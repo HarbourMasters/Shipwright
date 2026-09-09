@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 3, 0x01BF93B0 ]
+    - [ 2, 0x01BEE4F0 ]
+  directory: scenes/shared/spot17_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/spot17_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+    - ntsc_u_mq/scenes/shared/spot17_room_0Set_0000C0.yml
+    - ntsc_u_mq/scenes/shared/spot17_room_0Set_000120.yml
+    - ntsc_u_mq/scenes/shared/spot17_room_0Set_000170.yml
+
+spot17_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot17_room_0
+
+spot17_room_0Tex_003880:
+  type: TEXTURE
+  offset: 0x3880
+  symbol: spot17_room_0Tex_003880
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot17_room_0Tex_004880:
+  type: TEXTURE
+  offset: 0x4880
+  symbol: spot17_room_0Tex_004880
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot17_room_0Tex_005080:
+  type: TEXTURE
+  offset: 0x5080
+  symbol: spot17_room_0Tex_005080
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot17_room_0Tex_005880:
+  type: TEXTURE
+  offset: 0x5880
+  symbol: spot17_room_0Tex_005880
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+spot17_room_0Vtx_0001C0:
+  type: OOT:ARRAY
+  offset: 0x0001C0
+  symbol: spot17_room_0Vtx_0001C0
+  count: 245
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot17_room_0DL_001110:
+  type: GFX
+  offset: 0x001110
+  symbol: spot17_room_0DL_001110
+
+spot17_room_0Vtx_001C10:
+  type: OOT:ARRAY
+  offset: 0x001C10
+  symbol: spot17_room_0Vtx_001C10
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot17_room_0DL_001D30:
+  type: GFX
+  offset: 0x001D30
+  symbol: spot17_room_0DL_001D30
+
+spot17_room_0Vtx_001EB8:
+  type: OOT:ARRAY
+  offset: 0x001EB8
+  symbol: spot17_room_0Vtx_001EB8
+  count: 145
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot17_room_0DL_0027C8:
+  type: GFX
+  offset: 0x0027C8
+  symbol: spot17_room_0DL_0027C8
+
+spot17_room_0Vtx_0030F0:
+  type: OOT:ARRAY
+  offset: 0x0030F0
+  symbol: spot17_room_0Vtx_0030F0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot17_room_0DL_003480:
+  type: GFX
+  offset: 0x003480
+  symbol: spot17_room_0DL_003480

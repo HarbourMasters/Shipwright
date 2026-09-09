@@ -1,6 +1,7 @@
 #include "z_en_encount1.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED)
 
@@ -108,7 +109,7 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
 
     if ((this->timer == 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->curNumSpawn <= this->maxCurSpawns) &&
         (this->curNumSpawn < 5)) {
-        floorType = func_80041D4C(&play->colCtx, player->actor.floorPoly, player->actor.floorBgId);
+        floorType = SurfaceType_GetFloorType(&play->colCtx, player->actor.floorPoly, player->actor.floorBgId);
         if ((floorType != 4) && (floorType != 7) && (floorType != 12)) {
             this->numLeeverSpawns = 0;
         } else if (!(this->reduceLeevers && (this->actor.xzDistToPlayer > 1300.0f))) {
@@ -143,7 +144,7 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
 
                 if (leever != NULL) {
                     this->curNumSpawn++;
-                    leever->unk_280 = this->leeverIndex++;
+                    leever->aimType = this->leeverIndex++;
                     if (this->leeverIndex >= 5) {
                         this->leeverIndex = 0;
                     }
@@ -305,6 +306,12 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                 }
                 this->killCount++;
             }
+
+            if (!GameInteractor_Should(VB_ENCOUNT1_SPAWN_STALCHILD_OR_WOLFOS, true, this, play, spawnId, spawnPos,
+                                       spawnParams)) {
+                continue;
+            }
+
             if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y, spawnPos.z, 0,
                                    0, 0, spawnParams) != NULL) {
                 this->curNumSpawn++;

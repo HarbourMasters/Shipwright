@@ -6,6 +6,7 @@
 
 #include "z_door_gerudo.h"
 #include "objects/object_door_gerudo/object_door_gerudo.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -103,6 +104,7 @@ void func_8099485C(DoorGerudo* this, PlayState* play) {
         gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] -= 1;
         Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
+        GameInteractor_ExecuteOnDungeonKeyUsedHooks(gSaveContext.mapIndex);
     } else {
         s32 direction = func_80994750(this, play);
 

@@ -9,14 +9,24 @@
                 "-S",
                 ".",
                 "-B",
-                "build/x64",
+                "build-cmake",
                 "-G",
-                "Visual Studio 17 2022",
-                "-T",
-                "v143",
-                "-A",
-                "x64"
+                "Ninja"
             ],
+            "windows": {
+                "args": [
+                    "-S",
+                    ".",
+                    "-B",
+                    "build/x64",
+                    "-G",
+                    "Visual Studio 17 2022",
+                    "-T",
+                    "v143",
+                    "-A",
+                    "x64"
+                ]
+            },
             "group": "build",
             "problemMatcher": []
         },
@@ -26,10 +36,19 @@
             "command": "cmake",
             "args": [
                 "--build",
-                "./build/x64",
+                "build-cmake",
                 "--target",
-                "GenerateSohOtr"
+                "GenerateSohOtr",
+                "--parallel"
             ],
+            "windows": {
+                "args": [
+                    "--build",
+                    "./build/x64",
+                    "--target",
+                    "GenerateSohOtr"
+                ]
+            },
             "group": "build",
             "problemMatcher": []
         },
@@ -39,8 +58,14 @@
             "command": "cmake",
             "args": [
                 "--build",
-                "./build/x64"
+                "build-cmake"
             ],
+            "windows": {
+                "args": [
+                    "--build",
+                    "./build/x64"
+                ]
+            },
             "group": {
                 "kind": "build",
                 "isDefault": true

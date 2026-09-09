@@ -1,7 +1,6 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_CAN_ATTACH_TO_ARROW)
@@ -127,8 +126,6 @@ void EnCrow_Destroy(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Setup Action functions
@@ -241,7 +238,7 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
     skelanimeUpdated = Animation_OnFrame(&this->skelAnime, 0.0f);
     this->actor.speedXZ = (Rand_ZeroOne() * 1.5f) + 3.0f;
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->aimRotY = this->actor.wallYaw;
     } else if (Actor_WorldDistXZToPoint(&this->actor, &this->actor.home.pos) > 300.0f) {
         this->aimRotY = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
@@ -276,7 +273,7 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
         this->aimRotX = CLAMP(this->aimRotX, -0x1000, 0x1000);
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ScaledStepToS(&this->actor.shape.rot.x, -0x100, 0x400);
     }
 
@@ -341,7 +338,7 @@ void EnCrow_Damaged(EnCrow* this, PlayState* play) {
             Math_ScaledStepToS(&this->actor.shape.rot.x, 0x4000, 0x200);
             this->actor.shape.rot.z += 0x1780;
         }
-        if ((this->actor.bgCheckFlags & 1) || (this->actor.floorHeight == BGCHECK_Y_MIN)) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->actor.floorHeight == BGCHECK_Y_MIN)) {
             EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &sZeroVecAccel, &sZeroVecAccel,
                                  this->actor.scale.x * 10000.0f, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, 1);
             EnCrow_SetupDie(this);
@@ -378,7 +375,7 @@ void EnCrow_Die(EnCrow* this, PlayState* play) {
 void EnCrow_TurnAway(EnCrow* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->aimRotY = this->actor.wallYaw;
     } else {
         this->aimRotY = this->actor.yawTowardsPlayer + 0x8000;
@@ -427,7 +424,7 @@ void EnCrow_UpdateDamage(EnCrow* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
             if (this->actor.colChkInfo.damageEffect == 1) { // Deku Nuts
                 EnCrow_SetupTurnAway(this);
-            } else {
+            } else if (GameInteractor_Should(VB_GUAY_SETUP_DAMAGED, true, this)) {
                 Actor_ApplyDamage(&this->actor);
                 this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 Enemy_StartFinishingBlow(play, &this->actor);
@@ -450,7 +447,7 @@ void EnCrow_Update(Actor* thisx, PlayState* play) {
     this->actor.world.rot.x = -this->actor.shape.rot.x;
 
     if (this->actionFunc != EnCrow_Respawn) {
-        if (this->actor.colChkInfo.health != 0) {
+        if (GameInteractor_Should(VB_GUAY_ALIVE_MOVE_HEIGHT_OFFSET, this->actor.colChkInfo.health != 0, &scale)) {
             height = 20.0f * scale;
             Actor_MoveXYZ(&this->actor);
         } else {

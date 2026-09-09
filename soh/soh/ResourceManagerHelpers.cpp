@@ -1,33 +1,106 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <fast/interpreter.h>
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
+#include <libultraship/bridge/resourcebridge.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <stb_image.h>
+
 #include "ResourceManagerHelpers.h"
 #include "OTRGlobals.h"
-#include "variables.h"
-#include "z64.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
-#include <libultraship/libultraship.h>
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <fast/Fast3dWindow.h>
-#include <fast/resource/ResourceType.h>
-#include <fast/resource/type/DisplayList.h>
+
+extern "C" {
+#include "variables.h"
+#include "z64.h"
+#include "macros.h"
+}
 
 extern "C" PlayState* gPlayState;
 
+struct LinkTunicDListCacheKey {
+    size_t operator()(const std::pair<std::string, const char*>& key) const {
+        return std::hash<std::string>{}(key.first) ^ std::hash<const char*>{}(key.second);
+    }
+};
+
+static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
+    if (path == nullptr) {
+        return nullptr;
+    }
+
+    const char* originalPath = path;
+    constexpr std::string_view adultPrefix = "__OTR__objects/object_link_boy/";
+    constexpr std::string_view childPrefix = "__OTR__objects/object_link_child/";
+
+    std::string_view objectPrefix;
+    const char* objectFolder;
+
+    if (std::string_view(originalPath).starts_with(adultPrefix)) {
+        objectPrefix = adultPrefix;
+        objectFolder = "object_link_boy";
+    } else if (std::string_view(originalPath).starts_with(childPrefix)) {
+        objectPrefix = childPrefix;
+        objectFolder = "object_link_child";
+    } else {
+        return path;
+    }
+
+    const char* tunicSuffix = nullptr;
+    switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        case PLAYER_TUNIC_KOKIRI:
+            tunicSuffix = "kokiri";
+            break;
+        case PLAYER_TUNIC_GORON:
+            tunicSuffix = "goron";
+            break;
+        case PLAYER_TUNIC_ZORA:
+            tunicSuffix = "zora";
+            break;
+        default:
+            return path;
+    }
+
+    static std::unordered_map<std::pair<std::string, const char*>, std::string, LinkTunicDListCacheKey>
+        sResolvedLinkTunicDListPaths;
+    std::pair<std::string, const char*> cacheKey{ originalPath, tunicSuffix };
+    if (auto it = sResolvedLinkTunicDListPaths.find(cacheKey); it != sResolvedLinkTunicDListPaths.end()) {
+        return it->second.c_str();
+    }
+
+    const std::string candidate = spdlog::fmt_lib::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix,
+                                                          originalPath + objectPrefix.size());
+
+    if (!ResourceMgr_IsAltAssetsEnabled() || !ResourceMgr_FileAltExists(candidate.c_str()) ||
+        !ResourceGetIsCustomByName(candidate.c_str())) {
+        return path;
+    }
+
+    auto it = sResolvedLinkTunicDListPaths.emplace(std::move(cacheKey), candidate).first;
+    return it->second.c_str();
+}
+
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
+    return static_cast<u32>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size());
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
+    return Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
 }
 
 extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
     uint32_t version =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
+        Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
 
     switch (version) {
         case OOT_NTSC_US_10:
@@ -47,12 +120,15 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_GC_DBG2:
         case OOT_PAL_GC_MQ_DBG:
             return GAME_PLATFORM_GC;
+        default:
+            assert(false);
+            return GAME_PLATFORM_UNKNOWN;
     }
 }
 
 extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
     uint32_t version =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
+        Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions()[index];
 
     switch (version) {
         case OOT_NTSC_US_10:
@@ -72,6 +148,9 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_DBG2:
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
+        default:
+            assert(false);
+            return GAME_REGION_UNKNOWN;
     }
 }
 
@@ -100,7 +179,7 @@ u32 IsSceneMasterQuest(s16 sceneNum) {
         }
 
         if (IS_RANDO) {
-            auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
+            auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene((SceneID)sceneNum);
             if (dungeon != nullptr && dungeon->IsMQ()) {
                 return true;
             }
@@ -127,11 +206,11 @@ extern "C" uint32_t ResourceMgr_IsGameMasterQuest() {
 }
 
 extern "C" void ResourceMgr_LoadDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->LoadResources(resName);
+    Ship::Context::GetRawInstance()->GetResourceManager()->LoadResources(resName);
 }
 
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    Ship::Context::GetInstance()->GetResourceManager()->DirtyResources(resName);
+    Ship::Context::GetRawInstance()->GetResourceManager()->DirtyResources(resName);
 }
 
 extern "C" void ResourceMgr_UnloadResource(const char* resName) {
@@ -139,13 +218,13 @@ extern "C" void ResourceMgr_UnloadResource(const char* resName) {
     if (path.substr(0, 7) == "__OTR__") {
         path = path.substr(7);
     }
-    auto res = Ship::Context::GetInstance()->GetResourceManager()->UnloadResource(path);
+    auto res = Ship::Context::GetRawInstance()->GetResourceManager()->UnloadResource(path);
 }
 
 // OTRTODO: There is probably a more elegant way to go about this...
-// Kenix: This is definitely leaking memory when it's called.
+// Caller must free each string and the array itself when done.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(searchMask);
+    auto lst = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -154,7 +233,7 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
         str[lst.get()[0][i].size()] = '\0';
         result[i] = str;
     }
-    *resultSize = lst->size();
+    *resultSize = static_cast<int>(lst->size());
 
     return result;
 }
@@ -182,7 +261,7 @@ extern "C" uint8_t ResourceMgr_FileAltExists(const char* filePath) {
 }
 
 extern "C" bool ResourceMgr_IsAltAssetsEnabled() {
-    return Ship::Context::GetInstance()->GetResourceManager()->IsAltAssetsEnabled();
+    return Ship::Context::GetRawInstance()->GetResourceManager()->IsAltAssetsEnabled();
 }
 
 // Unloads a resource if an alternate version exists when alt assets are enabled
@@ -201,7 +280,7 @@ std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const c
             Path.replace(pos, 7, "/mq/");
         }
     }
-    return Ship::Context::GetInstance()->GetResourceManager()->LoadResource(Path.c_str());
+    return Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(Path.c_str());
 }
 
 extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
@@ -297,12 +376,15 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
+    path = ResourceMgr_ResolveLinkTunicDListPath(path);
     // When an alt resource exists for the DL, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
 
     auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    if (!res)
+        return nullptr;
     return (Gfx*)&res->Instructions[0];
 }
 
@@ -314,6 +396,9 @@ extern "C" uint8_t ResourceMgr_FileIsCustomByName(const char* path) {
 typedef struct {
     int index;
     Gfx instruction;
+    const void* instructionsPtr;
+    size_t instructionCount;
+    bool isCustom;
 } GfxPatch;
 
 std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
@@ -322,7 +407,11 @@ std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> origi
 // using OTRs instead (When that is available). Index can be found using the commented out section below.
 extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
     auto res = std::static_pointer_cast<Fast::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || static_cast<size_t>(index) >= res->Instructions.size()) {
+        return;
+    }
 
     // Leaving this here for people attempting to find the correct Dlist index to patch
     /*if (strcmp("__OTR__objects/object_gi_longsword/gGiBiggoronSwordDL", path) == 0) {
@@ -351,7 +440,8 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { index, *gfx };
+        originalGfx[path][patchName] = { index, *gfx, res->Instructions.data(), res->Instructions.size(),
+                                         res->GetInitData()->IsCustom };
     }
 
     *gfx = instruction;
@@ -360,7 +450,12 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
 extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex,
                                                       int sourceIndex) {
     auto res = std::static_pointer_cast<Fast::DisplayList>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || static_cast<size_t>(destinationIndex) >= res->Instructions.size() ||
+        static_cast<size_t>(sourceIndex) >= res->Instructions.size()) {
+        return;
+    }
 
     // Do not patch custom assets as they most likely do not have the same instructions as authentic assets
     if (res->GetInitData()->IsCustom) {
@@ -371,19 +466,62 @@ extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const ch
     Gfx sourceGfx = *(Gfx*)&res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = { destinationIndex, *destinationGfx };
+        originalGfx[path][patchName] = { destinationIndex, *destinationGfx, res->Instructions.data(),
+                                         res->Instructions.size(), res->GetInitData()->IsCustom };
     }
 
     *destinationGfx = sourceGfx;
 }
 
+extern "C" void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
+    auto res = std::static_pointer_cast<Fast::DisplayList>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(path));
+
+    if (res == nullptr || static_cast<size_t>(index) >= res->Instructions.size()) {
+        return;
+    }
+
+    Gfx* gfx = (Gfx*)&res->Instructions[index];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = { index, *gfx, res->Instructions.data(), res->Instructions.size(),
+                                         res->GetInitData()->IsCustom };
+    }
+
+    *gfx = instruction;
+}
+
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
     if (originalGfx.contains(path) && originalGfx[path].contains(patchName)) {
         auto res = std::static_pointer_cast<Fast::DisplayList>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(path));
 
-        Gfx* gfx = (Gfx*)&res->Instructions[originalGfx[path][patchName].index];
-        *gfx = originalGfx[path][patchName].instruction;
+        // If the resource is unavailable (e.g. swapped out when toggling alt assets), clean up the record and bail.
+        if (res == nullptr) {
+            ResourceMgr_UnloadResource(path);
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
+        const GfxPatch& patch = originalGfx[path][patchName];
+        // Skip and clean up if the backing resource changed since we recorded the patch (e.g. alt<->vanilla swap)
+        // to avoid writing instructions from a different asset onto the current one.
+        if (res->Instructions.data() != patch.instructionsPtr || res->Instructions.size() != patch.instructionCount ||
+            res->GetInitData()->IsCustom != patch.isCustom) {
+            ResourceMgr_UnloadResource(path);
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
+        // Skip and clean up if the loaded resource is smaller than the recorded patch index (can happen when alt assets
+        // swap in shorter display lists).
+        if (static_cast<size_t>(patch.index) >= res->Instructions.size()) {
+            originalGfx[path].erase(patchName);
+            return;
+        }
+
+        Gfx* gfx = (Gfx*)&res->Instructions[patch.index];
+        *gfx = patch.instruction;
 
         originalGfx[path].erase(patchName);
     }
@@ -461,7 +599,50 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
     return 0;
 }
 
+// Load animation with explicit alt asset path checking.
+// When Alt Assets is OFF: use original path directly (O2R or vanilla)
+// When Alt Assets is ON: try alt/ prefix first, fall back to regular path if not found or invalid
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
+    bool isAlt = ResourceMgr_IsAltAssetsEnabled();
+
+    if (isAlt) {
+        if (ResourceMgr_FileAltExists(path)) {
+            std::string pathStr = std::string(path);
+            static const std::string sOtr = "__OTR__";
+
+            if (pathStr.starts_with(sOtr)) {
+                pathStr = pathStr.substr(sOtr.length());
+            }
+
+            // Try alt/ first
+            pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
+
+            AnimationHeaderCommon* animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(pathStr.c_str());
+
+            // If alt loaded successfully, verify it has valid data
+            if (animHeader != NULL) {
+                // Check for valid frame count (> 0)
+                if (animHeader->frameCount > 0) {
+                    // For Normal animations: check frameData (comes after frameCount in AnimationHeader)
+                    // For Link animations: check segment (comes after frameCount in LinkAnimationHeader)
+                    // We check both to be safe - if either is valid, the animation is usable
+                    AnimationHeader* normalAnim = (AnimationHeader*)animHeader;
+                    LinkAnimationHeader* linkAnim = (LinkAnimationHeader*)animHeader;
+
+                    // Valid if Normal animation has frameData OR Link animation has segment
+                    if (normalAnim->frameData != NULL || linkAnim->segment != NULL) {
+                        return animHeader;
+                    }
+                }
+                // Alt loaded but is invalid (broken), fall through to original path
+            }
+        }
+
+        // Fall back to original path
+        return (AnimationHeaderCommon*)ResourceGetDataByName(path);
+    }
+
+    // Alt OFF: use original path directly
     return (AnimationHeaderCommon*)ResourceGetDataByName(path);
 }
 
@@ -487,7 +668,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     }
 
     // This function is only called when a skeleton is initialized.
-    // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
+    // Therefore we can take this opportunity to take note of the Skeleton that is created...
     if (skelAnime != nullptr) {
         auto stringPath = std::string(path);
         SOH::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);

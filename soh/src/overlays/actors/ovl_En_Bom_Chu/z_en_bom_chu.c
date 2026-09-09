@@ -108,7 +108,7 @@ void EnBomChu_Explode(EnBomChu* this, PlayState* play) {
     s32 i;
 
     bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y,
-                               this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+                               this->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
     if (bomb != NULL) {
         bomb->timer = 0;
     }
@@ -240,7 +240,7 @@ void EnBomChu_WaitForRelease(EnBomChu* this, PlayState* play) {
         //! and will cause a crash inside this function.
         EnBomChu_UpdateFloorPoly(this, this->actor.floorPoly, play);
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED; // make chu targetable
-        func_8002F850(play, &this->actor);
+        Actor_PlaySfx_SurfaceBomb(play, &this->actor);
         this->actionFunc = EnBomChu_Move;
     }
 }
@@ -280,7 +280,7 @@ void EnBomChu_Move(EnBomChu* this, PlayState* play) {
 
     if (BgCheck_EntityLineTest1(&play->colCtx, &posA, &posB, &posUpDown, &polyUpDown, true, true, true, true,
                                 &bgIdUpDown) &&
-        !(func_80041DB8(&play->colCtx, polyUpDown, bgIdUpDown) & 0x30) && // && not crawl space?
+        !(SurfaceType_GetWallFlags(&play->colCtx, polyUpDown, bgIdUpDown) & WALL_FLAG_CRAWLSPACE) &&
         !SurfaceType_IsIgnoredByProjectiles(&play->colCtx, polyUpDown, bgIdUpDown)) {
         // forwards
         posB.x = (this->axisForwards.x * lineLength) + posA.x;
@@ -289,7 +289,7 @@ void EnBomChu_Move(EnBomChu* this, PlayState* play) {
 
         if (BgCheck_EntityLineTest1(&play->colCtx, &posA, &posB, &posSide, &polySide, true, true, true, true,
                                     &bgIdSide) &&
-            !(func_80041DB8(&play->colCtx, polySide, bgIdSide) & 0x30) &&
+            !(SurfaceType_GetWallFlags(&play->colCtx, polySide, bgIdSide) & WALL_FLAG_CRAWLSPACE) &&
             !SurfaceType_IsIgnoredByProjectiles(&play->colCtx, polySide, bgIdSide)) {
             EnBomChu_UpdateFloorPoly(this, polySide, play);
             this->actor.world.pos = posSide;
@@ -328,7 +328,7 @@ void EnBomChu_Move(EnBomChu* this, PlayState* play) {
 
             if (BgCheck_EntityLineTest1(&play->colCtx, &posA, &posB, &posSide, &polySide, true, true, true, true,
                                         &bgIdSide) &&
-                !(func_80041DB8(&play->colCtx, polySide, bgIdSide) & 0x30) &&
+                !(SurfaceType_GetWallFlags(&play->colCtx, polySide, bgIdSide) & WALL_FLAG_CRAWLSPACE) &&
                 !SurfaceType_IsIgnoredByProjectiles(&play->colCtx, polySide, bgIdSide)) {
                 EnBomChu_UpdateFloorPoly(this, polySide, play);
                 this->actor.world.pos = posSide;
@@ -347,7 +347,7 @@ void EnBomChu_Move(EnBomChu* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.y, this->actor.world.rot.y, 0x800);
     Math_ScaledStepToS(&this->actor.shape.rot.z, this->actor.world.rot.z, 0x800);
 
-    func_8002F8F0(&this->actor, NA_SE_IT_BOMBCHU_MOVE - SFX_FLAG);
+    Actor_PlaySfx_Flagged2(&this->actor, NA_SE_IT_BOMBCHU_MOVE - SFX_FLAG);
 }
 
 void EnBomChu_WaitForKill(EnBomChu* this, PlayState* play) {

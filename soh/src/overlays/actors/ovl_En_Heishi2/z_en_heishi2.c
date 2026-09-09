@@ -11,7 +11,6 @@
 #include "overlays/actors/ovl_Bg_Gate_Shutter/z_bg_gate_shutter.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/actors/ovl_Bg_Spot15_Saku/z_bg_spot15_saku.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -169,8 +168,6 @@ void EnHeishi2_Destroy(Actor* thisx, PlayState* play) {
     if ((this->collider.dim.radius != 0) || (this->collider.dim.height != 0)) {
         Collider_DestroyCylinder(play, &this->collider);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi2_DoNothing1(EnHeishi2* this, PlayState* play) {
@@ -189,52 +186,54 @@ void func_80A531E4(EnHeishi2* this, PlayState* play) {
 void func_80A53278(EnHeishi2* this, PlayState* play) {
     this->unk_30B = 0;
     this->unk_30E = 0;
-    if (Text_GetFaceReaction(play, 5) != 0) {
-        this->actor.textId = Text_GetFaceReaction(play, 5);
-        this->unk_30B = 1;
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actionFunc = func_80A5475C;
-    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) &&
-               (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
-               (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
-        // "Get all spiritual stones!"
-        osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7006;
-        this->actionFunc = func_80A5475C;
-    } else if (!IS_DAY) {
-        // "Sleep early for children!"
-        osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ 子供ははやくネロ！ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7002;
-        this->actionFunc = func_80A5475C;
+    if (GameInteractor_Should(VB_CAN_BRIBE_HEISHI2, true, this)) {
+        if (Text_GetFaceReaction(play, 5) != 0) {
+            this->actor.textId = Text_GetFaceReaction(play, 5);
+            this->unk_30B = 1;
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actionFunc = func_80A5475C;
+        } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) &&
+                   (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
+                   (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
+            // "Get all spiritual stones!"
+            osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7006;
+            this->actionFunc = func_80A5475C;
+        } else if (!IS_DAY) {
+            // "Sleep early for children!"
+            osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ 子供ははやくネロ！ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7002;
+            this->actionFunc = func_80A5475C;
 
-    } else if (this->unk_30C != 0) {
-        // "Anything passes"
-        osSyncPrintf(VT_FGCOL(BLUE) " ☆☆☆☆☆ なんでも通るよ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7099;
-        this->actionFunc = func_80A5475C;
-    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
-        if (this->unk_30E == 0) {
-            // "Start under the first sleeve!"
-            osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ １回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
-            this->actor.textId = 0x7071;
-            this->unk_30E = 1;
+        } else if (this->unk_30C != 0) {
+            // "Anything passes"
+            osSyncPrintf(VT_FGCOL(BLUE) " ☆☆☆☆☆ なんでも通るよ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7099;
+            this->actionFunc = func_80A5475C;
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
+            if (this->unk_30E == 0) {
+                // "Start under the first sleeve!"
+                osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ １回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
+                this->actor.textId = 0x7071;
+                this->unk_30E = 1;
+            } else {
+                // "Start under the second sleeve!"
+                osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ ２回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
+                this->actor.textId = 0x7072;
+            }
+            this->unk_300 = TEXT_STATE_CHOICE;
+            this->actionFunc = func_80A5475C;
+
         } else {
-            // "Start under the second sleeve!"
-            osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ ２回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
-            this->actor.textId = 0x7072;
+            // "That's okay"
+            osSyncPrintf(VT_FGCOL(CYAN) " ☆☆☆☆☆ それはとおらんよぉ ☆☆☆☆☆ \n" VT_RST);
+            this->unk_300 = TEXT_STATE_DONE;
+            this->actor.textId = 0x7029;
+            this->actionFunc = func_80A5475C;
         }
-        this->unk_300 = TEXT_STATE_CHOICE;
-        this->actionFunc = func_80A5475C;
-
-    } else {
-        // "That's okay"
-        osSyncPrintf(VT_FGCOL(CYAN) " ☆☆☆☆☆ それはとおらんよぉ ☆☆☆☆☆ \n" VT_RST);
-        this->unk_300 = TEXT_STATE_DONE;
-        this->actor.textId = 0x7029;
-        this->actionFunc = func_80A5475C;
     }
 }
 
@@ -317,17 +316,17 @@ void func_80A5372C(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
-        this->unk_280.x = 947.0f;
-        this->unk_280.y = 1195.0f;
-        this->unk_280.z = 2682.0f;
+        this->subCamEye.x = 947.0f;
+        this->subCamEye.y = 1195.0f;
+        this->subCamEye.z = 2682.0f;
 
-        this->unk_28C.x = 1164.0f;
-        this->unk_28C.y = 1145.0f;
-        this->unk_28C.z = 3014.0f;
+        this->subCamAt.x = 1164.0f;
+        this->subCamAt.y = 1145.0f;
+        this->subCamAt.z = 3014.0f;
 
-        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+        Play_CameraSetAtEye(play, this->cameraId, &this->subCamEye, &this->subCamAt);
     }
     this->actionFunc = func_80A53850;
 }
@@ -337,13 +336,13 @@ void func_80A53850(EnHeishi2* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
-        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+        Play_CameraSetAtEye(play, this->cameraId, &this->subCamEye, &this->subCamAt);
     }
     gate = (BgSpot15Saku*)this->gate;
     if ((this->unk_2F2[0] == 0) || (gate->unk_168 == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         Message_CloseTextbox(play);
         this->unk_30C = 1;
@@ -415,7 +414,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
     }
     this->unk_300 = TEXT_STATE_DONE;
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        exchangeItemId = func_8002F368(play);
+        exchangeItemId = Actor_GetPlayerExchangeItemId(play);
         if (GameInteractor_Should(VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER, exchangeItemId == EXCH_ITEM_LETTER_ZELDA,
                                   exchangeItemId)) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
@@ -429,7 +428,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
         yawDiffTemp = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         yawDiff = ABS(yawDiffTemp);
         if (!(120.0f < this->actor.xzDistToPlayer) && (yawDiff < 0x4300)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
         }
     }
 }
@@ -488,21 +487,21 @@ void func_80A53DF8(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
-        this->unk_2BC.x = -71.0f;
-        this->unk_280.x = -71.0f;
-        this->unk_2BC.y = 571.0f;
-        this->unk_280.y = 571.0f;
-        this->unk_2BC.z = -1487.0f;
-        this->unk_280.z = -1487.0f;
-        this->unk_298.x = 181.0f;
-        this->unk_28C.x = 181.0f;
-        this->unk_298.y = 417.0f;
-        this->unk_28C.y = 417.0f;
-        this->unk_298.z = -1079.0f;
-        this->unk_28C.z = -1079.0f;
-        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+        this->subCamEyeInit.x = -71.0f;
+        this->subCamEye.x = -71.0f;
+        this->subCamEyeInit.y = 571.0f;
+        this->subCamEye.y = 571.0f;
+        this->subCamEyeInit.z = -1487.0f;
+        this->subCamEye.z = -1487.0f;
+        this->subCamAtInit.x = 181.0f;
+        this->subCamAt.x = 181.0f;
+        this->subCamAtInit.y = 417.0f;
+        this->subCamAt.y = 417.0f;
+        this->subCamAtInit.z = -1079.0f;
+        this->subCamAt.z = -1079.0f;
+        Play_CameraSetAtEye(play, this->cameraId, &this->subCamEye, &this->subCamAt);
     }
     this->actionFunc = func_80A53F30;
 }
@@ -512,13 +511,13 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
-        Play_CameraSetAtEye(play, this->cameraId, &this->unk_280, &this->unk_28C);
+        Play_CameraSetAtEye(play, this->cameraId, &this->subCamEye, &this->subCamAt);
     }
     gate = (BgGateShutter*)this->gate;
     if ((this->unk_2F2[0] == 0) || (gate->openingState == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         if ((this->unk_30A != 2)) {
             if (this->unk_30A == 0) {
@@ -677,10 +676,12 @@ void func_80A5455C(EnHeishi2* this, PlayState* play) {
         pos.y = Rand_CenteredFloat(20.0f) + (this->unk_274.y - 40.0f);
         pos.z = Rand_CenteredFloat(20.0f) + (this->unk_274.z - 20.0f);
         rotY = Rand_CenteredFloat(7000.0f) + this->actor.yawTowardsPlayer;
-        bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, pos.x, pos.y, pos.z, 0, rotY, 0, 0, true);
-        if (bomb != NULL) {
-            bomb->actor.speedXZ = Rand_CenteredFloat(5.0f) + 10.0f;
-            bomb->actor.velocity.y = Rand_CenteredFloat(5.0f) + 10.0f;
+        if (GameInteractor_Should(VB_WONDER_HEISHI_ITEM, true, &pos, rotY)) {
+            bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, pos.x, pos.y, pos.z, 0, rotY, 0, 0);
+            if (bomb != NULL) {
+                bomb->actor.speedXZ = Rand_CenteredFloat(5.0f) + 10.0f;
+                bomb->actor.velocity.y = Rand_CenteredFloat(5.0f) + 10.0f;
+            }
         }
 
         // "This is down!"
@@ -756,7 +757,7 @@ void func_80A5475C(EnHeishi2* this, PlayState* play) {
         ((yawDiff = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)),
           !(this->actor.xzDistToPlayer > 120.0f)) &&
          (yawDiff < 0x4300))) {
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -789,7 +790,7 @@ void EnHeishi2_Update(Actor* thisx, PlayState* play) {
     if ((this->type == 2) || (this->type == 5)) {
         this->actor.focus.pos.y = 70.0f;
         Actor_SetFocus(&this->actor, 70.0f);
-        func_80038290(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
     }
 
     this->unk_2FC++;

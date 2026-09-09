@@ -3,21 +3,29 @@
 #include <string>
 #include <vector>
 
-#include <libultraship/libultraship.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 
+#include "randomizer_check_objects.h"
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
-#include "randomizerTypes.h"
-#include "soh/cvar_prefixes.h"
+#include "randomizer_tracker_windows.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
+#include "ShuffleSilver.h"
+#include "static_data.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
+
+#include <fast/Fast3dGui.h>
 
 extern "C" {
 #include <z64.h>
@@ -25,9 +33,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -47,143 +52,226 @@ std::vector<ItemTrackerItem> mainWindowItems = {};
 
 static WidgetInfo backgroundColor;
 static WidgetInfo windowTypeWidget;
-static WidgetInfo enableDraggingWidget;
-static WidgetInfo onlyPausedWidget;
 static WidgetInfo ammoTracking;
 static WidgetInfo keyTracking;
 static WidgetInfo triforcePieceCount;
 static WidgetInfo dungeonItemTracking;
 static WidgetInfo gregTracking;
 static WidgetInfo triforcePieceTracking;
+static WidgetInfo beanSoulsTracking;
 static WidgetInfo bossSoulsTracking;
+static WidgetInfo jabberNutsTracking;
 static WidgetInfo ocarinaButtonTracking;
 static WidgetInfo overworldKeysTracking;
+static WidgetInfo silverRupeeTracking;
 static WidgetInfo fishingPoleTracking;
 static WidgetInfo personalNotesWiget;
 static WidgetInfo hookshotIdentWidget;
+static WidgetInfo openChestIdentWidget;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 std::vector<ItemTrackerItem> inventoryItems = {
-    ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_LENS, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BEAN, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 1, DrawBottle),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 2, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 3, DrawBottle),
-    ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_STICK, "", 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_NUT, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOMB, "", 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_BOW, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, "", 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, "", 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOMBCHU, "", 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, "", 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, "", 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_LENS, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BEAN, "", 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_HAMMER, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, "", 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, "", 0, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, "", 1, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, "", 2, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, "", 3, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, "", 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, "", 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> equipmentItems = {
-    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, 1 << 2, DrawEquip),     ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, 1 << 8, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, 1 << 9, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, 1 << 10, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, 1 << 4, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, 1 << 5, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, 1 << 6, DrawEquip), ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, 1 << 12, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, 1 << 13, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, 1 << 14, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, "", 1 << 0, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, "", 1 << 1, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, "", 1 << 2, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, "", 1 << 8, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, "", 1 << 9, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, "", 1 << 10, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, "", 1 << 4, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, "", 1 << 5, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, "", 1 << 6, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, "", 1 << 12, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, "", 1 << 13, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, "", 1 << 14, DrawEquip),
 };
 
 std::vector<ItemTrackerItem> miscItems = {
-    ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
+    ITEM_TRACKER_ITEM(ITEM_BRACELET, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, "", 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, "", 0, DrawItem),
+    ITEM_TRACKER_QUEST(QUEST_GERUDO_CARD, "", 1 << 22, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_SKULL_TOKEN, "", 1 << 23, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_STONE_OF_AGONY, "", 1 << 21, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardStones = {
-    ITEM_TRACKER_ITEM(QUEST_KOKIRI_EMERALD, 1 << 18, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_GORON_RUBY, 1 << 19, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_ZORA_SAPPHIRE, 1 << 20, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_KOKIRI_EMERALD, "", 1 << 18, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_GORON_RUBY, "", 1 << 19, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_ZORA_SAPPHIRE, "", 1 << 20, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardMedallions = {
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FOREST, 1 << 0, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FIRE, 1 << 1, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_WATER, 1 << 2, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SPIRIT, 1 << 3, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SHADOW, 1 << 4, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_LIGHT, 1 << 5, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_FOREST, "", 1 << 0, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_FIRE, "", 1 << 1, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_WATER, "", 1 << 2, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_SPIRIT, "", 1 << 3, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_SHADOW, "", 1 << 4, DrawQuest),
+    ITEM_TRACKER_QUEST(QUEST_MEDALLION_LIGHT, "", 1 << 5, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewards = {};
 
 std::vector<ItemTrackerItem> songItems = {
-    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_LULLABY, "", 0, DrawSong),  ITEM_TRACKER_QUEST(QUEST_SONG_EPONA, "", 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_SARIA, "", 0, DrawSong),    ITEM_TRACKER_QUEST(QUEST_SONG_SUN, "", 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_TIME, "", 0, DrawSong),     ITEM_TRACKER_QUEST(QUEST_SONG_STORMS, "", 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_MINUET, "", 0, DrawSong),   ITEM_TRACKER_QUEST(QUEST_SONG_BOLERO, "", 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_SERENADE, "", 0, DrawSong), ITEM_TRACKER_QUEST(QUEST_SONG_REQUIEM, "", 0, DrawSong),
+    ITEM_TRACKER_QUEST(QUEST_SONG_NOCTURNE, "", 0, DrawSong), ITEM_TRACKER_QUEST(QUEST_SONG_PRELUDE, "", 0, DrawSong),
 };
 
 std::vector<ItemTrackerItem> gregItems = {
-    ITEM_TRACKER_ITEM(ITEM_RUPEE_GREEN, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_RUPEE_GREEN, "", 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> triforcePieces = {
-    ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
+    ITEM_TRACKER_RG(RG_TRIFORCE_PIECE, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> rocsFeather = {
+    ITEM_TRACKER_RG(RG_ROCS_FEATHER, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> swimItems = {
+    ITEM_TRACKER_RG_CUSTOM(RG_BRONZE_SCALE, "Swim", ITEM_SCALE_SILVER, 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> crawlItems = {
+    ITEM_TRACKER_RG(RG_CRAWL, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> climbItems = {
+    ITEM_TRACKER_RG(RG_CLIMB, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> grabItems = {
+    ITEM_TRACKER_RG(RG_POWER_BRACELET, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> openChestItems = {
+    ITEM_TRACKER_RG(RG_OPEN_CHEST, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> beanSoulItems = {
+    ITEM_TRACKER_RG_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, "DMC", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, "DMT", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_DESERT_COLOSSUS_BEAN_SOUL, "DC", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GERUDO_VALLEY_BEAN_SOUL, "GV", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GRAVEYARD_BEAN_SOUL, "GY", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_KOKIRI_FOREST_BEAN_SOUL, "KF", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_LAKE_HYLIA_BEAN_SOUL, "LH", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_LOST_WOODS_BEAN_SOUL, "LWT", ITEM_BEAN, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_ZORAS_RIVER_BEAN_SOUL, "ZR", ITEM_BEAN, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> bossSoulItems = {
-    ITEM_TRACKER_ITEM(RG_GOHMA_SOUL, 0, DrawItem),       ITEM_TRACKER_ITEM(RG_KING_DODONGO_SOUL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(RG_BARINADE_SOUL, 0, DrawItem),    ITEM_TRACKER_ITEM(RG_PHANTOM_GANON_SOUL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(RG_VOLVAGIA_SOUL, 0, DrawItem),    ITEM_TRACKER_ITEM(RG_MORPHA_SOUL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(RG_BONGO_BONGO_SOUL, 0, DrawItem), ITEM_TRACKER_ITEM(RG_TWINROVA_SOUL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem),
+    ITEM_TRACKER_RG(RG_GOHMA_SOUL, "GOHMA", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_KING_DODONGO_SOUL, "KD", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_BARINADE_SOUL, "BARI", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_PHANTOM_GANON_SOUL, "PG", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_VOLVAGIA_SOUL, "VOLV", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_MORPHA_SOUL, "MORPH", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_BONGO_BONGO_SOUL, "BONGO", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_TWINROVA_SOUL, "TWIN", 0, DrawItem),
+    ITEM_TRACKER_RG(RG_GANON_SOUL, "GANON", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> jabbernutItems = {
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_DEKU, "DEKU", ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_GERUDO, "GERUDO", ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_GORON, "GORON", ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_HYLIAN, "HYLIAN", ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_KOKIRI, "KOKIRI", ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPEAK_ZORA, "ZORA", ITEM_NUT, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
     // Hack for right now, just gonna draw ocarina buttons as ocarinas.
     // Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_A_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_UP_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_DOWN_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_LEFT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_OCARINA_C_RIGHT_BUTTON, ITEM_OCARINA_TIME, ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_OCARINA_A_BUTTON, "A", ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_OCARINA_C_UP_BUTTON, "C-U", ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_OCARINA_C_DOWN_BUTTON, "C-D", ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_OCARINA_C_LEFT_BUTTON, "C-L", ITEM_OCARINA_TIME, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_OCARINA_C_RIGHT_BUTTON, "C-R", ITEM_OCARINA_TIME, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> overworldKeyItems = {
     // Hack for right now, just gonna overworld keys as dungeon keys.
     // Will replace with other macro once we have a custom texture
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GUARD_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_BAZAAR_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_POTION_SHOP_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MASK_SHOP_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_MARKET_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_BOWLING_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TREASURE_CHEST_GAME_BUILDING_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BOMBCHU_SHOP_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_RICHARDS_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_ALLEY_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_BAZAAR_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_POTION_SHOP_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BOSS_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_GRANNYS_POTION_SHOP_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_SKULLTULA_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_IMPAS_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_WINDMILL_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_KAK_SHOOTING_GALLERY_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_DAMPES_HUT_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_TALONS_HOUSE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_STABLES_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_BACK_TOWER_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_HYLIA_LAB_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM_CUSTOM(RG_FISHING_HOLE_KEY, ITEM_KEY_SMALL, ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GUARD_HOUSE_KEY, "GUARD", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_MARKET_BAZAAR_KEY, "MKBAZ", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_MARKET_POTION_SHOP_KEY, "MKPOT", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_MASK_SHOP_KEY, "MASK", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_MARKET_SHOOTING_GALLERY_KEY, "MKSHO", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_BOMBCHU_BOWLING_KEY, "BOWL", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_TREASURE_CHEST_GAME_BUILDING_KEY, "TREASU", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_BOMBCHU_SHOP_KEY, "CHUSHO", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_RICHARDS_HOUSE_KEY, "RICH", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_ALLEY_HOUSE_KEY, "ALLEY", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_KAK_BAZAAR_KEY, "KAKBAZ", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_KAK_POTION_SHOP_KEY, "KAKPO", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_BOSS_HOUSE_KEY, "BOSS", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GRANNYS_POTION_SHOP_KEY, "GRANNY", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SKULLTULA_HOUSE_KEY, "SKULL", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_IMPAS_HOUSE_KEY, "IMPAS", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_WINDMILL_KEY, "WIND", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_KAK_SHOOTING_GALLERY_KEY, "KAKSHO", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_DAMPES_HUT_KEY, "DAMPES", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_TALONS_HOUSE_KEY, "TALONS", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_STABLES_KEY, "STABLE", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_BACK_TOWER_KEY, "TOWER", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_HYLIA_LAB_KEY, "LAB", ITEM_KEY_SMALL, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_FISHING_HOLE_KEY, "FISH", ITEM_KEY_SMALL, 0, DrawItem),
 };
 
-std::vector<ItemTrackerItem> fishingPoleItems = { ITEM_TRACKER_ITEM(ITEM_FISHING_POLE, 0, DrawItem) };
+std::vector<ItemTrackerItem> fishingPoleItems = { ITEM_TRACKER_ITEM(ITEM_FISHING_POLE, "", 0, DrawItem) };
+
+std::vector<ItemTrackerItem> silverRupeeItems = {
+    ITEM_TRACKER_RG_CUSTOM(RG_ICE_CAVERN_SILVER_BLADES, "ICBlad", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_ICE_CAVERN_SILVER_BLOCK, "ICBlok", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_BOTW_SILVER, "BotW", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GTG_SILVER_SLOPE, "GTGSlo", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GTG_SILVER_LAVA, "GTGLva", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GTG_SILVER_WATER, "GTGWtr", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPIRIT_SILVER_CHILD, "SpiChd", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPIRIT_SILVER_SUN, "SpiSun", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPIRIT_SILVER_BOULDERS, "SpiBol", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SHADOW_SILVER_BLADES, "ShaBla", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SHADOW_SILVER_PIT, "ShaPit", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SHADOW_SILVER_SPIKES, "ShaSpk", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_SILVER_LIGHT, "LhtTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_SILVER_FOREST, "ForTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_SILVER_FIRE, "FirTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_SILVER_SPIRIT, "SpiTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_DODONGOS_CAVERN_MQ_SILVER, "DC", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES, "ShaInv", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPIRIT_MQ_SILVER_LOBBY, "SpiLob", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_SPIRIT_MQ_SILVER_BIG_WALL, "SpiWal", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_MQ_SILVER_WATER, "WatTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_MQ_SILVER_SHADOW, "ShaTri", ITEM_RUPEE_SILVER, 0, DrawItem),
+};
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -246,104 +334,66 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_THIEVES_HIDEOUT, "HIDE" },
 };
 
-std::map<uint16_t, std::string> itemTrackerBossShortNames = {
-    { RG_GOHMA_SOUL, "GOHMA" },       { RG_KING_DODONGO_SOUL, "KD" }, { RG_BARINADE_SOUL, "BARI" },
-    { RG_PHANTOM_GANON_SOUL, "PG" },  { RG_VOLVAGIA_SOUL, "VOLV" },   { RG_MORPHA_SOUL, "MORPH" },
-    { RG_BONGO_BONGO_SOUL, "BONGO" }, { RG_TWINROVA_SOUL, "TWIN" },   { RG_GANON_SOUL, "GANON" },
-};
-
-std::map<uint16_t, std::string> itemTrackerOcarinaButtonShortNames = {
-    { RG_OCARINA_A_BUTTON, "A" },        { RG_OCARINA_C_UP_BUTTON, "C-U" },    { RG_OCARINA_C_DOWN_BUTTON, "C-D" },
-    { RG_OCARINA_C_LEFT_BUTTON, "C-L" }, { RG_OCARINA_C_RIGHT_BUTTON, "C-R" },
-};
-
-std::map<uint16_t, std::string> itemTrackerOverworldKeyShortNames = {
-    { RG_GUARD_HOUSE_KEY, "GUARD" },
-    { RG_MARKET_BAZAAR_KEY, "MKBAZ" },
-    { RG_MARKET_POTION_SHOP_KEY, "MKPOT" },
-    { RG_MASK_SHOP_KEY, "MASK" },
-    { RG_MARKET_SHOOTING_GALLERY_KEY, "MKSHO" },
-    { RG_BOMBCHU_BOWLING_KEY, "BOWL" },
-    { RG_TREASURE_CHEST_GAME_BUILDING_KEY, "TREASU" },
-    { RG_BOMBCHU_SHOP_KEY, "CHUSHO" },
-    { RG_RICHARDS_HOUSE_KEY, "RICH" },
-    { RG_ALLEY_HOUSE_KEY, "ALLEY" },
-    { RG_KAK_BAZAAR_KEY, "KAKBAZ" },
-    { RG_KAK_POTION_SHOP_KEY, "KAKPO" },
-    { RG_BOSS_HOUSE_KEY, "BOSS" },
-    { RG_GRANNYS_POTION_SHOP_KEY, "GRANNY" },
-    { RG_SKULLTULA_HOUSE_KEY, "SKULL" },
-    { RG_IMPAS_HOUSE_KEY, "IMPAS" },
-    { RG_WINDMILL_KEY, "WIND" },
-    { RG_KAK_SHOOTING_GALLERY_KEY, "KAKSHO" },
-    { RG_DAMPES_HUT_KEY, "DAMPES" },
-    { RG_TALONS_HOUSE_KEY, "TALONS" },
-    { RG_STABLES_KEY, "STABLE" },
-    { RG_BACK_TOWER_KEY, "TOWER" },
-    { RG_HYLIA_LAB_KEY, "LAB" },
-    { RG_FISHING_HOLE_KEY, "FISH" },
-};
-
 std::vector<ItemTrackerItem> dungeonItems = {};
 
 std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
-    { ITEM_BOTTLE, ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
-    { ITEM_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
-    { ITEM_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
-    { ITEM_BUG, ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
-    { ITEM_FAIRY, ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
-    { ITEM_FISH, ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
-    { ITEM_POTION_GREEN, ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
-    { ITEM_POE, ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
-    { ITEM_POTION_RED, ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
-    { ITEM_POTION_BLUE, ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
-    { ITEM_MILK_BOTTLE, ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
-    { ITEM_MILK_HALF, ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
-    { ITEM_LETTER_RUTO, ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
+    { ITEM_BOTTLE, ITEM_TRACKER_ITEM(ITEM_BOTTLE, "", 0, DrawItem) },
+    { ITEM_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BIG_POE, "", 0, DrawItem) },
+    { ITEM_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, "", 0, DrawItem) },
+    { ITEM_BUG, ITEM_TRACKER_ITEM(ITEM_BUG, "", 0, DrawItem) },
+    { ITEM_FAIRY, ITEM_TRACKER_ITEM(ITEM_FAIRY, "", 0, DrawItem) },
+    { ITEM_FISH, ITEM_TRACKER_ITEM(ITEM_FISH, "", 0, DrawItem) },
+    { ITEM_POTION_GREEN, ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, "", 0, DrawItem) },
+    { ITEM_POE, ITEM_TRACKER_ITEM(ITEM_POE, "", 0, DrawItem) },
+    { ITEM_POTION_RED, ITEM_TRACKER_ITEM(ITEM_POTION_RED, "", 0, DrawItem) },
+    { ITEM_POTION_BLUE, ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, "", 0, DrawItem) },
+    { ITEM_MILK_BOTTLE, ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, "", 0, DrawItem) },
+    { ITEM_MILK_HALF, ITEM_TRACKER_ITEM(ITEM_MILK_HALF, "", 0, DrawItem) },
+    { ITEM_LETTER_RUTO, ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, "", 0, DrawItem) },
 
-    { ITEM_HOOKSHOT, ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
-    { ITEM_LONGSHOT, ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
+    { ITEM_HOOKSHOT, ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, "", 0, DrawItem) },
+    { ITEM_LONGSHOT, ITEM_TRACKER_ITEM(ITEM_LONGSHOT, "", 0, DrawItem) },
 
-    { ITEM_OCARINA_FAIRY, ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
-    { ITEM_OCARINA_TIME, ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, 0, DrawItem) },
+    { ITEM_OCARINA_FAIRY, ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, "", 0, DrawItem) },
+    { ITEM_OCARINA_TIME, ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, "", 0, DrawItem) },
 
-    { ITEM_MAGIC_SMALL, ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem) },
-    { ITEM_MAGIC_LARGE, ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, 0, DrawItem) },
+    { ITEM_MAGIC_SMALL, ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, "", 0, DrawItem) },
+    { ITEM_MAGIC_LARGE, ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, "", 0, DrawItem) },
 
-    { ITEM_WALLET_ADULT, ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem) },
-    { ITEM_WALLET_GIANT, ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, 0, DrawItem) },
+    { ITEM_WALLET_ADULT, ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, "", 0, DrawItem) },
+    { ITEM_WALLET_GIANT, ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, "", 0, DrawItem) },
 
-    { ITEM_BRACELET, ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem) },
-    { ITEM_GAUNTLETS_SILVER, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_SILVER, 0, DrawItem) },
-    { ITEM_GAUNTLETS_GOLD, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, 0, DrawItem) },
+    { ITEM_BRACELET, ITEM_TRACKER_ITEM(ITEM_BRACELET, "", 0, DrawItem) },
+    { ITEM_GAUNTLETS_SILVER, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_SILVER, "", 0, DrawItem) },
+    { ITEM_GAUNTLETS_GOLD, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, "", 0, DrawItem) },
 
-    { ITEM_SCALE_SILVER, ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
-    { ITEM_SCALE_GOLDEN, ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
+    { ITEM_SCALE_SILVER, ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, "", 0, DrawItem) },
+    { ITEM_SCALE_GOLDEN, ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, "", 0, DrawItem) },
 
-    { ITEM_WEIRD_EGG, ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
-    { ITEM_CHICKEN, ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
-    { ITEM_LETTER_ZELDA, ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, 0, DrawItem) },
-    { ITEM_MASK_KEATON, ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
-    { ITEM_MASK_SKULL, ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
-    { ITEM_MASK_SPOOKY, ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
-    { ITEM_MASK_BUNNY, ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, 0, DrawItem) },
-    { ITEM_MASK_GORON, ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
-    { ITEM_MASK_ZORA, ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
-    { ITEM_MASK_GERUDO, ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
-    { ITEM_MASK_TRUTH, ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
-    { ITEM_SOLD_OUT, ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
+    { ITEM_WEIRD_EGG, ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, "", 0, DrawItem) },
+    { ITEM_CHICKEN, ITEM_TRACKER_ITEM(ITEM_CHICKEN, "", 0, DrawItem) },
+    { ITEM_LETTER_ZELDA, ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, "", 0, DrawItem) },
+    { ITEM_MASK_KEATON, ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, "", 0, DrawItem) },
+    { ITEM_MASK_SKULL, ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, "", 0, DrawItem) },
+    { ITEM_MASK_SPOOKY, ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, "", 0, DrawItem) },
+    { ITEM_MASK_BUNNY, ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, "", 0, DrawItem) },
+    { ITEM_MASK_GORON, ITEM_TRACKER_ITEM(ITEM_MASK_GORON, "", 0, DrawItem) },
+    { ITEM_MASK_ZORA, ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, "", 0, DrawItem) },
+    { ITEM_MASK_GERUDO, ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, "", 0, DrawItem) },
+    { ITEM_MASK_TRUTH, ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, "", 0, DrawItem) },
+    { ITEM_SOLD_OUT, ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, "", 0, DrawItem) },
 
-    { ITEM_POCKET_EGG, ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
-    { ITEM_POCKET_CUCCO, ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
-    { ITEM_COJIRO, ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
-    { ITEM_ODD_MUSHROOM, ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
-    { ITEM_ODD_POTION, ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
-    { ITEM_SAW, ITEM_TRACKER_ITEM(ITEM_SAW, 0, DrawItem) },
-    { ITEM_SWORD_BROKEN, ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, 0, DrawItem) },
-    { ITEM_PRESCRIPTION, ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
-    { ITEM_FROG, ITEM_TRACKER_ITEM(ITEM_FROG, 0, DrawItem) },
-    { ITEM_EYEDROPS, ITEM_TRACKER_ITEM(ITEM_EYEDROPS, 0, DrawItem) },
-    { ITEM_CLAIM_CHECK, ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
+    { ITEM_POCKET_EGG, ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, "", 0, DrawItem) },
+    { ITEM_POCKET_CUCCO, ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, "", 0, DrawItem) },
+    { ITEM_COJIRO, ITEM_TRACKER_ITEM(ITEM_COJIRO, "", 0, DrawItem) },
+    { ITEM_ODD_MUSHROOM, ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, "", 0, DrawItem) },
+    { ITEM_ODD_POTION, ITEM_TRACKER_ITEM(ITEM_ODD_POTION, "", 0, DrawItem) },
+    { ITEM_SAW, ITEM_TRACKER_ITEM(ITEM_SAW, "", 0, DrawItem) },
+    { ITEM_SWORD_BROKEN, ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, "", 0, DrawItem) },
+    { ITEM_PRESCRIPTION, ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, "", 0, DrawItem) },
+    { ITEM_FROG, ITEM_TRACKER_ITEM(ITEM_FROG, "", 0, DrawItem) },
+    { ITEM_EYEDROPS, ITEM_TRACKER_ITEM(ITEM_EYEDROPS, "", 0, DrawItem) },
+    { ITEM_CLAIM_CHECK, ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, "", 0, DrawItem) },
 };
 
 std::vector<uint32_t> buttonMap = {
@@ -403,6 +453,31 @@ static bool presetLoaded = false;
 static std::unordered_map<std::string, ImVec2> presetPos;
 static std::unordered_map<std::string, ImVec2> presetSize;
 
+void TrackSilverRupees(std::vector<ItemTrackerItem>* trackList) {
+    for (auto silverRupee : silverRupeeItems) {
+        RandomizerGet rg = static_cast<RandomizerGet>(silverRupee.id);
+        if ((gSaveContext.gameMode != GAMEMODE_NORMAL && silverRupee.id <= RG_GANONS_CASTLE_SILVER_SPIRIT) ||
+            (IsSilverInPool(rg) && (Rando::StaticData::constantSilvers.contains(rg) ||
+                                    CheckTracker::IsAreaSpoiled(Rando::StaticData::silverToArea[rg])))) {
+            trackList->push_back(silverRupee);
+        }
+    }
+    if (gSaveContext.gameMode == GAMEMODE_NORMAL && !CheckTracker::AreAllSilversSpoiled()) {
+        trackList->push_back({ (uint32_t)ITEMTYPE_SILVER, ITEM_KIND_DUMMY, "????", "ITEM_RUPEE_SILVER",
+                               "ITEM_RUPEE_SILVER_Faded", 0, DrawItem });
+    }
+}
+
+void DrawName(std::string str, ImU32 color) {
+    int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    ImGui::SetCursorScreenPos(
+        ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize(str.c_str()).x / 2), p.y - (iconSize + 13)));
+    ImGui::PushStyleColor(ImGuiCol_Text, color);
+    ImGui::Text("%s", str.c_str());
+    ImGui::PopStyleColor();
+}
+
 void ItemTrackerOnFrame() {
     if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
         notesIdleFrames++;
@@ -415,23 +490,27 @@ bool IsValidSaveFile() {
 }
 
 bool HasSong(ItemTrackerItem item) {
+    assert(item.kind == ITEM_KIND_QUEST);
     return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
+    assert(item.kind == ITEM_KIND_QUEST);
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasEquipment(ItemTrackerItem item) {
+    assert(item.kind == ITEM_KIND_ITEM);
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
-void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
     presetLoaded = true;
     for (auto window : itemTrackerWindowIDs) {
         if (trackerInfo.contains(window)) {
-            presetPos[window] = { trackerInfo[window]["pos"]["x"], trackerInfo[window]["pos"]["y"] };
-            presetSize[window] = { trackerInfo[window]["size"]["width"], trackerInfo[window]["size"]["height"] };
+            const nlohmann::json& windowInfo = trackerInfo.at(window);
+            presetPos[window] = { windowInfo.at("pos").at("x"), windowInfo.at("pos").at("y") };
+            presetSize[window] = { windowInfo.at("size").at("width"), windowInfo.at("size").at("height") };
         }
     }
 }
@@ -442,130 +521,132 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     result.maxCapacity = 0;
     result.currentAmmo = 0;
 
-    switch (item.id) {
-        case ITEM_STICK:
-            result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
-            result.maxCapacity = 30;
-            result.currentAmmo = AMMO(ITEM_STICK);
-            break;
-        case ITEM_NUT:
-            result.currentCapacity = CUR_CAPACITY(UPG_NUTS);
-            result.maxCapacity = 40;
-            result.currentAmmo = AMMO(ITEM_NUT);
-            break;
-        case ITEM_BOMB:
-            result.currentCapacity = CUR_CAPACITY(UPG_BOMB_BAG);
-            result.maxCapacity = 40;
-            result.currentAmmo = AMMO(ITEM_BOMB);
-            break;
-        case ITEM_BOW:
-            result.currentCapacity = CUR_CAPACITY(UPG_QUIVER);
-            result.maxCapacity = 50;
-            result.currentAmmo = AMMO(ITEM_BOW);
-            break;
-        case ITEM_SLINGSHOT:
-            result.currentCapacity = CUR_CAPACITY(UPG_BULLET_BAG);
-            result.maxCapacity = 50;
-            result.currentAmmo = AMMO(ITEM_SLINGSHOT);
-            break;
-        case ITEM_WALLET_ADULT:
-        case ITEM_WALLET_GIANT:
-            result.currentCapacity =
-                IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity =
-                IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET) ? 999
-                                                                                                               : 500;
-            result.currentAmmo = gSaveContext.rupees;
-            break;
-        case ITEM_BOMBCHU:
-            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
-            result.maxCapacity = 50;
-            result.currentAmmo = AMMO(ITEM_BOMBCHU);
-            break;
-        case ITEM_BEAN:
-            result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
-            result.maxCapacity = 10;
-            result.currentAmmo = AMMO(ITEM_BEAN);
-            break;
-        case QUEST_SKULL_TOKEN:
-            result.maxCapacity = result.currentCapacity = 100;
-            result.currentAmmo = gSaveContext.inventory.gsTokens;
-            break;
-        case ITEM_HEART_CONTAINER:
-            result.maxCapacity = result.currentCapacity = 8;
-            result.currentAmmo = gSaveContext.ship.stats.heartContainers;
-            break;
-        case ITEM_HEART_PIECE:
-            result.maxCapacity = result.currentCapacity = 36;
-            result.currentAmmo = gSaveContext.ship.stats.heartPieces;
-            break;
-        case ITEM_KEY_SMALL:
-            // Though the ammo/capacity naming doesn't really make sense for keys, we are
-            // hijacking the same system to display key counts as there are enough similarities
-            result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
-            switch (item.data) {
-                case SCENE_FOREST_TEMPLE:
-                    result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_FIRE_TEMPLE:
-                    result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_WATER_TEMPLE:
-                    result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SPIRIT_TEMPLE:
-                    result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SHADOW_TEMPLE:
-                    result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_BOTTOM_OF_THE_WELL:
-                    result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                    break;
-                case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-                    break;
-                case SCENE_THIEVES_HIDEOUT:
-                    if (IS_RANDO) {
-                        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-                            case RO_GF_CARPENTERS_NORMAL:
-                                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                                break;
-                            case RO_GF_CARPENTERS_FAST:
-                                result.maxCapacity = 1;
-                                break;
-                            case RO_GF_CARPENTERS_FREE:
-                                result.maxCapacity = 0;
-                                break;
-                            default:
-                                result.maxCapacity = 0;
-                                SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: " +
-                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
-                                assert(false);
-                                break;
-                        }
+    if (item.kind == ITEM_KIND_ITEM) {
+        switch (item.id) {
+            case ITEM_STICK:
+                result.currentCapacity = CUR_CAPACITY(UPG_STICKS);
+                result.maxCapacity = 30;
+                result.currentAmmo = AMMO(ITEM_STICK);
+                break;
+            case ITEM_NUT:
+                result.currentCapacity = CUR_CAPACITY(UPG_NUTS);
+                result.maxCapacity = 40;
+                result.currentAmmo = AMMO(ITEM_NUT);
+                break;
+            case ITEM_BOMB:
+                result.currentCapacity = CUR_CAPACITY(UPG_BOMB_BAG);
+                result.maxCapacity = 40;
+                result.currentAmmo = AMMO(ITEM_BOMB);
+                break;
+            case ITEM_BOW:
+                result.currentCapacity = CUR_CAPACITY(UPG_QUIVER);
+                result.maxCapacity = 50;
+                result.currentAmmo = AMMO(ITEM_BOW);
+                break;
+            case ITEM_SLINGSHOT:
+                result.currentCapacity = CUR_CAPACITY(UPG_BULLET_BAG);
+                result.maxCapacity = 50;
+                result.currentAmmo = AMMO(ITEM_SLINGSHOT);
+                break;
+            case ITEM_WALLET_ADULT:
+            case ITEM_WALLET_GIANT:
+                result.currentCapacity =
+                    IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) ? 0 : CUR_CAPACITY(UPG_WALLET);
+                result.maxCapacity =
+                    IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INCLUDE_TYCOON_WALLET)
+                        ? 999
+                        : 500;
+                result.currentAmmo = gSaveContext.rupees;
+                break;
+            case ITEM_BOMBCHU: {
+                auto bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
+
+                uint8_t capacity = 0;
+
+                if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU) {
+                    if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                        capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
                     } else {
-                        result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+                        capacity = 50;
                     }
-                    break;
-                case SCENE_INSIDE_GANONS_CASTLE:
-                    result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
-                    break;
+                }
+
+                result.currentCapacity = capacity;
+                result.maxCapacity = 50;
+                result.currentAmmo = AMMO(ITEM_BOMBCHU);
+                break;
             }
-            break;
+            case ITEM_BEAN:
+                result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
+                result.maxCapacity = 10;
+                result.currentAmmo = AMMO(ITEM_BEAN);
+                break;
+            case ITEM_HEART_CONTAINER:
+                result.maxCapacity = result.currentCapacity = 8;
+                result.currentAmmo = gSaveContext.ship.stats.heartContainers;
+                break;
+            case ITEM_HEART_PIECE:
+                result.maxCapacity = result.currentCapacity = 36;
+                result.currentAmmo = gSaveContext.ship.stats.heartPieces;
+                break;
+            case ITEM_KEY_SMALL:
+                // Though the ammo/capacity naming doesn't really make sense for keys, we are
+                // hijacking the same system to display key counts as there are enough similarities
+                result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
+                result.currentCapacity = Rando::GetSceneTotalSmallKeys(&gSaveContext, (SceneID)item.data);
+                result.maxCapacity = Rando::GetSceneSmallKeyMax((SceneID)item.data);
+                if (item.data == SCENE_FIRE_TEMPLE && IS_RANDO &&
+                    !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                          .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
+                    OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                    result.currentCapacity--;
+                }
+                break;
+        }
+    } else if (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) {
+        result.maxCapacity = result.currentCapacity = 100;
+        result.currentAmmo = gSaveContext.inventory.gsTokens;
+    } else if (item.kind == ITEM_KIND_RG) {
+        switch (item.id) {
+            case RG_SHADOW_SILVER_BLADES:
+            case RG_SHADOW_SILVER_PIT:
+            case RG_SHADOW_SILVER_SPIKES:
+            case RG_SPIRIT_SILVER_CHILD:
+            case RG_SPIRIT_SILVER_SUN:
+            case RG_SPIRIT_SILVER_BOULDERS:
+            case RG_BOTW_SILVER:
+            case RG_ICE_CAVERN_SILVER_BLADES:
+            case RG_ICE_CAVERN_SILVER_BLOCK:
+            case RG_GTG_SILVER_SLOPE:
+            case RG_GTG_SILVER_LAVA:
+            case RG_GTG_SILVER_WATER:
+            case RG_GANONS_CASTLE_SILVER_LIGHT:
+            case RG_GANONS_CASTLE_SILVER_FOREST:
+            case RG_GANONS_CASTLE_SILVER_FIRE:
+            case RG_GANONS_CASTLE_SILVER_SPIRIT:
+            case RG_DODONGOS_CAVERN_MQ_SILVER:
+            case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+            case RG_SPIRIT_MQ_SILVER_LOBBY:
+            case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+            case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+            case RG_GANONS_CASTLE_MQ_SILVER_SHADOW:
+                // don't show max and current when we have wallets
+                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) ==
+                    RO_SHUFFLE_SILVER_ON) {
+                    result.maxCapacity = Randomizer::SilverTotal(static_cast<RandomizerGet>(item.id));
+                    result.currentAmmo =
+                        *Randomizer::SilverFieldFromSaveContext(&gSaveContext, static_cast<RandomizerGet>(item.id));
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     return result;
 }
-
-#define IM_COL_WHITE IM_COL32(255, 255, 255, 255)
-#define IM_COL_RED IM_COL32(255, 0, 0, 255)
-#define IM_COL_GREEN IM_COL32(0, 255, 0, 255)
-#define IM_COL_GRAY IM_COL32(155, 155, 155, 255)
-#define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
-#define IM_COL_LIGHT_YELLOW IM_COL32(255, 255, 130, 255)
 
 void DrawItemCount(ItemTrackerItem item, bool hideMax) {
     if (!GameInteractor::IsSaveLoaded()) {
@@ -579,30 +660,44 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger(CVAR_TRACKER_ITEM("KeyCounts"), KEYS_COLLECTED_MAX);
     float textScalingFactor = static_cast<float>(iconSize) / 36.0f;
-    uint32_t actualItemId = INV_CONTENT(item.id);
-    bool hasItem = actualItemId != ITEM_NONE;
+    uint32_t actualItemId = item.kind == ITEM_KIND_ITEM ? static_cast<ItemID>(INV_CONTENT(item.id)) : ITEM_NONE;
 
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("HookshotIdentifier"), 0)) {
-        if ((actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT) && hasItem) {
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("HookshotIdentifier"), 0) &&
+        (actualItemId == ITEM_HOOKSHOT || actualItemId == ITEM_LONGSHOT)) {
+        // Calculate the scaled position for the text
+        ImVec2 textPos =
+            ImVec2(p.x + (iconSize >> 1) -
+                       (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * textScalingFactor / 2) +
+                       8 * textScalingFactor,
+                   p.y - 22 * textScalingFactor);
 
-            // Calculate the scaled position for the text
-            ImVec2 textPos =
-                ImVec2(p.x + (iconSize / 2) -
-                           (ImGui::CalcTextSize(item.id == ITEM_HOOKSHOT ? "H" : "L").x * textScalingFactor / 2) +
-                           8 * textScalingFactor,
-                       p.y - 22 * textScalingFactor);
+        ImGui::SetCursorScreenPos(textPos);
+        ImGui::SetWindowFontScale(textScalingFactor);
 
-            ImGui::SetCursorScreenPos(textPos);
-            ImGui::SetWindowFontScale(textScalingFactor);
+        ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
+        ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
+    }
 
-            ImGui::Text(item.id == ITEM_HOOKSHOT ? "H" : "L");
-            ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
-        }
+    // progressive open chest: 'S' for small chests only, 'B' once big chests can be opened too
+    if (item.id == RG_OPEN_CHEST && CVarGetInteger(CVAR_TRACKER_ITEM("OpenChestIdentifier"), 0) && IS_RANDO &&
+        RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+        Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST)) {
+        const char* ident = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? "B" : "S";
+
+        ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ident).x * textScalingFactor / 2) +
+                                    8 * textScalingFactor,
+                                p.y - 22 * textScalingFactor);
+
+        ImGui::SetCursorScreenPos(textPos);
+        ImGui::SetWindowFontScale(textScalingFactor);
+
+        ImGui::Text("%s", ident);
+        ImGui::SetWindowFontScale(1.0f);
     }
 
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
-    if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
+    if (item.kind == ITEM_KIND_ITEM && item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
@@ -620,7 +715,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         }
 
         ImGui::SetCursorScreenPos(
-            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+            ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
         ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
@@ -628,22 +723,39 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
+    } else if (item.kind == ITEM_KIND_RG && IsSilver(static_cast<RandomizerGet>(item.id)) && IsValidSaveFile() &&
+               IS_RANDO &&
+               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) == RO_SHUFFLE_SILVER_ON) {
+        std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
+        std::string str = std::to_string(currentAndMax.currentAmmo) + "/" + maxString;
+
+        ImU32 color = IM_COL_WHITE;
+        if (!hideMax && currentAndMax.maxCapacity == currentAndMax.currentAmmo) {
+            color = IM_COL_GREEN;
+        }
+
+        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize((str).c_str()).x / 2), p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, color);
+        ImGui::Text("%s", str.c_str());
+        ImGui::PopStyleColor();
     } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE &&
                IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = "";
         ImU32 currentColor = IM_COL_WHITE;
-        ImU32 maxColor = item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
+        ImU32 maxColor = item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
 
         bool shouldAlignToLeft = CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountAlignLeft"), 0) &&
                                  trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_CAPACITY &&
                                  trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_AMMO;
 
-        bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
-                                 trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
-                                 // These items have a static capacity, so display ammo instead
-                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
-                                 item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
+        bool shouldDisplayAmmo =
+            trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
+            trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
+            // These items have a static capacity, so display ammo instead
+            (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) ||
+            (item.kind == ITEM_KIND_ITEM &&
+             (item.id == ITEM_BEAN || item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
                                   trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
@@ -651,7 +763,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         if (shouldDisplayAmmo) {
             currentString = std::to_string(currentAndMax.currentAmmo);
             if (currentAndMax.currentAmmo >= currentAndMax.currentCapacity) {
-                if (item.id == QUEST_SKULL_TOKEN) {
+                if (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) {
                     currentColor = IM_COL_RED;
                 } else {
                     currentColor = IM_COL_GREEN;
@@ -676,7 +788,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 
         float x = shouldAlignToLeft
                       ? p.x
-                      : p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2);
+                      : p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2);
 
         ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
@@ -686,15 +798,18 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
+    } else if (item.kind == ITEM_KIND_RG && item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0) &&
+               IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
-        uint8_t piecesRequired =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
-        uint8_t piecesTotal =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
+        uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
+        uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetTriforcePiecesRequired();
+        // If no trigger uses Triforce Pieces they're just filler; gauge progress against the whole pool.
+        if (piecesRequired == 0) {
+            piecesRequired = piecesTotal;
+        }
         ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
                                  ? IM_COL_GREEN
                                  : IM_COL_WHITE;
@@ -714,7 +829,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         }
 
         ImGui::SetCursorScreenPos(
-            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+            ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
         ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
@@ -724,26 +839,29 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
-        ImGui::Text("");
+        ImGui::TextUnformatted("");
     }
 }
 
 void DrawEquip(ItemTrackerItem item) {
-    bool hasEquip = HasEquipment(item);
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    assert(item.kind == ITEM_KIND_ITEM);
+    bool hasEquip = HasEquipment(item) && IsValidSaveFile();
+    bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
+    std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(iconName), ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
-    Tooltip(SohUtils::GetItemName(item.id).c_str());
+    Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    assert(item.kind == ITEM_KIND_QUEST);
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                           hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -755,309 +873,345 @@ void DrawQuest(ItemTrackerItem item) {
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 };
 
-void DrawItem(ItemTrackerItem item) {
+bool HasBossSoul(RandomizerInf bossSoul) {
+    if (!IS_RANDO) {
+        return false;
+    } else if (bossSoul == RAND_INF_GANON_SOUL) {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_STARTWITH ||
+               Flags_GetRandomizerInf(RAND_INF_GANON_SOUL);
+    } else {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) &&
+               Flags_GetRandomizerInf(bossSoul);
+    }
+}
 
-    uint32_t actualItemId = GameInteractor::IsSaveLoaded() ? INV_CONTENT(item.id) : ITEM_NONE;
+void DrawItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    uint32_t actualItemId =
+        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
+            ? INV_CONTENT(item.id)
+            : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
+    bool hideMax = false;
     std::string itemName = "";
+    bool drawItem = true;
 
-    // Hack fix as RG_MARKET_SHOOTING_GALLERY_KEY is RandomizerGet #255 which collides
-    // with ITEM_NONE (ItemId #255) due to the lack of a modid to separate them
-    if (item.name != "ITEM_KEY_SMALL" && item.id == ITEM_NONE) {
-        return;
-    }
+    if (item.kind == ITEM_KIND_ITEM) {
+        switch (item.id) {
+            case ITEM_HEART_CONTAINER:
+                actualItemId = item.id;
+                hasItem = gSaveContext.ship.stats.heartContainers > 0;
+                break;
+            case ITEM_HEART_PIECE:
+                actualItemId = item.id;
+                hasItem = gSaveContext.ship.stats.heartPieces > 0;
+                break;
+            case ITEM_MAGIC_SMALL:
+            case ITEM_MAGIC_LARGE:
+                actualItemId = gSaveContext.magicLevel == 2 ? ITEM_MAGIC_LARGE : ITEM_MAGIC_SMALL;
+                hasItem = gSaveContext.magicLevel > 0;
+                break;
+            case ITEM_WALLET_ADULT:
+            case ITEM_WALLET_GIANT:
+                actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
+                hasItem = !IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
+                break;
+            case ITEM_BRACELET:
+            case ITEM_GAUNTLETS_SILVER:
+            case ITEM_GAUNTLETS_GOLD:
+                actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) >= 3   ? ITEM_GAUNTLETS_GOLD
+                               : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER
+                                                                  : ITEM_BRACELET;
+                hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
+                break;
+            case ITEM_SCALE_SILVER:
+            case ITEM_SCALE_GOLDEN:
+                actualItemId = CUR_UPG_VALUE(UPG_SCALE) == 2 ? ITEM_SCALE_GOLDEN : ITEM_SCALE_SILVER;
+                hasItem = CUR_UPG_VALUE(UPG_SCALE) > 0;
+                break;
+            case ITEM_RUPEE_GREEN:
+                actualItemId = item.id;
+                hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+                break;
+            case ITEM_NAYRUS_LOVE:
+                // Roc's Feather shares this slot, so the slot being filled isn't enough
+                hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)
+                              ? Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE)
+                              : actualItemId == ITEM_NAYRUS_LOVE;
+                break;
+            case ITEM_FISHING_POLE:
+                actualItemId = item.id;
+                hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+                itemName = "Fishing Pole";
+                break;
+            case ITEM_NONE: // spacer, don't render
+                return;
+        }
+    } else if (item.kind == ITEM_KIND_RG) {
+        actualItemId = item.id;
+        if (Rando::StaticData::RandoGetToRandInf.contains(static_cast<RandomizerGet>(item.id))) {
+            hasItem = Flags_GetRandomizerInf(static_cast<RandomizerInf>(
+                Rando::StaticData::RandoGetToRandInf.at(static_cast<RandomizerGet>(item.id))));
+        }
+        auto test = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER);
+        switch (item.id) {
+            case RG_TRIFORCE_PIECE:
+                hasItem = IS_RANDO &&
+                          (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
+                itemName = "Triforce Piece";
+                break;
+            case RG_ROCS_FEATHER:
+                itemName = "Roc's Feather";
+                break;
+            case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
+                itemName = "Death Mountain Crater Bean Soul";
+                break;
+            case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
+                itemName = "Death Mountain Trail Bean Soul";
+                break;
+            case RG_DESERT_COLOSSUS_BEAN_SOUL:
+                itemName = "Desert Colossus Bean Soul";
+                break;
+            case RG_GERUDO_VALLEY_BEAN_SOUL:
+                itemName = "Gerudo Valley Bean Soul";
+                break;
+            case RG_GRAVEYARD_BEAN_SOUL:
+                itemName = "Graveyard Bean Soul";
+                break;
+            case RG_KOKIRI_FOREST_BEAN_SOUL:
+                itemName = "Kokiri Forest Bean Soul";
+                break;
+            case RG_LAKE_HYLIA_BEAN_SOUL:
+                itemName = "Lake Hylia Bean Soul";
+                break;
+            case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
+                itemName = "Lost Woods Bridge Bean Soul";
+                break;
+            case RG_LOST_WOODS_BEAN_SOUL:
+                itemName = "Lost Woods Theatre Bean Soul";
+                break;
+            case RG_ZORAS_RIVER_BEAN_SOUL:
+                itemName = "Zora's River Bean Soul";
+                break;
+            case RG_GOHMA_SOUL:
+                hasItem = HasBossSoul(RAND_INF_GOHMA_SOUL);
+                itemName = "Gohma's Soul";
+                break;
+            case RG_KING_DODONGO_SOUL:
+                hasItem = HasBossSoul(RAND_INF_KING_DODONGO_SOUL);
+                itemName = "King Dodongo's Soul";
+                break;
+            case RG_BARINADE_SOUL:
+                hasItem = HasBossSoul(RAND_INF_BARINADE_SOUL);
+                itemName = "Barinade's Soul";
+                break;
+            case RG_PHANTOM_GANON_SOUL:
+                hasItem = HasBossSoul(RAND_INF_PHANTOM_GANON_SOUL);
+                itemName = "Phantom Ganon's Soul";
+                break;
+            case RG_VOLVAGIA_SOUL:
+                hasItem = HasBossSoul(RAND_INF_VOLVAGIA_SOUL);
+                itemName = "Volvagia's Soul";
+                break;
+            case RG_MORPHA_SOUL:
+                hasItem = HasBossSoul(RAND_INF_MORPHA_SOUL);
+                itemName = "Morpha's Soul";
+                break;
+            case RG_BONGO_BONGO_SOUL:
+                hasItem = HasBossSoul(RAND_INF_BONGO_BONGO_SOUL);
+                itemName = "Bongo Bongo's Soul";
+                break;
+            case RG_TWINROVA_SOUL:
+                hasItem = HasBossSoul(RAND_INF_TWINROVA_SOUL);
+                itemName = "Twinrova's Soul";
+                break;
+            case RG_GANON_SOUL:
+                hasItem = HasBossSoul(RAND_INF_GANON_SOUL);
+                itemName = "Ganon's Soul";
+                break;
 
-    switch (item.id) {
-        case ITEM_HEART_CONTAINER:
-            actualItemId = item.id;
-            hasItem = gSaveContext.ship.stats.heartContainers > 0;
-            break;
-        case ITEM_HEART_PIECE:
-            actualItemId = item.id;
-            hasItem = gSaveContext.ship.stats.heartPieces > 0;
-            break;
-        case ITEM_MAGIC_SMALL:
-        case ITEM_MAGIC_LARGE:
-            actualItemId = gSaveContext.magicLevel == 2 ? ITEM_MAGIC_LARGE : ITEM_MAGIC_SMALL;
-            hasItem = gSaveContext.magicLevel > 0;
-            break;
-        case ITEM_WALLET_ADULT:
-        case ITEM_WALLET_GIANT:
-            actualItemId = CUR_UPG_VALUE(UPG_WALLET) == 2 ? ITEM_WALLET_GIANT : ITEM_WALLET_ADULT;
-            hasItem = !IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET);
-            break;
-        case ITEM_BRACELET:
-        case ITEM_GAUNTLETS_SILVER:
-        case ITEM_GAUNTLETS_GOLD:
-            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3   ? ITEM_GAUNTLETS_GOLD
-                           : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER
-                                                              : ITEM_BRACELET;
-            hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
-            break;
-        case ITEM_SCALE_SILVER:
-        case ITEM_SCALE_GOLDEN:
-            actualItemId = CUR_UPG_VALUE(UPG_SCALE) == 2 ? ITEM_SCALE_GOLDEN : ITEM_SCALE_SILVER;
-            hasItem = CUR_UPG_VALUE(UPG_SCALE) > 0;
-            break;
-        case ITEM_RUPEE_GREEN:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
-            break;
-        case RG_TRIFORCE_PIECE:
-            actualItemId = item.id;
-            hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
-            itemName = "Triforce Piece";
-            break;
-        case RG_GOHMA_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GOHMA_SOUL);
-            itemName = "Gohma's Soul";
-            break;
-        case RG_KING_DODONGO_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KING_DODONGO_SOUL);
-            itemName = "King Dodongo's Soul";
-            break;
-        case RG_BARINADE_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL);
-            itemName = "Barinade's Soul";
-            break;
-        case RG_PHANTOM_GANON_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL);
-            itemName = "Phantom Ganon's Soul";
-            break;
-        case RG_VOLVAGIA_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_VOLVAGIA_SOUL);
-            itemName = "Volvagia's Soul";
-            break;
-        case RG_MORPHA_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MORPHA_SOUL);
-            itemName = "Morpha's Soul";
-            break;
-        case RG_BONGO_BONGO_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BONGO_BONGO_SOUL);
-            itemName = "Bongo Bongo's Soul";
-            break;
-        case RG_TWINROVA_SOUL:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_TWINROVA_SOUL);
-            itemName = "Twinrova's Soul";
-            break;
-        case RG_GANON_SOUL:
-            actualItemId = item.id;
-            hasItem = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) ==
-                              RO_BOSS_SOULS_ON_PLUS_GANON
-                          ? Flags_GetRandomizerInf(RAND_INF_GANON_SOUL)
-                          : true;
-            itemName = "Ganon's Soul";
-            break;
+            case RG_SPEAK_DEKU:
+                itemName = "Deku Jabber Nut";
+                break;
+            case RG_SPEAK_GERUDO:
+                itemName = "Gerudo Jabber Nut";
+                break;
+            case RG_SPEAK_GORON:
+                itemName = "Goron Jabber Nut";
+                break;
+            case RG_SPEAK_HYLIAN:
+                itemName = "Hylian Jabber Nut";
+                break;
+            case RG_SPEAK_KOKIRI:
+                itemName = "Kokiri Jabber Nut";
+                break;
+            case RG_SPEAK_ZORA:
+                itemName = "Zora Jabber Nut";
+                break;
 
-        case RG_OCARINA_A_BUTTON:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A);
-            itemName = "Ocarina A Button";
-            break;
-        case RG_OCARINA_C_UP_BUTTON:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
-            itemName = "Ocarina C Up Button";
-            break;
-        case RG_OCARINA_C_DOWN_BUTTON:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
-            itemName = "Ocarina C Down Button";
-            break;
-        case RG_OCARINA_C_LEFT_BUTTON:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
-            itemName = "Ocarina C Left Button";
-            break;
-        case RG_OCARINA_C_RIGHT_BUTTON:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT);
-            itemName = "Ocarina C Right Button";
-            break;
-        case ITEM_FISHING_POLE:
-            actualItemId = item.id;
-            hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-            itemName = "Fishing Pole";
-            break;
+            case RG_OCARINA_A_BUTTON:
+                itemName = "Ocarina A Button";
+                break;
+            case RG_OCARINA_C_UP_BUTTON:
+                itemName = "Ocarina C Up Button";
+                break;
+            case RG_OCARINA_C_DOWN_BUTTON:
+                itemName = "Ocarina C Down Button";
+                break;
+            case RG_OCARINA_C_LEFT_BUTTON:
+                itemName = "Ocarina C Left Button";
+                break;
+            case RG_OCARINA_C_RIGHT_BUTTON:
+                itemName = "Ocarina C Right Button";
+                break;
 
-        case RG_GUARD_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GUARD_HOUSE_KEY_OBTAINED);
-            itemName = "Guard House Key";
-            break;
-        case RG_MARKET_BAZAAR_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_BAZAAR_KEY_OBTAINED);
-            itemName = "Market Bazaar Key";
-            break;
-        case RG_MARKET_POTION_SHOP_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_POTION_SHOP_KEY_OBTAINED);
-            itemName = "Market Potion Shop Key";
-            break;
-        case RG_MASK_SHOP_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MASK_SHOP_KEY_OBTAINED);
-            itemName = "Mask Shop Key";
-            break;
-        case RG_MARKET_SHOOTING_GALLERY_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_MARKET_SHOOTING_GALLERY_KEY_OBTAINED);
-            itemName = "Market Shooting Gallery Key";
-            break;
-        case RG_BOMBCHU_BOWLING_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BOMBCHU_BOWLING_KEY_OBTAINED);
-            itemName = "Bombchu Bowling Key";
-            break;
-        case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_TREASURE_CHEST_GAME_BUILDING_KEY_OBTAINED);
-            itemName = "Treasure Chest Game Building Key";
-            break;
-        case RG_BOMBCHU_SHOP_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BOMBCHU_SHOP_KEY_OBTAINED);
-            itemName = "Bombchu Shop Key";
-            break;
-        case RG_RICHARDS_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_RICHARDS_HOUSE_KEY_OBTAINED);
-            itemName = "Richards House Key";
-            break;
-        case RG_ALLEY_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_ALLEY_HOUSE_KEY_OBTAINED);
-            itemName = "Alley House Key";
-            break;
-        case RG_KAK_BAZAAR_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_BAZAAR_KEY_OBTAINED);
-            itemName = "Kak Bazaar Key";
-            break;
-        case RG_KAK_POTION_SHOP_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_POTION_SHOP_KEY_OBTAINED);
-            itemName = "Kak Potion Shop Key";
-            break;
-        case RG_BOSS_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BOSS_HOUSE_KEY_OBTAINED);
-            itemName = "Boss House Key";
-            break;
-        case RG_GRANNYS_POTION_SHOP_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_GRANNYS_POTION_SHOP_KEY_OBTAINED);
-            itemName = "Granny's Potion Shop Key";
-            break;
-        case RG_SKULLTULA_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_SKULLTULA_HOUSE_KEY_OBTAINED);
-            itemName = "Skulltula House Key";
-            break;
-        case RG_IMPAS_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_IMPAS_HOUSE_KEY_OBTAINED);
-            itemName = "Impa's House Key";
-            break;
-        case RG_WINDMILL_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_WINDMILL_KEY_OBTAINED);
-            itemName = "Windmill Key";
-            break;
-        case RG_KAK_SHOOTING_GALLERY_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_KAK_SHOOTING_GALLERY_KEY_OBTAINED);
-            itemName = "Kak Shooting Gallery Key";
-            break;
-        case RG_DAMPES_HUT_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_DAMPES_HUT_KEY_OBTAINED);
-            itemName = "Dampé's Hut Key";
-            break;
-        case RG_TALONS_HOUSE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_TALONS_HOUSE_KEY_OBTAINED);
-            itemName = "Talon's House Key";
-            break;
-        case RG_STABLES_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_STABLES_KEY_OBTAINED);
-            itemName = "Stables Key";
-            break;
-        case RG_BACK_TOWER_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_BACK_TOWER_KEY_OBTAINED);
-            itemName = "Back Tower Key";
-            break;
-        case RG_HYLIA_LAB_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_HYLIA_LAB_KEY_OBTAINED);
-            itemName = "Hylia Lab Key";
-            break;
-        case RG_FISHING_HOLE_KEY:
-            actualItemId = item.id;
-            hasItem = Flags_GetRandomizerInf(RAND_INF_FISHING_HOLE_KEY_OBTAINED);
-            itemName = "Fishing Hole Key";
-            break;
+            case RG_GUARD_HOUSE_KEY:
+                itemName = "Guard House Key";
+                break;
+            case RG_MARKET_BAZAAR_KEY:
+                itemName = "Market Bazaar Key";
+                break;
+            case RG_MARKET_POTION_SHOP_KEY:
+                itemName = "Market Potion Shop Key";
+                break;
+            case RG_MASK_SHOP_KEY:
+                itemName = "Mask Shop Key";
+                break;
+            case RG_MARKET_SHOOTING_GALLERY_KEY:
+                itemName = "Market Shooting Gallery Key";
+                break;
+            case RG_BOMBCHU_BOWLING_KEY:
+                itemName = "Bombchu Bowling Key";
+                break;
+            case RG_TREASURE_CHEST_GAME_BUILDING_KEY:
+                itemName = "Treasure Chest Game Building Key";
+                break;
+            case RG_BOMBCHU_SHOP_KEY:
+                itemName = "Bombchu Shop Key";
+                break;
+            case RG_RICHARDS_HOUSE_KEY:
+                itemName = "Richards House Key";
+                break;
+            case RG_ALLEY_HOUSE_KEY:
+                itemName = "Alley House Key";
+                break;
+            case RG_KAK_BAZAAR_KEY:
+                itemName = "Kak Bazaar Key";
+                break;
+            case RG_KAK_POTION_SHOP_KEY:
+                itemName = "Kak Potion Shop Key";
+                break;
+            case RG_BOSS_HOUSE_KEY:
+                itemName = "Boss House Key";
+                break;
+            case RG_GRANNYS_POTION_SHOP_KEY:
+                itemName = "Granny's Potion Shop Key";
+                break;
+            case RG_SKULLTULA_HOUSE_KEY:
+                itemName = "Skulltula House Key";
+                break;
+            case RG_IMPAS_HOUSE_KEY:
+                itemName = "Impa's House Key";
+                break;
+            case RG_WINDMILL_KEY:
+                itemName = "Windmill Key";
+                break;
+            case RG_KAK_SHOOTING_GALLERY_KEY:
+                itemName = "Kak Shooting Gallery Key";
+                break;
+            case RG_DAMPES_HUT_KEY:
+                itemName = "Dampé's Hut Key";
+                break;
+            case RG_TALONS_HOUSE_KEY:
+                itemName = "Talon's House Key";
+                break;
+            case RG_STABLES_KEY:
+                itemName = "Stables Key";
+                break;
+            case RG_BACK_TOWER_KEY:
+                itemName = "Back Tower Key";
+                break;
+            case RG_HYLIA_LAB_KEY:
+                itemName = "Hylia Lab Key";
+                break;
+            case RG_FISHING_HOLE_KEY:
+                itemName = "Fishing Hole Key";
+                break;
+            case RG_SHADOW_SILVER_BLADES:
+            case RG_SHADOW_SILVER_PIT:
+            case RG_SHADOW_SILVER_SPIKES:
+            case RG_SPIRIT_SILVER_CHILD:
+            case RG_SPIRIT_SILVER_SUN:
+            case RG_SPIRIT_SILVER_BOULDERS:
+            case RG_BOTW_SILVER:
+            case RG_ICE_CAVERN_SILVER_BLADES:
+            case RG_ICE_CAVERN_SILVER_BLOCK:
+            case RG_GTG_SILVER_SLOPE:
+            case RG_GTG_SILVER_LAVA:
+            case RG_GTG_SILVER_WATER:
+            case RG_GANONS_CASTLE_SILVER_LIGHT:
+            case RG_GANONS_CASTLE_SILVER_FOREST:
+            case RG_GANONS_CASTLE_SILVER_FIRE:
+            case RG_GANONS_CASTLE_SILVER_SPIRIT:
+            case RG_DODONGOS_CAVERN_MQ_SILVER:
+            case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+            case RG_SPIRIT_MQ_SILVER_LOBBY:
+            case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+            case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+            case RG_GANONS_CASTLE_MQ_SILVER_SHADOW:
+                hideMax =
+                    !CheckTracker::IsAreaSpoiled(Rando::StaticData::silverToArea[static_cast<RandomizerGet>(item.id)]);
+                hasItem = IsSilverCleared(static_cast<RandomizerGet>(item.id)) &&
+                          (!hideMax || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) !=
+                                           RO_SHUFFLE_SILVER_ON);
+                itemName = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(actualItemId))
+                               .GetName()
+                               .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), LANGUAGE_ENG));
+                break;
+            case RG_BRONZE_SCALE:
+                itemName = "Swim";
+                break;
+            case RG_CRAWL:
+                itemName = "Crawl";
+                break;
+            case RG_CLIMB:
+                itemName = "Climb";
+                break;
+            case RG_POWER_BRACELET:
+                itemName = "Grab";
+                break;
+            case RG_OPEN_CHEST:
+                itemName = "Open";
+                break;
+        }
+    } else if (item.kind == ITEM_KIND_DUMMY) {
+        if (item.id == ITEMTYPE_SILVER) {
+            hasItem = false;
+            itemName = "More Silver Rupees may or may not exist based on unknown dungeons.";
+        }
     }
 
     if (GameInteractor::IsSaveLoaded() &&
-        (hasItem && item.id != actualItemId &&
+        (hasItem && item.kind == ITEM_KIND_ITEM && item.id != actualItemId &&
          actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     ImGui::BeginGroup();
 
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    DrawItemCount(item, false);
+    DrawItemCount(item, hideMax);
 
-    if (item.id >= RG_GOHMA_SOUL && item.id <= RG_GANON_SOUL) {
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        std::string bossName = itemTrackerBossShortNames[item.id];
-        ImGui::SetCursorScreenPos(
-            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(bossName.c_str()).x / 2), p.y - (iconSize + 13)));
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
-        ImGui::Text("%s", bossName.c_str());
-        ImGui::PopStyleColor();
-    }
-
-    if (item.id >= RG_OCARINA_A_BUTTON && item.id <= RG_OCARINA_C_RIGHT_BUTTON) {
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        std::string ocarinaButtonName = itemTrackerOcarinaButtonShortNames[item.id];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ocarinaButtonName.c_str()).x / 2),
-                                         p.y - (iconSize + 13)));
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
-        ImGui::Text("%s", ocarinaButtonName.c_str());
-        ImGui::PopStyleColor();
-    }
-
-    if (item.id >= RG_GUARD_HOUSE_KEY && item.id <= RG_FISHING_HOLE_KEY) {
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        std::string overworldKeyName = itemTrackerOverworldKeyShortNames[item.id];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(overworldKeyName.c_str()).x / 2),
-                                         p.y - (iconSize + 13)));
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
-        ImGui::Text("%s", overworldKeyName.c_str());
-        ImGui::PopStyleColor();
+    if (item.displayName != "") {
+        DrawName(item.displayName, item.kind == ITEM_KIND_DUMMY ? IM_COL_GREEN : IM_COL_WHITE);
     }
 
     ImGui::EndGroup();
 
-    if (itemName == "") {
+    if (itemName == "" && item.kind == ITEM_KIND_ITEM) {
         itemName = SohUtils::GetItemName(item.id);
     }
 
@@ -1065,6 +1219,8 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
         GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
     bool hasItem = actualItemId != ITEM_NONE;
@@ -1076,14 +1232,15 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    assert(item.kind == ITEM_KIND_ITEM);
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
@@ -1092,12 +1249,10 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                         hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     } else {
-        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                         hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -1138,12 +1293,13 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    assert(item.kind == ITEM_KIND_QUEST);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
@@ -1204,46 +1360,20 @@ void DrawTotalChecks() {
 }
 
 // Windowing stuff
-void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
-    ImGuiWindowFlags windowFlags = flags;
-
-    if (windowFlags == 0) {
-        windowFlags |=
-            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
+static void BeginFloatingWindows(const std::string& UniqueName, ImGuiWindowFlags flags = 0) {
+    if (flags == 0) {
+        flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
     }
-
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
-                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-
-        if (!CVarGetInteger(CVAR_TRACKER_ITEM("Draggable"), 0)) {
-            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
-        }
-    }
-    auto color = VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }));
-    auto maybeParent = ImGui::GetCurrentWindow();
-    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
-    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
-        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
-        color.w = 1.0f;
-    }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     if (presetLoaded && presetPos.contains(UniqueName)) {
         ImGui::SetNextWindowSize(presetSize[UniqueName]);
         ImGui::SetNextWindowPos(presetPos[UniqueName]);
         presetSize.erase(UniqueName);
         presetPos.erase(UniqueName);
     }
-    ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
-}
-void EndFloatingWindows() {
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleColor();
-    ImGui::End();
+    Trackers::BeginFloatWindows(
+        UniqueName, nullptr, CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }),
+        static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING)),
+        CVarGetInteger(CVAR_TRACKER_ITEM("Draggable"), 0), flags);
 }
 
 /**
@@ -1256,9 +1386,9 @@ void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
     int topPadding =
         (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
 
-    for (int i = 0; i < items.size(); i++) {
-        int row = i / columns;
-        int column = i % columns;
+    for (size_t i = 0; i < items.size(); i++) {
+        size_t row = i / columns;
+        size_t column = i % columns;
         ImGui::SetCursorPos(
             ImVec2((column * (iconSize + iconSpacing) + 8.0f), (row * (iconSize + iconSpacing)) + 8.0f + topPadding));
         items[i].drawFunc(items[i]);
@@ -1276,7 +1406,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     ImVec2 max = ImGui::GetWindowContentRegionMax();
     float radius = (iconSize + iconSpacing) * 2.0f;
 
-    for (int i = 0; i < items.size(); i++) {
+    for (size_t i = 0; i < items.size(); i++) {
         float angle = static_cast<float>(i) / items.size() * 2.0f * M_PIf;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
@@ -1290,40 +1420,42 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
  * Loops over dungeons and creates vectors of items in the correct order
  * to then call DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    int rowCount = 0;
-    for (int i = 0; i < dungeons.size(); i++) {
+    size_t rowCount = 0;
+    for (size_t i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount)
             rowCount = static_cast<int32_t>(dungeons[i].items.size());
     }
 
-    for (int i = 0; i < rowCount; i++) {
-        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+    for (size_t i = 0; i < rowCount; i++) {
+        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, dungeons[j].id, DrawDungeonItem));
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", dungeons[j].id, DrawDungeonItem));
                         break;
                     case ITEM_KEY_BOSS:
                         // Swap Ganon's Castle boss key to the right scene ID manually
                         if (dungeons[j].id == SCENE_INSIDE_GANONS_CASTLE) {
                             dungeonItems.push_back(
-                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANONS_TOWER, DrawDungeonItem));
+                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", SCENE_GANONS_TOWER, DrawDungeonItem));
                         } else {
-                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
+                            dungeonItems.push_back(
+                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", dungeons[j].id, DrawDungeonItem));
                         }
                         break;
                     case ITEM_DUNGEON_MAP:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, dungeons[j].id, DrawDungeonItem));
+                        dungeonItems.push_back(
+                            ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, "", dungeons[j].id, DrawDungeonItem));
                         break;
                     case ITEM_COMPASS:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, dungeons[j].id, DrawDungeonItem));
+                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, "", dungeons[j].id, DrawDungeonItem));
                         break;
                 }
             } else {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
             }
         }
     }
@@ -1337,6 +1469,10 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     return dungeonItems;
 }
 /* ****************************************************** */
+
+void RefreshItemTrackerMainWindow() {
+    shouldUpdateVectors = true;
+}
 
 void UpdateVectors() {
     if (!shouldUpdateVectors) {
@@ -1354,17 +1490,17 @@ void UpdateVectors() {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
-            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         }
     } else {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
+            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
         }
@@ -1394,15 +1530,33 @@ void UpdateVectors() {
                 SECTION_DISPLAY_MAIN_WINDOW &&
             CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) !=
                 SECTION_DISPLAY_MAIN_WINDOW) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
         }
         mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+        mainWindowItems.insert(mainWindowItems.end(), rocsFeather.begin(), rocsFeather.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SWIM)) {
+        mainWindowItems.insert(mainWindowItems.end(), swimItems.begin(), swimItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_GRAB)) {
+        mainWindowItems.insert(mainWindowItems.end(), grabItems.begin(), grabItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CLIMB)) {
+        mainWindowItems.insert(mainWindowItems.end(), climbItems.begin(), climbItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRAWL)) {
+        mainWindowItems.insert(mainWindowItems.end(), crawlItems.begin(), crawlItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST)) {
+        mainWindowItems.insert(mainWindowItems.end(), openChestItems.begin(), openChestItems.end());
     }
 
     // if we're adding greg to the misc window,
@@ -1412,8 +1566,9 @@ void UpdateVectors() {
             SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) !=
             SECTION_DISPLAY_MAIN_WINDOW) {
-        if (std::none_of(miscItems.begin(), miscItems.end(),
-                         [](ItemTrackerItem item) { return item.id == ITEM_RUPEE_GREEN; }))
+        if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) {
+                return item.kind == ITEM_KIND_ITEM && item.id == ITEM_RUPEE_GREEN;
+            }))
             miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
     } else {
         miscItems.erase(std::remove_if(miscItems.begin(), miscItems.end(),
@@ -1428,7 +1583,7 @@ void UpdateVectors() {
         if (!newRowAdded) {
             // insert empty items until we're on a new row for greg
             while (mainWindowItems.size() % 6) {
-                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
             }
             newRowAdded = true;
         }
@@ -1443,7 +1598,7 @@ void UpdateVectors() {
         // If Greg isn't on the main window, add empty items to place the triforce pieces on a new row.
         if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
-                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
             }
             newRowAdded = true;
         }
@@ -1457,8 +1612,9 @@ void UpdateVectors() {
             SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) !=
             SECTION_DISPLAY_MAIN_WINDOW) {
-        if (std::none_of(miscItems.begin(), miscItems.end(),
-                         [](ItemTrackerItem item) { return item.id == ITEM_FISHING_POLE; }))
+        if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) {
+                return item.kind == ITEM_KIND_ITEM && item.id == ITEM_FISHING_POLE;
+            }))
             miscItems.insert(miscItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
     } else {
         miscItems.erase(std::remove_if(miscItems.begin(), miscItems.end(),
@@ -1470,7 +1626,7 @@ void UpdateVectors() {
         SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
-                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
             }
             newRowAdded = true;
         }
@@ -1478,26 +1634,51 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), fishingPoleItems.begin(), fishingPoleItems.end());
     }
 
-    // If we're adding boss souls to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
+    // If we're adding bean souls to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce
         // pieces)
         while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+        }
+
+        // Add bean souls
+        mainWindowItems.insert(mainWindowItems.end(), beanSoulItems.begin(), beanSoulItems.end());
+    }
+
+    // If we're adding boss souls to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        //...add empty items on the main window to get the souls on their own row
+        // (Too many to sit with Greg/Triforce pieces)
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
         }
 
         // Add boss souls
         mainWindowItems.insert(mainWindowItems.end(), bossSoulItems.begin(), bossSoulItems.end());
     }
 
+    // If we're adding jabbernuts to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        // there are 6 jabbernuts, perfect for a row
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+        }
+
+        // Add jabbernuts
+        mainWindowItems.insert(mainWindowItems.end(), jabbernutItems.begin(), jabbernutItems.end());
+    }
+
     // If we're adding ocarina buttons to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
-        //...add empty items on the main window to get the buttons on their own row. (Too many to sit with Greg/Triforce
-        // pieces/boss souls)
+        //...add empty items on the main window to get the buttons on their own row.
+        // (Too many to sit with Greg/Triforce pieces/boss souls)
         while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
         }
 
         // Add ocarina buttons
@@ -1507,14 +1688,23 @@ void UpdateVectors() {
     // If we're adding overworld keys to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
-        //...add empty items on the main window to get the keys on their own row. (Too many to sit with Greg/Triforce
-        // pieces/boss souls/ocarina buttons)
+        //...add empty items on the main window to get the keys on their own row.
+        // (Too many to sit with Greg/Triforce pieces/boss souls/ocarina buttons)
         while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
         }
 
         // Add overworld keys
         mainWindowItems.insert(mainWindowItems.end(), overworldKeyItems.begin(), overworldKeyItems.end());
+    }
+
+    // If we're adding silver rupees to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+        }
+        TrackSilverRupees(&mainWindowItems);
     }
 
     shouldUpdateVectors = false;
@@ -1560,7 +1750,7 @@ void ItemTrackerWindow::DrawElement() {
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
     int comboButton2Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
     OSContPad* buttonsPressed =
-        std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
+        std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask &&
                             buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger(CVAR_TRACKER_ITEM("ShowOnlyPaused"), 0) == 0 ||
@@ -1595,34 +1785,31 @@ void ItemTrackerWindow::DrawElement() {
             DrawItemsInRows(mainWindowItems, 6);
 
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
-                    SECTION_DISPLAY_MAIN_WINDOW &&
-                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                     TRACKER_DISPLAY_ALWAYS)) {
+                SECTION_DISPLAY_MAIN_WINDOW) {
                 DrawNotes();
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Inventory"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Inventory Items Tracker");
             DrawItemsInRows(inventoryItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Equipment"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Equipment Items Tracker");
             DrawItemsInRows(equipmentItems, 3);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Misc Items Tracker");
             DrawItemsInRows(miscItems, 4);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
@@ -1638,14 +1825,14 @@ void ItemTrackerWindow::DrawElement() {
             } else {
                 DrawItemsInRows(dungeonRewards, 3);
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Songs"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Songs Tracker");
             DrawItemsInRows(songItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
@@ -1660,49 +1847,72 @@ void ItemTrackerWindow::DrawElement() {
             } else {
                 DrawItemsInRows(dungeonItems);
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
             SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Greg Tracker");
             DrawItemsInRows(gregItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Triforce Piece Tracker");
             DrawItemsInRows(triforcePieces);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Bean Soul Tracker");
+            DrawItemsInRows(beanSoulItems);
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Boss Soul Tracker");
             DrawItemsInRows(bossSoulItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Jabber Nut Tracker");
+            DrawItemsInRows(jabbernutItems);
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Ocarina Button Tracker");
             DrawItemsInRows(ocarinaButtonItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Overworld Key Tracker");
             DrawItemsInRows(overworldKeyItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            std::vector<ItemTrackerItem> questMatchingSilverRupeeItems;
+            TrackSilverRupees(&questMatchingSilverRupeeItems);
+            BeginFloatingWindows("Silver Rupee Tracker");
+            DrawItemsInRows(questMatchingSilverRupeeItems);
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
             SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Fishing Pole Tracker");
             DrawItemsInRows(fishingPoleItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
@@ -1714,7 +1924,7 @@ void ItemTrackerWindow::DrawElement() {
             ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
@@ -1722,62 +1932,44 @@ void ItemTrackerWindow::DrawElement() {
             ImGui::SetNextWindowSize(ImVec2(450, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
             DrawTotalChecks();
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
     }
     if (presetLoaded) {
-        shouldUpdateVectors = true;
+        RefreshItemTrackerMainWindow();
         presetLoaded = false;
     }
 }
 
-static std::unordered_map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerCapacityTrackOptions = {
     { ITEM_TRACKER_NUMBER_NONE, "No Numbers" },
     { ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY, "Current Capacity" },
     { ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY, "Current Ammo" },
     { ITEM_TRACKER_NUMBER_CAPACITY, "Current Capacity / Max Capacity" },
     { ITEM_TRACKER_NUMBER_AMMO, "Current Ammo / Current Capacity" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerKeyTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerKeyTrackOptions = {
     { KEYS_COLLECTED_MAX, "Collected / Max" },
     { KEYS_CURRENT_COLLECTED_MAX, "Current / Collected / Max" },
     { KEYS_CURRENT_MAX, "Current / Max" },
 };
-static std::unordered_map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
+static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::unordered_map<int32_t, const char*> windowTypes = {
-    { TRACKER_WINDOW_FLOATING, "Floating" },
-    { TRACKER_WINDOW_WINDOW, "Window" },
-};
-static std::unordered_map<int32_t, const char*> displayModes = {
-    { TRACKER_DISPLAY_ALWAYS, "Always" },
-    { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
-};
-static std::unordered_map<int32_t, const char*> buttons = {
-    { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
-    { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
-    { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
-    { TRACKER_COMBO_BUTTON_L, "L" },           { TRACKER_COMBO_BUTTON_Z, "Z" },
-    { TRACKER_COMBO_BUTTON_R, "R" },           { TRACKER_COMBO_BUTTON_START, "Start" },
-    { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
-    { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
-};
-static std::unordered_map<int32_t, const char*> displayTypes = {
+static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> extendedDisplayTypes = {
+static std::map<int32_t, const char*> extendedDisplayTypes = {
     { SECTION_DISPLAY_EXTENDED_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_EXTENDED_MAIN_WINDOW, "Main Window" },
     { SECTION_DISPLAY_EXTENDED_MISC_WINDOW, "Misc Window" },
     { SECTION_DISPLAY_EXTENDED_SEPARATE, "Separate" },
 };
-static std::unordered_map<int32_t, const char*> minimalDisplayTypes = {
-    { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" }, { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" }
-};
+static std::map<int32_t, const char*> minimalDisplayTypes = { { SECTION_DISPLAY_MINIMAL_HIDDEN, "Hidden" },
+                                                              { SECTION_DISPLAY_MINIMAL_SEPARATE, "Separate" } };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
@@ -1794,37 +1986,37 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
             if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
             if (CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ITEM("ShowOnlyPaused"),
                              CheckboxOptions().Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
-            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes,
+            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), showMode,
                              ComboboxOptions()
                                  .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
                                  .ComponentAlignment(ComponentAlignments::Right)
                                  .LabelPosition(LabelPositions::Far)
                                  .Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
                 TRACKER_DISPLAY_COMBO_BUTTON) {
-                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons,
+                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_L)
                                      .ComponentAlignment(ComponentAlignments::Right)
                                      .LabelPosition(LabelPositions::Far)
                                      .Color(THEME_COLOR))) {
-                    shouldUpdateVectors = true;
+                    RefreshItemTrackerMainWindow();
                 }
-                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons,
+                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_R)
                                      .ComponentAlignment(ComponentAlignments::Right)
                                      .LabelPosition(LabelPositions::Far)
                                      .Color(THEME_COLOR))) {
-                    shouldUpdateVectors = true;
+                    RefreshItemTrackerMainWindow();
                 }
             }
         }
@@ -1844,7 +2036,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                 ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
             if (CVarCheckbox("Align count to left side", CVAR_TRACKER_ITEM("ItemCountAlignLeft"),
                              CheckboxOptions().Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
         }
 
@@ -1859,7 +2051,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
         if (CVarCombobox("Equipment", CVAR_TRACKER_ITEM("DisplayType.Equipment"), displayTypes,
                          ComboboxOptions()
@@ -1867,7 +2059,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
         if (CVarCombobox("Misc", CVAR_TRACKER_ITEM("DisplayType.Misc"), displayTypes,
                          ComboboxOptions()
@@ -1875,7 +2067,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
         if (CVarCombobox("Dungeon Rewards", CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), displayTypes,
                          ComboboxOptions()
@@ -1883,13 +2075,13 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             if (CVarCheckbox("Circle display", CVAR_TRACKER_ITEM("DungeonRewardsLayout"),
                              CheckboxOptions().DefaultValue(false).Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
         }
         if (CVarCombobox("Songs", CVAR_TRACKER_ITEM("DisplayType.Songs"), displayTypes,
@@ -1898,7 +2090,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
         SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, 250, THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) !=
@@ -1907,19 +2099,22 @@ void ItemTrackerSettingsWindow::DrawElement() {
                 SECTION_DISPLAY_SEPARATE) {
                 if (CVarCheckbox("Horizontal display", CVAR_TRACKER_ITEM("DungeonItems.Layout"),
                                  CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
-                    shouldUpdateVectors = true;
+                    RefreshItemTrackerMainWindow();
                 }
             }
             if (CVarCheckbox("Maps and compasses", CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"),
                              CheckboxOptions().DefaultValue(true).Color(THEME_COLOR))) {
-                shouldUpdateVectors = true;
+                RefreshItemTrackerMainWindow();
             }
         }
         SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(jabberNutsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(silverRupeeTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
 
         if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
@@ -1928,11 +2123,12 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .ComponentAlignment(ComponentAlignments::Right)
                              .LabelPosition(LabelPositions::Far)
                              .Color(THEME_COLOR))) {
-            shouldUpdateVectors = true;
+            RefreshItemTrackerMainWindow();
         }
 
         SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(openChestIdentWidget, 250, THEME_COLOR);
 
         ImGui::PopStyleVar(1);
         ImGui::EndTable();
@@ -1953,24 +2149,22 @@ void ItemTrackerWindow::InitElement() {
 }
 
 void RegisterItemTrackerWidgets() {
-    backgroundColor = { .name = "Background Color##gItemTrackerBgColor", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    backgroundColor = { .name = "Background Color##ItemTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
     backgroundColor.CVar(CVAR_TRACKER_ITEM("BgColor"))
         .Options(
             ColorPickerOptions().Color(THEME_COLOR).DefaultValue({ 0, 0, 0, 0 }).UseAlpha().ShowReset().ShowRandom());
     SohGui::mSohMenu->AddSearchWidget({ backgroundColor, "Randomizer", "Item Tracker", "General Settings" });
 
-    windowTypeWidget = { .name = "Window Type", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    windowTypeWidget = { .name = "Window Type##ItemTracker", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     windowTypeWidget.CVar(CVAR_TRACKER_ITEM("WindowType"))
         .Options(ComboboxOptions()
                      .DefaultIndex(TRACKER_WINDOW_FLOATING)
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
-                     .ComboMap(windowTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+                     .ComboMap(windowType))
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
-    enableDraggingWidget;
-    onlyPausedWidget;
 
     ammoTracking = { .name = "Ammo/Capacity Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     ammoTracking.CVar(CVAR_TRACKER_ITEM("ItemCountType"))
@@ -2003,7 +2197,7 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     SohGui::mSohMenu->AddSearchWidget({ triforcePieceTracking, "Randomizer", "Item Tracker", "General Settings" });
 
     dungeonItemTracking = { .name = "Dungeon Items", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
@@ -2014,7 +2208,7 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget(
         { dungeonItemTracking, "Randomizer", "Item Tracker", "General Settings", "keys maps compasses icon" });
@@ -2027,9 +2221,21 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(extendedDisplayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget({ gregTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    beanSoulsTracking = { .name = "Bean Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    beanSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ beanSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     bossSoulsTracking = { .name = "Boss Souls", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     bossSoulsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.BossSouls"))
@@ -2039,9 +2245,21 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget({ bossSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    jabberNutsTracking = { .name = "Jabber Nuts", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    jabberNutsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ jabberNutsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     triforcePieceCount = { .name = "Triforce Piece Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     triforcePieceCount.CVar(CVAR_TRACKER_ITEM("TriforcePieceCounts"))
@@ -2062,7 +2280,7 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget(
         { ocarinaButtonTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
@@ -2075,7 +2293,7 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget(
         { overworldKeysTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
@@ -2088,10 +2306,23 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(extendedDisplayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget(
         { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
+    silverRupeeTracking = { .name = "Silver Rupees", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    silverRupeeTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
+    ;
+    SohGui::mSohMenu->AddSearchWidget(
+        { silverRupeeTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
     personalNotesWiget = { .name = "Personal notes", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     static const char* notesDisabledTooltip =
@@ -2103,26 +2334,29 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .PreFunc([&](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
-                (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                 CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) !=
-                     TRACKER_DISPLAY_COMBO_BUTTON)) {
-                info.options.get()->disabled = true;
-                info.options.get()->disabledTooltip = notesDisabledTooltip;
-            }
-        })
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+        .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     ;
     SohGui::mSohMenu->AddSearchWidget({ personalNotesWiget, "Randomizer", "Item Tracker", "General Settings" });
 
     hookshotIdentWidget = { .name = "Show Hookshot Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    hookshotIdentWidget.CVar(CVAR_SETTING("FreeLook.Enabled"))
+    hookshotIdentWidget.CVar(CVAR_TRACKER_ITEM("HookshotIdentifier"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Shows an 'H' or an 'L' to more easiely distinguish between Hookshot and Longshot."));
-    SohGui::mSohMenu->AddSearchWidget(
-        { hookshotIdentWidget, "Settings", "Controls", "Camera Controls", "longshot icon" });
+                     .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
+    SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
+
+    openChestIdentWidget = { .name = "Show Open Chest Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    openChestIdentWidget.CVar(CVAR_TRACKER_ITEM("OpenChestIdentifier"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("With progressive Shuffle Open Chest, shows an 'S' when only small chests can be "
+                              "opened and a 'B' once big chests can be opened too."));
+    SohGui::mSohMenu->AddSearchWidget({ openChestIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
+void RegisterItemTracker() {
+    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { RefreshItemTrackerMainWindow(); });
+}
+
+static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);
 static RegisterMenuInitFunc menuInitFunc(RegisterItemTrackerWidgets);

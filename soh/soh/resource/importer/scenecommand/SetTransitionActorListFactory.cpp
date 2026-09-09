@@ -1,8 +1,8 @@
+#include <tinyxml2.h>
+
 #include "soh/resource/importer/scenecommand/SetTransitionActorListFactory.h"
 #include "soh/resource/type/scenecommand/SetTransitionActorList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -67,7 +67,7 @@ SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceIni
         child = child->NextSiblingElement();
     }
 
-    setTransitionActorList->numTransitionActors = setTransitionActorList->transitionActorList.size();
+    setTransitionActorList->numTransitionActors = static_cast<u32>(setTransitionActorList->transitionActorList.size());
 
     return setTransitionActorList;
 }

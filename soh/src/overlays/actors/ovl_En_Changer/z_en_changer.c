@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -114,7 +115,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
                                                                      : (ITEM_ETC_HEART_PIECE_CHEST_GAME)) &
                                0xFF;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, 20.0f, 20.0f, -2500.0f, 0, 0, 0,
-                            ((sTreasureFlags[5] & 0x1F) << 8) + rewardParams, true);
+                            ((sTreasureFlags[5] & 0x1F) << 8) + rewardParams);
                 // "Central treasure instance/occurrence (GREAT)"
                 osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ 中央宝発生(ＧＲＥＡＴ) ☆☆☆☆☆ %x\n" VT_RST, rewardChestParams);
                 this->actionFunc = EnChanger_SetHeartPieceFlag;
@@ -136,7 +137,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
     this->rightChestGetItemId = GI_DOOR_KEY;
     rightChestItem = ITEM_ETC_KEY_SMALL_CHEST_GAME;
 
-    if (Rand_ZeroFloat(1.99f) < 1.0f) {
+    if (GameInteractor_Should(VB_EN_CHANGER_SWAP_CHESTS, Rand_ZeroFloat(1.99f) < 1.0f, this)) {
         rightChestParams = (sLoserGetItemIds[play->roomCtx.curRoom.num] << 5) | 0x4000;
         this->rightChestNum = new_var;
         this->rightChestGetItemId = sLoserGetItemIds[play->roomCtx.curRoom.num];
@@ -168,7 +169,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
         } else {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, sLeftChestPos[play->roomCtx.curRoom.num].x,
                         sLeftChestPos[play->roomCtx.curRoom.num].y, sLeftChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
-                        ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF), true);
+                        ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF));
         }
     }
 
@@ -196,7 +197,7 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
 
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, sRightChestPos[play->roomCtx.curRoom.num].x,
                     sRightChestPos[play->roomCtx.curRoom.num].y, sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
-                    ((this->rightChestNum & 0x1F) << 8) + (rightChestItem & 0xFF), true);
+                    ((this->rightChestNum & 0x1F) << 8) + (rightChestItem & 0xFF));
     }
 
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
@@ -239,13 +240,13 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                 zPos = right->dyna.actor.world.pos.z;
 
                 if (this->rightChestGetItemId == GI_DOOR_KEY) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF);
                     Flags_SetSwitch(play, 0x32);
                 } else {
                     temp_s0_2 = (s16)(this->rightChestGetItemId - GI_RUPEE_GREEN_LOSE) + EXITEM_CHEST;
                     // "Open right treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 右宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2);
                 }
                 break;
             case CHEST_RIGHT:
@@ -254,13 +255,13 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                 zPos = left->dyna.actor.world.pos.z;
 
                 if (this->leftChestGetItemId == GI_DOOR_KEY) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, 0xF);
                     Flags_SetSwitch(play, 0x32);
                 } else {
                     temp_s0_2 = (s16)(this->leftChestGetItemId - 0x72) + 0xA;
                     // "Open left treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 左宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2);
                 }
                 break;
         }

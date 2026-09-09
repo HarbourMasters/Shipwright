@@ -1,0 +1,45 @@
+:config:
+  segments:
+    - [ 6, 0x012BE7D0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x012BE7D0 ]
+    - [ 9, 0x012BE7D0 ]
+    - [ 10, 0x012BE7D0 ]
+    - [ 11, 0x012BE7D0 ]
+    - [ 12, 0x012BE7D0 ]
+    - [ 13, 0x012BE7D0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gGossipStoneDL:
+  type: GFX
+  offset: 0x9D0
+  symbol: gGossipStoneDL
+
+gGossipStoneMaterialDL:
+  type: GFX
+  offset: 0x950
+  symbol: gGossipStoneMaterialDL
+
+gGossipStoneSquishedDL:
+  type: GFX
+  offset: 0xA60
+  symbol: gGossipStoneSquishedDL
+
+gGossipStoneTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGossipStoneTex
+  format: I8
+  width: 32
+  height: 64
+
+
+object_gsVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_gsVtx_000800
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

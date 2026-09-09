@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x011B8660 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x011B8660 ]
+    - [ 9, 0x011B8660 ]
+    - [ 10, 0x011B8660 ]
+    - [ 11, 0x011B8660 ]
+    - [ 12, 0x011B8660 ]
+    - [ 13, 0x011B8660 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiMaskOfTruthAccentsDL:
+  type: GFX
+  offset: 0x16B0
+  symbol: gGiMaskOfTruthAccentsDL
+
+gGiMaskOfTruthDL:
+  type: GFX
+  offset: 0x13D0
+  symbol: gGiMaskOfTruthDL
+
+object_gi_truth_maskTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_truth_maskTex_000000
+  format: I8
+  width: 32
+  height: 32
+
+object_gi_truth_maskTex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: object_gi_truth_maskTex_000400
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_truth_maskVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_gi_truth_maskVtx_000800
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_truth_maskVtx_0011E0:
+  type: OOT:ARRAY
+  offset: 0x0011E0
+  symbol: object_gi_truth_maskVtx_0011E0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

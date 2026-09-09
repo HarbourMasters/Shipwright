@@ -1,9 +1,9 @@
-#ifndef NOTIFICATION_H
-#define NOTIFICATION_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <string>
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 namespace Notification {
 
@@ -35,4 +35,3 @@ void Emit(Options notification);
 } // namespace Notification
 
 #endif // __cplusplus
-#endif // NOTIFICATION_H

@@ -4,12 +4,12 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 #include <assert.h>
 
 #include <libultraship/bridge/gfxbridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -34,7 +34,7 @@ Gfx D_801270B0[] = {
     gsSPEndDisplayList(),
 };
 
-s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum);
+s32 OTRRoom_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum);
 s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx);
 
 void (*sRoomDrawHandlers[])(PlayState* play, Room* room, u32 flags) = {
@@ -414,34 +414,28 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) ||
-                        (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))) {
-        // This prevents a crash when using items that change the
-        // camera (such as din's fire), voiding out or dying on
-        // scenes with prerendered backgrounds.
-        return NULL;
-    }
-
-    // jfifid
-    camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
-    if (camId2 >= 0) {
-        camId = camId2;
-    }
-
-    player = GET_PLAYER(play);
-    player->actor.params = (player->actor.params & 0xFF00) | camId;
-
-    bgImage = SEGMENTED_TO_VIRTUAL(polygon1->multi.list);
-    for (i = 0; i < polygon1->multi.count; i++) {
-        if (bgImage->id == camId) {
-            return bgImage;
+    if (GameInteractor_Should(VB_SHOULD_LOAD_BG_IMAGE, true, &camId)) {
+        // jfifid
+        camId2 = BgCheck_GetBgCamFuncDataImpl(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
+        if (camId2 >= 0) {
+            camId = camId2;
         }
-        bgImage++;
-    }
 
-    // "z_room.c: Data consistent with camera id does not exist camid=%d"
-    osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
-    LOG_HUNGUP_THREAD();
+        player = GET_PLAYER(play);
+        player->actor.params = (player->actor.params & 0xFF00) | camId;
+
+        bgImage = SEGMENTED_TO_VIRTUAL(polygon1->multi.list);
+        for (i = 0; i < polygon1->multi.count; i++) {
+            if (bgImage->id == camId) {
+                return bgImage;
+            }
+            bgImage++;
+        }
+
+        // "z_room.c: Data consistent with camera id does not exist camid=%d"
+        osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
+        LOG_HUNGUP_THREAD();
+    }
 
     return NULL;
 }
@@ -576,20 +570,20 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
     // "Room buffer end pointer=%08x"
     osSyncPrintf("部屋バッファ終了ポインタ=%08x\n", roomCtx->bufPtrs[1]);
     osSyncPrintf(VT_RST);
-    roomCtx->unk_30 = 0;
+    roomCtx->activeBufPage = 0;
     roomCtx->status = 0;
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
-    func_8009728C(play, roomCtx, frontRoom);
+    Room_RequestNewRoom(play, roomCtx, frontRoom);
 
     return maxRoomSize;
 }
 
-s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
+s32 Room_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
 
-    return OTRfunc_8009728C(play, roomCtx, roomNum);
+    return OTRRoom_RequestNewRoom(play, roomCtx, roomNum);
 
     if (roomCtx->status == 0) {
         roomCtx->prevRoom = roomCtx->curRoom;
@@ -600,13 +594,13 @@ s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
         assert(roomNum < play->numRooms);
 
         size = play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart;
-        roomCtx->unk_34 =
-            (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
+        roomCtx->unk_34 = (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->activeBufPage] -
+                                         ((size + 8) * roomCtx->activeBufPage + 7));
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             &roomCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
-        roomCtx->unk_30 ^= 1;
+        roomCtx->activeBufPage ^= 1;
 
         return 1;
     }
@@ -644,7 +638,7 @@ void Room_Draw(PlayState* play, Room* room, u32 flags) {
     }
 }
 
-void func_80097534(PlayState* play, RoomContext* roomCtx) {
+void Room_FinishRoomChange(PlayState* play, RoomContext* roomCtx) {
     roomCtx->prevRoom.num = -1;
     roomCtx->prevRoom.segment = NULL;
     func_80031B14(play, &play->actorCtx); // kills all actors without room num set to -1

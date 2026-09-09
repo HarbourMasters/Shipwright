@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 2, 0x01DDC5A0 ]
+
+hakasitarelay_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hakasitarelay_scene
+
+gSongOfStormsCs:
+  type: OOT:CUTSCENE
+  offset: 0xE080
+  symbol: gSongOfStormsCs
+
+hakasitarelay_sceneTex_00C080:
+  type: TEXTURE
+  offset: 0xC080
+  symbol: hakasitarelay_sceneTex_00C080
+  format: RGBA16
+  width: 64
+  height: 32
+
+hakasitarelay_sceneTex_00D080:
+  type: TEXTURE
+  offset: 0xD080
+  symbol: hakasitarelay_sceneTex_00D080
+  format: RGBA16
+  width: 32
+  height: 32
+
+hakasitarelay_sceneTex_00D880:
+  type: TEXTURE
+  offset: 0xD880
+  symbol: hakasitarelay_sceneTex_00D880
+  format: I4
+  width: 64
+  height: 64
+
+
+hakasitarelay_sceneCollisionHeader_00C04C:
+  type: OOT:COLLISION
+  offset: 0x00C04C
+  symbol: hakasitarelay_sceneCollisionHeader_00C04C

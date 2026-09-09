@@ -153,8 +153,8 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                 if (phi_s3 != pauseCtx->cursorPoint[PAUSE_QUEST]) {
                     pauseCtx->unk_1E4 = 0;
-                    Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
 
                 if (pauseCtx->cursorPoint[PAUSE_QUEST] != 0x18) {
@@ -205,9 +205,9 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         }
 
                         D_8082A11C = 0;
-                        Audio_OcaSetInstrument(1);
-                        func_800ECC04((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
-                        pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_DEFAULT);
+                        AudioOcarina_Start((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
+                        pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
                         pauseCtx->ocarinaStaff->pos = 0;
                         pauseCtx->ocarinaStaff->state = 0xFF;
                         VREG(21) = -62;
@@ -216,13 +216,13 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         VREG(24) = -46;
                         VREG(25) = -41;
                         pauseCtx->unk_1E4 = 8;
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                     }
                 }
             } else if (pauseCtx->unk_1E4 == 5) {
                 if ((pauseCtx->stickRelX != 0) || (pauseCtx->stickRelY != 0)) {
                     pauseCtx->unk_1E4 = 0;
-                    Audio_OcaSetInstrument(0);
+                    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                 }
             } else if (pauseCtx->unk_1E4 == 8) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A) && (sp216 >= QUEST_SONG_MINUET) &&
@@ -238,8 +238,8 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 pauseCtx->cursorSpecialPos = 0;
                 sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
                 KaleidoScope_SetCursorVtx(pauseCtx, sp216 * 4, pauseCtx->questVtx);
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 if (CHECK_QUEST_ITEM(pauseCtx->cursorPoint[PAUSE_QUEST])) {
                     phi_s0_2 = pauseCtx->cursorPoint[PAUSE_QUEST] + 0x5A;
                 } else {
@@ -256,8 +256,8 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 pauseCtx->cursorSpecialPos = 0;
                 sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
                 KaleidoScope_SetCursorVtx(pauseCtx, sp216 * 4, pauseCtx->questVtx);
-                Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 if (CHECK_QUEST_ITEM(pauseCtx->cursorPoint[PAUSE_QUEST])) {
                     if (pauseCtx->cursorPoint[PAUSE_QUEST] < 6) {
                         phi_s0_2 = pauseCtx->cursorPoint[PAUSE_QUEST] + 0x66;
@@ -292,12 +292,12 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 VREG(24) = -46;
                 VREG(25) = -41;
                 sp216 = pauseCtx->cursorSlot[PAUSE_QUEST];
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetInstrument(1);
+                AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_DEFAULT);
+                AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_DEFAULT);
                 pauseCtx->ocarinaSongIdx = gOcarinaSongItemMap[sp216 - QUEST_SONG_MINUET];
-                Audio_OcaSetSongPlayback(pauseCtx->ocarinaSongIdx + 1, 1);
+                AudioOcarina_SetPlaybackSong(pauseCtx->ocarinaSongIdx + 1, 1);
                 pauseCtx->unk_1E4 = 2;
-                pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+                pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
                 pauseCtx->ocarinaStaff->pos = 0;
                 sp216 = pauseCtx->cursorSlot[PAUSE_QUEST];
                 KaleidoScope_SetCursorVtx(pauseCtx, sp216 * 4, pauseCtx->questVtx);
@@ -533,12 +533,15 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
         }
 
         if (pauseCtx->unk_1E4 == 2) {
-            pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+            // Draw ocarina buttons as the song playback progresses
+            // QUEST_QUAD_SONG_NOTE_A1 to QUEST_QUAD_SONG_NOTE_A8
+
+            pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
 
             if (pauseCtx->ocarinaStaff->pos != 0) {
                 if (D_8082A11C + 1 == pauseCtx->ocarinaStaff->pos) {
                     D_8082A11C++;
-                    D_8082A124[pauseCtx->ocarinaStaff->pos - 1] = pauseCtx->ocarinaStaff->noteIdx;
+                    D_8082A124[pauseCtx->ocarinaStaff->pos - 1] = pauseCtx->ocarinaStaff->buttonIndex;
                 }
 
                 for (sp218 = 0, phi_s3 = 0; sp218 < 8; sp218++, phi_s3 += 4, sp21A += 4) {
@@ -566,16 +569,16 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
                                         Notes_alpha);
                     } else {
-                        if (D_8082A124[sp218] == OCARINA_NOTE_D5) {
+                        if (D_8082A124[sp218] == OCARINA_BTN_C_UP) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
                                             Notes_alpha);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_B4) {
+                        } else if (D_8082A124[sp218] == OCARINA_BTN_C_LEFT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
                                             cLeftButtonColor.b, Notes_alpha);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_A4) {
+                        } else if (D_8082A124[sp218] == OCARINA_BTN_C_RIGHT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
                                             cRightButtonColor.b, Notes_alpha);
-                        } else if (D_8082A124[sp218] == OCARINA_NOTE_F4) {
+                        } else if (D_8082A124[sp218] == OCARINA_BTN_C_DOWN) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
                                             cDownButtonColor.b, Notes_alpha);
                         } else {
@@ -595,12 +598,14 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 }
             }
         } else if (((pauseCtx->unk_1E4 >= 4) && (pauseCtx->unk_1E4 <= 6)) || (pauseCtx->unk_1E4 == 8)) {
+            // Draw the buttons for playing a song
+            // QUEST_QUAD_SONG_NOTE_A1 to QUEST_QUAD_SONG_NOTE_A8
             sp224 = pauseCtx->ocarinaSongIdx;
-            sp226 = gOcarinaSongNotes[sp224].len;
+            sp226 = gOcarinaSongButtons[sp224].numButtons;
 
             for (sp218 = sp21A, phi_s3 = 0; phi_s3 < sp226; phi_s3++, sp21A += 4) {
                 pauseCtx->questVtx[sp21A + 0].v.ob[1] = pauseCtx->questVtx[sp21A + 1].v.ob[1] =
-                    VREG(21 + gOcarinaSongNotes[sp224].notesIdx[phi_s3]);
+                    VREG(21 + gOcarinaSongButtons[sp224].buttonsIndex[phi_s3]);
 
                 pauseCtx->questVtx[sp21A + 2].v.ob[1] = pauseCtx->questVtx[sp21A + 3].v.ob[1] =
                     pauseCtx->questVtx[sp21A + 0].v.ob[1] - 12;
@@ -609,20 +614,20 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                 if (pauseCtx->unk_1E4 == 8) {
                     s16 Notes_alpha = 200;
-                    if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
+                    if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == 0) {
                         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
                                         Notes_alpha);
                     } else {
-                        if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
+                        if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_UP) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
                                             Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_LEFT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
                                             cLeftButtonColor.b, Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_RIGHT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
                                             cRightButtonColor.b, Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_DOWN) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
                                             cDownButtonColor.b, Notes_alpha);
                         } else {
@@ -638,21 +643,21 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                 gSPVertex(POLY_OPA_DISP++, &pauseCtx->questVtx[sp21A], 4, 0);
 
-                gDPLoadTextureBlock(POLY_OPA_DISP++, D_8082A130[gOcarinaSongNotes[sp224].notesIdx[phi_s3]], G_IM_FMT_IA,
-                                    G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock(POLY_OPA_DISP++, D_8082A130[gOcarinaSongButtons[sp224].buttonsIndex[phi_s3]],
+                                    G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                 gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
             }
 
             if (pauseCtx->unk_1E4 != 8) {
-                pauseCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
+                pauseCtx->ocarinaStaff = AudioOcarina_GetPlayingStaff();
 
                 if (pauseCtx->ocarinaStaff->pos != 0) {
                     if (D_8082A11C == (pauseCtx->ocarinaStaff->pos - 1)) {
-                        if ((pauseCtx->ocarinaStaff->noteIdx >= OCARINA_NOTE_D4) &&
-                            (pauseCtx->ocarinaStaff->noteIdx <= OCARINA_NOTE_D5)) {
-                            D_8082A124[pauseCtx->ocarinaStaff->pos - 1] = pauseCtx->ocarinaStaff->noteIdx;
+                        if ((pauseCtx->ocarinaStaff->buttonIndex >= OCARINA_BTN_A) &&
+                            (pauseCtx->ocarinaStaff->buttonIndex <= OCARINA_BTN_C_UP)) {
+                            D_8082A124[pauseCtx->ocarinaStaff->pos - 1] = pauseCtx->ocarinaStaff->buttonIndex;
                             D_8082A124[pauseCtx->ocarinaStaff->pos] = 0xFF;
                             D_8082A11C++;
                         }
@@ -685,16 +690,16 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b,
                                         Notes_alpha);
                     } else {
-                        if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
+                        if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_UP) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b,
                                             Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_LEFT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g,
                                             cLeftButtonColor.b, Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_RIGHT) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g,
                                             cRightButtonColor.b, Notes_alpha);
-                        } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
+                        } else if (gOcarinaSongButtons[sp224].buttonsIndex[phi_s3] == OCARINA_BTN_C_DOWN) {
                             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g,
                                             cDownButtonColor.b, Notes_alpha);
                         } else {
@@ -721,9 +726,9 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     }
 
                     D_8082A11C = 0;
-                    Audio_OcaSetInstrument(1);
-                    func_800ECC04((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
-                    pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+                    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_DEFAULT);
+                    AudioOcarina_Start((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
+                    pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
                     pauseCtx->ocarinaStaff->pos = 0;
                     pauseCtx->ocarinaStaff->state = 0xFE;
                     pauseCtx->unk_1E4 = 5;

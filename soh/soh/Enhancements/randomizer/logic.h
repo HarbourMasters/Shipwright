@@ -1,8 +1,7 @@
 #pragma once
 
-#include "randomizerTypes.h"
-#include "context.h"
-#include <cstdint>
+#include "SeedContext.h"
+#include <stdint.h>
 
 namespace Rando {
 
@@ -22,14 +21,15 @@ class Logic {
   public:
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    uint8_t PieceOfHeart = 0;
-    uint8_t HeartContainer = 0;
     bool IsChild = false;
     bool IsAdult = false;
     uint8_t BigPoes = 0;
+    // hearts we start the seed with, health itself lives in the save context
     uint8_t BaseHearts = 0;
     bool AtDay = false;
     bool AtNight = false;
+    RandomizerRegion CurrentRegionKey = RR_NONE;
+    RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
 
     bool CalculatingAvailableChecks = false;
     bool ACProcessUndiscoveredExits = false;
@@ -39,17 +39,21 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
-    bool HasBossSoul(RandomizerGet itemName);
-    bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool ItemUseAllowed(RandomizerGet itemName);
+    bool BAllowed();
+    bool SmallKeys(SceneID scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
+    bool CanGroundJumpslash(bool hasBombflower = false);
+    bool CanMiddairGroundJump(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
+    bool CanOpenLargeChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
                       uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
-    bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
+    bool CanAvoidEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool grounded = false,
+                       uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
@@ -57,55 +61,74 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
-    bool MQWaterLevel(RandoWaterLevel level);
+    bool BeanPlanted(LogicVal beanEvent);
+    bool CanRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
+    bool Water3FCentralToHighEmblem();
+    bool WaterRisingTargetTo3FCentral();
+    bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
     uint8_t OcarinaButtons();
     bool HasBottle();
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanClearStalagmite();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
     bool CanDamage();
     bool CanAttack();
     bool BombchusEnabled();
     bool BombchuRefill();
+    bool ShopItemNotForSale(RandomizerCheck loc);
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();
     bool HasExplosives();
     bool BlastOrSmash();
-    bool CanSpawnSoilSkull();
+    bool CanSpawnSoilSkull(RandomizerGet bean);
     bool CanReflectNuts();
     bool CanCutShrubs();
     bool CanStunDeku();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
-    uint8_t EffectiveHealth();
-    uint8_t Hearts();
+    uint16_t Health();
+    uint16_t EffectiveHealth();
     uint8_t StoneCount();
     uint8_t MedallionCount();
     uint8_t DungeonCount();
-    uint8_t FireTimer();
-    uint8_t WaterTimer();
+    uint16_t FireTimer();
+    uint16_t WaterTimer();
     bool TakeDamage();
+    bool CanVoid();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();
     bool CanGetNightTimeGS();
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
-    bool CanBreakPots();
+    bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
+    bool CanBreakRocks();
     bool CanBonkTrees();
+    bool CanRead();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
-    bool TradeQuestStep(RandomizerGet rg);
+    bool SunlightArrows();
+    bool BunnyHood();
+    bool BunnyHovers();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
     bool CanBuildRainbowBridge();
-    bool CanTriggerLACS();
+    bool CanTriggerGBK();
+    bool CanTriggerGanonsSoul();
+    bool CanTriggerWincon();
     bool IsFireLoopLocked();
+    bool ReachScarecrow();
+    bool ReachDistantScarecrow();
+    bool CanClimbLadder();
+    bool CanClimbHighLadder();
+    bool SummonEpona();
     void Reset(bool resetSaveContext = true);
     void SetContext(std::shared_ptr<Context> _ctx);
     bool Get(LogicVal logicVal);
@@ -120,8 +143,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
-    int8_t GetUsedSmallKeyCount(SceneID sceneId);
-    uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
+    int8_t GetSmallKeyCount(SceneID sceneId);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
     void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state);
@@ -129,6 +151,7 @@ class Logic {
     void SetRandoInf(uint32_t flag, bool state);
     bool CheckEventChkInf(int32_t flag);
     uint8_t GetGSCount();
+    uint8_t GetTriforcePieceCount();
     void SetEventChkInf(int32_t flag, bool state);
     uint8_t GetAmmo(uint32_t item);
     void SetAmmo(uint32_t item, uint8_t count);
@@ -137,9 +160,26 @@ class Logic {
     void InitSaveContext();
     void NewSaveContext();
     static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
-    static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
+    static std::map<uint32_t, SceneID> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
-    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
+    bool IsReverseAccessPossible();
+    bool DMCUpperToPots();
+    bool DMCPotsToPad();
+    bool DMCPadToPots();
+    bool DMCUpperToPad();
+    bool SpiritEastToSwitch();
+    bool SpiritWestToSkull();
+    bool SpiritSunBlockSouthLedge();
+    bool MQSpiritWestToPots();
+    bool MQSpiritStatueToSunBlock();
+    bool MQSpiritStatueSouthDoor();
+    bool MQSpirit4KeyColossus();
+    bool MQSpirit4KeyWestHand();
+    bool CouldMQSpirit4KeyWestHand();
+    bool OuterWestHandLogic();
+    bool OuterWestHandMQLogic();
+    bool SpiritExplosiveKeyLogic();
+    bool StatueRoomMQKeyLogic();
 
   private:
     std::shared_ptr<Context> ctx;

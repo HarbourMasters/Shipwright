@@ -6,6 +6,7 @@
 
 #include "z_bg_hidan_dalm.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -126,8 +127,10 @@ void BgHidanDalm_Destroy(Actor* thisx, PlayState* play) {
 void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if ((this->collider.base.acFlags & AC_HIT) && !Player_InCsMode(play) &&
-        (player->meleeWeaponAnimation == 22 || player->meleeWeaponAnimation == 23)) {
+    if (GameInteractor_Should(VB_HAMMER_TOTEM_BREAK,
+                              (this->collider.base.acFlags & AC_HIT) && !Player_InCsMode(play) &&
+                                  (player->meleeWeaponAnimation == 22 || player->meleeWeaponAnimation == 23),
+                              this)) {
         this->collider.base.acFlags &= ~AC_HIT;
         if ((this->collider.elements[0].info.bumperFlags & BUMP_HIT) ||
             (this->collider.elements[1].info.bumperFlags & BUMP_HIT)) {

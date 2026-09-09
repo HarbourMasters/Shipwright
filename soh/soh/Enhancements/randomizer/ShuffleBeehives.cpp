@@ -1,6 +1,9 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
@@ -11,7 +14,7 @@ extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
 
 void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
     s16 params = objComb->actor.params & 0x1F;
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
@@ -23,7 +26,9 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
         return;
     }
 
-    if ((params > 0) || (params < 0x1A)) {
+    // Vanilla is `(params > 0) || (params < 0x1A)`, which is always true; kept as-is to match
+    // ObjComb_ChooseItemDrop in soh/src/overlays/actors/ovl_Obj_Comb/z_obj_comb.c.
+    if (true) {
         if (params == 6) {
             if (Flags_GetCollectible(play, (objComb->actor.params >> 8) & 0x3F)) {
                 params = -1;
@@ -42,7 +47,7 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
 void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     objComb->unk_1B0 -= 50;
 
-    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<BeehiveIdentity>(&objComb->actor);
+    const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
         !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
         if (objComb->unk_1B0 <= -5000) {
@@ -74,12 +79,31 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     }
 }
 
+static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    CheckIdentity beehiveIdentity;
+
+    beehiveIdentity.randomizerInf = RAND_INF_MAX;
+    beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
+    } else {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+
+    IdentifyCheck(&beehiveIdentity, location);
+
+    return beehiveIdentity;
+}
+
 void ObjComb_RandomizerInit(void* actor) {
     ObjComb* objComb = static_cast<ObjComb*>(actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-    auto beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
-        gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
-    ObjectExtension::GetInstance().Set<BeehiveIdentity>(actor, std::move(beehiveIdentity));
+    auto beehiveIdentity = IdentifyBeehive(gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
+    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }
 
@@ -88,8 +112,8 @@ void ObjComb_RandomizerUpdate(void* actor) {
     PlayState* play = gPlayState;
     combActor->unk_1B2 += 0x2EE0;
     combActor->actionFunc(combActor, play);
-    combActor->actor.shape.rot.x =
-        Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0) + combActor->actor.home.rot.x;
+    combActor->actor.shape.rot.x = static_cast<s16>(Math_SinS(combActor->unk_1B2) * CLAMP_MIN(combActor->unk_1B0, 0)) +
+                                   combActor->actor.home.rot.x;
 }
 
 void RegisterShuffleBeehives() {
@@ -112,7 +136,7 @@ void Rando::StaticData::RegisterBeehiveLocations() {
     locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT] =  Location::Base(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,                        RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_LOST_WOODS,                   ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(-144, 0x14),       "Tunnel Grotto Beehive Left",                  RHT_BEEHIVE_CHEST_GROTTO,                                        RG_BLUE_RUPEE,                                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_LEFT));
     locationTable[RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT] = Location::Base(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT,                       RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_LOST_WOODS,                   ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(121,  0x14),       "Tunnel Grotto Beehive Right",                 RHT_BEEHIVE_CHEST_GROTTO,                                        RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_RIGHT));
     locationTable[RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE] =           Location::Base(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,                                 RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_LOST_WOODS,                   ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(747,  0xF5),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_LW_DEKU_SCRUB_GROTTO));
-    locationTable[RC_SFM_STORMS_GROTTO_BEEHIVE] =              Location::Base(RC_SFM_STORMS_GROTTO_BEEHIVE,                                    RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_SACRED_FOREST_MEADOW,         ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xEE),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_SFM_STORMS_GROTTO));
+    locationTable[RC_SFM_DEKU_SCRUB_GROTTO_BEEHIVE] =          Location::Base(RC_SFM_DEKU_SCRUB_GROTTO_BEEHIVE,                                RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_SACRED_FOREST_MEADOW,         ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xEE),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_SFM_STORMS_GROTTO));
     locationTable[RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT] =     Location::Base(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT,                           RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_HYRULE_FIELD,                 ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(-144, 0x00),       "Near Market Grotto Beehive Left",             RHT_BEEHIVE_CHEST_GROTTO,                                        RG_BLUE_RUPEE,                                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_LEFT));
     locationTable[RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT] =    Location::Base(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT,                          RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_HYRULE_FIELD,                 ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(121,  0x00),       "Near Market Grotto Beehive Right",            RHT_BEEHIVE_CHEST_GROTTO,                                        RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_RIGHT));
     locationTable[RC_HF_OPEN_GROTTO_BEEHIVE_LEFT] =            Location::Base(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,                                  RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_HYRULE_FIELD,                 ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(-144, 0x03),       "Open Grotto Beehive Left",                    RHT_BEEHIVE_CHEST_GROTTO,                                        RG_BLUE_RUPEE,                                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_HF_OPEN_GROTTO_LEFT));
@@ -132,15 +156,14 @@ void Rando::StaticData::RegisterBeehiveLocations() {
     locationTable[RC_DMC_HAMMER_GROTTO_BEEHIVE] =              Location::Base(RC_DMC_HAMMER_GROTTO_BEEHIVE,                                    RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_DEATH_MOUNTAIN_CRATER,        ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(5144, 0xF9),       "Hammer Grotto Beehive",                       RHT_BEEHIVE_SCRUB_TRIO_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_DMC_HAMMER_GROTTO));
     locationTable[RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT] =            Location::Base(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT,                                  RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_ZORAS_RIVER,                  ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(-144, 0x29),       "Open Grotto Beehive Left",                    RHT_BEEHIVE_CHEST_GROTTO,                                        RG_BLUE_RUPEE,                                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_LEFT));
     locationTable[RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT] =           Location::Base(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT,                                 RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_ZORAS_RIVER,                  ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(121,  0x29),       "Open Grotto Beehive Right",                   RHT_BEEHIVE_CHEST_GROTTO,                                        RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_RIGHT));
-    locationTable[RC_ZR_STORMS_GROTTO_BEEHIVE] =               Location::Base(RC_ZR_STORMS_GROTTO_BEEHIVE,                                     RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_ZORAS_RIVER,                  ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xEB),       "Storms Grotto Beehive",                       RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZR_STORMS_GROTTO));
+    locationTable[RC_ZR_DEKU_SCRUB_GROTTO_BEEHIVE] =           Location::Base(RC_ZR_DEKU_SCRUB_GROTTO_BEEHIVE,                                 RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_ZORAS_RIVER,                  ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xEB),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZR_STORMS_GROTTO));
     locationTable[RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT] =  Location::Base(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,                        RCQUEST_BOTH,    RCTYPE_BEEHIVE,                                                          ACTOR_OBJ_COMB,       SCENE_ZORAS_DOMAIN,                 TWO_ACTOR_PARAMS(382,  0x00),       "In Front of King Zora Beehive Left",          RHT_BEEHIVE_IN_FRONT_OF_KING_ZORA,                               RG_BLUE_RUPEE,                                          SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_LEFT));
     locationTable[RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT] = Location::Base(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT,                       RCQUEST_BOTH,    RCTYPE_BEEHIVE,                                                          ACTOR_OBJ_COMB,       SCENE_ZORAS_DOMAIN,                 TWO_ACTOR_PARAMS(948,  0x00),       "In Front of King Zora Beehive Right",         RHT_BEEHIVE_IN_FRONT_OF_KING_ZORA,                               RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_RIGHT));
     locationTable[RC_ZD_BEHIND_KING_ZORA_BEEHIVE] =            Location::Base(RC_ZD_BEHIND_KING_ZORA_BEEHIVE,                                  RCQUEST_BOTH,    RCTYPE_BEEHIVE,                                                          ACTOR_OBJ_COMB,       SCENE_ZORAS_DOMAIN,                 TWO_ACTOR_PARAMS(701,  0x00),       "Behind King Zora Beehive",                    RHT_BEEHIVE_BEHIND_KING_ZORA,                                    RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA));
     locationTable[RC_LH_GROTTO_BEEHIVE] =                      Location::Base(RC_LH_GROTTO_BEEHIVE,                                            RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_LAKE_HYLIA,                   ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(5144, 0xEF),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_TRIO_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_LH_GROTTO));
     locationTable[RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE] =           Location::Base(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                 RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_GERUDO_VALLEY,                ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xF0),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO));
-    locationTable[RC_COLOSSUS_GROTTO_BEEHIVE] =                Location::Base(RC_COLOSSUS_GROTTO_BEEHIVE,                                      RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_DESERT_COLOSSUS,              ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xFD),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_COLOSSUS_GROTTO));
+    locationTable[RC_COLOSSUS_DEKU_SCRUB_GROTTO_BEEHIVE] =     Location::Base(RC_COLOSSUS_DEKU_SCRUB_GROTTO_BEEHIVE,                           RCQUEST_BOTH,    RCTYPE_BEEHIVE,                     RCAREA_DESERT_COLOSSUS,              ACTOR_OBJ_COMB,       SCENE_GROTTOS,                      TWO_ACTOR_PARAMS(2262, 0xFD),       "Deku Scrub Grotto Beehive",                   RHT_BEEHIVE_SCRUB_PAIR_GROTTO,                                   RG_RED_RUPEE,                                           SpoilerCollectionCheck::RandomizerInf(RAND_INF_BEEHIVE_COLOSSUS_GROTTO));
     // clang-format-on
 }
 
-static ObjectExtension::Register<BeehiveIdentity> RegisterBeehiveIdentity;
 static RegisterShipInitFunc registerBeehiveLocations(Rando::StaticData::RegisterBeehiveLocations);

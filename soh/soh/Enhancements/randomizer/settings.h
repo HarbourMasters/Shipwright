@@ -1,24 +1,33 @@
 #pragma once
 
-#include "context.h"
+#include "SeedContext.h"
 #include "option.h"
-#include "randomizerTypes.h"
-#include "3drando/spoiler_log.hpp"
 
 #include <array>
-#include <set>
 #include <unordered_map>
-#include <nlohmann/json.hpp>
 
 namespace Rando {
 class Settings {
   public:
-    Settings();
-
     /**
      * @brief Hides or Unhides the price UI of Shopsanity based on settings.
      */
     void HandleShopsanityPriceUI();
+
+    /**
+     * @brief Hides or Unhides the UI of Mixed Entrance Pools
+     */
+    void HandleMixedEntrancePoolsUI();
+
+    /**
+     * @brief Hides or Unhides the UI of the keyring options, and updates the max keyring count.
+     */
+    void HandleKeyringUI();
+
+    /**
+     * @brief UI Callback for handling UI state of Starting Age shuffle.
+     */
+    void HandleStartingAgeUI();
 
     /**
      * @brief Creates the `Option` and `OptionGroup` objects. This happens after construction because certain
@@ -48,7 +57,7 @@ class Settings {
      * @param key
      * @return Option&
      */
-    TrickOption& GetTrickOption(RandomizerTrick key);
+    TrickSetting& GetTrickSetting(RandomizerTrick key);
 
     /**
      * @brief Get the RandomizerTrick corresponding to the provided name.
@@ -77,9 +86,9 @@ class Settings {
     /**
      * @brief Get a reference to all of the Exclude Location `Option` lists.
      *
-     * @return const std::vector<std::vector<Option*>>&
+     * @return const std::array<std::vector<Option*>, RCAREA_INVALID>&
      */
-    const std::vector<std::vector<Option*>>& GetExcludeLocationsOptions() const;
+    const std::array<std::vector<Option*>, RCAREA_INVALID>& GetExcludeLocationsOptions() const;
 
     /**
      * @brief Get the list of `OptionGroup`s.
@@ -97,23 +106,18 @@ class Settings {
     const OptionGroup& GetOptionGroup(RandomizerSettingGroupKey key);
 
     /**
-     * @brief Updates various properties of options based on the value of other options.
-     * Used to update visibility, whether or not interaction is disabled, and what the
-     * actual option values are. Actually changing option values should be handled in
-     * `FinalizeSettings`
-     *
-     * For example, this function handles setting the maximum possible keyring count to 9
-     * when Gerudo's Fortress options are set such that a keyring is possible for that
-     * dungeon.
+     * @brief Runs the Callback on every option, to ensure they are all
+     * hidden/unhidden and/or disabled/enabled properly after applying a
+     * preset or dropping a file.
      */
-    void UpdateOptionProperties();
+    void UpdateAllOptions();
 
     /**
      * @brief Parse Options from a JSON file.
      *
      * @param spoilerFileJson
      */
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
     /**
@@ -130,20 +134,22 @@ class Settings {
      */
     void SetAllToContext();
 
+    /**
+     * @brief Randomizes all randomizer settings (excluding tricks) to random valid values.
+     * This function iterates through all options and sets them to a random index within
+     * their valid range.
+     */
+    void RandomizeAllSettings();
+
     static std::shared_ptr<Settings> GetInstance();
 
   private:
-    /**
-     * @brief Create the list of description strings for `Option`s.
-     */
-    void CreateOptionDescriptions();
     static std::shared_ptr<Settings> mInstance;
     std::shared_ptr<Context> mContext = nullptr;
     std::array<Option, RSK_MAX> mOptions = {};
-    std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<TrickOption, RT_MAX> mTrickOptions = {};
-    std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
+    std::array<TrickSetting, RT_MAX> mTrickSettings = {};
+    std::array<std::vector<Option*>, RCAREA_INVALID> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando

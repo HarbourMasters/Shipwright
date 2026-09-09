@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01D5DAE0 ]
+    - [ 2, 0x01D56E70 ]
+  directory: scenes/shared/daiyousei_izumi_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/daiyousei_izumi_room_0.yml
+    - ntsc_j_gc/scenes/shared/daiyousei_izumi_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+daiyousei_izumi_room_0Set_0001E0:
+  type: OOT:ROOM
+  offset: 0x1E0
+  symbol: daiyousei_izumi_room_0Set_0001E0
+  base_name: daiyousei_izumi_room_0

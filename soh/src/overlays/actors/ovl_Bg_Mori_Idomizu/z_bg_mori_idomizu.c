@@ -119,10 +119,10 @@ void BgMoriIdomizu_Main(BgMoriIdomizu* this, PlayState* play) {
         this->targetWaterLevel = 184.0f;
     }
     if (switchFlagSet && !this->prevSwitchFlagSet) {
-        OnePointCutscene_Init(play, 3240, 70, thisx, MAIN_CAM);
+        OnePointCutscene_Init(play, 3240, 70, thisx, CAM_ID_MAIN);
         this->drainTimer = 90;
     } else if (!switchFlagSet && this->prevSwitchFlagSet) {
-        OnePointCutscene_Init(play, 3240, 70, thisx, MAIN_CAM);
+        OnePointCutscene_Init(play, 3240, 70, thisx, CAM_ID_MAIN);
         this->drainTimer = 90;
         thisx->world.pos.y = 0.0f;
     }
@@ -173,8 +173,8 @@ void BgMoriIdomizu_Draw(Actor* thisx, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 128);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0x7F - (gameplayFrames & 0x7F), gameplayFrames % 0x80, 0x20,
-                                0x20, 1, gameplayFrames & 0x7F, gameplayFrames % 0x80, 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0x7F - (gameplayFrames & 0x7F), gameplayFrames % 0x80, 0x20,
+                                  0x20, 1, gameplayFrames & 0x7F, gameplayFrames % 0x80, 0x20, 0x20, -1, 1, 1, 1));
 
     gSPDisplayList(POLY_XLU_DISP++, gMoriIdomizuWaterDL);
 

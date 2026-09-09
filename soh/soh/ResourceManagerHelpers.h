@@ -4,13 +4,18 @@
 
 #define GAME_REGION_NTSC 0
 #define GAME_REGION_PAL 1
+#define GAME_REGION_UNKNOWN 2
 
 #define GAME_PLATFORM_N64 0
 #define GAME_PLATFORM_GC 1
+#define GAME_PLATFORM_UNKNOWN 2
 
 #ifdef __cplusplus
 #include <memory>
-#include <ship/resource/Resource.h>
+
+namespace Ship {
+class IResource;
+} // namespace Ship
 
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path);
 
@@ -47,6 +52,7 @@ Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
 uint8_t ResourceMgr_FileIsCustomByName(const char* path);
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_PatchCustomGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);

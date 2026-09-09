@@ -7,7 +7,6 @@
 #include "z_en_mm2.h"
 #include "vt.h"
 #include "objects/object_mm/object_mm.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -107,14 +106,14 @@ void func_80AAEF70(EnMm2* this, PlayState* play) {
     } else if (Flags_GetInfTable(INFTABLE_17F)) {
         if (gSaveContext.eventInf[1] & 1) {
             this->actor.textId = 0x6082;
-        } else if (gSaveContext.subTimerState != 0) {
+        } else if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
             this->actor.textId = 0x6076;
         } else if (HIGH_SCORE(HS_MARATHON) == 158) {
             this->actor.textId = 0x607E;
         } else {
             this->actor.textId = 0x6081;
         }
-    } else if (gSaveContext.subTimerState) {
+    } else if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
         this->actor.textId = 0x6076;
     } else {
         this->actor.textId = 0x607D;
@@ -162,8 +161,6 @@ void EnMm2_Destroy(Actor* thisx, PlayState* play) {
     EnMm2* this = (EnMm2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
@@ -175,7 +172,7 @@ s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
     }
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((ABS(yawDiff) <= 0x4300) && (this->actor.xzDistToPlayer < 100.0f)) {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
     return 0;
 }
@@ -197,7 +194,7 @@ void func_80AAF330(EnMm2* this, PlayState* play) {
         if (!(this->unk_1F4 & 2)) {
             Message_CloseTextbox(play);
         }
-        gSaveContext.subTimerState = 0;
+        gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
         gSaveContext.eventInf[1] &= ~1;
     }
 }
@@ -238,7 +235,7 @@ void func_80AAF3C0(EnMm2* this, PlayState* play) {
 
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         if (this->actor.textId == 0x607F) {
-            func_80088AA0(0);
+            Interface_SetSubTimer(0);
             this->actionFunc = func_80AAF57C;
         } else {
             this->actionFunc = func_80AAF57C;
@@ -295,7 +292,7 @@ void EnMm2_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if (this->unk_1F4 & 1) {
-        func_80038290(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->unk_1E8.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->unk_1E8.y, 0, 6, 6200, 100);

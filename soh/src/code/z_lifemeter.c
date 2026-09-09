@@ -393,9 +393,9 @@ void HealthMeter_Draw(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     Vtx* sp154 = interfaceCtx->beatingHeartVtx;
-    s32 curHeartFraction = gSaveContext.health % 0x10;
-    s16 totalHeartCount = gSaveContext.healthCapacity / 0x10;
-    s16 fullHeartCount = gSaveContext.health / 0x10;
+    s32 curHeartFraction = gSaveContext.health % FULL_HEART_HEALTH;
+    s16 totalHeartCount = gSaveContext.healthCapacity / FULL_HEART_HEALTH;
+    s16 fullHeartCount = gSaveContext.health / FULL_HEART_HEALTH;
     s32 pad2;
     f32 sp144 = interfaceCtx->unk_22A * 0.1f;
     s32 curCombineModeSet = 0;
@@ -410,7 +410,7 @@ void HealthMeter_Draw(PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    if (!(gSaveContext.health % 0x10)) {
+    if (!(gSaveContext.health % FULL_HEART_HEALTH)) {
         fullHeartCount--;
     }
 

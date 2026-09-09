@@ -1,0 +1,117 @@
+:config:
+  segments:
+    - [ 3, 0x016FE410 ]
+    - [ 2, 0x016D3560 ]
+  directory: scenes/mq/ddan_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/ddan_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ddan_room_4:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ddan_room_4
+
+ddan_room_4TLUT_006B50:
+  type: TEXTURE
+  offset: 0x6B50
+  symbol: ddan_room_4TLUT_006B50
+  format: RGBA16
+  width: 16
+  height: 16
+
+ddan_room_4Tex_006D58:
+  type: TEXTURE
+  offset: 0x6D58
+  symbol: ddan_room_4Tex_006D58
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_4Tex_007158:
+  type: TEXTURE
+  offset: 0x7158
+  symbol: ddan_room_4Tex_007158
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6B50
+
+ddan_room_4Tex_007558:
+  type: TEXTURE
+  offset: 0x7558
+  symbol: ddan_room_4Tex_007558
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6B50
+
+ddan_room_4Tex_007D58:
+  type: TEXTURE
+  offset: 0x7D58
+  symbol: ddan_room_4Tex_007D58
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_4Tex_008558:
+  type: TEXTURE
+  offset: 0x8558
+  symbol: ddan_room_4Tex_008558
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_4Tex_008D58:
+  type: TEXTURE
+  offset: 0x8D58
+  symbol: ddan_room_4Tex_008D58
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_4Tex_009158:
+  type: TEXTURE
+  offset: 0x9158
+  symbol: ddan_room_4Tex_009158
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6B50
+
+
+ddan_room_4Vtx_000280:
+  type: OOT:ARRAY
+  offset: 0x000280
+  symbol: ddan_room_4Vtx_000280
+  count: 766
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_4DL_003260:
+  type: GFX
+  offset: 0x003260
+  symbol: ddan_room_4DL_003260
+
+ddan_room_4Vtx_005F80:
+  type: OOT:ARRAY
+  offset: 0x005F80
+  symbol: ddan_room_4Vtx_005F80
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_4DL_0068C0:
+  type: GFX
+  offset: 0x0068C0
+  symbol: ddan_room_4DL_0068C0

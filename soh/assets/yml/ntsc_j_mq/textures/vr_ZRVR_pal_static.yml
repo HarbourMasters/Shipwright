@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x015E1D10 ]
+
+gZoraShopBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gZoraShopBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZoraShopBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZoraShopBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

@@ -1,0 +1,61 @@
+:config:
+  segments:
+    - [ 3, 0x02AF7000 ]
+    - [ 2, 0x02AEA000 ]
+  directory: scenes/shared/testroom_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/testroom_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+testroom_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: testroom_room_2
+
+testroom_room_2TLUT_001A58:
+  type: TEXTURE
+  offset: 0x1A58
+  symbol: testroom_room_2TLUT_001A58
+  format: RGBA16
+  width: 4
+  height: 4
+
+testroom_room_2Tex_001A78:
+  type: TEXTURE
+  offset: 0x1A78
+  symbol: testroom_room_2Tex_001A78
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x1A58
+
+testroom_room_2Tex_002278:
+  type: TEXTURE
+  offset: 0x2278
+  symbol: testroom_room_2Tex_002278
+  format: RGBA16
+  width: 32
+  height: 32
+
+testroom_room_2Tex_002A78:
+  type: TEXTURE
+  offset: 0x2A78
+  symbol: testroom_room_2Tex_002A78
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+testroom_room_2Vtx_000130:
+  type: OOT:ARRAY
+  offset: 0x000130
+  symbol: testroom_room_2Vtx_000130
+  count: 326
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+testroom_room_2DL_001590:
+  type: GFX
+  offset: 0x001590
+  symbol: testroom_room_2DL_001590

@@ -6,8 +6,6 @@
 
 #include "z_en_ms.h"
 #include "objects/object_ms/object_ms.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -102,8 +100,6 @@ void EnMs_Destroy(Actor* thisx, PlayState* play) {
     EnMs* this = (EnMs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMs_Wait(EnMs* this, PlayState* play) {
@@ -115,7 +111,7 @@ void EnMs_Wait(EnMs* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) { // if talk is initiated
         this->actionFunc = EnMs_Talk;
     } else if ((this->actor.xzDistToPlayer < 90.0f) && (ABS(yawDiff) < 0x2000)) { // talk range
-        func_8002F2CC(&this->actor, play, 90.0f);
+        Actor_OfferTalk(&this->actor, play, 90.0f);
     }
 }
 
@@ -151,7 +147,9 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
 
 void EnMs_Sell(EnMs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
+        if (GameInteractor_Should(VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY, true, this)) {
+            Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
+        }
         this->actor.parent = NULL;
         this->actionFunc = EnMs_TalkAfterPurchase;
     } else {
@@ -179,7 +177,7 @@ void EnMs_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (gSaveContext.entranceIndex == ENTR_LON_LON_RANCH_ENTRANCE &&
-        gSaveContext.sceneSetupIndex == 8) { // ride carpet if in credits
+        gSaveContext.sceneLayer == 8) { // ride carpet if in credits
         Actor_MoveXZGravity(&this->actor);
         osSyncPrintf("OOOHHHHHH %f\n", this->actor.velocity.y);
         Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);

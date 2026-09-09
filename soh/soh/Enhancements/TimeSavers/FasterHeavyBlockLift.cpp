@@ -2,9 +2,9 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 #include "z64save.h"
 #include "macros.h"
-#include "variables.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
@@ -45,6 +45,9 @@ void RegisterFasterHeavyBlockLift() {
             LinkAnimation_PlayOnceSetSpeed(gPlayState, &player->skelAnime, anim, 5.0f);
         }
     });
+
+    COND_ID_HOOK(OnActorKill, ACTOR_BG_HEAVY_BLOCK, CVAR_BLOCKLIFT_VALUE || CVAR_SKIP_CUTSCENE_VALUE,
+                 [](void* actor) { Quake_Init(); });
 
     COND_VB_SHOULD(VB_MOVE_THROWN_ACTOR, CVAR_BLOCKLIFT_VALUE, {
         Actor* heldActor = va_arg(args, Actor*);

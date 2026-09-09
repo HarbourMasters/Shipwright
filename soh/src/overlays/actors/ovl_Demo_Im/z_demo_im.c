@@ -11,7 +11,6 @@
 #include "objects/object_im/object_im.h"
 #include "vt.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -331,7 +330,7 @@ void func_80985430(DemoIm* this, PlayState* play) {
 void func_8098544C(DemoIm* this, PlayState* play) {
     s32 pad[2];
 
-    if ((gSaveContext.chamberCutsceneNum == 4) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 4) && (gSaveContext.sceneLayer < 4)) {
         Player* player = GET_PLAYER(play);
 
         this->action = 1;
@@ -618,7 +617,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -633,7 +632,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -651,7 +650,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -673,7 +672,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -724,12 +723,12 @@ void func_8098652C(DemoIm* this, PlayState* play) {
 }
 
 void func_80986570(DemoIm* this, PlayState* play) {
-    if (Animation_OnFrame(&this->skelAnime, 7.0f) && (this->actor.bgCheckFlags & 1)) {
+    if (Animation_OnFrame(&this->skelAnime, 7.0f) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         u32 sfxId = SFX_FLAG;
 
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -748,7 +747,7 @@ void func_809865F8(DemoIm* this, PlayState* play, s32 arg2) {
                 f32 spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, spawnPosX, spawnPosY, spawnPosZ, 0xFA0,
-                            this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
+                            this->actor.shape.rot.y, 0, ARROW_CS_NUT);
                 this->unk_27C = 1;
             }
         } else {
@@ -782,7 +781,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -801,7 +800,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Spot00_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -862,7 +861,7 @@ s32 func_80986AD0(DemoIm* this, PlayState* play) {
     this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actor.textId = 0x708E;
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     } else {
         return true;
     }
@@ -917,7 +916,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
             func_80985F54(this);
         }
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_LULLABY)) {
             Item_Give(play, ITEM_SONG_LULLABY);
         }
     }
@@ -940,7 +939,7 @@ void func_80986CFC(DemoIm* this, PlayState* play) {
 }
 
 void func_80986D40(DemoIm* this, PlayState* play) {
-    if (gSaveContext.sceneSetupIndex == 6) {
+    if (gSaveContext.sceneLayer == 6) {
         this->action = 19;
         this->drawConfig = 1;
     } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) &&
@@ -1061,7 +1060,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -1074,7 +1073,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -1149,8 +1148,6 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
 void DemoIm_Destroy(Actor* thisx, PlayState* play) {
     DemoIm* this = (DemoIm*)thisx;
     DemoIm_DestroyCollider(thisx, play);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 DemoIm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

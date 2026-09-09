@@ -6,6 +6,7 @@
 
 #include "z_bg_mizu_water.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -173,7 +174,7 @@ void BgMizuWater_WaitForAction(BgMizuWater* this, PlayState* play) {
             waterLevelActionIndex = BgMizuWater_GetWaterLevelActionIndex(this->actor.params, play);
             if (waterLevelActionIndex != 0) {
                 if (prevSwitchFlag != sWaterLevels[waterLevelActionIndex].switchFlag) {
-                    OnePointCutscene_Init(play, 3120, -100 - waterLevelActionIndex, NULL, MAIN_CAM);
+                    OnePointCutscene_Init(play, 3120, -100 - waterLevelActionIndex, NULL, CAM_ID_MAIN);
                     this->actor.params = sWaterLevels[waterLevelActionIndex].switchFlag;
                     this->targetY = sWaterLevels[waterLevelActionIndex].yDiff + this->baseY;
                 }
@@ -233,7 +234,9 @@ void BgMizuWater_ChangeWaterLevel(BgMizuWater* this, PlayState* play) {
                 Flags_UnsetSwitch(play, prevSwitchFlag);
             }
 
-            if (Math_StepToF(&this->actor.world.pos.y, this->targetY, 5.0f)) {
+            f32 speed = 5.0f;
+            GameInteractor_Should(VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED, true, &speed);
+            if (Math_StepToF(&this->actor.world.pos.y, this->targetY, speed)) {
                 play->roomCtx.unk_74[0] = 0;
                 this->actionFunc = BgMizuWater_WaitForAction;
                 Message_CloseTextbox(play);
@@ -281,11 +284,11 @@ void BgMizuWater_ChangeWaterLevel(BgMizuWater* this, PlayState* play) {
     }
 
     if (this->targetY < this->actor.world.pos.y) {
-        func_800AA000(0.0f, 0x78, 0x14, 0xA);
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Rumble_Request(0.0f, 0x78, 0x14, 0xA);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else if (this->targetY > this->actor.world.pos.y) {
-        func_800AA000(0.0f, 0x78, 0x14, 0xA);
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Rumble_Request(0.0f, 0x78, 0x14, 0xA);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
 }
 
@@ -332,8 +335,8 @@ void BgMizuWater_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x0C,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, -gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,
-                                -gameplayFrames * 1, 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,
+                                  -gameplayFrames * 1, 32, 32, -1, 1, 0, -1));
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

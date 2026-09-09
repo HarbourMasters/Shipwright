@@ -1,18 +1,10 @@
-#ifndef _ENHANCEMENT_TYPES_H_
-#define _ENHANCEMENT_TYPES_H_
+#pragma once
 
 typedef enum {
     WARP_MODE_OVERRIDE_OFF,
     WARP_MODE_OVERRIDE_MQ_AS_VANILLA,
     WARP_MODE_OVERRIDE_VANILLA_AS_MQ,
 } BetterDebugWarpOverrideMQMode;
-
-typedef enum {
-    CSMC_DISABLED,
-    CSMC_BOTH,
-    CSMC_TEXTURE,
-    CSMC_SIZE,
-} ChestStyleMatchesContentsType;
 
 typedef enum {
     SGIA_DISABLED,
@@ -56,6 +48,8 @@ typedef enum {
     BOOTSEQUENCE_DEFAULT,
     BOOTSEQUENCE_AUTHENTIC,
     BOOTSEQUENCE_FILESELECT,
+    BOOTSEQUENCE_DEBUGWARPSCREEN,
+    BOOTSEQUENCE_WARPPOINT,
 } BootSequenceType;
 
 typedef enum {
@@ -123,4 +117,32 @@ typedef enum {
     WATERFALL_NEVER,
 } SleepingWaterfallType;
 
-#endif
+typedef enum {
+    INGO_RACE_TWICE,
+    INGO_RACE_ONCE,
+    INGO_RACE_NONE,
+} IngoRaceType;
+
+// The Bombchu Bowling prize cycle always runs in this order, only the entry it starts on is random
+typedef enum {
+    BOWLING_FIRST_PRIZE_RANDOM,
+    BOWLING_FIRST_PRIZE_BOMB_BAG,
+    BOWLING_FIRST_PRIZE_PURPLE_RUPEE,
+    BOWLING_FIRST_PRIZE_BOMBCHUS,
+    BOWLING_FIRST_PRIZE_HEART_PIECE,
+    BOWLING_FIRST_PRIZE_BOMBS,
+} BombchuBowlingFirstPrize;
+
+typedef enum {
+    RANDOMIZE_OFF,
+    RANDOMIZE_ON_NEW_SCENE,
+    RANDOMIZE_ON_RANDO_GEN_ONLY,
+    RANDOMIZE_ON_FILE_LOAD,
+    RANDOMIZE_ON_FILE_LOAD_SEEDED,
+} RandomizeOnMode;
+
+typedef enum {
+    TELEPORT_TRAP_OFF,
+    TELEPORT_TRAP_SIMPLE,
+    TELEPORT_TRAP_ADVANCED,
+} TeleportTrapMode;

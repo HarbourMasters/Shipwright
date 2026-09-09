@@ -140,7 +140,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
 
     // Current Health Quarter (X / 4)
-    KaleidoScope_DrawDigit(play, (gSaveContext.health % 0x10) / 4, 194, 15);
+    KaleidoScope_DrawDigit(play, (gSaveContext.health % FULL_HEART_HEALTH) / 4, 194, 15);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
@@ -169,7 +169,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
     // Health capacity
     spD8[2] = 0;
-    spD8[3] = gSaveContext.healthCapacity / 0x10;
+    spD8[3] = gSaveContext.healthCapacity / FULL_HEART_HEALTH;
     while (spD8[3] >= 10) {
         spD8[2]++;
         spD8[3] -= 10;
@@ -180,7 +180,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
     // Health
     spD8[2] = 0;
-    spD8[3] = gSaveContext.health / 0x10;
+    spD8[3] = gSaveContext.health / FULL_HEART_HEALTH;
     while (spD8[3] >= 10) {
         spD8[2]++;
         spD8[3] -= 10;
@@ -368,15 +368,15 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
         case 1:
             if (CHECK_BTN_ALL(input->press.button, BTN_CUP) || CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
-                gSaveContext.healthCapacity -= 0x10;
-                if (gSaveContext.healthCapacity < 0x30) {
-                    gSaveContext.healthCapacity = 0x30;
+                gSaveContext.healthCapacity -= FULL_HEART_HEALTH;
+                if (gSaveContext.healthCapacity < STARTING_HEALTH) {
+                    gSaveContext.healthCapacity = STARTING_HEALTH;
                 }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN) ||
                        CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
-                gSaveContext.healthCapacity += 0x10;
-                if (gSaveContext.healthCapacity >= 0x140) {
-                    gSaveContext.healthCapacity = 0x140;
+                gSaveContext.healthCapacity += FULL_HEART_HEALTH;
+                if (gSaveContext.healthCapacity >= MAX_HEALTH) {
+                    gSaveContext.healthCapacity = MAX_HEALTH;
                 }
             }
             break;
@@ -387,9 +387,9 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                 Health_ChangeBy(play, 4);
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
-                Health_ChangeBy(play, -0x10);
+                Health_ChangeBy(play, -FULL_HEART_HEALTH);
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
-                Health_ChangeBy(play, 0x10);
+                Health_ChangeBy(play, FULL_HEART_HEALTH);
             }
             break;
 

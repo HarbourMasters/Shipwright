@@ -482,7 +482,7 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
         db.resize(index + 1);
     }
     Entry& newEntry = db.at(index);
-    newEntry.entry.id = index;
+    newEntry.entry.id = static_cast<s32>(index);
 
     assert(!newEntry.entry.valid);
 
@@ -514,10 +514,10 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
     return entry;
 }
 
-// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or
+// Adds an actor with the new ActorDBInit struct. Leaving init.id unset assigns a dynamic id, use the returned Entry or
 // RetrieveId to get it.
 ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
-    Entry& entry = AddEntry(init.name, init.desc, nextFreeId);
+    Entry& entry = AddEntry(init.name, init.desc, init.id < 0 ? nextFreeId : (size_t)init.id);
 
     entry.entry.category = init.category;
     entry.entry.flags = init.flags;
@@ -535,7 +535,7 @@ ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
 // Get the ActorDB::Entry for the given actor id.
 ActorDB::Entry& ActorDB::RetrieveEntry(const int id) {
     static Entry invalid;
-    if ((id < 0) || (id >= db.size())) {
+    if ((id < 0) || (static_cast<size_t>(id) >= db.size())) {
         return invalid;
     }
     return db[id];
@@ -552,7 +552,7 @@ int ActorDB::RetrieveId(const std::string& name) {
 }
 
 int ActorDB::GetEntryCount() {
-    return db.size();
+    return static_cast<int>(db.size());
 }
 
 ActorDB::Entry::Entry() {
@@ -593,27 +593,6 @@ void ActorDB::Entry::SetName(const std::string& newName) {
 void ActorDB::Entry::SetDesc(const std::string& newDesc) {
     desc = newDesc;
     entry.desc = desc.c_str();
-}
-
-#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
-static ActorDBInit EnPartnerInit = {
-    "En_Partner",
-    "Ivan",
-    ACTORCAT_ITEMACTION,
-    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER |
-     ACTOR_FLAG_CAN_PRESS_SWITCHES),
-    OBJECT_GAMEPLAY_KEEP,
-    sizeof(EnPartner),
-    (ActorFunc)EnPartner_Init,
-    (ActorFunc)EnPartner_Destroy,
-    (ActorFunc)EnPartner_Update,
-    (ActorFunc)EnPartner_Draw,
-    nullptr,
-};
-extern "C" s16 gEnPartnerId;
-
-void ActorDB::AddBuiltInCustomActors() {
-    gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {

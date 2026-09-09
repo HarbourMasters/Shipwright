@@ -1,9 +1,6 @@
 #pragma once
-#ifndef TIMESPLITS_H
-#define TIMESPLITS_H
 
-#include <stdint.h>
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 #include <vector>
 #include <map>
@@ -101,5 +98,3 @@ extern void DrawSplitsList(bool isMain);
 extern void SplitLoadComparisonList();
 
 #endif
-
-#endif // TIMESPLITS_H

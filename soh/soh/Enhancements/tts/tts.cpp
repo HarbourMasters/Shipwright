@@ -2,18 +2,17 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
+#include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
-#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
-#include <spdlog/fmt/fmt.h>
 
-#include "soh/OTRGlobals.h"
-#include "message_data_static.h"
+#include "soh/ShipInit.hpp"
+#include "message_data_fmt.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
-#include "soh/resource/type/SohResourceType.h"
 
 extern "C" {
 extern MapData* gMapData;
@@ -38,11 +37,10 @@ nlohmann::json fileChooseMap = nullptr;
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
         case TEXT_BANK_SCENES: {
-            return sceneMap[key].get<std::string>();
-            break;
+            return sceneMap.value(key, "unknown");
         }
         case TEXT_BANK_MISC: {
-            auto value = miscMap[key].get<std::string>();
+            auto value = miscMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -50,15 +48,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_KALEIDO: {
-            auto value = kaleidoMap[key].get<std::string>();
+            auto value = kaleidoMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -66,15 +60,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_FILECHOOSE: {
-            auto value = fileChooseMap[key].get<std::string>();
+            auto value = fileChooseMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -82,14 +72,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
     }
+    return "unknown";
 }
 
 const char* GetLanguageCode() {
@@ -142,9 +129,9 @@ void RegisterOnInterfaceUpdateHook() {
         static char ttsAnnounceBuf[32];
 
         uint32_t timer = 0;
-        if (gSaveContext.timerState != 0) {
+        if (gSaveContext.timerState != TIMER_STATE_OFF) {
             timer = gSaveContext.timerSeconds;
-        } else if (gSaveContext.subTimerState != 0) {
+        } else if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
             timer = gSaveContext.subTimerSeconds;
         }
 
@@ -152,7 +139,7 @@ void RegisterOnInterfaceUpdateHook() {
             uint32_t minutes = timer / 60;
             uint32_t seconds = timer % 60;
             char* announceBuf = ttsAnnounceBuf;
-            char arg[8]; // at least big enough where no s8 string will overflow
+            char arg[16]; // big enough for any number formatted below
             if (minutes > 0) {
                 snprintf(arg, sizeof(arg), "%d", minutes);
                 auto translation =
@@ -183,8 +170,8 @@ void RegisterOnInterfaceUpdateHook() {
 
         if (gPlayState->state.frames % 7 == 0) {
             if (lostHealth >= 16) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 lostHealth -= 16;
             }
         }
@@ -353,12 +340,12 @@ void RegisterOnKaleidoscopeUpdateHook() {
         }
 
         if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
-            char arg[8];
+            char arg[16];
             if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
                 // Normalize hearts to fractional count similar to z_lifemeter
                 int curHeartFraction = gSaveContext.health % 16;
                 int fullHearts = gSaveContext.health / 16;
-                float fraction = ceilf((float)curHeartFraction / 5) * 0.25;
+                float fraction = ceilf(static_cast<f32>(curHeartFraction / 5.0f)) * 0.25f;
                 float health = (float)fullHearts + fraction;
                 snprintf(arg, sizeof(arg), "%g", health);
                 auto translation = GetParameritizedText("health", TEXT_BANK_KALEIDO, arg);
@@ -386,7 +373,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
         }
 
         uint16_t cursorIndex =
-            (pauseCtx->pageIndex == PAUSE_MAP && !inDungeonScene) ? PAUSE_WORLD_MAP : pauseCtx->pageIndex;
+            (pauseCtx->pageIndex == PAUSE_MAP && !inDungeonScene) ? (uint16_t)PAUSE_WORLD_MAP : pauseCtx->pageIndex;
         if (prevCursorIndex == cursorIndex && prevCursorSpecialPos == pauseCtx->cursorSpecialPos &&
             prevCursorPoint[cursorIndex] == pauseCtx->cursorPoint[cursorIndex]) {
             return;
@@ -406,7 +393,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
         switch (pauseCtx->pageIndex) {
             case PAUSE_ITEM: {
-                char arg[8]; // at least big enough where no s8 string will overflow
+                char arg[16]; // big enough for any number formatted below
                 switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
                     case ITEM_STICK:
                     case ITEM_NUT:
@@ -433,7 +420,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 // Check if item is assigned to a button
                 for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
                     if (gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
-                        assignedTo = i;
+                        assignedTo = static_cast<s8>(i);
                         break;
                     }
                 }
@@ -457,7 +444,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                     } else {
                         // Dungeon map floor numbers
-                        char arg[8];
+                        char arg[16];
                         int cursorPoint = pauseCtx->cursorPoint[PAUSE_MAP];
 
                         // Cursor is on a dungeon floor position
@@ -484,7 +471,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 }
                 break;
             case PAUSE_QUEST: {
-                char arg[8]; // at least big enough where no s8 string will overflow
+                char arg[16]; // big enough for any number formatted below
                 switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
                     case ITEM_SKULL_TOKEN:
                         snprintf(arg, sizeof(arg), "%d", gSaveContext.inventory.gsTokens);
@@ -514,7 +501,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_EQUIP]);
                 auto itemTranslation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                uint8_t checkEquipItem = pauseCtx->namedItem;
+                uint16_t checkEquipItem = pauseCtx->namedItem;
 
                 // BGS from kaleido reports as ITEM_HEART_PIECE_2 (122)
                 // remap BGS and broken knife to be the BGS item for the current equip check
@@ -533,7 +520,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                     for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
                         if (gSaveContext.equips.buttonItems[i + 1] == checkEquipItem) {
-                            assignedTo = i;
+                            assignedTo = static_cast<s8>(i);
                             break;
                         }
                     }
@@ -839,7 +826,7 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex, uint8_t optionValue) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
 
             auto optionName = BossRush_GetSettingName(optionIndex, language);
             auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
@@ -851,7 +838,7 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
 
             auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
             SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());
@@ -861,16 +848,16 @@ void RegisterOnUpdateMainMenuSelection() {
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
             return;
 
-        char charVal[2];
+        char charVal[2] = {};
         std::string translation;
 
         if (charCode < 10) { // Digits
-            sprintf(charVal, "%c", charCode + 0x30);
+            charVal[0] = charCode + 0x30;
         } else if (charCode >= 10 && charCode < 36) { // Uppercase letters
-            sprintf(charVal, "%c", charCode + 0x37);
+            charVal[0] = charCode + 0x37;
             translation = GetParameritizedText("capital_letter", TEXT_BANK_FILECHOOSE, charVal);
         } else if (charCode >= 36 && charCode < 62) { // Lowercase letters
-            sprintf(charVal, "%c", charCode + 0x3D);
+            charVal[0] = charCode + 0x3D;
         } else if (charCode == 62) { // Space
             translation = GetParameritizedText("space", TEXT_BANK_FILECHOOSE, nullptr);
         } else if (charCode == 63) { // -
@@ -882,7 +869,7 @@ void RegisterOnUpdateMainMenuSelection() {
         } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
             translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
         } else {
-            sprintf(charVal, "%c", charCode);
+            charVal[0] = static_cast<char>(charCode);
         }
 
         if (translation.empty()) {
@@ -1138,21 +1125,21 @@ void InitTTSBank() {
     initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
 
-    sceneMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+    sceneMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                         "accessibility/texts/scenes" + languageSuffix, true, initData))
                    ->Data;
 
-    miscMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+    miscMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                        "accessibility/texts/misc" + languageSuffix, true, initData))
                   ->Data;
 
     kaleidoMap =
-        std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+        std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                  "accessibility/texts/kaleidoscope" + languageSuffix, true, initData))
             ->Data;
 
     fileChooseMap =
-        std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+        std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                  "accessibility/texts/filechoose" + languageSuffix, true, initData))
             ->Data;
 }
@@ -1199,7 +1186,7 @@ void RegisterOnSetDoAction() {
     });
 }
 
-void RegisterTTSModHooks() {
+static void RegisterTTSModHooks() {
     RegisterOnSetGameLanguageHook();
     RegisterOnDialogMessageHook();
     RegisterOnSceneInitHook();
@@ -1210,7 +1197,9 @@ void RegisterTTSModHooks() {
     RegisterOnSetDoAction();
 }
 
-void RegisterTTS() {
+static void RegisterTTS() {
     InitTTSBank();
     RegisterTTSModHooks();
 }
+
+static RegisterShipInitFunc initFunc(RegisterTTS);

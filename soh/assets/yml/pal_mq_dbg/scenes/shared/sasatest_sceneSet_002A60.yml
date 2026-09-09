@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x02D00000 ]
+  directory: scenes/shared/sasatest_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/sasatest_scene.yml
+
+sasatest_sceneSet_002A60:
+  type: OOT:SCENE
+  offset: 0x2A60
+  symbol: sasatest_sceneSet_002A60
+  base_name: sasatest_scene

@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x028C4000 ]
+    - [ 2, 0x0288D000 ]
+  directory: scenes/shared/spot04_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/spot04_room_2.yml
+    - pal_mq_dbg/objects/gameplay_keep.yml
+    - pal_mq_dbg/scenes/shared/spot04_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+spot04_room_2Set_0003B0:
+  type: OOT:ROOM
+  offset: 0x3B0
+  symbol: spot04_room_2Set_0003B0
+  base_name: spot04_room_2

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <libultraship/libultra/gbi.h>
 #include "z64save.h"
 
 #define SECTION_PARENT_NONE -1
@@ -30,8 +29,12 @@ typedef struct {
     s16 gsTokens;
     u8 isDoubleDefenseAcquired;
     s32 filenameLanguage;
-    s32 gregFound;
-    s32 hasWallet;
+    bool gregFound;
+    bool hasWallet;
+    u8 triforcePieces;
+    u8 maxTriforcePieces;
+    bool hasFishingRod;
+    bool fishingPoleShuffled;
 } SaveFileMetaInfo;
 
 typedef enum {
@@ -44,7 +47,6 @@ typedef enum {
 
 #include <map>
 #include <string>
-#include <tuple>
 #include <functional>
 #include <vector>
 #include <filesystem>
@@ -161,6 +163,7 @@ class SaveManager {
     void SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID);
 
     void InitMeta(int slotNum);
+    void StartupCheckAndInitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();

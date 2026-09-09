@@ -7,8 +7,6 @@
 #include "z_en_gb.h"
 #include "objects/object_ps/object_ps.h"
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -227,8 +225,6 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
     LightContext_RemoveLight(play, &play->lightCtx, this->light);
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A2F608(EnGb* this) {
@@ -289,7 +285,7 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
     }
     if (Actor_ProcessTalkRequest(&this->dyna.actor, play)) {
         if (GameInteractor_Should(VB_SELL_POES_TO_POE_COLLECTOR, true, this)) {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_NONE:
                     func_80A2F180(this);
                     this->actionFunc = func_80A2F94C;
@@ -307,7 +303,7 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
         return;
     }
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
-        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
+        Actor_OfferTalkExchangeEquiCylinder(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
     }
 }
 
@@ -536,8 +532,9 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
 
         FrameInterpolation_RecordOpenChild(&this->cagedSouls[i], this->cagedSouls[i].epoch);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
-                                    (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
+                                      (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128, 0,
+                                      0, 0, sCagedSoulInfo[idx].timerMultiplier));
         gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sCagedSoulInfo[idx].texture));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, sCagedSoulInfo[idx].prim.r, sCagedSoulInfo[idx].prim.g,
                         sCagedSoulInfo[idx].prim.b, sCagedSoulInfo[idx].prim.a);

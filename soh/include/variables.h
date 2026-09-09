@@ -50,7 +50,7 @@ extern "C"
 	extern u16 gBuildVersionMinor;
 	extern u16 gBuildVersionPatch;
 	extern const char gGitBranch[];
-    extern const char gGitCommitHash[];
+	extern const char gGitCommitHash[];
 	extern u8 gGitCommitTag[];
 	extern u8 gBuildTeam[];
 	extern u8 gBuildDate[];
@@ -77,7 +77,7 @@ extern "C"
 	extern u8 D_8011FB34;
 	extern u8 D_8011FB38;
 	extern u8 gSkyboxBlendingEnabled;
-	extern u16 gTimeIncrement;
+	extern u16 gTimeSpeed;
 	extern struct_8011FC1C D_8011FC1C[][9];
 	extern SkyboxFile gSkyboxFiles[];
 	extern s32 gZeldaArenaLogSeverity;
@@ -103,7 +103,7 @@ extern "C"
 	extern u16 gUpgradeCapacities[8][4];
 	extern u32 gGsFlagsMasks[4];
 	extern u32 gGsFlagsShifts[4];
-	extern void* gItemIcons[0x82];
+	extern void* gItemIcons[158];
 	extern u8 gItemAgeReqs[];
 	extern u8 gSlotAgeReqs[];
 	extern u8 gItemSlots[56];
@@ -150,9 +150,10 @@ extern "C"
 	extern u8 gUsedChannelsPerBank[4][7];
 	extern u8 gMorphaTransposeTable[16];
 	extern u8* gFrogsSongPtr;
-	extern OcarinaNote* gScarecrowCustomSongPtr;
+	extern OcarinaNote* gScarecrowLongSongPtr;
 	extern u8* gScarecrowSpawnSongPtr;
-	extern OcarinaSongInfo gOcarinaSongNotes[];
+	extern OcarinaNote sOcarinaSongNotes[OCARINA_SONG_MAX][20];
+	extern OcarinaSongButtons gOcarinaSongButtons[OCARINA_SONG_MAX];
 	extern SoundParams* gSoundParams[7];
 	extern char D_80133390[];
 	extern char D_80133398[];
@@ -172,8 +173,7 @@ extern "C"
 	extern s32 gSystemArenaLogSeverity;
 	extern u8 __osPfsInodeCacheBank;
 	extern s32 __osPfsLastChannel;
-	extern u8 gWalkSpeedToggle1;
-	extern u8 gWalkSpeedToggle2;
+	extern u8 gWalkSpeedToggle;
 	extern f32 iceTrapScale;
 	extern f32 triforcePieceScale;
 	extern f32 mysteryItemScale;

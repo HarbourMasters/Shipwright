@@ -1,0 +1,59 @@
+:config:
+  segments:
+    - [ 128, 0x00C39A60 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x00C39A60 ]
+    - [ 9, 0x00C39A60 ]
+    - [ 10, 0x00C39A60 ]
+    - [ 11, 0x00C39A60 ]
+    - [ 12, 0x00C39A60 ]
+    - [ 13, 0x00C39A60 ]
+  virtual: [ 0x80A0BCC0, 0x00C39A60 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gMant1Vtx:
+  type: OOT:ARRAY
+  offset: 0x29F8
+  symbol: gMant1Vtx
+  count: 144
+  array_type: VTX
+
+gMant2Vtx:
+  type: OOT:ARRAY
+  offset: 0x37F8
+  symbol: gMant2Vtx
+  count: 144
+  array_type: VTX
+
+gMantDL:
+  type: GFX
+  offset: 0x33A8
+  symbol: gMantDL
+
+gMantMaterialDL:
+  type: GFX
+  offset: 0x32F8
+  symbol: gMantMaterialDL
+
+gMantTex:
+  type: TEXTURE
+  offset: 0x11F8
+  symbol: gMantTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMantUnusedMaterialDL:
+  type: GFX
+  offset: 0x3350
+  symbol: gMantUnusedMaterialDL
+
+gMantUnusedTex:
+  type: TEXTURE
+  offset: 0x21F8
+  symbol: gMantUnusedTex
+  format: RGBA16
+  width: 32
+  height: 32
+

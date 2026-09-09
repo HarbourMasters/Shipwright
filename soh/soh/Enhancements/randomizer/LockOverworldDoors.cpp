@@ -1,12 +1,10 @@
-#include <libultraship/libultraship.h>
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
-#include "macros.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
+extern PlayState* gPlayState;
 }
 
 using SceneDoorParamsPair = std::pair<int, int>;
@@ -60,7 +58,6 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     {{ SCENE_LON_LON_RANCH, 447 },               RAND_INF_BACK_TOWER_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 447 },                  RAND_INF_HYLIA_LAB_UNLOCKED },
     {{ SCENE_LAKE_HYLIA, 1471 },                 RAND_INF_FISHING_HOLE_UNLOCKED },
-
     // clang-format on
 };
 

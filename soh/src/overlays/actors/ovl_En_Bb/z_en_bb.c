@@ -8,7 +8,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_Bb/object_Bb.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -272,7 +271,7 @@ void EnBb_SpawnFlameTrail(PlayState* play, EnBb* this, s16 startAtZero) {
 
     for (i = 0; i < 5; i++) {
         next = (EnBb*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BB, this->actor.world.pos.x, this->actor.world.pos.y,
-                                  this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                  this->actor.world.pos.z, 0, 0, 0, 0);
         if (next != NULL) {
             now->actor.child = &next->actor;
             next->actor.parent = &now->actor;
@@ -407,8 +406,6 @@ void EnBb_Destroy(Actor* thisx, PlayState* play) {
     EnBb* this = (EnBb*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBb_SetupFlameTrail(EnBb* this) {
@@ -516,7 +513,7 @@ void EnBb_SetupDamage(EnBb* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BUBLE_DAMAGE);
     if (this->actor.params > ENBB_GREEN) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
-        if ((this->actor.bgCheckFlags & 8) == 0) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) == 0) {
             this->actor.speedXZ = -7.0f;
         }
         this->actor.shape.yOffset = 1500.0f;
@@ -635,7 +632,7 @@ void EnBb_Blue(EnBb* this, PlayState* play) {
         }
         thisYawToWall = this->actor.wallYaw - this->actor.world.rot.y;
         moveYawToWall = this->actor.wallYaw - this->vMoveAngleY;
-        if ((this->targetActor == NULL) && (this->actor.bgCheckFlags & 8) &&
+        if ((this->targetActor == NULL) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
             (ABS(thisYawToWall) > 0x4000 || ABS(moveYawToWall) > 0x4000)) {
             this->vMoveAngleY = this->actor.wallYaw + this->actor.wallYaw - this->actor.world.rot.y - 0x8000;
             Math_SmoothStepToS(&this->actor.world.rot.y, this->vMoveAngleY, 1, 0xBB8, 0);
@@ -693,7 +690,7 @@ void EnBb_Down(EnBb* this, PlayState* play) {
     s16 yawDiff = this->actor.world.rot.y - this->actor.wallYaw;
 
     SkelAnime_Update(&this->skelAnime);
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         if (ABS(yawDiff) > 0x4000) {
             this->actor.world.rot.y = this->actor.wallYaw + this->actor.wallYaw - this->actor.world.rot.y - 0x8000;
         }
@@ -701,7 +698,7 @@ void EnBb_Down(EnBb* this, PlayState* play) {
     }
     if (this->actor.bgCheckFlags & 3) {
         if (this->actor.params == ENBB_RED) {
-            s32 floorType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+            s32 floorType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
             if ((floorType == 2) || (floorType == 3) || (floorType == 9)) {
                 this->moveMode = BBMOVE_HIDDEN;
@@ -811,7 +808,7 @@ void EnBb_Red(EnBb* this, PlayState* play) {
             this->bobPhase += Rand_ZeroOne();
             Math_SmoothStepToF(&this->flameScaleY, 80.0f, 1.0f, 10.0f, 0.0f);
             Math_SmoothStepToF(&this->flameScaleX, 100.0f, 1.0f, 10.0f, 0.0f);
-            if (this->actor.bgCheckFlags & 8) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                 yawDiff = this->actor.world.rot.y - this->actor.wallYaw;
                 if (ABS(yawDiff) > 0x4000) {
                     this->actor.world.rot.y =
@@ -819,8 +816,8 @@ void EnBb_Red(EnBb* this, PlayState* play) {
                 }
                 this->actor.bgCheckFlags &= ~8;
             }
-            if (this->actor.bgCheckFlags & 1) {
-                floorType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+                floorType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
                 if ((floorType == 2) || (floorType == 3) || (floorType == 9)) {
                     this->moveMode = BBMOVE_HIDDEN;
                     this->timer = 10;
@@ -1107,13 +1104,13 @@ void EnBb_SetupStunned(EnBb* this) {
 void EnBb_Stunned(EnBb* this, PlayState* play) {
     s16 yawDiff = this->actor.world.rot.y - this->actor.wallYaw;
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         if (ABS(yawDiff) > 0x4000) {
             this->actor.world.rot.y = this->actor.wallYaw + this->actor.wallYaw - this->actor.world.rot.y - 0x8000;
         }
         this->actor.bgCheckFlags &= ~8;
     }
-    if (this->actor.bgCheckFlags & 2) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         if (this->actor.velocity.y < -14.0f) {
             this->actor.velocity.y *= -0.4f;
@@ -1329,11 +1326,11 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
         if (this->actor.params != ENBB_WHITE) {
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                        ((play->gameplayFrames + (this->flameScrollMod * 10)) *
-                                         (-20 - (this->flameScrollMod * -2))) %
-                                            0x200,
-                                        0x20, 0x80));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
+                                          ((play->gameplayFrames + (this->flameScrollMod * 10)) *
+                                           (-20 - (this->flameScrollMod * -2))) %
+                                              0x200,
+                                          0x20, 0x80, 0, 0, 0, (-20 - (this->flameScrollMod * -2))));
             gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, this->flamePrimBlue, this->flamePrimAlpha);
             gDPSetEnvColor(POLY_XLU_DISP++, this->flameEnvColor.r, this->flameEnvColor.g, this->flameEnvColor.b, 0);
             Matrix_RotateY(((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->actor.shape.rot.y + 0x8000)) *

@@ -1,4 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -9,6 +10,10 @@ Actor* func_80AEB124(PlayState* play);
 }
 
 void Ru1Init(void* actorRef) {
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) && !Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_ZORA)) {
+        return;
+    }
+
     EnRu1* enRu1 = static_cast<EnRu1*>(actorRef);
 
     if (enRu1->action == 22) {
@@ -68,11 +73,10 @@ void RegisterSkipChildRutoInteractions() {
                            enRu1->action = 42;
                            Animation_Change(&enRu1->skelAnime, (AnimationHeader*)&gRutoChildWait2Anim, 1.0f, 0,
                                             Animation_GetLastFrame((void*)&gRutoChildWait2Anim), ANIMMODE_LOOP, -8.0f);
-                           // If we aren't skipping one point cutscenes and BgBdan objects has set the camera setting
-                           // to CAM_SET_NORMAL1 (2), don't reset the camera setting to 1. This prevents the One Point
-                           // Cutscene of Ruto getting lifted up from getting queued up twice.
-                           if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO) ||
-                               enRu1->unk_28C->cameraSetting != 2) {
+                           // If BgBdan objects has set the camera setting to CAM_SET_NORMAL1 (2), don't reset the
+                           // camera setting to 1. This prevents the One Point Cutscene of Ruto getting lifted up
+                           // from getting queued up twice.
+                           if (enRu1->unk_28C->cameraSetting != 2) {
                                enRu1->unk_28C->cameraSetting = 1;
                            }
                            Actor* sapphire = func_80AEB124(gPlayState);

@@ -8,7 +8,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
@@ -404,7 +403,7 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             if (GameInteractor_Should(VB_SPAWN_FOUNTAIN_FAIRIES, true, this)) {
                 for (i = 0; i < 8; i++) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x, thisx->world.pos.y - 30.0f,
-                                thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+                                thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL);
                 }
             }
             break;
@@ -442,8 +441,6 @@ void EnElf_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A02A20(EnElf* this, PlayState* play) {
@@ -869,7 +866,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
             func_80A02C98(this, &nextPos, 0.2f);
         }
 
-        if ((play->sceneNum == SCENE_LINKS_HOUSE) && (gSaveContext.sceneSetupIndex == 4)) {
+        if ((play->sceneNum == SCENE_LINKS_HOUSE) && (gSaveContext.sceneLayer == 4)) {
             // play dash sound as Navi enters Links house in the intro
             if (play->csCtx.frames == 55) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);

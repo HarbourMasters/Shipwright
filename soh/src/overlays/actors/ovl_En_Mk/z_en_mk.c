@@ -6,8 +6,6 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -81,8 +79,6 @@ void EnMk_Destroy(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AACA40(EnMk* this, PlayState* play) {
@@ -99,7 +95,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
         this->actor.parent = NULL;
         if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true, this)) {
             this->actionFunc = func_80AACA40;
-            func_80088AA0(240);
+            Interface_SetSubTimer(240);
             gSaveContext.eventInf[1] &= ~1;
         }
     } else {
@@ -228,7 +224,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
     s32 playerExchangeItem;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        playerExchangeItem = func_8002F368(play);
+        playerExchangeItem = Actor_GetPlayerExchangeItemId(play);
 
         if (this->actor.textId != 0x4018) {
             player->actor.textId = this->actor.textId;
@@ -266,7 +262,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                         Animation_Change(&this->skelAnime, &object_mk_Anim_000368, 1.0f, 0.0f,
                                          Animation_GetLastFrame(&object_mk_Anim_000368), ANIMMODE_ONCE, -4.0f);
                         this->flags &= ~2;
-                        gSaveContext.subTimerState = 0;
+                        gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
                         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                         break;
                     default:
@@ -286,7 +282,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
         angle = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
         if ((ABS(angle) < 0x2151) && (this->actor.xzDistToPlayer < 100.0f)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_FROG);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, EXCH_ITEM_FROG);
             this->flags |= 1;
         }
     }
@@ -311,7 +307,7 @@ void EnMk_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->flags & 1) {
-        func_80038290(play, &this->actor, &this->headRotation, &vec, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->headRotation, &vec, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->headRotation.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->headRotation.y, 0, 6, 6200, 100);

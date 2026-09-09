@@ -1,0 +1,646 @@
+#include "SeedContext.h"
+#include "static_data.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/item-tables/ItemTableManager.h"
+#include "dungeon.h"
+#include "logic.h"
+#include "entrance.h"
+#include "settings.h"
+#include "rando_hash.h"
+#include "fishsanity.h"
+#include "macros.h"
+#include "3drando/hints.hpp"
+#include "soh/util.h"
+#include "../kaleido.h"
+#include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/rng.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+
+#include <algorithm>
+#include <vector>
+
+#include <fstream>
+#include <spdlog/spdlog.h>
+extern "C" {
+#include <functions.h>
+#include <variables.h>
+}
+
+namespace Rando {
+std::weak_ptr<Context> Context::mContext;
+
+Context::Context() {
+
+    for (int i = 0; i < RC_MAX; i++) {
+        itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
+    }
+    mEntranceShuffler = std::make_shared<EntranceShuffler>();
+    mDungeons = std::make_shared<Dungeons>();
+    mLogic = std::make_shared<Logic>();
+    mTrials = std::make_shared<Trials>();
+}
+
+RandomizerArea Context::GetAreaFromString(std::string str) {
+    return (RandomizerArea)StaticData::areaNameToEnum[str];
+}
+
+int Context::CountEmptyLocations(const bool countShops) {
+    auto ctx = Rando::Context::GetInstance();
+    return static_cast<int>(count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
+        return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE &&
+               (countShops || Rando::StaticData::GetLocation(loc)->GetRCType() != RCTYPE_SHOP);
+    }));
+}
+
+void Context::InitStaticData() {
+    StaticData::HintTable_Init();
+    StaticData::trialNameToEnum = StaticData::PopulateTranslationMap(StaticData::trialData);
+    StaticData::hintNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintNames);
+    StaticData::hintTypeNameToEnum = StaticData::PopulateTranslationMap(StaticData::hintTypeNames);
+    StaticData::areaNameToEnum = StaticData::PopulateTranslationMap(StaticData::areaNames);
+    StaticData::InitLocationTable();
+}
+
+std::shared_ptr<Context> Context::CreateInstance() {
+    if (mContext.expired()) {
+        auto instance = std::make_shared<Context>();
+        mContext = instance;
+        GetInstance()->GetLogic()->SetContext(GetInstance());
+        return instance;
+    }
+    return GetInstance();
+}
+
+std::shared_ptr<Context> Context::GetInstance() {
+    return mContext.lock();
+}
+
+Hint* Context::GetHint(const RandomizerHint hintKey) {
+    return &hintTable[hintKey];
+}
+
+void Context::AddHint(const RandomizerHint hintId, const Hint hint) {
+    hintTable[hintId] = hint; // RANDOTODO this should probably be an rvalue
+}
+
+ItemLocation* Context::GetItemLocation(const RandomizerCheck locKey) {
+    return &itemLocationTable[locKey];
+}
+
+ItemLocation* Context::GetItemLocation(size_t locKey) {
+    return &itemLocationTable[static_cast<RandomizerCheck>(locKey)];
+}
+
+bool Context::IsLocationShuffled(const RandomizerCheck locKey) {
+    return itemLocationTable[locKey].GetPlacedRandomizerGet() != RG_NONE;
+}
+
+ItemOverride& Context::GetItemOverride(RandomizerCheck locKey) {
+    if (!overrides.contains(locKey)) {
+        overrides.emplace(locKey, ItemOverride());
+    }
+    return overrides.at(locKey);
+}
+
+ItemOverride& Context::GetItemOverride(size_t locKey) {
+    if (!overrides.contains(static_cast<RandomizerCheck>(locKey))) {
+        overrides.emplace(static_cast<RandomizerCheck>(locKey), ItemOverride());
+    }
+    return overrides.at(static_cast<RandomizerCheck>(locKey));
+}
+
+void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item,
+                                  const bool applyEffectImmediately, const bool setHidden) {
+    const auto loc = GetItemLocation(locKey);
+    SPDLOG_DEBUG("{} placed at {}", StaticData::RetrieveItem(item).GetName().GetEnglish(),
+                 StaticData::GetLocation(locKey)->GetName());
+
+    if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS)) {
+        StaticData::RetrieveItem(item).ApplyEffect();
+    }
+
+    // TODO? Show Progress
+
+    loc->SetPlacedItem(item);
+    if (setHidden) {
+        loc->SetHidden(true);
+    }
+}
+
+void Context::AddLocation(const RandomizerCheck loc, std::vector<RandomizerCheck>* destination) {
+    if (destination == nullptr) {
+        destination = &allLocations;
+    }
+    destination->push_back(loc);
+}
+
+template <typename Container>
+void Context::AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination) {
+    if (destination == nullptr) {
+        destination = &allLocations;
+    }
+    destination->insert(destination->end(), std::cbegin(locations), std::cend(locations));
+}
+
+bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
+    const auto loc = Rando::StaticData::GetLocation(rc);
+    return loc->GetQuest() == RCQUEST_BOTH ||
+           loc->GetQuest() == RCQUEST_MQ && mDungeons->GetDungeonFromScene(loc->GetScene())->IsMQ() ||
+           loc->GetQuest() == RCQUEST_VANILLA && mDungeons->GetDungeonFromScene(loc->GetScene())->IsVanilla();
+}
+
+void Context::GenerateLocationPool() {
+    allLocations.clear();
+    overworldLocations.clear();
+    // add wincon here so it is properly logged
+    if (ctx->GetOption(RSK_WINCON).Get() > RO_WINCON_ANYWHERE) {
+        AddLocation(RC_WINCON);
+    }
+    for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
+        dungeon->locations.clear();
+    }
+    for (Location& location : StaticData::GetLocationTable()) {
+        // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
+        // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
+        if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
+            location.GetRandomizerCheck() == RC_WINCON || // already in pool
+            (location.GetRandomizerCheck() == RC_GANONS_BOSS_KEY && mGBKCondition == RO_CHECK_TRIGGER_NONE) ||
+            (location.GetRandomizerCheck() == RC_GANON_SOUL && mGanonsSoulCondition == RO_CHECK_TRIGGER_NONE) ||
+            (location.GetRandomizerCheck() == RC_TOT_MASTER_SWORD &&
+             mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
+            (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
+             mOptions[RSK_SHUFFLE_100_GS_REWARD].Is(RO_GENERIC_OFF)) ||
+            (location.GetRCType() == RCTYPE_CHEST_GAME && mOptions[RSK_SHUFFLE_CHEST_MINIGAME].Is(RO_GENERIC_OFF)) ||
+            location.GetRCType() == RCTYPE_STATIC_HINT ||  // can't have items
+            location.GetRCType() == RCTYPE_GOSSIP_STONE || // can't have items
+            (location.GetRCType() == RCTYPE_FROG_SONG && mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES].Is(RO_GENERIC_OFF)) ||
+            (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_OFF)) ||
+            (location.GetRCType() == RCTYPE_SCRUB && mOptions[RSK_SHUFFLE_SCRUBS].Is(RO_SCRUBS_ONE_TIME_ONLY) &&
+             !(location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
+               location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
+               location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO)) ||
+            (location.GetRCType() == RCTYPE_BEGGAR && mOptions[RSK_SHUFFLE_BEGGAR].Is(RO_GENERIC_OFF)) ||
+            (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
+            (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
+            (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH &&
+             mOptions[RSK_FISHSANITY].IsNot(RO_FISHSANITY_HYRULE_LOACH)) ||
+            (location.GetRCType() == RCTYPE_FISH && !Fishsanity::GetFishLocationIncluded(&location)) ||
+            (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OFF)) ||
+            (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OFF)) ||
+            (location.GetRCType() == RCTYPE_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
+            (location.GetRCType() == RCTYPE_NLCRATE && (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF) ||
+                                                        mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
+            (location.GetRCType() == RCTYPE_SMALL_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
+            (location.GetRCType() == RCTYPE_ROCK && !mOptions[RSK_SHUFFLE_ROCKS]) ||
+            (location.GetRCType() == RCTYPE_BOULDER && mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OFF)) ||
+            (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && !mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_STONE_FAIRY && !mOptions[RSK_SHUFFLE_STONE_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_BEAN_FAIRY && !mOptions[RSK_SHUFFLE_BEAN_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_SONG_FAIRY && !mOptions[RSK_SHUFFLE_SONG_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_BUTTERFLY_FAIRY && !mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_TREE && !mOptions[RSK_SHUFFLE_TREES]) ||
+            (location.GetRCType() == RCTYPE_NLTREE &&
+             (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
+            (location.GetRCType() == RCTYPE_BUSH && !mOptions[RSK_SHUFFLE_BUSHES]) ||
+            (location.GetRCType() == RCTYPE_ICICLE && !mOptions[RSK_SHUFFLE_ICICLES]) ||
+            (location.GetRCType() == RCTYPE_RED_ICE && !mOptions[RSK_SHUFFLE_RED_ICE]) ||
+            (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OFF)) ||
+            (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+             mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OFF)) ||
+            (location.GetRCType() == RCTYPE_FREESTANDING &&
+             mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
+            (location.GetRCType() == RCTYPE_SILVER && !mOptions[RSK_SHUFFLE_SILVER]) ||
+            (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
+            continue;
+        }
+        if (location.IsOverworld()) {
+            // Skip stuff that is shuffled to dungeon only, i.e. tokens, pots, etc., or other checks that
+            // should not have a shuffled item.
+            if ((location.GetRCType() == RCTYPE_FREESTANDING &&
+                 mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+                 mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_NLCRATE &&
+                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS) &&
+                 mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
+                (location.GetRCType() == RCTYPE_SMALL_CRATE &&
+                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_BOULDER &&
+                 mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_DUNGEONS))) {
+                continue;
+            }
+            // If we've gotten past all the conditions where an overworld location should not be
+            // shuffled, add it to the pool.
+            AddLocation(location.GetRandomizerCheck(), &overworldLocations);
+            AddLocation(location.GetRandomizerCheck());
+        } else { // is a dungeon check
+            auto* dungeon = GetDungeon(location.GetArea() - RCAREA_DEKU_TREE);
+            if (location.GetQuest() == RCQUEST_BOTH || (location.GetQuest() == RCQUEST_MQ) == dungeon->IsMQ()) {
+                if ((location.GetRCType() == RCTYPE_FREESTANDING &&
+                     mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_GRASS &&
+                     mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+                     mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_CRATE &&
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_NLCRATE &&
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD) &&
+                     mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
+                    (location.GetRCType() == RCTYPE_SMALL_CRATE &&
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_BOULDER &&
+                     mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_SIGN &&
+                     mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OVERWORLD))) {
+                    continue;
+                }
+                // also add to that dungeon's location list.
+                AddLocation(location.GetRandomizerCheck(), &dungeon->locations);
+                AddLocation(location.GetRandomizerCheck());
+            }
+        }
+    }
+}
+
+void Context::AddExcludedOptions() {
+    for (auto& loc : StaticData::GetLocationTable()) {
+        // Checks of these types don't have items, skip them.
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_WINCON ||
+            loc.GetRCType() == RCTYPE_STATIC_HINT || loc.GetRCType() == RCTYPE_GOSSIP_STONE) {
+            continue;
+        }
+        AddLocation(loc.GetRandomizerCheck(), &everyPossibleLocation);
+        Option* excludedOption = loc.GetExcludedOption();
+        auto& areaOptions = Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea());
+        const bool alreadyAdded = std::any_of(areaOptions.begin(), areaOptions.end(), [&](const Option* option) {
+            return option->GetName() == excludedOption->GetName();
+        });
+        if (!alreadyAdded) {
+            areaOptions.push_back(excludedOption);
+        }
+    }
+}
+
+std::vector<RandomizerCheck> Context::GetLocations(const std::vector<RandomizerCheck>& locationPool,
+                                                   const RandomizerCheckType checkType) {
+    std::vector<RandomizerCheck> locationsOfType;
+    for (RandomizerCheck locKey : locationPool) {
+        if (StaticData::GetLocation(locKey)->GetRCType() == checkType) {
+            locationsOfType.push_back(locKey);
+        }
+    }
+    return locationsOfType;
+}
+
+void Context::ClearItemLocations() {
+    for (size_t i = 0; i < itemLocationTable.size(); i++) {
+        GetItemLocation(static_cast<RandomizerCheck>(i))->ResetVariables();
+    }
+}
+
+void Context::ItemReset() {
+    for (const RandomizerCheck il : allLocations) {
+        GetItemLocation(il)->ResetVariables();
+    }
+
+    for (const RandomizerCheck il : StaticData::dungeonRewardLocations) {
+        GetItemLocation(il)->ResetVariables();
+    }
+
+    GetItemLocation(RC_GIFT_FROM_RAURU)->ResetVariables();
+    GetItemLocation(RC_LINKS_POCKET)->ResetVariables();
+}
+
+void Context::LocationReset() {
+    for (auto& il : itemLocationTable) {
+        il.RemoveFromPool();
+    }
+}
+
+void Context::HintReset() {
+    for (const RandomizerCheck il : StaticData::GetGossipStoneLocations()) {
+        GetItemLocation(il)->ResetVariables();
+    }
+    for (Hint& hint : hintTable) {
+        hint.ResetVariables();
+    }
+}
+
+void Context::CreateItemOverrides() {
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES");
+    for (RandomizerCheck locKey : allLocations) {
+        const auto loc = StaticData::GetLocation(locKey);
+        // If this is an ice trap, store the disguise model in iceTrapModels
+        const auto itemLoc = GetItemLocation(locKey);
+        if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
+            ItemOverride val(locKey, Traps::GetTrapTrickModel(&rando_state));
+            iceTrapModels[locKey] = val.LooksLike();
+            Traps::TrickName trickName = Traps::GetTrapName(
+                val.LooksLike(), static_cast<RandoIceTrapNames>(mOptions[RSK_ICE_TRAP_NAMES].Get()), &rando_state);
+            val.SetTrickName(trickName.name);
+            val.SetTrickArticle(trickName.article);
+            // If this is ice trap is in a shop, change the name based on what the model will look like
+            overrides[locKey] = val;
+        }
+        SPDLOG_DEBUG("{}: {}", loc->GetName(), itemLoc->GetPlacedItemName().GetEnglish());
+    }
+    SPDLOG_DEBUG("Overrides Created: {}", std::to_string(overrides.size()));
+}
+
+bool Context::IsSeedGenerated() const {
+    return mSeedGenerated;
+}
+
+void Context::SetSeedGenerated(const bool seedGenerated) {
+    mSeedGenerated = seedGenerated;
+}
+
+bool Context::IsSpoilerLoaded() const {
+    return mSpoilerLoaded;
+}
+
+void Context::SetSpoilerLoaded(const bool spoilerLoaded) {
+    mSpoilerLoaded = spoilerLoaded;
+}
+
+GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool checkObtainability, const GetItemID ogItemId,
+                                      bool spoilAreas) {
+    const auto itemLoc = GetItemLocation(rc);
+    if (itemLoc->GetPlacedRandomizerGet() == RG_NONE) {
+        if (ogItemId != GI_NONE) {
+            return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, ogItemId);
+        }
+        return ItemTableManager::Instance->RetrieveItemEntry(
+            MOD_NONE, StaticData::RetrieveItem(StaticData::GetLocation(rc)->GetVanillaItem()).GetItemID());
+    }
+    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(
+                                  itemLoc->GetPlacedRandomizerGet()) != CAN_OBTAIN) {
+        if (spoilAreas) {
+            CheckTracker::SpoilAreaFromCantObtain(itemLoc->GetPlacedRandomizerGet());
+        }
+        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+    }
+    GetItemEntry giEntry = itemLoc->GetPlacedItem().GetGIEntry_Copy();
+    if (overrides.contains(rc)) {
+        const auto fakeGiEntry = StaticData::RetrieveItem(overrides[rc].LooksLike()).GetGIEntry();
+        giEntry.gid = fakeGiEntry->gid;
+        giEntry.gi = fakeGiEntry->gi;
+        giEntry.drawItemId = fakeGiEntry->drawItemId;
+        giEntry.drawModIndex = fakeGiEntry->drawModIndex;
+        giEntry.drawFunc = fakeGiEntry->drawFunc;
+    }
+    return giEntry;
+}
+
+void Context::ParseSpoiler(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(SohUtils::Sanitize(spoilerFileName));
+    if (!spoilerFileStream) {
+        return;
+    }
+    mSeedGenerated = false;
+    mSpoilerLoaded = false;
+    try {
+        nlohmann::json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        spoilerFileStream.close();
+        ParseHashIconIndexesJson(spoilerFileJson);
+        Rando::Settings::GetInstance()->ParseJson(spoilerFileJson);
+        ParseItemLocationsJson(spoilerFileJson);
+        ParseTricksJson(spoilerFileJson);
+        mEntranceShuffler->ParseJson(spoilerFileJson);
+        ParseHintJson(spoilerFileJson);
+        mDungeons->ParseJson(spoilerFileJson);
+        mTrials->ParseJson(spoilerFileJson);
+        mSpoilerLoaded = true;
+        mSeedGenerated = false;
+    } catch (...) { SPDLOG_ERROR("Failed to load Spoiler File: {}", spoilerFileName); }
+}
+
+void Context::ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson) {
+    nlohmann::json hashJson = spoilerFileJson.value("file_hash", nlohmann::json());
+    int index = 0;
+    for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
+        hashIconIndexes[index] = gSeedTextures[it.value()].id;
+        index++;
+    }
+}
+
+void Context::ParseItemLocationsJson(const nlohmann::json& spoilerFileJson) {
+    nlohmann::json locationsJson = spoilerFileJson.value("locations", nlohmann::json());
+    for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+        RandomizerCheck rc = StaticData::locationNameToEnum[it.key()];
+        if (it->is_structured()) {
+            nlohmann::json itemJson = *it;
+            for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
+                if (itemit.key() == "item") {
+                    itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
+                } else if (itemit.key() == "price") {
+                    itemLocationTable[rc].SetCustomPrice(itemit.value().get<uint16_t>());
+                } else if (itemit.key() == "model") {
+                    overrides[rc] = ItemOverride(rc, StaticData::itemNameToEnum[itemit.value().get<std::string>()]);
+                } else if (itemit.key() == "trickName") {
+                    overrides[rc].SetTrickName(Text(itemit.value().get<std::string>()));
+                } else if (itemit.key() == "trickArticle") {
+                    overrides[rc].SetTrickArticle(Text(itemit.value().get<std::string>()));
+                }
+            }
+        } else {
+            itemLocationTable[rc].SetPlacedItem(StaticData::itemNameToEnum[it.value().get<std::string>()]);
+        }
+    }
+}
+
+void Context::WriteHintJson(nlohmann::ordered_json& spoilerFileJson) {
+    for (Hint hint : hintTable) {
+        hint.logHint(spoilerFileJson);
+    }
+}
+
+void Context::ParseHintJson(const nlohmann::json& spoilerFileJson) {
+    nlohmann::json gossipHintsJson = spoilerFileJson.value("Gossip Stone Hints", nlohmann::json());
+    for (auto hintData : gossipHintsJson.items()) {
+        RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
+        AddHint(hint, Hint(hint, hintData.value()));
+    }
+    nlohmann::json staticHintsJson = spoilerFileJson.value("Static Hints", nlohmann::json());
+    for (auto hintData : staticHintsJson.items()) {
+        RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
+        AddHint(hint, Hint(hint, hintData.value()));
+    }
+    CreateStaticHints();
+}
+
+void Context::ParseTricksJson(const nlohmann::json& spoilerFileJson) {
+    nlohmann::json enabledTricksJson = spoilerFileJson.value("enabledTricks", nlohmann::json());
+    const auto& settings = Rando::Settings::GetInstance();
+    for (auto it : enabledTricksJson) {
+        int rt = settings->GetRandomizerTrickByName(it);
+        if (rt != -1) {
+            mTrickOptions[rt].Set(RO_GENERIC_ON);
+        }
+    }
+}
+
+std::shared_ptr<EntranceShuffler> Context::GetEntranceShuffler() {
+    return mEntranceShuffler;
+}
+
+std::shared_ptr<Dungeons> Context::GetDungeons() {
+    return mDungeons;
+}
+
+DungeonInfo* Context::GetDungeon(size_t key) const {
+    return mDungeons->GetDungeon(static_cast<DungeonKey>(key));
+}
+
+DungeonInfo* Context::GetDungeonFromScene(SceneID scene) const {
+    return mDungeons->GetDungeonFromScene(scene);
+}
+
+std::shared_ptr<Logic> Context::GetLogic() {
+    if (mLogic.get() == nullptr) {
+        mLogic = std::make_shared<Logic>();
+    }
+    return mLogic;
+}
+
+std::shared_ptr<Trials> Context::GetTrials() {
+    return mTrials;
+}
+
+TrialInfo* Context::GetTrial(size_t key) const {
+    return mTrials->GetTrial(static_cast<TrialKey>(key));
+}
+
+TrialInfo* Context::GetTrial(TrialKey key) const {
+    return mTrials->GetTrial(key);
+}
+
+Sprite* Context::GetSeedTexture(const uint8_t index) {
+    return &gSeedTextures[index];
+}
+
+OptionValue& Context::GetOption(const RandomizerSettingKey key) {
+    return mOptions[key];
+}
+
+OptionValue& Context::GetTrickOption(const RandomizerTrick key) {
+    return mTrickOptions[key];
+}
+
+OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
+    return itemLocationTable[key].GetExcludedOption();
+}
+
+RandoOptionCheckTrigger Context::GBKCondition() const {
+    return mGBKCondition;
+}
+
+void Context::GBKCondition(RandoOptionCheckTrigger condition) {
+    mGBKCondition = condition;
+}
+
+RandoOptionCheckTrigger Context::GanonsSoulCondition() const {
+    return mGanonsSoulCondition;
+}
+
+void Context::GanonsSoulCondition(RandoOptionCheckTrigger condition) {
+    mGanonsSoulCondition = condition;
+}
+
+RandoOptionWincon Context::WinCondition() const {
+    return mWinCondition;
+}
+
+void Context::WinCondition(RandoOptionWincon condition) {
+    mWinCondition = condition;
+}
+
+std::shared_ptr<Kaleido> Context::GetKaleido() {
+    if (mKaleido == nullptr) {
+        mKaleido = std::make_shared<Kaleido>();
+    }
+    return mKaleido;
+}
+
+std::string Context::GetHash() const {
+    return mHash;
+}
+
+void Context::SetHash(std::string hash) {
+    mHash = std::move(hash);
+}
+
+uint8_t Context::GetBombchuCapacity() {
+    switch (mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel) {
+        case 0:
+            return 0;
+        case 1:
+            return 20;
+        case 2:
+            return 30;
+        case 3:
+            return 50;
+        default:
+            return 0;
+    }
+}
+
+void Context::HandleGetBombchuBag() {
+    if (GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_INFINITE_UPGRADES)) {
+            Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+        } else {
+            AMMO(ITEM_BOMBCHU) += 10;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
+        return;
+    }
+    switch (mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel) {
+        case 0:
+        case 1:
+        case 2:
+            mLogic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel++;
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            } else if (GetOption(RSK_INFINITE_UPGRADES).Is(RO_INF_UPGRADES_CONDENSED_PROGRESSIVE)) {
+                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            }
+            AMMO(ITEM_BOMBCHU) = GetBombchuCapacity();
+            return;
+        case 3:
+            if (GetOption(RSK_INFINITE_UPGRADES).IsNot(RO_INF_UPGRADES_OFF)) {
+                Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            }
+            return;
+    }
+}
+
+const std::string& Context::GetSeedString() const {
+    return mSeedString;
+}
+
+void Context::SetSeedString(std::string seedString) {
+    mSeedString = std::move(seedString);
+}
+
+uint32_t Context::GetSeed() const {
+    return mFinalSeed;
+}
+
+void Context::SetSeed(const uint32_t seed) {
+    mFinalSeed = seed;
+}
+} // namespace Rando

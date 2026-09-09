@@ -1,5 +1,3 @@
-#include <libultraship/bridge.h>
-
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -237,19 +235,19 @@ struct InterpolateCtx {
     float interpolate_angle(f32 o, f32 n) {
         if (o == n)
             return n;
-        o = fmodf(o, 2 * M_PI);
+        o = fmodf(o, static_cast<f32>(2.0f * M_PI));
         if (o < 0.0f) {
-            o += 2 * M_PI;
+            o += static_cast<f32>(2.0f * M_PI);
         }
-        n = fmodf(n, 2 * M_PI);
+        n = fmodf(n, static_cast<f32>(2.0f * M_PI));
         if (n < 0.0f) {
-            n += 2 * M_PI;
+            n += static_cast<f32>(2.0f * M_PI);
         }
         if (fabsf(o - n) > M_PI) {
             if (o < n) {
-                o += 2 * M_PI;
+                o += static_cast<f32>(2.0f * M_PI);
             } else {
-                n += 2 * M_PI;
+                n += static_cast<f32>(2.0f * M_PI);
             }
         }
         if (fabsf(o - n) > M_PI / 2) {
@@ -452,7 +450,7 @@ unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step) {
 }
 
 void FrameInterpolation_StartRecord(void) {
-    previous_recording = move(current_recording);
+    previous_recording = std::move(current_recording);
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
@@ -729,7 +727,7 @@ static bool invert_matrix(const float m[16], float invOut[16]) {
         return false;
     }
 
-    det = 1.0 / det;
+    det = 1.0f / det;
 
     for (i = 0; i < 16; i++) {
         invOut[i] = inv[i] * det;

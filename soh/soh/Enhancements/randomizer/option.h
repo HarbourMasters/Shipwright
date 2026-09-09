@@ -1,18 +1,13 @@
 #pragma once
 
-#ifndef RANDOPTION_H
-#define RANDOPTION_H
-
-#include <cstdint>
+#include <stdint.h>
 #include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <variant>
-#include <type_traits>
 
-#include "randomizerTypes.h"
 #include "tricks.h"
+#include "soh/SohGui/MenuTypes.h"
 
 namespace Rando {
 enum ImGuiMenuFlags {
@@ -21,6 +16,8 @@ enum ImGuiMenuFlags {
     IMFLAG_SEPARATOR_TOP = 1 << 1,    /** Adds a padded separator above the widget. */
     IMFLAG_INDENT = 1 << 2,           /** Indents this widget and all proceeding widgets. */
     IMFLAG_UNINDENT = 1 << 3,         /** Unindents this widget and all proceeding widgets. */
+    IMFLAG_SAME_LINE = 1 << 4,
+    IMFLAG_LABEL_INLINE = 1 << 5,
 };
 
 /**
@@ -29,18 +26,10 @@ enum ImGuiMenuFlags {
 enum class OptionCategory {
     Setting, /** An option that typically affects the logic/item pool/etc. of the seed. Typically gets written out to
                 the spoiler file. */
-    Toggle,  /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle
-                for randomizing the values of other options. */
-};
-
-/**
- * @brief Controls how this option is rendered in the menu.
- */
-enum class WidgetType {
-    Checkbox, /** Default for Bools, not compatible if options.size() > 2. */
-    Combobox, /** Default for U8s, works with U8s and Bools. */
-    Slider, /** Compatible with U8s. If constructed with NumOpts, consider using this. Technically can be used for Bool
-               or non-NumOpts options but it would be a bit weird semantically. */
+    Trick,   /** A trick option */
+    LocationExclusion, /** A location exclusion option */
+    Toggle, /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle
+               for randomizing the values of other options. */
 };
 
 class OptionValue {
@@ -93,7 +82,7 @@ class OptionValue {
     explicit operator bool() const;
 
   private:
-    uint8_t mVal;
+    uint8_t mVal = 0;
 };
 
 /**
@@ -109,14 +98,11 @@ class Option {
      * @brief Constructs a boolean option. This overload of this function typically requires more
      * options to be specified rather than left as default.
      *
-     * @param name_ The name of the option. Appears in the spoiler/patch file.
      * @param options_ A vector of value names for this Option. This vector should have a size of 2.
      * The name corresponding to the selected index for this option will be printed to the spoiler/patch file.
      * @param category_ The desired `OptionCategory` for this option.
      * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any Cvar.
-     * @param description_ A description of what this option affects. Will be rendered in a tooltip in ImGui.
-     * Can be left as an empty string if desired, no tooltip will be rendered.
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
      * @param defaultOption_ The default index that should be selected.
@@ -124,11 +110,11 @@ class Option {
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
-    static Option Bool(RandomizerSettingKey key_, std::string name_,
-                       std::vector<std::string> options_ = { "Off", "On" },
+    static Option Bool(RandomizerSettingKey key_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                       std::string description_ = "", WidgetType widgetType_ = WidgetType::Checkbox,
-                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
+                       WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX, uint8_t defaultOption_ = 0,
+                       bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
+                       int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
      * @brief Constructs a boolean option. This constructor was added later for convenience so that a cvarName
@@ -137,33 +123,27 @@ class Option {
      * when using this overload. If you want your option to have different value names, use the other overload.
      *
      * @param key_ The RandomizerSettingKey of this option.
-     * @param name_ The name of the option. Appears in the spoiler/patch file.
      * @param cvarName_ The name of the CVar this option should correspond with. Set as an empty string to not
      * link to any CVar.
-     * @param description_ A description of what this option affects. Will be rendered in a tooltip in ImGui.
-     * Can be left as an empty string if desired, no tooltip will be rendered.
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @param widgetType_ What type of widget should be rendered. Should probably be `Checkbox` but technically
      * `Combobox` or `Slider` would render and function correctly.
      * @param defaultOption_ The defaulted selected index for this Option.
      * @return Option
      */
-    static Option Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_,
-                       std::string description_ = "", int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
-                       WidgetType widgetType_ = WidgetType::Checkbox, bool defaultOption_ = false);
+    static Option Bool(RandomizerSettingKey key_, std::string cvarName_, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
+                       WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX, bool defaultOption_ = false,
+                       WidgetFunc callback_ = nullptr);
 
     /**
      * @brief Constructs a U8 Option.
      *
      * @param key_ The RandomizerSettingKey for this option.
-     * @param name_ The name of this Option. Appears in the spoiler/patch file.
      * @param options_ A vector of value names for this Option. The name corresponding to the selected
      * index for this option will be printed to the spoiler/patch file.
      * @param category_ The desired `OptionCategory` for this option.
      * @param cvarName_ The name ofthe CVar this option should correspond with. Set as an empty string to not
      * link to any Cvar.
-     * @param description_ A description of what this option affects. Will be rendered in a toolip in ImGui.
-     * Can be left as an empty string if desired, no tooltip will be rendered.
      * @param widgetType_ What type of widget should be rendered. Defaults to `Combobox`, but if you use NumOpts
      * to make the `options_` vector you should probably set this to `Slider`. `Slider` will technically work for
      * any value of `options_` but may be odd/unclear semantically speaking.
@@ -173,18 +153,11 @@ class Option {
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
-    static Option U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
+    static Option U8(RandomizerSettingKey key_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                     std::string description_ = "", WidgetType widgetType_ = WidgetType::Combobox,
-                     uint8_t defaultOption_ = 0, bool defaultHidden_ = false, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
-
-    /**
-     * @brief A convenience function for constructing the Option for a trick.
-     *
-     * @param name_ The name of the trick. Appears in the spoiler/patch file.
-     * @return Option
-     */
-    static Option LogicTrick(RandomizerTrick rt_, std::string name_);
+                     WidgetType widgetType_ = WIDGET_CVAR_COMBOBOX, uint8_t defaultOption_ = 0,
+                     bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
+                     int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
      * @brief Get the size of the options array.
@@ -231,14 +204,11 @@ class Option {
     uint8_t GetOptionIndex() const;
 
     /**
-     * @brief Set the delayedOption to the currently selected index so it can be restored later.
+     * @brief Get the default menu index for this Option.
+     *
+     * @return uint8_t
      */
-    void SetDelayedOption();
-
-    /**
-     * @brief Restores the delayedOption back to the selected index.
-     */
-    void RestoreDelayedOption();
+    uint8_t GetMenuOptionDefault() const;
 
     /**
      * @brief Set the rando context index for this Option.
@@ -293,66 +263,56 @@ class Option {
      * the option is "Disabled".
      *
      * @param text The tooltip text explaining why the option is disabled.
-     * @param graphic What graphic to display in a disabled checkbox. Defaults to an
-     * "X" symbol.
      */
     void Disable(std::string text);
-    bool IsCategory(OptionCategory category) const;
 
-    /**
-     * @brief Automatically renders a widget for this option in ImGui, based on the various
-     * properties of this Option. Typically, Bool options are rendered as Checkboxes and
-     * U8 options are rendered as Comboboxes, but this can be overridden during construction with
-     * the `widgetType` property.
-     */
-    bool RenderImGui();
+    OptionCategory GetCategory() const;
 
-    bool HasFlag(int imFlag_) const;
+    void AddWidget(WidgetPath& path);
+
     void AddFlag(int imFlag_);
-    void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
     uint8_t GetValueFromText(std::string text);
-    void SetContextIndexFromText(std::string text);
+
+    void SetCallback(WidgetFunc callback);
+    void RunCallback();
 
   protected:
-    Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-           bool defaultHidden_, int imFlags_);
+    Option(size_t key_, std::vector<std::string> options_, OptionCategory category_, std::string cvarName_,
+           WidgetType widgetType_, uint8_t defaultOption_, bool defaultHidden_, WidgetFunc callback_, int imFlags_);
     size_t key;
 
   private:
-    bool RenderCheckbox();
-    bool RenderCombobox();
-    bool RenderSlider();
     void PopulateTextToNum();
-    std::string name;
     std::vector<std::string> options;
     uint8_t contextSelection = 0;
-    uint8_t delayedSelection = 0;
     bool hidden = false;
     OptionCategory category = OptionCategory::Setting;
     std::string cvarName;
-    std::string description;
-    WidgetType widgetType = WidgetType::Checkbox;
+    WidgetType widgetType;
     uint8_t defaultOption = false;
     bool defaultHidden = false;
     int imFlags = IMFLAG_NONE;
     bool disabled = false;
     std::string disabledText;
     std::unordered_map<std::string, uint8_t> optionsTextToVar = {};
+    std::shared_ptr<UIWidgets::WidgetOptions> widgetOptions;
+    struct WidgetInfo widgetInfo;
+    WidgetFunc callback;
+    std::map<int32_t, const char*> optionsMap = {};
 };
 
 class LocationOption : public Option {
   public:
     LocationOption() = default;
-    LocationOption(RandomizerCheck key_, const std::string& name_);
+    LocationOption(RandomizerCheck key_);
     RandomizerCheck GetKey() const;
 };
 
-class TrickOption : public Option {
+class TrickSetting : public Option {
   public:
-    TrickOption() = default;
+    TrickSetting() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
      *
@@ -360,12 +320,11 @@ class TrickOption : public Option {
      * @param quest_ MQ, Vanilla, or Both.
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
-     * @param name_ The name of the trick. Appears in the spoiler/patch file.
-     * @param description_ A brief description of the trick.
+     * @param nameTag_ The 3-8 character long name tag of the trick. Appears in the settings and presets file.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                  std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+    static TrickSetting LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                   std::set<Tricks::Tag> tags_, const std::string nameTag_);
 
     RandomizerTrick GetKey() const;
 
@@ -384,6 +343,13 @@ class TrickOption : public Option {
     RandomizerArea GetArea() const;
 
     /**
+     * @brief Get the NameTag of the trick
+     *
+     * @return std::string
+     */
+    std::string GetNameTag() const;
+
+    /**
      * @brief Check if this Trick has the given tag
      *
      * @param tag the RandomizerTrickTag to check for
@@ -394,10 +360,11 @@ class TrickOption : public Option {
     const std::set<Tricks::Tag>& GetTags() const;
 
   private:
-    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
-                const std::string& name_, std::string description_);
+    TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
+                 const std::string nameTag_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
+    std::string mNameTag;
     std::set<Tricks::Tag> mTags;
 };
 
@@ -515,10 +482,7 @@ class OptionGroup {
 
     const std::string& GetDescription() const;
 
-    /**
-     * @brief Renders all of the options contained within this `OptionGroup` in the ImGui menu.
-     */
-    bool RenderImGui() const;
+    void AddWidgets(WidgetPath& path) const;
     void Disable();
     void Enable();
 
@@ -533,5 +497,3 @@ class OptionGroup {
     bool mDisabled = false;
 };
 } // namespace Rando
-
-#endif // RANDOPTION_H

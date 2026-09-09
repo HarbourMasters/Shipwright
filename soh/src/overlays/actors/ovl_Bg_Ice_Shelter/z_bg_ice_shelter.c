@@ -1,6 +1,6 @@
 #include "z_bg_ice_shelter.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
-#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -9,14 +9,11 @@ void BgIceShelter_Destroy(Actor* thisx, PlayState* play);
 void BgIceShelter_Update(Actor* thisx, PlayState* play);
 void BgIceShelter_Draw(Actor* thisx, PlayState* play);
 
-void func_80891064(BgIceShelter* this);
-void func_808911BC(BgIceShelter* this);
+void BgIceShelter_SetupIdle(BgIceShelter* this);
+void BgIceShelter_SetupMelt(BgIceShelter* this);
 
-void func_8089107C(BgIceShelter* this, PlayState* play);
-void func_808911D4(BgIceShelter* this, PlayState* play);
-
-// For "Blue Fire Arrows" enhancement
-void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play);
+void BgIceShelter_Idle(BgIceShelter* this, PlayState* play);
+void BgIceShelter_Melt(BgIceShelter* this, PlayState* play);
 
 const ActorInit Bg_Ice_Shelter_InitVars = {
     ACTOR_BG_ICE_SHELTER,
@@ -31,10 +28,10 @@ const ActorInit Bg_Ice_Shelter_InitVars = {
     NULL,
 };
 
-static f32 sScales[] = { 0.1f, 0.06f, 0.1f, 0.1f, 0.25f };
+static f32 sRedIceScales[] = { 0.1f, 0.06f, 0.1f, 0.1f, 0.25f };
 
-static Color_RGBA8 sDustPrimColor = { 250, 250, 250, 255 };
-static Color_RGBA8 sDustEnvColor = { 180, 180, 180, 255 };
+static Color_RGBA8 sSteamPrimColor = { 250, 250, 250, 255 };
+static Color_RGBA8 sSteamEnvColor = { 180, 180, 180, 255 };
 
 static ColliderCylinderInit sCylinder1Init = {
     {
@@ -76,52 +73,24 @@ static ColliderCylinderInit sCylinder2Init = {
     { 0, 0, 0, { 0, 0, 0 } },
 };
 
-// This cylinder only used for "Blue Fire Arrows" enhancement
-static ColliderCylinderInit sIceArrowCylinderInit = {
-    {
-        COLTYPE_NONE,
-        AT_NONE,
-        AC_ON | AC_TYPE_OTHER | AC_TYPE_PLAYER,
-        OC1_ON | OC1_TYPE_ALL,
-        OC2_TYPE_2,
-        COLSHAPE_CYLINDER,
-    },
-    {
-        ELEMTYPE_UNK0,
-        { 0x00000000, 0x00, 0x00 },
-        { 0xFFCFFFFF, 0x00, 0x00 },
-        TOUCH_NONE,
-        BUMP_ON,
-        OCELEM_ON,
-    },
-    { 0, 0, 0, { 0, 0, 0 } },
-};
-
-bool blueFireArrowsEnabledOnRedIceLoad = false;
-
-void func_80890740(BgIceShelter* this, PlayState* play) {
+/**
+ * Initializes either one or both cylinder colliders, depending on the actor's type.
+ */
+void BgIceShelter_InitColliders(BgIceShelter* this, PlayState* play) {
     static s16 cylinderRadii[] = { 47, 33, 44, 41, 100 };
     static s16 cylinderHeights[] = { 80, 54, 90, 60, 200 };
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
-    // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger(CVAR_ENHANCEMENT("BlueFireArrows"), 0) ||
-                                        (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
-
     Collider_InitCylinder(play, &this->cylinder1);
-    // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
-    if (blueFireArrowsEnabledOnRedIceLoad) {
-        Collider_SetCylinder(play, &this->cylinder1, &this->dyna.actor, &sIceArrowCylinderInit);
-    } else {
-        Collider_SetCylinder(play, &this->cylinder1, &this->dyna.actor, &sCylinder1Init);
-    }
+    Collider_SetCylinder(play, &this->cylinder1, &this->dyna.actor, &sCylinder1Init);
     Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder1);
 
     this->cylinder1.dim.radius = cylinderRadii[type];
     this->cylinder1.dim.height = cylinderHeights[type];
 
-    if (type == 0 || type == 1 || type == 4) {
+    // The wall and platform types use DynaPoly for collision, so they don't need the second collider
+    if (type == RED_ICE_LARGE || type == RED_ICE_SMALL || type == RED_ICE_KING_ZORA) {
         Collider_InitCylinder(play, &this->cylinder2);
         Collider_SetCylinder(play, &this->cylinder2, &this->dyna.actor, &sCylinder2Init);
         Collider_UpdateCylinder(&this->dyna.actor, &this->cylinder2);
@@ -129,13 +98,13 @@ void func_80890740(BgIceShelter* this, PlayState* play) {
         this->cylinder2.dim.height = cylinderHeights[type];
     }
 
-    if (type == 4) {
+    if (type == RED_ICE_KING_ZORA) {
         this->cylinder1.dim.pos.z += 30;
         this->cylinder2.dim.pos.z += 30;
     }
 }
 
-void func_80890874(BgIceShelter* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
+void BgIceShelter_InitDynaPoly(BgIceShelter* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
     s32 pad;
     CollisionHeader* colHeader = NULL;
     s32 pad2;
@@ -151,7 +120,7 @@ void func_80890874(BgIceShelter* this, PlayState* play, CollisionHeader* collisi
     }
 }
 
-void func_808908FC(Vec3f* dest, Vec3f* src, s16 angle) {
+void BgIceShelter_RotateY(Vec3f* dest, Vec3f* src, s16 angle) {
     f32 sin = Math_SinS(angle);
     f32 cos = Math_CosS(angle);
 
@@ -173,38 +142,42 @@ void BgIceShelter_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
 
-    if (type == 4) {
+    if (type == RED_ICE_KING_ZORA) {
         this->dyna.actor.world.rot.x += 0xBB8;
         this->dyna.actor.world.pos.y -= 45.0f;
         this->dyna.actor.shape.rot.x = this->dyna.actor.world.rot.x;
         this->dyna.actor.world.pos.z -= 38.0f;
     }
 
-    if (type == 4) {
+    if (type == RED_ICE_KING_ZORA) {
         Math_Vec3f_Copy(&this->dyna.actor.scale, &kzIceScale);
     } else {
-        Actor_SetScale(&this->dyna.actor, sScales[type]);
+        Actor_SetScale(&this->dyna.actor, sRedIceScales[type]);
     }
 
+    // Only 2 types use DynaPoly
     switch (type) {
-        case 2:
-            func_80890874(this, play, &gRedIcePlatformCol, 0);
+        case RED_ICE_PLATFORM:
+            BgIceShelter_InitDynaPoly(this, play, &gRedIcePlatformCol, 0);
             break;
-        case 3:
-            func_80890874(this, play, &gRedIceWallCol, 0);
+        case RED_ICE_WALL:
+            BgIceShelter_InitDynaPoly(this, play, &gRedIceWallCol, 0);
             break;
     }
 
-    func_80890740(this, play);
+    // All types use at least one collider
+    BgIceShelter_InitColliders(this, play);
 
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 
-    if (!((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
+    if (GameInteractor_Should(
+            VB_RED_ICE_MELTED_FLAG,
+            !((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)), this)) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
 
-    func_80891064(this);
+    BgIceShelter_SetupIdle(this);
 
     osSyncPrintf("(ice shelter)(arg_data 0x%04x)\n", this->dyna.actor.params);
 }
@@ -213,14 +186,14 @@ void BgIceShelter_Destroy(Actor* thisx, PlayState* play) {
     BgIceShelter* this = (BgIceShelter*)thisx;
 
     switch ((this->dyna.actor.params >> 8) & 7) {
-        case 2:
-        case 3:
+        case RED_ICE_PLATFORM:
+        case RED_ICE_WALL:
             DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             break;
 
-        case 0:
-        case 1:
-        case 4:
+        case RED_ICE_LARGE:
+        case RED_ICE_SMALL:
+        case RED_ICE_KING_ZORA:
             Collider_DestroyCylinder(play, &this->cylinder2);
             break;
     }
@@ -228,131 +201,153 @@ void BgIceShelter_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->cylinder1);
 }
 
-static s16 D_80891794[] = { 0x0000, 0x4000, 0x2000, 0x6000, 0x1000, 0x5000, 0x3000, 0x7000 };
-static s16 D_808917A4[] = { 0x0000, 0x003C, 0x0018, 0x0054, 0x0030, 0x000C, 0x0048, 0x0024 };
+/**
+ * Angles used to spawn steam particles in a circle.
+ */
+static s16 sSteamCircleAngles[] = { 0x0000, 0x4000, 0x2000, 0x6000, 0x1000, 0x5000, 0x3000, 0x7000 };
 
-void func_80890B8C(BgIceShelter* this, PlayState* play, f32 chance, f32 scale) {
+/**
+ * Positions used to spawn steam particles in a straight line.
+ */
+static s16 sSteamLinePositions[] = { 0x0000, 0x003C, 0x0018, 0x0054, 0x0030, 0x000C, 0x0048, 0x0024 };
+
+/**
+ * Spawns steam particle effects in a circle around the ice block.
+ *
+ * On each frame the function is called, two particles have a chance to appear, at the same distance and opposite
+ * sides from the center.
+ */
+void BgIceShelter_SpawnSteamAround(BgIceShelter* this, PlayState* play, f32 particleSpawningChance,
+                                   f32 steamEffectScale) {
     f32 cos;
     f32 sin;
-    f32 xzOffset;
+    f32 distance;
     Vec3f* icePos;
     s16 angle;
-    s16 frames;
+    s16 frameCounter;
     s32 i;
     s32 pad[2];
-    Vec3f dustPos;
-    Vec3f dustVel;
-    Vec3f dustAccel;
+    Vec3f steamPos;
+    Vec3f steamVel;
+    Vec3f steamAccel;
 
-    frames = (s16)play->state.frames & 7;
+    frameCounter = (s16)play->state.frames & 7;
 
     for (i = 0; i < 2; i++) {
-        if (chance < Rand_ZeroOne()) {
+        if (particleSpawningChance < Rand_ZeroOne()) {
             continue;
         }
 
-        xzOffset = 42.0f * scale;
+        // The steamEffectScale is used here to make the particles appear at the edges of the red ice.
+        distance = 42.0f * steamEffectScale;
         icePos = &this->dyna.actor.world.pos;
-        angle = D_80891794[frames] + (i * 0x8000);
+        angle = sSteamCircleAngles[frameCounter] + (i * 0x8000);
         sin = Math_SinS(angle);
         cos = Math_CosS(angle);
 
-        dustPos.x = (xzOffset * sin) + icePos->x;
-        dustPos.y = (16.0f * scale) + icePos->y;
-        dustPos.z = (xzOffset * cos) + icePos->z;
+        steamPos.x = (distance * sin) + icePos->x;
+        steamPos.y = (16.0f * steamEffectScale) + icePos->y;
+        steamPos.z = (distance * cos) + icePos->z;
 
-        dustVel.x = ((Rand_ZeroOne() * 3.0f) - 1.0f) * sin;
-        dustVel.y = 0.0f;
-        dustVel.z = ((Rand_ZeroOne() * 3.0f) - 1.0f) * cos;
+        steamVel.x = ((Rand_ZeroOne() * 3.0f) - 1.0f) * sin;
+        steamVel.y = 0.0f;
+        steamVel.z = ((Rand_ZeroOne() * 3.0f) - 1.0f) * cos;
 
-        dustAccel.x = 0.07f * sin;
-        dustAccel.y = 0.8f;
-        dustAccel.z = 0.07f * cos;
+        steamAccel.x = 0.07f * sin;
+        steamAccel.y = 0.8f;
+        steamAccel.z = 0.07f * cos;
 
-        func_8002829C(play, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450.0f * scale,
-                      (s16)((Rand_ZeroOne() * 40.0f) + 40.0f) * scale);
+        func_8002829C(play, &steamPos, &steamVel, &steamAccel, &sSteamPrimColor, &sSteamEnvColor,
+                      450.0f * steamEffectScale, (s16)((Rand_ZeroOne() * 40.0f) + 40.0f) * steamEffectScale);
     }
 }
 
-void func_80890E00(BgIceShelter* this, PlayState* play, f32 chance, f32 arg3) {
-    static f32 D_808917B4[] = { -1.0f, 1.0f };
+/**
+ * Spawns steam particle effects in a straight line. Only used for the ice wall type.
+ *
+ * On each frame the function is called, two particles have a chance to appear, at the same distance and opposite
+ * sides from the midpoint.
+ *
+ * The last argument is unused because only one red ice type can call this function, so the scale isn't needed.
+ */
+void BgIceShelter_SpawnSteamAlong(BgIceShelter* this, PlayState* play, f32 particleSpawningChance, f32 unusedArg) {
+    static f32 signs[] = { -1.0f, 1.0f };
     Vec3f* icePos;
-    s16 frames;
+    s16 frameCounter;
     s32 pad[2];
-    Vec3f dustPos;
-    Vec3f dustVel;
-    Vec3f dustAccel;
+    Vec3f steamPos;
+    Vec3f steamVel;
+    Vec3f steamAccel;
     Vec3f posOffset;
     s32 i;
 
-    frames = (s16)play->state.frames & 7;
+    frameCounter = (s16)play->state.frames & 7;
 
     for (i = 0; i < 2; i++) {
         icePos = &this->dyna.actor.world.pos;
 
-        if (chance < Rand_ZeroOne()) {
+        if (particleSpawningChance < Rand_ZeroOne()) {
             continue;
         }
 
-        posOffset.x = (D_808917A4[frames] + ((Rand_ZeroOne() * 12.0f) - 6.0f)) * D_808917B4[i];
+        posOffset.x = (sSteamLinePositions[frameCounter] + ((Rand_ZeroOne() * 12.0f) - 6.0f)) * signs[i];
         posOffset.y = 15.0f;
         posOffset.z = ((84.0f - posOffset.x) * 0.2f) + (Rand_ZeroOne() * 20.0f);
 
-        func_808908FC(&dustPos, &posOffset, this->dyna.actor.world.rot.y);
-        Math_Vec3f_Sum(&dustPos, icePos, &dustPos);
+        // Convert the position offset from relative to the ice wall to absolute.
+        BgIceShelter_RotateY(&steamPos, &posOffset, this->dyna.actor.world.rot.y);
+        Math_Vec3f_Sum(&steamPos, icePos, &steamPos);
 
-        dustVel.x = (Rand_ZeroOne() * 3.0f) - 1.5f;
-        dustVel.y = 0.0f;
-        dustVel.z = (Rand_ZeroOne() * 3.0f) - 1.5f;
+        steamVel.x = (Rand_ZeroOne() * 3.0f) - 1.5f;
+        steamVel.y = 0.0f;
+        steamVel.z = (Rand_ZeroOne() * 3.0f) - 1.5f;
 
-        dustAccel.x = (Rand_ZeroOne() * 0.14f) - 0.07f;
-        dustAccel.y = 0.8f;
-        dustAccel.z = (Rand_ZeroOne() * 0.14f) - 0.07f;
+        steamAccel.x = (Rand_ZeroOne() * 0.14f) - 0.07f;
+        steamAccel.y = 0.8f;
+        steamAccel.z = (Rand_ZeroOne() * 0.14f) - 0.07f;
 
-        func_8002829C(play, &dustPos, &dustVel, &dustAccel, &sDustPrimColor, &sDustEnvColor, 450,
+        func_8002829C(play, &steamPos, &steamVel, &steamAccel, &sSteamPrimColor, &sSteamEnvColor, 450,
                       (Rand_ZeroOne() * 40.0f) + 40.0f);
     }
 }
 
-void func_80891064(BgIceShelter* this) {
-    this->actionFunc = func_8089107C;
+void BgIceShelter_SetupIdle(BgIceShelter* this) {
+    this->actionFunc = BgIceShelter_Idle;
     this->alpha = 255;
 }
 
-void func_8089107C(BgIceShelter* this, PlayState* play) {
+void BgIceShelter_Idle(BgIceShelter* this, PlayState* play) {
     s32 pad;
     s16 type = (this->dyna.actor.params >> 8) & 7;
 
-    if (type == 4) {
+    // Freeze King Zora
+    if (type == RED_ICE_KING_ZORA) {
         if (this->dyna.actor.parent != NULL) {
             this->dyna.actor.parent->freezeTimer = 10000;
         }
     }
-    // If we have "Blue Fire Arrows" enabled, check both cylinders for a hit
-    if (blueFireArrowsEnabledOnRedIceLoad) {
-        MeltOnIceArrowHit(this, this->cylinder1, type, play);
-        MeltOnIceArrowHit(this, this->cylinder2, type, play);
-    }
-    // Default blue fire check
-    if (this->cylinder1.base.acFlags & AC_HIT) {
+
+    if (GameInteractor_Should(VB_BG_ICE_SHELTER_HIT, this->cylinder1.base.acFlags & AC_HIT, this)) {
         this->cylinder1.base.acFlags &= ~AC_HIT;
 
-        if ((this->cylinder1.base.ac != NULL) && (this->cylinder1.base.ac->id == ACTOR_EN_ICE_HONO)) {
-            if (type == 4) {
+        if (GameInteractor_Should(
+                VB_BG_ICE_SHELTER_MELT,
+                (this->cylinder1.base.ac != NULL) && (this->cylinder1.base.ac->id == ACTOR_EN_ICE_HONO), this)) {
+            if (type == RED_ICE_KING_ZORA) {
                 if (this->dyna.actor.parent != NULL) {
                     this->dyna.actor.parent->freezeTimer = 50;
                 }
             }
 
-            func_808911BC(this);
+            BgIceShelter_SetupMelt(this);
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
         }
     }
 
     switch (type) {
-        case 0:
-        case 1:
-        case 4:
+        case RED_ICE_LARGE:
+        case RED_ICE_SMALL:
+        case RED_ICE_KING_ZORA:
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->cylinder1.base);
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder2.base);
             break;
@@ -361,54 +356,50 @@ void func_8089107C(BgIceShelter* this, PlayState* play) {
     CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder1.base);
 }
 
-// For "Blue Fire Arrows" enhancement: If hit by an Ice Arrow, melt the red ice (copied from the default blue fire
-// function above).
-void MeltOnIceArrowHit(BgIceShelter* this, ColliderCylinder cylinder, s16 type, PlayState* play) {
-    if (cylinder.base.acFlags & AC_HIT) {
-        cylinder.base.acFlags &= ~AC_HIT;
-        if ((cylinder.base.ac != NULL) && (cylinder.base.ac->id == ACTOR_EN_ARROW)) {
-            if (cylinder.base.ac->child != NULL && cylinder.base.ac->child->id == ACTOR_ARROW_ICE) {
-                if (type == 4) {
-                    if (this->dyna.actor.parent != NULL) {
-                        this->dyna.actor.parent->freezeTimer = 50;
-                    }
-                }
-                func_808911BC(this);
-                Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
-            }
-        }
-    }
-}
-
-void func_808911BC(BgIceShelter* this) {
-    this->actionFunc = func_808911D4;
+void BgIceShelter_SetupMelt(BgIceShelter* this) {
+    this->actionFunc = BgIceShelter_Melt;
     this->alpha = 255;
 }
 
-static f32 D_808917BC[] = { -0.0015f, -0.0009f, -0.0016f, -0.0016f, -0.00375f };
-static f32 D_808917D0[] = { 1.0f, 0.6f, 1.2f, 1.0f, 1.8f };
+/**
+ * Values added to the ice block's height every frame while it's melting.
+ */
+static f32 sMeltingRates[] = { -0.0015f, -0.0009f, -0.0016f, -0.0016f, -0.00375f };
 
-static void (*sEffSpawnFuncs[])(BgIceShelter* this, PlayState* play, f32 chance, f32 scale) = {
-    func_80890B8C, func_80890B8C, func_80890B8C, func_80890E00, func_80890B8C,
+/**
+ * Values used to scale and position the steam effects so they match the ice block's size.
+ */
+static f32 sSteamEffectScales[] = { 1.0f, 0.6f, 1.2f, 1.0f, 1.8f };
+
+/**
+ * Functions used to spawn steam effects at the base of the red ice.
+ */
+static void (*sSteamSpawnFuncs[])(BgIceShelter* this, PlayState* play, f32 particleSpawningChance,
+                                  f32 steamEffectScale) = {
+    BgIceShelter_SpawnSteamAround, BgIceShelter_SpawnSteamAround, BgIceShelter_SpawnSteamAround,
+    BgIceShelter_SpawnSteamAlong,  BgIceShelter_SpawnSteamAround,
 };
 
-void func_808911D4(BgIceShelter* this, PlayState* play) {
+/**
+ * Progressively reduces the height and opacity of the red ice, while spawning steam effects at its base.
+ */
+void BgIceShelter_Melt(BgIceShelter* this, PlayState* play) {
 
     s32 pad;
     s32 type = (this->dyna.actor.params >> 8) & 7;
-    f32 phi_f0;
+    f32 particleSpawningChance;
 
     this->alpha -= 5;
     this->alpha = CLAMP(this->alpha, 0, 255);
 
-    this->dyna.actor.scale.y += D_808917BC[type];
+    this->dyna.actor.scale.y += sMeltingRates[type];
     this->dyna.actor.scale.y = CLAMP_MIN(this->dyna.actor.scale.y, 0.0001f);
 
     if (this->alpha > 80) {
         switch (type) {
-            case 0:
-            case 1:
-            case 4:
+            case RED_ICE_LARGE:
+            case RED_ICE_SMALL:
+            case RED_ICE_KING_ZORA:
                 CollisionCheck_SetOC(play, &play->colChkCtx, &this->cylinder1.base);
                 CollisionCheck_SetAC(play, &play->colChkCtx, &this->cylinder2.base);
                 break;
@@ -416,16 +407,16 @@ void func_808911D4(BgIceShelter* this, PlayState* play) {
     }
 
     if (this->alpha > 180) {
-        phi_f0 = 1.0f;
+        particleSpawningChance = 1.0f;
     } else if (this->alpha > 60) {
-        phi_f0 = 0.5f;
+        particleSpawningChance = 0.5f;
     } else {
-        phi_f0 = 0.0f;
+        particleSpawningChance = 0.0f;
     }
 
-    sEffSpawnFuncs[type](this, play, phi_f0, D_808917D0[type]);
+    sSteamSpawnFuncs[type](this, play, particleSpawningChance, sSteamEffectScales[type]);
 
-    if (this->alpha <= 0) {
+    if (GameInteractor_Should(VB_RED_ICE_DROP_ITEM, this->alpha <= 0, this)) {
         if (!((this->dyna.actor.params >> 6) & 1)) {
             Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         }
@@ -455,10 +446,10 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch ((this->dyna.actor.params >> 8) & 7) {
-        case 0:
-        case 1:
-        case 2:
-        case 4:
+        case RED_ICE_LARGE:
+        case RED_ICE_SMALL:
+        case RED_ICE_PLATFORM:
+        case RED_ICE_KING_ZORA:
             func_8002ED80(&this->dyna.actor, play, 0);
             break;
     }
@@ -471,28 +462,28 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
     }
 
     switch ((this->dyna.actor.params >> 8) & 7) {
-        case 0:
-        case 1:
-        case 4:
+        case RED_ICE_LARGE:
+        case RED_ICE_SMALL:
+        case RED_ICE_KING_ZORA:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
-                                        -play->gameplayFrames & 0x7F, 0x20, 0x20, 1, -play->gameplayFrames & 0x7F,
-                                        play->gameplayFrames & 0x7F, 0x20, 0x20));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -play->gameplayFrames & 0x7F,
+                                          -play->gameplayFrames & 0x7F, 0x20, 0x20, 1, -play->gameplayFrames & 0x7F,
+                                          play->gameplayFrames & 0x7F, 0x20, 0x20, -1, -1, -1, 1));
             gSPDisplayList(POLY_XLU_DISP++, gRedIceBlockDL);
             break;
 
-        case 2:
+        case RED_ICE_PLATFORM:
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
-                                        -play->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->gameplayFrames & 0xFF, 0x40, 0x40, 1, 0,
+                                          -play->gameplayFrames & 0xFF, 0x40, 0x40, 0, 1, 0, -1));
             gSPSegment(POLY_XLU_DISP++, 0x09,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
-                                        play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,
-                                        play->gameplayFrames & 0xFF, 0x40, 0x40));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -play->gameplayFrames & 0xFF,
+                                          play->gameplayFrames & 0xFF, 0x40, 0x40, 1, play->gameplayFrames & 0xFF,
+                                          play->gameplayFrames & 0xFF, 0x40, 0x40, -1, 1, 1, 1));
             gSPDisplayList(POLY_XLU_DISP++, gRedIcePlatformDL);
             break;
 
-        case 3:
+        case RED_ICE_WALL:
             gSPDisplayList(POLY_XLU_DISP++, gRedIceWallDL);
             break;
     }

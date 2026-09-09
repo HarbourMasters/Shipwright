@@ -8,7 +8,6 @@
 #include "objects/object_vali/object_vali.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <stdlib.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE)
@@ -175,8 +174,6 @@ void EnVali_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->leftArmCollider);
     Collider_DestroyQuad(play, &this->rightArmCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVali_SetupLurk(EnVali* this) {
@@ -244,18 +241,13 @@ void EnVali_SetupBurnt(EnVali* this) {
 void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     s32 i;
 
-    for (i = 0; i < 3; i++) {
+    if (GameInteractor_Should(VB_BIRI_SPAWN_JELLYFISH_UPON_DEATH, true, this, play)) {
+        for (i = 0; i < 3; i++) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0);
 
-        // Offset small jellyfish with Enemy Randomizer, otherwise it gets
-        // stuck in a loop spawning more big jellyfish with seeded spawns.
-        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
-            this->actor.world.rot.y += rand() % 50;
+            this->actor.world.rot.y += 0x10000 / 3;
         }
-
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BILI, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, this->actor.world.rot.y, 0, 0, true);
-
-        this->actor.world.rot.y += 0x10000 / 3;
     }
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x50);
@@ -316,7 +308,7 @@ void EnVali_DischargeLightning(EnVali* this, PlayState* play) {
         }
     }
 
-    func_8002F974(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
 }
 
 void EnVali_Lurk(EnVali* this, PlayState* play) {
@@ -801,7 +793,7 @@ void EnVali_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TexScroll(play->state.gfxCtx, 0, (127 - (play->gameplayFrames * 12)) % 128, 32, 32));
+               Gfx_TexScrollEx(play->state.gfxCtx, 0, (127 - (play->gameplayFrames * 12)) % 128, 32, 32, 0, -12));
 
     if ((this->lightningTimer % 2) != 0) {
         gSPSegment(POLY_XLU_DISP++, 0x09, D_80B28998);

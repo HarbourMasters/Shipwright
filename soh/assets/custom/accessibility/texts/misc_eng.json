@@ -1,8 +1,8 @@
 {
-    "minutes_plural" : "$0 minutes",
-    "minutes_singular" : "$0 minute",
-    "seconds_plural" : "$0 seconds",
-    "seconds_singular" : "$0 second",
+    "minutes_plural": "$0 minutes",
+    "minutes_singular": "$0 minute",
+    "seconds_plural": "$0 seconds",
+    "seconds_singular": "$0 second",
     "input_button_a": "the A button",
     "input_button_b": "the B button",
     "input_button_c": "the C button",

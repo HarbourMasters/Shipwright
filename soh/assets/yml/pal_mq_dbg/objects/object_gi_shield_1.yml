@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x015A6000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x015A6000 ]
+    - [ 9, 0x015A6000 ]
+    - [ 10, 0x015A6000 ]
+    - [ 11, 0x015A6000 ]
+    - [ 12, 0x015A6000 ]
+    - [ 13, 0x015A6000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiDekuShieldDL:
+  type: GFX
+  offset: 0x0A50
+  symbol: gGiDekuShieldDL
+
+object_gi_shield_1Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_shield_1Tex_000000
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_shield_1Vtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_shield_1Vtx_000400
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

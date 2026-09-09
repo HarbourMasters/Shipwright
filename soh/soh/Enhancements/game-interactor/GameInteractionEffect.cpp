@@ -10,7 +10,6 @@ have functions to both enable and disable said effect.
 
 #include "GameInteractionEffect.h"
 #include "GameInteractor.h"
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 extern "C" {
@@ -38,11 +37,9 @@ GameInteractionEffectQueryResult RemovableGameInteractionEffect::CanBeRemoved() 
 
 GameInteractionEffectQueryResult RemovableGameInteractionEffect::Remove() {
     GameInteractionEffectQueryResult result = CanBeRemoved();
-    if (result != GameInteractionEffectQueryResult::Possible) {
-        return result;
+    if (result == GameInteractionEffectQueryResult::Possible) {
+        _Remove();
     }
-
-    _Remove();
     return result;
 }
 
@@ -101,8 +98,10 @@ void UnsetFlag::_Apply() {
 GameInteractionEffectQueryResult ModifyHeartContainers::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-    } else if ((parameters[0] > 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) > 0x140)) ||
-               (parameters[0] < 0 && (gSaveContext.healthCapacity + (parameters[0] * 0x10) < 0x10))) {
+    } else if ((parameters[0] > 0 &&
+                (gSaveContext.healthCapacity + (parameters[0] * FULL_HEART_HEALTH) > MAX_HEALTH)) ||
+               (parameters[0] < 0 &&
+                (gSaveContext.healthCapacity + (parameters[0] * FULL_HEART_HEALTH) < FULL_HEART_HEALTH))) {
         return GameInteractionEffectQueryResult::NotPossible;
     }
 
@@ -131,6 +130,8 @@ void FillMagic::_Apply() {
 GameInteractionEffectQueryResult EmptyMagic::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (CVarGetInteger(CVAR_CHEAT("InfiniteMagic"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if (!gSaveContext.isMagicAcquired || gSaveContext.magic <= 0) {
         return GameInteractionEffectQueryResult::NotPossible;
     } else {
@@ -145,6 +146,8 @@ void EmptyMagic::_Apply() {
 GameInteractionEffectQueryResult ModifyRupees::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (CVarGetInteger(CVAR_CHEAT("InfiniteMoney"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if ((parameters[0] < 0 && gSaveContext.rupees <= 0) ||
                (parameters[0] > 0 && gSaveContext.rupees >= CUR_CAPACITY(UPG_WALLET))) {
         return GameInteractionEffectQueryResult::NotPossible;
@@ -255,16 +258,19 @@ void ElectrocutePlayer::_Apply() {
 
 // MARK: - KnockbackPlayer
 GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
+    if (!GameInteractor::IsPlayerInControl()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
     Player* player = GET_PLAYER(gPlayState);
-    if (!GameInteractor::IsSaveLoaded(true) || GameInteractor::IsGameplayPaused() ||
-        player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+    if (player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     } else {
         return GameInteractionEffectQueryResult::Possible;
     }
 }
 void KnockbackPlayer::_Apply() {
-    GameInteractor::RawAction::KnockbackPlayer(parameters[0]);
+    GameInteractor::RawAction::KnockbackPlayer(static_cast<f32>(parameters[0]));
 }
 
 // MARK: - ModifyLinkSize
@@ -530,6 +536,8 @@ void PressRandomButton::_Apply() {
 GameInteractionEffectQueryResult AddOrTakeAmmo::CanBeApplied() {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    } else if (parameters[1] != ITEM_BEAN && CVarGetInteger(CVAR_CHEAT("InfiniteAmmo"), 0)) {
+        return GameInteractionEffectQueryResult::NotPossible;
     } else if (!GameInteractor::CanAddOrTakeAmmo(parameters[0], parameters[1])) {
         return GameInteractionEffectQueryResult::NotPossible;
     } else {

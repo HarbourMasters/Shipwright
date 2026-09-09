@@ -1,9 +1,8 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 #include <set>
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 #define OPTION_SUB_MENU 1
 #define SUB_MENU 2

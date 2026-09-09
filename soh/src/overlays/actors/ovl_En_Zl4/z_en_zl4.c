@@ -7,8 +7,6 @@
 #include "z_en_zl4.h"
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -185,7 +183,7 @@ static AnimationInfo sAnimationInfo[] = {
 void EnZl4_SetCsCameraAngle(PlayState* play, s16 index) {
     Camera* activeCam = GET_ACTIVE_CAM(play);
 
-    Camera_ChangeSetting(activeCam, CAM_SET_FREE0);
+    Camera_RequestSetting(activeCam, CAM_SET_FREE0);
     activeCam->at = sCsCameraAngle[index].at;
     activeCam->eye = activeCam->eyeNext = sCsCameraAngle[index].eye;
     activeCam->roll = sCsCameraAngle[index].roll;
@@ -196,7 +194,7 @@ void EnZl4_SetCsCameraMove(PlayState* play, s16 index) {
     Camera* activeCam = GET_ACTIVE_CAM(play);
     Player* player = GET_PLAYER(play);
 
-    Camera_ChangeSetting(activeCam, CAM_SET_CS_0);
+    Camera_RequestSetting(activeCam, CAM_SET_CS_0);
     Camera_ResetAnim(activeCam);
     Camera_SetCSParams(activeCam, sCsCameraMove[index].atPoints, sCsCameraMove[index].eyePoints, player,
                        sCsCameraMove[index].relativeToPlayer);
@@ -336,8 +334,8 @@ s32 EnZl4_SetupFromLegendCs(EnZl4* this, PlayState* play) {
     player->linearVelocity = playerx->speedXZ = 0.0f;
 
     EnZl4_SetCsCameraMove(play, 5);
-    ShrinkWindow_SetVal(0x20);
-    Interface_ChangeAlpha(2);
+    Letterbox_SetSizeTarget(0x20);
+    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
     this->talkTimer2 = 0;
     return true;
 }
@@ -378,7 +376,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
     } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
@@ -405,8 +403,6 @@ void EnZl4_Destroy(Actor* thisx, PlayState* play) {
     EnZl4* this = (EnZl4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnZl4_SetNextAnim(EnZl4* this, s32 nextAnim) {
@@ -439,7 +435,7 @@ s32 EnZl4_CsWaitForPlayer(EnZl4* this, PlayState* play) {
         if ((playerx->world.pos.y != this->actor.world.pos.y) || (absYawDiff >= 0x3FFC)) {
             return false;
         } else {
-            func_8002F2CC(&this->actor, play, this->collider.dim.radius + 60.0f);
+            Actor_OfferTalk(&this->actor, play, this->collider.dim.radius + 60.0f);
             return false;
         }
     }
@@ -922,7 +918,7 @@ s32 EnZl4_CsLookWindow(EnZl4* this, PlayState* play) {
                     play->csCtx.state = CS_STATE_UNSKIPPABLE_INIT;
                 }
             } else {
-                func_800AA000(0.0f, 0xA0, 0xA, 0x28);
+                Rumble_Request(0.0f, 0xA0, 0xA, 0x28);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_30);
                 EnZl4_SetCsCameraAngle(play, 11);
@@ -1107,7 +1103,7 @@ s32 EnZl4_CsMakePlan(EnZl4* this, PlayState* play) {
             if (!((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play))) {
                 break;
             } else {
-                Camera_ChangeSetting(GET_ACTIVE_CAM(play), 1);
+                Camera_RequestSetting(GET_ACTIVE_CAM(play), 1);
                 this->talkState = 7;
                 play->talkWithPlayer(play, &this->actor);
                 if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LETTER, true)) {
@@ -1148,8 +1144,8 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
             this->mouthExpression = ZL4_MOUTH_SURPRISED;
             Audio_PlayFanfare(NA_BGM_APPEAR);
             EnZl4_SetCsCameraAngle(play, 0);
-            Interface_ChangeAlpha(2);
-            ShrinkWindow_SetVal(0x20);
+            Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
+            Letterbox_SetSizeTarget(0x20);
             this->talkState = 0;
             this->csState++;
             break;
@@ -1192,7 +1188,7 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
         case ZL4_CS_PLAN:
             if (EnZl4_CsMakePlan(this, play)) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                gSaveContext.unk_13EE = 0x32;
+                gSaveContext.prevHudVisibilityMode = 0x32;
                 Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
                 this->actionFunc = EnZl4_Idle;
             }

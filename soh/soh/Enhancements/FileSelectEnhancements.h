@@ -1,12 +1,12 @@
-#ifndef FILE_SELECT_ENHANCEMENTS_H
-#define FILE_SELECT_ENHANCEMENTS_H
+#pragma once
 
-#include "z64.h"
+#include <libultraship/libultra/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 const char* SohFileSelect_GetSettingText(u8 optionIndex, u8 language);
+void SohFileSelect_ShowPresetModal();
 #ifdef __cplusplus
 };
 #endif
@@ -19,5 +19,3 @@ typedef enum {
     RSM_NO_RANDOMIZER_GENERATED,
     RSM_MAX,
 } RandomizerSettingsMenuEnums;
-
-#endif

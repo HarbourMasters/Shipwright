@@ -1,10 +1,5 @@
-#include "custom_messages.hpp"
-
-#include "../randomizerTypes.h"
-#include "../context.h"
 #include "../static_data.h"
 
-using namespace CustomMessages;
 using namespace std::literals::string_literals;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
@@ -76,11 +71,11 @@ void StaticData::HintTable_Init() {
                                                                    /*french*/ "Selon moi, détruire #100 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/exterminar #100 skulltulas doradas# revela #[[1]]#.
                                                                 {},
-                                                                {CustomMessage("They say that #100 bug badges# rewards #[[1]]#.",
+                                                                {CustomMessage("They say that #100 bug badges# reward #[[1]]#.",
                                                                     /*german*/ "Man erzählt sich, daß die Belohnung für #100 Insektenplaketten# #[[1]]# |sei|seien|.",
                                                                     /*french*/ "Selon moi, #100 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                  // /*spanish*/#100 medallas de insectos# otorgan #[[1]]#.
-                                                                 CustomMessage("They say that #100 spider souls# yields #[[1]]#.",
+                                                                 CustomMessage("They say that #100 spider souls# yield #[[1]]#.",
                                                                     /*german*/ "Man erzählt sich, daß #100 Spinnenseelen# #[[1]]# einbrächten.",
                                                                     /*french*/ "Selon moi, #100 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                  // /*spanish*/#100 almas de araña# otorgan #[[1]]#.
@@ -179,11 +174,11 @@ void StaticData::HintTable_Init() {
                                                                   /*french*/ "Selon moi, détruire #50 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #50 skulltulas doradas# revela #[[1]]#.
                                                                {},
-                                                               {CustomMessage("They say that #50 bug badges# rewards #[[1]]#.",
+                                                               {CustomMessage("They say that #50 bug badges# reward #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß die Belohnung für #50 Insektenplaketten# #[[1]]# |sei|seien|.",
                                                                    /*french*/ "Selon moi, #50 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#50 medallas de insectos# otorgan #[[1]]#.
-                                                                CustomMessage("They say that #50 spider souls# yields #[[1]]#.",
+                                                                CustomMessage("They say that #50 spider souls# yield #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß #50 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #50 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#50 almas de araña# otorgan #[[1]]#.
@@ -197,11 +192,11 @@ void StaticData::HintTable_Init() {
                                                                   /*french*/ "Selon moi, détruire #40 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #40 skulltulas doradas# revela #[[1]]#.
                                                                {},
-                                                               {CustomMessage("They say that #40 bug badges# rewards #[[1]]#.",
+                                                               {CustomMessage("They say that #40 bug badges# reward #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß die Belohnung für #40 Insektenplaketten# #[[1]]# |sei|seien|.",
                                                                    /*french*/ "Selon moi, #40 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#40 medallas de insectos# otorgan #[[1]]#.
-                                                                CustomMessage("They say that #40 spider souls# yields #[[1]]#.",
+                                                                CustomMessage("They say that #40 spider souls# yield #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß #40 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #40 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#40 almas de araña# otorgan #[[1]]#.
@@ -215,11 +210,11 @@ void StaticData::HintTable_Init() {
                                                                   /*french*/ "Selon moi, détruire #30 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #30 skulltulas doradas# revela #[[1]]#.
                                                                {},
-                                                               {CustomMessage("They say that #30 bug badges# rewards #[[1]]#.",
+                                                               {CustomMessage("They say that #30 bug badges# reward #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß die Belohnung für #30 Insektenplaketten# #[[1]]# |sei|seien|.",
                                                                    /*french*/ "Selon moi, #30 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#30 medallas de insectos# otorgan #[[1]]#.
-                                                                CustomMessage("They say that #30 spider souls# yields #[[1]]#.",
+                                                                CustomMessage("They say that #30 spider souls# yield #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß #30 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #30 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#30 almas de araña# otorgan #[[1]]#.
@@ -233,11 +228,11 @@ void StaticData::HintTable_Init() {
                                                                   /*french*/ "Selon moi, détruire #20 Skulltulas d'or# donne #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                // /*spanish*/exterminar #20 skulltulas doradas# revela #[[1]]#.
                                                                {},
-                                                               {CustomMessage("They say that #20 bug badges# rewards #[[1]]#.",
+                                                               {CustomMessage("They say that #20 bug badges# reward #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß die Belohnung für #20 Insektenplaketten# #[[1]]# |sei|seien|.",
                                                                    /*french*/ "Selon moi, #20 écussons# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#20 medallas de insectos# otorgan #[[1]]#.
-                                                                CustomMessage("They say that #20 spider souls# yields #[[1]]#.",
+                                                                CustomMessage("They say that #20 spider souls# yield #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß #20 Spinnenseelen# #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #20 âmes d'arachnide# donnent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                 // /*spanish*/#20 almas de araña# otorgan #[[1]]#.
@@ -464,6 +459,14 @@ void StaticData::HintTable_Init() {
                                                                         /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
 
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER] = HintText(CustomMessage("They say that the #chest game host# is holding on to #[[1]]#.",
+                                                                           /*german*/ "Man erzählt sich, daß der #Truhenlotterie-Veranstalter# #[[1]]# bereithielte.",
+                                                                           /*french*/ "Selon moi, l'#hôte de la Chasse-aux-Trésors# détient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                        {},
+                                                                        {CustomMessage("They say that #paying to play the chest game# grants #[[1]]#.",
+                                                                            /*german*/ "Man erzählt sich, daß #ein Spiel der Truhenlotterie# #[[1]]# gewähre.",
+                                                                            /*french*/ "Selon moi, #payer pour la Chasse-aux-Trésors# donne #[[1]]#.", {QM_RED, QM_GREEN})});
+
     hintTextTable[RHT_GF_HBA_1500_POINTS] = HintText(CustomMessage("They say that scoring 1500 in #horseback archery# grants #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das Erzielen von 1.500 Punkten beim #Bogenschießen zu Pferde# #[[1]]# gewähre.",
                                                         /*french*/ "Selon moi, obtenir 1500 points dans l'#archerie équestre# donne #[[1]]#.", {QM_RED, QM_GREEN}),
@@ -621,12 +624,12 @@ void StaticData::HintTable_Init() {
                                                                                     /*french*/ "Selon moi, l'araignée sous #une pierre bleue dans une caverne# a #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                                  // /*spanish*/una Skulltula bajo #bloques temporales de una cueva# otorga #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_BOOMERANG_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guard #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_BOOMERANG_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guards #[[1]]#.",
                                                                       /*german*/ "Man erzählt sich, daß ein #von Jabu-Jabu verschluckter Rochenschwarm# #[[1]]# bewache.",
                                                                       /*french*/ "Selon moi, les #raies dans Jabu-Jabu# protègent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                    // /*spanish*/unos #stingers engullidos por Jabu-Jabu# guardan #[[1]]#.
                                                                    {},
-                                                                   {CustomMessage("They say that a school of #stingers swallowed by a deity# guard #[[1]]#.",
+                                                                   {CustomMessage("They say that a school of #stingers swallowed by a deity# guards #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß ein #von einer Gottheit verschluckter Rochenschwarm# #[[1]]# bewache.",
                                                                        /*french*/ "Selon moi, les #raies dans un gardien# protègent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                     // /*spanish*/unos de #stingers engullidos por cierta deidad# guardan #[[1]]#.
@@ -979,8 +982,13 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_GERUDO_FORTRESS] = HintText(CustomMessage("Gerudo's Fortress",
                                                      /*german*/ "in der Gerudo-Festung",
-                                                     /*french*/ "le Repaire des Voleurs"));
+                                                     /*french*/ "la Forteresse Gerudo"));
                                                   // /*spanish*/la Fortaleza Gerudo
+
+    hintTextTable[RHT_THIEVES_HIDEOUT] = HintText(CustomMessage("the Thieves' Hideout",
+                                                     /*german*/ "im Diebesversteck",
+                                                     /*french*/ "le Repaire des Voleurs"));
+                                                  // /*spanish*/la Guarida de los Ladrones
 
     hintTextTable[RHT_HAUNTED_WASTELAND] = HintText(CustomMessage("Haunted Wasteland",
                                                        /*german*/ "in der Gespensterwüste",
@@ -1651,7 +1659,7 @@ void StaticData::HintTable_Init() {
                                             /*german*/ "Man erzählt sich, daß Basil nicht besonders gut darin ist vorauszuplanen.",
                                             /*french*/ "Selon moi, Ingo ne fait pas un très bon geôlier."));
 
-    hintTextTable[RHT_JUNK50] = HintText(CustomMessage("You found a spiritual Stone! By which I mean, I worship Nayru.",
+    hintTextTable[RHT_JUNK50] = HintText(CustomMessage("You found a Spiritual Stone! By which I mean, I worship Nayru.",
                                             /*german*/ "Du hast einen Heiligen Stein gefunden!^Also... eigentlich heißt das nur, daß ich Nayru verehre.",
                                             /*french*/ "Vous avez trouvé une Pierre Ancestrale! En effet, je vénère la déesse Hylia."));
 
@@ -1671,7 +1679,7 @@ void StaticData::HintTable_Init() {
                                             /*german*/ "Man erzählt sich, daß die \"Nightly Builds\" instabil sein könnten.",
                                             /*french*/ "Selon moi, les \"nightly builds\" peuvent être instables."));
 
-    hintTextTable[RHT_JUNK55] = HintText(CustomMessage("You're playing a Randomizer. I'm randomized!^Here's a random number:  #4#.&Enjoy your Randomizer!",
+    hintTextTable[RHT_JUNK55] = HintText(CustomMessage("You're playing a Randomizer. I'm randomized!^Here's a random number: #4#.&Enjoy your Randomizer!",
                                             /*german*/ "Du spielst einen Randomizer. Ich wurde zufällig generiert!^Hier ist eine zufällige Zahl:  #4#.&Viel Spaß mit dem Randomizer!",
                                             /*french*/ "Tu joues à un randomizer. Je suis aléatoire!^Voici un nombre aléatoire: #4#.&Bonne partie!"));
 
@@ -2017,8 +2025,13 @@ void StaticData::HintTable_Init() {
                                                                    {QM_YELLOW}, {}, TEXTBOX_TYPE_BLUE));
                                                      // /*spanish*/$sLos sabios aguardarán a que el héroe obtenga #[[d]] símbolo||s| de skulltula dorada#.^
 
+    hintTextTable[RHT_BRIDGE_TRIFORCE_PIECES_HINT] = HintText(CustomMessage("$wThe awakened ones will await for the Hero to collect #[[d]] Triforce Piece||s|#.^",
+                                                                 /*german*/ "$wDie Weisen werden darauf&warten, daß der Held&#[[d]] Triforce-Fragment||e|# sammelt.^",
+                                                                 /*french*/ "$wLes êtres de sagesse attendront le héros muni de #[[d]] Morceau||x| de Triforce#.^",
+                                                                            {QM_YELLOW}, {}, TEXTBOX_TYPE_BLUE));
+
     hintTextTable[RHT_BRIDGE_GREG_HINT] = HintText(CustomMessage("$gThe awakened ones will await for the Hero to find #Greg#.^",
-	                                                  /*german*/ "$gDie Weisen werden darauf&warten, daß der Held&#Greg# findet.^",
+	                                                   /*german*/ "$gDie Weisen werden darauf&warten, daß der Held&#Greg# findet.^",
                                                       /*french*/ "$gLes êtres de sagesse attendront le héros muni de #Greg#.^",
                                                                  {QM_GREEN}, {}, TEXTBOX_TYPE_BLUE));
 
@@ -2063,55 +2076,117 @@ void StaticData::HintTable_Init() {
                                                                        {QM_PINK, QM_BLUE}));
                                                          // /*spanish*/$bY la llave del #señor del mal# aguardará en #cualquier lugar de Hyrule#.^
 
-    hintTextTable[RHT_GANON_BK_TRIFORCE_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be given to the Hero once the #Triforce## is completed.^",
-                                                            /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald das #Triforce# vervollständigt wurde.^",
-                                                            /*french*/ "$bAussi, la #clé du Malin# se&révèlera une fois la #Triforce#&assemblée.^",
-                                                                       {QM_PINK, QM_YELLOW}));
-                                                         // /*spanish*/$bY el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#.^
-
-    hintTextTable[RHT_GANON_BK_SKULLTULA_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by the cursed rich man once #100 Gold Skulltula Tokens# are retrieved.^",
-                                                             /*german*/ "$bUnd der #Schlüssel des Bösen# wird von einem verfluchten reichen Mann verliehen, sobald #100 Skulltula-Symbole# gesammelt wurden.^",
-                                                             /*french*/ "$bAussi, la #clé du Malin# sera&donnée par l'homme maudit une fois que #100 Symboles de Skulltula d'or# auront été trouvés.^",
-                                                                        {QM_PINK, QM_YELLOW}));
-                                                          // /*spanish*/$bY el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#.^
-
-    hintTextTable[RHT_LACS_VANILLA_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once the #Shadow and Spirit Medallions# are retrieved.^",
-                                                       /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #die Amulette des Schattens und der Geister# geborgen wurden.^",
-                                                       /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois que les #Médaillons de l'Ombre et de l'Esprit# seront récupérés.^",
-                                                                  {QM_PINK, QM_YELLOW, QM_RED}));
-                                                    // /*spanish*/$bY #Zelda# entregará la llave del #señor del mal# tras obtener #el medallón de las sombras y del espíritu#.^
-
-    hintTextTable[RHT_LACS_MEDALLIONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once #[[d]] Medallion|# is|s# are| retrieved.^",
-                                                          /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #[[d]] Amulett|# geborgen wurde|e# geborgen wurden|.^",
-                                                          /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois |qu' #[[d]] Médaillon# aura été récupéré|que #[[d]] Médaillons# auront été récupérés|.^",
+    hintTextTable[RHT_GBK_MEDALLIONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]] Medallion|# is|s# are| retrieved.^",
+                                                          /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]] Amulett|# geborgen wurde|e# geborgen wurden|.^",
+                                                          /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois |qu' #[[d]] Médaillon# aura été récupéré|que #[[d]] Médaillons# auront été récupérés|.^",
                                                                      {QM_PINK, QM_YELLOW, QM_RED}));
                                                        // /*spanish*/$bY #Zelda# entregará la llave&del #señor del mal# tras obtener #[[d]] |medallón|medallones|#.^
 
-    hintTextTable[RHT_LACS_STONES_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once #[[d]] Spiritual Stone|# is|s# are| retrieved.^",
-                                                      /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #[[d]] Heilige|r Stein# geborgen wurde| Steine# geborgen wurden|.^",
-                                                      /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois |qu' #[[d]] Pierre Ancestrale# aura été&récupérée|que #[[d]] Pierres Ancestrales# auront été récupérées|.^",
+    hintTextTable[RHT_GBK_STONES_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]] Spiritual Stone|# is|s# are| retrieved.^",
+                                                      /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]] Heilige|r Stein# geborgen wurde| Steine# geborgen wurden|.^",
+                                                      /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois |qu' #[[d]] Pierre Ancestrale# aura été&récupérée|que #[[d]] Pierres Ancestrales# auront été récupérées|.^",
                                                                  {QM_PINK, QM_YELLOW, QM_BLUE}));
                                                    // /*spanish*/$bY #Zelda# entregará la llave del #señor del mal# tras obtener #[[d]] piedra| espiritual|s espirituales|#.^
 
-    hintTextTable[RHT_LACS_REWARDS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once #[[d]]# #Spiritual Stone|# or #Medallion# is|s# and #Medallions# are| retrieved.^",
-                                                       /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #[[d]]# #Heilige|r Stein# oder #Amulett#&geborgen wurde| Steine# oder #Amulette#&geborgen wurden|.^",
-                                                       /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois qu|' #[[d]]# #Pierre Ancestrale# ou #[[d]] Médaillon# sera récupéré|e&#[[d]]# #Pierres Ancestrales# et&#Médaillons# seront récupérés|.^",
+    hintTextTable[RHT_GBK_REWARDS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]]# #Spiritual Stone|# or #Medallion# is|s# and #Medallions# are| retrieved.^",
+                                                       /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]]# #Heilige|r Stein# oder #Amulett#&geborgen wurde| Steine# oder #Amulette#&geborgen wurden|.^",
+                                                       /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois qu|' #[[d]]# #Pierre Ancestrale# ou #[[d]] Médaillon# sera récupéré|e&#[[d]]# #Pierres Ancestrales# et&#Médaillons# seront récupérés|.^",
                                                                   {QM_PINK, QM_YELLOW, QM_YELLOW, QM_BLUE, QM_RED}));
                                                     // /*spanish*/$bY #Zelda# entregará la llave del #señor del mal# tras obtener #[[d]]# piedra| espiritual o medallón|s espirituales o medallones|#.^
 
-    hintTextTable[RHT_LACS_DUNGEONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once #[[d]] Dungeon|# is|s# are| conquered.^",
-                                                        /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #[[d]] Labyrinth|# abgeschloßen wurde|e# abgeschloßen wurden|.^",
-                                                        /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois qu|' #[[d]] donjon #sera conquis|e #[[d]] donjons# seront conquis|.^",
+    hintTextTable[RHT_GBK_DUNGEONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]] Dungeon|# is|s# are| conquered.^",
+                                                        /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]] Labyrinth|# abgeschloßen wurde|e# abgeschloßen wurden|.^",
+                                                        /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois qu|' #[[d]] donjon #sera conquis|e #[[d]] donjons# seront conquis|.^",
                                                                   {QM_PINK, QM_YELLOW, QM_PINK}));
                                                      // /*spanish*/$bY #Zelda# entregará la llave del #señor del mal# tras completar #[[d]] mazmorra||s|#.^
 
-    hintTextTable[RHT_LACS_TOKENS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided by #Zelda# once #[[d]] Gold Skulltula Token|# is|s# are| retrieved.^",
-                                                      /*german*/ "$bUnd der #Schlüssel des Bösen# wird von #Zelda# verliehen, sobald #[[d]] Skulltula-Symbol|# gesammelt wurde|e# gesammelt wurden|.^",
-                                                      /*french*/ "$bAussi, la #clé du Malin# sera fournie par #Zelda# une fois |qu' #[[d]] symbole de Skulltula d'or #sera récupuéré"
+    hintTextTable[RHT_GBK_TOKENS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]] Gold Skulltula Token|# is|s# are| retrieved.^",
+                                                      /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]] Skulltula-Symbol|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                      /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois |qu' #[[d]] symbole de Skulltula d'or #sera récupuéré"
                                                                  "|que &#[[d]] symboles de Skulltula d'or&#seront recupérés|.^",
                                                                   {QM_PINK, QM_YELLOW, QM_YELLOW}));
                                                     // /*spanish*/$bY #Zelda# entregará la llave del #señor del mal# tras obtener #[[d]] símbolo
                                                               // ||s| de skulltula dorada#.^
+
+    hintTextTable[RHT_GBK_TRIFORCE_PIECES_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s key will be provided once #[[d]] Triforce Piece|# is|s# are| retrieved.^",
+                                                              /*german*/ "$bUnd der #Schlüssel des Bösen# wird verliehen, sobald #[[d]] Triforce-Fragment|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                              /*french*/ "$bAussi, la #clé du Malin# sera fournie une fois |qu' #[[d]] Morceau de Triforce# aura été récupéré|que #[[d]] Morceaux de Triforce# auront été récupérés|.^",
+                                                                         {QM_PINK, QM_YELLOW, QM_YELLOW}));
+
+    /*--------------------------
+    |  GANON'S SOUL HINT TEXT  |
+    ---------------------------*/
+
+    hintTextTable[RHT_GANONS_SOUL_MEDALLIONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]] Medallion|# is|s# are| retrieved.^",
+                                                                 /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]] Amulett|# geborgen wurde|e# geborgen wurden|.^",
+                                                                 /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois |qu' #[[d]] Médaillon# aura été récupéré|que #[[d]] Médaillons# auront été récupérés|.^",
+                                                                            {QM_PINK, QM_YELLOW, QM_RED}));
+
+    hintTextTable[RHT_GANONS_SOUL_STONES_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]] Spiritual Stone|# is|s# are| retrieved.^",
+                                                             /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]] Heilige|r Stein# geborgen wurde| Steine# geborgen wurden|.^",
+                                                             /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois |qu' #[[d]] Pierre Ancestrale# aura été&récupérée|que #[[d]] Pierres Ancestrales# auront été récupérées|.^",
+                                                                        {QM_PINK, QM_YELLOW, QM_BLUE}));
+
+    hintTextTable[RHT_GANONS_SOUL_REWARDS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]]# #Spiritual Stone|# or #Medallion# is|s# and #Medallions# are| retrieved.^",
+                                                              /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]]# #Heilige|r Stein# oder #Amulett#&geborgen wurde| Steine# oder #Amulette#&geborgen wurden|.^",
+                                                              /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois qu|' #[[d]]# #Pierre Ancestrale# ou #[[d]] Médaillon# sera récupéré|e&#[[d]]# #Pierres Ancestrales# et&#Médaillons# seront récupérés|.^",
+                                                                         {QM_PINK, QM_YELLOW, QM_YELLOW, QM_BLUE, QM_RED}));
+
+    hintTextTable[RHT_GANONS_SOUL_DUNGEONS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]] Dungeon|# is|s# are| conquered.^",
+                                                               /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]] Labyrinth|# abgeschloßen wurde|e# abgeschloßen wurden|.^",
+                                                               /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois qu|' #[[d]] donjon #sera conquis|e #[[d]] donjons# seront conquis|.^",
+                                                                          {QM_PINK, QM_YELLOW, QM_PINK}));
+
+    hintTextTable[RHT_GANONS_SOUL_TOKENS_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]] Gold Skulltula Token|# is|s# are| retrieved.^",
+                                                             /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]] Skulltula-Symbol|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                             /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois |qu' #[[d]] symbole de Skulltula d'or #sera récupuéré"
+                                                                        "|que &#[[d]] symboles de Skulltula d'or&#seront recupérés|.^",
+                                                                        {QM_PINK, QM_YELLOW, QM_YELLOW}));
+
+    hintTextTable[RHT_GANONS_SOUL_TRIFORCE_PIECES_HINT] = HintText(CustomMessage("$bAnd the #evil one#'s soul will be provided once #[[d]] Triforce Piece|# is|s# are| retrieved.^",
+                                                                     /*german*/ "$bUnd die #Seele des Bösen# wird verliehen, sobald #[[d]] Triforce-Fragment|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                                     /*french*/ "$bAussi, l'#âme du Malin# sera fournie une fois |qu' #[[d]] Morceau de Triforce# aura été récupéré|que #[[d]] Morceaux de Triforce# auront été récupérés|.^",
+                                                                                {QM_PINK, QM_YELLOW, QM_YELLOW}));
+
+    /*--------------------------
+    |      WINCON HINT TEXT     |
+    ---------------------------*/
+
+    hintTextTable[RHT_WINCON_ANYWHERE_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be hidden somewhere&#in Hyrule#.^",
+                                                          /*german*/ "$wUnd das #Triforce# wird irgendwo #in Hyrule# zu finden sein.^",
+                                                          /*french*/ "$wAussi, la #Triforce# se trouve quelque part #dans Hyrule#.^",
+                                                                     {QM_YELLOW, QM_BLUE}));
+
+    hintTextTable[RHT_WINCON_MEDALLIONS_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]] Medallion|# is|s# are| retrieved.^",
+                                                            /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]] Amulett|# geborgen wurde|e# geborgen wurden|.^",
+                                                            /*french*/ "$wAussi, la #Triforce# sera accordée une fois |qu' #[[d]] Médaillon# aura été récupéré|que #[[d]] Médaillons# auront été récupérés|.^",
+                                                                       {QM_YELLOW, QM_YELLOW, QM_RED}));
+
+    hintTextTable[RHT_WINCON_STONES_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]] Spiritual Stone|# is|s# are| retrieved.^",
+                                                        /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]] Heilige|r Stein# geborgen wurde| Steine# geborgen wurden|.^",
+                                                        /*french*/ "$wAussi, la #Triforce# sera accordée une fois |qu' #[[d]] Pierre Ancestrale# aura été&récupérée|que #[[d]] Pierres Ancestrales# auront été récupérées|.^",
+                                                                   {QM_YELLOW, QM_YELLOW, QM_BLUE}));
+
+    hintTextTable[RHT_WINCON_REWARDS_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]]# #Spiritual Stone|# or #Medallion# is|s# and #Medallions# are| retrieved.^",
+                                                         /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]]# #Heilige|r Stein# oder #Amulett#&geborgen wurde| Steine# oder #Amulette#&geborgen wurden|.^",
+                                                         /*french*/ "$wAussi, la #Triforce# sera accordée une fois qu|' #[[d]]# #Pierre Ancestrale# ou #[[d]] Médaillon# sera récupéré|e&#[[d]]# #Pierres Ancestrales# et&#Médaillons# seront récupérés|.^",
+                                                                    {QM_YELLOW, QM_YELLOW, QM_YELLOW, QM_BLUE, QM_RED}));
+
+    hintTextTable[RHT_WINCON_DUNGEONS_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]] Dungeon|# is|s# are| conquered.^",
+                                                          /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]] Labyrinth|# abgeschloßen wurde|e# abgeschloßen wurden|.^",
+                                                          /*french*/ "$wAussi, la #Triforce# sera accordée une fois qu|' #[[d]] donjon #sera conquis|e #[[d]] donjons# seront conquis|.^",
+                                                                     {QM_YELLOW, QM_YELLOW, QM_PINK}));
+
+    hintTextTable[RHT_WINCON_TOKENS_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]] Gold Skulltula Token|# is|s# are| retrieved.^",
+                                                        /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]] Skulltula-Symbol|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                        /*french*/ "$wAussi, la #Triforce# sera accordée une fois |qu' #[[d]] symbole de Skulltula d'or #sera récupuéré"
+                                                                   "|que &#[[d]] symboles de Skulltula d'or&#seront recupérés|.^",
+                                                                   {QM_YELLOW, QM_YELLOW, QM_YELLOW}));
+
+    hintTextTable[RHT_WINCON_TRIFORCE_PIECES_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #[[d]] Triforce Piece|# is|s# are| retrieved.^",
+                                                                /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #[[d]] Triforce-Fragment|# gesammelt wurde|e# gesammelt wurden|.^",
+                                                                /*french*/ "$wAussi, la #Triforce# sera accordée une fois |qu' #[[d]] Morceau de Triforce# aura été récupéré|que #[[d]] Morceaux de Triforce# auront été récupérés|.^",
+                                                                           {QM_YELLOW, QM_YELLOW, QM_YELLOW}));
 
     /*--------------------------
     |     TRIAL HINT TEXT      |
@@ -2132,7 +2207,7 @@ void StaticData::HintTable_Init() {
                                                /*french*/ "Selon moi, #[[1]]# a été dissipée par Sheik.", {QM_YELLOW}));
                                             // /*spanish*/Según dicen, #[[1]]# se disipó gracias a Sheik.
 
-    hintTextTable[RHT_TRIAL_ON] = HintText(CustomMessage("They say that #[[1]]# protects Ganons Tower.",
+    hintTextTable[RHT_TRIAL_ON] = HintText(CustomMessage("They say that #[[1]]# protects Ganon's Tower.",
                                               /*german*/ "Man erzählt sich, daß #[[1]]# den Teufelsturm schütze.",
                                               /*french*/ "Selon moi, #[[1]]# protège la Tour de Ganon.", {QM_PINK}));
                                            // /*spanish*/Según dicen, #[[1]]# protege la torre de Ganon
@@ -2237,6 +2312,10 @@ void StaticData::HintTable_Init() {
                                                         /*french*/ "J'ai entendu dire que Ganondorf aurait caché les #Flèches de Lumière# dans #[[1]]#.",
                                                                    {QM_YELLOW, QM_RED}));
 
+    hintTextTable[RHT_BOSS_KEY_HINT] = HintText(CustomMessage("%c@! I can hear Rauru's guidance! He's saying the %ykey for this door%c is in %w[[1]]%c!",
+                                                   /*german*/ TODO_TRANSLATE,
+                                                   /*french*/ TODO_TRANSLATE));
+
     hintTextTable[RHT_DAMPE_DIARY] = HintText(CustomMessage("Whoever reads this, please enter #[[1]]#. I will let you have my #stretching, shrinking keepsake#.^I'm waiting for you.&--Dampé",
                                                  /*german*/ "Wer immer dies liest, der möge #[[1]]# nach meinem #langen, kurzen Schatz# suchen.^Ich warte!&Boris",
                                                  /*french*/ "Toi qui lit ce journal, rends-toi dans #[[1]]#. Et peut-être auras-tu droit à mon précieux #trésor#.^Je t'attends...&--Igor",
@@ -2250,7 +2329,7 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_SARIA_TALK_HINT] = HintText(CustomMessage("Did you feel the #surge of magic# recently? A mysterious bird told me it came from #[[1]]#.^You should check that place out, @!",
                                                      /*german*/ "Hast Du kürzlich den #Magieschub# gespürt? Ein geheimnisvoller Vogel meinte, daß er #[[1]]# am stärksten zu spüren war.^Du solltest Dir diesen Ort mal ansehen, @!",
                                                      /*french*/ "As-tu récemment ressenti une vague de #puissance magique#? Un mystérieux hibou m'a dit qu'elle provenait du #[[1]]#.^Tu devrais aller y jeter un coup d'oeil, @!",
-                                                               {QM_GREEN, QM_RED}));
+                                                                {QM_GREEN, QM_RED}));
 
     hintTextTable[RHT_SARIA_SONG_HINT] = HintText(CustomMessage("Did you feel the #surge of magic# recently? A mysterious bird told me it came from #[[1]]#.^You should check that place out, @!\x0B",
                                                      /*german*/ "Hast Du kürzlich den #Magieschub# gespürt? Ein geheimnisvoller Vogel meinte, daß er #[[1]]# am stärksten zu spüren war.^Du solltest Dir diesen Ort mal ansehen, @!\x0B",
@@ -2262,7 +2341,7 @@ void StaticData::HintTable_Init() {
                                                /*french*/ "Pfeuuh! Tu n'trouveras jamais l'#Epée Kokiri# que j'ai cachée dans #[[1]]#!",
                                                           {QM_GREEN, QM_RED}));
 
-    hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give my %g[[1]]%w to anyone who catches it. Seriously!",
+    hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give %g[[1]]%w to anyone who catches it. Seriously!",
 	                                            /*german*/ "Was?^Du willst etwas über die&%rhylianische Forelle%w wissen?&Es ist ein riesiger Fisch,&der unfassbar selten ist!^Wenn Du mir eine bringst, |springt|springen| für Dich&%g[[1]]%w dabei raus.&Ganz im Ernst!",
                                                 /*french*/ "Quoi?&Tu veux en savoir plus sur le&%rBrochet d'Hyrule%w?^C'est un gros poisson, mais il&est si rare que je donne&%g[[1]]%w&à celui qui l'attrape.^Ouais, j'suis sérieux!",
                                                            {QM_RED}));
@@ -2270,15 +2349,15 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_FISHING_POLE_HINT] = HintText(CustomMessage("^If I remember correctly, I lost it somewhere in #[[1]]#...&Let me know if you find it!",
 	                                                    /*german*/ "Wenn ich mich recht erinnere,&habe ich sie irgendwo&#[[1]]#&verloren...&Sag mir Bescheid, wenn Du sie findest!",
 													    /*french*/ "Si je me souviens bien, il me&semble que je l'ai perdue&quelque part dans&#[[1]]#...^Fais-moi signe si jamais&tu la trouves!",
-                                                                  {QM_RED}));
+                                                                   {QM_RED}));
 
     /*--------------------------
     |    Static Entrance Hint   |
     ---------------------------*/
 
-    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
-                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + TWO_WAY_CHOICE() + "#Ja!&Nein!#",
-                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
+    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK&No#",
+                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + CustomMessage::TWO_WAY_CHOICE() + "#Ja!&Nein!#",
+                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
 
    /*--------------------------
@@ -2291,7 +2370,7 @@ void StaticData::HintTable_Init() {
                                                               {QM_RED, QM_GREEN, QM_GREEN, QM_GREEN}, {}, TEXTBOX_TYPE_WOODEN));
 
     hintTextTable[RHT_HBA_HINT_NOT_ON_HORSE] = HintText(CustomMessage("Hey, rookie!&Come back on your #horse# and take on the #Horseback Archery# challenge!^"
-                                                                      "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!",
+                                                                      "Impress me with a high score of 1000 to win #[[1]]# or score 1500 for #[[2]]#!",
                                                            /*german*/ "Hey, Kleiner! Das ist die %rArena für Bogenschießen zu Pferde%w.^"
                                                                       "Wenn Du reiten kannst, beeindrucke mich mit #1.000 Punkten# und gewinne #[[1]]#!^Knackst Du #1.500 Punkte# gibt es #[[2]]#!",
                                                            /*french*/ "Hé, l'nouveau!&Reviens avec ton #cheval# et essaie notre #Terrain d'Archerie Montée#^"
@@ -2299,7 +2378,7 @@ void StaticData::HintTable_Init() {
                                                                       {QM_RED, QM_RED, QM_GREEN, QM_GREEN}));
 
     hintTextTable[RHT_HBA_HINT_INITIAL] = HintText(CustomMessage("Hey, rookie!&Want to take on the #Horseback Archery# challenge?^"
-                                                                 "Impress me with a high score of 1000 to win a #[[1]]# or score 1500 for #[[2]]#!\x0B",
+                                                                 "Impress me with a high score of 1000 to win #[[1]]# or score 1500 for #[[2]]#!\x0B",
                                                       /*german*/ "Hey, Kleiner! Wie wäre es mit einer Runde %rBogenschießen zu Pferde%w!?^"
                                                                  "Wenn Du mich mit #1.000 Punkten# beeindruckst, erhältst Du #[[1]]#!^Knackst Du #1.500 Punkte# gibt es #[[2]]#!\x0B",
                                                       /*french*/ "Hé, l'nouveau!&Tu veux essayer notre #Terrain d'Archerie Montée#^"
@@ -2315,52 +2394,52 @@ void StaticData::HintTable_Init() {
                                                                    {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_HOW_IS_EPONA] = HintText(CustomMessage("@! You should come back with Epona and try to beat my time on the #Obstacle Course#!^"
-                                                                        "If you beat my time, I'll give you my favourite #cow# Elsie and her toy #[[1]]#!",
+                                                                        "If you beat my time, I'll give you my favorite #cow# Elsie and her toy, #[[1]]#!",
                                                              /*german*/ "@! Warum kommst Du nicht mit Epona zurück und versuchst Dich an dem #Hindernisparcours#?^"
                                                                         "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!",
                                                              /*french*/ "@! Tu devrais revenir avec Epona et essayer de battre mon temps sur le #Parcours d'Obstacles#!^"
-                                                                        "Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, ainsi que son jouet #[[1]]#!",
+                                                                        "Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, ainsi que son jouet, #[[1]]#!",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
-    hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obstacle Course?# If you beat my time I'll let you keep my favourite #cow# Elsie and her toy #[[1]]#!^"
-                                                                           "Challenge the #Obstacle Course?#&\x1B&#Let's go&No thanks#",
+    hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obstacle Course?# If you beat my time I'll let you keep my favorite #cow# Elsie and her toy, #[[1]]#!^"
+                                                                           "Challenge the #Obstacle Course?#\x1B#Let's go&No thanks#",
                                                                 /*german*/ "Warum versuchst Du Dich nicht mit Epona an dem #Hindernisparcours#?^"
                                                                            "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!^"
-                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B&#Ja!&Nein!#",
-                                                                /*french*/ "Que dirais-tu d'essayer le #Parcours d'Obstacles#? Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, et son jouet #[[1]]#!^"
-                                                                           "Tenter le #Parcours d'Obstacles#?&\x1B&#Allons-y&Non merci#",
+                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B#Ja!&Nein!#",
+                                                                /*french*/ "Que dirais-tu d'essayer le #Parcours d'Obstacles#? Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, et son jouet, #[[1]]#!^"
+                                                                           "Tenter le #Parcours d'Obstacles#?\x1B#Allons-y&Non merci#",
                                                                            {QM_RED, QM_BLUE, QM_GREEN, QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an #Obstacle Course#, and whoever gets the best time would win a #cow#!^"
-                                                                        "Elsie loves sharing her #[[1]]# with new people, It'll be fun!^...But Ingo won't let me...",
+                                                                        "Elsie loves sharing #[[1]]# with new people, it'll be fun!^...But Ingo won't let me...",
                                                              /*german*/ "@? Bist Du das?^Wenn ich die Farm leiten würde, würde ich einen #Hindernisparcours# bauen, und wer die beste Zeit schafft, gewinnt eine #Kuh#!^"
                                                                         "Elsie würde es lieben, #[[1]]# mit neuen Leuten zu teilen, es würde Spaß machen!^...Aber Basil läßt mich nicht...",
                                                              /*french*/ "@? C'est toi?^Si je dirigeais le ranch, je construirais un #Parcours d'Obstacles#, et celui qui obtiendrait le meilleur temps gagnerait une #vache#!^"
-                                                                        "Elsie adore partager son #[[1]]# avec de nouvelles personnes, ce serait amusant!^... Mais Ingo ne me laisse pas faire...",
+                                                                        "Elsie adore partager #[[1]]# avec de nouvelles personnes, ce serait amusant!^... Mais Ingo ne me laisse pas faire...",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_INGO_TEMPTED] = HintText(CustomMessage("@! You should come back in the morning and try to beat my time on the #Obstacle Course#!^"
-                                                                        "If you beat my time, I'll give you my favourite #cow# Elsie and her toy #[[1]]#!",
+                                                                        "If you beat my time, I'll give you my favorite #cow# Elsie and her toy, #[[1]]#!",
                                                              /*german*/ "@! Warum kommst Du nicht morgens wieder und versuchst Dich an dem #Hindernisparcours#?^"
                                                                         "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!",
                                                              /*french*/ "@! Tu devrais revenir le matin et essayer de battre mon temps sur le #Parcours d'Obstacles#!^"
-                                                                        "Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, ainsi que son jouet #[[1]]#!",
+                                                                        "Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, ainsi que son jouet, #[[1]]#!",
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
-    hintTextTable[RHT_CHICKENS_HINT] = HintText(CustomMessage("You! Please!&Bring my Cucco's back to my pen!&I'll give you my #[[1]]#!",
+    hintTextTable[RHT_CHICKENS_HINT] = HintText(CustomMessage("You! Please!&Bring my Cuccos back to my pen!&I'll give you #[[1]]#!",
                                                    /*german*/ "Was soll ich nur tun?! Bitte!&Hilf mir, die Hühner wieder einzusammeln!^Ich gebe Dir auch #[[1]]#, wenn du mir hilfst!",
                                                    /*french*/ "Mes Cocottes sont perdues!&Dépose toutes les cocottes dans cet enclos!&Je te donnerai #[[1]]#!",
                                                               {QM_GREEN}));
 
-    hintTextTable[RHT_BIG_POES_HINT] = HintText(CustomMessage("You have #\x1E\x01 Poe Points#! Reach 1000 and you'll get a #[[1]]#!",
+    hintTextTable[RHT_BIG_POES_HINT] = HintText(CustomMessage("You have #\x1E\x01 Poe Points#! Reach 1000 and you'll get #[[1]]#!",
                                                    /*german*/ "Du hast nun #\x1E\x01 Punkte# auf dem Nachtschwärmer-Konto gut!^"
                                                               "Hast Du %y1.000 Punkte%w gesammelt dann |wartet|warten| #[[1]]# auf Dich! Hehehe...",
                                                    /*french*/ "Tu as #\x1E\x01 Points d'Âme#! Atteins 1000 et tu recevras #[[1]]#!",
                                                               {QM_YELLOW, QM_GREEN}));
 
-    hintTextTable[RHT_BIGGORON_HINT] = HintText(CustomMessage("Arrrrrre you here to claim my finest #[[1]]#? Shoooooow me your #Claim Check#.",
+    hintTextTable[RHT_BIGGORON_HINT] = HintText(CustomMessage("Arrrrrre you here to claim my finest work, #[[1]]#? Shoooooow me your #Claim Check#.",
                                                    /*german*/ "Arrrrr, bist Du hier, um etwas von mir schmieden zu lassen? Zeig mir das #Zertifikat# und #[[1]]# |gehört|gehören| Dir!",
-                                                   /*french*/ "Eeeeeees-tu ici pour réclaaaaaamer mon plus beau #[[1]]#? Moooooontre-moi ton #Certificat#.",
+                                                   /*french*/ "Eeeeeees-tu ici pour réclaaaaaamer ma meilleure oeuvre, #[[1]]#? Moooooontre-moi ton #Certificat#.",
                                                               {QM_GREEN, QM_RED}));
 
     hintTextTable[RHT_FROGS_HINT] = HintText(CustomMessage("Some frogs holding #[[1]]# are looking at you from underwater...",
@@ -2373,11 +2452,6 @@ void StaticData::HintTable_Init() {
                                                          "Prinzessin Zelda erhältst und #[[2]]# lernst, um Hyrule vor dem Untergang zu bewahren!",
                                               /*french*/ "Amène les #Pierres Spirituelles# dans le passé et Zelda te donnera #[[1]]# et t'apprendra #[[2]]# !",
                                                          {QM_BLUE, QM_GREEN, QM_GREEN}));
-
-    hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
-                                                 /*german*/ "Aarrrgh! Ich bin verflucht!^Bitte rette mich, indem Du&#[[d]] Skulltulas# zerstörst und ich&werde Dir dafür #[[1]]# geben!",
-                                                 /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
-                                                            {QM_YELLOW, QM_GREEN}));
 
     hintTextTable[RHT_MASK_SHOP_HINT] = HintText(CustomMessage("Some young scrubs in the #Deku Theatre# love seeing Masks!^"
                                                                "They'll give you #[[1]]# if you show them the #Skull Mask#, and #[[2]]# if you show them the #Mask of Truth#!",

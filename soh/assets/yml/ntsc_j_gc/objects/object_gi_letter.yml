@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x0110C980 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x0110C980 ]
+    - [ 9, 0x0110C980 ]
+    - [ 10, 0x0110C980 ]
+    - [ 11, 0x0110C980 ]
+    - [ 12, 0x0110C980 ]
+    - [ 13, 0x0110C980 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiLetterDL:
+  type: GFX
+  offset: 0x0CC0
+  symbol: gGiLetterDL
+
+gGiLetterWritingDL:
+  type: GFX
+  offset: 0x0D60
+  symbol: gGiLetterWritingDL
+
+object_gi_letterTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_letterTex_000000
+  format: I8
+  width: 48
+  height: 32
+
+object_gi_letterTex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: object_gi_letterTex_000600
+  format: IA8
+  width: 48
+  height: 32
+
+
+object_gi_letterVtx_000C00:
+  type: OOT:ARRAY
+  offset: 0x000C00
+  symbol: object_gi_letterVtx_000C00
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_letterVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_gi_letterVtx_000C80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

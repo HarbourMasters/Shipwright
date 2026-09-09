@@ -1,0 +1,306 @@
+:config:
+  segments:
+    - [ 6, 0x00F47880 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00F47880 ]
+    - [ 9, 0x00F47880 ]
+    - [ 10, 0x00F47880 ]
+    - [ 11, 0x00F47880 ]
+    - [ 12, 0x00F47880 ]
+    - [ 13, 0x00F47880 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gFlagpoleCol:
+  type: OOT:COLLISION
+  offset: 0xC0
+  symbol: gFlagpoleCol
+
+gFlagpoleFlag1BaseLimb:
+  type: OOT:LIMB
+  offset: 0x2EA8
+  symbol: gFlagpoleFlag1BaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag1FlyEndBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2ED8
+  symbol: gFlagpoleFlag1FlyEndBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag1FlyEndDL:
+  type: GFX
+  offset: 0x2AC0
+  symbol: gFlagpoleFlag1FlyEndDL
+
+gFlagpoleFlag1FlyEndLimb:
+  type: OOT:LIMB
+  offset: 0x2EE4
+  symbol: gFlagpoleFlag1FlyEndLimb
+  limb_type: Standard
+
+gFlagpoleFlag1FlyMidBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2ECC
+  symbol: gFlagpoleFlag1FlyMidBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag1FlyMidDL:
+  type: GFX
+  offset: 0x29F0
+  symbol: gFlagpoleFlag1FlyMidDL
+
+gFlagpoleFlag1FlyMidLimb:
+  type: OOT:LIMB
+  offset: 0x2EF0
+  symbol: gFlagpoleFlag1FlyMidLimb
+  limb_type: Standard
+
+gFlagpoleFlag1HoistEndBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2EB4
+  symbol: gFlagpoleFlag1HoistEndBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag1HoistEndDL:
+  type: GFX
+  offset: 0x2850
+  symbol: gFlagpoleFlag1HoistEndDL
+
+gFlagpoleFlag1HoistEndLimb:
+  type: OOT:LIMB
+  offset: 0x2F08
+  symbol: gFlagpoleFlag1HoistEndLimb
+  limb_type: Standard
+
+gFlagpoleFlag1HoistMidBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2EC0
+  symbol: gFlagpoleFlag1HoistMidBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag1HoistMidDL:
+  type: GFX
+  offset: 0x2920
+  symbol: gFlagpoleFlag1HoistMidDL
+
+gFlagpoleFlag1HoistMidLimb:
+  type: OOT:LIMB
+  offset: 0x2EFC
+  symbol: gFlagpoleFlag1HoistMidLimb
+  limb_type: Standard
+
+gFlagpoleFlag2BaseLimb:
+  type: OOT:LIMB
+  offset: 0x2F14
+  symbol: gFlagpoleFlag2BaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag2FlyEndBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2F44
+  symbol: gFlagpoleFlag2FlyEndBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag2FlyEndDL:
+  type: GFX
+  offset: 0x2E00
+  symbol: gFlagpoleFlag2FlyEndDL
+
+gFlagpoleFlag2FlyEndLimb:
+  type: OOT:LIMB
+  offset: 0x2F50
+  symbol: gFlagpoleFlag2FlyEndLimb
+  limb_type: Standard
+
+gFlagpoleFlag2FlyMidBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2F38
+  symbol: gFlagpoleFlag2FlyMidBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag2FlyMidDL:
+  type: GFX
+  offset: 0x2D30
+  symbol: gFlagpoleFlag2FlyMidDL
+
+gFlagpoleFlag2FlyMidLimb:
+  type: OOT:LIMB
+  offset: 0x2F5C
+  symbol: gFlagpoleFlag2FlyMidLimb
+  limb_type: Standard
+
+gFlagpoleFlag2HoistEndBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2F20
+  symbol: gFlagpoleFlag2HoistEndBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag2HoistEndDL:
+  type: GFX
+  offset: 0x2B90
+  symbol: gFlagpoleFlag2HoistEndDL
+
+gFlagpoleFlag2HoistEndLimb:
+  type: OOT:LIMB
+  offset: 0x2F74
+  symbol: gFlagpoleFlag2HoistEndLimb
+  limb_type: Standard
+
+gFlagpoleFlag2HoistMidBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2F2C
+  symbol: gFlagpoleFlag2HoistMidBaseLimb
+  limb_type: Standard
+
+gFlagpoleFlag2HoistMidDL:
+  type: GFX
+  offset: 0x2C60
+  symbol: gFlagpoleFlag2HoistMidDL
+
+gFlagpoleFlag2HoistMidLimb:
+  type: OOT:LIMB
+  offset: 0x2F68
+  symbol: gFlagpoleFlag2HoistMidLimb
+  limb_type: Standard
+
+gFlagpoleFlagTex:
+  type: TEXTURE
+  offset: 0x1460
+  symbol: gFlagpoleFlagTex
+  format: IA8
+  width: 128
+  height: 32
+
+gFlagpoleFlapAnim:
+  type: OOT:ANIMATION
+  offset: 0x444
+  symbol: gFlagpoleFlapAnim
+
+gFlagpolePoleBaseLimb:
+  type: OOT:LIMB
+  offset: 0x2E90
+  symbol: gFlagpolePoleBaseLimb
+  limb_type: Standard
+
+gFlagpolePoleDL:
+  type: GFX
+  offset: 0x26D0
+  symbol: gFlagpolePoleDL
+
+gFlagpolePoleLimb:
+  type: OOT:LIMB
+  offset: 0x2E9C
+  symbol: gFlagpolePoleLimb
+  limb_type: Standard
+
+gFlagpolePoleTex:
+  type: TEXTURE
+  offset: 0x460
+  symbol: gFlagpolePoleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFlagpoleSkel:
+  type: OOT:SKELETON
+  offset: 0x2FD0
+  symbol: gFlagpoleSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gFlagpoleTopTex:
+  type: TEXTURE
+  offset: 0xC60
+  symbol: gFlagpoleTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_hataVtx_002460:
+  type: OOT:ARRAY
+  offset: 0x002460
+  symbol: object_hataVtx_002460
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002810:
+  type: OOT:ARRAY
+  offset: 0x002810
+  symbol: object_hataVtx_002810
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_0028E0:
+  type: OOT:ARRAY
+  offset: 0x0028E0
+  symbol: object_hataVtx_0028E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_0029B0:
+  type: OOT:ARRAY
+  offset: 0x0029B0
+  symbol: object_hataVtx_0029B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002A80:
+  type: OOT:ARRAY
+  offset: 0x002A80
+  symbol: object_hataVtx_002A80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002B50:
+  type: OOT:ARRAY
+  offset: 0x002B50
+  symbol: object_hataVtx_002B50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002C20:
+  type: OOT:ARRAY
+  offset: 0x002C20
+  symbol: object_hataVtx_002C20
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002CF0:
+  type: OOT:ARRAY
+  offset: 0x002CF0
+  symbol: object_hataVtx_002CF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hataVtx_002DC0:
+  type: OOT:ARRAY
+  offset: 0x002DC0
+  symbol: object_hataVtx_002DC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFlagpoleSkelLimbs:
+  type: BLOB
+  offset: 0x2F80
+  symbol: gFlagpoleSkelLimbs
+  size: 0

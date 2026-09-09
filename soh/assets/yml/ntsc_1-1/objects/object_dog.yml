@@ -1,0 +1,332 @@
+:config:
+  segments:
+    - [ 6, 0x012659D0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x012659D0 ]
+    - [ 9, 0x012659D0 ]
+    - [ 10, 0x012659D0 ]
+    - [ 11, 0x012659D0 ]
+    - [ 12, 0x012659D0 ]
+    - [ 13, 0x012659D0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gDogBackBodyDL:
+  type: GFX
+  offset: 0x6B00
+  symbol: gDogBackBodyDL
+
+gDogBackLeftLegDL:
+  type: GFX
+  offset: 0x6E50
+  symbol: gDogBackLeftLegDL
+
+gDogBackLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7248
+  symbol: gDogBackLeftLegLimb
+  limb_type: Standard
+
+gDogBackRightLegDL:
+  type: GFX
+  offset: 0x6CA0
+  symbol: gDogBackRightLegDL
+
+gDogBackRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x723C
+  symbol: gDogBackRightLegLimb
+  limb_type: Standard
+
+gDogBarkAnim:
+  type: OOT:ANIMATION
+  offset: 0x278
+  symbol: gDogBarkAnim
+
+gDogBodyBackLimb:
+  type: OOT:LIMB
+  offset: 0x71DC
+  symbol: gDogBodyBackLimb
+  limb_type: Standard
+
+gDogBodyFrontLimb:
+  type: OOT:LIMB
+  offset: 0x71E8
+  symbol: gDogBodyFrontLimb
+  limb_type: Standard
+
+gDogBow2Anim:
+  type: OOT:ANIMATION
+  offset: 0xC28
+  symbol: gDogBow2Anim
+
+gDogBowAnim:
+  type: OOT:ANIMATION
+  offset: 0x928
+  symbol: gDogBowAnim
+
+gDogFaceEyeTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gDogFaceEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFaceHairTex:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: gDogFaceHairTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFaceNoseTex:
+  type: TEXTURE
+  offset: 0x3380
+  symbol: gDogFaceNoseTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFrontBodyDL:
+  type: GFX
+  offset: 0x6588
+  symbol: gDogFrontBodyDL
+
+gDogFrontLeftLegDL:
+  type: GFX
+  offset: 0x6950
+  symbol: gDogFrontLeftLegDL
+
+gDogFrontLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7230
+  symbol: gDogFrontLeftLegLimb
+  limb_type: Standard
+
+gDogFrontRightLegDL:
+  type: GFX
+  offset: 0x67A0
+  symbol: gDogFrontRightLegDL
+
+gDogFrontRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7224
+  symbol: gDogFrontRightLegLimb
+  limb_type: Standard
+
+gDogFur1Tex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDogFur1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFur2Tex:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: gDogFur2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFur3Tex:
+  type: TEXTURE
+  offset: 0x2380
+  symbol: gDogFur3Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogFur4Tex:
+  type: TEXTURE
+  offset: 0x3B80
+  symbol: gDogFur4Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDogHeadControlLimb:
+  type: OOT:LIMB
+  offset: 0x71F4
+  symbol: gDogHeadControlLimb
+  limb_type: Standard
+
+gDogHeadDL:
+  type: GFX
+  offset: 0x60E0
+  symbol: gDogHeadDL
+
+gDogHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7200
+  symbol: gDogHeadLimb
+  limb_type: Standard
+
+gDogLeftFaceHairDL:
+  type: GFX
+  offset: 0x64E8
+  symbol: gDogLeftFaceHairDL
+
+gDogLeftFaceHairLimb:
+  type: OOT:LIMB
+  offset: 0x7218
+  symbol: gDogLeftFaceHairLimb
+  limb_type: Standard
+
+gDogPawTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gDogPawTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDogRightFaceHairDL:
+  type: GFX
+  offset: 0x6448
+  symbol: gDogRightFaceHairDL
+
+gDogRightFaceHairLimb:
+  type: OOT:LIMB
+  offset: 0x720C
+  symbol: gDogRightFaceHairLimb
+  limb_type: Standard
+
+gDogRootLimb:
+  type: OOT:LIMB
+  offset: 0x71D0
+  symbol: gDogRootLimb
+  limb_type: Standard
+
+gDogRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xD78
+  symbol: gDogRunAnim
+
+gDogSitAnim:
+  type: OOT:ANIMATION
+  offset: 0x1150
+  symbol: gDogSitAnim
+
+gDogSkel:
+  type: OOT:SKELETON
+  offset: 0x7290
+  symbol: gDogSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDogTailDL:
+  type: GFX
+  offset: 0x7000
+  symbol: gDogTailDL
+
+gDogTailLimb:
+  type: OOT:LIMB
+  offset: 0x7254
+  symbol: gDogTailLimb
+  limb_type: Standard
+
+gDogWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1368
+  symbol: gDogWalkAnim
+
+
+object_dogVtx_004D80:
+  type: OOT:ARRAY
+  offset: 0x004D80
+  symbol: object_dogVtx_004D80
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_005280:
+  type: OOT:ARRAY
+  offset: 0x005280
+  symbol: object_dogVtx_005280
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_0052C0:
+  type: OOT:ARRAY
+  offset: 0x0052C0
+  symbol: object_dogVtx_0052C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_005300:
+  type: OOT:ARRAY
+  offset: 0x005300
+  symbol: object_dogVtx_005300
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_0054E0:
+  type: OOT:ARRAY
+  offset: 0x0054E0
+  symbol: object_dogVtx_0054E0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_0056C0:
+  type: OOT:ARRAY
+  offset: 0x0056C0
+  symbol: object_dogVtx_0056C0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_0059B0:
+  type: OOT:ARRAY
+  offset: 0x0059B0
+  symbol: object_dogVtx_0059B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_005BA0:
+  type: OOT:ARRAY
+  offset: 0x005BA0
+  symbol: object_dogVtx_005BA0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_005D90:
+  type: OOT:ARRAY
+  offset: 0x005D90
+  symbol: object_dogVtx_005D90
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dogVtx_005F90:
+  type: OOT:ARRAY
+  offset: 0x005F90
+  symbol: object_dogVtx_005F90
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDogSkelLimbs:
+  type: BLOB
+  offset: 0x7260
+  symbol: gDogSkelLimbs
+  size: 0

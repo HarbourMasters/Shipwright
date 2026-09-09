@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
+
 #include <set>
-#include "../context.h"
+#include "../SeedContext.h"
 
 namespace Playthrough {
 int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,

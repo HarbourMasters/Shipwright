@@ -1,0 +1,556 @@
+:config:
+  segments:
+    - [ 6, 0x00FEBD40 ]
+
+gChildEponaEyeCloseTex:
+  type: TEXTURE
+  offset: 0x1B28
+  symbol: gChildEponaEyeCloseTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gChildEponaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1928
+  symbol: gChildEponaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gChildEponaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1D28
+  symbol: gChildEponaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gChildEponaEyeTLUT:
+  type: TEXTURE
+  offset: 0x1728
+  symbol: gChildEponaEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildEponaGallopingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F98
+  symbol: gChildEponaGallopingAnim
+
+gChildEponaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x43E4
+  symbol: gChildEponaIdleAnim
+
+gChildEponaSkel:
+  type: OOT:SKELETON
+  offset: 0x7B20
+  symbol: gChildEponaSkel
+  limb_type: Skin
+  skel_type: Normal
+
+gChildEponaTrottingAnim:
+  type: OOT:ANIMATION
+  offset: 0x360C
+  symbol: gChildEponaTrottingAnim
+
+gChildEponaWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x53F0
+  symbol: gChildEponaWalkingAnim
+
+gChildEponaWhinnyAnim:
+  type: OOT:ANIMATION
+  offset: 0x4B08
+  symbol: gChildEponaWhinnyAnim
+
+object_horse_link_childTex_001F28:
+  type: TEXTURE
+  offset: 0x1F28
+  symbol: object_horse_link_childTex_001F28
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_horse_link_childTex_001F68:
+  type: TEXTURE
+  offset: 0x1F68
+  symbol: object_horse_link_childTex_001F68
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_childTex_002168:
+  type: TEXTURE
+  offset: 0x2168
+  symbol: object_horse_link_childTex_002168
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_childTex_002368:
+  type: TEXTURE
+  offset: 0x2368
+  symbol: object_horse_link_childTex_002368
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_childTex_002568:
+  type: TEXTURE
+  offset: 0x2568
+  symbol: object_horse_link_childTex_002568
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_horse_link_childTex_002588:
+  type: TEXTURE
+  offset: 0x2588
+  symbol: object_horse_link_childTex_002588
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_horse_link_childTex_002788:
+  type: TEXTURE
+  offset: 0x2788
+  symbol: object_horse_link_childTex_002788
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_childTex_008120:
+  type: TEXTURE
+  offset: 0x8120
+  symbol: object_horse_link_childTex_008120
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_childTex_008320:
+  type: TEXTURE
+  offset: 0x8320
+  symbol: object_horse_link_childTex_008320
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_horse_link_childVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_horse_link_childVtx_000000
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_0005F0:
+  type: OOT:ARRAY
+  offset: 0x0005F0
+  symbol: object_horse_link_childVtx_0005F0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000690:
+  type: OOT:ARRAY
+  offset: 0x000690
+  symbol: object_horse_link_childVtx_000690
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000790:
+  type: OOT:ARRAY
+  offset: 0x000790
+  symbol: object_horse_link_childVtx_000790
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000830:
+  type: OOT:ARRAY
+  offset: 0x000830
+  symbol: object_horse_link_childVtx_000830
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000930:
+  type: OOT:ARRAY
+  offset: 0x000930
+  symbol: object_horse_link_childVtx_000930
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000A30:
+  type: OOT:ARRAY
+  offset: 0x000A30
+  symbol: object_horse_link_childVtx_000A30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000AD0:
+  type: OOT:ARRAY
+  offset: 0x000AD0
+  symbol: object_horse_link_childVtx_000AD0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000BD0:
+  type: OOT:ARRAY
+  offset: 0x000BD0
+  symbol: object_horse_link_childVtx_000BD0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChildEponaSkelLimbsLimb_007858DL_000C70:
+  type: GFX
+  offset: 0x000C70
+  symbol: gChildEponaSkelLimbsLimb_007858DL_000C70
+
+gChildEponaSkelLimbsLimb_0079D8DL_001028:
+  type: GFX
+  offset: 0x001028
+  symbol: gChildEponaSkelLimbsLimb_0079D8DL_001028
+
+gChildEponaSkelLimbsLimb_0079C8DL_0010D8:
+  type: GFX
+  offset: 0x0010D8
+  symbol: gChildEponaSkelLimbsLimb_0079C8DL_0010D8
+
+gChildEponaSkelLimbsLimb_0078D8DL_0011E8:
+  type: GFX
+  offset: 0x0011E8
+  symbol: gChildEponaSkelLimbsLimb_0078D8DL_0011E8
+
+gChildEponaSkelLimbsLimb_0078C8DL_001298:
+  type: GFX
+  offset: 0x001298
+  symbol: gChildEponaSkelLimbsLimb_0078C8DL_001298
+
+gChildEponaSkelLimbsLimb_007948DL_0013A8:
+  type: GFX
+  offset: 0x0013A8
+  symbol: gChildEponaSkelLimbsLimb_007948DL_0013A8
+
+gChildEponaSkelLimbsLimb_007958DL_0014B8:
+  type: GFX
+  offset: 0x0014B8
+  symbol: gChildEponaSkelLimbsLimb_007958DL_0014B8
+
+gChildEponaSkelLimbsLimb_007A48DL_001568:
+  type: GFX
+  offset: 0x001568
+  symbol: gChildEponaSkelLimbsLimb_007A48DL_001568
+
+gChildEponaSkelLimbsLimb_007A58DL_001678:
+  type: GFX
+  offset: 0x001678
+  symbol: gChildEponaSkelLimbsLimb_007A58DL_001678
+
+gChildEponaSkelLimbsLimb_007788:
+  type: OOT:LIMB
+  offset: 0x007788
+  symbol: gChildEponaSkelLimbsLimb_007788
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007798:
+  type: OOT:LIMB
+  offset: 0x007798
+  symbol: gChildEponaSkelLimbsLimb_007798
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077A8:
+  type: OOT:LIMB
+  offset: 0x0077A8
+  symbol: gChildEponaSkelLimbsLimb_0077A8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077B8:
+  type: OOT:LIMB
+  offset: 0x0077B8
+  symbol: gChildEponaSkelLimbsLimb_0077B8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077C8:
+  type: OOT:LIMB
+  offset: 0x0077C8
+  symbol: gChildEponaSkelLimbsLimb_0077C8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077D8:
+  type: OOT:LIMB
+  offset: 0x0077D8
+  symbol: gChildEponaSkelLimbsLimb_0077D8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077E8:
+  type: OOT:LIMB
+  offset: 0x0077E8
+  symbol: gChildEponaSkelLimbsLimb_0077E8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0077F8:
+  type: OOT:LIMB
+  offset: 0x0077F8
+  symbol: gChildEponaSkelLimbsLimb_0077F8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007808:
+  type: OOT:LIMB
+  offset: 0x007808
+  symbol: gChildEponaSkelLimbsLimb_007808
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007818:
+  type: OOT:LIMB
+  offset: 0x007818
+  symbol: gChildEponaSkelLimbsLimb_007818
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007828:
+  type: OOT:LIMB
+  offset: 0x007828
+  symbol: gChildEponaSkelLimbsLimb_007828
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007838:
+  type: OOT:LIMB
+  offset: 0x007838
+  symbol: gChildEponaSkelLimbsLimb_007838
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007848:
+  type: OOT:LIMB
+  offset: 0x007848
+  symbol: gChildEponaSkelLimbsLimb_007848
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007858:
+  type: OOT:LIMB
+  offset: 0x007858
+  symbol: gChildEponaSkelLimbsLimb_007858
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007868:
+  type: OOT:LIMB
+  offset: 0x007868
+  symbol: gChildEponaSkelLimbsLimb_007868
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007878:
+  type: OOT:LIMB
+  offset: 0x007878
+  symbol: gChildEponaSkelLimbsLimb_007878
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007888:
+  type: OOT:LIMB
+  offset: 0x007888
+  symbol: gChildEponaSkelLimbsLimb_007888
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007898:
+  type: OOT:LIMB
+  offset: 0x007898
+  symbol: gChildEponaSkelLimbsLimb_007898
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078A8:
+  type: OOT:LIMB
+  offset: 0x0078A8
+  symbol: gChildEponaSkelLimbsLimb_0078A8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078B8:
+  type: OOT:LIMB
+  offset: 0x0078B8
+  symbol: gChildEponaSkelLimbsLimb_0078B8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078C8:
+  type: OOT:LIMB
+  offset: 0x0078C8
+  symbol: gChildEponaSkelLimbsLimb_0078C8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078D8:
+  type: OOT:LIMB
+  offset: 0x0078D8
+  symbol: gChildEponaSkelLimbsLimb_0078D8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078E8:
+  type: OOT:LIMB
+  offset: 0x0078E8
+  symbol: gChildEponaSkelLimbsLimb_0078E8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0078F8:
+  type: OOT:LIMB
+  offset: 0x0078F8
+  symbol: gChildEponaSkelLimbsLimb_0078F8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007908:
+  type: OOT:LIMB
+  offset: 0x007908
+  symbol: gChildEponaSkelLimbsLimb_007908
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007918:
+  type: OOT:LIMB
+  offset: 0x007918
+  symbol: gChildEponaSkelLimbsLimb_007918
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007928:
+  type: OOT:LIMB
+  offset: 0x007928
+  symbol: gChildEponaSkelLimbsLimb_007928
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007938:
+  type: OOT:LIMB
+  offset: 0x007938
+  symbol: gChildEponaSkelLimbsLimb_007938
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007948:
+  type: OOT:LIMB
+  offset: 0x007948
+  symbol: gChildEponaSkelLimbsLimb_007948
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007958:
+  type: OOT:LIMB
+  offset: 0x007958
+  symbol: gChildEponaSkelLimbsLimb_007958
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007968:
+  type: OOT:LIMB
+  offset: 0x007968
+  symbol: gChildEponaSkelLimbsLimb_007968
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007978:
+  type: OOT:LIMB
+  offset: 0x007978
+  symbol: gChildEponaSkelLimbsLimb_007978
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007988:
+  type: OOT:LIMB
+  offset: 0x007988
+  symbol: gChildEponaSkelLimbsLimb_007988
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007998:
+  type: OOT:LIMB
+  offset: 0x007998
+  symbol: gChildEponaSkelLimbsLimb_007998
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079A8:
+  type: OOT:LIMB
+  offset: 0x0079A8
+  symbol: gChildEponaSkelLimbsLimb_0079A8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079B8:
+  type: OOT:LIMB
+  offset: 0x0079B8
+  symbol: gChildEponaSkelLimbsLimb_0079B8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079C8:
+  type: OOT:LIMB
+  offset: 0x0079C8
+  symbol: gChildEponaSkelLimbsLimb_0079C8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079D8:
+  type: OOT:LIMB
+  offset: 0x0079D8
+  symbol: gChildEponaSkelLimbsLimb_0079D8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079E8:
+  type: OOT:LIMB
+  offset: 0x0079E8
+  symbol: gChildEponaSkelLimbsLimb_0079E8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_0079F8:
+  type: OOT:LIMB
+  offset: 0x0079F8
+  symbol: gChildEponaSkelLimbsLimb_0079F8
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A08:
+  type: OOT:LIMB
+  offset: 0x007A08
+  symbol: gChildEponaSkelLimbsLimb_007A08
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A18:
+  type: OOT:LIMB
+  offset: 0x007A18
+  symbol: gChildEponaSkelLimbsLimb_007A18
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A28:
+  type: OOT:LIMB
+  offset: 0x007A28
+  symbol: gChildEponaSkelLimbsLimb_007A28
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A38:
+  type: OOT:LIMB
+  offset: 0x007A38
+  symbol: gChildEponaSkelLimbsLimb_007A38
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A48:
+  type: OOT:LIMB
+  offset: 0x007A48
+  symbol: gChildEponaSkelLimbsLimb_007A48
+  limb_type: Skin
+
+gChildEponaSkelLimbsLimb_007A58:
+  type: OOT:LIMB
+  offset: 0x007A58
+  symbol: gChildEponaSkelLimbsLimb_007A58
+  limb_type: Skin
+
+gChildEponaSkelLimbs:
+  type: BLOB
+  offset: 0x7A68
+  symbol: gChildEponaSkelLimbs
+  size: 0
+
+gChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30:
+  type: GFX
+  offset: 0x007B30
+  symbol: gChildEponaSkelLimbsLimb_0077D8SkinLimbDL_007B30

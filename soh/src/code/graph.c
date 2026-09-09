@@ -6,9 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <libultraship/bridge/gfxdebuggerbridge.h>
+#include <libultraship/bridge/windowbridge.h>
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/OTRGlobals.h"
-#include "libultraship/bridge.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -27,7 +28,6 @@ FaultClient sGraphFaultClient;
 CfbInfo sGraphCfbInfos[3];
 FaultClient sGraphUcodeFaultClient;
 
-void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId);
 void PadMgr_ThreadEntry(PadMgr* padMgr);
 
 // clang-format off
@@ -389,7 +389,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         gfxCtx->fbIdx++;
     }
 
-    func_800F3054();
+    Audio_Update();
 
     {
         OSTime time = osGetTime();
@@ -408,9 +408,11 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
+    s32 mask = CVarGetInteger("gDeveloperTools.MapSelectBtn", BTN_Z | BTN_L | BTN_R);
+
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
-        if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
-            CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
+        if (CHECK_BTN_ANY(gameState->input[0].press.button, mask) &&
+            CHECK_BTN_ALL(gameState->input[0].cur.button, mask)) {
             gSaveContext.gameMode = GAMEMODE_NORMAL;
             SET_NEXT_GAMESTATE(gameState, Select_Init, SelectContext);
             gameState->running = false;
@@ -435,7 +437,6 @@ extern void ProcessSaveStateRequests(void);
 static void RunFrame() {
     u32 size;
     char faultMsg[0x50];
-    static bool hasSetupSkybox = false;
 
     switch (runFrameContext.state) {
         case 0:
@@ -465,14 +466,6 @@ static void RunFrame() {
             Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
         }
         GameState_Init(gGameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
-
-        // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
-        // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
-        if (!hasSetupSkybox) {
-            PlayState* play = (PlayState*)gGameState;
-            Skybox_Setup(play, &play->skyboxCtx, SKYBOX_NORMAL_SKY);
-            hasSetupSkybox = true;
-        }
 
         uint64_t freq = GetFrequency();
 

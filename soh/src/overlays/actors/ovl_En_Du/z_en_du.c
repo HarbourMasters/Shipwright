@@ -1,7 +1,6 @@
 #include "z_en_du.h"
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_DURING_OCARINA)
@@ -121,7 +120,7 @@ void EnDu_SetupAction(EnDu* this, EnDuActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
-u16 func_809FDC38(PlayState* play, Actor* actor) {
+u16 EnDu_GetTextId(PlayState* play, Actor* actor) {
     u16 reaction = Text_GetFaceReaction(play, 0x21);
 
     if (reaction != 0) {
@@ -141,7 +140,7 @@ u16 func_809FDC38(PlayState* play, Actor* actor) {
     }
 }
 
-s16 func_809FDCDC(PlayState* play, Actor* actor) {
+s16 EnDu_UpdateTalkState(PlayState* play, Actor* actor) {
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
         case TEXT_STATE_DONE_HAS_NEXT:
@@ -387,8 +386,8 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE890);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         if (GameInteractor_Should(VB_PLAY_DARUNIAS_JOY_CS, true)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
@@ -405,7 +404,7 @@ void func_809FE638(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
-        OnePointCutscene_Init(play, 3330, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3330, -99, &this->actor, CAM_ID_MAIN);
         player->actor.shape.rot.y = player->actor.world.rot.y = this->actor.world.rot.y + 0x7FFF;
         Audio_PlayFanfare(NA_BGM_APPEAR);
         EnDu_SetupAction(this, func_809FE6CC);
@@ -624,7 +623,7 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != func_809FE4A4) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 116.0f,
-                          func_809FDC38, func_809FDCDC);
+                          EnDu_GetTextId, EnDu_UpdateTalkState);
     }
     this->actionFunc(this, play);
 }

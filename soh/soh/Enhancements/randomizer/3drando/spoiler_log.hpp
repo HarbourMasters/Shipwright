@@ -2,9 +2,6 @@
 
 #include <array>
 #include <string>
-#include <string_view>
-#include <cstdint>
-#include "../randomizerTypes.h"
 
 using RandomizerHash = std::array<std::string, 5>;
 
@@ -23,4 +20,4 @@ typedef enum {
 
 void GenerateHash();
 
-const char* SpoilerLog_Write();
+void SpoilerLog_Write();

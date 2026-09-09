@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F28C0 ]
+
+gWaterTempleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gWaterTempleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gWaterTempleTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWaterTempleTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

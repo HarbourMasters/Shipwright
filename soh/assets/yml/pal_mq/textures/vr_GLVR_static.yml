@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x015B8620 ]
+
+gGoronShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gGoronShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_GLVR_pal_static
+  external_tlut_offset: 0x200
+
+gGoronShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGoronShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_GLVR_pal_static
+  external_tlut_offset: 0x0
+

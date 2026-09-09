@@ -10,8 +10,6 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -243,9 +241,6 @@ void EnOwl_Destroy(Actor* thisx, PlayState* play) {
     EnOwl* this = (EnOwl*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 /**
@@ -280,14 +275,14 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
                 this->actionFlags &= ~0x40;
             }
         }
-        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, MAIN_CAM);
+        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, CAM_ID_MAIN);
         return true;
     } else {
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
         if (GameInteractor_Should(VB_OWL_INTERACTION, this->actor.xzDistToPlayer < targetDist, this)) {
             this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-            func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
+            Actor_OfferTalkExchange(&this->actor, play, targetDist, distCheck, 0);
         }
         return false;
     }
@@ -299,7 +294,7 @@ s32 func_80ACA558(EnOwl* this, PlayState* play, u16 textId) {
     } else {
         this->actor.textId = textId;
         if (this->actor.xzDistToPlayer < 120.0f) {
-            func_8002F1C4(&this->actor, play, 350.0f, 1000.0f, 0);
+            Actor_OfferTalkExchange(&this->actor, play, 350.0f, 1000.0f, 0);
         }
         return false;
     }
@@ -941,42 +936,24 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
             osSyncPrintf(VT_FGCOL(CYAN));
             osSyncPrintf("%dのフクロウ\n", owlType); // "%d owl"
             osSyncPrintf(VT_RST);
-            switch (owlType) {
-                case 7:
-                    osSyncPrintf(VT_FGCOL(CYAN));
-                    osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
-                    osSyncPrintf(VT_RST);
-                    if (IS_RANDO) {
-                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_OWL_DROP);
-                        } else {
-                            play->nextEntranceIndex = ENTR_HYRULE_FIELD_OWL_DROP;
-                        }
-                        play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = TRANS_TYPE_FADE_BLACK;
+            if (GameInteractor_Should(VB_PLAY_OWL_TRAVEL_CS, true, owlType)) {
+                switch (owlType) {
+                    case 7:
+                        osSyncPrintf(VT_FGCOL(CYAN));
+                        osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
+                        osSyncPrintf(VT_RST);
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
+                        this->actor.draw = NULL;
                         break;
-                    }
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                case 8:
-                case 9:
-                    if (IS_RANDO) {
-                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
-                            play->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_KAKARIKO_VILLAGE_OWL_DROP);
-                        } else {
-                            play->nextEntranceIndex = ENTR_KAKARIKO_VILLAGE_OWL_DROP;
-                        }
-                        play->transitionTrigger = TRANS_TRIGGER_START;
-                        play->transitionType = TRANS_TYPE_FADE_BLACK;
+                    case 8:
+                    case 9:
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
+                        this->actor.draw = NULL;
                         break;
-                    }
-                    play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
-                    this->actor.draw = NULL;
-                    break;
-                default:
-                    assert(0);
-                    break;
+                    default:
+                        assert(0);
+                        break;
+                }
             }
 
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
@@ -985,7 +962,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
             this->actionFunc = EnOwl_WaitDefault;
             this->unk_40A = 0;
             this->actionFlags |= 0x80;
-            gTimeIncrement = 0;
+            gTimeSpeed = 0;
         }
     }
 

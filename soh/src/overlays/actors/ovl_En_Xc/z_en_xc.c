@@ -13,9 +13,8 @@
 #include "scenes/indoors/tokinoma/tokinoma_scene.h"
 #include "scenes/dungeons/ice_doukutu/ice_doukutu_scene.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -77,8 +76,6 @@ void EnXc_Destroy(Actor* thisx, PlayState* play) {
     EnXc* this = (EnXc*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnXc_CalculateHeadTurn(EnXc* this, PlayState* play) {
@@ -112,7 +109,7 @@ void EnXc_SpawnNut(EnXc* this, PlayState* play) {
     f32 y = pos->y + 3.0f;
     f32 z = (Math_CosS(angle) * 30.0f) + pos->z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, x, y, z, 0xFA0, this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, x, y, z, 0xFA0, this->actor.shape.rot.y, 0, ARROW_CS_NUT);
 }
 
 void EnXc_BgCheck(EnXc* this, PlayState* play) {
@@ -303,7 +300,7 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
-                if (GameInteractor_Should(VB_GIVE_ITEM_MINUET_OF_FOREST, true)) {
+                if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_MINUET)) {
                     Item_Give(play, ITEM_SONG_MINUET);
                 }
                 if (GameInteractor_Should(VB_PLAY_MINUET_OF_FOREST_CS, true)) {
@@ -340,7 +337,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
-            if (GameInteractor_Should(VB_GIVE_ITEM_BOLERO_OF_FIRE, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_BOLERO)) {
                 Item_Give(play, ITEM_SONG_BOLERO);
             }
             if (GameInteractor_Should(VB_PLAY_BOLERO_OF_FIRE_CS, true)) {
@@ -379,7 +376,7 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
             }
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
-            if (GameInteractor_Should(VB_GIVE_ITEM_SERENADE_OF_WATER, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_SERENADE)) {
                 Item_Give(play, ITEM_SONG_SERENADE);
             }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
@@ -417,7 +414,7 @@ void EnXc_SetWalkingSFX(EnXc* this, PlayState* play) {
     s32 pad2;
 
     if (Animation_OnFrame(&this->skelAnime, 11.0f) || Animation_OnFrame(&this->skelAnime, 23.0f)) {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
             Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
@@ -431,7 +428,7 @@ void EnXc_SetNutThrowSFX(EnXc* this, PlayState* play) {
     s32 pad2;
 
     if (Animation_OnFrame(&this->skelAnime, 7.0f)) {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
             Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
@@ -446,7 +443,7 @@ void EnXc_SetLandingSFX(EnXc* this, PlayState* play) {
     u32 sfxId;
     s16 sceneNum = play->sceneNum;
 
-    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum != SCENE_DESERT_COLOSSUS)) {
+    if ((gSaveContext.sceneLayer != 4) || (sceneNum != SCENE_DESERT_COLOSSUS)) {
         if (Animation_OnFrame(&this->skelAnime, 11.0f)) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
@@ -459,7 +456,7 @@ void EnXc_SetColossusAppearSFX(EnXc* this, PlayState* play) {
     static Vec3f sXyzDist;
     s16 sceneNum;
 
-    if (gSaveContext.sceneSetupIndex == 4) {
+    if (gSaveContext.sceneLayer == 4) {
         sceneNum = play->sceneNum;
         if (sceneNum == SCENE_DESERT_COLOSSUS) {
             CutsceneContext* csCtx = &play->csCtx;
@@ -485,16 +482,16 @@ void EnXc_SetColossusAppearSFX(EnXc* this, PlayState* play) {
 void func_80B3D118(PlayState* play) {
     s16 sceneNum;
 
-    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum = play->sceneNum, sceneNum != SCENE_DESERT_COLOSSUS)) {
+    if ((gSaveContext.sceneLayer != 4) || (sceneNum = play->sceneNum, sceneNum != SCENE_DESERT_COLOSSUS)) {
         Sfx_PlaySfxCentered2(NA_SE_PL_SKIP);
     }
 }
 
 static Vec3f D_80B42DA0;
 
-s32 D_80B41D90 = 0;
+static s32 D_80B41D90 = 0;
 void EnXc_SetColossusWindSFX(PlayState* play) {
-    if (gSaveContext.sceneSetupIndex == 4) {
+    if (gSaveContext.sceneLayer == 4) {
         static Vec3f sPos = { 0.0f, 0.0f, 0.0f };
         static f32 sMaxSpeed = 0.0f;
         static Vec3f D_80B42DB0;
@@ -529,17 +526,17 @@ void EnXc_SetColossusWindSFX(PlayState* play) {
     }
 }
 
-s32 sEnXcFlameSpawned = false;
+static s32 sFlameSpawned = false;
 void EnXc_SpawnFlame(EnXc* this, PlayState* play) {
 
-    if (!sEnXcFlameSpawned) {
+    if (!sFlameSpawned) {
         CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
         f32 xPos = npcAction->startPos.x;
         f32 yPos = npcAction->startPos.y;
         f32 zPos = npcAction->startPos.z;
 
-        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5, true);
-        sEnXcFlameSpawned = true;
+        this->flameActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5);
+        sFlameSpawned = true;
     }
 }
 
@@ -564,7 +561,7 @@ void EnXc_DestroyFlame(EnXc* this) {
     Actor_Kill(&this->actor);
 }
 
-s32 D_80B41DA8 = 1;
+static s32 D_80B41DA8 = 1;
 void EnXc_InitFlame(EnXc* this, PlayState* play) {
     s32 pad;
     s16 sceneNum = play->sceneNum;
@@ -1439,12 +1436,20 @@ void func_80B3F534(PlayState* play) {
     u16 frameCount = csCtx->frames;
 
     if (frameCount == 310) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -1044.0f, -1243.0f, 7458.0f, 0, 0, 0, WARP_DESTINATION,
-                    true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -1044.0f, -1243.0f, 7458.0f, 0, 0, 0, WARP_DESTINATION);
     }
 }
 
-s32 D_80B41DAC = 1;
+static s32 D_80B41DAC = 1;
+
+#define EN_XC_SHIP_SAVESTATE_FIELDS(F) \
+    F(D_80B41D90)                      \
+    F(sFlameSpawned)                   \
+    F(D_80B41DA8)                      \
+    F(D_80B41DAC)
+
+SHIP_SAVESTATE_DEFINE(EnXc, EN_XC_SHIP_SAVESTATE_FIELDS)
+
 void func_80B3F59C(EnXc* this, PlayState* play) {
     CsCmdActorCue* npcAction = EnXc_GetCsCmd(play, 0);
 
@@ -2196,7 +2201,7 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
                                          !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) &&
                                              Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP))) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
-            if (GameInteractor_Should(VB_GIVE_ITEM_PRELUDE_OF_LIGHT, true)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_PRELUDE)) {
                 Item_Give(play, ITEM_SONG_PRELUDE);
             }
             if (GameInteractor_Should(VB_PLAY_PRELUDE_OF_LIGHT_CS, true)) {
@@ -2226,7 +2231,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
         } else {
             this->actor.textId = 0x700F; //"You need another skill"
         }
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -2481,7 +2486,7 @@ const ActorInit En_Xc_InitVars = {
 
 void EnXc_Reset(void) {
     D_80B41D90 = 0;
-    sEnXcFlameSpawned = false;
+    sFlameSpawned = false;
     D_80B41DA8 = 1;
     D_80B41DAC = 1;
 }

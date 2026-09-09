@@ -1,28 +1,26 @@
 #include "item.h"
-#include "item_location.h"
-
-#include "context.h"
+#include "SeedContext.h"
 #include "logic.h"
-#include "3drando/item_pool.hpp"
-#include "z64item.h"
-#include "variables.h"
-#include "macros.h"
-#include "functions.h"
 #include "../../OTRGlobals.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+
+extern "C" {
+#include "z64item.h"
+}
 
 namespace Rando {
 Item::Item()
-    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
-      progressive(false), price(0) {
+    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE), price(0) {
 }
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
            const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
-           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_,
-           const bool progressive_, const uint16_t price_)
+           const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_, Text article_,
+           const std::string color_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), progressive(progressive_),
-      price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
+      article(std::move(article_)), color(std::move(color_)), price(price_) {
+
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
             itemId_, field_, static_cast<int16_t>((chestAnimation_ != CHEST_ANIM_SHORT ? 1 : -1) * (gid_ + 1)), textId_,
@@ -38,13 +36,11 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_,
-           const GetItemCategory category_, const bool progressive_, const uint16_t price_)
+           const GetItemCategory category_, Text article_, const std::string color_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
-      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_), progressive(progressive_),
-      price(price_) {
+      advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
+      article(std::move(article_)), color(std::move(color_)), price(price_) {
 }
-
-Item::~Item() = default;
 
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
@@ -68,7 +64,21 @@ const Text& Item::GetName() const {
     return name;
 }
 
+const Text& Item::GetArticle() const {
+    return article;
+}
+
+const std::string& Item::GetColor() const {
+    return color;
+}
+
 bool Item::IsAdvancement() const {
+    // With the shop shield/tunic gate on, a found Deku/Hylian Shield unlocks its shop copy, so it must
+    // be treated as progression. Tunics already are.
+    if (!advancement && (randomizerGet == RG_DEKU_SHIELD || randomizerGet == RG_HYLIAN_SHIELD) &&
+        Context::GetInstance()->GetOption(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON)) {
+        return true;
+    }
     return advancement;
 }
 
@@ -93,7 +103,7 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr) {
+    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG) {
         return giEntry;
     }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
@@ -270,6 +280,10 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             }
             break;
         case RG_PROGRESSIVE_STRENGTH:
+            if (!logic->CheckRandoInf(RAND_INF_CAN_GRAB)) {
+                actual = RG_POWER_BRACELET;
+                break;
+            }
             switch (logic->CurrentUpgrade(UPG_STRENGTH)) {
                 case 0:
                     actual = RG_GORONS_BRACELET;
@@ -352,21 +366,37 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
             }
             break;
-        case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
-            actual = RG_BIGGORON_SWORD;
+        case RG_PROGRESSIVE_GORONSWORD:
+            // owning the slot means the knife was already given, breaking it doesn't clear the flag
+            actual = logic->CheckEquipment(EQUIP_FLAG_SWORD_BGS) ? RG_BIGGORON_SWORD : RG_GIANTS_KNIFE;
             break;
-        case RG_PROGRESSIVE_BOMBCHUS:
-            if (logic->CurrentInventory(ITEM_BOMBCHU) == ITEM_NONE) {
-                actual = RG_BOMBCHU_BAG;
-            } else if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
-                actual = RG_BOMBCHU_INF;
-            } else {
-                actual = RG_BOMBCHU_10;
+        case RG_PROGRESSIVE_BOMBCHU_BAG:
+            if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades != RO_INF_UPGRADES_OFF) {
+                        actual = RG_BOMBCHU_INF;
+                    } else {
+                        actual = RG_BOMBCHU_10;
+                    }
+                }
+            } else if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
+                    if (infiniteUpgrades == RO_INF_UPGRADES_CONDENSED_PROGRESSIVE) {
+                        actual = RG_BOMBCHU_INF;
+                    } else if (infiniteUpgrades == RO_INF_UPGRADES_PROGRESSIVE) {
+                        if (logic->GetSaveContext()->ship.quest.data.randomizer.bombchuUpgradeLevel >= 3) {
+                            actual = RG_BOMBCHU_INF;
+                        }
+                    }
+                }
             }
             break;
         default:
             actual = RG_NONE;
             break;
+    }
+    if (giEntry != nullptr && actual == RG_NONE) {
+        return giEntry;
     }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
@@ -400,7 +430,8 @@ bool Item::IsBottleItem() const {
 bool Item::IsMajorItem() const {
     const auto ctx = Context::GetInstance();
     if (type == ITEMTYPE_TOKEN) {
-        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->LACSCondition() == RO_LACS_TOKENS;
+        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) ||
+               ctx->GBKCondition() == RO_CHECK_TRIGGER_TOKENS;
     }
 
     if (type == ITEMTYPE_DROP || type == ITEMTYPE_EVENT || type == ITEMTYPE_SHOP || type == ITEMTYPE_MAP ||
@@ -414,7 +445,7 @@ bool Item::IsMajorItem() const {
     }
 
     if ((randomizerGet == RG_BOMBCHU_5 || randomizerGet == RG_BOMBCHU_10 || randomizerGet == RG_BOMBCHU_20) &&
-        !ctx->GetOption(RSK_BOMBCHU_BAG)) {
+        ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
         return false;
     }
 
@@ -450,6 +481,23 @@ bool Item::IsMajorItem() const {
     return IsAdvancement();
 }
 
+bool Item::IsShieldOrTunic() const {
+    switch (randomizerGet) {
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_BUY_DEKU_SHIELD:
+        case RG_BUY_HYLIAN_SHIELD:
+        case RG_BUY_GORON_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+            return true;
+        default:
+            return false;
+    }
+}
+
 RandomizerHintTextKey Item::GetHintKey() const {
     return hintKey;
 }
@@ -460,6 +508,24 @@ const HintText& Item::GetHint() const {
 
 GetItemCategory Item::GetCategory() {
     return category;
+}
+
+Item Item::CustomIcon(const char* customIcon_, CustomIconSize iconSize_) {
+    customIcon = customIcon_;
+    iconSize = iconSize_;
+    return *this;
+}
+
+const char* Item::GetCustomIcon() {
+    return customIcon;
+}
+
+CustomIconSize Item::GetCustomIconSize() {
+    return iconSize;
+}
+
+bool Item::HasCustomIcon() {
+    return customIcon != nullptr;
 }
 
 bool Item::operator==(const Item& right) const {

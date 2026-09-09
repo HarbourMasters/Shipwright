@@ -1,0 +1,170 @@
+:config:
+  segments:
+    - [ 3, 0x01C79390 ]
+    - [ 2, 0x01BFF280 ]
+  directory: scenes/nonmq/jyasinzou_scene
+  external_files:
+    - pal_1-1/scenes/nonmq/jyasinzou_scene.yml
+    - pal_1-1/code/sys_matrix.yml
+
+jyasinzou_room_27:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: jyasinzou_room_27
+
+jyasinzou_room_27Tex_004310:
+  type: TEXTURE
+  offset: 0x42C0
+  symbol: jyasinzou_room_27Tex_004310
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_27Tex_004B10:
+  type: TEXTURE
+  offset: 0x4AC0
+  symbol: jyasinzou_room_27Tex_004B10
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_27Tex_004F10:
+  type: TEXTURE
+  offset: 0x4EC0
+  symbol: jyasinzou_room_27Tex_004F10
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+
+jyasinzou_room_27Vtx_0001D0:
+  type: OOT:ARRAY
+  offset: 0x0001D0
+  symbol: jyasinzou_room_27Vtx_0001D0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_000310:
+  type: GFX
+  offset: 0x000310
+  symbol: jyasinzou_room_27DL_000310
+
+jyasinzou_room_27Vtx_000408:
+  type: OOT:ARRAY
+  offset: 0x000408
+  symbol: jyasinzou_room_27Vtx_000408
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_000548:
+  type: GFX
+  offset: 0x000548
+  symbol: jyasinzou_room_27DL_000548
+
+jyasinzou_room_27Vtx_000648:
+  type: OOT:ARRAY
+  offset: 0x000648
+  symbol: jyasinzou_room_27Vtx_000648
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_000A88:
+  type: GFX
+  offset: 0x000A88
+  symbol: jyasinzou_room_27DL_000A88
+
+jyasinzou_room_27Vtx_000C10:
+  type: OOT:ARRAY
+  offset: 0x000C10
+  symbol: jyasinzou_room_27Vtx_000C10
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_000D70:
+  type: GFX
+  offset: 0x000D70
+  symbol: jyasinzou_room_27DL_000D70
+
+jyasinzou_room_27Vtx_000E78:
+  type: OOT:ARRAY
+  offset: 0x000E78
+  symbol: jyasinzou_room_27Vtx_000E78
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_000F28:
+  type: GFX
+  offset: 0x000F28
+  symbol: jyasinzou_room_27DL_000F28
+
+jyasinzou_room_27Vtx_001010:
+  type: OOT:ARRAY
+  offset: 0x001010
+  symbol: jyasinzou_room_27Vtx_001010
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_0010D0:
+  type: GFX
+  offset: 0x0010D0
+  symbol: jyasinzou_room_27DL_0010D0
+
+jyasinzou_room_27Vtx_001150:
+  type: OOT:ARRAY
+  offset: 0x001150
+  symbol: jyasinzou_room_27Vtx_001150
+  count: 177
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_001C60:
+  type: GFX
+  offset: 0x001C60
+  symbol: jyasinzou_room_27DL_001C60
+
+jyasinzou_room_27Vtx_0029B8:
+  type: OOT:ARRAY
+  offset: 0x0029B8
+  symbol: jyasinzou_room_27Vtx_0029B8
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_0030E8:
+  type: GFX
+  offset: 0x0030E8
+  symbol: jyasinzou_room_27DL_0030E8
+
+jyasinzou_room_27Vtx_003D70:
+  type: OOT:ARRAY
+  offset: 0x003D70
+  symbol: jyasinzou_room_27Vtx_003D70
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_27DL_004100:
+  type: GFX
+  offset: 0x004100
+  symbol: jyasinzou_room_27DL_004100

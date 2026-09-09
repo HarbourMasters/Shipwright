@@ -1,10 +1,8 @@
 #pragma once
+
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
-#include "randomizer_check_objects.h"
 #include "soh/SohGui/UIWidgets.hpp"
-
-#include <libultraship/libultraship.h>
 
 namespace CheckTracker {
 
@@ -61,6 +59,8 @@ void UpdateAllOrdering();
 void UpdateAllAreas();
 void RecalculateAllAreaTotals();
 void SpoilAreaFromCheck(RandomizerCheck rc);
-void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT);
-void CheckTracker_LoadFromPreset(nlohmann::json info);
+void SpoilAreaFromCantObtain(RandomizerGet rg);
+void RecalculateAvailableChecks(RandomizerRegion startingRegion = RR_ROOT, RandoAgeTime startingAgeTime = RAT_NONE);
+void LoadFromPreset(const nlohmann::json& info);
+bool AreAllSilversSpoiled();
 } // namespace CheckTracker

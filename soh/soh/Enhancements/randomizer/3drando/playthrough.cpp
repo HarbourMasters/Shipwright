@@ -1,13 +1,13 @@
-#include "playthrough.hpp"
+#include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
-#include <libultraship/libultraship.h>
+#include "playthrough.hpp"
 #include "fill.hpp"
 #include "../location_access.h"
-#include "random.hpp"
+#include "../rng.h"
 #include "spoiler_log.hpp"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
@@ -16,7 +16,7 @@ namespace Playthrough {
 
 int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                      std::set<RandomizerTrick> enabledTricks) {
-    // initialize the RNG with just the seed incase any settings need to be
+    // initialize the RNG with just the seed in case any settings need to be
     // resolved to something random
     Random_Init(seed);
 
@@ -41,13 +41,13 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         }
 
         for (Rando::Option* option : optionGroup.GetOptions()) {
-            if (option->IsCategory(Rando::OptionCategory::Setting)) {
+            if (option->GetCategory() != Rando::OptionCategory::Toggle) {
                 if (option->GetOptionCount() > 0) {
                     if (i >= RSG_EXCLUDES_KOKIRI_FOREST && i <= RSG_EXCLUDES_GANONS_CASTLE) {
                         auto locationOption = static_cast<Rando::LocationOption*>(option);
                         settingsStr += option->GetOptionText(ctx->GetLocationOption(locationOption->GetKey()).Get());
                     } else if (i == RSG_TRICKS) {
-                        auto trickOption = static_cast<Rando::TrickOption*>(option);
+                        auto trickOption = static_cast<Rando::TrickSetting*>(option);
                         settingsStr += option->GetOptionText(ctx->GetTrickOption(trickOption->GetKey()).Get());
                     } else {
                         settingsStr += option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
@@ -65,30 +65,19 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(finalHash);
     ctx->SetHash(std::to_string(finalHash));
 
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        VanillaFill(); // Just place items in their vanilla locations
-    } else {           // Fill locations with logic
-        int ret = Fill();
-        if (ret < 0) {
-            return ret;
-        }
+    int ret = Fill();
+    if (ret < 0) {
+        return ret;
     }
 
     GenerateHash();
 
-    if (true) {
-        // TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files,
-        // etc.)
-        //  write logs
-        SPDLOG_INFO("Writing Spoiler Log...");
-        StartPerformanceTimer(PT_SPOILER_LOG);
-        if (SpoilerLog_Write()) {
-            SPDLOG_INFO("Writing Spoiler Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Spoiler Log Failed");
-        }
-        StopPerformanceTimer(PT_SPOILER_LOG);
-    }
+    // TODO: Handle different types of file output (Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
+    SPDLOG_INFO("Writing Spoiler Log...");
+    StartPerformanceTimer(PT_SPOILER_LOG);
+    SpoilerLog_Write();
+    StopPerformanceTimer(PT_SPOILER_LOG);
+    SPDLOG_INFO("Writing Spoiler Log Done");
 
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
@@ -103,7 +92,12 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->SetSeedString(std::to_string(rand()));
+        char seedString[11];
+        for (size_t i = 0; i < 10; i++) {
+            seedString[i] = '0' + ShipUtils::Random(0, 10);
+        }
+        seedString[10] = '\0';
+        ctx->SetSeedString(std::string(seedString));
         repeatedSeed = SohUtils::Hash(ctx->GetSeedString());
         ctx->SetSeed(repeatedSeed);
         SPDLOG_DEBUG("testing seed: %d", repeatedSeed);

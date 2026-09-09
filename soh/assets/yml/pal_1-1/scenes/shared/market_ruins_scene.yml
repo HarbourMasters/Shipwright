@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01BD7710 ]
+
+market_ruins_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: market_ruins_scene
+
+
+market_ruins_sceneCollisionHeader_0015F8:
+  type: OOT:COLLISION
+  offset: 0x0015F8
+  symbol: market_ruins_sceneCollisionHeader_0015F8

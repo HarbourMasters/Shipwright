@@ -123,7 +123,7 @@ void BgHidanFwbig_UpdatePosition(BgHidanFwbig* this) {
 void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->actor.params)) {
         this->actionFunc = BgHidanFwbig_WaitForCs;
-        OnePointCutscene_Init(play, 3340, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3340, -99, &this->actor, CAM_ID_MAIN);
         this->timer = 35;
     }
 }
@@ -173,7 +173,7 @@ void BgHidanFwbig_WaitForTimer(BgHidanFwbig* this, PlayState* play) {
     if (this->timer == 0) {
         this->actionFunc = BgHidanFwbig_Rise;
     }
-    func_8002F994(&this->actor, this->timer);
+    Actor_PlaySfx_FlaggedTimer(&this->actor, this->timer);
 }
 
 void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, PlayState* play) {
@@ -181,7 +181,7 @@ void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, PlayState* play) {
 
     if (player->actor.world.pos.x < 1150.0f) {
         this->actionFunc = BgHidanFwbig_Rise;
-        OnePointCutscene_Init(play, 3290, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3290, -99, &this->actor, CAM_ID_MAIN);
     }
 }
 
@@ -225,7 +225,7 @@ void BgHidanFwbig_Update(Actor* thisx, PlayState* play) {
 
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
-        func_8002F71C(play, &this->actor, 5.0f, this->actor.world.rot.y, 1.0f);
+        Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 5.0f, this->actor.world.rot.y, 1.0f);
         if (this->direction != 0) {
             this->actionFunc = BgHidanFwbig_Lower;
         }
@@ -238,10 +238,10 @@ void BgHidanFwbig_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if ((this->actor.home.pos.y - 200.0f) < this->actor.world.pos.y) {
-        if (gSaveContext.sceneSetupIndex < 4) {
-            func_8002F974(&this->actor, NA_SE_EV_BURNING - SFX_FLAG);
+        if (gSaveContext.sceneLayer < 4) {
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_BURNING - SFX_FLAG);
         } else if ((s16)this->actor.world.pos.x == -513) {
-            func_8002F974(&this->actor, NA_SE_EV_FLAME_OF_FIRE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FLAME_OF_FIRE - SFX_FLAG);
         }
         BgHidanFwbig_MoveCollider(this, play);
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
@@ -268,8 +268,8 @@ void BgHidanFwbig_Draw(Actor* thisx, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
-                                (u8)(play->gameplayFrames * -15), 0x20, 0x40));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
+                                  (u8)(play->gameplayFrames * -15), 0x20, 0x40, 1, 0, 0, -15));
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

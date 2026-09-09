@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_box/mat_gChestBodyTokenDL_TokenFront_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodyTokenDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_box/mat_gChestBodyTokenDL_TokenSides_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodyTokenDL_layer_Opaque_tri_1"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

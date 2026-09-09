@@ -1,0 +1,580 @@
+:config:
+  segments:
+    - [ 6, 0x011216D0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x011216D0 ]
+    - [ 9, 0x011216D0 ]
+    - [ 10, 0x011216D0 ]
+    - [ 11, 0x011216D0 ]
+    - [ 12, 0x011216D0 ]
+    - [ 13, 0x011216D0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gZoraBubblesMaterialDL:
+  type: GFX
+  offset: 0x22F0
+  symbol: gZoraBubblesMaterialDL
+
+gZoraBubblesModelDL:
+  type: GFX
+  offset: 0x2350
+  symbol: gZoraBubblesModelDL
+
+gZoraBubblesTex:
+  type: TEXTURE
+  offset: 0x21B0
+  symbol: gZoraBubblesTex
+  format: IA8
+  width: 16
+  height: 16
+
+gZoraEyeClosedTex:
+  type: TEXTURE
+  offset: 0x4E40
+  symbol: gZoraEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4640
+  symbol: gZoraEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraEyeOpenTex:
+  type: TEXTURE
+  offset: 0x3E40
+  symbol: gZoraEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraFinTex:
+  type: TEXTURE
+  offset: 0x3200
+  symbol: gZoraFinTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3000
+
+gZoraHandTex:
+  type: TEXTURE
+  offset: 0x5E40
+  symbol: gZoraHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3000
+
+gZoraHandsOnHipsTappingFootAnim:
+  type: OOT:ANIMATION
+  offset: 0x598
+  symbol: gZoraHandsOnHipsTappingFootAnim
+
+gZoraHeadDL:
+  type: GFX
+  offset: 0x9560
+  symbol: gZoraHeadDL
+
+gZoraHeadLimb:
+  type: OOT:LIMB
+  offset: 0xBF20
+  symbol: gZoraHeadLimb
+  limb_type: Standard
+
+gZoraHeadTail1DL:
+  type: GFX
+  offset: 0x97D8
+  symbol: gZoraHeadTail1DL
+
+gZoraHeadTail1Limb:
+  type: OOT:LIMB
+  offset: 0xBF2C
+  symbol: gZoraHeadTail1Limb
+  limb_type: Standard
+
+gZoraHeadTail2DL:
+  type: GFX
+  offset: 0x9978
+  symbol: gZoraHeadTail2DL
+
+gZoraHeadTail2Limb:
+  type: OOT:LIMB
+  offset: 0xBF38
+  symbol: gZoraHeadTail2Limb
+  limb_type: Standard
+
+gZoraHeadTail3DL:
+  type: GFX
+  offset: 0x9B10
+  symbol: gZoraHeadTail3DL
+
+gZoraHeadTail3Limb:
+  type: OOT:LIMB
+  offset: 0xBF44
+  symbol: gZoraHeadTail3Limb
+  limb_type: Standard
+
+gZoraHeadTailFinDL:
+  type: GFX
+  offset: 0x9CA8
+  symbol: gZoraHeadTailFinDL
+
+gZoraHeadTailFinLimb:
+  type: OOT:LIMB
+  offset: 0xBF50
+  symbol: gZoraHeadTailFinLimb
+  limb_type: Standard
+
+gZoraHeadTailTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gZoraHeadTailTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x3000
+
+gZoraHeadTex:
+  type: TEXTURE
+  offset: 0x3E00
+  symbol: gZoraHeadTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3000
+
+gZoraIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2FE8
+  symbol: gZoraIdleAnim
+
+gZoraKneeTex:
+  type: TEXTURE
+  offset: 0x5F40
+  symbol: gZoraKneeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3000
+
+gZoraLeftArmDL:
+  type: GFX
+  offset: 0xA630
+  symbol: gZoraLeftArmDL
+
+gZoraLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xBED8
+  symbol: gZoraLeftArmLimb
+  limb_type: Standard
+
+gZoraLeftFootDL:
+  type: GFX
+  offset: 0xBBB0
+  symbol: gZoraLeftFootDL
+
+gZoraLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xBE9C
+  symbol: gZoraLeftFootLimb
+  limb_type: Standard
+
+gZoraLeftForearmDL:
+  type: GFX
+  offset: 0xA890
+  symbol: gZoraLeftForearmDL
+
+gZoraLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xBEE4
+  symbol: gZoraLeftForearmLimb
+  limb_type: Standard
+
+gZoraLeftHandDL:
+  type: GFX
+  offset: 0xAB70
+  symbol: gZoraLeftHandDL
+
+gZoraLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xBEF0
+  symbol: gZoraLeftHandLimb
+  limb_type: Standard
+
+gZoraLeftShinDL:
+  type: GFX
+  offset: 0xB8D8
+  symbol: gZoraLeftShinDL
+
+gZoraLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xBE90
+  symbol: gZoraLeftShinLimb
+  limb_type: Standard
+
+gZoraLeftThighsDL:
+  type: GFX
+  offset: 0xB5F8
+  symbol: gZoraLeftThighsDL
+
+gZoraLeftThighsLimb:
+  type: OOT:LIMB
+  offset: 0xBE84
+  symbol: gZoraLeftThighsLimb
+  limb_type: Standard
+
+gZoraMouthTex:
+  type: TEXTURE
+  offset: 0x5640
+  symbol: gZoraMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraOpenArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0xD48
+  symbol: gZoraOpenArmsAnim
+
+gZoraPelvisDL:
+  type: GFX
+  offset: 0x9040
+  symbol: gZoraPelvisDL
+
+gZoraPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xBE78
+  symbol: gZoraPelvisLimb
+  limb_type: Standard
+
+gZoraRightArmDL:
+  type: GFX
+  offset: 0x9EE8
+  symbol: gZoraRightArmDL
+
+gZoraRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xBEFC
+  symbol: gZoraRightArmLimb
+  limb_type: Standard
+
+gZoraRightFootDL:
+  type: GFX
+  offset: 0xB330
+  symbol: gZoraRightFootDL
+
+gZoraRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xBEC0
+  symbol: gZoraRightFootLimb
+  limb_type: Standard
+
+gZoraRightForearmDL:
+  type: GFX
+  offset: 0xA148
+  symbol: gZoraRightForearmDL
+
+gZoraRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xBF08
+  symbol: gZoraRightForearmLimb
+  limb_type: Standard
+
+gZoraRightHandDL:
+  type: GFX
+  offset: 0xA428
+  symbol: gZoraRightHandDL
+
+gZoraRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xBF14
+  symbol: gZoraRightHandLimb
+  limb_type: Standard
+
+gZoraRightShinDL:
+  type: GFX
+  offset: 0xB058
+  symbol: gZoraRightShinDL
+
+gZoraRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xBEB4
+  symbol: gZoraRightShinLimb
+  limb_type: Standard
+
+gZoraRightThighsDL:
+  type: GFX
+  offset: 0xAD78
+  symbol: gZoraRightThighsDL
+
+gZoraRightThighsLimb:
+  type: OOT:LIMB
+  offset: 0xBEA8
+  symbol: gZoraRightThighsLimb
+  limb_type: Standard
+
+gZoraRipplesMaterialDL:
+  type: GFX
+  offset: 0xBFC0
+  symbol: gZoraRipplesMaterialDL
+
+gZoraRipplesModelDL:
+  type: GFX
+  offset: 0xC028
+  symbol: gZoraRipplesModelDL
+
+gZoraSkel:
+  type: OOT:SKELETON
+  offset: 0xBFA8
+  symbol: gZoraSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gZoraSplashesMaterialDL:
+  type: GFX
+  offset: 0x24A0
+  symbol: gZoraSplashesMaterialDL
+
+gZoraSplashesModelDL:
+  type: GFX
+  offset: 0x2510
+  symbol: gZoraSplashesModelDL
+
+gZoraSplashesTex:
+  type: TEXTURE
+  offset: 0x2370
+  symbol: gZoraSplashesTex
+  format: I8
+  width: 16
+  height: 16
+
+gZoraSurfaceAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F10
+  symbol: gZoraSurfaceAnim
+
+gZoraTLUT:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gZoraTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZoraThrowRupeesAnim:
+  type: OOT:ANIMATION
+  offset: 0x219C
+  symbol: gZoraThrowRupeesAnim
+
+gZoraTorsoDL:
+  type: GFX
+  offset: 0x91E8
+  symbol: gZoraTorsoDL
+
+gZoraTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xBECC
+  symbol: gZoraTorsoLimb
+  limb_type: Standard
+
+
+object_zoVtx_0022B0:
+  type: OOT:ARRAY
+  offset: 0x0022B0
+  symbol: object_zoVtx_0022B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_002470:
+  type: OOT:ARRAY
+  offset: 0x002470
+  symbol: object_zoVtx_002470
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_005F80:
+  type: OOT:ARRAY
+  offset: 0x005F80
+  symbol: object_zoVtx_005F80
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006140:
+  type: OOT:ARRAY
+  offset: 0x006140
+  symbol: object_zoVtx_006140
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0062A0:
+  type: OOT:ARRAY
+  offset: 0x0062A0
+  symbol: object_zoVtx_0062A0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006400:
+  type: OOT:ARRAY
+  offset: 0x006400
+  symbol: object_zoVtx_006400
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006580:
+  type: OOT:ARRAY
+  offset: 0x006580
+  symbol: object_zoVtx_006580
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006A30:
+  type: OOT:ARRAY
+  offset: 0x006A30
+  symbol: object_zoVtx_006A30
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006CC0:
+  type: OOT:ARRAY
+  offset: 0x006CC0
+  symbol: object_zoVtx_006CC0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_006ED0:
+  type: OOT:ARRAY
+  offset: 0x006ED0
+  symbol: object_zoVtx_006ED0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007130:
+  type: OOT:ARRAY
+  offset: 0x007130
+  symbol: object_zoVtx_007130
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0073C0:
+  type: OOT:ARRAY
+  offset: 0x0073C0
+  symbol: object_zoVtx_0073C0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0075D0:
+  type: OOT:ARRAY
+  offset: 0x0075D0
+  symbol: object_zoVtx_0075D0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007830:
+  type: OOT:ARRAY
+  offset: 0x007830
+  symbol: object_zoVtx_007830
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007ED0:
+  type: OOT:ARRAY
+  offset: 0x007ED0
+  symbol: object_zoVtx_007ED0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008140:
+  type: OOT:ARRAY
+  offset: 0x008140
+  symbol: object_zoVtx_008140
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0083D0:
+  type: OOT:ARRAY
+  offset: 0x0083D0
+  symbol: object_zoVtx_0083D0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008690:
+  type: OOT:ARRAY
+  offset: 0x008690
+  symbol: object_zoVtx_008690
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008900:
+  type: OOT:ARRAY
+  offset: 0x008900
+  symbol: object_zoVtx_008900
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008B90:
+  type: OOT:ARRAY
+  offset: 0x008B90
+  symbol: object_zoVtx_008B90
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008E50:
+  type: OOT:ARRAY
+  offset: 0x008E50
+  symbol: object_zoVtx_008E50
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZoraSkelLimbs:
+  type: BLOB
+  offset: 0xBF5C
+  symbol: gZoraSkelLimbs
+  size: 0

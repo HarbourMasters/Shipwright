@@ -1,0 +1,496 @@
+:config:
+  segments:
+    - [ 6, 0x00DB4900 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00DB4900 ]
+    - [ 9, 0x00DB4900 ]
+    - [ 10, 0x00DB4900 ]
+    - [ 11, 0x00DB4900 ]
+    - [ 12, 0x00DB4900 ]
+    - [ 13, 0x00DB4900 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gFloormasterTapFingerAnim:
+  type: OOT:ANIMATION
+  offset: 0x39B0
+  symbol: gFloormasterTapFingerAnim
+
+gFloormasterTurnAnim:
+  type: OOT:ANIMATION
+  offset: 0x2158
+  symbol: gFloormasterTurnAnim
+
+gWallmasterBloodyEdgeTex:
+  type: TEXTURE
+  offset: 0x89F0
+  symbol: gWallmasterBloodyEdgeTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x590
+  symbol: gWallmasterDamageAnim
+
+gWallmasterExposedBoneTex:
+  type: TEXTURE
+  offset: 0x88F0
+  symbol: gWallmasterExposedBoneTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterFingerDL:
+  type: GFX
+  offset: 0x8688
+  symbol: gWallmasterFingerDL
+
+gWallmasterFingerTipTex:
+  type: TEXTURE
+  offset: 0x8B70
+  symbol: gWallmasterFingerTipTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gWallmasterHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x9520
+  symbol: gWallmasterHoverAnim
+
+gWallmasterJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x19CC
+  symbol: gWallmasterJumpAnim
+
+gWallmasterKnuckleTex:
+  type: TEXTURE
+  offset: 0x8D30
+  symbol: gWallmasterKnuckleTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterLungeAnim:
+  type: OOT:ANIMATION
+  offset: 0x299C
+  symbol: gWallmasterLungeAnim
+
+gWallmasterMissAnim:
+  type: OOT:ANIMATION
+  offset: 0x3120
+  symbol: gWallmasterMissAnim
+
+gWallmasterRecoverFromDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA4
+  symbol: gWallmasterRecoverFromDamageAnim
+
+gWallmasterSkel:
+  type: OOT:SKELETON
+  offset: 0x8FB0
+  symbol: gWallmasterSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWallmasterStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xA054
+  symbol: gWallmasterStandUpAnim
+
+gWallmasterStopWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x9244
+  symbol: gWallmasterStopWalkAnim
+
+gWallmasterUnderSkinTex:
+  type: TEXTURE
+  offset: 0x8C30
+  symbol: gWallmasterUnderSkinTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterUpperSkinTex:
+  type: TEXTURE
+  offset: 0x8AF0
+  symbol: gWallmasterUpperSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWallmasterUpperToUnderBorderTex:
+  type: TEXTURE
+  offset: 0x8BF0
+  symbol: gWallmasterUpperToUnderBorderTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gWallmasterWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x9DB0
+  symbol: gWallmasterWaitAnim
+
+gWallmasterWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x41F4
+  symbol: gWallmasterWalkAnim
+
+
+object_wallmasterVtx_004210:
+  type: OOT:ARRAY
+  offset: 0x004210
+  symbol: object_wallmasterVtx_004210
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0044C0:
+  type: OOT:ARRAY
+  offset: 0x0044C0
+  symbol: object_wallmasterVtx_0044C0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0046B0:
+  type: OOT:ARRAY
+  offset: 0x0046B0
+  symbol: object_wallmasterVtx_0046B0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0049D0:
+  type: OOT:ARRAY
+  offset: 0x0049D0
+  symbol: object_wallmasterVtx_0049D0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_004BA0:
+  type: OOT:ARRAY
+  offset: 0x004BA0
+  symbol: object_wallmasterVtx_004BA0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_004D90:
+  type: OOT:ARRAY
+  offset: 0x004D90
+  symbol: object_wallmasterVtx_004D90
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0050C0:
+  type: OOT:ARRAY
+  offset: 0x0050C0
+  symbol: object_wallmasterVtx_0050C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0052F0:
+  type: OOT:ARRAY
+  offset: 0x0052F0
+  symbol: object_wallmasterVtx_0052F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0054D0:
+  type: OOT:ARRAY
+  offset: 0x0054D0
+  symbol: object_wallmasterVtx_0054D0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005800:
+  type: OOT:ARRAY
+  offset: 0x005800
+  symbol: object_wallmasterVtx_005800
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005A20:
+  type: OOT:ARRAY
+  offset: 0x005A20
+  symbol: object_wallmasterVtx_005A20
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005C10:
+  type: OOT:ARRAY
+  offset: 0x005C10
+  symbol: object_wallmasterVtx_005C10
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005F40:
+  type: OOT:ARRAY
+  offset: 0x005F40
+  symbol: object_wallmasterVtx_005F40
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_006180:
+  type: OOT:ARRAY
+  offset: 0x006180
+  symbol: object_wallmasterVtx_006180
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWallmasterSkelLimbsLimb_008F44DL_006660:
+  type: GFX
+  offset: 0x006660
+  symbol: gWallmasterSkelLimbsLimb_008F44DL_006660
+
+gWallmasterSkelLimbsLimb_008F38DL_006800:
+  type: GFX
+  offset: 0x006800
+  symbol: gWallmasterSkelLimbsLimb_008F38DL_006800
+
+gWallmasterSkelLimbsLimb_008F20DL_006A20:
+  type: GFX
+  offset: 0x006A20
+  symbol: gWallmasterSkelLimbsLimb_008F20DL_006A20
+
+gWallmasterSkelLimbsLimb_008F08DL_006C58:
+  type: GFX
+  offset: 0x006C58
+  symbol: gWallmasterSkelLimbsLimb_008F08DL_006C58
+
+gWallmasterSkelLimbsLimb_008EF0DL_006E98:
+  type: GFX
+  offset: 0x006E98
+  symbol: gWallmasterSkelLimbsLimb_008EF0DL_006E98
+
+gWallmasterSkelLimbsLimb_008EE4DL_007038:
+  type: GFX
+  offset: 0x007038
+  symbol: gWallmasterSkelLimbsLimb_008EE4DL_007038
+
+gWallmasterSkelLimbsLimb_008ECCDL_007258:
+  type: GFX
+  offset: 0x007258
+  symbol: gWallmasterSkelLimbsLimb_008ECCDL_007258
+
+gWallmasterSkelLimbsLimb_008EB4DL_007408:
+  type: GFX
+  offset: 0x007408
+  symbol: gWallmasterSkelLimbsLimb_008EB4DL_007408
+
+gWallmasterSkelLimbsLimb_008EA8DL_0075A8:
+  type: GFX
+  offset: 0x0075A8
+  symbol: gWallmasterSkelLimbsLimb_008EA8DL_0075A8
+
+gWallmasterSkelLimbsLimb_008E90DL_0077C8:
+  type: GFX
+  offset: 0x0077C8
+  symbol: gWallmasterSkelLimbsLimb_008E90DL_0077C8
+
+gWallmasterSkelLimbsLimb_008E78DL_007978:
+  type: GFX
+  offset: 0x007978
+  symbol: gWallmasterSkelLimbsLimb_008E78DL_007978
+
+gWallmasterSkelLimbsLimb_008E6CDL_007B18:
+  type: GFX
+  offset: 0x007B18
+  symbol: gWallmasterSkelLimbsLimb_008E6CDL_007B18
+
+gWallmasterSkelLimbsLimb_008E54DL_007CE8:
+  type: GFX
+  offset: 0x007CE8
+  symbol: gWallmasterSkelLimbsLimb_008E54DL_007CE8
+
+gWallmasterSkelLimbsLimb_008E3CDL_007E98:
+  type: GFX
+  offset: 0x007E98
+  symbol: gWallmasterSkelLimbsLimb_008E3CDL_007E98
+
+object_wallmasterVtx_0082E8:
+  type: OOT:ARRAY
+  offset: 0x0082E8
+  symbol: object_wallmasterVtx_0082E8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWallmasterSkelLimbsLimb_008E30:
+  type: OOT:LIMB
+  offset: 0x008E30
+  symbol: gWallmasterSkelLimbsLimb_008E30
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E3C:
+  type: OOT:LIMB
+  offset: 0x008E3C
+  symbol: gWallmasterSkelLimbsLimb_008E3C
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E48:
+  type: OOT:LIMB
+  offset: 0x008E48
+  symbol: gWallmasterSkelLimbsLimb_008E48
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E54:
+  type: OOT:LIMB
+  offset: 0x008E54
+  symbol: gWallmasterSkelLimbsLimb_008E54
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E60:
+  type: OOT:LIMB
+  offset: 0x008E60
+  symbol: gWallmasterSkelLimbsLimb_008E60
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E6C:
+  type: OOT:LIMB
+  offset: 0x008E6C
+  symbol: gWallmasterSkelLimbsLimb_008E6C
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E78:
+  type: OOT:LIMB
+  offset: 0x008E78
+  symbol: gWallmasterSkelLimbsLimb_008E78
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E84:
+  type: OOT:LIMB
+  offset: 0x008E84
+  symbol: gWallmasterSkelLimbsLimb_008E84
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E90:
+  type: OOT:LIMB
+  offset: 0x008E90
+  symbol: gWallmasterSkelLimbsLimb_008E90
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008E9C:
+  type: OOT:LIMB
+  offset: 0x008E9C
+  symbol: gWallmasterSkelLimbsLimb_008E9C
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EA8:
+  type: OOT:LIMB
+  offset: 0x008EA8
+  symbol: gWallmasterSkelLimbsLimb_008EA8
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EB4:
+  type: OOT:LIMB
+  offset: 0x008EB4
+  symbol: gWallmasterSkelLimbsLimb_008EB4
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EC0:
+  type: OOT:LIMB
+  offset: 0x008EC0
+  symbol: gWallmasterSkelLimbsLimb_008EC0
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008ECC:
+  type: OOT:LIMB
+  offset: 0x008ECC
+  symbol: gWallmasterSkelLimbsLimb_008ECC
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008ED8:
+  type: OOT:LIMB
+  offset: 0x008ED8
+  symbol: gWallmasterSkelLimbsLimb_008ED8
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EE4:
+  type: OOT:LIMB
+  offset: 0x008EE4
+  symbol: gWallmasterSkelLimbsLimb_008EE4
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EF0:
+  type: OOT:LIMB
+  offset: 0x008EF0
+  symbol: gWallmasterSkelLimbsLimb_008EF0
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008EFC:
+  type: OOT:LIMB
+  offset: 0x008EFC
+  symbol: gWallmasterSkelLimbsLimb_008EFC
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F08:
+  type: OOT:LIMB
+  offset: 0x008F08
+  symbol: gWallmasterSkelLimbsLimb_008F08
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F14:
+  type: OOT:LIMB
+  offset: 0x008F14
+  symbol: gWallmasterSkelLimbsLimb_008F14
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F20:
+  type: OOT:LIMB
+  offset: 0x008F20
+  symbol: gWallmasterSkelLimbsLimb_008F20
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F2C:
+  type: OOT:LIMB
+  offset: 0x008F2C
+  symbol: gWallmasterSkelLimbsLimb_008F2C
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F38:
+  type: OOT:LIMB
+  offset: 0x008F38
+  symbol: gWallmasterSkelLimbsLimb_008F38
+  limb_type: Standard
+
+gWallmasterSkelLimbsLimb_008F44:
+  type: OOT:LIMB
+  offset: 0x008F44
+  symbol: gWallmasterSkelLimbsLimb_008F44
+  limb_type: Standard
+
+gWallmasterSkelLimbs:
+  type: BLOB
+  offset: 0x8F50
+  symbol: gWallmasterSkelLimbs
+  size: 0

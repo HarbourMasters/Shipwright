@@ -1,0 +1,262 @@
+:config:
+  segments:
+    - [ 2, 0x0347F000 ]
+
+hylia_labo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hylia_labo_scene
+
+hylia_labo_sceneTex_001090:
+  type: TEXTURE
+  offset: 0x1090
+  symbol: hylia_labo_sceneTex_001090
+  format: IA8
+  width: 16
+  height: 64
+
+hylia_labo_sceneTex_001490:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: hylia_labo_sceneTex_001490
+  format: RGBA16
+  width: 64
+  height: 32
+
+hylia_labo_sceneTex_002490:
+  type: TEXTURE
+  offset: 0x2490
+  symbol: hylia_labo_sceneTex_002490
+  format: RGBA16
+  width: 32
+  height: 64
+
+hylia_labo_sceneTex_003490:
+  type: TEXTURE
+  offset: 0x3490
+  symbol: hylia_labo_sceneTex_003490
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_003C90:
+  type: TEXTURE
+  offset: 0x3C90
+  symbol: hylia_labo_sceneTex_003C90
+  format: RGBA16
+  width: 32
+  height: 64
+
+hylia_labo_sceneTex_004C90:
+  type: TEXTURE
+  offset: 0x4C90
+  symbol: hylia_labo_sceneTex_004C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_005490:
+  type: TEXTURE
+  offset: 0x5490
+  symbol: hylia_labo_sceneTex_005490
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_005C90:
+  type: TEXTURE
+  offset: 0x5C90
+  symbol: hylia_labo_sceneTex_005C90
+  format: IA8
+  width: 64
+  height: 16
+
+hylia_labo_sceneTex_006090:
+  type: TEXTURE
+  offset: 0x6090
+  symbol: hylia_labo_sceneTex_006090
+  format: RGBA16
+  width: 32
+  height: 4
+
+hylia_labo_sceneTex_006190:
+  type: TEXTURE
+  offset: 0x6190
+  symbol: hylia_labo_sceneTex_006190
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_006990:
+  type: TEXTURE
+  offset: 0x6990
+  symbol: hylia_labo_sceneTex_006990
+  format: RGBA16
+  width: 32
+  height: 16
+
+hylia_labo_sceneTex_006D90:
+  type: TEXTURE
+  offset: 0x6D90
+  symbol: hylia_labo_sceneTex_006D90
+  format: IA4
+  width: 64
+  height: 128
+
+hylia_labo_sceneTex_007D90:
+  type: TEXTURE
+  offset: 0x7D90
+  symbol: hylia_labo_sceneTex_007D90
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_008590:
+  type: TEXTURE
+  offset: 0x8590
+  symbol: hylia_labo_sceneTex_008590
+  format: IA8
+  width: 32
+  height: 16
+
+hylia_labo_sceneTex_008790:
+  type: TEXTURE
+  offset: 0x8790
+  symbol: hylia_labo_sceneTex_008790
+  format: IA8
+  width: 32
+  height: 128
+
+hylia_labo_sceneTex_009790:
+  type: TEXTURE
+  offset: 0x9790
+  symbol: hylia_labo_sceneTex_009790
+  format: RGBA16
+  width: 32
+  height: 8
+
+hylia_labo_sceneTex_009990:
+  type: TEXTURE
+  offset: 0x9990
+  symbol: hylia_labo_sceneTex_009990
+  format: IA8
+  width: 16
+  height: 16
+
+hylia_labo_sceneTex_009A90:
+  type: TEXTURE
+  offset: 0x9A90
+  symbol: hylia_labo_sceneTex_009A90
+  format: IA8
+  width: 16
+  height: 32
+
+hylia_labo_sceneTex_009C90:
+  type: TEXTURE
+  offset: 0x9C90
+  symbol: hylia_labo_sceneTex_009C90
+  format: IA8
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_00A090:
+  type: TEXTURE
+  offset: 0xA090
+  symbol: hylia_labo_sceneTex_00A090
+  format: RGBA16
+  width: 32
+  height: 64
+
+hylia_labo_sceneTex_00B090:
+  type: TEXTURE
+  offset: 0xB090
+  symbol: hylia_labo_sceneTex_00B090
+  format: RGBA16
+  width: 64
+  height: 32
+
+hylia_labo_sceneTex_00C090:
+  type: TEXTURE
+  offset: 0xC090
+  symbol: hylia_labo_sceneTex_00C090
+  format: RGBA16
+  width: 64
+  height: 16
+
+hylia_labo_sceneTex_00C890:
+  type: TEXTURE
+  offset: 0xC890
+  symbol: hylia_labo_sceneTex_00C890
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_00D090:
+  type: TEXTURE
+  offset: 0xD090
+  symbol: hylia_labo_sceneTex_00D090
+  format: RGBA16
+  width: 64
+  height: 16
+
+hylia_labo_sceneTex_00D890:
+  type: TEXTURE
+  offset: 0xD890
+  symbol: hylia_labo_sceneTex_00D890
+  format: RGBA16
+  width: 64
+  height: 16
+
+hylia_labo_sceneTex_00E090:
+  type: TEXTURE
+  offset: 0xE090
+  symbol: hylia_labo_sceneTex_00E090
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_00E890:
+  type: TEXTURE
+  offset: 0xE890
+  symbol: hylia_labo_sceneTex_00E890
+  format: RGBA16
+  width: 32
+  height: 64
+
+hylia_labo_sceneTex_00F890:
+  type: TEXTURE
+  offset: 0xF890
+  symbol: hylia_labo_sceneTex_00F890
+  format: RGBA16
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_010090:
+  type: TEXTURE
+  offset: 0x10090
+  symbol: hylia_labo_sceneTex_010090
+  format: I8
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_010490:
+  type: TEXTURE
+  offset: 0x10490
+  symbol: hylia_labo_sceneTex_010490
+  format: I8
+  width: 32
+  height: 32
+
+hylia_labo_sceneTex_010890:
+  type: TEXTURE
+  offset: 0x10890
+  symbol: hylia_labo_sceneTex_010890
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+hylia_labo_sceneCollisionHeader_00105C:
+  type: OOT:COLLISION
+  offset: 0x00105C
+  symbol: hylia_labo_sceneCollisionHeader_00105C

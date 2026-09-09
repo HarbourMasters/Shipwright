@@ -1,0 +1,55 @@
+:config:
+  segments:
+    - [ 6, 0x01065ED0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x01065ED0 ]
+    - [ 9, 0x01065ED0 ]
+    - [ 10, 0x01065ED0 ]
+    - [ 11, 0x01065ED0 ]
+    - [ 12, 0x01065ED0 ]
+    - [ 13, 0x01065ED0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiHeartBorderDL:
+  type: GFX
+  offset: 0x1290
+  symbol: gGiHeartBorderDL
+
+gGiHeartContainerDL:
+  type: GFX
+  offset: 0x1470
+  symbol: gGiHeartContainerDL
+
+gGiHeartPieceDL:
+  type: GFX
+  offset: 0x1590
+  symbol: gGiHeartPieceDL
+
+
+object_gi_heartsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_heartsVtx_000000
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_heartsVtx_000A00:
+  type: OOT:ARRAY
+  offset: 0x000A00
+  symbol: object_gi_heartsVtx_000A00
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_heartsVtx_000D60:
+  type: OOT:ARRAY
+  offset: 0x000D60
+  symbol: object_gi_heartsVtx_000D60
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

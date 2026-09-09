@@ -1,0 +1,650 @@
+:config:
+  segments:
+    - [ 6, 0x00FBF7A0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00FBF7A0 ]
+    - [ 9, 0x00FBF7A0 ]
+    - [ 10, 0x00FBF7A0 ]
+    - [ 11, 0x00FBF7A0 ]
+    - [ 12, 0x00FBF7A0 ]
+    - [ 13, 0x00FBF7A0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gPoSistersAmyBethBlockDL:
+  type: GFX
+  offset: 0x79E0
+  symbol: gPoSistersAmyBethBlockDL
+
+gPoSistersAmyBlockCol:
+  type: OOT:COLLISION
+  offset: 0x7860
+  symbol: gPoSistersAmyBlockCol
+
+gPoSistersAmyBlockDL:
+  type: GFX
+  offset: 0x75A0
+  symbol: gPoSistersAmyBlockDL
+
+gPoSistersAmyFaceDL:
+  type: GFX
+  offset: 0x4020
+  symbol: gPoSistersAmyFaceDL
+
+gPoSistersAmyPaintingDL:
+  type: GFX
+  offset: 0x7230
+  symbol: gPoSistersAmyPaintingDL
+
+gPoSistersBethPaintingDL:
+  type: GFX
+  offset: 0x6D60
+  symbol: gPoSistersBethPaintingDL
+
+gPoSistersBurnDL:
+  type: GFX
+  offset: 0x46E0
+  symbol: gPoSistersBurnDL
+
+gPoSistersJoellePaintingDL:
+  type: GFX
+  offset: 0x6830
+  symbol: gPoSistersJoellePaintingDL
+
+gPoSistersTorchDL:
+  type: GFX
+  offset: 0x27B0
+  symbol: gPoSistersTorchDL
+
+gPoeSistersAmyBodyDL:
+  type: GFX
+  offset: 0x3DC8
+  symbol: gPoeSistersAmyBodyDL
+
+gPoeSistersAppearDisappearAnim:
+  type: OOT:ANIMATION
+  offset: 0x119C
+  symbol: gPoeSistersAppearDisappearAnim
+
+gPoeSistersAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x0114
+  symbol: gPoeSistersAttackAnim
+
+gPoeSistersBethBodyDL:
+  type: GFX
+  offset: 0x3628
+  symbol: gPoeSistersBethBodyDL
+
+gPoeSistersBethFaceDL:
+  type: GFX
+  offset: 0x3880
+  symbol: gPoeSistersBethFaceDL
+
+gPoeSistersDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x08C0
+  symbol: gPoeSistersDamagedAnim
+
+gPoeSistersFleeAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A54
+  symbol: gPoeSistersFleeAnim
+
+gPoeSistersFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x0D40
+  symbol: gPoeSistersFloatAnim
+
+gPoeSistersJoelleBodyDL:
+  type: GFX
+  offset: 0x2F88
+  symbol: gPoeSistersJoelleBodyDL
+
+gPoeSistersJoelleFaceDL:
+  type: GFX
+  offset: 0x2EB8
+  symbol: gPoeSistersJoelleFaceDL
+
+gPoeSistersMegBodyDL:
+  type: GFX
+  offset: 0x1DE0
+  symbol: gPoeSistersMegBodyDL
+
+gPoeSistersMegCryAnim:
+  type: OOT:ANIMATION
+  offset: 0x0680
+  symbol: gPoeSistersMegCryAnim
+
+gPoeSistersMegFaceDL:
+  type: GFX
+  offset: 0x1CB0
+  symbol: gPoeSistersMegFaceDL
+
+gPoeSistersSkel:
+  type: OOT:SKELETON
+  offset: 0x65C8
+  symbol: gPoeSistersSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPoeSistersSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x14CC
+  symbol: gPoeSistersSwayAnim
+
+object_po_sistersTex_0048D8:
+  type: TEXTURE
+  offset: 0x48D8
+  symbol: object_po_sistersTex_0048D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_004AD8:
+  type: TEXTURE
+  offset: 0x4AD8
+  symbol: object_po_sistersTex_004AD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_0052D8:
+  type: TEXTURE
+  offset: 0x52D8
+  symbol: object_po_sistersTex_0052D8
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_po_sistersTex_0056D8:
+  type: TEXTURE
+  offset: 0x56D8
+  symbol: object_po_sistersTex_0056D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_0058D8:
+  type: TEXTURE
+  offset: 0x58D8
+  symbol: object_po_sistersTex_0058D8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_po_sistersTex_0058F8:
+  type: TEXTURE
+  offset: 0x58F8
+  symbol: object_po_sistersTex_0058F8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_005AF8:
+  type: TEXTURE
+  offset: 0x5AF8
+  symbol: object_po_sistersTex_005AF8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_005CF8:
+  type: TEXTURE
+  offset: 0x5CF8
+  symbol: object_po_sistersTex_005CF8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_po_sistersTex_005D78:
+  type: TEXTURE
+  offset: 0x5D78
+  symbol: object_po_sistersTex_005D78
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_005F78:
+  type: TEXTURE
+  offset: 0x5F78
+  symbol: object_po_sistersTex_005F78
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_po_sistersTex_006078:
+  type: TEXTURE
+  offset: 0x6078
+  symbol: object_po_sistersTex_006078
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_006278:
+  type: TEXTURE
+  offset: 0x6278
+  symbol: object_po_sistersTex_006278
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_po_sistersTex_0062F8:
+  type: TEXTURE
+  offset: 0x62F8
+  symbol: object_po_sistersTex_0062F8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_po_sistersTex_006318:
+  type: TEXTURE
+  offset: 0x6318
+  symbol: object_po_sistersTex_006318
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_sistersTex_007AC0:
+  type: TEXTURE
+  offset: 0x7AC0
+  symbol: object_po_sistersTex_007AC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_0082C0:
+  type: TEXTURE
+  offset: 0x82C0
+  symbol: object_po_sistersTex_0082C0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_po_sistersTex_0083C0:
+  type: TEXTURE
+  offset: 0x83C0
+  symbol: object_po_sistersTex_0083C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_008BC0:
+  type: TEXTURE
+  offset: 0x8BC0
+  symbol: object_po_sistersTex_008BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_0093C0:
+  type: TEXTURE
+  offset: 0x93C0
+  symbol: object_po_sistersTex_0093C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_009BC0:
+  type: TEXTURE
+  offset: 0x9BC0
+  symbol: object_po_sistersTex_009BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00A3C0:
+  type: TEXTURE
+  offset: 0xA3C0
+  symbol: object_po_sistersTex_00A3C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00ABC0:
+  type: TEXTURE
+  offset: 0xABC0
+  symbol: object_po_sistersTex_00ABC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00B3C0:
+  type: TEXTURE
+  offset: 0xB3C0
+  symbol: object_po_sistersTex_00B3C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00BBC0:
+  type: TEXTURE
+  offset: 0xBBC0
+  symbol: object_po_sistersTex_00BBC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00C3C0:
+  type: TEXTURE
+  offset: 0xC3C0
+  symbol: object_po_sistersTex_00C3C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00CBC0:
+  type: TEXTURE
+  offset: 0xCBC0
+  symbol: object_po_sistersTex_00CBC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00D3C0:
+  type: TEXTURE
+  offset: 0xD3C0
+  symbol: object_po_sistersTex_00D3C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_po_sistersTex_00DBC0:
+  type: TEXTURE
+  offset: 0xDBC0
+  symbol: object_po_sistersTex_00DBC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_po_sistersVtx_0014E0:
+  type: OOT:ARRAY
+  offset: 0x0014E0
+  symbol: object_po_sistersVtx_0014E0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0016B0:
+  type: OOT:ARRAY
+  offset: 0x0016B0
+  symbol: object_po_sistersVtx_0016B0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0020A8:
+  type: OOT:ARRAY
+  offset: 0x0020A8
+  symbol: object_po_sistersVtx_0020A8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0021D8:
+  type: OOT:ARRAY
+  offset: 0x0021D8
+  symbol: object_po_sistersVtx_0021D8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002238:
+  type: OOT:ARRAY
+  offset: 0x002238
+  symbol: object_po_sistersVtx_002238
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002298:
+  type: OOT:ARRAY
+  offset: 0x002298
+  symbol: object_po_sistersVtx_002298
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0022F8:
+  type: OOT:ARRAY
+  offset: 0x0022F8
+  symbol: object_po_sistersVtx_0022F8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002358:
+  type: OOT:ARRAY
+  offset: 0x002358
+  symbol: object_po_sistersVtx_002358
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002408:
+  type: OOT:ARRAY
+  offset: 0x002408
+  symbol: object_po_sistersVtx_002408
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSistersSkelLimbsLimb_006590DL_0024A8:
+  type: GFX
+  offset: 0x0024A8
+  symbol: gPoeSistersSkelLimbsLimb_006590DL_0024A8
+
+gPoeSistersSkelLimbsLimb_006560DL_002570:
+  type: GFX
+  offset: 0x002570
+  symbol: gPoeSistersSkelLimbsLimb_006560DL_002570
+
+gPoeSistersSkelLimbsLimb_006548DL_0025E8:
+  type: GFX
+  offset: 0x0025E8
+  symbol: gPoeSistersSkelLimbsLimb_006548DL_0025E8
+
+gPoeSistersSkelLimbsLimb_00653CDL_002680:
+  type: GFX
+  offset: 0x002680
+  symbol: gPoeSistersSkelLimbsLimb_00653CDL_002680
+
+gPoeSistersSkelLimbsLimb_006524DL_002718:
+  type: GFX
+  offset: 0x002718
+  symbol: gPoeSistersSkelLimbsLimb_006524DL_002718
+
+gPoeSistersSkelLimbsLimb_006530DL_002870:
+  type: GFX
+  offset: 0x002870
+  symbol: gPoeSistersSkelLimbsLimb_006530DL_002870
+
+object_po_sistersVtx_002908:
+  type: OOT:ARRAY
+  offset: 0x002908
+  symbol: object_po_sistersVtx_002908
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002A38:
+  type: OOT:ARRAY
+  offset: 0x002A38
+  symbol: object_po_sistersVtx_002A38
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003208:
+  type: OOT:ARRAY
+  offset: 0x003208
+  symbol: object_po_sistersVtx_003208
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003548:
+  type: OOT:ARRAY
+  offset: 0x003548
+  symbol: object_po_sistersVtx_003548
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003948:
+  type: OOT:ARRAY
+  offset: 0x003948
+  symbol: object_po_sistersVtx_003948
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003C58:
+  type: OOT:ARRAY
+  offset: 0x003C58
+  symbol: object_po_sistersVtx_003C58
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0040F0:
+  type: OOT:ARRAY
+  offset: 0x0040F0
+  symbol: object_po_sistersVtx_0040F0
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSistersSkelLimbsLimb_006518:
+  type: OOT:LIMB
+  offset: 0x006518
+  symbol: gPoeSistersSkelLimbsLimb_006518
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006524:
+  type: OOT:LIMB
+  offset: 0x006524
+  symbol: gPoeSistersSkelLimbsLimb_006524
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006530:
+  type: OOT:LIMB
+  offset: 0x006530
+  symbol: gPoeSistersSkelLimbsLimb_006530
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_00653C:
+  type: OOT:LIMB
+  offset: 0x00653C
+  symbol: gPoeSistersSkelLimbsLimb_00653C
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006548:
+  type: OOT:LIMB
+  offset: 0x006548
+  symbol: gPoeSistersSkelLimbsLimb_006548
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006554:
+  type: OOT:LIMB
+  offset: 0x006554
+  symbol: gPoeSistersSkelLimbsLimb_006554
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006560:
+  type: OOT:LIMB
+  offset: 0x006560
+  symbol: gPoeSistersSkelLimbsLimb_006560
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_00656C:
+  type: OOT:LIMB
+  offset: 0x00656C
+  symbol: gPoeSistersSkelLimbsLimb_00656C
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006578:
+  type: OOT:LIMB
+  offset: 0x006578
+  symbol: gPoeSistersSkelLimbsLimb_006578
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006584:
+  type: OOT:LIMB
+  offset: 0x006584
+  symbol: gPoeSistersSkelLimbsLimb_006584
+  limb_type: Standard
+
+gPoeSistersSkelLimbsLimb_006590:
+  type: OOT:LIMB
+  offset: 0x006590
+  symbol: gPoeSistersSkelLimbsLimb_006590
+  limb_type: Standard
+
+gPoeSistersSkelLimbs:
+  type: BLOB
+  offset: 0x659C
+  symbol: gPoeSistersSkelLimbs
+  size: 0
+
+object_po_sistersVtx_0065D0:
+  type: OOT:ARRAY
+  offset: 0x0065D0
+  symbol: object_po_sistersVtx_0065D0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_006B00:
+  type: OOT:ARRAY
+  offset: 0x006B00
+  symbol: object_po_sistersVtx_006B00
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_007030:
+  type: OOT:ARRAY
+  offset: 0x007030
+  symbol: object_po_sistersVtx_007030
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_007420:
+  type: OOT:ARRAY
+  offset: 0x007420
+  symbol: object_po_sistersVtx_007420
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_007890:
+  type: OOT:ARRAY
+  offset: 0x007890
+  symbol: object_po_sistersVtx_007890
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -3,7 +3,6 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -208,8 +207,8 @@ void EnPeehat_Init(Actor* thisx, PlayState* play) {
     this->actor.floorHeight = this->actor.world.pos.y;
     Collider_InitCylinder(play, &this->colCylinder);
     Collider_SetCylinder(play, &this->colCylinder, &this->actor, &sCylinderInit);
-    Collider_InitQuad(play, &this->colQuad);
-    Collider_SetQuad(play, &this->colQuad, &this->actor, &sQuadInit);
+    Collider_InitQuad(play, &this->colliderQuad);
+    Collider_SetQuad(play, &this->colliderQuad, &this->actor, &sQuadInit);
     Collider_InitJntSph(play, &this->colJntSph);
     Collider_SetJntSph(play, &this->colJntSph, &this->actor, &sJntSphInit, this->colJntSphItemList);
 
@@ -237,8 +236,8 @@ void EnPeehat_Init(Actor* thisx, PlayState* play) {
             this->colCylinder.dim.height = 15;
             this->colCylinder.dim.yShift = -5;
             this->colCylinder.info.bumper.dmgFlags = 0x1F824;
-            this->colQuad.base.atFlags = AT_ON | AT_TYPE_ENEMY;
-            this->colQuad.base.acFlags = AC_ON | AC_TYPE_PLAYER;
+            this->colliderQuad.base.atFlags = AT_ON | AT_TYPE_ENEMY;
+            this->colliderQuad.base.acFlags = AC_ON | AC_TYPE_PLAYER;
             this->actor.naviEnemyId = 0x49; // Larva
             EnPeehat_Larva_SetStateSeekPlayer(this);
             break;
@@ -259,8 +258,6 @@ void EnPeehat_Destroy(Actor* thisx, PlayState* play) {
             parent->unk_2FA--;
         }
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPeehat_SpawnDust(PlayState* play, EnPeehat* this, Vec3f* pos, f32 arg3, s32 arg4, f32 arg5, f32 arg6) {
@@ -298,17 +295,19 @@ void EnPeehat_HitWhenGrounded(EnPeehat* this, PlayState* play) {
         s32 i;
 
         this->colCylinder.base.acFlags &= ~AC_HIT;
-        for (i = MAX_LARVA - this->unk_2FA; i > 0; i--) {
-            Actor* larva =
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
-                                   Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
-                                   Rand_CenteredFloat(25.0f) + (this->actor.world.pos.y + 50.0f),
-                                   Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, PEAHAT_TYPE_LARVA);
+        if (GameInteractor_Should(VB_PEEHAT_SPAWN_LARVAS, true, this, play)) {
+            for (i = MAX_LARVA - this->unk_2FA; i > 0; i--) {
+                Actor* larva =
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
+                                       Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
+                                       Rand_CenteredFloat(25.0f) + (this->actor.world.pos.y + 50.0f),
+                                       Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, PEAHAT_TYPE_LARVA);
 
-            if (larva != NULL) {
-                larva->velocity.y = 6.0f;
-                larva->shape.rot.y = larva->world.rot.y = Rand_CenteredFloat(0xFFFF);
-                this->unk_2FA++;
+                if (larva != NULL) {
+                    larva->velocity.y = 6.0f;
+                    larva->shape.rot.y = larva->world.rot.y = Rand_CenteredFloat(0xFFFF);
+                    this->unk_2FA++;
+                }
             }
         }
         this->unk_2D4 = 8;
@@ -563,22 +562,22 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
     this->bladeRot += this->bladeRotVel;
     Math_SmoothStepToF(&this->scaleShift, 0.075f, 1.0f, 0.005f, 0.0f);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PIHAT_SM_FLY - SFX_FLAG);
-    if (this->colQuad.base.atFlags & AT_BOUNCED) {
+    if (this->colliderQuad.base.atFlags & AT_BOUNCED) {
         this->actor.colChkInfo.health = 0;
-        this->colQuad.base.acFlags = this->colQuad.base.acFlags & ~AC_BOUNCED;
+        this->colliderQuad.base.acFlags = this->colliderQuad.base.acFlags & ~AC_BOUNCED;
         EnPeehat_SetStateAttackRecoil(this);
-    } else if ((this->colQuad.base.atFlags & AT_HIT) || (this->colCylinder.base.acFlags & AC_HIT) ||
-               (this->actor.bgCheckFlags & 1)) {
+    } else if ((this->colliderQuad.base.atFlags & AT_HIT) || (this->colCylinder.base.acFlags & AC_HIT) ||
+               (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         Player* player = GET_PLAYER(play);
-        this->colQuad.base.atFlags &= ~AT_HIT;
-        if (!(this->colCylinder.base.acFlags & AC_HIT) && &player->actor == this->colQuad.base.at) {
+        this->colliderQuad.base.atFlags &= ~AT_HIT;
+        if (!(this->colCylinder.base.acFlags & AC_HIT) && &player->actor == this->colliderQuad.base.at) {
             if (Rand_ZeroOne() > 0.5f) {
                 this->actor.world.rot.y += 0x2000;
             } else {
                 this->actor.world.rot.y -= 0x2000;
             }
             this->unk_2D4 = 40;
-        } else if (this->colCylinder.base.acFlags & AC_HIT || this->actor.bgCheckFlags & 1) {
+        } else if (this->colCylinder.base.acFlags & AC_HIT || this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             Vec3f zeroVec = { 0, 0, 0 };
             s32 i;
             for (i = 4; i >= 0; i--) {
@@ -589,8 +588,8 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
                 EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 255, 0, 0, 1, 9, 1);
             }
         }
-        if (&player->actor != this->colQuad.base.at || this->colCylinder.base.acFlags & AC_HIT) {
-            if (!(this->actor.bgCheckFlags & 1)) {
+        if (&player->actor != this->colliderQuad.base.at || this->colCylinder.base.acFlags & AC_HIT) {
+            if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
                 EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_PIHAT_SM_DEAD, 1, 1, 40);
             }
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x20);
@@ -870,7 +869,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
 
     if (this->animTimer == 5) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0, true);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0);
         if (bomb != NULL) {
             bomb->timer = 0;
         }
@@ -886,8 +885,8 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
 }
 
 void EnPeehat_Adult_CollisionCheck(EnPeehat* this, PlayState* play) {
-    if ((this->colCylinder.base.acFlags & AC_BOUNCED) || (this->colQuad.base.acFlags & AC_BOUNCED)) {
-        this->colQuad.base.acFlags &= ~AC_BOUNCED;
+    if ((this->colCylinder.base.acFlags & AC_BOUNCED) || (this->colliderQuad.base.acFlags & AC_BOUNCED)) {
+        this->colliderQuad.base.acFlags &= ~AC_BOUNCED;
         this->colCylinder.base.acFlags &= ~AC_BOUNCED;
         this->colJntSph.base.acFlags &= ~AC_HIT;
     } else if (this->colJntSph.base.acFlags & AC_HIT) {
@@ -974,9 +973,9 @@ void EnPeehat_Update(Actor* thisx, PlayState* play) {
                 }
             }
         }
-        if (thisx->params != PEAHAT_TYPE_FLYING && this->colQuad.base.atFlags & AT_HIT) {
-            this->colQuad.base.atFlags &= ~AT_HIT;
-            if (&player->actor == this->colQuad.base.at) {
+        if (thisx->params != PEAHAT_TYPE_FLYING && this->colliderQuad.base.atFlags & AT_HIT) {
+            this->colliderQuad.base.atFlags &= ~AT_HIT;
+            if (&player->actor == this->colliderQuad.base.at) {
                 EnPeehat_SetStateAttackRecoil(this);
             }
         }
@@ -984,8 +983,8 @@ void EnPeehat_Update(Actor* thisx, PlayState* play) {
     if (this->state == PEAHAT_STATE_15 || this->state == PEAHAT_STATE_SEEK_PLAYER || this->state == PEAHAT_STATE_FLY ||
         this->state == PEAHAT_STATE_RETURN_HOME || this->state == PEAHAT_STATE_EXPLODE) {
         if (thisx->params != PEAHAT_TYPE_FLYING) {
-            CollisionCheck_SetAT(play, &play->colChkCtx, &this->colQuad.base);
-            CollisionCheck_SetAC(play, &play->colChkCtx, &this->colQuad.base);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderQuad.base);
+            CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderQuad.base);
         }
         // if PEAHAT_TYPE_GROUNDED
         if (thisx->params < 0 && (thisx->flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
@@ -1077,11 +1076,11 @@ void EnPeehat_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnPeehat_OverrideLimbDraw, EnPeehat_PostLimbDraw, this);
     if (this->actor.speedXZ != 0.0f || this->actor.velocity.y != 0.0f) {
-        Matrix_MultVec3f(&D_80AD285C[0], &this->colQuad.dim.quad[1]);
-        Matrix_MultVec3f(&D_80AD285C[1], &this->colQuad.dim.quad[0]);
-        Matrix_MultVec3f(&D_80AD285C[2], &this->colQuad.dim.quad[3]);
-        Matrix_MultVec3f(&D_80AD285C[3], &this->colQuad.dim.quad[2]);
-        Collider_SetQuadVertices(&this->colQuad, &this->colQuad.dim.quad[0], &this->colQuad.dim.quad[1],
-                                 &this->colQuad.dim.quad[2], &this->colQuad.dim.quad[3]);
+        Matrix_MultVec3f(&D_80AD285C[0], &this->colliderQuad.dim.quad[1]);
+        Matrix_MultVec3f(&D_80AD285C[1], &this->colliderQuad.dim.quad[0]);
+        Matrix_MultVec3f(&D_80AD285C[2], &this->colliderQuad.dim.quad[3]);
+        Matrix_MultVec3f(&D_80AD285C[3], &this->colliderQuad.dim.quad[2]);
+        Collider_SetQuadVertices(&this->colliderQuad, &this->colliderQuad.dim.quad[0], &this->colliderQuad.dim.quad[1],
+                                 &this->colliderQuad.dim.quad[2], &this->colliderQuad.dim.quad[3]);
     }
 }

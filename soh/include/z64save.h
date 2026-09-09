@@ -4,10 +4,36 @@
 #include <libultraship/libultra.h>
 #include "z64math.h"
 #include "z64audio.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+
+#define FULL_HEART_HEALTH 0x10
+#define STARTING_HEALTH (3 * FULL_HEART_HEALTH)
+#define MAX_HEALTH (20 * FULL_HEART_HEALTH)
+
+// `_FORCE` means that this request will respond to `forceRisingButtonAlphas`.
+// If set, the buttons will also raise alphas but will also account for disabled buttons
+
+typedef enum HudVisibilityMode {
+    /*  0 */ HUD_VISIBILITY_NO_CHANGE,
+    /*  1 */ HUD_VISIBILITY_NOTHING,
+    /*  2 */ HUD_VISIBILITY_NOTHING_ALT, // Identical to HUD_VISIBILITY_NOTHING
+    /*  3 */ HUD_VISIBILITY_HEARTS_FORCE, // See above
+    /*  4 */ HUD_VISIBILITY_A,
+    /*  5 */ HUD_VISIBILITY_A_HEARTS_MAGIC_FORCE, // See above
+    /*  6 */ HUD_VISIBILITY_A_HEARTS_MAGIC_MINIMAP_FORCE, // See above
+    /*  7 */ HUD_VISIBILITY_ALL_NO_MINIMAP_BY_BTN_STATUS, // Only raises button alphas if not disabled
+    /*  8 */ HUD_VISIBILITY_B,
+    /*  9 */ HUD_VISIBILITY_HEARTS_MAGIC,
+    /* 10 */ HUD_VISIBILITY_B_ALT, // Identical to HUD_VISIBILITY_B
+    /* 11 */ HUD_VISIBILITY_HEARTS,
+    /* 12 */ HUD_VISIBILITY_A_B_MINIMAP,
+    /* 13 */ HUD_VISIBILITY_HEARTS_MAGIC_FORCE, // See above
+    /* 50 */ HUD_VISIBILITY_ALL = 50, // Only raises button alphas if not disabled
+    /* 52 */ HUD_VISIBILITY_NOTHING_INSTANT = 52
+} HudVisibilityMode;
 
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
@@ -93,6 +119,7 @@ typedef struct {
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
     /*      */ bool rtaTiming;
+    /*      */ uint64_t firstInput;
     /*      */ uint64_t fileCreatedAt;
 } SohStats;
 
@@ -147,6 +174,45 @@ typedef struct {
     /* 0x24 */ s32 tempCollectFlags;
 } FaroresWindData; // size = 0x28
 
+typedef enum TimerState {
+    /* 0x0 */ TIMER_STATE_OFF,
+    /* 0x1 */ TIMER_STATE_ENV_HAZARD_INIT,    // Init env timer that counts down, total time based on health, resets on
+                                              // void-out, kills at 0
+    /* 0x2 */ TIMER_STATE_ENV_HAZARD_PREVIEW, // Display initial time, keep it fixed at the screen center
+    /* 0x3 */ TIMER_STATE_ENV_HAZARD_MOVE,    // Move to top-left corner
+    /* 0x4 */ TIMER_STATE_ENV_HAZARD_TICK,    // Counting down
+    /* 0x5 */ TIMER_STATE_DOWN_INIT,          // Init timer that counts down
+    /* 0x6 */ TIMER_STATE_DOWN_PREVIEW,       // Display initial time, keep it fixed at the screen center
+    /* 0x7 */ TIMER_STATE_DOWN_MOVE,          // Move to top-left corner
+    /* 0x8 */ TIMER_STATE_DOWN_TICK,          // Counting down
+    /* 0xA */ TIMER_STATE_STOP = 10,
+    /* 0xB */ TIMER_STATE_UP_INIT,    // Init timer that counts up
+    /* 0xC */ TIMER_STATE_UP_PREVIEW, // Display initial time, keep it fixed at the screen center
+    /* 0xD */ TIMER_STATE_UP_MOVE,    // Move to top-left corner
+    /* 0xE */ TIMER_STATE_UP_TICK,    // Counting up
+    /* 0xF */ TIMER_STATE_UP_FREEZE   // Stop counting the timer
+} TimerState;
+
+typedef enum SubTimerState {
+    /* 0x0 */ SUBTIMER_STATE_OFF,
+    /* 0x1 */ SUBTIMER_STATE_DOWN_INIT,    // Init timer that counts down
+    /* 0x2 */ SUBTIMER_STATE_DOWN_PREVIEW, // Display initial time, keep it fixed at the screen center
+    /* 0x3 */ SUBTIMER_STATE_DOWN_MOVE,    // Move to top-left corner
+    /* 0x4 */ SUBTIMER_STATE_DOWN_TICK,    // Counting down
+    /* 0x5 */ SUBTIMER_STATE_RESPAWN, // Time is up, trigger a transition, reset button items, spoil trade quest items
+    /* 0x6 */ SUBTIMER_STATE_STOP,    // Time is up, stop counting
+    /* 0x7 */ SUBTIMER_STATE_UP_INIT, // Init timer that counts up
+    /* 0x8 */ SUBTIMER_STATE_UP_PREVIEW, // Display initial time, keep it fixed at the screen center
+    /* 0x9 */ SUBTIMER_STATE_UP_MOVE,    // Move to top-left corner
+    /* 0xA */ SUBTIMER_STATE_UP_TICK     // Counting up
+} SubTimerState;
+
+typedef enum TimerId {
+    /* 0 */ TIMER_ID_MAIN, // Takes priority in both counting and drawing. See `timerState` and `timerSeconds`
+    /* 1 */ TIMER_ID_SUB,  // See `subTimerState` and `subTimerSeconds`
+    /* 2 */ TIMER_ID_MAX
+} TimerId;
+
 typedef struct {
     RandomizerCheck check;
     RandomizerCheck hintedCheck;
@@ -160,6 +226,29 @@ typedef struct {
 
 typedef struct ShipRandomizerSaveContextData {
     u8 triforcePiecesCollected;
+    u8 bombchuUpgradeLevel;
+    s8 silverShadowBlades;
+    s8 silverShadowPit;
+    s8 silverShadowSpikes;
+    s8 silverSpiritChild;
+    s8 silverSpiritSun;
+    s8 silverSpiritBoulders;
+    s8 silverBotw;
+    s8 silverIceCavernBlades;
+    s8 silverIceCavernBlock;
+    s8 silverGtgSlope;
+    s8 silverGtgLava;
+    s8 silverGtgWater;
+    s8 silverGanonLight;
+    s8 silverGanonForest;
+    s8 silverGanonFire;
+    s8 silverGanonSpirit;
+    s8 silverMqDodongosCavern;
+    s8 silverMqShadowInvisibleBlades;
+    s8 silverMqSpiritLobby;
+    s8 silverMqSpiritBigWall;
+    s8 silverMqGanonWater;
+    s8 silverMqGanonShadow;
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {
@@ -188,6 +277,7 @@ typedef struct ShipSaveContextData {
     u8 filenameLanguage;
     //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
     u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
+    u8 resetToSpawn;
 } ShipSaveContextData;
 
 #pragma endregion
@@ -247,7 +337,7 @@ typedef struct {
     /* 0x1354 */ s32 fileNum; // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex; // "counter" // Upstream TODO: sceneLayer
+    /* 0x1360 */ s32 sceneLayer; // "counter"
     /* 0x1364 */ s32 respawnFlag; // "restart_flag"
     /* 0x1368 */ RespawnData respawn[RESPAWN_MODE_MAX]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;
@@ -264,17 +354,17 @@ typedef struct {
     /* 0x13D0 */ s16 timerSeconds;
     /* 0x13D2 */ s16 subTimerState;
     /* 0x13D4 */ s16 subTimerSeconds;
-    /* 0x13D6 */ s16 timerX[2];
-    /* 0x13DA */ s16 timerY[2];
+    /* 0x13D6 */ s16 timerX[TIMER_ID_MAX];
+    /* 0x13DA */ s16 timerY[TIMER_ID_MAX];
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
     /* 0x13E7 */ u8 forceRisingButtonAlphas; // alpha related
-    /* 0x13E8 */ u16 unk_13E8; // alpha type?
-    /* 0x13EA */ u16 unk_13EA; // also alpha type?
-    /* 0x13EC */ u16 unk_13EC; // alpha type counter?
-    /* 0x13EE */ u16 unk_13EE; // previous alpha type?
+    /* 0x13E8 */ u16 nextHudVisibilityMode; // triggers the hud to change visibility mode to the requested value. Reset to HUD_VISIBILITY_NO_CHANGE when target is reached
+    /* 0x13EA */ u16 hudVisibilityMode; // current hud visibility mode
+    /* 0x13EC */ u16 hudVisibilityModeTimer; // number of frames in the transition to a new hud visibility mode. Used to step alpha
+    /* 0x13EE */ u16 prevHudVisibilityMode; // used to store and recover hud visibility mode for pause menu and text boxes
     /* 0x13F0 */ s16 magicState; // determines magic meter behavior on each frame
     /* 0x13F2 */ s16 prevMagicState; // used to resume the previous state after adding or filling magic
     /* 0x13F4 */ s16 magicCapacity; // maximum magic available
@@ -378,7 +468,7 @@ typedef enum {
     /* 4 */ SCENE_LAYER_CUTSCENE_FIRST
 } SceneLayer;
 
-#define IS_CUTSCENE_LAYER (gSaveContext.sceneSetupIndex >= SCENE_LAYER_CUTSCENE_FIRST)
+#define IS_CUTSCENE_LAYER (gSaveContext.sceneLayer >= SCENE_LAYER_CUTSCENE_FIRST)
 
 typedef enum {
     /* 0 */ LINK_AGE_ADULT,

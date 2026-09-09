@@ -74,7 +74,7 @@ public class ShipOfHarkinian : SimpleTCPPack<SimpleTCPServerConnector>
         new("Refill Deku Nuts", "refill_nuts") { Category = "Give Items/Consumables", Quantity = 30, Price = 3, Description = "Only works when the player already had Deku Nuts before." },
         new("Refill Bombs", "refill_bombs") { Category = "Give Items/Consumables", Quantity = 30, Price = 5, Description = "Only works when the player already has a bomb bag." },
         new("Refill Slingshot Seeds", "refill_seeds") { Category = "Give Items/Consumables", Quantity = 30, Price = 1, Description = "Only works when the player already has a Slingshot." },
-        new("Refill Arrows", "refill_arrows") { Category = "Give Items/Consumables", Price = 1, Description = "Only works when the player already has a bow." },
+        new("Refill Arrows", "refill_arrows") { Category = "Give Items/Consumables", Quantity = 30, Price = 1, Description = "Only works when the player already has a bow." },
         new("Refill Bombchus", "refill_bombchus") { Category = "Give Items/Consumables", Quantity = 30, Price = 5, Description = "Only works when the player already had Bombchus before." },
 
         // Take Items and Consumables

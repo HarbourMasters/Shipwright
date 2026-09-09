@@ -1,13 +1,16 @@
 //! This file is always optimized by a rule in the CMakeList. This is done because the SIMD functions are very large
 //! when unoptimized and clang does not allow optimizing a single function.
-#include <stdbool.h>
+
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "mixer.h"
+
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC optimize("unroll-loops")
+#endif
 #endif
 
 #define ROUND_UP_64(v) (((v) + 63) & ~63)
@@ -96,39 +99,62 @@ void aClearBufferImpl(uint16_t addr, int nbytes) {
 
 void aLoadBufferImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbytes) {
 #if __SANITIZE_ADDRESS__
-    for (size_t i = 0; i < ROUND_DOWN_16(nbytes); i++) {
+    for (size_t i = 0; i < nbytes; i++) {
         BUF_U8(dest_addr)[i] = ((const unsigned char*)source_addr)[i];
     }
 #else
-    memcpy(BUF_U8(dest_addr), source_addr, ROUND_DOWN_16(nbytes));
+    memcpy(BUF_U8(dest_addr), source_addr, nbytes);
 #endif
 }
 
-#include <opus/opus.h>
 #include <opusfile.h>
 
-void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OggOpusFile** decState, int32_t pos,
+// The decoder is cached on the note, so remember which buffer it was opened for.
+struct OpusDecState {
+    OggOpusFile* file;
+    const void* source;
+};
+
+void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OpusDecState** decState, int32_t pos,
                   uint32_t size) {
     int readSamples = 0;
-    if (*decState == NULL) {
-        *decState = op_open_memory(source_addr, size, NULL);
+    struct OpusDecState* dec = *decState;
+
+    // Note reused for another streamed sample may have previous decoder opened,
+    // which would keep playing the previous track under new note.
+    if (dec != NULL && dec->source != source_addr) {
+        aOPUSFree(dec);
+        dec = NULL;
+        *decState = NULL;
     }
-    op_pcm_seek(*decState, pos);
-    int ret = op_read(*decState, BUF_S16(dest_addr), nbytes / 2, NULL);
+    if (dec == NULL) {
+        OggOpusFile* file = op_open_memory(source_addr, size, NULL);
+        if (file == NULL) {
+            return;
+        }
+        dec = malloc(sizeof(struct OpusDecState));
+        dec->file = file;
+        dec->source = source_addr;
+        *decState = dec;
+    }
+
+    op_pcm_seek(dec->file, pos);
+    int ret = op_read(dec->file, BUF_S16(dest_addr), nbytes / 2, NULL);
     if (ret < 0) {
         return;
     }
     readSamples += ret;
     while (readSamples < nbytes / 2) {
-        ret = op_read(*decState, BUF_S16(dest_addr + readSamples * 2), (nbytes - readSamples * 2) / 2, NULL);
+        ret = op_read(dec->file, BUF_S16(dest_addr + readSamples * 2), (nbytes - readSamples * 2) / 2, NULL);
         if (ret == 0)
             break;
         readSamples += ret;
     }
 }
 
-void aOPUSFree(struct OggOpusFile* opusFile) {
-    op_free(opusFile);
+void aOPUSFree(struct OpusDecState* dec) {
+    op_free(dec->file);
+    free(dec);
 }
 
 void aSaveBufferImpl(uint16_t source_addr, int16_t* dest_addr, uint16_t nbytes) {
@@ -516,12 +542,16 @@ void aFilterImpl(uint8_t flags, uint16_t count_or_buf, int16_t* state_or_filter)
 
         if (flags == A_INIT) {
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmemset-elt-size"
 #endif
+#endif
             memset(tmp, 0, 8 * sizeof(int16_t));
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC diagnostic pop
+#endif
 #endif
             memset(tmp2, 0, 8 * sizeof(int16_t));
         } else {
@@ -623,15 +653,13 @@ static void aMixImplSSE2(uint16_t count, int16_t gain, uint16_t in_addr, uint16_
     int nbytes = ROUND_UP_32(ROUND_DOWN_16(count << 4));
     int16_t* in = BUF_S16(in_addr);
     int16_t* out = BUF_S16(out_addr);
-    int i;
-    int32_t sample;
     if (gain == -0x8000) {
         while (nbytes > 0) {
             for (unsigned int i = 0; i < 2; i++) {
                 __m128i outVec = _mm_loadu_si128((__m128i*)out);
                 __m128i inVec = _mm_loadu_si128((__m128i*)in);
                 __m128i subsVec = _mm_subs_epi16(outVec, inVec);
-                _mm_storeu_si128(out, subsVec);
+                _mm_storeu_si128((__m128i*)out, subsVec);
                 nbytes -= 8 * sizeof(int16_t);
                 in += 8;
                 out += 8;

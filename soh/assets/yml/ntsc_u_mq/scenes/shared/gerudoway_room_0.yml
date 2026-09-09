@@ -1,0 +1,142 @@
+:config:
+  segments:
+    - [ 3, 0x01EBDF10 ]
+    - [ 2, 0x01EB6340 ]
+  directory: scenes/shared/gerudoway_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/gerudoway_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+gerudoway_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: gerudoway_room_0
+
+gerudoway_room_0Tex_002FB0:
+  type: TEXTURE
+  offset: 0x2FB0
+  symbol: gerudoway_room_0Tex_002FB0
+  format: RGBA16
+  width: 64
+  height: 32
+
+gerudoway_room_0Tex_003FB0:
+  type: TEXTURE
+  offset: 0x3FB0
+  symbol: gerudoway_room_0Tex_003FB0
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+gerudoway_room_0Vtx_000160:
+  type: OOT:ARRAY
+  offset: 0x000160
+  symbol: gerudoway_room_0Vtx_000160
+  count: 209
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_000E70:
+  type: GFX
+  offset: 0x000E70
+  symbol: gerudoway_room_0DL_000E70
+
+gerudoway_room_0Vtx_0013C8:
+  type: OOT:ARRAY
+  offset: 0x0013C8
+  symbol: gerudoway_room_0Vtx_0013C8
+  count: 228
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_002208:
+  type: GFX
+  offset: 0x002208
+  symbol: gerudoway_room_0DL_002208
+
+gerudoway_room_0Vtx_0024C8:
+  type: OOT:ARRAY
+  offset: 0x0024C8
+  symbol: gerudoway_room_0Vtx_0024C8
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_002858:
+  type: GFX
+  offset: 0x002858
+  symbol: gerudoway_room_0DL_002858
+
+gerudoway_room_0Vtx_002998:
+  type: OOT:ARRAY
+  offset: 0x002998
+  symbol: gerudoway_room_0Vtx_002998
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_002B58:
+  type: GFX
+  offset: 0x002B58
+  symbol: gerudoway_room_0DL_002B58
+
+gerudoway_room_0Vtx_002D08:
+  type: OOT:ARRAY
+  offset: 0x002D08
+  symbol: gerudoway_room_0Vtx_002D08
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_002E68:
+  type: GFX
+  offset: 0x002E68
+  symbol: gerudoway_room_0DL_002E68
+
+gerudoway_room_0Vtx_0043B0:
+  type: OOT:ARRAY
+  offset: 0x0043B0
+  symbol: gerudoway_room_0Vtx_0043B0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_004520:
+  type: GFX
+  offset: 0x004520
+  symbol: gerudoway_room_0DL_004520
+
+gerudoway_room_0Vtx_004620:
+  type: OOT:ARRAY
+  offset: 0x004620
+  symbol: gerudoway_room_0Vtx_004620
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_0047A0:
+  type: GFX
+  offset: 0x0047A0
+  symbol: gerudoway_room_0DL_0047A0
+
+gerudoway_room_0Vtx_0048B8:
+  type: OOT:ARRAY
+  offset: 0x0048B8
+  symbol: gerudoway_room_0Vtx_0048B8
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gerudoway_room_0DL_004BF8:
+  type: GFX
+  offset: 0x004BF8
+  symbol: gerudoway_room_0DL_004BF8

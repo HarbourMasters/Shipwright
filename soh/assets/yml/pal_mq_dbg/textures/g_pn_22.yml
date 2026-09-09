@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A32000 ]
+
+gHouseOfSkulltulaTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHouseOfSkulltulaTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gHouseOfSkulltulaTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gHouseOfSkulltulaTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gHouseOfSkulltulaTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gHouseOfSkulltulaTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

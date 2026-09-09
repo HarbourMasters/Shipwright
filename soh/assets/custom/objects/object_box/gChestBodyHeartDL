@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_box/mat_gChestBodyHeartDL_HeartFront_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodyHeartDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_box/mat_gChestBodyHeartDL_HeartSides_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodyHeartDL_layer_Opaque_tri_1"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

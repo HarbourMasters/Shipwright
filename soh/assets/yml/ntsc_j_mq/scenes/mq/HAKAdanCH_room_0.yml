@@ -1,0 +1,634 @@
+:config:
+  segments:
+    - [ 3, 0x0196F730 ]
+    - [ 2, 0x01967EB0 ]
+  directory: scenes/mq/HAKAdanCH_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/HAKAdanCH_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+HAKAdanCH_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdanCH_room_0
+
+HAKAdanCH_room_0Tex_00D720:
+  type: TEXTURE
+  offset: 0xD720
+  symbol: HAKAdanCH_room_0Tex_00D720
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_00DF20:
+  type: TEXTURE
+  offset: 0xDF20
+  symbol: HAKAdanCH_room_0Tex_00DF20
+  format: RGBA16
+  width: 32
+  height: 8
+
+HAKAdanCH_room_0Tex_00E120:
+  type: TEXTURE
+  offset: 0xE120
+  symbol: HAKAdanCH_room_0Tex_00E120
+  format: RGBA16
+  width: 32
+  height: 64
+
+HAKAdanCH_room_0Tex_00F120:
+  type: TEXTURE
+  offset: 0xF120
+  symbol: HAKAdanCH_room_0Tex_00F120
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_00F920:
+  type: TEXTURE
+  offset: 0xF920
+  symbol: HAKAdanCH_room_0Tex_00F920
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_010120:
+  type: TEXTURE
+  offset: 0x10120
+  symbol: HAKAdanCH_room_0Tex_010120
+  format: RGBA16
+  width: 32
+  height: 64
+
+HAKAdanCH_room_0Tex_011120:
+  type: TEXTURE
+  offset: 0x11120
+  symbol: HAKAdanCH_room_0Tex_011120
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_011920:
+  type: TEXTURE
+  offset: 0x11920
+  symbol: HAKAdanCH_room_0Tex_011920
+  format: RGBA16
+  width: 16
+  height: 32
+
+HAKAdanCH_room_0Tex_011D20:
+  type: TEXTURE
+  offset: 0x11D20
+  symbol: HAKAdanCH_room_0Tex_011D20
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_011F20:
+  type: TEXTURE
+  offset: 0x11F20
+  symbol: HAKAdanCH_room_0Tex_011F20
+  format: RGBA16
+  width: 16
+  height: 64
+
+HAKAdanCH_room_0Tex_012720:
+  type: TEXTURE
+  offset: 0x12720
+  symbol: HAKAdanCH_room_0Tex_012720
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_012F20:
+  type: TEXTURE
+  offset: 0x12F20
+  symbol: HAKAdanCH_room_0Tex_012F20
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_013120:
+  type: TEXTURE
+  offset: 0x13120
+  symbol: HAKAdanCH_room_0Tex_013120
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_013320:
+  type: TEXTURE
+  offset: 0x13320
+  symbol: HAKAdanCH_room_0Tex_013320
+  format: RGBA16
+  width: 16
+  height: 32
+
+HAKAdanCH_room_0Tex_013720:
+  type: TEXTURE
+  offset: 0x13720
+  symbol: HAKAdanCH_room_0Tex_013720
+  format: RGBA16
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_013F20:
+  type: TEXTURE
+  offset: 0x13F20
+  symbol: HAKAdanCH_room_0Tex_013F20
+  format: I4
+  width: 32
+  height: 32
+
+HAKAdanCH_room_0Tex_014B20:
+  type: TEXTURE
+  offset: 0x14B20
+  symbol: HAKAdanCH_room_0Tex_014B20
+  format: IA4
+  width: 16
+  height: 128
+
+HAKAdanCH_room_0Tex_014F20:
+  type: TEXTURE
+  offset: 0x14F20
+  symbol: HAKAdanCH_room_0Tex_014F20
+  format: IA16
+  width: 32
+  height: 32
+
+
+HAKAdanCH_room_0Vtx_0005F0:
+  type: OOT:ARRAY
+  offset: 0x0005F0
+  symbol: HAKAdanCH_room_0Vtx_0005F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0007B0:
+  type: GFX
+  offset: 0x0007B0
+  symbol: HAKAdanCH_room_0DL_0007B0
+
+HAKAdanCH_room_0Vtx_0008F0:
+  type: OOT:ARRAY
+  offset: 0x0008F0
+  symbol: HAKAdanCH_room_0Vtx_0008F0
+  count: 167
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_001360:
+  type: GFX
+  offset: 0x001360
+  symbol: HAKAdanCH_room_0DL_001360
+
+HAKAdanCH_room_0Vtx_0015E0:
+  type: OOT:ARRAY
+  offset: 0x0015E0
+  symbol: HAKAdanCH_room_0Vtx_0015E0
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_001D30:
+  type: GFX
+  offset: 0x001D30
+  symbol: HAKAdanCH_room_0DL_001D30
+
+HAKAdanCH_room_0Vtx_0020C0:
+  type: OOT:ARRAY
+  offset: 0x0020C0
+  symbol: HAKAdanCH_room_0Vtx_0020C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0021C0:
+  type: GFX
+  offset: 0x0021C0
+  symbol: HAKAdanCH_room_0DL_0021C0
+
+HAKAdanCH_room_0Vtx_0022B8:
+  type: OOT:ARRAY
+  offset: 0x0022B8
+  symbol: HAKAdanCH_room_0Vtx_0022B8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_002438:
+  type: GFX
+  offset: 0x002438
+  symbol: HAKAdanCH_room_0DL_002438
+
+HAKAdanCH_room_0Vtx_002510:
+  type: OOT:ARRAY
+  offset: 0x002510
+  symbol: HAKAdanCH_room_0Vtx_002510
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0025D0:
+  type: GFX
+  offset: 0x0025D0
+  symbol: HAKAdanCH_room_0DL_0025D0
+
+HAKAdanCH_room_0Vtx_0026C0:
+  type: OOT:ARRAY
+  offset: 0x0026C0
+  symbol: HAKAdanCH_room_0Vtx_0026C0
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_002C00:
+  type: GFX
+  offset: 0x002C00
+  symbol: HAKAdanCH_room_0DL_002C00
+
+HAKAdanCH_room_0Vtx_002DA8:
+  type: OOT:ARRAY
+  offset: 0x002DA8
+  symbol: HAKAdanCH_room_0Vtx_002DA8
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_003228:
+  type: GFX
+  offset: 0x003228
+  symbol: HAKAdanCH_room_0DL_003228
+
+HAKAdanCH_room_0Vtx_003398:
+  type: OOT:ARRAY
+  offset: 0x003398
+  symbol: HAKAdanCH_room_0Vtx_003398
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_003518:
+  type: GFX
+  offset: 0x003518
+  symbol: HAKAdanCH_room_0DL_003518
+
+HAKAdanCH_room_0Vtx_003628:
+  type: OOT:ARRAY
+  offset: 0x003628
+  symbol: HAKAdanCH_room_0Vtx_003628
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0037D8:
+  type: GFX
+  offset: 0x0037D8
+  symbol: HAKAdanCH_room_0DL_0037D8
+
+HAKAdanCH_room_0Vtx_003918:
+  type: OOT:ARRAY
+  offset: 0x003918
+  symbol: HAKAdanCH_room_0Vtx_003918
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_004018:
+  type: GFX
+  offset: 0x004018
+  symbol: HAKAdanCH_room_0DL_004018
+
+HAKAdanCH_room_0Vtx_004318:
+  type: OOT:ARRAY
+  offset: 0x004318
+  symbol: HAKAdanCH_room_0Vtx_004318
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_004D18:
+  type: GFX
+  offset: 0x004D18
+  symbol: HAKAdanCH_room_0DL_004D18
+
+HAKAdanCH_room_0Vtx_005380:
+  type: OOT:ARRAY
+  offset: 0x005380
+  symbol: HAKAdanCH_room_0Vtx_005380
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0057C0:
+  type: GFX
+  offset: 0x0057C0
+  symbol: HAKAdanCH_room_0DL_0057C0
+
+HAKAdanCH_room_0Vtx_005AE0:
+  type: OOT:ARRAY
+  offset: 0x005AE0
+  symbol: HAKAdanCH_room_0Vtx_005AE0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_005C30:
+  type: GFX
+  offset: 0x005C30
+  symbol: HAKAdanCH_room_0DL_005C30
+
+HAKAdanCH_room_0Vtx_005D00:
+  type: OOT:ARRAY
+  offset: 0x005D00
+  symbol: HAKAdanCH_room_0Vtx_005D00
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_006000:
+  type: GFX
+  offset: 0x006000
+  symbol: HAKAdanCH_room_0DL_006000
+
+HAKAdanCH_room_0Vtx_006220:
+  type: OOT:ARRAY
+  offset: 0x006220
+  symbol: HAKAdanCH_room_0Vtx_006220
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_006760:
+  type: GFX
+  offset: 0x006760
+  symbol: HAKAdanCH_room_0DL_006760
+
+HAKAdanCH_room_0Vtx_006AB8:
+  type: OOT:ARRAY
+  offset: 0x006AB8
+  symbol: HAKAdanCH_room_0Vtx_006AB8
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_006D58:
+  type: GFX
+  offset: 0x006D58
+  symbol: HAKAdanCH_room_0DL_006D58
+
+HAKAdanCH_room_0Vtx_006EC0:
+  type: OOT:ARRAY
+  offset: 0x006EC0
+  symbol: HAKAdanCH_room_0Vtx_006EC0
+  count: 175
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0079B0:
+  type: GFX
+  offset: 0x0079B0
+  symbol: HAKAdanCH_room_0DL_0079B0
+
+HAKAdanCH_room_0Vtx_007C40:
+  type: OOT:ARRAY
+  offset: 0x007C40
+  symbol: HAKAdanCH_room_0Vtx_007C40
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_0087B0:
+  type: GFX
+  offset: 0x0087B0
+  symbol: HAKAdanCH_room_0DL_0087B0
+
+HAKAdanCH_room_0Vtx_008A48:
+  type: OOT:ARRAY
+  offset: 0x008A48
+  symbol: HAKAdanCH_room_0Vtx_008A48
+  count: 265
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_009AD8:
+  type: GFX
+  offset: 0x009AD8
+  symbol: HAKAdanCH_room_0DL_009AD8
+
+HAKAdanCH_room_0Vtx_009E70:
+  type: OOT:ARRAY
+  offset: 0x009E70
+  symbol: HAKAdanCH_room_0Vtx_009E70
+  count: 131
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00A6A0:
+  type: GFX
+  offset: 0x00A6A0
+  symbol: HAKAdanCH_room_0DL_00A6A0
+
+HAKAdanCH_room_0Vtx_00A8A8:
+  type: OOT:ARRAY
+  offset: 0x00A8A8
+  symbol: HAKAdanCH_room_0Vtx_00A8A8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00AC28:
+  type: GFX
+  offset: 0x00AC28
+  symbol: HAKAdanCH_room_0DL_00AC28
+
+HAKAdanCH_room_0Vtx_00AD80:
+  type: OOT:ARRAY
+  offset: 0x00AD80
+  symbol: HAKAdanCH_room_0Vtx_00AD80
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00B060:
+  type: GFX
+  offset: 0x00B060
+  symbol: HAKAdanCH_room_0DL_00B060
+
+HAKAdanCH_room_0Vtx_00B1A0:
+  type: OOT:ARRAY
+  offset: 0x00B1A0
+  symbol: HAKAdanCH_room_0Vtx_00B1A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00B380:
+  type: GFX
+  offset: 0x00B380
+  symbol: HAKAdanCH_room_0DL_00B380
+
+HAKAdanCH_room_0Vtx_00B498:
+  type: OOT:ARRAY
+  offset: 0x00B498
+  symbol: HAKAdanCH_room_0Vtx_00B498
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00BAB8:
+  type: GFX
+  offset: 0x00BAB8
+  symbol: HAKAdanCH_room_0DL_00BAB8
+
+HAKAdanCH_room_0Vtx_00BC88:
+  type: OOT:ARRAY
+  offset: 0x00BC88
+  symbol: HAKAdanCH_room_0Vtx_00BC88
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00C178:
+  type: GFX
+  offset: 0x00C178
+  symbol: HAKAdanCH_room_0DL_00C178
+
+HAKAdanCH_room_0Vtx_00C328:
+  type: OOT:ARRAY
+  offset: 0x00C328
+  symbol: HAKAdanCH_room_0Vtx_00C328
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00C7A8:
+  type: GFX
+  offset: 0x00C7A8
+  symbol: HAKAdanCH_room_0DL_00C7A8
+
+HAKAdanCH_room_0Vtx_00C938:
+  type: OOT:ARRAY
+  offset: 0x00C938
+  symbol: HAKAdanCH_room_0Vtx_00C938
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00CE78:
+  type: GFX
+  offset: 0x00CE78
+  symbol: HAKAdanCH_room_0DL_00CE78
+
+HAKAdanCH_room_0Vtx_00D018:
+  type: OOT:ARRAY
+  offset: 0x00D018
+  symbol: HAKAdanCH_room_0Vtx_00D018
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00D258:
+  type: GFX
+  offset: 0x00D258
+  symbol: HAKAdanCH_room_0DL_00D258
+
+HAKAdanCH_room_0Vtx_00D390:
+  type: OOT:ARRAY
+  offset: 0x00D390
+  symbol: HAKAdanCH_room_0Vtx_00D390
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_00D550:
+  type: GFX
+  offset: 0x00D550
+  symbol: HAKAdanCH_room_0DL_00D550
+
+HAKAdanCH_room_0Vtx_014120:
+  type: OOT:ARRAY
+  offset: 0x014120
+  symbol: HAKAdanCH_room_0Vtx_014120
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_014430:
+  type: GFX
+  offset: 0x014430
+  symbol: HAKAdanCH_room_0DL_014430
+
+HAKAdanCH_room_0Vtx_014550:
+  type: OOT:ARRAY
+  offset: 0x014550
+  symbol: HAKAdanCH_room_0Vtx_014550
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_014610:
+  type: GFX
+  offset: 0x014610
+  symbol: HAKAdanCH_room_0DL_014610
+
+HAKAdanCH_room_0Vtx_0146E8:
+  type: OOT:ARRAY
+  offset: 0x0146E8
+  symbol: HAKAdanCH_room_0Vtx_0146E8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_014868:
+  type: GFX
+  offset: 0x014868
+  symbol: HAKAdanCH_room_0DL_014868
+
+HAKAdanCH_room_0Vtx_014938:
+  type: OOT:ARRAY
+  offset: 0x014938
+  symbol: HAKAdanCH_room_0Vtx_014938
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdanCH_room_0DL_014A38:
+  type: GFX
+  offset: 0x014A38
+  symbol: HAKAdanCH_room_0DL_014A38

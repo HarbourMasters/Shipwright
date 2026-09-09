@@ -126,9 +126,9 @@ void MagicDark_DiamondUpdate(Actor* thisx, PlayState* play) {
     gSaveContext.nayrusLoveTimer = nayrusLoveTimer + 1;
 
     if (nayrusLoveTimer < 1100) {
-        func_8002F974(thisx, NA_SE_PL_MAGIC_SOUL_NORMAL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(thisx, NA_SE_PL_MAGIC_SOUL_NORMAL - SFX_FLAG);
     } else {
-        func_8002F974(thisx, NA_SE_PL_MAGIC_SOUL_FLASH - SFX_FLAG);
+        Actor_PlaySfx_Flagged(thisx, NA_SE_PL_MAGIC_SOUL_FLASH - SFX_FLAG);
     }
 }
 
@@ -171,7 +171,7 @@ void MagicDark_OrbUpdate(Actor* thisx, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
 
-    func_8002F974(&this->actor, NA_SE_PL_MAGIC_SOUL_BALL - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_PL_MAGIC_SOUL_BALL - SFX_FLAG);
     if (this->timer < 35) {
         MagicDark_DimLighting(play, this->timer * (1 / 45.0f));
         Math_SmoothStepToF(&thisx->scale.x, this->scale * (1 / 12.000001f), 0.05f, 0.01f, 0.0001f);
@@ -231,8 +231,9 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
                         (s32)(this->primAlpha * 0.6f) & 0xFF);
         gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 128);
         gSPDisplayList(POLY_XLU_DISP++, sDiamondMaterialDL);
-        gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames * 2, gameplayFrames * -4,
-                                                         32, 32, 1, 0, gameplayFrames * -16, 64, 32));
+        gSPDisplayList(POLY_XLU_DISP++,
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, gameplayFrames * 2, gameplayFrames * -4, 32, 32, 1, 0,
+                                          gameplayFrames * -16, 64, 32, 2, -4, 0, -16));
         gSPDisplayList(POLY_XLU_DISP++, sDiamondModelDL);
     }
 

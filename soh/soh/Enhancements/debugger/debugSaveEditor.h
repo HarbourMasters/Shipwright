@@ -1,12 +1,11 @@
 #pragma once
 
-#include <array>
 #include <map>
 #include <string>
 #include <vector>
-#include <cstdint>
+#include <stdint.h>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -22,8 +21,6 @@ typedef struct {
     uint32_t size;
     std::map<uint16_t, const char*> flagDescriptions;
 } FlagTable;
-
-#define DEFINE_RAND_INF(rand_inf) { rand_inf, #rand_inf },
 
 // Reference https://tcrf.net/Proto:The_Legend_of_Zelda:_Ocarina_of_Time_Master_Quest/Event_Editor
 // The source was last referenced on 2022-09-03 and had a last updated value of 2020-05-02
@@ -362,15 +359,9 @@ const std::vector<FlagTable> flagTables = {
           { 0x24, "Market Crowd Text Randomizer" },
           { 0x30, "Entered the Market" },
       } },
-    { "Randomizer Inf Flags",
-      RANDOMIZER_INF,
-      (RAND_INF_MAX + 15) / 16,
-      {
-#include "soh/Enhancements/randomizer/randomizer_inf.h"
-      } },
+    // Randomizer Inf flags are described by their enum name, see GetFlagDescription.
+    { "Randomizer Inf Flags", RANDOMIZER_INF, (RAND_INF_MAX + 15) / 16, {} },
 };
-
-#undef DEFINE_RAND_INF
 
 const std::vector<std::string> state1 = {
     "Loading",

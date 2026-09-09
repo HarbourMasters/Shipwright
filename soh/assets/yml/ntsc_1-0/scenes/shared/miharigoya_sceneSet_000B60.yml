@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01F133A0 ]
+  directory: scenes/shared/miharigoya_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/miharigoya_scene.yml
+
+miharigoya_sceneSet_000B60:
+  type: OOT:SCENE
+  offset: 0xB60
+  symbol: miharigoya_sceneSet_000B60
+  base_name: miharigoya_scene

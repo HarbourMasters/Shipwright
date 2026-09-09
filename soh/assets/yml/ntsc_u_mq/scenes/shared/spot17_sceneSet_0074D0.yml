@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01BEE4F0 ]
+  directory: scenes/shared/spot17_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/spot17_scene.yml
+
+spot17_sceneSet_0074D0:
+  type: OOT:SCENE
+  offset: 0x74D0
+  symbol: spot17_sceneSet_0074D0
+  base_name: spot17_scene

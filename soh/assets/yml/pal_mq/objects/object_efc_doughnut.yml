@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x01270700 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x01270700 ]
+    - [ 9, 0x01270700 ]
+    - [ 10, 0x01270700 ]
+    - [ 11, 0x01270700 ]
+    - [ 12, 0x01270700 ]
+    - [ 13, 0x01270700 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gDeathMountainCloudCircleFieryDL:
+  type: GFX
+  offset: 0x660
+  symbol: gDeathMountainCloudCircleFieryDL
+
+gDeathMountainCloudCircleNormalDL:
+  type: GFX
+  offset: 0xFC0
+  symbol: gDeathMountainCloudCircleNormalDL
+
+gDeathMountainCloudFireTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDeathMountainCloudFireTex
+  format: IA8
+  width: 16
+  height: 32
+
+gDeathMountainCloudNormalTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gDeathMountainCloudNormalTex
+  format: IA16
+  width: 32
+  height: 32
+
+
+object_efc_doughnutVtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: object_efc_doughnutVtx_000200
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_efc_doughnutVtx_000F80:
+  type: OOT:ARRAY
+  offset: 0x000F80
+  symbol: object_efc_doughnutVtx_000F80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

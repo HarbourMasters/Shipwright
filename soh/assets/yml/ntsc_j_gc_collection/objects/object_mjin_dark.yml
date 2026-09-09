@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 6, 0x00F161C0 ]
+
+gShadowMedallionPlatformTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gShadowMedallionPlatformTex
+  format: I8
+  width: 64
+  height: 64
+

@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -12,12 +12,16 @@ static constexpr int32_t CVAR_RUPEE_DASH_DEFAULT = 0;
 #define CVAR_RUPEE_DASH_NAME CVAR_ENHANCEMENT("RupeeDash")
 #define CVAR_RUPEE_DASH_VALUE CVarGetInteger(CVAR_RUPEE_DASH_NAME, CVAR_RUPEE_DASH_DEFAULT)
 
+static constexpr int32_t CVAR_RUPEE_DASH_SCALING_DEFAULT = 1;
+#define CVAR_RUPEE_DASH_SCALING_NAME CVAR_ENHANCEMENT("RupeeDashScaling")
+#define CVAR_RUPEE_DASH_SCALING_VALUE CVarGetInteger(CVAR_RUPEE_DASH_SCALING_NAME, CVAR_RUPEE_DASH_SCALING_DEFAULT)
+
 static constexpr int32_t CVAR_RUPEE_DASH_INTERVAL_DEFAULT = 5;
 #define CVAR_RUPEE_DASH_INTERVAL_NAME CVAR_ENHANCEMENT("RupeeDashInterval")
 #define CVAR_RUPEE_DASH_INTERVAL_TIME \
     CVarGetInteger(CVAR_RUPEE_DASH_INTERVAL_NAME, CVAR_RUPEE_DASH_INTERVAL_DEFAULT) * 20
 
-void UpdateRupeeDash() {
+static void UpdateRupeeDash() {
     // Initialize Timer
     static uint16_t rupeeDashTimer = 0;
 
@@ -29,14 +33,18 @@ void UpdateRupeeDash() {
 
     rupeeDashTimer = 0;
     if (gSaveContext.rupees > 0) {
-        uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1) * -1;
-        Rupees_ChangeBy(walletSize);
+        uint16_t rupeeChange = -1;
+        if (CVAR_RUPEE_DASH_SCALING_VALUE) {
+            const uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1);
+            rupeeChange = walletSize * -1;
+        }
+        Rupees_ChangeBy(rupeeChange);
     } else {
         Health_ChangeBy(gPlayState, -16);
     }
 }
 
-void RegisterRupeeDash() {
+static void RegisterRupeeDash() {
     COND_HOOK(OnPlayerUpdate, CVAR_RUPEE_DASH_VALUE, UpdateRupeeDash);
 }
 

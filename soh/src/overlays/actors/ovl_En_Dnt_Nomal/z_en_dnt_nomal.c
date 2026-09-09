@@ -12,7 +12,6 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
@@ -169,8 +168,6 @@ void EnDntNomal_Destroy(Actor* thisx, PlayState* play) {
     } else {
         Collider_DestroyCylinder(play, &this->bodyCyl);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
@@ -194,7 +191,7 @@ void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
 }
 
 void EnDntNomal_SetFlower(EnDntNomal* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->flowerPos = this->actor.world.pos;
         if (this->type == ENDNTNOMAL_TARGET) {
             this->actionFunc = EnDntNomal_SetupTargetWait;
@@ -257,7 +254,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
                     if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
                         this->actionFunc = EnDntNomal_TargetGivePrize;
                     } else {
-                        OnePointCutscene_Init(play, 4140, -99, &this->actor, MAIN_CAM);
+                        OnePointCutscene_Init(play, 4140, -99, &this->actor, CAM_ID_MAIN);
                         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                         this->timer4 = 50;
                         this->actionFunc = EnDntNomal_SetupTargetUnburrow;
@@ -551,7 +548,7 @@ void EnDntNomal_StageCelebrate(EnDntNomal* this, PlayState* play) {
     } else if ((this->timer5 & 3) == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_WALK);
     }
-    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->actor.velocity.y = 7.5f;
     }
 }
@@ -624,9 +621,8 @@ void EnDntNomal_StageHide(EnDntNomal* this, PlayState* play) {
                 break;
             case DNT_ACTION_LOW_RUPEES:
             case DNT_ACTION_HIGH_RUPEES:
-                rupee =
-                    (EnExRuppy*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_RUPPY, this->actor.world.pos.x,
-                                            this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3, true);
+                rupee = (EnExRuppy*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_RUPPY, this->actor.world.pos.x,
+                                                this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3);
                 if (rupee != NULL) {
                     rupeeColor = this->action - DNT_ACTION_LOW_RUPEES;
                     rupee->colorIdx = rupeeColor;
@@ -706,7 +702,7 @@ void EnDntNomal_StageAttack(EnDntNomal* this, PlayState* play) {
         spawnZ = this->mouthPos.z + spawnOffset.z;
 
         nut = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, spawnX, spawnY, spawnZ, this->actor.shape.rot.x,
-                          this->actor.shape.rot.y, this->actor.shape.rot.z, 4, true);
+                          this->actor.shape.rot.y, this->actor.shape.rot.z, 4);
         if (nut != NULL) {
             nut->velocity.y = spawnOffset.y * 0.5f;
         }

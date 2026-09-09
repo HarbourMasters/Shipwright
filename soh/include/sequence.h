@@ -97,7 +97,7 @@
 #define NA_BGM_SHADOW_TEMPLE 0x5B    // Shadow Temple "NA_BGM_DARKNESS_DUNGEON"
 #define NA_BGM_WATER_TEMPLE 0x5C     // Water Temple "NA_BGM_AQUA_DUNGEON"
 #define NA_BGM_BRIDGE_TO_GANONS 0x5D // Ganon's Castle Bridge "NA_BGM_BRIDGE"
-#define NA_BGM_OCARINA_OF_TIME 0x5E  // Ocarina of Time "NA_BGM_SARIA"
+#define NA_BGM_SEAL_OF_SAGES 0x5E    // Seal of Six Sages
 #define NA_BGM_GERUDO_VALLEY 0x5F    // Gerudo Valley "NA_BGM_GERUDO"
 #define NA_BGM_POTION_SHOP 0x60      // Potion Shop "NA_BGM_DRUGSTORE"
 #define NA_BGM_KOTAKE_KOUME 0x61     // Kotake & Koume's Theme
@@ -105,7 +105,7 @@
 #define NA_BGM_UNDERGROUND 0x63      // Ganon's Castle Under Ground
 #define NA_BGM_GANONDORF_BOSS 0x64   // Ganondorf Battle
 #define NA_BGM_GANON_BOSS 0x65       // Ganon Battle
-#define NA_BGM_END_DEMO 0x66         // Seal of Six Sages
+#define NA_BGM_OCARINA_OF_TIME 0x66  // Ocarina of Time
 #define NA_BGM_STAFF_1 0x67          // End Credits I
 #define NA_BGM_STAFF_2 0x68          // End Credits II
 #define NA_BGM_STAFF_3 0x69          // End Credits III

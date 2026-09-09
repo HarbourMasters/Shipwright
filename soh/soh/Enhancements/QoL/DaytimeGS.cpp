@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -21,7 +21,7 @@ struct DayTimeGoldSkulltulas {
 
 using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
 
-void OnSpawnNighttimeGoldSkulltula() {
+static void OnSpawnNighttimeGoldSkulltula() {
     // Gold Skulltulas that are not part of the scene actor list during the day
     // Actor values copied from the night time scene actor list
     static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {
@@ -55,14 +55,13 @@ void OnSpawnNighttimeGoldSkulltula() {
             dayTimeGS.room == gPlayState->roomCtx.curRoom.num) {
             for (const auto& actorEntry : dayTimeGS.actorEntries) {
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorEntry.id, actorEntry.pos.x, actorEntry.pos.y,
-                            actorEntry.pos.z, actorEntry.rot.x, actorEntry.rot.y, actorEntry.rot.z, actorEntry.params,
-                            false);
+                            actorEntry.pos.z, actorEntry.rot.x, actorEntry.rot.y, actorEntry.rot.z, actorEntry.params);
             }
         }
     }
 }
 
-void RegisterDaytimeGoldSkultullas() {
+static void RegisterDaytimeGoldSkultullas() {
     COND_HOOK(OnSceneSpawnActors, CVAR_DAYTIME_GS_VALUE, OnSpawnNighttimeGoldSkulltula);
 }
 

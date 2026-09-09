@@ -1,11 +1,14 @@
 #include "hookDebugger.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include <string>
-#include <version>
 
 static std::map<const char*, std::map<HOOK_ID, HookInfo>*> hookData;
+
+static bool hookOptCollapseAll; // A bool that will collapse all hook group once
+static bool hookOptExpandAll;   // A bool that will expand all hook group once
 
 const ImVec4 grey = ImVec4(0.75, 0.75, 0.75, 1);
 const ImVec4 yellow = ImVec4(1, 1, 0, 1);
@@ -19,7 +22,7 @@ void DrawHookRegisteringInfos(const char* hookName) {
         return;
     }
 
-    ImGui::Text("Total Registered: %d", numHooks);
+    ImGui::Text("Total Registered: %zu", numHooks);
 
     if (ImGui::BeginTable(("Table##" + std::string(hookName)).c_str(), 4,
                           ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |
@@ -77,6 +80,9 @@ void DrawHookRegisteringInfos(const char* hookName) {
 }
 
 void HookDebuggerWindow::DrawElement() {
+    bool collapseLogic = false;
+    bool doingCollapseOrExpand = hookOptExpandAll || hookOptCollapseAll;
+
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
 #ifndef __cpp_lib_source_location
     ImGui::TextColored(yellow, "Some features of the Hook Debugger are unavailable because SoH was compiled "
@@ -84,9 +90,29 @@ void HookDebuggerWindow::DrawElement() {
                                "(\"__cpp_lib_source_location\" not defined in \"<version>\").");
 #endif
 
+    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+        hookOptCollapseAll = false;
+        hookOptExpandAll = true;
+    }
+    ImGui::SameLine();
+    if (UIWidgets::Button("Collapse All",
+                          UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(UIWidgets::Sizes::Inline))) {
+        hookOptExpandAll = false;
+        hookOptCollapseAll = true;
+    }
+
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
 
     for (auto& [hookName, _] : hookData) {
+        if (doingCollapseOrExpand) {
+            if (hookOptExpandAll) {
+                collapseLogic = true;
+            } else if (hookOptCollapseAll) {
+                collapseLogic = false;
+            }
+            ImGui::SetNextItemOpen(collapseLogic, ImGuiCond_Always);
+        }
+
         if (ImGui::TreeNode(hookName)) {
             DrawHookRegisteringInfos(hookName);
             ImGui::TreePop();
@@ -95,9 +121,17 @@ void HookDebuggerWindow::DrawElement() {
 
     ImGui::PopFont();
     ImGui::EndDisabled();
+
+    if (doingCollapseOrExpand) {
+        hookOptExpandAll = false;
+        hookOptCollapseAll = false;
+    }
 }
 
 void HookDebuggerWindow::InitElement() {
+    hookOptExpandAll = false;
+    hookOptCollapseAll = false;
+
 #define DEFINE_HOOK(name, _) hookData.insert({ #name, GameInteractor::Instance->GetHookData<GameInteractor::name>() });
 
 #include "../game-interactor/GameInteractor_HookTable.h"

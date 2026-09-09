@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_box/mat_gChestBodySmallKeyDL_SmallkeyFront_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodySmallKeyDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_box/mat_gChestBodySmallKeyDL_SmallkeySides_layerOpaque"/>
+	<CallDisplayList Path="objects/object_box/gChestBodySmallKeyDL_layer_Opaque_tri_1"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

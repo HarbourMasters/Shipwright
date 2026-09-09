@@ -902,6 +902,10 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
         if (frame < 0) {
             frame = 0;
         }
+        // SOH [Alt Assets] Check if animData is null (can happen if animation data segment failed to load)
+        if (animData == NULL) {
+            return;
+        }
         memcpy(ram, (uintptr_t)animData + (((sizeof(Vec3s) * limbCount + 2) * frame)), sizeof(Vec3s) * limbCount + 2);
     }
 }
@@ -1140,6 +1144,8 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
     }
 
     LinkAnimation_Change(play, skelAnime, animation, 1.0f, 0.0f, 0.0f, ANIMMODE_LOOP, 0.0f);
+
+    GameInteractor_ExecuteOnLinkSkeletonInit();
 }
 
 /**

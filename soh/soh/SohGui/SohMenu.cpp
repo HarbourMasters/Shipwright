@@ -1,12 +1,11 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <ship/Context.h>
+
 #include "SohMenu.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/controls/SohInputEditorWindow.h"
-#include <ship/window/gui/GuiMenuBar.h>
-#include <ship/window/gui/GuiElement.h>
-#include <variant>
-#include <ship/utils/StringHelper.h>
-#include <spdlog/fmt/fmt.h>
-#include <tuple>
+
+extern "C" {
+extern PlayState* gPlayState;
+}
 
 extern std::unordered_map<s16, const char*> warpPointSceneList;
 
@@ -29,7 +28,7 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
     std::unordered_map<std::string, SidebarEntry>& sidebar = menuEntries.at(pathInfo.sectionName).sidebars;
     uint8_t column = pathInfo.column;
     if (sidebar.contains(pathInfo.sidebarName)) {
-        while (sidebar.at(pathInfo.sidebarName).columnWidgets.size() < column + 1) {
+        while (sidebar.at(pathInfo.sidebarName).columnWidgets.size() < static_cast<size_t>(column) + 1) {
             sidebar.at(pathInfo.sidebarName).columnWidgets.push_back({});
         }
     }
@@ -44,6 +43,9 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
         case WIDGET_SLIDER_FLOAT:
         case WIDGET_CVAR_SLIDER_FLOAT:
             widget.options = std::make_shared<FloatSliderOptions>();
+            break;
+        case WIDGET_CVAR_BTN_SELECTOR:
+            widget.options = std::make_shared<BtnSelectorOptions>();
             break;
         case WIDGET_SLIDER_INT:
         case WIDGET_CVAR_SLIDER_INT:
@@ -81,29 +83,7 @@ SohMenu::SohMenu(const std::string& consoleVariable, const std::string& name)
     : Menu(consoleVariable, name, 0, UIWidgets::Colors::LightBlue) {
 }
 
-#ifndef ENABLE_REMOTE_CONTROL
-void SohMenu::AddMenuNetwork() {
-#ifndef _DEBUG
-    // in release builds, the tab doesn't even show
-    return;
-#endif
-
-    // Add Network Menu
-    AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
-
-    WidgetPath path = { "Network", "Info", SECTION_COLUMN_1 };
-    AddSidebarEntry("Network", path.sidebarName, 2);
-
-    AddWidget(path,
-              ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without "
-                                           "network support (\"ENABLE_REMOTE_CONTROL\" build flag).",
-              WIDGET_TEXT)
-        .Options(TextOptions().Color(Colors::Orange));
-}
-#endif
-
-void SohMenu::InitElement() {
-    Ship::Menu::InitElement();
+void SohMenu::AddMenuElements() {
     AddMenuSettings();
     AddMenuEnhancements();
     AddMenuRandomizer();
@@ -118,32 +98,38 @@ void SohMenu::InitElement() {
         initFunc();
     }
 
+    mMenuElementsInitialized = true;
+}
+
+void SohMenu::InitElement() {
+    Ship::Menu::InitElement();
+
     disabledMap = {
         { DISABLE_FOR_NO_VSYNC,
           { [](disabledInfo& info) -> bool {
-               return !Ship::Context::GetInstance()->GetWindow()->CanDisableVerticalSync();
+               return !Ship::Context::GetRawInstance()->GetWindow()->CanDisableVerticalSync();
            },
             "Disabling VSync not supported" } },
         { DISABLE_FOR_NO_WINDOWED_FULLSCREEN,
           { [](disabledInfo& info) -> bool {
-               return !Ship::Context::GetInstance()->GetWindow()->SupportsWindowedFullscreen();
+               return !Ship::Context::GetRawInstance()->GetWindow()->SupportsWindowedFullscreen();
            },
             "Windowed Fullscreen not supported" } },
         { DISABLE_FOR_NO_MULTI_VIEWPORT,
           { [](disabledInfo& info) -> bool {
-               return !Ship::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports();
+               return !Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SupportsViewports();
            },
             "Multi-viewports not supported" } },
         { DISABLE_FOR_NOT_DIRECTX,
           { [](disabledInfo& info) -> bool {
-               return Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() !=
-                      Ship::WindowBackend::FAST3D_DXGI_DX11;
+               return Ship::Context::GetRawInstance()->GetWindow()->GetWindowBackend() !=
+                      Fast::WindowBackend::FAST3D_DXGI_DX11;
            },
             "Available Only on DirectX" } },
         { DISABLE_FOR_DIRECTX,
           { [](disabledInfo& info) -> bool {
-               return Ship::Context::GetInstance()->GetWindow()->GetWindowBackend() ==
-                      Ship::WindowBackend::FAST3D_DXGI_DX11;
+               return Ship::Context::GetRawInstance()->GetWindow()->GetWindowBackend() ==
+                      Fast::WindowBackend::FAST3D_DXGI_DX11;
            },
             "Not Available on DirectX" } },
         { DISABLE_FOR_MATCH_REFRESH_RATE_ON,
@@ -175,12 +161,6 @@ void SohMenu::InitElement() {
                return !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);
            },
             "Vertical Resolution Toggle is Off" } },
-        { DISABLE_FOR_BOOT_TO_DEBUG_WARP_SCREEN_ON,
-          { [](disabledInfo& info) -> bool {
-               return CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) &&
-                      CVarGetInteger(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"), 0);
-           },
-            "\"Boot To Debug Warp Screen\" Enabled (see Dev Tools -> General)" } },
     };
 }
 
@@ -193,6 +173,8 @@ void SohMenu::Draw() {
 }
 
 void SohMenu::DrawElement() {
-    Ship::Menu::DrawElement();
+    if (mMenuElementsInitialized) {
+        Ship::Menu::DrawElement();
+    }
 }
 } // namespace SohGui

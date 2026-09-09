@@ -71,6 +71,65 @@ typedef struct {
     // 0x0000_00FF = CamData index
 } WaterBox; // size = 0x10
 
+typedef enum FloorType {
+    /*  0 */ FLOOR_TYPE_0,
+    /*  1 */ FLOOR_TYPE_1,
+    /*  2 */ FLOOR_TYPE_2,
+    /*  3 */ FLOOR_TYPE_3,
+    /*  4 */ FLOOR_TYPE_4,
+    /*  5 */ FLOOR_TYPE_5,
+    /*  6 */ FLOOR_TYPE_6,
+    /*  7 */ FLOOR_TYPE_7,
+    /*  8 */ FLOOR_TYPE_8,
+    /*  9 */ FLOOR_TYPE_9,
+    /* 10 */ FLOOR_TYPE_10,
+    /* 11 */ FLOOR_TYPE_11,
+    /* 12 */ FLOOR_TYPE_12
+} FloorType;
+
+typedef enum WallType {
+    /*  0 */ WALL_TYPE_0,
+    /*  1 */ WALL_TYPE_1,
+    /*  2 */ WALL_TYPE_2,
+    /*  3 */ WALL_TYPE_3,
+    /*  4 */ WALL_TYPE_4,
+    /*  5 */ WALL_TYPE_5,
+    /*  6 */ WALL_TYPE_6,
+    /*  7 */ WALL_TYPE_7,
+    /*  8 */ WALL_TYPE_8,
+    /*  9 */ WALL_TYPE_9,
+    /* 10 */ WALL_TYPE_10,
+    /* 11 */ WALL_TYPE_11,
+    /* 12 */ WALL_TYPE_12,
+    /* 32 */ WALL_TYPE_MAX = 32
+} WallType;
+
+#define WALL_FLAG_0 (1 << 0)
+#define WALL_FLAG_LADDER (1 << 1)
+#define WALL_FLAG_LADDER_TOP (1 << 2)
+#define WALL_FLAG_CLIMBABLE (1 << 3)
+#define WALL_FLAG_CRAWLSPACE_1 (1 << 4)
+#define WALL_FLAG_CRAWLSPACE_2 (1 << 5)
+#define WALL_FLAG_GRABBABLE (1 << 6) // Grabbable dynapoly such as blocks
+#define WALL_FLAG_CRAWLSPACE (WALL_FLAG_CRAWLSPACE_1 | WALL_FLAG_CRAWLSPACE_2)
+
+typedef enum FloorProperty {
+    /*  0 */ FLOOR_PROPERTY_0,
+    /*  5 */ FLOOR_PROPERTY_5 = 5,
+    /*  6 */ FLOOR_PROPERTY_6,
+    /*  7 */ FLOOR_PROPERTY_7,
+    /*  8 */ FLOOR_PROPERTY_8,
+    /*  9 */ FLOOR_PROPERTY_9,
+    /* 11 */ FLOOR_PROPERTY_11 = 11,
+    /* 12 */ FLOOR_PROPERTY_12
+} FloorProperty;
+
+typedef enum FloorEffect {
+    /*  0 */ FLOOR_EFFECT_0,
+    /*  1 */ FLOOR_EFFECT_1, // Slope/sliding
+    /*  2 */ FLOOR_EFFECT_2 // Transition
+} FloorEffect;
+
 typedef struct {
     u32 data[2];
 

@@ -387,10 +387,10 @@ s32 EnGirlA_TryChangeShopItemShip(EnGirlA* this, PlayState* play) {
         }
     } else if (this->actor.params == SI_RANDOMIZED_ITEM) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+        if (Flags_GetRandomizerInf(shopItemIdentity.identity.randomizerInf)) {
             this->actor.params = SI_SOLD_OUT;
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-                shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
 
             // Undo the rotation for spiritual stones
             if (getItemEntry.getItemId >= RG_KOKIRI_EMERALD && getItemEntry.getItemId <= RG_ZORA_SAPPHIRE) {
@@ -485,7 +485,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         if (params == SI_RANDOMIZED_ITEM) {
             ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-                shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
 
             objectId = getItemEntry.objectId;
         }
@@ -664,6 +664,10 @@ s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_HYLIAN_SHIELD)) {
+        return canBuy;
+    }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_HYLIAN)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -677,6 +681,10 @@ s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_DEKU_SHIELD)) {
+        return canBuy;
+    }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -690,8 +698,11 @@ s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
-        (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_GORON_TUNIC)) {
+        return canBuy;
+    }
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !IS_RANDO) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_GORON)) {
@@ -707,8 +718,11 @@ s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
-        (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_ZORA_TUNIC)) {
+        return canBuy;
+    }
+    if (LINK_AGE_IN_YEARS == YEARS_CHILD && !IS_RANDO) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_TUNIC, EQUIP_INV_TUNIC_ZORA)) {
@@ -762,15 +776,11 @@ s32 EnGirlA_CanBuy_Unk20(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombchus(PlayState* play, EnGirlA* this) {
-    // When in rando, don't allow buying bombchus when the player doesn't have required explosives
-    // If bombchus are in logic, the player needs to have bombchus; otherwise they need a bomb bag
-    if (IS_RANDO) {
-        u8 bombchuBag = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG);
-        if ((!bombchuBag && CUR_CAPACITY(UPG_BOMB_BAG) == 0) ||
-            (bombchuBag && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
-            return CANBUY_RESULT_CANT_GET_NOW;
-        }
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_BOMBCHUS, false, &canBuy)) {
+        return canBuy;
     }
+
     if (AMMO(ITEM_BOMBCHU) >= 50) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -855,9 +865,9 @@ s32 EnGirlA_CanBuy_Fairy(PlayState* play, EnGirlA* this) {
 s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-        shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+        shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
     ItemObtainability itemObtainability =
-        Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.randomizerCheck);
+        Randomizer_GetItemObtainabilityFromRandomizerCheck(shopItemIdentity.identity.randomizerCheck);
 
     if (itemObtainability == CANT_OBTAIN_NEED_EMPTY_BOTTLE) {
         return CANBUY_RESULT_NEED_BOTTLE;
@@ -867,8 +877,8 @@ s32 EnGirlA_CanBuy_Randomizer(PlayState* play, EnGirlA* this) {
         return CANBUY_RESULT_CANT_GET_NOW_5;
     }
 
-    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf) || itemObtainability == CANT_OBTAIN_ALREADY_HAVE ||
-        itemObtainability == CANT_OBTAIN_MISC) {
+    if (Flags_GetRandomizerInf(shopItemIdentity.identity.randomizerInf) ||
+        itemObtainability == CANT_OBTAIN_ALREADY_HAVE || itemObtainability == CANT_OBTAIN_MISC) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
 
@@ -1060,9 +1070,9 @@ void EnGirlA_ItemGive_Randomizer(PlayState* play, EnGirlA* this) {
     Player* player = GET_PLAYER(play);
     ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-        shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+        shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
 
-    Flags_SetRandomizerInf(shopItemIdentity.randomizerInf);
+    Flags_SetRandomizerInf(shopItemIdentity.identity.randomizerInf);
     Rupees_ChangeBy(-this->basePrice);
 }
 
@@ -1185,7 +1195,7 @@ void EnGirlA_SetItemDescription(PlayState* play, EnGirlA* this) {
 
     if (params == SI_RANDOMIZED_ITEM) {
         ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-        this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+        this->actor.textId = 0x9100 + (shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
     }
 
     this->isInvisible = false;
@@ -1211,7 +1221,8 @@ void EnGirlA_UpdateStockedItem(PlayState* play, EnGirlA* this) {
 
             if (this->actor.params == SI_RANDOMIZED_ITEM) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
-                this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                this->actor.textId =
+                    0x9100 + (shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
             } else {
                 this->actor.textId = itemEntry->itemDescTextId;
             }
@@ -1352,10 +1363,12 @@ void EnGirlA_WaitForObject(EnGirlA* this, PlayState* play) {
             if (params == SI_RANDOMIZED_ITEM) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, this->randoSlotIndex);
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-                    shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
-                this->actor.textId = 0x9100 + (shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                    shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
+                this->actor.textId =
+                    0x9100 + (shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 this->itemBuyPromptTextId =
-                    0x9100 + ((shopItemIdentity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
+                    0x9100 +
+                    ((shopItemIdentity.identity.randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS);
                 this->getItemId = getItemEntry.getItemId;
                 this->basePrice = shopItemIdentity.itemPrice;
                 this->giDrawId = getItemEntry.gid;
@@ -1442,7 +1455,7 @@ void EnGirlA_Draw(Actor* thisx, PlayState* play) {
                                      this->actor.params == SI_RANDOMIZED_ITEM)
                                         ? GetItemMystery()
                                         : Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(
-                                              shopItemIdentity.randomizerCheck, shopItemIdentity.ogItemId);
+                                              shopItemIdentity.identity.randomizerCheck, shopItemIdentity.ogItemId);
 
         EnItem00_CustomItemsParticles(&this->actor, play, getItemEntry);
         GetItemEntry_Draw(play, getItemEntry);

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <functional>
+#include <ship/window/gui/GuiWindow.h>
 #include <ship/window/gui/GuiMenuBar.h>
-#include <ship/window/gui/GuiElement.h>
 
 class SohModalWindow final : public Ship::GuiWindow {
   public:
@@ -16,5 +16,6 @@ class SohModalWindow final : public Ship::GuiWindow {
                        std::function<void()> button1callback = nullptr,
                        std::function<void()> button2callback = nullptr);
     bool IsPopupOpen(std::string title);
+    size_t PopupsQueued();
     void DismissPopup();
 };

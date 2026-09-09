@@ -4,8 +4,7 @@
 #include "objects/object_fr/object_fr.h"
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -90,7 +89,7 @@ sEnFrPointers.flags = 12
      - Deactivate frogs, frogs will jump back into the water
 */
 
-EnFrPointers sEnFrPointers = {
+static EnFrPointers sEnFrPointers = {
     0x00,
     {
         NULL,
@@ -100,6 +99,10 @@ EnFrPointers sEnFrPointers = {
         NULL,
     },
 };
+
+#define EN_FR_SHIP_SAVESTATE_FIELDS(F) F(sEnFrPointers)
+
+SHIP_SAVESTATE_DEFINE(EnFr, EN_FR_SHIP_SAVESTATE_FIELDS)
 
 // Flags for gSaveContext.eventChkInf[13]
 static u16 sSongIndex[] = {
@@ -203,7 +206,7 @@ static u8 sJumpOrder[] = {
 };
 
 static u8 sOcarinaNotes[] = {
-    OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D5,
+    OCARINA_BTN_A, OCARINA_BTN_C_DOWN, OCARINA_BTN_C_RIGHT, OCARINA_BTN_C_LEFT, OCARINA_BTN_C_UP,
 };
 
 void EnFr_OrientUnderwater(EnFr* this) {
@@ -324,9 +327,6 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
     EnFr* this = (EnFr*)thisx;
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->skelAnimeButterfly);
 }
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {
@@ -613,7 +613,7 @@ void EnFr_Idle(EnFr* this, PlayState* play) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         }
 
-        OnePointCutscene_Init(play, 4110, ~0x62, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4110, ~0x62, &this->actor, CAM_ID_MAIN);
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         player->actor.world.pos.x = this->actor.world.pos.x; // x = 990.0f
         player->actor.world.pos.y = this->actor.world.pos.y; // y = 205.0f
@@ -699,19 +699,19 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, PlayState* play) {
             break;
         case OCARINA_MODE_01:                      // Ocarina note played, but no song played
             switch (play->msgCtx.lastOcaNoteIdx) { // Jumping frogs in open ocarina based on ocarina note played
-                case OCARINA_NOTE_D4:
+                case OCARINA_BTN_A:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_F4:
+                case OCARINA_BTN_C_DOWN:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_A4:
+                case OCARINA_BTN_C_RIGHT:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_B4:
+                case OCARINA_BTN_C_LEFT:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_D5:
+                case OCARINA_BTN_C_UP:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
                     break;
             }
@@ -820,22 +820,10 @@ void EnFr_SetupFrogSong(EnFr* this, PlayState* play) {
     if (this->frogSongTimer != 0) {
         this->frogSongTimer--;
     } else {
-        // #region SOH [Enhancement]
-        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0)) {
-            this->frogSongTimer = 40 * CVarGetInteger(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 1);
-            if (CVarGetInteger(CVAR_ENHANCEMENT("InstantFrogsGameWin"), 0)) {
-                this->actor.textId = 0x40AC;
-                EnFr_SetupReward(this, play, false);
-            } else {
-                this->ocarinaNoteIndex = 0;
-                func_8010BD58(play, OCARINA_ACTION_FROGS);
-                this->ocarinaNote = EnFr_GetNextNoteFrogSong(this->ocarinaNoteIndex);
-                EnFr_CheckOcarinaInputFrogSong(this->ocarinaNote);
-                this->actionFunc = EnFr_ContinueFrogSong;
-            }
-            // #endregion
-        } else {
+        if (GameInteractor_Should(VB_SET_FROG_OCARINA_GAME_TIME_LIMIT, true, this, 40)) {
             this->frogSongTimer = 40;
+        }
+        if (GameInteractor_Should(VB_PLAY_FROG_OCARINA_GAME, true, this)) {
             this->ocarinaNoteIndex = 0;
             func_8010BD58(play, OCARINA_ACTION_FROGS);
             this->ocarinaNote = EnFr_GetNextNoteFrogSong(this->ocarinaNoteIndex);
@@ -863,11 +851,7 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, PlayState* play) {
         ocarinaNote = EnFr_GetNextNoteFrogSong(ocarinaNoteIndex);
         this->ocarinaNote = ocarinaNote;
         EnFr_CheckOcarinaInputFrogSong(ocarinaNote);
-        // #region SOH [Enhancement]
-        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0)) {
-            this->frogSongTimer = sTimerFrogSong[index] * CVarGetInteger(CVAR_ENHANCEMENT("FrogsModifyFailTime"), 1);
-            // #endregion
-        } else {
+        if (GameInteractor_Should(VB_SET_FROG_OCARINA_GAME_TIME_LIMIT, true, this, sTimerFrogSong[index])) {
             this->frogSongTimer = sTimerFrogSong[index];
         }
     }
@@ -878,7 +862,7 @@ void EnFr_OcarinaMistake(EnFr* this, PlayState* play) {
     Message_CloseTextbox(play);
     this->reward = GI_NONE;
     Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
     sEnFrPointers.flags = 12;
     EnFr_DeactivateButterfly();
     this->actionFunc = EnFr_Deactivate;
@@ -892,10 +876,7 @@ void EnFr_ContinueFrogSong(EnFr* this, PlayState* play) {
     if (this->frogSongTimer == 0) {
         EnFr_OcarinaMistake(this, play);
     } else {
-        // #region SOH [Enhancement] - Don't decrement timer
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFrogsOcarinaGame"), 0) ||
-            !CVarGetInteger(CVAR_ENHANCEMENT("FrogsUnlimitedFailTime"), 0)) {
-            // #endregion
+        if (GameInteractor_Should(VB_FROGS_OCARINA_GAME_TIMER_TICK, true)) {
             this->frogSongTimer--;
         }
         if (play->msgCtx.msgMode == MSGMODE_FROGS_PLAYING) {
@@ -917,19 +898,19 @@ void EnFr_ContinueFrogSong(EnFr* this, PlayState* play) {
         if (play->msgCtx.msgMode == MSGMODE_FROGS_WAITING) {
             play->msgCtx.msgMode = MSGMODE_FROGS_START;
             switch (play->msgCtx.lastOcaNoteIdx) {
-                case OCARINA_NOTE_D4:
+                case OCARINA_BTN_A:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_F4:
+                case OCARINA_BTN_C_DOWN:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_A4:
+                case OCARINA_BTN_C_RIGHT:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_B4:
+                case OCARINA_BTN_C_LEFT:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_D5:
+                case OCARINA_BTN_C_UP:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
             }
             if (EnFr_IsFrogSongComplete(this, play)) {
@@ -948,7 +929,7 @@ void EnFr_SetupReward(EnFr* this, PlayState* play, u8 unkCondition) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
 
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
     play->msgCtx.msgMode = MSGMODE_PAUSED;
     this->actionFunc = EnFr_PrintTextBox;
 }

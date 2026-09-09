@@ -1,35 +1,49 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "option.h"
-#include "libultraship/bridge.h"
-#include <ship/Context.h>
-#include <imgui.h>
-#include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/UIWidgets.hpp"
+#include "randomizerEnumStrings.h"
+#include "static_data.h"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <soh/cvar_prefixes.h>
 
+namespace SohGui {
+extern std::shared_ptr<SohMenu> mSohMenu;
+}
+
 namespace Rando {
-Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
-                    const OptionCategory category_, std::string cvarName_, std::string description_,
-                    WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
-    return { static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,      std::move(cvarName_),
-             std::move(description_),   widgetType_,      defaultOption_,      defaultHidden_, imFlags_ };
+Option Option::Bool(RandomizerSettingKey key_, std::vector<std::string> options_, const OptionCategory category_,
+                    std::string cvarName_, WidgetType widgetType_, const uint8_t defaultOption_,
+                    const bool defaultHidden_, WidgetFunc callback_, int imFlags_) {
+    return { static_cast<size_t>(key_),
+             std::move(options_),
+             category_,
+             std::move(cvarName_),
+             widgetType_,
+             defaultOption_,
+             defaultHidden_,
+             callback_,
+             imFlags_ };
 }
 
-Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_, std::string description_,
-                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_) {
-    return Option(key_, std::move(name_), { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_),
-                  std::move(description_), widgetType_, defaultOption_, false, imFlags_);
+Option Option::Bool(RandomizerSettingKey key_, std::string cvarName_, const int imFlags_, const WidgetType widgetType_,
+                    const bool defaultOption_, WidgetFunc callback_) {
+    return Option(key_, { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_), widgetType_, defaultOption_,
+                  false, callback_, imFlags_);
 }
 
-Option Option::U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
-                  const OptionCategory category_, std::string cvarName_, std::string description_,
-                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, int imFlags_) {
-    return { static_cast<size_t>(key_), std::move(name_), std::move(options_), category_,      std::move(cvarName_),
-             std::move(description_),   widgetType_,      defaultOption_,      defaultHidden_, imFlags_ };
-}
-
-Option Option::LogicTrick(RandomizerTrick rt_, std::string name_) {
-    return Option(rt_, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "", "",
-                  WidgetType::Checkbox, 0, false, IMFLAG_NONE);
+Option Option::U8(RandomizerSettingKey key_, std::vector<std::string> options_, const OptionCategory category_,
+                  std::string cvarName_, WidgetType widgetType_, const uint8_t defaultOption_,
+                  const bool defaultHidden_, WidgetFunc callback_, int imFlags_) {
+    return { static_cast<size_t>(key_),
+             std::move(options_),
+             category_,
+             std::move(cvarName_),
+             widgetType_,
+             defaultOption_,
+             defaultHidden_,
+             callback_,
+             imFlags_ };
 }
 
 OptionValue::OptionValue(uint8_t val) : mVal(val) {
@@ -55,32 +69,101 @@ RandomizerSettingKey Option::GetKey() const {
     return static_cast<RandomizerSettingKey>(key);
 }
 
+#pragma region Lang
+
+const static std::string namePostfix = ".name";
+const static std::string descriptionPostfix = ".description";
+
+const static std::string settingPrefix = "randomizer.settings.";
+const static std::string trickPrefix = "randomizer.tricks.";
+
+const static std::string empty = "";
+const static std::string error = "[ERROR]";
+
+static const std::string& MakeSettingName(RandomizerSettingKey key) {
+    std::string settingNamePart(EnumToString(key).substr(4));
+    std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
+    return Lang::Translate((settingPrefix + settingNamePart + namePostfix).c_str());
+}
+
+static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
+    std::string settingNamePart(EnumToString(key).substr(4));
+    std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
+    auto result = Lang::TryTranslate((settingPrefix + settingNamePart + descriptionPostfix).c_str());
+    if (std::holds_alternative<std::reference_wrapper<const std::string>>(result)) {
+        return std::get<std::reference_wrapper<const std::string>>(result);
+    } else if (std::holds_alternative<Lang::Error>(result)) {
+        return empty;
+    } else {
+        assert(false);
+        return error;
+    }
+}
+
+static const std::string& MakeTrickName(RandomizerTrick key) {
+    std::string trickNamePart(EnumToString(key).substr(3));
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
+}
+
+static const std::string& MakeTrickDescription(RandomizerTrick key) {
+    std::string trickNamePart(EnumToString(key).substr(3));
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
+}
+
+#pragma endregion
+
 const std::string& Option::GetName() const {
-    return name;
+    switch (this->GetCategory()) {
+        case OptionCategory::Setting:
+        case OptionCategory::Toggle:
+            return MakeSettingName(static_cast<RandomizerSettingKey>(this->key));
+        case OptionCategory::Trick:
+            return MakeTrickName(static_cast<RandomizerTrick>(this->key));
+        case OptionCategory::LocationExclusion:
+            return StaticData::GetLocation(static_cast<RandomizerCheck>(this->key))->GetName();
+        default:
+            assert(false);
+            return error;
+    }
 }
 
 const std::string& Option::GetDescription() const {
-    return description;
+    switch (this->GetCategory()) {
+        case OptionCategory::Setting:
+        case OptionCategory::Toggle:
+            return MakeSettingDescription(static_cast<RandomizerSettingKey>(this->key));
+        case OptionCategory::Trick:
+            return MakeTrickDescription(static_cast<RandomizerTrick>(this->key));
+        case OptionCategory::LocationExclusion:
+            return empty;
+        default:
+            assert(false);
+            return error;
+    }
 }
 
 uint8_t Option::GetOptionIndex() const {
     return CVarGetInteger(cvarName.c_str(), defaultOption);
 }
 
+uint8_t Option::GetMenuOptionDefault() const {
+    return defaultOption;
+}
+
 const std::string& Option::GetOptionText(size_t index) const {
+    if (options.empty()) {
+        return empty;
+    }
+    if (index >= options.size()) {
+        index = options.size() - 1;
+    }
     return options[index];
 }
 
 const std::string& Option::GetCVarName() const {
     return cvarName;
-}
-
-void Option::SetDelayedOption() {
-    delayedSelection = contextSelection;
-}
-
-void Option::RestoreDelayedOption() {
-    contextSelection = delayedSelection;
 }
 
 void Option::SetContextIndex(uint8_t idx) {
@@ -121,38 +204,12 @@ void Option::Disable(std::string text) {
     }
 }
 
-bool Option::IsCategory(const OptionCategory category) const {
-    return category == this->category;
-}
-
-bool Option::RenderImGui() {
-    bool changed = false;
-    ImGui::BeginGroup();
-    switch (widgetType) {
-        case WidgetType::Checkbox:
-            changed = RenderCheckbox();
-            break;
-        case WidgetType::Combobox:
-            changed = RenderCombobox();
-            break;
-        case WidgetType::Slider:
-            changed = RenderSlider();
-            break;
-    }
-    ImGui::EndGroup();
-    return changed;
-}
-
-bool Option::HasFlag(const int imFlag_) const {
-    return imFlag_ & imFlags;
+OptionCategory Option::GetCategory() const {
+    return this->category;
 }
 
 void Option::AddFlag(const int imFlag_) {
     imFlags |= imFlag_;
-}
-
-void Option::SetFlag(const int imFlag_) {
-    imFlags = imFlag_;
 }
 
 void Option::RemoveFlag(const int imFlag_) {
@@ -163,101 +220,94 @@ uint8_t Option::GetValueFromText(const std::string text) {
     if (optionsTextToVar.contains(text)) {
         return optionsTextToVar[text];
     } else {
-        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
+        SPDLOG_ERROR("Option {} does not have a var named {}.", this->GetName(), text);
         assert(false);
     }
     return defaultOption;
 }
 
-void Option::SetContextIndexFromText(const std::string text) {
-    if (optionsTextToVar.contains(text)) {
-        SetContextIndex(optionsTextToVar[text]);
-    } else {
-        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
-        assert(false);
-    }
-}
-
-Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
-               bool defaultHidden_, int imFlags_)
-    : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_) {
+Option::Option(size_t key_, std::vector<std::string> options_, OptionCategory category_, std::string cvarName_,
+               WidgetType widgetType_, uint8_t defaultOption_, bool defaultHidden_, WidgetFunc callback_, int imFlags_)
+    : key(key_), options(std::move(options_)), category(category_), cvarName(std::move(cvarName_)),
+      widgetType(widgetType_), defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_),
+      callback(callback_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
+    for (size_t i = 0; i < options.size(); i++) {
+        optionsMap.emplace(static_cast<int32_t>(i), options[i].c_str());
+    }
+    UIWidgets::LabelPositions labelPosition;
+    switch (widgetType) {
+        case WIDGET_CVAR_CHECKBOX:
+            // labelPosition = UIWidgets::LabelPositions::Near;
+            // if (imFlags_ & IMFLAG_LABEL_INLINE) {
+            //     labelPosition = UIWidgets::LabelPositions::Near;
+            // }
+            widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(
+                UIWidgets::CheckboxOptions().DefaultValue(defaultOption).Tooltip(this->GetDescription()));
+            break;
+        case WIDGET_CVAR_COMBOBOX:
+            labelPosition = UIWidgets::LabelPositions::Above;
+            if (imFlags_ & IMFLAG_LABEL_INLINE) {
+                labelPosition = UIWidgets::LabelPositions::Near;
+            }
+            widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
+                                                                             .DefaultIndex(defaultOption)
+                                                                             .ComboMap(optionsMap)
+                                                                             .Tooltip(this->GetDescription())
+                                                                             .LabelPosition(labelPosition));
+            break;
+        case WIDGET_CVAR_SLIDER_INT:
+            labelPosition = UIWidgets::LabelPositions::Above;
+            if (imFlags_ & IMFLAG_LABEL_INLINE) {
+                labelPosition = UIWidgets::LabelPositions::Near;
+            }
+            widgetOptions =
+                std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
+                                                                  .DefaultValue(defaultOption)
+                                                                  .Tooltip(this->GetDescription())
+                                                                  .Min(0)
+                                                                  .Max(static_cast<int32_t>(options.size() - 1))
+                                                                  .Format(options[defaultOption].c_str())
+                                                                  .LabelPosition(labelPosition));
+            break;
+        default:
+            break;
+    }
     PopulateTextToNum();
 }
 
-bool Option::RenderCheckbox() {
-    bool changed = false;
-    bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    UIWidgets::CheckboxOptions widgetOptions = static_cast<UIWidgets::CheckboxOptions>(
-        UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), val);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+void Option::AddWidget(WidgetPath& path) {
+    auto widget = SohGui::mSohMenu->AddWidget(path, this->GetName() + "##Randomizer", widgetType)
+                      .Callback(callback)
+                      .PreFunc([this](WidgetInfo& info) {
+                          info.isHidden = this->IsHidden();
+                          info.options->disabled = this->disabled;
+                          info.options->disabledTooltip = this->disabledText.c_str();
+                          info.options->tooltip = this->GetDescription();
+                          if (info.type == WIDGET_CVAR_SLIDER_INT) {
+                              UIWidgets::IntSliderOptions* sliderOpts =
+                                  (UIWidgets::IntSliderOptions*)info.options.get();
+                              size_t maxIndex = this->options.size() - 1;
+                              if (this->GetKey() == RSK_SHOPSANITY_COUNT && maxIndex > 7 &&
+                                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
+                                      RO_LOGIC_NO_LOGIC) {
+                                  maxIndex = 7;
+                              }
+                              sliderOpts->Max(static_cast<int32_t>(maxIndex));
+                              if (this->GetOptionIndex() > maxIndex) {
+                                  CVarSetInteger(cvarName.c_str(), static_cast<int32_t>(maxIndex));
+                              }
+                              sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
+                          }
+                      })
+                      .CVar(cvarName.c_str())
+                      .Options(widgetOptions)
+                      .SameLine(imFlags & IMFLAG_SAME_LINE);
+    widgetInfo = widget;
+    if (callback != nullptr) {
+        callback(widgetInfo);
     }
-    return changed;
-}
-
-bool Option::RenderCombobox() {
-    bool changed = false;
-    uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (selected >= static_cast<uint8_t>(options.size())) {
-        selected = static_cast<uint8_t>(options.size());
-        CVarSetInteger(cvarName.c_str(), selected);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    UIWidgets::ComboboxOptions widgetOptions =
-        UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
-    if (this->GetKey() == RSK_LOGIC_RULES) {
-        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPositions::None)
-                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right);
-    }
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderSlider() {
-    bool changed = false;
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size()) - 1;
-        changed = true;
-    }
-    UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions()
-                                                    .Color(THEME_COLOR)
-                                                    .Min(0)
-                                                    .Max(static_cast<uint8_t>(options.size() - 1))
-                                                    .Tooltip(description.c_str())
-                                                    .Format(options[val].c_str())
-                                                    .DefaultValue(defaultOption);
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::SliderInt(name.c_str(), &val, widgetOptions)) {
-        changed = true;
-    }
-    if (val < 0) {
-        val = 0;
-        changed = true;
-    }
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size() - 1);
-        changed = true;
-    }
-    if (changed) {
-        CVarSetInteger(cvarName.c_str(), val);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
 }
 
 void Option::PopulateTextToNum() {
@@ -266,44 +316,58 @@ void Option::PopulateTextToNum() {
     }
 }
 
-LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_)
-    : Option(key_, name_, { "Included", "Excluded" }, OptionCategory::Setting, "", "", WidgetType::Checkbox,
-             RO_LOCATION_INCLUDE, false, IMFLAG_NONE) {
+void Option::SetCallback(WidgetFunc callback) {
+    this->callback = callback;
+}
+
+void Option::RunCallback() {
+    if (callback != nullptr) {
+        this->callback(widgetInfo);
+    }
+}
+
+LocationOption::LocationOption(RandomizerCheck key_)
+    : Option(key_, { "Included", "Excluded" }, OptionCategory::LocationExclusion, "", WIDGET_CVAR_CHECKBOX,
+             RO_LOCATION_INCLUDE, false, nullptr, IMFLAG_NONE) {
 }
 
 RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_)
-    : Option(key_, name_, { "Disabled", "Enabled" }, OptionCategory::Setting, "", std::move(description_),
-             WidgetType::Checkbox, 0, false, IMFLAG_NONE),
-      mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {
+TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
+                           std::set<Tricks::Tag> tags_, const std::string nameTag_)
+    : Option(key_, { "Disabled", "Enabled" }, OptionCategory::Trick, "", WIDGET_CVAR_CHECKBOX, 0, false, nullptr,
+             IMFLAG_NONE),
+      mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
-TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
-    return { key_, quest_, area_, std::move(tags_), name_, std::move(description_) };
+TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                      std::set<Tricks::Tag> tags_, const std::string nameTag_) {
+    return { key_, quest_, area_, std::move(tags_), nameTag_ };
 }
 
-RandomizerTrick TrickOption::GetKey() const {
+RandomizerTrick TrickSetting::GetKey() const {
     return static_cast<RandomizerTrick>(key);
 }
 
-RandomizerCheckQuest TrickOption::GetQuest() const {
+RandomizerCheckQuest TrickSetting::GetQuest() const {
     return mQuest;
 }
 
-RandomizerArea TrickOption::GetArea() const {
+RandomizerArea TrickSetting::GetArea() const {
     return mArea;
 }
 
-bool TrickOption::HasTag(const Tricks::Tag tag) const {
+std::string TrickSetting::GetNameTag() const {
+    return mNameTag;
+}
+
+bool TrickSetting::HasTag(const Tricks::Tag tag) const {
     return mTags.contains(tag);
 }
 
-const std::set<Tricks::Tag>& TrickOption::GetTags() const {
+const std::set<Tricks::Tag>& TrickSetting::GetTags() const {
     return mTags;
 }
 
@@ -365,75 +429,29 @@ void OptionGroup::Disable() {
     mDisabled = true;
 }
 
-bool OptionGroup::RenderImGui() const { // NOLINT(*-no-recursion)
-    ImGuiWindow* window = ImGui::GetCurrentWindow();
-    bool changed = false;
-    ImGui::BeginDisabled(mDisabled || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) ||
-                         CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) ||
-                         CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0));
+void OptionGroup::AddWidgets(WidgetPath& path) const {
     if (mContainerType == WidgetContainerType::TABLE) {
-        if (ImGui::BeginTable(mName.c_str(), static_cast<int>(mSubGroups.size()),
-                              ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            for (const auto column : mSubGroups) {
-                if (column->GetContainerType() == WidgetContainerType::COLUMN) {
-                    ImGui::TableSetupColumn(column->GetName().c_str(), ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                }
-            }
-            ImGui::PushItemFlag(ImGuiItemFlags_NoNav, true);
-            ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
-            for (int i = 0; i < mSubGroups.size(); i++) {
-                ImGui::TableSetColumnIndex(i);
-                ImGui::TableHeader(mSubGroups[i]->GetName().c_str());
-                if (!mSubGroups[i]->GetDescription().empty()) {
-                    UIWidgets::Tooltip(mSubGroups[i]->GetDescription().c_str());
-                }
-            }
-            ImGui::PopItemFlag();
-            ImGui::TableNextRow();
-        }
+        path.column = SECTION_COLUMN_1;
+        path.sidebarName = mName;
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, static_cast<uint32_t>(mSubGroups.size()));
     }
-    if (mContainerType == WidgetContainerType::SECTION && !mName.empty()) {
-        ImGui::SeparatorText(mName.c_str());
-        if (!mDescription.empty()) {
-            UIWidgets::Tooltip(mDescription.c_str());
+    if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
+        if (!mName.empty()) {
+            SohGui::mSohMenu->AddWidget(path, mName.c_str(), WIDGET_SEPARATOR_TEXT);
         }
-    }
-    if (mContainerType == WidgetContainerType::COLUMN) {
-        ImGui::TableNextColumn();
-        window->DC.CurrLineTextBaseOffset = 0.0f;
-        ImGui::BeginChild(mName.c_str(), ImVec2(0, -8));
-        ImGui::PushItemWidth(-FLT_MIN);
     }
     if (mContainsType == OptionGroupType::SUBGROUP) {
         for (const auto optionGroup : mSubGroups) {
-            if (optionGroup->RenderImGui()) {
-                changed = true;
-            }
+            optionGroup->AddWidgets(path);
         }
     } else {
         for (const auto option : mOptions) {
-            if (option->IsHidden()) {
-                continue;
-            }
-            if (option->HasFlag(IMFLAG_INDENT)) {
-                ImGui::Indent();
-            }
-            // If any options changed, changed will end up being true
-            if (option->RenderImGui()) {
-                changed = true;
-            }
-            if (option->HasFlag(IMFLAG_UNINDENT)) {
-                ImGui::Unindent();
-            }
+            option->AddWidget(path);
         }
     }
     if (mContainerType == WidgetContainerType::COLUMN) {
-        ImGui::EndChild();
+        assert(path.column < 3);
+        path.column = static_cast<SectionColumns>(path.column + 1);
     }
-    if (mContainerType == WidgetContainerType::TABLE) {
-        ImGui::EndTable();
-    }
-    ImGui::EndDisabled();
-    return changed;
 }
 } // namespace Rando

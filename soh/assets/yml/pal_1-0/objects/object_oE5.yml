@@ -1,0 +1,231 @@
+:config:
+  segments:
+    - [ 6, 0x00EDB880 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00EDB880 ]
+    - [ 9, 0x00EDB880 ]
+    - [ 10, 0x00EDB880 ]
+    - [ 11, 0x00EDB880 ]
+    - [ 12, 0x00EDB880 ]
+    - [ 13, 0x00EDB880 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+object_oE5_Blob_003A40:
+  type: BLOB
+  offset: 0x3A40
+  size: 0x800
+  symbol: object_oE5_Blob_003A40
+
+object_oE5_DL_0024E8:
+  type: GFX
+  offset: 0x24E8
+  symbol: object_oE5_DL_0024E8
+
+object_oE5_DL_002690:
+  type: GFX
+  offset: 0x2690
+  symbol: object_oE5_DL_002690
+
+object_oE5_DL_002C60:
+  type: GFX
+  offset: 0x2C60
+  symbol: object_oE5_DL_002C60
+
+object_oE5_DL_002E10:
+  type: GFX
+  offset: 0x2E10
+  symbol: object_oE5_DL_002E10
+
+object_oE5_DL_002F00:
+  type: GFX
+  offset: 0x2F00
+  symbol: object_oE5_DL_002F00
+
+object_oE5_DL_003050:
+  type: GFX
+  offset: 0x3050
+  symbol: object_oE5_DL_003050
+
+object_oE5_DL_003200:
+  type: GFX
+  offset: 0x3200
+  symbol: object_oE5_DL_003200
+
+object_oE5_DL_0032F0:
+  type: GFX
+  offset: 0x32F0
+  symbol: object_oE5_DL_0032F0
+
+object_oE5_TLUT_003440:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: object_oE5_TLUT_003440
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE5_TLUT_004240:
+  type: TEXTURE
+  offset: 0x4240
+  symbol: object_oE5_TLUT_004240
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE5_Tex_003640:
+  type: TEXTURE
+  offset: 0x3640
+  symbol: object_oE5_Tex_003640
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3440
+
+object_oE5_Tex_004440:
+  type: TEXTURE
+  offset: 0x4440
+  symbol: object_oE5_Tex_004440
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4240
+
+object_oE5_Tex_004480:
+  type: TEXTURE
+  offset: 0x4480
+  symbol: object_oE5_Tex_004480
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4240
+
+object_oE5_Tex_004580:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: object_oE5_Tex_004580
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4240
+
+object_oE5_Tex_004680:
+  type: TEXTURE
+  offset: 0x4680
+  symbol: object_oE5_Tex_004680
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_oE5_Tex_004A80:
+  type: TEXTURE
+  offset: 0x4A80
+  symbol: object_oE5_Tex_004A80
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_oE5_Tex_004B80:
+  type: TEXTURE
+  offset: 0x4B80
+  symbol: object_oE5_Tex_004B80
+  format: I4
+  width: 16
+  height: 8
+
+object_oE5_Tex_004BC0:
+  type: TEXTURE
+  offset: 0x4BC0
+  symbol: object_oE5_Tex_004BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oE5_Tex_0053C0:
+  type: TEXTURE
+  offset: 0x53C0
+  symbol: object_oE5_Tex_0053C0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_oE5_Tex_0054C0:
+  type: TEXTURE
+  offset: 0x54C0
+  symbol: object_oE5_Tex_0054C0
+  format: I4
+  width: 16
+  height: 32
+
+
+object_oE5Vtx_000268:
+  type: OOT:ARRAY
+  offset: 0x000268
+  symbol: object_oE5Vtx_000268
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_000728:
+  type: OOT:ARRAY
+  offset: 0x000728
+  symbol: object_oE5Vtx_000728
+  count: 240
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_001628:
+  type: OOT:ARRAY
+  offset: 0x001628
+  symbol: object_oE5Vtx_001628
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_0019C8:
+  type: OOT:ARRAY
+  offset: 0x0019C8
+  symbol: object_oE5Vtx_0019C8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_001B08:
+  type: OOT:ARRAY
+  offset: 0x001B08
+  symbol: object_oE5Vtx_001B08
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_001D88:
+  type: OOT:ARRAY
+  offset: 0x001D88
+  symbol: object_oE5Vtx_001D88
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_002128:
+  type: OOT:ARRAY
+  offset: 0x002128
+  symbol: object_oE5Vtx_002128
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oE5Vtx_002268:
+  type: OOT:ARRAY
+  offset: 0x002268
+  symbol: object_oE5Vtx_002268
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
