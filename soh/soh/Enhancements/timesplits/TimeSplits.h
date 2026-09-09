@@ -6,14 +6,16 @@
 #include <map>
 
 #ifdef __cplusplus
+namespace TimeSplits {
+
 class TimesplitsWindow : public Ship::GuiWindow {
-  public:
+public:
     using GuiWindow::GuiWindow;
 
     void InitElement() override;
-    void DrawElement() override{};
+    void DrawElement() override {};
     void Draw() override;
-    void UpdateElement() override{};
+    void UpdateElement() override {};
 };
 
 typedef enum {
@@ -96,5 +98,7 @@ extern void RemoveSplitEntry(uint32_t splitId, uint32_t index);
 extern void SplitSaveFileAction(uint32_t action, std::string listName);
 extern void DrawSplitsList(bool isMain);
 extern void SplitLoadComparisonList();
+
+} // namespace TimeSplits
 
 #endif

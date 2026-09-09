@@ -20,6 +20,8 @@ uint64_t GetUnixTimestamp();
 #define CVAR_NAME "gSettings.TimeSplits.Enable"
 #define CVAR CVarGetInteger(CVAR_NAME, 0)
 
+namespace TimeSplits {
+
 nlohmann::json TimesplitObject_to_json(const TimesplitObject& split) {
     return nlohmann::json{
         { "splitId", split.splitId },
@@ -463,5 +465,6 @@ void RegisterTimesplits() {
 
     COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { UpdateSplitStatusBySceneId(sceneNum); });
 }
+} // namespace TimeSplits
 
-static RegisterShipInitFunc initFunc(RegisterTimesplits, { CVAR_NAME });
+static RegisterShipInitFunc initFunc(TimeSplits::RegisterTimesplits, { CVAR_NAME });

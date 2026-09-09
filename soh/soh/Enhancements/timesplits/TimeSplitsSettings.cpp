@@ -18,6 +18,8 @@ extern "C" {
 #include "variables.h"
 }
 
+namespace TimeSplits {
+
 IndexRangeObject sceneRange = { 0, 77 };
 uint32_t sceneFilterIndex = 0;
 
@@ -740,3 +742,5 @@ void TimesplitsSettingsWindow::DrawElement() {
 
 void TimesplitsSettingsWindow::InitElement() {
 }
+
+} // namespace TimeSplits

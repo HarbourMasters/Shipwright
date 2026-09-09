@@ -15,6 +15,8 @@ extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();
 }
 
+namespace TimeSplits {
+
 #define BLANK_SPLIT "--:--:--.-"
 
 // ImVec4 Colors
@@ -302,5 +304,4 @@ void TimesplitsWindow::InitElement() {
     UpdateSplitSettings(SPLIT_COMPARE);
 }
 
-// void TimesplitsWindow::DrawElement() {
-// }
+} // namespace TimeSplits
