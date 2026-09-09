@@ -19,22 +19,6 @@ class TimesplitsWindow : public Ship::GuiWindow {
 };
 
 typedef enum {
-    SPLIT_KILLED_GOHMA = 256,
-    SPLIT_KILLED_KING_DODONGO,
-    SPLIT_KILLED_BARINADE,
-    SPLIT_KILLED_PHANTOM_GANON,
-    SPLIT_KILLED_VOLVAGIA,
-    SPLIT_KILLED_MORPHA,
-    SPLIT_KILLED_BONGO_BONGO,
-    SPLIT_KILLED_TWINROVA,
-    SPLIT_KILLED_GANONDORF,
-    SPLIT_KILLED_GANON,
-    SPLIT_SINGLE_MAGIC,
-    SPLIT_DOUBLE_MAGIC,
-    SPLIT_DOUBLE_DEFENSE,
-} ExtendedSplitIds;
-
-typedef enum {
     SPLIT_HEADERS,
     SPLIT_OPACITY,
     SPLIT_HIGHLIGHT,
@@ -49,7 +33,13 @@ typedef enum {
 } SplitFileActions;
 
 typedef enum { SPLIT_INACTIVE, SPLIT_ACTIVE, SPLIT_COMPLETE, SPLIT_SKIPPED } SplitStatus;
-typedef enum { SPLIT_TYPE_NORMAL, SPLIT_TYPE_SCENE } SplitTypes;
+
+// Split ids come from several enums, the type says which one an id belongs to.
+typedef enum {
+    SPLIT_TYPE_ITEM,  // ITEM_*
+    SPLIT_TYPE_SCENE, // SCENE_*
+    SPLIT_TYPE_BOSS,  // ACTOR_* of the boss
+} SplitTypes;
 
 typedef struct {
     uint32_t splitId;
@@ -59,6 +49,9 @@ typedef struct {
     uint8_t splitStatus;
     uint32_t splitType;
 } TimesplitObject;
+
+#define SPLIT_BOSS(actorId, name) \
+    { actorId, name, 0, 0, SPLIT_INACTIVE, SPLIT_TYPE_BOSS }
 
 typedef struct {
     uint32_t timeDisplay;
@@ -76,15 +69,14 @@ extern std::vector<TimesplitObject> splitObjectList;
 extern std::vector<TimesplitObject> sceneObjectList;
 extern std::vector<std::string> savedLists;
 extern std::map<uint32_t, std::vector<uint32_t>> itemSubMenuList;
-extern std::map<uint32_t, ImVec4> songColorMap;
 extern uint32_t comparedIndex;
 extern bool shouldPopUpOpen;
 extern uint32_t GetTotalTime();
-extern ImVec4 GetItemColor(int16_t itemId);
-extern TimesplitObject GetSplitObjectById(uint32_t itemId);
-extern ImVec2 GetItemImageSizeById(uint32_t itemId);
+extern ImVec4 GetSplitColor(const TimesplitObject& split);
+extern TimesplitObject GetSplitObject(uint32_t splitType, uint32_t splitId);
+extern ImVec2 GetSplitImageSize(const TimesplitObject& split);
 extern void TableCellCenteredText(ImVec4 color, const char* text);
-extern const char* GetItemImageById(uint32_t itemId);
+extern const char* GetSplitImage(const TimesplitObject& split);
 extern void SplitsPushImageButtonStyle();
 extern void SplitsPopImageButtonStyle();
 extern void HandlePopUpContext(uint32_t popupId);
@@ -93,8 +85,8 @@ extern void UpdateSplitBests();
 extern void UpdateSplitSettings(uint32_t settingName);
 extern void SkipSplitEntry(uint32_t index);
 extern void AddSplitEntryBySceneId(uint32_t sceneId);
-extern void AddSplitEntryById(uint32_t itemId);
-extern void RemoveSplitEntry(uint32_t splitId, uint32_t index);
+extern void AddSplitEntry(uint32_t splitType, uint32_t splitId);
+extern void RemoveSplitEntry(uint32_t index);
 extern void SplitSaveFileAction(uint32_t action, std::string listName);
 extern void DrawSplitsList(bool isMain);
 extern void SplitLoadComparisonList();

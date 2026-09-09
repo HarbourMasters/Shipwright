@@ -1,14 +1,11 @@
 #include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
-#include "fast/Fast3dWindow.h"
 #include "fast/Fast3dGui.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <fstream>
 #include <filesystem>
-
-#include "soh/Enhancements/randomizer/static_data.h"
-#include "assets/textures/icon_item_static/icon_item_static.h"
+#include <iterator>
 
 using json = nlohmann::json;
 
@@ -21,6 +18,23 @@ uint64_t GetUnixTimestamp();
 #define CVAR CVarGetInteger(CVAR_NAME, 0)
 
 namespace TimeSplits {
+
+typedef struct {
+    uint32_t splitType;
+    uint32_t splitId;
+} LegacySplitId;
+
+// Bosses and the magic upgrades used to be ids 256+ in the item space, saved lists still hold those.
+#define LEGACY_SPLIT_ID_BASE 256
+static const LegacySplitId legacySplitIds[] = {
+    { SPLIT_TYPE_BOSS, ACTOR_BOSS_GOMA },     { SPLIT_TYPE_BOSS, ACTOR_BOSS_DODONGO },
+    { SPLIT_TYPE_BOSS, ACTOR_BOSS_VA },       { SPLIT_TYPE_BOSS, ACTOR_BOSS_GANONDROF },
+    { SPLIT_TYPE_BOSS, ACTOR_BOSS_FD2 },      { SPLIT_TYPE_BOSS, ACTOR_BOSS_MO },
+    { SPLIT_TYPE_BOSS, ACTOR_BOSS_SST },      { SPLIT_TYPE_BOSS, ACTOR_BOSS_TW },
+    { SPLIT_TYPE_BOSS, ACTOR_BOSS_GANON },    { SPLIT_TYPE_BOSS, ACTOR_BOSS_GANON2 },
+    { SPLIT_TYPE_ITEM, ITEM_SINGLE_MAGIC },   { SPLIT_TYPE_ITEM, ITEM_DOUBLE_MAGIC },
+    { SPLIT_TYPE_ITEM, ITEM_DOUBLE_DEFENSE },
+};
 
 nlohmann::json TimesplitObject_to_json(const TimesplitObject& split) {
     return nlohmann::json{
@@ -43,13 +57,20 @@ TimesplitObject json_to_TimesplitObject(const nlohmann::json& jsonSplit) {
     if (jsonSplit.contains("splitType")) {
         split.splitType = jsonSplit["splitType"];
     } else {
-        split.splitType = SPLIT_TYPE_NORMAL;
+        split.splitType = SPLIT_TYPE_ITEM;
+    }
+
+    uint32_t legacyIndex = split.splitId - LEGACY_SPLIT_ID_BASE;
+    if (split.splitType == SPLIT_TYPE_ITEM && split.splitId >= LEGACY_SPLIT_ID_BASE &&
+        legacyIndex < std::size(legacySplitIds)) {
+        split.splitType = legacySplitIds[legacyIndex].splitType;
+        split.splitId = legacySplitIds[legacyIndex].splitId;
     }
 
     return split;
 }
 
-uint32_t GetCurrentActiveSplit(std::vector<TimesplitObject> list) {
+uint32_t GetCurrentActiveSplit(const std::vector<TimesplitObject>& list) {
     for (size_t i = 0; i < splitList.size(); i++) {
         if (splitList[i].splitStatus == SPLIT_ACTIVE) {
             return (uint32_t)i;
@@ -70,10 +91,10 @@ TimesplitObject GetSplitObjectBySceneId(uint32_t sceneId) {
     return splitObject;
 }
 
-TimesplitObject GetSplitObjectById(uint32_t itemId) {
+TimesplitObject GetSplitObject(uint32_t splitType, uint32_t splitId) {
     TimesplitObject splitObject;
     for (auto& list : splitObjectList) {
-        if (list.splitId == itemId) {
+        if (list.splitType == splitType && list.splitId == splitId) {
             splitObject = list;
         }
     }
@@ -99,15 +120,16 @@ void HandlePopUpContext(uint32_t popupId) {
 
         uint32_t slotIndex = 0;
         for (auto& list : itemList) {
+            TimesplitObject split = GetSplitObject(SPLIT_TYPE_ITEM, list);
             SplitsPushImageButtonStyle();
-            if (ImGui::ImageButton(std::to_string(list).c_str(), gui->GetTextureByName(GetItemImageById(list)),
-                                   GetItemImageSizeById(list) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                                   GetItemColor(list))) {
-                AddSplitEntryById(list);
+            if (ImGui::ImageButton(std::to_string(list).c_str(), gui->GetTextureByName(GetSplitImage(split)),
+                                   GetSplitImageSize(split) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+                                   GetSplitColor(split))) {
+                AddSplitEntry(SPLIT_TYPE_ITEM, list);
                 ImGui::CloseCurrentPopup();
                 shouldPopUpOpen = false;
             }
-            UIWidgets::Tooltip(GetSplitObjectById(list).splitName.c_str());
+            UIWidgets::Tooltip(split.splitName.c_str());
             SplitsPopImageButtonStyle();
 
             if (slotIndex == 4) {
@@ -125,14 +147,9 @@ void HandleDragAndDrop(size_t i) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
         ImGui::SetDragDropPayload("SPLIT_DRAG", &i, sizeof(size_t));
-        ImGui::ImageButton(
-            std::to_string(splitList[i].splitId).c_str(),
-            gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
-                                                                              : "gPauseUnusedCursorTex"),
-            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
-                                                        : ImVec2(32.0f, 32.0f),
-            ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId) : ImVec4(1, 1, 1, 1));
+        ImGui::ImageButton(std::to_string(splitList[i].splitId).c_str(),
+                           gui->GetTextureByName(GetSplitImage(splitList[i])), GetSplitImageSize(splitList[i]),
+                           ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), GetSplitColor(splitList[i]));
         ImGui::EndDragDropSource();
     }
 
@@ -172,8 +189,8 @@ void AddSplitEntryBySceneId(uint32_t sceneId) {
     splitList.push_back(splitObject);
 }
 
-void AddSplitEntryById(uint32_t itemId) {
-    TimesplitObject splitObject = GetSplitObjectById(itemId);
+void AddSplitEntry(uint32_t splitType, uint32_t splitId) {
+    TimesplitObject splitObject = GetSplitObject(splitType, splitId);
 
     if (splitList.size() == 0) {
         splitObject.splitStatus = SPLIT_ACTIVE;
@@ -181,13 +198,9 @@ void AddSplitEntryById(uint32_t itemId) {
     splitList.push_back(splitObject);
 }
 
-void RemoveSplitEntry(uint32_t splitId, uint32_t index) {
-    uint32_t activeIndex = GetCurrentActiveSplit(splitList);
-
-    if (activeIndex != -1) {
-        if (splitList[activeIndex].splitId == splitId) {
-            CheckSplitsCompleted(activeIndex);
-        }
+void RemoveSplitEntry(uint32_t index) {
+    if (index == GetCurrentActiveSplit(splitList)) {
+        CheckSplitsCompleted(index);
     }
 
     splitList.erase(splitList.begin() + index);
@@ -208,85 +221,44 @@ void UpdateSplitBests() {
     }
 }
 
-void UpdateSplitStatusBySceneId(uint32_t sceneId) {
+void UpdateSplitStatus(uint32_t splitType, uint32_t splitId) {
     uint32_t activeIndex = GetCurrentActiveSplit(splitList);
 
-    if (activeIndex == -1) {
+    if (activeIndex == UINT32_MAX) {
         return;
     }
 
-    if (splitList[activeIndex].splitType == SPLIT_TYPE_SCENE && splitList[activeIndex].splitId == sceneId) {
+    if (splitList[activeIndex].splitType == splitType && splitList[activeIndex].splitId == splitId) {
         splitList[activeIndex].splitCurrentTime = GetTotalTime();
         splitList[activeIndex].splitStatus = SPLIT_COMPLETE;
-
-        if (activeIndex == splitList.size() - 1) {
-            CheckSplitsCompleted(activeIndex);
-        } else {
-            splitList[activeIndex + 1].splitStatus = SPLIT_ACTIVE;
-        }
+        CheckSplitsCompleted(activeIndex);
     }
 }
 
-void UpdateSplitStatusById(uint32_t itemId) {
-    uint32_t activeIndex = GetCurrentActiveSplit(splitList);
-
-    if (activeIndex == -1) {
-        return;
+static bool IsUpgradeSplitDone(const TimesplitObject& split) {
+    if (split.splitType != SPLIT_TYPE_ITEM) {
+        return false;
     }
-
-    if (splitList[activeIndex].splitId == itemId) {
-        splitList[activeIndex].splitCurrentTime = GetTotalTime();
-        splitList[activeIndex].splitStatus = SPLIT_COMPLETE;
-
-        if (activeIndex == splitList.size() - 1) {
-            CheckSplitsCompleted(activeIndex);
-        } else {
-            splitList[activeIndex + 1].splitStatus = SPLIT_ACTIVE;
-        }
-    }
-}
-
-void GetSplitByActorId(int16_t actorId, uint32_t specialType = 0) {
-    uint32_t activeIndex = GetCurrentActiveSplit(splitList);
-
-    switch (actorId) {
-        case ACTOR_BOSS_GOMA:
-            UpdateSplitStatusById(SPLIT_KILLED_GOHMA);
-            break;
-        case ACTOR_BOSS_DODONGO:
-            UpdateSplitStatusById(SPLIT_KILLED_KING_DODONGO);
-            break;
-        case ACTOR_BOSS_VA:
-            UpdateSplitStatusById(SPLIT_KILLED_BARINADE);
-            break;
-        case ACTOR_BOSS_GANONDROF:
-            UpdateSplitStatusById(SPLIT_KILLED_PHANTOM_GANON);
-            break;
-        case ACTOR_BOSS_FD2:
-            UpdateSplitStatusById(SPLIT_KILLED_VOLVAGIA);
-            break;
-        case ACTOR_BOSS_MO:
-            UpdateSplitStatusById(SPLIT_KILLED_MORPHA);
-            break;
-        case ACTOR_BOSS_SST:
-            UpdateSplitStatusById(SPLIT_KILLED_BONGO_BONGO);
-            break;
-        case ACTOR_BOSS_TW:
-            UpdateSplitStatusById(SPLIT_KILLED_TWINROVA);
-            break;
-        case ACTOR_BOSS_GANON:
-            UpdateSplitStatusById(SPLIT_KILLED_GANONDORF);
-            break;
-        case ACTOR_BOSS_GANON2:
-            UpdateSplitStatusById(SPLIT_KILLED_GANON);
-            break;
+    switch (split.splitId) {
+        case ITEM_SINGLE_MAGIC:
+            return gSaveContext.isMagicAcquired;
+        case ITEM_DOUBLE_MAGIC:
+            return gSaveContext.isDoubleMagicAcquired;
+        case ITEM_DOUBLE_DEFENSE:
+            return gSaveContext.isDoubleDefenseAcquired;
         default:
-            break;
+            return false;
     }
+}
 
-    if (activeIndex == -1) {
+void UpdateSplitStatusByUpgrades() {
+    uint32_t activeIndex = GetCurrentActiveSplit(splitList);
+
+    if (activeIndex == UINT32_MAX || !IsUpgradeSplitDone(splitList[activeIndex])) {
         return;
     }
+
+    UpdateSplitStatus(splitList[activeIndex].splitType, splitList[activeIndex].splitId);
 }
 
 void SplitLoadComparisonList() {
@@ -357,7 +329,9 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
         savedLists.clear();
 
         for (auto& data : saveFile.items()) {
-            savedLists.push_back(data.key());
+            if (!data.key().empty()) {
+                savedLists.push_back(data.key());
+            }
         }
         if (savedLists.size() == 0) {
             savedLists.push_back("Create a List First");
@@ -373,28 +347,26 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
                 }
 
                 TimesplitObject splitObject;
-                // 4 is the old SPLIT_TYPE_BOSS which does not exist anymore
-                if (items["splitType"] == 4) {
-                    splitObject.splitId = ITEM_NONE;
-                    for (auto& split : splitObjectList) {
-                        if (split.splitName == items["splitName"].get<std::string>()) {
-                            splitObject.splitId = split.splitId;
-                            break;
-                        }
-                    }
-                } else {
-                    splitObject.splitId = items["splitID"];
-                }
-
                 splitObject.splitName = items["splitName"].get<std::string>();
                 splitObject.splitCurrentTime = items["splitTimeCurrent"];
                 splitObject.splitPreviousBest = items["splitTimePreviousBest"];
                 splitObject.splitStatus = SPLIT_INACTIVE;
-                // 5 is the old SPLIT_TYPE_ENTRANCE which is replaced by SPLIT_TYPE_SCENE
-                if (items["splitType"] == 5) {
-                    splitObject.splitType = SPLIT_TYPE_SCENE;
+
+                // 4 is the old SPLIT_TYPE_BOSS which does not exist anymore
+                if (items["splitType"] == 4) {
+                    splitObject.splitId = ITEM_NONE;
+                    splitObject.splitType = SPLIT_TYPE_ITEM;
+                    for (auto& split : splitObjectList) {
+                        if (split.splitName == splitObject.splitName) {
+                            splitObject.splitId = split.splitId;
+                            splitObject.splitType = split.splitType;
+                            break;
+                        }
+                    }
                 } else {
-                    splitObject.splitType = SPLIT_TYPE_NORMAL;
+                    // 5 is the old SPLIT_TYPE_ENTRANCE which is replaced by SPLIT_TYPE_SCENE
+                    splitObject.splitId = items["splitID"];
+                    splitObject.splitType = items["splitType"] == 5 ? SPLIT_TYPE_SCENE : SPLIT_TYPE_ITEM;
                 }
                 splitList.push_back(splitObject);
             }
@@ -402,11 +374,6 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
         }
         splitList.clear();
     }
-}
-
-void StallOut(GetItemEntry entry) {
-    int i = 0;
-    SPDLOG_INFO("ItemId: {}", entry.itemId);
 }
 
 void RegisterTimesplits() {
@@ -428,42 +395,37 @@ void RegisterTimesplits() {
 
     COND_HOOK(OnItemReceive, CVAR, [](GetItemEntry itemEntry) {
         if (itemEntry.modIndex == MOD_RANDOMIZER) {
-            if (itemEntry.itemId == RG_MAGIC_SINGLE) {
-                itemEntry.itemId = SPLIT_SINGLE_MAGIC;
-            }
-            if (itemEntry.itemId == RG_MAGIC_DOUBLE) {
-                itemEntry.itemId = SPLIT_DOUBLE_MAGIC;
-            }
-            if (itemEntry.itemId == RG_DOUBLE_DEFENSE) {
-                itemEntry.itemId = SPLIT_DOUBLE_DEFENSE;
-            }
-        } else {
-            if (itemEntry.itemId == ITEM_BOMBCHUS_20 || itemEntry.itemId == ITEM_BOMBCHUS_5) {
-                itemEntry.itemId = ITEM_BOMBCHU;
-            }
-            if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
-                itemEntry.itemId = ITEM_STICK;
-            }
-            if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
-                itemEntry.itemId = ITEM_NUT;
-            }
-            if (itemEntry.itemId == ITEM_SWORD_BGS) {
-                if (gSaveContext.bgsFlag == 0) {
-                    itemEntry.itemId = ITEM_SWORD_KNIFE;
-                }
+            return;
+        }
+
+        if (itemEntry.itemId == ITEM_BOMBCHUS_20 || itemEntry.itemId == ITEM_BOMBCHUS_5) {
+            itemEntry.itemId = ITEM_BOMBCHU;
+        }
+        if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
+            itemEntry.itemId = ITEM_STICK;
+        }
+        if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
+            itemEntry.itemId = ITEM_NUT;
+        }
+        if (itemEntry.itemId == ITEM_SWORD_BGS) {
+            if (gSaveContext.bgsFlag == 0) {
+                itemEntry.itemId = ITEM_SWORD_KNIFE;
             }
         }
 
-        UpdateSplitStatusById((uint32_t)itemEntry.itemId);
+        UpdateSplitStatus(SPLIT_TYPE_ITEM, (uint32_t)itemEntry.itemId);
     });
 
-    COND_HOOK(OnPlayerBottleUpdate, CVAR, [](int16_t contents) { UpdateSplitStatusById((uint32_t)contents); });
+    COND_HOOK(OnPlayerUpdate, CVAR, []() { UpdateSplitStatusByUpgrades(); });
+
+    COND_HOOK(OnPlayerBottleUpdate, CVAR,
+              [](int16_t contents) { UpdateSplitStatus(SPLIT_TYPE_ITEM, (uint32_t)contents); });
     COND_HOOK(OnBossDefeat, CVAR, [](void* refActor) {
         Actor* actor = (Actor*)refActor;
-        GetSplitByActorId(actor->id);
+        UpdateSplitStatus(SPLIT_TYPE_BOSS, (uint32_t)actor->id);
     });
 
-    COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { UpdateSplitStatusBySceneId(sceneNum); });
+    COND_HOOK(OnSceneInit, CVAR, [](int16_t sceneNum) { UpdateSplitStatus(SPLIT_TYPE_SCENE, (uint32_t)sceneNum); });
 }
 } // namespace TimeSplits
 

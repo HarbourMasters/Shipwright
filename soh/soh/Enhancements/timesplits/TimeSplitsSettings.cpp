@@ -4,15 +4,9 @@
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
-#include "fast/Fast3dWindow.h"
 #include "fast/Fast3dGui.h"
 
-#include "soh/ShipUtils.h"
-#include "soh_assets.h"
 #include "soh/SohGui/ImGuiUtils.h"
-#include "assets/textures/parameter_static/parameter_static.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "assets/textures/icon_item_static/icon_item_static.h"
 
 extern "C" {
 #include "variables.h"
@@ -131,9 +125,9 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_BOOTS_IRON,                 "Iron Boots" },
     { ITEM_BOOTS_HOVER,                "Hover Boots" },
     { ITEM_BRACELET,                   "Goron's Bracelet" },
-    { SPLIT_SINGLE_MAGIC,    		   "Magic" },
+    { ITEM_SINGLE_MAGIC,               "Magic" },
     { ITEM_WALLET_ADULT,               "Adult's Wallet" },
-    { SPLIT_DOUBLE_DEFENSE,            "Double Defense" },
+    { ITEM_DOUBLE_DEFENSE,             "Double Defense" },
     
     // Inventory
     { ITEM_STICK,                      "Deku Stick" },
@@ -171,27 +165,27 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_SONG_REQUIEM,               "Requiem of Spirit" },
     { ITEM_SONG_NOCTURNE,              "Nocturne of Shadow" },
     { ITEM_SONG_PRELUDE,               "Prelude of Light" },
-    { ITEM_MEDALLION_FOREST, 		   "Forest Medallion" },
-    { ITEM_MEDALLION_FIRE,   		   "Fire Medallion" },
-    { ITEM_MEDALLION_WATER,  		   "Water Medallion" },
-    { ITEM_MEDALLION_SPIRIT, 		   "Spirit Medallion" },
-    { ITEM_MEDALLION_SHADOW, 		   "Shadow Medallion" },
-    { ITEM_MEDALLION_LIGHT,  		   "Light Medallion" },
-    { ITEM_KOKIRI_EMERALD,   		   "Kokiri's Emerald" },
-    { ITEM_GORON_RUBY,       		   "Goron's Ruby" },
-    { ITEM_ZORA_SAPPHIRE,    		   "Zora's Sapphire" },
+    { ITEM_MEDALLION_FOREST,           "Forest Medallion" },
+    { ITEM_MEDALLION_FIRE,             "Fire Medallion" },
+    { ITEM_MEDALLION_WATER,            "Water Medallion" },
+    { ITEM_MEDALLION_SPIRIT,           "Spirit Medallion" },
+    { ITEM_MEDALLION_SHADOW,           "Shadow Medallion" },
+    { ITEM_MEDALLION_LIGHT,            "Light Medallion" },
+    { ITEM_KOKIRI_EMERALD,             "Kokiri's Emerald" },
+    { ITEM_GORON_RUBY,                 "Goron's Ruby" },
+    { ITEM_ZORA_SAPPHIRE,              "Zora's Sapphire" },
 
     // Bosses
-    { SPLIT_KILLED_GOHMA,              "Queen Gohma" },
-    { SPLIT_KILLED_KING_DODONGO,       "King Dodongo" },
-    { SPLIT_KILLED_BARINADE,           "Barinade" },
-    { SPLIT_KILLED_PHANTOM_GANON,      "Phantom Ganon" },
-    { SPLIT_KILLED_MORPHA,             "Morpha" },
-    { SPLIT_KILLED_VOLVAGIA,           "Volvagia" },
-    { SPLIT_KILLED_BONGO_BONGO,        "Bongo Bongo" },
-    { SPLIT_KILLED_TWINROVA,           "Twinrova" },
-    { SPLIT_KILLED_GANONDORF,          "Ganondorf" },
-    { SPLIT_KILLED_GANON,              "Ganon" },
+    SPLIT_BOSS(ACTOR_BOSS_GOMA,        "Queen Gohma"),
+    SPLIT_BOSS(ACTOR_BOSS_DODONGO,     "King Dodongo"),
+    SPLIT_BOSS(ACTOR_BOSS_VA,          "Barinade"),
+    SPLIT_BOSS(ACTOR_BOSS_GANONDROF,   "Phantom Ganon"),
+    SPLIT_BOSS(ACTOR_BOSS_MO,          "Morpha"),
+    SPLIT_BOSS(ACTOR_BOSS_FD2,         "Volvagia"),
+    SPLIT_BOSS(ACTOR_BOSS_SST,         "Bongo Bongo"),
+    SPLIT_BOSS(ACTOR_BOSS_TW,          "Twinrova"),
+    SPLIT_BOSS(ACTOR_BOSS_GANON,       "Ganondorf"),
+    SPLIT_BOSS(ACTOR_BOSS_GANON2,      "Ganon"),
     
     // Upgrade Items
     { ITEM_OCARINA_TIME,               "Ocarina of Time" },
@@ -209,7 +203,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_SCALE_SILVER,               "Silver Scale" },
     { ITEM_SCALE_GOLDEN,               "Gold Scale" },
     { ITEM_SWORD_KNIFE,                "Giant's Knife" },
-    { SPLIT_DOUBLE_MAGIC,    		   "Double Magic" },
+    { ITEM_DOUBLE_MAGIC,               "Double Magic" },
     
     // Trade Items
     { ITEM_CHICKEN,                    "Chicken" },
@@ -264,10 +258,10 @@ std::map<uint32_t, std::vector<uint32_t>> itemSubMenuList = {
     { ITEM_BRACELET,        { ITEM_BRACELET, ITEM_GAUNTLETS_SILVER, ITEM_GAUNTLETS_GOLD } },
     { ITEM_WALLET_ADULT,    { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT } },
     { ITEM_SWORD_BGS,       { ITEM_SWORD_KNIFE, ITEM_SWORD_BGS } },
-    { SPLIT_SINGLE_MAGIC,   { SPLIT_SINGLE_MAGIC, SPLIT_DOUBLE_MAGIC } },
+    { ITEM_SINGLE_MAGIC,    { ITEM_SINGLE_MAGIC, ITEM_DOUBLE_MAGIC } },
 };
 
-std::map<int16_t, ImVec4> itemColorMap = {
+static std::map<uint32_t, ImVec4> songColorMap = {
     { ITEM_SONG_LULLABY,           { 0.878f, 0.420f, 1.0f, 1.0f } },
     { ITEM_SONG_EPONA,             { 1.0f, 0.765f, 0.235f, 1.0f } },
     { ITEM_SONG_SARIA,             { 0.498f, 1.0f, 0.537f, 1.0f } },
@@ -280,16 +274,19 @@ std::map<int16_t, ImVec4> itemColorMap = {
     { ITEM_SONG_REQUIEM,           { 1.0f, 0.627f, 0.0f, 1.0f } },
     { ITEM_SONG_NOCTURNE,          { 1.0f, 0.392f, 1.0f, 1.0f } },
     { ITEM_SONG_PRELUDE,           { 1.0f, 0.941f, 0.392f, 1.0f } },
-    { SPLIT_KILLED_GOHMA, 			UIWidgets::ColorValues.at(UIWidgets::Colors::Green) },
-    { SPLIT_KILLED_KING_DODONGO, 	UIWidgets::ColorValues.at(UIWidgets::Colors::Red) },
-    { SPLIT_KILLED_BARINADE, 		UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) },
-    { SPLIT_KILLED_PHANTOM_GANON, 	UIWidgets::ColorValues.at(UIWidgets::Colors::DarkGreen) },
-    { SPLIT_KILLED_VOLVAGIA, 		UIWidgets::ColorValues.at(UIWidgets::Colors::DarkRed) },
-    { SPLIT_KILLED_MORPHA, 			UIWidgets::ColorValues.at(UIWidgets::Colors::DarkBlue) },
-    { SPLIT_KILLED_BONGO_BONGO, 	UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) },
-    { SPLIT_KILLED_TWINROVA, 		UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) },
-    { SPLIT_KILLED_GANONDORF, 		UIWidgets::ColorValues.at(UIWidgets::Colors::DarkGray) },
-    { SPLIT_KILLED_GANON, 			UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) },
+};
+
+static std::map<uint32_t, ImVec4> bossColorMap = {
+    { ACTOR_BOSS_GOMA,          UIWidgets::ColorValues.at(UIWidgets::Colors::Green) },
+    { ACTOR_BOSS_DODONGO,       UIWidgets::ColorValues.at(UIWidgets::Colors::Red) },
+    { ACTOR_BOSS_VA,            UIWidgets::ColorValues.at(UIWidgets::Colors::Blue) },
+    { ACTOR_BOSS_GANONDROF,     UIWidgets::ColorValues.at(UIWidgets::Colors::DarkGreen) },
+    { ACTOR_BOSS_FD2,           UIWidgets::ColorValues.at(UIWidgets::Colors::DarkRed) },
+    { ACTOR_BOSS_MO,            UIWidgets::ColorValues.at(UIWidgets::Colors::DarkBlue) },
+    { ACTOR_BOSS_SST,           UIWidgets::ColorValues.at(UIWidgets::Colors::Purple) },
+    { ACTOR_BOSS_TW,            UIWidgets::ColorValues.at(UIWidgets::Colors::Orange) },
+    { ACTOR_BOSS_GANON,         UIWidgets::ColorValues.at(UIWidgets::Colors::DarkGray) },
+    { ACTOR_BOSS_GANON2,        UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow) },
 };
 
 static std::vector<const char*> sceneAreaNameMap = {
@@ -330,10 +327,13 @@ IndexRangeObject GetSceneIndexRange(uint32_t start, uint32_t end) {
     return setRange;
 }
 
-IndexRangeObject GetIndexRange(uint32_t start, uint32_t end) {
+IndexRangeObject GetIndexRange(uint32_t splitType, uint32_t start, uint32_t end) {
     IndexRangeObject setRange = { 0, 0 };
 
     for (size_t i = 0; i < splitObjectList.size(); i++) {
+        if (splitObjectList[i].splitType != splitType) {
+            continue;
+        }
         if (splitObjectList[i].splitId == start) {
             setRange.startIndex = static_cast<int>(i);
         }
@@ -348,54 +348,58 @@ IndexRangeObject GetIndexRange(uint32_t start, uint32_t end) {
 bool shouldPopUpOpen = false;
 uint32_t popupItem = 0;
 const char* popupTooltip = "";
-IndexRangeObject range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)SPLIT_DOUBLE_DEFENSE);
+IndexRangeObject range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_SWORD_KOKIRI, ITEM_DOUBLE_DEFENSE);
 std::string listName = "Equipment";
 uint32_t listColumns = 3;
-const char* itemImage;
 std::string listInputName;
 std::vector<std::string> savedLists;
 uint32_t selectedIndex = 0;
 uint32_t comparedIndex = 0;
 
-const char* GetItemImageById(uint32_t itemId) {
-    if (itemId >= SPLIT_KILLED_GOHMA && itemId <= SPLIT_KILLED_GANON) {
+static bool IsSongSplit(const TimesplitObject& split) {
+    return split.splitType == SPLIT_TYPE_ITEM && split.splitId >= ITEM_SONG_MINUET && split.splitId <= ITEM_SONG_STORMS;
+}
+
+const char* GetSplitImage(const TimesplitObject& split) {
+    if (split.splitType == SPLIT_TYPE_SCENE) {
+        return "gPauseUnusedCursorTex";
+    }
+    if (split.splitType == SPLIT_TYPE_BOSS) {
         return "gWTriforcePieceTex";
     }
-    if (itemId >= ITEM_SONG_MINUET && itemId <= ITEM_SONG_STORMS) {
+    switch (split.splitId) {
+        case ITEM_SINGLE_MAGIC:
+            return GetTextureForItemId(ITEM_MAGIC_SMALL);
+        case ITEM_DOUBLE_MAGIC:
+            return GetTextureForItemId(ITEM_MAGIC_LARGE);
+        case ITEM_DOUBLE_DEFENSE:
+            return GetTextureForItemId(ITEM_HEART_CONTAINER);
+        default:
+            break;
+    }
+    if (IsSongSplit(split)) {
         return "gSongNoteTex";
     }
-    switch (itemId) {
-        case SPLIT_SINGLE_MAGIC:
-            return (const char*)gItemIcons[ITEM_MAGIC_SMALL];
-        case SPLIT_DOUBLE_MAGIC:
-            return (const char*)gItemIcons[ITEM_MAGIC_LARGE];
-        case SPLIT_DOUBLE_DEFENSE:
-            return (const char*)gItemIcons[ITEM_HEART_CONTAINER];
-        default:
-            if (itemId <= ITEM_MAGIC_LARGE) {
-                return itemMapping.find(itemId)->second.name.c_str();
-            }
-            return (const char*)gItemIcons[ITEM_SOLD_OUT];
-    }
+    const char* itemTexture = GetTextureForItemId(split.splitId);
+    return itemTexture != nullptr ? itemTexture : GetTextureForItemId(ITEM_SOLD_OUT);
 }
 
-ImVec4 GetItemColor(int16_t itemId) {
-    ImVec4 itemColor = { 1, 1, 1, 1 };
-    if ((itemId >= SPLIT_KILLED_GOHMA && itemId <= SPLIT_KILLED_GANON) ||
-        (itemId >= ITEM_SONG_MINUET && itemId <= ITEM_SONG_STORMS)) {
-        return itemColorMap.at(itemId);
-    } else {
-        return itemColor;
+ImVec4 GetSplitColor(const TimesplitObject& split) {
+    if (split.splitType == SPLIT_TYPE_BOSS) {
+        return bossColorMap.at(split.splitId);
     }
+    if (IsSongSplit(split)) {
+        return songColorMap.at(split.splitId);
+    }
+    return { 1, 1, 1, 1 };
 }
 
-ImVec2 GetItemImageSizeById(uint32_t itemId) {
+ImVec2 GetSplitImageSize(const TimesplitObject& split) {
     float defaultImageSize = 32.0f;
-    if (itemId >= ITEM_SONG_MINUET && itemId <= ITEM_SONG_STORMS) {
+    if (IsSongSplit(split)) {
         return ImVec2(defaultImageSize / 1.5f, defaultImageSize);
-    } else {
-        return ImVec2(defaultImageSize, defaultImageSize);
     }
+    return ImVec2(defaultImageSize, defaultImageSize);
 }
 
 void DrawOptions() {
@@ -459,7 +463,7 @@ void DrawOptions() {
         UIWidgets::PushStyleCombobox(THEME_COLOR);
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
         if (ImGui::BeginCombo("##compareSplits", savedLists[comparedIndex].c_str())) {
-            for (int i = 0; i < savedLists.size(); i++) {
+            for (uint32_t i = 0; i < savedLists.size(); i++) {
                 if (ImGui::Selectable(savedLists[i].c_str())) {
                     comparedIndex = i;
                     SplitLoadComparisonList();
@@ -490,15 +494,17 @@ void DrawActionButtons() {
         if (UIWidgets::Button("Create List", {
                                                  .color = THEME_COLOR,
                                              })) {
-            SplitSaveFileAction(SPLIT_SAVE, listInputName);
-            SplitSaveFileAction(SPLIT_RETRIEVE, "");
+            if (!listInputName.empty()) {
+                SplitSaveFileAction(SPLIT_SAVE, listInputName);
+                SplitSaveFileAction(SPLIT_RETRIEVE, "");
+            }
         }
 
         ImGui::TableNextColumn();
         UIWidgets::PushStyleCombobox(THEME_COLOR);
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
         if (ImGui::BeginCombo("##savedSplits", savedLists[selectedIndex].c_str())) {
-            for (int i = 0; i < savedLists.size(); i++) {
+            for (uint32_t i = 0; i < savedLists.size(); i++) {
                 if (ImGui::Selectable(savedLists[i].c_str())) {
                     selectedIndex = i;
                     break;
@@ -532,14 +538,12 @@ void DrawActionButtons() {
         if (UIWidgets::Button("New Attempt", {
                                                  .color = THEME_COLOR,
                                              })) {
-            if (splitList.size() == 0) {
-                return;
-            }
-
             for (auto& splits : splitList) {
                 splits.splitStatus = SPLIT_INACTIVE;
             }
-            splitList[0].splitStatus = SPLIT_ACTIVE;
+            if (splitList.size() != 0) {
+                splitList[0].splitStatus = SPLIT_ACTIVE;
+            }
         }
 
         ImGui::TableNextColumn();
@@ -558,7 +562,7 @@ void DrawEntranceList() {
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
     if (ImGui::BeginCombo("##SceneFilter", sceneAreaNameMap[sceneFilterIndex])) {
-        for (int i = 0; i < sceneAreaNameMap.size(); i++) {
+        for (uint32_t i = 0; i < sceneAreaNameMap.size(); i++) {
             if (ImGui::Selectable(sceneAreaNameMap[i])) {
                 sceneFilterIndex = i;
                 sceneRange = GetSceneIndexRange(sceneAreaRangeMap.at(sceneAreaNameMap[i]).startIndex,
@@ -600,18 +604,18 @@ void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableS
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (ImGui::BeginTable(tableName.c_str(), tableSize)) {
         for (uint32_t i = range.startIndex; i <= range.endIndex; i++) {
+            const TimesplitObject& split = splitObjectList[i];
             ImGui::TableNextColumn();
             SplitsPushImageButtonStyle();
-            if (ImGui::ImageButton(std::to_string(splitObjectList[i].splitId).c_str(),
-                                   gui->GetTextureByName(GetItemImageById(splitObjectList[i].splitId)),
-                                   GetItemImageSizeById(splitObjectList[i].splitId) * 1.5f, ImVec2(0, 0), ImVec2(1, 1),
-                                   ImVec4(0, 0, 0, 0), GetItemColor(splitObjectList[i].splitId))) {
-                if (itemSubMenuList.contains(splitObjectList[i].splitId)) {
+            if (ImGui::ImageButton(std::to_string(split.splitId).c_str(), gui->GetTextureByName(GetSplitImage(split)),
+                                   GetSplitImageSize(split) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+                                   GetSplitColor(split))) {
+                if (split.splitType == SPLIT_TYPE_ITEM && itemSubMenuList.contains(split.splitId)) {
                     shouldPopUpOpen = true;
-                    popupItem = splitObjectList[i].splitId;
+                    popupItem = split.splitId;
                     ImGui::OpenPopup("ItemSubMenu");
                 } else {
-                    AddSplitEntryById(splitObjectList[i].splitId);
+                    AddSplitEntry(split.splitType, split.splitId);
                 }
             }
             UIWidgets::Tooltip(splitObjectList[i].splitName.c_str());
@@ -631,7 +635,7 @@ void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableS
 void TimesplitsSettingsWindow::DrawElement() {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     bool shouldRemoveEntry = false;
-    uint32_t entryId = 0, entryIndex = 0;
+    uint32_t entryIndex = 0;
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTabBar("Timesplit Settings Tabs")) {
@@ -662,18 +666,11 @@ void TimesplitsSettingsWindow::DrawElement() {
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ((ImGui::GetContentRegionAvail().x - 50.0f) * 0.5f));
                     ImGui::PushID((uint32_t)i);
                     SplitsPushImageButtonStyle();
-                    if (ImGui::ImageButton(
-                            std::to_string(i).c_str(),
-                            gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL
-                                                      ? GetItemImageById(splitList[i].splitId)
-                                                      : "gPauseUnusedCursorTex"),
-                            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
-                                                                        : ImVec2(32.0f, 32.0f),
-                            ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId)
-                                                                        : ImVec4(1, 1, 1, 1))) {
+                    if (ImGui::ImageButton(std::to_string(i).c_str(),
+                                           gui->GetTextureByName(GetSplitImage(splitList[i])),
+                                           GetSplitImageSize(splitList[i]), ImVec2(0, 0), ImVec2(1, 1),
+                                           ImVec4(0, 0, 0, 0), GetSplitColor(splitList[i]))) {
                         shouldRemoveEntry = true;
-                        entryId = splitList[i].splitId;
                         entryIndex = (uint32_t)i;
                     };
                     UIWidgets::Tooltip(splitList[i].splitName.c_str());
@@ -688,28 +685,28 @@ void TimesplitsSettingsWindow::DrawElement() {
                 if (UIWidgets::Button("Equipment", {
                                                        .color = THEME_COLOR,
                                                    })) {
-                    range = GetIndexRange((uint32_t)ITEM_SWORD_KOKIRI, (uint32_t)SPLIT_DOUBLE_DEFENSE);
+                    range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_SWORD_KOKIRI, ITEM_DOUBLE_DEFENSE);
                     listName = "Equipment";
                     listColumns = 3;
                 }
                 if (UIWidgets::Button("Inventory", {
                                                        .color = THEME_COLOR,
                                                    })) {
-                    range = GetIndexRange((uint32_t)ITEM_STICK, (uint32_t)ITEM_WEIRD_EGG);
+                    range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_STICK, ITEM_WEIRD_EGG);
                     listName = "Inventory";
                     listColumns = 6;
                 }
                 if (UIWidgets::Button("Quest", {
                                                    .color = THEME_COLOR,
                                                })) {
-                    range = GetIndexRange((uint32_t)ITEM_SONG_LULLABY, (uint32_t)ITEM_ZORA_SAPPHIRE);
+                    range = GetIndexRange(SPLIT_TYPE_ITEM, ITEM_SONG_LULLABY, ITEM_ZORA_SAPPHIRE);
                     listName = "Quest";
                     listColumns = 6;
                 }
                 if (UIWidgets::Button("Bosses", {
                                                     .color = THEME_COLOR,
                                                 })) {
-                    range = GetIndexRange((uint32_t)SPLIT_KILLED_GOHMA, (uint32_t)SPLIT_KILLED_GANON);
+                    range = GetIndexRange(SPLIT_TYPE_BOSS, ACTOR_BOSS_GOMA, ACTOR_BOSS_GANON2);
                     listName = "Bosses";
                     listColumns = 2;
                 }
@@ -734,7 +731,7 @@ void TimesplitsSettingsWindow::DrawElement() {
     UIWidgets::PopStyleTabs();
 
     if (shouldRemoveEntry) {
-        RemoveSplitEntry(entryId, entryIndex);
+        RemoveSplitEntry(entryIndex);
         shouldRemoveEntry = false;
     }
 }

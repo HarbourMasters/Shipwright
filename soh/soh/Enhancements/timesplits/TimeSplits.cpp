@@ -1,13 +1,8 @@
 #include "TimeSplits.h"
 #include <libultraship/libultraship.h>
-#include "soh/SohGui/UIWidgets.hpp"
-#include "fast/Fast3dWindow.h"
 #include "fast/Fast3dGui.h"
 
 #include "soh/ShipUtils.h"
-#include "assets/textures/parameter_static/parameter_static.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "assets/textures/icon_item_static/icon_item_static.h"
 
 extern "C" {
 #include "variables.h"
@@ -141,7 +136,7 @@ void TableCellCenteredText(ImVec4 color, const char* text) {
     float textHeight = ImGui::GetTextLineHeight();
     float offsetY = (32.0f - textHeight + 10.0f) * 0.5f;
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() + offsetY);
-    ImGui::TextColored(color, text);
+    ImGui::TextColored(color, "%s", text);
 }
 
 void SplitsPushImageButtonStyle() {
@@ -183,7 +178,7 @@ void DrawSplitsList(bool isMain) {
                 ImGui::TableHeadersRow();
             }
 
-            for (int i = 0; i < splitList.size(); i++) {
+            for (uint32_t i = 0; i < splitList.size(); i++) {
                 ImGui::PushID(i);
 
                 // Item Image Column
@@ -194,16 +189,9 @@ void DrawSplitsList(bool isMain) {
                 }
 
                 SplitsPushImageButtonStyle();
-                if (ImGui::ImageButton(std::to_string(i).c_str(),
-                                       gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL
-                                                                 ? GetItemImageById(splitList[i].splitId)
-                                                                 : "gPauseUnusedCursorTex"),
-                                       splitList[i].splitType == SPLIT_TYPE_NORMAL
-                                           ? GetItemImageSizeById(splitList[i].splitId)
-                                           : ImVec2(32.0f, 32.0f),
-                                       ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                                       splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId)
-                                                                                   : ImVec4(1, 1, 1, 1))) {
+                if (ImGui::ImageButton(std::to_string(i).c_str(), gui->GetTextureByName(GetSplitImage(splitList[i])),
+                                       GetSplitImageSize(splitList[i]), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+                                       GetSplitColor(splitList[i]))) {
                     SkipSplitEntry(i);
                 };
                 SplitsPopImageButtonStyle();
@@ -229,7 +217,7 @@ void DrawSplitsList(bool isMain) {
                     !gPlayState ? ImGui::TextColored(COLOR_WHITE, BLANK_SPLIT)
                     : i < comparisonList.size()
                         ? ImGui::TextColored(
-                              GetComparisonTimeTextDisplay(splitList[i], comparisonList[i]).colorDisplay,
+                              GetComparisonTimeTextDisplay(splitList[i], comparisonList[i]).colorDisplay, "%s",
                               Ship_FormatTimeDisplay(
                                   GetComparisonTimeTextDisplay(splitList[i], comparisonList[i]).timeDisplay)
                                   .c_str())
@@ -240,7 +228,7 @@ void DrawSplitsList(bool isMain) {
                 ImGui::TableNextColumn();
                 TableCellCenteredText(COLOR_WHITE, Ship_FormatTimeDisplay(splitList[i].splitPreviousBest).c_str());
                 if (CVarGetInteger("gSettings.TimeSplits.Compare", 0) && comparisonList.size() != 0) {
-                    ImGui::TextColored(COLOR_GREY,
+                    ImGui::TextColored(COLOR_GREY, "%s",
                                        i < comparisonList.size()
                                            ? Ship_FormatTimeDisplay(comparisonList[i].splitPreviousBest).c_str()
                                            : "No Data");
