@@ -154,7 +154,8 @@ void HandleDragAndDrop(size_t i) {
 
 void CheckSplitsCompleted(uint32_t index) {
     if (index == splitList.size() - 1) {
-        gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TIMESPLITS_COMPLETED] = GetTotalTime();
+        gSaveContext.ship.stats.gameComplete = true;
     } else {
         splitList[index + 1].splitStatus = SPLIT_ACTIVE;
     }

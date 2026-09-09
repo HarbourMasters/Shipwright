@@ -31,11 +31,7 @@ ImGuiTableFlags tableColumnFlags = ImGuiTableColumnFlags_None;
 ImVec4 splitOpacity = { 0, 0, 0, 0.5f };
 
 uint32_t GetTotalTime() {
-    if (gSaveContext.ship.stats.fileCreatedAt == 0) {
-        return 0;
-    } else {
-        return (uint32_t)((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100);
-    }
+    return (uint32_t)GAMEPLAYSTAT_TOTAL_TIME;
 }
 
 SplitTextObject GetCurrentTimeTextDisplay(TimesplitObject split) {
