@@ -447,8 +447,7 @@ void DrawGameplayStatsHeader() {
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
-        GameplayStatsRow("Gameplay Time:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.playTimer / 2),
-                         COLOR_GREY);
+        GameplayStatsRow("Gameplay Time:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.playTimer / 2), COLOR_GREY);
         GameplayStatsRow("Pause Menu Time:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.pauseTimer / 3),
                          COLOR_GREY);
         GameplayStatsRow("Time in scene:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.sceneTimer / 2),
@@ -553,7 +552,7 @@ void DrawGameplayStatsCountsTab() {
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
     if (Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA || gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:",
-            Ship_FormatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+                         Ship_FormatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ROLLS]));
     GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BONKS]));

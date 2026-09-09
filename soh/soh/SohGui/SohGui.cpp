@@ -191,7 +191,8 @@ void SetupGuiElements() {
                                                                              "Item Tracker Settings", ImVec2(733, 472));
     gui->AddGuiWindow(mItemTrackerSettingsWindow);
 
-    mTimeSplitsWindow = std::make_shared<TimeSplits::TimesplitsWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
+    mTimeSplitsWindow =
+        std::make_shared<TimeSplits::TimesplitsWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
     gui->AddGuiWindow(mTimeSplitsWindow);
     mTimeSplitSettingsWindow = std::make_shared<TimeSplits::TimesplitsSettingsWindow>(
         CVAR_WINDOW("TimeSplitSettings"), "Time Splits Settings Window", ImVec2(450, 660));
