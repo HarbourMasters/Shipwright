@@ -591,8 +591,8 @@ void DrawEntranceList() {
 
             ImGui::EndTable();
         }
-        ImGui::EndChild();
     }
+    ImGui::EndChild();
 }
 
 void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableSize) {
