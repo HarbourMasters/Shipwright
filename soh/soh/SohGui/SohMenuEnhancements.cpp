@@ -2174,13 +2174,6 @@ void SohMenu::AddMenuEnhancements() {
 
     // Time Splits
     path.sidebarName = "Time Splits";
-    // AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    // AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
-    //     .CVar(CVAR_WINDOW("TimeSplits"))
-    //     .RaceDisable(false)
-    //     .WindowName("Time Splits")
-    //     .HideInSearch(true)
-    //     .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
     AddWidget(path, "Popout Timesplits Settings", WIDGET_WINDOW_BUTTON)
         .CVar("gWindows.Timesplits.Settings")
