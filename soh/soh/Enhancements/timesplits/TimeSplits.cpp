@@ -1,6 +1,8 @@
 #include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
+#include "fast/Fast3dWindow.h"
+#include "fast/Fast3dGui.h"
 
 #include "soh/ShipUtils.h"
 #include "assets/textures/parameter_static/parameter_static.h"
@@ -32,7 +34,7 @@ uint32_t GetTotalTime() {
     if (gSaveContext.ship.stats.fileCreatedAt == 0) {
         return 0;
     } else {
-        return ((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100);
+        return (uint32_t)((GetUnixTimestamp() - gSaveContext.ship.stats.fileCreatedAt) / 100);
     }
 }
 
@@ -63,7 +65,7 @@ SplitTextObject GetCurrentTimeTextDisplay(TimesplitObject split) {
             }
             return textDisplay;
         default:
-            break;
+            return textDisplay;
     }
 }
 
@@ -133,7 +135,7 @@ SplitTextObject GetTimeDiffTextDisplay(TimesplitObject split) {
             }
             return textDisplay;
         default:
-            break;
+            return textDisplay;
     }
 }
 
@@ -155,6 +157,7 @@ void SplitsPopImageButtonStyle() {
 }
 
 void DrawSplitsList(bool isMain) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     float columnSizeMultiplier = isMain ? 1.0f : 1.5f;
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 7.0f);
@@ -182,7 +185,7 @@ void DrawSplitsList(bool isMain) {
                 ImGui::TableHeadersRow();
             }
 
-            for (size_t i = 0; i < splitList.size(); i++) {
+            for (int i = 0; i < splitList.size(); i++) {
                 ImGui::PushID(i);
 
                 // Item Image Column
@@ -195,7 +198,7 @@ void DrawSplitsList(bool isMain) {
                 SplitsPushImageButtonStyle();
                 if (ImGui::ImageButton(
                         std::to_string(i).c_str(),
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                        gui->GetTextureByName(
                             splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
                                                                         : "gPauseUnusedCursorTex"),
                         splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)

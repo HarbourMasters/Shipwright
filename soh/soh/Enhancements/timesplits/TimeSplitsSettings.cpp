@@ -4,6 +4,8 @@
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "fast/Fast3dWindow.h"
+#include "fast/Fast3dGui.h"
 
 #include "soh/ShipUtils.h"
 #include "soh_assets.h"
@@ -369,7 +371,7 @@ const char* GetItemImageById(uint32_t itemId) {
             if (itemId <= ITEM_MAGIC_LARGE) {
                 return itemMapping.find(itemId)->second.name.c_str();
             }
-            break;
+            return (const char*)gItemIcons[ITEM_SOLD_OUT];;
     }
 }
 
@@ -548,6 +550,7 @@ void DrawActionButtons() {
 }
 
 void DrawEntranceList() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
     if (ImGui::BeginCombo("##SceneFilter", sceneAreaNameMap[sceneFilterIndex])) {
@@ -566,14 +569,14 @@ void DrawEntranceList() {
 
     if (ImGui::BeginChild("Entrance List")) {
         if (ImGui::BeginTable("Entrances", 2)) {
-            for (int i = sceneRange.startIndex; i <= sceneRange.endIndex; i++) {
+            for (uint32_t i = sceneRange.startIndex; i <= sceneRange.endIndex; i++) {
                 ImGui::TableNextColumn();
                 ImGui::PushID(sceneObjectList[i].splitId);
                 SplitsPushImageButtonStyle();
 
                 if (ImGui::ImageButton(
                         std::to_string(sceneObjectList[i].splitId).c_str(),
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("gPauseUnusedCursorTex"),
+                        gui->GetTextureByName("gPauseUnusedCursorTex"),
                         ImVec2(32.0f, 32.0f))) {
                     AddSplitEntryBySceneId(sceneObjectList[i].splitId);
                 };
@@ -592,12 +595,13 @@ void DrawEntranceList() {
 }
 
 void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableSize) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (ImGui::BeginTable(tableName.c_str(), tableSize)) {
-        for (int i = range.startIndex; i <= range.endIndex; i++) {
+        for (uint32_t i = range.startIndex; i <= range.endIndex; i++) {
             ImGui::TableNextColumn();
             SplitsPushImageButtonStyle();
             if (ImGui::ImageButton(std::to_string(splitObjectList[i].splitId).c_str(),
-                                   Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                   gui->GetTextureByName(
                                        GetItemImageById(splitObjectList[i].splitId)),
                                    GetItemImageSizeById(splitObjectList[i].splitId) * 1.5f, ImVec2(0, 0), ImVec2(1, 1),
                                    ImVec4(0, 0, 0, 0), GetItemColor(splitObjectList[i].splitId))) {
@@ -624,6 +628,7 @@ void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableS
 }
 
 void TimesplitsSettingsWindow::DrawElement() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     bool shouldRemoveEntry = false;
     uint32_t entryId = 0, entryIndex = 0;
 
@@ -654,11 +659,11 @@ void TimesplitsSettingsWindow::DrawElement() {
                 ImGui::BeginChild("Preview List");
                 for (size_t i = 0; i < splitList.size(); i++) {
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ((ImGui::GetContentRegionAvail().x - 50.0f) * 0.5f));
-                    ImGui::PushID(i);
+                    ImGui::PushID((uint32_t)i);
                     SplitsPushImageButtonStyle();
                     if (ImGui::ImageButton(
                             std::to_string(i).c_str(),
-                            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                            gui->GetTextureByName(
                                 splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
                                                                             : "gPauseUnusedCursorTex"),
                             splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
@@ -668,7 +673,7 @@ void TimesplitsSettingsWindow::DrawElement() {
                                                                         : ImVec4(1, 1, 1, 1))) {
                         shouldRemoveEntry = true;
                         entryId = splitList[i].splitId;
-                        entryIndex = i;
+                        entryIndex = (uint32_t)i;
                     };
                     UIWidgets::Tooltip(splitList[i].splitName.c_str());
 

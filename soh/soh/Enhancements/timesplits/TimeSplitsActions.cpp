@@ -1,6 +1,8 @@
 #include "TimeSplits.h"
 #include <libultraship/libultraship.h>
 #include "soh/SohGui/UIWidgets.hpp"
+#include "fast/Fast3dWindow.h"
+#include "fast/Fast3dGui.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <fstream>
 #include <filesystem>
@@ -77,6 +79,7 @@ TimesplitObject GetSplitObjectById(uint32_t itemId) {
 }
 
 void HandlePopUpContext(uint32_t popupId) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (shouldPopUpOpen && ImGui::BeginPopup("ItemSubMenu")) {
         std::vector<uint32_t> itemList;
 
@@ -97,7 +100,7 @@ void HandlePopUpContext(uint32_t popupId) {
             SplitsPushImageButtonStyle();
             if (ImGui::ImageButton(
                     std::to_string(list).c_str(),
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(GetItemImageById(list)),
+                    gui->GetTextureByName(GetItemImageById(list)),
                     GetItemImageSizeById(list) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
                     GetItemColor(list))) {
                 AddSplitEntryById(list);
@@ -119,10 +122,11 @@ void HandlePopUpContext(uint32_t popupId) {
 }
 
 void HandleDragAndDrop(size_t i) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
         ImGui::SetDragDropPayload("SPLIT_DRAG", &i, sizeof(size_t));
         ImGui::ImageButton(std::to_string(splitList[i].splitId).c_str(),
-                           Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+            gui->GetTextureByName(
                                splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
                                                                            : "gPauseUnusedCursorTex"),
                            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
@@ -433,17 +437,17 @@ void RegisterTimesplits() {
                 itemEntry.itemId = ITEM_BOMBCHU;
             }
             if (itemEntry.itemId == ITEM_STICKS_5 || itemEntry.itemId == ITEM_STICKS_10) {
-                itemEntry.itemId == ITEM_STICK;
+                itemEntry.itemId = ITEM_STICK;
             }
             if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
-                itemEntry.itemId == ITEM_NUT;
+                itemEntry.itemId = ITEM_NUT;
             }
         }
 
         UpdateSplitStatusById((uint32_t)itemEntry.itemId);
     });
 
-    COND_HOOK(OnPlayerBottleUpdate, CVAR, [](u8 item) { UpdateSplitStatusById((uint32_t)item); });
+    COND_HOOK(OnPlayerBottleUpdate, CVAR, [](int16_t contents) { UpdateSplitStatusById((uint32_t)contents); });
     COND_HOOK(OnBossDefeat, CVAR, [](void* refActor) {
         Actor* actor = (Actor*)refActor;
         GetSplitByActorId(actor->id);

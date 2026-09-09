@@ -3,6 +3,7 @@
 #include <random>
 #include "soh_assets.h"
 #include <libultraship/bridge/consolevariablebridge.h>
+#include "spdlog/common.h"
 
 extern "C" {
 #include "z64.h"
@@ -20,7 +21,7 @@ extern std::string Ship_FormatTimeDisplay(uint32_t value) {
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 constexpr f32 fourByThree = 4.0f / 3.0f;

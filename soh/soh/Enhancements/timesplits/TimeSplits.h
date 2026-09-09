@@ -16,7 +16,7 @@ class TimesplitsWindow : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 
-typedef enum ExtendedSplitIds {
+typedef enum {
     SPLIT_KILLED_GOHMA = 256,
     SPLIT_KILLED_KING_DODONGO,
     SPLIT_KILLED_BARINADE,
@@ -30,24 +30,24 @@ typedef enum ExtendedSplitIds {
     SPLIT_SINGLE_MAGIC,
     SPLIT_DOUBLE_MAGIC,
     SPLIT_DOUBLE_DEFENSE,
-};
+} ExtendedSplitIds;
 
-typedef enum SplitSettings {
+typedef enum {
     SPLIT_HEADERS,
     SPLIT_OPACITY,
     SPLIT_HIGHLIGHT,
     SPLIT_COMPARE,
-};
+} SplitSettings;
 
-typedef enum SplitFileActions {
+typedef enum {
     SPLIT_SAVE,
     SPLIT_LOAD,
     SPLIT_RETRIEVE,
     SPLIT_CONVERT,
-};
+} SplitFileActions;
 
-typedef enum SplitStatus { SPLIT_INACTIVE, SPLIT_ACTIVE, SPLIT_COMPLETE, SPLIT_SKIPPED };
-typedef enum SplitTypes { SPLIT_TYPE_NORMAL, SPLIT_TYPE_SCENE };
+typedef enum { SPLIT_INACTIVE, SPLIT_ACTIVE, SPLIT_COMPLETE, SPLIT_SKIPPED } SplitStatus;
+typedef enum { SPLIT_TYPE_NORMAL, SPLIT_TYPE_SCENE } SplitTypes;
 
 typedef struct {
     uint32_t splitId;
