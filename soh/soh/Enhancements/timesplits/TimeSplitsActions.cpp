@@ -98,11 +98,9 @@ void HandlePopUpContext(uint32_t popupId) {
         uint32_t slotIndex = 0;
         for (auto& list : itemList) {
             SplitsPushImageButtonStyle();
-            if (ImGui::ImageButton(
-                    std::to_string(list).c_str(),
-                    gui->GetTextureByName(GetItemImageById(list)),
-                    GetItemImageSizeById(list) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                    GetItemColor(list))) {
+            if (ImGui::ImageButton(std::to_string(list).c_str(), gui->GetTextureByName(GetItemImageById(list)),
+                                   GetItemImageSizeById(list) * 1.5f, ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+                                   GetItemColor(list))) {
                 AddSplitEntryById(list);
                 ImGui::CloseCurrentPopup();
                 shouldPopUpOpen = false;
@@ -125,15 +123,14 @@ void HandleDragAndDrop(size_t i) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
         ImGui::SetDragDropPayload("SPLIT_DRAG", &i, sizeof(size_t));
-        ImGui::ImageButton(std::to_string(splitList[i].splitId).c_str(),
-            gui->GetTextureByName(
-                               splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
-                                                                           : "gPauseUnusedCursorTex"),
-                           splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
-                                                                       : ImVec2(32.0f, 32.0f),
-                           ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                           splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId)
-                                                                       : ImVec4(1, 1, 1, 1));
+        ImGui::ImageButton(
+            std::to_string(splitList[i].splitId).c_str(),
+            gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
+                                                                              : "gPauseUnusedCursorTex"),
+            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
+                                                        : ImVec2(32.0f, 32.0f),
+            ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId) : ImVec4(1, 1, 1, 1));
         ImGui::EndDragDropSource();
     }
 

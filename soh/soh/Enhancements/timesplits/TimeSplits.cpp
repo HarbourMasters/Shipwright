@@ -196,16 +196,16 @@ void DrawSplitsList(bool isMain) {
                 }
 
                 SplitsPushImageButtonStyle();
-                if (ImGui::ImageButton(
-                        std::to_string(i).c_str(),
-                        gui->GetTextureByName(
-                            splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
-                                                                        : "gPauseUnusedCursorTex"),
-                        splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
-                                                                    : ImVec2(32.0f, 32.0f),
-                        ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
-                        splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId)
-                                                                    : ImVec4(1, 1, 1, 1))) {
+                if (ImGui::ImageButton(std::to_string(i).c_str(),
+                                       gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL
+                                                                 ? GetItemImageById(splitList[i].splitId)
+                                                                 : "gPauseUnusedCursorTex"),
+                                       splitList[i].splitType == SPLIT_TYPE_NORMAL
+                                           ? GetItemImageSizeById(splitList[i].splitId)
+                                           : ImVec2(32.0f, 32.0f),
+                                       ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
+                                       splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemColor(splitList[i].splitId)
+                                                                                   : ImVec4(1, 1, 1, 1))) {
                     SkipSplitEntry(i);
                 };
                 SplitsPopImageButtonStyle();

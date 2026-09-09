@@ -373,7 +373,8 @@ const char* GetItemImageById(uint32_t itemId) {
             if (itemId <= ITEM_MAGIC_LARGE) {
                 return itemMapping.find(itemId)->second.name.c_str();
             }
-            return (const char*)gItemIcons[ITEM_SOLD_OUT];;
+            return (const char*)gItemIcons[ITEM_SOLD_OUT];
+            ;
     }
 }
 
@@ -576,10 +577,8 @@ void DrawEntranceList() {
                 ImGui::PushID(sceneObjectList[i].splitId);
                 SplitsPushImageButtonStyle();
 
-                if (ImGui::ImageButton(
-                        std::to_string(sceneObjectList[i].splitId).c_str(),
-                        gui->GetTextureByName("gPauseUnusedCursorTex"),
-                        ImVec2(32.0f, 32.0f))) {
+                if (ImGui::ImageButton(std::to_string(sceneObjectList[i].splitId).c_str(),
+                                       gui->GetTextureByName("gPauseUnusedCursorTex"), ImVec2(32.0f, 32.0f))) {
                     AddSplitEntryBySceneId(sceneObjectList[i].splitId);
                 };
                 ImGui::SameLine();
@@ -603,8 +602,7 @@ void DrawItemList(std::string tableName, IndexRangeObject range, uint32_t tableS
             ImGui::TableNextColumn();
             SplitsPushImageButtonStyle();
             if (ImGui::ImageButton(std::to_string(splitObjectList[i].splitId).c_str(),
-                                   gui->GetTextureByName(
-                                       GetItemImageById(splitObjectList[i].splitId)),
+                                   gui->GetTextureByName(GetItemImageById(splitObjectList[i].splitId)),
                                    GetItemImageSizeById(splitObjectList[i].splitId) * 1.5f, ImVec2(0, 0), ImVec2(1, 1),
                                    ImVec4(0, 0, 0, 0), GetItemColor(splitObjectList[i].splitId))) {
                 if (itemSubMenuList.contains(splitObjectList[i].splitId)) {
@@ -665,9 +663,9 @@ void TimesplitsSettingsWindow::DrawElement() {
                     SplitsPushImageButtonStyle();
                     if (ImGui::ImageButton(
                             std::to_string(i).c_str(),
-                            gui->GetTextureByName(
-                                splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageById(splitList[i].splitId)
-                                                                            : "gPauseUnusedCursorTex"),
+                            gui->GetTextureByName(splitList[i].splitType == SPLIT_TYPE_NORMAL
+                                                      ? GetItemImageById(splitList[i].splitId)
+                                                      : "gPauseUnusedCursorTex"),
                             splitList[i].splitType == SPLIT_TYPE_NORMAL ? GetItemImageSizeById(splitList[i].splitId)
                                                                         : ImVec2(32.0f, 32.0f),
                             ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0),
