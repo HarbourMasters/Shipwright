@@ -404,6 +404,11 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
     }
 }
 
+void StallOut(GetItemEntry entry) {
+    int i = 0;
+    SPDLOG_INFO("ItemId: {}", entry.itemId);
+}
+
 void RegisterTimesplits() {
     if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json"))) {
         json initFile;
@@ -441,6 +446,11 @@ void RegisterTimesplits() {
             }
             if (itemEntry.itemId == ITEM_NUTS_5 || itemEntry.itemId == ITEM_NUTS_10) {
                 itemEntry.itemId = ITEM_NUT;
+            }
+            if (itemEntry.itemId == ITEM_SWORD_BGS) {
+                if (gSaveContext.bgsFlag == 0) {
+                    itemEntry.itemId = ITEM_SWORD_KNIFE;
+                }
             }
         }
 

@@ -206,6 +206,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_GAUNTLETS_GOLD,             "Gold Gauntlets" },
     { ITEM_SCALE_SILVER,               "Silver Scale" },
     { ITEM_SCALE_GOLDEN,               "Gold Scale" },
+    { ITEM_SWORD_KNIFE,                "Giant's Knife" },
     { SPLIT_DOUBLE_MAGIC,    		   "Double Magic" },
     
     // Trade Items
@@ -260,6 +261,7 @@ std::map<uint32_t, std::vector<uint32_t>> itemSubMenuList = {
     { ITEM_SCALE_SILVER,    { ITEM_SCALE_SILVER, ITEM_SCALE_GOLDEN } },
     { ITEM_BRACELET,        { ITEM_BRACELET, ITEM_GAUNTLETS_SILVER, ITEM_GAUNTLETS_GOLD } },
     { ITEM_WALLET_ADULT,    { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT } },
+    { ITEM_SWORD_BGS,       { ITEM_SWORD_KNIFE, ITEM_SWORD_BGS } },
     { SPLIT_SINGLE_MAGIC,   { SPLIT_SINGLE_MAGIC, SPLIT_DOUBLE_MAGIC } },
 };
 
