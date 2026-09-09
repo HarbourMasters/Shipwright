@@ -4,6 +4,7 @@
 #include <libultraship/bridge/resourcebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/heap_sim.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #include "message_data_static.h"
@@ -530,6 +531,7 @@ void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line) {
         osSyncPrintf(VT_FGCOL(GREEN));
         osSyncPrintf("game_alloc(%08x) %08x-%08x [%s:%d]\n", size, ret, (uintptr_t)ret + size, file, line);
         osSyncPrintf(VT_RST);
+        HeapSim_MirrorGameAlloc(ret, size);
     }
     return ret;
 }

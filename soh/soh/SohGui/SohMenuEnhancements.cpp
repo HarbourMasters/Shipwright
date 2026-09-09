@@ -1418,6 +1418,10 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultIndex(GIM_DISABLED)
                      .Tooltip("Restores Get Item Manipulation.\n"
                               "NTSC and PAL have separate tables."));
+    AddWidget(path, "Simulate N64 Heap", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SimulateN64Heap"))
+        .Options(CheckboxOptions().Tooltip("This restores heap fragmentation glitches, such as the Royal Tomb not "
+                                           "loading when reloading graveyard room. Takes effect on next scene load."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

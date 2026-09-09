@@ -1,6 +1,8 @@
 #include "global.h"
 #include <string.h>
 
+#include "soh/Enhancements/heap_sim.h"
+
 #define LOG_SEVERITY_NOLOG 0
 #define LOG_SEVERITY_ERROR 2
 #define LOG_SEVERITY_VERBOSE 3
@@ -31,6 +33,10 @@ void* ZeldaArena_Malloc(size_t size) {
 void* ZeldaArena_MallocDebug(size_t size, const char* file, s32 line) {
     void* ptr = __osMallocDebug(&sZeldaArena, size, file, line);
 
+    if (!HeapSim_MirrorMalloc(ptr, size)) {
+        __osFreeDebug(&sZeldaArena, ptr, file, line);
+        ptr = NULL;
+    }
     ZeldaArena_CheckPointer(ptr, size, "zelda_malloc_DEBUG", "確保"); // "Secure"
     return ptr;
 }
@@ -45,6 +51,11 @@ void* ZeldaArena_MallocR(size_t size) {
 void* ZeldaArena_MallocRDebug(size_t size, const char* file, s32 line) {
     void* ptr = __osMallocRDebug(&sZeldaArena, size, file, line);
 
+    if (!HeapSim_MirrorMallocR(ptr, size)) {
+        // would have failed on N64, fail for real
+        __osFreeDebug(&sZeldaArena, ptr, file, line);
+        ptr = NULL;
+    }
     ZeldaArena_CheckPointer(ptr, size, "zelda_malloc_r_DEBUG", "確保"); // "Secure"
     return ptr;
 }
@@ -66,6 +77,7 @@ void ZeldaArena_Free(void* ptr) {
 }
 
 void ZeldaArena_FreeDebug(void* ptr, const char* file, s32 line) {
+    HeapSim_MirrorFree(ptr);
     __osFreeDebug(&sZeldaArena, ptr, file, line);
 }
 

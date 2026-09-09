@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/heap_sim.h"
 #include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
@@ -187,6 +188,10 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
 
     if (overlayEntry->vramStart == NULL) {
+        // Heap sim: fail the spawn if the overlay would not have fit on the N64 heap
+        if (!HeapSim_MirrorEffectSsOverlay(type)) {
+            return;
+        }
         // "Not an overlay"
         osSyncPrintf("EffectSoftSprite2_makeEffect():オーバーレイではありません。\n");
         initInfo = overlayEntry->initInfo;
