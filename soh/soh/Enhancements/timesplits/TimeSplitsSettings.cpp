@@ -376,7 +376,6 @@ const char* GetItemImageById(uint32_t itemId) {
                 return itemMapping.find(itemId)->second.name.c_str();
             }
             return (const char*)gItemIcons[ITEM_SOLD_OUT];
-            ;
     }
 }
 
