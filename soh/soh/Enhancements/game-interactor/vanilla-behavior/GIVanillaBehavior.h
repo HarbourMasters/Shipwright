@@ -937,6 +937,71 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_PLAY_MINIBOSS_MUSIC,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnIk*`
+    VB_PLAY_MINIBOSS_MUSIC_IK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `EnGeldB*`
+    VB_PLAY_MINIBOSS_MUSIC_GELDB,
+
+    // #### `result`
+    // ```c
+    // (this->actor.params != STALFOS_TYPE_2) && !Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY,
+    // 8000.0f)
+    // ```
+    // #### `args`
+    // - `EnTest*`
+    VB_PLAY_MINIBOSS_MUSIC_TEST,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `Player*`
+    VB_PLAY_MINIBOSS_MUSIC_TORCH2,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `Actor*`
+    VB_STOP_MINIBOSS_MUSIC,
+
+    // #### `result`
+    // ```c
+    // this->bodyCollider.base.acFlags & AC_HIT
+    // ```
+    // #### `args`
+    // - `EnIk*`
+    VB_IK_ACTIVATE,
+
+    // #### `result`
+    // ```c
+    // (this->actor.xzDistToPlayer <= 120.0f) || Actor_IsTargeted(play, &this->actor) || (attackItem != NULL)
+    // ```
+    // #### `args`
+    // - `EnTorch2*`
+    VB_TORCH2_ACTIVATE,
+
+    // #### `result`
+    // ```c
     // (this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f
     // ```
     // #### `args`

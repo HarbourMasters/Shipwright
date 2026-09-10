@@ -106,6 +106,11 @@ void RegisterAlwaysOnFixes() {
 
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_TEST, true, [](void* refActor) {
         Actor* actor = reinterpret_cast<Actor*>(refActor);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) &&
+            (CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoMinibossBgm"), false) ||
+             CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"), false))) {
+            return;
+        }
         if (actor->params != STALFOS_TYPE_2 && !EnTest_HasLivingNearby(actor)) {
             func_800F5B58();
         }

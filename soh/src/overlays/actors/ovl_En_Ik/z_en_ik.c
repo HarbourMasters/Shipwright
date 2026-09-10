@@ -168,8 +168,9 @@ static DamageTable sDamageTable = {
 
 void EnIk_Destroy(Actor* thisx, PlayState* play) {
     EnIk* this = (EnIk*)thisx;
-
-    if (Actor_FindNearby(play, &this->actor, ACTOR_EN_IK, ACTORCAT_ENEMY, 8000.0f) == NULL) {
+    if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC,
+                              (Actor_FindNearby(play, &this->actor, ACTOR_EN_IK, ACTORCAT_ENEMY, 8000.0f) == NULL),
+                              &this->actor)) {
         func_800F5B58();
     }
 
@@ -295,15 +296,16 @@ void func_80A74714(EnIk* this) {
 void func_80A747C0(EnIk* this, PlayState* play) {
     Vec3f sp24;
 
-    if (this->bodyCollider.base.acFlags & AC_HIT) {
+    if (GameInteractor_Should(VB_IK_ACTIVATE,
+                              (this->bodyCollider.base.acFlags & AC_HIT) ||
+                                  CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0),
+                              this)) {
         sp24 = this->actor.world.pos;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_ARMOR_HIT);
         sp24.y += 30.0f;
         func_8003424C(play, &sp24);
         this->skelAnime.playSpeed = 1.0f;
-        // Disable miniboss music with Enemy Randomizer because the music would keep
-        // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
+        if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC_IK, true, this)) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
         }
     }
@@ -1456,13 +1458,6 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
                            this->jointTable, this->morphTable, 30);
         func_80A74398(&this->actor, play);
         func_80A780D0(this, play);
-    }
-
-    // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
-    if ((CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0) ||
-         (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0))) &&
-        (thisx->params == 2 || thisx->params == 3)) {
-        this->skelAnime.playSpeed = 1.0f;
     }
 }
 

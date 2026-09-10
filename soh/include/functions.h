@@ -2163,7 +2163,7 @@ void func_800F9474(u8, u16);
 void func_800F94FC(u32);
 void Audio_ProcessSeqCmd(u32);
 void Audio_ProcessSeqCmds(void);
-u16 func_800FA0B4(u8 a0);
+u16 Audio_GetActiveSeqId(u8 seqPlayerIndex);
 s32 func_800FA11C(u32 arg0, u32 arg1);
 void func_800FA174(u8);
 void func_800FA18C(u8, u8);

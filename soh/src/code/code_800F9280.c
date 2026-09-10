@@ -397,11 +397,11 @@ void Audio_ProcessSeqCmds(void) {
     }
 }
 
-u16 func_800FA0B4(u8 playerIdx) {
-    if (!gAudioContext.seqPlayers[playerIdx].enabled) {
+u16 Audio_GetActiveSeqId(u8 seqPlayerIndex) {
+    if (!gAudioContext.seqPlayers[seqPlayerIndex].enabled) {
         return NA_BGM_DISABLED;
     }
-    return gActiveSeqs[playerIdx].seqId;
+    return gActiveSeqs[seqPlayerIndex].seqId;
 }
 
 s32 func_800FA11C(u32 arg0, u32 arg1) {
