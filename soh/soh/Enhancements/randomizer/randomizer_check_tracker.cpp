@@ -247,6 +247,7 @@ SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
 
 const Color_RGBA8 Color_Main_Default = { 255, 255, 255, 255 };                  // White
 const Color_RGBA8 Color_Area_Incomplete_Extra_Default = { 255, 255, 255, 255 }; // White
+const Color_RGBA8 Color_Available_Extra_Default = { 255, 255, 255, 255 };       // White
 const Color_RGBA8 Color_Area_Complete_Extra_Default = { 255, 255, 255, 255 };   // White
 const Color_RGBA8 Color_Unchecked_Extra_Default = { 255, 255, 255, 255 };       // White
 const Color_RGBA8 Color_Skipped_Main_Default = { 160, 160, 160, 255 };          // Grey
@@ -261,6 +262,8 @@ Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
 
 Color_RGBA8 Color_Area_Incomplete_Main = { 255, 255, 255, 255 };  // White
 Color_RGBA8 Color_Area_Incomplete_Extra = { 255, 255, 255, 255 }; // White
+Color_RGBA8 Color_Available_Main = { 255, 255, 255, 255 };        // White
+Color_RGBA8 Color_Available_Extra = { 255, 255, 255, 255 };       // White
 Color_RGBA8 Color_Area_Complete_Main = { 255, 255, 255, 255 };    // White
 Color_RGBA8 Color_Area_Complete_Extra = { 255, 255, 255, 255 };   // White
 Color_RGBA8 Color_Unchecked_Main = { 255, 255, 255, 255 };        // White
@@ -1239,6 +1242,8 @@ void CheckTrackerWindow::DrawElement() {
     Color_Area_Incomplete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.MainColor.Value"), Color_Main_Default);
     Color_Area_Incomplete_Extra =
         CVarGetColor(CVAR_TRACKER_CHECK("AreaIncomplete.ExtraColor.Value"), Color_Area_Incomplete_Extra_Default);
+    Color_Available_Main = CVarGetColor(CVAR_TRACKER_CHECK("Available.MainColor.Value"), Color_Main_Default);
+    Color_Available_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Available.ExtraColor.Value"), Color_Main_Default);
     Color_Area_Complete_Main = CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.MainColor.Value"), Color_Main_Default);
     Color_Area_Complete_Extra =
         CVarGetColor(CVAR_TRACKER_CHECK("AreaComplete.ExtraColor.Value"), Color_Area_Complete_Extra_Default);
@@ -2180,6 +2185,15 @@ void DrawLocation(RandomizerCheck rc) {
                 ? Color_Scummed_Extra
                 : Color_Scummed_Main;
         extraColor = Color_Scummed_Extra;
+    } else if (available) {
+        if (!showHidden && hideScummed) {
+            return;
+        }
+        mainColor =
+            !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
+                ? Color_Available_Extra
+                : Color_Available_Main;
+        extraColor = Color_Available_Extra;
     } else if (status == RCSHOW_UNCHECKED) {
         if (!showHidden && hideUnchecked) {
             return;
@@ -2617,6 +2631,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                      Color_Area_Incomplete_Main, Color_Area_Incomplete_Extra,
                                                      Color_Main_Default, Color_Area_Incomplete_Extra_Default,
                                                      CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection(
+            "Available", CVAR_TRACKER_CHECK("Available.MainColor"), CVAR_TRACKER_CHECK("Available.ExtraColor"),
+            Color_Available_Main, Color_Available_Extra, Color_Main_Default, Color_Available_Extra_Default,
+            CVAR_TRACKER_CHECK("Available.Hide"), "", THEME_COLOR);
         CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete", CVAR_TRACKER_CHECK("AreaComplete.MainColor"),
                                                      CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),
                                                      Color_Area_Complete_Main, Color_Area_Complete_Extra,
