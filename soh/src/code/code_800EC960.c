@@ -4760,12 +4760,18 @@ void Audio_SplitBgmChannels(s8 volSplit) {
             }
 
             channelBits = 0;
-            for (channelIdx = 0; channelIdx < 16; channelIdx++) {
-                if (notePriority > gAudioContext.seqPlayers[bgmPlayers[i]].channels[channelIdx]->notePriority) {
-                    // If the note currently playing in the channel is a high enough priority,
-                    // then keep the channel on by setting a channelBit
-                    // If this condition fails, then the channel will be shut off
-                    channelBits += (1 << channelIdx);
+
+            // Streamed music is one note for the whole song, so stopping a channel ends it
+            // for good. An empty player is about to be handed one: the enemy sequence is
+            // queued a step before this runs.
+            if (gAudioContext.seqPlayers[bgmPlayers[i]].enabled && !gSeqPlayerIsStreamed[bgmPlayers[i]]) {
+                for (channelIdx = 0; channelIdx < 16; channelIdx++) {
+                    if (notePriority > gAudioContext.seqPlayers[bgmPlayers[i]].channels[channelIdx]->notePriority) {
+                        // If the note currently playing in the channel is a high enough priority,
+                        // then keep the channel on by setting a channelBit
+                        // If this condition fails, then the channel will be shut off
+                        channelBits += (1 << channelIdx);
+                    }
                 }
             }
 

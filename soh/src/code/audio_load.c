@@ -85,6 +85,7 @@ void* sUnusedHandler = NULL;
 s32 gAudioContextInitalized = false;
 
 char** sequenceMap;
+u8* gSeqIsStreamed;
 size_t sequenceMapSize;
 // A map of authentic sequence IDs to their cache policies, for use with sequence swapping.
 u8 seqCachePolicyMap[MAX_AUTHENTIC_SEQID];
@@ -1344,6 +1345,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
     // calloc: unassigned slots stay NULL for the guard in AudioLoad_SyncInitSeqPlayerInternal().
     sequenceMap = calloc(sequenceMapSize + 0xF, sizeof(char*));
+    gSeqIsStreamed = calloc(sequenceMapSize + 0xF, sizeof(u8));
 
     // SOH [Bugfix] Size to match sequenceMap (+ 0xF); custom ids can exceed sequenceMapSize.
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize + 0xF);
@@ -1405,6 +1407,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         // ensure that what would be the next sequence number is actually unassigned in AudioCollection
         int j = i - startingSeqNum;
         SequenceData* sDat = ResourceMgr_LoadSeqPtrByName(customSeqList[j]);
+        // Read before the branch below rewrites numFonts.
+        u8 isStreamed = (sDat->numFonts == -1);
 
         if (sDat->numFonts == -1) {
             uint64_t crc;
@@ -1449,6 +1453,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         sDat->seqNumber = seqNum;
         LUSLOG_DEBUG("Registered custom sequence \"%s\" as seqNum %d", customSeqList[j], seqNum);
         sequenceMap[sDat->seqNumber] = strdup(customSeqList[j]);
+        gSeqIsStreamed[sDat->seqNumber] = isStreamed;
         seqNum++;
     }
 
