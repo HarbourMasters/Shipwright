@@ -15,10 +15,14 @@ extern "C" PlayState* gPlayState;
 #define CVAR_OCARINA_TIME_TRAVEL_NAME CVAR_ENHANCEMENT("TimeTravel")
 #define CVAR_OCARINA_TIME_TRAVEL_VALUE CVarGetInteger(CVAR_OCARINA_TIME_TRAVEL_NAME, CVAR_OCARINA_TIME_TRAVEL_DEFAULT)
 
-/// Switches Link's age and respawns him at the last entrance he entered.
-void OcarinaTimeTravel() {
+// Set when the Song of Time is recognised, cleared once the era has changed.
+static bool timeTravelPending = false;
+
+/// True when the Song of Time just played moves Link between eras, rather than driving a Time Block, a
+/// staff spot, the frogs or a Gossip Stone.
+static bool TimeTravelApplies() {
     if (!GameInteractor::IsSaveLoaded(true)) {
-        return;
+        return false;
     }
 
     Actor* player = &GET_PLAYER(gPlayState)->actor;
@@ -34,10 +38,9 @@ void OcarinaTimeTravel() {
                             !nearbyFrogs && !nearbyGossipStone;
     bool hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
     bool hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER);
-    int timeTravelSetting = CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0);
     bool meetsTimeTravelRequirements = false;
 
-    switch (timeTravelSetting) {
+    switch (CVAR_OCARINA_TIME_TRAVEL_VALUE) {
         case TIME_TRAVEL_ANY:
             meetsTimeTravelRequirements = true;
             break;
@@ -53,13 +56,43 @@ void OcarinaTimeTravel() {
             break;
     }
 
-    if (justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements) {
-        SwitchAge();
+    return justPlayedSoT && notNearAnySource && meetsTimeTravelRequirements;
+}
+
+/// Arms the era change; the shift itself waits for the song (see OcarinaTimeTravelUpdate).
+static void OcarinaTimeTravel() {
+    if (TimeTravelApplies()) {
+        timeTravelPending = true;
     }
 }
 
+/// Switches Link's age once the Song of Time has played itself out, respawning him where he stood.
+static void OcarinaTimeTravelUpdate() {
+    // This hook also runs on the title screen and the file select, where there is no play state to read.
+    if (!timeTravelPending || !GameInteractor::IsSaveLoaded(true)) {
+        return;
+    }
+
+    // Let the song finish, since the scene load fades out whatever is still playing, and leave anything
+    // already warping Link alone.
+    if ((func_800FA0B4(SEQ_PLAYER_FANFARE) == NA_BGM_OCA_TIME) ||
+        (gPlayState->transitionTrigger != TRANS_TRIGGER_OFF)) {
+        return;
+    }
+
+    timeTravelPending = false;
+    SwitchAge();
+
+    // The fade the Sun's Song changes the time of day behind (z_parameter.c, sunsSongState).
+    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
+    gPlayState->haltAllActors = 1;
+}
+
 static void RegisterOcarinaTimeTravel() {
+    timeTravelPending = false;
     COND_HOOK(OnOcarinaSongAction, CVAR_OCARINA_TIME_TRAVEL_VALUE, OcarinaTimeTravel);
+    COND_HOOK(OnGameFrameUpdate, CVAR_OCARINA_TIME_TRAVEL_VALUE, OcarinaTimeTravelUpdate);
 }
 
 static RegisterShipInitFunc initFunc(RegisterOcarinaTimeTravel, { CVAR_OCARINA_TIME_TRAVEL_NAME });
