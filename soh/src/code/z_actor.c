@@ -663,9 +663,9 @@ void Attention_Update(TargetContext* targetCtx, Player* player, Actor* actorArg,
  */
 s32 Flags_GetSwitch(PlayState* play, s32 flag) {
     if (flag < 0x20) {
-        return play->actorCtx.flags.swch & (1 << flag);
+        return play->actorCtx.flags.swch & (1u << flag);
     } else {
-        return play->actorCtx.flags.tempSwch & (1 << (flag - 0x20));
+        return play->actorCtx.flags.tempSwch & (1u << (flag - 0x20));
     }
 }
 
@@ -675,9 +675,9 @@ s32 Flags_GetSwitch(PlayState* play, s32 flag) {
 void Flags_SetSwitch(PlayState* play, s32 flag) {
     u8 previouslyOff = !Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
-        play->actorCtx.flags.swch |= (1 << flag);
+        play->actorCtx.flags.swch |= (1u << flag);
     } else {
-        play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
+        play->actorCtx.flags.tempSwch |= (1u << (flag - 0x20));
     }
     if (previouslyOff) {
         LUSLOG_INFO("Switch Flag Set - %#x", flag);
@@ -691,9 +691,9 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
 void Flags_UnsetSwitch(PlayState* play, s32 flag) {
     u8 previouslyOn = Flags_GetSwitch(play, flag);
     if (flag < 0x20) {
-        play->actorCtx.flags.swch &= ~(1 << flag);
+        play->actorCtx.flags.swch &= ~(1u << flag);
     } else {
-        play->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
+        play->actorCtx.flags.tempSwch &= ~(1u << (flag - 0x20));
     }
     if (previouslyOn) {
         LUSLOG_INFO("Switch Flag Unset - %#x", flag);
@@ -706,9 +706,9 @@ void Flags_UnsetSwitch(PlayState* play, s32 flag) {
  */
 s32 Flags_GetUnknown(PlayState* play, s32 flag) {
     if (flag < 0x20) {
-        return play->actorCtx.flags.unk0 & (1 << flag);
+        return play->actorCtx.flags.unk0 & (1u << flag);
     } else {
-        return play->actorCtx.flags.unk1 & (1 << (flag - 0x20));
+        return play->actorCtx.flags.unk1 & (1u << (flag - 0x20));
     }
 }
 
@@ -717,9 +717,9 @@ s32 Flags_GetUnknown(PlayState* play, s32 flag) {
  */
 void Flags_SetUnknown(PlayState* play, s32 flag) {
     if (flag < 0x20) {
-        play->actorCtx.flags.unk0 |= (1 << flag);
+        play->actorCtx.flags.unk0 |= (1u << flag);
     } else {
-        play->actorCtx.flags.unk1 |= (1 << (flag - 0x20));
+        play->actorCtx.flags.unk1 |= (1u << (flag - 0x20));
     }
 }
 
@@ -728,9 +728,9 @@ void Flags_SetUnknown(PlayState* play, s32 flag) {
  */
 void Flags_UnsetUnknown(PlayState* play, s32 flag) {
     if (flag < 0x20) {
-        play->actorCtx.flags.unk0 &= ~(1 << flag);
+        play->actorCtx.flags.unk0 &= ~(1u << flag);
     } else {
-        play->actorCtx.flags.unk1 &= ~(1 << (flag - 0x20));
+        play->actorCtx.flags.unk1 &= ~(1u << (flag - 0x20));
     }
 }
 
@@ -738,7 +738,7 @@ void Flags_UnsetUnknown(PlayState* play, s32 flag) {
  * Tests if current scene chest flag is set.
  */
 s32 Flags_GetTreasure(PlayState* play, s32 flag) {
-    return play->actorCtx.flags.chest & (1 << flag);
+    return play->actorCtx.flags.chest & (1u << flag);
 }
 
 /**
@@ -746,7 +746,7 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
     u8 previouslyOff = !Flags_GetTreasure(play, flag);
-    play->actorCtx.flags.chest |= (1 << flag);
+    play->actorCtx.flags.chest |= (1u << flag);
     if (previouslyOff) {
         LUSLOG_INFO("Treasure Flag Set - %#x", flag);
         GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
@@ -757,7 +757,7 @@ void Flags_SetTreasure(PlayState* play, s32 flag) {
  * Tests if current scene clear flag is set.
  */
 s32 Flags_GetClear(PlayState* play, s32 flag) {
-    return play->actorCtx.flags.clear & (1 << flag);
+    return play->actorCtx.flags.clear & (1u << flag);
 }
 
 /**
@@ -765,7 +765,7 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
     u8 previouslyOff = !Flags_GetClear(play, flag);
-    play->actorCtx.flags.clear |= (1 << flag);
+    play->actorCtx.flags.clear |= (1u << flag);
     if (previouslyOff) {
         LUSLOG_INFO("Clear Flag Set - %#x", flag);
         GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
@@ -777,7 +777,7 @@ void Flags_SetClear(PlayState* play, s32 flag) {
  */
 void Flags_UnsetClear(PlayState* play, s32 flag) {
     u8 previouslyOn = Flags_GetClear(play, flag);
-    play->actorCtx.flags.clear &= ~(1 << flag);
+    play->actorCtx.flags.clear &= ~(1u << flag);
     if (previouslyOn) {
         LUSLOG_INFO("Clear Flag Unset - %#x", flag);
         GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
@@ -788,21 +788,21 @@ void Flags_UnsetClear(PlayState* play, s32 flag) {
  * Tests if current scene temp clear flag is set.
  */
 s32 Flags_GetTempClear(PlayState* play, s32 flag) {
-    return play->actorCtx.flags.tempClear & (1 << flag);
+    return play->actorCtx.flags.tempClear & (1u << flag);
 }
 
 /**
  * Sets current scene temp clear flag.
  */
 void Flags_SetTempClear(PlayState* play, s32 flag) {
-    play->actorCtx.flags.tempClear |= (1 << flag);
+    play->actorCtx.flags.tempClear |= (1u << flag);
 }
 
 /**
  * Unsets current scene temp clear flag.
  */
 void Flags_UnsetTempClear(PlayState* play, s32 flag) {
-    play->actorCtx.flags.tempClear &= ~(1 << flag);
+    play->actorCtx.flags.tempClear &= ~(1u << flag);
 }
 
 /**
@@ -810,9 +810,9 @@ void Flags_UnsetTempClear(PlayState* play, s32 flag) {
  */
 s32 Flags_GetCollectible(PlayState* play, s32 flag) {
     if (flag < 0x20) {
-        return play->actorCtx.flags.collect & (1 << flag);
+        return play->actorCtx.flags.collect & (1u << flag);
     } else {
-        return play->actorCtx.flags.tempCollect & (1 << (flag - 0x20));
+        return play->actorCtx.flags.tempCollect & (1u << (flag - 0x20));
     }
 }
 
@@ -823,9 +823,9 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
     u8 previouslyOff = !Flags_GetCollectible(play, flag);
     if (flag != 0) {
         if (flag < 0x20) {
-            play->actorCtx.flags.collect |= (1 << flag);
+            play->actorCtx.flags.collect |= (1u << flag);
         } else {
-            play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
+            play->actorCtx.flags.tempCollect |= (1u << (flag - 0x20));
         }
     }
     if (previouslyOff) {
