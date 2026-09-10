@@ -253,15 +253,6 @@ TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
 // std::vector<TimestampInfo> sceneTimestampDisplay;
 
-std::string formatTimestampGameplayStat(uint32_t value) {
-    uint32_t sec = value / 10;
-    uint32_t hh = sec / 3600;
-    uint32_t mm = (sec - hh * 3600) / 60;
-    uint32_t ss = sec - hh * 3600 - mm * 60;
-    uint32_t ds = value % 10;
-    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
-}
-
 std::string formatIntGameplayStat(uint32_t value) {
     return spdlog::fmt_lib::format("{}", value);
 }
@@ -275,7 +266,7 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
-    std::string timeString = formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)).c_str();
+    std::string timeString = Ship_FormatTimeDisplay(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)).c_str();
     const size_t stringLength = timeString.length();
     char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
@@ -449,20 +440,19 @@ void DrawGameplayStatsHeader() {
         GameplayStatsRow("Build Version:", (char*)gBuildVersion);
     }
     if (gSaveContext.ship.stats.rtaTiming) {
-        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
+        GameplayStatsRow("Total Time (RTA):", Ship_FormatTimeDisplay(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
-        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
+        GameplayStatsRow("Total Game Time:", Ship_FormatTimeDisplay(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
-        GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.playTimer / 2),
+        GameplayStatsRow("Gameplay Time:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.playTimer / 2), COLOR_GREY);
+        GameplayStatsRow("Pause Menu Time:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.pauseTimer / 3),
                          COLOR_GREY);
-        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.ship.stats.pauseTimer / 3),
-                         COLOR_GREY);
-        GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.ship.stats.sceneTimer / 2),
+        GameplayStatsRow("Time in scene:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.sceneTimer / 2),
                          COLOR_LIGHT_BLUE);
-        GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.ship.stats.roomTimer / 2),
+        GameplayStatsRow("Time in room:", Ship_FormatTimeDisplay(gSaveContext.ship.stats.roomTimer / 2),
                          COLOR_LIGHT_BLUE);
     }
     if (gPlayState != NULL && CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowDebugInfo"), 0)) { // && display debug info
@@ -494,7 +484,7 @@ void DrawGameplayStatsTimestampsTab() {
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 24) > 1) {
-            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time),
+            GameplayStatsRow(itemTimestampDisplay[i].name, Ship_FormatTimeDisplay(itemTimestampDisplay[i].time),
                              itemTimestampDisplay[i].color);
         }
     }
@@ -562,7 +552,7 @@ void DrawGameplayStatsCountsTab() {
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
     if (Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA || gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:",
-                         formatTimestampGameplayStat(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+                         Ship_FormatTimeDisplay(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_ROLLS]));
     GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_BONKS]));
@@ -613,7 +603,7 @@ void DrawGameplayStatsBreakdownTab() {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
         bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
-            GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
+            GameplayStatsRow(tsInfo.name, Ship_FormatTimeDisplay(tsInfo.time), tsInfo.color);
         }
     }
     std::string toPass;
@@ -624,7 +614,7 @@ void DrawGameplayStatsBreakdownTab() {
     } else {
         toPass = ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum);
     }
-    GameplayStatsRow(toPass.c_str(), formatTimestampGameplayStat(CURRENT_MODE_TIMER / 2));
+    GameplayStatsRow(toPass.c_str(), Ship_FormatTimeDisplay(CURRENT_MODE_TIMER / 2));
     ImGui::EndTable();
     ImGui::PopStyleVar(1);
 }
@@ -843,6 +833,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished:    ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:            ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_TIMESPLITS_COMPLETED], "Timesplits Completed:  ");
 
     // Rando items
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GOHMA_SOUL],                       "Gohma's Soul:          ");
@@ -959,6 +950,7 @@ void SetupDisplayColors() {
             case TIMESTAMP_DEFEAT_GANONDORF:
             case TIMESTAMP_DEFEAT_GANON:
             case TIMESTAMP_TRIFORCE_COMPLETED:
+            case TIMESTAMP_TIMESPLITS_COMPLETED:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
