@@ -958,9 +958,12 @@ void RegionTable_Init_WaterTemple() {
                                                       (logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslash()))),
     }, {
         //Locations
-        //Can also get these without iron boots with bombs or hammer, but requires a bit of upward momentum from diving to get on top of the crates
-        LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1, logic->CanBreakCrates() && logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT))),
-        LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2, logic->CanBreakCrates() && logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT))),
+        //Can also get these with hammer by climbing on top of the crates but you need to get some momentum from a dive for the climb to work. 
+        //To do these with a chu, run them over the ceiling, a bit unintuitive but not really worth a solo trick, maybe bundle it with some other weird chus
+        LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1, logic->CanBreakCrates() && ((logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT))) ||
+                                                                                               (logic->HasExplosives() && logic->HasItem(RG_BRONZE_SCALE)))),
+        LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2, logic->CanBreakCrates() && ((logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT))) ||
+                                                                                               (logic->HasExplosives() && logic->HasItem(RG_BRONZE_SCALE)))),
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_PILLAR_B1, logic->Get(LOGIC_WATER_MQ_B1_OPENED_PILLAR) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_ZORA_TUNIC)),
