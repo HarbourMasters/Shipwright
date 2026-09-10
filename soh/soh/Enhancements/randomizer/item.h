@@ -62,7 +62,7 @@ class Item {
     bool IsShieldOrTunic() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
-    GetItemCategory GetCategory();
+    GetItemCategory GetCategory() const;
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
     Item CustomIcon(const char* customIcon_, CustomIconSize iconSize_ = ICON_SIZE_32);
