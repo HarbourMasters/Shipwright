@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [1, vr_cloud2_static]
+  directory: textures/skyboxes/
+  external_files:
+    - common/textures/skyboxes/vr_cloud2_pal_static.yml
+gSunsetOvercastSkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSunsetOvercastSkybox1Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gSunsetOvercastSkyboxTLUT
+gSunsetOvercastSkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gSunsetOvercastSkybox2Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gSunsetOvercastSkyboxTLUT
+gSunsetOvercastSkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gSunsetOvercastSkybox3Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gSunsetOvercastSkyboxTLUT
+gSunsetOvercastSkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gSunsetOvercastSkybox4Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gSunsetOvercastSkyboxTLUT
+gSunsetOvercastSkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gSunsetOvercastSkybox5Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 128
+  tlut_symbol: gSunsetOvercastSkyboxTLUT

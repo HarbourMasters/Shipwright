@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [1, vr_cloud3_static]
+  directory: textures/skyboxes/
+  external_files:
+    - common/textures/skyboxes/vr_cloud3_pal_static.yml
+gNightOvercastSkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gNightOvercastSkybox1Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gNightOvercastSkyboxTLUT
+gNightOvercastSkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gNightOvercastSkybox2Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gNightOvercastSkyboxTLUT
+gNightOvercastSkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gNightOvercastSkybox3Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gNightOvercastSkyboxTLUT
+gNightOvercastSkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gNightOvercastSkybox4Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gNightOvercastSkyboxTLUT
+gNightOvercastSkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gNightOvercastSkybox5Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 128
+  tlut_symbol: gNightOvercastSkyboxTLUT

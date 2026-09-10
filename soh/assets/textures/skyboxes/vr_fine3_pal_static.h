@@ -3,7 +3,7 @@
 
 #include "align_asset_macro.h"
 
-#define dgNightSkyboxTLUT "__OTR__textures/vr_fine3_pal_static/gNightSkyboxTLUT"
+#define dgNightSkyboxTLUT "__OTR__textures/skyboxes/gNightSkyboxTLUT"
 static const ALIGN_ASSET(2) char gNightSkyboxTLUT[] = dgNightSkyboxTLUT;
 
 #endif // TEXTURES_VR_FINE3_PAL_STATIC_H
