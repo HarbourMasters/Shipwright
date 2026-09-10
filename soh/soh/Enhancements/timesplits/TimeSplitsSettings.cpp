@@ -8,10 +8,6 @@
 
 #include "soh/SohGui/ImGuiUtils.h"
 
-extern "C" {
-#include "variables.h"
-}
-
 namespace TimeSplits {
 
 IndexRangeObject sceneRange = { 0, 77 };
@@ -125,6 +121,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_BOOTS_IRON,                 "Iron Boots" },
     { ITEM_BOOTS_HOVER,                "Hover Boots" },
     { ITEM_BRACELET,                   "Goron's Bracelet" },
+    { ITEM_SCALE_SILVER,               "Silver Scale" },
     { ITEM_SINGLE_MAGIC,               "Magic" },
     { ITEM_WALLET_ADULT,               "Adult's Wallet" },
     { ITEM_DOUBLE_DEFENSE,             "Double Defense" },
@@ -200,7 +197,6 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_WALLET_GIANT,               "Giant's Wallet" },
     { ITEM_GAUNTLETS_SILVER,           "Silver Gauntlets" },
     { ITEM_GAUNTLETS_GOLD,             "Gold Gauntlets" },
-    { ITEM_SCALE_SILVER,               "Silver Scale" },
     { ITEM_SCALE_GOLDEN,               "Gold Scale" },
     { ITEM_SWORD_KNIFE,                "Giant's Knife" },
     { ITEM_DOUBLE_MAGIC,               "Double Magic" },
@@ -251,9 +247,8 @@ std::map<uint32_t, std::vector<uint32_t>> itemSubMenuList = {
                               ITEM_MASK_BUNNY, ITEM_MASK_GORON, ITEM_MASK_ZORA, ITEM_MASK_GERUDO, ITEM_MASK_TRUTH } },
     { ITEM_POCKET_EGG,      { ITEM_POCKET_EGG, ITEM_POCKET_CUCCO, ITEM_COJIRO, ITEM_ODD_MUSHROOM, ITEM_ODD_POTION,
                               ITEM_SAW, ITEM_SWORD_BROKEN, ITEM_PRESCRIPTION, ITEM_FROG, ITEM_EYEDROPS, ITEM_CLAIM_CHECK } },
-    { ITEM_BOTTLE,          { ITEM_POTION_RED, ITEM_POTION_GREEN, ITEM_POTION_BLUE, ITEM_FAIRY,
-                              ITEM_FISH, ITEM_MILK_BOTTLE, ITEM_LETTER_RUTO, ITEM_BLUE_FIRE, 
-                              ITEM_BUG, ITEM_BIG_POE, ITEM_MILK_HALF, ITEM_POE } },
+    { ITEM_BOTTLE,          { ITEM_BOTTLE, ITEM_POTION_RED, ITEM_POTION_GREEN, ITEM_POTION_BLUE, ITEM_FAIRY, ITEM_FISH,
+                              ITEM_MILK_BOTTLE, ITEM_LETTER_RUTO, ITEM_BLUE_FIRE, ITEM_BUG, ITEM_BIG_POE, ITEM_MILK_HALF, ITEM_POE } },
     { ITEM_SCALE_SILVER,    { ITEM_SCALE_SILVER, ITEM_SCALE_GOLDEN } },
     { ITEM_BRACELET,        { ITEM_BRACELET, ITEM_GAUNTLETS_SILVER, ITEM_GAUNTLETS_GOLD } },
     { ITEM_WALLET_ADULT,    { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT } },
