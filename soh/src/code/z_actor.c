@@ -1133,16 +1133,16 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosX"), 0)
-                                                            : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosX"), 0));
-        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosY"), 0)
-                                                            : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosY"), 0));
-        s16 TitleCard_PosType_Checker =
-            (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosType"), 0)
-                                  : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosType"), 0));
-        s16 TitleCard_Margin_Checker =
-            (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.UseMargins"), 0)
-                                  : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.UseMargins"), 0));
+        s16 TitleCard_PosX_Modifier = titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.PosX"), 0)
+                                                           : CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.PosX"), 0);
+        s16 TitleCard_PosY_Modifier = titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.PosY"), 0)
+                                                           : CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.PosY"), 0);
+        s16 TitleCard_PosType_Checker = titleCtx->isBossCard
+                                            ? CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.PosType"), 0)
+                                            : CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.PosType"), 0);
+        s16 TitleCard_Margin_Checker = titleCtx->isBossCard
+                                           ? CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Boss.UseMargins"), 0)
+                                           : CVarGetInteger(CVAR_COSMETIC("HUD.TitleCard.Map.UseMargins"), 0);
         s16 TitleCard_MarginX = 0;
         s16 TitleCard_PosX = titleCtx->x;
         s16 TitleCard_PosY = titleCtx->y;
