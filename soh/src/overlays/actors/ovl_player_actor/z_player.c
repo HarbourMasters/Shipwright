@@ -9555,7 +9555,7 @@ static FallImpactInfo D_80854600[] = {
 s32 func_80843E64(PlayState* play, Player* this) {
     s32 fallDistance;
 
-    if (!GameInteractor_Should(VB_RECIEVE_FALL_DAMAGE, true, this)) {
+    if (!GameInteractor_Should(VB_RECIEVE_FALL_DAMAGE, true, this) || (this->stateFlags1 & PLAYER_STATE1_HOOKSHOT_FALLING)) {
         return 0;
     }
 

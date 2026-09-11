@@ -1302,9 +1302,14 @@ void Actor_UpdateVelocityXZGravity(Actor* actor) {
     actor->velocity.x = Math_SinS(actor->world.rot.y) * actor->speedXZ * speedModifier;
     actor->velocity.z = Math_CosS(actor->world.rot.y) * actor->speedXZ * speedModifier;
 
+    f32 minVelocityY = actor->minVelocityY;
+    if (actor->id == ACTOR_ARMS_HOOK) {
+        minVelocityY *= CVarGetFloat(CVAR_CHEAT("HookshotPullSpeedMultiplier"), 1.0f);
+    }
+
     actor->velocity.y += actor->gravity;
-    if (actor->velocity.y < actor->minVelocityY) {
-        actor->velocity.y = actor->minVelocityY;
+    if (actor->velocity.y < minVelocityY) {
+        actor->velocity.y = minVelocityY;
     }
 }
 

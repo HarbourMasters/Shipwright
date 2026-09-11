@@ -2001,6 +2001,12 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Hookshot Reach Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_CHEAT("HookshotReachMultiplier"))
         .Options(FloatSliderOptions().Format("%.2f").Min(1.0f).Max(5.0f));
+    AddWidget(path, "Hookshot Speed Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("HookshotSpeedMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(1.0f).Max(5.0f));
+    AddWidget(path, "Hookshot Pull Speed Multiplier: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_CHEAT("HookshotPullSpeedMultiplier"))
+        .Options(FloatSliderOptions().Format("%.2f").Min(1.0f).Max(5.0f));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
