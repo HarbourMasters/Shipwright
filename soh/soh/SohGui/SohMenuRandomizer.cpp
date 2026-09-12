@@ -864,6 +864,13 @@ void SohMenu::AddMenuRandomizer() {
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Toggles the Entrance Tracker.").EmbedWindow(false));
 
+    AddWidget(path, "Toggle Entrance Tracker Graph", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EntranceTrackerGraph"))
+        .RaceDisable(false)
+        .WindowName("Entrance Tracker Graph")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Toggles the Entrance Tracker Graph.").EmbedWindow(false));
+
     AddWidget(path, "Entrance Tracker Settings", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Popout Entrance Tracker Settings", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("EntranceTrackerSettings"))
