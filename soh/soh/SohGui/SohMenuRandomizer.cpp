@@ -564,7 +564,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                 ImGui::SameLine();
                                 ImGui::Text("%s", option.GetName().c_str());
-                                UIWidgets::Tooltip(option.GetDescription().c_str());
+                                UIWidgets::Tooltip(option.GetDescription());
                             }
                         }
                         areaTreeDisabled.insert(area);
@@ -638,7 +638,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                 ImGui::SameLine();
                                 ImGui::Text("%s", option.GetName().c_str());
-                                UIWidgets::Tooltip(option.GetDescription().c_str());
+                                UIWidgets::Tooltip(option.GetDescription());
                             }
                         }
                         areaTreeEnabled.insert(area);
@@ -717,7 +717,6 @@ void SohMenu::AddMenuRandomizer() {
     });
     AddWidget(path, "Generate Randomizer", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) {
-            Rando::Context::GetInstance()->SetSpoilerLoaded(false);
             GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
         })
         .PreFunc([](WidgetInfo& info) {

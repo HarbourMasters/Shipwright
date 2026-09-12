@@ -11,8 +11,7 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerGet.h"
-#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
@@ -998,43 +997,25 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
 
             // Check if this item is equipped and which slot for colored border
-            enum EquippedSlot { None, BButton, CButton, DPad };
+            enum EquippedSlot { None, CButton, DPad };
             EquippedSlot equippedSlot = EquippedSlot::None;
 
-            // Check C button slots (cButtonSlots maps to inventory slot indices)
-            for (int cBtn = 0; cBtn < 4; cBtn++) {
-                if (gSaveContext.equips.cButtonSlots[cBtn] == index) {
-                    equippedSlot = EquippedSlot::CButton;
+            for (size_t btn = 1; btn < ARRAY_COUNT(gSaveContext.equips.buttonItems); btn++) {
+                if (btn >= 4 && !dpadEnabled) {
                     break;
                 }
-            }
-            // Check D-pad slots (buttonItems[4-7] - need to match the item, not slot)
-            if (equippedSlot == EquippedSlot::None && dpadEnabled) {
-                for (int dpadBtn = 4; dpadBtn <= 7; dpadBtn++) {
-                    if (gSaveContext.equips.buttonItems[dpadBtn] == item) {
-                        equippedSlot = EquippedSlot::DPad;
-                        break;
-                    }
+                if (gSaveContext.equips.cButtonSlots[btn - 1] == index) {
+                    equippedSlot = btn < 4 ? EquippedSlot::CButton : EquippedSlot::DPad;
+                    break;
                 }
-            }
-            // For B button (buttonItems[0])
-            if (equippedSlot == EquippedSlot::None && gSaveContext.equips.buttonItems[0] == item) {
-                equippedSlot = EquippedSlot::BButton;
             }
 
             // Determine border color (needed before group for proper rendering)
             ImU32 borderColor = 0;
             bool drawBorder = equippedSlot != EquippedSlot::None;
             if (drawBorder) {
-                if (equippedSlot == EquippedSlot::CButton) {
-                    borderColor = IM_COL32(255, 165, 0, 255); // Orange for C-button
-                } else if (equippedSlot == EquippedSlot::DPad) {
-                    borderColor = IM_COL32(180, 180, 180, 255); // Light grey for D-pad
-                } else {
-                    // B button color (green for N64, red for GC)
-                    bool isGcScheme = CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), 0) == 1;
-                    borderColor = isGcScheme ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
-                }
+                borderColor = equippedSlot == EquippedSlot::CButton ? IM_COL32(255, 165, 0, 255) // Orange for C-button
+                                                                    : IM_COL32(180, 180, 180, 255); // Light grey D-pad
             }
 
             ImGui::BeginGroup();
@@ -1368,13 +1349,24 @@ void DrawFlagArrayWithTooltips(const std::string& name, T& flags, Colors color, 
     ImGui::PopID();
 }
 
+static const char* GetFlagDescription(const FlagTable& flagTable, uint16_t index) {
+    if (flagTable.flagTableType == RANDOMIZER_INF) {
+        std::string_view name = EnumToString(static_cast<RandomizerInf>(index));
+        return name.empty() ? "" : name.data();
+    }
+    auto it = flagTable.flagDescriptions.find(index);
+    return it != flagTable.flagDescriptions.end() ? it->second : "";
+}
+
 // Draw a flag bitfield as a grid of checkboxes
 void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
     ImGui::PushID((std::to_string(row) + flagTable.name).c_str());
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
-        bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
+        uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
+        const char* desc = GetFlagDescription(flagTable, index);
+        bool hasDescription = desc[0] != '\0';
         uint32_t bitMask = 1 << flagIndex;
         ImVec4 themeColor = ColorValues.at(THEME_COLOR);
         ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f, themeColor.z };
@@ -1396,9 +1388,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         PopStyleCheckbox();
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            uint16_t index = row * 16 + flagIndex;
             if (hasDescription) {
-                const char* desc = flagTable.flagDescriptions.at(index);
                 ImGui::Text("0x%02X: %s", index, UIWidgets::WrappedText(desc, 60).c_str());
             } else {
                 ImGui::Text("0x%02X: %s (Bit %d)", index, flagTable.name, flagIndex);
@@ -1470,8 +1460,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
 
         for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
             uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
-            auto descIt = flagTable.flagDescriptions.find(index);
-            const char* desc = descIt != flagTable.flagDescriptions.end() ? descIt->second : "";
+            const char* desc = GetFlagDescription(flagTable, index);
             std::string searchable = spdlog::fmt_lib::format("0x{:02X} {}", index, desc);
             if (!filter.PassFilter(searchable.c_str())) {
                 continue;
@@ -1480,7 +1469,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             hasMatches = true;
 
             ImGui::PushID(index);
-            bool hasDescription = descIt != flagTable.flagDescriptions.end();
+            bool hasDescription = desc[0] != '\0';
             uint32_t bitMask = 1 << flagIndex;
             ImVec4 themeColor = ColorValues.at(THEME_COLOR);
             ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f, themeColor.z };

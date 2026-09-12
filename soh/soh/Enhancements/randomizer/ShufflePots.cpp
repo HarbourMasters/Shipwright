@@ -118,12 +118,7 @@ static CheckIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyPot did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-    } else {
-        potIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        potIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&potIdentity, location);
 
     return potIdentity;
 }

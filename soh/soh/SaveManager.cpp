@@ -539,25 +539,48 @@ void SaveManager::Init() {
     OTRGlobals::Instance->gRandoContext->ClearItemLocations();
 }
 
+static void RegisterUnreadableSavePopup(int fileNum) {
+    SohGui::RegisterPopup("Unreadable Save", "The file in slot " + std::to_string(fileNum + 1) +
+                                                 " could not be read, so the slot is shown as empty.\n" +
+                                                 "The file has been left on disk untouched.");
+}
+
 void SaveManager::StartupCheckAndInitMeta(int fileNum) {
-    saveMtx.lock();
     SPDLOG_INFO("Init Meta - fileNum: {}", fileNum);
     std::filesystem::path fileName = GetFileName(fileNum);
 
-    std::ifstream input(fileName);
-
-    bool deleteRando = false;
     nlohmann::json metaSaveBlock = nlohmann::json::object();
-    input >> metaSaveBlock;
-    input.close();
-    saveMtx.unlock();
+    {
+        std::lock_guard<std::mutex> guard(saveMtx);
+        std::ifstream input(fileName);
+        try {
+            input >> metaSaveBlock;
+        } catch (const std::exception& e) {
+            SPDLOG_ERROR("Save at {} could not be parsed: {}", fileName.string(), e.what());
+            RegisterUnreadableSavePopup(fileNum);
+            return;
+        }
+    }
     if (!metaSaveBlock.contains("version")) {
-        SPDLOG_ERROR("Save at " + fileName.string() + " contains no version");
+        SPDLOG_ERROR("Save at {} contains no version", fileName.string());
         assert(false);
         return;
     }
-    if (metaSaveBlock["sections"].contains("randomizer")) {
-        if (!metaSaveBlock.contains("fileType") || metaSaveBlock["fileType"] == FILE_TYPE_SAVE_VANILLA) {
+
+    nlohmann::json& sections = metaSaveBlock["sections"];
+    if (sections.contains("randomizer")) {
+        // Old vanilla saves had a randomizer section from shared save block, so having section doesn't make a file
+        // rando. Newer saves say so with fileType; older ones we infer by inspecting randomizer section.
+        bool isRandoFile;
+        if (metaSaveBlock.contains("fileType")) {
+            isRandoFile = metaSaveBlock["fileType"] != FILE_TYPE_SAVE_VANILLA;
+        } else {
+            nlohmann::json& randoData = sections["randomizer"]["data"];
+            isRandoFile = !randoData.empty() && !randoData.contains("aat0") && !randoData["entrances"].empty() &&
+                          sections.contains("sohStats") &&
+                          !SohUtils::IsStringEmpty(sections["sohStats"]["data"].value("buildVersion", ""s));
+        }
+        if (!isRandoFile) {
             SohGui::RegisterPopup(
                 "Loading old file",
                 "The file in slot " + std::to_string(fileNum + 1) +
@@ -566,99 +589,113 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
                     "file.\nIf this was a vanilla file, it still is, and you shouldn't see this "
                     "message again.\n" +
                     "If this was a randomizer file, the file will not work, and should be deleted.");
-            metaSaveBlock["sections"].erase(metaSaveBlock["sections"].find("randomizer"));
+            sections.erase("randomizer");
             metaSaveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
-            saveMtx.lock();
-            std::ofstream output(GetFileName(fileNum));
+            std::lock_guard<std::mutex> guard(saveMtx);
+            std::ofstream output(fileName);
             output << metaSaveBlock.dump(1);
             output.close();
-            saveMtx.unlock();
-        }
-        s16 major = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
-        s16 minor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
-        s16 patch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
-        // block loading outdated rando save
-        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
-            std::string newFileName =
-                Ship::Context::GetPathRelativeToAppDirectory("Save") +
-                ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
+        } else {
+            nlohmann::json& statsBlock = sections["sohStats"]["data"];
+            s16 major = statsBlock.value("buildVersionMajor", 0);
+            s16 minor = statsBlock.value("buildVersionMinor", 0);
+            s16 patch = statsBlock.value("buildVersionPatch", 0);
+            // block loading outdated rando save
+            if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
+                std::string newFileName =
+                    Ship::Context::GetPathRelativeToAppDirectory("Save") +
+                    ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
 #if defined(__SWITCH__) || defined(__WIIU__)
-            copy_file(fileName.c_str(), newFileName.c_str());
-            std::filesystem::remove(fileName);
+                copy_file(fileName.c_str(), newFileName.c_str());
+                std::filesystem::remove(fileName);
 #else
-            std::filesystem::rename(fileName, newFileName);
+                std::filesystem::rename(fileName, newFileName);
 #endif
-            SohGui::RegisterPopup("Outdated Randomizer Save",
-                                  "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
-                                      " does not match the currently running version.\n" +
-                                      "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
-                                      "    " + newFileName + "\n" +
-                                      "If this was not in error, the file should be deleted.");
-            return;
+                SohGui::RegisterPopup(
+                    "Outdated Randomizer Save",
+                    "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
+                        " does not match the currently running version.\n" +
+                        "Non-matching rando saves are unsupported, and the file has been renamed to\n    " +
+                        newFileName + "\nIf this was not in error, the file should be deleted.");
+                return;
+            }
         }
     }
-    bool isRando = metaSaveBlock["fileType"] == FILE_TYPE_SAVE_RANDO;
+    bool isRando = metaSaveBlock.value("fileType", (int)FILE_TYPE_SAVE_VANILLA) == FILE_TYPE_SAVE_RANDO;
 
-    fileMetaInfo[fileNum].valid = true;
-    nlohmann::json& baseBlock = metaSaveBlock["sections"]["base"]["data"];
-    fileMetaInfo[fileNum].deaths = baseBlock["deaths"];
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].playerName); i++) {
-        fileMetaInfo[fileNum].playerName[i] = baseBlock["playerName"][i];
-    }
-    fileMetaInfo[fileNum].healthCapacity = baseBlock["healthCapacity"];
-    fileMetaInfo[fileNum].questItems = baseBlock["inventory"]["questItems"];
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].inventoryItems); i++) {
-        fileMetaInfo[fileNum].inventoryItems[i] = baseBlock["inventory"]["items"][i];
-    }
-    fileMetaInfo[fileNum].equipment = baseBlock["inventory"]["equipment"];
-    fileMetaInfo[fileNum].upgrades = baseBlock["inventory"]["upgrades"];
-    fileMetaInfo[fileNum].isMagicAcquired = baseBlock["isMagicAcquired"];
-    fileMetaInfo[fileNum].isDoubleMagicAcquired = baseBlock["isDoubleMagicAcquired"];
-    fileMetaInfo[fileNum].rupees = baseBlock["rupees"];
-    fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
-    fileMetaInfo[fileNum].isDoubleDefenseAcquired = baseBlock["isDoubleDefenseAcquired"];
-    fileMetaInfo[fileNum].gregFound = false;
-    fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
-    fileMetaInfo[fileNum].hasWallet = !isRando;
-    fileMetaInfo[fileNum].triforcePieces = 0;
-    fileMetaInfo[fileNum].maxTriforcePieces = 0;
-    fileMetaInfo[fileNum].hasFishingRod = !isRando;
-    fileMetaInfo[fileNum].fishingPoleShuffled = false;
-    fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
-    fileMetaInfo[fileNum].health = baseBlock["health"];
-
-    fileMetaInfo[fileNum].requiresOriginal = !baseBlock["isMasterQuest"];
-    fileMetaInfo[fileNum].requiresMasterQuest = baseBlock["isMasterQuest"];
-
-    fileMetaInfo[fileNum].randoSave = isRando;
-    if (isRando) {
-        nlohmann::json& randoBlock = metaSaveBlock["sections"]["randomizer"]["data"];
-
-        for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
-            fileMetaInfo[fileNum].seedHash[i] = randoBlock["seed"][i];
+    // Keys that came and went between base section versions are read with defaults, the rest are covered by the
+    // catch: a file we can't make sense of is left on disk and hidden rather than taking the game down.
+    try {
+        fileMetaInfo[fileNum].valid = true;
+        nlohmann::json& baseBlock = sections["base"]["data"];
+        fileMetaInfo[fileNum].deaths = baseBlock["deaths"];
+        for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].playerName); i++) {
+            fileMetaInfo[fileNum].playerName[i] = baseBlock["playerName"][i];
         }
-        fileMetaInfo[fileNum].gregFound =
-            (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
-        fileMetaInfo[fileNum].hasWallet =
-            (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
-        fileMetaInfo[fileNum].triforcePieces = randoBlock.value("triforcePiecesCollected", 0);
-        nlohmann::json& randoSettings = randoBlock["randoSettings"];
-        fileMetaInfo[fileNum].maxTriforcePieces = randoSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL].get<uint8_t>();
-        fileMetaInfo[fileNum].hasFishingRod = (int16_t)baseBlock["randomizerInf"][RAND_INF_FISHING_POLE_FOUND >> 4] &
-                                              (1 << (RAND_INF_FISHING_POLE_FOUND & 0xF));
-        fileMetaInfo[fileNum].fishingPoleShuffled = randoSettings[RSK_SHUFFLE_FISHING_POLE].get<uint8_t>() != 0;
-        fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
-        // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
-        // dungeons, in which case we don't actually require a vanilla OTR.
-        fileMetaInfo[fileNum].requiresOriginal = randoBlock["masterQuestDungeonCount"] < 12;
-    }
+        fileMetaInfo[fileNum].healthCapacity = baseBlock["healthCapacity"];
+        fileMetaInfo[fileNum].questItems = baseBlock["inventory"]["questItems"];
+        for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].inventoryItems); i++) {
+            fileMetaInfo[fileNum].inventoryItems[i] = baseBlock["inventory"]["items"][i];
+        }
+        fileMetaInfo[fileNum].equipment = baseBlock["inventory"]["equipment"];
+        fileMetaInfo[fileNum].upgrades = baseBlock["inventory"]["upgrades"];
+        fileMetaInfo[fileNum].isMagicAcquired = baseBlock["isMagicAcquired"];
+        fileMetaInfo[fileNum].isDoubleMagicAcquired = baseBlock["isDoubleMagicAcquired"];
+        fileMetaInfo[fileNum].rupees = baseBlock["rupees"];
+        fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
+        // base version 1 and 2 called this doubleDefense
+        fileMetaInfo[fileNum].isDoubleDefenseAcquired =
+            baseBlock.value("isDoubleDefenseAcquired", baseBlock.value("doubleDefense", 0));
+        fileMetaInfo[fileNum].gregFound = false;
+        fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
+        fileMetaInfo[fileNum].hasWallet = !isRando;
+        fileMetaInfo[fileNum].triforcePieces = 0;
+        fileMetaInfo[fileNum].maxTriforcePieces = 0;
+        fileMetaInfo[fileNum].hasFishingRod = !isRando;
+        fileMetaInfo[fileNum].fishingPoleShuffled = false;
+        fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
+        fileMetaInfo[fileNum].health = baseBlock["health"];
 
-    fileMetaInfo[fileNum].buildVersionMajor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
-    fileMetaInfo[fileNum].buildVersionMinor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
-    fileMetaInfo[fileNum].buildVersionPatch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
-    SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion,
-                                    metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
-                                    ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
+        // isMasterQuest arrived in base version 2
+        bool isMasterQuest = baseBlock.value("isMasterQuest", false);
+        fileMetaInfo[fileNum].requiresOriginal = !isMasterQuest;
+        fileMetaInfo[fileNum].requiresMasterQuest = isMasterQuest;
+
+        fileMetaInfo[fileNum].randoSave = isRando;
+        if (isRando) {
+            nlohmann::json& randoBlock = sections["randomizer"]["data"];
+
+            for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
+                fileMetaInfo[fileNum].seedHash[i] = randoBlock["seed"][i];
+            }
+            fileMetaInfo[fileNum].gregFound =
+                (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
+            fileMetaInfo[fileNum].hasWallet =
+                (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
+            fileMetaInfo[fileNum].triforcePieces = randoBlock.value("triforcePiecesCollected", 0);
+            nlohmann::json& randoSettings = randoBlock["randoSettings"];
+            fileMetaInfo[fileNum].maxTriforcePieces = randoSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL].get<uint8_t>();
+            fileMetaInfo[fileNum].hasFishingRod =
+                (int16_t)baseBlock["randomizerInf"][RAND_INF_FISHING_POLE_FOUND >> 4] &
+                (1 << (RAND_INF_FISHING_POLE_FOUND & 0xF));
+            fileMetaInfo[fileNum].fishingPoleShuffled = randoSettings[RSK_SHUFFLE_FISHING_POLE].get<uint8_t>() != 0;
+            fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
+            // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
+            // dungeons, in which case we don't actually require a vanilla OTR.
+            fileMetaInfo[fileNum].requiresOriginal = randoBlock["masterQuestDungeonCount"] < 12;
+        }
+
+        nlohmann::json& statsBlock = sections["sohStats"]["data"];
+        fileMetaInfo[fileNum].buildVersionMajor = statsBlock.value("buildVersionMajor", 0);
+        fileMetaInfo[fileNum].buildVersionMinor = statsBlock.value("buildVersionMinor", 0);
+        fileMetaInfo[fileNum].buildVersionPatch = statsBlock.value("buildVersionPatch", 0);
+        SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion, statsBlock.value("buildVersion", ""s),
+                                        ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
+    } catch (const std::exception& e) {
+        SPDLOG_ERROR("Save at {} could not be read: {}", fileName.string(), e.what());
+        fileMetaInfo[fileNum].valid = false;
+        RegisterUnreadableSavePopup(fileNum);
+    }
 }
 
 void SaveManager::InitMeta(int fileNum) {
@@ -1343,7 +1380,7 @@ void SaveManager::LoadFile(int fileNum) {
         input >> saveBlock;
         input.close();
         if (!saveBlock.contains("version")) {
-            SPDLOG_ERROR("Save at " + fileName.string() + " contains no version");
+            SPDLOG_ERROR("Save at {} contains no version", fileName.string());
             assert(false);
         }
         if (saveBlock.contains("fileType") && saveBlock["fileType"] == FILE_TYPE_SAVE_RANDO) {
@@ -1360,7 +1397,7 @@ void SaveManager::LoadFile(int fileNum) {
                     if (!sectionLoadHandlers.contains(sectionName)) {
                         // Unloadable sections aren't necessarily errors, they are probably mods that were unloaded
                         // TODO report in a more noticeable manner
-                        SPDLOG_WARN("Save " + GetFileName(fileNum).string() + " contains unloadable section " +
+                        SPDLOG_WARN("Save {} contains unloadable section {}", GetFileName(fileNum).string(),
                                     sectionName);
                         continue;
                     }
@@ -1370,8 +1407,8 @@ void SaveManager::LoadFile(int fileNum) {
                         // has a mod at an earlier version than the save has. In this case, the user probably wants to
                         // load the save. Report the error so that the user can rectify the error.
                         // TODO report in a more noticeable manner
-                        SPDLOG_ERROR("Save " + GetFileName(fileNum).string() + " contains section " + sectionName +
-                                     " with an unloadable version " + std::to_string(sectionVersion));
+                        SPDLOG_ERROR("Save {} contains section {} with an unloadable version {}",
+                                     GetFileName(fileNum).string(), sectionName, sectionVersion);
                         assert(false);
                         continue;
                     }
@@ -1383,7 +1420,7 @@ void SaveManager::LoadFile(int fileNum) {
                 }
                 break;
             default:
-                SPDLOG_ERROR("Unrecognized save version " + std::to_string(saveBlock["version"].get<int>()) + " in " +
+                SPDLOG_ERROR("Unrecognized save version {} in {}", saveBlock["version"].get<int>(),
                              GetFileName(fileNum).string());
                 assert(false);
                 break;
@@ -1434,8 +1471,7 @@ void SaveManager::AddLoadFunction(const std::string& name, int version, LoadFunc
     }
 
     if (sectionLoadHandlers[name].contains(version)) {
-        SPDLOG_ERROR("Adding load function for section and version that already has one: " + name + ", " +
-                     std::to_string(version));
+        SPDLOG_ERROR("Adding load function for section and version that already has one: {}, {}", name, version);
         assert(false);
         return;
     }
@@ -1446,7 +1482,7 @@ void SaveManager::AddLoadFunction(const std::string& name, int version, LoadFunc
 int SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase,
                                  int parentSection = -1) {
     if (sectionRegistry.contains(name)) {
-        SPDLOG_ERROR("Adding save function for section that already has one: " + name);
+        SPDLOG_ERROR("Adding save function for section that already has one: {}", name);
         assert(false);
         return -1;
     }
@@ -1465,7 +1501,7 @@ int SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc 
 
 void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
     if (postHandlers.contains(name)) {
-        SPDLOG_ERROR("Adding post function for section that already has one: " + name);
+        SPDLOG_ERROR("Adding post function for section that already has one: {}", name);
         assert(false);
         return;
     }

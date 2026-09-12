@@ -144,14 +144,9 @@ class Settings {
     static std::shared_ptr<Settings> GetInstance();
 
   private:
-    /**
-     * @brief Create the list of description strings for `Option`s.
-     */
-    void CreateOptionDescriptions();
     static std::shared_ptr<Settings> mInstance;
     std::shared_ptr<Context> mContext = nullptr;
     std::array<Option, RSK_MAX> mOptions = {};
-    std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<TrickSetting, RT_MAX> mTrickSettings = {};
     std::array<std::vector<Option*>, RCAREA_INVALID> mExcludeLocationsOptionsAreas = {};

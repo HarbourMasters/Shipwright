@@ -5,6 +5,7 @@
 
 #include <nlohmann/json.hpp>
 #include <ship/window/FileDropMgr.h>
+#include <spdlog/spdlog.h>
 
 #include "randomizer.h"
 #include "3drando/menu.hpp"
@@ -17,6 +18,7 @@
 #include "settings.h"
 #include "soh/util.h"
 #include "randomizerTypes.h"
+#include "randomizerEnumStrings.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 #include "dungeon.h"
@@ -838,8 +840,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
         slotIndex - 1);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        shopItemIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        shopItemIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        IdentifyCheck(&shopItemIdentity.identity, location);
         shopItemIdentity.ogItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
 
         RandomizerGet randoGet = Rando::Context::GetInstance()
@@ -1140,8 +1141,8 @@ static bool ChildTradeSlotOccupied() {
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (giEntry.modIndex != MOD_RANDOMIZER) {
-        LUSLOG_WARN(
-            "Randomizer_Item_Give was called with a GetItemEntry with a mod index different from MOD_RANDOMIZER (%d)",
+        SPDLOG_WARN(
+            "Randomizer_Item_Give was called with a GetItemEntry with a mod index different from MOD_RANDOMIZER ({})",
             giEntry.modIndex);
         assert(false);
         return -1;
@@ -1457,7 +1458,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             break;
         }
         default:
-            LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
+            SPDLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId={}", item);
             assert(false);
             return -1;
     }

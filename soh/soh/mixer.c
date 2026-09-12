@@ -2,6 +2,7 @@
 //! when unoptimized and clang does not allow optimizing a single function.
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "mixer.h"
@@ -108,28 +109,52 @@ void aLoadBufferImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbyte
 
 #include <opusfile.h>
 
-void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OggOpusFile** decState, int32_t pos,
+// The decoder is cached on the note, so remember which buffer it was opened for.
+struct OpusDecState {
+    OggOpusFile* file;
+    const void* source;
+};
+
+void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OpusDecState** decState, int32_t pos,
                   uint32_t size) {
     int readSamples = 0;
-    if (*decState == NULL) {
-        *decState = op_open_memory(source_addr, size, NULL);
+    struct OpusDecState* dec = *decState;
+
+    // Note reused for another streamed sample may have previous decoder opened,
+    // which would keep playing the previous track under new note.
+    if (dec != NULL && dec->source != source_addr) {
+        aOPUSFree(dec);
+        dec = NULL;
+        *decState = NULL;
     }
-    op_pcm_seek(*decState, pos);
-    int ret = op_read(*decState, BUF_S16(dest_addr), nbytes / 2, NULL);
+    if (dec == NULL) {
+        OggOpusFile* file = op_open_memory(source_addr, size, NULL);
+        if (file == NULL) {
+            return;
+        }
+        dec = malloc(sizeof(struct OpusDecState));
+        dec->file = file;
+        dec->source = source_addr;
+        *decState = dec;
+    }
+
+    op_pcm_seek(dec->file, pos);
+    int ret = op_read(dec->file, BUF_S16(dest_addr), nbytes / 2, NULL);
     if (ret < 0) {
         return;
     }
     readSamples += ret;
     while (readSamples < nbytes / 2) {
-        ret = op_read(*decState, BUF_S16(dest_addr + readSamples * 2), (nbytes - readSamples * 2) / 2, NULL);
+        ret = op_read(dec->file, BUF_S16(dest_addr + readSamples * 2), (nbytes - readSamples * 2) / 2, NULL);
         if (ret == 0)
             break;
         readSamples += ret;
     }
 }
 
-void aOPUSFree(struct OggOpusFile* opusFile) {
-    op_free(opusFile);
+void aOPUSFree(struct OpusDecState* dec) {
+    op_free(dec->file);
+    free(dec);
 }
 
 void aSaveBufferImpl(uint16_t source_addr, int16_t* dest_addr, uint16_t nbytes) {

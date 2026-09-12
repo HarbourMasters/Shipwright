@@ -1586,6 +1586,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f && play->isPlayerDroppingFish(play)
+    // ```
+    // #### `args`
+    // - `*EnJj`
+    VB_JABU_JABU_EAT_FISH,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1775,6 +1783,14 @@ typedef enum {
     // #### `args`
     // - `s32` (note append position)
     VB_MODIFY_LOST_WOODS_OCARINA_GAME_NOTE_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `f32*` speed
+    VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED,
 
     // #### `result`
     // ```c
@@ -2035,14 +2051,6 @@ typedef enum {
     // #### `args`
     // - `*EnOkarinaTag`
     VB_PLAY_DRAIN_WELL_CS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_PLAY_DROP_FISH_FOR_JABU_CS,
 
     // #### `result`
     // ```c

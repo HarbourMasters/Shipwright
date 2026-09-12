@@ -1,3 +1,5 @@
+#include <spdlog/spdlog.h>
+
 #include "GameInteractor.h"
 #include "soh/ShipUtils.h"
 #include <math.h>
@@ -268,7 +270,7 @@ void GameInteractor::RawAction::UnsetFlag(int16_t flagType, int16_t flag) {
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
             if (!IS_RANDO) {
-                LUSLOG_ERROR("Tried to unset randomizerInf flag outside of rando (%d)", flag);
+                SPDLOG_ERROR("Tried to unset randomizerInf flag outside of rando ({})", flag);
                 assert(false);
                 break;
             }
