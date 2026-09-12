@@ -75,7 +75,7 @@ Functions that do not return must use the `[[noreturn]]` attribute.
 
 Functions that don't have any side effects and return a value must use the `[[nodiscard]]` attribute, prefferably with a reason specified.
 
-Switch case fallthroughs must me marked with the `[[fallthrough]]` attribute.
+Switch case fallthroughs must be marked with the `[[fallthrough]]` attribute.
 
 
 Use all other attributes as appropiate.
@@ -101,7 +101,7 @@ Use references instead of pointers (with [`std::optional`](https://en.cppreferen
 Prefer error values over exceptions.
 
 Prefer factory functions over public constructors (or [two phase initialization](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#rnr-two-phase-init)) and execute as much of the initialization logic as possible in the factory function.
-This avoid issues such as accidental default initialization and referencing class members before they are valid.
+This avoids issues such as accidental default initialization and referencing class members before they are valid.
 
 If possible, make invalid states unrepresentable.
 
