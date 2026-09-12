@@ -72,6 +72,7 @@ void ArmsHook_Init(Actor* thisx, PlayState* play) {
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     ArmsHook_SetupAction(this, ArmsHook_Wait);
     this->unk_1E8 = this->actor.world.pos;
+    this->actor.minVelocityY = -20.0f * CVarGetFloat(CVAR_CHEAT("HookshotSpeedMultiplier"), 1.0f);
 }
 
 void ArmsHook_Destroy(Actor* thisx, PlayState* play) {
@@ -87,11 +88,14 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
         Player* player = GET_PLAYER(play);
         // get correct timer length for hookshot or longshot
-        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) *
-                     CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f);
+        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26);
+        f32 float_length = (f32)length
+            * CVarGetFloat(CVAR_CHEAT("HookshotReachMultiplier"), 1.0f)
+            / CVarGetFloat(CVAR_CHEAT("HookshotSpeedMultiplier"), 1.0f);
+        length = (s32)ceil(float_length);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
-        Actor_SetProjectileSpeed(&this->actor, 20.0f);
+        Actor_SetProjectileSpeed(&this->actor, 20.0f * CVarGetFloat(CVAR_CHEAT("HookshotSpeedMultiplier"), 1.0f));
         this->actor.parent = &GET_PLAYER(play)->actor;
         this->timer = length;
     }
@@ -209,12 +213,13 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
             velocity = 0.0f;
             phi_f16 = 0.0f;
         } else {
+            f32 pullSpeed = CVarGetFloat(CVAR_CHEAT("HookshotPullSpeedMultiplier"), 1.0f);
             if (this->actor.child != NULL) {
-                velocity = 30.0f;
+                velocity = 30.0f * pullSpeed;
             } else if (grabbed != NULL) {
-                velocity = 50.0f;
+                velocity = 50.0f * pullSpeed;
             } else {
-                velocity = 200.0f;
+                velocity = 200.0f * pullSpeed;
             }
             phi_f16 = bodyDistDiff - velocity;
             if (bodyDistDiff <= velocity) {
