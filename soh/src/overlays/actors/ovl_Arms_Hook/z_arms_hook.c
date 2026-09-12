@@ -72,6 +72,7 @@ void ArmsHook_Init(Actor* thisx, PlayState* play) {
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     ArmsHook_SetupAction(this, ArmsHook_Wait);
     this->unk_1E8 = this->actor.world.pos;
+    this->actor.minVelocityY = -20.0f * CVarGetFloat(CVAR_CHEAT("HookshotSpeedMultiplier"), 1.0f);
 }
 
 void ArmsHook_Destroy(Actor* thisx, PlayState* play) {
