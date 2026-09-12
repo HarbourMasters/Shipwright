@@ -7,6 +7,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizerEnumStrings.h"
 #include "randomizerTypes.h"
+#include "randomizer_tracker_windows.h"
 
 const float initialSize = 2500.0f;
 
@@ -69,7 +70,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
     Color_RGBA8 bgColor = { 0, 0, 0,
                             static_cast<uint8_t>(
                                 CVarGetFloat(CVAR_TRACKER_ENTRANCE("Graph.backgroundTransparency"), 1.0f) * 255.0f) };
-    if (Trackers::BeginFloatWindows("Entrance Tracker Graph", mIsVisible, bgColor, TRACKER_WINDOW_WINDOW, true,
+    if (Trackers::BeginFloatWindows("Entrance Tracker Graph", &mIsVisible, bgColor, TRACKER_WINDOW_WINDOW, true,
                                     ImGuiWindowFlags_NoScrollbar)) {
         ImVec2 canvasPos = ImGui::GetCursorScreenPos();
         ImVec2 canvasSize = ImGui::GetContentRegionAvail();
