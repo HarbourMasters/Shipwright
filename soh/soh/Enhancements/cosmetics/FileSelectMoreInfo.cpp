@@ -479,7 +479,7 @@ static bool ShouldRenderItem(s16 fileIndex, u8 item) {
 
     // greg
     if (item == ITEM_RUPEE_GREEN) {
-        return Save_GetSaveMetaInfo(fileIndex)->randoSave;
+        return Save_GetSaveMetaInfo(fileIndex)->quest == QUEST_RANDOMIZER;
     }
 
     if (item == ITEM_FISHING_POLE) {

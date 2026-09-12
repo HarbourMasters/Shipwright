@@ -194,6 +194,15 @@ static uint8_t CountVisibleFileSelectQuests() {
         count++;
     }
 
+    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunQuest"), 0)) {
+        count++;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest() &&
+        !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunMasterQuest"), 0)) {
+        count++;
+    }
+
     return count;
 }
 
@@ -855,6 +864,36 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Options(CheckboxOptions().Tooltip(
             "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Speedrun", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (!ResourceMgr_GameHasOriginal()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded original O2R.";
+            } else if (CountVisibleFileSelectQuests() <= 1 &&
+                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Speedrun option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Speedrun Master Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunMasterQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (!ResourceMgr_GameHasMasterQuest()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+            } else if (CountVisibleFileSelectQuests() <= 1 &&
+                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunMasterQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Speedrun Master Quest option when selecting a quest type on the File Select screen."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);

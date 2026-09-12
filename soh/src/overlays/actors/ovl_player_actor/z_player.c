@@ -31,6 +31,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -12589,8 +12590,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
             temp2 += sControlInput->rel.right_stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
-        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            temp2 += (-sControlInput->cur.gyro_x) * 750.0f;
+        if (fabsf(Ship_FilterGyro(sControlInput->cur.gyro_x)) > 0.01f) {
+            temp2 += (-Ship_FilterGyro(sControlInput->cur.gyro_x)) * 750.0f;
         }
         if (CVarGetInteger(CVAR_SETTING("DisableFirstPersonAutoCenterView"), 0)) {
             this->actor.focus.rot.x += temp2 * 0.1f;
@@ -12608,8 +12609,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
             temp2 += sControlInput->rel.right_stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
-        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            temp2 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
+        if (fabsf(Ship_FilterGyro(sControlInput->cur.gyro_y)) > 0.01f) {
+            temp2 += (Ship_FilterGyro(sControlInput->cur.gyro_y)) * 750.0f * invertXAxisMulti;
         }
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
@@ -12628,8 +12629,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                      (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
         }
-        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            temp3 += (-sControlInput->cur.gyro_x) * 750.0f;
+        if (fabsf(Ship_FilterGyro(sControlInput->cur.gyro_x)) > 0.01f) {
+            temp3 += (-Ship_FilterGyro(sControlInput->cur.gyro_x)) * 750.0f;
         }
         this->actor.focus.rot.x += temp3;
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
@@ -12649,8 +12650,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                      (s32)((1.0f - Math_CosS(sControlInput->rel.right_stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                      xAxisMulti;
         }
-        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            temp3 += (sControlInput->cur.gyro_y) * 750.0f * invertXAxisMulti;
+        if (fabsf(Ship_FilterGyro(sControlInput->cur.gyro_y)) > 0.01f) {
+            temp3 += (Ship_FilterGyro(sControlInput->cur.gyro_y)) * 750.0f * invertXAxisMulti;
         }
         temp2 += temp3;
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;

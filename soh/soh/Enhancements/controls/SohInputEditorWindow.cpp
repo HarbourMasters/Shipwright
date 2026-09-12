@@ -7,6 +7,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 
 extern "C" {
 #include "z64.h"
@@ -1186,6 +1187,12 @@ void SohInputEditorWindow::DrawAddGyroMappingButton(uint8_t port) {
 }
 
 void SohInputEditorWindow::DrawGyroSection(uint8_t port) {
+    if (Speedrun_IsActive()) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ColorValues.at(UIWidgets::Colors::Orange));
+        ImGui::TextWrapped("Gyro aiming does nothing while a speedrun file is loaded.");
+        ImGui::PopStyleColor();
+    }
+
     auto mapping =
         Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetGyro()->GetGyroMapping();
     if (mapping != nullptr) {

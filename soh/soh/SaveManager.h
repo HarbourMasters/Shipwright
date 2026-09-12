@@ -14,7 +14,7 @@ typedef struct {
     u32 requiresMasterQuest;
     u32 requiresOriginal;
     u8 seedHash[5];
-    u8 randoSave;
+    u8 quest;
     char buildVersion[50];
     s16 buildVersionMajor;
     s16 buildVersionMinor;

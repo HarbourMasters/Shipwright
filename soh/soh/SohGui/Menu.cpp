@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "BackendTypes.h"
 #include "UIWidgets.hpp"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 #include "soh/OTRGlobals.h"
 #include "SohModals.h"
 
@@ -570,6 +571,10 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
 }
 
 void Menu::Draw() {
+    // Runs before the other windows draw, so this also keeps them hidden during a speedrun.
+    if (Speedrun_EnforceGuiLockdown(*this)) {
+        return;
+    }
     if (!IsVisible()) {
         return;
     }

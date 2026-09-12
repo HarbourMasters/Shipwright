@@ -549,6 +549,8 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                         this->configMode = CM_NAME_ENTRY_TO_QUEST_MENU;
                     } else if (this->prevConfigMode == CM_RANDOMIZER_SETTINGS_MENU) {
                         this->configMode = CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU;
+                    } else if (this->prevConfigMode == CM_SPEEDRUN_MENU) {
+                        this->configMode = CM_NAME_ENTRY_TO_SPEEDRUN_MENU;
                     } else {
                         this->configMode = CM_NAME_ENTRY_TO_MAIN;
                     }
