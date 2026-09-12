@@ -89,7 +89,7 @@ Use the libultra types when possible (`u64` instead of `uint64_t`, `f32` instead
 
 Use `bool`, `true` & `false` when appropriate instead of an integer type, `1` & `0`.
 
-Do not use `inptr_t` & `uintptr_t` as they can cause issues with pointer provenance, use `void*` (or a concrete pointer) instead if possible.
+Do not use `inptr_t` & `uintptr_t` to store pointers as they can cause issues with pointer provenance, use `void*` (or a concrete pointer) instead if possible.
 
 Use [`std::optional`](https://en.cppreference.com/cpp/utility/optional), [`std::variant`](https://en.cppreference.com/cpp/utility/variant) or [`std::expected`](https://en.cppreference.com/cpp/utility/expected) instead of sentinel values.
 
