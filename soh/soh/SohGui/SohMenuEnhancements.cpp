@@ -993,7 +993,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_BUNNY_HOOD_NAME)
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Bunny Hood Effect\" is currently loaded.";
         })
@@ -1008,7 +1009,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ADULT_MASKS_NAME)
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Masks as Adult\" is currently loaded.";
         })
