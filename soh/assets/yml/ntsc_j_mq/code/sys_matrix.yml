@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 128, 0x00A62520 ]
+  virtual: [ 0x80010EE0, 0x00A62520 ]
+
+gMtxClear:
+  type: OOT:MTX
+  offset: 0xED3C0
+  symbol: gMtxClear
+

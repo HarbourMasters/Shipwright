@@ -1,10 +1,8 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "z64save.h"
 #include "item_override.h"
 #include "hint.h"
-#include "fishsanity.h"
 #include "trial.h"
 
 #include <memory>
@@ -87,8 +85,8 @@ class Context {
                           const std::set<RandomizerTrick>& enabledTricks);
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
-    std::shared_ptr<Fishsanity> GetFishsanity();
     DungeonInfo* GetDungeon(size_t key) const;
+    DungeonInfo* GetDungeonFromScene(SceneID key) const;
     std::shared_ptr<Logic> GetLogic();
     std::shared_ptr<Trials> GetTrials();
     std::shared_ptr<Kaleido> GetKaleido();
@@ -119,7 +117,8 @@ class Context {
     void GanonsSoulCondition(RandoOptionCheckTrigger condition);
     void WinCondition(RandoOptionWincon condition);
 
-    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
+    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE,
+                                 bool spoilAreas = false);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson);
     void ParseItemLocationsJson(const nlohmann::json& spoilerFileJson);
@@ -194,7 +193,6 @@ class Context {
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;
     std::shared_ptr<Trials> mTrials;
-    std::shared_ptr<Fishsanity> mFishsanity;
     std::shared_ptr<Kaleido> mKaleido;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;

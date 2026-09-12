@@ -1,9 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include "z64.h"
+extern PlayState* gPlayState;
 }
 
 #define CVAR_UNRESTRICTED_ITEMS_NAME CVAR_CHEAT("NoRestrictItems")

@@ -25,7 +25,7 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 // the start of the animation or past the end of it. In either case you add a list of animations'
 // data that are neighboring before or after the target animation. If more weird frame data is
 // required then add more of the neighboring animations in ROM.
-// TODO use std::array, we don't need the functionality of of std::vector
+// TODO use std::array, we don't need the functionality of std::vector
 static std::vector<WeirdAnimation> weirdAnimations{
     // For weirdshots.
     { gPlayerAnim_link_bow_side_walk,

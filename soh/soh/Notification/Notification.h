@@ -1,5 +1,5 @@
-#ifndef NOTIFICATION_H
-#define NOTIFICATION_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <string>
@@ -35,4 +35,3 @@ void Emit(Options notification);
 } // namespace Notification
 
 #endif // __cplusplus
-#endif // NOTIFICATION_H

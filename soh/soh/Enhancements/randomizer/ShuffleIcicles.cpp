@@ -1,7 +1,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
-#include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
@@ -104,13 +104,7 @@ static CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_TURARA, icicleSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyIcicle did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        icicleIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        icicleIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&icicleIdentity, location);
 
     return icicleIdentity;
 }

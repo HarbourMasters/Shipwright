@@ -1,4 +1,5 @@
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
@@ -141,13 +142,7 @@ static CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_SHELTER, redIceSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyRedIce did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        redIceIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        redIceIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&redIceIdentity, location);
 
     return redIceIdentity;
 }

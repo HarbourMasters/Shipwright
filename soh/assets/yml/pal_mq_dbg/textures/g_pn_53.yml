@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A8F000 ]
+
+gGERudosFortressTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGERudosFortressTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudosFortressTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGERudosFortressTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudosFortressTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGERudosFortressTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

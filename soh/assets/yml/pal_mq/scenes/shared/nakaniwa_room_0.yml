@@ -1,0 +1,597 @@
+:config:
+  segments:
+    - [ 3, 0x01DB1A10 ]
+    - [ 2, 0x01DB0100 ]
+  directory: scenes/shared/nakaniwa_scene
+  external_files:
+    - pal_mq/scenes/shared/nakaniwa_scene.yml
+    - pal_mq/code/sys_matrix.yml
+    - pal_mq/scenes/shared/nakaniwa_room_0Set_000120.yml
+    - pal_mq/scenes/shared/nakaniwa_room_0Set_0001B0.yml
+    - pal_mq/scenes/shared/nakaniwa_room_0Set_000240.yml
+
+nakaniwa_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: nakaniwa_room_0
+
+nakaniwa_room_0Tex_007218:
+  type: TEXTURE
+  offset: 0x7218
+  symbol: nakaniwa_room_0Tex_007218
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_007418:
+  type: TEXTURE
+  offset: 0x7418
+  symbol: nakaniwa_room_0Tex_007418
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_007618:
+  type: TEXTURE
+  offset: 0x7618
+  symbol: nakaniwa_room_0Tex_007618
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_007818:
+  type: TEXTURE
+  offset: 0x7818
+  symbol: nakaniwa_room_0Tex_007818
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_007A18:
+  type: TEXTURE
+  offset: 0x7A18
+  symbol: nakaniwa_room_0Tex_007A18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_008218:
+  type: TEXTURE
+  offset: 0x8218
+  symbol: nakaniwa_room_0Tex_008218
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_008418:
+  type: TEXTURE
+  offset: 0x8418
+  symbol: nakaniwa_room_0Tex_008418
+  format: RGBA16
+  width: 16
+  height: 16
+
+nakaniwa_room_0Tex_008618:
+  type: TEXTURE
+  offset: 0x8618
+  symbol: nakaniwa_room_0Tex_008618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_008E18:
+  type: TEXTURE
+  offset: 0x8E18
+  symbol: nakaniwa_room_0Tex_008E18
+  format: RGBA16
+  width: 32
+  height: 64
+
+nakaniwa_room_0Tex_009E18:
+  type: TEXTURE
+  offset: 0x9E18
+  symbol: nakaniwa_room_0Tex_009E18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_00A618:
+  type: TEXTURE
+  offset: 0xA618
+  symbol: nakaniwa_room_0Tex_00A618
+  format: RGBA16
+  width: 32
+  height: 64
+
+nakaniwa_room_0Tex_00B618:
+  type: TEXTURE
+  offset: 0xB618
+  symbol: nakaniwa_room_0Tex_00B618
+  format: RGBA16
+  width: 32
+  height: 64
+
+nakaniwa_room_0Tex_00C618:
+  type: TEXTURE
+  offset: 0xC618
+  symbol: nakaniwa_room_0Tex_00C618
+  format: I4
+  width: 64
+  height: 64
+
+nakaniwa_room_0Tex_00CE18:
+  type: TEXTURE
+  offset: 0xCE18
+  symbol: nakaniwa_room_0Tex_00CE18
+  format: RGBA16
+  width: 32
+  height: 64
+
+nakaniwa_room_0Tex_00DE18:
+  type: TEXTURE
+  offset: 0xDE18
+  symbol: nakaniwa_room_0Tex_00DE18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_00E618:
+  type: TEXTURE
+  offset: 0xE618
+  symbol: nakaniwa_room_0Tex_00E618
+  format: RGBA16
+  width: 16
+  height: 64
+
+nakaniwa_room_0Tex_00EE18:
+  type: TEXTURE
+  offset: 0xEE18
+  symbol: nakaniwa_room_0Tex_00EE18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_00F618:
+  type: TEXTURE
+  offset: 0xF618
+  symbol: nakaniwa_room_0Tex_00F618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_00FE18:
+  type: TEXTURE
+  offset: 0xFE18
+  symbol: nakaniwa_room_0Tex_00FE18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_010618:
+  type: TEXTURE
+  offset: 0x10618
+  symbol: nakaniwa_room_0Tex_010618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_010E18:
+  type: TEXTURE
+  offset: 0x10E18
+  symbol: nakaniwa_room_0Tex_010E18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_011618:
+  type: TEXTURE
+  offset: 0x11618
+  symbol: nakaniwa_room_0Tex_011618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_011E18:
+  type: TEXTURE
+  offset: 0x11E18
+  symbol: nakaniwa_room_0Tex_011E18
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_012618:
+  type: TEXTURE
+  offset: 0x12618
+  symbol: nakaniwa_room_0Tex_012618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_012E18:
+  type: TEXTURE
+  offset: 0x12E18
+  symbol: nakaniwa_room_0Tex_012E18
+  format: RGBA16
+  width: 64
+  height: 16
+
+nakaniwa_room_0Tex_013618:
+  type: TEXTURE
+  offset: 0x13618
+  symbol: nakaniwa_room_0Tex_013618
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_013E18:
+  type: TEXTURE
+  offset: 0x13E18
+  symbol: nakaniwa_room_0Tex_013E18
+  format: I4
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_014EC0:
+  type: TEXTURE
+  offset: 0x14EC0
+  symbol: nakaniwa_room_0Tex_014EC0
+  format: IA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_0156C0:
+  type: TEXTURE
+  offset: 0x156C0
+  symbol: nakaniwa_room_0Tex_0156C0
+  format: IA16
+  width: 64
+  height: 32
+
+nakaniwa_room_0Tex_0166C0:
+  type: TEXTURE
+  offset: 0x166C0
+  symbol: nakaniwa_room_0Tex_0166C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+nakaniwa_room_0Tex_016EC0:
+  type: TEXTURE
+  offset: 0x16EC0
+  symbol: nakaniwa_room_0Tex_016EC0
+  format: IA16
+  width: 32
+  height: 64
+
+
+nakaniwa_room_0Vtx_0002D0:
+  type: OOT:ARRAY
+  offset: 0x0002D0
+  symbol: nakaniwa_room_0Vtx_0002D0
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_000780:
+  type: GFX
+  offset: 0x000780
+  symbol: nakaniwa_room_0DL_000780
+
+nakaniwa_room_0Vtx_0009C0:
+  type: OOT:ARRAY
+  offset: 0x0009C0
+  symbol: nakaniwa_room_0Vtx_0009C0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_000CE0:
+  type: GFX
+  offset: 0x000CE0
+  symbol: nakaniwa_room_0DL_000CE0
+
+nakaniwa_room_0Vtx_000DD0:
+  type: OOT:ARRAY
+  offset: 0x000DD0
+  symbol: nakaniwa_room_0Vtx_000DD0
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_001440:
+  type: GFX
+  offset: 0x001440
+  symbol: nakaniwa_room_0DL_001440
+
+nakaniwa_room_0Vtx_001630:
+  type: OOT:ARRAY
+  offset: 0x001630
+  symbol: nakaniwa_room_0Vtx_001630
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0017B0:
+  type: GFX
+  offset: 0x0017B0
+  symbol: nakaniwa_room_0DL_0017B0
+
+nakaniwa_room_0Vtx_0018C8:
+  type: OOT:ARRAY
+  offset: 0x0018C8
+  symbol: nakaniwa_room_0Vtx_0018C8
+  count: 267
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_002978:
+  type: GFX
+  offset: 0x002978
+  symbol: nakaniwa_room_0DL_002978
+
+nakaniwa_room_0Vtx_002D40:
+  type: OOT:ARRAY
+  offset: 0x002D40
+  symbol: nakaniwa_room_0Vtx_002D40
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_003080:
+  type: GFX
+  offset: 0x003080
+  symbol: nakaniwa_room_0DL_003080
+
+nakaniwa_room_0Vtx_0033A0:
+  type: OOT:ARRAY
+  offset: 0x0033A0
+  symbol: nakaniwa_room_0Vtx_0033A0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0035E0:
+  type: GFX
+  offset: 0x0035E0
+  symbol: nakaniwa_room_0DL_0035E0
+
+nakaniwa_room_0Vtx_003820:
+  type: OOT:ARRAY
+  offset: 0x003820
+  symbol: nakaniwa_room_0Vtx_003820
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_003C30:
+  type: GFX
+  offset: 0x003C30
+  symbol: nakaniwa_room_0DL_003C30
+
+nakaniwa_room_0Vtx_003DD0:
+  type: OOT:ARRAY
+  offset: 0x003DD0
+  symbol: nakaniwa_room_0Vtx_003DD0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_003F60:
+  type: GFX
+  offset: 0x003F60
+  symbol: nakaniwa_room_0DL_003F60
+
+nakaniwa_room_0Vtx_004040:
+  type: OOT:ARRAY
+  offset: 0x004040
+  symbol: nakaniwa_room_0Vtx_004040
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_004880:
+  type: GFX
+  offset: 0x004880
+  symbol: nakaniwa_room_0DL_004880
+
+nakaniwa_room_0Vtx_004AE8:
+  type: OOT:ARRAY
+  offset: 0x004AE8
+  symbol: nakaniwa_room_0Vtx_004AE8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_004C28:
+  type: GFX
+  offset: 0x004C28
+  symbol: nakaniwa_room_0DL_004C28
+
+nakaniwa_room_0Vtx_004D38:
+  type: OOT:ARRAY
+  offset: 0x004D38
+  symbol: nakaniwa_room_0Vtx_004D38
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_004E98:
+  type: GFX
+  offset: 0x004E98
+  symbol: nakaniwa_room_0DL_004E98
+
+nakaniwa_room_0Vtx_004FA0:
+  type: OOT:ARRAY
+  offset: 0x004FA0
+  symbol: nakaniwa_room_0Vtx_004FA0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_005120:
+  type: GFX
+  offset: 0x005120
+  symbol: nakaniwa_room_0DL_005120
+
+nakaniwa_room_0Vtx_005228:
+  type: OOT:ARRAY
+  offset: 0x005228
+  symbol: nakaniwa_room_0Vtx_005228
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_005388:
+  type: GFX
+  offset: 0x005388
+  symbol: nakaniwa_room_0DL_005388
+
+nakaniwa_room_0Vtx_005490:
+  type: OOT:ARRAY
+  offset: 0x005490
+  symbol: nakaniwa_room_0Vtx_005490
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0055F0:
+  type: GFX
+  offset: 0x0055F0
+  symbol: nakaniwa_room_0DL_0055F0
+
+nakaniwa_room_0Vtx_0056F8:
+  type: OOT:ARRAY
+  offset: 0x0056F8
+  symbol: nakaniwa_room_0Vtx_0056F8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_005978:
+  type: GFX
+  offset: 0x005978
+  symbol: nakaniwa_room_0DL_005978
+
+nakaniwa_room_0Vtx_005A68:
+  type: OOT:ARRAY
+  offset: 0x005A68
+  symbol: nakaniwa_room_0Vtx_005A68
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_005B88:
+  type: GFX
+  offset: 0x005B88
+  symbol: nakaniwa_room_0DL_005B88
+
+nakaniwa_room_0Vtx_005CA0:
+  type: OOT:ARRAY
+  offset: 0x005CA0
+  symbol: nakaniwa_room_0Vtx_005CA0
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0061D0:
+  type: GFX
+  offset: 0x0061D0
+  symbol: nakaniwa_room_0DL_0061D0
+
+nakaniwa_room_0Vtx_006308:
+  type: OOT:ARRAY
+  offset: 0x006308
+  symbol: nakaniwa_room_0Vtx_006308
+  count: 199
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_006F78:
+  type: GFX
+  offset: 0x006F78
+  symbol: nakaniwa_room_0DL_006F78
+
+nakaniwa_room_0DL_007178:
+  type: GFX
+  offset: 0x007178
+  symbol: nakaniwa_room_0DL_007178
+
+nakaniwa_room_0Vtx_014020:
+  type: OOT:ARRAY
+  offset: 0x014020
+  symbol: nakaniwa_room_0Vtx_014020
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0142E0:
+  type: GFX
+  offset: 0x0142E0
+  symbol: nakaniwa_room_0DL_0142E0
+
+nakaniwa_room_0Vtx_014400:
+  type: OOT:ARRAY
+  offset: 0x014400
+  symbol: nakaniwa_room_0Vtx_014400
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_0144E0:
+  type: GFX
+  offset: 0x0144E0
+  symbol: nakaniwa_room_0DL_0144E0
+
+nakaniwa_room_0Vtx_0145A0:
+  type: OOT:ARRAY
+  offset: 0x0145A0
+  symbol: nakaniwa_room_0Vtx_0145A0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_014700:
+  type: GFX
+  offset: 0x014700
+  symbol: nakaniwa_room_0DL_014700
+
+nakaniwa_room_0Vtx_014798:
+  type: OOT:ARRAY
+  offset: 0x014798
+  symbol: nakaniwa_room_0Vtx_014798
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+nakaniwa_room_0DL_014D18:
+  type: GFX
+  offset: 0x014D18
+  symbol: nakaniwa_room_0DL_014D18
+
+nakaniwa_room_0DL_014E98:
+  type: GFX
+  offset: 0x014E98
+  symbol: nakaniwa_room_0DL_014E98

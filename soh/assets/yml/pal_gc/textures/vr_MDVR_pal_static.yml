@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x0139BA70 ]
+
+gMarketDayBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gMarketDayBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketDayBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gMarketDayBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketDayBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gMarketDayBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMarketDayBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMarketDayBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

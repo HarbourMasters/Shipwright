@@ -8,7 +8,6 @@
 #include "objects/object_poh/object_poh.h"
 #include "objects/object_po_composer/object_po_composer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_IGNORE_QUAKE)
@@ -257,8 +256,6 @@ void EnPoh_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params == EN_POH_RUPEE) {
         D_80AE1A50--;
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80ADE114(EnPoh* this) {

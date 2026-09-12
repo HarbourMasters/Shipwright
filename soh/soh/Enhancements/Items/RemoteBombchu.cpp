@@ -1,9 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "functions.h"
 #include "src/overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
-
 void EnBomChu_Move(EnBomChu*, PlayState*);
 void EnBomChu_Explode(EnBomChu*, PlayState*);
 s32 Camera_BGCheck(Camera* camera, Vec3f* from, Vec3f* to);
@@ -75,7 +75,9 @@ static void StopControl(PlayState* play) {
     }
 
     Player* player = GET_PLAYER(play);
-    player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;
+    if (player != NULL) {
+        player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;
+    }
 
     sState.activeChu = nullptr;
     sState.isActive = false;
@@ -171,6 +173,12 @@ static void OnActorDestroy(void* refActor) {
     }
 }
 
+// Scene teardown deletes player before bombchu, stop while everything valid
+static void OnPlayDestroy() {
+    StopControl(gPlayState);
+    sState.activeChu = nullptr;
+}
+
 // Main update logic
 static void OnActorUpdate(void* refActor) {
     if (refActor != sState.activeChu)
@@ -198,6 +206,12 @@ static void OnActorUpdate(void* refActor) {
 }
 
 void RegisterRemoteBombchu() {
+    // Turning off mid-flight would drop hooks with disabled input
+    if (!CVAR_REMOTE_BOMBCHU_VALUE && sState.isActive) {
+        StopControl(gPlayState);
+    }
+
+    COND_HOOK(OnPlayDestroy, true, OnPlayDestroy);
     COND_ID_HOOK(OnActorInit, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorInit);
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorDestroy);
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorUpdate);

@@ -7,7 +7,6 @@
 #include "z_en_zf.h"
 #include "objects/object_zf/object_zf.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -373,8 +372,6 @@ void EnZf_Destroy(Actor* thisx, PlayState* play) {
     Effect_Delete(play, this->blureIndex);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 /**

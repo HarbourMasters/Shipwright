@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F7410 ]
+
+gHyruleFieldTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gHyruleFieldTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gHyruleFieldTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHyruleFieldTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

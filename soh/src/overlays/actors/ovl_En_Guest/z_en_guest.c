@@ -9,7 +9,6 @@
 #include "objects/object_boj/object_boj.h"
 #include "vt.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -73,8 +72,6 @@ void EnGuest_Destroy(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnGuest_Update(Actor* thisx, PlayState* play) {

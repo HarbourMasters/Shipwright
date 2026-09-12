@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01309AD0 ]
+
+gQuestionMarkTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gQuestionMarkTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gQuestionMarkTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gQuestionMarkTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

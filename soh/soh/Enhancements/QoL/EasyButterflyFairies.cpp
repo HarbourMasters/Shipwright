@@ -4,7 +4,6 @@
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Butte/z_en_butte.h"
-#include "variables.h"
 extern void EnButte_SetupTransformIntoFairy(EnButte* enButte);
 }
 

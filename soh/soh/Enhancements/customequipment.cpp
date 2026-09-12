@@ -633,7 +633,7 @@ static void RegisterCustomEquipment() {
             gSPDisplayList(play->state.gfxCtx->polyXlu.p++, resolvedBottle);
 
             if (player->itemAction >= PLAYER_IA_BOTTLE &&
-                player->itemAction < PLAYER_IA_BOTTLE + std::size(bottleContentDLs)) {
+                player->itemAction < static_cast<int>(PLAYER_IA_BOTTLE + std::size(bottleContentDLs))) {
                 contentDL = bottleContentDLs[player->itemAction - PLAYER_IA_BOTTLE];
             }
 

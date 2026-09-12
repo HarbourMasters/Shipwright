@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 6, 0x01116350 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x01116350 ]
+    - [ 9, 0x01116350 ]
+    - [ 10, 0x01116350 ]
+    - [ 11, 0x01116350 ]
+    - [ 12, 0x01116350 ]
+    - [ 13, 0x01116350 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gLonLonCorralFenceCol:
+  type: OOT:COLLISION
+  offset: 0x4D0
+  symbol: gLonLonCorralFenceCol
+
+gLonLonCorralFenceDL:
+  type: GFX
+  offset: 0x3C0
+  symbol: gLonLonCorralFenceDL
+
+gLonLonCorralFenceTex:
+  type: TEXTURE
+  offset: 0x500
+  symbol: gLonLonCorralFenceTex
+  format: I4
+  width: 32
+  height: 128
+
+gLonLonMilkCrateCol:
+  type: OOT:COLLISION
+  offset: 0x348
+  symbol: gLonLonMilkCrateCol
+
+gLonLonMilkCrateDL:
+  type: GFX
+  offset: 0x180
+  symbol: gLonLonMilkCrateDL
+
+gLonLonMilkCrateTex:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: gLonLonMilkCrateTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_spot15_objVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot15_objVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot15_objVtx_000380:
+  type: OOT:ARRAY
+  offset: 0x000380
+  symbol: object_spot15_objVtx_000380
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

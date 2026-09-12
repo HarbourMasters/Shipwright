@@ -5,8 +5,7 @@
 //  Created by David Chavez on 22.11.22.
 //
 
-#ifndef SOHDarwinSpeechSynthesizer_h
-#define SOHDarwinSpeechSynthesizer_h
+#pragma once
 
 #include "SpeechSynthesizer.h"
 
@@ -23,5 +22,3 @@ class DarwinSpeechSynthesizer : public SpeechSynthesizer {
   private:
     void* mSynthesizer;
 };
-
-#endif /* DarwinSpeechSynthesizer_h */

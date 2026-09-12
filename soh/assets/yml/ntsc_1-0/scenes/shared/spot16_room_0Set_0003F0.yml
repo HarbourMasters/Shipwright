@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01859A20 ]
+    - [ 2, 0x018437A0 ]
+  directory: scenes/shared/spot16_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/spot16_room_0.yml
+    - ntsc_1-0/objects/gameplay_keep.yml
+    - ntsc_1-0/scenes/shared/spot16_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+spot16_room_0Set_0003F0:
+  type: OOT:ROOM
+  offset: 0x3F0
+  symbol: spot16_room_0Set_0003F0
+  base_name: spot16_room_0

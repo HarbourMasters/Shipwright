@@ -1,0 +1,144 @@
+:config:
+  segments:
+    - [ 3, 0x016F2690 ]
+    - [ 2, 0x016D3590 ]
+  directory: scenes/nonmq/ddan_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/nonmq/ddan_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+ddan_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ddan_room_2
+
+ddan_room_2Tex_003B80:
+  type: TEXTURE
+  offset: 0x3A60
+  symbol: ddan_room_2Tex_003B80
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_004380:
+  type: TEXTURE
+  offset: 0x4260
+  symbol: ddan_room_2Tex_004380
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_004780:
+  type: TEXTURE
+  offset: 0x4660
+  symbol: ddan_room_2Tex_004780
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_004B80:
+  type: TEXTURE
+  offset: 0x4A60
+  symbol: ddan_room_2Tex_004B80
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_005380:
+  type: TEXTURE
+  offset: 0x5260
+  symbol: ddan_room_2Tex_005380
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_005B80:
+  type: TEXTURE
+  offset: 0x5A60
+  symbol: ddan_room_2Tex_005B80
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_005F80:
+  type: TEXTURE
+  offset: 0x5E60
+  symbol: ddan_room_2Tex_005F80
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_006380:
+  type: TEXTURE
+  offset: 0x6260
+  symbol: ddan_room_2Tex_006380
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_2Tex_006EB8:
+  type: TEXTURE
+  offset: 0x6D98
+  symbol: ddan_room_2Tex_006EB8
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ddan_room_2Vtx_000240:
+  type: OOT:ARRAY
+  offset: 0x000240
+  symbol: ddan_room_2Vtx_000240
+  count: 381
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_2DL_001A10:
+  type: GFX
+  offset: 0x001A10
+  symbol: ddan_room_2DL_001A10
+
+ddan_room_2Vtx_0029F8:
+  type: OOT:ARRAY
+  offset: 0x0029F8
+  symbol: ddan_room_2Vtx_0029F8
+  count: 171
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_2DL_0034A8:
+  type: GFX
+  offset: 0x0034A8
+  symbol: ddan_room_2DL_0034A8
+
+ddan_room_2Vtx_006660:
+  type: OOT:ARRAY
+  offset: 0x006660
+  symbol: ddan_room_2Vtx_006660
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_2DL_006B90:
+  type: GFX
+  offset: 0x006B90
+  symbol: ddan_room_2DL_006B90

@@ -1201,8 +1201,8 @@ void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos) {
     pauseCtx->cursorSpecialPos = specialPos;
     pauseCtx->pageSwitchTimer = 0;
 
-    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultReverb);
 }
 
 void KaleidoScope_DrawQuadTextureRGBA32(GraphicsContext* gfxCtx, void* texture, u16 width, u16 height, u16 point) {
@@ -1257,13 +1257,13 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;
-        Audio_PlaySoundGeneral(NA_SE_SY_WIN_SCROLL_LEFT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_WIN_SCROLL_LEFT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         pauseCtx->cursorSpecialPos = PAUSE_CURSOR_PAGE_RIGHT;
     } else {
         pauseCtx->mode = pauseCtx->pageIndex * 2;
-        Audio_PlaySoundGeneral(NA_SE_SY_WIN_SCROLL_RIGHT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_WIN_SCROLL_RIGHT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         pauseCtx->cursorSpecialPos = PAUSE_CURSOR_PAGE_LEFT;
     }
 
@@ -1764,7 +1764,8 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
     Gfx_SetupDL_42Opa(gfxCtx);
 
-    if ((pauseCtx->state == 7) || ((pauseCtx->state >= 8) && (pauseCtx->state < 0x12))) {
+    if ((GameInteractor_Should(VB_DRAW_SAVE_MENU, pauseCtx->state == 7, pauseCtx)) ||
+        ((pauseCtx->state >= 8) && (pauseCtx->state < 0x12))) {
         KaleidoScope_UpdatePrompt(play);
 
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
@@ -4267,8 +4268,8 @@ void KaleidoScope_Update(PlayState* play) {
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
-                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
@@ -4280,8 +4281,8 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->state = 7;
                     } else if (IS_RANDO && CHECK_BTN_ALL(input->press.button, BTN_CUP) &&
                                pauseCtx->pageIndex == PAUSE_QUEST) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         pauseCtx->randoQuestMode ^= 1;
                     }
                     break;
@@ -4291,10 +4292,10 @@ void KaleidoScope_Update(PlayState* play) {
                     break;
 
                 case 2:
-                    pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+                    pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
                     if (pauseCtx->ocarinaStaff->state == 0) {
                         pauseCtx->unk_1E4 = 4;
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                     }
                     break;
 
@@ -4306,10 +4307,10 @@ void KaleidoScope_Update(PlayState* play) {
                     break;
 
                 case 5:
-                    pauseCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
+                    pauseCtx->ocarinaStaff = AudioOcarina_GetPlayingStaff();
 
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
@@ -4317,12 +4318,12 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->unk_1E4 = 0;
                         break;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
-                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
@@ -4333,14 +4334,14 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
                     } else if (pauseCtx->ocarinaStaff->state == pauseCtx->ocarinaSongIdx) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         D_8082B258 = 0;
                         D_8082B25C = 30;
                         pauseCtx->unk_1E4 = 6;
                     } else if (pauseCtx->ocarinaStaff->state == 0xFF) {
-                        Audio_PlaySoundGeneral(NA_SE_SY_OCARINA_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_OCARINA_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         D_8082B258 = 4;
                         D_8082B25C = 20;
                         pauseCtx->unk_1E4 = 6;
@@ -4352,7 +4353,7 @@ void KaleidoScope_Update(PlayState* play) {
                     if (D_8082B25C == 0) {
                         pauseCtx->unk_1E4 = D_8082B258;
                         if (pauseCtx->unk_1E4 == 0) {
-                            AudioOcarina_SetInstrument(0);
+                            AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         }
                     }
                     break;
@@ -4362,19 +4363,19 @@ void KaleidoScope_Update(PlayState* play) {
 
                 case 8:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
                         func_800F64E0(0);
                         pauseCtx->unk_1E4 = 0;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
-                        Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
@@ -4397,20 +4398,61 @@ void KaleidoScope_Update(PlayState* play) {
             break;
 
         case 7:
-            switch (pauseCtx->unk_1EC) {
-                case 0:
-                    pauseCtx->unk_204 -= 314.0f / WREG(6);
-                    WREG(16) -= WREG(25) / WREG(6);
-                    WREG(17) -= WREG(26) / WREG(6);
-                    if (pauseCtx->unk_204 <= -628.0f) {
-                        pauseCtx->unk_204 = -628.0f;
-                        pauseCtx->unk_1EC = 1;
-                    }
-                    break;
+            if (GameInteractor_Should(VB_LOAD_SAVE_MENU, 1, play)) {
+                switch (pauseCtx->unk_1EC) {
+                    case 0:
+                        pauseCtx->unk_204 -= 314.0f / WREG(6);
+                        WREG(16) -= WREG(25) / WREG(6);
+                        WREG(17) -= WREG(26) / WREG(6);
+                        if (pauseCtx->unk_204 <= -628.0f) {
+                            pauseCtx->unk_204 = -628.0f;
+                            pauseCtx->unk_1EC = 1;
+                        }
+                        break;
 
-                case 1:
-                    if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-                        if (pauseCtx->promptChoice != 0) {
+                    case 1:
+                        if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
+                            if (pauseCtx->promptChoice != 0) {
+                                Interface_SetDoAction(play, DO_ACTION_NONE);
+                                gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] =
+                                    gSaveContext.buttonStatus[2] = gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                                gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] =
+                                    gSaveContext.buttonStatus[7] = gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                                gSaveContext.hudVisibilityMode = 0;
+                                Interface_ChangeHudVisibilityMode(50);
+                                pauseCtx->unk_1EC = 2;
+                                WREG(2) = -6240;
+                                YREG(8) = pauseCtx->unk_204;
+                                func_800F64E0(0);
+                            } else {
+                                Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4,
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
+                                Play_PerformSave(play);
+                                pauseCtx->unk_1EC = 4;
+                                D_8082B25C = CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0)
+                                                 ? 3 /* 0.1 sec */
+                                                 : 90 /* 3 secs */;
+                            }
+                        } else if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
+                                   CHECK_BTN_ALL(input->press.button, BTN_B)) {
+                            Interface_SetDoAction(play, DO_ACTION_NONE);
+                            pauseCtx->unk_1EC = 2;
+                            WREG(2) = -6240;
+                            YREG(8) = pauseCtx->unk_204;
+                            func_800F64E0(0);
+                            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                                gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                                gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                            gSaveContext.hudVisibilityMode = 0;
+                            Interface_ChangeHudVisibilityMode(50);
+                        }
+                        break;
+
+                    case 4:
+                        if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A) ||
+                            CHECK_BTN_ALL(input->press.button, BTN_START) || (--D_8082B25C == 0)) {
                             Interface_SetDoAction(play, DO_ACTION_NONE);
                             gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                                 gSaveContext.buttonStatus[3] = BTN_ENABLED;
@@ -4418,88 +4460,50 @@ void KaleidoScope_Update(PlayState* play) {
                                 gSaveContext.buttonStatus[8] = BTN_ENABLED;
                             gSaveContext.hudVisibilityMode = 0;
                             Interface_ChangeHudVisibilityMode(50);
-                            pauseCtx->unk_1EC = 2;
+                            pauseCtx->unk_1EC = 5;
                             WREG(2) = -6240;
                             YREG(8) = pauseCtx->unk_204;
                             func_800F64E0(0);
+                        }
+                        break;
+
+                    case 3:
+                    case 6:
+                        pauseCtx->unk_204 += 314.0f / WREG(6);
+                        WREG(16) += WREG(25) / WREG(6);
+                        WREG(17) += WREG(26) / WREG(6);
+                        if (pauseCtx->unk_204 >= -314.0f) {
+                            pauseCtx->state = 6;
+                            pauseCtx->unk_1EC = 0;
+                            pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 = 0.0f;
+                            pauseCtx->unk_204 = -314.0f;
+                        }
+                        break;
+
+                    case 2:
+                    case 5:
+                        if (pauseCtx->unk_204 != (YREG(8) + 160.0f)) {
+                            pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 +=
+                                160.0f / WREG(6);
+                            pauseCtx->unk_204 += 160.0f / WREG(6);
+                            pauseCtx->infoPanelOffsetY -= 40 / WREG(6);
+                            WREG(16) -= WREG(25) / WREG(6);
+                            WREG(17) -= WREG(26) / WREG(6);
+                            XREG(5) -= 150 / WREG(6);
+                            pauseCtx->alpha -= (u16)(255 / WREG(6));
+                            if (pauseCtx->unk_204 == (YREG(8) + 160.0f)) {
+                                pauseCtx->alpha = 0;
+                            }
                         } else {
-                            Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultReverb);
-                            Play_PerformSave(play);
-                            pauseCtx->unk_1EC = 4;
-                            D_8082B25C = CVarGetInteger(CVAR_ENHANCEMENT("SkipSaveConfirmation"), 0) ? 3 /* 0.1 sec */
-                                                                                                     : 90 /* 3 secs */;
+                            pauseCtx->debugState = 0;
+                            pauseCtx->state = 0x13;
+                            pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 = 160.0f;
+                            pauseCtx->namedItem = PAUSE_ITEM_NONE;
+                            pauseCtx->unk_1E4 = 0;
+                            pauseCtx->unk_204 = -434.0f;
                         }
-                    } else if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
-                               CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        Interface_SetDoAction(play, DO_ACTION_NONE);
-                        pauseCtx->unk_1EC = 2;
-                        WREG(2) = -6240;
-                        YREG(8) = pauseCtx->unk_204;
-                        func_800F64E0(0);
-                        gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                            gSaveContext.buttonStatus[3] = BTN_ENABLED;
-                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                        gSaveContext.hudVisibilityMode = 0;
-                        Interface_ChangeHudVisibilityMode(50);
-                    }
-                    break;
-
-                case 4:
-                    if (CHECK_BTN_ALL(input->press.button, BTN_B) || CHECK_BTN_ALL(input->press.button, BTN_A) ||
-                        CHECK_BTN_ALL(input->press.button, BTN_START) || (--D_8082B25C == 0)) {
-                        Interface_SetDoAction(play, DO_ACTION_NONE);
-                        gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-                            gSaveContext.buttonStatus[3] = BTN_ENABLED;
-                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                        gSaveContext.hudVisibilityMode = 0;
-                        Interface_ChangeHudVisibilityMode(50);
-                        pauseCtx->unk_1EC = 5;
-                        WREG(2) = -6240;
-                        YREG(8) = pauseCtx->unk_204;
-                        func_800F64E0(0);
-                    }
-                    break;
-
-                case 3:
-                case 6:
-                    pauseCtx->unk_204 += 314.0f / WREG(6);
-                    WREG(16) += WREG(25) / WREG(6);
-                    WREG(17) += WREG(26) / WREG(6);
-                    if (pauseCtx->unk_204 >= -314.0f) {
-                        pauseCtx->state = 6;
-                        pauseCtx->unk_1EC = 0;
-                        pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 = 0.0f;
-                        pauseCtx->unk_204 = -314.0f;
-                    }
-                    break;
-
-                case 2:
-                case 5:
-                    if (pauseCtx->unk_204 != (YREG(8) + 160.0f)) {
-                        pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 +=
-                            160.0f / WREG(6);
-                        pauseCtx->unk_204 += 160.0f / WREG(6);
-                        pauseCtx->infoPanelOffsetY -= 40 / WREG(6);
-                        WREG(16) -= WREG(25) / WREG(6);
-                        WREG(17) -= WREG(26) / WREG(6);
-                        XREG(5) -= 150 / WREG(6);
-                        pauseCtx->alpha -= (u16)(255 / WREG(6));
-                        if (pauseCtx->unk_204 == (YREG(8) + 160.0f)) {
-                            pauseCtx->alpha = 0;
-                        }
-                    } else {
-                        pauseCtx->debugState = 0;
-                        pauseCtx->state = 0x13;
-                        pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 = 160.0f;
-                        pauseCtx->namedItem = PAUSE_ITEM_NONE;
-                        pauseCtx->unk_1E4 = 0;
-                        pauseCtx->unk_204 = -434.0f;
-                    }
-                    break;
+                        break;
+                }
             }
             break;
 
@@ -4668,13 +4672,13 @@ void KaleidoScope_Update(PlayState* play) {
             if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                 if (pauseCtx->promptChoice != 0) {
                     pauseCtx->promptChoice = 0;
-                    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     pauseCtx->state = 0x10;
                     gameOverCtx->state++;
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     pauseCtx->promptChoice = 0;
                     Play_SaveSceneFlags(play);
                     gSaveContext.savedSceneNum = play->sceneNum;
@@ -4702,8 +4706,8 @@ void KaleidoScope_Update(PlayState* play) {
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
                 if (pauseCtx->promptChoice == 0 && GameInteractor_Should(VB_BE_ABLE_TO_SAVE, true)) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Play_SaveSceneFlags(play);
 
                     switch (gSaveContext.entranceIndex) {
@@ -4752,8 +4756,8 @@ void KaleidoScope_Update(PlayState* play) {
                             break;
                     }
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
 
                 pauseCtx->state = 0x11;

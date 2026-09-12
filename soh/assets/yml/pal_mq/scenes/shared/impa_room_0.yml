@@ -1,0 +1,134 @@
+:config:
+  segments:
+    - [ 3, 0x01D9AB50 ]
+    - [ 2, 0x01D9A400 ]
+  directory: scenes/shared/impa_scene
+  external_files:
+    - pal_mq/scenes/shared/impa_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+impa_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: impa_room_0
+
+
+impa_room_0Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: impa_room_0Vtx_0000C0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_000340:
+  type: OOT:ARRAY
+  offset: 0x000340
+  symbol: impa_room_0Vtx_000340
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_000A60:
+  type: OOT:ARRAY
+  offset: 0x000A60
+  symbol: impa_room_0Vtx_000A60
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_000DC0:
+  type: OOT:ARRAY
+  offset: 0x000DC0
+  symbol: impa_room_0Vtx_000DC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_000F50:
+  type: OOT:ARRAY
+  offset: 0x000F50
+  symbol: impa_room_0Vtx_000F50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_000F90:
+  type: OOT:ARRAY
+  offset: 0x000F90
+  symbol: impa_room_0Vtx_000F90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_001010:
+  type: OOT:ARRAY
+  offset: 0x001010
+  symbol: impa_room_0Vtx_001010
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_001090:
+  type: OOT:ARRAY
+  offset: 0x001090
+  symbol: impa_room_0Vtx_001090
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_001110:
+  type: OOT:ARRAY
+  offset: 0x001110
+  symbol: impa_room_0Vtx_001110
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0Vtx_001190:
+  type: OOT:ARRAY
+  offset: 0x001190
+  symbol: impa_room_0Vtx_001190
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+impa_room_0DL_001210:
+  type: GFX
+  offset: 0x001210
+  symbol: impa_room_0DL_001210
+
+impa_room_0DL_0012F0:
+  type: GFX
+  offset: 0x0012F0
+  symbol: impa_room_0DL_0012F0
+
+impa_room_0DL_001518:
+  type: GFX
+  offset: 0x001518
+  symbol: impa_room_0DL_001518
+
+impa_room_0DL_001628:
+  type: GFX
+  offset: 0x001628
+  symbol: impa_room_0DL_001628
+
+impa_room_0DL_0016D8:
+  type: GFX
+  offset: 0x0016D8
+  symbol: impa_room_0DL_0016D8
+
+impa_room_0DL_001758:
+  type: GFX
+  offset: 0x001758
+  symbol: impa_room_0DL_001758

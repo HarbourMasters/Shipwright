@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 6, 0x00F3F790 ]
+    - [ 8, 0x00F478E0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 9, 0x00F3F790 ]
+    - [ 10, 0x00F3F790 ]
+    - [ 11, 0x00F3F790 ]
+    - [ 12, 0x00F3F790 ]
+    - [ 13, 0x00F3F790 ]
+  external_files:
+    - ntsc_1-0/objects/object_mori_tex.yml
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+object_mori_hineri2_Col_0043D0:
+  type: OOT:COLLISION
+  offset: 0x43D0
+  symbol: object_mori_hineri2_Col_0043D0
+
+object_mori_hineri2_DL_0020F0:
+  type: GFX
+  offset: 0x20F0
+  symbol: object_mori_hineri2_DL_0020F0
+
+
+object_mori_hineri2Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mori_hineri2Vtx_000000
+  count: 527
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

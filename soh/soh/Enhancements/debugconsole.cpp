@@ -1,10 +1,11 @@
-#include "debugconsole.h"
-#include <ship/utils/Utils.h>
-#include "savestates.h"
-#include "soh/ActorDB.h"
-
 #include <vector>
 #include <string>
+
+#include <ship/utils/Utils.h>
+
+#include "debugconsole.h"
+#include "savestates.h"
+#include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -16,9 +17,7 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <ship/utils/StringHelper.h>
 
-#include <ship/window/Window.h>
 #include <ship/Context.h>
 #undef PATH_HACK
 #undef Path
@@ -572,7 +571,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
-    uint8_t slot;
+    int32_t slot;
 
     try {
         slot = std::stoi(args[1], nullptr, 10);
@@ -581,7 +580,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
         return 1;
     }
 
-    if (slot < 0) {
+    if (slot < 0 || slot > 2) {
         ERROR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return 1;
     }

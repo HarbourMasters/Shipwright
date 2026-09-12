@@ -606,10 +606,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
     }
 
     // If you haven't given Zelda's Letter to the Kakariko Guard
-    // or are rando'd and haven't gotten gotten the letter from zelda yet
-    if (this->actor.params == OSSAN_TYPE_MASK &&
-        (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD) ||
-         (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)))) {
+    if (this->actor.params == OSSAN_TYPE_MASK && !Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
         Actor_Kill(&this->actor);
         return;
     }

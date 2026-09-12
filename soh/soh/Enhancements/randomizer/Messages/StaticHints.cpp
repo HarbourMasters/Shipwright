@@ -5,17 +5,18 @@
  * File for registering hooks for "Static" hints, i.e. hints that
  * are always given by a specific NPC and/or for a specific item.
  */
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "z64scene.h"
+
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include <soh/OTRGlobals.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
-extern PlayState* gPlayState;
+#include "z64scene.h"
 #include <macros.h>
 #include <functions.h>
 #include <variables.h>
+extern PlayState* gPlayState;
 }
 
 #define RAND_GET_HINT(rh) OTRGlobals::Instance->gRandoContext->GetHint(rh)
@@ -140,7 +141,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the "
-                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      "Curse%w and I will give you [[color]][[1]]%w!",
                                       /*german*/
                                       "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w "
                                       "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
@@ -157,7 +158,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the "
-                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      "Curse%w and I will give you [[color]][[1]]%w!",
                                       /*german*/
                                       "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w "
                                       "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",

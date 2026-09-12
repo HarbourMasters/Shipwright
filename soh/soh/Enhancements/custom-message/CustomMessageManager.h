@@ -62,6 +62,7 @@ class CustomMessage {
     static std::string WAIT_FOR_INPUT();
     static std::string PLAYER_NAME();
     static std::string TWO_WAY_CHOICE();
+    static std::string THREE_WAY_CHOICE();
 
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;

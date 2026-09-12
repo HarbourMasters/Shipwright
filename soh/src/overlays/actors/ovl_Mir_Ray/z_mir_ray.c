@@ -7,6 +7,7 @@
 #include "z_mir_ray.h"
 #include "objects/object_mir_ray/object_mir_ray.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -510,7 +511,8 @@ void MirRay_Draw(Actor* thisx, PlayState* play) {
                 }
             }
             for (i = 0; i < 6; i++) {
-                if (reflection[i].reflectionPoly != NULL) {
+                if (GameInteractor_Should(VB_MIRRAY_DRAW_REFLECTION, reflection[i].reflectionPoly != NULL,
+                                          &reflection[i])) {
                     FrameInterpolation_RecordOpenChild(&reflection[i], i);
                     Matrix_Translate(reflection[i].pos.x, reflection[i].pos.y, reflection[i].pos.z, MTXMODE_NEW);
                     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);

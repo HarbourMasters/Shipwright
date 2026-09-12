@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x01929000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01929000 ]
+    - [ 9, 0x01929000 ]
+    - [ 10, 0x01929000 ]
+    - [ 11, 0x01929000 ]
+    - [ 12, 0x01929000 ]
+    - [ 13, 0x01929000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiBugsContainerDL:
+  type: GFX
+  offset: 0x0830
+  symbol: gGiBugsContainerDL
+
+gGiBugsGlassDL:
+  type: GFX
+  offset: 0x0B20
+  symbol: gGiBugsGlassDL
+
+
+object_gi_insectVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_insectVtx_000000
+  count: 113
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_insectVtx_000710:
+  type: OOT:ARRAY
+  offset: 0x000710
+  symbol: object_gi_insectVtx_000710
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

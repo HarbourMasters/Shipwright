@@ -1,0 +1,1020 @@
+:config:
+  segments:
+    - [ 6, 0x00DDC980 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00DDC980 ]
+    - [ 9, 0x00DDC980 ]
+    - [ 10, 0x00DDC980 ]
+    - [ 11, 0x00DDC980 ]
+    - [ 12, 0x00DDC980 ]
+    - [ 13, 0x00DDC980 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gKingDodongoTitleCardTex:
+  type: TEXTURE
+  offset: 0x17410
+  symbol: gKingDodongoTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+object_kingdodongo_Anim_000690:
+  type: OOT:ANIMATION
+  offset: 0x690
+  symbol: object_kingdodongo_Anim_000690
+
+object_kingdodongo_Anim_001074:
+  type: OOT:ANIMATION
+  offset: 0x1074
+  symbol: object_kingdodongo_Anim_001074
+
+object_kingdodongo_Anim_002D0C:
+  type: OOT:ANIMATION
+  offset: 0x2D0C
+  symbol: object_kingdodongo_Anim_002D0C
+
+object_kingdodongo_Anim_003CF8:
+  type: OOT:ANIMATION
+  offset: 0x3CF8
+  symbol: object_kingdodongo_Anim_003CF8
+
+object_kingdodongo_Anim_0042A8:
+  type: OOT:ANIMATION
+  offset: 0x42A8
+  symbol: object_kingdodongo_Anim_0042A8
+
+object_kingdodongo_Anim_004E0C:
+  type: OOT:ANIMATION
+  offset: 0x4E0C
+  symbol: object_kingdodongo_Anim_004E0C
+
+object_kingdodongo_Anim_0061D4:
+  type: OOT:ANIMATION
+  offset: 0x61D4
+  symbol: object_kingdodongo_Anim_0061D4
+
+object_kingdodongo_Anim_006924:
+  type: OOT:ANIMATION
+  offset: 0x6924
+  symbol: object_kingdodongo_Anim_006924
+
+object_kingdodongo_Anim_008EEC:
+  type: OOT:ANIMATION
+  offset: 0x8EEC
+  symbol: object_kingdodongo_Anim_008EEC
+
+object_kingdodongo_Anim_009D10:
+  type: OOT:ANIMATION
+  offset: 0x9D10
+  symbol: object_kingdodongo_Anim_009D10
+
+object_kingdodongo_Anim_00AA9C:
+  type: OOT:ANIMATION
+  offset: 0xAA9C
+  symbol: object_kingdodongo_Anim_00AA9C
+
+object_kingdodongo_Anim_00DF38:
+  type: OOT:ANIMATION
+  offset: 0xDF38
+  symbol: object_kingdodongo_Anim_00DF38
+
+object_kingdodongo_Anim_00E848:
+  type: OOT:ANIMATION
+  offset: 0xE848
+  symbol: object_kingdodongo_Anim_00E848
+
+object_kingdodongo_Anim_00F0D8:
+  type: OOT:ANIMATION
+  offset: 0xF0D8
+  symbol: object_kingdodongo_Anim_00F0D8
+
+object_kingdodongo_Anim_01CAE0:
+  type: OOT:ANIMATION
+  offset: 0x1CAE0
+  symbol: object_kingdodongo_Anim_01CAE0
+
+object_kingdodongo_Anim_01D218:
+  type: OOT:ANIMATION
+  offset: 0x1D218
+  symbol: object_kingdodongo_Anim_01D218
+
+object_kingdodongo_Anim_01D934:
+  type: OOT:ANIMATION
+  offset: 0x1D934
+  symbol: object_kingdodongo_Anim_01D934
+
+object_kingdodongo_Col_025B64:
+  type: OOT:COLLISION
+  offset: 0x25B64
+  symbol: object_kingdodongo_Col_025B64
+
+object_kingdodongo_Col_0264A8:
+  type: OOT:COLLISION
+  offset: 0x264A8
+  symbol: object_kingdodongo_Col_0264A8
+
+object_kingdodongo_DL_009D50:
+  type: GFX
+  offset: 0x9D50
+  symbol: object_kingdodongo_DL_009D50
+
+object_kingdodongo_DL_009DD0:
+  type: GFX
+  offset: 0x9DD0
+  symbol: object_kingdodongo_DL_009DD0
+
+object_kingdodongo_DL_00F310:
+  type: GFX
+  offset: 0xF310
+  symbol: object_kingdodongo_DL_00F310
+
+object_kingdodongo_DL_00F6C0:
+  type: GFX
+  offset: 0xF6C0
+  symbol: object_kingdodongo_DL_00F6C0
+
+object_kingdodongo_DL_00FAC0:
+  type: GFX
+  offset: 0xFAC0
+  symbol: object_kingdodongo_DL_00FAC0
+
+object_kingdodongo_DL_00FF68:
+  type: GFX
+  offset: 0xFF68
+  symbol: object_kingdodongo_DL_00FF68
+
+object_kingdodongo_DL_010390:
+  type: GFX
+  offset: 0x10390
+  symbol: object_kingdodongo_DL_010390
+
+object_kingdodongo_DL_010878:
+  type: GFX
+  offset: 0x10878
+  symbol: object_kingdodongo_DL_010878
+
+object_kingdodongo_DL_010BE0:
+  type: GFX
+  offset: 0x10BE0
+  symbol: object_kingdodongo_DL_010BE0
+
+object_kingdodongo_DL_010F90:
+  type: GFX
+  offset: 0x10F90
+  symbol: object_kingdodongo_DL_010F90
+
+object_kingdodongo_DL_011390:
+  type: GFX
+  offset: 0x11390
+  symbol: object_kingdodongo_DL_011390
+
+object_kingdodongo_DL_011838:
+  type: GFX
+  offset: 0x11838
+  symbol: object_kingdodongo_DL_011838
+
+object_kingdodongo_DL_011C60:
+  type: GFX
+  offset: 0x11C60
+  symbol: object_kingdodongo_DL_011C60
+
+object_kingdodongo_DL_012148:
+  type: GFX
+  offset: 0x12148
+  symbol: object_kingdodongo_DL_012148
+
+object_kingdodongo_DL_0127D0:
+  type: GFX
+  offset: 0x127D0
+  symbol: object_kingdodongo_DL_0127D0
+
+object_kingdodongo_DL_012F28:
+  type: GFX
+  offset: 0x12F28
+  symbol: object_kingdodongo_DL_012F28
+
+object_kingdodongo_DL_0137B0:
+  type: GFX
+  offset: 0x137B0
+  symbol: object_kingdodongo_DL_0137B0
+
+object_kingdodongo_DL_013C20:
+  type: GFX
+  offset: 0x13C20
+  symbol: object_kingdodongo_DL_013C20
+
+object_kingdodongo_DL_013EF8:
+  type: GFX
+  offset: 0x13EF8
+  symbol: object_kingdodongo_DL_013EF8
+
+object_kingdodongo_DL_014100:
+  type: GFX
+  offset: 0x14100
+  symbol: object_kingdodongo_DL_014100
+
+object_kingdodongo_DL_014A30:
+  type: GFX
+  offset: 0x14A30
+  symbol: object_kingdodongo_DL_014A30
+
+object_kingdodongo_DL_015630:
+  type: GFX
+  offset: 0x15630
+  symbol: object_kingdodongo_DL_015630
+
+object_kingdodongo_DL_01D950:
+  type: GFX
+  offset: 0x1D950
+  symbol: object_kingdodongo_DL_01D950
+
+object_kingdodongo_DL_0259F0:
+  type: GFX
+  offset: 0x259F0
+  symbol: object_kingdodongo_DL_0259F0
+
+object_kingdodongo_DL_025A90:
+  type: GFX
+  offset: 0x25A90
+  symbol: object_kingdodongo_DL_025A90
+
+object_kingdodongo_DL_025BD0:
+  type: GFX
+  offset: 0x25BD0
+  symbol: object_kingdodongo_DL_025BD0
+
+object_kingdodongo_Limb_01B010:
+  type: OOT:LIMB
+  offset: 0x1B010
+  symbol: object_kingdodongo_Limb_01B010
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B01C:
+  type: OOT:LIMB
+  offset: 0x1B01C
+  symbol: object_kingdodongo_Limb_01B01C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B028:
+  type: OOT:LIMB
+  offset: 0x1B028
+  symbol: object_kingdodongo_Limb_01B028
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B034:
+  type: OOT:LIMB
+  offset: 0x1B034
+  symbol: object_kingdodongo_Limb_01B034
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B040:
+  type: OOT:LIMB
+  offset: 0x1B040
+  symbol: object_kingdodongo_Limb_01B040
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B04C:
+  type: OOT:LIMB
+  offset: 0x1B04C
+  symbol: object_kingdodongo_Limb_01B04C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B058:
+  type: OOT:LIMB
+  offset: 0x1B058
+  symbol: object_kingdodongo_Limb_01B058
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B064:
+  type: OOT:LIMB
+  offset: 0x1B064
+  symbol: object_kingdodongo_Limb_01B064
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B070:
+  type: OOT:LIMB
+  offset: 0x1B070
+  symbol: object_kingdodongo_Limb_01B070
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B07C:
+  type: OOT:LIMB
+  offset: 0x1B07C
+  symbol: object_kingdodongo_Limb_01B07C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B088:
+  type: OOT:LIMB
+  offset: 0x1B088
+  symbol: object_kingdodongo_Limb_01B088
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B094:
+  type: OOT:LIMB
+  offset: 0x1B094
+  symbol: object_kingdodongo_Limb_01B094
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0A0:
+  type: OOT:LIMB
+  offset: 0x1B0A0
+  symbol: object_kingdodongo_Limb_01B0A0
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0AC:
+  type: OOT:LIMB
+  offset: 0x1B0AC
+  symbol: object_kingdodongo_Limb_01B0AC
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0B8:
+  type: OOT:LIMB
+  offset: 0x1B0B8
+  symbol: object_kingdodongo_Limb_01B0B8
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0C4:
+  type: OOT:LIMB
+  offset: 0x1B0C4
+  symbol: object_kingdodongo_Limb_01B0C4
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0D0:
+  type: OOT:LIMB
+  offset: 0x1B0D0
+  symbol: object_kingdodongo_Limb_01B0D0
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0DC:
+  type: OOT:LIMB
+  offset: 0x1B0DC
+  symbol: object_kingdodongo_Limb_01B0DC
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0E8:
+  type: OOT:LIMB
+  offset: 0x1B0E8
+  symbol: object_kingdodongo_Limb_01B0E8
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B0F4:
+  type: OOT:LIMB
+  offset: 0x1B0F4
+  symbol: object_kingdodongo_Limb_01B0F4
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B100:
+  type: OOT:LIMB
+  offset: 0x1B100
+  symbol: object_kingdodongo_Limb_01B100
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B10C:
+  type: OOT:LIMB
+  offset: 0x1B10C
+  symbol: object_kingdodongo_Limb_01B10C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B118:
+  type: OOT:LIMB
+  offset: 0x1B118
+  symbol: object_kingdodongo_Limb_01B118
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B124:
+  type: OOT:LIMB
+  offset: 0x1B124
+  symbol: object_kingdodongo_Limb_01B124
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B130:
+  type: OOT:LIMB
+  offset: 0x1B130
+  symbol: object_kingdodongo_Limb_01B130
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B13C:
+  type: OOT:LIMB
+  offset: 0x1B13C
+  symbol: object_kingdodongo_Limb_01B13C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B148:
+  type: OOT:LIMB
+  offset: 0x1B148
+  symbol: object_kingdodongo_Limb_01B148
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B154:
+  type: OOT:LIMB
+  offset: 0x1B154
+  symbol: object_kingdodongo_Limb_01B154
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B160:
+  type: OOT:LIMB
+  offset: 0x1B160
+  symbol: object_kingdodongo_Limb_01B160
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B16C:
+  type: OOT:LIMB
+  offset: 0x1B16C
+  symbol: object_kingdodongo_Limb_01B16C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B178:
+  type: OOT:LIMB
+  offset: 0x1B178
+  symbol: object_kingdodongo_Limb_01B178
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B184:
+  type: OOT:LIMB
+  offset: 0x1B184
+  symbol: object_kingdodongo_Limb_01B184
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B190:
+  type: OOT:LIMB
+  offset: 0x1B190
+  symbol: object_kingdodongo_Limb_01B190
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B19C:
+  type: OOT:LIMB
+  offset: 0x1B19C
+  symbol: object_kingdodongo_Limb_01B19C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1A8:
+  type: OOT:LIMB
+  offset: 0x1B1A8
+  symbol: object_kingdodongo_Limb_01B1A8
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1B4:
+  type: OOT:LIMB
+  offset: 0x1B1B4
+  symbol: object_kingdodongo_Limb_01B1B4
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1C0:
+  type: OOT:LIMB
+  offset: 0x1B1C0
+  symbol: object_kingdodongo_Limb_01B1C0
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1CC:
+  type: OOT:LIMB
+  offset: 0x1B1CC
+  symbol: object_kingdodongo_Limb_01B1CC
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1D8:
+  type: OOT:LIMB
+  offset: 0x1B1D8
+  symbol: object_kingdodongo_Limb_01B1D8
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1E4:
+  type: OOT:LIMB
+  offset: 0x1B1E4
+  symbol: object_kingdodongo_Limb_01B1E4
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1F0:
+  type: OOT:LIMB
+  offset: 0x1B1F0
+  symbol: object_kingdodongo_Limb_01B1F0
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B1FC:
+  type: OOT:LIMB
+  offset: 0x1B1FC
+  symbol: object_kingdodongo_Limb_01B1FC
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B208:
+  type: OOT:LIMB
+  offset: 0x1B208
+  symbol: object_kingdodongo_Limb_01B208
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B214:
+  type: OOT:LIMB
+  offset: 0x1B214
+  symbol: object_kingdodongo_Limb_01B214
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B220:
+  type: OOT:LIMB
+  offset: 0x1B220
+  symbol: object_kingdodongo_Limb_01B220
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B22C:
+  type: OOT:LIMB
+  offset: 0x1B22C
+  symbol: object_kingdodongo_Limb_01B22C
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B238:
+  type: OOT:LIMB
+  offset: 0x1B238
+  symbol: object_kingdodongo_Limb_01B238
+  limb_type: Standard
+
+object_kingdodongo_Limb_01B244:
+  type: OOT:LIMB
+  offset: 0x1B244
+  symbol: object_kingdodongo_Limb_01B244
+  limb_type: Standard
+
+object_kingdodongo_Skel_01B310:
+  type: OOT:SKELETON
+  offset: 0x1B310
+  symbol: object_kingdodongo_Skel_01B310
+  limb_type: Standard
+  skel_type: Normal
+
+object_kingdodongo_Tex_009DE8:
+  type: TEXTURE
+  offset: 0x9DE8
+  symbol: object_kingdodongo_Tex_009DE8
+  format: I8
+  width: 16
+  height: 16
+
+object_kingdodongo_Tex_015890:
+  type: TEXTURE
+  offset: 0x15890
+  symbol: object_kingdodongo_Tex_015890
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_kingdodongo_Tex_015990:
+  type: TEXTURE
+  offset: 0x15990
+  symbol: object_kingdodongo_Tex_015990
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_kingdodongo_Tex_015D90:
+  type: TEXTURE
+  offset: 0x15D90
+  symbol: object_kingdodongo_Tex_015D90
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kingdodongo_Tex_015F90:
+  type: TEXTURE
+  offset: 0x15F90
+  symbol: object_kingdodongo_Tex_015F90
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_kingdodongo_Tex_016390:
+  type: TEXTURE
+  offset: 0x16390
+  symbol: object_kingdodongo_Tex_016390
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kingdodongo_Tex_016590:
+  type: TEXTURE
+  offset: 0x16590
+  symbol: object_kingdodongo_Tex_016590
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kingdodongo_Tex_016790:
+  type: TEXTURE
+  offset: 0x16790
+  symbol: object_kingdodongo_Tex_016790
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kingdodongo_Tex_016990:
+  type: TEXTURE
+  offset: 0x16990
+  symbol: object_kingdodongo_Tex_016990
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_kingdodongo_Tex_016D90:
+  type: TEXTURE
+  offset: 0x16D90
+  symbol: object_kingdodongo_Tex_016D90
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_kingdodongo_Tex_016E10:
+  type: TEXTURE
+  offset: 0x16E10
+  symbol: object_kingdodongo_Tex_016E10
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_kingdodongo_Tex_017210:
+  type: TEXTURE
+  offset: 0x17210
+  symbol: object_kingdodongo_Tex_017210
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_kingdodongo_Tex_025C58:
+  type: TEXTURE
+  offset: 0x25C58
+  symbol: object_kingdodongo_Tex_025C58
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_kingdodongo_Tex_0264E0:
+  type: TEXTURE
+  offset: 0x264E0
+  symbol: object_kingdodongo_Tex_0264E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_0274E0:
+  type: TEXTURE
+  offset: 0x274E0
+  symbol: object_kingdodongo_Tex_0274E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_0284E0:
+  type: TEXTURE
+  offset: 0x284E0
+  symbol: object_kingdodongo_Tex_0284E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_0294E0:
+  type: TEXTURE
+  offset: 0x294E0
+  symbol: object_kingdodongo_Tex_0294E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_02A4E0:
+  type: TEXTURE
+  offset: 0x2A4E0
+  symbol: object_kingdodongo_Tex_02A4E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_02B4E0:
+  type: TEXTURE
+  offset: 0x2B4E0
+  symbol: object_kingdodongo_Tex_02B4E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_02C4E0:
+  type: TEXTURE
+  offset: 0x2C4E0
+  symbol: object_kingdodongo_Tex_02C4E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_02D4E0:
+  type: TEXTURE
+  offset: 0x2D4E0
+  symbol: object_kingdodongo_Tex_02D4E0
+  format: IA8
+  width: 64
+  height: 64
+
+object_kingdodongo_Tex_02E4E0:
+  type: TEXTURE
+  offset: 0x2E4E0
+  symbol: object_kingdodongo_Tex_02E4E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02E8E0:
+  type: TEXTURE
+  offset: 0x2E8E0
+  symbol: object_kingdodongo_Tex_02E8E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02ECE0:
+  type: TEXTURE
+  offset: 0x2ECE0
+  symbol: object_kingdodongo_Tex_02ECE0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02F0E0:
+  type: TEXTURE
+  offset: 0x2F0E0
+  symbol: object_kingdodongo_Tex_02F0E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02F4E0:
+  type: TEXTURE
+  offset: 0x2F4E0
+  symbol: object_kingdodongo_Tex_02F4E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02F8E0:
+  type: TEXTURE
+  offset: 0x2F8E0
+  symbol: object_kingdodongo_Tex_02F8E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_02FCE0:
+  type: TEXTURE
+  offset: 0x2FCE0
+  symbol: object_kingdodongo_Tex_02FCE0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_0300E0:
+  type: TEXTURE
+  offset: 0x300E0
+  symbol: object_kingdodongo_Tex_0300E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_0304E0:
+  type: TEXTURE
+  offset: 0x304E0
+  symbol: object_kingdodongo_Tex_0304E0
+  format: I4
+  width: 32
+  height: 64
+
+object_kingdodongo_Tex_0308E0:
+  type: TEXTURE
+  offset: 0x308E0
+  symbol: object_kingdodongo_Tex_0308E0
+  format: I4
+  width: 32
+  height: 64
+
+
+object_kingdodongoVtx_009D20:
+  type: OOT:ARRAY
+  offset: 0x009D20
+  symbol: object_kingdodongoVtx_009D20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_00F0F0:
+  type: OOT:ARRAY
+  offset: 0x00F0F0
+  symbol: object_kingdodongoVtx_00F0F0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_00F470:
+  type: OOT:ARRAY
+  offset: 0x00F470
+  symbol: object_kingdodongoVtx_00F470
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_00F840:
+  type: OOT:ARRAY
+  offset: 0x00F840
+  symbol: object_kingdodongoVtx_00F840
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_00FBE8:
+  type: OOT:ARRAY
+  offset: 0x00FBE8
+  symbol: object_kingdodongoVtx_00FBE8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_010120:
+  type: OOT:ARRAY
+  offset: 0x010120
+  symbol: object_kingdodongoVtx_010120
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_010508:
+  type: OOT:ARRAY
+  offset: 0x010508
+  symbol: object_kingdodongoVtx_010508
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_0109C0:
+  type: OOT:ARRAY
+  offset: 0x0109C0
+  symbol: object_kingdodongoVtx_0109C0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_010D40:
+  type: OOT:ARRAY
+  offset: 0x010D40
+  symbol: object_kingdodongoVtx_010D40
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_011110:
+  type: OOT:ARRAY
+  offset: 0x011110
+  symbol: object_kingdodongoVtx_011110
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_0114B8:
+  type: OOT:ARRAY
+  offset: 0x0114B8
+  symbol: object_kingdodongoVtx_0114B8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_0119F0:
+  type: OOT:ARRAY
+  offset: 0x0119F0
+  symbol: object_kingdodongoVtx_0119F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_011DD8:
+  type: OOT:ARRAY
+  offset: 0x011DD8
+  symbol: object_kingdodongoVtx_011DD8
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_012290:
+  type: OOT:ARRAY
+  offset: 0x012290
+  symbol: object_kingdodongoVtx_012290
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_012A28:
+  type: OOT:ARRAY
+  offset: 0x012A28
+  symbol: object_kingdodongoVtx_012A28
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_013160:
+  type: OOT:ARRAY
+  offset: 0x013160
+  symbol: object_kingdodongoVtx_013160
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_013A10:
+  type: OOT:ARRAY
+  offset: 0x013A10
+  symbol: object_kingdodongoVtx_013A10
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_013D78:
+  type: OOT:ARRAY
+  offset: 0x013D78
+  symbol: object_kingdodongoVtx_013D78
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_014040:
+  type: OOT:ARRAY
+  offset: 0x014040
+  symbol: object_kingdodongoVtx_014040
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_0141E0:
+  type: OOT:ARRAY
+  offset: 0x0141E0
+  symbol: object_kingdodongoVtx_0141E0
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_014D50:
+  type: OOT:ARRAY
+  offset: 0x014D50
+  symbol: object_kingdodongoVtx_014D50
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongo_Skel_01B310Limbs:
+  type: BLOB
+  offset: 0x1B250
+  symbol: object_kingdodongo_Skel_01B310Limbs
+  size: 0
+
+object_kingdodongoVtx_01D9B0:
+  type: OOT:ARRAY
+  offset: 0x01D9B0
+  symbol: object_kingdodongoVtx_01D9B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_025A50:
+  type: OOT:ARRAY
+  offset: 0x025A50
+  symbol: object_kingdodongoVtx_025A50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_025AF0:
+  type: OOT:ARRAY
+  offset: 0x025AF0
+  symbol: object_kingdodongoVtx_025AF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kingdodongoVtx_025B90:
+  type: OOT:ARRAY
+  offset: 0x025B90
+  symbol: object_kingdodongoVtx_025B90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

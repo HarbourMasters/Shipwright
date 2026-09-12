@@ -100,7 +100,7 @@ void DrawVisualAgony(Player* player, double temp) {
     }
     if (temp == 0 || temp <= 0.1f) {
         /*Fail check, it is used to draw off the icon when
-        link is standing out range but do not refresh unk_6A0.
+        Link is standing out of range but do not refresh unk_6A0.
         Also used to make a default value in my case.*/
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
                         DefaultIconA);
@@ -128,8 +128,8 @@ void RegisterVisualAgony() {
         double temp = va_arg(args, double);
         DrawVisualAgony(player, temp);
         if (*should == true && !SHOULD_HIDE_VISUAL_AGONY) {
-            Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     });
 }

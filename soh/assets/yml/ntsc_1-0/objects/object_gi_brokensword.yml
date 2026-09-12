@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x011C4280 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x011C4280 ]
+    - [ 9, 0x011C4280 ]
+    - [ 10, 0x011C4280 ]
+    - [ 11, 0x011C4280 ]
+    - [ 12, 0x011C4280 ]
+    - [ 13, 0x011C4280 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gGiBrokenGoronSwordDL:
+  type: GFX
+  offset: 0x06E0
+  symbol: gGiBrokenGoronSwordDL
+
+
+object_gi_brokenswordVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_brokenswordVtx_000000
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

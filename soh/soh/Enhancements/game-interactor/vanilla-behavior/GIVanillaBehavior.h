@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef GI_VANILLA_BEHAVIOR_H
-#define GI_VANILLA_BEHAVIOR_H
-
 typedef enum {
     // #### `result`
     // ```c
@@ -369,6 +366,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_AFTER_PROCESS_SCENE_COLLISION,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`
@@ -454,11 +459,27 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->hookshotSlotFull
+    // ```
+    // #### `args`
+    // - None
+    VB_DAMPE_AWARD_SECOND_PRIZE,
+
+    // #### `result`
+    // ```c
     // this->actionTimer == 0 && Rand_ZeroOne() < 0.03f
     // ```
     // #### `args`
     // - `*EnPoRelay`
     VB_DAMPE_DROP_FLAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*f32` (speed
+    VB_DAMPE_GO_BACKWARDS,
 
     // #### `result`
     // ```c
@@ -689,6 +710,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe1`
+    VB_END_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
     // !(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)
     // ```
     // #### `args`
@@ -729,6 +758,97 @@ typedef enum {
     VB_FAIRY_HEAL,
 
     // #### `result`
+    // ```c
+    // this->actor.xzDistToPlayer < (KREG(59) + 50.0f)
+    // ```
+    // Whether a hooked fish is reeled in close enough to be caught.
+    // #### `args`
+    // - None
+    VB_FISHING_CATCH_FISH,
+
+    // #### `result`
+    // ```c
+    // (this->isLoach == 0) && (sFishOnHandIsLoach == 0) && ((s16)this->fishLength < (s16)sFishOnHandLength)
+    // ```
+    // Whether keeping a fish smaller than the one held asks for confirmation.
+    // #### `args`
+    // - None
+    VB_FISHING_CONFIRM_KEEPING_SMALLER_FISH,
+
+    // #### `result`
+    // ```c
+    // ((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
+    //     ((Rand_ZeroOne() < (this->perception * multiplier)) || ((this->isLoach + 1) == KREG(69)))
+    // ```
+    // Whether a fish bites the lure.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_BITE,
+
+    // #### `result`
+    // ```c
+    // ((sLureTimer & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (sLureEquipped != FS_LURE_SINKING) && (KREG(69) == 0)
+    // ```
+    // Whether a hooked fish randomly escapes the line.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_ESCAPE,
+
+    // #### `result`
+    // ```c
+    // sFishInits[thisx->params - EN_FISH_PARAM].isLoach
+    // ```
+    // Whether this pond fish is a loach.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_IS_LOACH,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // Whether a caught fish snaps to Link's hand instead of drifting there.
+    // #### `args`
+    // - None
+    VB_FISHING_INSTANT_CATCH,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // Whether the pond owner offers to quit fishing at the door.
+    // #### `args`
+    // - None
+    VB_FISHING_QUIT_AT_DOOR,
+
+    // #### `result`
+    // ```c
+    // (KREG(1) == 1) || ((sFishGameNumber & 3) == 3)
+    // ```
+    // Whether loaches spawn in the pond this game.
+    // #### `args`
+    // - None
+    VB_FISHING_SPAWN_LOACHES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the starting fishing record uses the vanilla length.
+    // A hook returning false should write its own length through the arg.
+    // #### `args`
+    // - `*f32` (sFishingRecordLength)
+    VB_FISHING_USE_DEFAULT_RECORD_LENGTH,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FISHING_ZERO_XZ,
+
+    // #### `result`
     // True if the next text position must be beyond the current position; false otherwise
     // #### `args`
     // - `u16` (next text position)
@@ -761,6 +881,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `s32` (drop id)
+    VB_FLEX_DROP_AMMO,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -790,6 +918,14 @@ typedef enum {
     // #### `args`
     // - `*EnFr`
     VB_FROGS_GO_TO_IDLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FROGS_OCARINA_GAME_TIMER_TICK,
 
     // #### `result`
     // ```c
@@ -1333,6 +1469,22 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnCrow`
+    VB_GUAY_SETUP_DAMAGED,
+
+    // #### `result`
+    // ```c
+    // this->actor.colChkInfo.health != 0
+    // ```
+    // #### `args`
+    // - `*f32` (scale)
+    VB_GUAY_ALIVE_MOVE_HEIGHT_OFFSET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_HAVE_OCARINA_NOTE_A4,
 
@@ -1434,6 +1586,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f && play->isPlayerDroppingFish(play)
+    // ```
+    // #### `args`
+    // - `*EnJj`
+    VB_JABU_JABU_EAT_FISH,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1474,6 +1634,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `*EnFirefly`
+    VB_KEESE_SETUP_FALL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFirefly`
+    VB_KEESE_SETUP_FROZENFALL,
+
+    // #### `result`
+    // ```c
     // Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
     // ```
     // #### `args`
@@ -1498,6 +1674,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false if in Jabu, carrying Ruto, abducted flag set, door is id 21 or 3
+    // ```
+    // #### `args`
+    // - `*Actor` (shutter door)
+    VB_JABU_PREVENT_RUTO_REENTER_BIGOCTO,
+
+    // #### `result`
+    // ```c
     // varies
     // ```
     // #### `args`
@@ -1514,11 +1698,27 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // gSaveContext.eventInf[0] & 0x40
+    // ```
+    // #### `args`
+    // - None
+    VB_LINK_WIN_EPONA,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)
     // ```
     // #### `args`
     // - `*DoorShutter`
     VB_LOCK_BOSS_DOOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_LOST_WOODS_OCARINA_GAME_TIMER_TICK,
 
     // #### `result`
     // ```c
@@ -1567,6 +1767,30 @@ typedef enum {
     // #### `args`
     // - `*EnMd`
     VB_MIDO_SPAWN,
+
+    // #### `result`
+    // ```c
+    // reflection[i].reflectionPoly != NULL
+    // ```
+    // #### `args`
+    // - `*MirRayShieldReflection`
+    VB_MIRRAY_DRAW_REFLECTION,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `s32` (note append position)
+    VB_MODIFY_LOST_WOODS_OCARINA_GAME_NOTE_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `f32*` speed
+    VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED,
 
     // #### `result`
     // ```c
@@ -1656,7 +1880,7 @@ typedef enum {
     // this->getItemId != GI_NONE
     // ```
     // #### `args`
-    // - `None`
+    // - `*EnBox`
     VB_OPEN_CHEST,
 
     // #### `result`
@@ -1833,14 +2057,6 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_PLAY_DROP_FISH_FOR_JABU_CS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
     // ##### In `z_demo.c`:
     // - `int32_t` (entranceCutscene->flag) (promoted from `uint8_t` by va_arg)
     // - `int32_t` (entranceCutscene->entrance) (promoted from `uint16_t` by va_arg)
@@ -1881,6 +2097,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnFr`
+    VB_PLAY_FROG_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnHeishi2`
     // - `bool` (clearCamera - true if the code clears a sub-camera, false otherwise)
     VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
@@ -1892,6 +2116,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_GORON_FREE_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnSkj`
+    VB_PLAY_LOST_WOODS_OCARINA_GAME,
 
     // #### `result`
     // ```c
@@ -1916,6 +2148,31 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossTw`
+    // - `*PlayState`
+    VB_PLAY_TWINROVA_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOTAKE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOUME,
 
     // #### `result`
     // ```c
@@ -2009,6 +2266,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnSyatekiItm`
+    VB_PLAY_SHOOTING_GALLERY,
 
     // #### `result`
     // ```c
@@ -2210,6 +2475,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `s32` (entrance index)
+    VB_RACE_INGO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnRd`
     VB_REDEAD_GIBDO_FREEZE_LINK,
 
@@ -2329,6 +2602,31 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `None`
+    VB_SET_BOMBCHU_BOWLING_AMMO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnBomBowlMan`
+    // - `s16*` (prize to show, an `ExItemType`)
+    VB_SET_BOMBCHU_BOWLING_PRIZE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnBomBowlMan`
+    VB_SET_BOMBCHU_BOWLING_PRIZE_SELECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (button - promoted from `s16`)
     VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
 
@@ -2350,7 +2648,41 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFr`
+    // - `s16` (default time limit)
+    VB_SET_FROG_OCARINA_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` (round number, zero-based)
+    // - `*u8` (note end position)
+    VB_SET_LOST_WOODS_OCARINA_GAME_NOTES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SET_LOST_WOODS_OCARINA_GAME_STARTING_NOTES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (ammo count)
+    VB_SET_SHOOTING_GALLERY_AMMO,
+
+    // #### `result`
+    // ```c
+    // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == FLOOR_EFFECT_2
     // ```
     // #### `args`
     // - `*int16_t` - original next entrance index (`play->setupExitList[exitIndex - 1]`)
@@ -2373,6 +2705,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER,
+
+    // #### `result`
+    // ```c
+    // LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_SHOOTING_GALLERY_SHUFFLE_ADULT_RUPEES,
 
     // #### `result`
     // ```c
@@ -2421,6 +2761,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->actor.world.pos.z > 1300.0f) ||
+    // BgCheck_SphVsFirstPoly(&play->colCtx, &rodCheckPos, 20.0f)
+    // ```
+    // #### `args`
+    // - `*Vec3f`
+    VB_NOT_CAST_FISHING,
+
+    // #### `result`
+    // ```c
     // false
     // ```
     // #### `args`
@@ -2443,6 +2792,30 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHOW_TITLE_CARD,
+
+    // #### `result`
+    // ```c
+    // this->actor.xyzDistToPlayerSq < 900.0f
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_COLLECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_COUNT_CHECK,
+
+    // #### `result`
+    // ```c
+    // Flags_GetSwitch(play, this->switchFlag)
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_DESPAWN,
 
     // #### `result`
     // ```c
@@ -2529,6 +2902,14 @@ typedef enum {
     // ##### In `z_boss_va.c`:
     // - `*BossVa`
     VB_SPAWN_BLUE_WARP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` (Cucco index; 0 = small, 1 = big)
+    VB_SPAWN_BOMBCHU_BOWLING_CUCCOS,
 
     // #### `result`
     // ```c
@@ -2681,6 +3062,14 @@ typedef enum {
     // #### `args`
     // - `*Input`
     VB_THROW_OR_PUT_DOWN_HELD_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_ON_ACTOR_THROW_ONLY_CHECK,
 
     // #### `result`
     // ```c
@@ -2865,7 +3254,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // varies
     // ```
     // #### `args`
     // - `*Actor`
@@ -2937,7 +3326,17 @@ typedef enum {
     // ```
     // #### `args`
     // - `*DoorShutter`
+    // - `*Vec3f` (relPlayerPos)
+    // - `*f32` (maxDistSides)
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)
+    // ```
+    // #### `args`
+    // - `*Vec3f` (playerPosRelToDoor)
+    VB_EN_DOOR_OFFER_OPEN,
 
     // #### `result`
     // ```c
@@ -2946,14 +3345,6 @@ typedef enum {
     // #### `args`
     // - None
     VB_DRAW_2D_BACKGROUND,
-
-    // #### `result`
-    // ```c
-    // CVarGetInteger(CVAR_ENHANCEMENT("3DSceneRender"), 0)
-    // ```
-    // #### `args`
-    // - None
-    VB_LOAD_SKYBOX,
 
     // true
     // ```
@@ -3233,6 +3624,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_AFTER_ACTOR_UPDATE_BGCHECKINFO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHakaHuta`
     // - `*PlayState`
     VB_HAKA_HUTA_SPAWN_KEESE,
@@ -3264,6 +3663,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // interruptResult == PLAYER_INTERRUPT_NEW_ACTION
+    // ```
+    // #### `args`
+    // - `*u8 (&player->unk_6AD)`
+    VB_INTERRUPT_LADDER_DISMOUNT,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -3287,6 +3694,25 @@ typedef enum {
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - none
+    VB_PUTAWAY_BECAUSE_DISABLED_ITEM_BUTTONS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32* i` (button index)
+    // - `Player*`
+    // - `s32* item`
+    VB_OVERRIDE_BUTTON_ITEM_USED,
+
+    // #### `result`
+    // ```c
     // true if Goron Link is talking
     // ```
     // #### `args`
@@ -3371,6 +3797,144 @@ typedef enum {
     // #### `args`
     // - None
     VB_TEMP_B_RESTORE_SWORDLESS,
-} GIVanillaBehavior;
 
-#endif
+    // #### `result`
+    // ```c
+    // true
+    // // ```
+    // Hook to override the save menu for a message box allowing you to
+    // Continue, Reset, and Reset to Spawn after saving (only from the pause menu, not the
+    // game over screen).
+    // #### `args`
+    // - `*PlayState`
+    VB_LOAD_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // pauseCtx->state == 7
+    // ```
+    // Hook to override the drawing/loading textures for the save menu so that
+    // a textbox can be rendered instead. Pause screen only, Game Over version left
+    // intact.
+    VB_DRAW_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the chest game shopkeeper wipes the scene's chest flags and keys on spawn.
+    // #### `args`
+    // - `*EnTakaraMan`
+    VB_TAKARA_MAN_RESET_CHESTS_AND_KEYS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the chest game shopkeeper hands over a small key after being paid.
+    // #### `args`
+    // - `*EnTakaraMan`
+    VB_TAKARA_MAN_OFFER_GET_ITEM,
+
+    // #### `result`
+    // ```c
+    // Rand_ZeroFloat(1.99f) < 1.0f
+    // ```
+    // Whether the chest game swaps which side of the room holds the key chest.
+    // #### `args`
+    // - `*EnChanger`
+    VB_EN_CHANGER_SWAP_CHESTS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether opening a chest sets its treasure flag.
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_SET_TREASURE_FLAG,
+
+    // #### `result`
+    // ```c
+    // Flags_GetTreasure(play, this->dyna.actor.params & 0x1F)
+    // ```
+    // Whether a chest counts as already opened.
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_CONSIDER_CHEST_OPEN,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether NPCs give their mask reaction text for the mask being worn.
+    // #### `args`
+    // - `u8 currentMask`
+    VB_NPC_REACT_TO_MASK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether a trade item button gets greyed out while trade items are restricted.
+    // #### `args`
+    // - `u8 item`
+    VB_DISABLE_TRADE_ITEM_BUTTON,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Movement speed for the "Move in first person" setting, multiplied in place.
+    // #### `args`
+    // - `*Player`
+    // - `f32*` movementSpeed
+    VB_PLAYER_MODIFY_FIRST_PERSON_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the market night guard goes back to idle once talked to, rather than
+    // a hook taking over his action func.
+    // #### `args`
+    // - `*EnHeishi4`
+    // - `*PlayState`
+    VB_MARKET_NIGHT_GUARD_SET_ACTION_AFTER_TALK,
+
+    // #### `result`
+    // ```c
+    // ageReq == AGE_REQ_NONE || ageReq == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age for something age gated.
+    // #### `args`
+    // - `u8 ageReq` an `AGE_REQ_*`, which for adult and child is the matching `LINK_AGE_*`
+    VB_PLAYER_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // gItemAgeReqs[itemIndex] == AGE_REQ_NONE || gItemAgeReqs[itemIndex] == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age to hold an item.
+    // #### `args`
+    // - `u8 itemIndex`
+    VB_ITEM_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // gSlotAgeReqs[slotIndex] == AGE_REQ_NONE || gSlotAgeReqs[slotIndex] == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age to use an inventory slot.
+    // #### `args`
+    // - `u8 slotIndex`
+    VB_SLOT_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // this->currentMask != PLAYER_MASK_NONE
+    // ```
+    // Whether a worn mask comes off once it's no longer on a button.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_UNEQUIP_MASK_WITHOUT_BUTTON,
+} GIVanillaBehavior;

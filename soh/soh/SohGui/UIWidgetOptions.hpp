@@ -1,5 +1,4 @@
-#ifndef UIWidgetOptions_hpp
-#define UIWidgetOptions_hpp
+#pragma once
 
 #include <map>
 #include <memory>
@@ -597,5 +596,4 @@ struct InputOptions : WidgetOptions {
         return *this;
     }
 };
-};     // namespace UIWidgets
-#endif /* UIWidgetOptions_hpp */
+}; // namespace UIWidgets

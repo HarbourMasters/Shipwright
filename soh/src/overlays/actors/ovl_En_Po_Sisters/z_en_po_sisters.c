@@ -9,7 +9,6 @@
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -236,8 +235,6 @@ void EnPoSisters_Destroy(Actor* thisx, PlayState* play) {
         func_800F5B58();
     }
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AD9240(EnPoSisters* this, s32 arg1, Vec3f* arg2) {

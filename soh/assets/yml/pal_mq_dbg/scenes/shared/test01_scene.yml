@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x035B3000 ]
+
+test01_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: test01_scene
+
+
+test01_sceneCollisionHeader_003DEC:
+  type: OOT:COLLISION
+  offset: 0x003DEC
+  symbol: test01_sceneCollisionHeader_003DEC

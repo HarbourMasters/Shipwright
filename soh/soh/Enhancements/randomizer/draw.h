@@ -1,5 +1,3 @@
-#ifndef RANDODRAW_H
-#define RANDODRAW_H
 #pragma once
 
 #include "../item-tables/ItemTableTypes.h"
@@ -27,13 +25,15 @@ void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawSkeletonKey(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry* getItemEntry);
-void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawNutBag(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEntry);
 
 #define GET_ITEM_MYSTERY                                                                                 \
     {                                                                                                    \
@@ -42,6 +42,4 @@ void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry);
     }
 #ifdef __cplusplus
 };
-#endif
-
 #endif

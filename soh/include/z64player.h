@@ -845,7 +845,7 @@ typedef struct Player {
     /* 0x06A4 */ f32 closestSecretDistSq;
     /* 0x06A8 */ Actor* unk_6A8;
     /* 0x06AC */ s8 idleType;
-    /* 0x06AD */ u8 unk_6AD;
+    /* 0x06AD */ u8 unk_6AD; // Camera related. 0 = normal, 1 = first person without weapon, 2 = first person with weapon, 3 = cutscene action, 4 = cutscene items
     /* 0x06AE */ u16 unk_6AE_rotFlags; // See `UNK6AE_ROT_` macros. If its flag isn't set, a rot steps to 0.
     /* 0x06B0 */ s16 upperLimbYawSecondary;
     /* 0x06B2 */ char unk_6B4[0x004];

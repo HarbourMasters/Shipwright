@@ -21,11 +21,10 @@ class Logic {
   public:
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    uint8_t PieceOfHeart = 0;
-    uint8_t HeartContainer = 0;
     bool IsChild = false;
     bool IsAdult = false;
     uint8_t BigPoes = 0;
+    // hearts we start the seed with, health itself lives in the save context
     uint8_t BaseHearts = 0;
     bool AtDay = false;
     bool AtNight = false;
@@ -47,12 +46,14 @@ class Logic {
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
+    bool CanOpenLargeChest();
     bool CanDoGlitch(GlitchType glitch);
     bool CanEquipSwap(RandomizerGet itemName);
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
                       uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
-    bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
+    bool CanAvoidEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool grounded = false,
+                       uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
@@ -60,7 +61,9 @@ class Logic {
     bool CanHitEyeTargets();
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
-    bool CanHammerRecoilHover(bool needShield = false);
+    bool BeanPlanted(LogicVal beanEvent);
+    bool CanRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
@@ -88,14 +91,15 @@ class Logic {
     bool CanStunDeku();
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
-    uint8_t EffectiveHealth();
-    uint8_t Hearts();
+    uint16_t Health();
+    uint16_t EffectiveHealth();
     uint8_t StoneCount();
     uint8_t MedallionCount();
     uint8_t DungeonCount();
-    uint8_t FireTimer();
-    uint8_t WaterTimer();
+    uint16_t FireTimer();
+    uint16_t WaterTimer();
     bool TakeDamage();
+    bool CanVoid();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();
     bool CanGetNightTimeGS();
@@ -110,6 +114,8 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();
+    bool BunnyHood();
+    bool BunnyHovers();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();

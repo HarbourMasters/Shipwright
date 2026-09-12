@@ -6,7 +6,6 @@
 
 #include "z_en_brob.h"
 #include "objects/object_brob/object_brob.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -103,8 +102,6 @@ void EnBrob_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
     Collider_DestroyCylinder(play, &this->colliders[0]);
     Collider_DestroyCylinder(play, &this->colliders[1]);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBrob_SetupIdle(EnBrob* this, PlayState* play) {

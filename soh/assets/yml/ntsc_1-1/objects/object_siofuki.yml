@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x011B9610 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x011B9610 ]
+    - [ 9, 0x011B9610 ]
+    - [ 10, 0x011B9610 ]
+    - [ 11, 0x011B9610 ]
+    - [ 12, 0x011B9610 ]
+    - [ 13, 0x011B9610 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+object_siofuki_Col_000D78:
+  type: OOT:COLLISION
+  offset: 0xD78
+  symbol: object_siofuki_Col_000D78
+
+object_siofuki_DL_000B70:
+  type: GFX
+  offset: 0xB70
+  symbol: object_siofuki_DL_000B70
+
+object_siofuki_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_siofuki_Tex_000000
+  format: I4
+  width: 64
+  height: 64
+
+
+object_siofukiVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_siofukiVtx_000800
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

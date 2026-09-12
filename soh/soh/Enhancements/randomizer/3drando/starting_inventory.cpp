@@ -1,10 +1,8 @@
 #include "starting_inventory.hpp"
-
 #include "../dungeon.h"
 #include "../SeedContext.h"
-#include "../logic.h"
-#include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/util.h"
 
 std::vector<RandomizerGet> StartingInventory;
 uint8_t AdditionalHeartContainers;
@@ -51,6 +49,12 @@ void GenerateStartingInventory() {
         AddItemToInventory(RG_WATER_TEMPLE_BOSS_KEY);
         AddItemToInventory(RG_SPIRIT_TEMPLE_BOSS_KEY);
         AddItemToInventory(RG_SHADOW_TEMPLE_BOSS_KEY);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_STARTWITH)) {
+        for (int rg = (int)RG_SHADOW_SILVER_BLADES; rg <= (int)RG_GANONS_CASTLE_MQ_SILVER_SHADOW; rg++) {
+            AddItemToInventory((RandomizerGet)rg);
+        }
     }
 
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
@@ -109,10 +113,21 @@ void GenerateStartingInventory() {
         }
     }
     // The weird egg only exists as an item when it's shuffled; vanilla gives it through the cutscene.
-    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SHUFFLED)) {
         AddItemToInventory(RG_WEIRD_EGG, ctx->GetOption(RSK_STARTING_WEIRD_EGG) ? 1 : 0);
     }
+    // Same for Zelda's Letter.
+    if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
+        AddItemToInventory(RG_ZELDAS_LETTER, ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) ? 1 : 0);
+    }
+    AddItemToInventory(RG_KEATON_MASK, ctx->GetOption(RSK_STARTING_KEATON_MASK) ? 1 : 0);
+    AddItemToInventory(RG_SKULL_MASK, ctx->GetOption(RSK_STARTING_SKULL_MASK) ? 1 : 0);
+    AddItemToInventory(RG_SPOOKY_MASK, ctx->GetOption(RSK_STARTING_SPOOKY_MASK) ? 1 : 0);
     AddItemToInventory(RG_BUNNY_HOOD, ctx->GetOption(RSK_STARTING_BUNNY_HOOD) ? 1 : 0);
+    AddItemToInventory(RG_GORON_MASK, ctx->GetOption(RSK_STARTING_GORON_MASK) ? 1 : 0);
+    AddItemToInventory(RG_ZORA_MASK, ctx->GetOption(RSK_STARTING_ZORA_MASK) ? 1 : 0);
+    AddItemToInventory(RG_GERUDO_MASK, ctx->GetOption(RSK_STARTING_GERUDO_MASK) ? 1 : 0);
+    AddItemToInventory(RG_MASK_OF_TRUTH, ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH) ? 1 : 0);
     AddItemToInventory(RG_CLAIM_CHECK, ctx->GetOption(RSK_STARTING_CLAIM_CHECK) ? 1 : 0);
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());
     AddItemToInventory(RG_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);
@@ -154,7 +169,7 @@ void GenerateStartingInventory() {
 
 bool StartingInventoryHasBottle() {
     RandomizerGet bottle = RG_EMPTY_BOTTLE;
-    return ElementInContainer(bottle, StartingInventory);
+    return SohUtils::Contains(bottle, StartingInventory);
 }
 
 void ApplyStartingInventory() {

@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 128, 0x0157BC40 ]
+
+gRichardsHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gRichardsHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_IPVR_pal_static
+  external_tlut_offset: 0x200
+
+gRichardsHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gRichardsHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_IPVR_pal_static
+  external_tlut_offset: 0x400
+
+gRichardsHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gRichardsHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_IPVR_pal_static
+  external_tlut_offset: 0x600
+
+gRichardsHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gRichardsHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_IPVR_pal_static
+  external_tlut_offset: 0x0
+

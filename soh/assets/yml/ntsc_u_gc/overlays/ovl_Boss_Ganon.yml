@@ -1,0 +1,659 @@
+:config:
+  segments:
+    - [ 128, 0x00B82B50 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00B82B50 ]
+    - [ 9, 0x00B82B50 ]
+    - [ 10, 0x00B82B50 ]
+    - [ 11, 0x00B82B50 ]
+    - [ 12, 0x00B82B50 ]
+    - [ 13, 0x00B82B50 ]
+  virtual: [ 0x808CD090, 0x00B82B50 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gGanondorfBigMagicBGCircleDL:
+  type: GFX
+  offset: 0x1BFC0
+  symbol: gGanondorfBigMagicBGCircleDL
+
+gGanondorfDotDL:
+  type: GFX
+  offset: 0x1C068
+  symbol: gGanondorfDotDL
+
+gGanondorfImpactDarkDL:
+  type: GFX
+  offset: 0x1D968
+  symbol: gGanondorfImpactDarkDL
+
+gGanondorfImpactLightDL:
+  type: GFX
+  offset: 0x1DA80
+  symbol: gGanondorfImpactLightDL
+
+gGanondorfLightBallMaterialDL:
+  type: GFX
+  offset: 0x11288
+  symbol: gGanondorfLightBallMaterialDL
+
+gGanondorfLightCoreDL:
+  type: GFX
+  offset: 0x1FF38
+  symbol: gGanondorfLightCoreDL
+
+gGanondorfLightFlecksDL:
+  type: GFX
+  offset: 0x1BED0
+  symbol: gGanondorfLightFlecksDL
+
+gGanondorfLightRayTriDL:
+  type: GFX
+  offset: 0x1A478
+  symbol: gGanondorfLightRayTriDL
+
+gGanondorfLightStreak10DL:
+  type: GFX
+  offset: 0x1FBF8
+  symbol: gGanondorfLightStreak10DL
+
+gGanondorfLightStreak11DL:
+  type: GFX
+  offset: 0x1FC30
+  symbol: gGanondorfLightStreak11DL
+
+gGanondorfLightStreak12DL:
+  type: GFX
+  offset: 0x1FC68
+  symbol: gGanondorfLightStreak12DL
+
+gGanondorfLightStreak1DL:
+  type: GFX
+  offset: 0x1FA00
+  symbol: gGanondorfLightStreak1DL
+
+gGanondorfLightStreak2DL:
+  type: GFX
+  offset: 0x1FA38
+  symbol: gGanondorfLightStreak2DL
+
+gGanondorfLightStreak3DL:
+  type: GFX
+  offset: 0x1FA70
+  symbol: gGanondorfLightStreak3DL
+
+gGanondorfLightStreak4DL:
+  type: GFX
+  offset: 0x1FAA8
+  symbol: gGanondorfLightStreak4DL
+
+gGanondorfLightStreak5DL:
+  type: GFX
+  offset: 0x1FAE0
+  symbol: gGanondorfLightStreak5DL
+
+gGanondorfLightStreak6DL:
+  type: GFX
+  offset: 0x1FB18
+  symbol: gGanondorfLightStreak6DL
+
+gGanondorfLightStreak7DL:
+  type: GFX
+  offset: 0x1FB50
+  symbol: gGanondorfLightStreak7DL
+
+gGanondorfLightStreak8DL:
+  type: GFX
+  offset: 0x1FB88
+  symbol: gGanondorfLightStreak8DL
+
+gGanondorfLightStreak9DL:
+  type: GFX
+  offset: 0x1FBC0
+  symbol: gGanondorfLightStreak9DL
+
+gGanondorfLightning10Tex:
+  type: TEXTURE
+  offset: 0x17F10
+  symbol: gGanondorfLightning10Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning11Tex:
+  type: TEXTURE
+  offset: 0x18B10
+  symbol: gGanondorfLightning11Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning12Tex:
+  type: TEXTURE
+  offset: 0x19710
+  symbol: gGanondorfLightning12Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning1Tex:
+  type: TEXTURE
+  offset: 0x11310
+  symbol: gGanondorfLightning1Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning2Tex:
+  type: TEXTURE
+  offset: 0x11F10
+  symbol: gGanondorfLightning2Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning3Tex:
+  type: TEXTURE
+  offset: 0x12B10
+  symbol: gGanondorfLightning3Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning4Tex:
+  type: TEXTURE
+  offset: 0x13710
+  symbol: gGanondorfLightning4Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning5Tex:
+  type: TEXTURE
+  offset: 0x14310
+  symbol: gGanondorfLightning5Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning6Tex:
+  type: TEXTURE
+  offset: 0x14F10
+  symbol: gGanondorfLightning6Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning7Tex:
+  type: TEXTURE
+  offset: 0x15B10
+  symbol: gGanondorfLightning7Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning8Tex:
+  type: TEXTURE
+  offset: 0x16710
+  symbol: gGanondorfLightning8Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightning9Tex:
+  type: TEXTURE
+  offset: 0x17310
+  symbol: gGanondorfLightning9Tex
+  format: I8
+  width: 32
+  height: 96
+
+gGanondorfLightningDL:
+  type: GFX
+  offset: 0x1A350
+  symbol: gGanondorfLightningDL
+
+gGanondorfShadowModelDL:
+  type: GFX
+  offset: 0xE428
+  symbol: gGanondorfShadowModelDL
+
+gGanondorfShadowSetupDL:
+  type: GFX
+  offset: 0xE408
+  symbol: gGanondorfShadowSetupDL
+
+gGanondorfShockDL:
+  type: GFX
+  offset: 0x20000
+  symbol: gGanondorfShockDL
+
+gGanondorfShockGlowDL:
+  type: GFX
+  offset: 0x1EBD8
+  symbol: gGanondorfShockGlowDL
+
+gGanondorfShockwaveDL:
+  type: GFX
+  offset: 0x1CAD0
+  symbol: gGanondorfShockwaveDL
+
+gGanondorfSquareDL:
+  type: GFX
+  offset: 0x112F8
+  symbol: gGanondorfSquareDL
+
+gGanondorfTriforceDL:
+  type: GFX
+  offset: 0xF498
+  symbol: gGanondorfTriforceDL
+
+gGanondorfUnusedDL:
+  type: GFX
+  offset: 0x1A400
+  symbol: gGanondorfUnusedDL
+
+gGanondorfVortexDL:
+  type: GFX
+  offset: 0x20DE0
+  symbol: gGanondorfVortexDL
+
+gGanondorfWindowShardMaterialDL:
+  type: GFX
+  offset: 0xF988
+  symbol: gGanondorfWindowShardMaterialDL
+
+gGanondorfWindowShardModelDL:
+  type: GFX
+  offset: 0xFA30
+  symbol: gGanondorfWindowShardModelDL
+
+gGanondorfWindowShatterTemplateTex:
+  type: TEXTURE
+  offset: 0xFA48
+  symbol: gGanondorfWindowShatterTemplateTex
+  format: I8
+  width: 32
+  height: 64
+
+ovl_Boss_GanonTLUT_00F808:
+  type: TEXTURE
+  offset: 0xF518
+  symbol: ovl_Boss_GanonTLUT_00F808
+  format: RGBA16
+  width: 16
+  height: 16
+
+ovl_Boss_GanonTex_00E748:
+  type: TEXTURE
+  offset: 0xE458
+  symbol: ovl_Boss_GanonTex_00E748
+  format: I8
+  width: 64
+  height: 64
+
+ovl_Boss_GanonTex_00F848:
+  type: TEXTURE
+  offset: 0xF558
+  symbol: ovl_Boss_GanonTex_00F848
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xF518
+
+ovl_Boss_GanonTex_010538:
+  type: TEXTURE
+  offset: 0x10248
+  symbol: ovl_Boss_GanonTex_010538
+  format: I8
+  width: 64
+  height: 64
+
+ovl_Boss_GanonTex_01A7B0:
+  type: TEXTURE
+  offset: 0x1A4C0
+  symbol: ovl_Boss_GanonTex_01A7B0
+  format: IA16
+  width: 32
+  height: 32
+
+ovl_Boss_GanonTex_01AFB0:
+  type: TEXTURE
+  offset: 0x1ACC0
+  symbol: ovl_Boss_GanonTex_01AFB0
+  format: I4
+  width: 64
+  height: 64
+
+ovl_Boss_GanonTex_01B7B0:
+  type: TEXTURE
+  offset: 0x1B4C0
+  symbol: ovl_Boss_GanonTex_01B7B0
+  format: I4
+  width: 64
+  height: 64
+
+ovl_Boss_GanonTex_01C420:
+  type: TEXTURE
+  offset: 0x1C130
+  symbol: ovl_Boss_GanonTex_01C420
+  format: I8
+  width: 64
+  height: 32
+
+ovl_Boss_GanonTex_01CEB8:
+  type: TEXTURE
+  offset: 0x1CBC8
+  symbol: ovl_Boss_GanonTex_01CEB8
+  format: I8
+  width: 32
+  height: 64
+
+ovl_Boss_GanonTex_01D6B8:
+  type: TEXTURE
+  offset: 0x1D3C8
+  symbol: ovl_Boss_GanonTex_01D6B8
+  format: I8
+  width: 32
+  height: 32
+
+ovl_Boss_GanonTex_01DE88:
+  type: TEXTURE
+  offset: 0x1DB98
+  symbol: ovl_Boss_GanonTex_01DE88
+  format: I8
+  width: 32
+  height: 64
+
+ovl_Boss_GanonTex_01E688:
+  type: TEXTURE
+  offset: 0x1E398
+  symbol: ovl_Boss_GanonTex_01E688
+  format: I8
+  width: 32
+  height: 64
+
+ovl_Boss_GanonTex_01EF90:
+  type: TEXTURE
+  offset: 0x1ECA0
+  symbol: ovl_Boss_GanonTex_01EF90
+  format: I8
+  width: 96
+  height: 16
+
+ovl_Boss_GanonTex_01FFF8:
+  type: TEXTURE
+  offset: 0x1FD08
+  symbol: ovl_Boss_GanonTex_01FFF8
+  format: I4
+  width: 32
+  height: 32
+
+ovl_Boss_GanonTex_020370:
+  type: TEXTURE
+  offset: 0x20080
+  symbol: ovl_Boss_GanonTex_020370
+  format: I8
+  width: 32
+  height: 32
+
+ovl_Boss_GanonTex_020770:
+  type: TEXTURE
+  offset: 0x20480
+  symbol: ovl_Boss_GanonTex_020770
+  format: I8
+  width: 32
+  height: 64
+
+
+ovl_Boss_GanonVtx_00E3C8:
+  type: OOT:ARRAY
+  offset: 0x00E3C8
+  symbol: ovl_Boss_GanonVtx_00E3C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_00F458:
+  type: OOT:ARRAY
+  offset: 0x00F458
+  symbol: ovl_Boss_GanonVtx_00F458
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_00F958:
+  type: OOT:ARRAY
+  offset: 0x00F958
+  symbol: ovl_Boss_GanonVtx_00F958
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_011248:
+  type: OOT:ARRAY
+  offset: 0x011248
+  symbol: ovl_Boss_GanonVtx_011248
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01A310:
+  type: OOT:ARRAY
+  offset: 0x01A310
+  symbol: ovl_Boss_GanonVtx_01A310
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01A3D0:
+  type: OOT:ARRAY
+  offset: 0x01A3D0
+  symbol: ovl_Boss_GanonVtx_01A3D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01A448:
+  type: OOT:ARRAY
+  offset: 0x01A448
+  symbol: ovl_Boss_GanonVtx_01A448
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01BCC0:
+  type: OOT:ARRAY
+  offset: 0x01BCC0
+  symbol: ovl_Boss_GanonVtx_01BCC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01BE50:
+  type: OOT:ARRAY
+  offset: 0x01BE50
+  symbol: ovl_Boss_GanonVtx_01BE50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01BE90:
+  type: OOT:ARRAY
+  offset: 0x01BE90
+  symbol: ovl_Boss_GanonVtx_01BE90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01C930:
+  type: OOT:ARRAY
+  offset: 0x01C930
+  symbol: ovl_Boss_GanonVtx_01C930
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01D7C8:
+  type: OOT:ARRAY
+  offset: 0x01D7C8
+  symbol: ovl_Boss_GanonVtx_01D7C8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01EB98:
+  type: OOT:ARRAY
+  offset: 0x01EB98
+  symbol: ovl_Boss_GanonVtx_01EB98
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F2A0:
+  type: OOT:ARRAY
+  offset: 0x01F2A0
+  symbol: ovl_Boss_GanonVtx_01F2A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F340:
+  type: OOT:ARRAY
+  offset: 0x01F340
+  symbol: ovl_Boss_GanonVtx_01F340
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F3E0:
+  type: OOT:ARRAY
+  offset: 0x01F3E0
+  symbol: ovl_Boss_GanonVtx_01F3E0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F480:
+  type: OOT:ARRAY
+  offset: 0x01F480
+  symbol: ovl_Boss_GanonVtx_01F480
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F520:
+  type: OOT:ARRAY
+  offset: 0x01F520
+  symbol: ovl_Boss_GanonVtx_01F520
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F5C0:
+  type: OOT:ARRAY
+  offset: 0x01F5C0
+  symbol: ovl_Boss_GanonVtx_01F5C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F660:
+  type: OOT:ARRAY
+  offset: 0x01F660
+  symbol: ovl_Boss_GanonVtx_01F660
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F700:
+  type: OOT:ARRAY
+  offset: 0x01F700
+  symbol: ovl_Boss_GanonVtx_01F700
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F7A0:
+  type: OOT:ARRAY
+  offset: 0x01F7A0
+  symbol: ovl_Boss_GanonVtx_01F7A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F840:
+  type: OOT:ARRAY
+  offset: 0x01F840
+  symbol: ovl_Boss_GanonVtx_01F840
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F8E0:
+  type: OOT:ARRAY
+  offset: 0x01F8E0
+  symbol: ovl_Boss_GanonVtx_01F8E0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01F980:
+  type: OOT:ARRAY
+  offset: 0x01F980
+  symbol: ovl_Boss_GanonVtx_01F980
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01FF08:
+  type: OOT:ARRAY
+  offset: 0x01FF08
+  symbol: ovl_Boss_GanonVtx_01FF08
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_01FFC0:
+  type: OOT:ARRAY
+  offset: 0x01FFC0
+  symbol: ovl_Boss_GanonVtx_01FFC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_GanonVtx_020C80:
+  type: OOT:ARRAY
+  offset: 0x020C80
+  symbol: ovl_Boss_GanonVtx_020C80
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

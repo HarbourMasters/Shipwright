@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A84000 ]
+
+gTreasureBoxShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTreasureBoxShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gTreasureBoxShopTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gTreasureBoxShopTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gTreasureBoxShopTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gTreasureBoxShopTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

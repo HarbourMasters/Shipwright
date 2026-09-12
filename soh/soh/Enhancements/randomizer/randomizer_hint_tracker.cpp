@@ -1,8 +1,3 @@
-#include "randomizer_hint_tracker.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
-#include "soh/SohGui/SohGui.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -11,23 +6,28 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/window/gui/IconsFontAwesome4.h>
 
-extern "C" {
-#include <z64.h>
-#include "macros.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-}
-
+#include "randomizer_hint_tracker.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/hint.h"
 #include "soh/Enhancements/randomizer/item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+
+extern "C" {
+#include <z64.h>
+#include "variables.h"
+extern PlayState* gPlayState;
+}
 
 using namespace UIWidgets;
 
@@ -58,6 +58,13 @@ static WidgetInfo readTextColorWidget;
 static WidgetInfo unreadColorWidget;
 static WidgetInfo wothColorWidget;
 static WidgetInfo foolishColorWidget;
+static WidgetInfo foundColorWidget;
+static WidgetInfo draggableWidget;
+static WidgetInfo showOnlyPausedWidget;
+static WidgetInfo expandCollapseWidget;
+static WidgetInfo searchInputWidget;
+static WidgetInfo hintTotalsWidget;
+static WidgetInfo hideFoundWidget;
 
 static const Color_RGBA8 Color_ReadText_Default = { 179, 179, 179, 255 };
 static const Color_RGBA8 Color_Unread_Default = { 128, 128, 128, 255 };
@@ -65,15 +72,26 @@ static const Color_RGBA8 Color_Unread_Default = { 128, 128, 128, 255 };
 // "the way of the hero" renders light blue, "a foolish choice" pink.
 static const Color_RGBA8 Color_Woth_Default = { 100, 180, 255, 255 };
 static const Color_RGBA8 Color_Foolish_Default = { 255, 150, 180, 255 };
+// Dimmed grey for hints whose item has already been collected.
+static const Color_RGBA8 Color_Found_Default = { 110, 110, 110, 255 };
 static Color_RGBA8 Color_ReadText = Color_ReadText_Default;
 static Color_RGBA8 Color_Unread = Color_Unread_Default;
 static Color_RGBA8 Color_Woth = Color_Woth_Default;
 static Color_RGBA8 Color_Foolish = Color_Foolish_Default;
+static Color_RGBA8 Color_Found = Color_Found_Default;
 
 static const CustomMessage locationsTabLabel = CustomMessage("Locations", "Orte", "Lieux");
 static const CustomMessage journalTabLabel = CustomMessage("Journal", "Tagebuch", "Journal");
 static const CustomMessage junkLabel = CustomMessage("Junk", "Ramsch", "Inutile");
 static const CustomMessage itemsLabel = CustomMessage("Items", "Gegenstände", "Objets");
+static const CustomMessage majorItemsLabel = CustomMessage("Major Items", "Wichtige Gegenstände", "Objets majeurs");
+static const CustomMessage bossKeysLabel = CustomMessage("Boss Keys", "Master-Schlüssel", "Clés d'Or");
+static const CustomMessage smallKeysLabel = CustomMessage("Small Keys", "Kleine Schlüssel", "Petites Clés");
+static const CustomMessage skulltulaTokensLabel =
+    CustomMessage("Skulltula Tokens", "Skulltula-Symbole", "Symboles de Skulltula");
+static const CustomMessage heartsLabel = CustomMessage("Hearts", "Herzen", "Cœurs");
+static const CustomMessage lesserItemsLabel = CustomMessage("Lesser Items", "Kleinere Gegenstände", "Objets mineurs");
+static const CustomMessage junkItemsLabel = CustomMessage("Junk Items", "Nutzlose Gegenstände", "Objets inutiles");
 static const CustomMessage otherHintsLabel = CustomMessage("Other Hints", "Sonstige Hinweise", "Autres indices");
 static const CustomMessage hintsReadLabel = CustomMessage("Hints Read", "Hinweise gelesen", "Indices lus");
 static const CustomMessage noHintsMessage =
@@ -230,6 +248,9 @@ struct HintEntry {
     int sortRank = 0;
     // Optional color for the name line (points at one of the color statics).
     const Color_RGBA8* nameColor = nullptr;
+    // True once every location this hint points at has been collected. Found
+    // entries sink to the bottom of their group and render dimmed with a tick.
+    bool found = false;
 };
 
 // Most valuable first, mirroring the ordering implied by chest size & color
@@ -254,22 +275,42 @@ static int ItemCategoryRank(GetItemCategory category) {
     }
 }
 
+// Group label for each ItemCategoryRank value, in rank order. Callers clamp
+// the unresolved-item fallback rank (JUNK + 1) into the Junk group first.
+static std::string ItemCategoryRankName(int rank) {
+    static const CustomMessage* const rankLabels[] = {
+        &majorItemsLabel,      // ITEM_CATEGORY_MAJOR
+        &bossKeysLabel,        // ITEM_CATEGORY_BOSS_KEY
+        &smallKeysLabel,       // ITEM_CATEGORY_SMALL_KEY
+        &skulltulaTokensLabel, // ITEM_CATEGORY_SKULLTULA_TOKEN
+        &heartsLabel,          // ITEM_CATEGORY_HEALTH
+        &lesserItemsLabel,     // ITEM_CATEGORY_LESSER
+        &junkItemsLabel,       // ITEM_CATEGORY_JUNK
+    };
+    return rankLabels[rank]->GetForCurrentLanguage(MF_CLEAN);
+}
+
 static void DrawHintEntry(const HintEntry& entry) {
-    if (entry.nameColor != nullptr) {
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(entry.nameColor->r / 255.0f, entry.nameColor->g / 255.0f,
-                                                    entry.nameColor->b / 255.0f, entry.nameColor->a / 255.0f));
-        ImGui::TextUnformatted(entry.name.c_str());
+    // A collected hint is dimmed and prefixed with a tick; the dim colour wins
+    // over any per-type name colour (Way of the Hero / Foolish).
+    const Color_RGBA8* nameColor = entry.found ? &Color_Found : entry.nameColor;
+    std::string name = entry.found ? (ICON_FA_CHECK " " + entry.name) : entry.name;
+    if (nameColor != nullptr) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(nameColor->r / 255.0f, nameColor->g / 255.0f, nameColor->b / 255.0f,
+                                                    nameColor->a / 255.0f));
+        ImGui::TextUnformatted(name.c_str());
         ImGui::PopStyleColor();
     } else {
-        ImGui::TextUnformatted(entry.name.c_str());
+        ImGui::TextUnformatted(name.c_str());
     }
     if (entry.compact) {
         return;
     }
     ImGui::Indent();
     if (IsHintRead(entry.hintKey)) {
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(Color_ReadText.r / 255.0f, Color_ReadText.g / 255.0f,
-                                                    Color_ReadText.b / 255.0f, Color_ReadText.a / 255.0f));
+        const Color_RGBA8& textColor = entry.found ? Color_Found : Color_ReadText;
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(textColor.r / 255.0f, textColor.g / 255.0f, textColor.b / 255.0f,
+                                                    textColor.a / 255.0f));
         ImGui::TextWrapped("%s", GetJoinedHintText(entry.hintKey).c_str());
         ImGui::PopStyleColor();
     } else {
@@ -340,6 +381,7 @@ static void DrawHintList() {
     Color_Unread = CVarGetColor(CVAR_TRACKER_HINT("UnreadColor.Value"), Color_Unread_Default);
     Color_Woth = CVarGetColor(CVAR_TRACKER_HINT("WothColor.Value"), Color_Woth_Default);
     Color_Foolish = CVarGetColor(CVAR_TRACKER_HINT("FoolishColor.Value"), Color_Foolish_Default);
+    Color_Found = CVarGetColor(CVAR_TRACKER_HINT("FoundColor.Value"), Color_Found_Default);
 
     bool showExpandCollapse = CVarGetInteger(CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"), 1);
     bool showSearch = CVarGetInteger(CVAR_TRACKER_HINT("SearchInputVisible"), 1);
@@ -410,21 +452,17 @@ static void DrawHintList() {
         if (journalView && !read) {
             return;
         }
-        HintGroup& group = groups[groupKey];
-        if (group.name.empty()) {
-            group.name = groupName;
-            group.area = area;
-        }
-        group.total++;
-        if (read) {
-            group.read++;
-        }
         // Way of the Hero / Foolish hints are just area statements, so in the
         // journal the hinted area name alone says everything the hint did.
         bool compact = false;
         int sortRank = 0;
+        bool found = false;
         const Color_RGBA8* nameColor = nullptr;
         std::string hintName;
+        // The group this hint lands in. Item hints override it with their
+        // item category once it is known below.
+        size_t effectiveKey = groupKey;
+        std::string effectiveName = groupName;
         if (journalView) {
             Rando::Hint* hint = ctx->GetHint(hintKey);
             HintType type = hint->GetHintType();
@@ -442,21 +480,48 @@ static void DrawHintList() {
                 }
             } else if ((type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) &&
                        !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
-                // Rank item hints by the same adjusted item category that
-                // drives chest appearance, so ice trap disguises rank as
-                // their cover item. Mysterious Shuffle disables the ranking.
+                // Rank item hints by their adjusted item category, so ice trap
+                // disguises rank as their cover item. Mysterious Shuffle disables
+                // the ranking. Pass checkObtainability = false: we want the true
+                // placed item's value, otherwise a genuine major item that isn't
+                // reachable yet (e.g. Anju's Lens of Truth as adult) gets masked
+                // to a blue rupee and wrongly sinks to junk rank.
                 sortRank = ItemCategoryRank(ITEM_CATEGORY_JUNK) + 1;
-                for (RandomizerCheck rc : hint->GetHintedLocations()) {
-                    GetItemEntry itemEntry = ctx->GetFinalGIEntry(rc, true, GI_NONE);
+                std::vector<RandomizerCheck> hintedLocations = hint->GetHintedLocations();
+                // "Found" means every location this hint points at is collected;
+                // a multi-location hint still matters while any part is uncollected.
+                found = !hintedLocations.empty();
+                for (RandomizerCheck rc : hintedLocations) {
+                    GetItemEntry itemEntry = ctx->GetFinalGIEntry(rc, false, GI_NONE);
                     sortRank = std::min(sortRank, ItemCategoryRank(Randomizer_AdjustItemCategory(itemEntry)));
+                    if (!ctx->GetItemLocation(rc)->HasObtained()) {
+                        found = false;
+                    }
                 }
+                // Fan the single "Items" group out into the item categories.
+                // The unresolved-item fallback rank shares the Junk group.
+                int rank = std::min(sortRank, ItemCategoryRank(ITEM_CATEGORY_JUNK));
+                effectiveKey = groupKey + static_cast<size_t>(rank);
+                effectiveName = ItemCategoryRankName(rank);
             }
         }
         if (hintName.empty()) {
             hintName = Rando::StaticData::hintNames[hintKey].GetForCurrentLanguage(MF_CLEAN);
         }
-        if (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(groupName.c_str())) {
-            group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor });
+        HintGroup& group = groups[effectiveKey];
+        if (group.name.empty()) {
+            group.name = effectiveName;
+            group.area = area;
+        }
+        group.total++;
+        if (read) {
+            group.read++;
+        }
+        // "Hide found" only removes fully-collected hints from the journal view
+        // (found is never set in the locations view).
+        bool hideFound = found && CVarGetInteger(CVAR_TRACKER_HINT("HideFound"), 0);
+        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(effectiveName.c_str()))) {
+            group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor, found });
         }
     };
     auto typeGroupKey = [](HintType type) {
@@ -469,12 +534,15 @@ static void DrawHintList() {
             HINT_TYPE_WOTH,  HINT_TYPE_FOOLISH,     HINT_TYPE_ITEM,        HINT_TYPE_AREA,    HINT_TYPE_ENTRANCE,
             HINT_TYPE_TRIAL, HINT_TYPE_ALTAR_CHILD, HINT_TYPE_ALTAR_ADULT, HINT_TYPE_MESSAGE, HINT_TYPE_HINT_KEY,
         };
+        // Keys are scaled so the "Items" slot can fan out into the item
+        // categories (+0..+6) without colliding with the next hint type.
+        constexpr size_t kCategorySlots = 8;
         auto rank = std::find(priority.begin(), priority.end(), type);
         if (rank == priority.end()) {
             // Unranked types each get their own group after the ranked ones.
-            return priority.size() + static_cast<size_t>(type);
+            return (priority.size() + static_cast<size_t>(type)) * kCategorySlots;
         }
-        return static_cast<size_t>(rank - priority.begin());
+        return static_cast<size_t>(rank - priority.begin()) * kCategorySlots;
     };
     auto typeGroupName = [](HintType type) {
         if (type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) {
@@ -538,6 +606,10 @@ static void DrawHintList() {
             continue;
         }
         std::sort(group.entries.begin(), group.entries.end(), [](const auto& left, const auto& right) {
+            // Collected hints sink to the bottom of their group.
+            if (left.found != right.found) {
+                return !left.found;
+            }
             if (left.sortRank != right.sortRank) {
                 return left.sortRank < right.sortRank;
             }
@@ -592,7 +664,7 @@ void HintTrackerWindow::DrawElement() {
 
     ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_FirstUseEver);
     if (Trackers::BeginFloatWindows(
-            "Hint Tracker", mIsVisible, Color_Background,
+            "Hint Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_HINT("Draggable"), 1))) {
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_HINT("FontSize"), 1.0f));
@@ -651,9 +723,10 @@ void HintTrackerSettingsWindow::DrawElement() {
                         .DefaultValue(1.0f));
 
     if (CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        CVarCheckbox("Enable Dragging", CVAR_TRACKER_HINT("Draggable"), CheckboxOptions().Color(THEME_COLOR));
-        CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_HINT("ShowOnlyPaused"),
-                     CheckboxOptions().Color(THEME_COLOR));
+        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
         CVarCombobox("Display Mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
                      ComboboxOptions()
                          .LabelPosition(LabelPositions::Far)
@@ -677,12 +750,16 @@ void HintTrackerSettingsWindow::DrawElement() {
     }
 
     ImGui::SeparatorText("Tracker Header Visibility");
-    CVarCheckbox("Expand/Collapse Buttons", CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-    CVarCheckbox("Search Input", CVAR_TRACKER_HINT("SearchInputVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-    CVarCheckbox("Hint Totals", CVAR_TRACKER_HINT("HintTotalsVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+
+    ImGui::SeparatorText("Journal");
+    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
     ImGui::TableNextColumn();
 
@@ -693,6 +770,8 @@ void HintTrackerSettingsWindow::DrawElement() {
     SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                        THEME_COLOR);
     SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                        THEME_COLOR);
 
     ImGui::EndTable();
@@ -721,7 +800,7 @@ void RegisterHintTrackerWidgets() {
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_ReadText_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ readTextColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
 
-    unreadColorWidget = { .name = "Unread (???)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    unreadColorWidget = { .name = "Unread (?\?\?)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
     unreadColorWidget.CVar(CVAR_TRACKER_HINT("UnreadColor"))
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Unread_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ unreadColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
@@ -735,6 +814,44 @@ void RegisterHintTrackerWidgets() {
     foolishColorWidget.CVar(CVAR_TRACKER_HINT("FoolishColor"))
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Foolish_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ foolishColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    foundColorWidget = { .name = "Found (collected)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    foundColorWidget.CVar(CVAR_TRACKER_HINT("FoundColor"))
+        .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Found_Default).UseAlpha().ShowReset());
+    SohGui::GetSohMenu()->AddSearchWidget({ foundColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    draggableWidget = { .name = "Enable Dragging##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    draggableWidget.CVar(CVAR_TRACKER_HINT("Draggable")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::GetSohMenu()->AddSearchWidget({ draggableWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    showOnlyPausedWidget = { .name = "Only Enable While Paused##HintTracker",
+                             .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    showOnlyPausedWidget.CVar(CVAR_TRACKER_HINT("ShowOnlyPaused")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::GetSohMenu()->AddSearchWidget({ showOnlyPausedWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    expandCollapseWidget = { .name = "Expand/Collapse Buttons##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    expandCollapseWidget.CVar(CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ expandCollapseWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    searchInputWidget = { .name = "Search Input##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    searchInputWidget.CVar(CVAR_TRACKER_HINT("SearchInputVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ searchInputWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    hintTotalsWidget = { .name = "Hint Totals##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    hintTotalsWidget.CVar(CVAR_TRACKER_HINT("HintTotalsVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ hintTotalsWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    hideFoundWidget = { .name = "Hide Found Items##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    hideFoundWidget.CVar(CVAR_TRACKER_HINT("HideFound"))
+        .Options(CheckboxOptions()
+                     .Tooltip("Removes hints whose item you have already collected from the Journal, instead of "
+                              "dimming them and sorting them to the bottom.")
+                     .Color(THEME_COLOR)
+                     .DefaultValue(false));
+    SohGui::GetSohMenu()->AddSearchWidget({ hideFoundWidget, "Randomizer", "Hint Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterHintTrackerWidgets);

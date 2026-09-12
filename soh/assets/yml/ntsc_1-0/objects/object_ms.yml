@@ -1,0 +1,275 @@
+:config:
+  segments:
+    - [ 6, 0x0119D6B0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x0119D6B0 ]
+    - [ 9, 0x0119D6B0 ]
+    - [ 10, 0x0119D6B0 ]
+    - [ 11, 0x0119D6B0 ]
+    - [ 12, 0x0119D6B0 ]
+    - [ 13, 0x0119D6B0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gBeanSalesmanBackOfHandTex:
+  type: TEXTURE
+  offset: 0x3430
+  symbol: gBeanSalesmanBackOfHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3230
+
+gBeanSalesmanBeanbagDL:
+  type: GFX
+  offset: 0x21E0
+  symbol: gBeanSalesmanBeanbagDL
+
+gBeanSalesmanBeanbagLimb:
+  type: OOT:LIMB
+  offset: 0x3D94
+  symbol: gBeanSalesmanBeanbagLimb
+  limb_type: Standard
+
+gBeanSalesmanBeanbagTex:
+  type: TEXTURE
+  offset: 0x3C40
+  symbol: gBeanSalesmanBeanbagTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3230
+
+gBeanSalesmanBodyDL:
+  type: GFX
+  offset: 0x2300
+  symbol: gBeanSalesmanBodyDL
+
+gBeanSalesmanBodyLimb:
+  type: OOT:LIMB
+  offset: 0x3D88
+  symbol: gBeanSalesmanBodyLimb
+  limb_type: Standard
+
+gBeanSalesmanEarTex:
+  type: TEXTURE
+  offset: 0x3A30
+  symbol: gBeanSalesmanEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3230
+
+gBeanSalesmanEatingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5EC
+  symbol: gBeanSalesmanEatingAnim
+
+gBeanSalesmanEyeTex:
+  type: TEXTURE
+  offset: 0x3AB0
+  symbol: gBeanSalesmanEyeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3230
+
+gBeanSalesmanHeadDL:
+  type: GFX
+  offset: 0x28A0
+  symbol: gBeanSalesmanHeadDL
+
+gBeanSalesmanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3D70
+  symbol: gBeanSalesmanHeadLimb
+  limb_type: Standard
+
+gBeanSalesmanLeftForearmDL:
+  type: GFX
+  offset: 0x2F90
+  symbol: gBeanSalesmanLeftForearmDL
+
+gBeanSalesmanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x3D58
+  symbol: gBeanSalesmanLeftForearmLimb
+  limb_type: Standard
+
+gBeanSalesmanLeftHandDL:
+  type: GFX
+  offset: 0x30C0
+  symbol: gBeanSalesmanLeftHandDL
+
+gBeanSalesmanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x3D64
+  symbol: gBeanSalesmanLeftHandLimb
+  limb_type: Standard
+
+gBeanSalesmanLeftUpperArmDL:
+  type: GFX
+  offset: 0x2E58
+  symbol: gBeanSalesmanLeftUpperArmDL
+
+gBeanSalesmanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x3D4C
+  symbol: gBeanSalesmanLeftUpperArmLimb
+  limb_type: Standard
+
+gBeanSalesmanMouthDL:
+  type: GFX
+  offset: 0x2CC8
+  symbol: gBeanSalesmanMouthDL
+
+gBeanSalesmanMouthLimb:
+  type: OOT:LIMB
+  offset: 0x3D7C
+  symbol: gBeanSalesmanMouthLimb
+  limb_type: Standard
+
+gBeanSalesmanMouthTex:
+  type: TEXTURE
+  offset: 0x3930
+  symbol: gBeanSalesmanMouthTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3230
+
+gBeanSalesmanNoseTex:
+  type: TEXTURE
+  offset: 0x3A70
+  symbol: gBeanSalesmanNoseTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3230
+
+gBeanSalesmanPantsTex:
+  type: TEXTURE
+  offset: 0x3AF0
+  symbol: gBeanSalesmanPantsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3230
+
+gBeanSalesmanRootLimb:
+  type: OOT:LIMB
+  offset: 0x3D40
+  symbol: gBeanSalesmanRootLimb
+  limb_type: Standard
+
+gBeanSalesmanShoeTex:
+  type: TEXTURE
+  offset: 0x3BF0
+  symbol: gBeanSalesmanShoeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3230
+
+gBeanSalesmanSkel:
+  type: OOT:SKELETON
+  offset: 0x3DC0
+  symbol: gBeanSalesmanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBeanSalesmanSkinGradientTex:
+  type: TEXTURE
+  offset: 0x3C30
+  symbol: gBeanSalesmanSkinGradientTex
+  format: CI8
+  width: 4
+  height: 4
+  tlut: 0x3230
+
+gBeanSalesmanTLUT:
+  type: TEXTURE
+  offset: 0x3230
+  symbol: gBeanSalesmanTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeanSalesmanTattooTex:
+  type: TEXTURE
+  offset: 0x3530
+  symbol: gBeanSalesmanTattooTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3230
+
+
+object_msVtx_000600:
+  type: OOT:ARRAY
+  offset: 0x000600
+  symbol: object_msVtx_000600
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_0008B0:
+  type: OOT:ARRAY
+  offset: 0x0008B0
+  symbol: object_msVtx_0008B0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_000A50:
+  type: OOT:ARRAY
+  offset: 0x000A50
+  symbol: object_msVtx_000A50
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_000C50:
+  type: OOT:ARRAY
+  offset: 0x000C50
+  symbol: object_msVtx_000C50
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_000DB0:
+  type: OOT:ARRAY
+  offset: 0x000DB0
+  symbol: object_msVtx_000DB0
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_0014D0:
+  type: OOT:ARRAY
+  offset: 0x0014D0
+  symbol: object_msVtx_0014D0
+  count: 188
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_msVtx_002090:
+  type: OOT:ARRAY
+  offset: 0x002090
+  symbol: object_msVtx_002090
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeanSalesmanSkelLimbs:
+  type: BLOB
+  offset: 0x3DA0
+  symbol: gBeanSalesmanSkelLimbs
+  size: 0

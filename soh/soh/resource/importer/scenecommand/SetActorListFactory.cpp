@@ -1,8 +1,8 @@
+#include <tinyxml2.h>
+
 #include "soh/resource/importer/scenecommand/SetActorListFactory.h"
 #include "soh/resource/type/scenecommand/SetActorList.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetActorListFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

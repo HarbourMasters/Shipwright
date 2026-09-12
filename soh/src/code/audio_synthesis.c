@@ -851,28 +851,43 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                         s5 = samplesLenAdjusted;
                         goto skip;
                     case CODEC_S16:
-                    case CODEC_OPUS:
-                        AudioSynth_ClearBuffer(cmd++, DMEM_UNCOMPRESSED_NOTE, (samplesLenAdjusted + 16) * 2);
+                    case CODEC_OPUS: {
+                        if (nSamplesProcessed == 0) {
+                            AudioSynth_ClearBuffer(cmd++, DMEM_UNCOMPRESSED_NOTE, (samplesLenAdjusted + 16) * 2);
+                        }
                         flags = A_CONTINUE;
                         skipBytes = 0;
-                        size_t bytesToRead;
-                        nSamplesProcessed += samplesLenAdjusted;
+                        s32 nSamplesToRead = nSamplesToProcess;
 
-                        if (((synthState->samplePosInt * 2) + (samplesLenAdjusted)*2) < audioFontSample->size) {
-                            bytesToRead = (samplesLenAdjusted)*2;
-                        } else {
-                            bytesToRead = audioFontSample->size - (synthState->samplePosInt * 2);
+                        // Reading a whole block past the loop end plays back whatever the song has after
+                        // it and only then jumps, landing the seam at a random offset rather than the one
+                        // the sample asked for.
+                        if (nSamplesUntilLoopEnd > 0 && nSamplesToRead > nSamplesUntilLoopEnd) {
+                            nSamplesToRead = nSamplesUntilLoopEnd;
                         }
+
+                        size_t bytesToRead = nSamplesToRead * 2;
+                        size_t bytesAvailable = (synthState->samplePosInt * 2) < audioFontSample->size
+                                                    ? audioFontSample->size - (synthState->samplePosInt * 2)
+                                                    : 0;
+                        if (bytesToRead > bytesAvailable) {
+                            bytesToRead = bytesAvailable;
+                        }
+
                         // 2S2H [Port] [Custom audio] Handle decoding OPUS data
                         if (audioFontSample->codec == CODEC_OPUS) {
-                            aOPUSdecImpl(sampleAddr, DMEM_UNCOMPRESSED_NOTE, bytesToRead, &synthState->opusFile,
+                            aOPUSdecImpl(sampleAddr, DMEM_UNCOMPRESSED_NOTE + s5, bytesToRead, &synthState->opusFile,
                                          synthState->samplePosInt, audioFontSample->fileSize);
                         } else {
-                            aLoadBuffer(cmd++, sampleAddr + (synthState->samplePosInt * 2), DMEM_UNCOMPRESSED_NOTE,
+                            aLoadBuffer(cmd++, sampleAddr + (synthState->samplePosInt * 2), DMEM_UNCOMPRESSED_NOTE + s5,
                                         bytesToRead);
                         }
 
+                        nSamplesProcessed += nSamplesToRead;
+                        s5 += nSamplesToRead * 2;
+
                         goto skip;
+                    }
                     case CODEC_REVERB:
                         break;
                 }

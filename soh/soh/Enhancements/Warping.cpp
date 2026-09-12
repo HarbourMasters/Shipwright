@@ -1,16 +1,19 @@
 #include <ship/Context.h>
 #include <ship/config/Config.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
+#include "soh/Enhancements/gameconsole.h"
 
 extern "C" {
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
 #include "z64.h"
-#include "global.h"
 #include "soh/Enhancements/enhancementTypes.h"
 void Sram_InitDebugSave(void);
 void Select_LoadGame(SelectContext* selectContext, s32 entranceIndex);
@@ -48,7 +51,7 @@ void SaveConfig() {
 
 void Warp(WarpPoint& warpPoint) {
     if (gPlayState == NULL) {
-        // If gPlayState is NULL, it means the the user opted into BootToWarpPoint and the game is starting up.
+        // If gPlayState is NULL, it means the user opted into BootToWarpPoint and the game is starting up.
         gSaveContext.gameMode = GAMEMODE_NORMAL;
         gSaveContext.fileNum = 0xFE; // temporary file so that this will respect debug save file option
         Sram_InitDebugSave();

@@ -12,7 +12,6 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
@@ -169,8 +168,6 @@ void EnDntNomal_Destroy(Actor* thisx, PlayState* play) {
     } else {
         Collider_DestroyCylinder(play, &this->bodyCyl);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {

@@ -1,0 +1,6846 @@
+:config:
+  segments:
+    - [ 4, 0x00D30F00 ]
+    - [ 7, 0x00555F90 ]
+    - [ 8, 0x00D30F00 ]
+    - [ 9, 0x00D30F00 ]
+    - [ 10, 0x00D30F00 ]
+    - [ 11, 0x00D30F00 ]
+    - [ 12, 0x00D30F00 ]
+    - [ 13, 0x00D30F00 ]
+  external_files:
+    - ntsc_u_gc/misc/link_animetion.yml
+
+gArrow1Anim:
+  type: OOT:ANIMATION
+  offset: 0x4310
+  symbol: gArrow1Anim
+
+gArrow2Anim:
+  type: OOT:ANIMATION
+  offset: 0x436C
+  symbol: gArrow2Anim
+
+gArrowCursorTex:
+  type: TEXTURE
+  offset: 0xD3E0
+  symbol: gArrowCursorTex
+  format: IA8
+  width: 16
+  height: 24
+
+gArrowFarDL:
+  type: GFX
+  offset: 0x5E20
+  symbol: gArrowFarDL
+
+gArrowFletchingTex:
+  type: TEXTURE
+  offset: 0x5380
+  symbol: gArrowFletchingTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gArrowNearDL:
+  type: GFX
+  offset: 0x5AA0
+  symbol: gArrowNearDL
+
+gArrowShaftTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gArrowShaftTex
+  format: RGBA16
+  width: 16
+  height: 128
+
+gArrowSkel:
+  type: OOT:SKELETON
+  offset: 0x6010
+  symbol: gArrowSkel
+  limb_type: LOD
+  skel_type: Normal
+
+gBombBodyDL:
+  type: GFX
+  offset: 0x7860
+  symbol: gBombBodyDL
+
+gBombBodyTex:
+  type: TEXTURE
+  offset: 0x6820
+  symbol: gBombBodyTex
+  format: IA8
+  width: 64
+  height: 64
+
+gBombCapDL:
+  type: GFX
+  offset: 0x7A50
+  symbol: gBombCapDL
+
+gBombCapTex:
+  type: TEXTURE
+  offset: 0x78F0
+  symbol: gBombCapTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBombchuBodyTex:
+  type: TEXTURE
+  offset: 0x7B10
+  symbol: gBombchuBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBombchuDL:
+  type: GFX
+  offset: 0x7E10
+  symbol: gBombchuDL
+
+gBoomerangDL:
+  type: GFX
+  offset: 0xC698
+  symbol: gBoomerangDL
+
+gBoomerangRefDL:
+  type: GFX
+  offset: 0xC808
+  symbol: gBoomerangRefDL
+
+gBottleGlassTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gBottleGlassTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBoulderFragmentsDL:
+  type: GFX
+  offset: 0xD7E0
+  symbol: gBoulderFragmentsDL
+
+gBugBodyTex:
+  type: TEXTURE
+  offset: 0x34FC0
+  symbol: gBugBodyTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gBugCrawlAnim:
+  type: OOT:ANIMATION
+  offset: 0x3469C
+  symbol: gBugCrawlAnim
+
+gBugLegTex:
+  type: TEXTURE
+  offset: 0x357C0
+  symbol: gBugLegTex
+  format: RGBA16
+  width: 32
+  height: 4
+
+gBugLimb1DL:
+  type: GFX
+  offset: 0x346B0
+  symbol: gBugLimb1DL
+
+gBugLimb1WrapperDL:
+  type: GFX
+  offset: 0x34750
+  symbol: gBugLimb1WrapperDL
+
+gBugLimb1WrapperWrapperDL:
+  type: GFX
+  offset: 0x34760
+  symbol: gBugLimb1WrapperWrapperDL
+
+gBugLimb2DL:
+  type: GFX
+  offset: 0x347A0
+  symbol: gBugLimb2DL
+
+gBugLimb2WrapperDL:
+  type: GFX
+  offset: 0x34840
+  symbol: gBugLimb2WrapperDL
+
+gBugLimb2WrapperWrapperDL:
+  type: GFX
+  offset: 0x34850
+  symbol: gBugLimb2WrapperWrapperDL
+
+gBugLimb3DL:
+  type: GFX
+  offset: 0x34890
+  symbol: gBugLimb3DL
+
+gBugLimb3WrapperDL:
+  type: GFX
+  offset: 0x34930
+  symbol: gBugLimb3WrapperDL
+
+gBugLimb3WrapperWrapperDL:
+  type: GFX
+  offset: 0x34940
+  symbol: gBugLimb3WrapperWrapperDL
+
+gBugLimb4DL:
+  type: GFX
+  offset: 0x34980
+  symbol: gBugLimb4DL
+
+gBugLimb4WrapperDL:
+  type: GFX
+  offset: 0x34A20
+  symbol: gBugLimb4WrapperDL
+
+gBugLimb4WrapperWrapperDL:
+  type: GFX
+  offset: 0x34A30
+  symbol: gBugLimb4WrapperWrapperDL
+
+gBugLimb5DL:
+  type: GFX
+  offset: 0x34A70
+  symbol: gBugLimb5DL
+
+gBugLimb5WrapperDL:
+  type: GFX
+  offset: 0x34B10
+  symbol: gBugLimb5WrapperDL
+
+gBugLimb5WrapperWrapperDL:
+  type: GFX
+  offset: 0x34B20
+  symbol: gBugLimb5WrapperWrapperDL
+
+gBugLimb6DL:
+  type: GFX
+  offset: 0x34B60
+  symbol: gBugLimb6DL
+
+gBugLimb6WrapperDL:
+  type: GFX
+  offset: 0x34C00
+  symbol: gBugLimb6WrapperDL
+
+gBugLimb6WrapperWrapperDL:
+  type: GFX
+  offset: 0x34C10
+  symbol: gBugLimb6WrapperWrapperDL
+
+gBugLimb7DL:
+  type: GFX
+  offset: 0x34C50
+  symbol: gBugLimb7DL
+
+gBugLimb7WrapperDL:
+  type: GFX
+  offset: 0x34CF0
+  symbol: gBugLimb7WrapperDL
+
+gBugLimb7WrapperWrapperDL:
+  type: GFX
+  offset: 0x34D00
+  symbol: gBugLimb7WrapperWrapperDL
+
+gBugLimb8DL:
+  type: GFX
+  offset: 0x34D40
+  symbol: gBugLimb8DL
+
+gBugLimb8WrapperDL:
+  type: GFX
+  offset: 0x34DE0
+  symbol: gBugLimb8WrapperDL
+
+gBugLimb8WrapperWrapperDL:
+  type: GFX
+  offset: 0x34DF0
+  symbol: gBugLimb8WrapperWrapperDL
+
+gBugLimb9DL:
+  type: GFX
+  offset: 0x34E30
+  symbol: gBugLimb9DL
+
+gBugLimb9WrapperDL:
+  type: GFX
+  offset: 0x34EE0
+  symbol: gBugLimb9WrapperDL
+
+gBugLimb9WrapperWrapperDL:
+  type: GFX
+  offset: 0x34EF0
+  symbol: gBugLimb9WrapperWrapperDL
+
+gBugSkel:
+  type: OOT:SKELETON
+  offset: 0x35A30
+  symbol: gBugSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gCircleGlowLTex:
+  type: TEXTURE
+  offset: 0x592E0
+  symbol: gCircleGlowLTex
+  format: I8
+  width: 32
+  height: 64
+
+gCircleGlowRTex:
+  type: TEXTURE
+  offset: 0x59AE0
+  symbol: gCircleGlowRTex
+  format: I8
+  width: 32
+  height: 64
+
+gCircleGlowSLTex:
+  type: TEXTURE
+  offset: 0x5A2E0
+  symbol: gCircleGlowSLTex
+  format: I8
+  width: 32
+  height: 64
+
+gCircleGlowSRTex:
+  type: TEXTURE
+  offset: 0x5AAE0
+  symbol: gCircleGlowSRTex
+  format: I8
+  width: 32
+  height: 64
+
+gCircleShadowDL:
+  type: GFX
+  offset: 0x4E740
+  symbol: gCircleShadowDL
+
+gCircleShadowTex:
+  type: TEXTURE
+  offset: 0x4E7C0
+  symbol: gCircleShadowTex
+  format: IA16
+  width: 32
+  height: 32
+
+gCompassArrowDL:
+  type: GFX
+  offset: 0xC820
+  symbol: gCompassArrowDL
+
+gControlStickTex:
+  type: TEXTURE
+  offset: 0xD2E0
+  symbol: gControlStickTex
+  format: IA8
+  width: 16
+  height: 16
+
+gCuttableShrubLeafTFragmentTex:
+  type: TEXTURE
+  offset: 0x35BD0
+  symbol: gCuttableShrubLeafTFragmentTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuttableShrubStalkDL:
+  type: GFX
+  offset: 0x35A80
+  symbol: gCuttableShrubStalkDL
+
+gCuttableShrubTex:
+  type: TEXTURE
+  offset: 0x363D0
+  symbol: gCuttableShrubTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuttableShrubTipDL:
+  type: GFX
+  offset: 0x35B40
+  symbol: gCuttableShrubTipDL
+
+gDebugArrowDL:
+  type: GFX
+  offset: 0x39F0
+  symbol: gDebugArrowDL
+
+gDebugBallTex:
+  type: TEXTURE
+  offset: 0x36F0
+  symbol: gDebugBallTex
+  format: I8
+  width: 16
+  height: 16
+
+gDebugCameraDL:
+  type: GFX
+  offset: 0x3C90
+  symbol: gDebugCameraDL
+
+gDebugCheckeredFloorDL:
+  type: GFX
+  offset: 0x3FC8
+  symbol: gDebugCheckeredFloorDL
+
+gDebugCheckeredFloorTex:
+  type: TEXTURE
+  offset: 0x4058
+  symbol: gDebugCheckeredFloorTex
+  format: IA4
+  width: 32
+  height: 32
+
+gDebugCircleTex:
+  type: TEXTURE
+  offset: 0x35F0
+  symbol: gDebugCircleTex
+  format: I8
+  width: 16
+  height: 16
+
+gDebugCrossTex:
+  type: TEXTURE
+  offset: 0x38F0
+  symbol: gDebugCrossTex
+  format: I8
+  width: 16
+  height: 16
+
+gDebugCursorTex:
+  type: TEXTURE
+  offset: 0x37F0
+  symbol: gDebugCursorTex
+  format: I8
+  width: 16
+  height: 16
+
+gDebugPyramidDL:
+  type: GFX
+  offset: 0x35C0
+  symbol: gDebugPyramidDL
+
+gDebugSpriteDL:
+  type: GFX
+  offset: 0x4298
+  symbol: gDebugSpriteDL
+
+gDecorativeFlameMaskTex:
+  type: TEXTURE
+  offset: 0x52B90
+  symbol: gDecorativeFlameMaskTex
+  format: I4
+  width: 32
+  height: 128
+
+gDecorativeFlameTex:
+  type: TEXTURE
+  offset: 0x53390
+  symbol: gDecorativeFlameTex
+  format: I8
+  width: 32
+  height: 64
+
+gDekuStickOverflowTex:
+  type: TEXTURE
+  offset: 0x19FF
+  symbol: gDekuStickOverflowTex
+  format: I8
+  width: 16
+  height: 16
+
+gDekuStickTex:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: gDekuStickTex
+  format: I8
+  width: 16
+  height: 16
+
+gDoorAdultOpeningLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xEBF8
+  symbol: gDoorAdultOpeningLeftAnim
+
+gDoorAdultOpeningRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x104D8
+  symbol: gDoorAdultOpeningRightAnim
+
+gDoorChildOpeningLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA54
+  symbol: gDoorChildOpeningLeftAnim
+
+gDoorChildOpeningRightAnim:
+  type: OOT:ANIMATION
+  offset: 0xEB40
+  symbol: gDoorChildOpeningRightAnim
+
+gDoorFrameDL:
+  type: GFX
+  offset: 0xF0D0
+  symbol: gDoorFrameDL
+
+gDoorLeftDL:
+  type: GFX
+  offset: 0xF158
+  symbol: gDoorLeftDL
+
+gDoorMetalBarsDL:
+  type: GFX
+  offset: 0x50600
+  symbol: gDoorMetalBarsDL
+
+gDoorMetalBarsTex:
+  type: TEXTURE
+  offset: 0x4F5C0
+  symbol: gDoorMetalBarsTex
+  format: IA8
+  width: 32
+  height: 128
+
+gDoorRightDL:
+  type: GFX
+  offset: 0xF2A0
+  symbol: gDoorRightDL
+
+gDoorSkel:
+  type: OOT:SKELETON
+  offset: 0x10418
+  symbol: gDoorSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDropArrows1Tex:
+  type: TEXTURE
+  offset: 0x3E580
+  symbol: gDropArrows1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropArrows2Tex:
+  type: TEXTURE
+  offset: 0x3DD80
+  symbol: gDropArrows2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropArrows3Tex:
+  type: TEXTURE
+  offset: 0x3ED80
+  symbol: gDropArrows3Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropBombTex:
+  type: TEXTURE
+  offset: 0x3F580
+  symbol: gDropBombTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropDekuNutTex:
+  type: TEXTURE
+  offset: 0x42E50
+  symbol: gDropDekuNutTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropDekuSeedsTex:
+  type: TEXTURE
+  offset: 0x43650
+  symbol: gDropDekuSeedsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropDekuStickTex:
+  type: TEXTURE
+  offset: 0x43E50
+  symbol: gDropDekuStickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropKeySmallTex:
+  type: TEXTURE
+  offset: 0x41E50
+  symbol: gDropKeySmallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropMagicLargeTex:
+  type: TEXTURE
+  offset: 0x44650
+  symbol: gDropMagicLargeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropMagicSmallTex:
+  type: TEXTURE
+  offset: 0x42650
+  symbol: gDropMagicSmallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDropRecoveryHeartTex:
+  type: TEXTURE
+  offset: 0x40D80
+  symbol: gDropRecoveryHeartTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDungeonDoorDL:
+  type: GFX
+  offset: 0x4F510
+  symbol: gDungeonDoorDL
+
+gDust1Tex:
+  type: TEXTURE
+  offset: 0x572E0
+  symbol: gDust1Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust2Tex:
+  type: TEXTURE
+  offset: 0x576E0
+  symbol: gDust2Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust3Tex:
+  type: TEXTURE
+  offset: 0x57AE0
+  symbol: gDust3Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust4Tex:
+  type: TEXTURE
+  offset: 0x57EE0
+  symbol: gDust4Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust5Tex:
+  type: TEXTURE
+  offset: 0x582E0
+  symbol: gDust5Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust6Tex:
+  type: TEXTURE
+  offset: 0x586E0
+  symbol: gDust6Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust7Tex:
+  type: TEXTURE
+  offset: 0x58AE0
+  symbol: gDust7Tex
+  format: I8
+  width: 32
+  height: 32
+
+gDust8Tex:
+  type: TEXTURE
+  offset: 0x58EE0
+  symbol: gDust8Tex
+  format: I8
+  width: 32
+  height: 32
+
+gEffBombExplosion1DL:
+  type: GFX
+  offset: 0xBF80
+  symbol: gEffBombExplosion1DL
+
+gEffBombExplosion1Tex:
+  type: TEXTURE
+  offset: 0x7F80
+  symbol: gEffBombExplosion1Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion2DL:
+  type: GFX
+  offset: 0xBFE8
+  symbol: gEffBombExplosion2DL
+
+gEffBombExplosion2Tex:
+  type: TEXTURE
+  offset: 0x8780
+  symbol: gEffBombExplosion2Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion3DL:
+  type: GFX
+  offset: 0xC040
+  symbol: gEffBombExplosion3DL
+
+gEffBombExplosion3Tex:
+  type: TEXTURE
+  offset: 0x8F80
+  symbol: gEffBombExplosion3Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion4Tex:
+  type: TEXTURE
+  offset: 0x9780
+  symbol: gEffBombExplosion4Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion5Tex:
+  type: TEXTURE
+  offset: 0x9F80
+  symbol: gEffBombExplosion5Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion6Tex:
+  type: TEXTURE
+  offset: 0xA780
+  symbol: gEffBombExplosion6Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion7Tex:
+  type: TEXTURE
+  offset: 0xAF80
+  symbol: gEffBombExplosion7Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBombExplosion8Tex:
+  type: TEXTURE
+  offset: 0xB780
+  symbol: gEffBombExplosion8Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffBubble1Tex:
+  type: TEXTURE
+  offset: 0x5B2E0
+  symbol: gEffBubble1Tex
+  format: I8
+  width: 16
+  height: 16
+
+gEffBubble2Tex:
+  type: TEXTURE
+  offset: 0x5B3E0
+  symbol: gEffBubble2Tex
+  format: I8
+  width: 16
+  height: 16
+
+gEffBubbleDL:
+  type: GFX
+  offset: 0x1A600
+  symbol: gEffBubbleDL
+
+gEffDustDL:
+  type: GFX
+  offset: 0x104F0
+  symbol: gEffDustDL
+
+gEffEnemyDeathFlame10Tex:
+  type: TEXTURE
+  offset: 0x31C80
+  symbol: gEffEnemyDeathFlame10Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame1Tex:
+  type: TEXTURE
+  offset: 0x2D480
+  symbol: gEffEnemyDeathFlame1Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame2Tex:
+  type: TEXTURE
+  offset: 0x2DC80
+  symbol: gEffEnemyDeathFlame2Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame3Tex:
+  type: TEXTURE
+  offset: 0x2E480
+  symbol: gEffEnemyDeathFlame3Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame4Tex:
+  type: TEXTURE
+  offset: 0x2EC80
+  symbol: gEffEnemyDeathFlame4Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame5Tex:
+  type: TEXTURE
+  offset: 0x2F480
+  symbol: gEffEnemyDeathFlame5Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame6Tex:
+  type: TEXTURE
+  offset: 0x2FC80
+  symbol: gEffEnemyDeathFlame6Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame7Tex:
+  type: TEXTURE
+  offset: 0x30480
+  symbol: gEffEnemyDeathFlame7Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame8Tex:
+  type: TEXTURE
+  offset: 0x30C80
+  symbol: gEffEnemyDeathFlame8Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlame9Tex:
+  type: TEXTURE
+  offset: 0x31480
+  symbol: gEffEnemyDeathFlame9Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffEnemyDeathFlameDL:
+  type: GFX
+  offset: 0x32480
+  symbol: gEffEnemyDeathFlameDL
+
+gEffFire1DL:
+  type: GFX
+  offset: 0x52A10
+  symbol: gEffFire1DL
+
+gEffFire2DL:
+  type: GFX
+  offset: 0x52AD0
+  symbol: gEffFire2DL
+
+gEffFireCircleDL:
+  type: GFX
+  offset: 0x18950
+  symbol: gEffFireCircleDL
+
+gEffFireFootprint1Tex:
+  type: TEXTURE
+  offset: 0x1A6C0
+  symbol: gEffFireFootprint1Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint2Tex:
+  type: TEXTURE
+  offset: 0x1AAC0
+  symbol: gEffFireFootprint2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint3Tex:
+  type: TEXTURE
+  offset: 0x1AEC0
+  symbol: gEffFireFootprint3Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint4Tex:
+  type: TEXTURE
+  offset: 0x1B2C0
+  symbol: gEffFireFootprint4Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint5Tex:
+  type: TEXTURE
+  offset: 0x1B6C0
+  symbol: gEffFireFootprint5Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint6Tex:
+  type: TEXTURE
+  offset: 0x1BAC0
+  symbol: gEffFireFootprint6Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint7Tex:
+  type: TEXTURE
+  offset: 0x1BEC0
+  symbol: gEffFireFootprint7Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprint8Tex:
+  type: TEXTURE
+  offset: 0x1C2C0
+  symbol: gEffFireFootprint8Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffFireFootprintDL:
+  type: GFX
+  offset: 0x1C6C0
+  symbol: gEffFireFootprintDL
+
+gEffFlash1DL:
+  type: GFX
+  offset: 0x105D0
+  symbol: gEffFlash1DL
+
+gEffFlash2DL:
+  type: GFX
+  offset: 0x10648
+  symbol: gEffFlash2DL
+
+gEffFleckTex:
+  type: TEXTURE
+  offset: 0x224B0
+  symbol: gEffFleckTex
+  format: I8
+  width: 32
+  height: 64
+
+gEffFragments1DL:
+  type: GFX
+  offset: 0xC0D0
+  symbol: gEffFragments1DL
+
+gEffFragments2DL:
+  type: GFX
+  offset: 0xCE20
+  symbol: gEffFragments2DL
+
+gEffHitMark10Tex:
+  type: TEXTURE
+  offset: 0x20590
+  symbol: gEffHitMark10Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark11Tex:
+  type: TEXTURE
+  offset: 0x20710
+  symbol: gEffHitMark11Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark12Tex:
+  type: TEXTURE
+  offset: 0x20890
+  symbol: gEffHitMark12Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark13Tex:
+  type: TEXTURE
+  offset: 0x20A10
+  symbol: gEffHitMark13Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark14Tex:
+  type: TEXTURE
+  offset: 0x20B90
+  symbol: gEffHitMark14Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark15Tex:
+  type: TEXTURE
+  offset: 0x20D10
+  symbol: gEffHitMark15Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark16Tex:
+  type: TEXTURE
+  offset: 0x20E90
+  symbol: gEffHitMark16Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark17Tex:
+  type: TEXTURE
+  offset: 0x21010
+  symbol: gEffHitMark17Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark18Tex:
+  type: TEXTURE
+  offset: 0x21190
+  symbol: gEffHitMark18Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark19Tex:
+  type: TEXTURE
+  offset: 0x21310
+  symbol: gEffHitMark19Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark1Tex:
+  type: TEXTURE
+  offset: 0x1F810
+  symbol: gEffHitMark1Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark20Tex:
+  type: TEXTURE
+  offset: 0x21490
+  symbol: gEffHitMark20Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark21Tex:
+  type: TEXTURE
+  offset: 0x21610
+  symbol: gEffHitMark21Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark22Tex:
+  type: TEXTURE
+  offset: 0x21790
+  symbol: gEffHitMark22Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark23Tex:
+  type: TEXTURE
+  offset: 0x21910
+  symbol: gEffHitMark23Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark24Tex:
+  type: TEXTURE
+  offset: 0x21A90
+  symbol: gEffHitMark24Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark2Tex:
+  type: TEXTURE
+  offset: 0x1F990
+  symbol: gEffHitMark2Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark3Tex:
+  type: TEXTURE
+  offset: 0x1FB10
+  symbol: gEffHitMark3Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark4Tex:
+  type: TEXTURE
+  offset: 0x1FC90
+  symbol: gEffHitMark4Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark5Tex:
+  type: TEXTURE
+  offset: 0x1FE10
+  symbol: gEffHitMark5Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark6Tex:
+  type: TEXTURE
+  offset: 0x1FF90
+  symbol: gEffHitMark6Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark7Tex:
+  type: TEXTURE
+  offset: 0x20110
+  symbol: gEffHitMark7Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark8Tex:
+  type: TEXTURE
+  offset: 0x20290
+  symbol: gEffHitMark8Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMark9Tex:
+  type: TEXTURE
+  offset: 0x20410
+  symbol: gEffHitMark9Tex
+  format: I4
+  width: 32
+  height: 24
+
+gEffHitMarkDL:
+  type: GFX
+  offset: 0x21C10
+  symbol: gEffHitMarkDL
+
+gEffIceFragment1DL:
+  type: GFX
+  offset: 0x33BC0
+  symbol: gEffIceFragment1DL
+
+gEffIceFragment2DL:
+  type: GFX
+  offset: 0x33CB8
+  symbol: gEffIceFragment2DL
+
+gEffIceFragment3DL:
+  type: GFX
+  offset: 0x34380
+  symbol: gEffIceFragment3DL
+
+gEffLightning1Tex:
+  type: TEXTURE
+  offset: 0x2A3D0
+  symbol: gEffLightning1Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning2Tex:
+  type: TEXTURE
+  offset: 0x2A9D0
+  symbol: gEffLightning2Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning3Tex:
+  type: TEXTURE
+  offset: 0x2AFD0
+  symbol: gEffLightning3Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning4Tex:
+  type: TEXTURE
+  offset: 0x2B5D0
+  symbol: gEffLightning4Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning5Tex:
+  type: TEXTURE
+  offset: 0x2BBD0
+  symbol: gEffLightning5Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning6Tex:
+  type: TEXTURE
+  offset: 0x2C1D0
+  symbol: gEffLightning6Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning7Tex:
+  type: TEXTURE
+  offset: 0x2C7D0
+  symbol: gEffLightning7Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightning8Tex:
+  type: TEXTURE
+  offset: 0x2CDD0
+  symbol: gEffLightning8Tex
+  format: I8
+  width: 16
+  height: 96
+
+gEffLightningDL:
+  type: GFX
+  offset: 0x2D3D0
+  symbol: gEffLightningDL
+
+gEffMagmaBubble1Tex:
+  type: TEXTURE
+  offset: 0x23CB0
+  symbol: gEffMagmaBubble1Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble2Tex:
+  type: TEXTURE
+  offset: 0x23E30
+  symbol: gEffMagmaBubble2Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble3Tex:
+  type: TEXTURE
+  offset: 0x23FB0
+  symbol: gEffMagmaBubble3Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble4Tex:
+  type: TEXTURE
+  offset: 0x24130
+  symbol: gEffMagmaBubble4Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble5Tex:
+  type: TEXTURE
+  offset: 0x242B0
+  symbol: gEffMagmaBubble5Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble6Tex:
+  type: TEXTURE
+  offset: 0x24430
+  symbol: gEffMagmaBubble6Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble7Tex:
+  type: TEXTURE
+  offset: 0x245B0
+  symbol: gEffMagmaBubble7Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubble8Tex:
+  type: TEXTURE
+  offset: 0x24730
+  symbol: gEffMagmaBubble8Tex
+  format: IA8
+  width: 16
+  height: 24
+
+gEffMagmaBubbleDL:
+  type: GFX
+  offset: 0x248B0
+  symbol: gEffMagmaBubbleDL
+
+gEffShockwaveDL:
+  type: GFX
+  offset: 0x1A550
+  symbol: gEffShockwaveDL
+
+gEffShockwaveTex:
+  type: TEXTURE
+  offset: 0x19550
+  symbol: gEffShockwaveTex
+  format: I8
+  width: 64
+  height: 64
+
+gEffSpark1Tex:
+  type: TEXTURE
+  offset: 0x5B4E0
+  symbol: gEffSpark1Tex
+  format: I4
+  width: 32
+  height: 32
+
+gEffSpark2Tex:
+  type: TEXTURE
+  offset: 0x5B6E0
+  symbol: gEffSpark2Tex
+  format: I4
+  width: 32
+  height: 32
+
+gEffSpark3Tex:
+  type: TEXTURE
+  offset: 0x5B8E0
+  symbol: gEffSpark3Tex
+  format: I4
+  width: 32
+  height: 32
+
+gEffSpark4Tex:
+  type: TEXTURE
+  offset: 0x5BAE0
+  symbol: gEffSpark4Tex
+  format: I4
+  width: 32
+  height: 32
+
+gEffSparkDL:
+  type: GFX
+  offset: 0x259F0
+  symbol: gEffSparkDL
+
+gEffSparklesDL:
+  type: GFX
+  offset: 0x37D20
+  symbol: gEffSparklesDL
+
+gEffSparklesTex:
+  type: TEXTURE
+  offset: 0x37D80
+  symbol: gEffSparklesTex
+  format: I4
+  width: 16
+  height: 16
+
+gEffUnknown10Tex:
+  type: TEXTURE
+  offset: 0x32930
+  symbol: gEffUnknown10Tex
+  format: I8
+  width: 32
+  height: 32
+
+gEffUnknown11Tex:
+  type: TEXTURE
+  offset: 0x32D30
+  symbol: gEffUnknown11Tex
+  format: I8
+  width: 32
+  height: 32
+
+gEffUnknown12OverflowTex:
+  type: TEXTURE
+  offset: 0x3312E
+  symbol: gEffUnknown12OverflowTex
+  format: IA16
+  width: 32
+  height: 32
+
+gEffUnknown12Tex:
+  type: TEXTURE
+  offset: 0x33130
+  symbol: gEffUnknown12Tex
+  format: I8
+  width: 32
+  height: 32
+
+gEffUnknown13Tex:
+  type: TEXTURE
+  offset: 0x37E00
+  symbol: gEffUnknown13Tex
+  format: I8
+  width: 16
+  height: 32
+
+gEffUnknown14Tex:
+  type: TEXTURE
+  offset: 0x38000
+  symbol: gEffUnknown14Tex
+  format: I8
+  width: 16
+  height: 32
+
+gEffUnknown1Tex:
+  type: TEXTURE
+  offset: 0x11ED0
+  symbol: gEffUnknown1Tex
+  format: I8
+  width: 64
+  height: 32
+
+gEffUnknown2Tex:
+  type: TEXTURE
+  offset: 0x13BA0
+  symbol: gEffUnknown2Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffUnknown3Tex:
+  type: TEXTURE
+  offset: 0x143A0
+  symbol: gEffUnknown3Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffUnknown4Tex:
+  type: TEXTURE
+  offset: 0x17870
+  symbol: gEffUnknown4Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffUnknown5Tex:
+  type: TEXTURE
+  offset: 0x18070
+  symbol: gEffUnknown5Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffUnknown6Tex:
+  type: TEXTURE
+  offset: 0x21CB0
+  symbol: gEffUnknown6Tex
+  format: I8
+  width: 32
+  height: 64
+
+gEffUnknown8Tex:
+  type: TEXTURE
+  offset: 0x22CB0
+  symbol: gEffUnknown8Tex
+  format: I8
+  width: 64
+  height: 64
+
+gEffUnknown9Tex:
+  type: TEXTURE
+  offset: 0x32530
+  symbol: gEffUnknown9Tex
+  format: I8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles1Tex:
+  type: TEXTURE
+  offset: 0x1C760
+  symbol: gEffUnusedBubbles1Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles2Tex:
+  type: TEXTURE
+  offset: 0x1CB60
+  symbol: gEffUnusedBubbles2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles3Tex:
+  type: TEXTURE
+  offset: 0x1CF60
+  symbol: gEffUnusedBubbles3Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles4Tex:
+  type: TEXTURE
+  offset: 0x1D360
+  symbol: gEffUnusedBubbles4Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles5Tex:
+  type: TEXTURE
+  offset: 0x1D760
+  symbol: gEffUnusedBubbles5Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles6Tex:
+  type: TEXTURE
+  offset: 0x1DB60
+  symbol: gEffUnusedBubbles6Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles7Tex:
+  type: TEXTURE
+  offset: 0x1DF60
+  symbol: gEffUnusedBubbles7Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubbles8Tex:
+  type: TEXTURE
+  offset: 0x1E360
+  symbol: gEffUnusedBubbles8Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gEffUnusedBubblesDL:
+  type: GFX
+  offset: 0x1E760
+  symbol: gEffUnusedBubblesDL
+
+gEffWaterRippleDL:
+  type: GFX
+  offset: 0x25950
+  symbol: gEffWaterRippleDL
+
+gEffWaterRippleTex:
+  type: TEXTURE
+  offset: 0x24950
+  symbol: gEffWaterRippleTex
+  format: I8
+  width: 64
+  height: 64
+
+gEffWaterSplash1Tex:
+  type: TEXTURE
+  offset: 0x25A90
+  symbol: gEffWaterSplash1Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash2Tex:
+  type: TEXTURE
+  offset: 0x25F90
+  symbol: gEffWaterSplash2Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash3Tex:
+  type: TEXTURE
+  offset: 0x26490
+  symbol: gEffWaterSplash3Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash4Tex:
+  type: TEXTURE
+  offset: 0x26990
+  symbol: gEffWaterSplash4Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash5Tex:
+  type: TEXTURE
+  offset: 0x26E90
+  symbol: gEffWaterSplash5Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash6Tex:
+  type: TEXTURE
+  offset: 0x27390
+  symbol: gEffWaterSplash6Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash7Tex:
+  type: TEXTURE
+  offset: 0x27890
+  symbol: gEffWaterSplash7Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplash8Tex:
+  type: TEXTURE
+  offset: 0x27D90
+  symbol: gEffWaterSplash8Tex
+  format: I8
+  width: 32
+  height: 40
+
+gEffWaterSplashDL:
+  type: GFX
+  offset: 0x28290
+  symbol: gEffWaterSplashDL
+
+gFairyAnim:
+  type: OOT:ANIMATION
+  offset: 0x15044
+  symbol: gFairyAnim
+
+gFairySkel:
+  type: OOT:SKELETON
+  offset: 0x16EE8
+  symbol: gFairySkel
+  limb_type: Standard
+  skel_type: Normal
+
+gFairyWing1DL:
+  type: GFX
+  offset: 0x158A0
+  symbol: gFairyWing1DL
+
+gFairyWing2DL:
+  type: GFX
+  offset: 0x15968
+  symbol: gFairyWing2DL
+
+gFairyWing3DL:
+  type: GFX
+  offset: 0x15A30
+  symbol: gFairyWing3DL
+
+gFairyWing4DL:
+  type: GFX
+  offset: 0x15AF8
+  symbol: gFairyWing4DL
+
+gFairyWingTex:
+  type: TEXTURE
+  offset: 0x15060
+  symbol: gFairyWingTex
+  format: I8
+  width: 32
+  height: 64
+
+gFishBodyTex:
+  type: TEXTURE
+  offset: 0x19220
+  symbol: gFishBodyTex
+  format: RGBA16
+  width: 32
+  height: 8
+
+gFishInWaterAnim:
+  type: OOT:ANIMATION
+  offset: 0x1953C
+  symbol: gFishInWaterAnim
+
+gFishOutOfWaterAnim:
+  type: OOT:ANIMATION
+  offset: 0x18A9C
+  symbol: gFishOutOfWaterAnim
+
+gFishSkel:
+  type: OOT:SKELETON
+  offset: 0x19480
+  symbol: gFishSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFishTailTex:
+  type: TEXTURE
+  offset: 0x19020
+  symbol: gFishTailTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFlameWall1Tex:
+  type: TEXTURE
+  offset: 0x131D0
+  symbol: gFlameWall1Tex
+  format: I8
+  width: 32
+  height: 32
+
+gFlameWall2Tex:
+  type: TEXTURE
+  offset: 0x135D0
+  symbol: gFlameWall2Tex
+  format: I8
+  width: 32
+  height: 32
+
+gFlashTex:
+  type: TEXTURE
+  offset: 0x106C8
+  symbol: gFlashTex
+  format: I8
+  width: 64
+  height: 64
+
+gFlatBlockDL:
+  type: GFX
+  offset: 0x3A430
+  symbol: gFlatBlockDL
+
+gFlatRotBlockDL:
+  type: GFX
+  offset: 0x3AB00
+  symbol: gFlatRotBlockDL
+
+gFootShadowDL:
+  type: GFX
+  offset: 0x4D6B0
+  symbol: gFootShadowDL
+
+gFootShadowTex:
+  type: TEXTURE
+  offset: 0x4D740
+  symbol: gFootShadowTex
+  format: IA16
+  width: 32
+  height: 64
+
+gGenericDungeonDoorTex:
+  type: TEXTURE
+  offset: 0x50690
+  symbol: gGenericDungeonDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGlowCircleDL:
+  type: GFX
+  offset: 0x15C00
+  symbol: gGlowCircleDL
+
+gGlowCircleSmallDL:
+  type: GFX
+  offset: 0x15C20
+  symbol: gGlowCircleSmallDL
+
+gGlowCircleTextureLoadDL:
+  type: GFX
+  offset: 0x15BC0
+  symbol: gGlowCircleTextureLoadDL
+
+gGrassBladesDL:
+  type: GFX
+  offset: 0x3B3B0
+  symbol: gGrassBladesDL
+
+gHeartContainerInteriorDL:
+  type: GFX
+  offset: 0x3C508
+  symbol: gHeartContainerInteriorDL
+
+gHeartPieceExteriorDL:
+  type: GFX
+  offset: 0x3C3D0
+  symbol: gHeartPieceExteriorDL
+
+gHeartPieceInteriorDL:
+  type: GFX
+  offset: 0x3B860
+  symbol: gHeartPieceInteriorDL
+
+gHeartShapeTex:
+  type: TEXTURE
+  offset: 0x3B460
+  symbol: gHeartShapeTex
+  format: I8
+  width: 16
+  height: 16
+
+gHilite1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHilite1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHilite2Tex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gHilite2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHilite3Tex:
+  type: TEXTURE
+  offset: 0xCD20
+  symbol: gHilite3Tex
+  format: I8
+  width: 8
+  height: 8
+
+gHilite4Tex:
+  type: TEXTURE
+  offset: 0x17070
+  symbol: gHilite4Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHorseShadowDL:
+  type: GFX
+  offset: 0x4F000
+  symbol: gHorseShadowDL
+
+gHorseShadowTex:
+  type: TEXTURE
+  offset: 0x4F050
+  symbol: gHorseShadowTex
+  format: I8
+  width: 16
+  height: 64
+
+gHoverBootsCircleDL:
+  type: GFX
+  offset: 0x382D0
+  symbol: gHoverBootsCircleDL
+
+gHylianShieldDesignTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gHylianShieldDesignTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gItemDropDL:
+  type: GFX
+  offset: 0x41D80
+  symbol: gItemDropDL
+
+gKokiriDustMoteMaterialDL:
+  type: GFX
+  offset: 0x52690
+  symbol: gKokiriDustMoteMaterialDL
+
+gKokiriDustMoteModelDL:
+  type: GFX
+  offset: 0x526D8
+  symbol: gKokiriDustMoteModelDL
+
+gLargerCubeCol:
+  type: OOT:COLLISION
+  offset: 0x39CE0
+  symbol: gLargerCubeCol
+
+gLargerFlatBlockCol:
+  type: OOT:COLLISION
+  offset: 0x3ACB0
+  symbol: gLargerFlatBlockCol
+
+gLensFlareCircleDL:
+  type: GFX
+  offset: 0x37BD0
+  symbol: gLensFlareCircleDL
+
+gLensFlareCircleTex:
+  type: TEXTURE
+  offset: 0x36BD0
+  symbol: gLensFlareCircleTex
+  format: I4
+  width: 64
+  height: 64
+
+gLensFlareRingDL:
+  type: GFX
+  offset: 0x37C38
+  symbol: gLensFlareRingDL
+
+gLensFlareRingTex:
+  type: TEXTURE
+  offset: 0x373D0
+  symbol: gLensFlareRingTex
+  format: I4
+  width: 64
+  height: 64
+
+gLensOfTruthMaskTex:
+  type: TEXTURE
+  offset: 0x1E810
+  symbol: gLensOfTruthMaskTex
+  format: I8
+  width: 64
+  height: 64
+
+gLiftableRockDL:
+  type: GFX
+  offset: 0x39E90
+  symbol: gLiftableRockDL
+
+gLinkHairTex:
+  type: TEXTURE
+  offset: 0x1A40
+  symbol: gLinkHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkPauseAdultBgsJointTable:
+  type: OOT:ARRAY
+  offset: 0x2160
+  symbol: gLinkPauseAdultBgsJointTable
+  count: 24
+  array_type: Vec3s
+
+gLinkPauseAdultJointTable:
+  type: OOT:ARRAY
+  offset: 0x21F0
+  symbol: gLinkPauseAdultJointTable
+  count: 24
+  array_type: Vec3s
+
+gLinkPauseAdultShieldJointTable:
+  type: OOT:ARRAY
+  offset: 0x2280
+  symbol: gLinkPauseAdultShieldJointTable
+  count: 24
+  array_type: Vec3s
+
+gLinkPauseChildDekuShieldJointTable:
+  type: OOT:ARRAY
+  offset: 0x20D0
+  symbol: gLinkPauseChildDekuShieldJointTable
+  count: 24
+  array_type: Vec3s
+
+gLinkPauseChildJointTable:
+  type: OOT:ARRAY
+  offset: 0x2040
+  symbol: gLinkPauseChildJointTable
+  count: 24
+  array_type: Vec3s
+
+gLinkTunic1Tex:
+  type: TEXTURE
+  offset: 0x1C40
+  symbol: gLinkTunic1Tex
+  format: I8
+  width: 16
+  height: 16
+
+gLinkTunic2Tex:
+  type: TEXTURE
+  offset: 0x1D40
+  symbol: gLinkTunic2Tex
+  format: I8
+  width: 16
+  height: 32
+
+gLinkTunic3Tex:
+  type: TEXTURE
+  offset: 0x1F40
+  symbol: gLinkTunic3Tex
+  format: I8
+  width: 16
+  height: 16
+
+gMoonDL:
+  type: GFX
+  offset: 0x393A0
+  symbol: gMoonDL
+
+gMoonTex:
+  type: TEXTURE
+  offset: 0x383A0
+  symbol: gMoonTex
+  format: IA8
+  width: 64
+  height: 64
+
+gOcarinaofTimeDesignTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gOcarinaofTimeDesignTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gPlayerAnim_002578:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2578
+  symbol: gPlayerAnim_002578
+
+gPlayerAnim_0025A8:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25A8
+  symbol: gPlayerAnim_0025A8
+
+gPlayerAnim_0025B8:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25B8
+  symbol: gPlayerAnim_0025B8
+
+gPlayerAnim_0025E8:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25E8
+  symbol: gPlayerAnim_0025E8
+
+gPlayerAnim_002610:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2610
+  symbol: gPlayerAnim_002610
+
+gPlayerAnim_002840:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2840
+  symbol: gPlayerAnim_002840
+
+gPlayerAnim_002A78:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A78
+  symbol: gPlayerAnim_002A78
+
+gPlayerAnim_002AD0:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AD0
+  symbol: gPlayerAnim_002AD0
+
+gPlayerAnim_002B48:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B48
+  symbol: gPlayerAnim_002B48
+
+gPlayerAnim_002B50:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B50
+  symbol: gPlayerAnim_002B50
+
+gPlayerAnim_002BD8:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BD8
+  symbol: gPlayerAnim_002BD8
+
+gPlayerAnim_002D50:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D50
+  symbol: gPlayerAnim_002D50
+
+gPlayerAnim_L_1kyoro:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3470
+  symbol: gPlayerAnim_L_1kyoro
+
+gPlayerAnim_L_2kyoro:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3478
+  symbol: gPlayerAnim_L_2kyoro
+
+gPlayerAnim_L_bouzen:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3480
+  symbol: gPlayerAnim_L_bouzen
+
+gPlayerAnim_L_hajikareru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3488
+  symbol: gPlayerAnim_L_hajikareru
+
+gPlayerAnim_L_kamaeru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3490
+  symbol: gPlayerAnim_L_kamaeru
+
+gPlayerAnim_L_ken_miru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3498
+  symbol: gPlayerAnim_L_ken_miru
+
+gPlayerAnim_L_kennasi_w:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34A0
+  symbol: gPlayerAnim_L_kennasi_w
+
+gPlayerAnim_L_kw:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34A8
+  symbol: gPlayerAnim_L_kw
+
+gPlayerAnim_L_mukinaoru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34B0
+  symbol: gPlayerAnim_L_mukinaoru
+
+gPlayerAnim_L_okarina_get:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34B8
+  symbol: gPlayerAnim_L_okarina_get
+
+gPlayerAnim_L_sagaru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34C0
+  symbol: gPlayerAnim_L_sagaru
+
+gPlayerAnim_Link_ha:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34C8
+  symbol: gPlayerAnim_Link_ha
+
+gPlayerAnim_Link_m_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34D0
+  symbol: gPlayerAnim_Link_m_wait
+
+gPlayerAnim_Link_miageru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34D8
+  symbol: gPlayerAnim_Link_miageru
+
+gPlayerAnim_Link_muku:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34E0
+  symbol: gPlayerAnim_Link_muku
+
+gPlayerAnim_Link_otituku_w:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34E8
+  symbol: gPlayerAnim_Link_otituku_w
+
+gPlayerAnim_Link_ue_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x34F0
+  symbol: gPlayerAnim_Link_ue_wait
+
+gPlayerAnim_clink_demo_DDbox_open:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2310
+  symbol: gPlayerAnim_clink_demo_DDbox_open
+
+gPlayerAnim_clink_demo_Tbox_open:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2318
+  symbol: gPlayerAnim_clink_demo_Tbox_open
+
+gPlayerAnim_clink_demo_atozusari:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2320
+  symbol: gPlayerAnim_clink_demo_atozusari
+
+gPlayerAnim_clink_demo_bashi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2328
+  symbol: gPlayerAnim_clink_demo_bashi
+
+gPlayerAnim_clink_demo_doorA_link:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2330
+  symbol: gPlayerAnim_clink_demo_doorA_link
+
+gPlayerAnim_clink_demo_doorB_link:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2338
+  symbol: gPlayerAnim_clink_demo_doorB_link
+
+gPlayerAnim_clink_demo_futtobi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2340
+  symbol: gPlayerAnim_clink_demo_futtobi
+
+gPlayerAnim_clink_demo_get1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2348
+  symbol: gPlayerAnim_clink_demo_get1
+
+gPlayerAnim_clink_demo_get2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2350
+  symbol: gPlayerAnim_clink_demo_get2
+
+gPlayerAnim_clink_demo_get3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2358
+  symbol: gPlayerAnim_clink_demo_get3
+
+gPlayerAnim_clink_demo_goto_future:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2360
+  symbol: gPlayerAnim_clink_demo_goto_future
+
+gPlayerAnim_clink_demo_koutai:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2368
+  symbol: gPlayerAnim_clink_demo_koutai
+
+gPlayerAnim_clink_demo_koutai_kennuki:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2370
+  symbol: gPlayerAnim_clink_demo_koutai_kennuki
+
+gPlayerAnim_clink_demo_koutai_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2378
+  symbol: gPlayerAnim_clink_demo_koutai_wait
+
+gPlayerAnim_clink_demo_mimawasi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2380
+  symbol: gPlayerAnim_clink_demo_mimawasi
+
+gPlayerAnim_clink_demo_mimawasi_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2388
+  symbol: gPlayerAnim_clink_demo_mimawasi_wait
+
+gPlayerAnim_clink_demo_miokuri:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2390
+  symbol: gPlayerAnim_clink_demo_miokuri
+
+gPlayerAnim_clink_demo_miokuri_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2398
+  symbol: gPlayerAnim_clink_demo_miokuri_wait
+
+gPlayerAnim_clink_demo_nozoki:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23A0
+  symbol: gPlayerAnim_clink_demo_nozoki
+
+gPlayerAnim_clink_demo_return_to_future:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23A8
+  symbol: gPlayerAnim_clink_demo_return_to_future
+
+gPlayerAnim_clink_demo_standup:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23B0
+  symbol: gPlayerAnim_clink_demo_standup
+
+gPlayerAnim_clink_demo_standup_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23B8
+  symbol: gPlayerAnim_clink_demo_standup_wait
+
+gPlayerAnim_clink_normal_climb_endAL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23C0
+  symbol: gPlayerAnim_clink_normal_climb_endAL
+
+gPlayerAnim_clink_normal_climb_endAR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23C8
+  symbol: gPlayerAnim_clink_normal_climb_endAR
+
+gPlayerAnim_clink_normal_climb_endBL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23D0
+  symbol: gPlayerAnim_clink_normal_climb_endBL
+
+gPlayerAnim_clink_normal_climb_endBR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23D8
+  symbol: gPlayerAnim_clink_normal_climb_endBR
+
+gPlayerAnim_clink_normal_climb_startA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23E0
+  symbol: gPlayerAnim_clink_normal_climb_startA
+
+gPlayerAnim_clink_normal_climb_startB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23E8
+  symbol: gPlayerAnim_clink_normal_climb_startB
+
+gPlayerAnim_clink_normal_climb_upL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23F0
+  symbol: gPlayerAnim_clink_normal_climb_upL
+
+gPlayerAnim_clink_normal_climb_upR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x23F8
+  symbol: gPlayerAnim_clink_normal_climb_upR
+
+gPlayerAnim_clink_normal_defense_ALL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2400
+  symbol: gPlayerAnim_clink_normal_defense_ALL
+
+gPlayerAnim_clink_op3_negaeri:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2408
+  symbol: gPlayerAnim_clink_op3_negaeri
+
+gPlayerAnim_clink_op3_okiagari:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2410
+  symbol: gPlayerAnim_clink_op3_okiagari
+
+gPlayerAnim_clink_op3_tatiagari:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2418
+  symbol: gPlayerAnim_clink_op3_tatiagari
+
+gPlayerAnim_clink_op3_wait1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2420
+  symbol: gPlayerAnim_clink_op3_wait1
+
+gPlayerAnim_clink_op3_wait2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2428
+  symbol: gPlayerAnim_clink_op3_wait2
+
+gPlayerAnim_clink_op3_wait3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2430
+  symbol: gPlayerAnim_clink_op3_wait3
+
+gPlayerAnim_d_link_imanodare:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2438
+  symbol: gPlayerAnim_d_link_imanodare
+
+gPlayerAnim_d_link_orooro:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2440
+  symbol: gPlayerAnim_d_link_orooro
+
+gPlayerAnim_d_link_orowait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2448
+  symbol: gPlayerAnim_d_link_orowait
+
+gPlayerAnim_demo_link_nwait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2450
+  symbol: gPlayerAnim_demo_link_nwait
+
+gPlayerAnim_demo_link_orosuu:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2458
+  symbol: gPlayerAnim_demo_link_orosuu
+
+gPlayerAnim_demo_link_tewatashi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2460
+  symbol: gPlayerAnim_demo_link_tewatashi
+
+gPlayerAnim_demo_link_twait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2468
+  symbol: gPlayerAnim_demo_link_twait
+
+gPlayerAnim_kolink_odoroki_demo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2470
+  symbol: gPlayerAnim_kolink_odoroki_demo
+
+gPlayerAnim_link_anchor_LLside_kiru_endL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2478
+  symbol: gPlayerAnim_link_anchor_LLside_kiru_endL
+
+gPlayerAnim_link_anchor_LLside_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2480
+  symbol: gPlayerAnim_link_anchor_LLside_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_LRside_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2488
+  symbol: gPlayerAnim_link_anchor_LRside_kiru_endR
+
+gPlayerAnim_link_anchor_LRside_kiru_finsh_endL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2490
+  symbol: gPlayerAnim_link_anchor_LRside_kiru_finsh_endL
+
+gPlayerAnim_link_anchor_Lnormal_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2498
+  symbol: gPlayerAnim_link_anchor_Lnormal_kiru_endR
+
+gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24A0
+  symbol: gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_Lpierce_kiru_endL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24A8
+  symbol: gPlayerAnim_link_anchor_Lpierce_kiru_endL
+
+gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24B0
+  symbol: gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_Lrolling_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24B8
+  symbol: gPlayerAnim_link_anchor_Lrolling_kiru_endR
+
+gPlayerAnim_link_anchor_Lside_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24C0
+  symbol: gPlayerAnim_link_anchor_Lside_kiru_endR
+
+gPlayerAnim_link_anchor_Lside_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24C8
+  symbol: gPlayerAnim_link_anchor_Lside_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_Rside_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24D0
+  symbol: gPlayerAnim_link_anchor_Rside_kiru_endR
+
+gPlayerAnim_link_anchor_Rside_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24D8
+  symbol: gPlayerAnim_link_anchor_Rside_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_anchor2fighter:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24E0
+  symbol: gPlayerAnim_link_anchor_anchor2fighter
+
+gPlayerAnim_link_anchor_back_brake:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24E8
+  symbol: gPlayerAnim_link_anchor_back_brake
+
+gPlayerAnim_link_anchor_back_hitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24F0
+  symbol: gPlayerAnim_link_anchor_back_hitR
+
+gPlayerAnim_link_anchor_back_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x24F8
+  symbol: gPlayerAnim_link_anchor_back_walk
+
+gPlayerAnim_link_anchor_bom_side_walkL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2500
+  symbol: gPlayerAnim_link_anchor_bom_side_walkL
+
+gPlayerAnim_link_anchor_bom_side_walkR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2508
+  symbol: gPlayerAnim_link_anchor_bom_side_walkR
+
+gPlayerAnim_link_anchor_defense_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2510
+  symbol: gPlayerAnim_link_anchor_defense_hit
+
+gPlayerAnim_link_anchor_defense_long_hitL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2518
+  symbol: gPlayerAnim_link_anchor_defense_long_hitL
+
+gPlayerAnim_link_anchor_defense_long_hitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2520
+  symbol: gPlayerAnim_link_anchor_defense_long_hitR
+
+gPlayerAnim_link_anchor_front_hitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2528
+  symbol: gPlayerAnim_link_anchor_front_hitR
+
+gPlayerAnim_link_anchor_jump_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2530
+  symbol: gPlayerAnim_link_anchor_jump_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_landingR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2538
+  symbol: gPlayerAnim_link_anchor_landingR
+
+gPlayerAnim_link_anchor_normal_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2540
+  symbol: gPlayerAnim_link_anchor_normal_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_pierce_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2548
+  symbol: gPlayerAnim_link_anchor_pierce_kiru_endR
+
+gPlayerAnim_link_anchor_pierce_kiru_finsh_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2550
+  symbol: gPlayerAnim_link_anchor_pierce_kiru_finsh_endR
+
+gPlayerAnim_link_anchor_power_kiru_wait_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2558
+  symbol: gPlayerAnim_link_anchor_power_kiru_wait_endR
+
+gPlayerAnim_link_anchor_rolling_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2560
+  symbol: gPlayerAnim_link_anchor_rolling_kiru_endR
+
+gPlayerAnim_link_anchor_side_walkL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2568
+  symbol: gPlayerAnim_link_anchor_side_walkL
+
+gPlayerAnim_link_anchor_side_walkR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2570
+  symbol: gPlayerAnim_link_anchor_side_walkR
+
+gPlayerAnim_link_anchor_waitL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2590
+  symbol: gPlayerAnim_link_anchor_waitL
+
+gPlayerAnim_link_anchor_waitL2defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2580
+  symbol: gPlayerAnim_link_anchor_waitL2defense
+
+gPlayerAnim_link_anchor_waitL2defense_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2588
+  symbol: gPlayerAnim_link_anchor_waitL2defense_long
+
+gPlayerAnim_link_anchor_waitL_defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2598
+  symbol: gPlayerAnim_link_anchor_waitL_defense
+
+gPlayerAnim_link_anchor_waitL_defense_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25A0
+  symbol: gPlayerAnim_link_anchor_waitL_defense_wait
+
+gPlayerAnim_link_anchor_waitL_pierce_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25B0
+  symbol: gPlayerAnim_link_anchor_waitL_pierce_kiru
+
+gPlayerAnim_link_anchor_waitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25D0
+  symbol: gPlayerAnim_link_anchor_waitR
+
+gPlayerAnim_link_anchor_waitR2defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25C0
+  symbol: gPlayerAnim_link_anchor_waitR2defense
+
+gPlayerAnim_link_anchor_waitR2defense_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25C8
+  symbol: gPlayerAnim_link_anchor_waitR2defense_long
+
+gPlayerAnim_link_anchor_waitR_defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25D8
+  symbol: gPlayerAnim_link_anchor_waitR_defense
+
+gPlayerAnim_link_anchor_waitR_defense_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25E0
+  symbol: gPlayerAnim_link_anchor_waitR_defense_wait
+
+gPlayerAnim_link_anchor_waitR_pierce_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25F0
+  symbol: gPlayerAnim_link_anchor_waitR_pierce_kiru
+
+gPlayerAnim_link_boom_catch:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x25F8
+  symbol: gPlayerAnim_link_boom_catch
+
+gPlayerAnim_link_boom_throwL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2600
+  symbol: gPlayerAnim_link_boom_throwL
+
+gPlayerAnim_link_boom_throwR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2608
+  symbol: gPlayerAnim_link_boom_throwR
+
+gPlayerAnim_link_boom_throw_side_walkL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2618
+  symbol: gPlayerAnim_link_boom_throw_side_walkL
+
+gPlayerAnim_link_boom_throw_side_walkR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2620
+  symbol: gPlayerAnim_link_boom_throw_side_walkR
+
+gPlayerAnim_link_boom_throw_wait2waitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2628
+  symbol: gPlayerAnim_link_boom_throw_wait2waitR
+
+gPlayerAnim_link_boom_throw_waitL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2630
+  symbol: gPlayerAnim_link_boom_throw_waitL
+
+gPlayerAnim_link_boom_throw_waitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2638
+  symbol: gPlayerAnim_link_boom_throw_waitR
+
+gPlayerAnim_link_bottle_bug_in:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2640
+  symbol: gPlayerAnim_link_bottle_bug_in
+
+gPlayerAnim_link_bottle_bug_miss:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2648
+  symbol: gPlayerAnim_link_bottle_bug_miss
+
+gPlayerAnim_link_bottle_bug_out:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2650
+  symbol: gPlayerAnim_link_bottle_bug_out
+
+gPlayerAnim_link_bottle_drink_demo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2658
+  symbol: gPlayerAnim_link_bottle_drink_demo
+
+gPlayerAnim_link_bottle_drink_demo_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2660
+  symbol: gPlayerAnim_link_bottle_drink_demo_end
+
+gPlayerAnim_link_bottle_drink_demo_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2668
+  symbol: gPlayerAnim_link_bottle_drink_demo_start
+
+gPlayerAnim_link_bottle_drink_demo_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2670
+  symbol: gPlayerAnim_link_bottle_drink_demo_wait
+
+gPlayerAnim_link_bottle_fish_in:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2678
+  symbol: gPlayerAnim_link_bottle_fish_in
+
+gPlayerAnim_link_bottle_fish_miss:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2680
+  symbol: gPlayerAnim_link_bottle_fish_miss
+
+gPlayerAnim_link_bottle_fish_out:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2688
+  symbol: gPlayerAnim_link_bottle_fish_out
+
+gPlayerAnim_link_bottle_read:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2690
+  symbol: gPlayerAnim_link_bottle_read
+
+gPlayerAnim_link_bottle_read_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2698
+  symbol: gPlayerAnim_link_bottle_read_end
+
+gPlayerAnim_link_bow_bow_ready:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26A0
+  symbol: gPlayerAnim_link_bow_bow_ready
+
+gPlayerAnim_link_bow_bow_shoot:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26A8
+  symbol: gPlayerAnim_link_bow_bow_shoot
+
+gPlayerAnim_link_bow_bow_shoot_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26B0
+  symbol: gPlayerAnim_link_bow_bow_shoot_end
+
+gPlayerAnim_link_bow_bow_shoot_next:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26B8
+  symbol: gPlayerAnim_link_bow_bow_shoot_next
+
+gPlayerAnim_link_bow_bow_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26C0
+  symbol: gPlayerAnim_link_bow_bow_wait
+
+gPlayerAnim_link_bow_defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26C8
+  symbol: gPlayerAnim_link_bow_defense
+
+gPlayerAnim_link_bow_defense_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26D0
+  symbol: gPlayerAnim_link_bow_defense_wait
+
+gPlayerAnim_link_bow_side_runL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26D8
+  symbol: gPlayerAnim_link_bow_side_runL
+
+gPlayerAnim_link_bow_side_runR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26E0
+  symbol: gPlayerAnim_link_bow_side_runR
+
+gPlayerAnim_link_bow_side_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26E8
+  symbol: gPlayerAnim_link_bow_side_walk
+
+gPlayerAnim_link_bow_walk2ready:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26F0
+  symbol: gPlayerAnim_link_bow_walk2ready
+
+gPlayerAnim_link_child_tunnel_door:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x26F8
+  symbol: gPlayerAnim_link_child_tunnel_door
+
+gPlayerAnim_link_child_tunnel_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2700
+  symbol: gPlayerAnim_link_child_tunnel_end
+
+gPlayerAnim_link_child_tunnel_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2708
+  symbol: gPlayerAnim_link_child_tunnel_start
+
+gPlayerAnim_link_demo_DDbox_open:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2710
+  symbol: gPlayerAnim_link_demo_DDbox_open
+
+gPlayerAnim_link_demo_Tbox_open:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2718
+  symbol: gPlayerAnim_link_demo_Tbox_open
+
+gPlayerAnim_link_demo_back_to_past:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2720
+  symbol: gPlayerAnim_link_demo_back_to_past
+
+gPlayerAnim_link_demo_baru_op1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2728
+  symbol: gPlayerAnim_link_demo_baru_op1
+
+gPlayerAnim_link_demo_baru_op2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2730
+  symbol: gPlayerAnim_link_demo_baru_op2
+
+gPlayerAnim_link_demo_baru_op3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2738
+  symbol: gPlayerAnim_link_demo_baru_op3
+
+gPlayerAnim_link_demo_bikkuri:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2740
+  symbol: gPlayerAnim_link_demo_bikkuri
+
+gPlayerAnim_link_demo_doorA_link:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2748
+  symbol: gPlayerAnim_link_demo_doorA_link
+
+gPlayerAnim_link_demo_doorA_link_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2750
+  symbol: gPlayerAnim_link_demo_doorA_link_free
+
+gPlayerAnim_link_demo_doorB_link:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2758
+  symbol: gPlayerAnim_link_demo_doorB_link
+
+gPlayerAnim_link_demo_doorB_link_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2760
+  symbol: gPlayerAnim_link_demo_doorB_link_free
+
+gPlayerAnim_link_demo_furimuki:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2778
+  symbol: gPlayerAnim_link_demo_furimuki
+
+gPlayerAnim_link_demo_furimuki2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2768
+  symbol: gPlayerAnim_link_demo_furimuki2
+
+gPlayerAnim_link_demo_furimuki2_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2770
+  symbol: gPlayerAnim_link_demo_furimuki2_wait
+
+gPlayerAnim_link_demo_get_itemA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2780
+  symbol: gPlayerAnim_link_demo_get_itemA
+
+gPlayerAnim_link_demo_get_itemB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2788
+  symbol: gPlayerAnim_link_demo_get_itemB
+
+gPlayerAnim_link_demo_goma_furimuki:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2790
+  symbol: gPlayerAnim_link_demo_goma_furimuki
+
+gPlayerAnim_link_demo_gurad:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2798
+  symbol: gPlayerAnim_link_demo_gurad
+
+gPlayerAnim_link_demo_gurad_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27A0
+  symbol: gPlayerAnim_link_demo_gurad_wait
+
+gPlayerAnim_link_demo_jibunmiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27A8
+  symbol: gPlayerAnim_link_demo_jibunmiru
+
+gPlayerAnim_link_demo_kakeyori:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27B0
+  symbol: gPlayerAnim_link_demo_kakeyori
+
+gPlayerAnim_link_demo_kakeyori_mimawasi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27B8
+  symbol: gPlayerAnim_link_demo_kakeyori_mimawasi
+
+gPlayerAnim_link_demo_kakeyori_miokuri:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27C0
+  symbol: gPlayerAnim_link_demo_kakeyori_miokuri
+
+gPlayerAnim_link_demo_kakeyori_miokuri_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27C8
+  symbol: gPlayerAnim_link_demo_kakeyori_miokuri_wait
+
+gPlayerAnim_link_demo_kakeyori_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27D0
+  symbol: gPlayerAnim_link_demo_kakeyori_wait
+
+gPlayerAnim_link_demo_kaoage:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27D8
+  symbol: gPlayerAnim_link_demo_kaoage
+
+gPlayerAnim_link_demo_kaoage_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27E0
+  symbol: gPlayerAnim_link_demo_kaoage_wait
+
+gPlayerAnim_link_demo_kenmiru1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27E8
+  symbol: gPlayerAnim_link_demo_kenmiru1
+
+gPlayerAnim_link_demo_kenmiru1_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27F0
+  symbol: gPlayerAnim_link_demo_kenmiru1_wait
+
+gPlayerAnim_link_demo_kenmiru2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x27F8
+  symbol: gPlayerAnim_link_demo_kenmiru2
+
+gPlayerAnim_link_demo_kenmiru2_modori:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2800
+  symbol: gPlayerAnim_link_demo_kenmiru2_modori
+
+gPlayerAnim_link_demo_kenmiru2_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2808
+  symbol: gPlayerAnim_link_demo_kenmiru2_wait
+
+gPlayerAnim_link_demo_kousan:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2810
+  symbol: gPlayerAnim_link_demo_kousan
+
+gPlayerAnim_link_demo_look_hand:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2818
+  symbol: gPlayerAnim_link_demo_look_hand
+
+gPlayerAnim_link_demo_look_hand_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2820
+  symbol: gPlayerAnim_link_demo_look_hand_wait
+
+gPlayerAnim_link_demo_nozokikomi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2828
+  symbol: gPlayerAnim_link_demo_nozokikomi
+
+gPlayerAnim_link_demo_nozokikomi_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2830
+  symbol: gPlayerAnim_link_demo_nozokikomi_wait
+
+gPlayerAnim_link_demo_return_to_past:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2838
+  symbol: gPlayerAnim_link_demo_return_to_past
+
+gPlayerAnim_link_demo_sita_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2848
+  symbol: gPlayerAnim_link_demo_sita_wait
+
+gPlayerAnim_link_demo_ue:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2850
+  symbol: gPlayerAnim_link_demo_ue
+
+gPlayerAnim_link_demo_ue_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2858
+  symbol: gPlayerAnim_link_demo_ue_wait
+
+gPlayerAnim_link_demo_warp:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2860
+  symbol: gPlayerAnim_link_demo_warp
+
+gPlayerAnim_link_demo_zeldamiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2868
+  symbol: gPlayerAnim_link_demo_zeldamiru
+
+gPlayerAnim_link_demo_zeldamiru_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2870
+  symbol: gPlayerAnim_link_demo_zeldamiru_wait
+
+gPlayerAnim_link_derth_rebirth:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2878
+  symbol: gPlayerAnim_link_derth_rebirth
+
+gPlayerAnim_link_fighter_LLside_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2880
+  symbol: gPlayerAnim_link_fighter_LLside_kiru
+
+gPlayerAnim_link_fighter_LLside_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2888
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_end
+
+gPlayerAnim_link_fighter_LLside_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2890
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_finsh
+
+gPlayerAnim_link_fighter_LLside_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2898
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_finsh_end
+
+gPlayerAnim_link_fighter_LRside_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28A0
+  symbol: gPlayerAnim_link_fighter_LRside_kiru
+
+gPlayerAnim_link_fighter_LRside_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28A8
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_end
+
+gPlayerAnim_link_fighter_LRside_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28B0
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_finsh
+
+gPlayerAnim_link_fighter_LRside_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28B8
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_finsh_end
+
+gPlayerAnim_link_fighter_Lnormal_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28C0
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru
+
+gPlayerAnim_link_fighter_Lnormal_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28C8
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_end
+
+gPlayerAnim_link_fighter_Lnormal_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28D0
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_finsh
+
+gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28D8
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end
+
+gPlayerAnim_link_fighter_Lpierce_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28E0
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru
+
+gPlayerAnim_link_fighter_Lpierce_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28E8
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_end
+
+gPlayerAnim_link_fighter_Lpierce_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28F0
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_finsh
+
+gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x28F8
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2900
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2908
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru_end
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2910
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru_hit
+
+gPlayerAnim_link_fighter_Lpower_kiru_side_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2918
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_side_walk
+
+gPlayerAnim_link_fighter_Lpower_kiru_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2920
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_start
+
+gPlayerAnim_link_fighter_Lpower_kiru_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2928
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_wait
+
+gPlayerAnim_link_fighter_Lpower_kiru_wait_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2930
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_wait_end
+
+gPlayerAnim_link_fighter_Lpower_kiru_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2938
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_walk
+
+gPlayerAnim_link_fighter_Lrolling_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2940
+  symbol: gPlayerAnim_link_fighter_Lrolling_kiru
+
+gPlayerAnim_link_fighter_Lrolling_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2948
+  symbol: gPlayerAnim_link_fighter_Lrolling_kiru_end
+
+gPlayerAnim_link_fighter_Lside_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2950
+  symbol: gPlayerAnim_link_fighter_Lside_jump
+
+gPlayerAnim_link_fighter_Lside_jump_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2960
+  symbol: gPlayerAnim_link_fighter_Lside_jump_end
+
+gPlayerAnim_link_fighter_Lside_jump_endL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2958
+  symbol: gPlayerAnim_link_fighter_Lside_jump_endL
+
+gPlayerAnim_link_fighter_Lside_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2968
+  symbol: gPlayerAnim_link_fighter_Lside_kiru
+
+gPlayerAnim_link_fighter_Lside_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2970
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_end
+
+gPlayerAnim_link_fighter_Lside_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2978
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_finsh
+
+gPlayerAnim_link_fighter_Lside_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2980
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_finsh_end
+
+gPlayerAnim_link_fighter_Rside_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2988
+  symbol: gPlayerAnim_link_fighter_Rside_jump
+
+gPlayerAnim_link_fighter_Rside_jump_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2998
+  symbol: gPlayerAnim_link_fighter_Rside_jump_end
+
+gPlayerAnim_link_fighter_Rside_jump_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2990
+  symbol: gPlayerAnim_link_fighter_Rside_jump_endR
+
+gPlayerAnim_link_fighter_Rside_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29A0
+  symbol: gPlayerAnim_link_fighter_Rside_kiru
+
+gPlayerAnim_link_fighter_Rside_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29A8
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_end
+
+gPlayerAnim_link_fighter_Rside_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29B0
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_finsh
+
+gPlayerAnim_link_fighter_Rside_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29B8
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_finsh_end
+
+gPlayerAnim_link_fighter_Wrolling_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29C0
+  symbol: gPlayerAnim_link_fighter_Wrolling_kiru
+
+gPlayerAnim_link_fighter_Wrolling_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29C8
+  symbol: gPlayerAnim_link_fighter_Wrolling_kiru_end
+
+gPlayerAnim_link_fighter_backturn_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29D0
+  symbol: gPlayerAnim_link_fighter_backturn_jump
+
+gPlayerAnim_link_fighter_backturn_jump_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29E0
+  symbol: gPlayerAnim_link_fighter_backturn_jump_end
+
+gPlayerAnim_link_fighter_backturn_jump_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29D8
+  symbol: gPlayerAnim_link_fighter_backturn_jump_endR
+
+gPlayerAnim_link_fighter_damage_run:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29E8
+  symbol: gPlayerAnim_link_fighter_damage_run
+
+gPlayerAnim_link_fighter_damage_run_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29F0
+  symbol: gPlayerAnim_link_fighter_damage_run_long
+
+gPlayerAnim_link_fighter_defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x29F8
+  symbol: gPlayerAnim_link_fighter_defense
+
+gPlayerAnim_link_fighter_defense_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A00
+  symbol: gPlayerAnim_link_fighter_defense_long
+
+gPlayerAnim_link_fighter_defense_long_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A08
+  symbol: gPlayerAnim_link_fighter_defense_long_hit
+
+gPlayerAnim_link_fighter_defense_long_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A10
+  symbol: gPlayerAnim_link_fighter_defense_long_wait
+
+gPlayerAnim_link_fighter_defense_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A18
+  symbol: gPlayerAnim_link_fighter_defense_wait
+
+gPlayerAnim_link_fighter_fighter2long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A20
+  symbol: gPlayerAnim_link_fighter_fighter2long
+
+gPlayerAnim_link_fighter_front_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A28
+  symbol: gPlayerAnim_link_fighter_front_jump
+
+gPlayerAnim_link_fighter_front_jump_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A38
+  symbol: gPlayerAnim_link_fighter_front_jump_end
+
+gPlayerAnim_link_fighter_front_jump_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A30
+  symbol: gPlayerAnim_link_fighter_front_jump_endR
+
+gPlayerAnim_link_fighter_heavy_run_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A40
+  symbol: gPlayerAnim_link_fighter_heavy_run_long
+
+gPlayerAnim_link_fighter_jump_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A48
+  symbol: gPlayerAnim_link_fighter_jump_kiru
+
+gPlayerAnim_link_fighter_jump_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A50
+  symbol: gPlayerAnim_link_fighter_jump_kiru_finsh
+
+gPlayerAnim_link_fighter_jump_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A58
+  symbol: gPlayerAnim_link_fighter_jump_kiru_finsh_end
+
+gPlayerAnim_link_fighter_jump_rollkiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A60
+  symbol: gPlayerAnim_link_fighter_jump_rollkiru
+
+gPlayerAnim_link_fighter_landing_roll_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A68
+  symbol: gPlayerAnim_link_fighter_landing_roll_long
+
+gPlayerAnim_link_fighter_normal2fighter:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A70
+  symbol: gPlayerAnim_link_fighter_normal2fighter
+
+gPlayerAnim_link_fighter_normal_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A80
+  symbol: gPlayerAnim_link_fighter_normal_kiru
+
+gPlayerAnim_link_fighter_normal_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A90
+  symbol: gPlayerAnim_link_fighter_normal_kiru_end
+
+gPlayerAnim_link_fighter_normal_kiru_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A88
+  symbol: gPlayerAnim_link_fighter_normal_kiru_endR
+
+gPlayerAnim_link_fighter_normal_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2A98
+  symbol: gPlayerAnim_link_fighter_normal_kiru_finsh
+
+gPlayerAnim_link_fighter_normal_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AA0
+  symbol: gPlayerAnim_link_fighter_normal_kiru_finsh_end
+
+gPlayerAnim_link_fighter_pierce_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AA8
+  symbol: gPlayerAnim_link_fighter_pierce_kiru
+
+gPlayerAnim_link_fighter_pierce_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AB0
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_end
+
+gPlayerAnim_link_fighter_pierce_kiru_finsh:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AB8
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_finsh
+
+gPlayerAnim_link_fighter_pierce_kiru_finsh_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AC0
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_finsh_end
+
+gPlayerAnim_link_fighter_power_jump_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AC8
+  symbol: gPlayerAnim_link_fighter_power_jump_kiru_end
+
+gPlayerAnim_link_fighter_power_kiru_side_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AD8
+  symbol: gPlayerAnim_link_fighter_power_kiru_side_walk
+
+gPlayerAnim_link_fighter_power_kiru_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AE8
+  symbol: gPlayerAnim_link_fighter_power_kiru_start
+
+gPlayerAnim_link_fighter_power_kiru_startL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AE0
+  symbol: gPlayerAnim_link_fighter_power_kiru_startL
+
+gPlayerAnim_link_fighter_power_kiru_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AF0
+  symbol: gPlayerAnim_link_fighter_power_kiru_wait
+
+gPlayerAnim_link_fighter_power_kiru_wait_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2AF8
+  symbol: gPlayerAnim_link_fighter_power_kiru_wait_end
+
+gPlayerAnim_link_fighter_power_kiru_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B00
+  symbol: gPlayerAnim_link_fighter_power_kiru_walk
+
+gPlayerAnim_link_fighter_rebound:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B10
+  symbol: gPlayerAnim_link_fighter_rebound
+
+gPlayerAnim_link_fighter_reboundR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B08
+  symbol: gPlayerAnim_link_fighter_reboundR
+
+gPlayerAnim_link_fighter_rebound_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B20
+  symbol: gPlayerAnim_link_fighter_rebound_long
+
+gPlayerAnim_link_fighter_rebound_longR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B18
+  symbol: gPlayerAnim_link_fighter_rebound_longR
+
+gPlayerAnim_link_fighter_rolling_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B28
+  symbol: gPlayerAnim_link_fighter_rolling_kiru
+
+gPlayerAnim_link_fighter_rolling_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B30
+  symbol: gPlayerAnim_link_fighter_rolling_kiru_end
+
+gPlayerAnim_link_fighter_run:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B38
+  symbol: gPlayerAnim_link_fighter_run
+
+gPlayerAnim_link_fighter_run_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B40
+  symbol: gPlayerAnim_link_fighter_run_long
+
+gPlayerAnim_link_fighter_side_walkL_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B58
+  symbol: gPlayerAnim_link_fighter_side_walkL_long
+
+gPlayerAnim_link_fighter_side_walkR_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B60
+  symbol: gPlayerAnim_link_fighter_side_walkR_long
+
+gPlayerAnim_link_fighter_side_walk_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B68
+  symbol: gPlayerAnim_link_fighter_side_walk_long
+
+gPlayerAnim_link_fighter_turn_kiruL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B70
+  symbol: gPlayerAnim_link_fighter_turn_kiruL
+
+gPlayerAnim_link_fighter_turn_kiruL_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B78
+  symbol: gPlayerAnim_link_fighter_turn_kiruL_end
+
+gPlayerAnim_link_fighter_turn_kiruR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B80
+  symbol: gPlayerAnim_link_fighter_turn_kiruR
+
+gPlayerAnim_link_fighter_turn_kiruR_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B88
+  symbol: gPlayerAnim_link_fighter_turn_kiruR_end
+
+gPlayerAnim_link_fighter_upper_kiruR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B90
+  symbol: gPlayerAnim_link_fighter_upper_kiruR
+
+gPlayerAnim_link_fighter_upper_pierce_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2B98
+  symbol: gPlayerAnim_link_fighter_upper_pierce_kiru
+
+gPlayerAnim_link_fighter_upper_pierce_kiru_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BA0
+  symbol: gPlayerAnim_link_fighter_upper_pierce_kiru_end
+
+gPlayerAnim_link_fighter_wait2waitL_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BA8
+  symbol: gPlayerAnim_link_fighter_wait2waitL_long
+
+gPlayerAnim_link_fighter_wait2waitR_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BB0
+  symbol: gPlayerAnim_link_fighter_wait2waitR_long
+
+gPlayerAnim_link_fighter_waitL2wait_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BB8
+  symbol: gPlayerAnim_link_fighter_waitL2wait_long
+
+gPlayerAnim_link_fighter_waitL_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BC0
+  symbol: gPlayerAnim_link_fighter_waitL_long
+
+gPlayerAnim_link_fighter_waitR2wait_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BC8
+  symbol: gPlayerAnim_link_fighter_waitR2wait_long
+
+gPlayerAnim_link_fighter_waitR_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BD0
+  symbol: gPlayerAnim_link_fighter_waitR_long
+
+gPlayerAnim_link_fighter_wait_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BE0
+  symbol: gPlayerAnim_link_fighter_wait_long
+
+gPlayerAnim_link_fighter_walk_endL_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BE8
+  symbol: gPlayerAnim_link_fighter_walk_endL_long
+
+gPlayerAnim_link_fighter_walk_endR_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BF0
+  symbol: gPlayerAnim_link_fighter_walk_endR_long
+
+gPlayerAnim_link_fighter_walk_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2BF8
+  symbol: gPlayerAnim_link_fighter_walk_long
+
+gPlayerAnim_link_fishing_fish_catch:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C00
+  symbol: gPlayerAnim_link_fishing_fish_catch
+
+gPlayerAnim_link_fishing_fish_catch_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C08
+  symbol: gPlayerAnim_link_fishing_fish_catch_end
+
+gPlayerAnim_link_fishing_reel_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C10
+  symbol: gPlayerAnim_link_fishing_reel_down
+
+gPlayerAnim_link_fishing_reel_left:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C18
+  symbol: gPlayerAnim_link_fishing_reel_left
+
+gPlayerAnim_link_fishing_reel_right:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C20
+  symbol: gPlayerAnim_link_fishing_reel_right
+
+gPlayerAnim_link_fishing_reel_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C28
+  symbol: gPlayerAnim_link_fishing_reel_up
+
+gPlayerAnim_link_fishing_throw:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C30
+  symbol: gPlayerAnim_link_fishing_throw
+
+gPlayerAnim_link_fishing_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C38
+  symbol: gPlayerAnim_link_fishing_wait
+
+gPlayerAnim_link_hammer_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C40
+  symbol: gPlayerAnim_link_hammer_hit
+
+gPlayerAnim_link_hammer_hit_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C50
+  symbol: gPlayerAnim_link_hammer_hit_end
+
+gPlayerAnim_link_hammer_hit_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C48
+  symbol: gPlayerAnim_link_hammer_hit_endR
+
+gPlayerAnim_link_hammer_long2free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C58
+  symbol: gPlayerAnim_link_hammer_long2free
+
+gPlayerAnim_link_hammer_long2long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C60
+  symbol: gPlayerAnim_link_hammer_long2long
+
+gPlayerAnim_link_hammer_normal2long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C68
+  symbol: gPlayerAnim_link_hammer_normal2long
+
+gPlayerAnim_link_hammer_side_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C70
+  symbol: gPlayerAnim_link_hammer_side_hit
+
+gPlayerAnim_link_hammer_side_hit_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C80
+  symbol: gPlayerAnim_link_hammer_side_hit_end
+
+gPlayerAnim_link_hammer_side_hit_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C78
+  symbol: gPlayerAnim_link_hammer_side_hit_endR
+
+gPlayerAnim_link_hatto_demo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C88
+  symbol: gPlayerAnim_link_hatto_demo
+
+gPlayerAnim_link_hook_fly_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C90
+  symbol: gPlayerAnim_link_hook_fly_start
+
+gPlayerAnim_link_hook_fly_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2C98
+  symbol: gPlayerAnim_link_hook_fly_wait
+
+gPlayerAnim_link_hook_shot_ready:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CA0
+  symbol: gPlayerAnim_link_hook_shot_ready
+
+gPlayerAnim_link_hook_side_runL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CA8
+  symbol: gPlayerAnim_link_hook_side_runL
+
+gPlayerAnim_link_hook_side_runR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CB0
+  symbol: gPlayerAnim_link_hook_side_runR
+
+gPlayerAnim_link_hook_side_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CB8
+  symbol: gPlayerAnim_link_hook_side_walk
+
+gPlayerAnim_link_hook_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CC0
+  symbol: gPlayerAnim_link_hook_wait
+
+gPlayerAnim_link_hook_walk2ready:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CC8
+  symbol: gPlayerAnim_link_hook_walk2ready
+
+gPlayerAnim_link_last_hit_motion1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CD0
+  symbol: gPlayerAnim_link_last_hit_motion1
+
+gPlayerAnim_link_last_hit_motion2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CD8
+  symbol: gPlayerAnim_link_last_hit_motion2
+
+gPlayerAnim_link_magic_honoo1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CE0
+  symbol: gPlayerAnim_link_magic_honoo1
+
+gPlayerAnim_link_magic_honoo2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CE8
+  symbol: gPlayerAnim_link_magic_honoo2
+
+gPlayerAnim_link_magic_honoo3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CF0
+  symbol: gPlayerAnim_link_magic_honoo3
+
+gPlayerAnim_link_magic_kaze1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2CF8
+  symbol: gPlayerAnim_link_magic_kaze1
+
+gPlayerAnim_link_magic_kaze2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D00
+  symbol: gPlayerAnim_link_magic_kaze2
+
+gPlayerAnim_link_magic_kaze3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D08
+  symbol: gPlayerAnim_link_magic_kaze3
+
+gPlayerAnim_link_magic_tamashii1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D10
+  symbol: gPlayerAnim_link_magic_tamashii1
+
+gPlayerAnim_link_magic_tamashii2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D18
+  symbol: gPlayerAnim_link_magic_tamashii2
+
+gPlayerAnim_link_magic_tamashii3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D20
+  symbol: gPlayerAnim_link_magic_tamashii3
+
+gPlayerAnim_link_magic_tame:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D28
+  symbol: gPlayerAnim_link_magic_tame
+
+gPlayerAnim_link_magic_tame_kaijyo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D30
+  symbol: gPlayerAnim_link_magic_tame_kaijyo
+
+gPlayerAnim_link_normal_100step_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D38
+  symbol: gPlayerAnim_link_normal_100step_up
+
+gPlayerAnim_link_normal_150step_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D40
+  symbol: gPlayerAnim_link_normal_150step_up
+
+gPlayerAnim_link_normal_250jump_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D48
+  symbol: gPlayerAnim_link_normal_250jump_start
+
+gPlayerAnim_link_normal_45_turn:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D58
+  symbol: gPlayerAnim_link_normal_45_turn
+
+gPlayerAnim_link_normal_45_turn_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D60
+  symbol: gPlayerAnim_link_normal_45_turn_free
+
+gPlayerAnim_link_normal_Fclimb_hold2upL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D68
+  symbol: gPlayerAnim_link_normal_Fclimb_hold2upL
+
+gPlayerAnim_link_normal_Fclimb_sideL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D70
+  symbol: gPlayerAnim_link_normal_Fclimb_sideL
+
+gPlayerAnim_link_normal_Fclimb_sideR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D78
+  symbol: gPlayerAnim_link_normal_Fclimb_sideR
+
+gPlayerAnim_link_normal_Fclimb_startA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D80
+  symbol: gPlayerAnim_link_normal_Fclimb_startA
+
+gPlayerAnim_link_normal_Fclimb_startB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D88
+  symbol: gPlayerAnim_link_normal_Fclimb_startB
+
+gPlayerAnim_link_normal_Fclimb_upL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D90
+  symbol: gPlayerAnim_link_normal_Fclimb_upL
+
+gPlayerAnim_link_normal_Fclimb_upR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2D98
+  symbol: gPlayerAnim_link_normal_Fclimb_upR
+
+gPlayerAnim_link_normal_back_brake:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DA0
+  symbol: gPlayerAnim_link_normal_back_brake
+
+gPlayerAnim_link_normal_back_brake_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DA8
+  symbol: gPlayerAnim_link_normal_back_brake_end
+
+gPlayerAnim_link_normal_back_downA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DB0
+  symbol: gPlayerAnim_link_normal_back_downA
+
+gPlayerAnim_link_normal_back_downB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DB8
+  symbol: gPlayerAnim_link_normal_back_downB
+
+gPlayerAnim_link_normal_back_down_wake:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DC0
+  symbol: gPlayerAnim_link_normal_back_down_wake
+
+gPlayerAnim_link_normal_back_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DC8
+  symbol: gPlayerAnim_link_normal_back_hit
+
+gPlayerAnim_link_normal_back_run:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DD0
+  symbol: gPlayerAnim_link_normal_back_run
+
+gPlayerAnim_link_normal_back_shit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DE0
+  symbol: gPlayerAnim_link_normal_back_shit
+
+gPlayerAnim_link_normal_back_shitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DD8
+  symbol: gPlayerAnim_link_normal_back_shitR
+
+gPlayerAnim_link_normal_back_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DE8
+  symbol: gPlayerAnim_link_normal_back_walk
+
+gPlayerAnim_link_normal_backspace:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DF0
+  symbol: gPlayerAnim_link_normal_backspace
+
+gPlayerAnim_link_normal_box_kick:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2DF8
+  symbol: gPlayerAnim_link_normal_box_kick
+
+gPlayerAnim_link_normal_carryB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E00
+  symbol: gPlayerAnim_link_normal_carryB
+
+gPlayerAnim_link_normal_carryB_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E08
+  symbol: gPlayerAnim_link_normal_carryB_free
+
+gPlayerAnim_link_normal_carryB_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E10
+  symbol: gPlayerAnim_link_normal_carryB_wait
+
+gPlayerAnim_link_normal_check:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E18
+  symbol: gPlayerAnim_link_normal_check
+
+gPlayerAnim_link_normal_check_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E20
+  symbol: gPlayerAnim_link_normal_check_end
+
+gPlayerAnim_link_normal_check_end_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E28
+  symbol: gPlayerAnim_link_normal_check_end_free
+
+gPlayerAnim_link_normal_check_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E30
+  symbol: gPlayerAnim_link_normal_check_free
+
+gPlayerAnim_link_normal_check_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E38
+  symbol: gPlayerAnim_link_normal_check_wait
+
+gPlayerAnim_link_normal_check_wait_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E40
+  symbol: gPlayerAnim_link_normal_check_wait_free
+
+gPlayerAnim_link_normal_climb_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E48
+  symbol: gPlayerAnim_link_normal_climb_down
+
+gPlayerAnim_link_normal_climb_endAL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E50
+  symbol: gPlayerAnim_link_normal_climb_endAL
+
+gPlayerAnim_link_normal_climb_endAR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E58
+  symbol: gPlayerAnim_link_normal_climb_endAR
+
+gPlayerAnim_link_normal_climb_endBL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E60
+  symbol: gPlayerAnim_link_normal_climb_endBL
+
+gPlayerAnim_link_normal_climb_endBR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E68
+  symbol: gPlayerAnim_link_normal_climb_endBR
+
+gPlayerAnim_link_normal_climb_startA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E70
+  symbol: gPlayerAnim_link_normal_climb_startA
+
+gPlayerAnim_link_normal_climb_startB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E78
+  symbol: gPlayerAnim_link_normal_climb_startB
+
+gPlayerAnim_link_normal_climb_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E90
+  symbol: gPlayerAnim_link_normal_climb_up
+
+gPlayerAnim_link_normal_climb_upL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E80
+  symbol: gPlayerAnim_link_normal_climb_upL
+
+gPlayerAnim_link_normal_climb_upR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E88
+  symbol: gPlayerAnim_link_normal_climb_upR
+
+gPlayerAnim_link_normal_damage_run_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2E98
+  symbol: gPlayerAnim_link_normal_damage_run_free
+
+gPlayerAnim_link_normal_defense:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EA0
+  symbol: gPlayerAnim_link_normal_defense
+
+gPlayerAnim_link_normal_defense_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EA8
+  symbol: gPlayerAnim_link_normal_defense_end
+
+gPlayerAnim_link_normal_defense_end_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EB0
+  symbol: gPlayerAnim_link_normal_defense_end_free
+
+gPlayerAnim_link_normal_defense_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EB8
+  symbol: gPlayerAnim_link_normal_defense_free
+
+gPlayerAnim_link_normal_defense_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EC0
+  symbol: gPlayerAnim_link_normal_defense_hit
+
+gPlayerAnim_link_normal_defense_kiru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EC8
+  symbol: gPlayerAnim_link_normal_defense_kiru
+
+gPlayerAnim_link_normal_defense_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2ED0
+  symbol: gPlayerAnim_link_normal_defense_wait
+
+gPlayerAnim_link_normal_defense_wait_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2ED8
+  symbol: gPlayerAnim_link_normal_defense_wait_free
+
+gPlayerAnim_link_normal_down_slope_slip:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EE0
+  symbol: gPlayerAnim_link_normal_down_slope_slip
+
+gPlayerAnim_link_normal_down_slope_slip_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EE8
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end
+
+gPlayerAnim_link_normal_down_slope_slip_end_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EF0
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end_free
+
+gPlayerAnim_link_normal_down_slope_slip_end_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2EF8
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end_long
+
+gPlayerAnim_link_normal_electric_shock:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F00
+  symbol: gPlayerAnim_link_normal_electric_shock
+
+gPlayerAnim_link_normal_electric_shock_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F08
+  symbol: gPlayerAnim_link_normal_electric_shock_end
+
+gPlayerAnim_link_normal_fall:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F10
+  symbol: gPlayerAnim_link_normal_fall
+
+gPlayerAnim_link_normal_fall_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F18
+  symbol: gPlayerAnim_link_normal_fall_up
+
+gPlayerAnim_link_normal_fall_up_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F20
+  symbol: gPlayerAnim_link_normal_fall_up_free
+
+gPlayerAnim_link_normal_fall_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F28
+  symbol: gPlayerAnim_link_normal_fall_wait
+
+gPlayerAnim_link_normal_fighter2free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F30
+  symbol: gPlayerAnim_link_normal_fighter2free
+
+gPlayerAnim_link_normal_free2bom:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F38
+  symbol: gPlayerAnim_link_normal_free2bom
+
+gPlayerAnim_link_normal_free2fighter_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F40
+  symbol: gPlayerAnim_link_normal_free2fighter_free
+
+gPlayerAnim_link_normal_free2free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F50
+  symbol: gPlayerAnim_link_normal_free2free
+
+gPlayerAnim_link_normal_free2freeB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F48
+  symbol: gPlayerAnim_link_normal_free2freeB
+
+gPlayerAnim_link_normal_front_downA:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F58
+  symbol: gPlayerAnim_link_normal_front_downA
+
+gPlayerAnim_link_normal_front_downB:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F60
+  symbol: gPlayerAnim_link_normal_front_downB
+
+gPlayerAnim_link_normal_front_down_wake:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F68
+  symbol: gPlayerAnim_link_normal_front_down_wake
+
+gPlayerAnim_link_normal_front_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F70
+  symbol: gPlayerAnim_link_normal_front_hit
+
+gPlayerAnim_link_normal_front_shit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F80
+  symbol: gPlayerAnim_link_normal_front_shit
+
+gPlayerAnim_link_normal_front_shitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F78
+  symbol: gPlayerAnim_link_normal_front_shitR
+
+gPlayerAnim_link_normal_give_other:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F88
+  symbol: gPlayerAnim_link_normal_give_other
+
+gPlayerAnim_link_normal_hang_up_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F90
+  symbol: gPlayerAnim_link_normal_hang_up_down
+
+gPlayerAnim_link_normal_heavy_carry:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2F98
+  symbol: gPlayerAnim_link_normal_heavy_carry
+
+gPlayerAnim_link_normal_heavy_carry_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FA0
+  symbol: gPlayerAnim_link_normal_heavy_carry_end
+
+gPlayerAnim_link_normal_heavy_run:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FA8
+  symbol: gPlayerAnim_link_normal_heavy_run
+
+gPlayerAnim_link_normal_heavy_run_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FB0
+  symbol: gPlayerAnim_link_normal_heavy_run_free
+
+gPlayerAnim_link_normal_hip_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FB8
+  symbol: gPlayerAnim_link_normal_hip_down
+
+gPlayerAnim_link_normal_hip_down_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FC0
+  symbol: gPlayerAnim_link_normal_hip_down_free
+
+gPlayerAnim_link_normal_hip_down_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FC8
+  symbol: gPlayerAnim_link_normal_hip_down_long
+
+gPlayerAnim_link_normal_ice_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FD0
+  symbol: gPlayerAnim_link_normal_ice_down
+
+gPlayerAnim_link_normal_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FE0
+  symbol: gPlayerAnim_link_normal_jump
+
+gPlayerAnim_link_normal_jump2landing:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FD8
+  symbol: gPlayerAnim_link_normal_jump2landing
+
+gPlayerAnim_link_normal_jump_climb_hold:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FE8
+  symbol: gPlayerAnim_link_normal_jump_climb_hold
+
+gPlayerAnim_link_normal_jump_climb_hold_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FF0
+  symbol: gPlayerAnim_link_normal_jump_climb_hold_free
+
+gPlayerAnim_link_normal_jump_climb_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x2FF8
+  symbol: gPlayerAnim_link_normal_jump_climb_up
+
+gPlayerAnim_link_normal_jump_climb_up_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3000
+  symbol: gPlayerAnim_link_normal_jump_climb_up_free
+
+gPlayerAnim_link_normal_jump_climb_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3008
+  symbol: gPlayerAnim_link_normal_jump_climb_wait
+
+gPlayerAnim_link_normal_jump_climb_wait_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3010
+  symbol: gPlayerAnim_link_normal_jump_climb_wait_free
+
+gPlayerAnim_link_normal_jump_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3018
+  symbol: gPlayerAnim_link_normal_jump_up
+
+gPlayerAnim_link_normal_landing:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3020
+  symbol: gPlayerAnim_link_normal_landing
+
+gPlayerAnim_link_normal_landing_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3028
+  symbol: gPlayerAnim_link_normal_landing_free
+
+gPlayerAnim_link_normal_landing_roll:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3030
+  symbol: gPlayerAnim_link_normal_landing_roll
+
+gPlayerAnim_link_normal_landing_roll_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3038
+  symbol: gPlayerAnim_link_normal_landing_roll_free
+
+gPlayerAnim_link_normal_landing_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3040
+  symbol: gPlayerAnim_link_normal_landing_wait
+
+gPlayerAnim_link_normal_light_bom:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3048
+  symbol: gPlayerAnim_link_normal_light_bom
+
+gPlayerAnim_link_normal_light_bom_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3050
+  symbol: gPlayerAnim_link_normal_light_bom_end
+
+gPlayerAnim_link_normal_long2bom:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3058
+  symbol: gPlayerAnim_link_normal_long2bom
+
+gPlayerAnim_link_normal_nocarry_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3060
+  symbol: gPlayerAnim_link_normal_nocarry_free
+
+gPlayerAnim_link_normal_nocarry_free_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3068
+  symbol: gPlayerAnim_link_normal_nocarry_free_end
+
+gPlayerAnim_link_normal_nocarry_free_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3070
+  symbol: gPlayerAnim_link_normal_nocarry_free_wait
+
+gPlayerAnim_link_normal_normal2bom:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3078
+  symbol: gPlayerAnim_link_normal_normal2bom
+
+gPlayerAnim_link_normal_normal2fighter:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3080
+  symbol: gPlayerAnim_link_normal_normal2fighter
+
+gPlayerAnim_link_normal_normal2fighter_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3088
+  symbol: gPlayerAnim_link_normal_normal2fighter_free
+
+gPlayerAnim_link_normal_normal2free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3090
+  symbol: gPlayerAnim_link_normal_normal2free
+
+gPlayerAnim_link_normal_okarina_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3098
+  symbol: gPlayerAnim_link_normal_okarina_end
+
+gPlayerAnim_link_normal_okarina_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30A0
+  symbol: gPlayerAnim_link_normal_okarina_start
+
+gPlayerAnim_link_normal_okarina_swing:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30A8
+  symbol: gPlayerAnim_link_normal_okarina_swing
+
+gPlayerAnim_link_normal_pull_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30B0
+  symbol: gPlayerAnim_link_normal_pull_end
+
+gPlayerAnim_link_normal_pull_end_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30B8
+  symbol: gPlayerAnim_link_normal_pull_end_free
+
+gPlayerAnim_link_normal_pull_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30C0
+  symbol: gPlayerAnim_link_normal_pull_start
+
+gPlayerAnim_link_normal_pull_start_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30C8
+  symbol: gPlayerAnim_link_normal_pull_start_free
+
+gPlayerAnim_link_normal_pulling:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30D0
+  symbol: gPlayerAnim_link_normal_pulling
+
+gPlayerAnim_link_normal_pulling_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30D8
+  symbol: gPlayerAnim_link_normal_pulling_free
+
+gPlayerAnim_link_normal_push_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30E0
+  symbol: gPlayerAnim_link_normal_push_end
+
+gPlayerAnim_link_normal_push_fall:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30E8
+  symbol: gPlayerAnim_link_normal_push_fall
+
+gPlayerAnim_link_normal_push_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30F0
+  symbol: gPlayerAnim_link_normal_push_start
+
+gPlayerAnim_link_normal_push_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x30F8
+  symbol: gPlayerAnim_link_normal_push_wait
+
+gPlayerAnim_link_normal_push_wait_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3100
+  symbol: gPlayerAnim_link_normal_push_wait_end
+
+gPlayerAnim_link_normal_pushing:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3108
+  symbol: gPlayerAnim_link_normal_pushing
+
+gPlayerAnim_link_normal_put:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3110
+  symbol: gPlayerAnim_link_normal_put
+
+gPlayerAnim_link_normal_put_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3118
+  symbol: gPlayerAnim_link_normal_put_free
+
+gPlayerAnim_link_normal_re_dead_attack:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3120
+  symbol: gPlayerAnim_link_normal_re_dead_attack
+
+gPlayerAnim_link_normal_re_dead_attack_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3128
+  symbol: gPlayerAnim_link_normal_re_dead_attack_wait
+
+gPlayerAnim_link_normal_rebound:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3130
+  symbol: gPlayerAnim_link_normal_rebound
+
+gPlayerAnim_link_normal_run:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3138
+  symbol: gPlayerAnim_link_normal_run
+
+gPlayerAnim_link_normal_run_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3140
+  symbol: gPlayerAnim_link_normal_run_free
+
+gPlayerAnim_link_normal_run_jump:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3148
+  symbol: gPlayerAnim_link_normal_run_jump
+
+gPlayerAnim_link_normal_run_jump_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3150
+  symbol: gPlayerAnim_link_normal_run_jump_end
+
+gPlayerAnim_link_normal_run_jump_water_fall:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3158
+  symbol: gPlayerAnim_link_normal_run_jump_water_fall
+
+gPlayerAnim_link_normal_run_jump_water_fall_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3160
+  symbol: gPlayerAnim_link_normal_run_jump_water_fall_wait
+
+gPlayerAnim_link_normal_short_landing:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3168
+  symbol: gPlayerAnim_link_normal_short_landing
+
+gPlayerAnim_link_normal_short_landing_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3170
+  symbol: gPlayerAnim_link_normal_short_landing_free
+
+gPlayerAnim_link_normal_side_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3188
+  symbol: gPlayerAnim_link_normal_side_walk
+
+gPlayerAnim_link_normal_side_walkL_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3178
+  symbol: gPlayerAnim_link_normal_side_walkL_free
+
+gPlayerAnim_link_normal_side_walkR_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3180
+  symbol: gPlayerAnim_link_normal_side_walkR_free
+
+gPlayerAnim_link_normal_side_walk_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3190
+  symbol: gPlayerAnim_link_normal_side_walk_free
+
+gPlayerAnim_link_normal_take_out:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3198
+  symbol: gPlayerAnim_link_normal_take_out
+
+gPlayerAnim_link_normal_talk_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31A0
+  symbol: gPlayerAnim_link_normal_talk_free
+
+gPlayerAnim_link_normal_talk_free_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31A8
+  symbol: gPlayerAnim_link_normal_talk_free_wait
+
+gPlayerAnim_link_normal_talk_navi:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31B0
+  symbol: gPlayerAnim_link_normal_talk_navi
+
+gPlayerAnim_link_normal_talk_navi_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31B8
+  symbol: gPlayerAnim_link_normal_talk_navi_wait
+
+gPlayerAnim_link_normal_throw:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31C0
+  symbol: gPlayerAnim_link_normal_throw
+
+gPlayerAnim_link_normal_throw_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31C8
+  symbol: gPlayerAnim_link_normal_throw_free
+
+gPlayerAnim_link_normal_up_slope_slip:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31D0
+  symbol: gPlayerAnim_link_normal_up_slope_slip
+
+gPlayerAnim_link_normal_up_slope_slip_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31D8
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end
+
+gPlayerAnim_link_normal_up_slope_slip_end_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31E0
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end_free
+
+gPlayerAnim_link_normal_up_slope_slip_end_long:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31E8
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end_long
+
+gPlayerAnim_link_normal_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3238
+  symbol: gPlayerAnim_link_normal_wait
+
+gPlayerAnim_link_normal_wait2waitL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31F0
+  symbol: gPlayerAnim_link_normal_wait2waitL
+
+gPlayerAnim_link_normal_wait2waitR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x31F8
+  symbol: gPlayerAnim_link_normal_wait2waitR
+
+gPlayerAnim_link_normal_waitF_typeA_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3200
+  symbol: gPlayerAnim_link_normal_waitF_typeA_20f
+
+gPlayerAnim_link_normal_waitF_typeB_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3208
+  symbol: gPlayerAnim_link_normal_waitF_typeB_20f
+
+gPlayerAnim_link_normal_waitF_typeC_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3210
+  symbol: gPlayerAnim_link_normal_waitF_typeC_20f
+
+gPlayerAnim_link_normal_waitL2wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3218
+  symbol: gPlayerAnim_link_normal_waitL2wait
+
+gPlayerAnim_link_normal_waitL_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3220
+  symbol: gPlayerAnim_link_normal_waitL_free
+
+gPlayerAnim_link_normal_waitR2wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3228
+  symbol: gPlayerAnim_link_normal_waitR2wait
+
+gPlayerAnim_link_normal_waitR_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3230
+  symbol: gPlayerAnim_link_normal_waitR_free
+
+gPlayerAnim_link_normal_wait_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3240
+  symbol: gPlayerAnim_link_normal_wait_free
+
+gPlayerAnim_link_normal_wait_typeA_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3248
+  symbol: gPlayerAnim_link_normal_wait_typeA_20f
+
+gPlayerAnim_link_normal_wait_typeB_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3250
+  symbol: gPlayerAnim_link_normal_wait_typeB_20f
+
+gPlayerAnim_link_normal_wait_typeC_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3258
+  symbol: gPlayerAnim_link_normal_wait_typeC_20f
+
+gPlayerAnim_link_normal_wakeup:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3260
+  symbol: gPlayerAnim_link_normal_wakeup
+
+gPlayerAnim_link_normal_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3268
+  symbol: gPlayerAnim_link_normal_walk
+
+gPlayerAnim_link_normal_walk_endL:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3270
+  symbol: gPlayerAnim_link_normal_walk_endL
+
+gPlayerAnim_link_normal_walk_endL_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3278
+  symbol: gPlayerAnim_link_normal_walk_endL_free
+
+gPlayerAnim_link_normal_walk_endR:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3280
+  symbol: gPlayerAnim_link_normal_walk_endR
+
+gPlayerAnim_link_normal_walk_endR_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3288
+  symbol: gPlayerAnim_link_normal_walk_endR_free
+
+gPlayerAnim_link_normal_walk_free:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3290
+  symbol: gPlayerAnim_link_normal_walk_free
+
+gPlayerAnim_link_okarina_warp_goal:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3298
+  symbol: gPlayerAnim_link_okarina_warp_goal
+
+gPlayerAnim_link_okiru_demo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32A0
+  symbol: gPlayerAnim_link_okiru_demo
+
+gPlayerAnim_link_shagamu_demo:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32A8
+  symbol: gPlayerAnim_link_shagamu_demo
+
+gPlayerAnim_link_silver_carry:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32B0
+  symbol: gPlayerAnim_link_silver_carry
+
+gPlayerAnim_link_silver_throw:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32B8
+  symbol: gPlayerAnim_link_silver_throw
+
+gPlayerAnim_link_silver_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32C0
+  symbol: gPlayerAnim_link_silver_wait
+
+gPlayerAnim_link_swimer_Lside_swim:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32C8
+  symbol: gPlayerAnim_link_swimer_Lside_swim
+
+gPlayerAnim_link_swimer_Rside_swim:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32D0
+  symbol: gPlayerAnim_link_swimer_Rside_swim
+
+gPlayerAnim_link_swimer_back_swim:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32D8
+  symbol: gPlayerAnim_link_swimer_back_swim
+
+gPlayerAnim_link_swimer_land2swim_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32E0
+  symbol: gPlayerAnim_link_swimer_land2swim_wait
+
+gPlayerAnim_link_swimer_swim:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32F0
+  symbol: gPlayerAnim_link_swimer_swim
+
+gPlayerAnim_link_swimer_swim_15step_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32E8
+  symbol: gPlayerAnim_link_swimer_swim_15step_up
+
+gPlayerAnim_link_swimer_swim_dead:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x32F8
+  symbol: gPlayerAnim_link_swimer_swim_dead
+
+gPlayerAnim_link_swimer_swim_deep_end:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3300
+  symbol: gPlayerAnim_link_swimer_swim_deep_end
+
+gPlayerAnim_link_swimer_swim_deep_start:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3308
+  symbol: gPlayerAnim_link_swimer_swim_deep_start
+
+gPlayerAnim_link_swimer_swim_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3310
+  symbol: gPlayerAnim_link_swimer_swim_down
+
+gPlayerAnim_link_swimer_swim_get:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3318
+  symbol: gPlayerAnim_link_swimer_swim_get
+
+gPlayerAnim_link_swimer_swim_hit:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3320
+  symbol: gPlayerAnim_link_swimer_swim_hit
+
+gPlayerAnim_link_swimer_swim_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3328
+  symbol: gPlayerAnim_link_swimer_swim_wait
+
+gPlayerAnim_link_swimer_wait2swim_wait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3330
+  symbol: gPlayerAnim_link_swimer_wait2swim_wait
+
+gPlayerAnim_link_uma_anim_fastrun:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3338
+  symbol: gPlayerAnim_link_uma_anim_fastrun
+
+gPlayerAnim_link_uma_anim_fastrun_muti:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3340
+  symbol: gPlayerAnim_link_uma_anim_fastrun_muti
+
+gPlayerAnim_link_uma_anim_jump100:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3348
+  symbol: gPlayerAnim_link_uma_anim_jump100
+
+gPlayerAnim_link_uma_anim_jump200:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3350
+  symbol: gPlayerAnim_link_uma_anim_jump200
+
+gPlayerAnim_link_uma_anim_slowrun:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3358
+  symbol: gPlayerAnim_link_uma_anim_slowrun
+
+gPlayerAnim_link_uma_anim_slowrun_muti:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3360
+  symbol: gPlayerAnim_link_uma_anim_slowrun_muti
+
+gPlayerAnim_link_uma_anim_stand:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3368
+  symbol: gPlayerAnim_link_uma_anim_stand
+
+gPlayerAnim_link_uma_anim_stop:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3370
+  symbol: gPlayerAnim_link_uma_anim_stop
+
+gPlayerAnim_link_uma_anim_walk:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3380
+  symbol: gPlayerAnim_link_uma_anim_walk
+
+gPlayerAnim_link_uma_anim_walk2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3378
+  symbol: gPlayerAnim_link_uma_anim_walk2
+
+gPlayerAnim_link_uma_anim_walk_muti:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3388
+  symbol: gPlayerAnim_link_uma_anim_walk_muti
+
+gPlayerAnim_link_uma_left_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3390
+  symbol: gPlayerAnim_link_uma_left_down
+
+gPlayerAnim_link_uma_left_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3398
+  symbol: gPlayerAnim_link_uma_left_up
+
+gPlayerAnim_link_uma_right_down:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33A0
+  symbol: gPlayerAnim_link_uma_right_down
+
+gPlayerAnim_link_uma_right_up:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33A8
+  symbol: gPlayerAnim_link_uma_right_up
+
+gPlayerAnim_link_uma_stop_muti:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33B0
+  symbol: gPlayerAnim_link_uma_stop_muti
+
+gPlayerAnim_link_uma_wait_1:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33B8
+  symbol: gPlayerAnim_link_uma_wait_1
+
+gPlayerAnim_link_uma_wait_2:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33C0
+  symbol: gPlayerAnim_link_uma_wait_2
+
+gPlayerAnim_link_uma_wait_3:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33C8
+  symbol: gPlayerAnim_link_uma_wait_3
+
+gPlayerAnim_link_waitF_heat1_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33D0
+  symbol: gPlayerAnim_link_waitF_heat1_20f
+
+gPlayerAnim_link_waitF_heat2_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33D8
+  symbol: gPlayerAnim_link_waitF_heat2_20f
+
+gPlayerAnim_link_waitF_itemA_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33E0
+  symbol: gPlayerAnim_link_waitF_itemA_20f
+
+gPlayerAnim_link_waitF_itemB_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33E8
+  symbol: gPlayerAnim_link_waitF_itemB_20f
+
+gPlayerAnim_link_waitF_typeD_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33F0
+  symbol: gPlayerAnim_link_waitF_typeD_20f
+
+gPlayerAnim_link_wait_heat1_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x33F8
+  symbol: gPlayerAnim_link_wait_heat1_20f
+
+gPlayerAnim_link_wait_heat2_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3400
+  symbol: gPlayerAnim_link_wait_heat2_20f
+
+gPlayerAnim_link_wait_itemA_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3408
+  symbol: gPlayerAnim_link_wait_itemA_20f
+
+gPlayerAnim_link_wait_itemB_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3410
+  symbol: gPlayerAnim_link_wait_itemB_20f
+
+gPlayerAnim_link_wait_itemC_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3418
+  symbol: gPlayerAnim_link_wait_itemC_20f
+
+gPlayerAnim_link_wait_itemD1_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3420
+  symbol: gPlayerAnim_link_wait_itemD1_20f
+
+gPlayerAnim_link_wait_itemD2_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3428
+  symbol: gPlayerAnim_link_wait_itemD2_20f
+
+gPlayerAnim_link_wait_typeD_20f:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3430
+  symbol: gPlayerAnim_link_wait_typeD_20f
+
+gPlayerAnim_lkt_nwait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3438
+  symbol: gPlayerAnim_lkt_nwait
+
+gPlayerAnim_nw_modoru:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3440
+  symbol: gPlayerAnim_nw_modoru
+
+gPlayerAnim_o_get_ato:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3448
+  symbol: gPlayerAnim_o_get_ato
+
+gPlayerAnim_o_get_mae:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3450
+  symbol: gPlayerAnim_o_get_mae
+
+gPlayerAnim_om_get:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3458
+  symbol: gPlayerAnim_om_get
+
+gPlayerAnim_om_get_mae:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3460
+  symbol: gPlayerAnim_om_get_mae
+
+gPlayerAnim_sude_nwait:
+  type: OOT:PLAYER_ANIMATION
+  offset: 0x3468
+  symbol: gPlayerAnim_sude_nwait
+
+gRaindropDL:
+  type: GFX
+  offset: 0x4D690
+  symbol: gRaindropDL
+
+gRockFragment1Tex:
+  type: TEXTURE
+  offset: 0xD980
+  symbol: gRockFragment1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRockFragment2Tex:
+  type: TEXTURE
+  offset: 0xE180
+  symbol: gRockFragment2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRupeeBlueTex:
+  type: TEXTURE
+  offset: 0x44E70
+  symbol: gRupeeBlueTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeeDL:
+  type: GFX
+  offset: 0x45150
+  symbol: gRupeeDL
+
+gRupeeGreenTex:
+  type: TEXTURE
+  offset: 0x44E50
+  symbol: gRupeeGreenTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeeLightRedTex:
+  type: TEXTURE
+  offset: 0x46A20
+  symbol: gRupeeLightRedTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeeOrangeTex:
+  type: TEXTURE
+  offset: 0x44EB0
+  symbol: gRupeeOrangeTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeePinkTex:
+  type: TEXTURE
+  offset: 0x44ED0
+  symbol: gRupeePinkTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeeRedTex:
+  type: TEXTURE
+  offset: 0x44E90
+  symbol: gRupeeRedTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRupeeSilverTex:
+  type: TEXTURE
+  offset: 0x44EF0
+  symbol: gRupeeSilverTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSelectionCursorTex:
+  type: TEXTURE
+  offset: 0xD260
+  symbol: gSelectionCursorTex
+  format: IA4
+  width: 16
+  height: 16
+
+gSignDirectionalDL:
+  type: GFX
+  offset: 0x3DAC0
+  symbol: gSignDirectionalDL
+
+gSignLetteringTex:
+  type: TEXTURE
+  offset: 0x4C660
+  symbol: gSignLetteringTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gSignPostWoodTex:
+  type: TEXTURE
+  offset: 0x4C260
+  symbol: gSignPostWoodTex
+  format: RGBA16
+  width: 64
+  height: 8
+
+gSignRectangularDL:
+  type: GFX
+  offset: 0x3D560
+  symbol: gSignRectangularDL
+
+gSignRectangularFrontTex:
+  type: TEXTURE
+  offset: 0x4BE60
+  symbol: gSignRectangularFrontTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSignRectangularSideTex:
+  type: TEXTURE
+  offset: 0x4BA60
+  symbol: gSignRectangularSideTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSmallCubeDL:
+  type: GFX
+  offset: 0x3AE60
+  symbol: gSmallCubeDL
+
+gSmallerCubeCol:
+  type: OOT:COLLISION
+  offset: 0x3B020
+  symbol: gSmallerCubeCol
+
+gSmallerFlatBlockCol:
+  type: OOT:COLLISION
+  offset: 0x3A950
+  symbol: gSmallerFlatBlockCol
+
+gSpinAttack1DL:
+  type: GFX
+  offset: 0x12A10
+  symbol: gSpinAttack1DL
+
+gSpinAttack2DL:
+  type: GFX
+  offset: 0x12B30
+  symbol: gSpinAttack2DL
+
+gSpinAttack3DL:
+  type: GFX
+  offset: 0x12F90
+  symbol: gSpinAttack3DL
+
+gSpinAttack4DL:
+  type: GFX
+  offset: 0x130B0
+  symbol: gSpinAttack4DL
+
+gSpinAttackChargingDL:
+  type: GFX
+  offset: 0x13AB0
+  symbol: gSpinAttackChargingDL
+
+gSun1Tex:
+  type: TEXTURE
+  offset: 0x51690
+  symbol: gSun1Tex
+  format: I4
+  width: 64
+  height: 64
+
+gSunDL:
+  type: GFX
+  offset: 0x526F0
+  symbol: gSunDL
+
+gSunEvening1Tex:
+  type: TEXTURE
+  offset: 0x51E90
+  symbol: gSunEvening1Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTallBlockCol:
+  type: OOT:COLLISION
+  offset: 0x3A5F0
+  symbol: gTallBlockCol
+
+gTorchFlameTex:
+  type: TEXTURE
+  offset: 0x116D0
+  symbol: gTorchFlameTex
+  format: I8
+  width: 64
+  height: 32
+
+gTreeStumpDL:
+  type: GFX
+  offset: 0x3B1E0
+  symbol: gTreeStumpDL
+
+gUnknownBlankDL:
+  type: GFX
+  offset: 0xC690
+  symbol: gUnknownBlankDL
+
+gUnknownCircle3Tex:
+  type: TEXTURE
+  offset: 0x16EF0
+  symbol: gUnknownCircle3Tex
+  format: I4
+  width: 16
+  height: 16
+
+gUnknownCircle4Tex:
+  type: TEXTURE
+  offset: 0x16F70
+  symbol: gUnknownCircle4Tex
+  format: I8
+  width: 16
+  height: 16
+
+gUnknownCircle6Tex:
+  type: TEXTURE
+  offset: 0x39450
+  symbol: gUnknownCircle6Tex
+  format: I8
+  width: 32
+  height: 32
+
+gUnknownEffBlureTex:
+  type: TEXTURE
+  offset: 0x6020
+  symbol: gUnknownEffBlureTex
+  format: I8
+  width: 64
+  height: 32
+
+gUnknownEffStone1Tex:
+  type: TEXTURE
+  offset: 0x28330
+  symbol: gUnknownEffStone1Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone2Tex:
+  type: TEXTURE
+  offset: 0x28730
+  symbol: gUnknownEffStone2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone3Tex:
+  type: TEXTURE
+  offset: 0x28B30
+  symbol: gUnknownEffStone3Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone4Tex:
+  type: TEXTURE
+  offset: 0x28F30
+  symbol: gUnknownEffStone4Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone5Tex:
+  type: TEXTURE
+  offset: 0x29330
+  symbol: gUnknownEffStone5Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone6Tex:
+  type: TEXTURE
+  offset: 0x29730
+  symbol: gUnknownEffStone6Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone7Tex:
+  type: TEXTURE
+  offset: 0x29B30
+  symbol: gUnknownEffStone7Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStone8Tex:
+  type: TEXTURE
+  offset: 0x29F30
+  symbol: gUnknownEffStone8Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gUnknownEffStoneDL:
+  type: GFX
+  offset: 0x2A330
+  symbol: gUnknownEffStoneDL
+
+gUnknownStone1Tex:
+  type: TEXTURE
+  offset: 0x47A60
+  symbol: gUnknownStone1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnknownStone2Tex:
+  type: TEXTURE
+  offset: 0x48260
+  symbol: gUnknownStone2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnknownStone3Tex:
+  type: TEXTURE
+  offset: 0x4B260
+  symbol: gUnknownStone3Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnknownWoodBoardTex:
+  type: TEXTURE
+  offset: 0x33530
+  symbol: gUnknownWoodBoardTex
+  format: I8
+  width: 32
+  height: 32
+
+gUnusedBeamBladeDL:
+  type: GFX
+  offset: 0x14E60
+  symbol: gUnusedBeamBladeDL
+
+gUnusedDropArrows1Tex:
+  type: TEXTURE
+  offset: 0x46220
+  symbol: gUnusedDropArrows1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedDropBombTex:
+  type: TEXTURE
+  offset: 0x45A20
+  symbol: gUnusedDropBombTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedDropBombchuTex:
+  type: TEXTURE
+  offset: 0x3FD80
+  symbol: gUnusedDropBombchuTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedDropRecoveryHeartTex:
+  type: TEXTURE
+  offset: 0x45220
+  symbol: gUnusedDropRecoveryHeartTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedFairyWingTex:
+  type: TEXTURE
+  offset: 0x15E08
+  symbol: gUnusedFairyWingTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gUnusedGrassBladesTex:
+  type: TEXTURE
+  offset: 0x49A60
+  symbol: gUnusedGrassBladesTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gUnusedHeartContainerTex:
+  type: TEXTURE
+  offset: 0x46A60
+  symbol: gUnusedHeartContainerTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHeartPieceTex:
+  type: TEXTURE
+  offset: 0x41580
+  symbol: gUnusedHeartPieceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedRockFragmentDL:
+  type: GFX
+  offset: 0xD6E0
+  symbol: gUnusedRockFragmentDL
+
+gUnusedRockRectangularPrism1DL:
+  type: GFX
+  offset: 0x3A0C0
+  symbol: gUnusedRockRectangularPrism1DL
+
+gUnusedRockRectangularPrism3DL:
+  type: GFX
+  offset: 0x3A7A0
+  symbol: gUnusedRockRectangularPrism3DL
+
+gUnusedRupeeLightBlueTex:
+  type: TEXTURE
+  offset: 0x46A40
+  symbol: gUnusedRupeeLightBlueTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gUnusedStoneHookshotTargetTex:
+  type: TEXTURE
+  offset: 0x4AA60
+  symbol: gUnusedStoneHookshotTargetTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedTreeBarkTex:
+  type: TEXTURE
+  offset: 0x47260
+  symbol: gUnusedTreeBarkTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedTreeStumpBarkTex:
+  type: TEXTURE
+  offset: 0x49260
+  symbol: gUnusedTreeStumpBarkTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedTreeStumpTopTex:
+  type: TEXTURE
+  offset: 0x48A60
+  symbol: gUnusedTreeStumpTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedUnknownShape1DL:
+  type: GFX
+  offset: 0x547E0
+  symbol: gUnusedUnknownShape1DL
+
+gUnusedUnknownShape1RefDL:
+  type: GFX
+  offset: 0x54B60
+  symbol: gUnusedUnknownShape1RefDL
+
+gUnusedUnknownShape2DL:
+  type: GFX
+  offset: 0x55810
+  symbol: gUnusedUnknownShape2DL
+
+gUnusedUnknownShape2RefDL:
+  type: GFX
+  offset: 0x55B30
+  symbol: gUnusedUnknownShape2RefDL
+
+gUnusedUnknownShape3DL:
+  type: GFX
+  offset: 0x567B0
+  symbol: gUnusedUnknownShape3DL
+
+gUnusedUnknownShape3RefDL:
+  type: GFX
+  offset: 0x56AC8
+  symbol: gUnusedUnknownShape3RefDL
+
+gUnusedUpsideDownZeldaTex:
+  type: TEXTURE
+  offset: 0x56AE0
+  symbol: gUnusedUpsideDownZeldaTex
+  format: I8
+  width: 64
+  height: 32
+
+gUnusedWalletTex:
+  type: TEXTURE
+  offset: 0x40580
+  symbol: gUnusedWalletTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWideTallBlockCol:
+  type: OOT:COLLISION
+  offset: 0x3A278
+  symbol: gWideTallBlockCol
+
+gWitheredLeafTex:
+  type: TEXTURE
+  offset: 0xC160
+  symbol: gWitheredLeafTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWoodenDoorTex:
+  type: TEXTURE
+  offset: 0xF3D8
+  symbol: gWoodenDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gZTargetArrowDL:
+  type: GFX
+  offset: 0xCC10
+  symbol: gZTargetArrowDL
+
+gZTargetLockOnTriangleDL:
+  type: GFX
+  offset: 0x52980
+  symbol: gZTargetLockOnTriangleDL
+
+gameplay_keepTex_04C540:
+  type: TEXTURE
+  offset: 0x4C540
+  symbol: gameplay_keepTex_04C540
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_04C740:
+  type: TEXTURE
+  offset: 0x4C740
+  symbol: gameplay_keepTex_04C740
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_04CD40:
+  type: TEXTURE
+  offset: 0x4CD40
+  symbol: gameplay_keepTex_04CD40
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_04CF40:
+  type: TEXTURE
+  offset: 0x4CF40
+  symbol: gameplay_keepTex_04CF40
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keep_DL_0C8B0:
+  type: GFX
+  offset: 0xC8B0
+  symbol: gameplay_keep_DL_0C8B0
+
+gameplay_keep_DL_39890:
+  type: GFX
+  offset: 0x39890
+  symbol: gameplay_keep_DL_39890
+
+gameplay_keep_DL_399B0:
+  type: GFX
+  offset: 0x399B0
+  symbol: gameplay_keep_DL_399B0
+
+gameplay_keep_DL_39A80:
+  type: GFX
+  offset: 0x39A80
+  symbol: gameplay_keep_DL_39A80
+
+gameplay_keep_DL_39B50:
+  type: GFX
+  offset: 0x39B50
+  symbol: gameplay_keep_DL_39B50
+
+gameplay_keep_DL_3CFD0:
+  type: GFX
+  offset: 0x3CFD0
+  symbol: gameplay_keep_DL_3CFD0
+
+gameplay_keep_DL_3D108:
+  type: GFX
+  offset: 0x3D108
+  symbol: gameplay_keep_DL_3D108
+
+gameplay_keep_DL_3D260:
+  type: GFX
+  offset: 0x3D260
+  symbol: gameplay_keep_DL_3D260
+
+gameplay_keep_Tex_0CE60:
+  type: TEXTURE
+  offset: 0xCE60
+  symbol: gameplay_keep_Tex_0CE60
+  format: IA8
+  width: 32
+  height: 32
+
+
+gameplay_keepVtx_003500:
+  type: OOT:ARRAY
+  offset: 0x003500
+  symbol: gameplay_keepVtx_003500
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_003A50:
+  type: OOT:ARRAY
+  offset: 0x003A50
+  symbol: gameplay_keepVtx_003A50
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_003D08:
+  type: OOT:ARRAY
+  offset: 0x003D08
+  symbol: gameplay_keepVtx_003D08
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_003F88:
+  type: OOT:ARRAY
+  offset: 0x003F88
+  symbol: gameplay_keepVtx_003F88
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_004258:
+  type: OOT:ARRAY
+  offset: 0x004258
+  symbol: gameplay_keepVtx_004258
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_005780:
+  type: OOT:ARRAY
+  offset: 0x005780
+  symbol: gameplay_keepVtx_005780
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_005C80:
+  type: OOT:ARRAY
+  offset: 0x005C80
+  symbol: gameplay_keepVtx_005C80
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gArrowSkelLimbsLimb_005FC0:
+  type: OOT:LIMB
+  offset: 0x005FC0
+  symbol: gArrowSkelLimbsLimb_005FC0
+  limb_type: LOD
+
+gArrowSkelLimbsLimb_005FD0:
+  type: OOT:LIMB
+  offset: 0x005FD0
+  symbol: gArrowSkelLimbsLimb_005FD0
+  limb_type: LOD
+
+gArrowSkelLimbsLimb_005FE0:
+  type: OOT:LIMB
+  offset: 0x005FE0
+  symbol: gArrowSkelLimbsLimb_005FE0
+  limb_type: LOD
+
+gArrowSkelLimbsLimb_005FF0:
+  type: OOT:LIMB
+  offset: 0x005FF0
+  symbol: gArrowSkelLimbsLimb_005FF0
+  limb_type: LOD
+
+gArrowSkelLimbs:
+  type: BLOB
+  offset: 0x6000
+  symbol: gArrowSkelLimbs
+  size: 0
+
+gameplay_keepVtx_007820:
+  type: OOT:ARRAY
+  offset: 0x007820
+  symbol: gameplay_keepVtx_007820
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_007970:
+  type: OOT:ARRAY
+  offset: 0x007970
+  symbol: gameplay_keepVtx_007970
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_007B90:
+  type: OOT:ARRAY
+  offset: 0x007B90
+  symbol: gameplay_keepVtx_007B90
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C058:
+  type: OOT:ARRAY
+  offset: 0x00C058
+  symbol: gameplay_keepVtx_00C058
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C0A0:
+  type: OOT:ARRAY
+  offset: 0x00C0A0
+  symbol: gameplay_keepVtx_00C0A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C360:
+  type: OOT:ARRAY
+  offset: 0x00C360
+  symbol: gameplay_keepVtx_00C360
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C848:
+  type: OOT:ARRAY
+  offset: 0x00C848
+  symbol: gameplay_keepVtx_00C848
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C880:
+  type: OOT:ARRAY
+  offset: 0x00C880
+  symbol: gameplay_keepVtx_00C880
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00C920:
+  type: OOT:ARRAY
+  offset: 0x00C920
+  symbol: gameplay_keepVtx_00C920
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00CD60:
+  type: OOT:ARRAY
+  offset: 0x00CD60
+  symbol: gameplay_keepVtx_00CD60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00D560:
+  type: OOT:ARRAY
+  offset: 0x00D560
+  symbol: gameplay_keepVtx_00D560
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00D8B8:
+  type: OOT:ARRAY
+  offset: 0x00D8B8
+  symbol: gameplay_keepVtx_00D8B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00EC10:
+  type: OOT:ARRAY
+  offset: 0x00EC10
+  symbol: gameplay_keepVtx_00EC10
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00EE30:
+  type: OOT:ARRAY
+  offset: 0x00EE30
+  symbol: gameplay_keepVtx_00EE30
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_00F050:
+  type: OOT:ARRAY
+  offset: 0x00F050
+  symbol: gameplay_keepVtx_00F050
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDoorSkelLimbsLimb_0103D8:
+  type: OOT:LIMB
+  offset: 0x0103D8
+  symbol: gDoorSkelLimbsLimb_0103D8
+  limb_type: Standard
+
+gDoorSkelLimbsLimb_0103E4:
+  type: OOT:LIMB
+  offset: 0x0103E4
+  symbol: gDoorSkelLimbsLimb_0103E4
+  limb_type: Standard
+
+gDoorSkelLimbsLimb_0103F0:
+  type: OOT:LIMB
+  offset: 0x0103F0
+  symbol: gDoorSkelLimbsLimb_0103F0
+  limb_type: Standard
+
+gDoorSkelLimbsLimb_0103FC:
+  type: OOT:LIMB
+  offset: 0x0103FC
+  symbol: gDoorSkelLimbsLimb_0103FC
+  limb_type: Standard
+
+gDoorSkelLimbs:
+  type: BLOB
+  offset: 0x10408
+  symbol: gDoorSkelLimbs
+  size: 0
+
+gameplay_keepVtx_010548:
+  type: OOT:ARRAY
+  offset: 0x010548
+  symbol: gameplay_keepVtx_010548
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_010590:
+  type: OOT:ARRAY
+  offset: 0x010590
+  symbol: gameplay_keepVtx_010590
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0126D0:
+  type: OOT:ARRAY
+  offset: 0x0126D0
+  symbol: gameplay_keepVtx_0126D0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_012870:
+  type: OOT:ARRAY
+  offset: 0x012870
+  symbol: gameplay_keepVtx_012870
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_012C50:
+  type: OOT:ARRAY
+  offset: 0x012C50
+  symbol: gameplay_keepVtx_012C50
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_012DF0:
+  type: OOT:ARRAY
+  offset: 0x012DF0
+  symbol: gameplay_keepVtx_012DF0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0139D0:
+  type: OOT:ARRAY
+  offset: 0x0139D0
+  symbol: gameplay_keepVtx_0139D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_014BA0:
+  type: OOT:ARRAY
+  offset: 0x014BA0
+  symbol: gameplay_keepVtx_014BA0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_015860:
+  type: OOT:ARRAY
+  offset: 0x015860
+  symbol: gameplay_keepVtx_015860
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_015928:
+  type: OOT:ARRAY
+  offset: 0x015928
+  symbol: gameplay_keepVtx_015928
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0159F0:
+  type: OOT:ARRAY
+  offset: 0x0159F0
+  symbol: gameplay_keepVtx_0159F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_015AB8:
+  type: OOT:ARRAY
+  offset: 0x015AB8
+  symbol: gameplay_keepVtx_015AB8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_015B80:
+  type: OOT:ARRAY
+  offset: 0x015B80
+  symbol: gameplay_keepVtx_015B80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_015D88:
+  type: OOT:ARRAY
+  offset: 0x015D88
+  symbol: gameplay_keepVtx_015D88
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFairySkelLimbsLimb_016E08:
+  type: OOT:LIMB
+  offset: 0x016E08
+  symbol: gFairySkelLimbsLimb_016E08
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E14:
+  type: OOT:LIMB
+  offset: 0x016E14
+  symbol: gFairySkelLimbsLimb_016E14
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E20:
+  type: OOT:LIMB
+  offset: 0x016E20
+  symbol: gFairySkelLimbsLimb_016E20
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E2C:
+  type: OOT:LIMB
+  offset: 0x016E2C
+  symbol: gFairySkelLimbsLimb_016E2C
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E38:
+  type: OOT:LIMB
+  offset: 0x016E38
+  symbol: gFairySkelLimbsLimb_016E38
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E44:
+  type: OOT:LIMB
+  offset: 0x016E44
+  symbol: gFairySkelLimbsLimb_016E44
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E50:
+  type: OOT:LIMB
+  offset: 0x016E50
+  symbol: gFairySkelLimbsLimb_016E50
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E5C:
+  type: OOT:LIMB
+  offset: 0x016E5C
+  symbol: gFairySkelLimbsLimb_016E5C
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E68:
+  type: OOT:LIMB
+  offset: 0x016E68
+  symbol: gFairySkelLimbsLimb_016E68
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E74:
+  type: OOT:LIMB
+  offset: 0x016E74
+  symbol: gFairySkelLimbsLimb_016E74
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E80:
+  type: OOT:LIMB
+  offset: 0x016E80
+  symbol: gFairySkelLimbsLimb_016E80
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E8C:
+  type: OOT:LIMB
+  offset: 0x016E8C
+  symbol: gFairySkelLimbsLimb_016E8C
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016E98:
+  type: OOT:LIMB
+  offset: 0x016E98
+  symbol: gFairySkelLimbsLimb_016E98
+  limb_type: Standard
+
+gFairySkelLimbsLimb_016EA4:
+  type: OOT:LIMB
+  offset: 0x016EA4
+  symbol: gFairySkelLimbsLimb_016EA4
+  limb_type: Standard
+
+gFairySkelLimbs:
+  type: BLOB
+  offset: 0x16EB0
+  symbol: gFairySkelLimbs
+  size: 0
+
+gameplay_keepVtx_018870:
+  type: OOT:ARRAY
+  offset: 0x018870
+  symbol: gameplay_keepVtx_018870
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_018AB0:
+  type: OOT:ARRAY
+  offset: 0x018AB0
+  symbol: gameplay_keepVtx_018AB0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_018AF0:
+  type: OOT:ARRAY
+  offset: 0x018AF0
+  symbol: gameplay_keepVtx_018AF0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_018BF0:
+  type: OOT:ARRAY
+  offset: 0x018BF0
+  symbol: gameplay_keepVtx_018BF0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFishSkelLimbsLimb_01945CDL_018D50:
+  type: GFX
+  offset: 0x018D50
+  symbol: gFishSkelLimbsLimb_01945CDL_018D50
+
+gFishSkelLimbsLimb_019450DL_018DF0:
+  type: GFX
+  offset: 0x018DF0
+  symbol: gFishSkelLimbsLimb_019450DL_018DF0
+
+gFishSkelLimbsLimb_019438DL_018F08:
+  type: GFX
+  offset: 0x018F08
+  symbol: gFishSkelLimbsLimb_019438DL_018F08
+
+gFishSkelLimbsLimb_019420:
+  type: OOT:LIMB
+  offset: 0x019420
+  symbol: gFishSkelLimbsLimb_019420
+  limb_type: Standard
+
+gFishSkelLimbsLimb_01942C:
+  type: OOT:LIMB
+  offset: 0x01942C
+  symbol: gFishSkelLimbsLimb_01942C
+  limb_type: Standard
+
+gFishSkelLimbsLimb_019438:
+  type: OOT:LIMB
+  offset: 0x019438
+  symbol: gFishSkelLimbsLimb_019438
+  limb_type: Standard
+
+gFishSkelLimbsLimb_019444:
+  type: OOT:LIMB
+  offset: 0x019444
+  symbol: gFishSkelLimbsLimb_019444
+  limb_type: Standard
+
+gFishSkelLimbsLimb_019450:
+  type: OOT:LIMB
+  offset: 0x019450
+  symbol: gFishSkelLimbsLimb_019450
+  limb_type: Standard
+
+gFishSkelLimbsLimb_01945C:
+  type: OOT:LIMB
+  offset: 0x01945C
+  symbol: gFishSkelLimbsLimb_01945C
+  limb_type: Standard
+
+gFishSkelLimbs:
+  type: BLOB
+  offset: 0x19468
+  symbol: gFishSkelLimbs
+  size: 0
+
+gameplay_keepVtx_01A5C0:
+  type: OOT:ARRAY
+  offset: 0x01A5C0
+  symbol: gameplay_keepVtx_01A5C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_01A678:
+  type: OOT:ARRAY
+  offset: 0x01A678
+  symbol: gameplay_keepVtx_01A678
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_01C720:
+  type: OOT:ARRAY
+  offset: 0x01C720
+  symbol: gameplay_keepVtx_01C720
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_01E7D0:
+  type: OOT:ARRAY
+  offset: 0x01E7D0
+  symbol: gameplay_keepVtx_01E7D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_021C68:
+  type: OOT:ARRAY
+  offset: 0x021C68
+  symbol: gameplay_keepVtx_021C68
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_024910:
+  type: OOT:ARRAY
+  offset: 0x024910
+  symbol: gameplay_keepVtx_024910
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0259B0:
+  type: OOT:ARRAY
+  offset: 0x0259B0
+  symbol: gameplay_keepVtx_0259B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_025A50:
+  type: OOT:ARRAY
+  offset: 0x025A50
+  symbol: gameplay_keepVtx_025A50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0282F0:
+  type: OOT:ARRAY
+  offset: 0x0282F0
+  symbol: gameplay_keepVtx_0282F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_02A390:
+  type: OOT:ARRAY
+  offset: 0x02A390
+  symbol: gameplay_keepVtx_02A390
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_02D438:
+  type: OOT:ARRAY
+  offset: 0x02D438
+  symbol: gameplay_keepVtx_02D438
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0324E8:
+  type: OOT:ARRAY
+  offset: 0x0324E8
+  symbol: gameplay_keepVtx_0324E8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_033930:
+  type: OOT:ARRAY
+  offset: 0x033930
+  symbol: gameplay_keepVtx_033930
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_033DB0:
+  type: OOT:ARRAY
+  offset: 0x033DB0
+  symbol: gameplay_keepVtx_033DB0
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034770:
+  type: OOT:ARRAY
+  offset: 0x034770
+  symbol: gameplay_keepVtx_034770
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034860:
+  type: OOT:ARRAY
+  offset: 0x034860
+  symbol: gameplay_keepVtx_034860
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034950:
+  type: OOT:ARRAY
+  offset: 0x034950
+  symbol: gameplay_keepVtx_034950
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034A40:
+  type: OOT:ARRAY
+  offset: 0x034A40
+  symbol: gameplay_keepVtx_034A40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034B30:
+  type: OOT:ARRAY
+  offset: 0x034B30
+  symbol: gameplay_keepVtx_034B30
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034C20:
+  type: OOT:ARRAY
+  offset: 0x034C20
+  symbol: gameplay_keepVtx_034C20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034D10:
+  type: OOT:ARRAY
+  offset: 0x034D10
+  symbol: gameplay_keepVtx_034D10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034E00:
+  type: OOT:ARRAY
+  offset: 0x034E00
+  symbol: gameplay_keepVtx_034E00
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_034F00:
+  type: OOT:ARRAY
+  offset: 0x034F00
+  symbol: gameplay_keepVtx_034F00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBugSkelLimbsLimb_0358C0:
+  type: OOT:LIMB
+  offset: 0x0358C0
+  symbol: gBugSkelLimbsLimb_0358C0
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0358CC:
+  type: OOT:LIMB
+  offset: 0x0358CC
+  symbol: gBugSkelLimbsLimb_0358CC
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0358D8:
+  type: OOT:LIMB
+  offset: 0x0358D8
+  symbol: gBugSkelLimbsLimb_0358D8
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0358E4:
+  type: OOT:LIMB
+  offset: 0x0358E4
+  symbol: gBugSkelLimbsLimb_0358E4
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0358F0:
+  type: OOT:LIMB
+  offset: 0x0358F0
+  symbol: gBugSkelLimbsLimb_0358F0
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0358FC:
+  type: OOT:LIMB
+  offset: 0x0358FC
+  symbol: gBugSkelLimbsLimb_0358FC
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035908:
+  type: OOT:LIMB
+  offset: 0x035908
+  symbol: gBugSkelLimbsLimb_035908
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035914:
+  type: OOT:LIMB
+  offset: 0x035914
+  symbol: gBugSkelLimbsLimb_035914
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035920:
+  type: OOT:LIMB
+  offset: 0x035920
+  symbol: gBugSkelLimbsLimb_035920
+  limb_type: Standard
+
+gBugSkelLimbsLimb_03592C:
+  type: OOT:LIMB
+  offset: 0x03592C
+  symbol: gBugSkelLimbsLimb_03592C
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035938:
+  type: OOT:LIMB
+  offset: 0x035938
+  symbol: gBugSkelLimbsLimb_035938
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035944:
+  type: OOT:LIMB
+  offset: 0x035944
+  symbol: gBugSkelLimbsLimb_035944
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035950:
+  type: OOT:LIMB
+  offset: 0x035950
+  symbol: gBugSkelLimbsLimb_035950
+  limb_type: Standard
+
+gBugSkelLimbsLimb_03595C:
+  type: OOT:LIMB
+  offset: 0x03595C
+  symbol: gBugSkelLimbsLimb_03595C
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035968:
+  type: OOT:LIMB
+  offset: 0x035968
+  symbol: gBugSkelLimbsLimb_035968
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035974:
+  type: OOT:LIMB
+  offset: 0x035974
+  symbol: gBugSkelLimbsLimb_035974
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035980:
+  type: OOT:LIMB
+  offset: 0x035980
+  symbol: gBugSkelLimbsLimb_035980
+  limb_type: Standard
+
+gBugSkelLimbsLimb_03598C:
+  type: OOT:LIMB
+  offset: 0x03598C
+  symbol: gBugSkelLimbsLimb_03598C
+  limb_type: Standard
+
+gBugSkelLimbsLimb_035998:
+  type: OOT:LIMB
+  offset: 0x035998
+  symbol: gBugSkelLimbsLimb_035998
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0359A4:
+  type: OOT:LIMB
+  offset: 0x0359A4
+  symbol: gBugSkelLimbsLimb_0359A4
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0359B0:
+  type: OOT:LIMB
+  offset: 0x0359B0
+  symbol: gBugSkelLimbsLimb_0359B0
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0359BC:
+  type: OOT:LIMB
+  offset: 0x0359BC
+  symbol: gBugSkelLimbsLimb_0359BC
+  limb_type: Standard
+
+gBugSkelLimbsLimb_0359C8:
+  type: OOT:LIMB
+  offset: 0x0359C8
+  symbol: gBugSkelLimbsLimb_0359C8
+  limb_type: Standard
+
+gBugSkelLimbs:
+  type: BLOB
+  offset: 0x359D4
+  symbol: gBugSkelLimbs
+  size: 0
+
+gameplay_keepVtx_035A40:
+  type: OOT:ARRAY
+  offset: 0x035A40
+  symbol: gameplay_keepVtx_035A40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_035B10:
+  type: OOT:ARRAY
+  offset: 0x035B10
+  symbol: gameplay_keepVtx_035B10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_037CA0:
+  type: OOT:ARRAY
+  offset: 0x037CA0
+  symbol: gameplay_keepVtx_037CA0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_037CE0:
+  type: OOT:ARRAY
+  offset: 0x037CE0
+  symbol: gameplay_keepVtx_037CE0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_038200:
+  type: OOT:ARRAY
+  offset: 0x038200
+  symbol: gameplay_keepVtx_038200
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039410:
+  type: OOT:ARRAY
+  offset: 0x039410
+  symbol: gameplay_keepVtx_039410
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039850:
+  type: OOT:ARRAY
+  offset: 0x039850
+  symbol: gameplay_keepVtx_039850
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039970:
+  type: OOT:ARRAY
+  offset: 0x039970
+  symbol: gameplay_keepVtx_039970
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039A40:
+  type: OOT:ARRAY
+  offset: 0x039A40
+  symbol: gameplay_keepVtx_039A40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039B10:
+  type: OOT:ARRAY
+  offset: 0x039B10
+  symbol: gameplay_keepVtx_039B10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039D10:
+  type: OOT:ARRAY
+  offset: 0x039D10
+  symbol: gameplay_keepVtx_039D10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_039F40:
+  type: OOT:ARRAY
+  offset: 0x039F40
+  symbol: gameplay_keepVtx_039F40
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03A2B0:
+  type: OOT:ARRAY
+  offset: 0x03A2B0
+  symbol: gameplay_keepVtx_03A2B0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03A620:
+  type: OOT:ARRAY
+  offset: 0x03A620
+  symbol: gameplay_keepVtx_03A620
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03A980:
+  type: OOT:ARRAY
+  offset: 0x03A980
+  symbol: gameplay_keepVtx_03A980
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03ACE0:
+  type: OOT:ARRAY
+  offset: 0x03ACE0
+  symbol: gameplay_keepVtx_03ACE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03B050:
+  type: OOT:ARRAY
+  offset: 0x03B050
+  symbol: gameplay_keepVtx_03B050
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03B2F0:
+  type: OOT:ARRAY
+  offset: 0x03B2F0
+  symbol: gameplay_keepVtx_03B2F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03B560:
+  type: OOT:ARRAY
+  offset: 0x03B560
+  symbol: gameplay_keepVtx_03B560
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03BA10:
+  type: OOT:ARRAY
+  offset: 0x03BA10
+  symbol: gameplay_keepVtx_03BA10
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03BF10:
+  type: OOT:ARRAY
+  offset: 0x03BF10
+  symbol: gameplay_keepVtx_03BF10
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03C610:
+  type: OOT:ARRAY
+  offset: 0x03C610
+  symbol: gameplay_keepVtx_03C610
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03CB10:
+  type: OOT:ARRAY
+  offset: 0x03CB10
+  symbol: gameplay_keepVtx_03CB10
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03D220:
+  type: OOT:ARRAY
+  offset: 0x03D220
+  symbol: gameplay_keepVtx_03D220
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03D2F0:
+  type: OOT:ARRAY
+  offset: 0x03D2F0
+  symbol: gameplay_keepVtx_03D2F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_03D7F0:
+  type: OOT:ARRAY
+  offset: 0x03D7F0
+  symbol: gameplay_keepVtx_03D7F0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_041E08:
+  type: OOT:ARRAY
+  offset: 0x041E08
+  symbol: gameplay_keepVtx_041E08
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_044F10:
+  type: OOT:ARRAY
+  offset: 0x044F10
+  symbol: gameplay_keepVtx_044F10
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_04D660:
+  type: OOT:ARRAY
+  offset: 0x04D660
+  symbol: gameplay_keepVtx_04D660
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_04D710:
+  type: OOT:ARRAY
+  offset: 0x04D710
+  symbol: gameplay_keepVtx_04D710
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_04E790:
+  type: OOT:ARRAY
+  offset: 0x04E790
+  symbol: gameplay_keepVtx_04E790
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_04EFC0:
+  type: OOT:ARRAY
+  offset: 0x04EFC0
+  symbol: gameplay_keepVtx_04EFC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_04F450:
+  type: OOT:ARRAY
+  offset: 0x04F450
+  symbol: gameplay_keepVtx_04F450
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0505C0:
+  type: OOT:ARRAY
+  offset: 0x0505C0
+  symbol: gameplay_keepVtx_0505C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepTex_051A70:
+  type: TEXTURE
+  offset: 0x051A70
+  symbol: gameplay_keepTex_051A70
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_051C70:
+  type: TEXTURE
+  offset: 0x051C70
+  symbol: gameplay_keepTex_051C70
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_052270:
+  type: TEXTURE
+  offset: 0x052270
+  symbol: gameplay_keepTex_052270
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepTex_052470:
+  type: TEXTURE
+  offset: 0x052470
+  symbol: gameplay_keepTex_052470
+  format: I8
+  width: 64
+  height: 17
+
+gameplay_keepVtx_052938:
+  type: OOT:ARRAY
+  offset: 0x052938
+  symbol: gameplay_keepVtx_052938
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_052998:
+  type: OOT:ARRAY
+  offset: 0x052998
+  symbol: gameplay_keepVtx_052998
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_0529D0:
+  type: OOT:ARRAY
+  offset: 0x0529D0
+  symbol: gameplay_keepVtx_0529D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_053B90:
+  type: OOT:ARRAY
+  offset: 0x053B90
+  symbol: gameplay_keepVtx_053B90
+  count: 197
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_054B70:
+  type: OOT:ARRAY
+  offset: 0x054B70
+  symbol: gameplay_keepVtx_054B70
+  count: 202
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_keepVtx_055B40:
+  type: OOT:ARRAY
+  offset: 0x055B40
+  symbol: gameplay_keepVtx_055B40
+  count: 199
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

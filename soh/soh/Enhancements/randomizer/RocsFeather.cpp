@@ -1,10 +1,8 @@
-#include <soh/OTRGlobals.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include <soh_assets.h>
 
 extern "C" {
+#include <soh_assets.h>
 #include <z64.h>
 #include "functions.h"
 #include "variables.h"
@@ -19,7 +17,9 @@ static uint8_t groundTimer = 0;
 static f32 effectsScale = 1.0f;
 
 void RegisterRocsFeather() {
-    bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER);
+    // Always register hooks - they only activate when ITEM_ROCS_FEATHER is actually used
+    // Rando-specific logic (item pool, accessibility, etc.) is handled elsewhere
+    bool shouldRegister = true;
 
     COND_HOOK(OnPlayerUpdate, shouldRegister, []() {
         Player* player = GET_PLAYER(gPlayState);
@@ -99,4 +99,4 @@ void RegisterRocsFeather() {
     });
 }
 
-static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather, { "IS_RANDO" });
+static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather);

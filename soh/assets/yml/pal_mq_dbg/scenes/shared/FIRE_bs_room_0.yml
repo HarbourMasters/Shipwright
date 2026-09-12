@@ -1,0 +1,140 @@
+:config:
+  segments:
+    - [ 3, 0x02F0D000 ]
+    - [ 2, 0x02F08000 ]
+  directory: scenes/shared/FIRE_bs_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/FIRE_bs_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+FIRE_bs_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: FIRE_bs_room_0
+
+FIRE_bs_room_0TLUT_002E28:
+  type: TEXTURE
+  offset: 0x2E28
+  symbol: FIRE_bs_room_0TLUT_002E28
+  format: RGBA16
+  width: 4
+  height: 4
+
+FIRE_bs_room_0TLUT_002E48:
+  type: TEXTURE
+  offset: 0x2E48
+  symbol: FIRE_bs_room_0TLUT_002E48
+  format: RGBA16
+  width: 4
+  height: 4
+
+FIRE_bs_room_0Tex_002E68:
+  type: TEXTURE
+  offset: 0x2E68
+  symbol: FIRE_bs_room_0Tex_002E68
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x2E48
+
+FIRE_bs_room_0Tex_003068:
+  type: TEXTURE
+  offset: 0x3068
+  symbol: FIRE_bs_room_0Tex_003068
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x2E48
+
+FIRE_bs_room_0Tex_003468:
+  type: TEXTURE
+  offset: 0x3468
+  symbol: FIRE_bs_room_0Tex_003468
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x2E28
+
+FIRE_bs_room_0Tex_003868:
+  type: TEXTURE
+  offset: 0x3868
+  symbol: FIRE_bs_room_0Tex_003868
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x2E28
+
+FIRE_bs_room_0Tex_003A68:
+  type: TEXTURE
+  offset: 0x3A68
+  symbol: FIRE_bs_room_0Tex_003A68
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x2E28
+
+FIRE_bs_room_0Tex_003C68:
+  type: TEXTURE
+  offset: 0x3C68
+  symbol: FIRE_bs_room_0Tex_003C68
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x2E48
+
+FIRE_bs_room_0Tex_004068:
+  type: TEXTURE
+  offset: 0x4068
+  symbol: FIRE_bs_room_0Tex_004068
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x2E48
+
+
+FIRE_bs_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: FIRE_bs_room_0Vtx_000070
+  count: 491
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_0DL_001F20:
+  type: GFX
+  offset: 0x001F20
+  symbol: FIRE_bs_room_0DL_001F20
+
+FIRE_bs_room_0Vtx_0026C8:
+  type: OOT:ARRAY
+  offset: 0x0026C8
+  symbol: FIRE_bs_room_0Vtx_0026C8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_0DL_002848:
+  type: GFX
+  offset: 0x002848
+  symbol: FIRE_bs_room_0DL_002848
+
+FIRE_bs_room_0Vtx_002978:
+  type: OOT:ARRAY
+  offset: 0x002978
+  symbol: FIRE_bs_room_0Vtx_002978
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_0DL_002C78:
+  type: GFX
+  offset: 0x002C78
+  symbol: FIRE_bs_room_0DL_002C78
+
+FIRE_bs_room_0DL_002E08:
+  type: GFX
+  offset: 0x002E08
+  symbol: FIRE_bs_room_0DL_002E08

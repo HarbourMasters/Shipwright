@@ -335,7 +335,9 @@ f32 DoorShutter_GetPlayerDistance(PlayState* play, DoorShutter* this, f32 arg2, 
     sp28.y = player->actor.world.pos.y + arg2;
     sp28.z = player->actor.world.pos.z;
     Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &sp28);
-    if (GameInteractor_Should(VB_BE_NEAR_DOOR_SHUTTER, arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y), this, &sp1C)) {
+
+    if (GameInteractor_Should(VB_BE_NEAR_DOOR_SHUTTER, (arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)), this, &sp1C,
+                              &arg3)) {
         return FLT_MAX;
     } else {
         return sp1C.z;
@@ -402,22 +404,23 @@ void DoorShutter_Idle(DoorShutter* this, PlayState* play) {
 
         if (doorDirection != 0) {
             Player* player = GET_PLAYER(play);
-
-            if (this->unlockTimer != 0) {
-                if (this->doorType == SHUTTER_BOSS) {
-                    if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, gSaveContext.mapIndex)) {
-                        player->naviTextId = -0x204;
+            if (GameInteractor_Should(VB_JABU_PREVENT_RUTO_REENTER_BIGOCTO, true, player, &this->dyna.actor)) {
+                if (this->unlockTimer != 0) {
+                    if (this->doorType == SHUTTER_BOSS) {
+                        if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, gSaveContext.mapIndex)) {
+                            player->naviTextId = -0x204;
+                            return;
+                        }
+                    } else if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0) {
+                        player->naviTextId = -0x203;
                         return;
                     }
-                } else if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0) {
-                    player->naviTextId = -0x203;
-                    return;
+                    player->doorTimer = 10;
                 }
-                player->doorTimer = 10;
+                player->doorType = PLAYER_DOORTYPE_SLIDING;
+                player->doorDirection = doorDirection;
+                player->doorActor = &this->dyna.actor;
             }
-            player->doorType = PLAYER_DOORTYPE_SLIDING;
-            player->doorDirection = doorDirection;
-            player->doorActor = &this->dyna.actor;
         }
     }
 }

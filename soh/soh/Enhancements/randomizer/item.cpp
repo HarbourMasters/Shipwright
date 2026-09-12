@@ -1,28 +1,25 @@
 #include "item.h"
-#include "item_location.h"
-
 #include "SeedContext.h"
 #include "logic.h"
-#include "3drando/item_pool.hpp"
-#include "z64item.h"
-#include "variables.h"
-#include "functions.h"
 #include "../../OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
+extern "C" {
+#include "z64item.h"
+}
+
 namespace Rando {
 Item::Item()
-    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE),
-      progressive(false), price(0) {
+    : randomizerGet(RG_NONE), type(ITEMTYPE_ITEM), getItemId(GI_NONE), advancement(false), hintKey(RHT_NONE), price(0) {
 }
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_, const uint16_t itemId_,
            const uint16_t objectId_, const uint16_t gid_, const uint16_t textId_, const uint16_t field_,
            const int16_t chestAnimation_, const GetItemCategory category_, const uint16_t modIndex_, Text article_,
-           const std::string color_, const bool progressive_, const uint16_t price_)
+           const std::string color_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
-      article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
+      article(std::move(article_)), color(std::move(color_)), price(price_) {
 
     if (modIndex_ == MOD_RANDOMIZER || getItemId > 0x7D) {
         giEntry = std::make_shared<GetItemEntry>(GetItemEntry{
@@ -39,11 +36,10 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 
 Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_, const int16_t getItemId_,
            const bool advancement_, LogicVal logicVal_, const RandomizerHintTextKey hintKey_,
-           const GetItemCategory category_, Text article_, const std::string color_, const bool progressive_,
-           const uint16_t price_)
+           const GetItemCategory category_, Text article_, const std::string color_, const uint16_t price_)
     : randomizerGet(randomizerGet_), name(std::move(name_)), type(type_), getItemId(getItemId_),
       advancement(advancement_), logicVal(logicVal_), hintKey(hintKey_), category(category_),
-      article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
+      article(std::move(article_)), color(std::move(color_)), price(price_) {
 }
 
 void Item::ApplyEffect() const {
@@ -370,8 +366,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
             }
             break;
-        case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
-            actual = RG_BIGGORON_SWORD;
+        case RG_PROGRESSIVE_GORONSWORD:
+            // owning the slot means the knife was already given, breaking it doesn't clear the flag
+            actual = logic->CheckEquipment(EQUIP_FLAG_SWORD_BGS) ? RG_BIGGORON_SWORD : RG_GIANTS_KNIFE;
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {

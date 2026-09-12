@@ -2,7 +2,6 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "variables.h"
@@ -31,10 +30,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Hidan_Dalm/z_bg_hidan_dalm.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kowarerukabe/z_bg_hidan_kowarerukabe.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
-
 extern PlayState* gPlayState;
 extern MapData* gMapData;
-
 void func_8086ED70(BgBombwall* bgBombwall, PlayState* play);
 void BgBreakwall_Wait(BgBreakwall* bgBreakwall, PlayState* play);
 void BgHakaZou_WaitForHit(BgHakaZou* bgHakaZou, PlayState* play);
@@ -469,8 +466,8 @@ void Anchor::RegisterHooks() {
         s16 rightMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
         s16 bottomMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
-        s16 xMarginsMinimap;
-        s16 yMarginsMinimap;
+        s16 xMarginsMinimap = 0;
+        s16 yMarginsMinimap = 0;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {
                 xMarginsMinimap = rightMinimapMargin;

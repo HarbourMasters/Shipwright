@@ -231,7 +231,7 @@ typedef enum {
     COUNT_SWORD_SWINGS,     // z_player.c
     COUNT_SIDEHOPS,         // z_player.c
     COUNT_BACKFLIPS,        // z_player.c
-    COUNT_TIME_BUNNY_HOOD,  // z_play.c
+    COUNT_TIME_BUNNY_HOOD,  // BunnyHood.cpp
 
     COUNT_MAX
 

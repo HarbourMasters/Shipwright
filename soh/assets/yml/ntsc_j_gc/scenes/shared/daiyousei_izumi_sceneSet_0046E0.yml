@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01D56E70 ]
+  directory: scenes/shared/daiyousei_izumi_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/daiyousei_izumi_scene.yml
+
+daiyousei_izumi_sceneSet_0046E0:
+  type: OOT:SCENE
+  offset: 0x46E0
+  symbol: daiyousei_izumi_sceneSet_0046E0
+  base_name: daiyousei_izumi_scene

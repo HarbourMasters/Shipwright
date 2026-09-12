@@ -1,0 +1,108 @@
+:config:
+  segments:
+    - [ 128, 0x00CCC280 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00CCC280 ]
+    - [ 9, 0x00CCC280 ]
+    - [ 10, 0x00CCC280 ]
+    - [ 11, 0x00CCC280 ]
+    - [ 12, 0x00CCC280 ]
+    - [ 13, 0x00CCC280 ]
+  virtual: [ 0x80AE9FD0, 0x00CCC280 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+D_80B0A050:
+  type: GFX
+  offset: 0x2A90
+  symbol: D_80B0A050
+
+D_80B0A3C0:
+  type: GFX
+  offset: 0x2E00
+  symbol: D_80B0A3C0
+
+sChildDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x35A0
+  symbol: sChildDanceAnim
+
+sEar1Tex:
+  type: TEXTURE
+  offset: 0xFF0
+  symbol: sEar1Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+sEar2Tex:
+  type: TEXTURE
+  offset: 0x1C70
+  symbol: sEar2Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+sEyeTex:
+  type: TEXTURE
+  offset: 0x1070
+  symbol: sEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+sHair1Tex:
+  type: TEXTURE
+  offset: 0xEF0
+  symbol: sHair1Tex
+  format: RGBA16
+  width: 8
+  height: 16
+
+sHair2Tex:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: sHair2Tex
+  format: RGBA16
+  width: 8
+  height: 16
+
+sMouthTex:
+  type: TEXTURE
+  offset: 0x1870
+  symbol: sMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+sNoseTex:
+  type: TEXTURE
+  offset: 0xE70
+  symbol: sNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+sParentDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x3E34
+  symbol: sParentDanceAnim
+
+
+ovl_En_SthVtx_001DF0:
+  type: OOT:ARRAY
+  offset: 0x001DF0
+  symbol: ovl_En_SthVtx_001DF0
+  count: 121
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_SthVtx_002580:
+  type: OOT:ARRAY
+  offset: 0x002580
+  symbol: ovl_En_SthVtx_002580
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

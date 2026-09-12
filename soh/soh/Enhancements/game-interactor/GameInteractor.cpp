@@ -3,7 +3,7 @@ GameInteractor is meant to be used for interacting with the game (yup...).
 It exposes functions that directly modify, add or remove game related elements.
 
 GameInteractionEffects.cpp is used when code that needs these
-functions also need a check wether a command can be run or not.
+functions also need a check whether a command can be run or not.
 
 If these checks need to happen wherever GameInteractor functions are needed, the
 GameInteractor functions can be called directly.

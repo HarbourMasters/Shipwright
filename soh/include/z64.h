@@ -93,15 +93,16 @@ typedef struct {
     /* 0x14 */ s16  data[REG_GROUPS * REG_PER_GROUP]; // 0xAE0 entries
 } GameInfo; // size = 0x15D4
 
+// Changed the main buffers to be 1MiB to make them basically impossible to overflow
 typedef struct {
     /* 0x00000 */ u16 headMagic; // GFXPOOL_HEAD_MAGIC
-    /* 0x00008 */ Gfx polyOpaBuffer[0x2FC0];
-    /* 0x0BF08 */ Gfx polyXluBuffer[0x1000];
-    /* 0x0FF08 */ Gfx overlayBuffer[0x800];
-    /* 0x11F08 */ Gfx workBuffer[0x100];
-    /* 0x11308 */ Gfx unusedBuffer[0x40];
+    /* 0x00008 */ Gfx polyOpaBuffer[1 * 1024 * 1024]; // original size was 0x17E0
+    /* 0x0BF08 */ Gfx polyXluBuffer[1 * 1024 * 1024]; // original size was 0x800
+    /* 0x0FF08 */ Gfx overlayBuffer[1 * 1024 * 1024]; // original size was 0x400
+    /* 0x11F08 */ Gfx workBuffer[0x80];
+    /* 0x11308 */ Gfx unusedBuffer[0x20];
     /* 0x12408 */ u16 tailMagic; // GFXPOOL_TAIL_MAGIC
-} GfxPool; // size = 0x24820
+} GfxPool; // size = 0x12410
 
 typedef struct {
     /* 0x0000 */ u32    size;
@@ -439,7 +440,7 @@ typedef struct {
     char unk_150[0x10];
 } SkyboxContext;
 
-typedef enum {
+typedef enum OcarinaSongId {
     /*  0 */ OCARINA_SONG_MINUET,
     /*  1 */ OCARINA_SONG_BOLERO,
     /*  2 */ OCARINA_SONG_SERENADE,
@@ -452,7 +453,7 @@ typedef enum {
     /*  9 */ OCARINA_SONG_SUNS,
     /* 10 */ OCARINA_SONG_TIME,
     /* 11 */ OCARINA_SONG_STORMS,
-    /* 12 */ OCARINA_SONG_SCARECROW,
+    /* 12 */ OCARINA_SONG_SCARECROW_SPAWN,
     /* 13 */ OCARINA_SONG_MEMORY_GAME,
     /* 14 */ OCARINA_SONG_MAX,
     /* 14 */ OCARINA_SONG_SCARECROW_LONG = OCARINA_SONG_MAX // anything larger than 13 is considered the long scarecrow's song
@@ -509,14 +510,14 @@ typedef enum {
     /* 0x2F */ OCARINA_ACTION_FROGS,
     /* 0x30 */ OCARINA_ACTION_CHECK_NOWARP, // Check for any of sarias - storms
     /* 0x31 */ OCARINA_ACTION_CHECK_NOWARP_DONE
-} OcarinaSongActionIDs;
+} OcarinaSongActionId;
 
-typedef enum {
+typedef enum OcarinaMode {
     /* 0x00 */ OCARINA_MODE_00,
     /* 0x01 */ OCARINA_MODE_01,
     /* 0x02 */ OCARINA_MODE_02,
     /* 0x03 */ OCARINA_MODE_03,
-    /* 0x04 */ OCARINA_MODE_04,
+    /* 0x04 */ OCARINA_MODE_04, // Stop playing
     /* 0x05 */ OCARINA_MODE_05,
     /* 0x06 */ OCARINA_MODE_06,
     /* 0x07 */ OCARINA_MODE_07,

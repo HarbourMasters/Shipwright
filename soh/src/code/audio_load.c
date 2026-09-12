@@ -1006,6 +1006,7 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
+    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {
@@ -1344,8 +1345,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     // calloc: unassigned slots stay NULL for the guard in AudioLoad_SyncInitSeqPlayerInternal().
     sequenceMap = calloc(sequenceMapSize + 0xF, sizeof(char*));
 
-    gAudioContext.seqLoadStatus = malloc(sequenceMapSize);
-    memset(gAudioContext.seqLoadStatus, 5, sequenceMapSize);
+    // SOH [Bugfix] Size to match sequenceMap (+ 0xF); custom ids can exceed sequenceMapSize.
+    gAudioContext.seqLoadStatus = malloc(sequenceMapSize + 0xF);
+    memset(gAudioContext.seqLoadStatus, 5, sequenceMapSize + 0xF);
     for (size_t i = 0; i < seqListSize; i++) {
         SequenceData sDat = ResourceMgr_LoadSeqByName(seqList[i]);
         sequenceMap[sDat.seqNumber] = strdup(seqList[i]);

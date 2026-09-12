@@ -6,7 +6,6 @@
 
 #include "z_en_po_desert.h"
 #include "objects/object_po_field/object_po_field.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_REACT_TO_LENS | ACTOR_FLAG_IGNORE_QUAKE)
 
@@ -86,8 +85,6 @@ void EnPoDesert_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoDesert_SetNextPathPoint(EnPoDesert* this, PlayState* play) {

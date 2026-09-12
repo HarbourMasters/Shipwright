@@ -11,7 +11,6 @@
 #include "overlays/actors/ovl_Bg_Gate_Shutter/z_bg_gate_shutter.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/actors/ovl_Bg_Spot15_Saku/z_bg_spot15_saku.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -169,8 +168,6 @@ void EnHeishi2_Destroy(Actor* thisx, PlayState* play) {
     if ((this->collider.dim.radius != 0) || (this->collider.dim.height != 0)) {
         Collider_DestroyCylinder(play, &this->collider);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi2_DoNothing1(EnHeishi2* this, PlayState* play) {

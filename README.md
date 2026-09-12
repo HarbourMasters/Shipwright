@@ -1,13 +1,8 @@
 ![Ship of Harkinian](docs/shiptitle.darkmode.png#gh-dark-mode-only)
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 
-## Website
-
-Official Website: https://www.shipofharkinian.com/
-
-## Discord
-
-Official Discord: https://discord.com/invite/shipofharkinian
+* [Website](https://www.shipofharkinian.com)
+* [Discord](https://discord.com/invite/harbourmasters)
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
@@ -72,7 +67,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Ctrl+R | Reset |
 
 # Project Overview
-Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
+Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependent on the source code provided by the OOT decompilation project.
 
 In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific rom. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
 

@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01C54B60 ]
+    - [ 2, 0x01C44E80 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/tokinoma_room_1.yml
+    - ntsc_u_mq/scenes/shared/tokinoma_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+tokinoma_room_1Set_0002B0:
+  type: OOT:ROOM
+  offset: 0x2B0
+  symbol: tokinoma_room_1Set_0002B0
+  base_name: tokinoma_room_1

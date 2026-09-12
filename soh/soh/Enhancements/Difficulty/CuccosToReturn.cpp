@@ -1,9 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Niw_Lady/z_en_niw_lady.h"
+extern PlayState* gPlayState;
 }
 
 static constexpr int32_t CVAR_CUCCOS_TO_RETURN_DEFAULT = 7;

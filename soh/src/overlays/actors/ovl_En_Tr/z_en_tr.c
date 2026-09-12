@@ -7,7 +7,6 @@
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -122,17 +121,14 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTr_Destroy(Actor* thisx, PlayState* play) {
-    EnTr* this = (EnTr*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
     if (this->timer == 11) {
         // Both cry in the title screen cutscene, but only Kotake in the in-game cutscene
         if ((this->actor.params != TR_KOUME) || (gSaveContext.sceneLayer == 6)) {
-            Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 

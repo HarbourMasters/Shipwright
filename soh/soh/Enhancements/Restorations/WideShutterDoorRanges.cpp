@@ -1,5 +1,6 @@
 #include <libultraship/bridge/consolevariablebridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -19,6 +20,8 @@ void RegisterWideShutterDoorRange() {
     COND_VB_SHOULD(VB_BE_NEAR_DOOR_SHUTTER, CVAR_WIDE_SHUTTER_DOOR_RANGE_VALUE, {
         DoorShutter* doorShutter = va_arg(args, DoorShutter*);
         Vec3f relPlayerPos = *va_arg(args, Vec3f*);
+        f32* maxDistSides = va_arg(args, f32*);
+
         if (doorShutter->gfxType == SHUTTER_BACK_LOCKED || doorShutter->gfxType == SHUTTER_PG_BARS ||
             doorShutter->gfxType == SHUTTER_BOSS || doorShutter->gfxType == SHUTTER_GOHMA_BLOCK) {
             *should = (SHUTTER_DOOR_RANGE_X < fabsf(relPlayerPos.x) || SHUTTER_DOOR_RANGE_Y < fabsf(relPlayerPos.y));

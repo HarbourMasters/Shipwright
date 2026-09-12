@@ -7,7 +7,7 @@
 #include "z_en_jj.h"
 #include "objects/object_jj/object_jj.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
-#include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -144,8 +144,6 @@ void EnJj_Destroy(Actor* thisx, PlayState* play) {
         case JABUJABU_MAIN:
             DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             Collider_DestroyCylinder(play, &this->collider);
-
-            ResourceMgr_UnregisterSkeleton(&this->skelAnime);
             break;
 
         case JABUJABU_COLLISION:
@@ -200,7 +198,10 @@ void EnJj_WaitForFish(EnJj* this, PlayState* play) {
     static Vec3f feedingSpot = { -1589.0f, 53.0f, -43.0f };
     Player* player = GET_PLAYER(play);
 
-    if ((Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f) && play->isPlayerDroppingFish(play)) {
+    if (GameInteractor_Should(VB_JABU_JABU_EAT_FISH,
+                              (Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f) &&
+                                  play->isPlayerDroppingFish(play),
+                              this)) {
         this->cutsceneCountdownTimer = 100;
         EnJj_SetupAction(this, EnJj_BeginCutscene);
     }

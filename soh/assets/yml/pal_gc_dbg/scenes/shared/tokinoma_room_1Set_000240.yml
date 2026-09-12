@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x02B43000 ]
+    - [ 2, 0x02B18000 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/tokinoma_room_1.yml
+    - pal_gc_dbg/scenes/shared/tokinoma_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+tokinoma_room_1Set_000240:
+  type: OOT:ROOM
+  offset: 0x240
+  symbol: tokinoma_room_1Set_000240
+  base_name: tokinoma_room_1

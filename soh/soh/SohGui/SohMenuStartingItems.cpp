@@ -1,17 +1,14 @@
+#include <vector>
+
+#include <fast/Fast3dGui.h>
+
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/settings.h"
-
-#include <vector>
-#include <fast/Fast3dGui.h>
-
-extern "C" {
-#include "z64.h"
-}
 
 namespace SohGui {
 
@@ -148,7 +145,7 @@ static void StartingItemCombobox(RandomizerSettingKey rsk) {
 }
 
 void DrawStartingItemsMenu(WidgetInfo& info) {
-    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool generating = IsRandoGenerating();
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
@@ -290,7 +287,8 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_CLAIM_CHECK, ITEM_CLAIM_CHECK);
     ImGui::SameLine();
     bool weirdEggShuffled =
-        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_WEIRD_EGG).GetCVarName().c_str(), 0) != 0;
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_WEIRD_EGG).GetCVarName().c_str(),
+                       RO_WEIRD_EGG_VANILLA) == RO_WEIRD_EGG_SHUFFLED;
     ImGui::BeginDisabled(!weirdEggShuffled);
     StartingItemToggle(RSK_STARTING_WEIRD_EGG, ITEM_WEIRD_EGG, !weirdEggShuffled);
     ImGui::EndDisabled();
@@ -298,7 +296,36 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
         ImGui::SetTooltip("Enable Shuffle Weird Egg to start with the Weird Egg.");
     }
     ImGui::SameLine();
+    bool zeldasLetterShuffled =
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_ZELDAS_LETTER).GetCVarName().c_str(), 0) !=
+        0;
+    StartingItemToggle(RSK_STARTING_ZELDAS_LETTER, ITEM_LETTER_ZELDA);
+    if (ImGui::IsItemHovered()) {
+        if (zeldasLetterShuffled) {
+            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
+                              "The Kakariko gate starts open.");
+        } else {
+            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
+                              "The Kakariko gate starts open.\n"
+                              "While the letter isn't shuffled this also skips child Zelda:\n"
+                              "you get the item Impa would give and skip everything up to meeting Zelda.");
+        }
+    }
+    StartingItemToggle(RSK_STARTING_KEATON_MASK, ITEM_MASK_KEATON);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_SKULL_MASK, ITEM_MASK_SKULL);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_SPOOKY_MASK, ITEM_MASK_SPOOKY);
+    ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_BUNNY_HOOD, ITEM_MASK_BUNNY);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_GORON_MASK, ITEM_MASK_GORON);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_ZORA_MASK, ITEM_MASK_ZORA);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_GERUDO_MASK, ITEM_MASK_GERUDO);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_MASK_OF_TRUTH, ITEM_MASK_TRUTH);
 
     ImGui::SeparatorText("Songs");
     StartingSongToggle(RSK_STARTING_ZELDAS_LULLABY, QUEST_SONG_LULLABY);

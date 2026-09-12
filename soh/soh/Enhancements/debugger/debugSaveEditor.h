@@ -359,14 +359,8 @@ const std::vector<FlagTable> flagTables = {
           { 0x24, "Market Crowd Text Randomizer" },
           { 0x30, "Entered the Market" },
       } },
-    { "Randomizer Inf Flags",
-      RANDOMIZER_INF,
-      (RAND_INF_MAX + 15) / 16,
-      {
-#define RANDO_ENUM_ITEM(rand_inf) { rand_inf, #rand_inf },
-#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
-#undef RANDO_ENUM_ITEM
-      } },
+    // Randomizer Inf flags are described by their enum name, see GetFlagDescription.
+    { "Randomizer Inf Flags", RANDOMIZER_INF, (RAND_INF_MAX + 15) / 16, {} },
 };
 
 const std::vector<std::string> state1 = {

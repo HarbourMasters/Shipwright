@@ -1,0 +1,157 @@
+:config:
+  segments:
+    - [ 3, 0x01D80330 ]
+    - [ 2, 0x01D800C0 ]
+  directory: scenes/shared/drag_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/drag_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+drag_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: drag_room_0
+
+
+drag_room_0Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: drag_room_0Vtx_0000C0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_0003E0:
+  type: OOT:ARRAY
+  offset: 0x0003E0
+  symbol: drag_room_0Vtx_0003E0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_000760:
+  type: OOT:ARRAY
+  offset: 0x000760
+  symbol: drag_room_0Vtx_000760
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_000920:
+  type: OOT:ARRAY
+  offset: 0x000920
+  symbol: drag_room_0Vtx_000920
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_000A20:
+  type: OOT:ARRAY
+  offset: 0x000A20
+  symbol: drag_room_0Vtx_000A20
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_000AE0:
+  type: OOT:ARRAY
+  offset: 0x000AE0
+  symbol: drag_room_0Vtx_000AE0
+  count: 1070
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_004DC0:
+  type: OOT:ARRAY
+  offset: 0x004DC0
+  symbol: drag_room_0Vtx_004DC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_004E40:
+  type: OOT:ARRAY
+  offset: 0x004E40
+  symbol: drag_room_0Vtx_004E40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_004EC0:
+  type: OOT:ARRAY
+  offset: 0x004EC0
+  symbol: drag_room_0Vtx_004EC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_004F40:
+  type: OOT:ARRAY
+  offset: 0x004F40
+  symbol: drag_room_0Vtx_004F40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_004FC0:
+  type: OOT:ARRAY
+  offset: 0x004FC0
+  symbol: drag_room_0Vtx_004FC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0Vtx_005040:
+  type: OOT:ARRAY
+  offset: 0x005040
+  symbol: drag_room_0Vtx_005040
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+drag_room_0DL_0050C0:
+  type: GFX
+  offset: 0x0050C0
+  symbol: drag_room_0DL_0050C0
+
+drag_room_0DL_005230:
+  type: GFX
+  offset: 0x005230
+  symbol: drag_room_0DL_005230
+
+drag_room_0DL_005320:
+  type: GFX
+  offset: 0x005320
+  symbol: drag_room_0DL_005320
+
+drag_room_0DL_0053F0:
+  type: GFX
+  offset: 0x0053F0
+  symbol: drag_room_0DL_0053F0
+
+drag_room_0DL_0054A0:
+  type: GFX
+  offset: 0x0054A0
+  symbol: drag_room_0DL_0054A0
+
+drag_room_0DL_005530:
+  type: GFX
+  offset: 0x005530
+  symbol: drag_room_0DL_005530
+
+drag_room_0DL_006618:
+  type: GFX
+  offset: 0x006618
+  symbol: drag_room_0DL_006618

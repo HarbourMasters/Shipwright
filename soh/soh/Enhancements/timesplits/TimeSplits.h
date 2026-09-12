@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TIMESPLITS_H
-#define TIMESPLITS_H
 
 #include <ship/window/gui/GuiWindow.h>
 
@@ -54,5 +52,3 @@ typedef struct {
 } SplitObject;
 
 #endif
-
-#endif // TIMESPLITS_H

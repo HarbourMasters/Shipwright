@@ -9,7 +9,6 @@
                 "BombchuBag": 1,
                 "BossKeysanity": 5,
                 "ClosedForest": 2,
-                "CompleteMaskQuest": 1,
                 "CuccosToReturn": 1,
                 "DampeHint": 1,
                 "DoorOfTime": 2,
@@ -22,7 +21,6 @@
                 "GregHint": 1,
                 "HBAHint": 1,
                 "IncludeTycoonWallet": 1,
-                "KakarikoGate": 1,
                 "Keysanity": 5,
                 "GbkRewardCount": 8,
                 "MalonHint": 1,
@@ -47,6 +45,7 @@
                 "ShuffleKeyRings": 2,
                 "ShuffleKeyRingsRandomCount": 4,
                 "ShuffleKokiriSword": 1,
+                "ShuffleMasks": 1,
                 "ShuffleMasterSword": 1,
                 "ShuffleMerchants": 3,
                 "ShuffleOcarinas": 1,
@@ -55,15 +54,16 @@
                 "ShuffleSongs": 2,
                 "ShuffleSwim": 1,
                 "ShuffleTokens": 3,
-                "SkipChildZelda": 1,
+                "ShuffleWeirdEgg": 2,
                 "SkipEponaRace": 1,
                 "SkipScarecrowsSong": 1,
                 "StartingAge": 2,
                 "StartingMapsCompasses": 0,
+                "StartingZeldasLetter": 1,
                 "SunlightArrows": 1
             }
         }
     },
     "presetName": "Rando Seed Settings - Advanced",
-	"isBuiltIn": true
+    "isBuiltIn": true
 }

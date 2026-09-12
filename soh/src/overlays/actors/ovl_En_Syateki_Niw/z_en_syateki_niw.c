@@ -8,7 +8,6 @@
 #include "objects/object_niw/object_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -104,8 +103,6 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSyatekiNiw_UpdateRotations(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
@@ -459,8 +456,8 @@ void EnSyatekiNiw_Archery(EnSyatekiNiw* this, PlayState* play) {
             }
 
             if ((this->archeryTimer == 0) && ((player->actor.world.pos.z - 30.0f) < this->actor.world.pos.z)) {
-                Audio_PlaySoundGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_VO_LI_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->movementTimer = 0x14;
                 this->archeryState = 6;
                 this->actor.speedXZ = 0.0f;

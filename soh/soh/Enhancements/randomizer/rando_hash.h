@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOHASH_H
-#define RANDOHASH_H
-
 #include "randomizerTypes.h"
 #include <array>
 #include <textures/icon_item_static/icon_item_static.h>
@@ -110,4 +107,3 @@ inline std::array<Sprite, 100> gSeedTextures = { {
     { dgQuestIconMagicJarSmallTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, 98 },
     { dgQuestIconMagicJarBigTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, 99 },
 } };
-#endif

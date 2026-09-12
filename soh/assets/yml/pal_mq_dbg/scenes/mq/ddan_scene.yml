@@ -1,0 +1,125 @@
+:config:
+  segments:
+    - [ 2, 0x0203A000 ]
+
+ddan_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ddan_scene
+
+ddan_sceneTLUT_011D70:
+  type: TEXTURE
+  offset: 0x11D70
+  symbol: ddan_sceneTLUT_011D70
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDCDayEntranceTex:
+  type: TEXTURE
+  offset: 0x12378
+  symbol: gDCDayEntranceTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x11D70
+
+gDCLavaFloor1Tex:
+  type: TEXTURE
+  offset: 0x11F78
+  symbol: gDCLavaFloor1Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor2Tex:
+  type: TEXTURE
+  offset: 0x14778
+  symbol: gDCLavaFloor2Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor3Tex:
+  type: TEXTURE
+  offset: 0x14378
+  symbol: gDCLavaFloor3Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor4Tex:
+  type: TEXTURE
+  offset: 0x13F78
+  symbol: gDCLavaFloor4Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor5Tex:
+  type: TEXTURE
+  offset: 0x14B78
+  symbol: gDCLavaFloor5Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor6Tex:
+  type: TEXTURE
+  offset: 0x13B78
+  symbol: gDCLavaFloor6Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor7Tex:
+  type: TEXTURE
+  offset: 0x12F78
+  symbol: gDCLavaFloor7Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCLavaFloor8Tex:
+  type: TEXTURE
+  offset: 0x12B78
+  symbol: gDCLavaFloor8Tex
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
+
+gDCNightEntranceTex:
+  type: TEXTURE
+  offset: 0x13378
+  symbol: gDCNightEntranceTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x11D70
+
+gDcOpeningCs:
+  type: OOT:CUTSCENE
+  offset: 0x14F80
+  symbol: gDcOpeningCs
+
+
+ddan_sceneCollisionHeader_011D40:
+  type: OOT:COLLISION
+  offset: 0x011D40
+  symbol: ddan_sceneCollisionHeader_011D40

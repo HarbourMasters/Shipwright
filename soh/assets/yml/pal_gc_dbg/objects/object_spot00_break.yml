@@ -1,0 +1,83 @@
+:config:
+  segments:
+    - [ 6, 0x018E2000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x018E2000 ]
+    - [ 9, 0x018E2000 ]
+    - [ 10, 0x018E2000 ]
+    - [ 11, 0x018E2000 ]
+    - [ 12, 0x018E2000 ]
+    - [ 13, 0x018E2000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gBarbedWireFenceCol:
+  type: OOT:COLLISION
+  offset: 0xAF0
+  symbol: gBarbedWireFenceCol
+
+gBarbedWireFenceDL:
+  type: GFX
+  offset: 0x980
+  symbol: gBarbedWireFenceDL
+
+gBarbedWireFenceTex:
+  type: TEXTURE
+  offset: 0x1620
+  symbol: gBarbedWireFenceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBrokenDrawbridgeBoltTex:
+  type: TEXTURE
+  offset: 0xB20
+  symbol: gBrokenDrawbridgeBoltTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBrokenDrawbridgeChainTex:
+  type: TEXTURE
+  offset: 0x1520
+  symbol: gBrokenDrawbridgeChainTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBrokenDrawbridgeCol:
+  type: OOT:COLLISION
+  offset: 0x908
+  symbol: gBrokenDrawbridgeCol
+
+gBrokenDrawbridgeDL:
+  type: GFX
+  offset: 0x440
+  symbol: gBrokenDrawbridgeDL
+
+gBrokenDrawbridgeDirtTex:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: gBrokenDrawbridgeDirtTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_spot00_breakVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot00_breakVtx_000000
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot00_breakVtx_000940:
+  type: OOT:ARRAY
+  offset: 0x000940
+  symbol: object_spot00_breakVtx_000940
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

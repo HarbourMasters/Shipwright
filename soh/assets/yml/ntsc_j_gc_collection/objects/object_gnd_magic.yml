@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 6, 0x01177CA0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x01177CA0 ]
+    - [ 9, 0x01177CA0 ]
+    - [ 10, 0x01177CA0 ]
+    - [ 11, 0x01177CA0 ]
+    - [ 12, 0x01177CA0 ]
+    - [ 13, 0x01177CA0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+object_gnd_magic_DL_001190:
+  type: GFX
+  offset: 0x1190
+  symbol: object_gnd_magic_DL_001190
+
+object_gnd_magic_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gnd_magic_Tex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_gnd_magic_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_gnd_magic_Tex_000800
+  format: I8
+  width: 32
+  height: 64
+
+
+object_gnd_magicVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_gnd_magicVtx_001000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

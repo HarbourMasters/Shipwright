@@ -11,7 +11,6 @@
 #include "overlays/actors/ovl_Bg_Sst_Floor/z_bg_sst_floor.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
@@ -366,8 +365,6 @@ void BossSst_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyJntSph(play, &this->colliderJntSph);
     Collider_DestroyCylinder(play, &this->colliderCyl);
     Audio_StopSfxByPos(&this->center);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void BossSst_HeadSetupLurk(BossSst* this) {

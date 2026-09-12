@@ -5,8 +5,7 @@
 //  Created by David Chavez on 24.08.22.
 //
 
-#ifndef SohGui_hpp
-#define SohGui_hpp
+#pragma once
 
 #include "SohMenu.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
@@ -49,5 +48,3 @@ void DrawStartingItemsMenu(WidgetInfo& info);
 } // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()
-
-#endif /* SohGui_hpp */

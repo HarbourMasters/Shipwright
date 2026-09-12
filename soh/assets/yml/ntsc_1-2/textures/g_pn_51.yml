@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x0130E780 ]
+
+gTreasureBoxShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gTreasureBoxShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gTreasureBoxShopTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTreasureBoxShopTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

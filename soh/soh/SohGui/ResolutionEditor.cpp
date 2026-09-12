@@ -1,9 +1,9 @@
-#include "ResolutionEditor.h"
 #include <imgui.h>
-
-#include "soh/SohGui/UIWidgets.hpp"
 #include <fast/Fast3dWindow.h>
 #include <fast/interpreter.h>
+
+#include "ResolutionEditor.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -47,8 +47,8 @@ const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 216
 const int default_pixelCount = 0; // Default combo list option
 
 // Resolution clamp values as hardcoded in LUS::Gui::ApplyResolutionChanges()
-const uint32_t minVerticalPixelCount = SCREEN_HEIGHT;
-const uint32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
+const int32_t minVerticalPixelCount = SCREEN_HEIGHT;
+const int32_t maxVerticalPixelCount = 4320; // 18x native, or 8K TV resolution
 
 const unsigned short default_maxIntegerScaleFactor = 6; // Default size of Integer scale factor slider.
 
@@ -195,7 +195,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
 
         // Integer Scaling
         UIWidgets::CVarSliderInt(
-            fmt::format("Integer scale factor: {}", max_integerScaleFactor).c_str(),
+            spdlog::fmt_lib::format("Integer scale factor: {}", max_integerScaleFactor).c_str(),
             CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor",
             UIWidgets::IntSliderOptions(
                 { { .disabled = disabled_pixelPerfectMode ||
@@ -252,7 +252,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             // Having this button should hopefully prevent support headaches.
             ImGui::TextColored(messageColor[MESSAGE_QUESTION], ICON_FA_QUESTION_CIRCLE
                                " If the image is stretched and you don't know why, click this.");
-            if (ImGui::Button("Click to reenable aspect correction.")) {
+            if (ImGui::Button("Click to re-enable aspect correction.")) {
                 CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IgnoreAspectCorrection", 0);
                 Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
@@ -388,15 +388,15 @@ void RegisterResolutionWidgets() {
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
-            info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
-                                    gfx_current_game_window_viewport.height);
+            info.name = spdlog::fmt_lib::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
+                                                gfx_current_game_window_viewport.height);
         });
     mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
-            info.name = fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
-                                    gfx_current_dimensions.height);
+            info.name = spdlog::fmt_lib::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
+                                                gfx_current_dimensions.height);
         });
 
     //  Activator
@@ -405,7 +405,7 @@ void RegisterResolutionWidgets() {
         .RaceDisable(false);
     // Error/Warning display
     mSohMenu
-        ->AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.",
+        ->AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occurring.",
                     WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc(
@@ -549,11 +549,10 @@ void UpdateResolutionVars() {
         update[i] = false;
     }
 
-    // Initialise integer scale bounds.
-    short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
-    // overridden depending on viewport res
-
-    short integerScale_maximumBounds = 1; // can change when window is resized
+    // Initialise integer scale bounds. These are the file-scope ones the widgets read, so don't declare
+    // locals here or the values computed below get thrown away.
+    max_integerScaleFactor = default_maxIntegerScaleFactor;
+    integerScale_maximumBounds = 1; // can change when window is resized
     // This is mostly just for UX purposes, as Fit Automatically logic is part of LUS.
     auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
     auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;

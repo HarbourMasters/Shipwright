@@ -3,11 +3,33 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "macros.h"
 #include "z64save.h"
-#include "functions.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
+}
+
+// Where intro leaves Link, instead of scene's spawn point (1, 0, 95)
+static const Vec3f sIntroEndPos = { 0.0f, 0.0f, 60.0f };
+
+static HOOK_ID sIntroSpawnHook = 0;
+
+// Puts Link where intro would've left him with top-down camera
+static void SkipIntro_OnSceneSpawnActors() {
+    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(sIntroSpawnHook);
+    sIntroSpawnHook = 0;
+
+    if (gPlayState->sceneNum == SCENE_LINKS_HOUSE) {
+        Player* player = GET_PLAYER(gPlayState);
+        player->actor.world.pos = sIntroEndPos;
+        player->actor.prevPos = sIntroEndPos;
+        player->actor.home.pos = sIntroEndPos;
+        gPlayState->unk_1242B = 1; // VIEWPOINT_LOCKED
+        // Watching the intro leaves this visit on the cutscene layer, which stops func_80083108
+        // from running & dimming the buttons. Zeroing cutsceneIndex loses that, so put it back
+        gSaveContext.sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + 1;
+    }
 }
 
 void RegisterSkipIntro() {
@@ -41,8 +63,14 @@ void RegisterSkipIntro() {
             // Skip the intro cutscene for whatever the spawnEntrance is calculated to be.
             if (gSaveContext.entranceIndex == spawnEntrance) {
                 gSaveContext.cutsceneIndex = 0;
-                if (!IS_RANDO)
+                if (!IS_RANDO) {
                     gSaveContext.dayTime = 0x8000;
+                    if (sIntroSpawnHook == 0) {
+                        sIntroSpawnHook =
+                            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>(
+                                SkipIntro_OnSceneSpawnActors);
+                    }
+                }
                 *should = false;
             }
         }

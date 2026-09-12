@@ -170,6 +170,18 @@ static s16 sExtraItemBases[] = {
     ITEM_BOW,   ITEM_BOW,   ITEM_SEEDS, ITEM_BOMBCHU, ITEM_BOMBCHU, ITEM_STICK, ITEM_STICK, ITEM_NUT,  ITEM_NUT,
 };
 
+// These tables only cover the item IDs that live in the inventory, so anything else (quest items, songs,
+// medallions) must report SLOT_NONE rather than read past their end.
+static s16 Item_GetSlot(u8 item) {
+    if ((item >= ITEM_STICKS_5) && (item < ITEM_STICKS_5 + ARRAY_COUNT(sExtraItemBases))) {
+        return SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
+    }
+    if (item < ARRAY_COUNT(gItemSlots)) {
+        return SLOT(item);
+    }
+    return SLOT_NONE;
+}
+
 static s16 sEnvHazard = PLAYER_ENV_HAZARD_NONE;
 static s16 sEnvHazardActive = false;
 
@@ -1131,13 +1143,14 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if ((CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) !=
-                             BUNNY_HOOD_VANILLA) &&
-                            (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON) &&
-                            (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
-                            gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
-                        } else if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
-                                   (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK)) {
+                        if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                            (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK)) {
+                            if (!GameInteractor_Should(VB_DISABLE_TRADE_ITEM_BUTTON, true,
+                                                       gSaveContext.equips.buttonItems[i])) {
+                                gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
+                                continue;
+                            }
+
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
                                 sp28 = 1;
                             }
@@ -1870,13 +1883,11 @@ u8 Item_Give(PlayState* play, u8 item) {
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
 
-    slot = SLOT(item);
-    if (item >= ITEM_STICKS_5) {
-        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
-    }
+    slot = Item_GetSlot(item);
 
     osSyncPrintf(VT_FGCOL(YELLOW));
-    osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+    osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot,
+                 (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
 
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
@@ -2410,6 +2421,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             if (item >= ITEM_POCKET_EGG) {
                 Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
             } else if (item == ITEM_LETTER_ZELDA) {
+                Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
                 // don't care about zelda's letter if it's already been shown to the guard
                 if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
                     Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
@@ -2449,23 +2461,25 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
+    if (slot == SLOT_NONE) {
+        // Nothing to store: writing would land on an unrelated slot instead.
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
+    }
+
     returnItem = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
-    INV_CONTENT(item) = item;
+    gSaveContext.inventory.items[slot] = item;
     return Return_Item(item, MOD_NONE, returnItem);
 }
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
-    s16 slot = SLOT(item);
+    s16 slot = Item_GetSlot(item);
     s32 temp;
 
-    if (item >= ITEM_STICKS_5) {
-        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
-    }
-
     osSyncPrintf(VT_FGCOL(GREEN));
-    osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+    osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot,
+                 (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
 
     if (IS_RANDO) {
@@ -2587,7 +2601,7 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_NONE;
     }
 
-    return gSaveContext.inventory.items[slot];
+    return (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE;
 }
 
 void Inventory_DeleteItem(u16 item, u16 invSlot) {
@@ -2720,6 +2734,23 @@ s32 Inventory_ConsumeFairy(PlayState* play) {
     return 0;
 }
 
+// SOH helper
+bool Inventory_HatchWeirdEgg(PlayState* play) {
+    if (!IS_RANDO) {
+        return Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN);
+    }
+
+    if (!LINK_IS_CHILD || !Flags_GetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG)) {
+        return 0;
+    }
+
+    Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+    Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
+    Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN);
+    return 1;
+}
+
+// SOH helper
 bool Inventory_HatchPocketCucco(PlayState* play) {
     if (!IS_RANDO) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
@@ -2797,7 +2828,7 @@ void Interface_SetNaviCall(PlayState* play, u16 naviCallState) {
         (play->csCtx.state == CS_STATE_IDLE)) {
         if (!CVarGetInteger(CVAR_AUDIO("DisableNaviCallAudio"), 0)) {
             // clang-format off
-            if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &gSfxDefaultPos, 4,
+            if (naviCallState == 0x1E) { Audio_PlaySfxGeneral(NA_SE_VO_NAVY_CALL, &gSfxDefaultPos, 4,
                                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb); }
             // clang-format on
 
@@ -2870,7 +2901,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     }
 
     // clang-format off
-    if (healthChange > 0) { Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4,
+    if (healthChange > 0) { Audio_PlaySfxGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4,
                                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if ((gSaveContext.isDoubleDefenseAcquired != 0) && (healthChange < 0)) {
         healthChange >>= 1;
@@ -3053,8 +3084,8 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
 
     if ((type != 5) && (gSaveContext.magic - amount) < 0) {
         if (gSaveContext.magicCapacity != 0) {
-            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         return false;
     }
@@ -3071,8 +3102,8 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_CONSUME_SETUP;
                 return 1;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_CONSUME_WAIT_NO_PREVIEW:
@@ -3085,8 +3116,8 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_METER_FLASH_3;
                 return true;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_CONSUME_LENS:
@@ -3115,8 +3146,8 @@ s32 Magic_RequestChange(PlayState* play, s16 amount, s16 type) {
                 gSaveContext.magicState = MAGIC_STATE_METER_FLASH_2;
                 return true;
             } else {
-                Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 return false;
             }
         case MAGIC_ADD:
@@ -3210,8 +3241,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
             gSaveContext.magic += 4;
 
             if (gSaveContext.gameMode == GAMEMODE_NORMAL && gSaveContext.sceneLayer < 4) {
-                Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
 
             // "Storage  MAGIC_NOW=%d (%d)"
@@ -3314,8 +3345,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
                     ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) ||
                     !hasLens || !play->actorCtx.lensActive) {
                     play->actorCtx.lensActive = false;
-                    Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_GLASSMODE_OFF, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     gSaveContext.magicState = MAGIC_STATE_IDLE;
                     if (CVarGetInteger(CVAR_COSMETIC("Consumable.MagicBorder.Changed"), 0)) {
                         sMagicBorder = CVarGetColor24(CVAR_COSMETIC("Consumable.MagicBorder.Value"), sMagicBorder_ori);
@@ -3370,8 +3401,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
         case MAGIC_STATE_ADD:
             gSaveContext.magic += 4;
-            Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             if (gSaveContext.magic >= gSaveContext.magicTarget) {
                 gSaveContext.magic = gSaveContext.magicTarget;
                 gSaveContext.magicState = gSaveContext.prevMagicState;
@@ -6033,20 +6064,20 @@ void Interface_Draw(PlayState* play) {
                                 sEnvHazardActive = false;
                             } else if (gSaveContext.timerSeconds > 60) {
                                 if (timerDigits[4] == 1) {
-                                    Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                    Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 }
                             } else if (gSaveContext.timerSeconds >= 11) {
                                 if (timerDigits[4] & 1) {
-                                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                    Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 }
                             } else {
-                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4,
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                             }
                         }
                     }
@@ -6093,9 +6124,9 @@ void Interface_Draw(PlayState* play) {
                                 sTimerStateTimer = 40;
                                 gSaveContext.timerState = TIMER_STATE_UP_FREEZE;
                             } else {
-                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                             }
                         }
                     }
@@ -6213,20 +6244,20 @@ void Interface_Draw(PlayState* play) {
                                             }
                                         } else if (gSaveContext.subTimerSeconds > 60) {
                                             if (timerDigits[4] == 1) {
-                                                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
-                                                                       &gSfxDefaultFreqAndVolScale,
-                                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
+                                                                     &gSfxDefaultFreqAndVolScale,
+                                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                             }
                                         } else if (gSaveContext.subTimerSeconds > 10) {
                                             if ((timerDigits[4] & 1)) {
-                                                Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
-                                                                       &gSfxDefaultFreqAndVolScale,
-                                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
+                                                                     &gSfxDefaultFreqAndVolScale,
+                                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                             }
                                         } else {
-                                            Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4,
-                                                                   &gSfxDefaultFreqAndVolScale,
-                                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                            Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4,
+                                                                 &gSfxDefaultFreqAndVolScale,
+                                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                                         }
                                     } else {
                                         gSaveContext.subTimerSeconds++;
@@ -6240,9 +6271,9 @@ void Interface_Draw(PlayState* play) {
                                     }
 
                                     if ((gSaveContext.subTimerSeconds % 60) == 0) {
-                                        Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
-                                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                               &gSfxDefaultReverb);
+                                        Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
+                                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                             &gSfxDefaultReverb);
                                     }
                                 }
                             }
@@ -6628,8 +6659,8 @@ void Interface_Update(PlayState* play) {
         gSaveContext.health += 4;
 
         if ((gSaveContext.health & 0xF) < 4) {
-            Audio_PlaySoundGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_HP_RECOVER, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         osSyncPrintf("now_life=%d  max_life=%d\n", gSaveContext.health, gSaveContext.healthCapacity);
@@ -6670,8 +6701,8 @@ void Interface_Update(PlayState* play) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupeeAccumulator--;
                 gSaveContext.rupees++;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 // "Rupee Amount MAX = %d"
                 osSyncPrintf("ルピー数ＭＡＸ = %d\n", CUR_CAPACITY(UPG_WALLET));
@@ -6687,13 +6718,13 @@ void Interface_Update(PlayState* play) {
                     gSaveContext.rupees = 0;
                 }
 
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 gSaveContext.rupeeAccumulator++;
                 gSaveContext.rupees--;
-                Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_RUPY_COUNT, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         } else {
             gSaveContext.rupeeAccumulator = 0;

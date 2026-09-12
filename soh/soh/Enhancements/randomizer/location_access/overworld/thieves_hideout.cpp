@@ -12,7 +12,7 @@ void RegionTable_Init_ThievesHideout() {
         EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,       logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER)),
     }, {
         //Locations
-        LOCATION(RC_TH_1_TORCH_CARPENTER,      logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_TH_1_TORCH_CARPENTER,      logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER)),
         LOCATION(RC_TH_1_TORCH_CELL_RIGHT_POT, logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_MID_POT,   logic->CanBreakPots()),
         LOCATION(RC_TH_1_TORCH_CELL_LEFT_POT,  logic->CanBreakPots()),
@@ -32,7 +32,7 @@ void RegionTable_Init_ThievesHideout() {
         EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,           logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER)),
     }, {
         //Locations
-        LOCATION(RC_TH_DOUBLE_CELL_CARPENTER,         logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_TH_DOUBLE_CELL_CARPENTER,         logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER)),
         LOCATION(RC_TH_NEAR_DOUBLE_CELL_RIGHT_POT,    logic->CanBreakPots()),
         LOCATION(RC_TH_NEAR_DOUBLE_CELL_MID_POT,      logic->CanBreakPots()),
         LOCATION(RC_TH_NEAR_DOUBLE_CELL_LEFT_POT,     logic->CanBreakPots()),
@@ -58,7 +58,7 @@ void RegionTable_Init_ThievesHideout() {
         EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,        logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER)),
     }, {
         //Locations
-        LOCATION(RC_TH_DEAD_END_CARPENTER,              logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_TH_DEAD_END_CARPENTER,              logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER)),
         LOCATION(RC_TH_DEAD_END_CELL_CRATE,             logic->CanBreakCrates()),
         LOCATION(RC_TH_WONDER_DEAD_END_SKULL_ENTRANCE,  logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_TH_WONDER_DEAD_END_SKULL_NEAR_JAIL, logic->CanUse(RG_FAIRY_BOW)),
@@ -74,7 +74,7 @@ void RegionTable_Init_ThievesHideout() {
         EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,     logic->SmallKeys(SCENE_THIEVES_HIDEOUT, ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL) ? 4 : 1) && logic->Get(LOGIC_TH_COULD_FREE_1_TORCH_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DOUBLE_CELL_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_DEAD_END_CARPENTER) && logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER)),
     }, {
         //Locations
-        LOCATION(RC_TH_STEEP_SLOPE_CARPENTER,         logic->CanKillEnemy(RE_GERUDO_WARRIOR)),
+        LOCATION(RC_TH_STEEP_SLOPE_CARPENTER,         logic->Get(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER)),
         LOCATION(RC_TH_STEEP_SLOPE_RIGHT_POT,         logic->CanBreakPots()),
         LOCATION(RC_TH_STEEP_SLOPE_LEFT_POT,          logic->CanBreakPots()),
         LOCATION(RC_TH_WONDER_STEEP_SLOPE_LOWER_EXIT, logic->CanUse(RG_FAIRY_BOW)),
@@ -99,7 +99,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_KITCHEN_MAIN, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
-    areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Bottom", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Main", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
         LOCATION(RC_TH_KITCHEN_POT_1,        logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_TH_KITCHEN_POT_2,        logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
@@ -116,25 +116,28 @@ void RegionTable_Init_ThievesHideout() {
 
     areaTable[RR_TH_KITCHEN_BY_CORRIDOR] = Region("Thieves Hideout Kitchen Top By Corridor", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
-        LOCATION(RC_TH_KITCHEN_POT_1, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_TH_KITCHEN_POT_2, logic->CanUse(RG_BOOMERANG)),
+        //"Voidout" here means getting caught by guards
+        LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
+        LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,              true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,        true),
     });
 
     areaTable[RR_TH_KITCHEN_OPPOSITE_CORRIDOR] = Region("Thieves Hideout Kitchen Top Across From Corridor", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
-        LOCATION(RC_TH_KITCHEN_POT_1, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_TH_KITCHEN_POT_2, logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,        true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_GF_NEAR_GS,             true),
     });
 
@@ -156,7 +159,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
-    areaTable[RR_TH_BREAK_ROOM_LOWER_CORRIDOR] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_BREAK_ROOM_LOWER_CORRIDOR] = Region("Thieves Hideout Break Room Lower Corridor", SCENE_THIEVES_HIDEOUT, {}, {
     //Locations
         LOCATION(RC_TH_WONDER_BREAK_ROOM_BOTTOM_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {
@@ -165,7 +168,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, logic->CanUse(RG_HOOKSHOT)),
     });
 
-    areaTable[RR_TH_BREAK_ROOM_UPPER_CORRIDOR] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_BREAK_ROOM_UPPER_CORRIDOR] = Region("Thieves Hideout Break Room Upper Corridor", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
         LOCATION(RC_TH_WONDER_BREAK_ROOM_TOP_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {

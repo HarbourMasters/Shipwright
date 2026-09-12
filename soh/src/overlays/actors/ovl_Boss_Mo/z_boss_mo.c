@@ -769,9 +769,9 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         player->actor.parent = &this->actor;
                         this->work[MO_TENT_ACTION_STATE] = MO_TENT_GRAB;
                         Sfx_PlaySfxAtPos(&this->tentTipPos, NA_SE_EN_MOFER_CATCH);
-                        Audio_PlaySoundGeneral(NA_SE_VO_LI_DAMAGE_S, &player->actor.projectedPos, 4,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_VO_LI_DAMAGE_S, &player->actor.projectedPos, 4,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultReverb);
                     } else {
                         this->work[MO_TENT_ACTION_STATE] = MO_TENT_READY;
                         this->tentMaxAngle = .001f;

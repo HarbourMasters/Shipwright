@@ -1,7 +1,7 @@
 #include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 extern "C" {
 #include <variables.h>
@@ -12,12 +12,12 @@ extern PlayState* gPlayState;
 // clang-format attempts to format this strangely for some reason, so temporarily turning it off
 #define ENTRANCES_SHUFFLED                                                                     \
     IS_RANDO &&                                                                                \
-    OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON) && \
+    Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ENTRANCES).Is(RO_GENERIC_ON) && \
     (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"), 0) == 1)
 // clang-format on
 
 void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    auto ctx = OTRGlobals::Instance->gRandoContext;
+    auto ctx = Rando::Context::GetInstance();
     s16 entrance = -1;
     switch (*textId) {
         case TEXT_WATERFALL:

@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -13,7 +13,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
-
 extern SaveContext gSaveContext;
 }
 

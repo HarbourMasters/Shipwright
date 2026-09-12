@@ -1,7 +1,7 @@
-#include "SohMenu.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
-#include <ship/utils/StringHelper.h>
+
+#include "SohMenu.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -28,7 +28,7 @@ WidgetInfo& SohMenu::AddWidget(WidgetPath& pathInfo, std::string widgetName, Wid
     std::unordered_map<std::string, SidebarEntry>& sidebar = menuEntries.at(pathInfo.sectionName).sidebars;
     uint8_t column = pathInfo.column;
     if (sidebar.contains(pathInfo.sidebarName)) {
-        while (sidebar.at(pathInfo.sidebarName).columnWidgets.size() < column + 1) {
+        while (sidebar.at(pathInfo.sidebarName).columnWidgets.size() < static_cast<size_t>(column) + 1) {
             sidebar.at(pathInfo.sidebarName).columnWidgets.push_back({});
         }
     }

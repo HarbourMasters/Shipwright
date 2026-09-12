@@ -3,10 +3,11 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/bean_patches.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
@@ -44,6 +45,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 #include "src/overlays/actors/ovl_En_Hy/z_en_hy.h"
+#include "src/overlays/actors/ovl_En_Bom_Bowl_Man/z_en_bom_bowl_man.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Pit/z_en_bom_bowl_pit.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "src/overlays/actors/ovl_En_Ge2/z_en_ge2.h"
@@ -86,7 +88,7 @@ bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
         return true;
     } else {
-        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene());
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(loc.GetScene());
         return (dungeon->IsMQ() && loc.GetQuest() == RCQUEST_MQ) ||
                (dungeon->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
     }
@@ -294,12 +296,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_WOKEN_IN_CASTLE) {
-        // remove chicken as this is the only use for it
         Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_ZELDAS_LETTER) {
-        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) {
@@ -329,7 +326,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
     if (flagType == FLAG_SCENE_SWITCH) {
-        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneNum);
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)sceneNum);
         bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
 
         switch (sceneNum) {
@@ -419,7 +416,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
     RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
     GetItemID vanillaItem = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
     GetItemEntry getItemEntry =
-        Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet);
+        Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet, true);
     GetItemCategory getItemCategory = Randomizer_AdjustItemCategory(getItemEntry);
 
     if (loc->HasObtained()) {
@@ -432,12 +429,10 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                     static_cast<uint32_t>(rc));
         if (
             // Skipping ItemGet animation incompatible with checks that require closing a text box to finish
-            rc != RC_HF_OCARINA_OF_TIME_ITEM && rc != RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
-            rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE && rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
+            rc != RC_HF_OCARINA_OF_TIME_ITEM && rc != RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE &&
+            rc != RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE &&
             // Always show ItemGet animation for ice traps
             !(getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId == RG_ICE_TRAP) &&
-            // Always show ItemGet animation outside of randomizer to keep behaviour consistent in vanilla
-            IS_RANDO &&
             (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_ALL ||
              (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
               (
@@ -472,6 +467,21 @@ void RandomizerOnPlayerUpdateForItemQueueHandler() {
         player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
         Player_ActionHandler_2(player, gPlayState);
     }
+}
+
+// plants every bean patch at once for skip planting beans, growing the one in the current scene if it's loaded
+static void PlantAllBeans() {
+    for (const BeanPatch& patch : beanPatches) {
+        gSaveContext.sceneFlags[patch.scene].swch |= 1 << patch.swchFlag;
+        if (gPlayState->sceneNum == patch.scene) {
+            Flags_SetSwitch(gPlayState, patch.swchFlag);
+        }
+    }
+    ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
+    if (bean != nullptr) {
+        func_80B8FE00(bean);
+    }
+    AMMO(ITEM_BEAN) = 0;
 }
 
 void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
@@ -511,49 +521,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
 
     if (receivedItemEntry.modIndex == MOD_RANDOMIZER && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
-            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
-            if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
-                Flags_SetSwitch(gPlayState, 3);
-            }
-            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
-            if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
-                Flags_SetSwitch(gPlayState, 6);
-            }
-            gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
-            if (gPlayState->sceneNum == SCENE_DESERT_COLOSSUS) {
-                Flags_SetSwitch(gPlayState, 24);
-            }
-            gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
-            if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
-                Flags_SetSwitch(gPlayState, 3);
-            }
-            gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
-            if (gPlayState->sceneNum == SCENE_GRAVEYARD) {
-                Flags_SetSwitch(gPlayState, 3);
-            }
-            gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
-            if (gPlayState->sceneNum == SCENE_KOKIRI_FOREST) {
-                Flags_SetSwitch(gPlayState, 9);
-            }
-            gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
-            if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
-                Flags_SetSwitch(gPlayState, 1);
-            }
-            gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
-            if (gPlayState->sceneNum == SCENE_LOST_WOODS) {
-                Flags_SetSwitch(gPlayState, 4);
-                Flags_SetSwitch(gPlayState, 18);
-            }
-            gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
-            if (gPlayState->sceneNum == SCENE_ZORAS_RIVER) {
-                Flags_SetSwitch(gPlayState, 3);
-            }
-            ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
-            if (bean != nullptr) {
-                Flags_SetSwitch(gPlayState, bean->dyna.actor.params & 0x3F);
-                func_80B8FE00(bean);
-            }
-            AMMO(ITEM_BEAN) = 0;
+            PlantAllBeans();
         }
     }
 
@@ -573,7 +541,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
     }
 
     if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST) {
-        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 1)) {
             static uint32_t updateHook;
             updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
                 Player* player = GET_PLAYER(gPlayState);
@@ -814,15 +782,13 @@ bool ShouldGiveFishingPrize(f32 sFishOnHandLength) {
                              ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10)
                              : 10;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING)
-                                                       : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_CHILD));
+        return sFishOnHandLength >= score && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING);
     } else {
         int32_t weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)
                              ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13)
                              : 13;
         f32 score = sqrt(((f32)weight - 0.5f) / 0.0036f);
-        return sFishOnHandLength >= score && (IS_RANDO ? !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)
-                                                       : !(HIGH_SCORE(HS_FISHING) & HS_FISH_PRIZE_ADULT));
+        return sFishOnHandLength >= score && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING);
     }
 }
 
@@ -1004,8 +970,8 @@ static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnDat
             return scrubIdentity;
         }
 
-        scrubIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        scrubIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        IdentifyCheck(&scrubIdentity.identity, location);
+
         scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
         scrubIdentity.itemPrice =
             OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.identity.randomizerCheck)->GetPrice();
@@ -1136,9 +1102,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
-        case VB_OPEN_CHEST:
+        case VB_OPEN_CHEST: {
+            EnBox* chest = va_arg(args, EnBox*);
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            if (*should && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+                chest->type != ENBOX_TYPE_SMALL && chest->type != ENBOX_TYPE_6 &&
+                chest->type != ENBOX_TYPE_ROOM_CLEAR_SMALL && chest->type != ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL) {
+                *should = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST);
+            }
             break;
+        }
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
                       RAND_GET_OPTION(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON);
@@ -1271,6 +1244,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_JABU_PREVENT_RUTO_REENTER_BIGOCTO: {
+            // Don't let player carry Ruto through doors 21 and 3 to Bigocto room if Ruto abducted flag set
+            Player* player = va_arg(args, Player*);
+            Actor* doorActor = va_arg(args, Actor*);
+            if (gPlayState->sceneNum == SCENE_JABU_JABU && GET_INFTABLE(INFTABLE_146) &&
+                (GET_TRANSITION_ACTOR_INDEX(doorActor) == 21 || GET_TRANSITION_ACTOR_INDEX(doorActor) == 3) &&
+                player->heldActor != NULL && player->heldActor->id == ACTOR_EN_RU1) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BIGGORON_CONSIDER_SWORD_COLLECTED: {
             *should = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
             break;
@@ -1312,8 +1296,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 Actor_Kill(&item00->actor);
                 *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY) {
-                Audio_PlaySoundGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 if (item00->itemEntry.modIndex == MOD_NONE) {
                     if (item00->itemEntry.getItemId == GI_SWORD_BGS) {
                         gSaveContext.bgsFlag = true;
@@ -1482,6 +1466,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Flags_UnsetInfTable(INFTABLE_B1);
                     *should = true;
                 }
+            } else if (id == VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE && RAND_GET_OPTION(RSK_PROGRESSIVE_GORON_SWORD)) {
+                // the progressive sword carries the first knife, leaving Medigoron to replace broken ones
+                *should = false;
             }
             break;
         }
@@ -1500,21 +1487,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 Rupees_ChangeBy(-60);
                 Item_Give(NULL, ITEM_BEAN);
                 BEANS_BOUGHT = 10;
-                AMMO(ITEM_BEAN) = 0;
-                gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
-                gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
-                gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
-                gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
-                gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
-                gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
-                gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
-                gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
-                gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
-                ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
-                if (bean != nullptr) {
-                    Flags_SetSwitch(gPlayState, bean->dyna.actor.params & 0x3F);
-                    func_80B8FE00(bean);
-                }
+                PlantAllBeans();
                 enMs->actionFunc = (EnMsActionFunc)EnMs_Wait;
                 *should = false;
             }
@@ -1692,8 +1665,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_OKARINA_TAG_COMPLETE: {
             if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon =
-                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
                 if (dungeon->IsVanilla()) {
                     EnOkarinaTag* enOkarinaTag = va_arg(args, EnOkarinaTag*);
                     if (enOkarinaTag->switchFlag >= 0 && Flags_GetSwitch(gPlayState, enOkarinaTag->switchFlag)) {
@@ -1706,8 +1678,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_OKARINA_TAG_COMPLETED: {
             if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon =
-                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
                 if (dungeon->IsVanilla()) {
                     *should = false;
                 }
@@ -1966,6 +1937,36 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = INV_CONTENT((RAND_GET_OPTION(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB)) != ITEM_NONE;
             break;
         }
+        case VB_SET_BOMBCHU_BOWLING_PRIZE_SELECT: {
+            EnBomBowlMan* bowlMan = va_arg(args, EnBomBowlMan*);
+            bowlMan->prizeSelect = 0;
+            *should = false;
+            break;
+        }
+        case VB_SET_BOMBCHU_BOWLING_PRIZE: {
+            EnBomBowlMan* bowlMan = va_arg(args, EnBomBowlMan*);
+            s16* prize = va_arg(args, s16*);
+            switch (bowlMan->prizeSelect) {
+                case 0:
+                    *prize = Flags_GetItemGetInf(ITEMGETINF_11) ? EXITEM_PURPLE_RUPEE_BOWLING : EXITEM_BOMB_BAG_BOWLING;
+                    break;
+                case 1:
+                    *prize =
+                        Flags_GetItemGetInf(ITEMGETINF_12) ? EXITEM_PURPLE_RUPEE_BOWLING : EXITEM_HEART_PIECE_BOWLING;
+                    break;
+                case 2:
+                    *prize = EXITEM_BOMBCHUS_BOWLING;
+                    break;
+                case 3:
+                    *prize = EXITEM_PURPLE_RUPEE_BOWLING;
+                    break;
+                case 4:
+                    *prize = EXITEM_BOMBS_BOWLING;
+                    break;
+            }
+            *should = false;
+            break;
+        }
         case VB_SHOULD_CHECK_FOR_FISHING_RECORD: {
             f32 sFishOnHandLength = *va_arg(args, f32*);
             *should = *should || ShouldGiveFishingPrize(sFishOnHandLength);
@@ -1980,48 +1981,44 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE: {
-            VBFishingData* fishData = va_arg(args, VBFishingData*);
-            *should = !IS_RANDO && ShouldGiveFishingPrize(fishData->fishWeight);
+            // rando gives its prize via VB_GIVE_RANDO_FISHING_PRIZE instead
+            *should = false;
             break;
         }
         case VB_GIVE_RANDO_FISHING_PRIZE: {
-            if (IS_RANDO) {
-                VBFishingData* fishData = va_arg(args, VBFishingData*);
-                if (*fishData->sFishOnHandIsLoach) {
-                    if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
-                        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) ==
-                            RO_FISHSANITY_HYRULE_LOACH) {
-                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
-                        Message_StartTextbox(gPlayState, TEXT_FISHING_RELEASE_THIS_ONE, NULL);
-                        *should = true;
-                        fishData->actor->stateAndTimer = 20;
+            VBFishingData* fishData = va_arg(args, VBFishingData*);
+            if (*fishData->sFishOnHandIsLoach) {
+                if (!Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH) &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) ==
+                        RO_FISHSANITY_HYRULE_LOACH) {
+                    Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                    Message_StartTextbox(gPlayState, TEXT_FISHING_RELEASE_THIS_ONE, NULL);
+                    *should = true;
+                    fishData->actor->stateAndTimer = 20;
+                }
+            } else {
+                if (ShouldGiveFishingPrize(fishData->fishWeight)) {
+                    if (LINK_IS_CHILD) {
+                        Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
+                        HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
+                    } else {
+                        Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
+                        HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
                     }
-                } else {
-                    if (ShouldGiveFishingPrize(fishData->fishWeight)) {
-                        if (LINK_IS_CHILD) {
-                            Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
-                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_CHILD;
-                        } else {
-                            Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
-                            HIGH_SCORE(HS_FISHING) |= HS_FISH_PRIZE_ADULT;
-                        }
-                        *should = true;
-                        *fishData->sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                        fishData->actor->stateAndTimer = 0;
-                    }
+                    *should = true;
+                    *fishData->sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                    fishData->actor->stateAndTimer = 0;
                 }
             }
             break;
         }
         case VB_GIVE_RANDO_GLITCH_FISHING_PRIZE: {
-            if (IS_RANDO) {
-                Fishing* fishing = va_arg(args, Fishing*);
-                if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
-                    Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
-                }
-                *should = true;
-                fishing->stateAndTimer = 0;
+            Fishing* fishing = va_arg(args, Fishing*);
+            if (!Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING)) {
+                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
             }
+            *should = true;
+            fishing->stateAndTimer = 0;
             break;
         }
         case VB_TRADE_TIMER_EYEDROPS: {
@@ -2126,53 +2123,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 }
 
 void RandomizerOnSceneInitHandler(int16_t sceneNum) {
-    // Treasure Chest Game
-    // todo: for now we're just unsetting all of them, we will
-    //       probably need to do something different when we implement shuffle
-    if (sceneNum == SCENE_TREASURE_BOX_SHOP) {
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_1);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_2);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_3);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_4);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_5);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_1);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_2);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_3);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_4);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        CheckTracker::RecalculateAllAreaTotals();
-    }
-
     // ENTRTODO: Move all entrance rando handling to a dedicated file
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         // In ER, override roomNum to load based on scene and spawn during scene init
@@ -2274,7 +2224,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
     if (actor->id == ACTOR_PLAYER) {
-        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(gPlayState->sceneNum);
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)gPlayState->sceneNum);
         bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
         switch (gPlayState->sceneNum) {
             case SCENE_DEKU_TREE:
@@ -2476,8 +2426,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
-    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK &&
-        RAND_GET_OPTION(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
+    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK && RAND_GET_OPTION(RSK_SHUFFLE_MASKS)) {
         Actor_Kill(actor);
     }
 
@@ -2566,77 +2515,15 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     }
 
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEAN_SOULS)) {
-        RandomizerInf currentBeanSoulRandInf = RAND_INF_MAX;
+        const BeanPatch* patch = nullptr;
         if (actor->id == ACTOR_OBJ_BEAN) {
-            switch (gPlayState->sceneNum) {
-                case SCENE_DEATH_MOUNTAIN_CRATER:
-                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
-                    break;
-                case SCENE_DEATH_MOUNTAIN_TRAIL:
-                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL;
-                    break;
-                case SCENE_DESERT_COLOSSUS:
-                    currentBeanSoulRandInf = RAND_INF_DESERT_COLOSSUS_BEAN_SOUL;
-                    break;
-                case SCENE_GERUDO_VALLEY:
-                    currentBeanSoulRandInf = RAND_INF_GERUDO_VALLEY_BEAN_SOUL;
-                    break;
-                case SCENE_GRAVEYARD:
-                    currentBeanSoulRandInf = RAND_INF_GRAVEYARD_BEAN_SOUL;
-                    break;
-                case SCENE_KOKIRI_FOREST:
-                    currentBeanSoulRandInf = RAND_INF_KOKIRI_FOREST_BEAN_SOUL;
-                    break;
-                case SCENE_LAKE_HYLIA:
-                    currentBeanSoulRandInf = RAND_INF_LAKE_HYLIA_BEAN_SOUL;
-                    break;
-                case SCENE_LOST_WOODS:
-                    if ((actor->params & 0x3F) == 4) {
-                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL;
-                    } else {
-                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BEAN_SOUL;
-                    }
-                    break;
-                case SCENE_ZORAS_RIVER:
-                    currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
-                    break;
-            }
+            // bean params hold the switch flag
+            patch = FindBeanPatch(gPlayState->sceneNum, actor->params & 0x3F);
         } else if (actor->id == ACTOR_OBJ_MAKEKINSUTA) {
-            switch (gPlayState->sceneNum) {
-                case SCENE_DEATH_MOUNTAIN_CRATER:
-                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
-                    break;
-                case SCENE_DEATH_MOUNTAIN_TRAIL:
-                    currentBeanSoulRandInf = RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL;
-                    break;
-                case SCENE_DESERT_COLOSSUS:
-                    currentBeanSoulRandInf = RAND_INF_DESERT_COLOSSUS_BEAN_SOUL;
-                    break;
-                case SCENE_GERUDO_VALLEY:
-                    currentBeanSoulRandInf = RAND_INF_GERUDO_VALLEY_BEAN_SOUL;
-                    break;
-                case SCENE_GRAVEYARD:
-                    currentBeanSoulRandInf = RAND_INF_GRAVEYARD_BEAN_SOUL;
-                    break;
-                case SCENE_KOKIRI_FOREST:
-                    currentBeanSoulRandInf = RAND_INF_KOKIRI_FOREST_BEAN_SOUL;
-                    break;
-                case SCENE_LAKE_HYLIA:
-                    currentBeanSoulRandInf = RAND_INF_LAKE_HYLIA_BEAN_SOUL;
-                    break;
-                case SCENE_LOST_WOODS:
-                    if (actor->params == 0x4e01) {
-                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BRIDGE_BEAN_SOUL;
-                    } else {
-                        currentBeanSoulRandInf = RAND_INF_LOST_WOODS_BEAN_SOUL;
-                    }
-                    break;
-                case SCENE_ZORAS_RIVER:
-                    currentBeanSoulRandInf = RAND_INF_ZORAS_RIVER_BEAN_SOUL;
-                    break;
-            }
+            // soft soil params don't, so map the Lost Woods pair onto their flags
+            patch = FindBeanPatch(gPlayState->sceneNum, actor->params == 0x4e01 ? 4 : 18);
         }
-        if (currentBeanSoulRandInf != RAND_INF_MAX && !Flags_GetRandomizerInf(currentBeanSoulRandInf)) {
+        if (patch != nullptr && !Flags_GetRandomizerInf(patch->soulRandInf)) {
             Actor_Kill(actor);
             return;
         }
@@ -2663,8 +2550,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     // Turn MQ switch into toggle
     if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
         (actor->params & 0x3f07) == 0x303) {
-        auto dungeon =
-            OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
         if (dungeon->IsMQ()) {
             actor->params |= 0x10;
         }
@@ -2744,10 +2630,12 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
             Flags_UnsetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
         }
     }
+}
 
-    // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES) && actor->id == ACTOR_DEMO_KANKYO &&
-        actor->params == 0x000F) { // Warp Song particles
+// In ER, warp songs lead to their shuffled entrance rather than their warp pad. Every warp path commits its
+// destination through Environment_WarpSongLeave, so that is the one place the override has to happen.
+void RandomizerOnWarpSongLeaveHandler() {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_SetWarpSongEntrance();
     }
 }
@@ -2790,7 +2678,8 @@ f32 triforcePieceScale;
 
 void RandomizerOnPlayerUpdateHandler() {
     if ((GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) && !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
-        CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON) {
+        CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON &&
+        gPlayState->transitionTrigger == TRANS_TRIGGER_OFF) {
         // if you void out in water temple without swim you get instantly kicked out to prevent softlocks
         if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
             GameInteractor::RawAction::TeleportPlayer(
@@ -2816,6 +2705,7 @@ void RandomizerOnPlayerUpdateHandler() {
                 gSaveContext.respawnFlag = 0;
             } else {
                 Play_TriggerVoidOut(gPlayState);
+                Grotto_ForceGrottoReturnOnSpecialEntrance();
             }
         }
     }
@@ -2900,13 +2790,6 @@ void RandomizerOnKaleidoscopeUpdateHandler(int16_t inDungeonScene) {
     prevKaleidoState = gPlayState->pauseCtx.state;
 }
 
-void RandomizerOnCuccoOrChickenHatch() {
-    if (LINK_IS_CHILD) {
-        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-}
-
 static void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2919,13 +2802,13 @@ static void RandomizerRegisterHooks() {
     static uint32_t afterSceneCommandsHook = 0;
     static uint32_t onActorInitHook = 0;
     static uint32_t onActorUpdateHook = 0;
+    static uint32_t onWarpSongLeaveHook = 0;
     static uint32_t onPlayerUpdateHook = 0;
     static uint32_t onGameFrameUpdateHook = 0;
     static uint32_t onSceneSpawnActorsHook = 0;
     static uint32_t onPlayDestroyHook = 0;
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
-    static uint32_t onCuccoOrChickenHatchHook = 0;
 
     // register this outside OnLoadGame as VB is invoked before OnLoadGame
     COND_VB_SHOULD(VB_REVERT_SPOILING_ITEMS, true, {
@@ -2952,13 +2835,13 @@ static void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::AfterSceneCommands>(afterSceneCommandsHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnWarpSongLeave>(onWarpSongLeaveHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(onSceneSpawnActorsHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(onPlayDestroyHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
@@ -2971,13 +2854,13 @@ static void RandomizerRegisterHooks() {
         afterSceneCommandsHook = 0;
         onActorInitHook = 0;
         onActorUpdateHook = 0;
+        onWarpSongLeaveHook = 0;
         onPlayerUpdateHook = 0;
         onGameFrameUpdateHook = 0;
         onSceneSpawnActorsHook = 0;
         onPlayDestroyHook = 0;
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
-        onCuccoOrChickenHatchHook = 0;
 
         if (!IS_RANDO)
             return;
@@ -3013,6 +2896,8 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
         onActorUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(RandomizerOnActorUpdateHandler);
+        onWarpSongLeaveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWarpSongLeave>(
+            RandomizerOnWarpSongLeaveHandler);
         onPlayerUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateHandler);
         onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
@@ -3025,11 +2910,9 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(RandomizerOnExitGameHandler);
         onKaleidoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
             RandomizerOnKaleidoscopeUpdateHandler);
-        onCuccoOrChickenHatchHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(
-            RandomizerOnCuccoOrChickenHatch);
 
         if (RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
-            OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();
+            Rando::Fishsanity::InitializeFromSave();
         }
     });
 }

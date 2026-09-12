@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -186,8 +185,6 @@ void EnGe1_Destroy(Actor* thisx, PlayState* play) {
     EnGe1* this = (EnGe1*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnGe1_SetTalkAction(EnGe1* this, PlayState* play, u16 textId, f32 arg3, EnGe1ActionFunc actionFunc) {
@@ -511,7 +508,9 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         return;
     }
     if (Actor_HasParent(&this->actor, play)) {
-        this->actionFunc = EnGe1_SetupWait_Archery;
+        if (GameInteractor_Should(VB_END_HORSEBACK_ARCHERY, true, this)) {
+            this->actionFunc = EnGe1_SetupWait_Archery;
+        }
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             Flags_SetItemGetInf(ITEMGETINF_0F);

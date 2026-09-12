@@ -7,7 +7,6 @@
 #include "z_en_insect.h"
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS 0
@@ -243,8 +242,6 @@ void EnInsect_Destroy(Actor* thisx, PlayState* play) {
     if ((temp_v0 == 2 || temp_v0 == 3) && sDroppedCount > 0) {
         sDroppedCount--;
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnInsect_SetupSlowDown(EnInsect* this) {

@@ -1,0 +1,275 @@
+:config:
+  segments:
+    - [ 6, 0x00EACB50 ]
+
+gArmosCol:
+  type: OOT:COLLISION
+  offset: 0x118
+  symbol: gArmosCol
+
+gArmosDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x5B3C
+  symbol: gArmosDamagedAnim
+
+gArmosHopAnim:
+  type: OOT:ANIMATION
+  offset: 0x238
+  symbol: gArmosHopAnim
+
+gArmosRicochetAnim:
+  type: OOT:ANIMATION
+  offset: 0x33C
+  symbol: gArmosRicochetAnim
+
+gArmosSkel:
+  type: OOT:SKELETON
+  offset: 0x5948
+  symbol: gArmosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+object_amTex_002638:
+  type: TEXTURE
+  offset: 0x2638
+  symbol: object_amTex_002638
+  format: I4
+  width: 32
+  height: 32
+
+object_amTex_002838:
+  type: TEXTURE
+  offset: 0x2838
+  symbol: object_amTex_002838
+  format: I4
+  width: 16
+  height: 32
+
+object_amTex_002938:
+  type: TEXTURE
+  offset: 0x2938
+  symbol: object_amTex_002938
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_amTex_002D38:
+  type: TEXTURE
+  offset: 0x2D38
+  symbol: object_amTex_002D38
+  format: I4
+  width: 16
+  height: 32
+
+object_amTex_002E38:
+  type: TEXTURE
+  offset: 0x2E38
+  symbol: object_amTex_002E38
+  format: I4
+  width: 32
+  height: 32
+
+object_amTex_003038:
+  type: TEXTURE
+  offset: 0x3038
+  symbol: object_amTex_003038
+  format: I4
+  width: 32
+  height: 32
+
+object_amTex_003238:
+  type: TEXTURE
+  offset: 0x3238
+  symbol: object_amTex_003238
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_amTex_003A38:
+  type: TEXTURE
+  offset: 0x3A38
+  symbol: object_amTex_003A38
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_amTex_003C38:
+  type: TEXTURE
+  offset: 0x3C38
+  symbol: object_amTex_003C38
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_amTex_004438:
+  type: TEXTURE
+  offset: 0x4438
+  symbol: object_amTex_004438
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_amTex_004C38:
+  type: TEXTURE
+  offset: 0x4C38
+  symbol: object_amTex_004C38
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_amTex_005438:
+  type: TEXTURE
+  offset: 0x5438
+  symbol: object_amTex_005438
+  format: I4
+  width: 16
+  height: 8
+
+object_amTex_005478:
+  type: TEXTURE
+  offset: 0x5478
+  symbol: object_amTex_005478
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_amVtx_000350:
+  type: OOT:ARRAY
+  offset: 0x000350
+  symbol: object_amVtx_000350
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gArmosSkelLimbsLimb_005908DL_0005D0:
+  type: GFX
+  offset: 0x0005D0
+  symbol: gArmosSkelLimbsLimb_005908DL_0005D0
+
+object_amVtx_000838:
+  type: OOT:ARRAY
+  offset: 0x000838
+  symbol: object_amVtx_000838
+  count: 233
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gArmosSkelLimbsLimb_00589CDL_0016C8:
+  type: GFX
+  offset: 0x0016C8
+  symbol: gArmosSkelLimbsLimb_00589CDL_0016C8
+
+object_amVtx_001EA8:
+  type: OOT:ARRAY
+  offset: 0x001EA8
+  symbol: object_amVtx_001EA8
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gArmosSkelLimbsLimb_0058E4DL_002278:
+  type: GFX
+  offset: 0x002278
+  symbol: gArmosSkelLimbsLimb_0058E4DL_002278
+
+object_amVtx_002440:
+  type: OOT:ARRAY
+  offset: 0x002440
+  symbol: object_amVtx_002440
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gArmosSkelLimbsLimb_0058C0DL_002550:
+  type: GFX
+  offset: 0x002550
+  symbol: gArmosSkelLimbsLimb_0058C0DL_002550
+
+gArmosSkelLimbsLimb_005878:
+  type: OOT:LIMB
+  offset: 0x005878
+  symbol: gArmosSkelLimbsLimb_005878
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_005884:
+  type: OOT:LIMB
+  offset: 0x005884
+  symbol: gArmosSkelLimbsLimb_005884
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_005890:
+  type: OOT:LIMB
+  offset: 0x005890
+  symbol: gArmosSkelLimbsLimb_005890
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_00589C:
+  type: OOT:LIMB
+  offset: 0x00589C
+  symbol: gArmosSkelLimbsLimb_00589C
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058A8:
+  type: OOT:LIMB
+  offset: 0x0058A8
+  symbol: gArmosSkelLimbsLimb_0058A8
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058B4:
+  type: OOT:LIMB
+  offset: 0x0058B4
+  symbol: gArmosSkelLimbsLimb_0058B4
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058C0:
+  type: OOT:LIMB
+  offset: 0x0058C0
+  symbol: gArmosSkelLimbsLimb_0058C0
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058CC:
+  type: OOT:LIMB
+  offset: 0x0058CC
+  symbol: gArmosSkelLimbsLimb_0058CC
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058D8:
+  type: OOT:LIMB
+  offset: 0x0058D8
+  symbol: gArmosSkelLimbsLimb_0058D8
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058E4:
+  type: OOT:LIMB
+  offset: 0x0058E4
+  symbol: gArmosSkelLimbsLimb_0058E4
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058F0:
+  type: OOT:LIMB
+  offset: 0x0058F0
+  symbol: gArmosSkelLimbsLimb_0058F0
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_0058FC:
+  type: OOT:LIMB
+  offset: 0x0058FC
+  symbol: gArmosSkelLimbsLimb_0058FC
+  limb_type: Standard
+
+gArmosSkelLimbsLimb_005908:
+  type: OOT:LIMB
+  offset: 0x005908
+  symbol: gArmosSkelLimbsLimb_005908
+  limb_type: Standard
+
+gArmosSkelLimbs:
+  type: BLOB
+  offset: 0x5914
+  symbol: gArmosSkelLimbs
+  size: 0

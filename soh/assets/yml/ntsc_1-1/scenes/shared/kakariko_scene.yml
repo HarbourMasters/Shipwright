@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01CC04D0 ]
+
+kakariko_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: kakariko_scene
+
+
+kakariko_sceneCollisionHeader_000E68:
+  type: OOT:COLLISION
+  offset: 0x000E68
+  symbol: kakariko_sceneCollisionHeader_000E68

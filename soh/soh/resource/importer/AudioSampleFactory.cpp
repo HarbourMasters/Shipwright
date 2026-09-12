@@ -1,12 +1,16 @@
-#include "soh/resource/importer/AudioSampleFactory.h"
-#include "soh/resource/importer/AudioSoundFontFactory.h"
-#include "soh/resource/type/AudioSample.h"
-#include "spdlog/spdlog.h"
-#include "z64.h"
-#include "z64audio.h"
 #include <ship/Context.h>
 #include <ship/resource/archive/Archive.h>
 #include <ship/resource/ResourceManager.h>
+
+#include "soh/resource/importer/AudioSampleFactory.h"
+#include "soh/resource/importer/AudioSoundFontFactory.h"
+#include "soh/resource/type/AudioSample.h"
+
+extern "C" {
+#include "z64.h"
+#include "z64audio.h"
+}
+
 #define DR_WAV_IMPLEMENTATION
 #include <dr_wav.h>
 

@@ -1,9 +1,6 @@
-#ifndef MOUSE_H
-#define MOUSE_H
-
 #pragma once
 
-#include <libultraship/libultra.h>
+#include <libultraship/libultra/types.h>
 
 struct Player;
 
@@ -19,7 +16,4 @@ bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C);
 void Mouse_UpdateQuickspinCount();
 #ifdef __cplusplus
 }; // extern "C"
-#endif
-
-// MOUSE_H
 #endif

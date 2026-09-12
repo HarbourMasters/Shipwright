@@ -1,0 +1,663 @@
+:config:
+  segments:
+    - [ 6, 0x0134B000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0134B000 ]
+    - [ 9, 0x0134B000 ]
+    - [ 10, 0x0134B000 ]
+    - [ 11, 0x0134B000 ]
+    - [ 12, 0x0134B000 ]
+    - [ 13, 0x0134B000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gImpaBlackTex:
+  type: TEXTURE
+  offset: 0x2D80
+  symbol: gImpaBlackTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1880
+
+gImpaBrownGradientTex:
+  type: TEXTURE
+  offset: 0x1A80
+  symbol: gImpaBrownGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1880
+
+gImpaChestDL:
+  type: GFX
+  offset: 0x5040
+  symbol: gImpaChestDL
+
+gImpaChestLimb:
+  type: OOT:LIMB
+  offset: 0xF6E8
+  symbol: gImpaChestLimb
+  limb_type: Standard
+
+gImpaChestPlateEdgeTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gImpaChestPlateEdgeTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1880
+
+gImpaChestPlateStrapTex:
+  type: TEXTURE
+  offset: 0x2300
+  symbol: gImpaChestPlateStrapTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1880
+
+gImpaChestPlateTex:
+  type: TEXTURE
+  offset: 0x1E80
+  symbol: gImpaChestPlateTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1880
+
+gImpaEarTex:
+  type: TEXTURE
+  offset: 0x7610
+  symbol: gImpaEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7140
+
+gImpaElbowTex:
+  type: TEXTURE
+  offset: 0x1CC0
+  symbol: gImpaElbowTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1880
+
+gImpaEmblemTex:
+  type: TEXTURE
+  offset: 0x1F00
+  symbol: gImpaEmblemTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x1880
+
+gImpaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x8150
+  symbol: gImpaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6F40
+
+gImpaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x7D50
+  symbol: gImpaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6F40
+
+gImpaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7210
+  symbol: gImpaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6F40
+
+gImpaEyesTLUT:
+  type: TEXTURE
+  offset: 0x6F40
+  symbol: gImpaEyesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gImpaFingers2Tex:
+  type: TEXTURE
+  offset: 0x7C50
+  symbol: gImpaFingers2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7140
+
+gImpaHair2Tex:
+  type: TEXTURE
+  offset: 0x77D0
+  symbol: gImpaHair2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gImpaHandPointingDL:
+  type: GFX
+  offset: 0xEDE8
+  symbol: gImpaHandPointingDL
+
+gImpaHeadGradientTex:
+  type: TEXTURE
+  offset: 0x7710
+  symbol: gImpaHeadGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7140
+
+gImpaHeadLimb:
+  type: OOT:LIMB
+  offset: 0xF73C
+  symbol: gImpaHeadLimb
+  limb_type: Standard
+
+gImpaHeadMaskedDL:
+  type: GFX
+  offset: 0xD0D8
+  symbol: gImpaHeadMaskedDL
+
+gImpaHeadUnmaskedDL:
+  type: GFX
+  offset: 0xBDC0
+  symbol: gImpaHeadUnmaskedDL
+
+gImpaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1868
+  symbol: gImpaIdleAnim
+
+gImpaLeftArmDL:
+  type: GFX
+  offset: 0x64E8
+  symbol: gImpaLeftArmDL
+
+gImpaLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xF700
+  symbol: gImpaLeftArmLimb
+  limb_type: Standard
+
+gImpaLeftFootDL:
+  type: GFX
+  offset: 0xDDB8
+  symbol: gImpaLeftFootDL
+
+gImpaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xF6B8
+  symbol: gImpaLeftFootLimb
+  limb_type: Standard
+
+gImpaLeftHandDL:
+  type: GFX
+  offset: 0xE0F0
+  symbol: gImpaLeftHandDL
+
+gImpaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xF70C
+  symbol: gImpaLeftHandLimb
+  limb_type: Standard
+
+gImpaLeftLegDL:
+  type: GFX
+  offset: 0x6D70
+  symbol: gImpaLeftLegDL
+
+gImpaLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xF6AC
+  symbol: gImpaLeftLegLimb
+  limb_type: Standard
+
+gImpaLeftShoulderDL:
+  type: GFX
+  offset: 0x6200
+  symbol: gImpaLeftShoulderDL
+
+gImpaLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xF6F4
+  symbol: gImpaLeftShoulderLimb
+  limb_type: Standard
+
+gImpaLeftThighDL:
+  type: GFX
+  offset: 0x6BB8
+  symbol: gImpaLeftThighDL
+
+gImpaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xF6A0
+  symbol: gImpaLeftThighLimb
+  limb_type: Standard
+
+gImpaNeckTex:
+  type: TEXTURE
+  offset: 0x2480
+  symbol: gImpaNeckTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1880
+
+gImpaPantsAndSkinTex:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: gImpaPantsAndSkinTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gImpaPrepareSealGanonAnim:
+  type: OOT:ANIMATION
+  offset: 0x11C08
+  symbol: gImpaPrepareSealGanonAnim
+
+gImpaPresentShadowMedallionAnim:
+  type: OOT:ANIMATION
+  offset: 0xAFC
+  symbol: gImpaPresentShadowMedallionAnim
+
+gImpaRaiseArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x710
+  symbol: gImpaRaiseArmsAnim
+
+gImpaRightArmDL:
+  type: GFX
+  offset: 0x6048
+  symbol: gImpaRightArmDL
+
+gImpaRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xF724
+  symbol: gImpaRightArmLimb
+  limb_type: Standard
+
+gImpaRightFootDL:
+  type: GFX
+  offset: 0xE5D0
+  symbol: gImpaRightFootDL
+
+gImpaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xF6DC
+  symbol: gImpaRightFootLimb
+  limb_type: Standard
+
+gImpaRightHandDL:
+  type: GFX
+  offset: 0xE908
+  symbol: gImpaRightHandDL
+
+gImpaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xF730
+  symbol: gImpaRightHandLimb
+  limb_type: Standard
+
+gImpaRightLegDL:
+  type: GFX
+  offset: 0x69E8
+  symbol: gImpaRightLegDL
+
+gImpaRightLegLimb:
+  type: OOT:LIMB
+  offset: 0xF6D0
+  symbol: gImpaRightLegLimb
+  limb_type: Standard
+
+gImpaRightShoulderDL:
+  type: GFX
+  offset: 0x5D60
+  symbol: gImpaRightShoulderDL
+
+gImpaRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xF718
+  symbol: gImpaRightShoulderLimb
+  limb_type: Standard
+
+gImpaRightThighDL:
+  type: GFX
+  offset: 0x6880
+  symbol: gImpaRightThighDL
+
+gImpaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xF6C4
+  symbol: gImpaRightThighLimb
+  limb_type: Standard
+
+gImpaRootLimb:
+  type: OOT:LIMB
+  offset: 0xF688
+  symbol: gImpaRootLimb
+  limb_type: Standard
+
+gImpaSealGanonAnim:
+  type: OOT:ANIMATION
+  offset: 0x12218
+  symbol: gImpaSealGanonAnim
+
+gImpaShoulderPadBottomEdgeTex:
+  type: TEXTURE
+  offset: 0x1DC0
+  symbol: gImpaShoulderPadBottomEdgeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x1880
+
+gImpaShoulderPadTopTex:
+  type: TEXTURE
+  offset: 0x7A10
+  symbol: gImpaShoulderPadTopTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gImpaShoulderSkinTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gImpaShoulderSkinTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1880
+
+gImpaSkel:
+  type: OOT:SKELETON
+  offset: 0xF788
+  symbol: gImpaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gImpaSkinAndArmGuardTex:
+  type: TEXTURE
+  offset: 0x1AC0
+  symbol: gImpaSkinAndArmGuardTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x1880
+
+gImpaSpearEmblemTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gImpaSpearEmblemTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x1880
+
+gImpaStartWhistlingAnim:
+  type: OOT:ANIMATION
+  offset: 0x10EE0
+  symbol: gImpaStartWhistlingAnim
+
+gImpaSwordHandleTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gImpaSwordHandleTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gImpaThrowDekuNutAnim:
+  type: OOT:ANIMATION
+  offset: 0x14E4
+  symbol: gImpaThrowDekuNutAnim
+
+gImpaTorsoDL:
+  type: GFX
+  offset: 0x6720
+  symbol: gImpaTorsoDL
+
+gImpaTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xF694
+  symbol: gImpaTorsoLimb
+  limb_type: Standard
+
+gImpaWhistlingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1182C
+  symbol: gImpaWhistlingAnim
+
+object_im_Anim_00FB10:
+  type: OOT:ANIMATION
+  offset: 0xFB10
+  symbol: object_im_Anim_00FB10
+
+object_im_Anim_0101C8:
+  type: OOT:ANIMATION
+  offset: 0x101C8
+  symbol: object_im_Anim_0101C8
+
+object_im_TLUT_001880:
+  type: TEXTURE
+  offset: 0x1880
+  symbol: object_im_TLUT_001880
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_im_TLUT_007140:
+  type: TEXTURE
+  offset: 0x7140
+  symbol: object_im_TLUT_007140
+  format: RGBA16
+  width: 26
+  height: 4
+
+object_im_Tex_007750:
+  type: TEXTURE
+  offset: 0x7750
+  symbol: object_im_Tex_007750
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_im_Tex_0079D0:
+  type: TEXTURE
+  offset: 0x79D0
+  symbol: object_im_Tex_0079D0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7140
+
+object_im_Tex_007B10:
+  type: TEXTURE
+  offset: 0x7B10
+  symbol: object_im_Tex_007B10
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x7140
+
+object_im_Tex_007B50:
+  type: TEXTURE
+  offset: 0x7B50
+  symbol: object_im_Tex_007B50
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x7140
+
+
+object_imVtx_002DC0:
+  type: OOT:ARRAY
+  offset: 0x002DC0
+  symbol: object_imVtx_002DC0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_002FC0:
+  type: OOT:ARRAY
+  offset: 0x002FC0
+  symbol: object_imVtx_002FC0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_003260:
+  type: OOT:ARRAY
+  offset: 0x003260
+  symbol: object_imVtx_003260
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_003460:
+  type: OOT:ARRAY
+  offset: 0x003460
+  symbol: object_imVtx_003460
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_003700:
+  type: OOT:ARRAY
+  offset: 0x003700
+  symbol: object_imVtx_003700
+  count: 194
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_004320:
+  type: OOT:ARRAY
+  offset: 0x004320
+  symbol: object_imVtx_004320
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_004570:
+  type: OOT:ARRAY
+  offset: 0x004570
+  symbol: object_imVtx_004570
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_004840:
+  type: OOT:ARRAY
+  offset: 0x004840
+  symbol: object_imVtx_004840
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_004A90:
+  type: OOT:ARRAY
+  offset: 0x004A90
+  symbol: object_imVtx_004A90
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_004D60:
+  type: OOT:ARRAY
+  offset: 0x004D60
+  symbol: object_imVtx_004D60
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_008550:
+  type: OOT:ARRAY
+  offset: 0x008550
+  symbol: object_imVtx_008550
+  count: 306
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_009870:
+  type: OOT:ARRAY
+  offset: 0x009870
+  symbol: object_imVtx_009870
+  count: 258
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_00A890:
+  type: OOT:ARRAY
+  offset: 0x00A890
+  symbol: object_imVtx_00A890
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_00AAA0:
+  type: OOT:ARRAY
+  offset: 0x00AAA0
+  symbol: object_imVtx_00AAA0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_00AF00:
+  type: OOT:ARRAY
+  offset: 0x00AF00
+  symbol: object_imVtx_00AF00
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_00B110:
+  type: OOT:ARRAY
+  offset: 0x00B110
+  symbol: object_imVtx_00B110
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_imVtx_00B570:
+  type: OOT:ARRAY
+  offset: 0x00B570
+  symbol: object_imVtx_00B570
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gImpaSkelLimbs:
+  type: BLOB
+  offset: 0xF748
+  symbol: gImpaSkelLimbs
+  size: 0

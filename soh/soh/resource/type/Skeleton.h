@@ -79,7 +79,7 @@ struct SkeletonPatchInfo {
     SkelAnime* skelAnime;
     std::string vanillaSkeletonPath;
 
-    u8 lastSkeletonId;
+    u8 lastSkeletonId = 0xFF;
     bool isLocalPlayer;
 };
 

@@ -331,8 +331,8 @@ void DemoDu_CsPlaySfx_DaruniaHitsLink(PlayState* play) {
     s32 pad;
 
     Sfx_PlaySfxAtPos(&player->actor.projectedPos, NA_SE_EN_DARUNIA_HIT_LINK);
-    Audio_PlaySoundGeneral(NA_SE_VO_LI_DAMAGE_S_KID, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_VO_LI_DAMAGE_S_KID, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 // Cutscene: Darunia gives Link the Goron's Ruby.
@@ -346,8 +346,8 @@ void DemoDu_CsPlaySfx_LinkEscapeFromGorons(PlayState* play) {
     if (play->csCtx.frames == 1400) {
         Player* player = GET_PLAYER(play);
 
-        Audio_PlaySoundGeneral(NA_SE_VO_LI_FALL_L_KID, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_VO_LI_FALL_L_KID, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -357,8 +357,8 @@ void DemoDu_CsPlaySfx_LinkSurprised(PlayState* play) {
     if (play->csCtx.frames == 174) {
         Player* player = GET_PLAYER(play);
 
-        Audio_PlaySoundGeneral(NA_SE_VO_LI_SURPRISE_KID, &player->actor.projectedPos, 4U, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_VO_LI_SURPRISE_KID, &player->actor.projectedPos, 4U, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

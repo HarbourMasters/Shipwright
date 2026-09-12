@@ -1,7 +1,6 @@
-#ifndef FILE_SELECT_ENHANCEMENTS_H
-#define FILE_SELECT_ENHANCEMENTS_H
+#pragma once
 
-#include "z64.h"
+#include <libultraship/libultra/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,5 +19,3 @@ typedef enum {
     RSM_NO_RANDOMIZER_GENERATED,
     RSM_MAX,
 } RandomizerSettingsMenuEnums;
-
-#endif

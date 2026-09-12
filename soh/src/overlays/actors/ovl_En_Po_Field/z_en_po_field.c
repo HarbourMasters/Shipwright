@@ -8,7 +8,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_field/object_po_field.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
@@ -199,8 +198,6 @@ void EnPoField_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->flameCollider);
         Collider_DestroyCylinder(play, &this->collider);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoField_SetupWaitForSpawn(EnPoField* this, PlayState* play) {

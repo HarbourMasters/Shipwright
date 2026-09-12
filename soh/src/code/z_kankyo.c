@@ -6,9 +6,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -2097,9 +2096,8 @@ void func_80075B44(PlayState* play) {
                 gSaveContext.bgsDayCount++;
                 gSaveContext.dogIsLost = true;
                 Sfx_PlaySfxCentered(NA_SE_EV_CHICKEN_CRY_M);
-                if ((Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) &&
-                    play->csCtx.state == 0 && !Player_InCsMode(play)) {
-                    GameInteractor_ExecuteOnCuccoOrChickenHatch();
+                if ((Inventory_HatchWeirdEgg(play) || Inventory_HatchPocketCucco(play)) && play->csCtx.state == 0 &&
+                    !Player_InCsMode(play)) {
                     Message_StartTextbox(play, 0x3066, NULL);
                 }
                 play->envCtx.unk_E0++;
@@ -2536,6 +2534,9 @@ void Environment_WarpSongLeave(PlayState* play) {
     play->transitionTrigger = TRANS_TRIGGER_START;
     play->transitionType = TRANS_TYPE_FADE_WHITE;
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
+
+    // Where entrance rando redirects the warp: every warp song path decides its destination here.
+    GameInteractor_ExecuteOnWarpSongLeave();
 
     switch (play->nextEntranceIndex) {
         case ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT:

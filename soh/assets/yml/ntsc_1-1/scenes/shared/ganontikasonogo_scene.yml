@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 2, 0x01F6A400 ]
+
+ganontikasonogo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganontikasonogo_scene
+
+gGanonTikasongsoPath_00184:
+  type: OOT:PATH
+  offset: 0x184
+  symbol: gGanonTikasongsoPath_00184
+  num_paths: 3
+
+ganontikasonogo_sceneTex_002B00:
+  type: TEXTURE
+  offset: 0x2B00
+  symbol: ganontikasonogo_sceneTex_002B00
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganontikasonogo_sceneTex_003B00:
+  type: TEXTURE
+  offset: 0x3B00
+  symbol: ganontikasonogo_sceneTex_003B00
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+ganontikasonogo_sceneCollisionHeader_002ACC:
+  type: OOT:COLLISION
+  offset: 0x002ACC
+  symbol: ganontikasonogo_sceneCollisionHeader_002ACC

@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
 #include "static_data.h"
 #include "item_category_adj.h"
@@ -171,10 +172,7 @@ static CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawn
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
 
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        grassIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        grassIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&grassIdentity, location);
 
     return grassIdentity;
 }

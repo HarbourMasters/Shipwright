@@ -1,5 +1,4 @@
 #include "soh/Network/Anchor/Anchor.h"
-#include <nlohmann/json.hpp>
 
 /**
  * DISABLE_ANCHOR

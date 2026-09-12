@@ -7,7 +7,6 @@
 #include "z_en_zl4.h"
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -336,7 +335,7 @@ s32 EnZl4_SetupFromLegendCs(EnZl4* this, PlayState* play) {
 
     EnZl4_SetCsCameraMove(play, 5);
     Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(2);
+    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
     this->talkTimer2 = 0;
     return true;
 }
@@ -404,8 +403,6 @@ void EnZl4_Destroy(Actor* thisx, PlayState* play) {
     EnZl4* this = (EnZl4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnZl4_SetNextAnim(EnZl4* this, s32 nextAnim) {
@@ -1147,7 +1144,7 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
             this->mouthExpression = ZL4_MOUTH_SURPRISED;
             Audio_PlayFanfare(NA_BGM_APPEAR);
             EnZl4_SetCsCameraAngle(play, 0);
-            Interface_ChangeHudVisibilityMode(2);
+            Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
             Letterbox_SetSizeTarget(0x20);
             this->talkState = 0;
             this->csState++;

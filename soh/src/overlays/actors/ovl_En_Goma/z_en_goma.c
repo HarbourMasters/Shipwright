@@ -4,7 +4,6 @@
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                 \
@@ -186,8 +185,6 @@ void EnGoma_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params < 10) {
         Collider_DestroyCylinder(play, &this->colCyl1);
         Collider_DestroyCylinder(play, &this->colCyl2);
-
-        ResourceMgr_UnregisterSkeleton(&this->skelanime);
     }
 }
 
@@ -432,8 +429,8 @@ void EnGoma_Dead(EnGoma* this, PlayState* play) {
 
             parent->childrenGohmaState[this->actor.params] = -1;
         }
-        Audio_PlaySoundGeneral(NA_SE_EN_EXTINCT, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_EXTINCT, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Actor_Kill(&this->actor);
         Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, 0x30);
     }

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x0134F6A0 ]
+
+gSunriseOvercastSkyboxTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSunriseOvercastSkyboxTLUT
+  format: RGBA16
+  width: 16
+  height: 8
+

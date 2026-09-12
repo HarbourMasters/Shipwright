@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D746F0 ]
+
+golon_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: golon_scene
+
+
+golon_sceneCollisionHeader_000368:
+  type: OOT:COLLISION
+  offset: 0x000368
+  symbol: golon_sceneCollisionHeader_000368

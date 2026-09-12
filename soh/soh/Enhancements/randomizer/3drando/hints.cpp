@@ -1,6 +1,6 @@
 #include "hints.hpp"
 
-#include "random.hpp"
+#include "../rng.h"
 #include "fill.hpp"
 #include "../trial.h"
 #include "../entrance.h"
@@ -302,7 +302,7 @@ struct ConditionalAlwaysHint {
 std::vector<ConditionalAlwaysHint> conditionalAlwaysHints = {
     // clang-format off
     { RC_MARKET_10_BIG_POES,            RSK_BIG_POES_HINT,       []() { return Rando::Context::GetInstance()->GetOption(RSK_BIG_POE_COUNT).Get() > 3; } },
-    { RC_DEKU_THEATER_MASK_OF_TRUTH,    RSK_MASK_SHOP_HINT,      []() { return !Rando::Context::GetInstance()->GetOption(RSK_MASK_QUEST); } },
+    { RC_DEKU_THEATER_MASK_OF_TRUTH,    RSK_MASK_SHOP_HINT,      []() { return !Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_MASKS); } },
     { RC_SONG_FROM_OCARINA_OF_TIME,     RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
     { RC_HF_OCARINA_OF_TIME_ITEM,       RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
     { RC_SHEIK_IN_KAKARIKO,             RSK_NONE,                []() { return MedallionsRequiredBySettings() < 5; } },
@@ -480,8 +480,8 @@ static void CreateTrialHints(uint8_t copies) {
                 ctx->GetTrials()->GetTrialList();             // there's probably a way to remove this assignment
             if (ctx->GetOption(RSK_TRIAL_COUNT).Get() >= 4) { // 4 or 5 required trials, get skipped trials
                 trials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsSkipped(); });
-            } else { // 1 to 3 trials, get requried trials
-                auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsRequired(); });
+            } else { // 1 to 3 trials, get required trials
+                trials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsRequired(); });
             }
             for (auto& trial : trials) { // create a hint for each hinted trial
                 AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {}, { trial->GetTrialKey() });
@@ -638,7 +638,7 @@ void CreateStoneHints() {
     std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
     // Apply impa's song exclusions when zelda is skipped
-    if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
+    if (ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) && !ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
     }
     if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) || !ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {
@@ -769,7 +769,7 @@ void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData) {
                     // If we get to here then it means a location got through with no area assignment, which means
                     // something went wrong elsewhere.
                     SPDLOG_DEBUG("Attempted to hint location with no areas: ");
-                    SPDLOG_DEBUG(Rando::StaticData::GetLocation(loc)->GetName());
+                    SPDLOG_DEBUG("{}", Rando::StaticData::GetLocation(loc)->GetName());
                     // assert(false);
                     areas.push_back(RA_NONE);
                 } else {

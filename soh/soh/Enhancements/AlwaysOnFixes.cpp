@@ -8,6 +8,8 @@ extern "C" {
 #include "include/z64camera.h"
 #include "src/overlays/actors/ovl_En_Test/z_en_test.h"
 #include "src/overlays/actors/ovl_En_Horse/z_en_horse.h"
+#include "src/overlays/actors/ovl_Mir_Ray/z_mir_ray.h"
+void UnregisterActorSkeletons(struct Actor* actor);
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
 }
@@ -73,6 +75,15 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
+    // Dismounting a ladder in a cutscene or using cutscene item (using restricted items glitch) i.e.
+    // `player->unk_6AD` == 3 or 4 softlocks as animation update stops. Let animation continue in that case.
+    COND_VB_SHOULD(VB_INTERRUPT_LADDER_DISMOUNT, true, {
+        u8* unk_6AD = va_arg(args, u8*);
+        if (*unk_6AD >= 3) {
+            *should = false;
+        }
+    });
+
     COND_VB_SHOULD(VB_PREVENT_HBA_FANFARE_SOFTLOCK_TIMER, true, {
         EnHorse* enHorse = va_arg(args, EnHorse*);
         if (enHorse->hbaFlags & 1) {
@@ -88,10 +99,29 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
+    // ShouldActorDestroy rather than OnActorDestroy: the latter only fires from Actor_Delete, but
+    // Actor_UpdateAll and func_80031B14 both run Actor_Destroy without deleting.
+    COND_HOOK(ShouldActorDestroy, true,
+              [](void* refActor, bool* result) { UnregisterActorSkeletons(reinterpret_cast<Actor*>(refActor)); });
+
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_TEST, true, [](void* refActor) {
         Actor* actor = reinterpret_cast<Actor*>(refActor);
         if (actor->params != STALFOS_TYPE_2 && !EnTest_HasLivingNearby(actor)) {
             func_800F5B58();
+        }
+    });
+
+    // Mir_Ray draws the reflection image straight on the collision poly's plane, but CollisionPoly
+    // stores that plane quantized (s16 normal, integer dist), so for about half of all walls it
+    // lands a fraction of a unit inside the drawn surface. N64 RDP's decal mode handled that,
+    // but our graphics pipeline does not. Lift the image off the plane along the poly normal.
+    COND_VB_SHOULD(VB_MIRRAY_DRAW_REFLECTION, true, {
+        if (*should) {
+            MirRayShieldReflection* reflection = va_arg(args, MirRayShieldReflection*);
+            CollisionPoly* poly = reflection->reflectionPoly;
+            reflection->pos.x += COLPOLY_GET_NORMAL(poly->normal.x);
+            reflection->pos.y += COLPOLY_GET_NORMAL(poly->normal.y);
+            reflection->pos.z += COLPOLY_GET_NORMAL(poly->normal.z);
         }
     });
 
@@ -100,7 +130,8 @@ void RegisterAlwaysOnFixes() {
         s8* heldItemAction = va_arg(args, s8*);
         s32* camMode = va_arg(args, s32*);
 
-        if (*heldItemAction == PLAYER_IA_BOW) {
+        if (*heldItemAction == PLAYER_IA_BOW || *heldItemAction == PLAYER_IA_BOW_FIRE ||
+            *heldItemAction == PLAYER_IA_BOW_ICE || *heldItemAction == PLAYER_IA_BOW_LIGHT) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), false) ||
                 CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), false)) {
                 *camMode = CAM_MODE_AIM_ADULT;
@@ -111,7 +142,9 @@ void RegisterAlwaysOnFixes() {
                 *camMode = CAM_MODE_AIM_CHILD;
             }
         } else if (*heldItemAction == PLAYER_IA_HOOKSHOT || *heldItemAction == PLAYER_IA_LONGSHOT) {
-            if (gPlayState->sceneNum == SCENE_LAKESIDE_LABORATORY) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), false)) {
+                *camMode = CAM_MODE_AIM_ADULT;
+            } else if (gPlayState->sceneNum == SCENE_LAKESIDE_LABORATORY) {
                 *camMode = CAM_MODE_AIM_ADULT; // Fix child Hookshot aiming in lab (CAM_MODE_AIM_CHILD is invalid there)
             }
         } else if (*heldItemAction == PLAYER_IA_BOOMERANG) {

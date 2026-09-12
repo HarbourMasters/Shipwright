@@ -1,9 +1,9 @@
 #include "soh/ActorDB.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 
 extern "C" {
+#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 #include "macros.h"
 #include "functions.h"
 extern PlayState* gPlayState;
@@ -12,13 +12,14 @@ extern PlayState* gPlayState;
 #define CVAR_NAME CVAR_ENHANCEMENT("IvanCoopModeEnabled")
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
 
-static s16 ivanActorId = -1;
+static bool addedToActorDB = false;
 
 static void AddToActorDB() {
-    if (ivanActorId == -1) {
+    if (!addedToActorDB) {
         ActorDBInit entry = {
             "En_Partner",
             "Ivan",
+            ACTOR_EN_PARTNER,
             ACTORCAT_ITEMACTION,
             (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER |
              ACTOR_FLAG_CAN_PRESS_SWITCHES),
@@ -30,14 +31,13 @@ static void AddToActorDB() {
             (ActorFunc)EnPartner_Draw,
             nullptr,
         };
-        ivanActorId = ActorDB::Instance->AddEntry(entry).entry.id;
+        ActorDB::Instance->AddEntry(entry);
+        addedToActorDB = true;
     }
 }
 
 static Actor* FindIvan(ActorContext* actorCtx) {
-    if (ivanActorId == -1)
-        return nullptr;
-    return Actor_Find(actorCtx, ivanActorId, ACTORCAT_ITEMACTION);
+    return Actor_Find(actorCtx, ACTOR_EN_PARTNER, ACTORCAT_ITEMACTION);
 }
 
 static void SpawnIvan() {
@@ -54,7 +54,7 @@ static void SpawnIvan() {
     AddToActorDB();
 
     PosRot& world = player->actor.world;
-    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ivanActorId, world.pos.x,
+    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_PARTNER, world.pos.x,
                 world.pos.y + Player_GetHeight(player) + 5.0f, world.pos.z, 0, world.rot.y, 0, 1);
 }
 

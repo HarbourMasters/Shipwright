@@ -6,7 +6,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 extern SaveContext gSaveContext;
 }
 
@@ -75,8 +74,8 @@ void RegisterItemUnequip() {
             gSaveContext.equips.cButtonSlots[targetButton - 1] = SLOT_NONE;
             Interface_LoadItemIcon1(play, targetButton);
 
-            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
             *should = false;
         }
