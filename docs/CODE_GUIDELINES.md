@@ -106,7 +106,7 @@ This avoids issues such as accidental default initialization and referencing cla
 If possible, make invalid states unrepresentable.
 
 ## Headers
-Headers must have a `.h` extension.
+Headers must use the `.h` extension.
 
 Include the least amount of other headers needed, as an example, if possible, use extern declarations for types (such as `Rando::Context`) instead of including the corresponding header if that is the only reason for its inclusion.
 
