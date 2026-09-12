@@ -1188,6 +1188,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_ITEM00_TIMER_TICK: {
+            EnItem00* item00 = va_arg(args, EnItem00*);
+            uint8_t ogType = item00->ogParams & 0xFF;
+            // Shuffled keys and heart pieces become ITEM00_SOH_DUMMY, no longer matching checks preventing despawning
+            if (item00->actor.params == ITEM00_SOH_DUMMY &&
+                (ogType == ITEM00_SMALL_KEY || ogType == ITEM00_HEART_PIECE || ogType == ITEM00_HEART_CONTAINER)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_ITEM_B_HEART_DESPAWN: {
             ItemBHeart* itemBHeart = va_arg(args, ItemBHeart*);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
