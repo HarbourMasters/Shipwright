@@ -14,7 +14,7 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_FREESTANDING_POH,        logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN)),
         LOCATION(RC_COLOSSUS_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_COLOSSUS_GS_TREE,                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_COLOSSUS_GS_HILL,                 logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_COLOSSUS_GS_HILL,                 logic->IsAdult && (logic->CanHover(true, true) || (logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
         LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),

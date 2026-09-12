@@ -69,9 +69,9 @@ void RegionTable_Init_DeathMountainTrail() {
 
     areaTable[RR_DEATH_MOUNTAIN_ROCKFALL] = Region("Death Mountain Rockfall", SCENE_DEATH_MOUNTAIN_TRAIL, {}, {
         //Locations
-        LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH, logic->IsAdult && logic->CanGetNightTimeGS() && 
-                                               (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || 
-                                                (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives() || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
+        LOCATION(RC_DMT_GS_FALLING_ROCKS_PATH, logic->IsAdult && logic->CanGetNightTimeGS() &&
+                                               (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) ||
+                                                (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives() || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_FAIRY_SLINGSHOT)) ||
                                                                                           (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT)))))),
         LOCATION(RC_DMT_BRONZE_BOULDER_8,      logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_DMT_BRONZE_BOULDER_9,      logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
