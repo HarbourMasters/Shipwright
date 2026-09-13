@@ -231,6 +231,67 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
 
+# FluidSynth synthesis backend.
+# Always built from source and linked statically into soh, on every platform:
+# a system/shared libfluidsynth drags in glib and leaves a dylib the AppImage
+# (and macOS/Windows bundlers) must ship -- exactly what black-screened the
+# Linux AppImage when the lib wasn't found at runtime. osal=cpp11 replaces glib
+# with STL threading primitives and libinstpatch=OFF keeps it from being pulled back in,
+# so the only remaining shared dep is libsndfile (SF3 Ogg decode), which the
+# platform's normal bundling handles cleanly.
+if(ENABLE_FLUIDSYNTH)
+    include(FetchContent)
+    set(BUILD_SHARED_LIBS OFF)
+    set(osal cpp11 CACHE STRING "" FORCE)
+    set(enable-framework OFF CACHE BOOL "" FORCE)
+    set(enable-libsndfile ON CACHE BOOL "" FORCE)
+    set(enable-libinstpatch OFF CACHE BOOL "" FORCE)
+    # soh renders FluidSynth into its own audio pipeline (Render() -> LUS), so no
+    # FluidSynth audio/MIDI driver, network shell, or effect host is ever used.
+    # Disabling them all keeps the static lib to what we call and drops their
+    # link-time deps (alsa, gomp, ...). Options for other platforms are harmless.
+    set(enable-alsa OFF CACHE BOOL "" FORCE)
+    set(enable-oss OFF CACHE BOOL "" FORCE)
+    set(enable-pipewire OFF CACHE BOOL "" FORCE)
+    set(enable-pulseaudio OFF CACHE BOOL "" FORCE)
+    set(enable-jack OFF CACHE BOOL "" FORCE)
+    set(enable-portaudio OFF CACHE BOOL "" FORCE)
+    set(enable-sdl3 OFF CACHE BOOL "" FORCE)
+    set(enable-aufile OFF CACHE BOOL "" FORCE)
+    set(enable-coreaudio OFF CACHE BOOL "" FORCE)
+    set(enable-coremidi OFF CACHE BOOL "" FORCE)
+    set(enable-waveout OFF CACHE BOOL "" FORCE)
+    set(enable-wasapi OFF CACHE BOOL "" FORCE)
+    set(enable-dsound OFF CACHE BOOL "" FORCE)
+    set(enable-winmidi OFF CACHE BOOL "" FORCE)
+    set(enable-midishare OFF CACHE BOOL "" FORCE)
+    set(enable-network OFF CACHE BOOL "" FORCE)
+    set(enable-ipv6 OFF CACHE BOOL "" FORCE)
+    set(enable-ladspa OFF CACHE BOOL "" FORCE)
+    set(enable-systemd OFF CACHE BOOL "" FORCE)
+    set(enable-readline OFF CACHE BOOL "" FORCE)
+    set(enable-dbus OFF CACHE BOOL "" FORCE)
+    # Keep OpenMP: it parallelizes SF3 (ogg) decode, and soundfonts reload on a
+    # velocity-mode switch -- single-threaded decode made that switch much slower.
+    set(enable-openmp ON CACHE BOOL "" FORCE)
+    # DLS/GIG loading is unused (SF2/SF3 only).
+    set(enable-native-dls OFF CACHE BOOL "" FORCE)
+    # Match soh's static CRT: FluidSynth honors CMP0091 but defaults to the DLL
+    # runtime, which mismatches soh's MultiThreaded (/MT) runtime at link time.
+    if(MSVC)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
+    FetchContent_Declare(fluidsynth
+        GIT_REPOSITORY https://github.com/FluidSynth/fluidsynth.git
+        GIT_TAG v2.5.5
+        GIT_SHALLOW TRUE)
+    FetchContent_MakeAvailable(fluidsynth)
+    target_link_libraries(${PROJECT_NAME} PRIVATE libfluidsynth)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_FLUIDSYNTH=1)
+else()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_FLUIDSYNTH=0)
+endif()
+
 set(ROOT_NAMESPACE soh)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")

@@ -5,6 +5,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 #include "UIWidgets.hpp"
 #include <ship/controller/controldeck/ControlDeck.h>
 
@@ -290,7 +291,12 @@ void SohMenu::AddMenuSettings() {
     AddWidget(path, "Master Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.Master"))
         .RaceDisable(false)
-        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""));
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(40).ShowButtons(true).Format(""))
+        .Callback([](WidgetInfo& info) {
+            // Master scales the native engine per-note on its own; mirror it onto
+            // the FluidSynth master gain so the synth tracks the slider too.
+            AudioEditor_ApplySynthMasterVolume();
+        });
     AddWidget(path, "Main Music Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_SETTING("Volume.MainMusic"))
         .RaceDisable(false)
@@ -323,6 +329,18 @@ void SohMenu::AddMenuSettings() {
             Audio_SetGameVolume(SEQ_PLAYER_SFX, ((float)CVarGetInteger(CVAR_SETTING("Volume.SFX"), 100) / 100.0f));
         });
     AddWidget(path, "Audio API (Needs reload)", WIDGET_AUDIO_BACKEND).RaceDisable(false);
+    AddWidget(path, "Output Sample Rate (Restart required)", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_AUDIO("OutputSampleRate"))
+        .RaceDisable(false)
+        .Options(ComboboxOptions()
+                     .ComboMap({ { 32000, "32000 Hz (native)" }, { 44100, "44100 Hz" }, { 48000, "48000 Hz" } })
+                     .Tooltip("Output device sample rate. The native engine renders at 32 kHz and is "
+                              "resampled up to this rate, which any SoundFont synthesis also targets. "
+                              "48000 suits modern PCs; pick 44100 on hardware that only supports it. "
+                              "32000 (native) skips resampling entirely for the lowest overhead and the "
+                              "most authentic output, at the cost of synth high-frequency headroom. "
+                              "Takes effect after restarting the game.")
+                     .DefaultIndex(32000));
 
     // Graphics Settings
     static int32_t maxFps = 360;
