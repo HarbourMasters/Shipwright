@@ -688,6 +688,7 @@ void RegionTable_Init_WaterTemple() {
         //If we are not on WL_HIGH, we reach RR_WATER_TEMPLE_MQ_3F_MAIN with hookshot via 2F, otherwise we can reach the platform
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_A,  logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL_A,  logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_LAKEBED_A,     logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         //This represents going to the low emblem IF your water is high, then savewarping, coming back to this ledge and making it over to central 2F
         //There you can simply enter the pillar and set to mid IF water is low, resulting in always being able to make it to 2F at mid water. 
         //This looks problematic if you somehow need high water to return to this ledge after your savewarp, but in that case you could also just jump
@@ -700,7 +701,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_MQ_3F_CENTRAL_A] = Region("Water Temple MQ 3F Central Any Water", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_ENTRYWAY,               logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_ENTRANCE_LEDGE,      logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_ENTRANCE_LEDGE,      logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || (logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_BRONZE_SCALE))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL_A,        logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_LAKEBED_A,           logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         ENTRANCE(RR_WATER_TEMPLE_MQ_RISING_TARGET_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()))),
@@ -732,6 +733,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_PILLAR_A,           true),
         //This bunny hood jump is a bit too hard as child, but it is doable
         ENTRANCE(RR_WATER_TEMPLE_MQ_LIZALFOS_LOOP_A,       (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())) && logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_LAKEBED_A,          true),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_PILLAR_A] = Region("Water Temple MQ Central Pillar Any Water", SCENE_WATER_TEMPLE, {
@@ -753,7 +755,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL_A,           logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_SIDE_TOWER_1F_A,        logic->WaterTimer() >= 24),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_B1_GATE_SWITCH_A,       logic->Get(LOGIC_WATER_MQ_B1_SWITCH) && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_B1_GATE_SWITCH_A,       logic->Get(LOGIC_WATER_MQ_B1_SWITCH) && logic->HasItem(RG_BRONZE_SCALE)),
         //If we can't swim, thers a chance we came from low emblem and need some extra time because we can't float up for air
         ENTRANCE(RR_WATER_TEMPLE_MQ_SPIKE_MOAT,             logic->Get(LOGIC_WATER_MQ_B1_SWITCH) && (logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 24))),
         //Coming from low emblem swimless took me 32 seconds exactly, so picked 40 for now
@@ -802,7 +804,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_OUTSIDE_WEST_STORAGE_ROOM_A] = Region("Water Temple MQ Outside West Storage Room Any Water", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_A, logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_A, logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_LAKEBED_A,    logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
     });
 
@@ -880,7 +882,7 @@ void RegionTable_Init_WaterTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_LAKEBED_L,           logic->Get(LOGIC_WATER_MQ_B1_SWITCH)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_CHEST, logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_KEY_ROOM_CHEST, logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_2F_CENTRAL_M] = Region("Water Temple MQ 2F Central Mid Water", SCENE_WATER_TEMPLE, {}, {}, {
@@ -958,8 +960,7 @@ void RegionTable_Init_WaterTemple() {
                                                       (logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslash()))),
     }, {
         //Locations
-        //Can also get these with hammer by climbing on top of the crates but you need to get some momentum from a dive for the climb to work. 
-        //To do these with a chu, run them over the ceiling, a bit unintuitive but not really worth a solo trick, maybe bundle it with some other weird chus
+        //Getting on top of the crates can be a bit finicky, with just swim you can dive a bit for momentum to jump on top, with iron boots you can backflip onto the crates with a sideways angle.
         LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_1, logic->CanBreakCrates() && ((logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_LONGSHOT))) && 
                                                                                               (logic->BlastOrSmash() || (logic->CanUse(RG_IRON_BOOTS) /*&& logic->HasItem(RG_Roll)*/)))),
         LOCATION(RC_WATER_TEMPLE_MQ_CENTRAL_PILLAR_UPPER_CRATE_2, logic->CanBreakCrates() && ((logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_LONGSHOT))) && 
