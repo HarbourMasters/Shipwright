@@ -1,8 +1,10 @@
+#include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
 
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/type/SkeletonLimb.h"
+#include "soh/resource/type/SkinAnimatedLimbData.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -204,7 +206,12 @@ ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file,
     std::string limbType = reader->Attribute("Type");
 
     // OTRTODO
-    skelLimb->limbType = LimbType::LOD;
+    // skelLimb->limbType = LimbType::LOD;
+    if (limbType == "Skin") {
+        skelLimb->limbType = LimbType::Skin;
+    } else {
+        skelLimb->limbType = LimbType::LOD;
+    }
 
     // skelLimb->legTransX = reader->FloatAttribute("LegTransX");
     // skelLimb->legTransY = reader->FloatAttribute("LegTransY");
@@ -224,33 +231,68 @@ ResourceFactoryXMLSkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> file,
     skelLimb->childIndex = reader->IntAttribute("ChildIndex");
     skelLimb->siblingIndex = reader->IntAttribute("SiblingIndex");
 
+    skelLimb->skinSegmentType = (ZLimbSkinType)reader->IntAttribute("SegmentType");
     // skelLimb->childPtr = reader->Attribute("ChildLimb");
     // skelLimb->siblingPtr = reader->Attribute("SiblingLimb");
-    skelLimb->dListPtr = reader->Attribute("DisplayList1");
-
-    if (std::string(reader->Attribute("DisplayList1")) == "gEmptyDL") {
-        skelLimb->dListPtr = "";
-    }
 
     auto& limbData = skelLimb->limbData;
 
-    limbData.lodLimb.jointPos.x = skelLimb->transX;
-    limbData.lodLimb.jointPos.y = skelLimb->transY;
-    limbData.lodLimb.jointPos.z = skelLimb->transZ;
+    if (skelLimb->limbType == LimbType::LOD) {
 
-    if (skelLimb->dListPtr != "") {
-        skelLimb->dListPtr = "__OTR__" + skelLimb->dListPtr;
-        limbData.lodLimb.dLists[0] = (Gfx*)skelLimb->dListPtr.c_str();
-    } else {
-        limbData.lodLimb.dLists[0] = nullptr;
+        skelLimb->dListPtr = reader->Attribute("DisplayList1");
+
+        if (std::string(reader->Attribute("DisplayList1")) == "gEmptyDL") {
+            skelLimb->dListPtr = "";
+        }
+
+        limbData.lodLimb.jointPos.x = skelLimb->transX;
+        limbData.lodLimb.jointPos.y = skelLimb->transY;
+        limbData.lodLimb.jointPos.z = skelLimb->transZ;
+
+        if (skelLimb->dListPtr != "") {
+            skelLimb->dListPtr = "__OTR__" + skelLimb->dListPtr;
+            limbData.lodLimb.dLists[0] = (Gfx*)skelLimb->dListPtr.c_str();
+        } else {
+            limbData.lodLimb.dLists[0] = nullptr;
+        }
+
+        limbData.lodLimb.dLists[1] = nullptr;
+
+        limbData.lodLimb.child = skelLimb->childIndex;
+        limbData.lodLimb.sibling = skelLimb->siblingIndex;
+
+        limbData.lodLimb.child = skelLimb->childIndex;
+        limbData.lodLimb.sibling = skelLimb->siblingIndex;
+    } else if (skelLimb->limbType == LimbType::Skin) {
+
+        skelLimb->skinDList = std::string(reader->Attribute("Segment"));
+
+        limbData.skinLimb.jointPos.x = skelLimb->transX;
+        limbData.skinLimb.jointPos.y = skelLimb->transY;
+        limbData.skinLimb.jointPos.z = skelLimb->transZ;
+        limbData.skinLimb.child = skelLimb->childIndex;
+        limbData.skinLimb.sibling = skelLimb->siblingIndex;
+
+        skelLimb->limbData.skinLimb.segmentType = static_cast<int32_t>(skelLimb->skinSegmentType);
+
+        if (skelLimb->skinDList != "gEmptyDL") {
+            skelLimb->skinDList = "__OTR__" + skelLimb->skinDList;
+            skelLimb->limbData.skinLimb.segment = (Gfx*)skelLimb->skinDList.c_str();
+        } else {
+            skelLimb->skinDList = "";
+            skelLimb->limbData.skinLimb.segment = nullptr;
+        }
+
+        if (skelLimb->skinSegmentType == ZLimbSkinType::SkinType_4) {
+
+            auto skinAnimatedData = std::static_pointer_cast<SkinAnimData>(
+                Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(
+                    skelLimb->skinDList.c_str()));
+
+            skelLimb->skinAnimLimbData = skinAnimatedData->data;
+            skelLimb->limbData.skinLimb.segment = &skelLimb->skinAnimLimbData;
+        }
     }
-
-    limbData.lodLimb.dLists[1] = nullptr;
-
-    limbData.lodLimb.child = skelLimb->childIndex;
-    limbData.lodLimb.sibling = skelLimb->siblingIndex;
-
-    // skelLimb->dList2Ptr = reader->Attribute("DisplayList2");
 
     return skelLimb;
 }

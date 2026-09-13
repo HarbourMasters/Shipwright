@@ -91,6 +91,7 @@
 // Resource Types/Factories
 #include "soh/resource/type/SohResourceType.h"
 #include "soh/resource/type/Skeleton.h"
+#include "soh/resource/type/SkinAnimatedLimbData.h"
 #include <ship/resource/factory/BlobFactory.h>
 #include <fast/resource/factory/DisplayListFactory.h>
 #include <fast/resource/factory/MatrixFactory.h>
@@ -110,6 +111,7 @@
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
+#include "soh/resource/importer/SkinAnimatedLimbDataFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
@@ -932,6 +934,14 @@ void OTRGlobals::Initialize() {
                                     "Sequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY,
                                     "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkinVertV0>(), RESOURCE_FORMAT_XML,
+                                    "SkinVert", static_cast<uint32_t>(SOH::ResourceType::SOH_SkinVert), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkinTransformV0>(), RESOURCE_FORMAT_XML,
+                                    "SkinTransform", static_cast<uint32_t>(SOH::ResourceType::SOH_SkinTransform), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkinModifV0>(), RESOURCE_FORMAT_XML,
+                                    "SkinModif", static_cast<uint32_t>(SOH::ResourceType::SOH_SkinModif), 0);
+    loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryXMLSkinAnimDataV0>(), RESOURCE_FORMAT_XML,
+                                    "SkinAnimData", static_cast<uint32_t>(SOH::ResourceType::SOH_SkinAnimData), 0);
 
     Lang::LoadLangs();
 
