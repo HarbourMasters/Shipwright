@@ -333,10 +333,7 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_AUDIO("OutputSampleRate"))
         .RaceDisable(false)
         .Options(ComboboxOptions()
-                     .ComboMap({ { 32000, "32000 Hz (native)" },
-                                 { 44100, "44100 Hz" },
-                                 { 48000, "48000 Hz" },
-                                 { 96000, "96000 Hz" } })
+                     .ComboMap({ { 32000, "32000 Hz (native)" }, { 44100, "44100 Hz" }, { 48000, "48000 Hz" } })
                      .Tooltip("Output device sample rate. The native engine renders at 32 kHz and is "
                               "resampled up to this rate, which any SoundFont synthesis also targets. "
                               "48000 suits modern PCs; pick 44100 on hardware that only supports it. "
