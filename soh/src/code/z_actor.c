@@ -1133,6 +1133,11 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
+        f32 titleScale = MAX(CVarGetFloat(titleCtx->isBossCard ? CVAR_COSMETIC("HUD.TitleCard.Boss.Scale")
+                                                               : CVAR_COSMETIC("HUD.TitleCard.Map.Scale"),
+                                          1.0f),
+                             0.25f);
+        s32 titleTexStep = (1 << 10) / titleScale;
         s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosX"), 0)
                                                             : CVarGetInteger(CVAR_COSMETIC("TitleCard.Map.PosX"), 0));
         s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVarGetInteger(CVAR_COSMETIC("TitleCard.Boss.PosY"), 0)
@@ -1165,9 +1170,9 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
             }
         }
 
-        titleX = (TitleCard_PosX * 4) - (width * 2);
-        titleY = (TitleCard_PosY * 4) - (height * 2);
-        doubleWidth = width * 2;
+        titleX = (TitleCard_PosX * 4) - (s32)(width * 2 * titleScale);
+        titleY = (TitleCard_PosY * 4) - (s32)(height * 2 * titleScale);
+        doubleWidth = width * 2 * titleScale;
 
         OPEN_DISPS(play->state.gfxCtx);
 
@@ -1179,8 +1184,9 @@ void TitleCard_Draw(PlayState* play, TitleCardContext* titleCtx) {
         gDPLoadTextureBlock(OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPWideTextureRectangle(OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
-                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPWideTextureRectangle(OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4,
+                                titleY + (s32)(height * 4 * titleScale), G_TX_RENDERTILE, 0, 0, titleTexStep,
+                                titleTexStep);
 
         height = titleCtx->height - height;
 
