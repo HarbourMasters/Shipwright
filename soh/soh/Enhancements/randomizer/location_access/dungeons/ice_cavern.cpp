@@ -10,8 +10,8 @@ void RegionTable_Init_IceCavern() {
     // Vanilla/MQ Decider
     areaTable[RR_ICE_CAVERN_ENTRYWAY] = Region("Ice Cavern Entryway", SCENE_ICE_CAVERN, {}, {}, {
         //Exits
-        ENTRANCE(RR_ICE_CAVERN_BEGINNING,    ctx->GetDungeon(ICE_CAVERN)->IsVanilla()),
-        ENTRANCE(RR_ICE_CAVERN_MQ_BEGINNING, ctx->GetDungeon(ICE_CAVERN)->IsMQ() && logic->CanUseProjectile()),
+        ENTRANCE(RR_ICE_CAVERN_BEGINNING,    ctx->GetDungeon(ICE_CAVERN).IsVanilla()),
+        ENTRANCE(RR_ICE_CAVERN_MQ_BEGINNING, ctx->GetDungeon(ICE_CAVERN).IsMQ() && logic->CanUseProjectile()),
         ENTRANCE(RR_ZF_LEDGE,                true),
     });
 

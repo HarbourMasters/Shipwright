@@ -89,8 +89,14 @@ bool LocMatchesQuest(Rando::Location loc) {
         return true;
     } else {
         auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(loc.GetScene());
-        return (dungeon->IsMQ() && loc.GetQuest() == RCQUEST_MQ) ||
-               (dungeon->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
+
+        if (!dungeon.has_value()) {
+            assert(false);
+            return false;
+        }
+
+        return (dungeon.value()->IsMQ() && loc.GetQuest() == RCQUEST_MQ) ||
+               (dungeon.value()->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
     }
 }
 
@@ -327,7 +333,8 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
     if (flagType == FLAG_SCENE_SWITCH) {
         auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)sceneNum);
-        bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
+        // TODO: replace with `value_and` when we update to C++ 23
+        bool isVanilla = !dungeonInfo.has_value() || dungeonInfo.value()->IsVanilla();
 
         switch (sceneNum) {
             case SCENE_GERUDOS_FORTRESS:
@@ -1674,22 +1681,19 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_OKARINA_TAG_COMPLETE: {
-            if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
-                if (dungeon->IsVanilla()) {
-                    EnOkarinaTag* enOkarinaTag = va_arg(args, EnOkarinaTag*);
-                    if (enOkarinaTag->switchFlag >= 0 && Flags_GetSwitch(gPlayState, enOkarinaTag->switchFlag)) {
-                        Flags_UnsetSwitch(gPlayState, enOkarinaTag->switchFlag);
-                        *should = false;
-                    }
+            if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
+                Rando::Context::GetInstance()->GetDungeon(Rando::BOTTOM_OF_THE_WELL).IsVanilla()) {
+                EnOkarinaTag* enOkarinaTag = va_arg(args, EnOkarinaTag*);
+                if (enOkarinaTag->switchFlag >= 0 && Flags_GetSwitch(gPlayState, enOkarinaTag->switchFlag)) {
+                    Flags_UnsetSwitch(gPlayState, enOkarinaTag->switchFlag);
+                    *should = false;
                 }
             }
             break;
         }
         case VB_OKARINA_TAG_COMPLETED: {
             if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
-                if (dungeon->IsVanilla()) {
+                if (Rando::Context::GetInstance()->GetDungeon(Rando::BOTTOM_OF_THE_WELL).IsVanilla()) {
                     *should = false;
                 }
             }
@@ -2235,7 +2239,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
 
     if (actor->id == ACTOR_PLAYER) {
         auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)gPlayState->sceneNum);
-        bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
+        bool isVanilla = !dungeonInfo.has_value() || dungeonInfo.value()->IsVanilla();
         switch (gPlayState->sceneNum) {
             case SCENE_DEKU_TREE:
                 if (!isVanilla && Flags_GetRandomizerInf(RAND_INF_DEKU_TREE_MQ_TORCH_SWITCH)) {
@@ -2286,6 +2290,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
                 }
                 break;
         }
+        return;
     }
 
     if (actor->id == ACTOR_EN_SI) {
@@ -2560,8 +2565,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     // Turn MQ switch into toggle
     if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
         (actor->params & 0x3f07) == 0x303) {
-        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
-        if (dungeon->IsMQ()) {
+        if (Rando::Context::GetInstance()->GetDungeon(Rando::BOTTOM_OF_THE_WELL).IsMQ()) {
             actor->params |= 0x10;
         }
     }

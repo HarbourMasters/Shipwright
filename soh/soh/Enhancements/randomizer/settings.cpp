@@ -2886,35 +2886,35 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         }
         if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(BOTTOM_OF_THE_WELL)->SetKeyRing();
+            this->GetDungeon(BOTTOM_OF_THE_WELL).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(FOREST_TEMPLE)->SetKeyRing();
+            this->GetDungeon(FOREST_TEMPLE).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(FIRE_TEMPLE)->SetKeyRing();
+            this->GetDungeon(FIRE_TEMPLE).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(WATER_TEMPLE)->SetKeyRing();
+            this->GetDungeon(WATER_TEMPLE).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(SPIRIT_TEMPLE)->SetKeyRing();
+            this->GetDungeon(SPIRIT_TEMPLE).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(SHADOW_TEMPLE)->SetKeyRing();
+            this->GetDungeon(SHADOW_TEMPLE).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(GERUDO_TRAINING_GROUND)->SetKeyRing();
+            this->GetDungeon(GERUDO_TRAINING_GROUND).SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
             (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
-            this->GetDungeon(GANONS_CASTLE)->SetKeyRing();
+            this->GetDungeon(GANONS_CASTLE).SetKeyRing();
         }
         // Gerudo Fortress & the chest minigame have no DungeonInfo, so resolve their random rolls into the option
         for (const auto keyring : { &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS], &mOptions[RSK_KEYRINGS_CHEST_GAME] }) {

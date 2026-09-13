@@ -10,8 +10,8 @@ void RegionTable_Init_DodongosCavern() {
     // Vanilla/MQ Decider
     areaTable[RR_DODONGOS_CAVERN_ENTRYWAY] = Region("Dodongos Cavern Entryway", SCENE_DODONGOS_CAVERN, {}, {}, {
         //Exits
-        ENTRANCE(RR_DODONGOS_CAVERN_BEGINNING,    ctx->GetDungeon(DODONGOS_CAVERN)->IsVanilla()),
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_BEGINNING, ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ()),
+        ENTRANCE(RR_DODONGOS_CAVERN_BEGINNING,    ctx->GetDungeon(DODONGOS_CAVERN).IsVanilla()),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_BEGINNING, ctx->GetDungeon(DODONGOS_CAVERN).IsMQ()),
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,         true),
     });
 
@@ -727,8 +727,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_BOSS_EXIT] = Region("Dodongos Cavern Boss Exit", SCENE_DODONGOS_CAVERN, {}, {}, {
         // Exits
-        ENTRANCE(RR_DODONGOS_CAVERN_BOSS_AREA,       ctx->GetDungeon(DODONGOS_CAVERN)->IsVanilla()),
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH, ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ()),
+        ENTRANCE(RR_DODONGOS_CAVERN_BOSS_AREA,       ctx->GetDungeon(DODONGOS_CAVERN).IsVanilla()),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH, ctx->GetDungeon(DODONGOS_CAVERN).IsMQ()),
     });
 
     areaTable[RR_DODONGOS_CAVERN_BOSS_ROOM] = Region("Dodongos Cavern Boss Room", SCENE_DODONGOS_CAVERN_BOSS, {

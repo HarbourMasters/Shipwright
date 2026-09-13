@@ -8,6 +8,7 @@
 #include <memory>
 #include <array>
 #include <map>
+#include <optional>
 #include <set>
 #include <nlohmann/json.hpp>
 
@@ -48,9 +49,10 @@ class Context {
                              bool setHidden = false);
     std::vector<RandomizerCheck> allLocations;
     std::vector<RandomizerCheck> overworldLocations;
-    void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = nullptr);
+    void AddLocation(RandomizerCheck loc, std::optional<std::vector<RandomizerCheck>*> destination = std::nullopt);
     template <typename Container>
-    void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = nullptr);
+    void AddLocations(const Container& locations,
+                      std::optional<std::vector<RandomizerCheck>*> destination = std::nullopt);
     bool IsQuestOfLocationActive(RandomizerCheck rc);
     void GenerateLocationPool();
     static std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
@@ -85,8 +87,9 @@ class Context {
                           const std::set<RandomizerTrick>& enabledTricks);
     std::shared_ptr<EntranceShuffler> GetEntranceShuffler();
     std::shared_ptr<Dungeons> GetDungeons();
-    DungeonInfo* GetDungeon(size_t key) const;
-    DungeonInfo* GetDungeonFromScene(SceneID key) const;
+    DungeonInfo& GetDungeon(size_t key) const;
+    // TODO: Change to std::optional<DungeonInfo&> when we update to C++ 26
+    std::optional<DungeonInfo*> GetDungeonFromScene(SceneID key) const;
     std::shared_ptr<Logic> GetLogic();
     std::shared_ptr<Trials> GetTrials();
     std::shared_ptr<Kaleido> GetKaleido();
@@ -191,9 +194,9 @@ class Context {
     RandoOptionWincon mWinCondition = RO_WINCON_DEFEAT_GANON;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
-    std::shared_ptr<Logic> mLogic;
+    std::optional<std::shared_ptr<Logic>> mLogic = std::nullopt;
     std::shared_ptr<Trials> mTrials;
-    std::shared_ptr<Kaleido> mKaleido;
+    std::optional<std::shared_ptr<Kaleido>> mKaleido = std::nullopt;
     bool mSeedGenerated = false;
     bool mSpoilerLoaded = false;
     std::string mHash;

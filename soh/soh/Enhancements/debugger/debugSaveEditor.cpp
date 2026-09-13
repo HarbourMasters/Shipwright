@@ -138,11 +138,11 @@ template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section
 // for vanilla/MQ small key counts (synced to the loaded save on load via SaveManager).
 // Returns 0 for dungeons without small keys (e.g. Deku Tree, Ganon's Tower).
 static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
-    Rando::DungeonInfo* dungeon = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(dungeonIndex);
-    if (dungeon == nullptr) {
+    auto dungeon = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(dungeonIndex);
+    if (!dungeon.has_value()) {
         return 0; // Not a tracked key dungeon — no small keys.
     }
-    return static_cast<int8_t>(dungeon->GetSmallKeyCount());
+    return static_cast<int8_t>(dungeon.value()->GetSmallKeyCount());
 }
 
 // Check if a dungeon has a boss key

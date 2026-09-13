@@ -10,8 +10,8 @@ void RegionTable_Init_JabuJabusBelly() {
     // Vanilla/MQ Decider
     areaTable[RR_JABU_JABUS_BELLY_ENTRYWAY] = Region("Jabu Jabus Belly Entryway", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_BEGINNING,    ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla()),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BEGINNING, ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ()),
+        ENTRANCE(RR_JABU_JABUS_BELLY_BEGINNING,    ctx->GetDungeon(JABU_JABUS_BELLY).IsVanilla()),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BEGINNING, ctx->GetDungeon(JABU_JABUS_BELLY).IsMQ()),
         ENTRANCE(RR_ZORAS_FOUNTAIN,                true),
     });
 
@@ -618,8 +618,8 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_EXIT] = Region("Jabu Jabus Belly Boss Exit", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM,    ctx->GetDungeon(JABU_JABUS_BELLY)->IsVanilla()),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM, ctx->GetDungeon(JABU_JABUS_BELLY)->IsMQ()),
+        ENTRANCE(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM,    ctx->GetDungeon(JABU_JABUS_BELLY).IsVanilla()),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM, ctx->GetDungeon(JABU_JABUS_BELLY).IsMQ()),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_BOSS_ROOM] = Region("Jabu Jabus Belly Boss Room", SCENE_JABU_JABU_BOSS, {

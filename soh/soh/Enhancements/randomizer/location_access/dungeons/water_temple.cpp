@@ -10,8 +10,8 @@ void RegionTable_Init_WaterTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_WATER_TEMPLE_ENTRYWAY] = Region("Water Temple Entryway", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_ENTRANCE_LEDGE,    logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_ENTRANCE_LEDGE, logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_WATER_TEMPLE_ENTRANCE_LEDGE,    logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_ENTRANCE_LEDGE, logic->HasItem(RG_BRONZE_SCALE) && ctx->GetDungeon(WATER_TEMPLE).IsMQ()),
         ENTRANCE(RR_LH_FROM_WATER_TEMPLE,           true),
     });
 
@@ -1542,8 +1542,8 @@ void RegionTable_Init_WaterTemple() {
     // Boss Room
     areaTable[RR_WATER_TEMPLE_BOSS_ENTRYWAY] = Region("Water Temple Boss Entryway", SCENE_WATER_TEMPLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_WATER_TEMPLE_TRAPPED_SLOPE, ctx->GetDungeon(WATER_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  ctx->GetDungeon(WATER_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_WATER_TEMPLE_TRAPPED_SLOPE, ctx->GetDungeon(WATER_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR,  ctx->GetDungeon(WATER_TEMPLE).IsMQ()),
         ENTRANCE(RR_WATER_TEMPLE_BOSS_ROOM,     logic->HasItem(RG_WATER_TEMPLE_BOSS_KEY)),
     });
 

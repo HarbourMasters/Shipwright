@@ -9,8 +9,8 @@ void RegionTable_Init_DekuTree() {
     // Vanilla/MQ Decider
     areaTable[RR_DEKU_TREE_ENTRYWAY] = Region("Deku Tree Entryway", SCENE_DEKU_TREE, {}, {}, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_LOBBY,      ctx->GetDungeon(DEKU_TREE)->IsVanilla()),
-        ENTRANCE(RR_DEKU_TREE_MQ_1F,      ctx->GetDungeon(DEKU_TREE)->IsMQ()),
+        ENTRANCE(RR_DEKU_TREE_LOBBY,      ctx->GetDungeon(DEKU_TREE).IsVanilla()),
+        ENTRANCE(RR_DEKU_TREE_MQ_1F,      ctx->GetDungeon(DEKU_TREE).IsMQ()),
         ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE, true),
     });
 
@@ -503,8 +503,8 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_BOSS_EXIT] = Region("Deku Tree Boss Exit", SCENE_DEKU_TREE, {}, {}, {
         // Exits
-        ENTRANCE(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,    ctx->GetDungeon(DEKU_TREE)->IsVanilla()),
-        ENTRANCE(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, ctx->GetDungeon(DEKU_TREE)->IsMQ()),
+        ENTRANCE(RR_DEKU_TREE_OUTSIDE_BOSS_ROOM,    ctx->GetDungeon(DEKU_TREE).IsVanilla()),
+        ENTRANCE(RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM, ctx->GetDungeon(DEKU_TREE).IsMQ()),
     });
 
     areaTable[RR_DEKU_TREE_BOSS_ROOM] = Region("Deku Tree Boss Room", SCENE_DEKU_TREE_BOSS, {

@@ -177,15 +177,15 @@ void Entrance::SetIndex(int16_t newIndex) {
     index = newIndex;
 }
 
-Entrance* Entrance::GetAssumed() const {
+std::optional<Entrance*> Entrance::GetAssumed() const {
     return assumed;
 }
 
-void Entrance::SetReplacement(Entrance* newReplacement) {
+void Entrance::SetReplacement(std::optional<Entrance*> newReplacement) {
     replacement = newReplacement;
 }
 
-Entrance* Entrance::GetReplacement() const {
+std::optional<Entrance*> Entrance::GetReplacement() const {
     return replacement;
 }
 
@@ -197,7 +197,7 @@ void Entrance::SetType(EntranceType newType) {
     type = newType;
 }
 
-Entrance* Entrance::GetReverse() const {
+std::optional<Entrance*> Entrance::GetReverse() const {
     return reverse;
 }
 
@@ -228,11 +228,11 @@ Entrance* Entrance::GetNewTarget() {
 }
 
 Entrance* Entrance::AssumeReachable() {
-    if (assumed == nullptr) {
+    if (!assumed.has_value()) {
         assumed = GetNewTarget();
         Disconnect();
     }
-    return assumed;
+    return assumed.value();
 }
 
 bool Entrance::DoesSpreadAreas() {
@@ -642,8 +642,8 @@ static void SetShuffledEntrances(EntrancePools entrancePools) {
     for (auto& pool : entrancePools) {
         for (Entrance* entrance : pool.second) {
             entrance->SetAsShuffled();
-            if (entrance->GetReverse() != nullptr) {
-                entrance->GetReverse()->SetAsShuffled();
+            if (entrance->GetReverse().has_value()) {
+                entrance->GetReverse().value()->SetAsShuffled();
             }
         }
     }
@@ -682,14 +682,14 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
     for (Entrance* entrance : entrancePool) {
         mTotalRandomizableEntrances++;
         Entrance* assumedForward = entrance->AssumeReachable();
-        if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
-            Entrance* assumedReturn = entrance->GetReverse()->AssumeReachable();
+        if (entrance->GetReverse().has_value() && !entrance->IsDecoupled()) {
+            Entrance* assumedReturn = entrance->GetReverse().value()->AssumeReachable();
             if (!(ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) &&
                   (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
                    ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
                 auto type = entrance->GetType();
                 if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
-                     entrance->GetReverse()->GetName() !=
+                     entrance->GetReverse().value()->GetName() !=
                          "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
                     (type == EntranceType::Interior &&
                      ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL))) {
@@ -748,17 +748,23 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
 static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
     SPDLOG_DEBUG("Attempting to connect {} to {}", entrance->GetName(), targetEntrance->to_string());
     entrance->Connect(targetEntrance->Disconnect());
+
     entrance->SetReplacement(targetEntrance->GetReplacement());
-    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
-        targetEntrance->GetReplacement()->GetReverse()->Connect(entrance->GetReverse()->GetAssumed()->Disconnect());
-        targetEntrance->GetReplacement()->GetReverse()->SetReplacement(entrance->GetReverse());
+    if (entrance->GetReverse().has_value() && !entrance->IsDecoupled()) {
+        assert(entrance->GetReverse().value()->GetAssumed().has_value());
+
+        assert(entrance->GetReplacement().has_value());
+
+        targetEntrance->GetReplacement().value()->GetReverse().value()->Connect(
+            entrance->GetReverse().value()->GetAssumed().value()->Disconnect());
+        targetEntrance->GetReplacement().value()->GetReverse().value()->SetReplacement(entrance->GetReverse());
     }
 }
 
 static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<Entrance*>& alreadyChecked) {
-
     if (entrance == nullptr) {
         SPDLOG_DEBUG("Entrance is nullptr in EntranceUnreachableAs()");
+        assert(false);
         return true;
     }
 
@@ -837,9 +843,14 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             std::vector<Entrance*> alreadyChecked = {};
 
             if (entrance->IsShuffled()) {
-                if (entrance->GetReplacement() != nullptr) {
-                    auto replacementName = entrance->GetReplacement()->GetName();
-                    alreadyChecked.push_back(entrance->GetReplacement()->GetReverse());
+                if (entrance->GetReplacement().has_value()) {
+                    auto entranceReplacement = entrance->GetReplacement().value();
+                    auto replacementName = entranceReplacement->GetName();
+                    auto reverse = entranceReplacement->GetReverse();
+
+                    assert(reverse.has_value());
+
+                    alreadyChecked.push_back(reverse.value());
 
                     if (SohUtils::Contains(replacementName, childForbidden) &&
                         !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
@@ -853,7 +864,10 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
                 }
             } else {
                 auto name = entrance->GetName();
-                alreadyChecked.push_back(entrance->GetReverse());
+                auto reverse = entrance->GetReverse();
+                if (reverse.has_value()) {
+                    alreadyChecked.push_back(reverse.value());
+                }
 
                 if (SohUtils::Contains(name, childForbidden) &&
                     !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
@@ -907,10 +921,18 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 // original connections to reset the entrance and target entrance.
 static void RestoreConnections(Entrance* entrance, Entrance* targetEntrance) {
     targetEntrance->Connect(entrance->Disconnect());
-    entrance->SetReplacement(nullptr);
-    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
-        entrance->GetReverse()->GetAssumed()->Connect(targetEntrance->GetReplacement()->GetReverse()->Disconnect());
-        targetEntrance->GetReplacement()->GetReverse()->SetReplacement(nullptr);
+    entrance->SetReplacement(std::nullopt);
+
+    assert(targetEntrance->GetReplacement().has_value());
+
+    assert(targetEntrance->GetReplacement().value()->GetReverse().has_value());
+
+    if (entrance->GetReverse().has_value() && !entrance->IsDecoupled()) {
+        assert(entrance->GetReverse().value()->GetAssumed().has_value());
+
+        entrance->GetReverse().value()->GetAssumed().value()->Connect(
+            targetEntrance->GetReplacement().value()->GetReverse().value()->Disconnect());
+        targetEntrance->GetReplacement().value()->GetReverse().value()->SetReplacement(std::nullopt);
     }
 }
 
@@ -926,9 +948,18 @@ static void DeleteTargetEntrance(Entrance* targetEntrance) {
 
 static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
     DeleteTargetEntrance(targetEntrance);
-    if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
-        auto replacedReverse = targetEntrance->GetReplacement()->GetReverse();
-        DeleteTargetEntrance(replacedReverse->GetReverse()->GetAssumed());
+    if (entrance->GetReverse().has_value() && !entrance->IsDecoupled()) {
+        assert(targetEntrance->GetReplacement().has_value());
+
+        auto replacedReverse = targetEntrance->GetReplacement().value()->GetReverse();
+
+        assert(replacedReverse.has_value());
+
+        assert(replacedReverse.value()->GetReverse().has_value());
+
+        assert(replacedReverse.value()->GetReverse().value()->GetAssumed().has_value());
+
+        DeleteTargetEntrance(replacedReverse.value()->GetReverse().value()->GetAssumed().value());
     }
 }
 
@@ -977,7 +1008,7 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
     Shuffle(availPool);
 
     for (Entrance* entrance : availPool) {
-        if (entrance->GetReplacement() != nullptr) {
+        if (entrance->GetReplacement().has_value()) {
             continue;
         }
         // Only allow Adult Spawn as sole Nocturne access if hints != mask.
@@ -1058,8 +1089,8 @@ static std::array<std::vector<Entrance*>, 2> SplitEntrancesByRequirements(std::v
     std::set<Entrance*> entrancesToDisconnect = {};
     for (Entrance* entrance : assumedEntrances) {
         entrancesToDisconnect.insert(entrance);
-        if (entrance->GetReverse() != nullptr) {
-            entrancesToDisconnect.insert(entrance->GetReverse());
+        if (entrance->GetReverse().has_value()) {
+            entrancesToDisconnect.insert(entrance->GetReverse().value());
         }
     }
 
@@ -1251,7 +1282,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
-                    entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
+                    assert(entrance->GetReverse().has_value());
+
+                    entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse().value());
                 }
             }
         } else {
@@ -1264,10 +1297,14 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
-                    entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
+                    assert(entrance->GetReverse().has_value());
+
+                    entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse().value());
                 }
                 for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
-                    entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
+                    assert(entrance->GetReverse().has_value());
+
+                    entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse().value());
                 }
             }
         }
@@ -1283,7 +1320,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
         }
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::Dungeon]) {
-                entrancePools[EntranceType::DungeonReverse].push_back(entrance->GetReverse());
+                assert(entrance->GetReverse().has_value());
+
+                entrancePools[EntranceType::DungeonReverse].push_back(entrance->GetReverse().value());
             }
         }
     }
@@ -1298,7 +1337,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
         }
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::Interior]) {
-                entrancePools[EntranceType::InteriorReverse].push_back(entrance->GetReverse());
+                assert(entrance->GetReverse().has_value());
+
+                entrancePools[EntranceType::InteriorReverse].push_back(entrance->GetReverse().value());
             }
         }
     }
@@ -1309,7 +1350,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::ThievesHideout]) {
-                entrancePools[EntranceType::ThievesHideoutReverse].push_back(entrance->GetReverse());
+                assert(entrance->GetReverse().has_value());
+
+                entrancePools[EntranceType::ThievesHideoutReverse].push_back(entrance->GetReverse().value());
             }
         }
     }
@@ -1320,7 +1363,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
 
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::GrottoGrave]) {
-                entrancePools[EntranceType::GrottoGraveReverse].push_back(entrance->GetReverse());
+                assert(entrance->GetReverse().has_value());
+
+                entrancePools[EntranceType::GrottoGraveReverse].push_back(entrance->GetReverse().value());
             }
         }
     }
@@ -1471,7 +1516,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     std::vector<Entrance*> replacedEntrances = {};
     for (auto& pool : oneWayEntrancePools) {
         for (Entrance* entrance : pool.second) {
-            if (entrance->GetReplacement() != nullptr) {
+            if (entrance->GetReplacement().has_value()) {
                 replacedEntrances.push_back(entrance);
             }
         }
@@ -1479,7 +1524,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
     for (auto& pool : oneWayTargetEntrancePools) {
         for (Entrance* remainingTarget : pool.second) {
             auto replacement = remainingTarget->GetReplacement();
-            if (SohUtils::Contains(replacement, replacedEntrances)) {
+            assert(replacement.has_value());
+
+            if (SohUtils::Contains(replacement.value(), replacedEntrances)) {
                 DeleteTargetEntrance(remainingTarget);
             }
         }
@@ -1494,11 +1541,13 @@ int EntranceShuffler::ShuffleAllEntrances() {
         // Delete all targets that we just placed from other one way target pools so
         // multiple one way entrances don't use the same target
         replacedEntrances =
-            FilterFromPool(pool.second, [](Entrance* entrance) { return entrance->GetReplacement() != nullptr; });
+            FilterFromPool(pool.second, [](Entrance* entrance) { return entrance->GetReplacement().has_value(); });
         for (auto& targetPool : oneWayTargetEntrancePools) {
             for (Entrance* remainingTarget : targetPool.second) {
                 auto replacement = remainingTarget->GetReplacement();
-                if (SohUtils::Contains(replacement, replacedEntrances)) {
+                assert(replacement.has_value());
+
+                if (SohUtils::Contains(replacement.value(), replacedEntrances)) {
                     DeleteTargetEntrance(remainingTarget);
                 }
             }
@@ -1589,12 +1638,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         };
 
         for (EntrancePair pair : bossRoomExitPairs) {
-            Entrance* target = pair.second->GetReplacement() != nullptr ? pair.second->GetReplacement() : pair.second;
+            Entrance* target = pair.second->GetReplacement().value_or(pair.second);
 
             if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 while (bossExits.find(target->GetName()) != bossExits.end()) {
                     Entrance* next = bossExits.at(target->GetName());
-                    target = next->GetReplacement() != nullptr ? next->GetReplacement() : next;
+                    target = next->GetReplacement().value_or(next);
                 }
 
                 if (dungeonExits.find(target->GetName()) != dungeonExits.end()) {
@@ -1643,16 +1692,21 @@ void EntranceShuffler::CreateEntranceOverrides() {
 
         uint8_t type = (uint8_t)entrance->GetType();
         int16_t originalIndex = entrance->GetIndex();
-        int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+
+        assert(entrance->GetReplacement().has_value());
+
+        int16_t replacementIndex = entrance->GetReplacement().value()->GetIndex();
 
         int16_t destinationIndex = -1;
         int16_t replacementDestinationIndex = -1;
 
         // Track the reverse destination, useful for savewarp handling
-        if (entrance->GetReverse() != nullptr) {
-            destinationIndex = entrance->GetReverse()->GetIndex();
+        if (entrance->GetReverse().has_value()) {
+            assert(entrance->GetReplacement().value()->GetReverse().has_value());
+
+            destinationIndex = entrance->GetReverse().value()->GetIndex();
             if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-                replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+                replacementDestinationIndex = entrance->GetReplacement().value()->GetReverse().value()->GetIndex();
             }
         }
 

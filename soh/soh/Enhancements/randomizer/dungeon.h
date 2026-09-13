@@ -1,9 +1,10 @@
 #pragma once
 
 #include <array>
+#include <optional>
 #include <span>
-#include <vector>
 #include <string>
+#include <vector>
 #include "nlohmann/json.hpp"
 #include "z64save.h"
 #include "z64scene.h"
@@ -103,8 +104,9 @@ class Dungeons {
   public:
     Dungeons();
     ~Dungeons();
-    DungeonInfo* GetDungeon(DungeonKey key);
-    DungeonInfo* GetDungeonFromScene(uint16_t scene);
+    DungeonInfo& GetDungeon(DungeonKey key);
+    // TODO: Change to std::optional<DungeonInfo&> when we update to C++ 26
+    std::optional<DungeonInfo*> GetDungeonFromScene(uint16_t scene);
     size_t CountMQ();
     void ClearAllMQ();
     /// @brief Returns a new array of pointers to the DungeonInfo entries.

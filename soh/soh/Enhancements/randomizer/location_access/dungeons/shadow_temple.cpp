@@ -10,8 +10,8 @@ void RegionTable_Init_ShadowTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_SHADOW_TEMPLE_ENTRYWAY] = Region("Shadow Temple Entryway", SCENE_SHADOW_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_BEGINNING,    ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_BEGINNING, ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_SHADOW_TEMPLE_BEGINNING,    ctx->GetDungeon(SHADOW_TEMPLE).IsVanilla() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
+        ENTRANCE(RR_SHADOW_TEMPLE_MQ_BEGINNING, ctx->GetDungeon(SHADOW_TEMPLE).IsMQ()),
         ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION,  true),
     });
 
@@ -947,8 +947,8 @@ void RegionTable_Init_ShadowTemple() {
     // Boss Room
     areaTable[RR_SHADOW_TEMPLE_BOSS_ENTRYWAY] = Region("Shadow Temple Boss Entryway", SCENE_SHADOW_TEMPLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_BOSS_DOOR,    ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR, ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_SHADOW_TEMPLE_BOSS_DOOR,    ctx->GetDungeon(SHADOW_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_SHADOW_TEMPLE_MQ_BOSS_DOOR, ctx->GetDungeon(SHADOW_TEMPLE).IsMQ()),
         ENTRANCE(RR_SHADOW_TEMPLE_BOSS_ROOM,    logic->HasItem(RG_SHADOW_TEMPLE_BOSS_KEY)),
     });
 

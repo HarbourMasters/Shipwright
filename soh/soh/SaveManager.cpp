@@ -276,7 +276,7 @@ void SaveManager::LoadRandomizer() {
     SaveManager::Instance->LoadArray("masterQuestDungeons", mqDungeonCount, [&](size_t i) {
         size_t dungeonId;
         SaveManager::Instance->LoadData("", dungeonId);
-        randoContext->GetDungeon(dungeonId)->SetMQ();
+        randoContext->GetDungeon(dungeonId).SetMQ();
     });
 
     randoContext->GetTrials()->SkipAll();
@@ -463,7 +463,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("masterQuestDungeons", randoContext->GetDungeons()->GetDungeonListSize(),
                                      [&](size_t i) {
-                                         if (randoContext->GetDungeon(i)->IsMQ()) {
+                                         if (randoContext->GetDungeon(i).IsMQ()) {
                                              SaveManager::Instance->SaveData("", i);
                                          }
                                      });

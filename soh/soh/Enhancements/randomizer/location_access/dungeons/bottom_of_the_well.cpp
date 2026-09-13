@@ -11,8 +11,8 @@ void RegionTable_Init_BottomOfTheWell() {
         //Exits
         //Technically involves a fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
         //Backshot should be implemented here, or new regions should be added
-        ENTRANCE(RR_BOTW_CORRIDOR,     ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->CanUse(RG_CRAWL)),
-        ENTRANCE(RR_BOTW_MQ_PERIMETER, ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->CanUse(RG_CRAWL)),
+        ENTRANCE(RR_BOTW_CORRIDOR,     ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL).IsVanilla() && logic->CanUse(RG_CRAWL)),
+        ENTRANCE(RR_BOTW_MQ_PERIMETER, ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL).IsMQ()      && logic->CanUse(RG_CRAWL)),
         ENTRANCE(RR_KAK_WELL,          true),
     });
 
