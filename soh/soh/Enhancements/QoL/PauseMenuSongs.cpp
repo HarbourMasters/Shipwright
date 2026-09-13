@@ -250,6 +250,25 @@ static bool PauseSong_AdvancePending() {
     return true;
 }
 
+// The Sun's Song finishes through Interface_Update, which signals completion by setting MODE_04 for the
+// ocarina action to consume. Nothing consumes it here: the player never entered that action, and
+// AdvancePending only reclaims a mode it armed itself. Left set, it fails the ocarinaMode check in
+// PauseSong_CanPlayOcarina and every later song is refused as unplayable.
+static void PauseSong_ReclaimStaleOcarinaMode() {
+    Player* player = GET_PLAYER(gPlayState);
+    if (pendingTimer > 0 || isSongActive || isWarpActive) {
+        return;
+    }
+    if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_04 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        return;
+    }
+    // A real ocarina episode still owns the mode until Link stops playing.
+    if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
+        return;
+    }
+    gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+}
+
 // Hand the played song to a matching in-range NPC. Returns true if one was engaged, leaving MODE_03 held
 // for it to consume next frame.
 static bool PauseSong_ActivateNpcActors() {
@@ -601,6 +620,7 @@ static void RegisterPauseMenuHooks() {
             PauseWarp_Execute();
             PauseSong_Execute();
             PauseSong_RetryPlay();
+            PauseSong_ReclaimStaleOcarinaMode();
             PauseCannotPlay_Execute();
         }
     });
