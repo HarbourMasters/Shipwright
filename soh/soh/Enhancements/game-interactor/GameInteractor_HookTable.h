@@ -47,6 +47,7 @@ DEFINE_HOOK(OnTimestamp, (u8 item));
 DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayerSetModels, (Player * player, u8 modelGroup));
 DEFINE_HOOK(OnPlayerHealthChange, (int16_t amount));
+DEFINE_HOOK(OnPlayerDeath, ());
 DEFINE_HOOK(OnPlayerBottleUpdate, (int16_t contents));
 DEFINE_HOOK(OnPlayerHoldUpShield, ());
 DEFINE_HOOK(OnPlayerFirstPersonControl, (Player * player));

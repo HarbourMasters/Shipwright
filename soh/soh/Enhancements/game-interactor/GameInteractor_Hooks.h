@@ -47,6 +47,7 @@ void GameInteractor_ExecuteOnTimestamp(u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnPlayerSetModels(Player* player, u8 modelGroup);
 void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
+void GameInteractor_ExecuteOnPlayerDeath();
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
 void GameInteractor_ExecuteOnPlayerHoldUpShield();
 void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player);

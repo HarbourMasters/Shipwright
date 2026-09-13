@@ -1891,6 +1891,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Shadow Tag Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ShadowTag"))
         .Options(CheckboxOptions().Tooltip("A Wallmaster follows Link everywhere, don't get caught!"));
+    AddWidget(path, "Corpse Run Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("CorpseRun"))
+        .Options(CheckboxOptions().Tooltip("On death, drops all of your consumables at the location of death.\n\n"
+                                           "Pick up the remnant before dying again or it goes away!"));
     AddWidget(path, "Hurt Container Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HurtContainer"))
         .Options(CheckboxOptions().Tooltip("Changes Heart Piece and Heart Container functionality.\n\n"

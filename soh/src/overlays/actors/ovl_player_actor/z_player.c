@@ -3543,6 +3543,7 @@ void func_80836448(PlayState* play, Player* this, LinkAnimationHeader* anim) {
             Audio_PlayFanfare(NA_BGM_GAME_OVER);
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
             gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
+            GameInteractor_ExecuteOnPlayerDeath();
         }
 
         OnePointCutscene_Init(play, 9806, cond ? 120 : 60, &this->actor, CAM_ID_MAIN);
