@@ -452,35 +452,25 @@ static const char* MarginCvarNonAnchor[]{
 void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip) {
     if (UIWidgets::Button(ButtonName,
                           UIWidgets::ButtonOptions().Size(ImVec2(200.0f, 0.0f)).Color(THEME_COLOR).Tooltip(tooltip))) {
-        // MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the
-        // case this function will not touch it with pose type 0.
-        u8 arrayLengthNonMargin = sizeof(MarginCvarNonAnchor) / sizeof(*MarginCvarNonAnchor);
         for (auto cvarName : MarginCvarList) {
             std::string cvarPosType = std::string(cvarName).append(".PosType");
             std::string cvarNameMargins = std::string(cvarName).append(".UseMargins");
-            if (CVarGetInteger(cvarPosType.c_str(), 0) <= ANCHOR_RIGHT &&
-                SetActivated) { // Our element is not Hidden or Non anchor
-                for (int i = 0; i < arrayLengthNonMargin; i++) {
-                    if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) &&
-                        (CVarGetInteger(cvarPosType.c_str(), 0) ==
-                         ORIGINAL_LOCATION)) { // Our element is both in original position and do not have anchor by
-                                               // default so we skip it.
-                        CVarSetInteger(cvarNameMargins.c_str(), false); // force set off
-                    } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) &&
-                               (CVarGetInteger(cvarPosType.c_str(), 0) !=
-                                ORIGINAL_LOCATION)) { // Element not in original position, regardless. It has no
-                                                      // anchor by default; since player made it anchored we can toggle
-                                                      // margins
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
-                    } else if (strcmp(cvarName, MarginCvarNonAnchor[i]) !=
-                               0) { // Our element has an anchor by default, so regardless of its position right now
-                                    // it's okay to toggle margins.
-                        CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+            bool activate = SetActivated;
+            if (SetActivated) {
+                int posType = CVarGetInteger(cvarPosType.c_str(), 0);
+                // MarginCvarNonAnchor lists the elements that have no anchor by default.
+                bool noDefaultAnchor = false;
+                for (auto nonAnchorName : MarginCvarNonAnchor) {
+                    if (strcmp(cvarName, nonAnchorName) == 0) {
+                        noDefaultAnchor = true;
+                        break;
                     }
                 }
-            } else { // Since the user requested to turn all margin off no need to do any check there.
-                CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
+                // Skip hidden and non anchored elements, plus elements that only get an anchor once the player moves
+                // them off their original position. Margins do nothing for those.
+                activate = posType <= ANCHOR_RIGHT && !(noDefaultAnchor && posType == ORIGINAL_LOCATION);
             }
+            CVarSetInteger(cvarNameMargins.c_str(), activate);
         }
     }
 }
