@@ -374,6 +374,13 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
+    // Saria's Song answers through Navi, and vanilla only arms her as the message system closes
+    // (z_message_PAL.c, sLastPlayedSong == OCARINA_SONG_SARIAS) - a path this enhancement skips.
+    if (song == OCARINA_SONG_SARIAS && player->naviActor != NULL) {
+        player->naviTextId = -0xE0;
+        player->naviActor->flags |= 0x10000;
+    }
+
     // Staff spots are the one category safe to drive inline: calling them now, after every actor has already
     // updated this frame, lets them consume MODE_03 and set their own MODE_04 without it leaking to the
     // MODE_04 readers below, so we can reset within this frame.
