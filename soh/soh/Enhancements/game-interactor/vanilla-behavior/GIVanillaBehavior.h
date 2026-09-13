@@ -2355,6 +2355,24 @@ typedef enum {
     // ```c
     // true
     // ```
+    // Whether Link's movement direction is set to where he faces in first person.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_ALIGN_YAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether Link slows to a stop in first person. Hooks may set his speed instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_DECELERATE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `*Player`
     VB_PLAYER_LIMIT_DIVE_XZ_SPEED,
@@ -2385,16 +2403,6 @@ typedef enum {
     // - `f32*` swimSpeed
     // - `s32` sControlInput != NULL
     VB_PLAYER_MODIFY_SWIM_SPEED,
-
-    // #### `result`
-    // ```c
-    // false
-    // ```
-    // Runs after first person aiming. Hooks may move Link with the left stick.
-    // #### `args`
-    // - `*Player`
-    // - `*Input` (sControlInput)
-    VB_PLAYER_MOVE_IN_FIRST_PERSON,
 
     // #### `result`
     // ```c

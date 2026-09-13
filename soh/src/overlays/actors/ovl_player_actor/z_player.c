@@ -12652,8 +12652,6 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
-    GameInteractor_Should(VB_PLAYER_MOVE_IN_FIRST_PERSON, false, this, sControlInput);
-
     this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_Y;
     return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) - arg3;
 }
@@ -12779,8 +12777,10 @@ void func_8084B158(PlayState* play, Player* this, Input* input, f32 arg3) {
 void Player_Action_8084B1D8(Player* this, PlayState* play) {
     if (this->stateFlags1 & PLAYER_STATE1_IN_WATER) {
         func_8084B000(this);
-        func_8084AEEC(this, &this->linearVelocity, 0, this->actor.shape.rot.y);
-    } else {
+        if (GameInteractor_Should(VB_PLAYER_FIRST_PERSON_DECELERATE, true, this)) {
+            func_8084AEEC(this, &this->linearVelocity, 0, this->actor.shape.rot.y);
+        }
+    } else if (GameInteractor_Should(VB_PLAYER_FIRST_PERSON_DECELERATE, true, this)) {
         Player_DecelerateToZero(this);
     }
 
@@ -12808,7 +12808,9 @@ void Player_Action_8084B1D8(Player* this, PlayState* play) {
         }
     }
 
-    this->yaw = this->actor.shape.rot.y;
+    if (GameInteractor_Should(VB_PLAYER_FIRST_PERSON_ALIGN_YAW, true, this)) {
+        this->yaw = this->actor.shape.rot.y;
+    }
 }
 
 s32 func_8084B3CC(PlayState* play, Player* this) {
