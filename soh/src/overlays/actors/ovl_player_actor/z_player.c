@@ -7478,7 +7478,16 @@ s32 Player_CanThrowCarriedActor(Player* this, Actor* actor) {
 }
 
 s32 Player_ActionHandler_9(Player* this, PlayState* play) {
-    u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    bool isPutAwayBombsEnabled = CVarGetInteger(CVAR_ENHANCEMENT("PutAwayBombs"), 0) != 0 && 
+        this->heldActor && (
+        this->heldActor->id == ACTOR_EN_BOM ||
+        this->heldActor->id == ACTOR_EN_BOM_CHU ||
+        this->heldActor->id == ACTOR_EN_BOMBF);
+    
+    u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    if (!isPutAwayBombsEnabled) {
+        buttonsToCheck |= BTN_B;
+    }
     if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
@@ -7494,6 +7503,26 @@ s32 Player_ActionHandler_9(Player* this, PlayState* play) {
                 func_8083EA94(this, play);
             }
         }
+        return true;
+    }
+
+    // Press the B Button to put away bombs
+    if (isPutAwayBombsEnabled &&
+                              GameInteractor_Should(VB_THROW_OR_PUT_DOWN_HELD_ITEM,
+                              ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
+                               CHECK_BTN_ANY(sControlInput->press.button, BTN_B)),
+                              sControlInput)) {
+        switch (this->heldActor->id) {
+        case ACTOR_EN_BOM:
+        case ACTOR_EN_BOMBF:
+            Item_Give(play, ITEM_BOMB);
+            break;
+        case ACTOR_EN_BOM_CHU:
+            Item_Give(play, ITEM_BOMBCHU_1);
+            break;
+        }
+        Actor_Kill(this->heldActor);
+        Player_UseItem(play, this, ITEM_NONE);
         return true;
     }
 

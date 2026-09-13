@@ -1070,6 +1070,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(
             CheckboxOptions().Tooltip("Bombchus do not sell out when bought, and a 10 pack of Bombchus costs 99 rupees "
                                       "instead of 100."));
+    AddWidget(path, "Put Away Bombs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PutAwayBombs"))
+        .Options(CheckboxOptions().Tooltip("Put bombs back in the Bomb Bag by pressing the B Button."));
 
     AddWidget(path, "Bow / Slingshot", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Equip Multiple Arrows at Once", WIDGET_CVAR_CHECKBOX)
