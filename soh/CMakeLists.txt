@@ -281,10 +281,18 @@ if(ENABLE_FLUIDSYNTH)
     if(MSVC)
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     endif()
+    # Nothing links FluidSynth's CLI player, so keep it out of the build along with the
+    # install rules it brings. The keyword landed in CMake 3.28; below that the dependency
+    # is added as before and the player is simply built.
+    set(_fluidsynth_exclude "")
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.28)
+        set(_fluidsynth_exclude EXCLUDE_FROM_ALL)
+    endif()
     FetchContent_Declare(fluidsynth
         GIT_REPOSITORY https://github.com/FluidSynth/fluidsynth.git
         GIT_TAG v2.5.5
-        GIT_SHALLOW TRUE)
+        GIT_SHALLOW TRUE
+        ${_fluidsynth_exclude})
     FetchContent_MakeAvailable(fluidsynth)
     target_link_libraries(${PROJECT_NAME} PRIVATE libfluidsynth)
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_FLUIDSYNTH=1)
