@@ -25,6 +25,7 @@
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "location.h"
 #include "item_location.h"

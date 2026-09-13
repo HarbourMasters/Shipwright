@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <memory>
 
 #include <spdlog/spdlog.h>
@@ -342,7 +343,7 @@ void SaveState::SaveTransitionActors(void) {
 }
 
 void SaveState::LoadTransitionActors(void) {
-    u32 numActors = MIN(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
+    u32 numActors = std::min(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
     for (u32 i = 0; i < numActors; i++) {
         gPlayState->transiActorCtx.list[i].id = info->transitionActorIds_copy[i];
     }

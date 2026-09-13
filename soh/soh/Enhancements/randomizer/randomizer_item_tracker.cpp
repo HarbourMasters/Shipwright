@@ -603,7 +603,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             case ITEM_KEY_SMALL:
                 // Though the ammo/capacity naming doesn't really make sense for keys, we are
                 // hijacking the same system to display key counts as there are enough similarities
-                result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
+                result.currentAmmo = std::max(gSaveContext.inventory.dungeonKeys[item.data], (s8)0);
                 result.currentCapacity = Rando::GetSceneTotalSmallKeys(&gSaveContext, (SceneID)item.data);
                 result.maxCapacity = Rando::GetSceneSmallKeyMax((SceneID)item.data);
                 if (item.data == SCENE_FIRE_TEMPLE && IS_RANDO &&
@@ -1441,7 +1441,7 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     }
 
     for (size_t i = 0; i < rowCount; i++) {
-        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
+        for (size_t j = 0; j < std::min(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
