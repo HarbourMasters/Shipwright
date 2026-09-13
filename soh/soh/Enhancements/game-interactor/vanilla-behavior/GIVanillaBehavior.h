@@ -2327,6 +2327,15 @@ typedef enum {
     // ```c
     // true
     // ```
+    // Whether the left stick aims in first person. Off when it moves Link instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_AIM_WITH_LEFT_STICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `*Player`
     // - `int32_t` (magicArrowType)
@@ -2376,6 +2385,16 @@ typedef enum {
     // - `f32*` swimSpeed
     // - `s32` sControlInput != NULL
     VB_PLAYER_MODIFY_SWIM_SPEED,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // Runs after first person aiming. Hooks may move Link with the left stick.
+    // #### `args`
+    // - `*Player`
+    // - `*Input` (sControlInput)
+    VB_PLAYER_MOVE_IN_FIRST_PERSON,
 
     // #### `result`
     // ```c

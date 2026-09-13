@@ -12582,8 +12582,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
         // Y Axis
-        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
-              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
+        if (GameInteractor_Should(VB_PLAYER_AIM_WITH_LEFT_STICK, true, this)) {
             temp2 += sControlInput->rel.stick_y * 240.0f * invertYAxisMulti * yAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12601,8 +12600,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         // X Axis
         temp2 = 0;
-        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
-              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
+        if (GameInteractor_Should(VB_PLAYER_AIM_WITH_LEFT_STICK, true, this)) {
             temp2 += sControlInput->rel.stick_x * -16.0f * invertXAxisMulti * xAxisMulti;
         }
         if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
@@ -12617,8 +12615,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         // Y Axis
         temp1 = (this->stateFlags1 & PLAYER_STATE1_ON_HORSE) ? 3500 : 14000;
 
-        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
-              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
+        if (GameInteractor_Should(VB_PLAYER_AIM_WITH_LEFT_STICK, true, this)) {
             temp3 += ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
                      (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f) * invertYAxisMulti *
                      yAxisMulti;
@@ -12638,8 +12635,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp1 = 19114;
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = 0;
-        if (!(CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
-              CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0))) {
+        if (GameInteractor_Should(VB_PLAYER_AIM_WITH_LEFT_STICK, true, this)) {
             temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                     (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f) * invertXAxisMulti *
                     xAxisMulti;
@@ -12656,62 +12652,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
     }
 
-    if (CVarGetInteger(CVAR_SETTING("MoveInFirstPerson"), 0) &&
-        CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
-        f32 relX =
-            (sControlInput->rel.stick_x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1)) / 10.0f;
-        f32 relY = sControlInput->rel.stick_y / 10.0f;
-
-        // Normalize so that diagonal movement isn't faster
-        f32 relMag = sqrtf((relX * relX) + (relY * relY));
-        if (relMag > 1.0f) {
-            relX /= relMag;
-            relY /= relMag;
-        }
-
-        // Determine what left and right mean based on camera angle
-        f32 relX2 = relX * Math_CosS(this->actor.focus.rot.y) + relY * Math_SinS(this->actor.focus.rot.y);
-        f32 relY2 = relY * Math_CosS(this->actor.focus.rot.y) - relX * Math_SinS(this->actor.focus.rot.y);
-        s16 moveYaw = Math_Atan2S(relY2, relX2);
-
-        // Use the same speed cap as normal movement, so boots, swimming, quicksand, walls and slopes still slow Link
-        // down. Walls and slopes are checked along the movement direction, since Link may not face where he moves.
-        f32 movementSpeed = R_RUN_SPEED_LIMIT / 100.0f;
-        if ((this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (this->currentBoots != PLAYER_BOOTS_IRON)) {
-            movementSpeed *= 0.8f;
-            GameInteractor_Should(VB_PLAYER_MODIFY_SWIM_SPEED, true, this, &movementSpeed, sControlInput != NULL);
-        } else {
-            if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) {
-                s16 wallYawDiff = moveYaw - (s16)(this->actor.wallYaw + 0x8000);
-                float wallScale = ABS(wallYawDiff) * 0.00008f;
-                if (wallScale < 1.0f) {
-                    movementSpeed = CLAMP_MIN(movementSpeed * wallScale, 0.1f);
-                }
-            }
-            if (this->unk_6C4 != 0.0f) {
-                movementSpeed = CLAMP_MIN(movementSpeed - this->unk_6C4 * 0.008f, 2.0f);
-            }
-            if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->actor.floorPoly != NULL)) {
-                CollisionPoly* floorPoly = this->actor.floorPoly;
-                float slope = (-(COLPOLY_GET_NORMAL(floorPoly->normal.x) * Math_SinS(moveYaw)) -
-                               (COLPOLY_GET_NORMAL(floorPoly->normal.z) * Math_CosS(moveYaw))) /
-                              COLPOLY_GET_NORMAL(floorPoly->normal.y);
-                float uphill = CLAMP(Math_SinS(Math_Atan2S(1.0f, slope)), 0.0f, 0.6f);
-                movementSpeed = CLAMP_MIN(movementSpeed - (8.0f * uphill * uphill), 0.0f);
-            }
-            GameInteractor_Should(VB_PLAYER_MODIFY_FIRST_PERSON_SPEED, true, this, &movementSpeed);
-        }
-        // Speed to distance per update, same as Actor_UpdatePos
-        movementSpeed *= R_UPDATE_RATE * 0.5f;
-
-        // Calculate distance for footstep sound
-        f32 distance = sqrtf((relX2 * relX2) + (relY2 * relY2)) * movementSpeed;
-        func_8084029C(this, distance / 4.5f);
-
-        // No collision push here, Actor_UpdatePos already added it this frame
-        this->actor.world.pos.x += relX2 * movementSpeed;
-        this->actor.world.pos.z += relY2 * movementSpeed;
-    }
+    GameInteractor_Should(VB_PLAYER_MOVE_IN_FIRST_PERSON, false, this, sControlInput);
 
     this->unk_6AE_rotFlags |= UNK6AE_ROT_FOCUS_Y;
     return func_80836AB8(this, (play->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) - arg3;
