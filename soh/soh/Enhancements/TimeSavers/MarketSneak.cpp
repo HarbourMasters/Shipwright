@@ -3,6 +3,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 extern "C" {
 #include <functions.h>

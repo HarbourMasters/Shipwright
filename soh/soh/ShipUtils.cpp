@@ -1,4 +1,5 @@
 #include "ShipUtils.h"
+#include <algorithm>
 #include <cassert>
 #include <random>
 #include "soh_assets.h"
@@ -19,15 +20,14 @@ constexpr f32 fourByThree = 4.0f / 3.0f;
 // Gets the additional ratio of the screen compared to the original 4:3 ratio, clamping to 1 if smaller
 extern "C" f32 Ship_GetExtendedAspectRatioMultiplier() {
     f32 currentRatio = OTRGetAspectRatio();
-    return MAX(currentRatio / fourByThree, 1.0f);
+    return std::max(currentRatio / fourByThree, 1.0f);
 }
 
 // Enables Extended Culling options on specific actors by applying an inverse ratio of the draw distance slider
 // to the projected Z value of the actor. This tricks distance checks without having to replace hardcoded values.
 // Requires that Ship_ExtendedCullingActorRestoreProjectedPos is called within the same function scope.
 extern "C" void Ship_ExtendedCullingActorAdjustProjectedZ(Actor* actor) {
-    s32 multiplier = CVarGetInteger("gEnhancements.Graphics.IncreaseActorDrawDistance", 1);
-    multiplier = MAX(multiplier, 1);
+    s32 multiplier = std::max(CVarGetInteger("gEnhancements.Graphics.IncreaseActorDrawDistance", 1), 1);
     if (multiplier > 1) {
         actor->projectedPos.z /= multiplier;
     }
