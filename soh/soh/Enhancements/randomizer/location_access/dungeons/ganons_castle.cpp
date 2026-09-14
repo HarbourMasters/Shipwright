@@ -1019,8 +1019,8 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_18, logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_TOWER_STAIRS_4,              true;),
-        ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, true;),
+        ENTRANCE(RR_GANONS_TOWER_STAIRS_4,              true),
+        ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, true),
     });
 
     areaTable[RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR] = Region("Ganon's Tower Before Ganondorf's Lair", SCENE_GANONS_TOWER, {}, {
@@ -1028,7 +1028,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_BOSS_KEY_HINT, true),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_TOWER_POT_ROOM,       false;),
+        ENTRANCE(RR_GANONS_TOWER_POT_ROOM,       false),
         ENTRANCE(RR_GANONS_TOWER_GANONDORF_LAIR, AnyAgeTime([]{return logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);})),
     });
 
