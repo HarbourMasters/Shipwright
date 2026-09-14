@@ -393,29 +393,32 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Saria's Song answers through Navi, and vanilla only arms her as the message system closes
-    // (z_message_PAL.c, sLastPlayedSong == OCARINA_SONG_SARIAS) - a path this enhancement skips.
-    if (song == OCARINA_SONG_SARIAS && player->naviActor != NULL) {
-        player->naviTextId = -0xE0;
-        player->naviActor->flags |= 0x10000;
-    }
-
     // Staff spots are the one category safe to drive inline: calling them now, after every actor has already
     // updated this frame, lets them consume MODE_03 and set their own MODE_04 without it leaking to the
     // MODE_04 readers below, so we can reset within this frame.
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    bool tagMatched = PauseSong_ActivateOkarinaTags();
+    bool consumed = PauseSong_ActivateOkarinaTags();
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-    if (tagMatched) {
+    if (consumed) {
         // The Water Temple triforce tag leaves msgMode = MSGMODE_PAUSED, which would block the pause menu.
         if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
             gPlayState->msgCtx.msgMode = MSGMODE_NONE;
         }
-    } else if (!PauseSong_ActivateSongEventActors()) {
+    } else {
         // Otherwise hand the song to a deferred actor: a Song of Time block / Great Fairy spawner (MODE_04),
         // or a matching NPC (MODE_03). Either holds the mode for the actor to poll next frame; AdvancePending
         // then finishes the hand-off and restores state.
-        PauseSong_ActivateNpcActors();
+        consumed = PauseSong_ActivateSongEventActors() || PauseSong_ActivateNpcActors();
+    }
+
+    // Saria's Song answers through Navi, and vanilla only arms her as the message system closes
+    // (z_message_PAL.c, sLastPlayedSong == OCARINA_SONG_SARIAS) - a path this enhancement skips. Only when
+    // nothing else took the song: -0xE0 is outside the 0x2XX hint range, so Player_ActionHandler talks to
+    // Navi on the next frame with no button press, and that textbox clears ocarinaMode out from under a
+    // hand-off still waiting to be read.
+    if (song == OCARINA_SONG_SARIAS && !consumed && player->naviActor != NULL) {
+        player->naviTextId = -0xE0;
+        player->naviActor->flags |= 0x10000;
     }
 
     // Vanilla ends a played song with this hook (z_message_PAL.c, MSGMODE_SONG_PLAYED_ACT), which is what
