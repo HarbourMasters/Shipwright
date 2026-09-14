@@ -7479,8 +7479,9 @@ s32 Player_CanThrowCarriedActor(Player* this, Actor* actor) {
 
 s32 Player_ActionHandler_9(Player* this, PlayState* play) {
     bool canPutAwayBombs = CVarGetInteger(CVAR_ENHANCEMENT("PutAwayBombs"), 0) != 0 && (this->heldActor != NULL) &&
-                           (this->heldActor->id == ACTOR_EN_BOM || this->heldActor->id == ACTOR_EN_BOM_CHU ||
-                            this->heldActor->id == ACTOR_EN_BOMBF);
+                           (CUR_UPG_VALUE(UPG_BOMB_BAG) > 0 &&
+                                (this->heldActor->id == ACTOR_EN_BOM || this->heldActor->id == ACTOR_EN_BOMBF) ||
+                            this->heldActor->id == ACTOR_EN_BOM_CHU);
 
     u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
     if (!canPutAwayBombs) {
