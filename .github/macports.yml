@@ -21,3 +21,7 @@ ports:
     select: [ universal ]
   - name: libvorbis
     select: [ universal ]
+  # FluidSynth is built from source in soh/CMakeLists.txt (osal=cpp11, no glib).
+  # libsndfile is a dependency of FluidSynth, needed to decode SF3 SoundFonts.
+  - name: libsndfile
+    select: [ universal ]

@@ -103,7 +103,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endif()
 
     vcpkg_bootstrap()
-    vcpkg_install_packages(zlib bzip2 libzip libpng sdl2 sdl2-net glew glfw3 nlohmann-json tinyxml2 spdlog libogg libvorbis opus opusfile)
+    # libsndfile (with Ogg/Vorbis) decodes SF3 SoundFonts; FluidSynth itself is built
+    # from source (static, glib-free osal=cpp11) in soh/CMakeLists.txt and links against it.
+    vcpkg_install_packages(zlib bzip2 libzip libpng sdl2 sdl2-net glew glfw3 nlohmann-json tinyxml2 spdlog libogg libvorbis opus opusfile libsndfile)
     if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
         set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
     endif()
@@ -365,6 +367,7 @@ endif()
 ################################################################################
 # Sub-projects
 ################################################################################
+option(ENABLE_FLUIDSYNTH "Enable the FluidSynth synth backend" ON)
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship SYSTEM)
 quiet_target(libultraship "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
