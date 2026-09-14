@@ -2135,14 +2135,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_PLAY_MWEEP_CS,
-
-    // #### `result`
-    // ```c
     // this->getItemId == GI_GAUNTLETS_SILVER
     // ```
     // #### `args`
