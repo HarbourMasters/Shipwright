@@ -84,10 +84,10 @@ typedef enum AnimSfxType {
 
 #define ANIMSFX_SHIFT_TYPE(type) ((type) << 11)
 
-#define ANIMSFX_DATA(type, frame) ((ANIMSFX_SHIFT_TYPE(type) | ((frame)&0x7FF)))
+#define ANIMSFX_DATA(type, frame) ((ANIMSFX_SHIFT_TYPE(type) | ((frame) & 0x7FF)))
 
-#define ANIMSFX_GET_TYPE(data) ((data)&0x7800)
-#define ANIMSFX_GET_FRAME(data) ((data)&0x7FF)
+#define ANIMSFX_GET_TYPE(data) ((data) & 0x7800)
+#define ANIMSFX_GET_FRAME(data) ((data) & 0x7FF)
 
 typedef struct AnimSfxEntry {
     /* 0x00 */ u16 sfxId;
@@ -7478,23 +7478,23 @@ s32 Player_CanThrowCarriedActor(Player* this, Actor* actor) {
 }
 
 s32 Player_ActionHandler_9(Player* this, PlayState* play) {
-    bool isPutAwayBombsEnabled = CVarGetInteger(CVAR_ENHANCEMENT("PutAwayBombs"), 0) != 0 && 
-        this->heldActor && (
-        this->heldActor->id == ACTOR_EN_BOM ||
-        this->heldActor->id == ACTOR_EN_BOM_CHU ||
-        this->heldActor->id == ACTOR_EN_BOMBF);
-    
+    bool canPutAwayBombs = CVarGetInteger(CVAR_ENHANCEMENT("PutAwayBombs"), 0) != 0 && (this->heldActor != NULL) &&
+                           (this->heldActor->id == ACTOR_EN_BOM || this->heldActor->id == ACTOR_EN_BOM_CHU ||
+                            this->heldActor->id == ACTOR_EN_BOMBF);
+
     u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
-    if (!isPutAwayBombsEnabled) {
+    if (!canPutAwayBombs) {
         buttonsToCheck |= BTN_B;
     }
     if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0) != 0) {
         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
     }
+
+    bool isCarryingActor = (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL);
+    u16 button = sControlInput->press.button;
+
     if (GameInteractor_Should(VB_THROW_OR_PUT_DOWN_HELD_ITEM,
-                              ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
-                               CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)),
-                              sControlInput)) {
+                              (isCarryingActor && CHECK_BTN_ANY(button, buttonsToCheck)), sControlInput)) {
         if (!func_80835644(play, this, this->heldActor)) {
             if (!Player_CanThrowCarriedActor(this, this->heldActor)) {
                 Player_SetupAction(play, this, Player_Action_808464B0, 1);
@@ -7507,22 +7507,18 @@ s32 Player_ActionHandler_9(Player* this, PlayState* play) {
     }
 
     // Press the B Button to put away bombs
-    if (isPutAwayBombsEnabled &&
-                              GameInteractor_Should(VB_THROW_OR_PUT_DOWN_HELD_ITEM,
-                              ((this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) && (this->heldActor != NULL) &&
-                               CHECK_BTN_ANY(sControlInput->press.button, BTN_B)),
-                              sControlInput)) {
+    if (canPutAwayBombs && GameInteractor_Should(VB_THROW_OR_PUT_DOWN_HELD_ITEM,
+                                                 (isCarryingActor && CHECK_BTN_ANY(button, BTN_B)), sControlInput)) {
         switch (this->heldActor->id) {
-        case ACTOR_EN_BOM:
-        case ACTOR_EN_BOMBF:
-            Item_Give(play, ITEM_BOMB);
-            break;
-        case ACTOR_EN_BOM_CHU:
-            Item_Give(play, ITEM_BOMBCHU_1);
-            break;
+            case ACTOR_EN_BOM:
+            case ACTOR_EN_BOMBF:
+                Item_Give(play, ITEM_BOMB);
+                break;
+            case ACTOR_EN_BOM_CHU:
+                Item_Give(play, ITEM_BOMBCHU_1);
+                break;
         }
         Actor_Kill(this->heldActor);
-        Player_UseItem(play, this, ITEM_NONE);
         return true;
     }
 
