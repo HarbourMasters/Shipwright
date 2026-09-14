@@ -20,7 +20,7 @@ void RegionTable_Init_WaterTemple() {
     //Water Temple logic currently assumes that the locked door leading to the upper water raising location is unlocked from the start
     areaTable[RR_WATER_TEMPLE_ENTRANCE_LEDGE] = Region("Water Temple Entrance Ledge", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE_FROM_LOW, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
         //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
         EVENT_ACCESS(LOGIC_WATER_COULD_HIGH_FROM_MID, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->HasItem(RG_BRONZE_SCALE) || logic->BunnyHood()) &&
                                                       logic->CanHitSwitch(ED_BOMB_THROW)),
@@ -42,9 +42,9 @@ void RegionTable_Init_WaterTemple() {
     //Water Temple logic currently assumes that the locked door leading to the upper water raising location is unlocked from the start
     areaTable[RR_WATER_TEMPLE_MAIN] = Region("Water Temple Main", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_WATER_PUSHED_1F_BLOCK, logic->WaterLevel(WL_LOW) && logic->HasItem(RG_GORONS_BRACELET)),
-        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE,    (logic->CanUse(RG_LONGSHOT) && (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))) ||
-                                                  (logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5))),
+        EVENT_ACCESS(LOGIC_WATER_PUSHED_1F_BLOCK,       logic->WaterLevel(WL_LOW) && logic->HasItem(RG_GORONS_BRACELET)),
+        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE_FROM_LOW, (logic->CanUse(RG_LONGSHOT) && (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))) ||
+                                                        (logic->CanUse(RG_HOOKSHOT) && logic->SmallKeys(SCENE_WATER_TEMPLE, 5))),
         //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
         EVENT_ACCESS(LOGIC_WATER_COULD_HIGH_FROM_MID, logic->HasItem(RG_BRONZE_SCALE) && logic->CanHitSwitch(ED_BOMB_THROW)),
     }, {}, {
@@ -165,7 +165,6 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_LOW_EMBLEM] = Region("Water Temple Low Emblem", SCENE_WATER_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_WATER_LOW,       logic->CanUse(RG_ZELDAS_LULLABY)),
-        EVENT_ACCESS(LOGIC_WATER_COULD_LOW, true),
     }, {}, {
         //Exits
         //trick: with WL_HIGH, chu cracked wall from here, then open underwater chest
@@ -410,7 +409,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_PILLAR_2F] = Region("Water Temple Pillar 2F", SCENE_WATER_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_WATER_MIDDLE,       logic->CanUse(RG_ZELDAS_LULLABY)),
-        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE, true),
+        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE_FROM_LOW, true),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT);),
@@ -645,12 +644,12 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_RISING_TARGET_LEDGE] = Region("Water Temple Rising Target Ledge", SCENE_WATER_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE,        (logic->WaterRisingTargetTo3FCentral() || logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanUse(RG_LONGSHOT)) && 
+        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE_FROM_LOW,        (logic->WaterRisingTargetTo3FCentral() || logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanUse(RG_LONGSHOT)) && 
                                                                   (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))),
         //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
         EVENT_ACCESS(LOGIC_WATER_COULD_HIGH_FROM_MID, (logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanUse(RG_LONGSHOT)) &&
                                                       logic->CanHitSwitch(ED_BOMB_THROW)),
-        EVENT_ACCESS(LOGIC_WATER_COULD_LOW,           logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE)),
+        EVENT_ACCESS(LOGIC_WATER_COULD_LOW_FROM_HIGH, logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE)),
     }, {
         // Locations
         LOCATION(RC_WATER_TEMPLE_MAIN_LEVEL_1_POT_1, logic->CanBreakPots()),
