@@ -15,6 +15,7 @@ void RegionTable_Init_SacredForestMeadow() {
         //Exits
         ENTRANCE(RR_LW_BEYOND_MIDO,       true),
         ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->IsAdult || logic->Get(LOGIC_OPEN_SFM_GATE)),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->IsAdult || logic->Get(LOGIC_OPEN_SFM_GATE)),
         ENTRANCE(RR_SFM_WOLFOS_GROTTO,    logic->CanOpenBombGrotto()),
     });
 

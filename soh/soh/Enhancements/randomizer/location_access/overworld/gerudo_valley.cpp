@@ -91,9 +91,9 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_SILVER_BOULDER, logic->CanUse(RG_SILVER_GAUNTLETS)),
     }, {
         //Exits
-        ENTRANCE(RR_GV_UPPER_STREAM,   ((ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) ||
-                                       (logic->BunnyHovers() && logic->CanJumpslash()) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)) && logic->TakeDamage()),
-        ENTRANCE(RR_GV_LOWER_STREAM,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_GV_UPPER_STREAM,   logic->CanMegadive() || (((logic->BunnyHovers() && logic->CanJumpslash()) ||
+                                       logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)) && logic->TakeDamage())),
+        ENTRANCE(RR_GV_LOWER_STREAM,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanMegadive(false)),
         ENTRANCE(RR_GV_OCTOROK_GROTTO, logic->CanUse(RG_SILVER_GAUNTLETS)),
         ENTRANCE(RR_GV_CRATE_LEDGE,    logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHoverFromActor(ARECOIL_SHORT, BRECOIL_NO)),
     });
@@ -104,8 +104,8 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        ENTRANCE(RR_GV_UPPER_STREAM, ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY)),
-        ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_GV_UPPER_STREAM, logic->CanMegadive()),
+        ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanMegadive(false)),
     });
 
     areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", SCENE_GERUDO_VALLEY, {}, {
@@ -137,7 +137,8 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GERUDO_VALLEY,         logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES) || (logic->BunnyHovers() && logic->CanUse(RG_CLIMB))),
         ENTRANCE(RR_GV_CARPENTER_TENT,     logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT)),
         ENTRANCE(RR_GV_STORMS_GROTTO,      logic->IsAdult && logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_GV_CRATE_LEDGE,        (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)))),
+        ENTRANCE(RR_GV_GROTTO_LEDGE,       logic->CanMegadive()),
+        ENTRANCE(RR_GV_CRATE_LEDGE,        logic->CanMegadive() || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)))),
     });
 
     areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", SCENE_CARPENTERS_TENT, {}, {}, {

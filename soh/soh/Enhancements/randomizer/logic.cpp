@@ -707,9 +707,15 @@ bool Logic::CanMiddairGroundJump(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
-bool Logic::CanMegajump(bool hasBombflower) {
-    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_HOVER_BOOTS) &&
-           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) && TakeDamage(DAMAGE_NO_FAIRY);
+bool Logic::CanMegajump(bool needsBunny, bool hasBombflower) {
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) && 
+           (logic->BunnyHood() || (!needsBunny && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_HOVER_BOOTS))) &&
+           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
+bool Logic::CanMegadive(bool fallDamage, bool hasBombflower) {
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) &&
+           EffectiveHealth() > 16 || CanUse(RG_NAYRUS_LOVE) || (EffectiveHealth() > 8 && (fallDamage || CanUse(RG_BOTTLE_WITH_FAIRY)));
 }
 
 bool Logic::CanMidairDamageBoost(bool hasBombflower) {
@@ -1361,15 +1367,9 @@ bool Logic::BeanPlanted(LogicVal beanEvent) {
     return swch >> patch->swchFlag & 1;
 }
 
-bool Logic::CanRecoilHover(RecoilRequirements req, BombRecoilRequirements breq, bool bombFlower) {
+bool Logic::CanRecoilHover(RecoilRequirements req) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
-    }
-    //Fairies kill your mementom
-    if (breq != BRECOIL_NO && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && (HasExplosives() || bombFlower && HasItem(RG_GORONS_BRACELET)) && logic->TakeDamage(DAMAGE_NO_FAIRY)){
-        if (breq == BRECOIL_YES || logic->CanJumpslash()){
-            return true;
-        }
     }
     bool can = false;
     switch (req) {
@@ -1392,14 +1392,9 @@ bool Logic::CanRecoilHover(RecoilRequirements req, BombRecoilRequirements breq, 
 }
 
 // some actors seem to normalise recoil distance, so the only thing that can matter is attack range
-bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequirements breq) {
+bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
-    }
-    if (breq != BRECOIL_NO && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY)){
-        if (breq == BRECOIL_YES || logic->CanJumpslash()){
-            return true;
-        }
     }
     bool can = false;
     switch (req) {
@@ -1421,6 +1416,11 @@ bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequi
     return can;
 }
 
+bool Logic::CanBombRecoilHover(bool bombFlower){
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && 
+           CanUse(RG_HOVER_BOOTS) && HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY);
+}
+
 bool Logic::Water3FCentralToHighEmblem() {
     return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() ||
            (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
@@ -1428,7 +1428,7 @@ bool Logic::Water3FCentralToHighEmblem() {
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
-    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES);
+    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || CanBombRecoilHover();
 }
 
 /* Water level has 7 events that govern its logic.

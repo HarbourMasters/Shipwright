@@ -45,7 +45,8 @@ class Logic {
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
-    bool CanMegajump(bool hasBombflower = false);
+    bool CanMegajump(bool needsBunny = false, bool hasBombflower = false);
+    bool CanMegadive(bool fallDamage = true, bool hasBombflower = false);
     bool CanMidairDamageBoost(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanOpenLargeChest();
@@ -64,8 +65,9 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanRecoilHover(RecoilRequirements req, BombRecoilRequirements breq, bool bombFlower = false);
-    bool CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequirements breq);
+    bool CanRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromActor(ActorRecoilRequirements req);
+    bool CanBombRecoilHover(bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
