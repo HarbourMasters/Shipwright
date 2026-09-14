@@ -10,7 +10,9 @@
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include <ship/Context.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"

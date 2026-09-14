@@ -6,6 +6,7 @@
 
 #include <spdlog/common.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"

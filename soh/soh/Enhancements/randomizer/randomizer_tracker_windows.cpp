@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include <imgui_internal.h>
+#include <ship/window/Window.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
 

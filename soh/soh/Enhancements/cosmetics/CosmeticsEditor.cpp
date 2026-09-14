@@ -4,6 +4,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <ship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 #include <algorithm>
 #include <string>
 

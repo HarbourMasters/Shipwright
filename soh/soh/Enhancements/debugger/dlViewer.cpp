@@ -4,6 +4,8 @@
 #include <libultraship/bridge/resourcebridge.h>
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"

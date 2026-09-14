@@ -3,6 +3,7 @@
 #include "SeedContext.h"
 #include "static_data.h"
 #include "rng.h"
+#include "soh/Enhancements/randomizer/trial.h"
 
 namespace Rando {
 Hint::Hint() {

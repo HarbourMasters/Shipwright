@@ -10,6 +10,7 @@
 #include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "z64.h"
@@ -20,6 +21,7 @@ extern "C" {
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
+#include <ship/Context.h>
 
 #include <fstream>
 #include <filesystem>

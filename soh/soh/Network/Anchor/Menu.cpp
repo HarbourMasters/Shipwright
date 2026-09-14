@@ -1,7 +1,10 @@
+#include <ship/Context.h>
+
 #include "Anchor.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/util.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;

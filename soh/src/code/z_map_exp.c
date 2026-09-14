@@ -10,6 +10,7 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 MapData* gMapData;
 

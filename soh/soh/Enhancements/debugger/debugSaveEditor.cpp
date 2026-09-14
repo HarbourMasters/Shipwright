@@ -5,6 +5,7 @@
 #include <string>
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 #include "debugSaveEditor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"

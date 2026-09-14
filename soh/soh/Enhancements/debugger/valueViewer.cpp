@@ -1,5 +1,6 @@
 #include "valueViewer.h"
 #include <ship/config/Config.h>
+#include <ship/Context.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"

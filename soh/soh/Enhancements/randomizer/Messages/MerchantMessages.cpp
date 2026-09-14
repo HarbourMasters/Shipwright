@@ -7,11 +7,14 @@
  * and Carpet Salesman)
  */
 
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <macros.h>

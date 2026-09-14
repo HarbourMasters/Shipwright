@@ -113,6 +113,7 @@
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
+#include "soh/SohGui/SohModals.h"
 
 #ifdef _MSC_VER
 #define strdup _strdup

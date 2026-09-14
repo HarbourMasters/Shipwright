@@ -5,9 +5,17 @@
 #include <string>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
+#include <ship/window/Window.h>
+#include <ship/Context.h>
 #include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 namespace UIWidgets {
+
+void CVarChanged(const char* cvarName) {
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ShipInit::Init(cvarName);
+}
 
 // Automatically adds newlines to break up text longer than a specified number of characters
 // Manually included newlines will still be respected and reset the line length

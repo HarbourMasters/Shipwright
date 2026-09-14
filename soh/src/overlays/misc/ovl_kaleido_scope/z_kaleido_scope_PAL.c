@@ -23,6 +23,7 @@
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/kaleido.h"
 #include <soh_assets.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,

@@ -10,7 +10,6 @@
 
 #include <ship/utils/color.h>
 
-#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
 namespace UIWidgets {

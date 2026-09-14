@@ -24,8 +24,11 @@
 #include "soh/util.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/ShipInit.hpp"
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 extern "C" {
 #include <z64.h>

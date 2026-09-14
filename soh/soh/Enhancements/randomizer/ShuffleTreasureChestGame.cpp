@@ -1,7 +1,10 @@
+#include <ship/window/Window.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/item_location.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"

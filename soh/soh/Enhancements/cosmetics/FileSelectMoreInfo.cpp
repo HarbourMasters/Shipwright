@@ -1,4 +1,5 @@
 #include "ship/utils/color.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/SaveManager.h"

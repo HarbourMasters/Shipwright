@@ -1,5 +1,7 @@
 #include <string>
 
+#include <ship/window/Window.h>
+
 #include "gameplaystats.h"
 #include "soh/SaveManager.h"
 #include "soh/cvar_prefixes.h"
@@ -8,6 +10,7 @@
 #include "soh/util.h"
 #include "soh/Enhancements/BunnyHood.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/gameplaystatswindow.h"
 
 extern "C" {
 #include "functions.h"
