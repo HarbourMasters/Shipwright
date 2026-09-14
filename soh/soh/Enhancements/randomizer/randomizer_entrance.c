@@ -434,30 +434,33 @@ void Entrance_SetSavewarpEntrance(void) {
 }
 
 void Entrance_SetWarpSongEntrance(void) {
-    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-    gPlayState->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
+    s16 warpEntrance;
     switch (gPlayState->msgCtx.lastPlayedSong) {
         case OCARINA_SONG_MINUET:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_SACRED_FOREST_MEADOW_WARP_PAD); // Minuet
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_SACRED_FOREST_MEADOW_WARP_PAD); // Minuet
             break;
         case OCARINA_SONG_BOLERO:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD); // Bolero
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD); // Bolero
             break;
         case OCARINA_SONG_SERENADE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_WARP_PAD); // Serenade
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_WARP_PAD); // Serenade
             break;
         case OCARINA_SONG_REQUIEM:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_DESERT_COLOSSUS_WARP_PAD); // Requiem
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_DESERT_COLOSSUS_WARP_PAD); // Requiem
             break;
         case OCARINA_SONG_NOCTURNE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_GRAVEYARD_WARP_PAD); // Nocturne
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_GRAVEYARD_WARP_PAD); // Nocturne
             break;
         case OCARINA_SONG_PRELUDE:
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_TEMPLE_OF_TIME_WARP_PAD); // Prelude
+            warpEntrance = Entrance_OverrideNextIndex(ENTR_TEMPLE_OF_TIME_WARP_PAD); // Prelude
             break;
         default:
-            gPlayState->transitionTrigger = TRANS_TRIGGER_OFF; // if something goes wrong, the animation plays normally
+            return; // unknown song: leave the warp untouched
     }
+
+    // Environment_WarpSongLeave has pointed the transition at the vanilla warp pad; send it to the shuffled
+    // entrance instead. Skipping the warp cutscenes is the Skip Warp Cutscenes enhancement's job.
+    gPlayState->nextEntranceIndex = warpEntrance;
 
     // If one of the warp songs happens to lead to a grotto return, then we
     // have to force the grotto return afterwards

@@ -287,10 +287,11 @@ void SohMenu::AddMenuEnhancements() {
                 .DefaultIndex(PAUSE_ANY_CURSOR_RANDO_ONLY)
                 .Tooltip("Allows the cursor on the pause menu to be over any slot. Sometimes required in Randomizer "
                          "to select certain items."));
-    AddWidget(path, "Pause Warp", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("PauseWarp"))
+    AddWidget(path, "Play Songs from Pause Menu", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PauseMenuSongs"))
         .Options(CheckboxOptions().Tooltip(
-            "Selection of warp song in pause menu initiates a warp. Disables song playback."));
+            "Pressing A on any song in the Quest screen closes the menu and triggers the song's effect in gameplay. "
+            "Disables song in-menu playback."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Controls", WIDGET_SEPARATOR_TEXT);
@@ -483,7 +484,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Warp Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("WarpSongSkipAnimation"))
         .Options(CheckboxOptions().DefaultValue(IS_RANDO).Tooltip(
-            "Warp songs skip the departure and arrival cutscenes, fading immediately to the destination."));
+            "Warp songs skip the departure and arrival cutscenes, fading immediately to the destination. "
+            "Applies both when playing the ocarina manually and when using the pause menu shortcut."));
     AddWidget(path, "Skip Boss Introductions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"))
         .Options(CheckboxOptions().DefaultValue(IS_RANDO));

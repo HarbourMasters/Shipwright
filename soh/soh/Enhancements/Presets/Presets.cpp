@@ -223,8 +223,34 @@ void DrawSectionCheck(const std::string& name, bool empty, bool* pointer, std::s
     }
 }
 
+// Presets saved before an enhancement was renamed still carry the old CVar, and applying a block overwrites
+// it wholesale, so translate them on load the way ConfigUpdaters translates a config. Only the in-memory
+// copy is touched; the file is migrated again next launch, or cleaned up if the user saves over it.
+void MigratePreset(nlohmann::json& json) {
+    if (!json.contains("blocks") || !json["blocks"].is_object()) {
+        return;
+    }
+    for (auto& block : json["blocks"]) {
+        if (!block.is_object() || !block.contains("gEnhancements") || !block["gEnhancements"].is_object()) {
+            continue;
+        }
+        auto& enhancements = block["gEnhancements"];
+
+        // PauseWarp was split into PauseMenuSongs (covers all songs) + WarpSongSkipAnimation.
+        // Old behavior skipped the animation, so migrate both flags on.
+        if (auto pauseWarp = enhancements.find("PauseWarp"); pauseWarp != enhancements.end()) {
+            if (pauseWarp->is_number() && pauseWarp->get<int>() != 0) {
+                enhancements["PauseMenuSongs"] = 1;
+                enhancements["WarpSongSkipAnimation"] = 1;
+            }
+            enhancements.erase("PauseWarp");
+        }
+    }
+}
+
 void ParsePreset(nlohmann::json& json, std::string name) {
     try {
+        MigratePreset(json);
         presets[json["presetName"]].presetValues = json;
         presets[json["presetName"]].fileName = name;
         if (json.contains("isBuiltIn")) {
