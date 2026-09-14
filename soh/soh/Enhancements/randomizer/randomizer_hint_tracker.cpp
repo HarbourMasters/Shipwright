@@ -708,11 +708,9 @@ void HintTrackerSettingsWindow::DrawElement() {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
 
-    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, THEME_COLOR);
 
-    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
     CVarSliderFloat("Font Size", CVAR_TRACKER_HINT("FontSize"),
                     FloatSliderOptions()
@@ -725,10 +723,8 @@ void HintTrackerSettingsWindow::DrawElement() {
                         .DefaultValue(1.0f));
 
     if (CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
-        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget, THEME_COLOR);
         CVarCombobox("Display Mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
                      ComboboxOptions()
                          .LabelPosition(LabelPositions::Far)
@@ -752,29 +748,20 @@ void HintTrackerSettingsWindow::DrawElement() {
     }
 
     ImGui::SeparatorText("Tracker Header Visibility");
-    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, THEME_COLOR);
 
     ImGui::SeparatorText("Journal");
-    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, THEME_COLOR);
 
     ImGui::TableNextColumn();
 
-    SohGui::GetSohMenu()->MenuDrawItem(readTextColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(unreadColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(readTextColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(unreadColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, THEME_COLOR);
 
     ImGui::EndTable();
     ImGui::PopStyleVar();

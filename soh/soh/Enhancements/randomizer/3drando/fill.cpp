@@ -402,7 +402,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
     RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
-    assert(ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || quest == RCQUEST_BOTH ||
+    assert(ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON) || quest == RCQUEST_BOTH ||
            (quest == RCQUEST_VANILLA && ctx->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
            (quest == RCQUEST_MQ && ctx->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 
@@ -860,7 +860,7 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
         return;
     }
 
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
+    if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON)) {
         FastFill(items, GetEmptyLocations(allowedLocations), true);
         return;
     }
@@ -928,9 +928,9 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
                 ctx->GetItemLocation(selectedLocation)->SetAsHintable();
             }
 
-            // If ALR is off, then we check beatability after placing the item.
+            // If ACR is off, then we check beatability after placing the item.
             // If the game is beatable, then we can stop placing items with logic.
-            if (!ctx->GetOption(RSK_ALL_LOCATIONS_REACHABLE)) {
+            if (!ctx->GetOption(RSK_ALL_CHECKS_REACHABLE)) {
                 logic->Reset();
                 if (CheckBeatable()) {
                     SPDLOG_DEBUG("Game beatable, now placing items randomly. {} major items remaining",

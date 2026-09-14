@@ -74,7 +74,7 @@ bool WindowButton(const char* label, const char* cvarName, std::shared_ptr<Ship:
 void PushStyleCheckbox(const ImVec4& color, ImVec2 padding = ImVec2(10.0f, 6.0f));
 void PushStyleCheckbox(Colors color = Colors::LightBlue, ImVec2 padding = ImVec2(10.0f, 6.0f));
 void PopStyleCheckbox();
-void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash);
+void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash, float wrap_width = 0.0f);
 bool Checkbox(const char* label, bool* v, const CheckboxOptions& options = {});
 bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions& options = {});
 
