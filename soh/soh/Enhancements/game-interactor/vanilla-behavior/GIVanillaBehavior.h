@@ -27,6 +27,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossVa`
+    // - `s8*` sCsState
+    VB_BARINADE_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
     // this->actor.textId == 0x401A
     // ```
     // #### `args`
@@ -255,6 +264,20 @@ typedef enum {
     // #### `args`
     // - None
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
+
+    // #### `result`
+    // ```c
+    // this->timer == 0
+    // ```
+    // or while the body darkens
+    // ```c
+    // this->timer != 0
+    // ```
+    // #### `args`
+    // - `*BossSst` (head)
+    // - `*BossSst` (left hand)
+    // - `*BossSst` (right hand)
+    VB_BONGO_BONGO_DEATH_SCENE,
 
     // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
@@ -1378,6 +1401,18 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timer == 80
+    // ```
+    // or once the blue warp has spawned
+    // ```c
+    // this->timer == 0
+    // ```
+    // #### `args`
+    // - `*BossGoma`
+    VB_GOHMA_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1650,6 +1685,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->unk_1DA == 600
+    // ```
+    // #### `args`
+    // - `*BossDodongo`
+    VB_KING_DODONGO_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
     // Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)
     // ```
     // #### `args`
@@ -1791,6 +1834,15 @@ typedef enum {
     // #### `args`
     // - `f32*` speed
     VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED,
+
+    // #### `result`
+    // ```c
+    // this->timers[0] == 0
+    // ```
+    // #### `args`
+    // - `*BossMo` (core)
+    // - `*BossMo` (tentacle)
+    VB_MORPHA_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -2157,6 +2209,14 @@ typedef enum {
     // - `*BossTw`
     // - `*PlayState`
     VB_PLAY_TWINROVA_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // this->work[CS_TIMER_2] >= 120 && this->work[CS_TIMER_2] < 500
+    // ```
+    // #### `args`
+    // - `*BossTw`
+    VB_TWINROVA_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -3226,6 +3286,14 @@ typedef enum {
     // #### `args`
     // - `*Player`
     VB_USE_HELD_ITEM_AFTER_CHANGE,
+
+    // #### `result`
+    // ```c
+    // this->timers[0] == 0
+    // ```
+    // #### `args`
+    // - `*BossFd2`
+    VB_VOLVAGIA_DEATH_SCENE,
 
     // #### `result`
     // ```c

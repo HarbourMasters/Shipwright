@@ -1063,7 +1063,7 @@ void BossSst_HeadDeath(BossSst* this, PlayState* play) {
     }
 
     Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y - 140.0f, 20.0f);
-    if (this->timer == 0) {
+    if (GameInteractor_Should(VB_BONGO_BONGO_DEATH_SCENE, this->timer == 0, this, sHands[LEFT], sHands[RIGHT])) {
         BossSst_HandSetupThrash(sHands[LEFT]);
         BossSst_HandSetupThrash(sHands[RIGHT]);
         BossSst_HeadSetupThrash(this);
@@ -1118,7 +1118,7 @@ void BossSst_HeadSetupDarken(BossSst* this) {
 }
 
 void BossSst_HeadDarken(BossSst* this, PlayState* play) {
-    if (this->timer != 0) {
+    if (GameInteractor_Should(VB_BONGO_BONGO_DEATH_SCENE, this->timer != 0, this, sHands[LEFT], sHands[RIGHT])) {
         this->timer--;
     }
 
