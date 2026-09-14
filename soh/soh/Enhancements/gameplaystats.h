@@ -19,15 +19,17 @@ char* GameplayStats_GetCurrentTime();
 // Total gameplay time is tracked in tenths of seconds
 // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
 // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME                                                                \
-    (gSaveContext.ship.stats.rtaTiming                                                         \
-         ? (!gSaveContext.ship.stats.gameComplete                                              \
-                ? (!gSaveContext.ship.stats.firstInput                                         \
-                       ? 0                                                                     \
-                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.firstInput) / 100))    \
-                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]               \
-                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]         \
-                       : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED])) \
+#define GAMEPLAYSTAT_TOTAL_TIME                                                                          \
+    (gSaveContext.ship.stats.rtaTiming                                                                   \
+         ? (!gSaveContext.ship.stats.gameComplete                                                        \
+                ? (!gSaveContext.ship.stats.firstInput                                                   \
+                       ? 0                                                                               \
+                       : ((GetUnixTimestamp() - gSaveContext.ship.stats.firstInput) / 100))              \
+                : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]                         \
+                       ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]                   \
+                       : (gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED]            \
+                              ? gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED]      \
+                              : gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TIMESPLITS_COMPLETED]))) \
          : (gSaveContext.ship.stats.playTimer / 2 + gSaveContext.ship.stats.pauseTimer / 3))
 #define CURRENT_MODE_TIMER                                                                       \
     (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) ? gSaveContext.ship.stats.roomTimer \
@@ -118,6 +120,7 @@ typedef enum {
     /* 0xEC */ TIMESTAMP_FOUND_ZR_BEAN_SOUL,
     /* 0xED */ TIMESTAMP_FOUND_SKELETON_KEY,
     /* 0xEE */ TIMESTAMP_FOUND_ROCS_FEATHER,
+    /* 0xEF */ TIMESTAMP_TIMESPLITS_COMPLETED,
     /* 0xF0 */ TIMESTAMP_MAX
 } GameplayStatTimestamp;
 

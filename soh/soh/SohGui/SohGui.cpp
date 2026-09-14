@@ -83,7 +83,8 @@ std::shared_ptr<HintTracker::HintTrackerSettingsWindow> mHintTrackerSettingsWind
 std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+std::shared_ptr<TimeSplits::TimesplitsWindow> mTimeSplitsWindow;
+std::shared_ptr<TimeSplits::TimesplitsSettingsWindow> mTimeSplitSettingsWindow;
 std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
 std::shared_ptr<Notification::Window> mNotificationWindow;
@@ -189,8 +190,13 @@ void SetupGuiElements() {
     mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"),
                                                                              "Item Tracker Settings", ImVec2(733, 472));
     gui->AddGuiWindow(mItemTrackerSettingsWindow);
-    mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
-    gui->AddGuiWindow(mTimeSplitWindow);
+
+    mTimeSplitsWindow =
+        std::make_shared<TimeSplits::TimesplitsWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitsWindow);
+    mTimeSplitSettingsWindow = std::make_shared<TimeSplits::TimesplitsSettingsWindow>(
+        CVAR_WINDOW("TimeSplitSettings"), "Time Splits Settings Window", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitSettingsWindow);
     mPlandomizerWindow =
         std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
     gui->AddGuiWindow(mPlandomizerWindow);
@@ -233,7 +239,8 @@ void Destroy() {
     mGfxDebuggerWindow = nullptr;
     mInputViewer = nullptr;
     mInputViewerSettings = nullptr;
-    mTimeSplitWindow = nullptr;
+    mTimeSplitsWindow = nullptr;
+    mTimeSplitSettingsWindow = nullptr;
     mPlandomizerWindow = nullptr;
     mTimeDisplayWindow = nullptr;
     mAnchorRoomWindow = nullptr;
