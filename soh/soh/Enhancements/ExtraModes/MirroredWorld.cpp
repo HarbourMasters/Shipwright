@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipUtils.h"

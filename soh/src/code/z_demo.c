@@ -35,6 +35,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;

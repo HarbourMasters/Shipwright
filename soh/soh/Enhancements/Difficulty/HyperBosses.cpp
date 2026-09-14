@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"

@@ -1,3 +1,5 @@
+#include <ship/window/Window.h>
+
 #include "tricks.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include <unordered_map>

@@ -1,3 +1,5 @@
+#include <ship/window/Window.h>
+
 #include "MessageViewer.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"

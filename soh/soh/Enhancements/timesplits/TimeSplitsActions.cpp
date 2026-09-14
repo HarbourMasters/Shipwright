@@ -3,6 +3,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "fast/Fast3dGui.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
 #include <fstream>
 #include <filesystem>
 #include <iterator>

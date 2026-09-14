@@ -8,7 +8,9 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 extern "C" {
 #include "macros.h"

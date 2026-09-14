@@ -2,6 +2,8 @@
  * This file is for handling the Randomize Rupee Names enhancement
  */
 
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"

@@ -14,6 +14,7 @@
 #include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/frame_interpolation.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 

@@ -1,6 +1,7 @@
 #include <imgui.h>
 #include <fast/Fast3dWindow.h>
 #include <fast/interpreter.h>
+#include <ship/Context.h>
 
 #include "ResolutionEditor.h"
 #include "soh/SohGui/UIWidgets.hpp"

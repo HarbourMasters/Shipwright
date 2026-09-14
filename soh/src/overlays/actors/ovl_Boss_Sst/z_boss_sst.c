@@ -269,6 +269,7 @@ const ActorInit Boss_Sst_InitVars = {
 };
 
 #include "z_boss_sst_colchk.c"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 static AnimationHeader* sHandIdleAnims[] = { &gBongoLeftHandIdleAnim, &gBongoRightHandIdleAnim };
 static AnimationHeader* sHandFlatPoses[] = { &gBongoLeftHandFlatPoseAnim, &gBongoRightHandFlatPoseAnim };

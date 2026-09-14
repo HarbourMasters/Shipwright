@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 #include "Plandomizer.h"
 #include <soh/SohGui/SohGui.hpp>

@@ -9,6 +9,7 @@
 
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <ship/window/gui/IconsFontAwesome4.h>
+#include <ship/Context.h>
 
 #include "randomizer_hint_tracker.h"
 #include "soh/OTRGlobals.h"
@@ -22,6 +23,7 @@
 #include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 
 extern "C" {
 #include <z64.h>

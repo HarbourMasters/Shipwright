@@ -35,6 +35,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 // Some player animations are played at this reduced speed, for reasons yet unclear.
 // This is called "adjusted" for now.

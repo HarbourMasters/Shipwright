@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <soh/GameVersions.h>
@@ -8,6 +10,7 @@
 #include "particle_cmc.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"

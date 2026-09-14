@@ -8,6 +8,7 @@
 #include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/util.h"
+#include "soh/ShipInit.hpp"
 #include "z64camera.h"
 #include "z64scene.h"
 

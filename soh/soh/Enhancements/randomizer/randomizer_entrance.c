@@ -19,6 +19,7 @@
 #include "variables.h"
 #include "entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 extern PlayState* gPlayState;
 

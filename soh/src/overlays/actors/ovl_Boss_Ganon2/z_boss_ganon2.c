@@ -56,6 +56,7 @@ const ActorInit Boss_Ganon2_InitVars = {
 };
 
 #include "z_boss_ganon2_data.c"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 static Vec3f D_8090EB20;
 

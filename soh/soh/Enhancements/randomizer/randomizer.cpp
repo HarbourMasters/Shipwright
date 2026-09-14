@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <ship/window/FileDropMgr.h>
 #include <spdlog/spdlog.h>
+#include <ship/Context.h>
 
 #include "randomizer.h"
 #include "3drando/menu.hpp"
@@ -23,6 +24,8 @@
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 #include "dungeon.h"
 #include "logic.h"
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/Enhancements/randomizer/trial.h"
 
 extern "C" {
 #include <variables.h>

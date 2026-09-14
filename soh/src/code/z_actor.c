@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"

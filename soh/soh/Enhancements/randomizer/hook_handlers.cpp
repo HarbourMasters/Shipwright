@@ -1,4 +1,7 @@
 ﻿#include "soh/OTRGlobals.h"
+
+#include <ship/window/Window.h>
+
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"

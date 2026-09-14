@@ -7,6 +7,7 @@
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <macros.h>
