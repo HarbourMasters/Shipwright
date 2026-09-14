@@ -160,8 +160,8 @@ uint8_t GetSceneSmallKeyMax(const SceneID scene) {
         return static_cast<uint8_t>(chestGameDoorFlags.size());
     }
     // ask which layout actually loads rather than what the seed asked for, so an MQ-only rom still lines up
-    const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene);
-    return dungeon != nullptr ? dungeon->GetSmallKeyCountForQuest(ResourceMgr_IsSceneMasterQuest(scene)) : 0;
+    const auto dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene);
+    return dungeon.has_value() ? dungeon.value()->GetSmallKeyCountForQuest(ResourceMgr_IsSceneMasterQuest(scene)) : 0;
 }
 
 int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, const SceneID scene) {
@@ -171,8 +171,10 @@ int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, const SceneID scen
     if (scene == SCENE_TREASURE_BOX_SHOP) {
         return FindTotalSmallKeys(saveContext, scene, chestGameDoorFlags);
     }
-    if (const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene)) {
-        return FindTotalSmallKeys(saveContext, scene, dungeon->GetDoorFlags());
+    if (const auto dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene)) {
+        assert(dungeon.has_value());
+
+        return FindTotalSmallKeys(saveContext, scene, dungeon.value()->GetDoorFlags());
     }
     return FindCurrentSmallKeys(saveContext, scene);
 }
@@ -311,11 +313,12 @@ Dungeons::Dungeons() {
 
 Dungeons::~Dungeons() = default;
 
-DungeonInfo* Dungeons::GetDungeon(const DungeonKey key) {
-    return &dungeonList[key];
+DungeonInfo& Dungeons::GetDungeon(const DungeonKey key) {
+    return dungeonList[key];
 }
 
-DungeonInfo* Dungeons::GetDungeonFromScene(const uint16_t scene) {
+/// If you know the scene in advance, use `GetDungeon` as it's infallible
+std::optional<DungeonInfo*> Dungeons::GetDungeonFromScene(const uint16_t scene) {
     switch (scene) {
         case SCENE_DEKU_TREE:
             return &dungeonList[DEKU_TREE];
@@ -342,7 +345,7 @@ DungeonInfo* Dungeons::GetDungeonFromScene(const uint16_t scene) {
         case SCENE_INSIDE_GANONS_CASTLE:
             return &dungeonList[GANONS_CASTLE];
         default:
-            return nullptr;
+            return std::nullopt;
     }
 }
 

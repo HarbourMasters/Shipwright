@@ -74,12 +74,13 @@ class Entrance {
     void SetDecoupled();
     int16_t GetIndex() const;
     void SetIndex(int16_t newIndex);
-    Entrance* GetAssumed() const;
-    void SetReplacement(Entrance* newReplacement);
-    Entrance* GetReplacement() const;
+    // TODO: Change to std::optional<Entrance&> when we update to C++ 26
+    std::optional<Entrance*> GetAssumed() const;
+    void SetReplacement(std::optional<Entrance*> newReplacement);
+    std::optional<Entrance*> GetReplacement() const;
     EntranceType GetType() const;
     void SetType(EntranceType newType);
-    Entrance* GetReverse() const;
+    std::optional<Entrance*> GetReverse() const;
     void Connect(RandomizerRegion newConnectedRegion);
     RandomizerRegion Disconnect();
     void BindTwoWay(Entrance* otherEntrance);
@@ -95,9 +96,10 @@ class Entrance {
     ConditionFn condition_function;
 
     EntranceType type = EntranceType::None;
-    Entrance* reverse = nullptr;
-    Entrance* assumed = nullptr;
-    Entrance* replacement = nullptr;
+    // TODO: Change to std::optional<Entrance&> when we update to C++ 26
+    std::optional<Entrance*> reverse = std::nullopt;
+    std::optional<Entrance*> assumed = std::nullopt;
+    std::optional<Entrance*> replacement = std::nullopt;
     int16_t index = -1;
     bool shuffled = false;
     bool primary = false;

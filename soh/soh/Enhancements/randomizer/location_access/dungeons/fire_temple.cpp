@@ -10,8 +10,8 @@ void RegionTable_Init_FireTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_FIRE_TEMPLE_ENTRYWAY] = Region("Fire Temple Entryway", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FIRE_TEMPLE_FOYER,          ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_FOYER_LOWER, ctx->GetDungeon(FIRE_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_FIRE_TEMPLE_FOYER,          ctx->GetDungeon(FIRE_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_FOYER_LOWER, ctx->GetDungeon(FIRE_TEMPLE).IsMQ()),
         ENTRANCE(RR_DMC_TEMPLE_ENTRY,           true),
     });
 
@@ -1133,8 +1133,8 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_BOSS_KEY_HINT, true),
     }, {
         // Exits
-        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,    ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM, ctx->GetDungeon(FIRE_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,    ctx->GetDungeon(FIRE_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM, ctx->GetDungeon(FIRE_TEMPLE).IsMQ()),
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ROOM,         logic->HasItem(RG_FIRE_TEMPLE_BOSS_KEY)),
     });
 

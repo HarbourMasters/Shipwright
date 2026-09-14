@@ -11,8 +11,8 @@ void RegionTable_Init_ForestTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_FOREST_TEMPLE_ENTRYWAY] = Region("Forest Temple Entryway", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_TREES,      ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_TREES,   ctx->GetDungeon(FOREST_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_FOREST_TEMPLE_TREES,      ctx->GetDungeon(FOREST_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_TREES,   ctx->GetDungeon(FOREST_TEMPLE).IsMQ()),
         ENTRANCE(RR_SACRED_FOREST_MEADOW,     true),
     });
 
@@ -853,8 +853,8 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_BOSS_KEY_HINT, true),
     }, {
         // Exits
-        ENTRANCE(RR_FOREST_TEMPLE_BASEMENT,    ctx->GetDungeon(FOREST_TEMPLE)->IsVanilla() && logic->Get(LOGIC_FOREST_OPEN_BOSS_HALLWAY)),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_BASEMENT, ctx->GetDungeon(FOREST_TEMPLE)->IsMQ() && logic->Get(LOGIC_FOREST_OPEN_BOSS_HALLWAY)),
+        ENTRANCE(RR_FOREST_TEMPLE_BASEMENT,    ctx->GetDungeon(FOREST_TEMPLE).IsVanilla() && logic->Get(LOGIC_FOREST_OPEN_BOSS_HALLWAY)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_BASEMENT, ctx->GetDungeon(FOREST_TEMPLE).IsMQ() && logic->Get(LOGIC_FOREST_OPEN_BOSS_HALLWAY)),
         ENTRANCE(RR_FOREST_TEMPLE_BOSS_ROOM,   logic->HasItem(RG_FOREST_TEMPLE_BOSS_KEY)),
     });
 

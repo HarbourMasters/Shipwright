@@ -10,8 +10,8 @@ void RegionTable_Init_GanonsCastle() {
     // Vanilla/MQ Decider
     areaTable[RR_GANONS_CASTLE_ENTRYWAY] = Region("Ganon's Castle Entryway", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_LOBBY,               ctx->GetDungeon(GANONS_CASTLE)->IsVanilla()),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_LOBBY,            ctx->GetDungeon(GANONS_CASTLE)->IsMQ()),
+        ENTRANCE(RR_GANONS_CASTLE_LOBBY,               ctx->GetDungeon(GANONS_CASTLE).IsVanilla()),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_LOBBY,            ctx->GetDungeon(GANONS_CASTLE).IsMQ()),
         ENTRANCE(RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, true),
     });
 
@@ -945,8 +945,8 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_TOWER_ENTRYWAY] = Region("Ganon's Tower Entryway", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_LOBBY,   ctx->GetDungeon(GANONS_CASTLE)->IsVanilla()),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN, ctx->GetDungeon(GANONS_CASTLE)->IsMQ()),
+        ENTRANCE(RR_GANONS_CASTLE_LOBBY,   ctx->GetDungeon(GANONS_CASTLE).IsVanilla()),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN, ctx->GetDungeon(GANONS_CASTLE).IsMQ()),
         ENTRANCE(RR_GANONS_TOWER_STAIRS_1, true),
     });
 

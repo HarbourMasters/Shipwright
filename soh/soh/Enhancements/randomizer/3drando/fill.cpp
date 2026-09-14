@@ -219,9 +219,12 @@ void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, Randomizer
                 gals.entranceSphere.push_back(&exit);
                 exit.AddToPool();
                 // Don't list a two-way coupled entrance from both directions
-                if (exit.GetReverse() != nullptr && exit.GetReplacement()->GetReverse() != nullptr &&
+
+                assert(exit.GetReplacement().has_value());
+
+                if (exit.GetReverse().has_value() && exit.GetReplacement().value()->GetReverse().has_value() &&
                     !exit.IsDecoupled()) {
-                    exit.GetReplacement()->GetReverse()->AddToPool();
+                    exit.GetReplacement().value()->GetReverse().value()->AddToPool();
                 }
             }
         }
@@ -403,8 +406,10 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
     RandomizerGet locItem = location->GetPlacedRandomizerGet();
     RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
     assert(ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) || quest == RCQUEST_BOTH ||
-           (quest == RCQUEST_VANILLA && ctx->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
-           (quest == RCQUEST_MQ && ctx->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
+           (quest == RCQUEST_VANILLA && ctx->GetDungeonFromScene(parentRegion->scene).has_value() &&
+            ctx->GetDungeonFromScene(parentRegion->scene).value()->IsVanilla()) ||
+           (quest == RCQUEST_MQ && ctx->GetDungeonFromScene(parentRegion->scene).has_value() &&
+            ctx->GetDungeonFromScene(parentRegion->scene).value()->IsMQ()));
 
     if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks) &&
         !logic->ShopItemNotForSale(loc)) {

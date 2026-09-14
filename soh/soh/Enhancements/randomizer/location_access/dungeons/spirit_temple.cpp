@@ -10,8 +10,8 @@ void RegionTable_Init_SpiritTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_SPIRIT_TEMPLE_ENTRYWAY] = Region("Spirit Temple Entryway", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_FOYER,            ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOYER,         ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_FOYER,            ctx->GetDungeon(SPIRIT_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOYER,         ctx->GetDungeon(SPIRIT_TEMPLE).IsMQ()),
         ENTRANCE(RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE, true),
     });
 
@@ -1205,8 +1205,8 @@ void RegionTable_Init_SpiritTemple() {
     // Boss Room
     areaTable[RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY] = Region("Spirit Temple Boss Entryway", SCENE_SPIRIT_TEMPLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_HEAD,    ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla()),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_HEAD, ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_HEAD,    ctx->GetDungeon(SPIRIT_TEMPLE).IsVanilla()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_HEAD, ctx->GetDungeon(SPIRIT_TEMPLE).IsMQ()),
         ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ROOM,      logic->HasItem(RG_SPIRIT_TEMPLE_BOSS_KEY)),
     });
 

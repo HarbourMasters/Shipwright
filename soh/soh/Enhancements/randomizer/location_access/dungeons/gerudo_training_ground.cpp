@@ -10,8 +10,8 @@ void RegionTable_Init_GerudoTrainingGround() {
     // Vanilla/MQ Decider
     areaTable[RR_GERUDO_TRAINING_GROUND_ENTRYWAY] = Region("Gerudo Training Ground Entryway", SCENE_GERUDO_TRAINING_GROUND, {}, {}, {
         //Exits
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LOBBY,    ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsVanilla()),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ()),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_LOBBY,    ctx->GetDungeon(GERUDO_TRAINING_GROUND).IsVanilla()),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY, ctx->GetDungeon(GERUDO_TRAINING_GROUND).IsMQ()),
         ENTRANCE(RR_GF_EXITING_GTG,                  true),
     });
 

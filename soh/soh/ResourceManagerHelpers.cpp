@@ -180,7 +180,8 @@ u32 IsSceneMasterQuest(s16 sceneNum) {
 
         if (IS_RANDO) {
             auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene((SceneID)sceneNum);
-            if (dungeon != nullptr && dungeon->IsMQ()) {
+            // TODO: Change to value_and when we update to C++ 23
+            if (dungeon.has_value() && dungeon.value()->IsMQ()) {
                 return true;
             }
         }
