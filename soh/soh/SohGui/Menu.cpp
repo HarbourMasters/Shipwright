@@ -3,6 +3,7 @@
 
 #include <ship/config/Config.h>
 #include <spdlog/common.h>
+#include <ship/Context.h>
 
 #include "Menu.h"
 #include "BackendTypes.h"

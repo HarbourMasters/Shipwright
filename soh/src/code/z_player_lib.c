@@ -12,6 +12,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 #include <stdlib.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 typedef struct {
     /* 0x00 */ u8 flag;

@@ -6,6 +6,7 @@
 
 #include <spdlog/common.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
@@ -25,6 +26,7 @@
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "location.h"
 #include "item_location.h"

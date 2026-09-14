@@ -2,6 +2,8 @@
 #include <set>
 #include <string>
 
+#include <ship/Context.h>
+
 #include "AudioEditor.h"
 #include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
@@ -13,6 +15,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "sequence.h"

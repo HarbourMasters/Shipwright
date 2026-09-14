@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <ship/utils/StringHelper.h>
+#include <ship/Context.h>
 
 #include "mod_menu.h"
 #include "soh/Enhancements/audio/OotrsArchive.h"
@@ -13,6 +14,7 @@
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;

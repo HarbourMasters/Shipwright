@@ -2327,6 +2327,15 @@ typedef enum {
     // ```c
     // true
     // ```
+    // Whether the left stick aims in first person. Off when it moves Link instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_AIM_WITH_LEFT_STICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `*Player`
     // - `int32_t` (magicArrowType)
@@ -2341,6 +2350,24 @@ typedef enum {
     // - `void*` player (Player*)
     // - `PlayState*` play
     VB_PLAYER_DRAW_BOTTLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether Link's movement direction is set to where he faces in first person.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_ALIGN_YAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether Link slows to a stop in first person. Hooks may set his speed instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_DECELERATE,
 
     // #### `result`
     // ```c

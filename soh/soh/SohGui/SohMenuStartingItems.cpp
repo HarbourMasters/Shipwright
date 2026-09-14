@@ -1,6 +1,7 @@
 #include <vector>
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"

@@ -8,7 +8,6 @@
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "../custom-message/CustomMessageTypes.h"
 
 #define MAX_SEED_STRING_SIZE 1024
 

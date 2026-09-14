@@ -1,4 +1,7 @@
 ﻿#include "soh/OTRGlobals.h"
+
+#include <ship/window/Window.h>
+
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -1185,6 +1188,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 GetItemEntry itemEntry = randomizerQueuedItemEntry;
                 item00->itemEntry = itemEntry;
                 item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
+            }
+            break;
+        }
+        case VB_ITEM00_TIMER_TICK: {
+            EnItem00* item00 = va_arg(args, EnItem00*);
+            uint8_t ogType = item00->ogParams & 0xFF;
+            // Shuffled keys and heart pieces become ITEM00_SOH_DUMMY, no longer matching checks preventing despawning
+            if (item00->actor.params == ITEM00_SOH_DUMMY &&
+                (ogType == ITEM00_SMALL_KEY || ogType == ITEM00_HEART_PIECE || ogType == ITEM00_HEART_CONTAINER)) {
+                *should = false;
             }
             break;
         }

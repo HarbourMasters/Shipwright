@@ -1,12 +1,14 @@
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/utils/StringHelper.h>
 #include <fast/Fast3dWindow.h>
+#include <ship/Context.h>
 
 #include "SohInputEditorWindow.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/cvar_prefixes.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "z64.h"

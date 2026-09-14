@@ -10,7 +10,9 @@
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include <ship/Context.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
@@ -993,7 +995,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_BUNNY_HOOD_NAME)
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Bunny Hood Effect\" is currently loaded.";
         })
@@ -1008,7 +1011,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ADULT_MASKS_NAME)
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Masks as Adult\" is currently loaded.";
         })
@@ -2175,12 +2178,9 @@ void SohMenu::AddMenuEnhancements() {
     // Time Splits
     path.sidebarName = "Time Splits";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("TimeSplits"))
-        .RaceDisable(false)
-        .WindowName("Time Splits")
-        .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
+    AddWidget(path, "Popout Timesplits Settings", WIDGET_WINDOW_BUTTON)
+        .CVar("gWindows.Timesplits.Settings")
+        .WindowName("Time Splits Settings Window");
 
     // Timers
     path.sidebarName = "Timers";

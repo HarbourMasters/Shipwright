@@ -16,6 +16,7 @@
 #include "soh/Enhancements/randomizer/rng.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/trial.h"
 
 #include <algorithm>
 #include <vector>

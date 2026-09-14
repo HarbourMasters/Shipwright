@@ -2,6 +2,7 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
+#include "soh/Enhancements/randomizer/trial.h"
 
 using namespace Rando;
 

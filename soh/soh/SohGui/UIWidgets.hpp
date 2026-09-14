@@ -3,10 +3,8 @@
 #include "UIWidgetOptions.hpp"
 
 #include <libultraship/bridge/consolevariablebridge.h>
-#include <ship/Context.h>
 #include <ship/window/gui/GuiWindow.h>
-#include <ship/window/Window.h>
-#include "soh/ShipInit.hpp"
+#include <spdlog/spdlog.h>
 
 namespace UIWidgets {
 
@@ -454,6 +452,8 @@ bool Combobox(std::string label, T* value, const char* (&comboArray)[N], const C
     return dirty;
 }
 
+void CVarChanged(const char* cvarName);
+
 template <typename T = int32_t>
 bool CVarCombobox(const char* label, const char* cvarName, const std::map<T, const char*>& comboMap,
                   const ComboboxOptions& options = {}) {
@@ -461,8 +461,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::map<T, con
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboMap, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        ShipInit::Init(cvarName);
+        CVarChanged(cvarName);
         dirty = true;
     }
     return dirty;
@@ -475,8 +474,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const std::vector<con
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboVector, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        ShipInit::Init(cvarName);
+        CVarChanged(cvarName);
         dirty = true;
     }
     return dirty;
@@ -489,8 +487,7 @@ bool CVarCombobox(const char* label, const char* cvarName, const char* (&comboAr
     int32_t value = CVarGetInteger(cvarName, options.defaultIndex);
     if (Combobox<T>(label, &value, comboArray, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-        ShipInit::Init(cvarName);
+        CVarChanged(cvarName);
         dirty = true;
     }
     return dirty;

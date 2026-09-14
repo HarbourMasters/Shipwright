@@ -1,4 +1,5 @@
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "functions.h"
 #include "macros.h"
@@ -11,6 +12,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <z64.h>

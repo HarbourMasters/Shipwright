@@ -7,6 +7,9 @@
 #include <set>
 #include <vector>
 
+#include <string>
+std::string Ship_FormatTimeDisplay(uint32_t value);
+
 void LoadGuiTextures();
 
 extern "C" {

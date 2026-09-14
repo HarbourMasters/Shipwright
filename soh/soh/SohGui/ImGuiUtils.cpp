@@ -272,4 +272,11 @@ void RegisterImGuiItemIcons() {
     for (const auto& entry : gSeedTextures) {
         gui->LoadGuiTexture(entry.tex, entry.tex, "", ImVec4(1, 1, 1, 1));
     }
+
+    gui->LoadGuiTexture("gPauseUnusedCursorTex", gPauseUnusedCursorTex, "", ImVec4(1, 1, 1, 1));
+
+    gui->LoadGuiTexture("gWTriforcePieceTex", gWTriforcePieceTex, "", ImVec4(1, 1, 1, 1));
+
+    // TODO: Figure out why this texture wouldn't load in the TimeSplits Windows
+    gui->LoadGuiTexture("gSongNoteTex", gSongNoteTex, "", ImVec4(1, 1, 1, 1));
 }

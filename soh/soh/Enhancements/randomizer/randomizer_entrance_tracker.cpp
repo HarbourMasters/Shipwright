@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
@@ -19,6 +20,7 @@ extern PlayState* gPlayState;
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "entrance.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 using namespace UIWidgets;
 

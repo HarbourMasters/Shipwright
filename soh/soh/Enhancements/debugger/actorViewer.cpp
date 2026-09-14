@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <string>
 
+#include <ship/window/Window.h>
+
 #include "actorViewer.h"
 #include "../../util.h"
 #include "soh/SohGui/UIWidgets.hpp"

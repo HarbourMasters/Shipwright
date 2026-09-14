@@ -1,5 +1,7 @@
 #include <unordered_set>
 
+#include <ship/Context.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "SohMenu.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -8,6 +10,7 @@
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/ShipUtils.h"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "variables.h"

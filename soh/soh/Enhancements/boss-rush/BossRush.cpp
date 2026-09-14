@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "BossRush.h"
 #include "soh/ShipInit.hpp"

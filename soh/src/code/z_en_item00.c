@@ -5,6 +5,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS 0
 

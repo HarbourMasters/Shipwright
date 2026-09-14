@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 #include "soh/frame_interpolation.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "variables.h"

@@ -3,7 +3,7 @@
 #include "randomizerTypes.h"
 #include "item_override.h"
 #include "hint.h"
-#include "trial.h"
+#include "item_location.h"
 
 #include <memory>
 #include <array>
