@@ -219,6 +219,47 @@ static u8 pendingMode = OCARINA_MODE_00;
 static Actor* pendingTalkActor = NULL;
 static int pendingTimer = 0;
 
+// Vanilla only ever puts an NPC into its listening state together with the ocarina prompt, so the mode it
+// waits on is certain to arrive. Driving it from here carries no such guarantee, and an NPC left listening
+// is a dead end: it keeps setting PLAYER_STATE2_NEAR_OCARINA_ACTOR while answering nothing, so the next
+// real ocarina comes out to a camera change with no note prompt and no way to put it away
+// (Player_Action_8084E3C4 waits for a response the actor no longer gives). Undo any hand-off the actor
+// did not consume.
+static Actor* pendingNpc = NULL;
+static void (*pendingNpcRestore)(Actor*) = NULL;
+
+// The hold spans frames, which is long enough for a scene change. Never write through an actor pointer
+// the list no longer has.
+static bool PauseSong_NpcStillLoaded(Actor* actor) {
+    for (Actor* it = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head; it != NULL; it = it->next) {
+        if (it == actor) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static void PauseSong_RestoreMido(Actor* actor) {
+    EnMd* mido = reinterpret_cast<EnMd*>(actor);
+    if (mido->actionFunc == EnMd_ListenToOcarina) {
+        mido->actionFunc = EnMd_BlockPath;
+    }
+}
+
+static void PauseSong_RestoreDarunia(Actor* actor) {
+    EnDu* darunia = reinterpret_cast<EnDu*>(actor);
+    if (darunia->actionFunc == func_809FE4A4) {
+        darunia->actionFunc = func_809FE3C0;
+    }
+}
+
+static void PauseSong_RestoreMalon(Actor* actor) {
+    EnMa2* malon = reinterpret_cast<EnMa2*>(actor);
+    if (malon->actionFunc == EnMa2_WaitForEponasSong) {
+        malon->actionFunc = EnMa2_WaitForOcarina;
+    }
+}
+
 static void PauseSong_HoldMode(u8 mode) {
     gPlayState->msgCtx.ocarinaMode = mode;
     pendingMode = mode;
@@ -234,7 +275,15 @@ static bool PauseSong_AdvancePending() {
     }
     bool reacted = gPlayState->msgCtx.ocarinaMode != pendingMode;
     if (--pendingTimer == 0 || reacted) {
-        if (pendingTalkActor != NULL && reacted && pendingTalkActor->textId != 0) {
+        if (pendingNpc != NULL) {
+            if (PauseSong_NpcStillLoaded(pendingNpc)) {
+                pendingNpcRestore(pendingNpc);
+            }
+            pendingNpc = NULL;
+            pendingNpcRestore = NULL;
+        }
+        if (pendingTalkActor != NULL && reacted && PauseSong_NpcStillLoaded(pendingTalkActor) &&
+            pendingTalkActor->textId != 0) {
             Player_StartTalking(gPlayState, pendingTalkActor);
         }
         if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_03 || gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
@@ -280,9 +329,11 @@ static bool PauseSong_ActivateNpcActors() {
         if (actor->id == ACTOR_EN_MD && scene == SCENE_LOST_WOODS && song == OCARINA_SONG_SARIAS) {
             EnMd* mido = (EnMd*)actor;
             if (mido->actionFunc == EnMd_BlockPath && mido->interactInfo.talkState == NPC_TALK_STATE_IDLE &&
-                actor->xzDistToPlayer < 100.0f) {
+                actor->xzDistToPlayer < (30.0f + mido->collider.dim.radius)) {
                 mido->actionFunc = EnMd_ListenToOcarina;
                 pendingTalkActor = actor;
+                pendingNpc = actor;
+                pendingNpcRestore = PauseSong_RestoreMido;
                 PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
@@ -290,8 +341,11 @@ static bool PauseSong_ActivateNpcActors() {
         // Darunia, in Goron City as a child, dances (a cutscene) for Saria's Song.
         if (actor->id == ACTOR_EN_DU && scene == SCENE_GORON_CITY && song == OCARINA_SONG_SARIAS) {
             EnDu* darunia = (EnDu*)actor;
-            if (darunia->actionFunc == func_809FE3C0 && actor->xzDistToPlayer < 120.0f) {
+            if (darunia->actionFunc == func_809FE3C0 &&
+                actor->xzDistToPlayer < (116.0f + darunia->collider.dim.radius)) {
                 darunia->actionFunc = func_809FE4A4;
+                pendingNpc = actor;
+                pendingNpcRestore = PauseSong_RestoreDarunia;
                 PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
@@ -299,8 +353,11 @@ static bool PauseSong_ActivateNpcActors() {
         // Adult Malon, at Lon Lon Ranch, reacts to Epona's Song (she starts her own dialogue).
         if (actor->id == ACTOR_EN_MA2 && scene == SCENE_LON_LON_RANCH && song == OCARINA_SONG_EPONAS) {
             EnMa2* malon = (EnMa2*)actor;
-            if (malon->actionFunc == EnMa2_WaitForOcarina && actor->xzDistToPlayer < 60.0f) {
+            if (malon->actionFunc == EnMa2_WaitForOcarina &&
+                actor->xzDistToPlayer < (30.0f + malon->collider.dim.radius)) {
                 malon->actionFunc = EnMa2_WaitForEponasSong;
+                pendingNpc = actor;
+                pendingNpcRestore = PauseSong_RestoreMalon;
                 PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
