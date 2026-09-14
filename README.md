@@ -61,7 +61,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | F5 | Save state |
 | F6 | Change state |
 | F7 | Load state |
-| F9 | Toggle Text-to-Speech (Windows and Mac only) |
+| F9 | Toggle Text-to-Speech |
 | F11 | Fullscreen |
 | Tab | Toggle Alternate assets |
 | Ctrl+R | Reset |
