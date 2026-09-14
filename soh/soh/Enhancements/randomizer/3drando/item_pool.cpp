@@ -477,8 +477,8 @@ void GenerateItemPool() {
     bool dungeonCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_DUNGEONS) ||
                                ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
     PlaceItemsForType(RCTYPE_CRATE, overworldCratesActive, dungeonCratesActive);
-    PlaceItemsForType(RCTYPE_NLCRATE, ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) && overworldCratesActive,
-                      ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) && dungeonCratesActive);
+    PlaceItemsForType(RCTYPE_NLCRATE, ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON) && overworldCratesActive,
+                      ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON) && dungeonCratesActive);
     PlaceItemsForType(RCTYPE_SMALL_CRATE, overworldCratesActive, dungeonCratesActive);
 
     // Shuffle Rocks
@@ -495,7 +495,7 @@ void GenerateItemPool() {
     // Shuffle Trees
     bool treesActive = (bool)ctx->GetOption(RSK_SHUFFLE_TREES);
     PlaceItemsForType(RCTYPE_TREE, treesActive, false);
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC)) {
+    if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON)) {
         PlaceItemsForType(RCTYPE_NLTREE, treesActive, false);
     }
 

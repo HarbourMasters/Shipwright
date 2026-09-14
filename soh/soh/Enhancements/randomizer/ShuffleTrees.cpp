@@ -139,7 +139,7 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     IdentifyCheck(&treeIdentity, location);
 
     if ((location->GetRCType() != RCTYPE_NLTREE ||
-         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) &&
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON) &&
         IdentifyCheck(&treeIdentity, location)) {
         return treeIdentity;
     }

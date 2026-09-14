@@ -232,24 +232,24 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
+    auto logicSetting = RAND_GET_OPTION(RSK_NO_LOGIC);
 
     // don't shuffle the no logic crates when not in no logic
-    if (actor->id != ACTOR_OBJ_KIBAKO2 || (logicSetting.IsNot(RO_LOGIC_NO_LOGIC) &&
-                                           ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+    if (actor->id != ACTOR_OBJ_KIBAKO2 ||
+        (logicSetting.Is(RO_GENERIC_OFF) && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
@@ -315,7 +315,7 @@ void RegisterShuffleCrates() {
 
     // Prevent the randomized items from the "decoy" crates from immediately despawning
     COND_VB_SHOULD(VB_ITEM00_KILL, shouldRegister, {
-        if (RAND_GET_OPTION(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
+        if (RAND_GET_OPTION(RSK_NO_LOGIC).Is(RO_GENERIC_ON) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
             EnItem00* item00 = va_arg(args, EnItem00*);
 
             if (item00->actor.world.pos.x < -3500.0f) {

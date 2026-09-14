@@ -1925,7 +1925,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_NLCRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea()) &&
-                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) ||
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
@@ -1937,7 +1937,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_TREE || showTrees) &&
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
-                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON)) &&
                (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
                (loc->GetRCType() != RCTYPE_SIGN ||
                 (showOverworldSigns && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
@@ -2529,11 +2529,9 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
         UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
                                    UIWidgets::FloatSliderOptions()
@@ -2573,22 +2571,17 @@ void CheckTrackerSettingsWindow::DrawElement() {
             }
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget, THEME_COLOR);
         ImGui::EndDisabled();
 
-        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, THEME_COLOR);
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget, THEME_COLOR);
         ImGui::EndDisabled();
 
         // Filtering settings

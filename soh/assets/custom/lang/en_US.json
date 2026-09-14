@@ -1492,23 +1492,18 @@
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."
             },
-            "logic_rules": {
-                "name": "Logic",
+            "no_logic": {
+                "name": "No Logic",
                 "description": [
-                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled ",
-                    "and disabled below.\n",
-                    "\n",
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "Item placement is completely random without any verification for obtainability. MAY BE IMPOSSIBLE TO BEAT."
                 ]
             },
-            "all_locations_reachable": {
-                "name": "All Locations Reachable",
+            "all_checks_reachable": {
+                "name": "All Checks Reachable",
                 "description": [
-                    "When this option is enabled, the randomizer will ",
-                    "guarantee that every item is obtainable and every ",
-                    "location is reachable. When disabled, only ",
-                    "required items and locations to beat the game ",
-                    "will be guaranteed reachable."
+                    "When this option is enabled, the randomizer will guarantee that every item is obtainable and every ",
+                    "check is reachable. When disabled, only required items and checks to beat the game ",
+                    "will be guaranteed reachable. Does not apply to No Logic."
                 ]
             },
             "shuffle_bean_souls": {

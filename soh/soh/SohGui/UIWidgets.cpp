@@ -262,7 +262,7 @@ void InsertHelpHoverText(const char* text) {
     }
 }
 
-void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash) {
+void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash, float wrap_width) {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
 
@@ -277,7 +277,8 @@ void RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_te
     }
 
     if (text != text_display_end) {
-        window->DrawList->AddText(g.Font, g.FontSize, pos, ImGui::GetColorU32(ImGuiCol_Text), text, text_display_end);
+        window->DrawList->AddText(g.Font, g.FontSize, pos, ImGui::GetColorU32(ImGuiCol_Text), text, text_display_end,
+                                  wrap_width);
         if (g.LogEnabled)
             ImGui::LogRenderedText(&pos, text, text_display_end);
     }
@@ -304,9 +305,11 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
-    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
     const float square_sz = ImGui::GetFrameHeight();
     ImVec2 pos = window->DC.CursorPos;
+    const float labelWrapWidth =
+        ImGui::CalcWrapWidthForPos(pos + ImVec2(above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz, 0), 0.0f);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true, labelWrapWidth);
 
     if (right) {
         float labelOffsetX = (above ? 0 : (style.ItemInnerSpacing.x * 2.0f) + square_sz);
@@ -365,7 +368,7 @@ bool Checkbox(const char* _label, bool* value, const CheckboxOptions& options) {
         const float pad = ImMax(1.0f, IM_TRUNC(square_sz / 6.0f));
         ImGui::RenderCheckMark(window->DrawList, check_bb.Min + ImVec2(pad, pad), check_col, square_sz - pad * 2.0f);
     }
-    RenderText(labelPos, label, ImGui::FindRenderedTextEnd(label), true);
+    RenderText(labelPos, label, ImGui::FindRenderedTextEnd(label), true, labelWrapWidth);
     PopStyleCheckbox();
     ImGui::EndDisabled();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
@@ -982,10 +985,12 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
     const ImGuiID id = window->GetID(label);
-    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
 
     const float square_sz = ImGui::GetFrameHeight();
     const ImVec2 pos = window->DC.CursorPos;
+    const float labelWrapWidth =
+        ImGui::CalcWrapWidthForPos(pos + ImVec2(square_sz + style.ItemInnerSpacing.x, 0), 0.0f);
+    const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true, labelWrapWidth);
     const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
     const ImRect total_bb(
         pos, pos + ImVec2(square_sz + (label_size.x > 0.0f ? style.ItemInnerSpacing.x + label_size.x : 0.0f),
@@ -1027,7 +1032,7 @@ bool RadioButton(const char* label, bool active, const RadioButtonsOptions& opti
     if (g.LogEnabled)
         ImGui::LogRenderedText(&label_pos, active ? "(x)" : "( )");
     if (label_size.x > 0.0f)
-        RenderText(label_pos, label, ImGui::FindRenderedTextEnd(label), true);
+        RenderText(label_pos, label, ImGui::FindRenderedTextEnd(label), true, labelWrapWidth);
 
     IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
     return pressed;

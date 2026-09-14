@@ -161,7 +161,7 @@ void Settings::HandleKeyringUI() {
 
 void Settings::HandleStartingAgeUI() {
     // Starting Age - Disabled under very specific conditions unless it's No Logic
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("NoLogic"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
         // If Closed DoT requires OoT then we can only start as child
         ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
           CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) ||
@@ -1473,15 +1473,19 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_SKULLTULA_TOKEN, {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), WIDGET_CVAR_SLIDER_INT);
     OPT_U8(RSK_STARTING_HEARTS, {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
-    OPT_U8(RSK_LOGIC_RULES, {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS, false, nullptr, IMFLAG_LABEL_INLINE);
-    OPT_CALLBACK(RSK_LOGIC_RULES, {
+    OPT_BOOL(RSK_NO_LOGIC, CVAR_RANDOMIZER_SETTING("NoLogic"));
+    OPT_BOOL(RSK_ALL_CHECKS_REACHABLE, CVAR_RANDOMIZER_SETTING("AllChecksReachable"));
+    OPT_CALLBACK(RSK_NO_LOGIC, {
         HandleStartingAgeUI();
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 0) > 7) {
-            CVarSetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 7);
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("NoLogic"), RO_GENERIC_OFF) == RO_GENERIC_ON) {
+            mOptions[RSK_ALL_CHECKS_REACHABLE].Disable("This option has been disabled because No Logic is enabled.");
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 0) > 7) {
+                CVarSetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 7);
+            }
+        } else {
+            mOptions[RSK_ALL_CHECKS_REACHABLE].Enable();
         }
     });
-    OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON, false, nullptr, IMFLAG_SAME_LINE);
     OPT_BOOL(RSK_SKULLS_SUNS_SONG, CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"));
     OPT_U8(RSK_DAMAGE_MULTIPLIER, {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // Don't show any MQ options if both quests aren't available
@@ -1846,8 +1850,8 @@ void Settings::CreateOptions() {
     }
 
     mOptionGroups[RSG_LOGIC] = OptionGroup::SubGroup("Logic Options", {
-                                                                          &mOptions[RSK_LOGIC_RULES],
-                                                                          &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
+                                                                          &mOptions[RSK_NO_LOGIC],
+                                                                          &mOptions[RSK_ALL_CHECKS_REACHABLE],
                                                                           &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                           &mOptions[RSK_BIG_POE_COUNT],
                                                                       });
@@ -1866,8 +1870,8 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_TRICKS] = OptionGroup::SubGroup("Logical Tricks", tricksOption);
     mOptionGroups[RSG_MENU_SECTION_LOGIC] = OptionGroup::SubGroup("Logic",
                                                                   {
-                                                                      &mOptions[RSK_LOGIC_RULES],
-                                                                      &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
+                                                                      &mOptions[RSK_NO_LOGIC],
+                                                                      &mOptions[RSK_ALL_CHECKS_REACHABLE],
                                                                       &mOptions[RSK_STARTING_AGE],
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                       &mOptions[RSK_BIG_POE_COUNT],
@@ -2619,7 +2623,7 @@ void Settings::UpdateAllOptions() {
 void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations,
                                const std::set<RandomizerTrick>& enabledTricks) {
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) &&
+    if (!mOptions[RSK_NO_LOGIC].Get() &&
         ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) ||
          (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
           mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF) &&
