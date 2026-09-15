@@ -2623,7 +2623,8 @@ void BossSst_UpdateHand(Actor* thisx, PlayState* play) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
 
-    if (GameInteractor_Should(VB_ALLOW_QUICK_BONGO_KILL, (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro)) &&
+    if (GameInteractor_Should(VB_ALLOW_QUICK_BONGO_KILL,
+                              (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro)) &&
         (this->colliderJntSph.base.acFlags & AC_ON)) {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
@@ -2679,7 +2680,8 @@ void BossSst_UpdateHead(Actor* thisx, PlayState* play) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderJntSph.base);
     }
 
-    if (GameInteractor_Should(VB_ALLOW_QUICK_BONGO_KILL, (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro))) {
+    if (GameInteractor_Should(VB_ALLOW_QUICK_BONGO_KILL,
+                              (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro))) {
         if (this->colliderCyl.base.acFlags & AC_ON) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCyl.base);
         }
