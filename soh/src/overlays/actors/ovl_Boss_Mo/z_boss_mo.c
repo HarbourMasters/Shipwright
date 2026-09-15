@@ -1608,7 +1608,7 @@ void BossMo_DeathCs(BossMo* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_MOFER_CORE_JUMP);
                 SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 70, NA_SE_EN_MOFER_LASTVOICE);
             }
-            if (this->timers[0] == 0) {
+            if (GameInteractor_Should(VB_MORPHA_DEATH_SCENE, this->timers[0] == 0, this, sMorphaTent1)) {
                 this->csState = MO_DEATH_DRAIN_WATER_1;
                 this->cameraDist = 490.0f;
                 this->actor.world.pos.y = -1000.0f;

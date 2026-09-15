@@ -4,7 +4,6 @@
 #include "objects/object_tw/object_tw.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
@@ -2376,11 +2375,6 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     koumeAnim = 0;
     sp35 = 0;
 
-    // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO || IS_BOSS_RUSH)) {
-        this->work[CS_TIMER_2] = 860;
-    }
-
     if (this->work[CS_TIMER_2] == 80) {
         koumeAnim = 1;
     }
@@ -2556,18 +2550,9 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
             break;
     }
 
-    if (this->work[CS_TIMER_2] >= 120 && this->work[CS_TIMER_2] < 500) {
+    if (GameInteractor_Should(VB_TWINROVA_DEATH_SCENE, this->work[CS_TIMER_2] >= 120 && this->work[CS_TIMER_2] < 500,
+                              this)) {
         Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
-    }
-
-    // Add separate timings for the "beam" that opens and closes around the sisters
-    // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (IS_RANDO || IS_BOSS_RUSH) {
-        if (this->work[CS_TIMER_2] < 900) {
-            Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
-        } else if (this->work[CS_TIMER_2] > 910) {
-            Math_ApproachF(&this->workf[UNK_F18], 0.0f, 1.0f, 3.0f);
-        }
     }
 
     if (this->work[CS_TIMER_2] >= 150) {
