@@ -19,6 +19,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro)
+    // ```
+    // #### `args`
+    // - None
+    VB_ALLOW_QUICK_BONGO_KILL,
+
+    // #### `result`
+    // ```c
+    // !(this->stateFlags1 & PLAYER_STATE1_START_CHANGING_HELD_ITEM)
+    // ```
+    // #### `args`
+    // - None
+    VB_ALLOW_QUICK_PUTAWAY,
+
+    // #### `result`
+    // ```c
     // sPuzzleState == 0xF
     // ```
     // #### `args`
@@ -1010,6 +1026,14 @@ typedef enum {
     // #### `args`
     // - `*EnJs`
     VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_GIVE_EYEBALL_FROG_EARLY,
 
     // #### `result`
     // ```c
