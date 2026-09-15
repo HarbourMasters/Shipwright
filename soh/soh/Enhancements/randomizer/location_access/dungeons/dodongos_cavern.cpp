@@ -592,7 +592,7 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_LOWER, true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_TWO_FIRES_ROOM,     true),
         // Implied drop to LOWER_RIGHT_SIDE. Target in the air to shield drop the flower to avoid fall damage
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,   logic->HasItem(RG_GORONS_BRACELET)),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE,   logic->HasItem(RG_GORONS_BRACELET) && (logic->CanStandingShield() || logic->TakeDamage())),
     });
 
     areaTable[RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE] = Region("Dodongos Cavern MQ Lower Right Side", SCENE_DODONGOS_CAVERN, {}, {

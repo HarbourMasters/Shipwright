@@ -1,5 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -89,7 +90,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_THE_GRAVEYARD,            true),
         ENTRANCE(RR_KAK_BEHIND_GATE,          logic->IsAdult || logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
         //adult or bunny can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
-        ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || logic->BunnyHood() || (logic->AtDay && logic->HasItem(RG_POWER_BRACELET))),
+        ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || logic->BunnyHood() || (logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_KAK_HILL,                 (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || (logic->HasItem(RG_LONGSHOT) && ((logic->IsAdult && logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash() && logic->TakeDamage())))),
         ENTRANCE(RR_KAK_BEHIND_POTION_SHOP,   logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
     });
@@ -103,6 +104,7 @@ void RegionTable_Init_Kakariko() {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
         ENTRANCE(RR_KAK_BACKYARD,     true),
+        ENTRANCE(RR_KAK_ROOFTOP,      logic->IsAdult && logic->CanMegajump(true)),
     });
 
     areaTable[RR_KAK_IMPAS_LEDGE] = Region("Kak Impas Ledge", SCENE_KAKARIKO_VILLAGE, {}, {}, {
@@ -131,6 +133,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_ROOFTOP,      !!ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)),
     });
 
+    // specifically the roof with Man on Roof
     areaTable[RR_KAK_ROOFTOP] = Region("Kak Rooftop", SCENE_KAKARIKO_VILLAGE, {}, {
         //Locations
         LOCATION(RC_KAK_MAN_ON_ROOF, logic->HasItem(RG_SPEAK_HYLIAN)),
@@ -138,6 +141,8 @@ void RegionTable_Init_Kakariko() {
         //Exits
         ENTRANCE(RR_KAK_BACKYARD,           true),
         ENTRANCE(RR_KAK_HILL,               logic->CanMegajump(!logic->CanJumpslash()) || logic->CanBombRecoilHover()),
+        //via archery game roof
+        ENTRANCE(RR_KAK_IMPAS_ROOFTOP,      logic->CanMegajump(true) || logic->CanBombRecoilHover()),
         ENTRANCE(RR_KAK_BEHIND_POTION_SHOP, logic->HasItem(RG_HOVER_BOOTS)),
         ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
     });
@@ -161,7 +166,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_BACKYARD,    true),
         ENTRANCE(RR_KAK_POTION_SHOP, logic->IsAdult && logic->AtDay && logic->HasItem(RG_KAK_POTION_SHOP_KEY)),
         //can ledgegrab fence to rooftop with hover boots, but that's more difficult than the unintuitive jump, so not including in default logic
-        ENTRANCE(RR_KAK_ROOFTOP,     logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover()),
+        ENTRANCE(RR_KAK_ROOFTOP,     logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump()),
     });
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", SCENE_KAKARIKO_CENTER_GUEST_HOUSE, {

@@ -93,7 +93,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_TRAINING_1,       			  logic->IsChild),
         LOCATION(RC_KF_WONDER_TRAINING_2,       			  logic->IsChild),
         LOCATION(RC_KF_WONDER_TRAINING_3,       			  logic->IsChild),
-        LOCATION(RC_KF_WONDER_SIGN,             			  logic->IsChild && logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_KF_WONDER_SIGN,             			  logic->IsChild && logic->CanUseSword()),
         LOCATION(RC_KF_WONDER_PLATFORMS_1,      			  logic->IsChild),
         LOCATION(RC_KF_WONDER_PLATFORMS_2,      			  logic->IsChild),
         //Technically bad logic, because we can move Mido out of logic, but then we already have KSword...
