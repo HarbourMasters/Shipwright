@@ -604,34 +604,24 @@ void AudioEditor::DrawElement() {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             if (ImGui::BeginChild("SfxOptions", ImVec2(0, -8))) {
-                SohGui::mSohMenu->MenuDrawItem(lowHpAlarm, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(naviCall, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(enemyProx, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(lowHpAlarm, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(naviCall, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(enemyProx, THEME_COLOR);
                 if (!CVarGetInteger(CVAR_AUDIO("EnemyBGMDisable"), 0)) {
-                    SohGui::mSohMenu->MenuDrawItem(leeverProx, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                                   THEME_COLOR);
+                    SohGui::mSohMenu->MenuDrawItem(leeverProx, THEME_COLOR);
                 }
-                SohGui::mSohMenu->MenuDrawItem(leadingMusic, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(displaySeqName, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(ovlDuration, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(voicePitch, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(leadingMusic, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(displaySeqName, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(ovlDuration, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(voicePitch, THEME_COLOR);
                 ImGui::SameLine();
                 ImGui::SetCursorPosY(ImGui::GetCursorPos().y + 40.f);
                 if (UIWidgets::Button("Reset##linkVoiceFreqMultiplier",
                                       UIWidgets::ButtonOptions().Size(ImVec2(80, 36)).Padding(ImVec2(5.0f, 0.0f)))) {
                     CVarSetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0f);
                 }
-                SohGui::mSohMenu->MenuDrawItem(randomAudioGenModes,
-                                               static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
-                SohGui::mSohMenu->MenuDrawItem(lowerOctaves, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                               THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(randomAudioGenModes, THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(lowerOctaves, THEME_COLOR);
             }
             ImGui::EndChild();
             ImGui::EndTable();

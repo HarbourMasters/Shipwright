@@ -603,12 +603,12 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,      true),
-        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_PILLAR,    logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM)),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_PILLAR, logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM)),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 32 && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,   logic->FireTimer() >= 16 && (logic->CanUse(RG_HOVER_BOOTS) || (logic->Get(LOGIC_FIRE_HIT_PLATFORM) && logic->BunnyHood()) || (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->BunnyHood())))),
     });
 
-    areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_PILLAR] = Region("Fire Temple Near Boss Pillar", SCENE_FIRE_TEMPLE, {}, {}, {
+    areaTable[RR_FIRE_TEMPLE_MQ_NEAR_BOSS_PILLAR] = Region("Fire Temple Near Boss Pillar", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,   logic->FireTimer() >= 8),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 8 && logic->CanUse(RG_LONGSHOT)),
@@ -618,7 +618,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR] = Region("Fire Temple MQ Near Boss Door", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,   logic->FireTimer() >= 8 && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
-        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_PILLAR,    logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM) && (logic->IsAdult || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_PILLAR, logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM) && (logic->IsAdult || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 8 && logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood())),
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,       true),
     });

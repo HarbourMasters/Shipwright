@@ -201,7 +201,7 @@ uint16_t GetCheapBalancedPrice() {
 // since logic otherwise requires at least one buyable refill to remain reachable in each shop.
 int GetShopsanityReplaceAmount() {
     auto ctx = Rando::Context::GetInstance();
-    const int maxReplace = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) ? 8 : 7;
+    const int maxReplace = ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON) ? 8 : 7;
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
         return 0;
     } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT)) {
