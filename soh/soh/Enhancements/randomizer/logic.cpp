@@ -1460,7 +1460,6 @@ bool Logic::WaterLevel(RandoWaterLevel level) {
                    // If water is MID and we COULD_HIGH_FROM_MID, then if water is MID we can set it HIGH
                    // so we only need to check if we could make it MID from LOW
                    (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) && Get(LOGIC_WATER_COULD_MIDDLE_FROM_LOW));
-        
     }
     SPDLOG_ERROR("WaterLevel reached `return false;`. Missing case for a Water Level");
     assert(false);
