@@ -19,13 +19,14 @@ void EnKz_Wait(EnKz* enKz, PlayState* play);
 #define CVAR_SPEED CVarGetFloat(CVAR_SPEED_NAME, 1.0f)
 
 static void EnKz_MweepNoCutscene(EnKz* enKz, PlayState* play) {
-    enKz->actor.speedXZ = 0.1f * CVAR_SPEED;
     if ((EnKz_FollowPath(enKz, play) == 1) && (enKz->waypoint == 0)) {
         Animation_Change(&enKz->skelanime, (AnimationHeader*)&gKzIdleAnim, 1.0f, 0.0f,
                          Animation_GetLastFrame((void*)&gKzIdleAnim), ANIMMODE_LOOP, -10.0f);
         EnKz_SetMovedPos(enKz, play);
         enKz->actor.speedXZ = 0.0;
         enKz->actionFunc = EnKz_Wait;
+    } else {
+        enKz->actor.speedXZ = 0.1f * CVAR_SPEED;
     }
     if (enKz->skelanime.curFrame == 13.0f) {
         Audio_PlayActorSound2(&enKz->actor, NA_SE_VO_KZ_MOVE);
