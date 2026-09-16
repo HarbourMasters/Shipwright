@@ -126,7 +126,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_DONE:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 if (Message_ShouldAdvance(play)) {
                     talkState = NPC_TALK_STATE_ITEM_GIVEN;
                 }
@@ -147,7 +147,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             break;
         case TEXT_STATE_CLOSING:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
@@ -181,7 +181,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             if (this->actor.textId == 0x4014) {
                 if (play->msgCtx.choiceIndex == 0) {
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                    if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                         EnKz_SetupGetItem(this, play);
                     }
                     talkState = NPC_TALK_STATE_ACTION;
@@ -287,12 +287,12 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 this->actor.textId = 0x4014;
                 this->sfxPlayed = false;
                 player->actor.textId = this->actor.textId;
-                if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                     this->isTrading = true;
                 }
                 return;
             }
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 this->isTrading = false;
             }
             if (Flags_GetInfTable(INFTABLE_139)) {
@@ -455,7 +455,7 @@ void EnKz_StopMweep(EnKz* this, PlayState* play) {
 
 void EnKz_Wait(EnKz* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         }
         this->actionFunc = EnKz_SetupGetItem;
@@ -476,7 +476,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
             getItemId = Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
