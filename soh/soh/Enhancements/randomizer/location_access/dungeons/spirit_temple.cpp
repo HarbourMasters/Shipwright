@@ -159,7 +159,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_SAND_PIT] = Region("Spirit Temple Sand Pit", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         //bunnyhovers works as adult if you run against the wall, but it's unintuitive
-        LOCATION(RC_SPIRIT_TEMPLE_COMPASS_CHEST, logic->CanUse(RG_ZELDAS_LULLABY) && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)) && logic->CanOpenLargeChest()),
+        LOCATION(RC_SPIRIT_TEMPLE_COMPASS_CHEST, logic->CanUse(RG_ZELDAS_LULLABY) && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover()) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ADULT_SIDE_HUB, true),
@@ -234,7 +234,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,   true),
         ENTRANCE(RR_SPIRIT_TEMPLE_GS_LEDGE,          logic->CanUse(RG_HOVER_BOOTS) || logic->ReachScarecrow()),
         //adult requirement is artificial as a way to prevent child logic leaking
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, logic->CanRecoilHoverFromActor(ARECOIL_SHORT, BRECOIL_WITH_JUMPSLASH) && logic->IsAdult),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, (logic->CanRecoilHoverFromActor(ARECOIL_SHORT) || (logic->CanBombRecoilHover() && logic->CanJumpslash())) && logic->IsAdult),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
         ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,          logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && 
                                                      (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)))),
@@ -380,7 +380,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,   true),
         //(IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || CanUse(RG_HOVER_BOOTS) || (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
         ENTRANCE(RR_SPIRIT_TEMPLE_SHORTCUT_SWITCH,   logic->SpiritEastToSwitch()),
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, logic->CanRecoilHoverFromActor(ARECOIL_SHORT, BRECOIL_WITH_JUMPSLASH)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, logic->CanRecoilHoverFromActor(ARECOIL_SHORT) || (logic->CanBombRecoilHover() && logic->CanJumpslash())),
         ENTRANCE(RR_SPIRIT_TEMPLE_POT_STAIRS,        logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 4)),
         //RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
         ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,          logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && 
@@ -611,7 +611,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,           true),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  (logic->IsAdult || logic->HasItem(RG_SPEAK_GERUDO) || logic->Get(LOGIC_SPIRIT_NABOORU_KIDNAPPED)) && logic->CanUse(RG_CRAWL) /*&& logic->HasSoul(RG_NABOORU_SOUL)*/),
         //You can use the boulder over the eye target to do this with just sword, but it cannot be logical as the boulder is a perm flag
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEHIND_GEYSER,   logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD, BRECOIL_YES)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEHIND_GEYSER,   logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanBombRecoilHover()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_HOLE, logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5)),
     });
 
@@ -770,7 +770,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_RIGHT_HAND,    logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FLAMETHROWER_STAIRS, logic->MQSpiritStatueToSunBlock()),
         //explicit adult check here is a precaution against possible child logic leaking, child with a hookshot can do this
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT,   logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER_AND_SHIELD, BRECOIL_WITH_JUMPSLASH))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT,   logic->IsAdult && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER_AND_SHIELD) || (logic->CanBombRecoilHover() && logic->CanJumpslash()))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_POT_LEDGE] = Region("Spirit Temple MQ Pot Ledge", SCENE_SPIRIT_TEMPLE, {
@@ -905,7 +905,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT] = Region("Spirit Temple MQ Statue Room Adult", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,            true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD,      logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER_AND_SHIELD, BRECOIL_WITH_JUMPSLASH)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD,      logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER_AND_SHIELD) || (logic->CanBombRecoilHover() && logic->CanJumpslash())),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_INNER_LEFT_HAND,        logic->IsAdult || logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE,            logic->CanUse(RG_HOVER_BOOTS) || 
                                                              ((ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_LONGSHOT))),
@@ -970,7 +970,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_MQ_JET_LOBBY_SILVER,           logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOYER,               logic->CanUse(RG_MEGATON_HAMMER) || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD, BRECOIL_YES)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FOYER,               logic->CanUse(RG_MEGATON_HAMMER) || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanBombRecoilHover()),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_3_SUNS_ROOM_1F,      true),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SAND_PIT,            true),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_UPPER, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 7)),
@@ -979,7 +979,7 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_SAND_PIT] = Region("Spirit Temple MQ Sand Pit", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         //bunnyhovers works as adult if you run against the wall, but it's unintuitive
-        LOCATION(RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST, logic->CanKillEnemy(RE_PURPLE_LEEVER) && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_LEEVER_ROOM_CHEST, logic->CanKillEnemy(RE_PURPLE_LEEVER) && (logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover()) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM,    logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
     }, {
         //Exits
@@ -1016,12 +1016,12 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER] = Region("Spirit Temple MQ Fire Wall Stairs Lower", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT,      logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER] = Region("Spirit Temple MQ Fire Wall Stairs Upper", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEAMOS_PITS,            true),
     });
 

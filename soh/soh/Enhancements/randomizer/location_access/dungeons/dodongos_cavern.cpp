@@ -275,6 +275,15 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, true),
     });
 
+    //This region only exists when the mouth is closed, so should only leave to lobbvy and set EYES_LIT
+    areaTable[RR_DODONGOS_CAVERN_SKULL_CHIN] = Region("Dodongos Cavern Skull Chin", SCENE_DODONGOS_CAVERN, {
+        //Events
+        EVENT_ACCESS(LOGIC_DC_EYES_LIT, logic->CanUse(RG_BOMB_BAG)),
+    }, {}, {
+        //Exits
+        ENTRANCE(RR_DODONGOS_CAVERN_LOBBY, true),
+    });
+
     areaTable[RR_DODONGOS_CAVERN_BOSS_AREA] = Region("Dodongos Cavern Boss Region", SCENE_DODONGOS_CAVERN, {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
@@ -283,7 +292,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_BEFORE_BOSS_GRASS, logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,         true),
+        ENTRANCE(RR_DODONGOS_CAVERN_SKULL_CHIN,    true),
         ENTRANCE(RR_DODONGOS_CAVERN_BACK_ROOM,     AnyAgeTime([]{return logic->CanBreakMudWalls();})),
         ENTRANCE(RR_DODONGOS_CAVERN_BOSS_ENTRYWAY, logic->HasItem(RG_POWER_BRACELET)),
     });
@@ -659,6 +668,15 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_POES_ROOM, AnyAgeTime([]{return logic->CanKillEnemy(RE_FIRE_KEESE) && logic->CanKillEnemy(RE_MAD_SCRUB);})),
     });
 
+    //This region only exists when the mouth is closed, so should only leave to lobbvy and set EYES_LIT
+    areaTable[RR_DODONGOS_CAVERN_MQ_SKULL_CHIN] = Region("Dodongos Cavern MQ Skull Chin", SCENE_DODONGOS_CAVERN, {
+        //Events
+        EVENT_ACCESS(LOGIC_DC_EYES_LIT, logic->CanUse(RG_BOMB_BAG)),
+    }, {}, {
+        //Exits
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY, true),
+    });
+
     areaTable[RR_DODONGOS_CAVERN_MQ_BEHIND_MOUTH] = Region("Dodongos Cavern MQ Behind Mouth", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
         //This can be gotten with only str0 as adult by using 1 pot to kill the skull from the top of a nearby grave,
@@ -674,7 +692,7 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_ROOM_SW_POT,  logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY,             true),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_SKULL_CHIN,        true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BACK_BEHIND_FIRE,  logic->HasItem(RG_POWER_BRACELET) || logic->HasExplosives() || 
                                                           (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && Roll*/) || logic->BunnyHood()))),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_BACK_SWITCH_GRAVE, logic->IsAdult),
