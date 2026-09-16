@@ -112,6 +112,7 @@ bool showBossKeysanity;
 bool showGanonBossKey;
 bool showOcarinas;
 bool show100SkullReward;
+bool showScarecrowsSong;
 bool showLinksPocket;
 bool showChestMinigame;
 bool fortressFast;
@@ -1653,6 +1654,8 @@ void LoadSettings() {
         IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES;
     show100SkullReward = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                          RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES;
+    showScarecrowsSong = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
+                                         RSK_SHUFFLE_SCARECROWS_SONG) == RO_GENERIC_YES;
     // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
     showLinksPocket = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) !=
                                       RO_LINKS_POCKET_NOTHING;
@@ -1970,6 +1973,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
                (rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
+               (rc != RC_LH_SCARECROWS_SONG || showScarecrowsSong) &&
                (loc->GetRCType() != RCTYPE_GF_KEY && rc != RC_TH_FREED_CARPENTERS ||
                 (showGerudoCard && rc == RC_TH_FREED_CARPENTERS) ||
                 (fortressNormal && showGerudoFortressKeys && loc->GetRCType() == RCTYPE_GF_KEY) ||

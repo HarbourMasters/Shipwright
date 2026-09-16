@@ -606,13 +606,15 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("InstantScarecrow"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SKIP_SCARECROWS_SONG);
-            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized save "
-                                            "file with the option \"Skip Scarecrow's Song\" is currently loaded.";
+                IS_RANDO && (OTRGlobals::Instance->gRandoContext->GetOption(RSK_STARTING_SCARECROWS_SONG) ||
+                             OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SCARECROWS_SONG));
+            info.options->disabledTooltip =
+                "This setting is controlled by the randomizer because a randomized save file with the option "
+                "\"Start with Scarecrow's Song\" or \"Shuffle Scarecrow's Song\" is currently loaded.";
         })
         .Options(CheckboxOptions().Tooltip(
             "Pierre appears when an Ocarina is pulled out. Requires learning the Scarecrow's Song first.\n"
-            "Without the randomizer option \"Skip Scarecrow's Song\" enabled for a seed, this still requires you "
+            "Without the randomizer option \"Start with Scarecrow's Song\" enabled for a seed, this still requires you "
             "to teach the scarecrow the song as both ages before summoning."));
     AddWidget(path, "Faster Rupee Accumulator", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterRupeeAccumulator"))

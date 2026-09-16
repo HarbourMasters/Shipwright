@@ -905,6 +905,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_ZR_BEAN_SOUL],                     "ZR Bean Soul:          ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SKELETON_KEY],                     "Skeleton Key:          ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_ROCS_FEATHER],                     "Roc's Feather:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SCARECROWS_SONG],                  "Scarecrow's Song:      ");
     // clang-format on
 }
 

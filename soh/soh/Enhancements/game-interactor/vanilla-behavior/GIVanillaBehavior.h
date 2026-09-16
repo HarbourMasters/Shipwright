@@ -1265,6 +1265,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT)
+    // ```
+    // #### `args`
+    // - None
+    VB_GIVE_ITEM_FROM_SCARECROW,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`

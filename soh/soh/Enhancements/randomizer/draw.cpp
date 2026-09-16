@@ -14,6 +14,7 @@ extern "C" {
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
+#include "objects/object_gi_melody/object_gi_melody.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
@@ -1217,6 +1218,25 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawScarecrowsSong(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    // dark green note, distinct from the lighter Saria and Minuet greens
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, 40, 160, 40, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiSongNoteDL);
+
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

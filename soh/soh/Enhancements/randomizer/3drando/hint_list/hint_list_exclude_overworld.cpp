@@ -512,6 +512,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                         /*french*/ "Selon moi, le #trésor au fond du lac# est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                      // /*spanish*/ Según dicen, el #tesoro hundido del lago# se trata de #[[1]]#.
 
+    hintTextTable[RHT_LH_SCARECROWS_SONG] = HintText(CustomMessage("They say that #teaching a scarecrow a tune# is rewarded with #[[1]]#.",
+                                                        /*german*/ TODO_TRANSLATE,
+                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_TH_FREED_CARPENTERS] = HintText(CustomMessage("They say that #rescuing captured carpenters# is rewarded with #[[1]]#.",
                                                          /*german*/ "Man erzählt sich, daß das #Retten gefangener Zimmerleute# #[[1]]# einbrächte.",
                                                          /*french*/ "Selon moi, #secourir les charpentiers capturés# assure #[[1]]#.", {QM_RED, QM_GREEN}));

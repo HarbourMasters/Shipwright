@@ -121,7 +121,8 @@ typedef enum {
     /* 0xED */ TIMESTAMP_FOUND_SKELETON_KEY,
     /* 0xEE */ TIMESTAMP_FOUND_ROCS_FEATHER,
     /* 0xEF */ TIMESTAMP_TIMESPLITS_COMPLETED,
-    /* 0xF0 */ TIMESTAMP_MAX
+    /* 0xF0 */ TIMESTAMP_FOUND_SCARECROWS_SONG,
+    /* 0xF1 */ TIMESTAMP_MAX
 } GameplayStatTimestamp;
 
 typedef enum {

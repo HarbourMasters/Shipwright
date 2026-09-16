@@ -415,6 +415,12 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
         textureID = gui->GetTextureByName("ITEM_OCARINA_TIME");
     }
 
+    if (randoItem.GetRandomizerGet() == RG_SCARECROWS_SONG) {
+        textureID = gui->GetTextureByName("RG_SCARECROWS_SONG");
+        imageSize = ImVec2(24.0f, 32.0f);
+        imagePadding = 6.0f;
+    }
+
     if (textureID == 0) {
         textureID = gui->GetTextureByName(itemMapping[randoItem.GetGIEntry()->itemId].name);
     }

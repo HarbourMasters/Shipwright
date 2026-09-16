@@ -176,6 +176,10 @@ std::vector<ItemTrackerItem> openChestItems = {
     ITEM_TRACKER_RG(RG_OPEN_CHEST, "", 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> scarecrowsSongItems = {
+    ITEM_TRACKER_RG(RG_SCARECROWS_SONG, "", 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> beanSoulItems = {
     ITEM_TRACKER_RG_CUSTOM(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, "DMC", ITEM_BEAN, 0, DrawItem),
     ITEM_TRACKER_RG_CUSTOM(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, "DMT", ITEM_BEAN, 0, DrawItem),
@@ -1198,6 +1202,9 @@ void DrawItem(ItemTrackerItem item) {
             case RG_OPEN_CHEST:
                 itemName = "Open";
                 break;
+            case RG_SCARECROWS_SONG:
+                itemName = "Scarecrow's Song";
+                break;
         }
     } else if (item.kind == ITEM_KIND_DUMMY) {
         if (item.id == ITEMTYPE_SILVER) {
@@ -1621,6 +1628,9 @@ void UpdateVectors() {
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST)) {
         mainWindowItems.insert(mainWindowItems.end(), openChestItems.begin(), openChestItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+        mainWindowItems.insert(mainWindowItems.end(), scarecrowsSongItems.begin(), scarecrowsSongItems.end());
     }
 
     // if we're adding greg to the misc window,
