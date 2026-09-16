@@ -7,6 +7,8 @@ extern "C" {
 #endif
 const char* SohFileSelect_GetSettingText(u8 optionIndex, u8 language);
 void SohFileSelect_ShowPresetModal();
+bool SohFileSelect_IsQuestHidden(u8 quest);
+u8 SohFileSelect_CountVisibleQuests();
 #ifdef __cplusplus
 };
 #endif
