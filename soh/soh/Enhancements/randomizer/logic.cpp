@@ -1610,7 +1610,18 @@ bool Logic::ScarecrowsSong() {
 }
 
 bool Logic::BlueFire() {
-    return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
+    return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || BlueFireArrows();
+}
+
+bool Logic::BlueFireArrows() {
+    OptionValue option = ctx->GetOption(RSK_BLUE_FIRE_ARROWS);
+    if (option.Is(RO_BLUE_FIRE_ARROW_ICE)) {
+        return CanUse(RG_ICE_ARROWS);
+    } else if (option.Is(RO_BLUE_FIRE_ARROW_FIRE)) {
+        return CanUse(RG_FIRE_ARROWS);
+    } else {
+        return false;
+    }
 }
 
 bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater) {

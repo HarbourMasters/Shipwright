@@ -49,6 +49,12 @@ static std::map<int32_t, const char*> bunnyHoodEffectMap = {
     { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },
 };
 
+static const std::map<int32_t, const char*> blueFireArrowsMap = {
+    { BLUE_FIRE_ARROW_NONE, "None" },
+    { BLUE_FIRE_ARROW_ICE, "Ice" },
+    { BLUE_FIRE_ARROW_FIRE, "Fire" },
+};
+
 static const std::map<int32_t, const char*> dekuStickCheat = {
     { DEKU_STICK_NORMAL, "Normal" },
     { DEKU_STICK_UNBREAKABLE, "Unbreakable" },
@@ -1048,7 +1054,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Magic Arrow Equip Animation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipArrowAnimation"));
     // TODO: See if a Callback could be registered to avoid the need to reload scenes for the next two options.
-    AddWidget(path, "Blue Fire Arrows##Enhancement", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Blue Fire Arrows##Enhancement", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("BlueFireArrows"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
@@ -1056,8 +1062,11 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Blue Fire Arrows\" is currently loaded.";
         })
-        .Options(CheckboxOptions().Tooltip(
-            "Allows Ice Arrows to melt Red Ice. May require a room reload if toggled during gameplay."));
+        .Options(ComboboxOptions()
+                     .ComboMap(blueFireArrowsMap)
+                     .DefaultIndex(BLUE_FIRE_ARROW_NONE)
+                     .Tooltip("Allows arrows of the chosen type to melt Red Ice. May require a room reload if modified "
+                              "during gameplay."));
     AddWidget(path, "Sunlight Arrows##Enhancement", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SunlightArrows"))
         .PreFunc([](WidgetInfo& info) {

@@ -1452,7 +1452,7 @@
             "blue_fire_arrows": {
                 "name": "Blue Fire Arrows",
                 "description": [
-                    "Ice Arrows act like Blue Fire, making them able to melt red ice. ",
+                    "Ice or Fire Arrows act like Blue Fire, making them able to melt red ice. ",
                     "Item placement logic will respect this option, so it might be required to use this to progress."
                 ]
             },

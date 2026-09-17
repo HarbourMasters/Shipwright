@@ -83,6 +83,7 @@ class Logic {
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();
+    bool BlueFireArrows();
     bool HasExplosives();
     bool BlastOrSmash();
     bool CanSpawnSoilSkull(RandomizerGet bean);

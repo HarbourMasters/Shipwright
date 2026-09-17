@@ -27,6 +27,12 @@ typedef enum {
 } BunnyHoodMode;
 
 typedef enum {
+    BLUE_FIRE_ARROW_NONE,
+    BLUE_FIRE_ARROW_ICE,
+    BLUE_FIRE_ARROW_FIRE,
+} BlueFireArrowMode;
+
+typedef enum {
     MIRRORED_WORLD_OFF,
     MIRRORED_WORLD_ALWAYS,
     MIRRORED_WORLD_RANDOM,
