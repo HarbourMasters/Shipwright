@@ -30,7 +30,7 @@ static u32 GetBlueFireArrowDmgFlags() {
             return DMG_ARROW_FIRE;
         default:
             return 0;
-    })
+    };
 }
 
 static void UpdateBlueFireCollidersBgBreakwall(void* actorPtr) {
