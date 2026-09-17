@@ -1441,29 +1441,25 @@ bool Logic::WaterLevel(RandoWaterLevel level) {
             return Get(LOGIC_WATER_LOW) || Get(LOGIC_WATER_MIDDLE) ||
                    // The water level is either at HIGH, in which case we can set it to LOW, LOW, or MID, so we only
                    // have to check COULD_LOW and ZL
-                   ((Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) || Get(LOGIC_WATER_LOW)) && CanUse(RG_ZELDAS_LULLABY));
+                   (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) && CanUse(RG_ZELDAS_LULLABY));
         case WL_MID:
             return Get(LOGIC_WATER_MIDDLE) ||
-                   // LOGIC_WATER_COULD_MIDDLE is LOGIC_WATER_COULD_MIDDLE_FROM_LOW in practice, due to WL_LOW being a
-                   // hard requirement for WL_MID
-                   (Get(LOGIC_WATER_LOW) && Get(LOGIC_WATER_COULD_MIDDLE)) ||
-                   // If we have COULD_MIDDLE, we know we could move to LOW from HIGH,
-                   // we're either already MID, on LOW can set MID, or on HIGH so you can set LOW and thus MID.
-                   ((Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) || Get(LOGIC_WATER_COULD_LOW)) &&
-                    Get(LOGIC_WATER_COULD_MIDDLE) && CanUse(RG_ZELDAS_LULLABY));
-        case WL_HIGH:
-            // If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
-            return Get(LOGIC_WATER_HIGH) ||
-                   // If water is MID and we COULD_HIGH_FROM_MID, then if water is MID we can set it HIGH
-                   // so we only need to check if we could make it MID from LOW
-                   (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) && Get(LOGIC_WATER_COULD_MIDDLE));
+                   // If we could get MID from LOW and LOW from HIGH, then we can to MID from any water level
+                   (Get(LOGIC_WATER_COULD_MIDDLE_FROM_LOW) &&
+                    (Get(LOGIC_WATER_COULD_LOW_FROM_HIGH) || Get(LOGIC_WATER_LOW)) && CanUse(RG_ZELDAS_LULLABY));
         case WL_HIGH_OR_MID:
             // If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
             return Get(LOGIC_WATER_MIDDLE) || Get(LOGIC_WATER_HIGH) ||
                    // The water level is either at LOW, in which case COULD_MIDDLE can set it to MID, MID, or HIGH, so
                    // we only have to check COULD_MIDDLE if we don't have ZL, then we are at high, so we can skip that
                    // too
-                   (Get(LOGIC_WATER_COULD_MIDDLE));
+                   (Get(LOGIC_WATER_COULD_MIDDLE_FROM_LOW));
+        case WL_HIGH:
+            // If we don't have ZL, we're stuck on high anyway, so we only need to check for if we can reset it to high
+            return Get(LOGIC_WATER_HIGH) ||
+                   // If water is MID and we COULD_HIGH_FROM_MID, then if water is MID we can set it HIGH
+                   // so we only need to check if we could make it MID from LOW
+                   (Get(LOGIC_WATER_COULD_HIGH_FROM_MID) && Get(LOGIC_WATER_COULD_MIDDLE_FROM_LOW));
     }
     SPDLOG_ERROR("WaterLevel reached `return false;`. Missing case for a Water Level");
     assert(false);
