@@ -1240,14 +1240,12 @@ void SetAreaSpoiled(RandomizerCheckArea rcArea) {
 void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime);
 
 void ProcessAvailableCheckRecalculation() {
-    if (!recalculateAvailable) {
-        return;
+    if (recalculateAvailable) {
+        recalculateAvailable = false;
+        InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
+        availableChecksStartingRegion = RR_ROOT;
+        availableChecksStartingAgeTime = RAT_NONE;
     }
-
-    recalculateAvailable = false;
-    InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
-    availableChecksStartingRegion = RR_ROOT;
-    availableChecksStartingAgeTime = RAT_NONE;
 }
 
 void CheckTrackerWindow::DrawElement() {

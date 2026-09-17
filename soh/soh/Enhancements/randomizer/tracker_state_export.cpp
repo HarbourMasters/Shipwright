@@ -37,7 +37,6 @@ namespace {
 using json = nlohmann::json;
 
 std::atomic_bool writeRequested = false;
-uint64_t revision = 0;
 
 std::filesystem::path GetExportPath(int fileNum) {
     const std::filesystem::path savePath = Ship::Context::GetPathRelativeToAppDirectory("Save");
@@ -183,7 +182,6 @@ json BuildState() {
 
     return {
         { "schemaVersion", 1 },
-        { "revision", ++revision },
         { "build",
           {
               { "version", std::string(gBuildVersion) },
