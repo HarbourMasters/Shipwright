@@ -193,6 +193,7 @@ static WidgetFunc HideQuestPreFunc(Quest quest) {
         }
     };
 }
+
 static const std::map<int32_t, const char*> bossHealthOptions = {
     { 0, "Vanilla (1x)" }, { 1, "1.25x" }, { 2, "1.50x" }, { 3, "1.75x" }, { 4, "Double (2x)" },
 };
@@ -207,6 +208,9 @@ static uint8_t CountVisibleFileSelectQuests() {
     if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
         count++;
     }
+
+    return count;
+}
 
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
