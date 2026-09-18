@@ -2,15 +2,18 @@
  * This file handles the custom messages for Gossip Stone
  * hints.
  */
+
 #include <soh/OTRGlobals.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include <macros.h>
 #include <functions.h>
 #include <variables.h>
+extern PlayState* gPlayState;
 }
 
 // Resolves a hint's message for textbox display, firing OnRandoHintRevealed so

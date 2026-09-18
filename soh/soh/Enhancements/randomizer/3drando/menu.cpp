@@ -16,6 +16,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     const auto ctx = Rando::Context::GetInstance();
     ResetPerformanceTimers();
     StartPerformanceTimer(PT_WHOLE_SEED);
+    ctx->SetSpoilerLoaded(false);
 
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {

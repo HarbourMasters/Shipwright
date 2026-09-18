@@ -1,8 +1,9 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
 #include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 }
 

@@ -322,9 +322,9 @@ extern GraphicsContext* __gfxCtx;
 
 #ifdef __cplusplus
 #define DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(rsk) \
-    (OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) && \
-    OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) && \
-    OTRGlobals::Instance->gRandoContext->GetOption(rsk).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))
+    (RAND_GET_OPTION(rsk).IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) && \
+    RAND_GET_OPTION(rsk).IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) && \
+    RAND_GET_OPTION(rsk).IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON))
 #endif
 // #endregion
 

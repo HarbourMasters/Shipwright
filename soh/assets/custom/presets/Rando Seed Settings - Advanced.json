@@ -9,7 +9,6 @@
                 "BombchuBag": 1,
                 "BossKeysanity": 5,
                 "ClosedForest": 2,
-                "CompleteMaskQuest": 1,
                 "CuccosToReturn": 1,
                 "DampeHint": 1,
                 "DoorOfTime": 2,
@@ -46,6 +45,7 @@
                 "ShuffleKeyRings": 2,
                 "ShuffleKeyRingsRandomCount": 4,
                 "ShuffleKokiriSword": 1,
+                "ShuffleMasks": 1,
                 "ShuffleMasterSword": 1,
                 "ShuffleMerchants": 3,
                 "ShuffleOcarinas": 1,
@@ -56,14 +56,14 @@
                 "ShuffleTokens": 3,
                 "ShuffleWeirdEgg": 2,
                 "SkipEponaRace": 1,
-                "SkipScarecrowsSong": 1,
                 "StartingAge": 2,
                 "StartingMapsCompasses": 0,
+                "StartingScarecrowsSong": 1,
                 "StartingZeldasLetter": 1,
                 "SunlightArrows": 1
             }
         }
     },
     "presetName": "Rando Seed Settings - Advanced",
-	"isBuiltIn": true
+    "isBuiltIn": true
 }

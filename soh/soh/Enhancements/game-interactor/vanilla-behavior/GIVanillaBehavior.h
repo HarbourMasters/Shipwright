@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef GI_VANILLA_BEHAVIOR_H
-#define GI_VANILLA_BEHAVIOR_H
-
 typedef enum {
     // #### `result`
     // ```c
@@ -22,11 +19,36 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->actionFunc != BossSst_HeadLurk) && (this->actionFunc != BossSst_HeadIntro)
+    // ```
+    // #### `args`
+    // - None
+    VB_ALLOW_QUICK_BONGO_KILL,
+
+    // #### `result`
+    // ```c
+    // !(this->stateFlags1 & PLAYER_STATE1_START_CHANGING_HELD_ITEM)
+    // ```
+    // #### `args`
+    // - None
+    VB_ALLOW_QUICK_PUTAWAY,
+
+    // #### `result`
+    // ```c
     // sPuzzleState == 0xF
     // ```
     // #### `args`
     // - None
     VB_AMY_SOLVE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossVa`
+    // - `s8*` sCsState
+    VB_BARINADE_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -258,6 +280,20 @@ typedef enum {
     // #### `args`
     // - None
     VB_BIGGORON_CONSIDER_TRADE_COMPLETE,
+
+    // #### `result`
+    // ```c
+    // this->timer == 0
+    // ```
+    // or while the body darkens
+    // ```c
+    // this->timer != 0
+    // ```
+    // #### `args`
+    // - `*BossSst` (head)
+    // - `*BossSst` (left hand)
+    // - `*BossSst` (right hand)
+    VB_BONGO_BONGO_DEATH_SCENE,
 
     // #### `result`
     // Actor is ACTOR_EN_ELF, ACTOR_EN_FISH, ACTOR_EN_ICE_HONO, or ACTOR_EN_INSECT
@@ -761,6 +797,97 @@ typedef enum {
     VB_FAIRY_HEAL,
 
     // #### `result`
+    // ```c
+    // this->actor.xzDistToPlayer < (KREG(59) + 50.0f)
+    // ```
+    // Whether a hooked fish is reeled in close enough to be caught.
+    // #### `args`
+    // - None
+    VB_FISHING_CATCH_FISH,
+
+    // #### `result`
+    // ```c
+    // (this->isLoach == 0) && (sFishOnHandIsLoach == 0) && ((s16)this->fishLength < (s16)sFishOnHandLength)
+    // ```
+    // Whether keeping a fish smaller than the one held asks for confirmation.
+    // #### `args`
+    // - None
+    VB_FISHING_CONFIRM_KEEPING_SMALLER_FISH,
+
+    // #### `result`
+    // ```c
+    // ((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
+    //     ((Rand_ZeroOne() < (this->perception * multiplier)) || ((this->isLoach + 1) == KREG(69)))
+    // ```
+    // Whether a fish bites the lure.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_BITE,
+
+    // #### `result`
+    // ```c
+    // ((sLureTimer & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (sLureEquipped != FS_LURE_SINKING) && (KREG(69) == 0)
+    // ```
+    // Whether a hooked fish randomly escapes the line.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_ESCAPE,
+
+    // #### `result`
+    // ```c
+    // sFishInits[thisx->params - EN_FISH_PARAM].isLoach
+    // ```
+    // Whether this pond fish is a loach.
+    // #### `args`
+    // - None
+    VB_FISHING_FISH_IS_LOACH,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // Whether a caught fish snaps to Link's hand instead of drifting there.
+    // #### `args`
+    // - None
+    VB_FISHING_INSTANT_CATCH,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // Whether the pond owner offers to quit fishing at the door.
+    // #### `args`
+    // - None
+    VB_FISHING_QUIT_AT_DOOR,
+
+    // #### `result`
+    // ```c
+    // (KREG(1) == 1) || ((sFishGameNumber & 3) == 3)
+    // ```
+    // Whether loaches spawn in the pond this game.
+    // #### `args`
+    // - None
+    VB_FISHING_SPAWN_LOACHES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the starting fishing record uses the vanilla length.
+    // A hook returning false should write its own length through the arg.
+    // #### `args`
+    // - `*f32` (sFishingRecordLength)
+    VB_FISHING_USE_DEFAULT_RECORD_LENGTH,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FISHING_ZERO_XZ,
+
+    // #### `result`
     // True if the next text position must be beyond the current position; false otherwise
     // #### `args`
     // - `u16` (next text position)
@@ -899,6 +1026,14 @@ typedef enum {
     // #### `args`
     // - `*EnJs`
     VB_GIVE_BOMBCHUS_FROM_CARPET_SALESMAN,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_GIVE_EYEBALL_FROG_EARLY,
 
     // #### `result`
     // ```c
@@ -1130,6 +1265,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT)
+    // ```
+    // #### `args`
+    // - None
+    VB_GIVE_ITEM_FROM_SCARECROW,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1290,6 +1433,18 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timer == 80
+    // ```
+    // or once the blue warp has spawned
+    // ```c
+    // this->timer == 0
+    // ```
+    // #### `args`
+    // - `*BossGoma`
+    VB_GOHMA_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1375,6 +1530,22 @@ typedef enum {
     // #### `args`
     // - `*EnCrow`
     VB_GUAY_FORCE_FLY_AWAY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnCrow`
+    VB_GUAY_SETUP_DAMAGED,
+
+    // #### `result`
+    // ```c
+    // this->actor.colChkInfo.health != 0
+    // ```
+    // #### `args`
+    // - `*f32` (scale)
+    VB_GUAY_ALIVE_MOVE_HEIGHT_OFFSET,
 
     // #### `result`
     // ```c
@@ -1482,6 +1653,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f && play->isPlayerDroppingFish(play)
+    // ```
+    // #### `args`
+    // - `*EnJj`
+    VB_JABU_JABU_EAT_FISH,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1519,6 +1698,30 @@ typedef enum {
     // #### `args`
     // - `*EnFirefly`
     VB_KEESE_FORCE_FLY_AWAY,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `*EnFirefly`
+    VB_KEESE_SETUP_FALL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFirefly`
+    VB_KEESE_SETUP_FROZENFALL,
+
+    // #### `result`
+    // ```c
+    // this->unk_1DA == 600
+    // ```
+    // #### `args`
+    // - `*BossDodongo`
+    VB_KING_DODONGO_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -1655,6 +1858,23 @@ typedef enum {
     // #### `args`
     // - `s32` (note append position)
     VB_MODIFY_LOST_WOODS_OCARINA_GAME_NOTE_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `f32*` speed
+    VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED,
+
+    // #### `result`
+    // ```c
+    // this->timers[0] == 0
+    // ```
+    // #### `args`
+    // - `*BossMo` (core)
+    // - `*BossMo` (tentacle)
+    VB_MORPHA_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -1921,14 +2141,6 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_PLAY_DROP_FISH_FOR_JABU_CS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
     // ##### In `z_demo.c`:
     // - `int32_t` (entranceCutscene->flag) (promoted from `uint8_t` by va_arg)
     // - `int32_t` (entranceCutscene->entrance) (promoted from `uint16_t` by va_arg)
@@ -2007,14 +2219,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_PLAY_MWEEP_CS,
-
-    // #### `result`
-    // ```c
     // this->getItemId == GI_GAUNTLETS_SILVER
     // ```
     // #### `args`
@@ -2029,6 +2233,14 @@ typedef enum {
     // - `*BossTw`
     // - `*PlayState`
     VB_PLAY_TWINROVA_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // this->work[CS_TIMER_2] >= 120 && this->work[CS_TIMER_2] < 500
+    // ```
+    // #### `args`
+    // - `*BossTw`
+    VB_TWINROVA_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -2199,6 +2411,15 @@ typedef enum {
     // ```c
     // true
     // ```
+    // Whether the left stick aims in first person. Off when it moves Link instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_AIM_WITH_LEFT_STICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `*Player`
     // - `int32_t` (magicArrowType)
@@ -2213,6 +2434,24 @@ typedef enum {
     // - `void*` player (Player*)
     // - `PlayState*` play
     VB_PLAYER_DRAW_BOTTLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether Link's movement direction is set to where he faces in first person.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_ALIGN_YAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether Link slows to a stop in first person. Hooks may set his speed instead.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_FIRST_PERSON_DECELERATE,
 
     // #### `result`
     // ```c
@@ -2482,6 +2721,23 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnBomBowlMan`
+    // - `s16*` (prize to show, an `ExItemType`)
+    VB_SET_BOMBCHU_BOWLING_PRIZE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnBomBowlMan`
+    VB_SET_BOMBCHU_BOWLING_PRIZE_SELECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (button - promoted from `s16`)
     VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
 
@@ -2622,14 +2878,6 @@ typedef enum {
     // #### `args`
     // - `*Vec3f`
     VB_NOT_CAST_FISHING,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_FISHING_ZERO_XZ,
 
     // #### `result`
     // ```c
@@ -3065,6 +3313,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timers[0] == 0
+    // ```
+    // #### `args`
+    // - `*BossFd2`
+    VB_VOLVAGIA_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
     // (shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19)
     // ```
     // #### `args`
@@ -3487,6 +3743,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_AFTER_ACTOR_UPDATE_BGCHECKINFO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHakaHuta`
     // - `*PlayState`
     VB_HAKA_HUTA_SPAWN_KEESE,
@@ -3717,6 +3981,79 @@ typedef enum {
     // #### `args`
     // - `*EnBox`
     VB_CHEST_CONSIDER_CHEST_OPEN,
-} GIVanillaBehavior;
 
-#endif
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether NPCs give their mask reaction text for the mask being worn.
+    // #### `args`
+    // - `u8 currentMask`
+    VB_NPC_REACT_TO_MASK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether a trade item button gets greyed out while trade items are restricted.
+    // #### `args`
+    // - `u8 item`
+    VB_DISABLE_TRADE_ITEM_BUTTON,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Movement speed for the "Move in first person" setting, multiplied in place.
+    // #### `args`
+    // - `*Player`
+    // - `f32*` movementSpeed
+    VB_PLAYER_MODIFY_FIRST_PERSON_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the market night guard goes back to idle once talked to, rather than
+    // a hook taking over his action func.
+    // #### `args`
+    // - `*EnHeishi4`
+    // - `*PlayState`
+    VB_MARKET_NIGHT_GUARD_SET_ACTION_AFTER_TALK,
+
+    // #### `result`
+    // ```c
+    // ageReq == AGE_REQ_NONE || ageReq == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age for something age gated.
+    // #### `args`
+    // - `u8 ageReq` an `AGE_REQ_*`, which for adult and child is the matching `LINK_AGE_*`
+    VB_PLAYER_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // gItemAgeReqs[itemIndex] == AGE_REQ_NONE || gItemAgeReqs[itemIndex] == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age to hold an item.
+    // #### `args`
+    // - `u8 itemIndex`
+    VB_ITEM_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // gSlotAgeReqs[slotIndex] == AGE_REQ_NONE || gSlotAgeReqs[slotIndex] == gSaveContext.linkAge
+    // ```
+    // Whether the player is the right age to use an inventory slot.
+    // #### `args`
+    // - `u8 slotIndex`
+    VB_SLOT_MEETS_AGE_REQ,
+
+    // #### `result`
+    // ```c
+    // this->currentMask != PLAYER_MASK_NONE
+    // ```
+    // Whether a worn mask comes off once it's no longer on a button.
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_UNEQUIP_MASK_WITHOUT_BUTTON,
+} GIVanillaBehavior;

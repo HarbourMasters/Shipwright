@@ -1,5 +1,6 @@
-# Local clang-format hook: formats staged C/C++ in soh/ on commit, using a
-# pinned 14.x downloaded by pre-commit. Scope matches run-clang-format.sh / CI.
+# Local hooks run on commit: clang-format for staged C/C++ in soh/ (using a
+# pinned 14.x downloaded by pre-commit), and the JSON asset lint. Scopes match
+# run-clang-format.sh / scripts/lint-json.py and CI.
 #   pre-commit install --install-hooks   # enable (downloads clang-format up front)
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
@@ -8,3 +9,11 @@ repos:
       - id: clang-format
         files: '^soh/.*\.(c|cpp|h|hpp)$'
         exclude: '^soh/assets/|^soh/(src|include)/.*\.(h|hpp)$'
+  - repo: local
+    hooks:
+      - id: lint-json
+        name: lint JSON assets
+        entry: scripts/lint-json.sh --fix
+        language: system
+        files: '^soh/assets/custom/.*\.json$'
+        pass_filenames: false

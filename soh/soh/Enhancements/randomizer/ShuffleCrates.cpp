@@ -1,15 +1,16 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
-#include "soh_assets.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
-#include <libultraship/libultra.h>
-#include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
+#include "soh_assets.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 extern PlayState* gPlayState;
@@ -210,13 +211,7 @@ static CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        crateIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&crateIdentity, location);
 
     return crateIdentity;
 }
@@ -233,37 +228,31 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&smallCrateIdentity, location);
 
     return smallCrateIdentity;
 }
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
+    auto logicSetting = RAND_GET_OPTION(RSK_NO_LOGIC);
 
     // don't shuffle the no logic crates when not in no logic
-    if (actor->id != ACTOR_OBJ_KIBAKO2 || (logicSetting.IsNot(RO_LOGIC_NO_LOGIC) &&
-                                           ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+    if (actor->id != ACTOR_OBJ_KIBAKO2 ||
+        (logicSetting.Is(RO_GENERIC_OFF) && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
@@ -329,7 +318,7 @@ void RegisterShuffleCrates() {
 
     // Prevent the randomized items from the "decoy" crates from immediately despawning
     COND_VB_SHOULD(VB_ITEM00_KILL, shouldRegister, {
-        if (RAND_GET_OPTION(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
+        if (RAND_GET_OPTION(RSK_NO_LOGIC).Is(RO_GENERIC_ON) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
             EnItem00* item00 = va_arg(args, EnItem00*);
 
             if (item00->actor.world.pos.x < -3500.0f) {

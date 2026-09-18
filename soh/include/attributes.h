@@ -1,7 +1,7 @@
 #ifndef ATTRIBUTES_H
 #define ATTRIBUTES_H
 
-#if !defined(__GNUC__) && !defined(__attribute__)
+#if !defined(__GNUC__) && !defined(__clang__) && !defined(__attribute__)
 #define __attribute__(x)
 #endif
 

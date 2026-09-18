@@ -26,6 +26,10 @@ class Text {
     void Replace(const std::string& oldStr, const std::string& newStr);
     void Replace(const std::string& oldStr, const Text& newText);
 
+    void ReplaceRandomVowel(uint64_t* randState = nullptr);
+
+    void DuplicateRandomLetter(uint64_t* randState = nullptr);
+
     std::string english = "";
     std::string french = "";
     std::string german = "";

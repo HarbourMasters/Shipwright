@@ -136,9 +136,3 @@ class EntranceTrackerWindow final : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 } // namespace EntranceTracker
-
-namespace Trackers {
-bool BeginFloatWindows(std::string UniqueName, bool& open, Color_RGBA8& bgCol, TrackerWindowType windowType,
-                       bool draggable, ImGuiWindowFlags flags = 0);
-void EndFloatWindows();
-} // namespace Trackers

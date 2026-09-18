@@ -1,19 +1,20 @@
-#include "savestates.h"
-
+#include <algorithm>
 #include <memory>
-#include <spdlog/spdlog.h>
 
+#include <spdlog/spdlog.h>
 #include <ship/Context.h>
 #include <ship/window/Window.h>
-#include <ship/window/gui/GameOverlay.h>
+
+#include "savestates.h"
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
+#include "savestate_serialize.h"
 
+extern "C" {
 #include "z64.h"
 #include "z64save.h"
 #include <variables.h>
-#include <functions.h>
-#include "savestate_serialize.h"
+}
 
 extern "C" PlayState* gPlayState;
 extern "C" EffectContext sEffectContext;
@@ -342,7 +343,7 @@ void SaveState::SaveTransitionActors(void) {
 }
 
 void SaveState::LoadTransitionActors(void) {
-    u32 numActors = MIN(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
+    u32 numActors = std::min(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
     for (u32 i = 0; i < numActors; i++) {
         gPlayState->transiActorCtx.list[i].id = info->transitionActorIds_copy[i];
     }

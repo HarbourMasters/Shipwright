@@ -1,8 +1,11 @@
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
@@ -31,10 +34,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
 #include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
-#include "src/overlays/actors/ovl_En_Bigokuta/z_en_bigokuta.h"
-#include <overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h>
 #include <overlays/actors/ovl_En_Ik/z_en_ik.h>
-#include <objects/object_gnd/object_gnd.h>
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern int32_t D_8011D3AC;
@@ -128,6 +128,20 @@ bool ForcedDialogIsDisabled(ForcedDialogMode type) {
             type) != 0;
 }
 
+static void SkipJabuFeedingCutscene() {
+    Player_UpdateBottleHeld(gPlayState, GET_PLAYER(gPlayState), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU);
+    Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_ENTRANCE);
+    } else {
+        gPlayState->nextEntranceIndex = ENTR_JABU_JABU_ENTRANCE;
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+}
+
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -179,6 +193,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                     !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS)) {
                     Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+                    if (!IS_RANDO) {
+                        gSaveContext.dayTime = gSaveContext.skyboxTime = 0x2aaa;
+                    }
                     if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
                         Item_Give(gPlayState, ITEM_ARROW_LIGHT);
                     }
@@ -280,6 +297,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         }
                         // This is handled in the FasterHeavyBlockLift enhancement
                         if (actor->id == ACTOR_BG_HEAVY_BLOCK) {
+                            break;
+                        }
+
+                        // No point giving control while Big Octo platform goes up & down
+                        if (actor->id == ACTOR_BG_BDAN_OBJECTS && actor->params == 0) {
                             break;
                         }
 
@@ -438,7 +460,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
             // If it's near a jailed carpenter, skip it along with introduction of Gerudo mini-boss
             if (gPlayState->sceneNum == SCENE_THIEVES_HIDEOUT &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
+                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
+                (!IS_RANDO || !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) ||
+                 Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN))) {
                 EnWonderTalk2* enWonderTalk = va_arg(args, EnWonderTalk2*);
                 EnDaiku* enDaiku =
                     (EnDaiku*)Actor_FindNearby(gPlayState, &enWonderTalk->actor, ACTOR_EN_DAIKU, ACTORCAT_NPC, 999.0f);
@@ -505,21 +529,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
             }
             break;
-        case VB_PLAY_PULL_MASTER_SWORD_CS:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
-                    // Normally, these would be done in the cutscene, but we're skipping it
-                    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
-                    Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-                    Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-                    Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
-                    if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true)) {
-                        Item_Give(gPlayState, ITEM_MEDALLION_LIGHT);
-                    }
-                }
-                *should = false;
-            }
-            break;
         case VB_PLAY_DISPEL_BARRIER_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 static s16 trialEntrances[] = {
@@ -565,18 +574,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
-        case VB_PLAY_MWEEP_CS: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), 0)) {
+        case VB_JABU_JABU_EAT_FISH:
+            if (*should && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
-                Inventory_ReplaceItem(gPlayState, ITEM_LETTER_RUTO, ITEM_BOTTLE);
-                Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
+                SkipJabuFeedingCutscene();
             }
             break;
-        }
         case VB_PLAY_BEAN_PLANTING_CS:
         case VB_PLAY_EYEDROP_CREATION_ANIM:
         case VB_PLAY_EYEDROPS_CS:
-        case VB_PLAY_DROP_FISH_FOR_JABU_CS:
         case VB_PLAY_DARUNIAS_JOY_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
@@ -604,9 +610,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
 
                             if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
-                                Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                Audio_PlaySfxGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
                                     demoImUpdateHook);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(
@@ -851,31 +857,6 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
-        case VB_PHANTOM_GANON_DEATH_SCENE: {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO || IS_BOSS_RUSH)) {
-                *should = false;
-                BossGanondrof* pg = va_arg(args, BossGanondrof*);
-                Player* player = GET_PLAYER(gPlayState);
-                if (pg->work[GND_ACTION_STATE] == DEATH_SPASM) {
-                    // Skip to death scream animation and move ganondrof to middle
-                    pg->deathState = DEATH_SCREAM;
-                    pg->timers[0] = 50;
-                    AnimationHeader* screamAnim = (AnimationHeader*)gPhantomGanonScreamAnim;
-                    Animation_MorphToLoop(&pg->skelAnime, screamAnim, -10.0f);
-                    pg->actor.world.pos.x = GND_BOSSROOM_CENTER_X;
-                    pg->actor.world.pos.y = GND_BOSSROOM_CENTER_Y + 83.0f;
-                    pg->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
-                    pg->actor.shape.rot.y = 0;
-                    pg->work[GND_BODY_DECAY_INDEX] = 0;
-                    Audio_PlayActorSound2(&pg->actor, NA_SE_EN_FANTOM_LAST);
-
-                    // Move Player out of the center of the room
-                    player->actor.world.pos.x = GND_BOSSROOM_CENTER_X - 200.0f;
-                    player->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
-                }
-            }
-            break;
-        }
         case VB_NABOORU_KNUCKLE_DEATH_SCENE: {
             EnIk* ik = va_arg(args, EnIk*);
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), IS_RANDO)) {
@@ -915,6 +896,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         }
         case VB_SKIP_SCARECROWS_SONG: {
+            if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                break;
+            }
             if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
                 CVarGetInteger(CVAR_ENHANCEMENT("InstantScarecrow"), 0) && gSaveContext.scarecrowSpawnSongSet) {
                 *should = true;
@@ -932,16 +916,12 @@ static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
 static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
-static uint32_t enJjUpdateHook = 0;
-static uint32_t enJjKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
 static uint32_t bgSpot03UpdateHook = 0;
 static uint32_t bgSpot03KillHook = 0;
 static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
-static uint32_t enBigokutaUpdateHook = 0;
-static uint32_t enBigokutaKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1002,36 +982,12 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_EN_JJ) {
-        enJjUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-
-                if (innerActor->id != ACTOR_EN_JJ || Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) {
-                    return;
-                }
-
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
-                                           : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
-                if (!shouldOpen) {
-                    return;
-                }
-
-                EnJj* enJj = static_cast<EnJj*>(innerActorRef);
-                if (enJj->actionFunc == EnJj_WaitForFish) {
-                    EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                    enJjUpdateHook = 0;
-                    enJjKillHook = 0;
-                }
-            });
-        enJjKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                enJjUpdateHook = 0;
-                enJjKillHook = 0;
-            });
+        EnJj* enJj = static_cast<EnJj*>(actorRef);
+        bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
+                                   : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
+        if (shouldOpen && enJj->actionFunc == EnJj_WaitForFish) {
+            EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
+        }
     }
 
     if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER &&
@@ -1167,38 +1123,6 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             EnRu2_SetEncounterSwitchFlag(enRu2, gPlayState);
             Actor_Kill(actor);
         }
-    }
-
-    // Prevent softlock from pre-battle early hit on Bigocto (possible by cutscene skip)
-    if (actor->id == ACTOR_EN_BIGOKUTA) {
-        enBigokutaUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_EN_BIGOKUTA &&
-                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO))) {
-                    EnBigokuta* enBigokuta = static_cast<EnBigokuta*>(innerActorRef);
-                    if (enBigokuta->actor.params == 2) { // Platform already active
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
-                            enBigokutaUpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
-                        enBigokutaUpdateHook = 0;
-                        enBigokutaKillHook = 0;
-                        // Possible action functions after taken damage
-                    } else if (enBigokuta->actionFunc == func_809BE058 || enBigokuta->actionFunc == func_809BDF34 ||
-                               enBigokuta->actionFunc == func_809BE180) {
-                        enBigokuta->actor.home.pos.y = enBigokuta->actor.world.pos.y = -1025.0f;
-                        Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, &enBigokuta->actor, ACTORCAT_ENEMY);
-                        enBigokuta->actor.params = 2; // Activate platform
-                    }
-                }
-            });
-        enBigokutaKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enBigokutaUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
-                enBigokutaUpdateHook = 0;
-                enBigokutaKillHook = 0;
-            });
     }
 }
 

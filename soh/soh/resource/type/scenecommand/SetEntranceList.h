@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include <vector>
-#include <memory>
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 

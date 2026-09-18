@@ -1,11 +1,13 @@
+#include <ship/Context.h>
+
 #include "SohMenu.h"
 #include <soh/Notification/Notification.h>
-#include <soh/Network/Network.h>
 #include "SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"
 #include <soh/Network/Sail/Sail.h>
 #include <soh/Network/CrowdControl/CrowdControl.h>
+#include "soh/SohGui/UIWidgets.hpp"
 
 namespace SohGui {
 

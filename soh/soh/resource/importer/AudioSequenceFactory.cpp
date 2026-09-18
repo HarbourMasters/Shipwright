@@ -1,14 +1,14 @@
-#include "soh/resource/importer/AudioSequenceFactory.h"
-#include "soh/resource/importer/AudioSoundFontFactory.h"
-#include "soh/resource/type/AudioSequence.h"
-#include "spdlog/spdlog.h"
+#include <type_traits>
+
 #include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
-
 #include <ship/Context.h>
 #include <ship/resource/archive/Archive.h>
 #include <ship/utils/binarytools/BinaryWriter.h>
-#include <type_traits>
+
+#include "soh/resource/importer/AudioSequenceFactory.h"
+#include "soh/resource/importer/AudioSoundFontFactory.h"
+#include "soh/resource/type/AudioSequence.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

@@ -6,7 +6,7 @@
 #include "randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
 
-#include "global.h"
+#include "variables.h"
 
 extern PlayState* gPlayState;
 

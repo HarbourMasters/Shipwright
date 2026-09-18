@@ -1,4 +1,5 @@
 #include "randomizer_check_objects.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "static_data.h"
 #include "SeedContext.h"
 #include <map>
@@ -156,6 +157,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
             (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"), RO_GENERIC_NO)) &&
+            (location.GetRandomizerCheck() != RC_LH_SCARECROWS_SONG ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScarecrowsSong"), RO_GENERIC_NO)) &&
             (location.GetRCType() !=
              RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (location.GetRCType() != RCTYPE_STATIC_HINT) &&  // don't show static hints
@@ -208,7 +211,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_RED_ICE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleRedIce"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FISH ||
-             ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
+             Rando::Fishsanity::GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||

@@ -14,9 +14,12 @@
 #include "soh/SaveManager.h"
 #include <string.h>
 
-#include "global.h"
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
 #include "entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 extern PlayState* gPlayState;
 
@@ -464,9 +467,6 @@ void Entrance_SetWarpSongEntrance(void) {
     if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
         // During DHWW the cutscene must play at the destination
         gSaveContext.respawnFlag = -3;
-    } else if (gSaveContext.respawnFlag == -3) {
-        // Unset Zoneout Type -3 to avoid cutscene at destination (technically it's not needed)
-        gSaveContext.respawnFlag = 0;
     }
 }
 

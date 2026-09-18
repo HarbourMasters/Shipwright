@@ -6,6 +6,7 @@
 
 #include "z_bg_mizu_water.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -233,7 +234,9 @@ void BgMizuWater_ChangeWaterLevel(BgMizuWater* this, PlayState* play) {
                 Flags_UnsetSwitch(play, prevSwitchFlag);
             }
 
-            if (Math_StepToF(&this->actor.world.pos.y, this->targetY, 5.0f)) {
+            f32 speed = 5.0f;
+            GameInteractor_Should(VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED, true, &speed);
+            if (Math_StepToF(&this->actor.world.pos.y, this->targetY, speed)) {
                 play->roomCtx.unk_74[0] = 0;
                 this->actionFunc = BgMizuWater_WaitForAction;
                 Message_CloseTextbox(play);

@@ -54,11 +54,21 @@ gives you a 14.x binary:
 - **Homebrew (macOS or Linux)**: `brew install llvm@14` and use its
   `clang-format`, or use one of the cross-platform options above.
 
+## JSON assets
+
+JSON in `soh/assets/custom` checked by CI with:
+
+```sh
+./scripts/lint-json.sh          # check
+./scripts/lint-json.sh --fix    # reformat in place
+```
+
 ## Optional: format on commit
 
 The repo ships a [pre-commit](https://pre-commit.com/) config
 (`.pre-commit-config.yaml`) that auto-formats staged C/C++ with a pinned 14.x
-before each commit, so you never get caught by the CI check. With pre-commit
+and runs the JSON lint on staged assets before each commit, so you never get
+caught by the CI checks. With pre-commit
 [installed](https://pre-commit.com/#install), enable it once:
 
 ```bash

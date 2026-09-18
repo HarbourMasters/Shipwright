@@ -7,6 +7,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 #include "message_data_static.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 extern MessageTableEntry* sNesMessageEntryTablePtr;
 extern MessageTableEntry* sGerMessageEntryTablePtr;
 extern MessageTableEntry* sFraMessageEntryTablePtr;

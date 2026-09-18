@@ -1,10 +1,11 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Butte/z_en_butte.h"
-#include "variables.h"
 extern void EnButte_SetupTransformIntoFairy(EnButte* enButte);
 }
 

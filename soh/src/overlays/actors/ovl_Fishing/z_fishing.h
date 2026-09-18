@@ -3,7 +3,6 @@
 
 #include <libultraship/libultra.h>
 #include "global.h"
-#include "soh/Enhancements/randomizer/fishsanity.h"
 
 struct Fishing;
 

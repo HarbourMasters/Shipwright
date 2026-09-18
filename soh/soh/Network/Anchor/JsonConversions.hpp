@@ -1,5 +1,5 @@
-#ifndef NETWORK_ANCHOR_JSON_CONVERSIONS_H
-#define NETWORK_ANCHOR_JSON_CONVERSIONS_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <nlohmann/json.hpp>
@@ -209,4 +209,3 @@ inline void from_json(const json& j, SaveContext& saveContext) {
 }
 
 #endif // __cplusplus
-#endif // NETWORK_ANCHOR_JSON_CONVERSIONS_H

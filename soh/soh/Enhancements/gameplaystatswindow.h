@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ship/window/gui/GuiWindow.h>
 
 class GameplayStatsWindow final : public Ship::GuiWindow {

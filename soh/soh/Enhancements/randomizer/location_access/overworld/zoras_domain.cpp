@@ -19,7 +19,9 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_CHEST,                               logic->IsChild && logic->CanUse(RG_STICKS) && logic->CanOpenLargeChest()),
         LOCATION(RC_ZD_KING_ZORA_THAWED,                    logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->HasItem(RG_SPEAK_ZORA)),
         LOCATION(RC_ZD_TRADE_PRESCRIPTION,                  logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED) && logic->CanUse(RG_PRESCRIPTION)),
-        LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && (logic->HookshotOrBoomerang() || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_FAIRY_BOW) || (logic->CanUse(RG_MAGIC_SINGLE) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_KOKIRI_SWORD) || logic->CanUse(RG_BIGGORON_SWORD))) || (ctx->GetTrickOption(RT_ZD_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
+        //bad terrain blocks bomb throws, so "inWater" is enabled to simulate that. Chus are also awkward to aim, so might want to be removed as well
+        //You normally need spin attack or RT_ZD_GS to kill with melee weapons, simulated by ED_SHORT_JUMPSLASH when that condition is met, as that prohibits hammer like those 2 do
+        LOCATION(RC_ZD_GS_FROZEN_WATERFALL,                 logic->IsAdult && logic->CanKillEnemy(RE_GOLD_SKULLTULA, logic->CanUse(RG_MAGIC_SINGLE) || ctx->GetTrickOption(RT_ZD_GS) ? ED_SHORT_JUMPSLASH : ED_BOOMERANG, true, 1, false, true) && logic->CanGetNightTimeGS()),
         LOCATION(RC_ZD_FISH_1,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_FISH_2,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_FISH_3,                              logic->IsChild && logic->HasBottle()),
@@ -61,7 +63,9 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZORAS_DOMAIN_ISLAND] = Region("Zoras Domain Island", SCENE_ZORAS_DOMAIN, {}, {}, {
         //Exits
-        ENTRANCE(RR_ZORAS_DOMAIN,     logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))),
+        ENTRANCE(RR_ZORAS_DOMAIN,     logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) ||
+                                      (logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_HOOKSHOT_LADDERS)) || logic->CanUse(RG_IRON_BOOTS) ||
+                                      ((logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()) && logic->HasItem(RG_CLIMB))),
         ENTRANCE(RR_ZD_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
     });
 

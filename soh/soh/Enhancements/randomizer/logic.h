@@ -52,7 +52,8 @@ class Logic {
     bool CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true,
                       uint8_t quantity = 1, bool timer = false, bool inWater = false);
     bool CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true);
-    bool CanAvoidEnemy(RandomizerEnemy enemy, bool grounded = false, uint8_t quantity = 1);
+    bool CanAvoidEnemy(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool grounded = false,
+                       uint8_t quantity = 1);
     bool CanGetEnemyDrop(RandomizerEnemy enemy, EnemyDistance distance = ED_CLOSE, bool aboveLink = false);
     bool CanBreakMudWalls();
     bool CanGetDekuBabaSticks();
@@ -61,7 +62,8 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanHammerRecoilHover(bool needShield = false);
+    bool CanRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
@@ -112,6 +114,8 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();
+    bool BunnyHood();
+    bool BunnyHovers();
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();

@@ -5,6 +5,7 @@
 #include <ship/config/Config.h>
 #include <nlohmann/json.hpp>
 #include <ship/resource/type/Json.h>
+#include <ship/Context.h>
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
@@ -14,6 +15,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
 #include "soh/Enhancements/randomizer/settings.h"
+#include "soh/ShipInit.hpp"
 
 namespace fs = std::filesystem;
 

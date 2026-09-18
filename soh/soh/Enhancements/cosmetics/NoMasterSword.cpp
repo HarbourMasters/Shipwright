@@ -1,15 +1,14 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "objects/object_link_boy/object_link_boy.h"
 
 extern "C" {
+#include "objects/object_link_boy/object_link_boy.h"
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-
 extern PlayState* gPlayState;
 extern void Player_StartMode_Idle(PlayState*, Player*);
 extern u8 Randomizer_GetSettingValue(RandomizerSettingKey);

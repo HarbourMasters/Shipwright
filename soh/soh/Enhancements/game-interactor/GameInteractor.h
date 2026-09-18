@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef GameInteractor_h
-#define GameInteractor_h
-
-#include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 
 typedef enum {
@@ -86,10 +82,12 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(bool state);
 #include <stdarg.h>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 #include <functional>
 #include <cstring>
+#include <string>
 
 #ifdef __cpp_lib_source_location
 #include <source_location>
@@ -578,4 +576,3 @@ class GameInteractor {
 #undef GET_CURRENT_REGISTERING_INFO
 
 #endif /* __cplusplus */
-#endif /* GameInteractor_h */

@@ -1,11 +1,12 @@
 #include <string>
+
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/bridge/resourcebridge.h>
+
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
-#include <libultraship/libultra.h>
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_fz/object_fz.h"
 #include "objects/object_gi_soldout/object_gi_soldout.h"

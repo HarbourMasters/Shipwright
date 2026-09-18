@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef TRICKS_H
-#define TRICKS_H
-
 #include <imgui.h>
 #include "randomizerTypes.h"
 
@@ -31,5 +28,3 @@ class Tricks {
     static void DrawTagChips(const std::set<Tag>& rtTags, std::string trickName = "");
 };
 } // namespace Rando
-
-#endif // TRICKS_H

@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <vector>
 #include <ship/resource/Resource.h>
-#include <libultraship/libultra.h>
 #include "z64math.h"
 
 namespace SOH {

@@ -1,9 +1,10 @@
-#include <soh/OTRGlobals.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
-extern "C" {
-#include <variables.h>
-}
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 // TODO: Port the rest of the behavior for this enhancement here.
 
@@ -23,6 +24,9 @@ void BuildQuitFishingMessage(uint16_t* textId, bool* loadFromMessageTable) {
 void QuitFishingAtDoor_Register() {
     COND_ID_HOOK(OnOpenText, TEXT_FISHERMAN_LEAVE, CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0),
                  BuildQuitFishingMessage);
+
+    COND_VB_SHOULD(VB_FISHING_QUIT_AT_DOOR, CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0),
+                   { *should = true; });
 }
 
 static RegisterShipInitFunc initFunc(QuitFishingAtDoor_Register, { CVAR_ENHANCEMENT("QuitFishingAtDoor") });

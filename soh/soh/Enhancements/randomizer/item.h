@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "soh/Enhancements/custom-message/text.h"
-#include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "3drando/hints.hpp"
 
@@ -35,10 +34,10 @@ class Item {
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
          LogicVal logicVal_, RandomizerHintTextKey hintKey_, uint16_t itemId_, uint16_t objectId_, uint16_t gid_,
          uint16_t textId_, uint16_t field_, int16_t chestAnimation_, GetItemCategory category_, uint16_t modIndex_,
-         Text article_ = {}, std::string color_ = "%g", bool progressive_ = false, uint16_t price_ = 0);
+         Text article_ = {}, std::string color_ = "%g", uint16_t price_ = 0);
     Item(RandomizerGet randomizerGet_, Text name_, ItemType type_, int16_t getItemId_, bool advancement_,
          LogicVal logicVal_, RandomizerHintTextKey hintKey_, GetItemCategory category_, Text article_ = {},
-         std::string color_ = "%g", bool progressive_ = false, uint16_t price_ = 0);
+         std::string color_ = "%g", uint16_t price_ = 0);
 
     void ApplyEffect() const;
     void UndoEffect() const;
@@ -82,7 +81,6 @@ class Item {
     GetItemCategory category;
     Text article;
     std::string color;
-    bool progressive;
     uint16_t price;
     bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;

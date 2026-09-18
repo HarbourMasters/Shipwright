@@ -1,6 +1,3 @@
-#ifndef _BOOTCOMMANDS_H_
-#define _BOOTCOMMANDS_H_
+#pragma once
 
 void BootCommands_Init();
-
-#endif

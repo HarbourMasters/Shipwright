@@ -1,5 +1,4 @@
-#ifndef _RANDO_ENTRANCE_H_
-#define _RANDO_ENTRANCE_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -55,5 +54,3 @@ void Entrance_SetEntranceDiscovered(uint16_t entranceIndex, uint8_t isReversedEn
 #ifdef __cplusplus
 }
 #endif
-
-#endif //_RANDO_ENTRANCE_H_

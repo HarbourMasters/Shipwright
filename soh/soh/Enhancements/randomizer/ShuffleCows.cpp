@@ -1,7 +1,9 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Cow/z_en_cow.h"
@@ -50,10 +52,7 @@ static CheckIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        cowIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        cowIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&cowIdentity, location);
 
     return cowIdentity;
 }

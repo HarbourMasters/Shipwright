@@ -2,7 +2,6 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "variables.h"
@@ -31,10 +30,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Hidan_Dalm/z_bg_hidan_dalm.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kowarerukabe/z_bg_hidan_kowarerukabe.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
-
 extern PlayState* gPlayState;
 extern MapData* gMapData;
-
 void func_8086ED70(BgBombwall* bgBombwall, PlayState* play);
 void BgBreakwall_Wait(BgBreakwall* bgBreakwall, PlayState* play);
 void BgHakaZou_WaitForHit(BgHakaZou* bgHakaZou, PlayState* play);

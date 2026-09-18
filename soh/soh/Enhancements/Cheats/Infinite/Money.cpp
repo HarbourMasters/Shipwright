@@ -1,12 +1,14 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include "z64save.h"
-#include "variables.h"
 
 extern "C" {
+#include "z64save.h"
+#include "variables.h"
+#include "macros.h"
 extern SaveContext gSaveContext;
 extern s32 Flags_GetRandomizerInf(RandomizerInf flag);
-#include "macros.h"
 }
 
 #define CVAR_INFINITE_MONEY_NAME CVAR_CHEAT("InfiniteMoney")

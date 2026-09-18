@@ -12,11 +12,9 @@
 #include "objects/object_bv/object_bv.h"
 #include "overlays/actors/ovl_En_Boom/z_en_boom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
-#include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 #include "soh/OTRGlobals.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
@@ -1597,7 +1595,9 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
             play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] = play->envCtx.screenFillColor[2] = 0xFF;
             play->envCtx.screenFillColor[3] = 0;
             play->envCtx.fillScreen = true;
-            sCsState++;
+            if (GameInteractor_Should(VB_BARINADE_DEATH_SCENE, true, this, &sCsState)) {
+                sCsState++;
+            }
         case DEATH_BODY_TUMORS:
             this->unk_1AC += 0x100;
             sSubCamEyeNext.x = (Math_SinS(this->unk_1AC) * (160.0f + this->unk_1A8)) + sSubCamAtNext.x;
@@ -1655,7 +1655,9 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 sSubCamAtMaxVelFrac = sSubCamEyeMaxVelFrac = sZeroVec;
 
                 sCsState++;
-                this->timer = 133;
+                if (GameInteractor_Should(VB_BARINADE_DEATH_SCENE, true, this, &sCsState)) {
+                    this->timer = 133;
+                }
             }
             break;
         case DEATH_MUSIC:
@@ -3933,8 +3935,8 @@ void BossVa_SpawnTumor(PlayState* play, BossVaEffect* effect, BossVa* this, Vec3
             effect->scale = 0.0f;
 
             if (((i % 4) == 0) || (mode == 2)) {
-                Audio_PlaySoundGeneral(NA_SE_EN_BALINADE_BREAK, &effect->pos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_EN_BALINADE_BREAK, &effect->pos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
             break;
         }

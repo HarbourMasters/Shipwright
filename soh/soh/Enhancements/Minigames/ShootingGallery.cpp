@@ -1,8 +1,9 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "functions.h"
 #include "src/overlays/actors/ovl_En_Syateki_Itm/z_en_syateki_itm.h"
 extern PlayState* gPlayState;
 }

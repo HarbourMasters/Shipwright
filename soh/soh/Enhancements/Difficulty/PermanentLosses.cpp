@@ -1,14 +1,14 @@
 #include <ship/Context.h>
 #include <ship/window/Window.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "functions.h"
 #include "variables.h"
 #include "z64save.h"
 extern SaveContext gSaveContext;
@@ -39,9 +39,9 @@ static void UpdatePermanentHeartLossState() {
     uint8_t startingHealth =
         16 * (IS_RANDO ? (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_HEARTS) + 1) : 3);
 
-    uint8_t newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
-    gSaveContext.healthCapacity = MAX(newCapacity, gSaveContext.healthCapacity);
-    gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+    s16 newCapacity = startingHealth + (heartContainers * 16) + ((heartPieces - (heartPieces % 4)) * 4);
+    gSaveContext.healthCapacity = std::max(newCapacity, gSaveContext.healthCapacity);
+    gSaveContext.health = std::min(gSaveContext.health, gSaveContext.healthCapacity);
     hasAffectedHealth = false;
 }
 
@@ -53,7 +53,7 @@ static void UpdateHealthCapacity() {
 
     if (gSaveContext.healthCapacity > 16 && gSaveContext.healthCapacity - gSaveContext.health >= 16) {
         gSaveContext.healthCapacity -= 16;
-        gSaveContext.health = MIN(gSaveContext.health, gSaveContext.healthCapacity);
+        gSaveContext.health = std::min(gSaveContext.health, gSaveContext.healthCapacity);
         hasAffectedHealth = true;
     }
 }

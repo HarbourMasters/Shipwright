@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ship/config/Config.h>
 
 namespace SOH {

@@ -1,6 +1,7 @@
-#include "playthrough.hpp"
-
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "playthrough.hpp"
 #include "fill.hpp"
 #include "../location_access.h"
 #include "../rng.h"
@@ -40,7 +41,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         }
 
         for (Rando::Option* option : optionGroup.GetOptions()) {
-            if (option->IsCategory(Rando::OptionCategory::Setting)) {
+            if (option->GetCategory() != Rando::OptionCategory::Toggle) {
                 if (option->GetOptionCount() > 0) {
                     if (i >= RSG_EXCLUDES_KOKIRI_FOREST && i <= RSG_EXCLUDES_GANONS_CASTLE) {
                         auto locationOption = static_cast<Rando::LocationOption*>(option);

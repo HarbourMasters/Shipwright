@@ -8,7 +8,8 @@
 #include <set>
 #include <list>
 
-#include <ship/controller/controldevice/controller/Controller.h>
+#include <ship/controller/controldevice/controller/mapping/ControllerAxisDirectionMapping.h>
+#include <ship/controller/controldevice/controller/mapping/ControllerRumbleMapping.h>
 #include <ship/window/gui/GuiWindow.h>
 
 typedef CONTROLLERBUTTONS_T N64ButtonMask;

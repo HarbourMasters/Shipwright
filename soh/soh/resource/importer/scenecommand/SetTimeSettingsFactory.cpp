@@ -1,8 +1,8 @@
+#include <tinyxml2.h>
+
 #include "soh/resource/importer/scenecommand/SetTimeSettingsFactory.h"
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

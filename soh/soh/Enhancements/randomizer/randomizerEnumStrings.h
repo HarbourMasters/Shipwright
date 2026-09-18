@@ -1,29 +1,23 @@
 #pragma once
 
-#include <unordered_map>
+#include <string>
 #include <string_view>
-#include <optional>
 
-template <typename T> const std::unordered_map<std::string_view, T>& GetStringToEnumMap();
+#include "randomizerEnums.h"
 
-template <typename T> std::optional<T> StringToEnum(const std::string_view& str) {
-    const auto& map = GetStringToEnumMap<T>();
-    auto it = map.find(str);
-    if (it != map.end()) {
-        return it->second;
-    } else {
-        return std::nullopt;
-    }
-}
-
-template <typename T> const std::unordered_map<T, std::string_view>& GetEnumToStringMap();
-
-template <typename T> std::optional<std::string_view> EnumToString(const T& value) {
-    const auto& map = GetEnumToStringMap<T>();
-    auto it = map.find(value);
-    if (it != map.end()) {
-        return it->second;
-    } else {
-        return std::nullopt;
-    }
-}
+// EnumToString gives an item's name, or an empty view for a value that isn't one of them. A
+// name is a view over a string literal, so data() is NUL terminated and safe for %s.
+//
+// format_as is the hook fmt looks for: SPDLOG_ERROR("{}", RC_LINKS_POCKET) logs
+// "RC_LINKS_POCKET" rather than a number, and a value with no name logs as
+// "RandomizerCheck(...)". fmt finds it by argument dependent lookup, so including this
+// header is all a caller has to do.
+#define RANDO_ENUM_BEGIN(EnumName)                 \
+    std::string_view EnumToString(EnumName value); \
+    std::string format_as(EnumName value);
+#define RANDO_ENUM_ITEM(...)
+#define RANDO_ENUM_END(...)
+#include "randomizerEnumList.h"
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_END

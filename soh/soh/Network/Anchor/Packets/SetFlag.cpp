@@ -1,10 +1,10 @@
-#include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
+#include "soh/Network/Anchor/Anchor.h"
+#include "soh/Enhancements/game-interactor/GameInteractionEffect.h"
 
 extern "C" {
 #include "functions.h"
-
 extern PlayState* gPlayState;
 }
 

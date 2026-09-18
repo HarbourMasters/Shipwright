@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
@@ -13,8 +15,8 @@ void RegisterSkipDekuTreeIntro() {
                    CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
                        BgTreemouth* treeMouth = va_arg(args, BgTreemouth*);
                        Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
-                       Audio_PlaySoundGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                       Audio_PlaySfxGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                        BgTreemouth_SetupAction(treeMouth, func_808BC6F8);
                        *should = false;
                    });

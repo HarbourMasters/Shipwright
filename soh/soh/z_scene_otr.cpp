@@ -1,13 +1,12 @@
+#include <memory>
+#include <cassert>
+
+#include <ship/resource/type/Blob.h>
+#include <spdlog/spdlog.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "ResourceManagerHelpers.h"
 #include "soh/resource/type/Scene.h"
-#include "global.h"
-#include "vt.h"
-#include "soh/resource/type/CollisionHeader.h"
-#include "soh/resource/type/Cutscene.h"
-#include <ship/resource/type/Blob.h>
-#include <memory>
-#include <cassert>
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
@@ -29,7 +28,13 @@
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
-#include <spdlog/spdlog.h>
+
+extern "C" {
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
+#include "vt.h"
+}
 
 extern Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);

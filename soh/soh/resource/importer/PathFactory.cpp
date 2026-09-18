@@ -1,9 +1,9 @@
+#include <tinyxml2.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/resource/importer/PathFactory.h"
 #include "soh/resource/type/Path.h"
 #include "soh/resource/logging/PathLogger.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
-#include <libultraship/bridge/consolevariablebridge.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

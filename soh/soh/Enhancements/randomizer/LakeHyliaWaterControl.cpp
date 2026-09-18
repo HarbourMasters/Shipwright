@@ -1,17 +1,15 @@
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ShipInit.hpp"
-#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include <libultraship/bridge/resourcebridge.h>
 
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+
 extern "C" {
-extern PlayState* gPlayState;
 #include "macros.h"
 #include "functions.h"
-#include "variables.h"
 #include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
 #include "textures/map_grand_static/map_grand_static.h"
-
+extern PlayState* gPlayState;
 extern void BgSpot06Objects_LockFloat(BgSpot06Objects*, PlayState*);
 extern void BgSpot06Objects_WaterControl_Lower(BgSpot06Objects*, PlayState*);
 extern void BgSpot06Objects_WaterControl_Raise(BgSpot06Objects*, PlayState*);

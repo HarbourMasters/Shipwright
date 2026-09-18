@@ -8,6 +8,7 @@
 #include "randomizer_check_objects.h"
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
+#include "randomizer_tracker_windows.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/item.h"
@@ -23,8 +24,11 @@
 #include "soh/util.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/ShipInit.hpp"
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 extern "C" {
 #include <z64.h>
@@ -170,6 +174,10 @@ std::vector<ItemTrackerItem> grabItems = {
 
 std::vector<ItemTrackerItem> openChestItems = {
     ITEM_TRACKER_RG(RG_OPEN_CHEST, "", 0, DrawItem),
+};
+
+std::vector<ItemTrackerItem> scarecrowsSongItems = {
+    ITEM_TRACKER_RG(RG_SCARECROWS_SONG, "", 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> beanSoulItems = {
@@ -467,6 +475,17 @@ void TrackSilverRupees(std::vector<ItemTrackerItem>* trackList) {
     }
 }
 
+// Ganon's soul is shuffled separately from the other boss souls
+static void TrackBossSouls(std::vector<ItemTrackerItem>* trackList) {
+    bool bossSouls = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS);
+    bool ganonSoul = IS_RANDO && RAND_GET_OPTION(RSK_GANONS_SOUL).IsNot(RO_GANONS_SOUL_STARTWITH);
+    for (auto bossSoul : bossSoulItems) {
+        if (bossSoul.id == RG_GANON_SOUL ? ganonSoul : bossSouls) {
+            trackList->push_back(bossSoul);
+        }
+    }
+}
+
 void DrawName(std::string str, ImU32 color) {
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
     ImVec2 p = ImGui::GetCursorScreenPos();
@@ -591,54 +610,18 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             case ITEM_KEY_SMALL:
                 // Though the ammo/capacity naming doesn't really make sense for keys, we are
                 // hijacking the same system to display key counts as there are enough similarities
-                result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-                if (item.data == SCENE_THIEVES_HIDEOUT) {
-                    std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
-                    result.currentCapacity =
-                        Rando::FindTotalSmallKeys(&gSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
-                    result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                } else {
-                    result.currentCapacity = OTRGlobals::Instance->gRandoContext->GetDungeons()
-                                                 ->GetDungeonFromScene(item.data)
-                                                 ->GetTotalSmallKeys(&gSaveContext);
-                    switch (item.data) {
-                        case SCENE_FOREST_TEMPLE:
-                            result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_FIRE_TEMPLE:
-                            result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
-                            if (IS_RANDO &&
-                                !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                                  OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
-                                  OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
-                                OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
-                                result.currentCapacity = result.currentCapacity - 1;
-                            }
-                            break;
-                        case SCENE_WATER_TEMPLE:
-                            result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_SPIRIT_TEMPLE:
-                            result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_SHADOW_TEMPLE:
-                            result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_BOTTOM_OF_THE_WELL:
-                            result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_GERUDO_TRAINING_GROUND:
-                            result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_INSIDE_GANONS_CASTLE:
-                            result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
-                            break;
-                    }
-                    break;
+                result.currentAmmo = std::max(gSaveContext.inventory.dungeonKeys[item.data], (s8)0);
+                result.currentCapacity = Rando::GetSceneTotalSmallKeys(&gSaveContext, (SceneID)item.data);
+                result.maxCapacity = Rando::GetSceneSmallKeyMax((SceneID)item.data);
+                if (item.data == SCENE_FIRE_TEMPLE && IS_RANDO &&
+                    !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                          .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
+                    OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                    result.currentCapacity--;
                 }
+                break;
         }
     } else if (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) {
         result.maxCapacity = result.currentCapacity = 100;
@@ -879,27 +862,25 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 }
 
 void DrawEquip(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     bool hasEquip = HasEquipment(item) && IsValidSaveFile();
     bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
     std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(iconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(iconName), ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
     Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+                       ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
         DrawItemCount(item, false);
@@ -923,8 +904,11 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 }
 
 void DrawItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM ? INV_CONTENT(item.id) : (uint8_t)ITEM_NONE;
+        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
+            ? INV_CONTENT(item.id)
+            : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     bool hideMax = false;
@@ -968,6 +952,17 @@ void DrawItem(ItemTrackerItem item) {
                 actualItemId = item.id;
                 hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
                 break;
+            case ITEM_NAYRUS_LOVE:
+                // Roc's Feather shares this slot, so the slot being filled isn't enough
+                hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)
+                              ? Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE)
+                              : actualItemId == ITEM_NAYRUS_LOVE;
+                break;
+            case ITEM_FISHING_POLE:
+                actualItemId = item.id;
+                hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+                itemName = "Fishing Pole";
+                break;
             case ITEM_NONE: // spacer, don't render
                 return;
         }
@@ -983,19 +978,6 @@ void DrawItem(ItemTrackerItem item) {
                 hasItem = IS_RANDO &&
                           (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
                 itemName = "Triforce Piece";
-                break;
-            case ITEM_NAYRUS_LOVE:
-                if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
-                    hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
-                } else if (!IS_RANDO) {
-                    // In non-rando, check if player has Roc's Feather in inventory
-                    for (int i = 0; i < 24; i++) {
-                        if (gSaveContext.inventory.items[i] == ITEM_ROCS_FEATHER) {
-                            hasItem = true;
-                            break;
-                        }
-                    }
-                }
                 break;
             case RG_ROCS_FEATHER:
                 itemName = "Roc's Feather";
@@ -1100,10 +1082,6 @@ void DrawItem(ItemTrackerItem item) {
                 break;
             case RG_OCARINA_C_RIGHT_BUTTON:
                 itemName = "Ocarina C Right Button";
-                break;
-            case ITEM_FISHING_POLE:
-                hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-                itemName = "Fishing Pole";
                 break;
 
             case RG_GUARD_HOUSE_KEY:
@@ -1224,6 +1202,9 @@ void DrawItem(ItemTrackerItem item) {
             case RG_OPEN_CHEST:
                 itemName = "Open";
                 break;
+            case RG_SCARECROWS_SONG:
+                itemName = "Scarecrow's Song";
+                break;
         }
     } else if (item.kind == ITEM_KIND_DUMMY) {
         if (item.id == ITEMTYPE_SILVER) {
@@ -1240,8 +1221,7 @@ void DrawItem(ItemTrackerItem item) {
 
     ImGui::BeginGroup();
 
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, hideMax);
@@ -1260,6 +1240,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
         GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
@@ -1272,14 +1253,14 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
@@ -1289,12 +1270,10 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     } else {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -1335,13 +1314,13 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
@@ -1402,46 +1381,20 @@ void DrawTotalChecks() {
 }
 
 // Windowing stuff
-void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
-    ImGuiWindowFlags windowFlags = flags;
-
-    if (windowFlags == 0) {
-        windowFlags |=
-            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
+static void BeginFloatingWindows(const std::string& UniqueName, ImGuiWindowFlags flags = 0) {
+    if (flags == 0) {
+        flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
     }
-
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
-        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
-                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-
-        if (!CVarGetInteger(CVAR_TRACKER_ITEM("Draggable"), 0)) {
-            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
-        }
-    }
-    auto color = VecFromRGBA8(CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }));
-    auto maybeParent = ImGui::GetCurrentWindow();
-    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
-    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
-        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
-        color.w = 1.0f;
-    }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
     if (presetLoaded && presetPos.contains(UniqueName)) {
         ImGui::SetNextWindowSize(presetSize[UniqueName]);
         ImGui::SetNextWindowPos(presetPos[UniqueName]);
         presetSize.erase(UniqueName);
         presetPos.erase(UniqueName);
     }
-    ImGui::Begin(UniqueName.c_str(), nullptr, windowFlags);
-}
-void EndFloatingWindows() {
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleColor();
-    ImGui::End();
+    Trackers::BeginFloatWindows(
+        UniqueName, nullptr, CVarGetColor(CVAR_TRACKER_ITEM("BgColor.Value"), { 0, 0, 0, 0 }),
+        static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING)),
+        CVarGetInteger(CVAR_TRACKER_ITEM("Draggable"), 0), flags);
 }
 
 /**
@@ -1498,7 +1451,7 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     }
 
     for (size_t i = 0; i < rowCount; i++) {
-        for (size_t j = 0; j < MIN(dungeons.size(), columns); j++) {
+        for (size_t j = 0; j < std::min(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:
@@ -1537,6 +1490,56 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     return dungeonItems;
 }
 /* ****************************************************** */
+
+// Don't render when setting disabled
+static int32_t GetGatedSectionDisplay(const char* cvar, bool inPool) {
+    return inPool ? CVarGetInteger(cvar, SECTION_DISPLAY_HIDDEN) : SECTION_DISPLAY_HIDDEN;
+}
+
+static int32_t GregDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.Greg"), IS_RANDO);
+}
+
+static int32_t TriforcePiecesDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_TRIFORCE_HUNT_PIECES_TOTAL));
+}
+
+static int32_t BeanSoulsDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_BEAN_SOULS));
+}
+
+static int32_t BossSoulsDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.BossSouls"),
+                                  IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS) ||
+                                               RAND_GET_OPTION(RSK_GANONS_SOUL).IsNot(RO_GANONS_SOUL_STARTWITH)));
+}
+
+static int32_t JabberNutsDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK));
+}
+
+static int32_t OcarinaButtonsDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OCARINA_BUTTONS));
+}
+
+static int32_t OverworldKeysDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_LOCK_OVERWORLD_DOORS));
+}
+
+static int32_t SilverRupeesDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SILVER).IsNot(RO_SHUFFLE_SILVER_OFF));
+}
+
+static int32_t FishingPoleDisplay() {
+    return GetGatedSectionDisplay(CVAR_TRACKER_ITEM("DisplayType.FishingPole"),
+                                  IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_FISHING_POLE));
+}
 
 void RefreshItemTrackerMainWindow() {
     shouldUpdateVectors = true;
@@ -1626,12 +1629,14 @@ void UpdateVectors() {
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST)) {
         mainWindowItems.insert(mainWindowItems.end(), openChestItems.begin(), openChestItems.end());
     }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+        mainWindowItems.insert(mainWindowItems.end(), scarecrowsSongItems.begin(), scarecrowsSongItems.end());
+    }
 
     // if we're adding greg to the misc window,
     // and misc isn't on the main window,
     // and it doesn't already have greg, add him
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-            SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+    if (GregDisplay() == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) !=
             SECTION_DISPLAY_MAIN_WINDOW) {
         if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) {
@@ -1646,8 +1651,7 @@ void UpdateVectors() {
 
     bool newRowAdded = false;
     // if we're adding greg to the main window
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-        SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+    if (GregDisplay() == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         if (!newRowAdded) {
             // insert empty items until we're on a new row for greg
             while (mainWindowItems.size() % 6) {
@@ -1661,8 +1665,7 @@ void UpdateVectors() {
     }
 
     // If we're adding triforce pieces to the main window
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (TriforcePiecesDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         // If Greg isn't on the main window, add empty items to place the triforce pieces on a new row.
         if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
@@ -1676,8 +1679,7 @@ void UpdateVectors() {
     }
 
     // if misc is separate and fishing pole isn't added, add fishing pole to misc
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-            SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+    if (FishingPoleDisplay() == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
         CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) !=
             SECTION_DISPLAY_MAIN_WINDOW) {
         if (std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item) {
@@ -1690,8 +1692,7 @@ void UpdateVectors() {
                         miscItems.end());
     }
     // add fishing pole to main window
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-        SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+    if (FishingPoleDisplay() == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         if (!newRowAdded) {
             while (mainWindowItems.size() % 6) {
                 mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
@@ -1703,8 +1704,7 @@ void UpdateVectors() {
     }
 
     // If we're adding bean souls to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (BeanSoulsDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce
         // pieces)
         while (mainWindowItems.size() % 6) {
@@ -1716,8 +1716,7 @@ void UpdateVectors() {
     }
 
     // If we're adding boss souls to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (BossSoulsDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the souls on their own row
         // (Too many to sit with Greg/Triforce pieces)
         while (mainWindowItems.size() % 6) {
@@ -1725,12 +1724,11 @@ void UpdateVectors() {
         }
 
         // Add boss souls
-        mainWindowItems.insert(mainWindowItems.end(), bossSoulItems.begin(), bossSoulItems.end());
+        TrackBossSouls(&mainWindowItems);
     }
 
     // If we're adding jabbernuts to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (JabberNutsDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         // there are 6 jabbernuts, perfect for a row
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
@@ -1741,8 +1739,7 @@ void UpdateVectors() {
     }
 
     // If we're adding ocarina buttons to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (OcarinaButtonsDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the buttons on their own row.
         // (Too many to sit with Greg/Triforce pieces/boss souls)
         while (mainWindowItems.size() % 6) {
@@ -1754,8 +1751,7 @@ void UpdateVectors() {
     }
 
     // If we're adding overworld keys to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (OverworldKeysDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         //...add empty items on the main window to get the keys on their own row.
         // (Too many to sit with Greg/Triforce pieces/boss souls/ocarina buttons)
         while (mainWindowItems.size() % 6) {
@@ -1767,8 +1763,7 @@ void UpdateVectors() {
     }
 
     // If we're adding silver rupees to the main window...
-    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
-        SECTION_DISPLAY_MAIN_WINDOW) {
+    if (SilverRupeesDisplay() == SECTION_DISPLAY_MAIN_WINDOW) {
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
         }
@@ -1841,12 +1836,9 @@ void ItemTrackerWindow::DrawElement() {
              SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
              SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-             SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
-            (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), SECTION_DISPLAY_HIDDEN) ==
-             SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-             SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (GregDisplay() == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (TriforcePiecesDisplay() == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (FishingPoleDisplay() == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
              SECTION_DISPLAY_MAIN_WINDOW)) {
             BeginFloatingWindows("Item Tracker");
@@ -1856,28 +1848,28 @@ void ItemTrackerWindow::DrawElement() {
                 SECTION_DISPLAY_MAIN_WINDOW) {
                 DrawNotes();
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Inventory"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Inventory Items Tracker");
             DrawItemsInRows(inventoryItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Equipment"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Equipment Items Tracker");
             DrawItemsInRows(equipmentItems, 3);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Misc"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Misc Items Tracker");
             DrawItemsInRows(miscItems, 4);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonRewards"), SECTION_DISPLAY_MAIN_WINDOW) ==
@@ -1893,14 +1885,14 @@ void ItemTrackerWindow::DrawElement() {
             } else {
                 DrawItemsInRows(dungeonRewards, 3);
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Songs"), SECTION_DISPLAY_MAIN_WINDOW) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Songs Tracker");
             DrawItemsInRows(songItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
@@ -1915,72 +1907,65 @@ void ItemTrackerWindow::DrawElement() {
             } else {
                 DrawItemsInRows(dungeonItems);
             }
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-            SECTION_DISPLAY_EXTENDED_SEPARATE) {
+        if (GregDisplay() == SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Greg Tracker");
             DrawItemsInRows(gregItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.TriforcePieces"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (TriforcePiecesDisplay() == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Triforce Piece Tracker");
             DrawItemsInRows(triforcePieces);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BeanSouls"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (BeanSoulsDisplay() == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Bean Soul Tracker");
             DrawItemsInRows(beanSoulItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (BossSoulsDisplay() == SECTION_DISPLAY_SEPARATE) {
+            std::vector<ItemTrackerItem> shuffledBossSoulItems;
+            TrackBossSouls(&shuffledBossSoulItems);
             BeginFloatingWindows("Boss Soul Tracker");
-            DrawItemsInRows(bossSoulItems);
-            EndFloatingWindows();
+            DrawItemsInRows(shuffledBossSoulItems);
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (JabberNutsDisplay() == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Jabber Nut Tracker");
             DrawItemsInRows(jabbernutItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (OcarinaButtonsDisplay() == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Ocarina Button Tracker");
             DrawItemsInRows(ocarinaButtonItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (OverworldKeysDisplay() == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Overworld Key Tracker");
             DrawItemsInRows(overworldKeyItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SilverRupees"), SECTION_DISPLAY_HIDDEN) ==
-            SECTION_DISPLAY_SEPARATE) {
+        if (SilverRupeesDisplay() == SECTION_DISPLAY_SEPARATE) {
             std::vector<ItemTrackerItem> questMatchingSilverRupeeItems;
             TrackSilverRupees(&questMatchingSilverRupeeItems);
             BeginFloatingWindows("Silver Rupee Tracker");
             DrawItemsInRows(questMatchingSilverRupeeItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
-        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.FishingPole"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
-            SECTION_DISPLAY_EXTENDED_SEPARATE) {
+        if (FishingPoleDisplay() == SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Fishing Pole Tracker");
             DrawItemsInRows(fishingPoleItems);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Notes"), SECTION_DISPLAY_HIDDEN) ==
@@ -1992,7 +1977,7 @@ void ItemTrackerWindow::DrawElement() {
             ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
 
         if (CVarGetInteger("gTrackers.ItemTracker.TotalChecks.DisplayType", SECTION_DISPLAY_MINIMAL_HIDDEN) ==
@@ -2000,7 +1985,7 @@ void ItemTrackerWindow::DrawElement() {
             ImGui::SetNextWindowSize(ImVec2(450, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Total Checks");
             DrawTotalChecks();
-            EndFloatingWindows();
+            Trackers::EndFloatWindows();
         }
     }
     if (presetLoaded) {
@@ -2048,9 +2033,9 @@ void ItemTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-        SohGui::mSohMenu->MenuDrawItem(backgroundColor, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(backgroundColor, THEME_COLOR);
         ImGui::PopItemWidth();
-        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
         if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
             if (CVarCheckbox("Enable Dragging", CVAR_TRACKER_ITEM("Draggable"), CheckboxOptions().Color(THEME_COLOR))) {
@@ -2097,7 +2082,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                       IntSliderOptions().Min(1).Max(30).DefaultValue(13).Color(THEME_COLOR));
 
         ImGui::NewLine();
-        SohGui::mSohMenu->MenuDrawItem(ammoTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(ammoTracking, THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
                 ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
             CVarGetInteger(CVAR_TRACKER_ITEM("ItemCountType"), ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
@@ -2108,8 +2093,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
             }
         }
 
-        SohGui::mSohMenu->MenuDrawItem(keyTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(triforcePieceCount, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(keyTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceCount, THEME_COLOR);
 
         ImGui::TableNextColumn();
 
@@ -2160,7 +2145,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              .Color(THEME_COLOR))) {
             RefreshItemTrackerMainWindow();
         }
-        SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(dungeonItemTracking, THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) !=
             SECTION_DISPLAY_HIDDEN) {
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
@@ -2175,15 +2160,15 @@ void ItemTrackerSettingsWindow::DrawElement() {
                 RefreshItemTrackerMainWindow();
             }
         }
-        SohGui::mSohMenu->MenuDrawItem(gregTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(jabberNutsTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(silverRupeeTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(gregTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(jabberNutsTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(silverRupeeTracking, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, THEME_COLOR);
 
         if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
                          ComboboxOptions()
@@ -2194,9 +2179,9 @@ void ItemTrackerSettingsWindow::DrawElement() {
             RefreshItemTrackerMainWindow();
         }
 
-        SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(openChestIdentWidget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(openChestIdentWidget, THEME_COLOR);
 
         ImGui::PopStyleVar(1);
         ImGui::EndTable();

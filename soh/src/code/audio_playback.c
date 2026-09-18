@@ -150,7 +150,7 @@ void Audio_NoteInit(Note* note) {
     note->noteSubEu = gDefaultNoteSub;
 }
 
-extern void aOPUSFree(struct OggOpusFile* opusFile);
+extern void aOPUSFree(struct OpusDecState* dec);
 void Audio_NoteDisable(Note* note) {
     if (note->noteSubEu.bitField0.needsInit == true) {
         note->noteSubEu.bitField0.needsInit = false;

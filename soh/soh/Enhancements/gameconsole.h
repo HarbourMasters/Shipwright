@@ -1,5 +1,4 @@
-#ifndef _GAMECONSOLE_H_
-#define _GAMECONSOLE_H_
+#pragma once
 
 #include <stdbool.h>
 #include <libultraship/bridge/consolevariablebridge.h>
@@ -35,6 +34,4 @@ s32 GameConsole_Split(char* str, char** argv);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

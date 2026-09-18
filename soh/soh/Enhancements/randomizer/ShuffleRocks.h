@@ -1,5 +1,4 @@
-#ifndef SHUFFLEROCKS_H
-#define SHUFFLEROCKS_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,5 +7,3 @@ void EnIshi_RandomizerInit(void* actorRef);
 #ifdef __cplusplus
 };
 #endif
-
-#endif // SHUFFLEROCKS_H

@@ -1,11 +1,10 @@
-#include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
+#include "soh/Network/Anchor/Anchor.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Notification/Notification.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "functions.h"

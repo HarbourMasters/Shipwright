@@ -1,7 +1,7 @@
 #include "z_en_heishi4.h"
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -21,7 +21,6 @@ void func_80A56900(EnHeishi4* this, PlayState* play);
 void func_80A56994(EnHeishi4* this, PlayState* play);
 void func_80A56A50(EnHeishi4* this, PlayState* play);
 void func_80A56ACC(EnHeishi4* this, PlayState* play);
-void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play);
 
 const ActorInit En_Heishi4_InitVars = {
     ACTOR_EN_HEISHI4,
@@ -333,46 +332,13 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            Player* player = GET_PLAYER(play);
-            // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
-            // these interactions, so bunny hood is fine in that case.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("MarketSneak"), 0) &&
-                (player->currentMask == PLAYER_MASK_NONE ||
-                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), 0)))) {
-                this->actionFunc = EnHeishi4_MarketSneak;
-            } else {
+            if (GameInteractor_Should(VB_MARKET_NIGHT_GUARD_SET_ACTION_AFTER_TALK, true, this, play)) {
                 this->actionFunc = func_80A56614;
                 return;
             }
         }
     }
     Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
-}
-
-/*Function that allows child Link to exit from Market entrance to Hyrule Field
-at night.
-*/
-void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
-    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        switch (play->msgCtx.choiceIndex) {
-            case 0: // yes
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF) {
-                    play->nextEntranceIndex =
-                        Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_ON_BRIDGE_SPAWN); // Market Entrance -> HF
-                } else {
-                    play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN; // HF Near bridge (OoT cutscene
-                                                                                   // entrance) to not fall in the water
-                }
-                play->transitionTrigger = TRANS_TRIGGER_START;
-                play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
-                gSaveContext.nextTransitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_WHITE, TCS_FAST);
-                this->actionFunc = func_80A56614;
-                break;
-            case 1: // no
-                this->actionFunc = func_80A56614;
-                break;
-        }
-    }
 }
 
 void EnHeishi4_Update(Actor* thisx, PlayState* play) {

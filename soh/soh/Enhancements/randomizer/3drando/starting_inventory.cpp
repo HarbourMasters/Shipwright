@@ -1,9 +1,6 @@
 #include "starting_inventory.hpp"
-
 #include "../dungeon.h"
 #include "../SeedContext.h"
-#include "../logic.h"
-#include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/util.h"
 
@@ -123,7 +120,15 @@ void GenerateStartingInventory() {
     if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
         AddItemToInventory(RG_ZELDAS_LETTER, ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) ? 1 : 0);
     }
+    AddItemToInventory(RG_SCARECROWS_SONG, ctx->GetOption(RSK_STARTING_SCARECROWS_SONG) ? 1 : 0);
+    AddItemToInventory(RG_KEATON_MASK, ctx->GetOption(RSK_STARTING_KEATON_MASK) ? 1 : 0);
+    AddItemToInventory(RG_SKULL_MASK, ctx->GetOption(RSK_STARTING_SKULL_MASK) ? 1 : 0);
+    AddItemToInventory(RG_SPOOKY_MASK, ctx->GetOption(RSK_STARTING_SPOOKY_MASK) ? 1 : 0);
     AddItemToInventory(RG_BUNNY_HOOD, ctx->GetOption(RSK_STARTING_BUNNY_HOOD) ? 1 : 0);
+    AddItemToInventory(RG_GORON_MASK, ctx->GetOption(RSK_STARTING_GORON_MASK) ? 1 : 0);
+    AddItemToInventory(RG_ZORA_MASK, ctx->GetOption(RSK_STARTING_ZORA_MASK) ? 1 : 0);
+    AddItemToInventory(RG_GERUDO_MASK, ctx->GetOption(RSK_STARTING_GERUDO_MASK) ? 1 : 0);
+    AddItemToInventory(RG_MASK_OF_TRUTH, ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH) ? 1 : 0);
     AddItemToInventory(RG_CLAIM_CHECK, ctx->GetOption(RSK_STARTING_CLAIM_CHECK) ? 1 : 0);
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());
     AddItemToInventory(RG_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);

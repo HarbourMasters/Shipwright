@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include <vector>
-#include <memory>
 #include <string>
 #include "SceneCommand.h"
 #include "RomFile.h"

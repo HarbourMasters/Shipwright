@@ -1,5 +1,4 @@
-#ifndef SHIP_UTILS_H
-#define SHIP_UTILS_H
+#pragma once
 
 #include <libultraship/libultra.h>
 
@@ -7,6 +6,9 @@
 #include <array>
 #include <set>
 #include <vector>
+
+#include <string>
+std::string Ship_FormatTimeDisplay(uint32_t value);
 
 void LoadGuiTextures();
 
@@ -76,5 +78,3 @@ template <typename T, size_t size> void Shuffle(std::array<T, size>& arr, uint64
 }
 } // namespace ShipUtils
 #endif
-
-#endif // SHIP_UTILS_H

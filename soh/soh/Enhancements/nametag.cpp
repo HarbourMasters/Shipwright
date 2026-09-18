@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "nametag.h"
 #include <vector>
 #include <algorithm>

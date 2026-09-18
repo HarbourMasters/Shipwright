@@ -1,7 +1,7 @@
-#include <libultraship/libultra.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "z64.h"
 
 u32 osResetType;

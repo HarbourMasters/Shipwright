@@ -1,5 +1,4 @@
-#ifndef EXTRACT_H
-#define EXTRACT_H
+#pragma once
 
 #include <atomic>
 #include <stdint.h>
@@ -67,4 +66,3 @@ class Extractor {
                    std::atomic<size_t>* totalExtract);
     std::string Mkdtemp();
 };
-#endif

@@ -1,5 +1,5 @@
-#ifndef NETWORK_SAIL_H
-#define NETWORK_SAIL_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <memory>
@@ -23,4 +23,3 @@ class Sail : public Network {
 };
 
 #endif // __cplusplus
-#endif // NETWORK_SAIL_H

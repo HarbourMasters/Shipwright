@@ -1,5 +1,4 @@
-#ifndef SHIP_BACKENDTYPES_H
-#define SHIP_BACKENDTYPES_H
+#pragma once
 
 #include <fast/Fast3dWindow.h>
 #include <ship/audio/Audio.h>
@@ -16,5 +15,3 @@ static const std::map<Fast::WindowBackend, const char*> windowBackendsMap = {
     { Fast::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
     { Fast::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
-
-#endif // SHIP_BACKENDTYPES_H

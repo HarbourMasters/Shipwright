@@ -1,8 +1,3 @@
-#include "randomizer_hint_tracker.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
-#include "soh/SohGui/SohGui.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -11,24 +6,30 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <ship/window/gui/IconsFontAwesome4.h>
+#include <ship/Context.h>
 
-extern "C" {
-#include <z64.h>
-#include "macros.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-}
-
+#include "randomizer_hint_tracker.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/hint.h"
 #include "soh/Enhancements/randomizer/item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+
+extern "C" {
+#include <z64.h>
+#include "variables.h"
+extern PlayState* gPlayState;
+}
 
 using namespace UIWidgets;
 
@@ -665,7 +666,7 @@ void HintTrackerWindow::DrawElement() {
 
     ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_FirstUseEver);
     if (Trackers::BeginFloatWindows(
-            "Hint Tracker", mIsVisible, Color_Background,
+            "Hint Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_HINT("Draggable"), 1))) {
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_HINT("FontSize"), 1.0f));
@@ -707,11 +708,9 @@ void HintTrackerSettingsWindow::DrawElement() {
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
 
-    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, THEME_COLOR);
 
-    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
     CVarSliderFloat("Font Size", CVAR_TRACKER_HINT("FontSize"),
                     FloatSliderOptions()
@@ -724,10 +723,8 @@ void HintTrackerSettingsWindow::DrawElement() {
                         .DefaultValue(1.0f));
 
     if (CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
-        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget, THEME_COLOR);
         CVarCombobox("Display Mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
                      ComboboxOptions()
                          .LabelPosition(LabelPositions::Far)
@@ -751,29 +748,20 @@ void HintTrackerSettingsWindow::DrawElement() {
     }
 
     ImGui::SeparatorText("Tracker Header Visibility");
-    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, THEME_COLOR);
 
     ImGui::SeparatorText("Journal");
-    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, THEME_COLOR);
 
     ImGui::TableNextColumn();
 
-    SohGui::GetSohMenu()->MenuDrawItem(readTextColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(unreadColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
-    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(readTextColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(unreadColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, THEME_COLOR);
 
     ImGui::EndTable();
     ImGui::PopStyleVar();

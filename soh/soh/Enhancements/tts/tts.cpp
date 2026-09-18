@@ -7,9 +7,10 @@
 #include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
 #include <nlohmann/json.hpp>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/ShipInit.hpp"
-#include "message_data_static.h"
+#include "message_data_fmt.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
@@ -170,8 +171,8 @@ void RegisterOnInterfaceUpdateHook() {
 
         if (gPlayState->state.frames % 7 == 0) {
             if (lostHealth >= 16) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 lostHealth -= 16;
             }
         }

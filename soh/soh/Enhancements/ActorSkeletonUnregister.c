@@ -3,7 +3,6 @@
 
 #include "soh/ResourceManagerHelpers.h"
 
-#include "z64.h"
 #include "include/z64player.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_Boss_Sst/z_boss_sst.h"
@@ -114,7 +113,6 @@
 #include "src/overlays/actors/ovl_En_Test/z_en_test.h"
 #include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
 #include "src/overlays/actors/ovl_En_Tk/z_en_tk.h"
-#include "src/overlays/actors/ovl_En_Torch2/z_en_torch2.h"
 #include "src/overlays/actors/ovl_En_Toryo/z_en_toryo.h"
 #include "src/overlays/actors/ovl_En_Tr/z_en_tr.h"
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"

@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include "SceneCommand.h"
-#include <libultraship/libultra/types.h>
 
 namespace SOH {
 typedef struct {

@@ -1,5 +1,6 @@
 #include "SohModals.h"
 #include <imgui.h>
+#include <ship/window/Window.h>
 #include <vector>
 #include <string>
 #include "UIWidgets.hpp"

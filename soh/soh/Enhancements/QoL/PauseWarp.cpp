@@ -1,15 +1,14 @@
-#include <string>
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-
 extern PlayState* gPlayState;
-
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 }
 

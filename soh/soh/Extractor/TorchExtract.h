@@ -1,5 +1,4 @@
-#ifndef TORCHEXTRACT_H
-#define TORCHEXTRACT_H
+#pragma once
 
 #include <atomic>
 #include <cstddef>
@@ -20,5 +19,3 @@ std::string Extract(const std::string& romPath, const std::string& srcDir, const
                     const std::string& portVersion, std::atomic<size_t>* progress);
 
 } // namespace SohTorch
-
-#endif

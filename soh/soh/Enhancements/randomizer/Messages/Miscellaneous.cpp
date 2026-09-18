@@ -5,8 +5,10 @@
  * text changes that don't really fit anywhere else.
  */
 
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <variables.h>

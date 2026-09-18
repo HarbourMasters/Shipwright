@@ -38,6 +38,7 @@ s32 Camera_UpdateWater(Camera* camera);
 #define DISTORTION_UNDERWATER_FISHING (1 << 4)
 
 #include "z_camera_data.inc"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 /*===============================================================*/
 

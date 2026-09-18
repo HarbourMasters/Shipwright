@@ -1,39 +1,35 @@
+#include <algorithm>
+#include <array>
+#include <bit>
+#include <map>
+#include <string>
+
+#include <fast/Fast3dGui.h>
+#include <ship/Context.h>
+
 #include "debugSaveEditor.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerGet.h"
-#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SaveManager.h"
-#include "soh/ResourceManagerHelpers.h"
-
-#include <spdlog/common.h>
-#include <spdlog/fmt/fmt.h>
-#include <algorithm>
-#include <array>
-#include <bit>
-#include <map>
-#include <string>
-#include <soh_assets.h>
-
-#include <fast/Fast3dGui.h>
 
 extern "C" {
+#include <soh_assets.h>
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "message_data_static.h"
 extern PlayState* gPlayState;
 }
 
-#include "message_data_static.h"
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;
@@ -116,6 +112,7 @@ ButtonOptions buttonOptionsBase;
 CheckboxOptions checkboxOptionsBase;
 ComboboxOptions comboboxOptionsBase;
 static std::map<std::string, ImGuiTextFilter> flagTableFilters;
+static ImGuiTextFilter playerStateFilter;
 
 // Modification of gAmmoItems that replaces ITEM_NONE with the item in inventory slot it represents
 u8 gAllAmmoItems[] = {
@@ -175,6 +172,7 @@ static bool DungeonHasBossKey(int32_t dungeonIndex) {
 // restrictToValid: pointer to shared restrict flag (nullptr = use internal static)
 static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets::Colors color, bool isBButton = false,
                                    const bool* restrictToValidPtr = nullptr) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     // Use provided restrictToValid or default to true (restricted mode)
     bool useRestriction = restrictToValidPtr ? *restrictToValidPtr : true;
     uint8_t* buttonItem = &gSaveContext.equips.buttonItems[buttonIndex];
@@ -219,22 +217,16 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
 
     if (item == ITEM_ROCS_FEATHER) {
         std::string rocId = std::string("RG_ROCS_FEATHER_btn_") + label;
-        if (ImGui::ImageButton(
-                rocId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName("RG_ROCS_FEATHER"),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+        if (ImGui::ImageButton(rocId.c_str(), gui->GetTextureByName("RG_ROCS_FEATHER"), ImVec2(IMAGE_SIZE, IMAGE_SIZE),
+                               ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else if (const auto mappedItem = itemMapping.find(item); item != ITEM_NONE && mappedItem != itemMapping.end()) {
         const ItemMapEntry& slotEntry = mappedItem->second;
         // Use label-based ID to avoid conflicts when same item is on multiple buttons
         std::string itemId = std::string("item_btn_") + label + "_" + slotEntry.name;
-        if (ImGui::ImageButton(
-                itemId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName(slotEntry.name),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+        if (ImGui::ImageButton(itemId.c_str(), gui->GetTextureByName(slotEntry.name), ImVec2(IMAGE_SIZE, IMAGE_SIZE),
+                               ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else {
@@ -300,11 +292,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
             const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
             PushStyleButton(Colors::DarkGray);
             std::string pickerItemId = std::string("item_picker_") + label + "_" + slotEntry.name;
-            auto ret = ImGui::ImageButton(
-                pickerItemId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName(slotEntry.name),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            auto ret = ImGui::ImageButton(pickerItemId.c_str(), gui->GetTextureByName(slotEntry.name),
+                                          ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             PopStyleButton();
             if (ret) {
                 *buttonItem = slotEntry.id;
@@ -361,11 +350,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
             ImGui::SameLine();
             PushStyleButton(Colors::DarkGray);
             std::string rocPickerId = std::string("RG_ROCS_FEATHER_picker_") + label;
-            auto retRoc = ImGui::ImageButton(
-                rocPickerId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName("RG_ROCS_FEATHER"),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            auto retRoc = ImGui::ImageButton(rocPickerId.c_str(), gui->GetTextureByName("RG_ROCS_FEATHER"),
+                                             ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             PopStyleButton();
             if (retRoc) {
                 *buttonItem = ITEM_ROCS_FEATHER;
@@ -955,10 +941,9 @@ void DrawGeneralTab() {
 }
 
 void DrawBGSItemFlag(uint8_t itemID) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(slotEntry.name),
-                 ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
 // Re-sync any C/D-pad button that mirrors an edited inventory slot (buttonItems[i] == items[cButtonSlots[i-1]]),
@@ -975,6 +960,7 @@ static void SyncButtonItemsForSlot(uint8_t slot) {
 }
 
 void DrawInventoryTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("inventoryTab", ImVec2(0, 0), true);
@@ -1013,43 +999,25 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
 
             // Check if this item is equipped and which slot for colored border
-            enum EquippedSlot { None, BButton, CButton, DPad };
+            enum EquippedSlot { None, CButton, DPad };
             EquippedSlot equippedSlot = EquippedSlot::None;
 
-            // Check C button slots (cButtonSlots maps to inventory slot indices)
-            for (int cBtn = 0; cBtn < 4; cBtn++) {
-                if (gSaveContext.equips.cButtonSlots[cBtn] == index) {
-                    equippedSlot = EquippedSlot::CButton;
+            for (size_t btn = 1; btn < ARRAY_COUNT(gSaveContext.equips.buttonItems); btn++) {
+                if (btn >= 4 && !dpadEnabled) {
                     break;
                 }
-            }
-            // Check D-pad slots (buttonItems[4-7] - need to match the item, not slot)
-            if (equippedSlot == EquippedSlot::None && dpadEnabled) {
-                for (int dpadBtn = 4; dpadBtn <= 7; dpadBtn++) {
-                    if (gSaveContext.equips.buttonItems[dpadBtn] == item) {
-                        equippedSlot = EquippedSlot::DPad;
-                        break;
-                    }
+                if (gSaveContext.equips.cButtonSlots[btn - 1] == index) {
+                    equippedSlot = btn < 4 ? EquippedSlot::CButton : EquippedSlot::DPad;
+                    break;
                 }
-            }
-            // For B button (buttonItems[0])
-            if (equippedSlot == EquippedSlot::None && gSaveContext.equips.buttonItems[0] == item) {
-                equippedSlot = EquippedSlot::BButton;
             }
 
             // Determine border color (needed before group for proper rendering)
             ImU32 borderColor = 0;
             bool drawBorder = equippedSlot != EquippedSlot::None;
             if (drawBorder) {
-                if (equippedSlot == EquippedSlot::CButton) {
-                    borderColor = IM_COL32(255, 165, 0, 255); // Orange for C-button
-                } else if (equippedSlot == EquippedSlot::DPad) {
-                    borderColor = IM_COL32(180, 180, 180, 255); // Light grey for D-pad
-                } else {
-                    // B button color (green for N64, red for GC)
-                    bool isGcScheme = CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), 0) == 1;
-                    borderColor = isGcScheme ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
-                }
+                borderColor = equippedSlot == EquippedSlot::CButton ? IM_COL32(255, 165, 0, 255) // Orange for C-button
+                                                                    : IM_COL32(180, 180, 180, 255); // Light grey D-pad
             }
 
             ImGui::BeginGroup();
@@ -1060,19 +1028,13 @@ void DrawInventoryTab() {
             PushStyleButton(Colors::DarkGray);
             bool wasClicked = false;
             if (item == ITEM_ROCS_FEATHER) {
-                wasClicked = ImGui::ImageButton(
-                    "RG_ROCS_FEATHER",
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("RG_ROCS_FEATHER"),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                wasClicked = ImGui::ImageButton("RG_ROCS_FEATHER", gui->GetTextureByName("RG_ROCS_FEATHER"),
+                                                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             } else if (const auto mappedItem = itemMapping.find(item);
                        item != ITEM_NONE && mappedItem != itemMapping.end()) {
                 const ItemMapEntry& slotEntry = mappedItem->second;
-                wasClicked = ImGui::ImageButton(
-                    slotEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(slotEntry.name),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                wasClicked = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
+                                                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             } else {
                 wasClicked =
                     ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
@@ -1169,10 +1131,7 @@ void DrawInventoryTab() {
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
                     PushStyleButton(Colors::DarkGray);
-                    auto ret = ImGui::ImageButton(slotEntry.name.c_str(),
-                                                  std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                      Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                      ->GetTextureByName(slotEntry.name),
+                    auto ret = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
                                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (ret) {
@@ -1189,10 +1148,7 @@ void DrawInventoryTab() {
                 if (addRocsFeather) {
                     ImGui::SameLine();
                     PushStyleButton(Colors::DarkGray);
-                    auto retRoc = ImGui::ImageButton("RG_ROCS_FEATHER_PICKER",
-                                                     std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                         ->GetTextureByName("RG_ROCS_FEATHER"),
+                    auto retRoc = ImGui::ImageButton("RG_ROCS_FEATHER_PICKER", gui->GetTextureByName("RG_ROCS_FEATHER"),
                                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (retRoc) {
@@ -1374,7 +1330,7 @@ void DrawFlagArrayWithTooltips(const std::string& name, T& flags, Colors color, 
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1395,13 +1351,53 @@ void DrawFlagArrayWithTooltips(const std::string& name, T& flags, Colors color, 
     ImGui::PopID();
 }
 
+// List state flags matching the search, returns whether any matched
+template <typename T>
+bool DrawStateSearchResults(const char* label, T& flags, const std::vector<std::string>& names,
+                            ImGuiTextFilter& filter) {
+    bool hasMatches = false;
+    ImGui::PushID(label);
+    for (size_t flagIndex = 0; flagIndex < names.size() && flagIndex < sizeof(T) * 8; flagIndex++) {
+        std::string text = spdlog::fmt_lib::format("{} Bit {}: {}", label, flagIndex, names[flagIndex]);
+        if (!filter.PassFilter(text.c_str())) {
+            continue;
+        }
+        hasMatches = true;
+
+        ImGui::PushID(static_cast<int>(flagIndex));
+        uint32_t bitMask = 1u << flagIndex;
+        bool flag = (flags & bitMask) != 0;
+        PushStyleCheckbox(THEME_COLOR);
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+        if (ImGui::Checkbox(text.c_str(), &flag)) {
+            flags ^= bitMask;
+        }
+        ImGui::PopStyleVar();
+        PopStyleCheckbox();
+        ImGui::PopID();
+    }
+    ImGui::PopID();
+    return hasMatches;
+}
+
+static const char* GetFlagDescription(const FlagTable& flagTable, uint16_t index) {
+    if (flagTable.flagTableType == RANDOMIZER_INF) {
+        std::string_view name = EnumToString(static_cast<RandomizerInf>(index));
+        return name.empty() ? "" : name.data();
+    }
+    auto it = flagTable.flagDescriptions.find(index);
+    return it != flagTable.flagDescriptions.end() ? it->second : "";
+}
+
 // Draw a flag bitfield as a grid of checkboxes
 void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& flags) {
     ImGui::PushID((std::to_string(row) + flagTable.name).c_str());
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
-        bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
+        uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
+        const char* desc = GetFlagDescription(flagTable, index);
+        bool hasDescription = desc[0] != '\0';
         uint32_t bitMask = 1 << flagIndex;
         ImVec4 themeColor = ColorValues.at(THEME_COLOR);
         ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f, themeColor.z };
@@ -1423,9 +1419,7 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
         PopStyleCheckbox();
         if (ImGui::IsItemHovered()) {
             ImGui::BeginTooltip();
-            uint16_t index = row * 16 + flagIndex;
             if (hasDescription) {
-                const char* desc = flagTable.flagDescriptions.at(index);
                 ImGui::Text("0x%02X: %s", index, UIWidgets::WrappedText(desc, 60).c_str());
             } else {
                 ImGui::Text("0x%02X: %s (Bit %d)", index, flagTable.name, flagIndex);
@@ -1440,12 +1434,12 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
 
 // Helper to draw "Set All / Clear All" button pair with flag array
 void DrawFlagButtons(const char* name, uint32_t& flags, UIWidgets::Colors color) {
-    if (UIWidgets::Button(fmt::format("Set All##{}", name).c_str(),
+    if (UIWidgets::Button(spdlog::fmt_lib::format("Set All##{}", name).c_str(),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green))) {
         flags = UINT32_MAX;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button(fmt::format("Clear All##{}", name).c_str(),
+    if (UIWidgets::Button(spdlog::fmt_lib::format("Clear All##{}", name).c_str(),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red))) {
         flags = 0;
     }
@@ -1467,7 +1461,7 @@ void DrawActiveStates(const std::string& label, uint32_t states, const std::vect
     if (!hasAny)
         active += "None";
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
-    ImGui::Text("%s", active.c_str());
+    ImGui::TextWrapped("%s", active.c_str());
     ImGui::PopStyleColor();
 }
 
@@ -1497,8 +1491,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
 
         for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
             uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
-            auto descIt = flagTable.flagDescriptions.find(index);
-            const char* desc = descIt != flagTable.flagDescriptions.end() ? descIt->second : "";
+            const char* desc = GetFlagDescription(flagTable, index);
             std::string searchable = spdlog::fmt_lib::format("0x{:02X} {}", index, desc);
             if (!filter.PassFilter(searchable.c_str())) {
                 continue;
@@ -1507,7 +1500,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             hasMatches = true;
 
             ImGui::PushID(index);
-            bool hasDescription = descIt != flagTable.flagDescriptions.end();
+            bool hasDescription = desc[0] != '\0';
             uint32_t bitMask = 1 << flagIndex;
             ImVec4 themeColor = ColorValues.at(THEME_COLOR);
             ImVec4 colorDark = { themeColor.x * 0.4f, themeColor.y * 0.4f, themeColor.z * 0.4f, themeColor.z };
@@ -1536,10 +1529,16 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             }
 
             ImGui::SameLine();
+            ImVec2 labelPos = ImGui::GetCursorScreenPos();
             if (hasDescription) {
                 ImGui::TextWrapped("0x%02X: %s", index, desc);
             } else {
                 ImGui::Text("0x%02X", index);
+            }
+
+            ImGui::SetCursorScreenPos(labelPos);
+            if (ImGui::InvisibleButton("##label", ImGui::GetItemRectSize())) {
+                flags ^= bitMask;
             }
 
             ImGui::PopID();
@@ -1896,6 +1895,7 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
 
 // Draws a combo that lets you choose and upgrade value from a popup grid of icons
 void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const std::vector<uint8_t>& items) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     static const char* upgradePopupPicker = "upgradePopupPicker";
 
     ImGui::PushID(categoryName.c_str());
@@ -1904,11 +1904,9 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     auto value = (size_t)CUR_UPG_VALUE(categoryId);
     uint8_t item = value < items.size() ? items[value] : (uint8_t)ITEM_NONE;
     const ItemMapEntry& slotEntry = itemMapping[item];
-    if (ImGui::ImageButton(
-            slotEntry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(item != ITEM_NONE ? slotEntry.name : itemMapping[items[1]].nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+    if (ImGui::ImageButton(slotEntry.name.c_str(),
+                           gui->GetTextureByName(item != ITEM_NONE ? slotEntry.name : itemMapping[items[1]].nameFaded),
+                           ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
         ImGui::OpenPopup(upgradePopupPicker);
     }
     PopStyleButton();
@@ -1930,11 +1928,8 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 Tooltip("None");
             } else {
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
-                auto ret = ImGui::ImageButton(
-                    slotEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(slotEntry.name),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                auto ret = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
+                                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                 if (ret) {
                     Inventory_ChangeUpgrade(categoryId, static_cast<s16>(pickerIndex));
                     ImGui::CloseCurrentPopup();
@@ -1949,6 +1944,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
 }
 
 void DrawEquipmentTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("equipmentTab", ImVec2(0, 0), true);
@@ -2005,11 +2001,9 @@ void DrawEquipmentTab() {
         }
 
         PushStyleButton(Colors::DarkGray);
-        auto ret = ImGui::ImageButton(
-            entry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+        auto ret =
+            ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
             if (hasEquip) {
                 gSaveContext.inventory.equipment &= ~bitMask;
@@ -2138,6 +2132,7 @@ void DrawEquipmentTab() {
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) ||
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK) ||
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_SCARECROWS_SONG) ||
             randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER);
 
         if (bombchuProgressive || triforceHunt || anyAbilityShuffle) {
@@ -2222,6 +2217,8 @@ void DrawEquipmentTab() {
                             static_cast<RandomizerInf>(RAND_INF_HAS_OCARINA_A + i));
                     }
                 }
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_SCARECROWS_SONG))
+                    add(RG_SCARECROWS_SONG, RAND_INF_HAS_SCARECROWS_SONG);
                 if (randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER))
                     add(RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER);
                 if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE))
@@ -2256,15 +2253,14 @@ void DrawEquipmentTab() {
 
 // Draws a toggleable icon for a quest item that is faded when disabled
 void DrawQuestItemButton(uint32_t item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const QuestMapEntry& entry = questMapping[item];
     uint32_t bitMask = 1 << entry.id;
     bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     PushStyleButton(Colors::DarkGray);
-    auto ret = ImGui::ImageButton(
-        entry.name.c_str(),
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-        ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+    auto ret =
+        ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+                           ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasQuestItem) {
             gSaveContext.inventory.questItems &= ~bitMask;
@@ -2278,15 +2274,13 @@ void DrawQuestItemButton(uint32_t item) {
 
 // Draws a toggleable icon for a dungeon item that is faded when disabled
 void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const ItemMapEntry& entry = itemMapping[item];
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     PushStyleButton(Colors::DarkGray);
-    auto ret = ImGui::ImageButton(
-        entry.name.c_str(),
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
-        ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    auto ret = ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
+                                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
@@ -2299,6 +2293,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
 }
 
 void DrawQuestStatusTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("questStatusTab", ImVec2(0, 0), true);
@@ -2347,11 +2342,9 @@ void DrawQuestStatusTab() {
         uint32_t bitMask = 1 << entry.id;
         bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         PushStyleButton(Colors::DarkGray);
-        auto ret = ImGui::ImageButton(
-            entry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+        auto ret =
+            ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
@@ -2450,23 +2443,23 @@ void DrawDungeonItemsTab() {
 
         // Small keys - clickable button with popup (only for dungeons that have keys)
         if (GetMaxKeysForDungeon(dungeonIndex) > 0) {
+            auto gui =
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
             // Save cursor position before small key button to restore for boss key alignment
             ImVec2 smallKeyCursor = ImGui::GetCursorScreenPos();
 
             uint8_t keyCount = gSaveContext.inventory.dungeonKeys[dungeonIndex];
-            std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
-            std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
+            std::string keyPopupId = spdlog::fmt_lib::format("##SmallKeyPopup_{}", dungeonIndex);
+            std::string keySliderId = spdlog::fmt_lib::format("##KeySlider_{}", dungeonIndex);
             PushStyleButton(Colors::DarkGray);
             // keyCount is uint8_t, so -1 becomes 255. Only gray out when exactly 255 (-1)
             bool showNormal = (keyCount != 255);
             // Show count label for any value except 255 (-1)
             bool showCount = (keyCount != 255);
-            if (ImGui::ImageButton(
-                    itemMapping[ITEM_KEY_SMALL].name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(showNormal ? itemMapping[ITEM_KEY_SMALL].name
-                                                      : itemMapping[ITEM_KEY_SMALL].nameFaded),
-                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
+            if (ImGui::ImageButton(itemMapping[ITEM_KEY_SMALL].name.c_str(),
+                                   gui->GetTextureByName(showNormal ? itemMapping[ITEM_KEY_SMALL].name
+                                                                    : itemMapping[ITEM_KEY_SMALL].nameFaded),
+                                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
                 ImGui::OpenPopup(keyPopupId.c_str());
             }
             PopStyleButton();
@@ -2475,16 +2468,16 @@ void DrawDungeonItemsTab() {
             if (showCount) {
                 ImVec2 buttonMax = ImGui::GetItemRectMax();
                 ImVec2 framePadding = ImGui::GetStyle().FramePadding;
-                ImVec2 textSize = ImGui::CalcTextSize(fmt::format("{}", keyCount).c_str());
+                ImVec2 textSize = ImGui::CalcTextSize(spdlog::fmt_lib::format("{}", keyCount).c_str());
                 // Position text inside the button, accounting for frame padding
                 float textX = buttonMax.x - textSize.x - framePadding.x;
                 float textY = buttonMax.y - textSize.y - framePadding.y;
                 // Draw text directly without affecting cursor position
                 ImGui::GetForegroundDrawList()->AddText(ImVec2(textX, textY), IM_COL32(255, 255, 255, 255),
-                                                        fmt::format("{}", keyCount).c_str());
+                                                        spdlog::fmt_lib::format("{}", keyCount).c_str());
             }
 
-            Tooltip(fmt::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
+            Tooltip(spdlog::fmt_lib::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
 
             // Small key popup
             if (ImGui::BeginPopup(keyPopupId.c_str())) {
@@ -2649,31 +2642,46 @@ void DrawPlayerTab() {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Player State");
         ImGui::Spacing();
 
-        // State Flags 1
-        ImGui::Text("State 1");
-        DrawFlagArrayWithTooltips("State1", player->stateFlags1, THEME_COLOR, state1);
-
-        // Show active State 1 flags
+        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 16);
+        PushStyleInput(THEME_COLOR);
+        playerStateFilter.Draw();
+        PopStyleInput();
         ImGui::Spacing();
-        DrawActiveStates("State1", player->stateFlags1, state1);
 
-        ImGui::Spacing();
-        // State Flags 2
-        ImGui::Text("State 2");
-        DrawFlagArrayWithTooltips("State2", player->stateFlags2, THEME_COLOR, state2);
+        if (playerStateFilter.IsActive()) {
+            bool hasMatches = DrawStateSearchResults("State 1", player->stateFlags1, state1, playerStateFilter);
+            hasMatches |= DrawStateSearchResults("State 2", player->stateFlags2, state2, playerStateFilter);
+            hasMatches |= DrawStateSearchResults("State 3", player->stateFlags3, state3, playerStateFilter);
+            if (!hasMatches) {
+                ImGui::Text("No flags match the current search.");
+            }
+        } else {
+            // State Flags 1
+            ImGui::Text("State 1");
+            DrawFlagArrayWithTooltips("State1", player->stateFlags1, THEME_COLOR, state1);
 
-        // Show active State 2 flags
-        ImGui::Spacing();
-        DrawActiveStates("State2", player->stateFlags2, state2);
+            // Show active State 1 flags
+            ImGui::Spacing();
+            DrawActiveStates("State1", player->stateFlags1, state1);
 
-        ImGui::Spacing();
-        // State Flags 3
-        ImGui::Text("State 3");
-        DrawFlagArrayWithTooltips("State3", player->stateFlags3, THEME_COLOR, state3);
+            ImGui::Spacing();
+            // State Flags 2
+            ImGui::Text("State 2");
+            DrawFlagArrayWithTooltips("State2", player->stateFlags2, THEME_COLOR, state2);
 
-        // Show active State 3 flags
-        ImGui::Spacing();
-        DrawActiveStates("State3", player->stateFlags3, state3);
+            // Show active State 2 flags
+            ImGui::Spacing();
+            DrawActiveStates("State2", player->stateFlags2, state2);
+
+            ImGui::Spacing();
+            // State Flags 3
+            ImGui::Text("State 3");
+            DrawFlagArrayWithTooltips("State3", player->stateFlags3, THEME_COLOR, state3);
+
+            // Show active State 3 flags
+            ImGui::Spacing();
+            DrawActiveStates("State3", player->stateFlags3, state3);
+        }
 
         ImGui::Spacing();
         // Rotation Flags (unk_6AE_rotFlags)
@@ -2683,7 +2691,7 @@ void DrawPlayerTab() {
         ImGui::Spacing();
         ImGui::Text("Sword State");
         PushStyleCombobox(THEME_COLOR);
-        const char* currentSword = "None";
+        std::string currentSword = "None";
         switch (player->meleeWeaponState) {
             case 0:
                 currentSword = "None";
@@ -2701,10 +2709,10 @@ void DrawPlayerTab() {
                 currentSword = "Broken Giant's Knife";
                 break;
             default:
-                currentSword = fmt::format("Unknown ({})", player->meleeWeaponState).c_str();
+                currentSword = spdlog::fmt_lib::format("Unknown ({})", player->meleeWeaponState);
                 break;
         }
-        if (ImGui::BeginCombo("##SwordState", currentSword)) {
+        if (ImGui::BeginCombo("##SwordState", currentSword.c_str())) {
             if (ImGui::Selectable("None"))
                 player->meleeWeaponState = 0;
             if (ImGui::Selectable("Kokiri Sword"))

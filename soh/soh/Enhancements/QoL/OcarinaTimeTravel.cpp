@@ -1,10 +1,15 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/SwitchAge.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
+extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/SwitchAge.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+}
 
 extern "C" PlayState* gPlayState;
 

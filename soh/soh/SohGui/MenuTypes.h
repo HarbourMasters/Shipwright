@@ -1,5 +1,4 @@
-#ifndef MENUTYPES_H
-#define MENUTYPES_H
+#pragma once
 
 #include <variant>
 
@@ -319,5 +318,3 @@ struct RegisterMenuUpdateFunc {
         menuUpdateFuncs[sectionName][sidebarName].push_back(updateFunc);
     }
 };
-
-#endif // MENUTYPES_H

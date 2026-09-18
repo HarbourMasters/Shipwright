@@ -1,13 +1,16 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
-#include "soh_assets.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
+#include "soh_assets.h"
 #include "src/overlays/actors/ovl_En_Wood02/z_en_wood02.h"
 #include "objects/object_wood02/object_wood02.h"
 extern PlayState* gPlayState;
@@ -135,11 +138,12 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
-        (location->GetRCType() != RCTYPE_NLTREE ||
-         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
-        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+
+    IdentifyCheck(&treeIdentity, location);
+
+    if ((location->GetRCType() != RCTYPE_NLTREE ||
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON) &&
+        IdentifyCheck(&treeIdentity, location)) {
         return treeIdentity;
     }
 

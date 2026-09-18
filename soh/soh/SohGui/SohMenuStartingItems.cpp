@@ -1,17 +1,15 @@
+#include <vector>
+
+#include <fast/Fast3dGui.h>
+#include <ship/Context.h>
+
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/settings.h"
-
-#include <vector>
-#include <fast/Fast3dGui.h>
-
-extern "C" {
-#include "z64.h"
-}
 
 namespace SohGui {
 
@@ -95,22 +93,26 @@ static void StartingItemTiered(RandomizerSettingKey rsk, const std::vector<uint3
 }
 
 // Toggleable 32x48 song icon, mirroring the songMapping loop in DrawQuestStatusTab.
-static void StartingSongToggle(RandomizerSettingKey rsk, QuestItem song) {
+static void StartingSongToggle(RandomizerSettingKey rsk, const std::string& name, const std::string& nameFaded) {
     Rando::Option& option = Rando::Settings::GetInstance()->GetOption(rsk);
     const char* cvar = option.GetCVarName().c_str();
-    const SongMapEntry& entry = songMapping[song];
     bool on = CVarGetInteger(cvar, 0) != 0;
 
     ImGui::PushID(static_cast<int32_t>(rsk));
     PushStyleButton(Colors::DarkGray);
-    if (ImGui::ImageButton(entry.name.c_str(), GetFast3dGui()->GetTextureByName(on ? entry.name : entry.nameFaded),
-                           kSongSize, ImVec2(0, 0), ImVec2(1, 1))) {
+    if (ImGui::ImageButton(name.c_str(), GetFast3dGui()->GetTextureByName(on ? name : nameFaded), kSongSize,
+                           ImVec2(0, 0), ImVec2(1, 1))) {
         CVarSetInteger(cvar, on ? 0 : 1);
         SaveStartingItemCVars();
     }
     PopStyleButton();
     Tooltip(option.GetName().c_str());
     ImGui::PopID();
+}
+
+static void StartingSongToggle(RandomizerSettingKey rsk, QuestItem song) {
+    const SongMapEntry& entry = songMapping[song];
+    StartingSongToggle(rsk, entry.name, entry.nameFaded);
 }
 
 // Item icon followed by a count slider, like the ammo rows in DrawInventoryTab. The slider
@@ -148,7 +150,7 @@ static void StartingItemCombobox(RandomizerSettingKey rsk) {
 }
 
 void DrawStartingItemsMenu(WidgetInfo& info) {
-    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool generating = IsRandoGenerating();
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
@@ -314,8 +316,21 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
                               "you get the item Impa would give and skip everything up to meeting Zelda.");
         }
     }
+    StartingItemToggle(RSK_STARTING_KEATON_MASK, ITEM_MASK_KEATON);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_SKULL_MASK, ITEM_MASK_SKULL);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_SPOOKY_MASK, ITEM_MASK_SPOOKY);
     ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_BUNNY_HOOD, ITEM_MASK_BUNNY);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_GORON_MASK, ITEM_MASK_GORON);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_ZORA_MASK, ITEM_MASK_ZORA);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_GERUDO_MASK, ITEM_MASK_GERUDO);
+    ImGui::SameLine();
+    StartingItemToggle(RSK_STARTING_MASK_OF_TRUTH, ITEM_MASK_TRUTH);
 
     ImGui::SeparatorText("Songs");
     StartingSongToggle(RSK_STARTING_ZELDAS_LULLABY, QUEST_SONG_LULLABY);
@@ -341,6 +356,8 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingSongToggle(RSK_STARTING_NOCTURNE_OF_SHADOW, QUEST_SONG_NOCTURNE);
     ImGui::SameLine();
     StartingSongToggle(RSK_STARTING_PRELUDE_OF_LIGHT, QUEST_SONG_PRELUDE);
+    ImGui::SameLine();
+    StartingSongToggle(RSK_STARTING_SCARECROWS_SONG, "RG_SCARECROWS_SONG", "RG_SCARECROWS_SONG_Faded");
 
     ImGui::SeparatorText("Other");
     StartingItemCombobox(RSK_LINKS_POCKET);

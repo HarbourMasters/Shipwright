@@ -5,8 +5,7 @@
 //  Created by David Chavez on 22.11.22.
 //
 
-#ifndef SOHSpeechSynthesizer_h
-#define SOHSpeechSynthesizer_h
+#pragma once
 
 class SpeechSynthesizer {
   public:
@@ -26,8 +25,6 @@ class SpeechSynthesizer {
   private:
     bool mInitialized;
 };
-
-#endif /* SpeechSynthesizer_h */
 
 #ifdef _WIN32
 #include "SAPISpeechSynthesizer.h"

@@ -1,8 +1,8 @@
 {
-    "minutes_plural" : "$0 Minuten",
-    "minutes_singular" : "eine Minute",
-    "seconds_plural" : "$0 Sekunden",
-    "seconds_singular" : "eine Sekunde",
+    "minutes_plural": "$0 Minuten",
+    "minutes_singular": "eine Minute",
+    "seconds_plural": "$0 Sekunden",
+    "seconds_singular": "eine Sekunde",
     "input_button_a": "den A-Knopf",
     "input_button_b": "den B-Knopf",
     "input_button_c": "den C-Knopf",

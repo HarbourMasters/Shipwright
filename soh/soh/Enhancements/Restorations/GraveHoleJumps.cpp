@@ -1,11 +1,13 @@
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetCollisionHeader.h"
-#include <ship/Context.h>
-#include <ship/resource/ResourceManager.h>
 
 #define CVAR_GRAVE_HOLE_NAME CVAR_ENHANCEMENT("GraveHoles")
 #define GRAVE_HOLES_DEFAULT 0

@@ -1,9 +1,9 @@
 #include "hint.h"
 #include "string"
 #include "SeedContext.h"
-#include <spdlog/spdlog.h>
 #include "static_data.h"
 #include "rng.h"
+#include "soh/Enhancements/randomizer/trial.h"
 
 namespace Rando {
 Hint::Hint() {

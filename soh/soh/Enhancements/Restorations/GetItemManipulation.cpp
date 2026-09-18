@@ -1,13 +1,10 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "GetItemManipulation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "z64.h"
-#include "macros.h"
-#include "variables.h"
 extern PlayState* gPlayState;
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 }

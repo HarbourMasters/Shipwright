@@ -10,16 +10,7 @@
 // clang-format on
 #endif
 
-#include "randomizerEnums/LogicVal.h"
-#include "randomizerEnums/RandomizerCheck.h"
-#include "randomizerEnums/RandomizerGet.h"
-#include "randomizerEnums/RandomizerHintTextKey.h"
-#include "randomizerEnums/RandomizerInf.h"
-#include "randomizerEnums/RandomizerMiscEnums.h"
-#include "randomizerEnums/RandomizerOptions.h"
-#include "randomizerEnums/RandomizerRegion.h"
-#include "randomizerEnums/RandomizerSettingKey.h"
-#include "randomizerEnums/RandomizerTrick.h"
+#include "randomizerEnumList.h"
 
 // Clean up only the defaults we defined.
 #ifdef RANDO_ENUM__CLEANUP

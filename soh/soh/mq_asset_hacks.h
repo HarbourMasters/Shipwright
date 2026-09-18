@@ -1,5 +1,4 @@
-#ifndef MQ_ASSET_HACKS_H
-#define MQ_ASSET_HACKS_H
+#pragma once
 
 #include "align_asset_macro.h"
 
@@ -100,5 +99,3 @@ void* sSpiritTempleEntranceTextures_MQ[] = {
     gSpiritTempleDayEntranceTex_MQ,
     gSpiritTempleNightEntranceTex_MQ,
 };
-
-#endif
