@@ -5,6 +5,8 @@
 0227d7c0074f2d0ac935631990da8ec5914597b4:
   name: Legend of Zelda, The - Ocarina of Time (Europe) (GameCube)
   path: pal_gc
+  common_path: common
+  filelist: "filelists/gamecube_pal.yml"
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -17,6 +19,8 @@
 b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b:
   name: Legend of Zelda, The - Ocarina of Time (USA) (GameCube)
   path: ntsc_u_gc
+  filelist: "filelists/gamecube.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -29,6 +33,8 @@ b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b:
 0769c84615422d60f16925cd859593cdfa597f84:
   name: Zelda no Densetsu - Toki no Ocarina GC (Japan) (GameCube)
   path: ntsc_j_gc
+  filelist: "filelists/gc_jp.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -41,6 +47,8 @@ b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b:
 2ce2d1a9f0534c9cd9fa04ea5317b80da21e5e73:
   name: Zelda no Densetsu - Toki no Ocarina (Japan) (GameCube, Zelda Collection)
   path: ntsc_j_gc_collection
+  filelist: "filelists/gc_jp_ce.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -53,6 +61,8 @@ b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b:
 328a1f1beba30ce5e178f031662019eb32c5f3b5:
   name: Legend of Zelda, The - Ocarina of Time (Europe) (En,Fr,De)
   path: pal_1-0
+  filelist: "filelists/pal_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -65,6 +75,8 @@ b82710ba2bd3b4c6ee8aa1a7e9acf787dfc72e9b:
 cfbb98d392e4a9d39da8285d10cbef3974c2f012:
   name: Legend of Zelda, The - Ocarina of Time (Europe) (En,Fr,De) (Rev 1)
   path: pal_1-1
+  filelist: "filelists/pal_11.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -77,6 +89,8 @@ cfbb98d392e4a9d39da8285d10cbef3974c2f012:
 8b5d13aac69bfbf989861cfdc50b1d840945fc1d:
   name: Legend of Zelda, The - Ocarina of Time - Master Quest (USA) (GameCube)
   path: ntsc_u_mq
+  filelist: "filelists/gc_us_mq.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -89,6 +103,8 @@ cfbb98d392e4a9d39da8285d10cbef3974c2f012:
 dd14e143c4275861fe93ea79d0c02e36ae8c6c2f:
   name: Zelda no Densetsu - Toki no Ocarina GC Ura (Japan) (GameCube)
   path: ntsc_j_mq
+  filelist: "filelists/gc_jp_mq.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -101,6 +117,8 @@ dd14e143c4275861fe93ea79d0c02e36ae8c6c2f:
 f46239439f59a2a594ef83cf68ef65043b1bffe2:
   name: Legend of Zelda, The - Ocarina of Time - Master Quest (Europe) (GameCube)
   path: pal_mq
+  filelist: "filelists/gamecube_pal_mq.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -113,6 +131,8 @@ f46239439f59a2a594ef83cf68ef65043b1bffe2:
 cee6bc3c2a634b41728f2af8da54d9bf8cc14099:
   name: Legend of Zelda, The - Ocarina of Time (Europe) (Debug) (GameCube)
   path: pal_gc_dbg
+  filelist: "filelists/dbgnmq.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -124,7 +144,9 @@ cee6bc3c2a634b41728f2af8da54d9bf8cc14099:
 
 079b855b943d6ad8bd1eb026c0ed169ecbdac7da:
   name: Legend of Zelda, The - Ocarina of Time - Master Quest (Europe) (Debug) (GameCube)
+  filelist: "filelists/dbgmq.yml"
   path: pal_mq_dbg
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -138,6 +160,7 @@ cee6bc3c2a634b41728f2af8da54d9bf8cc14099:
 50bebedad9e0f10746a52b07239e47fa6c284d03:
   name: Legend of Zelda, The - Ocarina of Time - Master Quest (Europe) (Debug) (GameCube)
   path: pal_mq_dbg
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -151,6 +174,7 @@ cee6bc3c2a634b41728f2af8da54d9bf8cc14099:
 cfecfdc58d650e71a200c81f033de4e6d617a9f6:
   name: Legend of Zelda, The - Ocarina of Time - Master Quest (Europe) (Debug) (GameCube)
   path: pal_mq_dbg
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -163,6 +187,8 @@ cfecfdc58d650e71a200c81f033de4e6d617a9f6:
 c892bbda3993e66bd0d56a10ecd30b1ee612210f:
   name: Zelda no Densetsu - Toki no Ocarina (Japan)
   path: ntsc_1-0
+  filelist: "filelists/ntsc_10_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -176,6 +202,8 @@ c892bbda3993e66bd0d56a10ecd30b1ee612210f:
 ad69c91157f6705e8ab06c79fe08aad47bb57ba7:
   name: Legend of Zelda, The - Ocarina of Time (USA)
   path: ntsc_1-0
+  filelist: "filelists/ntsc_10_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -188,6 +216,8 @@ ad69c91157f6705e8ab06c79fe08aad47bb57ba7:
 dbfc81f655187dc6fefd93fa6798face770d579d:
   name: Zelda no Densetsu - Toki no Ocarina (Japan) (Rev 1)
   path: ntsc_1-1
+  filelist: "filelists/ntsc_11_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -201,6 +231,8 @@ dbfc81f655187dc6fefd93fa6798face770d579d:
 d3ecb253776cd847a5aa63d859d8c89a2f37b364:
   name: Legend of Zelda, The - Ocarina of Time (USA) (Rev 1)
   path: ntsc_1-1
+  filelist: "filelists/ntsc_11_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -213,6 +245,8 @@ d3ecb253776cd847a5aa63d859d8c89a2f37b364:
 fa5f5942b27480d60243c2d52c0e93e26b9e6b86:
   name: Zelda no Densetsu - Toki no Ocarina (Japan) (Rev 2)
   path: ntsc_1-2
+  filelist: "filelists/ntsc_12_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
@@ -226,6 +260,8 @@ fa5f5942b27480d60243c2d52c0e93e26b9e6b86:
 41b3bdc48d98c48529219919015a1af22f5057c2:
   name: Legend of Zelda, The - Ocarina of Time (USA) (Rev 2)
   path: ntsc_1-2
+  filelist: "filelists/ntsc_12_oot.yml"
+  common_path: common
   config:
     gbi: F3DEX2_OoT
     sort: OFFSET
