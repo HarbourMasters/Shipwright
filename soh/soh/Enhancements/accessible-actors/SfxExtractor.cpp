@@ -118,8 +118,8 @@ void SfxExtractor::ripNextSfx() {
     }
 
     currentSfx = sfxTable[sfxToRip++];
-    Audio_PlaySoundGeneral(currentSfx, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(currentSfx, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultReverb);
     captureThreadState = CT_READY;
     maybeGiveProgressReport();
 }
@@ -140,10 +140,10 @@ void SfxExtractor::finished() {
     Audio_QueueSeqCmd(NA_BGM_TITLE);
 
     if (currentStep >= STEP_ERROR) {
-        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-        Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         std::stringstream ss;
         ss << "Sorry, we tried to extract the sound effects, but Ganondorf overruled us with an iron fist."
            << std::endl;

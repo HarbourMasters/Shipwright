@@ -184,7 +184,7 @@ void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy* policy, const char*
     policy->pitch = 1.5;
     policy->runsAlways = false;
     policy->volume = 1.0;
-    policy->pitchModifier = 0.1;
+    policy->pitchModifier = 0.1f;
     policy->aimAssist.isProvider = 0;
     policy->aimAssist.sfx = NA_SE_SY_HITPOINT_ALARM;
     policy->aimAssist.tolerance = 0.0;
@@ -219,7 +219,7 @@ ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
 }
 
 int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
-    return min + Rand_ZeroOne() * (max - min);
+    return min + (int)(Rand_ZeroOne() * (max - min));
 }
 
 void ActorAccessibility_TrackNewActor(Actor* actor) {
@@ -266,7 +266,7 @@ f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer)
     if (maxDistance == 0)
         return 0.0;
     f32 absDistance = fabs(xzDistToPlayer);
-    f32 db = LERP(0.0 - MAX_DB_REDUCTION, 0.0, (maxDistance - absDistance) / maxDistance);
+    f32 db = LERP(0.0f - MAX_DB_REDUCTION, 0.0f, (maxDistance - absDistance) / maxDistance);
 
     return ActorAccessibility_DBToLinear(db);
 }
@@ -538,7 +538,7 @@ void ActorAccessibility_GeneralHelper(PlayState* play) {
             ActorAccessibility_SetSoundVolume(nullptr, 3, 0.5);
         } else if (movedsq < 9) {
             ActorAccessibility_PlaySound(nullptr, 3, NA_SE_IT_SHIELD_POSTURE);
-            ActorAccessibility_SetSoundVolume(nullptr, 3, 0.6);
+            ActorAccessibility_SetSoundVolume(nullptr, 3, 0.6f);
         } else {
             ActorAccessibility_PlaySound(nullptr, 3, NA_SE_PL_WALK_WALL);
             ActorAccessibility_SetSoundVolume(nullptr, 3, std::max(0.3f, 10.0f / movedsq));
@@ -763,11 +763,11 @@ void ActorAccessibility_AnnounceRoomNumber(PlayState* play) {
 AimAssistProps ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
     s32 angle = player->actor.focus.rot.x;
-    angle = angle / -14000.0 * 16384;
+    angle = (s32)(angle / -14000.0f * 16384);
     f32 cos_angle = Math_CosS(angle);
     f32 slope = cos_angle == 0.0f ? 0.0f : Math_SinS(angle) / cos_angle;
     f32 x = actor->pos.x, z = actor->pos.z, xzDist = actor->xzDistToPlayer;
-    s32 yHeight = actor->pos.y + 25;
+    s32 yHeight = (s32)actor->pos.y + 25;
     if (actor->id == ACTOR_BG_MIZU_MOVEBG) {
         x += Math_SinS(actor->actor->shape.rot.y) * 50;
         z += Math_CosS(actor->actor->shape.rot.y) * 50;
@@ -776,10 +776,10 @@ AimAssistProps ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* acto
         ShotSun* sun = (ShotSun*)actor->actor;
         x = sun->hitboxPos.x;
         z = sun->hitboxPos.z;
-        yHeight = sun->hitboxPos.y + 55;
+        yHeight = (s32)sun->hitboxPos.y + 55;
         xzDist = sqrtf(SQ(player->actor.world.pos.x - x) + SQ(player->actor.world.pos.z - z));
     }
-    s32 yIntercept = slope * xzDist + player->actor.focus.pos.y;
+    s32 yIntercept = (s32)(slope * xzDist + player->actor.focus.pos.y);
     AimAssistProps aimAssistProps;
     if (yIntercept > yHeight + 25) {
         aimAssistProps.pitch = 1.5;
@@ -788,9 +788,9 @@ AimAssistProps ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* acto
     } else {
         aimAssistProps.pitch = 1.0;
     }
-    s32 yDiff = fabs(yIntercept - yHeight);
+    s32 yDiff = abs(yIntercept - yHeight);
     if (yIntercept - yHeight > 0) {
-        s32 correction = 100.0f - 100.0f / std::max(slope, 1.0f);
+        s32 correction = (s32)(100.0f - 100.0f / std::max(slope, 1.0f));
         yDiff = std::max(yDiff - correction, 0);
     }
     if (yDiff > 300) {
@@ -800,11 +800,11 @@ AimAssistProps ActorAccessibility_ProvideAimAssistForActor(AccessibleActor* acto
     }
     s16 yawdiff = player->yaw - Math_Atan2S(z - player->actor.world.pos.z, x - player->actor.world.pos.x);
     if (yawdiff > -0x1000 && yawdiff < 0x1000) {
-        aimAssistProps.volume = 1.0 - (yawdiff * yawdiff) / (float)0x2000000;
+        aimAssistProps.volume = 1.0f - (yawdiff * yawdiff) / (float)0x2000000;
     } else if (yawdiff > -0x2000 && yawdiff < 0x2000) {
-        aimAssistProps.volume = 0.4;
+        aimAssistProps.volume = 0.4f;
     } else {
-        aimAssistProps.volume = 0.2;
+        aimAssistProps.volume = 0.2f;
     }
     aimAssistProps.pan = std::min(std::max(yawdiff / (float)0x1000, -1.0f), 1.0f);
     return aimAssistProps;
