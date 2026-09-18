@@ -21,7 +21,7 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_TREES] = Region("Forest Temple Trees", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && 
+        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) &&
                                                     (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOOMERANG) || ((logic->IsAdult || ctx->GetTrickOption(RT_BOMB_DETONATION)) && logic->CanUse(RG_BOMB_BAG)) ||
                                                      (ctx->GetTrickOption(RT_FOREST_FIRST_GS) && logic->CanJumpslashExceptHammer()))),
     }, {
@@ -98,7 +98,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_LOBBY,                     true),
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER,        (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_HOVER_BOOTS) && 
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER,        (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_HOVER_BOOTS) &&
                                                              ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives())) || logic->CanMiddairGroundJump())),
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER_ALCOVE, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_FOREST_TEMPLE_SEWER,                     logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
@@ -516,8 +516,8 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY, true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE,  ((logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanGroundJump())) && 
-                                                           (logic->HasItem(RG_GORONS_BRACELET) || logic->CanUse(RG_HOVER_BOOTS))) || 
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE,  ((logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanGroundJump())) &&
+                                                           (logic->HasItem(RG_GORONS_BRACELET) || logic->CanUse(RG_HOVER_BOOTS))) ||
                                                           (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_INDOOR_LEDGE,        logic->Get(LOGIC_FOREST_CAN_TWIST_HALLWAY) && logic->CanUse(RG_HOOKSHOT)),
     });
@@ -530,7 +530,7 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_BLOCK_PUZZLE_FLOOR,  true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_MIDDLE_BLOCK_PUZZLE, (logic->HasItem(RG_GORONS_BRACELET) && (logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanGroundJump()))) || 
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_MIDDLE_BLOCK_PUZZLE, (logic->HasItem(RG_GORONS_BRACELET) && (logic->HasItem(RG_CLIMB) || (logic->IsAdult && logic->CanGroundJump()))) ||
                                                            logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_INDOOR_LEDGE,        logic->Get(LOGIC_FOREST_CAN_TWIST_HALLWAY) && (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS))),
     });
@@ -543,7 +543,7 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE, true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, (logic->IsAdult && logic->HasItem(RG_GORONS_BRACELET)) || 
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, (logic->IsAdult && logic->HasItem(RG_GORONS_BRACELET)) ||
                                                          (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->CanUse(RG_HOOKSHOT))),
         //Hammer cannot recoil from here, but can make the jump forwards with a hammer jumpslash as adult
         ENTRANCE(RR_FOREST_TEMPLE_MQ_INDOOR_LEDGE,       logic->Get(LOGIC_FOREST_CAN_TWIST_HALLWAY) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && (logic->IsAdult || logic->CanJumpslash())) ||

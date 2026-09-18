@@ -151,7 +151,7 @@ void RegionTable_Init_GerudoFortress() {
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,    true),
         ENTRANCE(RR_GF_SLOPED_ROOF,           true),
         ENTRANCE(RR_GF_BOTTOM_OF_UPPER_VINES, true),
-        ENTRANCE(RR_GF_NEAR_CHEST,            logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->ReachScarecrow() || logic->BunnyHood())) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GF_NEAR_CHEST,            logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->ReachScarecrow(true, false) || logic->BunnyHood())) || logic->CanUse(RG_LONGSHOT)),
     });
 
     areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", SCENE_GERUDOS_FORTRESS, {}, {
@@ -228,7 +228,7 @@ void RegionTable_Init_GerudoFortress() {
         //Locations
         LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
         LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_HBA_RANGE_GS,             logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GF_HBA_RANGE_GS,             logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG, true) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_1,        logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_2,        logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_3,        logic->CanBreakCrates()),

@@ -34,6 +34,8 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_ROOM,              true),
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, true),
         ENTRANCE(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM,          (logic->Get(LOGIC_JABU_LOWERED_PATH) || ((ctx->GetTrickOption(RT_JABU_BOSS_HOVER) || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS))) && logic->HasItem(RG_POWER_BRACELET)),
+        //                                                    biri hover
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_UPPER,              logic->CanHover(true, true, true, true)),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_HOLES_ROOM] = Region("Jabu Jabus Belly Holes Room", SCENE_JABU_JABU, {
@@ -110,7 +112,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        //this is for climbing back and forth to use pots (or ruto) to kill skull...                                                            
+        //this is for climbing back and forth to use pots (or ruto) to kill skull...
         LOCATION(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, logic->HasItem(RG_POWER_BRACELET) && (logic->HasItem(RG_BRONZE_SCALE) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS))) ||
                                                            //or killing the skull before climbing to grab the token
                                                            logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW)),
@@ -515,7 +517,7 @@ void RegionTable_Init_JabuJabusBelly() {
                                                                     ((logic->CanUse(RG_HOVER_BOOTS) ||
                                                                    //Otherwise we have to kill the enemies to raise the platform. This persists so we can do it as the other age.
                                                                         AnyAgeTime([]{return (ctx->GetTrickOption(RT_LENS_JABU_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                                                                                              logic->CanKillEnemy(RE_STINGER, ED_BOOMERANG, false, 2, false, true) && 
+                                                                                                                                              logic->CanKillEnemy(RE_STINGER, ED_BOOMERANG, false, 2, false, true) &&
                                                                                                                                               //we can hit the keese farthest from the water with irons and hookshot, but we won't be able to see it while doing so
                                                                                                                                               (logic->CanKillEnemy(RE_KEESE, ED_LONGSHOT, false) || (ctx->GetTrickOption(RT_LENS_JABU_MQ) && logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)));}))
                                                                    //If we kill the enemies, we then need to cross the water using the platform. Note that adult cannot do so while swimming because MQ jank.
