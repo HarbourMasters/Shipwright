@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x01361350 ]
-
+    - [1, 0x01361350]
+  directory: textures/
+  external_files:
+    - ntsc_1-0/textures/vr_holy0_pal_static.yml
 gHoly0Skybox1Tex:
   type: TEXTURE
   offset: 0x0
@@ -11,7 +13,6 @@ gHoly0Skybox1Tex:
   height: 64
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
 gHoly0Skybox2Tex:
   type: TEXTURE
   offset: 0x2000
@@ -21,7 +22,6 @@ gHoly0Skybox2Tex:
   height: 64
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
 gHoly0Skybox3Tex:
   type: TEXTURE
   offset: 0x4000
@@ -31,7 +31,6 @@ gHoly0Skybox3Tex:
   height: 64
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
 gHoly0Skybox4Tex:
   type: TEXTURE
   offset: 0x6000
@@ -41,7 +40,6 @@ gHoly0Skybox4Tex:
   height: 64
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
 gHoly0Skybox5Tex:
   type: TEXTURE
   offset: 0x8000
@@ -51,7 +49,6 @@ gHoly0Skybox5Tex:
   height: 128
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
 gHoly0Skybox6Tex:
   type: TEXTURE
   offset: 0xC000
@@ -61,4 +58,3 @@ gHoly0Skybox6Tex:
   height: 128
   external_tlut: vr_holy0_pal_static
   external_tlut_offset: 0x000
-
