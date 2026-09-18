@@ -2090,6 +2090,12 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_MASK_GERUDO] = HintText(CustomMessage("a gerudo mask", /*german*/"!!!", /*french*/"le Masque de Gerudo"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
     hintTextTable[RHT_MASK_TRUTH] = HintText(CustomMessage("a mask of truth", /*german*/"!!!", /*french*/"le Masque de Vérité"), {CustomMessage("a mask", /*german*/"!!!", /*french*/"un masque")});
 
+    hintTextTable[RHT_SCARECROWS_SONG] = HintText(CustomMessage("Scarecrow's Song", /*german*/"das Vogelscheuchenlied", /*french*/"le chant de l'épouvantail"),
+                                                  {
+                                                  CustomMessage("a song", /*german*/"ein Lied", /*french*/"un chant")
+                                                  }, {
+                                                  CustomMessage("a scarecrow's memory", /*german*/"eine Vogelscheuchen-Erinnerung", /*french*/"un souvenir d'épouvantail")});
+
     hintTextTable[RHT_FISHING_POLE] = HintText(CustomMessage("a fishing pole", /*german*/"eine Angelrute", /*french*/"une canne à pêche"),
                                                // /*spanish*/caña de pescar
                                                {

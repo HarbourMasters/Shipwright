@@ -896,6 +896,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         }
         case VB_SKIP_SCARECROWS_SONG: {
+            if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                break;
+            }
             if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
                 CVarGetInteger(CVAR_ENHANCEMENT("InstantScarecrow"), 0) && gSaveContext.scarecrowSpawnSongSet) {
                 *should = true;

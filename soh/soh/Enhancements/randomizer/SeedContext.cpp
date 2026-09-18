@@ -172,6 +172,8 @@ void Context::GenerateLocationPool() {
              mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
              mOptions[RSK_SHUFFLE_100_GS_REWARD].Is(RO_GENERIC_OFF)) ||
+            (location.GetRandomizerCheck() == RC_LH_SCARECROWS_SONG &&
+             mOptions[RSK_SHUFFLE_SCARECROWS_SONG].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_CHEST_GAME && mOptions[RSK_SHUFFLE_CHEST_MINIGAME].Is(RO_GENERIC_OFF)) ||
             location.GetRCType() == RCTYPE_STATIC_HINT ||  // can't have items
             location.GetRCType() == RCTYPE_GOSSIP_STONE || // can't have items

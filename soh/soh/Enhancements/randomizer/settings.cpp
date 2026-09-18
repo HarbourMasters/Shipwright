@@ -858,6 +858,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_OPEN_CHEST, {"Off", "On", "Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), WIDGET_CVAR_COMBOBOX, RO_OPEN_CHEST_OFF);
     OPT_U8(RSK_SHUFFLE_WEIRD_EGG, {"Vanilla", "Shuffled", "Skip Waking Talon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), WIDGET_CVAR_COMBOBOX, RO_WEIRD_EGG_VANILLA);
     OPT_BOOL(RSK_SHUFFLE_ZELDAS_LETTER, CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"));
+    OPT_BOOL(RSK_SHUFFLE_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("ShuffleScarecrowsSong"));
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"));
     OPT_U8(RSK_SHUFFLE_POTS, {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_POTS_OFF);
     OPT_U8(RSK_SHUFFLE_GRASS, {"Off", "Dungeons", "Overworld", "All Grass"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
@@ -1341,7 +1342,6 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SKIP_CHILD_STEALTH, {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildStealth"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_DONT_SKIP);
     OPT_BOOL(RSK_EARLY_GRANNYS_SHOP, CVAR_RANDOMIZER_SETTING("EarlyGrannysShop"));
     OPT_BOOL(RSK_SKIP_EPONA_RACE, {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_DONT_SKIP);
-    OPT_BOOL(RSK_SKIP_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"));
     OPT_BOOL(RSK_SKIP_PLANTING_BEANS, CVAR_RANDOMIZER_SETTING("SkipPlantingBeans"));
     OPT_U8(RSK_BIG_POE_COUNT, {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), WIDGET_CVAR_SLIDER_INT, 10);
     OPT_CALLBACK(RSK_BIG_POE_COUNT, {
@@ -1446,6 +1446,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_BOTTLE_4, {"Off", "Empty Bottle", "Bottle with Big Poe"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingBottle4"), WIDGET_CVAR_COMBOBOX, 0);
     OPT_BOOL(RSK_STARTING_WEIRD_EGG, CVAR_RANDOMIZER_SETTING("StartingWeirdEgg"));
     OPT_BOOL(RSK_STARTING_ZELDAS_LETTER, CVAR_RANDOMIZER_SETTING("StartingZeldasLetter"));
+    OPT_BOOL(RSK_STARTING_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("StartingScarecrowsSong"));
     OPT_BOOL(RSK_STARTING_CLAIM_CHECK, CVAR_RANDOMIZER_SETTING("StartingClaimCheck"));
     OPT_BOOL(RSK_STARTING_GERUDO_CARD, CVAR_RANDOMIZER_SETTING("StartingGerudoCard"));
     OPT_BOOL(RSK_STARTING_KEATON_MASK, CVAR_RANDOMIZER_SETTING("StartingKeatonMask"));
@@ -1886,7 +1887,6 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_EARLY_GRANNYS_SHOP],
                                                                       &mOptions[RSK_SKIP_PLANTING_BEANS],
                                                                       &mOptions[RSK_SKIP_EPONA_RACE],
-                                                                      &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                   },
                                                                   WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_WINCON] = OptionGroup::SubGroup("Win Condition",
@@ -2022,24 +2022,43 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_BASIC_SHUFFLES] =
         OptionGroup::SubGroup("Shuffle Items",
                               {
-                                  &mOptions[RSK_SHUFFLE_SONGS],         &mOptions[RSK_SHUFFLE_TOKENS],
-                                  &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],  &mOptions[RSK_SHUFFLE_MASTER_SWORD],
-                                  &mOptions[RSK_SHUFFLE_OCARINA],       &mOptions[RSK_SHUFFLE_WEIRD_EGG],
-                                  &mOptions[RSK_SHUFFLE_ZELDAS_LETTER], &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
-                                  &mOptions[RSK_SHUFFLE_MASKS],         &mOptions[RSK_FISHSANITY],
-                                  &mOptions[RSK_FISHSANITY_POND_COUNT], &mOptions[RSK_FISHSANITY_AGE_SPLIT],
-                                  &mOptions[RSK_SHUFFLE_FREESTANDING],  &mOptions[RSK_SHUFFLE_WONDER_ITEMS],
-                                  &mOptions[RSK_SHUFFLE_SILVER],        &mOptions[RSK_SHUFFLE_BEEHIVES],
-                                  &mOptions[RSK_SHUFFLE_COWS],          &mOptions[RSK_SHUFFLE_POTS],
-                                  &mOptions[RSK_SHUFFLE_GRASS],         &mOptions[RSK_SHUFFLE_CRATES],
-                                  &mOptions[RSK_SHUFFLE_BOULDERS],      &mOptions[RSK_SHUFFLE_ROCKS],
-                                  &mOptions[RSK_SHUFFLE_TREES],         &mOptions[RSK_SHUFFLE_BUSHES],
-                                  &mOptions[RSK_SHUFFLE_ICICLES],       &mOptions[RSK_SHUFFLE_RED_ICE],
-                                  &mOptions[RSK_SHUFFLE_SIGNS],         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
-                                  &mOptions[RSK_SHUFFLE_ADULT_TRADE],   &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
-                                  &mOptions[RSK_SHUFFLE_100_GS_REWARD], &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
-                                  &mOptions[RSK_SHUFFLE_STONE_FAIRIES], &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
-                                  &mOptions[RSK_SHUFFLE_SONG_FAIRIES],  &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_SONGS],
+                                  &mOptions[RSK_SHUFFLE_TOKENS],
+                                  &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
+                                  &mOptions[RSK_SHUFFLE_MASTER_SWORD],
+                                  &mOptions[RSK_SHUFFLE_OCARINA],
+                                  &mOptions[RSK_SHUFFLE_WEIRD_EGG],
+                                  &mOptions[RSK_SHUFFLE_ZELDAS_LETTER],
+                                  &mOptions[RSK_SHUFFLE_SCARECROWS_SONG],
+                                  &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
+                                  &mOptions[RSK_SHUFFLE_MASKS],
+                                  &mOptions[RSK_FISHSANITY],
+                                  &mOptions[RSK_FISHSANITY_POND_COUNT],
+                                  &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+                                  &mOptions[RSK_SHUFFLE_FREESTANDING],
+                                  &mOptions[RSK_SHUFFLE_WONDER_ITEMS],
+                                  &mOptions[RSK_SHUFFLE_SILVER],
+                                  &mOptions[RSK_SHUFFLE_BEEHIVES],
+                                  &mOptions[RSK_SHUFFLE_COWS],
+                                  &mOptions[RSK_SHUFFLE_POTS],
+                                  &mOptions[RSK_SHUFFLE_GRASS],
+                                  &mOptions[RSK_SHUFFLE_CRATES],
+                                  &mOptions[RSK_SHUFFLE_BOULDERS],
+                                  &mOptions[RSK_SHUFFLE_ROCKS],
+                                  &mOptions[RSK_SHUFFLE_TREES],
+                                  &mOptions[RSK_SHUFFLE_BUSHES],
+                                  &mOptions[RSK_SHUFFLE_ICICLES],
+                                  &mOptions[RSK_SHUFFLE_RED_ICE],
+                                  &mOptions[RSK_SHUFFLE_SIGNS],
+                                  &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+                                  &mOptions[RSK_SHUFFLE_ADULT_TRADE],
+                                  &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
+                                  &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+                                  &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_BASIC_SHUFFLES] =
@@ -2277,6 +2296,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                             &mOptions[RSK_SHUFFLE_ZELDAS_LETTER],
+                                            &mOptions[RSK_SHUFFLE_SCARECROWS_SONG],
                                             &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
                                             &mOptions[RSK_SHUFFLE_MASKS],
                                             &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -2391,6 +2411,7 @@ void Settings::CreateOptions() {
                                                    &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
                                                    &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
                                                    &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT],
+                                                   &mOptions[RSK_STARTING_SCARECROWS_SONG],
                                                });
     mOptionGroups[RSG_STARTING_OTHER] = OptionGroup::SubGroup("Other", {
                                                                            &mOptions[RSK_STARTING_STICKS],
@@ -2409,7 +2430,6 @@ void Settings::CreateOptions() {
                                                         OptionGroupType::DEFAULT);
     mOptionGroups[RSG_TIMESAVERS] = OptionGroup("Timesaver Settings", {
                                                                           &mOptions[RSK_SKIP_EPONA_RACE],
-                                                                          &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                           &mOptions[RSK_SKIP_PLANTING_BEANS],
                                                                           &mOptions[RSK_BIG_POE_COUNT],
                                                                       });
@@ -3159,6 +3179,7 @@ void Settings::RandomizeAllSettings() {
             case RSK_STARTING_BOTTLE_4:
             case RSK_STARTING_WEIRD_EGG:
             case RSK_STARTING_ZELDAS_LETTER:
+            case RSK_STARTING_SCARECROWS_SONG:
             case RSK_STARTING_CLAIM_CHECK:
             case RSK_STARTING_GERUDO_CARD:
             case RSK_STARTING_BIGGORON_SWORD:

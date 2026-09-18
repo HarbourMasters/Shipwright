@@ -1932,9 +1932,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 break;
             }
 
-            if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING && RAND_GET_OPTION(RSK_SKIP_SCARECROWS_SONG)) {
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_SCARECROWS_SONG) &&
+                gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING) {
                 *should = true;
-                break;
+            } else if (RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_GIVE_ITEM_FROM_SCARECROW: {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                Flags_SetRandomizerInf(RAND_INF_LH_SCARECROWS_SONG);
+                *should = false;
             }
             break;
         }

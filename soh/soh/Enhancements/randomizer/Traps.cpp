@@ -982,6 +982,11 @@ static void InitTrickNames() {
         { Text{ "Floating Lure", "Floating Lure", "Schwimmer" }, Text{ "a ", "un ", "einen " } },
         { Text{ "Fishing Reel", "Fishing Reel", "Angelschnur" }, Text{ "a ", "un ", "eine " } },
     };
+    trickNameTable[RG_SCARECROWS_SONG] = {
+        { Text{ "Pierre's Polka", "Polka de Pierre", "Pierres Polka" }, Text{ "", "la ", "" } },
+        { Text{ "Crow's Song", "Chant du corbeau", "Krähenlied" }, Text{ "the ", "le ", "das " } },
+        { Text{ "Bonooru's Ballad", "Ballade de Bonooru", "Bonoorus Ballade" }, Text{ "", "la ", "" } },
+    };
     trickNameTable[RG_SKELETON_KEY] = {
         // TODO_TRANSLATE
         { Text{ "Stalfos Key" }, Text{ "the " } },   { Text{ "Nightmare Key" }, Text{ "the " } },

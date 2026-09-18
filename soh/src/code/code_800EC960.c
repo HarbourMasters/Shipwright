@@ -2090,7 +2090,8 @@ void AudioOcarina_PlaybackSong(void) {
                 }
                 return;
             } else {
-                sPlaybackNoteTimer -= nextNoteTimerStep;
+                // SoH [Fix] several audio tasks can run between updates, don't wrap below zero
+                sPlaybackNoteTimer -= MIN(nextNoteTimerStep, sPlaybackNoteTimer);
             }
 
             // Update volume

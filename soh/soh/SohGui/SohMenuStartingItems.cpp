@@ -93,22 +93,26 @@ static void StartingItemTiered(RandomizerSettingKey rsk, const std::vector<uint3
 }
 
 // Toggleable 32x48 song icon, mirroring the songMapping loop in DrawQuestStatusTab.
-static void StartingSongToggle(RandomizerSettingKey rsk, QuestItem song) {
+static void StartingSongToggle(RandomizerSettingKey rsk, const std::string& name, const std::string& nameFaded) {
     Rando::Option& option = Rando::Settings::GetInstance()->GetOption(rsk);
     const char* cvar = option.GetCVarName().c_str();
-    const SongMapEntry& entry = songMapping[song];
     bool on = CVarGetInteger(cvar, 0) != 0;
 
     ImGui::PushID(static_cast<int32_t>(rsk));
     PushStyleButton(Colors::DarkGray);
-    if (ImGui::ImageButton(entry.name.c_str(), GetFast3dGui()->GetTextureByName(on ? entry.name : entry.nameFaded),
-                           kSongSize, ImVec2(0, 0), ImVec2(1, 1))) {
+    if (ImGui::ImageButton(name.c_str(), GetFast3dGui()->GetTextureByName(on ? name : nameFaded), kSongSize,
+                           ImVec2(0, 0), ImVec2(1, 1))) {
         CVarSetInteger(cvar, on ? 0 : 1);
         SaveStartingItemCVars();
     }
     PopStyleButton();
     Tooltip(option.GetName().c_str());
     ImGui::PopID();
+}
+
+static void StartingSongToggle(RandomizerSettingKey rsk, QuestItem song) {
+    const SongMapEntry& entry = songMapping[song];
+    StartingSongToggle(rsk, entry.name, entry.nameFaded);
 }
 
 // Item icon followed by a count slider, like the ammo rows in DrawInventoryTab. The slider
@@ -352,6 +356,8 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingSongToggle(RSK_STARTING_NOCTURNE_OF_SHADOW, QUEST_SONG_NOCTURNE);
     ImGui::SameLine();
     StartingSongToggle(RSK_STARTING_PRELUDE_OF_LIGHT, QUEST_SONG_PRELUDE);
+    ImGui::SameLine();
+    StartingSongToggle(RSK_STARTING_SCARECROWS_SONG, "RG_SCARECROWS_SONG", "RG_SCARECROWS_SONG_Faded");
 
     ImGui::SeparatorText("Other");
     StartingItemCombobox(RSK_LINKS_POCKET);
