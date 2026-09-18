@@ -96,7 +96,7 @@ static const std::map<int32_t, const char*> audioRandomizerModes = {
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
-    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    u16 curSeqId = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
     // TODO: replace with Audio_StartSeq when the macro is shared
     // The fade time and audio player flags will always be 0 in the case of replaying the BGM, so they are not set here
     Audio_QueueSeqCmd(0x00000000 | curSeqId);
@@ -109,7 +109,7 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
         return;
     }
 
-    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    u16 curSeqId = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
     if (curSeqId == seqKey) {
         ReplayCurrentBGM();
     }
@@ -265,7 +265,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SeparatorText(tabName.c_str());
     if (UIWidgets::Button(resetAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         ResetGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -277,7 +277,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(randomizeAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -289,7 +289,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(lockAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         LockGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -301,7 +301,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(unlockAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         UnlockGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -312,7 +312,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     }
 
     auto playingFromMenu = CVarGetInteger(CVAR_AUDIO("Playing"), 0);
-    auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    auto currentBGM = Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN);
 
     // Longest text in Audio Editor
     ImVec2 columnSize = ImGui::CalcTextSize("Navi - Look/Hey/Watchout (Target Enemy)");
