@@ -1535,7 +1535,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_TEMP_B_RESTORE_SWORDLESS:
             // Convert the swordless sentinel back into an empty (swordless) B button.
             if (gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
-                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                u8 bItem = gSaveContext.equips.buttonItems[0];
+                if (!((bItem >= ITEM_SWORD_KOKIRI && bItem <= ITEM_SWORD_BGS) || bItem == ITEM_SWORD_KNIFE)) {
+                    gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                }
                 gSaveContext.buttonStatus[0] = BTN_ENABLED;
             }
             break;
