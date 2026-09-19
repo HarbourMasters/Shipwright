@@ -1509,8 +1509,12 @@ void Play_Draw(PlayState* play) {
                 Vec3f quakeOffset;
 
                 Camera_GetSkyboxOffset(&quakeOffset, GET_ACTIVE_CAM(play));
+                // Stereo: apply the shared prerendered-background depth to this late indoor panorama.
+                gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_STEREO_BACKGROUND);
                 SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, 0, play->view.eye.x + quakeOffset.x,
                                 play->view.eye.y + quakeOffset.y, play->view.eye.z + quakeOffset.z);
+                // Stereo: restore normal sky/world depth after the indoor panorama.
+                gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_STEREO_BACKGROUND);
             }
         }
 
