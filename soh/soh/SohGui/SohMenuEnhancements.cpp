@@ -3,6 +3,7 @@
 #include "soh/Enhancements/SwitchAge.h"
 #include "soh/Enhancements/AdultMasks.h"
 #include "soh/Enhancements/BunnyHood.h"
+#include "soh/Enhancements/DashAfterRoll.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 #include <soh/OTRGlobals.h>
@@ -47,6 +48,12 @@ static std::map<int32_t, const char*> bunnyHoodEffectMap = {
     { BUNNY_HOOD_VANILLA, "Vanilla" },
     { BUNNY_HOOD_FAST, "Faster Run" },
     { BUNNY_HOOD_FAST_AND_JUMP, "Faster + Longer Jump" },
+};
+
+static std::map<int32_t, const char*> dashAfterRollMap = {
+    { DASH_AFTER_ROLL_OFF, "Off" },
+    { DASH_AFTER_ROLL_ON, "On" },
+    { DASH_AFTER_ROLL_STACK, "Stack with Bunny Hood" },
 };
 
 static const std::map<int32_t, const char*> dekuStickCheat = {
@@ -559,6 +566,17 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Allows slight directional steering with the control stick while rolling. "
             "Steering is automatically disabled while Z is held, preserving Z-target roll glitch setups."));
+    AddWidget(path, "Dash After Roll", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_DASH_AFTER_ROLL_NAME)
+        .Options(ComboboxOptions()
+                     .ComboMap(dashAfterRollMap)
+                     .DefaultIndex(DASH_AFTER_ROLL_OFF)
+                     .Tooltip("Hold A after a roll to keep running at Bunny Hood speed.\n"
+                              "\"On\" tops out at Bunny Hood speed, so the hood adds nothing while "
+                              "dashing.\n"
+                              "\"Stack with Bunny Hood\" combines both boosts.\n"
+                              "Only ground speed changes, so jump distance and randomizer logic are "
+                              "untouched."));
     AddWidget(path, "Skip Water Take Breath Animation", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipSwimDeepEndAnim"))
         .Options(CheckboxOptions().Tooltip("Skips Link's taking breath animation after coming up from water. "

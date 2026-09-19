@@ -5,6 +5,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/BunnyHood.h"
+#include "soh/Enhancements/DashAfterRoll.h"
 
 extern "C" {
 #include "z64.h"
@@ -52,10 +53,13 @@ static bool ShouldAmplifyJump(Player* player) {
 
 static void RegisterSpeedModifiers() {
     bool speedModifierActive = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f;
+    bool dashActive = CVarGetInteger(CVAR_DASH_AFTER_ROLL_NAME, DASH_AFTER_ROLL_OFF) != DASH_AFTER_ROLL_OFF;
     bool bunnyHoodActive = Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA;
-    bool jumpsClamped =
-        Ship_GetBunnyHoodMode() == BUNNY_HOOD_FAST || (CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f &&
-                                                       CVarGetInteger(CVAR_SPEED_MODIFIER_JUMP_TOGGLE, 0) == 1);
+    // The dash is a ground-only boost, like bunny hood's "fast run", so the dive needs the
+    // same re-clamp to keep its distance vanilla.
+    bool jumpsClamped = Ship_GetBunnyHoodMode() == BUNNY_HOOD_FAST || dashActive ||
+                        (CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f &&
+                         CVarGetInteger(CVAR_SPEED_MODIFIER_JUMP_TOGGLE, 0) == 1);
 
     static f32 lastRunSpeed = 0.0f;
 
@@ -81,12 +85,13 @@ static void RegisterSpeedModifiers() {
     });
 
     // Ground run speed target, multiplied in place.
-    COND_VB_SHOULD(VB_PLAYER_MODIFY_RUN_SPEED, speedModifierActive || bunnyHoodActive, {
+    COND_VB_SHOULD(VB_PLAYER_MODIFY_RUN_SPEED, speedModifierActive || bunnyHoodActive || dashActive, {
         Player* player = va_arg(args, Player*);
         f32* speedTarget = va_arg(args, f32*);
         s16* yawTarget = va_arg(args, s16*);
 
-        *speedTarget *= Ship_GetBunnyHoodRunFactor(player) * GetSpeedModifierFactor(true);
+        *speedTarget *=
+            Ship_GetBunnyHoodRunFactor(player) * Ship_GetDashRunFactor(player) * GetSpeedModifierFactor(true);
 
         func_8083DF68(player, *speedTarget, *yawTarget);
         func_8083DDC8(player, gPlayState);
@@ -105,5 +110,6 @@ static void RegisterSpeedModifiers() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSpeedModifiers, { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME,
-                                                               CVAR_BUNNY_HOOD_NAME, CVAR_SPEED_MODIFIER_JUMP_TOGGLE });
+static RegisterShipInitFunc initFunc(RegisterSpeedModifiers,
+                                     { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME, CVAR_BUNNY_HOOD_NAME,
+                                       CVAR_SPEED_MODIFIER_JUMP_TOGGLE, CVAR_DASH_AFTER_ROLL_NAME });
