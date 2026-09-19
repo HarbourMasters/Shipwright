@@ -63,12 +63,20 @@ JSON in `soh/assets/custom` checked by CI with:
 ./scripts/lint-json.sh --fix    # reformat in place
 ```
 
+## No tabs
+
+C/C++ outside soh/include is indented with spaces, checked by CI with:
+
+```sh
+./scripts/check-no-tabs.sh      # check, prints file:line for each tab
+```
+
 ## Optional: format on commit
 
 The repo ships a [pre-commit](https://pre-commit.com/) config
 (`.pre-commit-config.yaml`) that auto-formats staged C/C++ with a pinned 14.x
-and runs the JSON lint on staged assets before each commit, so you never get
-caught by the CI checks. With pre-commit
+and runs the tab and JSON lints on staged files before each commit, so you
+never get caught by the CI checks. With pre-commit
 [installed](https://pre-commit.com/#install), enable it once:
 
 ```bash
