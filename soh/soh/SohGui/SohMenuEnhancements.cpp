@@ -194,6 +194,24 @@ static WidgetFunc HideQuestPreFunc(Quest quest) {
     };
 }
 
+static const std::map<int32_t, const char*> bossHealthOptions = {
+    { 0, "Vanilla (1x)" }, { 1, "1.25x" }, { 2, "1.50x" }, { 3, "1.75x" }, { 4, "Double (2x)" },
+};
+
+static uint8_t CountVisibleFileSelectQuests() {
+    uint8_t count = 0;
+
+    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
+        count++;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
+        count++;
+    }
+
+    return count;
+}
+
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
@@ -1526,6 +1544,13 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Hyper Bosses", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperBosses"))
         .Options(CheckboxOptions().Tooltip("All Major Bosses move and act twice as fast."));
+    AddWidget(path, "Boss Health Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BossHealthMultiplier"))
+        .Options(ComboboxOptions()
+                     .ComboMap(bossHealthOptions)
+                     .DefaultIndex(0)
+                     .Tooltip("Multiplies the health of all dungeon bosses.\n"
+                              "Requires a Scene Reload to take effect."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
         .Options(CheckboxOptions().Tooltip("All Regular Enemies and Mini-Bosses move and act twice as fast."));
