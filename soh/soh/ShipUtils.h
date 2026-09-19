@@ -23,6 +23,8 @@ void Ship_ExtendedCullingActorAdjustProjectedZ(Actor* actor);
 void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor);
 void Ship_ExtendedCullingActorRestoreProjectedPos(PlayState* play, Actor* actor);
 
+s32 Ship_GetActorSpawnObjectIndex(PlayState* play, s16 objectId, s16 actorId);
+
 bool Ship_IsCStringEmpty(const char* str);
 void Ship_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 f32 Ship_GetCharFontWidth(u8 character);

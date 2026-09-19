@@ -29,6 +29,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 
 extern PlayState* gPlayState;
+extern int gMapLoading;
 }
 
 namespace SohGui {
@@ -745,6 +746,26 @@ void RegisterEnemyRandomizer() {
     // If Random Gerudo Fighters are defeated, drop some items
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, ENEMY_RANDOMIZER_ENABLED, OnGerudoFighterDefeat);
 
+    // Spawn random enemies even if their object isn't loaded
+    COND_VB_SHOULD(VB_SPAWN_ACTOR_WITHOUT_OBJECT, ENEMY_RANDOMIZER_ENABLED, {
+        if (gMapLoading) {
+            *should = true;
+        }
+    });
+
+    // The following enemies break when the parent actor isn't the same as what would happen in authentic gameplay.
+    // As such, don't assign a parent to them at all when spawned with Enemy Randomizer.
+    // Gohma (z_boss_goma.c) and the falling platform spawning Stalfos in
+    // Forest Temple (z_bg_mori_bigst.c) that normally rely on this behaviour are changed when
+    // Enemy Rando is on so they still work properly even without assigning a parent.
+    COND_VB_SHOULD(VB_SET_CHILD_ACTOR_PARENT, ENEMY_RANDOMIZER_ENABLED, {
+        Actor* spawnedActor = va_arg(args, Actor*);
+
+        if (spawnedActor->id == ACTOR_EN_FLOORMAS || spawnedActor->id == ACTOR_EN_PEEHAT) {
+            *should = false;
+        }
+    });
+
     COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, ENEMY_RANDOMIZER_ENABLED, {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
         ActorEntry* actorEntry = va_arg(args, ActorEntry*);
@@ -1209,5 +1230,19 @@ void RegisterEnemyRandomizerWidgets() {
     }
 }
 
+// Remove object dependency for Enemy Randomizer and Crowd Control to allow Like-likes to
+// drop equipment correctly in rooms where Like-likes normally don't spawn.
+static void RegisterItem00WithoutObject() {
+    bool required = ENEMY_RANDOMIZER_ENABLED || CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0);
+    COND_VB_SHOULD(VB_ITEM00_REQUIRE_OBJECT, required, {
+        EnItem00* item = va_arg(args, EnItem00*);
+
+        *should = false;
+        item->actor.objBankIndex = 0;
+    });
+}
+
 static RegisterShipInitFunc initFunc(RegisterEnemyRandomizer, { CVAR_ENEMY_RANDOMIZER_NAME });
+static RegisterShipInitFunc initFuncItem00(RegisterItem00WithoutObject,
+                                           { CVAR_ENEMY_RANDOMIZER_NAME, CVAR_REMOTE_CROWD_CONTROL("Enabled") });
 static RegisterMenuInitFunc menuInitFunc(RegisterEnemyRandomizerWidgets);

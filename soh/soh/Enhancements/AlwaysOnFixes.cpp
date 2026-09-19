@@ -54,7 +54,8 @@ void RegisterAlwaysOnFixes() {
     // spawn (Player_InitItemAction removes the ranged weapon state elsewhere).
     COND_VB_SHOULD(VB_INIT_HOOKSHOT_IA, true, {
         Player* player = va_arg(args, Player*);
-        if (player->heldActor == NULL) {
+        if (player->heldActor == NULL && !(CVarGetInteger(CVAR_ENHANCEMENT("ChildHookshotSoftlock"), 0) &&
+                                           Object_GetIndex(&gPlayState->objectCtx, OBJECT_LINK_BOY) < 0)) {
             Player_UseItem(gPlayState, player, 0xFF);
         }
     });
