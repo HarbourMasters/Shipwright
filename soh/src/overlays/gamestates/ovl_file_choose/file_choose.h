@@ -70,6 +70,11 @@ typedef enum {
     CM_START_RANDOMIZER_SETTINGS_MENU,
     CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST,
     CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU,
+    CM_ROTATE_TO_SPEEDRUN_MENU,
+    CM_SPEEDRUN_MENU,
+    CM_START_SPEEDRUN_MENU,
+    CM_SPEEDRUN_TO_QUEST,
+    CM_NAME_ENTRY_TO_SPEEDRUN_MENU,
 } ConfigMode;
 
 typedef enum {
@@ -215,6 +220,7 @@ void FileChoose_ExitEraseToMain(GameState* thisx);
 
 void FileChoose_UpdateKeyboardCursor(GameState* thisx);
 void FileChoose_StartNameEntry(GameState* thisx);
+void FileChoose_StartNameEntryFromMenu(FileChooseContext* fileChooseContext);
 void FileChoose_UpdateOptionsMenu(GameState* thisx);
 void FileChoose_StartOptions(GameState* thisx);
 

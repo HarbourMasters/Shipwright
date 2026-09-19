@@ -437,6 +437,9 @@ static const ALIGN_ASSET(2) char gFileSelBossRushSettingsJPNText[] = dgFileSelBo
 #define dgFileSelRANDButtonTex "__OTR__textures/title_static/gFileSelRANDButtonTex"
 static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTex;
 
+#define dgFileSelRUNButtonTex "__OTR__textures/title_static/gFileSelRUNButtonTex"
+static const ALIGN_ASSET(2) char gFileSelRUNButtonTex[] = dgFileSelRUNButtonTex;
+
 #define dgFileSelLangEnglishENGTex "__OTR__textures/title_static/gFileSelLangEnglishENGTex"
 static const ALIGN_ASSET(2) char gFileSelLangEnglishENGTex[] = dgFileSelLangEnglishENGTex;
 

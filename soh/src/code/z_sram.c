@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/savefile.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 #include "soh/ResourceManagerHelpers.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
@@ -229,7 +230,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u16* ptr;
     u16 checksum;
 
-    if (fileChooseCtx->buttonIndex != 0 || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
+    if (fileChooseCtx->buttonIndex != 0 ||
+        !Ship_QuestDebugEnabled(fileChooseCtx->questType[fileChooseCtx->buttonIndex])) {
         Sram_InitNewSave();
     } else {
         Sram_InitDebugSave();
@@ -246,7 +248,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
 
-    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0))) {
+    if ((fileChooseCtx->buttonIndex == 0 &&
+         Ship_QuestDebugEnabled(fileChooseCtx->questType[fileChooseCtx->buttonIndex]))) {
         gSaveContext.cutsceneIndex = 0;
     }
 
@@ -264,6 +267,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         Randomizer_InitSaveFile();
     } else {
         gSaveContext.ship.quest.id = currentQuest;
+    }
+
+    if (IS_SPEEDRUN) {
+        Speedrun_InitSaveFile();
     }
 
     Save_SaveFile();
