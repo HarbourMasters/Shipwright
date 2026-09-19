@@ -1,6 +1,6 @@
 # Local hooks run on commit: clang-format for staged C/C++ in soh/ (using a
-# pinned 14.x downloaded by pre-commit), and the JSON asset lint. Scopes match
-# run-clang-format.sh / scripts/lint-json.py and CI.
+# pinned 14.x downloaded by pre-commit), the tab and JSON asset lints. Scopes
+# match run-clang-format.sh / scripts/lint-json.py and CI.
 #   pre-commit install --install-hooks   # enable (downloads clang-format up front)
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
@@ -16,4 +16,11 @@ repos:
         entry: scripts/lint-json.sh --fix
         language: system
         files: '^soh/assets/custom/.*\.json$'
+        pass_filenames: false
+      - id: no-tabs
+        name: check staged C/C++ for tabs
+        entry: scripts/check-no-tabs.sh
+        language: system
+        files: '^soh/.*\.(c|cpp|h|hpp)$'
+        exclude: '^soh/include/'
         pass_filenames: false
