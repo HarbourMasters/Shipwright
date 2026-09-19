@@ -5,6 +5,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/heap_sim.h"
 
 typedef struct {
     /* 0x00 */ void* texture;
@@ -62,6 +63,9 @@ static MapMarkData** sLoadedMarkDataTable;
 SHIP_SAVESTATE_DEFINE(MapMark, MAP_MARK_SHIP_SAVESTATE_FIELDS)
 
 void MapMark_Init(PlayState* play) {
+    // Heap sim: N64 game-allocs the map mark data overlay here
+    HeapSim_MirrorMapMarkLoad();
+
     // MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
     // u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 

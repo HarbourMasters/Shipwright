@@ -9,6 +9,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/heap_sim.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -236,6 +237,7 @@ void Play_Destroy(GameState* thisx) {
     KaleidoScopeCall_Destroy(play);
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
+    HeapSim_Cleanup();
 
     Fault_RemoveClient(&D_801614B8);
 
@@ -389,6 +391,8 @@ void Play_Init(GameState* thisx) {
     // This is to avoid some parts of the game, like loading actors, causing OoM
     // This is potionally unavoidable due to struct size differences, but is x2 the right amount?
     GameState_Realloc(&play->state, 0x1D4790 * 2);
+    // Heap sim: start tracking game allocs against the original (undoubled) heap size
+    HeapSim_BeginSimulation();
     KaleidoManager_Init(play);
     View_Init(&play->view, gfxCtx);
     Audio_SetExtraFilter(0);
@@ -547,6 +551,9 @@ void Play_Init(GameState* thisx) {
     VisMono_Init(&gPlayVisMono);
     gVisMonoColor.a = 0;
     Flags_UnsetAllEnv(play);
+
+    // Heap sim: whatever is left of the simulated heap becomes the shadow ZeldaArena
+    HeapSim_InitArena(&play->state);
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);
