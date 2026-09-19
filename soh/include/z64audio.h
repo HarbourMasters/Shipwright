@@ -26,6 +26,9 @@ extern "C" {
 
 //#define MAX_SEQUENCES 0x800
 extern size_t sequenceMapSize;
+// Streamed audio rather than a sequence script, per sequence and per sequence player.
+extern u8* gSeqIsStreamed;
+extern u8 gSeqPlayerIsStreamed[4];
 extern size_t fontMapSize;
 extern char** fontMap;
 

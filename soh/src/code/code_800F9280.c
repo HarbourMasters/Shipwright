@@ -15,6 +15,8 @@ Struct_8016E320 D_8016E320[4][5];
 u8 sNumSeqRequests[4];
 u32 sAudioSeqCmds[0x100];
 ActiveSequence gActiveSeqs[4];
+// Filled in here because this is where the audio editor mapping is resolved.
+u8 gSeqPlayerIsStreamed[4];
 
 u8 sSeqCmdWrPos = 0;
 u8 sSeqCmdRdPos = 0;
@@ -64,6 +66,8 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
 
         gActiveSeqs[playerIdx].seqId = seqId | (arg2 << 8);
         gActiveSeqs[playerIdx].prevSeqId = seqId | (arg2 << 8);
+        gSeqPlayerIsStreamed[playerIdx] = (gSeqIsStreamed != NULL) && ((size_t)resolvedSeqId < sequenceMapSize + 0xF) &&
+                                          (gSeqIsStreamed[resolvedSeqId] != 0);
 
         if (gActiveSeqs[playerIdx].volCur != 1.0f) {
             Audio_QueueCmdF32(0x41000000 | _SHIFTL(playerIdx, 16, 8), gActiveSeqs[playerIdx].volCur);
@@ -89,6 +93,7 @@ void func_800F9474(u8 playerIdx, u16 arg1) {
     Audio_QueueCmdS32(0x83000000 | ((u8)playerIdx << 16),
                       (arg1 * (u16)gAudioContext.audioBufferParameters.updatesPerFrame) / 4);
     gActiveSeqs[playerIdx].seqId = NA_BGM_DISABLED;
+    gSeqPlayerIsStreamed[playerIdx] = false;
 }
 
 typedef enum {
