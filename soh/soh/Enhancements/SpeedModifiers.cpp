@@ -14,6 +14,7 @@ extern "C" {
 extern PlayState* gPlayState;
 extern void func_8083DF68(Player* player, f32 arg1, s16 arg2);
 extern void func_8083DDC8(Player* player, PlayState* play);
+extern s32 Math_AsymStepToF(f32* pValue, f32 target, f32 incrStep, f32 decrStep);
 }
 
 #define CVAR_SPEED_MODIFIER_VALUE_NAME CVAR_CHEAT("SpeedModifier.Value")
@@ -94,6 +95,14 @@ static void RegisterSpeedModifiers() {
             Ship_GetBunnyHoodRunFactor(player) * Ship_GetDashRunFactor(player) * GetSpeedModifierFactor(true);
 
         func_8083DF68(player, *speedTarget, *yawTarget);
+
+        // Vanilla's fixed step makes the dash read as delayed after the roll, more so the faster
+        // the mode makes it. Close the rest of the gap on the dash's own schedule.
+        f32 dashAccel = Ship_GetDashAccel(player, *speedTarget);
+        if (dashAccel > 0.0f) {
+            Math_AsymStepToF(&player->linearVelocity, *speedTarget, dashAccel, 1.5f);
+        }
+
         func_8083DDC8(player, gPlayState);
 
         lastRunSpeed = player->linearVelocity;

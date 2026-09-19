@@ -37,6 +37,19 @@ float Ship_GetDashRunFactor(Player* player) {
     return 1.5f;
 }
 
+// Frames the dash should take to reach its target speed, whichever mode set it.
+#define DASH_RAMP_FRAMES 5.0f
+
+float Ship_GetDashAccel(Player* player, float speedTarget) {
+    if (Ship_GetDashRunFactor(player) == 1.0f) {
+        return 0.0f;
+    }
+
+    float remaining = speedTarget - player->linearVelocity;
+
+    return remaining > 0.0f ? remaining / DASH_RAMP_FRAMES : 0.0f;
+}
+
 // Runs at the end of Player_UpdateCommon, so the flag set here reaches the speed
 // pipeline on the following frame.
 static void Ship_UpdateDashState() {
