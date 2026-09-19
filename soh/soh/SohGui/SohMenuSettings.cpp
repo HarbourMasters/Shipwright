@@ -5,6 +5,7 @@
 #include "soh/OTRGlobals.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "UIWidgets.hpp"
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/Context.h>
@@ -239,6 +240,30 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yTTS"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Enables text to speech for in-game dialogue"));
+    AddWidget(path, "Speech Rate: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSRate"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions()
+                     .Min(SPEECH_RATE_MIN)
+                     .Max(SPEECH_RATE_MAX)
+                     .DefaultValue(100)
+                     .ShowButtons(true)
+                     .Format("")
+                     .Tooltip("Speaking speed, as a percentage of the speech engine's normal rate."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
+    AddWidget(path, "Speech Volume: %d %%", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSVolume"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(100).ShowButtons(true).Format("").Tooltip(
+            "Speech volume. The speech engine plays outside the game's mixer, so this is separate from the "
+            "volume sliders above."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
+    AddWidget(path, "Speech Pitch: %d", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_SETTING("A11yTTSPitch"))
+        .RaceDisable(false)
+        .Options(IntSliderOptions().Min(0).Max(100).DefaultValue(50).ShowButtons(true).Format("").Tooltip(
+            "Base pitch of the speaking voice. 50 is the engine's normal pitch."))
+        .Callback([](WidgetInfo& info) { SpeechSynthesizer::Instance->ApplySettings(); });
 #endif
     AddWidget(path, "Disable Idle Camera Re-Centering", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))

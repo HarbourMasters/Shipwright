@@ -8,6 +8,7 @@
 #pragma once
 
 #include "SpeechSynthesizer.h"
+#include <stdint.h>
 #include <stdio.h>
 
 class SAPISpeechSynthesizer : public SpeechSynthesizer {
@@ -19,4 +20,5 @@ class SAPISpeechSynthesizer : public SpeechSynthesizer {
   protected:
     bool DoInit(void);
     void DoUninitialize(void);
+    void DoApplySettings(int32_t rate, int32_t volume, int32_t pitch);
 };
