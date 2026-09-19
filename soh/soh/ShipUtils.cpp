@@ -5,15 +5,18 @@
 #include "soh_assets.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "spdlog/common.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern "C" {
 #include "z64.h"
 #include "macros.h"
+#include "functions.h"
 
 extern float OTRGetAspectRatio();
 
 extern f32 sFontWidths[144];
 extern const char* fontTbl[140];
+extern int gMapLoading;
 }
 
 extern std::string Ship_FormatTimeDisplay(uint32_t value) {
@@ -58,6 +61,16 @@ extern "C" void Ship_ExtendedCullingActorAdjustProjectedX(Actor* actor) {
 //    f32 invW = 0.0f;
 //    Actor_GetProjectedPos(play, &actor->world.pos, &actor->projectedPos, &invW);
 //}
+
+// Vanilla fails to spawn an actor whose object isn't loaded
+// SoH instead gives it gameplay_keep's slot, except while the room's actors are loading
+extern "C" s32 Ship_GetActorSpawnObjectIndex(PlayState* play, s16 objectId, s16 actorId) {
+    s32 objBankIndex = Object_GetIndex(&play->objectCtx, objectId);
+    if (objBankIndex < 0 && GameInteractor_Should(VB_SPAWN_ACTOR_WITHOUT_OBJECT, !gMapLoading, actorId)) {
+        return 0;
+    }
+    return objBankIndex;
+}
 
 extern "C" bool Ship_IsCStringEmpty(const char* str) {
     return str == NULL || str[0] == '\0';

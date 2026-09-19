@@ -1645,6 +1645,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_REQUIRE_OBJECT,
+
+    // #### `result`
+    // ```c
     // this->unk_15A > 0
     // ```
     // #### `args`
@@ -2746,6 +2754,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor` (spawnedActor)
+    VB_SET_CHILD_ACTOR_PARENT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
 
@@ -2967,6 +2983,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SKIP_SCARECROWS_SONG,
+
+    // #### `result`
+    // ```c
+    // !gMapLoading
+    // ```
+    // #### `args`
+    // - `s16` (actorId)
+    VB_SPAWN_ACTOR_WITHOUT_OBJECT,
 
     // #### `result`
     // ```c
