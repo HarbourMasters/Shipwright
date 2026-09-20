@@ -3,7 +3,7 @@
 
 cd "$(dirname "$0")/.." || exit 2
 
-if git grep -n "$(printf '\t')" -- 'soh/*.c' 'soh/*.cpp' 'soh/*.h' 'soh/*.hpp' ':!soh/include'; then
+if git --no-pager grep -n "$(printf '\t')" -- 'soh/*.c' 'soh/*.cpp' 'soh/*.h' 'soh/*.hpp' ':!soh/include'; then
     echo "replace tabs with spaces"
     exit 1
 fi
