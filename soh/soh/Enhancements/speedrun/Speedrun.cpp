@@ -54,11 +54,10 @@ static const std::array<const char*, 4> sOwnedBlocks = {
 
 // Settings the player keeps even under a preset. Their own values are copied over the file's settings on create and
 // load, and these are left out of the settings hash.
-static const std::array<nlohmann::json::json_pointer, 8> sExemptSettings = {
+static const std::array<nlohmann::json::json_pointer, 7> sExemptSettings = {
     nlohmann::json::json_pointer("/gDeveloperTools/LogLevel"),
     nlohmann::json::json_pointer("/gDeveloperTools/ResourceLogging"),
     nlohmann::json::json_pointer("/gEnhancements/DrawLineupTick"),
-    nlohmann::json::json_pointer("/gEnhancements/FastBottles"),
     nlohmann::json::json_pointer("/gEnhancements/FasterPauseMenu"),
     nlohmann::json::json_pointer("/gEnhancements/GraveHoles"),
     nlohmann::json::json_pointer("/gEnhancements/IncludeHeldInputsBufferWindow"),
