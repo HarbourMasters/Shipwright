@@ -132,6 +132,10 @@ static const std::map<int32_t, const char*> bonkDamageValues = {
     { BONK_DAMAGE_8_HEARTS, "8 Hearts" },     { BONK_DAMAGE_OHKO, "OHKO" },
 };
 
+static const std::map<int32_t, const char*> bossHealthOptions = {
+    { 0, "Vanilla (1x)" }, { 1, "1.25x" }, { 2, "1.50x" }, { 3, "1.75x" }, { 4, "Double (2x)" },
+};
+
 static const std::map<int32_t, const char*> dampeDropRates = {
     { DAMPE_NONE, "None" },
     { DAMPE_NORMAL, "Vanilla" },
@@ -193,10 +197,6 @@ static WidgetFunc HideQuestPreFunc(Quest quest) {
         }
     };
 }
-
-static const std::map<int32_t, const char*> bossHealthOptions = {
-    { 0, "Vanilla (1x)" }, { 1, "1.25x" }, { 2, "1.50x" }, { 3, "1.75x" }, { 4, "Double (2x)" },
-};
 
 static uint8_t CountVisibleFileSelectQuests() {
     uint8_t count = 0;

@@ -43,6 +43,7 @@ DEFINE_HOOK(ShouldActorDestroy, (void* actor, bool* result));
 DEFINE_HOOK(OnActorDestroy, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));
 DEFINE_HOOK(OnBossDefeat, (void* actor));
+DEFINE_HOOK(OnBossVaHealthInit, (s8 * phase4Hp));
 DEFINE_HOOK(OnTimestamp, (u8 item));
 DEFINE_HOOK(OnPlayerBonk, ());
 DEFINE_HOOK(OnPlayerSetModels, (Player * player, u8 modelGroup));
@@ -88,7 +89,7 @@ DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
 
 // Messages
-DEFINE_HOOK(OnOpenText, (uint16_t * textId, bool* loadFromMessageTable));
+DEFINE_HOOK(OnOpenText, (uint16_t* textId, bool* loadFromMessageTable));
 
 // Audio
 DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));

@@ -8,7 +8,6 @@ extern "C" {
 #include "z64.h"
 #include "variables.h"
 #include "functions.h"
-// King Dodongo manages health inside its specific actor struct
 #include "src/overlays/actors/ovl_Boss_Dodongo/z_boss_dodongo.h"
 }
 
@@ -44,7 +43,7 @@ static void SetBossHealth(Actor* actor, s16 newHealth) {
 }
 
 void HandleBossHealthMultiplier(void* refActor) {
-    // 0 corresponds to normal/vanilla multiplier (1x)
+    // 0 corresponds to vanilla multiplier (1x)
     if (CVAR <= 0) {
         return;
     }
@@ -74,7 +73,23 @@ void ClearBossHealthMultiplier(void* refActor) {
     sLastBossHealth.erase(actor);
 }
 
-// Helper macro to register conditional hooks for each boss with its own static hook ID
+// Handles Barinade (ACTOR_BOSS_VA) whose health is tracked via a file-static variable
+// Triggered by the OnBossVaHealthInit GameInteractor hook, overwriting the value via pointer
+void HandleBarinadeHealthMultiplier(s8* phase4Hp) {
+    if (CVAR <= 0 || phase4Hp == nullptr || *phase4Hp <= 0) {
+        return;
+    }
+
+    int option = CVAR;
+    if (option < 0 || option > 4) {
+        option = 0;
+    }
+    float multiplier = sMultipliers[option];
+
+    *phase4Hp = (s8)(*phase4Hp * multiplier);
+}
+
+// Register conditional hooks for each boss with its own static hook ID
 #define REGISTER_BOSS_HOOKS(bossId)                                            \
     COND_ID_HOOK(OnActorUpdate, bossId, CVAR > 0, HandleBossHealthMultiplier); \
     COND_ID_HOOK(OnActorDestroy, bossId, true, ClearBossHealthMultiplier);
@@ -82,10 +97,6 @@ void ClearBossHealthMultiplier(void* refActor) {
 void RegisterBossHealthMultiplier() {
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_GOMA);
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_DODONGO);
-    /*
-     * Note: Barinade (ACTOR_BOSS_VA) is omitted because its vulnerable Phase 4 health
-     * is tracked via a file-static variable (sPhase4HP) in z_boss_va.c
-     */
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_GANONDROF);
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_FD);
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_MO);
@@ -93,6 +104,9 @@ void RegisterBossHealthMultiplier() {
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_TW);
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_GANON);
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_GANON2);
+
+    // Barinade hook
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossVaHealthInit>(HandleBarinadeHealthMultiplier);
 }
 
 #undef REGISTER_BOSS_HOOKS
