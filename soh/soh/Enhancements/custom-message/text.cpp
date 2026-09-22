@@ -1,3 +1,4 @@
+#include <functional>
 #include "text.h"
 
 Text::Text() = default;
