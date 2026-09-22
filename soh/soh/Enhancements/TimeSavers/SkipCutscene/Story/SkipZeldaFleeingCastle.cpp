@@ -48,6 +48,30 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
     }
 }
 
+/**
+ * Cutscene speeds time up so it ends at dawn. Walking in late at night picks a speed too
+ * low to reach morning, and time can end up barely moving at all.
+ */
+static uint16_t ZeldaFleeingCutsceneTime(uint16_t time) {
+    uint32_t dawn = time >= 0xD557 ? 0x1D556 : 0xD556;
+    uint16_t speed = (dawn - time) / 350;
+
+    // 2259 frames, minus 88 frozen by textboxes, minus 7 frozen while fading
+    for (int32_t frame = 0; frame < 2164; frame++) {
+        // time stops at dawn
+        if (time >= 0x2AAC && time < 0x3000) {
+            speed = 0;
+        }
+        // last 340 frames clear sky and race to morning
+        if (frame >= 1824 && time < 0x4AAB) {
+            time += 30;
+        }
+        time += time > 0xC000 || time < 0x4555 ? speed * 2 : speed; // night runs double
+    }
+
+    return time;
+}
+
 void RegisterSkipZeldaFleeingCastle() {
     COND_ID_HOOK(OnActorInit, ACTOR_ITEM_OCARINA,
                  CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO),
@@ -55,7 +79,7 @@ void RegisterSkipZeldaFleeingCastle() {
     COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
         if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
             // Normally set in the cutscene
-            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4AAA;
+            gSaveContext.dayTime = gSaveContext.skyboxTime = ZeldaFleeingCutsceneTime(gSaveContext.dayTime);
 
             gSaveContext.cutsceneIndex = 0;
             *should = false;
