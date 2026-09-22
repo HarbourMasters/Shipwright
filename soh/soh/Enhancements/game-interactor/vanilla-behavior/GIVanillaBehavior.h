@@ -928,6 +928,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // gSaveContext.health < STARTING_HEALTH
+    // ```
+    // #### `args`
+    // - None
+    VB_FULL_HEALTH_SPAWN,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
