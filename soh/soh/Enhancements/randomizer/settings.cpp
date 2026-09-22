@@ -1862,7 +1862,7 @@ void Settings::CreateOptions() {
     tricksOption.reserve(mTrickSettings.size());
     for (int i = 0; i < RT_MAX; i++) {
         auto trick = &mTrickSettings[i];
-        if (!trick->GetName().empty()) {
+        if (trick->GetCategory() == OptionCategory::Trick) {
             tricksOption.push_back(trick);
             mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
             mTricksByArea[trick->GetArea()].push_back(static_cast<RandomizerTrick>(i));
