@@ -13,6 +13,7 @@
 #include <ship/Context.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
+#include "soh/Enhancements/n64-heap/N64Heap.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -1204,6 +1205,16 @@ void SohMenu::AddMenuEnhancements() {
             "The second small key lock in MQ Water Temple is removed before the player can reach it by a shared flag "
             "with some Stalfos on the way to Dark Link.\n"
             "Enabling this will cause that lock to use a different flag, working as intended."));
+    AddWidget(path, "Fix Wrong Warps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FixWrongWarps"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !N64Heap_HasN64Data();
+            info.options->disabledTooltip = "Only available when the game assets were generated from an NTSC 1.2 ROM.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Fixes wrong warps to behave as they do on N64 (NTSC 1.2): the leftover cutscene data at the stale "
+            "cutscene pointer decides whether the warp works or softlocks, instead of SoH replaying the old cutscene.\n"
+            "Requires game assets generated from an NTSC 1.2 ROM."));
 
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Deku Nut Upgrade", WIDGET_CVAR_CHECKBOX)
