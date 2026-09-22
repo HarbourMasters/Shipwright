@@ -1,6 +1,5 @@
 #include "Presets.h"
 #include <algorithm>
-#include <cctype>
 #include <string>
 #include <fstream>
 #include <spdlog/common.h>
@@ -213,19 +212,15 @@ std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
     std::vector<std::pair<std::string, std::string>> found;
 
     for (auto& [name, info] : presets) {
-        if (info.fileName.rfind(prefix, 0) == 0) {
-            found.emplace_back(info.fileName.substr(prefix.size()), name);
+        if (name.rfind(prefix, 0) == 0) {
+            found.emplace_back(name.substr(prefix.size()), name);
         }
     }
 
-    // A leading digit sets the order and is hidden, so "Speedrun - 1 Base" shows as "Base". Digits sort before
-    // letters, so presets without one come last.
-    std::sort(found.begin(), found.end());
-    for (auto& [display, name] : found) {
-        if (!display.empty() && isdigit((unsigned char)display[0])) {
-            display.erase(0, 2);
-        }
-    }
+    // Sort by filename so "Speedrun - 1 Base.json" comes first while still showing as "Base"
+    std::sort(found.begin(), found.end(), [](const auto& a, const auto& b) {
+        return presets.at(a.second).fileName < presets.at(b.second).fileName;
+    });
 
     return found;
 }
