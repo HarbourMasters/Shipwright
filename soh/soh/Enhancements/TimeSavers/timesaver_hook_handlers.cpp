@@ -675,9 +675,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 *should = false;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG);
-                // SoH [Randomizer] TODO: Increment time X amount (find out X)
-                // When time is 0, it's changed to 0x46A7
-                // When it's 0x8000, it's changed to 0xC090
+                // skipped cutscene in graveyard has time flow to dawn or dusk
+                gSaveContext.dayTime = gSaveContext.skyboxTime = IS_DAY ? 0xC079 : 0x45CD;
             }
             break;
         case VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
