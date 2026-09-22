@@ -157,7 +157,7 @@ static uint16_t SunsSongCutsceneTime(uint16_t time) {
             speed = 1;
         }
         bool night = time > 0xC000 || time < 0x4555;
-        time += night && speed < 400 ? speed * 2 : speed; // night runs double while sped up
+        time += night && speed < 400 ? speed * 2 : speed; // night runs double
     }
 
     return time;
