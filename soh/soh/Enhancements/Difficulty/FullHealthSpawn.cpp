@@ -5,10 +5,6 @@
 #include "soh/ShipInit.hpp"
 #include "variables.h"
 
-extern "C" {
-extern PlayState* gPlayState;
-}
-
 #define CVAR_FULL_HEALTH_SPAWN_NAME CVAR_ENHANCEMENT("FullHealthSpawn")
 #define CVAR_FULL_HEALTH_SPAWN_VALUE CVarGetInteger(CVAR_FULL_HEALTH_SPAWN_NAME, 0)
 
