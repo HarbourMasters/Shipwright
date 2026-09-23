@@ -10,6 +10,8 @@
 
 namespace n64heap {
 
+struct RomFile;
+
 using RomReader = std::function<bool(uint32_t vrom, uint8_t* out, uint32_t size)>;
 
 struct ScriptSimulation {
@@ -42,7 +44,7 @@ class ObjectSpace {
     }
 
   private:
-    enum class Kind { File, GreyIcon, Dynamic };
+    enum class Kind { File, GreyIcon, Runtime };
     struct Span {
         uint32_t end;
         Kind kind;
@@ -51,16 +53,19 @@ class ObjectSpace {
         std::string label;
     };
     void Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom, uint32_t base, const std::string& label);
-    void PaintFile(uint32_t address, uint32_t vrom, uint32_t size, const std::string& label);
+    void PaintFile(uint32_t address, const RomFile& file, const std::string& label);
+    void PaintRuntimeData(uint32_t address, uint32_t size, const std::string& label);
     void PaintObject(size_t slot);
+    uint32_t PaintIconFiles(uint32_t address, const RomFile& areaIcons, const char* areaLabel, bool japanese);
     bool ReadWord(uint32_t address, const RomReader& rom, uint32_t* value, std::string* source) const;
+    static bool IsHandledCommand(int32_t command);
 
     std::map<uint32_t, Span> mSpans;
     uint32_t mVersion = 0;
     int16_t mSceneId = -1;
     uint32_t mSpaceStart = 0;
     std::vector<int16_t> mSlotIds;
-    std::vector<uint32_t> mSlotAddr;
+    std::vector<uint32_t> mSlotAddresses;
 };
 
 } // namespace n64heap

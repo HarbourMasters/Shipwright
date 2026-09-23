@@ -10,6 +10,19 @@ static uint32_t Align16(uint32_t value) {
     return (value + 15) & ~15u;
 }
 
+const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer) {
+    const SceneLayout* baseLayout = nullptr;
+    for (const SceneLayout& layout : kSceneLayouts) {
+        if (layout.scene == scene && layout.layer == layer) {
+            return &layout;
+        }
+        if (layout.scene == scene && layout.layer == 0) {
+            baseLayout = &layout;
+        }
+    }
+    return baseLayout;
+}
+
 void Arena::Init(uint32_t start, uint32_t size) {
     uint32_t first = Align16(start);
     size = (size - (first - start)) & ~15u;
@@ -127,7 +140,7 @@ void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
     mAbsoluteSpace = 0;
     // SoH's game over sets nayrusLoveTimer to 2000, so Player_Init spawns a Magic_Dark that NTSC 1.2 does not
     mSkipMagicDark = skipNextMagicDark;
-    mBodyBreakStage = 0;
+    mBodyBreakStep = BodyBreakStep::Matrices;
 }
 
 Core::Site Core::Classify(const char* file) {
@@ -177,24 +190,11 @@ bool Core::ActorSpawn(int16_t actorId) {
     const ActorEntry& entry = kActors[actorId];
     Overlay* overlay = nullptr;
     if (entry.overlaySize != 0) {
-        auto it = mOverlays.find(actorId);
-        if (it == mOverlays.end()) {
-            uint32_t address;
-            if (entry.allocType & 1) {
-                if (mAbsoluteSpace == 0) {
-                    mAbsoluteSpace = mArena.Alloc(kAbsoluteSpaceSize, true);
-                }
-                address = mAbsoluteSpace;
-            } else {
-                address = mArena.Alloc(entry.overlaySize, (entry.allocType & 2) != 0);
-            }
-            if (address == 0) {
-                mStats.failedSpawns++;
-                return false;
-            }
-            it = mOverlays.emplace(actorId, Overlay{ address, 0 }).first;
+        overlay = LoadOverlay(actorId);
+        if (overlay == nullptr) {
+            mStats.failedSpawns++;
+            return false;
         }
-        overlay = &it->second;
     }
     uint32_t address = mArena.Alloc(entry.instanceSize, false);
     if (address == 0) {
@@ -210,6 +210,34 @@ bool Core::ActorSpawn(int16_t actorId) {
     mStats.allocs++;
     Check();
     return true;
+}
+
+Core::Overlay* Core::LoadOverlay(int16_t actorId) {
+    auto it = mOverlays.find(actorId);
+    if (it != mOverlays.end()) {
+        return &it->second;
+    }
+    const ActorEntry& entry = kActors[actorId];
+    uint32_t address = 0;
+    switch (entry.allocType) {
+        case AllocType::Absolute:
+            // Every absolute overlay shares one space, allocated the first time any of them loads
+            if (mAbsoluteSpace == 0) {
+                mAbsoluteSpace = mArena.Alloc(kAbsoluteSpaceSize, true);
+            }
+            address = mAbsoluteSpace;
+            break;
+        case AllocType::Persistent:
+            address = mArena.Alloc(entry.overlaySize, true);
+            break;
+        case AllocType::Normal:
+            address = mArena.Alloc(entry.overlaySize, false);
+            break;
+    }
+    if (address == 0) {
+        return nullptr;
+    }
+    return &mOverlays.emplace(actorId, Overlay{ address, 0 }).first->second;
 }
 
 void Core::AbortSpawn() {
@@ -235,11 +263,11 @@ void Core::FreeUnusedOverlay(int16_t actorId) {
     if (it == mOverlays.end() || it->second.count != 0) {
         return;
     }
-    uint8_t type = kActors[actorId].allocType;
-    if (type & 2) {
+    AllocType type = kActors[actorId].allocType;
+    if (type == AllocType::Persistent) {
         return; // Persistent overlays stay loaded until the scene ends
     }
-    if (!(type & 1)) {
+    if (type == AllocType::Normal) {
         mArena.Free(it->second.address);
     }
     mOverlays.erase(it);
@@ -275,22 +303,7 @@ uint32_t Core::TranslateSize(Site site, size_t size) {
         case Site::Camera:
             return kCameraSize;
         case Site::ActorSpawn:
-            // BodyBreak_Alloc: MtxF[n] and s16[n] match N64, Gfx*[n] uses 4 byte pointers there
-            if (mBodyBreakStage == 1 && size == mBodyBreakCount * mHost.pointer) {
-                mBodyBreakStage = 2;
-                return mBodyBreakCount * kPointerSize;
-            }
-            if (mBodyBreakStage == 2 && size == mBodyBreakCount * 2) {
-                mBodyBreakStage = 0;
-                return static_cast<uint32_t>(size);
-            }
-            if (size % 0x40 == 0) {
-                mBodyBreakCount = static_cast<uint32_t>(size / 0x40);
-                mBodyBreakStage = 1;
-                return static_cast<uint32_t>(size);
-            }
-            mStats.approximateSizes++;
-            return static_cast<uint32_t>(size);
+            return TranslateBodyBreakSize(size);
         case Site::SkelAnime:
         case Site::Curve:
             return static_cast<uint32_t>(size);
@@ -300,6 +313,26 @@ uint32_t Core::TranslateSize(Site site, size_t size) {
             mStats.unknownSites++;
             return static_cast<uint32_t>(size);
     }
+}
+
+// Other z_actor.c allocations come from BodyBreak_Alloc, which allocates three arrays of the same length
+uint32_t Core::TranslateBodyBreakSize(size_t size) {
+    const size_t kMatrixSize = 0x40;
+    if (mBodyBreakStep == BodyBreakStep::DisplayLists && size == mBodyBreakCount * mHost.pointer) {
+        mBodyBreakStep = BodyBreakStep::ObjectIds;
+        return mBodyBreakCount * kPointerSize;
+    }
+    if (mBodyBreakStep == BodyBreakStep::ObjectIds && size == mBodyBreakCount * sizeof(int16_t)) {
+        mBodyBreakStep = BodyBreakStep::Matrices;
+        return static_cast<uint32_t>(size);
+    }
+    if (size % kMatrixSize == 0) {
+        mBodyBreakCount = static_cast<uint32_t>(size / kMatrixSize);
+        mBodyBreakStep = BodyBreakStep::DisplayLists;
+        return static_cast<uint32_t>(size);
+    }
+    mStats.approximateSizes++;
+    return static_cast<uint32_t>(size);
 }
 
 void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse) {
@@ -413,6 +446,7 @@ uint32_t Core::OverlayAddress(int16_t actorId) const {
 }
 
 bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const {
+    // SoH passes scene cutscenes as "__OTR__scenes/<mq|nonmq>/<scene file>/<symbol>"
     size_t length = strlen(path);
     for (const ScriptEntry& entry : kScripts) {
         size_t nameLength = strlen(entry.name);
@@ -423,8 +457,9 @@ bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what
         if (tail[-1] == '/' && strcmp(tail, entry.name) == 0) {
             *n64Address = entry.value;
             if (what != nullptr) {
-                *what = std::string("scene 0x") + "0123456789ABCDEF"[(entry.owner >> 4) & 0xF] +
-                        "0123456789ABCDEF"[entry.owner & 0xF] + " " + entry.name;
+                char text[96];
+                snprintf(text, sizeof(text), "scene 0x%02X %s", entry.owner, entry.name);
+                *what = text;
             }
             return true;
         }
@@ -432,55 +467,63 @@ bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what
     return false;
 }
 
-bool Core::ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64Address, std::string* what) const {
-    // Actor scripts in loaded overlays are checked before the current scene's scripts
-    for (int pass = 0; pass < 2; pass++) {
-        bool found = false;
-        int candidates = 0;
-        char text[96] = "";
-        for (const ScriptEntry& entry : kScripts) {
-            if ((pass == 0) != (entry.isScene == 0) || memcmp(entry.words, words, sizeof(entry.words)) != 0) {
-                continue;
-            }
-            uint32_t value;
-            if (entry.isScene) {
-                if (entry.owner != sceneId) {
-                    continue;
-                }
-                value = entry.value;
-            } else {
-                uint32_t base = OverlayAddress(entry.owner);
-                if (base == 0) {
-                    continue;
-                }
-                value = base + entry.value;
-            }
-            if (found && value == *n64Address) {
-                continue;
-            }
-            candidates++;
-            if (!found) {
-                found = true;
-                *n64Address = value;
-                if (entry.isScene) {
-                    snprintf(text, sizeof(text), "scene 0x%02X file data", entry.owner);
-                } else {
-                    snprintf(text, sizeof(text), "actor 0x%03X overlay %08X + 0x%X", entry.owner, value - entry.value,
-                             entry.value);
-                }
-            }
+const ScriptEntry* Core::FindScript(const int32_t words[4], bool isScene, int16_t sceneId, uint32_t* n64Address,
+                                    int* candidates) const {
+    const ScriptEntry* found = nullptr;
+    *candidates = 0;
+    for (const ScriptEntry& entry : kScripts) {
+        if (entry.isScene != isScene || memcmp(entry.words, words, sizeof(entry.words)) != 0) {
+            continue;
         }
-        if (found) {
-            if (what != nullptr) {
-                *what = text;
-                if (candidates > 1) {
-                    *what += " (ambiguous: " + std::to_string(candidates) + " scripts share this header)";
-                }
+        uint32_t address;
+        if (isScene) {
+            if (entry.owner != sceneId) {
+                continue;
             }
-            return true;
+            address = entry.value;
+        } else {
+            uint32_t overlay = OverlayAddress(entry.owner);
+            if (overlay == 0) {
+                continue;
+            }
+            address = overlay + entry.value;
+        }
+        if (found != nullptr && address == *n64Address) {
+            continue;
+        }
+        (*candidates)++;
+        if (found == nullptr) {
+            found = &entry;
+            *n64Address = address;
         }
     }
-    return false;
+    return found;
+}
+
+bool Core::ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64Address, std::string* what) const {
+    // Actor scripts in loaded overlays take priority over the current scene's scripts
+    int candidates = 0;
+    const ScriptEntry* entry = FindScript(words, false, sceneId, n64Address, &candidates);
+    if (entry == nullptr) {
+        entry = FindScript(words, true, sceneId, n64Address, &candidates);
+    }
+    if (entry == nullptr) {
+        return false;
+    }
+    if (what != nullptr) {
+        char text[96];
+        if (entry->isScene) {
+            snprintf(text, sizeof(text), "scene 0x%02X file data", entry->owner);
+        } else {
+            snprintf(text, sizeof(text), "actor 0x%03X overlay %08X + 0x%X", entry->owner, *n64Address - entry->value,
+                     entry->value);
+        }
+        *what = text;
+        if (candidates > 1) {
+            *what += " (ambiguous: " + std::to_string(candidates) + " scripts share this header)";
+        }
+    }
+    return true;
 }
 
 } // namespace n64heap

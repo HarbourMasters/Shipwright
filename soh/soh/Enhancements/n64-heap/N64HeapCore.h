@@ -11,6 +11,12 @@
 
 namespace n64heap {
 
+struct SceneLayout;
+struct ScriptEntry;
+
+// Layers a scene does not define use its base layout
+const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer);
+
 // Host sizes of the structs whose size differs on N64
 struct HostSizes {
     size_t jntSphElement;
@@ -92,10 +98,15 @@ class Core {
         uint32_t address = 0;
         int16_t actorId = -1;
     };
+    enum class BodyBreakStep { Matrices, DisplayLists, ObjectIds };
 
     static Site Classify(const char* file);
     uint32_t TranslateSize(Site site, size_t size);
+    uint32_t TranslateBodyBreakSize(size_t size);
+    Overlay* LoadOverlay(int16_t actorId);
     void FreeUnusedOverlay(int16_t actorId);
+    const ScriptEntry* FindScript(const int32_t words[4], bool isScene, int16_t sceneId, uint32_t* n64Address,
+                                  int* candidates) const;
     void Check();
 
     HostSizes mHost;
@@ -109,7 +120,7 @@ class Core {
     uint32_t mAbsoluteSpace = 0;
     bool mSkipMagicDark = false;
     uint32_t mBodyBreakCount = 0;
-    int mBodyBreakStage = 0;
+    BodyBreakStep mBodyBreakStep = BodyBreakStep::Matrices;
     Stats mStats;
 };
 

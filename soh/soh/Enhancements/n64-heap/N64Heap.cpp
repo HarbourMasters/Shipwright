@@ -30,6 +30,15 @@ n64heap::Core& Shadow() {
     return core;
 }
 
+// The last host script and N64 pointer a cutscene decision was made for
+struct CutsceneDecision {
+    void* script = nullptr;
+    uint32_t pointer = 0;
+    uint32_t memoryVersion = UINT32_MAX;
+    void* result = nullptr;
+    int32_t replacement[4] = {};
+};
+
 n64heap::ObjectSpace sObjectSpace;
 void* sLastHostScript = nullptr;
 uint32_t sCutscenePointer = 0;
@@ -37,40 +46,47 @@ std::string sLastVerdict;
 n64heap::Stats sLastStats;
 uint16_t sLastPauseState = 0;
 bool sVerdictDirty = false;
+CutsceneDecision sDecision;
 
 bool Enabled() {
     return CVarGetInteger(CVAR_FIX_N64_HEAP, 0) && N64Heap_HasN64Data();
 }
 
-// N64 file data stored in oot.o2r as "n64heap/<file>/data" when the assets come from an NTSC 1.2 ROM
-bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
-    const n64heap::ArchiveFile* files = n64heap::kArchiveFiles;
-    int lo = 0;
-    int hi = n64heap::kArchiveFileCount - 1;
-    while (lo < hi) {
-        int mid = (lo + hi + 1) / 2;
-        if (files[mid].vrom <= vrom) {
-            lo = mid;
+const uint8_t* sArchiveData[n64heap::kArchiveFileCount];
+bool sArchiveLoaded[n64heap::kArchiveFileCount];
+
+// Index of the last archive file starting at or before vrom
+int FindArchiveFile(uint32_t vrom) {
+    int low = 0;
+    int high = n64heap::kArchiveFileCount - 1;
+    while (low < high) {
+        int middle = (low + high + 1) / 2;
+        if (n64heap::kArchiveFiles[middle].vrom <= vrom) {
+            low = middle;
         } else {
-            hi = mid - 1;
+            high = middle - 1;
         }
     }
-    const n64heap::ArchiveFile& file = files[lo];
+    return low;
+}
+
+// N64 file data stored in oot.o2r as "n64heap/<file>/data" when the assets come from an NTSC 1.2 ROM
+bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
+    int index = FindArchiveFile(vrom);
+    const n64heap::ArchiveFile& file = n64heap::kArchiveFiles[index];
     if (vrom < file.vrom || vrom + size > file.vrom + file.size) {
         return false;
     }
-    static const uint8_t* sData[n64heap::kArchiveFileCount];
-    static bool sLoaded[n64heap::kArchiveFileCount];
-    if (!sLoaded[lo]) {
-        sLoaded[lo] = true;
+    if (!sArchiveLoaded[index]) {
+        sArchiveLoaded[index] = true;
         if (ResourceMgr_FileExists(file.path) && ResourceGetSizeByName(file.path) == file.size) {
-            sData[lo] = static_cast<const uint8_t*>(ResourceGetDataByName(file.path));
+            sArchiveData[index] = static_cast<const uint8_t*>(ResourceGetDataByName(file.path));
         }
     }
-    if (sData[lo] == nullptr) {
+    if (sArchiveData[index] == nullptr) {
         return false;
     }
-    memcpy(out, sData[lo] + (vrom - file.vrom), size);
+    memcpy(out, sArchiveData[index] + (vrom - file.vrom), size);
     return true;
 }
 
@@ -93,6 +109,15 @@ void ReportStats() {
     sLastStats = stats;
 }
 
+// pauseCtx.state values while KaleidoScope loads and shows the pause and game over screens
+bool InPauseScreen(uint16_t state) {
+    return state >= 3 && state <= 7;
+}
+
+bool InGameOverScreen(uint16_t state) {
+    return state >= 10 && state <= 17;
+}
+
 void SyncObjectSpace() {
     ObjectContext& objects = gPlayState->objectCtx;
     int16_t ids[OBJECT_EXCHANGE_BANK_MAX];
@@ -106,10 +131,10 @@ void SyncObjectSpace() {
     uint16_t state = gPlayState->pauseCtx.state;
     if (state != sLastPauseState) {
         bool japanese = gSaveContext.language == LANGUAGE_JPN;
-        if (state >= 3 && state <= 7 && !(sLastPauseState >= 3 && sLastPauseState <= 7)) {
+        if (InPauseScreen(state) && !InPauseScreen(sLastPauseState)) {
             sObjectSpace.PauseOpened(gSaveContext.linkAge, japanese, gSaveContext.worldMapArea);
             sVerdictDirty = true;
-        } else if (state >= 10 && state <= 17 && !(sLastPauseState >= 10 && sLastPauseState <= 17)) {
+        } else if (InGameOverScreen(state) && !InGameOverScreen(sLastPauseState)) {
             sObjectSpace.GameOverOpened(japanese);
             sVerdictDirty = true;
         } else if (state == 0) {
@@ -218,8 +243,7 @@ RegisterShipInitFunc sInitFunc(RegisterN64Heap);
 extern "C" void N64Heap_OnArenaInit(void) {
     const n64heap::SceneLayout* layout = n64heap::FindSceneLayout(gPlayState->sceneNum, gSaveContext.sceneLayer);
     if (layout == nullptr) {
-        SPDLOG_WARN("[N64Heap] no N64 layout for scene {:#x} layer {}", gPlayState->sceneNum,
-                    gSaveContext.sceneLayer);
+        SPDLOG_WARN("[N64Heap] no N64 layout for scene {:#x} layer {}", gPlayState->sceneNum, gSaveContext.sceneLayer);
     }
     Shadow().ArenaInit(layout != nullptr ? layout->zeldaArenaSize : 0, gSaveContext.nayrusLoveTimer == 2000);
 }
@@ -271,19 +295,14 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
     if (sCutscenePointer == 0) {
         return script;
     }
-    // The decision is reused while the script, pointer and modelled memory stay the same
-    static void* sDecidedScript = nullptr;
-    static uint32_t sDecidedPointer = 0;
-    static uint32_t sDecidedVersion = 0xFFFFFFFF;
-    static void* sDecision = nullptr;
-    static int32_t sReplacement[4];
-    if (script == sDecidedScript && sCutscenePointer == sDecidedPointer && sObjectSpace.Version() == sDecidedVersion) {
-        return sDecision;
+    if (script == sDecision.script && sCutscenePointer == sDecision.pointer &&
+        sObjectSpace.Version() == sDecision.memoryVersion) {
+        return sDecision.result;
     }
-    sDecidedScript = script;
-    sDecidedPointer = sCutscenePointer;
-    sDecidedVersion = sObjectSpace.Version();
-    sDecision = script;
+    sDecision.script = script;
+    sDecision.pointer = sCutscenePointer;
+    sDecision.memoryVersion = sObjectSpace.Version();
+    sDecision.result = script;
 
     n64heap::ScriptSimulation sim = sObjectSpace.Simulate(sCutscenePointer, ReadRom);
     int32_t hostHeader[2];
@@ -292,20 +311,22 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
         sim.frameCount == hostHeader[1]) {
         return script;
     }
+    // A replacement script is a header (entry count, frame count) followed by the end of script command
+    int32_t* replacement = sDecision.replacement;
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
         case Outcome::EndsImmediately:
-            sReplacement[0] = sim.totalEntries;
-            sReplacement[1] = sim.frameCount;
+            replacement[0] = sim.totalEntries;
+            replacement[1] = sim.frameCount;
             break;
         case Outcome::NoCommands:
-            sReplacement[0] = 0;
-            sReplacement[1] = sim.frameCount;
+            replacement[0] = 0;
+            replacement[1] = sim.frameCount;
             break;
         case Outcome::Hang:
             // The N64 locks up in the parser, so play an endless cutscene that does nothing instead
-            sReplacement[0] = 0;
-            sReplacement[1] = 0x7FFFFFFF;
+            replacement[0] = 0;
+            replacement[1] = INT32_MAX;
             break;
         case Outcome::RunsCommands:
             SPDLOG_WARN("[N64Heap] N64 cutscene data at {:#010x} not emulated ({}); SoH runs its own copy",
@@ -319,11 +340,11 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
             }
             return script;
     }
-    sReplacement[2] = n64heap::kCsCmdEndOfScript;
-    sReplacement[3] = 0;
-    sDecision = sReplacement;
+    replacement[2] = n64heap::kCsCmdEndOfScript;
+    replacement[3] = 0;
+    sDecision.result = replacement;
     SPDLOG_INFO("[N64Heap] running N64 cutscene data at {:#010x} ({}): header ({}, {}) -> {}{}", sCutscenePointer,
                 sim.source, sim.totalEntries, sim.frameCount, DescribeOutcome(sim),
                 sim.outcome == Outcome::Hang ? " (emulated as an endless cutscene)" : "");
-    return sDecision;
+    return sDecision.result;
 }
