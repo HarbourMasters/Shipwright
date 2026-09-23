@@ -505,8 +505,7 @@ struct ScriptEntry {
     uint8_t isScene;   // 0: actor overlay data, 1: scene file data
     int16_t owner;     // actor id or scene id
     uint32_t value;    // overlay offset (actor) or absolute N64 address (scene)
-    const char* name;  // "<scene file>/<symbol>" for scene data (SoH passes these as
-                       // "__OTR__scenes/<mq|nonmq>/<scene file>/<symbol>" paths), else ""
+    const char* name;  // "<scene file>/<symbol>" for scene data, else ""
 };
 
 constexpr int kScriptCount = 188;
@@ -2134,8 +2133,7 @@ constexpr SceneLayout kSceneLayouts[kSceneLayoutCount] = { // sorted by scene, l
     {0x64, 3, 0x567a0, 0xfa000}, // ganon_tou
     {0x64, 4, 0x72be0, 0xfa000}, // ganon_tou
 };
-// The layout Play_Init produces for this scene and layer; layers the scene
-// file does not define run its base header (layer 0). nullptr: unknown scene.
+// Layers a scene does not define run its base header
 inline const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer) {
     const SceneLayout* base = nullptr;
     for (const SceneLayout& layout : kSceneLayouts) {
@@ -2148,6 +2146,47 @@ inline const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer) {
     }
     return base;
 }
+
+constexpr int kEffectCount = 37;
+constexpr uint32_t kEffectOverlaySizes[kEffectCount] = {
+    0x830, // 0x00 Effect_Ss_Dust
+    0x670, // 0x01 Effect_Ss_KiraKira
+    0x420, // 0x02 Effect_Ss_Bomb
+    0x930, // 0x03 Effect_Ss_Bomb2
+    0x390, // 0x04 Effect_Ss_Blast
+    0x5b0, // 0x05 Effect_Ss_G_Spk
+    0x4f0, // 0x06 Effect_Ss_D_Fire
+    0x480, // 0x07 Effect_Ss_Bubble
+    0x0, // 0x08 EFFECT_SS_UNSET
+    0x560, // 0x09 Effect_Ss_G_Ripple
+    0x4b0, // 0x0a Effect_Ss_G_Splash
+    0x260, // 0x0b Effect_Ss_G_Magma
+    0x290, // 0x0c Effect_Ss_G_Fire
+    0x6d0, // 0x0d Effect_Ss_Lightning
+    0x590, // 0x0e Effect_Ss_Dt_Bubble
+    0x640, // 0x0f Effect_Ss_Hahen
+    0x3a0, // 0x10 Effect_Ss_Stick
+    0x6d0, // 0x11 Effect_Ss_Sibuki
+    0x330, // 0x12 Effect_Ss_Sibuki2
+    0x510, // 0x13 Effect_Ss_G_Magma2
+    0x390, // 0x14 Effect_Ss_Stone1
+    0x550, // 0x15 Effect_Ss_HitMark
+    0xf80, // 0x16 Effect_Ss_Fhg_Flash
+    0x430, // 0x17 Effect_Ss_K_Fire
+    0x1b0, // 0x18 Effect_Ss_Solder_Srch_Ball
+    0x1090, // 0x19 Effect_Ss_Kakera
+    0x440, // 0x1a Effect_Ss_Ice_Piece
+    0x8c0, // 0x1b Effect_Ss_En_Ice
+    0x700, // 0x1c Effect_Ss_Fire_Tail
+    0x740, // 0x1d Effect_Ss_En_Fire
+    0x3c0, // 0x1e Effect_Ss_Extra
+    0x4b0, // 0x1f Effect_Ss_Fcircle
+    0x4e0, // 0x20 Effect_Ss_Dead_Db
+    0x590, // 0x21 Effect_Ss_Dead_Dd
+    0x480, // 0x22 Effect_Ss_Dead_Ds
+    0x140, // 0x23 Effect_Ss_Dead_Sound
+    0x4c0, // 0x24 Effect_Ss_Ice_Smoke
+};
 
 } // namespace n64heap
 // clang-format on

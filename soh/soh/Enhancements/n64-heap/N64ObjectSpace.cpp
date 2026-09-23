@@ -24,7 +24,6 @@ void ObjectSpace::Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom,
     }
     mVersion++;
     uint32_t end = start + size;
-    // Split any span overlapping [start, end) and keep the parts outside it.
     auto it = mSpans.upper_bound(start);
     if (it != mSpans.begin()) {
         --it;
@@ -43,7 +42,7 @@ void ObjectSpace::Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom,
             mSpans.emplace(spanStart, left);
         }
         if (span.end > end) {
-            mSpans.emplace(end, span); // vrom/base still describe the same file
+            mSpans.emplace(end, span);
         }
     }
     mSpans.emplace(start, Span{ end, kind, vrom, base, label });
@@ -54,9 +53,7 @@ void ObjectSpace::PaintFile(uint32_t address, uint32_t vrom, uint32_t size, cons
 }
 
 void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
-    // Play_Init: Kaleido/message/effect areas are rewritten at runtime, then
-    // Play_SpawnScene loads the scene file right below them and
-    // Object_InitContext places the object space below the scene file.
+    // The scene file sits below the fixed areas and the object space below the scene file
     mSceneId = sceneId;
     mSlotIds.clear();
     mSlotAddr.clear();
@@ -89,8 +86,7 @@ void ObjectSpace::SyncObjects(const int16_t* ids, int count) {
     if (mSpaceStart == 0) {
         return;
     }
-    // Scene_CommandObjectList keeps matching slots and loads the rest one after
-    // another (func_800982FC: next = ALIGN16(segment + size)).
+    // Matching slots are kept and the rest are loaded one after another
     size_t first = 0;
     while (first < mSlotIds.size() && first < static_cast<size_t>(count) &&
            mSlotIds[first] == static_cast<int16_t>(std::abs(ids[first]))) {
@@ -121,15 +117,12 @@ void ObjectSpace::PauseClosed() {
 }
 
 void ObjectSpace::PauseOpened(int linkAge, bool japanese, int16_t worldMapArea) {
-    // KaleidoScope_Update, PAUSE_STATE_INIT (z_kaleido_scope.c:3725-3870).
     if (mSpaceStart == 0 || linkAge < 0 || linkAge > 1) {
         return;
     }
     uint32_t segment = (mSpaceStart + 0x30) & ~0x3Fu;
     const RomFile& keep = kObjects[kObjectGameplayKeep];
     const RomFile& link = kObjects[kLinkObjectIds[linkAge]];
-    // Player_InitPauseDrawData: render texture, all of gameplay_keep, then the
-    // link object over it, then the joint tables.
     Paint(segment, kPauseRenderTextureSize, Kind::Dynamic, 0, 0, "pause player render texture (runtime)");
     PaintFile(segment + kPauseRenderTextureSize, keep.vrom, keep.size, "pause gameplay_keep");
     uint32_t linkAddr = segment + kPauseRenderTextureSize + kPauseKeepBufferSize;
@@ -139,7 +132,7 @@ void ObjectSpace::PauseOpened(int linkAge, bool japanese, int16_t worldMapArea) 
 
     uint32_t icons = Align16(segment + size1);
     PaintFile(icons, kFile_icon_item_static.vrom, kFile_icon_item_static.size, "icon_item_static");
-    for (int i = 0; i < kItemAgeReqCount; i++) { // KaleidoScope_GrayOutTextureRGBA32
+    for (int i = 0; i < kItemAgeReqCount; i++) {
         const ItemIcon& icon = kItemIcons[i];
         if (icon.offset != 0xFFFFFFFFu && icon.ageReq != 9 && icon.ageReq != linkAge) {
             Paint(icons + icon.offset, 32 * 32 * 4, Kind::GreyIcon, kFile_icon_item_static.vrom + icon.offset,
@@ -158,18 +151,16 @@ void ObjectSpace::PauseOpened(int linkAge, bool japanese, int16_t worldMapArea) 
     uint32_t names = Align16(lang + langFile.size);
     uint32_t nameSize = std::max(kMapNameTex1Size, kItemNameTexSize);
     Paint(names, nameSize, Kind::Dynamic, 0, 0, "pause item name texture (cursor dependent)");
-    if (worldMapArea >= 0 && worldMapArea < 22) { // WORLD_MAP_AREA_MAX
+    if (worldMapArea >= 0 && worldMapArea < 22) {
         uint32_t offset = (worldMapArea + 22 * (japanese ? 0 : 1)) * kMapNameTex2Size + 24 * kMapNameTex1Size;
         PaintFile(names + nameSize, kFile_map_name_static.vrom + offset, kMapNameTex2Size, "map_name_static");
     }
-    // sPreRenderCvg (z_kaleido_scope.c:3879): the I8 coverage image of the
-    // player pre-render, 64x112 bytes, written while the pause screen draws.
+    // Coverage image of the player pre-render, written while the pause screen draws
     Paint(Align16(names + nameSize + kMapNameTex2Size), 64 * 112, Kind::Dynamic, 0, 0,
           "pause player coverage buffer (runtime)");
 }
 
 void ObjectSpace::GameOverOpened(bool japanese) {
-    // PAUSE_STATE_GAME_OVER_INIT: icons only, no player data.
     if (mSpaceStart == 0) {
         return;
     }
@@ -217,8 +208,7 @@ bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* val
 }
 
 ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) const {
-    // Cutscene_ProcessScript (z_demo.c), first frame. curFrame is 0 (0xFFFF + 1).
-    // The same bytes are parsed again every frame, so one frame decides it.
+    // The same bytes are parsed every frame, so the first frame decides the outcome
     ScriptSimulation sim;
     uint32_t word = 0;
     std::string source;
@@ -235,8 +225,7 @@ ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) c
         return sim;
     }
     uint32_t script = address + 8;
-    // `for (i = 0; i < totalEntries; i++)` with s16 i: a count above 0x7FFF never
-    // finishes unless CS_CMD_END_OF_SCRIPT is reached.
+    // The s16 loop counter never reaches a count above 0x7FFF
     const int32_t limit = sim.totalEntries <= 0x7FFF ? sim.totalEntries : 0x10000;
     for (int32_t i = 0; i < limit; i++) {
         if (!ReadWord(script, rom, &word, &source)) {
@@ -263,7 +252,7 @@ ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) c
         }
         int32_t cmdEntries = static_cast<int32_t>(word);
         script += 4;
-        if (cmdEntries > 0x7FFF) { // `for (j = 0; j < cmdEntries; j++)` with s16 j never ends
+        if (cmdEntries > 0x7FFF) {
             sim.outcome = ScriptSimulation::Outcome::Hang;
             sim.detail = "unknown command " + Hex(static_cast<uint32_t>(cmdType)) + " with " +
                          std::to_string(cmdEntries) + " entries";

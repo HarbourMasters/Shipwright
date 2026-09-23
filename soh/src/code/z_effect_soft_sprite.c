@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/n64-heap/N64Heap.h"
 #include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
@@ -184,6 +185,9 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
     }
 
     sEffectSsInfo.searchStartIndex = index + 1;
+    if (!N64Heap_EffectSpawn(type)) {
+        return;
+    }
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
 
     if (overlayEntry->vramStart == NULL) {

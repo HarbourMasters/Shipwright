@@ -1,14 +1,3 @@
-// Connects the N64 actor-heap shadow (N64HeapCore) and the object-space model
-// (N64ObjectSpace) to Ship of Harkinian.
-//
-// Inputs:  ZeldaArena_Init / MallocDebug / MallocRDebug / FreeDebug (z_malloc.c),
-//          GameInteractor OnActorSpawn, OnSceneInit and OnGameFrameUpdate.
-// Output:  the value NTSC 1.2 would hold in play->csCtx.script and a verdict
-//          on the data at that address (for example after the "pause in
-//          Link's house" fix), logged whenever they change; with "Fix Wrong
-//          Warps" enabled, N64Heap_FilterCutsceneScript also plays stale
-//          cutscene pointers the way the N64 would.
-
 #include "N64Heap.h"
 #include "N64HeapCore.h"
 #include "N64HeapTables.h"
@@ -31,6 +20,8 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+#define CVAR_FIX_N64_HEAP CVAR_ENHANCEMENT("FixN64Heap")
+
 namespace {
 
 n64heap::Core& Shadow() {
@@ -47,15 +38,16 @@ n64heap::Stats sLastStats;
 uint16_t sLastPauseState = 0;
 bool sVerdictDirty = false;
 
-// N64 bytes of the files the model reads (objects, scene files, pause-screen
-// files). The extractor stores them in oot.o2r as "n64heap/<file>/data", from
-// the asset ymls in soh/assets/yml/ntsc_1-2/n64heap, so they exist only when
-// the assets were generated from an NTSC 1.2 ROM.
+bool Enabled() {
+    return CVarGetInteger(CVAR_FIX_N64_HEAP, 0) && N64Heap_HasN64Data();
+}
+
+// N64 file data stored in oot.o2r as "n64heap/<file>/data" when the assets come from an NTSC 1.2 ROM
 bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
     const n64heap::ArchiveFile* files = n64heap::kArchiveFiles;
     int lo = 0;
     int hi = n64heap::kArchiveFileCount - 1;
-    while (lo < hi) { // last file starting at or before vrom
+    while (lo < hi) {
         int mid = (lo + hi + 1) / 2;
         if (files[mid].vrom <= vrom) {
             lo = mid;
@@ -80,10 +72,6 @@ bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
     }
     memcpy(out, sData[lo] + (vrom - file.vrom), size);
     return true;
-}
-
-void OnActorSpawn(void* actor) {
-    Shadow().OnActorSpawn(actor, static_cast<Actor*>(actor)->id);
 }
 
 void OnSceneInit(int16_t sceneNum) {
@@ -114,9 +102,7 @@ void SyncObjectSpace() {
     }
     sObjectSpace.SyncObjects(ids, count);
 
-    // KaleidoScope loads its data over the object space in PAUSE_STATE_INIT (3)
-    // and PAUSE_STATE_GAME_OVER_INIT (10); leaving the pause screen
-    // (state -> 0) reloads every object (Object_ReloadAll).
+    // The pause and game over screens load their data over the object space, which is reloaded on close
     uint16_t state = gPlayState->pauseCtx.state;
     if (state != sLastPauseState) {
         bool japanese = gSaveContext.language == LANGUAGE_JPN;
@@ -141,13 +127,12 @@ void UpdatePointer() {
     }
     sLastHostScript = script;
     if (script == nullptr) {
-        return; // the N64 value is never cleared; keep the last one
+        return; // The N64 never clears the pointer
     }
     uint32_t value = 0;
     std::string what;
     bool resolved;
     if (memcmp(script, "__OTR__", 7) == 0) {
-        // Entrance cutscenes (Cutscene_SetSegment) hold a resource path, not data.
         char path[256];
         strncpy(path, static_cast<const char*>(script), sizeof(path) - 1);
         path[sizeof(path) - 1] = '\0';
@@ -212,7 +197,6 @@ void UpdateVerdict() {
 }
 
 void OnGameFrameUpdate() {
-    Shadow().Flush();
     ReportStats();
     if (gPlayState == nullptr) {
         return;
@@ -223,7 +207,6 @@ void OnGameFrameUpdate() {
 }
 
 void RegisterN64Heap() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>(OnActorSpawn);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(OnSceneInit);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(OnGameFrameUpdate);
 }
@@ -233,7 +216,6 @@ RegisterShipInitFunc sInitFunc(RegisterN64Heap);
 } // namespace
 
 extern "C" void N64Heap_OnArenaInit(void) {
-    // Play_Init has set the scene and layer before ZeldaArena_Init.
     const n64heap::SceneLayout* layout = n64heap::FindSceneLayout(gPlayState->sceneNum, gSaveContext.sceneLayer);
     if (layout == nullptr) {
         SPDLOG_WARN("[N64Heap] no N64 layout for scene {:#x} layer {}", gPlayState->sceneNum,
@@ -254,25 +236,42 @@ extern "C" void N64Heap_OnFree(void* ptr) {
     }
 }
 
+extern "C" int N64Heap_ActorSpawn(int16_t actorId) {
+    if (Shadow().ActorSpawn(actorId)) {
+        return 1;
+    }
+    SPDLOG_INFO("[N64Heap] actor {:#x} does not fit in the N64 heap (largest free block {:#x})", actorId,
+                Shadow().LargestFree());
+    if (!Enabled()) {
+        return 1;
+    }
+    Shadow().AbortSpawn();
+    return 0;
+}
+
+extern "C" int N64Heap_EffectSpawn(int32_t type) {
+    if (Shadow().EffectSpawn(type)) {
+        return 1;
+    }
+    SPDLOG_INFO("[N64Heap] effect {:#x} overlay does not fit in the N64 heap (largest free block {:#x})", type,
+                Shadow().LargestFree());
+    return Enabled() ? 0 : 1;
+}
+
 extern "C" int N64Heap_HasN64Data(void) {
     return ResourceMgr_FileExists(n64heap::kArchiveFiles[0].path) ? 1 : 0;
 }
 
 extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
-    // Off by default: this deliberately changes gameplay to match the N64.
-    if (script == nullptr || gPlayState == nullptr || !CVarGetInteger(CVAR_ENHANCEMENT("FixWrongWarps"), 0) ||
-        !N64Heap_HasN64Data()) {
+    if (script == nullptr || gPlayState == nullptr || !Enabled()) {
         return script;
     }
-    // The pointer may have been set earlier this frame (e.g. by an actor), so
-    // bring the shadow heap and the resolved N64 pointer up to date first.
-    Shadow().Flush();
+    // The pointer may have been set earlier this frame
     UpdatePointer();
     if (sCutscenePointer == 0) {
         return script;
     }
-    // Decide once per (script, pointer, memory state); the result is reused
-    // on every frame the cutscene runs.
+    // The decision is reused while the script, pointer and modelled memory stay the same
     static void* sDecidedScript = nullptr;
     static uint32_t sDecidedPointer = 0;
     static uint32_t sDecidedVersion = 0xFFFFFFFF;
@@ -291,7 +290,7 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
     memcpy(hostHeader, script, sizeof(hostHeader));
     if (sim.outcome != n64heap::ScriptSimulation::Outcome::Unknown && sim.totalEntries == hostHeader[0] &&
         sim.frameCount == hostHeader[1]) {
-        return script; // N64 memory still holds this script: nothing to emulate
+        return script;
     }
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
@@ -300,12 +299,11 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
             sReplacement[1] = sim.frameCount;
             break;
         case Outcome::NoCommands:
-            sReplacement[0] = 0; // nothing the N64 recognises runs; same length
+            sReplacement[0] = 0;
             sReplacement[1] = sim.frameCount;
             break;
         case Outcome::Hang:
-            // The N64 locks up inside the parser. Closest safe equivalent: a
-            // cutscene that never ends and does nothing (no control = softlock).
+            // The N64 locks up in the parser, so play an endless cutscene that does nothing instead
             sReplacement[0] = 0;
             sReplacement[1] = 0x7FFFFFFF;
             break;
@@ -314,8 +312,6 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
                         sCutscenePointer, sim.detail);
             return script;
         default:
-            // Not modelled or not deterministic: leave SoH alone. For actor-heap
-            // pointers, report what the shadow heap holds there as the cutscene starts.
             if (InActorHeap(sCutscenePointer)) {
                 SPDLOG_INFO(
                     "[N64Heap] cutscene starts with pointer {:#010x} in the actor heap: {}; SoH runs its own copy",

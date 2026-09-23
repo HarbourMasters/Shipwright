@@ -10,17 +10,13 @@ static uint32_t Align16(uint32_t value) {
     return (value + 15) & ~15u;
 }
 
-// ---------------------------------------------------------------------------
-// Arena: __osMallocInit / __osMalloc / __osMallocR / __osFree (PLATFORM_N64)
-// ---------------------------------------------------------------------------
-
 void Arena::Init(uint32_t start, uint32_t size) {
     uint32_t first = Align16(start);
     size = (size - (first - start)) & ~15u;
     mStart = first;
     mEnd = first + size;
     mBlocks.clear();
-    if (size > kArenaNodeSize) { // size 0: unknown scene, every allocation fails
+    if (size > kArenaNodeSize) {
         mBlocks.push_back(Block{ first, size - kArenaNodeSize, true });
     } else {
         mEnd = first;
@@ -40,7 +36,7 @@ uint32_t Arena::Alloc(uint32_t requested, bool reverse) {
         uint32_t node = block.start;
         if (blockSize < block.size) {
             if (reverse) {
-                node = block.start + block.size - size; // iter + (iter->size - size)
+                node = block.start + block.size - size;
                 block.size -= blockSize;
                 mBlocks.insert(mBlocks.begin() + i + 1, Block{ node, size, false });
             } else {
@@ -93,6 +89,16 @@ bool Arena::Check() const {
     return cursor == mEnd;
 }
 
+uint32_t Arena::LargestFree() const {
+    uint32_t largest = 0;
+    for (const Block& block : mBlocks) {
+        if (block.free && block.size > largest) {
+            largest = block.size;
+        }
+    }
+    return largest;
+}
+
 bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const {
     for (const Block& block : mBlocks) {
         uint32_t end = block.start + kArenaNodeSize + block.size;
@@ -107,23 +113,19 @@ bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* fr
     return false;
 }
 
-// ---------------------------------------------------------------------------
-// Core
-// ---------------------------------------------------------------------------
-
 Core::Core(const HostSizes& hostSizes) : mHost(hostSizes) {
 }
 
 void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
-    // Play_Init -> ZeldaArena_Init; Actor_InitContext clears every overlay entry.
-    // The cutscene pointer is not part of the heap and is kept by the caller.
     mArenaSize = arenaSize;
     mArena.Init(kZeldaArenaStart, arenaSize);
-    mPending.clear();
     mLive.clear();
     mIgnored.clear();
     mOverlays.clear();
+    mEffects.clear();
+    mSpawn = PendingSpawn{};
     mAbsoluteSpace = 0;
+    // SoH's game over sets nayrusLoveTimer to 2000, so Player_Init spawns a Magic_Dark that NTSC 1.2 does not
     mSkipMagicDark = skipNextMagicDark;
     mBodyBreakStage = 0;
 }
@@ -160,39 +162,93 @@ Core::Site Core::Classify(const char* file) {
     return Site::Other;
 }
 
-void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse) {
-    mPending.push_back(Event{ true, host, size, Classify(file), reverse, -1, false });
-}
-
-void Core::OnFree(const void* host) {
-    mPending.push_back(Event{ false, host, 0, Site::Other, false, -1, false });
-}
-
-void Core::OnActorSpawn(const void* host, int16_t actorId) {
-    // SoH reports the spawn after the actor's init, so nested spawns (Navi in
-    // Player_Init) arrive in reverse. The instance allocation itself was
-    // buffered at the right position; tag it with the actor id here.
-    for (auto it = mPending.rbegin(); it != mPending.rend(); ++it) {
-        if (it->isAlloc && it->host == host && it->site == Site::ActorSpawn && it->actorId < 0) {
-            it->actorId = actorId;
-            bool known = actorId >= 0 && actorId < kActorCount && kActors[actorId].valid;
-            if (!known) {
-                it->ignore = true; // SoH-only actor: not part of the N64 heap
-            } else if (actorId == kActorMagicDark && mSkipMagicDark) {
-                it->ignore = true;
-                mSkipMagicDark = false;
-            }
-            return;
-        }
+bool Core::ActorSpawn(int16_t actorId) {
+    if (mSpawn.active) {
+        mStats.unresolvedSpawns++;
     }
-    mStats.unresolvedSpawns++;
+    mSpawn = PendingSpawn{ true, 0, actorId };
+    if (actorId < 0 || actorId >= kActorCount || !kActors[actorId].valid) {
+        return true;
+    }
+    if (actorId == kActorMagicDark && mSkipMagicDark) {
+        mSkipMagicDark = false;
+        return true;
+    }
+    const ActorEntry& entry = kActors[actorId];
+    Overlay* overlay = nullptr;
+    if (entry.overlaySize != 0) {
+        auto it = mOverlays.find(actorId);
+        if (it == mOverlays.end()) {
+            uint32_t address;
+            if (entry.allocType & 1) {
+                if (mAbsoluteSpace == 0) {
+                    mAbsoluteSpace = mArena.Alloc(kAbsoluteSpaceSize, true);
+                }
+                address = mAbsoluteSpace;
+            } else {
+                address = mArena.Alloc(entry.overlaySize, (entry.allocType & 2) != 0);
+            }
+            if (address == 0) {
+                mStats.failedSpawns++;
+                return false;
+            }
+            it = mOverlays.emplace(actorId, Overlay{ address, 0 }).first;
+        }
+        overlay = &it->second;
+    }
+    uint32_t address = mArena.Alloc(entry.instanceSize, false);
+    if (address == 0) {
+        FreeUnusedOverlay(actorId);
+        mStats.failedSpawns++;
+        Check();
+        return false;
+    }
+    if (overlay != nullptr) {
+        overlay->count++;
+    }
+    mSpawn.address = address;
+    mStats.allocs++;
+    Check();
+    return true;
 }
 
-uint32_t Core::TranslateSize(const Event& event) {
-    size_t size = event.size;
-    switch (event.site) {
+void Core::AbortSpawn() {
+    mSpawn = PendingSpawn{};
+}
+
+bool Core::EffectSpawn(int32_t type) {
+    if (type < 0 || type >= kEffectCount || kEffectOverlaySizes[type] == 0 || mEffects.count(type) != 0) {
+        return true;
+    }
+    uint32_t address = mArena.Alloc(kEffectOverlaySizes[type], true);
+    if (address == 0) {
+        mStats.failedEffects++;
+        return false;
+    }
+    mEffects.emplace(type, address);
+    Check();
+    return true;
+}
+
+void Core::FreeUnusedOverlay(int16_t actorId) {
+    auto it = mOverlays.find(actorId);
+    if (it == mOverlays.end() || it->second.count != 0) {
+        return;
+    }
+    uint8_t type = kActors[actorId].allocType;
+    if (type & 2) {
+        return; // Persistent overlays stay loaded until the scene ends
+    }
+    if (!(type & 1)) {
+        mArena.Free(it->second.address);
+    }
+    mOverlays.erase(it);
+}
+
+uint32_t Core::TranslateSize(Site site, size_t size) {
+    switch (site) {
         case Site::Player:
-            return kGiObjectSegmentSize; // giObjectSegment is the only z_player.c allocation
+            return kGiObjectSegmentSize;
         case Site::Collision: {
             bool jnt = size % mHost.jntSphElement == 0;
             bool tris = size % mHost.trisElement == 0;
@@ -215,13 +271,11 @@ uint32_t Core::TranslateSize(const Event& event) {
             if (size % mHost.skinLimbVtx == 0) {
                 mStats.approximateSizes++;
             }
-            return static_cast<uint32_t>(size); // Vtx buffers: same size on N64
+            return static_cast<uint32_t>(size);
         case Site::Camera:
             return kCameraSize;
         case Site::ActorSpawn:
-            // Unresolved z_actor.c allocations are BodyBreak_Alloc's three arrays:
-            // MtxF[count+1] (same size), Gfx*[count+1] (4-byte pointers on N64),
-            // s16[count+1] (same size).
+            // BodyBreak_Alloc: MtxF[n] and s16[n] match N64, Gfx*[n] uses 4 byte pointers there
             if (mBodyBreakStage == 1 && size == mBodyBreakCount * mHost.pointer) {
                 mBodyBreakStage = 2;
                 return mBodyBreakCount * kPointerSize;
@@ -239,7 +293,7 @@ uint32_t Core::TranslateSize(const Event& event) {
             return static_cast<uint32_t>(size);
         case Site::SkelAnime:
         case Site::Curve:
-            return static_cast<uint32_t>(size); // Vec3s / s16 tables: same size on N64
+            return static_cast<uint32_t>(size);
         case Site::Effect:
         case Site::Other:
         default:
@@ -248,57 +302,36 @@ uint32_t Core::TranslateSize(const Event& event) {
     }
 }
 
-void Core::ApplyAlloc(const Event& event) {
-    if (event.ignore) {
-        mIgnored.insert(event.host);
+void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse) {
+    Site site = Classify(file);
+    if (site == Site::ActorSpawn && mSpawn.active) {
+        if (mSpawn.address != 0) {
+            mLive[host] = Live{ mSpawn.address, mSpawn.actorId };
+        } else {
+            mIgnored.insert(host);
+        }
+        mSpawn = PendingSpawn{};
         return;
     }
-    Live live{ 0, -1 };
-    if (event.site == Site::ActorSpawn && event.actorId >= 0) {
-        const ActorEntry& entry = kActors[event.actorId];
-        if (entry.overlaySize != 0) {
-            // Actor_Spawn (z_actor.c:3198-3240): load the overlay before the instance.
-            auto it = mOverlays.find(event.actorId);
-            if (it == mOverlays.end()) {
-                uint32_t address;
-                if (entry.allocType & 1) { // ACTOROVL_ALLOC_ABSOLUTE
-                    if (mAbsoluteSpace == 0) {
-                        mAbsoluteSpace = mArena.Alloc(kAbsoluteSpaceSize, true);
-                    }
-                    address = mAbsoluteSpace;
-                } else {
-                    address = mArena.Alloc(entry.overlaySize, (entry.allocType & 2) != 0);
-                }
-                if (address == 0) {
-                    mStats.failedAllocs++;
-                    mIgnored.insert(event.host);
-                    return;
-                }
-                it = mOverlays.emplace(event.actorId, Overlay{ address, 0 }).first;
-            }
-            it->second.count++;
-        }
-        live.address = mArena.Alloc(entry.instanceSize, false);
-        live.actorId = event.actorId;
-    } else {
-        live.address = mArena.Alloc(TranslateSize(event), event.reverse);
-    }
-    if (live.address == 0) {
+    uint32_t address = mArena.Alloc(TranslateSize(site, size), reverse);
+    if (address == 0) {
+        // Only recorded: failing this in SoH could crash where the N64 would misbehave
         mStats.failedAllocs++;
-        mIgnored.insert(event.host);
+        mIgnored.insert(host);
         return;
     }
     mStats.allocs++;
-    mLive[event.host] = live;
+    mLive[host] = Live{ address, -1 };
+    Check();
 }
 
-void Core::ApplyFree(const Event& event) {
-    if (mIgnored.erase(event.host) != 0) {
+void Core::OnFree(const void* host) {
+    if (mIgnored.erase(host) != 0) {
         return;
     }
-    auto it = mLive.find(event.host);
+    auto it = mLive.find(host);
     if (it == mLive.end()) {
-        mStats.unknownFrees++; // allocated before the shadow was reset
+        mStats.unknownFrees++;
         return;
     }
     Live live = it->second;
@@ -306,34 +339,23 @@ void Core::ApplyFree(const Event& event) {
     mArena.Free(live.address);
     mStats.frees++;
     if (live.actorId >= 0) {
-        // Actor_Delete -> Actor_FreeOverlay (z_actor.c:3142)
-        auto ovl = mOverlays.find(live.actorId);
-        if (ovl != mOverlays.end() && --ovl->second.count == 0) {
-            uint8_t type = kActors[live.actorId].allocType;
-            if (type & 2) {
-                // persistent: stays loaded
-            } else if (type & 1) {
-                mOverlays.erase(ovl); // absolute space stays allocated
-            } else {
-                mArena.Free(ovl->second.address);
-                mOverlays.erase(ovl);
-            }
+        auto overlay = mOverlays.find(live.actorId);
+        if (overlay != mOverlays.end()) {
+            overlay->second.count--;
+            FreeUnusedOverlay(live.actorId);
         }
     }
+    Check();
 }
 
-void Core::Flush() {
-    for (const Event& event : mPending) {
-        if (event.isAlloc) {
-            ApplyAlloc(event);
-        } else {
-            ApplyFree(event);
-        }
-    }
-    mPending.clear();
+void Core::Check() {
     if (!mArena.Check()) {
         mStats.arenaCorrupt = true;
     }
+}
+
+uint32_t Core::LargestFree() const {
+    return mArena.LargestFree();
 }
 
 std::string Core::DescribeAddress(uint32_t address) const {
@@ -355,6 +377,13 @@ std::string Core::DescribeAddress(uint32_t address) const {
     for (const auto& overlay : mOverlays) {
         if (overlay.second.address == payload) {
             snprintf(text, sizeof(text), "overlay of actor 0x%03X at %08X +0x%X", overlay.first, payload,
+                     address - payload);
+            return text;
+        }
+    }
+    for (const auto& effect : mEffects) {
+        if (effect.second == payload) {
+            snprintf(text, sizeof(text), "overlay of effect 0x%02X at %08X +0x%X", effect.first, payload,
                      address - payload);
             return text;
         }
@@ -392,7 +421,7 @@ bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what
         }
         const char* tail = path + length - nameLength;
         if (tail[-1] == '/' && strcmp(tail, entry.name) == 0) {
-            *n64Address = entry.value; // scene data: absolute N64 address
+            *n64Address = entry.value;
             if (what != nullptr) {
                 *what = std::string("scene 0x") + "0123456789ABCDEF"[(entry.owner >> 4) & 0xF] +
                         "0123456789ABCDEF"[entry.owner & 0xF] + " " + entry.name;
@@ -404,9 +433,7 @@ bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what
 }
 
 bool Core::ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64Address, std::string* what) const {
-    // Candidates: actor-owned scripts whose overlay is loaded, then scripts in
-    // the current scene's file. Scripts that share their first four words
-    // cannot be told apart; the result is then flagged as ambiguous.
+    // Actor scripts in loaded overlays are checked before the current scene's scripts
     for (int pass = 0; pass < 2; pass++) {
         bool found = false;
         int candidates = 0;

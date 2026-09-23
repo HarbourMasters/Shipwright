@@ -1,14 +1,6 @@
 #pragma once
 
-// N64 (NTSC 1.2) actor-heap shadow.
-//
-// Ship of Harkinian has no actor overlays and uses PC struct sizes, so the
-// N64 addresses of actor-heap allocations never exist in its memory. This core
-// replays SoH's Zelda-arena traffic into an emulation of the retail N64
-// allocator (__osMalloc_n64.c) using N64 sizes from N64HeapTables.h, and adds
-// the overlay allocations that the N64 Actor_Spawn performs.
-//
-// It has no SoH dependencies; N64Heap.cpp connects it to the game.
+// Mirrors SoH's Zelda arena traffic into an emulation of the NTSC 1.2 allocator using N64 sizes
 
 #include <cstddef>
 #include <cstdint>
@@ -19,7 +11,7 @@
 
 namespace n64heap {
 
-// PC sizes of the structs whose N64 size differs (sizeof in the host build).
+// Host sizes of the structs whose size differs on N64
 struct HostSizes {
     size_t jntSphElement;
     size_t trisElement;
@@ -30,17 +22,16 @@ struct HostSizes {
 class Arena {
   public:
     void Init(uint32_t start, uint32_t size);
-    uint32_t Alloc(uint32_t size, bool reverse); // payload address, 0 on failure
+    uint32_t Alloc(uint32_t size, bool reverse); // 0 when it does not fit
     bool Free(uint32_t address);
     bool Check() const;
-    // Block containing `address`: payload start and size, whether it is free,
-    // and whether `address` falls in the 0x30-byte node header before it.
+    uint32_t LargestFree() const;
     bool Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const;
 
   private:
     struct Block {
-        uint32_t start; // node address
-        uint32_t size;  // payload size
+        uint32_t start;
+        uint32_t size;
         bool free;
     };
     uint32_t mStart = 0;
@@ -52,6 +43,8 @@ struct Stats {
     uint32_t allocs = 0;
     uint32_t frees = 0;
     uint32_t failedAllocs = 0;
+    uint32_t failedSpawns = 0;
+    uint32_t failedEffects = 0;
     uint32_t unknownFrees = 0;
     uint32_t unresolvedSpawns = 0;
     uint32_t approximateSizes = 0;
@@ -63,26 +56,22 @@ class Core {
   public:
     explicit Core(const HostSizes& hostSizes);
 
-    // ZeldaArena_Init. arenaSize: the scene layer's zeldaArenaSize (the start
-    // is the same in every scene). skipNextMagicDark: SoH's game over sets
-    // nayrusLoveTimer = 2000 (PAL 1.1+ behaviour); NTSC 1.2 sets it to 0, so
-    // the Magic_Dark that Player_Init spawns must not exist in the shadow.
     void ArenaInit(uint32_t arenaSize, bool skipNextMagicDark);
     uint32_t ArenaSize() const {
         return mArenaSize;
     }
+
+    // Places the N64 overlay and instance for a spawn; the next z_actor.c allocation is SoH's instance
+    bool ActorSpawn(int16_t actorId);
+    void AbortSpawn();
+    bool EffectSpawn(int32_t type);
     void OnAlloc(const void* host, size_t size, const char* file, bool reverse);
     void OnFree(const void* host);
-    void OnActorSpawn(const void* host, int16_t actorId); // after Actor_Spawn, actor->id
-    void Flush();                                         // apply buffered events in order
 
-    // Resolve a cutscene script from its first four CutsceneData words.
     bool ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64Address, std::string* what) const;
-    // Resolve a SoH resource path ("__OTR__scenes/<mq|nonmq>/<scene>/<symbol>").
     bool ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const;
-
-    uint32_t OverlayAddress(int16_t actorId) const; // 0 if not loaded
-    // What the shadow heap holds at an N64 actor-heap address, for diagnostics.
+    uint32_t OverlayAddress(int16_t actorId) const;
+    uint32_t LargestFree() const;
     std::string DescribeAddress(uint32_t address) const;
     const Stats& GetStats() const {
         return mStats;
@@ -90,39 +79,36 @@ class Core {
 
   private:
     enum class Site { ActorSpawn, Player, Collision, SkelAnime, Curve, Skin, Camera, Effect, Other };
-    struct Event {
-        bool isAlloc;
-        const void* host;
-        size_t size;
-        Site site;
-        bool reverse;
-        int16_t actorId;
-        bool ignore;
-    };
     struct Live {
         uint32_t address;
-        int16_t actorId; // instance of this actor, or -1
+        int16_t actorId;
     };
     struct Overlay {
         uint32_t address;
         int count;
     };
+    struct PendingSpawn {
+        bool active = false;
+        uint32_t address = 0;
+        int16_t actorId = -1;
+    };
 
     static Site Classify(const char* file);
-    uint32_t TranslateSize(const Event& event);
-    void ApplyAlloc(const Event& event);
-    void ApplyFree(const Event& event);
+    uint32_t TranslateSize(Site site, size_t size);
+    void FreeUnusedOverlay(int16_t actorId);
+    void Check();
 
     HostSizes mHost;
     Arena mArena;
     uint32_t mArenaSize = 0;
-    std::vector<Event> mPending;
     std::unordered_map<const void*, Live> mLive;
     std::unordered_set<const void*> mIgnored;
     std::unordered_map<int16_t, Overlay> mOverlays;
+    std::unordered_map<int32_t, uint32_t> mEffects;
+    PendingSpawn mSpawn;
     uint32_t mAbsoluteSpace = 0;
     bool mSkipMagicDark = false;
-    uint32_t mBodyBreakCount = 0; // element count of the last BodyBreak matrices allocation
+    uint32_t mBodyBreakCount = 0;
     int mBodyBreakStage = 0;
     Stats mStats;
 };
