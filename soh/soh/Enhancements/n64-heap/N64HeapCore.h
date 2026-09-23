@@ -33,6 +33,9 @@ class Arena {
     uint32_t Alloc(uint32_t size, bool reverse); // payload address, 0 on failure
     bool Free(uint32_t address);
     bool Check() const;
+    // Block containing `address`: payload start and size, whether it is free,
+    // and whether `address` falls in the 0x30-byte node header before it.
+    bool Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const;
 
   private:
     struct Block {
@@ -60,10 +63,14 @@ class Core {
   public:
     explicit Core(const HostSizes& hostSizes);
 
-    // ZeldaArena_Init. skipNextMagicDark: SoH's game over sets
+    // ZeldaArena_Init. arenaSize: the scene layer's zeldaArenaSize (the start
+    // is the same in every scene). skipNextMagicDark: SoH's game over sets
     // nayrusLoveTimer = 2000 (PAL 1.1+ behaviour); NTSC 1.2 sets it to 0, so
     // the Magic_Dark that Player_Init spawns must not exist in the shadow.
-    void ArenaInit(bool skipNextMagicDark);
+    void ArenaInit(uint32_t arenaSize, bool skipNextMagicDark);
+    uint32_t ArenaSize() const {
+        return mArenaSize;
+    }
     void OnAlloc(const void* host, size_t size, const char* file, bool reverse);
     void OnFree(const void* host);
     void OnActorSpawn(const void* host, int16_t actorId); // after Actor_Spawn, actor->id
@@ -75,6 +82,8 @@ class Core {
     bool ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const;
 
     uint32_t OverlayAddress(int16_t actorId) const; // 0 if not loaded
+    // What the shadow heap holds at an N64 actor-heap address, for diagnostics.
+    std::string DescribeAddress(uint32_t address) const;
     const Stats& GetStats() const {
         return mStats;
     }
@@ -106,6 +115,7 @@ class Core {
 
     HostSizes mHost;
     Arena mArena;
+    uint32_t mArenaSize = 0;
     std::vector<Event> mPending;
     std::unordered_map<const void*, Live> mLive;
     std::unordered_set<const void*> mIgnored;

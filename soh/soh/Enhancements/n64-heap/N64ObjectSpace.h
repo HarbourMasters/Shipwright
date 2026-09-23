@@ -39,7 +39,7 @@ struct ScriptSimulation {
 
 class ObjectSpace {
   public:
-    void SceneInit(int16_t sceneId);
+    void SceneInit(int16_t sceneId, uint8_t sceneLayer);
     void SyncObjects(const int16_t* ids, int count);
     void PauseOpened(int linkAge, bool japanese, int16_t worldMapArea);
     void GameOverOpened(bool japanese);

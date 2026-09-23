@@ -87,7 +87,7 @@ void OnActorSpawn(void* actor) {
 }
 
 void OnSceneInit(int16_t sceneNum) {
-    sObjectSpace.SceneInit(sceneNum);
+    sObjectSpace.SceneInit(sceneNum, gSaveContext.sceneLayer);
     sLastPauseState = 0;
     sVerdictDirty = true;
 }
@@ -171,6 +171,10 @@ void UpdatePointer() {
     sVerdictDirty = true;
 }
 
+bool InActorHeap(uint32_t address) {
+    return address >= n64heap::kZeldaArenaStart && address < n64heap::kZeldaArenaStart + Shadow().ArenaSize();
+}
+
 std::string DescribeOutcome(const n64heap::ScriptSimulation& sim) {
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
@@ -198,6 +202,9 @@ void UpdateVerdict() {
     std::string line = sim.headerKnown ? sim.source + ": header (" + std::to_string(sim.totalEntries) + ", " +
                                              std::to_string(sim.frameCount) + ") -> " + DescribeOutcome(sim)
                                        : sim.source + ": unknown (data is not deterministic or not modelled)";
+    if (!sim.headerKnown && InActorHeap(sCutscenePointer)) {
+        line = "actor heap: " + Shadow().DescribeAddress(sCutscenePointer) + " (contents not modelled)";
+    }
     if (line != sLastVerdict) {
         sLastVerdict = line;
         SPDLOG_INFO("[N64Heap] data at {:#010x}: {}", sCutscenePointer, line);
@@ -226,7 +233,13 @@ RegisterShipInitFunc sInitFunc(RegisterN64Heap);
 } // namespace
 
 extern "C" void N64Heap_OnArenaInit(void) {
-    Shadow().ArenaInit(gSaveContext.nayrusLoveTimer == 2000);
+    // Play_Init has set the scene and layer before ZeldaArena_Init.
+    const n64heap::SceneLayout* layout = n64heap::FindSceneLayout(gPlayState->sceneNum, gSaveContext.sceneLayer);
+    if (layout == nullptr) {
+        SPDLOG_WARN("[N64Heap] no N64 layout for scene {:#x} layer {}", gPlayState->sceneNum,
+                    gSaveContext.sceneLayer);
+    }
+    Shadow().ArenaInit(layout != nullptr ? layout->zeldaArenaSize : 0, gSaveContext.nayrusLoveTimer == 2000);
 }
 
 extern "C" void N64Heap_OnAlloc(void* ptr, size_t size, const char* file, int reverse) {
@@ -301,7 +314,14 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
                         sCutscenePointer, sim.detail);
             return script;
         default:
-            return script; // not modelled (e.g. actor heap) or not deterministic: leave SoH alone
+            // Not modelled or not deterministic: leave SoH alone. For actor-heap
+            // pointers, report what the shadow heap holds there as the cutscene starts.
+            if (InActorHeap(sCutscenePointer)) {
+                SPDLOG_INFO(
+                    "[N64Heap] cutscene starts with pointer {:#010x} in the actor heap: {}; SoH runs its own copy",
+                    sCutscenePointer, Shadow().DescribeAddress(sCutscenePointer));
+            }
+            return script;
     }
     sReplacement[2] = n64heap::kCsCmdEndOfScript;
     sReplacement[3] = 0;

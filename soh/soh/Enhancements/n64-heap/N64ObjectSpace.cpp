@@ -53,7 +53,7 @@ void ObjectSpace::PaintFile(uint32_t address, uint32_t vrom, uint32_t size, cons
     Paint(address, size, Kind::File, vrom, address, label);
 }
 
-void ObjectSpace::SceneInit(int16_t sceneId) {
+void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
     // Play_Init: Kaleido/message/effect areas are rewritten at runtime, then
     // Play_SpawnScene loads the scene file right below them and
     // Object_InitContext places the object space below the scene file.
@@ -63,12 +63,13 @@ void ObjectSpace::SceneInit(int16_t sceneId) {
     Paint(kKaleidoArea, kKaleidoAreaSize, Kind::Dynamic, 0, 0, "kaleido/player overlay area (runtime)");
     Paint(kMessageArea, kMessageAreaSize, Kind::Dynamic, 0, 0, "message textbox area (runtime)");
     Paint(kEffectArea, kEffectAreaSize, Kind::Dynamic, 0, 0, "EffectSs table (runtime)");
-    if (sceneId < 0 || sceneId >= kSceneCount || kScenes[sceneId].file.size == 0) {
+    const SceneLayout* layout = FindSceneLayout(sceneId, sceneLayer);
+    if (sceneId < 0 || sceneId >= kSceneCount || kScenes[sceneId].file.size == 0 || layout == nullptr) {
         mSpaceStart = 0;
         return;
     }
     const SceneEntry& scene = kScenes[sceneId];
-    mSpaceStart = scene.base - scene.objectSpaceSize;
+    mSpaceStart = scene.base - layout->objectSpaceSize;
     char label[48];
     snprintf(label, sizeof(label), "scene 0x%02X file", sceneId);
     PaintFile(scene.base, scene.file.vrom, scene.file.size, label);

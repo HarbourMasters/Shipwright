@@ -19,7 +19,12 @@ void Arena::Init(uint32_t start, uint32_t size) {
     size = (size - (first - start)) & ~15u;
     mStart = first;
     mEnd = first + size;
-    mBlocks.assign(1, Block{ first, size - kArenaNodeSize, true });
+    mBlocks.clear();
+    if (size > kArenaNodeSize) { // size 0: unknown scene, every allocation fails
+        mBlocks.push_back(Block{ first, size - kArenaNodeSize, true });
+    } else {
+        mEnd = first;
+    }
 }
 
 uint32_t Arena::Alloc(uint32_t requested, bool reverse) {
@@ -88,18 +93,32 @@ bool Arena::Check() const {
     return cursor == mEnd;
 }
 
+bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const {
+    for (const Block& block : mBlocks) {
+        uint32_t end = block.start + kArenaNodeSize + block.size;
+        if (address >= block.start && address < end) {
+            *payload = block.start + kArenaNodeSize;
+            *size = block.size;
+            *free = block.free;
+            *header = address < *payload;
+            return true;
+        }
+    }
+    return false;
+}
+
 // ---------------------------------------------------------------------------
 // Core
 // ---------------------------------------------------------------------------
 
 Core::Core(const HostSizes& hostSizes) : mHost(hostSizes) {
-    mArena.Init(kZeldaArenaStart, kZeldaArenaSize);
 }
 
-void Core::ArenaInit(bool skipNextMagicDark) {
+void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
     // Play_Init -> ZeldaArena_Init; Actor_InitContext clears every overlay entry.
     // The cutscene pointer is not part of the heap and is kept by the caller.
-    mArena.Init(kZeldaArenaStart, kZeldaArenaSize);
+    mArenaSize = arenaSize;
+    mArena.Init(kZeldaArenaStart, arenaSize);
     mPending.clear();
     mLive.clear();
     mIgnored.clear();
@@ -315,6 +334,48 @@ void Core::Flush() {
     if (!mArena.Check()) {
         mStats.arenaCorrupt = true;
     }
+}
+
+std::string Core::DescribeAddress(uint32_t address) const {
+    uint32_t payload, size;
+    bool free, header;
+    char text[128];
+    if (!mArena.Locate(address, &payload, &size, &free, &header)) {
+        return "outside the actor heap";
+    }
+    if (header) {
+        snprintf(text, sizeof(text), "arena node header of the block at %08X (+0x%X)", payload,
+                 address - (payload - kArenaNodeSize));
+        return text;
+    }
+    if (free) {
+        snprintf(text, sizeof(text), "free block %08X+0x%X (+0x%X, leftover data)", payload, size, address - payload);
+        return text;
+    }
+    for (const auto& overlay : mOverlays) {
+        if (overlay.second.address == payload) {
+            snprintf(text, sizeof(text), "overlay of actor 0x%03X at %08X +0x%X", overlay.first, payload,
+                     address - payload);
+            return text;
+        }
+    }
+    if (mAbsoluteSpace == payload) {
+        snprintf(text, sizeof(text), "absolute overlay space at %08X +0x%X", payload, address - payload);
+        return text;
+    }
+    for (const auto& live : mLive) {
+        if (live.second.address == payload) {
+            if (live.second.actorId >= 0) {
+                snprintf(text, sizeof(text), "instance of actor 0x%03X at %08X +0x%X", live.second.actorId, payload,
+                         address - payload);
+            } else {
+                snprintf(text, sizeof(text), "allocation %08X+0x%X (+0x%X)", payload, size, address - payload);
+            }
+            return text;
+        }
+    }
+    snprintf(text, sizeof(text), "untracked block %08X+0x%X (+0x%X)", payload, size, address - payload);
+    return text;
 }
 
 uint32_t Core::OverlayAddress(int16_t actorId) const {
