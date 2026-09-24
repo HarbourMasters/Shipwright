@@ -1,6 +1,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/TimeSavers/SkipCutscene/CutsceneTime.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -48,28 +49,16 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
     }
 }
 
-/**
- * Cutscene speeds time up so it ends at dawn. Walking in late at night picks a speed too
- * low to reach morning, and time can end up barely moving at all.
- */
-static uint16_t ZeldaFleeingCutsceneTime(uint16_t time) {
-    uint32_t dawn = time >= 0xD557 ? 0x1D556 : 0xD556;
-    uint16_t speed = (dawn - time) / 350;
-
-    // 2259 frames, minus 88 frozen by textboxes, minus 7 frozen while fading
-    for (int32_t frame = 0; frame < 2164; frame++) {
-        // time stops at dawn
-        if (time >= 0x2AAC && time < 0x3000) {
-            speed = 0;
-        }
-        // last 340 frames clear sky and race to morning
-        if (frame >= 1824 && time < 0x4AAB) {
-            time += 30;
-        }
-        time += time > 0xC000 || time < 0x4555 ? speed * 2 : speed; // night runs double
+// BgSpot00Hanebasi_Update swaps the room's time speed for one that reaches dawn by the end, then stops time at dawn.
+// Walking in late at night picks a speed too low to reach morning, and time can end up barely moving at all.
+static void HanebasiTime(uint16_t& dayTime, uint16_t& timeSpeed) {
+    if (timeSpeed == 50) {
+        int32_t dawn = dayTime >= 0xD557 ? 0x1D556 : 0xD556;
+        timeSpeed = (dawn - dayTime) * (1.0f / 350.0f);
     }
-
-    return time;
+    if (dayTime >= 0x2AAC && dayTime < 0x3000) {
+        timeSpeed = 0;
+    }
 }
 
 void RegisterSkipZeldaFleeingCastle() {
@@ -79,7 +68,8 @@ void RegisterSkipZeldaFleeingCastle() {
     COND_VB_SHOULD(VB_PLAY_TRANSITION_CS, CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO), {
         if (gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN && gSaveContext.cutsceneIndex == 0xFFF1) {
             // Normally set in the cutscene
-            gSaveContext.dayTime = gSaveContext.skyboxTime = ZeldaFleeingCutsceneTime(gSaveContext.dayTime);
+            gSaveContext.dayTime = gSaveContext.skyboxTime =
+                CutsceneTime_Simulate(SCENE_HYRULE_FIELD, 0xFFF1, gSaveContext.dayTime, 7, HanebasiTime);
 
             gSaveContext.cutsceneIndex = 0;
             *should = false;
