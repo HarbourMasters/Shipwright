@@ -165,7 +165,6 @@ jobs:
         cmake --build build-cmake --config Release -j4
         (cd build-cmake && cpack -G External)
 
-        mv README.md readme.txt
         mv build-cmake/*.appimage soh.appimage
       env:
         CC: gcc-12
@@ -174,9 +173,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: soh-linux
-        path: |
-          soh.appimage
-          readme.txt
+        path: soh.appimage
     - name: Save Cache deps folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v5
