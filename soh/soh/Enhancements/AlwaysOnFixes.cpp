@@ -1,6 +1,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/vanilla-behavior/GIVanillaBehavior.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -154,6 +155,17 @@ void RegisterAlwaysOnFixes() {
             if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), false)) {
                 *camMode = CAM_MODE_FIRST_PERSON;
             }
+        }
+    });
+
+    // Empty Bottle OI (aka "Drinking Bugs") causes the bottle to read the potion effect array out of bounds
+    // The exact effect this had on N64 depended on the game version, but on ship it seems to depend on the compiler or
+    // build type. To resolve this UB, this hook forces the effect of milk, which is the most useful vanilla effect
+    // (other versions do nothing). A setting can be trivially added if the option for it to do something else is
+    // desired, but it should still be in this hook to avoid UB.
+    COND_VB_SHOULD(VB_EMPTY_BOTTLE_OI, true, {
+        if (!*should) {
+            gSaveContext.healthAccumulator = 0x50;
         }
     });
 }
