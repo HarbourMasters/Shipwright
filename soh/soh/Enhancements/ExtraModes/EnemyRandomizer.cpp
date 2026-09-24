@@ -832,10 +832,8 @@ void RegisterEnemyRandomizer() {
         s16 rotZ = 0;
         s16 params = 0;
 
-
-
-        //rotation is hardcoded here as it is inconsistent, breaking seeded randomiser
-        //value provided is the best meme number avalible, theoretically any number works
+        // rotation is hardcoded here as it is inconsistent, breaking seeded randomiser
+        // value provided is the best meme number avalible, theoretically any number works
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &seededRotY, &rotZ, &params)) {
             assert(false);
         }
