@@ -124,9 +124,9 @@ RandomizerGet SilverFromSwitchFlag(s16 switchFlag) {
             return RG_BOTW_SILVER;
         case SCENE_ICE_CAVERN:
             switch (switchFlag) {
-                case 8:
                 case 9:
                     return RG_ICE_CAVERN_SILVER_BLOCK;
+                case 8:
                 case 31:
                     return RG_ICE_CAVERN_SILVER_BLADES;
             }

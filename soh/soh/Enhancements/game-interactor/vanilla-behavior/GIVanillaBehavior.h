@@ -928,6 +928,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // gSaveContext.health < STARTING_HEALTH
+    // ```
+    // #### `args`
+    // - None
+    VB_FULL_HEALTH_SPAWN,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -4080,4 +4088,13 @@ typedef enum {
     // #### `args`
     // - `*Player`
     VB_PLAYER_UNEQUIP_MASK_WITHOUT_BUTTON,
+
+    // #### `result`
+    // ```c
+    // this->itemAction != PLAYER_IA_BOTTLE
+    // ```
+    // #### `args`
+    // - none
+    VB_EMPTY_BOTTLE_OI,
+
 } GIVanillaBehavior;
