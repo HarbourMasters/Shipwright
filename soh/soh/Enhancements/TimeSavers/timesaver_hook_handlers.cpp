@@ -2,6 +2,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/TimeSavers/SkipCutscene/CutsceneTime.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -140,27 +141,6 @@ static void SkipJabuFeedingCutscene() {
     }
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
-}
-
-// Cutscene warps to graveyard with time passage enabled, speeds time up to next dawn or dusk,
-// then warps back.
-static uint16_t SunsSongCutsceneTime(uint16_t time) {
-    uint16_t speed = 1;
-    bool toDusk = false;
-
-    // time paused for first 11 frames while scene fades in
-    for (int32_t frame = 12; frame <= 130; frame++) {
-        if (frame == 40) {
-            toDusk = time >= 0x4555 && time <= 0xC001;
-            speed = 400;
-        } else if (speed == 400 && (toDusk ? time > 0xC001 : (time >= 0x4555 && time <= 0xC001))) {
-            speed = 1;
-        }
-        bool night = time > 0xC000 || time < 0x4555;
-        time += night && speed < 400 ? speed * 2 : speed; // night runs double
-    }
-
-    return time;
 }
 
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -696,7 +676,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 *should = false;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG);
-                gSaveContext.dayTime = gSaveContext.skyboxTime = SunsSongCutsceneTime(gSaveContext.dayTime);
+                gSaveContext.dayTime = gSaveContext.skyboxTime =
+                    CutsceneTime_Simulate(SCENE_GRAVEYARD, 0xFFF1, gSaveContext.dayTime, 11);
             }
             break;
         case VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
