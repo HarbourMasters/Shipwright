@@ -54,7 +54,7 @@ void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
 static void HanebasiTime(uint16_t& dayTime, uint16_t& timeSpeed) {
     if (timeSpeed == 50) {
         int32_t dawn = dayTime >= 0xD557 ? 0x1D556 : 0xD556;
-        timeSpeed = (dawn - dayTime) * (1.0f / 350.0f);
+        timeSpeed = static_cast<s16>((dawn - dayTime) * (1.0f / 350.0f));
     }
     if (dayTime >= 0x2AAC && dayTime < 0x3000) {
         timeSpeed = 0;
