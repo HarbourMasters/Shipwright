@@ -8,6 +8,7 @@ extern PlayState* gPlayState;
 }
 
 void WarpPointsWidget(WidgetInfo& info);
+void DebugSpawnLink_Trigger();
 
 namespace SohGui {
 
@@ -56,6 +57,29 @@ void SohMenu::AddMenuDevTools() {
         .CVar("gDeveloperTools.NoClipBtn")
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(BtnSelectorOptions().DefaultValue(BTN_L | BTN_DRIGHT));
+    AddWidget(path, "Enable Spawn Player Actor", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("SpawnLink.Enabled"))
+        .Options(CheckboxOptions()
+                     .Tooltip("Enables the Spawn Player Actor function, including its hotkey.")
+                     .DefaultValue(true))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); });
+    AddWidget(path, "Spawn Player Actor", WIDGET_BUTTON)
+        .Options(ButtonOptions()
+                     .Tooltip("Restores or spawns Link and returns you to controllable gameplay.\n\n"
+                              "Useful when you cancel/stop a cutscene and the game leaves you with no Player actor\n"
+                              "or an uninitialized Link (e.g., cutscene-only scenes).")
+                     .Size(Sizes::Inline))
+        .Callback([](WidgetInfo& info) { DebugSpawnLink_Trigger(); })
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) || (gPlayState == nullptr);
+        });
+    AddWidget(path, "Spawn Player Actor Hotkey", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar(CVAR_DEVELOPER_TOOLS("SpawnLink.Btn"))
+        .Options(BtnSelectorOptions().DefaultValue(BTN_L | BTN_R | BTN_A))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) ||
+                            !CVarGetInteger(CVAR_DEVELOPER_TOOLS("SpawnLink.Enabled"), 1);
+        });
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
