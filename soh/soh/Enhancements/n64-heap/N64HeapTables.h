@@ -18,6 +18,9 @@ constexpr uint32_t kSkinLimbVtxSize = 0xc;
 constexpr uint32_t kCameraSize = 0x16c;
 constexpr uint32_t kPointerSize = 4;
 constexpr int16_t kActorMagicDark = 0xf4;
+constexpr uint32_t kActorBaseSize = 0x13c;
+constexpr uint32_t kActorOverlayTable = 0x800e8b70;
+constexpr uint32_t kActorOverlayEntrySize = 0x20;
 
 enum class AllocType : uint8_t { Normal, Absolute, Persistent };
 

@@ -1,6 +1,7 @@
 #include "N64HeapCore.h"
 #include "N64HeapTables.h"
 
+#include <algorithm>
 #include <cstdio>
 #include <cstring>
 
@@ -126,10 +127,74 @@ bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* fr
     return false;
 }
 
+void Memory::Reserve(uint32_t end) {
+    uint32_t size = end - kZeldaArenaStart;
+    if (size > mBytes.size()) {
+        mBytes.resize(size, 0);
+        mKnown.resize(size, false);
+        mSources.resize(size, Source{ 0, -1 });
+    }
+}
+
+void Memory::Forget(uint32_t address, uint32_t size) {
+    if (address < kZeldaArenaStart || size == 0) {
+        return;
+    }
+    Reserve(address + size);
+    uint32_t start = address - kZeldaArenaStart;
+    std::fill(mKnown.begin() + start, mKnown.begin() + start + size, false);
+    std::fill(mSources.begin() + start, mSources.begin() + start + size, Source{ 0, -1 });
+}
+
+void Memory::Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner) {
+    if (address < kZeldaArenaStart || bytes.empty()) {
+        return;
+    }
+    uint32_t size = static_cast<uint32_t>(bytes.size());
+    Reserve(address + size);
+    uint32_t start = address - kZeldaArenaStart;
+    for (uint32_t i = 0; i < size; i++) {
+        mBytes[start + i] = bytes[i];
+        mKnown[start + i] = known[i];
+        mSources[start + i] = Source{ address, owner };
+    }
+}
+
+bool Memory::ReadWord(uint32_t address, uint32_t* value) const {
+    if (address < kZeldaArenaStart || address + 4 - kZeldaArenaStart > mBytes.size()) {
+        return false;
+    }
+    uint32_t start = address - kZeldaArenaStart;
+    uint32_t word = 0;
+    for (uint32_t i = 0; i < 4; i++) {
+        if (!mKnown[start + i]) {
+            return false;
+        }
+        word = (word << 8) | mBytes[start + i];
+    }
+    *value = word;
+    return true;
+}
+
+bool Memory::Owner(uint32_t address, int16_t* owner, uint32_t* origin) const {
+    if (address < kZeldaArenaStart || address - kZeldaArenaStart >= mSources.size()) {
+        return false;
+    }
+    const Source& source = mSources[address - kZeldaArenaStart];
+    *owner = source.owner;
+    *origin = source.origin;
+    return source.owner >= 0;
+}
+
 Core::Core(const HostSizes& hostSizes) : mHost(hostSizes) {
 }
 
 void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
+    // Memory past a smaller arena holds other scene data, and __osMallocInit writes the first node
+    if (arenaSize < mArenaSize) {
+        mMemory.Forget(kZeldaArenaStart + arenaSize, mArenaSize - arenaSize);
+    }
+    mMemory.Forget(kZeldaArenaStart, kArenaNodeSize);
     mArenaSize = arenaSize;
     mArena.Init(kZeldaArenaStart, arenaSize);
     mLive.clear();
@@ -165,7 +230,6 @@ Core::Site Core::Classify(const char* file) {
         { "z_fcurve_data_skelanime.c", Site::Curve },
         { "z_skin_awb.c", Site::Skin },
         { "z_camera.c", Site::Camera },
-        { "z_effect_soft_sprite.c", Site::Effect },
     };
     for (const Rule& rule : kRules) {
         if (strcmp(base, rule.name) == 0) {
@@ -196,7 +260,7 @@ bool Core::ActorSpawn(int16_t actorId) {
             return false;
         }
     }
-    uint32_t address = mArena.Alloc(entry.instanceSize, false);
+    uint32_t address = Allocate(entry.instanceSize, false);
     if (address == 0) {
         FreeUnusedOverlay(actorId);
         mStats.failedSpawns++;
@@ -223,15 +287,15 @@ Core::Overlay* Core::LoadOverlay(int16_t actorId) {
         case AllocType::Absolute:
             // Every absolute overlay shares one space, allocated the first time any of them loads
             if (mAbsoluteSpace == 0) {
-                mAbsoluteSpace = mArena.Alloc(kAbsoluteSpaceSize, true);
+                mAbsoluteSpace = Allocate(kAbsoluteSpaceSize, true);
             }
             address = mAbsoluteSpace;
             break;
         case AllocType::Persistent:
-            address = mArena.Alloc(entry.overlaySize, true);
+            address = Allocate(entry.overlaySize, true);
             break;
         case AllocType::Normal:
-            address = mArena.Alloc(entry.overlaySize, false);
+            address = Allocate(entry.overlaySize, false);
             break;
     }
     if (address == 0) {
@@ -248,7 +312,7 @@ bool Core::EffectSpawn(int32_t type) {
     if (type < 0 || type >= kEffectCount || kEffectOverlaySizes[type] == 0 || mEffects.count(type) != 0) {
         return true;
     }
-    uint32_t address = mArena.Alloc(kEffectOverlaySizes[type], true);
+    uint32_t address = Allocate(kEffectOverlaySizes[type], true);
     if (address == 0) {
         mStats.failedEffects++;
         return false;
@@ -271,6 +335,15 @@ void Core::FreeUnusedOverlay(int16_t actorId) {
         mArena.Free(it->second.address);
     }
     mOverlays.erase(it);
+}
+
+// Node headers and new allocations overwrite what the memory held before
+uint32_t Core::Allocate(uint32_t size, bool reverse) {
+    uint32_t address = mArena.Alloc(size, reverse);
+    if (address != 0) {
+        mMemory.Forget(address - kArenaNodeSize, kArenaNodeSize + Align16(size) + kArenaNodeSize);
+    }
+    return address;
 }
 
 uint32_t Core::TranslateSize(Site site, size_t size) {
@@ -307,7 +380,6 @@ uint32_t Core::TranslateSize(Site site, size_t size) {
         case Site::SkelAnime:
         case Site::Curve:
             return static_cast<uint32_t>(size);
-        case Site::Effect:
         case Site::Other:
         default:
             mStats.unknownSites++;
@@ -346,7 +418,7 @@ void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse
         mSpawn = PendingSpawn{};
         return;
     }
-    uint32_t address = mArena.Alloc(TranslateSize(site, size), reverse);
+    uint32_t address = Allocate(TranslateSize(site, size), reverse);
     if (address == 0) {
         // Only recorded: failing this in SoH could crash where the N64 would misbehave
         mStats.failedAllocs++;
@@ -404,7 +476,15 @@ std::string Core::DescribeAddress(uint32_t address) const {
         return text;
     }
     if (free) {
-        snprintf(text, sizeof(text), "free block %08X+0x%X (+0x%X, leftover data)", payload, size, address - payload);
+        int16_t owner;
+        uint32_t origin;
+        if (mMemory.Owner(address, &owner, &origin)) {
+            snprintf(text, sizeof(text), "free block %08X+0x%X (+0x%X, left by actor 0x%03X at %08X +0x%X)", payload,
+                     size, address - payload, owner, origin, address - origin);
+        } else {
+            snprintf(text, sizeof(text), "free block %08X+0x%X (+0x%X, leftover data)", payload, size,
+                     address - payload);
+        }
         return text;
     }
     for (const auto& overlay : mOverlays) {
@@ -443,6 +523,44 @@ std::string Core::DescribeAddress(uint32_t address) const {
 uint32_t Core::OverlayAddress(int16_t actorId) const {
     auto it = mOverlays.find(actorId);
     return it == mOverlays.end() ? 0 : it->second.address;
+}
+
+uint32_t Core::AddressOf(const void* host) const {
+    auto it = mLive.find(host);
+    return it == mLive.end() ? 0 : it->second.address;
+}
+
+const void* Core::FindActorAt(uint32_t address, uint32_t* instanceAddress) const {
+    for (const auto& live : mLive) {
+        if (live.second.actorId < 0) {
+            continue;
+        }
+        uint32_t start = live.second.address;
+        if (address >= start && address < start + kActors[live.second.actorId].instanceSize) {
+            *instanceAddress = start;
+            return live.first;
+        }
+    }
+    return nullptr;
+}
+
+bool Core::FindActor(const void* host, uint32_t* address, int16_t* actorId) const {
+    auto it = mLive.find(host);
+    if (it == mLive.end() || it->second.actorId < 0) {
+        return false;
+    }
+    *address = it->second.address;
+    *actorId = it->second.actorId;
+    return true;
+}
+
+void Core::RecordLeftover(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known,
+                          int16_t actorId) {
+    mMemory.Write(address, bytes, known, actorId);
+}
+
+bool Core::ReadLeftover(uint32_t address, uint32_t* value) const {
+    return mMemory.ReadWord(address, value);
 }
 
 bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const {

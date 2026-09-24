@@ -45,6 +45,26 @@ class Arena {
     std::vector<Block> mBlocks;
 };
 
+// The last bytes written to each address of the Zelda arena, which the N64 never clears
+class Memory {
+  public:
+    void Forget(uint32_t address, uint32_t size);
+    // owner is the id of the actor whose instance held the bytes
+    void Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner);
+    bool ReadWord(uint32_t address, uint32_t* value) const;
+    bool Owner(uint32_t address, int16_t* owner, uint32_t* origin) const;
+
+  private:
+    struct Source {
+        uint32_t origin;
+        int16_t owner;
+    };
+    void Reserve(uint32_t end);
+    std::vector<uint8_t> mBytes;
+    std::vector<bool> mKnown;
+    std::vector<Source> mSources;
+};
+
 struct Stats {
     uint32_t allocs = 0;
     uint32_t frees = 0;
@@ -76,7 +96,14 @@ class Core {
 
     bool ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64Address, std::string* what) const;
     bool ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const;
-    uint32_t OverlayAddress(int16_t actorId) const;
+    uint32_t AddressOf(const void* host) const;
+    // The host actor whose N64 instance contains address, or nullptr
+    const void* FindActorAt(uint32_t address, uint32_t* instanceAddress) const;
+    bool FindActor(const void* host, uint32_t* address, int16_t* actorId) const;
+    // Keeps the N64 bytes of an instance about to be freed, as the memory still holds them afterwards
+    void RecordLeftover(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known,
+                        int16_t actorId);
+    bool ReadLeftover(uint32_t address, uint32_t* value) const;
     uint32_t LargestFree() const;
     std::string DescribeAddress(uint32_t address) const;
     const Stats& GetStats() const {
@@ -84,7 +111,7 @@ class Core {
     }
 
   private:
-    enum class Site { ActorSpawn, Player, Collision, SkelAnime, Curve, Skin, Camera, Effect, Other };
+    enum class Site { ActorSpawn, Player, Collision, SkelAnime, Curve, Skin, Camera, Other };
     struct Live {
         uint32_t address;
         int16_t actorId;
@@ -101,16 +128,19 @@ class Core {
     enum class BodyBreakStep { Matrices, DisplayLists, ObjectIds };
 
     static Site Classify(const char* file);
+    uint32_t Allocate(uint32_t size, bool reverse);
     uint32_t TranslateSize(Site site, size_t size);
     uint32_t TranslateBodyBreakSize(size_t size);
     Overlay* LoadOverlay(int16_t actorId);
     void FreeUnusedOverlay(int16_t actorId);
+    uint32_t OverlayAddress(int16_t actorId) const;
     const ScriptEntry* FindScript(const int32_t words[4], bool isScene, int16_t sceneId, uint32_t* n64Address,
                                   int* candidates) const;
     void Check();
 
     HostSizes mHost;
     Arena mArena;
+    Memory mMemory;
     uint32_t mArenaSize = 0;
     std::unordered_map<const void*, Live> mLive;
     std::unordered_set<const void*> mIgnored;

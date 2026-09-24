@@ -13,6 +13,8 @@ namespace n64heap {
 struct RomFile;
 
 using RomReader = std::function<bool(uint32_t vrom, uint8_t* out, uint32_t size)>;
+// Reads one N64 word and describes where it came from; false when the value is not known
+using WordReader = std::function<bool(uint32_t address, uint32_t* value, std::string* source)>;
 
 struct ScriptSimulation {
     enum class Outcome {
@@ -28,7 +30,11 @@ struct ScriptSimulation {
     int32_t frameCount = 0;
     std::string source;
     std::string detail;
+    // For RunsCommands: the commands the N64 parser runs, in the layout SoH's cutscene importer produces
+    std::vector<int32_t> script;
 };
+
+ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read);
 
 class ObjectSpace {
   public:
@@ -38,7 +44,7 @@ class ObjectSpace {
     void GameOverOpened(bool japanese);
     void PauseClosed();
 
-    ScriptSimulation Simulate(uint32_t address, const RomReader& rom) const;
+    bool ReadWord(uint32_t address, const RomReader& rom, uint32_t* value, std::string* source) const;
     uint32_t Version() const {
         return mVersion;
     }
@@ -57,8 +63,6 @@ class ObjectSpace {
     void PaintRuntimeData(uint32_t address, uint32_t size, const std::string& label);
     void PaintObject(size_t slot);
     uint32_t PaintIconFiles(uint32_t address, const RomFile& areaIcons, const char* areaLabel, bool japanese);
-    bool ReadWord(uint32_t address, const RomReader& rom, uint32_t* value, std::string* source) const;
-    static bool IsHandledCommand(int32_t command);
 
     std::map<uint32_t, Span> mSpans;
     uint32_t mVersion = 0;

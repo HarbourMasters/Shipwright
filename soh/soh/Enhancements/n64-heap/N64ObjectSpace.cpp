@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <iterator>
 
 namespace n64heap {
@@ -219,7 +220,7 @@ bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* val
     }
     uint8_t bytes[4];
     if (!rom(span.vrom + (address - span.base), bytes, 4)) {
-        *source += " (ROM not readable)";
+        *source += " (N64 data not available)";
         return false;
     }
     uint32_t word = ReadBigEndian32(bytes);
@@ -227,19 +228,157 @@ bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* val
     return true;
 }
 
-bool ObjectSpace::IsHandledCommand(int32_t command) {
+static const int32_t kCsCmdDestination = 0x3E8;
+
+static bool IsHandledCommand(int32_t command) {
     return std::find(std::begin(kCutsceneCommands), std::end(kCutsceneCommands), command) !=
            std::end(kCutsceneCommands);
 }
 
-ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) const {
+// How SoH's cutscene importer lays out each N64 word: whole, two halves, two bytes and a half, or a half and two bytes
+enum class Field { Word, Halves, BytesHalf, HalfBytes };
+
+static int32_t ToHost(uint32_t word, Field field) {
+    uint8_t bytes[4];
+    uint16_t halves[2] = { static_cast<uint16_t>(word >> 16), static_cast<uint16_t>(word) };
+    switch (field) {
+        case Field::Word:
+            memcpy(bytes, &word, sizeof(word));
+            break;
+        case Field::Halves:
+            memcpy(bytes, halves, sizeof(halves));
+            break;
+        case Field::BytesHalf:
+            bytes[0] = static_cast<uint8_t>(word >> 24);
+            bytes[1] = static_cast<uint8_t>(word >> 16);
+            memcpy(bytes + 2, &halves[1], sizeof(uint16_t));
+            break;
+        case Field::HalfBytes:
+            memcpy(bytes, &halves[0], sizeof(uint16_t));
+            bytes[2] = static_cast<uint8_t>(word >> 8);
+            bytes[3] = static_cast<uint8_t>(word);
+            break;
+    }
+    int32_t value;
+    memcpy(&value, bytes, sizeof(value));
+    return value;
+}
+
+// Copies N64 words into a host script, advancing through N64 memory
+class ScriptCopier {
+  public:
+    ScriptCopier(const WordReader& read, uint32_t address, std::vector<int32_t>* out)
+        : mRead(read), mAddress(address), mOut(out) {
+    }
+    bool Copy(Field field, uint32_t* word = nullptr) {
+        uint32_t value;
+        if (!mRead(mAddress, &value, &mSource)) {
+            return false;
+        }
+        mAddress += 4;
+        mOut->push_back(ToHost(value, field));
+        if (word != nullptr) {
+            *word = value;
+        }
+        return true;
+    }
+    bool CopyFields(std::initializer_list<Field> fields) {
+        for (Field field : fields) {
+            if (!Copy(field)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    uint32_t Address() const {
+        return mAddress;
+    }
+    const std::string& Source() const {
+        return mSource;
+    }
+
+  private:
+    const WordReader& mRead;
+    uint32_t mAddress;
+    std::vector<int32_t>* mOut;
+    std::string mSource;
+};
+
+static bool CopyEntries(ScriptCopier& copier, std::initializer_list<Field> entry) {
+    uint32_t count;
+    if (!copier.Copy(Field::Word, &count)) {
+        return false;
+    }
+    for (uint32_t i = 0; i < count; i++) {
+        if (!copier.CopyFields(entry)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Camera commands are a start and end frame followed by points up to the one flagged CS_CAM_STOP
+static bool CopyCamera(ScriptCopier& copier) {
+    const uint32_t kMaxPoints = 0x1000;
+    if (!copier.CopyFields({ Field::Halves, Field::Halves })) {
+        return false;
+    }
+    for (uint32_t i = 0; i < kMaxPoints; i++) {
+        uint32_t flags;
+        if (!copier.Copy(Field::BytesHalf, &flags) ||
+            !copier.CopyFields({ Field::Word, Field::Halves, Field::Halves })) {
+            return false;
+        }
+        if (static_cast<int8_t>(flags >> 24) == -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool CopyCommand(ScriptCopier& copier, int32_t command) {
+    const std::initializer_list<Field> kCue = { Field::Halves, Field::Halves, Field::Halves, Field::Word,
+                                                Field::Word,   Field::Word,   Field::Word,   Field::Word,
+                                                Field::Word,   Field::Word,   Field::Word,   Field::Word };
+    const std::initializer_list<Field> kList = { Field::Halves, Field::Halves, Field::Word, Field::Word,
+                                                 Field::Word,   Field::Word,   Field::Word, Field::Word,
+                                                 Field::Word,   Field::Word,   Field::Word, Field::Word };
+    switch (command) {
+        case 0x01: // CS_CMD_CAM_EYE_SPLINE
+        case 0x02: // CS_CMD_CAM_AT_SPLINE
+        case 0x05: // CS_CMD_CAM_EYE_SPLINE_REL_TO_PLAYER
+        case 0x06: // CS_CMD_CAM_AT_SPLINE_REL_TO_PLAYER
+        case 0x07: // CS_CMD_CAM_EYE
+        case 0x08: // CS_CMD_CAM_AT
+            return CopyCamera(copier);
+        case 0x03: // CS_CMD_MISC
+        case 0x04: // CS_CMD_LIGHT_SETTING
+        case 0x56: // CS_CMD_START_SEQ
+        case 0x57: // CS_CMD_STOP_SEQ
+        case 0x7C: // CS_CMD_FADE_OUT_SEQ
+            return CopyEntries(copier, kList);
+        case 0x09: // CS_CMD_RUMBLE_CONTROLLER
+            return CopyEntries(copier, { Field::Halves, Field::HalfBytes, Field::BytesHalf });
+        case 0x8C: // CS_CMD_TIME
+            return CopyEntries(copier, { Field::Halves, Field::HalfBytes, Field::Word });
+        case 0x13: // CS_CMD_TEXT
+            return CopyEntries(copier, { Field::Halves, Field::Halves, Field::Halves });
+        case 0x2D: // CS_CMD_TRANSITION
+        case kCsCmdDestination:
+            return copier.CopyFields({ Field::Word, Field::Halves, Field::Halves });
+        default: // Player and actor cues
+            return CopyEntries(copier, kCue);
+    }
+}
+
+ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
     // The same bytes are parsed every frame, so the first frame decides the outcome
     ScriptSimulation sim;
     uint32_t word = 0;
     std::string source;
-    bool haveEntries = ReadWord(address, rom, &word, &sim.source);
+    bool haveEntries = read(address, &word, &sim.source);
     sim.totalEntries = static_cast<int32_t>(word);
-    if (!haveEntries || !ReadWord(address + 4, rom, &word, &source)) {
+    if (!haveEntries || !read(address + 4, &word, &source)) {
         sim.detail = haveEntries ? source : sim.source;
         return sim;
     }
@@ -250,28 +389,46 @@ ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) c
         return sim;
     }
 
-    // The parser's loop counters are s16, so a count above 0x7FFF never finishes
+    // The parser's loop counters are s16, so a count above 0x7FFF only stops at CS_CMD_END_OF_SCRIPT
     const int32_t kS16Max = 0x7FFF;
+    const int32_t kMaxCommands = 0x10000;
+    std::vector<int32_t> commands;
+    int32_t commandCount = 0;
+    std::string firstCommand;
+    std::string destination;
     uint32_t script = address + 8;
-    int32_t entries = sim.totalEntries <= kS16Max ? sim.totalEntries : kS16Max + 1;
-    for (int32_t i = 0; i < entries; i++) {
-        if (!ReadWord(script, rom, &word, &source)) {
+    int32_t entries = sim.totalEntries <= kS16Max ? sim.totalEntries : kMaxCommands;
+    int32_t i = 0;
+    for (; i < entries; i++) {
+        if (!read(script, &word, &source)) {
             sim.detail = source;
             return sim;
         }
         int32_t command = static_cast<int32_t>(word);
         script += 4;
         if (command == kCsCmdEndOfScript) {
-            sim.outcome = ScriptSimulation::Outcome::NoCommands;
-            sim.detail = "reaches CS_CMD_END_OF_SCRIPT";
-            return sim;
+            break;
         }
         if (IsHandledCommand(command)) {
-            sim.outcome = ScriptSimulation::Outcome::RunsCommands;
-            sim.detail = "command " + Hex(static_cast<uint32_t>(command)) + " at " + Hex(script - 4);
-            return sim;
+            commands.push_back(command);
+            ScriptCopier copier(read, script, &commands);
+            if (!CopyCommand(copier, command)) {
+                sim.detail = "command " + Hex(static_cast<uint32_t>(command)) + " at " + Hex(script - 4) + " reaches " +
+                             copier.Source();
+                return sim;
+            }
+            if (command == kCsCmdDestination) {
+                uint32_t value;
+                read(script + 4, &value, &source);
+                destination = ", destination " + Hex(value >> 16);
+            }
+            if (commandCount++ == 0) {
+                firstCommand = "command " + Hex(static_cast<uint32_t>(command)) + " at " + Hex(script - 4);
+            }
+            script = copier.Address();
+            continue;
         }
-        if (!ReadWord(script, rom, &word, &source)) {
+        if (!read(script, &word, &source)) {
             sim.detail = source;
             return sim;
         }
@@ -287,13 +444,22 @@ ScriptSimulation ObjectSpace::Simulate(uint32_t address, const RomReader& rom) c
             script += 0x30u * static_cast<uint32_t>(commandEntries);
         }
     }
-    if (sim.totalEntries > kS16Max) {
+    if (i == kMaxCommands) {
         sim.outcome = ScriptSimulation::Outcome::Hang;
         sim.detail = "command loop never reaches totalEntries";
         return sim;
     }
-    sim.outcome = ScriptSimulation::Outcome::NoCommands;
-    sim.detail = "only unrecognised commands, all skipped";
+    if (commandCount == 0) {
+        sim.outcome = ScriptSimulation::Outcome::NoCommands;
+        sim.detail = i < entries ? "reaches CS_CMD_END_OF_SCRIPT" : "only unrecognised commands, all skipped";
+        return sim;
+    }
+    sim.outcome = ScriptSimulation::Outcome::RunsCommands;
+    sim.detail = firstCommand + ", " + std::to_string(commandCount) + " commands" + destination;
+    sim.script = { commandCount, sim.frameCount };
+    sim.script.insert(sim.script.end(), commands.begin(), commands.end());
+    sim.script.push_back(kCsCmdEndOfScript);
+    sim.script.push_back(0);
     return sim;
 }
 

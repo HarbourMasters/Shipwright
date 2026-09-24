@@ -1,13 +1,18 @@
 #include "N64Heap.h"
+#include "N64ActorMemory.h"
 #include "N64HeapCore.h"
 #include "N64HeapTables.h"
 #include "N64ObjectSpace.h"
 
 #include <cstring>
+#include <memory>
 #include <spdlog/spdlog.h>
+#include <vector>
 
 #include <libultraship/bridge/consolevariablebridge.h>
-#include <libultraship/bridge/resourcebridge.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <ship/resource/type/Blob.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -36,7 +41,14 @@ struct CutsceneDecision {
     uint32_t pointer = 0;
     uint32_t memoryVersion = UINT32_MAX;
     void* result = nullptr;
-    int32_t replacement[4] = {};
+    std::vector<int32_t> replacement;
+};
+
+// The rebuilt N64 bytes of one live actor, valid for the frame they were built on
+struct ActorMemoryCache {
+    const void* actor = nullptr;
+    uint32_t frame = 0;
+    std::unique_ptr<n64heap::ActorMemory> memory;
 };
 
 n64heap::ObjectSpace sObjectSpace;
@@ -47,12 +59,14 @@ n64heap::Stats sLastStats;
 uint16_t sLastPauseState = 0;
 bool sVerdictDirty = false;
 CutsceneDecision sDecision;
+ActorMemoryCache sActorMemory;
 
 bool Enabled() {
     return CVarGetInteger(CVAR_FIX_N64_HEAP, 0) && N64Heap_HasN64Data();
 }
 
-const uint8_t* sArchiveData[n64heap::kArchiveFileCount];
+// Held so the resource manager cannot unload the data while the model reads it
+std::shared_ptr<Ship::Blob> sArchiveData[n64heap::kArchiveFileCount];
 bool sArchiveLoaded[n64heap::kArchiveFileCount];
 
 // Index of the last archive file starting at or before vrom
@@ -71,7 +85,7 @@ int FindArchiveFile(uint32_t vrom) {
 }
 
 // N64 file data stored in oot.o2r as "n64heap/<file>/data" when the assets come from an NTSC 1.2 ROM
-bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
+bool ReadN64File(uint32_t vrom, uint8_t* out, uint32_t size) {
     int index = FindArchiveFile(vrom);
     const n64heap::ArchiveFile& file = n64heap::kArchiveFiles[index];
     if (vrom < file.vrom || vrom + size > file.vrom + file.size) {
@@ -79,14 +93,20 @@ bool ReadRom(uint32_t vrom, uint8_t* out, uint32_t size) {
     }
     if (!sArchiveLoaded[index]) {
         sArchiveLoaded[index] = true;
-        if (ResourceMgr_FileExists(file.path) && ResourceGetSizeByName(file.path) == file.size) {
-            sArchiveData[index] = static_cast<const uint8_t*>(ResourceGetDataByName(file.path));
+        auto blob = std::dynamic_pointer_cast<Ship::Blob>(
+            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(file.path));
+        // The blob loader pads the data with zeros
+        if (blob == nullptr || blob->Data.size() < file.size) {
+            SPDLOG_WARN("[N64Heap] {} is missing or too small ({:#x} bytes, expected {:#x})", file.path,
+                        blob != nullptr ? blob->Data.size() : size_t(0), size_t(file.size));
+        } else {
+            sArchiveData[index] = blob;
         }
     }
     if (sArchiveData[index] == nullptr) {
         return false;
     }
-    memcpy(out, sArchiveData[index] + (vrom - file.vrom), size);
+    memcpy(out, sArchiveData[index]->Data.data() + (vrom - file.vrom), size);
     return true;
 }
 
@@ -185,6 +205,41 @@ bool InActorHeap(uint32_t address) {
     return address >= n64heap::kZeldaArenaStart && address < n64heap::kZeldaArenaStart + Shadow().ArenaSize();
 }
 
+n64heap::ActorMemory RebuildActor(const Actor* actor) {
+    return n64heap::ActorMemory(actor, n64heap::kActors[actor->id].instanceSize,
+                                [](const void* host) { return Shadow().AddressOf(host); });
+}
+
+const n64heap::ActorMemory& ActorMemoryFor(const Actor* actor) {
+    if (sActorMemory.actor != actor || sActorMemory.frame != gPlayState->gameplayFrames || !sActorMemory.memory) {
+        sActorMemory.actor = actor;
+        sActorMemory.frame = gPlayState->gameplayFrames;
+        sActorMemory.memory = std::make_unique<n64heap::ActorMemory>(RebuildActor(actor));
+    }
+    return *sActorMemory.memory;
+}
+
+// Reads N64 memory from the live actors in the shadow heap or from the object space model
+bool ReadN64Word(uint32_t address, uint32_t* value, std::string* source) {
+    if (!InActorHeap(address)) {
+        return sObjectSpace.ReadWord(address, ReadN64File, value, source);
+    }
+    uint32_t instance = 0;
+    const Actor* actor = static_cast<const Actor*>(Shadow().FindActorAt(address, &instance));
+    if (actor == nullptr) {
+        *source = "actor heap: " + Shadow().DescribeAddress(address);
+        return Shadow().ReadLeftover(address, value);
+    }
+    char text[64];
+    snprintf(text, sizeof(text), "actor 0x%03X instance at %08X +0x%X", actor->id, instance, address - instance);
+    *source = text;
+    if (!ActorMemoryFor(actor).ReadWord(address - instance, value)) {
+        *source += " (not modelled)";
+        return false;
+    }
+    return true;
+}
+
 std::string DescribeOutcome(const n64heap::ScriptSimulation& sim) {
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
@@ -197,7 +252,7 @@ std::string DescribeOutcome(const n64heap::ScriptSimulation& sim) {
         case Outcome::Hang:
             return "N64 locks up in the cutscene parser: " + sim.detail;
         case Outcome::RunsCommands:
-            return "runs cutscene commands (" + sim.detail + "); safe only if this is real cutscene data";
+            return "runs cutscene commands (" + sim.detail + ")";
         default:
             return "parser reaches data that is not modelled (" + sim.detail + ")";
     }
@@ -208,13 +263,10 @@ void UpdateVerdict() {
         return;
     }
     sVerdictDirty = false;
-    n64heap::ScriptSimulation sim = sObjectSpace.Simulate(sCutscenePointer, ReadRom);
+    n64heap::ScriptSimulation sim = n64heap::SimulateCutscene(sCutscenePointer, ReadN64Word);
     std::string line = sim.headerKnown ? sim.source + ": header (" + std::to_string(sim.totalEntries) + ", " +
                                              std::to_string(sim.frameCount) + ") -> " + DescribeOutcome(sim)
                                        : sim.source + ": unknown (data is not deterministic or not modelled)";
-    if (!sim.headerKnown && InActorHeap(sCutscenePointer)) {
-        line = "actor heap: " + Shadow().DescribeAddress(sCutscenePointer) + " (contents not modelled)";
-    }
     if (line != sLastVerdict) {
         sLastVerdict = line;
         SPDLOG_INFO("[N64Heap] data at {:#010x}: {}", sCutscenePointer, line);
@@ -255,9 +307,19 @@ extern "C" void N64Heap_OnAlloc(void* ptr, size_t size, const char* file, int re
 }
 
 extern "C" void N64Heap_OnFree(void* ptr) {
-    if (ptr != nullptr) {
-        Shadow().OnFree(ptr);
+    if (ptr == nullptr) {
+        return;
     }
+    uint32_t address;
+    int16_t actorId;
+    if (Shadow().FindActor(ptr, &address, &actorId)) {
+        n64heap::ActorMemory memory = RebuildActor(static_cast<const Actor*>(ptr));
+        Shadow().RecordLeftover(address, memory.Bytes(), memory.Known(), actorId);
+    }
+    if (sActorMemory.actor == ptr) {
+        sActorMemory = ActorMemoryCache{};
+    }
+    Shadow().OnFree(ptr);
 }
 
 extern "C" int N64Heap_ActorSpawn(int16_t actorId) {
@@ -304,45 +366,37 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
     sDecision.memoryVersion = sObjectSpace.Version();
     sDecision.result = script;
 
-    n64heap::ScriptSimulation sim = sObjectSpace.Simulate(sCutscenePointer, ReadRom);
+    n64heap::ScriptSimulation sim = n64heap::SimulateCutscene(sCutscenePointer, ReadN64Word);
     int32_t hostHeader[2];
     memcpy(hostHeader, script, sizeof(hostHeader));
     if (sim.outcome != n64heap::ScriptSimulation::Outcome::Unknown && sim.totalEntries == hostHeader[0] &&
         sim.frameCount == hostHeader[1]) {
         return script;
     }
-    // A replacement script is a header (entry count, frame count) followed by the end of script command
-    int32_t* replacement = sDecision.replacement;
+    // Replacements that run no commands are a header (entry count, frame count) followed by the end of script command
+    std::vector<int32_t>& replacement = sDecision.replacement;
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
         case Outcome::EndsImmediately:
-            replacement[0] = sim.totalEntries;
-            replacement[1] = sim.frameCount;
+            replacement = { sim.totalEntries, sim.frameCount, n64heap::kCsCmdEndOfScript, 0 };
             break;
         case Outcome::NoCommands:
-            replacement[0] = 0;
-            replacement[1] = sim.frameCount;
+            replacement = { 0, sim.frameCount, n64heap::kCsCmdEndOfScript, 0 };
             break;
         case Outcome::Hang:
             // The N64 locks up in the parser, so play an endless cutscene that does nothing instead
-            replacement[0] = 0;
-            replacement[1] = INT32_MAX;
+            replacement = { 0, INT32_MAX, n64heap::kCsCmdEndOfScript, 0 };
             break;
         case Outcome::RunsCommands:
-            SPDLOG_WARN("[N64Heap] N64 cutscene data at {:#010x} not emulated ({}); SoH runs its own copy",
+            replacement = sim.script;
+            break;
+        default:
+            SPDLOG_INFO("[N64Heap] cutscene pointer {:#010x} reaches data that is not modelled ({}); SoH runs its own "
+                        "copy",
                         sCutscenePointer, sim.detail);
             return script;
-        default:
-            if (InActorHeap(sCutscenePointer)) {
-                SPDLOG_INFO(
-                    "[N64Heap] cutscene starts with pointer {:#010x} in the actor heap: {}; SoH runs its own copy",
-                    sCutscenePointer, Shadow().DescribeAddress(sCutscenePointer));
-            }
-            return script;
     }
-    replacement[2] = n64heap::kCsCmdEndOfScript;
-    replacement[3] = 0;
-    sDecision.result = replacement;
+    sDecision.result = replacement.data();
     SPDLOG_INFO("[N64Heap] running N64 cutscene data at {:#010x} ({}): header ({}, {}) -> {}{}", sCutscenePointer,
                 sim.source, sim.totalEntries, sim.frameCount, DescribeOutcome(sim),
                 sim.outcome == Outcome::Hang ? " (emulated as an endless cutscene)" : "");
