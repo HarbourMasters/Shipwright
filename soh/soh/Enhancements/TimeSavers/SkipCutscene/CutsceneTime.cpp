@@ -1,5 +1,6 @@
 #include "CutsceneTime.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -120,7 +121,12 @@ static CutsceneTimeScript ReadScript(const uint32_t* data) {
                 int32_t entries = *ptr++;
                 for (int32_t j = 0; j < entries; j++, ptr += 12) {
                     if (cmdType == CS_CMD_MISC) {
-                        script.misc.push_back(*(CsCmdBase*)ptr);
+                        CsCmdBase* cmd = (CsCmdBase*)ptr;
+                        script.misc.push_back(*cmd);
+                        // Stops the cutscene
+                        if (cmd->base == 12) {
+                            script.lastFrame = std::min(script.lastFrame, (int32_t)cmd->startFrame);
+                        }
                     }
                 }
                 break;
@@ -131,42 +137,20 @@ static CutsceneTimeScript ReadScript(const uint32_t* data) {
     return script;
 }
 
-uint16_t CutsceneTime_Simulate(int32_t sceneNum, uint16_t cutsceneIndex, uint16_t dayTime, int32_t fadeInFrames,
-                               const CutsceneTimeActorUpdate& actorUpdate) {
-    int32_t sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (cutsceneIndex & 0xF);
-    SOH::Scene* scene = LoadScene(ScenePath(sceneNum));
-    SOH::Scene* layer = scene != nullptr ? LayerHeader(scene, sceneLayer) : nullptr;
-    auto cutscene =
-        layer != nullptr ? FindCommand<SOH::SetCutscenes>(layer, SOH::SceneCommandID::SetCutscenes) : nullptr;
-    auto rooms = FindCommand<SOH::SetRoomList>(scene, SOH::SceneCommandID::SetRoomList);
-    if (cutscene == nullptr || rooms == nullptr || rooms->fileNames.empty()) {
-        return dayTime;
-    }
-
-    // Room time settings, as in Scene_CommandTimeSettings. Assumes the cutscene starts in the first room.
-    uint16_t timeSpeed = 0;
-    SOH::Scene* room = LoadScene(rooms->fileNames[0]);
-    SOH::Scene* roomLayer = room != nullptr ? LayerHeader(room, sceneLayer) : nullptr;
-    auto timeSettings = roomLayer != nullptr
-                            ? FindCommand<SOH::SetTimeSettings>(roomLayer, SOH::SceneCommandID::SetTimeSettings)
-                            : nullptr;
-    if (timeSettings != nullptr) {
-        auto& settings = timeSettings->settings;
-        if (settings.hour != 0xFF && settings.minute != 0xFF) {
-            dayTime = (uint16_t)(((settings.hour + (settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
-        }
-        timeSpeed = settings.timeIncrement != 0xFF ? settings.timeIncrement : 0;
-    }
+// Runs the cutscene frame by frame, starting from the given time and time speed
+static uint16_t RunScript(const uint32_t* data, uint16_t dayTime, uint16_t timeSpeed, int32_t fadeInFrames,
+                          const CutsceneTimeActorUpdate& actorUpdate) {
     uint16_t roomTimeSpeed = timeSpeed;
-
-    CutsceneTimeScript script = ReadScript(cutscene->cutscene->commands.data());
+    CutsceneTimeScript script = ReadScript(data);
     bool night = IsNight(dayTime);
     bool sunsSongStarted = false;
     bool sunsSongSpeeding = false;
     bool sunsSongToDusk = false;
     uint16_t sunsSongPrevSpeed = 0;
 
-    for (int32_t frame = 1; frame <= script.lastFrame; frame++) {
+    // csCtx->frames starts at 0xFFFF and ticks before commands run, so commands start on frame 0.
+    // Frame 0 is counted as paused by the fade in check.
+    for (int32_t frame = 0; frame <= script.lastFrame; frame++) {
         if (actorUpdate) {
             actorUpdate(dayTime, timeSpeed);
         }
@@ -232,4 +216,47 @@ uint16_t CutsceneTime_Simulate(int32_t sceneNum, uint16_t cutsceneIndex, uint16_
     }
 
     return dayTime;
+}
+
+uint16_t CutsceneTime_Simulate(int32_t sceneNum, uint16_t cutsceneIndex, uint16_t dayTime, int32_t fadeInFrames,
+                               const CutsceneTimeActorUpdate& actorUpdate) {
+    int32_t sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (cutsceneIndex & 0xF);
+    SOH::Scene* scene = LoadScene(ScenePath(sceneNum));
+    SOH::Scene* layer = scene != nullptr ? LayerHeader(scene, sceneLayer) : nullptr;
+    auto cutscene =
+        layer != nullptr ? FindCommand<SOH::SetCutscenes>(layer, SOH::SceneCommandID::SetCutscenes) : nullptr;
+    auto rooms = FindCommand<SOH::SetRoomList>(scene, SOH::SceneCommandID::SetRoomList);
+    if (cutscene == nullptr || rooms == nullptr || rooms->fileNames.empty()) {
+        return dayTime;
+    }
+
+    // Room time settings, as in Scene_CommandTimeSettings. Assumes the cutscene starts in the first room.
+    uint16_t timeSpeed = 0;
+    SOH::Scene* room = LoadScene(rooms->fileNames[0]);
+    SOH::Scene* roomLayer = room != nullptr ? LayerHeader(room, sceneLayer) : nullptr;
+    auto timeSettings = roomLayer != nullptr
+                            ? FindCommand<SOH::SetTimeSettings>(roomLayer, SOH::SceneCommandID::SetTimeSettings)
+                            : nullptr;
+    if (timeSettings != nullptr) {
+        auto& settings = timeSettings->settings;
+        if (settings.hour != 0xFF && settings.minute != 0xFF) {
+            dayTime = (uint16_t)(((settings.hour + (settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
+        }
+        timeSpeed = settings.timeIncrement != 0xFF ? settings.timeIncrement : 0;
+    }
+
+    return RunScript(cutscene->cutscene->commands.data(), dayTime, timeSpeed, fadeInFrames, actorUpdate);
+}
+
+uint16_t CutsceneTime_SimulateScript(const void* cutscene, uint16_t dayTime, uint16_t timeSpeed, int32_t fadeInFrames,
+                                     const CutsceneTimeActorUpdate& actorUpdate) {
+    // Same lookup as Cutscene_ProcessCommands
+    char* data = (char*)cutscene;
+    if (ResourceMgr_OTRSigCheck(data)) {
+        data = (char*)ResourceMgr_LoadCSByName(data);
+    }
+    if (data == nullptr) {
+        return dayTime;
+    }
+    return RunScript((const uint32_t*)data, dayTime, timeSpeed, fadeInFrames, actorUpdate);
 }
