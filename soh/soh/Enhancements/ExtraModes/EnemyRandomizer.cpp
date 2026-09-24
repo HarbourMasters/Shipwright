@@ -828,10 +828,15 @@ void RegisterEnemyRandomizer() {
         s16 posZ = static_cast<s16>(blkobj->dyna.actor.world.pos.z);
         s16 rotX = 0;
         s16 rotY = blkobj->dyna.actor.yawTowardsPlayer;
+        s16 seededRotY = 6969;
         s16 rotZ = 0;
         s16 params = 0;
 
-        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+
+
+        //rotation is hardcoded here as it is inconsistent, breaking seeded randomiser
+        //value provided is the best meme number avalible, theoretically any number works
+        if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &seededRotY, &rotZ, &params)) {
             assert(false);
         }
 
