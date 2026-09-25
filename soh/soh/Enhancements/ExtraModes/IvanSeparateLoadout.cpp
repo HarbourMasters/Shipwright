@@ -119,7 +119,7 @@ static void OnKaleidoUpdate() {
                                  &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             break;
         }
-        u8 targetSlot = i;
+        u8 targetSlot = static_cast<u8>(i);
 
         if (CVarGetInteger(CVAR_ENHANCEMENT("ItemUnequip"), 0) &&
             gSaveContext.ship.ivanButtonItems[targetSlot] == cursorItem) {
@@ -137,7 +137,7 @@ static void OnKaleidoUpdate() {
                 sEquipAnim[j].framesLeft = 0;
             }
         }
-        gSaveContext.ship.ivanButtonItems[targetSlot] = cursorItem;
+        gSaveContext.ship.ivanButtonItems[targetSlot] = static_cast<u8>(cursorItem);
         StartEquipAnim(play, targetSlot);
         Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -218,8 +218,8 @@ static Gfx* DrawItemIcon(Gfx* gfx, u8 slot, s16 centerX, s16 centerY, s16 alpha)
     bool animating = anim.framesLeft > 0;
     if (animating) {
         float frac = static_cast<float>(anim.framesLeft) / kAnimFrames;
-        centerX = centerX + (anim.startX - centerX) * frac;
-        centerY = centerY + (anim.startY - centerY) * frac;
+        centerX = static_cast<s16>(centerX + (anim.startX - centerX) * frac);
+        centerY = static_cast<s16>(centerY + (anim.startY - centerY) * frac);
         anim.framesLeft--;
     }
 
@@ -239,16 +239,16 @@ static Gfx* DrawItemIcon(Gfx* gfx, u8 slot, s16 centerX, s16 centerY, s16 alpha)
 static Color_RGB8 CalculateTint() {
     Color_RGB8 primary = { 255, 255, 255 };
     if (CVarGetInteger(CVAR_COSMETIC("Ivan.IdlePrimary.Changed"), 0)) {
-        primary = CVarGetColor24(CVAR_COSMETIC("Ivan.IdlePrimary.Value"), (Color_RGB8){ 255, 255, 255 });
+        primary = CVarGetColor24(CVAR_COSMETIC("Ivan.IdlePrimary.Value"), Color_RGB8{ 255, 255, 255 });
     }
     Color_RGB8 secondary = { 0, 255, 0 };
     if (CVarGetInteger(CVAR_COSMETIC("Ivan.IdleSecondary.Changed"), 0)) {
-        secondary = CVarGetColor24(CVAR_COSMETIC("Ivan.IdleSecondary.Value"), (Color_RGB8){ 0, 255, 0 });
+        secondary = CVarGetColor24(CVAR_COSMETIC("Ivan.IdleSecondary.Value"), Color_RGB8{ 0, 255, 0 });
     }
     Color_RGB8 tint = {
-        (primary.r + secondary.r) / 2,
-        (primary.g + secondary.g) / 2,
-        (primary.b + secondary.b) / 2,
+        static_cast<u8>((primary.r + secondary.r) / 2),
+        static_cast<u8>((primary.g + secondary.g) / 2),
+        static_cast<u8>((primary.b + secondary.b) / 2),
     };
     return tint;
 }
@@ -270,9 +270,13 @@ static std::array<s16, 2> CalculateCButtonsCenter() {
     s16 y = CVarGetInteger(CVAR_COSMETIC("Ivan.CButtons.PosY"), 0) + yMargin;
     switch (posType) {
         case ANCHOR_LEFT:
-            return { OTRGetDimensionFromLeftEdge(posX + (useMargins ? leftMargin : 0)), y };
+            return { static_cast<s16>(
+                         OTRGetDimensionFromLeftEdge(static_cast<float>(posX + (useMargins ? leftMargin : 0)))),
+                     y };
         case ANCHOR_RIGHT:
-            return { OTRGetDimensionFromRightEdge(posX + (useMargins ? rightMargin : 0)), y };
+            return { static_cast<s16>(
+                         OTRGetDimensionFromRightEdge(static_cast<float>(posX + (useMargins ? rightMargin : 0)))),
+                     y };
         case ANCHOR_NONE:
             return { posX, y };
         case HIDDEN:
@@ -298,9 +302,13 @@ static std::array<s16, 2> CalculateDpadCenter() {
     s16 y = CVarGetInteger(CVAR_COSMETIC("Ivan.Dpad.PosY"), 0) + yMargin;
     switch (posType) {
         case ANCHOR_LEFT:
-            return { OTRGetDimensionFromLeftEdge(posX + (useMargins ? leftMargin : 0)), y };
+            return { static_cast<s16>(
+                         OTRGetDimensionFromLeftEdge(static_cast<float>(posX + (useMargins ? leftMargin : 0)))),
+                     y };
         case ANCHOR_RIGHT:
-            return { OTRGetDimensionFromRightEdge(posX + (useMargins ? rightMargin : 0)), y };
+            return { static_cast<s16>(
+                         OTRGetDimensionFromRightEdge(static_cast<float>(posX + (useMargins ? rightMargin : 0)))),
+                     y };
         case ANCHOR_NONE:
             return { posX, y };
         case HIDDEN:
@@ -338,7 +346,7 @@ static void OnInterfaceDraw() {
 
     // Draw C button assignments
     for (size_t i = 0; i < 3; i++) {
-        u8 slot = static_cast<size_t>(IvanItemIndex::CLeft) + i;
+        u8 slot = static_cast<u8>(static_cast<size_t>(IvanItemIndex::CLeft) + i);
         OVERLAY_DISP = DrawItemIcon(OVERLAY_DISP, slot, cButtonIconCenters[i][0], cButtonIconCenters[i][1], alpha);
     }
 
@@ -369,7 +377,7 @@ static void OnInterfaceDraw() {
             { dpadX + 16, dpadY }, // Dpad-Right
         };
         for (size_t i = 0; i < ARRAY_COUNT(dpadIconCenters); i++) {
-            u8 slot = static_cast<size_t>(IvanItemIndex::DPadUp) + i;
+            u8 slot = static_cast<u8>(static_cast<size_t>(IvanItemIndex::DPadUp) + i);
             OVERLAY_DISP = DrawItemIcon(OVERLAY_DISP, slot, dpadIconCenters[i][0], dpadIconCenters[i][1], alpha);
         }
     }
