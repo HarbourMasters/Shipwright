@@ -189,12 +189,17 @@ bool Memory::Owner(uint32_t address, int16_t* owner, uint32_t* origin) const {
 Core::Core(const HostSizes& hostSizes) : mHost(hostSizes) {
 }
 
+void Core::Reset() {
+    *this = Core(mHost);
+}
+
 void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
     // Memory past a smaller arena holds other scene data, and __osMallocInit writes the first node
     if (arenaSize < mArenaSize) {
         mMemory.Forget(kZeldaArenaStart + arenaSize, mArenaSize - arenaSize);
     }
     mMemory.Forget(kZeldaArenaStart, kArenaNodeSize);
+    mActive = true;
     mArenaSize = arenaSize;
     mArena.Init(kZeldaArenaStart, arenaSize);
     mLive.clear();
@@ -240,6 +245,9 @@ Core::Site Core::Classify(const char* file) {
 }
 
 bool Core::ActorSpawn(int16_t actorId) {
+    if (!mActive) {
+        return true;
+    }
     if (mSpawn.active) {
         mStats.unresolvedSpawns++;
     }
@@ -309,7 +317,7 @@ void Core::AbortSpawn() {
 }
 
 bool Core::EffectSpawn(int32_t type) {
-    if (type < 0 || type >= kEffectCount || kEffectOverlaySizes[type] == 0 || mEffects.count(type) != 0) {
+    if (!mActive || type < 0 || type >= kEffectCount || kEffectOverlaySizes[type] == 0 || mEffects.count(type) != 0) {
         return true;
     }
     uint32_t address = Allocate(kEffectOverlaySizes[type], true);
@@ -408,6 +416,9 @@ uint32_t Core::TranslateBodyBreakSize(size_t size) {
 }
 
 void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse) {
+    if (!mActive) {
+        return;
+    }
     Site site = Classify(file);
     if (site == Site::ActorSpawn && mSpawn.active) {
         if (mSpawn.address != 0) {
@@ -431,6 +442,9 @@ void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse
 }
 
 void Core::OnFree(const void* host) {
+    if (!mActive) {
+        return;
+    }
     if (mIgnored.erase(host) != 0) {
         return;
     }

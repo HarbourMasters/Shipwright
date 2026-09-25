@@ -14,7 +14,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
-#include "soh/Enhancements/n64-heap/N64Heap.h"
 
 #include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
@@ -3359,7 +3358,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    if (!N64Heap_ActorSpawn(actorId)) {
+    if (!GameInteractor_Should(VB_ACTOR_FITS_IN_HEAP, true, actorId)) {
         Actor_FreeOverlay(dbEntry);
         return NULL;
     }

@@ -1205,14 +1205,6 @@ void SohMenu::AddMenuEnhancements() {
             "The second small key lock in MQ Water Temple is removed before the player can reach it by a shared flag "
             "with some Stalfos on the way to Dark Link.\n"
             "Enabling this will cause that lock to use a different flag, working as intended."));
-    AddWidget(path, "Fix N64 Heap", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("FixN64Heap"))
-        .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !N64Heap_HasN64Data();
-            info.options->disabledTooltip = "Only available when the game assets were generated from an NTSC 1.2 ROM.";
-        })
-        .Options(CheckboxOptions().Tooltip(
-            "Simulate an N64 heap, used for wrong warps and heap fragmentation glitches (Royal Family Tomb)."));
 
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Deku Nut Upgrade", WIDGET_CVAR_CHECKBOX)
@@ -1400,6 +1392,15 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultIndex(GIM_DISABLED)
                      .Tooltip("Restores Get Item Manipulation.\n"
                               "NTSC and PAL have separate tables."));
+    AddWidget(path, "N64 Heap", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("N64Heap"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !N64Heap_HasN64Data();
+            info.options->disabledTooltip = "Only available when the game assets were generated from an NTSC 1.2 ROM.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Simulate an N64 heap, used for wrong warps and heap fragmentation glitches (Royal Family Tomb). "
+            "Takes effect on the next scene load."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

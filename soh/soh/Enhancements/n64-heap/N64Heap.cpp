@@ -15,6 +15,7 @@
 #include <ship/resource/type/Blob.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/vanilla-behavior/GIVanillaBehavior.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 #include "soh/cvar_prefixes.h"
@@ -25,7 +26,8 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#define CVAR_FIX_N64_HEAP CVAR_ENHANCEMENT("FixN64Heap")
+#define CVAR_N64_HEAP_NAME CVAR_ENHANCEMENT("N64Heap")
+#define CVAR_N64_HEAP_VALUE CVarGetInteger(CVAR_N64_HEAP_NAME, 0)
 
 namespace {
 
@@ -60,10 +62,6 @@ uint16_t sLastPauseState = 0;
 bool sVerdictDirty = false;
 CutsceneDecision sDecision;
 ActorMemoryCache sActorMemory;
-
-bool Enabled() {
-    return CVarGetInteger(CVAR_FIX_N64_HEAP, 0) && N64Heap_HasN64Data();
-}
 
 // Held so the resource manager cannot unload the data while the model reads it
 std::shared_ptr<Ship::Blob> sArchiveData[n64heap::kArchiveFileCount];
@@ -283,16 +281,7 @@ void OnGameFrameUpdate() {
     UpdateVerdict();
 }
 
-void RegisterN64Heap() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(OnSceneInit);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(OnGameFrameUpdate);
-}
-
-RegisterShipInitFunc sInitFunc(RegisterN64Heap);
-
-} // namespace
-
-extern "C" void N64Heap_OnArenaInit(void) {
+void OnArenaInit() {
     const n64heap::SceneLayout* layout = n64heap::FindSceneLayout(gPlayState->sceneNum, gSaveContext.sceneLayer);
     if (layout == nullptr) {
         SPDLOG_WARN("[N64Heap] no N64 layout for scene {:#x} layer {}", gPlayState->sceneNum, gSaveContext.sceneLayer);
@@ -300,13 +289,13 @@ extern "C" void N64Heap_OnArenaInit(void) {
     Shadow().ArenaInit(layout != nullptr ? layout->zeldaArenaSize : 0, gSaveContext.nayrusLoveTimer == 2000);
 }
 
-extern "C" void N64Heap_OnAlloc(void* ptr, size_t size, const char* file, int reverse) {
+void OnArenaAlloc(void* ptr, size_t size, const char* file, bool reverse) {
     if (ptr != nullptr) {
-        Shadow().OnAlloc(ptr, size, file, reverse != 0);
+        Shadow().OnAlloc(ptr, size, file, reverse);
     }
 }
 
-extern "C" void N64Heap_OnFree(void* ptr) {
+void OnArenaFree(void* ptr) {
     if (ptr == nullptr) {
         return;
     }
@@ -322,34 +311,28 @@ extern "C" void N64Heap_OnFree(void* ptr) {
     Shadow().OnFree(ptr);
 }
 
-extern "C" int N64Heap_ActorSpawn(int16_t actorId) {
+bool ActorFitsInHeap(int16_t actorId) {
     if (Shadow().ActorSpawn(actorId)) {
-        return 1;
+        return true;
     }
     SPDLOG_INFO("[N64Heap] actor {:#x} does not fit in the N64 heap (largest free block {:#x})", actorId,
                 Shadow().LargestFree());
-    if (!Enabled()) {
-        return 1;
-    }
     Shadow().AbortSpawn();
-    return 0;
+    return false;
 }
 
-extern "C" int N64Heap_EffectSpawn(int32_t type) {
+bool EffectFitsInHeap(int32_t type) {
     if (Shadow().EffectSpawn(type)) {
-        return 1;
+        return true;
     }
     SPDLOG_INFO("[N64Heap] effect {:#x} overlay does not fit in the N64 heap (largest free block {:#x})", type,
                 Shadow().LargestFree());
-    return Enabled() ? 0 : 1;
+    return false;
 }
 
-extern "C" int N64Heap_HasN64Data(void) {
-    return ResourceMgr_FileExists(n64heap::kArchiveFiles[0].path) ? 1 : 0;
-}
-
-extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
-    if (script == nullptr || gPlayState == nullptr || !Enabled()) {
+// Swaps the script SoH is about to parse for one that behaves like the N64 data at the stale pointer
+void* FilterCutsceneScript(void* script) {
+    if (script == nullptr || gPlayState == nullptr || !N64Heap_HasN64Data()) {
         return script;
     }
     // The pointer may have been set earlier this frame
@@ -401,4 +384,41 @@ extern "C" void* N64Heap_FilterCutsceneScript(void* script) {
                 sim.source, sim.totalEntries, sim.frameCount, DescribeOutcome(sim),
                 sim.outcome == Outcome::Hang ? " (emulated as an endless cutscene)" : "");
     return sDecision.result;
+}
+
+void RegisterN64Heap() {
+    // Everything restarts at the next scene, when the arena is created again
+    Shadow().Reset();
+    sObjectSpace = n64heap::ObjectSpace{};
+    sLastHostScript = nullptr;
+    sCutscenePointer = 0;
+    sLastVerdict.clear();
+    sLastPauseState = 0;
+    sVerdictDirty = false;
+    sDecision = CutsceneDecision{};
+    sActorMemory = ActorMemoryCache{};
+
+    COND_HOOK(OnZeldaArenaInit, CVAR_N64_HEAP_VALUE, OnArenaInit);
+    COND_HOOK(OnZeldaArenaAlloc, CVAR_N64_HEAP_VALUE, OnArenaAlloc);
+    COND_HOOK(OnZeldaArenaFree, CVAR_N64_HEAP_VALUE, OnArenaFree);
+    COND_HOOK(OnSceneInit, CVAR_N64_HEAP_VALUE, OnSceneInit);
+    COND_HOOK(OnGameFrameUpdate, CVAR_N64_HEAP_VALUE, OnGameFrameUpdate);
+    COND_HOOK(OnCutsceneScriptLoad, CVAR_N64_HEAP_VALUE,
+              [](uint8_t** script) { *script = static_cast<uint8_t*>(FilterCutsceneScript(*script)); });
+    COND_VB_SHOULD(VB_ACTOR_FITS_IN_HEAP, CVAR_N64_HEAP_VALUE, {
+        int16_t actorId = static_cast<int16_t>(va_arg(args, int32_t));
+        *should = ActorFitsInHeap(actorId);
+    });
+    COND_VB_SHOULD(VB_EFFECT_FITS_IN_HEAP, CVAR_N64_HEAP_VALUE, {
+        int32_t type = va_arg(args, int32_t);
+        *should = EffectFitsInHeap(type);
+    });
+}
+
+RegisterShipInitFunc sInitFunc(RegisterN64Heap, { CVAR_N64_HEAP_NAME });
+
+} // namespace
+
+extern "C" int N64Heap_HasN64Data(void) {
+    return ResourceMgr_FileExists(n64heap::kArchiveFiles[0].path) ? 1 : 0;
 }

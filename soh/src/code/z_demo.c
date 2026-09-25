@@ -36,7 +36,6 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <libultraship/bridge/consolevariablebridge.h>
-#include "soh/Enhancements/n64-heap/N64Heap.h"
 
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;
@@ -1710,7 +1709,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
 
     if (ResourceMgr_OTRSigCheck(cutscenePtr))
         cutscenePtr = ResourceMgr_LoadCSByName(cutscenePtr);
-    cutscenePtr = N64Heap_FilterCutsceneScript(cutscenePtr);
+    GameInteractor_ExecuteOnCutsceneScriptLoad(&cutscenePtr);
 
     memcpy(&totalEntries, cutscenePtr, sizeof(CutsceneData));
     cutscenePtr += sizeof(CutsceneData);

@@ -4097,4 +4097,22 @@ typedef enum {
     // - none
     VB_EMPTY_BOTTLE_OI,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether an actor's overlay and instance fit in the actor heap.
+    // #### `args`
+    // - `s16` (actor id)
+    VB_ACTOR_FITS_IN_HEAP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether a soft sprite effect's overlay fits in the actor heap.
+    // #### `args`
+    // - `s32` (effect type)
+    VB_EFFECT_FITS_IN_HEAP,
+
 } GIVanillaBehavior;

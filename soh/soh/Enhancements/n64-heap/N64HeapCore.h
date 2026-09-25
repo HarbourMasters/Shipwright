@@ -82,6 +82,8 @@ class Core {
   public:
     explicit Core(const HostSizes& hostSizes);
 
+    // Stops mirroring until the next ArenaInit, so a heap is never mirrored from part way through
+    void Reset();
     void ArenaInit(uint32_t arenaSize, bool skipNextMagicDark);
     uint32_t ArenaSize() const {
         return mArenaSize;
@@ -141,6 +143,7 @@ class Core {
     HostSizes mHost;
     Arena mArena;
     Memory mMemory;
+    bool mActive = false;
     uint32_t mArenaSize = 0;
     std::unordered_map<const void*, Live> mLive;
     std::unordered_set<const void*> mIgnored;
