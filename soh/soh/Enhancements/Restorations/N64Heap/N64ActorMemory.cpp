@@ -2,6 +2,7 @@
 #include "N64HeapTables.h"
 
 #include <cstring>
+#include <memory>
 
 extern "C" {
 #include "z64.h"
