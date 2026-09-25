@@ -13,7 +13,7 @@
 #include <ship/Context.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
-#include "soh/Enhancements/n64-heap/N64Heap.h"
+#include "soh/Enhancements/Restorations/N64Heap/N64Heap.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
