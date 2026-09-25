@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <dlfcn.h>
 
 #include <spdlog/spdlog.h>
@@ -14,9 +15,10 @@ bool ESpeakSpeechSynthesizer::DoInit() {
         this->SetVoiceByProperties = (speak_SetVoiceByProperties)dlsym(espeak, "espeak_SetVoiceByProperties");
         this->Synth = (speak_Synth)dlsym(espeak, "espeak_Synth");
         this->Cancel = (speak_Cancel)dlsym(espeak, "espeak_Cancel");
+        this->SetParameter = (speak_SetParameter)dlsym(espeak, "espeak_SetParameter");
         this->Terminate = (speak_Terminate)dlsym(espeak, "espeak_Terminate");
         if (this->Initialize == NULL || this->SetVoiceByProperties == NULL || this->Synth == NULL ||
-            this->Cancel == NULL || this->Terminate == NULL) {
+            this->Cancel == NULL || this->SetParameter == NULL || this->Terminate == NULL) {
             SPDLOG_INFO("Failed to load espeak-ng");
             dlclose(espeak);
             return false;
@@ -53,4 +55,15 @@ void ESpeakSpeechSynthesizer::Speak(const char* text, const char* language) {
         }
         this->Synth(text, 100, 0, POS_CHARACTER, 0, espeakCHARS_UTF8, NULL, NULL);
     }
+}
+
+void ESpeakSpeechSynthesizer::DoApplySettings(int32_t rate, int32_t volume, int32_t pitch) {
+    if (this->espeak == NULL) {
+        return;
+    }
+
+    this->SetParameter(espeakRATE, std::clamp(espeakRATE_NORMAL * rate / 100, espeakRATE_MINIMUM, espeakRATE_MAXIMUM),
+                       0);
+    this->SetParameter(espeakVOLUME, volume, 0);
+    this->SetParameter(espeakPITCH, pitch, 0);
 }
