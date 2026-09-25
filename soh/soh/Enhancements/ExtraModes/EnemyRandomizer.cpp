@@ -331,8 +331,7 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s1
     }
 
     // Don't allow Lizalfos in the silver rupee bridge room of spirit, as they spawn in the room above
-    if (sceneNum == SCENE_SPIRIT_TEMPLE && roomNum == 2 && enemy.id == ACTOR_EN_ZF &&
-        enemy.params == -1) {
+    if (sceneNum == SCENE_SPIRIT_TEMPLE && roomNum == 2 && enemy.id == ACTOR_EN_ZF && enemy.params == -1) {
         return false;
     }
 
@@ -564,8 +563,9 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             // when not twisted, the whole floor is at 1228
 
             *posY = 1228;
-        } else if (isMQ && play->sceneNum == SCENE_SPIRIT_TEMPLE && play->roomCtx.curRoom.num == 27){
-            // Similar to the twisted hallway, the turntable here is an actor used as flooring, so the enemy needs spawning on it
+        } else if (isMQ && play->sceneNum == SCENE_SPIRIT_TEMPLE && play->roomCtx.curRoom.num == 27) {
+            // Similar to the twisted hallway, the turntable here is an actor used as flooring, so the enemy needs
+            // spawning on it
 
             *posY = 50;
         } else {
@@ -843,10 +843,8 @@ void RegisterEnemyRandomizer() {
         s16 rotZ = 0;
         s16 params = 0;
 
-
-
-        //rotation is hardcoded here as it is inconsistent, breaking seeded randomiser
-        //value provided is the best meme number avalible, theoretically any number works
+        // rotation is hardcoded here as it is inconsistent, breaking seeded randomiser
+        // value provided is the best meme number avalible, theoretically any number works
         if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &seededRotY, &rotZ, &params)) {
             assert(false);
         }
