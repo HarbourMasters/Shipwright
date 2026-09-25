@@ -235,7 +235,7 @@ cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## macOS
-Requires Xcode (or xcode-tools) && `sdl2, sdl2_net, libpng, glew, ninja, cmake, tinyxml2, nlohmann-json, libzip, opusfile, libvorbis` (can be installed via [homebrew](https://brew.sh/), macports, etc)
+Requires Xcode (or xcode-tools) && `sdl2, sdl2_net, sdl3, libpng, glew, ninja, cmake, tinyxml2, nlohmann-json, libzip, opusfile, libvorbis` (can be installed via [homebrew](https://brew.sh/), macports, etc)
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
