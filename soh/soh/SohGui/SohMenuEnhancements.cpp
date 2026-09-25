@@ -133,7 +133,8 @@ static const std::map<int32_t, const char*> bonkDamageValues = {
 };
 
 static const std::map<int32_t, const char*> bossHealthOptions = {
-    { 0, "Vanilla (1x)" }, { 1, "1.25x" }, { 2, "1.50x" }, { 3, "1.75x" }, { 4, "Double (2x)" },
+    { 0, "Half (0.5x)" }, { 1, "0.75x" }, { 2, "Vanilla (1x)" }, { 3, "1.25x" },
+    { 4, "1.50x" },       { 5, "1.75x" }, { 6, "Double (2x)" },
 };
 
 static const std::map<int32_t, const char*> dampeDropRates = {
@@ -1551,7 +1552,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BossHealthMultiplier"))
         .Options(ComboboxOptions()
                      .ComboMap(bossHealthOptions)
-                     .DefaultIndex(0)
+                     .DefaultIndex(2)
                      .Tooltip("Multiplies the health of all dungeon bosses.\n"
                               "Requires a Scene Reload to take effect."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)

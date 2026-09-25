@@ -12,13 +12,15 @@ extern "C" {
 }
 
 #define CVAR_NAME "gEnhancements.BossHealthMultiplier"
-#define CVAR CVarGetInteger(CVAR_NAME, 0)
+// 2 corresponds to Vanilla (1x)
+#define CVAR CVarGetInteger(CVAR_NAME, 2)
 
 // Tracks the last recorded health to detect when a boss is initialized or resets
 static std::unordered_map<Actor*, int> sLastBossHealth;
 
-// Combobox index to multiplier value mapping (0: 1.0x, 1: 1.25x, 2: 1.50x, 3: 1.75x, 4: 2.0x)
-static const float sMultipliers[] = { 1.0f, 1.25f, 1.50f, 1.75f, 2.0f };
+// Combobox index to multiplier value mapping
+// 0: 0.50x, 1: 0.75x, 2: Vanilla (1x), 3: 1.25x, 4: 1.50x, 5: 1.75x, 6: 2.0x
+static const float sMultipliers[] = { 0.50f, 0.75f, 1.0f, 1.25f, 1.50f, 1.75f, 2.0f };
 
 /*
  * Retrieves the current health of a boss actor.
@@ -43,8 +45,8 @@ static void SetBossHealth(Actor* actor, s16 newHealth) {
 }
 
 void HandleBossHealthMultiplier(void* refActor) {
-    // 0 corresponds to vanilla multiplier (1x)
-    if (CVAR <= 0) {
+    // 2 corresponds to vanilla multiplier (1x)
+    if (CVAR == 2) {
         return;
     }
 
@@ -55,12 +57,18 @@ void HandleBossHealthMultiplier(void* refActor) {
         // Apply multiplier on initial spawn or if health was externally restored
         if (sLastBossHealth.count(actor) == 0 || currentHealth > sLastBossHealth[actor]) {
             int option = CVAR;
-            if (option < 0 || option > 4) {
-                option = 0;
+            if (option < 0 || option > 6) {
+                option = 2;
             }
             float multiplier = sMultipliers[option];
 
             currentHealth = (s16)(currentHealth * multiplier);
+
+            // Prevent bosses from dying instantly if health rounds down to 0
+            if (currentHealth < 1) {
+                currentHealth = 1;
+            }
+
             SetBossHealth(actor, currentHealth);
         }
 
@@ -76,22 +84,27 @@ void ClearBossHealthMultiplier(void* refActor) {
 // Handles Barinade (ACTOR_BOSS_VA) whose health is tracked via a file-static variable
 // Triggered by the OnBossVaHealthInit GameInteractor hook, overwriting the value via pointer
 void HandleBarinadeHealthMultiplier(s8* phase4Hp) {
-    if (CVAR <= 0 || phase4Hp == nullptr || *phase4Hp <= 0) {
+    if (CVAR == 2 || phase4Hp == nullptr || *phase4Hp <= 0) {
         return;
     }
 
     int option = CVAR;
-    if (option < 0 || option > 4) {
-        option = 0;
+    if (option < 0 || option > 6) {
+        option = 2;
     }
     float multiplier = sMultipliers[option];
 
     *phase4Hp = (s8)(*phase4Hp * multiplier);
+
+    // Prevent instant defeat on spawn
+    if (*phase4Hp < 1) {
+        *phase4Hp = 1;
+    }
 }
 
 // Register conditional hooks for each boss with its own static hook ID
-#define REGISTER_BOSS_HOOKS(bossId)                                            \
-    COND_ID_HOOK(OnActorUpdate, bossId, CVAR > 0, HandleBossHealthMultiplier); \
+#define REGISTER_BOSS_HOOKS(bossId)                                             \
+    COND_ID_HOOK(OnActorUpdate, bossId, CVAR != 2, HandleBossHealthMultiplier); \
     COND_ID_HOOK(OnActorDestroy, bossId, true, ClearBossHealthMultiplier);
 
 void RegisterBossHealthMultiplier() {
