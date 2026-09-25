@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_KKRVR_static]
+  directory: textures/backgrounds/
+  external_files:
+    - common/textures/backgrounds/vr_KKRVR_pal_static.yml
+gCarpentersHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gCarpentersHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersHouseBg2TLUT
+gCarpentersHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gCarpentersHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersHouseBg3TLUT
+gCarpentersHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gCarpentersHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersHouseBg4TLUT
+gCarpentersHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCarpentersHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersHouseBgTLUT

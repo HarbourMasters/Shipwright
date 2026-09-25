@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_LHVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_LHVR_pal_static.yml
+gLinksHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gLinksHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gLinksHouseBg2TLUT
+gLinksHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gLinksHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gLinksHouseBg3TLUT
+gLinksHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gLinksHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gLinksHouseBg4TLUT
+gLinksHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLinksHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gLinksHouseBgTLUT

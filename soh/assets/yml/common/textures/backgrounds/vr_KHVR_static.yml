@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_KHVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_KHVR_pal_static.yml
+gKnowItAllBrosHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gKnowItAllBrosHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKnowItAllBrosHouseBg2TLUT
+gKnowItAllBrosHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gKnowItAllBrosHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKnowItAllBrosHouseBg3TLUT
+gKnowItAllBrosHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gKnowItAllBrosHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKnowItAllBrosHouseBg4TLUT
+gKnowItAllBrosHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKnowItAllBrosHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKnowItAllBrosHouseBgTLUT
