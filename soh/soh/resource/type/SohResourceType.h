@@ -18,5 +18,9 @@ enum class ResourceType {
     SOH_AudioSequence = 0x4F534551,   // OSEQ
     SOH_Background = 0x4F424749,      // OBGI
     SOH_SceneCommand = 0x4F52434D,    // ORCM
+    SOH_SkinVert = 0x4f525356,        // ORSV
+    SOH_SkinTransform = 0x4F525354,   // ORST
+    SOH_SkinModif = 0x4F52534D,       // ORSM
+    SOH_SkinAnimData = 0x4F534144,    // OSAD
 };
 } // namespace SOH
