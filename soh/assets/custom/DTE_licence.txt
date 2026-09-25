@@ -1,0 +1,7 @@
+This licence certifies that HARBOUR MASTERS 64 ("the Organisation") is granted EXCLUSIVE, LIMITED, NONCOMMERCIAL rights to the 3D models and 2D textures ("the Assets") provided and created by contributor DanaTheElf ("the Artist").
+The Artist grants permission to the Organisation to DISTRIBUTE the Assets as part of the project to which this licence has been submitted.
+The Organisation MAY NOT transfer this licence. The Organisation MAY NOT deploy the Assets in any project, be it wholly owned, in direct partnership or association, or otherwise subsidiary to the Organisation that is not built directly upon this project for which the licence has been submitted. If this repository is removed or transferred from the Organisation, the licence is VOID and any controlling party will be found in violation of the Artist's copyrights.
+YOU MAY fork this repository, and DISTRIBUTE the Assets with resultant derivative works, provided the Organisation retains ownership and control of the original repository to which this licence has been submitted.
+YOU MAY NOT continue to use the Assets if the project or fork becomes commercial or for-profit. This includes accepting one-time donations, recurring subscription models such as Patreon, or any other avenues, such as distribution on paid platforms.
+YOU MAY NOT take or deploy the Assets for ANY other purpose or project, be they edited or unedited, credited or uncredited.
+YOU MAY NOT use the Assets for the purposes of training AI.
