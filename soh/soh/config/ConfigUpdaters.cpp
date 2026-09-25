@@ -1459,6 +1459,7 @@ static const Migration version7Migrations[] = {
     { "gRandoEnhancements.CustomKeyModels", nullptr },
     { "gRandoSettings.LogicRules", "gRandoSettings.NoLogic" },
     { "gRandoSettings.AllLocationsReachable", "gRandoSettings.AllChecksReachable" },
+    { "gRandoSettings.SkipScarecrowsSong", "gRandoSettings.StartingScarecrowsSong" },
     { nullptr, nullptr },
 };
 

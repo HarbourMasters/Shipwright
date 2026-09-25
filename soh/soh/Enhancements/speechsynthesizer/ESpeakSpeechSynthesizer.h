@@ -12,6 +12,7 @@ typedef ESPEAK_API espeak_ERROR (*speak_SetVoiceByProperties)(espeak_VOICE* voic
 typedef ESPEAK_API espeak_ERROR (*speak_Synth)(const void* text, size_t size, unsigned int position,
                                                espeak_POSITION_TYPE position_type, unsigned int end_position,
                                                unsigned int flags, unsigned int* unique_identifier, void* user_data);
+typedef ESPEAK_API espeak_ERROR (*speak_Cancel)(void);
 }
 
 class ESpeakSpeechSynthesizer : public SpeechSynthesizer {
@@ -30,5 +31,6 @@ class ESpeakSpeechSynthesizer : public SpeechSynthesizer {
     speak_Initialize Initialize = NULL;
     speak_SetVoiceByProperties SetVoiceByProperties = NULL;
     speak_Synth Synth = NULL;
+    speak_Cancel Cancel = NULL;
     speak_Terminate Terminate = NULL;
 };

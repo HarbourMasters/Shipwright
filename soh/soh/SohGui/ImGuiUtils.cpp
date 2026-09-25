@@ -250,6 +250,12 @@ void RegisterImGuiItemIcons() {
     gui->LoadGuiTexture("ITEM_RUPEE_SILVER", gRupeeCounterIconTex, "", silver);
     gui->LoadGuiTexture("ITEM_RUPEE_SILVER_Faded", gRupeeCounterIconTex, "", silverFaded);
 
+    ImVec4 scarecrow = ImVec4(40.0f / 255.0f, 160.0f / 255.0f, 40.0f / 255.0f, 1.0f);
+    ImVec4 scarecrowFaded = scarecrow;
+    scarecrowFaded.w = 0.3f;
+    gui->LoadGuiTexture("RG_SCARECROWS_SONG", gSongNoteTex, "", scarecrow);
+    gui->LoadGuiTexture("RG_SCARECROWS_SONG_Faded", gSongNoteTex, "", scarecrowFaded);
+
     for (const auto& entry : questMapping) {
         gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
         gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));

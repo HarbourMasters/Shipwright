@@ -2132,6 +2132,7 @@ void DrawEquipmentTab() {
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) ||
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK) ||
             randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_SCARECROWS_SONG) ||
             randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER);
 
         if (bombchuProgressive || triforceHunt || anyAbilityShuffle) {
@@ -2216,6 +2217,8 @@ void DrawEquipmentTab() {
                             static_cast<RandomizerInf>(RAND_INF_HAS_OCARINA_A + i));
                     }
                 }
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_SCARECROWS_SONG))
+                    add(RG_SCARECROWS_SONG, RAND_INF_HAS_SCARECROWS_SONG);
                 if (randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER))
                     add(RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER);
                 if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE))

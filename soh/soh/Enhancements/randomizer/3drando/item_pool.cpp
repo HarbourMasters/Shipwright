@@ -387,6 +387,10 @@ void GenerateItemPool() {
         AddItemToPool(RG_ZELDAS_LETTER, 2, 1, 1, 1);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && !ctx->GetOption(RSK_STARTING_SCARECROWS_SONG)) {
+        AddItemToPool(RG_SCARECROWS_SONG, 2, 1, 1, 1);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA)) {
         if (ctx->GetOption(RSK_STARTING_OCARINA).IsNot(RO_STARTING_OCARINA_TIME)) {
             int baseOcarinas = ctx->GetOption(RSK_STARTING_OCARINA).Is(RO_STARTING_OCARINA_OFF) ? 2 : 1;

@@ -728,7 +728,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
             }
             break;
         case DEATH_HANDOFF:
-            if (this->timers[0] == 0) {
+            if (GameInteractor_Should(VB_VOLVAGIA_DEATH_SCENE, this->timers[0] == 0, this)) {
                 this->actor.draw = NULL;
                 this->deathState = DEATH_FD_BODY;
                 bossFd->handoffSignal = FD2_SIGNAL_DEATH;

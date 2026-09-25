@@ -120,6 +120,7 @@ void GenerateStartingInventory() {
     if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
         AddItemToInventory(RG_ZELDAS_LETTER, ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) ? 1 : 0);
     }
+    AddItemToInventory(RG_SCARECROWS_SONG, ctx->GetOption(RSK_STARTING_SCARECROWS_SONG) ? 1 : 0);
     AddItemToInventory(RG_KEATON_MASK, ctx->GetOption(RSK_STARTING_KEATON_MASK) ? 1 : 0);
     AddItemToInventory(RG_SKULL_MASK, ctx->GetOption(RSK_STARTING_SKULL_MASK) ? 1 : 0);
     AddItemToInventory(RG_SPOOKY_MASK, ctx->GetOption(RSK_STARTING_SPOOKY_MASK) ? 1 : 0);
