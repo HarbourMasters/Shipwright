@@ -2,6 +2,7 @@
 #include "OTRAudio.h"
 #include <algorithm>
 #include <atomic>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <vector>
@@ -1545,7 +1546,44 @@ bool VerifyArchiveVersion(OTRVersion version) {
     return version.major != INT16_MAX && version.major != gBuildVersionMajor;
 }
 
+#ifdef __linux__
+// When run as an AppImage, keep user data in ~/.local/share/soh instead of the launch folder.
+// Keep using the launch folder if it already has data from older versions.
+static void SetAppImageHome() {
+    if (getenv("APPIMAGE") == nullptr || getenv("SHIP_HOME") != nullptr) {
+        return;
+    }
+
+    for (const char* file : { "shipofharkinian.json", "oot.o2r", "oot-mq.o2r" }) {
+        if (std::filesystem::exists(file)) {
+            return;
+        }
+    }
+
+    std::filesystem::path home;
+    const char* dataHome = getenv("XDG_DATA_HOME");
+    const char* userHome = getenv("HOME");
+    if (dataHome != nullptr && std::filesystem::path(dataHome).is_absolute()) {
+        home = dataHome;
+    } else if (userHome != nullptr && userHome[0] != '\0') {
+        home = std::filesystem::path(userHome) / ".local" / "share";
+    } else {
+        return;
+    }
+    home /= appShortName;
+
+    std::error_code ec;
+    std::filesystem::create_directories(home, ec);
+    if (!ec) {
+        setenv("SHIP_HOME", home.c_str(), 0);
+    }
+}
+#endif
+
 extern "C" void InitOTR(int argc, char* argv[]) {
+#ifdef __linux__
+    SetAppImageHome();
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     OTRGlobals::Instance->RunExtract(argc, argv);
 
