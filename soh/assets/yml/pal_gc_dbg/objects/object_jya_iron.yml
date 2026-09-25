@@ -8,8 +8,6 @@
     - [ 11, 0x01911000 ]
     - [ 12, 0x01911000 ]
     - [ 13, 0x01911000 ]
-  external_files:
-    - pal_gc_dbg/objects/gameplay_keep.yml
 
 gObjectJyaIronDL_000600:
   type: GFX

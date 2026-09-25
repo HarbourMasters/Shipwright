@@ -43,36 +43,39 @@ gSheikDefenseStanceAnim:
 
 gSheikEyeHalfClosedTex:
   type: TEXTURE
-  offset: 0x5AE0
+  offset: 0x50C0
   symbol: gSheikEyeHalfClosedTex
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeOpenTex:
   type: TEXTURE
-  offset: 0x56E0
+  offset: 0x4CC0
   symbol: gSheikEyeOpenTex
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeShutTex:
   type: TEXTURE
-  offset: 0x5EE0
+  offset: 0x54C0
   symbol: gSheikEyeShutTex
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeSquintingTex:
   type: TEXTURE
-  offset: 0x62E0
+  offset: 0x58C0
   symbol: gSheikEyeSquintingTex
   format: CI8
   width: 32
   height: 32
-
+  tlut: 0x4A40
 gSheikFallingFromContortionsAnim:
   type: OOT:ANIMATION
   offset: 0x15404
