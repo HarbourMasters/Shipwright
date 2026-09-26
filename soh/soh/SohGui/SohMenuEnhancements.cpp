@@ -1392,14 +1392,14 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultIndex(GIM_DISABLED)
                      .Tooltip("Restores Get Item Manipulation.\n"
                               "NTSC and PAL have separate tables."));
-    AddWidget(path, "N64 Heap", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Simulate N64 Heap", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("N64Heap"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled = !N64Heap_HasN64Data();
             info.options->disabledTooltip = "Only available when the game assets were generated from an NTSC 1.2 ROM.";
         })
         .Options(CheckboxOptions().Tooltip(
-            "Simulate an N64 heap, used for wrong warps and heap fragmentation glitches (Royal Family Tomb). "
+            "Simulate an N64 heap, used for wrong warps and heap fragmentation glitches (e.g. Royal Family Tomb). "
             "Takes effect on the next scene load."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
