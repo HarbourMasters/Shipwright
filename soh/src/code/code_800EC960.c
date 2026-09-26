@@ -3,6 +3,7 @@
 #include "global.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/StreamedMusic.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
@@ -4762,12 +4763,14 @@ void Audio_SplitBgmChannels(s8 volSplit) {
             }
 
             channelBits = 0;
-            for (channelIdx = 0; channelIdx < 16; channelIdx++) {
-                if (notePriority > gAudioContext.seqPlayers[bgmPlayers[i]].channels[channelIdx]->notePriority) {
-                    // If the note currently playing in the channel is a high enough priority,
-                    // then keep the channel on by setting a channelBit
-                    // If this condition fails, then the channel will be shut off
-                    channelBits += (1 << channelIdx);
+            if (SOH_StreamedMusic_ShouldSplitChannels(bgmPlayers[i])) {
+                for (channelIdx = 0; channelIdx < 16; channelIdx++) {
+                    if (notePriority > gAudioContext.seqPlayers[bgmPlayers[i]].channels[channelIdx]->notePriority) {
+                        // If the note currently playing in the channel is a high enough priority,
+                        // then keep the channel on by setting a channelBit
+                        // If this condition fails, then the channel will be shut off
+                        channelBits += (1 << channelIdx);
+                    }
                 }
             }
 
@@ -4846,6 +4849,7 @@ void Audio_PlaySceneSequence(u16 seqId) {
             if ((sSeqResumePoint & 0x3F) != 0) {
                 sp27 = 0x1E;
             }
+            SOH_StreamedMusic_ResumeNextStart(SEQ_PLAYER_BGM_MAIN);
 
             Audio_PlaySequenceWithSeqPlayerIO(SEQ_PLAYER_BGM_MAIN, seqId, sp27, 7, sSeqResumePoint);
 

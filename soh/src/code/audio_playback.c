@@ -3,6 +3,8 @@
 
 extern bool gUseLegacySD;
 
+extern s32 SOH_OpusStream_ContinuePos(const void* sampleAddr, u32 sampleLength, s32 fallback);
+
 void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     f32 volRight, volLeft;
     s32 smallPanIndex;
@@ -770,6 +772,10 @@ void Audio_NoteInitForLayer(Note* note, SequenceLayer* layer) {
     layer->channel->layerUnused = layer;
     layer->noteVelocity = 0.0f;
     Audio_NoteInit(note);
+    // SOH [Port] A streamed track restarted to continue picks up where it was.
+    note->unk_BC = (layer->sound != NULL && layer->sound->sample != NULL)
+                       ? SOH_OpusStream_ContinuePos(layer->sound->sample->sampleAddr, layer->sound->sample->size / 2, 0)
+                       : 0;
     instId = layer->instOrWave;
 
     if (instId == 0xFF) {
