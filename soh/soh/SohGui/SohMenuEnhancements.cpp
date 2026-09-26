@@ -132,6 +132,11 @@ static const std::map<int32_t, const char*> bonkDamageValues = {
     { BONK_DAMAGE_8_HEARTS, "8 Hearts" },     { BONK_DAMAGE_OHKO, "OHKO" },
 };
 
+static const std::map<int32_t, const char*> bossHealthOptions = {
+    { 0, "Half (0.5x)" }, { 1, "0.75x" }, { 2, "Vanilla (1x)" }, { 3, "1.25x" },
+    { 4, "1.5x" },        { 5, "1.75x" }, { 6, "Double (2x)" },
+};
+
 static const std::map<int32_t, const char*> dampeDropRates = {
     { DAMPE_NONE, "None" },
     { DAMPE_NORMAL, "Vanilla" },
@@ -192,6 +197,20 @@ static WidgetFunc HideQuestPreFunc(Quest quest) {
             info.options->disabledTooltip = "At least one quest type must remain visible.";
         }
     };
+}
+
+static uint8_t CountVisibleFileSelectQuests() {
+    uint8_t count = 0;
+
+    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
+        count++;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
+        count++;
+    }
+
+    return count;
 }
 
 void SohMenu::AddMenuEnhancements() {
@@ -1529,6 +1548,13 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Hyper Bosses", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperBosses"))
         .Options(CheckboxOptions().Tooltip("All Major Bosses move and act twice as fast."));
+    AddWidget(path, "Boss Health Multiplier", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BossHealthMultiplier"))
+        .Options(ComboboxOptions()
+                     .ComboMap(bossHealthOptions)
+                     .DefaultIndex(2)
+                     .Tooltip("Multiplies the health of all dungeon bosses.\n"
+                              "Requires a Scene Reload to take effect."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
         .Options(CheckboxOptions().Tooltip("All Regular Enemies and Mini-Bosses move and act twice as fast."));
