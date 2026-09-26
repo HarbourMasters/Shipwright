@@ -16,6 +16,7 @@ uint8_t SOH_StreamedMusic_SequenceStopped(uint8_t playerIdx, uint16_t fadeTimer)
 // Otherwise a zero `*fadeTimer` may be set to the incoming track's fade-in.
 uint8_t SOH_StreamedMusic_PrepareStart(uint8_t playerIdx, uint8_t seqId, uint8_t seqArgs, uint16_t* fadeTimer);
 
+void SOH_StreamedMusic_ResumeNextStart(uint8_t playerIdx);
 void SOH_StreamedMusic_Update();
 void SOH_StreamedMusic_Reset();
 
