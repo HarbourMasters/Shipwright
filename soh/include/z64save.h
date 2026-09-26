@@ -278,6 +278,7 @@ typedef struct ShipSaveContextData {
     //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData
     u16 randomizerInf[(RAND_INF_MAX + 15) / 16];
     u8 resetToSpawn;
+    u8 ivanButtonItems[7];
 } ShipSaveContextData;
 
 #pragma endregion
