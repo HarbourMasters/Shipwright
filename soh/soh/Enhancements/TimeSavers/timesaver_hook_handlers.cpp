@@ -2,6 +2,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/TimeSavers/SkipCutscene/CutsceneTime.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -35,8 +36,10 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
 #include <overlays/actors/ovl_En_Ik/z_en_ik.h>
+#include "scenes/overworld/spot06/spot06_scene.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+extern u16 gTimeSpeed;
 extern int32_t D_8011D3AC;
 
 extern void BgSpot03Taki_HandleWaterfallState(BgSpot03Taki* bgSpot03Taki, PlayState* play);
@@ -222,6 +225,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_ENTRANCE_CS: {
             s32 entranceFlag = va_arg(args, s32);
             s32 entranceIndex = va_arg(args, s32);
+            void* cutscene = va_arg(args, void*);
 
             // Epona LLR fence jump cutscenes not skipped to allow the player and epona to load in the world correctly
             // Nabooru fight cutscene is handled by boss intro skip instead (which deals with other flags needing to be
@@ -229,6 +233,12 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), IS_RANDO) &&
                 (entranceFlag != EVENTCHKINF_EPONA_OBTAINED) && entranceIndex != ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE) {
                 *should = false;
+                // Time keeps running during the cutscene in fields.
+                // Left alone elsewhere, as the scene has already snapped skyboxTime.
+                uint16_t dayTime = CutsceneTime_SimulateScript(cutscene, gSaveContext.dayTime, gTimeSpeed);
+                if (dayTime != gSaveContext.dayTime) {
+                    gSaveContext.dayTime = gSaveContext.skyboxTime = dayTime;
+                }
 
                 // Check for dispulsion of Ganon's Tower barrier
                 switch (entranceIndex) {
@@ -633,7 +643,10 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                                 } else {
                                     gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
                                 }
-                                gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+                                // Normally set in Impa's escort cutscene, which keeps the time and lets it run.
+                                // Its fade in is a slow circle, 50 frames.
+                                gSaveContext.dayTime = gSaveContext.skyboxTime =
+                                    CutsceneTime_Simulate(SCENE_HYRULE_FIELD, 0xFFF8, gSaveContext.dayTime, 50);
                                 gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                                 gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                                 gSaveContext.nextTransitionType = 2;
@@ -680,9 +693,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO) {
                 *should = false;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG);
-                // SoH [Randomizer] TODO: Increment time X amount (find out X)
-                // When time is 0, it's changed to 0x46A7
-                // When it's 0x8000, it's changed to 0xC090
+                gSaveContext.dayTime = gSaveContext.skyboxTime =
+                    CutsceneTime_Simulate(SCENE_GRAVEYARD, 0xFFF1, gSaveContext.dayTime, 11);
             }
             break;
         case VB_PLAY_ROYAL_FAMILY_TOMB_CS: {
@@ -733,6 +745,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         case VB_PLAY_FIRE_ARROW_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
+                // Cutscene sets the time to 7:00
+                gSaveContext.dayTime = gSaveContext.skyboxTime =
+                    CutsceneTime_SimulateScript(gLakeHyliaFireArrowsCS, gSaveContext.dayTime, gTimeSpeed);
             }
             break;
         }
