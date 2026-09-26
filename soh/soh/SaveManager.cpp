@@ -146,7 +146,7 @@ SaveManager::SaveManager() {
             info.seedHash[i] = 0;
         }
 
-        info.randoSave = 0;
+        info.quest = QUEST_NORMAL;
         info.requiresMasterQuest = 0;
         info.requiresOriginal = 0;
 
@@ -623,7 +623,8 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             }
         }
     }
-    bool isRando = metaSaveBlock.value("fileType", (int)FILE_TYPE_SAVE_VANILLA) == FILE_TYPE_SAVE_RANDO;
+    int fileType = metaSaveBlock.value("fileType", (int)FILE_TYPE_SAVE_VANILLA);
+    bool isRando = fileType == FILE_TYPE_SAVE_RANDO;
 
     // Keys that came and went between base section versions are read with defaults, the rest are covered by the
     // catch: a file we can't make sense of is left on disk and hidden rather than taking the game down.
@@ -663,8 +664,13 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
         fileMetaInfo[fileNum].requiresOriginal = !isMasterQuest;
         fileMetaInfo[fileNum].requiresMasterQuest = isMasterQuest;
 
-        fileMetaInfo[fileNum].randoSave = isRando;
+        if (fileType == FILE_TYPE_SAVE_SPEEDRUN) {
+            fileMetaInfo[fileNum].quest = isMasterQuest ? QUEST_SPEEDRUN_MASTER : QUEST_SPEEDRUN;
+        } else {
+            fileMetaInfo[fileNum].quest = isMasterQuest ? QUEST_MASTER : QUEST_NORMAL;
+        }
         if (isRando) {
+            fileMetaInfo[fileNum].quest = QUEST_RANDOMIZER;
             nlohmann::json& randoBlock = sections["randomizer"]["data"];
 
             for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
@@ -737,7 +743,7 @@ void SaveManager::InitMeta(int fileNum) {
         fileMetaInfo[fileNum].seedHash[i] = randoContext->hashIconIndexes[i];
     }
 
-    fileMetaInfo[fileNum].randoSave = IS_RANDO;
+    fileMetaInfo[fileNum].quest = gSaveContext.ship.quest.id;
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon,
     // we need the mq otr.
     fileMetaInfo[fileNum].requiresMasterQuest =
@@ -1256,6 +1262,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
     saveBlock["version"] = 1;
     if (IS_RANDO) {
         saveBlock["fileType"] = FILE_TYPE_SAVE_RANDO;
+    } else if (IS_SPEEDRUN) {
+        saveBlock["fileType"] = FILE_TYPE_SAVE_SPEEDRUN;
     } else {
         saveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
     }
@@ -1263,7 +1271,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         for (auto& sectionHandlerPair : sectionSaveHandlers) {
             auto& saveFuncInfo = sectionHandlerPair.second;
             // Don't call SaveFuncs for sections that aren't tied to game save
-            if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO)) {
+            if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO) ||
+                (saveFuncInfo.name == "speedrun" && !IS_SPEEDRUN)) {
                 continue;
             }
             nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
@@ -1385,8 +1394,12 @@ void SaveManager::LoadFile(int fileNum) {
             SPDLOG_ERROR("Save at {} contains no version", fileName.string());
             assert(false);
         }
-        if (saveBlock.contains("fileType") && saveBlock["fileType"] == FILE_TYPE_SAVE_RANDO) {
+        int fileType = saveBlock.value("fileType", (int)FILE_TYPE_SAVE_VANILLA);
+        if (fileType == FILE_TYPE_SAVE_RANDO) {
             gSaveContext.ship.quest.id = QUEST_RANDOMIZER;
+        } else if (fileType == FILE_TYPE_SAVE_SPEEDRUN) {
+            // The base section changes this to QUEST_SPEEDRUN_MASTER for master quest files.
+            gSaveContext.ship.quest.id = QUEST_SPEEDRUN;
         }
         switch (saveBlock["version"].get<int>()) {
             case 1:
@@ -1845,7 +1858,8 @@ void SaveManager::LoadBaseVersion2() {
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
-        gSaveContext.ship.quest.id = QUEST_MASTER;
+        // Speedrun files have their own master quest id.
+        gSaveContext.ship.quest.id = IS_SPEEDRUN ? QUEST_SPEEDRUN_MASTER : QUEST_MASTER;
     }
 
     // Workaround for breaking save compatibility from 5.0.2 -> 5.1.0 in commit d7c35221421bf712b5ead56a360f81f624aca4bc
@@ -2071,7 +2085,8 @@ void SaveManager::LoadBaseVersion3() {
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
-        gSaveContext.ship.quest.id = QUEST_MASTER;
+        // Speedrun files have their own master quest id.
+        gSaveContext.ship.quest.id = IS_SPEEDRUN ? QUEST_SPEEDRUN_MASTER : QUEST_MASTER;
     }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
@@ -2244,7 +2259,8 @@ void SaveManager::LoadBaseVersion4() {
     int isMQ = 0;
     SaveManager::Instance->LoadData("isMasterQuest", isMQ);
     if (isMQ) {
-        gSaveContext.ship.quest.id = QUEST_MASTER;
+        // Speedrun files have their own master quest id.
+        gSaveContext.ship.quest.id = IS_SPEEDRUN ? QUEST_SPEEDRUN_MASTER : QUEST_MASTER;
     }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
@@ -2411,7 +2427,8 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->ship.randomizerInf), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->ship.randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", saveContext->ship.quest.id == QUEST_MASTER);
+    SaveManager::Instance->SaveData("isMasterQuest", saveContext->ship.quest.id == QUEST_MASTER ||
+                                                         saveContext->ship.quest.id == QUEST_SPEEDRUN_MASTER);
     SaveManager::Instance->SaveStruct("backupFW", [&]() {
         SaveManager::Instance->SaveStruct("pos", [&]() {
             SaveManager::Instance->SaveData("x", saveContext->ship.backupFW.pos.x);
@@ -2524,7 +2541,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
         std::filesystem::remove(GetFileName(fileNum));
     }
     fileMetaInfo[fileNum].valid = false;
-    fileMetaInfo[fileNum].randoSave = false;
+    fileMetaInfo[fileNum].quest = QUEST_NORMAL;
     fileMetaInfo[fileNum].requiresMasterQuest = false;
     fileMetaInfo[fileNum].requiresOriginal = false;
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
