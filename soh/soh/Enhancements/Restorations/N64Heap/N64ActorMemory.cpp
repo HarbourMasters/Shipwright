@@ -14,7 +14,7 @@ ActorMemory::ActorMemory(const Actor* actor, uint32_t size, const std::function<
     : mAddressOf(addressOf), mBytes(size, 0), mKnown(size, true) {
     // Actor_Spawn clears the instance, so bytes no field writes to are zero; actor-specific fields are not modelled
     WriteActorBase(actor);
-    std::fill(mKnown.begin() + kActorBaseSize, mKnown.end(), false);
+    std::fill(mKnown.begin() + ACTOR_BASE_SIZE, mKnown.end(), false);
 }
 
 bool ActorMemory::ReadWord(uint32_t offset, uint32_t* value) const {
@@ -161,7 +161,7 @@ void ActorMemory::WriteActorBase(const Actor* actor) {
     PutUnknownPointer(0x12C, reinterpret_cast<const void*>(actor->destroy));
     PutUnknownPointer(0x130, reinterpret_cast<const void*>(actor->update));
     PutUnknownPointer(0x134, reinterpret_cast<const void*>(actor->draw));
-    Put32(0x138, kActorOverlayTable + actor->id * kActorOverlayEntrySize);
+    Put32(0x138, ACTOR_OVERLAY_TABLE + actor->id * ACTOR_OVERLAY_ENTRY_SIZE);
 }
 
 } // namespace n64heap

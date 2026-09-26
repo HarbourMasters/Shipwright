@@ -13,7 +13,7 @@ static uint32_t Align16(uint32_t value) {
 
 const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer) {
     const SceneLayout* baseLayout = nullptr;
-    for (const SceneLayout& layout : kSceneLayouts) {
+    for (const SceneLayout& layout : SCENE_LAYOUTS) {
         if (layout.scene == scene && layout.layer == layer) {
             return &layout;
         }
@@ -30,8 +30,8 @@ void Arena::Init(uint32_t start, uint32_t size) {
     mStart = first;
     mEnd = first + size;
     mBlocks.clear();
-    if (size > kArenaNodeSize) {
-        mBlocks.push_back(Block{ first, size - kArenaNodeSize, true });
+    if (size > ARENA_NODE_SIZE) {
+        mBlocks.push_back(Block{ first, size - ARENA_NODE_SIZE, true });
     } else {
         mEnd = first;
     }
@@ -39,7 +39,7 @@ void Arena::Init(uint32_t start, uint32_t size) {
 
 uint32_t Arena::Alloc(uint32_t requested, bool reverse) {
     uint32_t size = Align16(requested);
-    uint32_t blockSize = size + kArenaNodeSize;
+    uint32_t blockSize = size + ARENA_NODE_SIZE;
     int count = static_cast<int>(mBlocks.size());
     for (int n = 0; n < count; n++) {
         int i = reverse ? count - 1 - n : n;
@@ -62,13 +62,13 @@ uint32_t Arena::Alloc(uint32_t requested, bool reverse) {
         } else {
             block.free = false;
         }
-        return node + kArenaNodeSize;
+        return node + ARENA_NODE_SIZE;
     }
     return 0;
 }
 
 bool Arena::Free(uint32_t address) {
-    uint32_t node = address - kArenaNodeSize;
+    uint32_t node = address - ARENA_NODE_SIZE;
     for (size_t i = 0; i < mBlocks.size(); i++) {
         if (mBlocks[i].start != node) {
             continue;
@@ -78,11 +78,11 @@ bool Arena::Free(uint32_t address) {
         }
         mBlocks[i].free = true;
         if (i + 1 < mBlocks.size() && mBlocks[i + 1].free) {
-            mBlocks[i].size += kArenaNodeSize + mBlocks[i + 1].size;
+            mBlocks[i].size += ARENA_NODE_SIZE + mBlocks[i + 1].size;
             mBlocks.erase(mBlocks.begin() + i + 1);
         }
         if (i > 0 && mBlocks[i - 1].free) {
-            mBlocks[i - 1].size += kArenaNodeSize + mBlocks[i].size;
+            mBlocks[i - 1].size += ARENA_NODE_SIZE + mBlocks[i].size;
             mBlocks.erase(mBlocks.begin() + i);
         }
         return true;
@@ -98,7 +98,7 @@ bool Arena::Check() const {
             return false;
         }
         previousFree = block.free;
-        cursor = block.start + kArenaNodeSize + block.size;
+        cursor = block.start + ARENA_NODE_SIZE + block.size;
     }
     return cursor == mEnd;
 }
@@ -115,9 +115,9 @@ uint32_t Arena::LargestFree() const {
 
 bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const {
     for (const Block& block : mBlocks) {
-        uint32_t end = block.start + kArenaNodeSize + block.size;
+        uint32_t end = block.start + ARENA_NODE_SIZE + block.size;
         if (address >= block.start && address < end) {
-            *payload = block.start + kArenaNodeSize;
+            *payload = block.start + ARENA_NODE_SIZE;
             *size = block.size;
             *free = block.free;
             *header = address < *payload;
@@ -128,7 +128,7 @@ bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* fr
 }
 
 void Memory::Reserve(uint32_t end) {
-    uint32_t size = end - kZeldaArenaStart;
+    uint32_t size = end - ZELDA_ARENA_START;
     if (size > mBytes.size()) {
         mBytes.resize(size, 0);
         mKnown.resize(size, false);
@@ -137,22 +137,22 @@ void Memory::Reserve(uint32_t end) {
 }
 
 void Memory::Forget(uint32_t address, uint32_t size) {
-    if (address < kZeldaArenaStart || size == 0) {
+    if (address < ZELDA_ARENA_START || size == 0) {
         return;
     }
     Reserve(address + size);
-    uint32_t start = address - kZeldaArenaStart;
+    uint32_t start = address - ZELDA_ARENA_START;
     std::fill(mKnown.begin() + start, mKnown.begin() + start + size, false);
     std::fill(mSources.begin() + start, mSources.begin() + start + size, Source{ 0, -1 });
 }
 
 void Memory::Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner) {
-    if (address < kZeldaArenaStart || bytes.empty()) {
+    if (address < ZELDA_ARENA_START || bytes.empty()) {
         return;
     }
     uint32_t size = static_cast<uint32_t>(bytes.size());
     Reserve(address + size);
-    uint32_t start = address - kZeldaArenaStart;
+    uint32_t start = address - ZELDA_ARENA_START;
     for (uint32_t i = 0; i < size; i++) {
         mBytes[start + i] = bytes[i];
         mKnown[start + i] = known[i];
@@ -161,10 +161,10 @@ void Memory::Write(uint32_t address, const std::vector<uint8_t>& bytes, const st
 }
 
 bool Memory::ReadWord(uint32_t address, uint32_t* value) const {
-    if (address < kZeldaArenaStart || address + 4 - kZeldaArenaStart > mBytes.size()) {
+    if (address < ZELDA_ARENA_START || address + 4 - ZELDA_ARENA_START > mBytes.size()) {
         return false;
     }
-    uint32_t start = address - kZeldaArenaStart;
+    uint32_t start = address - ZELDA_ARENA_START;
     uint32_t word = 0;
     for (uint32_t i = 0; i < 4; i++) {
         if (!mKnown[start + i]) {
@@ -177,10 +177,10 @@ bool Memory::ReadWord(uint32_t address, uint32_t* value) const {
 }
 
 bool Memory::Owner(uint32_t address, int16_t* owner, uint32_t* origin) const {
-    if (address < kZeldaArenaStart || address - kZeldaArenaStart >= mSources.size()) {
+    if (address < ZELDA_ARENA_START || address - ZELDA_ARENA_START >= mSources.size()) {
         return false;
     }
-    const Source& source = mSources[address - kZeldaArenaStart];
+    const Source& source = mSources[address - ZELDA_ARENA_START];
     *owner = source.owner;
     *origin = source.origin;
     return source.owner >= 0;
@@ -196,12 +196,12 @@ void Core::Reset() {
 void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
     // Memory past a smaller arena holds other scene data, and __osMallocInit writes the first node
     if (arenaSize < mArenaSize) {
-        mMemory.Forget(kZeldaArenaStart + arenaSize, mArenaSize - arenaSize);
+        mMemory.Forget(ZELDA_ARENA_START + arenaSize, mArenaSize - arenaSize);
     }
-    mMemory.Forget(kZeldaArenaStart, kArenaNodeSize);
+    mMemory.Forget(ZELDA_ARENA_START, ARENA_NODE_SIZE);
     mActive = true;
     mArenaSize = arenaSize;
-    mArena.Init(kZeldaArenaStart, arenaSize);
+    mArena.Init(ZELDA_ARENA_START, arenaSize);
     mLive.clear();
     mIgnored.clear();
     mOverlays.clear();
@@ -227,7 +227,7 @@ Core::Site Core::Classify(const char* file) {
         const char* name;
         Site site;
     };
-    static const Rule kRules[] = {
+    static const Rule RULES[] = {
         { "z_actor.c", Site::ActorSpawn },
         { "z_player.c", Site::Player },
         { "z_collision_check.c", Site::Collision },
@@ -236,7 +236,7 @@ Core::Site Core::Classify(const char* file) {
         { "z_skin_awb.c", Site::Skin },
         { "z_camera.c", Site::Camera },
     };
-    for (const Rule& rule : kRules) {
+    for (const Rule& rule : RULES) {
         if (strcmp(base, rule.name) == 0) {
             return rule.site;
         }
@@ -252,14 +252,14 @@ bool Core::ActorSpawn(int16_t actorId) {
         mStats.unresolvedSpawns++;
     }
     mSpawn = PendingSpawn{ true, 0, actorId };
-    if (actorId < 0 || actorId >= kActorCount || !kActors[actorId].valid) {
+    if (actorId < 0 || actorId >= ACTOR_COUNT || !ACTORS[actorId].valid) {
         return true;
     }
-    if (actorId == kActorMagicDark && mSkipMagicDark) {
+    if (actorId == MAGIC_DARK_ACTOR_ID && mSkipMagicDark) {
         mSkipMagicDark = false;
         return true;
     }
-    const ActorEntry& entry = kActors[actorId];
+    const ActorEntry& entry = ACTORS[actorId];
     Overlay* overlay = nullptr;
     if (entry.overlaySize != 0) {
         overlay = LoadOverlay(actorId);
@@ -289,13 +289,13 @@ Core::Overlay* Core::LoadOverlay(int16_t actorId) {
     if (it != mOverlays.end()) {
         return &it->second;
     }
-    const ActorEntry& entry = kActors[actorId];
+    const ActorEntry& entry = ACTORS[actorId];
     uint32_t address = 0;
     switch (entry.allocType) {
         case AllocType::Absolute:
             // Every absolute overlay shares one space, allocated the first time any of them loads
             if (mAbsoluteSpace == 0) {
-                mAbsoluteSpace = Allocate(kAbsoluteSpaceSize, true);
+                mAbsoluteSpace = Allocate(ABSOLUTE_SPACE_SIZE, true);
             }
             address = mAbsoluteSpace;
             break;
@@ -317,10 +317,10 @@ void Core::AbortSpawn() {
 }
 
 bool Core::EffectSpawn(int32_t type) {
-    if (!mActive || type < 0 || type >= kEffectCount || kEffectOverlaySizes[type] == 0 || mEffects.count(type) != 0) {
+    if (!mActive || type < 0 || type >= EFFECT_COUNT || EFFECT_OVERLAY_SIZES[type] == 0 || mEffects.count(type) != 0) {
         return true;
     }
-    uint32_t address = Allocate(kEffectOverlaySizes[type], true);
+    uint32_t address = Allocate(EFFECT_OVERLAY_SIZES[type], true);
     if (address == 0) {
         mStats.failedEffects++;
         return false;
@@ -335,7 +335,7 @@ void Core::FreeUnusedOverlay(int16_t actorId) {
     if (it == mOverlays.end() || it->second.count != 0) {
         return;
     }
-    AllocType type = kActors[actorId].allocType;
+    AllocType type = ACTORS[actorId].allocType;
     if (type == AllocType::Persistent) {
         return; // Persistent overlays stay loaded until the scene ends
     }
@@ -349,7 +349,7 @@ void Core::FreeUnusedOverlay(int16_t actorId) {
 uint32_t Core::Allocate(uint32_t size, bool reverse) {
     uint32_t address = mArena.Alloc(size, reverse);
     if (address != 0) {
-        mMemory.Forget(address - kArenaNodeSize, kArenaNodeSize + Align16(size) + kArenaNodeSize);
+        mMemory.Forget(address - ARENA_NODE_SIZE, ARENA_NODE_SIZE + Align16(size) + ARENA_NODE_SIZE);
     }
     return address;
 }
@@ -357,7 +357,7 @@ uint32_t Core::Allocate(uint32_t size, bool reverse) {
 uint32_t Core::TranslateSize(Site site, size_t size) {
     switch (site) {
         case Site::Player:
-            return kGiObjectSegmentSize;
+            return GI_OBJECT_SEGMENT_SIZE;
         case Site::Collision: {
             bool jnt = size % mHost.jntSphElement == 0;
             bool tris = size % mHost.trisElement == 0;
@@ -365,24 +365,24 @@ uint32_t Core::TranslateSize(Site site, size_t size) {
                 mStats.approximateSizes++;
             }
             if (jnt) {
-                return static_cast<uint32_t>(size / mHost.jntSphElement * kJntSphElementSize);
+                return static_cast<uint32_t>(size / mHost.jntSphElement * JNT_SPH_ELEMENT_SIZE);
             }
             if (tris) {
-                return static_cast<uint32_t>(size / mHost.trisElement * kTrisElementSize);
+                return static_cast<uint32_t>(size / mHost.trisElement * TRIS_ELEMENT_SIZE);
             }
             mStats.approximateSizes++;
             return static_cast<uint32_t>(size);
         }
         case Site::Skin:
             if (size % mHost.skinLimbVtx == 0 && size % 16 != 0) {
-                return static_cast<uint32_t>(size / mHost.skinLimbVtx * kSkinLimbVtxSize);
+                return static_cast<uint32_t>(size / mHost.skinLimbVtx * SKIN_LIMB_VTX_SIZE);
             }
             if (size % mHost.skinLimbVtx == 0) {
                 mStats.approximateSizes++;
             }
             return static_cast<uint32_t>(size);
         case Site::Camera:
-            return kCameraSize;
+            return CAMERA_SIZE;
         case Site::ActorSpawn:
             return TranslateBodyBreakSize(size);
         case Site::SkelAnime:
@@ -397,17 +397,17 @@ uint32_t Core::TranslateSize(Site site, size_t size) {
 
 // Other z_actor.c allocations come from BodyBreak_Alloc, which allocates three arrays of the same length
 uint32_t Core::TranslateBodyBreakSize(size_t size) {
-    const size_t kMatrixSize = 0x40;
+    const size_t MATRIX_SIZE = 0x40;
     if (mBodyBreakStep == BodyBreakStep::DisplayLists && size == mBodyBreakCount * mHost.pointer) {
         mBodyBreakStep = BodyBreakStep::ObjectIds;
-        return mBodyBreakCount * kPointerSize;
+        return mBodyBreakCount * POINTER_SIZE;
     }
     if (mBodyBreakStep == BodyBreakStep::ObjectIds && size == mBodyBreakCount * sizeof(int16_t)) {
         mBodyBreakStep = BodyBreakStep::Matrices;
         return static_cast<uint32_t>(size);
     }
-    if (size % kMatrixSize == 0) {
-        mBodyBreakCount = static_cast<uint32_t>(size / kMatrixSize);
+    if (size % MATRIX_SIZE == 0) {
+        mBodyBreakCount = static_cast<uint32_t>(size / MATRIX_SIZE);
         mBodyBreakStep = BodyBreakStep::DisplayLists;
         return static_cast<uint32_t>(size);
     }
@@ -486,7 +486,7 @@ std::string Core::DescribeAddress(uint32_t address) const {
     }
     if (header) {
         snprintf(text, sizeof(text), "arena node header of the block at %08X (+0x%X)", payload,
-                 address - (payload - kArenaNodeSize));
+                 address - (payload - ARENA_NODE_SIZE));
         return text;
     }
     if (free) {
@@ -550,7 +550,7 @@ const void* Core::FindActorAt(uint32_t address, uint32_t* instanceAddress) const
             continue;
         }
         uint32_t start = live.second.address;
-        if (address >= start && address < start + kActors[live.second.actorId].instanceSize) {
+        if (address >= start && address < start + ACTORS[live.second.actorId].instanceSize) {
             *instanceAddress = start;
             return live.first;
         }
@@ -580,7 +580,7 @@ bool Core::ReadLeftover(uint32_t address, uint32_t* value) const {
 bool Core::ResolvePath(const char* path, uint32_t* n64Address, std::string* what) const {
     // SoH passes scene cutscenes as "__OTR__scenes/<mq|nonmq>/<scene file>/<symbol>"
     size_t length = strlen(path);
-    for (const ScriptEntry& entry : kScripts) {
+    for (const ScriptEntry& entry : SCRIPTS) {
         size_t nameLength = strlen(entry.name);
         if (nameLength == 0 || nameLength + 1 > length) {
             continue;
@@ -603,7 +603,7 @@ const ScriptEntry* Core::FindScript(const int32_t words[4], bool isScene, int16_
                                     int* candidates) const {
     const ScriptEntry* found = nullptr;
     *candidates = 0;
-    for (const ScriptEntry& entry : kScripts) {
+    for (const ScriptEntry& entry : SCRIPTS) {
         if (entry.isScene != isScene || memcmp(entry.words, words, sizeof(entry.words)) != 0) {
             continue;
         }

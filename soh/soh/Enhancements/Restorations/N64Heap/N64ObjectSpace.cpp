@@ -84,17 +84,17 @@ void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
     mSceneId = sceneId;
     mSlotIds.clear();
     mSlotAddresses.clear();
-    PaintRuntimeData(kKaleidoArea, kKaleidoAreaSize, "kaleido/player overlay area");
-    PaintRuntimeData(kMessageArea, kMessageAreaSize, "message textbox area");
-    PaintRuntimeData(kEffectArea, kEffectAreaSize, "EffectSs table");
+    PaintRuntimeData(KALEIDO_AREA, KALEIDO_AREA_SIZE, "kaleido/player overlay area");
+    PaintRuntimeData(MESSAGE_AREA, MESSAGE_AREA_SIZE, "message textbox area");
+    PaintRuntimeData(EFFECT_AREA, EFFECT_AREA_SIZE, "EffectSs table");
 
     const SceneLayout* layout = FindSceneLayout(sceneId, sceneLayer);
-    if (sceneId < 0 || sceneId >= kSceneCount || kScenes[sceneId].file.size == 0 || layout == nullptr) {
+    if (sceneId < 0 || sceneId >= SCENE_COUNT || SCENES[sceneId].file.size == 0 || layout == nullptr) {
         mSpaceStart = 0;
         return;
     }
     // The object space sits directly below the scene file
-    const SceneEntry& scene = kScenes[sceneId];
+    const SceneEntry& scene = SCENES[sceneId];
     mSpaceStart = scene.base - layout->objectSpaceSize;
     char label[48];
     snprintf(label, sizeof(label), "scene 0x%02X file", sceneId);
@@ -103,12 +103,12 @@ void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
 
 void ObjectSpace::PaintObject(size_t slot) {
     int16_t id = mSlotIds[slot];
-    if (id <= 0 || id >= kObjectCount || kObjects[id].size == 0) {
+    if (id <= 0 || id >= OBJECT_COUNT || OBJECTS[id].size == 0) {
         return;
     }
     char label[48];
     snprintf(label, sizeof(label), "object 0x%03X (slot %zu)", id, slot);
-    PaintFile(mSlotAddresses[slot], kObjects[id], label);
+    PaintFile(mSlotAddresses[slot], OBJECTS[id], label);
 }
 
 void ObjectSpace::SyncObjects(const int16_t* ids, int count) {
@@ -132,7 +132,7 @@ void ObjectSpace::SyncObjects(const int16_t* ids, int count) {
             mSlotAddresses[i] = mSpaceStart;
         } else {
             int16_t previous = mSlotIds[i - 1];
-            uint32_t previousSize = (previous > 0 && previous < kObjectCount) ? kObjects[previous].size : 0;
+            uint32_t previousSize = (previous > 0 && previous < OBJECT_COUNT) ? OBJECTS[previous].size : 0;
             mSlotAddresses[i] = Align16(mSlotAddresses[i - 1] + previousSize);
         }
         PaintObject(i);
@@ -146,12 +146,12 @@ void ObjectSpace::PauseClosed() {
 }
 
 uint32_t ObjectSpace::PaintIconFiles(uint32_t address, const RomFile& areaIcons, const char* areaLabel, bool japanese) {
-    uint32_t icons24 = Align16(address + kFileIconItemStatic.size);
-    PaintFile(icons24, kFileIconItem24Static, "icon_item_24_static");
-    uint32_t area = Align16(icons24 + kFileIconItem24Static.size);
+    uint32_t icons24 = Align16(address + FILE_ICON_ITEM_STATIC.size);
+    PaintFile(icons24, FILE_ICON_ITEM_24_STATIC, "icon_item_24_static");
+    uint32_t area = Align16(icons24 + FILE_ICON_ITEM_24_STATIC.size);
     PaintFile(area, areaIcons, areaLabel);
     uint32_t language = Align16(area + areaIcons.size);
-    const RomFile& languageFile = japanese ? kFileIconItemJpnStatic : kFileIconItemNesStatic;
+    const RomFile& languageFile = japanese ? FILE_ICON_ITEM_JPN_STATIC : FILE_ICON_ITEM_NES_STATIC;
     PaintFile(language, languageFile, japanese ? "icon_item_jpn_static" : "icon_item_nes_static");
     return Align16(language + languageFile.size);
 }
@@ -162,35 +162,37 @@ void ObjectSpace::PauseOpened(int linkAge, bool japanese, int16_t worldMapArea) 
     }
     // The player preview comes first: render texture, gameplay_keep, the link object and its joint table
     uint32_t segment = PauseSegmentStart(mSpaceStart);
-    const RomFile& link = kObjects[kLinkObjectIds[linkAge]];
-    uint32_t keepAddress = segment + kPauseRenderTextureSize;
-    uint32_t linkAddress = keepAddress + kPauseKeepBufferSize;
-    PaintRuntimeData(segment, kPauseRenderTextureSize, "pause player render texture");
-    PaintFile(keepAddress, kObjects[kObjectGameplayKeep], "pause gameplay_keep");
+    const RomFile& link = OBJECTS[LINK_OBJECT_IDS[linkAge]];
+    uint32_t keepAddress = segment + PAUSE_RENDER_TEXTURE_SIZE;
+    uint32_t linkAddress = keepAddress + PAUSE_KEEP_BUFFER_SIZE;
+    PaintRuntimeData(segment, PAUSE_RENDER_TEXTURE_SIZE, "pause player render texture");
+    PaintFile(keepAddress, OBJECTS[GAMEPLAY_KEEP_OBJECT_ID], "pause gameplay_keep");
     PaintFile(linkAddress, link, "pause link object");
-    PaintRuntimeData(Align16(linkAddress + link.size), kPauseJointTableSize, "pause joint table");
+    PaintRuntimeData(Align16(linkAddress + link.size), PAUSE_JOINT_TABLE_SIZE, "pause joint table");
 
-    uint32_t icons = Align16(linkAddress + link.size + kPauseJointTableSize);
-    PaintFile(icons, kFileIconItemStatic, "icon_item_static");
+    uint32_t icons = Align16(linkAddress + link.size + PAUSE_JOINT_TABLE_SIZE);
+    PaintFile(icons, FILE_ICON_ITEM_STATIC, "icon_item_static");
     AgeReq age = linkAge == 0 ? AgeReq::Adult : AgeReq::Child;
-    for (const ItemIcon& icon : kItemIcons) {
-        if (icon.offset != kNoIcon && icon.ageReq != AgeReq::None && icon.ageReq != age) {
-            Paint(icons + icon.offset, kItemIconSize, Kind::GreyIcon, kFileIconItemStatic.vrom + icon.offset,
+    for (const ItemIcon& icon : ITEM_ICONS) {
+        if (icon.offset != NO_ICON && icon.ageReq != AgeReq::None && icon.ageReq != age) {
+            Paint(icons + icon.offset, ITEM_ICON_SIZE, Kind::GreyIcon, FILE_ICON_ITEM_STATIC.vrom + icon.offset,
                   icons + icon.offset, "icon_item_static (greyed icon)");
         }
     }
 
-    bool dungeon = kScenes[mSceneId].dungeon;
-    uint32_t names = PaintIconFiles(icons, dungeon ? kFileIconItemDungeonStatic : kFileIconItemFieldStatic,
+    bool dungeon = SCENES[mSceneId].dungeon;
+    uint32_t names = PaintIconFiles(icons, dungeon ? FILE_ICON_ITEM_DUNGEON_STATIC : FILE_ICON_ITEM_FIELD_STATIC,
                                     dungeon ? "icon_item_dungeon_static" : "icon_item_field_static", japanese);
-    uint32_t nameSize = std::max(kMapNameTex1Size, kItemNameTexSize);
+    uint32_t nameSize = std::max(MAP_NAME_TEX1_SIZE, ITEM_NAME_TEX_SIZE);
     PaintRuntimeData(names, nameSize, "pause item name texture");
-    if (worldMapArea >= 0 && worldMapArea < kWorldMapAreaCount) {
+    if (worldMapArea >= 0 && worldMapArea < WORLD_MAP_AREA_COUNT) {
         int language = japanese ? 0 : 1;
-        uint32_t offset = (worldMapArea + kWorldMapAreaCount * language) * kMapNameTex2Size + 24 * kMapNameTex1Size;
-        PaintFile(names + nameSize, RomFile{ kFileMapNameStatic.vrom + offset, kMapNameTex2Size }, "map_name_static");
+        uint32_t offset =
+            (worldMapArea + WORLD_MAP_AREA_COUNT * language) * MAP_NAME_TEX2_SIZE + 24 * MAP_NAME_TEX1_SIZE;
+        PaintFile(names + nameSize, RomFile{ FILE_MAP_NAME_STATIC.vrom + offset, MAP_NAME_TEX2_SIZE },
+                  "map_name_static");
     }
-    PaintRuntimeData(Align16(names + nameSize + kMapNameTex2Size), kPauseCoverageSize, "pause player coverage");
+    PaintRuntimeData(Align16(names + nameSize + MAP_NAME_TEX2_SIZE), PAUSE_COVERAGE_SIZE, "pause player coverage");
 }
 
 void ObjectSpace::GameOverOpened(bool japanese) {
@@ -198,8 +200,8 @@ void ObjectSpace::GameOverOpened(bool japanese) {
         return;
     }
     uint32_t icons = PauseSegmentStart(mSpaceStart);
-    PaintFile(icons, kFileIconItemStatic, "icon_item_static");
-    PaintIconFiles(icons, kFileIconItemGameoverStatic, "icon_item_gameover_static", japanese);
+    PaintFile(icons, FILE_ICON_ITEM_STATIC, "icon_item_static");
+    PaintIconFiles(icons, FILE_ICON_ITEM_GAMEOVER_STATIC, "icon_item_gameover_static", japanese);
 }
 
 bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* value, std::string* source) const {
@@ -228,11 +230,11 @@ bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* val
     return true;
 }
 
-static const int32_t kCsCmdDestination = 0x3E8;
+static const int32_t CS_CMD_DESTINATION = 0x3E8;
 
 static bool IsHandledCommand(int32_t command) {
-    return std::find(std::begin(kCutsceneCommands), std::end(kCutsceneCommands), command) !=
-           std::end(kCutsceneCommands);
+    return std::find(std::begin(CUTSCENE_COMMANDS), std::end(CUTSCENE_COMMANDS), command) !=
+           std::end(CUTSCENE_COMMANDS);
 }
 
 // How SoH's cutscene importer lays out each N64 word: whole, two halves, two bytes and a half, or a half and two bytes
@@ -319,11 +321,11 @@ static bool CopyEntries(ScriptCopier& copier, std::initializer_list<Field> entry
 
 // Camera commands are a start and end frame followed by points up to the one flagged CS_CAM_STOP
 static bool CopyCamera(ScriptCopier& copier) {
-    const uint32_t kMaxPoints = 0x1000;
+    const uint32_t MAX_POINTS = 0x1000;
     if (!copier.CopyFields({ Field::Halves, Field::Halves })) {
         return false;
     }
-    for (uint32_t i = 0; i < kMaxPoints; i++) {
+    for (uint32_t i = 0; i < MAX_POINTS; i++) {
         uint32_t flags;
         if (!copier.Copy(Field::BytesHalf, &flags) ||
             !copier.CopyFields({ Field::Word, Field::Halves, Field::Halves })) {
@@ -337,12 +339,12 @@ static bool CopyCamera(ScriptCopier& copier) {
 }
 
 static bool CopyCommand(ScriptCopier& copier, int32_t command) {
-    const std::initializer_list<Field> kCue = { Field::Halves, Field::Halves, Field::Halves, Field::Word,
-                                                Field::Word,   Field::Word,   Field::Word,   Field::Word,
-                                                Field::Word,   Field::Word,   Field::Word,   Field::Word };
-    const std::initializer_list<Field> kList = { Field::Halves, Field::Halves, Field::Word, Field::Word,
-                                                 Field::Word,   Field::Word,   Field::Word, Field::Word,
-                                                 Field::Word,   Field::Word,   Field::Word, Field::Word };
+    const std::initializer_list<Field> CUE = { Field::Halves, Field::Halves, Field::Halves, Field::Word,
+                                               Field::Word,   Field::Word,   Field::Word,   Field::Word,
+                                               Field::Word,   Field::Word,   Field::Word,   Field::Word };
+    const std::initializer_list<Field> LIST = { Field::Halves, Field::Halves, Field::Word, Field::Word,
+                                                Field::Word,   Field::Word,   Field::Word, Field::Word,
+                                                Field::Word,   Field::Word,   Field::Word, Field::Word };
     switch (command) {
         case 0x01: // CS_CMD_CAM_EYE_SPLINE
         case 0x02: // CS_CMD_CAM_AT_SPLINE
@@ -356,7 +358,7 @@ static bool CopyCommand(ScriptCopier& copier, int32_t command) {
         case 0x56: // CS_CMD_START_SEQ
         case 0x57: // CS_CMD_STOP_SEQ
         case 0x7C: // CS_CMD_FADE_OUT_SEQ
-            return CopyEntries(copier, kList);
+            return CopyEntries(copier, LIST);
         case 0x09: // CS_CMD_RUMBLE_CONTROLLER
             return CopyEntries(copier, { Field::Halves, Field::HalfBytes, Field::BytesHalf });
         case 0x8C: // CS_CMD_TIME
@@ -364,10 +366,10 @@ static bool CopyCommand(ScriptCopier& copier, int32_t command) {
         case 0x13: // CS_CMD_TEXT
             return CopyEntries(copier, { Field::Halves, Field::Halves, Field::Halves });
         case 0x2D: // CS_CMD_TRANSITION
-        case kCsCmdDestination:
+        case CS_CMD_DESTINATION:
             return copier.CopyFields({ Field::Word, Field::Halves, Field::Halves });
         default: // Player and actor cues
-            return CopyEntries(copier, kCue);
+            return CopyEntries(copier, CUE);
     }
 }
 
@@ -390,14 +392,14 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
     }
 
     // The parser's loop counters are s16, so a count above 0x7FFF only stops at CS_CMD_END_OF_SCRIPT
-    const int32_t kS16Max = 0x7FFF;
-    const int32_t kMaxCommands = 0x10000;
+    const int32_t S16_MAX = 0x7FFF;
+    const int32_t MAX_COMMANDS = 0x10000;
     std::vector<int32_t> commands;
     int32_t commandCount = 0;
     std::string firstCommand;
     std::string destination;
     uint32_t script = address + 8;
-    int32_t entries = sim.totalEntries <= kS16Max ? sim.totalEntries : kMaxCommands;
+    int32_t entries = sim.totalEntries <= S16_MAX ? sim.totalEntries : MAX_COMMANDS;
     int32_t i = 0;
     for (; i < entries; i++) {
         if (!read(script, &word, &source)) {
@@ -406,7 +408,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
         }
         int32_t command = static_cast<int32_t>(word);
         script += 4;
-        if (command == kCsCmdEndOfScript) {
+        if (command == CS_CMD_END_OF_SCRIPT) {
             break;
         }
         if (IsHandledCommand(command)) {
@@ -417,7 +419,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
                              copier.Source();
                 return sim;
             }
-            if (command == kCsCmdDestination) {
+            if (command == CS_CMD_DESTINATION) {
                 uint32_t value;
                 read(script + 4, &value, &source);
                 destination = ", destination " + Hex(value >> 16);
@@ -434,7 +436,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
         }
         int32_t commandEntries = static_cast<int32_t>(word);
         script += 4;
-        if (commandEntries > kS16Max) {
+        if (commandEntries > S16_MAX) {
             sim.outcome = ScriptSimulation::Outcome::Hang;
             sim.detail = "unknown command " + Hex(static_cast<uint32_t>(command)) + " with " +
                          std::to_string(commandEntries) + " entries";
@@ -444,7 +446,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
             script += 0x30u * static_cast<uint32_t>(commandEntries);
         }
     }
-    if (i == kMaxCommands) {
+    if (i == MAX_COMMANDS) {
         sim.outcome = ScriptSimulation::Outcome::Hang;
         sim.detail = "command loop never reaches totalEntries";
         return sim;
@@ -458,7 +460,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
     sim.detail = firstCommand + ", " + std::to_string(commandCount) + " commands" + destination;
     sim.script = { commandCount, sim.frameCount };
     sim.script.insert(sim.script.end(), commands.begin(), commands.end());
-    sim.script.push_back(kCsCmdEndOfScript);
+    sim.script.push_back(CS_CMD_END_OF_SCRIPT);
     sim.script.push_back(0);
     return sim;
 }

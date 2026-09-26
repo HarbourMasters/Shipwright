@@ -7,20 +7,20 @@ namespace n64heap {
 
 // ---- Actor heap ----
 
-constexpr uint32_t kZeldaArenaStart = 0x801db2c0;
-constexpr uint32_t kCsScriptAddress = 0x801caac8; // &play->csCtx.script
-constexpr uint32_t kArenaNodeSize = 0x30;
-constexpr uint32_t kAbsoluteSpaceSize = 0x24e0;
-constexpr uint32_t kGiObjectSegmentSize = 0x2008;
-constexpr uint32_t kJntSphElementSize = 0x40;
-constexpr uint32_t kTrisElementSize = 0x5c;
-constexpr uint32_t kSkinLimbVtxSize = 0xc;
-constexpr uint32_t kCameraSize = 0x16c;
-constexpr uint32_t kPointerSize = 4;
-constexpr int16_t kActorMagicDark = 0xf4;
-constexpr uint32_t kActorBaseSize = 0x13c;
-constexpr uint32_t kActorOverlayTable = 0x800e8b70;
-constexpr uint32_t kActorOverlayEntrySize = 0x20;
+constexpr uint32_t ZELDA_ARENA_START = 0x801db2c0;
+constexpr uint32_t CS_SCRIPT_ADDRESS = 0x801caac8; // &play->csCtx.script
+constexpr uint32_t ARENA_NODE_SIZE = 0x30;
+constexpr uint32_t ABSOLUTE_SPACE_SIZE = 0x24e0;
+constexpr uint32_t GI_OBJECT_SEGMENT_SIZE = 0x2008;
+constexpr uint32_t JNT_SPH_ELEMENT_SIZE = 0x40;
+constexpr uint32_t TRIS_ELEMENT_SIZE = 0x5c;
+constexpr uint32_t SKIN_LIMB_VTX_SIZE = 0xc;
+constexpr uint32_t CAMERA_SIZE = 0x16c;
+constexpr uint32_t POINTER_SIZE = 4;
+constexpr int16_t MAGIC_DARK_ACTOR_ID = 0xf4;
+constexpr uint32_t ACTOR_BASE_SIZE = 0x13c;
+constexpr uint32_t ACTOR_OVERLAY_TABLE = 0x800e8b70;
+constexpr uint32_t ACTOR_OVERLAY_ENTRY_SIZE = 0x20;
 
 enum class AllocType : uint8_t { Normal, Absolute, Persistent };
 
@@ -31,8 +31,8 @@ struct ActorEntry {
     bool valid;
 };
 
-constexpr int kActorCount = 471;
-constexpr ActorEntry kActors[kActorCount] = {
+constexpr int ACTOR_COUNT = 471;
+constexpr ActorEntry ACTORS[ACTOR_COUNT] = {
     { 0xa84, 0x0, AllocType::Normal, true }, // 0x000 Player
     { 0, 0, AllocType::Normal, false }, // 0x001 ACTOR_UNSET_1
     { 0x918, 0x58b0, AllocType::Normal, true }, // 0x002 En_Test
@@ -516,8 +516,8 @@ struct ScriptEntry {
     const char* name; // "<scene file>/<symbol>" for scene data
 };
 
-constexpr int kScriptCount = 188;
-constexpr ScriptEntry kScripts[kScriptCount] = {
+constexpr int SCRIPT_COUNT = 188;
+constexpr ScriptEntry SCRIPTS[SCRIPT_COUNT] = {
     { { 28, 3000, 10, 3 }, false, 0x29, 0x1a70, "" }, // En_Zl1 +0x1a70
     { { 8, 3000, 21, 1 }, false, 0x3e, 0xff0, "" }, // Bg_Treemouth +0xff0
     { { 8, 3000, 21, 1 }, false, 0x3e, 0x1260, "" }, // Bg_Treemouth +0x1260
@@ -715,33 +715,33 @@ struct RomFile {
     uint32_t size;
 };
 
-constexpr uint32_t kKaleidoArea = 0x80389310;
-constexpr uint32_t kKaleidoAreaSize = 0x26740;
-constexpr uint32_t kMessageArea = 0x80387110;
-constexpr uint32_t kMessageAreaSize = 0x2200;
-constexpr uint32_t kEffectArea = 0x80385130;
-constexpr uint32_t kEffectAreaSize = 0x1fe0;
-constexpr uint32_t kPauseRenderTextureSize = 0x3800;
-constexpr uint32_t kPauseKeepBufferSize = 0x5000;
-constexpr uint32_t kPauseJointTableSize = 24 * 6;
-constexpr uint32_t kPauseCoverageSize = 64 * 112;
-constexpr uint32_t kItemIconSize = 32 * 32 * 4;
-constexpr uint32_t kItemNameTexSize = 0x400;
-constexpr uint32_t kMapNameTex1Size = 0x400;
-constexpr uint32_t kMapNameTex2Size = 0xA00;
-constexpr int kWorldMapAreaCount = 22;
+constexpr uint32_t KALEIDO_AREA = 0x80389310;
+constexpr uint32_t KALEIDO_AREA_SIZE = 0x26740;
+constexpr uint32_t MESSAGE_AREA = 0x80387110;
+constexpr uint32_t MESSAGE_AREA_SIZE = 0x2200;
+constexpr uint32_t EFFECT_AREA = 0x80385130;
+constexpr uint32_t EFFECT_AREA_SIZE = 0x1fe0;
+constexpr uint32_t PAUSE_RENDER_TEXTURE_SIZE = 0x3800;
+constexpr uint32_t PAUSE_KEEP_BUFFER_SIZE = 0x5000;
+constexpr uint32_t PAUSE_JOINT_TABLE_SIZE = 24 * 6;
+constexpr uint32_t PAUSE_COVERAGE_SIZE = 64 * 112;
+constexpr uint32_t ITEM_ICON_SIZE = 32 * 32 * 4;
+constexpr uint32_t ITEM_NAME_TEX_SIZE = 0x400;
+constexpr uint32_t MAP_NAME_TEX1_SIZE = 0x400;
+constexpr uint32_t MAP_NAME_TEX2_SIZE = 0xA00;
+constexpr int WORLD_MAP_AREA_COUNT = 22;
 
-constexpr RomFile kFileIconItemStatic = { 0x7bd000, 0x888a0 };
-constexpr RomFile kFileIconItem24Static = { 0x846000, 0xb400 };
-constexpr RomFile kFileIconItemFieldStatic = { 0x852000, 0xb930 };
-constexpr RomFile kFileIconItemDungeonStatic = { 0x85e000, 0x1d80 };
-constexpr RomFile kFileIconItemGameoverStatic = { 0x860000, 0x3300 };
-constexpr RomFile kFileIconItemJpnStatic = { 0x864000, 0xdc80 };
-constexpr RomFile kFileIconItemNesStatic = { 0x872000, 0xdc80 };
-constexpr RomFile kFileMapNameStatic = { 0x8be000, 0x21800 };
+constexpr RomFile FILE_ICON_ITEM_STATIC = { 0x7bd000, 0x888a0 };
+constexpr RomFile FILE_ICON_ITEM_24_STATIC = { 0x846000, 0xb400 };
+constexpr RomFile FILE_ICON_ITEM_FIELD_STATIC = { 0x852000, 0xb930 };
+constexpr RomFile FILE_ICON_ITEM_DUNGEON_STATIC = { 0x85e000, 0x1d80 };
+constexpr RomFile FILE_ICON_ITEM_GAMEOVER_STATIC = { 0x860000, 0x3300 };
+constexpr RomFile FILE_ICON_ITEM_JPN_STATIC = { 0x864000, 0xdc80 };
+constexpr RomFile FILE_ICON_ITEM_NES_STATIC = { 0x872000, 0xdc80 };
+constexpr RomFile FILE_MAP_NAME_STATIC = { 0x8be000, 0x21800 };
 
-constexpr int kObjectCount = 402;
-constexpr RomFile kObjects[kObjectCount] = {
+constexpr int OBJECT_COUNT = 402;
+constexpr RomFile OBJECTS[OBJECT_COUNT] = {
     { 0x0, 0x0 }, // 0x000 
     { 0xf03000, 0x5bce0 }, // 0x001 gameplay_keep
     { 0xf5f000, 0xd330 }, // 0x002 gameplay_field_keep
@@ -1146,8 +1146,8 @@ constexpr RomFile kObjects[kObjectCount] = {
     { 0x196d000, 0x1ce20 }, // 0x191 object_zl4
 };
 
-constexpr int16_t kObjectGameplayKeep = 0x1;
-constexpr int16_t kLinkObjectIds[2] = { 0x14, 0x15 }; // Indexed by link age
+constexpr int16_t GAMEPLAY_KEEP_OBJECT_ID = 0x1;
+constexpr int16_t LINK_OBJECT_IDS[2] = { 0x14, 0x15 }; // Indexed by link age
 
 struct SceneEntry {
     RomFile file;
@@ -1155,8 +1155,8 @@ struct SceneEntry {
     bool dungeon;
 };
 
-constexpr int kSceneCount = 110;
-constexpr SceneEntry kScenes[kSceneCount] = {
+constexpr int SCENE_COUNT = 110;
+constexpr SceneEntry SCENES[SCENE_COUNT] = {
     { { 0x2499000, 0xda10 }, 0x80377720, true }, // 0x00 ydan_scene
     { { 0x1f12000, 0x15140 }, 0x8036fff0, true }, // 0x01 ddan_scene
     { { 0x273e000, 0x157c0 }, 0x8036f970, true }, // 0x02 bdan_scene
@@ -1270,15 +1270,15 @@ constexpr SceneEntry kScenes[kSceneCount] = {
 };
 
 enum class AgeReq : uint8_t { Adult, Child, None };
-constexpr uint32_t kNoIcon = 0xFFFFFFFF;
+constexpr uint32_t NO_ICON = 0xFFFFFFFF;
 
 struct ItemIcon {
     uint32_t offset; // Offset in icon_item_static
     AgeReq ageReq;
 };
 
-constexpr int kItemIconCount = 86;
-constexpr ItemIcon kItemIcons[kItemIconCount] = {
+constexpr int ITEM_ICON_COUNT = 86;
+constexpr ItemIcon ITEM_ICONS[ITEM_ICON_COUNT] = {
     { 0x0, AgeReq::Child }, // gItemIconDekuStickTex
     { 0x1000, AgeReq::None }, // gItemIconDekuNutTex
     { 0x2000, AgeReq::None }, // gItemIconBombTex
@@ -1368,8 +1368,8 @@ constexpr ItemIcon kItemIcons[kItemIconCount] = {
 };
 
 // Cutscene commands with their own handler; any other command is skipped
-constexpr int kCutsceneCommandCount = 113;
-constexpr int32_t kCutsceneCommands[kCutsceneCommandCount] = {
+constexpr int CUTSCENE_COMMAND_COUNT = 113;
+constexpr int32_t CUTSCENE_COMMANDS[CUTSCENE_COMMAND_COUNT] = {
     0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xe, 0xf,
     0x10, 0x11, 0x12, 0x13, 0x17, 0x18, 0x19, 0x1d, 0x1e, 0x1f, 0x22, 0x23,
     0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
@@ -1381,7 +1381,7 @@ constexpr int32_t kCutsceneCommands[kCutsceneCommandCount] = {
     0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c,
     0x8d, 0x8e, 0x8f, 0x90, 0x3e8,
 };
-constexpr int32_t kCsCmdEndOfScript = -1;
+constexpr int32_t CS_CMD_END_OF_SCRIPT = -1;
 
 // N64 files stored in oot.o2r, sorted by vrom
 struct ArchiveFile {
@@ -1390,8 +1390,8 @@ struct ArchiveFile {
     const char* path;
 };
 
-constexpr int kArchiveFileCount = 489;
-constexpr ArchiveFile kArchiveFiles[kArchiveFileCount] = {
+constexpr int ARCHIVE_FILE_COUNT = 489;
+constexpr ArchiveFile ARCHIVE_FILES[ARCHIVE_FILE_COUNT] = {
     { 0x7bd000, 0x888a0, "n64heap/icon_item_static/data" },
     { 0x846000, 0xb400, "n64heap/icon_item_24_static/data" },
     { 0x852000, 0xb930, "n64heap/icon_item_field_static/data" },
@@ -1892,8 +1892,8 @@ struct SceneLayout {
     uint32_t objectSpaceSize;
 };
 
-constexpr int kSceneLayoutCount = 303;
-constexpr SceneLayout kSceneLayouts[kSceneLayoutCount] = {
+constexpr int SCENE_LAYOUT_COUNT = 303;
+constexpr SceneLayout SCENE_LAYOUTS[SCENE_LAYOUT_COUNT] = {
     { 0x00, 0, 0x49600, 0xfa000 }, // ydan
     { 0x01, 0, 0x44580, 0xfa000 }, // ddan
     { 0x02, 0, 0x5a9c0, 0xfa000 }, // bdan
@@ -2202,8 +2202,8 @@ constexpr SceneLayout kSceneLayouts[kSceneLayoutCount] = {
 // ---- Effects ----
 
 // Overlay size of each effect type, 0 when the effect is part of code
-constexpr int kEffectCount = 37;
-constexpr uint32_t kEffectOverlaySizes[kEffectCount] = {
+constexpr int EFFECT_COUNT = 37;
+constexpr uint32_t EFFECT_OVERLAY_SIZES[EFFECT_COUNT] = {
     0x830, // 0x00 Effect_Ss_Dust
     0x670, // 0x01 Effect_Ss_KiraKira
     0x420, // 0x02 Effect_Ss_Bomb

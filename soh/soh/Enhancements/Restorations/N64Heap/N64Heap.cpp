@@ -64,16 +64,16 @@ CutsceneDecision sDecision;
 ActorMemoryCache sActorMemory;
 
 // Held so the resource manager cannot unload the data while the model reads it
-std::shared_ptr<Ship::Blob> sArchiveData[n64heap::kArchiveFileCount];
-bool sArchiveLoaded[n64heap::kArchiveFileCount];
+std::shared_ptr<Ship::Blob> sArchiveData[n64heap::ARCHIVE_FILE_COUNT];
+bool sArchiveLoaded[n64heap::ARCHIVE_FILE_COUNT];
 
 // Index of the last archive file starting at or before vrom
 int FindArchiveFile(uint32_t vrom) {
     int low = 0;
-    int high = n64heap::kArchiveFileCount - 1;
+    int high = n64heap::ARCHIVE_FILE_COUNT - 1;
     while (low < high) {
         int middle = (low + high + 1) / 2;
-        if (n64heap::kArchiveFiles[middle].vrom <= vrom) {
+        if (n64heap::ARCHIVE_FILES[middle].vrom <= vrom) {
             low = middle;
         } else {
             high = middle - 1;
@@ -85,7 +85,7 @@ int FindArchiveFile(uint32_t vrom) {
 // N64 file data stored in oot.o2r as "n64heap/<file>/data" when the assets come from an NTSC 1.2 ROM
 bool ReadN64File(uint32_t vrom, uint8_t* out, uint32_t size) {
     int index = FindArchiveFile(vrom);
-    const n64heap::ArchiveFile& file = n64heap::kArchiveFiles[index];
+    const n64heap::ArchiveFile& file = n64heap::ARCHIVE_FILES[index];
     if (vrom < file.vrom || vrom + size > file.vrom + file.size) {
         return false;
     }
@@ -194,17 +194,17 @@ void UpdatePointer() {
     }
     sCutscenePointer = resolved ? value : 0;
     if (resolved) {
-        SPDLOG_INFO("[N64Heap] csCtx.script ({:#010x}) = {:#010x} ({})", n64heap::kCsScriptAddress, value, what);
+        SPDLOG_INFO("[N64Heap] csCtx.script ({:#010x}) = {:#010x} ({})", n64heap::CS_SCRIPT_ADDRESS, value, what);
     }
     sVerdictDirty = true;
 }
 
 bool InActorHeap(uint32_t address) {
-    return address >= n64heap::kZeldaArenaStart && address < n64heap::kZeldaArenaStart + Shadow().ArenaSize();
+    return address >= n64heap::ZELDA_ARENA_START && address < n64heap::ZELDA_ARENA_START + Shadow().ArenaSize();
 }
 
 n64heap::ActorMemory RebuildActor(const Actor* actor) {
-    return n64heap::ActorMemory(actor, n64heap::kActors[actor->id].instanceSize,
+    return n64heap::ActorMemory(actor, n64heap::ACTORS[actor->id].instanceSize,
                                 [](const void* host) { return Shadow().AddressOf(host); });
 }
 
@@ -361,14 +361,14 @@ void* FilterCutsceneScript(void* script) {
     using Outcome = n64heap::ScriptSimulation::Outcome;
     switch (sim.outcome) {
         case Outcome::EndsImmediately:
-            replacement = { sim.totalEntries, sim.frameCount, n64heap::kCsCmdEndOfScript, 0 };
+            replacement = { sim.totalEntries, sim.frameCount, n64heap::CS_CMD_END_OF_SCRIPT, 0 };
             break;
         case Outcome::NoCommands:
-            replacement = { 0, sim.frameCount, n64heap::kCsCmdEndOfScript, 0 };
+            replacement = { 0, sim.frameCount, n64heap::CS_CMD_END_OF_SCRIPT, 0 };
             break;
         case Outcome::Hang:
             // The N64 locks up in the parser, so play an endless cutscene that does nothing instead
-            replacement = { 0, INT32_MAX, n64heap::kCsCmdEndOfScript, 0 };
+            replacement = { 0, INT32_MAX, n64heap::CS_CMD_END_OF_SCRIPT, 0 };
             break;
         case Outcome::RunsCommands:
             replacement = sim.script;
@@ -420,5 +420,5 @@ RegisterShipInitFunc sInitFunc(RegisterN64Heap, { CVAR_N64_HEAP_NAME });
 } // namespace
 
 extern "C" int N64Heap_HasN64Data(void) {
-    return ResourceMgr_FileExists(n64heap::kArchiveFiles[0].path) ? 1 : 0;
+    return ResourceMgr_FileExists(n64heap::ARCHIVE_FILES[0].path) ? 1 : 0;
 }
