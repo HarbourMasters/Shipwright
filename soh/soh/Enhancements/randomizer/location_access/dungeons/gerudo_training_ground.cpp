@@ -24,10 +24,10 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Exits
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,         true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_SAND_ROOM,        true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_DINALFOS,         true),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE,     true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_ENTRYWAY,     true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_SAND_ROOM,    true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_DINALFOS,     true),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_CENTRAL_MAZE, true),
     });
 
     areaTable[RR_GERUDO_TRAINING_GROUND_SAND_ROOM] = Region("Gerudo Training Ground Sand Room", SCENE_GERUDO_TRAINING_GROUND, {}, {
@@ -73,7 +73,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST, logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY,         true),
-        LOCATION(RC_GTG_UNDER_LEDGE_LAVA_SILVER,                               true),
+        LOCATION(RC_GTG_UNDER_LEDGE_LAVA_SILVER,                     true),
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_LAVA_ROOM,             true),
