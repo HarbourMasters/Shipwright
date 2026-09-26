@@ -7,6 +7,7 @@
 #include <memory>
 #include <optional>
 #include <unordered_map>
+#include <utility>
 
 #include <libultraship/libultra.h>
 #include <ship/Context.h>
@@ -36,6 +37,8 @@ constexpr auto kFadeOutWaitSlack = std::chrono::milliseconds(500);
 constexpr uint8_t kStopGraceFrames = 3;
 // Two audio frames: what the 0x100100FF stops (Ganondorf's organ, boss defeat) decode to. A cut, not a fade.
 constexpr uint16_t kCutFadeTimer = 8;
+// Audio_PlaySceneSequence's resume fade, as the seq command scales it.
+constexpr uint16_t kResumeFadeTimer = 0x1E << 3;
 
 struct Fades {
     float inSeconds;
@@ -57,6 +60,8 @@ std::array<bool, kNumSeqPlayers> sStopSaved{};
 std::array<uint8_t, kNumSeqPlayers> sStopSeqId{};
 std::array<uint8_t, kNumSeqPlayers> sStopSeqArgs{};
 bool sStartingShadow = false;
+std::array<bool, kNumSeqPlayers> sResumeRequested{};
+std::unordered_map<uint16_t, const void*> sStreamedSource;
 
 uint16_t SecondsToFadeTimer(float seconds) {
     return static_cast<uint16_t>((seconds * kAudioFramesPerSecond * kFadeTimerUnitsPerAudioFrame) + 0.5f);
@@ -131,7 +136,17 @@ const void* FindStreamedNoteSource(uint8_t playerIdx) {
 }
 
 void PrepareStartingTrack(uint8_t playerIdx, uint8_t seqId, uint16_t* fadeTimer) {
-    const Fades* fades = FindFades(ResolveSeqId(playerIdx, seqId));
+    const uint16_t resolvedSeqId = ResolveSeqId(playerIdx, seqId);
+    const bool resume = std::exchange(sResumeRequested.at(playerIdx), false);
+    const auto source = sStreamedSource.find(resolvedSeqId);
+    if (resume && source != sStreamedSource.end() && SOH_OpusStream_ArmContinue(source->second)) {
+        if (*fadeTimer == 0) {
+            *fadeTimer = kResumeFadeTimer;
+        }
+        return;
+    }
+
+    const Fades* fades = FindFades(resolvedSeqId);
     if (*fadeTimer == 0 && fades != nullptr) {
         *fadeTimer = SecondsToFadeTimer(fades->inSeconds);
     }
@@ -273,9 +288,21 @@ extern "C" uint8_t SOH_StreamedMusic_PrepareStart(uint8_t playerIdx, uint8_t seq
     return 1;
 }
 
+extern "C" void SOH_StreamedMusic_ResumeNextStart(uint8_t playerIdx) {
+    sResumeRequested.at(playerIdx) = true;
+}
+
 extern "C" void SOH_StreamedMusic_Update() {
     SOH_OpusStream_Update();
     for (uint8_t playerIdx = 0; playerIdx < kNumSeqPlayers; playerIdx++) {
+        const std::optional<uint16_t> streamedSeq = sPlayerStreamedSeq.at(playerIdx);
+        if (streamedSeq.has_value()) {
+            const void* source = FindStreamedNoteSource(playerIdx);
+            if (source != nullptr) {
+                sStreamedSource.insert_or_assign(streamedSeq.value(), source);
+            }
+        }
+
         uint8_t& grace = sStopGrace.at(playerIdx);
         if (grace != 0 && --grace == 0) {
             QueueFadeOut(playerIdx, FadeOutTimerOn(playerIdx));
@@ -309,6 +336,7 @@ extern "C" void SOH_StreamedMusic_Update() {
 extern "C" void SOH_StreamedMusic_Reset() {
     sFadeOutDeadline.fill(std::nullopt);
     sPendingStart.fill(PendingStart{});
+    sResumeRequested.fill(false);
     for (uint8_t playerIdx = 0; playerIdx < kNumSeqPlayers; playerIdx++) {
         ClearStopRecord(playerIdx);
     }

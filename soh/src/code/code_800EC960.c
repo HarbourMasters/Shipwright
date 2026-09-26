@@ -3,6 +3,7 @@
 #include "global.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/StreamedMusic.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
@@ -4846,6 +4847,7 @@ void Audio_PlaySceneSequence(u16 seqId) {
             if ((sSeqResumePoint & 0x3F) != 0) {
                 sp27 = 0x1E;
             }
+            SOH_StreamedMusic_ResumeNextStart(SEQ_PLAYER_BGM_MAIN);
 
             Audio_PlaySequenceWithSeqPlayerIO(SEQ_PLAYER_BGM_MAIN, seqId, sp27, 7, sSeqResumePoint);
 
