@@ -456,6 +456,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (ForcedDialogIsDisabled(FORCED_DIALOG_SKIP_NPC) &&
                 !(gPlayState->sceneNum == SCENE_ZORAS_RIVER && IS_RANDO && RAND_GET_OPTION(RSK_FROGS_HINT))) {
                 *should = false;
+
+                // We should still come out of a softlock if the setting was changed during forced dialogue
+                if (GET_PLAYER(gPlayState)->csAction != 7) {
+                    Player_SetCsAction(gPlayState, NULL, 7);
+                }
             }
 
             // If it's near a jailed carpenter, skip it along with introduction of Gerudo mini-boss
