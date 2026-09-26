@@ -5016,8 +5016,8 @@ void func_800F5C2C(void) {
 void Audio_PlayFanfare(u16 seqId) {
     u16 curSeqId;
     u32 outNumFonts;
-    u8* curFontId;
-    u8* requestedFontId;
+    u16* curFontId;
+    u16* requestedFontId;
 
     curSeqId = func_800FA0B4(SEQ_PLAYER_FANFARE);
 

@@ -326,7 +326,7 @@ SoundFontSound* Audio_InstrumentGetSound(Instrument* instrument, s32 semitone) {
 Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
     Instrument* inst;
 
-    if (fontId == 0xFF) {
+    if (fontId == FONT_ID_NONE) {
         return NULL;
     }
 
@@ -354,7 +354,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
 Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
     Drum* drum = NULL;
 
-    if (fontId == 0xFF) {
+    if (fontId == FONT_ID_NONE) {
         return NULL;
     }
 
@@ -378,7 +378,7 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
     SoundFontSound* sfx = NULL;
 
-    if (fontId == 0xFF) {
+    if (fontId == FONT_ID_NONE) {
         return NULL;
     }
 
@@ -404,7 +404,7 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
 }
 
 s32 Audio_SetFontInstrument(s32 instrumentType, s32 fontId, s32 index, void* value) {
-    if (fontId == 0xFF) {
+    if (fontId == FONT_ID_NONE) {
         return -1;
     }
 
