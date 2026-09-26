@@ -2,7 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include <unordered_map>
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
 #include "z64.h"
@@ -15,11 +15,14 @@ extern "C" {
 // 2 corresponds to Vanilla (1x)
 #define CVAR CVarGetInteger(CVAR_NAME, 2)
 
-// Tracks the last recorded health to detect when a boss is initialized or resets
-static std::unordered_map<Actor*, int> sLastBossHealth;
+// ObjectExtension structure to track the last recorded health for each boss
+struct BossHealthData {
+    int lastHealth = 0;
+};
+static ObjectExtension::Register<BossHealthData> BossHealthDataRegister;
 
 // Combobox index to multiplier value mapping
-// 0: 0.50x, 1: 0.75x, 2: Vanilla (1x), 3: 1.25x, 4: 1.50x, 5: 1.75x, 6: 2.0x
+// 0: 0.5x, 1: 0.75x, 2: Vanilla (1x), 3: 1.25x, 4: 1.5x, 5: 1.75x, 6: 2x
 static const float sMultipliers[] = { 0.50f, 0.75f, 1.0f, 1.25f, 1.50f, 1.75f, 2.0f };
 
 /*
@@ -54,8 +57,16 @@ void HandleBossHealthMultiplier(void* refActor) {
     s16 currentHealth = GetBossHealth(actor);
 
     if (currentHealth > 0) {
+        // Check if the boss already has our health extension attached
+        bool isNew = !ObjectExtension::GetInstance().Has<BossHealthData>(actor);
+        if (isNew) {
+            ObjectExtension::GetInstance().Set<BossHealthData>(actor, BossHealthData{ 0 });
+        }
+
+        BossHealthData* healthData = ObjectExtension::GetInstance().Get<BossHealthData>(actor);
+
         // Apply multiplier on initial spawn or if health was externally restored
-        if (sLastBossHealth.count(actor) == 0 || currentHealth > sLastBossHealth[actor]) {
+        if (isNew || currentHealth > healthData->lastHealth) {
             int option = CVAR;
             if (option < 0 || option > 6) {
                 option = 2;
@@ -72,13 +83,8 @@ void HandleBossHealthMultiplier(void* refActor) {
             SetBossHealth(actor, currentHealth);
         }
 
-        sLastBossHealth[actor] = currentHealth;
+        healthData->lastHealth = currentHealth;
     }
-}
-
-void ClearBossHealthMultiplier(void* refActor) {
-    Actor* actor = static_cast<Actor*>(refActor);
-    sLastBossHealth.erase(actor);
 }
 
 // Handles Barinade (ACTOR_BOSS_VA) whose health is tracked via a file-static variable
@@ -103,9 +109,7 @@ void HandleBarinadeHealthMultiplier(s8* phase4Hp) {
 }
 
 // Register conditional hooks for each boss with its own static hook ID
-#define REGISTER_BOSS_HOOKS(bossId)                                             \
-    COND_ID_HOOK(OnActorUpdate, bossId, CVAR != 2, HandleBossHealthMultiplier); \
-    COND_ID_HOOK(OnActorDestroy, bossId, true, ClearBossHealthMultiplier);
+#define REGISTER_BOSS_HOOKS(bossId) COND_ID_HOOK(OnActorUpdate, bossId, CVAR != 2, HandleBossHealthMultiplier);
 
 void RegisterBossHealthMultiplier() {
     REGISTER_BOSS_HOOKS(ACTOR_BOSS_GOMA);

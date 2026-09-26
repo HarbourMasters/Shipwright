@@ -134,7 +134,7 @@ static const std::map<int32_t, const char*> bonkDamageValues = {
 
 static const std::map<int32_t, const char*> bossHealthOptions = {
     { 0, "Half (0.5x)" }, { 1, "0.75x" }, { 2, "Vanilla (1x)" }, { 3, "1.25x" },
-    { 4, "1.50x" },       { 5, "1.75x" }, { 6, "Double (2x)" },
+    { 4, "1.5x" },        { 5, "1.75x" }, { 6, "Double (2x)" },
 };
 
 static const std::map<int32_t, const char*> dampeDropRates = {
