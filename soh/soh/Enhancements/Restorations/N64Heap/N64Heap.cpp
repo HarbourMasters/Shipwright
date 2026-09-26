@@ -53,8 +53,15 @@ struct ActorMemoryCache {
     std::unique_ptr<n64heap::ActorMemory> memory;
 };
 
+// The N64 always boots through the title screen, which loads Hyrule Field with cutscene layer 7
+constexpr int16_t TITLE_SCREEN_SCENE = 0x51;
+constexpr uint8_t TITLE_SCREEN_LAYER = 7;
+constexpr const char* TITLE_SCREEN_SCRIPT = "spot00_scene/gHyruleFieldTitleScreenCs";
+
 n64heap::ObjectSpace sObjectSpace;
 void* sLastHostScript = nullptr;
+// Until the pointer first changes, its value may be unset or point at freed data, so it is not read
+bool sAwaitingPointerBaseline = true;
 uint32_t sCutscenePointer = 0;
 std::string sLastVerdict;
 n64heap::Stats sLastStats;
@@ -163,8 +170,25 @@ void SyncObjectSpace() {
     }
 }
 
-void UpdatePointer() {
+uint32_t TitleScreenScript() {
+    for (const n64heap::ScriptEntry& entry : n64heap::SCRIPTS) {
+        if (entry.isScene && strcmp(entry.name, TITLE_SCREEN_SCRIPT) == 0) {
+            return entry.value;
+        }
+    }
+    return 0;
+}
+
+// segmentReadable is true when the game is running the script, so the pointer is known to hold real data
+void UpdatePointer(bool segmentReadable = false) {
     void* script = gPlayState->csCtx.segment;
+    if (sAwaitingPointerBaseline && !segmentReadable) {
+        // Records the pointer without reading it; only later changes are real writes the module can follow
+        sAwaitingPointerBaseline = false;
+        sLastHostScript = script;
+        return;
+    }
+    sAwaitingPointerBaseline = false;
     if (script == sLastHostScript) {
         return;
     }
@@ -336,7 +360,7 @@ void* FilterCutsceneScript(void* script) {
         return script;
     }
     // The pointer may have been set earlier this frame
-    UpdatePointer();
+    UpdatePointer(true);
     if (sCutscenePointer == 0) {
         return script;
     }
@@ -389,9 +413,12 @@ void* FilterCutsceneScript(void* script) {
 void RegisterN64Heap() {
     // Everything restarts at the next scene, when the arena is created again
     Shadow().Reset();
+    // Start from the state the title screen leaves, as Ship can boot straight to a file
     sObjectSpace = n64heap::ObjectSpace{};
+    sObjectSpace.SceneInit(TITLE_SCREEN_SCENE, TITLE_SCREEN_LAYER);
     sLastHostScript = nullptr;
-    sCutscenePointer = 0;
+    sAwaitingPointerBaseline = true;
+    sCutscenePointer = TitleScreenScript();
     sLastVerdict.clear();
     sLastPauseState = 0;
     sVerdictDirty = false;
