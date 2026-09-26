@@ -8,6 +8,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioCollection.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/StreamedMusic.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <stdio.h>
@@ -1405,6 +1406,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         // ensure that what would be the next sequence number is actually unassigned in AudioCollection
         int j = i - startingSeqNum;
         SequenceData* sDat = ResourceMgr_LoadSeqPtrByName(customSeqList[j]);
+        // Read before the branch below rewrites numFonts.
+        u8 isStreamed = (sDat->numFonts == -1);
 
         if (sDat->numFonts == -1) {
             uint64_t crc;
@@ -1449,6 +1452,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         sDat->seqNumber = seqNum;
         LUSLOG_DEBUG("Registered custom sequence \"%s\" as seqNum %d", customSeqList[j], seqNum);
         sequenceMap[sDat->seqNumber] = strdup(customSeqList[j]);
+        SOH_StreamedMusic_RegisterSequence(sDat->seqNumber, isStreamed, customSeqList[j]);
         seqNum++;
     }
 
