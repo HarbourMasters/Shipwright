@@ -1452,7 +1452,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         sDat->seqNumber = seqNum;
         LUSLOG_DEBUG("Registered custom sequence \"%s\" as seqNum %d", customSeqList[j], seqNum);
         sequenceMap[sDat->seqNumber] = strdup(customSeqList[j]);
-        SOH_StreamedMusic_SetStreamed(sDat->seqNumber, isStreamed);
+        SOH_StreamedMusic_RegisterSequence(sDat->seqNumber, isStreamed, customSeqList[j]);
         seqNum++;
     }
 
