@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x012DCF50 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x970
+  symbol: gN64Heap_object_ouke_haka

@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x012DC0A0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0xD20
+  symbol: gN64Heap_object_gi_sword_1

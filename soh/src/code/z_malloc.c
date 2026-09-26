@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 
 #define LOG_SEVERITY_NOLOG 0
@@ -30,6 +31,7 @@ void* ZeldaArena_Malloc(size_t size) {
 
 void* ZeldaArena_MallocDebug(size_t size, const char* file, s32 line) {
     void* ptr = __osMallocDebug(&sZeldaArena, size, file, line);
+    GameInteractor_ExecuteOnZeldaArenaAlloc(ptr, size, file, false);
 
     ZeldaArena_CheckPointer(ptr, size, "zelda_malloc_DEBUG", "確保"); // "Secure"
     return ptr;
@@ -44,6 +46,7 @@ void* ZeldaArena_MallocR(size_t size) {
 
 void* ZeldaArena_MallocRDebug(size_t size, const char* file, s32 line) {
     void* ptr = __osMallocRDebug(&sZeldaArena, size, file, line);
+    GameInteractor_ExecuteOnZeldaArenaAlloc(ptr, size, file, true);
 
     ZeldaArena_CheckPointer(ptr, size, "zelda_malloc_r_DEBUG", "確保"); // "Secure"
     return ptr;
@@ -66,6 +69,7 @@ void ZeldaArena_Free(void* ptr) {
 }
 
 void ZeldaArena_FreeDebug(void* ptr, const char* file, s32 line) {
+    GameInteractor_ExecuteOnZeldaArenaFree(ptr);
     __osFreeDebug(&sZeldaArena, ptr, file, line);
 }
 
@@ -98,6 +102,7 @@ void ZeldaArena_Check() {
 void ZeldaArena_Init(void* start, size_t size) {
     gZeldaArenaLogSeverity = LOG_SEVERITY_NOLOG;
     __osMallocInit(&sZeldaArena, start, size);
+    GameInteractor_ExecuteOnZeldaArenaInit();
 }
 
 void ZeldaArena_Cleanup() {

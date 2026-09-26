@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x012AE950 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x3C90
+  symbol: gN64Heap_object_spot01_matoya

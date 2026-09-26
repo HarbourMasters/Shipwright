@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00F1ED80 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x1290
+  symbol: gN64Heap_object_mjin
