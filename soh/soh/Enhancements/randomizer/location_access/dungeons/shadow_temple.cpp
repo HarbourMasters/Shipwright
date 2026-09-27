@@ -10,7 +10,7 @@ void RegionTable_Init_ShadowTemple() {
     // Vanilla/MQ Decider
     areaTable[RR_SHADOW_TEMPLE_ENTRYWAY] = Region("Shadow Temple Entryway", SCENE_SHADOW_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_BEGINNING,    ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
+        ENTRANCE(RR_SHADOW_TEMPLE_BEGINNING,    ctx->GetDungeon(SHADOW_TEMPLE)->IsVanilla() && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || logic->CanMegajump())),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_BEGINNING, ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ()),
         ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION,  true),
     });
@@ -22,9 +22,9 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN, logic->CanRead()),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_ENTRYWAY,               (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT))),
+        ENTRANCE(RR_SHADOW_TEMPLE_ENTRYWAY,               (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || logic->CanMegajump())),
         ENTRANCE(RR_SHADOW_TEMPLE_WHISPERING_WALLS_START, ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        ENTRANCE(RR_SHADOW_TEMPLE_FIRST_BEAMOS,           (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_POWER_BRACELET) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()))),
+        ENTRANCE(RR_SHADOW_TEMPLE_FIRST_BEAMOS,           (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_POWER_BRACELET) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump())),
     });
 
     areaTable[RR_SHADOW_TEMPLE_WHISPERING_WALLS_START] = Region("Shadow Temple Whispering Walls Start", SCENE_SHADOW_TEMPLE, {
@@ -106,12 +106,14 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_SPINNING_BLADES] = Region("Shadow Temple Spinning Blades", SCENE_SHADOW_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_SHADOW_SILVER_BLADES, (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanGroundJump())) || logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood()),
+        EVENT_ACCESS(LOGIC_SHADOW_SILVER_BLADES, (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanGroundJump())) ||
+                                                 logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood() || (logic->CanMegajump() && logic->EffectiveHealth() > 8)),
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST, logic->HasItem(RG_SHADOW_SILVER_BLADES) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SHADOW_N_UNDER_BLADE_SILVER,            true),
-        LOCATION(RC_SHADOW_TALL_BLOCK_BLADE_SILVER,         (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanGroundJump())) || logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood()),
+        LOCATION(RC_SHADOW_TALL_BLOCK_BLADE_SILVER,         (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanGroundJump())) ||
+                                                                           logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood() || (logic->CanMegajump() && logic->EffectiveHealth() > 8)),
         LOCATION(RC_SHADOW_N_NOOK_BLADE_SILVER,             true),
         LOCATION(RC_SHADOW_W_NOOK_BLADE_SILVER,             true),
         LOCATION(RC_SHADOW_S_UNDER_BLADE_SILVER,            true),
@@ -141,7 +143,7 @@ void RegionTable_Init_ShadowTemple() {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_B2_TO_B3_CORRIDOR_B3,      logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_SHADOW_TEMPLE_UPPER_HUGE_PIT_DOOR_LEDGE, ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT,            logic->IsAdult || logic->CanJumpslash() || logic->BunnyHood() || ctx->GetTrickOption(RT_SHADOW_MQ_HUGE_PIT)),
+        ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT,            logic->IsAdult || logic->CanJumpslash() || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS) || ctx->GetTrickOption(RT_SHADOW_MQ_HUGE_PIT)),
     });
 
     areaTable[RR_SHADOW_TEMPLE_UPPER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple Upper Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
