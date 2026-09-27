@@ -115,4 +115,4 @@ More detailed documentation can be found in the 'docs' directory, including the 
 
 Ship of Harkinian's project lead identifies as a robot. All bad code makes us sad. Some code is written with LLMs. Some isn't.
 
-Please avoid LLM monologues, low information density is not suitable for reviewer's. New contributors should be slow & patient as they learn how to contribute.
+Please avoid LLM monologues, low information density is not suitable for reviewers. New contributors should be slow & patient as they learn how to contribute.
