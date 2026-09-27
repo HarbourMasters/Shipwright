@@ -63,6 +63,9 @@ void* sLastHostScript = nullptr;
 // Until the pointer first changes, its value may be unset or point at freed data, so it is not read
 bool sAwaitingPointerBaseline = true;
 uint32_t sCutscenePointer = 0;
+// The last scene and layer loaded, to tell whether file select was reached through the title screen
+int16_t sLastSceneId = -1;
+uint8_t sLastSceneLayer = 0;
 std::string sLastVerdict;
 n64heap::Stats sLastStats;
 uint16_t sLastPauseState = 0;
@@ -116,6 +119,8 @@ bool ReadN64File(uint32_t vrom, uint8_t* out, uint32_t size) {
 }
 
 void OnSceneInit(int16_t sceneNum) {
+    sLastSceneId = sceneNum;
+    sLastSceneLayer = gSaveContext.sceneLayer;
     sObjectSpace.SceneInit(sceneNum, gSaveContext.sceneLayer);
     sLastPauseState = 0;
     sVerdictDirty = true;
@@ -410,25 +415,41 @@ void* FilterCutsceneScript(void* script) {
     return sDecision.result;
 }
 
-void RegisterN64Heap() {
-    // Everything restarts at the next scene, when the arena is created again
+// The state the title screen leaves; the heap restarts at the next scene, when the arena is created again
+void EnterTitleScreenState() {
     Shadow().Reset();
-    // Start from the state the title screen leaves, as Ship can boot straight to a file
     sObjectSpace = n64heap::ObjectSpace{};
     sObjectSpace.SceneInit(TITLE_SCREEN_SCENE, TITLE_SCREEN_LAYER);
+    sLastSceneId = TITLE_SCREEN_SCENE;
+    sLastSceneLayer = TITLE_SCREEN_LAYER;
     sLastHostScript = nullptr;
     sAwaitingPointerBaseline = true;
     sCutscenePointer = TitleScreenScript();
-    sLastVerdict.clear();
     sLastPauseState = 0;
-    sVerdictDirty = false;
     sDecision = CutsceneDecision{};
     sActorMemory = ActorMemoryCache{};
+}
+
+// The N64 always reaches file select through the title screen, but Ship's boot and reset can skip it
+void OnPresentFileSelect() {
+    if (sLastSceneId != TITLE_SCREEN_SCENE || sLastSceneLayer != TITLE_SCREEN_LAYER) {
+        SPDLOG_INFO("[N64Heap] file select reached without the title screen; the pointer is set to the title screen "
+                    "script as on N64");
+        EnterTitleScreenState();
+    }
+}
+
+void RegisterN64Heap() {
+    // Start from the state the title screen leaves, as Ship can boot straight to a file
+    EnterTitleScreenState();
+    sLastVerdict.clear();
+    sVerdictDirty = false;
 
     COND_HOOK(OnZeldaArenaInit, CVAR_N64_HEAP_VALUE, OnArenaInit);
     COND_HOOK(OnZeldaArenaAlloc, CVAR_N64_HEAP_VALUE, OnArenaAlloc);
     COND_HOOK(OnZeldaArenaFree, CVAR_N64_HEAP_VALUE, OnArenaFree);
     COND_HOOK(OnSceneInit, CVAR_N64_HEAP_VALUE, OnSceneInit);
+    COND_HOOK(OnPresentFileSelect, CVAR_N64_HEAP_VALUE, OnPresentFileSelect);
     COND_HOOK(OnGameFrameUpdate, CVAR_N64_HEAP_VALUE, OnGameFrameUpdate);
     COND_HOOK(OnCutsceneScriptLoad, CVAR_N64_HEAP_VALUE,
               [](uint8_t** script) { *script = static_cast<uint8_t*>(FilterCutsceneScript(*script)); });
