@@ -1726,6 +1726,99 @@ const char* FileChoose_GetSohOptionsTitleTexName(Language lang) {
     }
 }
 
+// #region SOH - quest label, drawn as the 64DD disk label with its lettering covered and our own text on top
+static void FileChoose_DrawQuestLabelBox(FileChooseContext* this, Vtx* labelVtx) {
+    // pieces of the 44x16 disk label as left, right, top, bottom in texels.
+    // "DISK" covers columns 11 to 37 and rows 3 to 12, so that area is filled by stretching row 2 down over it.
+    // filtering reads half a texel lower, so each texel shows half a row higher than its place on the quad.
+    // the stretched piece ends on row 13 rather than 14 so the bottom bevel lines up with the sides again
+    static const s16 pieces[][4] = {
+        { 0, 10, 0, 16 }, { 40, 44, 0, 16 }, { 10, 40, 0, 2 }, { 10, 40, 2, 13 }, { 10, 40, 13, 16 },
+    };
+    const int stretchedPiece = 3;
+    Vtx* vtx = Graph_Alloc(this->state.gfxCtx, ARRAY_COUNT(pieces) * 4 * sizeof(Vtx));
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    for (int i = 0; i < ARRAY_COUNT(pieces); i++) {
+        Vtx* quad = &vtx[i * 4];
+        for (int j = 0; j < 4; j++) {
+            int x = pieces[i][(j & 1) ? 1 : 0];
+            int y = pieces[i][(j & 2) ? 3 : 2];
+            quad[j] = labelVtx[0];
+            quad[j].v.ob[0] = labelVtx[0].v.ob[0] + x;
+            quad[j].v.ob[1] = labelVtx[0].v.ob[1] - y;
+            quad[j].v.tc[0] = x << 5;
+            // filtering adds half a texel, so 2 lands on the middle of row 2
+            quad[j].v.tc[1] = (i == stretchedPiece) ? 2 << 5 : y << 5;
+        }
+    }
+
+    gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelDISKButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                        G_TX_NOLOD);
+    gSPVertex(POLY_OPA_DISP++, vtx, ARRAY_COUNT(pieces) * 4, 0);
+    for (int i = 0; i < ARRAY_COUNT(pieces); i++) {
+        gSP1Quadrangle(POLY_OPA_DISP++, i * 4, i * 4 + 2, i * 4 + 3, i * 4 + 1, 0);
+    }
+
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
+static void FileChoose_DrawQuestLabelText(FileChooseContext* this, Vtx* labelVtx, const char* text, u8 alpha) {
+    // the blank part of the label spans columns 8 to 40 and rows 3 to 12
+    // glyphs are 16x16 with capitals on rows 1 to 12, so 12 makes capitals 9 tall
+    const int glyphSize = 12;
+    const float scale = glyphSize / 16.0f;
+    // the font puts A-Z at 0x0A when loaded in PAL order, 0xAB when loaded in NTSC order
+    int letterA =
+        (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) ? 0x0A : 0xAB;
+    int len = strlen(text);
+    // space letters by their font width, pulled half a unit closer so they stay inside the label
+    float offsets[8];
+    float inkWidth = 0.0f;
+    for (int i = 0; i < len; i++) {
+        offsets[i] = inkWidth;
+        inkWidth += (i + 1 < len) ? Ship_GetCharFontWidth(text[i]) * scale - 0.5f
+                                  : (Ship_GetCharFontWidth(text[i]) - 1) * scale;
+    }
+    // glyph ink starts one texel in from the left of the cell
+    float left = labelVtx[0].v.ob[0] + 24 - inkWidth / 2 - scale;
+    int top = labelVtx[0].v.ob[1] - 3;
+    Vtx* vtx = Graph_Alloc(this->state.gfxCtx, len * 4 * sizeof(Vtx));
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    for (int i = 0; i < len; i++) {
+        Vtx* quad = &vtx[i * 4];
+        for (int j = 0; j < 4; j++) {
+            quad[j] = labelVtx[0];
+            quad[j].v.ob[0] = (int)(left + offsets[i] + 0.5f) + ((j & 1) ? glyphSize : 0);
+            quad[j].v.ob[1] = top - ((j & 2) ? glyphSize : 0);
+            quad[j].v.tc[0] = (j & 1) ? 16 << 5 : 0;
+            quad[j].v.tc[1] = (j & 2) ? 16 << 5 : 0;
+        }
+    }
+
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                      PRIMITIVE, 0);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, alpha);
+    gSPVertex(POLY_OPA_DISP++, vtx, len * 4, 0);
+    for (int i = 0; i < len; i++) {
+        FileChoose_DrawCharacter(this->state.gfxCtx,
+                                 this->font.fontBuf + (letterA + text[i] - 'A') * FONT_CHAR_TEX_SIZE, i * 4);
+    }
+
+    // back to the combiner the file buttons use
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+                      ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+// #endregion
+
 /**
  * Draw most window contents including buttons, labels, and icons.
  * Does not include anything from the keyboard and settings windows.
@@ -2044,32 +2137,37 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             }
 
             // draw quest label (rando, speedrun or MQ)
-            const char* questLabelTex = NULL;
+            const char* questLabelText = NULL;
+            u8 questLabelAlpha = 0;
             switch (Save_GetSaveMetaInfo(i)->quest) {
                 case QUEST_RANDOMIZER:
-                    questLabelTex = gFileSelRANDButtonTex;
+                    questLabelText = "RAND";
                     break;
                 case QUEST_SPEEDRUN:
                 case QUEST_SPEEDRUN_MASTER:
-                    questLabelTex = gFileSelRUNButtonTex;
+                    questLabelText = "RUN";
                     break;
                 case QUEST_MASTER:
-                    questLabelTex = gFileSelMQButtonTex;
+                    questLabelText = "MQ";
                     break;
             }
-            if (questLabelTex != NULL && Save_GetSaveMetaInfo(i)->valid) {
+            if (!Save_GetSaveMetaInfo(i)->valid) {
+                questLabelText = NULL;
+            }
+            if (questLabelText != NULL) {
                 if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(i))) {
+                    questLabelAlpha = this->nameBoxAlpha[i];
                     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[1][0], sWindowContentColors[1][1],
-                                    sWindowContentColors[1][2], this->nameBoxAlpha[i]);
+                                    sWindowContentColors[1][2], questLabelAlpha);
                 } else {
+                    questLabelAlpha = this->nameAlpha[i];
                     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
                                     sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
-                                    this->nameAlpha[i]);
+                                    questLabelAlpha);
                 }
-                gDPLoadTextureBlock(POLY_OPA_DISP++, questLabelTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
-                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                                    G_TX_NOLOD, G_TX_NOLOD);
-                gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+                FileChoose_DrawQuestLabelBox(this, &this->windowContentVtx[temp + 8]);
+                // put back the file button vertices the label replaced
+                gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
             }
 
             // draw connectors
@@ -2088,6 +2186,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
             if (this->n64ddFlags[i] || Save_GetSaveMetaInfo(i)->quest != QUEST_NORMAL) {
                 gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
+            }
+
+            // drawn last since it loads its own vertices over the ones above
+            if (questLabelText != NULL) {
+                FileChoose_DrawQuestLabelText(this, &this->windowContentVtx[temp + 8], questLabelText, questLabelAlpha);
             }
         }
 
