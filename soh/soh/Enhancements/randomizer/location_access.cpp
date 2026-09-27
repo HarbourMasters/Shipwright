@@ -5,6 +5,8 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
+#include "logic/generated/soh/regions.gen.h"
+
 #include <fstream>
 #include <soh/OTRGlobals.h>
 
@@ -956,6 +958,10 @@ bool AdultCanAccess(const RandomizerRegion region) {
 Rando::Context* ctx;
 std::shared_ptr<Rando::Logic> logic;
 
+static void SetExitSpreadAreas(RandomizerRegion fromRegion, RandomizerRegion toRegion, bool spreadAreas) {
+    areaTable[fromRegion].GetExit(toRegion)->SetSpreadAreas(spreadAreas);
+}
+
 void RegionTable_Init() {
     using namespace Rando;
     ctx = Context::GetInstance().get();
@@ -969,43 +975,12 @@ void RegionTable_Init() {
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
     areaTable.fill(Region("Invalid Region", SCENE_ID_MAX, {}, {}, {}));
 
-    RegionTable_Init_Root();
-    // Overworld
-    RegionTable_Init_KokiriForest();
-    RegionTable_Init_LostWoods();
-    RegionTable_Init_SacredForestMeadow();
-    RegionTable_Init_HyruleField();
-    RegionTable_Init_LakeHylia();
-    RegionTable_Init_LonLonRanch();
-    RegionTable_Init_Market();
-    RegionTable_Init_TempleOfTime();
-    RegionTable_Init_CastleGrounds();
-    RegionTable_Init_Kakariko();
-    RegionTable_Init_Graveyard();
-    RegionTable_Init_DeathMountainTrail();
-    RegionTable_Init_GoronCity();
-    RegionTable_Init_DeathMountainCrater();
-    RegionTable_Init_ZoraRiver();
-    RegionTable_Init_ZorasDomain();
-    RegionTable_Init_ZorasFountain();
-    RegionTable_Init_GerudoValley();
-    RegionTable_Init_GerudoFortress();
-    RegionTable_Init_ThievesHideout();
-    RegionTable_Init_HauntedWasteland();
-    RegionTable_Init_DesertColossus();
+    RegisterRegions();
+
     // Dungeons
-    RegionTable_Init_DekuTree();
-    RegionTable_Init_DodongosCavern();
-    RegionTable_Init_JabuJabusBelly();
     RegionTable_Init_ForestTemple();
     RegionTable_Init_FireTemple();
-    RegionTable_Init_WaterTemple();
-    RegionTable_Init_SpiritTemple();
     RegionTable_Init_ShadowTemple();
-    RegionTable_Init_BottomOfTheWell();
-    RegionTable_Init_IceCavern();
-    RegionTable_Init_GerudoTrainingGround();
-    RegionTable_Init_GanonsCastle();
 
     // Set parent regions
     for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
@@ -1020,6 +995,18 @@ void RegionTable_Init() {
             exit.GetConnectedRegion()->entrances.push_front(&exit);
         }
     }
+
+    SetExitSpreadAreas(RR_DMT_OWL_FLIGHT, RR_KAK_IMPAS_ROOFTOP, false);
+    SetExitSpreadAreas(RR_GRAVEYARD_DAMPES_GRAVE, RR_KAK_WINDMILL_UPPER, false);
+    SetExitSpreadAreas(RR_LH_OWL_FLIGHT, RR_HYRULE_FIELD, false);
+    SetExitSpreadAreas(RR_DEKU_TREE_BOSS_ROOM, RR_KF_OUTSIDE_DEKU_TREE, false);
+    SetExitSpreadAreas(RR_DODONGOS_CAVERN_BOSS_ROOM, RR_DEATH_MOUNTAIN_TRAIL, false);
+    SetExitSpreadAreas(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN, false);
+    SetExitSpreadAreas(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW, false);
+    SetExitSpreadAreas(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_PAD_ENTRY, false);
+    SetExitSpreadAreas(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA, false);
+    SetExitSpreadAreas(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION, false);
+    SetExitSpreadAreas(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS, false);
 }
 
 void ReplaceFirstInString(std::string& s, std::string const& toReplace, std::string const& replaceWith) {

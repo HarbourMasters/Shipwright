@@ -236,6 +236,10 @@ bool Entrance::DoesSpreadAreas() {
     return spreadsAreasWithPriority;
 }
 
+void Entrance::SetSpreadAreas(bool spreadAreas) {
+    spreadsAreasWithPriority = spreadAreas;
+}
+
 const std::string& Entrance::GetConditionStr() const {
     return condition_str;
 }
