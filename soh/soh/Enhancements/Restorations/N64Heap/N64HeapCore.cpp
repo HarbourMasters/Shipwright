@@ -658,4 +658,79 @@ bool Core::ResolveScript(const int32_t words[4], int16_t sceneId, uint32_t* n64A
     return true;
 }
 
+void Arena::Serialize(SaveStateCtx* ctx) {
+    SaveState_Blob(ctx, &mStart, sizeof(mStart));
+    SaveState_Blob(ctx, &mEnd, sizeof(mEnd));
+    SaveStateVector(ctx, mBlocks);
+}
+
+void Memory::Serialize(SaveStateCtx* ctx) {
+    SaveStateVector(ctx, mBytes);
+    // std::vector<bool> is packed, so its bits go one byte each
+    uint32_t count = SaveStateCount(ctx, mKnown.size());
+    if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+        mKnown.assign(count, false);
+    }
+    for (uint32_t i = 0; i < count; i++) {
+        uint8_t known = mKnown[i] ? 1 : 0;
+        SaveState_Blob(ctx, &known, sizeof(known));
+        mKnown[i] = known != 0;
+    }
+    SaveStateVector(ctx, mSources);
+}
+
+// Keys and values are plain data; a set is a map without values
+template <typename M> static void SaveStateMap(SaveStateCtx* ctx, M& map) {
+    uint32_t count = SaveStateCount(ctx, map.size());
+    if (ctx->mode != SHIP_SAVESTATE_LOAD) {
+        for (auto& [key, value] : map) {
+            typename M::key_type savedKey = key;
+            SaveState_Blob(ctx, &savedKey, sizeof(savedKey));
+            SaveState_Blob(ctx, &value, sizeof(value));
+        }
+        return;
+    }
+    map.clear();
+    for (uint32_t i = 0; i < count; i++) {
+        typename M::key_type key{};
+        typename M::mapped_type value{};
+        SaveState_Blob(ctx, &key, sizeof(key));
+        SaveState_Blob(ctx, &value, sizeof(value));
+        map.emplace(key, value);
+    }
+}
+
+template <typename S> static void SaveStateSet(SaveStateCtx* ctx, S& set) {
+    uint32_t count = SaveStateCount(ctx, set.size());
+    if (ctx->mode != SHIP_SAVESTATE_LOAD) {
+        for (typename S::key_type key : set) {
+            SaveState_Blob(ctx, &key, sizeof(key));
+        }
+        return;
+    }
+    set.clear();
+    for (uint32_t i = 0; i < count; i++) {
+        typename S::key_type key{};
+        SaveState_Blob(ctx, &key, sizeof(key));
+        set.insert(key);
+    }
+}
+
+void Core::Serialize(SaveStateCtx* ctx) {
+    mArena.Serialize(ctx);
+    mMemory.Serialize(ctx);
+    SaveState_Blob(ctx, &mActive, sizeof(mActive));
+    SaveState_Blob(ctx, &mArenaSize, sizeof(mArenaSize));
+    SaveStateMap(ctx, mLive);
+    SaveStateSet(ctx, mIgnored);
+    SaveStateMap(ctx, mOverlays);
+    SaveStateMap(ctx, mEffects);
+    SaveState_Blob(ctx, &mSpawn, sizeof(mSpawn));
+    SaveState_Blob(ctx, &mAbsoluteSpace, sizeof(mAbsoluteSpace));
+    SaveState_Blob(ctx, &mSkipMagicDark, sizeof(mSkipMagicDark));
+    SaveState_Blob(ctx, &mBodyBreakCount, sizeof(mBodyBreakCount));
+    SaveState_Blob(ctx, &mBodyBreakStep, sizeof(mBodyBreakStep));
+    SaveState_Blob(ctx, &mStats, sizeof(mStats));
+}
+
 } // namespace n64heap

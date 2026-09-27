@@ -465,4 +465,39 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
     return sim;
 }
 
+void ObjectSpace::Serialize(SaveStateCtx* ctx) {
+    uint32_t count = SaveStateCount(ctx, mSpans.size());
+    if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+        mSpans.clear();
+    }
+    auto span = mSpans.begin();
+    for (uint32_t i = 0; i < count; i++) {
+        uint32_t start = ctx->mode == SHIP_SAVESTATE_LOAD ? 0 : span->first;
+        Span loaded{};
+        Span& entry = ctx->mode == SHIP_SAVESTATE_LOAD ? loaded : span->second;
+        SaveState_Blob(ctx, &start, sizeof(start));
+        SaveState_Blob(ctx, &entry.end, sizeof(entry.end));
+        SaveState_Blob(ctx, &entry.kind, sizeof(entry.kind));
+        SaveState_Blob(ctx, &entry.vrom, sizeof(entry.vrom));
+        SaveState_Blob(ctx, &entry.base, sizeof(entry.base));
+        uint32_t length = SaveStateCount(ctx, entry.label.size());
+        if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+            entry.label.resize(length);
+        }
+        if (length != 0) {
+            SaveState_Blob(ctx, entry.label.data(), length);
+        }
+        if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+            mSpans.emplace(start, std::move(loaded));
+        } else {
+            ++span;
+        }
+    }
+    SaveState_Blob(ctx, &mVersion, sizeof(mVersion));
+    SaveState_Blob(ctx, &mSceneId, sizeof(mSceneId));
+    SaveState_Blob(ctx, &mSpaceStart, sizeof(mSpaceStart));
+    SaveStateVector(ctx, mSlotIds);
+    SaveStateVector(ctx, mSlotAddresses);
+}
+
 } // namespace n64heap

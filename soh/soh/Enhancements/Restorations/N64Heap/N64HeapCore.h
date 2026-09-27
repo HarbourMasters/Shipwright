@@ -9,10 +9,29 @@
 #include <unordered_set>
 #include <vector>
 
+#include "soh/Enhancements/savestate_serialize.h"
+
 namespace n64heap {
 
 struct SceneLayout;
 struct ScriptEntry;
+
+// Savestates keep a container as its size followed by its items (savestate_serialize.h)
+inline uint32_t SaveStateCount(SaveStateCtx* ctx, size_t size) {
+    uint32_t count = static_cast<uint32_t>(size);
+    SaveState_Blob(ctx, &count, sizeof(count));
+    return count;
+}
+
+template <typename T> void SaveStateVector(SaveStateCtx* ctx, std::vector<T>& values) {
+    uint32_t count = SaveStateCount(ctx, values.size());
+    if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+        values.resize(count);
+    }
+    if (count != 0) {
+        SaveState_Blob(ctx, values.data(), count * sizeof(T));
+    }
+}
 
 // Layers a scene does not define use its base layout
 const SceneLayout* FindSceneLayout(int16_t scene, uint8_t layer);
@@ -33,6 +52,7 @@ class Arena {
     bool Check() const;
     uint32_t LargestFree() const;
     bool Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* free, bool* header) const;
+    void Serialize(SaveStateCtx* ctx);
 
   private:
     struct Block {
@@ -53,6 +73,7 @@ class Memory {
     void Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner);
     bool ReadWord(uint32_t address, uint32_t* value) const;
     bool Owner(uint32_t address, int16_t* owner, uint32_t* origin) const;
+    void Serialize(SaveStateCtx* ctx);
 
   private:
     struct Source {
@@ -111,6 +132,8 @@ class Core {
     const Stats& GetStats() const {
         return mStats;
     }
+    // Host pointers are kept as they are, which holds because a savestate puts SoH's arena back at the same addresses
+    void Serialize(SaveStateCtx* ctx);
 
   private:
     enum class Site { ActorSpawn, Player, Collision, SkelAnime, Curve, Skin, Camera, Other };

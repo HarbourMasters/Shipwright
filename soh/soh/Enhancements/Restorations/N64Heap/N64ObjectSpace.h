@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "soh/Enhancements/savestate_serialize.h"
+
 namespace n64heap {
 
 struct RomFile;
@@ -48,6 +50,7 @@ class ObjectSpace {
     uint32_t Version() const {
         return mVersion;
     }
+    void Serialize(SaveStateCtx* ctx);
 
   private:
     enum class Kind { File, GreyIcon, Runtime };

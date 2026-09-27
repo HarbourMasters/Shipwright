@@ -58,8 +58,6 @@ DEFINE_HOOK(OnPlayDrawEnd, ());
 DEFINE_HOOK(OnZeldaArenaInit, ());
 DEFINE_HOOK(OnZeldaArenaAlloc, (void* ptr, size_t size, const char* file, bool reverse));
 DEFINE_HOOK(OnZeldaArenaFree, (void* ptr));
-DEFINE_HOOK(OnSaveStateSave, (uint32_t slot));
-DEFINE_HOOK(OnSaveStateLoad, (uint32_t slot));
 DEFINE_HOOK(OnCutsceneScriptLoad, (uint8_t * *script));
 DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list originalArgs));
 DEFINE_HOOK(OnSaveFile, (int32_t fileNum, int32_t sectionID));
