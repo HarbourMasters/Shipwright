@@ -61,6 +61,8 @@ constexpr const char* TITLE_SCREEN_SCRIPT = "spot00_scene/gHyruleFieldTitleScree
 
 n64heap::ObjectSpace sObjectSpace;
 void* sLastHostScript = nullptr;
+// True once SoH has written the pointer in this scene; SoH frees a scene's cutscene data when it unloads the scene
+bool sHostScriptLive = false;
 // Until the pointer first changes, its value may be unset or point at freed data, so it is not read
 bool sAwaitingPointerBaseline = true;
 uint32_t sCutscenePointer = 0;
@@ -135,6 +137,7 @@ bool ReadN64File(uint32_t vrom, uint8_t* out, uint32_t size) {
 void OnSceneInit(int16_t sceneNum) {
     sLastSceneId = sceneNum;
     sLastSceneLayer = gSaveContext.sceneLayer;
+    sHostScriptLive = false;
     sObjectSpace.SceneInit(sceneNum, gSaveContext.sceneLayer);
     sLastPauseState = 0;
     sVerdictDirty = true;
@@ -205,6 +208,7 @@ void UpdatePointer(bool segmentReadable = false) {
         // Records the pointer without reading it; only later changes are real writes the module can follow
         sAwaitingPointerBaseline = false;
         sLastHostScript = script;
+        sHostScriptLive = false;
         return;
     }
     sAwaitingPointerBaseline = false;
@@ -212,6 +216,7 @@ void UpdatePointer(bool segmentReadable = false) {
         return;
     }
     sLastHostScript = script;
+    sHostScriptLive = true;
     if (script == nullptr) {
         return; // The N64 never clears the pointer
     }
@@ -393,11 +398,13 @@ void* FilterCutsceneScript(void* script) {
     sDecision.result = script;
 
     n64heap::ScriptSimulation sim = n64heap::SimulateCutscene(sCutscenePointer, ReadN64Word);
-    int32_t hostHeader[2];
-    memcpy(hostHeader, script, sizeof(hostHeader));
-    if (sim.outcome != n64heap::ScriptSimulation::Outcome::Unknown && sim.totalEntries == hostHeader[0] &&
-        sim.frameCount == hostHeader[1]) {
-        return script;
+    // A stale host pointer is never read: the simulation decides from the N64 data alone
+    if (sHostScriptLive && sim.outcome != n64heap::ScriptSimulation::Outcome::Unknown) {
+        int32_t hostHeader[2];
+        memcpy(hostHeader, script, sizeof(hostHeader));
+        if (sim.totalEntries == hostHeader[0] && sim.frameCount == hostHeader[1]) {
+            return script;
+        }
     }
     // Replacements that run no commands are a header (entry count, frame count) followed by the end of script command
     std::vector<int32_t>& replacement = sDecision.replacement;
@@ -417,10 +424,19 @@ void* FilterCutsceneScript(void* script) {
             replacement = sim.script;
             break;
         default:
-            SPDLOG_INFO("[N64Heap] cutscene pointer {:#010x} reaches data that is not modelled ({}); SoH runs its own "
-                        "copy",
+            if (sHostScriptLive) {
+                SPDLOG_INFO("[N64Heap] cutscene pointer {:#010x} reaches data that is not modelled ({}); SoH runs "
+                            "its own copy",
+                            sCutscenePointer, sim.detail);
+                return script;
+            }
+            // SoH's copy was freed with its scene, so running it would read freed memory
+            SPDLOG_WARN("[N64Heap] cutscene pointer {:#010x} reaches data that is not modelled ({}) and SoH's copy "
+                        "was freed with its scene; the cutscene is ended instead",
                         sCutscenePointer, sim.detail);
-            return script;
+            replacement = { 0, 0, n64heap::CS_CMD_END_OF_SCRIPT, 0 };
+            sDecision.result = replacement.data();
+            return sDecision.result;
     }
     sDecision.result = replacement.data();
     SPDLOG_INFO("[N64Heap] running N64 cutscene data at {:#010x} ({}): header ({}, {}) -> {}{}", sCutscenePointer,
@@ -470,6 +486,7 @@ void EnterTitleScreenState() {
     sLastSceneId = TITLE_SCREEN_SCENE;
     sLastSceneLayer = TITLE_SCREEN_LAYER;
     sLastHostScript = nullptr;
+    sHostScriptLive = false;
     sAwaitingPointerBaseline = true;
     sCutscenePointer = TitleScreenScript();
     sLastPauseState = 0;
