@@ -9,6 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 #include "savestate_serialize.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern "C" {
 #include "z64.h"
@@ -374,12 +375,14 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                         std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
+                GameInteractor_ExecuteOnSaveStateSave(request.slot);
                 Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
                     1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
+                    GameInteractor_ExecuteOnSaveStateLoad(request.slot);
                     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
                         1.0f, true, "loaded state %u", request.slot);
                 } else {

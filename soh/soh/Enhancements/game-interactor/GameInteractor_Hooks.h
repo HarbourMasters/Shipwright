@@ -60,6 +60,8 @@ void GameInteractor_ExecuteOnPlayDrawEnd();
 void GameInteractor_ExecuteOnZeldaArenaInit();
 void GameInteractor_ExecuteOnZeldaArenaAlloc(void* ptr, size_t size, const char* file, bool reverse);
 void GameInteractor_ExecuteOnZeldaArenaFree(void* ptr);
+void GameInteractor_ExecuteOnSaveStateSave(uint32_t slot);
+void GameInteractor_ExecuteOnSaveStateLoad(uint32_t slot);
 void GameInteractor_ExecuteOnCutsceneScriptLoad(uint8_t** script);
 bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 

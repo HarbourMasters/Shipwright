@@ -7,6 +7,7 @@
 #include <cstring>
 #include <memory>
 #include <spdlog/spdlog.h>
+#include <unordered_map>
 #include <vector>
 
 #include <libultraship/bridge/consolevariablebridge.h>
@@ -72,6 +73,19 @@ uint16_t sLastPauseState = 0;
 bool sVerdictDirty = false;
 CutsceneDecision sDecision;
 ActorMemoryCache sActorMemory;
+
+// The model as it was when each savestate slot was saved, so loading the state puts it back too
+struct Snapshot {
+    n64heap::Core core;
+    n64heap::ObjectSpace objectSpace;
+    void* lastHostScript;
+    bool awaitingPointerBaseline;
+    uint32_t cutscenePointer;
+    uint16_t lastPauseState;
+    int16_t lastSceneId;
+    uint8_t lastSceneLayer;
+};
+std::unordered_map<uint32_t, Snapshot> sSnapshots;
 
 // Held so the resource manager cannot unload the data while the model reads it
 std::shared_ptr<Ship::Blob> sArchiveData[n64heap::ARCHIVE_FILE_COUNT];
@@ -415,6 +429,39 @@ void* FilterCutsceneScript(void* script) {
     return sDecision.result;
 }
 
+// A slot saved while the model is off keeps no snapshot, so an older one is never restored with it
+void OnSaveStateSave(uint32_t slot) {
+    if (!CVAR_N64_HEAP_VALUE) {
+        sSnapshots.erase(slot);
+        return;
+    }
+    sSnapshots.insert_or_assign(slot, Snapshot{ Shadow(), sObjectSpace, sLastHostScript, sAwaitingPointerBaseline,
+                                                sCutscenePointer, sLastPauseState, sLastSceneId, sLastSceneLayer });
+}
+
+// The savestate restores SoH's arena at the same host addresses, so the model's host pointers stay valid
+void OnSaveStateLoad(uint32_t slot) {
+    auto snapshot = sSnapshots.find(slot);
+    if (snapshot == sSnapshots.end()) {
+        SPDLOG_INFO("[N64Heap] savestate slot {} has no N64 heap snapshot; the model restarts at the next scene", slot);
+        Shadow().Reset();
+        sAwaitingPointerBaseline = true;
+    } else {
+        Shadow() = snapshot->second.core;
+        sObjectSpace = snapshot->second.objectSpace;
+        sLastHostScript = snapshot->second.lastHostScript;
+        sAwaitingPointerBaseline = snapshot->second.awaitingPointerBaseline;
+        sCutscenePointer = snapshot->second.cutscenePointer;
+        sLastPauseState = snapshot->second.lastPauseState;
+        sLastSceneId = snapshot->second.lastSceneId;
+        sLastSceneLayer = snapshot->second.lastSceneLayer;
+    }
+    sDecision = CutsceneDecision{};
+    sActorMemory = ActorMemoryCache{};
+    sLastStats = Shadow().GetStats();
+    sVerdictDirty = true;
+}
+
 // The state the title screen leaves; the heap restarts at the next scene, when the arena is created again
 void EnterTitleScreenState() {
     Shadow().Reset();
@@ -451,6 +498,13 @@ void RegisterN64Heap() {
     COND_HOOK(OnSceneInit, CVAR_N64_HEAP_VALUE, OnSceneInit);
     COND_HOOK(OnPresentFileSelect, CVAR_N64_HEAP_VALUE, OnPresentFileSelect);
     COND_HOOK(OnGameFrameUpdate, CVAR_N64_HEAP_VALUE, OnGameFrameUpdate);
+    COND_HOOK(OnSaveStateLoad, CVAR_N64_HEAP_VALUE, OnSaveStateLoad);
+    // Always registered, so saving with the model off clears that slot's snapshot
+    static bool sSaveHookRegistered = false;
+    if (!sSaveHookRegistered) {
+        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaveStateSave>(OnSaveStateSave);
+        sSaveHookRegistered = true;
+    }
     COND_HOOK(OnCutsceneScriptLoad, CVAR_N64_HEAP_VALUE,
               [](uint8_t** script) { *script = static_cast<uint8_t*>(FilterCutsceneScript(*script)); });
     COND_VB_SHOULD(VB_ACTOR_FITS_IN_HEAP, CVAR_N64_HEAP_VALUE, {

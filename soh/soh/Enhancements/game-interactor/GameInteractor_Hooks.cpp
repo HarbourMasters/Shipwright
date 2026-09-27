@@ -267,6 +267,14 @@ void GameInteractor_ExecuteOnZeldaArenaFree(void* ptr) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZeldaArenaFree>(ptr);
 }
 
+void GameInteractor_ExecuteOnSaveStateSave(uint32_t slot) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveStateSave>(slot);
+}
+
+void GameInteractor_ExecuteOnSaveStateLoad(uint32_t slot) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveStateLoad>(slot);
+}
+
 void GameInteractor_ExecuteOnCutsceneScriptLoad(uint8_t** script) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCutsceneScriptLoad>(script);
 }
