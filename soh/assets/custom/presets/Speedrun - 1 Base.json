@@ -103,6 +103,14 @@
             "gRandoEnhancements": null
         }
     },
+    "exempt": [
+        "/gDeveloperTools/LogLevel",
+        "/gDeveloperTools/ResourceLogging",
+        "/gEnhancements/DrawLineupTick",
+        "/gEnhancements/GraveHoles",
+        "/gEnhancements/IncludeHeldInputsBufferWindow",
+        "/gEnhancements/PauseBufferWindow"
+    ],
     "fileType": 2,
     "presetName": "Base"
 }

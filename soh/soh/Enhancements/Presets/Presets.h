@@ -26,3 +26,6 @@ nlohmann::json applyPresetToBlocks(std::string presetName, nlohmann::json blocks
 
 // {display name, preset name} of every preset whose file is named "Speedrun - <display name>"
 std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets();
+
+// The preset's "exempt" list of cvar json pointers, or an empty array if it has none.
+nlohmann::json GetPresetExempt(const std::string& presetName);

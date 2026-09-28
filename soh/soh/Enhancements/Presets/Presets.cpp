@@ -225,6 +225,15 @@ std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
     return found;
 }
 
+nlohmann::json GetPresetExempt(const std::string& presetName) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end() || !entry->second.presetValues.contains("exempt") ||
+        !entry->second.presetValues["exempt"].is_array()) {
+        return nlohmann::json::array();
+    }
+    return entry->second.presetValues["exempt"];
+}
+
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
     std::vector<std::string> includedPresets;
     for (auto& [name, info] : presets) {

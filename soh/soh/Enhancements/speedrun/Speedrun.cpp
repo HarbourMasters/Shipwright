@@ -52,20 +52,13 @@ static const std::array<const char*, 4> sOwnedBlocks = {
 #define SPEEDRUN_PRESET_NONE "None"
 #define SPEEDRUN_MAX_OPTIONS_ON_SCREEN 6
 
-// Settings the player keeps even under a preset. Their own values are copied over the file's settings on create and
-// load, and these are left out of the settings hash.
-static const std::array<nlohmann::json::json_pointer, 6> sExemptSettings = {
-    nlohmann::json::json_pointer("/gDeveloperTools/LogLevel"),
-    nlohmann::json::json_pointer("/gDeveloperTools/ResourceLogging"),
-    nlohmann::json::json_pointer("/gEnhancements/DrawLineupTick"),
-    nlohmann::json::json_pointer("/gEnhancements/GraveHoles"),
-    nlohmann::json::json_pointer("/gEnhancements/IncludeHeldInputsBufferWindow"),
-    nlohmann::json::json_pointer("/gEnhancements/PauseBufferWindow"),
-};
-
 // {display name, preset name}, ending with "None" which has no preset.
 static std::vector<std::pair<std::string, std::string>> sPresetChoices;
 static nlohmann::json sSettings = nlohmann::json::object();
+// Paths of settings the player keeps even under a preset, from the preset's "exempt" list. Their own values are copied
+// over the file's settings on create and load. The values are left out of the settings hash, the paths are not.
+// Saved with the file, so later preset edits don't change an existing file.
+static nlohmann::json sExempt = nlohmann::json::array();
 static std::string sPresetName = SPEEDRUN_PRESET_NONE;
 static std::string sPresetKey;
 static uint32_t sSettingsHash = 0;
@@ -116,9 +109,21 @@ static void SetOwnedBlocks(const nlohmann::json& blocks) {
     ShipInit::InitAll();
 }
 
+static std::vector<nlohmann::json::json_pointer> GetExemptPaths() {
+    std::vector<nlohmann::json::json_pointer> paths;
+
+    for (const auto& path : sExempt) {
+        try {
+            paths.emplace_back(path.get<std::string>());
+        } catch (const std::exception& e) { SPDLOG_ERROR("Speedrun: bad exempt path {}: {}", path.dump(), e.what()); }
+    }
+
+    return paths;
+}
+
 // Copies the player's exempt settings onto blocks. Ones the player never set keep the preset's value.
 static void OverlayExemptSettings(nlohmann::json& blocks, const nlohmann::json& custom) {
-    for (const auto& path : sExemptSettings) {
+    for (const auto& path : GetExemptPaths()) {
         if (custom.contains(path)) {
             blocks[path] = custom[path];
         }
@@ -251,17 +256,17 @@ extern "C" bool Ship_QuestDebugEnabled(u8 questId) {
            CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0);
 }
 
-// FNV-1a hash of the build version and the file's settings, without exempt settings. Same hash means same build and
-// settings. nlohmann sorts object keys, so the dump is stable.
+// FNV-1a hash of the build version, the file's settings without exempt values, and the exempt paths. Same hash means
+// same build and settings. nlohmann sorts object keys, so the dump is stable.
 static uint32_t HashSettings() {
     nlohmann::json stripped = sSettings;
-    for (const auto& path : sExemptSettings) {
+    for (const auto& path : GetExemptPaths()) {
         if (stripped.contains(path)) {
             stripped[path.parent_pointer()].erase(path.back());
         }
     }
 
-    std::string data = std::string((const char*)gBuildVersion) + stripped.dump();
+    std::string data = std::string((const char*)gBuildVersion) + stripped.dump() + sExempt.dump();
     uint32_t hash = 0x811C9DC5;
 
     for (char c : data) {
@@ -422,6 +427,7 @@ extern "C" void FileChoose_DrawSpeedrunMenuWindowContents(FileChooseContext* fil
 extern "C" void Speedrun_InitSaveFile(void) {
     nlohmann::json custom = GetOwnedBlocks();
     sSettings = custom;
+    sExempt = GetPresetExempt(sPresetKey);
 
     if (!sPresetKey.empty()) {
         // Applied to the file's copy only, never the player's config.
@@ -443,6 +449,7 @@ static void SaveSaveSection(SaveContext* saveContext, int sectionID, bool fullSa
     SaveManager::Instance->SaveData("presetName", sPresetName);
     SaveManager::Instance->SaveData("settingsHash", sSettingsHash);
     SaveManager::Instance->SaveData("settings", sSettings);
+    SaveManager::Instance->SaveData("exempt", sExempt);
 }
 
 static void LoadSaveSection() {
@@ -455,6 +462,11 @@ static void LoadSaveSection() {
 
     SaveManager::Instance->LoadData("presetName", sPresetName);
     SaveManager::Instance->LoadData("settings", sSettings);
+    SaveManager::Instance->LoadData("exempt", sExempt);
+
+    if (!sExempt.is_array()) {
+        sExempt = nlohmann::json::array();
+    }
 
     if (!sSettings.is_object()) {
         SPDLOG_ERROR("Speedrun: file has no settings to load");
