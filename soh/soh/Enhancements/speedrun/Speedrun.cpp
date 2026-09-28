@@ -41,7 +41,7 @@ int16_t OTRGetRectDimensionFromRightEdge(float v);
 namespace fs = std::filesystem;
 
 // The cvar blocks a speedrun file owns. They are copied onto the file when it is created and put back every time it is
-// loaded. Everything else (controls, resolution, audio, most cosmetics) stays with the player.
+// loaded. Everything else (controls, resolution, audio) stays with the player, except cosmetics which a run turns off.
 static const std::array<const char*, 4> sOwnedBlocks = {
     CVAR_PREFIX_ENHANCEMENT,
     CVAR_PREFIX_RANDOMIZER_ENHANCEMENT,
@@ -61,15 +61,6 @@ static const std::array<nlohmann::json::json_pointer, 6> sExemptSettings = {
     nlohmann::json::json_pointer("/gEnhancements/GraveHoles"),
     nlohmann::json::json_pointer("/gEnhancements/IncludeHeldInputsBufferWindow"),
     nlohmann::json::json_pointer("/gEnhancements/PauseBufferWindow"),
-};
-
-// Cosmetics a run turns off. They scale Link's actor or his limbs, which moves his hitbox, his sword's reach and where
-// he looks. The player gets them back when the run is exited; every other cosmetic is left alone.
-static const std::array<const char*, 4> sBannedCosmetics = {
-    CVAR_COSMETIC("Link.BodySize"),
-    CVAR_COSMETIC("Link.HeadScale"),
-    CVAR_COSMETIC("Link.SwordScale"),
-    CVAR_COSMETIC("UnfixGoronSpin"),
 };
 
 // {display name, preset name}, ending with "None" which has no preset.
@@ -125,43 +116,6 @@ static void SetOwnedBlocks(const nlohmann::json& blocks) {
     ShipInit::InitAll();
 }
 
-static nlohmann::json GetBannedCosmetics() {
-    auto config = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
-    nlohmann::json values = nlohmann::json::object();
-
-    for (const char* name : sBannedCosmetics) {
-        // A cvar's dots are nesting in the config.
-        std::string path = spdlog::fmt_lib::format("/CVars/{}", name);
-        std::replace(path.begin(), path.end(), '.', '/');
-
-        nlohmann::json::json_pointer pointer(path);
-        if (config.contains(pointer)) {
-            values[name] = config[pointer];
-        }
-    }
-
-    return values;
-}
-
-static void ClearBannedCosmetics() {
-    for (const char* name : sBannedCosmetics) {
-        CVarClearBlock(name);
-    }
-}
-
-// Puts back what GetBannedCosmetics saved. Ones the player never set were cleared and stay that way.
-static void SetBannedCosmetics(const nlohmann::json& values) {
-    auto config = Ship::Context::GetRawInstance()->GetConfig();
-
-    for (const char* name : sBannedCosmetics) {
-        if (values.contains(name)) {
-            config->SetBlock(spdlog::fmt_lib::format("{}.{}", "CVars", name), values[name]);
-        }
-    }
-
-    Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
-}
-
 // Copies the player's exempt settings onto blocks. Ones the player never set keep the preset's value.
 static void OverlayExemptSettings(nlohmann::json& blocks, const nlohmann::json& custom) {
     for (const auto& path : sExemptSettings) {
@@ -184,9 +138,16 @@ static void BackupSettings() {
         return;
     }
 
+    // Cosmetics are backed up with the owned blocks, since a run clears them too.
+    auto config = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
+    nlohmann::json blocks = GetOwnedBlocks();
+    blocks[CVAR_PREFIX_COSMETIC] = nlohmann::json::object();
+    if (config.contains("CVars") && config["CVars"].contains(CVAR_PREFIX_COSMETIC)) {
+        blocks[CVAR_PREFIX_COSMETIC] = config["CVars"][CVAR_PREFIX_COSMETIC];
+    }
+
     nlohmann::json backup;
-    backup["blocks"] = GetOwnedBlocks();
-    backup["cosmetics"] = GetBannedCosmetics();
+    backup["blocks"] = blocks;
     file << backup.dump(4);
 }
 
@@ -267,7 +228,6 @@ static void RestoreSettings() {
             std::ifstream file(GetBackupPath());
             nlohmann::json backup = nlohmann::json::parse(file);
             file.close();
-            SetBannedCosmetics(backup.value("cosmetics", nlohmann::json::object()));
             SetOwnedBlocks(backup.value("blocks", nlohmann::json::object()));
         } catch (const std::exception& e) { SPDLOG_ERROR("Speedrun: could not read settings backup: {}", e.what()); }
 
@@ -511,9 +471,11 @@ static void LoadSaveSection() {
 
     OverlayExemptSettings(blocks, GetOwnedBlocks());
 
+    // No cosmetics during a run. Some scale Link or his sword, which changes his hitbox and reach.
+    blocks[CVAR_PREFIX_COSMETIC] = nlohmann::json::object();
+
     BackupSettings();
     SetOwnedBlocks(blocks);
-    ClearBannedCosmetics();
     sSettingsHash = HashSettings();
 
     EmitHashNotification();
