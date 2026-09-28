@@ -628,6 +628,16 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Player_InCsMode(play) && !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
+    // this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
+    // this->actor.yDistToPlayer <= 15.0f
+    // ```
+    // #### `args`
+    // - `*DoorAna`
+    VB_DOOR_ANA_GRAB_PLAYER,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->actor.params & 0x3F)
     // ```
     // #### `args`
