@@ -48,8 +48,9 @@ void ItemLocation::SetPlacedItem(const RandomizerGet item) {
     SetPrice(StaticData::RetrieveItem(placedItem).GetPrice());
 }
 
-void ItemLocation::SetDelayedItem(const RandomizerGet item) {
-    delayedItem = item;
+void ItemLocation::DelayItem() {
+    delayedItem = placedItem;
+    placedItem = RG_NONE;
 }
 
 void ItemLocation::SaveDelayedItem() {
