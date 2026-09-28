@@ -74,7 +74,7 @@ static EnemyEntry randomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"),     "Flying Peahat",         ACTOR_EN_PEEHAT,                            -1 }, // Flying Peahat (big grounded, doesn't spawn larva)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPot"),        "Flying Pot",            ACTOR_EN_TUBO_TRAP,                          0 }, // Flying pot
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Freezard"),         "Freezard",              ACTOR_EN_FZ,                                 0 }, // Freezard
-    { CVAR_ENHANCEMENT("RandomizedEnemyList.GerudoFighter"),    "Gerudo Fighter",        ACTOR_EN_GELDB,                              0 }, // Gerudo Fighter
+    { CVAR_ENHANCEMENT("RandomizedEnemyList.GerudoFighter"),    "Gerudo Thief",          ACTOR_EN_GELDB,                              0 }, // Gerudo Thief
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Gibdo"),            "Gibdo",                 ACTOR_EN_RD,                             32766 }, // Gibdo (standing)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.GohmaLarva"),       "Gohma Larva",           ACTOR_EN_GOMA,                               7 }, // Gohma Larva (Non-Gohma rooms)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Guay"),             "Guay",                  ACTOR_EN_CROW,                               0 }, // Guay
