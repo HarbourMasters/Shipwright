@@ -10,7 +10,7 @@ typedef struct Rect {
     ImVec2 max;
 } Rect;
 
-Rect GetVisibleWorldRect(ImVec2 canvasSize, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom) noexcept {
+static Rect GetVisibleWorldRect(ImVec2 canvasSize, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom) noexcept {
     Rect r;
 
     r.min = (-cameraOffset) / zoom;
@@ -37,7 +37,7 @@ static bool IsEdgeVisible(ImVec2 a, ImVec2 b, const Rect& view) noexcept {
     return !(maxX < view.min.x || minX > view.max.x || maxY < view.min.y || minY > view.max.y);
 }
 
-ImVec2 WorldSpaceToScreenSpace(ImVec2 vec, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom) noexcept {
+static ImVec2 WorldSpaceToScreenSpace(ImVec2 vec, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom) noexcept {
     return canvasPos + cameraOffset + vec * zoom;
 }
 

@@ -236,7 +236,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
     Trackers::EndFloatWindows();
 }
 
-ImU32 GetColorForArea(RandomizerArea area) {
+static ImU32 GetColorForArea(RandomizerArea area) {
     switch (area) {
         case RA_NONE:
         case RA_LINKS_POCKET:
@@ -318,7 +318,7 @@ ImU32 GetColorForArea(RandomizerArea area) {
     }
 }
 
-ImU32 GetColorForAreas(std::set<RandomizerArea> areas) {
+static ImU32 GetColorForAreas(std::set<RandomizerArea> areas) {
     switch (areas.size()) {
         case 0:
             return IM_COL32(0xD8, 0xD2, 0xE8, 0xFF);
