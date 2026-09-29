@@ -168,7 +168,7 @@ Graph Graph::New(std::vector<Node> nodes, std::vector<Edge> edges, GraphOptions 
     return Graph(nodes, edges, options);
 }
 
-Graph::Graph(std::vector<Node> _nodes, std::vector<Edge> _edges, GraphOptions _options)
+Graph::Graph(std::vector<Node> _nodes, std::vector<Edge> _edges, GraphOptions _options) noexcept
     : nodes(_nodes), edges(_edges), options(_options) {
 }
 
@@ -347,14 +347,14 @@ void Graph::Draw(ImVec2 canvasSize, ImVec2 canvasPos) noexcept {
     // LUSLOG_INFO("[Graph::Draw] End\n");
 }
 
-void Graph::Focus(ImVec2 pos) {
+void Graph::Focus(ImVec2 pos) noexcept {
     this->cameraOffset = pos;
     if (this->zoom < 1.0f) {
         this->zoom = 1.0f;
     }
 }
 
-void Graph::FocusOnNode(size_t index) {
+void Graph::FocusOnNode(size_t index) noexcept {
     if (index >= this->nodes.size()) {
         LUSLOG_ERROR("[Graph::FocusOnNode] Invalid index = %d", index);
         assert(false);
@@ -364,7 +364,7 @@ void Graph::FocusOnNode(size_t index) {
     this->Focus(this->nodes[index].position);
 }
 
-void Graph::FocusOnEdge(size_t index) {
+void Graph::FocusOnEdge(size_t index) noexcept {
     if (index >= this->edges.size()) {
         LUSLOG_ERROR("[Graph::FocusOnEdge] Invalid index = %d", index);
         assert(false);

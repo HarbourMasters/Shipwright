@@ -89,9 +89,9 @@ class Graph final {
     void Stabilize(float width, float height) noexcept;
     float StabilizeStep(float width, float height, float temperature) noexcept;
     void Draw(ImVec2 canvasSize, ImVec2 canvasPos) noexcept;
-    void Focus(ImVec2 pos);
-    void FocusOnNode(size_t index);
-    void FocusOnEdge(size_t index);
+    void Focus(ImVec2 pos) noexcept;
+    void FocusOnNode(size_t index) noexcept;
+    void FocusOnEdge(size_t index) noexcept;
     [[nodiscard("There's no point in calling the function without using the options returned")]]
     // comment so clang format doesn't mess this up too much
     GraphOptions&
@@ -107,7 +107,7 @@ class Graph final {
 
   private:
     Graph() = delete;
-    Graph(std::vector<Node> _nodes, std::vector<Edge> _edges, GraphOptions _options);
+    Graph(std::vector<Node> _nodes, std::vector<Edge> _edges, GraphOptions _options) noexcept;
     void HandleMouse(ImVec2 canvasPos) noexcept;
     std::vector<Node> nodes;
     std::vector<Edge> edges;
