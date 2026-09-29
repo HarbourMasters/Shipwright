@@ -18,7 +18,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_GS_NEAR_KAK,                      logic->BlastOrSmash() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN,         logic->IsAdult && logic->CanGetNightTimeGS() && 
                                                               ((logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DMT_JS_LOWER_GS) && logic->CanJumpslash())) || 
-                                                              ((ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) &&
+                                                              (((ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS))) &&
                                                                   (logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || ((ctx->GetTrickOption(RT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_ITEM_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))) || logic->CanJumpslash())))),
         LOCATION(RC_DMT_BLUE_RUPEE,                       logic->IsChild && logic->BlastOrSmash()),
         LOCATION(RC_DMT_RED_RUPEE,                        logic->IsChild && logic->BlastOrSmash()),
