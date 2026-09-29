@@ -7,6 +7,7 @@
 #include "z_en_kakasi3.h"
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_DURING_OCARINA)
 
@@ -387,7 +388,8 @@ void func_80A91A90(EnKakasi3* this, PlayState* play) {
 
     if (this->dialogState == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         if (this->unk_195) {
-            if (!Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT)) {
+            if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SCARECROW,
+                                      !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT))) {
                 Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT);
             }
         }

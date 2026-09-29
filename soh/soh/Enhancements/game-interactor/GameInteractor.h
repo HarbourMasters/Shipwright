@@ -1,6 +1,5 @@
 #pragma once
 
-#include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 
 typedef enum {
@@ -83,11 +82,14 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(bool state);
 #include <stdarg.h>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 #include <functional>
 #include <cstring>
+#include <string>
 
+#include <version>
 #ifdef __cpp_lib_source_location
 #include <source_location>
 #else

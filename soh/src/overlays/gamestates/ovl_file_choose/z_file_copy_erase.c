@@ -1,6 +1,7 @@
 #include "file_choose.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SaveManager.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 // when choosing a file to copy or erase, the 6 main menu buttons are placed at these offsets
 static s16 sChooseFileYOffsets[] = { -48, -48, -48, -24, -24, 0 };

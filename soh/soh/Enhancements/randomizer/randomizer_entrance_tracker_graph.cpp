@@ -1,13 +1,15 @@
 #include "randomizer_entrance_tracker_graph.h"
 
 #include <libultraship/bridge/consolevariablebridge.h>
+#include "soh/ShipInit.hpp"
+#include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/location_access.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "entrance.h"
-#include "location_access.h"
-#include "randomizer_entrance_tracker.h"
-#include "randomizerEnumStrings.h"
-#include "randomizerTypes.h"
-#include "randomizer_tracker_windows.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 const float initialSize = 2500.0f;
 

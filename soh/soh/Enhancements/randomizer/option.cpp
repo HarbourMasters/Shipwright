@@ -290,8 +290,7 @@ void Option::AddWidget(WidgetPath& path) {
                                   (UIWidgets::IntSliderOptions*)info.options.get();
                               size_t maxIndex = this->options.size() - 1;
                               if (this->GetKey() == RSK_SHOPSANITY_COUNT && maxIndex > 7 &&
-                                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
-                                      RO_LOGIC_NO_LOGIC) {
+                                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("NoLogic"), RO_GENERIC_OFF) != RO_GENERIC_ON) {
                                   maxIndex = 7;
                               }
                               sliderOpts->Max(static_cast<int32_t>(maxIndex));

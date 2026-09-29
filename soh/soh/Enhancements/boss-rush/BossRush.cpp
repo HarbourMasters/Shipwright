@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "BossRush.h"
 #include "soh/ShipInit.hpp"
@@ -915,6 +916,8 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
 
 void RegisterBossRush() {
     COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
+        ShipInit::Init("IS_BOSS_RUSH");
+
         COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
             BossRush_SpawnBlueWarps(gPlayState);
             Actor_Kill((Actor*)actorPtr);

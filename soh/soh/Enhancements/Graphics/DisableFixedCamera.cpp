@@ -1,6 +1,8 @@
 #include <set>
 #include <unordered_map>
 
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 

@@ -15,6 +15,7 @@ void RegionTable_Init_LakeHylia() {
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
+        LOCATION(RC_LH_SCARECROWS_SONG,                  logic->Get(LOGIC_CHILD_SCARECROW) && logic->Get(LOGIC_ADULT_SCARECROW)),
         LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->HasItem(RG_BRONZE_SCALE)) || logic->ReachDistantScarecrow()) && logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN)) && logic->CanAvoidEnemy(RE_GUAY, ED_CLOSE, false) && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_LH_GS_BEAN_PATCH,                    logic->CanSpawnSoilSkull(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),

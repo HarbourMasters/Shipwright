@@ -1,7 +1,10 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <variables.h>

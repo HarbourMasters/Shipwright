@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "dungeon.h"
@@ -6,6 +8,7 @@
 #include "static_data.h"
 #include "randomizer.h" // IWYU pragma: keep
 #include "ShuffleSilver.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
@@ -121,9 +124,9 @@ RandomizerGet SilverFromSwitchFlag(s16 switchFlag) {
             return RG_BOTW_SILVER;
         case SCENE_ICE_CAVERN:
             switch (switchFlag) {
-                case 8:
                 case 9:
                     return RG_ICE_CAVERN_SILVER_BLOCK;
+                case 8:
                 case 31:
                     return RG_ICE_CAVERN_SILVER_BLADES;
             }

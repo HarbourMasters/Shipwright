@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -165,7 +167,10 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                     gSaveContext.natureAmbienceId = 0xFF;
                     GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
                     if (gSaveContext.ship.resetToSpawn) {
-                        if (LINK_IS_CHILD) {
+                        if (!IS_RANDO) {
+                            gSaveContext.entranceIndex =
+                                LINK_IS_CHILD ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
+                        } else if (LINK_IS_CHILD) {
                             gSaveContext.entranceIndex =
                                 Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN); // Child Overworld Spawn
                         } else {

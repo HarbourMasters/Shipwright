@@ -1,4 +1,5 @@
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "GameInteractor.h"
 #include "soh/ShipUtils.h"

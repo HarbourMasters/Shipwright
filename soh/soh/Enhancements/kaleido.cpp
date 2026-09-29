@@ -154,6 +154,11 @@ Kaleido::Kaleido() {
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA_BUTTONS)) {
         mEntries.push_back(std::make_shared<KaleidoEntryOcarinaButtons>());
     }
+    if (ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gSongNoteTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, Color_RGBA8{ 40, 160, 40, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_HAS_SCARECROWS_SONG, "Scarecrow's Song"));
+    }
     if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).IsNot(RO_BOSS_SOULS_OFF)) {
         static const char* bossSoulNames[] = {
             "Gohma's Soul",    "King Dodongo's Soul", "Barinade's Soul",    "Phantom Ganon's Soul",

@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
@@ -5,6 +7,7 @@
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "soh_assets.h"
@@ -232,24 +235,24 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
 
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
-    auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
+    auto logicSetting = RAND_GET_OPTION(RSK_NO_LOGIC);
 
     // don't shuffle the no logic crates when not in no logic
-    if (actor->id != ACTOR_OBJ_KIBAKO2 || (logicSetting.IsNot(RO_LOGIC_NO_LOGIC) &&
-                                           ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
-                                             (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
-                                            (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
-                                             (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
+    if (actor->id != ACTOR_OBJ_KIBAKO2 ||
+        (logicSetting.Is(RO_GENERIC_OFF) && ((gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4051 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == -4571 && (s16)actor->world.pos.z == -3429) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS &&
+                                              (s16)actor->world.pos.x == 3443 && (s16)actor->world.pos.z == -4876) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -764 && (s16)actor->world.pos.z == 148) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -125) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -150) ||
+                                             (gPlayState->sceneNum == SCENE_GERUDO_VALLEY &&
+                                              (s16)actor->world.pos.x == -860 && (s16)actor->world.pos.z == -90))))
         return;
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
@@ -315,7 +318,7 @@ void RegisterShuffleCrates() {
 
     // Prevent the randomized items from the "decoy" crates from immediately despawning
     COND_VB_SHOULD(VB_ITEM00_KILL, shouldRegister, {
-        if (RAND_GET_OPTION(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
+        if (RAND_GET_OPTION(RSK_NO_LOGIC).Is(RO_GENERIC_ON) && gPlayState->sceneNum == SCENE_GERUDOS_FORTRESS) {
             EnItem00* item00 = va_arg(args, EnItem00*);
 
             if (item00->actor.world.pos.x < -3500.0f) {
@@ -332,7 +335,7 @@ void Rando::StaticData::RegisterCrateLocations() {
     registered = true;
     // clang-format off
     // Overworld Crates
-    //            Randomizer Check                                 	                        Randomizer Check                                        Quest            Area                           Scene ID                        Params                              Short Name                    	          Hint Text Key                       Vanilla                 Spoiler Collection Check
+    //            Randomizer Check                                                          Randomizer Check                                        Quest            Area                           Scene ID                        Params                              Short Name                                Hint Text Key                       Vanilla                 Spoiler Collection Check
     locationTable[RC_GV_FREESTANDING_POH_CRATE]                           = Location::Crate(RC_GV_FREESTANDING_POH_CRATE,                           RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,          SCENE_GERUDO_VALLEY,            TWO_ACTOR_PARAMS(-350, 1480),       "Freestanding PoH Crate",                 RHT_CRATE_GERUDO_VALLEY,            RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GV_FREESTANDING_POH_CRATE));
     locationTable[RC_GV_NEAR_COW_CRATE]                                   = Location::Crate(RC_GV_NEAR_COW_CRATE,                                   RCQUEST_BOTH,    RCAREA_GERUDO_VALLEY,          SCENE_GERUDO_VALLEY,            TWO_ACTOR_PARAMS(-449, 123),        "Near Cow Crate",                         RHT_CRATE_GERUDO_VALLEY,            RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GV_NEAR_COW_CRATE));
     locationTable[RC_GF_ABOVE_JAIL_CRATE]                                 = Location::Crate(RC_GF_ABOVE_JAIL_CRATE,                                 RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(51, -2997),        "Above Jail Crate",                       RHT_CRATE_GERUDOS_FORTRESS,         RG_PURPLE_RUPEE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_ABOVE_JAIL_CRATE));
@@ -417,7 +420,7 @@ void Rando::StaticData::RegisterCrateLocations() {
     locationTable[RC_GF_FAR_AWAY_CRATE_ADULT]                           = Location::NLCrate(RC_GF_FAR_AWAY_CRATE_ADULT,                             RCQUEST_BOTH,    RCAREA_GERUDO_FORTRESS,        SCENE_GERUDOS_FORTRESS,         TWO_ACTOR_PARAMS(-4051, -3429),     "Far Away Crate Adult",                   RHT_CRATE_GERUDOS_FORTRESS,         RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GF_FAR_AWAY_CRATE_ADULT));
 
     // MQ Crates
-    //            Randomizer Check                                 	                        Randomizer Check                                        Quest            Area                           Scene ID                        Params                              Short Name                    	                Hint Text Key                       Vanilla                 Spoiler Collection Check
+    //            Randomizer Check                                                          Randomizer Check                                        Quest            Area                           Scene ID                        Params                              Short Name                                      Hint Text Key                       Vanilla                 Spoiler Collection Check
     locationTable[RC_DEKU_TREE_MQ_LOBBY_CRATE]                            = Location::Crate(RC_DEKU_TREE_MQ_LOBBY_CRATE,                            RCQUEST_MQ,      RCAREA_DEKU_TREE,              SCENE_DEKU_TREE,                TWO_ACTOR_PARAMS(279, 333),         "MQ Lobby Crate",                         RHT_CRATE_DEKU_TREE,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_MQ_LOBBY_CRATE));
     locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1]                 = Location::Crate(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1,                 RCQUEST_MQ,      RCAREA_DEKU_TREE,              SCENE_DEKU_TREE,                TWO_ACTOR_PARAMS(-805, -62),        "MQ Slingshot Room Crate 1",              RHT_CRATE_DEKU_TREE,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_1));
     locationTable[RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2]                 = Location::Crate(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2,                 RCQUEST_MQ,      RCAREA_DEKU_TREE,              SCENE_DEKU_TREE,                TWO_ACTOR_PARAMS(-805, -2),         "MQ Slingshot Room Crate 2",              RHT_CRATE_DEKU_TREE,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_DEKU_TREE_MQ_SLINGSHOT_ROOM_CRATE_2));
@@ -560,7 +563,7 @@ void Rando::StaticData::RegisterCrateLocations() {
     locationTable[RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE]                = Location::Crate(RC_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE,                RCQUEST_MQ,      RCAREA_GERUDO_TRAINING_GROUND, SCENE_GERUDO_TRAINING_GROUND,   TWO_ACTOR_PARAMS(-59, -1598),       "MQ Maze Crate",                          RHT_CRATE_GERUDO_TRAINING_GROUND,   RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_GERUDO_TRAINING_GROUND_MQ_MAZE_CRATE));
 
     // Small Crates
-    //            Randomizer Check                                 	            Randomizer Check                                                     Quest            Area                           Scene ID                        Params                              Short Name                    	                Hint Text Key                       Vanilla                 Spoiler Collection Check
+    //            Randomizer Check                                              Randomizer Check                                                     Quest            Area                           Scene ID                        Params                              Short Name                                     Hint Text Key                       Vanilla                 Spoiler Collection Check
     locationTable[RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1]      = Location::SmallCrate(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1,      RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-141, -1945),      "Platform Room Small Crate 1",            RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1));
     locationTable[RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2]      = Location::SmallCrate(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2,      RCQUEST_VANILLA, RCAREA_JABU_JABUS_BELLY,       SCENE_JABU_JABU,                TWO_ACTOR_PARAMS(-189, -1925),      "Platform Room Small Crate 2",            RHT_CRATE_JABU_JABU,                RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2));
     locationTable[RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1]            = Location::SmallCrate(RC_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1,            RCQUEST_VANILLA, RCAREA_FIRE_TEMPLE,            SCENE_FIRE_TEMPLE,              TWO_ACTOR_PARAMS(-2030, -1172),     "After Hammer Small Crate 1",             RHT_CRATE_FIRE_TEMPLE,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_FIRE_TEMPLE_AFTER_HAMMER_SMALL_CRATE_1));

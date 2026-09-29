@@ -3,6 +3,7 @@
 #include "soh/Enhancements/SwitchAge.h"
 #include "soh/Enhancements/AdultMasks.h"
 #include "soh/Enhancements/BunnyHood.h"
+#include "soh/Enhancements/FileSelectEnhancements.h"
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
@@ -10,7 +11,9 @@
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include <ship/Context.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
@@ -175,26 +178,20 @@ static const std::map<int32_t, const char*> mirroredWorldModes = {
     { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)" },
 };
 
-static uint8_t CountVisibleFileSelectQuests() {
-    uint8_t count = 0;
-
-    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
-        count++;
-    }
-
-    if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
-        count++;
-    }
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0)) {
-        count++;
-    }
-
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0)) {
-        count++;
-    }
-
-    return count;
+// Disables a File Select "Hide" checkbox when its O2R is missing, or when it would hide the last visible quest
+static WidgetFunc HideQuestPreFunc(Quest quest) {
+    return [quest](WidgetInfo& info) {
+        if (quest == QUEST_NORMAL && !ResourceMgr_GameHasOriginal()) {
+            info.options->disabled = true;
+            info.options->disabledTooltip = "This option requires a loaded original O2R.";
+        } else if (quest == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+            info.options->disabled = true;
+            info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+        } else if (!SohFileSelect_IsQuestHidden(quest) && SohFileSelect_CountVisibleQuests() <= 1) {
+            info.options->disabled = true;
+            info.options->disabledTooltip = "At least one quest type must remain visible.";
+        }
+    };
 }
 
 void SohMenu::AddMenuEnhancements() {
@@ -604,13 +601,15 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("InstantScarecrow"))
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_SKIP_SCARECROWS_SONG);
-            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized save "
-                                            "file with the option \"Skip Scarecrow's Song\" is currently loaded.";
+                IS_RANDO && (OTRGlobals::Instance->gRandoContext->GetOption(RSK_STARTING_SCARECROWS_SONG) ||
+                             OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_SCARECROWS_SONG));
+            info.options->disabledTooltip =
+                "This setting is controlled by the randomizer because a randomized save file with the option "
+                "\"Start with Scarecrow's Song\" or \"Shuffle Scarecrow's Song\" is currently loaded.";
         })
         .Options(CheckboxOptions().Tooltip(
             "Pierre appears when an Ocarina is pulled out. Requires learning the Scarecrow's Song first.\n"
-            "Without the randomizer option \"Skip Scarecrow's Song\" enabled for a seed, this still requires you "
+            "Without the randomizer option \"Start with Scarecrow's Song\" enabled for a seed, this still requires you "
             "to teach the scarecrow the song as both ages before summoning."));
     AddWidget(path, "Faster Rupee Accumulator", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterRupeeAccumulator"))
@@ -804,55 +803,25 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Hide Original", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"))
         .RaceDisable(false)
-        .PreFunc([](const WidgetInfo& info) {
-            if (!ResourceMgr_GameHasOriginal()) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "This option requires a loaded original O2R.";
-            } else if (CountVisibleFileSelectQuests() <= 1 &&
-                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "At least one quest type must remain visible.";
-            }
-        })
+        .PreFunc(HideQuestPreFunc(QUEST_NORMAL))
         .Options(CheckboxOptions().Tooltip(
             "Hides the original game when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Master Quest", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"))
         .RaceDisable(false)
-        .PreFunc([](const WidgetInfo& info) {
-            if (!ResourceMgr_GameHasMasterQuest()) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
-            } else if (CountVisibleFileSelectQuests() <= 1 &&
-                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "At least one quest type must remain visible.";
-            }
-        })
+        .PreFunc(HideQuestPreFunc(QUEST_MASTER))
         .Options(CheckboxOptions().Tooltip(
             "Hides the Master Quest option when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Randomizer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"))
         .RaceDisable(false)
-        .PreFunc([](const WidgetInfo& info) {
-            if (CountVisibleFileSelectQuests() <= 1 &&
-                !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0)) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "At least one quest type must remain visible.";
-            }
-        })
+        .PreFunc(HideQuestPreFunc(QUEST_RANDOMIZER))
         .Options(CheckboxOptions().Tooltip(
             "Hides the Randomizer option when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Boss Rush", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"))
         .RaceDisable(false)
-        .PreFunc([](const WidgetInfo& info) {
-            if (CountVisibleFileSelectQuests() <= 1 &&
-                !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0)) {
-                info.options->disabled = true;
-                info.options->disabledTooltip = "At least one quest type must remain visible.";
-            }
-        })
+        .PreFunc(HideQuestPreFunc(QUEST_BOSSRUSH))
         .Options(CheckboxOptions().Tooltip(
             "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
 
@@ -993,7 +962,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_BUNNY_HOOD_NAME)
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Bunny Hood Effect\" is currently loaded.";
         })
@@ -1008,7 +978,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ADULT_MASKS_NAME)
         .PreFunc([](WidgetInfo& info) {
             info.options->disabled =
-                OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
             info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
                                             "\"Masks as Adult\" is currently loaded.";
         })
@@ -1411,6 +1381,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
             "instead of the Zora Tunic by Holding Shield."));
+    AddWidget(path, "Child Hookshot Softlock", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ChildHookshotSoftlock"))
+        .Options(CheckboxOptions().Tooltip("Using the Hookshot as child softlocks."));
     AddWidget(path, "Get Item Manipulation", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("GetItemManipulation"))
         .Options(ComboboxOptions()
@@ -2175,12 +2148,9 @@ void SohMenu::AddMenuEnhancements() {
     // Time Splits
     path.sidebarName = "Time Splits";
     AddSidebarEntry("Enhancements", path.sidebarName, 1);
-    AddWidget(path, "Popout Time Splits Window", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("TimeSplits"))
-        .RaceDisable(false)
-        .WindowName("Time Splits")
-        .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Time Splits Window."));
+    AddWidget(path, "Popout Timesplits Settings", WIDGET_WINDOW_BUTTON)
+        .CVar("gWindows.Timesplits.Settings")
+        .WindowName("Time Splits Settings Window");
 
     // Timers
     path.sidebarName = "Timers";

@@ -161,7 +161,7 @@ void Settings::HandleKeyringUI() {
 
 void Settings::HandleStartingAgeUI() {
     // Starting Age - Disabled under very specific conditions unless it's No Logic
-    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
+    if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("NoLogic"), RO_GENERIC_OFF) == RO_GENERIC_OFF &&
         // If Closed DoT requires OoT then we can only start as child
         ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("DoorOfTime"), RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED &&
           CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_OFF) == RO_GENERIC_OFF) ||
@@ -858,6 +858,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_OPEN_CHEST, {"Off", "On", "Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), WIDGET_CVAR_COMBOBOX, RO_OPEN_CHEST_OFF);
     OPT_U8(RSK_SHUFFLE_WEIRD_EGG, {"Vanilla", "Shuffled", "Skip Waking Talon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), WIDGET_CVAR_COMBOBOX, RO_WEIRD_EGG_VANILLA);
     OPT_BOOL(RSK_SHUFFLE_ZELDAS_LETTER, CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"));
+    OPT_BOOL(RSK_SHUFFLE_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("ShuffleScarecrowsSong"));
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"));
     OPT_U8(RSK_SHUFFLE_POTS, {"Off", "Dungeons", "Overworld", "All Pots"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShufflePots"), WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_POTS_OFF);
     OPT_U8(RSK_SHUFFLE_GRASS, {"Off", "Dungeons", "Overworld", "All Grass"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGrass"), WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_GRASS_OFF);
@@ -1341,7 +1342,6 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SKIP_CHILD_STEALTH, {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipChildStealth"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_DONT_SKIP);
     OPT_BOOL(RSK_EARLY_GRANNYS_SHOP, CVAR_RANDOMIZER_SETTING("EarlyGrannysShop"));
     OPT_BOOL(RSK_SKIP_EPONA_RACE, {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_DONT_SKIP);
-    OPT_BOOL(RSK_SKIP_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"));
     OPT_BOOL(RSK_SKIP_PLANTING_BEANS, CVAR_RANDOMIZER_SETTING("SkipPlantingBeans"));
     OPT_U8(RSK_BIG_POE_COUNT, {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BigPoeTargetCount"), WIDGET_CVAR_SLIDER_INT, 10);
     OPT_CALLBACK(RSK_BIG_POE_COUNT, {
@@ -1446,6 +1446,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_BOTTLE_4, {"Off", "Empty Bottle", "Bottle with Big Poe"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingBottle4"), WIDGET_CVAR_COMBOBOX, 0);
     OPT_BOOL(RSK_STARTING_WEIRD_EGG, CVAR_RANDOMIZER_SETTING("StartingWeirdEgg"));
     OPT_BOOL(RSK_STARTING_ZELDAS_LETTER, CVAR_RANDOMIZER_SETTING("StartingZeldasLetter"));
+    OPT_BOOL(RSK_STARTING_SCARECROWS_SONG, CVAR_RANDOMIZER_SETTING("StartingScarecrowsSong"));
     OPT_BOOL(RSK_STARTING_CLAIM_CHECK, CVAR_RANDOMIZER_SETTING("StartingClaimCheck"));
     OPT_BOOL(RSK_STARTING_GERUDO_CARD, CVAR_RANDOMIZER_SETTING("StartingGerudoCard"));
     OPT_BOOL(RSK_STARTING_KEATON_MASK, CVAR_RANDOMIZER_SETTING("StartingKeatonMask"));
@@ -1473,15 +1474,19 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_STARTING_SKULLTULA_TOKEN, {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), WIDGET_CVAR_SLIDER_INT);
     OPT_U8(RSK_STARTING_HEARTS, {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
-    OPT_U8(RSK_LOGIC_RULES, {"Glitchless", "No Logic"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LogicRules"), WIDGET_CVAR_COMBOBOX, RO_LOGIC_GLITCHLESS, false, nullptr, IMFLAG_LABEL_INLINE);
-    OPT_CALLBACK(RSK_LOGIC_RULES, {
+    OPT_BOOL(RSK_NO_LOGIC, CVAR_RANDOMIZER_SETTING("NoLogic"));
+    OPT_BOOL(RSK_ALL_CHECKS_REACHABLE, CVAR_RANDOMIZER_SETTING("AllChecksReachable"));
+    OPT_CALLBACK(RSK_NO_LOGIC, {
         HandleStartingAgeUI();
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC &&
-            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 0) > 7) {
-            CVarSetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 7);
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("NoLogic"), RO_GENERIC_OFF) == RO_GENERIC_ON) {
+            mOptions[RSK_ALL_CHECKS_REACHABLE].Disable("This option has been disabled because No Logic is enabled.");
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 0) > 7) {
+                CVarSetInteger(CVAR_RANDOMIZER_SETTING("ShopsanityCount"), 7);
+            }
+        } else {
+            mOptions[RSK_ALL_CHECKS_REACHABLE].Enable();
         }
     });
-    OPT_BOOL(RSK_ALL_LOCATIONS_REACHABLE, {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AllLocationsReachable"), WIDGET_CVAR_CHECKBOX, RO_GENERIC_ON, false, nullptr, IMFLAG_SAME_LINE);
     OPT_BOOL(RSK_SKULLS_SUNS_SONG, CVAR_RANDOMIZER_SETTING("GsExpectSunsSong"));
     OPT_U8(RSK_DAMAGE_MULTIPLIER, {"x1/2", "x1", "x2", "x4", "x8", "x16", "OHKO"}, OptionCategory::Setting, "", WIDGET_CVAR_SLIDER_INT, RO_DAMAGE_MULTIPLIER_DEFAULT);
     // Don't show any MQ options if both quests aren't available
@@ -1846,8 +1851,8 @@ void Settings::CreateOptions() {
     }
 
     mOptionGroups[RSG_LOGIC] = OptionGroup::SubGroup("Logic Options", {
-                                                                          &mOptions[RSK_LOGIC_RULES],
-                                                                          &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
+                                                                          &mOptions[RSK_NO_LOGIC],
+                                                                          &mOptions[RSK_ALL_CHECKS_REACHABLE],
                                                                           &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                           &mOptions[RSK_BIG_POE_COUNT],
                                                                       });
@@ -1857,7 +1862,7 @@ void Settings::CreateOptions() {
     tricksOption.reserve(mTrickSettings.size());
     for (int i = 0; i < RT_MAX; i++) {
         auto trick = &mTrickSettings[i];
-        if (!trick->GetName().empty()) {
+        if (trick->GetCategory() == OptionCategory::Trick) {
             tricksOption.push_back(trick);
             mTrickNameToEnum[std::string(trick->GetName())] = static_cast<RandomizerTrick>(i);
             mTricksByArea[trick->GetArea()].push_back(static_cast<RandomizerTrick>(i));
@@ -1866,8 +1871,8 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_TRICKS] = OptionGroup::SubGroup("Logical Tricks", tricksOption);
     mOptionGroups[RSG_MENU_SECTION_LOGIC] = OptionGroup::SubGroup("Logic",
                                                                   {
-                                                                      &mOptions[RSK_LOGIC_RULES],
-                                                                      &mOptions[RSK_ALL_LOCATIONS_REACHABLE],
+                                                                      &mOptions[RSK_NO_LOGIC],
+                                                                      &mOptions[RSK_ALL_CHECKS_REACHABLE],
                                                                       &mOptions[RSK_STARTING_AGE],
                                                                       &mOptions[RSK_SKULLS_SUNS_SONG],
                                                                       &mOptions[RSK_BIG_POE_COUNT],
@@ -1882,7 +1887,6 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_EARLY_GRANNYS_SHOP],
                                                                       &mOptions[RSK_SKIP_PLANTING_BEANS],
                                                                       &mOptions[RSK_SKIP_EPONA_RACE],
-                                                                      &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                   },
                                                                   WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_WINCON] = OptionGroup::SubGroup("Win Condition",
@@ -2018,24 +2022,43 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_BASIC_SHUFFLES] =
         OptionGroup::SubGroup("Shuffle Items",
                               {
-                                  &mOptions[RSK_SHUFFLE_SONGS],         &mOptions[RSK_SHUFFLE_TOKENS],
-                                  &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],  &mOptions[RSK_SHUFFLE_MASTER_SWORD],
-                                  &mOptions[RSK_SHUFFLE_OCARINA],       &mOptions[RSK_SHUFFLE_WEIRD_EGG],
-                                  &mOptions[RSK_SHUFFLE_ZELDAS_LETTER], &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
-                                  &mOptions[RSK_SHUFFLE_MASKS],         &mOptions[RSK_FISHSANITY],
-                                  &mOptions[RSK_FISHSANITY_POND_COUNT], &mOptions[RSK_FISHSANITY_AGE_SPLIT],
-                                  &mOptions[RSK_SHUFFLE_FREESTANDING],  &mOptions[RSK_SHUFFLE_WONDER_ITEMS],
-                                  &mOptions[RSK_SHUFFLE_SILVER],        &mOptions[RSK_SHUFFLE_BEEHIVES],
-                                  &mOptions[RSK_SHUFFLE_COWS],          &mOptions[RSK_SHUFFLE_POTS],
-                                  &mOptions[RSK_SHUFFLE_GRASS],         &mOptions[RSK_SHUFFLE_CRATES],
-                                  &mOptions[RSK_SHUFFLE_BOULDERS],      &mOptions[RSK_SHUFFLE_ROCKS],
-                                  &mOptions[RSK_SHUFFLE_TREES],         &mOptions[RSK_SHUFFLE_BUSHES],
-                                  &mOptions[RSK_SHUFFLE_ICICLES],       &mOptions[RSK_SHUFFLE_RED_ICE],
-                                  &mOptions[RSK_SHUFFLE_SIGNS],         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
-                                  &mOptions[RSK_SHUFFLE_ADULT_TRADE],   &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
-                                  &mOptions[RSK_SHUFFLE_100_GS_REWARD], &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
-                                  &mOptions[RSK_SHUFFLE_STONE_FAIRIES], &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
-                                  &mOptions[RSK_SHUFFLE_SONG_FAIRIES],  &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_SONGS],
+                                  &mOptions[RSK_SHUFFLE_TOKENS],
+                                  &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
+                                  &mOptions[RSK_SHUFFLE_MASTER_SWORD],
+                                  &mOptions[RSK_SHUFFLE_OCARINA],
+                                  &mOptions[RSK_SHUFFLE_WEIRD_EGG],
+                                  &mOptions[RSK_SHUFFLE_ZELDAS_LETTER],
+                                  &mOptions[RSK_SHUFFLE_SCARECROWS_SONG],
+                                  &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
+                                  &mOptions[RSK_SHUFFLE_MASKS],
+                                  &mOptions[RSK_FISHSANITY],
+                                  &mOptions[RSK_FISHSANITY_POND_COUNT],
+                                  &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+                                  &mOptions[RSK_SHUFFLE_FREESTANDING],
+                                  &mOptions[RSK_SHUFFLE_WONDER_ITEMS],
+                                  &mOptions[RSK_SHUFFLE_SILVER],
+                                  &mOptions[RSK_SHUFFLE_BEEHIVES],
+                                  &mOptions[RSK_SHUFFLE_COWS],
+                                  &mOptions[RSK_SHUFFLE_POTS],
+                                  &mOptions[RSK_SHUFFLE_GRASS],
+                                  &mOptions[RSK_SHUFFLE_CRATES],
+                                  &mOptions[RSK_SHUFFLE_BOULDERS],
+                                  &mOptions[RSK_SHUFFLE_ROCKS],
+                                  &mOptions[RSK_SHUFFLE_TREES],
+                                  &mOptions[RSK_SHUFFLE_BUSHES],
+                                  &mOptions[RSK_SHUFFLE_ICICLES],
+                                  &mOptions[RSK_SHUFFLE_RED_ICE],
+                                  &mOptions[RSK_SHUFFLE_SIGNS],
+                                  &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+                                  &mOptions[RSK_SHUFFLE_ADULT_TRADE],
+                                  &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
+                                  &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+                                  &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
+                                  &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_BASIC_SHUFFLES] =
@@ -2273,6 +2296,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                             &mOptions[RSK_SHUFFLE_WEIRD_EGG],
                                             &mOptions[RSK_SHUFFLE_ZELDAS_LETTER],
+                                            &mOptions[RSK_SHUFFLE_SCARECROWS_SONG],
                                             &mOptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD],
                                             &mOptions[RSK_SHUFFLE_MASKS],
                                             &mOptions[RSK_SHUFFLE_MERCHANTS],
@@ -2387,6 +2411,7 @@ void Settings::CreateOptions() {
                                                    &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
                                                    &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
                                                    &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT],
+                                                   &mOptions[RSK_STARTING_SCARECROWS_SONG],
                                                });
     mOptionGroups[RSG_STARTING_OTHER] = OptionGroup::SubGroup("Other", {
                                                                            &mOptions[RSK_STARTING_STICKS],
@@ -2405,7 +2430,6 @@ void Settings::CreateOptions() {
                                                         OptionGroupType::DEFAULT);
     mOptionGroups[RSG_TIMESAVERS] = OptionGroup("Timesaver Settings", {
                                                                           &mOptions[RSK_SKIP_EPONA_RACE],
-                                                                          &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                           &mOptions[RSK_SKIP_PLANTING_BEANS],
                                                                           &mOptions[RSK_BIG_POE_COUNT],
                                                                       });
@@ -2619,7 +2643,7 @@ void Settings::UpdateAllOptions() {
 void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocations,
                                const std::set<RandomizerTrick>& enabledTricks) {
     // With certain access settings, the seed is only beatable if Starting Age is set to Child.
-    if (mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC) &&
+    if (!mOptions[RSK_NO_LOGIC].Get() &&
         ((mOptions[RSK_DOOR_OF_TIME].Is(RO_DOOROFTIME_CLOSED) && !mOptions[RSK_SHUFFLE_OCARINA]) ||
          (mOptions[RSK_FOREST].Is(RO_CLOSED_FOREST_ON) && mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS].Is(RO_GENERIC_OFF) &&
           mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES].Is(RO_GENERIC_OFF) &&
@@ -3155,6 +3179,7 @@ void Settings::RandomizeAllSettings() {
             case RSK_STARTING_BOTTLE_4:
             case RSK_STARTING_WEIRD_EGG:
             case RSK_STARTING_ZELDAS_LETTER:
+            case RSK_STARTING_SCARECROWS_SONG:
             case RSK_STARTING_CLAIM_CHECK:
             case RSK_STARTING_GERUDO_CARD:
             case RSK_STARTING_BIGGORON_SWORD:

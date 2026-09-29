@@ -6,6 +6,7 @@
 
 #include <spdlog/common.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
@@ -25,6 +26,7 @@
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "location.h"
 #include "item_location.h"
@@ -110,6 +112,7 @@ bool showBossKeysanity;
 bool showGanonBossKey;
 bool showOcarinas;
 bool show100SkullReward;
+bool showScarecrowsSong;
 bool showLinksPocket;
 bool showChestMinigame;
 bool fortressFast;
@@ -1651,6 +1654,8 @@ void LoadSettings() {
         IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES;
     show100SkullReward = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                          RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES;
+    showScarecrowsSong = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
+                                         RSK_SHUFFLE_SCARECROWS_SONG) == RO_GENERIC_YES;
     // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
     showLinksPocket = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) !=
                                       RO_LINKS_POCKET_NOTHING;
@@ -1924,7 +1929,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_NLCRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea()) &&
-                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) ||
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
@@ -1936,7 +1941,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_TREE || showTrees) &&
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
-                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
+                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON)) &&
                (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
                (loc->GetRCType() != RCTYPE_SIGN ||
                 (showOverworldSigns && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
@@ -1968,6 +1973,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&
                (rc != RC_KAK_100_GOLD_SKULLTULA_REWARD || show100SkullReward) &&
+               (rc != RC_LH_SCARECROWS_SONG || showScarecrowsSong) &&
                (loc->GetRCType() != RCTYPE_GF_KEY && rc != RC_TH_FREED_CARPENTERS ||
                 (showGerudoCard && rc == RC_TH_FREED_CARPENTERS) ||
                 (fortressNormal && showGerudoFortressKeys && loc->GetRCType() == RCTYPE_GF_KEY) ||
@@ -2528,11 +2534,9 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
         UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
                                    UIWidgets::FloatSliderOptions()
@@ -2572,22 +2576,17 @@ void CheckTrackerSettingsWindow::DrawElement() {
             }
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget, THEME_COLOR);
         ImGui::EndDisabled();
 
-        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, THEME_COLOR);
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget,
-                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget, THEME_COLOR);
         ImGui::EndDisabled();
 
         // Filtering settings

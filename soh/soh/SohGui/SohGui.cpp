@@ -22,7 +22,28 @@
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/Enhancements/mod_menu.h"
 #include "soh/Network/Anchor/Anchor.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/controls/InputViewer.h"
+#include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+#include "soh/Enhancements/debugger/actorViewer.h"
+#include "soh/Enhancements/debugger/colViewer.h"
+#include "soh/Enhancements/debugger/debugSaveEditor.h"
+#include "soh/Enhancements/debugger/hookDebugger.h"
+#include "soh/Enhancements/debugger/dlViewer.h"
+#include "soh/Enhancements/debugger/SohConsoleWindow.h"
+#include "soh/Enhancements/debugger/SohGfxDebuggerWindow.h"
+#include "soh/Enhancements/debugger/SohStatsWindow.h"
+#include "soh/Enhancements/debugger/valueViewer.h"
+#include "soh/Enhancements/gameplaystatswindow.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker_graph.h"
+#include "soh/Enhancements/randomizer/randomizer_hint_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+#include "soh/Enhancements/timesplits/TimeSplits.h"
+#include "soh/Enhancements/timesplits/TimeSplitsSettings.h"
+#include "soh/Enhancements/randomizer/Plandomizer.h"
+#include "soh/SohGui/SohModals.h"
 
 namespace SohGui {
 
@@ -85,7 +106,8 @@ std::shared_ptr<HintTracker::HintTrackerSettingsWindow> mHintTrackerSettingsWind
 std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
-std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
+std::shared_ptr<TimeSplits::TimesplitsWindow> mTimeSplitsWindow;
+std::shared_ptr<TimeSplits::TimesplitsSettingsWindow> mTimeSplitSettingsWindow;
 std::shared_ptr<PlandomizerWindow> mPlandomizerWindow;
 std::shared_ptr<SohModalWindow> mModalWindow;
 std::shared_ptr<Notification::Window> mNotificationWindow;
@@ -194,8 +216,13 @@ void SetupGuiElements() {
     mItemTrackerSettingsWindow = std::make_shared<ItemTrackerSettingsWindow>(CVAR_WINDOW("ItemTrackerSettings"),
                                                                              "Item Tracker Settings", ImVec2(733, 472));
     gui->AddGuiWindow(mItemTrackerSettingsWindow);
-    mTimeSplitWindow = std::make_shared<TimeSplitWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
-    gui->AddGuiWindow(mTimeSplitWindow);
+
+    mTimeSplitsWindow =
+        std::make_shared<TimeSplits::TimesplitsWindow>(CVAR_WINDOW("TimeSplits"), "Time Splits", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitsWindow);
+    mTimeSplitSettingsWindow = std::make_shared<TimeSplits::TimesplitsSettingsWindow>(
+        CVAR_WINDOW("TimeSplitSettings"), "Time Splits Settings Window", ImVec2(450, 660));
+    gui->AddGuiWindow(mTimeSplitSettingsWindow);
     mPlandomizerWindow =
         std::make_shared<PlandomizerWindow>(CVAR_WINDOW("PlandomizerEditor"), "Plandomizer Editor", ImVec2(850, 760));
     gui->AddGuiWindow(mPlandomizerWindow);
@@ -239,7 +266,8 @@ void Destroy() {
     mGfxDebuggerWindow = nullptr;
     mInputViewer = nullptr;
     mInputViewerSettings = nullptr;
-    mTimeSplitWindow = nullptr;
+    mTimeSplitsWindow = nullptr;
+    mTimeSplitSettingsWindow = nullptr;
     mPlandomizerWindow = nullptr;
     mTimeDisplayWindow = nullptr;
     mAnchorRoomWindow = nullptr;

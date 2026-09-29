@@ -6,6 +6,7 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
+#include "macros.h"
 #include "variables.h"
 extern PlayState* gPlayState;
 }

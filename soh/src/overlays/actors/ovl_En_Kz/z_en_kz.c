@@ -7,6 +7,7 @@
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -125,7 +126,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_DONE:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 if (Message_ShouldAdvance(play)) {
                     talkState = NPC_TALK_STATE_ITEM_GIVEN;
                 }
@@ -146,7 +147,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             break;
         case TEXT_STATE_CLOSING:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 talkState = NPC_TALK_STATE_IDLE;
                 switch (this->actor.textId) {
                     case 0x4012:
@@ -180,7 +181,7 @@ s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
             }
             if (this->actor.textId == 0x4014) {
                 if (play->msgCtx.choiceIndex == 0) {
-                    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                    if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                         EnKz_SetupGetItem(this, play);
                     }
                     talkState = NPC_TALK_STATE_ACTION;
@@ -286,12 +287,12 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 this->actor.textId = 0x4014;
                 this->sfxPlayed = false;
                 player->actor.textId = this->actor.textId;
-                if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+                if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                     this->isTrading = true;
                 }
                 return;
             }
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+            if (!GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
                 this->isTrading = false;
             }
             if (Flags_GetInfTable(INFTABLE_139)) {
@@ -327,7 +328,7 @@ s32 EnKz_FollowPath(EnKz* this, PlayState* play) {
     pathDiffZ = pointPos->z - this->actor.world.pos.z;
     Math_SmoothStepToS(&this->actor.world.rot.y, (Math_FAtan2F(pathDiffX, pathDiffZ) * (0x8000 / M_PI)), 0xA, 0x3E8, 1);
 
-    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f * CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f)) {
+    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f) {
         this->waypoint++;
         if (this->waypoint >= path->count) {
             this->waypoint = 0;
@@ -406,24 +407,18 @@ void EnKz_SetupMweep(EnKz* this, PlayState* play) {
     Vec3f pos;
     Vec3f initPos;
 
-    bool shouldPlayCutscene = GameInteractor_Should(VB_PLAY_MWEEP_CS, true);
-
-    if (shouldPlayCutscene) {
-        this->cutsceneCamera = Play_CreateSubCamera(play);
-        this->gameplayCamera = play->activeCamera;
-        Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
-        Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
-    }
+    this->cutsceneCamera = Play_CreateSubCamera(play);
+    this->gameplayCamera = play->activeCamera;
+    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, this->cutsceneCamera, CAM_STAT_ACTIVE);
     pos = this->actor.world.pos;
     initPos = this->actor.home.pos;
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    if (shouldPlayCutscene) {
-        Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
-        Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-    }
-    this->actor.speedXZ = 0.1f * CVarGetFloat(CVAR_ENHANCEMENT("MweepSpeed"), 1.0f);
+    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
+    this->actor.speedXZ = 0.1f;
     this->actionFunc = EnKz_Mweep;
 }
 
@@ -437,9 +432,7 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
     pos.y += 60.0f;
     initPos.y += -100.0f;
     initPos.z += 260.0f;
-    if (GameInteractor_Should(VB_PLAY_MWEEP_CS, true)) {
-        Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
-    }
+    Play_CameraSetAtEye(play, this->cutsceneCamera, &pos, &initPos);
     if ((EnKz_FollowPath(this, play) == 1) && (this->waypoint == 0)) {
         Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_1);
         Inventory_ReplaceItem(play, ITEM_LETTER_RUTO, ITEM_BOTTLE);
@@ -454,17 +447,15 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
 }
 
 void EnKz_StopMweep(EnKz* this, PlayState* play) {
-    if (GameInteractor_Should(VB_PLAY_MWEEP_CS, true)) {
-        Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
-        Play_ClearCamera(play, this->cutsceneCamera);
-        Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-    }
+    Play_ChangeCameraStatus(play, this->gameplayCamera, CAM_STAT_ACTIVE);
+    Play_ClearCamera(play, this->cutsceneCamera);
+    Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
     this->actionFunc = EnKz_Wait;
 }
 
 void EnKz_Wait(EnKz* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
             this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         }
         this->actionFunc = EnKz_SetupGetItem;
@@ -485,7 +476,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
+        if (GameInteractor_Should(VB_GIVE_EYEBALL_FROG_EARLY, false)) {
             getItemId = Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_PRESCRIPTION ? GI_FROG : GI_TUNIC_ZORA;
         } else {
             getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;

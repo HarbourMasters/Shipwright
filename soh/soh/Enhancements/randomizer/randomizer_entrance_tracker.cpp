@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/Context.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
@@ -19,6 +20,7 @@ extern PlayState* gPlayState;
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "entrance.h"
+#include "soh/SohGui/UIWidgets.hpp"
 
 using namespace UIWidgets;
 
@@ -395,8 +397,8 @@ const EntranceData entranceData[] = {
     { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",           "Inside Ganon's Castle Entrance",    ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
     { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",          "OGC Behind Pillar",                 ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
     { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance",    "OGC Rainbow Bridge Exit",           ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"},
-    { ENTR_INSIDE_GANONS_CASTLE_1,                   ENTR_GANONS_TOWER_0,                           SINGLE_SCENE_INFO(SCENE_GANONS_TOWER),                                              "Ganon's Tower Entrance",            "Inside Ganon's Castle",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc"},
-    { ENTR_GANONS_TOWER_0,                           ENTR_INSIDE_GANONS_CASTLE_1,                   SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle",             "Ganon's Tower Entrance",            ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc"},
+    { ENTR_INSIDE_GANONS_CASTLE_1,                   ENTR_GANONS_TOWER_0,                           SINGLE_SCENE_INFO(SCENE_GANONS_TOWER),                                              "Ganon's Tower Entrance",            "Inside Ganon's Castle",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc", 1},
+    { ENTR_GANONS_TOWER_0,                           ENTR_INSIDE_GANONS_CASTLE_1,                   SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle",             "Ganon's Tower Entrance",            ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc", 1},
     { ENTR_OUTSIDE_GANONS_CASTLE_1_2,                -1,                                            SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "Ganon's Blue Warp",                 "Ganon's Castle Blue Warp",          ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_ONE_WAY,   "gc,bw", 1},
 
     // clang-format on
@@ -696,11 +698,9 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     Spacer(0);
 
     ImGui::TableNextColumn();
-    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, THEME_COLOR);
 
-    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
-                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, THEME_COLOR);
 
     if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         CVarCheckbox("Enable Dragging", CVAR_TRACKER_ENTRANCE("Draggable"), CheckboxOptions().Color(THEME_COLOR));

@@ -325,7 +325,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_DODONGOS_CAVERN_GRASS] = HintText(CustomMessage("They say that some #grass in Dodongo's Cavern# hides #[[1]]#.",
                                                                             /*german*/ "Man erzählt sich, daß etwas #Gras in Dodongos Höhle# #[[1]]# verstecke.",
                                                                             /*french*/ "Selon moi, de l'#herbe dans la Caverne Dodongo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
-											
+
     hintTextTable[RHT_CRATE_DODONGOS_CAVERN] = HintText(CustomMessage("They say that a #crate in Dodongo's Cavern# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in Dodongos Höhle# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans la Caverne Dodongo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
