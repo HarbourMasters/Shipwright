@@ -1,4 +1,3 @@
-
 #include <libultraship/libultraship.h>
 #include "randomizerTypes.h"
 #include "soh/Graph/Graph.h"
