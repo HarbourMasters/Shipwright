@@ -533,8 +533,8 @@ void RegionTable_Init_ForestTemple() {
         //Events
         //I don't seem able to get master as child, but noted i did before. very precise?
         EVENT_ACCESS(LOGIC_FOREST_CAN_TWIST_HALLWAY,     ctx->GetTrickOption(RT_FOREST_MQ_JS_HALLWAY_SWITCH) && 
-                                                          (logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->BunnyHood())) && 
-                                                          (logic->IsAdult && logic->CanJumpslash()) || (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD))),
+                                                          ((logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->BunnyHood()))) && 
+                                                          ((logic->IsAdult && logic->CanJumpslash()) || (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD)))),
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_BLOCK_PUZZLE_FLOOR,  true),

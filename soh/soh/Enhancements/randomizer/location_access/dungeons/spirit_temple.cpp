@@ -651,7 +651,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_GIBDO_GRAVES] = Region("Spirit Temple MQ Gibdo Graves", SCENE_SPIRIT_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_SPIRIT_MQ_GIBDOS_CLEARED, logic->HasItem(RG_POWER_BRACELET) &&
+        EVENT_ACCESS(LOGIC_SPIRIT_MQ_GIBDOS_CLEARED, logic->HasItem(RG_POWER_BRACELET) && // possible to trigger switch without pulling grave, but too precise for RT_VISIBLE_COLLISION
                                                      ((logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()) || 
                                                       logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump()) &&
                                                      logic->CanKillEnemy(RE_GIBDO, ED_CLOSE, true, 3)),
@@ -662,7 +662,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB, true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_GIBDO_POTS,     logic->HasItem(RG_POWER_BRACELET) &&
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_GIBDO_POTS,     logic->HasItem(RG_POWER_BRACELET) && // possible to trigger switch without pulling grave, but too precise for RT_VISIBLE_COLLISION
                                                      ((logic->CanUse(RG_BOMBCHU_5) && logic->CanHitEyeTargets()) ||
                                                       logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump())),
     });

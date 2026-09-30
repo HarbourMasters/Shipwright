@@ -842,7 +842,7 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BARRED_DOOR] = Region("Ganon's Castle MQ Shadow Trial Barred Door", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
         EVENT_ACCESS(LOGIC_GANONS_CASTLE_MQ_SILVER_SHADOW,  (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()),
+                                                                (logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump())),
         }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_GUILLOTINE_SHADOW_SILVER, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) ||
