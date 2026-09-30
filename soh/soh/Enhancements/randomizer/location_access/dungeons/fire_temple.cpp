@@ -285,8 +285,8 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_FIRE_WALL_SIDE_DOOR] = Region("Fire Temple Fire Wall Chase", SCENE_FIRE_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_EAST_HEART, logic->FireTimer() >= 8 && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_WEST_HEART, logic->FireTimer() >= 8 && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_EAST_HEART, logic->FireTimer() >= 8 && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump())),
+        LOCATION(RC_FIRE_TEMPLE_FIRE_WALL_WEST_HEART, logic->FireTimer() >= 8 && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump())),
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_CHASE, true),
@@ -421,8 +421,8 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH] = Region("Fire Temple Fire Maze Switch", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_MAIN,      ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_HAMMER) ||
-                                                     (logic->IsAdult && logic->CanStandingShield() && logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_GROUND_JUMP_HARD) 
-                                                      && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)))),
+                                                     (logic->IsAdult && logic->CanGroundJump() && (logic->CanMegajump() || 
+                                                      (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)))))),
         ENTRANCE(RR_FIRE_TEMPLE_SOT_CAGE_LOWER,      true),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_PAST_WALL, true),
     });
@@ -1021,7 +1021,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_MQ_CORRIDOR,            true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PLATFORMS, logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()),
         //Hover boots get there via the platforms
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_HAMMER)),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanGroundJump() && logic->CanMegajump())),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,  true),
     });
 
@@ -1052,8 +1052,7 @@ void RegionTable_Init_FireTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_UPPER_DOOR, logic->CanUse(RG_HOOKSHOT)),
-        //you can also push through the fire wall at the corner by taking damage, but it's a varient of fire rings
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,      !!ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,      ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || ctx->GetTrickOption(RT_FIRE_RINGS)),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER] = Region("Fire Temple MQ 2 Fire Walls Lower", SCENE_FIRE_TEMPLE, {}, {
@@ -1082,7 +1081,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL, true),
         //this "middair ground jump" is actually a normal ground jump into a hovers run across the poles
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanMiddairGroundJump() || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD)),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanMiddairGroundJump() || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanMegajump()),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,  true),
     });
 

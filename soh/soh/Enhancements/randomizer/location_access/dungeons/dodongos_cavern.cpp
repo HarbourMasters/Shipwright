@@ -271,11 +271,11 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,           true),
         //Bunny hood jump + jumpslash can also make it directly from the raising platform, but it's too tight for unintuitive and overlaps with the recoil trick
-        ENTRANCE(RR_DODONGOS_CAVERN_LOBBY_SWITCH,    logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump ()|| (ctx->GetTrickOption(RT_DC_CHILD_LOBBY) && logic->CanJumpslashExceptHammer() && logic->TakeDamage())),
+        ENTRANCE(RR_DODONGOS_CAVERN_LOBBY_SWITCH,    logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() || (ctx->GetTrickOption(RT_DC_CHILD_LOBBY) && logic->CanJumpslashExceptHammer() && logic->TakeDamage())),
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, true),
     });
 
-    //This region only exists when the mouth is closed, so should only leave to lobbvy and set EYES_LIT
+    //This region only exists when the mouth is closed, so should only leave to lobby and set EYES_LIT
     areaTable[RR_DODONGOS_CAVERN_SKULL_CHIN] = Region("Dodongos Cavern Skull Chin", SCENE_DODONGOS_CAVERN, {
         //Events
         EVENT_ACCESS(LOGIC_DC_EYES_LIT, logic->CanUse(RG_BOMB_BAG)),

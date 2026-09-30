@@ -46,6 +46,7 @@ class Logic {
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
     bool CanMegajump(bool needsBunny = false, bool hasBombflower = false);
+    bool CanBunnyMegaJumpslash(bool hasBombflower = false);
     bool CanMegadive(bool fallDamage = true, bool hasBombflower = false);
     bool CanMidairDamageBoost(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
@@ -69,6 +70,7 @@ class Logic {
     bool CanRecoilHoverFromActor(ActorRecoilRequirements req);
     bool CanBombRecoilHover(bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
+    bool WaterMQ3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();

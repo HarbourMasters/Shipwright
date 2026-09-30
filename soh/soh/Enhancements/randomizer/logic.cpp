@@ -714,6 +714,12 @@ bool Logic::CanMegajump(bool needsBunny, bool hasBombflower) {
            (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
+bool Logic::CanBunnyMegaJumpslash(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) && 
+          logic->BunnyHood() && CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && 
+           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
+}
+
 bool Logic::CanMegadive(bool fallDamage, bool hasBombflower) {
     return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) &&
            EffectiveHealth() > 16 || CanUse(RG_NAYRUS_LOVE) || (EffectiveHealth() > 8 && (fallDamage || CanUse(RG_BOTTLE_WITH_FAIRY)));
@@ -1429,13 +1435,19 @@ bool Logic::CanBombRecoilHover(bool bombFlower){
 }
 
 bool Logic::Water3FCentralToHighEmblem() {
-    return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() ||
+    return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() || logic->CanMegajump() ||
            (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
             ((logic->IsAdult || logic->BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
 }
 
+bool Logic::WaterMQ3FCentralToHighEmblem() {
+    return logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) ||
+           ((logic->IsAdult || logic->BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)) ||
+           logic->CanMegajump() || logic->CanMiddairGroundJump();
+}
+
 bool Logic::WaterRisingTargetTo3FCentral() {
-    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || CanBombRecoilHover();
+    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || CanBombRecoilHover() || logic->CanMegajump(true);
 }
 
 /* Water level has 7 events that govern its logic.
@@ -3037,7 +3049,7 @@ bool Logic::SpiritExplosiveKeyLogic() {
 
 bool Logic::SpiritWestToSkull() {
     return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) ||
-           ReachScarecrow();
+           ReachScarecrow() || logic->CanMegajump();
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {
@@ -3051,7 +3063,7 @@ bool Logic::SpiritSunBlockSouthLedge() {
 
 bool Logic::SpiritEastToSwitch() {
     return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood())) || CanUse(RG_HOVER_BOOTS) ||
-           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT));
+           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT) || logic->CanMegajump());
 }
 
 // Combines crossing the ledge directly and the jump from the hand

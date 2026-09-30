@@ -106,7 +106,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Exits
         //there's tricks for getting here with bunny-jumps or just side-hops
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE, (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()) && logic->HasItem(RG_CLIMB)),
-        ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanBunnyMegaJumpslash()),
         ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_LOWER_DOOR_LEDGE,  true),
     });
 
@@ -116,7 +116,7 @@ void RegionTable_Init_JabuJabusBelly() {
                                                                ((logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->Get(LOGIC_JABU_RUTO_IN_1F)) && (logic->CanMegajump() || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS))))),
     }, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_NORTH, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_NORTH, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanBunnyMegaJumpslash()),
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE, (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()) && logic->HasItem(RG_CLIMB)),
         //Adult can barely reach it with BGS, but it's finnicky enough to be a trick, and too niche to be worth adding yet (only relevant in doorsanity)
         ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM,               logic->CanHitSwitch(ED_BOMB_THROW)),
@@ -399,25 +399,6 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO,              logic->Get(LOGIC_JABU_WEST_TENTACLE)),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_NORTH, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET) && logic->Get(LOGIC_JABU_RUTO_IN_B1)),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_B1_SW_DOOR,        true),
-    });
-
-    areaTable[RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_NORTH] = Region("Jabu Jabus Belly MQ Water Switch Room", SCENE_JABU_JABU, {
-        //Events
-        EVENT_ACCESS(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS, logic->CanKillEnemy(RE_LIZALFOS)),
-    }, {
-        //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,            (logic->IsAdult || logic->HasItem(RG_CLIMB)) && logic->CanKillEnemy(RE_LIZALFOS) && logic->CanOpenLargeChest()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,    (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_1,           logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_2,           logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_BOOMERANG_GRASS,   logic->CanCutShrubs()),
-    }, {
-        //Exits
-        //without swim, jump from rang chest to the other side
-        //you can also bunnyhovers to force your way through but that's a trick
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER, AnyAgeTime([]{return logic->CanKillEnemy(RE_LIZALFOS) && (logic->IsAdult || logic->CanUse(RG_CLIMB) || logic->HasItem(RG_BRONZE_SCALE));})),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,                    (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_LIZALFOS);})),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_NORTH] = Region("Jabu Jabus Belly MQ Water Switch Room North", SCENE_JABU_JABU, {
