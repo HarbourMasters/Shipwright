@@ -1043,24 +1043,13 @@ std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
 #define SAMPLES_HIGH 560
-#define SAMPLES_MID 544
 #define SAMPLES_LOW 528
 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
 #define NUM_AUDIO_CHANNELS 2
 
-    // The sequencer advances a fixed slice of musical time per engine update
-    // (tempoInternalToExternal in audio_heap.c assumes 60 updates/sec), so with
-    // production paced by backend buffer fill the sample count must average
-    // exactly 32000/60 = 533.33 per update or tempo drifts.
-    // Two thirds 528 one third 544 gives 533.33.
-    int32_t sample_debt_thirds = 0;
-
-    // Single producer routine used by both wake-driven and pre-buffer loops.
-    // Picks per-iteration sample count itself, then produces and plays it.
-    auto produce_next_batch = [&]() {
-        u32 num_audio_samples = sample_debt_thirds > 0 ? SAMPLES_MID : SAMPLES_LOW;
-        sample_debt_thirds += (1600 - 3 * (int32_t)num_audio_samples) * AUDIO_FRAMES_PER_UPDATE;
-
+    // Single producer routine used by both the wake-driven and pre-buffer
+    // loops. Captures the per-iteration sample count from the caller.
+    auto produce_and_play = [&](u32 num_audio_samples) {
         const u32 total_frames = num_audio_samples * AUDIO_FRAMES_PER_UPDATE;
         const u32 total_samples = total_frames * NUM_AUDIO_CHANNELS;
 
@@ -1111,16 +1100,18 @@ void OTRAudio_Thread() {
 
         {
             std::unique_lock<std::mutex> Lock(audio.mutex);
+            int samples_left = AudioPlayer_Buffered();
+            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
 
             // Producer guard (banteg/Shipwright#6594): skip advancing the audio
-            // engine if the backend ring cannot accept the largest next burst.
+            // engine if the backend ring cannot accept the smallest next burst.
             // Generating PCM that DoPlay() would refuse creates a discontinuity
             // audible as a click. The pre-buffer loop below will catch up once
             // the backend drains enough.
-            if (AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
+            if (AudioPlayer_Buffered() + SAMPLES_LOW * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
                 audio.processing = false;
             } else {
-                produce_next_batch();
+                produce_and_play(num_audio_samples);
                 audio.processing = false;
             }
         }
@@ -1131,10 +1122,12 @@ void OTRAudio_Thread() {
         // The producer guard (same as above) prevents advancing the audio engine
         // when the backend ring is already at capacity.
         while (audio.running && AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered()) {
-            if (AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
+            if (AudioPlayer_Buffered() + SAMPLES_LOW * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
                 break;
             }
-            produce_next_batch();
+            int samples_left = AudioPlayer_Buffered();
+            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+            produce_and_play(num_audio_samples);
         }
     }
 }
