@@ -15,8 +15,31 @@
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 
 extern "C" {
+#include "z64.h"
+#include "macros.h"
 #include "variables.h"
 }
+
+// Misc cutscene command types
+enum {
+    CS_MISC_STOP_CUTSCENE = 12,
+    CS_MISC_STOP_STORM_AND_ADVANCE_TO_DAY = 18,
+    CS_MISC_TIME_ADVANCE_TO_NIGHT = 25,
+    CS_MISC_SUNSSONG_START = 33,
+    CS_MISC_FREEZE_TIME = 34,
+};
+
+// Textbox entries with this id show no text
+static constexpr uint16_t CS_TEXT_ID_NONE = 0xFFFF;
+// Room time settings use this for "not set"
+static constexpr uint8_t TIME_SETTING_UNSET = 0xFF;
+static constexpr uint16_t SUNS_SONG_TIME_SPEED = 400;
+
+// Command entry sizes, in 4 byte words
+static constexpr int32_t CAMERA_POINT_WORDS = sizeof(CutsceneCameraPoint) / sizeof(CutsceneData);
+// CS_CMD_09 and set time entries are the same size as textboxes
+static constexpr int32_t TEXTBOX_WORDS = sizeof(CsCmdTextbox) / sizeof(CutsceneData);
+static constexpr int32_t ACTOR_CUE_WORDS = sizeof(CsCmdActorCue) / sizeof(CutsceneData);
 
 static SOH::Scene* LoadScene(const std::string& path) {
     return (SOH::Scene*)Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(path).get();
@@ -52,12 +75,12 @@ static std::string ScenePath(int32_t sceneNum) {
 }
 
 static bool IsNight(uint16_t time) {
-    return time > 0xC000 || time < 0x4555;
+    return time > CLOCK_TIME(18, 0) || time < CLOCK_TIME(6, 30);
 }
 
 // Sun's Song speeds time up to the next of these
 static bool IsSunsSongDay(uint16_t time) {
-    return time >= 0x4555 && time <= 0xC001;
+    return time >= CLOCK_TIME(6, 30) && time <= CLOCK_TIME(18, 0) + 1;
 }
 
 struct CutsceneTimeScript {
@@ -89,7 +112,7 @@ static CutsceneTimeScript ReadScript(const uint32_t* data) {
                 bool more = true;
                 while (more) {
                     more = ((CutsceneCameraPoint*)ptr)->continueFlag != CS_CMD_STOP;
-                    ptr += 4;
+                    ptr += CAMERA_POINT_WORDS;
                 }
                 break;
             }
@@ -108,8 +131,8 @@ static CutsceneTimeScript ReadScript(const uint32_t* data) {
             case CS_CMD_09:
             case CS_CMD_SETTIME: {
                 int32_t entries = *ptr++;
-                for (int32_t j = 0; j < entries; j++, ptr += 3) {
-                    if (cmdType == CS_CMD_TEXTBOX && ((CsCmdBase*)ptr)->base != 0xFFFF) {
+                for (int32_t j = 0; j < entries; j++, ptr += TEXTBOX_WORDS) {
+                    if (cmdType == CS_CMD_TEXTBOX && ((CsCmdBase*)ptr)->base != CS_TEXT_ID_NONE) {
                         script.textboxes.push_back(*(CsCmdBase*)ptr);
                     } else if (cmdType == CS_CMD_SETTIME) {
                         script.setTimes.push_back(*(CsCmdDayTime*)ptr);
@@ -119,12 +142,11 @@ static CutsceneTimeScript ReadScript(const uint32_t* data) {
             }
             default: {
                 int32_t entries = *ptr++;
-                for (int32_t j = 0; j < entries; j++, ptr += 12) {
+                for (int32_t j = 0; j < entries; j++, ptr += ACTOR_CUE_WORDS) {
                     if (cmdType == CS_CMD_MISC) {
                         CsCmdBase* cmd = (CsCmdBase*)ptr;
                         script.misc.push_back(*cmd);
-                        // Stops the cutscene
-                        if (cmd->base == 12) {
+                        if (cmd->base == CS_MISC_STOP_CUTSCENE) {
                             script.lastFrame = std::min(script.lastFrame, (int32_t)cmd->startFrame);
                         }
                     }
@@ -161,21 +183,21 @@ static uint16_t RunScript(const uint32_t* data, uint16_t dayTime, uint16_t timeS
                 continue;
             }
             switch (cmd.base) {
-                case 18:
-                    if (dayTime < 0x4AAB) {
+                case CS_MISC_STOP_STORM_AND_ADVANCE_TO_DAY:
+                    if (dayTime < CLOCK_TIME(7, 0)) {
                         dayTime += 30;
                     }
                     break;
-                case 25:
+                case CS_MISC_TIME_ADVANCE_TO_NIGHT:
                     dayTime += 30;
-                    if (dayTime > 0xCAAA) {
-                        dayTime = 0xCAAA;
+                    if (dayTime > CLOCK_TIME(19, 0) - 1) {
+                        dayTime = CLOCK_TIME(19, 0) - 1;
                     }
                     break;
-                case 33:
+                case CS_MISC_SUNSSONG_START:
                     sunsSongStarted = true;
                     break;
-                case 34:
+                case CS_MISC_FREEZE_TIME:
                     dayTime -= night ? timeSpeed * 2 : timeSpeed;
                     break;
             }
@@ -196,8 +218,8 @@ static uint16_t RunScript(const uint32_t* data, uint16_t dayTime, uint16_t timeS
                 sunsSongToDusk = IsSunsSongDay(dayTime);
                 sunsSongSpeeding = true;
                 sunsSongPrevSpeed = timeSpeed;
-                timeSpeed = 400;
-            } else if (sunsSongToDusk ? dayTime > 0xC001 : IsSunsSongDay(dayTime)) {
+                timeSpeed = SUNS_SONG_TIME_SPEED;
+            } else if (sunsSongToDusk ? dayTime > CLOCK_TIME(18, 0) + 1 : IsSunsSongDay(dayTime)) {
                 sunsSongStarted = sunsSongSpeeding = false;
                 timeSpeed = sunsSongPrevSpeed;
             }
@@ -210,7 +232,7 @@ static uint16_t RunScript(const uint32_t* data, uint16_t dayTime, uint16_t timeS
             paused |= frame > cmd.startFrame && frame < cmd.endFrame;
         }
         if (!paused) {
-            dayTime += night && timeSpeed < 400 ? timeSpeed * 2 : timeSpeed;
+            dayTime += night && timeSpeed < SUNS_SONG_TIME_SPEED ? timeSpeed * 2 : timeSpeed;
         }
         night = IsNight(dayTime);
     }
@@ -239,10 +261,10 @@ uint16_t CutsceneTime_Simulate(int32_t sceneNum, uint16_t cutsceneIndex, uint16_
                             : nullptr;
     if (timeSettings != nullptr) {
         auto& settings = timeSettings->settings;
-        if (settings.hour != 0xFF && settings.minute != 0xFF) {
+        if (settings.hour != TIME_SETTING_UNSET && settings.minute != TIME_SETTING_UNSET) {
             dayTime = (uint16_t)(((settings.hour + (settings.minute / 60.0f)) * 60.0f) / ((f32)(24 * 60) / 0x10000));
         }
-        timeSpeed = settings.timeIncrement != 0xFF ? settings.timeIncrement : 0;
+        timeSpeed = settings.timeIncrement != TIME_SETTING_UNSET ? settings.timeIncrement : 0;
     }
 
     return RunScript(cutscene->cutscene->commands.data(), dayTime, timeSpeed, fadeInFrames, actorUpdate);
