@@ -852,8 +852,10 @@ void OTRGlobals::Initialize() {
 
     context->InitAudio({ .SampleRate = 32000,
                          .SampleLength = 1024,
-                         // ~128 ms reservoir to bridge gfx hitches without stutter.
-                         .DesiredBuffered = 4096 });
+                         // ~75 ms reservoir; long blocking loads are kept audible
+                         // by OTRAudio_Pump instead of deeper buffering, which
+                         // would delay every sound.
+                         .DesiredBuffered = 2400 });
 
     // The menu is set up before audio is initialized, so its list of available audio backends has to be
     // populated here rather than in Menu::InitElement (where the window backends are handled).
@@ -1043,7 +1045,6 @@ std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 OTRAudioState audio;
 
-void OTRAudio_Thread() {
 // AudioMgr_ThreadEntry(&gAudioMgr);
 //  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
 //  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
@@ -1051,34 +1052,29 @@ void OTRAudio_Thread() {
 #define SAMPLES_MID 544
 #define SAMPLES_LOW 528
 
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
 #define NUM_AUDIO_CHANNELS 2
 
-    // The sequencer advances a fixed slice of musical time per engine update
-    // (tempoInternalToExternal in audio_heap.c assumes 60 updates/sec), so with
-    // production paced by backend buffer fill the sample count must average
-    // exactly 32000/60 = 533.33 per update or tempo drifts.
-    // Two thirds 528 one third 544 gives 533.33.
-    int32_t sample_debt_thirds = 0;
+// The sequencer advances a fixed slice of musical time per engine update
+// (tempoInternalToExternal in audio_heap.c assumes 60 updates/sec), so with
+// production paced by backend buffer fill the sample count must average
+// exactly 32000/60 = 533.33 per update or tempo drifts.
+// Two thirds 528 one third 544 gives 533.33.
+static int32_t sSampleDebtThirds;
 
-    auto produce_next_batch = [&]() {
-        u32 num_audio_samples = sample_debt_thirds > 0 ? SAMPLES_MID : SAMPLES_LOW;
-        sample_debt_thirds += (1600 - 3 * (int32_t)num_audio_samples) * AUDIO_FRAMES_PER_UPDATE;
+// Caller holds audio.mutex. Produces one engine update and plays it. Updates
+// are produced one at a time behind a room check, so the backend ring never
+// dips more than one update below its target at any frame rate.
+static void OTRAudio_ProduceUpdate() {
+    u32 num_audio_samples = sSampleDebtThirds > 0 ? SAMPLES_MID : SAMPLES_LOW;
+    sSampleDebtThirds += (1600 - 3 * (int32_t)num_audio_samples);
 
-        const u32 total_frames = num_audio_samples * AUDIO_FRAMES_PER_UPDATE;
-        const u32 total_samples = total_frames * NUM_AUDIO_CHANNELS;
+    static thread_local s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS];
 
-        // 3 is the maximum authentic frame divisor.
-        static thread_local s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+    AudioMgr_CreateNextAudioBuffer(audio_buffer, num_audio_samples);
+    AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), num_audio_samples * NUM_AUDIO_CHANNELS * sizeof(int16_t));
+}
 
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
-        }
-
-        AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), total_samples * sizeof(int16_t));
-    };
-
+void OTRAudio_Thread() {
     // The engine must never run while game logic does: the game writes audio
     // state with the engine expected to be idle, as on console. The gfx thread
     // holds in_frame across Graph_ProcessGfxCommands (submit + present), which
@@ -1092,8 +1088,7 @@ void OTRAudio_Thread() {
             std::unique_lock<std::mutex> Lock(audio.mutex);
             audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval, [&] {
                 return !audio.running ||
-                       (audio.in_frame && AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE <=
-                                              AudioPlayer_GetDesiredBuffered());
+                       (audio.in_frame && AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered());
             });
 
             if (!audio.running) {
@@ -1105,18 +1100,39 @@ void OTRAudio_Thread() {
             std::unique_lock<std::mutex> Lock(audio.mutex);
 
             // Producer guard (banteg/Shipwright#6594): skip advancing the audio
-            // engine if the backend ring cannot accept the next burst. The
+            // engine if the backend ring cannot accept the next update. The
             // reservoir refills once the backend drains.
             if (!audio.in_frame || audio.busy ||
-                AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
+                AudioPlayer_Buffered() + SAMPLES_MID > AudioPlayer_GetDesiredBuffered()) {
                 break;
             }
 
             audio.busy = true;
-            produce_next_batch();
+            OTRAudio_ProduceUpdate();
             audio.busy = false;
+            audio.primed = true;
             audio.cv_from_thread.notify_all();
         }
+    }
+}
+
+// Called from the game thread while it is suspended inside a blocking resource
+// load: game logic cannot run then, so advancing the engine here is the
+// console scheduler interleaving audio tasks with gameplay, not the
+// cross-thread racing #6704 got wrong. Keeps long scene and room loads from
+// draining the backend ring to silence.
+extern "C" void OTRAudio_Pump(void) {
+    if (!audio.running) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> Lock(audio.mutex);
+    if (!audio.primed || audio.busy) {
+        return;
+    }
+
+    while (AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered()) {
+        OTRAudio_ProduceUpdate();
     }
 }
 
