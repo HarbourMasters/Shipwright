@@ -8,6 +8,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/Notification/Notification.h"
 
 extern "C" {
 #include <z64.h>
@@ -74,6 +75,21 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
                 Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch(command);
+            responsePayload["status"] = "success";
+            SendJsonToRemote(responsePayload);
+            return;
+        } else if (payloadType == "notify") {
+            if (!payload.contains("message")) {
+                SPDLOG_ERROR("[Sail] Received notify payload without message");
+                SendJsonToRemote(responsePayload);
+                return;
+            }
+
+            Notification::Emit({
+                .message = payload["message"].get<std::string>(),
+                .remainingTime = payload.value("duration", 0.0f),
+                .mute = payload.value("mute", false),
+            });
             responsePayload["status"] = "success";
             SendJsonToRemote(responsePayload);
             return;
