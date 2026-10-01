@@ -6,6 +6,12 @@
 #include <ship/Context.h>
 
 #include "Menu.h"
+#ifdef __APPLE__
+#include <SDL_audio.h>
+#else
+#include <SDL2/SDL_audio.h>
+#endif
+#include "soh/Enhancements/audio/SpeechPlayer.h"
 #include "BackendTypes.h"
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
@@ -360,6 +366,39 @@ void Menu::MenuDrawItem(WidgetInfo& widget, UIWidgets::Colors menuThemeIndex) {
                 options.disabledTooltip = "Only one audio API is available on this platform.";
                 if (UIWidgets::Combobox("Audio API", &currentAudioBackend, availableAudioBackendsMap, options)) {
                     Ship::Context::GetRawInstance()->GetAudio()->SetCurrentAudioBackend(currentAudioBackend);
+                }
+            } break;
+            case WIDGET_SPEECH_DEVICE: {
+                // Named rather than numbered: the system's device ids are not the same
+                // from one run to the next, but what it calls them is.
+                static std::vector<std::string> devices;
+                devices.assign(1, "Default");
+                for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
+                    const char* name = SDL_GetAudioDeviceName(i, 0);
+                    if (name != nullptr) {
+                        devices.emplace_back(name);
+                    }
+                }
+
+                const std::string chosen = CVarGetString(CVAR_SETTING("A11yTTSOutputDevice"), "");
+                int32_t index = 0;
+                for (size_t i = 1; i < devices.size(); i++) {
+                    if (devices.at(i) == chosen) {
+                        index = static_cast<int32_t>(i);
+                    }
+                }
+
+                UIWidgets::ComboboxOptions options = {};
+                options.color = menuThemeIndex;
+                options.tooltip = "Which device speech plays on. Leave it on Default and route the stream with "
+                                  "your system's sound settings, or pick the device here.";
+                options.disabled = !CVarGetInteger(CVAR_SETTING("A11yTTSSeparateOutput"), 1);
+                options.disabledTooltip = "Speech is mixed into the game's own output.";
+                if (UIWidgets::Combobox("Speech Output Device", &index, devices, options)) {
+                    const std::string& device = devices.at(static_cast<size_t>(index));
+                    CVarSetString(CVAR_SETTING("A11yTTSOutputDevice"), index == 0 ? "" : device.c_str());
+                    CVarSave();
+                    SOH::SpeechPlayer::Instance().SetSeparateOutput(true, index == 0 ? "" : device);
                 }
             } break;
             case WIDGET_VIDEO_BACKEND: {
