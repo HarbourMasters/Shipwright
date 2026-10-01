@@ -515,6 +515,18 @@ void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
+// Adding a sample is the only thing that moves a ribbon, and func_80090480 skips it while the
+// weapon does not move (that is what happens once a swing is over). Only the frame that added a
+// sample has an end that has to travel between the previous sample and the new one, so the other
+// frames must keep the geometry the game wrote: blending them anyway would shrink the newest
+// segment onto its predecessor and pop it back on every displayed frame.
+// A sample is recognized by its timer, which AddVertex sets to 1 and Update then increments once
+// per logical frame.
+static s32 EffectBlure_HeadIsNew(EffectBlure* this) {
+    return (this->numElements >= 2) && (this->elements[this->numElements - 1].state == 1) &&
+           (this->elements[this->numElements - 1].timer == 1);
+}
+
 // original name: "SQ_NoInterpolate_disp"
 void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
                                          GraphicsContext* gfxCtx) {
@@ -600,6 +612,15 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[3].v.cn[1] = sp78.g;
         vtx[3].v.cn[2] = sp78.b;
         vtx[3].v.cn[3] = sp78.a;
+
+        if ((index == (s32)this->numElements - 2) && EffectBlure_HeadIsNew(this)) {
+            // Only the newest segment of the ribbon moves during a logical frame, and only
+            // its newest end (vtx[2], vtx[3]): it slides from the previous sample's end
+            // (vtx[1], vtx[0]) so the trail keeps following the blade between ticks.
+            static const s16 headPairs[] = { 2, 1, 3, 0 };
+
+            FrameInterpolation_RecordRibbonHead(this, index, vtx, 4, 2, headPairs);
+        }
 
         gSPVertex(POLY_XLU_DISP++, vtx, 4, 0);
         gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 2, 3, 0);
@@ -766,6 +787,20 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
             vtx[j2].v.cn[1] = EffectSs_LerpU8(sp1A0.g, sp198.g, temp_f28);
             vtx[j2].v.cn[2] = EffectSs_LerpU8(sp1A0.b, sp198.b, temp_f28);
             vtx[j2].v.cn[3] = EffectSs_LerpU8(sp1A0.a, sp198.a, temp_f28);
+        }
+
+        if ((index == (s32)this->numElements - 2) && EffectBlure_HeadIsNew(this)) {
+            // The newest span is the only one that moves during a logical frame: its end
+            // cross-section slides from the previous sample towards the current one. Both
+            // spline edges and every point along them depend on that end cross-section, so
+            // all of them are blended towards the start of their own edge (vtx[0] for the
+            // tip edge, vtx[1] for the base edge).
+            static const s16 headPairs[] = {
+                2, 0, 4, 0, 6, 0, 8, 0, 10, 0, 12, 0, 14, 0, // tip edge, pivot vtx[0]
+                3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1, // base edge, pivot vtx[1]
+            };
+
+            FrameInterpolation_RecordRibbonHead(this, index, vtx, 16, 14, headPairs);
         }
 
         gSPVertex(POLY_XLU_DISP++, vtx, 16, 0);
@@ -1061,6 +1096,15 @@ void EffectBlure_DrawSimple(EffectBlure* this2, GraphicsContext* gfxCtx) {
             }
         }
 
+        if (EffectBlure_HeadIsNew(this)) {
+            // Same as the smooth path: the newest span is the only one that moves, and its
+            // end cross-section (vtx[2], vtx[3]) slides from the previous sample
+            // (vtx[0], vtx[1]).
+            static const s16 headPairs[] = { 2, 0, 3, 1 };
+
+            FrameInterpolation_RecordRibbonHead(this, 0, &vtx[(this->numElements - 2) * 4], 4, 2, headPairs);
+        }
+
         EffectBlure_DrawSimpleVertices(gfxCtx, this, vtx);
     }
 }
@@ -1153,6 +1197,14 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         vtx[j].v.cn[3] = EffectSs_LerpU8(this->p2StartColor.a, this->p2EndColor.a, ratio);
                         j++;
                     }
+                }
+
+                if ((j >= 4) && EffectBlure_HeadIsNew(this)) {
+                    // The newest pair of vertices is the moving end of the trail: it slides
+                    // from the previous sample's pair (j - 4, j - 3) between ticks.
+                    const s16 headPairs[] = { (s16)(j - 2), (s16)(j - 4), (s16)(j - 1), (s16)(j - 3) };
+
+                    FrameInterpolation_RecordRibbonHead(this, 0, vtx, j, 2, headPairs);
                 }
 
                 j = 0;

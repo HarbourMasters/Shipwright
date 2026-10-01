@@ -56,6 +56,28 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode);
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest);
 
+/**
+ * Records a CPU written vertex block whose newest end is a moving sample: swept ribbon
+ * trails (blure: sword slashes, enemy slashes, boomerang, ...). `dest` holds the vertices
+ * the game just wrote for this logical frame. `pairs` lists `pairCount` (destination,
+ * source) vertex index pairs, `source` being the vertex the destination has to collapse
+ * onto at the start of the logical frame. Only the newest segment of a ribbon moves, and
+ * only its newest end moves within that segment, so every other vertex of the block is
+ * simply left out of `pairs` and stays where the game put it.
+ *
+ * Only record a block for a logical frame in which the game actually appended a sample:
+ * a ribbon that did not grow is a fixed shape and must be left untouched, otherwise the
+ * blend keeps collapsing its newest segment onto the previous sample on every frame.
+ */
+void FrameInterpolation_RecordRibbonHead(void* key, int index, void* dest, u32 vtxCount, u32 pairCount,
+                                         const s16* pairs);
+
+/**
+ * Blends the recorded ribbon ends for the displayed frame of factor `step`.
+ * Call once per displayed frame, right before running the commands.
+ */
+void FrameInterpolation_UpdateRibbonHeads(f32 step);
+
 #ifdef __cplusplus
 }
 #endif
