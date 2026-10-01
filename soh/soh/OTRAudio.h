@@ -13,5 +13,8 @@ struct OTRAudioState {
     bool running;
     bool in_frame; // gfx thread is inside Graph_ProcessGfxCommands
     bool busy;     // audio thread is inside AudioMgr_CreateNextAudioBuffer
+    bool primed;   // the engine has produced its first update
 };
 extern OTRAudioState audio;
+
+extern "C" void OTRAudio_Pump(void);
