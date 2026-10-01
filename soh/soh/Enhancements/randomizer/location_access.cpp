@@ -977,11 +977,6 @@ void RegionTable_Init() {
 
     RegisterRegions();
 
-    // Dungeons
-    RegionTable_Init_ForestTemple();
-    RegionTable_Init_FireTemple();
-    RegionTable_Init_ShadowTemple();
-
     // Set parent regions
     for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {
         areaTable[i].randomizerRegionKey = (RandomizerRegion)i;
