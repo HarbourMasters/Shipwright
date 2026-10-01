@@ -9,6 +9,13 @@
 #include "soh/ShipUtils.h"
 #include "soh/cvar_prefixes.h"
 
+extern "C" {
+#include <z64.h>
+#include "macros.h"
+extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
+}
+
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;
 }
@@ -288,6 +295,14 @@ std::unique_ptr<GameInteractionEffectBase> Sail::EffectFromJson(nlohmann::json p
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
+    } else if (name == "PlaySfx") {
+        auto effect = std::make_unique<GameInteractionEffect::PlaySfx>();
+        if (payload.contains("parameters")) {
+            effect->parameters[0] = payload["parameters"][0].get<int32_t>();
+        }
+        return effect;
+    } else if (name == "SwitchAge") {
+        return std::make_unique<GameInteractionEffect::SwitchAge>();
     } else if (name == "SetCollisionViewer") {
         return std::make_unique<GameInteractionEffect::SetCollisionViewer>();
     } else if (name == "RandomizeCosmetics") {
@@ -470,6 +485,30 @@ void Sail::RegisterHooks() {
         payload["hook"]["flagType"] = flagType;
         payload["hook"]["flag"] = flag;
         payload["hook"]["sceneNum"] = sceneNum;
+
+        SendJsonToRemote(payload);
+    });
+
+    // Player update runs at 20 Hz, so sending every 4th update gives 5 Hz
+    COND_HOOK(OnPlayerUpdate, isConnected, [&]() {
+        static uint32_t updateCount = 0;
+        if (!CVarGetInteger(CVAR_REMOTE_SAIL("PlayerPosition"), 0) || !GameInteractor::IsSaveLoaded() ||
+            ++updateCount % 4 != 0)
+            return;
+
+        Player* player = GET_PLAYER(gPlayState);
+        nlohmann::json payload;
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
+        payload["type"] = "hook";
+        payload["hook"]["type"] = "OnPlayerPosition";
+        payload["hook"]["sceneNum"] = gPlayState->sceneNum;
+        payload["hook"]["roomNum"] = gPlayState->roomCtx.curRoom.num;
+        payload["hook"]["x"] = player->actor.world.pos.x;
+        payload["hook"]["y"] = player->actor.world.pos.y;
+        payload["hook"]["z"] = player->actor.world.pos.z;
+        payload["hook"]["yaw"] = player->actor.shape.rot.y;
+        payload["hook"]["linkAge"] = gSaveContext.linkAge;
+        payload["hook"]["dayTime"] = gSaveContext.dayTime;
 
         SendJsonToRemote(payload);
     });

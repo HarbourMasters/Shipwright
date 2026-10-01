@@ -94,6 +94,10 @@ void SohMenu::AddMenuNetwork() {
             info.name = "Connecting...##Sail";
         }
     });
+    AddWidget(path, "Send Player Position##Sail", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_REMOTE_SAIL("PlayerPosition"))
+        .Options(CheckboxOptions().Tooltip(
+            "Sends Link's scene, room, position, age and the time of day to the Sail server 5 times per second."));
 
     path.sidebarName = "Crowd Control";
     AddSidebarEntry("Network", path.sidebarName, 3);
