@@ -495,8 +495,8 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LOBBY,                 true),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS)),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_LIT_TORCH,   logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || (ctx->GetTrickOption(RT_GTG_MQ_LAVA_ROOM) && (logic->IsAdult || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS)/* || logic->CanUse(RG_ROLL)*/))),
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(logic->HasItem(RG_GTG_SILVER_LAVA) ? RG_HOOKSHOT : RG_LONGSHOT) || (logic->CanRecoilHover(logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) ? RECOIL_HAMMER : RECOIL_HAMMER_AND_SHIELD))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_LIT_TORCH,   logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (ctx->GetTrickOption(RT_GTG_MQ_LAVA_ROOM) && (logic->IsAdult || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS)/* || logic->CanUse(RG_ROLL)*/))),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_PLATFORMS_UNLIT_TORCH, logic->CanUse(logic->HasItem(RG_GTG_SILVER_LAVA) ? RG_HOOKSHOT : RG_LONGSHOT) || (logic->CanMeleeRecoilHover(logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) ? RECOIL_HAMMER : RECOIL_HAMMER_AND_SHIELD))),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_LEDGE_SIDE_PLATFORMS,  logic->CanUse(RG_FIRE_ARROWS)),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_FURTHEST_PLATFORM,     logic->CanUse(RG_FIRE_ARROWS)),
     });

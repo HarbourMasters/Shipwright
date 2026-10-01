@@ -1380,7 +1380,7 @@ bool Logic::BeanPlanted(LogicVal beanEvent) {
     return swch >> patch->swchFlag & 1;
 }
 
-bool Logic::CanRecoilHover(RecoilRequirements req) {
+bool Logic::CanMeleeRecoilHover(RecoilRequirements req) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
     }
@@ -1429,6 +1429,41 @@ bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req) {
     return can;
 }
 
+bool Logic::CanRecoilHover(RecoilRequirements req, bool bombFlower) {
+    if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
+        return false;
+    }
+    bool can = false;
+    switch (req) {
+        case RECOIL_SWORD:
+            if (CanJumpslash()){
+                return true;
+            }
+            break;
+        case RECOIL_SWORD_AND_SHIELD:
+            // hammer without shield gives better recoils than sword and shield
+            if (CanJumpslash() && CanStandingShield()){
+                return true;
+            }
+            [[fallthrough]];
+        case RECOIL_HAMMER:
+            if (CanUse(RG_MEGATON_HAMMER)){
+                return true;
+            }
+            break;
+        case RECOIL_HAMMER_AND_SHIELD:
+             if (CanUse(RG_MEGATON_HAMMER) && CanStandingShield()) {
+                return true;
+            }
+        case RECOIL_MAX:
+            break;
+    }
+    if (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage(DAMAGE_NO_FAIRY) && HasExplosives()){
+        return true;
+    }
+    return false;
+}
+
 bool Logic::CanBombRecoilHover(bool bombFlower){
     return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && 
            CanUse(RG_HOVER_BOOTS) && HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY);
@@ -1447,7 +1482,7 @@ bool Logic::WaterMQ3FCentralToHighEmblem() {
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
-    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || CanBombRecoilHover() || logic->CanMegajump(true);
+    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true);
 }
 
 /* Water level has 7 events that govern its logic.

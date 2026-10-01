@@ -170,7 +170,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_BACKYARD,    true),
         ENTRANCE(RR_KAK_POTION_SHOP, logic->IsAdult && logic->AtDay && logic->HasItem(RG_KAK_POTION_SHOP_KEY)),
         //can ledgegrab fence to rooftop with hover boots, but that's more difficult than the unintuitive jump, so not including in default logic
-        ENTRANCE(RR_KAK_ROOFTOP,     logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump()),
+        ENTRANCE(RR_KAK_ROOFTOP,     logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump()),
     });
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", SCENE_KAKARIKO_CENTER_GUEST_HOUSE, {

@@ -125,7 +125,7 @@ void RegionTable_Init_ZoraRiver() {
         //possible with adult + bunny, but too precise for unintuitive
         ENTRANCE(RR_ZR_BEHIND_WATERFALL, ctx->GetOption(RSK_SLEEPING_WATERFALL).Is(RO_WATERFALL_OPEN) || AnyAgeTime([]{return logic->CanUse(RG_ZELDAS_LULLABY);}) ||
                                              (logic->IsChild && ctx->GetTrickOption(RT_ZR_CUCCO) && logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_ZR_HOVERS)) ||
-                                             logic->CanMegajump() || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD)),
+                                             logic->CanMegajump() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD)),
     });
 
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {

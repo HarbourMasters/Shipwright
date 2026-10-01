@@ -146,19 +146,19 @@ void RegionTable_Init_GanonsCastle() {
     });
 
     areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, {
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 56 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 56 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 8),
-        LOCATION(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 32 && 
+        LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
+        LOCATION(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 8),
+        LOCATION(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
+        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 32 && 
                                                                                  (logic->CanUse(RG_GOLDEN_GAUNTLETS) || logic->BunnyHovers() || logic->CanMegajump() || logic->CanBombRecoilHover())),
-        LOCATION(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        LOCATION(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
+        LOCATION(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 24),
+        ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 24),
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR, true),
     });    
     
@@ -270,7 +270,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MAIN,                        true),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_SOT_PLATFORM,    logic->IsChild || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->CanMegajump()),
         //start the recoil away from the wall
-        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_TORCH,          logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanRecoilHover(RECOIL_HAMMER)) || logic->CanBunnyMegaJumpslash() || (logic->CanUse(RG_FIRE_ARROWS) && ((logic->IsAdult && logic->BunnyHood()) || logic->CanUse(RG_HOVER_BOOTS)))),
+        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_TORCH,          logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanMeleeRecoilHover(RECOIL_HAMMER)) || logic->CanBunnyMegaJumpslash() || (logic->CanUse(RG_FIRE_ARROWS) && ((logic->IsAdult && logic->BunnyHood()) || logic->CanUse(RG_HOVER_BOOTS)))),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM,  logic->CanUse(RG_FIRE_ARROWS)),
     });
 
@@ -610,17 +610,17 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle MQ Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 56 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 56 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_MQ_UNDER_PILLAR_FIRE_SILVER,    (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
-        LOCATION(RC_GANONS_CASTLE_MQ_NEAR_TARGET_FIRE_SILVER,     (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 24),
-        LOCATION(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && ((logic->FireTimer() >= 32 && logic->CanUse(RG_GOLDEN_GAUNTLETS)) || (logic->FireTimer() >= 8 && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)))),
-        LOCATION(RC_GANONS_CASTLE_MQ_LAUNCH_PLATFORM_FIRE_SILVER, (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_MQ_JET_PLATFORM_FIRE_SILVER,    (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 24),
+        LOCATION(RC_GANONS_CASTLE_MQ_UNDER_PILLAR_FIRE_SILVER,    (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        LOCATION(RC_GANONS_CASTLE_MQ_NEAR_TARGET_FIRE_SILVER,     (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 24),
+        LOCATION(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && ((logic->FireTimer() >= 32 && logic->CanUse(RG_GOLDEN_GAUNTLETS)) || (logic->FireTimer() >= 8 && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)))),
+        LOCATION(RC_GANONS_CASTLE_MQ_LAUNCH_PLATFORM_FIRE_SILVER, (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 16),
+        LOCATION(RC_GANONS_CASTLE_MQ_JET_PLATFORM_FIRE_SILVER,    (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 24),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,   (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->FireTimer() >= 32),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,   (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump(true)) && logic->FireTimer() >= 32),
         ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, true),
     });
 
@@ -752,7 +752,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_CHEST_PLATFORM, (logic->Get(LOGIC_SHADOW_TRIAL_FIRST_CHEST) && logic->CanUse(RG_HOOKSHOT)) ||
                                                                       (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())) ||
                                                                       logic->BunnyHovers() || logic->CanRecoilHoverFromActor(ARECOIL_SHORT) || logic->CanBombRecoilHover() || logic->CanMegajump()),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER,    (logic->IsAdult && (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanRecoilHoverFromActor(ARECOIL_LONG_AND_SHIELD))) || logic->CanBunnyMegaJumpslash()),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER,    (logic->IsAdult && (logic->CanMeleeRecoilHover(RECOIL_HAMMER) || logic->CanRecoilHoverFromActor(ARECOIL_LONG_AND_SHIELD))) || logic->CanBunnyMegaJumpslash()),
         //shortcut route for passage involving the torch
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST,   (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && 
                                                                 (((logic->BunnyHovers() || logic->CanMegajump()) && logic->CanUse(RG_STICKS)) ||
@@ -768,7 +768,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER_CHEST, logic->Get(LOGIC_SHADOW_TRIAL_FIRST_CHEST) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE,  logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanRecoilHover(RECOIL_SWORD) || logic->CanBombRecoilHover() || logic->CanMegajump()),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE,  logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanRecoilHover(RECOIL_SWORD)  || logic->CanMegajump()),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_MOVING_PLATFORM, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())),
     });
 
@@ -852,7 +852,7 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) || (logic->Get(LOGIC_SHADOW_TRIAL_LATE_CHEST) && logic->CanUse(RG_LONGSHOT))),
         //the beamos makes the recoil annoying, but you can avoid it
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_FAR_BEAMOS,   (logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump()) && (logic->CanAvoidEnemy(RE_BEAMOS, ED_LONGSHOT, true, 1) || logic->CanUse(RG_NUTS))),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_FAR_BEAMOS,   (logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanMegajump()) && (logic->CanAvoidEnemy(RE_BEAMOS, ED_LONGSHOT, true, 1) || logic->CanUse(RG_NUTS))),
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_FINAL_ROOM,   logic->HasItem(RG_GANONS_CASTLE_MQ_SILVER_SHADOW)),
     });
 

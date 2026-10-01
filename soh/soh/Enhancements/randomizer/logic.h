@@ -66,9 +66,10 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanRecoilHover(RecoilRequirements req);
+    bool CanMeleeRecoilHover(RecoilRequirements req);
     bool CanRecoilHoverFromActor(ActorRecoilRequirements req);
     bool CanBombRecoilHover(bool bombFlower = false);
+    bool CanRecoilHover(RecoilRequirements req, bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
     bool WaterMQ3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
