@@ -119,7 +119,8 @@ void RegionTable_Init_ThievesHideout() {
         //"Voidout" here means getting caught by guards
         LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
         LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) &&
+                                                          (logic->BunnyHovers() || logic->CanMegajump() || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_HAMMER))),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,              true),
@@ -132,7 +133,8 @@ void RegionTable_Init_ThievesHideout() {
         //Locations
         LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
-        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) &&
+                                                          (logic->BunnyHovers() || logic->CanMegajump() || logic->CanBombRecoilHover() || logic->CanRecoilHover(RECOIL_HAMMER))),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,        true),

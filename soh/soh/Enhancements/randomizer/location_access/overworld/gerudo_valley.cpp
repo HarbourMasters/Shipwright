@@ -34,8 +34,10 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GV_CRATE_LEDGE,        (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       true),
         //Bunnyhovers needs to aim for the sides of the bridge
-        ENTRANCE(RR_GV_FORTRESS_SIDE,      (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS))) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || (logic->BunnyHovers() && logic->HasItem(RG_CLIMB)) ||
-                                           ((logic->IsChild || ctx->GetTrickOption(RT_GV_HOOKSHOT_BRIDGE)) && logic->CanUse(RG_HOOKSHOT)) || (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash())),
+        ENTRANCE(RR_GV_FORTRESS_SIDE,      (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) ||
+                                                                logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || (logic->BunnyHovers() && logic->HasItem(RG_CLIMB)))) ||
+                                           ((logic->IsChild || ctx->GetTrickOption(RT_GV_HOOKSHOT_BRIDGE)) && logic->CanUse(RG_HOOKSHOT)) ||
+                                           (logic->IsChild && ctx->GetTrickOption(RT_GV_CHILD_CUCCO_JUMP) && logic->HasItem(RG_POWER_BRACELET) && logic->CanJumpslash())),
         ENTRANCE(RR_GV_WATERFALL_ALCOVE,   logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
         ENTRANCE(RR_GV_LOWER_STREAM,       logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
     });
@@ -134,7 +136,8 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GF_OUTSKIRTS,          true),
         ENTRANCE(RR_GV_UPPER_STREAM,       logic->TakeDamage()),
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
-        ENTRANCE(RR_GERUDO_VALLEY,         logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || (logic->BunnyHovers() && logic->CanUse(RG_CLIMB))),
+        ENTRANCE(RR_GERUDO_VALLEY,         logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) ||
+                                               logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || (logic->BunnyHovers() && logic->CanUse(RG_CLIMB))),
         ENTRANCE(RR_GV_CARPENTER_TENT,     logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT)),
         ENTRANCE(RR_GV_STORMS_GROTTO,      logic->IsAdult && logic->CanOpenStormsGrotto()),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       logic->CanMegadive()),

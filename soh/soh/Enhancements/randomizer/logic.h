@@ -173,6 +173,8 @@ class Logic {
     bool DMCPotsToPad();
     bool DMCPadToPots();
     bool DMCUpperToPad();
+    bool DMCHoverToPoH();
+    bool DMCPadToFarPlatform();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

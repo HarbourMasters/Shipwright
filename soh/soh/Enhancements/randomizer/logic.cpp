@@ -3029,7 +3029,7 @@ bool Logic::DMCUpperToPots() {
 }
 
 bool Logic::DMCPotsToPad() {
-    return CanUse(RG_HOVER_BOOTS) || (BunnyHood() && (IsAdult || HasItem(RG_CLIMB))) || CanUse(RG_HOOKSHOT) ||
+    return CanUse(RG_HOVER_BOOTS) || (BunnyHood() && (IsAdult || HasItem(RG_CLIMB))) || CanUse(RG_HOOKSHOT) || CanMegajump() ||
            (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET));
 }
 
@@ -3038,9 +3038,22 @@ bool Logic::DMCPadToPots() {
            CanUse(RG_HOOKSHOT) || (IsAdult && BunnyHood() && HasItem(RG_CLIMB));
 }
 
-// via scarecrow
+// via scarecrow or bunny megajump
 bool Logic::DMCUpperToPad() {
-    return IsAdult && TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && ReachDistantScarecrow();
+    return (TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) &&
+           ((IsAdult && ReachDistantScarecrow()) ||
+            (((logic->IsAdult && CanMegajump(true) || CanBombRecoilHover()) || logic->CanBunnyMegaJumpslash()) && logic->EffectiveHealth() > 24))) ||
+           logic->CanMegajump(true);
+}
+
+bool Logic::DMCHoverToPoH() {
+    return (ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && CanUse(RG_HOVER_BOOTS)) || CanMegajump();
+}
+
+bool Logic::DMCPadToFarPlatform() {
+    //you can go this way as child easilly with a bunny megajump, but not the reverse.
+    // the difference is ledge grab angles so there's probably some way to make it
+    return (IsAdult && (ReachDistantScarecrow() || CanBombRecoilHover())) || logic->CanMegajump(true);
 }
 
 bool Logic::SpiritExplosiveKeyLogic() {

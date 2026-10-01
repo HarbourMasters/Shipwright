@@ -1,5 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -108,7 +109,7 @@ void RegionTable_Init_GerudoFortress() {
         ENTRANCE(RR_GF_BOTTOM_OF_LOWER_VINES, true),
         // need to explicitly convert it into a bool
         ENTRANCE(RR_GF_BOTTOM_OF_UPPER_VINES, logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS).Get()),
-        ENTRANCE(RR_GF_BELOW_GS,              logic->BunnyHovers()),
+        ENTRANCE(RR_GF_BELOW_GS,              logic->BunnyHovers() || logic->CanMegajump(!logic->CanJumpslash())),
     });
 
     areaTable[RR_GF_NEAR_GS] = Region("GF Near GS", SCENE_GERUDOS_FORTRESS, {}, {
@@ -120,7 +121,7 @@ void RegionTable_Init_GerudoFortress() {
         ENTRANCE(RR_GF_BOTTOM_OF_LOWER_VINES,     true),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,        true),
         ENTRANCE(RR_GF_SLOPED_ROOF,               logic->IsAdult || logic->CanGroundJump()),
-        ENTRANCE(RR_GF_LONG_ROOF,                 logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
+        ENTRANCE(RR_GF_LONG_ROOF,                 logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump()),
         ENTRANCE(RR_GF_NEAR_CHEST,                logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GF_BELOW_GS,                  true),
     });
@@ -137,7 +138,8 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         ENTRANCE(RR_GF_OUTSIDE_GTG,        true),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES, true),
-        ENTRANCE(RR_GF_SLOPED_ROOF,        logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && roll*/))),
+        ENTRANCE(RR_GF_SLOPED_ROOF,        logic->CanMegajump() || 
+                                               (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && roll*/)))),
         ENTRANCE(RR_GF_TOP_OF_UPPER_VINES, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_GF_TO_GTG,             logic->IsAdult && ctx->GetTrickOption(RT_GF_LEDGE_CLIP_INTO_GTG).Get()),
     });
@@ -151,7 +153,7 @@ void RegionTable_Init_GerudoFortress() {
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,    true),
         ENTRANCE(RR_GF_SLOPED_ROOF,           true),
         ENTRANCE(RR_GF_BOTTOM_OF_UPPER_VINES, true),
-        ENTRANCE(RR_GF_NEAR_CHEST,            logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->ReachScarecrow() || logic->BunnyHood())) || logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GF_NEAR_CHEST,            logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (logic->ReachScarecrow() || logic->BunnyHood())) || logic->CanUse(RG_LONGSHOT) || logic->CanMegajump()),
     });
 
     areaTable[RR_GF_NEAR_CHEST] = Region("GF Near Chest", SCENE_GERUDOS_FORTRESS, {}, {
@@ -167,7 +169,7 @@ void RegionTable_Init_GerudoFortress() {
     areaTable[RR_GF_LONG_ROOF] = Region("GF Long Roof", SCENE_GERUDOS_FORTRESS, {}, {}, {
         //Exits
         ENTRANCE(RR_GF_BOTTOM_OF_LOWER_VINES, true),
-        ENTRANCE(RR_GF_NEAR_GS,               (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->BunnyHood())) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_GF_NEAR_GS,               (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->BunnyHood())) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()),
         ENTRANCE(RR_GF_BELOW_GS,              true),
         ENTRANCE(RR_GF_NEAR_CHEST,            logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GF_BELOW_CHEST,           true),
@@ -186,6 +188,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         ENTRANCE(RR_TH_BREAK_ROOM, true),
         ENTRANCE(RR_GF_OUTSKIRTS,  true),
+        ENTRANCE(RR_GF_JAIL_WINDOW,           logic->CanUse(RG_LONGSHOT)),
     });
 
 
@@ -209,6 +212,7 @@ void RegionTable_Init_GerudoFortress() {
         //there's a trick to reach RR_GF_LONG_ROOF
         ENTRANCE(RR_GF_OUTSKIRTS,                 true),
         ENTRANCE(RR_GF_NEAR_CHEST,                logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GF_LONG_ROOF,                 ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_GF_BELOW_CHEST,               logic->TakeDamage()),
         ENTRANCE(RR_GF_JAIL_WINDOW,               logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, true),
@@ -218,7 +222,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_JAIL_WINDOW] = Region("GF Jail Window", SCENE_GERUDOS_FORTRESS, {}, {}, {
         //Exits
-        ENTRANCE(RR_GF_LONG_ROOF,   logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover()), // can also get it with hovers backwalk into backflip
+        ENTRANCE(RR_GF_LONG_ROOF,   logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanBombRecoilHover() || logic->CanMegajump()), // can also get it with hovers backwalk into backflip
         ENTRANCE(RR_GF_OUTSKIRTS,   true),
         ENTRANCE(RR_GF_BELOW_CHEST, true),
         ENTRANCE(RR_GF_ABOVE_JAIL,  ctx->GetTrickOption(RT_HOOKSHOT_CLIP) && logic->CanUse(RG_HOOKSHOT)),

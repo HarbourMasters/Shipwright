@@ -83,15 +83,19 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_WELL,                 logic->IsAdult || logic->Get(LOGIC_DRAIN_WELL) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
         ENTRANCE(RR_KAK_POTION_SHOP,          (logic->AtDay || logic->IsChild) && logic->HasItem(RG_KAK_POTION_SHOP_KEY)),
         ENTRANCE(RR_KAK_REDEAD_GROTTO,        logic->CanOpenBombGrotto()),
-        ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && ((logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (logic->BunnyHovers() && logic->CanJumpslash()) || logic->CanMegajump(true) || logic->CanBombRecoilHover())) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
-        ENTRANCE(RR_KAK_WATCHTOWER,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer()))),
-        ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
-        ENTRANCE(RR_KAK_IMPAS_ROOFTOP,        logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS)) || (logic->IsAdult && (logic->CanMegajump(true) || logic->CanBombRecoilHover()))),
+        ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && ((logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (logic->BunnyHovers() && logic->CanJumpslash()) || logic->CanMegajump(true) || logic->CanBombRecoilHover())) ||
+                                                   (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
+        ENTRANCE(RR_KAK_WATCHTOWER,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) ||
+                                                                                         (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer()))),
+        ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanBunnyMegaJumpslash()))),
+        ENTRANCE(RR_KAK_IMPAS_ROOFTOP,        logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS)) ||
+                                                   (logic->IsAdult && (logic->CanMegajump(true) || logic->CanBombRecoilHover()))),
         ENTRANCE(RR_THE_GRAVEYARD,            true),
         ENTRANCE(RR_KAK_BEHIND_GATE,          logic->IsAdult || logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
         //adult or bunny can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
         ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || logic->BunnyHood() || (logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_KAK_HILL,                 (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || (logic->HasItem(RG_LONGSHOT) && ((logic->IsAdult && logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash() && logic->TakeDamage())))),
+        ENTRANCE(RR_KAK_HILL,                 (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMegajump() ||
+                                                   (logic->HasItem(RG_LONGSHOT) && ((logic->IsAdult && logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash() && logic->TakeDamage())))),
         ENTRANCE(RR_KAK_BEHIND_POTION_SHOP,   logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
     });
 
@@ -143,7 +147,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_HILL,               logic->CanMegajump(!logic->CanJumpslash()) || logic->CanBombRecoilHover()),
         //via archery game roof
         ENTRANCE(RR_KAK_IMPAS_ROOFTOP,      logic->CanMegajump(true) || logic->CanBombRecoilHover()),
-        ENTRANCE(RR_KAK_BEHIND_POTION_SHOP, logic->HasItem(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_KAK_BEHIND_POTION_SHOP, logic->HasItem(RG_HOVER_BOOTS) || logic->CanMegajump()),
         ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
     });
 
@@ -218,7 +222,9 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE,   true),
-        ENTRANCE(RR_KAK_WINDMILL_UPPER, (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) || (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH))),
+        ENTRANCE(RR_KAK_WINDMILL_UPPER, (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanGroundJump())) ||
+                                            (logic->IsChild && logic->CanJumpslash() && ctx->GetTrickOption(RT_KAK_CHILD_WINDMILL_POH)) ||
+                                            logic->CanMegajump()),
     });
 
     areaTable[RR_KAK_WINDMILL_UPPER] = Region("Kak Windmill Upper", SCENE_WINDMILL_AND_DAMPES_GRAVE, {}, {

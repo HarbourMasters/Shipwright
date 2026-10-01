@@ -16,7 +16,8 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_GS_BEAN_PATCH,                         logic->CanSpawnSoilSkull(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,                     logic->IsAdult && logic->CanGetNightTimeGS() && 
                                                               (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
-                                                               (((ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS)) || (logic->CanBombRecoilHover() && logic->CanJumpslash()))  && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
+                                                               (((ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS)) || 
+                                                                 ((logic->CanBombRecoilHover() || logic->CanMegajump(true)) && logic->CanJumpslash())) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
