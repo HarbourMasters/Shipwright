@@ -157,8 +157,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
                                       !Player_InCsMode(play) &&
                                           !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
                                           this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
-                                          this->actor.yDistToPlayer <= 15.0f,
-                                      this)) {
+                                          this->actor.yDistToPlayer <= 15.0f)) {
                 player->stateFlags1 |= PLAYER_STATE1_FLOOR_DISABLED;
                 this->actor.targetMode = 1;
             } else {

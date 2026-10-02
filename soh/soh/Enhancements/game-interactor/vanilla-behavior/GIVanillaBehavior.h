@@ -633,7 +633,7 @@ typedef enum {
     // this->actor.yDistToPlayer <= 15.0f
     // ```
     // #### `args`
-    // - `*DoorAna`
+    // - None
     VB_DOOR_ANA_GRAB_PLAYER,
 
     // #### `result`
