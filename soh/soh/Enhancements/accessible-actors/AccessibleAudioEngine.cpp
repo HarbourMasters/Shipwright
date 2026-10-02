@@ -5,7 +5,9 @@
 #define AAE_MAX_DB_REDUCTION -20
 #define AAE_LPF_ORDER 4
 
+#ifndef NOMINMAX
 #define NOMINMAX // because Windows is a joke.
+#endif
 #define MINIAUDIO_IMPLEMENTATION
 #include "AccessibleAudioEngine.h"
 
@@ -34,7 +36,7 @@ typedef int8_t s8;
 typedef uint8_t u8;
 // Processing for our custom audio positioning.
 static float lerp_aae(float x, float y, float z) {
-    return (1.0 - z) * x + z * y;
+    return (1.0f - z) * x + z * y;
 }
 
 static float computeGain(SoundExtras* extras) {
@@ -70,7 +72,7 @@ static void positioner_process_pcm_frames(ma_node* pNode, const float** ppFrames
         db = 64 - panSigned;
     else
         db = panSigned - 64;
-    pan = 1.0 - fabs(ma_volume_db_to_linear(-db / 2));
+    pan = 1.0f - fabsf(ma_volume_db_to_linear((float)(-db / 2)));
     if (panSigned < 64)
         pan = -pan;
 
@@ -314,7 +316,7 @@ void AccessibleAudioEngine::doSetPitch(SoundAction& action) {
     slot->extras.pitch = action.pitch;
     float pitch = action.pitch;
     if (slot->extras.z < 0)
-        pitch *= (1.0 - slot->extras.pitchBehindModifier);
+        pitch *= (1.0f - slot->extras.pitchBehindModifier);
     ma_sound_set_pitch(&slot->sound, pitch);
 }
 
@@ -367,7 +369,7 @@ void AccessibleAudioEngine::doSetSoundPos(SoundAction& action) {
     slot->extras.maxDistance = action.maxDistance;
     float pitch = slot->extras.pitch;
     if (action.posZ < 0)
-        pitch *= (1.0 - slot->extras.pitchBehindModifier);
+        pitch *= (1.0f - slot->extras.pitchBehindModifier);
     ma_sound_set_pitch(&slot->sound, pitch);
 }
 void AccessibleAudioEngine::garbageCollect() {
@@ -491,8 +493,8 @@ void AccessibleAudioEngine::mix(int16_t* ogBuffer, uint32_t nFrames) {
         float scalar = 1.0;
         for (uint32_t i = 0; i < nextChunk * AAE_CHANNELS; i++)
             scalar = std::max(scalar, mixedChunk[i]);
-        if (scalar > 1.0) {
-            scalar = 1.0 / scalar;
+        if (scalar > 1.0f) {
+            scalar = 1.0f / scalar;
             for (uint32_t i = 0; i < nextChunk * AAE_CHANNELS; i++)
                 mixedChunk[i] *= scalar;
         }

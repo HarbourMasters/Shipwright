@@ -35,10 +35,9 @@ f32 qNaN0x10000 = 0x7F810000;
 #pragma warning(disable : 4716)
 #endif
 
-// void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy)
-//{
-//	__gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
-// }
+// void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy) {
+//     __gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
+//}
 
 OSId osGetThreadId(OSThread* thread) {
     return 0;

@@ -525,8 +525,8 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_MQ_LOWER_BLOCK_PUZZLE] = Region("Forest Temple MQ Lower Block Puzzle", SCENE_FOREST_TEMPLE, {
         //Events
         //I don't seem able to get master as child, but noted i did before. very precise?
-        EVENT_ACCESS(LOGIC_FOREST_CAN_TWIST_HALLWAY,     (ctx->GetTrickOption(RT_FOREST_MQ_JS_HALLWAY_SWITCH) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->BunnyHood())) && 
-                                                          (logic->IsAdult && logic->CanJumpslash()) || (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD)))),
+        EVENT_ACCESS(LOGIC_FOREST_CAN_TWIST_HALLWAY,     ctx->GetTrickOption(RT_FOREST_MQ_JS_HALLWAY_SWITCH) && ((logic->CanUse(RG_HOVER_BOOTS) || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->BunnyHood())) && 
+                                                         ((logic->IsAdult && logic->CanJumpslash()) || (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD))))),
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_BLOCK_PUZZLE_FLOOR,  true),

@@ -97,7 +97,7 @@ void accessible_area_change(AccessibleActor* actor) {
 
     if (actor->play->sceneNum == SCENE_HYRULE_FIELD) {
         if (actor->xzDistToPlayer > 700) {
-            actor->policy.distance = actor->xzDistToPlayer * 1.2;
+            actor->policy.distance = actor->xzDistToPlayer * 1.2f;
             if (actor->xzDistToPlayer > 8000) {
                 return;
             }
@@ -114,9 +114,9 @@ void accessible_area_change(AccessibleActor* actor) {
             actor->policy.ydist = 5000;
             if (actor->xzDistToPlayer > 700) {
                 if (actor->sceneIndex == SCENE_HYRULE_FIELD) {
-                    actor->policy.distance = actor->xyzDistToPlayer * 1.4;
+                    actor->policy.distance = actor->xyzDistToPlayer * 1.4f;
                 } else {
-                    actor->policy.distance = actor->xyzDistToPlayer * 1.2;
+                    actor->policy.distance = actor->xyzDistToPlayer * 1.2f;
                 }
                 if (actor->xzDistToPlayer > 8000) {
                     return;
@@ -165,7 +165,7 @@ void accessible_area_change(AccessibleActor* actor) {
     } else if (actor->play->sceneNum >= SCENE_DEKU_TREE_BOSS && actor->play->sceneNum <= SCENE_GANONDORF_BOSS) {
         return; // dont check for entrances while in boss rooms
     } else if (actor->play->sceneNum == SCENE_GROTTOS || actor->play->sceneNum == SCENE_FAIRYS_FOUNTAIN) {
-        actor->policy.volume = 0.1;
+        actor->policy.volume = 0.1f;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_WARP_HOLE);
     } else if (actor->sceneIndex == SCENE_HYRULE_FIELD) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL);
@@ -223,7 +223,7 @@ void accessible_area_change(AccessibleActor* actor) {
 
 void accessible_en_guard(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
-    f32 guardsfx = NA_SE_IT_SWORD_IMPACT;
+    s16 guardsfx = NA_SE_IT_SWORD_IMPACT;
     if (fabs(actor->actor->world.pos.x - player->actor.world.pos.x) >
         fabs(actor->actor->world.pos.z - player->actor.world.pos.z)) {
         if (fabs(actor->actor->shape.rot.y - 16384) < 1000) {
@@ -232,12 +232,12 @@ void accessible_en_guard(AccessibleActor* actor) {
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
             } else {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2f);
             }
         } else if ((actor->actor->shape.rot.y + 16384) < 1000) {
             if (actor->actor->world.pos.x < player->actor.world.pos.x) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2f);
             } else {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
@@ -253,12 +253,12 @@ void accessible_en_guard(AccessibleActor* actor) {
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
             } else {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2f);
             }
         } else if (fabs(actor->actor->shape.rot.y + 32768) < 1000) {
             if (actor->actor->world.pos.z < player->actor.world.pos.z) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
-                ActorAccessibility_SetSoundPitch(actor, 0, 0.2);
+                ActorAccessibility_SetSoundPitch(actor, 0, 0.2f);
             } else {
                 ActorAccessibility_PlaySoundForActor(actor, 0, guardsfx);
                 ActorAccessibility_SetSoundPitch(actor, 0, 2.0);
@@ -280,7 +280,7 @@ void ActorAccessibility_InitActors() {
     policy.englishName = "Mido";
     policy.n = Npc_Frames;
     policy.distance = 1000;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_MD, policy);
     policy.englishName = "Malon";
     policy.distance = 500;
@@ -319,7 +319,7 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_HEISHI4, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Shopkeepers", NA_SE_VO_NA_HELLO_1);
-    policy.pitch = 0.6;
+    policy.pitch = 0.6f;
     policy.n = 30;
     policy.englishName = "Shooting Gallery Man";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SYATEKI_MAN, policy);
@@ -335,7 +335,7 @@ void ActorAccessibility_InitActors() {
     // general NPCs
     ActorAccessibility_InitPolicy(&policy, "Kokiri Child", NA_SE_VO_NB_LAUGH);
     policy.n = Npc_Frames;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KO, policy);
     policy.englishName = "Zoras";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ZO, policy);
@@ -516,11 +516,11 @@ void ActorAccessibility_InitActors() {
         }
         // Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because
         // some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
-        f32 leftAngle = actor->actor->world.rot.y - 16384;
+        s16 leftAngle = actor->actor->world.rot.y - 16384;
         f32 velocityXRight = Math_SinS(leftAngle);
         f32 velocityZRight = Math_CosS(leftAngle);
 
-        f32 frontAngle = actor->actor->world.rot.y;
+        s16 frontAngle = actor->actor->world.rot.y;
         f32 velocityXFront = Math_SinS(frontAngle);
         f32 velocityZFront = Math_CosS(frontAngle);
 
@@ -535,13 +535,13 @@ void ActorAccessibility_InitActors() {
             ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH);
         }
     });
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     policy.distance = 1000;
     policy.aimAssist.isProvider = AIM_HOOK;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BOX, policy);
     ActorAccessibility_InitPolicy(&policy, "Sign", NA_SE_IT_REFLECTION_WOOD);
     policy.n = 40;
-    policy.pitch = 1.6;
+    policy.pitch = 1.6f;
     policy.distance = 800;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
 
@@ -566,19 +566,19 @@ void ActorAccessibility_InitActors() {
 
     ActorAccessibility_InitPolicy(&policy, "Ruto", NA_SE_VO_RT_LAUGH_0);
     policy.n = 40;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_RU1, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Bean patch", NA_SE_EN_MUSI_SINK);
     policy.n = 60;
     policy.distance = 2400;
-    policy.pitch = 1.3;
+    policy.pitch = 1.3f;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_BEAN, policy);
     ActorAccessibility_InitPolicy(&policy, "Graveyard Digging Spot", NA_SE_IT_WOODSTICK_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_IT, policy);
     ActorAccessibility_InitPolicy(&policy, "Collectible", NA_SE_EN_NUTS_DAMAGE);
     policy.n = 40;
-    policy.pitch = 1.4;
+    policy.pitch = 1.4f;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ITEM00, policy);
     ActorAccessibility_InitPolicy(&policy, "Collectible", [](AccessibleActor* actor) {
         if (actor->actor->category == ACTORCAT_ITEMACTION) {
@@ -625,7 +625,7 @@ void ActorAccessibility_InitActors() {
     // TODO better gerudo guard logic
     ActorAccessibility_InitPolicy(&policy, "Gerudo Guard", NA_SE_VO_NB_LAUGH);
     policy.n = Npc_Frames;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GE1, policy);
     ActorAccessibility_InitPolicy(&policy, "Boulder", NA_SE_EV_ROCK_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_BOMBIWA, policy);
@@ -670,7 +670,7 @@ void ActorAccessibility_InitActors() {
     policy.n = 40;
     policy.ydist = 2000;
     policy.distance = 2000;
-    policy.pitch = 1.2;
+    policy.pitch = 1.2f;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_SP, policy);
 
     ActorAccessibility_InitPolicy(&policy, "Shutter Door", [](AccessibleActor* actor) {
@@ -683,7 +683,7 @@ void ActorAccessibility_InitActors() {
     });
     policy.n = 30;
     policy.distance = 1000;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Killer Door", NA_SE_EN_KDOOR_WAVE);
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_KILLER, policy);
@@ -693,7 +693,7 @@ void ActorAccessibility_InitActors() {
     policy.distance = 2000;
     policy.n = 1;
     policy.ydist = 200;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Wonder", [](AccessibleActor* actor) {
         auto wonder = (EnWonderItem*)actor->actor;
@@ -723,7 +723,7 @@ void ActorAccessibility_InitActors() {
         }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH);
     });
-    policy.volume = 0.6;
+    policy.volume = 0.6f;
     policy.distance = 1000;
     policy.ydist = 300;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_BDAN_SWITCH, policy);
@@ -748,7 +748,7 @@ void ActorAccessibility_InitActors() {
     policy.ydist = 1;
     policy.distance = 200;
     policy.volume = 0.5;
-    policy.pitch = 1.2;
+    policy.pitch = 1.2f;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_MORI_HASHIRA4, policy);
     ActorAccessibility_InitPolicy(&policy, "Forest Elevator", NA_SE_EV_ELEVATOR_MOVE2);
     policy.n = 40;
@@ -767,7 +767,7 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GANONDROF, policy);
     ActorAccessibility_InitPolicy(&policy, "Phantom Ganon Ball", [](AccessibleActor* actor) {
         if (actor->actor->params == 50) { // energy ball
-            int distance = actor->xyzDistToPlayer;
+            int distance = (int)actor->xyzDistToPlayer;
             int freq = distance < 200 ? 1 : distance < 400 ? 3 : 7;
             if ((actor->frameCount & freq) == 0) {
                 ActorAccessibility_PlaySoundForActor(
@@ -782,13 +782,13 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_InitPolicy(&policy, "Ocarina Spots", NA_SE_EV_DIAMOND_SWITCH);
     policy.n = 30;
     policy.distance = 800;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     policy.ydist = 500;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_OKARINA_TAG, policy);
     ActorAccessibility_InitPolicy(&policy, "Pushable Block", NA_SE_EV_TRAP_BOUND);
     policy.n = 30;
     policy.distance = 800;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_SPOT18_OBJ, policy); // Ideally should only play while adult
     ActorAccessibility_AddSupportedActor(ACTOR_BG_SPOT15_RRBOX, policy);
@@ -801,7 +801,7 @@ void ActorAccessibility_InitActors() {
         // temporary torches
         if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227 ||
             (actor->actor->params) == 4380 || actor->actor->params == 4321) {
-            actor->policy.volume = torch->litTimer != 0 ? 0.1 : 1.0;
+            actor->policy.volume = torch->litTimer != 0 ? 0.1f : 1.0f;
             if ((actor->frameCount & 31) == 0) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT);
             }
@@ -826,7 +826,7 @@ void ActorAccessibility_InitActors() {
     });
     policy.aimAssist.isProvider = AIM_HOOK;
     policy.n = 1;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     policy.distance = 800;
     ActorAccessibility_InitPolicy(&policy, "Po Torch", NA_SE_EN_ANUBIS_FIRE);
     policy.n = 40;
@@ -1021,7 +1021,7 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BX, policy);
     ActorAccessibility_InitPolicy(&policy, "tentacle", [](AccessibleActor* actor) {
         if (actor->actor->params < EN_BA_DEAD_BLOB) {
-            actor->policy.volume = 2.5 - (actor->actor->world.pos.y - actor->actor->home.pos.y) / 200.0;
+            actor->policy.volume = 2.5f - (actor->actor->world.pos.y - actor->actor->home.pos.y) / 200.0f;
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OWL_FLUTTER);
         }
     });
@@ -1119,7 +1119,7 @@ void ActorAccessibility_InitActors() {
         if (actor->yDistToPlayer < 80)
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_LAND_LADDER);
     });
-    policy.pitch = 1.3;
+    policy.pitch = 1.3f;
     ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
     ActorAccessibility_InitPolicy(&policy, "Door", [](AccessibleActor* actor) {
         if (((actor->actor->params >> 7) & 7) == DOOR_LOCKED &&
@@ -1130,7 +1130,7 @@ void ActorAccessibility_InitActors() {
         }
     });
     policy.n = 30;
-    policy.pitch = 1.1;
+    policy.pitch = 1.1f;
     policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_DOOR, policy);
@@ -1140,7 +1140,7 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     ActorAccessibility_InitPolicy(&policy, "marker", NA_SE_EV_DIAMOND_SWITCH);
     policy.distance = 1000;
-    policy.pitch = 1.7;
+    policy.pitch = 1.7f;
     ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
 
     // Virtual actors for a given location (scene and room number).
@@ -1149,7 +1149,7 @@ void ActorAccessibility_InitActors() {
 
     list = ActorAccessibility_GetVirtualActorList(SCENE_KOKIRI_FOREST, 0);
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { -784, 120, 1046 });
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 2146, 1, -142.8 });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 2146, 1, -142.8f });
 
     // Kokiri Forest Room with boulder and kokiri sword
     list = ActorAccessibility_GetVirtualActorList(SCENE_KOKIRI_FOREST, 2);
@@ -1170,7 +1170,7 @@ void ActorAccessibility_InitActors() {
 
     list = ActorAccessibility_GetVirtualActorList(SCENE_DEKU_TREE, 3); // basement 1 lobby
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { -901, -820, 0.5 });
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -181.76, -905, -28.3 });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -181.76f, -905, -28.3f });
 
     list = ActorAccessibility_GetVirtualActorList(SCENE_DODONGOS_CAVERN, 0);
     temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -80, 310, -1540 });
@@ -1198,29 +1198,29 @@ void ActorAccessibility_InitActors() {
     temp->policy.sound = NA_SE_VO_RT_FALL;
 
     list = ActorAccessibility_GetVirtualActorList(SCENE_CASTLE_COURTYARD_GUARDS_DAY, 0);
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 0.3;
-    temp->policy.volume = 0.5;
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1040.0, 0.0, 140.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 0.6;
-    temp->policy.volume = 0.5;
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 230.0, 0.0, 188.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 0.9;
-    temp->policy.volume = 0.5;
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -426.0, 0.0, 130.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 1.2;
-    temp->policy.volume = 0.5;
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -1206.0, 0.0, 133.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 1.5;
-    temp->policy.volume = 0.5;
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -1571.0, 0.0, -834.514 });
-    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0, 0.0, 140.514 });
-    temp->policy.pitch = 1.8;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 0.3f;
+    temp->policy.volume = 0.5f;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1040.0f, 0.0f, 140.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 0.6f;
+    temp->policy.volume = 0.5f;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 230.0f, 0.0f, 188.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 0.9f;
+    temp->policy.volume = 0.5f;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -426.0f, 0.0f, 130.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 1.2f;
+    temp->policy.volume = 0.5f;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -1206.0f, 0.0f, 133.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 1.5f;
+    temp->policy.volume = 0.5f;
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { -1571.0f, 0.0f, -834.514f });
+    temp = ActorAccessibility_AddVirtualActor(list, VA_MARKER, { 1734.0f, 0.0f, 140.514f });
+    temp->policy.pitch = 1.8f;
     temp->policy.volume = 0.5;
 
     list = ActorAccessibility_GetVirtualActorList(SCENE_TEMPLE_OF_TIME, 0);

@@ -928,6 +928,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // gSaveContext.health < STARTING_HEALTH
+    // ```
+    // #### `args`
+    // - None
+    VB_FULL_HEALTH_SPAWN,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1645,6 +1653,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_REQUIRE_OBJECT,
+
+    // #### `result`
+    // ```c
     // this->unk_15A > 0
     // ```
     // #### `args`
@@ -2144,9 +2160,11 @@ typedef enum {
     // ##### In `z_demo.c`:
     // - `int32_t` (entranceCutscene->flag) (promoted from `uint8_t` by va_arg)
     // - `int32_t` (entranceCutscene->entrance) (promoted from `uint16_t` by va_arg)
+    // - `void*` (entranceCutscene->segAddr)
     // ##### In `z_bg_breakwall.c` and `z_bg_toki_swd.c`:
     // - `int32_t` (EVENTCHKINF)
     // - `int32_t` (gSaveContext.entranceIndex)
+    // - `void*` (cutscene)
     VB_PLAY_ENTRANCE_CS,
 
     // #### `result`
@@ -2746,6 +2764,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor` (spawnedActor)
+    VB_SET_CHILD_ACTOR_PARENT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
 
@@ -2967,6 +2993,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SKIP_SCARECROWS_SONG,
+
+    // #### `result`
+    // ```c
+    // !gMapLoading
+    // ```
+    // #### `args`
+    // - `s16` (actorId)
+    VB_SPAWN_ACTOR_WITHOUT_OBJECT,
 
     // #### `result`
     // ```c
@@ -4056,4 +4090,13 @@ typedef enum {
     // #### `args`
     // - `*Player`
     VB_PLAYER_UNEQUIP_MASK_WITHOUT_BUTTON,
+
+    // #### `result`
+    // ```c
+    // this->itemAction != PLAYER_IA_BOTTLE
+    // ```
+    // #### `args`
+    // - none
+    VB_EMPTY_BOTTLE_OI,
+
 } GIVanillaBehavior;

@@ -399,7 +399,7 @@ static constexpr std::pair<u16, const char*> actorDescriptionData[] = {
     { ACTOR_BG_SPOT00_BREAK, "Broken Drawbridge, Fences" },
     { ACTOR_EN_SHOPNUTS, "Grounded Sales Scrub" },
     { ACTOR_EN_IT, "Dampe's Minigame Collectibles" },
-    { ACTOR_EN_GELDB, "Gerudo Fighter" },
+    { ACTOR_EN_GELDB, "Gerudo Thief" },
     { ACTOR_OCEFF_WIPE2, "Epona's Song Ocarina Effect" },
     { ACTOR_OCEFF_WIPE3, "Saria's Song Ocarina Effect" },
     { ACTOR_EN_NIW_GIRL, "Girl Chasing Cucco" },

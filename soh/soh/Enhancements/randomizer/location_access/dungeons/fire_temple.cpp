@@ -57,7 +57,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_NEAR_BOSS_TARGET] = Region("Fire Temple Near Boss Target", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,  logic->FireTimer() >= 8 && (logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_DOOR,  logic->FireTimer() >= 8 && logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
+        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_DOOR,  logic->FireTimer() >= 8 && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()))),
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_UPPER, logic->FireTimer() >= 8 && logic->IsAdult),
     });
 
@@ -619,7 +619,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,   logic->FireTimer() >= 8 && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_PILLAR, logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM) && (logic->IsAdult || logic->BunnyHood() || logic->CanUse(RG_HOVER_BOOTS))),
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 8 && logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood())),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 8 && (logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood()))),
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ENTRYWAY,       true),
     });
 

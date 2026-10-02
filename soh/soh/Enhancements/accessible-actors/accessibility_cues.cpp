@@ -68,7 +68,7 @@ class TerrainCueSound {
 
         // Set xzDistToPlayer.
         xzDistToPlayer = Math_Vec3f_DistXZ(&terrainPos, &player->actor.world.pos);
-        f32 distance = actor->policy.distance * (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON ? 2.0 : 1.0);
+        f32 distance = actor->policy.distance * (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON ? 2.0f : 1.0f);
         ActorAccessibility_SetSoundPos(this, 0, &terrainProjectedPos, xzDistToPlayer, distance);
         ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
     }
@@ -105,7 +105,7 @@ class Incline : protected TerrainCueSound {
 
             return;
         }
-        ActorAccessibility_SetSoundPitch(this, 0, 0.5 + (1 - pitchModifier));
+        ActorAccessibility_SetSoundPitch(this, 0, 0.5f + (1 - pitchModifier));
     }
     void setPitchModifier(float modifier) {
         pitchModifier = modifier;
@@ -132,7 +132,7 @@ class Decline : protected TerrainCueSound {
 
             return;
         }
-        ActorAccessibility_SetSoundPitch(this, 0, 1.0 + pitchModifier);
+        ActorAccessibility_SetSoundPitch(this, 0, 1.0f + pitchModifier);
     }
     void setPitchModifier(float mod) {
         pitchModifier = mod;
@@ -149,7 +149,7 @@ class Ledge : protected TerrainCueSound {
         savedType = type;
 
         if (type == 0) {
-            currentPitch = probeRot.y == 0 ? 0.4 : probeRot.y < 0 ? 0.2 : 0.8;
+            currentPitch = probeRot.y == 0 ? 0.4f : probeRot.y < 0 ? 0.2f : 0.8f;
         }
 
         play(sfx());
@@ -214,7 +214,7 @@ class Wall : protected TerrainCueSound {
 
         targetPitch = (f32)rot.y / (16384.0f * 2.0f);
         if (rot.y != 0 && targetPitch < -0.4)
-            targetPitch = -0.4;
+            targetPitch = -0.4f;
 
         play(NA_SE_IT_SWORD_CHARGE);
     }
@@ -230,9 +230,9 @@ class Wall : protected TerrainCueSound {
         f32 pitchModifier = 0.0;
 
         if (targetPitch < 0)
-            pitchModifier = LERP(2.5, 0.5 + targetPitch, (f32)restFrames / 20.0f);
+            pitchModifier = LERP(2.5f, 0.5f + targetPitch, (f32)restFrames / 20.0f);
         else if (targetPitch > 0)
-            pitchModifier = LERP(0.1, (0.5 + targetPitch), (f32)restFrames / 20.0f);
+            pitchModifier = LERP(0.1f, (0.5f + targetPitch), (f32)restFrames / 20.0f);
 
         ActorAccessibility_SetSoundPitch(this, 0, pitchModifier);
     }
@@ -287,7 +287,7 @@ class Ground : protected TerrainCueSound {
             play(NA_SE_EV_WOOD_BOUND);
             restFrames = 10;
         } else {
-            ActorAccessibility_SetSoundPitch(this, 0, 1.0 + (2 * pitchModifier));
+            ActorAccessibility_SetSoundPitch(this, 0, 1.0f + (2 * pitchModifier));
             restFrames--;
         }
     }
@@ -534,7 +534,6 @@ class TerrainCueDirection final {
     // Another copy/modify job from z_player.c. This function sets windspeed and wind direction, which are used for
     // pushing the player up and down slopes. "Inspired" by func_8083E318.
     s32 computePushedSpeedEtc() {
-        s32 pad;
         s16 sp4A;
         Vec3f sp3C;
         s16 sp3A;
@@ -857,7 +856,6 @@ class TerrainCueDirection final {
         f32 distToTravel = DETECTION_DISTANCE;
         if (trackingMode)
             distToTravel = 1.0;
-        Vec3f collisionResult;
         s32 bgId = 0;
 
         // Don't be fooled: link being in the air does not mean we've found a dropoff. I mean... it could mean that, but
@@ -918,11 +916,11 @@ class TerrainCueDirection final {
                 }
 
                 // checks for ledges
-                pos.y = player->actor.world.pos.y - 10.0;
+                pos.y = player->actor.world.pos.y - 10.0f;
                 f32 ogStep = step;
                 step = 1.0;
                 while (pos.y < player->actor.world.pos.y + player->actor.yDistToWater) {
-                    pos.y = player->actor.world.pos.y - 10.0;
+                    pos.y = player->actor.world.pos.y - 10.0f;
                     pos.y += 50.0;
                     if (!move()) {
                         break; // Probe is out of bounds.
@@ -930,10 +928,10 @@ class TerrainCueDirection final {
                 }
                 step = ogStep;
                 if (player->ageProperties->unk_92 == 0) {
-                    wallHeight = fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater -
-                                               45.5)); // change that number just a guess
+                    wallHeight = fabsf(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater -
+                                                45.5f)); // change that number just a guess
                 } else {
-                    wallHeight = fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater - 30.0));
+                    wallHeight = fabsf(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater - 30.0f));
                 }
 
                 prevPos = pos;
@@ -969,7 +967,6 @@ class TerrainCueDirection final {
             } else if (player->stateFlags1 == PLAYER_STATE1_CLIMBING_LADDER) {
                 f32 playerHeight =
                     BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &player->actor.world.pos);
-                f32 floorHeight;
                 s8 moveMethod = false;
                 Vec3s_ ogRot = rot;
                 setVelocity();
@@ -1208,7 +1205,7 @@ class TerrainCueDirection final {
                     if (distToGo > 500.0) {
                         distToGo = 500.0;
                     }
-                    f32 pitchModifier = distToGo / 500.0;
+                    f32 pitchModifier = distToGo / 500.0f;
 
                     pos = bottom;
                     discoverIncline(bottom, pitchModifier);
@@ -1235,7 +1232,7 @@ class TerrainCueDirection final {
                     if (distToGo > 500.0) {
                         distToGo = 500.0;
                     }
-                    f32 pitchModifier = distToGo / 500.0;
+                    f32 pitchModifier = distToGo / 500.0f;
 
                     pos = top;
                     discoverDecline(pos, pitchModifier);
@@ -1303,7 +1300,7 @@ class TerrainCueDirection final {
         while (ledgeCheckDistance >= 0) {
             prevPos = pos;
             setVelocity();
-            pos.y = player->actor.prevPos.y + 100.0;
+            pos.y = player->actor.prevPos.y + 100.0f;
             f32 step = fabs(velocity.x + velocity.z);
 
             if (!move()) {

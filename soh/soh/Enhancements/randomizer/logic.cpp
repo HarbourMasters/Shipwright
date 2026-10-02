@@ -3,6 +3,7 @@
 #include "logic.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
 #include "randomizerEnumStrings.h"
@@ -1332,6 +1333,12 @@ bool Logic::BeanPlanted(LogicVal beanEvent) {
     // rely on Get, rest is to track bean being planted out of logic
     if (Get(beanEvent)) {
         return true;
+    }
+
+    // if we don't have the bean soul, the bean isn't really planted.
+    if (!HasItem(static_cast<RandomizerGet>(beanEvent - LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN +
+                                            RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL))) {
+        return false;
     }
 
     const BeanPatch* patch = FindBeanPatch(beanEvent);
