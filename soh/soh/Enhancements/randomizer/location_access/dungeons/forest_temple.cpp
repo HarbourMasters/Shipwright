@@ -2,6 +2,7 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
+#include "z64scene.h"
 
 using namespace Rando;
 
@@ -62,7 +63,8 @@ void RegionTable_Init_ForestTemple() {
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER,      logic->CanUse(RG_SONG_OF_TIME) || logic->IsChild),
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,      logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
         ENTRANCE(RR_FOREST_TEMPLE_RED_DOORMAT_HALLWAY,     logic->SmallKeys(SCENE_FOREST_TEMPLE, 1)),
-        ENTRANCE(RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY,    false),
+        //RECOIL_HAMMER works but is probably too much for simple.
+        ENTRANCE(RR_FOREST_TEMPLE_LOBBY_LEDGE,             (logic->IsAdult && logic->CanBombRecoilHover())),
         ENTRANCE(RR_FOREST_TEMPLE_BASEMENT,                logic->Get(LOGIC_FOREST_MEG)),
         ENTRANCE(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,           false),
     });
@@ -419,7 +421,13 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY] = Region("Forest Temple Blue Doormat Hallway", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY_DOORMAT, logic->CanPassEnemy(RE_BIG_SKULLTULA)),
-        ENTRANCE(RR_FOREST_TEMPLE_LOBBY,                        true),
+        ENTRANCE(RR_FOREST_TEMPLE_LOBBY_LEDGE,                  true),
+    });
+
+    areaTable[RR_FOREST_TEMPLE_LOBBY_LEDGE] = Region("Forest Temple Lobby Ledge", SCENE_FOREST_TEMPLE, {}, {}, {
+        //Exits
+        ENTRANCE(RR_FOREST_TEMPLE_BLUE_DOORMAT_HALLWAY, true),
+        ENTRANCE(RR_FOREST_TEMPLE_LOBBY,                true),
     });
 
     areaTable[RR_FOREST_TEMPLE_BASEMENT] = Region("Forest Temple Basement", SCENE_FOREST_TEMPLE, {
@@ -476,14 +484,14 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_LOBBY_POT_6, logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_OVERGROWN_HALLWAY_UPPER,  logic->SmallKeys(SCENE_FOREST_TEMPLE, 1)),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_HALLWAY,        true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY,  true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_BLUE_DOORMAT_HALLWAY, false),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,         logic->CanHitEyeTargets()),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,         logic->CanHitEyeTargets()),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_OVERGROWN_HALLWAY_UPPER, logic->SmallKeys(SCENE_FOREST_TEMPLE, 1)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_HALLWAY,           true),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_RED_DOORMAT_HALLWAY,     true),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY_LEDGE,             (logic->IsAdult && logic->CanBombRecoilHover())),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,            logic->CanHitEyeTargets()),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,            logic->CanHitEyeTargets()),
         //implies the other 3 poes
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_BASEMENT,             logic->Get(LOGIC_FOREST_MEG)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_BASEMENT,                logic->Get(LOGIC_FOREST_MEG)),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NORTH_HALLWAY] = Region("Forest Temple MQ North Hallway", SCENE_FOREST_TEMPLE, {}, {}, {
@@ -574,8 +582,12 @@ void RegionTable_Init_ForestTemple() {
         ENTRANCE(RR_FOREST_TEMPLE_MQ_JOELLE_ROOM,        logic->Get(LOGIC_FOREST_CAN_TWIST_HALLWAY) && logic->SmallKeys(SCENE_FOREST_TEMPLE, 4)),
         //!QUANTUM LOGIC!
         //As there is no way in default logic to reach the other possible key use without going through RR_FOREST_TEMPLE_MQ_NW_COURTYARD, this is logically safe for now
-        //Breaks if there's any other way to RR_FOREST_TEMPLE_MQ_FALLING_ROOM than going through the eye targets in RR_FOREST_TEMPLE_MQ_LOBBY
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) && AnyAgeTime([]{return logic->CanKillEnemy(RE_FLOORMASTER);})),
+        //If RT_DAMAGE_BOOST_SIMPLE and RT_HOVER_BOOST_SIMPLE are on, it's possible to instead go via Amy's room which turns courtyard into spirit temple like fork, but thankfully only as adult
+        //If child can even do either of those routes, this turns into spirit key logic.
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) && AnyAgeTime([]{return logic->CanKillEnemy(RE_FLOORMASTER);}) &&
+                                                             (!(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE)) || 
+                                                              ((logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB))) && logic->HasFireSourceWithTorch()) ||
+                                                              logic->ForestMQNEToNWViaWell())),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY] = Region("Forest Temple MQ Straight Hallway", SCENE_FOREST_TEMPLE, {}, {
@@ -638,8 +650,8 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_WELL_LEDGE,   logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,              logic->HasItem(RG_CLIMB) && (logic->Get(LOGIC_FOREST_DRAINED_WELL) || ((((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_WELL_SWIM) && logic->CanUse(RG_HOOKSHOT))) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16))),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->Get(LOGIC_FOREST_MQ_BURNED_WEB) && (logic->CanKillEnemy(RE_BIG_SKULLTULA, ED_LONGSHOT) || logic->CanUse(RG_BOMBCHU_5))),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,              logic->ForestMQNWToNEViaWell()),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->Get(LOGIC_FOREST_MQ_BURNED_WEB) && logic->CanKillEnemy(RE_BIG_SKULLTULA, ED_LONGSHOT)),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD_WELL_LEDGE] = Region("Forest Temple MQ NW Courtyard Well Ledge", SCENE_FOREST_TEMPLE, {}, {
@@ -689,7 +701,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,                  true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,           (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && (((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,           logic->ForestMQNEToNWViaWell()),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_CHEST,    logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_VINES) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB))),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,    logic->CanUse(RG_LONGSHOT)),
@@ -821,6 +833,13 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MQ_GREEN_POE_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
+        //!QUANTUM LOGIC!
+        //If we have 2 keys, we can spend the second key either here or aty the top of BLOCK_PUZZLE_ROOM.
+        //Either option here gives us access to the courtyards, but we can only rely on it if we can access the second courtyard from the other side.
+        //If child can reach either logic, this becomes a lot more complicated.
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,         logic->SmallKeys(SCENE_FOREST_TEMPLE, 2) &&
+                                                           (((logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->CanUse(RG_FIRE_ARROWS)) ||
+                                                            logic->ForestMQNWToNEViaWell())),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_BLUE_DOORMAT_HALLWAY, logic->Get(LOGIC_FOREST_AMY)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_FALLING_ROOM,         logic->SmallKeys(SCENE_FOREST_TEMPLE, 6)),
     });
@@ -829,6 +848,12 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_AMY_ROOM, true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,    true),
+    });
+
+    areaTable[RR_FOREST_TEMPLE_MQ_LOBBY_LEDGE] = Region("Forest Temple MQ Lobby Ledge", SCENE_FOREST_TEMPLE, {}, {}, {
+        //Exits
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_BLUE_DOORMAT_HALLWAY, true),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,                true),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_BASEMENT] = Region("Forest Temple MQ Basement", SCENE_FOREST_TEMPLE, {

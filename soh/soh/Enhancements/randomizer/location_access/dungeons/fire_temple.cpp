@@ -273,7 +273,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_NARROW_PATH_ROOM,     logic->FireTimer() >= 24 && logic->SmallKeys(SCENE_FIRE_TEMPLE, 6)),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_CAGE,       logic->FireTimer() >= 16 && logic->IsAdult),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_UPPER_DOOR, logic->FireTimer() >= 24 && logic->IsAdult),
-        ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_SIDE_DOOR,  logic->FireTimer() >= 16 && logic->IsAdult),
+        ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_SIDE_DOOR,  logic->FireTimer() >= 16 && (logic->IsAdult || (logic->CanMidairDamageBoost() && logic->CanUse(RG_BOTTLE_WITH_FAIRY)))),
     });
 
     areaTable[RR_FIRE_TEMPLE_FIRE_WALL_UPPER_DOOR] = Region("Fire Temple Fire Wall Upper Door", SCENE_FIRE_TEMPLE, {}, {}, {
@@ -300,7 +300,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_NARROW_PATH_ROOM, true),
-        ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_CHASE,  false),
+        ENTRANCE(RR_FIRE_TEMPLE_FIRE_WALL_CHASE,  logic->IsAdult && logic->CanBombRecoilHover()),
     });
 
     areaTable[RR_FIRE_TEMPLE_BOULDER_MAZE_UPPER] = Region("Fire Temple Boulder Maze Upper", SCENE_FIRE_TEMPLE, {}, {
@@ -968,7 +968,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE,         logic->SmallKeys(SCENE_FIRE_TEMPLE, 3) && logic->FireTimer() >= 24),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM,            logic->FireTimer() >= 24),
         //Child has issues navigating the higher points of this room without an equip swapped hookshot
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_BARRED_DOOR, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)) && logic->FireTimer() >= 16),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_BARRED_DOOR, (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || (logic->CanMidairDamageBoost() && logic->CanUse(RG_BOTTLE_WITH_FAIRY))) && logic->FireTimer() >= 16),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_BARRED_DOOR] = Region("Fire Temple MQ High Torch Barred Door", SCENE_FIRE_TEMPLE, {}, {

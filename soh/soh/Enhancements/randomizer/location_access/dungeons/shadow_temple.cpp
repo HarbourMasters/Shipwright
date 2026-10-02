@@ -477,7 +477,9 @@ void RegionTable_Init_ShadowTemple() {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_ENTRYWAY,                  true),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_FIRST_BEAMOS,           AnyAgeTime([]{return logic->HasItem(RG_POWER_BRACELET) && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)));}) &&
-                                                                (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump() || AnyAgeTime([]{return logic->CanUse(RG_FIRE_ARROWS);}) || (ctx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslashExceptHammer()))),
+                                                                 (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump() ||
+                                                                  AnyAgeTime([]{return logic->CanUse(RG_FIRE_ARROWS);}) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->CanUse(RG_BOMBCHU_5) && logic->TakeDamage(DAMAGE_NO_FAIRY) && logic->CanStandingShield()) ||
+                                                                  (ctx->GetTrickOption(RT_SHADOW_MQ_GAP) && logic->CanUse(RG_LONGSHOT) && logic->CanJumpslashExceptHammer()))),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_START, AnyAgeTime([]{return logic->HasExplosives();}) && logic->SmallKeys(SCENE_SHADOW_TEMPLE, 6) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
     });
 

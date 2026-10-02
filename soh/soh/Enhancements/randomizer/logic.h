@@ -176,6 +176,8 @@ class Logic {
     bool DMCUpperToPad();
     bool DMCHoverToPoH();
     bool DMCPadToFarPlatform();
+    bool ForestMQNEToNWViaWell();
+    bool ForestMQNWToNEViaWell();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

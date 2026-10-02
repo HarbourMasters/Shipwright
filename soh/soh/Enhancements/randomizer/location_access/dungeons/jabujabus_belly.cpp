@@ -33,7 +33,8 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_BEGINNING,               true),
         ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_ROOM,              true),
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, true),
-        ENTRANCE(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM,          (logic->Get(LOGIC_JABU_LOWERED_PATH) || ((ctx->GetTrickOption(RT_JABU_BOSS_HOVER) || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS))) && logic->HasItem(RG_POWER_BRACELET)),
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE,         logic->CanUse(RG_HOVER_BOOTS) || logic->CanMidairDamageBoost() || logic->CanMegajump() ||
+                                                                  (logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_HOLES_ROOM] = Region("Jabu Jabus Belly Holes Room", SCENE_JABU_JABU, {
@@ -275,6 +276,14 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_JIGGLIES_ROOM, true),
     });
 
+    areaTable[RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE] = Region("Jabu Jabus Belly Lift Room Ledge", SCENE_JABU_JABU, {}, {
+    }, {
+        //Exits
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM,      true),
+        // assumes access to the previous room to get the box
+        ENTRANCE(RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM, (logic->Get(LOGIC_JABU_LOWERED_PATH) || ((ctx->GetTrickOption(RT_JABU_BOSS_HOVER) || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS))) && logic->HasItem(RG_POWER_BRACELET)),
+    });
+
     areaTable[RR_JABU_JABUS_BELLY_NEAR_BOSS_ROOM] = Region("Jabu Jabus Belly Near Boss Room", SCENE_JABU_JABU, {}, {
         //Locations
         //can also use ruto
@@ -329,7 +338,7 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_UNDERWATER_ALCOVE,             logic->HasItem(RG_SILVER_SCALE) || (logic->HasItem(RG_BRONZE_SCALE) && ((logic->IsChild || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))))),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,                    logic->Get(LOGIC_JABU_MQ_HOLES_ROOM_DOOR)),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE,          logic->Get(LOGIC_JABU_LOWERED_PATH) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->BunnyHood()) ||
-                                                                           logic->CanMegajump() || (logic->CanUse(RG_HOOKSHOT) && logic->Get(LOGIC_JABU_MQ_LIFT_ROOM_COW))),
+                                                                           logic->CanMegajump() || (logic->CanUse(RG_HOOKSHOT) && logic->Get(LOGIC_JABU_MQ_LIFT_ROOM_COW)) || logic->CanMidairDamageBoost()),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER, logic->Get(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS)),
     });
 

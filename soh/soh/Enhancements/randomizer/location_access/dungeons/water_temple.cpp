@@ -80,6 +80,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_ENTRANCE_LEDGE,      logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump()),
         ENTRANCE(RR_WATER_TEMPLE_HIGH_EMBLEM,         logic->Water3FCentralToHighEmblem()),
         ENTRANCE(RR_WATER_TEMPLE_JET_CHEST_ROOM,      logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
+        ENTRANCE(RR_WATER_TEMPLE_OUTSIDE_WATERFALL,   logic->CanRecoilHover(RECOIL_HAMMER)),
         ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
@@ -127,8 +128,8 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MAIN,                true),
         //Implies CanAvoid(RE_STINGERS)
         ENTRANCE(RR_WATER_TEMPLE_JET_CHEST_ROOM,      logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_WATER_TEMPLE_OUTSIDE_JET_LIFT_2F, logic->WaterLevel(WL_MID) &&
-                                                      (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->HasItem(RG_BRONZE_SCALE) || logic->BunnyHood())),
+        ENTRANCE(RR_WATER_TEMPLE_OUTSIDE_JET_LIFT_2F, logic->CanRecoilHover(RECOIL_HAMMER) || (logic->WaterLevel(WL_MID) &&
+                                                      (logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->HasItem(RG_BRONZE_SCALE) || logic->BunnyHood()))),
         //Child can jumpslash with the lit stick to light the torch
         ENTRANCE(RR_WATER_TEMPLE_PILLAR_2F,           logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
         //assumes RR_WATER_TEMPLE_3F_CENTRAL_LM and RR_WATER_TEMPLE_HIGH_EMBLEM access
@@ -751,6 +752,7 @@ void RegionTable_Init_WaterTemple() {
         //this swimless jump with irons may be a trick as you have to put irons on quite late.
         ENTRANCE(RR_WATER_TEMPLE_MQ_LIZALFOS_LOOP_A,     logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         ENTRANCE(RR_WATER_TEMPLE_MQ_HIGH_EMBLEM,         logic->WaterMQ3FCentralToHighEmblem()),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_OUTSIDE_WATERFALL,   logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
     //This region specifically covers the topmost platform around central pillar
