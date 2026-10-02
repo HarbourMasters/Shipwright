@@ -519,6 +519,7 @@ void Sail::RegisterHooks() {
         payload["hook"]["type"] = "OnPlayerPosition";
         payload["hook"]["sceneNum"] = gPlayState->sceneNum;
         payload["hook"]["roomNum"] = gPlayState->roomCtx.curRoom.num;
+        payload["hook"]["entranceIndex"] = gSaveContext.entranceIndex;
         payload["hook"]["x"] = player->actor.world.pos.x;
         payload["hook"]["y"] = player->actor.world.pos.y;
         payload["hook"]["z"] = player->actor.world.pos.z;
