@@ -754,7 +754,7 @@ bool Logic::CanDoGlitch(GlitchType glitch) {
 }
 
 // RANDOTODO quantity is a placeholder for proper ammo use calculation logic. in time will want updating to account for
-// ammo capacity
+// ammo capacity and ISG
 bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wallOrFloor, uint8_t quantity, bool timer,
                          bool inWater) {
     bool killed = false;
