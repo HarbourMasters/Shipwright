@@ -285,7 +285,6 @@ static ImGuiTextFilter checkSearch;
 static bool recalculateAvailable = false;
 static RandomizerRegion availableChecksStartingRegion = RR_ROOT;
 static RandoAgeTime availableChecksStartingAgeTime = RAT_NONE;
-static int16_t previousEntrance = 0;
 std::array<bool, RCAREA_INVALID> filterAreasHidden = { 0 };
 std::array<bool, RC_MAX> filterChecksHidden = { 0 };
 
@@ -899,7 +898,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     }
     if (!IsAreaSpoiled(currentArea) && (RandomizerCheckObjects::AreaIsOverworld(currentArea) ||
                                         std::find(spoilingEntrances.begin(), spoilingEntrances.end(),
-                                                  gPlayState->nextEntranceIndex) != spoilingEntrances.end())) {
+                                                  gSaveContext.entranceIndex) != spoilingEntrances.end())) {
         SetAreaSpoiled(currentArea);
     }
 }
@@ -2443,7 +2442,7 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAg
     const auto& ctx = Rando::Context::GetInstance();
     logic = ctx->GetLogic();
 
-    int16_t entranceIndex = gPlayState->nextEntranceIndex;
+    int16_t entranceIndex = gSaveContext.entranceIndex;
     if (startingRegion == RR_ROOT && entranceIndex >= 0 && entranceIndex < ENTR_MAX) {
         // Try to find a mapped entrance
         // e.g. ENTR_DEKU_TREE_0_1 (index 1) is not mapped, but ENTR_DEKU_TREE_ENTRANCE (index 0) is mapped
