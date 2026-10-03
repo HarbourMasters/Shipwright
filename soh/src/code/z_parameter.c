@@ -2219,6 +2219,19 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
+    } else if (item == ITEM_BOMBCHU_1) {
+        if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 1;
+        } else {
+            AMMO(ITEM_BOMBCHU) += 1;
+            if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
+                if (AMMO(ITEM_BOMBCHU) > 50) {
+                    AMMO(ITEM_BOMBCHU) = 50;
+                }
+            }
+        }
+        return ITEM_NONE;
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
         AMMO(ITEM_BOW) += sAmmoRefillCounts[item - ITEM_ARROWS_SMALL + 4];
 
