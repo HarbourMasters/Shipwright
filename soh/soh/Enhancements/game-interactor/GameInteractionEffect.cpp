@@ -495,8 +495,9 @@ void PlaySfx::_Apply() {
 }
 
 // MARK: - SwitchAge
+// Talking and other cutscenes don't block it: the scene reload ends them
 GameInteractionEffectQueryResult SwitchAge::CanBeApplied() {
-    if (!GameInteractor::IsSaveLoaded(true) || GameInteractor::IsGameplayPaused() ||
+    if (!GameInteractor::IsSaveLoaded(true) || gPlayState->pauseCtx.state != 0 ||
         gPlayState->transitionTrigger != TRANS_TRIGGER_OFF) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     } else {
