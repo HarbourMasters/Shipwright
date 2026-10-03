@@ -3,6 +3,7 @@
 #include "soh/mixer.h"
 
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/audio/StreamedMusic.h"
 
 typedef struct {
     u8 unk_0;
@@ -64,6 +65,7 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
 
         gActiveSeqs[playerIdx].seqId = seqId | (arg2 << 8);
         gActiveSeqs[playerIdx].prevSeqId = seqId | (arg2 << 8);
+        SOH_StreamedMusic_SequenceStarted(playerIdx, resolvedSeqId);
 
         if (gActiveSeqs[playerIdx].volCur != 1.0f) {
             Audio_QueueCmdF32(0x41000000 | _SHIFTL(playerIdx, 16, 8), gActiveSeqs[playerIdx].volCur);
@@ -86,6 +88,8 @@ void Audio_StartSequence(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
 }
 
 void func_800F9474(u8 playerIdx, u16 arg1) {
+    SOH_StreamedMusic_SequenceStopped(playerIdx);
+
     Audio_QueueCmdS32(0x83000000 | ((u8)playerIdx << 16),
                       (arg1 * (u16)gAudioContext.audioBufferParameters.updatesPerFrame) / 4);
     gActiveSeqs[playerIdx].seqId = NA_BGM_DISABLED;
