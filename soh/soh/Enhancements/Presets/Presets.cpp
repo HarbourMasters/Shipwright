@@ -213,14 +213,14 @@ std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
 
     for (auto& [name, info] : presets) {
         if (name.rfind(prefix, 0) == 0) {
-            found.emplace_back(name.substr(prefix.size()), name);
+            std::string label = name.substr(prefix.size());
+            size_t digits = label.find_first_not_of("0123456789");
+            if (digits > 0 && digits != std::string::npos && label[digits] == ' ') {
+                label = label.substr(digits + 1);
+            }
+            found.emplace_back(label, name);
         }
     }
-
-    // Sort by filename so "Speedrun - 1 Base.json" comes first while still showing as "Base"
-    std::sort(found.begin(), found.end(), [](const auto& a, const auto& b) {
-        return presets.at(a.second).fileName < presets.at(b.second).fileName;
-    });
 
     return found;
 }

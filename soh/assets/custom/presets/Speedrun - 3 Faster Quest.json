@@ -170,5 +170,6 @@
         "/gEnhancements/PauseBufferWindow"
     ],
     "fileType": 2,
-    "presetName": "Faster Quest"
+    "presetName": "Speedrun - 3 Faster Quest",
+    "isBuiltIn": true
 }

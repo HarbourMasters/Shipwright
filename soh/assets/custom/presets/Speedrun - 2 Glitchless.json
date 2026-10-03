@@ -120,5 +120,6 @@
         "/gEnhancements/PauseBufferWindow"
     ],
     "fileType": 2,
-    "presetName": "Glitchless"
+    "presetName": "Speedrun - 2 Glitchless",
+    "isBuiltIn": true
 }

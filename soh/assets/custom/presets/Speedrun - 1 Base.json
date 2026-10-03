@@ -112,5 +112,6 @@
         "/gEnhancements/PauseBufferWindow"
     ],
     "fileType": 2,
-    "presetName": "Base"
+    "presetName": "Speedrun - 1 Base",
+    "isBuiltIn": true
 }
