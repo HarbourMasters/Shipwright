@@ -73,6 +73,11 @@ class Logic {
     bool CanUseSword();
     bool CanJumpslashExceptHammer();
     bool CanJumpslash();
+    bool CanCrouchStab();
+    bool CanInterruptCrouchStab(bool blockingTextboxAvaliable, bool grabableActorAvaliable);
+    bool CanDoISG(bool blockingTextboxAvaliable, bool grabableActorAvaliable);
+    bool CanHover(bool blockingTextboxAvaliable, bool grabableActorAvaliable, bool againstWall = false,
+                  bool persistentDamageSource = false);
     bool CanClearStalagmite();
     bool CanHitSwitch(EnemyDistance distance = ED_CLOSE, bool inWater = false);
     bool CanDamage();
@@ -124,8 +129,8 @@ class Logic {
     bool CanTriggerGanonsSoul();
     bool CanTriggerWincon();
     bool IsFireLoopLocked();
-    bool ReachScarecrow();
-    bool ReachDistantScarecrow();
+    bool ReachScarecrow(bool blockingTextboxAvaliable, bool grabableActorAvaliable);
+    bool ReachDistantScarecrow(bool blockingTextboxAvaliable, bool grabableActorAvaliable);
     bool CanClimbLadder();
     bool CanClimbHighLadder();
     bool SummonEpona();

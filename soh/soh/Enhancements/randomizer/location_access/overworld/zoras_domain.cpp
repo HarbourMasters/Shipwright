@@ -56,14 +56,14 @@ void RegionTable_Init_ZorasDomain() {
         //Exits
         ENTRANCE(RR_ZR_BEHIND_WATERFALL, true),
         ENTRANCE(RR_LH_FROM_SHORTCUT,    logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
-        ENTRANCE(RR_ZD_BEHIND_KING_ZORA, logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult) || (ctx->GetTrickOption(RT_ZD_KING_ZORA_SKIP) && logic->IsAdult)),
+        ENTRANCE(RR_ZD_BEHIND_KING_ZORA, logic->CanHover(true, true) || logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult) || (ctx->GetTrickOption(RT_ZD_KING_ZORA_SKIP) && logic->IsAdult)),
         ENTRANCE(RR_ZD_SHOP,             logic->IsChild || logic->BlueFire()),
         ENTRANCE(RR_ZORAS_DOMAIN_ISLAND, true),
     });
 
     areaTable[RR_ZORAS_DOMAIN_ISLAND] = Region("Zoras Domain Island", SCENE_ZORAS_DOMAIN, {}, {}, {
         //Exits
-        ENTRANCE(RR_ZORAS_DOMAIN,     logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) ||
+        ENTRANCE(RR_ZORAS_DOMAIN,     logic->CanHover(true, true) || logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) ||
                                       (logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_HOOKSHOT_LADDERS)) || logic->CanUse(RG_IRON_BOOTS) ||
                                       ((logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()) && logic->HasItem(RG_CLIMB))),
         ENTRANCE(RR_ZD_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
@@ -78,7 +78,7 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_KING_ZORA_RED_ICE,        logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
     }, {
         //Exits
-        ENTRANCE(RR_ZORAS_DOMAIN,   logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult)),
+        ENTRANCE(RR_ZORAS_DOMAIN,   logic->CanHover(true, true) || logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult)),
         ENTRANCE(RR_ZORAS_FOUNTAIN, true),
     });
 

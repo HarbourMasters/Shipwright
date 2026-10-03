@@ -45,6 +45,9 @@ void RegionTable_Init_LonLonRanch() {
     }, {
         //Exits
         ENTRANCE(RR_LON_LON_RANCH, true),
+        // possible if items aren't restricted as you can hover out of a window
+        // there's a convoluted glitch that unrestricts items that could be implemented in the future
+        ENTRANCE(RR_LLR_STABLES,   false && logic->CanHover(true, true)),
     });
 
     areaTable[RR_LLR_STABLES] = Region("LLR Stables", SCENE_STABLE, {}, {

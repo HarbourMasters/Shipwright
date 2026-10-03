@@ -1935,7 +1935,19 @@
             },
             "isg": {
                 "name": "ISG",
-                "description": "Enables locations requiring use of the infinite sword glitch."
+                "description": "By interrupting a crouchstab, the sword hitbox is never disabled."
+            },
+            "hovering": {
+                "name": "Hovering",
+                "description": [
+                    "By shielding damage while midair and doing ISG, you can hover in place.\n",
+                    "It is possible to the backflip (or sideflip) and shield another damage source to get higher.\n",
+                    "\n",
+                    "Requires the \"Infinite Sword Glitch\" trick to be enabled\n",
+                    "\n",
+                    "This trick doesn't include complex hovers (such as the one to pass the boat in shadow temple) ",
+                    "or very long hovers (such as the one to the \"Decoy\" crates in Gerudo Valley)."
+                ]
             },
             "visible_collision": {
                 "name": "Ignore Visible Collision",

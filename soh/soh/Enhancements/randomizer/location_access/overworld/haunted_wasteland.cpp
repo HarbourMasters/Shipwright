@@ -12,7 +12,7 @@ void RegionTable_Init_HauntedWasteland() {
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSIDE_GATE,   true),
-        ENTRANCE(RR_HAUNTED_WASTELAND, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING) || (ctx->GetTrickOption(RT_HW_BUNNY_CROSSING) && logic->BunnyHood())),
+        ENTRANCE(RR_HAUNTED_WASTELAND, logic->CanHover(true, false) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING) || (ctx->GetTrickOption(RT_HW_BUNNY_CROSSING) && logic->BunnyHood())),
     });
 
     areaTable[RR_HAUNTED_WASTELAND] = Region("Haunted Wasteland", SCENE_HAUNTED_WASTELAND, {
@@ -37,7 +37,7 @@ void RegionTable_Init_HauntedWasteland() {
     }, {
         //Exits
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS, ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        ENTRANCE(RR_WASTELAND_NEAR_FORTRESS, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING) || (ctx->GetTrickOption(RT_HW_BUNNY_CROSSING) && logic->BunnyHood())),
+        ENTRANCE(RR_WASTELAND_NEAR_FORTRESS, logic->CanHover(true, false) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || ctx->GetTrickOption(RT_HW_CROSSING) || (ctx->GetTrickOption(RT_HW_BUNNY_CROSSING) && logic->BunnyHood())),
     });
 
     areaTable[RR_WASTELAND_NEAR_COLOSSUS] = Region("Wasteland Near Colossus", SCENE_HAUNTED_WASTELAND, {}, {
