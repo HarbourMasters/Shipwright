@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -65,7 +66,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         ENTRANCE(RR_BOTW_PERIMETER,       ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        ENTRANCE(RR_BOTW_PIT_CAGE,        ctx->GetTrickOption(RT_BOTW_PITS) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        ENTRANCE(RR_BOTW_PIT_CAGE,        (ctx->GetTrickOption(RT_BOTW_PITS) || logic->CanUse(RG_HOVER_BOOTS)) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
         ENTRANCE(RR_BOTW_SKULL_WALL_ROOM, logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3)),
         ENTRANCE(RR_BOTW_INVISIBLE_PATH,  logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 3)),
         ENTRANCE(RR_BOTW_B3_OOZE,         true),
@@ -116,7 +117,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         ENTRANCE(RR_BOTW_PERIMETER, ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        ENTRANCE(RR_BOTW_MIDDLE,    ctx->GetTrickOption(RT_BOTW_PITS) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        ENTRANCE(RR_BOTW_MIDDLE,    (ctx->GetTrickOption(RT_BOTW_PITS) || logic->CanUse(RG_HOVER_BOOTS)) && (ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH))),
         ENTRANCE(RR_BOTW_B3_OOZE,   true),
     });
 
@@ -331,7 +332,7 @@ void RegionTable_Init_BottomOfTheWell() {
         //Exits
         ENTRANCE(RR_BOTW_ENTRYWAY,             logic->CanUse(RG_CRAWL) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_BOTW_MQ_MIDDLE,            logic->Get(LOGIC_BOTW_MQ_OPENED_GATES)),
-        ENTRANCE(RR_BOTW_MQ_PIT_CAGE,          AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA)),
+        ENTRANCE(RR_BOTW_MQ_PIT_CAGE,          AnyAgeTime([]{return logic->BlastOrSmash();}) && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->CanUse(RG_HOVER_BOOTS))),
         //Climb always needed in case water is lowered out of logic
         ENTRANCE(RR_BOTW_MQ_BEHIND_MOAT,       (logic->Get(LOGIC_BOTW_LOWERED_WATER) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE) || 
                                                 (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
@@ -350,7 +351,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_PERIMETER,      logic->Get(LOGIC_BOTW_MQ_OPENED_GATES)),
-        ENTRANCE(RR_BOTW_MQ_PIT_CAGE,       (bool)ctx->GetTrickOption(RT_BOTW_PITS)),
+        ENTRANCE(RR_BOTW_MQ_PIT_CAGE,       ctx->GetTrickOption(RT_BOTW_PITS) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_BOTW_MQ_B3_PLATFORM,    logic->Get(LOGIC_BOTW_MQ_OPENED_MIDDLE_HOLE)),
         ENTRANCE(RR_BOTW_MQ_B3,             true),
         ENTRANCE(RR_BOTW_MQ_INVISIBLE_PATH, AnyAgeTime([]{return logic->HasItem(RG_POWER_BRACELET) || logic->CanHitSwitch(ED_BOMB_THROW);})),
@@ -403,9 +404,9 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTW_MQ_BOULDER_3, logic->BlastOrSmash()),
     }, {
         //Exits
-        ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_PITS))),
-        ENTRANCE(RR_BOTW_MQ_MIDDLE,    (bool)ctx->GetTrickOption(RT_BOTW_PITS)),
-        ENTRANCE(RR_BOTW_MQ_B3,   true),
+        ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_PITS) || logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_BOTW_MQ_MIDDLE,    ctx->GetTrickOption(RT_BOTW_PITS) || logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_BOTW_MQ_B3,        true),
     });
 
     areaTable[RR_BOTW_MQ_BEHIND_MOAT] = Region("Bottom of the Well MQ Behind Moat", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {

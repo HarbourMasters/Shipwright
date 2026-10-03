@@ -203,7 +203,7 @@ void RegionTable_Init_HyruleField() {
         ENTRANCE(RR_ZR_FRONT,               true),
         ENTRANCE(RR_LON_LON_RANCH,          true),
         ENTRANCE(RR_HF_SOUTHEAST_GROTTO,    AnyAgeTime([]{return logic->BlastOrSmash();})),
-        ENTRANCE(RR_HF_TO_LAKE_HYLIA,       logic->CanClimbLadder() || logic->SummonEpona()),
+        ENTRANCE(RR_HF_TO_LAKE_HYLIA,       logic->CanClimbLadder() || logic->SummonEpona() || (logic->IsAdult && (logic->CanMegajump(true) || logic->CanBombRecoilHover()))),
         ENTRANCE(RR_HF_OPEN_GROTTO,         true),
         ENTRANCE(RR_HF_INSIDE_FENCE_GROTTO, logic->CanOpenBombGrotto()),
         ENTRANCE(RR_HF_COW_GROTTO,          (logic->CanUse(RG_MEGATON_HAMMER) || logic->IsChild) && logic->CanOpenBombGrotto()),

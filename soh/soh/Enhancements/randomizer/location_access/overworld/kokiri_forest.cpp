@@ -1,5 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -16,7 +17,8 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_GS_BEAN_PATCH,                         logic->CanSpawnSoilSkull(RG_KOKIRI_FOREST_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_KF_GS_HOUSE_OF_TWINS,                     logic->IsAdult && logic->CanGetNightTimeGS() && 
                                                               (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
-                                                               (ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
+                                                               (((ctx->GetTrickOption(RT_KF_ADULT_GS) && logic->CanUse(RG_HOVER_BOOTS)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY))) && 
+                                                                logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)))),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_1,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_2,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_KF_BEAN_SPROUT_FAIRY_3,                   logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -93,7 +95,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_TRAINING_1,                     logic->IsChild),
         LOCATION(RC_KF_WONDER_TRAINING_2,                     logic->IsChild),
         LOCATION(RC_KF_WONDER_TRAINING_3,                     logic->IsChild),
-        LOCATION(RC_KF_WONDER_SIGN,                           logic->IsChild && logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_KF_WONDER_SIGN,                           logic->IsChild && logic->CanUseSword()),
         LOCATION(RC_KF_WONDER_PLATFORMS_1,                    logic->IsChild),
         LOCATION(RC_KF_WONDER_PLATFORMS_2,                    logic->IsChild),
         //Technically bad logic, because we can move Mido out of logic, but then we already have KSword...
@@ -102,7 +104,7 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),
         //The Deku Baba blocks the setup as Adult, and stunning doesn't last long enough to perform it.
-        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || 
+        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() ||
                                            ((logic->IsChild || logic->CanKillEnemy(RE_DEKU_BABA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR)) && logic->CanClimbLadder())),
         ENTRANCE(RR_KF_MIDOS_HOUSE,        true),
         ENTRANCE(RR_KF_SARIAS_HOUSE,       true),
@@ -134,7 +136,7 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST,         true),
         ENTRANCE(RR_THE_LOST_WOODS,        true),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMiddairGroundJump()),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMiddairGroundJump() || logic->CanMegajump()),
         ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 

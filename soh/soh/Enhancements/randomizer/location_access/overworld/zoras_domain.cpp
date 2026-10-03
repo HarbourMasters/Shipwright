@@ -65,7 +65,7 @@ void RegionTable_Init_ZorasDomain() {
         //Exits
         ENTRANCE(RR_ZORAS_DOMAIN,     logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_LONGSHOT) ||
                                       (logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_HOOKSHOT_LADDERS)) || logic->CanUse(RG_IRON_BOOTS) ||
-                                      ((logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()) && logic->HasItem(RG_CLIMB))),
+                                      ((logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()) && logic->HasItem(RG_CLIMB)) || logic->CanBunnyMegaJumpslash()),
         ENTRANCE(RR_ZD_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
     });
 

@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -70,7 +71,7 @@ void RegionTable_Init_DekuTree() {
     areaTable[RR_DEKU_TREE_SLINGSHOT_ROOM] = Region("Deku Tree Slingshot Room", SCENE_DEKU_TREE, {}, {
         //Locations
         LOCATION(RC_DEKU_TREE_SLINGSHOT_CHEST,           logic->CanOpenLargeChest()),
-        LOCATION(RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanMegajump())) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_1,         logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_2,         logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_3,         logic->CanCutShrubs()),
@@ -133,6 +134,7 @@ void RegionTable_Init_DekuTree() {
     areaTable[RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT] = Region("Deku Tree Basement Water Room Front", SCENE_DEKU_TREE, {}, {}, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_BASEMENT_SCRUB_ROOM,      true),
+        //Taking damage or using a cutscene item on the platform can be used to pass the log, it's a trick.
         ENTRANCE(RR_DEKU_TREE_BASEMENT_WATER_ROOM_BACK, logic->HasItem(RG_BRONZE_SCALE) || ctx->GetTrickOption(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG)),
     });
 
@@ -142,7 +144,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_BASEMENT_SPIKE_ROLLER_GRASS_2, logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, logic->HasItem(RG_BRONZE_SCALE) || ctx->GetTrickOption(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG)),
+        ENTRANCE(RR_DEKU_TREE_BASEMENT_WATER_ROOM_FRONT, logic->HasItem(RG_BRONZE_SCALE) || ctx->GetTrickOption(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG) || logic->TakeDamage()),
         ENTRANCE(RR_DEKU_TREE_BASEMENT_TORCH_ROOM,       true),
     });
 
@@ -327,9 +329,9 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM,    true),
-        ENTRANCE(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_SONG_OF_TIME))) && 
-                                                     AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ((logic->CanUse(RG_SONG_OF_TIME) || logic->BunnyHood()) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || 
-                                                                   (logic->CanUse(RG_MEGATON_HAMMER) && (((logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));})),
+        ENTRANCE(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || ((logic->IsAdult || logic->BunnyHood()) && logic->CanUse(RG_SONG_OF_TIME)) || ((logic->IsAdult || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanMegajump())) && 
+                                                     AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ((logic->CanUse(RG_SONG_OF_TIME) && logic->BunnyHood()) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || 
+                                                                   (logic->CanUse(RG_MEGATON_HAMMER) && (((logic->IsAdult || logic->BunnyHood() || logic->CanMegajump()) && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));})),
     });
 
     areaTable[RR_DEKU_TREE_MQ_PAST_BOULDER_VINES] = Region("Deku Tree MQ Past Boulder Vines", SCENE_DEKU_TREE, {}, {
@@ -410,7 +412,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM,   logic->Get(LOGIC_DEKU_TREE_MQ_WATER_ROOM_TORCHES) && logic->CanPassEnemy(RE_BIG_SKULLTULA, logic->CanUse(RG_SONG_OF_TIME) ? ED_CLOSE : ED_SHORT_JUMPSLASH)),
-        ENTRANCE(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) || logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT)))),
+        ENTRANCE(RR_DEKU_TREE_MQ_BASEMENT_WATER_ROOM_FRONT, ctx->GetTrickOption(RT_DEKU_MQ_LOG) || (logic->IsChild && logic->CanShield()) || logic->CanUse(RG_LONGSHOT) || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT))) || logic->TakeDamage()),
     });
 
     areaTable[RR_DEKU_TREE_MQ_BASEMENT_SOUTHWEST_ROOM] = Region("Deku Tree MQ Basement Southwest Room", SCENE_DEKU_TREE, {}, {

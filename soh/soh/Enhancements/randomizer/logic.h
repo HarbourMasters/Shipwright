@@ -45,6 +45,10 @@ class Logic {
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
+    bool CanMegajump(bool needsBunny = false, bool hasBombflower = false);
+    bool CanBunnyMegaJumpslash(bool hasBombflower = false);
+    bool CanMegadive(bool fallDamage = true, bool hasBombflower = false);
+    bool CanMidairDamageBoost(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanOpenLargeChest();
     bool CanDoGlitch(GlitchType glitch);
@@ -62,9 +66,12 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanRecoilHover(RecoilRequirements req);
-    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
+    bool CanMeleeRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromActor(ActorRecoilRequirements req);
+    bool CanBombRecoilHover(bool bombFlower = false);
+    bool CanRecoilHover(RecoilRequirements req, bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
+    bool WaterMQ3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
@@ -98,7 +105,7 @@ class Logic {
     uint8_t DungeonCount();
     uint16_t FireTimer();
     uint16_t WaterTimer();
-    bool TakeDamage();
+    bool TakeDamage(DamageAllowance allowance = DAMAGE_ANY);
     bool CanVoid();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();
@@ -167,6 +174,10 @@ class Logic {
     bool DMCPotsToPad();
     bool DMCPadToPots();
     bool DMCUpperToPad();
+    bool DMCHoverToPoH();
+    bool DMCPadToFarPlatform();
+    bool ForestMQNEToNWViaWell();
+    bool ForestMQNWToNEViaWell();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();
