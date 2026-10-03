@@ -7,8 +7,11 @@
 #include <ship/resource/ResourceManager.h>
 #include <stb_image.h>
 
+#include <chrono>
+
 #include "ResourceManagerHelpers.h"
 #include "OTRGlobals.h"
+#include "OTRAudio.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
@@ -272,7 +275,7 @@ extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     }
 }
 
-std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path) {
+static std::string ResolveMQPath(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
         size_t pos = 0;
@@ -280,7 +283,24 @@ std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const c
             Path.replace(pos, 7, "/mq/");
         }
     }
-    return Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(Path.c_str());
+    return Path;
+}
+
+std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path) {
+    return Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(ResolveMQPath(path).c_str());
+}
+
+// For loads that can block long enough for the backend ring to drain, e.g.
+// cold scene and room loads: pumps the audio engine from this thread while
+// waiting (OTRAudio_Pump), keeping the soundtrack alive through the load
+// without a deeper ring that would add latency to every sound.
+std::shared_ptr<Ship::IResource> ResourceMgr_LoadResourcePumpingAudio(const char* path) {
+    auto future = Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceAsync(ResolveMQPath(path), false,
+                                                                                           BS::pr::highest);
+    while (future.wait_for(std::chrono::milliseconds(5)) != std::future_status::ready) {
+        OTRAudio_Pump();
+    }
+    return future.get();
 }
 
 extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
