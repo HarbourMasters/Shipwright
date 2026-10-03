@@ -18,7 +18,7 @@ class ItemLocation {
     RandomizerGet GetPlacedRandomizerGet() const;
     void SetPlacedItem(RandomizerGet item);
     RandomizerGet& RefPlacedItem();
-    void SetDelayedItem(RandomizerGet item);
+    void DelayItem();
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion(RandomizerRegion region);
     std::set<RandomizerArea> GetAreas() const;
