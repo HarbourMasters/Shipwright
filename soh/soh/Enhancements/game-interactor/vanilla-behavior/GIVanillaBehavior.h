@@ -2043,6 +2043,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    VB_PERFORM_KNOCKDOWN_RECOVERY,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
