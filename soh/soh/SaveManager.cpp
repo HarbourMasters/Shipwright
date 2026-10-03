@@ -1,3 +1,16 @@
+#include <ship/Context.h>
+#include <fstream>
+#include <filesystem>
+#include <array>
+#include <mutex>
+#ifdef _WIN32
+#include <io.h>
+#elif !defined(__SWITCH__) && !defined(__WIIU__)
+#include <unistd.h>
+#endif
+#include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "SaveManager.h"
 #include "OTRGlobals.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
@@ -10,7 +23,6 @@
 #include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/UIWidgets.hpp"
 
 extern "C" {
 #include "z64.h"
@@ -19,17 +31,75 @@ extern "C" {
 #include <variables.h>
 }
 
-#define NOGDI // avoid various windows defines that conflict with things in z64.h
-#include <spdlog/spdlog.h>
-#include <ship/Context.h>
-
-#include <fstream>
-#include <filesystem>
-#include <array>
-#include <mutex>
-
 extern "C" SaveContext gSaveContext;
 using namespace std::string_literals;
+
+#if defined(__WIIU__) || defined(__SWITCH__)
+// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
+int copy_file(const char* src, const char* dst) {
+    alignas(0x40) uint8_t buf[4096];
+    FILE* r = fopen(src, "r");
+    if (!r) {
+        return -1;
+    }
+    FILE* w = fopen(dst, "w");
+    if (!w) {
+        return -2;
+    }
+
+    size_t res;
+    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
+        if (fwrite(buf, 1, res, w) != res) {
+            break;
+        }
+    }
+
+    fclose(r);
+    fclose(w);
+    return res >= 0 ? 0 : res;
+}
+#endif
+
+// Write to temp file and only swap once fully on disk
+static bool WriteFileSafely(const std::filesystem::path& fileName, const std::filesystem::path& tempFile,
+                            const std::string& contents) {
+#ifdef _WIN32
+    FILE* w = _wfopen(tempFile.c_str(), L"wb");
+#else
+    FILE* w = fopen(tempFile.c_str(), "wb");
+#endif
+    bool written =
+        w != nullptr && fwrite(contents.c_str(), 1, contents.length(), w) == contents.length() && fflush(w) == 0;
+    // Push data from OS cache to disk. Without this system crash after rename can leave file at full size but zeroed
+#ifdef _WIN32
+    written = written && _commit(_fileno(w)) == 0;
+#elif !defined(__SWITCH__) && !defined(__WIIU__)
+    written = written && fsync(fileno(w)) == 0;
+#endif
+    if (w != nullptr) {
+        written = fclose(w) == 0 && written;
+    }
+
+    std::error_code ec;
+    if (!written) {
+        SPDLOG_ERROR("Failed to write {}, keeping previous {}", tempFile.string(), fileName.string());
+        std::filesystem::remove(tempFile, ec);
+        return false;
+    }
+#if defined(__SWITCH__) || defined(__WIIU__)
+    std::filesystem::remove(fileName, ec);
+    copy_file(tempFile.c_str(), fileName.c_str());
+    std::filesystem::remove(tempFile, ec);
+#else
+    std::filesystem::rename(tempFile, fileName, ec);
+    if (ec) {
+        SPDLOG_ERROR("Failed to replace {}: {}", fileName.string(), ec.message());
+        std::filesystem::remove(tempFile, ec);
+        return false;
+    }
+#endif
+    return true;
+}
 
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
                                 const size_t size) {
@@ -594,9 +664,7 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             sections.erase("randomizer");
             metaSaveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
             std::lock_guard<std::mutex> guard(saveMtx);
-            std::ofstream output(fileName);
-            output << metaSaveBlock.dump(1);
-            output.close();
+            WriteFileSafely(fileName, GetFileTempName(fileNum), metaSaveBlock.dump(1));
         } else {
             nlohmann::json& statsBlock = sections["sohStats"]["data"];
             s16 major = statsBlock.value("buildVersionMajor", 0);
@@ -1221,32 +1289,6 @@ void SaveManager::InitFileMaxed() {
     Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
 }
 
-#if defined(__WIIU__) || defined(__SWITCH__)
-// std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
-int copy_file(const char* src, const char* dst) {
-    alignas(0x40) uint8_t buf[4096];
-    FILE* r = fopen(src, "r");
-    if (!r) {
-        return -1;
-    }
-    FILE* w = fopen(dst, "w");
-    if (!w) {
-        return -2;
-    }
-
-    size_t res;
-    while ((res = fread(buf, 1, sizeof(buf), r)) > 0) {
-        if (fwrite(buf, 1, res, w) != res) {
-            break;
-        }
-    }
-
-    fclose(r);
-    fclose(w);
-    return res >= 0 ? 0 : res;
-}
-#endif
-
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
@@ -1292,35 +1334,11 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         svi.func(saveContext, sectionID, false);
     }
 
-    std::filesystem::path fileName = GetFileName(fileNum);
-    std::filesystem::path tempFile = GetFileTempName(fileNum);
-
-    if (std::filesystem::exists(tempFile)) {
-        std::filesystem::remove(tempFile);
+    if (!WriteFileSafely(GetFileName(fileNum), GetFileTempName(fileNum), saveBlock.dump(1))) {
+        delete saveContext;
+        saveMtx.unlock();
+        return;
     }
-
-#if defined(__SWITCH__) || defined(__WIIU__)
-    FILE* w = fopen(tempFile.c_str(), "w");
-    std::string json_string = saveBlock.dump(1);
-    fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
-    fclose(w);
-#else
-    std::ofstream output(tempFile);
-    output << std::setw(1) << saveBlock << std::endl;
-    output.close();
-#endif
-
-#if defined(__SWITCH__) || defined(__WIIU__)
-    if (std::filesystem::exists(fileName)) {
-        std::filesystem::remove(fileName);
-    }
-    copy_file(tempFile.c_str(), fileName.c_str());
-    if (std::filesystem::exists(tempFile)) {
-        std::filesystem::remove(tempFile);
-    }
-#else
-    std::filesystem::rename(tempFile, fileName);
-#endif
 
     delete saveContext;
     InitMeta(fileNum);
@@ -1364,8 +1382,7 @@ void SaveManager::SaveGlobal() {
     const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
-    std::ofstream output(sGlobalPath);
-    output << std::setw(1) << globalBlock << std::endl;
+    WriteFileSafely(sGlobalPath, sSavePath / std::string("global.temp"), globalBlock.dump(1));
 }
 
 void SaveManager::LoadFile(int fileNum) {
