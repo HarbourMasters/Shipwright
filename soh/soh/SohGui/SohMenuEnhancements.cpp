@@ -1842,6 +1842,15 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Enables Ivan the Fairy. Player 2 can control Ivan and press the C-Buttons to use items and mess with "
             "Player 1!"));
+    AddWidget(path, "Ivan: Separate Loadout", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("IvanSeparateLoadout"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0) == 0; })
+        .Options(CheckboxOptions().Tooltip(
+            "Lets Ivan choose his C-Button / D-Pad items separately from Link's. Get Link to open the Inventory "
+            "screen and move the cursor over an item, then press a C-Button or D-Pad direction (on Ivan's controller) "
+            "to assign that item.\n\n"
+            "When disabled, Ivan mirrors Link's C-Button / D-Pad assignments."));
     AddWidget(path, "Dogs Follow You Everywhere", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));
