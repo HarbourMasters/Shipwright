@@ -344,6 +344,9 @@ void SetStartingItems() {
         Randomizer_GetSettingValue(RSK_SHUFFLE_ZELDAS_LETTER)) {
         Item_Give(NULL, ITEM_LETTER_ZELDA);
     }
+    if (Randomizer_GetSettingValue(RSK_STARTING_SCARECROWS_SONG)) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_SCARECROWS_SONG);
+    }
     if (Randomizer_GetSettingValue(RSK_STARTING_CLAIM_CHECK)) {
         Item_Give(NULL, ITEM_CLAIM_CHECK);
     }

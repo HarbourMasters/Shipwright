@@ -1,3 +1,5 @@
+#include <nlohmann/json.hpp>
+
 #include "trial.h"
 #include "static_data.h"
 

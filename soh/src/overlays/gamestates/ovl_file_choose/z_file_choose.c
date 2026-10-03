@@ -25,36 +25,28 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipUtils.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? QUEST_NORMAL : QUEST_MASTER)
 #define MAX_QUEST QUEST_BOSSRUSH
 
 // #region SOH [Enhancement] - Hide Quest Modes
-static bool IsQuestSkipped(uint8_t quest) {
-    switch (quest) {
-        case QUEST_NORMAL:
-            return !ResourceMgr_GameHasOriginal() || CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0);
-        case QUEST_MASTER:
-            return !ResourceMgr_GameHasMasterQuest() ||
-                   CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0);
-        case QUEST_RANDOMIZER:
-            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0);
-        case QUEST_BOSSRUSH:
-            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0);
-        default:
-            return false;
-    }
-}
-
-static uint8_t CountVisibleQuests(void) {
-    uint8_t count = 0;
-    for (int32_t quest = MIN_QUEST; quest <= MAX_QUEST; ++quest) {
-        if (!IsQuestSkipped(quest)) {
-            count++;
+// Step from quest in the given direction (1 or -1) to the next visible quest, wrapping around at the ends
+static s8 NextVisibleQuest(s8 quest, s8 dir) {
+    // Try each quest at most once, so this can't loop forever if every quest is hidden
+    for (int32_t tries = MAX_QUEST - MIN_QUEST + 1; tries > 0; --tries) {
+        quest += dir;
+        if (quest > MAX_QUEST) {
+            quest = MIN_QUEST;
+        } else if (quest < MIN_QUEST) {
+            quest = MAX_QUEST;
+        }
+        if (!SohFileSelect_IsQuestHidden(quest)) {
+            break;
         }
     }
 
-    return count;
+    return quest;
 }
 // #endregion
 
@@ -705,35 +697,20 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     // #region SOH [Enhancement] - Hide Quest Modes
     // If the current quest type was hidden after being selected (i.e., CVar changed while on the quest menu), advance
     // to the next visible one.
-    if (CountVisibleQuests() > 0) {
-        while (IsQuestSkipped(this->questType[this->buttonIndex])) {
-            this->questType[this->buttonIndex]++;
-            if (this->questType[this->buttonIndex] > MAX_QUEST) {
-                this->questType[this->buttonIndex] = MIN_QUEST;
-            }
-        }
+    if (SohFileSelect_IsQuestHidden(this->questType[this->buttonIndex])) {
+        this->questType[this->buttonIndex] = NextVisibleQuest(this->questType[this->buttonIndex], 1);
     }
     // #endregion
 
     // #region SOH [Enhancement] - Hide Quest Modes
-    if (CountVisibleQuests() > 1 && ABS(this->stickRelX) > 30 ||
-        (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+    if (SohFileSelect_CountVisibleQuests() > 1 &&
+        (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT)))) {
         // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without O2R,
         // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            do {
-                this->questType[this->buttonIndex]++;
-                if (this->questType[this->buttonIndex] > MAX_QUEST) {
-                    this->questType[this->buttonIndex] = MIN_QUEST;
-                }
-            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
+            this->questType[this->buttonIndex] = NextVisibleQuest(this->questType[this->buttonIndex], 1);
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            do {
-                this->questType[this->buttonIndex]--;
-                if (this->questType[this->buttonIndex] < MIN_QUEST) {
-                    this->questType[this->buttonIndex] = MAX_QUEST;
-                }
-            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
+            this->questType[this->buttonIndex] = NextVisibleQuest(this->questType[this->buttonIndex], -1);
         }
         // #endregion
 
@@ -933,7 +910,7 @@ void FileChoose_RotateToQuest(GameState* thisx) {
         this->windowRot -= VREG(16);
 
         if (this->windowRot <= 314.0f) {
-            if (CountVisibleQuests() > 1) {
+            if (SohFileSelect_CountVisibleQuests() > 1) {
                 this->windowRot = 314.0f;
                 this->configMode = CM_START_QUEST_MENU;
             } else {
@@ -945,21 +922,29 @@ void FileChoose_RotateToQuest(GameState* thisx) {
         this->windowRot += VREG(16);
 
         if (this->windowRot >= 314.0f) {
-            if (CountVisibleQuests() > 1) {
+            if (SohFileSelect_CountVisibleQuests() > 1) {
                 this->windowRot = 314.0f;
                 this->configMode = CM_START_QUEST_MENU;
             } else {
                 this->windowRot = 628.0f;
 
-                if (!IsQuestSkipped(QUEST_RANDOMIZER)) {
-                    this->configMode = CM_START_RANDOMIZER_SETTINGS_MENU;
-                } else if (!IsQuestSkipped(QUEST_BOSSRUSH)) {
-                    this->configMode = CM_START_BOSS_RUSH_MENU;
-                } else {
-                    this->configMode = CM_START_NAME_ENTRY;
+                // Only one quest is visible, so select it as if it was picked on the quest menu
+                this->questType[this->buttonIndex] = NextVisibleQuest(MAX_QUEST, 1);
+                gSaveContext.ship.quest.id = this->questType[this->buttonIndex];
 
-                    // Needed to come back to main menu
-                    this->prevConfigMode = CM_MAIN_MENU;
+                switch (this->questType[this->buttonIndex]) {
+                    case QUEST_RANDOMIZER:
+                        this->configMode = CM_START_RANDOMIZER_SETTINGS_MENU;
+                        break;
+                    case QUEST_BOSSRUSH:
+                        this->configMode = CM_START_BOSS_RUSH_MENU;
+                        break;
+                    default:
+                        this->configMode = CM_START_NAME_ENTRY;
+
+                        // Needed to come back to main menu
+                        this->prevConfigMode = CM_MAIN_MENU;
+                        break;
                 }
             }
         }
@@ -1753,7 +1738,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
         // #region SOH [Enhancement] - Hide Quest Modes
         // Only draw the control stick prompts and arrows when there's more than one quest to cycle through.
-        if (CountVisibleQuests() > 1) {
+        if (SohFileSelect_CountVisibleQuests() > 1) {
             // #endregion
             // draw control stick prompts.
             Gfx_SetupDL_39Opa(this->state.gfxCtx);

@@ -1,13 +1,8 @@
 ![Ship of Harkinian](docs/shiptitle.darkmode.png#gh-dark-mode-only)
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 
-## Website
-
-Official Website: https://www.shipofharkinian.com/
-
-## Discord
-
-Official Discord: https://discord.com/invite/shipofharkinian
+* [Website](https://www.shipofharkinian.com)
+* [Discord](https://discord.com/invite/harbourmasters)
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
@@ -26,26 +21,13 @@ You can verify you have dumped a supported copy of the game by using the compati
 * Launch `soh.exe`
 
 #### Linux
-* Place your supported copy of the game in the same folder as the appimage.
 * Execute `soh.appimage`.  You may have to `chmod +x` the appimage via terminal.
+* When prompted, select your supported copy of the game.
+* Saves, settings and `oot.o2r` are stored in `~/.local/share/soh/`. If the folder you launch from already has `shipofharkinian.json`, `oot.o2r` or `oot-mq.o2r`, that folder is used instead. Set `SHIP_HOME` to choose another folder.
 
 #### macOS
 * Run `soh.app`. When prompted, select your supported copy of the game.
 * You should see a notification saying `Processing OTR`, then, once the process is complete, you should get a notification saying `OTR Successfully Generated`, then the game should start.
-
-#### Nintendo Switch
-* Run one of the PC releases to generate an `oot.o2r` and/or `oot-mq.o2r` file. After launching the game on PC, you will be able to find these files in the same directory as `soh.exe` or `soh.appimage`. On macOS, these files can be found in `/Users/<username>/Library/Application Support/com.shipofharkinian.soh/`
-* Copy the files to your sd card
-```
-sdcard
-└── switch
-    └── soh
-        ├── oot-mq.o2r
-        ├── oot.o2r
-        ├── soh.nro
-        └── soh.o2r
-```
-* Launch via Atmosphere's `Game+R` launcher method.
 
 ### 4. Play!
 
@@ -66,7 +48,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | F5 | Save state |
 | F6 | Change state |
 | F7 | Load state |
-| F9 | Toggle Text-to-Speech (Windows and Mac only) |
+| F9 | Toggle Text-to-Speech |
 | F11 | Fullscreen |
 | Tab | Toggle Alternate assets |
 | Ctrl+R | Reset |

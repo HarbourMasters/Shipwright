@@ -7,6 +7,7 @@
 #include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
 #include <nlohmann/json.hpp>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "soh/ShipInit.hpp"
 #include "message_data_fmt.h"

@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
@@ -21,8 +23,8 @@ static void UpdateBlueFireCollidersBgIceShelter(void* actorPtr) {
     thisx->cylinder2.info.bumper.dmgFlags |= DMG_ARROW_ICE;
 }
 
-static bool CheckAC(Actor* ac) {
-    return ac != NULL && ac->id == ACTOR_EN_ARROW && ac->child != NULL && ac->child->id == ACTOR_ARROW_ICE;
+static bool HitByIceArrow(ColliderCylinder* cylinder) {
+    return cylinder->info.acHitInfo != NULL && (cylinder->info.acHitInfo->toucher.dmgFlags & DMG_ARROW_ICE);
 }
 
 void RegisterBlueFireArrowsHooks() {
@@ -45,7 +47,7 @@ void RegisterBlueFireArrowsHooks() {
     COND_VB_SHOULD(VB_BG_ICE_SHELTER_MELT, shouldRegister, {
         BgIceShelter* thisx = va_arg(args, BgIceShelter*);
 
-        if (CheckAC(thisx->cylinder1.base.ac) || CheckAC(thisx->cylinder2.base.ac)) {
+        if (HitByIceArrow(&thisx->cylinder1) || HitByIceArrow(&thisx->cylinder2)) {
             *should = true;
         }
     });

@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include <fast/Fast3dGui.h>
+#include <ship/Context.h>
 
 #include "Plandomizer.h"
 #include <soh/SohGui/SohGui.hpp>
@@ -412,6 +413,12 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     if (randoItem.GetRandomizerGet() >= RG_OCARINA_A_BUTTON &&
         randoItem.GetRandomizerGet() <= RG_OCARINA_C_RIGHT_BUTTON) {
         textureID = gui->GetTextureByName("ITEM_OCARINA_TIME");
+    }
+
+    if (randoItem.GetRandomizerGet() == RG_SCARECROWS_SONG) {
+        textureID = gui->GetTextureByName("RG_SCARECROWS_SONG");
+        imageSize = ImVec2(24.0f, 32.0f);
+        imagePadding = 6.0f;
     }
 
     if (textureID == 0) {

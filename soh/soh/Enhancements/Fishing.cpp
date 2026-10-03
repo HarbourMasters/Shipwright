@@ -1,5 +1,7 @@
 #include <cmath>
 
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"

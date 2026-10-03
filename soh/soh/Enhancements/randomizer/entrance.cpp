@@ -8,6 +8,7 @@
 #include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/util.h"
+#include "soh/ShipInit.hpp"
 #include "z64camera.h"
 #include "z64scene.h"
 
@@ -35,7 +36,7 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 
 bool Entrance::GetConditionsMet() const {
     auto ctx = Rando::Context::GetInstance();
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+    if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_OFF)) {
         return condition_function();
     }
     return true;
@@ -897,7 +898,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             }
         }
 
-        SPDLOG_DEBUG("All Locations NOT REACHABLE");
+        SPDLOG_DEBUG("All Checks NOT REACHABLE");
         return false;
     }
     return true;
@@ -1230,7 +1231,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     if (ctx->GetOption(RSK_SHUFFLE_WARP_SONGS)) {
         oneWayEntrancePools[EntranceType::WarpSong] = GetShuffleableEntrances(EntranceType::WarpSong);
         // In Glitchless, there aren't any other ways to access these areas
-        if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_OFF)) {
             oneWayPriorities["Bolero"] = priorityEntranceTable["Bolero"];
             oneWayPriorities["Nocturne"] = priorityEntranceTable["Nocturne"];
             if (!ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) && !ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {

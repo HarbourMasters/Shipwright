@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <ship/utils/StringHelper.h>
+#include <ship/Context.h>
 
 #include "mod_menu.h"
 #include "soh/Enhancements/audio/OotrsArchive.h"
@@ -13,6 +14,7 @@
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/SohGui/UIWidgets.hpp"
 
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
@@ -467,9 +469,9 @@ void DrawCustomMusicSummary() {
 }
 
 void ModMenuWindow::DrawElement() {
-    SohGui::mSohMenu->MenuDrawItem(enableModsWidget, 200, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(enableModsWidget, THEME_COLOR);
     ImGui::SameLine();
-    SohGui::mSohMenu->MenuDrawItem(tabHotkeyWidget, 200, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(tabHotkeyWidget, THEME_COLOR);
 
     ImGui::TextColored(
         UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),

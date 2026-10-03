@@ -1,5 +1,6 @@
 #include "global.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 typedef struct {
     u8 x;

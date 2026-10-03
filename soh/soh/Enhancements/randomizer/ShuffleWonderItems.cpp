@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <soh/GameVersions.h>
@@ -8,6 +10,7 @@
 #include "particle_cmc.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
@@ -331,7 +334,7 @@ void Rando::StaticData::RegisterWonderItemLocations() {
     registered = true;
     // clang-format off
     // Overworld Wonder Items
-    //            Randomizer Check                                              Randomizer Check                                                                        Quest               Area                            Scene ID                            Params                                  Short Name                    	        Hint Text Key                               Vanilla                 Spoiler Collection Check
+    //            Randomizer Check                                              Randomizer Check                                                                        Quest               Area                            Scene ID                            Params                                  Short Name                              Hint Text Key                               Vanilla                 Spoiler Collection Check
     locationTable[RC_KF_WONDER_TRAINING_1]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_1,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-747, 951),            "Wonder Training 1",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_1));
     locationTable[RC_KF_WONDER_TRAINING_2]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_2,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-677, 899),            "Wonder Training 2",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_BLUE_RUPEE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_2));
     locationTable[RC_KF_WONDER_TRAINING_3]                                      = Location::WonderItem(RC_KF_WONDER_TRAINING_3,                                         RCQUEST_BOTH,       RCAREA_KOKIRI_FOREST,           SCENE_KOKIRI_FOREST,                TWO_ACTOR_PARAMS(-698, 830),            "Wonder Training 3",                    RHT_WONDER_ITEM_KOKIRI_FOREST,              RG_GREEN_RUPEE,         SpoilerCollectionCheck::RandomizerInf(RAND_INF_KF_WONDER_TRAINING_3));

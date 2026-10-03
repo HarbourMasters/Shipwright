@@ -3,6 +3,7 @@
 #include "logic.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
 #include "randomizerEnumStrings.h"
@@ -144,6 +145,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_POWER_BRACELET:
         case RG_CHILD_WALLET:
         case RG_FISHING_POLE:
+        case RG_SCARECROWS_SONG:
         case RG_BRONZE_SCALE:
         case RG_CLIMB:
         case RG_CRAWL:
@@ -1337,6 +1339,12 @@ bool Logic::BeanPlanted(LogicVal beanEvent) {
         return true;
     }
 
+    // if we don't have the bean soul, the bean isn't really planted.
+    if (!HasItem(static_cast<RandomizerGet>(beanEvent - LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN +
+                                            RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL))) {
+        return false;
+    }
+
     const BeanPatch* patch = FindBeanPatch(beanEvent);
     if (patch == nullptr) {
         assert(false);
@@ -1657,8 +1665,8 @@ bool Logic::HookshotOrBoomerang() {
 }
 
 bool Logic::ScarecrowsSong() {
-    return (ctx->GetOption(RSK_SKIP_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
-           (Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW));
+    return (HasItem(RG_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
+           (!ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW));
 }
 
 bool Logic::BlueFire() {
@@ -2081,6 +2089,7 @@ std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
     { RG_SPEAK_KOKIRI, RAND_INF_CAN_SPEAK_KOKIRI },
     { RG_SPEAK_ZORA, RAND_INF_CAN_SPEAK_ZORA },
     { RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND },
+    { RG_SCARECROWS_SONG, RAND_INF_HAS_SCARECROWS_SONG },
     { RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER },
     { RG_GUARD_HOUSE_KEY, RAND_INF_GUARD_HOUSE_KEY_OBTAINED },
     { RG_MARKET_BAZAAR_KEY, RAND_INF_MARKET_BAZAAR_KEY_OBTAINED },
@@ -2553,6 +2562,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_SPEAK_KOKIRI:
                 case RG_SPEAK_ZORA:
                 case RG_FISHING_POLE:
+                case RG_SCARECROWS_SONG:
                 case RG_GUARD_HOUSE_KEY:
                 case RG_MARKET_BAZAAR_KEY:
                 case RG_MARKET_POTION_SHOP_KEY:

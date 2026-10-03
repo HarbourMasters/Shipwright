@@ -96,6 +96,7 @@ static EnClearTagEffect sEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
 SHIP_SAVESTATE_DEFINE(EnClearTag, EN_CLEAR_TAG_SHIP_SAVESTATE_FIELDS)
 
 #include "overlays/ovl_En_Clear_Tag/ovl_En_Clear_Tag.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 /**
  * Creates a debris effect.

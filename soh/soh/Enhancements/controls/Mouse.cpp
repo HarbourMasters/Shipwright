@@ -1,5 +1,6 @@
 #include <ship/Context.h>
 #include <ship/window/Window.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include "Mouse.h"
 #include "soh/OTRGlobals.h"

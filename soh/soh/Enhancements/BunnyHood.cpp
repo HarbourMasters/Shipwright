@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/BunnyHood.h"
@@ -57,6 +59,13 @@ static void RegisterBunnyHood() {
         Player* player = va_arg(args, Player*);
         f32* movementSpeed = va_arg(args, f32*);
         *movementSpeed *= Ship_GetBunnyHoodRunFactor(player);
+    });
+
+    // Faster running can reach a grotto before scene fade-in ends, breaking entrance. Wait for fade to finish.
+    COND_VB_SHOULD(VB_DOOR_ANA_GRAB_PLAYER, bunnyHoodActive, {
+        if (gPlayState->transitionTrigger != TRANS_TRIGGER_OFF) {
+            *should = false;
+        }
     });
 
     // Gameplay stat: time spent wearing the hood

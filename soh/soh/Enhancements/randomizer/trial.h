@@ -1,9 +1,10 @@
 #pragma once
 
+#include <nlohmann/json_fwd.hpp>
+
 #include "../custom-message/CustomMessageManager.h"
-#include <nlohmann/json.hpp>
-#include "static_data.h"
 #include <unordered_map>
+#include <array>
 
 namespace Rando {
 class TrialInfo {

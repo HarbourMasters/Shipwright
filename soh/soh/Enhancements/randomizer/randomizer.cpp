@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <ship/window/FileDropMgr.h>
 #include <spdlog/spdlog.h>
+#include <ship/Context.h>
 
 #include "randomizer.h"
 #include "3drando/menu.hpp"
@@ -23,6 +24,8 @@
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 #include "dungeon.h"
 #include "logic.h"
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/Enhancements/randomizer/trial.h"
 
 extern "C" {
 #include <variables.h>
@@ -509,6 +512,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                        : (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_FISHING_POLE:
             return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_SCARECROWS_SONG:
+            return !Flags_GetRandomizerInf(RAND_INF_HAS_SCARECROWS_SONG) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -1088,6 +1093,8 @@ static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToS
     { RG_SKELETON_KEY, TIMESTAMP_FOUND_SKELETON_KEY },
 
     { RG_ROCS_FEATHER, TIMESTAMP_FOUND_ROCS_FEATHER },
+
+    { RG_SCARECROWS_SONG, TIMESTAMP_FOUND_SCARECROWS_SONG },
 };
 
 // Gameplay stat tracking: Update time the item was acquired

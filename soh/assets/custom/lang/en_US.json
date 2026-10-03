@@ -472,6 +472,13 @@
                     "When disabled, \"Start with Zelda's Letter\" skips child Zelda: you also get the item Impa would give."
                 ]
             },
+            "shuffle_scarecrows_song": {
+                "name": "Shuffle Scarecrow's Song",
+                "description": [
+                    "Shuffles Scarecrow's Song into the item pool. Teaching Bonooru a song as child, then playing it ",
+                    "back to him as adult, gives a random item instead."
+                ]
+            },
             "shuffle_gerudo_membership_card": {
                 "name": "Shuffle Gerudo Membership Card",
                 "description": [
@@ -1168,14 +1175,6 @@
                 "name": "Shuffle Masks",
                 "description": "The Happy Mask Shop never opens, masks are shuffled with the rest of the items."
             },
-            "skip_scarecrows_song": {
-                "name": "Skip Scarecrow's Song",
-                "description": [
-                    "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will ",
-                    "automatically summon him.\n",
-                    "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two Ocarina buttons to summon him."
-                ]
-            },
             "skip_planting_beans": {
                 "name": "Skip Planting Beans",
                 "description": [
@@ -1492,23 +1491,18 @@
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."
             },
-            "logic_rules": {
-                "name": "Logic",
+            "no_logic": {
+                "name": "No Logic",
                 "description": [
-                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled ",
-                    "and disabled below.\n",
-                    "\n",
-                    "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    "Item placement is completely random without any verification for obtainability. MAY BE IMPOSSIBLE TO BEAT."
                 ]
             },
-            "all_locations_reachable": {
-                "name": "All Locations Reachable",
+            "all_checks_reachable": {
+                "name": "All Checks Reachable",
                 "description": [
-                    "When this option is enabled, the randomizer will ",
-                    "guarantee that every item is obtainable and every ",
-                    "location is reachable. When disabled, only ",
-                    "required items and locations to beat the game ",
-                    "will be guaranteed reachable."
+                    "When this option is enabled, the randomizer will guarantee that every item is obtainable and every ",
+                    "check is reachable. When disabled, only required items and checks to beat the game ",
+                    "will be guaranteed reachable. Does not apply to No Logic."
                 ]
             },
             "shuffle_bean_souls": {
@@ -1830,6 +1824,9 @@
             },
             "starting_zeldas_letter": {
                 "name": "Start with Zelda's Letter"
+            },
+            "starting_scarecrows_song": {
+                "name": "Start with Scarecrow's Song"
             },
             "starting_claim_check": {
                 "name": "Start with Claim Check"

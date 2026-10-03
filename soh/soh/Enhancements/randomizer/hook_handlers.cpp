@@ -1,4 +1,7 @@
 ﻿#include "soh/OTRGlobals.h"
+
+#include <ship/window/Window.h>
+
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -1188,6 +1191,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_ITEM00_TIMER_TICK: {
+            EnItem00* item00 = va_arg(args, EnItem00*);
+            uint8_t ogType = item00->ogParams & 0xFF;
+            // Shuffled keys and heart pieces become ITEM00_SOH_DUMMY, no longer matching checks preventing despawning
+            if (item00->actor.params == ITEM00_SOH_DUMMY &&
+                (ogType == ITEM00_SMALL_KEY || ogType == ITEM00_HEART_PIECE || ogType == ITEM00_HEART_CONTAINER)) {
+                *should = false;
+            }
+            break;
+        }
         case VB_ITEM_B_HEART_DESPAWN: {
             ItemBHeart* itemBHeart = va_arg(args, ItemBHeart*);
             RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
@@ -1522,7 +1535,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_TEMP_B_RESTORE_SWORDLESS:
             // Convert the swordless sentinel back into an empty (swordless) B button.
             if (gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
-                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                u8 bItem = gSaveContext.equips.buttonItems[0];
+                if (!((bItem >= ITEM_SWORD_KOKIRI && bItem <= ITEM_SWORD_BGS) || bItem == ITEM_SWORD_KNIFE)) {
+                    gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                }
                 gSaveContext.buttonStatus[0] = BTN_ENABLED;
             }
             break;
@@ -1919,9 +1935,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 break;
             }
 
-            if (gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING && RAND_GET_OPTION(RSK_SKIP_SCARECROWS_SONG)) {
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_SCARECROWS_SONG) &&
+                gPlayState->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING) {
                 *should = true;
-                break;
+            } else if (RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                *should = false;
+            }
+            break;
+        }
+        case VB_GIVE_ITEM_FROM_SCARECROW: {
+            if (RAND_GET_OPTION(RSK_SHUFFLE_SCARECROWS_SONG)) {
+                Flags_SetRandomizerInf(RAND_INF_LH_SCARECROWS_SONG);
+                *should = false;
             }
             break;
         }

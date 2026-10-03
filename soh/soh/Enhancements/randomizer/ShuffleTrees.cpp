@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
@@ -5,6 +7,7 @@
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "soh_assets.h"
@@ -139,7 +142,7 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     IdentifyCheck(&treeIdentity, location);
 
     if ((location->GetRCType() != RCTYPE_NLTREE ||
-         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) &&
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_NO_LOGIC) == RO_GENERIC_ON) &&
         IdentifyCheck(&treeIdentity, location)) {
         return treeIdentity;
     }

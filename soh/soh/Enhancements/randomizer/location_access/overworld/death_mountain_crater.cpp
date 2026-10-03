@@ -209,7 +209,7 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_POTS,            (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() || 
                                          (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
         ENTRANCE(RR_DMC_POT_GROTTO_EXIT, (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() || 
-                                         ((logic->IsAdult && logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
+                                         (logic->IsAdult && (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
         ENTRANCE(RR_DMC_CENTRAL,         (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16)),
         ENTRANCE(RR_DMC_FAR_PLATFORM,    ((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanClimbLadder() && logic->DMCPadToPots()) ||
                                          ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||

@@ -640,7 +640,7 @@ void RegionTable_Init_ShadowTemple() {
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple MQ Lower Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,      logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH)) && ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)),
+        ENTRANCE(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,      logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH)) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_S_DOOR, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3)),
     });
 
@@ -692,9 +692,9 @@ void RegionTable_Init_ShadowTemple() {
                                                 //We need to get onto the Door Platform to get North target Rupee at minimum,
                                                 //This needs either longshot, middair ground jump or hookshot & adult & defeating the redeads (as any age, as they are perm flags)
                                                 //hovers can cross from the corner platform with a backflip but that would be a trick.
-                                                logic->CanUse(RG_LONGSHOT) || ((AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) || logic->CanMiddairGroundJump()) &&
+                                                (logic->CanUse(RG_LONGSHOT) || ((AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) || logic->CanMiddairGroundJump()) &&
                                                 //East midair rupee needs longshot to reach from the floor, or hover boots, bunny hood or jumpslash to reach from the upper door platform.
-                                                  (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())) &&
+                                                  (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()))) &&
                                                 //1 rupee is in spikes, needs hovers, goron tunic or damage
                                                   (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC))),
     }, {

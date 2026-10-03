@@ -157,6 +157,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
             (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"), RO_GENERIC_NO)) &&
+            (location.GetRandomizerCheck() != RC_LH_SCARECROWS_SONG ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleScarecrowsSong"), RO_GENERIC_NO)) &&
             (location.GetRCType() !=
              RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (location.GetRCType() != RCTYPE_STATIC_HINT) &&  // don't show static hints
