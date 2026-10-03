@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [1, vr_LBVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_LBVR_pal_static.yml
+gCowHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gCowHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCowHouseBg2TLUT
+gCowHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gCowHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCowHouseBg3TLUT
+gCowHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gCowHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCowHouseBg4TLUT
+gCowHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCowHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCowHouseBgTLUT

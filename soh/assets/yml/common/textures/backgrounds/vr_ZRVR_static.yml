@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_ZRVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_ZRVR_pal_static.yml
+gZoraShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gZoraShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gZoraShopBg2TLUT
+gZoraShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZoraShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gZoraShopBgTLUT

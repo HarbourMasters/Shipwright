@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [1, vr_fine3_static]
+  directory: textures/skyboxes/
+  external_files:
+    - common/textures/skyboxes/vr_fine3_pal_static.yml
+gNightSkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gNightSkybox1Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gNightSkyboxTLUT
+gNightSkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gNightSkybox2Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gNightSkyboxTLUT
+gNightSkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gNightSkybox3Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gNightSkyboxTLUT
+gNightSkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gNightSkybox4Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 64
+  tlut_symbol: gNightSkyboxTLUT
+gNightSkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gNightSkybox5Tex
+  format: CI8
+  split_tlut: false
+  width: 128
+  height: 128
+  tlut_symbol: gNightSkyboxTLUT
