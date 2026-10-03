@@ -257,9 +257,11 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Locations
         LOCATION(RC_GF_GATE_EXIT_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
-        // "Decoy" crates to look like the crate in wasteland
-        LOCATION(RC_GF_FAR_AWAY_CRATE_CHILD, logic->IsChild && false),
-        LOCATION(RC_GF_FAR_AWAY_CRATE_ADULT, logic->IsAdult && false),
+        // "Decoy" crates that were placed to look like the crate in wasteland
+        // RANDOTODO: Specific trick for these as the hover is very long
+        // RANDOTODO: The hover might be long enough that bomb/bombchu capacity matters
+        LOCATION(RC_GF_FAR_AWAY_CRATE_CHILD, logic->IsChild && logic->CanHover(true, false) && false /* <specific trick> */),
+        LOCATION(RC_GF_FAR_AWAY_CRATE_ADULT, logic->IsAdult && logic->CanHover(true, false) && false /* <specific trick> */),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,            logic->Get(LOGIC_GF_GATE_OPEN)),
