@@ -1145,7 +1145,7 @@ void InitTrackerData(bool isDebug) {
     areasSpoiled = 0;
 }
 
-void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveTrackerData(const SaveContext& saveContext, int sectionID, bool fullSave) {
     bool updateOrdering = false;
     std::vector<RandomizerCheck> checkCount;
     for (int i = RC_UNKNOWN_CHECK; i < RC_MAX; i++) {
@@ -1182,7 +1182,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
     }
 }
 
-void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveFile(const SaveContext& saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
         recalculateAvailable = true;

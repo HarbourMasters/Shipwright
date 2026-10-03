@@ -1766,7 +1766,7 @@ void ItemTrackerInitFile(bool isDebug) {
     itemTrackerNotes.push_back(0);
 }
 
-void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+void ItemTrackerSaveFile(const SaveContext& saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("personalNotes",
                                     std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
 }
