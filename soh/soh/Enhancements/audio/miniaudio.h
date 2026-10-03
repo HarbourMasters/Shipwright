@@ -1,0 +1,9 @@
+#pragma once
+#define MA_NO_FLAC
+#define MA_NO_MP3
+#define MA_NO_THREADING
+#define MA_NO_DEVICE_IO
+#define MA_NO_GENERATION
+#define MA_NO_STDIO
+#define MA_ENABLE_ONLY_SPECIFIC_BACKENDS
+#include <miniaudio.h>
