@@ -26,13 +26,15 @@ enum class RomSearchMode {
 };
 
 class Extractor {
-    std::unique_ptr<unsigned char[]> mRomData = std::make_unique<unsigned char[]>(MB64);
+    std::vector<uint8_t> mRomData;
+    uint32_t mRomVerCrc = 0;
     std::string mCurrentRomPath;
     std::string mSearchPath;
     size_t mCurRomSize = 0;
 
     bool GetRomPathFromBox();
 
+    bool ReadRom();
     uint32_t GetRomVerCrc() const;
     size_t GetCurRomSize() const;
     bool ValidateAndFixRom();
