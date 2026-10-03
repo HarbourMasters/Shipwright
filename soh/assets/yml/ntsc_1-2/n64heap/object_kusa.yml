@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011A50E0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x380
+  symbol: gN64Heap_object_kusa

@@ -13,6 +13,7 @@
 #include <ship/Context.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <soh/ResourceManagerHelpers.h>
+#include "soh/Enhancements/Restorations/N64Heap/N64Heap.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -1391,6 +1392,15 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultIndex(GIM_DISABLED)
                      .Tooltip("Restores Get Item Manipulation.\n"
                               "NTSC and PAL have separate tables."));
+    AddWidget(path, "Simulate N64 Heap", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("N64Heap"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !N64Heap_HasN64Data();
+            info.options->disabledTooltip = "Only available when the game assets were generated from an NTSC 1.2 ROM.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Simulate an N64 heap, used for wrong warps and heap fragmentation glitches (e.g. Royal Family Tomb). "
+            "Takes effect on the next scene load."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

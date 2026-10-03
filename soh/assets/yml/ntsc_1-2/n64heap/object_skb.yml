@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x012C2960 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x4810
+  symbol: gN64Heap_object_skb

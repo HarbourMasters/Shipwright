@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011B69C0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0xDF0
+  symbol: gN64Heap_object_gi_ki_tan_mask
