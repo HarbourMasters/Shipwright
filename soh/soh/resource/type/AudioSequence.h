@@ -12,7 +12,7 @@ typedef struct {
     uint8_t medium;
     uint8_t cachePolicy;
     uint32_t numFonts;
-    uint8_t fonts[16];
+    uint16_t fonts[16];
 } Sequence;
 
 class AudioSequence : public Ship::Resource<Sequence> {
