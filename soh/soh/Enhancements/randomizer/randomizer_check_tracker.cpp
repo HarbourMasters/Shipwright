@@ -12,6 +12,7 @@
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizer_tracker_windows.h"
+#include "tracker_state_export.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/randomizer/static_data.h"
@@ -59,6 +60,7 @@ static WidgetInfo hideUnshuffledShopWidget;
 static WidgetInfo showGSWidget;
 static WidgetInfo showLogicWidget;
 static WidgetInfo checkAvailabilityWidget;
+static WidgetInfo externalStateExportWidget;
 
 // settings
 bool showShops;
@@ -1231,11 +1233,21 @@ bool AreAllSilversSpoiled() {
 
 void SetAreaSpoiled(RandomizerCheckArea rcArea) {
     areasSpoiled |= (1 << rcArea);
+    StateExport::RequestWrite();
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
     RefreshItemTrackerMainWindow();
 }
 
 void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime);
+
+void ProcessAvailableCheckRecalculation() {
+    if (recalculateAvailable) {
+        recalculateAvailable = false;
+        InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
+        availableChecksStartingRegion = RR_ROOT;
+        availableChecksStartingAgeTime = RAT_NONE;
+    }
+}
 
 void CheckTrackerWindow::DrawElement() {
     Color_Background = CVarGetColor(CVAR_TRACKER_CHECK("BgColor.Value"), Color_Bg_Default);
@@ -1311,13 +1323,6 @@ void CheckTrackerWindow::DrawElement() {
             ImGui::Text("Waiting for file load..."); // TODO Language
             Trackers::EndFloatWindows();
             return;
-        }
-
-        if (recalculateAvailable) {
-            recalculateAvailable = false;
-            InternalRecalculateAvailableChecks(availableChecksStartingRegion, availableChecksStartingAgeTime);
-            availableChecksStartingRegion = RR_ROOT;
-            availableChecksStartingAgeTime = RAT_NONE;
         }
 
         // Quick Options
@@ -2433,7 +2438,7 @@ void ImGuiDrawTwoColorPickerSection(const char* text, const char* cvarMainName, 
 }
 
 void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAgeTime startingAgeTime) {
-    if (!enableAvailableChecks || !GameInteractor::IsSaveLoaded()) {
+    if ((!enableAvailableChecks && !StateExport::IsEnabled()) || !GameInteractor::IsSaveLoaded()) {
         return;
     }
 
@@ -2502,6 +2507,7 @@ void InternalRecalculateAvailableChecks(RandomizerRegion startingRegion, RandoAg
     StopPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS);
     SPDLOG_INFO("Recalculate Available Checks Time: {}ms",
                 GetPerformanceTimer(PT_RECALCULATE_AVAILABLE_CHECKS).count());
+    StateExport::RequestWrite();
 }
 
 void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */,
@@ -2589,6 +2595,9 @@ void CheckTrackerSettingsWindow::DrawElement() {
         SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget, THEME_COLOR);
         ImGui::EndDisabled();
 
+        SohGui::GetSohMenu()->MenuDrawItem(externalStateExportWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
+
         // Filtering settings
         UIWidgets::CVarCheckbox(
             "Filter Empty Areas", CVAR_TRACKER_CHECK("HideFilteredAreas"),
@@ -2672,9 +2681,12 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(CheckTrackerDialogMessage);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandoHintRevealed>(CheckTrackerHintRevealed);
+    StateExport::Init();
 }
 
 void CheckTrackerWindow::UpdateElement() {
+    ProcessAvailableCheckRecalculation();
+    StateExport::WriteIfRequested();
 }
 
 void RegisterCheckTrackerWidgets() {
@@ -2743,6 +2755,22 @@ void RegisterCheckTrackerWidgets() {
             enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
             RecalculateAvailableChecks();
         });
+    externalStateExportWidget = { .name = "Export Tracker State", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    externalStateExportWidget.CVar(CVAR_TRACKER_CHECK("ExternalStateExport"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Exports the current randomizer tracker state to Save/fileN.tracker.json for "
+                              "external tracker applications. No item placements are included."))
+        .Callback([&](WidgetInfo& info) {
+            if (StateExport::IsEnabled()) {
+                StateExport::RequestWrite();
+                RecalculateAvailableChecks();
+            } else {
+                StateExport::RemoveFiles();
+            }
+        });
+    SohGui::GetSohMenu()->AddSearchWidget(
+        { externalStateExportWidget, "Randomizer", "Check Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
