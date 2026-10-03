@@ -243,6 +243,7 @@ typedef enum {
     TEXT_SAVE_MSG = 0x9213,
     TEXT_CONTINUE_OVERWORLD_MSG = 0x9214,
     TEXT_CONTINUE_DUNGEON_MSG = 0x9215,
+    TEXT_TIME_TRAVEL_PROMPT = 0x9217,
 } TextIDs;
 
 #ifdef __cplusplus
