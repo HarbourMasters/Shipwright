@@ -56,6 +56,19 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode);
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest);
 
+/**
+ * Records the vertices of a skinned limb (SKIN_LIMB_TYPE_ANIMATED).
+ * `key` stably identifies the limb, `dest` is the buffer written for this logical frame and
+ * `prev` is the other double-buffer slot (the previous logical frame's pose).
+ */
+void FrameInterpolation_RecordSkinnedLimb(void* key, void* dest, void* prev, u32 vtxCount);
+
+/**
+ * Blends the skinned limb vertices for the displayed frame of factor `step`.
+ * Call once per displayed frame, right before running the commands.
+ */
+void FrameInterpolation_UpdateSkinnedVertices(f32 step);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1783,9 +1783,14 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
     for (int i = 0; i < count; i++) {
         time += step;
+        const float interpolationStep = (float)time / denom;
         std::unordered_map<Mtx*, MtxF> mtx_replacements =
-            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate((float)time / denom);
-        intp->mInterpolationT = (float)time / denom;
+            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate(interpolationStep);
+        // Blend the skinned meshes (horse body and legs, ...) for this displayed frame: the
+        // vertices written by Skin_ApplyLimbModifications are shared by every frame of a tick,
+        // so they must be re-blended before each execution.
+        FrameInterpolation_UpdateSkinnedVertices(interpolationStep);
+        intp->mInterpolationT = interpolationStep;
         wnd->DrawAndRunGraphicsCommands(Commands, mtx_replacements);
         intp->mInterpolationIndex++;
     }

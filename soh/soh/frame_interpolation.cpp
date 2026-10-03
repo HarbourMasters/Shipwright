@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -194,6 +195,24 @@ bool next_is_actor_pos_rot_matrix;
 bool has_inv_actor_mtx;
 MtxF inv_actor_mtx;
 size_t inv_actor_mtx_path_index;
+
+// ---------------------------------------------------------------------------
+// Skinned limbs (SKIN_LIMB_TYPE_ANIMATED: horse body and legs, etc.).
+// They are deformed by the CPU every logical frame: their vertices are rewritten
+// into a buffer referenced by gSPSegment(0x08, ...) with no recorded matrix, so
+// matrix interpolation cannot touch them. We store the current pose and blend it
+// with the previous one for each displayed frame.
+// ---------------------------------------------------------------------------
+struct SkinnedLimb {
+    Vtx* dest = nullptr; // buffer referenced by the current logical frame's commands
+    Vtx* prev = nullptr; // other double-buffer slot = previous logical frame's pose
+    vector<Vtx> current; // untouched copy of the current pose
+    uint32_t frameStamp = 0;
+    bool prevValid = false;
+};
+
+unordered_map<const void*, SkinnedLimb> skinned_limbs;
+uint32_t record_frame;
 
 Data& append(Op op) {
     auto& m = current_path.back()->ops[op];
@@ -454,8 +473,12 @@ void FrameInterpolation_StartRecord(void) {
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
+    record_frame++;
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
+    } else {
+        is_recording = false;
+        skinned_limbs.clear();
     }
 }
 
@@ -600,6 +623,60 @@ void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest) {
     if (!is_recording)
         return;
     FrameInterpolation_RecordMatrixMtxFToMtx(src, dest);
+}
+
+void FrameInterpolation_RecordSkinnedLimb(void* key, void* dest, void* prev, u32 vtxCount) {
+    if (!is_recording || dest == nullptr || vtxCount == 0) {
+        return;
+    }
+
+    SkinnedLimb& limb = skinned_limbs[key];
+
+    // `prev` is only usable if this limb was drawn on the immediately previous logical
+    // frame, otherwise it holds a stale pose.
+    limb.prevValid = (limb.frameStamp + 1 == record_frame) && (limb.current.size() == vtxCount);
+    limb.dest = (Vtx*)dest;
+    limb.prev = (Vtx*)prev;
+    limb.current.assign((Vtx*)dest, (Vtx*)dest + vtxCount);
+    limb.frameStamp = record_frame;
+}
+
+void FrameInterpolation_UpdateSkinnedVertices(f32 step) {
+    if (skinned_limbs.empty()) {
+        return;
+    }
+
+    for (auto it = skinned_limbs.begin(); it != skinned_limbs.end();) {
+        SkinnedLimb& limb = it->second;
+
+        // Limb not redrawn this logical frame: drop the entry.
+        if (limb.frameStamp != record_frame || limb.dest == nullptr) {
+            it = skinned_limbs.erase(it);
+            continue;
+        }
+
+        Vtx* dest = limb.dest;
+        const size_t count = limb.current.size();
+
+        if (limb.prevValid && step < 1.0f) {
+            const Vtx* prevPose = limb.prev;
+            const Vtx* curPose = limb.current.data();
+            const f32 w = 1.0f - step;
+
+            for (size_t i = 0; i < count; i++) {
+                dest[i] = curPose[i];
+                for (s32 j = 0; j < 3; j++) {
+                    dest[i].v.ob[j] = (s16)(w * prevPose[i].v.ob[j] + step * curPose[i].v.ob[j]);
+                    dest[i].n.n[j] = (s8)(w * (f32)prevPose[i].n.n[j] + step * (f32)curPose[i].n.n[j]);
+                }
+            }
+        } else {
+            // Last displayed frame (or no previous pose): exact pose.
+            std::copy(limb.current.begin(), limb.current.end(), dest);
+        }
+
+        ++it;
+    }
 }
 
 // https://stackoverflow.com/questions/1148309/inverting-a-4x4-matrix
