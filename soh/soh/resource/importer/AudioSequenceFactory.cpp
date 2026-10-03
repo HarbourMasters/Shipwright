@@ -201,8 +201,8 @@ static void WriteMonoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uint8
     writer->Seek(channelStart, Ship::SeekOffsetType::Start);
 
     // Channel header
-    layerPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteNoshort(writer);
+    layerPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLdlayer(writer, 0, 0);
     WritePan(writer, 64);
     WriteVolCHeader(writer, 127); // Max volume
