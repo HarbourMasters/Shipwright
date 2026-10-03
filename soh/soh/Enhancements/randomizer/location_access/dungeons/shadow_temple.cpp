@@ -335,8 +335,28 @@ void RegionTable_Init_ShadowTemple() {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_ROOM_TO_BOAT,    logic->SmallKeys(SCENE_SHADOW_TEMPLE, 4)),
         ENTRANCE(RR_SHADOW_TEMPLE_SPINNING_BLADES, logic->Get(LOGIC_SHADOW_SHORTCUT_BLOCK) && logic->HasItem(RG_CLIMB)),
-        // there is a hover to get past the boat but it requires rba & a hess, among other things
-        ENTRANCE(RR_SHADOW_TEMPLE_BEYOND_BOAT,     (false && logic->CanHover(true, false)) || (((logic->IsAdult && ((logic->HasItem(RG_GORONS_BRACELET) && logic->HasItem(RG_CLIMB)) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanUse(RG_ZELDAS_LULLABY))),
+        ENTRANCE(RR_SHADOW_TEMPLE_BEYOND_BOAT,
+            // hover past the boat
+            // RANDOTODO: Specific trick for these as the hover is very long and complex
+            // RANDOTODO: HESS
+            // RANDOTODO: RBA use to refill bombchus
+            (
+                false /* <specific trick> && logic->CanHESS() */ &&
+                // 30 chus required at once, more than 50 needed in total
+                (
+                    (
+                        false/* logic->RBARefill(RG_BOMBCHU_5) */ && logic->mSaveContext->ship.quest.data.randomizer.bombchuUpgradeLevel >= 2
+                    ) ||
+                    logic->CheckRandoInf(RAND_INF_HAS_INFINITE_BOMBCHUS)
+                ) &&
+                logic->CanUse(RG_HOVER_BOOTS) &&
+                logic->CanUse(RG_BOMBCHU_5) &&
+                // you need to restart isg in one of the platforms, without a blocking textbox avaliable
+                logic->CanHover(false, false)
+            ) ||
+            // normal method
+            (((logic->IsAdult && ((logic->HasItem(RG_GORONS_BRACELET) && logic->HasItem(RG_CLIMB)) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanUse(RG_ZELDAS_LULLABY))
+        ),
     });
 
     areaTable[RR_SHADOW_TEMPLE_BEYOND_BOAT] = Region("Shadow Temple Beyond Boat", SCENE_SHADOW_TEMPLE, {
