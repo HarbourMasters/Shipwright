@@ -135,7 +135,7 @@ void InitHintTrackerData(bool isDebug) {
     hintTextCache.clear();
 }
 
-void SaveHintTrackerData(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveHintTrackerData(const SaveContext& saveContext, int sectionID, bool fullSave) {
     std::vector<RandomizerHint> hints;
     {
         std::lock_guard<std::mutex> lock(readHintsMutex);
