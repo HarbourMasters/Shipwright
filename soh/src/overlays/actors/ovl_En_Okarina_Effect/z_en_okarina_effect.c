@@ -93,7 +93,7 @@ void EnOkarinaEffect_ManageStorm(EnOkarinaEffect* this, PlayState* play) {
         play->envCtx.unk_F2[0] = 0;
         if (play->csCtx.state == CS_STATE_IDLE) {
             Environment_StopStormNatureAmbience(play);
-        } else if (func_800FA0B4(SEQ_PLAYER_BGM_MAIN) == NA_BGM_NATURE_AMBIENCE) {
+        } else if (Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN) == NA_BGM_NATURE_AMBIENCE) {
             Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_LIGHTNING, CHANNEL_IO_PORT_1, 0);
             Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_RAIN, CHANNEL_IO_PORT_1, 0);
         }
