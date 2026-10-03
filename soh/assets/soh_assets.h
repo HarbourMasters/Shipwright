@@ -407,9 +407,6 @@ static const ALIGN_ASSET(2) char gSunIconTex[] = dgSunIcon;
 #define dgNaviIcon "__OTR__textures/parameter_static/gNavi"
 static const ALIGN_ASSET(2) char gNaviIconTex[] = dgNaviIcon;
 
-#define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
-static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
-
 #define dgFileSelPleaseChooseAQuestENGTex "__OTR__textures/title_static/gFileSelPleaseChooseAQuestENGTex"
 static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestENGTex[] = dgFileSelPleaseChooseAQuestENGTex;
 
@@ -433,9 +430,6 @@ static const ALIGN_ASSET(2) char gFileSelBossRushSettingsGERText[] = dgFileSelBo
 
 #define dgFileSelBossRushSettingsJPNTex "__OTR__textures/title_static/gFileSelBossRushSettingsJPNTex"
 static const ALIGN_ASSET(2) char gFileSelBossRushSettingsJPNText[] = dgFileSelBossRushSettingsJPNTex;
-
-#define dgFileSelRANDButtonTex "__OTR__textures/title_static/gFileSelRANDButtonTex"
-static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTex;
 
 #define dgFileSelLangEnglishENGTex "__OTR__textures/title_static/gFileSelLangEnglishENGTex"
 static const ALIGN_ASSET(2) char gFileSelLangEnglishENGTex[] = dgFileSelLangEnglishENGTex;
