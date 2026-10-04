@@ -985,23 +985,44 @@ void SaveManager::InitFileNormal() {
 
     // Init with normal quest unless only an MQ rom is provided
     gSaveContext.ship.quest.id = OTRGlobals::Instance->HasOriginal() ? QUEST_NORMAL : QUEST_MASTER;
-
-    // RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
-void SaveManager::InitFileDebug() {
-    InitFileNormal();
-
-    // don't apply gDebugSaveFileMode on the title screen
-    if (gSaveContext.fileNum != 0xFF) {
-        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 2) {
-            InitFileMaxed();
-            return;
-        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 0) {
-            return;
-        }
+// Debug saves start with shuffled abilities
+static void SetDebugRandoAbilities() {
+    static const std::array<RandomizerInf, 22> sFlags = {
+        RAND_INF_CAN_SWIM,
+        RAND_INF_CAN_CLIMB,
+        RAND_INF_CAN_CRAWL,
+        RAND_INF_CAN_GRAB,
+        RAND_INF_CAN_OPEN_CHEST,
+        RAND_INF_CAN_OPEN_LARGE_CHEST,
+        RAND_INF_CAN_SPEAK_DEKU,
+        RAND_INF_CAN_SPEAK_GERUDO,
+        RAND_INF_CAN_SPEAK_GORON,
+        RAND_INF_CAN_SPEAK_HYLIAN,
+        RAND_INF_CAN_SPEAK_KOKIRI,
+        RAND_INF_CAN_SPEAK_ZORA,
+        RAND_INF_HAS_WALLET,
+        RAND_INF_HAS_OCARINA_A,
+        RAND_INF_HAS_OCARINA_C_UP,
+        RAND_INF_HAS_OCARINA_C_DOWN,
+        RAND_INF_HAS_OCARINA_C_LEFT,
+        RAND_INF_HAS_OCARINA_C_RIGHT,
+        RAND_INF_FISHING_POLE_FOUND,
+        RAND_INF_HAS_SCARECROWS_SONG,
+        RAND_INF_OBTAINED_NAYRUS_LOVE,
+        RAND_INF_OBTAINED_ROCS_FEATHER,
+    };
+    for (RandomizerInf flag : sFlags) {
+        Flags_SetRandomizerInf(flag);
     }
+    for (int flag = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL; flag <= RAND_INF_ZORAS_RIVER_BEAN_SOUL; flag++) {
+        Flags_SetRandomizerInf(static_cast<RandomizerInf>(flag));
+    }
+}
 
+// Mirrors decomp Sram_InitDebugSave
+static void InitDebugSave() {
     gSaveContext.totalDays = 0;
     gSaveContext.bgsDayCount = 0;
 
@@ -1122,77 +1143,41 @@ void SaveManager::InitFileDebug() {
     gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
     gSaveContext.magicLevel = 0;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    SetDebugRandoAbilities();
 }
 
-void SaveManager::InitFileMaxed() {
-    gSaveContext.totalDays = 0;
-    gSaveContext.bgsDayCount = 0;
+void SaveManager::InitFileDebug() {
+    InitFileNormal();
 
-    gSaveContext.deaths = 0;
-    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<u8, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
-
-        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-            gSaveContext.playerName[i] = sPlayerName[i];
+    // don't apply gDebugSaveFileMode on the title screen
+    if (gSaveContext.fileNum != 0xFF) {
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 2) {
+            InitFileMaxed();
+            return;
+        } else if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) == 0) {
+            return;
         }
-        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
-    } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<u8, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-
-        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-            gSaveContext.playerName[i] = sPlayerName[i];
-        }
-        gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
-    } else { // GAME_REGION_NTSC
-        const static std::array<u8, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
-
-        for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-            gSaveContext.playerName[i] = sPlayerName[i];
-        }
-        gSaveContext.ship.filenameLanguage =
-            (gSaveContext.language == LANGUAGE_JPN) ? NAME_LANGUAGE_NTSC_JPN : NAME_LANGUAGE_NTSC_ENG;
     }
+
+    InitDebugSave();
+}
+
+// Debug save with everything maxed out
+void SaveManager::InitFileMaxed() {
+    InitDebugSave();
+
     gSaveContext.healthCapacity = MAX_HEALTH;
     gSaveContext.health = MAX_HEALTH;
     gSaveContext.magicLevel = 2;
     gSaveContext.magic = MAGIC_DOUBLE_METER;
     gSaveContext.rupees = 500;
-    gSaveContext.swordHealth = 8;
-    gSaveContext.naviTimer = 0;
-    gSaveContext.isMagicAcquired = 1;
     gSaveContext.isDoubleMagicAcquired = 1;
     gSaveContext.isDoubleDefenseAcquired = 1;
     gSaveContext.bgsFlag = 1;
-    gSaveContext.ocarinaGameRoundNum = 0;
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); button++) {
-        gSaveContext.childEquips.buttonItems[button] = ITEM_NONE;
-    }
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots); button++) {
-        gSaveContext.childEquips.cButtonSlots[button] = SLOT_NONE;
-    }
-    gSaveContext.childEquips.equipment = 0;
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); button++) {
-        gSaveContext.adultEquips.buttonItems[button] = ITEM_NONE;
-    }
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots); button++) {
-        gSaveContext.adultEquips.cButtonSlots[button] = SLOT_NONE;
-    }
-    gSaveContext.adultEquips.equipment = 0;
-    gSaveContext.unk_54 = 0;
-    gSaveContext.savedSceneNum = 0x51;
 
-    // Equipment
-    static std::array<u8, 8> sButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_BOMB, ITEM_OCARINA_TIME,
-                                              ITEM_NONE,         ITEM_NONE, ITEM_NONE, ITEM_NONE };
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonItems); button++) {
-        gSaveContext.equips.buttonItems[button] = sButtonItems[button];
-    }
-    static std::array<u8, 7> sCButtonSlots = { SLOT_BOW,  SLOT_BOMB, SLOT_OCARINA, SLOT_NONE,
-                                               SLOT_NONE, SLOT_NONE, SLOT_NONE };
-    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
-        gSaveContext.equips.cButtonSlots[button] = sCButtonSlots[button];
-    }
-    gSaveContext.equips.equipment = 0x1122;
+    // only set the ocarina button, child age already changed the sword button
+    gSaveContext.equips.buttonItems[3] = ITEM_OCARINA_TIME;
 
     // Inventory
     static std::array<u8, 24> sItems = {
@@ -1208,29 +1193,16 @@ void SaveManager::InitFileMaxed() {
     for (int ammo = 0; ammo < ARRAY_COUNT(gSaveContext.inventory.ammo); ammo++) {
         gSaveContext.inventory.ammo[ammo] = sAmmo[ammo];
     }
-    gSaveContext.inventory.equipment = 0x7777;
     gSaveContext.inventory.upgrades = 3597531;
     gSaveContext.inventory.questItems = 33554431;
-    static std::array<u8, 20> sDungeonItems = { 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 };
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.inventory.dungeonItems); dungeon++) {
-        gSaveContext.inventory.dungeonItems[dungeon] = sDungeonItems[dungeon];
+        gSaveContext.inventory.dungeonItems[dungeon] = 7;
     }
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.inventory.dungeonKeys); dungeon++) {
         gSaveContext.inventory.dungeonKeys[dungeon] = 9;
     }
     gSaveContext.inventory.defenseHearts = 20;
     gSaveContext.inventory.gsTokens = 100;
-
-    gSaveContext.horseData.scene = SCENE_HYRULE_FIELD;
-    gSaveContext.horseData.pos.x = -1840;
-    gSaveContext.horseData.pos.y = 72;
-    gSaveContext.horseData.pos.z = 5497;
-    gSaveContext.horseData.angle = -0x6AD9;
-    gSaveContext.infTable[0] |= 0x5009;
-    gSaveContext.infTable[29] = 0; // unset flag from normal file setup
-    gSaveContext.eventChkInf[0] |= 0x123F;
-    gSaveContext.eventChkInf[8] |= 1;
-    gSaveContext.eventChkInf[12] |= 0x10;
 
     // set all the "Entered *" flags for dungeons
     for (int i = 0; i < 0xF; i += 1) {
@@ -1271,22 +1243,6 @@ void SaveManager::InitFileMaxed() {
     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GANONS_CASTLE_EXTERIOR);
-
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
-        if (gSaveContext.fileNum == 0xFF) {
-            gSaveContext.equips.buttonItems[1] = ITEM_SLINGSHOT;
-            gSaveContext.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
-            Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
-        }
-    }
-
-    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
-    gSaveContext.sceneFlags[5].swch = 0x40000000;
-
-    Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
-    Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
 }
 
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
