@@ -68,18 +68,8 @@ static void WriteLocation(std::string sphere, const RandomizerCheck locationKey,
     Rando::Location* location = Rando::StaticData::GetLocation(locationKey);
     Rando::ItemLocation* itemLocation = Rando::Context::GetInstance()->GetItemLocation(locationKey);
 
-    switch (gSaveContext.language) {
-        case LANGUAGE_ENG:
-        default:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
-            break;
-        case LANGUAGE_GER:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetGerman();
-            break;
-        case LANGUAGE_FRA:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
-            break;
-    }
+    jsonData["playthrough"][sphere][location->GetName()] =
+        itemLocation->GetPlacedItemName().GetForLanguage(gSaveContext.language);
 }
 
 // Writes a shuffled entrance to the specified node
@@ -263,20 +253,7 @@ static void WriteAllLocations() {
     auto ctx = Rando::Context::GetInstance();
     for (const RandomizerCheck key : ctx->allLocations) {
         Rando::ItemLocation* location = ctx->GetItemLocation(key);
-        std::string placedItemName;
-
-        switch (gSaveContext.language) {
-            case 0:
-            default:
-                placedItemName = location->GetPlacedItemName().GetEnglish();
-                break;
-            case 1:
-                placedItemName = location->GetPlacedItemName().GetGerman();
-                break;
-            case 2:
-                placedItemName = location->GetPlacedItemName().GetFrench();
-                break;
-        }
+        std::string placedItemName = location->GetPlacedItemName().GetForLanguage(gSaveContext.language);
 
         // If it's a simple item (not an ice trap, doesn't have a price)
         // just add the name of the item and move on
@@ -300,45 +277,14 @@ static void WriteAllLocations() {
         }
 
         if (location->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            switch (gSaveContext.language) {
-                case 0:
-                default:
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetEnglish();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickArticle"] =
-                                ctx->overrides[location->GetRandomizerCheck()].GetTrickArticle().GetEnglish();
-                    break;
-                case 1:
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetGerman();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickArticle"] =
-                                ctx->overrides[location->GetRandomizerCheck()].GetTrickArticle().GetGerman();
-                    break;
-                case 2:
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetFrench();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetFrench();
-                    jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickArticle"] =
-                                ctx->overrides[location->GetRandomizerCheck()].GetTrickArticle().GetFrench();
-                    break;
-            }
+            auto& locationJson =
+                jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()];
+            auto& itemOverride = ctx->overrides[location->GetRandomizerCheck()];
+            locationJson["model"] = Rando::StaticData::RetrieveItem(itemOverride.LooksLike())
+                                        .GetName()
+                                        .GetForLanguage(gSaveContext.language);
+            locationJson["trickName"] = itemOverride.GetTrickName().GetForLanguage(gSaveContext.language);
+            locationJson["trickArticle"] = itemOverride.GetTrickArticle().GetForLanguage(gSaveContext.language);
         }
     }
 }
