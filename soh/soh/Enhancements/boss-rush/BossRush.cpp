@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <array>
 #include <string>
 #include <vector>
@@ -6,6 +7,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "BossRush.h"
+#include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -569,11 +571,11 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
 
 extern "C" void BossRush_InitSave() {
 
-    // Set player name to Lonk for the few textboxes that show up during Boss Rush. Player can't input their own name.
-    std::array<char, 8> brPlayerName = { 21, 50, 49, 46, 62, 62, 62, 62 };
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
-        gSaveContext.playerName[i] = brPlayerName[i];
-    }
+    // Set player name to Link using PAL charset for few textboxes that show up during Boss Rush.
+    static const u8 brPlayerName[] = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+    static_assert(sizeof(brPlayerName) == sizeof(gSaveContext.playerName));
+    std::copy(std::begin(brPlayerName), std::end(brPlayerName), gSaveContext.playerName);
+    gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
 
     gSaveContext.ship.quest.id = QUEST_BOSSRUSH;
     gSaveContext.ship.quest.data.bossRush.isPaused = true;
