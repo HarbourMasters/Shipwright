@@ -1,7 +1,10 @@
 #include "static_data.h"
+#include "randomizerEnumStrings.h"
 #include "z64save.h"
 #include "SeedContext.h"
 #include "dungeon.h"
+#include <cassert>
+#include <spdlog/spdlog.h>
 
 std::array<Rando::Location, RC_MAX> Rando::StaticData::locationTable;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> Rando::StaticData::CheckFromActorMultimap;
@@ -1020,6 +1023,15 @@ void Rando::StaticData::InitHashMaps() {
         CheckFromActorMultimap.emplace(
             std::make_tuple((int16_t)location.GetActorID(), (int16_t)location.GetScene(), location.GetActorParams()),
             location.GetRandomizerCheck());
+        if (location.GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+            std::string name(EnumToString(location.GetRandomizerCheck()));
+            if (excludedLocationToEnum.contains(name)) {
+                SPDLOG_ERROR("REPEATED EXCLUDED LOCATION NAME " + name);
+                assert(false);
+            } else {
+                excludedLocationToEnum[name] = location.GetRandomizerCheck();
+            }
+        }
     }
 }
 

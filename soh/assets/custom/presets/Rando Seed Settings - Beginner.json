@@ -16,7 +16,7 @@
                 "DampeHint": 1,
                 "DoorOfTime": 2,
                 "EnableBombchuDrops": 1,
-                "ExcludedLocations": "147,148,233,323,",
+                "ExcludedLocations": "RC_KAK_40_GOLD_SKULLTULA_REWARD,RC_KAK_50_GOLD_SKULLTULA_REWARD,RC_ZR_FROGS_OCARINA_GAME,RC_GF_HBA_1500_POINTS,",
                 "FortressCarpenters": 1,
                 "FrogsHint": 1,
                 "FullWallets": 1,
