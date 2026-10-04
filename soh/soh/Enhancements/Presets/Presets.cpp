@@ -16,6 +16,7 @@
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/ShipInit.hpp"
+#include "soh/config/ConfigUpdaters.h"
 
 namespace fs = std::filesystem;
 
@@ -107,6 +108,7 @@ std::string FormatPresetPath(std::string name) {
 
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
     auto& info = presets[presetName];
+    bool randoApplied = false;
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
             if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
@@ -150,11 +152,21 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
-                Rando::Settings::GetInstance()->UpdateAllOptions();
-                SohGui::UpdateMenuTricks();
-                SohGui::UpdateMenuLocations();
+                randoApplied = true;
             }
         }
+    }
+    if (randoApplied) {
+        // Unversioned presets predate v4. Only migrate when rando came from the preset
+        uint32_t presetVersion = SOH::GetConfigVersion(info.presetValues, 3);
+        if (presetVersion < SOH::GetLatestConfigVersion()) {
+            SOH::RunVersionUpdatesFrom(presetVersion);
+            // SetBlock already saved the unmigrated values
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+        Rando::Settings::GetInstance()->UpdateAllOptions();
+        SohGui::UpdateMenuTricks();
+        SohGui::UpdateMenuLocations();
     }
     ShipInit::InitAll();
     OTRGlobals::Instance->ScaleImGui();
@@ -284,6 +296,7 @@ void SavePreset(std::string& presetName) {
     }
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
+    presets[presetName].presetValues["ConfigVersion"] = SOH::GetLatestConfigVersion();
 
     std::ofstream file(FormatPresetPath(presetName));
     if (!file.is_open()) {

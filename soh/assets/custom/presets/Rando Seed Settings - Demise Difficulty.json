@@ -138,5 +138,6 @@
         }
     },
     "presetName": "Rando Seed Settings - Demise Difficulty",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

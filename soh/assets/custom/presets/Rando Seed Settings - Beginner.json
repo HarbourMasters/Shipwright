@@ -48,5 +48,6 @@
         }
     },
     "presetName": "Rando Seed Settings - Beginner",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

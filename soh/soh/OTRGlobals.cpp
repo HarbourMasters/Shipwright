@@ -1532,13 +1532,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion7Updater>());
+    SOH::RegisterVersionUpdaters(conf.get());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -2481,6 +2475,8 @@ bool SoH_HandleConfigDrop(char* filePath) {
             return false;
         }
 
+        uint32_t configVersion = SOH::GetConfigVersion(configJson, 0);
+
         CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
         CVarClearBlock(CVAR_PREFIX_CHEAT);
         CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
@@ -2505,6 +2501,9 @@ bool SoH_HandleConfigDrop(char* filePath) {
                 CVarSetFloat(path.c_str(), value.get<float>());
             }
         }
+
+        // Migrate configs from older versions
+        SOH::RunVersionUpdatesFrom(configVersion);
 
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();

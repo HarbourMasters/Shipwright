@@ -33,7 +33,7 @@
                 "MixThievesHideout": 1,
                 "MixedEntrances": 1,
                 "ProgressiveGoronSword": 1,
-                "RainbowBridge": 9,
+                "RainbowBridge": 8,
                 "ScrubsPrices": 2,
                 "ShopShieldsTunicsGate": 1,
                 "Shopsanity": 1,
@@ -114,5 +114,6 @@
         }
     },
     "presetName": "Rando Seed Settings - Hell Mode",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }
