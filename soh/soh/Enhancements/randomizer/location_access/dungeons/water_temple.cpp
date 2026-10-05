@@ -751,7 +751,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_RISING_TARGET_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER)),
         //this swimless jump with irons may be a trick as you have to put irons on quite late.
         ENTRANCE(RR_WATER_TEMPLE_MQ_LIZALFOS_LOOP_A,     logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_HIGH_EMBLEM,         logic->WaterMQ3FCentralToHighEmblem()),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_HIGH_EMBLEM,         logic->Water3FCentralToHighEmblem()),
         ENTRANCE(RR_WATER_TEMPLE_MQ_OUTSIDE_WATERFALL,   logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
@@ -1245,7 +1245,7 @@ void RegionTable_Init_WaterTemple() {
                                                               logic->CanMegajump() || logic->CanBombRecoilHover()))),
         //This ledge is bad: Child can make this with bunnyhovers, but it's inconsistent and has a bad retry time, adult can't ledgegrab and needs a jumpslash
         //regardless, this is annoying enough to be a trick.
-        ENTRANCE(RR_WATER_TEMPLE_RIVER_POTS,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS)) ||
+        ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_POTS,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS)) ||
                                                    logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) ||
                                                    logic->CanMegajump(!(logic->IsChild || logic->CanJumpslash()))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_BOTTOM, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8),

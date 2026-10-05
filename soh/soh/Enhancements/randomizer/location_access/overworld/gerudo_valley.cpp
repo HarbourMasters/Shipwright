@@ -137,7 +137,7 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GV_UPPER_STREAM,       logic->TakeDamage()),
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
         ENTRANCE(RR_GERUDO_VALLEY,         logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) ||
-                                               logic->CanRecoilHover(RECOIL_HAMMER) || (logic->BunnyHovers() && logic->CanUse(RG_CLIMB))),
+                                               logic->CanRecoilHover(RECOIL_HAMMER) || (logic->BunnyHovers() && logic->HasItem(RG_CLIMB))),
         ENTRANCE(RR_GV_CARPENTER_TENT,     logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT)),
         ENTRANCE(RR_GV_STORMS_GROTTO,      logic->IsAdult && logic->CanOpenStormsGrotto()),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       logic->CanMegadive()),

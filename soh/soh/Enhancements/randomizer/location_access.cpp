@@ -4,6 +4,7 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -668,11 +669,6 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->OuterWestHandLogic();},
                                                  []{return logic->OuterWestHandLogic();},
                                              }},
-    {RR_DESERT_COLOSSUS_ARCH,               {5, 5, 3, 3,
-                                                 []{return logic->OuterWestHandLogic() && ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                                 []{return logic->OuterWestHandLogic() && ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                                 []{return logic->OuterWestHandLogic() && ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                             }},
     {RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT,     {5, 0, 3, 0,
                                                  []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT));},
                                                  []{return (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
@@ -687,6 +683,12 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();},
                                                  []{return logic->SpiritEastToSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
                                                  []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult));}}},
+    
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT,    {5, 5, 3, 3,
+                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->OuterWestHandLogic();},
+                                             }},
     //MQ
     {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7,
                                                  []{return logic->StatueRoomMQKeyLogic();},
@@ -728,18 +730,15 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->OuterWestHandMQLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT));},
                                                  []{return logic->OuterWestHandMQLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult));},
                                              }},
-    {RR_DESERT_COLOSSUS_ARCH_MQ,             {7, 7, 4, 4,
-                                                 []{return logic->CanHitSwitch() && logic->OuterWestHandMQLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET) &&
-                                                                               ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                                 []{return logic->OuterWestHandMQLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) &&
-                                                                               ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                                 []{return logic->OuterWestHandMQLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult)) &&
-                                                                               ((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash());},
-                                             }},
     {RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,    {7, 0, 0, 0,
                                                  []{return logic->CanHitSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
                                                  []{return true;},
                                                  []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
+                                             }},
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ, {7, 7, 4, 4,
+                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->OuterWestHandLogic();},
                                              }},
 };
 // clang-format on

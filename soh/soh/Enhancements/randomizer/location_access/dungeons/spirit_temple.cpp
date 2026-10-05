@@ -241,7 +241,7 @@ void RegionTable_Init_SpiritTemple() {
         //RANDOTODO child gets across with bunnymegajump from the armos, will be handled in a future PR due to key logic implications
         //hovers backwalk > backflip from the armos also works
         ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, (logic->CanRecoilHoverFromActor(ARECOIL_SHORT) || (logic->CanBombRecoilHover() && logic->CanJumpslash()) || 
-                                                          (logic->CanUse(RG_POWER_BRACELET) && logic->CanMegajump()) || logic->CanBunnyMegaJumpslash()) && logic->IsAdult),
+                                                          (logic->HasItem(RG_POWER_BRACELET) && logic->CanMegajump()) || logic->CanBunnyMegaJumpslash()) && logic->IsAdult),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
         ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,          logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && 
                                                      (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)))),
@@ -740,7 +740,7 @@ void RegionTable_Init_SpiritTemple() {
         //Needs 2 keys if hover recoils are on because you can recoil past the jet and waste a key without having Statue Room Access.
         //If the clip through the grate in 3 suns room is added to logic, being able to perform that will reduce the requirement as well.
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, logic->SmallKeys(SCENE_SPIRIT_TEMPLE,
-                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->CanUse(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 2 : 1)),
+                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 2 : 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE] = Region("Spirit Temple MQ Under Like Like", SCENE_SPIRIT_TEMPLE, {}, {
@@ -764,7 +764,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,  logic->CanHitSwitch()),
         //This exit only governs child forwards access, adult and reverse access starts on the other side so never checks this
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 
-                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->CanUse(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 3 : 2)),
+                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 3 : 2)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD] = Region("Spirit Temple MQ Statue Room Child", SCENE_SPIRIT_TEMPLE, {}, {
@@ -898,7 +898,7 @@ void RegionTable_Init_SpiritTemple() {
         //If it is ever relevant for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_RIGHT_HAND_EXIT, true),
         ENTRANCE(RR_DESERT_COLOSSUS,                  SpiritCertainAccess(RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND)),
-        ENTRANCE(RR_DESERT_COLOSSUS_ARCH_MQ,          (logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash()),
+        ENTRANCE(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT, (logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash()),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_HOLE] = Region("Spirit Temple MQ Big Blocks Hole", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -1093,7 +1093,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND, logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_ADULT_THRONE,     true),
         ENTRANCE(RR_DESERT_COLOSSUS,                   true),
-        ENTRANCE(RR_DESERT_COLOSSUS_ARCH_MQ,           (logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash()),
+        ENTRANCE(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT,  (logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) || logic->CanBunnyMegaJumpslash()),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_3F_GIBDO_ROOM] = Region("Spirit Temple MQ 3F Gibdo Room", SCENE_SPIRIT_TEMPLE, {}, {

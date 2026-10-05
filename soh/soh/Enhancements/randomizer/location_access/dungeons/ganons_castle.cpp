@@ -690,7 +690,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_4, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE) && logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_5, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE) && logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_GANONS_CASTLE_MQ_IN_HOLE_WATER_SILVER,              true),
-        LOCATION(RC_GANONS_CASTLE_MQ_AIRBORNE_WATER_SILVER,             logic->IsAdult || logic->CanUse(RG_POWER_BRACELET) || (/*roll or bunny && */ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || (logic->CanUse(RG_HOVER_BOOTS)/* && roll or bunny?*/) || logic->CanMegajump()),
+        LOCATION(RC_GANONS_CASTLE_MQ_AIRBORNE_WATER_SILVER,             logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || (/*roll or bunny && */ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || (logic->CanUse(RG_HOVER_BOOTS)/* && roll or bunny?*/) || logic->CanMegajump()),
         LOCATION(RC_GANONS_CASTLE_MQ_OVER_PIT_WATER_SILVER,             true),
         LOCATION(RC_GANONS_CASTLE_MQ_NOOK_WATER_SILVER,                 true),
     }, {

@@ -1472,15 +1472,15 @@ bool Logic::CanBombRecoilHover(bool bombFlower) {
 }
 
 bool Logic::Water3FCentralToHighEmblem() {
-    return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() || CanMegajump() ||
-           (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
-            ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
-}
-
-bool Logic::WaterMQ3FCentralToHighEmblem() {
-    return CanUse(RG_HOOKSHOT) || (IsAdult && CanUse(RG_HOVER_BOOTS)) ||
-           ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)) || CanMegajump() ||
-           CanMiddairGroundJump();
+    if (ctx->GetDungeon(WATER_TEMPLE)->IsMQ()) {
+        return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() || CanMegajump() ||
+               (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
+                ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
+    } else {
+        return CanUse(RG_HOOKSHOT) || (IsAdult && CanUse(RG_HOVER_BOOTS)) ||
+               ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)) || CanMegajump() ||
+               CanMiddairGroundJump();
+    }
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
@@ -3069,7 +3069,7 @@ bool Logic::DMCUpperToPots() {
 bool Logic::DMCPotsToPad() {
     return CanUse(RG_HOVER_BOOTS) || (BunnyHood() && (IsAdult || HasItem(RG_CLIMB))) || CanUse(RG_HOOKSHOT) ||
            CanMegajump() ||
-           (IsAdult && ((CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)) ||
+           (IsAdult && ((CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && HasItem(RG_POWER_BRACELET)) ||
                         (HasItem(RG_CLIMB) && CanMidairDamageBoost())));
 }
 
@@ -3195,6 +3195,19 @@ bool Logic::OuterWestHandLogic() {
 
 bool Logic::OuterWestHandMQLogic() {
     return MQSpiritStatueToSunBlock() && SmallKeys(SCENE_SPIRIT_TEMPLE, CouldMQSpirit4KeyWestHand() ? 4 : 7);
+}
+
+bool Logic::SpiritHandToArch() {
+    if (!((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) ||
+          logic->CanBunnyMegaJumpslash())) {
+        return false;
+    }
+    if (ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
+        return logic->CanHitSwitch() && logic->OuterWestHandMQLogic() &&
+               (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);
+    } else {
+        return logic->OuterWestHandLogic();
+    }
 }
 
 bool Logic::StatueRoomMQKeyLogic() {

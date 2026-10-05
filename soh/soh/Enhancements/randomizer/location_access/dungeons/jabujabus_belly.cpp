@@ -33,7 +33,7 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_BEGINNING,               true),
         ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_ROOM,              true),
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, true),
-        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE,         logic->CanUse(RG_HOVER_BOOTS) || logic->CanMidairDamageBoost() || logic->CanMegajump() ||
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE,         logic->Get(LOGIC_JABU_LOWERED_PATH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMidairDamageBoost() || logic->CanMegajump() ||
                                                                   (logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))),
     });
 
@@ -290,10 +290,10 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_GS_NEAR_BOSS, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && (logic->HasItem(RG_CLIMB) || logic->HookshotOrBoomerang())),
     }, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM,     true),
-        ENTRANCE(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY, (logic->HasItem(RG_CLIMB) && logic->CanUse(RG_BOOMERANG)) ||
-                                                    (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && (logic->CanUse(logic->HasItem(RG_CLIMB) ? RG_HOOKSHOT : RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))) ||
-                                                    (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_EXPLOSIVES) && (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_BOMB_BAG) && logic->HasItem(RG_CLIMB))))),
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE, true),
+        ENTRANCE(RR_JABU_JABUS_BELLY_BOSS_ENTRYWAY,   (logic->HasItem(RG_CLIMB) && logic->CanUse(RG_BOOMERANG)) ||
+                                                      (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && (logic->CanUse(logic->HasItem(RG_CLIMB) ? RG_HOOKSHOT : RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))) ||
+                                                      (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_EXPLOSIVES) && (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_BOMB_BAG) && logic->HasItem(RG_CLIMB))))),
     });
 
 #pragma endregion

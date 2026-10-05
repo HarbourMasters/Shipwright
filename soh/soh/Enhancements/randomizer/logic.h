@@ -71,7 +71,6 @@ class Logic {
     bool CanBombRecoilHover(bool bombFlower = false);
     bool CanRecoilHover(RecoilRequirements req, bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
-    bool WaterMQ3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
@@ -189,6 +188,7 @@ class Logic {
     bool CouldMQSpirit4KeyWestHand();
     bool OuterWestHandLogic();
     bool OuterWestHandMQLogic();
+    bool SpiritHandToArch();
     bool SpiritExplosiveKeyLogic();
     bool StatueRoomMQKeyLogic();
 
