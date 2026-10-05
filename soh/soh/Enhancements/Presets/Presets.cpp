@@ -8,6 +8,7 @@
 #include <ship/resource/type/Json.h>
 #include <ship/Context.h>
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
@@ -332,6 +333,10 @@ void LoadPresets() {
     }
     if (fs::exists(presetFolder)) {
         for (auto const& preset : fs::directory_iterator(presetFolder)) {
+            // Skip leftover temp files from an interrupted save
+            if (preset.path().extension() != ".json") {
+                continue;
+            }
             try {
                 std::ifstream ifs(preset.path());
                 if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
@@ -372,14 +377,11 @@ void SavePreset(std::string& presetName) {
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
     presets[presetName].presetValues["ConfigVersion"] = SOH::GetLatestConfigVersion();
 
-    std::ofstream file(FormatPresetPath(presetName));
-    if (!file.is_open()) {
-        spdlog::error("Failed to save preset '{}': Could not create file", presetName);
+    std::string presetPath = FormatPresetPath(presetName);
+    if (!SaveManager::WriteFileSafely(presetPath, presets[presetName].presetValues.dump(4))) {
+        spdlog::error("Failed to save preset '{}'", presetName);
         return;
     }
-
-    file << presets[presetName].presetValues.dump(4);
-    file.close();
     LoadPresets();
 }
 
