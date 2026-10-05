@@ -39,6 +39,7 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/Enhancements/savestates.h"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -849,11 +850,7 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000,
-                         .SampleLength = 1024,
-                         // 4096 frames at 32 kHz (~128 ms) gives enough reservoir for frame
-                         // jitter and slow-frame spikes without perceptible audio latency.
-                         .DesiredBuffered = 4096 });
+    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
     // The menu is set up before audio is initialized, so its list of available audio backends has to be
     // populated here rather than in Menu::InitElement (where the window backends are handled).
@@ -1042,100 +1039,42 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
-#define SAMPLES_HIGH 560
-#define SAMPLES_MID 544
-#define SAMPLES_LOW 528
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
-#define NUM_AUDIO_CHANNELS 2
-
-    // The sequencer advances a fixed slice of musical time per engine update
-    // (tempoInternalToExternal in audio_heap.c assumes 60 updates/sec), so with
-    // production paced by backend buffer fill the sample count must average
-    // exactly 32000/60 = 533.33 per update or tempo drifts.
-    // Two thirds 528 one third 544 gives 533.33.
-    int32_t sample_debt_thirds = 0;
-
-    // Single producer routine used by both wake-driven and pre-buffer loops.
-    // Picks per-iteration sample count itself, then produces and plays it.
-    auto produce_next_batch = [&]() {
-        u32 num_audio_samples = sample_debt_thirds > 0 ? SAMPLES_MID : SAMPLES_LOW;
-        sample_debt_thirds += (1600 - 3 * (int32_t)num_audio_samples) * AUDIO_FRAMES_PER_UPDATE;
-
-        const u32 total_frames = num_audio_samples * AUDIO_FRAMES_PER_UPDATE;
-        const u32 total_samples = total_frames * NUM_AUDIO_CHANNELS;
-
-        // 3 is the maximum authentic frame divisor.
-        static thread_local s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
-        }
-
-        AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), total_samples * sizeof(int16_t));
-    };
-
-    // Self-pump cadence. The gfx thread wakes us once per rendered frame
-    // (Graph_ProcessGfxCommands sets audio.processing), but a single long
-    // frame leave us asleep while the backend's queue drains to silence.
-    // So we also wake on a short timeout, independent of the gfx frame rate.
-    // Doing so is in fact closer to the console, where the audio task ran
-    // off the scheduler rather than gated on rendering..
-    constexpr auto kSelfPumpInterval = std::chrono::milliseconds(5);
-
-    // The self-pump timeout must wait that the game has reached its render
-    // loop, to avoid accessing uninitialized variables.
-    bool primed = false;
-
     while (audio.running) {
         {
             std::unique_lock<std::mutex> Lock(audio.mutex);
-            if (!primed) {
-                // Pre-init: block until the gfx thread drives the first buffer
-                // (engine guaranteed ready by then), exactly as before.
-                while (!audio.processing && audio.running) {
-                    audio.cv_to_thread.wait(Lock);
-                }
-                primed = true;
-            } else if (!audio.processing && audio.running) {
-                // Primed: wait for the next gfx wake, but no longer than
-                // kSelfPumpInterval so a stalled gfx thread can't starve the
-                // backend queue. A pending wake falls straight through.
-                audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval);
+            while (!audio.processing && audio.running) {
+                audio.cv_to_thread.wait(Lock);
             }
 
             if (!audio.running) {
                 break;
             }
         }
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+// AudioMgr_ThreadEntry(&gAudioMgr);
+//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+#define SAMPLES_HIGH 560
+#define SAMPLES_LOW 528
 
-        {
-            std::unique_lock<std::mutex> Lock(audio.mutex);
+#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
+#define NUM_AUDIO_CHANNELS 2
 
-            // Producer guard (banteg/Shipwright#6594): skip advancing the audio
-            // engine if the backend ring cannot accept the largest next burst.
-            // Generating PCM that DoPlay() would refuse creates a discontinuity
-            // audible as a click. The pre-buffer loop below will catch up once
-            // the backend drains enough.
-            if (AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
-                audio.processing = false;
-            } else {
-                produce_next_batch();
-                audio.processing = false;
-            }
+        int samples_left = AudioPlayer_Buffered();
+        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+
+        // 3 is the maximum authentic frame divisor.
+        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
         }
 
-        // Pre-buffer: fill the reservoir while the backend can accept more,
-        // without waiting for the next frame signal. This absorbs load spikes.
-        // Safe for BGM — the N64 sequencer advances independently of gameplay.
-        // The producer guard (same as above) prevents advancing the audio engine
-        // when the backend ring is already at capacity.
-        while (audio.running && AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered()) {
-            if (AudioPlayer_Buffered() + SAMPLES_MID * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
-                break;
-            }
-            produce_next_batch();
-        }
+        AudioPlayer_Play((u8*)audio_buffer,
+                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+
+        audio.processing = false;
+        audio.cv_from_thread.notify_one();
     }
 }
 
@@ -1594,13 +1533,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion7Updater>());
+    SOH::RegisterVersionUpdaters(conf.get());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1657,6 +1590,8 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Enable();
     }
+    // Restores settings left over from a run that never exited cleanly, so it must come after other setup.
+    Speedrun_Register();
     ShipInit::InitAll();
     Rando::StaticData::InitHashMaps();
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
@@ -1668,6 +1603,7 @@ extern "C" void SaveManager_ThreadPoolWait() {
 
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
+    WaitForRandoGeneration();
     OTRAudio_Exit();
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Disable();
@@ -1905,6 +1841,13 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
+
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        while (audio.processing) {
+            audio.cv_from_thread.wait(Lock);
+        }
+    }
 
     bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     if (prevAltAssets != curAltAssets) {
@@ -2535,6 +2478,8 @@ bool SoH_HandleConfigDrop(char* filePath) {
             return false;
         }
 
+        uint32_t configVersion = SOH::GetConfigVersion(configJson, 0);
+
         CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
         CVarClearBlock(CVAR_PREFIX_CHEAT);
         CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
@@ -2559,6 +2504,9 @@ bool SoH_HandleConfigDrop(char* filePath) {
                 CVarSetFloat(path.c_str(), value.get<float>());
             }
         }
+
+        // Migrate configs from older versions
+        SOH::RunVersionUpdatesFrom(configVersion);
 
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();

@@ -167,6 +167,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                     gSaveContext.natureAmbienceId = 0xFF;
                     GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
                     if (gSaveContext.ship.resetToSpawn) {
+                        gSaveContext.respawnFlag = 0;
                         if (!IS_RANDO) {
                             gSaveContext.entranceIndex =
                                 LINK_IS_CHILD ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
@@ -175,8 +176,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                                 Entrance_OverrideNextIndex(ENTR_LINKS_HOUSE_CHILD_SPAWN); // Child Overworld Spawn
                         } else {
                             // Adult Overworld Spawn. Normally 0x5F4 (ENTR_TEMPLE_OF_TIME_WARP_PAD), but 0x282
-                            // (ENTR_HYRULE_FIELD_10) has been repurposed to differentiate from Prelude which also uses
-                            // 0x5F4
+                            // (ENTR_HYRULE_FIELD_10) repurposed to differentiate from Prelude which also uses 0x5F4
                             gSaveContext.entranceIndex = Entrance_OverrideNextIndex(ENTR_HYRULE_FIELD_10);
                         }
                         gSaveContext.ship.resetToSpawn = 0;

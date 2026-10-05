@@ -1894,6 +1894,9 @@ Rando::Traps::TrickName Rando::Traps::GetTrapName(RandomizerGet id, RandoIceTrap
     const Rando::Item& item =
         Rando::StaticData::RetrieveItem(iceTrapNamesOption == RO_ICE_TRAP_NAMES_REVEALED ? RG_ICE_TRAP : id);
     Text name = item.GetName();
+    Text article = item.GetArticle();
+    name.FillMissingTranslations();
+    article.FillMissingTranslations();
 
     if (iceTrapNamesOption == RO_ICE_TRAP_NAMES_MISSPELLED_CHANGED_VOWEL) {
         name.ReplaceRandomVowel(state);
@@ -1901,7 +1904,7 @@ Rando::Traps::TrickName Rando::Traps::GetTrapName(RandomizerGet id, RandoIceTrap
         name.DuplicateRandomLetter(state);
     }
 
-    return { name, item.GetArticle() };
+    return { name, article };
 }
 
 RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {

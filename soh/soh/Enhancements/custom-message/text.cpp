@@ -1,6 +1,7 @@
 #include "text.h"
 #include "soh/ShipUtils.h"
 #include <functional>
+#include "z64.h"
 
 Text::Text() = default;
 
@@ -18,20 +19,33 @@ Text::Text(std::string english_) : english(std::move(english_)), french(""), ger
     french = spanish = german = english;
 }
 
+static bool IsMissing(const std::string& translation) {
+    return translation.empty() || translation == TODO_TRANSLATE;
+}
+
+// Use English where a translation is missing, so text never shows "TranslateThis"
+void Text::FillMissingTranslations() {
+    for (std::string* translation : { &french, &german, &spanish }) {
+        if (IsMissing(*translation)) {
+            *translation = english;
+        }
+    }
+}
+
 const std::string& Text::GetEnglish() const {
     return english;
 }
 
 const std::string& Text::GetFrench() const {
-    return french.length() > 0 ? french : english;
+    return IsMissing(french) ? english : french;
 }
 
 const std::string& Text::GetGerman() const {
-    return german.length() > 0 ? german : english;
+    return IsMissing(german) ? english : german;
 }
 
 const std::string& Text::GetSpanish() const {
-    return spanish.length() > 0 ? spanish : english;
+    return IsMissing(spanish) ? english : spanish;
 }
 
 const std::string& Text::GetForLanguage(uint8_t language) const {
