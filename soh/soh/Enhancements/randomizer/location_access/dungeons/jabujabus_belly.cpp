@@ -99,7 +99,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_JABU_RUTO_IN_1F, logic->Get(LOGIC_JABU_RUTO_IN_B1) && (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
-        //RUTO_IN_1F is not the proper flag for this, we only need to bring Ruto into the room, 
+        //RUTO_IN_1F is not the proper flag for this, we only need to bring Ruto into the room,
         //however as it takes 2 ruto throws to kill the skull you need to go into and out of the pit anyway, lining up with RUTO_IN_1F's requirements
         LOCATION(RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) ||
                                                                ((logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->Get(LOGIC_JABU_RUTO_IN_1F)) && (logic->CanMegajump() || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS))))),

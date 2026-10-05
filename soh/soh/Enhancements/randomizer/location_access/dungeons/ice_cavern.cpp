@@ -142,8 +142,8 @@ void RegionTable_Init_IceCavern() {
         //Locations
         // trick involves backflip, could be merged into general trick
         // is also possible with bunnyhovers and a jumpslash, but unintuitive
-        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                      logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
-                                                                                      (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) && 
+        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                      logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) ||
+                                                                                      (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) &&
                                                                                        ((ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                                                         logic->CanMegajump(!logic->IsAdult)))),
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,                   logic->CanUse(RG_BOOMERANG)),

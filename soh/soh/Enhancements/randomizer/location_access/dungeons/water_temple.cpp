@@ -208,7 +208,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_SPIKE_MOAT] = Region("Water Temple Spike Moat", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MAIN,              logic->HasItem(RG_BRONZE_SCALE)),
-        ENTRANCE(RR_WATER_TEMPLE_BEHIND_SPIKE_MOAT, logic->CanUse(RG_LONGSHOT) || 
+        ENTRANCE(RR_WATER_TEMPLE_BEHIND_SPIKE_MOAT, logic->CanUse(RG_LONGSHOT) ||
                                                         (ctx->GetTrickOption(RT_WATER_BK_REGION) && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                         logic->CanMegajump(!logic->CanJumpslash())),
     });
@@ -634,8 +634,8 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_RIVER_POT_2,   logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_RIVER_PLATFORM, logic->HasItem(RG_BRONZE_SCALE) || 
-                                                     (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->BunnyHovers())) || 
+        ENTRANCE(RR_WATER_TEMPLE_RIVER_PLATFORM, logic->HasItem(RG_BRONZE_SCALE) ||
+                                                     (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->BunnyHovers())) ||
                                                      logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanMegajump()),
         ENTRANCE(RR_WATER_TEMPLE_RIVER,          logic->CanUse(RG_IRON_BOOTS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanMegajump() || logic->CanRecoilHover(RECOIL_HAMMER))),
     });
@@ -1225,11 +1225,11 @@ void RegionTable_Init_WaterTemple() {
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_SKULL, logic->CanUse(RG_LONGSHOT) ||
-                                                     (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 && 
+                                                     (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 &&
                                                       (logic->CanUse(RG_HOOKSHOT) || logic->BunnyHovers() || logic->HasItem(RG_BRONZE_SCALE) ||
                                                        logic->CanMegajump() || logic->CanRecoilHover(RECOIL_HAMMER)))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_END,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT) ||
-                                                     (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->BunnyHovers())) || 
+                                                     (logic->IsAdult && (logic->CanUse(RG_IRON_BOOTS) || logic->BunnyHovers())) ||
                                                      logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanMegajump()),
     });
 
@@ -1239,8 +1239,8 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_RIVER_POT_2, logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_SKULL,        logic->CanUse(RG_LONGSHOT) || 
-                                                            (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 && 
+        ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_SKULL,        logic->CanUse(RG_LONGSHOT) ||
+                                                            (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 &&
                                                              (logic->CanUse(RG_HOOKSHOT) || logic->BunnyHovers() || logic->HasItem(RG_BRONZE_SCALE) ||
                                                               logic->CanMegajump() || logic->CanBombRecoilHover()))),
         //This ledge is bad: Child can make this with bunnyhovers, but it's inconsistent and has a bad retry time, adult can't ledgegrab and needs a jumpslash

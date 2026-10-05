@@ -138,7 +138,7 @@ void RegionTable_Init_GerudoFortress() {
         //Exits
         ENTRANCE(RR_GF_OUTSIDE_GTG,        true),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES, true),
-        ENTRANCE(RR_GF_SLOPED_ROOF,        logic->CanMegajump() || 
+        ENTRANCE(RR_GF_SLOPED_ROOF,        logic->CanMegajump() ||
                                                (logic->IsAdult && (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)/* && roll*/)))),
         ENTRANCE(RR_GF_TOP_OF_UPPER_VINES, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_GF_TO_GTG,             logic->IsAdult && ctx->GetTrickOption(RT_GF_LEDGE_CLIP_INTO_GTG).Get()),

@@ -95,7 +95,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_ON_TARGET_FOREST_SILVER,      logic->IsAdult || logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM,            logic->CanUse(RG_LONGSHOT) || 
+        ENTRANCE(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM,            logic->CanUse(RG_LONGSHOT) ||
                                                                            ((logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)/* && (logic->CanUse(RG_ROLL) || logic->BunnyHood() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanBombRecoilHover())*/) ||
                                                                             (logic->CanMiddairGroundJump()/*&& (logic->CanUse(RG_ROLL) || logic->BunnyHood())*/)) ||
                                                                            logic->CanMegajump(!logic->IsAdult)),
@@ -152,7 +152,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
         LOCATION(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 8),
         LOCATION(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 32 && 
+        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 32 &&
                                                                                  (logic->CanUse(RG_GOLDEN_GAUNTLETS) || logic->BunnyHovers() || logic->CanMegajump() || logic->CanBombRecoilHover())),
         LOCATION(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 16),
         LOCATION(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, (logic->CanUse(RG_LONGSHOT) || logic->CanMeleeRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->CanMegajump(true)) || logic->CanBunnyMegaJumpslash()) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
@@ -349,11 +349,11 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_SHADOW_TRIAL_HEART_3, (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())) || logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_CHEST_PLATFORM, (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH)) || 
+        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_CHEST_PLATFORM, (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH)) ||
                                                                    ((logic->CanUse(RG_HOVER_BOOTS) || ((logic->IsAdult || logic->CanJumpslash()) && logic->BunnyHood()) || logic->CanMegajump()) && logic->HasFireSource()) ||
                                                                    (logic->Get(LOGIC_SHADOW_TRIAL_LATE_CHEST) && logic->CanUse(RG_LONGSHOT))),
-        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM,  logic->CanUse(RG_DINS_FIRE) && 
-                                                                   (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH) || 
+        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM,  logic->CanUse(RG_DINS_FIRE) &&
+                                                                   (ctx->GetTrickOption(RT_LENS_GANON) || logic->CanUse(RG_LENS_OF_TRUTH) ||
                                                                    ((logic->IsAdult || logic->CanJumpslash()) && logic->BunnyHood()))),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_LOWER_SWITCH,   logic->CanUse(RG_HOVER_BOOTS) || ((logic->IsAdult || logic->CanJumpslash()) && logic->BunnyHood()) || logic->CanMegajump()),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_RUSTED_SWITCH,  (logic->CanUse(RG_HOVER_BOOTS) && (logic->HasFireSource() || logic->BunnyHood())) || logic->CanMegajump()),
@@ -742,7 +742,7 @@ void RegionTable_Init_GanonsCastle() {
         //Events
         EVENT_ACCESS(LOGIC_SHADOW_TRIAL_FIRST_CHEST, logic->CanUse(RG_FAIRY_BOW)),
         //shortcut route for passage involving the torch. defacto the same as the RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST shortcut as everything else is merely lens locked
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_MQ_SILVER_SHADOW,  (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && 
+        EVENT_ACCESS(LOGIC_GANONS_CASTLE_MQ_SILVER_SHADOW,  (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                 (((logic->BunnyHovers() || logic->CanMegajump()) && logic->CanUse(RG_STICKS)) ||
                                                                  (logic->IsAdult && ctx->GetTrickOption(RT_GANON_MQ_SHADOW_TRIAL) && logic->CanUse(RG_FAIRY_BOW) &&
                                                                   (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())))),
@@ -834,7 +834,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_BEAMOS_PLATFORM_SHADOW_SILVER, true),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST, ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || 
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST, ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) ||
                                                                     (logic->Get(LOGIC_SHADOW_TRIAL_LATE_CHEST) && logic->CanUse(RG_LONGSHOT)) || logic->CanMegajump()),
         //it's possible to recoil off the beamos, but it's a huge pain and not currently useful.
     });

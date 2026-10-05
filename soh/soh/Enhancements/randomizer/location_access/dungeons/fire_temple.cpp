@@ -421,7 +421,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_FIRE_MAZE_SWITCH] = Region("Fire Temple Fire Maze Switch", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_MAIN,      ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanRecoilHover(RECOIL_HAMMER) ||
-                                                     (logic->IsAdult && logic->CanGroundJump() && (logic->CanMegajump() || 
+                                                     (logic->IsAdult && logic->CanGroundJump() && (logic->CanMegajump() ||
                                                       (ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)))))),
         ENTRANCE(RR_FIRE_TEMPLE_SOT_CAGE_LOWER,      true),
         ENTRANCE(RR_FIRE_TEMPLE_FIRE_MAZE_PAST_WALL, true),
