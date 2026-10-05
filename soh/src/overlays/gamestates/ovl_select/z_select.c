@@ -538,7 +538,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "なか゛や", "Boss House", "Haus des Bosses", "Maison du Boss", ENTR_KAKARIKO_CENTER_GUEST_HOUSE_0, 0 },
         { "ふうしゃ", "Windmill", "Windmuehle", "Moulin", ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL, 0 },
         { "スタルチュラハウス", "Skulltula House", "Haus der Skulltulas", "Maison des Skulltulas", ENTR_HOUSE_OF_SKULLTULA_0, 0 },
-    }}, 
+    }},
     { "17:ほ゛ち", "17:Graveyard", "17:Friedhof", "17:Cimetiere", Select_LoadGame, 9, {
         { "カカリコむら　から", "From Kakariko", "Von Kakariko", "Depuis l'Apothicaire", ENTR_GRAVEYARD_ENTRANCE, 0 },
         { "やみのしんて゛ん　から", "From Shadow Temple", "Vom Schattentempel", "Depuis le Temple de l'Ombre", ENTR_GRAVEYARD_OUTSIDE_TEMPLE, 0 },
