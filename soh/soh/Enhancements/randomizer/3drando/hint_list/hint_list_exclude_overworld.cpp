@@ -2149,7 +2149,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_HC_ROCK] = HintText(CustomMessage("They say that a #rock at Hyrule Castle# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein bei Hyrules Schloß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_HC_BOULDER] = HintText(CustomMessage("They say that a #boulder at Hyrule Castle# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken bei Hyrules Schloß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2157,7 +2157,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_OGC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder outside Ganon's Castle# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken außerhalb von Ganons Schloß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_OGC_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder outside Ganon's Castle# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken außerhalb von Ganons Schloß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2165,11 +2165,11 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_DMC_ROCK] = HintText(CustomMessage("They say that a #rock in Death Mountain Crater# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein im Todesbergkrater# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_DMC_BOULDER] = HintText(CustomMessage("They say that a #boulder in Death Mountain Crater# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken im Todesbergkrater# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_DMC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Death Mountain Crater# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken im Todesbergkrater# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2177,15 +2177,15 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_GV_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Gerudo Valley# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken im Gerudo-Tal# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GV_ROCK] = HintText(CustomMessage("They say that a #rock in Gerudo Valley# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein im Gerudo-Tal# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GV_BOULDER] = HintText(CustomMessage("They say that a #boulder in Gerudo Valley# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken im Gerudo-Tal# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GV_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Gerudo Valley# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken im Gerudo-Tal# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2193,15 +2193,15 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_HF_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder on Hyrule Field# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken auf der Hylianischen Steppe# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_HF_ROCK] = HintText(CustomMessage("They say that a #rock on Hyrule Field# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein auf der Hylianischen Steppe# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_HF_BOULDER] = HintText(CustomMessage("They say that a #boulder on Hyrule Field# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken auf der Hylianischen Steppe# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_HF_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder on Hyrule Field# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken auf der Hylianischen Steppe# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2209,7 +2209,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_KAK_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder at Kakariko Village# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken im Kakariko-Dorf# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_KAK_ROCK] = HintText(CustomMessage("They say that a #rock at Kakariko Village# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein im Kakariko-Dorf# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2229,7 +2229,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_ZF_BOULDER] = HintText(CustomMessage("They say that a #boulder in Zora's Fountain# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken an Zoras Quelle# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-                                                       
+
     hintTextTable[RHT_ZF_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Zora's Fountain# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken an Zoras Quelle# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2237,7 +2237,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_ZR_ROCK] = HintText(CustomMessage("They say that a #rock along a river# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein an einem Fluß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_ZR_BOULDER] = HintText(CustomMessage("They say that a #boulder along a river# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken an einem Fluß# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2245,27 +2245,27 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_DMT_ROCK] = HintText(CustomMessage("They say that a #rock on Death Mountain Trail# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein auf dem Todesbergpfad# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_DMT_BOULDER] = HintText(CustomMessage("They say that a #boulder on Death Mountain Trail# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken auf dem Todesbergpfad# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_DMT_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder on Death Mountain Trail# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken auf dem Todesbergpfad# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GC_ROCK] = HintText(CustomMessage("They say that a #rock in Goron City# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein in Goronia# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GC_BOULDER] = HintText(CustomMessage("They say that a #boulder in Goron City# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Felsbrocken in Goronia# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Goron City# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #bronze-farbener Felsbrocken in Goronia# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_GC_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Goron City# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken in Goronia# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2273,7 +2273,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_COLOSSUS_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in a desert# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #silberner Felsbrocken in einer Wüste# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
-													   
+
     hintTextTable[RHT_COLOSSUS_ROCK] = HintText(CustomMessage("They say that a #rock in a desert# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Stein in einer Wüste# #[[1]]# enthält.",
                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
@@ -2282,27 +2282,27 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
         HintText(CustomMessage("They say that a #tree in Hyrule Field# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum auf der Hylianischen Steppe# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #arbre dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_TREE_MARKET] =
         HintText(CustomMessage("They say that a #tree in Hyrule Market# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum auf dem Marktplatz von Hyrule# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #arbre sur la Place du Marché# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_TREE_HYRULE_CASTLE] =
         HintText(CustomMessage("They say that a #tree in Hyrule Castle# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum bei Hyrules Schloß# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #arbre au Château d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_TREE_ZORAS_RIVER] =
         HintText(CustomMessage("They say that a #tree in Zora's River# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum am Zora-Fluß# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #arbre à la Rivière Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_TREE_ZORAS_FOUNTAIN] =
         HintText(CustomMessage("They say that a #tree in Zora's Fountain# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum an Zoras Quelle# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #arbre à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_TREE_LON_LON_RANCH] =
         HintText(CustomMessage("They say that a #tree in Lon Lon Ranch# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Baum auf der Lon-Lon-Farm# #[[1]]# enthält.",
@@ -2312,7 +2312,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
         HintText(CustomMessage("They say that a #bush in Hyrule Field# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Busch auf der Hylianischen Steppe# #[[1]]# enthält.",
                                /*french*/ "Selon moi, un #buisson dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
-							   
+
     hintTextTable[RHT_BUSH_ZORAS_FOUNTAIN] =
         HintText(CustomMessage("They say that a #bush in Zora's Fountain# contains #[[1]]#.",
                                /*german*/ "Man erzählt sich, daß ein #Busch an Zoras Quelle# #[[1]]# enthält.",

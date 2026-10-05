@@ -6,18 +6,18 @@
 
 /**
  * Actor Parameters
- * 
+ *
  * |                  |         |
  * | Transition Index | Type    | Switch Flag
  * |------------------|---------|-------------
- * | 0 0 0 0 0 0      | 0 0 0 0 | 0 0 0 0 0 0 
+ * | 0 0 0 0 0 0      | 0 0 0 0 | 0 0 0 0 0 0
  * | 6                | 4       | 6
  * |
- * 
+ *
  * Transition Index     1111110000000000    Set by the actor engine when the door is spawned
  * Type                 0000001111000000
  * Switch Flag          0000000000111111
- * 
+ *
  */
 
 typedef enum {

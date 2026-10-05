@@ -617,7 +617,7 @@ std::array<Region, RR_MAX> areaTable;
 
 // clang-format off
 std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
-    //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks 
+    //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks
     {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,       {5, 0, 3, 0,
                                                  []{return true;},
                                                  []{return logic->SpiritExplosiveKeyLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
@@ -710,7 +710,7 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                              }},
     {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        {7, 0, 0, 0,
                                                  []{return logic->CanHitSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT));},
-                                                 []{return true;}, 
+                                                 []{return true;},
                                                  []{return true;},
                                              }},
     {RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,     {7, 0, 0, 0,
