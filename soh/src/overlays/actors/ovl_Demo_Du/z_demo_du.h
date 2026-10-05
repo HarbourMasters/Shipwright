@@ -35,7 +35,7 @@ typedef enum DemoDu_Cutscene {
  * DEMO_DU_CS_GORONS_RUBY: Map selector -> Map 16 (SPOT16) -> Stage 01
  * DEMO_DU_CS_CHAMBER_AFTER_GANON: Map selector -> Map 21 -> Stage 02
  * DEMO_DU_CS_CREDITS: Map selector -> Map 16 (SPOT16) -> Stage 04
- * 
+ *
  */
 
 #endif

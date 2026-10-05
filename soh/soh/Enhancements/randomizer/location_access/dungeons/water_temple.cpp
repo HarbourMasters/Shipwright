@@ -317,12 +317,12 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOULDER_CANAL] = Region("Water Temple Boulder Canal", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)) || 
+        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)) ||
                                                                         (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
     }, {
         //Exits
         //making the jump as adult without jumpslash is possible, but hard enough to be a trick
-        ENTRANCE(RR_WATER_TEMPLE_BOULDERS_SOUTH, logic->HasItem(RG_BRONZE_SCALE) || 
+        ENTRANCE(RR_WATER_TEMPLE_BOULDERS_SOUTH, logic->HasItem(RG_BRONZE_SCALE) ||
                                                  (ctx->GetTrickOption(RT_WATER_INVISIBLE_HOOKSHOT_TARGET) && logic->CanUse((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) ? RG_HOOKSHOT : RG_LONGSHOT)) ||
                                                  (logic->IsAdult && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)))),
         ENTRANCE(RR_WATER_TEMPLE_BOULDERS_NORTH, logic->HasItem(RG_BRONZE_SCALE) || (ctx->GetTrickOption(RT_WATER_INVISIBLE_HOOKSHOT_TARGET) && logic->CanUse(logic->IsAdult ? RG_HOOKSHOT : RG_LONGSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
@@ -368,7 +368,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_GS_CAGE] = Region("Water Temple GS Cage", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_BEHIND_GATE,    (logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))) || 
+        LOCATION(RC_WATER_TEMPLE_GS_BEHIND_GATE,    (logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))) ||
                                                     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || logic->CanGroundJumpslash()),
         LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_1, logic->CanBreakPots()),
         LOCATION(RC_WATER_TEMPLE_BEHIND_GATE_POT_2, logic->CanBreakPots()),
@@ -654,7 +654,7 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_RISING_TARGET_LEDGE] = Region("Water Temple Rising Target Ledge", SCENE_WATER_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE,        (logic->WaterRisingTargetTo3FCentral() || logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanUse(RG_LONGSHOT) || logic->CanMegajump()) && 
+        EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE,        (logic->WaterRisingTargetTo3FCentral() || logic->BunnyHovers() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanUse(RG_LONGSHOT) || logic->CanMegajump()) &&
                                                                   (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))),
         //If water is not high. playing scarecrow song on the serpent's head will call the scarecrow, but this is unintuitive and only useful on low water
         //Assumes RR_WATER_TEMPLE_JET_LIFT and RR_WATER_TEMPLE_HIGH_EMBLEM access
@@ -1120,7 +1120,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3, logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_1,  logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_2,  logic->CanUse(RG_HOOKSHOT)),
-        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,  logic->CanUse(RG_HOOKSHOT)),   
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,  logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         //you can also make it with hover boots and good timing, using the momentom of the slope, but it's a trick
@@ -1249,7 +1249,7 @@ void RegionTable_Init_WaterTemple() {
                                                    logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) ||
                                                    logic->CanMegajump(!(logic->IsChild || logic->CanJumpslash()))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_BOTTOM, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8),
-        //You don't need to swim for this if you put irons on in midair and hold forward while aiming for the tunnel with a tight angle, but if you miss you have to void unless you have a hook. 
+        //You don't need to swim for this if you put irons on in midair and hold forward while aiming for the tunnel with a tight angle, but if you miss you have to void unless you have a hook.
         //Including in jump dive as it's too long a retry for unintuitive
         ENTRANCE(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_TUNNEL, logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && ctx->GetTrickOption(RT_WATER_DRAGON_JUMP_DIVE)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_DRAGON_ROOM_ALCOVE, logic->HasItem(RG_SILVER_SCALE) || (logic->IsAdult && logic->HasItem(RG_BRONZE_SCALE) && ctx->GetTrickOption(RT_WATER_DRAGON_JUMP_DIVE))),
@@ -1435,18 +1435,18 @@ void RegionTable_Init_WaterTemple() {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_1,     logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_FRONT_CRATE_2,     logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_1, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_1, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->IsAdult && logic->BunnyHood()))),
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_2, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_2, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE))),
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_3, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_3, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE))),
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_4, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8 && (logic->IsAdult || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE))),
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_5, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->IsAdult && logic->BunnyHood()))),
         //This can spawn in or outside of rang range depending on random spread, should be a trick
-        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6, logic->CanUse(RG_BOMBCHU_5) && 
+        LOCATION(RC_WATER_TEMPLE_MQ_WHIRLPOOL_SUBMERGED_CRATE_6, logic->CanUse(RG_BOMBCHU_5) &&
                                                                      ((logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) || logic->HasItem(RG_BRONZE_SCALE))),
     }, {
         //Exits

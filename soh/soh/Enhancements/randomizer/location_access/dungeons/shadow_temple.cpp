@@ -250,7 +250,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_S_DOOR,    true),
         ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_W_DOOR,    true),
         ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_CORNER_PLATFORM, (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && (logic->IsAdult && logic->CanMiddairGroundJump() || logic->CanUse(RG_HOOKSHOT))),
-        ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_DOOR_PLATFORM,   (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && ((logic->IsAdult && logic->CanMiddairGroundJump()) || 
+        ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_DOOR_PLATFORM,   (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && ((logic->IsAdult && logic->CanMiddairGroundJump()) ||
                                                            (logic->CanUse(logic->IsAdult && AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) ? RG_HOOKSHOT : RG_LONGSHOT)))),
     });
 
@@ -375,7 +375,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_ACROSS_CHASM,  true),
         ENTRANCE(RR_SHADOW_TEMPLE_BROKEN_PILLAR, logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash()) || (logic->IsAdult && ((ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()) || logic->BunnyHood()))),
     });
-    
+
     areaTable[RR_SHADOW_TEMPLE_ACROSS_CHASM] = Region("Shadow Temple Across Chasm", SCENE_SHADOW_TEMPLE, {
         //Events
         EVENT_ACCESS(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED, logic->CanDetonateUprightBombFlower()),
@@ -392,7 +392,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_BROKEN_PILLAR, logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)),
         ENTRANCE(RR_SHADOW_TEMPLE_PRE_BOSS_ROOM, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 5)),
     });
-    
+
     areaTable[RR_SHADOW_TEMPLE_BROKEN_PILLAR] = Region("Shadow Temple Broken Pillar", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_AFTER_SHIP_LOWER_HEART, true),
@@ -451,7 +451,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         //child can make this jump with bunny, and it's not hard, but it's too inconsistent for unintuitive
-        ENTRANCE(RR_SHADOW_TEMPLE_PRE_BOSS_ROOM, (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && 
+        ENTRANCE(RR_SHADOW_TEMPLE_PRE_BOSS_ROOM, (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                  (logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->IsAdult))),
         ENTRANCE(RR_SHADOW_TEMPLE_BOSS_ENTRYWAY, true),
     });
@@ -466,7 +466,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM,  logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT)),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", SCENE_SHADOW_TEMPLE, {}, 
+    areaTable[RR_SHADOW_TEMPLE_MQ_SPINNER_ROOM] = Region("Shadow Temple MQ Spinner Room", SCENE_SHADOW_TEMPLE, {},
     {
         // Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_TRUTH_SPINNER_SMALL_CRATE_1, logic->CanBreakSmallCrates()),

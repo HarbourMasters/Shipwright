@@ -63,6 +63,8 @@ class SaveManager {
 
     static void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
     static void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+    // Write to fileName + ".temp" and only swap once fully on disk
+    static bool WriteFileSafely(const std::filesystem::path& fileName, const std::string& contents);
 
     using InitFunc = void (*)(bool isDebug);
     using LoadFunc = void (*)();
@@ -154,7 +156,6 @@ class SaveManager {
 
   private:
     std::filesystem::path GetFileName(int fileNum);
-    std::filesystem::path GetFileTempName(int fileNum);
     nlohmann::json saveBlock;
 
     void ConvertFromUnversioned();

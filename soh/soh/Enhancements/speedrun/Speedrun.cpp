@@ -126,16 +126,10 @@ static void OverlayExemptSettings(nlohmann::json& blocks, const nlohmann::json& 
 }
 
 // Saves the player's settings before a speedrun file replaces them. An existing backup is kept, since it means the
-// last run never restored it and it still holds the player's real settings.
-static void BackupSettings() {
+// last run never restored it and it still holds the player's real settings. Returns false if nothing is backed up.
+static bool BackupSettings() {
     if (fs::exists(GetBackupPath())) {
-        return;
-    }
-
-    std::ofstream file(GetBackupPath());
-    if (!file.is_open()) {
-        SPDLOG_ERROR("Speedrun: could not write settings backup");
-        return;
+        return true;
     }
 
     // Cosmetics are backed up with the owned blocks, since a run clears them too.
@@ -148,7 +142,11 @@ static void BackupSettings() {
 
     nlohmann::json backup;
     backup["blocks"] = blocks;
-    file << backup.dump(4);
+    if (!SaveManager::WriteFileSafely(GetBackupPath(), backup.dump(4))) {
+        SPDLOG_ERROR("Speedrun: could not write settings backup");
+        return false;
+    }
+    return true;
 }
 
 static void LockMenu() {
@@ -229,7 +227,11 @@ static void RestoreSettings() {
             nlohmann::json backup = nlohmann::json::parse(file);
             file.close();
             SetOwnedBlocks(backup.value("blocks", nlohmann::json::object()));
-        } catch (const std::exception& e) { SPDLOG_ERROR("Speedrun: could not read settings backup: {}", e.what()); }
+        } catch (const std::exception& e) {
+            // Keep the file, it may be the only copy of the player's settings.
+            SPDLOG_ERROR("Speedrun: could not read settings backup: {}", e.what());
+            return;
+        }
 
         fs::remove(GetBackupPath());
     }
@@ -390,7 +392,13 @@ static void LoadSaveSection() {
         return;
     }
 
+    // Don't touch the player's settings unless they can be put back.
+    if (!BackupSettings()) {
+        return;
+    }
+
     // Blocks missing from the file are cleared rather than left as the player's.
+    nlohmann::json custom = GetOwnedBlocks();
     nlohmann::json blocks = sSettings;
     for (const char* block : sOwnedBlocks) {
         if (!blocks.contains(block)) {
@@ -398,12 +406,21 @@ static void LoadSaveSection() {
         }
     }
 
-    OverlayExemptSettings(blocks, GetOwnedBlocks());
+    // Settings from an older build are migrated after they're live, since the updaters work on cvars. The file keeps
+    // its old settings and version, so the hash stays the same on every load.
+    if (sConfigVersion < SOH::GetLatestConfigVersion()) {
+        SetOwnedBlocks(blocks);
+        SOH::RunVersionUpdatesFrom(sConfigVersion);
+        // Updaters change cvars, not the config json GetOwnedBlocks reads.
+        Ship::Context::GetRawInstance()->GetConsoleVariables()->Save();
+        blocks = GetOwnedBlocks();
+    }
+
+    OverlayExemptSettings(blocks, custom);
 
     // No cosmetics during a run. Some scale Link or his sword, which changes his hitbox and reach.
     blocks[CVAR_PREFIX_COSMETIC] = nlohmann::json::object();
 
-    BackupSettings();
     SetOwnedBlocks(blocks);
     sSettingsHash = HashSettings();
 
