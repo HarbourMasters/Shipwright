@@ -60,9 +60,9 @@ int copy_file(const char* src, const char* dst) {
 }
 #endif
 
-// Write to temp file and only swap once fully on disk
-static bool WriteFileSafely(const std::filesystem::path& fileName, const std::filesystem::path& tempFile,
-                            const std::string& contents) {
+bool SaveManager::WriteFileSafely(const std::filesystem::path& fileName, const std::string& contents) {
+    std::filesystem::path tempFile = fileName;
+    tempFile += ".temp";
 #ifdef _WIN32
     FILE* w = _wfopen(tempFile.c_str(), L"wb");
 #else
@@ -126,11 +126,6 @@ void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, v
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
     const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
-}
-
-std::filesystem::path SaveManager::GetFileTempName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
-    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".temp");
 }
 
 std::vector<RandomizerHint> Rando::StaticData::oldVerHintOrder{
@@ -664,7 +659,7 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             sections.erase("randomizer");
             metaSaveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
             std::lock_guard<std::mutex> guard(saveMtx);
-            WriteFileSafely(fileName, GetFileTempName(fileNum), metaSaveBlock.dump(1));
+            WriteFileSafely(fileName, metaSaveBlock.dump(1));
         } else {
             nlohmann::json& statsBlock = sections["sohStats"]["data"];
             s16 major = statsBlock.value("buildVersionMajor", 0);
@@ -1299,7 +1294,7 @@ void SaveManager::SaveFileThreaded(int fileNum, const SaveContext& saveContext, 
         svi.func(saveContext, sectionID, false);
     }
 
-    if (!WriteFileSafely(GetFileName(fileNum), GetFileTempName(fileNum), saveBlock.dump(1))) {
+    if (!WriteFileSafely(GetFileName(fileNum), saveBlock.dump(1))) {
         return;
     }
 
@@ -1344,7 +1339,7 @@ void SaveManager::SaveGlobal() {
     const std::filesystem::path sSavePath(Ship::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
-    WriteFileSafely(sGlobalPath, sSavePath / std::string("global.temp"), globalBlock.dump(1));
+    WriteFileSafely(sGlobalPath, globalBlock.dump(1));
 }
 
 void SaveManager::LoadFile(int fileNum) {
