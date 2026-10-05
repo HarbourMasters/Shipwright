@@ -989,6 +989,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*BossGanon`
+    VB_GANONDORF_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_GANON_HEAL_BEFORE_FIGHT,
 
@@ -2182,6 +2190,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*BossGanon2`
+    VB_PLAY_ESCAPED_TOWER_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // ##### When called from `z_en_ds.c`
     // - `*EnDs`
     // ##### When called from `z_en_mk.c`
@@ -2211,6 +2227,23 @@ typedef enum {
     // #### `args`
     // - `*EnFr`
     VB_PLAY_FROG_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon`
+    VB_PLAY_GANONDORF_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon2`
+    // - `*EnZl3`
+    VB_PLAY_GANON_INTRO_CS,
 
     // #### `result`
     // ```c
@@ -2434,6 +2467,14 @@ typedef enum {
     // #### `args`
     // - `*DemoIm`
     VB_PLAY_ZELDAS_LULLABY_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon`
+    VB_PLAY_ZELDA_CRYSTAL_CS,
 
     // #### `result`
     // ```c
