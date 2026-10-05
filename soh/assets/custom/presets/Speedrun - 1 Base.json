@@ -114,5 +114,6 @@
     ],
     "fileType": 2,
     "presetName": "Speedrun - 1 Base",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

@@ -7,6 +7,7 @@
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include "soh/config/ConfigUpdaters.h"
 
 #include <ship/Context.h>
 #include <ship/config/Config.h>
@@ -51,16 +52,15 @@ static const std::array<const char*, 4> sOwnedBlocks = {
 // {display name, preset name}, ending with "None" which has no preset.
 static std::vector<std::pair<std::string, std::string>> sPresetChoices;
 static nlohmann::json sSettings = nlohmann::json::object();
-// Paths of settings the player keeps even under a preset, from the preset's "exempt" list. Their own values are copied
-// over the file's settings on create and load. The values are left out of the settings hash, the paths are not.
-// Saved with the file, so later preset edits don't change an existing file.
+static uint32_t sConfigVersion = 0;
+// Paths of settings the player keeps even under a preset, from the preset's "exempt" list. Copied over file's
+// settings on create and load. Values left out of settings hash, but paths are not. Saved with file.
 static nlohmann::json sExempt = nlohmann::json::array();
 static std::string sPresetName = SPEEDRUN_PRESET_NONE;
 static uint32_t sSettingsHash = 0;
 static bool sMenuLocked = false;
 
-// The only windows allowed while a speedrun file is loaded. Everything else, menu included, is hidden so settings can't
-// be changed mid-run.
+// Everything else, menu included, is hidden so settings can't be changed mid-run.
 static const std::vector<std::string> sAllowedWindows = {
     "Time Splits", "Gameplay Stats", "Additional Timers", "Input Viewer", "Notifications Window", "Modal Window",
 };
@@ -341,6 +341,7 @@ extern "C" void Speedrun_InitSaveFile(u8 presetIndex) {
 
     nlohmann::json custom = GetOwnedBlocks();
     sSettings = custom;
+    sConfigVersion = SOH::GetLatestConfigVersion();
     sExempt = GetPresetExempt(presetKey);
 
     if (!presetKey.empty()) {
@@ -363,6 +364,7 @@ static void SaveSaveSection(const SaveContext& saveContext, int sectionID, bool 
     SaveManager::Instance->SaveData("presetName", sPresetName);
     SaveManager::Instance->SaveData("settingsHash", sSettingsHash);
     SaveManager::Instance->SaveData("settings", sSettings);
+    SaveManager::Instance->SaveData("configVersion", sConfigVersion);
     SaveManager::Instance->SaveData("exempt", sExempt);
 }
 
@@ -376,6 +378,7 @@ static void LoadSaveSection() {
 
     SaveManager::Instance->LoadData("presetName", sPresetName);
     SaveManager::Instance->LoadData("settings", sSettings);
+    SaveManager::Instance->LoadData("configVersion", sConfigVersion);
     SaveManager::Instance->LoadData("exempt", sExempt);
 
     if (!sExempt.is_array()) {

@@ -125,5 +125,6 @@
     ],
     "fileType": 2,
     "presetName": "Speedrun - 2 Faster Quest",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

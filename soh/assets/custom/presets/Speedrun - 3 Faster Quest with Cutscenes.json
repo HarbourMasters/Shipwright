@@ -118,5 +118,6 @@
     ],
     "fileType": 2,
     "presetName": "Speedrun - 3 Faster Quest with Cutscenes",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }
