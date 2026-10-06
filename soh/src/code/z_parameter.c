@@ -4918,7 +4918,9 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             i = ITEM_BOW;
         }
 
-        ammo = AMMO(i);
+        if (GameInteractor_Should(VB_OVERRIDE_AMMO_COUNT, true, &i, &ammo)) {
+            ammo = AMMO(i);
+        }
 
         gDPPipeSync(OVERLAY_DISP++);
 

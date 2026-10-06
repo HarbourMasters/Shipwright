@@ -50,6 +50,8 @@ static uint16_t rupeeCounts[] = {
     200, // ITEM_RUPEE_GOLD
 };
 
+static uint8_t sStartingNayrusLoveGives = 0;
+
 void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck) {
     if (randomizerCheck != RC_MAX) {
         OTRGlobals::Instance->gRandoContext->GetItemLocation(randomizerCheck)->SetCheckStatus(RCSHOW_SAVED);
@@ -60,6 +62,9 @@ void StartingItemGive(GetItemEntry getItemEntry, RandomizerCheck randomizerCheck
         } else {
             if (getItemEntry.getItemId == GI_SWORD_BGS) {
                 gSaveContext.bgsFlag = true;
+            }
+            if (getItemEntry.itemId == ITEM_NAYRUS_LOVE) {
+                sStartingNayrusLoveGives++;
             }
             Item_Give(NULL, static_cast<uint8_t>(getItemEntry.itemId));
         }
@@ -451,6 +456,9 @@ extern "C" void Randomizer_InitSaveFile() {
     // Reset Bombchu Bag Upgrade
     gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 0;
 
+    gSaveContext.ship.quest.data.randomizer.nayrusLoveUses = 0;
+    sStartingNayrusLoveGives = 0;
+
     SetStartingItems();
 
     // Debug saves start with bombchus but no bag level, which would cap them at 0
@@ -678,5 +686,13 @@ extern "C" void Randomizer_InitSaveFile() {
         if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
             Item_Give(NULL, ITEM_GERUDO_CARD);
         }
+    }
+
+    // The item hooks aren't registered yet, so count the starting gives here
+    if (Randomizer_GetSettingValue(RSK_NAYRUS_LOVE_USES) > 0) {
+        uint8_t uses = (Randomizer_GetSettingValue(RSK_STARTING_NAYRUS_LOVE) ? 1 : 0) + sStartingNayrusLoveGives;
+        gSaveContext.ship.quest.data.randomizer.nayrusLoveUses = uses < 99 ? uses : 99;
+    } else {
+        gSaveContext.ship.quest.data.randomizer.nayrusLoveUses = 0;
     }
 }
