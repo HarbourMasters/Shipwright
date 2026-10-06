@@ -16,6 +16,7 @@
 #include <libultraship/bridge/audiobridge.h>
 #include <libultraship/bridge/gfxdebuggerbridge.h>
 #include <libultraship/bridge/windowbridge.h>
+#include <ship/audio/Audio.h>
 #include <ship/Context.h>
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
@@ -1074,6 +1075,14 @@ static void OTRAudio_ProduceUpdate() {
     AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), num_audio_samples * NUM_AUDIO_CHANNELS * sizeof(int16_t));
 }
 
+// The null output backend never consumes, so the ring never opens room and
+// the normal gates would stop the engine entirely, yet the engine still has
+// to advance: it drains the command queue and completes reset handshakes.
+static bool AudioNoDrain() {
+    auto audioBackend = Ship::Context::GetRawInstance()->GetAudio();
+    return audioBackend != nullptr && audioBackend->GetCurrentAudioBackend() == Ship::AudioBackend::NUL;
+}
+
 void OTRAudio_Thread() {
     // The engine must never run while game logic does: the game writes audio
     // state with the engine expected to be idle, as on console. The gfx thread
@@ -1088,7 +1097,8 @@ void OTRAudio_Thread() {
             std::unique_lock<std::mutex> Lock(audio.mutex);
             audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval, [&] {
                 return !audio.running ||
-                       (audio.in_frame && AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered());
+                       (audio.in_frame && (AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered() ||
+                                           (AudioNoDrain() && !audio.produced_in_window)));
             });
 
             if (!audio.running) {
@@ -1102,14 +1112,20 @@ void OTRAudio_Thread() {
             // Producer guard (banteg/Shipwright#6594): skip advancing the audio
             // engine if the backend ring cannot accept the next update. The
             // reservoir refills once the backend drains.
-            if (!audio.in_frame || audio.busy ||
-                AudioPlayer_Buffered() + SAMPLES_MID > AudioPlayer_GetDesiredBuffered()) {
+            bool room = AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered();
+            if (!audio.in_frame || audio.busy || (!room && !AudioNoDrain())) {
+                break;
+            }
+            // Without a drain the reservoir can never open room; one update per
+            // frame window keeps the engine's protocol moving instead.
+            if (!room && audio.produced_in_window) {
                 break;
             }
 
             audio.busy = true;
             OTRAudio_ProduceUpdate();
             audio.busy = false;
+            audio.produced_in_window = true;
             audio.primed = true;
             audio.cv_from_thread.notify_all();
         }
@@ -1131,9 +1147,23 @@ extern "C" void OTRAudio_Pump(void) {
         return;
     }
 
+    // Busy/notify match the audio-thread producer, so the gfx thread's
+    // wait-out at window close can never overlap engine work started here.
+    audio.busy = true;
     while (AudioPlayer_Buffered() + SAMPLES_MID <= AudioPlayer_GetDesiredBuffered()) {
         OTRAudio_ProduceUpdate();
     }
+    if (AudioNoDrain()) {
+        // The reservoir can never open room without a drain; pace the engine
+        // by wall clock so the protocol keeps moving through loads.
+        auto now = std::chrono::steady_clock::now();
+        if (now - audio.last_tick >= std::chrono::milliseconds(15)) {
+            OTRAudio_ProduceUpdate();
+            audio.last_tick = now;
+        }
+    }
+    audio.busy = false;
+    audio.cv_from_thread.notify_all();
 }
 
 void OTRAudio_Init() {
@@ -1852,6 +1882,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.in_frame = true;
+        audio.produced_in_window = false;
     }
 
     audio.cv_to_thread.notify_one();
