@@ -5,6 +5,7 @@
 #include <spdlog/common.h>
 #include <ship/config/Config.h>
 #include <nlohmann/json.hpp>
+#include <ship/resource/archive/ArchiveManager.h>
 #include <ship/resource/type/Json.h>
 #include <ship/Context.h>
 #include "soh/OTRGlobals.h"
@@ -225,7 +226,7 @@ std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
     std::vector<std::pair<std::string, std::string>> found;
 
     for (auto& [name, info] : presets) {
-        if (name.rfind(prefix, 0) == 0) {
+        if (info.isBuiltIn && name.rfind(prefix, 0) == 0) {
             std::string label = name.substr(prefix.size());
             size_t digits = label.find_first_not_of("0123456789");
             if (digits > 0 && digits != std::string::npos && label[digits] == ' ') {
@@ -245,6 +246,20 @@ nlohmann::json GetPresetExempt(const std::string& presetName) {
         return nlohmann::json::array();
     }
     return entry->second.presetValues["exempt"];
+}
+
+std::string GetPresetFileContents(const std::string& presetName) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end()) {
+        return "";
+    }
+
+    auto file = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+        "presets/" + entry->second.fileName + ".json");
+    if (file == nullptr || file->Buffer == nullptr) {
+        return "";
+    }
+    return std::string(file->Buffer->begin(), file->Buffer->end());
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
