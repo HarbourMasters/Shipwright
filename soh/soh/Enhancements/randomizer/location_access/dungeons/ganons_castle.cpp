@@ -268,7 +268,7 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MAIN,                        true),
-        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_SOT_PLATFORM,    logic->IsChild || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->CanMegajump()),
+        ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_SOT_PLATFORM,   logic->IsChild || logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_SONG_OF_TIME) || logic->CanMegajump()),
         //start the recoil away from the wall
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_TORCH,          logic->CanUse(RG_LONGSHOT) || (logic->IsAdult && logic->CanMeleeRecoilHover(RECOIL_HAMMER)) || logic->CanBunnyMegaJumpslash() || (logic->CanUse(RG_FIRE_ARROWS) && ((logic->IsAdult && logic->BunnyHood()) || logic->CanUse(RG_HOVER_BOOTS)))),
         ENTRANCE(RR_GANONS_CASTLE_SHADOW_TRIAL_POTS_PLATFORM,  logic->CanUse(RG_FIRE_ARROWS)),
