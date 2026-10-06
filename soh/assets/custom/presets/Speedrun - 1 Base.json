@@ -107,6 +107,7 @@
     "exempt": [
         "/gDeveloperTools/LogLevel",
         "/gDeveloperTools/ResourceLogging",
+        "/gEnhancements/AskToEquip",
         "/gEnhancements/DrawLineupTick",
         "/gEnhancements/GraveHoles",
         "/gEnhancements/IncludeHeldInputsBufferWindow",
