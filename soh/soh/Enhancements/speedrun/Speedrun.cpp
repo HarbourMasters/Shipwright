@@ -8,6 +8,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/util.h"
 
 #include <ship/Context.h>
 #include <ship/config/Config.h>
@@ -55,7 +56,7 @@ static std::vector<std::pair<std::string, std::string>> sPresetChoices;
 static nlohmann::json sSettings = nlohmann::json::object();
 static uint32_t sConfigVersion = 0;
 // Paths of settings the player keeps even under a preset, from the preset's "exempt" list. Copied over file's
-// settings on create and load. Values left out of settings hash, but paths are not. Saved with file.
+// settings on create and load. Saved with file.
 static nlohmann::json sExempt = nlohmann::json::array();
 static std::string sPresetName = SPEEDRUN_PRESET_NONE;
 static uint32_t sSettingsHash = 0;
@@ -253,27 +254,6 @@ extern "C" bool Ship_QuestDebugEnabled(u8 questId) {
            CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0);
 }
 
-// FNV-1a hash of the build version, the file's settings without exempt values, and the exempt paths. Same hash means
-// same build and settings. nlohmann sorts object keys, so the dump is stable.
-static uint32_t HashSettings() {
-    nlohmann::json stripped = sSettings;
-    for (const auto& path : GetExemptPaths(sExempt)) {
-        if (stripped.contains(path)) {
-            stripped[path.parent_pointer()].erase(path.back());
-        }
-    }
-
-    std::string data = std::string((const char*)gBuildVersion) + stripped.dump() + sExempt.dump();
-    uint32_t hash = 0x811C9DC5;
-
-    for (char c : data) {
-        hash ^= (uint8_t)c;
-        hash *= 0x01000193;
-    }
-
-    return hash;
-}
-
 static void EmitHashNotification() {
     Notification::Emit({
         .prefix = "Speedrun",
@@ -399,7 +379,7 @@ extern "C" void Speedrun_InitSaveFile(u8 presetIndex) {
     // Runs are always timed in real time, whatever the "RTA Timing on new files" option says.
     gSaveContext.ship.stats.rtaTiming = 1;
 
-    sSettingsHash = HashSettings();
+    sSettingsHash = SohUtils::Hash(std::string((const char*)gBuildVersion) + GetPresetFileContents(presetKey));
 
     EmitHashNotification();
 }
@@ -422,6 +402,7 @@ static void LoadSaveSection() {
     LockMenu();
 
     SaveManager::Instance->LoadData("presetName", sPresetName);
+    SaveManager::Instance->LoadData("settingsHash", sSettingsHash);
     SaveManager::Instance->LoadData("settings", sSettings);
     SaveManager::Instance->LoadData("configVersion", sConfigVersion);
     SaveManager::Instance->LoadData("exempt", sExempt);
@@ -465,7 +446,6 @@ static void LoadSaveSection() {
     blocks[CVAR_PREFIX_COSMETIC] = nlohmann::json::object();
 
     SetOwnedBlocks(blocks);
-    sSettingsHash = HashSettings();
 
     EmitHashNotification();
 }
