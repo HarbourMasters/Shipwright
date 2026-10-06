@@ -156,7 +156,7 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,     true),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_SWITCH,    logic->BunnyHood() || logic->HasItem(RG_CLIMB) || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) ||logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_SWITCH,    logic->BunnyHood() || logic->HasItem(RG_CLIMB) || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanMeleeRecoilHover(RECOIL_HAMMER) || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && (logic->BunnyHood() || logic->CanJumpslash()))) ||
                                                               logic->CanMegajump() || logic->CanBombRecoilHover()),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,               true),
