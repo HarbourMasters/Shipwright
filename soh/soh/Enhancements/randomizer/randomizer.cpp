@@ -937,13 +937,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
 
-    // todo: this efficiently when we build out cvar array support
-    std::set<RandomizerCheck> excludedLocations;
-    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-    std::string excludedLocationString;
-    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-    }
+    std::set<RandomizerCheck> excludedLocations =
+        Rando::StaticData::ParseExcludedLocations(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
 
     // todo: better way to sort out linking tricks rather than name
 

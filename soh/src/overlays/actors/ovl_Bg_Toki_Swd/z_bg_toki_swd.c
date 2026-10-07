@@ -118,7 +118,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER,
-                                  gSaveContext.entranceIndex)) {
+                                  gSaveContext.entranceIndex, D_808BBD90)) {
             play->csCtx.segment = D_808BBD90;
             gSaveContext.cutsceneTrigger = 1;
         }

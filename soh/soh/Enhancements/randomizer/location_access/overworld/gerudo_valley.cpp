@@ -14,11 +14,11 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_ROCK_1,                logic->CanBreakRocks()),
         LOCATION(RC_GV_ROCK_2,                logic->CanBreakRocks()),
         LOCATION(RC_GV_ROCK_3,                logic->CanBreakRocks()),
-        LOCATION(RC_GV_UNDERWATER_ROCK_1,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
+        LOCATION(RC_GV_UNDERWATER_ROCK_1,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) &&
                                               (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
-        LOCATION(RC_GV_UNDERWATER_ROCK_2,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
+        LOCATION(RC_GV_UNDERWATER_ROCK_2,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) &&
                                               (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
-        LOCATION(RC_GV_UNDERWATER_ROCK_3,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
+        LOCATION(RC_GV_UNDERWATER_ROCK_3,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) &&
                                               (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
         LOCATION(RC_GV_BOULDER_1,             logic->IsAdult && logic->BlastOrSmash()),
         LOCATION(RC_GV_BOULDER_2,             logic->IsAdult && logic->BlastOrSmash()),

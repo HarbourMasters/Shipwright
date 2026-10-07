@@ -154,8 +154,8 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   (logic->CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER)) && logic->FireTimer() >= 24),
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR, true),
-    });    
-    
+    });
+
     areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR] = Region("Ganon's Castle Fire Trial Barred Door", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_FINAL_ROOM, logic->HasItem(RG_GANONS_CASTLE_SILVER_FIRE)),
@@ -222,7 +222,7 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,    true),
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLOCK_ROOM_SWITCH, logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanMiddairGroundJump())),
-        ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLOCK_ROOM_END,    logic->IsAdult || 
+        ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLOCK_ROOM_END,    logic->IsAdult ||
 //RANDOTODO when you hover close to the floor, you can pivot out of a backwalk to ledgegrab, should this be in base logic?
                                                                      (logic->CanUse(RG_HOVER_BOOTS)/* && roll or bunny?*/) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP) || ((logic->BunnyHood() || logic->HasItem(RG_POWER_BRACELET)) && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))),
     });
@@ -549,8 +549,8 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_FOREST_TRIAL_FROZEN_EYE_SWITCH_CHEST, logic->HasFireSource() && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM,     (logic->CanAvoidEnemy(RE_BEAMOS) || logic->CanKillEnemy(RE_ARMOS)) && 
-                                                                   ((logic->Get(LOGIC_FOREST_TRIAL_MQ_SPAWN_BEAMOS_CHEST) && logic->CanUse(RG_LONGSHOT)) || 
+        ENTRANCE(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM,     (logic->CanAvoidEnemy(RE_BEAMOS) || logic->CanKillEnemy(RE_ARMOS)) &&
+                                                                   ((logic->Get(LOGIC_FOREST_TRIAL_MQ_SPAWN_BEAMOS_CHEST) && logic->CanUse(RG_LONGSHOT)) ||
                                                                     (((logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)/* && (logic->CanUse(RG_ROLL) || logic->BunnyHood() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD))*/) || (logic->CanMiddairGroundJump()/*&& (logic->CanUse(RG_ROLL) || logic->BunnyHood())*/))))),
         ENTRANCE(RR_GANONS_CASTLE_MQ_FOREST_TRIAL_BEAMOS_ROOM_END, logic->IsAdult || logic->CanGroundJump() || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)),
     });
@@ -591,7 +591,7 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,   true),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, logic->FireTimer() >= 32 && (logic->CanUse(RG_LONGSHOT) || 
+        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, logic->FireTimer() >= 32 && (logic->CanUse(RG_LONGSHOT) ||
                                                                                           (logic->CanUse(RG_GOLDEN_GAUNTLETS) && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || (ctx->GetTrickOption(RT_GANON_MQ_FIRE_TRIAL) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT)))))),
     });
 
@@ -681,7 +681,7 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,     logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM_HIGH, logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanMiddairGroundJump())),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM_END,  logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE) && 
+        ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM_END,  logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE) &&
                                                                   (logic->IsAdult || (logic->CanUse(RG_HOVER_BOOTS)/* && roll or bunny?*/) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_POWER_BRACELET)) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP))),
     });
 
@@ -736,7 +736,7 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BOMB_FLOWER,    (logic->IsAdult && (logic->CanRecoilHover(RECOIL_HAMMER) || logic->CanRecoilHoverFromObject(TRECOIL_LONG_AND_SHIELD)))),
         //shortcut route for passage involving the torch
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST,   (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && ((logic->BunnyHovers() && logic->CanUse(RG_STICKS)) ||
-                                                                       (logic->IsAdult && ctx->GetTrickOption(RT_GANON_MQ_SHADOW_TRIAL) && logic->CanUse(RG_FAIRY_BOW) && 
+                                                                       (logic->IsAdult && ctx->GetTrickOption(RT_GANON_MQ_SHADOW_TRIAL) && logic->CanUse(RG_FAIRY_BOW) &&
                                                                         (((logic->Get(LOGIC_SHADOW_TRIAL_FIRST_CHEST) && logic->CanUse(RG_HOOKSHOT))) || (logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())))))
     });
 
@@ -792,7 +792,7 @@ void RegionTable_Init_GanonsCastle() {
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST] = Region("Ganon's Castle MQ Shadow Trial Beamos Chest", SCENE_INSIDE_GANONS_CASTLE, {
-        //Events    
+        //Events
         EVENT_ACCESS(LOGIC_SHADOW_TRIAL_LATE_CHEST, logic->CanHitEyeTargets()),
     }, {
         //Locations
@@ -821,7 +821,7 @@ void RegionTable_Init_GanonsCastle() {
     areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BARRED_DOOR] = Region("Ganon's Castle MQ Shadow Trial Barred Door", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
         EVENT_ACCESS(LOGIC_GANONS_CASTLE_MQ_SILVER_SHADOW,  (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
-                                                                logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOVER_BOOTS)),
+                                                                (logic->CanUse(RG_FIRE_ARROWS) || logic->CanUse(RG_HOVER_BOOTS))),
         }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_GUILLOTINE_SHADOW_SILVER, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) ||

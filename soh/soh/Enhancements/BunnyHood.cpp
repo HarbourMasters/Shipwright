@@ -61,6 +61,13 @@ static void RegisterBunnyHood() {
         *movementSpeed *= Ship_GetBunnyHoodRunFactor(player);
     });
 
+    // Faster running can reach a grotto before scene fade-in ends, breaking entrance. Wait for fade to finish.
+    COND_VB_SHOULD(VB_DOOR_ANA_GRAB_PLAYER, bunnyHoodActive, {
+        if (gPlayState->transitionTrigger != TRANS_TRIGGER_OFF) {
+            *should = false;
+        }
+    });
+
     // Gameplay stat: time spent wearing the hood
     COND_HOOK(OnPlayerUpdate, bunnyHoodActive, []() {
         if (gSaveContext.ship.stats.gameComplete || (IS_BOSS_RUSH && gSaveContext.ship.quest.data.bossRush.isPaused)) {

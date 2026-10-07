@@ -327,48 +327,48 @@ void LoadStatsVersion1() {
         [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.entrancesDiscovered[i]); });
 }
 
-void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
-    SaveManager::Instance->SaveData("buildVersion", saveContext->ship.stats.buildVersion);
-    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->ship.stats.buildVersionMajor);
-    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->ship.stats.buildVersionMinor);
-    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->ship.stats.buildVersionPatch);
+void SaveStats(const SaveContext& saveContext, int sectionID, bool fullSave) {
+    SaveManager::Instance->SaveData("buildVersion", saveContext.ship.stats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", saveContext.ship.stats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", saveContext.ship.stats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", saveContext.ship.stats.buildVersionPatch);
 
-    SaveManager::Instance->SaveData("heartPieces", saveContext->ship.stats.heartPieces);
-    SaveManager::Instance->SaveData("heartContainers", saveContext->ship.stats.heartContainers);
-    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->ship.stats.dungeonKeys), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.stats.dungeonKeys[i]);
+    SaveManager::Instance->SaveData("heartPieces", saveContext.ship.stats.heartPieces);
+    SaveManager::Instance->SaveData("heartContainers", saveContext.ship.stats.heartContainers);
+    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext.ship.stats.dungeonKeys), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext.ship.stats.dungeonKeys[i]);
     });
-    SaveManager::Instance->SaveData("rtaTiming", saveContext->ship.stats.rtaTiming);
-    SaveManager::Instance->SaveData("firstInput", saveContext->ship.stats.firstInput);
-    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->ship.stats.fileCreatedAt);
-    SaveManager::Instance->SaveData("playTimer", saveContext->ship.stats.playTimer);
-    SaveManager::Instance->SaveData("pauseTimer", saveContext->ship.stats.pauseTimer);
+    SaveManager::Instance->SaveData("rtaTiming", saveContext.ship.stats.rtaTiming);
+    SaveManager::Instance->SaveData("firstInput", saveContext.ship.stats.firstInput);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext.ship.stats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext.ship.stats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext.ship.stats.pauseTimer);
     SaveManager::Instance->SaveArray(
-        "itemTimestamps", ARRAY_COUNT(saveContext->ship.stats.itemTimestamp),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.itemTimestamp[i]); });
+        "itemTimestamps", ARRAY_COUNT(saveContext.ship.stats.itemTimestamp),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext.ship.stats.itemTimestamp[i]); });
     SaveManager::Instance->SaveArray(
-        "sceneTimestamps", ARRAY_COUNT(saveContext->ship.stats.sceneTimestamps), [&](size_t i) {
-            if (saveContext->ship.stats.sceneTimestamps[i].scene != 254 &&
-                saveContext->ship.stats.sceneTimestamps[i].room != 254) {
+        "sceneTimestamps", ARRAY_COUNT(saveContext.ship.stats.sceneTimestamps), [&](size_t i) {
+            if (saveContext.ship.stats.sceneTimestamps[i].scene != 254 &&
+                saveContext.ship.stats.sceneTimestamps[i].room != 254) {
                 SaveManager::Instance->SaveStruct("", [&]() {
-                    SaveManager::Instance->SaveData("scene", saveContext->ship.stats.sceneTimestamps[i].scene);
-                    SaveManager::Instance->SaveData("room", saveContext->ship.stats.sceneTimestamps[i].room);
-                    SaveManager::Instance->SaveData("sceneTime", saveContext->ship.stats.sceneTimestamps[i].sceneTime);
-                    SaveManager::Instance->SaveData("roomTime", saveContext->ship.stats.sceneTimestamps[i].roomTime);
-                    SaveManager::Instance->SaveData("isRoom", saveContext->ship.stats.sceneTimestamps[i].isRoom);
+                    SaveManager::Instance->SaveData("scene", saveContext.ship.stats.sceneTimestamps[i].scene);
+                    SaveManager::Instance->SaveData("room", saveContext.ship.stats.sceneTimestamps[i].room);
+                    SaveManager::Instance->SaveData("sceneTime", saveContext.ship.stats.sceneTimestamps[i].sceneTime);
+                    SaveManager::Instance->SaveData("roomTime", saveContext.ship.stats.sceneTimestamps[i].roomTime);
+                    SaveManager::Instance->SaveData("isRoom", saveContext.ship.stats.sceneTimestamps[i].isRoom);
                 });
             }
         });
-    SaveManager::Instance->SaveData("tsIdx", saveContext->ship.stats.tsIdx);
-    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->ship.stats.count), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->ship.stats.count[i]);
+    SaveManager::Instance->SaveData("tsIdx", saveContext.ship.stats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext.ship.stats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext.ship.stats.count[i]);
     });
     SaveManager::Instance->SaveArray(
-        "scenesDiscovered", ARRAY_COUNT(saveContext->ship.stats.scenesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.scenesDiscovered[i]); });
+        "scenesDiscovered", ARRAY_COUNT(saveContext.ship.stats.scenesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext.ship.stats.scenesDiscovered[i]); });
     SaveManager::Instance->SaveArray(
-        "entrancesDiscovered", ARRAY_COUNT(saveContext->ship.stats.entrancesDiscovered),
-        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->ship.stats.entrancesDiscovered[i]); });
+        "entrancesDiscovered", ARRAY_COUNT(saveContext.ship.stats.entrancesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext.ship.stats.entrancesDiscovered[i]); });
 }
 
 void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE,

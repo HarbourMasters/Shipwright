@@ -3,6 +3,7 @@
 #include <exception>
 #include <filesystem>
 #include <memory>
+#include <utility>
 
 #include "spdlog/spdlog.h"
 
@@ -31,13 +32,13 @@ size_t CountAssetFiles(const std::string& ymlDir) {
     return count;
 }
 
-std::string Extract(const std::string& romPath, const std::string& srcDir, const std::string& destDir,
+std::string Extract(std::vector<uint8_t> rom, const std::string& srcDir, const std::string& destDir,
                     const std::string& portVersion, std::atomic<size_t>* progress) {
     std::string archiveName;
 
     try {
         // Companion::Instance is a raw global with no getter; factories dereference it.
-        auto companion = std::make_unique<Companion>(fs::path(romPath), ArchiveType::O2R, false, srcDir, destDir);
+        auto companion = std::make_unique<Companion>(std::move(rom), ArchiveType::O2R, false, srcDir, destDir);
         Companion::Instance = companion.get();
         companion->SetVersion(portVersion);
         companion->SetPhaseCallback([progress](int) {

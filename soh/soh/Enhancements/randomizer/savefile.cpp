@@ -453,6 +453,12 @@ extern "C" void Randomizer_InitSaveFile() {
 
     SetStartingItems();
 
+    // Debug saves start with bombchus but no bag level, which would cap them at 0
+    if (Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE &&
+        INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU && gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel == 0) {
+        gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 3;
+    }
+
     // Set Cutscene flags and texts to skip them.
     Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);

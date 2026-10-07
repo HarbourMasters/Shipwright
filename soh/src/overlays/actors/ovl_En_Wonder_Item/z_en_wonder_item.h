@@ -11,7 +11,7 @@ typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, PlayState*);
 typedef struct EnWonderItem {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ EnWonderItemUpdateFunc updateFunc;
-    /* 0x0150 */ f32 unkHeight; // sets height of dummied out mode 4 
+    /* 0x0150 */ f32 unkHeight; // sets height of dummied out mode 4
     /* 0x0154 */ s16 wonderMode;
     /* 0x0156 */ s16 itemDrop;
     /* 0x0158 */ s16 numTagPoints;

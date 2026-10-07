@@ -15,7 +15,7 @@ typedef struct EnTp {
     /* 0x0154 */ EnTpActionFunc actionFunc;
     /* 0x0158 */ u8 damageEffect; // Used to propagate the effect to the other segments' actors
     /* 0x015A */ s16 timer;
-    /* 0x015C */ s16 unk_15C; // Multipurpose, used to change the horizontal position of tail segments 
+    /* 0x015C */ s16 unk_15C; // Multipurpose, used to change the horizontal position of tail segments
     /* 0x015E */ s16 alpha; // The dying types fade away
     /* 0x0160 */ s16 red;
     /* 0x0162 */ s16 kiraSpawnTimer;

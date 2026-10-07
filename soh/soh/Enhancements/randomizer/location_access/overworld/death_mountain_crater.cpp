@@ -20,15 +20,15 @@ using namespace Rando;
 void RegionTable_Init_DeathMountainCrater() {
     // clang-format off
     areaTable[RR_DMC_UPPER_ENTRY] = Region("DMC Upper Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
+        //Locations
         //You can also walk off the edge at a shallow angle to not grab the wall, then drift to land in the alcove.
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
-                                                   (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) || 
+                                                   (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
                                                     ((logic->FireTimer() >= 48  || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())))),
         LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
-                                                   (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) || 
+                                                   (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
                                                     ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
     }, {
         //Exits
@@ -54,14 +54,14 @@ void RegionTable_Init_DeathMountainCrater() {
 
     areaTable[RR_DMC_ROCKS_GROTTO_ENTRY] = Region("DMC Rocks Grotto Entry", SCENE_DEATH_MOUNTAIN_CRATER, {
     }, {
-        //Locations 
+        //Locations
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 8 || logic->Health() >= 2 * 16) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
-                                                   (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) || 
+                                                   (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
                                                     ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
         LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
-                                                   (((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) || 
+                                                   (((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
                                                     ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
     }, {
         //Exits
@@ -86,11 +86,11 @@ void RegionTable_Init_DeathMountainCrater() {
     });
 
     areaTable[RR_DMC_BLOCKED_ENTRY] = Region("DMC Blocked Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
-        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) || 
+        //Locations
+        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                                   ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) || 
+        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
     }, {
         //Exits
@@ -100,7 +100,7 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_ROCK_GROTTO,     ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->CanClimbLadder()) ||
                                          (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                          ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        ENTRANCE(RR_DMC_CRACKED_WALL,    (logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->CanClimbLadder() || 
+        ENTRANCE(RR_DMC_CRACKED_WALL,    (logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->CanClimbLadder() ||
                                          (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                          ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
         ENTRANCE(RR_DMC_SCRUB,           logic->FireTimer() >= 8 || logic->Health() >= 2 * 16),
@@ -110,7 +110,7 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_CENTRAL,         ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCPotsToPad()) ||
                                          (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
         ENTRANCE(RR_DMC_FAR_PLATFORM,    (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPotsToPad() && logic->ReachDistantScarecrow()) ||
-                                         ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanClimbLadder()) || 
+                                         ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanClimbLadder()) ||
                                          (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                          ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_DMC_TEMPLE_EXIT,     (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
@@ -119,11 +119,11 @@ void RegionTable_Init_DeathMountainCrater() {
     });
 
     areaTable[RR_DMC_POTS_ENTRY] = Region("DMC Pots Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
-        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) || 
+        //Locations
+        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                                   ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT))),
-        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 8 || logic->Health() >= 2 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) || 
+        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 8 || logic->Health() >= 2 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS)) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
     }, {
         //Exits
@@ -152,11 +152,11 @@ void RegionTable_Init_DeathMountainCrater() {
     });
 
     areaTable[RR_DMC_POT_GROTTO_ENTRY] = Region("DMC Pot Grotto Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
-        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) || 
+        //Locations
+        LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->CanClimbLadder() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)) ||
                                                   ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash())))),
-        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) || 
+        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->DMCPotsToPad() && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
     }, {
         //Exits
@@ -185,11 +185,11 @@ void RegionTable_Init_DeathMountainCrater() {
     });
 
     areaTable[RR_DMC_PAD_ENTRY] = Region("DMC Pad Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
+        //Locations
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->CanClimbLadder() && logic->DMCPadToPots() && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
-        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->DMCPadToPots() || 
+        LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->DMCPadToPots() ||
                                                   (logic->IsAdult && (logic->FireTimer() >= 8 || logic->Health() >= 2 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
     }, {
         //Exits
@@ -202,14 +202,14 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_CRACKED_WALL,    (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->CanClimbLadder() && logic->DMCPadToPots() ||
                                          ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                          (logic->IsAdult && (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
-        ENTRANCE(RR_DMC_SCRUB,           (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCPadToPots() || 
+        ENTRANCE(RR_DMC_SCRUB,           (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCPadToPots() ||
                                          (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
-        ENTRANCE(RR_DMC_BLOCKED_EXIT,    (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCPadToPots() || 
+        ENTRANCE(RR_DMC_BLOCKED_EXIT,    (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCPadToPots() ||
                                          (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
-        ENTRANCE(RR_DMC_POTS,            (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() || 
+        ENTRANCE(RR_DMC_POTS,            (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() ||
                                          (logic->IsAdult && (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
-        ENTRANCE(RR_DMC_POT_GROTTO_EXIT, (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() || 
-                                         ((logic->IsAdult && logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
+        ENTRANCE(RR_DMC_POT_GROTTO_EXIT, (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && logic->DMCPadToPots() ||
+                                         (logic->IsAdult && (logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))),
         ENTRANCE(RR_DMC_CENTRAL,         (logic->FireTimer() >= 16 || logic->Health() >= 3 * 16)),
         ENTRANCE(RR_DMC_FAR_PLATFORM,    ((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanClimbLadder() && logic->DMCPadToPots()) ||
                                          ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
@@ -220,49 +220,49 @@ void RegionTable_Init_DeathMountainCrater() {
     });
 
     areaTable[RR_DMC_TEMPLE_ENTRY] = Region("DMC Temple Entry", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
-        //Locations 
+        //Locations
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    logic->HasItem(RG_CLIMB) &&
                                                   (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCPadToPots()) ||
                                                    ((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                                    (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
         LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, logic->HasItem(RG_CLIMB) &&
-                                                  ((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->DMCPadToPots() || 
+                                                  ((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->DMCPadToPots() ||
                                                    (logic->IsAdult && (logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
     }, {
         //Exits
-        ENTRANCE(RR_DMC_CRATE,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
+        ENTRANCE(RR_DMC_CRATE,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
                                          (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCPadToPots()) ||
                                           ((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_ROCK_GROTTO,     logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
+        ENTRANCE(RR_DMC_ROCK_GROTTO,     logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
                                          (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCPadToPots()) ||
                                           ((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_CRACKED_WALL,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
+        ENTRANCE(RR_DMC_CRACKED_WALL,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
                                          (((logic->FireTimer() >= 80 || logic->Health() >= 15 * 16) && logic->DMCPadToPots()) ||
                                           ((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_SCRUB,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
-                                         (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCPadToPots()) || 
+        ENTRANCE(RR_DMC_SCRUB,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
+                                         (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCPadToPots()) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_BLOCKED_EXIT,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
-                                         (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCPadToPots()) || 
+        ENTRANCE(RR_DMC_BLOCKED_EXIT,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
+                                         (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCPadToPots()) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_POTS,            logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
-                                         (((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPadToPots()) || 
+        ENTRANCE(RR_DMC_POTS,            logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
+                                         (((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPadToPots()) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_POT_GROTTO_EXIT, logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
-                                         (((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPadToPots()) || 
+        ENTRANCE(RR_DMC_POT_GROTTO_EXIT, logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
+                                         (((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCPadToPots()) ||
                                          (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN)))),
-        ENTRANCE(RR_DMC_CENTRAL,         logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
+        ENTRANCE(RR_DMC_CENTRAL,         logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
                                          (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16)),
-        ENTRANCE(RR_DMC_FAR_PLATFORM,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) && 
+        ENTRANCE(RR_DMC_FAR_PLATFORM,    logic->HasItem(RG_CLIMB) && (logic->IsAdult || (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF))) &&
                                          (((logic->FireTimer() >= 88 || logic->Health() >= 16 * 16) && logic->TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanClimbLadder() && logic->DMCPadToPots()) ||
                                           ((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && ctx->GetTrickOption(RT_DMC_HOVER_BEAN_POH) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_LONGSHOT)) ||
                                           (logic->IsAdult && (logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN))||
                                           (logic->IsAdult && (logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->ReachDistantScarecrow()))),
         ENTRANCE(RR_DMC_TEMPLE_EXIT,     true),
-    });   
+    });
 
     areaTable[RR_DMC_CRATE] = Region("DMC Crate", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
         //Locations
@@ -337,7 +337,7 @@ void RegionTable_Init_DeathMountainCrater() {
         //Exits
         ENTRANCE(RR_GC_DARUNIAS_CHAMBER, true),
     });
-    
+
     areaTable[RR_DMC_POT_GROTTO_EXIT] = Region("DMC Pot Grotto Exit", SCENE_DEATH_MOUNTAIN_CRATER, {}, {}, {
         //Exits
         //Perm flag only as Adult

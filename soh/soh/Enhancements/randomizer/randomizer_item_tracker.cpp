@@ -460,16 +460,21 @@ static bool presetLoaded = false;
 static std::unordered_map<std::string, ImVec2> presetPos;
 static std::unordered_map<std::string, ImVec2> presetSize;
 
+static bool TrackerHasSave() {
+    return GameInteractor::IsSaveLoaded() ||
+           (gSaveContext.gameMode == GAMEMODE_END_CREDITS && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2);
+}
+
 void TrackSilverRupees(std::vector<ItemTrackerItem>* trackList) {
     for (auto silverRupee : silverRupeeItems) {
         RandomizerGet rg = static_cast<RandomizerGet>(silverRupee.id);
-        if ((gSaveContext.gameMode != GAMEMODE_NORMAL && silverRupee.id <= RG_GANONS_CASTLE_SILVER_SPIRIT) ||
+        if ((!TrackerHasSave() && silverRupee.id <= RG_GANONS_CASTLE_SILVER_SPIRIT) ||
             (IsSilverInPool(rg) && (Rando::StaticData::constantSilvers.contains(rg) ||
                                     CheckTracker::IsAreaSpoiled(Rando::StaticData::silverToArea[rg])))) {
             trackList->push_back(silverRupee);
         }
     }
-    if (gSaveContext.gameMode == GAMEMODE_NORMAL && !CheckTracker::AreAllSilversSpoiled()) {
+    if (TrackerHasSave() && !CheckTracker::AreAllSilversSpoiled()) {
         trackList->push_back({ (uint32_t)ITEMTYPE_SILVER, ITEM_KIND_DUMMY, "????", "ITEM_RUPEE_SILVER",
                                "ITEM_RUPEE_SILVER_Faded", 0, DrawItem });
     }
@@ -502,24 +507,19 @@ void ItemTrackerOnFrame() {
     }
 }
 
-bool IsValidSaveFile() {
-    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
-    return validSave;
-}
-
 bool HasSong(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_QUEST);
-    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
+    return TrackerHasSave() && ((1 << item.id) & gSaveContext.inventory.questItems);
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_QUEST);
-    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.questItems) : false;
+    return TrackerHasSave() && (item.data & gSaveContext.inventory.questItems);
 }
 
 bool HasEquipment(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_ITEM);
-    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
+    return TrackerHasSave() && (item.data & gSaveContext.inventory.equipment);
 }
 
 void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
@@ -667,7 +667,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 }
 
 void DrawItemCount(ItemTrackerItem item, bool hideMax) {
-    if (!GameInteractor::IsSaveLoaded()) {
+    if (!TrackerHasSave()) {
         return;
     }
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
@@ -715,7 +715,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
-    if (item.kind == ITEM_KIND_ITEM && item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
+    if (item.kind == ITEM_KIND_ITEM && item.id == ITEM_KEY_SMALL) {
         std::string currentString = "";
         std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
@@ -741,8 +741,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.kind == ITEM_KIND_RG && IsSilver(static_cast<RandomizerGet>(item.id)) && IsValidSaveFile() &&
-               IS_RANDO &&
+    } else if (item.kind == ITEM_KIND_RG && IsSilver(static_cast<RandomizerGet>(item.id)) && IS_RANDO &&
                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) == RO_SHUFFLE_SILVER_ON) {
         std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         std::string str = std::to_string(currentAndMax.currentAmmo) + "/" + maxString;
@@ -756,8 +755,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, color);
         ImGui::Text("%s", str.c_str());
         ImGui::PopStyleColor();
-    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE &&
-               IsValidSaveFile()) {
+    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE) {
         std::string currentString = "";
         std::string maxString = "";
         ImU32 currentColor = IM_COL_WHITE;
@@ -817,8 +815,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.kind == ITEM_KIND_RG && item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0) &&
-               IsValidSaveFile()) {
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0)) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
@@ -864,7 +861,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 void DrawEquip(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
-    bool hasEquip = HasEquipment(item) && IsValidSaveFile();
+    bool hasEquip = HasEquipment(item);
     bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
     std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
@@ -879,7 +876,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem ? item.iconName : item.fadedIconName),
                        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -905,10 +902,9 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 
 void DrawItem(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
-    uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
-            ? INV_CONTENT(item.id)
-            : (uint8_t)ITEM_NONE;
+    uint32_t actualItemId = TrackerHasSave() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
+                                ? INV_CONTENT(item.id)
+                                : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     bool hideMax = false;
@@ -1213,16 +1209,15 @@ void DrawItem(ItemTrackerItem item) {
         }
     }
 
-    if (GameInteractor::IsSaveLoaded() &&
-        (hasItem && item.kind == ITEM_KIND_ITEM && item.id != actualItemId &&
-         actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (hasItem && item.kind == ITEM_KIND_ITEM && item.id != actualItemId &&
+        actualItemTrackerItemMap.contains(actualItemId)) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     ImGui::BeginGroup();
 
-    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasItem ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, hideMax);
 
@@ -1243,18 +1238,16 @@ void DrawBottle(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
+        TrackerHasSave() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : (uint8_t)ITEM_NONE;
     bool hasItem = actualItemId != ITEM_NONE;
 
-    if (GameInteractor::IsSaveLoaded() &&
-        (hasItem && item.id != actualItemId &&
-         actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.contains(actualItemId)) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasItem ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
@@ -1266,19 +1259,15 @@ void DrawDungeonItem(ItemTrackerItem item) {
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
-    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
+    bool hasItem = TrackerHasSave() && (bitMask & gSaveContext.inventory.dungeonItems[item.data]);
+    bool hasSmallKey = TrackerHasSave() && gSaveContext.inventory.dungeonKeys[item.data] >= 0;
     ImGui::BeginGroup();
-    if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    } else {
-        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    }
+    bool owned = itemId == ITEM_KEY_SMALL ? hasSmallKey : hasItem;
+    ImGui::Image(gui->GetTextureByName(owned ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))) &&
-        GameInteractor::IsSaveLoaded()) {
+        TrackerHasSave()) {
         dungeonColor = (ResourceMgr_IsSceneMasterQuest(item.data) ? IM_COL_PURPLE : IM_COL_LIGHT_YELLOW);
     }
 
@@ -1289,7 +1278,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         // offset puts the text at the correct level. for some reason, if the save is loaded, the margin is 3 pixels
         // higher only for small keys, so we use 16 then. Otherwise, 13 is where everything else is
-        int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
+        int offset = TrackerHasSave() ? 16 : 13;
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
@@ -1320,8 +1309,8 @@ void DrawSong(ItemTrackerItem item) {
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasSong ? item.iconName : item.fadedIconName), ImVec2(iconSize / 1.5f, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
@@ -1351,14 +1340,13 @@ void DrawNotes(bool resizeable = false) {
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y)
                              : ImVec2(((iconSize + iconSpacing) * 6) - 8.0f, 200.0f);
-    if (GameInteractor::IsSaveLoaded()) {
+    if (TrackerHasSave()) {
         if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size,
                                                              ImGuiInputTextFlags_AllowTabInput)) {
             notesNeedSave = true;
             notesIdleFrames = 0;
         }
-        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) &&
-            IsValidSaveFile()) {
+        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames))) {
             notesNeedSave = false;
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
         }
@@ -1778,7 +1766,7 @@ void ItemTrackerInitFile(bool isDebug) {
     itemTrackerNotes.push_back(0);
 }
 
-void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+void ItemTrackerSaveFile(const SaveContext& saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("personalNotes",
                                     std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
 }

@@ -649,9 +649,6 @@ void Play_Init(GameState* thisx) {
         DmaMgr_DmaRomToRam(0x03FEB000, gDebugCutsceneScript, sizeof(sDebugCutsceneScriptBuf));
     }
 #endif
-
-    // nextEntranceIndex was not initialized, so the previous value was carried over during soft resets.
-    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
 }
 
 void Play_Update(PlayState* play) {

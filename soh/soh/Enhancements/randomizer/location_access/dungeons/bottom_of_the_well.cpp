@@ -48,7 +48,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_HIDDEN_POTS,       ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
         ENTRANCE(RR_BOTW_CORNER_CRAWLSPACE, logic->CanUse(RG_CRAWL)),
         //Climb always needed in case water is lowered out of logic
-        ENTRANCE(RR_BOTW_BEHIND_MOAT,           ((logic->Get(LOGIC_BOTW_LOWERED_WATER) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE) || 
+        ENTRANCE(RR_BOTW_BEHIND_MOAT,           ((logic->Get(LOGIC_BOTW_LOWERED_WATER) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE) ||
                                                 (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)))),
         ENTRANCE(RR_BOTW_NEAR_BOSS_LOWER,   logic->Get(LOGIC_BOTW_LOWERED_WATER) && logic->CanUse(RG_CRAWL)),
         //Falling down into basement requires nothing, but falling down somewhere specific requires lens or lens trick
@@ -147,7 +147,7 @@ void RegionTable_Init_BottomOfTheWell() {
     }, {
         //Exits
         //Climb always needed in case water is lowered out of logic
-        ENTRANCE(RR_BOTW_PERIMETER, (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE) || 
+        ENTRANCE(RR_BOTW_PERIMETER, (logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE) ||
                                      (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_BOTW_CRYPT,     true),
     });
@@ -295,7 +295,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         // Fairies are in slingshot wonder item, & pot behind grate. Pot can also be broken with boomerang trick
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) ||
                                                  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
                                                  //Item extension can get a fairy by either shooting the pot through the grate and letting the fairy fly through the wall
                                                  //This cannot be done if the pot has an item in it, as it cannot be collected this way.
@@ -333,7 +333,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_MQ_MIDDLE,            logic->Get(LOGIC_BOTW_MQ_OPENED_GATES)),
         ENTRANCE(RR_BOTW_MQ_PIT_CAGE,          AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanPassEnemy(RE_BIG_SKULLTULA)),
         //Climb always needed in case water is lowered out of logic
-        ENTRANCE(RR_BOTW_MQ_BEHIND_MOAT,       (logic->Get(LOGIC_BOTW_LOWERED_WATER) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE) || 
+        ENTRANCE(RR_BOTW_MQ_BEHIND_MOAT,       (logic->Get(LOGIC_BOTW_LOWERED_WATER) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || logic->HasItem(RG_BRONZE_SCALE) ||
                                                 (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_BOTW_MQ_CORNER_CRAWLSPACE, logic->CanUse(RG_CRAWL)),
         ENTRANCE(RR_BOTW_MQ_NEAR_BOSS_LOWER,   logic->CanUse(RG_CRAWL) && logic->Get(LOGIC_BOTW_LOWERED_WATER)),
@@ -386,7 +386,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
         //Without power bracelet, the skull can be killed through the Grave with any valid weapon.
         //Bow, Sling and Hammer should aim for the left side (from the door's perspective) ot eh grave, hookshot should get close to the grave and aim inside it (no extension needed).
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && 
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) &&
                                                               (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) &&
                                                               logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
     }, {
@@ -411,7 +411,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_BEHIND_MOAT] = Region("Bottom of the Well MQ Behind Moat", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
         //Climb always needed in case water is lowered out of logic
-        ENTRANCE(RR_BOTW_MQ_PERIMETER, ((logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE)) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) || 
+        ENTRANCE(RR_BOTW_MQ_PERIMETER, ((logic->Get(LOGIC_BOTW_LOWERED_WATER) || logic->HasItem(RG_BRONZE_SCALE)) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))) ||
                                         (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_BOTW_MQ_CRYPT,     logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2)),
     });

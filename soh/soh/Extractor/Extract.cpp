@@ -51,6 +51,8 @@
 #include <fstream>
 #include <filesystem>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 #include <string>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
@@ -198,7 +200,6 @@ void Extractor::SetRomInfo(const std::string& path) {
 }
 
 void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode) {
-    std::ifstream inFile;
     std::vector<std::string>::iterator it = roms.begin();
 
     while (it != roms.end()) {
@@ -211,12 +212,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
             continue;
         }
 
-        inFile.open(rom, std::ios::in | std::ios::binary);
-        inFile.read((char*)mRomData.get(), mCurRomSize);
-        inFile.clear();
-        inFile.close();
-
-        BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
+        ReadRom();
 
         // Rom doesn't claim to be valid
         // Game type doesn't match search mode
@@ -334,8 +330,22 @@ bool Extractor::GetRomPathFromBox() {
     return true;
 }
 
+// Reads mCurrentRomPath into mRomData, converting v64/n64 to big-endian.
+bool Extractor::ReadRom() {
+    std::ifstream inFile(mCurrentRomPath, std::ios::in | std::ios::binary);
+    if (!inFile.is_open()) {
+        return false;
+    }
+
+    mRomData.resize(mCurRomSize);
+    inFile.read((char*)mRomData.data(), mCurRomSize);
+    BitConverter::RomToBigEndian(mRomData.data(), mCurRomSize);
+    mRomVerCrc = mCurRomSize >= 0x14 ? BSWAP32(((uint32_t*)mRomData.data())[4]) : 0;
+    return true;
+}
+
 uint32_t Extractor::GetRomVerCrc() const {
-    return BSWAP32(((uint32_t*)mRomData.get())[4]);
+    return mRomVerCrc;
 }
 
 size_t Extractor::GetCurRomSize() const {
@@ -343,12 +353,15 @@ size_t Extractor::GetCurRomSize() const {
 }
 
 bool Extractor::ValidateAndFixRom() {
-    // The MQ debug rom sometimes has the header patched to look like a US rom. Change it back
+    // The MQ debug rom sometimes has the header patched to look like a US rom.
+    // Check the crc as if it were changed back, but leave mRomData as the original dump for torch.
+    const uint8_t region = mRomData[0x3E];
     if (GetRomVerCrc() == OOT_PAL_GC_MQ_DBG) {
         mRomData[0x3E] = 'P';
     }
 
-    const uint32_t actualCrc = CRC32C(mRomData.get(), mCurRomSize);
+    const uint32_t actualCrc = CRC32C(mRomData.data(), mCurRomSize);
+    mRomData[0x3E] = region;
 
     for (const uint32_t crc : goodCrcs) {
         if (actualCrc == crc) {
@@ -360,6 +373,10 @@ bool Extractor::ValidateAndFixRom() {
 
 // The file box will only allow selecting an n64 rom but typing in the file name will allow selecting anything.
 bool Extractor::ValidateNotCompressed() const {
+    // Too small to hold any header below, the size check rejects it
+    if (mRomData.size() < 6) {
+        return true;
+    }
     // ZIP file header
     if (mRomData[0] == 'P' && mRomData[1] == 'K' && mRomData[2] == 0x03 && mRomData[3] == 0x04) {
         return false;
@@ -403,21 +420,13 @@ bool Extractor::ValidateRom(bool skipCrcTextBox) {
 }
 
 bool Extractor::ManuallySearchForRom() {
-    std::ifstream inFile;
-
     if (!GetRomPathFromBox()) {
         return false;
     }
 
-    inFile.open(mCurrentRomPath, std::ios::in | std::ios::binary);
-
-    if (!inFile.is_open()) {
+    if (!ReadRom()) {
         return false; // TODO Handle error
     }
-
-    inFile.read((char*)mRomData.get(), mCurRomSize);
-    inFile.close();
-    BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
 
     if (!ValidateRom()) {
         return false;
@@ -470,13 +479,7 @@ bool Extractor::RunFileStandalone(std::string rom) {
     if (!ValidateRomSize()) {
         return false;
     }
-    std::ifstream inFile;
-
-    inFile.open(rom, std::ios::in | std::ios::binary);
-    inFile.read((char*)mRomData.get(), mCurRomSize);
-    inFile.clear();
-    inFile.close();
-    BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
+    ReadRom();
 
     if (!ValidateRom(true)) {
         return false;
@@ -491,7 +494,6 @@ void Extractor::SetSearchPath(const std::string& path) {
 
 bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
     std::vector<std::string> roms;
-    std::ifstream inFile;
 
     SetSearchPath(searchPath);
 
@@ -524,11 +526,7 @@ bool Extractor::Run(std::string searchPath, RomSearchMode searchMode) {
             continue;
         }
 
-        inFile.open(rom, std::ios::in | std::ios::binary);
-        inFile.read((char*)mRomData.get(), mCurRomSize);
-        inFile.clear();
-        inFile.close();
-        BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
+        ReadRom();
 
         int option = ShowRomPickBox(GetRomVerCrc());
 
@@ -648,7 +646,6 @@ bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::a
     char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
     snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
-    std::string romPath = std::filesystem::absolute(mCurrentRomPath).string();
     std::string srcDir = std::filesystem::absolute(installPath).string() + "/assets";
     exportdir = std::filesystem::absolute(exportdir).string();
     // Work this out in the temporary folder
@@ -658,7 +655,7 @@ bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::a
     *extractCount = 0;
 
     // config.yml decides whether this is oot.o2r or oot-mq.o2r.
-    std::string archiveName = SohTorch::Extract(romPath, srcDir, tempdir, portVersion, extractCount);
+    std::string archiveName = SohTorch::Extract(std::move(mRomData), srcDir, tempdir, portVersion, extractCount);
     bool success = !archiveName.empty();
 
     std::error_code ec;
