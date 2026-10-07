@@ -34,6 +34,7 @@ void RegionTable_Init_GerudoValley() {
         ENTRANCE(RR_GV_CRATE_LEDGE,        (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       true),
         //Bunnyhovers needs to aim for the sides of the bridge
+        //you can sword recoil off a boulder, but breaking it is a perm flag and it's precise.
         ENTRANCE(RR_GV_FORTRESS_SIDE,      (logic->IsAdult && (logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) ||
                                                                 logic->CanRecoilHover(RECOIL_HAMMER) || (logic->BunnyHovers() && logic->HasItem(RG_CLIMB)))) ||
                                            ((logic->IsChild || ctx->GetTrickOption(RT_GV_HOOKSHOT_BRIDGE)) && logic->CanUse(RG_HOOKSHOT)) ||

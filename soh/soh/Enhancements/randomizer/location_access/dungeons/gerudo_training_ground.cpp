@@ -101,6 +101,7 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {}, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_HEAVY_BLOCK_ROOM, ctx->GetTrickOption(RT_LENS_GTG) || logic->CanUse(RG_LENS_OF_TRUTH)),
+        //you can recoil hover on top of the block, but it's not simple
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_EYE_STATUE_UPPER, true),
     });
 
@@ -342,6 +343,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         //Locations
         LOCATION(RC_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM_RED_ICE, logic->BlueFire()),
     }, {
+        //you can recoil hover on top of the block, but it's not simple
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM,      true),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM_LEDGE, logic->Get(LOGIC_GTG_UNLOCKED_DOOR_BEHIND_HEAVY_BLOCK)),
     });
