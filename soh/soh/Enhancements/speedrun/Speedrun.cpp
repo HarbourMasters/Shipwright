@@ -8,6 +8,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/util.h"
 
 #include <ship/Context.h>
 #include <ship/config/Config.h>
@@ -47,18 +48,22 @@ static const std::array<const char*, 4> sOwnedBlocks = {
 };
 
 #define SPEEDRUN_PRESET_NONE "None"
-#define SPEEDRUN_MAX_OPTIONS_ON_SCREEN 6
+#define SPEEDRUN_MAX_OPTIONS_ON_SCREEN 4
+#define SPEEDRUN_EXEMPT_ROWS 4
 
 // {display name, preset name}, ending with "None" which has no preset.
 static std::vector<std::pair<std::string, std::string>> sPresetChoices;
 static nlohmann::json sSettings = nlohmann::json::object();
 static uint32_t sConfigVersion = 0;
 // Paths of settings the player keeps even under a preset, from the preset's "exempt" list. Copied over file's
-// settings on create and load. Values left out of settings hash, but paths are not. Saved with file.
+// settings on create and load. Saved with file.
 static nlohmann::json sExempt = nlohmann::json::array();
 static std::string sPresetName = SPEEDRUN_PRESET_NONE;
 static uint32_t sSettingsHash = 0;
 static bool sMenuLocked = false;
+// "Name: value" of each exempt setting for the preset picked in the menu, and which preset they were made for.
+static std::vector<std::string> sExemptLines;
+static int sExemptLinesIndex = -1;
 
 // Everything else, menu included, is hidden so settings can't be changed mid-run.
 static const std::vector<std::string> sAllowedWindows = {
@@ -104,10 +109,10 @@ static void SetOwnedBlocks(const nlohmann::json& blocks) {
     ShipInit::InitAll();
 }
 
-static std::vector<nlohmann::json::json_pointer> GetExemptPaths() {
+static std::vector<nlohmann::json::json_pointer> GetExemptPaths(const nlohmann::json& exempt) {
     std::vector<nlohmann::json::json_pointer> paths;
 
-    for (const auto& path : sExempt) {
+    for (const auto& path : exempt) {
         try {
             paths.emplace_back(path.get<std::string>());
         } catch (const std::exception& e) { SPDLOG_ERROR("Speedrun: bad exempt path {}: {}", path.dump(), e.what()); }
@@ -117,8 +122,8 @@ static std::vector<nlohmann::json::json_pointer> GetExemptPaths() {
 }
 
 // Copies the player's exempt settings onto blocks. Ones the player never set keep the preset's value.
-static void OverlayExemptSettings(nlohmann::json& blocks, const nlohmann::json& custom) {
-    for (const auto& path : GetExemptPaths()) {
+static void OverlayExemptSettings(nlohmann::json& blocks, const nlohmann::json& custom, const nlohmann::json& exempt) {
+    for (const auto& path : GetExemptPaths(exempt)) {
         if (custom.contains(path)) {
             blocks[path] = custom[path];
         }
@@ -249,27 +254,6 @@ extern "C" bool Ship_QuestDebugEnabled(u8 questId) {
            CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0);
 }
 
-// FNV-1a hash of the build version, the file's settings without exempt values, and the exempt paths. Same hash means
-// same build and settings. nlohmann sorts object keys, so the dump is stable.
-static uint32_t HashSettings() {
-    nlohmann::json stripped = sSettings;
-    for (const auto& path : GetExemptPaths()) {
-        if (stripped.contains(path)) {
-            stripped[path.parent_pointer()].erase(path.back());
-        }
-    }
-
-    std::string data = std::string((const char*)gBuildVersion) + stripped.dump() + sExempt.dump();
-    uint32_t hash = 0x811C9DC5;
-
-    for (char c : data) {
-        hash ^= (uint8_t)c;
-        hash *= 0x01000193;
-    }
-
-    return hash;
-}
-
 static void EmitHashNotification() {
     Notification::Emit({
         .prefix = "Speedrun",
@@ -277,6 +261,41 @@ static void EmitHashNotification() {
         .suffix = spdlog::fmt_lib::format("{:08X}", sSettingsHash),
         .remainingTime = 15.0f,
     });
+}
+
+// The settings a new file gets with this preset: the player's settings, then the preset, then the exempt ones put back.
+static nlohmann::json BuildFileSettings(const std::string& presetKey, const nlohmann::json& custom,
+                                        const nlohmann::json& exempt) {
+    nlohmann::json settings = custom;
+
+    if (!presetKey.empty()) {
+        // Applied to the file's copy only, never the player's config.
+        settings = applyPresetToBlocks(presetKey, settings, { PRESET_SECTION_ENHANCEMENTS });
+    }
+
+    OverlayExemptSettings(settings, custom, exempt);
+    return settings;
+}
+
+static void UpdateExemptLines(uint8_t presetIndex) {
+    if (sExemptLinesIndex == presetIndex) {
+        return;
+    }
+    sExemptLinesIndex = presetIndex;
+    sExemptLines.clear();
+
+    const std::string& presetKey = sPresetChoices[presetIndex].second;
+    nlohmann::json exempt = GetPresetExempt(presetKey);
+    nlohmann::json settings = BuildFileSettings(presetKey, GetOwnedBlocks(), exempt);
+
+    for (const auto& path : GetExemptPaths(exempt)) {
+        std::string value = "default";
+        if (settings.contains(path)) {
+            const auto& entry = settings[path];
+            value = entry.is_string() ? entry.get<std::string>() : entry.dump();
+        }
+        sExemptLines.push_back(spdlog::fmt_lib::format("{}: {}", path.back(), value));
+    }
 }
 
 extern "C" void Speedrun_LoadPresetChoices(FileChooseContext* fileChooseContext) {
@@ -287,6 +306,8 @@ extern "C" void Speedrun_LoadPresetChoices(FileChooseContext* fileChooseContext)
         fileChooseContext->speedrunIndex = 0;
         fileChooseContext->speedrunOffset = 0;
     }
+    // Player may have changed settings since the menu was last open.
+    sExemptLinesIndex = -1;
 }
 
 extern "C" void FileChoose_UpdateSpeedrunMenu(GameState* gameState) {
@@ -335,6 +356,15 @@ extern "C" void FileChoose_DrawSpeedrunMenuWindowContents(FileChooseContext* fil
                                            static_cast<f32>(92 + textYOffset), false);
         }
     }
+
+    // Exempt settings of the selected preset, with the values the new file will get, in columns under the list.
+    UpdateExemptLines(fileChooseContext->speedrunIndex);
+    for (size_t i = 0; i < sExemptLines.size(); i++) {
+        int16_t x = 65 + (int16_t)(i / SPEEDRUN_EXEMPT_ROWS) * 100;
+        int16_t y = 87 + SPEEDRUN_MAX_OPTIONS_ON_SCREEN * 16 + (int16_t)(i % SPEEDRUN_EXEMPT_ROWS) * 7;
+        Interface_DrawTextLine(fileChooseContext->state.gfxCtx, (char*)sExemptLines[i].c_str(), x, y, 180, 180, 180,
+                               textAlpha, 0.5f, false);
+    }
 }
 
 extern "C" void Speedrun_InitSaveFile(u8 presetIndex) {
@@ -342,21 +372,14 @@ extern "C" void Speedrun_InitSaveFile(u8 presetIndex) {
     sPresetName = sPresetChoices[presetIndex].first;
 
     nlohmann::json custom = GetOwnedBlocks();
-    sSettings = custom;
     sConfigVersion = SOH::GetLatestConfigVersion();
     sExempt = GetPresetExempt(presetKey);
-
-    if (!presetKey.empty()) {
-        // Applied to the file's copy only, never the player's config.
-        sSettings = applyPresetToBlocks(presetKey, sSettings, { PRESET_SECTION_ENHANCEMENTS });
-    }
-
-    OverlayExemptSettings(sSettings, custom);
+    sSettings = BuildFileSettings(presetKey, custom, sExempt);
 
     // Runs are always timed in real time, whatever the "RTA Timing on new files" option says.
     gSaveContext.ship.stats.rtaTiming = 1;
 
-    sSettingsHash = HashSettings();
+    sSettingsHash = SohUtils::Hash(std::string((const char*)gBuildVersion) + GetPresetFileContents(presetKey));
 
     EmitHashNotification();
 }
@@ -379,6 +402,7 @@ static void LoadSaveSection() {
     LockMenu();
 
     SaveManager::Instance->LoadData("presetName", sPresetName);
+    SaveManager::Instance->LoadData("settingsHash", sSettingsHash);
     SaveManager::Instance->LoadData("settings", sSettings);
     SaveManager::Instance->LoadData("configVersion", sConfigVersion);
     SaveManager::Instance->LoadData("exempt", sExempt);
@@ -416,13 +440,12 @@ static void LoadSaveSection() {
         blocks = GetOwnedBlocks();
     }
 
-    OverlayExemptSettings(blocks, custom);
+    OverlayExemptSettings(blocks, custom, sExempt);
 
     // No cosmetics during a run. Some scale Link or his sword, which changes his hitbox and reach.
     blocks[CVAR_PREFIX_COSMETIC] = nlohmann::json::object();
 
     SetOwnedBlocks(blocks);
-    sSettingsHash = HashSettings();
 
     EmitHashNotification();
 }

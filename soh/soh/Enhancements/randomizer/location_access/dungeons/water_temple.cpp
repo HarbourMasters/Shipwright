@@ -64,7 +64,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_BLOCK_U_BEND,        logic->Get(LOGIC_WATER_PUSHED_1F_BLOCK) &&
                                                       ((logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE) && logic->WaterTimer() >= 16) ||
                                                        (logic->WaterLevel(WL_LOW) && logic->HasItem(RG_SILVER_SCALE)))),
-        ENTRANCE(RR_WATER_TEMPLE_NEAR_CAGE,           AnyAgeTime([]{return logic->WaterLevel(WL_LOW) && logic->HasExplosives();}) &&
+        ENTRANCE(RR_WATER_TEMPLE_NEAR_CAGE_STEPS,     AnyAgeTime([]{return logic->WaterLevel(WL_LOW) && logic->HasExplosives();}) &&
                                                       (logic->WaterLevel(WL_LOW) && logic->HasItem(RG_SILVER_SCALE) ||
                                                        (logic->CanUse(RG_IRON_BOOTS) && logic->HasItem(RG_BRONZE_SCALE) && logic->WaterTimer() >= 16))),
         ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, logic->WaterLevel(WL_HIGH) && ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->IsAdult && logic->HasItem(RG_BRONZE_SCALE) && logic->CanUse(RG_IRON_BOOTS)),

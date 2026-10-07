@@ -24,8 +24,11 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
 nlohmann::json applyPresetToBlocks(std::string presetName, nlohmann::json blocks,
                                    std::vector<PresetSection> includeSections = {});
 
-// {display name, preset name} of every preset whose file is named "Speedrun - <display name>"
+// {display name, preset name} of every built-in preset whose file is named "Speedrun - <display name>"
 std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets();
 
 // The preset's "exempt" list of cvar json pointers, or an empty array if it has none.
 nlohmann::json GetPresetExempt(const std::string& presetName);
+
+// The raw contents of a built-in preset's file in the archive, or an empty string if there's none.
+std::string GetPresetFileContents(const std::string& presetName);

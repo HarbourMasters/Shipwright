@@ -111,6 +111,9 @@ void RegisterQuickBossDeaths() {
         }
     });
 
+    // Skip Ganondorf dying, go to the window shattering before the escape
+    COND_VB_SHOULD(VB_GANONDORF_DEATH_SCENE, CVAR_VALUE || IS_BOSS_RUSH, { *should = false; });
+
     COND_VB_SHOULD(VB_VOLVAGIA_DEATH_SCENE, CVAR_VALUE, {
         if (*should) {
             BossFd2* fd2 = va_arg(args, BossFd2*);
