@@ -1,0 +1,26 @@
+name: Heart piece regression tests
+on:
+  pull_request:
+    paths:
+      - 'soh/soh/Enhancements/HeartPieces/**'
+      - 'soh/include/**'
+      - 'libultraship'
+      - 'tests/**'
+      - '.github/workflows/heart-piece-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  regression:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - run: python3 tests/run.py --sanitize

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <array>
 #include <bit>
+#include <cmath>
 #include <map>
 #include <string>
 
@@ -8,6 +9,7 @@
 #include <ship/Context.h>
 
 #include "debugSaveEditor.h"
+#include "soh/Enhancements/HeartPieces/HeartPieceFlagEditor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/item.h"
@@ -2746,6 +2748,133 @@ void ResetBaseOptions() {
         .Tooltip("");
 }
 
+static bool sSyncHeartRewards = true;
+static const char* sHeartEditError = nullptr;
+
+template <size_t N>
+static void DrawHeartFlagCheckboxes(const std::array<HeartPieceViewer::HeartFlag, N>& entries,
+                                    const ImGuiTextFilter& filter, bool missingOnly, bool isContainer) {
+    UIWidgets::PushStyleCheckbox(THEME_COLOR);
+    for (size_t i = 0; i < entries.size(); ++i) {
+        const auto& entry = entries[i];
+        const auto state = HeartPieceViewer::ReadFlag(entry, gSaveContext, gPlayState);
+        if (!filter.PassFilter(entry.name) || (missingOnly && state == true)) {
+            continue;
+        }
+        bool checked = state.value_or(false);
+        const std::string label = std::string(entry.name) + (state ? "" : " (Unknown)");
+        ImGui::PushID(static_cast<int>(i));
+        ImGui::BeginDisabled(!state.has_value() || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+        if (ImGui::Checkbox(label.c_str(), &checked)) {
+            sHeartEditError =
+                HeartPieceViewer::EditReward(entry, gSaveContext, gPlayState, checked, isContainer, sSyncHeartRewards,
+                                             CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
+        }
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+            const bool sceneFlag = entry.type == HeartPieceViewer::HeartFlagType::Collectible ||
+                                   entry.type == HeartPieceViewer::HeartFlagType::Chest;
+            const char* source =
+                sceneFlag ? (gPlayState->sceneNum == entry.scene ? "currentSceneFlags" : "sceneFlags") : "save";
+            ImGui::SetTooltip("%s | %s | scene 0x%02X | flag 0x%04X%s", source, HeartPieceViewer::FlagName(entry.type),
+                              entry.scene, entry.flag, state ? "" : " | Unknown");
+        }
+        ImGui::EndDisabled();
+        ImGui::PopID();
+    }
+    UIWidgets::PopStyleCheckbox();
+}
+
+static void DrawHeartPiecesTab() {
+    if (gPlayState == nullptr || gSaveContext.gameMode != GAMEMODE_NORMAL) {
+        ImGui::TextUnformatted("Load a game to inspect heart-piece flags.");
+        return;
+    }
+    if (IS_RANDO) {
+        ImGui::TextWrapped("This viewer shows original heart-piece rewards. Randomized saves are not supported; use "
+                           "the check tracker.");
+        return;
+    }
+    static ImGuiTextFilter filter;
+    static bool missingOnly = false;
+    static bool showContainers = true;
+    const auto theme = THEME_COLOR;
+    const ImVec2 padding(10.0f, 6.0f);
+    const float availableWidth = ImGui::GetContentRegionAvail().x;
+    UIWidgets::PushStyleInput(theme);
+    const auto background = ImGui::GetStyleColorVec4(ImGuiCol_FrameBg);
+    const auto linear = [](float value) {
+        return value <= 0.04045f ? value / 12.92f : std::pow((value + 0.055f) / 1.055f, 2.4f);
+    };
+    const float luminance =
+        0.2126f * linear(background.x) + 0.7152f * linear(background.y) + 0.0722f * linear(background.z);
+    const float foreground = luminance > 0.179f ? 0.0f : 1.0f;
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(foreground, foreground, foreground, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_TextDisabled, ImVec4(foreground, foreground, foreground, 1.0f));
+    ImGui::SetNextItemWidth(availableWidth);
+    if (ImGui::InputTextWithHint("##HeartSearch", "Search locations...", filter.InputBuf,
+                                 IM_ARRAYSIZE(filter.InputBuf)))
+        filter.Build();
+    ImGui::PopStyleColor(2);
+    UIWidgets::PopStyleInput();
+
+    UIWidgets::PushStyleCheckbox(theme, padding);
+    ImGui::Checkbox("Missing only", &missingOnly);
+    ImGui::SameLine();
+    ImGui::Checkbox("Include boss containers", &showContainers);
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+        ImGui::SetTooltip("Boss containers appear separately and do not count as heart pieces.");
+    ImGui::SameLine();
+    if (ImGui::Checkbox("Sync health & pieces", &sSyncHeartRewards))
+        sHeartEditError = nullptr;
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Apply each reward's change to health and piece count. Disable for flag-only editing. "
+                          "Reload the area to refresh spawned rewards after editing.");
+    UIWidgets::PopStyleCheckbox();
+    if (sHeartEditError)
+        ImGui::TextWrapped("%s", sHeartEditError);
+
+    // Reserve one line below the scrolling list for progress.
+    const float footerHeight = ImGui::GetTextLineHeightWithSpacing();
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
+    ImGui::BeginChild("HeartPieceCheckboxes", ImVec2(0, -footerHeight), true);
+    ImGui::PushID("pieces");
+    DrawHeartFlagCheckboxes(HeartPieceViewer::heartFlags, filter, missingOnly, false);
+    ImGui::PopID();
+    if (showContainers) {
+        size_t containers = 0;
+        for (const auto& entry : HeartPieceViewer::bossHeartFlags)
+            containers += HeartPieceViewer::ReadFlag(entry, gSaveContext, gPlayState) == true;
+        ImGui::SeparatorText("Boss Heart Containers");
+        ImGui::Text("%zu / %zu collected", containers, HeartPieceViewer::bossHeartFlags.size());
+        ImGui::PushID("containers");
+        DrawHeartFlagCheckboxes(HeartPieceViewer::bossHeartFlags, filter, missingOnly, true);
+        ImGui::PopID();
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
+    size_t total = 0, collected = 0, unknown = 0;
+    for (const auto& entry : HeartPieceViewer::heartFlags) {
+        const auto state = HeartPieceViewer::ReadFlag(entry, gSaveContext, gPlayState);
+        ++total;
+        collected += state == true;
+        unknown += !state.has_value();
+    }
+    ImGui::TextDisabled("%zu / %zu collected", collected, total);
+    if (!sSyncHeartRewards) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| Flag-only editing");
+    }
+    if (missingOnly) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| %zu missing", total - collected - unknown);
+    }
+    if (unknown) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| %zu unknown", unknown);
+    }
+}
+
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
@@ -2782,7 +2911,14 @@ void SaveEditorWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        ImGui::EndDisabled();
         ResetBaseOptions();
+        if (ImGui::BeginTabItem("Heart Pieces")) {
+            DrawHeartPiecesTab();
+            ImGui::EndTabItem();
+        }
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+
         if (ImGui::BeginTabItem("Flags")) {
             DrawFlagsTab();
             ImGui::EndTabItem();
