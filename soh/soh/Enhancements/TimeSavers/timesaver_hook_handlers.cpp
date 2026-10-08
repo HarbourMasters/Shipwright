@@ -468,7 +468,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
 
                 // We should still come out of a softlock if the setting was changed during forced dialogue
-                if (GET_PLAYER(gPlayState)->csAction != 7) {
+                if (GET_PLAYER(gPlayState)->csAction == 8) {
                     Player_SetCsAction(gPlayState, NULL, 7);
                 }
             }
