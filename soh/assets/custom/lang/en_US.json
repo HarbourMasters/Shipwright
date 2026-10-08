@@ -1174,7 +1174,7 @@
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping into ",
                     "the blue warp after the boss.\n",
                     "- Tokens: Obtain the specified amount of Skulltula tokens.\n",
-					"- Triforce Pieces: Obtain the specified number of Triforce Pieces."
+                    "- Triforce Pieces: Obtain the specified number of Triforce Pieces."
                 ]
             },
             "wincon_options": {
