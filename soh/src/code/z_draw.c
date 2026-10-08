@@ -114,6 +114,7 @@ void GetItem_DrawJewelGoron(PlayState* play, s16 drawId);
 void GetItem_DrawJewelZora(PlayState* play, s16 drawId);
 void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId);
 void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId);
+void GetItem_DrawTriforce(PlayState* play, s16 drawId);
 void GetItem_DrawFishingPole(PlayState* play, s16 drawId);
 
 typedef struct {
@@ -384,14 +385,15 @@ DrawItemTableEntry sDrawItemTable[] = {
 
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, // Generic
 
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Zelda's  Lullaby
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Epona's song
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Saria's song
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Sun's song
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Song of time
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Song of storms
-    { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } }, // Triforce Piece
-    { GetItem_DrawFishingPole, { gGiFishingPoleDL } },    // Fishing Pole
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Zelda's  Lullaby
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Epona's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Saria's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Sun's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Song of time
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },     // Song of storms
+    { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } },    // Triforce Piece
+    { GetItem_DrawTriforce, { gTriforcePieceCompletedDL } }, // Triforce
+    { GetItem_DrawFishingPole, { gGiFishingPoleDL } },       // Fishing Pole
 };
 
 /**
@@ -1023,6 +1025,24 @@ void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId) {
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, triforcePieceDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void GetItem_DrawTriforce(PlayState* play, s16 drawId) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
+
+    uint8_t index = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected % 3;
+    Gfx* triforceDL = (Gfx*)gTriforcePieceCompletedDL;
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, triforceDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

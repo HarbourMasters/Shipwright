@@ -650,7 +650,9 @@ CustomMessage Hint::GetWinconText() {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage winconMessage;
 
-    if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_ANYWHERE)) {
+    if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DEFEAT_GANON)) {
+        return StaticData::hintTextTable[RHT_WINCON_DEFEAT_GANON_HINT].GetHintMessage();
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_ANYWHERE)) {
         return StaticData::hintTextTable[RHT_WINCON_ANYWHERE_HINT].GetHintMessage();
     } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_STONES)) {
         winconMessage = StaticData::hintTextTable[RHT_WINCON_STONES_HINT].GetHintMessage();
