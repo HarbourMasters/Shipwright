@@ -2152,6 +2152,11 @@ void StaticData::HintTable_Init() {
     |      WINCON HINT TEXT     |
     ---------------------------*/
 
+    hintTextTable[RHT_WINCON_DEFEAT_GANON_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be granted once #the evil one# is defeated.^",
+                                                              /*german*/ "$wUnd das #Triforce# wird gewährt, sobald #der Böse# besiegt wurde.^",
+                                                              /*french*/ "$wAussi, la #Triforce# sera accordée une fois que #le Malin# aura été vaincu.^",
+                                                                           {QM_YELLOW, QM_PINK}));
+
     hintTextTable[RHT_WINCON_ANYWHERE_HINT] = HintText(CustomMessage("$wAnd the #Triforce# will be hidden somewhere&#in Hyrule#.^",
                                                           /*german*/ "$wUnd das #Triforce# wird irgendwo #in Hyrule# zu finden sein.^",
                                                           /*french*/ "$wAussi, la #Triforce# se trouve quelque part #dans Hyrule#.^",

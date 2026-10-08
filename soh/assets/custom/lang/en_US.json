@@ -1159,6 +1159,38 @@
                     "rewards on slider does not change."
                 ]
             },
+            "wincon": {
+                "name": "Win Condition",
+                "description": [
+                    "Defeat Ganon - Defeat Ganon to complete the game.\n",
+                    "\n",
+                    "Anywhere - Collect the Triforce to complete the game. It can appear anywhere in the world.\n",
+                    "\n",
+                    "Trigger - These settings put the completing the game on a trigger, ",
+                    "playing the credits when the requirements are met:\n",
+                    "- Stones: Obtain the specified amount of Spiritual Stones.\n",
+                    "- Medallions: Obtain the specified amount of medallions.\n",
+                    "- Dungeon rewards: Obtain the specified total sum of Spiritual Stones or medallions.\n",
+                    "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping into ",
+                    "the blue warp after the boss.\n",
+                    "- Tokens: Obtain the specified amount of Skulltula tokens.\n",
+                    "- Triforce Pieces: Obtain the specified number of Triforce Pieces."
+                ]
+            },
+            "wincon_options": {
+                "name": "Win Condition Options",
+                "description": [
+                    "Standard Rewards - Greg does not change logic, Greg does not help obtain Ganon's Soul, max ",
+                    "number of rewards on slider does not change.\n",
+                    "\n",
+                    "Greg as Reward - Greg does change logic (can be part of expected path for obtaining ",
+                    "Ganon's Soul), Greg helps obtain Ganon's Soul, max number of rewards on slider increases by 1 to ",
+                    "account for Greg.\n",
+                    "\n",
+                    "Greg as Wildcard - Greg does not change logic, Greg helps obtain Ganon's Soul, max number of ",
+                    "rewards on slider does not change."
+                ]
+            },
             "big_poe_count": {
                 "name": "Big Poe Target Count",
                 "description": "The Poe collector will give a reward for turning in this many Big Poes."
@@ -1548,12 +1580,6 @@
             },
             "ganons_soul_triforce_count": {
                 "name": "Ganon's Soul Triforce Piece Count"
-            },
-            "wincon": {
-                "name": "Win Condition"
-            },
-            "wincon_options": {
-                "name": "Win Condition Reward Options"
             },
             "wincon_medallion_count": {
                 "name": "Win Condition Medallion Count"
