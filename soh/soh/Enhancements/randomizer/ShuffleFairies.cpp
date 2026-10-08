@@ -64,6 +64,7 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
     CheckIdentity fairyIdentity;
     s16 sceneNum = gPlayState->sceneNum;
     fairyIdentity.randomizerInf = RAND_INF_MAX;
+    fairyIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
     if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT || sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS) {
         sceneNum = SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY;
@@ -73,7 +74,6 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         SPDLOG_WARN("FairyGetIdentity did not receive a valid RC value ({}).", location->GetRandomizerCheck());
-        assert(false);
     } else {
         fairyIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
         fairyIdentity.randomizerCheck = location->GetRandomizerCheck();
@@ -84,6 +84,9 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
 
 static bool SpawnFairy(f32 posX, f32 posY, f32 posZ, int32_t params, FairyType fairyType, ActorID id) {
     CheckIdentity fairyIdentity = ShuffleFairies_GetFairyIdentity(params, id);
+    if (fairyIdentity.randomizerCheck == RC_UNKNOWN_CHECK) {
+        return false;
+    }
     if (!Flags_GetRandomizerInf(fairyIdentity.randomizerInf)) {
         Actor* fairy =
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_ELF, posX, posY - 30.0f, posZ, 0, 0, 0, fairyType);
