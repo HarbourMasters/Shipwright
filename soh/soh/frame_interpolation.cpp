@@ -5,6 +5,7 @@
 
 #include "frame_interpolation.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 /*
 Frame interpolation.
@@ -39,6 +40,9 @@ given a specific interpolation factor (0=old frame, 0.5=average of frames,
 */
 
 extern "C" {
+#include "z64.h"
+
+extern PlayState* gPlayState;
 
 void Matrix_Init(struct GameState* gameState);
 void Matrix_Push(void);
@@ -190,10 +194,33 @@ uint32_t previous_camera_epoch;
 Recording current_recording;
 Recording previous_recording;
 
+// Children keyed by an object with this attached are drawn as-is on the gameplay frame it names,
+// instead of blended with the previous one
+struct DontInterpolate {
+    uint32_t frame = 0;
+};
+ObjectExtension::Register<DontInterpolate> DontInterpolateRegister;
+
+bool dont_interpolate(const void* key) {
+    const DontInterpolate* d = ObjectExtension::GetInstance().Get<DontInterpolate>(key);
+    return d != nullptr && gPlayState != nullptr && d->frame == gPlayState->gameplayFrames;
+}
+
 bool next_is_actor_pos_rot_matrix;
 bool has_inv_actor_mtx;
 MtxF inv_actor_mtx;
 size_t inv_actor_mtx_path_index;
+
+// Matrix stack depth, and the depth where a matrix was last built from scratch (MTXMODE_NEW).
+// Such matrices don't depend on the actor matrix, so they're stored as-is rather than relative to it.
+int matrix_depth;
+int new_mtx_depth = -1;
+
+void record_mode(u8 mode) {
+    if (mode == MTXMODE_NEW && new_mtx_depth < 0) {
+        new_mtx_depth = matrix_depth;
+    }
+}
 
 Data& append(Op op) {
     auto& m = current_path.back()->ops[op];
@@ -298,7 +325,8 @@ struct InterpolateCtx {
 
             if (item.first == Op::OpenChild) {
                 if (auto it = old_path->children.find(new_op.open_child.key);
-                    it != old_path->children.end() && new_op.open_child.idx < it->second.size()) {
+                    it != old_path->children.end() && new_op.open_child.idx < it->second.size() &&
+                    !dont_interpolate(new_op.open_child.key.first)) {
                     interpolate_branch(&it->second[new_op.open_child.idx],
                                        &new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx]);
                 } else {
@@ -410,10 +438,12 @@ struct InterpolateCtx {
                                 interpolate_mtxf(&tmp_mtxf, &old_op.matrix_to_mtx.src, &new_op.matrix_to_mtx.src);
                                 SkinMatrix_MtxFMtxFMult(&actor_mtx, &tmp_mtxf,
                                                         new_replacement(new_op.matrix_to_mtx.dest));
-                            } else {
+                            } else if (!old_op.matrix_to_mtx.has_adjusted && !new_op.matrix_to_mtx.has_adjusted) {
                                 interpolate_mtxf(new_replacement(new_op.matrix_to_mtx.dest), &old_op.matrix_to_mtx.src,
                                                  &new_op.matrix_to_mtx.src);
                             }
+                            // Otherwise one is relative to the actor and the other isn't, so can't be blended.
+                            // Without a replacement the new frame's matrix is drawn as-is
                             break;
                         }
 
@@ -454,6 +484,8 @@ void FrameInterpolation_StartRecord(void) {
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
+    matrix_depth = 0;
+    new_mtx_depth = -1;
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
     }
@@ -479,6 +511,7 @@ void FrameInterpolation_RecordCloseChild(void) {
     // append(Op::CloseChild);
     if (has_inv_actor_mtx && current_path.size() == inv_actor_mtx_path_index) {
         has_inv_actor_mtx = false;
+        new_mtx_depth = -1;
     }
     current_path.pop_back();
 }
@@ -491,6 +524,13 @@ int FrameInterpolation_GetCameraEpoch(void) {
     return (int)camera_epoch;
 }
 
+void FrameInterpolation_DontInterpolateChild(const void* a) {
+    // NULL is shared by the camera and skybox children
+    if (a != NULL && gPlayState != NULL) {
+        ObjectExtension::GetInstance().Set<DontInterpolate>(a, DontInterpolate{ gPlayState->gameplayFrames });
+    }
+}
+
 void FrameInterpolation_RecordActorPosRotMatrix(void) {
     if (!is_recording)
         return;
@@ -501,12 +541,17 @@ void FrameInterpolation_RecordMatrixPush(void) {
     if (!is_recording)
         return;
     append(Op::MatrixPush);
+    matrix_depth++;
 }
 
 void FrameInterpolation_RecordMatrixPop(void) {
     if (!is_recording)
         return;
     append(Op::MatrixPop);
+    matrix_depth--;
+    if (matrix_depth < new_mtx_depth) {
+        new_mtx_depth = -1;
+    }
 }
 
 void FrameInterpolation_RecordMatrixPut(MtxF* src) {
@@ -525,24 +570,28 @@ void FrameInterpolation_RecordMatrixTranslate(f32 x, f32 y, f32 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixTranslate).matrix_translate = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixScale(f32 x, f32 y, f32 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixScale).matrix_scale = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixRotate1Coord(u32 coord, f32 value, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixRotate1Coord).matrix_rotate_1_coord = { coord, value, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixRotateZYX(s16 x, s16 y, s16 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixRotateZYX).matrix_rotate_zyx = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixTranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
@@ -563,6 +612,9 @@ void FrameInterpolation_RecordMatrixSetTranslateRotateYXZ(f32 translateX, f32 tr
         next_is_actor_pos_rot_matrix = false;
         has_inv_actor_mtx = true;
         inv_actor_mtx_path_index = current_path.size();
+        new_mtx_depth = -1;
+    } else {
+        record_mode(MTXMODE_NEW);
     }
 }
 
@@ -576,7 +628,7 @@ void FrameInterpolation_RecordMatrixToMtx(Mtx* dest, char* file, s32 line) {
     if (!is_recording)
         return;
     auto& d = append(Op::MatrixToMtx).matrix_to_mtx = { dest };
-    if (has_inv_actor_mtx) {
+    if (has_inv_actor_mtx && new_mtx_depth < 0) {
         d.has_adjusted = true;
         SkinMatrix_MtxFMtxFMult(&inv_actor_mtx, Matrix_GetCurrent(), &d.src);
     } else {
@@ -594,6 +646,7 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode) 
     if (!is_recording)
         return;
     append(Op::MatrixRotateAxis).matrix_rotate_axis = { angle, *axis, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest) {

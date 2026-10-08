@@ -3413,6 +3413,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     gSegments[6] = temp;
 
     GameInteractor_ExecuteOnActorSpawn(actor);
+    FrameInterpolation_DontInterpolateChild(actor);
 
     return actor;
 }
