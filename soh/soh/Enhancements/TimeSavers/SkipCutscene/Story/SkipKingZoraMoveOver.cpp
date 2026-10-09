@@ -8,6 +8,7 @@ extern "C" {
 
 s32 EnKz_FollowPath(EnKz* enKz, PlayState* play);
 s32 EnKz_SetMovedPos(EnKz* enKz, PlayState* play);
+void EnKz_Mweep(EnKz* enKz, PlayState* play);
 void EnKz_SetupMweep(EnKz* enKz, PlayState* play);
 void EnKz_Wait(EnKz* enKz, PlayState* play);
 }
@@ -35,7 +36,11 @@ static void EnKz_MweepNoCutscene(EnKz* enKz, PlayState* play) {
 
 static void EnKz_InterceptMweep(void* actorPtr) {
     EnKz* enKz = (EnKz*)actorPtr;
-    if (enKz->actionFunc != EnKz_SetupMweep) {
+    if (enKz->actionFunc == EnKz_Mweep) {
+        Play_ChangeCameraStatus(gPlayState, enKz->gameplayCamera, CAM_STAT_ACTIVE);
+        Play_ClearCamera(gPlayState, enKz->cutsceneCamera);
+        Player_SetCsActionWithHaltedActors(gPlayState, &enKz->actor, 7);
+    } else if (enKz->actionFunc != EnKz_SetupMweep) {
         return;
     }
 
