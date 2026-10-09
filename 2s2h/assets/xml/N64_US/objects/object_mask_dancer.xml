@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_mask_dancer" Segment="10">
+        <DList Name="object_mask_dancer_DL_000EF0" Offset="0xEF0" />
+        <Texture Name="object_mask_dancer_TLUT_001548" OutName="tlut_001548" Format="rgba16" Width="16" Height="16" Offset="0x1548" />
+        <Texture Name="object_mask_dancer_Tex_001748" OutName="tex_001748" Format="ci8" Width="16" Height="16" Offset="0x1748" />
+        <Texture Name="object_mask_dancer_Tex_001848" OutName="tex_001848" Format="ci8" Width="8" Height="8" Offset="0x1848" />
+        <Texture Name="object_mask_dancer_Tex_001888" OutName="tex_001888" Format="ci8" Width="16" Height="16" Offset="0x1888" />
+        <Texture Name="object_mask_dancer_Tex_001988" OutName="tex_001988" Format="ci8" Width="8" Height="8" Offset="0x1988" />
+        <Texture Name="object_mask_dancer_Tex_0019C8" OutName="tex_0019C8" Format="ci8" Width="16" Height="16" Offset="0x19C8" />
+        <Texture Name="object_mask_dancer_Tex_001AC8" OutName="tex_001AC8" Format="ci8" Width="8" Height="16" Offset="0x1AC8" />
+    </File>
+</Root>

@@ -1,0 +1,22 @@
+﻿<Root>
+    <!-- Assets for Anju in the Couple's Mask cutscene -->
+    <File Name="object_an4" Segment="6">
+        <Animation Name="gAnju4CombineMasks2Anim" Offset="0x41C" /> <!-- Original name is "anj_awase" ("to face; to be opposite (someone)") -->
+
+        <Animation Name="gAnju4HugAnim" Offset="0x13C8" /> <!-- Start hugging while kneeled --> <!-- Original name is "anj_dakiau" ("to embrace each other​") -->
+        <Animation Name="gAnju4HugLoopAnim" Offset="0x2550" /> <!-- hugging while kneeled --> <!-- Original name is "anj_dakiau_loop" -->
+
+        <Animation Name="gAnju4HugReleaseAnim" Offset="0x353C" /> <!-- Stop hugging while kneeled -->  <!-- Original name is "anj_hanare" ("to be separated; to be apart") -->
+        <Animation Name="gAnju4HugReleaseLoopAnim" Offset="0x4498" /> <!-- Original name is "anj_hanare_loop" -->
+
+        <Animation Name="gAnju4LookUpAnim" Offset="0x4A78" /> <!-- Original name is "anj_kaoage" ("raising face") -->
+        <Animation Name="gAnju4LookUpLoopAnim" Offset="0x506C" /> <!-- Original name is "anj_kaoage_loop" -->
+
+        <Animation Name="gAnju4CombineMasks1Anim" Offset="0x60B4" /> <!-- Shows Moon Mask to Kafei --> <!-- Original name is "anj_miseau" ("to show each other​") -->
+
+        <Animation Name="gAnju4MaskStandLoopAnim" Offset="0x6CC0" /> <!-- Holds the Moon Mask while standing --> <!-- Original name is "anj_mitume_loop" ("to stare (at); to gaze (at)") -->
+
+        <Animation Name="gAnju4MaskKneelAnim" Offset="0x7E3C" /> <!-- Holds the Moon Mask while kneeling --> <!-- Original name is "anj_omen" ("mask") -->
+        <Animation Name="gAnju4MaskKneelLoopAnim" Offset="0x88C0" /> <!-- Holds the Moon Mask while kneeled --> <!-- Original name is "anj_omen_loop" -->
+    </File>
+</Root>

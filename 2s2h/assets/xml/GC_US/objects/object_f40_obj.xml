@@ -1,0 +1,25 @@
+﻿<Root>
+    <!-- 
+        Assets for Stone Tower platforms. These platforms include the cubes moved by pressing the switches in 
+        Stone Tower and two unused platforms.
+    -->
+    <File Name="object_f40_obj" Segment="6">
+        <Texture Name="gStoneTowerPlatformsTopTex" OutName="stone_tower_platforms_top" Format="i8" Width="64" Height="64" Offset="0x0" /> <!-- Unused -->
+        <Texture Name="gStoneTowerPlatformsSidesTex" OutName="stone_tower_platforms_sides" Format="rgba16" Width="32" Height="64" Offset="0x1000" /> <!-- Unused -->
+        
+        <Texture Name="gStoneTowerBlockBackgroundTex" OutName="stone_tower_block_background" Format="rgba16" Width="32" Height="32" Offset="0x2000" />
+        <Texture Name="gStoneTowerBlockPatternTex" OutName="stone_tower_block_pattern" Format="i4" Width="32" Height="128" Offset="0x2800" />
+        <Texture Name="gStoneTowerBlockSidesTex" OutName="stone_tower_block_sides" Format="i4" Width="64" Height="64" Offset="0x3000" />
+        
+        <DList Name="gStoneTowerVerticallyOscillatingPlatformEmptyDL" Offset="0x3B00" />
+        <DList Name="gStoneTowerVerticallyOscillatingPlatformDL" Offset="0x3B08" /> <!-- Unused -->
+        <Collision Name="gStoneTowerVerticallyOscillatingPlatformCol" Offset="0x3E80" /> <!-- Unused -->
+        
+        <DList Name="gStoneTowerTempleSquareElevatorEmptyDL" Offset="0x4030" />
+        <DList Name="gStoneTowerTempleSquareElevatorDL" Offset="0x4038" /> <!-- Unused -->
+        <Collision Name="gStoneTowerTempleSquareElevatorCol" Offset="0x4240" /> <!-- Unused -->
+        
+        <DList Name="gStoneTowerBlockDL" Offset="0x43D0" />
+        <Collision Name="gStoneTowerBlockCol" Offset="0x4640" />
+    </File>
+</Root>

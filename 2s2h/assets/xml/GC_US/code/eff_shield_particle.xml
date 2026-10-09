@@ -1,0 +1,7 @@
+<Root>
+    <File Name="code" BaseAddress="0x800A6440" RangeStart="0x106910" RangeEnd="0x106950" OutName="eff_shield_particle">
+        <Array Name="sEffShieldParticleVtx" Count="4" Offset="0x106910">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

@@ -1,0 +1,53 @@
+﻿<Root>
+    <File Name="object_bai" Segment="6">
+        <Animation Name="object_bai_Anim_0008B4" Offset="0x8B4" /> <!-- Original name is "bai_talk01" -->
+        <Animation Name="object_bai_Anim_0011C0" Offset="0x11C0" /> <!-- Original name is "bai_wait01" -->
+        <DList Name="object_bai_DL_0049C0" Offset="0x49C0" />
+        <DList Name="object_bai_DL_004BA8" Offset="0x4BA8" />
+        <DList Name="object_bai_DL_004EC0" Offset="0x4EC0" />
+        <DList Name="object_bai_DL_004FF0" Offset="0x4FF0" />
+        <DList Name="object_bai_DL_0050F8" Offset="0x50F8" />
+        <DList Name="object_bai_DL_005410" Offset="0x5410" />
+        <DList Name="object_bai_DL_005540" Offset="0x5540" />
+        <DList Name="object_bai_DL_005648" Offset="0x5648" />
+        <DList Name="object_bai_DL_005A30" Offset="0x5A30" />
+        <DList Name="object_bai_DL_005EA8" Offset="0x5EA8" />
+        <DList Name="object_bai_DL_005FC8" Offset="0x5FC8" />
+        <DList Name="object_bai_DL_0060D0" Offset="0x60D0" />
+        <DList Name="object_bai_DL_0062F8" Offset="0x62F8" />
+        <DList Name="object_bai_DL_006410" Offset="0x6410" />
+        <DList Name="object_bai_DL_006518" Offset="0x6518" />
+        <DList Name="object_bai_DL_006740" Offset="0x6740" />
+        <Texture Name="object_bai_TLUT_006858" OutName="tlut_006858" Format="rgba16" Width="16" Height="16" Offset="0x6858" />
+        <Texture Name="object_bai_Tex_006A58" OutName="tex_006A58" Format="ci8" Width="32" Height="64" Offset="0x6A58" />
+        <Texture Name="object_bai_Tex_007258" OutName="tex_007258" Format="ci8" Width="8" Height="8" Offset="0x7258" />
+        <Texture Name="object_bai_Tex_007298" OutName="tex_007298" Format="ci8" Width="8" Height="8" Offset="0x7298" />
+        <Texture Name="object_bai_Tex_0072D8" OutName="tex_0072D8" Format="ci8" Width="8" Height="8" Offset="0x72D8" />
+        <Texture Name="object_bai_Tex_007318" OutName="tex_007318" Format="ci8" Width="8" Height="16" Offset="0x7318" />
+        <Texture Name="object_bai_Tex_007398" OutName="tex_007398" Format="ci8" Width="8" Height="8" Offset="0x7398" />
+        <Texture Name="object_bai_Tex_0073D8" OutName="tex_0073D8" Format="ci8" Width="16" Height="16" Offset="0x73D8" />
+        <Texture Name="object_bai_Tex_0074D8" OutName="tex_0074D8" Format="ci8" Width="16" Height="16" Offset="0x74D8" />
+        <Texture Name="object_bai_Tex_0075D8" OutName="tex_0075D8" Format="rgba16" Width="16" Height="16" Offset="0x75D8" />
+        <Limb Name="object_bai_Standardlimb_0077D8" Type="Standard" EnumName="OBJECT_BAI_LIMB_01" Offset="0x77D8" />
+        <Limb Name="object_bai_Standardlimb_0077E4" Type="Standard" EnumName="OBJECT_BAI_LIMB_02" Offset="0x77E4" />
+        <Limb Name="object_bai_Standardlimb_0077F0" Type="Standard" EnumName="OBJECT_BAI_LIMB_03" Offset="0x77F0" />
+        <Limb Name="object_bai_Standardlimb_0077FC" Type="Standard" EnumName="OBJECT_BAI_LIMB_04" Offset="0x77FC" />
+        <Limb Name="object_bai_Standardlimb_007808" Type="Standard" EnumName="OBJECT_BAI_LIMB_05" Offset="0x7808" />
+        <Limb Name="object_bai_Standardlimb_007814" Type="Standard" EnumName="OBJECT_BAI_LIMB_06" Offset="0x7814" />
+        <Limb Name="object_bai_Standardlimb_007820" Type="Standard" EnumName="OBJECT_BAI_LIMB_07" Offset="0x7820" />
+        <Limb Name="object_bai_Standardlimb_00782C" Type="Standard" EnumName="OBJECT_BAI_LIMB_08" Offset="0x782C" />
+        <Limb Name="object_bai_Standardlimb_007838" Type="Standard" EnumName="OBJECT_BAI_LIMB_09" Offset="0x7838" />
+        <Limb Name="object_bai_Standardlimb_007844" Type="Standard" EnumName="OBJECT_BAI_LIMB_0A" Offset="0x7844" />
+        <Limb Name="object_bai_Standardlimb_007850" Type="Standard" EnumName="OBJECT_BAI_LIMB_0B" Offset="0x7850" />
+        <Limb Name="object_bai_Standardlimb_00785C" Type="Standard" EnumName="OBJECT_BAI_LIMB_0C" Offset="0x785C" />
+        <Limb Name="object_bai_Standardlimb_007868" Type="Standard" EnumName="OBJECT_BAI_LIMB_0D" Offset="0x7868" />
+        <Limb Name="object_bai_Standardlimb_007874" Type="Standard" EnumName="OBJECT_BAI_LIMB_0E" Offset="0x7874" />
+        <Limb Name="object_bai_Standardlimb_007880" Type="Standard" EnumName="OBJECT_BAI_LIMB_0F" Offset="0x7880" />
+        <Limb Name="object_bai_Standardlimb_00788C" Type="Standard" EnumName="OBJECT_BAI_LIMB_10" Offset="0x788C" />
+        <Limb Name="object_bai_Standardlimb_007898" Type="Standard" EnumName="OBJECT_BAI_LIMB_11" Offset="0x7898" />
+        <Limb Name="object_bai_Standardlimb_0078A4" Type="Standard" EnumName="OBJECT_BAI_LIMB_12" Offset="0x78A4" />
+        <Limb Name="object_bai_Standardlimb_0078B0" Type="Standard" EnumName="OBJECT_BAI_LIMB_13" Offset="0x78B0" />
+        <Skeleton Name="object_bai_Skel_007908" Type="Flex" LimbType="Standard" LimbNone="OBJECT_BAI_LIMB_NONE" LimbMax="OBJECT_BAI_LIMB_MAX" EnumName="ObjectBaiLimb" Offset="0x7908" />
+        <Animation Name="object_bai_Anim_008198" Offset="0x8198" /> <!-- Original name is "bai_wait02" -->
+    </File>
+</Root>

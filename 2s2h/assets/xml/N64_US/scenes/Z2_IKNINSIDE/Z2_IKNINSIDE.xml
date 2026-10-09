@@ -1,0 +1,15 @@
+<Root>
+    <File Name="Z2_IKNINSIDE" Segment="2" Game="MM">
+        <Scene Name="Z2_IKNINSIDE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_IKNINSIDE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_IKNINSIDE_room_00" Offset="0x0"/>
+        <DList Name="Z2_IKNINSIDE_room_00DL_002988" Offset="0x2988"/>
+        <DList Name="Z2_IKNINSIDE_room_00DL_0029C8" Offset="0x29C8"/>
+    </File>
+    <File Name="Z2_IKNINSIDE_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_IKNINSIDE_room_01" Offset="0x0"/>
+        <DList Name="Z2_IKNINSIDE_room_01DL_0061F0" Offset="0x61F0"/>
+        <DList Name="Z2_IKNINSIDE_room_01DL_007828" Offset="0x7828"/>
+    </File>
+</Root>

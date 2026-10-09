@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_obj_dinner" Segment="6">
+        <DList Name="object_obj_dinner_DL_0011E0" Offset="0x11E0" /> <!-- Original name is "obj_dinner_model" -->
+        <DList Name="object_obj_dinner_DL_001AA0" Offset="0x1AA0" /> <!-- Original name might be "objT_model" -->
+        <Texture Name="object_obj_dinner_Tex_001B38" OutName="tex_001B38" Format="rgba16" Width="4" Height="32" Offset="0x1B38" />
+        <Texture Name="object_obj_dinner_Tex_001C38" OutName="tex_001C38" Format="rgba16" Width="16" Height="16" Offset="0x1C38" />
+        <Texture Name="object_obj_dinner_Tex_001E38" OutName="tex_001E38" Format="rgba16" Width="16" Height="16" Offset="0x1E38" />
+        <Texture Name="object_obj_dinner_Tex_002038" OutName="tex_002038" Format="rgba16" Width="16" Height="16" Offset="0x2038" />
+        <Texture Name="object_obj_dinner_Tex_002238" OutName="tex_002238" Format="rgba16" Width="16" Height="32" Offset="0x2238" />
+    </File>
+</Root>

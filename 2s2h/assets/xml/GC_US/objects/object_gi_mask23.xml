@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Giant's Mask -->
+    <File Name="object_gi_mask23" Segment="6">
+
+        <!-- Giant's Mask Display List -->
+        <DList Name="gGiGiantMaskDL" Offset="0x8C0" />
+        <DList Name="gGiGiantMaskEmptyDL" Offset="0xC00" />
+
+        <!-- Giant's Mask Textures -->
+        <Texture Name="gGiGiantMaskEyeTex" OutName="gi_giant_mask_eye" Format="i8" Width="32" Height="64" Offset="0xC08" />
+        <Texture Name="gGiGiantMaskMouthTex" OutName="gi_giant_mask_mouth" Format="i8" Width="24" Height="11" Offset="0x1408" />
+    </File>
+</Root>

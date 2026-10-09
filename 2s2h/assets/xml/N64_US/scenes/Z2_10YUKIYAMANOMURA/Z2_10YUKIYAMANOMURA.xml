@@ -1,0 +1,13 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_04.xml" OutPath="misc/scene_texture_04/"/>
+    <File Name="Z2_10YUKIYAMANOMURA" Segment="2" Game="MM">
+        <Scene Name="Z2_10YUKIYAMANOMURA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_10YUKIYAMANOMURA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_10YUKIYAMANOMURA_room_00" Offset="0x0"/>
+        <DList Name="Z2_10YUKIYAMANOMURA_room_00DL_00B120" Offset="0xB120"/>
+        <DList Name="Z2_10YUKIYAMANOMURA_room_00DL_000610" Offset="0x610"/>
+        <DList Name="Z2_10YUKIYAMANOMURA_room_00DL_00B028" Offset="0xB028"/>
+        <DList Name="Z2_10YUKIYAMANOMURA_room_00DL_00B678" Offset="0xB678"/>
+    </File>
+</Root>

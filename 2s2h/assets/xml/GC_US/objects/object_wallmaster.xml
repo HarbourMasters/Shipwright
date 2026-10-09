@@ -1,0 +1,75 @@
+﻿<Root>
+    <!-- Assets for both Wallmasters and Floormasters. -->
+    <File Name="object_wallmaster" Segment="6">
+        <Animation Name="gWallmasterDamageAnim" Offset="0x590" /> <!-- Original name is "wm_damage" -->
+        <Animation Name="gWallmasterRecoverFromDamageAnim" Offset="0xEA4" /> <!-- Original name is "wm_damage_wait" -->
+        <Animation Name="gWallmasterJumpAnim" Offset="0x19CC" /> <!-- Original name is "wm_f_jump" -->
+        <Animation Name="gFloormasterTurnAnim" Offset="0x2158" /> <!-- Original name is "wm_l_turn" -->
+        <Animation Name="gWallmasterLungeAnim" Offset="0x299C" /> <!-- Original name is "wm_link_hangup" -->
+        <Animation Name="gWallmasterMissAnim" Offset="0x3120" /> <!-- Unused. Original name is "wm_miss" -->
+        <Animation Name="gFloormasterTapFingerAnim" Offset="0x39B0" /> <!-- Original name is "wm_motionA" -->
+        <Animation Name="gWallmasterWalkAnim" Offset="0x41F4" /> <!-- Original name is "wm_move" -->
+
+        <!-- Wallmaster/Floormaster Limb DisplayLists -->
+        <DList Name="gWallmasterThumbDistalDL" Offset="0x6660" />
+        <DList Name="gWallmasterThumbMiddleDL" Offset="0x6800" />
+        <DList Name="gWallmasterThumbProximalDL" Offset="0x6A20" />
+        <DList Name="gWallmasterWristDL" Offset="0x6C58" />
+        <DList Name="gWallmasterMiddleFingerDistalDL" Offset="0x6E98" />
+        <DList Name="gWallmasterMiddleFingerMiddleDL" Offset="0x7038" />
+        <DList Name="gWallmasterMiddleFingerProximalDL" Offset="0x7258" />
+        <DList Name="gWallmasterRingFingerDistalDL" Offset="0x7408" />
+        <DList Name="gWallmasterRingFingerMiddleDL" Offset="0x75A8" />
+        <DList Name="gWallmasterRingFingerProximalDL" Offset="0x77C8" />
+        <DList Name="gWallmasterIndexFingerDistalDL" Offset="0x7978" />
+        <DList Name="gWallmasterIndexFingerMiddleDL" Offset="0x7B18" />
+        <DList Name="gWallmasterIndexFingerProximalDL" Offset="0x7CE8" />
+        <DList Name="gWallmasterHandDL" Offset="0x7E98" />
+
+        <!-- Wallmaster/Floormaster Little Finger DisplayList. Not part of the skeleton, unlike the other fingers. -->
+        <DList Name="gWallmasterLittleFingerDL" Offset="0x8688" />
+
+        <!-- Wallmaster/Floormaster Textures -->
+        <Texture Name="gWallmasterWristTopTex" OutName="wallmaster_wrist_top" Format="rgba16" Width="8" Height="16" Offset="0x88F0" />
+        <Texture Name="gWallmasterWristSidesTex" OutName="wallmaster_wrist_sides" Format="rgba16" Width="8" Height="16" Offset="0x89F0" />
+        <Texture Name="gWallmasterHandBackTex" OutName="wallmaster_hand_back" Format="rgba16" Width="8" Height="8" Offset="0x8AF0" />
+        <Texture Name="gWallmasterFingerTipTex" OutName="wallmaster_finger_tip" Format="rgba16" Width="4" Height="16" Offset="0x8B70" />
+        <Texture Name="gWallmasterJointsAndSidesTex" OutName="wallmaster_joints_and_sides" Format="rgba16" Width="4" Height="8" Offset="0x8BF0" />
+        <Texture Name="gWallmasterPalmAndFingerPadTex" OutName="wallmaster_palm_and_finger_pad" Format="rgba16" Width="8" Height="16" Offset="0x8C30" />
+        <Texture Name="gWallmasterKnuckleAndFingerTopTex" OutName="wallmaster_knuckle_and_finger_top" Format="rgba16" Width="8" Height="16" Offset="0x8D30" />
+
+        <!-- Wallmaster/Floormaster Limbs -->
+        <Limb Name="gWallmasterRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_ROOT" Offset="0x8E30" />
+        <Limb Name="gWallmasterHandLimb" Type="Standard" EnumName="WALLMASTER_LIMB_HAND" Offset="0x8E3C" />
+        <Limb Name="gWallmasterIndexFingerRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_INDEX_FINGER_ROOT" Offset="0x8E48" />
+        <Limb Name="gWallmasterIndexFingerProximalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_INDEX_FINGER_PROXIMAL" Offset="0x8E54" />
+        <Limb Name="gWallmasterIndexFingerDistalRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_INDEX_FINGER_DISTAL_ROOT" Offset="0x8E60" />
+        <Limb Name="gWallmasterIndexFingerMiddleLimb" Type="Standard" EnumName="WALLMASTER_LIMB_INDEX_FINGER_MIDDLE" Offset="0x8E6C" />
+        <Limb Name="gWallmasterIndexFingerDistalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_INDEX_FINGER_DISTAL" Offset="0x8E78" />
+        <Limb Name="gWallmasterRingFingerRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_RING_FINGER_ROOT" Offset="0x8E84" />
+        <Limb Name="gWallmasterRingFingerProximalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_RING_FINGER_PROXIMAL" Offset="0x8E90" />
+        <Limb Name="gWallmasterRingFingerDistalRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_RING_FINGER_DISTAL_ROOT" Offset="0x8E9C" />
+        <Limb Name="gWallmasterRingFingerMiddleLimb" Type="Standard" EnumName="WALLMASTER_LIMB_RING_FINGER_MIDDLE" Offset="0x8EA8" />
+        <Limb Name="gWallmasterRingFingerDistalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_RING_FINGER_DISTAL" Offset="0x8EB4" />
+        <Limb Name="gWallmasterMiddleFingerRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_MIDDLE_FINGER_ROOT" Offset="0x8EC0" />
+        <Limb Name="gWallmasterMiddleFingerProximalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_MIDDLE_FINGER_PROXIMAL" Offset="0x8ECC" />
+        <Limb Name="gWallmasterMiddleFingerDistalRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_MIDDLE_FINGER_DISTAL_ROOT" Offset="0x8ED8" />
+        <Limb Name="gWallmasterMiddleFingerMiddleLimb" Type="Standard" EnumName="WALLMASTER_LIMB_MIDDLE_FINGER_MIDDLE" Offset="0x8EE4" />
+        <Limb Name="gWallmasterMiddleFingerDistalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_MIDDLE_FINGER_DISTAL" Offset="0x8EF0" />
+        <Limb Name="gWallmasterWristRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_WRIST_ROOT" Offset="0x8EFC" />
+        <Limb Name="gWallmasterWristLimb" Type="Standard" EnumName="WALLMASTER_LIMB_WRIST" Offset="0x8F08" />
+        <Limb Name="gWallmasterThumbRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_THUMB_ROOT" Offset="0x8F14" />
+        <Limb Name="gWallmasterThumbProximalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_THUMB_PROXIMAL" Offset="0x8F20" />
+        <Limb Name="gWallmasterThumbDistalRootLimb" Type="Standard" EnumName="WALLMASTER_LIMB_THUMB_DISTAL_ROOT" Offset="0x8F2C" />
+        <Limb Name="gWallmasterThumbMiddleLimb" Type="Standard" EnumName="WALLMASTER_LIMB_THUMB_MIDDLE" Offset="0x8F38" />
+        <Limb Name="gWallmasterThumbDistalLimb" Type="Standard" EnumName="WALLMASTER_LIMB_THUMB_DISTAL" Offset="0x8F44" />
+
+        <!-- Wallmaster/Floormaster Skeleton-->
+        <Skeleton Name="gWallmasterSkel" Type="Flex" LimbType="Standard" LimbNone="WALLMASTER_LIMB_NONE" LimbMax="WALLMASTER_LIMB_MAX" EnumName="WallmasterLimb" Offset="0x8FB0" />
+        
+        <Animation Name="gWallmasterStopWalkAnim" Offset="0x9244" /> <!-- Original name is "wm_move_wait" -->
+        <Animation Name="gWallmasterHoverAnim" Offset="0x9520" /> <!-- Original name is "wm_success" -->
+        <Animation Name="gWallmasterIdleAnim" Offset="0x9DB0" /> <!-- Original name is "wm_wait" -->
+        <Animation Name="gWallmasterStandUpAnim" Offset="0xA054" /> <!-- Original name is "wm_wait_move" -->
+    </File>
+</Root>

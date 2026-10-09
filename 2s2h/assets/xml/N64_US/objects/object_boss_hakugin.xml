@@ -1,0 +1,106 @@
+﻿<Root>
+    <!-- Assets for the Goht boss fight (Goht itself, its title card, its lightning, its rocks, etc.) -->
+    <File Name="object_boss_hakugin" Segment="6">
+        <!-- Goht Animations -->
+        <Animation Name="gGohtThawAndBreakWallAnim" Offset="0x2054" /> <!-- Original name is "iceb_demo" -->
+        <Animation Name="gGohtWritheOnSideAnim" Offset="0x25B0" /> <!-- Unused. Original name is "iceb_dm01" -->
+        <Animation Name="gGohtTwitchOnSideAnim" Offset="0x28D0" /> <!-- Unused. Original name is "iceb_dm02" -->
+        <Animation Name="gGohtFallOnSideAnim" Offset="0x3088" /> <!-- Unused. Original name is "iceb_down" -->
+        <Animation Name="gGohtStationaryAnim" Offset="0x319C" /> <!-- Original name is "iceb_kihon" ("basic") -->
+
+        <!-- Goht Limb DisplayLists -->
+        <DList Name="gGohtPelvisDL" Offset="0x8030" />
+        <DList Name="gGohtBackLeftHoofDL" Offset="0x8380" />
+        <DList Name="gGohtBackLeftPasternDL" Offset="0x84C0" />
+        <DList Name="gGohtBackLeftShinDL" Offset="0x8590" />
+        <DList Name="gGohtBackLeftThighDL" Offset="0x8718" />
+        <DList Name="gGohtBackRightHoofDL" Offset="0x89B8" />
+        <DList Name="gGohtBackRightPasternDL" Offset="0x8AF8" />
+        <DList Name="gGohtBackRightShinDL" Offset="0x8BC8" />
+        <DList Name="gGohtBackRightThighDL" Offset="0x8D50" />
+        <DList Name="gGohtHeadDL" Offset="0x8FF0" />
+        <DList Name="gGohtJawDL" Offset="0x9748" />
+        <DList Name="gGohtThoraxDL" Offset="0x9948" />
+        <DList Name="gGohtFrontLeftHoofDL" Offset="0x9E18" />
+        <DList Name="gGohtFrontLeftLowerLegDL" Offset="0x9F58" />
+        <DList Name="gGohtFrontLeftUpperLegDL" Offset="0xA170" />
+        <DList Name="gGohtFrontRightHoofDL" Offset="0xA478" />
+        <DList Name="gGohtFrontRightLowerLegDL" Offset="0xA5B8" />
+        <DList Name="gGohtFrontRightUpperLegDL" Offset="0xA7D0" />
+
+        <!-- Goht Textures -->
+        <Texture Name="gGohtMachineryTex" OutName="goht_machinery" Format="rgba16" Width="32" Height="64" Offset="0xAAD8" />
+        <Texture Name="gGohtMetalPlateWithCirclePatternTex" OutName="goht_metal_plate_with_circle_pattern" Format="rgba16" Width="32" Height="64" Offset="0xBAD8" />
+        <Texture Name="gGohtMetalPlateWithMulticoloredPatternTex" OutName="goht_metal_plate_with_multicolored_pattern" Format="rgba16" Width="32" Height="64" Offset="0xCAD8" />
+        <Texture Name="gGohtEyeTex" OutName="goht_eye" Format="rgba16" Width="32" Height="64" Offset="0xDAD8" />
+        <Texture Name="gGohtFaceAndKneePatternTex" OutName="goht_face_and_knee_pattern" Format="rgba16" Width="32" Height="64" Offset="0xEAD8" />
+        <Texture Name="gGohtHornTex" OutName="goht_horn" Format="rgba16" Width="32" Height="32" Offset="0xFAD8" />
+
+        <!-- Assets for the small rocks that Goht kicks up, as well as the large rocks that surround him when he is defeated. -->
+        <DList Name="gGohtRockMaterialDL" Offset="0x10488" />
+        <DList Name="gGohtRockModelDL" Offset="0x10500" /> <!-- Original name is "boss_haku_rock_model" -->
+        <Texture Name="gGohtRockTex" OutName="goht_rock" Format="rgba16" Width="36" Height="36" Offset="0x10560" />
+
+        <!-- DisplayLists for the stalactites that fall from the ceiling. -->
+        <DList Name="gGohtStalactiteMaterialDL" Offset="0x11100" />
+        <DList Name="gGohtStalactiteModelDL" Offset="0x11178" /> <!-- Original name is "boss_haku_icicle_model" -->
+
+        <!-- Assets for the lightning that Goht can shoot. -->
+        <DList Name="gGohtLightningMaterialDL" Offset="0x11208" />
+        <DList Name="gGohtLightningModelDL" Offset="0x11278" /> <!-- Original name is "boss_hakugin_lightining_modelT" -->
+        <Texture Name="gGohtLightningTex" OutName="goht_lightning" Format="i4" Width="32" Height="96" Offset="0x11290" />
+
+        <!-- A large amount of zeroes that are unused and have seemingly no purpose. -->
+        <Blob Name="gGohtEmptyBlob" Size="0x600" Offset="0x11890" />
+        
+        <!-- Assets for the light orb that Goht can shoot at the player, or out of which he can shoot lightning. -->
+        <Texture Name="gGohtLightOrbTex" OutName="goht_light_orb" Format="i8" Width="64" Height="64" Offset="0x11E90" />
+        <DList Name="gGohtLightOrbMaterialDL" Offset="0x12ED0" />
+        <DList Name="gGohtLightOrbModelDL" Offset="0x12F40" /> <!-- Original name is "boss_hakugin_lightball_modelT" -->
+
+        <!-- Goht Limbs -->
+        <Limb Name="gGohtRootLimb" Type="Standard" EnumName="GOHT_LIMB_ROOT" Offset="0x12F58" />
+        <Limb Name="gGohtPelvisLimb" Type="Standard" EnumName="GOHT_LIMB_PELVIS" Offset="0x12F64" />
+        <Limb Name="gGohtThoraxRootLimb" Type="Standard" EnumName="GOHT_LIMB_THORAX_ROOT" Offset="0x12F70" />
+        <Limb Name="gGohtThoraxWrapperLimb" Type="Standard" EnumName="GOHT_LIMB_THORAX_WRAPPER" Offset="0x12F7C" />
+        <Limb Name="gGohtFrontRightLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_RIGHT_LEG_ROOT" Offset="0x12F88" />
+        <Limb Name="gGohtFrontRightUpperLegLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x12F94" />
+        <Limb Name="gGohtFrontRightLowerLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_RIGHT_LOWER_LEG_ROOT" Offset="0x12FA0" />
+        <Limb Name="gGohtFrontRightLowerLegLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x12FAC" />
+        <Limb Name="gGohtFrontRightHoofLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_RIGHT_HOOF" Offset="0x12FB8" />
+        <Limb Name="gGohtFrontLeftLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_LEFT_LEG_ROOT" Offset="0x12FC4" />
+        <Limb Name="gGohtFrontLeftUpperLegLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x12FD0" />
+        <Limb Name="gGohtFrontLeftLowerLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_LEFT_LOWER_LEG_ROOT" Offset="0x12FDC" />
+        <Limb Name="gGohtFrontLeftLowerLegLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x12FE8" />
+        <Limb Name="gGohtFrontLeftHoofLimb" Type="Standard" EnumName="GOHT_LIMB_FRONT_LEFT_HOOF" Offset="0x12FF4" />
+        <Limb Name="gGohtThoraxLimb" Type="Standard" EnumName="GOHT_LIMB_THORAX" Offset="0x13000" />
+        <Limb Name="gGohtHeadLimb" Type="Standard" EnumName="GOHT_LIMB_HEAD" Offset="0x1300C" />
+        <Limb Name="gGohtJawRootLimb" Type="Standard" EnumName="GOHT_LIMB_JAW_ROOT" Offset="0x13018" />
+        <Limb Name="gGohtJawLimb" Type="Standard" EnumName="GOHT_LIMB_JAW" Offset="0x13024" />
+        <Limb Name="gGohtBackRightLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_LEG_ROOT" Offset="0x13030" />
+        <Limb Name="gGohtBackRightLegWrapperLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_LEG_WRAPPER" Offset="0x1303C" />
+        <Limb Name="gGohtBackRightThighLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_THIGH" Offset="0x13048" />
+        <Limb Name="gGohtBackRightShinLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_SHIN" Offset="0x13054" />
+        <Limb Name="gGohtBackRightPasternRootLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_PASTERN_ROOT" Offset="0x13060" />
+        <Limb Name="gGohtBackRightPasternLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_PASTERN" Offset="0x1306C" />
+        <Limb Name="gGohtBackRightHoofLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_RIGHT_HOOF" Offset="0x13078" />
+        <Limb Name="gGohtBackLeftLegRootLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_LEG_ROOT" Offset="0x13084" />
+        <Limb Name="gGohtBackLeftLegWrapperLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_LEG_WRAPPER" Offset="0x13090" />
+        <Limb Name="gGohtBackLeftThighLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_THIGH" Offset="0x1309C" />
+        <Limb Name="gGohtBackLeftShinLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_SHIN" Offset="0x130A8" />
+        <Limb Name="gGohtBackLeftPasternRootLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_PASTERN_ROOT" Offset="0x130B4" />
+        <Limb Name="gGohtBackLeftPasternLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_PASTERN" Offset="0x130C0" />
+        <Limb Name="gGohtBackLeftHoofLimb" Type="Standard" EnumName="GOHT_LIMB_BACK_LEFT_HOOF" Offset="0x130CC" />
+
+        <!-- Goht Skeleton -->
+        <Skeleton Name="gGohtSkel" Type="Flex" LimbType="Standard" LimbNone="GOHT_LIMB_NONE" LimbMax="GOHT_LIMB_MAX" EnumName="GohtLimb" Offset="0x13158" />
+
+        <!-- Goht Animations -->
+        <Animation Name="gGohtFallDownAnim" Offset="0x134D0" /> <!-- Original name is "iceb_koke" ("folly; fool") -->
+        <Animation Name="gGohtRunAnim" Offset="0x13828" /> <!-- Original name is "iceb_run" -->
+        <Animation Name="gGohtGetUpFromSideAnim" Offset="0x14024" /> <!-- Unused. Original name is "iceb_up" -->
+
+        <!-- Goht Title Card -->
+        <Texture Name="gGohtTitleCardTex" OutName="goht_title_card" Format="ia8" Width="128" Height="40" Offset="0x14040" />
+    </File>
+</Root>

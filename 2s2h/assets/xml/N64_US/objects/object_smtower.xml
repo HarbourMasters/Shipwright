@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_smtower" Segment="6">
+        <DList Name="object_smtower_DL_000520" Offset="0x520" /> <!-- Original name is "smtower_model" -->
+        <Texture Name="object_smtower_Tex_000778" OutName="tex_000778" Format="i8" Width="64" Height="32" Offset="0x778" />
+        <Texture Name="object_smtower_Tex_000F78" OutName="tex_000F78" Format="i4" Width="64" Height="64" Offset="0xF78" />
+        <TextureAnimation Name="object_smtower_Matanimheader_001788" Offset="0x1788" />
+    </File>
+</Root>

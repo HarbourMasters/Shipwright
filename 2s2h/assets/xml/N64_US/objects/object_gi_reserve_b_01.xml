@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Letter to Mama -->
+    <File Name="object_gi_reserve_b_01" Segment="6">
+
+        <!-- Letter to Mama Display Lists -->
+        <DList Name="gGiLetterToMamaInscriptionsDL" Offset="0x820" />
+        <DList Name="gGiLetterToMamaEnvelopeLetterDL" Offset="0x948" />
+
+        <!-- Letter to Mama Textures -->
+        <Texture Name="gGiLetterToMamaPostalAddressTex" OutName="gi_letter_to_mama_postal_address" Format="i4" Width="32" Height="16" Offset="0xCD8" />
+        <Texture Name="gGiLetterToMamaStampTex" OutName="gi_letter_to_mama_stamp" Format="ia16" Width="24" Height="32" Offset="0xDD8" />
+        <Texture Name="gGiLetterToMamaPattern1Tex" OutName="gi_letter_to_mama_pattern_1" Format="i8" Width="16" Height="32" Offset="0x13D8" />
+        <Texture Name="gGiLetterToMamaPattern2Tex" OutName="gi_letter_to_mama_pattern_2" Format="i4" Width="16" Height="32" Offset="0x15D8" />
+    </File>
+</Root>

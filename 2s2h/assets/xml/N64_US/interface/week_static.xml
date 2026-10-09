@@ -1,0 +1,7 @@
+<Root>
+    <File Name="week_static" Segment="9">
+        <Texture Name="gClockDay1stTex" OutName="clock_day_1st" Format="i8" Width="48" Height="27" Offset="0x0"/>
+        <Texture Name="gClockDay2ndTex" OutName="clock_day_2nd" Format="i8" Width="48" Height="27" Offset="0x510"/>
+        <Texture Name="gClockDayFinalTex" OutName="clock_day_final" Format="i8" Width="48" Height="27" Offset="0xA20"/>
+    </File>
+</Root>

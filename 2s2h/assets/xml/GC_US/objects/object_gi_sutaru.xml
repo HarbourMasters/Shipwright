@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Skull Token -->
+    <File Name="object_gi_sutaru" Segment="6">
+
+        <!-- Skull Token Display Lists -->
+        <DList Name="gGiSkulltulaTokenDL" Offset="0x330" />
+        <DList Name="gGiSkulltulaTokenFlameDL" Offset="0x438" />
+    </File>
+</Root>

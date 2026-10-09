@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_mask_rabit" Segment="10">
+        <DList Name="object_mask_rabit_DL_000610" Offset="0x610" />
+        <Texture Name="object_mask_rabit_Tex_0009A0" OutName="tex_0009A0" Format="rgba16" Width="16" Height="16" Offset="0x9A0" />
+        <Texture Name="object_mask_rabit_Tex_000BA0" OutName="tex_000BA0" Format="rgba16" Width="16" Height="32" Offset="0xBA0" />
+        <Texture Name="object_mask_rabit_Tex_000FA0" OutName="tex_000FA0" Format="rgba16" Width="16" Height="32" Offset="0xFA0" />
+    </File>
+</Root>

@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Assets for cuttable signs -->
+    <File Name="object_kanban" Segment="6">
+        <DList Name="gSignMaterialDL" Offset="0xC30" />
+        <DList Name="gSignUpperSideLeftModelDL" Offset="0xCB0" /> <!-- Original name is "kanban_L_top_R_model" -->
+        <DList Name="gSignLeftSideUpperModelDL" Offset="0xDB8" /> <!-- Original name is "kanban_L_top_L_model" -->
+        <DList Name="gSignLeftSideLowerModelDL" Offset="0xE78" /> <!-- Original name is "kanban_L_bottom_L_model" -->
+        <DList Name="gSignRightSideUpperModelDL" Offset="0xF38" /> <!-- Original name is "kanban_R_top_R_model" -->
+        <DList Name="gSignRightSideLowerModelDL" Offset="0xFF8" /> <!-- Original name is "kanban_R_bottom_R_model" -->
+        <DList Name="gSignLowerSideLeftModelDL" Offset="0x10B8" /> <!-- Original name is "kanban_L_bottom_R_model" -->
+        <DList Name="gSignUpperSideRightModelDL" Offset="0x11C0" /> <!-- Original name is "kanban_R_top_L_model" -->
+        <DList Name="gSignLowerSideRightModelDL" Offset="0x12C8" /> <!-- Original name is "kanban_R_bottom_L_model" -->
+        <DList Name="gSignPostUpperModelDL" Offset="0x13D0" /> <!-- Original name is "kanban_bo_top_model" -->
+        <DList Name="gSignPostLowerModelDL" Offset="0x1488" /> <!-- Original name is "kanban_bo_center_model" -->
+        <DList Name="gSignPostStandModelDL" Offset="0x1540" /> <!-- Original name is "kanban_bo_bottom_model" -->
+        <DList Name="gSignParticleDL" Offset="0x1630" /> <!-- Original name is "kanban_eff_modelT" -->
+        <Texture Name="gSignParticleTex" OutName="sign_particle" Format="i8" Width="16" Height="16" Offset="0x16B0" />
+    </File>
+</Root>

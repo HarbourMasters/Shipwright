@@ -1,0 +1,33 @@
+﻿<Root>
+    <File Name="object_dhouse" Segment="6">
+        <Texture Name="object_dhouse_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="object_dhouse_TLUT_000020" OutName="tlut_000020" Format="rgba16" Width="4" Height="4" Offset="0x20" />
+        <Texture Name="object_dhouse_Tex_000040" OutName="tex_000040" Format="ci4" Width="64" Height="64" Offset="0x40" />
+        <Texture Name="object_dhouse_Tex_000840" OutName="tex_000840" Format="rgba16" Width="32" Height="32" Offset="0x840" />
+        <Texture Name="object_dhouse_Tex_001040" OutName="tex_001040" Format="rgba16" Width="64" Height="32" Offset="0x1040" />
+        <Texture Name="object_dhouse_Tex_002040" OutName="tex_002040" Format="ci4" Width="64" Height="64" Offset="0x2040" />
+        <Texture Name="object_dhouse_Tex_002840" OutName="tex_002840" Format="rgba16" Width="32" Height="32" Offset="0x2840" />
+        <Texture Name="object_dhouse_Tex_003040" OutName="tex_003040" Format="i4" Width="64" Height="64" Offset="0x3040" />
+        <DList Name="object_dhouse_DL_004920" Offset="0x4920" />
+        <DList Name="object_dhouse_DL_004928" Offset="0x4928" /> <!-- Original name is "z2_broken_dhouse_model" -->
+        <DList Name="object_dhouse_DL_005A70" Offset="0x5A70" />
+        <DList Name="object_dhouse_DL_005A78" Offset="0x5A78" /> <!-- Original name is "z2_dhouse_model" -->
+        <DList Name="object_dhouse_DL_006CE0" Offset="0x6CE0" />
+        <DList Name="object_dhouse_DL_006E28" Offset="0x6E28" /> <!-- Original name is "d_hahen_01_model" -->
+        <DList Name="object_dhouse_DL_006EF8" Offset="0x6EF8" />
+        <DList Name="object_dhouse_DL_0070A8" Offset="0x70A8" /> <!-- Original name is "d_hahen_02_model" -->
+        <DList Name="object_dhouse_DL_007190" Offset="0x7190" />
+        <DList Name="object_dhouse_DL_007348" Offset="0x7348" /> <!-- Original name is "d_hahen_03_model" -->
+        <DList Name="object_dhouse_DL_007438" Offset="0x7438" />
+        <DList Name="object_dhouse_DL_007568" Offset="0x7568" /> <!-- Original name is "d_hahen_04_model" -->
+        <DList Name="object_dhouse_DL_007638" Offset="0x7638" />
+        <DList Name="object_dhouse_DL_007780" Offset="0x7780" /> <!-- Original name is "d_hahen_05_model" -->
+        <DList Name="object_dhouse_DL_007850" Offset="0x7850" />
+        <DList Name="object_dhouse_DL_007A00" Offset="0x7A00" /> <!-- Original name is "d_hahen_06_model" -->
+        <DList Name="object_dhouse_DL_007AE8" Offset="0x7AE8" />
+        <DList Name="object_dhouse_DL_007C98" Offset="0x7C98" /> <!-- Original name is "d_hahen_07_model" -->
+        <Collision Name="object_dhouse_Colheader_008040" Offset="0x8040" /> <!-- Original name is "z2_dhouse_hahen_bgdatainfo" -->
+        <DList Name="object_dhouse_DL_0081D0" Offset="0x81D0" />
+        <DList Name="object_dhouse_DL_0081D8" Offset="0x81D8" /> <!-- Original name is "z2_small_hahen_model" -->
+    </File>
+</Root>

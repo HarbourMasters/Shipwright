@@ -1,0 +1,106 @@
+﻿<Root>
+    <!-- Assets for Kotake -->
+    <File Name="object_trt" Segment="6">
+        <!-- Animations -->
+        <Animation Name="gKotakeHoverAnim" Offset="0xA44" /> <!-- Original name is "kt_fly_fuwafuwa" -->
+        <Animation Name="gKotakeFlyLookAroundAnim" Offset="0x1EF4" /> <!-- Original name is "kt_fly_kyoro" -->
+        <Animation Name="gKotakeFlyDownAnim" Offset="0x2224" /> <!-- Original name is "kt_kouka_loop" -->
+        <Animation Name="gKotakeFlyAnim" Offset="0x2CB0" /> <!-- Original name is "kt_tati_loop" -->
+        <Animation Name="gKotakeWakeUpAnim" Offset="0x30EC" /> <!-- Original name is "trT_kizuku" -->
+        <Animation Name="gKotakeSurprisedAnim" Offset="0x3D78" /> <!-- Original name is "trT_odoroku" -->
+
+        <!-- DLists -->
+        <DList Name="gKotakePelvisDL" Offset="0x6380" />
+        <DList Name="gKotakeTorsoDL" Offset="0x6590" />
+        <DList Name="gKotakeNeckDL" Offset="0x66D8" />
+        <DList Name="gKotakeHeadDL" Offset="0x6808" />
+        <DList Name="gKotakeLeftBraidStartDL" Offset="0x7298" />
+        <DList Name="gKotakeLeftBraidEndDL" Offset="0x7398" />
+        <DList Name="gKotakeTeethDL" Offset="0x7478" />
+        <DList Name="gKotakeRightBraidStartDL" Offset="0x74C8" />
+        <DList Name="gKotakeRightBraidEndDL" Offset="0x75C8" />
+        <DList Name="gKotakeRightSleeveStartDL" Offset="0x76A8" />
+        <DList Name="gKotakeRightSleeveFrontDL" Offset="0x77B8" />
+        <DList Name="gKotakeRightHandDL" Offset="0x7928" />
+        <DList Name="gKotakeRightSleeveMidDL" Offset="0x7C10" />
+        <DList Name="gKotakeRightSleeveEndDL" Offset="0x7D28" />
+        <DList Name="gKotakeLeftSleeveStartDL" Offset="0x7E38" />
+        <DList Name="gKotakeLeftSleeveFrontDL" Offset="0x7F48" />
+        <DList Name="gKotakeLeftHandDL" Offset="0x80B8" />
+        <DList Name="gKotakeBroomDL" Offset="0x83A0" />
+        <DList Name="gKotakeLeftSleeveMidDL" Offset="0x86A0" />
+        <DList Name="gKotakeLeftSleeveEndDL" Offset="0x87B8" />
+        <DList Name="gKotakeRightThighDL" Offset="0x88C8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gKotakeRightShinDL" Offset="0x8958" />
+        <DList Name="gKotakeRightFootDL" Offset="0x8A08" />
+        <DList Name="gKotakeLeftThighDL" Offset="0x8AA0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gKotakeLeftShinDL" Offset="0x8B30" />
+        <DList Name="gKotakeLeftFootDL" Offset="0x8BE0" />
+
+        <!-- Textures -->
+        <Texture Name="gKotakeSkinTLUT" OutName="kotake_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x8C78" />
+        <Texture Name="gKotakeMouthTLUT" OutName="kotake_mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0x8E78" />
+        <Texture Name="gKotakeEarTLUT" OutName="kotake_ear_tlut" Format="rgba16" Width="16" Height="16" Offset="0x9078" />
+        <Texture Name="gKotakeFingerTLUT" OutName="kotake_finger_tlut" Format="rgba16" Width="16" Height="16" Offset="0x9278" />
+        <Texture Name="gKotakeNeckTLUT" OutName="kotake_neck_tlut" Format="rgba16" Width="16" Height="16" Offset="0x9478" />
+        <Texture Name="gKotakeNostrilsTLUT" OutName="kotake_nostrils_tlut" Format="rgba16" Width="16" Height="16" Offset="0x9678" />
+        <Texture Name="gKotakeGerudoFabricTex" OutName="kotake_gerudo_fabric" Format="rgba16" Width="32" Height="32" Offset="0x9878" />
+        <Texture Name="gKotakeRobeTex" OutName="kotake_robe" Format="rgba16" Width="16" Height="16" Offset="0xA078" />
+        <Texture Name="gKotakeRobePatternTex" OutName="kotake_robe_pattern" Format="rgba16" Width="16" Height="16" Offset="0xA278" />
+        <Texture Name="gKotakeRobeTrimTex" OutName="kotake_robe_trim" Format="rgba16" Width="16" Height="16" Offset="0xA478" />
+        <Texture Name="gKotakeSkinTex" OutName="kotake_skin" Format="ci8" Width="16" Height="8" Offset="0xA678" />
+        <Texture Name="gKotakeMouthTex" OutName="kotake_mouth" Format="ci8" Width="8" Height="8" Offset="0xA6F8" />
+        <Texture Name="gKotakeHairTex" OutName="kotake_hair" Format="rgba16" Width="8" Height="32" Offset="0xA738" />
+        <Texture Name="gKotakeBraidEndTex" OutName="kotake_braid_end" Format="rgba16" Width="8" Height="8" Offset="0xA938" />
+        <Texture Name="gKotakeEarTex" OutName="kotake_ear" Format="ci8" Width="8" Height="8" Offset="0xA9B8" />
+        <Texture Name="gKotakeCollarNeckTex" OutName="kotake_collar_neck" Format="rgba16" Width="4" Height="8" Offset="0xA9F8" />
+        <Texture Name="gKotakeFingerTex" OutName="kotake_finger" Format="ci8" Width="8" Height="16" Offset="0xAA38" />
+        <Texture Name="gKotakeBroomHandleTex" OutName="kotake_broom_handle" Format="rgba16" Width="8" Height="8" Offset="0xAAB8" />->
+        <Texture Name="gKotakeBroomHeadTex" OutName="kotake_broom_head" Format="rgba16" Width="16" Height="32" Offset="0xAB38" />
+        <Texture Name="gKotakeJewelHolderTex" OutName="kotake_jewel_holder" Format="rgba16" Width="16" Height="8" Offset="0xAF38" />
+        <Texture Name="gKotakeNeckTex" OutName="kotake_neck" Format="ci8" Width="8" Height="8" Offset="0xB038" />
+        <Texture Name="gKotakeNostrilsTex" OutName="kotake_nostrils" Format="ci8" Width="8" Height="8" Offset="0xB078" />
+        <Texture Name="gKotakeEyeOpenTex" OutName="kotake_eye_open" Format="rgba16" Width="32" Height="32" Offset="0xB0B8" />
+        <Texture Name="gKotakeEyeHalfTex" OutName="kotake_eye_half" Format="rgba16" Width="32" Height="32" Offset="0xB8B8" />
+        <Texture Name="gKotakeEyeClosedTex" OutName="kotake_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0xC0B8" />
+        <Texture Name="gKotakeJewelTex" OutName="kotake_jewel" Format="rgba16" Width="8" Height="8" Offset="0xC8B8" />
+
+        <!-- Unused Eye TexAnim-->
+        <TextureAnimation Name="gKotakeEyeTexAnim" Offset="0xC988" />
+
+        <!-- Animations -->
+        <Animation Name="gKotakeHandsOnCounterAnim" Offset="0xD52C" /> <!-- Original name is "trT_talk" -->
+        <Animation Name="gKotakeIdleAnim" Offset="0xDE68" /> <!-- Original name is "trT_wait" -->
+        <Animation Name="gKotakeHalfAwakeAnim" Offset="0xEE98" /> <!-- Original name is "trT_wait01" -->
+        <Animation Name="gKotakeSleepingAnim" Offset="0xFD34" /> <!-- Original name is "trT_wait02" -->
+
+        <!-- Skeleton -->
+        <Limb Name="gKotakePelvisLimb" Type="Standard" EnumName="KOTAKE_LIMB_PELVIS" Offset="0xFD50" />
+        <Limb Name="gKotakeLeftThighLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_THIGH" Offset="0xFD5C" />
+        <Limb Name="gKotakeLeftShinLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_SHIN" Offset="0xFD68" />
+        <Limb Name="gKotakeLeftFootLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_FOOT" Offset="0xFD74" />
+        <Limb Name="gKotakeRightThighLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGH_THIGH" Offset="0xFD80" />
+        <Limb Name="gKotakeRightShinLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_SHIN" Offset="0xFD8C" />
+        <Limb Name="gKotakeRightFootLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_FOOT" Offset="0xFD98" />
+        <Limb Name="gKotakeTorsoLimb" Type="Standard" EnumName="KOTAKE_LIMB_TORSO_LIMB" Offset="0xFDA4" />
+        <Limb Name="gKotakeLeftSleeveStartLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_SLEEVE_START" Offset="0xFDB0" />
+        <Limb Name="gKotakeLeftSleeveMidLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_SLEEVE_MID" Offset="0xFDBC" />
+        <Limb Name="gKotakeLeftSleeveEndLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_SLEEVE_END" Offset="0xFDC8" />
+        <Limb Name="gKotakeLeftSleeveFrontLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_SLEEVE_FRONT" Offset="0xFDD4" />
+        <Limb Name="gKotakeLeftHandLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_HAND" Offset="0xFDE0" />
+        <Limb Name="gKotakeBroomLimb" Type="Standard" EnumName="KOTAKE_LIMB_BROOM" Offset="0xFDEC" />
+        <Limb Name="gKotakeRightSleeveStartLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_SLEEVE_START" Offset="0xFDF8" />
+        <Limb Name="gKotakeRightSleeveMidLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_SLEEVE_MID" Offset="0xFE04" />
+        <Limb Name="gKotakeRightSleeveEndLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_SLEEVE_END" Offset="0xFE10" />
+        <Limb Name="gKotakeRightSleeveFrontLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_SLEEVE_FRONT" Offset="0xFE1C" />
+        <Limb Name="gKotakeRightHandLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_HAND" Offset="0xFE28" />
+        <Limb Name="gKotakeNeckLimb" Type="Standard" EnumName="KOTAKE_LIMB_NECK" Offset="0xFE34" />
+        <Limb Name="gKotakeHeadLimb" Type="Standard" EnumName="KOTAKE_LIMB_HEAD" Offset="0xFE40" />
+        <Limb Name="gKotakeRightBraidStartLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_BRAID_START" Offset="0xFE4C" />
+        <Limb Name="gKotakeRightBraidEndLimb" Type="Standard" EnumName="KOTAKE_LIMB_RIGHT_BRAID_END" Offset="0xFE58" />
+        <Limb Name="gKotakeTeethLimb" Type="Standard" EnumName="KOTAKE_LIMB_TEETH" Offset="0xFE64" />
+        <Limb Name="gKotakeLeftBraidStartLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_BRAID_START" Offset="0xFE70" />
+        <Limb Name="gKotakeLeftBraidEndLimb" Type="Standard" EnumName="KOTAKE_LIMB_LEFT_BRAID_END" Offset="0xFE7C" />
+        <Skeleton Name="gKotakeSkel" Type="Flex" LimbType="Standard" LimbNone="KOTAKE_LIMB_NONE" LimbMax="KOTAKE_LIMB_MAX" EnumName="KotakeLimb" Offset="0xFEF0" />
+    </File>
+</Root>

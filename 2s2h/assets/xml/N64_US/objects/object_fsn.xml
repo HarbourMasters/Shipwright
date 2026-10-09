@@ -1,0 +1,111 @@
+﻿<Root>
+    <!-- Object for the Curisoity Shop Man -->
+    <File Name="object_fsn" Segment="6">
+        <!-- DLists -->
+        <DList Name="gFsnTorsoDL" Offset="0x2A20" />
+        <DList Name="gFsnToupeeDL" Offset="0x2D88" />
+        <DList Name="gFsnHeadDL" Offset="0x2EF0" />
+        <DList Name="gFsnRightUpperArmDL" Offset="0x34C8" />
+        <DList Name="gFsnRightForearmDL" Offset="0x3600" />
+        <DList Name="gFsnRightHandDL" Offset="0x3718" />
+        <DList Name="gFsnLeftUpperArmDL" Offset="0x3860" />
+        <DList Name="gFsnLeftForearmDL" Offset="0x3998" />
+        <DList Name="gFsnLeftHandDL" Offset="0x3AB0" />
+        <DList Name="gFsnPelvisDL" Offset="0x3BF8" />
+        <DList Name="gFsnRightThighDL" Offset="0x3CF0" />
+        <DList Name="gFsnRightShinDL" Offset="0x3DD8" />
+        <DList Name="gFsnRightFootDL" Offset="0x3F20" />
+        <DList Name="gFsnLeftThighDL" Offset="0x3FF8" />
+        <DList Name="gFsnLeftShinDL" Offset="0x40E0" />
+        <DList Name="gFsnLeftFootDL" Offset="0x4228" />
+
+        <!-- TLUTs -->
+        <Texture Name="gFsnHandTLUT" OutName="fsn_hand_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4300" />
+        <Texture Name="gFsnSkinTLUT" OutName="fsn_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4500" />
+        <Texture Name="gFsnShirtTLUT" OutName="fsn_shirt_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4700" />
+        <Texture Name="gFsnHairTLUT" OutName="fsn_hair_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4900" />
+        <Texture Name="gFsnEyeTLUT" OutName="fsn_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4B00" />
+        <Texture Name="gFsnEarTLUT" OutName="fsn_ear_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4D00" />
+        <Texture Name="gFsnHairSkinTLUT" OutName="fsn_hair_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4F00" />
+        <Texture Name="gFsnMouthTLUT" OutName="fsn_mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5100" />
+        <Texture Name="gFsnNostrilTLUT" OutName="fsn_nostril_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5300" />
+
+        <!-- Textures -->
+        <Texture Name="gFsnHandTex" OutName="fsn_hand" Format="ci8" Width="16" Height="16" Offset="0x5500" />
+        <Texture Name="gFsnSkinTex" OutName="fsn_skin" Format="ci8" Width="8" Height="8" Offset="0x5600" />
+        <Texture Name="gFsnShirtTex" OutName="fsn_shirt" Format="ci8" Width="8" Height="16" Offset="0x5640" />
+        <Texture Name="gFsnPantsTex" OutName="fsn_pants" Format="rgba16" Width="16" Height="16" Offset="0x56C0" />
+        <Texture Name="gFsnBootsTex" OutName="fsn_boots" Format="rgba16" Width="16" Height="16" Offset="0x58C0" />
+        <Texture Name="gFsnHairTex" OutName="fsn_hair" Format="ci8" Width="16" Height="16" Offset="0x5AC0" />
+        <Texture Name="gFsnEyeOpenTex" OutName="fsn_eye_open" Format="ci8" Width="32" Height="32" Offset="0x5BC0" /> 
+        <Texture Name="gFsnEarTex" OutName="fsn_ear" Format="ci8" Width="8" Height="8" Offset="0x5FC0" />
+        <Texture Name="gFsnHairSkinTex" OutName="fsn_hair_and_skin" Format="ci8" Width="16" Height="16" Offset="0x6000" />
+        <Texture Name="gFsnMouthTex" OutName="fsn_mouth" Format="ci8" Width="32" Height="32" Offset="0x6100" />
+        <Texture Name="gFsnNostrilTex" OutName="fsn_nostril" Format="ci8" Width="8" Height="8" Offset="0x6500" />
+        <Texture Name="gFsnVestTex" OutName="fsn_vest" Format="rgba16" Width="32" Height="32" Offset="0x6540" />
+        <Texture Name="gFsnEyeHalfTex" OutName="fsn_eye_half" Format="ci8" Width="32" Height="32" Offset="0x6D40" />
+        <Texture Name="gFsnEyeClosedTex" OutName="fsn_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x7140" />
+        
+        <!-- Unused -->
+        <!-- <Blob Name="object_fsn_Blob_007540" Size="0x1100" Offset="0x7540" /> -->
+
+        <Texture Name="gFsnUnusedEyeOpenTex" OutName="fsn_unused_eye_open" Format="rgba32" Width="32" Height="32" Offset="0x8640" />
+        <Texture Name="gFsnUnusedEyeHalfTex" OutName="fsn_unused_eye_half" Format="rgba32" Width="32" Height="32" Offset="0x9640" />
+        <Texture Name="gFsnUnusedEyeClosedTex" OutName="fsn_unused_eye_closed" Format="rgba32" Width="32" Height="32" Offset="0xA640" />
+
+        <!-- Unused Eye Texture Animation -->
+        <TextureAnimation Name="gFsnEyeTexAnim" Offset="0xB664" />
+        
+        <!-- Animations -->
+        <Animation Name="gFsnSlamCounterStartAnim" Offset="0xB9D8" /> <!-- Original name is "fsn_dekuwait01" -->
+        <Animation Name="gFsnSlamCounterLoopAnim" Offset="0xC26C" /> <!-- Original name is "fsn_dekuwait02" -->
+        <Animation Name="gFsnTurnAroundAnim" Offset="0xC58C" /> <!-- Original name is "fsn_furimuki" -->
+        <Animation Name="gFsnHandOnFaceStartAnim" Offset="0xCB3C" /> <!-- Original name is "fsn_goronwait01" -->
+        <Animation Name="gFsnHandOnFaceLoopAnim" Offset="0xD354" /> <!-- Original name is "fsn_goronwait02" -->
+        <Animation Name="gFsnMakeOfferAnim" Offset="0xDE34" /> <!-- Original name is "fsn_kane" -->
+        <Animation Name="gFsnHandsOnCounterStartAnim" Offset="0xE3EC" /> <!-- Original name is "fsn_nwait01" -->
+        <Animation Name="gFsnHandsOnCounterLoopAnim" Offset="0xF00C" /> <!-- Original name is "fsn_nwait02" -->
+
+        <!-- Glasses DLists -->
+        <DList Name="gFsnGlassesFrameDL" Offset="0xF180" />
+        <DList Name="gFsnGlassesLensesDL" Offset="0xF218" />
+
+        <!-- Glasses Textures -->
+        <Texture Name="gFsnGlassesLensesTex" OutName="fsn_glasses_lenses" Format="rgba16" Width="32" Height="32" Offset="0xF2B0" />
+        <Texture Name="gFsnGlassesFrameTex" OutName="fsn_glasses_frame" Format="rgba16" Width="8" Height="8" Offset="0xFAB0" />
+        
+        <!-- <Blob Name="object_fsn_Blob_00FB30" Size="0x3040" Offset="0xFB30" /> -->
+        
+        <!-- Animations -->
+        <Animation Name="gFsnIdleAnim" Offset="0x12C34" /> <!-- Original name is "fsn_wait" -->
+        <Animation Name="gFsnScratchBackAnim" Offset="0x131FC" /> <!-- Original name is "fsn_wait01" -->
+
+        <!-- Limbs -->
+        <Limb Name="gFsnPelvisLimb" Type="Standard" EnumName="FSN_LIMB_PELVIS" Offset="0x13210" />
+        <Limb Name="gFsnLeftThighLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_THIGH" Offset="0x1321C" />
+        <Limb Name="gFsnLeftShinLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_SHIN" Offset="0x13228" />
+        <Limb Name="gFsnLeftFootLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_FOOT" Offset="0x13234" />
+        <Limb Name="gFsnRightThighLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_THIGH" Offset="0x13240" />
+        <Limb Name="gFsnRightShinLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_SHIN" Offset="0x1324C" />
+        <Limb Name="gFsnRightFootLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_FOOT" Offset="0x13258" />
+        <Limb Name="gFsnTorsoLimb" Type="Standard" EnumName="FSN_LIMB_TORSO" Offset="0x13264" />
+        <Limb Name="gFsnLeftUpperArmLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_UPPER_ARM" Offset="0x13270" />
+        <Limb Name="gFsnLeftForearmLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_FOREARM" Offset="0x1327C" />
+        <Limb Name="gFsnLeftHandLimb" Type="Standard" EnumName="FSN_LIMB_LEFT_HAND" Offset="0x13288" />
+        <Limb Name="gFsnRightUpperArmLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_UPPER_ARM" Offset="0x13294" />
+        <Limb Name="gFsnRightForearmLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_FOREARM" Offset="0x132A0" />
+        <Limb Name="gFsnRightHandLimb" Type="Standard" EnumName="FSN_LIMB_RIGHT_HAND" Offset="0x132AC" />
+        <Limb Name="gFsnHeadRootLimb" Type="Standard" EnumName="FSN_LIMB_HEAD_ROOT" Offset="0x132B8" />
+        <Limb Name="gFsnHeadLimb" Type="Standard" EnumName="FSN_LIMB_HEAD" Offset="0x132C4" />
+        <Limb Name="gFsnToupeeLimb" Type="Standard" EnumName="FSN_LIMB_TOUPEE" Offset="0x132D0" />
+
+        <!-- Skeleton -->
+        <!-- @bug: gFsnSkel specifies 18 limbs but only 17 exist, ZAPD breaks if gFsnLimbs is not extracted manually -->
+        <LimbTable Name="gFsnLimbs" LimbType="Standard" Count="17" Offset="0x132DC"/>
+        <Skeleton Name="gFsnSkel" Type="Flex" LimbType="Standard" LimbNone="FSN_LIMB_NONE" LimbMax="FSN_LIMB_MAX" EnumName="FsnLimb" Offset="0x13320" />
+
+        <!-- Animations -->
+        <Animation Name="gFsnLeanForwardStartAnim" Offset="0x138B0" /> <!-- Original name is "fsn_zorawait01" -->
+        <Animation Name="gFsnLeanForwardLoopAnim" Offset="0x1430C" /> <!-- Original name is "fsn_zorawait02" -->
+    </File>
+</Root>

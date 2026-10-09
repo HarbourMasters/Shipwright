@@ -1,0 +1,97 @@
+﻿<Root>
+    <File Name="object_cs" Segment="6">
+        <DList Name="object_cs_DL_000040" Offset="0x40" />
+        <Texture Name="object_cs_Tex_0000C0" OutName="tex_0000C0" Format="ia8" Width="64" Height="64" Offset="0xC0" />
+        <Animation Name="object_cs_Anim_001708" Offset="0x1708" /> <!-- Original name is "csn_atsume" ("to collect; to assemble; to gather​") -->
+        <Animation Name="object_cs_Anim_001A1C" Offset="0x1A1C" /> <!-- Original name is "csn_fly" -->
+        <Animation Name="object_cs_Anim_002044" Offset="0x2044" /> <!-- Original name is "csn_fukiya" ("blowgun; blowpipe; dart​") -->
+        <Animation Name="object_cs_Anim_0026B0" Offset="0x26B0" /> <!-- Original name is "csn_keirei" ("salute") -->
+        <Animation Name="object_cs_Anim_002930" Offset="0x2930" /> <!-- Original name is "csn_kinobori" ("tree climbing​") -->
+        <Animation Name="object_cs_Anim_0031C4" Offset="0x31C4" /> <!-- Original name is "csn_kyoro" (onomatopoeic for "looking around restlessly") -->
+        <Animation Name="object_cs_Anim_00349C" Offset="0x349C" /> <!-- Original name is "csn_odoroku" ("surprise") -->
+        <Animation Name="object_cs_Anim_0036B0" Offset="0x36B0" /> <!-- Original name is "csn_run03" -->
+        <Animation Name="object_cs_Anim_003EE4" Offset="0x3EE4" /> <!-- Original name is "csn_senakamise" ("senaka" = "back (of the body)​", "mise" = "to show; to display​") -->
+        <Animation Name="object_cs_Anim_00433C" Offset="0x433C" /> <!-- Original name is "csn_senakatalk" -->
+        <Animation Name="object_cs_Anim_00478C" Offset="0x478C" /> <!-- Original name is "csn_senakawait" -->
+        <Animation Name="object_cs_Anim_004960" Offset="0x4960" /> <!-- Original name is "csn_shagamu" ("to squat; to crouch​") -->
+        <Animation Name="object_cs_Anim_004C1C" Offset="0x4C1C" /> <!-- Original name is "csn_suwari" ("sitting") -->
+        <Animation Name="object_cs_Anim_005128" Offset="0x5128" /> <!-- Original name is "csn_suwaripiyo" ("piyo" = "weakly moving") -->
+        <Animation Name="object_cs_Anim_0053F4" Offset="0x53F4" /> <!-- Original name is "csn_talk01" -->
+        <Animation Name="object_cs_Anim_0057C8" Offset="0x57C8" /> <!-- Original name is "csn_talk02" -->
+        <Animation Name="object_cs_Anim_005DC4" Offset="0x5DC4" /> <!-- Original name is "csn_talk03" -->
+        <Animation Name="object_cs_Anim_0060E8" Offset="0x60E8" /> <!-- Original name is "csn_tome" -->
+        <Animation Name="gBomberIdleAnim" Offset="0x64B8" /> <!-- Original name is "csn_wait01" -->
+        <DList Name="object_cs_DL_009130" Offset="0x9130" />
+        <DList Name="object_cs_DL_009478" Offset="0x9478" />
+        <DList Name="object_cs_DL_009578" Offset="0x9578" />
+        <DList Name="object_cs_DL_009678" Offset="0x9678" />
+        <DList Name="object_cs_DL_009C50" Offset="0x9C50" />
+        <DList Name="object_cs_DL_009D48" Offset="0x9D48" />
+        <DList Name="object_cs_DL_009E38" Offset="0x9E38" />
+        <DList Name="object_cs_DL_009F80" Offset="0x9F80" />
+        <DList Name="object_cs_DL_00A0C0" Offset="0xA0C0" />
+        <DList Name="object_cs_DL_00A1B8" Offset="0xA1B8" />
+        <DList Name="object_cs_DL_00A2A8" Offset="0xA2A8" />
+        <DList Name="object_cs_DL_00A3F0" Offset="0xA3F0" />
+        <DList Name="object_cs_DL_00A508" Offset="0xA508" />
+        <DList Name="object_cs_DL_00A650" Offset="0xA650" />
+        <DList Name="object_cs_DL_00A7E0" Offset="0xA7E0" />
+        <DList Name="object_cs_DL_00AA58" Offset="0xAA58" />
+        <DList Name="object_cs_DL_00ABA0" Offset="0xABA0" />
+        <DList Name="object_cs_DL_00AD30" Offset="0xAD30" />
+        <Texture Name="object_cs_TLUT_00B020" OutName="tlut_00B020" Format="rgba16" Width="16" Height="16" Offset="0xB020" />
+        <Texture Name="object_cs_TLUT_00B220" OutName="tlut_00B220" Format="rgba16" Width="16" Height="16" Offset="0xB220" />
+        <Texture Name="object_cs_TLUT_00B420" OutName="tlut_00B420" Format="rgba16" Width="16" Height="16" Offset="0xB420" />
+        <Texture Name="object_cs_Tex_00B620" OutName="tex_00B620" Format="ci8" Width="32" Height="16" Offset="0xB620" />
+        <Texture Name="object_cs_Tex_00B820" OutName="tex_00B820" Format="ci8" Width="8" Height="8" Offset="0xB820" />
+        <Texture Name="object_cs_Tex_00B860" OutName="tex_00B860" Format="ci8" Width="8" Height="8" Offset="0xB860" />
+        <Texture Name="object_cs_Tex_00B8A0" OutName="tex_00B8A0" Format="ci8" Width="16" Height="16" Offset="0xB8A0" />
+        <Texture Name="object_cs_Tex_00B9A0" OutName="tex_00B9A0" Format="ci8" Width="8" Height="8" Offset="0xB9A0" />
+        <Texture Name="object_cs_Tex_00B9E0" OutName="tex_00B9E0" Format="ci8" Width="16" Height="16" Offset="0xB9E0" />
+        <Texture Name="object_cs_Tex_00BAE0" OutName="tex_00BAE0" Format="ci8" Width="16" Height="16" Offset="0xBAE0" />
+        <Blob Name="object_cs_Blob_00BBE0" Size="0x400" Offset="0xBBE0" />
+        <Texture Name="object_cs_Tex_00BFE0" OutName="tex_00BFE0" Format="ci8" Width="8" Height="8" Offset="0xBFE0" />
+        <Texture Name="object_cs_Tex_00C020" OutName="tex_00C020" Format="ci8" Width="8" Height="8" Offset="0xC020" />
+        <Texture Name="object_cs_Tex_00C060" OutName="tex_00C060" Format="ci8" Width="8" Height="8" Offset="0xC060" />
+        <Texture Name="object_cs_Tex_00C0A0" OutName="tex_00C0A0" Format="ci8" Width="8" Height="16" Offset="0xC0A0" />
+        <Texture Name="object_cs_Tex_00C120" OutName="tex_00C120" Format="i8" Width="16" Height="16" Offset="0xC120" />
+        <Texture Name="object_cs_Tex_00C220" OutName="tex_00C220" Format="ci8" Width="16" Height="16" Offset="0xC220" />
+        <Blob Name="object_cs_Blob_00C320" Size="0x200" Offset="0xC320" />
+        <Texture Name="object_cs_Tex_00C520" OutName="tex_00C520" Format="rgba16" Width="32" Height="32" Offset="0xC520" />
+        <Texture Name="object_cs_Tex_00CD20" OutName="tex_00CD20" Format="rgba16" Width="32" Height="32" Offset="0xCD20" />
+        <Texture Name="object_cs_Tex_00D520" OutName="tex_00D520" Format="rgba16" Width="32" Height="32" Offset="0xD520" />
+        <Texture Name="object_cs_Tex_00DD20" OutName="tex_00DD20" Format="i8" Width="32" Height="32" Offset="0xDD20" />
+        <Texture Name="object_cs_Tex_00E120" OutName="tex_00E120" Format="i8" Width="16" Height="16" Offset="0xE120" />
+        <Texture Name="object_cs_Tex_00E220" OutName="tex_00E220" Format="i8" Width="32" Height="32" Offset="0xE220"/>
+        <Texture Name="object_cs_Tex_00E620" OutName="tex_00E620" Format="i8" Width="32" Height="32" Offset="0xE620" />
+        <Texture Name="object_cs_Tex_00EA20" OutName="tex_00EA20" Format="i8" Width="32" Height="32" Offset="0xEA20" />
+        <Texture Name="object_cs_Tex_00EE20" OutName="tex_00EE20" Format="i8" Width="32" Height="32" Offset="0xEE20" />
+        <Texture Name="object_cs_Tex_00F220" OutName="tex_00F220" Format="i8" Width="32" Height="32" Offset="0xF220" />
+        <Texture Name="object_cs_Tex_00F620" OutName="tex_00F620" Format="i8" Width="8" Height="8" Offset="0xF620" />
+        <TextureAnimation Name="object_cs_Matanimheader_00F6D4" Offset="0xF6D4" />
+        <Limb Name="object_cs_Standardlimb_00F6EC" Type="Standard" EnumName="OBJECT_CS_LIMB_01" Offset="0xF6EC" />
+        <Limb Name="object_cs_Standardlimb_00F6F8" Type="Standard" EnumName="OBJECT_CS_LIMB_02" Offset="0xF6F8" />
+        <Limb Name="object_cs_Standardlimb_00F704" Type="Standard" EnumName="OBJECT_CS_LIMB_03" Offset="0xF704" />
+        <Limb Name="object_cs_Standardlimb_00F710" Type="Standard" EnumName="OBJECT_CS_LIMB_04" Offset="0xF710" />
+        <Limb Name="object_cs_Standardlimb_00F71C" Type="Standard" EnumName="OBJECT_CS_LIMB_05" Offset="0xF71C" />
+        <Limb Name="object_cs_Standardlimb_00F728" Type="Standard" EnumName="OBJECT_CS_LIMB_06" Offset="0xF728" />
+        <Limb Name="object_cs_Standardlimb_00F734" Type="Standard" EnumName="OBJECT_CS_LIMB_07" Offset="0xF734" />
+        <Limb Name="object_cs_Standardlimb_00F740" Type="Standard" EnumName="OBJECT_CS_LIMB_08" Offset="0xF740" />
+        <Limb Name="object_cs_Standardlimb_00F74C" Type="Standard" EnumName="OBJECT_CS_LIMB_09" Offset="0xF74C" />
+        <Limb Name="object_cs_Standardlimb_00F758" Type="Standard" EnumName="OBJECT_CS_LIMB_0A" Offset="0xF758" />
+        <Limb Name="object_cs_Standardlimb_00F764" Type="Standard" EnumName="OBJECT_CS_LIMB_0B" Offset="0xF764" />
+        <Limb Name="object_cs_Standardlimb_00F770" Type="Standard" EnumName="OBJECT_CS_LIMB_0C" Offset="0xF770" />
+        <Limb Name="object_cs_Standardlimb_00F77C" Type="Standard" EnumName="OBJECT_CS_LIMB_0D" Offset="0xF77C" />
+        <Limb Name="object_cs_Standardlimb_00F788" Type="Standard" EnumName="OBJECT_CS_LIMB_0E" Offset="0xF788" />
+        <Limb Name="object_cs_Standardlimb_00F794" Type="Standard" EnumName="OBJECT_CS_LIMB_0F" Offset="0xF794" />
+        <Limb Name="object_cs_Standardlimb_00F7A0" Type="Standard" EnumName="OBJECT_CS_LIMB_10" Offset="0xF7A0" />
+        <Limb Name="object_cs_Standardlimb_00F7AC" Type="Standard" EnumName="OBJECT_CS_LIMB_11" Offset="0xF7AC" />
+        <Limb Name="object_cs_Standardlimb_00F7B8" Type="Standard" EnumName="OBJECT_CS_LIMB_12" Offset="0xF7B8" />
+        <Limb Name="object_cs_Standardlimb_00F7C4" Type="Standard" EnumName="OBJECT_CS_LIMB_13" Offset="0xF7C4" />
+        <Limb Name="object_cs_Standardlimb_00F7D0" Type="Standard" EnumName="OBJECT_CS_LIMB_14" Offset="0xF7D0" />
+        <Skeleton Name="object_cs_Skel_00F82C" Type="Flex" LimbType="Standard" LimbNone="OBJECT_CS_LIMB_NONE" LimbMax="OBJECT_CS_LIMB_MAX" EnumName="ObjectCsLimb" Offset="0xF82C" />
+        <Animation Name="object_cs_Anim_00FAF4" Offset="0xFAF4" /> <!-- Original name is "csn_wait02" -->
+        <Animation Name="object_cs_Anim_01007C" Offset="0x1007C" /> <!-- Original name is "csn_walk" -->
+        <Animation Name="object_cs_Anim_010B68" Offset="0x10B68" /> <!-- Original name is "csn_yarare" ("to suffer damage") -->
+    </File>
+</Root>

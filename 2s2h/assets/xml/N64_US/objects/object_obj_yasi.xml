@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Object for the Palm Tree(s) found at the Great Bay Coast -->
+    <File Name="object_obj_yasi" Segment="6">
+        <DList Name="gPalmTreeDL" Offset="0x360" /> <!-- Original name is "z2_yasi_model" -->
+        <Texture Name="gPalmTreeTLUT" OutName="palm_tree_tlut" Format="rgba16" Width="4" Height="4" Offset="0x630" />
+        <Texture Name="gPalmTreeFrondTex" OutName="palm_tree_frond" Format="ci4" Width="32" Height="128" Offset="0x650" />
+        <Texture Name="gPalmTreeDekuNutTex" OutName="palm_tree_deku_nut" Format="rgba16" Width="16" Height="16" Offset="0xE50" />
+        <Texture Name="gPalmTreeScarredWoodTex" OutName="palm_tree_scarred_wood" Format="rgba16" Width="16" Height="16" Offset="0x1050" />
+        <Texture Name="gPalmTreeWoodTex" OutName="palm_tree_wood" Format="rgba16" Width="8" Height="8" Offset="0x1250" />
+        <Collision Name="gPalmTreeCol" Offset="0x1428" /> <!-- Original name is "z2_yasi_bgdatainfo" -->
+    </File>
+</Root>

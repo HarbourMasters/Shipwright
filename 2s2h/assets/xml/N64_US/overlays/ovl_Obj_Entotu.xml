@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_Obj_Entotu" BaseAddress="0x80A34700" RangeStart="0x0D10" RangeEnd="0x0D80">
+        <Array Name="ovl_Obj_Entotu_Vtx_000D10" Count="7" Offset="0xD10">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Letter To Kafei -->
+    <File Name="object_gi_reserve_c_00" Segment="6">
+
+        <!-- Letter To Kafei Display Lists -->
+        <DList Name="gGiLetterToKafeiInscriptionsDL" Offset="0x4A0" />
+        <DList Name="gGiLetterToKafeiEnvelopeLetterDL" Offset="0x5F0" />
+
+        <!-- Letter To Kafei Textures -->
+        <Texture Name="gGiLetterToKafeiLetterBackgroundTex" OutName="gi_letter_to_kafei_background" Format="i8" Width="16" Height="16" Offset="0x760" />
+        <Texture Name="gGiLetterToKafeiLetterInscriptionsTex" OutName="gi_letter_to_kafei_letter_inscriptions" Format="i4" Width="32" Height="8" Offset="0x860" />
+        <Texture Name="gGiLetterToKafeiEnvelopeInscriptionsTex" OutName="gi_letter_to_kafei_inscriptions" Format="i4" Width="128" Height="32" Offset="0x8E0" />
+    </File>
+</Root>

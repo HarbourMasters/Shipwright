@@ -1,0 +1,106 @@
+﻿<Root>
+    <!-- Assets for the Deku King -->
+    <File Name="object_dno" Segment="6">
+        <!-- Deku King Animations -->
+        <Animation Name="gDekuKingJumpedOnStartAnim" Offset="0x6F0" /> <!-- Original name is "dno_attack2" -->
+        <Animation Name="gDekuKingJumpedOnLoopAnim" Offset="0xBF8" /> <!-- Original name is "dno_attack2_loop" -->
+        <Animation Name="gDekuKingSpinScepterAnim" Offset="0x1100" /> <!-- Original name is "dno_batton" -->
+        <Animation Name="gDekuKingMarchAnim" Offset="0x1AEC" /> <!-- Original name is "dno_battonwalk" -->
+        <Animation Name="gDekuKingJumpedOnEndAnim" Offset="0x2690" /> <!-- Original name is "dno_gaku" -->
+        <Animation Name="gDekuKingLyingDownTwitchAnim" Offset="0x3408" /> <!-- Original name is "dno_gaku_loop" -->
+        <Animation Name="gDekuKingLaughAnim" Offset="0x3DBC" /> <!-- Original name is "dno_gebohaha" (onomatopoetic for a boisterous laugh) -->
+        <Animation Name="gDekuKingJumpAnim" Offset="0x47B8" /> <!-- Original name is "dno_gogojump" -->
+        <Animation Name="gDekuKingIntimidateAnim" Offset="0x4EA0" /> <!-- Original name is "dno_horehore" -->
+        <Animation Name="gDekuKingWailStartAnim" Offset="0x5284" /> <!-- Original name is "dno_jidaTOnage" -->
+        <Animation Name="gDekuKingFootStampLoopAnim" Offset="0x5A14" /> <!-- Original name is "dno_jidanda" ("to stamp one's feet (in frustration, impatience, etc.)​") -->
+        <Animation Name="gDekuKingFootStampStartAnim" Offset="0x5E18" /> <!-- Original name is "dno_nageTOjida" -->
+        <Animation Name="gDekuKingWailLoopAnim" Offset="0x6984" /> <!-- Original name is "dno_nageki" ("grief; lamentation​") -->
+        <Animation Name="gDekuKingSurpriseAnim" Offset="0x7528" /> <!-- Original name is "dno_oh" -->
+        <Animation Name="gDekuKingIdleAnim" Offset="0x8328" /> <!-- Original name is "dno_wait" -->
+
+        <!-- Deku King Textures -->
+        <Texture Name="gDekuKingBodyTex" OutName="deku_king_body" Format="rgba16" Width="16" Height="16" Offset="0x8340" />
+        <Texture Name="gDekuKingMustacheAndLoinclothLeafTex" OutName="deku_king_mustache_and_loincloth_leaf" Format="rgba16" Width="16" Height="16" Offset="0x8540" />
+        <Texture Name="gDekuKingCrownTex" OutName="deku_king_crown" Format="rgba16" Width="32" Height="32" Offset="0x8740" />
+        <Texture Name="gDekuKingLeavesTex" OutName="deku_king_leaves" Format="rgba16" Width="32" Height="64" Offset="0x8F40" />
+        <Texture Name="gDekuKingBeardLeavesTex" OutName="deku_king_beard_leaves" Format="rgba16" Width="32" Height="32" Offset="0x9F40" />
+        <Texture Name="gDekuKingEyeTex" OutName="deku_king_eye" Format="rgba16" Width="16" Height="16" Offset="0xA740" />
+        <Texture Name="gDekuKingScepterTipTex" OutName="deku_king_scepter_tip" Format="rgba16" Width="8" Height="8" Offset="0xA940" />
+        <Texture Name="gDekuKingScepterPetalTex" OutName="deku_king_scepter_petal" Format="rgba16" Width="16" Height="16" Offset="0xA9C0" />
+        <Texture Name="gDekuKingSnoutTex" OutName="deku_king_snout" Format="rgba16" Width="8" Height="8" Offset="0xABC0" />
+        <Texture Name="gDekuKingMouthTex" OutName="deku_king_mouth" Format="rgba16" Width="8" Height="8" Offset="0xAC40" />
+
+        <!-- Deku King Limb DisplayLists -->
+        <DList Name="gDekuKingCrownDL" Offset="0xC9B0" />
+        <DList Name="gDekuKingCrownLeavesDL" Offset="0xCB70" />
+        <DList Name="gDekuKingUpperBodyDL" Offset="0xCC10" />
+        <DList Name="gDekuKingEyesDL" Offset="0xCE38" />
+        <DList Name="gDekuKingLeftHandDL" Offset="0xCED0" />
+        <DList Name="gDekuKingLeftForearmDL" Offset="0xCFA8" />
+        <DList Name="gDekuKingLeftForearmLowerLeavesDL" Offset="0xD050" />
+        <DList Name="gDekuKingLeftForearmUpperLeavesDL" Offset="0xD140" />
+        <DList Name="gDekuKingLeftUpperArmDL" Offset="0xD230" />
+        <DList Name="gDekuKingLeftUpperArmLowerLeavesDL" Offset="0xD2E8" />
+        <DList Name="gDekuKingLeftUpperArmUpperLeavesDL" Offset="0xD3D8" />
+        <DList Name="gDekuKingSnoutDL" Offset="0xD4C8" />
+        <DList Name="gDekuKingRightLowerMustacheDL" Offset="0xD668" />
+        <DList Name="gDekuKingRightUpperMustacheDL" Offset="0xD758" />
+        <DList Name="gDekuKingLeftLowerMustacheDL" Offset="0xD848" />
+        <DList Name="gDekuKingLeftUpperMustacheDL" Offset="0xD938" />
+        <DList Name="gDekuKingRightHandDL" Offset="0xDA28" />
+        <DList Name="gDekuKingScepterDL" Offset="0xDB00" />
+        <DList Name="gDekuKingRightForearmDL" Offset="0xDCA8" />
+        <DList Name="gDekuKingRightForearmLowerLeavesDL" Offset="0xDD50" />
+        <DList Name="gDekuKingRightForearmUpperLeavesDL" Offset="0xDE40" />
+        <DList Name="gDekuKingRightUpperArmDL" Offset="0xDF30" />
+        <DList Name="gDekuKingRightUpperArmLowerLeavesDL" Offset="0xDFE8" />
+        <DList Name="gDekuKingRightUpperArmUpperLeavesDL" Offset="0xE0D8" />
+        <DList Name="gDekuKingPelvisDL" Offset="0xE1C8" />
+        <DList Name="gDekuKingRightFootDL" Offset="0xE318" />
+        <DList Name="gDekuKingRightShinDL" Offset="0xE420" />
+        <DList Name="gDekuKingRightThighDL" Offset="0xE538" />
+        <DList Name="gDekuKingLeftFootDL" Offset="0xE630" />
+        <DList Name="gDekuKingLeftShinDL" Offset="0xE738" />
+        <DList Name="gDekuKingLeftThighDL" Offset="0xE850" />
+
+        <!-- Deku King Limbs -->
+        <Limb Name="gDekuKingRootLimb" Type="Standard" EnumName="DEKU_KING_LIMB_ROOT" Offset="0xE948" />
+        <Limb Name="gDekuKingPelvisLimb" Type="Standard" EnumName="DEKU_KING_LIMB_PELVIS" Offset="0xE954" />
+        <Limb Name="gDekuKingLeftThighLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_THIGH" Offset="0xE960" />
+        <Limb Name="gDekuKingLeftShinLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_SHIN" Offset="0xE96C" />
+        <Limb Name="gDekuKingLeftFootLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_FOOT" Offset="0xE978" />
+        <Limb Name="gDekuKingRightThighLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_THIGH" Offset="0xE984" />
+        <Limb Name="gDekuKingRightShinLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_SHIN" Offset="0xE990" />
+        <Limb Name="gDekuKingRightFootLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_FOOT" Offset="0xE99C" />
+        <Limb Name="gDekuKingUpperBodyLimb" Type="Standard" EnumName="DEKU_KING_LIMB_UPPER_BODY" Offset="0xE9A8" />
+        <Limb Name="gDekuKingRightUpperArmLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_UPPER_ARM" Offset="0xE9B4" />
+        <Limb Name="gDekuKingRightUpperArmUpperLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_UPPER_ARM_UPPER_LEAVES" Offset="0xE9C0" />
+        <Limb Name="gDekuKingRightUpperArmLowerLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_UPPER_ARM_LOWER_LEAVES" Offset="0xE9CC" />
+        <Limb Name="gDekuKingRightForearmLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_FOREARM" Offset="0xE9D8" />
+        <Limb Name="gDekuKingRightForearmUpperLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_FOREARM_UPPER_LEAVES" Offset="0xE9E4" />
+        <Limb Name="gDekuKingRightForearmLowerLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_FOREARM_LOWER_LEAVES" Offset="0xE9F0" />
+        <Limb Name="gDekuKingRightHandLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_HAND" Offset="0xE9FC" />
+        <Limb Name="gDekuKingScepterLimb" Type="Standard" EnumName="DEKU_KING_LIMB_SCEPTER" Offset="0xEA08" />
+        <Limb Name="gDekuKingSnoutLimb" Type="Standard" EnumName="DEKU_KING_LIMB_SNOUT" Offset="0xEA14" />
+        <Limb Name="gDekuKingLeftUpperMustacheLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_UPPER_MUSTACHE" Offset="0xEA20" />
+        <Limb Name="gDekuKingLeftLowerMustacheLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_LOWER_MUSTACHE" Offset="0xEA2C" />
+        <Limb Name="gDekuKingRightUpperMustacheLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_UPPER_MUSTACHE" Offset="0xEA38" />
+        <Limb Name="gDekuKingRightLowerMustacheLimb" Type="Standard" EnumName="DEKU_KING_LIMB_RIGHT_LOWER_MUSTACHE" Offset="0xEA44" />
+        <Limb Name="gDekuKingLeftUpperArmLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_UPPER_ARM" Offset="0xEA50" />
+        <Limb Name="gDekuKingLeftUpperArmUpperLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_UPPER_ARM_UPPER_LEAVES" Offset="0xEA5C" />
+        <Limb Name="gDekuKingLeftUpperArmLowerLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_UPPER_ARM_LOWER_LEAVES" Offset="0xEA68" />
+        <Limb Name="gDekuKingLeftForearmLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_FOREARM" Offset="0xEA74" />
+        <Limb Name="gDekuKingLeftForearmUpperLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_FOREARM_UPPER_LEAVES" Offset="0xEA80" />
+        <Limb Name="gDekuKingLeftForearmLowerLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_FOREARM_LOWER_LEAVES" Offset="0xEA8C" />
+        <Limb Name="gDekuKingLeftHandLimb" Type="Standard" EnumName="DEKU_KING_LIMB_LEFT_HAND" Offset="0xEA98" />
+        <Limb Name="gDekuKingEyesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_EYES" Offset="0xEAA4" />
+        <Limb Name="gDekuKingCrownLimb" Type="Standard" EnumName="DEKU_KING_LIMB_CROWN" Offset="0xEAB0" />
+        <Limb Name="gDekuKingCrownLeavesLimb" Type="Standard" EnumName="DEKU_KING_LIMB_CROWN_LEAVES" Offset="0xEABC" />
+
+        <!-- Deku King Skeleton -->
+        <Skeleton Name="gDekuKingSkel" Type="Flex" LimbType="Standard" LimbNone="DEKU_KING_LIMB_NONE" LimbMax="DEKU_KING_LIMB_MAX" EnumName="DekuKingLimb" Offset="0xEB48" />
+
+        <!-- Deku King Animation -->
+        <Animation Name="gDekuKingPointScepterAnim" Offset="0xF504" /> <!-- Original name is "dno_yubisashi" ("pointing at") -->
+    </File>
+</Root>

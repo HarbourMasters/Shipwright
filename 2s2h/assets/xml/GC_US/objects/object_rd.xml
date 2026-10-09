@@ -1,0 +1,114 @@
+﻿<Root>
+    <File Name="object_rd" Segment="6">
+        <Animation Name="gGibdoRedeadArmsUpStartAnim" Offset="0x9C4" /> <!-- Original name is "gibud_banzai" ("cheering"?)-->
+        <Animation Name="gGibdoRedeadArmsUpLoopAnim" Offset="0xF1C" /> <!-- Original name is "gibud_banzai_loop" -->
+        <Animation Name="gGibdoRedeadConvulsionAnim" Offset="0x1600" /> <!-- Original name is "gibud_keiren" ("convulsion") -->
+        <Texture Name="gGibdoWrappingTex" OutName="gibdo_wrapping" Format="rgba16" Width="64" Height="32" Offset="0x1610" />
+        <Texture Name="gGibdoEyeTex" OutName="gibdo_eye" Format="rgba16" Width="32" Height="16" Offset="0x2610" />
+        <DList Name="gGibdoPelvisDL" Offset="0x4270" />
+        <DList Name="gGibdoHeadDL" Offset="0x4350" />
+        <DList Name="gGibdoTorsoDL" Offset="0x44C0" />
+        <DList Name="gGibdoRightShoulderAndUpperArmDL" Offset="0x4628" />
+        <DList Name="gGibdoRightForearmDL" Offset="0x4730" />
+        <DList Name="gGibdoRightHandDL" Offset="0x4830" />
+        <DList Name="gGibdoLeftShoulderAndUpperArmDL" Offset="0x4930" />
+        <DList Name="gGibdoLeftForearmDL" Offset="0x4A38" />
+        <DList Name="gGibdoLeftHandDL" Offset="0x4B38" />
+        <DList Name="gGibdoRightThighDL" Offset="0x4C38" />
+        <DList Name="gGibdoRightShinDL" Offset="0x4D48" />
+        <DList Name="gGibdoRightFootDL" Offset="0x4E40" />
+        <DList Name="gGibdoLeftThighDL" Offset="0x4F58" />
+        <DList Name="gGibdoLeftShinDL" Offset="0x5068" />
+        <DList Name="gGibdoLeftFootDL" Offset="0x5160" />
+        <Limb Name="gGibdoRootLimb" Type="Standard" EnumName="GIBDO_LIMB_ROOT" Offset="0x5258" />
+        <Limb Name="gGibdoLeftLegRootLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_LEG_ROOT" Offset="0x5264" />
+        <Limb Name="gGibdoLeftThighLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_THIGH" Offset="0x5270" />
+        <Limb Name="gGibdoLeftShinLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_SHIN" Offset="0x527C" />
+        <Limb Name="gGibdoLeftAnkleLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_ANKLE" Offset="0x5288" />
+        <Limb Name="gGibdoLeftFootLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_FOOT" Offset="0x5294" />
+        <Limb Name="gGibdoRightLegRootLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_LEG_ROOT" Offset="0x52A0" />
+        <Limb Name="gGibdoRightThighLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_THIGH" Offset="0x52AC" />
+        <Limb Name="gGibdoRightShinLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_SHIN" Offset="0x52B8" />
+        <Limb Name="gGibdoRightAnkleLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_ANKLE" Offset="0x52C4" />
+        <Limb Name="gGibdoRightFootLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_FOOT" Offset="0x52D0" />
+        <Limb Name="gGibdoUpperBodyRootLimb" Type="Standard" EnumName="GIBDO_LIMB_UPPER_BODY_ROOT" Offset="0x52DC" />
+        <Limb Name="gGibdoUpperBodyLimb" Type="Standard" EnumName="GIBDO_LIMB_UPPER_BODY" Offset="0x52E8" />
+        <Limb Name="gGibdoTorsoLimb" Type="Standard" EnumName="GIBDO_LIMB_TORSO" Offset="0x52F4" />
+        <Limb Name="gGibdoLeftArmRootLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_ARM_ROOT" Offset="0x5300" />
+        <Limb Name="gGibdoLeftShoulderAndUpperArmLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_SHOULDER_AND_UPPER_ARM" Offset="0x530C" />
+        <Limb Name="gGibdoLeftForearmLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_FOREARM" Offset="0x5318" />
+        <Limb Name="gGibdoLeftHandLimb" Type="Standard" EnumName="GIBDO_LIMB_LEFT_HAND" Offset="0x5324" />
+        <Limb Name="gGibdoRightArmRootLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_ARM_ROOT" Offset="0x5330" />
+        <Limb Name="gGibdoRightShoulderAndUpperArmLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_SHOULDER_AND_UPPER_ARM" Offset="0x533C" />
+        <Limb Name="gGibdoRightForearmLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_FOREARM" Offset="0x5348" />
+        <Limb Name="gGibdoRightHandLimb" Type="Standard" EnumName="GIBDO_LIMB_RIGHT_HAND" Offset="0x5354" />
+        <Limb Name="gGibdoHeadRootLimb" Type="Standard" EnumName="GIBDO_LIMB_HEAD_ROOT" Offset="0x5360" />
+        <Limb Name="gGibdoHeadLimb" Type="Standard" EnumName="GIBDO_LIMB_HEAD" Offset="0x536C" />
+        <Limb Name="gGibdoPelvisLimb" Type="Standard" EnumName="GIBDO_LIMB_PELVIS" Offset="0x5378" />
+        <Skeleton Name="gGibdoSkel" Type="Flex" LimbType="Standard" LimbNone="GIBDO_LIMB_NONE" LimbMax="GIBDO_LIMB_MAX" EnumName="GibdoLimb" Offset="0x53E8" />
+        <Animation Name="gGibdoRedeadSlumpStartAnim" Offset="0x5DF4" /> <!-- Original name is "gibud_stop" -->
+        <Animation Name="gGibdoRedeadSlumpLoopAnim" Offset="0x61E4" /> <!-- Original name is "gibud_stop_loop" -->
+        <Animation Name="gGibdoRedeadGrabAttackAnim" Offset="0x6678" /> <!-- Original name is "re_dead_attack" -->
+        <Animation Name="gGibdoRedeadGrabEndAnim" Offset="0x6B08" /> <!-- Original name is "re_dead_attack_end" -->
+        <Animation Name="gGibdoRedeadGrabStartAnim" Offset="0x6EEC" /> <!-- Original name is "re_dead_attack_start" -->
+        <Animation Name="gGibdoRedeadLookBackAnim" Offset="0x73A4" /> <!-- Original name is "re_dead_back_turn" -->
+        <Animation Name="gGibdoRedeadWipingTearsAnim" Offset="0x7BBC" /> <!-- Original name is "re_dead_cry" -->
+        <Animation Name="gGibdoRedeadSobbingAnim" Offset="0x81A8" /> <!-- Original name is "re_dead_cryB" -->
+        <Animation Name="gGibdoRedeadDeathAnim" Offset="0x9298" /> <!-- Original name is "re_dead_down" -->
+        <Animation Name="gGibdoRedeadDamageAnim" Offset="0x9900" /> <!-- Original name is "re_dead_hit" -->
+        <Animation Name="gGibdoRedeadStandUpAnim" Offset="0xA450" /> <!-- Original name is "re_dead_standing" -->
+        <Animation Name="gGibdoRedeadIdleAnim" Offset="0xABE0" /> <!-- Original name is "re_dead_wait" -->
+        <Texture Name="gRedeadBackTex" OutName="redead_back" Format="rgba16" Width="32" Height="64" Offset="0xABF0" />
+        <Texture Name="gRedeadTorsoTex" OutName="redead_torso" Format="rgba16" Width="32" Height="64" Offset="0xBBF0" />
+        <Texture Name="gRedeadFingersAndToesTex" OutName="redead_fingers_and_toes" Format="rgba16" Width="16" Height="32" Offset="0xCBF0" />
+        <Texture Name="gRedeadMuscleTex" OutName="redead_muscle" Format="rgba16" Width="16" Height="32" Offset="0xCFF0" />
+        <Texture Name="gRedeadMaskTex" OutName="redead_mask" Format="i8" Width="32" Height="32" Offset="0xD3F0" />
+        <Texture Name="gRedeadFaceTex" OutName="redead_face" Format="rgba16" Width="32" Height="64" Offset="0xD7F0" />
+        <Texture Name="gRedeadHipsTex" OutName="redead_hips" Format="rgba16" Width="32" Height="16" Offset="0xE7F0" />
+        <DList Name="gRedeadPelvisDL" Offset="0xFAB0" />
+        <DList Name="gRedeadTorsoDL" Offset="0xFBD8" />
+        <DList Name="gRedeadLeftShoulderAndUpperArmDL" Offset="0xFED0" />
+        <DList Name="gRedeadLeftForearmDL" Offset="0xFFB0" />
+        <DList Name="gRedeadLeftHandDL" Offset="0x10070" />
+        <DList Name="gRedeadRightShoulderAndUpperArmDL" Offset="0x10140" />
+        <DList Name="gRedeadRightForearmDL" Offset="0x10218" />
+        <DList Name="gRedeadRightHandDL" Offset="0x102E8" />
+        <DList Name="gRedeadHeadDL" Offset="0x103B8" />
+        <DList Name="gRedeadLeftThighDL" Offset="0x104F8" />
+        <DList Name="gRedeadLeftShinDL" Offset="0x105D8" />
+        <DList Name="gRedeadLeftFootDL" Offset="0x106A0" />
+        <DList Name="gRedeadRightThighDL" Offset="0x10768" />
+        <DList Name="gRedeadRightShinDL" Offset="0x10848" />
+        <DList Name="gRedeadRightFootDL" Offset="0x10910" />
+        <Limb Name="gRedeadRootLimb" Type="Standard" EnumName="REDEAD_LIMB_ROOT" Offset="0x109F8" />
+        <Limb Name="gRedeadLeftLegRootLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_LEG_ROOT" Offset="0x10A04" />
+        <Limb Name="gRedeadLeftThighLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_THIGH" Offset="0x10A10" />
+        <Limb Name="gRedeadLeftShinLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_SHIN" Offset="0x10A1C" />
+        <Limb Name="gRedeadLeftAnkleLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_ANKLE" Offset="0x10A28" />
+        <Limb Name="gRedeadLeftFootLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_FOOT" Offset="0x10A34" />
+        <Limb Name="gRedeadRightLegRootLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_LEG_ROOT" Offset="0x10A40" />
+        <Limb Name="gRedeadRightThighLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_THIGH" Offset="0x10A4C" />
+        <Limb Name="gRedeadRightShinLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_SHIN" Offset="0x10A58" />
+        <Limb Name="gRedeadRightAnkleLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_ANKLE" Offset="0x10A64" />
+        <Limb Name="gRedeadRightFootLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_FOOT" Offset="0x10A70" />
+        <Limb Name="gRedeadUpperBodyRootLimb" Type="Standard" EnumName="REDEAD_LIMB_UPPER_BODY_ROOT" Offset="0x10A7C" />
+        <Limb Name="gRedeadUpperBodyLimb" Type="Standard" EnumName="REDEAD_LIMB_UPPER_BODY" Offset="0x10A88" />
+        <Limb Name="gRedeadTorsoLimb" Type="Standard" EnumName="REDEAD_LIMB_TORSO" Offset="0x10A94" />
+        <Limb Name="gRedeadLeftArmRootLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_ARM_ROOT" Offset="0x10AA0" />
+        <Limb Name="gRedeadLeftShoulderAndUpperArmLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_SHOULDER_AND_UPPER_ARM" Offset="0x10AAC" />
+        <Limb Name="gRedeadLeftForearmLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_FOREARM" Offset="0x10AB8" />
+        <Limb Name="gRedeadLeftHandLimb" Type="Standard" EnumName="REDEAD_LIMB_LEFT_HAND" Offset="0x10AC4" />
+        <Limb Name="gRedeadRightArmRootLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_ARM_ROOT" Offset="0x10AD0" />
+        <Limb Name="gRedeadRightShoulderAndUpperArmLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_SHOULDER_AND_UPPER_ARM" Offset="0x10ADC" />
+        <Limb Name="gRedeadRightForearmLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_FOREARM" Offset="0x10AE8" />
+        <Limb Name="gRedeadRightHandLimb" Type="Standard" EnumName="REDEAD_LIMB_RIGHT_HAND" Offset="0x10AF4" />
+        <Limb Name="gRedeadHeadRootLimb" Type="Standard" EnumName="REDEAD_LIMB_HEAD_ROOT" Offset="0x10B00" />
+        <Limb Name="gRedeadHeadLimb" Type="Standard" EnumName="REDEAD_LIMB_HEAD" Offset="0x10B0C" />
+        <Limb Name="gRedeadPelvisLimb" Type="Standard" EnumName="REDEAD_LIMB_PELVIS" Offset="0x10B18" />
+        <Skeleton Name="gRedeadSkel" Type="Flex" LimbType="Standard" LimbNone="REDEAD_LIMB_NONE" LimbMax="REDEAD_LIMB_MAX" EnumName="RedeadLimb" Offset="0x10B88" />
+        <Animation Name="gGibdoRedeadWalkAnim" Offset="0x113EC" /> <!-- Original name is "re_dead_walk" -->
+        <Animation Name="gGibdoRedeadPirouetteAnim" Offset="0x118D8" /> <!-- Original name is "wait_baree" ("ballet") -->
+        <Animation Name="gGibdoRedeadClappingDanceAnim" Offset="0x11DB8" /> <!-- Original name is "wait_dance_b" -->
+        <Animation Name="gGibdoRedeadSquattingDanceAnim" Offset="0x1216C" /> <!-- Original name is "wait_kosakku" ("Cossack" as in "Cossack Dance") -->
+    </File>
+</Root>

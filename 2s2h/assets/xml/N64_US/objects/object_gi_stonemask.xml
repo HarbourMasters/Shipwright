@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Stone Mask -->
+    <File Name="object_gi_stonemask" Segment="6">
+
+        <!-- Stone Mask Display Lists -->
+        <DList Name="gGiStoneMaskDL" Offset="0xA10" />
+        <DList Name="gGiStoneMaskEmptyDL" Offset="0xE48" />
+
+        <!-- Stone Mask Textures -->
+        <Texture Name="gGiStoneMaskFaceTex" OutName="gi_stone_mask_face" Format="i8" Width="16" Height="16" Offset="0xE50" />
+        <Texture Name="gGiStoneMaskEyeTex" OutName="gi_stone_mask_eye" Format="i8" Width="32" Height="32" Offset="0xF50" />
+    </File>
+</Root>

@@ -1,0 +1,48 @@
+﻿<Root>
+    <!-- Object for Zora Baby and Zora Egg -->
+    <File Name="object_zoraegg" Segment="6">
+        <!-- The animations when all the eggs hatch and the Zora babies swim up -->
+        <Animation Name="gZoraBabySwimUpAnim" Offset="0x5D4" /> <!-- Original name is "zb_ebioyogi" -->
+        <Animation Name="gZoraBabyHatchAnim" Offset="0x1E08" /> <!-- Original name is "zb_fuka" -->
+        
+        <!-- Zora Baby Dlists -->
+        <DList Name="gZoraBabyHeadDL" Offset="0x2550" />
+        <DList Name="gZoraBabyTail1DL" Offset="0x27C8" />
+        <DList Name="gZoraBabyTail2DL" Offset="0x2A60" />
+        <DList Name="gZoraBabyTailFinDL" Offset="0x2B60" />
+        <DList Name="gZoraBabyRightPectoralFinDL" Offset="0x2C70" />
+        <DList Name="gZoraBabyLeftPectoralFinDL" Offset="0x2D30" />
+        
+        <!-- Zora Baby Textures -->
+        <Texture Name="gZoraBabyTLUT" OutName="zora_baby_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2DF0" />
+        <Texture Name="gZoraBabyTailFinTex" OutName="zora_baby_tail_fin" Format="ci8" Width="32" Height="32" Offset="0x2FF0" />
+        <Texture Name="gZoraBabySkinTex" OutName="zora_baby_skin" Format="ci8" Width="8" Height="8" Offset="0x33F0" />
+        <Texture Name="gZoraBabyEyeOpenTex" OutName="zora_baby_eye_open" Format="ci8" Width="32" Height="32" Offset="0x3430" />
+        <Texture Name="gZoraBabySkinPatternTex" OutName="zora_baby_skin_pattern" Format="ci8" Width="32" Height="64" Offset="0x3830" />
+        <Texture Name="gZoraBabyPectoralFinTex" OutName="zora_baby_pectoral_fin" Format="ci8" Width="32" Height="32" Offset="0x4030" />
+        <Texture Name="gZoraBabyEyeHalfTex" OutName="zora_baby_eye_half" Format="ci8" Width="32" Height="32" Offset="0x4430" />
+        <Texture Name="gZoraBabyEyeClosedTex" OutName="zora_baby_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x4830" />
+
+        <!-- Zora Baby Limbs -->
+        <Limb Name="gZoraBabyHeadLimb" Type="Standard" EnumName="ZORA_BABY_LIMB_HEAD" Offset="0x4C30" />
+        <Limb Name="gZoraBabyTail1Limb" Type="Standard" EnumName="ZORA_BABY_LIMB_TAIL1" Offset="0x4C3C" />
+        <Limb Name="gZoraBabyTail2Limb" Type="Standard" EnumName="ZORA_BABY_LIMB_TAIL2" Offset="0x4C48" />
+        <Limb Name="gZoraBabyTailFinLimb" Type="Standard" EnumName="ZORA_BABY_LIMB_TAIL_FIN" Offset="0x4C54" />
+        <Limb Name="gZoraBabyRightPectoralFinLimb" Type="Standard" EnumName="ZORA_BABY_LIMB_RIGHT_PECTORAL_FIN" Offset="0x4C60" />
+        <Limb Name="gZoraBabyLeftPectoralFinLimb" Type="Standard" EnumName="ZORA_BABY_LIMB_LEFT_PECTORAL_FIN" Offset="0x4C6C" />
+
+        <!-- Zora baby Skeleton -->
+        <Skeleton Name="gZoraBabySkel" Type="Flex" LimbType="Standard" LimbNone="ZORA_BABY_LIMB_NONE" LimbMax="ZORA_BABY_LIMB_MAX" EnumName="ZoraBabyLimb" Offset="0x4C90" />
+        
+        <!-- Animations -->
+        <Animation Name="gZoraBabyFormNoteAnim" Offset="0x4D20" /> <!-- Original name is "zb_onpu" -->
+        <Animation Name="gZoraBabySongLearnedAnim" Offset="0x4E04" /> <!-- Original name is "zb_onpuhappy" -->
+        <Animation Name="gZoraBabyNoteAnim" Offset="0x4FE4" /> <!-- Original name is "zb_onpuwait" -->
+        <Animation Name="gZoraBabySwimAnim" Offset="0x5098" /> <!-- Original name is "zb_pichi" -->
+        
+        <!-- Zora Egg -->
+        <DList Name="gZoraEggDL" Offset="0x5250" />
+        <Texture Name="gZoraEggTLUT" OutName="zora_egg_tlut" Format="rgba16" Width="16" Height="16" Offset="0x53B0" />
+        <Texture Name="gZoraEggTex" OutName="zora_egg" Format="ci8" Width="32" Height="32" Offset="0x55B0" />
+    </File>
+</Root>

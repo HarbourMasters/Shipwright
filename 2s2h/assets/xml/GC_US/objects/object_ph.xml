@@ -1,0 +1,44 @@
+﻿<Root>
+    <File Name="object_ph" Segment="6">
+        <Animation Name="object_ph_Anim_000350" Offset="0x350" /> <!-- Original name is "ph_end" -->
+        <Animation Name="object_ph_Anim_0005C4" Offset="0x5C4" /> <!-- Original name is "ph_fly" -->
+        <Animation Name="object_ph_Anim_000844" Offset="0x844" /> <!-- Original name is "ph_shock" -->
+        <Animation Name="object_ph_Anim_0009C4" Offset="0x9C4" /> <!-- Original name is "ph_start" -->
+        <DList Name="object_ph_DL_000ED0" Offset="0xED0" />
+        <DList Name="object_ph_DL_000F60" Offset="0xF60" />
+        <DList Name="object_ph_DL_000FF0" Offset="0xFF0" />
+        <DList Name="object_ph_DL_001080" Offset="0x1080" />
+        <DList Name="object_ph_DL_001110" Offset="0x1110" />
+        <DList Name="object_ph_DL_0011A0" Offset="0x11A0" />
+        <DList Name="object_ph_DL_001230" Offset="0x1230" />
+        <DList Name="object_ph_DL_0012F0" Offset="0x12F0" />
+        <Texture Name="object_ph_Tex_001410" OutName="tex_001410" Format="rgba16" Width="8" Height="8" Offset="0x1410" />
+        <Texture Name="object_ph_Tex_001490" OutName="tex_001490" Format="rgba16" Width="16" Height="32" Offset="0x1490" />
+        <Texture Name="object_ph_Tex_001890" OutName="tex_001890" Format="rgba16" Width="8" Height="32" Offset="0x1890" />
+        <Texture Name="object_ph_Tex_001A90" OutName="tex_001A90" Format="rgba16" Width="8" Height="8" Offset="0x1A90" />
+        <Limb Name="object_ph_Standardlimb_001B10" Type="Standard" EnumName="OBJECT_PH_LIMB_01" Offset="0x1B10" />
+        <Limb Name="object_ph_Standardlimb_001B1C" Type="Standard" EnumName="OBJECT_PH_LIMB_02" Offset="0x1B1C" />
+        <Limb Name="object_ph_Standardlimb_001B28" Type="Standard" EnumName="OBJECT_PH_LIMB_03" Offset="0x1B28" />
+        <Limb Name="object_ph_Standardlimb_001B34" Type="Standard" EnumName="OBJECT_PH_LIMB_04" Offset="0x1B34" />
+        <Limb Name="object_ph_Standardlimb_001B40" Type="Standard" EnumName="OBJECT_PH_LIMB_05" Offset="0x1B40" />
+        <Limb Name="object_ph_Standardlimb_001B4C" Type="Standard" EnumName="OBJECT_PH_LIMB_06" Offset="0x1B4C" />
+        <Limb Name="object_ph_Standardlimb_001B58" Type="Standard" EnumName="OBJECT_PH_LIMB_07" Offset="0x1B58" />
+        <Limb Name="object_ph_Standardlimb_001B64" Type="Standard" EnumName="OBJECT_PH_LIMB_08" Offset="0x1B64" />
+        <Limb Name="object_ph_Standardlimb_001B70" Type="Standard" EnumName="OBJECT_PH_LIMB_09" Offset="0x1B70" />
+        <Limb Name="object_ph_Standardlimb_001B7C" Type="Standard" EnumName="OBJECT_PH_LIMB_0A" Offset="0x1B7C" />
+        <Limb Name="object_ph_Standardlimb_001B88" Type="Standard" EnumName="OBJECT_PH_LIMB_0B" Offset="0x1B88" />
+        <Limb Name="object_ph_Standardlimb_001B94" Type="Standard" EnumName="OBJECT_PH_LIMB_0C" Offset="0x1B94" />
+        <Limb Name="object_ph_Standardlimb_001BA0" Type="Standard" EnumName="OBJECT_PH_LIMB_0D" Offset="0x1BA0" />
+        <Limb Name="object_ph_Standardlimb_001BAC" Type="Standard" EnumName="OBJECT_PH_LIMB_0E" Offset="0x1BAC" />
+        <Limb Name="object_ph_Standardlimb_001BB8" Type="Standard" EnumName="OBJECT_PH_LIMB_0F" Offset="0x1BB8" />
+        <Limb Name="object_ph_Standardlimb_001BC4" Type="Standard" EnumName="OBJECT_PH_LIMB_10" Offset="0x1BC4" />
+        <Limb Name="object_ph_Standardlimb_001BD0" Type="Standard" EnumName="OBJECT_PH_LIMB_11" Offset="0x1BD0" />
+        <Limb Name="object_ph_Standardlimb_001BDC" Type="Standard" EnumName="OBJECT_PH_LIMB_12" Offset="0x1BDC" />
+        <Limb Name="object_ph_Standardlimb_001BE8" Type="Standard" EnumName="OBJECT_PH_LIMB_13" Offset="0x1BE8" />
+        <Limb Name="object_ph_Standardlimb_001BF4" Type="Standard" EnumName="OBJECT_PH_LIMB_14" Offset="0x1BF4" />
+        <Limb Name="object_ph_Standardlimb_001C00" Type="Standard" EnumName="OBJECT_PH_LIMB_15" Offset="0x1C00" />
+        <Limb Name="object_ph_Standardlimb_001C0C" Type="Standard" EnumName="OBJECT_PH_LIMB_16" Offset="0x1C0C" />
+        <Limb Name="object_ph_Standardlimb_001C18" Type="Standard" EnumName="OBJECT_PH_LIMB_17" Offset="0x1C18" />
+        <Skeleton Name="object_ph_Skel_001C80" Type="Normal" LimbType="Standard" LimbNone="OBJECT_PH_LIMB_NONE" LimbMax="OBJECT_PH_LIMB_MAX" EnumName="ObjectPhLimb" Offset="0x1C80" />
+    </File>
+</Root>

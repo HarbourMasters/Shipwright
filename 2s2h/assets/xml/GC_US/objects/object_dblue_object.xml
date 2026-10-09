@@ -1,0 +1,148 @@
+﻿<Root>
+    <!-- Assets for interactive elements in Great Bay Temple, i.e., waterwheels, seesaws, whirlpools, waterfalls, doors, etc. -->
+    <File Name="object_dblue_object" Segment="6">
+        <!-- DisplayLists and Collision for the elevator platforms. -->
+        <DList Name="gGreatBayTempleObjectElevatorEmptyDL" Offset="0x2C0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectElevatorDL" Offset="0x2C8" /> <!-- Original name is "m2_KON_ELE_model" -->
+        <Collision Name="gGreatBayTempleObjectElevatorCol" Offset="0x5C4" /> <!-- Original name is "m2_KON_ELE_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the rotating waterwheel with two platforms. -->
+        <DList Name="gGreatBayTempleObjectWaterwheelWithPlatformsEmptyDL" Offset="0x1E60" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectWaterwheelWithPlatformsDL" Offset="0x1E68" /> <!-- Original name is "m2_KON_GEAR09_model" -->
+        <Collision Name="gGreatBayTempleObjectWaterwheelWithPlatformsCol" Offset="0x2E78" /> <!-- Original name is "m2_KON_GEAR09_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the ice stalactites that can be thawed with Fire Arrows.  -->
+        <DList Name="gGreatBayTempleObjectIceStalactiteRimDL" Offset="0x3250" />
+        <DList Name="gGreatBayTempleObjectIceStalactiteDL" Offset="0x3358" /> <!-- Original name is "m2_KON_ICE_model" -->
+        <Collision Name="gGreatBayTempleObjectIceStalactiteCol" Offset="0x3540" /> <!-- Unused. Original name is "m2_KON_ICE_bgdatainfo" -->
+
+        <!-- DisplayLists for the frozen version of the waterfall that briefly appears when you hit it with an Ice Arrow. -->
+        <DList Name="gGreatBayTempleObjectFrozenWaterfallDL" Offset="0x3770" />
+        <DList Name="gGreatBayTempleObjectFrozenWaterfallEmptyDL" Offset="0x38D0" /> <!-- Probably was the opaque component for the above DL -->
+
+        <!-- DisplayLists and Collision for the rotating gear shaft, both with and without two platforms. -->
+        <DList Name="gGreatBayTempleObjectGearShaftWithPlatformsEmptyDL" Offset="0x4840" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectGearShaftWithPlatformsDL" Offset="0x4848" /> <!-- Original name is "m2_KON_Screw_model" -->
+        <DList Name="gGreatBayTempleObjectGearShaftEmptyDL" Offset="0x52B0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectGearShaftDL" Offset="0x52B8" /> <!-- Original name is "m2_KON_ScrewFor8_model" -->
+        <Collision Name="gGreatBayTempleObjectGearShaftWithPlatformsCol" Offset="0x5D28" /> <!-- Original name is "m2_KON_Screw_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the switches that can be pushed or pulled. -->
+        <DList Name="gGreatBayTempleObjectOneWaySwitchEmptyDL" Offset="0x61B0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectOneWaySwitchDL" Offset="0x61B8" /> <!-- Original name is "m2_KON_Sen_model" (perhaps "tap; faucet") -->
+        <DList Name="gGreatBayTempleObjectTwoWaySwitchEmptyDL" Offset="0x69D0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectTwoWaySwitchDL" Offset="0x69D8" /> <!-- Original name is "m2_KON_SenP2_model" -->
+        <Collision Name="gGreatBayTempleObjectTwoWaySwitchCol" Offset="0x6EA8" /> <!-- Original name is "m2_KON_SenP2_bgdatainfo" -->
+        <Collision Name="gGreatBayTempleObjectOneWaySwitchCol" Offset="0x714C" /> <!-- Original name is "m2_KON_Sen_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the giant waterwheel near the start of the dungeon. -->
+        <DList Name="gGreatBayTempleObjectWaterwheelEmptyDL" Offset="0x8770" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectWaterwheelDL" Offset="0x8778" /> <!-- Original name is "m2_KON_SuisyaFor0_model" ("waterwheel") -->
+        <DList Name="gGreatBayTempleObjectWaterwheelWithFakeGearEmptyDL" Offset="0xA520" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectWaterwheelWithFakeGearDL" Offset="0xA528" /> <!-- Original name is "m2_KON_SuisyaFor8_model" -->
+        <Collision Name="gGreatBayTempleObjectWaterwheelCol" Offset="0xAED0" /> <!-- Original name is "m2_KON_SuisyaFor8_bgdatainfo" -->
+
+        <!-- DisplayLists and TextureAnimation for the waterfalls that can be frozen with Ice Arrows. -->
+        <DList Name="gGreatBayTempleObjectWaterfallDL" Offset="0xB280" /> <!-- Original name is "m2_KON_TAKI_modelT" ("waterfall​") -->
+        <DList Name="gGreatBayTempleObjectWaterfallEmptyDL" Offset="0xB430" /> <!-- Probably was the opaque component for the above DL -->
+        <TextureAnimation Name="gGreatBayTempleObjectWaterfallTexAnim" Offset="0xB448" />
+
+        <!-- DisplayLists and Collision for the "shaft" of the seesaw, i.e., the bar that connects the two platforms. -->
+        <DList Name="gGreatBayTempleObjectSeesawShaftEmptyDL" Offset="0xB8F0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectSeesawShaftDL" Offset="0xB8F8" /> <!-- Original name is "m2_KON_TENBIN_model" ("(balance) scales​") -->
+        <Collision Name="gGreatBayTempleObjectSeesawShaftCol" Offset="0xBC08" /> <!-- Original name is "m2_KON_TENBIN_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the large seesaw platform. -->
+        <DList Name="gGreatBayTempleObjectLargeSeesawPlatformEmptyDL" Offset="0xBF40" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectLargeSeesawPlatformDL" Offset="0xBF48" /> <!-- Original name is "m2_KON_TENBINstepBIG_model" -->
+        <Collision Name="gGreatBayTempleObjectLargeSeesawPlatformCol" Offset="0xC180" /> <!-- Original name is "m2_KON_TENBINstepBIG_bgdatainfo" -->
+
+        <!-- DisplayLists and Collision for the small seesaw platform. -->
+        <DList Name="gGreatBayTempleObjectSmallSeesawPlatformEmptyDL" Offset="0xC4B0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gGreatBayTempleObjectSmallSeesawPlatformDL" Offset="0xC4B8" /> <!-- Original name is "m2_KON_TENBINstepSML_model" -->
+        <Collision Name="gGreatBayTempleObjectSmallSeesawPlatformCol" Offset="0xC700" /> <!-- Original name is "m2_KON_TENBINstepSML_bgdatainfo" -->
+
+        <!-- DisplayLists and TextureAnimation for the large whirlpool at the bottom of the main room. -->
+        <DList Name="gGreatBayTempleObjectWhirlpoolDL" Offset="0xCAA0" /> <!-- Original name is "m2_KON_UZUdis_modelT" ("whirlpool; swirl") -->
+        <DList Name="gGreatBayTempleObjectWhirlpoolEmptyDL" Offset="0xCC08" /> <!-- Probably was the opaque component for the above DL -->
+        <TextureAnimation Name="gGreatBayTempleObjectWhirlpoolTexAnim" Offset="0xCC18" />
+
+        <!-- DisplayLists and TextureAnimation for the splashing effect created when water hits a waterwheel. -->
+        <DList Name="gGreatBayTempleObjectWaterwheelSplashDL" Offset="0xCD10" /> <!-- Original name is "m2_KON_sibukiG_modelT" (probably "splash" + GEAR) -->
+        <DList Name="gGreatBayTempleObjectWaterwheelSplashEmptyDL" Offset="0xCDD8" /> <!-- Probably was the opaque component for the above DL -->
+        <TextureAnimation Name="gGreatBayTempleObjectWaterwheelSplashTexAnim" Offset="0xCE00" />
+        
+        <!-- DisplayLists and TextureAnimation for the splashing effect created when water hits a seesaw platform. -->
+        <DList Name="gGreatBayTempleObjectSeesawSplashDL" Offset="0xD110" /> <!-- Original name is "m2_KON_sibukiT_modelT" (probably "splash" + TENBIN) -->
+        <DList Name="gGreatBayTempleObjectSeesawSplashEmptyDL" Offset="0xD220" /> <!-- Probably was the opaque component for the above DL -->
+        <TextureAnimation Name="gGreatBayTempleObjectSeesawSplashTexAnim" Offset="0xD250" />
+
+        <Collision Name="gGreatBayTempleObjectUnusedCol" Offset="0xD3DC" /> <!-- Original name is probably "m2_SEAuzuuzu2_bgdatainfo" ("itching to do something; impatient") -->
+
+        <!-- Textures for all the Great Bay Temple objects. -->
+        <Texture Name="gGreatBayTempleObjectOneWaySwitchTLUT" OutName="great_bay_temple_object_one_way_switch_tlut" Format="rgba16" Width="4" Height="4" Offset="0xD410" />
+        <Texture Name="gGreatBayTempleObjectUnused1TLUT" OutName="great_bay_temple_object_unused_tlut_1" Format="rgba16" Width="4" Height="4" Offset="0xD430" />
+        <Texture Name="gGreatBayTempleObjectUnused2TLUT" OutName="great_bay_temple_object_unused_tlut_2" Format="rgba16" Width="4" Height="4" Offset="0xD450" />
+        <Texture Name="gGreatBayTempleObjectUnused3TLUT" OutName="great_bay_temple_object_unused_tlut_3" Format="rgba16" Width="4" Height="4" Offset="0xD470" />
+        <Texture Name="gGreatBayTempleObjectUnused4TLUT" OutName="great_bay_temple_object_unused_tlut_4" Format="rgba16" Width="4" Height="4" Offset="0xD490" />
+        <Texture Name="gGreatBayTempleObjectUnused5TLUT" OutName="great_bay_temple_object_unused_tlut_5" Format="rgba16" Width="4" Height="4" Offset="0xD4B0" />
+        <Texture Name="gGreatBayTempleObjectUnused6TLUT" OutName="great_bay_temple_object_unused_tlut_6" Format="rgba16" Width="4" Height="4" Offset="0xD4D0" />
+        <Texture Name="gGreatBayTempleObjectUnused7TLUT" OutName="great_bay_temple_object_unused_tlut_7" Format="rgba16" Width="4" Height="4" Offset="0xD4F0" />
+        <Texture Name="gGreatBayTempleObjectUnused8TLUT" OutName="great_bay_temple_object_unused_tlut_8" Format="rgba16" Width="4" Height="4" Offset="0xD510" />
+        <Texture Name="gGreatBayTempleObjectUnusedGearTLUT" OutName="great_bay_temple_object_unused_gear_tlut" Format="rgba16" Width="4" Height="4" Offset="0xD530" />
+        <Texture Name="gGreatBayTempleObjectUnused9TLUT" OutName="great_bay_temple_object_unused_tlut_9" Format="rgba16" Width="4" Height="4" Offset="0xD550" />
+        <Texture Name="gGreatBayTempleObjectUnused10TLUT" OutName="great_bay_temple_object_unused_tlut_10" Format="rgba16" Width="4" Height="4" Offset="0xD570" />
+        <Texture Name="gGreatBayTempleObjectUnused11TLUT" OutName="great_bay_temple_object_unused_tlut_11" Format="rgba16" Width="4" Height="4" Offset="0xD590" />
+        <Texture Name="gGreatBayTempleObjectUnused12TLUT" OutName="great_bay_temple_object_unused_tlut_12" Format="rgba16" Width="4" Height="4" Offset="0xD5B0" />
+        <Texture Name="gGreatBayTempleObjectUnused13TLUT" OutName="great_bay_temple_object_unused_tlut_13" Format="rgba16" Width="4" Height="4" Offset="0xD5D0" />
+        <Texture Name="gGreatBayTempleObjectUnused14TLUT" OutName="great_bay_temple_object_unused_tlut_14" Format="rgba16" Width="4" Height="4" Offset="0xD5F0" />
+        <Texture Name="gGreatBayTempleObjectUnused15TLUT" OutName="great_bay_temple_object_unused_tlut_15" Format="rgba16" Width="4" Height="4" Offset="0xD610" />
+        <Texture Name="gGreatBayTempleObjectUnusedDarkMetalTLUT" OutName="great_bay_temple_object_unused_dark_metal_tlut" Format="rgba16" Width="4" Height="4" Offset="0xD630" />
+        <Texture Name="gGreatBayTempleObjectUnused16TLUT" OutName="great_bay_temple_object_unused_tlut_16" Format="rgba16" Width="4" Height="4" Offset="0xD650" />
+        <Texture Name="gGreatBayTempleObjectUnusedPaddleTLUT" OutName="great_bay_temple_object_unused_paddle_tlut" Format="rgba16" Width="4" Height="4" Offset="0xD670" /> 
+        <Texture Name="gGreatBayTempleObjectUnused17TLUT" OutName="great_bay_temple_object_unused_tlut_17" Format="rgba16" Width="4" Height="4" Offset="0xD690" /> 
+        <Texture Name="gGreatBayTempleObjectUnused18TLUT" OutName="great_bay_temple_object_unused_tlut_18" Format="rgba16" Width="4" Height="4" Offset="0xD6B0" />
+        <Texture Name="gGreatBayTempleObjectUnused19TLUT" OutName="great_bay_temple_object_unused_tlut_19" Format="rgba16" Width="4" Height="4" Offset="0xD6D0" />
+        <Texture Name="gGreatBayTempleObjectUnused20TLUT" OutName="great_bay_temple_object_unused_tlut_20" Format="rgba16" Width="4" Height="4" Offset="0xD6F0" /> 
+        <Texture Name="gGreatBayTempleObjectUnused21TLUT" OutName="great_bay_temple_object_unused_tlut_21" Format="rgba16" Width="4" Height="4" Offset="0xD710" /> 
+        <Texture Name="gGreatBayTempleObjectUnused22TLUT" OutName="great_bay_temple_object_unused_tlut_22" Format="rgba16" Width="4" Height="4" Offset="0xD730" /> 
+        <Texture Name="gGreatBayTempleObjectUnused23TLUT" OutName="great_bay_temple_object_unused_tlut_23" Format="rgba16" Width="4" Height="4" Offset="0xD750" /> 
+        <Texture Name="gGreatBayTempleObjectUnused24TLUT" OutName="great_bay_temple_object_unused_tlut_24" Format="rgba16" Width="4" Height="4" Offset="0xD770" /> 
+        <Texture Name="gGreatBayTempleObjectUnused25TLUT" OutName="great_bay_temple_object_unused_tlut_25" Format="rgba16" Width="4" Height="4" Offset="0xD790" /> 
+        <Texture Name="gGreatBayTempleObjectUnused26TLUT" OutName="great_bay_temple_object_unused_tlut_26" Format="rgba16" Width="4" Height="4" Offset="0xD7B0" /> 
+        <Texture Name="gGreatBayTempleObjectUnused27TLUT" OutName="great_bay_temple_object_unused_tlut_27" Format="rgba16" Width="4" Height="4" Offset="0xD7D0" /> 
+        <Texture Name="gGreatBayTempleObjectUnused28TLUT" OutName="great_bay_temple_object_unused_tlut_28" Format="rgba16" Width="4" Height="4" Offset="0xD7F0" /> 
+        <Texture Name="gGreatBayTempleObjectUnused29TLUT" OutName="great_bay_temple_object_unused_tlut_29" Format="rgba16" Width="4" Height="4" Offset="0xD810" /> 
+        <Texture Name="gGreatBayTempleObjectUnused30TLUT" OutName="great_bay_temple_object_unused_tlut_30" Format="rgba16" Width="4" Height="4" Offset="0xD830" /> 
+        <Texture Name="gGreatBayTempleObjectLargeSeesawPlatformTLUT" OutName="great_bay_temple_object_large_seesaw_platform_tlut" Format="rgba16" Width="4" Height="4" Offset="0xD850" />
+        <Texture Name="gGreatBayTempleObjectUnused31TLUT" OutName="great_bay_temple_object_unused_tlut_31" Format="rgba16" Width="4" Height="4" Offset="0xD870" />
+        <Texture Name="gGreatBayTempleObjectUnused32TLUT" OutName="great_bay_temple_object_unused_tlut_32" Format="rgba16" Width="4" Height="4" Offset="0xD890" />
+        <Texture Name="gGreatBayTempleObjectUnused33TLUT" OutName="great_bay_temple_object_unused_tlut_33" Format="rgba16" Width="4" Height="4" Offset="0xD8B0" />
+        <Texture Name="gGreatBayTempleObjectPlatformSideAndSeesawShaftTex" OutName="great_bay_temple_object_platform_side_and_seesaw_shaft" Format="rgba16" Width="16" Height="64" Offset="0xD8D0" />
+        <Texture Name="gGreatBayTempleObjectElevatorRiserTex" OutName="great_bay_temple_object_elevator_riser" Format="rgba16" Width="8" Height="16" Offset="0xE0D0" />
+        <Texture Name="gGreatBayTempleObjectPlatformAndWaterwheelBladeTex" OutName="great_bay_temple_object_platform_and_waterwheel_blade" Format="rgba16" Width="32" Height="64" Offset="0xE1D0" />
+        <Texture Name="gGreatBayTempleObjectDarkMetalTex" OutName="great_bay_temple_object_dark_metal" Format="rgba16" Width="16" Height="32" Offset="0xF1D0" />
+        <Texture Name="gGreatBayTempleObjectShaftTex" OutName="great_bay_temple_object_shaft" Format="rgba16" Width="16" Height="64" Offset="0xF5D0" />
+        <Texture Name="gGreatBayTempleObjectGearTex" OutName="great_bay_temple_object_gear" Format="rgba16" Width="16" Height="32" Offset="0xFDD0" />
+        <Texture Name="gGreatBayTempleObjectPaddleTex" OutName="great_bay_temple_object_paddle" Format="rgba16" Width="32" Height="64" Offset="0x101D0" />
+        <Texture Name="gGreatBayTempleObjectSwitchKnobTex" OutName="great_bay_temple_object_switch_knob" Format="rgba16" Width="32" Height="32" Offset="0x111D0" />
+        <Texture Name="gGreatBayTempleObjectOneWaySwitchTex" OutName="great_bay_temple_object_one_way_switch" Format="ci4" Width="8" Height="16" Offset="0x119D0" />
+        <Texture Name="gGreatBayTempleObjectSwitchSideTex" OutName="great_bay_temple_object_switch_side" Format="rgba16" Width="32" Height="32" Offset="0x11A10" />
+        <Texture Name="gGreatBayTempleObjectUnusedGearTex" OutName="great_bay_temple_object_unused_gear" Format="ci4" Width="48" Height="36" Offset="0x12210" TlutOffset="0xD530" />
+        <Texture Name="gGreatBayTempleObjectUnusedDarkMetalTex" OutName="great_bay_temple_object_unused_dark_metal" Format="ci4" Width="32" Height="32" Offset="0x12570" TlutOffset="0xD630" />
+        <Texture Name="gGreatBayTempleObjectUnusedShaftTex" OutName="great_bay_temple_object_unused_shaft" Format="rgba16" Width="32" Height="64" Offset="0x12770" />
+        <Texture Name="gGreatBayTempleObjectUnusedPaddleTex" OutName="great_bay_temple_object_unused_paddle" Format="ci4" Width="32" Height="128" Offset="0x13770" TlutOffset="0xD670" />
+        <Texture Name="gGreatBayTempleObjectLargeSeesawPlatformTex" OutName="great_bay_temple_object_large_seesaw_platform" Format="ci4" Width="64" Height="64" Offset="0x13F70" />
+        <Texture Name="gGreatBayTempleObjectHorizontalWaterFoamTex" OutName="great_bay_temple_object_horizontal_water_foam" Format="rgba16" Width="32" Height="32" Offset="0x14770" />
+        <Texture Name="gGreatBayTempleObjectIceTex" OutName="great_bay_temple_object_ice" Format="rgba16" Width="32" Height="32" Offset="0x14F70" />
+        <Texture Name="gGreatBayTempleObjectIceStalactiteRimMaskTex" OutName="great_bay_temple_object_ice_stalactite_rim_mask" Format="ia8" Width="32" Height="64" Offset="0x15770" />
+        <Texture Name="gGreatBayTempleObjectWaterfallWaterTex" OutName="great_bay_temple_object_waterfall_water" Format="rgba16" Width="32" Height="32" Offset="0x15F70" />
+        <Texture Name="gGreatBayTempleObjectVerticalWaterFoamTex" OutName="great_bay_temple_object_vertical_water_foam" Format="rgba16" Width="32" Height="32" Offset="0x16770" />
+        <Texture Name="gGreatBayTempleObjectWhirpoolWaterTex" OutName="great_bay_temple_object_whirlpool_water" Format="rgba16" Width="32" Height="32" Offset="0x16F70" />
+        <Texture Name="gGreatBayTempleObjectSplashScrollTex" OutName="great_bay_temple_object_splash_scroll" Format="ia8" Width="32" Height="32" Offset="0x17770" />
+
+        <!-- Assets for the doors in Great Bay Temple. -->
+        <DList Name="gGreatBayTempleObjectDoorDL" Offset="0x17D00" /> <!-- Original name is "m2_KON_shuter1_model" -->
+        <Texture Name="gGreatBayTempleObjectDoorTex" OutName="great_bay_temple_object_door" Format="rgba16" Width="32" Height="64" Offset="0x17E58" />
+    </File>
+</Root>

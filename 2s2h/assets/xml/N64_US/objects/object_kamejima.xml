@@ -1,0 +1,101 @@
+﻿<Root>
+    <!-- Assest for the giant turtle and wave he creates -->
+    <File Name="object_kamejima" Segment="6">
+        <!-- Turtle Wave -->
+        <Array Name="gTurtleWaveVtx" Count="20" Offset="0x0">
+            <Vtx/>
+        </Array>
+        <DList Name="gTurtleWaveDL" Offset="0x140" /> <!-- Original name is "efc_wave_model" -->
+        <Texture Name="gTurtleWaveUnusedTex" OutName="turtle_wave_unused" Format="i8" Width="32" Height="64" Offset="0x2D8" />
+        <Texture Name="gTurtleWaveTex" OutName="turtle_wave" Format="i8" Width="64" Height="64" Offset="0xAD8" />
+        <TextureAnimation Name="gTurtleWaveTexAnim" Offset="0x1AF0" />
+
+
+        <!-- Turtle -->
+        <Collision Name="gTurtleZoraCapeAsleepCol" Offset="0x2328" /> <!-- Original name is "kam_all_bgdatainfo" -->
+        <TextureAnimation Name="gTurtleEmpty1TexAnim" Offset="0x2360"/>
+        <Collision Name="gTurtleZoraCapeAwakeCol" Offset="0x2470" /> <!-- Original name is "kam_kamebgbox_bgdatainfo" -->
+        <Collision Name="gTurtleUnusedCol" Offset="0x2E04" /> <!-- Original name might be "kam_kamebg_bgdatainfo"? MM3D has this, but the collision vertices do not match at all. -->
+        
+        <Animation Name="gTurtleGlitchy1Anim" Offset="0x3980" /> <!-- Original name is "kam_laugh" -->
+        <Animation Name="gTurtleCoughAnim" Offset="0x47B8" /> <!-- Original name is "kam_laughlong" -->
+        <Animation Name="gTurtleIdleAnim" Offset="0x48B0" /> <!-- Original name is "kam_mezame" -->
+
+        <DList Name="gTurtleAsleepDL" Offset="0x4E70" /> <!-- When asleep, the turtle looks like a giant rock. Original name is "kam_sima_3_model" -->
+
+        <Texture Name="gTurtleAsleepTLUT" OutName="turtle_asleep_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5248" />
+        <Texture Name="gTurtleAsleepGrassTex" OutName="turtle_asleep_grass" Format="ci8" Width="32" Height="32" Offset="0x5448" />
+        <Texture Name="gTurtleAsleepGrassDirtTex" OutName="turtle_asleep_grass_dirt" Format="ci8" Width="64" Height="32" Offset="0x5848" />
+
+        <TextureAnimation Name="gTurtleEmpty2TexAnim" Offset="0x6050" />
+
+        <Animation Name="gTurtleSwimAnim" Offset="0x6980" /> <!-- Original name is "kam_swim" -->
+
+        <DList Name="gTurtleShellDL" Offset="0x8760" />
+        <DList Name="gTurtleFrontLeftUpperFlipperDL" Offset="0x8E18" />
+        <DList Name="gTurtleFrontLeftLowerFlipperDL" Offset="0x90E8" />
+        <DList Name="gTurtleFrontLeftEndFlipperDL" Offset="0x9278" />
+        <DList Name="gTurtleFrontRightUpperFlipperDL" Offset="0x93E8" />
+        <DList Name="gTurtleFrontRightLowerFlipperDL" Offset="0x96B8" />
+        <DList Name="gTurtleFrontRightEndFlipperDL" Offset="0x9848" />
+        <DList Name="gTurtleBackRightFlipperDL" Offset="0x99B8" />
+        <DList Name="gTurtleBackLeftFlipperDL" Offset="0x9C38" />
+        <DList Name="gTurtleTailDL" Offset="0x9E38" />
+        <DList Name="gTurtleNeckDL" Offset="0x9F18" />
+        <DList Name="gTurtleHeadDL" Offset="0xA118" />
+        <DList Name="gTurtleUpperMouthDL" Offset="0xA4B8" />
+        <DList Name="gTurtleLowerMouthDL" Offset="0xA7C8" />
+
+        <Texture Name="gTurtleSkinTLUT" OutName="turtle_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0xAAD8" />
+        <Texture Name="gTurtleTLUT" OutName="turtle_tlut" Format="rgba16" Width="16" Height="16" Offset="0xACD8" />
+        <Texture Name="gTurtleNostrilTex" OutName="turtle_nostril" Format="ci8" Width="32" Height="32" Offset="0xAED8" />
+        <Texture Name="gTurtleInsideUpperMouthTex" OutName="turtle_inside_upper_mouth" Format="ci8" Width="16" Height="16" Offset="0xB2D8" />
+        <Texture Name="gTurtleInsideLowerMouthTex" OutName="turtle_inside_lower_mouth" Format="ci8" Width="16" Height="32" Offset="0xB3D8"/>
+        <Texture Name="gTurtleSpottedSkinTex" OutName="turtle_spotted_skin" Format="ci8" Width="64" Height="32" Offset="0xB5D8"/>
+        <Texture Name="gTurtleSkinTex" OutName="turtle_skin" Format="ci8" Width="16" Height="16" Offset="0xBDD8" />
+        <Texture Name="gTurtleEyeOpenStraightTex" OutName="turtle_eye_open_straight" Format="ci8" Width="32" Height="32" Offset="0xBED8" TlutOffset="0xAAD8"/>
+        <Texture Name="gTurtleEyeHalfStraightTex" OutName="turtle_eye_half_straight" Format="ci8" Width="32" Height="32" Offset="0xC2D8" TlutOffset="0xAAD8"/>
+        <Texture Name="gTurtleEyeClosedTex" OutName="turtle_eye_closed" Format="ci8" Width="32" Height="32" Offset="0xC6D8" TlutOffset="0xAAD8"/>
+        <Texture Name="gTurtleEyeHalfLeftTex" OutName="turtle_eye_half_left" Format="ci8" Width="32" Height="32" Offset="0xCAD8" TlutOffset="0xAAD8"/>
+        <Texture Name="gTurtleEyeOpenRightTex" OutName="turtle_eye_half_right" Format="ci8" Width="32" Height="32" Offset="0xCED8" TlutOffset="0xAAD8"/>
+        <Texture Name="gTurtleEyeOpenLeftTex" OutName="turtle_eye_half_left_2" Format="ci8" Width="32" Height="32" Offset="0xD2D8" TlutOffset="0xAAD8"/>
+
+        <Texture Name="gTurtleHeadTex" OutName="turtle_head" Format="ci8" Width="16" Height="16" Offset="0xD6D8"/>
+        <Texture Name="gTurtleShellGrassTex" OutName="turtle_shell_grass" Format="ci8" Width="32" Height="64" Offset="0xD7D8" />
+        <Texture Name="gTurtleShellScutesTex" OutName="turtle_shell_scutes" Format="ci8" Width="32" Height="32" Offset="0xDFD8"/>
+        <Texture Name="gTurtleShellBottomTex" OutName="turtle_shell_bottom" Format="ci8" Width="16" Height="32" Offset="0xE3D8"/>
+
+        <Limb Name="gTurtleRootLimb" Type="Standard" EnumName="TURTLE_LIMB_ROOT" Offset="0xE5D8" />
+        <Limb Name="gTurtleShellLimb" Type="Standard" EnumName="TURTLE_LIMB_SHELL" Offset="0xE5E4" />
+        <Limb Name="gTurtleNeckHeadRootLimb" Type="Standard" EnumName="TURTLE_LIMB_NECK_HEAD_ROOT" Offset="0xE5F0" />
+        <Limb Name="gTurtleNeckLimb" Type="Standard" EnumName="TURTLE_LIMB_NECK" Offset="0xE5FC" />
+        <Limb Name="gTurtleHeadLimb" Type="Standard" EnumName="TURTLE_LIMB_HEAD" Offset="0xE608" />
+        <Limb Name="gTurtleUpperMouthLimb" Type="Standard" EnumName="TURTLE_LIMB_UPPER_MOUTH" Offset="0xE614" />
+        <Limb Name="gTurtleLowerMouthRootLimb" Type="Standard" EnumName="TURTLE_LIMB_LOWER_MOUTH_ROOT" Offset="0xE620" />
+        <Limb Name="gTurtleLowerMouthLimb" Type="Standard" EnumName="TURTLE_LIMB_LOWER_MOUTH" Offset="0xE62C" />
+        <Limb Name="gTurtleBackLeftFlipperRootLimb" Type="Standard" EnumName="TURTLE_LIMB_BACK_LEFT_FLIPPER_ROOT" Offset="0xE638" />
+        <Limb Name="gTurtleBackLeftFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_BACK_LEFT_FLIPPER" Offset="0xE644" />
+        <Limb Name="gTurtleBackRightFlipperRootLimb" Type="Standard" EnumName="TURTLE_LIMB_BACK_RIGHT_FLIPPER_ROOT" Offset="0xE650" />
+        <Limb Name="gTurtleBackRightFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_BACK_RIGHT_FLIPPER" Offset="0xE65C" />
+        <Limb Name="gTurtleTailRootLimb" Type="Standard" EnumName="TURTLE_TAIL_ROOT_LIMB" Offset="0xE668" />
+        <Limb Name="gTurtleTailLimb" Type="Standard" EnumName="TURTLE_TAIL_LIMB" Offset="0xE674" />
+        <Limb Name="gTurtleTailEndRootLimb" Type="Standard" EnumName="TURTLE_TAIL_END_ROOT_LIMB" Offset="0xE680" />
+        <Limb Name="gTurtleFrontLeftFlipperRootLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_LEFT_FLIPPER_ROOT" Offset="0xE68C" />
+        <Limb Name="gTurtleFrontLeftUpperFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_LEFT_UPPER_FLIPPER" Offset="0xE698" />
+        <Limb Name="gTurtleFrontLeftLowerFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_LEFT_LOWER_FLIPPER" Offset="0xE6A4" />
+        <Limb Name="gTurtleFrontLeftEndFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_LEFT_END_FLIPPER" Offset="0xE6B0" />
+        <Limb Name="gTurtleFrontRightFlipperRootLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_RIGHT_FLIPPER_ROOT" Offset="0xE6BC" />
+        <Limb Name="gTurtleFrontRightUpperFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_RIGHT_UPPER_FLIPPER" Offset="0xE6C8" />
+        <Limb Name="gTurtleFrontRightLowerFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_RIGHT_LOWER_FLIPPER" Offset="0xE6D4" />
+        <Limb Name="gTurtleFrontRightEndFlipperLimb" Type="Standard" EnumName="TURTLE_LIMB_FRONT_RIGHT_END_FLIPPER" Offset="0xE6E0" />
+        <Skeleton Name="gTurtleSkel" Type="Flex" LimbType="Standard" LimbNone="TURTLE_LIMB_NONE" LimbMax="TURTLE_LIMB_MAX" EnumName="TurtleLimb" Offset="0xE748" />
+
+        <Animation Name="gTurtleGlitchy2Anim" Offset="0xEF98" /> <!-- Original name is "kam_talk" -->
+        <Animation Name="gTurtleSpeak1Anim" Offset="0x100CC" /> <!-- Original name is "kam_talklong" -->
+        <Animation Name="gTurtleGlitchyRaiseHeadAnim" Offset="0x10918" /> <!-- Original name is "kam_unazuku" -->
+        <Animation Name="gTurtleSpeak2Anim" Offset="0x119D4" /> <!-- Original name is "kam_unazukulong" -->
+        <Animation Name="gTurtleFloatAnim" Offset="0x12260" /> <!-- Original name is "kam_wait" -->
+        <Animation Name="gTurtleGlitchyLookAroundAnim" Offset="0x13264" /> <!-- Original name is "kam_yawn" -->
+        <Animation Name="gTurtleYawnAnim" Offset="0x14E8C" /> <!-- Original name is "kam_yawnlong" -->
+    </File>
+</Root>

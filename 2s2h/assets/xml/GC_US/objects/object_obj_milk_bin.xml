@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_obj_milk_bin" Segment="6">
+        <DList Name="gMilkBinMilkJarDL" Offset="0x4B0" /> <!-- Original name is "obj_mlk_simplebin_model" -->
+        <Texture Name="object_obj_milk_bin_TLUT_0007C0" OutName="tlut_0007C0" Format="rgba16" Width="16" Height="16" Offset="0x7C0" />
+        <Texture Name="object_obj_milk_bin_Tex_0009C0" OutName="tex_0009C0" Format="ci8" Width="8" Height="8" Offset="0x9C0" />
+        <Texture Name="object_obj_milk_bin_Tex_000A00" OutName="tex_000A00" Format="ci8" Width="32" Height="64" Offset="0xA00" />
+        <Texture Name="object_obj_milk_bin_Tex_001200" OutName="tex_001200" Format="rgba16" Width="32" Height="32" Offset="0x1200" />
+    </File>
+</Root>

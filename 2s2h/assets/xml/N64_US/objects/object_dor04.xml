@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Assets for the magic hag potion shop door -->
+    <File Name="object_dor04" Segment="6">
+        <DList Name="gMagicHagPotionShopDoorEmptyDL" Offset="0x460"/> <!-- Original name is "z2_dor04_modelT" -->
+        <DList Name="gMagicHagPotionShopDoorDL" Offset="0x468"/> <!-- Original name is "z2_dor04_model" -->
+        <Texture Name="gMagicHagPotionShopDoorTex" OutName="magic_hag_potion_shop_door" Format="rgba16" Width="64" Height="32" Offset="0x658"/>
+    </File>
+</Root>

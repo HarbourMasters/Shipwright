@@ -1,0 +1,14 @@
+<Root>
+    <File Name="Z2_DANPEI2TEST" Segment="2" Game="MM">
+        <Scene Name="Z2_DANPEI2TEST" Offset="0x0"/>
+    </File>
+    <File Name="Z2_DANPEI2TEST_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI2TEST_room_00" Offset="0x0"/>
+        <DList Name="Z2_DANPEI2TEST_room_00DL_00F360" Offset="0xF360"/>
+        <DList Name="Z2_DANPEI2TEST_room_00DL_016C50" Offset="0x16C50"/>
+    </File>
+    <File Name="Z2_DANPEI2TEST_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI2TEST_room_01" Offset="0x0"/>
+        <DList Name="Z2_DANPEI2TEST_room_01DL_004F48" Offset="0x4F48"/>
+    </File>
+</Root>

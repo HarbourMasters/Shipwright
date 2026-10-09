@@ -1,0 +1,41 @@
+﻿<Root>
+    <File Name="object_am" Segment="6">
+        <Collision Name="object_am_Colheader_000118" Offset="0x118" /> <!-- Original name is "am_bgdatainfo" -->
+        <Animation Name="gArmosHopAnim" Offset="0x238" /> <!-- Original name is "am_jump" -->
+        <Animation Name="gArmosPushedBackAnim" Offset="0x33C" /> <!-- Original name is "am_mamori" ("protection; defense") -->
+        <DList Name="object_am_DL_0005D0" Offset="0x5D0" />
+        <DList Name="object_am_DL_0007A8" Offset="0x7A8" />
+        <DList Name="object_am_DL_0016C8" Offset="0x16C8" />
+        <DList Name="object_am_DL_002278" Offset="0x2278" />
+        <DList Name="object_am_DL_002550" Offset="0x2550" />
+        <Texture Name="object_am_Tex_002638" OutName="tex_002638" Format="i4" Width="32" Height="32" Offset="0x2638" />
+        <Texture Name="object_am_Tex_002838" OutName="tex_002838" Format="i4" Width="16" Height="32" Offset="0x2838" />
+        <Texture Name="object_am_Tex_002938" OutName="tex_002938" Format="rgba16" Width="16" Height="32" Offset="0x2938" />
+        <Texture Name="object_am_Tex_002D38" OutName="tex_002D38" Format="i4" Width="16" Height="32" Offset="0x2D38" />
+        <Texture Name="object_am_Tex_002E38" OutName="tex_002E38" Format="i4" Width="32" Height="32" Offset="0x2E38" />
+        <Texture Name="object_am_Tex_003038" OutName="tex_003038" Format="i4" Width="32" Height="32" Offset="0x3038" />
+        <Texture Name="object_am_Tex_003238" OutName="tex_003238" Format="rgba16" Width="32" Height="32" Offset="0x3238" />
+        <Texture Name="object_am_Tex_003A38" OutName="tex_003A38" Format="rgba16" Width="16" Height="16" Offset="0x3A38" />
+        <Texture Name="object_am_Tex_003C38" OutName="tex_003C38" Format="rgba16" Width="32" Height="32" Offset="0x3C38" />
+        <Texture Name="object_am_Tex_004438" OutName="tex_004438" Format="rgba16" Width="32" Height="32" Offset="0x4438" />
+        <Texture Name="object_am_Tex_004C38" OutName="tex_004C38" Format="rgba16" Width="32" Height="32" Offset="0x4C38" />
+        <Texture Name="object_am_Tex_005438" OutName="tex_005438" Format="i4" Width="16" Height="8" Offset="0x5438" />
+        <Texture Name="object_am_Tex_005478" OutName="tex_005478" Format="rgba16" Width="16" Height="32" Offset="0x5478" />
+        <Limb Name="object_am_Standardlimb_005878" Type="Standard" EnumName="OBJECT_AM_LIMB_01" Offset="0x5878" />
+        <Limb Name="object_am_Standardlimb_005884" Type="Standard" EnumName="OBJECT_AM_LIMB_02" Offset="0x5884" />
+        <Limb Name="object_am_Standardlimb_005890" Type="Standard" EnumName="OBJECT_AM_LIMB_BODY" Offset="0x5890" />
+        <Limb Name="object_am_Standardlimb_00589C" Type="Standard" EnumName="OBJECT_AM_LIMB_04" Offset="0x589C" />
+        <Limb Name="object_am_Standardlimb_0058A8" Type="Standard" EnumName="OBJECT_AM_LIMB_05" Offset="0x58A8" />
+        <Limb Name="object_am_Standardlimb_0058B4" Type="Standard" EnumName="OBJECT_AM_LIMB_SHIELD" Offset="0x58B4" />
+        <Limb Name="object_am_Standardlimb_0058C0" Type="Standard" EnumName="OBJECT_AM_LIMB_07" Offset="0x58C0" />
+        <Limb Name="object_am_Standardlimb_0058CC" Type="Standard" EnumName="OBJECT_AM_LIMB_08" Offset="0x58CC" />
+        <Limb Name="object_am_Standardlimb_0058D8" Type="Standard" EnumName="OBJECT_AM_LIMB_SWORD" Offset="0x58D8" />
+        <Limb Name="object_am_Standardlimb_0058E4" Type="Standard" EnumName="OBJECT_AM_LIMB_0A" Offset="0x58E4" />
+        <Limb Name="object_am_Standardlimb_0058F0" Type="Standard" EnumName="OBJECT_AM_LIMB_0B" Offset="0x58F0" />
+        <Limb Name="object_am_Standardlimb_0058FC" Type="Standard" EnumName="OBJECT_AM_LIMB_BASE" Offset="0x58FC" />
+        <Limb Name="object_am_Standardlimb_005908" Type="Standard" EnumName="OBJECT_AM_LIMB_0D" Offset="0x5908" />
+        <Skeleton Name="object_am_Skel_005948" Type="Normal" LimbType="Standard" LimbNone="OBJECT_AM_LIMB_NONE" LimbMax="OBJECT_AM_LIMB_MAX" EnumName="ObjectAmLimb" Offset="0x5948" />
+        <Animation Name="gArmosTakeDamageAnim" Offset="0x5B3C" /> <!-- Original name is "am_yarare" ("to suffer damage") -->
+        <Collision Name="object_am_Colheader_005CF8" Offset="0x5CF8" /> <!-- Original name is "armos_test_bgdatainfo" -->
+    </File>
+</Root>

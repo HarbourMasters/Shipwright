@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Powdered Gold Dust (not inside a bottle) -->
+    <File Name="object_gi_gold_dust" Segment="6">
+
+        <!-- Powdered Gold Dust Display Lists -->
+        <DList Name="gGiGoldDustPowderEmptyDL" Offset="0x880" />
+        <DList Name="gGiGoldDustPowderDL" Offset="0x888" />
+
+        <!-- Powdered Gold Dust Textures -->
+        <Texture Name="gGiGoldDustPowderClothTex" OutName="gi_gold_dust_powder_cloth" Format="i8" Width="32" Height="32" Offset="0xB40" />
+        <Texture Name="gGiGoldDustPowderContentTex" OutName="gi_gold_dust_powder_content" Format="i4" Width="32" Height="32" Offset="0xF40" />
+    </File>
+</Root>

@@ -1,0 +1,81 @@
+﻿<Root>
+    <File Name="object_pamera" Segment="6">
+        <Animation Name="object_pamera_Anim_0005BC" Offset="0x5BC" /> <!-- Original name is "pam_wait" -->
+
+        <DList Name="gPamelaAbdomenDL" Offset="0x2E50" />
+        <DList Name="gPamelaPelvisDL" Offset="0x2FB8" />
+        <DList Name="gPamelaNeckDL" Offset="0x30D0" />
+        <DList Name="gPamelaChestDL" Offset="0x31B0" />
+        <DList Name="gPamelaLeftUpperArmDL" Offset="0x3520" />
+        <DList Name="gPamelaLeftForearmDL" Offset="0x37B8" />
+        <DList Name="gPamelaLeftHandDL" Offset="0x39C0" />
+        <DList Name="gPamelaRightUpperArmDL" Offset="0x3D60" />
+        <DList Name="gPamelaRightForearmDL" Offset="0x3F78" />
+        <DList Name="gPamelaRightHandDL" Offset="0x4180" />
+        <DList Name="gPamelaHeadDL" Offset="0x4520" />
+        <DList Name="gPamelaHairEndDL" Offset="0x4AC0" />
+        <DList Name="gPamelaBackDressDL" Offset="0x4C88" />
+        <DList Name="gPamelaFrontDressDL" Offset="0x4E00" />
+        <DList Name="gPamelaLeftThighDL" Offset="0x4F78" />
+        <DList Name="gPamelaLeftLegDL" Offset="0x5158" />
+        <DList Name="gPamelaLeftFootDL" Offset="0x54B8" />
+        <DList Name="gPamelaRightThighDL" Offset="0x5830" />
+        <DList Name="gPamelaRightLegDL" Offset="0x5A10" />
+        <DList Name="gPamelaRightFootDL" Offset="0x5D70" />
+
+        <Texture Name="object_pamera_TLUT_0060E8" OutName="tlut_0060E8" Format="rgba16" Width="16" Height="16" Offset="0x60E8" />
+        <Texture Name="object_pamera_Tex_0062E8" OutName="tex_0062E8" Format="ci8" Width="16" Height="16" Offset="0x62E8" />
+        <Texture Name="object_pamera_Tex_0063E8" OutName="tex_0063E8" Format="ci8" Width="16" Height="16" Offset="0x63E8" />
+        <Texture Name="object_pamera_Tex_0064E8" OutName="tex_0064E8" Format="ci8" Width="16" Height="16" Offset="0x64E8" />
+        <Texture Name="object_pamera_Tex_0065E8" OutName="tex_0065E8" Format="ci8" Width="16" Height="16" Offset="0x65E8" />
+        <Texture Name="object_pamera_Tex_0066E8" OutName="tex_0066E8" Format="ci8" Width="32" Height="32" Offset="0x66E8" />
+        <Texture Name="object_pamera_Tex_006AE8" OutName="tex_006AE8" Format="ci8" Width="32" Height="32" Offset="0x6AE8" />
+        <Texture Name="object_pamera_Tex_006EE8" OutName="tex_006EE8" Format="ci8" Width="32" Height="32" Offset="0x6EE8" />
+        <Texture Name="object_pamera_Tex_0072E8" OutName="tex_0072E8" Format="ci8" Width="16" Height="16" Offset="0x72E8" />
+        <Texture Name="object_pamera_Tex_0073E8" OutName="tex_0073E8" Format="ci8" Width="16" Height="16" Offset="0x73E8" />
+        <Texture Name="object_pamera_Tex_0074E8" OutName="tex_0074E8" Format="ci8" Width="32" Height="32" Offset="0x74E8" />
+        <Texture Name="object_pamera_Tex_0078E8" OutName="tex_0078E8" Format="ci8" Width="32" Height="32" Offset="0x78E8" />
+        <Texture Name="object_pamera_Tex_007CE8" OutName="tex_007CE8" Format="ci8" Width="16" Height="16" Offset="0x7CE8" />
+        <Texture Name="object_pamera_Tex_007DE8" OutName="tex_007DE8" Format="ci8" Width="32" Height="16" Offset="0x7DE8" />
+        <Texture Name="object_pamera_Tex_007FE8" OutName="tex_007FE8" Format="ci8" Width="16" Height="16" Offset="0x7FE8" />
+        <Texture Name="object_pamera_Tex_0080E8" OutName="tex_0080E8" Format="ci8" Width="16" Height="16" Offset="0x80E8" />
+        <Texture Name="object_pamera_Tex_0081E8" OutName="tex_0081E8" Format="ci8" Width="16" Height="16" Offset="0x81E8" />
+
+        <Limb Name="gPamelaRootLimb" Type="Standard" EnumName="PAMELA_LIMB_ROOT" Offset="0x82E8" />
+        <Limb Name="gPamelaUpperBodyRootLimb" Type="Standard" EnumName="PAMELA_LIMB_UPPER_BODY_ROOT" Offset="0x82F4" />
+        <Limb Name="gPamelaLeftUpperArmLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_UPPER_ARM" Offset="0x8300" />
+        <Limb Name="gPamelaLeftForearmLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_FOREARM" Offset="0x830C" />
+        <Limb Name="gPamelaLeftHandLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_HAND" Offset="0x8318" />
+        <Limb Name="gPamelaRightUpperArmLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_UPPER_ARM" Offset="0x8324" />
+        <Limb Name="gPamelaRightForearmLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_FOREARM" Offset="0x8330" />
+        <Limb Name="gPamelaRightHandLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_HAND" Offset="0x833C" />
+        <Limb Name="gPamelaHeadLimb" Type="Standard" EnumName="PAMELA_LIMB_HEAD" Offset="0x8348" />
+        <Limb Name="gPamelaHairEndLimb" Type="Standard" EnumName="PAMELA_LIMB_HAIR_END" Offset="0x8354" />
+        <Limb Name="gPamelaChestLimb" Type="Standard" EnumName="PAMELA_LIMB_CHEST" Offset="0x8360" />
+        <Limb Name="gPamelaNeckLimb" Type="Standard" EnumName="PAMELA_LIMB_NECK" Offset="0x836C" />
+        <Limb Name="gPamelaLeftThighLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_THIGH" Offset="0x8378" />
+        <Limb Name="gPamelaLeftLegLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_LEG" Offset="0x8384" />
+        <Limb Name="gPamelaLeftFootLimb" Type="Standard" EnumName="PAMELA_LIMB_LEFT_FOOT" Offset="0x8390" />
+        <Limb Name="gPamelaRightThighLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_THIGH" Offset="0x839C" />
+        <Limb Name="gPamelaRightLegLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_LEG" Offset="0x83A8" />
+        <Limb Name="gPamelaRightFootLimb" Type="Standard" EnumName="PAMELA_LIMB_RIGHT_FOOT" Offset="0x83B4" />
+        <Limb Name="gPamelaFrontDressLimb" Type="Standard" EnumName="PAMELA_LIMB_FRONT_DRESS" Offset="0x83C0" />
+        <Limb Name="gPamelaBackDressLimb" Type="Standard" EnumName="PAMELA_LIMB_BACK_DRESS" Offset="0x83CC" />
+        <Limb Name="gPamelaAbdomenLimb" Type="Standard" EnumName="PAMELA_LIMB_ABDOMEN" Offset="0x83D8" />
+        <Limb Name="gPamelaPelvisLimb" Type="Standard" EnumName="PAMELA_LIMB_PELVIS" Offset="0x83E4" />
+        <Skeleton Name="gPamelaSkel" Type="Flex" LimbType="Standard" LimbNone="PAMELA_LIMB_NONE" LimbMax="PAMELA_LIMB_MAX" EnumName="PamelaLimb" Offset="0x8448" />
+        
+        <Animation Name="object_pamera_Anim_008AE0" Offset="0x8AE0" /> <!-- Pamela Walking. Original name is "pamera_aruku" -->
+        <Animation Name="object_pamera_Anim_008E38" Offset="0x8E38" /> <!-- Original name is "pamera_hasiru" -->
+        <Animation Name="object_pamera_Anim_009870" Offset="0x9870" /> <!-- Original name is "pamera_kabau" -->
+        <Animation Name="object_pamera_Anim_009F54" Offset="0x9F54" /> <!-- HoldBack En_Hgo. Original name is "pamera_kabau_loop" -->
+        <Animation Name="object_pamera_Anim_00A844" Offset="0xA844" /> <!-- Pamela Looking down the well. Original name is "pamera_nozoku" -->
+        <Animation Name="object_pamera_Anim_00B0C4" Offset="0xB0C4" /> <!-- Original name is "pamera_odoroku" -->
+        <Animation Name="object_pamera_Anim_00B5B0" Offset="0xB5B0" /> <!-- PushBack En_Hgo. Original name is "pamera_osaeru_loop" -->
+        <Animation Name="object_pamera_Anim_00BCC4" Offset="0xBCC4" /> <!-- Defend En_Hgo. Original name is "pamera_sakebu" -->
+        <Animation Name="object_pamera_Anim_00C9F4" Offset="0xC9F4" /> <!-- Original name is "pamera_siawase" -->
+        <Animation Name="object_pamera_Anim_00D0F0" Offset="0xD0F0" /> <!-- Original name is "pamera_siawase_loop" -->
+        <Animation Name="object_pamera_Anim_00D9DC" Offset="0xD9DC" /> <!-- Original name is "pamera_tobikomu" -->
+        <Animation Name="object_pamera_Anim_00E16C" Offset="0xE16C" /> <!-- Hugging En_Hg. Original name is "pamera_tobikomu_loop" -->
+    </File>
+</Root>

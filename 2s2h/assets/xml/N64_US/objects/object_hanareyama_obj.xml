@@ -1,0 +1,69 @@
+﻿<Root>
+    <File Name="object_hanareyama_obj" Segment="6">
+        <DList Name="object_hanareyama_obj_DL_000000" Offset="0x0" />
+        <DList Name="object_hanareyama_obj_DL_000020" Offset="0x20" />
+        <DList Name="object_hanareyama_obj_DL_000D70" Offset="0xD70" />
+        <DList Name="object_hanareyama_obj_DL_000E30" Offset="0xE30" />
+        <DList Name="object_hanareyama_obj_DL_000EF0" Offset="0xEF0" />
+        <DList Name="object_hanareyama_obj_DL_000FB8" Offset="0xFB8" />
+        <DList Name="object_hanareyama_obj_DL_001078" Offset="0x1078" />
+        <DList Name="object_hanareyama_obj_DL_001138" Offset="0x1138" />
+        <DList Name="object_hanareyama_obj_DL_001200" Offset="0x1200" />
+        <DList Name="object_hanareyama_obj_DL_0012C0" Offset="0x12C0" />
+        <DList Name="object_hanareyama_obj_DL_001380" Offset="0x1380" />
+        <DList Name="object_hanareyama_obj_DL_001448" Offset="0x1448" />
+        <DList Name="object_hanareyama_obj_DL_001508" Offset="0x1508" />
+        <DList Name="object_hanareyama_obj_DL_0015C8" Offset="0x15C8" />
+        <DList Name="object_hanareyama_obj_DL_001690" Offset="0x1690" />
+        <DList Name="object_hanareyama_obj_DL_001750" Offset="0x1750" />
+        <DList Name="object_hanareyama_obj_DL_001810" Offset="0x1810" />
+        <DList Name="object_hanareyama_obj_DL_0018D8" Offset="0x18D8" />
+        <DList Name="object_hanareyama_obj_DL_001998" Offset="0x1998" />
+        <DList Name="object_hanareyama_obj_DL_001A58" Offset="0x1A58" />
+        <DList Name="object_hanareyama_obj_DL_001B20" Offset="0x1B20" />
+        <DList Name="object_hanareyama_obj_DL_001BE0" Offset="0x1BE0" />
+        <DList Name="object_hanareyama_obj_DL_001CA0" Offset="0x1CA0" />
+        <DList Name="object_hanareyama_obj_DL_001D68" Offset="0x1D68" />
+        <DList Name="object_hanareyama_obj_DL_001E28" Offset="0x1E28" />
+        <DList Name="object_hanareyama_obj_DL_001EE8" Offset="0x1EE8" />
+        <DList Name="object_hanareyama_obj_DL_001FB0" Offset="0x1FB0" />
+        <DList Name="object_hanareyama_obj_DL_002070" Offset="0x2070" />
+        <DList Name="object_hanareyama_obj_DL_002130" Offset="0x2130" />
+        <DList Name="object_hanareyama_obj_DL_0021F0" Offset="0x21F0" />
+        <DList Name="object_hanareyama_obj_DL_0022B0" Offset="0x22B0" />
+        <DList Name="object_hanareyama_obj_DL_002370" Offset="0x2370" />
+        <DList Name="object_hanareyama_obj_DL_002430" Offset="0x2430" />
+        <DList Name="object_hanareyama_obj_DL_0024F0" Offset="0x24F0" />
+        <DList Name="object_hanareyama_obj_DL_0025B0" Offset="0x25B0" />
+        <DList Name="object_hanareyama_obj_DL_002670" Offset="0x2670" />
+        <DList Name="object_hanareyama_obj_DL_002730" Offset="0x2730" />
+        <DList Name="object_hanareyama_obj_DL_0027F0" Offset="0x27F0" />
+        <DList Name="object_hanareyama_obj_DL_0028B0" Offset="0x28B0" />
+        <DList Name="object_hanareyama_obj_DL_002970" Offset="0x2970" />
+        <DList Name="object_hanareyama_obj_DL_002A30" Offset="0x2A30" />
+        <DList Name="object_hanareyama_obj_DL_002AF0" Offset="0x2AF0" />
+        <DList Name="object_hanareyama_obj_DL_002BB0" Offset="0x2BB0" />
+        <DList Name="object_hanareyama_obj_DL_002C70" Offset="0x2C70" />
+        <DList Name="object_hanareyama_obj_DL_002D30" Offset="0x2D30" />
+        <DList Name="object_hanareyama_obj_DL_002DF0" Offset="0x2DF0" />
+        <DList Name="object_hanareyama_obj_DL_002EB0" Offset="0x2EB0" />
+        <DList Name="object_hanareyama_obj_DL_002F78" Offset="0x2F78" />
+        <DList Name="object_hanareyama_obj_DL_003038" Offset="0x3038" />
+        <DList Name="object_hanareyama_obj_DL_0030F8" Offset="0x30F8" />
+        <DList Name="object_hanareyama_obj_DL_0031B8" Offset="0x31B8" />
+        <DList Name="object_hanareyama_obj_DL_003278" Offset="0x3278" />
+        <DList Name="object_hanareyama_obj_DL_003338" Offset="0x3338" />
+        <DList Name="object_hanareyama_obj_DL_0033F8" Offset="0x33F8" />
+        <DList Name="object_hanareyama_obj_DL_0034B8" Offset="0x34B8" />
+        <DList Name="object_hanareyama_obj_DL_003578" Offset="0x3578" />
+        <Texture Name="object_hanareyama_obj_Tex_003638" OutName="tex_003638" Format="i4" Width="64" Height="64" Offset="0x3638" />
+        <Texture Name="object_hanareyama_obj_Tex_003E38" OutName="tex_003E38" Format="rgba16" Width="32" Height="32" Offset="0x3E38" />
+        <Array Name="object_hanareyama_obj_DLArray_004638" Count="54" Offset="0x4638">
+            <Pointer Type="Gfx"/>
+        </Array>
+        <Array Name="object_hanareyama_obj_Vec_004710" Count="54" Offset="0x4710">
+            <Vector Type="s16" Dimensions="3" />
+        </Array>
+        <Collision Name="object_hanareyama_obj_Colheader_004D8C" Offset="0x4D8C" />
+    </File>
+</Root>

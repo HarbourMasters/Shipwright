@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_tree" Segment="6">
+        <DList Name="gTreeBodyDL" Offset="0x680" /> <!-- Original name is "tree_miki_model" -->
+        <DList Name="gTreeLeavesDL" Offset="0x7C8" /> <!-- Original name is "tree_haT_model" -->
+        <Texture Name="gTreeBodyTex" OutName="tree_body" Format="rgba16" Width="32" Height="32" Offset="0x8B8" />
+        <Texture Name="gTreeLeavesTex" OutName="tree_leaves" Format="rgba16" Width="32" Height="32" Offset="0x10B8" />
+        <Collision Name="gTreeTopCol" Offset="0x1B2C" /> <!-- Original name is "z2_wood_bgdatainfo" -->
+    </File>
+</Root>

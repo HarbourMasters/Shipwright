@@ -1,0 +1,116 @@
+﻿<Root>
+    <!-- Assets for Romani -->
+    <File Name="object_ma1" Segment="6">
+        <!-- Romani's Bow DisplayList and Textures -->
+        <DList Name="gRomaniBowDL" Offset="0x3B0" />
+        <Texture Name="gRomaniBowTLUT" OutName="romani_bow_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5E0" />
+        <Texture Name="gRomaniBowHandleTex" OutName="romani_bow_handle" Format="ci8" Width="16" Height="16" Offset="0x7E0" />
+        <Texture Name="gRomaniBowLimbTex" OutName="romani_bow_limb" Format="ci8" Width="8" Height="8" Offset="0x8E0" />
+        
+        <!-- Romani's Wooden Box DisplayList and Textures. She sits on it after being abducted by the aliens. -->
+        <DList Name="gRomaniWoodenBoxDL" Offset="0xA20" />
+        <Texture Name="gRomaniWoodenBoxTex" OutName="romani_wooden_box" Format="rgba16" Width="32" Height="64" Offset="0xAD0" />
+
+        <!-- Romani Animation -->
+        <Animation Name="gRomaniLookAroundAnim" Offset="0x2A8C" /> <!-- Original name is "rm_kyoro" (onomatopoeic for "looking around restlessly") -->
+
+        <!-- Romani Sleeping DisplayList and Textures -->
+        <DList Name="gRomaniSleepingDL" Offset="0x43A0" />
+        <Texture Name="gRomaniSleepingTLUT" OutName="romani_sleeping_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4CF8" />
+        <Texture Name="gRomaniSleepingDressTex" OutName="romani_sleeping_dress" Format="ci8" Width="16" Height="16" Offset="0x4EF8" />
+        <Texture Name="gRomaniSleepingSkinTex" OutName="romani_sleeping_skin" Format="ci8" Width="8" Height="8" Offset="0x4FF8" />
+        <Texture Name="gRomaniSleepingEarTex" OutName="romani_sleeping_ear" Format="ci8" Width="8" Height="8" Offset="0x5038" />
+        <Texture Name="gRomaniSleepingHairTex" OutName="romani_sleeping_hair" Format="ci8" Width="16" Height="16" Offset="0x5078" />
+        <Texture Name="gRomaniSleepingHandTex" OutName="romani_sleeping_hand" Format="ci8" Width="16" Height="16" Offset="0x5178" />
+        <Texture Name="gRomaniSleepingDressPatternAndPillowTex" OutName="romani_sleeping_dress_pattern_and_pillow" Format="ci8" Width="8" Height="16" Offset="0x5278" />
+        <Texture Name="gRomaniSleepingEyeTex" OutName="romani_sleeping_eye" Format="rgba16" Width="32" Height="32" Offset="0x52F8" />
+        <Texture Name="gRomaniSleepingBlanketTex" OutName="romani_sleeping_blanket" Format="rgba16" Width="16" Height="128" Offset="0x5AF8" />
+        <Texture Name="gRomaniSleepingMouthTex" OutName="romani_sleeping_mouth" Format="rgba16" Width="32" Height="16" Offset="0x6AF8" />
+
+        <!-- Romani Animations -->
+        <Animation Name="gRomaniRunAnim" Offset="0x7328" /> <!-- Original anme is "rm_run" -->
+        <Animation Name="gRomaniSittingAnim" Offset="0x7D98" /> <!-- Original name is "rm_swari" ("sitting") -->
+        <Animation Name="gRomaniSittingHeadShakeAnim" Offset="0x852C" /> <!-- Original name is "rm_swariatamafuri" ("sitting head shake") -->
+        <Animation Name="gRomaniSittingLookDownAnim" Offset="0x8F6C" /> <!-- Original name is "rm_swariutumuku" ("sitting" and "to hang one's head") -->
+        <Animation Name="gRomaniIdleAnim" Offset="0x9E58" /> <!-- Original name is "rm_wait" -->
+
+        <!-- Romani Limb DisplayLists -->
+        <DList Name="gRomaniTorsoDL" Offset="0xD060" />
+        <DList Name="gRomaniRightUpperArmDL" Offset="0xD440" />
+        <DList Name="gRomaniRightForearmDL" Offset="0xD688" />
+        <DList Name="gRomaniRightHandDL" Offset="0xD7A0" />
+        <DList Name="gRomaniLeftUpperArmDL" Offset="0xD980" />
+        <DList Name="gRomaniLeftForearmDL" Offset="0xDBC8" />
+        <DList Name="gRomaniLeftHandDL" Offset="0xDCE0" />
+        <DList Name="gRomaniHeadDL" Offset="0xDEC0" />
+        <DList Name="gRomaniUpperHairDL" Offset="0xE410" />
+        <DList Name="gRomaniLowerHairDL" Offset="0xE510" />
+        <DList Name="gRomaniDress1DL" Offset="0xE618" />
+        <DList Name="gRomaniDress2DL" Offset="0xE710" />
+        <DList Name="gRomaniDress3DL" Offset="0xE838" />
+        <DList Name="gRomaniDress4DL" Offset="0xE980" />
+        <DList Name="gRomaniPelvisDL" Offset="0xEA80" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gRomaniRightThighDL" Offset="0xEAC8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gRomaniRightShinDL" Offset="0xEB88" />
+        <DList Name="gRomaniRightFootDL" Offset="0xED08" />
+        <DList Name="gRomaniLeftThighDL" Offset="0xEE28" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gRomaniLeftShinDL" Offset="0xEEE8" />
+        <DList Name="gRomaniLeftFootDL" Offset="0xF068" />
+        
+        <!-- Romani Textures -->
+        <Texture Name="gRomaniTLUT" OutName="romani_tlut" Format="rgba16" Width="16" Height="16" Offset="0xF188" />
+        <Texture Name="gRomaniDressTex" OutName="romani_dress" Format="ci8" Width="16" Height="16" Offset="0xF388" />
+        <Texture Name="gRomaniSkinTex" OutName="romani_skin" Format="ci8" Width="8" Height="8" Offset="0xF488" />
+        <Texture Name="gRomaniEarTex" OutName="romani_ear" Format="ci8" Width="8" Height="8" Offset="0xF4C8" />
+        <Texture Name="gRomaniHairTex" OutName="romani_hair" Format="ci8" Width="16" Height="16" Offset="0xF508" />
+        <Texture Name="gRomaniShawlTex" OutName="romani_shawl" Format="ci8" Width="8" Height="8" Offset="0xF608" />
+        <Texture Name="gRomaniBroochTex" OutName="romani_brooch" Format="rgba16" Width="16" Height="32" Offset="0xF648" />
+        <Texture Name="gRomaniHandTex" OutName="romani_hand" Format="ci8" Width="16" Height="16" Offset="0xFA48" />
+        <Texture Name="gRomaniBootTex" OutName="romani_boot" Format="ci8" Width="64" Height="16" Offset="0xFB48" />
+        <Texture Name="gRomaniDressPatternTex" OutName="romani_dress_pattern" Format="ci8" Width="8" Height="16" Offset="0xFF48" />
+        <Texture Name="gRomaniEyeOpenTex" OutName="romani_eye_open" Format="rgba16" Width="32" Height="32" Offset="0xFFC8" />
+        <Texture Name="gRomaniEyeHalfTex" OutName="romani_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x107C8" />
+        <Texture Name="gRomaniEyeClosedTex" OutName="romani_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x10FC8" />
+        <Texture Name="gRomaniEyeHappyTex" OutName="romani_eye_happy" Format="rgba16" Width="32" Height="32" Offset="0x117C8" />
+        <Texture Name="gRomaniEyeSadTex" OutName="romani_eye_sad" Format="rgba16" Width="32" Height="32" Offset="0x11FC8" />
+        <Texture Name="gRomaniMouthHappyTex" OutName="romani_mouth_happy" Format="rgba16" Width="32" Height="16" Offset="0x127C8" />
+        <Texture Name="gRomaniMouthFrownTex" OutName="romani_mouth_frown" Format="rgba16" Width="32" Height="16" Offset="0x12BC8" />
+        <Texture Name="gRomaniMouthHangingOpenTex" OutName="romani_mouth_hanging_open" Format="rgba16" Width="32" Height="16" Offset="0x12FC8" />
+        <Texture Name="gRomaniMouthSmileTex" OutName="romani_mouth_smile" Format="rgba16" Width="32" Height="16" Offset="0x133C8" />
+
+        <!-- Romani Limbs -->
+        <Limb Name="gRomaniRootLimb" Type="Standard" EnumName="ROMANI_LIMB_ROOT" Offset="0x137C8" />
+        <Limb Name="gRomaniPelvisLimb" Type="Standard" EnumName="ROMANI_LIMB_PELVIS" Offset="0x137D4" />
+        <Limb Name="gRomaniLeftThighLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_THIGH" Offset="0x137E0" />
+        <Limb Name="gRomaniLeftShinLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_SHIN" Offset="0x137EC" />
+        <Limb Name="gRomaniLeftFootLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_FOOT" Offset="0x137F8" />
+        <Limb Name="gRomaniRightThighLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_THIGH" Offset="0x13804" />
+        <Limb Name="gRomaniRightShinLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_SHIN" Offset="0x13810" />
+        <Limb Name="gRomaniRightFootLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_FOOT" Offset="0x1381C" />
+        <Limb Name="gRomaniDress1Limb" Type="Standard" EnumName="ROMANI_LIMB_DRESS_1" Offset="0x13828" />
+        <Limb Name="gRomaniDress2Limb" Type="Standard" EnumName="ROMANI_LIMB_DRESS_2" Offset="0x13834" />
+        <Limb Name="gRomaniDress3Limb" Type="Standard" EnumName="ROMANI_LIMB_DRESS_3" Offset="0x13840" />
+        <Limb Name="gRomaniDress4Limb" Type="Standard" EnumName="ROMANI_LIMB_DRESS_4" Offset="0x1384C" />
+        <Limb Name="gRomaniTorsoLimb" Type="Standard" EnumName="ROMANI_LIMB_TORSO" Offset="0x13858" />
+        <Limb Name="gRomaniHeadLimb" Type="Standard" EnumName="ROMANI_LIMB_HEAD" Offset="0x13864" />
+        <Limb Name="gRomaniUpperHairLimb" Type="Standard" EnumName="ROMANI_LIMB_UPPER_HAIR" Offset="0x13870" />
+        <Limb Name="gRomaniLowerHairLimb" Type="Standard" EnumName="ROMANI_LIMB_LOWER_HAIR" Offset="0x1387C" />
+        <Limb Name="gRomaniLeftUpperArmLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_UPPER_ARM" Offset="0x13888" />
+        <Limb Name="gRomaniLeftForearmLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_FOREARM" Offset="0x13894" />
+        <Limb Name="gRomaniLeftHandLimb" Type="Standard" EnumName="ROMANI_LIMB_LEFT_HAND" Offset="0x138A0" />
+        <Limb Name="gRomaniRightUpperArmLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_UPPER_ARM" Offset="0x138AC" />
+        <Limb Name="gRomaniRightForearmLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_FOREARM" Offset="0x138B8" />
+        <Limb Name="gRomaniRightHandLimb" Type="Standard" EnumName="ROMANI_LIMB_RIGHT_HAND" Offset="0x138C4" />
+
+        <!-- Romani Skeleton -->
+        <Skeleton Name="gRomaniSkel" Type="Flex" LimbType="Standard" LimbNone="ROMANI_LIMB_NONE" LimbMax="ROMANI_LIMB_MAX" EnumName="RomaniLimb" Offset="0x13928" />
+
+        <!-- Romani Animations -->
+        <Animation Name="gRomaniWalkAnim" Offset="0x14088" /> <!-- Original name is "rm_walk" -->
+        <Animation Name="gRomaniShootBowAnim" Offset="0x15B7C" /> <!-- Original name is "rm_yumiuti" ("shooting a bow") -->
+        <Animation Name="gRomaniAbductedAnim" Offset="0x16588" /> <!-- Original name is "romani_capture_loop" -->
+        <Animation Name="gRomaniTurnAroundAndFlickHairAnim" Offset="0x180DC" /> <!-- Original name is "romani_furimuki" ("to turn around") -->
+        <Animation Name="gRomaniSingStartAnim" Offset="0x18948" /> <!-- Original name is "romani_utau" ("sing") -->
+        <Animation Name="gRomaniSingLoopAnim" Offset="0x1B76C" /> <!-- Original name is "romani_utau_loop" -->
+    </File>
+</Root>

@@ -1,0 +1,24 @@
+﻿<Root>
+    <File Name="object_fwall" Segment="6">
+        <DList Name="object_fwall_DL_000040" Offset="0x40" /> <!-- Original name is "m_Ffirewall_model" -->
+        
+        <!-- 0xA0 to 0x3520 are leftover textures from the OOT fire jet elevator in Fire Temple -->
+        <Texture Name="gFireTempleBigVerticalFlame0Tex" OutName="fwall_fire_temple_big_vertical_flame_0" Format="ia8" Width="24" Height="80" Offset="0xA0" /> 
+        <Texture Name="gFireTempleBigVerticalFlame1Tex" OutName="fwall_fire_temple_big_vertical_flame_1" Format="ia8" Width="24" Height="80" Offset="0x820" />
+        <Texture Name="gFireTempleBigVerticalFlame2Tex" OutName="fwall_fire_temple_big_vertical_flame_2" Format="ia8" Width="24" Height="80" Offset="0xFA0" />
+        <Texture Name="gFireTempleBigVerticalFlame3Tex" OutName="fwall_fire_temple_big_vertical_flame_3" Format="ia8" Width="24" Height="80" Offset="0x1720" />
+        <Texture Name="gFireTempleBigVerticalFlame4Tex" OutName="fwall_fire_temple_big_vertical_flame_4" Format="ia8" Width="24" Height="80" Offset="0x1EA0" />
+        <Texture Name="gFireTempleBigVerticalFlame5Tex" OutName="fwall_fire_temple_big_vertical_flame_5" Format="ia8" Width="24" Height="80" Offset="0x2620" />
+        <Texture Name="gFireTempleBigVerticalFlame6Tex" OutName="fwall_fire_temple_big_vertical_flame_6" Format="ia8" Width="24" Height="80" Offset="0x2DA0" />
+        <Texture Name="gFireTempleBigVerticalFlame7Tex" OutName="fwall_fire_temple_big_vertical_flame_7" Format="ia8" Width="24" Height="80" Offset="0x3520" />
+        
+        <Texture Name="gFwallFireball0Tex" OutName="fwall_fireball_0" Format="ia8" Width="32" Height="32" Offset="0x3CA0" />
+        <Texture Name="gFwallFireball1Tex" OutName="fwall_fireball_1" Format="ia8" Width="32" Height="32" Offset="0x40A0" />
+        <Texture Name="gFwallFireball2Tex" OutName="fwall_fireball_2" Format="ia8" Width="32" Height="32" Offset="0x44A0" />
+        <Texture Name="gFwallFireball3Tex" OutName="fwall_fireball_3" Format="ia8" Width="32" Height="32" Offset="0x48A0" />
+        <Texture Name="gFwallFireball4Tex" OutName="fwall_fireball_4" Format="ia8" Width="32" Height="32" Offset="0x4CA0" />
+        <Texture Name="gFwallFireball5Tex" OutName="fwall_fireball_5" Format="ia8" Width="32" Height="32" Offset="0x50A0" />
+        <Texture Name="gFwallFireball6Tex" OutName="fwall_fireball_6" Format="ia8" Width="32" Height="32" Offset="0x54A0" />
+        <Texture Name="gFwallFireball7Tex" OutName="fwall_fireball_7" Format="ia8" Width="32" Height="32" Offset="0x58A0" />        
+    </File>
+</Root>

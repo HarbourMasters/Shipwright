@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Mirror Shield -->
+    <File Name="object_gi_shield_3" Segment="6">
+
+        <!-- Mirror Shield Display Lists -->
+        <DList Name="gGiMirrorShieldDL" Offset="0x770" />
+        <DList Name="gGiMirrorShieldEmptyDL" Offset="0xBF8" />
+
+        <!-- Mirror Shield Textures -->
+        <Texture Name="gGiMirrorShieldHandleTex" OutName="gi_mirror_shield_handle" Format="i4" Width="32" Height="32" Offset="0xC00" />
+        <Texture Name="gGiMirrorShieldFaceSymbolTex" OutName="gi_mirror_shield_face_symbol" Format="i8" Width="32" Height="64" Offset="0xE00" />
+        <Texture Name="gGiMirrorShieldFaceBackgroundTex" OutName="gi_mirror_shield_face_background" Format="i8" Width="32" Height="32" Offset="0x1600" />
+        <Texture Name="gGiMirrorShieldPatternTex" OutName="gi_mirror_shield_pattern" Format="i4" Width="32" Height="32" Offset="0x1A00" />
+    </File>
+</Root>

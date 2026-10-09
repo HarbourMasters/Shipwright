@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Hot Spring Water found in the Goron Graveyard -->
+    <File Name="object_oyu" Segment="6">
+        <DList Name="gGoronGraveyardHotSpringWaterDL" Offset="0x80" /> <!-- Original name is "z2_goron_haka_oyu_modelT" -->
+        <DList Name="gGoronGraveyardHotSpringWaterEmptyDL" Offset="0x158" />
+        <Texture Name="gGoronGraveyardHotSpringWaterTex" OutName="hot_spring_water" Format="rgba16" Width="32" Height="32" Offset="0x160" />
+        <TextureAnimation Name="gGoronGraveyardHotSpringWaterTexAnim" Offset="0x968" />
+        <Collision Name="gGoronGraveyardHotSpringWaterCol" Offset="0x988" /> <!-- Original name is "z2_goron_haka_oyu_bgdatainfo" -->
+    </File>
+</Root>

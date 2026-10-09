@@ -1,0 +1,5 @@
+<Root>
+	<File Name="locerrmsg" Segment="1">
+		<Texture Name="gNotDesignedForSystemErrorTex" OutName="not_designed_for_system_error" Format="i4" Width="208" Height="16" Offset="0x0"/>
+	</File>
+</Root>

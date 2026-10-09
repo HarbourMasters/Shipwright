@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_d_lift" Segment="6">
+        <DList Name="object_d_lift_DL_000180" Offset="0x180" />
+        <Texture Name="object_d_lift_Tex_000298" OutName="tex_000298" Format="rgba16" Width="32" Height="32" Offset="0x298" />
+        <Collision Name="object_d_lift_Colheader_000BA0" Offset="0xBA0" />
+        <DList Name="gDampeGraveBrownElevatorDL" Offset="0xD10" /> <!-- Original name is "lift_l_model" -->
+        <Collision Name="gDampeGraveBrownElevatorCol" Offset="0xF00" /> <!-- Original name is "lift_l_bgdatainfo" -->
+        <Texture Name="gDampeGraveBrownElevatorSideTex" OutName="brown_elevator_side" Format="i8" Width="64" Height="16" Offset="0xF30" />
+        <Texture Name="gDampeGraveBrownElevatorTopBottomTex" OutName="brown_elevator_top_bottom" Format="i8" Width="64" Height="64" Offset="0x1330" />
+    </File>
+</Root>

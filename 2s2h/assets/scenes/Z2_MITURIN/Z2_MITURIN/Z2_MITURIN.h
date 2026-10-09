@@ -1,0 +1,65 @@
+#ifndef Z2_MITURIN_Z2_MITURIN_H
+#define Z2_MITURIN_Z2_MITURIN_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_MITURINCollisionHeader_012458 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINCollisionHeader_012458"
+static const ALIGN_ASSET(2) char Z2_MITURINCollisionHeader_012458[] = dZ2_MITURINCollisionHeader_012458;
+
+#define dZ2_MITURINCutsceneData_0003DC "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINCutsceneData_0003DC"
+static const ALIGN_ASSET(2) char Z2_MITURINCutsceneData_0003DC[] = dZ2_MITURINCutsceneData_0003DC;
+
+#define dZ2_MITURINCutsceneData_00127C "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINCutsceneData_00127C"
+static const ALIGN_ASSET(2) char Z2_MITURINCutsceneData_00127C[] = dZ2_MITURINCutsceneData_00127C;
+
+#define dZ2_MITURINCutsceneData_00258C "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINCutsceneData_00258C"
+static const ALIGN_ASSET(2) char Z2_MITURINCutsceneData_00258C[] = dZ2_MITURINCutsceneData_00258C;
+
+#define dZ2_MITURINCutsceneData_002734 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINCutsceneData_002734"
+static const ALIGN_ASSET(2) char Z2_MITURINCutsceneData_002734[] = dZ2_MITURINCutsceneData_002734;
+
+#define dZ2_MITURINTLUT_017190 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTLUT_017190"
+static const ALIGN_ASSET(2) char Z2_MITURINTLUT_017190[] = dZ2_MITURINTLUT_017190;
+
+#define dZ2_MITURINTex_016990 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_016990"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_016990[] = dZ2_MITURINTex_016990;
+
+#define dZ2_MITURINTex_015D90 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_015D90"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_015D90[] = dZ2_MITURINTex_015D90;
+
+#define dZ2_MITURINTex_014490 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_014490"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_014490[] = dZ2_MITURINTex_014490;
+
+#define dZ2_MITURINTex_015090 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_015090"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_015090[] = dZ2_MITURINTex_015090;
+
+#define dZ2_MITURINTex_016190 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_016190"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_016190[] = dZ2_MITURINTex_016190;
+
+#define dZ2_MITURINTex_016D90 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_016D90"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_016D90[] = dZ2_MITURINTex_016D90;
+
+#define dZ2_MITURINTex_014C90 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_014C90"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_014C90[] = dZ2_MITURINTex_014C90;
+
+#define dZ2_MITURINTex_013C90 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_013C90"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_013C90[] = dZ2_MITURINTex_013C90;
+
+#define dZ2_MITURINTex_016590 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_016590"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_016590[] = dZ2_MITURINTex_016590;
+
+#define dZ2_MITURINTex_015590 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_015590"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_015590[] = dZ2_MITURINTex_015590;
+
+#define dZ2_MITURINTex_012490 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_012490"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_012490[] = dZ2_MITURINTex_012490;
+
+#define dZ2_MITURINTex_012C90 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_012C90"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_012C90[] = dZ2_MITURINTex_012C90;
+
+#define dZ2_MITURINTex_013490 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_013490"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_013490[] = dZ2_MITURINTex_013490;
+
+#define dZ2_MITURINTex_015490 "__OTR__scenes/nonmq/Z2_MITURIN/Z2_MITURINTex_015490"
+static const ALIGN_ASSET(2) char Z2_MITURINTex_015490[] = dZ2_MITURINTex_015490;
+#endif // Z2_MITURIN_Z2_MITURIN_H

@@ -1,0 +1,19 @@
+<Root>
+    <File Name="esp_daytelop_static" Segment="9">
+        <Texture Name="gDaytelopFirstDayLeftESPTex" OutName="first_day_left_esp" Format="i4" Width="128" Height="64" Offset="0x0"/>
+        <Texture Name="gDaytelopFirstDayRightESPTex" OutName="first_day_right_esp" Format="i4" Width="128" Height="64" Offset="0x1000"/>
+
+        <Texture Name="gDaytelopSecondDayLeftESPTex" OutName="second_day_left_esp" Format="i4" Width="128" Height="64" Offset="0x2000"/>
+        <Texture Name="gDaytelopSecondDayRightESPTex" OutName="second_day_right_esp" Format="i4" Width="128" Height="64" Offset="0x3000"/>
+
+        <Texture Name="gDaytelopFinalDayLeftESPTex" OutName="final_day_left_esp" Format="i4" Width="128" Height="64" Offset="0x4000"/>
+        <Texture Name="gDaytelopFinalDayRightESPTex" OutName="final_day_right_esp" Format="i4" Width="128" Height="64" Offset="0x5000"/>
+
+        <Texture Name="gDaytelopNewDayLeftESPTex" OutName="new_day_left_esp" Format="i4" Width="128" Height="64" Offset="0x6000"/>
+        <Texture Name="gDaytelopNewDayRightESPTex" OutName="new_day_right_esp" Format="i4" Width="128" Height="64" Offset="0x7000"/>
+
+        <Texture Name="gDaytelop72HoursESPTex" OutName="72_hours_esp" Format="i4" Width="144" Height="32" Offset="0x8000"/>
+        <Texture Name="gDaytelop48HoursESPTex" OutName="48_hours_esp" Format="i4" Width="144" Height="32" Offset="0x8900"/>
+        <Texture Name="gDaytelop24HoursESPTex" OutName="24_hours_esp" Format="i4" Width="144" Height="32" Offset="0x9200"/>
+    </File>
+</Root>

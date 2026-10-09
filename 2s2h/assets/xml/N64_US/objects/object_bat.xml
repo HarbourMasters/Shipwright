@@ -1,0 +1,21 @@
+﻿<Root>
+    <!-- Assets for ovl_En_Bat (Bad Bats) -->
+    <File Name="object_bat" Segment="6">
+        <DList Name="gBadBatSetupDL" Offset="0xA0" />
+        <DList Name="gBadBatBodyDL" Offset="0xC8" />
+
+        <!-- Wings used in manual animation -->
+        <DList Name="gBadBatWingsFrame0DL" Offset="0x1B0" />
+        <DList Name="gBadBatWingsFrame1DL" Offset="0x2A0" />
+        <DList Name="gBadBatWingsFrame2DL" Offset="0x390" />
+        <DList Name="gBadBatWingsFrame3DL" Offset="0x480" />
+        <DList Name="gBadBatWingsFrame4DL" Offset="0x570" />
+        <DList Name="gBadBatWingsFrame5DL" Offset="0x660" />
+        <DList Name="gBadBatWingsFrame6DL" Offset="0x750" />
+        <DList Name="gBadBatWingsFrame7DL" Offset="0x840" />
+        <DList Name="gBadBatWingsFrame8DL" Offset="0x930" />
+
+        <Texture Name="gBadBatWingTex" OutName="bad_bat_wing" Format="rgba16" Width="8" Height="16" Offset="0x9A0" />
+        <Texture Name="gBatBatBodyTex" OutName="bad_bat_body" Format="rgba16" Width="16" Height="16" Offset="0xAA0" />
+    </File>
+</Root>

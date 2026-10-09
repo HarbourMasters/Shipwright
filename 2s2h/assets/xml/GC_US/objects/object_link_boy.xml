@@ -1,0 +1,86 @@
+﻿<Root>
+    <File Name="object_link_boy" Segment="6">
+        <Texture Name="object_link_boy_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="object_link_boy_TLUT_000200" OutName="tlut_000200" Format="rgba16" Width="16" Height="16" Offset="0x200" />
+        <Texture Name="gLinkFierceDeityHandHoldingTLUT" OutName="hand_holding_tlut" Format="rgba16" Width="16" Height="16" Offset="0x400" />
+        <Texture Name="object_link_boy_Tex_000600" OutName="tex_000600" Format="ci8" Width="16" Height="32" Offset="0x600" TlutOffset="0x0" />
+        <Texture Name="object_link_boy_Tex_000800" OutName="tex_000800" Format="ci8" Width="16" Height="32" Offset="0x800" />
+        <Texture Name="gLinkFierceDeityHandHoldingTex" OutName="hand_holding" Format="ci8" Width="16" Height="16" Offset="0xA00" TlutOffset="0x400" />
+        <Texture Name="object_link_boy_Tex_000B00" OutName="tex_000B00" Format="i8" Width="16" Height="16" Offset="0xB00" />
+
+        <DList Name="gLinkFierceDeityWaistDL" Offset="0x49E0" />
+        <DList Name="gLinkFierceDeityRightThighDL" Offset="0x4C50" />
+        <DList Name="gLinkFierceDeityRightShinDL" Offset="0x4F48" />
+        <DList Name="gLinkFierceDeityRightFootDL" Offset="0x5190" />
+        <DList Name="gLinkFierceDeityLeftThighDL" Offset="0x52A0" />
+        <DList Name="gLinkFierceDeityLeftShinDL" Offset="0x55D0" />
+        <DList Name="gLinkFierceDeityLeftFootDL" Offset="0x5818" />
+        <DList Name="gLinkFierceDeityHatDL" Offset="0x5928" />
+        <DList Name="gLinkFierceDeityHeadDL" Offset="0x5A78" />
+        <DList Name="object_link_boy_DL_0060E8" Offset="0x60E8" />
+        <DList Name="gLinkFierceDeityTorsoDL" Offset="0x6148" />
+        <DList Name="object_link_boy_DL_006370" Offset="0x6370" />
+        <DList Name="gLinkFierceDeityRightShoulderDL" Offset="0x6410" />
+        <DList Name="gLinkFierceDeityRightForearmDL" Offset="0x65E0" />
+        <DList Name="gLinkFierceDeityRightHandDL" Offset="0x67D8" />
+        <DList Name="gLinkFierceDeityLeftShoulderDL" Offset="0x6A58" />
+        <DList Name="gLinkFierceDeityLeftForearmDL" Offset="0x6C38" />
+        <DList Name="gLinkFierceDeityLeftHandDL" Offset="0x6EB8" />
+        <!-- Unused leftover from OoT -->
+        <DList Name="gLinkFierceDeityLeftHandHoldBottleDL" Offset="0x7820" />
+        <DList Name="object_link_boy_DL_007A50" Offset="0x7A50" />
+        <DList Name="gLinkFierceDeityBottleDL" Offset="0x7AD0" />
+        <DList Name="gLinkFierceDeitySwordDL" Offset="0x7F28" />
+        <DList Name="gLinkFierceDeityLeftHandHoldingSwordDL" Offset="0x80F0" />
+        <DList Name="gLinkFierceDeityEmptyDL" Offset="0x8100" />
+
+        <Texture Name="object_link_boy_TLUT_008108" OutName="tlut_008108" Format="rgba16" Width="4" Height="4" Offset="0x8108" />
+        <Texture Name="object_link_boy_TLUT_008128" OutName="tlut_008128" Format="rgba16" Width="4" Height="4" Offset="0x8128" />
+        <Texture Name="object_link_boy_TLUT_008148" OutName="tlut_008148" Format="rgba16" Width="4" Height="4" Offset="0x8148" />
+        <Texture Name="object_link_boy_TLUT_008168" OutName="tlut_008168" Format="rgba16" Width="4" Height="4" Offset="0x8168" />
+        <Texture Name="object_link_boy_TLUT_008188" OutName="tlut_008188" Format="rgba16" Width="4" Height="4" Offset="0x8188" />
+        <Texture Name="object_link_boy_TLUT_0081A8" OutName="tlut_0081A8" Format="rgba16" Width="4" Height="4" Offset="0x81A8" />
+        <Texture Name="gLinkFierceDeityHandTLUT" OutName="hand_tlut" Format="rgba16" Width="4" Height="4" Offset="0x81C8" />
+        <Texture Name="object_link_boy_TLUT_0081E8" OutName="tlut_0081E8" Format="rgba16" Width="4" Height="4" Offset="0x81E8" />
+        <Texture Name="object_link_boy_Tex_008208" OutName="tex_008208" Format="rgba16" Width="16" Height="16" Offset="0x8208" />
+        <Texture Name="object_link_boy_Tex_008408" OutName="tex_008408" Format="ci4" Width="16" Height="16" Offset="0x8408" />
+        <Texture Name="object_link_boy_Tex_008488" OutName="tex_008488" Format="rgba16" Width="16" Height="32" Offset="0x8488" />
+        <Texture Name="object_link_boy_Tex_008888" OutName="tex_008888" Format="rgba16" Width="32" Height="16" Offset="0x8888" />
+        <Texture Name="object_link_boy_Tex_008C88" OutName="tex_008C88" Format="ci4" Width="16" Height="16" Offset="0x8C88" />
+        <Texture Name="object_link_boy_Tex_008D08" OutName="tex_008D08" Format="ci4" Width="32" Height="32" Offset="0x8D08" />
+        <Texture Name="object_link_boy_Tex_008F08" OutName="tex_008F08" Format="ci4" Width="64" Height="64" Offset="0x8F08" />
+        <Texture Name="gLinkFierceDeityEyesTex" OutName="eyes" Format="rgba16" Width="64" Height="32" Offset="0x9708" />
+        <Texture Name="object_link_boy_Tex_00A708" OutName="tex_00A708" Format="ci4" Width="32" Height="32" Offset="0xA708" />
+        <Texture Name="gLinkFierceDeityMouthTex" OutName="mouth" Format="rgba16" Width="32" Height="16" Offset="0xA908" />
+        <Texture Name="gLinkFierceDeityEarTex" OutName="ear" Format="rgba16" Width="16" Height="16" Offset="0xAD08" />
+        <Texture Name="object_link_boy_Tex_00AF08" OutName="tex_00AF08" Format="ci4" Width="32" Height="32" Offset="0xAF08" />
+        <Texture Name="gLinkFierceDeityHandTex" OutName="hand" Format="ci4" Width="16" Height="16" Offset="0xB108" TlutOffset="0x81C8" />
+        <Texture Name="object_link_boy_Tex_00B188" OutName="tex_00B188" Format="ci4" Width="64" Height="64" Offset="0xB188" />
+
+        <!-- TODO this texture should be 50x75 but the u64 type of textures makes this not match currently -->
+        <Texture Name="object_link_boy_Tex_00B988" OutName="tex_00B988" Format="rgba16" Width="50" Height="74" Offset="0xB988" />
+
+        <Limb Name="gLinkFierceDeityRootLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_ROOT" Offset="0xD6D4" />
+        <Limb Name="gLinkFierceDeityWaistLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_WAIST" Offset="0xD6E4" />
+        <Limb Name="gLinkFierceDeityLowerRootLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LOWER_ROOT" Offset="0xD6F4" />
+        <Limb Name="gLinkFierceDeityRightThighLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_THIGH" Offset="0xD704" />
+        <Limb Name="gLinkFierceDeityRightShinLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_SHIN" Offset="0xD714" />
+        <Limb Name="gLinkFierceDeityRightFootLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_FOOT" Offset="0xD724" />
+        <Limb Name="gLinkFierceDeityLeftThighLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_THIGH" Offset="0xD734" />
+        <Limb Name="gLinkFierceDeityLeftShinLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_SHIN" Offset="0xD744" />
+        <Limb Name="gLinkFierceDeityLeftFootLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_FOOT" Offset="0xD754" />
+        <Limb Name="gLinkFierceDeityUpperRootLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_UPPER_ROOT" Offset="0xD764" />
+        <Limb Name="gLinkFierceDeityHeadLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_HEAD" Offset="0xD774" />
+        <Limb Name="gLinkFierceDeityHatLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_HAT" Offset="0xD784" />
+        <Limb Name="gLinkFierceDeityCollarLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_COLLAR" Offset="0xD794" />
+        <Limb Name="gLinkFierceDeityLeftShoulderLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_SHOULDER" Offset="0xD7A4" />
+        <Limb Name="gLinkFierceDeityLeftForearmLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_FOREARM" Offset="0xD7B4" />
+        <Limb Name="gLinkFierceDeityLeftHandLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_LEFT_HAND" Offset="0xD7C4" />
+        <Limb Name="gLinkFierceDeityRightShoulderLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_SHOULDER" Offset="0xD7D4" />
+        <Limb Name="gLinkFierceDeityRightForearmLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_FOREARM" Offset="0xD7E4" />
+        <Limb Name="gLinkFierceDeityRightHandLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_RIGHT_HAND" Offset="0xD7F4" />
+        <Limb Name="gLinkFierceDeitySheathLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_SHEATH" Offset="0xD804" />
+        <Limb Name="gLinkFierceDeityTorsoLimb" Type="LOD" EnumName="LINK_FIERCE_DEITY_LIMB_TORSO" Offset="0xD814" />
+        <Skeleton Name="gLinkFierceDeitySkel" Type="Flex" LimbType="LOD" LimbNone="LINK_FIERCE_DEITY_LIMB_NONE" LimbMax="LINK_FIERCE_DEITY_LIMB_MAX" EnumName="LinkFierceDeityLimb" Offset="0xD878" />
+    </File>
+</Root>

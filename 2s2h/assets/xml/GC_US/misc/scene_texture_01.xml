@@ -1,0 +1,35 @@
+<Root>
+    <File Name="scene_texture_01" Segment="6">
+        <Texture Name="scene_texture_01_Tex_000000" OutName="tex_000000" Format="ci8" Width="16" Height="16" Offset="0x0"/>
+        <Texture Name="scene_texture_01_Tex_000100" OutName="tex_000100" Format="rgba16" Width="32" Height="32" Offset="0x100"/>
+        <Texture Name="scene_texture_01_Tex_000900" OutName="tex_000900" Format="ci8" Width="64" Height="16" Offset="0x900"/>
+        <Texture Name="scene_texture_01_Tex_000D00" OutName="tex_000D00" Format="ci8" Width="64" Height="16" Offset="0xD00"/>
+        <Texture Name="scene_texture_01_Tex_001100" OutName="tex_001100" Format="ci8" Width="16" Height="16" Offset="0x1100"/>
+        <Texture Name="scene_texture_01_Tex_001200" OutName="tex_001200" Format="ci8" Width="32" Height="16" Offset="0x1200"/>
+        <Texture Name="scene_texture_01_Tex_001400" OutName="tex_001400" Format="ci8" Width="32" Height="32" Offset="0x1400"/>
+        <Texture Name="scene_texture_01_Tex_001800" OutName="tex_001800" Format="rgba16" Width="16" Height="8" Offset="0x1800"/>
+        <Texture Name="scene_texture_01_Tex_001900" OutName="tex_001900" Format="ci8" Width="16" Height="16" Offset="0x1900"/>
+        <Texture Name="scene_texture_01_Tex_001A00" OutName="tex_001A00" Format="ci8" Width="32" Height="32" Offset="0x1A00"/>
+        <Texture Name="scene_texture_01_Tex_001E00" OutName="tex_001E00" Format="ci8" Width="32" Height="32" Offset="0x1E00"/>
+        <Texture Name="scene_texture_01_Tex_002200" OutName="tex_002200" Format="ci8" Width="16" Height="16" Offset="0x2200"/>
+        <Texture Name="scene_texture_01_Tex_002300" OutName="tex_002300" Format="ci8" Width="16" Height="32" Offset="0x2300"/>
+        <Texture Name="scene_texture_01_Tex_002500" OutName="tex_002500" Format="ci8" Width="16" Height="64" Offset="0x2500"/>
+        <Texture Name="scene_texture_01_Tex_002900" OutName="tex_002900" Format="ci8" Width="16" Height="64" Offset="0x2900"/>
+        <Texture Name="scene_texture_01_Tex_002D00" OutName="tex_002D00" Format="i8" Width="8" Height="8" Offset="0x2D00"/>
+        <Texture Name="scene_texture_01_Tex_002D40" OutName="tex_002D40" Format="ci8" Width="16" Height="16" Offset="0x2D40"/>
+        <Texture Name="scene_texture_01_Tex_002E40" OutName="tex_002E40" Format="ci8" Width="16" Height="32" Offset="0x2E40"/>
+        <Texture Name="scene_texture_01_Tex_003040" OutName="tex_003040" Format="ci8" Width="32" Height="16" Offset="0x3040"/>
+        <Texture Name="scene_texture_01_Tex_003240" OutName="tex_003240" Format="ci8" Width="8" Height="8" Offset="0x3240"/>
+        <Texture Name="scene_texture_01_Tex_003280" OutName="tex_003280" Format="ci8" Width="32" Height="32" Offset="0x3280"/>
+        <Texture Name="scene_texture_01_Tex_003680" OutName="tex_003680" Format="ci8" Width="32" Height="32" Offset="0x3680"/>
+        <Texture Name="scene_texture_01_Tex_003A80" OutName="tex_003A80" Format="ci8" Width="16" Height="32" Offset="0x3A80"/>
+        <Texture Name="scene_texture_01_Tex_003C80" OutName="tex_003C80" Format="ci8" Width="32" Height="32" Offset="0x3C80"/>
+        <Texture Name="scene_texture_01_Tex_004080" OutName="tex_004080" Format="ci8" Width="32" Height="32" Offset="0x4080"/>
+        <Texture Name="scene_texture_01_Tex_004480" OutName="tex_004480" Format="ci8" Width="32" Height="8" Offset="0x4480"/>
+        <Texture Name="scene_texture_01_Tex_004580" OutName="tex_004580" Format="ci8" Width="16" Height="8" Offset="0x4580"/>
+        <Texture Name="scene_texture_01_Tex_004600" OutName="tex_004600" Format="ci8" Width="16" Height="16" Offset="0x4600"/>
+        <Texture Name="scene_texture_01_Tex_004700" OutName="tex_004700" Format="ci8" Width="16" Height="16" Offset="0x4700"/>
+        <Texture Name="scene_texture_01_Tex_004800" OutName="tex_004800" Format="ci8" Width="16" Height="64" Offset="0x4800"/>
+        <Texture Name="scene_texture_01_Tex_004C00" OutName="tex_004C00" Format="ci8" Width="16" Height="16" Offset="0x4C00"/>
+    </File>
+</Root>

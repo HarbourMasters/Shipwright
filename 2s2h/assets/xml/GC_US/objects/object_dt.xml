@@ -1,0 +1,67 @@
+﻿<Root>
+    <File Name="object_dt" Segment="6">
+        <Animation Name="gDotourDistressAnim" Offset="0x5A4" /> <!-- Original name is "dt_aiya" -->
+        <Animation Name="gDotourShockAnim" Offset="0x854" /> <!-- Original name is "dt_aiya2yomesan" -->
+        <Animation Name="gDotourUprightAnim" Offset="0xBE0" /> <!-- Original name is "dt_arigato" -->
+        <Animation Name="gDotourTapDeskAnim" Offset="0xDA8" /> <!-- Original name is "dt_mojimoji" -->
+        <Animation Name="gDotourWaitAnim" Offset="0x112C" /> <!-- Original name is "dt_wait" -->
+        <DList Name="object_dt_DL_004DB0" Offset="0x4DB0" />
+        <DList Name="object_dt_DL_005130" Offset="0x5130" />
+        <DList Name="object_dt_DL_0054C8" Offset="0x54C8" />
+        <DList Name="object_dt_DL_005AF8" Offset="0x5AF8" />
+        <DList Name="object_dt_DL_005DB0" Offset="0x5DB0" />
+        <DList Name="object_dt_DL_005E70" Offset="0x5E70" />
+        <DList Name="object_dt_DL_006018" Offset="0x6018" />
+        <DList Name="object_dt_DL_006140" Offset="0x6140" />
+        <DList Name="object_dt_DL_006258" Offset="0x6258" />
+        <DList Name="object_dt_DL_0063B8" Offset="0x63B8" />
+        <DList Name="object_dt_DL_0064E0" Offset="0x64E0" />
+        <DList Name="object_dt_DL_0065F8" Offset="0x65F8" />
+        <DList Name="object_dt_DL_006800" Offset="0x6800" />
+        <DList Name="object_dt_DL_006928" Offset="0x6928" />
+        <Texture Name="object_dt_TLUT_006A50" OutName="tlut_006A50" Format="rgba16" Width="16" Height="16" Offset="0x6A50" />
+        <Texture Name="object_dt_TLUT_006C50" OutName="tlut_006C50" Format="rgba16" Width="16" Height="16" Offset="0x6C50" />
+        <Texture Name="object_dt_TLUT_006E50" OutName="tlut_006E50" Format="rgba16" Width="16" Height="16" Offset="0x6E50" />
+        <Texture Name="object_dt_Tex_007050" OutName="tex_007050" Format="ci8" Width="8" Height="8" Offset="0x7050" />
+        <Texture Name="object_dt_Tex_007090" OutName="tex_007090" Format="ci8" Width="16" Height="16" Offset="0x7090" />
+        <Texture Name="object_dt_Tex_007190" OutName="tex_007190" Format="ci8" Width="8" Height="8" Offset="0x7190" />
+        <Texture Name="object_dt_Tex_0071D0" OutName="tex_0071D0" Format="ci8" Width="8" Height="8" Offset="0x71D0" />
+        <Texture Name="object_dt_Tex_007210" OutName="tex_007210" Format="rgba16" Width="8" Height="16" Offset="0x7210" />
+        <Texture Name="object_dt_Tex_007310" OutName="tex_007310" Format="ci8" Width="8" Height="8" Offset="0x7310" />
+        <Texture Name="gDotourEyeShockTex" OutName="dotour_eye_shock" Format="ci8" Width="32" Height="32" Offset="0x7350" TlutOffset="0x6C50" /> 
+        <Texture Name="gDotourEyebrowHighTex" OutName="dotour_eyebrow_high" Format="ci8" Width="16" Height="16" Offset="0x7750" TlutOffset="0x6E50" />
+        <Texture Name="object_dt_Tex_007850" OutName="tex_007850" Format="ci8" Width="32" Height="32" Offset="0x7850" />
+        <Texture Name="object_dt_Tex_007C50" OutName="tex_007C50" Format="ci8" Width="16" Height="16" Offset="0x7C50" />
+        <Texture Name="object_dt_Tex_007D50" OutName="tex_007D50" Format="ci8" Width="32" Height="32" Offset="0x7D50" />
+        <Texture Name="object_dt_Tex_008150" OutName="tex_008150" Format="ci8" Width="8" Height="8" Offset="0x8150" />
+        <Texture Name="object_dt_Tex_008190" OutName="tex_008190" Format="ci8" Width="32" Height="16" Offset="0x8190" />
+        <Texture Name="object_dt_Tex_008390" OutName="tex_008390" Format="rgba16" Width="32" Height="64" Offset="0x8390" />
+        <Texture Name="object_dt_Tex_009390" OutName="tex_009390" Format="rgba16" Width="16" Height="16" Offset="0x9390" />
+        <Texture Name="gDotourEyeOpenTex" OutName="dotour_eye_open" Format="ci8" Width="32" Height="32" Offset="0x9590" TlutOffset="0x6C50" />
+        <Texture Name="object_dt_Tex_009990" OutName="tex_009990" Format="rgba16" Width="16" Height="32" Offset="0x9990" />
+        <Texture Name="object_dt_Tex_009D90" OutName="tex_009D90" Format="rgba16" Width="16" Height="16" Offset="0x9D90" />
+        <Texture Name="gDotourEyeClosedTex" OutName="dotour_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x9F90" TlutOffset="0x6C50" />
+        <Texture Name="gDotourEyebrowMidTex" OutName="dotour_eyebrow_mid" Format="ci8" Width="16" Height="16" Offset="0xA390" TlutOffset="0x6E50" />
+        <Texture Name="gDotourEyebrowLowTex" OutName="dotour_eyebrow_low" Format="ci8" Width="16" Height="16" Offset="0xA490" TlutOffset="0x6E50" />
+        <Texture Name="object_dt_Tex_00A590" OutName="tex_00A590" Format="rgba16" Width="16" Height="16" Offset="0xA590" />
+        <Texture Name="gDotourEyeLookDownTex" OutName="dotour_eye_look_down" Format="ci8" Width="32" Height="32" Offset="0xA790" TlutOffset="0x6C50" />
+        <Texture Name="gDotourEyeSquintTex" OutName="dotour_eye_squint" Format="ci8" Width="32" Height="32" Offset="0xAB90" TlutOffset="0x6C50" />
+        <TextureAnimation Name="object_dt_Matanimheader_00AFDC" Offset="0xAFDC" />
+        <Limb Name="object_dt_Standardlimb_00AFEC" Type="Standard" EnumName="OBJECT_DT_LIMB_01" Offset="0xAFEC" />
+        <Limb Name="object_dt_Standardlimb_00AFF8" Type="Standard" EnumName="OBJECT_DT_LIMB_02" Offset="0xAFF8" />
+        <Limb Name="object_dt_Standardlimb_00B004" Type="Standard" EnumName="OBJECT_DT_LIMB_03" Offset="0xB004" />
+        <Limb Name="object_dt_Standardlimb_00B010" Type="Standard" EnumName="OBJECT_DT_LIMB_04" Offset="0xB010" />
+        <Limb Name="object_dt_Standardlimb_00B01C" Type="Standard" EnumName="OBJECT_DT_LIMB_05" Offset="0xB01C" />
+        <Limb Name="object_dt_Standardlimb_00B028" Type="Standard" EnumName="OBJECT_DT_LIMB_06" Offset="0xB028" />
+        <Limb Name="object_dt_Standardlimb_00B034" Type="Standard" EnumName="OBJECT_DT_LIMB_07" Offset="0xB034" />
+        <Limb Name="object_dt_Standardlimb_00B040" Type="Standard" EnumName="OBJECT_DT_LIMB_08" Offset="0xB040" />
+        <Limb Name="object_dt_Standardlimb_00B04C" Type="Standard" EnumName="OBJECT_DT_LIMB_09" Offset="0xB04C" />
+        <Limb Name="object_dt_Standardlimb_00B058" Type="Standard" EnumName="OBJECT_DT_LIMB_0A" Offset="0xB058" />
+        <Limb Name="object_dt_Standardlimb_00B064" Type="Standard" EnumName="OBJECT_DT_LIMB_0B" Offset="0xB064" />
+        <Limb Name="object_dt_Standardlimb_00B070" Type="Standard" EnumName="OBJECT_DT_LIMB_0C" Offset="0xB070" />
+        <Limb Name="object_dt_Standardlimb_00B07C" Type="Standard" EnumName="OBJECT_DT_LIMB_0D" Offset="0xB07C" />
+        <Limb Name="object_dt_Standardlimb_00B088" Type="Standard" EnumName="OBJECT_DT_LIMB_0E" Offset="0xB088" />
+        <Skeleton Name="object_dt_Skel_00B0CC" Type="Flex" LimbType="Standard" LimbNone="OBJECT_DT_LIMB_NONE" LimbMax="OBJECT_DT_LIMB_MAX" EnumName="ObjectDtLimb" Offset="0xB0CC" />
+        <Animation Name="gDotourSitUpAnim" Offset="0xB500" /> <!-- Original name is "dt_yome2arigato" -->
+    </File>
+</Root>

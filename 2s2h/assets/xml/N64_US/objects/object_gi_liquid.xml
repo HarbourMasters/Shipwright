@@ -1,0 +1,29 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Potion Containers (refills) -->
+    <File Name="object_gi_liquid" Segment="6">
+
+        <!-- Potion Containers Textures -->
+        <Texture Name="gGiPotionContainerGreenPatternTex" OutName="gi_potion_container_green_pattern" Format="ia8" Width="16" Height="32" Offset="0x0" />
+        <Texture Name="gGiPotionContainerRedPatternTex" OutName="gi_potion_container_red_pattern" Format="ia8" Width="16" Height="32" Offset="0x200" />
+        <Texture Name="gGiPotionContainerBluePatternTex" OutName="gi_potion_container_blue_pattern" Format="ia8" Width="16" Height="32" Offset="0x400" />
+
+        <!-- Potion Containers Color Display Lists -->
+        <DList Name="gGiPotionContainerGreenPotColorDL" Offset="0x1270" />
+        <DList Name="gGiPotionContainerRedPotColorDL" Offset="0x1290" />
+        <DList Name="gGiPotionContainerBluePotColorDL" Offset="0x12B0" />
+        <DList Name="gGiPotionContainerGreenLiquidColorDL" Offset="0x12D0" />
+        <DList Name="gGiPotionContainerRedLiquidColorDL" Offset="0x12F0" />
+        <DList Name="gGiPotionContainerBlueLiquidColorDL" Offset="0x1310" />
+        <DList Name="gGiPotionContainerGreenPatternColorDL" Offset="0x1330" />
+        <DList Name="gGiPotionContainerRedPatternColorDL" Offset="0x1388" />
+        <DList Name="gGiPotionContainerBluePatternColorDL" Offset="0x13E0" />
+
+        <!-- Potion Containers Common Display Lists -->
+        <DList Name="gGiPotionContainerPotDL" Offset="0x1438" />
+        <DList Name="gGiPotionContainerLiquidDL" Offset="0x1790" />
+        <DList Name="gGiPotionContainerPatternDL" Offset="0x1848" />
+    </File>
+</Root>

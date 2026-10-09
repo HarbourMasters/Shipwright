@@ -1,0 +1,54 @@
+﻿<Root>
+    <!-- Assets for Unused Hylian Young Woman NPC -->
+    <File Name="object_cne" Segment="6">
+        <!-- The textures used by these limbs aren't 64-bit aligned -->
+        <Limb Name="gHylianYoungWomanPelvisLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_PELVIS" Offset="0x0"/>
+        <Limb Name="gHylianYoungWomanLeftThighLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_THIGH" Offset="0xC"/>
+        <Limb Name="gHylianYoungWomanLeftShinLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_SHIN" Offset="0x18"/>
+        <Limb Name="gHylianYoungWomanLeftFootLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_FOOT" Offset="0x24"/>
+        <Limb Name="gHylianYoungWomanRightThighLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_THIGH" Offset="0x30"/>
+        <Limb Name="gHylianYoungWomanRightShinLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_SHIN" Offset="0x3C"/>
+        <Limb Name="gHylianYoungWomanRightFootLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_FOOT" Offset="0x48"/>
+        <Limb Name="gHylianYoungWomanTorsoLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_TORSO" Offset="0x54"/>
+        <Limb Name="gHylianYoungWomanLeftUpperArmLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_UPPER_ARM" Offset="0x60"/>
+        <Limb Name="gHylianYoungWomanLeftForearmLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_FOREARM" Offset="0x6C"/>
+        <Limb Name="gHylianYoungWomanLeftHandLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_LEFT_HAND" Offset="0x78"/>
+        <Limb Name="gHylianYoungWomanRightUpperArmLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_UPPER_ARM" Offset="0x84"/>
+        <Limb Name="gHylianYoungWomanRightForearmLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_FOREARM" Offset="0x90"/>
+        <Limb Name="gHylianYoungWomanRightHandLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_RIGHT_HAND" Offset="0x9C"/>
+        <Limb Name="gHylianYoungWomanHeadLimb" LimbType="Standard" EnumName="HYLIAN_YOUNG_WOMAN_LIMB_HEAD" Offset="0xA8"/>
+
+        <Skeleton Name="gHylianYoungWomanSkel" Type="Flex" LimbType="Standard" LimbNone="HYLIAN_YOUNG_WOMAN_LIMB_NONE" LimbMax="HYLIAN_YOUNG_WOMAN_LIMB_MAX" EnumName="HylianYoungWomanLimb" Offset="0xF0"/>
+
+        <!-- 32-bit aligned textures. -->
+        <Texture Name="gHylianYoungWomanTLUT" OutName="hylian_young_woman_tlut" Format="rgba16" Width="16" Height="16" Offset="0xFC"/>
+        <Texture Name="gHylianYoungWomanSkinTex" OutName="hylian_young_woman_skin" Format="ci8" Width="8" Height="8" Offset="0x2FC"/>
+        <Texture Name="gHylianYoungWomanBrownHairTex" OutName="hylian_young_woman_brown_hair" Format="ci8" Width="8" Height="8" Offset="0x33C"/>
+        <Texture Name="gHylianYoungWomanHandTex" OutName="hylian_young_woman_hand" Format="ci8" Width="8" Height="8" Offset="0x37C"/>
+        <Texture Name="gHylianYoungWomanBrownHairSkinTex" OutName="hylian_young_woman_brown_hair_skin" Format="ci8" Width="8" Height="8" Offset="0x3BC"/>
+        <Texture Name="gHylianYoungWomanBrownHairFaceTex" OutName="hylian_young_woman_brown_hair_face" Format="ci8" Width="8" Height="16" Offset="0x3FC"/>
+        <Texture Name="gHylianYoungWomanDressTex" OutName="hylian_young_woman_dress" Format="i8" Width="8" Height="8" Offset="0x47C"/>
+        <Texture Name="gHylianYoungWomanDressNeckTex" OutName="hylian_young_woman_dress_neck" Format="ci8" Width="8" Height="8" Offset="0x4BC"/>
+
+        <DList Name="gHylianYoungWomanHeadBrownHairDL" Offset="0x1300"/>
+        <DList Name="gHylianYoungWomanRightHandDL" Offset="0x1608"/>
+        <DList Name="gHylianYoungWomanRightForearmDL" Offset="0x16E8"/>
+        <DList Name="gHylianYoungWomanRightUpperArmDL" Offset="0x1808"/>
+        <DList Name="gHylianYoungWomanLeftHandDL" Offset="0x18C8"/>
+        <DList Name="gHylianYoungWomanLeftForearmDL" Offset="0x19A8"/>
+        <DList Name="gHylianYoungWomanLeftUpperArmDL" Offset="0x1AC8"/>
+        <DList Name="gHylianYoungWomanTorsoDL" Offset="0x1B88"/>
+        <DList Name="gHylianYoungWomanRightFootDL" Offset="0x1E50"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanRightShinDL" Offset="0x1F18"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanRightThighDL" Offset="0x1FE0"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanLeftFootDL" Offset="0x20A8"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanLeftShinDL" Offset="0x2170"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanLeftThighDL" Offset="0x2238"/> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gHylianYoungWomanPelvisDL" Offset="0x2300"/>
+
+        <Texture Name="gHylianYoungWomanOrangeHairFaceTex" OutName="hylian_young_woman_orange_hair_face" Format="rgba16" Width="8" Height="16" Offset="0x23D0"/>
+        <Texture Name="gHylianYoungWomanOrangeHairSkinTex" OutName="hylian_young_woman_orange_hair_skin" Format="rgba16" Width="8" Height="8" Offset="0x24D0"/>
+
+        <DList Name="gHylianYoungWomanHeadOrangeHairDL" Offset="0x2860"/>
+    </File>
+</Root>

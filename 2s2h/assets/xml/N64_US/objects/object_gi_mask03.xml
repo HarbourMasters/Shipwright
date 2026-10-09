@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Get Item Draw: Fierce Deity Mask -->
+    <File Name="object_gi_mask03" Segment="6">
+
+        <!-- Fierce Deity Mask Display Lists -->
+        <DList Name="gGiFierceDeityMaskHairAndHatDL" Offset="0x9B0" />
+        <DList Name="gGiFierceDeityMaskFaceDL" Offset="0xB90" />
+
+        <!-- Fierce Deity Mask TLUTs -->
+        <Texture Name="gGiFierceDeityMaskMouthAndEarTLUT" OutName="gi_fierce_deity_mask_mouth_and_ear_tlut" Format="rgba16" Width="16" Height="16" Offset="0xF70" />
+        <Texture Name="gGiFierceDeityMaskEyeTLUT" OutName="gi_fierce_deity_mask_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1170" />
+
+        <!-- Fierce Deity Mask Textures -->
+        <Texture Name="gGiFierceDeityMaskMouthTex" OutName="gi_fierce_deity_mask_mouth" Format="ci8" Width="32" Height="16" Offset="0x1370" />
+        <Texture Name="gGiFierceDeityMaskEarTex" OutName="gi_fierce_deity_mask_ear" Format="ci8" Width="16" Height="16" Offset="0x1570" />
+        <Texture Name="gGiFierceDeityMaskEyeTex" OutName="gi_fierce_deity_mask_eye" Format="ci8" Width="32" Height="32" Offset="0x1670" />
+        <Texture Name="gGiFierceDeityMaskHatTex" OutName="gi_fierce_deity_mask_hat" Format="i8" Width="8" Height="8" Offset="0x1A70" />
+        <Texture Name="gGiFierceDeityMaskHairTex" OutName="gi_fierce_deity_mask_hair" Format="i8" Width="32" Height="32" Offset="0x1AB0" />
+    </File>
+</Root>

@@ -1,0 +1,153 @@
+﻿<Root>
+    <!-- Assets for Hiploops. Includes an entire unused duplicate of the Hiploop's skeletal model and textures. -->
+    <File Name="object_pp" Segment="6">
+        <!-- Hiploop Animations -->
+        <Animation Name="gHiploopAttackAnim" Offset="0xE14" /> <!-- Original name is "pp_attack" -->
+        <Animation Name="gHiploopChargeAnim" Offset="0x1354" /> <!-- Original name is "pp_attack_run" -->
+        <Animation Name="gHiploopDamageAnim" Offset="0x178C" /> <!-- Original name is "pp_damage" -->
+
+        <!-- Unused Hiploop Limb DisplayLists -->
+        <DList Name="gUnusedHiploopBodyDL" Offset="0x2FD0" />
+        <DList Name="gUnusedHiploopLeftEyeDL" Offset="0x32D8" />
+        <DList Name="gUnusedHiploopRightEyeDL" Offset="0x3368" />
+        <DList Name="gUnusedHiploopBackLeftUpperLegDL" Offset="0x33F8" />
+        <DList Name="gUnusedHiploopBackLeftLowerLegDL" Offset="0x3580" />
+        <DList Name="gUnusedHiploopBackLeftFootDL" Offset="0x3700" />
+        <DList Name="gUnusedHiploopCenterWingBaseDL" Offset="0x3880" />
+        <DList Name="gUnusedHiploopCenterWingMiddleDL" Offset="0x39C0" />
+        <DList Name="gUnusedHiploopCenterWingTipDL" Offset="0x3AB8" />
+        <DList Name="gUnusedHiploopRightWingBaseDL" Offset="0x3BA8" />
+        <DList Name="gUnusedHiploopRightWingMiddleDL" Offset="0x3D30" />
+        <DList Name="gUnusedHiploopRightWingTipDL" Offset="0x3E20" />
+        <DList Name="gUnusedHiploopMaskDL" Offset="0x3F10" />
+        <DList Name="gUnusedHiploopBackRightUpperLegDL" Offset="0x4028" />
+        <DList Name="gUnusedHiploopBackRightLowerLegDL" Offset="0x41B0" />
+        <DList Name="gUnusedHiploopBackRightFootDL" Offset="0x4330" />
+        <DList Name="gUnusedHiploopLeftWingBaseDL" Offset="0x44B0" />
+        <DList Name="gUnusedHiploopLeftWingMiddleDL" Offset="0x4638" />
+        <DList Name="gUnusedHiploopLeftWingTipDL" Offset="0x4728" />
+        <DList Name="gUnusedHiploopFrontRightUpperLegDL" Offset="0x4818" />
+        <DList Name="gUnusedHiploopFrontRightLowerLegDL" Offset="0x4998" />
+        <DList Name="gUnusedHiploopFrontRightFootDL" Offset="0x4B18" />
+        <DList Name="gUnusedHiploopFrontLeftUpperLegDL" Offset="0x4C98" />
+        <DList Name="gUnusedHiploopFrontLeftLowerLegDL" Offset="0x4E18" />
+        <DList Name="gUnusedHiploopFrontLeftFootDL" Offset="0x4F98" />
+
+        <!-- Unused Hiploop Textures -->
+        <Texture Name="gUnusedHiploopEyeTex" OutName="unused_hiploop_eye" Format="rgba16" Width="32" Height="32" Offset="0x5118" />
+        <Texture Name="gUnusedHiploopUndersideTex" OutName="unused_hiploop_underside" Format="rgba16" Width="64" Height="32" Offset="0x5918" />
+        <Texture Name="gUnusedHiploopFaceTex" OutName="unused_hiploop_face" Format="rgba16" Width="32" Height="32" Offset="0x6918" />
+        <Texture Name="gUnusedHiploopBackTex" OutName="unused_hiploop_back" Format="rgba16" Width="32" Height="32" Offset="0x7118" />
+        <Texture Name="gUnusedHiploopCenterWingTex" OutName="unused_hiploop_center_wing" Format="rgba16" Width="32" Height="32" Offset="0x7918" />
+        <Texture Name="gUnusedHiploopSideWingsTex" OutName="unused_hiploop_side_wings" Format="rgba16" Width="32" Height="32" Offset="0x8118" />
+        <Texture Name="gUnusedHiploopBackCenterTex" OutName="unused_hiploop_back_center" Format="rgba16" Width="32" Height="32" Offset="0x8918" />
+        <Texture Name="gUnusedHiploopLegTex" OutName="unused_hiploop_leg" Format="rgba16" Width="16" Height="16" Offset="0x9118" />
+        <Texture Name="gUnusedHiploopMaskTex" OutName="unused_hiploop_mask" Format="i4" Width="32" Height="32" Offset="0x9318" />
+
+        <!-- Unused Hiploop Limbs -->
+        <Limb Name="gUnusedHiploopBodyLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BODY" Offset="0x9518" />
+        <Limb Name="gUnusedHiploopFrontLeftUpperLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x9524" />
+        <Limb Name="gUnusedHiploopFrontLeftLowerLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x9530" />
+        <Limb Name="gUnusedHiploopFrontLeftFootLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_LEFT_FOOT" Offset="0x953C" />
+        <Limb Name="gUnusedHiploopFrontRightUpperLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x9548" />
+        <Limb Name="gUnusedHiploopFrontRightLowerLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x9554" />
+        <Limb Name="gUnusedHiploopFrontRightFootLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_FRONT_RIGHT_FOOT" Offset="0x9560" />
+        <Limb Name="gUnusedHiploopMaskLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_MASK" Offset="0x956C" />
+        <Limb Name="gUnusedHiploopLeftWingBaseLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_LEFT_WING_BASE" Offset="0x9578" />
+        <Limb Name="gUnusedHiploopLeftWingMiddleLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_LEFT_WING_MIDDLE" Offset="0x9584" />
+        <Limb Name="gUnusedHiploopLeftWingTipLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_LEFT_WING_TIP" Offset="0x9590" />
+        <Limb Name="gUnusedHiploopBackRightUpperLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_RIGHT_UPPER_LEG" Offset="0x959C" />
+        <Limb Name="gUnusedHiploopBackRightLowerLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_RIGHT_LOWER_LEG" Offset="0x95A8" />
+        <Limb Name="gUnusedHiploopBackRightFootLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_RIGHT_FOOT" Offset="0x95B4" />
+        <Limb Name="gUnusedHiploopRightWingBaseLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_RIGHT_WING_BASE" Offset="0x95C0" />
+        <Limb Name="gUnusedHiploopRightWingMiddleLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_RIGHT_WING_MIDDLE" Offset="0x95CC" />
+        <Limb Name="gUnusedHiploopRightWingTipLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_RIGHT_WING_TIP" Offset="0x95D8" />
+        <Limb Name="gUnusedHiploopCenterWingBaseLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_CENTER_WING_BASE" Offset="0x95E4" />
+        <Limb Name="gUnusedHiploopCenterWingMiddleLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_CENTER_WING_MIDDLE" Offset="0x95F0" />
+        <Limb Name="gUnusedHiploopCenterWingTipLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_CENTER_WING_TIP" Offset="0x95FC" />
+        <Limb Name="gUnusedHiploopBackLeftUpperLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_LEFT_UPPER_LEG" Offset="0x9608" />
+        <Limb Name="gUnusedHiploopBackLeftLowerLegLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_LEFT_LOWER_LEG" Offset="0x9614" />
+        <Limb Name="gUnusedHiploopBackLeftFootLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_BACK_LEFT_FOOT" Offset="0x9620" />
+        <Limb Name="gUnusedHiploopRightEyeLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_RIGHT_EYE" Offset="0x962C" />
+        <Limb Name="gUnusedHiploopLeftEyeLimb" Type="Standard" EnumName="UNUSED_HIPLOOP_LIMB_LEFT_EYE" Offset="0x9638" />
+
+        <!-- Unused Hiploop Skeleton -->
+        <Skeleton Name="gUnusedHiploopSkel" Type="Flex" LimbType="Standard" LimbNone="UNUSED_HIPLOOP_LIMB_NONE" LimbMax="UNUSED_HIPLOOP_LIMB_MAX" EnumName="UnusedHiploopLimb" Offset="0x96A8" />
+
+        <!-- Hiploop Animations -->
+        <Animation Name="gHiploopRoarAnim" Offset="0x9A74" /> <!-- Original name is "pp_mogaki" ("writhing") -->
+        <Animation Name="gHiploopWindUpAnim" Offset="0xA304" /> <!-- Original name is "pp_pre_attack" -->
+        <Animation Name="gHiploopIdleAnim" Offset="0xA844" /> <!-- Original name is "pp_wait" -->
+
+        <!-- Hiploop Limb DisplayLists -->
+        <DList Name="gHiploopBodyDL" Offset="0xC090" />
+        <DList Name="gHiploopLeftEyeDL" Offset="0xC398" />
+        <DList Name="gHiploopRightEyeDL" Offset="0xC428" />
+        <DList Name="gHiploopBackLeftUpperLegDL" Offset="0xC4B8" />
+        <DList Name="gHiploopBackLeftLowerLegDL" Offset="0xC640" />
+        <DList Name="gHiploopBackLeftFootDL" Offset="0xC7C0" />
+        <DList Name="gHiploopCenterWingBaseDL" Offset="0xC940" />
+        <DList Name="gHiploopCenterWingMiddleDL" Offset="0xCA80" />
+        <DList Name="gHiploopCenterWingTipDL" Offset="0xCB78" />
+        <DList Name="gHiploopRightWingBaseDL" Offset="0xCC68" />
+        <DList Name="gHiploopRightWingMiddleDL" Offset="0xCDF0" />
+        <DList Name="gHiploopRightWingTipDL" Offset="0xCEE0" />
+        <DList Name="gHiploopMaskDL" Offset="0xCFD0" />
+        <DList Name="gHiploopBackRightUpperLegDL" Offset="0xD0E8" />
+        <DList Name="gHiploopBackRightLowerLegDL" Offset="0xD270" />
+        <DList Name="gHiploopBackRightFootDL" Offset="0xD3F0" />
+        <DList Name="gHiploopLeftWingBaseDL" Offset="0xD570" />
+        <DList Name="gHiploopLeftWingMiddleDL" Offset="0xD6F8" />
+        <DList Name="gHiploopLeftWingTipDL" Offset="0xD7E8" />
+        <DList Name="gHiploopFrontRightUpperLegDL" Offset="0xD8D8" />
+        <DList Name="gHiploopFrontRightLowerLegDL" Offset="0xDA58" />
+        <DList Name="gHiploopFrontRightFootDL" Offset="0xDBD8" />
+        <DList Name="gHiploopFrontLeftUpperLegDL" Offset="0xDD58" />
+        <DList Name="gHiploopFrontLeftLowerLegDL" Offset="0xDED8" />
+        <DList Name="gHiploopFrontLeftFootDL" Offset="0xE058" />
+        
+        <!-- Hiploop Textures -->
+        <Texture Name="gHiploopEyeTex" OutName="hiploop_eye" Format="rgba16" Width="32" Height="32" Offset="0xE1D8" />
+        <Texture Name="gHiploopUndersideTex" OutName="hiploop_underside" Format="rgba16" Width="64" Height="32" Offset="0xE9D8" />
+        <Texture Name="gHiploopFaceTex" OutName="hiploop_face" Format="rgba16" Width="32" Height="32" Offset="0xF9D8" />
+        <Texture Name="gHiploopBackTex" OutName="hiploop_back" Format="rgba16" Width="32" Height="32" Offset="0x101D8" />
+        <Texture Name="gHiploopCenterWingTex" OutName="hiploop_center_wing" Format="rgba16" Width="32" Height="32" Offset="0x109D8" />
+        <Texture Name="gHiploopSideWingsTex" OutName="hiploop_side_wings" Format="rgba16" Width="32" Height="32" Offset="0x111D8" />
+        <Texture Name="gHiploopBackCenterTex" OutName="hiploop_back_center" Format="rgba16" Width="32" Height="32" Offset="0x119D8" />
+        <Texture Name="gHiploopLegTex" OutName="hiploop_leg" Format="rgba16" Width="16" Height="16" Offset="0x121D8" />
+        <Texture Name="gHiploopMaskTex" OutName="hiploop_mask" Format="i4" Width="32" Height="32" Offset="0x123D8" />
+
+        <!-- Hiploop Limbs -->
+        <Limb Name="gHiploopBodyLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BODY" Offset="0x125D8" />
+        <Limb Name="gHiploopFrontLeftUpperLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x125E4" />
+        <Limb Name="gHiploopFrontLeftLowerLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x125F0" />
+        <Limb Name="gHiploopFrontLeftFootLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_LEFT_FOOT" Offset="0x125FC" />
+        <Limb Name="gHiploopFrontRightUpperLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x12608" />
+        <Limb Name="gHiploopFrontRightLowerLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x12614" />
+        <Limb Name="gHiploopFrontRightFootLimb" Type="Standard" EnumName="HIPLOOP_LIMB_FRONT_RIGHT_FOOT" Offset="0x12620" />
+        <Limb Name="gHiploopMaskLimb" Type="Standard" EnumName="HIPLOOP_LIMB_MASK" Offset="0x1262C" />
+        <Limb Name="gHiploopLeftWingBaseLimb" Type="Standard" EnumName="HIPLOOP_LIMB_LEFT_WING_BASE" Offset="0x12638" />
+        <Limb Name="gHiploopLeftWingMiddleLimb" Type="Standard" EnumName="HIPLOOP_LIMB_LEFT_WING_MIDDLE" Offset="0x12644" />
+        <Limb Name="gHiploopLeftWingTipLimb" Type="Standard" EnumName="HIPLOOP_LIMB_LEFT_WING_TIP" Offset="0x12650" />
+        <Limb Name="gHiploopBackRightUpperLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_RIGHT_UPPER_LEG" Offset="0x1265C" />
+        <Limb Name="gHiploopBackRightLowerLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_RIGHT_LOWER_LEG" Offset="0x12668" />
+        <Limb Name="gHiploopBackRightFootLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_RIGHT_FOOT" Offset="0x12674" />
+        <Limb Name="gHiploopRightWingBaseLimb" Type="Standard" EnumName="HIPLOOP_LIMB_RIGHT_WING_BASE" Offset="0x12680" />
+        <Limb Name="gHiploopRightWingMiddleLimb" Type="Standard" EnumName="HIPLOOP_LIMB_RIGHT_WING_MIDDLE" Offset="0x1268C" />
+        <Limb Name="gHiploopRightWingTipLimb" Type="Standard" EnumName="HIPLOOP_LIMB_RIGHT_WING_TIP" Offset="0x12698" />
+        <Limb Name="gHiploopCenterWingBaseLimb" Type="Standard" EnumName="HIPLOOP_LIMB_CENTER_WING_BASE" Offset="0x126A4" />
+        <Limb Name="gHiploopCenterWingMiddleLimb" Type="Standard" EnumName="HIPLOOP_LIMB_CENTER_WING_MIDDLE" Offset="0x126B0" />
+        <Limb Name="gHiploopCenterWingTipLimb" Type="Standard" EnumName="HIPLOOP_LIMB_CENTER_WING_TIP" Offset="0x126BC" />
+        <Limb Name="gHiploopBackLeftUpperLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_LEFT_UPPER_LEG" Offset="0x126C8" />
+        <Limb Name="gHiploopBackLeftLowerLegLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_LEFT_LOWER_LEG" Offset="0x126D4" />
+        <Limb Name="gHiploopBackLeftFootLimb" Type="Standard" EnumName="HIPLOOP_LIMB_BACK_LEFT_FOOT" Offset="0x126E0" />
+        <Limb Name="gHiploopRightEyeLimb" Type="Standard" EnumName="HIPLOOP_LIMB_RIGHT_EYE" Offset="0x126EC" />
+        <Limb Name="gHiploopLeftEyeLimb" Type="Standard" EnumName="HIPLOOP_LIMB_LEFT_EYE" Offset="0x126F8" />
+
+        <!-- Hiploop Skeleton -->
+        <Skeleton Name="gHiploopSkel" Type="Flex" LimbType="Standard" LimbNone="HIPLOOP_LIMB_NONE" LimbMax="HIPLOOP_LIMB_MAX" EnumName="HiploopLimb" Offset="0x12768" />
+
+        <!-- Hiploop Animation -->
+        <Animation Name="gHiploopWalkAnim" Offset="0x12AE4" /> <!-- Original name is "pp_walk" -->
+    </File>
+</Root>

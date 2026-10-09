@@ -1,0 +1,21 @@
+﻿<Root>
+    <File Name="object_last_obj" Segment="6">
+        <DList Name="object_last_obj_DL_000090" Offset="0x90" />
+        <DList Name="object_last_obj_DL_000098" Offset="0x98" /> <!-- Original name is "i2_bomH1_sep__L_model" -->
+        <DList Name="object_last_obj_DL_0001A0" Offset="0x1A0" />
+        <DList Name="object_last_obj_DL_0001A8" Offset="0x1A8" /> <!-- Original name is "i2_last_L031_model" -->
+        <Collision Name="object_last_obj_Colheader_000288" Offset="0x288" /> <!-- Original name is "i2_last_L031_bgdatainfo" -->
+        <Texture Name="object_last_obj_Tex_0002C0" OutName="tex_0002C0" Format="rgba16" Width="32" Height="64" Offset="0x2C0" />
+        <DList Name="object_last_obj_DL_001310" Offset="0x1310" />
+        <DList Name="object_last_obj_DL_001318" Offset="0x1318" /> <!-- Original name is "i2_last_L041_model" -->
+        <Collision Name="object_last_obj_Colheader_001450" Offset="0x1450" /> <!-- Original name is "i2_last_L041_bgdatainfo" -->
+        <!-- <Blob Name="object_last_obj_Blob_00147C" Size="0x284" Offset="0x147C" /> -->
+        <Texture Name="object_last_obj_TLUT_001700" OutName="tlut_001700" Format="rgba16" Width="4" Height="4" Offset="0x1700" />
+        <!-- <Blob Name="object_last_obj_Blob_001720" Size="0x180" Offset="0x1720" /> -->
+        <Texture Name="object_last_obj_Tex_0018A0" OutName="tex_0018A0" Format="rgba16" Width="32" Height="32" Offset="0x18A0" />
+        <!-- <Blob Name="object_last_obj_Blob_0020A0" Size="0x1000" Offset="0x20A0" /> -->
+        <Texture Name="object_last_obj_Tex_0030A0" OutName="tex_0030A0" Format="ci4" Width="64" Height="64" Offset="0x30A0" />
+        <DList Name="object_last_obj_DL_0039C0" Offset="0x39C0" /> <!-- Original name is "i2_L_shutter1_model" -->
+        <Texture Name="object_last_obj_Tex_003B20" OutName="tex_003B20" Format="rgba16" Width="32" Height="64" Offset="0x3B20" />
+    </File>
+</Root>

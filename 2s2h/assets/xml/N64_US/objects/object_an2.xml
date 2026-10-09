@@ -1,0 +1,18 @@
+﻿<Root>
+    <!-- Assets for Anju on the rainy second day -->
+    <File Name="object_an2" Segment="6">
+        <!-- Empty -->
+        <DList Name="gAnju2EmptyDL" Offset="0x370" />
+
+        <!-- Umbrella -->
+        <DList Name="gAnju2UmbrellaDL" Offset="0x378" /> <!-- Original name is "an_kasa_model" ("umbrella; parasol") -->
+        <Texture Name="gAnju2UmbrellaCircleTex" OutName="umbrella_circle" Format="i8" Width="16" Height="16" Offset="0x578" />
+        <Texture Name="gAnju2UmbrellaDesignTex" OutName="umbrella_design" Format="i8" Width="32" Height="32" Offset="0x678" />
+
+        <!-- Animations holding the umbrella -->
+        <Animation Name="gAnju2UmbrellaCryAnim" Offset="0x1B80" /> <!-- Original name is "an_kasasuwarinaku" ("suwari" = "sitting", "naku" = "to cry; to weep; to sob") -->
+        <Animation Name="gAnju2UmbrellaIdleAnim" Offset="0x28DC" /> <!-- Original name is "an_kasawait" -->
+        <Animation Name="gAnju2UmbrellaSitAnim" Offset="0x38A0" /> <!-- Original name is "an_kasawait2suwaru" ("suwaru" = "to sit") -->
+        <Animation Name="gAnju2UmbrellaWalkAnim" Offset="0x42CC" /> <!-- Original name is "an_kasawalk" -->
+    </File>
+</Root>

@@ -1,0 +1,41 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_01.xml" OutPath="misc/scene_texture_01/"/>
+    <File Name="Z2_YADOYA" Segment="2" Game="MM">
+        <Scene Name="Z2_YADOYA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_YADOYA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_YADOYA_room_00" Offset="0x0"/>
+        <DList Name="Z2_YADOYA_room_00DL_000490" Offset="0x490"/>
+        <DList Name="Z2_YADOYA_room_00DL_014778" Offset="0x14778"/>
+        <DList Name="Z2_YADOYA_room_00DL_016EA0" Offset="0x16EA0"/>
+        <DList Name="Z2_YADOYA_room_00DL_017478" Offset="0x17478"/>
+    </File>
+    <File Name="Z2_YADOYA_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_YADOYA_room_01" Offset="0x0"/>
+        <DList Name="Z2_YADOYA_room_01DL_000260" Offset="0x260"/>
+        <DList Name="Z2_YADOYA_room_01DL_007060" Offset="0x7060"/>
+        <DList Name="Z2_YADOYA_room_01DL_0082F0" Offset="0x82F0"/>
+        <DList Name="Z2_YADOYA_room_01DL_008318" Offset="0x8318"/>
+    </File>
+    <File Name="Z2_YADOYA_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_YADOYA_room_02" Offset="0x0"/>
+        <DList Name="Z2_YADOYA_room_02DL_000270" Offset="0x270"/>
+        <DList Name="Z2_YADOYA_room_02DL_005D78" Offset="0x5D78"/>
+        <DList Name="Z2_YADOYA_room_02DL_005EB0" Offset="0x5EB0"/>
+        <DList Name="Z2_YADOYA_room_02DL_005ED0" Offset="0x5ED0"/>
+    </File>
+    <File Name="Z2_YADOYA_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_YADOYA_room_03" Offset="0x0"/>
+        <DList Name="Z2_YADOYA_room_03DL_000230" Offset="0x230"/>
+        <DList Name="Z2_YADOYA_room_03DL_005008" Offset="0x5008"/>
+        <DList Name="Z2_YADOYA_room_03DL_005090" Offset="0x5090"/>
+        <DList Name="Z2_YADOYA_room_03DL_0050A8" Offset="0x50A8"/>
+    </File>
+    <File Name="Z2_YADOYA_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_YADOYA_room_04" Offset="0x0"/>
+        <DList Name="Z2_YADOYA_room_04DL_0002F0" Offset="0x2F0"/>
+        <DList Name="Z2_YADOYA_room_04DL_006FD0" Offset="0x6FD0"/>
+        <DList Name="Z2_YADOYA_room_04DL_007500" Offset="0x7500"/>
+        <DList Name="Z2_YADOYA_room_04DL_007518" Offset="0x7518"/>
+    </File>
+</Root>

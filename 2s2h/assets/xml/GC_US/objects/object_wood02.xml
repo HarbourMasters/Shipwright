@@ -1,0 +1,37 @@
+﻿<Root>
+    <ExternalFile XmlPath="objects/gameplay_field_keep.xml" OutPath="assets/objects/gameplay_field_keep/"/>
+    <File Name="object_wood02" Segment="6">
+        <DList Name="object_wood02_DL_000090" Offset="0x90" /> <!-- Original name might be "grass01_modelT" -->
+        <DList Name="object_wood02_DL_000160" Offset="0x160" />
+        <DList Name="object_wood02_DL_000340" Offset="0x340" />
+        <DList Name="object_wood02_DL_000440" Offset="0x440" />
+        <Texture Name="object_wood02_Tex_0004D0" OutName="tex_0004D0" Format="rgba16" Width="16" Height="16" Offset="0x4D0" />
+        <DList Name="object_wood02_DL_000700" Offset="0x700" />
+        <Texture Name="object_wood02_Tex_000790" OutName="tex_000790" Format="rgba16" Width="32" Height="32" Offset="0x790" />
+        <Texture Name="object_wood02_Tex_000F90" OutName="tex_000F90" Format="ia4" Width="32" Height="128" Offset="0xF90" />
+        <Texture Name="object_wood02_Tex_001790" OutName="tex_001790" Format="ia8" Width="32" Height="128" Offset="0x1790" />
+        <Texture Name="object_wood02_Tex_002790" OutName="tex_002790" Format="ia4" Width="32" Height="128" Offset="0x2790" />
+        <Texture Name="object_wood02_Tex_002F90" OutName="tex_002F90" Format="rgba16" Width="32" Height="32" Offset="0x2F90" />
+        <Texture Name="object_wood02_Tex_003790" OutName="tex_003790" Format="ia8" Width="32" Height="128" Offset="0x3790" />
+        <Texture Name="object_wood02_Tex_004790" OutName="tex_004790" Format="ia8" Width="32" Height="64" Offset="0x4790" />
+        <Texture Name="object_wood02_Tex_004F90" OutName="tex_004F90" Format="ia8" Width="32" Height="128" Offset="0x4F90" />
+        <Texture Name="object_wood02_Tex_005F90" OutName="tex_005F90" Format="ia8" Width="32" Height="64" Offset="0x5F90" />
+        <Texture Name="object_wood02_Tex_006790" OutName="tex_006790" Format="ia8" Width="32" Height="64" Offset="0x6790" />
+        <Texture Name="object_wood02_Tex_006F90" OutName="tex_006F90" Format="ia8" Width="32" Height="64" Offset="0x6F90" />
+        <DList Name="object_wood02_DL_0078D0" Offset="0x78D0" />
+        <DList Name="object_wood02_DL_007968" Offset="0x7968" />
+        <Collision Name="object_wood02_Colheader_007A70" Offset="0x7A70" /> <!-- Original name is "tree01_bgdatainfo" -->
+        <DList Name="object_wood02_DL_007AD0" Offset="0x7AD0" />
+        <DList Name="object_wood02_DL_007CA0" Offset="0x7CA0" />
+        <DList Name="object_wood02_DL_007D38" Offset="0x7D38" />
+        <DList Name="object_wood02_DL_007E20" Offset="0x7E20" />
+        <DList Name="object_wood02_DL_0080D0" Offset="0x80D0" />
+        <DList Name="object_wood02_DL_008160" Offset="0x8160" />
+        <Texture Name="object_wood02_Tex_008230" OutName="tex_008230" Format="ia8" Width="32" Height="64" Offset="0x8230" />
+        <Texture Name="object_wood02_Tex_008A30" OutName="tex_008A30" Format="rgba16" Width="32" Height="32" Offset="0x8A30" />
+        <DList Name="object_wood02_DL_0092A0" Offset="0x92A0" />
+        <DList Name="object_wood02_DL_009340" Offset="0x9340" />
+        <DList Name="object_wood02_DL_0093D0" Offset="0x93D0" />
+        <DList Name="object_wood02_DL_0095B0" Offset="0x95B0" />
+    </File>
+</Root>

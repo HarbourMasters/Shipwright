@@ -7,7 +7,46 @@ concurrency:
   cancel-in-progress: true
 jobs:
 
-  generate-soh-otr:
+  # Pushes build every game. PRs only build the games their changes can affect.
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      games: ${{ steps.pick.outputs.games }}
+    steps:
+    - name: Filter changed paths
+      if: github.event_name == 'pull_request'
+      id: filter
+      uses: dorny/paths-filter@v3
+      with:
+        predicate-quantifier: every
+        filters: |
+          soh:
+            - '**'
+            - '!2s2h/**'
+            - '!CMake/2ship-cvars.cmake'
+          twoship:
+            - '**'
+            - '!soh/**'
+            - '!CMake/soh-cvars.cmake'
+    - name: Pick games
+      id: pick
+      env:
+        ALL: ${{ github.event_name != 'pull_request' }}
+        SOH: ${{ steps.filter.outputs.soh }}
+        TWOSHIP: ${{ steps.filter.outputs.twoship }}
+      run: |
+        games=()
+        if [ "$ALL" = true ] || [ "$SOH" = true ]; then games+=('"soh"'); fi
+        if [ "$ALL" = true ] || [ "$TWOSHIP" = true ]; then games+=('"2ship"'); fi
+        echo "games=[$(IFS=,; echo "${games[*]}")]" >> "$GITHUB_OUTPUT"
+
+  generate-otr:
+    needs: changes
+    if: needs.changes.outputs.games != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        game: ${{ fromJSON(needs.changes.outputs.games) }}
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
@@ -20,10 +59,10 @@ jobs:
         max-size: "2G"
         evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-        key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-${{ matrix.game }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-otr-ccache-${{ github.ref }}
-          ${{ runner.os }}-otr-ccache
+          ${{ runner.os }}-${{ matrix.game }}-otr-ccache-${{ github.ref }}
+          ${{ runner.os }}-${{ matrix.game }}-otr-ccache
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -33,18 +72,47 @@ jobs:
         echo "/usr/lib/ccache" >> "$GITHUB_PATH"
         echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
     - name: Generate soh.o2r
+      if: matrix.game == 'soh'
       run: |
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DSOH_TOOLS_ONLY=ON
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_2SHIP=OFF -DSOH_TOOLS_ONLY=ON
         cmake --build build-cmake --config Release --target GenerateSohOtr -j4
-    - name: Upload soh.o2r
+    # ZAPD needs libultraship, so 2ship configures the whole build
+    - name: Install latest SDL
+      if: matrix.game == '2ship'
+      run: |
+        mkdir -p deps
+        wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
+        tar -xzf SDL2-2.30.3.tar.gz -C deps
+        cd deps/SDL2-2.30.3
+        ./configure --enable-hidapi-libusb
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - uses: ./.github/actions/install-sdl2-net
+      if: matrix.game == '2ship'
+    - name: Remove distro tinyxml2
+      if: matrix.game == '2ship'
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
+      if: matrix.game == '2ship'
+    - name: Generate 2ship.o2r
+      if: matrix.game == '2ship'
+      run: |
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SOH=OFF
+        cmake --build build-cmake --config Release --target Generate2ShipOtr -j4
+    - name: Upload o2r
       uses: actions/upload-artifact@v7
       with:
-        name: soh.o2r
-        path: soh.o2r
+        name: ${{ matrix.game }}.o2r
+        path: ${{ matrix.game }}.o2r
         retention-days: 3
 
   build-macos:
-    needs: generate-soh-otr
+    needs: [changes, generate-otr]
+    strategy:
+      fail-fast: false
+      matrix:
+        game: ${{ fromJSON(needs.changes.outputs.games) }}
     runs-on: macos-14
     steps:
     - name: Git Checkout
@@ -58,45 +126,54 @@ jobs:
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2.23
       with:
-        key: ${{ runner.os }} # ccache-macos-{{ timestamp }}
+        key: ${{ runner.os }}-${{ matrix.game }} # ccache-macos-{{ timestamp }}
         max-size: "2G"
         evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-    - name: Download soh.o2r
+    - name: Download o2r
       uses: actions/download-artifact@v8
       with:
-        name: soh.o2r
-        path: build-cmake/soh
-    - name: Build SoH
+        name: ${{ matrix.game }}.o2r
+        path: build-cmake/${{ matrix.game == 'soh' && 'soh' || '2s2h' }}
+    - name: Build ${{ matrix.game }}
+      env:
+        CCACHE_SLOPPINESS: ${{ matrix.game == '2ship' && 'pch_defines,time_macros' || '' }}
       run: |
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1 ${{ matrix.game == 'soh' && '-DBUILD_2SHIP=OFF' || '-DBUILD_SOH=OFF -DCMAKE_C_FLAGS="-Xclang -fno-pch-timestamp" -DCMAKE_CXX_FLAGS="-Xclang -fno-pch-timestamp"' }}
         cmake --build build-cmake -j
         # Spotlight indexing the disk image CPack just made keeps hdiutil from
         # unmounting it, failing the build with "Resource busy"
         sudo mdutil -a -i off || true
         (cd build-cmake && cpack)
 
-        mv _packages/*.dmg SoH.dmg
-        mv README.md readme.txt
+        mv _packages/*.dmg ${{ matrix.game == 'soh' && 'SoH' || '2Ship' }}.dmg
+        mv ${{ matrix.game == 'soh' && 'README.md' || '2s2h/README.md' }} readme.txt
     - name: Upload build
       uses: actions/upload-artifact@v7
       with:
-        name: soh-mac
+        name: ${{ matrix.game }}-mac
         path: |
-          SoH.dmg
+          ${{ matrix.game == 'soh' && 'SoH' || '2Ship' }}.dmg
           readme.txt
 
   build-linux:
-    needs: generate-soh-otr
+    needs: [changes, generate-otr]
     strategy:
       fail-fast: false
       matrix:
-        include:
+        game: ${{ fromJSON(needs.changes.outputs.games) }}
+        platform:
           - runner: ubuntu-22.04
             arch: x86_64
           - runner: ubuntu-22.04-arm
             arch: aarch64
-    runs-on: ${{ matrix.runner }}
+        # 2ship has never shipped an arm64 linux build
+        exclude:
+          - game: 2ship
+            platform:
+              runner: ubuntu-22.04-arm
+              arch: aarch64
+    runs-on: ${{ matrix.platform.runner }}
     steps:
     - name: Git Checkout
       uses: actions/checkout@v7
@@ -112,18 +189,18 @@ jobs:
         max-size: "2G"
         evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-        key: ${{ runner.os }}-${{ matrix.arch }}-ccache-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-${{ matrix.platform.arch }}-${{ matrix.game }}-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-${{ matrix.arch }}-ccache-${{ github.ref }}
-          ${{ runner.os }}-${{ matrix.arch }}-ccache
+          ${{ runner.os }}-${{ matrix.platform.arch }}-${{ matrix.game }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-${{ matrix.platform.arch }}-${{ matrix.game }}-ccache
     - name: Restore Cached deps folder
       id: restore-cache-deps
       uses: actions/cache/restore@v5
       with:
-        key: ${{ runner.os }}-${{ matrix.arch }}-deps-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-${{ matrix.platform.arch }}-deps-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-${{ matrix.arch }}-deps-${{ github.ref }}-
-          ${{ runner.os }}-${{ matrix.arch }}-deps-
+          ${{ runner.os }}-${{ matrix.platform.arch }}-deps-${{ github.ref }}-
+          ${{ runner.os }}-${{ matrix.platform.arch }}-deps-
         path: deps
     - name: Create deps folder
       run: mkdir -p deps
@@ -141,10 +218,10 @@ jobs:
         ./configure --enable-hidapi-libusb
         make -j 10
         sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.arch }}-linux-gnu/
+        sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.platform.arch }}-linux-gnu/
     - uses: ./.github/actions/install-sdl2-net
     - name: Copy SDL libs to multiarch dir
-      run: sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.arch }}-linux-gnu/
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.platform.arch }}-linux-gnu/
     - name: Remove distro tinyxml2
       run: sudo apt-get remove libtinyxml2-dev
     - uses: ./.github/actions/install-tinyxml2
@@ -161,27 +238,27 @@ jobs:
         cmake .. -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF
         make
         sudo make install
-        sudo cp -av /usr/local/lib/libzip* /lib/${{ matrix.arch }}-linux-gnu/
-    - name: Download soh.o2r
+        sudo cp -av /usr/local/lib/libzip* /lib/${{ matrix.platform.arch }}-linux-gnu/
+    - name: Download o2r
       uses: actions/download-artifact@v8
       with:
-        name: soh.o2r
-        path: build-cmake/soh
-    - name: Build SoH
+        name: ${{ matrix.game }}.o2r
+        path: build-cmake/${{ matrix.game == 'soh' && 'soh' || '2s2h' }}
+    - name: Build ${{ matrix.game }}
       run: |
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1 ${{ matrix.game == 'soh' && '-DBUILD_2SHIP=OFF' || '-DBUILD_SOH=OFF' }}
         cmake --build build-cmake --config Release -j4
         (cd build-cmake && cpack -G External)
 
-        mv build-cmake/*.appimage soh.appimage
+        mv build-cmake/*.appimage ${{ matrix.game }}.appimage
       env:
         CC: gcc-12
         CXX: g++-12
     - name: Upload build
       uses: actions/upload-artifact@v7
       with:
-        name: soh-linux-${{ matrix.arch }}
-        path: soh.appimage
+        name: ${{ matrix.game }}-linux-${{ matrix.platform.arch }}
+        path: ${{ matrix.game }}.appimage
     - name: Save Cache deps folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v5
@@ -190,7 +267,11 @@ jobs:
         path: deps
 
   build-windows:
-    needs: generate-soh-otr
+    needs: [changes, generate-otr]
+    strategy:
+      fail-fast: false
+      matrix:
+        game: ${{ fromJSON(needs.changes.outputs.games) }}
     runs-on: windows-latest
     steps:
     - name: Install dependencies
@@ -207,10 +288,10 @@ jobs:
         max-size: "2G"
         evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        key: ${{ runner.os }}-${{ matrix.game }}-ccache-${{ github.ref }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-ccache-${{ github.ref }}
-          ${{ runner.os }}-ccache
+          ${{ runner.os }}-${{ matrix.game }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-${{ matrix.game }}-ccache
     - name: Restore Cached VCPKG folder
       id: restore-cache-vcpkg
       uses: actions/cache/restore@v5
@@ -224,29 +305,29 @@ jobs:
       uses: TheMrMilchmann/setup-msvc-dev@v4
       with:
         arch: x64
-    - name: Download soh.o2r
+    - name: Download o2r
       uses: actions/download-artifact@v8
       with:
-        name: soh.o2r
-        path: build-windows/soh
-    - name: Build SoH
+        name: ${{ matrix.game }}.o2r
+        path: build-windows/${{ matrix.game == 'soh' && 'soh' || '2s2h' }}
+    - name: Build ${{ matrix.game }}
       env:
         VCPKG_ROOT: ${{github.workspace}}/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
-        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_REMOTE_CONTROL=1
+        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_REMOTE_CONTROL=1 ${{ matrix.game == 'soh' && '-DBUILD_2SHIP=OFF' || '-DBUILD_SOH=OFF' }}
         cmake --build build-windows --config Release --parallel 10
 
         (cd build-windows && cpack)
         cd ..
-        mv _packages/*.zip _packages/soh-windows.zip
+        mv _packages/*.zip _packages/${{ matrix.game }}-windows.zip
     - name: Unzip package
-      run: Expand-Archive -Path _packages/soh-windows.zip -DestinationPath soh-windows
+      run: Expand-Archive -Path _packages/${{ matrix.game }}-windows.zip -DestinationPath ${{ matrix.game }}-windows
     - name: Upload build
       uses: actions/upload-artifact@v7
       with:
-        name: soh-windows
-        path: soh-windows
+        name: ${{ matrix.game }}-windows
+        path: ${{ matrix.game }}-windows
     - name: Save Cache VCPKG folder
       if: ${{ github.ref_name == github.event.repository.default_branch }}
       uses: actions/cache/save@v5

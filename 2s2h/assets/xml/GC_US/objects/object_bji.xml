@@ -1,0 +1,64 @@
+﻿<Root>
+    <File Name="object_bji" Segment="6">
+        <Animation Name="object_bji_Anim_00066C" Offset="0x66C" /> <!-- Original name is "Bji_fushigigaru" ("to be curious; to wonder; to marvel​") -->
+        <Animation Name="object_bji_Anim_000AB0" Offset="0xAB0" /> <!-- Original name is "Bji_talk" -->
+        <Animation Name="object_bji_Anim_000FDC" Offset="0xFDC" /> <!-- Original name is "Bji_wait01" -->
+        
+        <DList Name="gShikashiHeadDL" Offset="0x23A0" />
+        <DList Name="gShikashiRightHandDL" Offset="0x28D8" />
+        <DList Name="gShikashiRightForearmDL" Offset="0x2998" />
+        <DList Name="gShikashiRightArmDL" Offset="0x2A98" />
+        <DList Name="gShikashiLeftHandDL" Offset="0x2BA8" />
+        <DList Name="gShikashiLeftForearmDL" Offset="0x2C68" />
+        <DList Name="gShikashiLeftArmDL" Offset="0x2D68" />
+        <DList Name="gShikashiTorsoDL" Offset="0x2E78" />
+        <DList Name="gShikashiRightFootDL" Offset="0x30F0" />
+        <DList Name="gShikashiRightLegDL" Offset="0x31B0" />
+        <DList Name="gShikashiRightThighDL" Offset="0x3270" />
+        <DList Name="gShikashiLeftFootDL" Offset="0x3330" />
+        <DList Name="gShikashiLeftLegDL" Offset="0x33F0" />
+        <DList Name="gShikashiLeftThighDL" Offset="0x34B0" />
+        <DList Name="gShikashiPelvisDL" Offset="0x3570" />
+
+        <Texture Name="object_bji_TLUT_003730" OutName="tlut_003730" Format="rgba16" Width="16" Height="16" Offset="0x3730" />
+        <Texture Name="object_bji_TLUT_003930" OutName="tlut_003930" Format="rgba16" Width="16" Height="16" Offset="0x3930" />
+        <Texture Name="object_bji_TLUT_003B30" OutName="tlut_003B30" Format="rgba16" Width="16" Height="16" Offset="0x3B30" />
+        <Texture Name="object_bji_TLUT_003D30" OutName="tlut_003D30" Format="rgba16" Width="16" Height="16" Offset="0x3D30" />
+        <Texture Name="object_bji_TLUT_003F30" OutName="tlut_003F30" Format="rgba16" Width="16" Height="16" Offset="0x3F30" />
+        <Texture Name="object_bji_Tex_004130" OutName="tex_004130" Format="rgba16" Width="16" Height="16" Offset="0x4130" />
+        <Texture Name="object_bji_TLUT_004330" OutName="tlut_004330" Format="rgba16" Width="16" Height="16" Offset="0x4330" />
+        <Texture Name="object_bji_TLUT_004530" OutName="tlut_004530" Format="rgba16" Width="16" Height="16" Offset="0x4530" />
+        <Texture Name="object_bji_Tex_004730" OutName="tex_004730" Format="ci8" Width="8" Height="8" Offset="0x4730" />
+        <Texture Name="object_bji_Tex_004770" OutName="tex_004770" Format="ci8" Width="16" Height="16" Offset="0x4770" />
+        <Texture Name="object_bji_Tex_004870" OutName="tex_004870" Format="ci8" Width="8" Height="8" Offset="0x4870" />
+        <Texture Name="object_bji_Tex_0048B0" OutName="tex_0048B0" Format="ci8" Width="16" Height="16" Offset="0x48B0" />
+        <Texture Name="object_bji_Tex_0049B0" OutName="tex_0049B0" Format="ci8" Width="8" Height="8" Offset="0x49B0" />
+        <Texture Name="object_bji_Tex_0049F0" OutName="tex_0049F0" Format="ci8" Width="32" Height="32" Offset="0x49F0" />
+        <Texture Name="object_bji_Tex_004DF0" OutName="tex_004DF0" Format="ci8" Width="8" Height="8" Offset="0x4DF0" />
+        <Texture Name="object_bji_Tex_004E30" OutName="tex_004E30" Format="ci8" Width="8" Height="8" Offset="0x4E30" />
+        <Texture Name="object_bji_Tex_004E70" OutName="tex_004E70" Format="ci8" Width="32" Height="32" Offset="0x4E70" />
+        <Texture Name="object_bji_Tex_005270" OutName="tex_005270" Format="ci8" Width="32" Height="32" Offset="0x5270" />
+        
+        <!-- Unused Eye Texture Animation -->
+        <TextureAnimation Name="gShikashiEyeTexAnim" Offset="0x5694" />
+
+        <Limb Name="gShikashiPelvisLimb" Type="Standard" EnumName="SHIKASHI_LIMB_PELVIS" Offset="0x569C" />
+        <Limb Name="gShikashiLeftThighLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_THIGH" Offset="0x56A8" />
+        <Limb Name="gShikashiLeftLegLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_LEG" Offset="0x56B4" />
+        <Limb Name="gShikashiLeftFootLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_FOOT" Offset="0x56C0" />
+        <Limb Name="gShikashiRightThighLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_THIGH" Offset="0x56CC" />
+        <Limb Name="gShikashiRightLegLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_LEG" Offset="0x56D8" />
+        <Limb Name="gShikashiRightFootLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_FOOT" Offset="0x56E4" />
+        <Limb Name="gShikashiTorsoLimb" Type="Standard" EnumName="SHIKASHI_LIMB_TORSO" Offset="0x56F0" />
+        <Limb Name="gShikashiLeftArmLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_ARM" Offset="0x56FC" />
+        <Limb Name="gShikashiLeftForearmLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_FOREARM" Offset="0x5708" />
+        <Limb Name="gShikashiLeftHandLimb" Type="Standard" EnumName="SHIKASHI_LIMB_LEFT_HAND" Offset="0x5714" />
+        <Limb Name="gShikashiRightArmLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_ARM" Offset="0x5720" />
+        <Limb Name="gShikashiRightForearmLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_FOREARM" Offset="0x572C" />
+        <Limb Name="gShikashiRightHandLimb" Type="Standard" EnumName="SHIKASHI_LIMB_RIGHT_HAND" Offset="0x5738" />
+        <Limb Name="gShikashiHeadLimb" Type="Standard" EnumName="SHIKASHI_LIMB_HEAD" Offset="0x5744" />
+        <Skeleton Name="gShikashiSkel" Type="Flex" LimbType="Standard" LimbNone="SHIKASHI_LIMB_NONE" LimbMax="SHIKASHI_LIMB_MAX" EnumName="ShikashiLimb" Offset="0x578C" />
+
+        <Animation Name="object_bji_Anim_005B58" Offset="0x5B58" /> <!-- Original name is "Bji_wait02" -->
+    </File>
+</Root>

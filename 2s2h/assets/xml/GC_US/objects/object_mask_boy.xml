@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_mask_boy" Segment="10">
+        <DList Name="object_mask_boy_DL_000900" Offset="0x900" />
+        <Texture Name="object_mask_boy_TLUT_000D50" OutName="tlut_000D50" Format="rgba16" Width="16" Height="16" Offset="0xD50" />
+        <Texture Name="object_mask_boy_Tex_000F50" OutName="tex_000F50" Format="ci8" Width="32" Height="32" Offset="0xF50" />
+        <Texture Name="object_mask_boy_Tex_001350" OutName="tex_001350" Format="ci8" Width="64" Height="32" Offset="0x1350" />
+        <Texture Name="object_mask_boy_Tex_001B50" OutName="tex_001B50" Format="ci8" Width="32" Height="32" Offset="0x1B50" />
+        <Texture Name="object_mask_boy_Tex_001F50" OutName="tex_001F50" Format="ci8" Width="16" Height="16" Offset="0x1F50" />
+        <Texture Name="object_mask_boy_Tex_002050" OutName="tex_002050" Format="rgba16" Width="8" Height="8" Offset="0x2050" />
+    </File>
+</Root>

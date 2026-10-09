@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Object for Beehive -->
+    <File Name="object_comb" Segment="6">
+        <!-- Beehive -->
+        <Texture Name="gBeehiveTex" OutName="beehive" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <DList Name="gBeehiveDL" Offset="0xCB0" /> <!-- Original name is "hatisu_model" ("hive; beehive") -->
+
+        <!-- Beehive Fragment -->
+        <Texture Name="gBeehiveFragmentTex" OutName="beehive_fragment" Format="rgba16" Width="16" Height="16" Offset="0xE10" />
+        <DList Name="gBeehiveFragmentDL" Offset="0x1040" /> <!-- Original name is "hatisu_hahen_model" ("hahen" = "fragment; broken piece") -->
+    </File>
+</Root>

@@ -1,0 +1,64 @@
+<Root>
+    <!-- Assets for Barten, the Milk Bar Bartender -->
+    <File Name="object_tab" Segment="6">
+        <Animation Name="gBartenIdleAnim" Offset="0x758" /> <!-- Original name is "tab_wait01" -->
+        <DList Name="gBartenPelvisDL" Offset="0x3E10" />
+        <DList Name="gBartenLeftHandDL" Offset="0x3EF0" />
+        <DList Name="gBartenLeftBroomDL" Offset="0x4270" />
+        <DList Name="gBartenLeftForearmDL" Offset="0x4438" />
+        <DList Name="gBartenLeftUpperArmDL" Offset="0x46C8" />
+        <DList Name="gBartenRightHandDL" Offset="0x47F8" />
+        <DList Name="gBartenRightForearmDL" Offset="0x4B70" />
+        <DList Name="gBartenRightUpperArmDL" Offset="0x4E00" />
+        <DList Name="gBartenChestDL" Offset="0x4F30" />
+        <DList Name="gBartenHeadDL" Offset="0x5178" />
+        <DList Name="gBartenLeftThighDL" Offset="0x5668" />
+        <DList Name="gBartenLeftLegDL" Offset="0x5758" />
+        <DList Name="gBartenLeftFootDL" Offset="0x5840" />
+        <DList Name="gBartenRightThighDL" Offset="0x5988" />
+        <DList Name="gBartenRightLegDL" Offset="0x5A78" />
+        <DList Name="gBartenRightFootDL" Offset="0x5B60" />
+        <Texture Name="gBartenTLUT" OutName="barten_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5CA8" />
+        <Texture Name="gBartenEyeTLUT" OutName="barten_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5EA8" />
+        <Texture Name="gBartenBeardTex" OutName="barten_beard" Format="ci8" Width="8" Height="16" Offset="0x60A8" />
+        <Texture Name="gBartenArmTex" OutName="barten_arm" Format="ci8" Width="16" Height="32" Offset="0x6128" />
+        <Texture Name="gBartenMouthTex" OutName="barten_mouth" Format="ci8" Width="8" Height="8" Offset="0x6328" />
+        <Texture Name="gBartenHairTex" OutName="barten_hair" Format="ci8" Width="8" Height="16" Offset="0x6368" />
+        <Texture Name="gBartenEarTex" OutName="barten_ear" Format="ci8" Width="8" Height="8" Offset="0x63E8" />
+        <Texture Name="gBartenEyeOpenTex" OutName="barten_eye_open" Format="ci8" Width="32" Height="32" Offset="0x6428" />
+        <Texture Name="gBartenHandTex" OutName="barten_hand" Format="ci8" Width="16" Height="16" Offset="0x6828" />
+        <Texture Name="gBartenEyeHalfOpenTex" OutName="barten_eye_half_open" Format="ci8" Width="32" Height="32" Offset="0x6928" />
+        <Texture Name="gBartenEyeClosedTex" OutName="barten_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x6D28" />
+        <Texture Name="gBartenBroomTex" OutName="barten_broom" Format="ci8" Width="16" Height="16" Offset="0x7128" />
+        <Texture Name="gBartenBroomHeadTex" OutName="barten_broom_head" Format="ci8" Width="16" Height="16" Offset="0x7228" />
+        <Texture Name="gBartenPantsTex" OutName="barten_pants" Format="i8" Width="32" Height="32" Offset="0x7328" />
+        <Texture Name="gBartenBowtieTex" OutName="barten_bowtie" Format="rgba16" Width="8" Height="16" Offset="0x7728" />
+        <Texture Name="gBartenSkinTex" OutName="barten_skin" Format="ci8" Width="8" Height="8" Offset="0x7828" />
+        <Texture Name="gBartenCollarTex" OutName="barten_collar" Format="ci8" Width="8" Height="16" Offset="0x7868" />
+        <Texture Name="gBartenSleeveTex" OutName="barten_sleeve" Format="i8" Width="16" Height="16" Offset="0x78E8" />
+        <Texture Name="gBartenJacketTex" OutName="barten_jacket" Format="i8" Width="8" Height="8" Offset="0x79E8" />
+        <Texture Name="gBartenFootTex" OutName="barten_foot" Format="rgba16" Width="16" Height="16" Offset="0x7A28" />
+        <!-- <Blob Name="object_tab_Blob_007C28" Size="0x220" Offset="0x7C28" /> -->
+        <Limb Name="gBartenPelvisLimb" Type="Standard" EnumName="BARTEN_LIMB_PELVIS" Offset="0x7E48" />
+        <Limb Name="gBartenRightThighLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_THIGH" Offset="0x7E54" />
+        <Limb Name="gBartenRightLegLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_LEG" Offset="0x7E60" />
+        <Limb Name="gBartenRightFootLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_FOOT" Offset="0x7E6C" />
+        <Limb Name="gBartenLeftThighLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_THIGH" Offset="0x7E78" />
+        <Limb Name="gBartenLeftLegLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_LEG" Offset="0x7E84" />
+        <Limb Name="gBartenLeftFootLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_FOOT" Offset="0x7E90" />
+        <Limb Name="gBartenChestLimb" Type="Standard" EnumName="BARTEN_LIMB_CHEST" Offset="0x7E9C" />
+        <Limb Name="gBartenHeadLimb" Type="Standard" EnumName="BARTEN_LIMB_HEAD" Offset="0x7EA8" />
+        <Limb Name="gBartenRightUpperArmLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_UPPER_ARM" Offset="0x7EB4" />
+        <Limb Name="gBartenRightForearmRootLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_FOREARM_ROOT" Offset="0x7EC0" />
+        <Limb Name="gBartenRightForearmLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_FOREARM" Offset="0x7ECC" />
+        <Limb Name="gBartenRightHandLimb" Type="Standard" EnumName="BARTEN_LIMB_RIGHT_HAND" Offset="0x7ED8" />
+        <Limb Name="gBartenLeftArmRootLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_ARM_ROOT" Offset="0x7EE4" />
+        <Limb Name="gBartenLeftUpperArmLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_UPPER_ARM" Offset="0x7EF0" />
+        <Limb Name="gBartenLeftForearmLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_FOREARM" Offset="0x7EFC" />
+        <Limb Name="gBartenLeftHandRootLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_HAND_ROOT" Offset="0x7F08" />
+        <Limb Name="gBartenLeftBroomLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_BROOM" Offset="0x7F14" />
+        <Limb Name="gBartenLeftHandLimb" Type="Standard" EnumName="BARTEN_LIMB_LEFT_HAND" Offset="0x7F20" />
+        <Skeleton Name="gBartenSkel" Type="Flex" LimbType="Standard" LimbNone="BARTEN_LIMB_NONE" LimbMax="BARTEN_LIMB_MAX" EnumName="BartenLimb" Offset="0x7F78" />
+        <Animation Name="gBartenIdleBarCounterAnim" Offset="0x86AC" /> <!-- Original name is "tab_wait02" -->
+    </File>
+</Root>

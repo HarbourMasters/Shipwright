@@ -1,0 +1,43 @@
+﻿<Root>
+    <!-- Assets for Twinmold's Arena -->
+    <File Name="object_inibs_object" Segment="6">
+        <!-- Assets for the version of the arena when the player is using the Giant's Mask -->
+        <DList Name="gTwinmoldArenaGiantModeCenterPlatformDL" Offset="0x1C10" />
+        <DList Name="gTwinmoldArenaGiantModeSandDL" Offset="0x1DC0" />
+        <TextureAnimation Name="gTwinmoldArenaGiantModeSandTexAnim" Offset="0x2598" />
+        <Collision Name="gTwinmoldArenaGiantModeArenaCol" Offset="0x4BA0" /> <!-- Unused. Attempting to use it severely slows down the game. -->
+
+        <!-- Assets for the normal version of the arena -->
+        <DList Name="gTwinmoldArenaNormalModeCenterPlatformDL" Offset="0x6140" />
+        <DList Name="gTwinmoldArenaNormalModeSandDL" Offset="0x62D8" />
+        <TextureAnimation Name="gTwinmoldArenaNormalModeSandTexAnim" Offset="0x6858" />
+        <Collision Name="gTwinmoldArenaNormalModeArenaCol" Offset="0x8EF4" /> <!-- Unused. Attempting to use it severely slows down the game. -->
+
+        <!-- Assets for unused pillars and walls -->
+        <DList Name="gTwinmoldArenaEmpty1DL" Offset="0x90A0" /> <!-- Probably intended to be used as the xluDList for the pillar below. -->
+        <DList Name="gTwinmoldArenaUnusedTwistedPillarDL" Offset="0x90A8" />
+        <Collision Name="gTwinmoldArenaUnusedTwistedPillarCol" Offset="0x930C" />
+        <DList Name="gTwinmoldArenaEmpty2DL" Offset="0x9460" /> <!-- Probably intended to be used as the xluDList for the pillar below. -->
+        <DList Name="gTwinmoldArenaUnusedTrapezoidalPillarDL" Offset="0x9468" />
+        <Collision Name="gTwinmoldArenaUnusedTrapezoidalPillarCol" Offset="0x9600" />
+        <DList Name="gTwinmoldArenaEmpty3DL" Offset="0x9A90" /> <!-- Probably intended to be used as the xluDList for the pillar below. -->
+        <DList Name="gTwinmoldArenaUnusedClawShapedPillarDL" Offset="0x9A98" />
+        <Collision Name="gTwinmoldArenaUnusedClawShapedPillarCol" Offset="0x9EA8" />
+        <DList Name="gTwinmoldArenaEmpty4DL" Offset="0xA020" /> <!-- Probably intended to be used as the xluDList for the wall below. -->
+        <DList Name="gTwinmoldArenaUnusedWallDL" Offset="0xA028" />
+        <Collision Name="gTwinmoldArenaUnusedWallCol" Offset="0xA200" />
+        <DList Name="gTwinmoldArenaEmpty5DL" Offset="0xA430" /> <!-- Probably intended to be used as the xluDList for the wall below. -->
+        <DList Name="gTwinmoldArenaUnusedWallCornerDL" Offset="0xA438" />
+        <Collision Name="gTwinmoldArenaUnusedWallCornerCol" Offset="0xA6A8" />
+
+        <!-- Textures for Twinmold's Arena -->
+        <Texture Name="gTwinmoldArenaCenterPlatformBrickTex" OutName="twinmold_arena_center_platform_brick" Format="rgba16" Width="32" Height="32" Offset="0xA6E0" />
+        <Texture Name="gTwinmoldArenaCenterPlatformEmblemTex" OutName="twinmold_arena_center_platform_emblem" Format="rgba16" Width="32" Height="32" Offset="0xAEE0" />
+        <Texture Name="gTwinmoldArenaCenterPlatformSlopesAndWallSidesTex" OutName="twinmold_arena_center_platform_slopes_and_wall_sides" Format="rgba16" Width="32" Height="64" Offset="0xB6E0" />
+        <Texture Name="gTwinmoldArenaPillarSidesTex" OutName="twinmold_arena_pillar_sides" Format="rgba16" Width="32" Height="32" Offset="0xC6E0" />
+        <Texture Name="gTwinmoldArenaTwistedPillarTopTex" OutName="twinmold_arena_twisted_pillar_top" Format="rgba16" Width="32" Height="32" Offset="0xCEE0" />
+        <Texture Name="gTwinmoldArenaWallTopAndClawPillarInteriorTex" OutName="twinmold_arena_wall_top_and_claw_pillar_interior" Format="rgba16" Width="32" Height="32" Offset="0xD6E0" />
+        <Texture Name="gTwinmoldArenaSandTex" OutName="twinmold_arena_sand" Format="rgba16" Width="32" Height="32" Offset="0xDEE0" />
+        <Texture Name="gTwinmoldArenaSandDetailTex" OutName="twinmold_arena_sand_detail" Format="rgba16" Width="32" Height="32" Offset="0xE6E0" />
+    </File>
+</Root>

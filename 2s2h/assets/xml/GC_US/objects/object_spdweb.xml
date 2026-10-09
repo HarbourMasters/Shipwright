@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_spdweb" Segment="6">
+        <DList Name="object_spdweb_DL_000060" Offset="0x60" /> <!-- Original name is "m2_KUMOkabeFIRE_modelT" -->
+        <DList Name="object_spdweb_DL_000130" Offset="0x130" /> <!-- Original name is "m2_KUMOkabeFIRE_model" -->
+        <Texture Name="object_spdweb_Tex_000138" OutName="tex_000138" Format="rgba16" Width="32" Height="32" Offset="0x138" />
+        <Texture Name="object_spdweb_Tex_000938" OutName="tex_000938" Format="ia8" Width="32" Height="64" Offset="0x938" />
+        <Collision Name="object_spdweb_Colheader_0011C0" Offset="0x11C0" /> <!-- Original name is "m2_KUMOkabeFIRE_bgdatainfo" -->
+        <DList Name="object_spdweb_DL_0012F0" Offset="0x12F0" /> <!-- Original name is "m2_KUMOyukaBOYON_modelT" -->
+        <DList Name="object_spdweb_DL_001400" Offset="0x1400" /> <!-- Original name is "m2_KUMOyukaBOYON_model" -->
+        <Texture Name="object_spdweb_Tex_001408" OutName="tex_001408" Format="ia8" Width="64" Height="64" Offset="0x1408" />
+        <Collision Name="object_spdweb_Colheader_002678" Offset="0x2678" /> <!-- Original name is "m2_KUMOyukaBOYON_bgdatainfo" -->
+    </File>
+</Root>

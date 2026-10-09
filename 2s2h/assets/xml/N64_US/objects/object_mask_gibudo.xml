@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_mask_gibudo" Segment="10">
+        <DList Name="object_mask_gibudo_DL_000250" Offset="0x250" />
+        <Texture Name="object_mask_gibudo_Tex_000398" OutName="tex_000398" Format="i8" Width="64" Height="32" Offset="0x398" />
+        <Texture Name="object_mask_gibudo_Tex_000B98" OutName="tex_000B98" Format="i8" Width="32" Height="16" Offset="0xB98" />
+    </File>
+</Root>

@@ -1,0 +1,68 @@
+﻿<Root>
+    <File Name="object_mm" Segment="6">
+        <Animation Name="object_mm_Anim_000468" Offset="0x468" /> <!-- Original name is "hasiruu" -->
+        <Animation Name="object_mm_Anim_00099C" Offset="0x99C" /> <!-- Original name is "mm_kunou" -->
+        <Animation Name="object_mm_Anim_000FC4" Offset="0xFC4" /> <!-- Original name is "mm_neru" -->
+        <Animation Name="object_mm_Anim_001F84" Offset="0x1F84" /> <!-- Original name is "mm_postcheck" -->
+        <Animation Name="object_mm_Anim_002238" Offset="0x2238" /> <!-- Original name is "mm_run01" -->
+        <Texture Name="object_mm_TLUT_002250" OutName="tlut_002250" Format="rgba16" Width="16" Height="16" Offset="0x2250" />
+        <Texture Name="object_mm_Tex_002450" OutName="tex_002450" Format="ci8" Width="8" Height="8" Offset="0x2450" />
+        <Texture Name="object_mm_Tex_002490" OutName="tex_002490" Format="ci8" Width="8" Height="8" Offset="0x2490" />
+        <Texture Name="object_mm_Tex_0024D0" OutName="tex_0024D0" Format="ci8" Width="8" Height="8" Offset="0x24D0" />
+        <Texture Name="object_mm_Tex_002510" OutName="tex_002510" Format="ci8" Width="8" Height="8" Offset="0x2510" />
+        <Texture Name="object_mm_Tex_002550" OutName="tex_002550" Format="ci8" Width="16" Height="16" Offset="0x2550" />
+        <Texture Name="object_mm_Tex_002650" OutName="tex_002650" Format="ci8" Width="16" Height="16" Offset="0x2650" />
+        <Texture Name="object_mm_Tex_002750" OutName="tex_002750" Format="ci8" Width="32" Height="16" Offset="0x2750" />
+        <Texture Name="object_mm_Tex_002950" OutName="tex_002950" Format="ci8" Width="32" Height="16" Offset="0x2950" />
+        <Texture Name="object_mm_Tex_002B50" OutName="tex_002B50" Format="ci8" Width="16" Height="16" Offset="0x2B50" />
+        <Texture Name="object_mm_Tex_002C50" OutName="tex_002C50" Format="ci8" Width="32" Height="16" Offset="0x2C50" />
+        <Texture Name="object_mm_Tex_002E50" OutName="tex_002E50" Format="ci8" Width="16" Height="16" Offset="0x2E50" />
+        <DList Name="object_mm_DL_005B30" Offset="0x5B30" />
+        <DList Name="object_mm_DL_005E70" Offset="0x5E70" />
+        <DList Name="object_mm_DL_006598" Offset="0x6598" />
+        <DList Name="object_mm_DL_0066D0" Offset="0x66D0" />
+        <DList Name="object_mm_DL_006808" Offset="0x6808" />
+        <DList Name="object_mm_DL_006A10" Offset="0x6A10" />
+        <DList Name="object_mm_DL_006B48" Offset="0x6B48" />
+        <DList Name="object_mm_DL_006C80" Offset="0x6C80" />
+        <DList Name="object_mm_DL_006E88" Offset="0x6E88" />
+        <DList Name="object_mm_DL_006F20" Offset="0x6F20" />
+        <DList Name="object_mm_DL_007188" Offset="0x7188" />
+        <DList Name="object_mm_DL_0072F8" Offset="0x72F8" />
+        <DList Name="object_mm_DL_007430" Offset="0x7430" />
+        <DList Name="object_mm_DL_007610" Offset="0x7610" />
+        <DList Name="object_mm_DL_007780" Offset="0x7780" />
+        <DList Name="object_mm_DL_008348" Offset="0x8348" /> <!-- Original name is "mm_letter_model" -->
+        <DList Name="object_mm_DL_0083E0" Offset="0x83E0" /> <!-- Original name is "mm_bag_model" -->
+        <DList Name="object_mm_DL_0085C8" Offset="0x85C8" /> <!-- Original name is "mm_cap_model" -->
+        <Texture Name="object_mm_Tex_008778" OutName="tex_008778" Format="rgba16" Width="8" Height="8" Offset="0x8778" />
+        <Texture Name="object_mm_Tex_0087F8" OutName="tex_0087F8" Format="rgba16" Width="16" Height="16" Offset="0x87F8" />
+        <Texture Name="object_mm_Tex_0089F8" OutName="tex_0089F8" Format="rgba16" Width="32" Height="32" Offset="0x89F8" />
+        <Texture Name="object_mm_Tex_0091F8" OutName="tex_0091F8" Format="i8" Width="32" Height="32" Offset="0x91F8" />
+        <Limb Name="object_mm_Standardlimb_0095F8" Type="Standard" EnumName="OBJECT_MM_LIMB_01" Offset="0x95F8" />
+        <Limb Name="object_mm_Standardlimb_009604" Type="Standard" EnumName="OBJECT_MM_LIMB_02" Offset="0x9604" />
+        <Limb Name="object_mm_Standardlimb_009610" Type="Standard" EnumName="OBJECT_MM_LIMB_03" Offset="0x9610" />
+        <Limb Name="object_mm_Standardlimb_00961C" Type="Standard" EnumName="OBJECT_MM_LIMB_04" Offset="0x961C" />
+        <Limb Name="object_mm_Standardlimb_009628" Type="Standard" EnumName="OBJECT_MM_LIMB_05" Offset="0x9628" />
+        <Limb Name="object_mm_Standardlimb_009634" Type="Standard" EnumName="OBJECT_MM_LIMB_06" Offset="0x9634" />
+        <Limb Name="object_mm_Standardlimb_009640" Type="Standard" EnumName="OBJECT_MM_LIMB_07" Offset="0x9640" />
+        <Limb Name="object_mm_Standardlimb_00964C" Type="Standard" EnumName="OBJECT_MM_LIMB_08" Offset="0x964C" />
+        <Limb Name="object_mm_Standardlimb_009658" Type="Standard" EnumName="OBJECT_MM_LIMB_09" Offset="0x9658" />
+        <Limb Name="object_mm_Standardlimb_009664" Type="Standard" EnumName="OBJECT_MM_LIMB_0A" Offset="0x9664" />
+        <Limb Name="object_mm_Standardlimb_009670" Type="Standard" EnumName="OBJECT_MM_LIMB_0B" Offset="0x9670" />
+        <Limb Name="object_mm_Standardlimb_00967C" Type="Standard" EnumName="OBJECT_MM_LIMB_0C" Offset="0x967C" />
+        <Limb Name="object_mm_Standardlimb_009688" Type="Standard" EnumName="OBJECT_MM_LIMB_0D" Offset="0x9688" />
+        <Limb Name="object_mm_Standardlimb_009694" Type="Standard" EnumName="OBJECT_MM_LIMB_0E" Offset="0x9694" />
+        <Limb Name="object_mm_Standardlimb_0096A0" Type="Standard" EnumName="OBJECT_MM_LIMB_0F" Offset="0x96A0" />
+        <Skeleton Name="object_mm_Skel_0096E8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_MM_LIMB_NONE" LimbMax="OBJECT_MM_LIMB_MAX" EnumName="ObjectMmLimb" Offset="0x96E8" />
+        <Animation Name="object_mm_Anim_0099B4" Offset="0x99B4" /> <!-- Original name is "mm_runwait" -->
+        <Animation Name="object_mm_Anim_00A4E0" Offset="0xA4E0" /> <!-- Original name is "mm_tatsu" -->
+        <Animation Name="object_mm_Anim_00A8D8" Offset="0xA8D8" /> <!-- Original name is "mm_uzukumaru" -->
+        <Animation Name="object_mm_Anim_00B09C" Offset="0xB09C" /> <!-- Original name is "mm_wait01" -->
+        <Animation Name="object_mm_Anim_00BA78" Offset="0xBA78" /> <!-- Original name is "mm_watasu" -->
+        <Animation Name="object_mm_Anim_00C32C" Offset="0xC32C" /> <!-- Original name is "mm_watasuwait" -->
+        <Animation Name="object_mm_Anim_00C640" Offset="0xC640" /> <!-- Original name is "mm_yoru" -->
+        <Animation Name="object_mm_Anim_00CD90" Offset="0xCD90" /> <!-- Original name is "uttekure" -->
+        <Animation Name="object_mm_Anim_00DA50" Offset="0xDA50" /> <!-- Original name is "yorokobi_long" -->
+    </File>
+</Root>

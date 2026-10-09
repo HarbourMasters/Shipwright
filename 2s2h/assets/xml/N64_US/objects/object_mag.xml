@@ -1,0 +1,33 @@
+﻿<Root>
+    <!-- Textures for the title screen -->
+    <File Name="object_mag" Segment="6">
+        <Texture Name="gTitleScreenZeldaLogoTex" OutName="title_screen_zelda_logo" Format="rgba32" Width="144" Height="64" Offset="0x0"/>
+        <Texture Name="gTitleScreenMajorasMaskSubtitleTex" OutName="title_screen_majoras_mask_subtitle" Format="i8" Width="104" Height="16" Offset="0x9000"/>
+        <Texture Name="gTitleScreenMajorasMaskSubtitleMaskTex" OutName="title_screen_majoras_mask_subtitle_mask" Format="i8" Width="104" Height="16" Offset="0x9680"/><!-- Masking the flame effect -->
+        <Texture Name="gTitleScreenTheLegendOfTextTex" OutName="title_screen_the_legend_of_text" Format="i8" Width="72" Height="8" Offset="0x9D00"/>
+    
+        <Texture Name="gTitleScreenDisplayEffectMask00Tex" OutName="title_screen_display_effect_mask_0_0" Format="i4" Width="64" Height="64" Offset="0x9F40"/>
+        <Texture Name="gTitleScreenDisplayEffectMask01Tex" OutName="title_screen_display_effect_mask_0_1" Format="i4" Width="64" Height="64" Offset="0xA740"/>
+        <Texture Name="gTitleScreenDisplayEffectMask10Tex" OutName="title_screen_display_effect_mask_1_0" Format="i4" Width="64" Height="64" Offset="0xAF40"/>
+        <Texture Name="gTitleScreenDisplayEffectMask11Tex" OutName="title_screen_display_effect_mask_1_1" Format="i4" Width="64" Height="64" Offset="0xB740"/>
+        <Texture Name="gTitleScreenDisplayEffectMask02Tex" OutName="title_screen_display_effect_mask_0_2" Format="i4" Width="64" Height="64" Offset="0xBF40"/>
+        <Texture Name="gTitleScreenDisplayEffectMask12Tex" OutName="title_screen_display_effect_mask_1_2" Format="i4" Width="64" Height="64" Offset="0xC740"/>
+
+        <Texture Name="gTitleScreenAppearEffectMask00Tex" OutName="title_screen_appear_effect_mask_0_0" Format="i4" Width="64" Height="64" Offset="0xCF40"/>
+        <Texture Name="gTitleScreenAppearEffectMask01Tex" OutName="title_screen_appear_effect_mask_0_1" Format="i4" Width="64" Height="64" Offset="0xD740"/>
+        <Texture Name="gTitleScreenAppearEffectMask10Tex" OutName="title_screen_appear_effect_mask_1_0" Format="i4" Width="64" Height="64" Offset="0xDF40"/>
+        <Texture Name="gTitleScreenAppearEffectMask11Tex" OutName="title_screen_appear_effect_mask_1_1" Format="i4" Width="64" Height="64" Offset="0xE740"/>
+        <Texture Name="gTitleScreenAppearEffectMask02Tex" OutName="title_screen_appear_effect_mask_0_2" Format="i4" Width="64" Height="64" Offset="0xEF40"/>
+        <Texture Name="gTitleScreenAppearEffectMask12Tex" OutName="title_screen_appear_effect_mask_1_2" Format="i4" Width="64" Height="64" Offset="0xF740"/>
+
+        <Texture Name="gTitleScreenFlame0Tex" OutName="title_screen_flame_0" Format="i8" Width="32" Height="32" Offset="0xFF40"/>
+        <Texture Name="gTitleScreenFlame1Tex" OutName="title_screen_flame_1" Format="i8" Width="32" Height="32" Offset="0x10340"/>
+        <Texture Name="gTitleScreenFlame2Tex" OutName="title_screen_flame_2" Format="i8" Width="32" Height="32" Offset="0x10740"/>
+        <Texture Name="gTitleScreenFlame3Tex" OutName="title_screen_flame_3" Format="i8" Width="32" Height="32" Offset="0x10B40"/>
+
+        <Texture Name="gTitleScreenCopyright2000NintendoTex" OutName="title_screen_copyright_2000_nintendo_text" Format="i8" Width="128" Height="16" Offset="0x10F40"/>
+        <Texture Name="gTitleScreenControllerNotConnectedTextTex" OutName="title_screen_controller_not_connected_text" Format="i4" Width="256" Height="9" Offset="0x11740"/>
+        <Texture Name="gTitleScreenInsertControllerTextTex" OutName="title_screen_insert_controller_text" Format="i4" Width="144" Height="9" Offset="0x11BC0"/>
+        <Texture Name="gTitleScreenMajorasMaskTex" OutName="title_screen_majoras_mask" Format="rgba32" Width="128" Height="112" Offset="0x11E48"/>
+    </File>
+</Root>

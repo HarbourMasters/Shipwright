@@ -1,0 +1,88 @@
+﻿<Root>
+    <!-- Object for Kafei -->
+    <File Name="object_test3" Segment="6">
+        <!-- Textures -->
+        <Texture Name="gKafeiBody1TLUT" OutName="kafei_body_1_tlut" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="gKafeiBody2TLUT" OutName="kafei_body_2_tlut" Format="rgba16" Width="16" Height="16" Offset="0x200" />
+        <Texture Name="gKafeiMouthTLUT" OutName="kafei_mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0x400" />
+        <Texture Name="gKafeiEyesTLUT" OutName="kafei_eyes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x600" />
+        <Texture Name="gKafeiSkinTex" OutName="kafei_skin" Format="ci8" Width="8" Height="8" Offset="0x800" />
+        <Texture Name="gKafeiHairTex" OutName="kafei_hair" Format="ci8" Width="8" Height="16" Offset="0x840" />
+        <Texture Name="gKafeiNoseTex" OutName="kafei_nose" Format="ci8" Width="16" Height="16" Offset="0x8C0" />
+        <Texture Name="gKafeiMouthClosedTex" OutName="kafei_mouth_closed" Format="ci8" Width="32" Height="32" Offset="0x9C0" TlutOffset="0x400" />
+        <Texture Name="gKafeiEyesOpenTex" OutName="kafei_eyes_open" Format="ci8" Width="64" Height="32" Offset="0xDC0" TlutOffset="0x600" />
+        <Texture Name="gKafeiHairPartAndUndersideTex" OutName="kafei_hair_part_and_underside" Format="ci8" Width="8" Height="16" Offset="0x15C0" />
+        <Texture Name="gKafeiFingersTex" OutName="kafei_fingers" Format="ci8" Width="16" Height="16" Offset="0x1640" />
+        <Texture Name="gKafeiBootTex" OutName="kafei_boot" Format="ci8" Width="32" Height="32" Offset="0x1740" />
+        <Texture Name="gKafeiSleevePatternTex" OutName="kafei_sleeve_pattern" Format="ci8" Width="32" Height="32" Offset="0x1B40" />
+        <Texture Name="gKafeiInnerSleeveTex" OutName="kafei_inner_sleeve" Format="ci8" Width="8" Height="8" Offset="0x1F40" />
+        <Texture Name="gKafeiClothesNeckOpeningTex" OutName="kafei_clothes_neck_opening" Format="ci8" Width="32" Height="16" Offset="0x1F80" />
+        <Texture Name="gKafeiPendantOfMemoriesTex" OutName="kafei_pendant_of_memories" Format="rgba16" Width="32" Height="64" Offset="0x2180" />
+        <Texture Name="gKafeiClothesPatternTex" OutName="kafei_clothes_pattern" Format="ci8" Width="16" Height="64" Offset="0x3180" />
+        <Texture Name="gKafeiTrouserHemTex" OutName="kafei_trouser_hem" Format="ci8" Width="16" Height="16" Offset="0x3580" />
+        <Texture Name="gKafeiEyesHalfTex" OutName="kafei_eyes_half" Format="ci8" Width="64" Height="32" Offset="0x3680" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesClosedTex" OutName="kafei_eyes_closed" Format="ci8" Width="64" Height="32" Offset="0x3E80" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesRightTex" OutName="kafei_eyes_right" Format="ci8" Width="64" Height="32" Offset="0x4680" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesLeftTex" OutName="kafei_eyes_left" Format="ci8" Width="64" Height="32" Offset="0x4E80" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesUpTex" OutName="kafei_eyes_up" Format="ci8" Width="64" Height="32" Offset="0x5680" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesDownTex" OutName="kafei_eyes_down" Format="ci8" Width="64" Height="32" Offset="0x5E80" TlutOffset="0x600" />
+        <Texture Name="gKafeiEyesWincingTex" OutName="kafei_eyes_wincing" Format="ci8" Width="64" Height="32" Offset="0x6680" TlutOffset="0x600" />
+        <Texture Name="gKafeiMouthHalfTex" OutName="kafei_mouth_half" Format="ci8" Width="32" Height="32" Offset="0x6E80" TlutOffset="0x400" />
+        <Texture Name="gKafeiMouthOpenTex" OutName="kafei_mouth_open" Format="ci8" Width="32" Height="32" Offset="0x7280" TlutOffset="0x400" />
+        <Texture Name="gKafeiMouthSmileTex" OutName="kafei_mouth_smile" Format="ci8" Width="32" Height="32" Offset="0x7680" TlutOffset="0x400" />
+
+        <!-- Kafei Dlists -->
+        <DList Name="gKafeiRightThighDL" Offset="0xBF10" />
+        <DList Name="gKafeiRightShinDL" Offset="0xC198" />
+        <DList Name="gKafeiRightFootDL" Offset="0xC300" />
+        <DList Name="gKafeiLeftThighDL" Offset="0xC478" />
+        <DList Name="gKafeiLeftShinDL" Offset="0xC708" />
+        <DList Name="gKafeiLeftFootDL" Offset="0xC870" />
+        <DList Name="gKafeiWaistDL" Offset="0xC9E8" />
+        <DList Name="gKafeiPendantOfMemoriesDL" Offset="0xCB60" />
+        <DList Name="gKafeiTorsoDL" Offset="0xCC20" />
+        <DList Name="gKafeiHeadDL" Offset="0xCF70" />
+        <DList Name="gKafeiNose1DL" Offset="0xD670" />
+        <DList Name="gKafeiNose2DL" Offset="0xD730" />
+        <DList Name="gKafeiRightShoulderDL" Offset="0xD7F0" />
+        <DList Name="gKafeiRightForearmDL" Offset="0xD930" />
+        <DList Name="gKafeiRightHandDL" Offset="0xDA70" />
+        <DList Name="gKafeiLeftShoulderDL" Offset="0xDCF0" />
+        <DList Name="gKafeiLeftForearmDL" Offset="0xDE30" />
+        <DList Name="gKafeiLeftHandDL" Offset="0xDF70" />
+
+        <!-- Sun Mask -->
+        <DList Name="gKafeiSunMaskDL" Offset="0xEDD0" />
+        <Texture Name="gKafeiSunMaskEyeTex" OutName="kafei_sun_mask_eye" Format="i4" Width="16" Height="16" Offset="0xF2C0" />
+        <Texture Name="gKafeiSunMaskPattern1Tex" OutName="kafei_sun_mask_pattern1" Format="i4" Width="16" Height="16" Offset="0xF340" />
+        <Texture Name="gKafeiSunMaskPattern2Tex" OutName="kafei_sun_mask_pattern2" Format="i4" Width="16" Height="16" Offset="0xF3C0" />
+        <Texture Name="gKafeiSunMaskPattern3Tex" OutName="kafei_sun_mask_pattern3" Format="i4" Width="32" Height="32" Offset="0xF440" />
+        <DList Name="gKafeiSunMaskEmptyDL" Offset="0xF640" />
+
+        <!-- Kafei Limbs -->
+        <Limb Name="gKafeiRootLimb" Type="LOD" EnumName="KAFEI_LIMB_ROOT" Offset="0xF648" />
+        <Limb Name="gKafeiWaistLimb" Type="LOD" EnumName="KAFEI_LIMB_WAIST" Offset="0xF658" />
+        <Limb Name="gKafeiLowerRootLimb" Type="LOD" EnumName="KAFEI_LIMB_LOWER_ROOT" Offset="0xF668" />
+        <Limb Name="gKafeiRightThighLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_THIGH" Offset="0xF678" />
+        <Limb Name="gKafeiRightShinLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_SHIN" Offset="0xF688" />
+        <Limb Name="gKafeiRightFootLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_FOOT" Offset="0xF698" />
+        <Limb Name="gKafeiLeftThighLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_THIGH" Offset="0xF6A8" />
+        <Limb Name="gKafeiLeftShinLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_SHIN" Offset="0xF6B8" />
+        <Limb Name="gKafeiLeftFootLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_FOOT" Offset="0xF6C8" />
+        <Limb Name="gKafeiUpperRootLimb" Type="LOD" EnumName="KAFEI_LIMB_UPPER_ROOT" Offset="0xF6D8" />
+        <Limb Name="gKafeiHeadLimb" Type="LOD" EnumName="KAFEI_LIMB_HEAD" Offset="0xF6E8" />
+        <Limb Name="gKafeiHatLimb" Type="LOD" EnumName="KAFEI_LIMB_HAT" Offset="0xF6F8" />
+        <Limb Name="gKafeiCollarLimb" Type="LOD" EnumName="KAFEI_LIMB_COLLAR" Offset="0xF708" />
+        <Limb Name="gKafeiLeftShoulderLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_SHOULDER" Offset="0xF718" />
+        <Limb Name="gKafeiLeftForearmLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_FOREARM" Offset="0xF728" />
+        <Limb Name="gKafeiLeftHandLimb" Type="LOD" EnumName="KAFEI_LIMB_LEFT_HAND" Offset="0xF738" />
+        <Limb Name="gKafeiRightShoulderLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_SHOULDER" Offset="0xF748" />
+        <Limb Name="gKafeiRightForearmLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_FOREARM" Offset="0xF758" />
+        <Limb Name="gKafeiRightHandLimb" Type="LOD" EnumName="KAFEI_LIMB_RIGHT_HAND" Offset="0xF768" />
+        <Limb Name="gKafeiSheathLimb" Type="LOD" EnumName="KAFEI_LIMB_SHEATH" Offset="0xF778" />
+        <Limb Name="gKafeiTorsoLimb" Type="LOD" EnumName="KAFEI_LIMB_TORSO" Offset="0xF788" />
+
+        <!-- Kafei Skeleton -->
+        <Skeleton Name="gKafeiSkel" Type="Flex" LimbType="Standard" LimbNone="KAFEI_LIMB_NONE" LimbMax="KAFEI_LIMB_MAX" EnumName="KafeiLimb" Offset="0xF7EC" />
+    </File>
+</Root>

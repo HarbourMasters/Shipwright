@@ -1,0 +1,40 @@
+﻿<Root>
+    <!-- Cucco: zelda name for chicken, "Niw" likely short for "Niwatori" -->
+    <File Name="object_niw" Segment="6">
+        <Animation Name="gNiwIdleAnim" Offset="0xE8" /> <!-- Original name is "nw_wait" -->
+        <DList Name="gNiwNeckDL" Offset="0x9C0" />
+        <DList Name="gNiwHeadDL" Offset="0xA98" />
+        <DList Name="gNiwTailDL" Offset="0xDF0" />
+        <DList Name="gNiwWingLeftDL" Offset="0xFD0" />
+        <DList Name="gNiwFootLeftDL" Offset="0x1088" />
+        <DList Name="gNiwWingRightDL" Offset="0x1128" />
+        <DList Name="gNiwFootRightDL" Offset="0x11E0" />
+        <Texture Name="gNiwEyeTex" OutName="eye" Format="rgba16" Width="16" Height="16" Offset="0x1280" />
+        <Texture Name="gNiwHeadFeathersTex" OutName="head_feathers" Format="rgba16" Width="8" Height="16" Offset="0x1480" />
+        <Texture Name="gNiwBaseFeathersTex" OutName="base_feathers" Format="rgba16" Width="8" Height="8" Offset="0x1580" />
+        <Texture Name="gNiwBeakTex" OutName="beak" Format="rgba16" Width="8" Height="8" Offset="0x1600" />
+        <Texture Name="gNiwCombTex" OutName="comb" Format="rgba16" Width="16" Height="16" Offset="0x1680" />
+        <Texture Name="gNiwTailFeathersTex" OutName="tail_feathers" Format="rgba16" Width="32" Height="32" Offset="0x1880" />
+        <Texture Name="gNiwFootTex" OutName="foot" Format="rgba16" Width="8" Height="16" Offset="0x2080" />
+        <Texture Name="gNiwFeatherTex" OutName="feather" Format="rgba16" Width="16" Height="16" Offset="0x2180" />
+        <DList Name="gNiwFeatherMaterialDL" Offset="0x23B0" />
+        <DList Name="gNiwFeatherDL" Offset="0x2428" /> <!-- Original name is "nw_hane_model" -->
+
+        <Limb Name="gNiwRootLimb" LimbType="Standard" EnumName="NIW_LIMB_ROOT" Offset="0x2440"/>
+        <Limb Name="gNiwLimb_244C" LimbType="Standard" EnumName="NIW_LIMB_2" Offset="0x244C"/>
+        <Limb Name="gNiwLimb_2458" LimbType="Standard" EnumName="NIW_LIMB_3" Offset="0x2458"/>
+        <Limb Name="gNiwTailAndUndersideLimb" LimbType="Standard" EnumName="NIW_LIMB_UNDER_SIDE" Offset="0x2464"/>
+        <Limb Name="gNiwLeftFootRootLimb" LimbType="Standard" EnumName="NIW_LIMB_LEFT_FOOT_ROOT" Offset="0x2470"/>
+        <Limb Name="gNiwLeftFootLimb" LimbType="Standard" EnumName="NIW_LIMB_LEFT_FOOT" Offset="0x247C"/>
+        <Limb Name="gNiwLeftWingRootLimb" LimbType="Standard" EnumName="NIW_LIMB_LEFT_WING_ROOT" Offset="0x2488"/>
+        <Limb Name="gNiwLeftWingLimb" LimbType="Standard" EnumName="NIW_LIMB_LEFT_WING" Offset="0x2494"/>
+        <Limb Name="gNiwRightFootRootLimb" LimbType="Standard" EnumName="NIW_LIMB_RIGHT_FOOT_ROOT" Offset="0x24A0"/>
+        <Limb Name="gNiwRightFootLimb" LimbType="Standard" EnumName="NIW_LIMB_RIGHT_FOOT" Offset="0x24AC"/>
+        <Limb Name="gNiwRightWingRootLimb" LimbType="Standard" EnumName="NIW_LIMB_RIGHT_WING_ROOT" Offset="0x24B8"/>
+        <Limb Name="gNiwRightWingLimb" LimbType="Standard" EnumName="NIW_LIMB_RIGHT_WING" Offset="0x24C4"/>
+        <Limb Name="gNiwUpperBodyRootLimb" LimbType="Standard" EnumName="NIW_LIMB_UPPER_BODY" Offset="0x24D0"/>
+        <Limb Name="gNiwNeckLimb" LimbType="Standard" EnumName="NIW_LIMB_NECK" Offset="0x24DC"/>
+        <Limb Name="gNiwHeadLimb" LimbType="Standard" EnumName="NIW_LIMB_HEAD" Offset="0x24E8"/>
+        <Skeleton Name="gNiwSkel" Type="Flex" LimbType="Standard" LimbNone="NIW_LIMB_NONE" LimbMax="NIW_LIMB_MAX" EnumName="ObjectNiwLimb" Offset="0x2530" />
+    </File>
+</Root>

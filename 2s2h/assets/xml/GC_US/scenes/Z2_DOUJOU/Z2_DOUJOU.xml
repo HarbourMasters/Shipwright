@@ -1,0 +1,11 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_01.xml" OutPath="misc/scene_texture_01/"/>
+    <File Name="Z2_DOUJOU" Segment="2" Game="MM">
+        <Scene Name="Z2_DOUJOU" Offset="0x0"/>
+    </File>
+    <File Name="Z2_DOUJOU_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_DOUJOU_room_00" Offset="0x0"/>
+        <DList Name="Z2_DOUJOU_room_00DL_0062B0" Offset="0x62B0"/>
+        <DList Name="Z2_DOUJOU_room_00DL_0064C0" Offset="0x64C0"/>
+    </File>
+</Root>

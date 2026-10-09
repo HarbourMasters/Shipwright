@@ -1,0 +1,142 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Assets for the Happy Mask Salesman and the cutscene Deku Mask -->
+    <File Name="object_osn" Segment="6">
+        <!-- Happy Mask Salesman Animations -->
+        <Animation Name="gHappyMaskSalesmanLyingDownAnim" Offset="0xC4" /> <!-- Frame 0: Face up, Frame 1: Face down--> <!-- Original name is "om_downpose" -->
+        <Animation Name="gHappyMaskSalesmanOrganPlayAnim" Offset="0x1034" /> <!-- Original name is "om_ensou" -->
+        <Animation Name="gHappyMaskSalesmanOrganTalkAnim" Offset="0x1614" /> <!-- Original name is "om_ensou_taiki" -->
+        <Animation Name="gHappyMaskSalesmanTurnAroundStartAnim" Offset="0x1D6C" /> <!-- Original name is "om_furimuki" -->
+        <Animation Name="gHappyMaskSalesmanTurnAroundLoopAnim" Offset="0x2634" /> <!-- Original name is "om_furimuki_loop" -->
+        <Animation Name="gHappyMaskSalesmanArmsOutAnim" Offset="0x2F74" /> <!-- Original name is "om_gozonji" -->
+        <Animation Name="gHappyMaskSalesmanBowingAnim" Offset="0x37C4" /> <!-- Original name is "om_hajime" -->
+        <Animation Name="gHappyMaskSalesmanChokeAnim" Offset="0x3A1C" /> <!-- Original name is "om_kubisime_loop" -->
+        <Animation Name="gHappyMaskSalesmanReminisceAnim" Offset="0x4320" /> <!-- Rock calmly with hands together out front --> <!-- Original name is "om_nanto" -->
+        <Animation Name="gHappyMaskSalesmanHandsClaspedAnim" Offset="0x4C8C" /> <!-- Stand still with hands clasped together out front --> <!-- Original name is "om_niginigi" -->
+        <Animation Name="gHappyMaskSalesmanDespairAnim" Offset="0x55F8" /> <!-- Rock wildly with both hands on head --> <!-- Original name is "om_noo_loop" -->
+        <Animation Name="gHappyMaskSalesmanMaskLookFromStartAnim" Offset="0x5D78" /> <!-- Look away from held mask --> <!-- Original name is "om_omfurim" -->
+        <Animation Name="gHappyMaskSalesmanMaskLookFromLoopAnim" Offset="0x6564" /> <!-- Original name is "om_omfurim_loop" -->
+        <Animation Name="gHappyMaskSalesmanMaskLookAtAnim" Offset="0x6D48" /> <!-- Original name is "om_ommotu_loop" -->
+        <Animation Name="gHappyMaskSalesmanFastBowsAnim" Offset="0x7220" /> <!-- Original name is "om_onegai_loop" -->
+        <Animation Name="gHappyMaskSalesmanWalkAwayAnim" Offset="0x8D80" /> <!-- Original name is "om_saru" -->
+        <Animation Name="gHappyMaskSalesmanBelieveAnim" Offset="0x94E4" /> <!-- Both arms outstreched while looking up --> <!-- Original name is "om_sinjina" -->
+        <Animation Name="gHappyMaskSalesmanThinkAnim" Offset="0x9BB8" /> <!-- Stand still with hand on chin --> <!-- --> <!-- Original name is "om_souieba" -->
+        <Animation Name="gHappyMaskSalesmanHandOutAnim" Offset="0xA444" /> <!-- Original name is "om_tewodasu_loop" -->
+        <Animation Name="gHappyMaskSalesmanShakeHeadAnim" Offset="0xAC60" /> <!-- Shake head with hand on forehead --> <!-- Original name is "om_watasi" -->
+        <Animation Name="gHappyMaskSalesmanShakeAnim" Offset="0xAE9C" /> <!-- Original name is "om_yusaburu" -->
+
+        <!-- Happy Mask Salesman DLists -->
+        <DList Name="gHappyMaskSalesmanPelvisDL" Offset="0xF5E0" />
+        <DList Name="gHappyMaskSalesmanRightThighDL" Offset="0xF830" />
+        <DList Name="gHappyMaskSalesmanRightShinDL" Offset="0xFB30" />
+        <DList Name="gHappyMaskSalesmanRightFootDL" Offset="0xFD88" />
+        <DList Name="gHappyMaskSalesmanLeftThighDL" Offset="0xFFC0" />
+        <DList Name="gHappyMaskSalesmanLeftShinDL" Offset="0x102C0" />
+        <DList Name="gHappyMaskSalesmanLeftFootDL" Offset="0x10518" />
+        <DList Name="gHappyMaskSalesmanAbdomenDL" Offset="0x10750" />
+        <DList Name="gHappyMaskSalesmanChestDL" Offset="0x10AB0" />
+        <DList Name="gHappyMaskSalesmanHeadDL" Offset="0x10ED0" />
+        <DList Name="gHappyMaskSalesmanBackpackDL" Offset="0x114B8" />
+        <DList Name="gHappyMaskSalesmanRightUpperArmDL" Offset="0x12088" />
+        <DList Name="gHappyMaskSalesmanRightForearmDL" Offset="0x122F8" />
+        <DList Name="gHappyMaskSalesmanRightHandDL" Offset="0x125F0" />
+        <DList Name="gHappyMaskSalesmanLeftUpperArmDL" Offset="0x12780" />
+        <DList Name="gHappyMaskSalesmanLeftForearmDL" Offset="0x129F0" />
+        <DList Name="gHappyMaskSalesmanLeftHandDL" Offset="0x12CE8" />
+
+        <!-- Happy Mask Salesman Textures -->
+        <Texture Name="gHappyMaskSalesmanBodyTLUT" OutName="happy_mask_salesman_body_tlut" Format="rgba16" Width="16" Height="16" Offset="0x12E78" />
+        <Texture Name="gHappyMaskSalesmanBackpackTLUT" OutName="happy_mask_salesman_mask_backpack_tlut" Format="rgba16" Width="16" Height="16" Offset="0x13078" />
+        <Texture Name="gHappyMaskSalesmanMask1TLUT" OutName="happy_mask_salesman_mask_1_tlut" Format="rgba16" Width="16" Height="16" Offset="0x13278" /> <!-- Shared between multiple masks -->
+        <Texture Name="gHappyMaskSalesmanMask2TLUT" OutName="happy_mask_salesman_mask_2_tlut" Format="rgba16" Width="16" Height="16" Offset="0x13478" /> <!-- Shared between multiple masks -->
+        <Texture Name="gHappyMaskSalesmanSkinTex" OutName="happy_mask_salesman_skin" Format="ci8" Width="8" Height="8" Offset="0x13678" />
+        <Texture Name="gHappyMaskSalesmanEarTex" OutName="happy_mask_salesman_ear" Format="ci8" Width="8" Height="8" Offset="0x136B8" />
+        <Texture Name="gHappyMaskSalesmanNostrilTex" OutName="happy_mask_salesman_nostril" Format="ci8" Width="8" Height="8" Offset="0x136F8" />
+        <Texture Name="gHappyMaskSalesmanHairTex" OutName="happy_mask_salesman_hair" Format="ci8" Width="8" Height="16" Offset="0x13738" />
+        <Texture Name="gHappyMaskSalesmanGoldFabric1Tex" OutName="happy_mask_salesman_gold_fabric_1" Format="ci8" Width="8" Height="16" Offset="0x137B8" /> <!-- Main neck piece and back of the cuffs -->
+        <Texture Name="gHappyMaskSalesmanGoldFabric2Tex" OutName="happy_mask_salesman_gold_fabric_2" Format="ci8" Width="8" Height="16" Offset="0x13838" /> <!-- Collar and front of the cuffs -->
+        <Texture Name="gHappyMaskSalesmanRobeFrontTex" OutName="happy_mask_salesman_robe_front" Format="ci8" Width="16" Height="16" Offset="0x138B8" />
+        <Texture Name="gHappyMaskSalesmanFootTex" OutName="happy_mask_salesman_foot" Format="ci8" Width="8" Height="8" Offset="0x139B8" />
+        <Texture Name="gHappyMaskSalesmanFingersTex" OutName="happy_mask_salesman_fingers" Format="ci8" Width="16" Height="16" Offset="0x139F8" />
+        <Texture Name="gHappyMaskSalesmaeClothesTex" OutName="happy_mask_salesman_clothes" Format="ci8" Width="16" Height="16" Offset="0x13AF8" />
+        <Texture Name="gHappyMaskSalesmanHairlineTex" OutName="happy_mask_salesman_hairline" Format="rgba16" Width="8" Height="16" Offset="0x13BF8" />
+        <Texture Name="gHappyMaskSalesmanShoeTex" OutName="happy_mask_salesman_shoe" Format="ci8" Width="16" Height="8" Offset="0x13CF8" />
+        <Texture Name="gHappyMaskSalesmanRobeBackTex" OutName="happy_mask_salesman_robe_back" Format="ci8" Width="16" Height="16" Offset="0x13D78" />
+        <Texture Name="gHappyMaskSalesmanShirtTex" OutName="happy_mask_salesman_shirt" Format="ci8" Width="16" Height="16" Offset="0x13E78" />
+        <Texture Name="gHappyMaskSalesmaeClothesEndTex" OutName="happy_mask_salesman_clothes_ends" Format="ci8" Width="8" Height="8" Offset="0x13F78" />
+
+        <!-- Happy Mask Salesman Backpack Textures, TLUTs are above -->
+        <Texture Name="gHappyMaskSalesmanBackpackTopTex" OutName="happy_mask_salesman_backpack_top" Format="ci8" Width="16" Height="32" Offset="0x13FB8" />
+        <Texture Name="gHappyMaskSalesmanBackpackPocketTex" OutName="happy_mask_salesman_backpack_pocket" Format="ci8" Width="16" Height="32" Offset="0x141B8" />
+        <Texture Name="gHappyMaskSalesmanBackpackPocketTopTex" OutName="happy_mask_salesman_backpack_pocket_top" Format="ci8" Width="16" Height="16" Offset="0x143B8" />
+        <Texture Name="gHappyMaskSalesmanBackpackBottomTex" OutName="happy_mask_salesman_backpack_bottom" Format="ci8" Width="32" Height="64" Offset="0x144B8" />
+        <Texture Name="gHappyMaskSalesmanBackpackRollTex" OutName="happy_mask_salesman_backpack_roll" Format="ci8" Width="32" Height="16" Offset="0x14CB8" />
+        <Texture Name="gHappyMaskSalesmanBackpackRollEndTex" OutName="happy_mask_salesman_backpack_roll_end" Format="ci8" Width="16" Height="16" Offset="0x14EB8" />
+        <Texture Name="gHappyMaskSalesmanBackpackStrapTex" OutName="happy_mask_salesman_backpack_strap" Format="ci8" Width="8" Height="8" Offset="0x14FB8" />
+        <Texture Name="gHappyMaskSalesmanMask01Tex" OutName="happy_mask_salesman_mask_01" Format="ci8" Width="16" Height="32" Offset="0x14FF8" />
+        <Texture Name="gHappyMaskSalesmanMask02Tex" OutName="happy_mask_salesman_mask_02" Format="ci8" Width="16" Height="32" Offset="0x151F8" />
+        <Texture Name="gHappyMaskSalesmanScrollTex" OutName="happy_mask_salesman_scroll" Format="i8" Width="16" Height="16" Offset="0x153F8" />
+        <Texture Name="gHappyMaskSalesmanMask03Tex" OutName="happy_mask_salesman_mask_03" Format="ci8" Width="16" Height="32" Offset="0x154F8" /> <!-- Mario Mask -->
+        <Texture Name="gHappyMaskSalesmanMask04Tex" OutName="happy_mask_salesman_mask_04" Format="ci8" Width="16" Height="32" Offset="0x156F8" />
+        <Texture Name="gHappyMaskSalesmanMask05Tex" OutName="happy_mask_salesman_mask_05" Format="i8" Width="16" Height="32" Offset="0x158F8" /> <!-- Mayor's Mask, frowning version of the one on the Mayor's chair -->
+        <Texture Name="gHappyMaskSalesmanMask06Tex" OutName="happy_mask_salesman_mask_06" Format="rgba16" Width="16" Height="32" Offset="0x15AF8" />
+        <Texture Name="gHappyMaskSalesmanMask07Tex" OutName="happy_mask_salesman_mask_07" Format="ci8" Width="16" Height="32" Offset="0x15EF8" />
+        <Texture Name="gHappyMaskSalesmanMask08Tex" OutName="happy_mask_salesman_mask_08" Format="ci8" Width="16" Height="32" Offset="0x160F8" />
+        <Texture Name="gHappyMaskSalesmanMask09Tex" OutName="happy_mask_salesman_mask_09" Format="ci8" Width="16" Height="32" Offset="0x162F8" />
+        <Texture Name="gHappyMaskSalesmanMask10Tex" OutName="happy_mask_salesman_mask_10" Format="ci8" Width="16" Height="32" Offset="0x164F8" /> <!-- Mirror Shield Mask, same face as on mirror shield -->
+
+        <!-- Happy Mask Salesman Face Textures -->
+        <Texture Name="gHappyMaskSalesmanEyeClosedHappyTex" OutName="happy_mask_salesman_eye_closed_happy" Format="rgba16" Width="32" Height="32" Offset="0x166F8" />
+        <Texture Name="gHappyMaskSalesmanEyeOpenTex" OutName="happy_mask_salesman_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x16EF8" />
+        <Texture Name="gHappyMaskSalesmanEyeClosedAngryTex" OutName="happy_mask_salesman_eye_closed_angry" Format="rgba16" Width="32" Height="32" Offset="0x176F8" />
+        <Texture Name="gHappyMaskSalesmanSmileTex" OutName="happy_mask_salesman_smile" Format="rgba16" Width="32" Height="16" Offset="0x17EF8" />
+        <Texture Name="gHappyMaskSalesmanFrownTex" OutName="happy_mask_salesman_frown" Format="rgba16" Width="32" Height="16" Offset="0x182F8" />
+
+        <TextureAnimation Name="gHappyMaskSalesmanMouthTexAnim" Offset="0x1873C" /> <!-- Unused -->
+
+        <!-- Majora's Mask -->
+        <DList Name="gHappyMaskSalesmanMajorasMaskDL" Offset="0x192A0" />
+        <DList Name="gHappyMaskSalesmanMajorasMaskEyesDL" Offset="0x19650" />
+
+        <Texture Name="gHappyMaskSalesmanMajorasMaskFaceTex" OutName="happy_mask_salesman_majoras_mask_face" Format="rgba16" Width="32" Height="64" Offset="0x19700" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskSpikes1Tex" OutName="happy_mask_salesman_majoras_mask_spikes_1" Format="rgba16" Width="16" Height="16" Offset="0x1A700" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskSpikes2Tex" OutName="happy_mask_salesman_majoras_mask_spikes_2" Format="rgba16" Width="16" Height="16" Offset="0x1A900" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskSpikes3Tex" OutName="happy_mask_salesman_majoras_mask_spikes_3" Format="rgba16" Width="16" Height="16" Offset="0x1AB00" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskSpikes4Tex" OutName="happy_mask_salesman_majoras_mask_spikes_4" Format="rgba16" Width="16" Height="16" Offset="0x1AD00" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskBackTex" OutName="happy_mask_salesman_majoras_mask_back" Format="rgba16" Width="32" Height="32" Offset="0x1AF00" />
+        <Texture Name="gHappyMaskSalesmanMajorasMaskEyeTex" OutName="happy_mask_salesman_majoras_mask_eye" Format="rgba16" Width="32" Height="32" Offset="0x1B700" />
+
+        <!-- <Blob Name="object_osn_Blob_01BF00" Size="0x3880" Offset="0x1BF00" /> -->
+
+        <!-- Happy Mask Salesman Idle Anim-->
+        <Animation Name="gHappyMaskSalesmanIdleAnim" Offset="0x201BC" /> <!-- Original name is "osn_wait" -->
+
+        <!-- Happy Mask Salesman Skeleton -->
+        <Limb Name="gHappyMaskSalesmanRootLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_ROOT" Offset="0x201D0" />
+        <Limb Name="gHappyMaskSalesmanAbdomenLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_ABDOMEN" Offset="0x201DC" />
+        <Limb Name="gHappyMaskSalesmanChestLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_CHEST" Offset="0x201E8" />
+        <Limb Name="gHappyMaskSalesmanLeftUpperArmLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_UPPER_ARM" Offset="0x201F4" />
+        <Limb Name="gHappyMaskSalesmanLeftForearmLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_FOREARM" Offset="0x20200" />
+        <Limb Name="gHappyMaskSalesmanLeftHandLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_HAND" Offset="0x2020C" />
+        <Limb Name="gHappyMaskSalesmanRightUpperArmLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_RIGHT_UPPER_ARM" Offset="0x20218" />
+        <Limb Name="gHappyMaskSalesmanRightForearmLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_RIGHT_FOREARM" Offset="0x20224" />
+        <Limb Name="gHappyMaskSalesmanRightHandLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_RIGHT_HAND" Offset="0x20230" />
+        <Limb Name="gHappyMaskSalesmanBackpackLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_BACKPACK" Offset="0x2023C" />
+        <Limb Name="gHappyMaskSalesmanHeadLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_HEAD" Offset="0x20248" />
+        <Limb Name="gHappyMaskSalesmanPelvisLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_PELVIS" Offset="0x20254" />
+        <Limb Name="gHappyMaskSalesmanLeftThighLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_THIGH" Offset="0x20260" />
+        <Limb Name="gHappyMaskSalesmanLeftShinLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_SHIN" Offset="0x2026C" />
+        <Limb Name="gHappyMaskSalesmanLeftFootLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_LEFT_FOOT" Offset="0x20278" />
+        <Limb Name="gHappyMaskSalesmanRightThighLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_RIGHT_THIGH" Offset="0x20284" />
+        <Limb Name="gHappyMaskSalesmanRightShinLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_RIGHT_SHIN" Offset="0x20290" />
+        <Limb Name="gHappyMaskSalesmanRightFootLimb" Type="Standard" EnumName="HAPPY_MASK_SALESMAN_LIMB_RIGHT_FOOT" Offset="0x2029C" />
+        <Skeleton Name="gHappyMaskSalesmanSkel" Type="Flex" LimbType="Standard" LimbNone="HAPPY_MASK_SALESMAN_LIMB_NONE" LimbMax="HAPPY_MASK_SALESMAN_LIMB_MAX" EnumName="HappyMaskSalesmanLimb" Offset="0x202F0" />
+
+        <!-- Deku Mask -->
+        <Animation Name="gDekuMaskFallOverAnim" Offset="0x20530" /> <!-- Original name is "rakka" -->
+        <Limb Name="gDekuMaskLimb" Type="Standard" EnumName="DEKU_MASK_LIMB" Offset="0x20540" />
+        <Skeleton Name="gDekuMaskSkel" Type="Flex" LimbType="Standard" LimbNone="DEKU_MASK_LIMB_NONE" LimbMax="DEKU_MASK_LIMB_MAX" EnumName="DekuMaskLimb" Offset="0x20550" />
+    </File>
+</Root>

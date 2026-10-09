@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ovl_fbdemo_wipe1" BaseAddress="0x80AC57B0" RangeStart="0x470" RangeEnd="0xEF8">
+        <Array Name="sTransWipe1Vtx" Count="25" Offset="0x470">
+            <Vtx/>
+        </Array>
+        <Texture Name="sTransWipe1Tex" OutName="trans_wipe" Format="i4" Width="64" Height="64" Offset="0x600"/>
+        <DList Name="sTransWipe1DL" Offset="0xE00"/>
+    </File>
+</Root>

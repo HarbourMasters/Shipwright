@@ -1,0 +1,105 @@
+﻿<Root>
+    <!-- Most of Skull Kid's animations, as well as assets for his curse effects and the Ocarina in the Clock Tower. -->
+    <File Name="object_stk2" Segment="6">
+        <!-- Skull Kid Animations -->
+        <Animation Name="gSkullKidCurseStartAnim" Offset="0x55C" /> <!-- Original name is "kubi_katakata" ("neck clack/rattle") -->
+        <!-- <Blob Name="object_stk2_Blob_00056C" Size="0x24" Offset="0x56C" /> -->
+        <Animation Name="gSkullKidCurseLoopAnim" Offset="0x130C" /> <!-- Original name is "kubi_katakata_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_00131C" Size="0x54" Offset="0x131C" /> -->
+        <Animation Name="gSkullKidHorseRideStartAnim" Offset="0x35C8" /> <!-- Original name is "lost_horse" -->
+        <Animation Name="gSkullKidHorseRideAndRotateAnim" Offset="0x4580" /> <!-- Original name is "lost_horse2" -->
+        <!-- <Blob Name="object_stk2_Blob_004590" Size="0x50" Offset="0x4590" /> -->
+        <Animation Name="gSkullKidHorseRideLoopAnim" Offset="0x49C8" /> <!-- Original name is "lost_horse_wait" -->
+        <Animation Name="gSkullKidGlitchyHorseRideStartAnim" Offset="0x70DC" /> <!-- Original name is "lost_house" -->
+
+        <!-- Assets for the curse effect overlayed on top of Majora's Mask when Skull Kid curses Link -->
+        <DList Name="gSkullKidMajorasMaskCurseOverlayDL" Offset="0x7840" />
+        <Texture Name="gSkullKidMajorasMaskCurseOverlayMaskTex" OutName="skull_kid_majoras_mask_curse_overlay_mask" Format="i8" Width="32" Height="32" Offset="0x7A48" />
+        <Texture Name="gSkullKidMajorasMaskCurseOverlayElectricityTex" OutName="skull_kid_majoras_mask_curse_overlay_electricity" Format="i8" Width="32" Height="64" Offset="0x7E48" />
+        <TextureAnimation Name="gSkullKidMajorasMaskCurseOverlayTexAnim" Offset="0x8658" />
+
+        <!-- Assets for the effects displayed on the sides of the screen when Skull Kid curses Link or calls down the moon -->
+        <DList Name="object_stk2_DL_008920" Offset="0x8920" />
+        <DList Name="object_stk2_DL_008A38" Offset="0x8A38" />
+        <Texture Name="object_stk2_Tex_008B50" OutName="tex_008B50" Format="i8" Width="32" Height="64" Offset="0x8B50" />
+        <Texture Name="object_stk2_Tex_009350" OutName="tex_009350" Format="i8" Width="32" Height="32" Offset="0x9350" />
+        <Texture Name="object_stk2_Tex_009750" OutName="tex_009750" Format="i8" Width="32" Height="64" Offset="0x9750" />
+        <TextureAnimation Name="object_stk2_Matanimheader_009F60" Offset="0x9F60" />
+
+        <!-- Clock Tower Ocarina Animations -->
+        <Animation Name="gClockTowerOcarinaOfTimeFallAnim" Offset="0xA104" /> <!-- Original name is "ok_otosu" ("to fall") -->
+        <Animation Name="gClockTowerOcarinaOfTimeHitGroundAnim" Offset="0xA2BC" /> <!-- Original name is "ok_rakka" ("falling down (from a high place)") -->
+        <Animation Name="gClockTowerOcarinaOfTimeTurnAroundAnim" Offset="0xA4C4" /> <!-- Original name is "ok_skypon" ("pon" = onomatopoeic for lightly hitting something, probably representing the sound that plays) -->
+        <Animation Name="gClockTowerOcarinaOfTimeJuggleAnim" Offset="0xA6D4" /> <!-- Original name is "ok_skypon_loop" -->
+
+        <!-- Clock Tower Ocarina Limb DisplayLists -->
+        <DList Name="gClockTowerOcarinaOfTimeDL" Offset="0xA840" />
+
+        <!-- Clock Tower Ocarina Textures -->
+        <Texture Name="gClockTowerOcarinaOfTimeTex" OutName="clock_tower_ocarina_of_time" Format="rgba16" Width="32" Height="16" Offset="0xA958" />
+
+        <!-- Clock Tower Ocarina Limbs -->
+        <Limb Name="gClockTowerOcarinaOfTimeRootLimb" Type="Standard" EnumName="CLOCK_TOWER_OCARINA_OF_TIME_LIMB_ROOT" Offset="0xAD58" />
+
+        <!-- Clock Tower Ocarina Skeleton -->
+        <Skeleton Name="gClockTowerOcarinaOfTimeSkel" Type="Flex" LimbType="Standard" LimbNone="CLOCK_TOWER_OCARINA_OF_TIME_LIMB_NONE" LimbMax="CLOCK_TOWER_OCARINA_OF_TIME_LIMB_MAX" EnumName="ClockTowerOcarinaOfTimeLimb" Offset="0xAD68" />
+
+        <!-- Skull Kid Animations -->
+        <Animation Name="gSkullKidLaughStartAnim" Offset="0xC270" /> <!-- Original name is "oowarai" ("laughing loudly") -->
+        <!-- <Blob Name="object_stk2_Blob_00C280" Size="0x60" Offset="0xC280" /> -->
+        <Animation Name="gSkullKidLaughLoopAnim" Offset="0xCBB8" /> <!-- Original name is "oowarai_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_00CBC8" Size="0x28" Offset="0xCBC8" /> -->
+        <Animation Name="gSkullKidRecliningFloatAnim" Offset="0xD830" /> <!-- Original name is "situkoi_wait" ("being stubborn or persistant" or "being fixated on something, obsession") -->
+        <!-- <Blob Name="object_stk2_Blob_00D840" Size="0x50" Offset="0xD840" /> -->
+        <Animation Name="gSkullKidHoldHeadAndShakeStartAnim" Offset="0xE6EC" /> <!-- Original name is "sk_atama" ("head") -->
+        <Animation Name="gSkullKidHoldHeadAndShakeLoopAnim" Offset="0xEEC0" /> <!-- Original name is "sk_atama_loop" -->
+        <Animation Name="gSkullKidSmackFairyStartAnim" Offset="0x101A4" /> <!-- Original name is "sk_elf_hataku" ("elf hit/smack/strike") -->
+        <Animation Name="gSkullKidSmackFairyLoopAnim" Offset="0x10B60" /> <!-- Original name is "sk_elf_hataku_loop" -->
+        <Animation Name="gSkullKidSurpriseStartAnim" Offset="0x110B4" /> <!-- Original name is "sk_koe_kizuku" ("become aware of a voice") -->
+        <Animation Name="gSkullKidSurpriseLoopAnim" Offset="0x11FB0" /> <!-- Original name is "sk_koe_kizuku_loop" -->
+        <Animation Name="gSkullKidLookAroundForGiantsStartAnim" Offset="0x12A58" /> <!-- Original name is "sk_kyojin_sagasu" ("searching for giants") -->
+        <Animation Name="gSkullKidLookAroundForGiantsLoopAnim" Offset="0x141E4" /> <!-- Original name is "sk_kyojin_sagasu_loop" -->
+        <Animation Name="gSkullKidPickUpOcarinaAndStartPlayingAnim" Offset="0x16910" /> <!-- Original name is "sk_ok_fuku" ("playing ocarina") -->
+        <!-- <Blob Name="object_stk2_Blob_016920" Size="0xC0" Offset="0x16920" /> -->
+        <Animation Name="gSkullKidPlayOcarinaAndLaughAnim" Offset="0x18ED0" /> <!-- Original name is "sk_ok_fuku_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_018EE0" Size="0xC0" Offset="0x18EE0" /> -->
+        <Animation Name="gSkullKidHideOcarinaStartAnim" Offset="0x1AA80" /> <!-- Original name is "sk_ok_kakusu" ("hiding/concealing ocarina") -->
+        <Animation Name="gSkullKidJumpWhileHidingOcarinaAnim" Offset="0x1C114" /> <!-- Original name is "sk_ok_kakusu_jump" -->
+        <!-- <Blob Name="object_stk2_Blob_01C124" Size="0x6C" Offset="0x1C124" /> -->
+        <Animation Name="gSkullKidHideOcarinaLoopAnim" Offset="0x1D07C" /> <!-- Original name is "sk_ok_kakusu_wait" -->
+        <Animation Name="gSkullKidPickUpOcarinaAnim" Offset="0x1DDE0" /> <!-- Original name is "sk_ok_miru" ("looking at/seeing the ocarina") -->
+        <!-- <Blob Name="object_stk2_Blob_01DDF0" Size="0x40" Offset="0x1DDF0" /> -->
+        <Animation Name="gSkullKidLookAtOcarinaAnim" Offset="0x1EF50" /> <!-- Original name is "sk_ok_miru_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_01EF60" Size="0x50" Offset="0x1EF60" /> -->
+        <Animation Name="gSkullKidDropOcarinaAnim" Offset="0x1F9E4" /> <!-- Original name is "sk_ok_otosu" ("dropping the ocarina") -->
+        <Animation Name="gSkullKidPlayOcarinaWhileFloatingAnim" Offset="0x20CAC" /> <!-- Original name is "sk_ok_skyplay" -->
+        <Animation Name="gSkullKidFloatingTurnAroundAnim" Offset="0x2200C" /> <!-- Original name is "sk_ok_skypon" ("pon" = onomatopoeic for lightly hitting something, probably representing the sound that plays) -->
+        <Animation Name="gSkullKidOcarinaJuggleAnim" Offset="0x2336C" /> <!-- Original name is "sk_ok_skypon_loop" -->
+        <Animation Name="gSkullKidRaiseMaskStartAnim" Offset="0x259F4" /> <!-- Original name is "sk_omenage" ("mask raise") -->
+        <!-- <Blob Name="object_stk2_Blob_025A04" Size="0xCC" Offset="0x25A04" /> -->
+        <Animation Name="gSkullKidRaiseMaskLoopAnim" Offset="0x266C8" /> <!-- Original name is "sk_omenage_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_0266D8" Size="0x48" Offset="0x266D8" /> -->
+        <Animation Name="gSkullKidLowerMaskAnim" Offset="0x26CF4" /> <!-- Original name is "sk_omensage" ("mask lower") -->
+        <!-- <Blob Name="object_stk2_Blob_026D04" Size="0x1C" Offset="0x26D04" /> -->
+        <Animation Name="gSkullKidHoldHeadAndScreamStartAnim" Offset="0x27CF4" /> <!-- Original name is "sk_sakebu" ("letting out a loud voice") -->
+        <Animation Name="gSkullKidHoldHeadAndScreamLoopAnim" Offset="0x28F28" /> <!-- Original name is "sk_sakebu_loop" -->
+        <Animation Name="gSkullKidFloatingArmsCrossedAnim" Offset="0x29A04" /> <!-- Original name is "sk_sky_taiki" ("standing by") -->
+        <Animation Name="gSkullKidHitByBubbleAnim" Offset="0x2A2D8" /> <!-- Original name is "sk_syabon_otosu" ("bubble fall") -->
+        <Animation Name="gSkullKidDeflectAttackAnim" Offset="0x2AD54" /> <!-- Original name is "sk_sybonn_hajiku" ("bubble repel") -->
+        <Animation Name="gSkullKidKickOverLinkAnim" Offset="0x2DC64" /> <!-- Original name is "sk_uragaesu" ("turn over") -->
+        <!-- <Blob Name="object_stk2_Blob_02DC74" Size="0xDC" Offset="0x2DC74" /> -->
+        <Animation Name="gSkullKidSearchLinkAnim" Offset="0x2E9A0" /> <!-- Original name is "sk_uragaesu_wait" -->
+        <!-- <Blob Name="object_stk2_Blob_02E9B0" Size="0x40" Offset="0x2E9B0" /> -->
+        <Animation Name="gSkullKidPlayFluteAnim" Offset="0x2FA70" /> <!-- Original name is "stk_fue_loop" ("flute") -->
+        <Animation Name="gSkullKidShiverAnim" Offset="0x3021C" /> <!-- Original name is "stk_furueru" ("to shiver/tremble") -->
+        <Animation Name="gSkullKidSearchMaskSalesmanAnim" Offset="0x31210" /> <!-- Original name is "stk_gosogoso" (onomatopoeic for "objects rubbing together, rustling") -->
+        <Animation Name="gSkullKidHoldUpMaskStartAnim" Offset="0x322FC" /> <!-- Original name is "stk_kakageru" ("holding up/hoisting something") -->
+        <Animation Name="gSkullKidHoldUpMaskLoopAnim" Offset="0x32AE0" /> <!-- Original name is "stk_kakageru_loop" -->
+        <Animation Name="gSkullKidHuddleWithFairiesAnim" Offset="0x3323C" /> <!-- Original name is "stk_miwoyoseau" ("huddling next to others to keep warm") -->
+        <Animation Name="gSkullKidDroppedFromMaskAnim" Offset="0x34FD8" /> <!-- Original name is "stk_rakka" ("falling down (from a high place)") -->
+        <Animation Name="gSkullKidDrawAnim" Offset="0x36964" /> <!-- Original name is "stk_rakugaki" ("graffiti") -->
+        <Animation Name="gSkullKidCartwheelAnim" Offset="0x37B94" /> <!-- Original name is "stk_sokuten" ("cartwheel") -->
+        <Animation Name="gSkullKidDangleFromMaskStartAnim" Offset="0x3967C" /> <!-- Original name is "stk_tyubura" ("to dangle in midair") -->
+        <Animation Name="gSkullKidDangleFromMaskLoopAnim" Offset="0x3A8F8" /> <!-- Original name is "stk_tyubura_loop" -->
+    </File>
+</Root>

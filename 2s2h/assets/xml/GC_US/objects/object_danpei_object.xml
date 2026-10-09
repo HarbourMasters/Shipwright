@@ -1,0 +1,15 @@
+﻿<Root>
+    <File Name="object_danpei_object" Segment="6">
+        <DList Name="object_danpei_object_DL_000300" Offset="0x300" />
+        <Texture Name="object_danpei_object_TLUT_000438" OutName="tlut_000438" Format="rgba16" Width="4" Height="4" Offset="0x438" />
+        <Texture Name="object_danpei_object_Tex_000458" OutName="tex_000458" Format="ci4" Width="64" Height="64" Offset="0x458" />
+        <Collision Name="object_danpei_object_Colheader_000D60" Offset="0xD60" /> <!-- Original name is "y2_kanokefuta_bgdatainfo" -->
+        <DList Name="object_danpei_object_DL_0012C0" Offset="0x12C0" /> <!-- Original name is "Y2_DP2_RASENsita_model" ("rasen" = "spiral", "sita" = "below") -->
+        <DList Name="object_danpei_object_DL_002110" Offset="0x2110" /> <!-- Original name is "Y2_DP2_RASENue_model" ("ue" = "above") -->
+        <Texture Name="object_danpei_object_TLUT_002B10" OutName="tlut_002B10" Format="rgba16" Width="16" Height="16" Offset="0x2B10" />
+        <Texture Name="object_danpei_object_Tex_002D10" OutName="tex_002D10" Format="ci8" Width="32" Height="64" Offset="0x2D10" />
+        <Texture Name="object_danpei_object_Tex_003510" OutName="tex_003510" Format="ci8" Width="32" Height="32" Offset="0x3510" />
+        <Texture Name="object_danpei_object_Tex_003910" OutName="tex_003910" Format="ci8" Width="32" Height="32" Offset="0x3910" />
+        <Texture Name="object_danpei_object_Tex_003D10" OutName="tex_003D10" Format="ci8" Width="16" Height="16" Offset="0x3D10" />
+    </File>
+</Root>

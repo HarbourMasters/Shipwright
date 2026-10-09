@@ -1,0 +1,22 @@
+<Root>
+    <File Name="Z2_LOST_WOODS" Segment="2" Game="MM">
+        <Texture Name="Z2_LOST_WOODSTex_00B9D0" Format="ia16" Width="64" Height="64" Offset="0xB9D0"/>
+
+        <Scene Name="Z2_LOST_WOODS" Offset="0x0"/>
+    </File>
+    <File Name="Z2_LOST_WOODS_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_LOST_WOODS_room_00" Offset="0x0"/>
+        <DList Name="Z2_LOST_WOODS_room_00DL_0049D0" Offset="0x49D0"/>
+        <DList Name="Z2_LOST_WOODS_room_00DL_0080D8" Offset="0x80D8"/>
+    </File>
+    <File Name="Z2_LOST_WOODS_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_LOST_WOODS_room_01" Offset="0x0"/>
+        <DList Name="Z2_LOST_WOODS_room_01DL_005658" Offset="0x5658"/>
+        <DList Name="Z2_LOST_WOODS_room_01DL_009D08" Offset="0x9D08"/>
+    </File>
+    <File Name="Z2_LOST_WOODS_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_LOST_WOODS_room_02" Offset="0x0"/>
+        <DList Name="Z2_LOST_WOODS_room_02DL_000B48" Offset="0xB48"/>
+        <DList Name="Z2_LOST_WOODS_room_02DL_001498" Offset="0x1498"/>
+    </File>
+</Root>

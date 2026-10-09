@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_wdor05" Segment="6">
+        <DList Name="gMusicBoxHouseEndDL" Offset="0x500"/> <!-- Original name is "w2_door5_modelT" -->
+        <DList Name="gMusicBoxHouseDoorDL" Offset="0x508"/> <!-- Original name is "w2_door5_model" -->
+        <Texture Name="gMusicBoxHouseDoorTex" OutName="music_box_house_door" Format="rgba16" Width="32" Height="64" Offset="0x670"/>
+    </File>
+</Root>

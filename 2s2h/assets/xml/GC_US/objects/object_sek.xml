@@ -1,0 +1,18 @@
+﻿<Root>
+    <File Name="object_sek" Segment="6">
+        <DList Name="gOwlStatueClosedDL" Offset="0x1D0" /> <!-- Original name is "sek_close_model" -->
+        <Texture Name="object_sek_Tex_0003F0" OutName="tex_0003F0" Format="ci8" Width="32" Height="32" Offset="0x3F0" />
+        <Texture Name="object_sek_Tex_0007F0" OutName="tex_0007F0" Format="ci8" Width="32" Height="32" Offset="0x7F0" />
+        <DList Name="object_sek_DL_001110" Offset="0x1110" /> <!-- Original name is "sek_head_model" -->
+        <Texture Name="object_sek_TLUT_001610" OutName="tlut_001610" Format="rgba16" Width="16" Height="16" Offset="0x1610" />
+        <Texture Name="object_sek_Tex_001810" OutName="tex_001810" Format="ci8" Width="32" Height="32" Offset="0x1810" />
+        <Texture Name="object_sek_Tex_001C10" OutName="tex_001C10" Format="ci8" Width="32" Height="32" Offset="0x1C10" />
+        <Texture Name="object_sek_Tex_002010" OutName="tex_002010" Format="ci8" Width="32" Height="32" Offset="0x2010" />
+        <Texture Name="object_sek_Tex_002410" OutName="tex_002410" Format="ci8" Width="32" Height="32" Offset="0x2410" />
+        <Texture Name="object_sek_Tex_002810" OutName="tex_002810" Format="ci8" Width="32" Height="32" Offset="0x2810" />
+        <Texture Name="object_sek_Tex_002C10" OutName="tex_002C10" Format="ci8" Width="32" Height="32" Offset="0x2C10" />
+        <DList Name="gOwlStatueOpenedDL" Offset="0x3770" /> <!-- Original name is "sek_open_model" -->
+        <Texture Name="object_sek_Tex_003A70" OutName="tex_003A70" Format="ci8" Width="32" Height="64" Offset="0x3A70" />
+        <Texture Name="object_sek_Tex_004270" OutName="tex_004270" Format="ci8" Width="32" Height="64" Offset="0x4270" />
+    </File>
+</Root>

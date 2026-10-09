@@ -1,0 +1,17 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Dungeon Map and Stone of Agony -->
+    <File Name="object_gi_map" Segment="6">
+
+        <!-- Dungeon Map Display Lists -->
+        <DList Name="gGiDungeonMapDL" Offset="0x3C0" />
+
+        <!-- Stone of Agony Display Lists -->
+        <DList Name="gGiStoneOfAgonyDL" Offset="0xB70" /> <!-- remnant of OoT -->
+
+        <!-- Dungeon Map Textures -->
+        <Texture Name="gGiDungeonMapInscriptionsTex" OutName="gi_dungeon_map_inscriptions" Format="i8" Width="32" Height="32" Offset="0xD60" />
+    </File>
+</Root>

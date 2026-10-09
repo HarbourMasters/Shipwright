@@ -1,0 +1,71 @@
+﻿<Root>
+    <File Name="object_rz" Segment="6">
+        <Animation Name="gRosaSistersApplaudingAnim" Offset="0x59C" /> <!-- Original name is "rz_kakkoii_loop" -->
+        <Animation Name="gRosaSistersOnKneesAnim" Offset="0xDE8" /> <!-- Original name is "rz_onegai_loop" -->
+        <Animation Name="gRosaSistersDancingAnim" Offset="0x28D4" /> <!-- Original name is "rz_rensyu_loop" -->
+        <Animation Name="gRosaSistersSittingAnim" Offset="0x3098" /> <!-- Original name is "rz_suwaru" -->
+        <Animation Name="gRosaSistersStandingAnim" Offset="0x3A20" /> <!-- Original name is "rz_waitA" -->
+        <Animation Name="gRosaSistersThinkingAnim" Offset="0x457C" /> <!-- Original name is "rz_waitB" -->
+        <Animation Name="gRosaSistersWalkingAnim" Offset="0x5390" /> <!-- Original name is "rz_walkA" -->
+        <Animation Name="gRosaSistersWalkingWhileThinkingAnim" Offset="0x5E50" /> <!-- Original name is "rz_walkB" -->
+        <DList Name="object_rz_DL_0092B0" Offset="0x92B0" />
+        <DList Name="object_rz_DL_0094C8" Offset="0x94C8" />
+        <DList Name="object_rz_DL_009620" Offset="0x9620" />
+        <DList Name="object_rz_DL_009850" Offset="0x9850" />
+        <DList Name="object_rz_DL_009A68" Offset="0x9A68" />
+        <DList Name="object_rz_DL_009BC0" Offset="0x9BC0" />
+        <DList Name="object_rz_DL_009DF0" Offset="0x9DF0" />
+        <DList Name="object_rz_DL_009FD0" Offset="0x9FD0" />
+        <DList Name="object_rz_DL_00A088" Offset="0xA088" />
+        <DList Name="object_rz_DL_00A378" Offset="0xA378" />
+        <DList Name="object_rz_DL_00A9F8" Offset="0xA9F8" />
+        <DList Name="object_rz_DL_00AB98" Offset="0xAB98" />
+        <DList Name="object_rz_DL_00AC50" Offset="0xAC50" />
+        <DList Name="object_rz_DL_00AD70" Offset="0xAD70" />
+        <DList Name="object_rz_DL_00AE88" Offset="0xAE88" />
+        <DList Name="object_rz_DL_00B050" Offset="0xB050" />
+        <DList Name="object_rz_DL_00B170" Offset="0xB170" />
+        <DList Name="object_rz_DL_00B288" Offset="0xB288" />
+        <Texture Name="object_rz_TLUT_00B450" OutName="tlut_00B450" Format="rgba16" Width="16" Height="16" Offset="0xB450" />
+        <Texture Name="object_rz_Tex_00B650" OutName="tex_00B650" Format="rgba16" Width="16" Height="16" Offset="0xB650" />
+        <Texture Name="object_rz_Tex_00B850" OutName="tex_00B850" Format="ci8" Width="8" Height="8" Offset="0xB850" />
+        <Texture Name="object_rz_Tex_00B890" OutName="tex_00B890" Format="ci8" Width="8" Height="8" Offset="0xB890" />
+        <Texture Name="object_rz_Tex_00B8D0" OutName="tex_00B8D0" Format="ci8" Width="16" Height="16" Offset="0xB8D0" />
+        <Texture Name="object_rz_Tex_00B9D0" OutName="tex_00B9D0" Format="ci8" Width="16" Height="16" Offset="0xB9D0" />
+        <Texture Name="object_rz_Tex_00BAD0" OutName="tex_00BAD0" Format="ci8" Width="16" Height="16" Offset="0xBAD0" />
+        <Texture Name="object_rz_Tex_00BBD0" OutName="tex_00BBD0" Format="ci8" Width="8" Height="16" Offset="0xBBD0" />
+        <Texture Name="object_rz_Tex_00BC50" OutName="tex_00BC50" Format="ci8" Width="32" Height="32" Offset="0xBC50" />
+        <Texture Name="object_rz_Tex_00C050" OutName="tex_00C050" Format="ci8" Width="16" Height="16" Offset="0xC050" />
+        <Texture Name="object_rz_Tex_00C150" OutName="tex_00C150" Format="i8" Width="8" Height="8" Offset="0xC150" />
+        <Texture Name="object_rz_Tex_00C190" OutName="tex_00C190" Format="ci8" Width="32" Height="32" Offset="0xC190" />
+        <Texture Name="object_rz_Tex_00C590" OutName="tex_00C590" Format="ci8" Width="32" Height="32" Offset="0xC590" />
+        <Texture Name="object_rz_Tex_00C990" OutName="tex_00C990" Format="ci8" Width="32" Height="32" Offset="0xC990" />
+        <Texture Name="object_rz_Tex_00CD90" OutName="tex_00CD90" Format="ci8" Width="32" Height="32" Offset="0xCD90" />
+        <Texture Name="object_rz_Tex_00D190" OutName="tex_00D190" Format="i8" Width="8" Height="8" Offset="0xD190" />
+        <Texture Name="object_rz_Tex_00D1D0" OutName="tex_00D1D0" Format="i8" Width="16" Height="16" Offset="0xD1D0" />
+        <Texture Name="object_rz_Tex_00D2D0" OutName="tex_00D2D0" Format="i8" Width="32" Height="32" Offset="0xD2D0" />
+        <TextureAnimation Name="object_rz_Matanimheader_00D768" Offset="0xD768" />
+        <Limb Name="object_rz_Standardlimb_00D788" Type="Standard" EnumName="OBJECT_RZ_LIMB_01" Offset="0xD788" />
+        <Limb Name="object_rz_Standardlimb_00D794" Type="Standard" EnumName="OBJECT_RZ_LIMB_02" Offset="0xD794" />
+        <Limb Name="object_rz_Standardlimb_00D7A0" Type="Standard" EnumName="OBJECT_RZ_LIMB_03" Offset="0xD7A0" />
+        <Limb Name="object_rz_Standardlimb_00D7AC" Type="Standard" EnumName="OBJECT_RZ_LIMB_04" Offset="0xD7AC" />
+        <Limb Name="object_rz_Standardlimb_00D7B8" Type="Standard" EnumName="OBJECT_RZ_LIMB_05" Offset="0xD7B8" />
+        <Limb Name="object_rz_Standardlimb_00D7C4" Type="Standard" EnumName="OBJECT_RZ_LIMB_06" Offset="0xD7C4" />
+        <Limb Name="object_rz_Standardlimb_00D7D0" Type="Standard" EnumName="OBJECT_RZ_LIMB_07" Offset="0xD7D0" />
+        <Limb Name="object_rz_Standardlimb_00D7DC" Type="Standard" EnumName="OBJECT_RZ_LIMB_08" Offset="0xD7DC" />
+        <Limb Name="object_rz_Standardlimb_00D7E8" Type="Standard" EnumName="OBJECT_RZ_LIMB_09" Offset="0xD7E8" />
+        <Limb Name="object_rz_Standardlimb_00D7F4" Type="Standard" EnumName="OBJECT_RZ_LIMB_0A" Offset="0xD7F4" />
+        <Limb Name="object_rz_Standardlimb_00D800" Type="Standard" EnumName="OBJECT_RZ_LIMB_0B" Offset="0xD800" />
+        <Limb Name="object_rz_Standardlimb_00D80C" Type="Standard" EnumName="OBJECT_RZ_LIMB_0C" Offset="0xD80C" />
+        <Limb Name="object_rz_Standardlimb_00D818" Type="Standard" EnumName="OBJECT_RZ_LIMB_0D" Offset="0xD818" />
+        <Limb Name="object_rz_Standardlimb_00D824" Type="Standard" EnumName="OBJECT_RZ_LIMB_0E" Offset="0xD824" />
+        <Limb Name="object_rz_Standardlimb_00D830" Type="Standard" EnumName="OBJECT_RZ_LIMB_0F" Offset="0xD830" />
+        <Limb Name="object_rz_Standardlimb_00D83C" Type="Standard" EnumName="OBJECT_RZ_LIMB_10" Offset="0xD83C" />
+        <Limb Name="object_rz_Standardlimb_00D848" Type="Standard" EnumName="OBJECT_RZ_LIMB_11" Offset="0xD848" />
+        <Limb Name="object_rz_Standardlimb_00D854" Type="Standard" EnumName="OBJECT_RZ_LIMB_12" Offset="0xD854" />
+        <Limb Name="object_rz_Standardlimb_00D860" Type="Standard" EnumName="OBJECT_RZ_LIMB_13" Offset="0xD860" />
+        <Limb Name="object_rz_Standardlimb_00D86C" Type="Standard" EnumName="OBJECT_RZ_LIMB_14" Offset="0xD86C" />
+        <Limb Name="object_rz_Standardlimb_00D878" Type="Standard" EnumName="OBJECT_RZ_LIMB_15" Offset="0xD878" />
+        <Skeleton Name="object_rz_Skel_00D8D8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_RZ_LIMB_NONE" LimbMax="OBJECT_RZ_LIMB_MAX" EnumName="ObjectRzLimb" Offset="0xD8D8" />
+    </File>
+</Root>

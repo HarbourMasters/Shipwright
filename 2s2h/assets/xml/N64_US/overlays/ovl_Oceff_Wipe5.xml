@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe5" BaseAddress="0x80BC7AD0" RangeStart="0x440" RangeEnd="0x1630">
+        <TextureAnimation Name="gOceff5TexAnim" Offset="0x448" />
+        <Array Name="gOceff5Vtx" Count="22" Offset="0x1450"> 
+            <Vtx/>
+        </Array>
+        <DList Name="gOceff5DL" Offset="0x15B0"/>  <!-- Original name might be "g1T_model" -->
+    </File>
+</Root>

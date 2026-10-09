@@ -1,0 +1,13 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_05.xml" OutPath="misc/scene_texture_05/"/>
+    <File Name="Z2_31MISAKI" Segment="2" Game="MM">
+        <Scene Name="Z2_31MISAKI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_31MISAKI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_31MISAKI_room_00" Offset="0x0"/>
+        <DList Name="Z2_31MISAKI_room_00DL_0158A0" Offset="0x158A0"/>
+        <DList Name="Z2_31MISAKI_room_00DL_001090" Offset="0x1090"/>
+        <DList Name="Z2_31MISAKI_room_00DL_0157D8" Offset="0x157D8"/>
+        <DList Name="Z2_31MISAKI_room_00DL_017400" Offset="0x17400"/>
+    </File>
+</Root>

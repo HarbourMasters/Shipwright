@@ -1,0 +1,48 @@
+﻿<Root>
+    <File Name="object_ikninside_obj" Segment="6">
+        <DList Name="object_ikninside_obj_DL_000590" Offset="0x590" /> <!-- Original name is "w2_RASENsite_model" -->
+        <DList Name="object_ikninside_obj_DL_000EA0" Offset="0xEA0" /> <!-- Original name is "w2_RASENue_model" -->
+        <Texture Name="object_ikninside_obj_Tex_001120" OutName="tex_001120" Format="rgba16" Width="32" Height="64" Offset="0x1120" />
+        <Texture Name="object_ikninside_obj_Tex_002120" OutName="tex_002120" Format="rgba16" Width="32" Height="64" Offset="0x2120" />
+        <Texture Name="object_ikninside_obj_Tex_003120" OutName="tex_003120" Format="rgba16" Width="32" Height="64" Offset="0x3120" />
+        <DList Name="object_ikninside_obj_DL_004440" Offset="0x4440" /> <!-- Original name is "w2_ikn_marutobira_model" -->
+        <Texture Name="object_ikninside_obj_TLUT_004620" OutName="tlut_004620" Format="rgba16" Width="16" Height="16" Offset="0x4620" />
+        <Texture Name="object_ikninside_obj_Tex_004820" OutName="tex_004820" Format="ci8" Width="32" Height="64" Offset="0x4820" />
+        <Texture Name="object_ikninside_obj_Tex_005020" OutName="tex_005020" Format="ci8" Width="16" Height="32" Offset="0x5020" />
+        <DList Name="object_ikninside_obj_DL_005260" Offset="0x5260" /> <!-- Original name is "w2_ikn_zenetu_model" -->
+        <Texture Name="object_ikninside_obj_Tex_0052F0" OutName="tex_0052F0" Format="ia16" Width="16" Height="64" Offset="0x52F0" />
+        <!-- <Blob Name="object_ikninside_obj_Blob_005AF0" Size="0x220" Offset="0x5AF0" /> -->
+        <Texture Name="object_ikninside_obj_Tex_005D10" OutName="tex_005D10" Format="ia16" Width="32" Height="32" Offset="0x5D10" />
+        <!-- <Blob Name="object_ikninside_obj_Blob_006510" Size="0x20" Offset="0x6510" /> -->
+        <Texture Name="object_ikninside_obj_Tex_006530" OutName="tex_006530" Format="rgba16" Width="32" Height="64" Offset="0x6530" />
+        <Texture Name="object_ikninside_obj_Tex_007530" OutName="tex_007530" Format="rgba16" Width="32" Height="16" Offset="0x7530" />
+        <Texture Name="object_ikninside_obj_Tex_007930" OutName="tex_007930" Format="i4" Width="64" Height="64" Offset="0x7930" />
+        <Texture Name="object_ikninside_obj_Tex_008130" OutName="tex_008130" Format="ia16" Width="16" Height="32" Offset="0x8130" />
+        <Texture Name="object_ikninside_obj_Tex_008530" OutName="tex_008530" Format="rgba16" Width="32" Height="32" Offset="0x8530" />
+        <Texture Name="object_ikninside_obj_Tex_008D30" OutName="tex_008D30" Format="rgba16" Width="32" Height="32" Offset="0x8D30" />
+        <Texture Name="object_ikninside_obj_Tex_009530" OutName="tex_009530" Format="rgba16" Width="16" Height="64" Offset="0x9530" />
+        <Texture Name="object_ikninside_obj_Tex_009D30" OutName="tex_009D30" Format="rgba16" Width="32" Height="32" Offset="0x9D30" />
+        <DList Name="object_ikninside_obj_DL_00A5A0" Offset="0xA5A0" /> <!-- Original name is "w2_ikn_hahen_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00A5A8" Offset="0xA5A8" /> <!-- Original name is "w2_ikn_hahen_model" -->
+        <DList Name="object_ikninside_obj_DL_00A740" Offset="0xA740" /> <!-- Original name is "w2_ikn_hahen2_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00A748" Offset="0xA748" /> <!-- Original name is "w2_ikn_hahen2_model" -->
+        <DList Name="object_ikninside_obj_DL_00AB10" Offset="0xAB10" /> <!-- Original name is "w2_ikn_hikari_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00AD50" Offset="0xAD50" /> <!-- Original name is "w2_ikn_hikari_model" -->
+        <DList Name="object_ikninside_obj_DL_00AEC0" Offset="0xAEC0" /> <!-- Original name is "w2_ikn_hikari2_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00B0A8" Offset="0xB0A8" /> <!-- Original name is "w2_ikn_hikari2_model" -->
+        <Texture Name="object_ikninside_obj_Tex_00B0B0" OutName="tex_00B0B0" Format="ia16" Width="32" Height="32" Offset="0xB0B0" />
+        <Texture Name="object_ikninside_obj_Tex_00B8B0" OutName="tex_00B8B0" Format="ia16" Width="16" Height="32" Offset="0xB8B0" />
+        <TextureAnimation Name="object_ikninside_obj_Matanimheader_00BCB8" Offset="0xBCB8" />
+        <TextureAnimation Name="object_ikninside_obj_Matanimheader_00BCC8" Offset="0xBCC8" />
+        <DList Name="object_ikninside_obj_DL_00C300" Offset="0xC300" /> <!-- Original name is "w2_ikn_turitenjo_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00C308" Offset="0xC308" /> <!-- Original name is "w2_ikn_turitenjo_model" -->
+        <TextureAnimation Name="object_ikninside_obj_Matanimheader_00C670" Offset="0xC670" />
+        <Collision Name="object_ikninside_obj_Colheader_00CBAC" Offset="0xCBAC" /> <!-- Original name is "w2_ikn_turitenjo_bgdatainfo" -->
+        <DList Name="object_ikninside_obj_DL_00CC70" Offset="0xCC70" /> <!-- Original name is "w2_ikn_yuka_modelT" -->
+        <DList Name="object_ikninside_obj_DL_00CC78" Offset="0xCC78" /> <!-- Original name is "w2_ikn_yuka_model" -->
+        <Texture Name="object_ikninside_obj_Tex_00CD60" OutName="tex_00CD60" Format="rgba16" Width="16" Height="64" Offset="0xCD60" />
+        <Texture Name="object_ikninside_obj_Tex_00D560" OutName="tex_00D560" Format="i4" Width="64" Height="64" Offset="0xD560" />
+        <TextureAnimation Name="object_ikninside_obj_Matanimheader_00DD70" Offset="0xDD70" />
+        <Collision Name="object_ikninside_obj_Colheader_00DE48" Offset="0xDE48" /> <!-- Original name is "w2_ikn_yuka_bgdatainfo" -->
+    </File>
+</Root>

@@ -1,0 +1,35 @@
+<Root>
+    <File Name="Z2_RANDOM" Segment="2" Game="MM">
+        <Scene Name="Z2_RANDOM" Offset="0x0"/>
+    </File>
+    <File Name="Z2_RANDOM_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_00" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_00DL_0024E8" Offset="0x24E8"/>
+        <DList Name="Z2_RANDOM_room_00DL_002B10" Offset="0x2B10"/>
+    </File>
+    <File Name="Z2_RANDOM_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_01" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_01DL_008C90" Offset="0x8C90"/>
+        <DList Name="Z2_RANDOM_room_01DL_009728" Offset="0x9728"/>
+    </File>
+    <File Name="Z2_RANDOM_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_02" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_02DL_004B50" Offset="0x4B50"/>
+        <DList Name="Z2_RANDOM_room_02DL_0071B0" Offset="0x71B0"/>
+    </File>
+    <File Name="Z2_RANDOM_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_03" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_03DL_004B88" Offset="0x4B88"/>
+        <DList Name="Z2_RANDOM_room_03DL_0072D0" Offset="0x72D0"/>
+    </File>
+    <File Name="Z2_RANDOM_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_04" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_04DL_002548" Offset="0x2548"/>
+        <DList Name="Z2_RANDOM_room_04DL_0035A8" Offset="0x35A8"/>
+    </File>
+    <File Name="Z2_RANDOM_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_RANDOM_room_05" Offset="0x0"/>
+        <DList Name="Z2_RANDOM_room_05DL_002988" Offset="0x2988"/>
+        <DList Name="Z2_RANDOM_room_05DL_003BE0" Offset="0x3BE0"/>
+    </File>
+</Root>

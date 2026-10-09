@@ -1,0 +1,48 @@
+﻿<Root>
+    <!-- 
+        Assets for Ocean Spider House's bombable wall, Skullkid's painting, fireplace grate on the path to the Heart
+        Piece, bookshelves and chests of drawers.
+    -->
+    <File Name="object_kin2_obj" Segment="6">
+        <DList Name="gOceanSpiderHouseEmpty1DL" Offset="0x120" /> <!-- Not present in MM3D, but it was probably named "m2_KIN_BOMBhahen_modelT" based on the rest of this object. -->
+        <DList Name="gOceanSpiderHouseBombableWallDebrisDL" Offset="0x128" /> <!-- Original name is "m2_KIN_BOMBhahen_model" -->
+
+        <DList Name="gOceanSpiderHouseBombableWallCrackDL" Offset="0x2C0" /> <!-- Not present in MM3D, but it was probably named "m2_KIN_BOMBwall_modelT" based on the rest of this object. -->
+        <DList Name="gOceanSpiderHouseBombableWallDL" Offset="0x360" /> <!-- Original name is "m2_KIN_BOMBwall_model" -->
+        <Collision Name="gOceanSpiderHouseBombableWallCol" Offset="0x490" /> <!-- Original name is "m2_KIN_BOMBwall_bgdatainfo" -->
+
+        <DList Name="gOceanSpiderHouseEmpty2DL" Offset="0x650" /> <!-- Original name is "m2_KIN_GAKU_modelT" -->
+        <DList Name="gOceanSpiderHouseSkullkidPaintingDL" Offset="0x658" /> <!-- Original name is "m2_KIN_GAKU_model" -->
+        <Collision Name="gOceanSpiderHouseSkullkidPaintingCol" Offset="0x798" /> <!-- Original name is "m2_KIN_GAKU_bgdatainfo" -->
+
+        <DList Name="gOceanSpiderHouseEmpty3DL" Offset="0x820" /> <!-- Original name is "m2_KIN_SAKU_modelT" -->
+        <DList Name="gOceanSpiderHouseFireplaceGrateDL" Offset="0x828" /> <!-- Original name is "m2_KIN_SAKU_model" -->
+        <Collision Name="gOceanSpiderHouseFireplaceGrateCol" Offset="0x908" /> <!-- Original name is "m2_KIN_SAKU_bgdatainfo" -->
+        
+        <DList Name="gOceanSpiderHouseEmpty4DL" Offset="0xCA0" /> <!-- Original name is "m2_KIN_TANAbig_modelT" -->
+        <DList Name="gOceanSpiderHouseBookshelfDL" Offset="0xCA8" /> <!-- Original name is "m2_KIN_TANAbig_model"-->
+        <Collision Name="gOceanSpiderHouseBookshelfCol" Offset="0xF80" /> <!-- Original name is "m2_KIN_TANAbig_bgdatainfo" -->
+        
+        <DList Name="gOceanSpiderHouseEmpty5DL" Offset="0x10F0" /> <!-- Original name is "m2_KIN_TANAsmall_modelT" -->
+        <DList Name="gOceanSpiderHouseChestOfDrawersDL" Offset="0x10F8" /> <!-- Original name is "m2_KIN_TANAsmall_model" -->
+        <Collision Name="gOceanSpiderHouseChestOfDrawersCol" Offset="0x1328" /> <!-- Original name is "m2_KIN_TANAsmall_bgdatainfo" -->
+        
+        <Texture Name="gOceanSpiderHouseUnused1TLUT" OutName="ocean_spider_house_unused_tlut_1" Format="rgba16" Width="4" Height="4" Offset="0x1360" />
+        <Texture Name="gOceanSpiderHouseTLUT" OutName="ocean_spider_house_tlut" Format="rgba16" Width="4" Height="4" Offset="0x1380" />
+        <Texture Name="gOceanSpiderHouseUnused2TLUT" OutName="ocean_spider_house_unused_tlut_2" Format="rgba16" Width="4" Height="4" Offset="0x13A0" />
+        
+        <Texture Name="gOceanSpiderHouseBombableWallCrackTex" OutName="ocean_spider_house_bombable_wall_crack" Format="ia8" Width="64" Height="64" Offset="0x13C0" />
+        <Texture Name="gOceanSpiderHouseBookshelfWoodTex" OutName="ocean_spider_house_bookshelf_wood" Format="rgba16" Width="32" Height="32" Offset="0x23C0" />
+        <Texture Name="gOceanSpiderHouseFireplaceGrateTex" OutName="ocean_spider_house_fireplace_grate" Format="rgba16" Width="32" Height="32" Offset="0x2BC0" />
+        <Texture Name="gOceanSpiderHouseSkullkidPaintingTex" OutName="ocean_spider_house_skullkid_painting" Format="ci4" Width="64" Height="64" Offset="0x33C0" />
+        
+        <Texture Name="gOceanSpiderHouseChestOfDrawersFrontTex" OutName="ocean_spider_house_chest_of_drawers_front" Format="rgba16" Width="32" Height="64" Offset="0x3BC0" />
+        <Texture Name="gOceanSpiderHouseChestOfDrawersBackTex" OutName="ocean_spider_house_chest_of_drawers_back" Format="rgba16" Width="32" Height="64" Offset="0x4BC0" />
+        <Texture Name="gOceanSpiderHouseChestOfDrawersTopTex" OutName="ocean_spider_house_chest_of_drawers_top" Format="rgba16" Width="32" Height="32" Offset="0x5BC0" />
+        
+        <Texture Name="gOceanSpiderHouseBookshelfBooksTex" OutName="ocean_spider_house_bookshelf_books" Format="rgba16" Width="32" Height="64" Offset="0x63C0" />
+        
+        <Texture Name="gOceanSpiderHouseBombableWallDebrisTex1" OutName="ocean_spider_house_debris_1" Format="rgba16" Width="32" Height="32" Offset="0x73C0" />
+        <Texture Name="gOceanSpiderHouseBombableWallDebrisTex2" OutName="ocean_spider_house_debris_2" Format="i4" Width="64" Height="64" Offset="0x7BC0" />
+    </File>
+</Root>

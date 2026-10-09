@@ -1,0 +1,12 @@
+<Root>
+    <File Name="Z2_IKANAMAE" Segment="2" Game="MM">
+        <Scene Name="Z2_IKANAMAE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_IKANAMAE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_IKANAMAE_room_00" Offset="0x0"/>
+        <DList Name="Z2_IKANAMAE_room_00DL_004510" Offset="0x4510"/>
+        <DList Name="Z2_IKANAMAE_room_00DL_000650" Offset="0x650"/>
+        <DList Name="Z2_IKANAMAE_room_00DL_004498" Offset="0x4498"/>
+        <DList Name="Z2_IKANAMAE_room_00DL_004BC0" Offset="0x4BC0"/>
+    </File>
+</Root>

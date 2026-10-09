@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for Underwater grate -->
+    <File Name="object_kzsaku" Segment="6">
+        <DList Name="gUnderwaterGrateDL" Offset="0x40" /> <!-- Original name is "kz_saku_model" -->
+        <Texture Name="gUnderwaterGrateTex" OutName="underwater_grate" Format="ia8" Width="32" Height="128" Offset="0xD0" />
+        <Collision Name="gUnderwaterGrateCol" Offset="0x1118" /> <!-- Original name is "z2_30_saku_bgdatainfo" -->
+    </File>
+</Root>

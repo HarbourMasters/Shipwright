@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_dekucity_ana_obj" Segment="6">
+        <DList Name="object_dekucity_ana_obj_DL_000040" Offset="0x40" />
+        <Texture Name="object_dekucity_ana_obj_Tex_000100" OutName="tex_000100" Format="rgba16" Width="32" Height="32" Offset="0x100" />
+        <Texture Name="object_dekucity_ana_obj_Tex_000900" OutName="tex_000900" Format="i4" Width="64" Height="64" Offset="0x900" />
+    </File>
+</Root>

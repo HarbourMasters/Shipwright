@@ -1,0 +1,51 @@
+﻿<Root>
+    <!-- Assets for Deku Palace Guards -->
+    <File Name="object_dnk" Segment="6">
+        <Animation Name="gDekuPalaceGuardAttackAnim" Offset="0x31C" /> <!-- Original name is "dnk_attack" -->
+        <Animation Name="gDekuPalaceGuardDigAnim" Offset="0x430" /> <!-- Original name is "dnk_dig" -->
+        <Animation Name="gDekuPalaceGuardHappyAnim" Offset="0x6CC" /> <!-- Original name is "dnk_happy" -->
+        <Animation Name="gDekuPalaceGuardJumpAnim" Offset="0x894" /> <!-- Original name is "dnk_jump" -->
+        <Animation Name="gDekuPalaceGuardStartAnim" Offset="0xB70" /> <!-- Original name is "dnk_start" -->
+        <Texture Name="gDekuPalaceGuardLeafTorsoTex" OutName="deku_palace_guard_leaf_torso" Format="rgba16" Width="32" Height="32" Offset="0xB80" />
+        <Texture Name="gDekuPalaceGuardFootTex" OutName="deku_palace_guard_foot" Format="rgba16" Width="16" Height="16" Offset="0x1380" />
+        <Texture Name="gDekuPalaceGuardHeadTex" OutName="deku_palace_guard_head" Format="rgba16" Width="8" Height="8" Offset="0x1580" />
+        <Texture Name="gDekuPalaceGuardMouthTex" OutName="deku_palace_guard_mouth" Format="rgba16" Width="8" Height="8" Offset="0x1600" />
+        <Texture Name="gDekuPalaceGuardEyeOpenTex" OutName="deku_palace_guard_eye_open" Format="rgba16" Width="8" Height="8" Offset="0x1680" />
+        <Texture Name="gDekuPalaceGuardEyeHalfTex" OutName="deku_palace_guard_eye_half" Format="rgba16" Width="8" Height="8" Offset="0x1700" />
+        <Texture Name="gDekuPalaceGuardEyeClosedTex" OutName="deku_palace_guard_eye_closed" Format="rgba16" Width="8" Height="8" Offset="0x1780" />
+        <DList Name="gDekuPalaceGuardRightLeafDL" Offset="0x1DD0" />
+        <DList Name="gDekuPalaceGuardRightLeaf2DL" Offset="0x1E58" />
+        <DList Name="gDekuPalaceGuardLeftLeafDL" Offset="0x1E68" />
+        <DList Name="gDekuPalaceGuardLeftLeaf2DL" Offset="0x1EF0" />
+        <DList Name="gDekuPalaceGuardRearLeafDL" Offset="0x1F00" />
+        <DList Name="gDekuPalaceGuardRearLeaf2DL" Offset="0x1F90" />
+        <DList Name="gDekuPalaceGuardCenterLeafDL" Offset="0x1FA0" />
+        <DList Name="gDekuPalaceGuardCenterLeaf2DL" Offset="0x2030" />
+        <DList Name="gDekuPalaceGuardTorsoDL" Offset="0x2040" />
+        <DList Name="gDekuPalaceGuardTorso2DL" Offset="0x20F0" />
+        <DList Name="gDekuPalaceGuardEyesDL" Offset="0x2100" />
+        <DList Name="gDekuPalaceGuardEyes2DL" Offset="0x2188" />
+        <DList Name="gDekuPalaceGuardRightFootDL" Offset="0x2198" />
+        <DList Name="gDekuPalaceGuardRightFoot2DL" Offset="0x2240" />
+        <DList Name="gDekuPalaceGuardLeftFootDL" Offset="0x2250" />
+        <DList Name="gDekuPalaceGuardLeftFoot2DL" Offset="0x22F8" />
+        <DList Name="gDekuPalaceGuardHeadDL" Offset="0x2308" />
+        <DList Name="gDekuPalaceGuardHead2DL" Offset="0x2400" />
+        <DList Name="gDekuPalaceGuardSnoutDL" Offset="0x2410" />
+        <DList Name="gDekuPalaceGuardSnout2DL" Offset="0x2510" />
+        <DList Name="gDekuPalaceGuardFlowerDL" Offset="0x2700" />
+        <Limb Name="gDekuPalaceGuardTorsoLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_TORSO" Offset="0x27A8" />
+        <Limb Name="gDekuPalaceGuardHeadLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_HEAD" Offset="0x27B4" />
+        <Limb Name="gDekuPalaceGuardLeftLeafLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_LEFT_LEAF" Offset="0x27C0" />
+        <Limb Name="gDekuPalaceGuardRightLeafLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_RIGHT_LEAF" Offset="0x27CC" />
+        <Limb Name="gDekuPalaceGuardCenterLeafLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_CENTER_LEAF" Offset="0x27D8" />
+        <Limb Name="gDekuPalaceGuardRearLeafLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_REAR_LEAF" Offset="0x27E4" />
+        <Limb Name="gDekuPalaceGuardSnoutLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_SNOUT" Offset="0x27F0" />
+        <Limb Name="gDekuPalaceGuardEyesLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_EYES" Offset="0x27FC" />
+        <Limb Name="gDekuPalaceGuardLeftFootLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_LEFT_FOOT" Offset="0x2808" />
+        <Limb Name="gDekuPalaceGuardRightFootLimb" Type="Standard" EnumName="DEKU_PALACE_GUARD_LIMB_RIGHT_FOOT" Offset="0x2814" />
+        <Skeleton Name="gDekuPalaceGuardSkel" Type="Normal" LimbType="Standard" LimbNone="DEKU_PALACE_GUARD_LIMB_NONE" LimbMax="DEKU_PALACE_GUARD_LIMB_MAX" EnumName="DekuPalaceGuardLimb" Offset="0x2848" />
+        <Animation Name="gDekuPalaceGuardWaitAnim" Offset="0x2A08" /> <!-- Original name is "dnk_wait" -->
+        <Animation Name="gDekuPalaceGuardWalkAnim" Offset="0x2B6C" /> <!-- Original name is "dnk_walk" -->
+    </File>
+</Root>

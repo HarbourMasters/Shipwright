@@ -1,0 +1,20 @@
+﻿<Root>
+    <ExternalFile XmlPath="objects/gameplay_field_keep.xml" OutPath="assets/objects/gameplay_field_keep/"/>
+    <!-- Assets for the orange graveyard flowers -->
+    <File Name="object_hana" Segment="6">
+        <!-- Each of these is a single flower out of the 3 -->
+        <DList Name="gGraveyardFlower1DL" Offset="0x0" />
+        <DList Name="gGraveyardFlower2DL" Offset="0xA0" />
+        <DList Name="gGraveyardFlower3DL" Offset="0x140" />
+
+        <!-- Each of these is a single leaf out of the 5 -->
+        <DList Name="gGraveyardFlowerLeaf1DL" Offset="0x1E0" />
+        <DList Name="gGraveyardFlowerLeaf2DL" Offset="0x280" />
+        <DList Name="gGraveyardFlowerLeaf3DL" Offset="0x320" />
+        <DList Name="gGraveyardFlowerLeaf4DL" Offset="0x3C0" />
+        <DList Name="gGraveyardFlowerLeaf5DL" Offset="0x460" />
+
+        <!-- This DL combines all the other DLs to make the whole object -->
+        <DList Name="gGraveyardFlowersDL" Offset="0x500" /> <!-- Original name is "flower1_model" -->
+    </File>
+</Root>

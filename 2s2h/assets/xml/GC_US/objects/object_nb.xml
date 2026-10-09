@@ -1,0 +1,58 @@
+﻿<Root>
+    <!-- Assets for Anju's Grandma -->
+    <File Name="object_nb" Segment="6">
+        <!-- Anju's Grandma Animations-->
+        <Animation Name="gNbTalkAnim" Offset="0x290" /> <!-- Original name is "nb_talk01" -->
+        <Animation Name="gNbAngryAnim" Offset="0x52C" /> <!-- Original name is "nb_talk02" -->
+        <Animation Name="gNbRelievedAnim" Offset="0x6D4" /> <!-- Original name is "nb_talk03" -->
+        <Animation Name="gNbIdleAnim" Offset="0x990" /> <!-- Original name is "nb_wait01" -->
+
+        <!-- Anju's Grandma DisplayLists -->
+        <DList Name="gNbWheelchairDL" Offset="0x4A70" /> <!-- Includes legs -->
+        <DList Name="gNbRightWheelDL" Offset="0x5170" />
+        <DList Name="gNbLeftWheelDL" Offset="0x5430" />
+        <DList Name="gNbTorsoDL" Offset="0x56F0" />
+        <DList Name="gNbNeckDL" Offset="0x5988" />
+        <DList Name="gNbHeadDL" Offset="0x5AA8" />
+        <DList Name="gNbArmsBookDL" Offset="0x6390" />
+
+        <!-- Anju's Grandma TLUTs -->
+        <Texture Name="object_nb_TLUT_006910" OutName="tlut_006910" Format="rgba16" Width="16" Height="16" Offset="0x6910" />
+        <Texture Name="object_nb_TLUT_006B10" OutName="tlut_006B10" Format="rgba16" Width="16" Height="16" Offset="0x6B10" />
+        <Texture Name="gNbTigerTLUT" OutName="nb_tiger_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6D10" />
+
+        <!-- Anju's Grandma Textures -->
+        <Texture Name="gNbSkinTex" OutName="nb_skin" Format="ci8" Width="8" Height="8" Offset="0x6F10" TlutOffset="0x6910" />
+        <Texture Name="gNbEarTex" OutName="nb_ear" Format="ci8" Width="16" Height="16" Offset="0x6F50" TlutOffset="0x6910" />
+        <Texture Name="object_nb_Tex_007050" OutName="tex_007050" Format="ci8" Width="16" Height="16" Offset="0x7050" TlutOffset="0x6910" />
+        <Texture Name="gNbUpperEyelidTex" OutName="nb_upper_eyelid" Format="ci8" Width="16" Height="8" Offset="0x7150" TlutOffset="0x6910" />
+        <Texture Name="gNbHairTex" OutName="nb_hair" Format="ci8" Width="16" Height="32" Offset="0x71D0" TlutOffset="0x6B10" />
+        <Texture Name="gNbEyeTex" OutName="nb_eye" Format="ci8" Width="16" Height="8" Offset="0x73D0" TlutOffset="0x6910" />
+        <Texture Name="gNbLowerEyelidTex" OutName="nb_lower_eyelid" Format="ci8" Width="16" Height="8" Offset="0x7450" TlutOffset="0x6910" />
+        <Texture Name="object_nb_Tex_0074D0" OutName="tex_0074D0" Format="ci8" Width="16" Height="8" Offset="0x74D0" TlutOffset="0x6D10" />
+        <Texture Name="object_nb_Tex_007550" OutName="tex_007550" Format="ci8" Width="16" Height="16" Offset="0x7550" TlutOffset="0x6B10" />
+        <Texture Name="object_nb_Tex_007650" OutName="tex_007650" Format="i8" Width="16" Height="16" Offset="0x7650" />
+        <Texture Name="object_nb_Tex_007750" OutName="tex_007750" Format="rgba16" Width="8" Height="8" Offset="0x7750" />
+        <Texture Name="object_nb_Tex_0077D0" OutName="tex_0077D0" Format="ci8" Width="16" Height="16" Offset="0x77D0" TlutOffset="0x6B10" />
+        <Texture Name="object_nb_Tex_0078D0" OutName="tex_0078D0" Format="ci8" Width="16" Height="16" Offset="0x78D0" TlutOffset="0x6B10" />
+        <Texture Name="object_nb_Tex_0079D0" OutName="tex_0079D0" Format="ci8" Width="32" Height="16" Offset="0x79D0" TlutOffset="0x6B10" />
+        <Texture Name="gNbBookCoverTex" OutName="nb_book_cover" Format="ci8" Width="16" Height="16" Offset="0x7BD0" TlutOffset="0x6B10" />
+        <Texture Name="gNbSkirtTex" OutName="nb_skirt" Format="ci8" Width="16" Height="16" Offset="0x7CD0" TlutOffset="0x6910" />
+        <Texture Name="gNbBookPageTex" OutName="nb_book_page" Format="ci8" Width="16" Height="16" Offset="0x7DD0" TlutOffset="0x6D10" />
+        <Texture Name="gNbFingersTex" OutName="nb_fingers" Format="ci8" Width="16" Height="16" Offset="0x7ED0" TlutOffset="0x6910" />
+        <Texture Name="gNbTigerTex" OutName="nb_tiger" Format="ci8" Width="32" Height="64" Offset="0x7FD0" TlutOffset="0x6D10" />
+        <Texture Name="object_nb_Tex_0087D0" OutName="tex_0087D0" Format="ci8" Width="32" Height="32" Offset="0x87D0" TlutOffset="0x6B10" />
+
+        <!-- Anju's Grandma Limbs -->
+        <Limb Name="gNbWheelchairLimb" Type="Standard" EnumName="NB_LIMB_WHEELCHAIR" Offset="0x8BD0" />
+        <Limb Name="gNbTorsoLimb" Type="Standard" EnumName="NB_LIMB_TORSO" Offset="0x8BDC" />
+        <Limb Name="gNbArmsBookLimb" Type="Standard" EnumName="NB_LIMB_ARMS_BOOK" Offset="0x8BE8" />
+        <Limb Name="gNbNeckLimb" Type="Standard" EnumName="NB_LIMB_NECK" Offset="0x8BF4" />
+        <Limb Name="gNbHeadLimb" Type="Standard" EnumName="NB_LIMB_HEAD" Offset="0x8C00" />
+        <Limb Name="gNbLeftWheelLimb" Type="Standard" EnumName="NB_LIMB_LEFT_WHEEL" Offset="0x8C0C" />
+        <Limb Name="gNbRightWheelLimb" Type="Standard" EnumName="NB_LIMB_RIGHT_WHEEL" Offset="0x8C18" />
+
+        <!-- Anju's Grandma Skeleton -->
+        <Skeleton Name="gNbSkel" Type="Flex" LimbType="Standard" LimbNone="NB_LIMB_NONE" LimbMax="NB_LIMB_MAX" EnumName="NbLimb" Offset="0x8C40" />
+    </File>
+</Root>

@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Great Fairys Sword -->
+    <File Name="object_gi_sword_4" Segment="6">
+        
+        <!-- Great Fairys Sword Display Lists -->
+        <DList Name="gGiGreatFairysSwordHiltEmblemDL" Offset="0x940" /> <!-- The leafy hilt and the green emblem on the blade -->
+        <DList Name="gGiGreatFairysSwordBladeDL" Offset="0xAD8" />
+
+        <!-- Great Fairys Sword Textures -->
+        <Texture Name="gGiGreatFairysSwordLeafPatternTex" OutName="gi_great_fairys_sword_leaf_pattern" Format="ia8" Width="32" Height="32" Offset="0xE58" />
+        <Texture Name="gGiGreatFairysSwordBladeTex" OutName="gi_great_fairys_sword_blade" Format="i8" Width="16" Height="16" Offset="0x1258" />
+        <Texture Name="gGiGreatFairysSwordEmblemBackgroundTex" OutName="gi_great_fairys_sword_emblem_background" Format="i8" Width="16" Height="16" Offset="0x1358" />
+    </File>
+</Root>

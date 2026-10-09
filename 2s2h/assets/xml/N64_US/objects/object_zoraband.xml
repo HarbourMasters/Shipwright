@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_zoraband" Segment="6">
+        <DList Name="object_zoraband_DL_000180" Offset="0x180" /> <!-- Original name is "sl_zoraband_modelT" -->
+        <DList Name="object_zoraband_DL_0002A8" Offset="0x2A8" /> <!-- Original name is "sl_zoraband_model" -->
+        <Texture Name="object_zoraband_Tex_000330" OutName="tex_000330" Format="i8" Width="32" Height="32" Offset="0x330" />
+        <Texture Name="object_zoraband_Tex_000730" OutName="tex_000730" Format="i8" Width="32" Height="32" Offset="0x730" />
+        <Texture Name="object_zoraband_Tex_000B30" OutName="tex_000B30" Format="i8" Width="32" Height="32" Offset="0xB30" />
+        <TextureAnimation Name="object_zoraband_Matanimheader_000F38" Offset="0xF38" />
+    </File>
+</Root>

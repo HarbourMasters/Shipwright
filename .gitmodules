@@ -6,3 +6,9 @@
 	path = torch
 	url = https://github.com/HarbourMasters/Torch.git
 	branch = main
+[submodule "2s2h/OTRExporter"]
+	path = 2s2h/OTRExporter
+	url = https://github.com/HarbourMasters/OTRExporter.git
+[submodule "2s2h/ZAPDTR"]
+	path = 2s2h/ZAPDTR
+	url = https://github.com/HarbourMasters/ZAPDTR.git

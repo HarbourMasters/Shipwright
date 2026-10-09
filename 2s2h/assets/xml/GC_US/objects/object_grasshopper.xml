@@ -1,0 +1,79 @@
+﻿<Root>
+    <!-- Assets for Dragonflies. -->
+    <File Name="object_grasshopper" Segment="6">
+        <!-- Dragonfly Animations -->
+        <Animation Name="gDragonflyAttackAnim" Offset="0x66C" /> <!-- Original name is "kdz_attack" -->
+        <Animation Name="gDragonflyDeadAnim" Offset="0x8D4" /> <!-- Original name is "kdz_dead_hit" -->
+        <Animation Name="gDragonflyFallAnim" Offset="0x9E0" /> <!-- Original name is "kdz_down" -->
+        <Animation Name="gDragonflyFlyAnim" Offset="0xF9C" /> <!-- Original name is "kdz_fly" -->
+
+        <!-- Dragonfly Textures -->
+        <Texture Name="gDragonflyMouthAndTailSegmentUndersideTex" OutName="dragonfly_mouth_and_tail_segment_underside" Format="rgba16" Width="8" Height="8" Offset="0xFB0" />
+        <Texture Name="gDragonflyTailBackTex" OutName="dragonfly_tail_back" Format="rgba16" Width="16" Height="32" Offset="0x1030" />
+        <Texture Name="gDragonflyThoraxBackAndLegsTex" OutName="dragonfly_thorax_back_and_legs" Format="rgba16" Width="16" Height="16" Offset="0x1430" />
+        <Texture Name="gDragonflyStripeTex" OutName="dragonfly_stripe" Format="rgba16" Width="8" Height="8" Offset="0x1630" />
+        <Texture Name="gDragonflyHeadAndTailTipTex" OutName="dragonfly_head_and_tail_tip" Format="rgba16" Width="32" Height="8" Offset="0x16B0" />
+        <Texture Name="gDragonflyThoraxSidesTex" OutName="dragonfly_thorax_sides" Format="rgba16" Width="16" Height="8" Offset="0x18B0" />
+        <Texture Name="gDragonflyWingTex" OutName="dragonfly_wing" Format="rgba16" Width="8" Height="8" Offset="0x19B0" />
+        <Texture Name="gDragonflyEyeTex" OutName="dragonfly_eye" Format="rgba16" Width="8" Height="8" Offset="0x1A30" />
+        <Texture Name="gDragonflyFaceTex" OutName="dragonfly_face" Format="rgba16" Width="16" Height="16" Offset="0x1AB0" />
+        
+        <!-- Dragonfly Limb DisplayLists -->
+        <DList Name="gDragonflyBackRightFootDL" Offset="0x2BE0" />
+        <DList Name="gDragonflyBackLeftLowerLegDL" Offset="0x2C70" />
+        <DList Name="gDragonflyBackRightLowerLegDL" Offset="0x2D00" />
+        <DList Name="gDragonflyFrontLeftUpperLegDL" Offset="0x2D90" />
+        <DList Name="gDragonflyFrontRightUpperLegDL" Offset="0x2E28" />
+        <DList Name="gDragonflyFrontLeftLowerLegDL" Offset="0x2EC0" />
+        <DList Name="gDragonflyFrontRightLowerLegDL" Offset="0x2F50" />
+        <DList Name="gDragonflyLeftWingDL" Offset="0x2FE0" />
+        <DList Name="gDragonflyRightWingDL" Offset="0x3078" />
+        <DList Name="gDragonflyBackRightUpperLegDL" Offset="0x3110" />
+        <DList Name="gDragonflyBackLeftUpperLegDL" Offset="0x31A8" />
+        <DList Name="gDragonflyTailTipDL" Offset="0x3240" />
+        <DList Name="gDragonflyTailSegment4DL" Offset="0x32E8" />
+        <DList Name="gDragonflyTailSegment3DL" Offset="0x33E0" />
+        <DList Name="gDragonflyTailSegment2DL" Offset="0x3520" />
+        <DList Name="gDragonflyTailSegment1DL" Offset="0x3660" />
+        <DList Name="gDragonflyThoraxDL" Offset="0x3798" />
+        <DList Name="gDragonflyJawDL" Offset="0x3900" />
+        <DList Name="gDragonflyHeadDL" Offset="0x39E0" />
+        <DList Name="gDragonflyBackLeftFootDL" Offset="0x3BE0" />
+        <DList Name="gDragonflyFrontLeftFootDL" Offset="0x3C70" />
+        <DList Name="gDragonflyFrontRightFootDL" Offset="0x3D00" />
+
+        <!-- Dragonfly Limbs -->
+        <Limb Name="gDragonflyRootLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_ROOT" Offset="0x3D90" />
+        <Limb Name="gDragonflyTailSegment1Limb" Type="Standard" EnumName="DRAGONFLY_LIMB_TAIL_SEGMENT_1" Offset="0x3D9C" />
+        <Limb Name="gDragonflyTailSegment2Limb" Type="Standard" EnumName="DRAGONFLY_LIMB_TAIL_SEGMENT_2" Offset="0x3DA8" />
+        <Limb Name="gDragonflyTailSegment3Limb" Type="Standard" EnumName="DRAGONFLY_LIMB_TAIL_SEGMENT_3" Offset="0x3DB4" />
+        <Limb Name="gDragonflyTailSegment4Limb" Type="Standard" EnumName="DRAGONFLY_LIMB_TAIL_SEGMENT_4" Offset="0x3DC0" />
+        <Limb Name="gDragonflyTailTipLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_TAIL_TIP" Offset="0x3DCC" />
+        <Limb Name="gDragonflyThoraxLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_THORAX" Offset="0x3DD8" />
+        <Limb Name="gDragonflyLeftWingLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_LEFT_WING" Offset="0x3DE4" />
+        <Limb Name="gDragonflyRightWingLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_RIGHT_WING" Offset="0x3DF0" />
+        <Limb Name="gDragonflyBackLeftUpperLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_LEFT_UPPER_LEG" Offset="0x3DFC" />
+        <Limb Name="gDragonflyBackLeftLowerLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_LEFT_LOWER_LEG" Offset="0x3E08" />
+        <Limb Name="gDragonflyBackLeftFootLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_LEFT_FOOT" Offset="0x3E14" />
+        <Limb Name="gDragonflyBackRightUpperLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_RIGHT_UPPER_LEG" Offset="0x3E20" />
+        <Limb Name="gDragonflyBackRightLowerLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_RIGHT_LOWER_LEG" Offset="0x3E2C" />
+        <Limb Name="gDragonflyBackRightFootLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_BACK_RIGHT_FOOT" Offset="0x3E38" />
+        <Limb Name="gDragonflyFrontLeftUpperLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x3E44" />
+        <Limb Name="gDragonflyFrontLeftLowerLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x3E50" />
+        <Limb Name="gDragonflyFrontLeftFootLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_LEFT_FOOT" Offset="0x3E5C" />
+        <Limb Name="gDragonflyFrontRightUpperLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x3E68" />
+        <Limb Name="gDragonflyFrontRightLowerLegLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x3E74" />
+        <Limb Name="gDragonflyFrontRightFootLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_FRONT_RIGHT_FOOT" Offset="0x3E80" />
+        <Limb Name="gDragonflyHeadLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_HEAD" Offset="0x3E8C" />
+        <Limb Name="gDragonflyJawLimb" Type="Standard" EnumName="DRAGONFLY_LIMB_JAW" Offset="0x3E98" />
+
+        <!-- Dragonfly Skeleton -->
+        <Skeleton Name="gDragonflySkel" Type="Normal" LimbType="Standard" LimbNone="DRAGONFLY_LIMB_NONE" LimbMax="DRAGONFLY_LIMB_MAX" EnumName="DragonflyLimb" Offset="0x3F00" />
+
+        <!-- Dragonfly Animations -->
+        <Animation Name="gDragonflyRaiseTailAnim" Offset="0x42F0" /> <!-- Original name is "kdz_hight" -->
+        <Animation Name="gDragonflyDamageAnim" Offset="0x47AC" /> <!-- Original name is "kdz_hit" -->
+        <Animation Name="gDragonflyLowerTailAnim" Offset="0x4BC8" /> <!-- Original name is "kdz_low" -->
+        <Animation Name="gDragonflyHoverAnim" Offset="0x524C" /> <!-- Original name is "kdz_wait" -->
+    </File>
+</Root>

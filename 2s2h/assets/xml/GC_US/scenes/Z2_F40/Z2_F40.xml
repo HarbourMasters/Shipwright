@@ -1,0 +1,10 @@
+<Root>
+    <File Name="Z2_F40" Segment="2" Game="MM">
+        <Scene Name="Z2_F40" Offset="0x0"/>
+    </File>
+    <File Name="Z2_F40_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_F40_room_00" Offset="0x0"/>
+        <DList Name="Z2_F40_room_00DL_0090F0" Offset="0x90F0"/>
+        <DList Name="Z2_F40_room_00DL_00BE50" Offset="0xBE50"/>
+    </File>
+</Root>

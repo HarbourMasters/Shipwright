@@ -1,0 +1,17 @@
+﻿<Root>
+    <!-- Get Item Draw: All Night's Mask -->
+    <File Name="object_gi_mask06" Segment="6">
+
+        <!-- All Night's Mask Display Lists -->
+        <DList Name="gGiAllNightMaskFaceDL" Offset="0x6F0" />
+        <DList Name="gGiAllNightMaskEyesDL" Offset="0x968" />
+
+        <!-- All Night's Mask TLUT -->
+        <Texture Name="gGiAllNightMaskEyeTLUT" OutName="gi_all_night_mask_eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0xAD8" />
+
+        <!-- All Night's Mask Textures -->
+        <Texture Name="gGiAllNightMaskEyeTex" OutName="gi_all_night_mask_eye" Format="ci8" Width="32" Height="32" Offset="0xCD8" />
+        <Texture Name="gGiAllNightMaskFacePattern1Tex" OutName="gi_all_night_mask_face_pattern_1" Format="i8" Width="32" Height="32" Offset="0x10D8" />
+        <Texture Name="gGiAllNightMaskFacePattern2Tex" OutName="gi_all_night_mask_face_pattern_2" Format="i4" Width="64" Height="32" Offset="0x14D8" />
+    </File>
+</Root>

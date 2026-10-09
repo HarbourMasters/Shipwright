@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_omoya_obj" Segment="6">
+        <DList Name="object_omoya_obj_DL_0001A0" Offset="0x1A0" /> <!-- Original name is "yane_model" -->
+        <Texture Name="object_omoya_obj_TLUT_0002D8" OutName="tlut_0002D8" Format="rgba16" Width="4" Height="4" Offset="0x2D8" />
+        <Texture Name="object_omoya_obj_Tex_0002F8" OutName="tex_0002F8" Format="rgba16" Width="64" Height="32" Offset="0x2F8" />
+        <Texture Name="object_omoya_obj_Tex_0012F8" OutName="tex_0012F8" Format="ci4" Width="64" Height="64" Offset="0x12F8" />
+    </File>
+</Root>

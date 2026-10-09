@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_botihasira" Segment="6">
+        <DList Name="object_botihasira_DL_0004A0" Offset="0x4A0" /> <!-- Original name is "z2_botihasira_model" ("boti" = "graveyard", "hasira" = "post") -->
+        <DList Name="object_botihasira_DL_000628" Offset="0x628" />
+        <DList Name="object_botihasira_DL_000638" Offset="0x638" />
+        <Texture Name="object_botihasira_Tex_000648" OutName="tex_000648" Format="rgba16" Width="32" Height="64" Offset="0x648" />
+        <Texture Name="object_botihasira_Tex_001648" OutName="tex_001648" Format="rgba16" Width="32" Height="16" Offset="0x1648" />
+        <TextureAnimation Name="object_botihasira_Matanimheader_001A48" Offset="0x1A50" /> <!-- Empty TexAnim -->
+        <Collision Name="object_botihasira_Colheader_001BD8" Offset="0x1BD8" /> <!-- Original name is "z2_botihasira_bgdatainfo" -->
+    </File>
+</Root>

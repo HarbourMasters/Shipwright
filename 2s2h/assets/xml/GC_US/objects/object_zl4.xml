@@ -1,0 +1,165 @@
+﻿<Root>
+    <!-- Child Zelda: from the cutscene where Deku Link recalls how to play Song of Time after getting his Ocarina back -->
+    <File Name="object_zl4" Segment="6">
+        <!-- Everything up to and including the skeleton is retained from the beginning of OoT's object_zl4 -->
+        <Animation Name="gDmZl4IdleAnim" Offset="0x654" /> <!-- Original name is "anim_matsu" -->
+        <Texture Name="gDmZl4DressTLUT" OutName="dress_tlut" Format="rgba16" Width="16" Height="16" Offset="0x670" />
+        <Texture Name="gDmZl4EyeTLUT" OutName="eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0x870" />
+        <Texture Name="gDmZl4MouthTLUT" OutName="mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0xA70" />
+        <Texture Name="gDmZl4DressGradientTex" OutName="dress_gradient" Format="ci8" Width="8" Height="8" Offset="0xC70" />
+        <Texture Name="gDmZl4DressPurpleTex" OutName="purple_dress_patern" Format="ci8" Width="16" Height="16" Offset="0xCB0" />
+        <Texture Name="gDmZl4TriforceSashTex" OutName="triforce_sash" Format="ci8" Width="32" Height="64" Offset="0xDB0" />
+        <Texture Name="gDmZl4BootLacesTex" OutName="boot_laces" Format="rgba16" Width="8" Height="8" Offset="0x15B0" />
+        <Texture Name="gDmZl4BootTex" OutName="boot" Format="rgba16" Width="8" Height="8" Offset="0x1630" />
+        <Texture Name="gDmZl4AltDressBeltTex" OutName="alternate_dress_belt" Format="ci8" Width="32" Height="8" Offset="0x16B0" />
+        <Texture Name="gDmZl4AltDressTex" OutName="alternate_dress_patern" Format="ci8" Width="8" Height="8" Offset="0x17B0" />
+        <Texture Name="gDmZl4DressWrinklesTex" OutName="dress_wrinkles" Format="ci8" Width="32" Height="32" Offset="0x17F0" />
+        <Texture Name="gDmZl4AltDressLiningTex" OutName="alternate_dress_lining" Format="rgba16" Width="8" Height="16" Offset="0x1BF0" />
+        <Texture Name="gDmZl4AltDressGradientTex" OutName="alternate_dress_gradient" Format="ci8" Width="16" Height="16" Offset="0x1CF0" />
+
+        <!-- not named in OOT, some blue blemish center -->
+        <Texture Name="gDmZl4_001DF0_Tex" OutName="tex_001DF0" Format="ci8" Width="8" Height="8" Offset="0x1DF0" />
+        <Texture Name="gDmZl4HeadressTriforceEmblemTex" OutName="headdress_triforce_emblem" Format="rgba16" Width="16" Height="32" Offset="0x1E30" />
+        <Texture Name="gDmZl4HeadressGradientTex" OutName="headdress_gradient" Format="ci8" Width="8" Height="8" Offset="0x2230" />
+        <!-- not named in OOT, gradient with dark blotch bottom-->
+        <Texture Name="gDmZl4_002270_Tex" OutName="tex_002270" Format="ci8" Width="8" Height="16" Offset="0x2270" />
+        <Texture Name="gDmZl4HeaddressStripeTex" OutName="headdress_stripe" Format="ci8" Width="16" Height="32" Offset="0x22F0" />
+        <Texture Name="gDmZl4EarTex" OutName="ear" Format="rgba16" Width="16" Height="16" Offset="0x24F0" />
+        <Texture Name="gDmZl4HairOnSideTex" OutName="hair_on_side" Format="rgba16" Width="16" Height="16" Offset="0x26F0" />
+        <Texture Name="gDmZl4SkinGradientTex" OutName="skin_gradient" Format="rgba16" Width="8" Height="8" Offset="0x28F0" />
+        <!-- not named in OOT, some skin blemish center -->
+        <Texture Name="gDmZl4_002970_Tex" OutName="tex_002970" Format="rgba16" Width="8" Height="8" Offset="0x2970" />
+        <Texture Name="gDmZl4HairTex" OutName="hair" Format="rgba16" Width="16" Height="8" Offset="0x29F0" />
+
+        <!-- Eye Textures -->
+        <Texture Name="gDmZl4EyeOpenNormalTex" OutName="eye_open_normal" Format="ci8" Width="32" Height="32" Offset="0x2AF0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeHalfTex" OutName="eye_blinking" Format="ci8" Width="32" Height="32" Offset="0x2EF0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x32F0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeWideTex" OutName="eye_wide" Format="ci8" Width="32" Height="32" Offset="0x36F0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeHappyTex" OutName="eye_happy" Format="ci8" Width="32" Height="32" Offset="0x3AF0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeOpenLookingLeftTex" OutName="eye_open_looking_left" Format="ci8" Width="32" Height="32" Offset="0x3EF0" TlutOffset="0x870"/>
+        <Texture Name="gDmZl4EyeOpenLookingRightTex" OutName="eye_open_looking_right" Format="ci8" Width="32" Height="32" Offset="0x42F0" TlutOffset="0x870"/>
+
+        <!-- Mouth Textures -->
+        <Texture Name="gZl4MouthNeutralTex" OutName="mouth_neutral" Format="ci8" Width="32" Height="32" Offset="0x46F0" TlutOffset="0xA70"/>
+        <Texture Name="gZl4MouthOpenSmilingTex" OutName="mouth_open_smiling" Format="ci8" Width="32" Height="32" Offset="0x4AF0" TlutOffset="0xA70"/>
+        <Texture Name="gZl4MouthFrowningTex" OutName="mouth_frowning" Format="ci8" Width="32" Height="32" Offset="0x4EF0" TlutOffset="0xA70"/>
+        <Texture Name="gZl4MouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="32" Offset="0x52F0" TlutOffset="0xA70"/>
+
+        <Texture Name="gDmZl4FingersTex" OutName="fingers" Format="rgba16" Width="16" Height="16" Offset="0x56F0" />
+        <Texture Name="gDmZl4BraceletTex" OutName="bracelet" Format="ci8" Width="16" Height="16" Offset="0x58F0" />
+        <Texture Name="gDmZl4BlueUndershirtGradient1Tex" OutName="blue_undershirt_gradient" Format="rgba16" Width="8" Height="8" Offset="0x59F0" />
+        <Texture Name="gDmZl4BlueUndershirtGradient2Tex" OutName="blue_undershirt_gradient_2" Format="rgba16" Width="16" Height="16" Offset="0x5A70" />
+        <Texture Name="gDmZl4StripedShoulderTex" OutName="striped_shoulder_patern" Format="ci8" Width="8" Height="8" Offset="0x5C70" />
+        <Texture Name="gDmZl4UndershirtWrinklesTex" OutName="undershirt_wrinkles" Format="ci8" Width="16" Height="16" Offset="0x5CB0" />
+        <Texture Name="gDmZl4PendantTex" OutName="pendant" Format="rgba16" Width="32" Height="32" Offset="0x5DB0" />
+
+        <DList Name="gDmZl4ChestDL" Offset="0xA630" />
+        <DList Name="gDmZl4HeadDL" Offset="0xAFC8" />
+        <DList Name="gDmZl4RightUpperArmDL" Offset="0xB8D8" />
+        <DList Name="gDmZl4RightForearmDL" Offset="0xBB40" />
+        <DList Name="gDmZl4RightHandDL" Offset="0xBC90" />
+        <DList Name="gDmZl4LeftUpperArmDL" Offset="0xBE70" />
+        <DList Name="gDmZl4LeftForearmDL" Offset="0xC0E0" />
+        <DList Name="gDmZl4LeftHandDL" Offset="0xC230" />
+        <DList Name="gDmZl4HorseRidingDressDL" Offset="0xC410" />
+        <DList Name="gDmZl4WaistDL" Offset="0xC8D0" />
+        <DList Name="gDmZl4Dress1DL" Offset="0xD0E8" />
+        <DList Name="gDmZl4Dress2DL" Offset="0xD2A0" />
+        <DList Name="gDmZl4Dress3DL" Offset="0xD460" />
+        <DList Name="gDmZl4RightLegDL" Offset="0xD598" />
+        <DList Name="gDmZl4RightBootDL" Offset="0xD5E8" />
+        <DList Name="gDmZl4LeftLegDL" Offset="0xD728" />
+        <DList Name="gDmZl4LeftBootDL" Offset="0xD778" />
+
+        <!-- Ocarina, drawn to right hand in OverrideLimbDraw -->
+        <Texture Name="gDmZl4OcarinaTex" OutName="ocarina" Format="rgba16" Width="32" Height="16" Offset="0xD8B8" />
+        <DList Name="gDmZl4OcarinaDL" Offset="0xDE08" /> <!-- Original name is "zl4_okarina_model" -->
+
+        <Limb Name="gDmZl4RootLimb" Type="Standard" EnumName="ZL4_LIMB_ROOT" Offset="0xDF28" />
+        <Limb Name="gDmZl4WaistLimb" Type="Standard" EnumName="ZL4_LIMB_WAIST" Offset="0xDF34" />
+        <Limb Name="gDmZl4LeftLegLimb" Type="Standard" EnumName="ZL4_LIMB_LEFT_LEG" Offset="0xDF40" />
+        <Limb Name="gDmZl4LeftFootLimb" Type="Standard" EnumName="ZL4_LIMB_LEFT_FOOT" Offset="0xDF4C" />
+        <Limb Name="gDmZl4RightLegLimb" Type="Standard" EnumName="ZL4_LIMB_RIGHT_LEG" Offset="0xDF58" />
+        <Limb Name="gDmZl4RightFootLimb" Type="Standard" EnumName="ZL4_LIMB_RIGHT_FOOT" Offset="0xDF64" />
+        <Limb Name="gDmZl4Dress1Limb" Type="Standard" EnumName="ZL4_LIMB_DRESS_1" Offset="0xDF70" />
+        <Limb Name="gDmZl4Dress2Limb" Type="Standard" EnumName="ZL4_LIMB_DRESS_2" Offset="0xDF7C" />
+        <Limb Name="gDmZl4Dress3Limb" Type="Standard" EnumName="ZL4_LIMB_DRESS_3" Offset="0xDF88" />
+        <Limb Name="gDmZl4TorsoLimb" Type="Standard" EnumName="ZL4_LIMB_TORSO" Offset="0xDF94" />
+        <Limb Name="gDmZl4LeftUpperArmLimb" Type="Standard" EnumName="ZL4_LIMB_LEFT_UPPER_ARM" Offset="0xDFA0" />
+        <Limb Name="gDmZl4LeftForearmLimb" Type="Standard" EnumName="ZL4_LIMB_LEFT_FOREARM" Offset="0xDFAC" />
+        <Limb Name="gDmZl4LeftHandLimb" Type="Standard" EnumName="ZL4_LIMB_LEFT_HAND" Offset="0xDFB8" />
+        <Limb Name="gDmZl4RightUpperArmLimb" Type="Standard" EnumName="ZL4_LIMB_RIGHT_UPPER_ARM" Offset="0xDFC4" />
+        <Limb Name="gDmZl4RightForearmLimb" Type="Standard" EnumName="ZL4_LIMB_RIGHT_FOREARM" Offset="0xDFD0" />
+        <Limb Name="gDmZl4RightHandLimb" Type="Standard" EnumName="ZL4_LIMB_RIGHT_HAND" Offset="0xDFDC" />
+        <Limb Name="gDmZl4HeadLimb" Type="Standard" EnumName="ZL4_LIMB_HEAD" Offset="0xDFE8" />
+        <Skeleton Name="gZl4Skel" Type="Flex" LimbType="Standard" LimbNone="ZL4_LIMB_NONE" LimbMax="ZL4_LIMB_MAX" EnumName="Zl4Limb" Offset="0xE038" />
+
+        <!-- Used in MM -->
+        <Animation Name="gDmZl4TurningAroundAnim" Offset="0xF250" /> <!-- Original name is probably "cze_fue_furimuki" -->
+        
+        <!-- Unused Flute Animations -->
+        <Animation Name="gDmZl4HoldingFluteInFrontAnim" Offset="0xFDC8" /> <!-- Original name is probably "cze_fue_furimuki_wait" -->
+        <Animation Name="gDmZl4RaiseFluteToPlayAnim" Offset="0x10334" /> <!-- Original name is probably "cze_fue_kamae" -->
+        <Animation Name="gDmZl4LowerFluteAfterPlayAnim" Offset="0x105C8" /> <!-- Original name is probably "cze_fue_niyari" -->
+        <Animation Name="gDmZl4PlayingFluteAnim" Offset="0x10D50" /> <!-- Original name is probably "cze_fue_play" -->
+
+        <!-- Used in MM -->
+        <Animation Name="gDmZl4FacingAwayIdleAnim" Offset="0x11294" /> <!-- Original name is probably "cze_fue_wait" -->
+        <Animation Name="gDmZl4GivingItemStartAnim" Offset="0x11BB8" /> <!-- Original name is "cze_okarina_dasu" -->
+        <Animation Name="gDmZl4GivingItemLoopAnim" Offset="0x122E0" /> <!-- Original name is "cze_okarina_dasu_loop" -->
+        <Animation Name="gDmZl4RaisingOcarinaToPlayAnim" Offset="0x12A84" /> <!-- Original name is "cze_okarina_fuku" -->
+        <Animation Name="gDmZl4PlayingOcarinaAnim" Offset="0x1303C" /> <!-- Original name is "cze_okarina_fuku_loop" -->
+
+        <!-- Unused Backflipping Animation -->
+        <Animation Name="gDmZl4BackflipAnim" Offset="0x13934" /> <!-- Original name is probably "cze_op_bakutyu" -->
+        <Animation Name="gDmZl4BackflipPrepareAnim" Offset="0x13F2C" /> <!-- Original name is probably "cze_op_suihei" -->
+        <Animation Name="gDmZl4BackflipPrepareHoldingReadyAnim" Offset="0x14558" /> <!-- Original name is probably "cze_op_suihei_wait" -->
+
+        <!-- Used in MM --> 
+        <Animation Name="gDmZl4TurningAround2Anim" Offset="0x15494" /> <!-- Original name is "cze_usiro_furimuki" -->
+        <Animation Name="gDmZl4HandsOverEmblemLoopAnim" Offset="0x15A4C" /> <!-- Original name is "cze_usiro_furimuki_roop" -->
+        <Animation Name="gDmZl4FacingAwayHandsOverEmblemLoopAnim" Offset="0x15DA0" /> <!-- Original name is "cze_usiro_roop" -->
+
+        <!-- Unused in MM, copy of OoT Animations in object_zl4:(0xE050 -> End) --> 
+        <Animation Name="gDmZl4Anim_016328" Offset="0x16328" /> <!-- Original name is "demo_aisatu" -->
+        <Animation Name="gDmZl4Anim_016924" Offset="0x16924" /> <!-- Original name is "demo_aisatu_wait" -->
+        <Animation Name="gDmZl4Anim_016E04" Offset="0x16E04" /> <!-- Original name is "demo_arigato" -->
+        <Animation Name="gDmZl4Anim_0175F4" Offset="0x175F4" /> <!-- Original name is "demo_arigato_wait" -->
+        <Animation Name="gDmZl4Anim_018B58" Offset="0x18B58" /> <!-- Seems like a modified form of "gChildZelda1Anim_10B38" from object_zl1. Original name is probably "demo_furimuki" -->
+        <Animation Name="gDmZl4Anim_018FA8" Offset="0x18FA8" /> <!-- Seems like a modified form of "gChildZelda1Anim_11348" from object_zl1. Original name is probably "demo_furimuki_wait" -->
+        <Animation Name="gDmZl4Anim_0193F8" Offset="0x193F8" /> <!-- Original name is "demo_gomen" -->
+        <Animation Name="gDmZl4Anim_019894" Offset="0x19894" /> <!-- Original name is "demo_himitu" -->
+        <Animation Name="gDmZl4Anim_01A344" Offset="0x1A344" /> <!-- Original name is "demo_kaku" -->
+        <Animation Name="gDmZl4Anim_01ABB8" Offset="0x1ABB8" /> <!-- Original name is "demo_kaku_wait" -->
+        <Animation Name="gDmZl4Anim_01AFE0" Offset="0x1AFE0" /> <!-- Seems like a modified form of "gChildZelda1Anim_116E4" from object_zl1. Original name is probably "demo_kasige" -->
+        <Animation Name="gDmZl4Anim_01B388" Offset="0x1B388" /> <!-- Seems like a modified form of "gChildZelda1Anim_11B88" from object_zl1. Original name is probably "demo_kasige_wait" -->
+        <Animation Name="gDmZl4Anim_01B7B0" Offset="0x1B7B0" /> <!-- Original name is "demo_kirai" -->
+        <Animation Name="gDmZl4Anim_01BC00" Offset="0x1BC00" /> <!-- Original name is "demo_kirai_wait" -->
+        <Animation Name="gDmZl4Anim_01DC74" Offset="0x1DC74" /> <!-- Original name is "demo_modoru" -->
+        <Animation Name="gDmZl4Anim_01E714" Offset="0x1E714" /> <!-- Original name is "demo_modoru_to_omegai2" -->
+        <Animation Name="gDmZl4Anim_01EA68" Offset="0x1EA68" /> <!-- Original name is "demo_modoru_wait" -->
+        <Animation Name="gDmZl4Anim_01EFCC" Offset="0x1EFCC" /> <!-- Original name is "demo_namae" -->
+        <Animation Name="gDmZl4Anim_01F578" Offset="0x1F578" /> <!-- Original name is "demo_namae_wait" -->
+        <Animation Name="gDmZl4Anim_01FDBC" Offset="0x1FDBC" /> <!-- Original name is "demo_naname_wait" -->
+        <Animation Name="gDmZl4Anim_0205F8" Offset="0x205F8" /> <!-- Original name is "demo_noridasi" -->
+        <Animation Name="gDmZl4Anim_020E6C" Offset="0x20E6C" /> <!-- Original name is "demo_noridasi_wait" -->
+        <Animation Name="gDmZl4Anim_021360" Offset="0x21360" /> <!-- Seems like a modified form of "gChildZelda1Anim_12118" from object_zl1. Original name is probably "demo_nozoki_wait" -->
+        <Animation Name="gDmZl4Anim_02167C" Offset="0x2167C" /> <!-- Original name is "demo_onegai" -->
+        <Animation Name="gDmZl4Anim_02205C" Offset="0x2205C" /> <!-- Original name is "demo_onegai2" -->
+        <Animation Name="gDmZl4Anim_022840" Offset="0x22840" /> <!-- Original name is "demo_onegai2_wait" -->
+        <Animation Name="gDmZl4Anim_022BE8" Offset="0x22BE8" /> <!-- Original name is "demo_onegai_wait" -->
+        <Animation Name="gDmZl4Anim_0235D4" Offset="0x235D4" /> <!-- Duplicate of "gChildZelda1Anim_12B04" from object_zl1. Original name is "demo_slide" -->
+        <Animation Name="gDmZl4Anim_023A50" Offset="0x23A50" /> <!-- Duplicate of "gChildZelda1Anim_12F80" from object_zl1. Original name is "demo_slide_wait" -->
+        <Animation Name="gDmZl4Anim_0241F4" Offset="0x241F4" /> <!-- Seems like a modified form of "gChildZelda1Anim_138E0" from object_zl1. Original name is probably "demo_tetataki_1" -->
+        <Animation Name="gDmZl4Anim_024510" Offset="0x24510" /> <!-- Seems like a modified form of "gChildZelda1Anim_143A8" from object_zl1. Original name is probably "demo_tetataki_wait" -->
+        <Animation Name="gDmZl4Anim_024B68" Offset="0x24B68" /> <!-- Original name is probably "demo_usiro_ude_wait" -->
+
+        <!-- Unused Flute -->
+        <DList Name="gDmZl4FluteDL" Offset="0x24D80" />
+        <DList Name="gDmZl4FluteWrapperDL" Offset="0x24E40" />
+        <Texture Name="gDmZl4FluteHoleTex" OutName="flute_hole" Format="rgba16" Width="16" Height="8" Offset="0x24E50" />
+        
+        <TextureAnimation Name="gDmZl4EmptyTexAnim" Offset="0x24F50" />
+    </File>
+</Root>

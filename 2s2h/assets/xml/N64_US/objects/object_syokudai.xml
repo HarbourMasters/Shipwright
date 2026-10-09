@@ -1,0 +1,13 @@
+﻿<Root>
+    <ExternalFile XmlPath="objects/gameplay_dangeon_keep.xml" OutPath="assets/objects/gameplay_dangeon_keep/"/>
+    <File Name="object_syokudai" Segment="6">
+        <DList Name="gObjectSyokudaiTypeSwitchCausesFlameDL" Offset="0x3A0" /> <!-- Original name is "syokudai_model" -->
+        <DList Name="gObjectSyokudaiTypeNoSwitchDL" Offset="0x870" /> <!-- Original name is "syokudai_isi_model" -->
+        <DList Name="gObjectSyokudaiTypeFlameCausesSwitchDL" Offset="0xB90" /> <!-- Original name is "syokudai_ki_model" -->
+        <Texture Name="object_syokudai_Tex_000C90" OutName="tex_000C90" Format="rgba16" Width="32" Height="32" Offset="0xC90" />
+        <Texture Name="object_syokudai_Tex_001490" OutName="tex_001490" Format="rgba16" Width="32" Height="64" Offset="0x1490" />
+        <Texture Name="object_syokudai_Tex_002490" OutName="tex_002490" Format="rgba16" Width="32" Height="32" Offset="0x2490" />
+        <Texture Name="object_syokudai_Tex_002C90" OutName="tex_002C90" Format="rgba16" Width="32" Height="32" Offset="0x2C90" />
+        <Texture Name="object_syokudai_Tex_003490" OutName="tex_003490" Format="rgba16" Width="16" Height="64" Offset="0x3490" />
+    </File>
+</Root>

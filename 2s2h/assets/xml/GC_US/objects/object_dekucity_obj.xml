@@ -1,0 +1,23 @@
+﻿<Root>
+    <File Name="object_dekucity_obj" Segment="6">
+        <Collision Name="object_dekucity_obj_Colheader_0002AC" Offset="0x2AC" /> <!-- Original name is "z2_22_DOKUcode_bgdatainfo" ("doku" = "poison") -->
+        <DList Name="object_dekucity_obj_DL_0004E0" Offset="0x4E0" /> <!-- Original name is "z2_22_DOKUwter_modelT" -->
+        <DList Name="object_dekucity_obj_DL_000610" Offset="0x610" />
+        <Texture Name="object_dekucity_obj_Tex_000618" OutName="tex_000618" Format="rgba16" Width="32" Height="32" Offset="0x618" />
+        <TextureAnimation Name="object_dekucity_obj_Matanimheader_000E28" Offset="0xE28" />
+        <DList Name="object_dekucity_obj_DL_001030" Offset="0x1030" /> <!-- Original name is "z2_22_wter_modelT" -->
+        <DList Name="object_dekucity_obj_DL_001160" Offset="0x1160" />
+        <Texture Name="object_dekucity_obj_Tex_001168" OutName="tex_001168" Format="rgba16" Width="32" Height="32" Offset="0x1168" />
+        <TextureAnimation Name="object_dekucity_obj_Matanimheader_001978" Offset="0x1978" />
+        <DList Name="object_dekucity_obj_DL_001D80" Offset="0x1D80" />
+        <DList Name="object_dekucity_obj_DL_001ED8" Offset="0x1ED8" /> <!-- Original name is "z2_22_yama01_model" ("yama" = "mountain; hill​") -->
+        <Texture Name="object_dekucity_obj_Tex_002008" OutName="tex_002008" Format="rgba16" Width="16" Height="64" Offset="0x2008" />
+        <Texture Name="object_dekucity_obj_Tex_002808" OutName="tex_002808" Format="rgba16" Width="32" Height="32" Offset="0x2808" />
+        <Texture Name="object_dekucity_obj_Tex_003008" OutName="tex_003008" Format="i4" Width="64" Height="64" Offset="0x3008" />
+        <TextureAnimation Name="object_dekucity_obj_Matanimheader_003820" Offset="0x3820" />
+        <DList Name="object_dekucity_obj_DL_003990" Offset="0x3990" />
+        <DList Name="object_dekucity_obj_DL_003998" Offset="0x3998" /> <!-- Original name is "z2_22_yama02_model" -->
+        <Texture Name="object_dekucity_obj_Tex_003AC0" OutName="tex_003AC0" Format="rgba16" Width="16" Height="32" Offset="0x3AC0" />
+        <Texture Name="object_dekucity_obj_Tex_003EC0" OutName="tex_003EC0" Format="rgba16" Width="32" Height="32" Offset="0x3EC0" />
+    </File>
+</Root>

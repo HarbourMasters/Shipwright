@@ -1,0 +1,80 @@
+﻿<Root>
+    <!-- Assets for Anju in a wedding dress -->
+    <File Name="object_and" Segment="6">
+        <Animation Name="gAndStaticAnim" Offset="0xC8" /> <!-- Original name is "and_test" -->
+        <DList Name="gAndTrainDL" Offset="0x4670" />
+        <DList Name="gAndCalvesDL" Offset="0x4708" />
+        <DList Name="gAndShinsDL" Offset="0x47F0" />
+        <DList Name="gAndThighsDL" Offset="0x4998" />
+        <DList Name="gAndPelvisDL" Offset="0x4BE0" />
+        <DList Name="gAndLowerVeilDL" Offset="0x4D90" />
+        <DList Name="gAndUpperVeilDL" Offset="0x4E50" />
+        <DList Name="gAndVeilBaseDL" Offset="0x4F20" />
+        <DList Name="gAndHeadDL" Offset="0x5038" />
+        <DList Name="gAndBouquetDL" Offset="0x56C0" />
+        <DList Name="gAndCenterLeavesTipDL" Offset="0x5888" />
+        <DList Name="gAndCenterLeavesDL" Offset="0x5938" />
+        <DList Name="gAndRightLeavesTipDL" Offset="0x59C8" />
+        <DList Name="gAndRightLeavesDL" Offset="0x5A80" />
+        <DList Name="gAndLeftLeavesTipDL" Offset="0x5BA8" />
+        <DList Name="gAndLeftLeavesDL" Offset="0x5C60" />
+        <DList Name="gAndRightHandDL" Offset="0x5D80" />
+        <DList Name="gAndRightForearmDL" Offset="0x5F10" />
+        <DList Name="gAndRightUpperArmDL" Offset="0x5FF8" />
+        <DList Name="gAndLeftHandDL" Offset="0x6240" />
+        <DList Name="gAndLeftForearmDL" Offset="0x63D8" />
+        <DList Name="gAndLeftUpperArmDL" Offset="0x64C0" />
+        <DList Name="gAndSymbolDL" Offset="0x6708" />
+        <DList Name="gAndTorsoDL" Offset="0x67E0" />
+        <Texture Name="gAndSkinShadowTex" OutName="and_skin_shadow" Format="rgba16" Width="8" Height="8" Offset="0x6C30" />
+        <Texture Name="gAndHairTex" OutName="and_hair" Format="rgba16" Width="8" Height="16" Offset="0x6CB0" />
+        <Texture Name="gAndEarTex" OutName="and_ear" Format="rgba16" Width="16" Height="16" Offset="0x6DB0" />
+        <Texture Name="gAndFingersTex" OutName="and_fingers" Format="rgba16" Width="16" Height="16" Offset="0x6FB0" />
+        <Texture Name="gAndDressGradientTex" OutName="and_dress_gradient" Format="i8" Width="8" Height="8" Offset="0x71B0" />
+        <Texture Name="gAndDressSymbolTex" OutName="and_dress_symbol" Format="i8" Width="32" Height="32" Offset="0x71F0" />
+        <Texture Name="gAndPearlTex" OutName="and_pearl" Format="rgba16" Width="16" Height="16" Offset="0x75F0" />
+        <Texture Name="gAndLeavesTex" OutName="and_leaves" Format="rgba16" Width="32" Height="16" Offset="0x77F0" />
+        <Texture Name="gAndFlowerTex" OutName="and_flower" Format="rgba16" Width="16" Height="16" Offset="0x7BF0" />
+        <Texture Name="gAndEyeOpenTex" OutName="and_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x7DF0" />
+        <Texture Name="gAndEyeClosingTex" OutName="and_eye_closing" Format="rgba16" Width="32" Height="32" Offset="0x85F0" />
+        <Texture Name="gAndEyeClosedTex" OutName="and_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x8DF0" />
+        <Texture Name="gAndEyeOpeningTex" OutName="and_eye_opening" Format="rgba16" Width="32" Height="32" Offset="0x95F0" />
+        <Texture Name="gAndMouthNeutralTex" OutName="and_mouth_neutral" Format="rgba16" Width="32" Height="16" Offset="0x9DF0" />
+        <Texture Name="gAndMouthSmileTex" OutName="and_mouth_smile" Format="rgba16" Width="32" Height="16" Offset="0xA1F0" />
+        <Texture Name="gAndDressSpotsTex" OutName="and_dress_spots" Format="i8" Width="32" Height="64" Offset="0xA5F0" />
+        <Texture Name="gAndDressCircleTex" OutName="and_dress_circle" Format="i8" Width="32" Height="32" Offset="0xADF0" />
+        <Limb Name="gAndRootLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_ROOT" Offset="0xB1F0" />
+        <Limb Name="gAndTorsoLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_TORSO" Offset="0xB1FC" />
+        <Limb Name="gAndSymbolLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_SYMBOL" Offset="0xB208" />
+        <Limb Name="gAndLeftUpperArmLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LEFT_UPPER_ARM" Offset="0xB214" />
+        <Limb Name="gAndLeftForearmLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LEFT_FOREARM" Offset="0xB220" />
+        <Limb Name="gAndLeftHandLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LEFT_HAND" Offset="0xB22C" />
+        <Limb Name="gAndRightUpperArmLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_RIGHT_UPPER_ARM" Offset="0xB238" />
+        <Limb Name="gAndRightForearmLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_RIGHT_FOREARM" Offset="0xB244" />
+        <Limb Name="gAndRightHandLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_RIGHT_HAND" Offset="0xB250" />
+        <Limb Name="gAndBouquetLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_BOUQUET" Offset="0xB25C" />
+        <Limb Name="gAndLeftLeavesLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LEFT_LEAVES" Offset="0xB268" />
+        <Limb Name="gAndLeftLeavesTipLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LEFT_LEAVES_TIP" Offset="0xB274" />
+        <Limb Name="gAndRightLeavesLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_RIGHT_LEAVES" Offset="0xB280" />
+        <Limb Name="gAndRightLeavesTipLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_RIGHT_LEAVES_TIP" Offset="0xB28C" />
+        <Limb Name="gAndCenterLeavesLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_CENTER_LEAVES" Offset="0xB298" />
+        <Limb Name="gAndCenterLeavesTipLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_CENTER_LEAVES_TIP" Offset="0xB2A4" />
+        <Limb Name="gAndVeilBaseLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_VEIL_BASE" Offset="0xB2B0" />
+        <Limb Name="gAndHeadLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_HEAD" Offset="0xB2BC" />
+        <Limb Name="gAndUpperVeilLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_UPPER_VEIL" Offset="0xB2C8" />
+        <Limb Name="gAndLowerVeilLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_LOWER_VEIL" Offset="0xB2D4" />
+        <Limb Name="gAndPelvisLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_PELVIS" Offset="0xB2E0" />
+        <Limb Name="gAndThighsLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_THIGHS" Offset="0xB2EC" />
+        <Limb Name="gAndShinsLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_SHINS" Offset="0xB2F8" />
+        <Limb Name="gAndCalvesLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_CALVES" Offset="0xB304" />
+        <Limb Name="gAndTrainLimb" Type="Standard" EnumName="OBJECT_AND_LIMB_TRAIN" Offset="0xB310" />
+        <Skeleton Name="gAndSkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_AND_LIMB_NONE" LimbMax="OBJECT_AND_LIMB_MAX" EnumName="ObjectAndLimb" Offset="0xB380" />
+        <Animation Name="gAndWalkAnim" Offset="0xDA58" /> <!-- Original name is "wa_aruku" ("walk") -->
+        <Animation Name="gAndRaiseHandAnim" Offset="0xEE00" /> <!-- Original name is "wa_hidari" ("left; left hand side") -->
+        <Animation Name="gAndRaisedHandLoopAnim" Offset="0xF6C4" /> <!-- Original name is "wa_hidari_loop" -->
+        <Animation Name="gAndRaiseHeadAnim" Offset="0xFE64" /> <!-- Original name is "wa_kaoage" ("raising face") -->
+        <Animation Name="gAndRaisedHeadLoopAnim" Offset="0x1067C" /> <!-- Original name is "wa_kaoage_loop" -->
+        <Animation Name="gAndRaisedHandWalkAnim" Offset="0x11AFC" /> <!-- Original name is "wa_kaoaruki" (probably a combination of "kaoage" and "aruki") -->
+        <Animation Name="gAndIdleAnim" Offset="0x122D0" /> <!-- Original name is "wa_utumuki_loop" ("looking down") -->
+    </File>
+</Root>

@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_ghaka" Segment="6">
+        <Collision Name="object_ghaka_Colheader_0000E8" Offset="0xE8" /> <!-- Original name is "goron_hakaisi_bgdatainfo" -->
+        <DList Name="object_ghaka_DL_001980" Offset="0x1980" />
+        <DList Name="object_ghaka_DL_001A20" Offset="0x1A20" /> <!-- Original name is "z2_goron_hakaisi_model" -->
+        <Texture Name="object_ghaka_Tex_002020" OutName="tex_002020" Format="i8" Width="32" Height="64" Offset="0x2020" />
+        <Texture Name="object_ghaka_Tex_002820" OutName="tex_002820" Format="ia16" Width="16" Height="16" Offset="0x2820" />
+        <Texture Name="object_ghaka_Tex_002A20" OutName="tex_002A20" Format="rgba16" Width="32" Height="32" Offset="0x2A20" />
+        <Texture Name="object_ghaka_Tex_003220" OutName="tex_003220" Format="rgba16" Width="32" Height="32" Offset="0x3220" />
+        <Collision Name="object_ghaka_Colheader_003CD0" Offset="0x3CD0" /> <!-- Original name is "z2_goron_hakaisi_bgdatainfo" -->
+    </File>
+</Root>

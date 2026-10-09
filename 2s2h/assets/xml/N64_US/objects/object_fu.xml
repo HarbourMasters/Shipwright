@@ -1,0 +1,61 @@
+﻿<Root>
+    <File Name="object_fu" Segment="6">
+        <!-- Animations -->
+        <Animation Name="gGuruGuruPlayAndMoveHeadAnim" Offset="0x57C"/> <!-- Original name is "are_are" -->
+        <Animation Name="gGuruGuruPlayStillAnim" Offset="0xB04"/> <!-- Original name is "fu_mawasu" -->
+
+        <!-- Guru Guru Limb DisplayLists -->
+        <DList Name="gGuruGuruHornDL" Offset="0x3130"/>
+        <DList Name="gGuruGuruChestAndMusicBoxPipeDL" Offset="0x3320"/>
+        <DList Name="gGuruGuruHeadDL" Offset="0x36A0"/>
+        <DList Name="gGuruGuruRightShoulderDL" Offset="0x3BD8"/>
+        <DList Name="gGuruGuruRightArmDL" Offset="0x3D08"/>
+        <DList Name="gGuruGuruRightHandAndCrankDL" Offset="0x3E38"/>
+        <DList Name="gGuruGuruLeftArmAndMusicBoxDL" Offset="0x40E0"/>
+        <DList Name="gGuruGuruBlueTriangleDL" Offset="0x4390"/>
+        <DList Name="gGuruGuruTorsoDL" Offset="0x4460"/>
+        <DList Name="gGuruGuruRightThighDL" Offset="0x4570"/>
+        <DList Name="gGuruGuruRightLegDL" Offset="0x4690"/>
+        <DList Name="gGuruGuruRightFootDL" Offset="0x47E0"/>
+        <DList Name="gGuruGuruLeftThighDL" Offset="0x48E8"/>
+        <DList Name="gGuruGuruLeftLegDL" Offset="0x4A08"/>
+        <DList Name="gGuruGuruLeftFootDL" Offset="0x4B58"/>
+
+        <!-- Textures -->
+        <Texture Name="gGuruGuruClothesTLUT" OutName="guru_guru_clothes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4C60"/>
+        <Texture Name="gGuruGuruSkinTLUT" OutName="guru_guru_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4E60"/>
+        <Texture Name="gGuruGuruPantsTex" OutName="guru_guru_pants" Format="ci8" Width="16" Height="16" Offset="0x5060" TlutOffset="0x4C60"/>
+        <Texture Name="gGuruGuruHeadSkinTex" OutName="guru_guru_head_skin" Format="ci8" Width="8" Height="8" Offset="0x5160" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruMusicBoxTex" OutName="guru_guru_music_box" Format="ci8" Width="32" Height="32" Offset="0x51A0" TlutOffset="0x4C60"/>
+        <Texture Name="gGuruGuruFingersAndToesTex" OutName="guru_guru_fingers_and_toes" Format="ci8" Width="16" Height="16" Offset="0x55A0" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruEarTex" OutName="guru_guru_ear" Format="ci8" Width="8" Height="8" Offset="0x56A0" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruUpperHornAndCrankTex" OutName="guru_guru_upper_horn_and_crank" Format="ci8" Width="32" Height="32" Offset="0x56E0" TlutOffset="0x4C60"/>
+        <Texture Name="gGuruGuruShirtTex" OutName="guru_guru_shirt" Format="ci8" Width="32" Height="32" Offset="0x5AE0" TlutOffset="0x4C60"/>
+        <Texture Name="gGuruGuruHornAndPipeTex" OutName="guru_guru_horn_and_pipe" Format="ci8" Width="8" Height="8" Offset="0x5EE0" TlutOffset="0x4C60"/>
+        <Texture Name="gGuruGuruEyeClosedTex" OutName="guru_guru_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x5F20" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruEyeAngryTex" OutName="guru_guru_eye_angry" Format="ci8" Width="32" Height="32" Offset="0x6320" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruMouthOpenTex" OutName="guru_guru_mouth_open" Format="ci8" Width="32" Height="16" Offset="0x6720" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruMouthAngryTex" OutName="guru_guru_mouth_angry" Format="ci8" Width="32" Height="16" Offset="0x6920" TlutOffset="0x4E60"/>
+        <Texture Name="gGuruGuruHairTex" OutName="guru_guru_hair" Format="ci8" Width="8" Height="16" Offset="0x6B20" TlutOffset="0x4E60"/>
+
+        <!-- Guru Guru Limbs -->
+        <Limb Name="gGuruGuruTorsoLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_TORSO" Offset="0x6BA0"/>
+        <Limb Name="gGuruGuruLeftThighLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_LEFT_THIGH" Offset="0x6BAC"/>
+        <Limb Name="gGuruGuruLeftLegLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_LEFT_LEG" Offset="0x6BB8"/>
+        <Limb Name="gGuruGuruLeftFootLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_LEFT_FOOT" Offset="0x6BC4"/>
+        <Limb Name="gGuruGuruRightThighLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT_THIGH" Offset="0x6BD0"/>
+        <Limb Name="gGuruGuruRightLegLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT_LEG" Offset="0x6BDC"/>
+        <Limb Name="gGuruGuruRightFootLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT_FOOT" Offset="0x6BE8"/>
+        <Limb Name="gGuruGuruChestAndMusicBoxPipeLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_CHEST_AND_MUSIC_BOX_PIPE" Offset="0x6BF4"/>
+        <Limb Name="gGuruGuruLeftArmAndMusicBoxLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_LEFT_ARM_AND_MUSIC_BOX" Offset="0x6C00"/>
+        <Limb Name="gGuruGuruTriangleLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_TRIANGLE" Offset="0x6C0C"/> <!--A random triangle near the right side of the music box-->
+        <Limb Name="gGuruGuruRightShoulderLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT_SHOULDER" Offset="0x6C18"/>
+        <Limb Name="gGuruGuruRightArmLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT" Offset="0x6C24"/>
+        <Limb Name="gGuruGuruRightHandAndCrankLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_RIGHT_HAND_AND_CRANK" Offset="0x6C30"/>
+        <Limb Name="gGuruGuruHeadLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_HEAD" Offset="0x6C3C"/>
+        <Limb Name="gGuruGuruHornLimb" LimbType="Standard" EnumName="GURU_GURU_LIMB_HORN" Offset="0x6C48"/>
+
+        <!-- Guru Guru Skeleton -->
+        <Skeleton Name="gGuruGuruSkel" Type="Flex" LimbType="Standard" LimbNone="GURU_GURU_LIMB_NONE" LimbMax="GURU_GURU_LIMB_MAX" EnumName="GuruGuruLimb" Offset="0x6C90" />
+    </File>
+</Root>

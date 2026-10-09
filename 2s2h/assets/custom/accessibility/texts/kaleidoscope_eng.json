@@ -1,0 +1,18 @@
+{
+    "health": "Health - $0 Hearts",
+    "magic": "Magic - $0",
+    "rupees": "Rupees - $0",
+    "floor": "Floor $0",
+    "basement": "Basement $0",
+    "item_menu": "Select Item",
+    "map_menu": "Map - $0",
+    "quest_menu": "Quest Status",
+    "equip_menu": "Equipment",
+    "overworld": "Overworld",
+    "equipped": "$0 - Equipped",
+    "save_prompt": "Would you like to save?",
+    "game_saved": "Game saved",
+    "game_over": "Game Over",
+    "continue_game": "Continue playing?",
+    "assigned_to": "Assigned to $0"
+}

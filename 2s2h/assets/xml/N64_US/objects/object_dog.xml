@@ -1,0 +1,65 @@
+﻿<Root>
+    <!-- Assets for dogs and the arrow that appears over your selected dog in the Doggy Racetrack -->
+    <File Name="object_dog" Segment="6">
+        <!-- Unused Selection Arrow with a Texture Animation -->
+        <DList Name="gDogSelectionArrowAnimatedDL" Offset="0x170" /> <!-- Original name is "cursor_00_anim_model" -->
+        <DList Name="gDogSelectionArrowAnimatedEmptyDL" Offset="0x250" /> <!-- Original name is "cursor_00_anim_modelT" -->
+        <Texture Name="gDogSelectionArrowAnimatedTex" OutName="dog_selection_arrow_animated" Format="i8" Width="8" Height="32" Offset="0x258" />
+        <TextureAnimation Name="gDogSelectionArrowTexAnim" Offset="0x3C4" />
+
+        <!-- Selection Arrow DisplayLists and Texture -->
+        <DList Name="gDogSelectionArrowDL" Offset="0x550" /> <!-- Original name is "cursor_00_none_model" -->
+        <DList Name="gDogSelectionArrowEmptyDL" Offset="0x618" /> <!-- Original name is "cursor_00_none_modelT" -->
+        <Texture Name="gDogSelectionArrowTex" OutName="dog_selection_arrow" Format="i4" Width="16" Height="32" Offset="0x620" />
+
+        <!-- Dog Animations -->
+        <Animation Name="gDogBarkAnim" Offset="0x998" /> <!-- Original name is "dog_bark" -->
+        <Animation Name="gDogLyingDownAnim" Offset="0x1048" /> <!-- Original name is "dog_fuse" ("lying on the ground") -->
+        <Animation Name="gDogLyingDownLoopAnim" Offset="0x1348" /> <!-- Original name is "dog_fusetamama" ("lying on the ground continues") -->
+        <Animation Name="gDogJumpAnim" Offset="0x1560" /> <!-- Original name is "dog_jump" -->
+        <Animation Name="gDogJumpAttackAnim" Offset="0x17C0" /> <!-- Original name is "dog_jump2" -->
+        <Animation Name="gDogLongJumpAnim" Offset="0x1A84" /> <!-- Original name is "dog_longjump" -->
+        <Animation Name="gDogRunAnim" Offset="0x1BD8" /> <!-- Original name is "dog_run" -->
+        <Animation Name="gDogSitAnim" Offset="0x1FB0" /> <!-- Original name is "dog_sit" -->
+        <Animation Name="gDogWalkAnim" Offset="0x21C8" /> <!-- Original name is "dog_walk" -->
+
+        <!-- Dog Textures -->
+        <Texture Name="gDogFur1Tex" OutName="dog_fur_1" Format="rgba16" Width="32" Height="32" Offset="0x21E0" /> <!-- Lower body, legs, and tail -->
+        <Texture Name="gDogFur2Tex" OutName="dog_fur_2" Format="rgba16" Width="32" Height="32" Offset="0x29E0" /> <!-- Front of ears, back of the tail, and around the feet-->
+        <Texture Name="gDogFur3Tex" OutName="dog_fur_3" Format="rgba16" Width="32" Height="32" Offset="0x31E0" /> <!-- Upper body, top of head-->
+        <Texture Name="gDogFaceAndEyeTex" OutName="dog_face_and_eye" Format="rgba16" Width="32" Height="32" Offset="0x39E0" />
+        <Texture Name="gDogFaceAndNoseTex" OutName="dog_face_and_nose" Format="rgba16" Width="32" Height="32" Offset="0x41E0" />
+        <Texture Name="gDogFur4Tex" OutName="dog_fur_4" Format="rgba16" Width="32" Height="32" Offset="0x49E0" /> <!-- Back of ears, side of head, and part of front body-->
+        <Texture Name="gDogPawTex" OutName="dog_paw" Format="rgba16" Width="16" Height="16" Offset="0x51E0" />
+        <Texture Name="gDogFaceHairTex" OutName="dog_face_hair" Format="rgba16" Width="32" Height="32" Offset="0x53E0" />
+
+        <!-- Dog Limb DisplayLists -->
+        <DList Name="gDogHeadDL" Offset="0x6F40" />
+        <DList Name="gDogRightFaceHairDL" Offset="0x72A8" />
+        <DList Name="gDogLeftFaceHairDL" Offset="0x7348" />
+        <DList Name="gDogBodyFrontDL" Offset="0x73E8" />
+        <DList Name="gDogFrontRightLegDL" Offset="0x7600" />
+        <DList Name="gDogFrontLeftLegDL" Offset="0x77B0" />
+        <DList Name="gDogBodyBackDL" Offset="0x7960" />
+        <DList Name="gDogBackRightLegDL" Offset="0x7B00" />
+        <DList Name="gDogBackLeftLegDL" Offset="0x7CB0" />
+        <DList Name="gDogTailDL" Offset="0x7E60" />
+
+        <!-- Dog Limbs -->
+        <Limb Name="gDogRootLimb" Type="Standard" EnumName="DOG_LIMB_ROOT" Offset="0x8030" />
+        <Limb Name="gDogBodyBackLimb" Type="Standard" EnumName="DOG_LIMB_BODY_BACK" Offset="0x803C" />
+        <Limb Name="gDogBodyFrontLimb" Type="Standard" EnumName="DOG_LIMB_BODY_FRONT" Offset="0x8048" />
+        <Limb Name="gDogHeadRootLimb" Type="Standard" EnumName="DOG_LIMB_HEAD_ROOT" Offset="0x8054" />
+        <Limb Name="gDogHeadLimb" Type="Standard" EnumName="DOG_LIMB_HEAD" Offset="0x8060" />
+        <Limb Name="gDogRightFaceHairLimb" Type="Standard" EnumName="DOG_LIMB_RIGHT_FACE_HAIR" Offset="0x806C" />
+        <Limb Name="gDogLeftFaceHairLimb" Type="Standard" EnumName="DOG_LIMB_LEFT_FACE_HAIR" Offset="0x8078" />
+        <Limb Name="gDogFrontRightLegLimb" Type="Standard" EnumName="DOG_LIMB_FRONT_RIGHT_LEG" Offset="0x8084" />
+        <Limb Name="gDogFrontLeftLegLimb" Type="Standard" EnumName="DOG_LIMB_FRONT_LEFT_LEG" Offset="0x8090" />
+        <Limb Name="gDogBackRightLegLimb" Type="Standard" EnumName="DOG_LIMB_BACK_RIGHT_LEG" Offset="0x809C" />
+        <Limb Name="gDogBackLeftLegLimb" Type="Standard" EnumName="DOG_LIMB_BACK_LEFT_LEG" Offset="0x80A8" />
+        <Limb Name="gDogTailLimb" Type="Standard" EnumName="DOG_LIMB_TAIL" Offset="0x80B4" />
+
+        <!-- Dog Skeleton -->
+        <Skeleton Name="gDogSkel" Type="Flex" LimbType="Standard" LimbNone="DOG_LIMB_NONE" LimbMax="DOG_LIMB_MAX" EnumName="DogLimb" Offset="0x80F0" />
+    </File>
+</Root>

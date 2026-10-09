@@ -1,0 +1,76 @@
+﻿<Root>
+    <!-- Object for Dinolfos -->
+    <File Name="object_dinofos" Segment="6">
+        <Animation Name="gDinolfosWalkAnim" Offset="0x580" /> <!-- Original name is "zf2_aruku" -->
+        <Animation Name="gDinolfosLandAnim" Offset="0xAF0" /> <!-- Original name is "zf2_chakuti" -->
+        <Animation Name="gDinolfosFireStartAnim" Offset="0x1040" /> <!-- Original name is "zf2_fire1" -->
+        <Animation Name="gDinolfosFireLoopAnim" Offset="0x13C0" /> <!-- Original name is "zf2_fire2" -->
+        <Animation Name="gDinolfosFireEndAnim" Offset="0x17B8" /> <!-- Original name is "zf2_fire3" -->
+        <Animation Name="gDinolfosJumpAnim" Offset="0x1CCC" /> <!-- Original name is "zf2_jump" -->
+        <Animation Name="gDinolfosAttackAnim" Offset="0x25B4" /> <!-- Original name is "zf2_kiru" -->
+        <Animation Name="gDinolfosIdleAnim" Offset="0x2E40" /> <!-- Original name is "zf2_matsu" -->
+
+        <DList Name="gDinolfosKnifeDL" Offset="0x5B10" />
+        <DList Name="gDinolfosLowerTailDL" Offset="0x5D00" />
+        <DList Name="gDinolfosUpperTailDL" Offset="0x5E60" />
+        <DList Name="gDinolfosUpperBodyDL" Offset="0x5FC8" />
+        <DList Name="gDinolfosNeckDL" Offset="0x61F8" />
+        <DList Name="gDinolfosHeadDL" Offset="0x6440" />
+        <DList Name="gDinolfosJawDL" Offset="0x6930" />
+        <DList Name="gDinolfosRightUpperArmDL" Offset="0x6C28" />
+        <DList Name="gDinolfosRightForearmDL" Offset="0x6D68" />
+        <DList Name="gDinolfosRightHandDL" Offset="0x6E58" />
+        <DList Name="gDinolfosLeftUpperArmDL" Offset="0x70A0" />
+        <DList Name="gDinolfosLeftForearmDL" Offset="0x71E0" />
+        <DList Name="gDinolfosLeftHandDL" Offset="0x72D0" />
+        <DList Name="gDinolfosLowerBodyDL" Offset="0x7450" />
+        <DList Name="gDinolfosRightUpperLegDL" Offset="0x7690" />
+        <DList Name="gDinolfosRightLowerLegDL" Offset="0x78E0" />
+        <DList Name="gDinolfosRightClawsDL" Offset="0x7AC8" />
+        <DList Name="gDinolfosLeftUpperLegDL" Offset="0x7C20" />
+        <DList Name="gDinolfosLeftLowerLegDL" Offset="0x7E70" />
+        <DList Name="gDinolfosLeftClawsDL" Offset="0x8058" />
+
+        <Texture Name="gDinolfosTLUT" OutName="dinolfos_tlut" Format="rgba16" Width="16" Height="16" Offset="0x81B0" />
+        <Texture Name="gDinolfosSkinTex" OutName="dinolfos_skin" Format="ci8" Width="16" Height="16" Offset="0x83B0" />
+        <Texture Name="gDinolfosScaleTex" OutName="dinolfos_scale" Format="rgba16" Width="16" Height="16" Offset="0x84B0" />
+        <Texture Name="gDinolfosArmorTex" OutName="dinolfos_armor" Format="rgba16" Width="16" Height="16" Offset="0x86B0" />
+        <Texture Name="gDinolfosSpikeTex" OutName="dinolfos_spike" Format="rgba16" Width="8" Height="8" Offset="0x88B0" />
+        <Texture Name="gDinolfosInnerMouthTex" OutName="dinolfos_inner_mouth" Format="rgba16" Width="16" Height="16" Offset="0x8930" />
+        <Texture Name="gDinolfosKnifeHoleTex" OutName="dinolfos_knife_hole" Format="rgba16" Width="8" Height="8" Offset="0x8B30" />
+        <Texture Name="gDinolfosJawTex" OutName="dinolfos_jaw" Format="rgba16" Width="8" Height="16" Offset="0x8BB0" />
+        <Texture Name="gDinolfosEyeHoleTex" OutName="dinolfos_eye_hole" Format="rgba16" Width="16" Height="8" Offset="0x8CB0" />
+        <Texture Name="gDinolfosClawTex" OutName="dinolfos_claw" Format="rgba16" Width="8" Height="8" Offset="0x8DB0" />
+        <Texture Name="gDinolfosEyeOpenTex" OutName="dinolfos_eye_open" Format="rgba16" Width="16" Height="16" Offset="0x8E30" />
+        <Texture Name="gDinolfosEyeHalfTex" OutName="dinolfos_eye_half" Format="rgba16" Width="16" Height="16" Offset="0x9030" />
+        <Texture Name="gDinolfosEyeClosedTex" OutName="dinolfos_eye_closed" Format="rgba16" Width="16" Height="16" Offset="0x9230" />
+
+        <Limb Name="gDinolfosLowerBodyLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LOWER_BODY" Offset="0x9430" />
+        <Limb Name="gDinolfosLeftUpperLegLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_UPPER_LEG" Offset="0x943C" />
+        <Limb Name="gDinolfosLeftLowerLegLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_LOWER_LEG" Offset="0x9448" />
+        <Limb Name="gDinolfosLeftClawsLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_CLAWS" Offset="0x9454" />
+        <Limb Name="gDinolfosRightUpperLegLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_UPPER_LEG" Offset="0x9460" />
+        <Limb Name="gDinolfosRightLowerLegLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_LOWER_LEG" Offset="0x946C" />
+        <Limb Name="gDinolfosRightClawsLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_CLAWS" Offset="0x9478" />
+        <Limb Name="gDinolfosUpperBodyLimb" Type="Standard" EnumName="DINOLFOS_LIMB_UPPER_BODY" Offset="0x9484" />
+        <Limb Name="gDinolfosLeftUpperArmLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_UPPER_ARM" Offset="0x9490" />
+        <Limb Name="gDinolfosLeftForearmLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_FOREARM" Offset="0x949C" />
+        <Limb Name="gDinolfosLeftHandLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LEFT_HAND" Offset="0x94A8" />
+        <Limb Name="gDinolfosRightUpperArmLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_UPPER_ARM" Offset="0x94B4" />
+        <Limb Name="gDinolfosRightForearmLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_FOREARM" Offset="0x94C0" />
+        <Limb Name="gDinolfosRightHandLimb" Type="Standard" EnumName="DINOLFOS_LIMB_RIGHT_HAND" Offset="0x94CC" />
+        <Limb Name="gDinolfosNeckLimb" Type="Standard" EnumName="DINOLFOS_LIMB_NECK" Offset="0x94D8" />
+        <Limb Name="gDinolfosHeadLimb" Type="Standard" EnumName="DINOLFOS_LIMB_HEAD" Offset="0x94E4" />
+        <Limb Name="gDinolfosJawLimb" Type="Standard" EnumName="DINOLFOS_LIMB_JAW" Offset="0x94F0" />
+        <Limb Name="gDinolfosUpperTailLimb" Type="Standard" EnumName="DINOLFOS_LIMB_UPPER_TAIL" Offset="0x94FC" />
+        <Limb Name="gDinolfosLowerTailLimb" Type="Standard" EnumName="DINOLFOS_LIMB_LOWER_TAIL" Offset="0x9508" />
+        <Limb Name="gDinolfosKnifeLimb" Type="Standard" EnumName="DINOLFOS_LIMB_KNIFE" Offset="0x9514" />
+        <Skeleton Name="gDinolfosSkel" Type="Flex" LimbType="Standard" LimbNone="DINOLFOS_LIMB_NONE" LimbMax="DINOLFOS_LIMB_MAX" EnumName="DinolfosLimb" Offset="0x9570" />
+
+        <Animation Name="gDinolfosCryAnim" Offset="0x9B70" /> <!-- Original name is "zf2_sakebi" -->
+        <Animation Name="gDinolfosDieAnim" Offset="0xABD0" /> <!-- Original name is "zf2_lowerlegi" -->
+        <Animation Name="gDinolfosIntroAnim" Offset="0xC974" /> <!-- Original name is "zf2_startDEMO" -->
+        <Animation Name="gDinolfosHitAnim" Offset="0xD21C" /> <!-- Original name is "zf2_yarare" -->
+        <Animation Name="gDinolfosSidestepAnim" Offset="0xD62C" /> <!-- Original name is "zf2_yokoaruki" -->
+    </File>
+</Root>

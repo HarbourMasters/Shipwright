@@ -1,0 +1,91 @@
+﻿<Root>
+    <!-- Unused Potion Shop Seller from OoT, in that game (Ossan -> object_ds2) -->
+    <File Name="object_ds2n" Segment="6">
+        <!-- [object_ds2] still exists as a copy from OoT in MM, but unused, this has a different skeleton with legs -->
+        <!-- Difficult to document, might have made mistakes -->
+
+        <DList Name="gDs2nTorsoDL" Offset="0x2420" />
+        <DList Name="gDs2nHeadDL" Offset="0x2740" />
+        <DList Name="gDs2nRightUpperArmDL" Offset="0x2C20" />
+        <DList Name="gDs2nRightForearmDL" Offset="0x2D38" />
+        <DList Name="gDs2nRightHandDL" Offset="0x2F68" />
+        <DList Name="gDs2nLeftUpperArmDL" Offset="0x30E0" />
+        <DList Name="gDs2nLeftForearmDL" Offset="0x31F8" />
+        <DList Name="gDs2nLeftHandDL" Offset="0x33B0" />
+        <DList Name="gDs2nHipsDL" Offset="0x3528" />
+        <DList Name="gDs2nRightThighDL" Offset="0x35F0" /> 
+        <DList Name="gDs2nRightShinDL" Offset="0x36D0" />
+        <DList Name="gDs2nRightFootDL" Offset="0x37A8" />
+        <DList Name="gDs2nLeftThighDL" Offset="0x3988" />
+        <DList Name="gDs2nLeftShinDL" Offset="0x3A68" />
+        <DList Name="gDs2nLeftFootDL" Offset="0x3B40" />
+        
+        <Texture Name="gDs2nMainTLUT" OutName="main_tlut" Format="rgba16" Width="16" Height="16" Offset="0x3CD8" />
+        <Texture Name="gDs2nFingersTLUT" OutName="fingers_tlut" Format="rgba16" Width="16" Height="16" Offset="0x3ED8" />
+        <Texture Name="gDs2nEyesTLUT" OutName="eyes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x40D8" />
+        <Texture Name="gDs2nPantsAndShirtBottomTex" OutName="pants_and_shirt_bottom" Format="rgba16" Width="16" Height="16" Offset="0x42D8" />
+        <Texture Name="gDs2nShoesTex" OutName="shoes" Format="rgba16" Width="16" Height="32" Offset="0x44D8" />
+
+        <!-- Unused Belt/Tie Texture, kinda looks like a Karate belt. -->
+        <Texture Name="gDs2nBeltTieTex" OutName="belt_tie" Format="ci8" Width="32" Height="32" Offset="0x48D8" TlutOffset="0x3CD8"/>
+
+        <!-- These two eye textures are corrupted, they extract and draw broken in-game.
+            The half tex: the blue iris is olive greenish and whites of the eyes are blended blue, with scatter of random pixels.
+            The closed has an extra dot of black in the center of the eye lid. -->
+        <Texture Name="gDs2nEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x4CD8" TlutOffset="0x40D8"/>
+        <Texture Name="gDs2nEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x50D8" TlutOffset="0x40D8"/>
+
+        <Texture Name="gDs2nFingersTex" OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0x54D8" TlutOffset="0x3ED8" />
+        <Texture Name="gDs2nSkinGradientTex" OutName="skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x55D8" />
+        <Texture Name="gDs2nHairTex" OutName="hair" Format="rgba16" Width="16" Height="16" Offset="0x5618" />
+        <Texture Name="gDs2nHairlineTex" OutName="hairline" Format="ci8" Width="16" Height="16" Offset="0x5818" />
+        <Texture Name="gDs2nShirtButtonsTex" OutName="shirt_buttons" Format="ci8" Width="16" Height="32" Offset="0x5918" />
+        <Texture Name="gDs2nVestTex" OutName="vest" Format="rgba16" Width="16" Height="16" Offset="0x5B18" />
+        <Texture Name="gDs2nShirtTex" OutName="shirt" Format="ci8" Width="16" Height="16" Offset="0x5D18" />
+        <Texture Name="gDs2nEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x5E18" TlutOffset="0x40D8" />
+
+        <Texture Name="gDs2nMouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="16" Offset="0x6218" TlutOffset="0x3CD8" />
+
+        <TextureAnimation Name="gDs2nEyeTexAnim" Offset="0x6444" /> <!-- Unused -->
+
+        <!-- Unused and unreferenced. Exact copies of the above used textures. -->
+        <Texture Name="gDs2nMain2TLUT" OutName="main2_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6450" />
+        <Texture Name="gDs2nFingers2TLUT" OutName="fingers2_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6650" />
+        <Texture Name="gDs2nEyes2TLUT" OutName="eyes2_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6850" />
+        <Texture Name="gDs2nPantsAndShirtBottom2Tex" OutName="pants_and_shirt_bottom2" Format="rgba16" Width="16" Height="16" Offset="0x6A50" />
+        <Texture Name="gDs2nShoes2Tex" OutName="shoes2" Format="rgba16" Width="16" Height="32" Offset="0x6C50" />
+        <Texture Name="gDs2nFingers2Tex" OutName="fingers2" Format="ci8" Width="16" Height="16" Offset="0x7050" TlutOffset="0x6650" />
+        <Texture Name="gDs2nSkinGradient2Tex" OutName="skin_gradient2" Format="ci8" Width="8" Height="8" Offset="0x7150" TlutOffset="0x6450"/>
+        <Texture Name="gDs2nHair2Tex" OutName="hair2" Format="rgba16" Width="16" Height="16" Offset="0x7190" />
+        <Texture Name="gDs2nHairline2Tex" OutName="hairline2" Format="ci8" Width="16" Height="16" Offset="0x7390" TlutOffset="0x6450"/>
+        <Texture Name="gDs2nShirtButtons2Tex" OutName="shirt_buttons2" Format="ci8" Width="16" Height="32" Offset="0x7490" TlutOffset="0x6450"/>
+        <Texture Name="gDs2nVest2Tex" OutName="vest2" Format="rgba16" Width="16" Height="16" Offset="0x7690" />
+        <Texture Name="gDs2nShirt2Tex" OutName="shirt2" Format="ci8" Width="16" Height="16" Offset="0x7890" TlutOffset="0x6450" />
+
+        <Texture Name="gDs2nEyeOpen2Tex" OutName="eye_open2" Format="ci8" Width="32" Height="32" Offset="0x7990" TlutOffset="0x6850" />
+        <Texture Name="gDs2nMouthOpen2Tex" OutName="mouth_open2" Format="ci8" Width="32" Height="16" Offset="0x7D90" TlutOffset="0x6450" />
+        
+        <Animation Name="gDs2nIdleAnim" Offset="0x8038" /> <!-- Original name is "ds2n_wait" -->
+
+        <!-- z64Utils cannot render this skeleton, no idea what the three limbs with no DL are for, our actor doesnt use them -->
+        <Limb Name="gDs2nHipsLimb" Type="Standard" EnumName="DS2N_LIMB_HIPS" Offset="0x8050" />
+        <Limb Name="gDs2nLeftThighLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_THIGH" Offset="0x805C" />
+        <Limb Name="gDs2nLeftShinLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_SHIN" Offset="0x8068" />
+        <Limb Name="gDs2nLeftFootLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_FOOT" Offset="0x8074" />
+        <Limb Name="gDs2nRightThighLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_THIGH" Offset="0x8080" />
+        <Limb Name="gDs2nRightShinLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_SHIN" Offset="0x808C" />
+        <Limb Name="gDs2nRightFootLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_FOOT" Offset="0x8098" />
+        <Limb Name="gDs2nLimb_008098" Type="Standard" EnumName="DS2N_LIMB_08" Offset="0x80A4" /> <!-- these three have no DL -->
+        <Limb Name="gDs2nLimb_0080B0" Type="Standard" EnumName="DS2N_LIMB_09" Offset="0x80B0" />
+        <Limb Name="gDs2nLimb_0080BC" Type="Standard" EnumName="DS2N_LIMB_0A" Offset="0x80BC" />
+        <Limb Name="gDs2nTorsoLimb" Type="Standard" EnumName="DS2N_LIMB_TORSO" Offset="0x80C8" />
+        <Limb Name="gDs2nLeftUpperArmLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_UPPER_ARM" Offset="0x80D4" />
+        <Limb Name="gDs2nLeftForearmLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_FOREARM" Offset="0x80E0" />
+        <Limb Name="gDs2nLeftHandLimb" Type="Standard" EnumName="DS2N_LIMB_LEFT_HAND" Offset="0x80EC" />
+        <Limb Name="gDs2nRightUpperArmLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_UPPER_ARM" Offset="0x80F8" />
+        <Limb Name="gDs2nRightForearmLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_FOREARM" Offset="0x8104" />
+        <Limb Name="gDs2nRightHandLimb" Type="Standard" EnumName="DS2N_LIMB_RIGHT_HAND" Offset="0x8110" />
+        <Limb Name="gDs2nHeadLimb" Type="Standard" EnumName="DS2N_LIMB_HEAD" Offset="0x811C" />
+        <Skeleton Name="gDs2nSkel" Type="Flex" LimbType="Standard" LimbNone="DS2N_LIMB_NONE" LimbMax="DS2N_LIMB_MAX" EnumName="Ds2nLimb" Offset="0x8170" />
+    </File>
+</Root>

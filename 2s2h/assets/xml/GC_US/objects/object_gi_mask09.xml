@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Get Item Draw: Garo's Mask -->
+    <File Name="object_gi_mask09" Segment="6">
+
+        <!-- Garo's Mask Display Lists -->
+        <DList Name="gGiGarosMaskFaceDL" Offset="0x7A0" />
+        <DList Name="gGiGarosMaskCloakDL" Offset="0x8F0" />
+
+        <!-- Garo's Mask TLUT -->
+        <Texture Name="gGiGarosMaskCloakTLUT" OutName="gi_garos_mask_cloak_tlut" Format="rgba16" Width="16" Height="16" Offset="0xDA0" />
+
+        <!-- Garo's Mask Texture -->
+        <Texture Name="gGiGarosMaskEyeTex" OutName="gi_garo_mask_eye" Format="i8" Width="16" Height="16" Offset="0xFA0" />
+        <Texture Name="gGiGarosMaskUpperSidePatternTex" OutName="gi_garo_mask_upper_side_pattern" Format="ci8" Width="16" Height="8" Offset="0x10A0" />
+        <Texture Name="gGiGarosMaskFrontPatternTex" OutName="gi_garo_mask_front_pattern" Format="ci8" Width="16" Height="32" Offset="0x1120" />
+        <Texture Name="gGiGarosMaskLowerSidePatternTex" OutName="gi_garo_mask_lower_side_pattern" Format="ci8" Width="32" Height="32" Offset="0x1320" />
+        <Texture Name="gGiGarosMaskTopPatternTex" OutName="gi_garo_mask_top_pattern" Format="ci8" Width="8" Height="8" Offset="0x1720" />
+    </File>
+</Root>

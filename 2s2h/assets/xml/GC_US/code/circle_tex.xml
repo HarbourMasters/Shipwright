@@ -1,0 +1,6 @@
+<Root>
+    <File Name="code" OutName="circle_tex" BaseAddress="0x800A5AC0" RangeStart="0x138DD0" RangeEnd="0x1395D0" >
+        <!-- The global version is const and found in z_circle_tex -->
+        <Texture Name="sCircleTex" OutName="circle" Format="i4" Width="64" Height="64" Offset="0x138DD0"/>
+    </File>
+</Root>

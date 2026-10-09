@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_hunsui" Segment="6">
+        <DList Name="object_hunsui_DL_000220" Offset="0x220" /> <!-- Original name might be "m2_SEAhunsui_4_modelT" -->
+        <Texture Name="object_hunsui_Tex_0003E0" OutName="tex_0003E0" Format="rgba16" Width="32" Height="32" Offset="0x3E0" />
+        <TextureAnimation Name="object_hunsui_Matanimheader_000BF0" Offset="0xBF0" />
+        <Collision Name="object_hunsui_Colheader_000C74" Offset="0xC74" /> <!-- Original name might be "m2_SEAhunsui_4_bgdatainfo" -->
+        <DList Name="object_hunsui_DL_000EC0" Offset="0xEC0" /> <!-- Original name might be "m2_SEAhunsui20_5_modelT" -->
+        <Texture Name="object_hunsui_Tex_001078" OutName="tex_001078" Format="rgba16" Width="32" Height="32" Offset="0x1078" />
+        <TextureAnimation Name="object_hunsui_Matanimheader_001888" Offset="0x1888" />
+        <Collision Name="object_hunsui_Colheader_00190C" Offset="0x190C" /> <!-- Original name might be "m2_SEAhunsui20_5_bgdatainfo". Unused duplicate of object_hunsui_Colheader_000C74 -->
+    </File>
+</Root>

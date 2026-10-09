@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Object for the Sun Block -->
+    <File Name="object_lightblock" Segment="6">
+        <DList Name="gSunBlockEmptyDL" Offset="0x170" /> <!-- Original name is "z2_brick_light_modelT" -->
+        <DList Name="gSunBlockDL" Offset="0x178" /> <!-- Original name is "z2_brick_light_model" -->
+        <Texture Name="gSunBlockTLUT" OutName="sun_block_tlut" Format="rgba16" Width="4" Height="4" Offset="0x258" />
+        <Texture Name="gSunBlockTex" OutName="sun_block" Format="ci4" Width="64" Height="64" Offset="0x278" />
+        <Collision Name="gSunBlockCol" Offset="0xB80" /> <!-- Original name is "z2_brick_light_bgdatainfo" -->
+    </File>
+</Root>

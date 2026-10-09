@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Get Item Draw: Moon's Tear -->
+    <File Name="object_gi_reserve00" Segment="6">
+
+        <!-- Moon's Tear Identity Mtx (unused) -->
+        <Mtx Name="gGiMoonsTearIdentityMtx" Offset="0xC40" />
+
+        <!-- Moon's Tear Display Lists -->
+        <DList Name="gGiMoonsTearGlowDL" Offset="0xC80" />
+        <DList Name="gGiMoonsTearItemDL" Offset="0xD78" />
+
+        <!-- Moon's Tear Textures -->
+        <Texture Name="gGiMoonsTearItem1Tex" OutName="gi_moons_tear_item_1" Format="i8" Width="32" Height="32" Offset="0x1048" />
+        <Texture Name="gGiMoonsTearItem2Tex" OutName="gi_moons_tear_item_2" Format="i8" Width="32" Height="32" Offset="0x1448" />
+        <Texture Name="gGiMoonsTearGlowTex" OutName="gi_moons_tear_glow" Format="i8" Width="32" Height="32" Offset="0x1848" />
+
+        <!-- Moon's Tear Texture Animation -->
+        <TextureAnimation Name="gGiMoonsTearTexAnim" Offset="0x1C60" />
+    </File>
+</Root>

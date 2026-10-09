@@ -1,0 +1,21 @@
+﻿<Root>
+    <!-- Get Item Draw: Title Deeds -->
+    <File Name="object_gi_reserve01" Segment="6">
+
+        <!-- Title Deed Common Display Lists -->
+        <DList Name="gGiTitleDeedSealAndRibbonDL" Offset="0x600" />
+        <DList Name="gGiTitleDeedPaperDL" Offset="0x788" />
+        <DList Name="gGiTitleDeedEmptyDL" Offset="0xA08" />
+
+        <!-- Title Deed Color Display Lists -->
+        <DList Name="gGiTitleDeedLandColorDL" Offset="0x968" />
+        <DList Name="gGiTitleDeedSwampColorDL" Offset="0x990" />
+        <DList Name="gGiTitleDeedMountainColorDL" Offset="0x9B8" />
+        <DList Name="gGiTitleDeedOceanColorDL" Offset="0x9E0" />
+
+        <!-- Title Deed Textures -->
+        <Texture Name="gGiTitleDeedRightInscriptionsTex" OutName="gi_title_deed_right_inscriptions" Format="i8" Width="32" Height="32" Offset="0xA10" />
+        <Texture Name="gGiTitleDeedLeftInscriptionsTex" OutName="gi_title_deed_left_inscriptions" Format="i8" Width="32" Height="32" Offset="0xE10" />
+        <Texture Name="gGiTitleDeedSealAndRibbonTex" OutName="gi_title_deed_seal_and_ribbon" Format="i8" Width="32" Height="32" Offset="0x1210" />
+    </File>
+</Root>

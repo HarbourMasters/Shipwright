@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Get Item Draw: Captains Hat -->
+    <File Name="object_gi_mask18" Segment="6">
+
+        <!-- Captains Hat Display Lists -->
+        <DList Name="gGiCaptainsHatFaceDL" Offset="0xCF0" />
+        <DList Name="gGiCaptainsHatBodyDL" Offset="0xFA0" />
+
+        <!-- Captains Hat TLUT -->
+        <Texture Name="gGiCaptainsHatBodyTLUT" OutName="gi_captains_hat_body_tlut" Format="rgba16" Width="16" Height="16" Offset="0x12F8" />
+
+        <!-- Captains Hat Textures -->
+        <Texture Name="gGiCaptainsHatHoodTex" OutName="gi_captains_hat_hood" Format="ci8" Width="16" Height="16" Offset="0x14F8" />
+        <Texture Name="gGiCaptainsHatHandTex" OutName="gi_captains_hat_hand" Format="ci8" Width="8" Height="16" Offset="0x15F8" />
+        <Texture Name="gGiCaptainsHatArmTex" OutName="gi_captains_hat_arm" Format="ci8" Width="8" Height="8" Offset="0x1678" />
+        <Texture Name="gGiCaptainsHatRibTex" OutName="gi_captains_hat_rib" Format="rgba16" Width="8" Height="16" Offset="0x16B8" />
+        <Texture Name="gGiCaptainsHatFaceTex" OutName="gi_captains_hat_face" Format="i4" Width="16" Height="32" Offset="0x17B8" />
+    </File>
+</Root>

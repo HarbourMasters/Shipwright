@@ -1,0 +1,15 @@
+<Root>
+    <File Name="ovl_En_Mm2" BaseAddress="0x809A2030" RangeStart="0x240" RangeEnd="0xAD0">
+        <Texture Name="sEnMm2EnvelopeTex" OutName="mm2_envelope" Format="i8" Width="32" Height="32" Offset="0x240"/>
+        <Texture Name="sEnMm2LetterTex" OutName="mm2_letter" Format="rgba16" Width="16" Height="16" Offset="0x640"/>
+        <Array Name="sEnMm21Vtx" Count="10" Offset="0x840">
+            <Vtx/>
+        </Array>
+        <Array Name="sEnMm22Vtx" Count="12" Offset="0x8E0">
+            <Vtx/>
+        </Array>
+        <DList Name="sEnMm2EmptyDL" Offset="0x9A0"/>
+        <DList Name="sEnMm2DL" Offset="0x9A8"/> <!-- Original name is "mm_myletter_model" -->
+    </File>
+</Root>
+

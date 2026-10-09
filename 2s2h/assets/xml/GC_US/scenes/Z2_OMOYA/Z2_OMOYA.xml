@@ -1,0 +1,20 @@
+<Root>
+    <File Name="Z2_OMOYA" Segment="2" Game="MM">
+        <Scene Name="Z2_OMOYA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_OMOYA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_OMOYA_room_00" Offset="0x0"/>
+        <DList Name="Z2_OMOYA_room_00DL_007B88" Offset="0x7B88"/>
+        <DList Name="Z2_OMOYA_room_00DL_0095B8" Offset="0x95B8"/>
+    </File>
+    <File Name="Z2_OMOYA_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_OMOYA_room_01" Offset="0x0"/>
+        <DList Name="Z2_OMOYA_room_01DL_00CE88" Offset="0xCE88"/>
+        <DList Name="Z2_OMOYA_room_01DL_00F690" Offset="0xF690"/>
+    </File>
+    <File Name="Z2_OMOYA_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_OMOYA_room_02" Offset="0x0"/>
+        <DList Name="Z2_OMOYA_room_02DL_007278" Offset="0x7278"/>
+        <DList Name="Z2_OMOYA_room_02DL_009778" Offset="0x9778"/>
+    </File>
+</Root>

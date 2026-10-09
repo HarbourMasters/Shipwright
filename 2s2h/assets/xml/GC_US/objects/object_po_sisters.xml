@@ -1,0 +1,65 @@
+﻿<Root>
+    <!-- Po Sisters (Jo, Beth, Ami, and Meg) that you fight as a minigame in Ikana for a HP -->
+    <!-- Joelle is red, Beth is blue, Ami is green, and Meg is purple -->
+    <File Name="object_po_sisters" Segment="6">
+        <!-- PoSister Animations -->
+        <Animation Name="gPoeSistersAttackAnim" Offset="0x114" /> <!-- Original name is "pob_atack" -->
+        <Animation Name="gPoeSistersMegCryAnim" Offset="0x680" /> <!-- Original name is "pob_cry" -->
+        <Animation Name="gPoeSistersDamagedAnim" Offset="0x8C0" /> <!-- Original name is "pob_damage" -->
+        <Animation Name="gPoeSistersFleeAnim" Offset="0xA54" /> <!-- Original name is "pob_escape" -->
+        <Animation Name="gPoeSistersFloatAnim" Offset="0xD40" /> <!-- Original name is "pob_fly" -->
+        <Animation Name="gPoeSistersAppearDisappearAnim" Offset="0x119C" /> <!-- Original name is "pob_start" -->
+        <Animation Name="gPoeSistersSwayAnim" Offset="0x14CC" /> <!-- Original name is "pob_wait" -->
+
+        <!-- PoSister DisplayLists -->
+        <DList Name="gPoeSistersMegFaceDL" Offset="0x1CB0" />
+        <DList Name="gPoeSistersMegBodyDL" Offset="0x1DE0" />
+        <DList Name="gPoeSistersLowerBodyDL" Offset="0x24A8" />
+        <DList Name="gPoeSistersRightHandDL" Offset="0x2570" />
+        <DList Name="gPoeSistersArmShortDL" Offset="0x25E8" />
+        <DList Name="gPoeSistersArmMedDL" Offset="0x2680" />
+        <DList Name="gPoeSistersArmLongDL" Offset="0x2718" />
+        <DList Name="gPoeSistersTorchDL" Offset="0x27B0" />
+        <DList Name="gPoeSistersLeftHandDL" Offset="0x2870" />
+        <DList Name="gPoeSistersJoelleFaceDL" Offset="0x2EB8" />
+        <DList Name="gPoeSistersJoelleBodyDL" Offset="0x2F88" />
+        <DList Name="gPoeSistersBethBodyDL" Offset="0x3628" />
+        <DList Name="gPoeSistersBethFaceDL" Offset="0x3880" />
+        <DList Name="gPoeSistersAmyBodyDL" Offset="0x3DC8" />
+        <DList Name="gPoeSistersAmyFaceDL" Offset="0x4020" />
+        <DList Name="gPoeSistersBurnBodyDL" Offset="0x46E0" />
+
+        <!-- PoSister Textures -->
+        <Texture Name="gPoeSistersTorchTex" OutName="torch" Format="rgba16" Width="16" Height="16" Offset="0x48D8" />
+        <Texture Name="gPoeSistersTatteredRobeTex" OutName="tattered_robe" Format="rgba16" Width="32" Height="32" Offset="0x4AD8" />
+        <Texture Name="gPoeSistersArmTex" OutName="arm" Format="rgba16" Width="32" Height="16" Offset="0x52D8" />
+        <Texture Name="gPoeSistersMegJoelleEyeTex" OutName="meg_joelle_eye" Format="rgba16" Width="16" Height="16" Offset="0x56D8" />
+        <Texture Name="gPoeSistersMainRobeGradientTex" OutName="robe_gradient" Format="rgba16" Width="4" Height="4" Offset="0x58D8" />
+        <Texture Name="gPoeSistersMegTiaraTex" OutName="meg_tiara" Format="rgba16" Width="16" Height="16" Offset="0x58F8" />
+        <Texture Name="gPoeSistersMegHairTex" OutName="meg_hair" Format="rgba16" Width="16" Height="16" Offset="0x5AF8" />
+        <Texture Name="gPoeSistersJoelleHairBandtex" OutName="joelle_hair_tie" Format="rgba16" Width="8" Height="8" Offset="0x5CF8" />
+        <Texture Name="gPoeSistersJoelleAmyHairTex" OutName="joelle_amy_hair" Format="rgba16" Width="16" Height="16" Offset="0x5D78" />
+        <Texture Name="gPoeSistersBethAmyEyesTex" OutName="beth_amy_eye" Format="rgba16" Width="16" Height="8" Offset="0x5F78" />
+        <Texture Name="gPoeSistersBethHatAndHairTex" OutName="beth_hat_and_hair" Format="rgba16" Width="16" Height="16" Offset="0x6078" />
+        <Texture Name="gPoeSistersBethHatEdgeTex" OutName="beth_hat_edge" Format="rgba16" Width="8" Height="8" Offset="0x6278" />
+        <Texture Name="gPoeSistersAmyHairTieTex" OutName="amy_hair_tie" Format="rgba16" Width="4" Height="4" Offset="0x62F8" />
+        <Texture Name="gPoeSistersCrispBodyTex" OutName="crisp_body" Format="rgba16" Width="16" Height="16" Offset="0x6318" />
+
+
+        <!-- PoSister Limbs -->
+        <Limb Name="gPoeSistersMainRootLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_ROOT" Offset="0x6518" />
+        <Limb Name="gPoeSistersLeftArmLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_LEFT_ARM" Offset="0x6524" />
+        <Limb Name="gPoeSistersLeftHandLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_LEFT_HAND" Offset="0x6530" />
+        <Limb Name="gPoeSistersRightUpperArmLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_RIGHT_UPPER_ARM" Offset="0x653C" />
+        <Limb Name="gPoeSistersRightForearmLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_RIGHT_FOREARM" Offset="0x6548" />
+        <Limb Name="gPoeSistersTorchRootLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_TORCH_ROOT" Offset="0x6554" />
+        <Limb Name="gPoeSistersRightHandLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_RIGHT_HAND" Offset="0x6560" />
+        <Limb Name="gPoeSistersTorchLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_TORCH" Offset="0x656C" />
+        <Limb Name="gPoeSistersMainBodyLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_MAIN_BODY" Offset="0x6578" />
+        <Limb Name="gPoeSistersFaceLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_FACE" Offset="0x6584" />
+        <Limb Name="gPoeSistersLowerBodyLimb" Type="Standard" EnumName="POE_SISTERS_LIMB_LOWER_BODY" Offset="0x6590" />
+
+        <!-- PoSister Skeleton -->
+        <Skeleton Name="gPoeSistersSkel" Type="Normal" LimbType="Standard" LimbNone="POE_SISTERS_LIMB_NONE" LimbMax="POE_SISTERS_LIMB_MAX" EnumName="PoeSistersLimb" Offset="0x65C8" />
+    </File>
+</Root>

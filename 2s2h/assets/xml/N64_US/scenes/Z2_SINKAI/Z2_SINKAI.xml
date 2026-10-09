@@ -1,0 +1,11 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_05.xml" OutPath="misc/scene_texture_05/"/>
+    <File Name="Z2_SINKAI" Segment="2" Game="MM">
+        <Scene Name="Z2_SINKAI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_SINKAI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_SINKAI_room_00" Offset="0x0"/>
+        <DList Name="Z2_SINKAI_room_00DL_007550" Offset="0x7550"/>
+        <DList Name="Z2_SINKAI_room_00DL_007C20" Offset="0x7C20"/>
+    </File>
+</Root>

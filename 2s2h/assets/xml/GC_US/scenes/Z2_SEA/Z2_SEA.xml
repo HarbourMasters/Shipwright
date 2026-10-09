@@ -1,0 +1,82 @@
+<Root>
+    <File Name="Z2_SEA" Segment="2" Game="MM">
+        <Scene Name="Z2_SEA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_SEA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_00" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_00DL_00CB08" Offset="0xCB08"/>
+        <DList Name="Z2_SEA_room_00DL_00EA40" Offset="0xEA40"/>
+    </File>
+    <File Name="Z2_SEA_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_01" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_01DL_007D18" Offset="0x7D18"/>
+        <DList Name="Z2_SEA_room_01DL_008390" Offset="0x8390"/>
+    </File>
+    <File Name="Z2_SEA_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_02" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_02DL_001C90" Offset="0x1C90"/>
+    </File>
+    <File Name="Z2_SEA_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_03" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_03DL_002218" Offset="0x2218"/>
+        <DList Name="Z2_SEA_room_03DL_002430" Offset="0x2430"/>
+    </File>
+    <File Name="Z2_SEA_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_04" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_04DL_006CC8" Offset="0x6CC8"/>
+        <DList Name="Z2_SEA_room_04DL_008B68" Offset="0x8B68"/>
+    </File>
+    <File Name="Z2_SEA_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_05" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_05DL_003EB0" Offset="0x3EB0"/>
+        <DList Name="Z2_SEA_room_05DL_0052E0" Offset="0x52E0"/>
+    </File>
+    <File Name="Z2_SEA_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_06" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_06DL_008EE0" Offset="0x8EE0"/>
+        <DList Name="Z2_SEA_room_06DL_00BD70" Offset="0xBD70"/>
+    </File>
+    <File Name="Z2_SEA_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_07" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_07DL_003C78" Offset="0x3C78"/>
+        <DList Name="Z2_SEA_room_07DL_0050B0" Offset="0x50B0"/>
+    </File>
+    <File Name="Z2_SEA_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_08" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_08DL_008110" Offset="0x8110"/>
+        <DList Name="Z2_SEA_room_08DL_00A3E8" Offset="0xA3E8"/>
+    </File>
+    <File Name="Z2_SEA_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_09" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_09DL_004878" Offset="0x4878"/>
+        <DList Name="Z2_SEA_room_09DL_004AD8" Offset="0x4AD8"/>
+    </File>
+    <File Name="Z2_SEA_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_10" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_10DL_006A78" Offset="0x6A78"/>
+        <DList Name="Z2_SEA_room_10DL_008B00" Offset="0x8B00"/>
+    </File>
+    <File Name="Z2_SEA_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_11" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_11DL_007888" Offset="0x7888"/>
+        <DList Name="Z2_SEA_room_11DL_00AAD0" Offset="0xAAD0"/>
+    </File>
+    <File Name="Z2_SEA_room_12" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_12" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_12DL_006948" Offset="0x6948"/>
+        <DList Name="Z2_SEA_room_12DL_008548" Offset="0x8548"/>
+    </File>
+    <File Name="Z2_SEA_room_13" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_13" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_13DL_002D28" Offset="0x2D28"/>
+        <DList Name="Z2_SEA_room_13DL_003778" Offset="0x3778"/>
+    </File>
+    <File Name="Z2_SEA_room_14" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_14" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_14DL_001320" Offset="0x1320"/>
+    </File>
+    <File Name="Z2_SEA_room_15" Segment="3" Game="MM">
+        <Room Name="Z2_SEA_room_15" Offset="0x0"/>
+        <DList Name="Z2_SEA_room_15DL_001958" Offset="0x1958"/>
+    </File>
+</Root>

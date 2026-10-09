@@ -1,0 +1,65 @@
+﻿<Root>
+    <!-- Assets for Mamamu Yan, the proprietor of the Doggy Racetrack. -->
+    <File Name="object_aob" Segment="6">
+        <!-- Unused dummied-out idle animation. Probably an OoT leftover, since her idle animation in that game has the same name. -->
+        <Animation Name="gMamamuYanUnusedIdleAnim" Offset="0x7C" /> <!-- Original name is "Aob_mastu" (probably a misspelling of "matsu" or "wait") -->
+
+        <!-- Mamamu Yan Limbs -->
+        <Limb Name="gMamamuYanDressLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_DRESS" Offset="0x90" />
+        <Limb Name="gMamamuYanLeftThighLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_THIGH" Offset="0x9C" />
+        <Limb Name="gMamamuYanLeftShinLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_SHIN" Offset="0xA8" />
+        <Limb Name="gMamamuYanLeftFootLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_FOOT" Offset="0xB4" />
+        <Limb Name="gMamamuYanRightThighLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_THIGH" Offset="0xC0" />
+        <Limb Name="gMamamuYanRightShinLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_SHIN" Offset="0xCC" />
+        <Limb Name="gMamamuYanRightFootLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_FOOT" Offset="0xD8" />
+        <Limb Name="gMamamuYanTorsoLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_TORSO" Offset="0xE4" />
+        <Limb Name="gMamamuYanLeftUpperArmLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_UPPER_ARM" Offset="0xF0" />
+        <Limb Name="gMamamuYanLeftForearmLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_FOREARM" Offset="0xFC" />
+        <Limb Name="gMamamuYanLeftHandLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_LEFT_HAND" Offset="0x108" />
+        <Limb Name="gMamamuYanRightUpperArmLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_UPPER_ARM" Offset="0x114" />
+        <Limb Name="gMamamuYanRightForearmLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_FOREARM" Offset="0x120" />
+        <Limb Name="gMamamuYanRightHandLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_RIGHT_HAND" Offset="0x12C" />
+        <Limb Name="gMamamuYanHeadLimb" Type="Standard" EnumName="MAMAMU_YAN_LIMB_HEAD" Offset="0x138" />
+
+        <!-- Mamamu Yan Skeleton -->
+        <Skeleton Name="gMamamuYanSkel" Type="Flex" LimbType="Standard" LimbNone="MAMAMU_YAN_LIMB_NONE" LimbMax="MAMAMU_YAN_LIMB_MAX" EnumName="MamamuYanLimb" Offset="0x180" />
+
+        <!-- Mamamu Yan Textures -->
+        <Texture Name="gMamamuYanTLUT" OutName="mamamu_yan_tlut" Format="rgba16" Width="16" Height="16" Offset="0x198" />
+        <Texture Name="gMamamuYanHairTex" OutName="mamamu_yan_hair" Format="ci8" Width="16" Height="16" Offset="0x398" />
+        <Texture Name="gMamamuYanSkinTex" OutName="mamamu_yan_skin" Format="ci8" Width="8" Height="8" Offset="0x498" />
+        <Texture Name="gMamamuYanEarTex" OutName="mamamu_yan_ear" Format="ci8" Width="16" Height="16" Offset="0x4D8" />
+        <Texture Name="gMamamuYanLipsTex" OutName="mamamu_yan_lips" Format="ci8" Width="8" Height="8" Offset="0x5D8" />
+        <Texture Name="gMamamuYanNostrilTex" OutName="mamamu_yan_nostril" Format="ci8" Width="8" Height="8" Offset="0x618" />
+        <Texture Name="gMamamuYanEyeOpenTex" OutName="mamamu_yan_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x658" /> 
+        <Texture Name="gMamamuYanEyeHalfTex" OutName="mamamu_yan_eye_half" Format="rgba16" Width="32" Height="32" Offset="0xE58" /> 
+        <Texture Name="gMamamuYanEyeClosedTex" OutName="mamamu_yan_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x1658" /> 
+        <Texture Name="gMamamuYanFingersTex" OutName="mamamu_yan_fingers" Format="ci8" Width="16" Height="16" Offset="0x1E58" />
+        <Texture Name="gMamamuYanSleevesTex" OutName="mamamu_yan_sleeves" Format="ci8" Width="8" Height="8" Offset="0x1F58" />
+        <Texture Name="gMamamuYanDressTex" OutName="mamamu_yan_dress" Format="ci8" Width="8" Height="8" Offset="0x1F98" />
+
+        <!-- Mamamu Yan Limb DisplayLists -->
+        <DList Name="gMamamuYanHeadDL" Offset="0x3D18" />
+        <DList Name="gMamamuYanRightHandDL" Offset="0x44D8" />
+        <DList Name="gMamamuYanRightForearmDL" Offset="0x46E0" />
+        <DList Name="gMamamuYanRightUpperArmDL" Offset="0x4810" />
+        <DList Name="gMamamuYanLeftHandDL" Offset="0x49B8" />
+        <DList Name="gMamamuYanLeftForearmDL" Offset="0x4BC0" />
+        <DList Name="gMamamuYanLeftUpperArmDL" Offset="0x4CF0" />
+        <DList Name="gMamamuYanTorsoDL" Offset="0x4E98" />
+        <DList Name="gMamamuYanRightFootDL" Offset="0x5138" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanRightShinDL" Offset="0x5208" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanRightThighDL" Offset="0x52D8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanLeftFootDL" Offset="0x53A8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanLeftShinDL" Offset="0x5478" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanLeftThighDL" Offset="0x5548" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gMamamuYanDressDL" Offset="0x5618" />
+
+        <!-- Mamamu Yan Animations -->
+        <Animation Name="gMamamuYanSurpriseStartAnim" Offset="0x58EC" /> <!-- Original name is "Aob_odoroku" ("surprise") -->
+        <Animation Name="gMamamuYanSurpriseLoopAnim" Offset="0x6040" /> <!-- Original name is "Aob_odorokuroop" -->
+        <Animation Name="gMamamuYanLaughStartAnim" Offset="0x68B4" /> <!-- Original name is "Aob_sikkari" (reference to her catchphrase in the Japanese text) -->
+        <Animation Name="gMamamuYanLaughLoopAnim" Offset="0x700C" /> <!-- Original name is "Aob_sikkariroop" -->
+        <Animation Name="gMamamuYanIdleAnim" Offset="0x7758" /> <!-- Original name is "Aob_wait" -->
+    </File>
+</Root>

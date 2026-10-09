@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_mask_stone" Segment="10">
+        <DList Name="object_mask_stone_DL_000820" Offset="0x820" />
+        <Texture Name="object_mask_stone_Tex_000B40" OutName="tex_000B40" Format="i8" Width="16" Height="16" Offset="0xB40" />
+        <Texture Name="object_mask_stone_Tex_000C40" OutName="tex_000C40" Format="i8" Width="32" Height="32" Offset="0xC40" />
+    </File>
+</Root>

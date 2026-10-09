@@ -1,0 +1,18 @@
+﻿<Root>
+    <!-- Get Item Draw: Bremen Mask -->
+    <File Name="object_gi_mask20" Segment="6">
+
+        <!-- Bremen Mask Display Lists -->
+        <DList Name="gGiBremenMaskEmptyDL" Offset="0x800" />
+        <DList Name="gGiBremenMaskDL" Offset="0x808" />
+
+        <!-- Bremen Mask TLUTs -->
+        <Texture Name="gGiBremenMaskTLUT" OutName="gi_bremen_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0xC80" />
+
+        <!-- Bremen Mask Textures -->
+        <Texture Name="gGiBremenMaskFeathersTex" OutName="gi_bremen_mask_feathers" Format="ia8" Width="48" Height="24" Offset="0xE80" />
+        <Texture Name="gGiBremenMaskBeakBaseTex" OutName="gi_bremen_mask_beak_base" Format="ci8" Width="16" Height="16" Offset="0x1300" />
+        <Texture Name="gGiBremenMaskBeakNostrilTex" OutName="gi_bremen_mask_beak_nostril" Format="ci8" Width="8" Height="8" Offset="0x1400" />
+        <Texture Name="gGiBremenMaskEyeTex" OutName="gi_bremen_mask_eye" Format="ci8" Width="32" Height="32" Offset="0x1440" />
+    </File>
+</Root>

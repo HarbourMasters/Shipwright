@@ -1,0 +1,38 @@
+﻿<Root>
+    <File Name="object_syoten" Segment="6">
+        <KeyFrameAnimation Name="gSyotenKFAnim_023C" Skel="0x1328" Offset="0x023C"/>
+        <DList Name="object_syoten_DL_000450" Offset="0x450" />
+        <DList Name="object_syoten_DL_000518" Offset="0x518" />
+        <DList Name="object_syoten_DL_0005E0" Offset="0x5E0" />
+        <DList Name="object_syoten_DL_0006A8" Offset="0x6A8" />
+        <DList Name="object_syoten_DL_000770" Offset="0x770" />
+        <DList Name="object_syoten_DL_000838" Offset="0x838" />
+        <DList Name="object_syoten_DL_000900" Offset="0x900" />
+        <DList Name="object_syoten_DL_0009C8" Offset="0x9C8" />
+        <Texture Name="object_syoten_Tex_000A90" OutName="tex_000A90" Format="i8" Width="32" Height="32" Offset="0xA90" />
+        <Texture Name="object_syoten_Tex_000E90" OutName="tex_000E90" Format="i8" Width="32" Height="32" Offset="0xE90" />
+        <TextureAnimation Name="object_syoten_Matanimheader_001298" Offset="0x1298" />
+
+        <KeyFrameSkel Name="gSyotenKFSkel_1328" LimbType="Flex" Offset="0x1328"/>
+        <DList Name="object_syoten_DL_001370" Offset="0x1370" />
+        <TextureAnimation Name="object_syoten_Matanimheader_001448" Offset="0x1448" />
+        <DList Name="object_syoten_DL_001730" Offset="0x1730" />
+        <DList Name="object_syoten_DL_0018A0" Offset="0x18A0" />
+        <TextureAnimation Name="object_syoten_Matanimheader_0018B8" Offset="0x18B8" />
+        <Array Name="object_syotenVtx_0018C0" Count="81" Offset="0x18C0">
+            <Vtx/>
+        </Array>
+        <DList Name="object_syoten_DL_001DD0" Offset="0x1DD0" /> <!-- Original name is "soul_shoten4" -->
+        <DList Name="object_syoten_DL_002018" Offset="0x2018" />
+        <DList Name="object_syoten_DL_002880" Offset="0x2880" />
+        <DList Name="object_syoten_DL_002A20" Offset="0x2A20" />
+        <TextureAnimation Name="object_syoten_Matanimheader_002B88" Offset="0x2B88" />
+        <TextureAnimation Name="object_syoten_Matanimheader_002B98" Offset="0x2B98" />
+        <Texture Name="object_syoten_Tex_002BA0" OutName="tex_002BA0" Format="i8" Width="32" Height="32" Offset="0x2BA0" />
+        <Texture Name="object_syoten_Tex_002FA0" OutName="tex_002FA0" Format="i8" Width="32" Height="32" Offset="0x2FA0" />
+        <Texture Name="object_syoten_Tex_0033A0" OutName="tex_0033A0" Format="i8" Width="16" Height="128" Offset="0x33A0" />
+        <Texture Name="object_syoten_Tex_003BA0" OutName="tex_003BA0" Format="i4" Width="32" Height="32" Offset="0x3BA0" />
+        <Texture Name="object_syoten_Tex_003DA0" OutName="tex_003DA0" Format="i8" Width="32" Height="64" Offset="0x3DA0" />
+        <Texture Name="object_syoten_Tex_0045A0" OutName="tex_0045A0" Format="i8" Width="32" Height="64" Offset="0x45A0" />
+    </File>
+</Root>

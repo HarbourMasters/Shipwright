@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_f52_obj" Segment="6">
+        <DList Name="object_f52_obj_DL_000570" Offset="0x570" /> <!-- Bell post. Original name is "bw_01_model" -->
+        <DList Name="object_f52_obj_DL_000698" Offset="0x698" /> <!-- Bell. Original name is "bk_model" -->
+        <DList Name="object_f52_obj_DL_0007A8" Offset="0x7A8" /> <!-- Bell Base -->
+        <DList Name="object_f52_obj_DL_000840" Offset="0x840" /> <!-- Bell Shadow. Original name is "bqT_model" -->
+        <DList Name="object_f52_obj_DL_0008D0" Offset="0x8D0" /> <!-- Bell Hook. Original name is "bhT_model" -->
+        <DList Name="object_f52_obj_DL_000960" Offset="0x960" /> <!-- Bell Designs -->
+        <Texture Name="object_f52_obj_Tex_000A10" OutName="tex_000A10" Format="rgba16" Width="32" Height="16" Offset="0xA10" />
+        <Texture Name="object_f52_obj_Tex_000E10" OutName="tex_000E10" Format="ia16" Width="16" Height="16" Offset="0xE10" />
+        <Texture Name="object_f52_obj_Tex_001010" OutName="tex_001010" Format="rgba16" Width="32" Height="16" Offset="0x1010" />
+        <Texture Name="object_f52_obj_Tex_001410" OutName="tex_001410" Format="rgba16" Width="16" Height="32" Offset="0x1410" />
+        <Texture Name="object_f52_obj_Tex_001810" OutName="tex_001810" Format="rgba16" Width="8" Height="16" Offset="0x1810" />
+        <Collision Name="object_f52_obj_Colheader_001BA8" Offset="0x1BA8" /> <!-- Original name is "z2_bell_bgdatainfo" -->
+    </File>
+</Root>

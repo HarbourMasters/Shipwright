@@ -1,0 +1,63 @@
+﻿<Root>
+    <!-- Object for Bomb Shopkeeper-->
+    <File Name="object_rsn" Segment="6">
+        <!-- Bomb -->
+        <DList Name="gBombShopkeeperBombDL" Offset="0x970" />
+        <Texture Name="gBombShopkeeperBombFuseTex" OutName="bomb_shopkeeper_bomb_fuse" Format="i8" Width="32" Height="32" Offset="0xC08" />
+
+        <!-- DLists -->
+        <DList Name="gBombShopkeeperPelvisDL" Offset="0x36F0" />
+        <DList Name="gBombShopkeeperTorsoDL" Offset="0x3778" />
+        <DList Name="gBombShopkeeperHeadDL" Offset="0x3AF0" />
+        <DList Name="gBombShopkeeperRightUpperArmDL" Offset="0x3ED0" />
+        <DList Name="gBombShopkeeperRightForearmDL" Offset="0x3FF0" />
+        <DList Name="gBombShopkeeperRightHandDL" Offset="0x4108" />
+        <DList Name="gBombShopkeeperLeftUpperArmDL" Offset="0x4308" />
+        <DList Name="gBombShopkeeperLeftForearmDL" Offset="0x4428" />
+        <DList Name="gBombShopkeeperLeftHandDL" Offset="0x4540" />
+        <DList Name="gBombShopkeeperRightThighDL" Offset="0x4738" />
+        <DList Name="gBombShopkeeperRightShinDL" Offset="0x48D0" />
+        <DList Name="gBombShopkeeperRightFootDL" Offset="0x4A20" />
+        <DList Name="gBombShopkeeperLeftThighDL" Offset="0x4B88" />
+        <DList Name="gBombShopkeeperLeftShinDL" Offset="0x4D20" />
+        <DList Name="gBombShopkeeperLeftFootDL" Offset="0x4E70" />
+
+        <!-- Textures -->
+        <Texture Name="gBombShopkeeperTLUT" OutName="bomb_shopkeeper_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4FD8" />
+        <Texture Name="gBombShopkeeperEarTex" OutName="bomb_shopkeeper_ear" Format="ci8" Width="8" Height="8" Offset="0x51D8" />
+        <Texture Name="gBombShopkeeperSkinTex" OutName="bomb_shopkeeper_skin" Format="ci8" Width="8" Height="8" Offset="0x5218" />
+        <Texture Name="gBombShopkeeperTorsoTex" OutName="bomb_shopkeeper_torso" Format="ci8" Width="8" Height="32" Offset="0x5258" />
+        <Texture Name="gBombShopkeeperFingersTex" OutName="bomb_shopkeeper_fingers" Format="ci8" Width="16" Height="16" Offset="0x5358" />
+        <Texture Name="gBombShopkeeperEyeTex" OutName="bomb_shopkeeper_eye" Format="rgba16" Width="32" Height="32" Offset="0x5458" />
+        <Texture Name="gBombShopkeeperTatooTex" OutName="bomb_shopkeeper_tatoo" Format="ci8" Width="32" Height="64" Offset="0x5C58" />
+        <Texture Name="gBombShopkeeperShortsTex" OutName="bomb_shopkeeper_shorts" Format="rgba16" Width="16" Height="16" Offset="0x6458" />
+        <Texture Name="gBombShopkeeperSandalsTex" OutName="bomb_shopkeeper_sandals" Format="rgba16" Width="8" Height="8" Offset="0x6658" />
+        <Texture Name="gBombShopkeeperVestTex" OutName="bomb_shopkeeper_vest" Format="rgba16" Width="16" Height="16" Offset="0x66D8" />
+        <Texture Name="gBombShopkeeperToesTex" OutName="bomb_shopkeeper_toes" Format="ci8" Width="16" Height="16" Offset="0x68D8" />
+        <Texture Name="gBombShopkeeperWristBandTex" OutName="bomb_shopkeeper_wrist_band" Format="ci8" Width="32" Height="32" Offset="0x69D8" />
+
+        <!-- Animations -->
+        <Animation Name="gBombShopkeeperSwayAnim" Offset="0x788C" /> <!-- Original name is "rsn_ending" -->
+        <Animation Name="gBombShopkeeperSitAtCounterStartAnim" Offset="0x8268" /> <!-- Original name is "rsn_suwaru" -->
+        <Animation Name="gBombShopkeeperSitAtCounterLoopAnim" Offset="0x87BC" /> <!-- Original name is "rsn_wait" -->
+        <Animation Name="gBombShopkeeperWalkAnim" Offset="0x9120" /> <!-- Original name is "rsn_walk" -->
+
+        <!-- Skeleton -->
+        <Limb Name="gBombShopkeeperPelvisLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_PELVIS" Offset="0x9130" />
+        <Limb Name="gBombShopkeeperLeftThighLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_THIGH" Offset="0x913C" />
+        <Limb Name="gBombShopkeeperLeftShinLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_SHIN" Offset="0x9148" />
+        <Limb Name="gBombShopkeeperLeftFootLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_FOOT" Offset="0x9154" />
+        <Limb Name="gBombShopkeeperRightThighLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_THIGH" Offset="0x9160" />
+        <Limb Name="gBombShopkeeperRightShinLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_SHIN" Offset="0x916C" />
+        <Limb Name="gBombShopkeeperRightFootLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_FOOT" Offset="0x9178" />
+        <Limb Name="gBombShopkeeperTorsoLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_TORSO" Offset="0x9184" />
+        <Limb Name="gBombShopkeeperLeftUpperArmLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_UPPER_ARM" Offset="0x9190" />
+        <Limb Name="gBombShopkeeperLeftForearmLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_FOREARM" Offset="0x919C" />
+        <Limb Name="gBombShopkeeperLeftHandLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_LEFT_HAND" Offset="0x91A8" />
+        <Limb Name="gBombShopkeeperRightUpperArmLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_UPPER_ARM" Offset="0x91B4" />
+        <Limb Name="gBombShopkeeperRightForearmLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_FOREARM" Offset="0x91C0" />
+        <Limb Name="gBombShopkeeperRightHandLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_RIGHT_HAND" Offset="0x91CC" />
+        <Limb Name="gBombShopkeeperHeadLimb" Type="Standard" EnumName="BOMB_SHOPKEEPER_LIMB_HEAD" Offset="0x91D8" />
+        <Skeleton Name="gBombShopkeeperSkel" Type="Flex" LimbType="Standard" LimbNone="BOMB_SHOPKEEPER_LIMB_NONE" LimbMax="BOMB_SHOPKEEPER_LIMB_MAX" EnumName="BombShopkeeperLimb" Offset="0x9220" />
+    </File>
+</Root>

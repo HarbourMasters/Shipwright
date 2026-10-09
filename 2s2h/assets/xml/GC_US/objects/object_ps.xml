@@ -1,0 +1,40 @@
+﻿<Root>
+    <File Name="object_ps" Segment="6">
+        <Animation Name="object_ps_Anim_00049C" Offset="0x49C" /> <!-- Original name is "ps_matsu" -->
+        <DList Name="object_ps_DL_001B30" Offset="0x1B30" />
+        <DList Name="object_ps_DL_001B38" Offset="0x1B38" />
+        <DList Name="object_ps_DL_001F38" Offset="0x1F38" />
+        <DList Name="object_ps_DL_002438" Offset="0x2438" />
+        <DList Name="object_ps_DL_002560" Offset="0x2560" />
+        <DList Name="object_ps_DL_002638" Offset="0x2638" />
+        <DList Name="object_ps_DL_002840" Offset="0x2840" />
+        <DList Name="object_ps_DL_002948" Offset="0x2948" />
+        <DList Name="object_ps_DL_002A60" Offset="0x2A60" />
+        <DList Name="object_ps_DL_002B68" Offset="0x2B68" />
+        <Texture Name="object_ps_TLUT_002C80" OutName="tlut_002C80" Format="rgba16" Width="16" Height="16" Offset="0x2C80" />
+        <!-- <Blob Name="object_ps_Blob_002E80" Size="0x1080" Offset="0x2E80" /> -->
+        <Texture Name="object_ps_Tex_003F00" OutName="tex_003F00" Format="rgba16" Width="16" Height="16" Offset="0x3F00" />
+        <!-- <Blob Name="object_ps_Blob_004100" Size="0x21C0" Offset="0x4100" /> -->
+        <Texture Name="object_ps_Tex_0062C0" OutName="tex_0062C0" Format="ci8" Width="8" Height="8" Offset="0x62C0" />
+        <Texture Name="object_ps_Tex_006300" OutName="tex_006300" Format="ci8" Width="32" Height="32" Offset="0x6300" />
+        <Texture Name="object_ps_Tex_006700" OutName="tex_006700" Format="ci8" Width="8" Height="8" Offset="0x6700" />
+        <Texture Name="object_ps_Tex_006740" OutName="tex_006740" Format="ci8" Width="8" Height="8" Offset="0x6740" />
+        <Texture Name="object_ps_Tex_006780" OutName="tex_006780" Format="ci8" Width="32" Height="32" Offset="0x6780" />
+        <Texture Name="object_ps_Tex_006B80" OutName="tex_006B80" Format="rgba16" Width="16" Height="16" Offset="0x6B80" />
+        <Texture Name="object_ps_Tex_006D80" OutName="tex_006D80" Format="ci8" Width="32" Height="32" Offset="0x6D80" />
+        <Limb Name="object_ps_Standardlimb_007180" Type="Standard" EnumName="OBJECT_PS_LIMB_01" Offset="0x7180" />
+        <Limb Name="object_ps_Standardlimb_00718C" Type="Standard" EnumName="OBJECT_PS_LIMB_02" Offset="0x718C" />
+        <Limb Name="object_ps_Standardlimb_007198" Type="Standard" EnumName="OBJECT_PS_LIMB_03" Offset="0x7198" />
+        <Limb Name="object_ps_Standardlimb_0071A4" Type="Standard" EnumName="OBJECT_PS_LIMB_04" Offset="0x71A4" />
+        <Limb Name="object_ps_Standardlimb_0071B0" Type="Standard" EnumName="OBJECT_PS_LIMB_05" Offset="0x71B0" />
+        <Limb Name="object_ps_Standardlimb_0071BC" Type="Standard" EnumName="OBJECT_PS_LIMB_06" Offset="0x71BC" />
+        <Limb Name="object_ps_Standardlimb_0071C8" Type="Standard" EnumName="OBJECT_PS_LIMB_07" Offset="0x71C8" />
+        <Limb Name="object_ps_Standardlimb_0071D4" Type="Standard" EnumName="OBJECT_PS_LIMB_08" Offset="0x71D4" />
+        <Limb Name="object_ps_Standardlimb_0071E0" Type="Standard" EnumName="OBJECT_PS_LIMB_09" Offset="0x71E0" />
+        <Limb Name="object_ps_Standardlimb_0071EC" Type="Standard" EnumName="OBJECT_PS_LIMB_0A" Offset="0x71EC" />
+        <Limb Name="object_ps_Standardlimb_0071F8" Type="Standard" EnumName="OBJECT_PS_LIMB_0B" Offset="0x71F8" />
+        <Skeleton Name="object_ps_Skel_007230" Type="Flex" LimbType="Standard" LimbNone="OBJECT_PS_LIMB_NONE" LimbMax="OBJECT_PS_LIMB_MAX" EnumName="ObjectPsLimb" Offset="0x7230" />
+        <Collision Name="object_ps_Colheader_0072E0" Offset="0x72E0" /> <!-- Original name is "ps_set_bgdatainfo" -->
+        <Animation Name="object_ps_Anim_0078FC" Offset="0x78FC" /> <!-- Original name is "ps_tataku" -->
+    </File>
+</Root>

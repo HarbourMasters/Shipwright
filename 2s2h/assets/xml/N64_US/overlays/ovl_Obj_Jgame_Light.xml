@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Obj_Jgame_Light" BaseAddress="0x80C152F0" RangeStart="0x8FC" RangeEnd="0xE40">
+        <!-- @bug: Based on the DList, this should be an invalid i16 -->
+        <Texture Name="sObjJgameLightIncorrectTex" OutName="obj_jgamelight_incorrect" Format="ia16" Width="16" Height="16" Offset="0x8FC"/>
+        <!-- @bug: Based on the DList, this should be an invalid i16 -->
+        <Texture Name="sObjJgameLightCorrectTex" OutName="obj_jgamelight_correct" Format="ia16" Width="16" Height="16" Offset="0xAFC"/>
+
+        <DList Name="gObjJgameLightIncorrectDL" Offset="0xD40"/> <!-- Original name is "jgame_maru_model" -->
+        <DList Name="gObjJgameLightCorrectDL" Offset="0xDC0"/> <!-- Original name is "jgame_peke_model" -->
+    </File>
+</Root>

@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Quiver Upgrades -->
+    <File Name="object_gi_arrowcase" Segment="6">
+
+        <!-- Quiver Upgrades Color Display Lists -->
+        <DList Name="gGiQuiver30InnerColorDL" Offset="0x8D0" />
+        <DList Name="gGiQuiver40InnerColorDL" Offset="0x8F0" />
+        <DList Name="gGiQuiver50InnerColorDL" Offset="0x910" />
+        <DList Name="gGiQuiver30OuterColorDL" Offset="0x930" />
+        <DList Name="gGiQuiver40OuterColorDL" Offset="0x950" />
+        <DList Name="gGiQuiver50OuterColorDL" Offset="0x970" />
+
+        <!-- Quiver Upgrades Common Display Lists -->
+        <DList Name="gGiQuiverInnerDL" Offset="0x990" />
+        <DList Name="gGiQuiverOuterDL" Offset="0xA80" />
+    </File>
+</Root>

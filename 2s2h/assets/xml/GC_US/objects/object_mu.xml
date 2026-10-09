@@ -1,0 +1,63 @@
+﻿<Root>
+    <!-- Assets for Honey & Darling -->
+    <File Name="object_mu" Segment="6">
+        <Animation Name="gHoneyAndDarlingCupCheeksLoopAnim" Offset="0x1F74" /> <!-- Original name is "tg_betabeta" -->
+        <Animation Name="gHoneyAndDarlingHugLoopAnim" Offset="0x2F64" /> <!-- Original name is "tg_dakisime" -->
+        <Animation Name="gHoneyAndDarlingGameDanceLoopAnim" Offset="0x4904" /> <!-- Original name is "tg_dance" -->
+        <Animation Name="gHoneyAndDarlingHoldHandsLoopAnim" Offset="0x5304" /> <!-- Original name is "tg_ityaita" -->
+        <Animation Name="gHoneyAndDarlingIdleAnim" Offset="0x53E0" /> <!-- Original name is "tg_matsu" -->
+        <Texture Name="gHoneyAndDarlingTLUT" OutName="honey_and_darling_tlut" Format="rgba16" Width="16" Height="16" Offset="0x53F0" />
+        <Texture Name="gHoneyAndDarlingShirtsAndShoesTex" OutName="honey_and_darling_shirts_and_shoes" Format="i8" Width="16" Height="16" Offset="0x55F0" />
+        <Texture Name="gHoneyAndDarlingWomanDressTex" OutName="honey_and_darling_woman_dress" Format="ci8" Width="16" Height="16" Offset="0x56F0" />
+        <Texture Name="gHoneyAndDarlingJointShadeTex" OutName="honey_and_darling_joint_shade" Format="i8" Width="8" Height="8" Offset="0x57F0" /> <!-- For the man's shoulders, elbows, and knees, and the woman's elbows -->
+        <Texture Name="gHoneyAndDarlingHeadSkinTex" OutName="honey_and_darling_head_skin" Format="ci8" Width="8" Height="8" Offset="0x5830" /> <!-- For their necks, under chin, noses, cheeks, and foreheads -->
+        <Texture Name="gHoneyAndDarlingManHairTex" OutName="honey_and_darling_man_hair" Format="ci8" Width="16" Height="16" Offset="0x5870" /> 
+        <Texture Name="gHoneyAndDarlingEarTex" OutName="honey_and_darling_ear" Format="ci8" Width="8" Height="8" Offset="0x5970" />
+        <Texture Name="gHoneyAndDarlingMouthTex" OutName="honey_and_darling_mouth" Format="ci8" Width="32" Height="16" Offset="0x59B0" />
+        <Texture Name="gHoneyAndDarlingManEyeTex" OutName="honey_and_darling_man_eye" Format="ci8" Width="32" Height="32" Offset="0x5BB0" />
+        <Texture Name="gHoneyAndDarlingHandTex" OutName="honey_and_darling_hand" Format="ci8" Width="8" Height="8" Offset="0x5FB0" />
+        <Texture Name="gHoneyAndDarlingWomanHairTex" OutName="honey_and_darling_woman_hair" Format="ci8" Width="8" Height="16" Offset="0x5FF0" />
+        <Texture Name="gHoneyAndDarlingWomanEyeTex" OutName="honey_and_darling_woman_eye" Format="ci8" Width="32" Height="32" Offset="0x6070" />
+        <DList Name="gHoneyAndDarlingLegsDL" Offset="0x9370" />
+        <DList Name="gHoneyAndDarlingWomanHeadDL" Offset="0x96C8" />
+        <DList Name="gHoneyAndDarlingWomanRightHandDL" Offset="0x9BC8" />
+        <DList Name="gHoneyAndDarlingWomanRightForearmDL" Offset="0x9D10" />
+        <DList Name="gHoneyAndDarlingWomanRightUpperArmDL" Offset="0x9E10" />
+        <DList Name="gHoneyAndDarlingWomanLeftHandDL" Offset="0x9F10" />
+        <DList Name="gHoneyAndDarlingWomanLeftForearmDL" Offset="0xA058" />
+        <DList Name="gHoneyAndDarlingWomanLeftUpperArmDL" Offset="0xA158" />
+        <DList Name="gHoneyAndDarlingWomanTorsoDL" Offset="0xA258" />
+        <DList Name="gHoneyAndDarlingManTorsoDL" Offset="0xA3C8" />
+        <DList Name="gHoneyAndDarlingManHeadDL" Offset="0xA510" />
+        <DList Name="gHoneyAndDarlingManRightUpperArmDL" Offset="0xAA10" />
+        <DList Name="gHoneyAndDarlingManRightForearmDL" Offset="0xAB10" />
+        <DList Name="gHoneyAndDarlingManRightHandDL" Offset="0xAC10" />
+        <DList Name="gHoneyAndDarlingManLeftUpperArmDL" Offset="0xAD58" />
+        <DList Name="gHoneyAndDarlingManLeftForearmDL" Offset="0xAE58" />
+        <DList Name="gHoneyAndDarlingManLeftHandDL" Offset="0xAF58" />
+        <DList Name="gHoneyAndDarlingHeartMaterialDL" Offset="0xB0A0" />
+        <DList Name="gHoneyAndDarlingHeartModelDL" Offset="0xB0E0" />
+        <Limb Name="gHoneyAndDarlingLegsLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_LEGS" Offset="0xB170" />
+        <Limb Name="gHoneyAndDarlingManTorsoLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_TORSO" Offset="0xB17C" />
+        <Limb Name="gHoneyAndDarlingManLeftUpperArmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_LEFT_UPPER_ARM" Offset="0xB188" />
+        <Limb Name="gHoneyAndDarlingManLeftForearmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_LEFT_FOREARM" Offset="0xB194" />
+        <Limb Name="gHoneyAndDarlingManLeftHandLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_LEFT_HAND" Offset="0xB1A0" />
+        <Limb Name="gHoneyAndDarlingManRightUpperArmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_RIGHT_UPPER_ARM" Offset="0xB1AC" />
+        <Limb Name="gHoneyAndDarlingManRightForearmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_RIGHT_FOREARM" Offset="0xB1B8" />
+        <Limb Name="gHoneyAndDarlingManRightHandLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_RIGHT_HAND" Offset="0xB1C4" />
+        <Limb Name="gHoneyAndDarlingManHeadLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_MAN_HEAD" Offset="0xB1D0" />
+        <Limb Name="gHoneyAndDarlingWomanRootLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_ROOT" Offset="0xB1DC" />
+        <Limb Name="gHoneyAndDarlingWomanTorsoLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_TORSO" Offset="0xB1E8" />
+        <Limb Name="gHoneyAndDarlingWomanLeftUpperArmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_LEFT_UPPER_ARM" Offset="0xB1F4" />
+        <Limb Name="gHoneyAndDarlingWomanLeftForearmRootLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_LEFT_FOREARM_ROOT" Offset="0xB200" />
+        <Limb Name="gHoneyAndDarlingWomanLeftForearmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_LEFT_FOREARM" Offset="0xB20C" />
+        <Limb Name="gHoneyAndDarlingWomanLeftHandLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_LEFT_HAND" Offset="0xB218" />
+        <Limb Name="gHoneyAndDarlingWomanRightUpperArmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_RIGHT_UPPER_ARM" Offset="0xB224" />
+        <Limb Name="gHoneyAndDarlingWomanRightForearmRootLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_RIGHT_FOREARM_ROOT" Offset="0xB230" />
+        <Limb Name="gHoneyAndDarlingWomanRightForearmLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_RIGHT_FOREARM" Offset="0xB23C" />
+        <Limb Name="gHoneyAndDarlingWomanRightHandLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_RIGHT_HAND" Offset="0xB248" />
+        <Limb Name="gHoneyAndDarlingWomanHeadLimb" Type="Standard" EnumName="HONEY_AND_DARLING_LIMB_WOMAN_HEAD" Offset="0xB254" />
+        <Skeleton Name="gHoneyAndDarlingSkel" Type="Flex" LimbType="Standard" LimbNone="HONEY_AND_DARLING_LIMB_NONE" LimbMax="HONEY_AND_DARLING_LIMB_MAX" EnumName="HoneyAndDarlingLimb" Offset="0xB2B0" />
+        <Animation Name="gHoneyAndDarlingSurpiseAnim" Offset="0xBAC4" /> <!-- Original name is "tg_odoroku" -->
+    </File>
+</Root>

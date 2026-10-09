@@ -1,0 +1,142 @@
+﻿<Root>
+    <!-- Assets for Wolfos and White Wolfos -->
+    <File Name="object_wf" Segment="6">
+        <!-- White Wolfos Textures -->
+        <Texture Name="gWolfosWhiteFurTex" OutName="wolfos_white_fur" Format="rgba16" Width="8" Height="16" Offset="0x0" />
+        <Texture Name="gWolfosWhiteToothClawTex" OutName="wolfos_white_tooth_claw" Format="rgba16" Width="8" Height="8" Offset="0x100" />
+        <Texture Name="gWolfosWhiteMouthTex" OutName="wolfos_white_mouth" Format="rgba16" Width="8" Height="8" Offset="0x180" />
+        <Texture Name="gWolfosWhiteTongueTex" OutName="wolfos_white_tongue" Format="rgba16" Width="8" Height="8" Offset="0x200" />
+        <Texture Name="gWolfosWhiteNostrilTex" OutName="wolfos_white_nostril" Format="rgba16" Width="8" Height="8" Offset="0x280" />
+
+        <!-- White Wolfos Eye Textures -->
+        <Texture Name="gWolfosWhiteEyeOpenTex" OutName="wolfos_white_eye_open" Format="rgba16" Width="16" Height="16" Offset="0x300" />
+
+        <!-- White Wolfos Limb DisplayLists -->
+        <DList Name="gWolfosWhiteAbdomenDL" Offset="0x1A20" />
+        <DList Name="gWolfosWhiteBackRightThighDL" Offset="0x1AE8" />
+        <DList Name="gWolfosWhiteBackRightShinDL" Offset="0x1BD8" />
+        <DList Name="gWolfosWhiteBackRightPasternDL" Offset="0x1CC8" />
+        <DList Name="gWolfosWhiteBackRightPawDL" Offset="0x1D98" />
+        <DList Name="gWolfosWhiteBackLeftThighDL" Offset="0x1E98" />
+        <DList Name="gWolfosWhiteBackLeftShinDL" Offset="0x1F88" />
+        <DList Name="gWolfosWhiteBackLeftPasternDL" Offset="0x2078" />
+        <DList Name="gWolfosWhiteBackLeftPawDL" Offset="0x2148" />
+        <DList Name="gWolfosWhiteThoraxDL" Offset="0x2248" />
+        <DList Name="gWolfosWhiteFrontLeftUpperLegDL" Offset="0x2368" />
+        <DList Name="gWolfosWhiteFrontLeftLowerLegDL" Offset="0x2490" />
+        <DList Name="gWolfosWhiteFrontRightUpperLegDL" Offset="0x25A0" />
+        <DList Name="gWolfosWhiteFrontRightLowerLegDL" Offset="0x26C8" />
+
+        <!-- White Wolfos Eye Textures -->
+        <Texture Name="gWolfosWhiteEyeHalfTex" OutName="wolfos_white_eye_half" Format="rgba16" Width="16" Height="16" Offset="0x27D8" />
+        <Texture Name="gWolfosWhiteEyeNarrowTex" OutName="wolfos_white_eye_narrow" Format="rgba16" Width="16" Height="16" Offset="0x29D8" />
+
+        <!-- White Wolfos Limb DisplayLists -->
+        <DList Name="gWolfosWhiteTailDL" Offset="0x3488" />
+        <DList Name="gWolfosWhiteFrontLeftClawDL" Offset="0x3528" />
+        <DList Name="gWolfosWhiteFrontRightClawDL" Offset="0x35F0" />
+        <DList Name="gWolfosWhiteHeadDL" Offset="0x36B8" />
+        <DList Name="gWolfosWhiteEyesDL" Offset="0x39D8" />
+
+        <!-- White Wolfos Limbs -->
+        <Limb Name="gWolfosWhiteRootLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_ROOT" Offset="0x3A70" />
+        <Limb Name="gWolfosWhiteBackLeftThighLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_LEFT_THIGH" Offset="0x3A7C" />
+        <Limb Name="gWolfosWhiteBackLeftShinLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_LEFT_SHIN" Offset="0x3A88" />
+        <Limb Name="gWolfosWhiteBackLeftPasternLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_LEFT_PASTERN" Offset="0x3A94" />
+        <Limb Name="gWolfosWhiteBackLeftPawLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_LEFT_PAW" Offset="0x3AA0" />
+        <Limb Name="gWolfosWhiteTailLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_TAIL" Offset="0x3AAC" />
+        <Limb Name="gWolfosWhiteAbdomenLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_ABDOMEN" Offset="0x3AB8" />
+        <Limb Name="gWolfosWhiteBackRightThighLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_RIGHT_THIGH" Offset="0x3AC4" />
+        <Limb Name="gWolfosWhiteBackRightShinLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_RIGHT_SHIN" Offset="0x3AD0" />
+        <Limb Name="gWolfosWhiteBackRightPasternLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_RIGHT_PASTERN" Offset="0x3ADC" />
+        <Limb Name="gWolfosWhiteBackRightPawLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_BACK_RIGHT_PAW" Offset="0x3AE8" />
+        <Limb Name="gWolfosWhiteThoraxLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_THORAX" Offset="0x3AF4" />
+        <Limb Name="gWolfosWhiteFrontRightUpperLegLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x3B00" />
+        <Limb Name="gWolfosWhiteFrontRightLowerLegLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x3B0C" />
+        <Limb Name="gWolfosWhiteFrontRightClawLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_RIGHT_CLAW" Offset="0x3B18" />
+        <Limb Name="gWolfosWhiteHeadRootLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_HEAD_ROOT" Offset="0x3B24" />
+        <Limb Name="gWolfosWhiteHeadLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_HEAD" Offset="0x3B30" />
+        <Limb Name="gWolfosWhiteEyesLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_EYES" Offset="0x3B3C" />
+        <Limb Name="gWolfosWhiteFrontLeftUpperLegLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x3B48" />
+        <Limb Name="gWolfosWhiteFrontLeftLowerLegLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x3B54" />
+        <Limb Name="gWolfosWhiteFrontLeftClawLimb" Type="Standard" EnumName="WOLFOS_WHITE_LIMB_FRONT_LEFT_CLAW" Offset="0x3B60" />
+
+        <!-- White Wolfos Skeleton -->
+        <Skeleton Name="gWolfosWhiteSkel" Type="Flex" LimbType="Standard" LimbNone="WOLFOS_WHITE_LIMB_NONE" LimbMax="WOLFOS_WHITE_LIMB_MAX" EnumName="WolfosWhiteLimb" Offset="0x3BC0" />
+
+        <!-- Wolfos/White Wolfos Animations -->
+        <Animation Name="gWolfosSlashAnim" Offset="0x4638" /> <!-- Original name is "wolfman_attack" -->
+        <Animation Name="gWolfosBackflipAnim" Offset="0x4A90" /> <!-- Original name is "wolfman_back_jump" -->
+        <Animation Name="gWolfosBlockAnim" Offset="0x4C44" /> <!-- Original name is "wolfman_defense" -->
+        <Animation Name="gWolfosRearUpFallOverAnim" Offset="0x53D0" /> <!-- Original name is "wolfman_down" -->
+        <Animation Name="gWolfosRunAnim" Offset="0x5700" /> <!-- Original name is "wolfman_run" -->
+
+        <!-- Wolfos Limb DisplayLists -->
+        <DList Name="gWolfosNormalAbdomenDL" Offset="0x6D10" />
+        <DList Name="gWolfosNormalBackRightThighDL" Offset="0x6DD8" />
+        <DList Name="gWolfosNormalBackRightShinDL" Offset="0x6EC8" />
+        <DList Name="gWolfosNormalBackRightPasternDL" Offset="0x6FB8" />
+        <DList Name="gWolfosNormalBackRightPawDL" Offset="0x7088" />
+        <DList Name="gWolfosNormalBackLeftThighDL" Offset="0x7188" />
+        <DList Name="gWolfosNormalBackLeftShinDL" Offset="0x7278" />
+        <DList Name="gWolfosNormalBackLeftPasternDL" Offset="0x7368" />
+        <DList Name="gWolfosNormalBackLeftPawDL" Offset="0x7438" />
+        <DList Name="gWolfosNormalThoraxDL" Offset="0x7538" />
+        <DList Name="gWolfosNormalFrontLeftUpperLegDL" Offset="0x7658" />
+        <DList Name="gWolfosNormalFrontLeftLowerLegDL" Offset="0x7770" />
+        <DList Name="gWolfosNormalFrontRightUpperLegDL" Offset="0x7880" />
+        <DList Name="gWolfosNormalFrontRightLowerLegDL" Offset="0x7998" />
+
+        <!-- Wolfos Eye Textures -->
+        <Texture Name="gWolfosNormalEyeOpenTex" OutName="wolfos_normal_eye_open" Format="rgba16" Width="16" Height="16" Offset="0x7AA8" />
+
+        <!-- Wolfos Textures -->
+        <Texture Name="gWolfosNormalFurTex" OutName="wolfos_normal_fur" Format="rgba16" Width="16" Height="32" Offset="0x7CA8" />
+        <Texture Name="gWolfosNormalMouthTex" OutName="wolfos_normal_mouth" Format="rgba16" Width="8" Height="8" Offset="0x80A8" />
+        <Texture Name="gWolfosNormalTongueTex" OutName="wolfos_normal_tongue" Format="rgba16" Width="8" Height="8" Offset="0x8128" />
+        <Texture Name="gWolfosNormalToothClawTex" OutName="wolfos_normal_tooth_claw" Format="rgba16" Width="8" Height="8" Offset="0x81A8" />
+        <Texture Name="gWolfosNormalNostrilTex" OutName="wolfos_normal_nostril" Format="rgba16" Width="8" Height="8" Offset="0x8228" />
+
+        <!-- Wolfos Eye Textures -->
+        <Texture Name="gWolfosNormalEyeHalfTex" OutName="wolfos_normal_eye_half" Format="rgba16" Width="16" Height="16" Offset="0x82A8" />
+        <Texture Name="gWolfosNormalEyeNarrowTex" OutName="wolfos_normal_eye_narrow" Format="rgba16" Width="16" Height="16" Offset="0x84A8" />
+
+        <!-- Wolfos Limb DisplayLists -->
+        <DList Name="gWolfosNormalTailDL" Offset="0x8E98" />
+        <DList Name="gWolfosNormalFrontLeftClawDL" Offset="0x8F38" />
+        <DList Name="gWolfosNormalFrontRightClawDL" Offset="0x9000" />
+        <DList Name="gWolfosNormalHeadDL" Offset="0x90C8" />
+        <DList Name="gWolfosNormalEyesDL" Offset="0x93E8" />
+
+        <!-- Wolfos Limbs -->
+        <Limb Name="gWolfosNormalRootLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_ROOT" Offset="0x9480" />
+        <Limb Name="gWolfosNormalBackLeftThighLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_LEFT_THIGH" Offset="0x948C" />
+        <Limb Name="gWolfosNormalBackLeftShinLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_LEFT_SHIN" Offset="0x9498" />
+        <Limb Name="gWolfosNormalBackLeftPasternLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_LEFT_PASTERN" Offset="0x94A4" />
+        <Limb Name="gWolfosNormalBackLeftPawLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_LEFT_PAW" Offset="0x94B0" />
+        <Limb Name="gWolfosNormalTailLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_TAIL" Offset="0x94BC" />
+        <Limb Name="gWolfosNormalAbdomenLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_ABDOMEN" Offset="0x94C8" />
+        <Limb Name="gWolfosNormalBackRightThighLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_RIGHT_THIGH" Offset="0x94D4" />
+        <Limb Name="gWolfosNormalBackRightShinLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_RIGHT_SHIN" Offset="0x94E0" />
+        <Limb Name="gWolfosNormalBackRightPasternLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_RIGHT_PASTERN" Offset="0x94EC" />
+        <Limb Name="gWolfosNormalBackRightPawLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_BACK_RIGHT_PAW" Offset="0x94F8" />
+        <Limb Name="gWolfosNormalThoraxLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_THORAX" Offset="0x9504" />
+        <Limb Name="gWolfosNormalFrontRightUpperLegLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_RIGHT_UPPER_LEG" Offset="0x9510" />
+        <Limb Name="gWolfosNormalFrontRightLowerLegLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_RIGHT_LOWER_LEG" Offset="0x951C" />
+        <Limb Name="gWolfosNormalFrontRightClawLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_RIGHT_CLAW" Offset="0x9528" />
+        <Limb Name="gWolfosNormalHeadRootLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_HEAD_ROOT" Offset="0x9534" />
+        <Limb Name="gWolfosNormalHeadLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_HEAD" Offset="0x9540" />
+        <Limb Name="gWolfosNormalEyesLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_EYES" Offset="0x954C" />
+        <Limb Name="gWolfosNormalFrontLeftUpperLegLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_LEFT_UPPER_LEG" Offset="0x9558" />
+        <Limb Name="gWolfosNormalFrontLeftLowerLegLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_LEFT_LOWER_LEG" Offset="0x9564" />
+        <Limb Name="gWolfosNormalFrontLeftClawLimb" Type="Standard" EnumName="WOLFOS_NORMAL_LIMB_FRONT_LEFT_CLAW" Offset="0x9570" />
+
+        <!-- Wolfos Skeleton -->
+        <Skeleton Name="gWolfosNormalSkel" Type="Flex" LimbType="Standard" LimbNone="WOLFOS_NORMAL_LIMB_NONE" LimbMax="WOLFOS_NORMAL_LIMB_MAX" EnumName="WolfosNormalLimb" Offset="0x95D0" />
+
+        <!-- Wolfos/White Wolfos Animations -->
+        <Animation Name="gWolfosSidestepAnim" Offset="0x9808" /> <!-- Original name is "wolfman_side_walk" -->
+        <Animation Name="gWolfosDamagedAnim" Offset="0x9A50" /> <!-- Originla name is "wolfman_tail_hit" -->
+        <Animation Name="gWolfosWaitAnim" Offset="0xA3CC" /> <!-- Original name is "wolfman_wait" -->
+    </File>
+</Root>

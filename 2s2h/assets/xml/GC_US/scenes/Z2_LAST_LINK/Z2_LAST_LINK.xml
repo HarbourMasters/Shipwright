@@ -1,0 +1,37 @@
+<Root>
+    <File Name="Z2_LAST_LINK" Segment="2" Game="MM">
+        <Scene Name="Z2_LAST_LINK" Offset="0x0"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_00" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_00DL_001990" Offset="0x1990"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_01" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_01DL_0015D0" Offset="0x15D0"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_02" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_02DL_0016C0" Offset="0x16C0"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_03" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_03DL_001B20" Offset="0x1B20"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_04" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_04DL_001168" Offset="0x1168"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_05" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_05DL_0016A0" Offset="0x16A0"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_06" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_06DL_000B18" Offset="0xB18"/>
+    </File>
+    <File Name="Z2_LAST_LINK_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_LINK_room_07" Offset="0x0"/>
+        <DList Name="Z2_LAST_LINK_room_07DL_000B18" Offset="0xB18"/>
+    </File>
+</Root>

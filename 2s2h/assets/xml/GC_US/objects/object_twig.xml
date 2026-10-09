@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_twig" Segment="6">
+        <Texture Name="object_twig_Tex_000000" OutName="tex_000000" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="object_twig_Tex_000800" OutName="tex_000800" Format="rgba16" Width="32" Height="32" Offset="0x800" />
+        <Texture Name="object_twig_Tex_001000" OutName="tex_001000" Format="rgba16" Width="16" Height="32" Offset="0x1000" />
+        <DList Name="object_twig_DL_0014C0" Offset="0x14C0" />
+        <DList Name="object_twig_DL_0014C8" Offset="0x14C8" /> <!-- Original name is "z2_35_saku01_model" -->
+        <Collision Name="object_twig_Colheader_0016C0" Offset="0x16C0" /> <!-- Original name is "z2_35_saku01_bgdatainfo" -->
+        <DList Name="object_twig_DL_001C30" Offset="0x1C30" />
+        <DList Name="object_twig_DL_001C38" Offset="0x1C38" /> <!-- Original name is "z2_35_wa01_model" -->
+        <Collision Name="object_twig_Colheader_0020A0" Offset="0x20A0" /> <!-- Original name is "z2_35_wa01_bgdatainfo" -->
+    </File>
+</Root>

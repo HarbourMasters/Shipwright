@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_yabusame_point" Segment="6">
+        <Texture Name="gYabusamePoint30Tex" OutName="points_30" Format="ia8" Width="48" Height="24" Offset="0x0"/>
+        <Texture Name="gYabusamePoint60Tex" OutName="points_60" Format="ia8" Width="48" Height="24" Offset="0x480"/>
+        <Texture Name="gYabusamePoint100Tex" OutName="points_100" Format="ia8" Width="48" Height="24" Offset="0x900"/>
+        <DList Name="gYabusamePointDL" Offset="0xDC0" />
+    </File>
+</Root>

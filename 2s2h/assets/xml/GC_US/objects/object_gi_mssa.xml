@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Sun Mask -->
+    <File Name="object_gi_mssa" Segment="6">
+
+        <!-- Sun Mask Display List -->
+        <DList Name="gGiSunMaskEyesSidePatternsDL" Offset="0xC00" /> <!-- Both the eyes and side patterns -->
+        <DList Name="gGiSunMaskFaceDL" Offset="0xDF0" />
+
+        <!-- Sun Mask Textures -->
+        <Texture Name="gGiSunMaskEyeTex" OutName="gi_sun_mask_eye" Format="i4" Width="16" Height="16" Offset="0x10F0" />
+        <Texture Name="gGiSunMaskSidePatternsTex" OutName="gi_sun_mask_side_patterns" Format="i4" Width="16" Height="16" Offset="0x1170" />
+        <Texture Name="gGiSunMaskFacePatternsTex" OutName="gi_sun_mask_face_patterns" Format="i4" Width="16" Height="16" Offset="0x11F0" />
+        <Texture Name="gGiSunMaskManeSwirlTex" OutName="gi_sun_mask_mane_swirl" Format="i4" Width="32" Height="32" Offset="0x1270" />
+    </File>
+</Root>

@@ -1,0 +1,219 @@
+﻿<Root>
+    <!--
+        Assets for Igos du Ikana and his aides.
+        A note about the original animation names; in MM3D, they split them up into two into two nearly-identical but
+        incompatible sets of animations. For example, there is an animation named "nsk_king_front_damage" for the king,
+        and an animation named "nsk_zako_front_damage" for the aides. In the original game, the animations are used
+        for *both* the king and his aides, so for the animation names, I just removed "king" or "zako" from the name
+        under the assumption that Grezzo were probably the ones who added the qualifier to the names.
+    -->
+    <File Name="object_knight" Segment="6">
+        <Animation Name="gKnightIgosCurtainReactionShockedAnim" Offset="0x5A8" /> <!-- Original name is probably "nsk_aramaD" -->
+        <Animation Name="gKnightIgosCurtainReactionAngryAnim" Offset="0x9E0" /> <!-- Original name is probably "nsk_araraD" -->
+        <Animation Name="gKnightDamagedBackAnim" Offset="0xD9C" /> <!-- Original name is probably "nsk_back_damage" -->
+        <Animation Name="gKnightFallBackwardsAnim" Offset="0x1CDC" /> <!-- Original name is probably "nsk_back_down" -->
+        <Animation Name="gKnightJumpBackAnim" Offset="0x2174" /> <!-- Original name is probably "nsk_back_jump" -->
+        <Animation Name="gKnightIgosRemoveHeadAnim" Offset="0x3008" /> <!-- Original name is probably "nsk_bunri" -->
+        <Animation Name="gKnightFastBlockStandingAnim" Offset="0x31F0" /> <!-- Original name is probably "nsk_defend" -->
+        <Animation Name="gKnightFastWalkShieldingAnim" Offset="0x3650" /> <!-- Original name is probably "nsk_fighting_run" -->
+        <Animation Name="gKnightIdleAnim" Offset="0x40E0" /> <!-- Original name is probably "nsk_fighting_wait" -->
+        <Animation Name="gKnightSlowWalkShieldingAnim" Offset="0x4620" /> <!-- Original name is probably "nsk_fighting_walk" -->
+        <Animation Name="gKnightDamagedFrontAnim" Offset="0x4974" /> <!-- Original name is probably "nsk_front_damage" -->
+        <Animation Name="gKnightFallForwardsAnim" Offset="0x5D30" /> <!-- Original name is probably "nsk_front_down" -->
+        <Animation Name="gKnightIgosShrugAnim" Offset="0x5E78" /> <!-- Original name is probably "nsk_furufuruD" -->
+        <Animation Name="gKnightCaptainsHatCSIgosShockedStandingAnim" Offset="0x6754" /> <!-- Original name is probably "nsk_gabaBD" -->
+        <Animation Name="gKnightCaptainsHatCSIgosShockedSittingAnim" Offset="0x6EF8" /> <!-- Original name is probably "nsk_gabaD" -->
+        <Animation Name="gKnightIgosPutHeadBackOnAnim" Offset="0x79D4" /> <!-- Original name is probably "nsk_gattai" -->
+        <Animation Name="gKnightIgosLaughAnim" Offset="0x8390" /> <!-- Original name is probably "nsk_goD" -->
+        <Animation Name="gKnightFastBlockSittingAnim" Offset="0x8524" /> <!-- Original name is probably "nsk_guardA" -->
+        <Animation Name="gKnightEndBlockAndSitAnim" Offset="0x89E4" /> <!-- Original name is probably "nsk_guardB" -->
+        <Animation Name="gKnightIgosBreathAttackAnim" Offset="0x8D80" /> <!-- Original name is probably "nsk_haiteru" -->
+        <Animation Name="gKnightIgosBreathAttackStartAnim" Offset="0x9538" /> <!-- Original name is probably "nsk_haku" -->
+        <Animation Name="gKnightIgosStandAndDrawAnim" Offset="0x9D8C" /> <!-- Original name is probably "nsk_jakinD" -->
+        <Animation Name="gKnightIgosSitDownAnim" Offset="0xA530" /> <!-- Original name is probably "nsk_jakinTOsekiD" -->
+        <Animation Name="gKnightCaptainsHatCSIgosSteppingAnim" Offset="0xA88C" /> <!-- Original name is probably "nsk_jidandaD" -->
+        <Animation Name="gKnightJumpAnim" Offset="0xAB68" /> <!-- Original name is probably "nsk_jump" -->
+        <Animation Name="gKnightJumpAttackBeginAnim" Offset="0xAFAC" /> <!-- Original name is probably "nsk_jump_kiru" -->
+        <Animation Name="gKnightJumpAttackEndAnim" Offset="0xB5D4" /> <!-- Original name is probably "nsk_jump_kiru_end" -->
+        <Animation Name="gKnightLeftSwingAnim" Offset="0xBCF4" /> <!-- Original name is probably "nsk_koteL" -->
+        <Animation Name="gKnightRightSwingAnim" Offset="0xC384" /> <!-- Original name is probably "nsk_koteR" -->
+        <Animation Name="gKnightCaptainsHatCSIgosShockedAnim" Offset="0xC7F0" /> <!-- Original name is probably "nsk_kunekuneaD" -->
+        <Animation Name="gKnightLaugh1Anim" Offset="0xCDE0" /> <!-- Original name is probably "nsk_laugh" -->
+        <Animation Name="gKnightLaugh2Anim" Offset="0xD870" /> <!-- Original name is probably "nsk_laughD" -->
+        <Animation Name="gKnightMarchAnim" Offset="0xDDCC" /> <!-- Original name is probably "nsk_march" -->
+        <Animation Name="gKnightIgosBreathAttackStopAnim" Offset="0xE15C" /> <!-- Original name is probably "nsk_modoru" -->
+        <Animation Name="gKnightStruckByLightRayAnim" Offset="0xE45C" /> <!-- Original name is probably "nsk_muzumuzuwalk" -->
+        <Animation Name="gKnightCaptainsHatCSBeginStandingAnim" Offset="0xE7F4" /> <!-- Original name is probably "nsk_nunuBD" -->
+        <Animation Name="gKnightCaptainsHatCSBeginSittingAnim" Offset="0xEA90" /> <!-- Original name is probably "nsk_nunuD" -->
+        <Animation Name="gKnightStrafeAnim" Offset="0xEF44" /> <!-- Original name is probably "nsk_side_walk" -->
+        <Animation Name="gKnightUppercutAnim" Offset="0xF90C" /> <!-- Original name is probably "nsk_sonicgiri" -->
+        <Animation Name="gKnightIgosSittingAnim" Offset="0xFC78" /> <!-- Original name is probably "nsk_suwariwaitD" -->
+        <Animation Name="gKnightCaptainsHatCSSitBackDownAnim" Offset="0x1024C" /> <!-- Original name is probably "nsk_suwaru02D" -->
+        <Animation Name="gKnightIntroSitDownAnim" Offset="0x10E98" /> <!-- Original name is probably "nsk_suwaruD" -->
+        <Animation Name="gKnightHeavyAttackAnim" Offset="0x11298" /> <!-- Original name is probably "nsk_tategiri" -->
+        <Animation Name="gKnightBeginTelegraphHeavyAttackAnim" Offset="0x11AAC" /> <!-- Original name is probably "nsk_tategiri_kaburu" -->
+        <DList Name="gKnightWideHeadDL" Offset="0x12400" />
+        <Texture Name="object_knight_Tex_012760" OutName="tex_012760" Format="rgba16" Width="16" Height="16" Offset="0x12760" />
+        <Texture Name="object_knight_Tex_012960" OutName="tex_012960" Format="rgba16" Width="16" Height="16" Offset="0x12960" />
+        <Texture Name="object_knight_Tex_012B60" OutName="tex_012B60" Format="rgba16" Width="8" Height="8" Offset="0x12B60" />
+        <Texture Name="object_knight_Tex_012BE0" OutName="tex_012BE0" Format="ia16" Width="8" Height="8" Offset="0x12BE0" />
+        <DList Name="gKnightWideJawDL" Offset="0x12DB0" />
+        <Texture Name="object_knight_Tex_012EC0" OutName="tex_012EC0" Format="rgba16" Width="8" Height="16" Offset="0x12EC0" />
+        <Texture Name="object_knight_Tex_012FC0" OutName="tex_012FC0" Format="rgba16" Width="4" Height="4" Offset="0x12FC0" />
+        <DList Name="gKnightWideNeckDL" Offset="0x13020" />
+        <DList Name="object_knight_DL_0153E0" Offset="0x153E0" />
+        <DList Name="object_knight_DL_0154B0" Offset="0x154B0" />
+        <DList Name="object_knight_DL_0155A0" Offset="0x155A0" />
+        <DList Name="object_knight_DL_015660" Offset="0x15660" />
+        <DList Name="object_knight_DL_015730" Offset="0x15730" />
+        <DList Name="object_knight_DL_015820" Offset="0x15820" />
+        <DList Name="object_knight_DL_0158E0" Offset="0x158E0" />
+        <DList Name="object_knight_DL_015A40" Offset="0x15A40" />
+        <DList Name="object_knight_DL_015AE0" Offset="0x15AE0" />
+        <DList Name="object_knight_DL_015B88" Offset="0x15B88" />
+        <DList Name="object_knight_DL_015D78" Offset="0x15D78" />
+        <DList Name="object_knight_DL_015E38" Offset="0x15E38" />
+        <DList Name="object_knight_DL_015ED8" Offset="0x15ED8" />
+        <DList Name="object_knight_DL_016310" Offset="0x16310" />
+        <DList Name="object_knight_DL_0163C8" Offset="0x163C8" />
+        <DList Name="object_knight_DL_016478" Offset="0x16478" />
+        <DList Name="object_knight_DL_016530" Offset="0x16530" />
+        <DList Name="object_knight_DL_0165F0" Offset="0x165F0" />
+        <DList Name="object_knight_DL_0166D8" Offset="0x166D8" />
+        <DList Name="object_knight_DL_016810" Offset="0x16810" />
+        <DList Name="object_knight_DL_0169C8" Offset="0x169C8" />
+        <DList Name="object_knight_DL_016AD0" Offset="0x16AD0" />
+        <DList Name="object_knight_DL_016B90" Offset="0x16B90" />
+        <DList Name="object_knight_DL_016C78" Offset="0x16C78" />
+        <DList Name="object_knight_DL_016DB0" Offset="0x16DB0" />
+        <DList Name="object_knight_DL_016F70" Offset="0x16F70" />
+        <Texture Name="object_knight_Tex_017078" OutName="tex_017078" Format="rgba16" Width="16" Height="16" Offset="0x17078" />
+        <Texture Name="object_knight_Tex_017278" OutName="tex_017278" Format="rgba16" Width="4" Height="4" Offset="0x17278" />
+        <Texture Name="object_knight_Tex_017298" OutName="tex_017298" Format="rgba16" Width="4" Height="8" Offset="0x17298" />
+        <Texture Name="object_knight_Tex_0172D8" OutName="tex_0172D8" Format="rgba16" Width="8" Height="8" Offset="0x172D8" />
+        <Texture Name="object_knight_Tex_017358" OutName="tex_017358" Format="rgba16" Width="16" Height="16" Offset="0x17358" />
+        <Texture Name="object_knight_Tex_017558" OutName="tex_017558" Format="rgba16" Width="8" Height="8" Offset="0x17558" />
+        <Texture Name="object_knight_Tex_0175D8" OutName="tex_0175D8" Format="rgba16" Width="8" Height="16" Offset="0x175D8" />
+        <Texture Name="object_knight_Tex_0176D8" OutName="tex_0176D8" Format="rgba16" Width="16" Height="16" Offset="0x176D8" />
+        <Texture Name="object_knight_Tex_0178D8" OutName="tex_0178D8" Format="rgba16" Width="16" Height="16" Offset="0x178D8" />
+        <Texture Name="object_knight_Tex_017AD8" OutName="tex_017AD8" Format="rgba16" Width="8" Height="16" Offset="0x17AD8" />
+        <Texture Name="object_knight_Tex_017BD8" OutName="tex_017BD8" Format="rgba16" Width="16" Height="16" Offset="0x17BD8" />
+        <Texture Name="object_knight_Tex_017DD8" OutName="tex_017DD8" Format="rgba16" Width="8" Height="32" Offset="0x17DD8" />
+        <Texture Name="object_knight_Tex_017FD8" OutName="tex_017FD8" Format="ia8" Width="8" Height="8" Offset="0x17FD8" />
+        <Texture Name="object_knight_Tex_018018" OutName="tex_018018" Format="i4" Width="16" Height="16" Offset="0x18018" />
+        <Texture Name="object_knight_Tex_018098" OutName="tex_018098" Format="i8" Width="64" Height="32" Offset="0x18098" />
+        <DList Name="gKnightBlureState2DL" Offset="0x188F8" />
+        <DList Name="gKnightBlureState1DL" Offset="0x189F0" />
+        <DList Name="gKnightBlureState0DL" Offset="0x18AF0" />
+        <TextureAnimation Name="gKnightBlureTexAnim" Offset="0x18BC4" />
+        <Array Name="gIkanaThroneRoomLightRayVtx" Count="18" Offset="0x18BD0">
+            <Vtx/>
+        </Array>
+        <DList Name="gIkanaThroneRoomLightRayDL" Offset="0x18CF0" /> <!-- Original name is "w2_hikari_naname_modelT" -->
+        <DList Name="gIkanaThroneRoomLightOnFloorDL" Offset="0x18DE0" /> <!-- Original name is "w2_hikari_naname2_modelT" -->
+        <DList Name="object_knight_DL_018E50" Offset="0x18E50" />
+        <Texture Name="object_knight_Tex_018E58" OutName="tex_018E58" Format="ia8" Width="16" Height="16" Offset="0x18E58" />
+        <Texture Name="object_knight_Tex_018F58" OutName="tex_018F58" Format="ia16" Width="16" Height="32" Offset="0x18F58" />
+        <TextureAnimation Name="gIkanaThroneRoomLightRayTexAnim" Offset="0x19360" />
+        <DList Name="object_knight_DL_0193A8" Offset="0x193A8" />
+        <DList Name="gIkanaThroneRoomCurtainDL" Offset="0x193B0" /> <!-- Original name is "w2_ikn_katen_model" -->
+        <Texture Name="object_knight_TLUT_019470" OutName="tex_019470" Format="rgba16" Width="4" Height="4" Offset="0x19470" />
+        <Texture Name="gIkanaThroneRoomCurtainTex" OutName="ikana_throne_room_curtain" Format="ci4" Width="64" Height="64" Offset="0x19490" TlutOffset="0x19470" />
+        <DList Name="object_knight_DL_01D380" Offset="0x1D380" />
+        <DList Name="object_knight_DL_01D4C0" Offset="0x1D4C0" />
+        <DList Name="object_knight_DL_01D650" Offset="0x1D650" />
+        <DList Name="object_knight_DL_01D710" Offset="0x1D710" />
+        <DList Name="object_knight_DL_01D870" Offset="0x1D870" />
+        <DList Name="object_knight_DL_01DA00" Offset="0x1DA00" />
+        <DList Name="object_knight_DL_01DAC0" Offset="0x1DAC0" />
+        <DList Name="object_knight_DL_01DC00" Offset="0x1DC00" />
+        <DList Name="object_knight_DL_01DCA0" Offset="0x1DCA0" />
+        <DList Name="object_knight_DL_01DD48" Offset="0x1DD48" />
+        <DList Name="object_knight_DL_01DF88" Offset="0x1DF88" />
+        <DList Name="object_knight_DL_01E050" Offset="0x1E050" />
+        <DList Name="object_knight_DL_01E0A0" Offset="0x1E0A0" />
+        <DList Name="object_knight_DL_01E878" Offset="0x1E878" />
+        <DList Name="object_knight_DL_01EAA8" Offset="0x1EAA8" />
+        <DList Name="object_knight_DL_01EB40" Offset="0x1EB40" />
+        <DList Name="object_knight_DL_01EBD8" Offset="0x1EBD8" />
+        <DList Name="object_knight_DL_01EC98" Offset="0x1EC98" />
+        <DList Name="object_knight_DL_01EDE0" Offset="0x1EDE0" />
+        <DList Name="object_knight_DL_01EF68" Offset="0x1EF68" />
+        <DList Name="object_knight_DL_01F188" Offset="0x1F188" />
+        <DList Name="object_knight_DL_01F248" Offset="0x1F248" />
+        <DList Name="object_knight_DL_01F308" Offset="0x1F308" />
+        <DList Name="object_knight_DL_01F3C0" Offset="0x1F3C0" />
+        <DList Name="object_knight_DL_01F5C0" Offset="0x1F5C0" />
+        <DList Name="object_knight_DL_01F828" Offset="0x1F828" />
+        <Texture Name="object_knight_Tex_01F8E8" OutName="tex_01F8E8" Format="rgba16" Width="8" Height="16" Offset="0x1F8E8" />
+        <Texture Name="object_knight_Tex_01F9E8" OutName="tex_01F9E8" Format="rgba16" Width="8" Height="16" Offset="0x1F9E8" />
+        <Texture Name="object_knight_Tex_01FAE8" OutName="tex_01FAE8" Format="rgba16" Width="16" Height="8" Offset="0x1FAE8" />
+        <Texture Name="object_knight_Tex_01FBE8" OutName="tex_01FBE8" Format="ia8" Width="16" Height="16" Offset="0x1FBE8" />
+        <Texture Name="object_knight_Tex_01FCE8" OutName="tex_01FCE8" Format="rgba16" Width="8" Height="16" Offset="0x1FCE8" />
+        <Texture Name="object_knight_Tex_01FDE8" OutName="tex_01FDE8" Format="rgba16" Width="16" Height="16" Offset="0x1FDE8" />
+        <Limb Name="object_knight_Standardlimb_01FFE8" Type="Standard" EnumName="IGOS_LIMB_ROOT" Offset="0x1FFE8" />
+        <Limb Name="object_knight_Standardlimb_01FFF4" Type="Standard" EnumName="IGOS_LIMB_SPINE_BASE" Offset="0x1FFF4" />
+        <Limb Name="object_knight_Standardlimb_020000" Type="Standard" EnumName="IGOS_LIMB_SPINE_UPPER" Offset="0x20000" />
+        <Limb Name="object_knight_Standardlimb_02000C" Type="Standard" EnumName="IGOS_LIMB_LEFT_UPPER_ARM" Offset="0x2000C" />
+        <Limb Name="object_knight_Standardlimb_020018" Type="Standard" EnumName="IGOS_LIMB_LEFT_FOREARM" Offset="0x20018" />
+        <Limb Name="object_knight_Standardlimb_020024" Type="Standard" EnumName="IGOS_LIMB_SHIELD" Offset="0x20024" />
+        <Limb Name="object_knight_Standardlimb_020030" Type="Standard" EnumName="IGOS_LIMB_LEFT_HAND" Offset="0x20030" />
+        <Limb Name="object_knight_Standardlimb_02003C" Type="Standard" EnumName="IGOS_LIMB_LEFT_SHOULDER" Offset="0x2003C" />
+        <Limb Name="object_knight_Standardlimb_020048" Type="Standard" EnumName="IGOS_LIMB_RIGHT_UPPER_ARM" Offset="0x20048" />
+        <Limb Name="object_knight_Standardlimb_020054" Type="Standard" EnumName="IGOS_LIMB_RIGHT_FOREARM" Offset="0x20054" />
+        <Limb Name="object_knight_Standardlimb_020060" Type="Standard" EnumName="IGOS_LIMB_SWORD" Offset="0x20060" />
+        <Limb Name="object_knight_Standardlimb_02006C" Type="Standard" EnumName="IGOS_LIMB_RIGHT_HAND" Offset="0x2006C" />
+        <Limb Name="object_knight_Standardlimb_020078" Type="Standard" EnumName="IGOS_LIMB_RIGHT_SHOULDER" Offset="0x20078" />
+        <Limb Name="object_knight_Standardlimb_020084" Type="Standard" EnumName="IGOS_LIMB_COLLAR" Offset="0x20084" />
+        <Limb Name="object_knight_Standardlimb_020090" Type="Standard" EnumName="IGOS_LIMB_NECK" Offset="0x20090" />
+        <Limb Name="object_knight_Standardlimb_02009C" Type="Standard" EnumName="IGOS_LIMB_10" Offset="0x2009C" />
+        <Limb Name="object_knight_Standardlimb_0200A8" Type="Standard" EnumName="IGOS_LIMB_11" Offset="0x200A8" />
+        <Limb Name="object_knight_Standardlimb_0200B4" Type="Standard" EnumName="IGOS_LIMB_JAW" Offset="0x200B4" />
+        <Limb Name="object_knight_Standardlimb_0200C0" Type="Standard" EnumName="IGOS_LIMB_HEAD" Offset="0x200C0" />
+        <Limb Name="object_knight_Standardlimb_0200CC" Type="Standard" EnumName="IGOS_LIMB_TORSO" Offset="0x200CC" />
+        <Limb Name="object_knight_Standardlimb_0200D8" Type="Standard" EnumName="IGOS_LIMB_PELVIS" Offset="0x200D8" />
+        <Limb Name="object_knight_Standardlimb_0200E4" Type="Standard" EnumName="IGOS_LIMB_16" Offset="0x200E4" />
+        <Limb Name="object_knight_Standardlimb_0200F0" Type="Standard" EnumName="IGOS_LIMB_LEFT_LEG_UPPER" Offset="0x200F0" />
+        <Limb Name="object_knight_Standardlimb_0200FC" Type="Standard" EnumName="IGOS_LIMB_LEFT_LEG_LOWER" Offset="0x200FC" />
+        <Limb Name="object_knight_Standardlimb_020108" Type="Standard" EnumName="IGOS_LIMB_LEFT_FOOT" Offset="0x20108" />
+        <Limb Name="object_knight_Standardlimb_020114" Type="Standard" EnumName="IGOS_LIMB_RIGHT_LEG_UPPER" Offset="0x20114" />
+        <Limb Name="object_knight_Standardlimb_020120" Type="Standard" EnumName="IGOS_LIMB_RIGHT_LEG_LOWER" Offset="0x20120" />
+        <Limb Name="object_knight_Standardlimb_02012C" Type="Standard" EnumName="IGOS_LIMB_RIGHT_FOOT" Offset="0x2012C" />
+        <Skeleton Name="gIgosSkel" Type="Flex" LimbType="Standard" LimbNone="IGOS_LIMB_NONE" LimbMax="IGOS_LIMB_MAX" EnumName="IgosLimb" Offset="0x201A8" />
+        <Limb Name="object_knight_Standardlimb_0201B4" Type="Standard" EnumName="KNIGHT_LIMB_ROOT" Offset="0x201B4" />
+        <Limb Name="object_knight_Standardlimb_0201C0" Type="Standard" EnumName="KNIGHT_LIMB_SPINE_BASE" Offset="0x201C0" />
+        <Limb Name="object_knight_Standardlimb_0201CC" Type="Standard" EnumName="KNIGHT_LIMB_SPINE_UPPER" Offset="0x201CC" />
+        <Limb Name="object_knight_Standardlimb_0201D8" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_UPPER_ARM" Offset="0x201D8" />
+        <Limb Name="object_knight_Standardlimb_0201E4" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_FOREARM" Offset="0x201E4" />
+        <Limb Name="object_knight_Standardlimb_0201F0" Type="Standard" EnumName="KNIGHT_LIMB_SHIELD" Offset="0x201F0" />
+        <Limb Name="object_knight_Standardlimb_0201FC" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_HAND" Offset="0x201FC" />
+        <Limb Name="object_knight_Standardlimb_020208" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_SHOULDER" Offset="0x20208" />
+        <Limb Name="object_knight_Standardlimb_020214" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_UPPER_ARM" Offset="0x20214" />
+        <Limb Name="object_knight_Standardlimb_020220" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_FOREARM" Offset="0x20220" />
+        <Limb Name="object_knight_Standardlimb_02022C" Type="Standard" EnumName="KNIGHT_LIMB_SWORD" Offset="0x2022C" />
+        <Limb Name="object_knight_Standardlimb_020238" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_HAND" Offset="0x20238" />
+        <Limb Name="object_knight_Standardlimb_020244" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_SHOULDER" Offset="0x20244" />
+        <Limb Name="object_knight_Standardlimb_020250" Type="Standard" EnumName="KNIGHT_LIMB_COLLAR" Offset="0x20250" />
+        <Limb Name="object_knight_Standardlimb_02025C" Type="Standard" EnumName="KNIGHT_LIMB_NECK" Offset="0x2025C" />
+        <Limb Name="object_knight_Standardlimb_020268" Type="Standard" EnumName="KNIGHT_LIMB_10" Offset="0x20268" />
+        <Limb Name="object_knight_Standardlimb_020274" Type="Standard" EnumName="KNIGHT_LIMB_11" Offset="0x20274" />
+        <Limb Name="object_knight_Standardlimb_020280" Type="Standard" EnumName="KNIGHT_LIMB_JAW" Offset="0x20280" />
+        <Limb Name="object_knight_Standardlimb_02028C" Type="Standard" EnumName="KNIGHT_LIMB_HEAD" Offset="0x2028C" />
+        <Limb Name="object_knight_Standardlimb_020298" Type="Standard" EnumName="KNIGHT_LIMB_TORSO" Offset="0x20298" />
+        <Limb Name="object_knight_Standardlimb_0202A4" Type="Standard" EnumName="KNIGHT_LIMB_PELVIS" Offset="0x202A4" />
+        <Limb Name="object_knight_Standardlimb_0202B0" Type="Standard" EnumName="KNIGHT_LIMB_16" Offset="0x202B0" />
+        <Limb Name="object_knight_Standardlimb_0202BC" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_LEG_UPPER" Offset="0x202BC" />
+        <Limb Name="object_knight_Standardlimb_0202C8" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_LEG_LOWER" Offset="0x202C8" />
+        <Limb Name="object_knight_Standardlimb_0202D4" Type="Standard" EnumName="KNIGHT_LIMB_LEFT_FOOT" Offset="0x202D4" />
+        <Limb Name="object_knight_Standardlimb_0202E0" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_LEG_UPPER" Offset="0x202E0" />
+        <Limb Name="object_knight_Standardlimb_0202EC" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_LEG_LOWER" Offset="0x202EC" />
+        <Limb Name="object_knight_Standardlimb_0202F8" Type="Standard" EnumName="KNIGHT_LIMB_RIGHT_FOOT" Offset="0x202F8" />
+        <Skeleton Name="gKnightSkel" Type="Flex" LimbType="Standard" LimbNone="KNIGHT_LIMB_NONE" LimbMax="KNIGHT_LIMB_MAX" EnumName="KnightLimb" Offset="0x20374" />
+        <Animation Name="gKnightTelegraphHeavyAttackAnim" Offset="0x20950" /> <!-- Original name is probably "nsk_tategiri_tame" -->
+        <Animation Name="gKnightIgosShrugStopAnim" Offset="0x2105C" /> <!-- Original name is probably "nsk_towaitBD" -->
+        <Animation Name="gKnightIntroWalkAnim" Offset="0x21B10" /> <!-- Original name is probably "nsk_walkD" -->
+        <Animation Name="gKnightIgosShrugStartAnim" Offset="0x21E34" /> <!-- Original name is probably "nsk_whyD" -->
+        <Animation Name="gKnightLowSwingAnim" Offset="0x22728" /> <!-- Original name is probably "nsk_yokogiri" -->
+        <Animation Name="gKnightLowSwingEndAnim" Offset="0x22CAC" /> <!-- Original name is probably "nsk_yokogiri_kime" -->
+    </File>
+</Root>

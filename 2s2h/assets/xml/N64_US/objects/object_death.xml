@@ -1,0 +1,85 @@
+﻿<Root>
+    <File Name="object_death" Segment="6">
+        <Animation Name="gGomessScytheSwingAnim" Offset="0xE64" /> <!-- Original name is "d13_atack" -->
+        <Animation Name="gGomessBatSwarmStartAnim" Offset="0x15B4" /> <!-- Original name is "d13_callenemy" -->
+        <Animation Name="gGomessBatSwarmAnim" Offset="0x1834" /> <!-- Original name is "d13_callingenemy" -->
+        <Animation Name="gGomessDamagedAnim" Offset="0x1F80" /> <!-- Original name is "d13_damage" -->
+        <Animation Name="gGomessBeginDeathAnim" Offset="0x2DE8" /> <!-- Original name is "d13_deadhit" -->
+        <Animation Name="gGomessDeathAnim" Offset="0x352C" /> <!-- Original name is "d13_deadwait" -->
+        <Animation Name="gGomessFloatAnim" Offset="0x3CAC" /> <!-- Original name is "d13_fly" -->
+        <DList Name="object_death_DL_006B80" Offset="0x6B80" />
+        <DList Name="object_death_DL_006D18" Offset="0x6D18" />
+        <DList Name="object_death_DL_006E08" Offset="0x6E08" />
+        <DList Name="gGomessScytheHandleDL" Offset="0x6F88" /> <!-- Original name is "d13_kama_model" ("sickle​") -->
+        <DList Name="gGomessScytheBladeDL" Offset="0x73D0" /> <!-- Original name is "d13_kamahaA_model" -->
+        <DList Name="object_death_DL_0074B8" Offset="0x74B8" />
+        <DList Name="object_death_DL_007560" Offset="0x7560" />
+        <DList Name="object_death_DL_007638" Offset="0x7638" />
+        <DList Name="object_death_DL_007710" Offset="0x7710" />
+        <DList Name="object_death_DL_007818" Offset="0x7818" />
+        <DList Name="object_death_DL_007998" Offset="0x7998" />
+        <DList Name="object_death_DL_007A40" Offset="0x7A40" />
+        <DList Name="object_death_DL_007CD0" Offset="0x7CD0" />
+        <DList Name="object_death_DL_007ED0" Offset="0x7ED0" />
+        <DList Name="object_death_DL_0082C0" Offset="0x82C0" />
+        <DList Name="object_death_DL_008370" Offset="0x8370" />
+        <DList Name="object_death_DL_008428" Offset="0x8428" />
+        <DList Name="object_death_DL_0084E0" Offset="0x84E0" />
+        <DList Name="object_death_DL_008598" Offset="0x8598" />
+        <DList Name="object_death_DL_008638" Offset="0x8638" />
+        <Texture Name="object_death_Tex_008788" OutName="tex_008788" Format="rgba16" Width="32" Height="32" Offset="0x8788" />
+        <Texture Name="object_death_Tex_008F88" OutName="tex_008F88" Format="rgba16" Width="8" Height="8" Offset="0x8F88" />
+        <Texture Name="object_death_Tex_009008" OutName="tex_009008" Format="rgba16" Width="8" Height="16" Offset="0x9008" />
+        <Texture Name="object_death_Tex_009108" OutName="tex_009108" Format="rgba16" Width="8" Height="8" Offset="0x9108" />
+        <Texture Name="object_death_Tex_009188" OutName="tex_009188" Format="rgba16" Width="16" Height="8" Offset="0x9188" />
+        <Texture Name="object_death_Tex_009288" OutName="tex_009288" Format="rgba16" Width="8" Height="8" Offset="0x9288" />
+        <Texture Name="object_death_Tex_009308" OutName="tex_009308" Format="rgba16" Width="8" Height="8" Offset="0x9308" />
+        <Texture Name="object_death_Tex_009388" OutName="tex_009388" Format="rgba16" Width="16" Height="16" Offset="0x9388" />
+        <Texture Name="object_death_Tex_009588" OutName="tex_009588" Format="rgba16" Width="4" Height="8" Offset="0x9588" />
+        <Texture Name="object_death_Tex_0095C8" OutName="tex_0095C8" Format="rgba16" Width="16" Height="16" Offset="0x95C8" />
+        <Texture Name="object_death_Tex_0097C8" OutName="tex_0097C8" Format="rgba16" Width="4" Height="8" Offset="0x97C8" />
+        <Texture Name="object_death_Tex_009808" OutName="tex_009808" Format="i4" Width="16" Height="16" Offset="0x9808" />
+        <DList Name="gGomessCoreDL" Offset="0x9988" />
+        <Texture Name="gGomessCoreTex" OutName="gomess_core" Format="i4" Width="16" Height="16" Offset="0x9AA0" />
+        <DList Name="gGomessBatsGuardingCoreDL" Offset="0x9BA0" /> <!-- Original name is "d13_cover_model" -->
+        <Texture Name="gGomessBatsGuardingCoreTex" OutName="gomess_bats_guarding_core" Format="rgba16" Width="16" Height="16" Offset="0x9C40" />
+        <DList Name="gGomessBatMaterialDL" Offset="0x9F10" />
+        <DList Name="gGomessBatFrame1DL" Offset="0x9F88" />
+        <DList Name="gGomessBatFrame2DL" Offset="0xA088" />
+        <DList Name="gGomessBatFrame3DL" Offset="0xA188" />
+        <DList Name="gGomessBatFrame4DL" Offset="0xA288" />
+        <DList Name="gGomessBatFrame5DL" Offset="0xA388" />
+        <DList Name="gGomessBatFrame6DL" Offset="0xA488" />
+        <DList Name="gGomessBatFrame7DL" Offset="0xA588" />
+        <DList Name="gGomessBatFrame8DL" Offset="0xA688" />
+        <DList Name="gGomessBatFrame9DL" Offset="0xA788" />
+        <Texture Name="gGomessBatTex" OutName="gomess_bat" Format="rgba16" Width="32" Height="16" Offset="0xA7B8" />
+        <Limb Name="object_death_Standardlimb_00ABB8" Type="Standard" EnumName="GOMESS_LIMB_1" Offset="0xABB8" />
+        <Limb Name="object_death_Standardlimb_00ABC4" Type="Standard" EnumName="GOMESS_LIMB_CORE_POS" Offset="0xABC4" />
+        <Limb Name="object_death_Standardlimb_00ABD0" Type="Standard" EnumName="GOMESS_LIMB_LOWER_BODY" Offset="0xABD0" />
+        <Limb Name="object_death_Standardlimb_00ABDC" Type="Standard" EnumName="GOMESS_LIMB_TORSO" Offset="0xABDC" />
+        <Limb Name="object_death_Standardlimb_00ABE8" Type="Standard" EnumName="GOMESS_LIMB_COLLAR" Offset="0xABE8" />
+        <Limb Name="object_death_Standardlimb_00ABF4" Type="Standard" EnumName="GOMESS_LIMB_HEAD_LOWER" Offset="0xABF4" />
+        <Limb Name="object_death_Standardlimb_00AC00" Type="Standard" EnumName="GOMESS_LIMB_HEAD_UPPER" Offset="0xAC00" />
+        <Limb Name="object_death_Standardlimb_00AC0C" Type="Standard" EnumName="GOMESS_LIMB_8" Offset="0xAC0C" />  <!-- Antenna thing, 4 parts -->
+        <Limb Name="object_death_Standardlimb_00AC18" Type="Standard" EnumName="GOMESS_LIMB_9" Offset="0xAC18" />
+        <Limb Name="object_death_Standardlimb_00AC24" Type="Standard" EnumName="GOMESS_LIMB_10" Offset="0xAC24" />
+        <Limb Name="object_death_Standardlimb_00AC30" Type="Standard" EnumName="GOMESS_LIMB_11" Offset="0xAC30" />
+        <Limb Name="object_death_Standardlimb_00AC3C" Type="Standard" EnumName="GOMESS_LIMB_CLOAK_UPPER" Offset="0xAC3C" />
+        <Limb Name="object_death_Standardlimb_00AC48" Type="Standard" EnumName="GOMESS_LIMB_CLOAK_LOWER" Offset="0xAC48" />
+        <Limb Name="object_death_Standardlimb_00AC54" Type="Standard" EnumName="GOMESS_LIMB_UPPER_ARM_LEFT" Offset="0xAC54" />
+        <Limb Name="object_death_Standardlimb_00AC60" Type="Standard" EnumName="GOMESS_LIMB_FOREARM_LEFT" Offset="0xAC60" />
+        <Limb Name="object_death_Standardlimb_00AC6C" Type="Standard" EnumName="GOMESS_LIMB_HAND_LEFT" Offset="0xAC6C" />
+        <Limb Name="object_death_Standardlimb_00AC78" Type="Standard" EnumName="GOMESS_LIMB_UPPER_ARM_RIGHT" Offset="0xAC78" />
+        <Limb Name="object_death_Standardlimb_00AC84" Type="Standard" EnumName="GOMESS_LIMB_FOREARM_RIGHT" Offset="0xAC84" />
+        <Limb Name="object_death_Standardlimb_00AC90" Type="Standard" EnumName="GOMESS_LIMB_HAND_RIGHT" Offset="0xAC90" />
+        <Limb Name="object_death_Standardlimb_00AC9C" Type="Standard" EnumName="GOMESS_LIMB_SCYTHE_HANDLE" Offset="0xAC9C" />
+        <Limb Name="object_death_Standardlimb_00ACA8" Type="Standard" EnumName="GOMESS_LIMB_SCYTHE_BLADE" Offset="0xACA8" />
+        <Skeleton Name="gGomessSkel" Type="Flex" LimbType="Standard" LimbNone="GOMESS_LIMB_NONE" LimbMax="GOMESS_LIMB_MAX" EnumName="GomessSkelLimb" Offset="0xAD08" />
+        <Animation Name="object_death_Anim_00B284" Offset="0xB284" /> <!-- Original name is "d13_gahaha" -->    <!-- Intro anim 1 -->
+        <Animation Name="gGomessScytheSpinAnim" Offset="0xB508" /> <!-- Original name is "d13_guard" -->
+        <Animation Name="object_death_Anim_00CB2C" Offset="0xCB2C" /> <!-- Original name is "d13_jakin" -->     <!-- Intro anim 2 -->
+        <TextureAnimation Name="gGomessCoreMatAnim" Offset="0xCB84" />
+        <TextureAnimation Name="gGomessBodyMatAnim" Offset="0xCBC0" />
+    </File>
+</Root>

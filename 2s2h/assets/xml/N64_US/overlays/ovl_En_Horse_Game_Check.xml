@@ -1,0 +1,5 @@
+<Root>
+    <File Name="ovl_En_Horse_Game_Check" BaseAddress="0x808F8AA0" RangeStart="0x1080" RangeEnd="0x10F4">
+        <Collision Name="ovl_En_Horse_Game_Check_Colheader_0010C8" Offset="0x10C8" /> <!-- Original name is "nukarumi_bgdatainfo" -->
+    </File>
+</Root>

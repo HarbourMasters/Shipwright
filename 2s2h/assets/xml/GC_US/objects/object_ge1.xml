@@ -1,0 +1,83 @@
+﻿<Root>
+    <!-- Assets for white-clothed Gerudo -->
+    <File Name="object_ge1" Segment="6">
+        <!-- White-clothed Gerudo Animations -->
+        <Animation Name="gGerudoWhiteStandingHeadBowedAnim" Offset="0x594" /><!-- Original name may be "gb_ie" ("home")? -->
+        <Animation Name="gGerudoWhiteSaluteAnim" Offset="0xABC" /><!-- Original name is "gb_keirei" ("salute/bow") -->
+        <Animation Name="gGerudoWhiteStiffeningAnim" Offset="0xCF8" /><!-- Original name is "gb_kochoku" ("stiffening/rigidity") -->
+        <Animation Name="gGerudoWhiteStiffShiveringAnim" Offset="0x13CC" /><!-- Original name is "gb_kochoku_loop" ("stiffening loop") -->
+        <Animation Name="gGerudoWhiteTrudgingOffAnim" Offset="0x202C" /><!-- Original name is "gb_tobotobo" ("totteringly/trudgingly") -->
+        <Animation Name="gGerudoWhiteGreatBayCutsceneAnim" Offset="0x2148" /><!-- one frame used for each part of Great Bay Temple first entry cutscene. Original name is "gb_twister" -->
+        <Animation Name="gGerudoWhiteExcitedClappingAnim" Offset="0x2954" /><!-- Original name is "gb_wakuwaku", ("excited") -->
+        <Animation Name="gGerudoWhiteUnfoldingArmsAnim" Offset="0x2AD8" /><!-- Original name is "ge1_hanasi" ("talk") -->
+
+        <!-- From here to the end this file is identical to OoT's object_ge1, offset 0x0-0x9860 -->
+        <Animation Name="gGerudoWhiteArmsFoldedAnim" Offset="0x2B98" /><!-- Original name is "ge1_matsu" ("waiting") -->
+
+        <!-- White-clothed Gerudo Limbs -->
+        <Limb Name="gGerudoWhiteWaistLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_WAIST" Offset="0x2BB0" />
+        <Limb Name="gGerudoWhiteLeftThighLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_THIGH" Offset="0x2BBC" />
+        <Limb Name="gGerudoWhiteLeftShinLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_LOWER_LEG" Offset="0x2BC8" />
+        <Limb Name="gGerudoWhiteLeftFootLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_FOOT" Offset="0x2BD4" />
+        <Limb Name="gGerudoWhiteRightThighLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_THIGH" Offset="0x2BE0" />
+        <Limb Name="gGerudoWhiteRightShinLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_LOWER_LEG" Offset="0x2BEC" />
+        <Limb Name="gGerudoWhiteRightFootLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_FOOT" Offset="0x2BF8" />
+        <Limb Name="gGerudoWhiteTorsoLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_TORSO" Offset="0x2C04" />
+        <Limb Name="gGerudoWhiteLeftUpperArmLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_UPPER_ARM" Offset="0x2C10" />
+        <Limb Name="gGerudoWhiteLeftForearmLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_FOREARM" Offset="0x2C1C" />
+        <Limb Name="gGerudoWhiteLeftHandLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_LEFT_HAND" Offset="0x2C28" />
+        <Limb Name="gGerudoWhiteRightUpperArmLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_UPPER_ARM" Offset="0x2C34" />
+        <Limb Name="gGerudoWhiteRightForearmLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_FOREARM" Offset="0x2C40" />
+        <Limb Name="gGerudoWhiteRightHandLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_RIGHT_HAND" Offset="0x2C4C" />
+        <Limb Name="gGerudoWhiteHeadLimb" Type="Standard" EnumName="GERUDO_WHITE_LIMB_HEAD" Offset="0x2C58" />
+
+        <!-- White-clothed Gerudo Skeleton -->
+        <Skeleton Name="gGerudoWhiteSkel" Type="Flex" LimbType="Standard" LimbNone="GERUDO_WHITE_LIMB_NONE" LimbMax="GERUDO_WHITE_LIMB_MAX" EnumName="GerudoWhiteLimb" Offset="0x2CA0" />
+
+        <Texture Name="gGerudoWhiteGeneralTLUT" OutName="gerudo_white_general_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2CB8" />
+        <Texture Name="gGerudoWhiteSkinGradientTex" OutName="gerudo_white_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x2EB8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteWhiteFabricLipsTex" OutName="gerudo_white_white_fabric_lips" Format="ci8" Width="16" Height="16" Offset="0x2EF8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteEarTex" OutName="gerudo_white_ear" Format="ci8" Width="8" Height="16" Offset="0x2FF8" TlutOffset="0x2CB8" />
+
+        <!-- White-clothed Gerudo Eye Textures -->
+        <Texture Name="gGerudoWhiteEyeOpenTex" OutName="gerudo_white_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x3078"/>
+        <Texture Name="gGerudoWhiteEyeHalfTex" OutName="gerudo_white_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x3878"/>
+        <Texture Name="gGerudoWhiteEyeClosedTex" OutName="gerudo_white_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x4078"/>
+
+        <Texture Name="gGerudoWhiteFingersTex" OutName="gerudo_white_fingers" Format="ci8" Width="32" Height="32" Offset="0x4878" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteArmletTex" OutName="gerudo_white_armlet" Format="ci8" Width="8" Height="16" Offset="0x4C78" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteJacketTex" OutName="gerudo_white_jacket" Format="ci8" Width="16" Height="16" Offset="0x4CF8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteTubeTopTex" OutName="gerudo_white_tube_top" Format="ci8" Width="16" Height="16" Offset="0x4DF8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteNavelTex" OutName="gerudo_white_navel" Format="ci8" Width="16" Height="16" Offset="0x4EF8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteCleavageTex" OutName="gerudo_white_cleavage" Format="ci8" Width="8" Height="8" Offset="0x4FF8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteShoeUpperTex" OutName="gerudo_white_shoe_upper" Format="ci8" Width="8" Height="16" Offset="0x5038" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteShoeSoleTex" OutName="gerudo_white_shoe_sole" Format="ci8" Width="8" Height="8" Offset="0x50B8" TlutOffset="0x2CB8" />
+        <Texture Name="gGerudoWhiteCrotchTex" OutName="gerudo_white_crotch" Format="rgba16" Width="8" Height="8" Offset="0x50F8" />
+
+        <!-- White-clothed Gerudo Hair Textures -->
+        <Texture Name="gGerudoWhiteHairTLUT" OutName="gerudo_white_hair_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5178" />
+        <Texture Name="gGerudoWhiteHairTex" OutName="gerudo_white_hair" Format="ci8" Width="16" Height="16" Offset="0x5378" TlutOffset="0x5178" />
+
+        <!-- White-clothed Gerudo Limb DisplayLists -->
+        <DList Name="gGerudoWhiteWaistDL" Offset="0x7F78" />
+        <DList Name="gGerudoWhiteLeftThighDL" Offset="0x85A8" />
+        <DList Name="gGerudoWhiteLeftShinDL" Offset="0x89B0" />
+        <DList Name="gGerudoWhiteLeftFootDL" Offset="0x8B58" />
+        <DList Name="gGerudoWhiteRightThighDL" Offset="0x8C88" />
+        <DList Name="gGerudoWhiteRightShinDL" Offset="0x8E80" />
+        <DList Name="gGerudoWhiteRightFootDL" Offset="0x9028" />
+        <DList Name="gGerudoWhiteTorsoDL" Offset="0x9158" />
+        <DList Name="gGerudoWhiteLeftUpperArmDL" Offset="0x9350" />
+        <DList Name="gGerudoWhiteLeftForearmDL" Offset="0x9440" />
+        <DList Name="gGerudoWhiteLeftHandDL" Offset="0x9570" />
+        <DList Name="gGerudoWhiteRightUpperArmDL" Offset="0x97C0" />
+        <DList Name="gGerudoWhiteRightForearmDL" Offset="0x9A20" />
+        <DList Name="gGerudoWhiteRightHandDL" Offset="0x9B50" />
+        <DList Name="gGerudoWhiteHeadDL" Offset="0x9D18" />
+
+        <!-- White-clothed Gerudo Hairstyle DisplayLists -->
+        <DList Name="gGerudoWhiteHairstyleBobDL" Offset="0xBB08" />
+        <DList Name="gGerudoWhiteHairstyleStraightFringeDL" Offset="0xBDA0" />
+        <DList Name="gGerudoWhiteHairstyleSpikyDL" Offset="0xC000" />
+    </File>
+</Root>

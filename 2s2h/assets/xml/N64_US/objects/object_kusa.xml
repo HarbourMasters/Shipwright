@@ -1,0 +1,6 @@
+﻿<Root>
+    <File Name="object_kusa" Segment="6">
+        <DList Name="gKusaSproutDL" Offset="0x140" /> <!-- Original name is "obj_kusa01_model" -->
+        <DList Name="gKusaStumpDL" Offset="0x2E0" /> <!-- Original name is "obj_kusa03_model" -->
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe2" BaseAddress="0x80986270" RangeStart="0x420" RangeEnd="0x1688">
+        <Texture Name="sEponaSongEffect1Tex" OutName="eponas_song_effect_1" Format="i4" Width="64" Height="64" Offset="0x420"/>
+        <Texture Name="sEponaSongEffect2Tex" OutName="eponas_song_effect_2" Format="i4" Width="64" Height="64" Offset="0xC20"/>
+        <Array Name="sEponaSongFrustumVtx" Count="22" Offset="0x1420">
+            <Vtx/>
+        </Array>
+        <DList Name="sEponaSongFrustumMaterialDL" Offset="0x1580"/>
+        <DList Name="sEponaSongFrustumModelDL" Offset="0x1628"/> <!-- Original name might be "efc_ocarina_41_modelT" or "ocarina_epona_model" -->
+    </File>
+</Root>

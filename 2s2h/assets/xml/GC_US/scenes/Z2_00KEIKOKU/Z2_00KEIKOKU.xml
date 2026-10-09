@@ -1,0 +1,36 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_08.xml" OutPath="misc/scene_texture_08/"/>
+    <File Name="Z2_00KEIKOKU" Segment="2" Game="MM">
+        <Scene Name="Z2_00KEIKOKU" Offset="0x0"/>
+        <Cutscene Name="gTerminaFieldClockTowerOpeningCs" Offset="0x9D8"/> <!-- Original name is "clock_t_change" -->
+        <Cutscene Name="gTerminaFieldTelescopeDay1And2Cs" Offset="0x11F8"/> <!-- Original name is "findoutstk" -->
+        <Cutscene Name="gTerminaFieldMoonCrashCs" Offset="0x1A48"/> <!-- Original name is "moon_atack" -->
+        <Cutscene Name="gTerminaFieldTelescopeDay3Cs" Offset="0x2A88"/> <!-- Original name is "findoutstk_3rd" -->
+        <Cutscene Name="gTerminaFieldTelescopeFinalHoursCs" Offset="0x32A8"/> <!-- Original name is "findoutstk_mad" -->
+        <Cutscene Name="gTerminaFieldSkullKidDrawingStartCs" Offset="0x3A68"/> <!-- Original name is "find_rakugaki" ("rakugaki" = "graffiti") -->
+        <Cutscene Name="gTerminaFieldSkullKidDrawingEndCs" Offset="0x4208"/> <!-- Original name is "rakugaki_end" -->
+        <Cutscene Name="gTerminaFieldIntroFromWestClockTownCs" Offset="0x4568"/> <!-- Original name is "sc1st01_001valley0" -->
+        <Cutscene Name="gTerminaFieldIntroFromNorthClockTownCs" Offset="0x4858"/> <!-- Original name is "sc1st01_001valley1" -->
+        <Cutscene Name="gTerminaFieldIntroFromEastClockTownCs" Offset="0x4A68"/> <!-- Original name is "sc1st01_001valley2" -->
+        <Cutscene Name="gTerminaFieldIntroFromSouthClockTownCs" Offset="0x4C78"/> <!-- Original name is "sc1st01_001valley3" -->
+        <Cutscene Name="gTerminaFieldGiantsGatherToStopMoonCs" Offset="0xDE2C"/> <!-- Original name is "k_s_start" ("k" is probably short for "kyojin", meaning "giant") -->
+        <Cutscene Name="gTerminaFieldGiantsStopMoonFailureCs" Offset="0xFA3C"/> <!-- Original name is "k_s_sippai" ("failure") -->
+        <Cutscene Name="gTerminaFieldGiantsStopMoonSuccessCs" Offset="0x1040C"/> <!-- Original name is "k_s_seikou" ("success") -->
+        <Cutscene Name="gTerminaFieldFirstCycleClockTowerOpeningCs" Offset="0x11414"/> <!-- Original name is "clock_t_change"; exact duplicate of gTerminaFieldClockTowerOpeningCs -->
+        <Cutscene Name="gTerminaFieldSkullKidFlashbackRainCs" Offset="0x11E80"/> <!-- Original name is "memory" -->
+        <Cutscene Name="gTerminaFieldSkullKidFlashbackDrawingWithFairiesCs" Offset="0x133B0"/> <!-- Original name is "rakugaki" -->
+        <Cutscene Name="gTerminaFieldSkullKidFlashbackPlayingWithFairiesCs" Offset="0x137E0"/> <!-- Original name is "asobu" ("to play; to enjoy oneself; to have a good time") -->
+        <Cutscene Name="gTerminaFieldCremiaHugCs" Offset="0x1421C"/> <!-- Original name is "climia_dakisime" ("dakisime" = "to hug someone close") -->
+        <Cutscene Name="gTerminaFieldGiantsDepartCs" Offset="0x1507C"/> <!-- Original name is "aftermoonclash" -->
+        <Cutscene Name="gTerminaFieldHappyMaskSalesmanAndLinkDepartCs" Offset="0x174EC"/> <!-- Original name is "bye_omenya" ("omenya" = "mask salesman") -->
+        <Cutscene Name="gTerminaFieldMoonsDestructionCs" Offset="0x1A1FC"/> <!-- Original name is "moonclash" -->
+        <Cutscene Name="gTerminaFieldCreditsWeddingCs" Offset="0x1B114"/> <!-- Original name is "sc_meoto" ("meoto" = "married couple; husband and wife; man and wife​") -->
+        <Cutscene Name="gTerminaFieldCreditsPostmanCs" Offset="0x1BC94"/> <!-- Original name is "sc_posthut" -->
+    </File>
+    <File Name="Z2_00KEIKOKU_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_00KEIKOKU_room_00" Offset="0x0"/>
+        <DList Name="Z2_00KEIKOKU_room_00DL_026C10" Offset="0x26C10"/>
+        <DList Name="Z2_00KEIKOKU_room_00DL_026A58" Offset="0x26A58"/>
+        <DList Name="Z2_00KEIKOKU_room_00DL_0287F8" Offset="0x287F8"/>
+    </File>
+</Root>

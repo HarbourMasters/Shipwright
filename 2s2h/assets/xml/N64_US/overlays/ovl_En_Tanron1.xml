@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_En_Tanron1" BaseAddress="0x80BB4E00" RangeStart="0x1028" RangeEnd="0x1918">
+        <Texture Name="ovl_En_Tanron1_DL_001428" OutName="tex_001428" Format="rgba16" Width="16" Height="32" Offset="0x1428"/>
+        <DList Name="ovl_En_Tanron1_DL_001888" Offset="0x1888"/>
+        <DList Name="ovl_En_Tanron1_DL_001900" Offset="0x1900"/> <!-- Original name might be "tanron1_model" -->
+    </File>
+</Root>

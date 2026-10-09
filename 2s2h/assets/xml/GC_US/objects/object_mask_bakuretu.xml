@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_mask_bakuretu" Segment="10">
+        <DList Name="object_mask_bakuretu_DL_000440" Offset="0x440" />
+        <DList Name="object_mask_bakuretu_DL_0005C0" Offset="0x5C0" />
+        <Texture Name="object_mask_bakuretu_Tex_0007B0" OutName="tex_0007B0" Format="i8" Width="32" Height="32" Offset="0x7B0" />
+        <Texture Name="object_mask_bakuretu_Tex_000BB0" OutName="tex_000BB0" Format="i8" Width="8" Height="8" Offset="0xBB0" />
+        <Texture Name="object_mask_bakuretu_Tex_000BF0" OutName="tex_000BF0" Format="i4" Width="32" Height="32" Offset="0xBF0" />
+        <Texture Name="object_mask_bakuretu_Tex_000DF0" OutName="tex_000DF0" Format="i8" Width="32" Height="32" Offset="0xDF0" />
+        <TextureAnimation Name="object_mask_bakuretu_Matanimheader_0011F8" Offset="0x11F8" />
+    </File>
+</Root>

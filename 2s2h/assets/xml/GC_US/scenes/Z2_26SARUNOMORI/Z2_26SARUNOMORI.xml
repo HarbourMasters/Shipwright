@@ -1,0 +1,51 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_06.xml" OutPath="misc/scene_texture_06/"/>
+    <File Name="Z2_26SARUNOMORI" Segment="2" Game="MM">
+        <Scene Name="Z2_26SARUNOMORI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_00" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_00DL_002AF8" Offset="0x2AF8"/>
+        <DList Name="Z2_26SARUNOMORI_room_00DL_0035C0" Offset="0x35C0"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_01" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_01DL_002AE8" Offset="0x2AE8"/>
+        <DList Name="Z2_26SARUNOMORI_room_01DL_0035B0" Offset="0x35B0"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_02" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_02DL_002F80" Offset="0x2F80"/>
+        <DList Name="Z2_26SARUNOMORI_room_02DL_003A28" Offset="0x3A28"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_03" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_03DL_001C80" Offset="0x1C80"/>
+        <DList Name="Z2_26SARUNOMORI_room_03DL_002740" Offset="0x2740"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_04" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_04DL_002940" Offset="0x2940"/>
+        <DList Name="Z2_26SARUNOMORI_room_04DL_003418" Offset="0x3418"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_05" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_05DL_001C80" Offset="0x1C80"/>
+        <DList Name="Z2_26SARUNOMORI_room_05DL_002740" Offset="0x2740"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_06" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_06DL_003520" Offset="0x3520"/>
+        <DList Name="Z2_26SARUNOMORI_room_06DL_003FF8" Offset="0x3FF8"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_07" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_07DL_001C80" Offset="0x1C80"/>
+        <DList Name="Z2_26SARUNOMORI_room_07DL_002740" Offset="0x2740"/>
+    </File>
+    <File Name="Z2_26SARUNOMORI_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_26SARUNOMORI_room_08" Offset="0x0"/>
+        <DList Name="Z2_26SARUNOMORI_room_08DL_002A18" Offset="0x2A18"/>
+        <DList Name="Z2_26SARUNOMORI_room_08DL_0034F8" Offset="0x34F8"/>
+    </File>
+</Root>

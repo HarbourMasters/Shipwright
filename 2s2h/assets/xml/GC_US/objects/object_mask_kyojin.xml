@@ -1,0 +1,6 @@
+﻿<Root>
+    <File Name="object_mask_kyojin" Segment="10">
+        <DList Name="object_mask_kyojin_DL_000380" Offset="0x380" />
+        <Texture Name="object_mask_kyojin_Tex_000498" OutName="tex_000498" Format="i4" Width="64" Height="64" Offset="0x498" />
+    </File>
+</Root>

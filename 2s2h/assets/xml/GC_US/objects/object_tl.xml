@@ -1,0 +1,87 @@
+﻿<Root>
+    <!-- Assets for Snappers. There are two variants: the regular Snapper with four legs, and a Spiked Snapper with spikes instead of legs that spins to attack. -->
+    <File Name="object_tl" Segment="6">
+        <!-- Snapper Animations -->
+        <Animation Name="gSnapperRearUpAnim" Offset="0x440" /> <!-- Original name is "tl_aisatsuDEMO" ("greeting") -->
+        <Animation Name="gSnapperDamageAnim" Offset="0x8B4" /> <!-- Original name is "tl_damage" -->
+        <Animation Name="gSnapperDeathAnim" Offset="0xAF4" /> <!-- Original name is "tl_dead" -->
+
+        <!-- Spiked Snapper Animation -->
+        <Animation Name="gSpikedSnapperIdleAnim" Offset="0xB30" /> <!-- Original name is "tl_default" -->
+
+        <!-- Spiked Snapper Limb DisplayLists -->
+        <DList Name="gSpikedSnapperBodyDL" Offset="0x1550" />
+        <DList Name="gSpikedSnapperShellDL" Offset="0x1800" />
+        <DList Name="gSpikedSnapperSpikesDL" Offset="0x18E0" />
+
+        <!-- Spiked Snapper Limbs -->
+        <Limb Name="gSpikedSnapperBodyLimb" Type="Standard" EnumName="SPIKED_SNAPPER_LIMB_BODY" Offset="0x1A20" />
+        <Limb Name="gSpikedSnapperShellLimb" Type="Standard" EnumName="SPIKED_SNAPPER_LIMB_SHELL" Offset="0x1A2C" />
+        <Limb Name="gSpikedSnapperSpikesLimb" Type="Standard" EnumName="SPIKED_SNAPPER_LIMB_SPIKES" Offset="0x1A38" />
+
+        <!-- Spiked Snapper Skeleton -->
+        <Skeleton Name="gSpikedSnapperSkel" Type="Flex" LimbType="Standard" LimbNone="SPIKED_SNAPPER_LIMB_NONE" LimbMax="SPIKED_SNAPPER_LIMB_MAX" EnumName="SpikedSnapperLimb" Offset="0x1A50" />
+
+        <!-- Snapper Animations -->
+        <Animation Name="gSnapperRetreatIntoShellAnim" Offset="0x1C68" /> <!-- Original name is "tl_hikkomi" ("retreat") -->
+        <Animation Name="gSnapperFlipUprightAnim" Offset="0x2510" /> <!-- Original name is "tl_modoru" ("to rebound; to spring back"). Used for when the Snapper flips itself upright. -->
+        <Animation Name="gSnapperWiggleLegsAnim" Offset="0x27D8" /> <!-- Original name is "tl_mogaki01" ("struggle; writhing; wriggling; floundering") -->
+        <Animation Name="gSnapperFailToFlipUprightAnim" Offset="0x2F88" /> <!-- Original name is "tl_mogaki02" -->
+        <Animation Name="gSnapperEmergeFromShellAnim" Offset="0x31DC" /> <!-- Original name is "tl_nyokkiri" ("sticking out prominently; rising up") -->
+        <Animation Name="gSnapperBouncedUprightAnim" Offset="0x35EC" /> <!-- Original name is "tl_omotegaeshi" ("omote" = "surface; face", "gaeshi" = "to turn over"). Used for when a Goron Pound flips the Snapper upright. -->
+
+        <!-- Unused Eye Texture Animation -->
+        <TextureAnimation Name="gSnapperEyeTexAnim" Offset="0x3624" />
+
+        <!-- Snapper Animations -->
+        <Animation Name="gSnapperFlipOverAnim" Offset="0x39C0" /> <!-- Original name is "tl_uragaeshi" ("ura" = "opposite side; bottom; other side")-->
+        <Animation Name="gSnapperIdleAnim" Offset="0x4210" /> <!-- Original name is "tl_wait" -->
+
+        <!-- Snapper and Spiked Snapper Textures -->
+        <Texture Name="gSnapperShellTex" OutName="snapper_shell" Format="rgba16" Width="16" Height="32" Offset="0x4220" />
+        <Texture Name="gSnapperBodyTex" OutName="snapper_body" Format="rgba16" Width="16" Height="16" Offset="0x4620" />
+        <Texture Name="gSnapperLegTex" OutName="snapper_leg" Format="rgba16" Width="16" Height="32" Offset="0x4820" />
+        <Texture Name="gSnapperHeadTex" OutName="snapper_head" Format="rgba16" Width="32" Height="16" Offset="0x4C20" />
+        <Texture Name="gSnapperMouthTex" OutName="snapper_mouth" Format="rgba16" Width="8" Height="8" Offset="0x5020" />
+        <Texture Name="gSnapperHoleTex" OutName="snapper_hole" Format="rgba16" Width="16" Height="16" Offset="0x50A0" />
+        <Texture Name="gSnapperSpikeSkinTex" OutName="snapper_spike_skin" Format="rgba16" Width="16" Height="8" Offset="0x52A0" />
+        <Texture Name="gSnapperSpikeTex" OutName="snapper_spike" Format="rgba16" Width="16" Height="16" Offset="0x53A0" />
+        <Texture Name="gSnapperEyeOpenTex" OutName="snapper_eye_open" Format="rgba16" Width="16" Height="16" Offset="0x55A0" />
+        <Texture Name="gSnapperEyeHalfTex" OutName="snapper_eye_half" Format="rgba16" Width="16" Height="16" Offset="0x57A0" />
+        <Texture Name="gSnapperEyeClosedTex" OutName="snapper_eye_closed" Format="rgba16" Width="16" Height="16" Offset="0x59A0" />
+
+        <!-- Snapper Limb DisplayLists -->
+        <DList Name="gSnapperBodyDL" Offset="0x6C50" />
+        <DList Name="gSnapperBackRightLegDL" Offset="0x6DE8" />
+        <DList Name="gSnapperBackRightFootDL" Offset="0x6F30" />
+        <DList Name="gSnapperBackLeftLegDL" Offset="0x7040" />
+        <DList Name="gSnapperBackLeftFootDL" Offset="0x7188" />
+        <DList Name="gSnapperFrontRightLegDL" Offset="0x7298" />
+        <DList Name="gSnapperFrontRightFootDL" Offset="0x73E0" />
+        <DList Name="gSnapperFrontLeftLegDL" Offset="0x74F0" />
+        <DList Name="gSnapperFrontLeftFootDL" Offset="0x7638" />
+        <DList Name="gSnapperHeadDL" Offset="0x7748" />
+        <DList Name="gSnapperEyesDL" Offset="0x7938" />
+        <DList Name="gSnapperJawDL" Offset="0x79C8" />
+
+        <!-- Snapper Limbs -->
+        <Limb Name="gSnapperBodyLimb" Type="Standard" EnumName="SNAPPER_LIMB_BODY" Offset="0x7BB0" />
+        <Limb Name="gSnapperHeadLimb" Type="Standard" EnumName="SNAPPER_LIMB_HEAD" Offset="0x7BBC" />
+        <Limb Name="gSnapperJawLimb" Type="Standard" EnumName="SNAPPER_LIMB_JAW" Offset="0x7BC8" />
+        <Limb Name="gSnapperEyesLimb" Type="Standard" EnumName="SNAPPER_LIMB_EYES" Offset="0x7BD4" />
+        <Limb Name="gSnapperFrontLeftLegLimb" Type="Standard" EnumName="SNAPPER_LIMB_FRONT_LEFT_LEG" Offset="0x7BE0" />
+        <Limb Name="gSnapperFrontLeftFootLimb" Type="Standard" EnumName="SNAPPER_LIMB_FRONT_LEFT_FOOT" Offset="0x7BEC" />
+        <Limb Name="gSnapperFrontRightLegLimb" Type="Standard" EnumName="SNAPPER_LIMB_FRONT_RIGHT_LEG" Offset="0x7BF8" />
+        <Limb Name="gSnapperFrontRightFootLimb" Type="Standard" EnumName="SNAPPER_LIMB_FRONT_RIGHT_FOOT" Offset="0x7C04" />
+        <Limb Name="gSnapperBackLeftLegLimb" Type="Standard" EnumName="SNAPPER_LIMB_BACK_LEFT_LEG" Offset="0x7C10" />
+        <Limb Name="gSnapperBackLeftFootLimb" Type="Standard" EnumName="SNAPPER_LIMB_BACK_LEFT_FOOT" Offset="0x7C1C" />
+        <Limb Name="gSnapperBackRightLegLimb" Type="Standard" EnumName="SNAPPER_LIMB_BACK_RIGHT_LEG" Offset="0x7C28" />
+        <Limb Name="gSnapperBackRightFootLimb" Type="Standard" EnumName="SNAPPER_LIMB_BACK_RIGHT_FOOT" Offset="0x7C34" />
+
+        <!-- Snapper Skeleton -->
+        <Skeleton Name="gSnapperSkel" Type="Flex" LimbType="Standard" LimbNone="SNAPPER_LIMB_NONE" LimbMax="SNAPPER_LIMB_MAX" EnumName="SnapperLimb" Offset="0x7C70" />
+
+        <!-- Snapper Animation-->
+        <Animation Name="gSnapperWalkAnim" Offset="0x823C" /> <!-- Original name is "tl_walk" -->
+    </File>
+</Root>

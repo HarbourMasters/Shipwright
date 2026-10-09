@@ -1,0 +1,80 @@
+﻿<Root>
+    <File Name="object_bsb" Segment="6">
+        <Animation Name="object_bsb_Anim_000400" Offset="0x400" /> <!-- Original name is "bsb_aita" ("Ouch!") -->
+        <Animation Name="object_bsb_Anim_000C50" Offset="0xC50" /> <!-- Original name is "bsb_atack" -->
+        <Animation Name="object_bsb_Anim_000FF0" Offset="0xFF0" /> <!-- Original name is "bsb_battlewalk" -->
+        <Animation Name="object_bsb_Anim_001390" Offset="0x1390" /> <!-- Original name is "bsb_damage" -->
+        <Animation Name="object_bsb_Anim_001CD8" Offset="0x1CD8" /> <!-- Original name is "bsb_demo_wait" -->
+        <Animation Name="object_bsb_Anim_001F90" Offset="0x1F90" /> <!-- Original name is "bsb_don" (onomatopoeic for "bang; bam; boom; thud") -->
+        <Animation Name="object_bsb_Anim_002590" Offset="0x2590" /> <!-- Original name is "bsb_dosuni" -->
+        <Animation Name="object_bsb_Anim_002AF4" Offset="0x2AF4" /> <!-- Original name is "bsb_down" -->
+        <Animation Name="object_bsb_Anim_003238" Offset="0x3238" /> <!-- Original name is "bsb_furi_wait" -->
+        <Animation Name="object_bsb_Anim_003E1C" Offset="0x3E1C" /> <!-- Original name is "bsb_furimuki" ("to turn around") -->
+        <Animation Name="object_bsb_Anim_004208" Offset="0x4208" /> <!-- Original name is "bsb_jidanda" ("to stamp one's feet (in frustration, impatience, etc.)") -->
+        <Animation Name="object_bsb_Anim_0043A4" Offset="0x43A4" /> <!-- Original name is "bsb_jump" -->
+        <Animation Name="object_bsb_Anim_004510" Offset="0x4510" /> <!-- Original name is "bsb_jumpTOdon" -->
+        <Animation Name="object_bsb_Anim_004894" Offset="0x4894" /> <!-- Original name is "bsb_kei_wait" -->
+        <Animation Name="object_bsb_Anim_004E2C" Offset="0x4E2C" /> <!-- Original name is "bsb_keirei" ("salute") -->
+        <Animation Name="object_bsb_Anim_005440" Offset="0x5440" /> <!-- Original name is "bsb_kiwo_wait" -->
+        <Animation Name="object_bsb_Anim_00606C" Offset="0x606C" /> <!-- Original name is "bsb_kiwotuke" ("standing at attention​") -->
+        <Animation Name="object_bsb_Anim_0065D8" Offset="0x65D8" /> <!-- Original name is "bsb_kyorokyoro" (onomatopoeic for "looking around restlessly") -->
+        <Animation Name="object_bsb_Anim_006C48" Offset="0x6C48" /> <!-- Original name is "bsb_laugh" -->
+        <Animation Name="object_bsb_Anim_007120" Offset="0x7120" /> <!-- Original name is "bsb_matarei" -->
+        <Animation Name="object_bsb_Anim_007B18" Offset="0x7B18" /> <!-- Original name is "bsb_rajio" -->
+        <Animation Name="object_bsb_Anim_0086BC" Offset="0x86BC" /> <!-- Original name is "bsb_start" -->
+        <DList Name="object_bsb_DL_00A010" Offset="0xA010" />
+        <DList Name="object_bsb_DL_00A0D8" Offset="0xA0D8" />
+        <DList Name="object_bsb_DL_00A188" Offset="0xA188" />
+        <DList Name="object_bsb_DL_00A230" Offset="0xA230" />
+        <DList Name="object_bsb_DL_00A2F8" Offset="0xA2F8" />
+        <DList Name="object_bsb_DL_00A3A8" Offset="0xA3A8" />
+        <DList Name="object_bsb_DL_00A450" Offset="0xA450" />
+        <DList Name="object_bsb_DL_00A5D0" Offset="0xA5D0" />
+        <DList Name="object_bsb_DL_00A708" Offset="0xA708" />
+        <DList Name="object_bsb_DL_00AE20" Offset="0xAE20" />
+        <DList Name="object_bsb_DL_00AEA8" Offset="0xAEA8" />
+        <DList Name="object_bsb_DL_00B038" Offset="0xB038" />
+        <DList Name="object_bsb_DL_00B100" Offset="0xB100" />
+        <DList Name="object_bsb_DL_00B228" Offset="0xB228" />
+        <DList Name="object_bsb_DL_00B2F8" Offset="0xB2F8" />
+        <DList Name="object_bsb_DL_00B3C0" Offset="0xB3C0" />
+        <DList Name="object_bsb_DL_00B4E8" Offset="0xB4E8" />
+        <DList Name="object_bsb_DL_00B5B8" Offset="0xB5B8" />
+        <Texture Name="object_bsb_Tex_00B660" OutName="tex_00B660" Format="rgba16" Width="8" Height="16" Offset="0xB660" />
+        <Texture Name="object_bsb_Tex_00B760" OutName="tex_00B760" Format="rgba16" Width="8" Height="16" Offset="0xB760" />
+        <Texture Name="object_bsb_Tex_00B860" OutName="tex_00B860" Format="rgba16" Width="8" Height="8" Offset="0xB860" />
+        <Texture Name="object_bsb_Tex_00B8E0" OutName="tex_00B8E0" Format="rgba16" Width="16" Height="16" Offset="0xB8E0" />
+        <Texture Name="object_bsb_Tex_00BAE0" OutName="tex_00BAE0" Format="rgba16" Width="16" Height="8" Offset="0xBAE0" />
+        <Texture Name="object_bsb_Tex_00BBE0" OutName="tex_00BBE0" Format="rgba16" Width="8" Height="8" Offset="0xBBE0" />
+        <Texture Name="object_bsb_Tex_00BC60" OutName="tex_00BC60" Format="rgba16" Width="16" Height="16" Offset="0xBC60" />
+        <Texture Name="object_bsb_Tex_00BE60" OutName="tex_00BE60" Format="rgba16" Width="16" Height="16" Offset="0xBE60" />
+        <Texture Name="object_bsb_Tex_00C060" OutName="tex_00C060" Format="rgba16" Width="8" Height="16" Offset="0xC060" />
+        <Texture Name="object_bsb_Tex_00C160" OutName="tex_00C160" Format="rgba16" Width="8" Height="8" Offset="0xC160" />
+        <Texture Name="object_bsb_Tex_00C1E0" OutName="tex_00C1E0" Format="rgba16" Width="8" Height="8" Offset="0xC1E0" />
+        <TextureAnimation Name="object_bsb_Matanimheader_00C298" Offset="0xC298" />
+        <Limb Name="object_bsb_Standardlimb_00C2A0" Type="Standard" EnumName="OBJECT_BSB_LIMB_01" Offset="0xC2A0" />
+        <Limb Name="object_bsb_Standardlimb_00C2AC" Type="Standard" EnumName="OBJECT_BSB_LIMB_02" Offset="0xC2AC" />
+        <Limb Name="object_bsb_Standardlimb_00C2B8" Type="Standard" EnumName="OBJECT_BSB_LIMB_03" Offset="0xC2B8" />
+        <Limb Name="object_bsb_Standardlimb_00C2C4" Type="Standard" EnumName="OBJECT_BSB_LIMB_04" Offset="0xC2C4" />
+        <Limb Name="object_bsb_Standardlimb_00C2D0" Type="Standard" EnumName="OBJECT_BSB_LIMB_05" Offset="0xC2D0" />
+        <Limb Name="object_bsb_Standardlimb_00C2DC" Type="Standard" EnumName="OBJECT_BSB_LIMB_06" Offset="0xC2DC" />
+        <Limb Name="object_bsb_Standardlimb_00C2E8" Type="Standard" EnumName="OBJECT_BSB_LIMB_07" Offset="0xC2E8" />
+        <Limb Name="object_bsb_Standardlimb_00C2F4" Type="Standard" EnumName="OBJECT_BSB_LIMB_08" Offset="0xC2F4" />
+        <Limb Name="object_bsb_Standardlimb_00C300" Type="Standard" EnumName="OBJECT_BSB_LIMB_09" Offset="0xC300" />
+        <Limb Name="object_bsb_Standardlimb_00C30C" Type="Standard" EnumName="OBJECT_BSB_LIMB_0A" Offset="0xC30C" />
+        <Limb Name="object_bsb_Standardlimb_00C318" Type="Standard" EnumName="OBJECT_BSB_LIMB_0B" Offset="0xC318" />
+        <Limb Name="object_bsb_Standardlimb_00C324" Type="Standard" EnumName="OBJECT_BSB_LIMB_0C" Offset="0xC324" />
+        <Limb Name="object_bsb_Standardlimb_00C330" Type="Standard" EnumName="OBJECT_BSB_LIMB_0D" Offset="0xC330" />
+        <Limb Name="object_bsb_Standardlimb_00C33C" Type="Standard" EnumName="OBJECT_BSB_LIMB_0E" Offset="0xC33C" />
+        <Limb Name="object_bsb_Standardlimb_00C348" Type="Standard" EnumName="OBJECT_BSB_LIMB_0F" Offset="0xC348" />
+        <Limb Name="object_bsb_Standardlimb_00C354" Type="Standard" EnumName="OBJECT_BSB_LIMB_10" Offset="0xC354" />
+        <Limb Name="object_bsb_Standardlimb_00C360" Type="Standard" EnumName="OBJECT_BSB_LIMB_11" Offset="0xC360" />
+        <Limb Name="object_bsb_Standardlimb_00C36C" Type="Standard" EnumName="OBJECT_BSB_LIMB_12" Offset="0xC36C" />
+        <Limb Name="object_bsb_Standardlimb_00C378" Type="Standard" EnumName="OBJECT_BSB_LIMB_13" Offset="0xC378" />
+        <Limb Name="object_bsb_Standardlimb_00C384" Type="Standard" EnumName="OBJECT_BSB_LIMB_14" Offset="0xC384" />
+        <Skeleton Name="object_bsb_Skel_00C3E0" Type="Normal" LimbType="Standard" LimbNone="OBJECT_BSB_LIMB_NONE" LimbMax="OBJECT_BSB_LIMB_MAX" EnumName="ObjectBsbLimb" Offset="0xC3E0" />
+        <Animation Name="object_bsb_Anim_00C790" Offset="0xC790" /> <!-- Original name is "bsb_tatsu" ("to stand; to rise; to stand up​") -->
+        <Animation Name="object_bsb_Anim_00CD88" Offset="0xCD88" /> <!-- Original name is "bsb_walk" -->
+        <Animation Name="object_bsb_Anim_00D3CC" Offset="0xD3CC" /> <!-- Original name is "bsb_yareyare" ("oh!; ah!; oh dear!; good grief!; dear me!") -->
+    </File>
+</Root>

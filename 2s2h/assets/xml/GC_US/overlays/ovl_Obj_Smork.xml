@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_Obj_Smork" BaseAddress="0x80A1F570" RangeStart="0x400" RangeEnd="0x480">
+        <Array Name="ovl_Obj_Smork_Vtx_000C10" Count="7" Offset="0x400">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

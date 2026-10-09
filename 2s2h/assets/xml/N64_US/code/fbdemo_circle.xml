@@ -1,0 +1,5 @@
+<Root>
+    <File Name="code" OutName="fbdemo_circle" BaseAddress="0x800A5AC0" RangeStart="0x138DD0" RangeEnd="0x1395D0">
+        <Texture Name="gCircleTex" Format="i4" Width="64" Height="64" Offset="0x138DD0"/>
+    </File>
+</Root>

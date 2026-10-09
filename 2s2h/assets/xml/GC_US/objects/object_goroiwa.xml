@@ -1,0 +1,28 @@
+﻿<Root>
+    <File Name="object_goroiwa" Segment="6">
+        <DList Name="object_goroiwa_DL_0003B0" Offset="0x3B0" /> <!-- Original name is "Z2_goron_hahenAT_model" -->
+        <Texture Name="object_goroiwa_Tex_000520" OutName="tex_000520" Format="rgba16" Width="32" Height="32" Offset="0x520" />
+        <Texture Name="object_goroiwa_Tex_000D20" OutName="tex_000D20" Format="rgba16" Width="32" Height="32" Offset="0xD20" />
+        <Texture Name="object_goroiwa_Tex_001520" OutName="tex_001520" Format="rgba16" Width="32" Height="64" Offset="0x1520" />
+        <DList Name="object_goroiwa_DL_0028E0" Offset="0x28E0" /> <!-- Original name is "Z2_goron_hahenBT_model" -->
+        <DList Name="object_goroiwa_DL_002D70" Offset="0x2D70" /> <!-- Original name is "Z2_goron_hahenCT_model" -->
+        <DList Name="object_goroiwa_DL_0032E0" Offset="0x32E0" /> <!-- Original name is "Z2_goron_halfAT_model" -->
+        <DList Name="object_goroiwa_DL_003B40" Offset="0x3B40" /> <!-- Original name is "Z2_gorongoroiwa_model" -->
+        <DList Name="object_goroiwa_DL_0042B0" Offset="0x42B0" /> <!-- Original name is "Z2_new_hahenA_model" -->
+        <DList Name="object_goroiwa_DL_004960" Offset="0x4960" /> <!-- Original name is "Z2_new_hahenB_model" -->
+        <DList Name="object_goroiwa_DL_004EF0" Offset="0x4EF0" /> <!-- Original name is "Z2_new_hahenC_model" -->
+        <DList Name="object_goroiwa_DL_005C20" Offset="0x5C20" /> <!-- Original name is "Z2_newgoroiwa_model" -->
+        <Texture Name="object_goroiwa_TLUT_005EE0" OutName="tlut_005EE0" Format="rgba16" Width="4" Height="4" Offset="0x5EE0" />
+        <Texture Name="object_goroiwa_TLUT_005F00" OutName="tlut_005F00" Format="rgba16" Width="4" Height="4" Offset="0x5F00" />
+        <Texture Name="object_goroiwa_Tex_005F20" OutName="tex_005F20" Format="ci4" Width="64" Height="64" Offset="0x5F20" />
+        <Texture Name="object_goroiwa_Tex_006720" OutName="tex_006720" Format="ci4" Width="64" Height="64" Offset="0x6720" />
+        <DList Name="object_goroiwa_DL_0072F0" Offset="0x72F0" /> <!-- Original name is "Z2_snow_hahenA_model" -->
+        <DList Name="object_goroiwa_DL_0077D0" Offset="0x77D0" /> <!-- Original name is "Z2_snow_hahenB_model" -->
+        <DList Name="object_goroiwa_DL_007C60" Offset="0x7C60" /> <!-- Original name is "Z2_snow_hahenC_model" -->
+        <DList Name="object_goroiwa_DL_0082D0" Offset="0x82D0" /> <!-- Original name is "Z2_snow_halfA_model" -->
+        <DList Name="object_goroiwa_DL_008B90" Offset="0x8B90" /> <!-- Original name is "Z2_snowgoroniwa_model" -->
+        <!-- <Blob Name="object_goroiwa_Blob_008D80" Size="0x20" Offset="0x8D80" /> -->
+        <Texture Name="object_goroiwa_Tex_008DA0" OutName="tex_008DA0" Format="rgba16" Width="32" Height="64" Offset="0x8DA0" />
+        <!-- <Blob Name="object_goroiwa_Blob_009DA0" Size="0x800" Offset="0x9DA0" /> -->
+    </File>
+</Root>

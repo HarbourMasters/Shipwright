@@ -1,0 +1,20 @@
+﻿<Root>
+    <File Name="object_lastday" Segment="6">
+        <Array Name="object_lastday_Vtx_000000" Count="6" Offset="0x0">
+            <Vtx/>
+        </Array>
+        <DList Name="object_lastday_DL_000060" Offset="0x60" /> <!-- Original name is "houkai_core_model" -->
+        <TextureAnimation Name="object_lastday_Matanimheader_000148" Offset="0x148" />
+        <DList Name="object_lastday_DL_000210" Offset="0x210" /> <!-- Original name is "houkai_fire_model" -->
+        <TextureAnimation Name="object_lastday_Matanimheader_000308" Offset="0x308" />
+        <DList Name="object_lastday_DL_000370" Offset="0x370" /> <!-- Original name is "houkai_horizon_model" -->
+        <TextureAnimation Name="object_lastday_Matanimheader_000448" Offset="0x448" />
+        <DList Name="object_lastday_DL_000510" Offset="0x510" /> <!-- Original name is "houkai_smoke_model" -->
+        <TextureAnimation Name="object_lastday_Matanimheader_000608" Offset="0x608" />
+        <Texture Name="object_lastday_Tex_000610" OutName="tex_000610" Format="ia16" Width="32" Height="32" Offset="0x610" />
+        <Texture Name="object_lastday_Tex_000E10" OutName="tex_000E10" Format="i8" Width="64" Height="32" Offset="0xE10" />
+        <Texture Name="object_lastday_Tex_001610" OutName="tex_001610" Format="i8" Width="32" Height="64" Offset="0x1610" />
+        <Texture Name="object_lastday_Tex_001E10" OutName="tex_001E10" Format="i8" Width="32" Height="32" Offset="0x1E10" />
+        <Texture Name="object_lastday_Tex_002210" OutName="tex_002210" Format="i8" Width="64" Height="32" Offset="0x2210" />
+    </File>
+</Root>

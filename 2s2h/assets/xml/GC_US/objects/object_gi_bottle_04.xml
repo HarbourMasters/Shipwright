@@ -1,0 +1,21 @@
+﻿<Root>
+    <!-- Get Item Draw: Bottled Fairy -->
+    <File Name="object_gi_bottle_04" Segment="6">
+
+        <!-- Bottled Fairy Billboard Mtx Rotation -->
+        <Mtx Name="gGiFairyBottleBillboardRotMtx" Offset="0x7B0" />
+
+        <!-- Bottled Fairy Display Lists -->
+        <DList Name="gGiFairyBottleContentsDL" Offset="0x7F0" />
+        <DList Name="gGiFairyBottleGlassCorkDL" Offset="0x8B8" />
+        <DList Name="gGiFairyBottleEmptyDL" Offset="0xB10" />
+
+        <!-- Bottled Fairy Textures -->
+        <Texture Name="gGiFairyBottleCorkTex" OutName="gi_fairy_bottle_cork" Format="i8" Width="16" Height="16" Offset="0xB18" />
+        <Texture Name="gGiFairyBottleFairyTex" OutName="gi_fairy_bottle_fairy" Format="ia8" Width="32" Height="32" Offset="0xC18" />
+        <Texture Name="gGiFairyBottleGlassTex" OutName="gi_fairy_bottle_glass" Format="i4" Width="32" Height="32" Offset="0x1018" />
+
+        <!-- Bottled Fairy Texture Animation -->
+        <TextureAnimation Name="gGiFairyBottleTexAnim" Offset="0x1254" />
+    </File>
+</Root>

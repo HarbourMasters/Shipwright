@@ -1,0 +1,79 @@
+﻿<Root>
+    <!-- Assets for the warp portal, warp crystal, the boss warp platform, and related effects. -->
+    <File Name="object_warp1" Segment="6">
+        <!-- Assets for the portal that the player can walk into to warp out of boss rooms. Often called a "blue warp". -->
+        <DList Name="gWarpPortalDL" Offset="0x1A0" /> <!-- Original name is "warp_2_modelT" -->
+        <Texture Name="gWarpPortalTex" OutName="warp_portal" Format="i8" Width="64" Height="64" Offset="0x2C0" />
+
+        <!-- Warp Crystal Animation -->
+        <Animation Name="gWarpCrystalAnim" Offset="0x1374" /> <!-- Original name is "crystal_anim" -->
+
+        <!-- Warp Crystal Limb DisplayLists -->
+        <DList Name="gWarpCrystalBottomDL" Offset="0x1750" />
+        <DList Name="gWarpCrystalTopSegment1DL" Offset="0x1828" />
+        <DList Name="gWarpCrystalTopSegment2DL" Offset="0x18B0" />
+        <DList Name="gWarpCrystalTopSegment3DL" Offset="0x1938" />
+        <DList Name="gWarpCrystalTopSegment4DL" Offset="0x19C0" />
+        <DList Name="gWarpCrystalTopSegment5DL" Offset="0x1A48" />
+        <DList Name="gWarpCrystalTopSegment6DL" Offset="0x1AD0" />
+
+        <!-- Warp Crystal Limb Texture -->
+        <Texture Name="gWarpCrystalTex" OutName="warp_crystal" Format="i8" Width="64" Height="64" Offset="0x1B58" />
+
+        <!-- Warp Crystal Limbs -->
+        <Limb Name="gWarpCrystalRootLimb" Type="Standard" EnumName="WARP_CRYSTAL_LIMB_ROOT" Offset="0x2B58" />
+        <Limb Name="gWarpCrystalWrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_LIMB_WRAPPER" Offset="0x2B64" />
+        <Limb Name="gWarpCrystalBottomLimb" Type="Standard" EnumName="WARP_CRYSTAL_LIMB_BOTTOM" Offset="0x2B70" />
+        <Limb Name="gWarpCrystalTopSegment1RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_1_ROOT" Offset="0x2B7C" />
+        <Limb Name="gWarpCrystalTopSegment1WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_1_WRAPPER" Offset="0x2B88" />
+        <Limb Name="gWarpCrystalTopSegment1Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_1" Offset="0x2B94" />
+        <Limb Name="gWarpCrystalTopSegment2RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_2_ROOT" Offset="0x2BA0" />
+        <Limb Name="gWarpCrystalTopSegment2WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_2_WRAPPER" Offset="0x2BAC" />
+        <Limb Name="gWarpCrystalTopSegment2Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_2" Offset="0x2BB8" />
+        <Limb Name="gWarpCrystalTopSegment3RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_3_ROOT" Offset="0x2BC4" />
+        <Limb Name="gWarpCrystalTopSegment3WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_3_WRAPPER" Offset="0x2BD0" />
+        <Limb Name="gWarpCrystalTopSegment3Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_3" Offset="0x2BDC" />
+        <Limb Name="gWarpCrystalTopSegment4RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_4_ROOT" Offset="0x2BE8" />
+        <Limb Name="gWarpCrystalTopSegment4WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_4_WRAPPER" Offset="0x2BF4" />
+        <Limb Name="gWarpCrystalTopSegment4Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_4" Offset="0x2C00" />
+        <Limb Name="gWarpCrystalTopSegment5RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_5_ROOT" Offset="0x2C0C" />
+        <Limb Name="gWarpCrystalTopSegment5WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_5_WRAPPER" Offset="0x2C18" />
+        <Limb Name="gWarpCrystalTopSegment5Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_5" Offset="0x2C24" />
+        <Limb Name="gWarpCrystalTopSegment6RootLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_6_ROOT" Offset="0x2C30" />
+        <Limb Name="gWarpCrystalTopSegment6WrapperLimb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_6_WRAPPER" Offset="0x2C3C" />
+        <Limb Name="gWarpCrystalTopSegment6Limb" Type="Standard" EnumName="WARP_CRYSTAL_TOP_SEGMENT_6" Offset="0x2C48" />
+
+        <!-- Warp Crystal Skeleton -->
+        <Skeleton Name="gWarpCrystalSkel" Type="Normal" LimbType="Standard" LimbNone="WARP_CRYSTAL_LIMB_NONE" LimbMax="WARP_CRYSTAL_LIMB_MAX" EnumName="WarpCrystalLimb" Offset="0x2CA8" />
+
+        <!-- Assets for the beam that falls from the sky to activate a boss warp. -->
+        <DList Name="gWarpBossWarpActivationBeamDL" Offset="0x3230" /> <!-- Original name is "boss_warp1_modelT" -->
+        <DList Name="gWarpBossWarpActivationBeamEmptyDL" Offset="0x34C8" />
+        <Texture Name="gWarpBossWarpActivationBeamTex" OutName="warp_boss_warp_activation_beam" Format="i8" Width="32" Height="64" Offset="0x34D0" />
+        <Texture Name="gWarpBossWarpActivationBeamMaskTex" OutName="warp_boss_warp_activation_beam_mask" Format="i8" Width="32" Height="64" Offset="0x3CD0" />
+        <TextureAnimation Name="gWarpBossWarpActivationBeamTexAnim" Offset="0x44D8" />
+
+        <!-- Assets for the light shafts that rise upwards from an activated boss warp. -->
+        <DList Name="gWarpBossWarpLightShaftsDL" Offset="0x4690" /> <!-- Original name is "boss_warp2_modelT" -->
+        <DList Name="gWarpBossWarpLightShaftsEmptyDL" Offset="0x47C8" />
+        <Texture Name="gWarpBossWarpLightShaftsTex" OutName="warp_boss_warp_light_shafts" Format="i4" Width="64" Height="64" Offset="0x47D0" />
+        <Texture Name="gWarpBossWarpLightShaftsMaskTex" OutName="warp_boss_warp_light_shafts_mask" Format="i4" Width="64" Height="64" Offset="0x4FD0" />
+        <TextureAnimation Name="gWarpBossWarpLightShaftsTexAnim" Offset="0x57D8" />
+
+        <!-- Assets for the glow that covers the top of an activated boss warp platform. -->
+        <DList Name="gWarpBossWarpGlowEmptyDL" Offset="0x58C0" />
+        <DList Name="gWarpBossWarpGlowDL" Offset="0x58C8" /> <!-- Original name is "boss_warp3_model" -->
+        <Texture Name="gWarpBossWarpGlowBottomMaskTex" OutName="warp_boss_warp_glow_bottom_mask" Format="i4" Width="64" Height="64" Offset="0x5A30" />
+        <Texture Name="gWarpBossWarpGlowTopMaskTex" OutName="warp_boss_warp_glow_top_mask" Format="i4" Width="64" Height="64" Offset="0x6230" />
+        <Texture Name="gWarpBossWarpGlowTex" OutName="warp_boss_warp_glow" Format="i8" Width="32" Height="64" Offset="0x6A30" />
+        <TextureAnimation Name="gWarpBossWarpGlowTexAnim" Offset="0x7238" />
+
+        <!-- Assets for the Majora's Mask-shaped boss warp platform. -->
+        <DList Name="gWarpBossWarpPlatformDL" Offset="0x76C0" /> <!-- Original name is "m2_BossWarp_model" -->
+        <Texture Name="gWarpBossWarpPlatformBottomTLUT" OutName="warp_boss_warp_platform_bottom_tlut" Format="rgba16" Width="4" Height="4" Offset="0x78A0" />
+        <Texture Name="gWarpBossWarpPlatformTopTLUT" OutName="warp_boss_warp_platform_top_tlut" Format="rgba16" Width="4" Height="4" Offset="0x78C0" />
+        <Texture Name="gWarpBossWarpPlatformBottomTex" OutName="warp_boss_warp_platform_bottom" Format="ci4" Width="64" Height="64" Offset="0x78E0" />
+        <Texture Name="gWarpBossWarpPlatformTopTex" OutName="warp_boss_warp_platform_top" Format="ci4" Width="64" Height="64" Offset="0x80E0" />
+        <Collision Name="gWarpBossWarpPlatformCol" Offset="0x8BD4" />
+    </File>
+</Root>

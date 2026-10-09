@@ -1,0 +1,36 @@
+﻿<Root>
+    <!-- Boss Remains -->
+    <File Name="object_bsmask" Segment="6">
+
+        <!-- Boss Remains Display Lists -->
+        <DList Name="gRemainsOdolwaDL" Offset="0x690" /> <!-- Original name is "face01_get_model" -->
+        <DList Name="gRemainsGyorgDL" Offset="0x1D80" /> <!-- Original name is "face02_get_model" -->
+        <DList Name="gRemainsGohtDL" Offset="0x3AD0" /> <!-- Original name is "face03_get_model" -->
+        <DList Name="gRemainsTwinmoldDL" Offset="0x5020" /> <!-- Original name is "face04_get_model" -->
+
+        <!-- Boss Remains TLUTs -->
+        <Texture Name="gRemainsOdolwaFaceTLUT" OutName="remains_odolwa_face_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5830" />
+        <Texture Name="gRemainsOdolwaEarTLUT" OutName="remains_odolwa_ear_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5850" />
+        <Texture Name="gRemainsGyorgSkinTLUT" OutName="remains_gyorg_skin_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5870" />
+        <Texture Name="gRemainsGyorgMouthTLUT" OutName="remains_gyorg_mouth_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5890" />
+        <Texture Name="gRemainsGyorgToothHornTLUT" OutName="remains_gyorg_tooth_horn_tlut" Format="rgba16" Width="4" Height="4" Offset="0x58B0" />
+        <Texture Name="gRemainsTwinmoldSkinTLUT" OutName="remains_twinmold_skin_tlut" Format="rgba16" Width="4" Height="4" Offset="0x58D0" />
+        <Texture Name="gRemainsTwinmoldSnoutTLUT" OutName="remains_twinmold_snout_tlut" Format="rgba16" Width="4" Height="4" Offset="0x58F0" />
+
+        <!-- Boss Remains Textures -->
+        <Texture Name="gRemainsOdolwaPlumeTex" OutName="remains_odolwa_plume" Format="rgba16" Width="16" Height="16" Offset="0x5910" />
+        <Texture Name="gRemainsOdolwaFaceTex" OutName="remains_odolwa_face" Format="ci4" Width="64" Height="64" Offset="0x5B10" />
+        <Texture Name="gRemainsOdolwaEarTex" OutName="remains_odolwa_ear" Format="ci4" Width="64" Height="64" Offset="0x6310" />
+        <Texture Name="gRemainsGyorgTwinmoldEyeTex" OutName="remains_gyorg_twinmold_eye" Format="rgba16" Width="32" Height="32" Offset="0x6B10" />
+        <Texture Name="gRemainsGyorgSkinTex" OutName="remains_gyorg_skin" Format="ci4" Width="64" Height="64" Offset="0x7310" />
+        <Texture Name="gRemainsGyorgMouthTex" OutName="remains_gyorg_mouth" Format="ci4" Width="64" Height="64" Offset="0x7B10" />
+        <Texture Name="gRemainsGyorgToothHornTex" OutName="remains_gyorg_tooth_horn" Format="ci4" Width="16" Height="16" Offset="0x8310" />
+        <Texture Name="gRemainsGohtEyeTex" OutName="remains_goht_eye" Format="rgba16" Width="32" Height="64" Offset="0x8390" />
+        <Texture Name="gRemainsGohtTopPatternTex" OutName="remains_goht_top_pattern" Format="rgba16" Width="32" Height="64" Offset="0x9390" />
+        <!-- Used for the lower part of Goht's Remains for the mouth of Twinmold's Remains -->
+        <Texture Name="gRemainsGohtTwinmoldPatternTex" OutName="remains_goht_twinmold_pattern" Format="rgba16" Width="32" Height="64" Offset="0xA390" />
+        <Texture Name="gRemainsGohtSpikeTwinmoldMandibleTex" OutName="remains_goht_spike_twinmold_mandible" Format="rgba16" Width="32" Height="32" Offset="0xB390" />
+        <Texture Name="gRemainsTwinmoldSkinTex" OutName="remains_twinmold_skin" Format="ci4" Width="64" Height="64" Offset="0xBB90" />
+        <Texture Name="gRemainsTwinmoldSnoutTex" OutName="remains_twinmold_snout" Format="ci4" Width="64" Height="64" Offset="0xC390" />
+    </File>
+</Root>

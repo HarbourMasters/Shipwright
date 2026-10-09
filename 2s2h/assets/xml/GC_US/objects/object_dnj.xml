@@ -1,0 +1,96 @@
+﻿<Root>
+    <!-- Assets for the Deku Butler -->
+    <File Name="object_dnj" Segment="6">
+        <!-- Deku Butler Animations -->
+        <Animation Name="gDekuButlerStartRaceStartAnim" Offset="0x470" /> <!-- Original name is "dnj_douzoR" (named after the line he says when the race starts in the Japanese text)-->
+        <Animation Name="gDekuButlerStartRaceEndAnim" Offset="0x8F0" /> <!-- Original name is "dnj_douzoTOwaitR" -->
+        <Animation Name="gDekuButlerFlyAnim" Offset="0xF6C" /> <!-- Original name is "dnj_flyR" -->
+        <Animation Name="gDekuButlerFarewellAnim" Offset="0x1A50" /> <!-- Original name is "dnj_goodbye" -->
+        <Animation Name="gDekuButlerGreetingAnim" Offset="0x2530" /> <!-- Original name is "dnj_hello" -->
+        <Animation Name="gDekuButlerGreetingWithCandleAnim" Offset="0x3320" /> <!-- Original name is "dnj_helloR" -->
+        <Animation Name="gDekuButlerPrayerLoopAnim" Offset="0x36D0" /> <!-- Original name is "dnj_inori" ("prayer; supplication") -->
+        <Animation Name="gDekuButlerCloseParasolAnim" Offset="0x41CC" /> <!-- Original name is "dnj_kasacloseR" ("kasa" = "umbrella; parasol") -->
+        <Animation Name="gDekuButlerOpenParasolAnim" Offset="0x4DD8" /> <!-- Original name is "dnj_kasaopenR" -->
+        <Animation Name="gDekuButlerShockStartAnim" Offset="0x51E4" /> <!-- Original name is "dnj_kosinukasu" ("to be unable to stand due to fear/surprise") -->
+        <Animation Name="gDekuButlerShockLoopAnim" Offset="0x5E20" /> <!-- Original name is "dnj_kosinukasu_loop" -->
+        <Animation Name="gDekuButlerImploreLoopAnim" Offset="0x5F98" /> <!-- Original name is "dnj_oisame" ("o" = "king", "isame" = "to admonish; to advise") -->
+        <Animation Name="gDekuButlerImploreEndAnim" Offset="0x6488" /> <!-- Original name is "dnj_oisameTOwait" -->
+        <Animation Name="gDekuButlerGrieveAnim" Offset="0x6F84" /> <!-- Original name is "dnj_rakutan_loop" ("despondency; disappointment​")-->
+        <Animation Name="gDekuButlerTalkAnim" Offset="0x73E4" /> <!-- Original name is "dnj_talk" -->
+        <Animation Name="gDekuButlerTalkWithParasolAndCandleAnim" Offset="0x77A8" /> <!-- Original name is "dnj_talkR" -->
+        <Animation Name="gDekuButlerIdleAnim" Offset="0x7CA4" /> <!-- Original name is "dnj_wait" -->
+        <Animation Name="gDekuButlerIdleWithCandleAnim" Offset="0x8324" /> <!-- Original name is "dnj_waitR" -->
+        <Animation Name="gDekuButlerPrayerStartAnim" Offset="0x8AE4" /> <!-- Original name is "dnj_waitTOinori" -->
+        <Animation Name="gDekuButlerImploreStartAnim" Offset="0x9100" /> <!-- Original name is "dnj_waitTOoisame" -->
+
+        <!-- Deku Butler Limb DisplayLists -->
+        <DList Name="gDekuButlerEyesDL" Offset="0xB7C0" />
+        <DList Name="gDekuButlerUpperBodyDL" Offset="0xB850" />
+        <DList Name="gDekuButlerLeftForearmDL" Offset="0xBC68" />
+        <DList Name="gDekuButlerLeftHandDL" Offset="0xBDD8" />
+        <DList Name="gDekuButlerCandleDL" Offset="0xBEF0" />
+        <DList Name="gDekuButlerCandleWickDL" Offset="0xC118" />
+        <DList Name="gDekuButlerLeftUpperArmDL" Offset="0xC1A0" />
+        <DList Name="gDekuButlerSnoutDL" Offset="0xC248" />
+        <DList Name="gDekuButlerRightMustacheCurlDL" Offset="0xC370" />
+        <DList Name="gDekuButlerRightMustacheBaseDL" Offset="0xC450" />
+        <DList Name="gDekuButlerLeftMustacheCurlDL" Offset="0xC4E0" />
+        <DList Name="gDekuButlerLeftMustacheBaseDL" Offset="0xC5C0" />
+        <DList Name="gDekuButlerRightForearmDL" Offset="0xC650" />
+        <DList Name="gDekuButlerRightHandDL" Offset="0xC7C0" />
+        <DList Name="gDekuButlerParasolUpperPetalsDL" Offset="0xC8D8" />
+        <DList Name="gDekuButlerParasolMiddlePetalsDL" Offset="0xC988" />
+        <DList Name="gDekuButlerParasolLowerPetalsDL" Offset="0xCA38" />
+        <DList Name="gDekuButlerParasolHandleDL" Offset="0xCAE8" />
+        <DList Name="gDekuButlerRightUpperArmDL" Offset="0xCBE8" />
+        <DList Name="gDekuButlerPelvisDL" Offset="0xCC90" />
+        <DList Name="gDekuButlerLeftShinDL" Offset="0xCD48" />
+        <DList Name="gDekuButlerLeftFootDL" Offset="0xCE00" />
+        <DList Name="gDekuButlerLeftThighDL" Offset="0xCEC8" />
+        <DList Name="gDekuButlerRightShinDL" Offset="0xCF88" />
+        <DList Name="gDekuButlerRightFootDL" Offset="0xD040" />
+        <DList Name="gDekuButlerRightThighDL" Offset="0xD108" />
+
+        <!-- Deku Butler Textures -->
+        <Texture Name="gDekuButlerEyeTex" OutName="deku_butler_eye" Format="rgba16" Width="16" Height="16" Offset="0xD1C8" />
+        <Texture Name="gDekuButlerBodyAndCandleHolderTex" OutName="deku_butler_body_and_candle_holder" Format="rgba16" Width="16" Height="16" Offset="0xD3C8" />
+        <Texture Name="gDekuButlerMouthTex" OutName="deku_butler_mouth" Format="rgba16" Width="8" Height="8" Offset="0xD5C8" />
+        <Texture Name="gDekuButlerLeafTex" OutName="deku_butler_leaf" Format="rgba16" Width="16" Height="16" Offset="0xD648" />
+        <Texture Name="gDekuButlerParasolPetalTex" OutName="deku_butler_parasol_petal" Format="rgba16" Width="16" Height="32" Offset="0xD848" />
+        <Texture Name="gDekuButlerCandleTex" OutName="deku_butler_candle" Format="rgba16" Width="16" Height="8" Offset="0xDC48" />
+        <Texture Name="gDekuButlerHairTex" OutName="deku_butler_hair" Format="rgba16" Width="16" Height="16" Offset="0xDD48" />
+        <Texture Name="gDekuButlerBowtieCenterTex" OutName="deku_butler_bowtie_center" Format="rgba16" Width="8" Height="16" Offset="0xDF48" />
+
+        <!-- Deku Butler Limbs -->
+        <Limb Name="gDekuButlerRootLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_ROOT" Offset="0xE048" />
+        <Limb Name="gDekuButlerPelvisLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_PELVIS" Offset="0xE054" />
+        <Limb Name="gDekuButlerRightThighLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_THIGH" Offset="0xE060" />
+        <Limb Name="gDekuButlerRightShinLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_SHIN" Offset="0xE06C" />
+        <Limb Name="gDekuButlerRightFootLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_FOOT" Offset="0xE078" />
+        <Limb Name="gDekuButlerLeftThighLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_THIGH" Offset="0xE084" />
+        <Limb Name="gDekuButlerLeftShinLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_SHIN" Offset="0xE090" />
+        <Limb Name="gDekuButlerLeftFootLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_FOOT" Offset="0xE09C" />
+        <Limb Name="gDekuButlerEyesLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_EYES" Offset="0xE0A8" />
+        <Limb Name="gDekuButlerRightUpperArmLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_UPPER_ARM" Offset="0xE0B4" />
+        <Limb Name="gDekuButlerRightForearmLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_FOREARM" Offset="0xE0C0" />
+        <Limb Name="gDekuButlerRightHandLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_HAND" Offset="0xE0CC" />
+        <Limb Name="gDekuButlerParasolHandleLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_PARASOL_HANDLE" Offset="0xE0D8" />
+        <Limb Name="gDekuButlerParasolUpperPetalsLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_PARASOL_UPPER_PETALS" Offset="0xE0E4" />
+        <Limb Name="gDekuButlerParasolLowerPetalsLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_PARASOL_LOWER_PETALS" Offset="0xE0F0" />
+        <Limb Name="gDekuButlerParasolMiddlePetalsLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_PARASOL_MIDDLE_PETALS" Offset="0xE0FC" />
+        <Limb Name="gDekuButlerSnoutLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_SNOUT" Offset="0xE108" />
+        <Limb Name="gDekuButlerLeftMustacheBaseLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_MUSTACHE_BASE" Offset="0xE114" />
+        <Limb Name="gDekuButlerLeftMustacheCurlLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_MUSTACHE_CURL" Offset="0xE120" />
+        <Limb Name="gDekuButlerRightMustacheBaseLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_MUSTACHE_BASE" Offset="0xE12C" />
+        <Limb Name="gDekuButlerRightMustacheCurlLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_RIGHT_MUSTACHE_CURL" Offset="0xE138" />
+        <Limb Name="gDekuButlerLeftUpperArmLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_UPPER_ARM" Offset="0xE144" />
+        <Limb Name="gDekuButlerLeftForearmLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_FOREARM" Offset="0xE150" />
+        <Limb Name="gDekuButlerLeftHandLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_LEFT_HAND" Offset="0xE15C" />
+        <Limb Name="gDekuButlerCandleLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_CANDLE" Offset="0xE168" />
+        <Limb Name="gDekuButlerCandleWickLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_CANDLE_WICK" Offset="0xE174" />
+        <Limb Name="gDekuButlerUpperBodyLimb" Type="Standard" EnumName="DEKU_BUTLER_LIMB_UPPER_BODY" Offset="0xE180" />
+
+        <!-- Deku Butler Skeleton -->
+        <Skeleton Name="gDekuButlerSkel" Type="Flex" LimbType="Standard" LimbNone="DEKU_BUTLER_LIMB_NONE" LimbMax="DEKU_BUTLER_LIMB_MAX" EnumName="DekuButlerLimb" Offset="0xE1F8" />
+    </File>
+</Root>

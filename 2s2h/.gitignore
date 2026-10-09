@@ -1,0 +1,57 @@
+# Cache files
+__pycache__/
+.pyc
+.DS_Store
+
+# Text editor remnants
+.vscode/
+.vs/
+.idea/
+cmake-build-debug
+venv/
+tags
+
+# Project-specific ignores
+*.z64
+*.n64
+*.v64
+*.sra
+*.bin
+*.elf
+archive/
+build/
+baserom/
+decomp/
+asm/
+data/
+expected/
+nonmatchings/
+
+# Tool artifacts
+tools/ido5.3_compiler/
+tools/ido7.1_compiler/
+tools/qemu-mips
+tools/ido_recomp/* binary
+ctx.c
+graphs/
+*.c.m2c
+tools/**/*dSYM/
+tools/decomp-permuter/
+tools/mips_to_c/
+
+# Assets
+*.png
+*.jpg
+!*_custom*
+.extracted-assets.json
+
+# Docs
+!docs/**/*.png
+docs/doxygen/
+!.vscode/extensions.json
+
+# Per-user configuration
+.python-version
+.make_options
+.*env
+*.otr

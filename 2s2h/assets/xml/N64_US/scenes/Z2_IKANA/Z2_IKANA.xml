@@ -1,0 +1,40 @@
+<Root>
+    <File Name="Z2_IKANA" Segment="2" Game="MM">
+        <Scene Name="Z2_IKANA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_IKANA_room_00" Segment="3" Game="MM">
+        <Texture Name="Z2_IKANA_room_00Tex_020A40" Format="rgba16" Width="64" Height="64" Offset="0x20A40"/>
+
+        <Room Name="Z2_IKANA_room_00" Offset="0x0"/>
+        <DList Name="Z2_IKANA_room_00DL_001040" Offset="0x1040"/>
+        <DList Name="Z2_IKANA_room_00DL_011DF0" Offset="0x11DF0"/>
+        <DList Name="Z2_IKANA_room_00DL_023880" Offset="0x23880"/>
+        <DList Name="Z2_IKANA_room_00DL_025F28" Offset="0x25F28"/>
+    </File>
+    <File Name="Z2_IKANA_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_IKANA_room_01" Offset="0x0"/>
+        <DList Name="Z2_IKANA_room_01DL_000340" Offset="0x340"/>
+        <DList Name="Z2_IKANA_room_01DL_000478" Offset="0x478"/>
+    </File>
+    <File Name="Z2_IKANA_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_IKANA_room_02" Offset="0x0"/>
+        <DList Name="Z2_IKANA_room_02DL_000370" Offset="0x370"/>
+        <DList Name="Z2_IKANA_room_02DL_001348" Offset="0x1348"/>
+        <DList Name="Z2_IKANA_room_02DL_001F70" Offset="0x1F70"/>
+        <DList Name="Z2_IKANA_room_02DL_002B00" Offset="0x2B00"/>
+    </File>
+    <File Name="Z2_IKANA_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_IKANA_room_03" Offset="0x0"/>
+        <DList Name="Z2_IKANA_room_03DL_0002A0" Offset="0x2A0"/>
+        <DList Name="Z2_IKANA_room_03DL_001510" Offset="0x1510"/>
+        <DList Name="Z2_IKANA_room_03DL_002D40" Offset="0x2D40"/>
+        <DList Name="Z2_IKANA_room_03DL_002D50" Offset="0x2D50"/>
+    </File>
+    <File Name="Z2_IKANA_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_IKANA_room_04" Offset="0x0"/>
+        <DList Name="Z2_IKANA_room_04DL_000550" Offset="0x550"/>
+        <DList Name="Z2_IKANA_room_04DL_002A70" Offset="0x2A70"/>
+        <DList Name="Z2_IKANA_room_04DL_007CD0" Offset="0x7CD0"/>
+        <DList Name="Z2_IKANA_room_04DL_008840" Offset="0x8840"/>
+    </File>
+</Root>

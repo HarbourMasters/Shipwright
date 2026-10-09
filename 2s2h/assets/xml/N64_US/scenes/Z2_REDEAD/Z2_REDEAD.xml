@@ -1,0 +1,69 @@
+<Root>
+    <File Name="Z2_REDEAD" Segment="2" Game="MM">
+        <Scene Name="Z2_REDEAD" Offset="0x0"/>
+    </File>
+    <File Name="Z2_REDEAD_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_00" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_00DL_0052C0" Offset="0x52C0"/>
+    </File>
+    <File Name="Z2_REDEAD_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_01" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_01DL_0087C0" Offset="0x87C0"/>
+        <DList Name="Z2_REDEAD_room_01DL_008B78" Offset="0x8B78"/>
+    </File>
+    <File Name="Z2_REDEAD_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_02" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_02DL_007D90" Offset="0x7D90"/>
+        <DList Name="Z2_REDEAD_room_02DL_008070" Offset="0x8070"/>
+    </File>
+    <File Name="Z2_REDEAD_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_03" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_03DL_007920" Offset="0x7920"/>
+        <DList Name="Z2_REDEAD_room_03DL_0078F0" Offset="0x78F0"/>
+    </File>
+    <File Name="Z2_REDEAD_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_04" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_04DL_006A38" Offset="0x6A38"/>
+        <DList Name="Z2_REDEAD_room_04DL_007430" Offset="0x7430"/>
+    </File>
+    <File Name="Z2_REDEAD_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_05" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_05DL_009390" Offset="0x9390"/>
+        <DList Name="Z2_REDEAD_room_05DL_009358" Offset="0x9358"/>
+    </File>
+    <File Name="Z2_REDEAD_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_06" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_06DL_006E78" Offset="0x6E78"/>
+    </File>
+    <File Name="Z2_REDEAD_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_07" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_07DL_0060B0" Offset="0x60B0"/>
+        <DList Name="Z2_REDEAD_room_07DL_006078" Offset="0x6078"/>
+    </File>
+    <File Name="Z2_REDEAD_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_08" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_08DL_002638" Offset="0x2638"/>
+    </File>
+    <File Name="Z2_REDEAD_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_09" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_09DL_002800" Offset="0x2800"/>
+    </File>
+    <File Name="Z2_REDEAD_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_10" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_10DL_0029D0" Offset="0x29D0"/>
+    </File>
+    <File Name="Z2_REDEAD_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_11" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_11DL_0044E8" Offset="0x44E8"/>
+        <DList Name="Z2_REDEAD_room_11DL_007F50" Offset="0x7F50"/>
+    </File>
+    <File Name="Z2_REDEAD_room_12" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_12" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_12DL_000F60" Offset="0xF60"/>
+    </File>
+    <File Name="Z2_REDEAD_room_13" Segment="3" Game="MM">
+        <Room Name="Z2_REDEAD_room_13" Offset="0x0"/>
+        <DList Name="Z2_REDEAD_room_13DL_001548" Offset="0x1548"/>
+        <DList Name="Z2_REDEAD_room_13DL_001878" Offset="0x1878"/>
+    </File>
+</Root>

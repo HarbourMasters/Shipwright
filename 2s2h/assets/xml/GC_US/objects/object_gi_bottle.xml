@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Empty Bottle -->
+    <File Name="object_gi_bottle" Segment="6">
+
+        <!-- Empty Bottle Display Lists -->
+        <DList Name="gGiEmptyBottleCorkDL" Offset="0x670" />
+        <DList Name="gGiEmptyBottleGlassDL" Offset="0x750" />
+    </File>
+</Root>

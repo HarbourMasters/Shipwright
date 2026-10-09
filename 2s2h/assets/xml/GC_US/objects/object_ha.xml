@@ -1,0 +1,162 @@
+﻿<Root>
+    <!-- Assets for Cremia's Donkeys and Gorman Brothers' Horses -->
+    <File Name="object_ha" Segment="6">
+
+        <Animation Name="gHorseUnusedAnim" Offset="0xC4" /> <!-- Original name is "ha_default" -->
+
+        <!-- Gorman Brothers' Horses -->
+
+        <!-- Gorman Brothers' Horses' DLs -->
+
+        <DList Name="gHorseBanditRightHindFootDL" Offset="0x30C0" />
+        <DList Name="gHorseBanditRightHindCannonDL" Offset="0x3418" />
+        <DList Name="gHorseBanditRightHindStifleDL" Offset="0x35D8" />
+        <DList Name="gHorseBanditRightHindThighDL" Offset="0x37A8" />
+        <DList Name="gHorseBanditLeftHindFootDL" Offset="0x3A68" />
+        <DList Name="gHorseBanditLeftHindCannonDL" Offset="0x3DB8" />
+        <DList Name="gHorseBanditLeftHindStifleDL" Offset="0x3F78" />
+        <DList Name="gHorseBanditLeftHindThighDL" Offset="0x4150" />
+        <DList Name="gHorseBanditTailEndDL" Offset="0x44C0" />
+        <DList Name="gHorseBanditTailMiddleDL" Offset="0x4628" />
+        <DList Name="gHorseBanditTailDockDL" Offset="0x47A8" />
+        <DList Name="gHorseBanditPelvisDL" Offset="0x4880" />
+        <DList Name="gHorseBanditRightFrontFootDL" Offset="0x4CA8" />
+        <DList Name="gHorseBanditRightFrontCannonDL" Offset="0x5000" />
+        <DList Name="gHorseBanditRightFrontForearmDL" Offset="0x51C0" />
+        <DList Name="gHorseBanditRightFrontLegRootDL" Offset="0x5390" />
+        <DList Name="gHorseBanditHeadDL" Offset="0x5450" />
+        <DList Name="gHorseBanditUpperNeckDL" Offset="0x5E08" />
+        <DList Name="gHorseBanditLowerNeckDL" Offset="0x5F98" />
+        <DList Name="gHorseBanditLeftFrontFootDL" Offset="0x6220" />
+        <DList Name="gHorseBanditLeftFrontCannonDL" Offset="0x6538" />
+        <DList Name="gHorseBanditLeftFrontForearmDL" Offset="0x6708" />
+        <DList Name="gHorseBanditLeftFrontLegRootDL" Offset="0x68E8" />
+        <DList Name="gHorseBanditTorsoDL" Offset="0x69A8" />
+
+        <!-- Gorman Brothers' Horses' Textures -->
+
+        <Texture Name="gHorseBanditTLUT" OutName="horse_bandit_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6E58" />
+        <Texture Name="gHorseBanditMaskTex" OutName="horse_bandit_mask" Format="ci8" Width="16" Height="16" Offset="0x7058" />
+        <Texture Name="gHorseBanditSpottedDetailTex" OutName="horse_bandit_spotted_detail" Format="ci8" Width="16" Height="32" Offset="0x7158" />
+        <Texture Name="gHorseBanditEyebrowTex" OutName="horse_bandit_eyebrow" Format="rgba16" Width="16" Height="16" Offset="0x7358" />
+        <Texture Name="gHorseBanditTeethTex" OutName="horse_bandit_teeth" Format="ci8" Width="16" Height="16" Offset="0x7558" />
+        <Texture Name="gHorseBanditTailAndFeetTex" OutName="horse_bandit_tail_and_feet" Format="ci8" Width="16" Height="16" Offset="0x7658" />
+        <Texture Name="gHorseBanditEyeTex" OutName="horse_bandit_eye" Format="rgba16" Width="32" Height="32" Offset="0x7758" />
+        <Texture Name="gHorseBanditMouthTex" OutName="horse_bandit_mouth" Format="ci8" Width="32" Height="32" Offset="0x7F58" />
+        <Texture Name="gHorseBanditSpottedSkinTex" OutName="horse_bandit_spotted_skin" Format="ci8" Width="32" Height="32" Offset="0x8358" />
+        <Texture Name="gHorseBanditTasselTex" OutName="horse_bandit_tassel" Format="rgba16" Width="8" Height="16" Offset="0x8758" />
+        <Texture Name="gHorseBanditSaddleSideTex" OutName="horse_bandit_saddle_side" Format="ci8" Width="16" Height="16" Offset="0x8858" />
+        <Texture Name="gHorseBanditSaddleTopTex" OutName="horse_bandit_saddle_top" Format="ci8" Width="16" Height="16" Offset="0x8958" />
+        <Texture Name="gHorseBanditSaddleBackTex" OutName="horse_bandit_saddle_back" Format="ci8" Width="8" Height="16" Offset="0x8A58" />
+
+        <!-- Gorman Brothers' Horses' Limbs and Skel -->
+
+        <Limb Name="gHorseBanditRootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_ROOT" Offset="0x8AD8" />
+        <Limb Name="gHorseBanditPelvisLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_PELVIS" Offset="0x8AE4" />
+        <Limb Name="gHorseBanditTorsoLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_TORSO" Offset="0x8AF0" />
+        <Limb Name="gHorseBanditLeftFrontLegRootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_FRONT_LEG_ROOT" Offset="0x8AFC" />
+        <Limb Name="gHorseBanditLeftFrontForearmLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_FRONT_FOREARM" Offset="0x8B08" />
+        <Limb Name="gHorseBanditLeftFrontCannonLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_FRONT_CANNON" Offset="0x8B14" />
+        <Limb Name="gHorseBanditLeftFrontFootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_FRONT_FOOT" Offset="0x8B20" />
+        <Limb Name="gHorseBanditLowerNeckLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LOWER_NECK" Offset="0x8B2C" />
+        <Limb Name="gHorseBanditUpperNeckLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_UPPER_NECK" Offset="0x8B38" />
+        <Limb Name="gHorseBanditHeadLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_HEAD" Offset="0x8B44" />
+        <Limb Name="gHorseBanditRightFrontLegRootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_FRONT_LEG_ROOT" Offset="0x8B50" />
+        <Limb Name="gHorseBanditRightFrontForearmLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_FRONT_FOREARM" Offset="0x8B5C" />
+        <Limb Name="gHorseBanditRightFrontCannonLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_FRONT_CANNON" Offset="0x8B68" />
+        <Limb Name="gHorseBanditRightFrontFootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_FRONT_FOOT" Offset="0x8B74" />
+        <Limb Name="gHorseBanditTailDockLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_TAIL_DOCK" Offset="0x8B80" />
+        <Limb Name="gHorseBanditTailMiddleLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_TAIL_MIDDLE" Offset="0x8B8C" />
+        <Limb Name="gHorseBanditTailEndLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_TAIL_END" Offset="0x8B98" />
+        <Limb Name="gHorseBanditLeftHindThighLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_HIND_THIGH" Offset="0x8BA4" />
+        <Limb Name="gHorseBanditLeftHindStifleLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_HIND_STIFLE" Offset="0x8BB0" />
+        <Limb Name="gHorseBanditLeftHindCannonLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_HIND_CANNON" Offset="0x8BBC" />
+        <Limb Name="gHorseBanditLeftHindFootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_LEFT_HIND_FOOT" Offset="0x8BC8" />
+        <Limb Name="gHorseBanditRightHindThighLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_HIND_THIGH" Offset="0x8BD4" />
+        <Limb Name="gHorseBanditRightHindStifleLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_HIND_STIFLE" Offset="0x8BE0" />
+        <Limb Name="gHorseBanditRightHindCannonLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_HIND_CANNON" Offset="0x8BEC" />
+        <Limb Name="gHorseBanditRightHindFootLimb" Type="Standard" EnumName="HORSE_BANDIT_LIMB_RIGHT_HIND_FOOT" Offset="0x8BF8" />
+        <Skeleton Name="gHorseBanditSkel" Type="Flex" LimbType="Standard" LimbNone="HORSE_BANDIT_LIMB_NONE" LimbMax="HORSE_BANDIT_LIMB_MAX" EnumName="DonkeyBanditLimb" Offset="0x8C68" />
+
+        <!-- Horse/Donkey Animations -->
+
+        <Animation Name="gHorseGallopAnim" Offset="0x9208" /> <!-- Original name is "ha_fastrun" -->
+        <Animation Name="gHorseJumpLowAnim" Offset="0x9858" /> <!-- Original name is "ha_jump100" -->
+        <Animation Name="gHorseJumpHighAnim" Offset="0xA05C" /> <!-- Original name is "ha_jump200" -->
+        <Animation Name="gHorseTrotAnim" Offset="0xA650" /> <!-- Original name is "ha_slowrun" -->
+        <Animation Name="gHorseWhinnyAnim" Offset="0xB00C" /> <!-- Original name is "ha_stand" -->
+        <Animation Name="gHorseStopAnim" Offset="0xB9C8" /> <!-- Original name is "ha_stop" -->
+        <Animation Name="gHorseIdleAnim" Offset="0xC850" /> <!-- Original name is "ha_wait" -->
+        <Animation Name="gHorseShakeHeadAnim" Offset="0xCE70" /> <!-- Original name is "ha_wait02" -->
+        <Animation Name="gHorseWalkAnim" Offset="0xD648" /> <!-- Original name is "ha_walk" -->
+
+        <!-- Cremia's Donkey -->
+        
+        <!-- Cremia's Donkey DLs -->
+
+        <DList Name="gDonkeyRightHindFootDL" Offset="0x100B0" />
+        <DList Name="gDonkeyRightHindCannonDL" Offset="0x10258" />
+        <DList Name="gDonkeyRightHindStifleDL" Offset="0x103F0" />
+        <DList Name="gDonkeyRightHindThighDL" Offset="0x105C8" />
+        <DList Name="gDonkeyLeftHindFootDL" Offset="0x107A8" />
+        <DList Name="gDonkeyLeftHindCannonDL" Offset="0x10940" />
+        <DList Name="gDonkeyLeftHindStifleDL" Offset="0x10AE0" />
+        <DList Name="gDonkeyLeftHindThighDL" Offset="0x10CB8" />
+        <DList Name="gDonkeyTailEndDL" Offset="0x10E88" />
+        <DList Name="gDonkeyTailMiddleDL" Offset="0x10FE0" />
+        <DList Name="gDonkeyTailDockDL" Offset="0x11160" />
+        <DList Name="gDonkeyPelvisDL" Offset="0x11228" />
+        <DList Name="gDonkeyRightFrontFootDL" Offset="0x11378" />
+        <DList Name="gDonkeyRightFrontCannonDL" Offset="0x11518" />
+        <DList Name="gDonkeyRightFrontForearmDL" Offset="0x116A8" />
+        <DList Name="gDonkeyRightFrontLegRootDL" Offset="0x11888" />
+        <DList Name="gDonkeyHeadDL" Offset="0x11948" />
+        <DList Name="gDonkeyUpperNeckDL" Offset="0x11E08" />
+        <DList Name="gDonkeyLowerNeckDL" Offset="0x11F90" />
+        <DList Name="gDonkeyLeftFrontFootDL" Offset="0x122C0" />
+        <DList Name="gDonkeyLeftFrontCannonDL" Offset="0x12460" />
+        <DList Name="gDonkeyLeftFrontForearmDL" Offset="0x125E8" />
+        <DList Name="gDonkeyLeftFrontLegRootDL" Offset="0x127D0" />
+        <DList Name="gDonkeyTorsoDL" Offset="0x12890" />
+
+        <!-- Cremia's Donkey Textures -->
+
+        <Texture Name="gDonkeyTLUT" OutName="donkey_tlut" Format="rgba16" Width="16" Height="16" Offset="0x12D48" />
+        <Texture Name="gDonkeyMouthTex" OutName="donkey_mouth" Format="ci8" Width="32" Height="32" Offset="0x12F48" />
+        <Texture Name="gDonkeyHeadTex" OutName="donkey_head" Format="ci8" Width="32" Height="32" Offset="0x13348" />
+        <Texture Name="gDonkeyEyeTex" OutName="donkey_eye" Format="rgba32" Width="32" Height="32" Offset="0x13748" />
+        <Texture Name="gDonkeyManeTex" OutName="donkey_mane" Format="ci8" Width="16" Height="32" Offset="0x14748" />
+        <Texture Name="gDonkeySkinTex" OutName="donkey_skin" Format="ci8" Width="32" Height="32" Offset="0x14948" />
+        <Texture Name="gDonkeyHarnessTex" OutName="donkey_harness" Format="ci8" Width="16" Height="16" Offset="0x14D48" />
+        <Texture Name="gDonkeyTailAndFeetTex" OutName="donkey_tail_and_feet" Format="ci8" Width="16" Height="16" Offset="0x14E48" />
+    
+        <!-- Cremia's Donkey Limbs and Skel-->
+
+        <Limb Name="gDonkeyRootLimb" Type="Standard" EnumName="DONKEY_LIMB_ROOT" Offset="0x14F48" />
+        <Limb Name="gDonkeyPelvisLimb" Type="Standard" EnumName="DONKEY_LIMB_PELVIS" Offset="0x14F54" />
+        <Limb Name="gDonkeyTorsoLimb" Type="Standard" EnumName="DONKEY_LIMB_TORSO" Offset="0x14F60" />
+        <Limb Name="gDonkeyLeftFrontLegRootLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_FRONT_LEG_ROOT" Offset="0x14F6C" />
+        <Limb Name="gDonkeyLeftFrontForearmLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_FRONT_FOREARM" Offset="0x14F78" />
+        <Limb Name="gDonkeyLeftFrontCannonLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_FRONT_CANNON" Offset="0x14F84" />
+        <Limb Name="gDonkeyLeftFrontFootLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_FRONT_FOOT" Offset="0x14F90" />
+        <Limb Name="gDonkeyLowerNeckLimb" Type="Standard" EnumName="DONKEY_LIMB_LOWER_NECK" Offset="0x14F9C" />
+        <Limb Name="gDonkeyUpperNeckLimb" Type="Standard" EnumName="DONKEY_LIMB_UPPER_NECK" Offset="0x14FA8" />
+        <Limb Name="gDonkeyHeadLimb" Type="Standard" EnumName="DONKEY_LIMB_HEAD" Offset="0x14FB4" />
+        <Limb Name="gDonkeyRightFrontLegRootLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_FRONT_LEG_ROOT" Offset="0x14FC0" />
+        <Limb Name="gDonkeyRightFrontForearmLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_FRONT_FOREARM" Offset="0x14FCC" />
+        <Limb Name="gDonkeyRightFrontCannonLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_FRONT_CANNON" Offset="0x14FD8" />
+        <Limb Name="gDonkeyRightFrontFootLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_FRONT_FOOT" Offset="0x14FE4" />
+        <Limb Name="gDonkeyTailDockLimb" Type="Standard" EnumName="DONKEY_LIMB_TAIL_DOCK" Offset="0x14FF0" />
+        <Limb Name="gDonkeyTailMiddleLimb" Type="Standard" EnumName="DONKEY_LIMB_TAIL_MIDDLE" Offset="0x14FFC" />
+        <Limb Name="gDonkeyTailEndLimb" Type="Standard" EnumName="DONKEY_LIMB_TAIL_END" Offset="0x15008" />
+        <Limb Name="gDonkeyLeftHindThighLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_HIND_THIGH" Offset="0x15014" />
+        <Limb Name="gDonkeyLeftHindStifleLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_HIND_STIFLE" Offset="0x15020" />
+        <Limb Name="gDonkeyLeftHindCannonLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_HIND_CANNON" Offset="0x1502C" />
+        <Limb Name="gDonkeyLeftHindFootLimb" Type="Standard" EnumName="DONKEY_LIMB_LEFT_HIND_FOOT" Offset="0x15038" />
+        <Limb Name="gDonkeyRightHindThighLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_HIND_THIGH" Offset="0x15044" />
+        <Limb Name="gDonkeyRightHindStifleLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_HIND_STIFLE" Offset="0x15050" />
+        <Limb Name="gDonkeyRightHindCannonLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_HIND_CANNON" Offset="0x1505C" />
+        <Limb Name="gDonkeyRightHindFootLimb" Type="Standard" EnumName="DONKEY_LIMB_RIGHT_HIND_FOOT" Offset="0x15068" />
+        <Skeleton Name="gDonkeySkel" Type="Flex" LimbType="Standard" LimbNone="DONKEY_LIMB_NONE" LimbMax="DONKEY_LIMB_MAX" EnumName="DonkeyLimb" Offset="0x150D8" />
+    </File>
+</Root>

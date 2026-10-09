@@ -1,0 +1,138 @@
+﻿<Root>
+    <!-- Assets for Skull Kid, including a small number of animations. Most animations are in object_stk2 and object_stk3. -->
+    <File Name="object_stk" Segment="6">
+        <Animation Name="gSkullKidLookAroundAnim" Offset="0x1030" /> <!-- Original name is "kyoro" (onomatopoeic for "looking around restlessly") -->
+        <Animation Name="gSkullKidCallDownMoonStartAnim" Offset="0x2774" /> <!-- Original name is "sk_moon_hikiyose" ("draw or pull the moon") -->
+        <Animation Name="gSkullKidCallDownMoonLoopAnim" Offset="0x3068" /> <!-- Original name is "sk_moon_hikiyose_loop" -->
+
+        <!-- DisplayLists for an unused Link Mask -->
+        <DList Name="gSkullKidLinkMask1DL" Offset="0x39A0" />
+        <DList Name="gSkullKidLinkMask2DL" Offset="0x46B0" />
+        <DList Name="gSkullKidLinkMask3DL" Offset="0x53C0" />
+
+        <!-- Majora's Mask Eyes DisplayList and Texture -->
+        <DList Name="gSkullKidMajorasMaskEyesDL" Offset="0x5870" />
+        <Texture Name="gSkullKidMajorasMaskEyeTex" OutName="skull_kid_majoras_mask_eye" Format="rgba16" Width="32" Height="32" Offset="0x5920" />
+
+        <!-- DisplayLists for Majora's Mask -->
+        <DList Name="gSkullKidMajorasMask1DL" Offset="0x6BB0" />
+        <DList Name="gSkullKidMajorasMask2DL" Offset="0x79F0" />
+
+        <!-- Unused Eyes DisplayList and Texture -->
+        <DList Name="gSkullKidUnusedEyesDL" Offset="0x7E10" />
+        <Texture Name="gSkullKidUnusedEyeTex" OutName="skull_kid_unused_eye" Format="rgba16" Width="8" Height="8" Offset="0x7EA0" /> <!-- Duplicate of gSkullKidEyeTex -->
+
+        <!-- Various Hand DisplayLists -->
+        <DList Name="gSkullKidUntexturedLeftHandDL" Offset="0x84C0" />
+        <DList Name="gSkullKidOpenLeftHandDL" Offset="0x87B0" />
+        <DList Name="gSkullKidFluteHoldingLeftHandDL" Offset="0x8A80" />
+        <DList Name="gSkullKidTwoFingersExtendedLeftHandDL" Offset="0x90C0" />
+        <DList Name="gSkullKidMaskHoldingRightHandDL" Offset="0x9710" />
+        <DList Name="gSkullKidUntexturedRightHandDL" Offset="0x9AC0" />
+        <DList Name="gSkullKidOcarinaHoldingRightHandDL" Offset="0x9DA0" />
+
+        <!-- Head DisplayLists with two different expressions -->
+        <DList Name="gSkullKidNormalEyesDL" Offset="0xA530" />
+        <DList Name="gSkullKidNormalHeadDL" Offset="0xA5C0" />
+        <DList Name="gSkullKidLaughingEyesDL" Offset="0xAE30" />
+        <DList Name="gSkullKidLaughingHeadDL" Offset="0xAEC0" />
+
+        <Animation Name="gSkullKidTelescopeLookUpStartAnim" Offset="0xBB2C" /> <!-- Original name is "stk_miageru" ("look up") -->
+        <Animation Name="gSkullKidTelescopeLookUpLoopAnim" Offset="0xC964" /> <!-- Original name is "stk_miageru_loop" -->
+        <DList Name="gSkullKidOcarinaOfTimeDL" Offset="0xCAD0" />
+        <Animation Name="gSkullKidTPoseAnim" Offset="0xCC94" /> <!-- Original name is "stk_pause" -->
+
+        <!-- Skull Kid Limb DisplayLists -->
+        <DList Name="gSkullKidTorsoDL" Offset="0xF6F0" />
+        <DList Name="gSkullKidNeckDL" Offset="0xF8B8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gSkullKidHeadWithLipsDL" Offset="0xF908" /> <!-- Unused in the final game. Has lips instead of beak, similar to how he looks in OoT. -->
+        <DList Name="gSkullKidHatBrimDL" Offset="0xFA78" />
+        <DList Name="gSkullKidHatRingsDL" Offset="0xFBD0" />
+        <DList Name="gSkullKidHatNarrowSectionDL" Offset="0xFCE8" />
+        <DList Name="gSkullKidHatTopDL" Offset="0xFDF8" />
+        <DList Name="gSkullKidRightUpperArmDL" Offset="0xFF30" />
+        <DList Name="gSkullKidRightForearmDL" Offset="0x10230" />
+        <DList Name="gSkullKidRightHandDL" Offset="0x10428" />
+        <DList Name="gSkullKidLeftUpperArmDL" Offset="0x10560" />
+        <DList Name="gSkullKidLeftForearmDL" Offset="0x10868" />
+        <DList Name="gSkullKidLeftHandAndFluteDL" Offset="0x10A50" />
+        <DList Name="gSkullKidPelvisDL" Offset="0x10C60" />
+        <DList Name="gSkullKidLeftThighDL" Offset="0x10E30" />
+        <DList Name="gSkullKidLeftShinDL" Offset="0x11080" />
+        <DList Name="gSkullKidLeftFootDL" Offset="0x111A8" />
+        <DList Name="gSkullKidRightThighDL" Offset="0x112F0" />
+        <DList Name="gSkullKidRightShinDL" Offset="0x11560" />
+        <DList Name="gSkullKidRightFootDL" Offset="0x11688" />
+
+        <!-- Unused Empty Texture Animation -->
+        <TextureAnimation Name="gSkullKidEmptyTexAnim" Offset="0x117D0" />
+
+        <!-- Skull Kid Textures -->
+        <Texture Name="gSkullKidClothingFringeTex" OutName="skull_kid_clothing_fringe" Format="rgba16" Width="32" Height="16" Offset="0x117D8" />
+        <Texture Name="gSkullKidRingTex" OutName="skull_kid_ring" Format="rgba16" Width="32" Height="16" Offset="0x11BD8" />
+        <Texture Name="gSkullKidOoTStyleMouthTex" OutName="skull_kid_oot_style_mouth" Format="rgba16" Width="16" Height="16" Offset="0x11FD8" />
+        <Texture Name="gSkullKidPantsAndWristsTex" OutName="skull_kid_pants_and_wrists" Format="rgba16" Width="16" Height="16" Offset="0x121D8" />
+        <Texture Name="gSkullKidSkinTex" OutName="skull_kid_skin" Format="rgba16" Width="16" Height="16" Offset="0x123D8" />
+        <Texture Name="gSkullKidShawlTex" OutName="skull_kid_shawl" Format="rgba16" Width="32" Height="32" Offset="0x125D8" />
+        <Texture Name="gSkullKidShoeTex" OutName="skull_kid_shoe" Format="rgba16" Width="32" Height="16" Offset="0x12DD8" />
+
+        <!-- Skull Kid Limbs -->
+        <Limb Name="gSkullKidRootLimb" Type="Standard" EnumName="SKULL_KID_LIMB_ROOT" Offset="0x131D8" />
+        <Limb Name="gSkullKidPelvisLimb" Type="Standard" EnumName="SKULL_KID_LIMB_PELVIS" Offset="0x131E4" />
+        <Limb Name="gSkullKidRightThighLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_THIGH" Offset="0x131F0" />
+        <Limb Name="gSkullKidRightShinLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_SHIN" Offset="0x131FC" />
+        <Limb Name="gSkullKidRightFootLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_FOOT" Offset="0x13208" />
+        <Limb Name="gSkullKidLeftThighLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_THIGH" Offset="0x13214" />
+        <Limb Name="gSkullKidLeftShinLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_SHIN" Offset="0x13220" />
+        <Limb Name="gSkullKidLeftFootLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_FOOT" Offset="0x1322C" />
+        <Limb Name="gSkullKidTorsoLimb" Type="Standard" EnumName="SKULL_KID_LIMB_TORSO" Offset="0x13238" />
+        <Limb Name="gSkullKidLeftUpperArmLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_UPPER_ARM" Offset="0x13244" />
+        <Limb Name="gSkullKidLeftForearmLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_FOREARM" Offset="0x13250" />
+        <Limb Name="gSkullKidLeftHandLimb" Type="Standard" EnumName="SKULL_KID_LIMB_LEFT_HAND" Offset="0x1325C" />
+        <Limb Name="gSkullKidRightUpperArmLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_UPPER_ARM" Offset="0x13268" />
+        <Limb Name="gSkullKidRightForearmLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_FOREARM" Offset="0x13274" />
+        <Limb Name="gSkullKidRightHandLimb" Type="Standard" EnumName="SKULL_KID_LIMB_RIGHT_HAND" Offset="0x13280" />
+        <Limb Name="gSkullKidNeckLimb" Type="Standard" EnumName="SKULL_KID_LIMB_NECK" Offset="0x1328C" />
+        <Limb Name="gSkullKidHeadLimb" Type="Standard" EnumName="SKULL_KID_LIMB_HEAD" Offset="0x13298" />
+        <Limb Name="gSkullKidHatBrimLimb" Type="Standard" EnumName="SKULL_KID_LIMB_HAT_BRIM" Offset="0x132A4" />
+        <Limb Name="gSkullKidHatRingsLimb" Type="Standard" EnumName="SKULL_KID_LIMB_HAT_RINGS" Offset="0x132B0" />
+        <Limb Name="gSkullKidHatNarrowSectionLimb" Type="Standard" EnumName="SKULL_KID_LIMB_HAT_NARROW_SECTION" Offset="0x132BC" />
+        <Limb Name="gSkullKidHatTopLimb" Type="Standard" EnumName="SKULL_KID_LIMB_HAT_TOP" Offset="0x132C8" />
+
+        <!-- Skull Kid Skeleton -->
+        <Skeleton Name="gSkullKidSkel" Type="Flex" LimbType="Standard" LimbNone="SKULL_KID_LIMB_NONE" LimbMax="SKULL_KID_LIMB_MAX" EnumName="SkullKidLimb" Offset="0x13328" />
+
+        <Animation Name="gSkullKidHipShakeAndJumpAnim" Offset="0x14920" /> <!-- Original name is "stk_penpen_jump" ("spanking") -->
+        <Animation Name="gSkullKidSpankAnim" Offset="0x15028" /> <!-- Original name is "stk_penpen_loop" -->
+        <Animation Name="gSkullKidBentOverHeadTwitchAnim" Offset="0x15C14" /> <!-- Original name is "stk_rari_loop" -->
+        <Animation Name="gSkullKidBentOverLookUpAnim" Offset="0x16508" /> <!-- Original name is "stk_rarimiage" -->
+
+        <DList Name="gSkullKidFluteDL" Offset="0x16620" />
+
+        <Texture Name="gSkullKidLinkMaskEyeTex" OutName="skull_kid_link_mask_eye" Format="rgba16" Width="32" Height="32" Offset="0x16720" />
+        <Texture Name="gSkullKidLinkMaskNoseTex" OutName="skull_kid_link_mask_nose" Format="rgba16" Width="16" Height="8" Offset="0x16F20" />
+        <Texture Name="gSkullKidLinkMaskMouthTex" OutName="skull_kid_link_mask_mouth" Format="rgba16" Width="32" Height="16" Offset="0x17020" />
+        <Texture Name="gSkullKidLinkMaskHairTex" OutName="skull_kid_link_mask_hair" Format="rgba16" Width="16" Height="16" Offset="0x17420" />
+        <Texture Name="gSkullKidLinkMaskHatTex" OutName="skull_kid_link_mask_hat" Format="rgba16" Width="8" Height="16" Offset="0x17620" />
+        <Texture Name="gSkullKidLinkMaskEarTex" OutName="skull_kid_link_mask_ear" Format="rgba16" Width="16" Height="16" Offset="0x17720" />
+        <Texture Name="gSkullKidUnusedMajorasMaskEyeTex" OutName="skull_kid_unused_majoras_mask_eye" Format="rgba16" Width="32" Height="32" Offset="0x17920" /> <!-- Duplicate of gSkullKidMajorasMaskEyeTex -->
+        <Texture Name="gSkullKidMajorasMaskFaceTex" OutName="skull_kid_majoras_mask_face" Format="rgba16" Width="32" Height="64" Offset="0x18120" />
+        <Texture Name="gSkullKidMajorasMaskSpikes1Tex" OutName="skull_kid_majoras_mask_spikes_1" Format="rgba16" Width="16" Height="16" Offset="0x19120" />
+        <Texture Name="gSkullKidMajorasMaskSpikes2Tex" OutName="skull_kid_majoras_mask_spikes_2" Format="rgba16" Width="16" Height="16" Offset="0x19320" />
+        <Texture Name="gSkullKidMajorasMaskSpikes3Tex" OutName="skull_kid_majoras_mask_spikes_3" Format="rgba16" Width="16" Height="16" Offset="0x19520" />
+        <Texture Name="gSkullKidMajorasMaskSpikes4Tex" OutName="skull_kid_majoras_mask_spikes_4" Format="rgba16" Width="16" Height="16" Offset="0x19720" />
+        <Texture Name="gSkullKidMajorasMaskBackTex" OutName="skull_kid_majoras_mask_back" Format="rgba16" Width="32" Height="32" Offset="0x19920" />
+        <Texture Name="gSkullKidUnusedEye2Tex" OutName="skull_kid_unused_eye2" Format="rgba16" Width="8" Height="8" Offset="0x1A120" /> <!-- Duplicate of gSkullKidEyeTex -->
+        <Texture Name="gSkullKidHandTex" OutName="skull_kid_hand" Format="rgba16" Width="16" Height="32" Offset="0x1A1A0" />
+        <Texture Name="gSkullKidEyeTex" OutName="skull_kid_eye" Format="rgba16" Width="8" Height="8" Offset="0x1A5A0" />
+        <Texture Name="gSkullKidBeakTex" OutName="skull_kid_beak" Format="rgba16" Width="16" Height="16" Offset="0x1A620" />
+        <Texture Name="gSkullKidHeadSkinTex" OutName="skull_kid_head_skin" Format="rgba16" Width="16" Height="16" Offset="0x1A820" />
+        <Texture Name="gSkullKidOcarinaOfTimeTex" OutName="skull_kid_ocarina_of_time" Format="rgba16" Width="32" Height="16" Offset="0x1AA20" />
+        <Texture Name="gSkullKidFluteTex" OutName="skull_kid_flute" Format="rgba16" Width="8" Height="8" Offset="0x1AE20" />
+        <Texture Name="gSkullKidFluteHoleTex" OutName="skull_kid_flute_hole" Format="ia16" Width="16" Height="8" Offset="0x1AEA0" />
+
+        <Animation Name="gSkullKidShakeHeadAnim" Offset="0x1C21C" /> <!-- Original name is "wait_1" -->
+        <Animation Name="gSkullKidIdleAnim" Offset="0x1D008" /> <!-- Original name is "wait_2" -->
+        <Animation Name="gSkullKidWalkAnim" Offset="0x1D3D0" /> <!-- Original name is "walk" -->
+    </File>
+</Root>

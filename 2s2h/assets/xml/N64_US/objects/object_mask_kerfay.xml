@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Assets for Kafei's Mask -->
+    <File Name="object_mask_kerfay" Segment="10">
+        <DList Name="gKafeisMaskDL" Offset="0xD40" />
+
+        <Texture Name="gKafeisMaskTLUT" OutName="kafeis_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1140" />
+        <Texture Name="gKafeisMaskHoleTex" OutName="hole" Format="ci8" Width="16" Height="16" Offset="0x1340" TlutOffset="0x1140" />
+        <Texture Name="gKafeisMaskHairTex" OutName="hair" Format="ci8" Width="8" Height="16" Offset="0x1440" TlutOffset="0x1140" />
+        <Texture Name="gKafeisMaskHairPartAndUndersideTex" OutName="hair_part_and_underside" Format="ci8" Width="8" Height="16" Offset="0x14C0" TlutOffset="0x1140" />
+        <Texture Name="gKafeisMaskEyebrowTex" OutName="eyebrow" Format="ci8" Width="16" Height="8" Offset="0x1540" TlutOffset="0x1140" />
+    </File>
+</Root>

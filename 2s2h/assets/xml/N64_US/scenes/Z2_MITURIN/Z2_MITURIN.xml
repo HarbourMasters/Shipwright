@@ -1,0 +1,69 @@
+<Root>
+    <File Name="Z2_MITURIN" Segment="2" Game="MM">
+        <Scene Name="Z2_MITURIN" Offset="0x0"/>
+    </File>
+    <File Name="Z2_MITURIN_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_00" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_00DL_007490" Offset="0x7490"/>
+        <DList Name="Z2_MITURIN_room_00DL_009430" Offset="0x9430"/>
+    </File>
+    <File Name="Z2_MITURIN_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_01" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_01DL_006BF0" Offset="0x6BF0"/>
+        <DList Name="Z2_MITURIN_room_01DL_008860" Offset="0x8860"/>
+    </File>
+    <File Name="Z2_MITURIN_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_02" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_02DL_004B58" Offset="0x4B58"/>
+        <DList Name="Z2_MITURIN_room_02DL_006CC8" Offset="0x6CC8"/>
+    </File>
+    <File Name="Z2_MITURIN_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_03" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_03DL_006BF8" Offset="0x6BF8"/>
+        <DList Name="Z2_MITURIN_room_03DL_009DA8" Offset="0x9DA8"/>
+    </File>
+    <File Name="Z2_MITURIN_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_04" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_04DL_0019E0" Offset="0x19E0"/>
+        <DList Name="Z2_MITURIN_room_04DL_002438" Offset="0x2438"/>
+    </File>
+    <File Name="Z2_MITURIN_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_05" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_05DL_004230" Offset="0x4230"/>
+        <DList Name="Z2_MITURIN_room_05DL_006028" Offset="0x6028"/>
+    </File>
+    <File Name="Z2_MITURIN_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_06" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_06DL_002158" Offset="0x2158"/>
+        <DList Name="Z2_MITURIN_room_06DL_002FF8" Offset="0x2FF8"/>
+    </File>
+    <File Name="Z2_MITURIN_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_07" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_07DL_002828" Offset="0x2828"/>
+        <DList Name="Z2_MITURIN_room_07DL_003750" Offset="0x3750"/>
+    </File>
+    <File Name="Z2_MITURIN_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_08" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_08DL_002CB0" Offset="0x2CB0"/>
+        <DList Name="Z2_MITURIN_room_08DL_006718" Offset="0x6718"/>
+    </File>
+    <File Name="Z2_MITURIN_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_09" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_09DL_009F70" Offset="0x9F70"/>
+        <DList Name="Z2_MITURIN_room_09DL_00ADD0" Offset="0xADD0"/>
+    </File>
+    <File Name="Z2_MITURIN_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_10" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_10DL_004A18" Offset="0x4A18"/>
+        <DList Name="Z2_MITURIN_room_10DL_004EA0" Offset="0x4EA0"/>
+    </File>
+    <File Name="Z2_MITURIN_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_11" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_11DL_003510" Offset="0x3510"/>
+        <DList Name="Z2_MITURIN_room_11DL_006D88" Offset="0x6D88"/>
+    </File>
+    <File Name="Z2_MITURIN_room_12" Segment="3" Game="MM">
+        <Room Name="Z2_MITURIN_room_12" Offset="0x0"/>
+        <DList Name="Z2_MITURIN_room_12DL_001450" Offset="0x1450"/>
+    </File>
+</Root>

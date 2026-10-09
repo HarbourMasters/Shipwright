@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_mask_zora" Segment="10">
+        <Texture Name="object_mask_zora_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="object_mask_zora_Tex_000200" OutName="tex_000200" Format="ci8" Width="32" Height="32" Offset="0x200" />
+        <Texture Name="object_mask_zora_Tex_000600" OutName="tex_000600" Format="ci8" Width="16" Height="32" Offset="0x600" />
+        <Texture Name="object_mask_zora_Tex_000800" OutName="tex_000800" Format="ci8" Width="8" Height="8" Offset="0x800" />
+        <Texture Name="object_mask_zora_Tex_000840" OutName="tex_000840" Format="ci8" Width="16" Height="32" Offset="0x840" />
+        <DList Name="object_mask_zora_DL_000DB0" Offset="0xDB0" />
+    </File>
+</Root>

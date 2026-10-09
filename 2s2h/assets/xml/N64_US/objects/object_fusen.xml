@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_fusen" Segment="6">
+        <DList Name="gMajoraBalloonDL" Offset="0xA00" /> <!-- Original name is "sphere1_model" -->
+        <DList Name="gMajoraBalloonKnotDL" Offset="0xD78" /> <!-- Original name is "musubu_model" -->
+        <Texture Name="object_fusen_Tex_000E08" OutName="tex_000E08" Format="rgba16" Width="32" Height="32" Offset="0xE08" />
+        <Collision Name="object_fusen_Colheader_002420" Offset="0x2420" /> <!-- Original name is "zako_fusen_bgdatainfo" -->
+    </File>
+</Root>

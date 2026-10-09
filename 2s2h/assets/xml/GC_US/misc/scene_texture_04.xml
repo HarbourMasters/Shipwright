@@ -1,0 +1,14 @@
+<Root>
+    <File Name="scene_texture_04" Segment="6">
+        <Texture Name="scene_texture_04_Tex_000000" OutName="tex_000000" Format="rgba16" Width="16" Height="128" Offset="0x0"/>
+        <Texture Name="scene_texture_04_Tex_001000" OutName="tex_001000" Format="rgba16" Width="32" Height="32" Offset="0x1000"/>
+        <Texture Name="scene_texture_04_Tex_001800" OutName="tex_001800" Format="rgba16" Width="32" Height="32" Offset="0x1800"/>
+        <Texture Name="scene_texture_04_Tex_002000" OutName="tex_002000" Format="rgba16" Width="16" Height="64" Offset="0x2000"/>
+        <Texture Name="scene_texture_04_Tex_002800" OutName="tex_002800" Format="rgba16" Width="16" Height="64" Offset="0x2800"/>
+        <Texture Name="scene_texture_04_Tex_003000" OutName="tex_003000" Format="i4" Width="64" Height="64" Offset="0x3000"/>
+        <Texture Name="scene_texture_04_Tex_003800" OutName="tex_003800" Format="i4" Width="64" Height="64" Offset="0x3800"/>
+        <Texture Name="scene_texture_04_Tex_004000" OutName="tex_004000" Format="i4" Width="32" Height="32" Offset="0x4000"/>
+        <Texture Name="scene_texture_04_Tex_004200" OutName="tex_004200" Format="rgba16" Width="32" Height="32" Offset="0x4200"/>
+        <Texture Name="scene_texture_04_Tex_004A00" OutName="tex_004A00" Format="rgba16" Width="32" Height="32" Offset="0x4A00"/>
+    </File>
+</Root>

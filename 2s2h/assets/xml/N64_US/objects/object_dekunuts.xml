@@ -1,0 +1,55 @@
+﻿<Root>
+    <!-- Assets for Deku Scrubs and their flowers -->
+    <File Name="object_dekunuts" Segment="6">
+        <Animation Name="gDekuScrubSpitAnim" Offset="0x168" /> <!-- Original name is "dn_atack" -->
+
+        <!-- Deku Scrub Limb DisplayLists -->
+        <DList Name="gDekuScrubRightFootDL" Offset="0xA00" />
+        <DList Name="gDekuScrubRightLegDL" Offset="0xAA8" />
+        <DList Name="gDekuScrubLeftFootDL" Offset="0xB40" />
+        <DList Name="gDekuScrubLeftLegDL" Offset="0xBE8" />
+        <DList Name="gDekuScrubSnoutDL" Offset="0xC80" />
+        <DList Name="gDekuScrubCrestDL" Offset="0xD90" />
+        <DList Name="gDekuScrubHeaddressDL" Offset="0xE30" />
+        <DList Name="gDekuScrubHeadDL" Offset="0xF20" />
+        <DList Name="gDekuScrubBodyDL" Offset="0x1050" />
+
+        <!-- Deku Scrub Textures -->
+        <Texture Name="gDekuScrubSnoutTex" OutName="deku_scrub_snout" Format="rgba16" Width="8" Height="8" Offset="0x10F0" />
+        <Texture Name="gDekuScrubMouthTex" OutName="deku_scrub_mouth" Format="rgba16" Width="8" Height="8" Offset="0x1170" />
+        <Texture Name="gDekuScrubLeafTex" OutName="deku_scrub_leaf" Format="rgba16" Width="32" Height="32" Offset="0x11F0" />
+        <Texture Name="gDekuScrubEyeTex" OutName="deku_scrub_eye" Format="rgba16" Width="8" Height="8" Offset="0x19F0" />
+        <Texture Name="gDekuScrubSkinTex" OutName="deku_scrub_skin" Format="rgba16" Width="16" Height="16" Offset="0x1A70" />
+
+        <!-- Deku Scrub Flower and Flower Fragment DisplayLists and Textures -->
+        <DList Name="gDekuScrubFlowerDL" Offset="0x1E50" />
+        <DList Name="gDekuScrubFlowerFragmentDL" Offset="0x1F50" />
+        <Texture Name="gDekuScrubFlowerFragmentTex" OutName="deku_scrub_flower_fragment" Format="rgba16" Width="16" Height="32" Offset="0x1FD8" />
+
+        <!-- Deku Scrub Limbs -->
+        <Limb Name="gDekuScrubBodyLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_BODY" Offset="0x23D8" />
+        <Limb Name="gDekuScrubHeadLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_HEAD" Offset="0x23E4" />
+        <Limb Name="gDekuScrubHeaddressLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_HEADDRESS" Offset="0x23F0" />
+        <Limb Name="gDekuScrubCrestLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_CREST" Offset="0x23FC" />
+        <Limb Name="gDekuScrubSnoutLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_SNOUT" Offset="0x2408" />
+        <Limb Name="gDekuScrubLeftLegLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_LEFT_LEG" Offset="0x2414" />
+        <Limb Name="gDekuScrubLeftFootLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_LEFT_FOOT" Offset="0x2420" />
+        <Limb Name="gDekuScrubRightLegLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_RIGHT_LEG" Offset="0x242C" />
+        <Limb Name="gDekuScrubRightFootLimb" Type="Standard" EnumName="DEKU_SCRUB_LIMB_RIGHT_FOOT" Offset="0x2438" />
+
+        <!-- Deku Scrub Skeleton -->
+        <Skeleton Name="gDekuScrubSkel" Type="Normal" LimbType="Standard" LimbNone="DEKU_SCRUB_LIMB_NONE" LimbMax="DEKU_SCRUB_LIMB_MAX" EnumName="DekuScrubLimb" Offset="0x2468" />
+
+        <!-- Deku Scrub Animations -->
+        <Animation Name="gDekuScrubDamageAnim" Offset="0x259C" /> <!-- Original name is "dn_damage" -->
+        <Animation Name="gDekuScrubStandingIdleAnim" Offset="0x2950" /> <!-- Original name is "dn_demowait" -->
+        <Animation Name="gDekuScrubBurrowAnim" Offset="0x2A5C" /> <!-- Original name is "dn_dig" -->
+        <Animation Name="gDekuScrubDieAnim" Offset="0x2BD4" /> <!-- Original name is "dn_down" -->
+        <Animation Name="gDekuScrubUnburrowAnim" Offset="0x2DD4" /> <!-- Original name is "dn_jump" -->
+        <Animation Name="gDekuScrubLookAroundAnim" Offset="0x2FA4" /> <!-- Original name is "dn_lookaround" -->
+        <Animation Name="gDekuScrubUpAnim" Offset="0x3180" /> <!-- Original name is "dn_start" -->
+        <Animation Name="gDekuScrubIdleAnim" Offset="0x326C" /> <!-- Original name is "dn_wait" -->
+        <Animation Name="gDekuScrubPantingAnim" Offset="0x33E4" /> <!-- Original name is "dn_wait02" -->
+        <Animation Name="gDekuScrubRunAnim" Offset="0x3780" /> <!-- Original name is "dn_walk" -->
+    </File>
+</Root>

@@ -1,0 +1,9 @@
+﻿<Root>
+    <!-- Assets for the Clock Tower steps -->
+    <File Name="object_tokei_step" Segment="6">
+        <DList Name="gClocktowerPanelEmptyDL" Offset="0x80" />
+        <DList Name="gClocktowerPanelDL" Offset="0x88" /> <!-- Original name is "z2_towerkabe_model" -->
+        <Texture Name="gClocktowerPanelTex" OutName="clocktower_panel" Format="rgba16" Width="32" Height="32" Offset="0x120" />
+        <Collision Name="gClocktowerPanelCol" Offset="0x968" /> <!-- Original name is "z2_towerwall_bgdatainfo" -->
+    </File>
+</Root>

@@ -1,0 +1,75 @@
+﻿<Root>
+    <File Name="object_kbt" Segment="6">
+        <Animation Name="object_kbt_Anim_000670" Offset="0x670" /> <!-- Original name is "kbt_neru" -->
+        <Animation Name="object_kbt_Anim_000FE8" Offset="0xFE8" /> <!-- Original name is "kbt_nerutalk" -->
+        <Animation Name="object_kbt_Anim_001674" Offset="0x1674" /> <!-- Original name is "kbt_niramitalk" -->
+        <Animation Name="object_kbt_Anim_001940" Offset="0x1940" /> <!-- Original name is "kbt_niramu" -->
+        <Animation Name="object_kbt_Anim_001BF4" Offset="0x1BF4" /> <!-- Original name is "kbt_niramu02" -->
+        <Animation Name="object_kbt_Anim_002084" Offset="0x2084" /> <!-- Original name is "kbt_okiru" -->
+        <Animation Name="object_kbt_Anim_002710" Offset="0x2710" /> <!-- Original name is "kbt_talk01" -->
+        <Animation Name="object_kbt_Anim_002DE0" Offset="0x2DE0" /> <!-- Original name is "kbt_talk02" -->
+        <Animation Name="object_kbt_Anim_003414" Offset="0x3414" /> <!-- Original name is "kbt_talk03" -->
+        <Animation Name="object_kbt_Anim_003D24" Offset="0x3D24" /> <!-- Original name is "kbt_talk04" -->
+        <Animation Name="object_kbt_Anim_004274" Offset="0x4274" /> <!-- Original name is "kbt_testwait" -->
+        <DList Name="object_kbt_DL_007550" Offset="0x7550" />
+        <DList Name="object_kbt_DL_0076F8" Offset="0x76F8" />
+        <DList Name="object_kbt_DL_0077E0" Offset="0x77E0" />
+        <DList Name="object_kbt_DL_007940" Offset="0x7940" />
+        <DList Name="object_kbt_DL_007AE8" Offset="0x7AE8" />
+        <DList Name="object_kbt_DL_007C68" Offset="0x7C68" />
+        <DList Name="object_kbt_DL_007D50" Offset="0x7D50" />
+        <DList Name="object_kbt_DL_007E38" Offset="0x7E38" />
+        <DList Name="object_kbt_DL_008150" Offset="0x8150" />
+        <DList Name="object_kbt_DL_008738" Offset="0x8738" />
+        <DList Name="object_kbt_DL_008810" Offset="0x8810" />
+        <DList Name="object_kbt_DL_0088E8" Offset="0x88E8" />
+        <DList Name="object_kbt_DL_008A60" Offset="0x8A60" />
+        <DList Name="object_kbt_DL_008C48" Offset="0x8C48" />
+        <DList Name="object_kbt_DL_008D20" Offset="0x8D20" />
+        <DList Name="object_kbt_DL_008E98" Offset="0x8E98" />
+        <Texture Name="object_kbt_TLUT_009078" OutName="tlut_009078" Format="rgba16" Width="16" Height="16" Offset="0x9078" />
+        <Texture Name="object_kbt_Tex_009278" OutName="tex_009278" Format="i8" Width="16" Height="16" Offset="0x9278" />
+        <Texture Name="object_kbt_Tex_009378" OutName="tex_009378" Format="ci8" Width="16" Height="16" Offset="0x9378" />
+        <Texture Name="object_kbt_Tex_009478" OutName="tex_009478" Format="rgba16" Width="16" Height="16" Offset="0x9478" />
+        <Texture Name="object_kbt_Tex_009678" OutName="tex_009678" Format="rgba16" Width="32" Height="32" Offset="0x9678" />
+        <Texture Name="object_kbt_Tex_009E78" OutName="tex_009E78" Format="ci8" Width="8" Height="8" Offset="0x9E78" />
+        <Texture Name="object_kbt_Tex_009EB8" OutName="tex_009EB8" Format="ci8" Width="8" Height="8" Offset="0x9EB8" />
+        <Texture Name="object_kbt_Tex_009EF8" OutName="tex_009EF8" Format="rgba16" Width="8" Height="8" Offset="0x9EF8" />
+        <Texture Name="object_kbt_Tex_009F78" OutName="tex_009F78" Format="ci8" Width="16" Height="16" Offset="0x9F78" />
+        <Texture Name="object_kbt_Tex_00A078" OutName="tex_00A078" Format="rgba16" Width="8" Height="8" Offset="0xA078" />
+        <Texture Name="object_kbt_Tex_00A0F8" OutName="tex_00A0F8" Format="ci8" Width="16" Height="16" Offset="0xA0F8" />
+        <Texture Name="object_kbt_Tex_00A1F8" OutName="tex_00A1F8" Format="ci8" Width="16" Height="16" Offset="0xA1F8" />
+        <Texture Name="object_kbt_Tex_00A2F8" OutName="tex_00A2F8" Format="ci8" Width="8" Height="8" Offset="0xA2F8" />
+        <Texture Name="object_kbt_Tex_00A338" OutName="tex_00A338" Format="rgba16" Width="8" Height="8" Offset="0xA338" />
+        <Texture Name="object_kbt_Tex_00A3B8" OutName="tex_00A3B8" Format="ci8" Width="16" Height="32" Offset="0xA3B8" />
+        <Texture Name="object_kbt_Tex_00A5B8" OutName="tex_00A5B8" Format="rgba16" Width="32" Height="32" Offset="0xA5B8" />
+        <Texture Name="object_kbt_Tex_00ADB8" OutName="tex_00ADB8" Format="rgba16" Width="32" Height="32" Offset="0xADB8" />
+        <Texture Name="object_kbt_Tex_00B5B8" OutName="tex_00B5B8" Format="rgba16" Width="32" Height="32" Offset="0xB5B8" />
+        <Texture Name="object_kbt_Tex_00BDB8" OutName="tex_00BDB8" Format="rgba16" Width="32" Height="32" Offset="0xBDB8" />
+        <Texture Name="object_kbt_Tex_00C5B8" OutName="tex_00C5B8" Format="rgba16" Width="32" Height="32" Offset="0xC5B8" />
+        <Texture Name="object_kbt_Tex_00CDB8" OutName="tex_00CDB8" Format="rgba16" Width="32" Height="32" Offset="0xCDB8" />
+        <Texture Name="object_kbt_Tex_00D5B8" OutName="tex_00D5B8" Format="rgba16" Width="32" Height="32" Offset="0xD5B8" />
+        <Limb Name="object_kbt_Standardlimb_00DDB8" Type="Standard" EnumName="OBJECT_KBT_LIMB_01" Offset="0xDDB8" />
+        <Limb Name="object_kbt_Standardlimb_00DDC4" Type="Standard" EnumName="OBJECT_KBT_LIMB_02" Offset="0xDDC4" />
+        <Limb Name="object_kbt_Standardlimb_00DDD0" Type="Standard" EnumName="OBJECT_KBT_LIMB_03" Offset="0xDDD0" />
+        <Limb Name="object_kbt_Standardlimb_00DDDC" Type="Standard" EnumName="OBJECT_KBT_LIMB_04" Offset="0xDDDC" />
+        <Limb Name="object_kbt_Standardlimb_00DDE8" Type="Standard" EnumName="OBJECT_KBT_LIMB_05" Offset="0xDDE8" />
+        <Limb Name="object_kbt_Standardlimb_00DDF4" Type="Standard" EnumName="OBJECT_KBT_LIMB_06" Offset="0xDDF4" />
+        <Limb Name="object_kbt_Standardlimb_00DE00" Type="Standard" EnumName="OBJECT_KBT_LIMB_07" Offset="0xDE00" />
+        <Limb Name="object_kbt_Standardlimb_00DE0C" Type="Standard" EnumName="OBJECT_KBT_LIMB_08" Offset="0xDE0C" />
+        <Limb Name="object_kbt_Standardlimb_00DE18" Type="Standard" EnumName="OBJECT_KBT_LIMB_09" Offset="0xDE18" />
+        <Limb Name="object_kbt_Standardlimb_00DE24" Type="Standard" EnumName="OBJECT_KBT_LIMB_0A" Offset="0xDE24" />
+        <Limb Name="object_kbt_Standardlimb_00DE30" Type="Standard" EnumName="OBJECT_KBT_LIMB_0B" Offset="0xDE30" />
+        <Limb Name="object_kbt_Standardlimb_00DE3C" Type="Standard" EnumName="OBJECT_KBT_LIMB_0C" Offset="0xDE3C" />
+        <Limb Name="object_kbt_Standardlimb_00DE48" Type="Standard" EnumName="OBJECT_KBT_LIMB_0D" Offset="0xDE48" />
+        <Limb Name="object_kbt_Standardlimb_00DE54" Type="Standard" EnumName="OBJECT_KBT_LIMB_0E" Offset="0xDE54" />
+        <Limb Name="object_kbt_Standardlimb_00DE60" Type="Standard" EnumName="OBJECT_KBT_LIMB_0F" Offset="0xDE60" />
+        <Limb Name="object_kbt_Standardlimb_00DE6C" Type="Standard" EnumName="OBJECT_KBT_LIMB_10" Offset="0xDE6C" />
+        <Limb Name="object_kbt_Standardlimb_00DE78" Type="Standard" EnumName="OBJECT_KBT_LIMB_11" Offset="0xDE78" />
+        <Limb Name="object_kbt_Standardlimb_00DE84" Type="Standard" EnumName="OBJECT_KBT_LIMB_12" Offset="0xDE84" />
+        <Limb Name="object_kbt_Standardlimb_00DE90" Type="Standard" EnumName="OBJECT_KBT_LIMB_13" Offset="0xDE90" />
+        <Skeleton Name="object_kbt_Skel_00DEE8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_KBT_LIMB_NONE" LimbMax="OBJECT_KBT_LIMB_MAX" EnumName="ObjectKbtLimb" Offset="0xDEE8" />
+        <Animation Name="object_kbt_Anim_00E7BC" Offset="0xE7BC" /> <!-- Original name is "kbt_wait01" -->
+        <Animation Name="object_kbt_Anim_00F0C8" Offset="0xF0C8" /> <!-- Original name is "kbt_wait02" -->
+    </File>
+</Root>

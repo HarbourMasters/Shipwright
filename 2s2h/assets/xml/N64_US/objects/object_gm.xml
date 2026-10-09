@@ -1,0 +1,6 @@
+﻿<Root>
+    <!-- This file is empty -->
+    <File Name="object_gm" Segment="6">
+        <Blob Name="gGmEmptyBlob" Size="0x10" Offset="0x0" />
+    </File>
+</Root>

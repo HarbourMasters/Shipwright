@@ -1,0 +1,117 @@
+﻿<Root>
+    <!-- Assets for Koume -->
+    <File Name="object_tru" Segment="6">
+        <DList Name="gKoumeTargetDL" Offset="0x390" /> <!-- Original name is "tru_mato1_model" -->
+        <DList Name="gKoumeChainDL" Offset="0x4C8" /> <!-- Original name is "tru_kusari1_model" -->
+        <Texture Name="gKoumeChainTex" OutName="koume_chain" Format="rgba16" Width="16" Height="32" Offset="0x560" />
+        <Texture Name="gKoumeTargetSideTex" OutName="koume_target_side" Format="rgba16" Width="32" Height="32" Offset="0x960" />
+        <Texture Name="gKoumeTargetFaceTex" OutName="koume_target_face" Format="rgba16" Width="32" Height="32" Offset="0x1160" />
+
+        <DList Name="gKoumeBottleDL" Offset="0x1F90" /> <!-- Original name is "trU_bottle_modelT" -->
+        <DList Name="gKoumePotionDL" Offset="0x20C8" /> <!-- Original name is "trU_bottle_aft_modelT" -->
+        <DList Name="gKoumeEmptyDL" Offset="0x2160" />
+        <Texture Name="gKoumeBottleTex" OutName="koume_bottle" Format="i4" Width="16" Height="16" Offset="0x2168" />
+
+        <Animation Name="gKoumeFlyAnim" Offset="0x2BD8" /> <!-- Original name is "trU_fly" -->
+        <Animation Name="gKoumeTakeOffAnim" Offset="0x3698" /> <!-- Original name is "trU_flyaway" -->
+        <Animation Name="gKoumeHoverAnim" Offset="0x446C" /> <!-- Original name is "trU_flywait" -->
+        <Animation Name="gKoumeDrinkAnim" Offset="0x7FA0" /> <!-- Original name is "trU_nomu" -->
+        <Animation Name="gKoumeInjuredRaiseHeadAnim" Offset="0x9348" /> <!-- Original name is "trU_okiru" -->
+
+        <DList Name="gKoumePelvisDL" Offset="0xB730" />
+        <DList Name="gKoumeTorsoDL" Offset="0xB940" />
+        <DList Name="gKoumeNeckDL" Offset="0xBA88" />
+        <DList Name="gKoumeHeadDL" Offset="0xBBB8" />
+        <DList Name="gKoumeLeftBraidStartDL" Offset="0xC630" />
+        <DList Name="gKoumeLeftBraidEndDL" Offset="0xC730" />
+        <DList Name="gKoumeTeethDL" Offset="0xC810" />
+        <DList Name="gKoumeRightBraidStartDL" Offset="0xC860" />
+        <DList Name="gKoumeRightBraidEndDL" Offset="0xC960" />
+        <DList Name="gKoumeRightSleeveStartDL" Offset="0xCA40" />
+        <DList Name="gKoumeRightSleeveFrontDL" Offset="0xCB50" />
+        <DList Name="gKoumeRightHandDL" Offset="0xCCC0" />
+        <DList Name="gKoumeRightSleeveMidDL" Offset="0xCFA8" />
+        <DList Name="gKoumeRightSleeveEndDL" Offset="0xD0C0" />
+        <DList Name="gKoumeLeftSleeveStartDL" Offset="0xD1D0" />
+        <DList Name="gKoumeLeftSleeveFrontDL" Offset="0xD2E0" />
+        <DList Name="gKoumeLeftHandDL" Offset="0xD450" />
+        <DList Name="gKoumeBroomDL" Offset="0xD738" />
+        <DList Name="gKoumeLeftSleeveMidDL" Offset="0xDA38" />
+        <DList Name="gKoumeLeftSleeveEndDL" Offset="0xDB50" />
+        <DList Name="gKoumeRightThighDL" Offset="0xDC40" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gKoumeRightShinDL" Offset="0xDC88" />
+        <DList Name="gKoumeRightFootDL" Offset="0xDD38" />
+        <DList Name="gKoumeLeftThighDL" Offset="0xDDD0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gKoumeLeftShinDL" Offset="0xDE18" />
+        <DList Name="gKoumeLeftFootDL" Offset="0xDEC8" />
+
+        <Animation Name="gKoumeInjuredTalkAnim" Offset="0xEEDC" /> <!-- Original name is "trU_talk" -->
+        <Animation Name="gKoumeInjuredLyingDownAnim" Offset="0xF9A0" /> <!-- Original name is "trU_taore01" -->
+        <Animation Name="gKoumeTryGetUpAnim" Offset="0x108AC" /> <!-- Original name is "trU_taore02" -->
+        <Animation Name="gKoumeHealedAnim" Offset="0x11F88" /> <!-- Original name is "trU_tatu" -->
+        <Animation Name="gKoumeTakeAnim" Offset="0x14728" /> <!-- Original name is "trU_ubau" -->
+        <Animation Name="gKoumeIdleAnim" Offset="0x15068" /> <!-- Original name is "trU_wait" -->
+        <Animation Name="gKoumeInjuredHeadUpAnim" Offset="0x15CA0" /> <!-- Original name is "trU_wait01" -->
+        <Animation Name="gKoumeFinishedDrinkingAnim" Offset="0x16B4C" /> <!-- Original name is "trU_wait02" -->
+
+        <Texture Name="gKoumeSkinTLUT" OutName="koume_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x16B60" />
+        <Texture Name="gKoumeMouthTLUT" OutName="koume_mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0x16D60" />
+        <Texture Name="gKoumeEarTLUT" OutName="koume_ear_tlut" Format="rgba16" Width="16" Height="16" Offset="0x16F60" />
+        <Texture Name="gKoumeFingerTLUT" OutName="koume_finger_tlut" Format="rgba16" Width="16" Height="16" Offset="0x17160" />
+        <Texture Name="gKoumeNeckTLUT" OutName="koume_neck_tlut" Format="rgba16" Width="16" Height="16" Offset="0x17360" />
+        <Texture Name="gKoumeNostrilsTLUT" OutName="koume_nostrils_tlut" Format="rgba16" Width="16" Height="16" Offset="0x17560" />
+        <Texture Name="gKoumeGerudoFabricTex" OutName="koume_gerudo_fabric" Format="rgba16" Width="32" Height="32" Offset="0x17760" />
+        <Texture Name="gKoumeRobeTex" OutName="koume_robe" Format="rgba16" Width="16" Height="16" Offset="0x17F60" />
+        <Texture Name="gKoumeRobePatternTex" OutName="koume_robe_pattern" Format="rgba16" Width="16" Height="16" Offset="0x18160" />
+        <Texture Name="gKoumeRobeTrimTex" OutName="koume_robe_trim" Format="rgba16" Width="16" Height="16" Offset="0x18360" />
+        <Texture Name="gKoumeSkinTex" OutName="koume_skin" Format="ci8" Width="16" Height="8" Offset="0x18560" />
+        <Texture Name="gKoumeMouthTex" OutName="koume_mouth" Format="ci8" Width="8" Height="8" Offset="0x185E0" />
+        <Texture Name="gKoumeHairTex" OutName="koume_hair" Format="rgba16" Width="8" Height="32" Offset="0x18620" />
+        <Texture Name="gKoumeBraidEndTex" OutName="koume_braid_end" Format="rgba16" Width="8" Height="8" Offset="0x18820" />
+        <Texture Name="gKoumeEarTex" OutName="koume_ear" Format="ci8" Width="8" Height="8" Offset="0x188A0" />
+        <Texture Name="gKoumeCollarNeckTex" OutName="koume_collar_neck" Format="rgba16" Width="4" Height="8" Offset="0x188E0" />
+        <Texture Name="gKoumeFingerTex" OutName="koume_finger" Format="ci8" Width="8" Height="16" Offset="0x18920" />
+        <Texture Name="gKoumeBroomHandleTex" OutName="koume_broom_handle" Format="rgba16" Width="8" Height="8" Offset="0x189A0" />
+        <Texture Name="gKoumeBroomHeadTex" OutName="koume_broom_head" Format="rgba16" Width="16" Height="32" Offset="0x18A20" />
+        <Texture Name="gKoumeJewelHolderTex" OutName="koume_jewel_holder" Format="rgba16" Width="16" Height="8" Offset="0x18E20" />
+        <Texture Name="gKoumeNeckTex" OutName="koume_neck" Format="ci8" Width="8" Height="8" Offset="0x18F20" />
+        <Texture Name="gKoumeNostrilsTex" OutName="koume_nostrils" Format="ci8" Width="8" Height="8" Offset="0x18F60" />
+        <Texture Name="gKoumeEyeOpenTex" OutName="koume_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x18FA0" />
+        <Texture Name="gKoumeEyeHalfTex" OutName="koume_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x197A0" />
+        <Texture Name="gKoumeEyeClosedTex" OutName="koume_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x19FA0" />
+        <Texture Name="gKoumeJewelTex" OutName="koume_jewel" Format="rgba16" Width="8" Height="8" Offset="0x1A7A0" />
+
+        <DList Name="gKoumeDustMaterialDL" Offset="0x1A820" />
+        <DList Name="gKoumeDustModelDL" Offset="0x1A830" /> <!-- Original name is "tru_flash_model" -->
+
+        <Limb Name="gKoumePelvisLimb" Type="Standard" EnumName="KOUME_LIMB_PELVIS" Offset="0x1A8C0" />
+        <Limb Name="gKoumeLeftThighLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_THIGH" Offset="0x1A8CC" />
+        <Limb Name="gKoumeLeftShinLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_SHIN" Offset="0x1A8D8" />
+        <Limb Name="gKoumeLeftFootLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_FOOT" Offset="0x1A8E4" />
+        <Limb Name="gKoumeRightThighLimb" Type="Standard" EnumName="KOUME_LIMB_RIGH_THIGH" Offset="0x1A8F0" />
+        <Limb Name="gKoumeRightShinLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_SHIN" Offset="0x1A8FC" />
+        <Limb Name="gKoumeRightFootLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_FOOT" Offset="0x1A908" />
+        <Limb Name="gKoumeTorsoLimb" Type="Standard" EnumName="KOUME_LIMB_TORSO_LIMB" Offset="0x1A914" />
+        <Limb Name="gKoumeLeftSleeveStartLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_SLEEVE_START" Offset="0x1A920" />
+        <Limb Name="gKoumeLeftSleeveMidLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_SLEEVE_MID" Offset="0x1A92C" />
+        <Limb Name="gKoumeLeftSleeveEndLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_SLEEVE_END" Offset="0x1A938" />
+        <Limb Name="gKoumeLeftSleeveFrontLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_SLEEVE_FRONT" Offset="0x1A944" />
+        <Limb Name="gKoumeLeftHandLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_HAND" Offset="0x1A950" />
+        <Limb Name="gKoumeBroomLimb" Type="Standard" EnumName="KOUME_LIMB_BROOM" Offset="0x1A95C" />
+        <Limb Name="gKoumeRightSleeveStartLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_SLEEVE_START" Offset="0x1A968" />
+        <Limb Name="gKoumeRightSleeveMidLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_SLEEVE_MID" Offset="0x1A974" />
+        <Limb Name="gKoumeRightSleeveEndLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_SLEEVE_END" Offset="0x1A980" />
+        <Limb Name="gKoumeRightSleeveFrontLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_SLEEVE_FRONT" Offset="0x1A98C" />
+        <Limb Name="gKoumeRightHandLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_HAND" Offset="0x1A998" />
+        <Limb Name="gKoumeNeckLimb" Type="Standard" EnumName="KOUME_LIMB_NECK" Offset="0x1A9A4" />
+        <Limb Name="gKoumeHeadLimb" Type="Standard" EnumName="KOUME_LIMB_HEAD" Offset="0x1A9B0" />
+        <Limb Name="gKoumeRightBraidStartLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_BRAID_START" Offset="0x1A9BC" />
+        <Limb Name="gKoumeRightBraidEndLimb" Type="Standard" EnumName="KOUME_LIMB_RIGHT_BRAID_END" Offset="0x1A9C8" />
+        <Limb Name="gKoumeTeethLimb" Type="Standard" EnumName="KOUME_LIMB_TEETH" Offset="0x1A9D4" />
+        <Limb Name="gKoumeLeftBraidStartLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_BRAID_START" Offset="0x1A9E0" />
+        <Limb Name="gKoumeLeftBraidEndLimb" Type="Standard" EnumName="KOUME_LIMB_LEFT_BRAID_END" Offset="0x1A9EC" />
+        <Skeleton Name="gKoumeSkel" Type="Flex" LimbType="Standard" LimbNone="KOUME_LIMB_NONE" LimbMax="KOUME_LIMB_MAX" EnumName="KoumeLimb" Offset="0x1AA60" />
+
+        <Animation Name="gKoumeShakeAnim" Offset="0x1B5C4" /> <!-- Original name is "trU_yorokobu" -->
+    </File>
+</Root>

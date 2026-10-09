@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Assets for a zora hall door -->
+    <File Name="object_dor02" Segment="6">
+        <DList Name="gZoraHallDoorEmptyDL" Offset="0x420"/> <!-- Original name is "z2_dor02_modelT" -->
+        <DList Name="gZoraHallDoorDL" Offset="0x428"/> <!-- Original name is "z2_dor02_model" -->
+        <Texture Name="gZoraHallDoorTex" OutName="zora_hall_door" Format="rgba16" Width="32" Height="64" Offset="0x610"/>
+    </File>
+</Root>

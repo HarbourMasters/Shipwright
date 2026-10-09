@@ -1,0 +1,32 @@
+<Root>
+    <File Name="Z2_BANDROOM" Segment="2" Game="MM">
+        <Scene Name="Z2_BANDROOM" Offset="0x0"/>
+    </File>
+    <File Name="Z2_BANDROOM_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_BANDROOM_room_00" Offset="0x0"/>
+        <DList Name="Z2_BANDROOM_room_00DL_0068B8" Offset="0x68B8"/>
+        <DList Name="Z2_BANDROOM_room_00DL_00CEF0" Offset="0xCEF0"/>
+    </File>
+    <File Name="Z2_BANDROOM_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_BANDROOM_room_01" Offset="0x0"/>
+        <DList Name="Z2_BANDROOM_room_01DL_004498" Offset="0x4498"/>
+        <DList Name="Z2_BANDROOM_room_01DL_0076D0" Offset="0x76D0"/>
+    </File>
+    <File Name="Z2_BANDROOM_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_BANDROOM_room_02" Offset="0x0"/>
+        <DList Name="Z2_BANDROOM_room_02DL_007200" Offset="0x7200"/>
+        <DList Name="Z2_BANDROOM_room_02DL_00D100" Offset="0xD100"/>
+    </File>
+    <File Name="Z2_BANDROOM_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_BANDROOM_room_03" Offset="0x0"/>
+        <DList Name="Z2_BANDROOM_room_03DL_004730" Offset="0x4730"/>
+        <DList Name="Z2_BANDROOM_room_03DL_008748" Offset="0x8748"/>
+    </File>
+    <File Name="Z2_BANDROOM_room_04" Segment="3" Game="MM">
+        <Texture Name="Z2_BANDROOM_room_04Tex_005A38" Format="rgba16" Width="64" Height="64" Offset="0x5A38"/>
+
+        <Room Name="Z2_BANDROOM_room_04" Offset="0x0"/>
+        <DList Name="Z2_BANDROOM_room_04DL_004500" Offset="0x4500"/>
+        <DList Name="Z2_BANDROOM_room_04DL_008630" Offset="0x8630"/>
+    </File>
+</Root>

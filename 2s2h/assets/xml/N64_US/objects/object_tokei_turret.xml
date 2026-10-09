@@ -1,0 +1,18 @@
+﻿<Root>
+    <!-- Object for the turret in South Clock Town that the carpenters build during the 3 day period. -->
+    <File Name="object_tokei_turret" Segment="6">
+        <Texture Name="gClockTownTurretTLUT" OutName="clock_town_turret_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gClockTownTurretTextTex" OutName="clock_town_turret_text" Format="ci4" Width="64" Height="64" Offset="0x20" />
+        <Texture Name="gClockTownTurretFabricTex" OutName="clock_town_turret_fabric" Format="rgba16" Width="32" Height="32" Offset="0x820" />
+        <Texture Name="gClockTownTurretWoodTex" OutName="clock_town_turret_wood" Format="rgba16" Width="16" Height="32" Offset="0x1020" />
+        <Texture Name="gClockTownFlagsTex" OutName="clock_town_flags" Format="rgba16" Width="128" Height="16" Offset="0x1420" />
+        <DList Name="gClockTownTurretEmpty0DL" Offset="0x2500" />
+        <DList Name="gClockTownTurretPlatformBaseDL" Offset="0x2508" />
+        <Collision Name="gClockTownTurretBaseCol" Offset="0x26A0" /> <!-- Original name is "z2_yagura01_bgdatainfo" -->
+        <DList Name="gClockTownTurretEmpty1DL" Offset="0x2A80" />
+        <DList Name="gClockTownTurretPlatformTopDL" Offset="0x2A88" />
+        <Collision Name="gClockTownTurretPlatformCol" Offset="0x2D80" /> <!-- Original name is "z2_yagura02_bgdatainfo" -->
+        <DList Name="gClockTownTurretEmpty2DL" Offset="0x3030" />
+        <DList Name="gClockTownFlagsDL" Offset="0x3038" />
+    </File>
+</Root>

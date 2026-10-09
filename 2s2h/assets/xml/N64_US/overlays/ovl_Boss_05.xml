@@ -1,0 +1,6 @@
+<Root>
+    <!-- Contains the collision for the Bio Deku Baba's lily pad. -->
+    <File Name="ovl_Boss_05" BaseAddress="0x809EE4E0" RangeStart="0x3540" RangeEnd="0x364C">
+        <Collision Name="sBioBabaLilypadCol" Offset="0x3620" />
+    </File>
+</Root>

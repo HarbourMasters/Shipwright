@@ -1,0 +1,118 @@
+﻿<Root>
+    <File Name="object_jg" Segment="6">
+        <!-- Goron Elder Limb DisplayLists -->
+        <DList Name="gGoronElderPelvisDL" Offset="0x3C50" />
+        <DList Name="gGoronElderRightShinDL" Offset="0x3DC8" />
+        <DList Name="gGoronElderRightFootDL" Offset="0x4068" />
+        <DList Name="gGoronElderRightThighDL" Offset="0x4410" />
+        <DList Name="gGoronElderLeftShinDL" Offset="0x4688" />
+        <DList Name="gGoronElderLeftFootDL" Offset="0x4928" />
+        <DList Name="gGoronElderLeftThighDL" Offset="0x4CD0" />
+        <DList Name="gGoronElderHeadDL" Offset="0x4F50" />
+        <DList Name="gGoronElderLowerBeardDL" Offset="0x5440" />
+        <DList Name="gGoronElderUpperBeardDL" Offset="0x54F0" />
+        <DList Name="gGoronElderLowerLipDL" Offset="0x55A8" />
+        <DList Name="gGoronElderHairBackDL" Offset="0x5770" />
+        <DList Name="gGoronElderRightHairEndDL" Offset="0x5968" />
+        <DList Name="gGoronElderLeftHairEndDL" Offset="0x5A48" />
+        <DList Name="gGoronElderUpperTorsoDL" Offset="0x5B28" />
+        <DList Name="gGoronElderRightForearmDL" Offset="0x5EE8" />
+        <DList Name="gGoronElderRightFingersDL" Offset="0x6018" />
+        <DList Name="gGoronElderRightHandAndThumbDL" Offset="0x6130" />
+        <DList Name="gGoronElderRightShoulderAndUpperArmDL" Offset="0x6378" />
+        <DList Name="gGoronElderLeftForearmDL" Offset="0x6678" />
+        <DList Name="gGoronElderLeftFingersDL" Offset="0x67A8" />
+        <DList Name="gGoronElderLeftHandAndThumbDL" Offset="0x68C0" />
+        <DList Name="gGoronElderLeftShoulderAndUpperArmDL" Offset="0x6B08" />
+        <DList Name="gGoronElderLowerTorsoDL" Offset="0x6E08" />
+
+        <!-- Goron Elder Animations -->
+        <Animation Name="gGoronElderThinkingAnim" Offset="0x77CC" /> <!-- Original name is "jg_are_loop" ("huh?") -->
+        <Animation Name="gGoronElderWalkAnim" Offset="0x9440" /> <!-- Original name is "jg_aruku" ("walk") -->
+        <Animation Name="gGoronElderCradleAnim" Offset="0xA07C" /> <!-- Original name is "jg_dakko" ("hug") -->
+
+        <!-- Drum DisplayList and Textures -->
+        <DList Name="gGoronElderDrumDL" Offset="0xA3B0" />
+        <Texture Name="gGoronElderDrumSidesTex" OutName="goron_elder_drum_sides" Format="rgba16" Width="32" Height="32" Offset="0xA530" />
+        <Texture Name="gGoronElderDrumTopTex" OutName="goron_elder_drum_top" Format="rgba16" Width="16" Height="16" Offset="0xAD30" />
+        
+        <!-- Goron Elder Animations -->
+        <Animation Name="gGoronElderWavingAnim" Offset="0xBDD8" /> <!-- Original name is "jg_iran" ("refuse") -->
+        <Animation Name="gGoronElderHeadShakeAnim" Offset="0xC7A8" /> <!-- Original name is "jg_kubifuri" ("head shake") -->
+        <Animation Name="gGoronElderRememberingAnim" Offset="0xD630" /> <!-- Original name is "jg_mouichido" ("once more time") -->
+        <Animation Name="gGoronElderSurpriseStartAnim" Offset="0xDB54" /> <!-- Original name is "jg_odoroki" ("surprise") -->
+        <Animation Name="gGoronElderSurpriseLoopAnim" Offset="0xE8FC" /> <!-- Original name is "jg_odorokiLoop" -->
+        <Animation Name="gGoronElderStrongRememberingAnim" Offset="0xFE48" /> <!-- Original name is "jg_soujyatta" (something like "it was this way") -->
+        <Animation Name="gGoronElderTakeOutDrumAnim" Offset="0x11F50" /> <!-- Original name is "jg_taiko_dasu" ("get out drum") -->
+        <Animation Name="gGoronElderDrumIdleAnim" Offset="0x129F4" /> <!-- Original name is "jg_taiko_loop" ("drum loop") -->
+        <Animation Name="gGoronElderPlayingDrumAnim" Offset="0x13DD8" /> <!-- Original name is "jg_taiko_tataku" ("playing the drum") -->
+        <Animation Name="gGoronElderAngryAnim" Offset="0x1436C" /> <!-- Original name is "jg_takaburu" ("to become worked up") -->
+
+        <!-- Goron Elder Textures -->
+        <Texture Name="gGoronElderTLUT" OutName="goron_elder_palette" Format="rgba16" Width="16" Height="16" Offset="0x14380" />
+        <Texture Name="gGoronElderSkinTex" OutName="goron_elder_skin" Format="ci8" Width="8" Height="8" Offset="0x14580" />
+        <Texture Name="gGoronElderToesTex" OutName="goron_elder_toes" Format="ci8" Width="32" Height="16" Offset="0x145C0" />
+        <Texture Name="gGoronElderFootBottomTex" OutName="goron_elder_foot_bottom" Format="ci8" Width="32" Height="32" Offset="0x147C0" />
+        <Texture Name="gGoronElderVeinsTex" OutName="goron_elder_veins" Format="ci8" Width="32" Height="32" Offset="0x14BC0" />
+        <Texture Name="gGoronElderSpotsTex" OutName="goron_elder_spots" Format="ci8" Width="16" Height="16" Offset="0x14FC0" />
+        <Texture Name="gGoronElderLowerLipTex" OutName="goron_elder_lower_lip" Format="rgba16" Width="8" Height="16" Offset="0x150C0" />
+        <Texture Name="gGoronElderLipTex" OutName="goron_elder_lip" Format="rgba16" Width="8" Height="8" Offset="0x151C0" />
+        <Texture Name="gGoronElderHairTex" OutName="goron_elder_hair" Format="rgba16" Width="16" Height="32" Offset="0x15240" />
+        <Texture Name="gGoronElderNostrilAndBellyButtonTex" OutName="goron_elder_nostril_and_belly_button" Format="ci8" Width="8" Height="8" Offset="0x15640" />
+        <Texture Name="gGoronElderCheekTex" OutName="goron_elder_cheek" Format="ci8" Width="8" Height="8" Offset="0x15680" />
+        <Texture Name="gGoronElderBrowTex" OutName="goron_elder_brow" Format="ci8" Width="8" Height="8" Offset="0x156C0" />
+        <Texture Name="gGoronElderHairEndTex" OutName="goron_elder_hair_end" Format="rgba16" Width="32" Height="64" Offset="0x15700" />
+        <Texture Name="gGoronElderFingersTex" OutName="goron_elder_fingers" Format="ci8" Width="16" Height="16" Offset="0x16700" />
+        <Texture Name="gGoronElderGoronRubyTattooTex" OutName="goron_elder_goron_ruby_tattoo" Format="ci8" Width="16" Height="32" Offset="0x16800" />
+        <Texture Name="gGoronElderChestTex" OutName="goron_elder_chest" Format="ci8" Width="32" Height="32" Offset="0x16A00" />
+        <Texture Name="gGoronElderBackTex" OutName="goron_elder_back" Format="ci8" Width="32" Height="64" Offset="0x16E00" />
+
+        <!-- Goron Elder Animations -->
+        <Animation Name="gGoronElderDepressedAnim" Offset="0x18CE4" /> <!-- Original name is "jg_u_m_loop" -->
+        <Animation Name="gGoronElderIdleAnim" Offset="0x1ADC0" /> <!-- Original name is "jg_wait" -->
+
+        <!-- Goron Elder Limbs -->
+        <Limb Name="gGoronElderRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_ROOT" Offset="0x1ADD0" />
+        <Limb Name="gGoronElderUpperBodyRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_UPPER_BODY_ROOT" Offset="0x1ADDC" />
+        <Limb Name="gGoronElderLowerTorsoLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LOWER_TORSO" Offset="0x1ADE8" />
+        <Limb Name="gGoronElderUpperTorsoLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_UPPER_TORSO" Offset="0x1ADF4" />
+        <Limb Name="gGoronElderLeftArmRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_ARM_ROOT" Offset="0x1AE00" />
+        <Limb Name="gGoronElderLeftShoulderAndUpperArmLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_SHOULDER_AND_UPPER_ARM" Offset="0x1AE0C" />
+        <Limb Name="gGoronElderLeftForearmLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_FOREARM" Offset="0x1AE18" />
+        <Limb Name="gGoronElderLeftWristLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_WRIST" Offset="0x1AE24" />
+        <Limb Name="gGoronElderLeftHandAndThumbLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_HAND_AND_THUMB" Offset="0x1AE30" />
+        <Limb Name="gGoronElderLeftFingersLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_FINGERS" Offset="0x1AE3C" />
+        <Limb Name="gGoronElderRightArmRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_ARM_ROOT" Offset="0x1AE48" />
+        <Limb Name="gGoronElderRightShoulderAndUpperArmLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_SHOULDER_AND_UPPER_ARM" Offset="0x1AE54" />
+        <Limb Name="gGoronElderRightForearmLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_FOREARM" Offset="0x1AE60" />
+        <Limb Name="gGoronElderRightWristLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_WRIST" Offset="0x1AE6C" />
+        <Limb Name="gGoronElderRightHandAndThumbLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_HAND_AND_THUMB" Offset="0x1AE78" />
+        <Limb Name="gGoronElderRightFingersLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_FINGERS" Offset="0x1AE84" />
+        <Limb Name="gGoronElderNeckLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_NECK" Offset="0x1AE90" />
+        <Limb Name="gGoronElderLeftHairEndLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_HAIR_END" Offset="0x1AE9C" />
+        <Limb Name="gGoronElderRightHairEndLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_HAIR_END" Offset="0x1AEA8" />
+        <Limb Name="gGoronElderHairBackLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_HAIR_BACK" Offset="0x1AEB4" />
+        <Limb Name="gGoronElderHeadLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_HEAD" Offset="0x1AEC0" />
+        <Limb Name="gGoronElderLowerLipLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LOWER_LIP" Offset="0x1AECC" />
+        <Limb Name="gGoronElderBeardRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_BEARD_ROOT" Offset="0x1AED8" />
+        <Limb Name="gGoronElderUpperBeardLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_UPPER_BEARD" Offset="0x1AEE4" />
+        <Limb Name="gGoronElderLowerBeardLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LOWER_BEARD" Offset="0x1AEF0" />
+        <Limb Name="gGoronElderPelvisLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_PELVIS" Offset="0x1AEFC" />
+        <Limb Name="gGoronElderLeftLegRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_LEG_ROOT" Offset="0x1AF08" />
+        <Limb Name="gGoronElderLeftThighLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_THIGH" Offset="0x1AF14" />
+        <Limb Name="gGoronElderLeftShinLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_SHIN" Offset="0x1AF20" />
+        <Limb Name="gGoronElderLeftFootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_LEFT_FOOT" Offset="0x1AF2C" />
+        <Limb Name="gGoronElderRightLegRootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_LEG_ROOT" Offset="0x1AF38" />
+        <Limb Name="gGoronElderRightThighLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_THIGH" Offset="0x1AF44" />
+        <Limb Name="gGoronElderRightShinLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_SHIN" Offset="0x1AF50" />
+        <Limb Name="gGoronElderRightFootLimb" Type="Standard" EnumName="GORON_ELDER_LIMB_RIGHT_FOOT" Offset="0x1AF5C" />
+
+        <!-- Goron Elder Skeleton -->
+        <Skeleton Name="gGoronElderSkel" Type="Flex" LimbType="Standard" LimbNone="GORON_ELDER_LIMB_NONE" LimbMax="GORON_ELDER_LIMB_MAX" EnumName="GoronElderLimb" Offset="0x1AFF0" />
+
+        <!-- Drum Animation, Limb, and Skeleton -->
+        <Animation Name="gGoronElderDrumTakeOutAnim" Offset="0x1B1E8" /> <!-- Original name is "jggakki_dasu" ("get out") -->
+        <Limb Name="gGoronElderDrumLimb" Type="Standard" EnumName="GORON_ELDER_DRUM_LIMB_ROOT" Offset="0x1B200" />
+        <Skeleton Name="gGoronElderDrumSkel" Type="Normal" LimbType="Standard" LimbNone="GORON_ELDER_DRUM_LIMB_NONE" LimbMax="GORON_ELDER_DRUM_LIMB_MAX" EnumName="GoronElderDrumLimb" Offset="0x1B210" />
+    </File>
+</Root>

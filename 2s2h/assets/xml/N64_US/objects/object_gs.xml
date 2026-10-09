@@ -1,0 +1,9 @@
+﻿<Root>
+    <!-- Assets for the Gossip Stones. -->
+    <File Name="object_gs" Segment="6">
+        <Texture Name="gGossipStoneTex" OutName="gossip_stone" Format="i8" Width="32" Height="64" Offset="0x0" />
+        <DList Name="gGossipStoneMaterialDL" Offset="0x950" />
+        <DList Name="gGossipStoneDL" Offset="0x9D0" />
+        <DList Name="gGossipStoneBottomModelDL" Offset="0xA60" />
+    </File>
+</Root>

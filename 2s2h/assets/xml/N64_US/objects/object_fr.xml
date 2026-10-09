@@ -1,0 +1,68 @@
+﻿<Root>
+    <!-- Object for the choir frogs and unused hostile(?) frog -->
+    <File Name="object_fr" Segment="6">
+        <Animation Name="gFrogJumpAnim" Offset="0x7BC" /> <!-- Original name is "Jump" -->
+        <Animation Name="gFrogDanceAnim" Offset="0x11C0" /> <!-- Original name is "swing" -->
+        <Animation Name="gFrogIdleAnim" Offset="0x1534" /> <!-- Original name is "wait" -->
+        <Texture Name="gFrogLimbPatternTex" OutName="frog_limb_pattern" Format="rgba16" Width="32" Height="32" Offset="0x1550" />
+        <Texture Name="gFrogQuestionMarkTex" OutName="frog_question_mark" Format="rgba16" Width="50" Height="74" Offset="0x1D50" />
+        <Texture Name="gFrogNostrilTex" OutName="frog_nostril" Format="i8" Width="16" Height="16" Offset="0x3AA0" />
+        <Texture Name="gFrogLowerInnerMouthTex" OutName="frog_lower_inner_mouth" Format="rgba16" Width="32" Height="32" Offset="0x3BA0" />
+        <Texture Name="gFrogUpperInnerMouthTex" OutName="frog_upper_inner_mouth" Format="rgba16" Width="32" Height="32" Offset="0x43A0" />
+        <Texture Name="gFrogSkinTex" OutName="frog_skin" Format="rgba16" Width="16" Height="16" Offset="0x4BA0" />
+        <Texture Name="gFrogUpperBodyPatternTex" OutName="frog_upper_body_pattern" Format="rgba16" Width="32" Height="32" Offset="0x4DA0" />
+        <Texture Name="gFrogLowerBodyPatternTex" OutName="frog_lower_body_pattern" Format="i8" Width="32" Height="32" Offset="0x55A0" />
+        <Texture Name="gFrogIrisOpenTex" OutName="frog_iris_open" Format="rgba16" Width="16" Height="16" Offset="0x59A0" />
+        <Texture Name="gFrogIrisClosedTex" OutName="frog_iris_closed" Format="rgba16" Width="16" Height="16" Offset="0x5BA0" />
+        <Texture Name="gFrogEyeTex" OutName="frog_eye" Format="ia16" Width="32" Height="32" Offset="0x5DA0" />
+        <Texture Name="gFrogHandAndToeTex" OutName="frog_hand_and_toe" Format="ia16" Width="32" Height="32" Offset="0x65A0" />
+        <DList Name="gFrogRightEyeDL" Offset="0x8EC0" />
+        <DList Name="gFrogLeftEyeDL" Offset="0x8F60" />
+        <DList Name="gFrogHeadDL" Offset="0x9000" />
+        <DList Name="gFrogRightIrisDL" Offset="0x9328" />
+        <DList Name="gFrogLeftIrisDL" Offset="0x93C8" />
+        <DList Name="gFrogJawDL" Offset="0x9468" />
+        <DList Name="gFrogUpperBodyDL" Offset="0x95A0" />
+        <DList Name="gFrogLeftForearmDL" Offset="0x98B8" />
+        <DList Name="gFrogLeftHandDL" Offset="0x9AE0" />
+        <DList Name="gFrogLeftUpperArmDL" Offset="0x9B80" />
+        <DList Name="gFrogRightForearmDL" Offset="0x9D88" />
+        <DList Name="gFrogRightHandDL" Offset="0x9FB0" />
+        <DList Name="gFrogRightUpperArmDL" Offset="0xA050" />
+        <DList Name="gFrogLowerBodyDL" Offset="0xA258" />
+        <DList Name="gFrogRightHeelDL" Offset="0xA428" />
+        <DList Name="gFrogRightToeDL" Offset="0xA6B8" />
+        <DList Name="gFrogRightShinDL" Offset="0xA758" />
+        <DList Name="gFrogRightThighDL" Offset="0xA978" />
+        <DList Name="gFrogLeftHeelDL" Offset="0xABA8" />
+        <DList Name="gFrogLeftToeDL" Offset="0xAE38" />
+        <DList Name="gFrogLeftShinDL" Offset="0xAED8" />
+        <DList Name="gFrogLeftThighDL" Offset="0xB0F8" />
+        <DList Name="gFrogDustMaterialDL" Offset="0xB328" />
+        <DList Name="gFrogDustModelDL" Offset="0xB338" />
+        <Limb Name="gFrogLowerBodyLimb" Type="Standard" EnumName="FROG_LIMB_LOWER_BODY" Offset="0xB3C8" />
+        <Limb Name="gFrogUpperBodyLimb" Type="Standard" EnumName="FROG_LIMB_UPPER_BODY" Offset="0xB3D4" />
+        <Limb Name="gFrogHeadRootLimb" Type="Standard" EnumName="FROG_LIMB_HEAD_ROOT" Offset="0xB3E0" />
+        <Limb Name="gFrogHeadLimb" Type="Standard" EnumName="FROG_LIMB_HEAD" Offset="0xB3EC" />
+        <Limb Name="gFrogRightIrisLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_IRIS" Offset="0xB3F8" />
+        <Limb Name="gFrogJawLimb" Type="Standard" EnumName="FROG_LIMB_JAW" Offset="0xB404" />
+        <Limb Name="gFrogRightEyeLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_EYE" Offset="0xB410" />
+        <Limb Name="gFrogLeftEyeLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_EYE" Offset="0xB41C" />
+        <Limb Name="gFrogLeftIrisLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_IRIS" Offset="0xB428" />
+        <Limb Name="gFrogLeftUpperArmLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_UPPER_ARM" Offset="0xB434" />
+        <Limb Name="gFrogLeftForearmLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_FOREARM" Offset="0xB440" />
+        <Limb Name="gFrogLeftHandLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_HAND" Offset="0xB44C" />
+        <Limb Name="gFrogRightUpperArmLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_UPPER_ARM" Offset="0xB458" />
+        <Limb Name="gFrogRightForearmLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_FOREARM" Offset="0xB464" />
+        <Limb Name="gFrogRightHandLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_HAND" Offset="0xB470" />
+        <Limb Name="gFrogRightThighLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_THIGH" Offset="0xB47C" />
+        <Limb Name="gFrogRightShinLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_SHIN" Offset="0xB488" />
+        <Limb Name="gFrogRightHeelLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_HEEL" Offset="0xB494" />
+        <Limb Name="gFrogRightToesLimb" Type="Standard" EnumName="FROG_LIMB_RIGHT_TOES" Offset="0xB4A0" />
+        <Limb Name="gFrogLeftThighLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_THIGH" Offset="0xB4AC" />
+        <Limb Name="gFrogLeftShinLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_SHIN" Offset="0xB4B8" />
+        <Limb Name="gFrogLeftHeelLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_HEEL" Offset="0xB4C4" />
+        <Limb Name="gFrogLeftToesLimb" Type="Standard" EnumName="FROG_LIMB_LEFT_TOES" Offset="0xB4D0" />
+        <Skeleton Name="gFrogSkel" Type="Flex" LimbType="Standard" LimbNone="FROG_LIMB_NONE" LimbMax="FROG_LIMB_MAX" EnumName="FrogLimb" Offset="0xB538" />
+    </File>
+</Root>

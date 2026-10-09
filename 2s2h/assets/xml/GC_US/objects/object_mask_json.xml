@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_mask_json" Segment="10">
+        <DList Name="object_mask_json_DL_0004C0" Offset="0x4C0" />
+        <Texture Name="object_mask_json_TLUT_0008A0" OutName="tlut_0008A0" Format="rgba16" Width="16" Height="16" Offset="0x8A0" />
+        <Texture Name="object_mask_json_Tex_000AA0" OutName="tex_000AA0" Format="rgba16" Width="16" Height="16" Offset="0xAA0" />
+        <Texture Name="object_mask_json_Tex_000CA0" OutName="tex_000CA0" Format="ci8" Width="16" Height="8" Offset="0xCA0" />
+        <Texture Name="object_mask_json_Tex_000D20" OutName="tex_000D20" Format="ci8" Width="16" Height="32" Offset="0xD20" />
+        <Texture Name="object_mask_json_Tex_000F20" OutName="tex_000F20" Format="ci8" Width="32" Height="32" Offset="0xF20" />
+        <Texture Name="object_mask_json_Tex_001320" OutName="tex_001320" Format="ci8" Width="8" Height="8" Offset="0x1320" />
+    </File>
+</Root>

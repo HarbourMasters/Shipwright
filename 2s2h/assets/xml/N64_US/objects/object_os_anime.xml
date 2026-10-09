@@ -1,0 +1,26 @@
+﻿<Root>
+    <File Name="object_os_anime" Segment="6">
+        <Animation Name="object_os_anime_Anim_0000B4" Offset="0xB4" />
+        <Animation Name="object_os_anime_Anim_000170" Offset="0x170" />
+        <Animation Name="object_os_anime_Anim_000228" Offset="0x228" />
+        <Animation Name="object_os_anime_Anim_000718" Offset="0x718" />
+        <Animation Name="object_os_anime_Anim_0007D0" Offset="0x7D0" />
+        <Animation Name="object_os_anime_Anim_000894" Offset="0x894" />
+        <Animation Name="object_os_anime_Anim_000938" Offset="0x938" />
+        <Animation Name="object_os_anime_Anim_000B80" Offset="0xB80" />
+        <Animation Name="object_os_anime_Anim_000FF0" Offset="0xFF0" />
+        <Animation Name="object_os_anime_Anim_00107C" Offset="0x107C" />
+        <Animation Name="object_os_anime_Anim_001270" Offset="0x1270" />
+        <Animation Name="object_os_anime_Anim_0012FC" Offset="0x12FC" />
+        <Animation Name="object_os_anime_Anim_001458" Offset="0x1458" /> <!-- Original name is "Cne2_15" -->
+        <Animation Name="object_os_anime_Anim_0017D8" Offset="0x17D8" /> <!-- Original name is "Cne_aruku" ("walk") -->
+        <Animation Name="object_os_anime_Anim_001C9C" Offset="0x1C9C" /> <!-- Original name is "Cne_hiso_wait" ("hiso" = onomatopoeic for "whisper") -->
+        <Animation Name="object_os_anime_Anim_001D44" Offset="0x1D44" /> <!-- Original name is "Cne_matsu" -->
+        <Animation Name="object_os_anime_Anim_001EE0" Offset="0x1EE0" /> <!-- Original name is "Cne_n_wait" ("to wait​") -->
+        <Animation Name="object_os_anime_Anim_001F78" Offset="0x1F78" />
+        <Animation Name="object_os_anime_Anim_0020F8" Offset="0x20F8" />
+        <Animation Name="object_os_anime_Anim_0021B8" Offset="0x21B8" />
+        <Animation Name="object_os_anime_Anim_0025E4" Offset="0x25E4" />
+        <Animation Name="object_os_anime_Anim_002C80" Offset="0x2C80" />
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Biggoron Sword (remnant of OoT) -->
+    <File Name="object_gi_longsword" Segment="6">
+
+        <!-- Biggoron Sword Display Lists -->
+        <DList Name="gGiBiggoronSwordDL" Offset="0x600" />
+    </File>
+</Root>

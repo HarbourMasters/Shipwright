@@ -1,0 +1,31 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <File Name="object_dmask" Segment="6">
+        <Animation Name="object_dmask_Anim_00017C" Offset="0x17C" /> <!-- Original name is "gbm_fall" -->
+        <Animation Name="object_dmask_Anim_0001A8" Offset="0x1A8" /> <!-- Original name is "gbm_normal" -->
+        <Limb Name="object_dmask_Standardlimb_01C0" Type="Standard" Offset="0x1C0" />
+        <Skeleton Name="object_dmask_Skel_001D0" Type="Flex" LimbType="Standard" Offset="0x1D0" />
+        <DList Name="object_dmask_DL_000430" Offset="0x430" />
+        <Texture Name="object_dmask_Tex_000578" OutName="tex_000578" Format="i8" Width="64" Height="32" Offset="0x578" />
+        <Texture Name="object_dmask_Tex_000D78" OutName="tex_000D78" Format="i8" Width="32" Height="16" Offset="0xD78" />
+        <Animation Name="object_dmask_Anim_001090" Offset="0x1090" /> <!-- Original name is "gmask_rakka" -->
+        <Limb Name="object_dmask_Standardlimb_010A0" Type="Standard" Offset="0x10A0" />
+        <Skeleton Name="object_dmask_Skel_010B0" Type="Normal" LimbType="Standard" Offset="0x10B0" />
+        <Animation Name="object_dmask_Anim_0011A0" Offset="0x11A0" /> <!-- Original name is "mjm_suteru" -->
+        <Animation Name="object_dmask_Anim_0013A4" Offset="0x13A4" /> <!-- Original name is "mjm_suteru_loop" -->
+        <Limb Name="object_dmask_Standardlimb_013C0" Type="Standard" Offset="0x13C0" />
+        <Skeleton Name="object_dmask_Skel_013D0" Type="Normal" LimbType="Standard" Offset="0x13D0" />
+        <DList Name="object_dmask_DL_001E70" Offset="0x1E70" />
+        <Texture Name="object_dmask_Tex_002220" OutName="tex_002220" Format="rgba16" Width="32" Height="64" Offset="0x2220" />
+        <Texture Name="object_dmask_Tex_003220" OutName="tex_003220" Format="rgba16" Width="16" Height="16" Offset="0x3220" />
+        <Texture Name="object_dmask_Tex_003420" OutName="tex_003420" Format="rgba16" Width="16" Height="16" Offset="0x3420" />
+        <Texture Name="object_dmask_Tex_003620" OutName="tex_003620" Format="rgba16" Width="16" Height="16" Offset="0x3620" />
+        <Texture Name="object_dmask_Tex_003820" OutName="tex_003820" Format="rgba16" Width="16" Height="16" Offset="0x3820" />
+        <Texture Name="object_dmask_Tex_003A20" OutName="tex_003A20" Format="rgba16" Width="32" Height="32" Offset="0x3A20" />
+        <Animation Name="object_dmask_Anim_004288" Offset="0x4288" /> <!-- Original name is "pzmask_taoreru" -->
+        <Limb Name="object_dmask_Standardlimb_042A0" Type="Standard" Offset="0x42A0" />
+        <Skeleton Name="object_dmask_Skel_042B0" Type="Normal" LimbType="Standard" Offset="0x42B0" />
+    </File>
+</Root>

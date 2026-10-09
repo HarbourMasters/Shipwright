@@ -1,0 +1,57 @@
+﻿<Root>
+    <File Name="gameplay_field_keep" Segment="5">
+        <Texture Name="gameplay_field_keep_Tex_000000" OutName="tex_000000" Format="rgba16" Width="16" Height="32" Offset="0x0" />
+        <Texture Name="gameplay_field_keep_Tex_000400" OutName="tex_000400" Format="rgba16" Width="32" Height="32" Offset="0x400" />
+        <DList Name="gameplay_field_keep_DL_000C40" Offset="0xC40" /> <!-- Original name is "ana01_modelT" -->
+        <Texture Name="gameplay_field_keep_Tex_000CD0" OutName="tex_000CD0" Format="ia16" Width="32" Height="64" Offset="0xCD0" />
+        <Animation Name="gameplay_field_keep_Anim_001D20" Offset="0x1D20" /> <!-- Original name is "butterfly_fly" -->
+        <DList Name="gameplay_field_keep_DL_001D30" Offset="0x1D30" />
+        <DList Name="gameplay_field_keep_DL_001DD0" Offset="0x1DD0" />
+        <DList Name="gameplay_field_keep_DL_001DE0" Offset="0x1DE0" />
+        <DList Name="gameplay_field_keep_DL_001E30" Offset="0x1E30" />
+        <DList Name="gameplay_field_keep_DL_001ED0" Offset="0x1ED0" />
+        <DList Name="gameplay_field_keep_DL_001EE0" Offset="0x1EE0" />
+        <Texture Name="gameplay_field_keep_Tex_001F30" OutName="tex_001F30" Format="rgba16" Width="32" Height="64" Offset="0x1F30" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F30" Type="Standard" EnumName="BUTTERFLY_LIMB_01" Offset="0x2F30" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F3C" Type="Standard" EnumName="BUTTERFLY_LIMB_02" Offset="0x2F3C" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F48" Type="Standard" EnumName="BUTTERFLY_LIMB_03" Offset="0x2F48" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F54" Type="Standard" EnumName="BUTTERFLY_LIMB_04" Offset="0x2F54" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F60" Type="Standard" EnumName="BUTTERFLY_LIMB_05" Offset="0x2F60" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F6C" Type="Standard" EnumName="BUTTERFLY_LIMB_06" Offset="0x2F6C" />
+        <Limb Name="gameplay_field_keep_Standardlimb_002F78" Type="Standard" EnumName="BUTTERFLY_LIMB_07" Offset="0x2F78" />
+        <Skeleton Name="gameplay_field_keep_Skel_002FA0" Type="Normal" LimbType="Standard" LimbNone="BUTTERFLY_LIMB_NONE" LimbMax="BUTTERFLY_LIMB_MAX" EnumName="ButterflyLimb" Offset="0x2FA0" />
+        <Texture Name="gameplay_field_keep_TLUT_002FB0" OutName="tlut_002FB0" Format="rgba16" Width="4" Height="4" Offset="0x2FB0" />
+        <Texture Name="gameplay_field_keep_Tex_002FD0" OutName="tex_002FD0" Format="ci4" Width="32" Height="64" Offset="0x2FD0" />
+        <Texture Name="gameplay_field_keep_Tex_0033D0" OutName="tex_0033D0" Format="ci4" Width="32" Height="64" Offset="0x33D0" />
+        <DList Name="gameplay_field_keep_DL_003870" Offset="0x3870" /> <!-- Original name is "c_bombwallbefore_model" -->
+        <DList Name="gameplay_field_keep_DL_003938" Offset="0x3938" /> <!-- Original name is "c_bombwallafter_model" -->
+        <Collision Name="gameplay_field_keep_Colheader_003A60" Offset="0x3A60" /> <!-- Original name is "c_bombwallbefore_bgdatainfo" -->
+        <DList Name="gFieldWoodDoorFrameDL" Offset="0x3FD0" /> <!-- Original name is "obj_door_huti_model" -->
+        <DList Name="gFieldWoodDoorLeftDL" Offset="0x4050" />
+        <DList Name="gFieldWoodDoorRightDL" Offset="0x4228" />
+        <Texture Name="gameplay_field_keep_Tex_004400" OutName="tex_004400" Format="rgba16" Width="16" Height="16" Offset="0x4400" />
+        <Texture Name="gameplay_field_keep_Tex_004600" OutName="tex_004600" Format="rgba16" Width="16" Height="16" Offset="0x4600" />
+        <Texture Name="gFieldWoodDoorTex" OutName="wood_door" Format="i4" Width="64" Height="128" Offset="0x4800" />
+        <Texture Name="gFieldSilverBoulderTLUT" OutName="silver_boulder_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5800" />
+        <Texture Name="gFieldSilverBoulderTex" OutName="silver_boulder" Format="ci4" Width="64" Height="64" Offset="0x5828" />
+        <DList Name="gFieldSilverBoulderDL" Offset="0x61E8" /> <!-- Original name is "obj_ginbure_model" -->
+        <DList Name="gFieldSilverBoulderDebrisDL" Offset="0x6420" /> <!-- Original name is "obj_ginbure_h_model" -->
+        <DList Name="gFieldSmallRockOpaDL" Offset="0x66B0" /> <!-- Original name is "obj_isi01_model" -->
+        <DList Name="gFieldSmallRockXluDL" Offset="0x6760" /> <!-- Original name is "obj_isi01_xlu_model" -->
+        <Texture Name="gameplay_field_keep_Tex_006810" OutName="tex_006810" Format="rgba16" Width="32" Height="32" Offset="0x6810" />
+        <Texture Name="gameplay_field_keep_Tex_007010" OutName="tex_007010" Format="rgba16" Width="32" Height="32" Offset="0x7010" />
+
+        <Array Name="gameplay_field_keepVtx_007810" Count="9" Offset="0x7810">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gKusaBushType1DL" Offset="0x78A0" />
+        <DList Name="gKusaBushType2DL" Offset="0x7938" />
+
+        <Texture Name="gFieldSandstorm1Tex" OutName="sandstorm_1" Format="i8" Width="64" Height="32" Offset="0x79D0" />
+        <Texture Name="gFieldSandstorm2Tex" OutName="sandstorm_2" Format="ia8" Width="64" Height="32" Offset="0x81D0" />
+        <DList Name="gFieldSandstormDL" Offset="0x89D0" />
+
+        <Texture Name="gameplay_field_keep_Tex_008A90" OutName="tex_008A90" Format="rgba16" Width="32" Height="32" Offset="0x8A90" />
+    </File>
+</Root>

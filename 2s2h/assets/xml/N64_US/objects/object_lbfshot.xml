@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_lbfshot" Segment="6">
+        <DList Name="object_lbfshot_DL_000220" Offset="0x220" /> <!-- Original name is "z2_lbfshot_modelT" -->
+        <DList Name="object_lbfshot_DL_000228" Offset="0x228" /> <!-- Original name is "z2_lbfshot_model" -->
+        <Texture Name="object_lbfshot_Tex_000340" OutName="tex_000340" Format="rgba16" Width="16" Height="64" Offset="0x340" />
+        <Texture Name="object_lbfshot_Tex_000B40" OutName="tex_000B40" Format="rgba16" Width="32" Height="32" Offset="0xB40" />
+        <Collision Name="object_lbfshot_Colheader_0014D8" Offset="0x14D8" /> <!-- Original name is "z2_lbfshot_bgdatainfo" -->
+    </File>
+</Root>

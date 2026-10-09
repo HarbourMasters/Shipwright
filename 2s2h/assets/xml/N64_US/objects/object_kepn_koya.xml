@@ -1,0 +1,18 @@
+﻿<Root>
+    <File Name="object_kepn_koya" Segment="6">
+        <DList Name="object_kepn_koya_DL_003470" Offset="0x3470" /> <!-- Original name is "w2_kepn_koya_modelT" -->
+        <DList Name="object_kepn_koya_DL_003478" Offset="0x3478" /> <!-- Original name is "w2_kepn_koya_model" -->
+        <Texture Name="object_kepn_koya_TLUT_005118" OutName="tlut_005118" Format="rgba16" Width="16" Height="16" Offset="0x5118" />
+        <Texture Name="object_kepn_koya_Tex_005318" OutName="tex_005318" Format="ci8" Width="16" Height="16" Offset="0x5318" />
+        <Texture Name="object_kepn_koya_Tex_005418" OutName="tex_005418" Format="ci8" Width="64" Height="32" Offset="0x5418" />
+        <Texture Name="object_kepn_koya_Tex_005C18" OutName="tex_005C18" Format="ci8" Width="32" Height="64" Offset="0x5C18" />
+        <Texture Name="object_kepn_koya_Tex_006418" OutName="tex_006418" Format="ci8" Width="16" Height="32" Offset="0x6418" />
+        <Texture Name="object_kepn_koya_Tex_006618" OutName="tex_006618" Format="ci8" Width="16" Height="32" Offset="0x6618" />
+        <Texture Name="object_kepn_koya_Tex_006818" OutName="tex_006818" Format="ci8" Width="32" Height="16" Offset="0x6818" />
+        <Texture Name="object_kepn_koya_Tex_006A18" OutName="tex_006A18" Format="ci8" Width="64" Height="16" Offset="0x6A18" />
+        <Texture Name="object_kepn_koya_Tex_006E18" OutName="tex_006E18" Format="ci8" Width="32" Height="32" Offset="0x6E18" />
+        <Texture Name="object_kepn_koya_Tex_007218" OutName="tex_007218" Format="rgba16" Width="8" Height="8" Offset="0x7218" />
+        <Texture Name="object_kepn_koya_Tex_007298" OutName="tex_007298" Format="ci8" Width="8" Height="8" Offset="0x7298" />
+        <Collision Name="object_kepn_koya_Colheader_00805C" Offset="0x805C" /> <!-- Original name is "w2_kepn_koya_bgdatainfo" -->
+    </File>
+</Root>

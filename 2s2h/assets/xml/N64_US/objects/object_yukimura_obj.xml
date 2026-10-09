@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="code/actor.xml" OutPath="assets/code/actor/"/>
+
+    <File Name="object_yukimura_obj" Segment="6">
+        <DList Name="object_yukimura_obj_DL_000640" Offset="0x640" />
+        <DList Name="object_yukimura_obj_DL_000758" Offset="0x758" />
+        <DList Name="object_yukimura_obj_DL_000870" Offset="0x870" />
+        <DList Name="object_yukimura_obj_DL_000890" Offset="0x890" />
+        <DList Name="object_yukimura_obj_DL_0008C0" Offset="0x8C0" />
+        <Texture Name="object_yukimura_obj_Tex_0008D8" OutName="tex_0008D8" Format="rgba16" Width="16" Height="8" Offset="0x8D8" />
+        <Texture Name="object_yukimura_obj_Tex_0009D8" OutName="tex_0009D8" Format="rgba16" Width="32" Height="16" Offset="0x9D8" />
+        <DList Name="object_yukimura_obj_DL_000EB0" Offset="0xEB0" />
+        <DList Name="object_yukimura_obj_DL_000F98" Offset="0xF98" /> <!-- Orignal name might be "z2_10_kemuri01_model" -->
+        <Texture Name="object_yukimura_obj_Tex_001078" OutName="tex_001078" Format="rgba16" Width="32" Height="32" Offset="0x1078" />
+        <Texture Name="object_yukimura_obj_Tex_001878" OutName="tex_001878" Format="i4" Width="64" Height="64" Offset="0x1878" />
+        <TextureAnimation Name="object_yukimura_obj_Matanimheader_002090" Offset="0x2090" />
+    </File>
+</Root>

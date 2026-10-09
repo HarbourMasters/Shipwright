@@ -1,0 +1,34 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_01.xml" OutPath="misc/scene_texture_01/"/>
+    <File Name="Z2_SONCHONOIE" Segment="2" Game="MM">
+        <Scene Name="Z2_SONCHONOIE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_SONCHONOIE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_SONCHONOIE_room_00" Offset="0x0"/>
+        <DList Name="Z2_SONCHONOIE_room_00DL_000160" Offset="0x160"/>
+        <DList Name="Z2_SONCHONOIE_room_00DL_008520" Offset="0x8520"/>
+        <DList Name="Z2_SONCHONOIE_room_00DL_009560" Offset="0x9560"/>
+        <DList Name="Z2_SONCHONOIE_room_00DL_0095B8" Offset="0x95B8"/>
+    </File>
+    <File Name="Z2_SONCHONOIE_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_SONCHONOIE_room_01" Offset="0x0"/>
+        <DList Name="Z2_SONCHONOIE_room_01DL_000180" Offset="0x180"/>
+        <DList Name="Z2_SONCHONOIE_room_01DL_005510" Offset="0x5510"/>
+        <DList Name="Z2_SONCHONOIE_room_01DL_005DD0" Offset="0x5DD0"/>
+        <DList Name="Z2_SONCHONOIE_room_01DL_005F68" Offset="0x5F68"/>
+    </File>
+    <File Name="Z2_SONCHONOIE_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_SONCHONOIE_room_02" Offset="0x0"/>
+        <DList Name="Z2_SONCHONOIE_room_02DL_000160" Offset="0x160"/>
+        <DList Name="Z2_SONCHONOIE_room_02DL_0084F8" Offset="0x84F8"/>
+        <DList Name="Z2_SONCHONOIE_room_02DL_009540" Offset="0x9540"/>
+        <DList Name="Z2_SONCHONOIE_room_02DL_009940" Offset="0x9940"/>
+    </File>
+    <File Name="Z2_SONCHONOIE_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_SONCHONOIE_room_03" Offset="0x0"/>
+        <DList Name="Z2_SONCHONOIE_room_03DL_000110" Offset="0x110"/>
+        <DList Name="Z2_SONCHONOIE_room_03DL_007FC0" Offset="0x7FC0"/>
+        <DList Name="Z2_SONCHONOIE_room_03DL_0093C0" Offset="0x93C0"/>
+        <DList Name="Z2_SONCHONOIE_room_03DL_009550" Offset="0x9550"/>
+    </File>
+</Root>

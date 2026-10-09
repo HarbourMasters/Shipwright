@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_Obj_Toudai" BaseAddress="0x80A33B00" RangeStart="0xA90" RangeEnd="0xB70">
+        <Array Name="ovl_Obj_Toudai_Vtx_D_80A34590" Count="14" Offset="0xA90">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

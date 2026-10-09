@@ -1,0 +1,16 @@
+<Root>
+    <File Name="ovl_En_Bigslime" BaseAddress="0x808E4FC0" RangeStart="0x8680" RangeEnd="0xAF00">
+        <Array Name="sBigslimeStaticVtx" Count="162" Offset="0x8680">
+            <Vtx/>
+        </Array>
+        <Array Name="sBigslimeDynamicState0Vtx" Count="162" Offset="0x90A0">
+            <Vtx/>
+        </Array>
+        <Array Name="sBigslimeDynamicState1Vtx" Count="162" Offset="0x9AC0">
+            <Vtx/>
+        </Array>
+        <Array Name="sBigslimeTargetVtx" Count="162" Offset="0xA4E0">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

@@ -1,0 +1,9 @@
+﻿<Root>
+    <!-- Object for Lens of Truth Platform -->
+    <File Name="object_visiblock" Segment="6">
+        <DList Name="gLensOfTruthPlatformDL" Offset="0x140" /> <!-- Original name is "z2_11_brick01_modelT" -->
+        <DList Name="gLensOfTruthPlatformEmptyDL" Offset="0x1E8" /> <!-- Original name is "z2_11_brick01_model" -->
+        <Texture Name="gLensOfTruthPlatformTex" OutName="lens_of_truth_platform" Format="rgba16" Width="32" Height="32" Offset="0x1F0" />
+        <Collision Name="gLensOfTruthPlatformCol" Offset="0xAD0" /> <!-- Original name is "z2_11_brick01_bgdatainfo" -->
+    </File>
+</Root>

@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_warp_uzu" Segment="6">
+        <DList Name="object_warp_uzu_DL_000EC0" Offset="0xEC0" /> <!-- Original name is "Y2_telescope_model" -->
+        <Texture Name="object_warp_uzu_TLUT_0019D0" OutName="tlut_0019D0" Format="rgba16" Width="16" Height="16" Offset="0x19D0" />
+        <Texture Name="object_warp_uzu_Tex_001BD0" OutName="tex_001BD0" Format="rgba16" Width="16" Height="32" Offset="0x1BD0" />
+        <Texture Name="object_warp_uzu_Tex_001FD0" OutName="tex_001FD0" Format="ci8" Width="8" Height="8" Offset="0x1FD0" />
+        <Texture Name="object_warp_uzu_Tex_002010" OutName="tex_002010" Format="ci8" Width="32" Height="32" Offset="0x2010" />
+        <Texture Name="object_warp_uzu_Tex_002410" OutName="tex_002410" Format="ci8" Width="8" Height="8" Offset="0x2410" />
+    </File>
+</Root>

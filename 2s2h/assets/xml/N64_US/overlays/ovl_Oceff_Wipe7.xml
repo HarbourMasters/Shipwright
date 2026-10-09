@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe7" BaseAddress="0x80BCDCB0" RangeStart="0x330" RangeEnd="0xDB8">
+        <Texture Name="sSongofHealingEffectTex" OutName="song_of_healing_effect" Format="i8" Width="32" Height="64" Offset="0x330"/>
+        <TextureAnimation Name="sSongofHealingEffectTexAnim" Offset="0xB38" />
+        <Array Name="sSongofHealingEffectFrustrumVtx" Count="22" Offset="0xB40">
+            <Vtx/>
+        </Array>
+        <DList Name="sSongOfHealingEffectFrustumDL" Offset="0xCA0"/> <!-- Original name might be "g1T_model2" -->
+    </File>
+</Root>

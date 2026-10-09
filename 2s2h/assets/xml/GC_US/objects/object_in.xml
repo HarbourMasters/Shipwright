@@ -1,0 +1,140 @@
+﻿<Root>
+    <File Name="object_in" Segment="6">
+        <Animation Name="object_in_Anim_0003B4" Offset="0x3B4" /> <!-- Original name is "in2_fusagu" -->
+        <Animation Name="object_in_Anim_000CB0" Offset="0xCB0" /> <!-- Original name is "in2_kachi" -->
+        <Animation Name="object_in_Anim_001BE0" Offset="0x1BE0" /> <!-- Original name is "in2_kuyasii" -->
+        <TextureAnimation Name="object_in_Matanimheader_001C30" Offset="0x1C30" />
+        <Animation Name="object_in_Anim_001D10" Offset="0x1D10" /> <!-- Original name is "in_matsu1" -->
+        <!-- <Blob Name="object_in_Blob_001D20" Size="0x1738" Offset="0x1D20" /> -->
+        <Texture Name="object_in_Tex_003520" OutName="tex_003520" Format="ci8" Width="8" Height="8" Offset="0x3520" />
+        <Texture Name="object_in_Tex_0035E0" OutName="tex_0035E0" Format="ci8" Width="32" Height="32" Offset="0x35E0" />
+        <Texture Name="object_in_Tex_0039E0" OutName="tex_0039E0" Format="rgba16" Width="16" Height="16" Offset="0x39E0" />
+        <Texture Name="object_in_Tex_003BE0" OutName="tex_003BE0" Format="ci8" Width="16" Height="16" Offset="0x3BE0" />
+        <Texture Name="object_in_Tex_003CE0" OutName="tex_003CE0" Format="ci8" Width="16" Height="16" Offset="0x3CE0" />
+        <Texture Name="object_in_Tex_003DE0" OutName="tex_003DE0" Format="i8" Width="8" Height="8" Offset="0x3DE0" />
+        <Texture Name="object_in_Tex_003E20" OutName="tex_003E20" Format="rgba16" Width="8" Height="16" Offset="0x3E20" />
+        <Texture Name="object_in_Tex_003F20" OutName="tex_003F20" Format="ci8" Width="16" Height="32" Offset="0x3F20" />
+        <Texture Name="object_in_Tex_004120" OutName="tex_004120" Format="rgba16" Width="8" Height="16" Offset="0x4120" />
+        <Texture Name="object_in_Tex_004220" OutName="tex_004220" Format="ci8" Width="8" Height="16" Offset="0x4220" />
+        <Texture Name="object_in_Tex_0042A0" OutName="tex_0042A0" Format="ci8" Width="16" Height="16" Offset="0x42A0" />
+        <Texture Name="object_in_Tex_0043E0" OutName="tex_0043E0" Format="ci8" Width="32" Height="32" Offset="0x43E0" />
+        <Texture Name="object_in_Tex_0047E0" OutName="tex_0047E0" Format="ci8" Width="8" Height="8" Offset="0x47E0" />
+        <Texture Name="object_in_Tex_004820" OutName="tex_004820" Format="ci8" Width="32" Height="32" Offset="0x4820" />
+        <Texture Name="object_in_Tex_004C20" OutName="tex_004C20" Format="ci8" Width="32" Height="32" Offset="0x4C20" />
+        <DList Name="object_in_DL_006780" Offset="0x6780" />
+        <DList Name="object_in_DL_0073E8" Offset="0x73E8" />
+        <DList Name="object_in_DL_007510" Offset="0x7510" />
+        <DList Name="object_in_DL_007638" Offset="0x7638" />
+        <DList Name="object_in_DL_007730" Offset="0x7730" />
+        <DList Name="object_in_DL_0078D0" Offset="0x78D0" />
+        <DList Name="object_in_DL_007A70" Offset="0x7A70" />
+        <DList Name="object_in_DL_007C48" Offset="0x7C48" />
+        <DList Name="object_in_DL_00A0B8" Offset="0xA0B8" />
+        <DList Name="object_in_DL_00A2B8" Offset="0xA2B8" />
+        <DList Name="object_in_DL_00A4B0" Offset="0xA4B0" />
+        <DList Name="object_in_DL_00A748" Offset="0xA748" />
+        <DList Name="object_in_DL_00AAC8" Offset="0xAAC8" />
+        <DList Name="object_in_DL_00ACC0" Offset="0xACC0" />
+        <DList Name="object_in_DL_00AF58" Offset="0xAF58" />
+        <DList Name="object_in_DL_00B2D8" Offset="0xB2D8" />
+        <DList Name="object_in_DL_00B410" Offset="0xB410" />
+        <DList Name="object_in_DL_00B570" Offset="0xB570" />
+        <DList Name="object_in_DL_00B718" Offset="0xB718" />
+        <DList Name="object_in_DL_00B8D0" Offset="0xB8D0" />
+        <Texture Name="object_in_TLUT_00BA78" OutName="tlut_00BA78" Format="rgba16" Width="16" Height="16" Offset="0xBA78" />
+        <!-- <Blob Name="object_in_Blob_00BC78" Size="0x400" Offset="0xBC78" /> -->
+        <Texture Name="object_in_TLUT_00C078" OutName="tlut_00C078" Format="rgba16" Width="16" Height="16" Offset="0xC078" />
+        <Texture Name="object_in_TLUT_00C278" OutName="tlut_00C278" Format="rgba16" Width="16" Height="16" Offset="0xC278" />
+        <!-- <Blob Name="object_in_Blob_00C478" Size="0x200" Offset="0xC478" /> -->
+        <Texture Name="object_in_Tex_00C678" OutName="tex_00C678" Format="ci8" Width="8" Height="8" Offset="0xC678" />
+        <!-- <Blob Name="object_in_Blob_00C6B8" Size="0x640" Offset="0xC6B8" /> -->
+        <Texture Name="object_in_Tex_00CCF8" OutName="tex_00CCF8" Format="ci8" Width="16" Height="32" Offset="0xCCF8" />
+        <Texture Name="object_in_Tex_00CEF8" OutName="tex_00CEF8" Format="ci8" Width="16" Height="16" Offset="0xCEF8" />
+        <!-- <Blob Name="object_in_Blob_00CFF8" Size="0x100" Offset="0xCFF8" /> -->
+        <Texture Name="object_in_Tex_00D0F8" OutName="tex_00D0F8" Format="i8" Width="8" Height="8" Offset="0xD0F8" />
+        <Texture Name="object_in_Tex_00D138" OutName="tex_00D138" Format="i8" Width="32" Height="32" Offset="0xD138" />
+        <Texture Name="object_in_Tex_00D538" OutName="tex_00D538" Format="i8" Width="8" Height="8" Offset="0xD538" />
+        <Texture Name="object_in_Tex_00D578" OutName="tex_00D578" Format="i8" Width="8" Height="8" Offset="0xD578" />
+        <Texture Name="object_in_TLUT_00D5B8" OutName="tlut_00D5B8" Format="rgba16" Width="16" Height="16" Offset="0xD5B8" />
+        <Texture Name="object_in_Tex_00D7B8" OutName="tex_00D7B8" Format="rgba16" Width="16" Height="16" Offset="0xD7B8" />
+        <Texture Name="object_in_Tex_00D9B8" OutName="tex_00D9B8" Format="ci8" Width="8" Height="8" Offset="0xD9B8" />
+        <Texture Name="object_in_Tex_00D9F8" OutName="tex_00D9F8" Format="ci8" Width="8" Height="8" Offset="0xD9F8" />
+        <Texture Name="object_in_Tex_00DA38" OutName="tex_00DA38" Format="ci8" Width="8" Height="8" Offset="0xDA38" />
+        <Texture Name="object_in_Tex_00DA78" OutName="tex_00DA78" Format="ci8" Width="16" Height="32" Offset="0xDA78" />
+        <Texture Name="object_in_Tex_00DC78" OutName="tex_00DC78" Format="ci8" Width="16" Height="16" Offset="0xDC78" />
+        <Texture Name="object_in_Tex_00DD78" OutName="tex_00DD78" Format="ci8" Width="16" Height="16" Offset="0xDD78" />
+        <Texture Name="object_in_Tex_00DE78" OutName="tex_00DE78" Format="ci8" Width="8" Height="8" Offset="0xDE78" />
+        <!-- <Blob Name="object_in_Blob_00DEB8" Size="0x800" Offset="0xDEB8" /> -->
+        <Texture Name="object_in_Tex_00E6B8" OutName="tex_00E6B8" Format="rgba16" Width="32" Height="32" Offset="0xE6B8" />
+        <!-- <Blob Name="object_in_Blob_00EEB8" Size="0x800" Offset="0xEEB8" /> -->
+        <Texture Name="object_in_Tex_00F6B8" OutName="tex_00F6B8" Format="ci8" Width="16" Height="16" Offset="0xF6B8" />
+        <Texture Name="object_in_Tex_00F7B8" OutName="tex_00F7B8" Format="ci8" Width="16" Height="32" Offset="0xF7B8" />
+        <Texture Name="object_in_Tex_00F9B8" OutName="tex_00F9B8" Format="ci8" Width="16" Height="16" Offset="0xF9B8" />
+        <Texture Name="object_in_Tex_00FAB8" OutName="tex_00FAB8" Format="ci8" Width="16" Height="16" Offset="0xFAB8" />
+        <Texture Name="object_in_Tex_00FBB8" OutName="tex_00FBB8" Format="ci8" Width="16" Height="16" Offset="0xFBB8" />
+        <Texture Name="object_in_Tex_00FCB8" OutName="tex_00FCB8" Format="ci8" Width="16" Height="16" Offset="0xFCB8" />
+        <Texture Name="object_in_Tex_00FDB8" OutName="tex_00FDB8" Format="ci8" Width="8" Height="8" Offset="0xFDB8" />
+        <Texture Name="object_in_Tex_00FDF8" OutName="tex_00FDF8" Format="ci8" Width="8" Height="8" Offset="0xFDF8" />
+        <DList Name="object_in_DL_012A78" Offset="0x12A78" />
+        <DList Name="object_in_DL_012DF8" Offset="0x12DF8" />
+        <DList Name="object_in_DL_013440" Offset="0x13440" />
+        <DList Name="object_in_DL_013540" Offset="0x13540" />
+        <DList Name="object_in_DL_013670" Offset="0x13670" />
+        <DList Name="object_in_DL_0137A0" Offset="0x137A0" />
+        <DList Name="object_in_DL_0138D0" Offset="0x138D0" />
+        <DList Name="object_in_DL_013A00" Offset="0x13A00" />
+        <DList Name="object_in_DL_013DE0" Offset="0x13DE0" />
+        <DList Name="object_in_DL_013F10" Offset="0x13F10" />
+        <DList Name="object_in_DL_014040" Offset="0x14040" />
+        <DList Name="object_in_DL_014420" Offset="0x14420" />
+        <DList Name="object_in_DL_0145D8" Offset="0x145D8" />
+        <DList Name="object_in_DL_014710" Offset="0x14710" />
+        <DList Name="object_in_DL_014860" Offset="0x14860" />
+        <DList Name="object_in_DL_0149A8" Offset="0x149A8" />
+        <DList Name="object_in_DL_014AE0" Offset="0x14AE0" />
+        <DList Name="object_in_DL_014C30" Offset="0x14C30" />
+        <Limb Name="object_in_Standardlimb_014D78" Type="Standard" EnumName="OBJECT_IN_LIMB_01" Offset="0x14D78" />
+        <Limb Name="object_in_Standardlimb_014D84" Type="Standard" EnumName="OBJECT_IN_LIMB_02" Offset="0x14D84" />
+        <Limb Name="object_in_Standardlimb_014D90" Type="Standard" EnumName="OBJECT_IN_LIMB_03" Offset="0x14D90" />
+        <Limb Name="object_in_Standardlimb_014D9C" Type="Standard" EnumName="OBJECT_IN_LIMB_04" Offset="0x14D9C" />
+        <Limb Name="object_in_Standardlimb_014DA8" Type="Standard" EnumName="OBJECT_IN_LIMB_05" Offset="0x14DA8" />
+        <Limb Name="object_in_Standardlimb_014DB4" Type="Standard" EnumName="OBJECT_IN_LIMB_06" Offset="0x14DB4" />
+        <Limb Name="object_in_Standardlimb_014DC0" Type="Standard" EnumName="OBJECT_IN_LIMB_07" Offset="0x14DC0" />
+        <Limb Name="object_in_Standardlimb_014DCC" Type="Standard" EnumName="OBJECT_IN_LIMB_08" Offset="0x14DCC" />
+        <Limb Name="object_in_Standardlimb_014DD8" Type="Standard" EnumName="OBJECT_IN_LIMB_09" Offset="0x14DD8" />
+        <Limb Name="object_in_Standardlimb_014DE4" Type="Standard" EnumName="OBJECT_IN_LIMB_0A" Offset="0x14DE4" />
+        <Limb Name="object_in_Standardlimb_014DF0" Type="Standard" EnumName="OBJECT_IN_LIMB_0B" Offset="0x14DF0" />
+        <Limb Name="object_in_Standardlimb_014DFC" Type="Standard" EnumName="OBJECT_IN_LIMB_0C" Offset="0x14DFC" />
+        <Limb Name="object_in_Standardlimb_014E08" Type="Standard" EnumName="OBJECT_IN_LIMB_0D" Offset="0x14E08" />
+        <Limb Name="object_in_Standardlimb_014E14" Type="Standard" EnumName="OBJECT_IN_LIMB_0E" Offset="0x14E14" />
+        <Limb Name="object_in_Standardlimb_014E20" Type="Standard" EnumName="OBJECT_IN_LIMB_0F" Offset="0x14E20" />
+        <Limb Name="object_in_Standardlimb_014E2C" Type="Standard" EnumName="OBJECT_IN_LIMB_10" Offset="0x14E2C" />
+        <Limb Name="object_in_Standardlimb_014E38" Type="Standard" EnumName="OBJECT_IN_LIMB_11" Offset="0x14E38" />
+        <Limb Name="object_in_Standardlimb_014E44" Type="Standard" EnumName="OBJECT_IN_LIMB_12" Offset="0x14E44" />
+        <Limb Name="object_in_Standardlimb_014E50" Type="Standard" EnumName="OBJECT_IN_LIMB_13" Offset="0x14E50" />
+        <Skeleton Name="object_in_Skel_014EA8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_IN_LIMB_NONE" LimbMax="OBJECT_IN_LIMB_MAX" EnumName="ObjectInLimb" Offset="0x14EA8" />
+        <Animation Name="object_in_Anim_014F8C" Offset="0x14F8C" /> <!-- Original name is "in_matsu2" -->
+        <Animation Name="object_in_Anim_015918" Offset="0x15918" /> <!-- Original name is "in_shigoto" -->
+        <Animation Name="object_in_Anim_015E38" Offset="0x15E38" /> <!-- Original name is "ingo_anim_fastrun" -->
+        <Animation Name="object_in_Anim_016484" Offset="0x16484" /> <!-- Original name is "ingo_anim_fastrun_muti" -->
+        <Animation Name="object_in_Anim_016A60" Offset="0x16A60" /> <!-- Original name is "ingo_anim_slowrun" -->
+        <Animation Name="object_in_Anim_0170DC" Offset="0x170DC" /> <!-- Original name is "ingo_anim_slowrun_muti" -->
+        <Animation Name="object_in_Anim_0177AC" Offset="0x177AC" /> <!-- Original name is "ingo_anim_stop" -->
+        <Animation Name="object_in_Anim_018240" Offset="0x18240" /> <!-- Original name is "ingo_anim_stop_muti" -->
+        <Animation Name="object_in_Anim_0187C8" Offset="0x187C8" /> <!-- Original name is "ingo_anim_wait1" -->
+        <Animation Name="object_in_Anim_0198A8" Offset="0x198A8" /> <!-- Original name is "ingo_anim_wait2" -->
+        <Animation Name="object_in_Anim_019EB4" Offset="0x19EB4" /> <!-- Original name is "ingo_jump" -->
+        <Animation Name="object_in_Anim_01A140" Offset="0x1A140" /> <!-- Original name is "ingo_run1" -->
+        <Animation Name="object_in_Anim_01B3C4" Offset="0x1B3C4" /> <!-- Original name is "ingo_tyakuti" -->
+        <Animation Name="object_in_Anim_01B904" Offset="0x1B904" /> <!-- Original name is "ingo_wait1" -->
+        <Animation Name="object_in_Anim_01C0B0" Offset="0x1C0B0" /> <!-- Original name is "ingo_walk_loop" -->
+        <DList Name="object_in_DL_01C520" Offset="0x1C520" />
+        <DList Name="object_in_DL_01C528" Offset="0x1C528" />
+        <Texture Name="object_in_TLUT_01C8F0" OutName="tlut_01C8F0" Format="rgba16" Width="16" Height="16" Offset="0x1C8F0" />
+        <Texture Name="object_in_Tex_01CAF0" OutName="tex_01CAF0" Format="ci8" Width="8" Height="8" Offset="0x1CAF0" />
+        <Texture Name="object_in_Tex_01CB30" OutName="tex_01CB30" Format="ci8" Width="16" Height="8" Offset="0x1CB30" />
+        <Texture Name="object_in_Tex_01CBB0" OutName="tex_01CBB0" Format="ci8" Width="16" Height="16" Offset="0x1CBB0" />
+        <Texture Name="object_in_Tex_01CCB0" OutName="tex_01CCB0" Format="rgba16" Width="16" Height="16" Offset="0x1CCB0" />
+        <Texture Name="object_in_Tex_01CEB0" OutName="tex_01CEB0" Format="ci8" Width="8" Height="32" Offset="0x1CEB0" />
+    </File>
+</Root>

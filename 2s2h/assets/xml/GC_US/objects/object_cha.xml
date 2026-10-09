@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_cha" Segment="6">
+        <DList Name="object_cha_DL_000710" Offset="0x710" /> <!-- Original name is "cha_ki_model" -->
+        <DList Name="object_cha_DL_000958" Offset="0x958" /> <!-- Original name is "cha_kane_model" -->
+        <Texture Name="object_cha_TLUT_000B08" OutName="tlut_000B08" Format="rgba16" Width="16" Height="16" Offset="0xB08" />
+        <Texture Name="object_cha_Tex_000D08" OutName="tex_000D08" Format="ci8" Width="32" Height="32" Offset="0xD08" />
+        <Texture Name="object_cha_Tex_001108" OutName="tex_001108" Format="ci8" Width="32" Height="32" Offset="0x1108" />
+        <Texture Name="object_cha_Tex_001508" OutName="tex_001508" Format="ci8" Width="16" Height="16" Offset="0x1508" />
+        <Texture Name="object_cha_Tex_001608" OutName="tex_001608" Format="ci8" Width="32" Height="32" Offset="0x1608" />
+        <Texture Name="object_cha_Tex_001A08" OutName="tex_001A08" Format="rgba16" Width="16" Height="32" Offset="0x1A08" />
+    </File>
+</Root>

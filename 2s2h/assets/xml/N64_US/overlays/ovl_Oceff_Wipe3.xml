@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe3" BaseAddress="0x809879E0" RangeStart="0x430" RangeEnd="0x1678">
+        <Texture Name="sSariaSongEffectTex" OutName="saria_song_effect" Format="i8" Width="64" Height="64" Offset="0x430"/>
+        <Array Name="sSariaSongFrustumVtx" Count="22" Offset="0x1430">
+            <Vtx/>
+        </Array>
+        <DList Name="sSariaSongFrustrumMaterialDL" Offset="0x1590"/>
+        <DList Name="sSariaSongFrustumModelDL" Offset="0x1618"/> <!-- Original name might be "efc_ocarina_42_modelT" -->
+    </File>
+</Root>

@@ -1,0 +1,55 @@
+﻿<Root>
+    <!-- Skeleton & Animations for Keaton -->
+    <File Name="object_kitan" Segment="6">
+        <Animation Name="gKeatonChuckleAnim" Offset="0xCE8" /> <!-- Original name is "kt_hohoho" -->
+        <Animation Name="gKeatonCelebrateAnim" Offset="0x190C" /> <!-- Original name is "kt_laugh" -->
+        <Animation Name="gKeatonIdleAnim" Offset="0x2770" /> <!-- Original name is "kt_wait" -->
+        <DList Name="object_kitan_DL_004C40" Offset="0x4C40" />
+        <DList Name="object_kitan_DL_004DF0" Offset="0x4DF0" />
+        <DList Name="object_kitan_DL_005160" Offset="0x5160" />
+        <DList Name="object_kitan_DL_005628" Offset="0x5628" />
+        <DList Name="object_kitan_DL_005928" Offset="0x5928" />
+        <DList Name="object_kitan_DL_005B48" Offset="0x5B48" />
+        <DList Name="object_kitan_DL_005E48" Offset="0x5E48" />
+        <DList Name="object_kitan_DL_006068" Offset="0x6068" />
+        <DList Name="object_kitan_DL_0063E8" Offset="0x63E8" />
+        <DList Name="object_kitan_DL_0065E0" Offset="0x65E0" />
+        <DList Name="object_kitan_DL_0066A8" Offset="0x66A8" />
+        <DList Name="object_kitan_DL_006810" Offset="0x6810" />
+        <DList Name="object_kitan_DL_006990" Offset="0x6990" />
+        <DList Name="object_kitan_DL_006A58" Offset="0x6A58" />
+        <DList Name="object_kitan_DL_006BC0" Offset="0x6BC0" />
+        <DList Name="object_kitan_DL_006D40" Offset="0x6D40" />
+        <DList Name="object_kitan_DL_006E08" Offset="0x6E08" />
+        <DList Name="object_kitan_DL_006F70" Offset="0x6F70" />
+        <DList Name="object_kitan_DL_0070F0" Offset="0x70F0" />
+        <DList Name="object_kitan_DL_007470" Offset="0x7470" />
+        <Texture Name="object_kitan_TLUT_007668" OutName="tlut_007668" Format="rgba16" Width="16" Height="16" Offset="0x7668" />
+        <Texture Name="object_kitan_Tex_007868" OutName="tex_007868" Format="ci8" Width="32" Height="16" Offset="0x7868" />
+        <Texture Name="object_kitan_Tex_007A68" OutName="tex_007A68" Format="ci8" Width="16" Height="16" Offset="0x7A68" />
+        <Texture Name="object_kitan_Tex_007B68" OutName="tex_007B68" Format="ci8" Width="16" Height="16" Offset="0x7B68" />
+        <Texture Name="object_kitan_Tex_007C68" OutName="tex_007C68" Format="ci8" Width="16" Height="16" Offset="0x7C68" />
+        <Texture Name="object_kitan_Tex_007D68" OutName="tex_007D68" Format="ci8" Width="16" Height="16" Offset="0x7D68" />
+        <Limb Name="gKeatonLowerBodyLimb" Type="Standard" EnumName="KEATON_LIMB_LOWER_BODY" Offset="0x7E68" />
+        <Limb Name="gKeatonUpperBodyLimb" Type="Standard" EnumName="KEATON_LIMB_UPPER_BODY" Offset="0x7E74" />
+        <Limb Name="gKeatonHeadLimb" Type="Standard" EnumName="KEATON_LIMB_HEAD" Offset="0x7E80" />
+        <Limb Name="gKeatonLeftShoulderLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_SHOULDER" Offset="0x7E8C" />
+        <Limb Name="gKeatonLeftArmLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_ARM" Offset="0x7E98" />
+        <Limb Name="gKeatonRightShoulderLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_SHOULDER" Offset="0x7EA4" />
+        <Limb Name="gKeatonRightArmLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_ARM" Offset="0x7EB0" />
+        <Limb Name="gKeatonRightLegLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_LEG" Offset="0x7EBC" />
+        <Limb Name="gKeatonRightFootLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_FOOT" Offset="0x7EC8" />
+        <Limb Name="gKeatonLeftLegLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_LEG" Offset="0x7ED4" />
+        <Limb Name="gKeatonLeftFootLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_FOOT" Offset="0x7EE0" />
+        <Limb Name="gKeatonRightTailBaseLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_TAIL_BASE" Offset="0x7EEC" />
+        <Limb Name="gKeatonRightTailMidLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_TAIL_MID" Offset="0x7EF8" />
+        <Limb Name="gKeatonRightTailEndLimb" Type="Standard" EnumName="KEATON_LIMB_RIGHT_TAIL_END" Offset="0x7F04" />
+        <Limb Name="gKeatonMiddleTailBaseLimb" Type="Standard" EnumName="KEATON_LIMB_MIDDLE_TAIL_BASE" Offset="0x7F10" />
+        <Limb Name="gKeatonMiddleTailMidLimb" Type="Standard" EnumName="KEATON_LIMB_MIDDLE_TAIL_MID" Offset="0x7F1C" />
+        <Limb Name="gKeatonMiddleTailEndLimb" Type="Standard" EnumName="KEATON_LIMB_MIDDLE_TAIL_END" Offset="0x7F28" />
+        <Limb Name="gKeatonLeftTailBaseLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_TAIL_BASE" Offset="0x7F34" />
+        <Limb Name="gKeatonLeftTailMidLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_TAIL_MID" Offset="0x7F40" />
+        <Limb Name="gKeatonLeftTailEndLimb" Type="Standard" EnumName="KEATON_LIMB_LEFT_TAIL_END" Offset="0x7F4C" />
+        <Skeleton Name="gKeatonSkel" Type="Flex" LimbType="Standard" LimbNone="KEATON_LIMB_NONE" LimbMax="KEATON_LIMB_MAX" EnumName="KeatonLimb" Offset="0x7FA8" />
+    </File>
+</Root>

@@ -1,0 +1,26 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Rupee -->
+    <File Name="object_gi_rupy" Segment="6">
+
+        <!-- Rupee Color Display Lists -->
+        <DList Name="gGiGreenRupeeInnerColorDL" Offset="0x4A0" />
+        <DList Name="gGiBlueRupeeInnerColorDL" Offset="0x4C0" />
+        <DList Name="gGiRedRupeeInnerColorDL" Offset="0x4E0" />
+        <DList Name="gGiPurpleRupeeInnerColorDL" Offset="0x500" />
+        <DList Name="gGiSilverRupeeInnerColorDL" Offset="0x520" />
+        <DList Name="gGiGoldRupeeInnerColorDL" Offset="0x540" />
+        <DList Name="gGiGreenRupeeOuterColorDL" Offset="0x560" />
+        <DList Name="gGiBlueRupeeOuterColorDL" Offset="0x580" />
+        <DList Name="gGiRedRupeeOuterColorDL" Offset="0x5A0" />
+        <DList Name="gGiPurpleRupeeOuterColorDL" Offset="0x5C0" />
+        <DList Name="gGiSilverRupeeOuterColorDL" Offset="0x5E0" />
+        <DList Name="gGiGoldRupeeOuterColorDL" Offset="0x600" />
+
+        <!-- Rupee Common Display Lists -->
+        <DList Name="gGiRupeeInnerDL" Offset="0x620" />
+        <DList Name="gGiRupeeOuterDL" Offset="0x730" />
+    </File>
+</Root>

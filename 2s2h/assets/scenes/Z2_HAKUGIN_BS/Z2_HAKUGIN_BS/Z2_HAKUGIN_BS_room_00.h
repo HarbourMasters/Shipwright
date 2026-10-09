@@ -1,0 +1,42 @@
+#ifndef Z2_HAKUGIN_BS_Z2_HAKUGIN_BS_ROOM_00_H
+#define Z2_HAKUGIN_BS_Z2_HAKUGIN_BS_ROOM_00_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_HAKUGIN_BS_room_00DL_000600 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_000600"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_000600[] = dZ2_HAKUGIN_BS_room_00DL_000600;
+
+#define dZ2_HAKUGIN_BS_room_00DL_004850 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_004850"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_004850[] = dZ2_HAKUGIN_BS_room_00DL_004850;
+
+#define dZ2_HAKUGIN_BS_room_00DL_006230 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_006230"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_006230[] = dZ2_HAKUGIN_BS_room_00DL_006230;
+
+#define dZ2_HAKUGIN_BS_room_00DL_002D28 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_002D28"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_002D28[] = dZ2_HAKUGIN_BS_room_00DL_002D28;
+
+#define dZ2_HAKUGIN_BS_room_00DL_001240 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_001240"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_001240[] = dZ2_HAKUGIN_BS_room_00DL_001240;
+
+#define dZ2_HAKUGIN_BS_room_00DL_003D50 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_003D50"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_003D50[] = dZ2_HAKUGIN_BS_room_00DL_003D50;
+
+#define dZ2_HAKUGIN_BS_room_00DL_002130 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_002130"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_002130[] = dZ2_HAKUGIN_BS_room_00DL_002130;
+
+#define dZ2_HAKUGIN_BS_room_00DL_004EE8 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_004EE8"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_004EE8[] = dZ2_HAKUGIN_BS_room_00DL_004EE8;
+
+#define dZ2_HAKUGIN_BS_room_00DL_003578 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_003578"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_003578[] = dZ2_HAKUGIN_BS_room_00DL_003578;
+
+#define dZ2_HAKUGIN_BS_room_00DL_005F00 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_005F00"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_005F00[] = dZ2_HAKUGIN_BS_room_00DL_005F00;
+
+#define dZ2_HAKUGIN_BS_room_00DL_0061E0 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_0061E0"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_0061E0[] = dZ2_HAKUGIN_BS_room_00DL_0061E0;
+
+#define dZ2_HAKUGIN_BS_room_00DL_006238 "__OTR__scenes/nonmq/Z2_HAKUGIN_BS_scene/Z2_HAKUGIN_BS_room_00DL_006238"
+static const ALIGN_ASSET(2) char Z2_HAKUGIN_BS_room_00DL_006238[] = dZ2_HAKUGIN_BS_room_00DL_006238;
+
+#endif // Z2_HAKUGIN_BS_Z2_HAKUGIN_BS_ROOM_00_H

@@ -1,0 +1,53 @@
+﻿<Root>
+    <File Name="object_tsn" Segment="6">
+        <Animation Name="object_tsn_Anim_000964" Offset="0x964" /> <!-- Original name is "tsn_talk02" -->
+        <Animation Name="object_tsn_Anim_001198" Offset="0x1198" /> <!-- Original name is "tsn_talk03" -->
+        <DList Name="object_tsn_DL_0043A0" Offset="0x43A0" />
+        <DList Name="object_tsn_DL_0044F0" Offset="0x44F0" />
+        <DList Name="object_tsn_DL_0047C0" Offset="0x47C0" />
+        <DList Name="object_tsn_DL_004B48" Offset="0x4B48" />
+        <DList Name="object_tsn_DL_004F00" Offset="0x4F00" />
+        <DList Name="object_tsn_DL_0050B8" Offset="0x50B8" />
+        <DList Name="object_tsn_DL_005270" Offset="0x5270" />
+        <DList Name="object_tsn_DL_0053B8" Offset="0x53B8" />
+        <DList Name="object_tsn_DL_0055E8" Offset="0x55E8" />
+        <DList Name="object_tsn_DL_005818" Offset="0x5818" />
+        <DList Name="object_tsn_DL_005960" Offset="0x5960" />
+        <DList Name="object_tsn_DL_005B00" Offset="0x5B00" />
+        <DList Name="object_tsn_DL_005CF8" Offset="0x5CF8" />
+        <DList Name="object_tsn_DL_005DE8" Offset="0x5DE8" />
+        <DList Name="object_tsn_DL_005F88" Offset="0x5F88" />
+        <DList Name="object_tsn_DL_006108" Offset="0x6108" />
+        <Texture Name="object_tsn_TLUT_0061F8" OutName="tlut_0061F8" Format="rgba16" Width="16" Height="16" Offset="0x61F8" />
+        <Texture Name="object_tsn_Tex_0063F8" OutName="tex_0063F8" Format="ci8" Width="32" Height="64" Offset="0x63F8" />
+        <Texture Name="object_tsn_Tex_006BF8" OutName="tex_006BF8" Format="ci8" Width="8" Height="8" Offset="0x6BF8" />
+        <Texture Name="object_tsn_Tex_006C38" OutName="tex_006C38" Format="ci8" Width="8" Height="8" Offset="0x6C38" />
+        <Texture Name="object_tsn_Tex_006C78" OutName="tex_006C78" Format="ci8" Width="8" Height="8" Offset="0x6C78" />
+        <Texture Name="object_tsn_Tex_006CB8" OutName="tex_006CB8" Format="ci8" Width="32" Height="32" Offset="0x6CB8" />
+        <Texture Name="object_tsn_Tex_0070B8" OutName="tex_0070B8" Format="rgba16" Width="16" Height="16" Offset="0x70B8" />
+        <Texture Name="object_tsn_Tex_0072B8" OutName="tex_0072B8" Format="ci8" Width="16" Height="16" Offset="0x72B8" />
+        <Texture Name="object_tsn_Tex_0073B8" OutName="tex_0073B8" Format="ci8" Width="32" Height="32" Offset="0x73B8" />
+        <Texture Name="object_tsn_Tex_0077B8" OutName="tex_0077B8" Format="rgba16" Width="16" Height="32" Offset="0x77B8" />
+        <Texture Name="object_tsn_Tex_007BB8" OutName="tex_007BB8" Format="rgba16" Width="16" Height="16" Offset="0x7BB8" />
+        <Texture Name="object_tsn_Tex_007DB8" OutName="tex_007DB8" Format="rgba16" Width="32" Height="32" Offset="0x7DB8" />
+        <Texture Name="object_tsn_Tex_0085B8" OutName="tex_0085B8" Format="ci8" Width="32" Height="32" Offset="0x85B8" />
+        <Limb Name="object_tsn_Standardlimb_0089B8" Type="Standard" EnumName="OBJECT_TSN_LIMB_01" Offset="0x89B8" />
+        <Limb Name="object_tsn_Standardlimb_0089C4" Type="Standard" EnumName="OBJECT_TSN_LIMB_02" Offset="0x89C4" />
+        <Limb Name="object_tsn_Standardlimb_0089D0" Type="Standard" EnumName="OBJECT_TSN_LIMB_03" Offset="0x89D0" />
+        <Limb Name="object_tsn_Standardlimb_0089DC" Type="Standard" EnumName="OBJECT_TSN_LIMB_04" Offset="0x89DC" />
+        <Limb Name="object_tsn_Standardlimb_0089E8" Type="Standard" EnumName="OBJECT_TSN_LIMB_05" Offset="0x89E8" />
+        <Limb Name="object_tsn_Standardlimb_0089F4" Type="Standard" EnumName="OBJECT_TSN_LIMB_06" Offset="0x89F4" />
+        <Limb Name="object_tsn_Standardlimb_008A00" Type="Standard" EnumName="OBJECT_TSN_LIMB_07" Offset="0x8A00" />
+        <Limb Name="object_tsn_Standardlimb_008A0C" Type="Standard" EnumName="OBJECT_TSN_LIMB_08" Offset="0x8A0C" />
+        <Limb Name="object_tsn_Standardlimb_008A18" Type="Standard" EnumName="OBJECT_TSN_LIMB_09" Offset="0x8A18" />
+        <Limb Name="object_tsn_Standardlimb_008A24" Type="Standard" EnumName="OBJECT_TSN_LIMB_0A" Offset="0x8A24" />
+        <Limb Name="object_tsn_Standardlimb_008A30" Type="Standard" EnumName="OBJECT_TSN_LIMB_0B" Offset="0x8A30" />
+        <Limb Name="object_tsn_Standardlimb_008A3C" Type="Standard" EnumName="OBJECT_TSN_LIMB_0C" Offset="0x8A3C" />
+        <Limb Name="object_tsn_Standardlimb_008A48" Type="Standard" EnumName="OBJECT_TSN_LIMB_0D" Offset="0x8A48" />
+        <Limb Name="object_tsn_Standardlimb_008A54" Type="Standard" EnumName="OBJECT_TSN_LIMB_0E" Offset="0x8A54" />
+        <Limb Name="object_tsn_Standardlimb_008A60" Type="Standard" EnumName="OBJECT_TSN_LIMB_0F" Offset="0x8A60" />
+        <Limb Name="object_tsn_Standardlimb_008A6C" Type="Standard" EnumName="OBJECT_TSN_LIMB_10" Offset="0x8A6C" />
+        <Skeleton Name="object_tsn_Skel_008AB8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_TSN_LIMB_NONE" LimbMax="OBJECT_TSN_LIMB_MAX" EnumName="ObjectTsnLimb" Offset="0x8AB8" />
+        <Animation Name="object_tsn_Anim_0092FC" Offset="0x92FC" /> <!-- Original name is "tsn_waitnew" -->
+    </File>
+</Root>

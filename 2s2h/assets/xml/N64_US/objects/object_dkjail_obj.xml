@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Assets for the ivy jail -->
+    <File Name="object_dkjail_obj" Segment="6">
+        <DList Name="gDkjailIvyDL" Offset="0x80" /> <!-- Original name is "m2_Mn_TUTA_modelT" -->
+        <DList Name="gDkjailEmptyDL" Offset="0x150" />
+        <Texture Name="gDkjailIvyTex" OutName="dkjail_ivy" Format="rgba16" Width="32" Height="32" Offset="0x158" />
+        <Texture Name="gDkjailMaskTex" OutName="dkjail_mask" Format="ia8" Width="32" Height="64" Offset="0x958" />
+        <Collision Name="gDkjailCol" Offset="0x11A8" /> <!-- Original name is "m2_Mn_TUTA_bgdatainfo" -->
+    </File>
+</Root>

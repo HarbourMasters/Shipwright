@@ -1,0 +1,84 @@
+﻿<Root>
+    <!-- Assets for Takkuri -->
+    <File Name="object_thiefbird" Segment="6">
+        <!-- Takkuri Animations -->
+        <Animation Name="gTakkuriDeathAnim" Offset="0x88" /> <!-- Original name is "hnt_damage" -->
+        <Animation Name="gTakkuriFlyWithItemAnim" Offset="0x278" /> <!-- Original name is "hnt_escape" -->
+        <Animation Name="gTakkuriFlyAnim" Offset="0x604" /> <!-- Original name is "hnt_fly" -->
+
+        <!-- Takkuri Limb DisplayLists -->
+        <DList Name="gTakkuriBodyDL" Offset="0x16D0" />
+        <DList Name="gTakkuriLegsDL" Offset="0x1800" />
+        <DList Name="gTakkuriFeetDL" Offset="0x18A8" />
+        <DList Name="gTakkuriStolenItemDL" Offset="0x19D0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gTakkuriHeadDL" Offset="0x1A18" />
+        <DList Name="gTakkuriEyesDL" Offset="0x1CF0" />
+        <DList Name="gTakkuriLowerBeakDL" Offset="0x1DA8" />
+        <DList Name="gTakkuriLeftEarDL" Offset="0x1FE0" />
+        <DList Name="gTakkuriRightEarDL" Offset="0x2070" />
+        <DList Name="gTakkuriNeckDL" Offset="0x2100" />
+        <DList Name="gTakkuriRightWingTipDL" Offset="0x21D0" />
+        <DList Name="gTakkuriRightWingMiddleDL" Offset="0x22C0" />
+        <DList Name="gTakkuriRightWingBaseDL" Offset="0x23B0" />
+        <DList Name="gTakkuriLeftWingTipDL" Offset="0x24A0" />
+        <DList Name="gTakkuriLeftWingMiddleDL" Offset="0x2590" />
+        <DList Name="gTakkuriLeftWingBaseDL" Offset="0x2680" />
+
+        <!-- Takkuri Textures -->
+        <Texture Name="gTakkuriFeathersTex" OutName="takkuri_feathers" Format="rgba16" Width="8" Height="16" Offset="0x2770" />
+        <Texture Name="gTakkuriWingTipTex" OutName="takkuri_wing_tip" Format="rgba16" Width="16" Height="16" Offset="0x2870" />
+        <Texture Name="gTakkuriEyeTex" OutName="takkuri_eye" Format="rgba16" Width="16" Height="16" Offset="0x2A70" />
+        <Texture Name="gTakkuriHeadAndNeckTex" OutName="takkuri_head_and_neck" Format="i8" Width="16" Height="16" Offset="0x2C70" />
+        <Texture Name="gTakkuriBeakAndLegsTex" OutName="takkuri_beak_and_legs" Format="rgba16" Width="8" Height="8" Offset="0x2D70" />
+        <Texture Name="gTakkuriInnerBeakTex" OutName="takkuri_inner_beak" Format="rgba16" Width="4" Height="8" Offset="0x2DF0" />
+        <Texture Name="gTakkuriEarTex" OutName="takkuri_ear" Format="rgba16" Width="16" Height="16" Offset="0x2E30" />
+
+        <!-- DisplayLists and Texture for Takkuri's feather effect -->
+        <DList Name="gTakkuriFeatherMaterialDL" Offset="0x3060" />
+        <DList Name="gTakkuriFeatherModelDL" Offset="0x30D8" />
+        <Texture Name="gTakkuriFeatherTex" OutName="takkuri_feather" Format="rgba16" Width="8" Height="16" Offset="0x30F0" />
+        
+        <!-- DisplayLists for stolen items -->
+        <DList Name="gTakkuriStolenBottleDL" Offset="0x33B0" />
+        <DList Name="gTakkuriStolenGreatFairysSwordDL" Offset="0x3D58" />
+        <DList Name="gTakkuriStolenKokiriSwordDL" Offset="0x4348" />
+        <DList Name="gTakkuriStolenRazorSwordDL" Offset="0x4B88" />
+        <DList Name="gTakkuriStolenGildedSwordDL" Offset="0x55E0" />
+
+        <!-- Textures for stolen items -->
+        <Texture Name="gTakkuriStolenGreatFairysSwordCenterAndHiltTex" OutName="takkuri_stolen_great_fairys_sword_center_and_hilt" Format="rgba16" Width="32" Height="8" Offset="0x59A0" />
+        <Texture Name="gTakkuriStolenKokiriSwordPommelTex" OutName="takkuri_stolen_kokiri_sword_pommel" Format="rgba16" Width="8" Height="8" Offset="0x5BA0" />
+        <Texture Name="gTakkuriStolenKokiriAndRazorSwordScabbardTex" OutName="takkuri_stolen_kokiri_and_razor_sword_scabbard" Format="rgba16" Width="8" Height="8" Offset="0x5C20" />
+        <Texture Name="gTakkuriStolenKokiriSwordGuardTex" OutName="takkuri_stolen_kokiri_sword_guard" Format="rgba16" Width="8" Height="8" Offset="0x5CA0" />
+        <Texture Name="gTakkuriStolenKokiriSwordGripTex" OutName="takkuri_stolen_kokiri_sword_grip" Format="i8" Width="8" Height="8" Offset="0x5D20" />
+        <Texture Name="gTakkuriStolenRazorSwordHiltAndScabbardTex" OutName="takkuri_stolen_razor_sword_hilt_and_scabbard" Format="rgba16" Width="8" Height="16" Offset="0x5D60" />
+        <Texture Name="gTakkuriStolenGildedSwordScabbardTex" OutName="takkuri_stolen_gilded_sword_scabbard" Format="rgba16" Width="8" Height="16" Offset="0x5E60" />
+        <Texture Name="gTakkuriStolenGildedSwordGripAndScabbardTopTex" OutName="takkuri_stolen_gilded_sword_grip_and_scabbard_top" Format="rgba16" Width="8" Height="8" Offset="0x5F60" />
+        <Texture Name="gTakkuriStolenBottleAndGildedSwordGemTex" OutName="takkuri_stolen_bottle_and_gilded_sword_gem" Format="i8" Width="8" Height="8" Offset="0x5FE0" />
+        <Texture Name="gTakkuriStolenGreatFairysSwordBladeGildedSwordPommelGuardTex" OutName="takkuri_stolen_great_fairys_sword_blade_gilded_sword_pommel_guard" Format="i4" Width="16" Height="16" Offset="0x6020" />
+
+        <!-- Takkuri Limbs -->
+        <Limb Name="gTakkuriBodyLimb" Type="Standard" EnumName="TAKKURI_LIMB_BODY" Offset="0x60A0" />
+        <Limb Name="gTakkuriLeftWingBaseLimb" Type="Standard" EnumName="TAKKURI_LIMB_LEFT_WING_BASE" Offset="0x60AC" />
+        <Limb Name="gTakkuriLeftWingMiddleLimb" Type="Standard" EnumName="TAKKURI_LIMB_LEFT_WING_MIDDLE" Offset="0x60B8" />
+        <Limb Name="gTakkuriLeftWingTipLimb" Type="Standard" EnumName="TAKKURI_LIMB_LEFT_WING_TIP" Offset="0x60C4" />
+        <Limb Name="gTakkuriRightWingBaseLimb" Type="Standard" EnumName="TAKKURI_LIMB_RIGHT_WING_BASE" Offset="0x60D0" />
+        <Limb Name="gTakkuriRightWingMiddleLimb" Type="Standard" EnumName="TAKKURI_LIMB_RIGHT_WING_MIDDLE" Offset="0x60DC" />
+        <Limb Name="gTakkuriRightWingTipLimb" Type="Standard" EnumName="TAKKURI_LIMB_RIGHT_WING_TIP" Offset="0x60E8" />
+        <Limb Name="gTakkuriNeckLimb" Type="Standard" EnumName="TAKKURI_LIMB_NECK" Offset="0x60F4" />
+        <Limb Name="gTakkuriHeadLimb" Type="Standard" EnumName="TAKKURI_LIMB_HEAD" Offset="0x6100" />
+        <Limb Name="gTakkuriRightEarLimb" Type="Standard" EnumName="TAKKURI_LIMB_RIGHT_EAR" Offset="0x610C" />
+        <Limb Name="gTakkuriLeftEarLimb" Type="Standard" EnumName="TAKKURI_LIMB_LEFT_EAR" Offset="0x6118" />
+        <Limb Name="gTakkuriLowerBeakLimb" Type="Standard" EnumName="TAKKURI_LIMB_LOWER_BEAK" Offset="0x6124" />
+        <Limb Name="gTakkuriEyesLimb" Type="Standard" EnumName="TAKKURI_LIMB_EYES" Offset="0x6130" />
+        <Limb Name="gTakkuriLegsLimb" Type="Standard" EnumName="TAKKURI_LIMB_LEGS" Offset="0x613C" />
+        <Limb Name="gTakkuriFeetLimb" Type="Standard" EnumName="TAKKURI_LIMB_FEET" Offset="0x6148" />
+        <Limb Name="gTakkuriStolenItemLimb" Type="Standard" EnumName="TAKKURI_LIMB_STOLEN_ITEM" Offset="0x6154" />
+
+        <!-- Takkuri Skeleton -->
+        <Skeleton Name="gTakkuriSkel" Type="Flex" LimbType="Standard" LimbNone="TAKKURI_LIMB_NONE" LimbMax="TAKKURI_LIMB_MAX" EnumName="TakkuriLimb" Offset="0x61A0" />
+
+        <!-- Takkuri Animation -->
+        <Animation Name="gTakkuriAttackAnim" Offset="0x63C4" /> <!-- Original name is "hnt_ikaku" ("threat, intimidation") -->
+    </File>
+</Root>

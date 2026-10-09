@@ -1,0 +1,27 @@
+#ifndef KAKUSIANA_KAKUSIANA_ROOM_04_H
+#define KAKUSIANA_KAKUSIANA_ROOM_04_H 1
+
+#include "align_asset_macro.h"
+
+#define dKAKUSIANA_room_04DL_001898 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_001898"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_001898[] = dKAKUSIANA_room_04DL_001898;
+
+#define dKAKUSIANA_room_04DL_0014F8 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_0014F8"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_0014F8[] = dKAKUSIANA_room_04DL_0014F8;
+
+#define dKAKUSIANA_room_04DL_001220 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_001220"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_001220[] = dKAKUSIANA_room_04DL_001220;
+
+#define dKAKUSIANA_room_04DL_001680 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_001680"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_001680[] = dKAKUSIANA_room_04DL_001680;
+
+#define dKAKUSIANA_room_04DL_000AC0 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_000AC0"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_000AC0[] = dKAKUSIANA_room_04DL_000AC0;
+
+#define dKAKUSIANA_room_04DL_001598 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_001598"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_001598[] = dKAKUSIANA_room_04DL_001598;
+
+#define dKAKUSIANA_room_04DL_001980 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_04DL_001980"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_04DL_001980[] = dKAKUSIANA_room_04DL_001980;
+
+#endif // KAKUSIANA_KAKUSIANA_ROOM_04_H

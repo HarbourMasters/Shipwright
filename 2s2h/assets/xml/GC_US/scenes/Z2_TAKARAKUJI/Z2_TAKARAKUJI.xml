@@ -1,0 +1,10 @@
+<Root>
+    <File Name="Z2_TAKARAKUJI" Segment="2" Game="MM">
+        <Scene Name="Z2_TAKARAKUJI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_TAKARAKUJI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_TAKARAKUJI_room_00" Offset="0x0"/>
+        <DList Name="Z2_TAKARAKUJI_room_00DL_002E00" Offset="0x2E00"/>
+        <DList Name="Z2_TAKARAKUJI_room_00DL_002E38" Offset="0x2E38"/>
+    </File>
+</Root>

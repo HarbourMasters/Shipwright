@@ -1,0 +1,35 @@
+<Root>
+    <File Name="Z2_KINDAN2" Segment="2" Game="MM">
+        <Scene Name="Z2_KINDAN2" Offset="0x0"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_00" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_00DL_004288" Offset="0x4288"/>
+        <DList Name="Z2_KINDAN2_room_00DL_006A28" Offset="0x6A28"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_01" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_01DL_00ADB8" Offset="0xADB8"/>
+        <DList Name="Z2_KINDAN2_room_01DL_00C2D8" Offset="0xC2D8"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_02" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_02DL_007FC8" Offset="0x7FC8"/>
+        <DList Name="Z2_KINDAN2_room_02DL_00A328" Offset="0xA328"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_03" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_03DL_007610" Offset="0x7610"/>
+        <DList Name="Z2_KINDAN2_room_03DL_0093F0" Offset="0x93F0"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_04" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_04DL_003E30" Offset="0x3E30"/>
+        <DList Name="Z2_KINDAN2_room_04DL_004AA8" Offset="0x4AA8"/>
+    </File>
+    <File Name="Z2_KINDAN2_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_KINDAN2_room_05" Offset="0x0"/>
+        <DList Name="Z2_KINDAN2_room_05DL_006B20" Offset="0x6B20"/>
+        <DList Name="Z2_KINDAN2_room_05DL_007DD0" Offset="0x7DD0"/>
+    </File>
+</Root>

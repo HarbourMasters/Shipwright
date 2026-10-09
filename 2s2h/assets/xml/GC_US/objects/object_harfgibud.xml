@@ -1,0 +1,131 @@
+﻿<Root>
+    <!-- Object for the Pamela's father, both human and gibdo form-->
+    <File Name="object_harfgibud" Segment="6">
+
+        <!-- Gibdo Form -->
+        <Animation Name="gPamelasFatherLeanForwardAnim" Offset="0x370" /> <!-- Original name is "hg_garuru" -->
+        <Animation Name="gPamelasFatherReachForwardAnim" Offset="0x1138" /> <!-- Original name is "hg_garuru_loop" -->
+        <Animation Name="gPamelasFatherCurlUpAnim" Offset="0x15D4" /> <!-- Original name is "hg_kurusimu" -->
+        <Animation Name="gPamelasFatherCrouchedPanicAnim" Offset="0x1960" /> <!-- Original name is "hg_kurusimu_loop" -->
+        <Animation Name="gPamelasFatherIdleAnim" Offset="0x260C" /> <!-- Original name is "hg_wait" -->
+
+        <DList Name="gPamelasFatherGibdoPelvisDL" Offset="0x5790" />
+        <DList Name="gPamelasFatherGibdoRightFootDL" Offset="0x5878" />
+        <DList Name="gPamelasFatherGibdoRightLegDL" Offset="0x5978" />
+        <DList Name="gPamelasFatherGibdoRightThighDL" Offset="0x5A60" />
+        <DList Name="gPamelasFatherGibdoLeftFootDL" Offset="0x5B50" />
+        <DList Name="gPamelasFatherGibdoLeftLegDL" Offset="0x5C50" />
+        <DList Name="gPamelasFatherGibdoLeftThighDL" Offset="0x5D38" />
+        <DList Name="gPamelasFatherGibdoEyebrowsDL" Offset="0x5E28" />
+        <DList Name="gPamelasFatherGibdoHeadDL" Offset="0x5ED0" />
+        <DList Name="gPamelasFatherGibdoChestDL" Offset="0x65B0" />
+        <DList Name="gPamelasFatherGibdoRightHandDL" Offset="0x67C8" />
+        <DList Name="gPamelasFatherGibdoRightForearmDL" Offset="0x6988" />
+        <DList Name="gPamelasFatherGibdoRightUpperArmDL" Offset="0x6B80" />
+        <DList Name="gPamelasFatherGibdoLeftHandDL" Offset="0x6C80" />
+        <DList Name="gPamelasFatherGibdoLeftForearmDL" Offset="0x6DB8" />
+        <DList Name="gPamelasFatherGibdoLeftUpperArmDL" Offset="0x6EA0" />
+        <DList Name="gPamelasFatherGibdoAbdomenDL" Offset="0x6F98" />
+
+        <Texture Name="gPamelasFatherGibdoTLUT" OutName="pamelas_father_gibdo__tlut" Format="rgba16" Width="16" Height="16" Offset="0x70A0" />
+        <Texture Name="gPamelasFatherGibdoBandageWrappingsTex" OutName="gibdo_bandage_wrappings" Format="i8" Width="64" Height="32" Offset="0x72A0" />
+        <Texture Name="gPamelasFatherGibdoSkinGradientTex" OutName="gibdo_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x7AA0" />
+        <Texture Name="gPamelasFatherGibdoSideHairTex" OutName="gibdo_side_hair" Format="ci8" Width="8" Height="16" Offset="0x7AE0" />
+        <Texture Name="gPamelasFatherGibdoEarTex" OutName="gibdo_ear" Format="ci8" Width="8" Height="8" Offset="0x7B60" />
+        <Texture Name="gPamelasFatherGibdoLipTex" OutName="gibdo_lip" Format="ci8" Width="8" Height="8" Offset="0x7BA0" />
+        <Texture Name="gPamelasFatherGibdoBloodshotEyeTex" OutName="gibdo_bloodshot_eye" Format="ci8" Width="32" Height="32" Offset="0x7BE0" />
+        <Texture Name="gPamelasFatherGibdoHairTex" OutName="gibdo_hair" Format="ci8" Width="16" Height="16" Offset="0x7FE0" />
+        <Texture Name="gPamelasFatherGibdoEyebrowTex" OutName="gibdo_eyebrow" Format="rgba16" Width="16" Height="16" Offset="0x80E0" />
+        <Texture Name="gPamelasFatherGibdoLabCoatSleeveTex" OutName="gibdo_lab_coat_sleeve" Format="i8" Width="8" Height="8" Offset="0x82E0" />
+        <Texture Name="gPamelasFatherGibdoShirtPieceTex" OutName="gibdo_shirt_piece" Format="rgba16" Width="8" Height="8" Offset="0x8320" />
+        <Texture Name="gPamelasFatherGibdoFingernailTex" OutName="gibdo_fingernail" Format="ci8" Width="16" Height="8" Offset="0x83A0" />
+        <Texture Name="gPamelasFatherGibdoLabCoatCuffTex" OutName="gibdo_lab_coat_cuff" Format="i8" Width="8" Height="8" Offset="0x8420" />
+
+        <Limb Name="gPamelasFatherGibdoRootLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_ROOT" Offset="0x8460" />
+        <Limb Name="gPamelasFatherGibdoAbdomenLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_ABDOMEN" Offset="0x846C" />
+        <Limb Name="gPamelasFatherGibdoChestLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_CHEST" Offset="0x8478" />
+        <Limb Name="gPamelasFatherGibdoLeftUpperArmLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_UPPER_ARM" Offset="0x8484" />
+        <Limb Name="gPamelasFatherGibdoLeftForearmLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_FOREARM" Offset="0x8490" />
+        <Limb Name="gPamelasFatherGibdoLeftHandLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_HAND" Offset="0x849C" />
+        <Limb Name="gPamelasFatherGibdoRightUpperArmLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_UPPER_ARM" Offset="0x84A8" />
+        <Limb Name="gPamelasFatherGibdoRightForearmLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_FOREARM" Offset="0x84B4" />
+        <Limb Name="gPamelasFatherGibdoRightHandLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_HAND" Offset="0x84C0" />
+        <Limb Name="gPamelasFatherGibdoEyebrowsLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_EYEBROWS" Offset="0x84CC" />
+        <Limb Name="gPamelasFatherGibdoHeadLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_HEAD" Offset="0x84D8" />
+        <Limb Name="gPamelasFatherGibdoPelvisLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_PELVIS" Offset="0x84E4" />
+        <Limb Name="gPamelasFatherGibdoLeftThighLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_THIGH" Offset="0x84F0" />
+        <Limb Name="gPamelasFatherGibdoLeftShinLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_SHIN" Offset="0x84FC" />
+        <Limb Name="gPamelasFatherGibdoLeftFootLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_LEFT_FOOT" Offset="0x8508" />
+        <Limb Name="gPamelasFatherGibdoRightThighLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_THIGH" Offset="0x8514" />
+        <Limb Name="gPamelasFatherGibdoRightShinLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_SHIN" Offset="0x8520" />
+        <Limb Name="gPamelasFatherGibdoRightFootLimb" Type="Standard" EnumName="PAMELAS_FATHER_GIBDO_LIMB_RIGHT_FOOT" Offset="0x852C" />
+        <Skeleton Name="gPamelasFatherGibdoSkel" Type="Flex" LimbType="Standard" LimbNone="PAMELAS_FATHER_GIBDO_LIMB_NONE" LimbMax="PAMELAS_FATHER_GIBDO_LIMB_MAX" EnumName="PamelasFatherGibdoLimb" Offset="0x8580" />
+
+        <Animation Name="gPamelasFatherLurchForwardAnim" Offset="0x9D44" /> <!-- Original name is "hg_walk" -->
+        <Animation Name="gPamelasFatherRecoilFromHitAnim" Offset="0xA164" /> <!-- Original name is "hg_yarare" -->
+        <Animation Name="gPamelasFatherPanicAnim" Offset="0xAE1C" /> <!-- Original name is "hg_yurayura" -->
+        <TextureAnimation Name="gPamelasFatherEyeTexAnim" Offset="0xAE50" />
+        <Animation Name="gPamelasFatherArmsFoldedAnim" Offset="0xB644" /> <!-- Original name is "hgo_wait" -->
+
+        <DList Name="gPamelasFatherHumanPelvisDL" Offset="0xE860" />
+        <DList Name="gPamelasFatherHumanRightFootDL" Offset="0xE9E0" />
+        <DList Name="gPamelasFatherHumanRightShinDL" Offset="0xEB28" />
+        <DList Name="gPamelasFatherHumanRightThighDL" Offset="0xEC48" />
+        <DList Name="gPamelasFatherHumanLeftFootDL" Offset="0xEE50" />
+        <DList Name="gPamelasFatherHumanLeftShinDL" Offset="0xEF98" />
+        <DList Name="gPamelasFatherHumanLeftThighDL" Offset="0xF0B8" />
+        <DList Name="gPamelasFatherHumanEyebrowsDL" Offset="0xF248" />
+        <DList Name="gPamelasFatherHumanHeadDL" Offset="0xF2F0" />
+        <DList Name="gPamelasFatherHumanChestDL" Offset="0xF838" />
+        <DList Name="gPamelasFatherHumanRightHandDL" Offset="0xFAA8" />
+        <DList Name="gPamelasFatherHumanRightForearmDL" Offset="0xFC10" />
+        <DList Name="gPamelasFatherHumanRightUpperArmDL" Offset="0xFE08" />
+        <DList Name="gPamelasFatherHumanLeftHandDL" Offset="0xFF10" />
+        <DList Name="gPamelasFatherHumanLeftForearmDL" Offset="0x10078" />
+        <DList Name="gPamelasFatherHumanLeftUpperArmDL" Offset="0x102B8" />
+        <DList Name="gPamelasFatherHumanAbdomenDL" Offset="0x103C0" />
+
+        <Texture Name="gPamelasFatherHumanTLUT" OutName="human_tlut" Format="rgba16" Width="16" Height="16" Offset="0x10578" />
+        <Texture Name="gPamelasFatherHumanSkinGradientTex" OutName="human_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x10778" />
+        <Texture Name="gPamelasFatherHumanHandTex" OutName="human_hand" Format="ci8" Width="16" Height="16" Offset="0x107B8" />
+        <Texture Name="gPamelasFatherHumanSideHairTex" OutName="human_side_hair" Format="ci8" Width="8" Height="16" Offset="0x108B8" />
+        <Texture Name="gPamelasFatherHumanEarTex" OutName="human_ear" Format="ci8" Width="8" Height="8" Offset="0x10938" />
+        <Texture Name="gPamelasFatherHumanBeltTex" OutName="human_belt" Format="ci8" Width="32" Height="16" Offset="0x10978" />
+        <Texture Name="gPamelasFatherHumanLipTex" OutName="human_lip" Format="ci8" Width="8" Height="8" Offset="0x10B78" />
+        <Texture Name="gPamelasFatherHumanShirtTex" OutName="human_shirt" Format="rgba16" Width="8" Height="16" Offset="0x10BB8" />
+        <Texture Name="gPamelasFatherHumanEyebrowTex" OutName="human_eyebrow" Format="rgba16" Width="16" Height="16" Offset="0x10CB8" />
+        <Texture Name="gPamelasFatherHumanLabCoatTex" OutName="human_lab_coat" Format="i8" Width="8" Height="8" Offset="0x10EB8" />
+        <Texture Name="gPamelasFatherHumanSockTex" OutName="human_sock" Format="rgba16" Width="16" Height="16" Offset="0x10EF8" />
+        <Texture Name="gPamelasFatherHumanLabCoatCuffTex" OutName="human_lab_coat_cuff" Format="i8" Width="8" Height="8" Offset="0x110F8" />
+        <Texture Name="gPamelasFatherHumanEyeOpenTex" OutName="human_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x11138" />
+        <Texture Name="gPamelasFatherHumanEyeHalfTex" OutName="human_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x11938" />
+        <Texture Name="gPamelasFatherHumanEyeClosedTex" OutName="human_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x12138" />
+
+        <Limb Name="gPamelasFatherHumanRootLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_ROOT" Offset="0x12938" />
+        <Limb Name="gPamelasFatherHumanAbdomenLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_ABDOMEN" Offset="0x12944" />
+        <Limb Name="gPamelasFatherHumanChestLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_CHEST" Offset="0x12950" />
+        <Limb Name="gPamelasFatherHumanLeftUpperArmLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_UPPER_ARM" Offset="0x1295C" />
+        <Limb Name="gPamelasFatherHumanLeftForearmLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_FOREARM" Offset="0x12968" />
+        <Limb Name="gPamelasFatherHumanLeftHandLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_HAND" Offset="0x12974" />
+        <Limb Name="gPamelasFatherHumanRightUpperArmLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_UPPER_ARM" Offset="0x12980" />
+        <Limb Name="gPamelasFatherHumanRightForearmLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_FOREARM" Offset="0x1298C" />
+        <Limb Name="gPamelasFatherHumanRightHandLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_HAND" Offset="0x12998" />
+        <Limb Name="gPamelasFatherHumanEyebrowsLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_EYEBROWS" Offset="0x129A4" />
+        <Limb Name="gPamelasFatherHumanHeadLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_HEAD" Offset="0x129B0" />
+        <Limb Name="gPamelasFatherHumanPelvisLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_PELVIS" Offset="0x129BC" />
+        <Limb Name="gPamelasFatherHumanLeftThighLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_THIGH" Offset="0x129C8" />
+        <Limb Name="gPamelasFatherHumanLeftLegLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_SHIN" Offset="0x129D4" />
+        <Limb Name="gPamelasFatherHumanLeftFootLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_LEFT_FOOT" Offset="0x129E0" />
+        <Limb Name="gPamelasFatherHumanRightThighLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_THIGH" Offset="0x129EC" />
+        <Limb Name="gPamelasFatherHumanRightLegLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_SHIN" Offset="0x129F8" />
+        <Limb Name="gPamelasFatherHumanRightFootLimb" Type="Standard" EnumName="PAMELAS_FATHER_HUMAN_LIMB_RIGHT_FOOT" Offset="0x12A04" />
+        <Skeleton Name="gPamelasFatherHumanSkel" Type="Flex" LimbType="Standard" LimbNone="PAMELAS_FATHER_HUMAN_LIMB_NONE" LimbMax="PAMELAS_FATHER_HUMAN_LIMB_MAX" EnumName="PamelasFatherHumanLimb" Offset="0x12A58" />
+
+        <Animation Name="gPamelasFatherAstonishedAnim" Offset="0x13684" /> <!-- Original name is "ho_bozen_loop" -->
+        <Animation Name="gPamelasFatherReachDownToLiftAnim" Offset="0x14220" /> <!-- Original name is "ho_siawase" -->
+        <Animation Name="gPamelasFatherTossAnim" Offset="0x14A9C" /> <!-- Original name is "ho_siawase_loop" -->
+        <Animation Name="gPamelasFatherKneelDownAndHugAnim" Offset="0x152EC" /> <!-- Original name is "ho_uketome" -->
+        <Animation Name="gPamelasFatherConsoleAnim" Offset="0x15C70" /> <!-- Original name is "ho_uketome_loop" -->
+        <Animation Name="gPamelasFatherConsoleHeadUpAnim" Offset="0x165F0" /> <!-- Original name is "ho_watasiwa" -->
+    </File>
+</Root>

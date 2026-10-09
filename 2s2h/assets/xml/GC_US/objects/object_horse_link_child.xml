@@ -1,0 +1,101 @@
+﻿<Root>
+    <!-- Epona -->
+    <File Name="object_horse_link_child" Segment="6">
+        <DList Name="object_horse_link_child_DL_000C70" Offset="0xC70" />
+        <DList Name="object_horse_link_child_DL_001028" Offset="0x1028" />
+        <DList Name="object_horse_link_child_DL_0010D8" Offset="0x10D8" />
+        <DList Name="object_horse_link_child_DL_0011E8" Offset="0x11E8" />
+        <DList Name="object_horse_link_child_DL_001298" Offset="0x1298" />
+        <DList Name="object_horse_link_child_DL_0013A8" Offset="0x13A8" />
+        <DList Name="object_horse_link_child_DL_0014B8" Offset="0x14B8" />
+        <DList Name="object_horse_link_child_DL_001568" Offset="0x1568" />
+        <DList Name="object_horse_link_child_DL_001678" Offset="0x1678" />
+
+        <Texture Name="gEponaTLUT" OutName="epona_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1728" />
+
+        <Texture Name="gEponaEyeHalfTex" OutName="epona_eye_half" Format="ci8" Width="32" Height="16" Offset="0x1928" TlutOffset="0x1728" />
+        <Texture Name="gEponaEyeClosedTex" OutName="epona_eye_closed" Format="ci8" Width="32" Height="16" Offset="0x1B28" TlutOffset="0x1728" />
+        <Texture Name="gEponaEyeOpenTex" OutName="epona_eye_open" Format="ci8" Width="32" Height="16" Offset="0x1D28" TlutOffset="0x1728" />
+
+        <Texture Name="object_horse_link_child_Tex_001F28" OutName="tex_001F28" Format="rgba16" Width="4" Height="8" Offset="0x1F28" />
+        <Texture Name="object_horse_link_child_Tex_001F68" OutName="tex_001F68" Format="rgba16" Width="16" Height="16" Offset="0x1F68" />
+        <Texture Name="object_horse_link_child_Tex_002168" OutName="tex_002168" Format="rgba16" Width="16" Height="16" Offset="0x2168" />
+        <Texture Name="object_horse_link_child_Tex_002368" OutName="tex_002368" Format="rgba16" Width="16" Height="16" Offset="0x2368" />
+        <Texture Name="object_horse_link_child_Tex_002568" OutName="tex_002568" Format="rgba16" Width="4" Height="4" Offset="0x2568" />
+        <Texture Name="object_horse_link_child_Tex_002588" OutName="tex_002588" Format="rgba16" Width="8" Height="32" Offset="0x2588" />
+        <Texture Name="object_horse_link_child_Tex_002788" OutName="tex_002788" Format="rgba16" Width="16" Height="16" Offset="0x2788" />
+
+        <Animation Name="gEponaGallopAnim" Offset="0x2F98" /> <!-- Original name is "hlc_anim_fastrun_30" -->
+        <Animation Name="object_horse_link_child_Anim_0035B0" Offset="0x35B0" /> <!-- Original name is "hlc_anim_jump100" -->
+        <Animation Name="object_horse_link_child_Anim_003D38" Offset="0x3D38" /> <!-- Original name is "hlc_anim_jump200" -->
+        <Animation Name="gEponaTrotAnim" Offset="0x43AC" /> <!-- Original name is "hlc_anim_slowrun_30" -->
+        <Animation Name="object_horse_link_child_Anim_004DE8" Offset="0x4DE8" /> <!-- Original name is "hlc_anim_stand" -->
+        <Animation Name="object_horse_link_child_Anim_005F64" Offset="0x5F64" /> <!-- Original name is "hlc_anim_stop" -->
+        <Animation Name="gEponaIdleAnim" Offset="0x6D44" /> <!-- Original name is "hlc_anim_wait" -->
+        <Animation Name="gEponaWhinnyAnim" Offset="0x7468" /> <!-- Original name is "hlc_anim_wait02" -->
+        <Animation Name="gEponaWalkAnim" Offset="0x7D50" /> <!-- Original name is "hlc_anim_walk_30" -->
+
+        <!-- <Blob Name="object_horse_link_child_Blob_007D60" Size="0x2388" Offset="0x7D60" /> -->
+
+        <!-- z64Utils will not render because of skin type skeleton -->
+        <Limb Name="object_horse_link_child_Skinlimb_00A0E8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_01" Offset="0xA0E8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A0F8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_02" Offset="0xA0F8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A108" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_03" Offset="0xA108" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A118" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_04" Offset="0xA118" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A128" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_05" Offset="0xA128" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A138" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_06" Offset="0xA138" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A148" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_07" Offset="0xA148" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A158" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_08" Offset="0xA158" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A168" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_09" Offset="0xA168" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A178" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0A" Offset="0xA178" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A188" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0B" Offset="0xA188" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A198" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0C" Offset="0xA198" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1A8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0D" Offset="0xA1A8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1B8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0E" Offset="0xA1B8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1C8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_0F" Offset="0xA1C8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1D8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_10" Offset="0xA1D8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1E8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_11" Offset="0xA1E8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A1F8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_12" Offset="0xA1F8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A208" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_13" Offset="0xA208" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A218" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_14" Offset="0xA218" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A228" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_15" Offset="0xA228" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A238" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_16" Offset="0xA238" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A248" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_17" Offset="0xA248" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A258" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_18" Offset="0xA258" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A268" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_19" Offset="0xA268" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A278" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1A" Offset="0xA278" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A288" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1B" Offset="0xA288" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A298" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1C" Offset="0xA298" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2A8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1D" Offset="0xA2A8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2B8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1E" Offset="0xA2B8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2C8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_1F" Offset="0xA2C8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2D8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_20" Offset="0xA2D8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2E8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_21" Offset="0xA2E8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A2F8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_22" Offset="0xA2F8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A308" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_23" Offset="0xA308" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A318" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_24" Offset="0xA318" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A328" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_25" Offset="0xA328" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A338" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_26" Offset="0xA338" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A348" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_27" Offset="0xA348" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A358" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_28" Offset="0xA358" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A368" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_29" Offset="0xA368" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A378" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_2A" Offset="0xA378" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A388" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_2B" Offset="0xA388" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A398" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_2C" Offset="0xA398" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A3A8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_2D" Offset="0xA3A8" />
+        <Limb Name="object_horse_link_child_Skinlimb_00A3B8" Type="Skin" EnumName="OBJECT_HORSE_LINK_CHILD_LIMB_2E" Offset="0xA3B8" />
+        <Skeleton Name="gEponaSkel" Type="Normal" LimbType="Standard" LimbNone="OBJECT_HORSE_LINK_CHILD_LIMB_NONE" LimbMax="OBJECT_HORSE_LINK_CHILD_LIMB_MAX" EnumName="ObjectHorseLinkChildLimb" Offset="0xA480" />
+
+        <Animation Name="object_horse_link_child_Anim_00A8DC" Offset="0xA8DC" /> <!-- Original name is "hlc_inanaki" -->
+        <Animation Name="object_horse_link_child_Anim_00AD08" Offset="0xAD08" /> <!-- Original name is "hlc_inanaki_modori" -->
+        <Animation Name="object_horse_link_child_Anim_00B3E0" Offset="0xB3E0" /> <!-- Original name is "hlc_inanaki_wait" -->
+        <Animation Name="object_horse_link_child_Anim_00BDE0" Offset="0xBDE0" /> <!-- Original name is "hlc_lost_house2" -->
+        <Animation Name="object_horse_link_child_Anim_00D178" Offset="0xD178" /> <!-- Original name is "hlc_lost_house_inanaki" -->
+        <Animation Name="object_horse_link_child_Anim_00D4E8" Offset="0xD4E8" /> <!-- Original name is "hlc_lost_house_inanaki_run" -->
+
+        <DList Name="object_horse_link_child_DL_00D500" Offset="0xD500" />
+        <!-- skin textures -->
+        <Texture Name="object_horse_link_child_Tex_00DAF0" OutName="tex_00DAF0" Format="rgba16" Width="16" Height="16" Offset="0xDAF0" />
+        <Texture Name="object_horse_link_child_Tex_00DCF0" OutName="tex_00DCF0" Format="rgba16" Width="32" Height="32" Offset="0xDCF0" />
+    </File>
+</Root>

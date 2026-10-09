@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Bottled Seahorse -->
+    <File Name="object_gi_bottle_16" Segment="6">
+
+        <!-- Bottled Seahorse Display Lists -->
+        <DList Name="gGiSeahorseBottleGlassAndCorkDL" Offset="0x9A0" />
+        <DList Name="gGiSeahorseBottleEmptyDL" Offset="0xD18" />
+
+        <!-- Bottled Seahorse Textures -->
+        <Texture Name="gGiSeahorseBottleCorkTex" OutName="gi_seahorse_bottle_cork" Format="i8" Width="32" Height="32" Offset="0xD20" />
+        <Texture Name="gGiSeahorseBottleGlassTex" OutName="gi_seahorse_bottle_glass" Format="i4" Width="32" Height="32" Offset="0x1120" />
+    </File>
+</Root>

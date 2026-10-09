@@ -1,0 +1,27 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_06.xml" OutPath="misc/scene_texture_06/"/>
+    <File Name="Z2_22DEKUCITY" Segment="2" Game="MM">
+        <Scene Name="Z2_22DEKUCITY" Offset="0x0"/>
+    </File>
+    <File Name="Z2_22DEKUCITY_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_22DEKUCITY_room_00" Offset="0x0"/>
+        <DList Name="Z2_22DEKUCITY_room_00DL_000540" Offset="0x540"/>
+        <DList Name="Z2_22DEKUCITY_room_00DL_00F3D8" Offset="0xF3D8"/>
+        <DList Name="Z2_22DEKUCITY_room_00DL_0119F0" Offset="0x119F0"/>
+        <DList Name="Z2_22DEKUCITY_room_00DL_011A28" Offset="0x11A28"/>
+    </File>
+    <File Name="Z2_22DEKUCITY_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_22DEKUCITY_room_01" Offset="0x0"/>
+        <DList Name="Z2_22DEKUCITY_room_01DL_0003E0" Offset="0x3E0"/>
+        <DList Name="Z2_22DEKUCITY_room_01DL_00CE28" Offset="0xCE28"/>
+        <DList Name="Z2_22DEKUCITY_room_01DL_00E910" Offset="0xE910"/>
+        <DList Name="Z2_22DEKUCITY_room_01DL_00E930" Offset="0xE930"/>
+    </File>
+    <File Name="Z2_22DEKUCITY_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_22DEKUCITY_room_02" Offset="0x0"/>
+        <DList Name="Z2_22DEKUCITY_room_02DL_000460" Offset="0x460"/>
+        <DList Name="Z2_22DEKUCITY_room_02DL_00F488" Offset="0xF488"/>
+        <DList Name="Z2_22DEKUCITY_room_02DL_012490" Offset="0x12490"/>
+        <DList Name="Z2_22DEKUCITY_room_02DL_0124C0" Offset="0x124C0"/>
+    </File>
+</Root>

@@ -1,0 +1,9 @@
+﻿<Root>
+    <!-- Animations for Gorons during the arrival of spring cutscene -->
+    <File Name="object_hakugin_demo" Segment="6">
+        <Animation Name="gGoronSpringShowAnim" Offset="0x1420" /> <!-- Original name is "goron_hora" -->
+        <Animation Name="gGoronSpringShowLoopAnim" Offset="0x1A4C" /> <!-- Original name is "goron_hora_loop" -->
+        <Animation Name="gGoronSpringLookAroundAnim" Offset="0x2704" /> <!-- Original name is "goron_mimawasu" -->
+        <Animation Name="gGoronSpringLookAroundLoopAnim" Offset="0x3378" /> <!-- Original name is "goron_mimawasu_loop" -->
+    </File>
+</Root>

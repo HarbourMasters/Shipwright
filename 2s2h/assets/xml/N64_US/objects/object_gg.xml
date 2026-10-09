@@ -1,0 +1,77 @@
+﻿<Root>
+    <File Name="object_gg" Segment="6">
+        <DList Name="object_gg_DL_003BA0" Offset="0x3BA0" />
+        <DList Name="object_gg_DL_003EC0" Offset="0x3EC0" />
+        <DList Name="object_gg_DL_004578" Offset="0x4578" />
+        <DList Name="object_gg_DL_004890" Offset="0x4890" />
+        <DList Name="object_gg_DL_004B08" Offset="0x4B08" />
+        <DList Name="object_gg_DL_004B50" Offset="0x4B50" />
+        <DList Name="object_gg_DL_004C48" Offset="0x4C48" />
+        <DList Name="object_gg_DL_004F08" Offset="0x4F08" />
+        <DList Name="object_gg_DL_005050" Offset="0x5050" />
+        <DList Name="object_gg_DL_0050E0" Offset="0x50E0" />
+        <DList Name="object_gg_DL_0051D8" Offset="0x51D8" />
+        <DList Name="object_gg_DL_005498" Offset="0x5498" />
+        <DList Name="object_gg_DL_0055D8" Offset="0x55D8" />
+        <DList Name="object_gg_DL_005670" Offset="0x5670" />
+        <DList Name="object_gg_DL_005730" Offset="0x5730" />
+        <DList Name="object_gg_DL_005828" Offset="0x5828" />
+        <DList Name="object_gg_DL_0058E8" Offset="0x58E8" />
+        <Texture Name="object_gg_Tex_0059E0" OutName="tex_0059E0" Format="i8" Width="16" Height="16" Offset="0x59E0" />
+        <Texture Name="object_gg_Tex_005AE0" OutName="tex_005AE0" Format="i8" Width="8" Height="8" Offset="0x5AE0" />
+        <Texture Name="object_gg_Tex_005B20" OutName="tex_005B20" Format="i8" Width="8" Height="8" Offset="0x5B20" />
+        <Texture Name="object_gg_Tex_005B60" OutName="tex_005B60" Format="i8" Width="32" Height="64" Offset="0x5B60" />
+        <Texture Name="object_gg_Tex_006360" OutName="tex_006360" Format="i8" Width="32" Height="32" Offset="0x6360" />
+        <Texture Name="object_gg_Tex_006760" OutName="tex_006760" Format="i8" Width="8" Height="32" Offset="0x6760" />
+        <Texture Name="object_gg_Tex_006860" OutName="tex_006860" Format="i8" Width="16" Height="32" Offset="0x6860" />
+        <Texture Name="object_gg_Tex_006A60" OutName="tex_006A60" Format="i8" Width="8" Height="16" Offset="0x6A60" />
+        <Texture Name="object_gg_Tex_006AE0" OutName="tex_006AE0" Format="i8" Width="16" Height="16" Offset="0x6AE0" />
+        <Texture Name="object_gg_Tex_006BE0" OutName="tex_006BE0" Format="i8" Width="8" Height="16" Offset="0x6BE0" />
+        <Texture Name="object_gg_Tex_006C60" OutName="tex_006C60" Format="i8" Width="8" Height="8" Offset="0x6C60" />
+        <Texture Name="object_gg_Tex_006CA0" OutName="tex_006CA0" Format="i8" Width="8" Height="16" Offset="0x6CA0" />
+        <Texture Name="object_gg_Tex_006D20" OutName="tex_006D20" Format="i8" Width="16" Height="16" Offset="0x6D20" />
+        <Texture Name="object_gg_Tex_006E20" OutName="tex_006E20" Format="i8" Width="32" Height="64" Offset="0x6E20" />
+        <Texture Name="object_gg_Tex_007620" OutName="tex_007620" Format="i8" Width="32" Height="64" Offset="0x7620" />
+        <Texture Name="object_gg_Tex_007E20" OutName="tex_007E20" Format="rgba16" Width="32" Height="64" Offset="0x7E20" />
+        <Texture Name="object_gg_Tex_008E20" OutName="tex_008E20" Format="i8" Width="8" Height="8" Offset="0x8E20" />
+        <Texture Name="object_gg_Tex_008E60" OutName="tex_008E60" Format="i8" Width="32" Height="32" Offset="0x8E60" />
+        <Texture Name="object_gg_Tex_009260" OutName="tex_009260" Format="i8" Width="32" Height="32" Offset="0x9260" />
+        <Texture Name="object_gg_Tex_009660" OutName="tex_009660" Format="i8" Width="32" Height="32" Offset="0x9660" />
+        <Texture Name="object_gg_Tex_009A60" OutName="tex_009A60" Format="i8" Width="32" Height="32" Offset="0x9A60" />
+        <Texture Name="object_gg_Tex_009E60" OutName="tex_009E60" Format="i8" Width="32" Height="32" Offset="0x9E60" />
+        <Animation Name="object_gg_Anim_00A4B4" Offset="0xA4B4" /> <!-- Original name is "gg_2um" -->
+        <TextureAnimation Name="object_gg_Matanimheader_00A4F4" Offset="0xA4F4" />
+        <Animation Name="object_gg_Anim_00AF40" Offset="0xAF40" /> <!-- Original name is "gg_fly" -->
+        <Animation Name="object_gg_Anim_00B560" Offset="0xB560" /> <!-- Original name is "gg_gokyu" -->
+        <Animation Name="object_gg_Anim_00BAF0" Offset="0xBAF0" /> <!-- Original name is "gg_kongan" -->
+        <Animation Name="object_gg_Anim_00CDA0" Offset="0xCDA0" /> <!-- Original name is "gg_kyorokyoro" -->
+        <Animation Name="object_gg_Anim_00D174" Offset="0xD174" /> <!-- Original name is "gg_munen" -->
+        <Animation Name="object_gg_Anim_00D528" Offset="0xD528" /> <!-- Original name is "gg_odoroki" -->
+        <Animation Name="object_gg_Anim_00D99C" Offset="0xD99C" /> <!-- Original name is "gg_otakebi" -->
+        <Animation Name="object_gg_Anim_00E2A4" Offset="0xE2A4" /> <!-- Original name is "gg_otakebi_loop" -->
+        <Animation Name="object_gg_Anim_00E86C" Offset="0xE86C" /> <!-- Original name is "gg_um" -->
+        <Animation Name="object_gg_Anim_00ECC0" Offset="0xECC0" /> <!-- Original name is "gg_unadareru" -->
+        <Animation Name="object_gg_Anim_00F578" Offset="0xF578" /> <!-- Original name is "gg_wait" -->
+        <Limb Name="object_gg_Standardlimb_00F590" Type="Standard" EnumName="OBJECT_GG_LIMB_01" Offset="0xF590" />
+        <Limb Name="object_gg_Standardlimb_00F59C" Type="Standard" EnumName="OBJECT_GG_LIMB_02" Offset="0xF59C" />
+        <Limb Name="object_gg_Standardlimb_00F5A8" Type="Standard" EnumName="OBJECT_GG_LIMB_03" Offset="0xF5A8" />
+        <Limb Name="object_gg_Standardlimb_00F5B4" Type="Standard" EnumName="OBJECT_GG_LIMB_04" Offset="0xF5B4" />
+        <Limb Name="object_gg_Standardlimb_00F5C0" Type="Standard" EnumName="OBJECT_GG_LIMB_05" Offset="0xF5C0" />
+        <Limb Name="object_gg_Standardlimb_00F5CC" Type="Standard" EnumName="OBJECT_GG_LIMB_06" Offset="0xF5CC" />
+        <Limb Name="object_gg_Standardlimb_00F5D8" Type="Standard" EnumName="OBJECT_GG_LIMB_07" Offset="0xF5D8" />
+        <Limb Name="object_gg_Standardlimb_00F5E4" Type="Standard" EnumName="OBJECT_GG_LIMB_08" Offset="0xF5E4" />
+        <Limb Name="object_gg_Standardlimb_00F5F0" Type="Standard" EnumName="OBJECT_GG_LIMB_09" Offset="0xF5F0" />
+        <Limb Name="object_gg_Standardlimb_00F5FC" Type="Standard" EnumName="OBJECT_GG_LIMB_0A" Offset="0xF5FC" />
+        <Limb Name="object_gg_Standardlimb_00F608" Type="Standard" EnumName="OBJECT_GG_LIMB_0B" Offset="0xF608" />
+        <Limb Name="object_gg_Standardlimb_00F614" Type="Standard" EnumName="OBJECT_GG_LIMB_0C" Offset="0xF614" />
+        <Limb Name="object_gg_Standardlimb_00F620" Type="Standard" EnumName="OBJECT_GG_LIMB_0D" Offset="0xF620" />
+        <Limb Name="object_gg_Standardlimb_00F62C" Type="Standard" EnumName="OBJECT_GG_LIMB_0E" Offset="0xF62C" />
+        <Limb Name="object_gg_Standardlimb_00F638" Type="Standard" EnumName="OBJECT_GG_LIMB_0F" Offset="0xF638" />
+        <Limb Name="object_gg_Standardlimb_00F644" Type="Standard" EnumName="OBJECT_GG_LIMB_10" Offset="0xF644" />
+        <Limb Name="object_gg_Standardlimb_00F650" Type="Standard" EnumName="OBJECT_GG_LIMB_11" Offset="0xF650" />
+        <Limb Name="object_gg_Standardlimb_00F65C" Type="Standard" EnumName="OBJECT_GG_LIMB_12" Offset="0xF65C" />
+        <Limb Name="object_gg_Standardlimb_00F668" Type="Standard" EnumName="OBJECT_GG_LIMB_13" Offset="0xF668" />
+        <Skeleton Name="object_gg_Skel_00F6C0" Type="Flex" LimbType="Standard" LimbNone="OBJECT_GG_LIMB_NONE" LimbMax="OBJECT_GG_LIMB_MAX" EnumName="ObjectGgLimb" Offset="0xF6C0" />
+        <Animation Name="object_gg_Anim_0100C8" Offset="0x100C8" /> <!-- Original name is "gg_yurayura" -->
+    </File>
+</Root>

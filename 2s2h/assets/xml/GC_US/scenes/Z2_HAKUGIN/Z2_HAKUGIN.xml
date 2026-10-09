@@ -1,0 +1,70 @@
+<Root>
+    <File Name="Z2_HAKUGIN" Segment="2" Game="MM">
+        <Scene Name="Z2_HAKUGIN" Offset="0x0"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_00" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_00DL_003B88" Offset="0x3B88"/>
+        <DList Name="Z2_HAKUGIN_room_00DL_008420" Offset="0x8420"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_01" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_01DL_002CC8" Offset="0x2CC8"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_02" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_02DL_0051E0" Offset="0x51E0"/>
+        <DList Name="Z2_HAKUGIN_room_02DL_00C480" Offset="0xC480"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_03" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_03DL_002808" Offset="0x2808"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_04" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_04DL_0116C0" Offset="0x116C0"/>
+        <DList Name="Z2_HAKUGIN_room_04DL_021760" Offset="0x21760"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_05" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_05DL_004410" Offset="0x4410"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_06" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_06DL_001230" Offset="0x1230"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_07" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_07DL_0029F0" Offset="0x29F0"/>
+        <DList Name="Z2_HAKUGIN_room_07DL_006AA0" Offset="0x6AA0"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_08" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_08DL_002F78" Offset="0x2F78"/>
+        <DList Name="Z2_HAKUGIN_room_08DL_004FC0" Offset="0x4FC0"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_09" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_09DL_003388" Offset="0x3388"/>
+        <DList Name="Z2_HAKUGIN_room_09DL_008428" Offset="0x8428"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_10" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_10DL_001C40" Offset="0x1C40"/>
+        <DList Name="Z2_HAKUGIN_room_10DL_003470" Offset="0x3470"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_11" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_11DL_001700" Offset="0x1700"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_12" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_12" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_12DL_001C98" Offset="0x1C98"/>
+        <DList Name="Z2_HAKUGIN_room_12DL_004CF8" Offset="0x4CF8"/>
+    </File>
+    <File Name="Z2_HAKUGIN_room_13" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_room_13" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_room_13DL_000A50" Offset="0xA50"/>
+        <DList Name="Z2_HAKUGIN_room_13DL_0042F0" Offset="0x42F0"/>
+    </File>
+</Root>

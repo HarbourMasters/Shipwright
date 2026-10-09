@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_mask_romerny" Segment="10">
+        <DList Name="object_mask_romerny_DL_0007A0" Offset="0x7A0" />
+        <Texture Name="object_mask_romerny_TLUT_000B88" OutName="tlut_000B88" Format="rgba16" Width="16" Height="16" Offset="0xB88" />
+        <Texture Name="object_mask_romerny_Tex_000D88" OutName="tex_000D88" Format="i4" Width="64" Height="64" Offset="0xD88" />
+        <Texture Name="object_mask_romerny_Tex_001588" OutName="tex_001588" Format="ci8" Width="16" Height="16" Offset="0x1588" />
+        <Texture Name="object_mask_romerny_Tex_001688" OutName="tex_001688" Format="ci8" Width="16" Height="16" Offset="0x1688" />
+        <Texture Name="object_mask_romerny_Tex_001788" OutName="tex_001788" Format="rgba16" Width="16" Height="16" Offset="0x1788" />
+        <Texture Name="object_mask_romerny_Tex_001988" OutName="tex_001988" Format="ci8" Width="8" Height="16" Offset="0x1988" />
+    </File>
+</Root>

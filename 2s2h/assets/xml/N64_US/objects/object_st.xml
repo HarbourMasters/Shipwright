@@ -1,0 +1,71 @@
+﻿<Root>
+    <File Name="object_st" Segment="6">
+        <Animation Name="object_st_Anim_000304" Offset="0x304" /> <!-- Original name is "st_matsu" -->
+        <Texture Name="object_st_Tex_000320" OutName="tex_000320" Format="i4" Width="16" Height="8" Offset="0x320" />
+        <Texture Name="object_st_Tex_000360" OutName="tex_000360" Format="rgba16" Width="16" Height="8" Offset="0x360" />
+        <Texture Name="object_st_Tex_000460" OutName="tex_000460" Format="rgba16" Width="8" Height="8" Offset="0x460" />
+        <Texture Name="object_st_Tex_0004E0" OutName="tex_0004E0" Format="i4" Width="16" Height="16" Offset="0x4E0" />
+        <Texture Name="object_st_Tex_000560" OutName="tex_000560" Format="rgba16" Width="16" Height="16" Offset="0x560" />
+        <Texture Name="object_st_Tex_000760" OutName="tex_000760" Format="rgba16" Width="8" Height="8" Offset="0x760" />
+        <Texture Name="object_st_Tex_0007E0" OutName="tex_0007E0" Format="rgba16" Width="8" Height="8" Offset="0x7E0" />
+        <DList Name="object_st_DL_001A40" Offset="0x1A40" />
+        <DList Name="object_st_DL_001C30" Offset="0x1C30" />
+        <DList Name="object_st_DL_001FD0" Offset="0x1FD0" />
+        <DList Name="object_st_DL_002068" Offset="0x2068" />
+        <DList Name="object_st_DL_002100" Offset="0x2100" />
+        <DList Name="object_st_DL_002198" Offset="0x2198" />
+        <DList Name="object_st_DL_002230" Offset="0x2230" />
+        <DList Name="object_st_DL_0022C8" Offset="0x22C8" />
+        <DList Name="object_st_DL_002360" Offset="0x2360" />
+        <DList Name="object_st_DL_0023F8" Offset="0x23F8" />
+        <Texture Name="object_st_Tex_002490" OutName="tex_002490" Format="i8" Width="8" Height="8" Offset="0x2490" />
+        <Texture Name="object_st_Tex_0024D0" OutName="tex_0024D0" Format="rgba16" Width="16" Height="8" Offset="0x24D0" />
+        <Texture Name="object_st_Tex_0025D0" OutName="tex_0025D0" Format="i4" Width="16" Height="16" Offset="0x25D0" />
+        <Texture Name="object_st_Tex_002650" OutName="tex_002650" Format="rgba16" Width="8" Height="8" Offset="0x2650" />
+        <!-- <Blob Name="object_st_Blob_003C50" Size="0x360" Offset="0x3C50" /> -->
+        <DList Name="object_st_DL_003FB0" Offset="0x3FB0" />
+        <DList Name="object_st_DL_0043D8" Offset="0x43D8" />
+        <DList Name="object_st_DL_0045C0" Offset="0x45C0" />
+        <DList Name="object_st_DL_004658" Offset="0x4658" />
+        <DList Name="object_st_DL_0046F0" Offset="0x46F0" />
+        <DList Name="object_st_DL_004788" Offset="0x4788" />
+        <DList Name="object_st_DL_004820" Offset="0x4820" />
+        <DList Name="object_st_DL_0048B8" Offset="0x48B8" />
+        <DList Name="object_st_DL_004950" Offset="0x4950" />
+        <DList Name="object_st_DL_0049E8" Offset="0x49E8" />
+        <DList Name="gSkulltulaTokenDL" Offset="0x4DB0" /> <!-- Original name is "gi_sutaru_model" -->
+        <DList Name="gSkulltulaTokenFlameDL" Offset="0x4EB8" /> <!-- Original name is "gi_sutaru_modelT" -->
+        <Limb Name="object_st_Standardlimb_0050C8" Type="Standard" EnumName="OBJECT_ST_LIMB_01" Offset="0x50C8" />
+        <Limb Name="object_st_Standardlimb_0050D4" Type="Standard" EnumName="OBJECT_ST_LIMB_02" Offset="0x50D4" />
+        <Limb Name="object_st_Standardlimb_0050E0" Type="Standard" EnumName="OBJECT_ST_LIMB_03" Offset="0x50E0" />
+        <Limb Name="object_st_Standardlimb_0050EC" Type="Standard" EnumName="OBJECT_ST_LIMB_04" Offset="0x50EC" />
+        <Limb Name="object_st_Standardlimb_0050F8" Type="Standard" EnumName="OBJECT_ST_LIMB_05" Offset="0x50F8" />
+        <Limb Name="object_st_Standardlimb_005104" Type="Standard" EnumName="OBJECT_ST_LIMB_06" Offset="0x5104" />
+        <Limb Name="object_st_Standardlimb_005110" Type="Standard" EnumName="OBJECT_ST_LIMB_07" Offset="0x5110" />
+        <Limb Name="object_st_Standardlimb_00511C" Type="Standard" EnumName="OBJECT_ST_LIMB_08" Offset="0x511C" />
+        <Limb Name="object_st_Standardlimb_005128" Type="Standard" EnumName="OBJECT_ST_LIMB_09" Offset="0x5128" />
+        <Limb Name="object_st_Standardlimb_005134" Type="Standard" EnumName="OBJECT_ST_LIMB_0A" Offset="0x5134" />
+        <Limb Name="object_st_Standardlimb_005140" Type="Standard" EnumName="OBJECT_ST_LIMB_0B" Offset="0x5140" />
+        <Limb Name="object_st_Standardlimb_00514C" Type="Standard" EnumName="OBJECT_ST_LIMB_0C" Offset="0x514C" />
+        <Limb Name="object_st_Standardlimb_005158" Type="Standard" EnumName="OBJECT_ST_LIMB_0D" Offset="0x5158" />
+        <Limb Name="object_st_Standardlimb_005164" Type="Standard" EnumName="OBJECT_ST_LIMB_0E" Offset="0x5164" />
+        <Limb Name="object_st_Standardlimb_005170" Type="Standard" EnumName="OBJECT_ST_LIMB_0F" Offset="0x5170" />
+        <Limb Name="object_st_Standardlimb_00517C" Type="Standard" EnumName="OBJECT_ST_LIMB_10" Offset="0x517C" />
+        <Limb Name="object_st_Standardlimb_005188" Type="Standard" EnumName="OBJECT_ST_LIMB_11" Offset="0x5188" />
+        <Limb Name="object_st_Standardlimb_005194" Type="Standard" EnumName="OBJECT_ST_LIMB_12" Offset="0x5194" />
+        <Limb Name="object_st_Standardlimb_0051A0" Type="Standard" EnumName="OBJECT_ST_LIMB_13" Offset="0x51A0" />
+        <Limb Name="object_st_Standardlimb_0051AC" Type="Standard" EnumName="OBJECT_ST_LIMB_14" Offset="0x51AC" />
+        <Limb Name="object_st_Standardlimb_0051B8" Type="Standard" EnumName="OBJECT_ST_LIMB_15" Offset="0x51B8" />
+        <Limb Name="object_st_Standardlimb_0051C4" Type="Standard" EnumName="OBJECT_ST_LIMB_16" Offset="0x51C4" />
+        <Limb Name="object_st_Standardlimb_0051D0" Type="Standard" EnumName="OBJECT_ST_LIMB_17" Offset="0x51D0" />
+        <Limb Name="object_st_Standardlimb_0051DC" Type="Standard" EnumName="OBJECT_ST_LIMB_18" Offset="0x51DC" />
+        <Limb Name="object_st_Standardlimb_0051E8" Type="Standard" EnumName="OBJECT_ST_LIMB_19" Offset="0x51E8" />
+        <Limb Name="object_st_Standardlimb_0051F4" Type="Standard" EnumName="OBJECT_ST_LIMB_1A" Offset="0x51F4" />
+        <Limb Name="object_st_Standardlimb_005200" Type="Standard" EnumName="OBJECT_ST_LIMB_1B" Offset="0x5200" />
+        <Limb Name="object_st_Standardlimb_00520C" Type="Standard" EnumName="OBJECT_ST_LIMB_1C" Offset="0x520C" />
+        <Limb Name="object_st_Standardlimb_005218" Type="Standard" EnumName="OBJECT_ST_LIMB_1D" Offset="0x5218" />
+        <Skeleton Name="object_st_Skel_005298" Type="Normal" LimbType="Standard" LimbNone="OBJECT_ST_LIMB_NONE" LimbMax="OBJECT_ST_LIMB_MAX" EnumName="ObjectStLimb" Offset="0x5298" />
+        <Animation Name="object_st_Anim_0055A8" Offset="0x55A8" /> <!-- Original name is "st_otchiru" -->
+        <Animation Name="object_st_Anim_005B98" Offset="0x5B98" /> <!-- Original name is "st_yarare" -->
+    </File>
+</Root>

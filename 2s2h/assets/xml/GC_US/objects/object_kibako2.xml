@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Object for large wooden crate -->
+    <File Name="object_kibako2" Segment="6">
+        <Texture Name="gLargeCrateTLUT" OutName="large_crate_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gLargeCrateTopTex" OutName="large_crate_top" Format="ci4" Width="32" Height="64" Offset="0x20" />
+        <Texture Name="gLargeCrateSidesTex" OutName="large_crate_sides" Format="ci4" Width="32" Height="64" Offset="0x420" />
+        <DList Name="gLargeCrateDL" Offset="0x960" /> <!-- Original name is "CIkibako_model" -->
+        <Collision Name="gLargeCrateCol" Offset="0xB70" /> <!-- Original name is "CIkibako_bgdatainfo" -->
+        <Texture Name="gLargeCrateFragmentTLUT" OutName="large_crate_fragment_tlut" Format="rgba16" Width="4" Height="4" Offset="0xBA0" />
+        <Texture Name="gLargeCrateFragmentTex" OutName="large_crate_fragment" Format="ci4" Width="32" Height="64" Offset="0xBC0" />
+        <DList Name="gLargeCrateFragment1DL" Offset="0x1040" /> <!-- Original name is "CIkibako_hahen_model" -->
+        <DList Name="gLargeCrateFragment2DL" Offset="0x1100" /> <!-- Original name is "CIkibako_hahen2_model" -->
+    </File>
+</Root>

@@ -1,0 +1,16 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_02.xml" OutPath="misc/scene_texture_02/"/>
+    <File Name="Z2_AYASHIISHOP" Segment="2" Game="MM">
+        <Scene Name="Z2_AYASHIISHOP" Offset="0x0"/>
+    </File>
+    <File Name="Z2_AYASHIISHOP_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_AYASHIISHOP_room_00" Offset="0x0"/>
+        <DList Name="Z2_AYASHIISHOP_room_00DL_00CF78" Offset="0xCF78"/>
+        <DList Name="Z2_AYASHIISHOP_room_00DL_011820" Offset="0x11820"/>
+    </File>
+    <File Name="Z2_AYASHIISHOP_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_AYASHIISHOP_room_01" Offset="0x0"/>
+        <DList Name="Z2_AYASHIISHOP_room_01DL_004F80" Offset="0x4F80"/>
+        <DList Name="Z2_AYASHIISHOP_room_01DL_0054F8" Offset="0x54F8"/>
+    </File>
+</Root>

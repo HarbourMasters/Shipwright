@@ -1,0 +1,14 @@
+<Root>
+    <File Name="Z2_LAST_GORON" Segment="2" Game="MM">
+        <Scene Name="Z2_LAST_GORON" Offset="0x0"/>
+    </File>
+    <File Name="Z2_LAST_GORON_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_GORON_room_00" Offset="0x0"/>
+        <DList Name="Z2_LAST_GORON_room_00DL_00D3C8" Offset="0xD3C8"/>
+        <DList Name="Z2_LAST_GORON_room_00DL_015E78" Offset="0x15E78"/>
+    </File>
+    <File Name="Z2_LAST_GORON_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_GORON_room_01" Offset="0x0"/>
+        <DList Name="Z2_LAST_GORON_room_01DL_001438" Offset="0x1438"/>
+    </File>
+</Root>

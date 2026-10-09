@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Mask Of Truth -->
+    <File Name="object_gi_truth_mask" Segment="6">
+
+        <!-- Mask of Truth Textures -->
+        <Texture Name="gGiMaskOfTruthEyebrowTriangleTex" OutName="gi_mask_of_truth_eyebrow_triangle" Format="i8" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="gGiMaskOfTruthSideEtchingTex" OutName="gi_mask_of_truth_side_etching" Format="i8" Width="32" Height="32" Offset="0x400" />
+
+        <!-- Mask of Truth Display Lists -->
+        <DList Name="gGiMaskOfTruthDL" Offset="0x13D0" />
+        <DList Name="gGiMaskOfTruthAccentsDL" Offset="0x16B0" />
+    </File>
+</Root>

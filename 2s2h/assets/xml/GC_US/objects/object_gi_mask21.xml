@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Blast Mask -->
+    <File Name="object_gi_mask21" Segment="6">
+
+        <!-- Blast Mask Display Lists -->
+        <DList Name="gGiBlastMaskDL" Offset="0x830" />
+        <DList Name="gGiBlastMaskEmptyDL" Offset="0xAA8" />
+
+        <!-- Blast Mask Textures -->
+        <Texture Name="gGiBlastMaskSkullTex" OutName="gi_blast_mask_skull" Format="i4" Width="64" Height="64" Offset="0xAB0" />
+        <Texture Name="gGiBlastMaskBombTex" OutName="gi_blast_mask_bomb" Format="i4" Width="16" Height="32" Offset="0x12B0" />
+    </File>
+</Root>

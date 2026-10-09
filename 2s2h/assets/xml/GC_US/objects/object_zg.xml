@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_zg" Segment="6">
+        <Texture Name="gTowerCollapseBarMetalTex" OutName="tower_collapse_bar_metal" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="gTowerCollapseBarFlameTex" OutName="tower_collapse_bar_flame" Format="rgba16" Width="32" Height="32" Offset="0x800"/>
+        <DList Name="gTowerCollapseBarsDL" Offset="0x1080"/> <!-- Original name is "zeldoor_model" -->
+        <Collision Name="gTowerCollapseBarsCol" Offset="0x11D4"/> <!-- Original name is "zeldoor_bgdatainfo" -->
+    </File>
+</Root>

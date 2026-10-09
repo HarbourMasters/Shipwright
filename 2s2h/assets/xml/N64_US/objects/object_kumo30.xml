@@ -1,0 +1,14 @@
+﻿<Root>
+    <File Name="object_kumo30" Segment="6">
+        <DList Name="object_kumo30_DL_000A50" Offset="0xA50" /> <!-- Original name is "konpeki_mist1_FT_model" -->
+        <DList Name="object_kumo30_DL_000C98" Offset="0xC98" /> <!-- Original name is "konpeki_mist3_FT_model" -->
+        <Texture Name="object_kumo30_Tex_000E80" OutName="tex_000E80" Format="i8" Width="64" Height="64" Offset="0xE80" />
+        <Texture Name="object_kumo30_Tex_001E80" OutName="tex_001E80" Format="i4" Width="32" Height="32" Offset="0x1E80" />
+        <Texture Name="object_kumo30_Tex_002080" OutName="tex_002080" Format="i4" Width="64" Height="64" Offset="0x2080" />
+        <TextureAnimation Name="object_kumo30_Matanimheader_002890" Offset="0x2890" />
+        <DList Name="object_kumo30_DL_002A40" Offset="0x2A40" /> <!-- Original name is "z2_30_kumo_model" -->
+        <Texture Name="object_kumo30_Tex_002B58" OutName="tex_002B58" Format="i8" Width="32" Height="32" Offset="0x2B58" />
+        <Texture Name="object_kumo30_Tex_002F58" OutName="tex_002F58" Format="i8" Width="32" Height="32" Offset="0x2F58" />
+        <TextureAnimation Name="object_kumo30_Matanimheader_003368" Offset="0x3368" />
+    </File>
+</Root>

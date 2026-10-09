@@ -1,0 +1,85 @@
+﻿<Root>
+    <File Name="object_gk" Segment="6">
+        <DList Name="object_gk_DL_002E30" Offset="0x2E30" />
+        <DList Name="object_gk_DL_0031B0" Offset="0x31B0" />
+        <DList Name="object_gk_DL_0038B0" Offset="0x38B0" />
+        <DList Name="object_gk_DL_0039D0" Offset="0x39D0" />
+        <DList Name="object_gk_DL_003AC0" Offset="0x3AC0" />
+        <DList Name="object_gk_DL_003D60" Offset="0x3D60" />
+        <DList Name="object_gk_DL_003F68" Offset="0x3F68" />
+        <DList Name="object_gk_DL_004088" Offset="0x4088" />
+        <DList Name="object_gk_DL_004218" Offset="0x4218" />
+        <DList Name="object_gk_DL_004498" Offset="0x4498" />
+        <DList Name="object_gk_DL_0045B8" Offset="0x45B8" />
+        <DList Name="object_gk_DL_004748" Offset="0x4748" />
+        <DList Name="object_gk_DL_0047D8" Offset="0x47D8" />
+        <DList Name="object_gk_DL_0048C0" Offset="0x48C0" />
+        <DList Name="object_gk_DL_0049F0" Offset="0x49F0" />
+        <DList Name="object_gk_DL_004CB8" Offset="0x4CB8" />
+        <DList Name="object_gk_DL_004DA0" Offset="0x4DA0" />
+        <DList Name="object_gk_DL_004ED0" Offset="0x4ED0" />
+        <TextureAnimation Name="object_gk_Matanimheader_005144" Offset="0x5144" />
+        <Animation Name="object_gk_Anim_005EDC" Offset="0x5EDC" /> <!-- Original name is "gk_furafura" -->
+        <DList Name="object_gk_DL_006680" Offset="0x6680" />
+        <DList Name="object_gk_DL_006688" Offset="0x6688" /> <!-- Original name is "gk_iwa_obj_model" -->
+        <Animation Name="object_gk_Anim_00787C" Offset="0x787C" /> <!-- Oriignal name is "gk_naki" -->
+        <Limb Name="object_gk_Standardlimb_007890" Type="Standard" EnumName="OBJECT_GK_LIMB_01" Offset="0x7890" />
+        <Limb Name="object_gk_Standardlimb_00789C" Type="Standard" EnumName="OBJECT_GK_LIMB_02" Offset="0x789C" />
+        <Limb Name="object_gk_Standardlimb_0078A8" Type="Standard" EnumName="OBJECT_GK_LIMB_03" Offset="0x78A8" />
+        <Limb Name="object_gk_Standardlimb_0078B4" Type="Standard" EnumName="OBJECT_GK_LIMB_04" Offset="0x78B4" />
+        <Limb Name="object_gk_Standardlimb_0078C0" Type="Standard" EnumName="OBJECT_GK_LIMB_05" Offset="0x78C0" />
+        <Limb Name="object_gk_Standardlimb_0078CC" Type="Standard" EnumName="OBJECT_GK_LIMB_06" Offset="0x78CC" />
+        <Limb Name="object_gk_Standardlimb_0078D8" Type="Standard" EnumName="OBJECT_GK_LIMB_07" Offset="0x78D8" />
+        <Limb Name="object_gk_Standardlimb_0078E4" Type="Standard" EnumName="OBJECT_GK_LIMB_08" Offset="0x78E4" />
+        <Limb Name="object_gk_Standardlimb_0078F0" Type="Standard" EnumName="OBJECT_GK_LIMB_09" Offset="0x78F0" />
+        <Limb Name="object_gk_Standardlimb_0078FC" Type="Standard" EnumName="OBJECT_GK_LIMB_0A" Offset="0x78FC" />
+        <Limb Name="object_gk_Standardlimb_007908" Type="Standard" EnumName="OBJECT_GK_LIMB_0B" Offset="0x7908" />
+        <Limb Name="object_gk_Standardlimb_007914" Type="Standard" EnumName="OBJECT_GK_LIMB_0C" Offset="0x7914" />
+        <Limb Name="object_gk_Standardlimb_007920" Type="Standard" EnumName="OBJECT_GK_LIMB_0D" Offset="0x7920" />
+        <Limb Name="object_gk_Standardlimb_00792C" Type="Standard" EnumName="OBJECT_GK_LIMB_0E" Offset="0x792C" />
+        <Limb Name="object_gk_Standardlimb_007938" Type="Standard" EnumName="OBJECT_GK_LIMB_0F" Offset="0x7938" />
+        <Limb Name="object_gk_Standardlimb_007944" Type="Standard" EnumName="OBJECT_GK_LIMB_10" Offset="0x7944" />
+        <Limb Name="object_gk_Standardlimb_007950" Type="Standard" EnumName="OBJECT_GK_LIMB_11" Offset="0x7950" />
+        <Limb Name="object_gk_Standardlimb_00795C" Type="Standard" EnumName="OBJECT_GK_LIMB_12" Offset="0x795C" />
+        <Limb Name="object_gk_Standardlimb_007968" Type="Standard" EnumName="OBJECT_GK_LIMB_13" Offset="0x7968" />
+        <Skeleton Name="object_gk_Skel_0079C0" Type="Flex" LimbType="Standard" LimbNone="OBJECT_GK_LIMB_NONE" LimbMax="OBJECT_GK_LIMB_MAX" EnumName="ObjectGkLimb" Offset="0x79C0" />
+        <Animation Name="object_gk_Anim_007DC4" Offset="0x7DC4" /> <!-- Original name is "gk_sleep" -->
+        <Animation Name="object_gk_Anim_008774" Offset="0x8774" /> <!-- Original name is "gk_stand_wait" -->
+        <Animation Name="object_gk_Anim_0092C0" Offset="0x92C0" /> <!-- Original name is "gk_talk" -->
+        <Animation Name="object_gk_Anim_009638" Offset="0x9638" /> <!-- Original name is "gk_wait" -->
+        <Animation Name="object_gk_Anim_009858" Offset="0x9858" /> <!-- Original name is "gkid_dada" -->
+        <Animation Name="object_gk_Anim_009D88" Offset="0x9D88" /> <!-- Original name is "gkid_dada_loop" -->
+        <Animation Name="object_gk_Anim_00A21C" Offset="0xA21C" /> <!-- Original name is "gkid_dada_modori" -->
+        <Animation Name="object_gk_Anim_00AAEC" Offset="0xAAEC" /> <!-- Original name is "gkid_dakko" -->
+        <Animation Name="object_gk_Anim_00AE34" Offset="0xAE34" /> <!-- Original name is "gkid_run_loop" -->
+        <Animation Name="object_gk_Anim_00BD90" Offset="0xBD90" /> <!-- Original name is "gkid_utau" -->
+        <Animation Name="object_gk_Anim_00C308" Offset="0xC308" /> <!-- Original name is "gkid_utau_loop" -->
+        <Texture Name="object_gk_TLUT_00C320" OutName="tlut_00C320" Format="rgba16" Width="16" Height="16" Offset="0xC320" />
+        <Texture Name="object_gk_Tex_00C520" OutName="tex_00C520" Format="ci8" Width="32" Height="32" Offset="0xC520" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00C920" OutName="tex_00C920" Format="ci8" Width="32" Height="16" Offset="0xC920" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00CB20" OutName="tex_00CB20" Format="ci8" Width="8" Height="8" Offset="0xCB20" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00CB60" OutName="tex_00CB60" Format="rgba16" Width="8" Height="8" Offset="0xCB60" />
+        <Texture Name="object_gk_Tex_00CBE0" OutName="tex_00CBE0" Format="ci8" Width="16" Height="16" Offset="0xCBE0" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00CCE0" OutName="tex_00CCE0" Format="ci8" Width="8" Height="8" Offset="0xCCE0" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00CD20" OutName="tex_00CD20" Format="ci8" Width="32" Height="64" Offset="0xCD20" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00D520" OutName="tex_00D520" Format="rgba16" Width="16" Height="16" Offset="0xD520" />
+        <Texture Name="object_gk_Tex_00D720" OutName="tex_00D720" Format="ci8" Width="16" Height="16" Offset="0xD720" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00D820" OutName="tex_00D820" Format="ci8" Width="16" Height="32" Offset="0xD820" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00DA20" OutName="tex_00DA20" Format="ci8" Width="32" Height="32" Offset="0xDA20" TlutOffset="00C320" />
+        <Texture Name="object_gk_Tex_00DE20" OutName="tex_00DE20" Format="ci8" Width="8" Height="8" Offset="0xDE20" />
+        <Texture Name="object_gk_Tex_00DE60" OutName="tex_00DE60" Format="ci8" Width="16" Height="16" Offset="0xDE60" />
+        <Texture Name="object_gk_Tex_00DF60" OutName="tex_00DF60" Format="ci8" Width="16" Height="32" Offset="0xDF60" />
+        <Texture Name="object_gk_Tex_00E160" OutName="tex_00E160" Format="ci8" Width="32" Height="16" Offset="0xE160" />
+        <Texture Name="object_gk_Tex_00E360" OutName="tex_00E360" Format="ci8" Width="32" Height="32" Offset="0xE360" />
+        <Texture Name="object_gk_Tex_00E760" OutName="tex_00E760" Format="ci8" Width="8" Height="8" Offset="0xE760" />
+        <Texture Name="object_gk_Tex_00E7A0" OutName="tex_00E7A0" Format="ci8" Width="32" Height="64" Offset="0xE7A0" />
+        <Texture Name="object_gk_Tex_00EFA0" OutName="tex_00EFA0" Format="ci8" Width="16" Height="16" Offset="0xEFA0" />
+        <Texture Name="object_gk_Tex_00F0A0" OutName="tex_00F0A0" Format="ci8" Width="32" Height="32" Offset="0xF0A0" />
+        <Texture Name="object_gk_Tex_00F4A0" OutName="tex_00F4A0" Format="rgba16" Width="8" Height="8" Offset="0xF4A0" />
+        <Texture Name="object_gk_Tex_00F520" OutName="tex_00F520" Format="rgba16" Width="16" Height="16" Offset="0xF520" />
+        <Texture Name="object_gk_Tex_00F720" OutName="tex_00F720" Format="rgba16" Width="32" Height="32" Offset="0xF720" />
+        <Texture Name="object_gk_Tex_00FF20" OutName="tex_00FF20" Format="rgba16" Width="32" Height="32" Offset="0xFF20" />
+        <Texture Name="object_gk_Tex_010720" OutName="tex_010720" Format="rgba16" Width="32" Height="32" Offset="0x10720" />
+        <Texture Name="object_gk_Tex_010F20" OutName="tex_010F20" Format="rgba16" Width="32" Height="32" Offset="0x10F20" />
+    </File>
+</Root>

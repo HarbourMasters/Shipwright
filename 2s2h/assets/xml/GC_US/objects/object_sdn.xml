@@ -1,0 +1,66 @@
+﻿<Root>
+    <File Name="object_sdn" Segment="6">
+        <DList Name="gSoldierBottleDL" Offset="0x630" />
+        <DList Name="gSoldierBottleContentsDL" Offset="0x768" />
+        <DList Name="gSoldierBottleEmptyContentsDL" Offset="0x800" />
+        <Texture Name="gSoldierBottleTex" OutName="soldier_bottle" Format="i4" Width="16" Height="16" Offset="0x808" />
+        <Animation Name="gSoldierStandWithHandOnChestAnim" Offset="0xA54" /> <!-- Original name is "sdn_lastwait" -->
+        <Animation Name="gSoldierDrinkAnim" Offset="0x20D8" /> <!-- Original name is "sdn_nomu" -->
+        <Animation Name="gSoldierCheerWithSpearAnim" Offset="0x2A84" /> <!-- Original name is "sdn_renshuu" -->
+        <Animation Name="gSoldierSitAndReachAnim" Offset="0x3380" /> <!-- Original name is "sdn_suwaritalk" -->
+        <Animation Name="gSoldierWaveAnim" Offset="0x3BFC" /> <!-- Original name is "sdn_suwariwait" -->
+        <Animation Name="gSoldierStandUpAnim" Offset="0x4770" /> <!-- Original name is "sdn_tatsu" -->
+        <Animation Name="gSoldierLookDownAnim" Offset="0x4AC0" /> <!-- Original name is "sdn_tome01" -->
+        <Animation Name="gSoldierComeUpHereAnim" Offset="0x5320" /> <!-- Original name is "sdn_tome02" -->
+        <Animation Name="object_sdn_Anim_0057BC" Offset="0x57BC" /><!-- gSoldierHaltStartAnim? Original name is "sdn_tome03" -->
+        <Animation Name="object_sdn_Anim_005D28" Offset="0x5D28" /><!-- gSoldierHaltIdleAnim? Original name is "sdn_tome04" -->
+        <Animation Name="object_sdn_Anim_0064C0" Offset="0x64C0" /><!-- gSoldierHaltLoopAnim? Original name is "sdn_tome05" -->
+        <Animation Name="gSoldierStandHandOnHipAnim" Offset="0x6C18" /> <!-- Original name is "sdn_wait01" -->
+        <DList Name="gSoldierTorsoDL" Offset="0x9EB0" />
+        <DList Name="gSoldierHeadDL" Offset="0xA1A8" />
+        <DList Name="gSoldierRightShoulderDL" Offset="0xA678" />
+        <DList Name="gSoldierRightForearmDL" Offset="0xA768" />
+        <DList Name="gSoldierRightHandWithSpearDL" Offset="0xA9A8" />
+        <DList Name="gSoldierLeftShoulderDL" Offset="0xADE0" />
+        <DList Name="gSoldierLeftForearmDL" Offset="0xAED0" />
+        <DList Name="gSoldierLeftHandDL" Offset="0xB120" />
+        <DList Name="gSoldierPelvisDL" Offset="0xB438" />
+        <DList Name="gSoldierRightThighDL" Offset="0xB5B0" />
+        <DList Name="gSoldierRightShinDL" Offset="0xB698" />
+        <DList Name="gSoldierRightFootDL" Offset="0xB988" />
+        <DList Name="gSoldierLeftThighDL" Offset="0xBAD0" />
+        <DList Name="gSoldierLeftShinDL" Offset="0xBBB8" />
+        <DList Name="gSoldierLeftFootDL" Offset="0xBEB8" />
+        <Texture Name="gSoldierSkinTLUT" OutName="soldier_skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0xC000" />
+        <Texture Name="gSoldierGeneralTLUT" OutName="soldier_general_tlut" Format="rgba16" Width="16" Height="16" Offset="0xC200" />
+        <Texture Name="gSoldierArmorStrapTex" OutName="soldier_armor_strap" Format="ci8" Width="32" Height="32" Offset="0xC400" />
+        <Texture Name="gSoldierArmorPlate1Tex" OutName="soldier_armor_plate1" Format="i8" Width="16" Height="16" Offset="0xC800" />
+        <Texture Name="gSoldierArmorEmblemTex" OutName="soldier_armor_emblem" Format="i8" Width="32" Height="32" Offset="0xC900" />
+        <Texture Name="gSoldierSkinShadowGradient2Tex" OutName="soldier_skin_shadow_gradient2" Format="ci8" Width="8" Height="8" Offset="0xCD00" />
+        <Texture Name="gSoldierShortsToLegTex" OutName="soldier_shorts_to_leg" Format="ci8" Width="16" Height="16" Offset="0xCD40" />
+        <Texture Name="gSoldierArmorTex" OutName="soldier_armor" Format="ci8" Width="8" Height="8" Offset="0xCE40" />
+        <Texture Name="gSoldierSkinShadowGradient1Tex" OutName="soldier_skin_shadow_gradient1" Format="ci8" Width="8" Height="8" Offset="0xCE80" />
+        <Texture Name="gSoldierLipsTex" OutName="soldier_lips" Format="ci8" Width="16" Height="16" Offset="0xCEC0" />
+        <Texture Name="gSoldierArmorCoatOfArmsTex" OutName="soldier_armor_coat_of_arms" Format="ci8" Width="32" Height="32" Offset="0xCFC0" />
+        <Texture Name="gSoldierArmorPlate2Tex" OutName="soldier_armor_plate2" Format="i8" Width="16" Height="8" Offset="0xD3C0" />
+        <Texture Name="gSoldierFingersTex" OutName="soldier_fingers" Format="ci8" Width="16" Height="16" Offset="0xD440" />
+        <Limb Name="gSoldierRootLimb" Type="Standard" EnumName="SOLDIER_LIMB_ROOT" Offset="0xD540" />
+        <Limb Name="gSoldierPelvisLimb" Type="Standard" EnumName="SOLDIER_LIMB_PELVIS" Offset="0xD54C" />
+        <Limb Name="gSoldierLeftThighLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_THIGH" Offset="0xD558" />
+        <Limb Name="gSoldierLeftShinLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_SHIN" Offset="0xD564" />
+        <Limb Name="gSoldierLeftFootLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_FOOT" Offset="0xD570" />
+        <Limb Name="gSoldierRightThighLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_THIGH" Offset="0xD57C" />
+        <Limb Name="gSoldierRightShinLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_SHIN" Offset="0xD588" />
+        <Limb Name="gSoldierRightFootLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_FOOT" Offset="0xD594" />
+        <Limb Name="gSoldierTorsoLimb" Type="Standard" EnumName="SOLDIER_LIMB_TORSO" Offset="0xD5A0" />
+        <Limb Name="gSoldierLeftShoulderLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_SHOULDER" Offset="0xD5AC" />
+        <Limb Name="gSoldierLeftForearmLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_FOREARM" Offset="0xD5B8" />
+        <Limb Name="gSoldierLeftHandLimb" Type="Standard" EnumName="SOLDIER_LIMB_LEFT_HAND" Offset="0xD5C4" />
+        <Limb Name="gSoldierRightShoulderLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_SHOULDER" Offset="0xD5D0" />
+        <Limb Name="gSoldierRightForearmLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_FOREARM" Offset="0xD5DC" />
+        <Limb Name="gSoldierRightHandWithSpearLimb" Type="Standard" EnumName="SOLDIER_LIMB_RIGHT_HAND_WITH_SPEAR" Offset="0xD5E8" />
+        <Limb Name="gSoldierHeadLimb" Type="Standard" EnumName="SOLDIER_LIMB_HEAD" Offset="0xD5F4" />
+        <Skeleton Name="gSoldierSkel" Type="Flex" LimbType="Standard" LimbNone="SOLDIER_LIMB_NONE" LimbMax="SOLDIER_LIMB_MAX" EnumName="SoldierLimb" Offset="0xD640" />
+        <Animation Name="gSoldierStandAndLookDownAnim" Offset="0xDC7C" /> <!-- Original name is "sdn_wait02" -->
+    </File>
+</Root>

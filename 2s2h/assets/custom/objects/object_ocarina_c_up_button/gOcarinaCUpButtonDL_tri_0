@@ -1,0 +1,29 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="32"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
+	<Triangles2 V00="3" V01="5" V02="6" Flag0="0" V10="5" V11="7" V12="6" Flag1="0"/>
+	<Triangles2 V00="6" V01="8" V02="3" Flag0="0" V10="8" V11="9" V12="3" Flag1="0"/>
+	<Triangles2 V00="10" V01="11" V02="12" Flag0="0" V10="13" V11="10" V12="12" Flag1="0"/>
+	<Triangles2 V00="12" V01="14" V02="13" Flag0="0" V10="12" V11="15" V12="14" Flag1="0"/>
+	<Triangles2 V00="14" V01="16" V02="13" Flag0="0" V10="17" V11="1" V12="18" Flag1="0"/>
+	<Triangles2 V00="18" V01="1" V02="19" Flag0="0" V10="20" V11="21" V12="22" Flag1="0"/>
+	<Triangles2 V00="22" V01="21" V02="23" Flag0="0" V10="24" V11="22" V12="23" Flag1="0"/>
+	<Triangles2 V00="24" V01="23" V02="25" Flag0="0" V10="26" V11="24" V12="25" Flag1="0"/>
+	<Triangles2 V00="25" V01="27" V02="26" Flag0="0" V10="27" V11="28" V12="26" Flag1="0"/>
+	<Triangles2 V00="28" V01="29" V02="26" Flag0="0" V10="29" V11="30" V12="26" Flag1="0"/>
+	<Triangle1 V00="30" V01="29" V02="31"/>
+	<LoadVertices Path="objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL_vtx_0" VertexBufferIndex="0" VertexOffset="32" Count="28"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="2" V12="3" Flag1="0"/>
+	<Triangles2 V00="2" V01="4" V02="3" Flag0="0" V10="0" V11="3" V12="5" Flag1="0"/>
+	<Triangles2 V00="6" V01="0" V02="5" Flag0="0" V10="6" V11="5" V12="7" Flag1="0"/>
+	<Triangles2 V00="7" V01="8" V02="6" Flag0="0" V10="8" V11="9" V12="6" Flag1="0"/>
+	<Triangles2 V00="9" V01="10" V02="6" Flag0="0" V10="9" V11="11" V12="10" Flag1="0"/>
+	<Triangles2 V00="11" V01="12" V02="10" Flag0="0" V10="12" V11="13" V12="10" Flag1="0"/>
+	<Triangles2 V00="0" V01="14" V02="1" Flag0="0" V10="15" V11="16" V12="17" Flag1="0"/>
+	<Triangles2 V00="18" V01="19" V02="20" Flag0="0" V10="18" V11="20" V12="21" Flag1="0"/>
+	<Triangles2 V00="20" V01="22" V02="21" Flag0="0" V10="21" V11="23" V12="18" Flag1="0"/>
+	<Triangles2 V00="21" V01="24" V02="23" Flag0="0" V10="21" V11="25" V12="24" Flag1="0"/>
+	<Triangles2 V00="24" V01="26" V02="23" Flag0="0" V10="23" V11="27" V12="18" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

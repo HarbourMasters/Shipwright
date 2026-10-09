@@ -1,0 +1,18 @@
+﻿<Root>
+    <File Name="object_bh" Segment="6">
+        <Animation Name="gBhFlyingAnim" Offset="0x74" /> <!-- Original name is "bh_fly" -->
+        <DList Name="gBhBodyDL" Offset="0x2B0" />
+        <DList Name="gBhRightWingToEdgeDL" Offset="0x3A0" />
+        <DList Name="gBhRightWingToBodyDL" Offset="0x450" />
+        <DList Name="gBhLeftWingToEdgeDL" Offset="0x4D8" />
+        <DList Name="gBhLeftWingToBodyDL" Offset="0x588" />
+        <Texture Name="gBhBodyTex" OutName="en_bh_body" Format="rgba16" Width="32" Height="32" Offset="0x610" />
+        <Texture Name="gBhWingTex" OutName="en_bh_wing" Format="rgba16" Width="64" Height="32" Offset="0xE10" />
+        <Limb Name="gBhBodyLimb" Type="Standard" EnumName="OBJECT_BH_LIMB_BODY" Offset="0x1E10" />
+        <Limb Name="gBhRightWingToBodyLimb" Type="Standard" EnumName="OBJECT_BH_LIMB_RIGHT_WING_TO_BODY" Offset="0x1E1C" />
+        <Limb Name="gBhRightWingToEdgeLimb" Type="Standard" EnumName="OBJECT_BH_LIMB_RIGHT_WING_TO_EDGE" Offset="0x1E28" />
+        <Limb Name="gBhLeftWingToBodyLimb" Type="Standard" EnumName="OBJECT_BH_LIMB_LEFT_WING_TO_BODY" Offset="0x1E34" />
+        <Limb Name="gBhLeftWingToEdgeLimb" Type="Standard" EnumName="OBJECT_BH_LIMB_LEFT_WING_TO_EDGE" Offset="0x1E40" />
+        <Skeleton Name="gBhSkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_BH_LIMB_NONE" LimbMax="OBJECT_BH_LIMB_MAX" EnumName="ObjectBhLimb" Offset="0x1E60" />
+    </File>
+</Root>

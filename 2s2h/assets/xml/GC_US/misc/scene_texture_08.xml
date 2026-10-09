@@ -1,0 +1,21 @@
+<Root>
+    <File Name="scene_texture_08" Segment="6">
+        <Texture Name="scene_texture_08_Tex_000000" OutName="tex_000000" Format="rgba16" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="scene_texture_08_Tex_000800" OutName="tex_000800" Format="rgba16" Width="32" Height="32" Offset="0x800"/>
+        <Texture Name="scene_texture_08_Tex_001000" OutName="tex_001000" Format="rgba16" Width="32" Height="32" Offset="0x1000"/>
+        <Texture Name="scene_texture_08_Tex_001800" OutName="tex_001800" Format="rgba16" Width="32" Height="32" Offset="0x1800"/>
+        <Texture Name="scene_texture_08_Tex_002000" OutName="tex_002000" Format="rgba16" Width="32" Height="32" Offset="0x2000"/>
+        <Texture Name="scene_texture_08_Tex_002800" OutName="tex_002800" Format="i4" Width="64" Height="64" Offset="0x2800"/>
+        <Texture Name="scene_texture_08_Tex_003000" OutName="tex_003000" Format="ia4" Width="64" Height="32" Offset="0x3000"/>
+        <Texture Name="scene_texture_08_Tex_003400" OutName="tex_003400" Format="ia8" Width="64" Height="32" Offset="0x3400"/>
+        <Texture Name="scene_texture_08_Tex_003C00" OutName="tex_003C00" Format="ia4" Width="64" Height="32" Offset="0x3C00"/>
+        <Texture Name="scene_texture_08_Tex_004000" OutName="tex_004000" Format="ia8" Width="64" Height="32" Offset="0x4000"/>
+        <Texture Name="scene_texture_08_Tex_004800" OutName="tex_004800" Format="rgba16" Width="32" Height="32" Offset="0x4800"/>
+        <Texture Name="scene_texture_08_Tex_005000" OutName="tex_005000" Format="ia4" Width="64" Height="64" Offset="0x5000"/>
+        <Texture Name="scene_texture_08_Tex_005800" OutName="tex_005800" Format="rgba16" Width="32" Height="32" Offset="0x5800"/>
+        <Texture Name="scene_texture_08_Tex_006000" OutName="tex_006000" Format="rgba16" Width="32" Height="32" Offset="0x6000"/>
+        <Texture Name="scene_texture_08_Tex_006800" OutName="tex_006800" Format="ia4" Width="64" Height="64" Offset="0x6800"/>
+        <Texture Name="scene_texture_08_Tex_007000" OutName="tex_007000" Format="rgba16" Width="32" Height="32" Offset="0x7000"/>
+        <Texture Name="scene_texture_08_Tex_007800" OutName="tex_007800" Format="rgba16" Width="32" Height="32" Offset="0x7800"/>
+    </File>
+</Root>

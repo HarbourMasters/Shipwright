@@ -1,0 +1,23 @@
+﻿<Root>
+    <File Name="object_ending_obj" Segment="6">
+        <DList Name="object_ending_obj_DL_0003D0" Offset="0x3D0" /> <!-- Original name is "lost_woods_light_u_modelT" -->
+        <DList Name="object_ending_obj_DL_0005E0" Offset="0x5E0" />
+        <Texture Name="object_ending_obj_Tex_0005E8" OutName="tex_0005E8" Format="i8" Width="32" Height="64" Offset="0x5E8" />
+        <Texture Name="object_ending_obj_Tex_000DE8" OutName="tex_000DE8" Format="i8" Width="8" Height="64" Offset="0xDE8" />
+        <Texture Name="object_ending_obj_Tex_000FE8" OutName="tex_000FE8" Format="ia8" Width="64" Height="64" Offset="0xFE8" />
+        <TextureAnimation Name="object_ending_obj_Matanimheader_001FF8" Offset="0x1FF8" />
+        <DList Name="object_ending_obj_DL_0031A0" Offset="0x31A0" /> <!-- Original name is "z2_lost_woods_end_modelT" -->
+        <DList Name="object_ending_obj_DL_003440" Offset="0x3440" /> <!-- Original name is "z2_lost_woods_end_model" -->
+        <Texture Name="object_ending_obj_Tex_003958" OutName="tex_003958" Format="ia4" Width="128" Height="64" Offset="0x3958" />
+        <Texture Name="object_ending_obj_Tex_004958" OutName="tex_004958" Format="rgba16" Width="32" Height="32" Offset="0x4958" />
+        <Texture Name="object_ending_obj_Tex_005158" OutName="tex_005158" Format="ia16" Width="16" Height="64" Offset="0x5158" />
+        <Texture Name="object_ending_obj_Tex_005958" OutName="tex_005958" Format="ia16" Width="8" Height="32" Offset="0x5958" />
+        <Texture Name="object_ending_obj_Tex_005B58" OutName="tex_005B58" Format="rgba16" Width="16" Height="16" Offset="0x5B58" />
+        <Texture Name="object_ending_obj_Tex_005D58" OutName="tex_005D58" Format="ia16" Width="32" Height="32" Offset="0x5D58" />
+        <Texture Name="object_ending_obj_Tex_006558" OutName="tex_006558" Format="ia8" Width="64" Height="64" Offset="0x6558" />
+        <Texture Name="object_ending_obj_Tex_007558" OutName="tex_007558" Format="ia8" Width="8" Height="16" Offset="0x7558" />
+        <Texture Name="object_ending_obj_Tex_0075D8" OutName="tex_0075D8" Format="i8" Width="32" Height="64" Offset="0x75D8" />
+        <Texture Name="object_ending_obj_Tex_007DD8" OutName="tex_007DD8" Format="i4" Width="64" Height="64" Offset="0x7DD8" />
+        <Texture Name="object_ending_obj_Tex_0085D8" OutName="tex_0085D8" Format="i4" Width="32" Height="32" Offset="0x85D8" />
+    </File>
+</Root>

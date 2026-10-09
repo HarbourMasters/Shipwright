@@ -1,0 +1,14 @@
+<Root>
+    <File Name="Z2_INSIDETOWER" Segment="2" Game="MM">
+        <Scene Name="Z2_INSIDETOWER" Offset="0x0"/>
+    </File>
+    <File Name="Z2_INSIDETOWER_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_INSIDETOWER_room_00" Offset="0x0"/>
+        <DList Name="Z2_INSIDETOWER_room_00DL_006B10" Offset="0x6B10"/>
+        <DList Name="Z2_INSIDETOWER_room_00DL_00C9E0" Offset="0xC9E0"/>
+    </File>
+    <File Name="Z2_INSIDETOWER_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_INSIDETOWER_room_01" Offset="0x0"/>
+        <DList Name="Z2_INSIDETOWER_room_01DL_000198" Offset="0x198"/>
+    </File>
+</Root>

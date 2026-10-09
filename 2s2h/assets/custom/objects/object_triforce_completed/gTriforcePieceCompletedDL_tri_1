@@ -1,0 +1,7 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_triforce_completed/gTriforcePieceCompletedDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="6"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<EndDisplayList/>
+</DisplayList>
+

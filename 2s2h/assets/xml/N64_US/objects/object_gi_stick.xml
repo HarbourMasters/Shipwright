@@ -1,0 +1,11 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Deku Stick -->
+    <File Name="object_gi_stick" Segment="6">
+
+        <!-- Deku Stick Display Lists -->
+        <DList Name="gGiStickDL" Offset="0x4D0" />
+    </File>
+</Root>

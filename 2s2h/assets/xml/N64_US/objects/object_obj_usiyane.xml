@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_obj_usiyane" Segment="6">
+        <DList Name="object_obj_usiyane_DL_000090" Offset="0x90" /> <!-- Original name is "z2_usiwara_modelT" -->
+        <DList Name="object_obj_usiyane_DL_000098" Offset="0x98" /> <!-- Original name is "z2_usiwara_model" -->
+        <Texture Name="object_obj_usiyane_Tex_000130" OutName="tex_000130" Format="rgba16" Width="32" Height="16" Offset="0x130" />
+        <DList Name="object_obj_usiyane_DL_000830" Offset="0x830" /> <!-- Original name is "z2_usiyane_modelT" -->
+        <DList Name="object_obj_usiyane_DL_000838" Offset="0x838" /> <!-- Original name is "z2_usiyane_model" -->
+        <Texture Name="object_obj_usiyane_TLUT_0009C8" OutName="tlut_0009C8" Format="rgba16" Width="4" Height="4" Offset="0x9C8" />
+        <Texture Name="object_obj_usiyane_Tex_0009E8" OutName="tex_0009E8" Format="ci4" Width="64" Height="64" Offset="0x9E8" />
+        <Texture Name="object_obj_usiyane_Tex_0011E8" OutName="tex_0011E8" Format="rgba16" Width="64" Height="32" Offset="0x11E8" />
+        <Collision Name="object_obj_usiyane_Colheader_0022AC" Offset="0x22AC" /> <!-- Original name is "z2_usiyane_bgdatainfo" -->
+    </File>
+</Root>

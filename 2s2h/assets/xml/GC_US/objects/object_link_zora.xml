@@ -1,0 +1,114 @@
+﻿<Root>
+    <File Name="object_link_zora" Segment="6">
+        <Texture Name="gLinkZoraEyesOpenTex" OutName="eyes_open" Format="ci8" Width="64" Height="32" Offset="0x0" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesHalfTex" OutName="eyes_half" Format="ci8" Width="64" Height="32" Offset="0x800" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesClosedTex" OutName="eyes_closed" Format="ci8" Width="64" Height="32" Offset="0x1000" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesRightTex" OutName="eyes_right" Format="ci8" Width="64" Height="32" Offset="0x1800" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesLeftTex" OutName="eyes_left" Format="ci8" Width="64" Height="32" Offset="0x2000" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesUpTex" OutName="eyes_up" Format="ci8" Width="64" Height="32" Offset="0x2800" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesDownTex" OutName="eyes_down" Format="ci8" Width="64" Height="32" Offset="0x3000" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraEyesWincingTex" OutName="eyes_wincing" Format="ci8" Width="64" Height="32" Offset="0x3800" TlutOffset="0x5200" />
+
+        <Texture Name="gLinkZoraMouthClosedTex" OutName="mouth_closed" Format="ci8" Width="32" Height="32" Offset="0x4000" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraMouthHalfTex" OutName="mouth_half" Format="ci8" Width="32" Height="32" Offset="0x4400" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraMouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="32" Offset="0x4800" TlutOffset="0x5200" />
+        <Texture Name="gLinkZoraMouthSmileTex" OutName="mouth_smile" Format="ci8" Width="32" Height="32" Offset="0x4C00" TlutOffset="0x5200" />
+
+        <Texture Name="object_link_zora_TLUT_005000" OutName="tlut_005000" Format="rgba16" Width="16" Height="16" Offset="0x5000" />
+        <Texture Name="gLinkZoraSkinTLUT" OutName="skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5200" />
+
+        <Texture Name="object_link_zora_Tex_005400" OutName="tex_005400" Format="ci8" Width="32" Height="32" Offset="0x5400" />
+        <Texture Name="object_link_zora_Tex_005800" OutName="tex_005800" Format="ci8" Width="16" Height="16" Offset="0x5800" />
+        <Texture Name="object_link_zora_Tex_005900" OutName="tex_005900" Format="ci8" Width="16" Height="16" Offset="0x5900" />
+        <Texture Name="object_link_zora_Tex_005A00" OutName="tex_005A00" Format="ci8" Width="8" Height="16" Offset="0x5A00" />
+        <Texture Name="object_link_zora_Tex_005A80" OutName="tex_005A80" Format="ci8" Width="8" Height="16" Offset="0x5A80" />
+        <Texture Name="object_link_zora_Tex_005B00" OutName="tex_005B00" Format="ci8" Width="32" Height="16" Offset="0x5B00" />
+        <Texture Name="object_link_zora_Tex_005D00" OutName="tex_005D00" Format="ci8" Width="16" Height="32" Offset="0x5D00" />
+        <Texture Name="object_link_zora_Tex_005F00" OutName="tex_005F00" Format="ci8" Width="16" Height="16" Offset="0x5F00" />
+        <Texture Name="object_link_zora_Tex_006000" OutName="tex_006000" Format="ci8" Width="16" Height="16" Offset="0x6000" />
+        <Texture Name="object_link_zora_Tex_006100" OutName="tex_006100" Format="ci8" Width="8" Height="16" Offset="0x6100" />
+        <Texture Name="object_link_zora_Tex_006180" OutName="tex_006180" Format="ci8" Width="8" Height="8" Offset="0x6180" />
+        <Texture Name="object_link_zora_Tex_0061C0" OutName="tex_0061C0" Format="ci8" Width="16" Height="16" Offset="0x61C0" />
+
+        <DList Name="gLinkZoraRightThighDL" Offset="0x9E00" />
+        <DList Name="gLinkZoraRightShinDL" Offset="0xA108" />
+        <DList Name="gLinkZoraRightFootDL" Offset="0xA370" />
+        <DList Name="gLinkZoraLeftThighDL" Offset="0xA4A0" />
+        <DList Name="gLinkZoraLeftShinDL" Offset="0xA7A8" />
+        <DList Name="gLinkZoraLeftFootDL" Offset="0xAA10" />
+        <DList Name="gLinkZoraWaistDL" Offset="0xAB40" />
+        <DList Name="gLinkZoraCollarDL" Offset="0xAD38" />
+        <DList Name="gLinkZoraTorsoDL" Offset="0xADF0" />
+        <DList Name="gLinkZoraHeadDL" Offset="0xB170" />
+        <DList Name="gLinkZoraHatDL" Offset="0xB630" />
+        <DList Name="gLinkZoraSheathDL" Offset="0xB768" />
+        <DList Name="gLinkZoraRightShoulderDL" Offset="0xB820" />
+        <DList Name="gLinkZoraRightForearmDL" Offset="0xB990" />
+        <DList Name="gLinkZoraRightHandClosedDL" Offset="0xBBE0" />
+        <DList Name="gLinkZoraLeftShoulderDL" Offset="0xBEE8" />
+        <DList Name="gLinkZoraLeftForearmDL" Offset="0xC020" />
+        <DList Name="gLinkZoraLeftHandClosedDL" Offset="0xC270" />
+
+        <Texture Name="object_link_zora_TLUT_00C578" OutName="tlut_00C578" Format="rgba16" Width="16" Height="16" Offset="0xC578" />
+        <Texture Name="object_link_zora_Tex_00C778" OutName="tex_00C778" Format="ci8" Width="16" Height="32" Offset="0xC778" />
+        <Texture Name="object_link_zora_Tex_00C978" OutName="tex_00C978" Format="ci8" Width="16" Height="16" Offset="0xC978" />
+        <DList Name="object_link_zora_DL_00CC38" Offset="0xCC38" />
+        <DList Name="object_link_zora_DL_00CDA0" Offset="0xCDA0" />
+        <DList Name="object_link_zora_DL_00E088" Offset="0xE088" />
+        <DList Name="object_link_zora_DL_00E2A0" Offset="0xE2A0" />
+        <Texture Name="object_link_zora_Tex_00E678" OutName="tex_00E678" Format="ci8" Width="16" Height="16" Offset="0xE678" />
+        <Texture Name="object_link_zora_Tex_00E778" OutName="tex_00E778" Format="ci8" Width="16" Height="16" Offset="0xE778" />
+        <Texture Name="object_link_zora_Tex_00E878" OutName="tex_00E878" Format="ci8" Width="8" Height="16" Offset="0xE878" />
+        <Texture Name="object_link_zora_Tex_00E8F8" OutName="tex_00E8F8" Format="rgba16" Width="16" Height="16" Offset="0xE8F8" />
+        <Texture Name="object_link_zora_Tex_00EAF8" OutName="tex_00EAF8" Format="rgba16" Width="16" Height="16" Offset="0xEAF8" />
+        <Texture Name="object_link_zora_Tex_00ECF8" OutName="tex_00ECF8" Format="rgba16" Width="16" Height="16" Offset="0xECF8" />
+        <Texture Name="object_link_zora_Tex_00EEF8" OutName="tex_00EEF8" Format="rgba16" Width="16" Height="32" Offset="0xEEF8" />
+        <Texture Name="object_link_zora_Tex_00F2F8" OutName="tex_00F2F8" Format="rgba16" Width="16" Height="32" Offset="0xF2F8" />
+        <DList Name="gLinkZoraRightHandOpenDL" Offset="0xFBB8" />
+        <DList Name="gLinkZoraLeftHandOpenDL" Offset="0xFDF0" />
+        <Texture Name="object_link_zora_Tex_010028" OutName="tex_010028" Format="rgba16" Width="16" Height="16" Offset="0x10028" />
+        <Texture Name="object_link_zora_Tex_010228" OutName="tex_010228" Format="rgba16" Width="16" Height="32" Offset="0x10228" />
+        <DList Name="object_link_zora_DL_010868" Offset="0x10868" />
+        <DList Name="object_link_zora_DL_010978" Offset="0x10978" />
+        <DList Name="gLinkZoraLeftHandHoldBottleDL" Offset="0x10D08" />
+        <DList Name="object_link_zora_DL_0110A8" Offset="0x110A8" />
+
+        <Array Name="object_link_zora_Vtx_011210" Count="80" Offset="0x011210">
+            <Vtx/>
+        </Array>
+        <Array Name="object_link_zora_U8_011710" Count="80" Offset="0x011710">
+            <Scalar Type="x8"/>
+        </Array>
+
+        <DList Name="object_link_zora_DL_011760" Offset="0x11760" /> <!-- Original name is "zora_thunder_modelT" -->
+        <DList Name="object_link_zora_DL_011A58" Offset="0x11A58" />
+        <Texture Name="object_link_zora_Tex_011A60" OutName="tex_011A60" Format="i8" Width="64" Height="32" Offset="0x11A60" />
+        <Texture Name="object_link_zora_Tex_012260" OutName="tex_012260" Format="i8" Width="32" Height="64" Offset="0x12260" />
+
+        <TextureAnimation Name="object_link_zora_Matanimheader_012A68" Offset="0x12A68" />
+        <TextureAnimation Name="object_link_zora_Matanimheader_012A80" Offset="0x12A80" />
+
+        <Limb Name="gLinkZoraRootLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_ROOT" Offset="0x12A90" />
+        <Limb Name="gLinkZoraWaistLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_WAIST" Offset="0x12AA0" />
+        <Limb Name="gLinkZoraLowerRootLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LOWER_ROOT" Offset="0x12AB0" />
+        <Limb Name="gLinkZoraRightThighLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_THIGH" Offset="0x12AC0" />
+        <Limb Name="gLinkZoraRightShinLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_SHIN" Offset="0x12AD0" />
+        <Limb Name="gLinkZoraRightFootLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_FOOT" Offset="0x12AE0" />
+        <Limb Name="gLinkZoraLeftThighLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_THIGH" Offset="0x12AF0" />
+        <Limb Name="gLinkZoraLeftShinLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_SHIN" Offset="0x12B00" />
+        <Limb Name="gLinkZoraLeftFootLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_FOOT" Offset="0x12B10" />
+        <Limb Name="gLinkZoraUpperRootLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_UPPER_ROOT" Offset="0x12B20" />
+        <Limb Name="gLinkZoraHeadLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_HEAD" Offset="0x12B30" />
+        <Limb Name="gLinkZoraHatLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_HAT" Offset="0x12B40" />
+        <Limb Name="gLinkZoraCollarLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_COLLAR" Offset="0x12B50" />
+        <Limb Name="gLinkZoraLeftShoulderLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_SHOULDER" Offset="0x12B60" />
+        <Limb Name="gLinkZoraLeftForearmLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_FOREARM" Offset="0x12B70" />
+        <Limb Name="gLinkZoraLeftHandLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_LEFT_HAND" Offset="0x12B80" />
+        <Limb Name="gLinkZoraRightShoulderLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_SHOULDER" Offset="0x12B90" />
+        <Limb Name="gLinkZoraRightForearmLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_FOREARM" Offset="0x12BA0" />
+        <Limb Name="gLinkZoraRightHandLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_RIGHT_HAND" Offset="0x12BB0" />
+        <Limb Name="gLinkZoraSheathLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_SHEATH" Offset="0x12BC0" />
+        <Limb Name="gLinkZoraTorsoLimb" Type="LOD" EnumName="LINK_ZORA_LIMB_TORSO" Offset="0x12BD0" />
+        <Skeleton Name="gLinkZoraSkel" Type="Flex" LimbType="LOD" LimbNone="LINK_ZORA_LIMB_NONE" LimbMax="LINK_ZORA_LIMB_MAX" EnumName="LinkZoraLimb" Offset="0x12C34" />
+    </File>
+</Root>

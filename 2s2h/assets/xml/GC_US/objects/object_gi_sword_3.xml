@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Gilded Sword -->
+    <File Name="object_gi_sword_3" Segment="6">
+
+        <!-- Gilded Sword Display Lists -->
+        <DList Name="gGiGildedSwordEmptyDL" Offset="0x9E0" />
+        <DList Name="gGiGildedSwordDL" Offset="0x9E8" />
+
+        <!-- Gilded Sword Textures -->
+        <Texture Name="gGiGildedSwordHiltTex" OutName="gi_gilded_sword_hilt" Format="rgba16" Width="16" Height="16" Offset="0xF58" />
+        <Texture Name="gGiGildedSwordSpotTex" OutName="gi_gilded_sword_spot" Format="i8" Width="8" Height="8" Offset="0x1158" />
+        <Texture Name="gGiGildedSwordBladePommelTex" OutName="gi_gilded_sword_blade_pommel" Format="i8" Width="16" Height="16" Offset="0x1198" />
+    </File>
+</Root>

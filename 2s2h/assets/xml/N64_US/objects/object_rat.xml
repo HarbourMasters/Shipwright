@@ -1,0 +1,38 @@
+﻿<Root>
+    <!-- Assets for Real Bombchus -->
+    <File Name="object_rat" Segment="6">
+        <!-- Real Bombchu Animations -->
+        <Animation Name="gRealBombchuSpotAnim" Offset="0x174" /> <!-- Original name is "rat_hakken" ("detection") -->
+        <Animation Name="gRealBombchuRunAnim" Offset="0x26C" /> <!-- Original name is "rat_run" -->
+
+        <!-- Real Bombchu Limb DisplayLists -->
+        <DList Name="gRealBombchuBodyDL" Offset="0xA50" />
+        <DList Name="gRealBombchuBackRightLegDL" Offset="0xB18" />
+        <DList Name="gRealBombchuFrontRightLegDL" Offset="0xBC8" />
+        <DList Name="gRealBombchuBackLeftLegDL" Offset="0xC78" />
+        <DList Name="gRealBombchuFrontLeftLegDL" Offset="0xD28" />
+        <DList Name="gRealBombchuTailBaseDL" Offset="0xDD8" />
+        <DList Name="gRealBombchuTailMiddleDL" Offset="0xE20" />
+        <DList Name="gRealBombchuTailEndDL" Offset="0xE90" />
+        <DList Name="gRealBombchuHeadDL" Offset="0xED8" />
+
+        <!-- Real Bombchu Textures -->
+        <Texture Name="gRealBombchuSkinTex" OutName="real_bombchu_skin" Format="rgba16" Width="16" Height="16" Offset="0x11C8" />
+        <Texture Name="gRealBombchuMouthTex" OutName="real_bombchu_mouth" Format="rgba16" Width="16" Height="16" Offset="0x13C8" />
+        <Texture Name="gRealBombchuEyeTex" OutName="real_bombchu_eye" Format="rgba16" Width="16" Height="16" Offset="0x15C8" />
+
+        <!-- Real Bombchu Limbs -->
+        <Limb Name="gRealBombchuBodyLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_BODY" Offset="0x17C8" />
+        <Limb Name="gRealBombchuHeadLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_HEAD" Offset="0x17D4" />
+        <Limb Name="gRealBombchuTailBaseLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_TAIL_BASE" Offset="0x17E0" />
+        <Limb Name="gRealBombchuTailMiddleLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_TAIL_MIDDLE" Offset="0x17EC" />
+        <Limb Name="gRealBombchuTailEndLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_TAIL_END" Offset="0x17F8" />
+        <Limb Name="gRealBombchuFrontLeftLegLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_FRONT_LEFT_LEG" Offset="0x1804" />
+        <Limb Name="gRealBombchuBackLeftLegLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_BACK_LEFT_LEG" Offset="0x1810" />
+        <Limb Name="gRealBombchuFrontRightLegLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_FRONT_RIGHT_LEG" Offset="0x181C" />
+        <Limb Name="gRealBombchuBackRightLegLimb" Type="Standard" EnumName="REAL_BOMBCHU_LIMB_BACK_RIGHT_LEG" Offset="0x1828" />
+
+        <!-- Real Bombchu Skeleton -->
+        <Skeleton Name="gRealBombchuSkel" Type="Flex" LimbType="Standard" LimbNone="REAL_BOMBCHU_LIMB_NONE" LimbMax="REAL_BOMBCHU_LIMB_MAX" EnumName="RealBombchuLimb" Offset="0x1858" />
+    </File>
+</Root>

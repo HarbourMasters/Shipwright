@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Romani's Mask -->
+    <File Name="object_gi_mask10" Segment="6">
+
+        <!-- Romani's Mask Display Lists -->
+        <DList Name="gGiRomaniMaskNoseEyeDL" Offset="0xA30" />
+        <DList Name="gGiRomaniMaskCapDL" Offset="0xB60" />
+
+        <!-- Romani's Mask Textures -->
+        <Texture Name="gGiRomaniMaskSpotsTex" OutName="gi_romani_mask_spots" Format="i8" Width="32" Height="64" Offset="0xF38" />
+        <Texture Name="gGiRomaniMaskPlainTex" OutName="gi_romani_mask_plain" Format="i8" Width="16" Height="8" Offset="0x1738" />
+        <Texture Name="gGiRomaniMaskNoseTex" OutName="gi_romani_mask_nose" Format="ia8" Width="16" Height="16" Offset="0x17B8" />
+        <Texture Name="gGiRomaniMaskEyeTex" OutName="gi_romani_mask_eye" Format="ia8" Width="32" Height="32" Offset="0x18B8" />
+    </File>
+</Root>

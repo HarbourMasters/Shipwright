@@ -1,0 +1,72 @@
+﻿<Root>
+    <!-- Assets for Octoroks -->
+    <File Name="object_okuta" Segment="6">
+        <Animation Name="gOctorokShootAnim" Offset="0x44C" /> <!-- Original name is "oc_atack" -->
+
+        <!-- Octorok Limb DisplayLists -->
+        <DList Name="gFrontRightArmBaseDL" Offset="0xDC0" />
+        <DList Name="gFrontRightArmMiddleDL" Offset="0xE70" />
+        <DList Name="gFrontRightArmEndDL" Offset="0xF28" />
+        <DList Name="gBackRightArmBaseDL" Offset="0xFD8" />
+        <DList Name="gBackRightArmMiddleDL" Offset="0x1088" />
+        <DList Name="gBackRightArmEndDL" Offset="0x1140" />
+        <DList Name="gBackLeftArmBaseDL" Offset="0x11F0" />
+        <DList Name="gBackLeftArmMiddleDL" Offset="0x12A0" />
+        <DList Name="gBackLeftArmEndDL" Offset="0x1358" />
+        <DList Name="gFrontLeftArmBaseDL" Offset="0x1408" />
+        <DList Name="gFrontLeftArmMiddleDL" Offset="0x14B8" />
+        <DList Name="gFrontLeftArmEndDL" Offset="0x1570" />
+        <DList Name="gOctorokSnoutDL" Offset="0x1620" />
+        <DList Name="gOctorokUnderEyeTrianglesDL" Offset="0x1730" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokHeadBottomDL" Offset="0x17F0" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokHeadFrontDL" Offset="0x18B0" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokHeadTopDL" Offset="0x1970" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokHeadBackDL" Offset="0x1A38" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokEyesDL" Offset="0x1B18" /> <!-- Used as part of the head displaylist -->
+        <DList Name="gOctorokHeadDL" Offset="0x1BE8" />
+        <DList Name="gOctorokBodyDL" Offset="0x1C20" />
+
+        <!-- Octorok Textures -->
+        <Texture Name="gOctorokRoughSkinTex" OutName="octorok_rough_skin" Format="rgba16" Width="16" Height="16" Offset="0x1D20" />
+        <Texture Name="gOctorokMouthTex" OutName="octorok_mouth" Format="rgba16" Width="8" Height="16" Offset="0x1F20" />
+        <Texture Name="gOctorokArmTex" OutName="octorok_arm" Format="rgba16" Width="16" Height="32" Offset="0x2020" />
+        <Texture Name="gOctorokFinTex" OutName="octorok_fin" Format="rgba16" Width="16" Height="16" Offset="0x2420" />
+        <Texture Name="gOctorokEyeTex" OutName="octorok_eye" Format="rgba16" Width="16" Height="16" Offset="0x2620" />
+        <Texture Name="gOctorokStripesTex" OutName="octorok_stripes" Format="rgba16" Width="8" Height="16" Offset="0x2820" />
+        <Texture Name="gOctorokScalesTex" OutName="octorok_scales" Format="rgba32" Width="16" Height="16" Offset="0x2920" />
+        <Texture Name="gOctorokScalesOoTTex" OutName="octorok_scales_oot" Format="rgba16" Width="16" Height="16" Offset="0x2D20" /> <!-- Unused OoT leftover -->
+        <Texture Name="gOctorokHeadBottomTex" OutName="octorok_head_bottom" Format="rgba16" Width="8" Height="8" Offset="0x2F20" />
+        <Texture Name="gOctorokShadedSkinTex" OutName="octorok_shaded_skin" Format="rgba16" Width="8" Height="8" Offset="0x2FA0" />
+
+        <!-- Octorok Projectile Texture and DisplayList -->
+        <Texture Name="gOctorokProjectileTex" OutName="octorok_projectile" Format="rgba16" Width="16" Height="16" Offset="0x3020" />
+        <DList Name="gOctorokProjectileDL" Offset="0x3250" />
+
+        <!-- Octorok Limbs -->
+        <Limb Name="gOctorokBodyLimb" Type="Standard" EnumName="OCTOROK_LIMB_BODY" Offset="0x32E0" />
+        <Limb Name="gFrontLeftArmBaseLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_LEFT_ARM_BASE" Offset="0x32EC" />
+        <Limb Name="gFrontLeftArmMiddleLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_LEFT_ARM_MIDDLE" Offset="0x32F8" />
+        <Limb Name="gFrontLeftArmEndLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_LEFT_ARM_END" Offset="0x3304" />
+        <Limb Name="gFrontRightArmBaseLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_RIGHT_ARM_BASE" Offset="0x3310" />
+        <Limb Name="gFrontRightArmMiddleLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_RIGHT_ARM_MIDDLE" Offset="0x331C" />
+        <Limb Name="gFrontRightArmEndLimb" Type="Standard" EnumName="OCTOROK_LIMB_FRONT_RIGHT_ARM_END" Offset="0x3328" />
+        <Limb Name="gBackLeftArmBaseLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_LEFT_ARM_BASE" Offset="0x3334" />
+        <Limb Name="gBackLeftArmMiddleLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_LEFT_ARM_MIDDLE" Offset="0x3340" />
+        <Limb Name="gBackLeftArmEndLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_LEFT_ARM_END" Offset="0x334C" />
+        <Limb Name="gBackRightArmBaseLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_RIGHT_ARM_BASE" Offset="0x3358" />
+        <Limb Name="gBackRightArmMiddleLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_RIGHT_ARM_MIDDLE" Offset="0x3364" />
+        <Limb Name="gBackRightArmEndLimb" Type="Standard" EnumName="OCTOROK_LIMB_BACK_RIGHT_ARM_END" Offset="0x3370" />
+        <Limb Name="gOctorokHeadLimb" Type="Standard" EnumName="OCTOROK_LIMB_HEAD" Offset="0x337C" />
+        <Limb Name="gOctorokSnoutLimb" Type="Standard" EnumName="OCTOROK_LIMB_SNOUT" Offset="0x3388" />
+
+        <!-- Octorok Skeleton -->
+        <Skeleton Name="gOctorokSkel" Type="Normal" LimbType="Standard" LimbNone="OCTOROK_LIMB_NONE" LimbMax="OCTOROK_LIMB_MAX" EnumName="OctorokLimb" Offset="0x33D0" />
+
+        <!-- Octorok Animations -->
+        <Animation Name="gOctorokDieAnim" Offset="0x3958" /> <!-- Original name is "oc_dead" -->
+        <Animation Name="gOctorokHideAnim" Offset="0x3B24" /> <!-- Original name is "oc_down" -->
+        <Animation Name="gOctorokFloatAnim" Offset="0x3EE4" /> <!-- Original name is "oc_float" -->
+        <Animation Name="gOctorokHitAnim" Offset="0x4204" /> <!-- Original name is "oc_predead" -->
+        <Animation Name="gOctorokAppearAnim" Offset="0x466C" /> <!-- Original name is "oc_up" -->
+    </File>
+</Root>

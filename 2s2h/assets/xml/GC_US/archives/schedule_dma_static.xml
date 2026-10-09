@@ -1,0 +1,28 @@
+<Root>
+    <File Name="schedule_dma_static_yar" Segment="7">
+        <Texture Name="gBombersNotebookPhotoAnjuTex" OutName="bombers_notebook_photo_anju" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="gBombersNotebookPhotoKafeiTex" OutName="bombers_notebook_photo_kafei" Format="rgba16" Width="32" Height="32" Offset="0x800" />
+        <Texture Name="gBombersNotebookPhotoCuriosityShopManTex" OutName="bombers_notebook_photo_curiosity_shop_man" Format="rgba16" Width="32" Height="32" Offset="0x1000" />
+        <Texture Name="gBombersNotebookPhotoBombShopLadyTex" OutName="bombers_notebook_photo_bomb_shop_lady" Format="rgba16" Width="32" Height="32" Offset="0x1800" />
+        <Texture Name="gBombersNotebookPhotoRomaniTex" OutName="bombers_notebook_photo_romani" Format="rgba16" Width="32" Height="32" Offset="0x2000" />
+        <Texture Name="gBombersNotebookPhotoCremiaTex" OutName="bombers_notebook_photo_cremia" Format="rgba16" Width="32" Height="32" Offset="0x2800" />
+        <Texture Name="gBombersNotebookPhotoMayorDotourTex" OutName="bombers_notebook_photo_mayor_dotour" Format="rgba16" Width="32" Height="32" Offset="0x3000" />
+        <Texture Name="gBombersNotebookPhotoMadameAromaTex" OutName="bombers_notebook_photo_madame_aroma" Format="rgba16" Width="32" Height="32" Offset="0x3800" />
+        <Texture Name="gBombersNotebookPhotoTotoTex" OutName="bombers_notebook_photo_toto" Format="rgba16" Width="32" Height="32" Offset="0x4000" />
+        <Texture Name="gBombersNotebookPhotoGormanTex" OutName="bombers_notebook_photo_gorman" Format="rgba16" Width="32" Height="32" Offset="0x4800" />
+        <Texture Name="gBombersNotebookPhotoPostmanTex" OutName="bombers_notebook_photo_postman" Format="rgba16" Width="32" Height="32" Offset="0x5000" />
+        <Texture Name="gBombersNotebookPhotoRosaSistersTex" OutName="bombers_notebook_photo_rosa_sisters" Format="rgba16" Width="32" Height="32" Offset="0x5800" />
+        <Texture Name="gBombersNotebookPhotoToiletHandTex" OutName="bombers_notebook_photo_toilet_hand" Format="rgba16" Width="32" Height="32" Offset="0x6000" />
+        <Texture Name="gBombersNotebookPhotoAnjusGrandmotherTex" OutName="bombers_notebook_photo_anjus_grandmother" Format="rgba16" Width="32" Height="32" Offset="0x6800" />
+        <Texture Name="gBombersNotebookPhotoKamaroTex" OutName="bombers_notebook_photo_kamaro" Format="rgba16" Width="32" Height="32" Offset="0x7000" />
+        <Texture Name="gBombersNotebookPhotoGrogTex" OutName="bombers_notebook_photo_grog" Format="rgba16" Width="32" Height="32" Offset="0x7800" />
+        <Texture Name="gBombersNotebookPhotoGormanBrothersTex" OutName="bombers_notebook_photo_gorman_brothers" Format="rgba16" Width="32" Height="32" Offset="0x8000" />
+        <Texture Name="gBombersNotebookPhotoShiroTex" OutName="bombers_notebook_photo_shiro" Format="rgba16" Width="32" Height="32" Offset="0x8800" />
+        <Texture Name="gBombersNotebookPhotoGuruGuruTex" OutName="bombers_notebook_photo_guru_guru" Format="rgba16" Width="32" Height="32" Offset="0x9000" />
+        <Texture Name="gBombersNotebookPhotoBombersTex" OutName="bombers_notebook_photo_bombers" Format="rgba16" Width="32" Height="32" Offset="0x9800" />
+        <Texture Name="gBombersNotebookPhotoMadameAromaBrightTex" OutName="bombers_notebook_photo_madame_aroma_bright" Format="rgba16" Width="32" Height="32" Offset="0xA000" /> <!-- Unused, slightly different pose to the used one -->
+        <Texture Name="gBombersNotebookEntryIconExclamationPointLargeTex" OutName="bombers_notebook_entry_icon_exclamation_point_large" Format="ia8" Width="32" Height="32" Offset="0xA800" /> <!-- Unused -->
+        <Texture Name="gBombersNotebookEntryIconMaskTex" OutName="bombers_notebook_entry_icon_mask" Format="ia8" Width="24" Height="28" Offset="0xAC00" />
+        <Texture Name="gBombersNotebookEntryIconRibbonTex" OutName="bombers_notebook_entry_icon_ribbon" Format="ia8" Width="32" Height="28" Offset="0xAEA0" />
+    </File>
+</Root>

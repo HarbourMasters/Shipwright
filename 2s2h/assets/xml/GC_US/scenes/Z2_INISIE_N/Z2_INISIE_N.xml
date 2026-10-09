@@ -1,0 +1,62 @@
+<Root>
+    <File Name="Z2_INISIE_N" Segment="2" Game="MM">
+        <Scene Name="Z2_INISIE_N" Offset="0x0"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_00" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_00DL_009D48" Offset="0x9D48"/>
+        <DList Name="Z2_INISIE_N_room_00DL_00EA18" Offset="0xEA18"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_01" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_01DL_006E18" Offset="0x6E18"/>
+        <DList Name="Z2_INISIE_N_room_01DL_00A4E8" Offset="0xA4E8"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_02" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_02DL_006C70" Offset="0x6C70"/>
+        <DList Name="Z2_INISIE_N_room_02DL_0076D8" Offset="0x76D8"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_03" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_03DL_007978" Offset="0x7978"/>
+        <DList Name="Z2_INISIE_N_room_03DL_00A410" Offset="0xA410"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_04" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_04DL_0050C0" Offset="0x50C0"/>
+        <DList Name="Z2_INISIE_N_room_04DL_007518" Offset="0x7518"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_05" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_05DL_000198" Offset="0x198"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_06" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_06DL_000198" Offset="0x198"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_07" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_07DL_002F38" Offset="0x2F38"/>
+        <DList Name="Z2_INISIE_N_room_07DL_003300" Offset="0x3300"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_08" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_08DL_003AD8" Offset="0x3AD8"/>
+        <DList Name="Z2_INISIE_N_room_08DL_004C38" Offset="0x4C38"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_09" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_09DL_004DD0" Offset="0x4DD0"/>
+        <DList Name="Z2_INISIE_N_room_09DL_008270" Offset="0x8270"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_10" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_10DL_0029F8" Offset="0x29F8"/>
+        <DList Name="Z2_INISIE_N_room_10DL_004A20" Offset="0x4A20"/>
+    </File>
+    <File Name="Z2_INISIE_N_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_INISIE_N_room_11" Offset="0x0"/>
+        <DList Name="Z2_INISIE_N_room_11DL_0001B8" Offset="0x1B8"/>
+    </File>
+</Root>

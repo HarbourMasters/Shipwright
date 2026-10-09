@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_mask_bigelf" Segment="10">
+        <DList Name="object_mask_bigelf_DL_0016F0" Offset="0x16F0" />
+        <Texture Name="object_mask_bigelf_TLUT_002130" OutName="tlut_002130" Format="rgba16" Width="16" Height="16" Offset="0x2130" />
+        <Texture Name="object_mask_bigelf_Tex_002330" OutName="tex_002330" Format="ci8" Width="8" Height="8" Offset="0x2330" />
+        <Texture Name="object_mask_bigelf_Tex_002370" OutName="tex_002370" Format="ci8" Width="32" Height="32" Offset="0x2370" />
+        <Texture Name="object_mask_bigelf_Tex_002770" OutName="tex_002770" Format="ci8" Width="64" Height="32" Offset="0x2770" />
+        <Texture Name="object_mask_bigelf_Tex_002F70" OutName="tex_002F70" Format="ci8" Width="16" Height="16" Offset="0x2F70" />
+        <Texture Name="object_mask_bigelf_Tex_003070" OutName="tex_003070" Format="ci8" Width="8" Height="8" Offset="0x3070" />
+        <Texture Name="object_mask_bigelf_Tex_0030B0" OutName="tex_0030B0" Format="rgba16" Width="32" Height="16" Offset="0x30B0" />
+    </File>
+</Root>

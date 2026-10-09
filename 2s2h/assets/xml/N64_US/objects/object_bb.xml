@@ -1,0 +1,47 @@
+﻿<Root>
+    <!-- Assets for red and blue Bubbles -->
+    <File Name="object_bb" Segment="6">
+        <!-- Bubble Animations -->
+        <Animation Name="gBubbleAttackAnim" Offset="0x184" /> <!-- Original name is "bb_atack" -->
+        <Animation Name="gBubblePainAnim" Offset="0x2AC" /> <!-- Original name might be "bb_damage". Unused. -->
+        <Animation Name="gBubbleFlyingAnim" Offset="0x444" /> <!-- Original name is "bb_fly" -->
+
+        <!-- Bubble Limb DisplayLimbs -->
+        <DList Name="gBubbleLeftWingWebbingDL" Offset="0xC20" />
+        <DList Name="gBubbleLeftWingBoneDL" Offset="0xCB0" />
+        <DList Name="gBubbleJawDL" Offset="0xD40" />
+        <DList Name="gBubbleCraniumDL" Offset="0xE08" />
+        <DList Name="gBubbleRightWingBoneDL" Offset="0x1100" />
+        <DList Name="gBubbleRightWingWebbingDL" Offset="0x1190" />
+
+        <!-- Bubble Textures -->
+        <Texture Name="gBubbleEyeSocketBottomTex" OutName="eye_socket_bottom" Format="rgba16" Width="16" Height="16" Offset="0x1220" />
+        <Texture Name="gBubbleNostrilTex" OutName="nostril" Format="rgba16" Width="8" Height="8" Offset="0x1420" />
+        <Texture Name="gBubbleEyeSocketTopAndJawTex" OutName="eye_socket_top_and_jaw" Format="rgba16" Width="4" Height="4" Offset="0x14A0" />
+        <Texture Name="gBubbleCraniumTopTex" OutName="cranium_top" Format="rgba16" Width="8" Height="8" Offset="0x14C0" />
+        <Texture Name="gBubbleCraniumSidesAndBackTex" OutName="cranium_sides_and_back" Format="rgba16" Width="8" Height="8" Offset="0x1540" />
+        <Texture Name="gBubbleEyeGlowTex" OutName="eye_glow" Format="rgba16" Width="8" Height="8" Offset="0x15C0" />
+        <Texture Name="gBubbleWingBoneTex" OutName="wing_bone" Format="rgba16" Width="16" Height="8" Offset="0x1640" />
+        <Texture Name="gBubbleWingWebbingTex" OutName="wing_webbing" Format="rgba16" Width="16" Height="16" Offset="0x1740" />
+
+        <!-- Bubble Limbs -->
+        <Limb Name="gBubbleRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_ROOT" Offset="0x1940" />
+        <Limb Name="gBubbleCraniumRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_CRANIUM_ROOT" Offset="0x194C" />
+        <Limb Name="gBubbleJawRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_JAW_ROOT" Offset="0x1958" />
+        <Limb Name="gBubbleJawLimb" Type="Standard" EnumName="BUBBLE_LIMB_JAW" Offset="0x1964" />
+        <Limb Name="gBubbleLeftWingRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_LEFT_WING_ROOT" Offset="0x1970" />
+        <Limb Name="gBubbleLeftWingWrapperLimb" Type="Standard" EnumName="BUBBLE_LIMB_LEFT_WING_WRAPPER" Offset="0x197C" />
+        <Limb Name="gBubbleLeftWingWebbingRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_LEFT_WING_WEBBING_ROOT" Offset="0x1988" />
+        <Limb Name="gBubbleLeftWingWebbingLimb" Type="Standard" EnumName="BUBBLE_LIMB_LEFT_WING_WEBBING" Offset="0x1994" />
+        <Limb Name="gBubbleLeftWingBoneLimb" Type="Standard" EnumName="BUBBLE_LIMB_LEFT_WING_BONE" Offset="0x19A0" />
+        <Limb Name="gBubbleRightWingRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_RIGHT_WING_ROOT" Offset="0x19AC" />
+        <Limb Name="gBubbleRightWingWrapperLimb" Type="Standard" EnumName="BUBBLE_LIMB_RIGHT_WING_WRAPPER" Offset="0x19B8" />
+        <Limb Name="gBubbleRightWingWebbingRootLimb" Type="Standard" EnumName="BUBBLE_LIMB_RIGHT_WING_WEBBING_ROOT" Offset="0x19C4" />
+        <Limb Name="gBubbleRightWingWebbingLimb" Type="Standard" EnumName="BUBBLE_LIMB_RIGHT_WING_WEBBING" Offset="0x19D0" />
+        <Limb Name="gBubbleRightWingBoneLimb" Type="Standard" EnumName="BUBBLE_LIMB_RIGHT_WING_BONE" Offset="0x19DC" />
+        <Limb Name="gBubbleCraniumLimb" Type="Standard" EnumName="BUBBLE_LIMB_CRANIUM" Offset="0x19E8" />
+
+        <!-- Bubble Skeleton -->
+        <Skeleton Name="gBubbleSkel" Type="Normal" LimbType="Standard" LimbNone="BUBBLE_LIMB_NONE" LimbMax="BUBBLE_LIMB_MAX" EnumName="BubbleLimb" Offset="0x1A30" />
+    </File>
+</Root>

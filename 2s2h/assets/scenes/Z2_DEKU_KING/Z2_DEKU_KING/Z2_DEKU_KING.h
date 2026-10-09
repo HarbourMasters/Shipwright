@@ -1,0 +1,119 @@
+#ifndef Z2_DEKU_KING_Z2_DEKU_KING_H
+#define Z2_DEKU_KING_Z2_DEKU_KING_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_DEKU_KINGCollisionHeader_00812C "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCollisionHeader_00812C"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCollisionHeader_00812C[] = dZ2_DEKU_KINGCollisionHeader_00812C;
+
+#define dZ2_DEKU_KINGCutsceneData_000140 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_000140"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_000140[] = dZ2_DEKU_KINGCutsceneData_000140;
+
+#define dZ2_DEKU_KINGCutsceneData_000960 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_000960"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_000960[] = dZ2_DEKU_KINGCutsceneData_000960;
+
+#define dZ2_DEKU_KINGCutsceneData_000B70 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_000B70"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_000B70[] = dZ2_DEKU_KINGCutsceneData_000B70;
+
+#define dZ2_DEKU_KINGCutsceneData_000DD0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_000DD0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_000DD0[] = dZ2_DEKU_KINGCutsceneData_000DD0;
+
+#define dZ2_DEKU_KINGCutsceneData_002360 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_002360"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_002360[] = dZ2_DEKU_KINGCutsceneData_002360;
+
+#define dZ2_DEKU_KINGCutsceneData_0033D0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_0033D0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_0033D0[] = dZ2_DEKU_KINGCutsceneData_0033D0;
+
+#define dZ2_DEKU_KINGCutsceneData_003C50 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_003C50"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_003C50[] = dZ2_DEKU_KINGCutsceneData_003C50;
+
+#define dZ2_DEKU_KINGTLUT_0119C0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTLUT_0119C0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTLUT_0119C0[] = dZ2_DEKU_KINGTLUT_0119C0;
+
+#define dZ2_DEKU_KINGTex_00F7A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00F7A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00F7A0[] = dZ2_DEKU_KINGTex_00F7A0;
+
+#define dZ2_DEKU_KINGTex_010DA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_010DA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_010DA0[] = dZ2_DEKU_KINGTex_010DA0;
+
+#define dZ2_DEKU_KINGTex_00B220 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00B220"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00B220[] = dZ2_DEKU_KINGTex_00B220;
+
+#define dZ2_DEKU_KINGTex_00BAA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00BAA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00BAA0[] = dZ2_DEKU_KINGTex_00BAA0;
+
+#define dZ2_DEKU_KINGTex_00BA20 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00BA20"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00BA20[] = dZ2_DEKU_KINGTex_00BA20;
+
+#define dZ2_DEKU_KINGTex_00FCA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00FCA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00FCA0[] = dZ2_DEKU_KINGTex_00FCA0;
+
+#define dZ2_DEKU_KINGTex_00D2A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00D2A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00D2A0[] = dZ2_DEKU_KINGTex_00D2A0;
+
+#define dZ2_DEKU_KINGTex_0105A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_0105A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_0105A0[] = dZ2_DEKU_KINGTex_0105A0;
+
+#define dZ2_DEKU_KINGTex_00D3A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00D3A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00D3A0[] = dZ2_DEKU_KINGTex_00D3A0;
+
+#define dZ2_DEKU_KINGTex_00F8A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00F8A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00F8A0[] = dZ2_DEKU_KINGTex_00F8A0;
+
+#define dZ2_DEKU_KINGTex_00FDA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00FDA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00FDA0[] = dZ2_DEKU_KINGTex_00FDA0;
+
+#define dZ2_DEKU_KINGTex_0101A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_0101A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_0101A0[] = dZ2_DEKU_KINGTex_0101A0;
+
+#define dZ2_DEKU_KINGTex_00AA20 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00AA20"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00AA20[] = dZ2_DEKU_KINGTex_00AA20;
+
+#define dZ2_DEKU_KINGTex_008620 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_008620"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_008620[] = dZ2_DEKU_KINGTex_008620;
+
+#define dZ2_DEKU_KINGTLUT_0119A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTLUT_0119A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTLUT_0119A0[] = dZ2_DEKU_KINGTLUT_0119A0;
+
+#define dZ2_DEKU_KINGTex_00D7A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00D7A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00D7A0[] = dZ2_DEKU_KINGTex_00D7A0;
+
+#define dZ2_DEKU_KINGTex_00E7A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00E7A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00E7A0[] = dZ2_DEKU_KINGTex_00E7A0;
+
+#define dZ2_DEKU_KINGTex_0111A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_0111A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_0111A0[] = dZ2_DEKU_KINGTex_0111A0;
+
+#define dZ2_DEKU_KINGTex_00A220 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00A220"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00A220[] = dZ2_DEKU_KINGTex_00A220;
+
+#define dZ2_DEKU_KINGTex_008E20 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_008E20"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_008E20[] = dZ2_DEKU_KINGTex_008E20;
+
+#define dZ2_DEKU_KINGTex_009220 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_009220"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_009220[] = dZ2_DEKU_KINGTex_009220;
+
+#define dZ2_DEKU_KINGTex_00C2A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00C2A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00C2A0[] = dZ2_DEKU_KINGTex_00C2A0;
+
+#define dZ2_DEKU_KINGTex_00DFA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00DFA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00DFA0[] = dZ2_DEKU_KINGTex_00DFA0;
+
+#define dZ2_DEKU_KINGTex_00BEA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00BEA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00BEA0[] = dZ2_DEKU_KINGTex_00BEA0;
+
+#define dZ2_DEKU_KINGTex_009A20 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_009A20"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_009A20[] = dZ2_DEKU_KINGTex_009A20;
+
+#define dZ2_DEKU_KINGTex_00BCA0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00BCA0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00BCA0[] = dZ2_DEKU_KINGTex_00BCA0;
+
+#define dZ2_DEKU_KINGTex_00C0A0 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGTex_00C0A0"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGTex_00C0A0[] = dZ2_DEKU_KINGTex_00C0A0;
+
+#define dZ2_DEKU_KINGCollisionHeader_00812C "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCollisionHeader_00812C"
+
+#define dZ2_DEKU_KINGCutsceneData_008258 "__OTR__scenes/nonmq/Z2_DEKU_KING/Z2_DEKU_KINGCutsceneData_008258"
+static const ALIGN_ASSET(2) char Z2_DEKU_KINGCutsceneData_008258[] = dZ2_DEKU_KINGCutsceneData_008258;
+
+#endif // Z2_DEKU_KING_Z2_DEKU_KING_H

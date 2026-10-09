@@ -1,0 +1,100 @@
+﻿<Root>
+    <!-- Interior clocktower objects including the ceiling cog, rotating corridor, organ, center cog, stone doors, and water wheel  -->
+    <File Name="object_ctower_rot" Segment="6">
+        <!-- TLUTs -->
+        <Texture Name="gClockTowerCeilingCogWoodTLUT" OutName="clocktower_ceiling_cog_wood_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gClockTowerCeilingCogWoodMetalTLUT" OutName="clocktower_ceiling_cog_wood_metal_tlut" Format="rgba16" Width="4" Height="4" Offset="0x20" />
+        <Texture Name="gClockTowerCooridorTLUT" OutName="clocktower_cooridor_tlut" Format="rgba16" Width="16" Height="16" Offset="0x40" />
+        <Texture Name="gClockTowerOrganTLUT" OutName="clocktower_organ_tlut" Format="rgba16" Width="16" Height="16" Offset="0x240" />
+        <Texture Name="gClockTowerStoneDoorTLUT" OutName="clocktower_stone_door_tlut" Format="rgba16" Width="4" Height="4" Offset="0x440" />
+
+        <!-- Textures -->
+
+        <!-- CeilingCog -->
+        <Texture Name="gClockTowerCeilingCogWoodTex" OutName="clocktower_ceiling_cog_wood" Format="ci4" Width="64" Height="64" Offset="0x460" />
+        <Texture Name="gClockTowerCeilingCogWoodMetalTex" OutName="clocktower_ceiling_cog_wood_metal" Format="ci4" Width="64" Height="64" Offset="0xC60" />
+        
+        <!-- Corridor -->
+        <Texture Name="gClockTowerCorridorStonePath1Tex" OutName="clocktower_corridor_stone_path_1" Format="ci8" Width="32" Height="32" Offset="0x1460" />
+        <Texture Name="gClockTowerCorridorStonePath2Tex" OutName="clocktower_corridor_stone_path_2" Format="ci8" Width="32" Height="32" Offset="0x1860" />
+        <Texture Name="gClockTowerCorridorStoneWallTex" OutName="clocktower_corridor_stone_wall" Format="ci8" Width="32" Height="64" Offset="0x1C60" />
+        <Texture Name="gClockTowerCorridorGrassyStoneWallTex" OutName="clocktower_corridor_grassy_stone_wall" Format="ci8" Width="32" Height="64" Offset="0x2460" />
+        <Texture Name="gClockTowerCorridorStonePillarTex" OutName="clocktower_corridor_stone_pillar" Format="ci8" Width="32" Height="64" Offset="0x2C60" />
+        <Texture Name="gClockTowerCorridorStoneCeilingTex" OutName="clocktower_corridor_stone_ceiling" Format="ci8" Width="32" Height="64" Offset="0x3460" />
+        <Texture Name="gClockTowerCorridorDirtPathTex" OutName="clocktower_corridor_dirt_path" Format="ci8" Width="32" Height="32" Offset="0x3C60" />
+        <Texture Name="gClockTowerCooridorFoliageTex" OutName="clocktower_corridor_foliage" Format="rgba16" Width="32" Height="64" Offset="0x4060" />
+        <Texture Name="gClockTowerCorridorWoodPillarTex" OutName="clocktower_corridor_wood_pillar" Format="ci8" Width="16" Height="64" Offset="0x5060" />
+        <Texture Name="gClockTowerCorridorWoodWallTex" OutName="clocktower_corridor_wood_wall" Format="ci8" Width="64" Height="32" Offset="0x5460" />
+        <Texture Name="gClockTowerCorridorGrassyCeilingTex" OutName="clocktower_corridor_grassy_ceiling" Format="ci8" Width="8" Height="64" Offset="0x5C60" />
+        <Texture Name="gClockTowerCorridorDirtTex" OutName="clocktower_corridor_dirt" Format="ci8" Width="32" Height="32" Offset="0x5E60" />
+        
+        <!-- Organ -->
+        <Texture Name="gClockTowerOrganBackTex" OutName="clocktower_organ_back" Format="ci8" Width="16" Height="128" Offset="0x6260" />
+        <Texture Name="gClockTowerOrganSeatLegsTex" OutName="clocktower_organ_seat_legs" Format="ia16" Width="32" Height="32" Offset="0x6A60" />
+        <Texture Name="gClockTowerOrganSeatCushionTex" OutName="clocktower_organ_seat_cushion" Format="ci8" Width="16" Height="16" Offset="0x7260" />
+        <Texture Name="gClockTowerOrganSeatBackTex" OutName="clocktower_organ_seat_back" Format="ia16" Width="32" Height="64" Offset="0x7360" />
+        <Texture Name="gClockTowerOrganPedalTex" OutName="clocktower_organ_pedal" Format="ia16" Width="16" Height="16" Offset="0x8360" />
+        <Texture Name="gClockTowerOrganWoodTex" OutName="clocktower_organ_wood" Format="i8" Width="32" Height="32" Offset="0x8560" />
+        <Texture Name="gClockTowerOrganMetalPiece1Tex" OutName="clocktower_organ_metal_piece_1" Format="ia8" Width="64" Height="64" Offset="0x8960" />
+        <Texture Name="gClockTowerOrganMetalPiece2Tex" OutName="clocktower_organ_metal_piece_2" Format="ia8" Width="64" Height="64" Offset="0x9960" />
+        <Texture Name="gClockTowerOrganMetalPiece3Tex" OutName="clocktower_organ_metal_piece_3" Format="ia16" Width="32" Height="32" Offset="0xA960" />
+        <Texture Name="gClockTowerOrganMetalPiece4Tex" OutName="clocktower_organ_metal_piece_4" Format="ia16" Width="32" Height="32" Offset="0xB160" />
+        <Texture Name="gClockTowerOrganMetalPiece5Tex" OutName="clocktower_organ_metal_piece_5" Format="ia16" Width="8" Height="64" Offset="0xB960" />
+        <Texture Name="gClockTowerOrganMetalPiece6Tex" OutName="clocktower_organ_metal_piece_6" Format="ia16" Width="32" Height="32" Offset="0xBD60" />
+        
+        <!-- CenterCog -->
+        <Texture Name="gClockTowerCenterCogBeamTex" OutName="clocktower_center_cog_beam" Format="rgba16" Width="32" Height="32" Offset="0xC560" />
+        <Texture Name="gClockTowerCenterCogTex" OutName="clocktower_center_cog" Format="ia8" Width="64" Height="64" Offset="0xCD60" />
+        
+        <!-- StoneDoors -->
+        <Texture Name="gClockTowerStoneDoorTex" OutName="clocktower_stone_door" Format="ci4" Width="64" Height="64" Offset="0xDD60" />
+        
+        <!-- Waterwheel -->
+        <Texture Name="gClockTowerWaterWheelWoodTex" OutName="clocktower_water_wheel_wood" Format="rgba16" Width="32" Height="32" Offset="0xE560" />
+        <Texture Name="gClockTowerWaterWheelGrassyWoodTex" OutName="clocktower_water_wheel_grassy_wood" Format="rgba16" Width="32" Height="32" Offset="0xED60" />
+        
+        <!-- Organ Pipes -->
+        <Texture Name="gClockTowerOrganPipesThinTex" OutName="clocktower_organ_pipes_thin" Format="ia4" Width="32" Height="32" Offset="0xF560" />
+        <Texture Name="gClockTowerOrganPipesThickTex" OutName="clocktower_organ_pipes_thick" Format="ia4" Width="32" Height="32" Offset="0xF760" />
+
+        <!-- Organ Keys -->
+        <!-- Keys get progressively blurrier-->
+        <Texture Name="gClockTowerOrganKeys1Tex" OutName="clocktower_organ_keys_1" Format="i4" Width="32" Height="16" Offset="0xF960" />
+        <Texture Name="gClockTowerOrganKeys2Tex" OutName="clocktower_organ_keys_2" Format="i4" Width="32" Height="16" Offset="0xFA60" />
+        <Texture Name="gClockTowerOrganKeys3Tex" OutName="clocktower_organ_keys_3" Format="i4" Width="32" Height="16" Offset="0xFB60" />
+        <Texture Name="gClockTowerOrganKeys4Tex" OutName="clocktower_organ_keys_4" Format="i4" Width="32" Height="16" Offset="0xFC60" />
+        
+        <!-- DLists and Collision -->
+
+        <!-- CeilingCog -->
+        <DList Name="gClockTowerEmpty1DL" Offset="0x10820" /> <!-- Original name is "w2_gia_modelT" (probably a mispelling of "gear") -->
+        <DList Name="gClockTowerCeilingCogDL" Offset="0x10828" /> <!-- Original name is "w2_gia_model" -->
+        
+        <!-- Corridor -->
+        <DList Name="gClockTowerCorridorFoliageDL" Offset="0x129D0" />
+        <DList Name="gClockTowerCorridorDL" Offset="0x12DA0" /> <!-- Original name is "w2_hineri_model" ("twist; spin") -->
+        <Collision Name="gClockTowerCorridorCol" Offset="0x142E8" /> <!-- Original name is "w2_hineri_bgdatainfo" -->
+        
+        <!-- Organ -->
+        <DList Name="gClockTowerOrganPipesDL" Offset="0x15F30" /> <!-- Original name is "w2_piano_modelT" -->
+        <DList Name="gClockTowerOrganDL" Offset="0x160A0" /> <!-- Original name is "w2_piano_model" -->
+        <Collision Name="gClockTowerOrganCol" Offset="0x16E70" /> <!-- Original name is "w2_piano_bgdatainfo" -->
+        
+        <!-- CenterCog -->
+        <DList Name="gClockTowerEmpty2DL" Offset="0x17010" /> <!-- Original name is "w2_shaft_modelT" -->
+        <DList Name="gClockTowerCenterCogDL" Offset="0x17018" /> <!-- Original name is "w2_shaft_model" -->
+        
+        <!-- StoneDoorMain -->
+        <DList Name="gClockTowerStoneDoorMainDL" Offset="0x17220" /> <!-- Original name is "w2_shatter_higashi_model" ("higashi" = "east") -->
+        <Collision Name="gClockTowerStoneDoorMainCol" Offset="0x17410" /> <!-- Original name is "w2_shatter_higashi_bgdatainfo" -->
+        
+        <!-- StoneDoor -->
+        <DList Name="gClockTowerStoneDoorDL" Offset="0x174E0" /> <!-- Original name is "w2_shatter_nishi_model" ("nishi" = "west") -->
+        <Collision Name="gClockTowerStoneDoorCol" Offset="0x17650" /> <!-- Original name is "w2_shatter_nishi_bgdatainfo" -->
+        
+        <!-- WaterWheel -->
+        <DList Name="gClockTowerEmpty3DL" Offset="0x18110" /> <!-- Original name is "w2_suisha_modelT" ("water wheel") -->
+        <DList Name="gClockTowerWaterWheelDL" Offset="0x18118" /> <!-- Original name is "w2_suisha_model" -->
+        <Collision Name="gClockTowerWaterWheelCol" Offset="0x18588" /> <!-- Original name is "w2_suisha_bgdatainfo" -->
+    </File>
+</Root>

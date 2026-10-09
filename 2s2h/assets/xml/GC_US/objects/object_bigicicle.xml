@@ -1,0 +1,15 @@
+﻿<Root>
+    <File Name="object_bigicicle" Segment="6">
+        <Texture Name="object_bigicicle_Tex_000000" OutName="tex_000000" Format="i4" Width="64" Height="64" Offset="0x0" />
+        <Texture Name="object_bigicicle_Tex_000800" OutName="tex_000800" Format="i4" Width="16" Height="16" Offset="0x800" />
+        <DList Name="object_bigicicle_DL_0009B0" Offset="0x9B0" /> <!-- Original name is "trr_hahen_modelT" -->
+        <DList Name="object_bigicicle_DL_000B20" Offset="0xB20" /> <!-- Original name is "trr_hibi01_modelT" ("crack; fissure") -->
+        <DList Name="object_bigicicle_DL_000D60" Offset="0xD60" /> <!-- Original name is "trr_hibi02_modelT" -->
+        <DList Name="object_bigicicle_DL_000F40" Offset="0xF40" /> <!-- Original name is "trr_hibi03_modelT" -->
+        <DList Name="object_bigicicle_DL_0014F0" Offset="0x14F0" /> <!-- Original name is "trr_inside_modelT" -->
+        <TextureAnimation Name="object_bigicicle_Matanimheader_001678" Offset="0x1678" />
+        <DList Name="object_bigicicle_DL_001D10" Offset="0x1D10" />
+        <DList Name="object_bigicicle_DL_002530" Offset="0x2530" />
+        <DList Name="object_bigicicle_DL_002C20" Offset="0x2C20" />
+    </File>
+</Root>

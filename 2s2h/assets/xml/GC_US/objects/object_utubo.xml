@@ -1,0 +1,53 @@
+﻿<Root>
+    <!-- Assets for Deep Python -->
+    <File Name="object_utubo" Segment="6">
+        <Animation Name="gDeepPythonMultiDirectionalSwayAnim" Offset="0x82C" /> <!-- Unused -->
+
+        <!-- Deep Python Limb DisplayLists -->
+        <DList Name="gDeepPythonHeadDL" Offset="0x20B0" />
+        <DList Name="gDeepPythonJawDL" Offset="0x2358" />
+        <DList Name="gDeepPythonCollarDL" Offset="0x2440" />
+        <DList Name="gDeepPythonBodySegment1DL" Offset="0x2580" />
+        <DList Name="gDeepPythonBodySegment2DL" Offset="0x2738" />
+        <DList Name="gDeepPythonBodySegment3DL" Offset="0x28A0" />
+        <DList Name="gDeepPythonBodySegment4DL" Offset="0x2A08" />
+        <DList Name="gDeepPythonBodySegment7DL" Offset="0x2B18" />
+        <DList Name="gDeepPythonBodySegment6DL" Offset="0x2C28" />
+        <DList Name="gDeepPythonBodySegment5DL" Offset="0x2D38" />
+
+        <!-- Deep Python Textures -->
+        <Texture Name="gDeepPythonHeadAndCollarTLUT" OutName="deep_python_head_and_collar_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2E48" />
+        <Texture Name="gDeepPythonBodySegment1FrontTLUT" OutName="deep_python_body_segment_1_front_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2E68" />
+        <Texture Name="gDeepPythonBodyTLUT" OutName="deep_python_body_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2E88" />
+        <Texture Name="gDeepPythonHeadAndCollarTex" OutName="deep_python_head_and_collar" Format="ci4" Width="64" Height="64" Offset="0x2EA8" />
+        <Texture Name="gDeepPythonEyeTex" OutName="deep_python_eye" Format="rgba16" Width="32" Height="32" Offset="0x36A8" />
+        <Texture Name="gDeepPythonBodySegment1FrontTex" OutName="deep_python_body_segment_1_front" Format="ci4" Width="32" Height="32" Offset="0x3EA8" />
+        <Texture Name="gDeepPythonBodyTex" OutName="deep_python_body" Format="ci4" Width="32" Height="32" Offset="0x40A8" />
+
+        <!-- Deep Python Limbs -->
+        <Limb Name="gDeepPythonRootLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_ROOT" Offset="0x42A8" />
+        <Limb Name="gDeepPythonMiddleBodyRootLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_MIDDLE_BODY_ROOT" Offset="0x42B4" />
+        <Limb Name="gDeepPythonBodySegment4Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_4" Offset="0x42C0" />
+        <Limb Name="gDeepPythonBodySegment5Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_5" Offset="0x42CC" />
+        <Limb Name="gDeepPythonBodySegment6Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_6" Offset="0x42D8" />
+        <Limb Name="gDeepPythonBodySegment7Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_7" Offset="0x42E4" />
+        <Limb Name="gDeepPythonBodySegment3Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_3" Offset="0x42F0" />
+        <Limb Name="gDeepPythonUpperBodyRootLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_UPPER_BODY_ROOT" Offset="0x42FC" />
+        <Limb Name="gDeepPythonBodySegment2Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_2" Offset="0x4308" />
+        <Limb Name="gDeepPythonBodySegment1Limb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_BODY_SEGMENT_1" Offset="0x4314" />
+        <Limb Name="gDeepPythonHeadAndCollarRootLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_HEAD_AND_COLLAR_ROOT" Offset="0x4320" />
+        <Limb Name="gDeepPythonCollarLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_COLLAR" Offset="0x432C" />
+        <Limb Name="gDeepPythonHeadLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_HEAD" Offset="0x4338" />
+        <Limb Name="gDeepPythonJawRootLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_JAW_ROOT" Offset="0x4344" />
+        <Limb Name="gDeepPythonJawLimb" Type="Standard" EnumName="DEEP_PYTHON_LIMB_JAW" Offset="0x4350" />
+
+        <!-- Deep Python Skeleton -->
+        <Skeleton Name="gDeepPythonSkel" Type="Flex" LimbType="Standard" LimbNone="DEEP_PYTHON_LIMB_NONE" LimbMax="DEEP_PYTHON_LIMB_MAX" EnumName="DeepPythonLimb" Offset="0x4398" />
+
+        <!-- Deep Python Animations -->
+        <Animation Name="gDeepPythonUnusedSideSwayAnim" Offset="0x4518" /> <!-- Unused duplicate of gDeepPythonSmallSideSwayAnim -->
+        <Animation Name="gDeepPythonVerticalSwayAnim" Offset="0x4740" /> <!-- Referenced by En_Dragon, but never actually used in the final game. -->
+        <Animation Name="gDeepPythonSmallSideSwayAnim" Offset="0x48B8" /> <!-- Original name might be "utubo_wait" -->
+        <Animation Name="gDeepPythonLargeSideSwayAnim" Offset="0x4ABC" /> <!-- Original name might be "utubo_yoko" ("side-to-side") -->
+    </File>
+</Root>

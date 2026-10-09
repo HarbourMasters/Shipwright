@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_yukiyama" Segment="6">
+        <DList Name="object_yukiyama_DL_001250" Offset="0x1250" /> <!-- Original name is "z2_10yukiyamanomura3_modelT" -->
+        <DList Name="object_yukiyama_DL_0013A8" Offset="0x13A8" /> <!-- Original name is "z2_10yukiyamanomura3_model" -->
+        <Texture Name="object_yukiyama_Tex_001A60" OutName="tex_001A60" Format="ia16" Width="32" Height="8" Offset="0x1A60" />
+        <Texture Name="object_yukiyama_Tex_001C60" OutName="tex_001C60" Format="i8" Width="32" Height="128" Offset="0x1C60" />
+        <Texture Name="object_yukiyama_Tex_002C60" OutName="tex_002C60" Format="rgba16" Width="16" Height="128" Offset="0x2C60" />
+        <Texture Name="object_yukiyama_Tex_003C60" OutName="tex_003C60" Format="i4" Width="64" Height="64" Offset="0x3C60" />
+        <Texture Name="object_yukiyama_Tex_004460" OutName="tex_004460" Format="rgba16" Width="16" Height="64" Offset="0x4460" />
+        <Texture Name="object_yukiyama_Tex_004C60" OutName="tex_004C60" Format="i8" Width="32" Height="32" Offset="0x4C60" />
+        <Texture Name="object_yukiyama_Tex_005060" OutName="tex_005060" Format="rgba16" Width="32" Height="32" Offset="0x5060" />
+        <Texture Name="object_yukiyama_Tex_005860" OutName="tex_005860" Format="rgba16" Width="32" Height="32" Offset="0x5860" />
+        <Texture Name="object_yukiyama_Tex_006060" OutName="tex_006060" Format="rgba16" Width="32" Height="32" Offset="0x6060" />
+        <TextureAnimation Name="object_yukiyama_Matanimheader_006868" Offset="0x6868" />
+    </File>
+</Root>

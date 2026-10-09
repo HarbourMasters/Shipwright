@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_maruta" Segment="6">
+        <Texture Name="object_maruta_Tex_000000" OutName="tex_000000" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="object_maruta_Tex_000800" OutName="tex_000800" Format="rgba16" Width="32" Height="32" Offset="0x800" />
+        <Texture Name="object_maruta_Tex_001000" OutName="tex_001000" Format="rgba16" Width="32" Height="32" Offset="0x1000" />
+        <DList Name="object_maruta_DL_002220" Offset="0x2220" /> <!-- Original name is "parts_1_model" -->
+        <DList Name="object_maruta_DL_0023D0" Offset="0x23D0" /> <!-- Original name is "parts_2_model" -->
+        <DList Name="object_maruta_DL_002568" Offset="0x2568" /> <!-- Original name is "parts_3_model" -->
+        <DList Name="object_maruta_DL_002660" Offset="0x2660" /> <!-- Original name is "parts_4_model" -->
+        <DList Name="object_maruta_DL_002758" Offset="0x2758" /> <!-- Original name is "parts_5_model" -->
+        <DList Name="object_maruta_DL_002850" Offset="0x2850" /> <!-- Original name is "parts_6_model" -->
+        <DList Name="object_maruta_DL_002948" Offset="0x2948" /> <!-- Original name is "parts_7_model" -->
+        <DList Name="object_maruta_DL_002AE0" Offset="0x2AE0" /> <!-- Original name is "parts_8_model" -->
+        <DList Name="object_maruta_DL_002EC0" Offset="0x2EC0" /> <!-- Original name is "kiretenaimaruta_model" -->
+    </File>
+</Root>

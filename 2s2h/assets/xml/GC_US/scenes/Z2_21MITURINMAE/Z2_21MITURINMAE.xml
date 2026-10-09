@@ -1,0 +1,12 @@
+<Root>
+    <File Name="Z2_21MITURINMAE" Segment="2" Game="MM">
+        <Scene Name="Z2_21MITURINMAE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_21MITURINMAE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_21MITURINMAE_room_00" Offset="0x0"/>
+        <DList Name="Z2_21MITURINMAE_room_00DL_00FB30" Offset="0xFB30"/>
+        <DList Name="Z2_21MITURINMAE_room_00DL_000AC0" Offset="0xAC0"/>
+        <DList Name="Z2_21MITURINMAE_room_00DL_00FA68" Offset="0xFA68"/>
+        <DList Name="Z2_21MITURINMAE_room_00DL_00FBF8" Offset="0xFBF8"/>
+    </File>
+</Root>

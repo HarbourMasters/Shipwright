@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ovl_En_Holl" BaseAddress="0x80899960" RangeStart="0x0BF0" RangeEnd="0x0C58">
+        <Array Name="gEnHollCentralPlaneVtx" Count="4" Offset="0x0BF0">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gEnHollCentralPlaneDL" Offset="0x0C30"/> <!-- Original name might be "holl" or "opaque_holl" -->
+    </File>
+</Root>

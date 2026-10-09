@@ -1,0 +1,94 @@
+﻿<Root>
+    <!-- Object file for Tingle -->
+    <File Name="object_bal" Segment="6">
+
+        <!-- Animations 1 -->
+        <Animation Name="gTingleFloatIdleAnim" Offset="0x5FC" /> <!-- Original name is "bal_fly"-->
+        <Animation Name="gTingleFallAnim" Offset="0x840" /> <!-- Original name is "bal_fly2"-->
+        <Animation Name="gTingleSpinAnim" Offset="0xC78" /> <!-- Original name is "bal_kaiten" ("rotation; revolution; turn; spin​") -->
+        <Animation Name="gTingleFloatThrowConfettiAnim" Offset="0x1804" /> <!-- Original name is "bal_kami" ("paper​")-->
+
+        <!-- Model Pieces -->
+        <DList Name="gTinglePelvisDL" Offset="0x4000" />
+        <DList Name="gTingleLeftFootDL" Offset="0x4108" />
+        <DList Name="gTingleLeftShinDL" Offset="0x41E8" />
+        <DList Name="gTingleLeftThighDL" Offset="0x42A8" />
+        <DList Name="gTingleRightFootDL" Offset="0x4368" />
+        <DList Name="gTingleRightShinDL" Offset="0x4448" />
+        <DList Name="gTingleRightThighDL" Offset="0x4508" />
+        <DList Name="gTingleHeadDL" Offset="0x45C8" />
+        <DList Name="gTingleTorsoDL" Offset="0x4980" />
+        <DList Name="gTingleLeftHandDL" Offset="0x4BA0" />
+        <DList Name="gTingleMapDL" Offset="0x4CA0" />
+        <DList Name="gTingleLeftForearmDL" Offset="0x4D58" />
+        <DList Name="gTingleLeftUpperArmDL" Offset="0x4E40" />
+        <DList Name="gTingleRightHandDL" Offset="0x4F00" />
+        <DList Name="gTinglePenDL" Offset="0x5000" />
+        <DList Name="gTingleRightForearmDL" Offset="0x50F8" />
+        <DList Name="gTingleRightUpperArmDL" Offset="0x51E0" />
+        <DList Name="gTingleBalloonDL" Offset="0x52A0" />
+
+        <!-- Textures -->
+        <Texture Name="gTingleMapTLUT" OutName="tingle_map_tlut" Format="rgba16" Width="4" Height="4" Offset="0x53B0" />
+        <Texture Name="gTingleBriefsTex" OutName="tingle_briefs" Format="rgba16" Width="16" Height="16" Offset="0x53D0" />
+        <Texture Name="gTingleTopFrontTex" OutName="tingle_top" Format="rgba16" Width="32" Height="32" Offset="0x55D0" />
+        <Texture Name="gTingleBalloonTex" OutName="tingle_balloon" Format="rgba16" Width="16" Height="16" Offset="0x5DD0" />
+        <Texture Name="gTingleBackpackTex" OutName="tingle_backpack" Format="rgba16" Width="8" Height="8" Offset="0x5FD0" />
+        <Texture Name="gTingleEyeOpenTex" OutName="tingle_eye_open" Format="rgba16" Width="32" Height="64" Offset="0x6050" />
+        <Texture Name="gTingleBodysuitTex" OutName="tingle_bodysuit" Format="rgba16" Width="8" Height="8" Offset="0x7050" />
+        <Texture Name="gTingleNostrilTex" OutName="tingle_nostril" Format="rgba16" Width="16" Height="16" Offset="0x70D0" />
+        <Texture Name="gTingleMouthTex" OutName="tingle_mouth" Format="rgba16" Width="64" Height="32" Offset="0x72D0" />
+        <Texture Name="gTingleNoseSideTex" OutName="tingle_nose" Format="rgba16" Width="16" Height="32" Offset="0x82D0" />
+        <Texture Name="gTingleHandTex" OutName="tingle_hand" Format="rgba16" Width="32" Height="16" Offset="0x86D0" />
+        <Texture Name="gTinglePenTopTex" OutName="tingle_pen_top" Format="rgba16" Width="16" Height="16" Offset="0x8AD0" />
+        <Texture Name="gTingleMapTex" OutName="tingle_map" Format="ci4" Width="64" Height="64" Offset="0x8CD0" />
+        <Texture Name="gTingleEyeClosedTex" OutName="tingle_eye_closed" Format="rgba16" Width="32" Height="64" Offset="0x94D0" />
+
+        <!-- Skeleton -->
+        <Limb Name="gTingleRootLimb" Type="Standard" EnumName="TINGLE_LIMB_ROOT" Offset="0xA4D0" />
+        <Limb Name="gTinglePelvisLimb" Type="Standard" EnumName="TINGLE_LIMB_PELVIS" Offset="0xA4DC" />
+        <Limb Name="gTingleUpperBodyRootLimb" Type="Standard" EnumName="TINGLE_LIMB_UPPER_BODY_ROOT" Offset="0xA4E8" />
+        <Limb Name="gTingleUpperBodyWrapperLimb" Type="Standard" EnumName="TINGLE_LIMB_UPPER_BODY_WRAPPER" Offset="0xA4F4" />
+        <Limb Name="gTingleBalloonRootLimb" Type="Standard" EnumName="TINGLE_LIMB_BALLOON_ROOT" Offset="0xA500" />
+        <Limb Name="gTingleBalloonLimb" Type="Standard" EnumName="TINGLE_LIMB_BALLOON" Offset="0xA50C" />
+        <Limb Name="gTingleRightArmRootLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_ARM_ROOT" Offset="0xA518" />
+        <Limb Name="gTingleRightArmWrapperLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_ARM_WRAPPER" Offset="0xA524" />
+        <Limb Name="gTingleRightUpperArmLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_UPPER_ARM" Offset="0xA530" />
+        <Limb Name="gTingleRightForearmLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_FOREARM" Offset="0xA53C" />
+        <Limb Name="gTingleRightHandRootLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_HAND_ROOT" Offset="0xA548" />
+        <Limb Name="gTingleRightHandLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_HAND" Offset="0xA554" />
+        <Limb Name="gTingleHeldPenLimb" Type="Standard" EnumName="TINGLE_LIMB_HELD_PEN" Offset="0xA560" />
+        <Limb Name="gTingleLeftArmRootLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_ARM_ROOT" Offset="0xA56C" />
+        <Limb Name="gTingleLeftArmWrapperLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_ARM_WRAPPER" Offset="0xA578" />
+        <Limb Name="gTingleLeftUpperArmLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_UPPER_ARM" Offset="0xA584" />
+        <Limb Name="gTingleLeftForearmLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_FOREARM" Offset="0xA590" />
+        <Limb Name="gTingleLeftHandRootLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_HAND_ROOT" Offset="0xA59C" />
+        <Limb Name="gTingleLeftHandLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_HAND" Offset="0xA5A8" />
+        <Limb Name="gTingleHeldMapLimb" Type="Standard" EnumName="TINGLE_LIMB_HELD_MAP" Offset="0xA5B4" />
+        <Limb Name="gTingleTorsoLimb" Type="Standard" EnumName="TINGLE_LIMB_TORSO" Offset="0xA5C0" />
+        <Limb Name="gTingleHeadLimb" Type="Standard" EnumName="TINGLE_LIMB_HEAD" Offset="0xA5CC" />
+        <Limb Name="gTingleRightLegRootLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_LEG_ROOT" Offset="0xA5D8" /> 
+        <Limb Name="gTingleRightThighLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_THIGH" Offset="0xA5E4" />
+        <Limb Name="gTingleRightLowerLegRootLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_LOWER_LEG_ROOT" Offset="0xA5F0" />
+        <Limb Name="gTingleRightShinLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_SHIN" Offset="0xA5FC" />
+        <Limb Name="gTingleRightFootLimb" Type="Standard" EnumName="TINGLE_LIMB_RIGHT_FOOT" Offset="0xA608" />
+        <Limb Name="gTingleLeftLegRootLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_LEG_ROOT" Offset="0xA614" />
+        <Limb Name="gTingleLeftThighLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_THIGH" Offset="0xA620" />
+        <Limb Name="gTingleLeftLowerLegRootLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_LOWER_LEG_ROOT" Offset="0xA62C" />
+        <Limb Name="gTingleLeftShinLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_SHIN" Offset="0xA638" />
+        <Limb Name="gTingleLeftFootLimb" Type="Standard" EnumName="TINGLE_LIMB_LEFT_FOOT" Offset="0xA644" />
+        <Skeleton Name="gTingleSkel" Type="Flex" LimbType="Standard" LimbNone="TINGLE_LIMB_NONE" LimbMax="TINGLE_LIMB_MAX" EnumName="TingleLimb" Offset="0xA6D0" />
+
+        <!-- Animations 2 -->
+        <Animation Name="gTingleLandAnim" Offset="0xA7DC" /> <!-- Original name is "bal_put"-->
+        <Animation Name="gTingleTwistAnim" Offset="0xB1E8" /> <!-- Original name is "bal_talk" -->
+        <Animation Name="gTingleTalkAnim" Offset="0xB604" /> <!-- Original name is "bal_talk2" -->
+        <Animation Name="gTingleThrowConfettiAnim" Offset="0xC498" /> <!-- Original name is "bal_talk3" -->
+        <Animation Name="gTingleHappyDanceAnim" Offset="0xC8D8" /> <!-- Original name is "bal_talk4" -->
+        <Animation Name="gTingleFloatHideFaceAnim" Offset="0xCB78" /> <!-- Original name is "bal_tereru" ("to be shy; to be bashful") -->
+        <Animation Name="gTingleIdleAnim" Offset="0xD530" /> <!-- Original name is "bal_wait" -->
+		
+        <!-- Misc. -->
+        <DList Name="gTingleConfettiDL" Offset="0xD5A0" /> <!-- Original name is "bal_cube32_model" -->
+    </File>
+</Root>

@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_fz" Segment="6">
+        <DList Name="object_fz_DL_001130" Offset="0x1130" />
+        <DList Name="object_fz_DL_0021A0" Offset="0x21A0" />
+        <DList Name="object_fz_DL_002CA0" Offset="0x2CA0" />
+        <Texture Name="object_fz_Tex_002E70" OutName="tex_002E70" Format="i4" Width="32" Height="32" Offset="0x2E70" />
+        <DList Name="object_fz_DL_0030A0" Offset="0x30A0" />
+        <DList Name="object_fz_DL_003158" Offset="0x3158" />
+        <DList Name="object_fz_DL_003260" Offset="0x3260" />
+        <DList Name="object_fz_DL_0033F0" Offset="0x33F0" />
+    </File>
+</Root>

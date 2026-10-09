@@ -1,0 +1,223 @@
+<Root>
+    <File Name="icon_item_static_yar" Segment="8">
+        <!-- Item icons -->
+        <Texture Name="gItemIconOcarinaOfTimeTex" OutName="ocarina_of_time_icon" Format="rgba32" Width="32" Height="32" Offset="0x0000"/>
+        <Texture Name="gItemIconBowTex" OutName="bow_icon" Format="rgba32" Width="32" Height="32" Offset="0x1000"/>
+        <Texture Name="gItemIconFireArrowTex" OutName="fire_arrow_icon" Format="rgba32" Width="32" Height="32" Offset="0x2000" />
+        <Texture Name="gItemIconIceArrowTex" OutName="ice_arrow_icon" Format="rgba32" Width="32" Height="32" Offset="0x3000" />
+        <Texture Name="gItemIconLightArrowTex" OutName="light_arrow_icon" Format="rgba32" Width="32" Height="32" Offset="0x4000" />
+        <Texture Name="gItemIconFairyOcarinaTex" OutName="fairy_ocarina_icon" Format="rgba32" Width="32" Height="32" Offset="0x5000" />
+        <Texture Name="gItemIconBombTex" OutName="bomb_icon" Format="rgba32" Width="32" Height="32" Offset="0x6000" />
+        <Texture Name="gItemIconBombchuTex" OutName="bombchu_icon" Format="rgba32" Width="32" Height="32" Offset="0x7000" />
+        <Texture Name="gItemIconDekuStickTex" OutName="deku_stick_icon" Format="rgba32" Width="32" Height="32" Offset="0x8000" />
+        <Texture Name="gItemIconDekuNutTex" OutName="deku_nut_icon" Format="rgba32" Width="32" Height="32" Offset="0x9000" />
+        <Texture Name="gItemIconMagicBeansTex" OutName="magic_beans_icon" Format="rgba32" Width="32" Height="32" Offset="0xA000" />
+        <Texture Name="gItemIconSlingshotTex" OutName="slingshot_icon" Format="rgba32" Width="32" Height="32" Offset="0xB000" />
+        <Texture Name="gItemIconPowderKegTex" OutName="powder_keg_icon" Format="rgba32" Width="32" Height="32" Offset="0xC000" />
+        <Texture Name="gItemIconPictographBoxTex" OutName="picto_box_icon" Format="rgba32" Width="32" Height="32" Offset="0xD000" />
+        <Texture Name="gItemIconLensofTruthTex" OutName="lens_of_truth_icon" Format="rgba32" Width="32" Height="32" Offset="0xE000" />
+        <Texture Name="gItemIconHookshotTex" OutName="hookshot_icon" Format="rgba32" Width="32" Height="32" Offset="0xF000" />
+        <Texture Name="gItemIconGreatFairysSwordTex" OutName="great_fairys_sword_icon" Format="rgba32" Width="32" Height="32" Offset="0x10000" />
+        <!-- Visually looks like OoT's Hookshot Icon -->
+        <Texture Name="gItemIconLongshotTex" OutName="longshot_icon" Format="rgba32" Width="32" Height="32" Offset="0x11000" />
+
+        <!-- Bottled item icons -->
+        <Texture Name="gItemIconEmptyBottleTex" OutName="empty_bottle_icon" Format="rgba32" Width="32" Height="32" Offset="0x12000" />
+        <Texture Name="gItemIconRedPotionTex" OutName="red_potion_icon" Format="rgba32" Width="32" Height="32" Offset="0x13000" />
+        <Texture Name="gItemIconGreenPotionTex" OutName="green_potion_icon" Format="rgba32" Width="32" Height="32" Offset="0x14000" />
+        <Texture Name="gItemIconBluePotionTex" OutName="blue_potion_icon" Format="rgba32" Width="32" Height="32" Offset="0x15000" />
+        <Texture Name="gItemIconBottledFairyTex" OutName="bottled_fairy_icon" Format="rgba32" Width="32" Height="32" Offset="0x16000" />
+        <Texture Name="gItemIconBottledDekuPrincessTex" OutName="bottled_deku_princess_icon" Format="rgba32" Width="32" Height="32" Offset="0x17000" />
+        <Texture Name="gItemIconBottledFullMilkTex" OutName="bottled_full_milk_icon" Format="rgba32" Width="32" Height="32" Offset="0x18000" />
+        <Texture Name="gItemIconBottledHalfMilkTex" OutName="bottled_half_milk_icon" Format="rgba32" Width="32" Height="32" Offset="0x19000" />
+        <Texture Name="gItemIconBottledFishTex" OutName="bottled_fish_icon" Format="rgba32" Width="32" Height="32" Offset="0x1A000" />
+        <Texture Name="gItemIconBottledBugTex" OutName="bottled_bug_icon" Format="rgba32" Width="32" Height="32" Offset="0x1B000" />
+        <Texture Name="gItemIconBottledBlueFireTex" OutName="bottled_blue_fire_icon" Format="rgba32" Width="32" Height="32" Offset="0x1C000" />
+        <Texture Name="gItemIconBottledPoeTex" OutName="bottled_poe_icon" Format="rgba32" Width="32" Height="32" Offset="0x1D000" />
+        <Texture Name="gItemIconBottledBigPoeTex" OutName="bottled_big_poe_icon" Format="rgba32" Width="32" Height="32" Offset="0x1E000" />
+        <Texture Name="gItemIconSpringWaterTex" OutName="spring_water_icon" Format="rgba32" Width="32" Height="32" Offset="0x1F000" />
+        <Texture Name="gItemIconHotSpringWaterTex" OutName="hot_spring_water_icon" Format="rgba32" Width="32" Height="32" Offset="0x20000" />
+        <Texture Name="gItemIconBottledZoraEggTex" OutName="bottled_zora_egg_icon" Format="rgba32" Width="32" Height="32" Offset="0x21000" />
+        <Texture Name="gItemIconBottledGoldDustTex" OutName="bottled_gold_dust_icon" Format="rgba32" Width="32" Height="32" Offset="0x22000" />
+        <Texture Name="gItemIconBottledMushroomTex" OutName="bottled_mushroom_icon" Format="rgba32" Width="32" Height="32" Offset="0x23000" />
+        <Texture Name="gItemIconBottledSeahorseTex" OutName="bottled_seahorse_icon" Format="rgba32" Width="32" Height="32" Offset="0x24000" />
+        <Texture Name="gItemIconChateauRomaniTex" OutName="chateau_romani_icon" Format="rgba32" Width="32" Height="32" Offset="0x25000" />
+        <Texture Name="gItemIconBottledHylianLoachTex" OutName="bottled_hylian_loach_icon" Format="rgba32" Width="32" Height="32" Offset="0x26000" />
+        <!-- Identical to gItemIconEmptyBottleTex -->
+        <Texture Name="gItemIconEmptyBottle2Tex" OutName="empty_bottle_2_icon" Format="rgba32" Width="32" Height="32" Offset="0x27000" />
+
+        <!-- Trade Quest icons -->
+        <Texture Name="gItemIconMoonsTearTex" OutName="moons_tear_icon" Format="rgba32" Width="32" Height="32" Offset="0x28000" />
+        <Texture Name="gItemIconLandDeedTex" OutName="land_deed_icon" Format="rgba32" Width="32" Height="32" Offset="0x29000" />
+        <Texture Name="gItemIconSwampDeedTex" OutName="swamp_deed_icon" Format="rgba32" Width="32" Height="32" Offset="0x2A000" />
+        <Texture Name="gItemIconMountainDeedTex" OutName="mountain_deed_icon" Format="rgba32" Width="32" Height="32" Offset="0x2B000" />
+        <Texture Name="gItemIconOceanDeedTex" OutName="ocean_deed_icon" Format="rgba32" Width="32" Height="32" Offset="0x2C000" />
+        <Texture Name="gItemIconRoomKeyTex" OutName="room_key_icon" Format="rgba32" Width="32" Height="32" Offset="0x2D000" />
+        <Texture Name="gItemIconLetterToMamaTex" OutName="letter_to_mama_icon" Format="rgba32" Width="32" Height="32" Offset="0x2E000" />
+        <Texture Name="gItemIconLetterToKafeiTex" OutName="letter_to_kafei_icon" Format="rgba32" Width="32" Height="32" Offset="0x2F000" />
+        <Texture Name="gItemIconPendantOfMemoriesTex" OutName="pendant_of_memories_icon" Format="rgba32" Width="32" Height="32" Offset="0x30000" />
+
+        <Texture Name="gItemIconTingleMapTex" OutName="tingle_map_icon" Format="rgba32" Width="32" Height="32" Offset="0x31000" />
+
+        <!-- Mask icons -->
+        <Texture Name="gItemIconDekuMaskTex" OutName="deku_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x32000" />
+        <Texture Name="gItemIconGoronMaskTex" OutName="goron_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x33000" />
+        <Texture Name="gItemIconZoraMaskTex" OutName="zora_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x34000" />
+        <Texture Name="gItemIconFierceDeityMaskTex" OutName="fierce_deity_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x35000" />
+        <Texture Name="gItemIconMaskOfTruthTex" OutName="mask_of_truth_icon" Format="rgba32" Width="32" Height="32" Offset="0x36000" />
+        <Texture Name="gItemIconKafeisMaskTex" OutName="kafeis_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x37000" />
+        <Texture Name="gItemIconAllNightMaskTex" OutName="all_night_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x38000" />
+        <Texture Name="gItemIconBunnyHoodTex" OutName="bunny_hood_icon" Format="rgba32" Width="32" Height="32" Offset="0x39000" />
+        <Texture Name="gItemIconKeatonMaskTex" OutName="keaton_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x3A000" />
+        <Texture Name="gItemIconGaroMaskTex" OutName="garo_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x3B000" />
+        <Texture Name="gItemIconRomaniMaskTex" OutName="romani_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x3C000" />
+        <Texture Name="gItemIconCircusLeaderMaskTex" OutName="circus_leader_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x3D000" />
+        <Texture Name="gItemIconPostmansHatTex" OutName="postmans_hat_icon" Format="rgba32" Width="32" Height="32" Offset="0x3E000" />
+        <Texture Name="gItemIconCouplesMaskTex" OutName="couples_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x3F000" />
+        <Texture Name="gItemIconGreatFairyMaskTex" OutName="great_fairy_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x40000" />
+        <Texture Name="gItemIconGibdoMaskTex" OutName="gibdo_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x41000" />
+        <Texture Name="gItemIconDonGeroMaskTex" OutName="don_gero_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x42000" />
+        <Texture Name="gItemIconKamaroMaskTex" OutName="kamaro_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x43000" />
+        <Texture Name="gItemIconCaptainsHatTex" OutName="captains_hat_icon" Format="rgba32" Width="32" Height="32" Offset="0x44000" />
+        <Texture Name="gItemIconStoneMaskTex" OutName="stone_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x45000" />
+        <Texture Name="gItemIconBremenMaskTex" OutName="bremen_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x46000" />
+        <Texture Name="gItemIconBlastMaskTex" OutName="blast_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x47000" />
+        <Texture Name="gItemIconMaskOfScentsTex" OutName="mask_of_scents_icon" Format="rgba32" Width="32" Height="32" Offset="0x48000" />
+        <Texture Name="gItemIconGiantsMaskTex" OutName="giants_mask_icon" Format="rgba32" Width="32" Height="32" Offset="0x49000" />
+
+        <!-- Upgrads/Misc icons -->
+        <Texture Name="gItemIconBowFireTex" OutName="bow_fire_icon" Format="rgba32" Width="32" Height="32" Offset="0x4A000" />
+        <Texture Name="gItemIconBowIceTex" OutName="bow_ice_icon" Format="rgba32" Width="32" Height="32" Offset="0x4B000" />
+        <Texture Name="gItemIconBowLightTex" OutName="bow_light_icon" Format="rgba32" Width="32" Height="32" Offset="0x4C000" />
+        <Texture Name="gItemIconKokiriSwordTex" OutName="kokiri_sword_icon" Format="rgba32" Width="32" Height="32" Offset="0x4D000" />
+        <Texture Name="gItemIconRazorSwordTex" OutName="razor_sword_icon" Format="rgba32" Width="32" Height="32" Offset="0x4E000" />
+        <Texture Name="gItemIconGildedSwordTex" OutName="gilded_sword_icon" Format="rgba32" Width="32" Height="32" Offset="0x4F000" />
+        <Texture Name="gItemIconFierceDeitySwordTex" OutName="fierce_deity_sword_icon" Format="rgba32" Width="32" Height="32" Offset="0x50000" />
+        <Texture Name="gItemIconHerosShieldTex" OutName="heros_shield_icon" Format="rgba32" Width="32" Height="32" Offset="0x51000" />
+        <Texture Name="gItemIconMirrorShieldTex" OutName="mirror_shield_icon" Format="rgba32" Width="32" Height="32" Offset="0x52000" />
+        <Texture Name="gItemIconQuiver30Tex" OutName="quiver_30_icon" Format="rgba32" Width="32" Height="32" Offset="0x53000" />
+        <Texture Name="gItemIconQuiver40Tex" OutName="quiver_40_icon" Format="rgba32" Width="32" Height="32" Offset="0x54000" />
+        <Texture Name="gItemIconQuiver50Tex" OutName="quiver_50_icon" Format="rgba32" Width="32" Height="32" Offset="0x55000" />
+        <Texture Name="gItemIconBombBag20Tex" OutName="bomb_bag_20_icon" Format="rgba32" Width="32" Height="32" Offset="0x56000" />
+        <Texture Name="gItemIconBombBag30Tex" OutName="bomb_bag_30_icon" Format="rgba32" Width="32" Height="32" Offset="0x57000" />
+        <Texture Name="gItemIconBombBag40Tex" OutName="bomb_bag_40_icon" Format="rgba32" Width="32" Height="32" Offset="0x58000" />
+        <Texture Name="gItemIconDefaultWalletTex" OutName="default_wallet_icon" Format="rgba32" Width="32" Height="32" Offset="0x59000" />
+        <Texture Name="gItemIconAdultsWalletTex" OutName="adults_wallet_icon" Format="rgba32" Width="32" Height="32" Offset="0x5A000" />
+        <Texture Name="gItemIconGiantsWalletTex" OutName="giants_wallet_icon" Format="rgba32" Width="32" Height="32" Offset="0x5B000" />
+        <Texture Name="gItemIconFishingRodTex" OutName="fishing_rod_icon" Format="rgba32" Width="32" Height="32" Offset="0x5C000" />
+        <Texture Name="gItemIconOdolwasRemainsTex" OutName="odolwas_remains_icon" Format="rgba32" Width="32" Height="32" Offset="0x5D000" />
+        <Texture Name="gItemIconGohtsRemainsTex" OutName="gohts_remains_icon" Format="rgba32" Width="32" Height="32" Offset="0x5E000" />
+        <Texture Name="gItemIconGyorgsRemainsTex" OutName="gyorgs_remains_icon" Format="rgba32" Width="32" Height="32" Offset="0x5F000" />
+        <Texture Name="gItemIconTwinmoldsRemainsTex" OutName="twinmolds_remains_icon" Format="rgba32" Width="32" Height="32" Offset="0x60000" />
+        <Texture Name="gItemIconBombersNotebookTex" OutName="bombers_notebook_icon" Format="rgba32" Width="32" Height="32" Offset="0x61000" />
+
+        <!-- ia8 icons -->
+        <Texture Name="gItemIconSongNoteTex" OutName="song_note_icon" Format="ia8" Width="16" Height="24" Offset="0x62000" />
+        <Texture Name="gItemIconHeartPiece1Tex" OutName="heart_piece_icon_1" Format="ia8" Width="48" Height="48" Offset="0x62180" />
+        <Texture Name="gItemIconHeartPiece2Tex" OutName="heart_piece_icon_2" Format="ia8" Width="48" Height="48" Offset="0x62A80" />
+        <Texture Name="gItemIconHeartPiece3Tex" OutName="heart_piece_icon_3" Format="ia8" Width="48" Height="48" Offset="0x63380" />
+
+        <!-- Cursors -->
+        <Texture Name="gPausePromptCursorTex" OutName="pause_prompt_cursor" Format="i4" Width="48" Height="48" Offset="0x63C80"/>
+        <Texture Name="gPauseUnusedCursorTex" OutName="pause_unused_cursor" Format="i8" Width="24" Height="24" Offset="0x64100"/>
+        <Texture Name="gPauseMenuCursorTex" OutName="pause_menu_cursor" Format="ia8" Width="16" Height="16" Offset="0x64340" />
+
+        <!-- Divided Background Menu: First Row -->
+        <Texture Name="gPauseMasks00Tex" OutName="pause_masks_0_0" Format="ia8" Width="80" Height="32" Offset="0x64440" />
+        <Texture Name="gPauseMasks10JPNTex" OutName="pause_masks_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x64E40" />
+        <Texture Name="gPauseMasks20Tex" OutName="pause_masks_2_0" Format="ia8" Width="80" Height="32" Offset="0x65840" />
+        <Texture Name="gPauseSelectItem00JPNTex" OutName="pause_select_item_0_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x66240" />
+        <Texture Name="gPauseSelectItem10JPNTex" OutName="pause_select_item_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x66C40" />
+        <Texture Name="gPauseSelectItem20JPNTex" OutName="pause_select_item_2_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x67640" />
+        <Texture Name="gPauseMap00Tex" OutName="pause_map_0_0" Format="ia8" Width="80" Height="32" Offset="0x68040" />
+        <Texture Name="gPauseMap10JPNTex" OutName="pause_map_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x68A40" />
+        <Texture Name="gPauseMap20Tex" OutName="pause_map_2_0" Format="ia8" Width="80" Height="32" Offset="0x69440" />
+        <Texture Name="gPauseQuestStatus00JPNTex" OutName="pause_quest_status_0_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x69E40" />
+        <Texture Name="gPauseQuestStatus10JPNTex" OutName="pause_quest_status_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x6A840" />
+        <Texture Name="gPauseQuestStatus20JPNTex" OutName="pause_quest_status_2_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x6B240" />
+        <Texture Name="gPauseSave00Tex" OutName="pause_save_0_0" Format="ia8" Width="80" Height="32" Offset="0x6BC40" />
+        <Texture Name="gPauseSave10JPNTex" OutName="pause_save_1_0_jpn" Format="ia8" Width="80" Height="32" Offset="0x6C640" />
+        <Texture Name="gPauseSave20Tex" OutName="pause_save_2_0" Format="ia8" Width="80" Height="32" Offset="0x6D040" />
+        <Texture Name="gPauseGameOver10Tex" OutName="pause_game_over_1_0" Format="ia8" Width="80" Height="32" Offset="0x6DA40" />
+
+       <!-- Divided Background Menu: Second Row -->
+        <Texture Name="gPauseMasks01Tex" OutName="pause_masks_0_1" Format="ia8" Width="80" Height="32" Offset="0x6E440" />
+        <Texture Name="gPauseMasks11Tex" OutName="pause_masks_1_1" Format="ia8" Width="80" Height="32" Offset="0x6EE40" />
+        <Texture Name="gPauseMasks21Tex" OutName="pause_masks_2_1" Format="ia8" Width="80" Height="32" Offset="0x6F840" />
+        <Texture Name="gPauseSelectItem01Tex" OutName="pause_select_item_0_1" Format="ia8" Width="80" Height="32" Offset="0x70240" />
+        <Texture Name="gPauseSelectItem11Tex" OutName="pause_select_item_1_1" Format="ia8" Width="80" Height="32" Offset="0x70C40" />
+        <Texture Name="gPauseSelectItem21Tex" OutName="pause_select_item_2_1" Format="ia8" Width="80" Height="32" Offset="0x71640" />
+        <Texture Name="gPauseMap01Tex" OutName="pause_map_0_1" Format="ia8" Width="80" Height="32" Offset="0x72040" />
+        <Texture Name="gPauseMap11Tex" OutName="pause_map_1_1" Format="ia8" Width="80" Height="32" Offset="0x72A40" />
+        <Texture Name="gPauseMap21Tex" OutName="pause_map_2_1" Format="ia8" Width="80" Height="32" Offset="0x73440" />
+        <Texture Name="gPauseQuestStatus01Tex" OutName="pause_quest_status_0_1" Format="ia8" Width="80" Height="32" Offset="0x73E40" />
+        <Texture Name="gPauseQuestStatus11Tex" OutName="pause_quest_status_1_1" Format="ia8" Width="80" Height="32" Offset="0x74840" />
+        <Texture Name="gPauseQuestStatus21Tex" OutName="pause_quest_status_2_1" Format="ia8" Width="80" Height="32" Offset="0x75240" />
+        <Texture Name="gPauseSave01Tex" OutName="pause_save_0_1" Format="ia8" Width="80" Height="32" Offset="0x75C40" />
+        <Texture Name="gPauseSave11Tex" OutName="pause_save_1_1" Format="ia8" Width="80" Height="32" Offset="0x76640" />
+        <Texture Name="gPauseSave21Tex" OutName="pause_save_2_1" Format="ia8" Width="80" Height="32" Offset="0x77040" />
+
+        <!-- Divided Background Menu: Third Row -->
+        <Texture Name="gPauseMasks02Tex" OutName="pause_masks_0_2" Format="ia8" Width="80" Height="32" Offset="0x77A40" />
+        <Texture Name="gPauseMasks12Tex" OutName="pause_masks_1_2" Format="ia8" Width="80" Height="32" Offset="0x78440" />
+        <Texture Name="gPauseMasks22Tex" OutName="pause_masks_2_2" Format="ia8" Width="80" Height="32" Offset="0x78E40" />
+        <Texture Name="gPauseSelectItem02Tex" OutName="pause_select_item_0_2" Format="ia8" Width="80" Height="32" Offset="0x79840" />
+        <Texture Name="gPauseSelectItem12Tex" OutName="pause_select_item_1_2" Format="ia8" Width="80" Height="32" Offset="0x7A240" />
+        <Texture Name="gPauseSelectItem22Tex" OutName="pause_select_item_2_2" Format="ia8" Width="80" Height="32" Offset="0x7AC40" />
+        <Texture Name="gPauseMap02Tex" OutName="pause_map_0_2" Format="ia8" Width="80" Height="32" Offset="0x7B640" />
+        <Texture Name="gPauseMap12Tex" OutName="pause_map_1_2" Format="ia8" Width="80" Height="32" Offset="0x7C040" />
+        <Texture Name="gPauseMap22Tex" OutName="pause_map_2_2" Format="ia8" Width="80" Height="32" Offset="0x7CA40" />
+        <Texture Name="gPauseQuestStatus02Tex" OutName="pause_quest_status_0_2" Format="ia8" Width="80" Height="32" Offset="0x7D440" />
+        <Texture Name="gPauseQuestStatus12Tex" OutName="pause_quest_status_1_2" Format="ia8" Width="80" Height="32" Offset="0x7DE40" />
+        <Texture Name="gPauseQuestStatus22Tex" OutName="pause_quest_status_2_2" Format="ia8" Width="80" Height="32" Offset="0x7E840" />
+        <Texture Name="gPauseSave02Tex" OutName="pause_save_0_2" Format="ia8" Width="80" Height="32" Offset="0x7F240" />
+        <Texture Name="gPauseSave12Tex" OutName="pause_save_1_2" Format="ia8" Width="80" Height="32" Offset="0x7FC40" />
+        <Texture Name="gPauseSave22Tex" OutName="pause_save_2_2" Format="ia8" Width="80" Height="32" Offset="0x80640" />
+
+        <!-- Divided Background Menu: Fourth Row -->
+        <Texture Name="gPauseMasks03Tex" OutName="pause_masks_0_3" Format="ia8" Width="80" Height="32" Offset="0x81040" />
+        <Texture Name="gPauseMasks13Tex" OutName="pause_masks_1_3" Format="ia8" Width="80" Height="32" Offset="0x81A40" />
+        <Texture Name="gPauseMasks23Tex" OutName="pause_masks_2_3" Format="ia8" Width="80" Height="32" Offset="0x82440" />
+        <Texture Name="gPauseSelectItem03Tex" OutName="pause_select_item_0_3" Format="ia8" Width="80" Height="32" Offset="0x82E40" />
+        <Texture Name="gPauseSelectItem13Tex" OutName="pause_select_item_1_3" Format="ia8" Width="80" Height="32" Offset="0x83840" />
+        <Texture Name="gPauseSelectItem23Tex" OutName="pause_select_item_2_3" Format="ia8" Width="80" Height="32" Offset="0x84240" />
+        <Texture Name="gPauseMap03Tex" OutName="pause_map_0_3" Format="ia8" Width="80" Height="32" Offset="0x84C40" />
+        <Texture Name="gPauseMap13Tex" OutName="pause_map_1_3" Format="ia8" Width="80" Height="32" Offset="0x85640" />
+        <Texture Name="gPauseMap23Tex" OutName="pause_map_2_3" Format="ia8" Width="80" Height="32" Offset="0x86040" />
+        <Texture Name="gPauseQuestStatus03Tex" OutName="pause_quest_status_0_3" Format="ia8" Width="80" Height="32" Offset="0x86A40" />
+        <Texture Name="gPauseQuestStatus13Tex" OutName="pause_quest_status_1_3" Format="ia8" Width="80" Height="32" Offset="0x87440" />
+        <Texture Name="gPauseQuestStatus23Tex" OutName="pause_quest_status_2_3" Format="ia8" Width="80" Height="32" Offset="0x87E40" />
+        <Texture Name="gPauseSave03Tex" OutName="pause_save_0_3" Format="ia8" Width="80" Height="32" Offset="0x88840" />
+        <Texture Name="gPauseSave13Tex" OutName="pause_save_1_3" Format="ia8" Width="80" Height="32" Offset="0x89240" />
+        <Texture Name="gPauseSave23Tex" OutName="pause_save_2_3" Format="ia8" Width="80" Height="32" Offset="0x89C40" />
+
+        <!-- Divided Background Menu: Fifth Row -->
+        <Texture Name="gPauseMasks04Tex" OutName="pause_masks_0_4" Format="ia8" Width="80" Height="32" Offset="0x8A640" />
+        <Texture Name="gPauseMasks14Tex" OutName="pause_masks_1_4" Format="ia8" Width="80" Height="32" Offset="0x8B040" />
+        <Texture Name="gPauseMasks24Tex" OutName="pause_masks_2_4" Format="ia8" Width="80" Height="32" Offset="0x8BA40" />
+        <Texture Name="gPauseSelectItem04Tex" OutName="pause_select_item_0_4" Format="ia8" Width="80" Height="32" Offset="0x8C440" />
+        <Texture Name="gPauseSelectItem14Tex" OutName="pause_select_item_1_4" Format="ia8" Width="80" Height="32" Offset="0x8CE40" />
+        <Texture Name="gPauseSelectItem24Tex" OutName="pause_select_item_2_4" Format="ia8" Width="80" Height="32" Offset="0x8D840" />
+        <Texture Name="gPauseMap04Tex" OutName="pause_map_0_4" Format="ia8" Width="80" Height="32" Offset="0x8E240" />
+        <Texture Name="gPauseMap14Tex" OutName="pause_map_1_4" Format="ia8" Width="80" Height="32" Offset="0x8EC40" />
+        <Texture Name="gPauseMap24Tex" OutName="pause_map_2_4" Format="ia8" Width="80" Height="32" Offset="0x8F640" />
+        <Texture Name="gPauseQuestStatus04Tex" OutName="pause_quest_status_0_4" Format="ia8" Width="80" Height="32" Offset="0x90040" />
+        <Texture Name="gPauseQuestStatus14Tex" OutName="pause_quest_status_1_4" Format="ia8" Width="80" Height="32" Offset="0x90A40" />
+        <Texture Name="gPauseQuestStatus24Tex" OutName="pause_quest_status_2_4" Format="ia8" Width="80" Height="32" Offset="0x91440" />
+        <Texture Name="gPauseSave04Tex" OutName="pause_save_0_4" Format="ia8" Width="80" Height="32" Offset="0x91E40" />
+        <Texture Name="gPauseSave14Tex" OutName="pause_save_1_4" Format="ia8" Width="80" Height="32" Offset="0x92840" />
+        <Texture Name="gPauseSave24Tex" OutName="pause_save_2_4" Format="ia8" Width="80" Height="32" Offset="0x93240" />
+
+        <!-- Textures used by display lists extracted from icon_item_vtx_static -->
+        <Texture Name="gABtnSymbolTex" OutName="a_button_symbol" Format="ia8" Width="24" Height="16" Offset="0x93C40"/>
+        <Texture Name="gBBtnSymbolTex" OutName="b_button_symbol" Format="ia8" Width="24" Height="16" Offset="0x93DC0"/>
+        <Texture Name="gCBtnSymbolsTex" OutName="c_button_symbols" Format="ia8" Width="48" Height="16" Offset="0x93F40"/>
+        <Texture Name="gNamePanelLeftTex" OutName="name_panel_left" Format="ia8" Width="72" Height="24" Offset="0x94240"/>
+        <Texture Name="gNamePanelRightTex" OutName="name_panel_right" Format="ia8" Width="72" Height="24" Offset="0x94900"/>
+        <Texture Name="gZButtonTex" OutName="z_button" Format="ia8" Width="24" Height="32" Offset="0x94FC0"/>
+        <Texture Name="gRButtonTex" OutName="r_button" Format="ia8" Width="24" Height="32" Offset="0x952C0"/>
+        <!-- unused -->
+        <Texture Name="gShowAMusicalNoteTex" OutName="show_a_musical_note" Format="ia8" Width="80" Height="16" Offset="0x955C0"/>
+        <Texture Name="gMagicArrowEquipEffectTex" OutName="magic_arrow_equip_effect" Format="ia8" Width="32" Height="32" Offset="0x95AC0"/>
+    </File>
+</Root>

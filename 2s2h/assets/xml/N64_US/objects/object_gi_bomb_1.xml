@@ -1,0 +1,11 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Bomb -->
+    <File Name="object_gi_bomb_1" Segment="6">
+
+        <!-- Bomb Display Lists -->
+        <DList Name="gGiBombDL" Offset="0x9A0" />
+    </File>
+</Root>

@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Ocarina of Time -->
+    <File Name="object_gi_ocarina" Segment="6">
+
+        <!-- Ocarina of Time Textures -->
+        <Texture Name="gGiOcarinaOfTimeHoleTex" OutName="gi_ocarina_of_time_hole" Format="i8" Width="16" Height="16" Offset="0x0" />
+
+        <!-- Ocarina of Time Display Lists -->
+        <DList Name="gGiOcarinaOfTimeDL" Offset="0x8C0" />
+        <DList Name="gGiOcarinaOfTimeHolesDL" Offset="0xAF8" />
+    </File>
+</Root>

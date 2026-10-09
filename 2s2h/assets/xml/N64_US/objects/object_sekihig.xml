@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Assets for a suns song grave with a goron symbol on it -->
+    <File Name="object_sekihig" Segment="6">
+        <DList Name="gSunsSongGraveGoronSymbolsBaseDL" Offset="0x340" />
+        <DList Name="gSunsSongGraveGoronSymbolsDL" Offset="0x4A8" />
+        <DList Name="gSunsSongGraveGoronStoneDL" Offset="0x4B8" />
+        <DList Name="gSunsSongGraveGoronDL" Offset="0x5C8" />
+        <Texture Name="gSunsSongGraveGoronTLUT" OutName="sun_song_grave_goron_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5E0" />
+        <Texture Name="gSunsSongGraveGoronKokiriTLUT" OutName="suns_song_grave_goron_kokiri_tlut" Format="rgba16" Width="4" Height="4" Offset="0x600" />
+        <Texture Name="gSunsSongGraveGoronUnknownTLUT" OutName="suns_song_grave_goron_unknown_tlut" Format="rgba16" Width="4" Height="4" Offset="0x620" />
+        <Texture Name="gSunsSongGraveGoronTriforceTLUT" OutName="suns_song_grave_goron_triforce_tlut" Format="rgba16" Width="4" Height="4" Offset="0x640" />
+        <Texture Name="gSunsSongGraveGoronGraniteTex" OutName="sun_song_grave_goron_granite" Format="rgba16" Width="32" Height="32" Offset="0x660" />
+        <Texture Name="gSunsSongGraveGoronMarbleTex" OutName="sun_song_grave_goron_marble" Format="rgba16" Width="32" Height="64" Offset="0xE60" />
+        <Texture Name="gSunsSongGraveGoronSymbolTex" OutName="sun_song_grave_goron_symbol" Format="ci4" Width="64" Height="64" Offset="0x1E60" />
+        <Texture Name="gSunsSongGraveGoronStoneInscriptionTex" OutName="sun_song_grave_goron_stone_inscription" Format="ia4" Width="128" Height="16" Offset="0x2660" />
+        <Texture Name="gSunsSongGraveGoronStaffNotesTex" OutName="sun_song_grave_goron_staff_notes" Format="ia4" Width="128" Height="32" Offset="0x2A60" />
+        <Collision Name="gSunsSongGraveGoronCol" Offset="0x33D8" />
+    </File>
+</Root>
