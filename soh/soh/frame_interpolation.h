@@ -63,6 +63,10 @@ void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCou
 
 void FrameInterpolation_UpdateRibbonHeads(float step);
 
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount);
+
+void FrameInterpolation_UpdateSkinnedVertices(float step);
+
 #ifdef __cplusplus
 }
 #endif

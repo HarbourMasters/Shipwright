@@ -1785,6 +1785,8 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
             (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate(interpolationStep);
         // Ribbon vertices are shared by every frame of a tick: re-blend them before each run.
         FrameInterpolation_UpdateRibbonHeads(interpolationStep);
+        // Skinned vertices are shared by every displayed frame, so blend them before each run
+        FrameInterpolation_UpdateSkinnedVertices(interpolationStep);
         intp->mInterpolationT = interpolationStep;
         wnd->DrawAndRunGraphicsCommands(Commands, mtx_replacements);
         intp->mInterpolationIndex++;

@@ -234,6 +234,18 @@ struct RibbonHead {
 };
 
 unordered_map<const void*, RibbonHead> ribbon_heads;
+
+// Skinned limbs (horse body and legs) have their vertices rewritten on the CPU each
+// gameplay frame, so matrix interpolation can't move them. Keep the last two poses and
+// write a blend of them into the game's buffer before each displayed frame.
+struct SkinnedLimb {
+    Vtx* dest = nullptr;
+    vector<Vtx> prev;
+    vector<Vtx> cur;
+    uint32_t frame = 0;
+};
+
+unordered_map<const void*, SkinnedLimb> skinned_limbs;
 uint32_t record_frame;
 
 Data& append(Op op) {
@@ -505,6 +517,7 @@ void FrameInterpolation_StartRecord(void) {
         is_recording = true;
     } else {
         ribbon_heads.clear();
+        skinned_limbs.clear();
     }
 }
 
@@ -709,6 +722,53 @@ void FrameInterpolation_UpdateRibbonHeads(float step) {
                 // Colour carries the fade
                 for (int j = 0; j < 4; j++) {
                     to.v.cn[j] = (u8)(w * from.v.cn[j] + step * to.v.cn[j]);
+                }
+            }
+        }
+
+        ++it;
+    }
+}
+
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount) {
+    if (!is_recording) {
+        return;
+    }
+
+    SkinnedLimb& limb = skinned_limbs[key];
+    // Only blend against a pose from the frame right before this one
+    if (limb.frame + 1 == record_frame && limb.cur.size() == vtxCount) {
+        limb.prev.swap(limb.cur);
+    } else {
+        limb.prev.clear();
+    }
+    limb.dest = (Vtx*)dest;
+    limb.cur.assign(limb.dest, limb.dest + vtxCount);
+    limb.frame = record_frame;
+}
+
+void FrameInterpolation_UpdateSkinnedVertices(float step) {
+    for (auto it = skinned_limbs.begin(); it != skinned_limbs.end();) {
+        SkinnedLimb& limb = it->second;
+
+        // Not drawn this frame, its buffer may be freed
+        if (limb.frame != record_frame) {
+            it = skinned_limbs.erase(it);
+            continue;
+        }
+
+        if (limb.prev.empty() || step >= 1.0f) {
+            std::copy(limb.cur.begin(), limb.cur.end(), limb.dest);
+        } else {
+            float w = 1.0f - step;
+            for (size_t i = 0; i < limb.cur.size(); i++) {
+                const Vtx& p = limb.prev[i];
+                const Vtx& c = limb.cur[i];
+                Vtx& d = limb.dest[i];
+                d = c;
+                for (int j = 0; j < 3; j++) {
+                    d.n.ob[j] = (s16)(w * p.n.ob[j] + step * c.n.ob[j]);
+                    d.n.n[j] = (s8)(w * p.n.n[j] + step * c.n.n[j]);
                 }
             }
         }
