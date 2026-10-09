@@ -721,8 +721,8 @@ bool Logic::CanBunnyMegaJumpslash(bool hasBombflower) {
 
 bool Logic::CanMegadive(bool fallDamage, bool hasBombflower) {
     return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) &&
-           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) && 
-           (EffectiveHealth() > 16 || CanUse(RG_NAYRUS_LOVE) || 
+           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) &&
+           (EffectiveHealth() > 16 || CanUse(RG_NAYRUS_LOVE) ||
             (EffectiveHealth() > 8 && (fallDamage || CanUse(RG_BOTTLE_WITH_FAIRY))));
 }
 
@@ -1459,7 +1459,7 @@ bool Logic::CanRecoilHover(RecoilRequirements req, bool bombFlower) {
         case RECOIL_MAX:
             break;
     }
-    if (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) && 
+    if (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) &&
         (HasExplosives() || (bombFlower && HasItem(RG_GORONS_BRACELET)))) {
         return true;
     }
