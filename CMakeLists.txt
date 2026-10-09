@@ -280,6 +280,9 @@ function(quiet_dependency_tree dir)
     endforeach()
 endfunction()
 
+# Torch is the PC-side ROM extractor. On Switch the ROM archives (and soh.o2r) are built on a PC/CI host,
+# so none of the asset tooling is configured for the console build.
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
 add_subdirectory(torch SYSTEM)
 quiet_dependency_tree(${CMAKE_CURRENT_SOURCE_DIR}/torch)
 
@@ -358,6 +361,7 @@ add_custom_target(GenerateSohOtr ALL DEPENDS ${CMAKE_BINARY_DIR}/soh/soh.o2r)
 
 # ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
 add_dependencies(ExtractAssets GenerateSohOtr)
+endif() # NOT NintendoSwitch
 
 # The asset tools only need torch, so a tools-only configure can skip libultraship and soh
 # entirely -- that is all CI needs to produce soh.o2r.

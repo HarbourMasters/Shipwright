@@ -1,0 +1,89 @@
+name: build-switch
+on:
+  push:
+    branches: ['switch-**']
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # soh.o2r holds the port's own assets (fonts, textures, shaders). It's platform independent and is built
+  # with the PC asset tools, exactly like the upstream generate-builds workflow does.
+  generate-soh-o2r:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Apply libultraship Switch patch
+      # soh.o2r embeds libultraship's shaders, so build it from the same tree the .nro uses.
+      run: git -C libultraship apply --whitespace=nowarn ../switch/libultraship-switch.patch
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
+    - name: Generate soh.o2r
+      run: |
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DSOH_TOOLS_ONLY=ON
+        cmake --build build-cmake --config Release --target GenerateSohOtr -j4
+    - uses: actions/upload-artifact@v4
+      with:
+        name: soh.o2r
+        path: soh.o2r
+        retention-days: 3
+
+  build-switch:
+    needs: generate-soh-o2r
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+    steps:
+    - name: Install host tools
+      run: |
+        apt-get update
+        apt-get install -y --no-install-recommends ninja-build python3 git ccache curl ca-certificates
+    - name: Install Switch portlibs
+      # Each one is optional: the CMake build falls back to building a library from source if its
+      # portlib is unavailable, so a missing package shouldn't fail the job.
+      run: |
+        dkp-pacman -Sy --noconfirm || true
+        for p in switch-sdl2 switch-sdl2_net switch-glad switch-mesa switch-libdrm_nouveau switch-zlib \
+                 switch-bzip2 switch-libzip switch-libogg switch-libvorbis switch-tinyxml2; do
+          dkp-pacman -S --needed --noconfirm "$p" || echo "::warning::portlib $p not available, will build from source"
+        done
+    - name: Mark workspace safe for git
+      run: git config --global --add safe.directory '*'
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Apply libultraship Switch patch
+      run: git -C libultraship apply --whitespace=nowarn ../switch/libultraship-switch.patch
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: switch-ccache-${{ github.ref_name }}
+        max-size: 2G
+    - name: Configure
+      run: |
+        cmake -H. -Bbuild-switch -GNinja \
+          -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
+          -DCMAKE_BUILD_TYPE:STRING=Release \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+    - name: Build soh.nro
+      run: cmake --build build-switch --target soh_nro -j"$(nproc)"
+    - name: Download soh.o2r
+      uses: actions/download-artifact@v4
+      with:
+        name: soh.o2r
+        path: package/switch/soh
+    - name: Package
+      run: |
+        cp build-switch/soh/soh.nro package/switch/soh/soh.nro
+        cp switch/README.md package/README-Switch.txt
+        ls -la package/switch/soh
+    - uses: actions/upload-artifact@v4
+      with:
+        # Unzip onto the root of the SD card: it creates /switch/soh/.
+        name: SoH-Dewey-Alpha-Switch
+        path: package

@@ -1,6 +1,8 @@
 name: generate-builds
 on:
   push:
+    # Switch port branches are built by build-switch.yml instead.
+    branches-ignore: ['switch-**']
   pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

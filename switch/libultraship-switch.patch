@@ -1,0 +1,710 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 08cc7915..034cff06 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -72,6 +72,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     include(cmake/dependencies/windows.cmake)
+ endif()
+ 
++if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
++    include(cmake/dependencies/switch.cmake)
++endif()
++
+ # === Platform Specific Configuration ===
+ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+     include(cmake/ios-toolchain-populate.cmake)
+diff --git a/cmake/dependencies/switch.cmake b/cmake/dependencies/switch.cmake
+new file mode 100644
+index 00000000..71125b36
+--- /dev/null
++++ b/cmake/dependencies/switch.cmake
+@@ -0,0 +1,85 @@
++# Nintendo Switch (devkitA64 + libnx) dependencies.
++#
++# Prefer devkitPro's portlibs. Anything not provided there (or provided without a CMake config) is
++# fetched and built from source with OVERRIDE_FIND_PACKAGE, so the plain find_package(... REQUIRED)
++# calls elsewhere in libultraship and the game keep working unchanged.
++
++include(FetchContent)
++
++if(NOT DEFINED DEVKITPRO)
++    if(DEFINED ENV{DEVKITPRO})
++        set(DEVKITPRO $ENV{DEVKITPRO})
++    else()
++        set(DEVKITPRO /opt/devkitpro)
++    endif()
++endif()
++set(SWITCH_PORTLIBS_INCLUDE ${DEVKITPRO}/portlibs/switch/include)
++list(APPEND ADDITIONAL_LIB_INCLUDES ${SWITCH_PORTLIBS_INCLUDE})
++
++set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
++
++#=================== SDL2 + GL ===================
++find_package(SDL2 REQUIRED)
++
++find_library(SWITCH_GLAD_LIBRARY glad PATHS ${DEVKITPRO}/portlibs/switch/lib REQUIRED)
++if(NOT TARGET glad::glad)
++    add_library(glad::glad STATIC IMPORTED GLOBAL)
++    set_target_properties(glad::glad PROPERTIES
++        IMPORTED_LOCATION ${SWITCH_GLAD_LIBRARY}
++        INTERFACE_INCLUDE_DIRECTORIES ${SWITCH_PORTLIBS_INCLUDE}
++        # glad resolves through Mesa's EGL; SDL2 pulls in EGL/glapi/drm_nouveau/nx.
++        INTERFACE_LINK_LIBRARIES SDL2::SDL2
++    )
++endif()
++
++#=================== ImGui ===================
++target_link_libraries(ImGui PUBLIC glad::glad SDL2::SDL2)
++target_include_directories(ImGui PRIVATE ${SWITCH_PORTLIBS_INCLUDE})
++# ImGui's bundled GL loader dlopens libGL, which doesn't exist on the Switch; use glad instead.
++target_compile_definitions(ImGui PRIVATE IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
++set_source_files_properties(${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
++    PROPERTIES COMPILE_OPTIONS "-include;glad/glad.h")
++
++#=================== Libraries with source fallbacks ===================
++find_package(ZLIB REQUIRED)
++
++find_package(libzip CONFIG QUIET)
++if(NOT libzip_FOUND)
++    message(STATUS "Switch: libzip not in portlibs, building from source")
++    foreach(_opt ENABLE_BZIP2 ENABLE_LZMA ENABLE_ZSTD ENABLE_OPENSSL ENABLE_GNUTLS ENABLE_MBEDTLS ENABLE_COMMONCRYPTO
++                 ENABLE_WINDOWS_CRYPTO BUILD_TOOLS BUILD_REGRESS BUILD_OSSFUZZ BUILD_EXAMPLES BUILD_DOC LIBZIP_DO_INSTALL)
++        set(${_opt} OFF CACHE BOOL "" FORCE)
++    endforeach()
++    FetchContent_Declare(libzip
++        GIT_REPOSITORY https://github.com/nih-at/libzip.git
++        GIT_TAG v1.11.4
++        OVERRIDE_FIND_PACKAGE)
++    FetchContent_MakeAvailable(libzip)
++endif()
++
++find_package(nlohmann_json CONFIG QUIET)
++if(NOT nlohmann_json_FOUND)
++    message(STATUS "Switch: nlohmann_json not in portlibs, fetching")
++    set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
++    set(JSON_Install OFF CACHE BOOL "" FORCE)
++    FetchContent_Declare(nlohmann_json
++        GIT_REPOSITORY https://github.com/nlohmann/json.git
++        GIT_TAG v3.12.0
++        OVERRIDE_FIND_PACKAGE)
++    FetchContent_MakeAvailable(nlohmann_json)
++endif()
++
++find_package(tinyxml2 CONFIG QUIET)
++if(NOT tinyxml2_FOUND)
++    message(STATUS "Switch: tinyxml2 not in portlibs, building from source")
++    set(tinyxml2_BUILD_TESTING OFF CACHE BOOL "" FORCE)
++    FetchContent_Declare(tinyxml2
++        GIT_REPOSITORY https://github.com/leethomason/tinyxml2.git
++        GIT_TAG 11.0.0
++        OVERRIDE_FIND_PACKAGE)
++    FetchContent_MakeAvailable(tinyxml2)
++endif()
++
++#=================== Threads ===================
++set(THREADS_PREFER_PTHREAD_FLAG ON)
++find_package(Threads REQUIRED)
+diff --git a/include/fast/backends/gfx_opengl.h b/include/fast/backends/gfx_opengl.h
+index af24c702..53ddbe00 100644
+--- a/include/fast/backends/gfx_opengl.h
++++ b/include/fast/backends/gfx_opengl.h
+@@ -16,6 +16,9 @@
+ #elif __APPLE__
+ #include <SDL2/SDL.h>
+ #include <GL/glew.h>
++#elif defined(__SWITCH__)
++#include <glad/glad.h>
++#include <SDL2/SDL.h>
+ #elif USE_OPENGLES
+ #include <SDL2/SDL.h>
+ #include <GLES3/gl3.h>
+diff --git a/include/ship/port/switch/SwitchImpl.h b/include/ship/port/switch/SwitchImpl.h
+new file mode 100644
+index 00000000..badf8931
+--- /dev/null
++++ b/include/ship/port/switch/SwitchImpl.h
+@@ -0,0 +1,32 @@
++#pragma once
++
++#include <cstdint>
++#include <string>
++
++#include <imgui.h>
++
++namespace Ship {
++enum SwitchProfiles { MAXIMUM, HIGH, BOOST, STOCK, POWERSAVINGM1, POWERSAVINGM2, POWERSAVINGM3, SWITCH_PROFILE_COUNT };
++
++enum SwitchPhase { PreInitPhase, PostInitPhase };
++
++// Display names for SwitchProfiles, indexed by profile.
++extern const char* SWITCH_CPU_PROFILES[SWITCH_PROFILE_COUNT];
++
++// CVar holding the selected SwitchProfiles value. Matches the name SoH's config updater migrates gSwitchPerfMode to.
++#define CVAR_SWITCH_PERF_MODE "gEnhancements.SwitchPerfMode"
++
++class Switch {
++  public:
++    static void Init(SwitchPhase phase);
++    static void Exit();
++    static void ImGuiSetupFont(ImFontAtlas* fonts);
++    static void ImGuiProcessEvent(bool wantsTextInput);
++    static bool IsRunning();
++    static bool IsDocked();
++    static void GetDisplaySize(int* width, int* height);
++    static void ApplyOverclock();
++    static void ThrowMissingOTR(const std::string& otrPath);
++    static void PrintErrorMessageToScreen(const char* str, ...);
++};
++}; // namespace Ship
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 45989b66..81463b3c 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -134,6 +134,10 @@ endif()
+ 
+ target_link_libraries(libultraship PUBLIC prism monocypher)
+ 
++if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
++    target_link_libraries(libultraship PUBLIC glad::glad SDL2::SDL2 Threads::Threads)
++endif()
++
+ if(ENABLE_SCRIPTING)
+     target_link_libraries(libultraship PUBLIC libtcc libtcc1)
+     target_compile_definitions(libultraship PUBLIC ENABLE_SCRIPTING)
+diff --git a/src/fast/Fast3dGui.cpp b/src/fast/Fast3dGui.cpp
+index 237a502a..a0c0da0a 100644
+--- a/src/fast/Fast3dGui.cpp
++++ b/src/fast/Fast3dGui.cpp
+@@ -22,6 +22,8 @@
+ 
+ #if defined(__ANDROID__) || defined(__IOS__)
+ #include "ship/port/mobile/MobileImpl.h"
++#elif defined(__SWITCH__)
++#include "ship/port/switch/SwitchImpl.h"
+ #endif
+ 
+ #ifdef ENABLE_OPENGL
+@@ -58,7 +60,7 @@ bool Fast3dGui::SupportsViewports() {
+     }
+ #endif
+ 
+-#if defined(__ANDROID__) || defined(__IOS__)
++#if defined(__ANDROID__) || defined(__IOS__) || defined(__SWITCH__)
+     return false;
+ #endif
+ 
+@@ -72,6 +74,8 @@ void Fast3dGui::HandleWindowEvents(Fast::WindowEvent event) {
+             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.Sdl.Event));
+ #if defined(__ANDROID__) || defined(__IOS__)
+             Ship::Mobile::ImGuiProcessEvent(ImGui::GetIO().WantTextInput);
++#elif defined(__SWITCH__)
++            Ship::Switch::ImGuiProcessEvent(ImGui::GetIO().WantTextInput);
+ #endif
+             break;
+ #ifdef ENABLE_DX11
+diff --git a/src/fast/Fast3dWindow.cpp b/src/fast/Fast3dWindow.cpp
+index 2b77a5f2..3d4f1581 100644
+--- a/src/fast/Fast3dWindow.cpp
++++ b/src/fast/Fast3dWindow.cpp
+@@ -299,7 +299,7 @@ uint32_t Fast3dWindow::GetCurrentRefreshRate() {
+ }
+ 
+ bool Fast3dWindow::SupportsWindowedFullscreen() {
+-#ifdef __APPLE__
++#if defined(__APPLE__) || defined(__SWITCH__)
+     return false;
+ #endif
+ 
+diff --git a/src/fast/backends/gfx_opengl.cpp b/src/fast/backends/gfx_opengl.cpp
+index ad9b1dde..8125b52d 100644
+--- a/src/fast/backends/gfx_opengl.cpp
++++ b/src/fast/backends/gfx_opengl.cpp
+@@ -583,7 +583,7 @@ void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width
+     textures[mCurrentTextureIds[mCurrentTile]].height = height;
+ }
+ 
+-#ifdef USE_OPENGLES
++#if defined(USE_OPENGLES) || (defined(__SWITCH__) && !defined(GL_MIRROR_CLAMP_TO_EDGE))
+ #define GL_MIRROR_CLAMP_TO_EDGE 0x8743
+ #endif
+ 
+@@ -708,7 +708,7 @@ void GfxRenderingAPIOGL::DrawTriangles(float buf_vbo[], size_t buf_vbo_len, size
+ }
+ 
+ void GfxRenderingAPIOGL::Init() {
+-#if !defined(__linux__) && !defined(__OpenBSD__)
++#if !defined(__linux__) && !defined(__OpenBSD__) && !defined(__SWITCH__)
+     glewInit();
+ #endif
+ 
+diff --git a/src/fast/backends/gfx_sdl2.cpp b/src/fast/backends/gfx_sdl2.cpp
+index 15c5415f..dabdb8e7 100644
+--- a/src/fast/backends/gfx_sdl2.cpp
++++ b/src/fast/backends/gfx_sdl2.cpp
+@@ -30,6 +30,12 @@
+ #include <SDL.h>
+ #include "fast/backends/gfx_metal.h"
+ #include "ship/utils/macUtils.h"
++#elif defined(__SWITCH__)
++// glad must come before anything else that pulls in GL declarations.
++#include <glad/glad.h>
++#include <SDL2/SDL.h>
++#include <switch.h>
++#include "ship/port/switch/SwitchImpl.h"
+ #else
+ #include <SDL2/SDL.h>
+ #define GL_GLEXT_PROTOTYPES 1
+@@ -350,6 +356,12 @@ void GfxWindowBackendSDL2::Init(const char* gameName, const char* gfxApiName, bo
+     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
++#elif defined(__SWITCH__)
++    // Same context request the 8.x Switch builds shipped with; Mesa on the Switch hands back a context
++    // that accepts the GLSL 1.30 shaders the Linux path generates.
++    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
++    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
++    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+ #endif
+ 
+ #ifdef _WIN32
+@@ -373,6 +385,12 @@ void GfxWindowBackendSDL2::Init(const char* gameName, const char* gfxApiName, bo
+     char title[512];
+     int len = snprintf(title, sizeof(title), "%s (%s)", gameName, gfxApiName);
+ 
++#ifdef __SWITCH__
++    // The Switch only has one "window": the whole screen, 1080p docked or 720p handheld.
++    Ship::Switch::GetDisplaySize(&mWindowWidth, &mWindowHeight);
++    startFullScreen = false;
++#endif
++
+ #ifdef __IOS__
+     Uint32 flags = SDL_WINDOW_BORDERLESS | SDL_WINDOW_SHOWN;
+ #else
+@@ -405,14 +423,22 @@ void GfxWindowBackendSDL2::Init(const char* gameName, const char* gfxApiName, bo
+     }
+ 
+     if (use_opengl) {
++#ifndef __SWITCH__
+         SDL_GL_GetDrawableSize(mWnd, &mWindowWidth, &mWindowHeight);
+ 
+         if (startFullScreen) {
+             SetFullscreenImpl(true, false);
+         }
++#endif
+ 
+         mCtx = SDL_GL_CreateContext(mWnd);
+ 
++#ifdef __SWITCH__
++        if (mCtx == nullptr || !gladLoadGLLoader(SDL_GL_GetProcAddress)) {
++            SPDLOG_CRITICAL("Failed to create an OpenGL context: {}", SDL_GetError());
++        }
++#endif
++
+         SDL_GL_MakeCurrent(mWnd, mCtx);
+         SDL_GL_SetSwapInterval(mVsyncEnabled ? 1 : 0);
+ 
+@@ -525,6 +551,15 @@ void GfxWindowBackendSDL2::SetMouseCallbacks(bool (*onMouseButtonDown)(int btn),
+ }
+ 
+ void GfxWindowBackendSDL2::GetDimensions(uint32_t* width, uint32_t* height, int32_t* posX, int32_t* posY) {
++#ifdef __SWITCH__
++    int w, h;
++    Ship::Switch::GetDisplaySize(&w, &h);
++    *width = w;
++    *height = h;
++    *posX = 0;
++    *posY = 0;
++    return;
++#endif
+ #ifdef __APPLE__
+     SDL_GetWindowSize(mWnd, static_cast<int*>((void*)width), static_cast<int*>((void*)height));
+ #else
+@@ -639,7 +674,10 @@ void GfxWindowBackendSDL2::HandleSingleEvent(SDL_Event& event) {
+         case SDL_WINDOWEVENT:
+             switch (event.window.event) {
+                 case SDL_WINDOWEVENT_SIZE_CHANGED:
+-#ifdef __APPLE__
++#ifdef __SWITCH__
++                    // Fired when docking/undocking.
++                    Ship::Switch::GetDisplaySize(&mWindowWidth, &mWindowHeight);
++#elif defined(__APPLE__)
+                     SDL_GetWindowSize(mWnd, &mWindowWidth, &mWindowHeight);
+ #else
+                     SDL_GL_GetDrawableSize(mWnd, &mWindowWidth, &mWindowHeight);
+@@ -778,10 +816,18 @@ bool GfxWindowBackendSDL2::CanDisableVsync() {
+ }
+ 
+ bool GfxWindowBackendSDL2::IsRunning() {
++#ifdef __SWITCH__
++    // HOME -> Close Software arrives as an applet exit request.
++    return mIsRunning && Ship::Switch::IsRunning();
++#else
+     return mIsRunning;
++#endif
+ }
+ 
+ void GfxWindowBackendSDL2::Destroy() {
++#ifdef __SWITCH__
++    Ship::Switch::Exit();
++#endif
+     // TODO: destroy _any_ resources used by SDL
+     SDL_GL_DeleteContext(mCtx);
+     SDL_DestroyWindow(mWnd);
+diff --git a/src/ship/CMakeLists.txt b/src/ship/CMakeLists.txt
+index e37a3a1d..f66c108c 100644
+--- a/src/ship/CMakeLists.txt
++++ b/src/ship/CMakeLists.txt
+@@ -98,6 +98,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Android" OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+     set(Source_Files__Port
+         ${CMAKE_CURRENT_SOURCE_DIR}/port/mobile/MobileImpl.cpp
+     )
++elseif (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
++    set(Source_Files__Port
++        ${CMAKE_CURRENT_SOURCE_DIR}/port/switch/SwitchImpl.cpp
++    )
+ endif()
+ 
+ source_group("port" FILES ${Source_Files__Port})
+diff --git a/src/ship/Context.cpp b/src/ship/Context.cpp
+index 361a1f75..e4db06d7 100644
+--- a/src/ship/Context.cpp
++++ b/src/ship/Context.cpp
+@@ -11,6 +11,9 @@
+ #include "ship/debug/CrashHandler.h"
+ #include "ship/window/FileDropMgr.h"
+ #include "ship/events/EventSystem.h"
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++#endif
+ #ifdef ENABLE_SCRIPTING
+ #include "ship/scripting/ScriptLoader.h"
+ #include "ship/security/Keystore.h"
+@@ -246,6 +249,10 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
+     }
+ 
+     if (!allowEmptyPaths && !GetResourceManager()->IsLoaded()) {
++#ifdef __SWITCH__
++        // No message boxes on the Switch; this prints to the console and exits back to the HOME menu.
++        Ship::Switch::ThrowMissingOTR(mMainPath);
++#endif
+         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OTR file not found",
+                                  "Main OTR file not found. Please generate one", nullptr);
+         SPDLOG_ERROR("Main OTR file not found!");
+@@ -256,6 +263,9 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
+         return false;
+     }
+ 
++#ifdef __SWITCH__
++    Ship::Switch::Init(PostInitPhase);
++#endif
+     return true;
+ }
+ 
+diff --git a/src/ship/port/switch/SwitchImpl.cpp b/src/ship/port/switch/SwitchImpl.cpp
+new file mode 100644
+index 00000000..ac9260eb
+--- /dev/null
++++ b/src/ship/port/switch/SwitchImpl.cpp
+@@ -0,0 +1,263 @@
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++
++#include <switch.h>
++#include <SDL2/SDL.h>
++#include <spdlog/spdlog.h>
++
++#include <cstdarg>
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
++#include <ctime>
++#include <imgui_internal.h>
++
++#include "libultraship/bridge/consolevariablebridge.h"
++#include "ship/Context.h"
++#include "ship/audio/Audio.h"
++
++namespace Ship {
++const char* SWITCH_CPU_PROFILES[SWITCH_PROFILE_COUNT] = {
++    "Maximum Performance (1785 MHz)", "High Performance (1581 MHz)", "Boost Performance (1224 MHz)",
++    "Stock Performance (1020 MHz)",   "Powersaving Mode 1 (918 MHz)", "Powersaving Mode 2 (816 MHz)",
++    "Powersaving Mode 3 (714 MHz)",
++};
++} // namespace Ship
++
++// All of these are clocks Horizon itself uses (1785 MHz is the official "boost mode" used during loading),
++// so none of them push the hardware beyond what Nintendo ships.
++static const uint32_t SWITCH_CPU_SPEEDS_VALUES[Ship::SWITCH_PROFILE_COUNT] = {
++    1785000000, 1581000000, 1224000000, 1020000000, 918000000, 816000000, 714000000,
++};
++
++static AppletHookCookie sAppletHookCookie;
++static bool sIsRunning = true;
++static bool sHasFocus = true;
++static bool sIsShowingVirtualKeyboard = false;
++static bool sClkrstInitialized = false;
++static bool sSocketsInitialized = false;
++
++static const char* sRandomTexts[] = {
++    "Psst, don't forget to blame Melon",
++    "Potsanity when?",
++    "Why are you acting so random?",
++    "Enough! My ship sails in the morning",
++    "Do you want 2 or 7 of those?",
++    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rupees",
++    "You can build it yourself",
++    "Made with <3 by the Harbour Masters!",
++    "They say that Kenix is not a developer",
++    "Squadala we're off",
++    "They say one once saw an equals not get set equals",
++    "This is the port all true gamers dock at",
++    "Enhancements? Times Savers? Cheats? You want them? They're yours my friend!",
++    "They say you gotta have the BIIIIG salad",
++    "They say Torch is good software",
++};
++
++static const char* RandomText() {
++    return sRandomTexts[rand() % (sizeof(sRandomTexts) / sizeof(sRandomTexts[0]))];
++}
++
++static void SetCpuClock(uint32_t hz) {
++    if (hosversionBefore(8, 0, 0)) {
++        pcvSetClockRate(PcvModule_CpuBus, hz);
++    } else if (sClkrstInitialized) {
++        ClkrstSession session = { 0 };
++        if (R_SUCCEEDED(clkrstOpenSession(&session, PcvModuleId_CpuBus, 3))) {
++            clkrstSetClockRate(&session, hz);
++            clkrstCloseSession(&session);
++        }
++    }
++}
++
++static void OnAppletHook(AppletHookType hook, void* param) {
++    switch (hook) {
++        case AppletHookType_OnExitRequest:
++            sIsRunning = false;
++            break;
++        case AppletHookType_OnFocusState:
++            sHasFocus = appletGetFocusState() == AppletFocusState_InFocus;
++            if (!sHasFocus) {
++                // Don't burn battery at boosted clocks while sitting on the HOME menu or asleep.
++                SetCpuClock(SWITCH_CPU_SPEEDS_VALUES[Ship::STOCK]);
++            } else {
++                Ship::Switch::ApplyOverclock();
++                // Audio output is lost after resuming from sleep; recreate the SDL audio player.
++                // See https://github.com/HarbourMasters/Shipwright/issues/3317
++                auto audio = Ship::Context::GetRawInstance()->GetAudio();
++                if (audio != nullptr && audio->GetCurrentAudioBackend() == Ship::AudioBackend::SDL) {
++                    SPDLOG_INFO("Restarting SDL audio to work around audio loss on resume");
++                    audio->SetCurrentAudioBackend(Ship::AudioBackend::SDL);
++                }
++            }
++            break;
++        case AppletHookType_OnPerformanceMode:
++        case AppletHookType_OnOperationMode:
++            Ship::Switch::ApplyOverclock();
++            break;
++        default:
++            break;
++    }
++}
++
++static void DetectAppletMode() {
++    AppletType at = appletGetAppletType();
++    if (at == AppletType_Application || at == AppletType_SystemApplication) {
++        return;
++    }
++
++    Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship while in Applet mode."
++                                            "\x1b[4;2HPlease relaunch while in full-memory mode."
++                                            "\x1b[5;2HHold R when opening any game to enter HBMenu."
++                                            "\x1b[44;2H%s.",
++                                            RandomText());
++}
++
++void Ship::Switch::Init(SwitchPhase phase) {
++    switch (phase) {
++        case PreInitPhase:
++            srand(time(nullptr));
++            DetectAppletMode();
++            break;
++        case PostInitPhase:
++            appletInitializeGamePlayRecording();
++            // Needed for online play (Anchor) and Crowd Control; failure just leaves networking unavailable.
++            sSocketsInitialized = R_SUCCEEDED(socketInitializeDefault());
++#ifdef _DEBUG
++            if (sSocketsInitialized) {
++                nxlinkStdio();
++            }
++#endif
++            appletSetGamePlayRecordingState(true);
++            appletHook(&sAppletHookCookie, OnAppletHook, nullptr);
++            appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
++            if (!hosversionBefore(8, 0, 0)) {
++                sClkrstInitialized = R_SUCCEEDED(clkrstInitialize());
++            } else {
++                pcvInitialize();
++            }
++            ApplyOverclock();
++            break;
++    }
++}
++
++void Ship::Switch::Exit() {
++    // Hand the CPU back at stock clocks instead of leaving it boosted after we quit.
++    SetCpuClock(SWITCH_CPU_SPEEDS_VALUES[STOCK]);
++    if (sClkrstInitialized) {
++        clkrstExit();
++        sClkrstInitialized = false;
++    } else if (hosversionBefore(8, 0, 0)) {
++        pcvExit();
++    }
++    appletUnhook(&sAppletHookCookie);
++    appletSetGamePlayRecordingState(false);
++    if (sSocketsInitialized) {
++        socketExit();
++        sSocketsInitialized = false;
++    }
++}
++
++void Ship::Switch::ImGuiSetupFont(ImFontAtlas* fonts) {
++    if (R_FAILED(plInitialize(PlServiceType_User))) {
++        return;
++    }
++
++    PlFontData fontStd;
++    PlFontData fontExt;
++
++    if (R_SUCCEEDED(plGetSharedFontByType(&fontStd, PlSharedFontType_Standard))) {
++        ImFontConfig config;
++        config.FontDataOwnedByAtlas = false;
++        config.MergeMode = true;
++        strcpy(config.Name, "Nintendo Standard");
++        fonts->AddFontFromMemoryTTF(fontStd.address, fontStd.size, 13.0f, &config,
++                                    fonts->GetGlyphRangesCyrillic());
++    }
++
++    if (R_SUCCEEDED(plGetSharedFontByType(&fontExt, PlSharedFontType_NintendoExt))) {
++        // Nintendo button glyphs (A/B/X/Y, sticks, etc).
++        static const ImWchar ranges[] = {
++            0xE000, 0xE06B, 0xE070, 0xE07E, 0xE080, 0xE099, 0xE0A0, 0xE0BA, 0xE0C0, 0xE0D6, 0xE0E0, 0xE0F5, 0xE100,
++            0xE105, 0xE110, 0xE116, 0xE121, 0xE12C, 0xE130, 0xE13C, 0xE140, 0xE14D, 0xE150, 0xE153, 0,
++        };
++        ImFontConfig config;
++        config.FontDataOwnedByAtlas = false;
++        config.MergeMode = true;
++        strcpy(config.Name, "Nintendo Ext");
++        fonts->AddFontFromMemoryTTF(fontExt.address, fontExt.size, 13.0f, &config, ranges);
++    }
++
++    // The shared font memory stays mapped after plExit, so the atlas can keep pointing at it.
++    plExit();
++}
++
++void Ship::Switch::ImGuiProcessEvent(bool wantsTextInput) {
++    if (wantsTextInput) {
++        if (!sIsShowingVirtualKeyboard) {
++            ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
++            if (state != nullptr) {
++                state->ClearText();
++            }
++            sIsShowingVirtualKeyboard = true;
++            SDL_StartTextInput();
++        }
++    } else if (sIsShowingVirtualKeyboard) {
++        sIsShowingVirtualKeyboard = false;
++        SDL_StopTextInput();
++    }
++}
++
++bool Ship::Switch::IsRunning() {
++    return sIsRunning;
++}
++
++bool Ship::Switch::IsDocked() {
++    return appletGetOperationMode() == AppletOperationMode_Console;
++}
++
++void Ship::Switch::GetDisplaySize(int* width, int* height) {
++    if (IsDocked()) {
++        *width = 1920;
++        *height = 1080;
++    } else {
++        *width = 1280;
++        *height = 720;
++    }
++}
++
++void Ship::Switch::ApplyOverclock() {
++    int32_t perfMode = CVarGetInteger(CVAR_SWITCH_PERF_MODE, (int32_t)MAXIMUM);
++    if (perfMode < 0 || perfMode >= SWITCH_PROFILE_COUNT) {
++        perfMode = MAXIMUM;
++    }
++    if (sHasFocus) {
++        SetCpuClock(SWITCH_CPU_SPEEDS_VALUES[perfMode]);
++    }
++}
++
++void Ship::Switch::PrintErrorMessageToScreen(const char* str, ...) {
++    consoleInit(nullptr);
++
++    va_list args;
++    va_start(args, str);
++    vprintf(str, args);
++    va_end(args);
++
++    while (appletMainLoop()) {
++        consoleUpdate(nullptr);
++    }
++
++    consoleExit(nullptr);
++    exit(1);
++}
++
++void Ship::Switch::ThrowMissingOTR(const std::string& otrPath) {
++    PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship without the game O2R file."
++                              "\x1b[4;2HPlease relaunch making sure %s exists."
++                              "\x1b[5;2HGenerate it by running SoH 9.3.0 on a PC with your ROM."
++                              "\x1b[44;2H%s.",
++                              otrPath.c_str(), RandomText());
++}
++#endif
+diff --git a/src/ship/window/gui/Gui.cpp b/src/ship/window/gui/Gui.cpp
+index 1f9279bd..cfe93374 100644
+--- a/src/ship/window/gui/Gui.cpp
++++ b/src/ship/window/gui/Gui.cpp
+@@ -1,5 +1,8 @@
+ #define NOMINMAX
+ 
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++#endif
+ #include "ship/window/gui/Gui.h"
+ 
+ #include <cstring>
+@@ -78,6 +81,12 @@ void Gui::Init() {
+     mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
+                                                           &iconsConfig, sIconsRanges);
+ 
++#ifdef __SWITCH__
++    // Nintendo shared font for Cyrillic text and the controller button glyphs.
++    // Menu scaling itself is left to the game (SoH defaults to its "Large" menu scale on Switch).
++    Ship::Switch::ImGuiSetupFont(mImGuiIo->Fonts);
++#endif
++
+ #if defined(__ANDROID__)
+     // Scale everything by 2 for Android
+     ImGui::GetStyle().ScaleAllSizes(2.0f);
+diff --git a/src/ship/window/gui/StatsWindow.cpp b/src/ship/window/gui/StatsWindow.cpp
+index 00cc7f03..187672ca 100644
+--- a/src/ship/window/gui/StatsWindow.cpp
++++ b/src/ship/window/gui/StatsWindow.cpp
+@@ -21,6 +21,8 @@ void StatsWindow::DrawElement() {
+     ImGui::Text("Platform: iOS");
+ #elif defined(__APPLE__)
+     ImGui::Text("Platform: macOS");
++#elif defined(__SWITCH__)
++    ImGui::Text("Platform: Nintendo Switch");
+ #elif defined(__linux__)
+     ImGui::Text("Platform: Linux");
+ #elif defined(__OpenBSD__)

@@ -614,10 +614,10 @@ add_custom_command(
 ################################################################################
 # Dependencies
 ################################################################################
-add_dependencies(${PROJECT_NAME}
-    libultraship
-    torch
-)
+add_dependencies(${PROJECT_NAME} libultraship)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+    add_dependencies(${PROJECT_NAME} torch)
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(glfw3 REQUIRED)
@@ -665,15 +665,19 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
-    find_package(SDL2)
+    find_package(SDL2 REQUIRED)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
+    include(${CMAKE_SOURCE_DIR}/CMake/switch-deps.cmake)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
+        ${SOH_SWITCH_NET_LIBRARY}
+        ${SOH_SWITCH_VORBIS_LIBRARIES}
+        glad::glad
         SDL2::SDL2
-        -lglad
         Threads::Threads
     )
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DEVKITPRO}/portlibs/switch/include)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES

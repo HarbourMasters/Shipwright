@@ -8,6 +8,9 @@
 #include "UIWidgets.hpp"
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/Context.h>
+#ifdef __SWITCH__
+#include <ship/port/switch/SwitchImpl.h>
+#endif
 
 extern "C" {
 #include "include/z64audio.h"
@@ -26,6 +29,18 @@ static std::map<int32_t, const char*> imguiScaleOptions = {
     { 2, "Large" },
     { 3, "X-Large" },
 };
+
+#ifdef __SWITCH__
+static const std::map<int32_t, const char*> switchCpuProfileOptions = {
+    { Ship::MAXIMUM, Ship::SWITCH_CPU_PROFILES[Ship::MAXIMUM] },
+    { Ship::HIGH, Ship::SWITCH_CPU_PROFILES[Ship::HIGH] },
+    { Ship::BOOST, Ship::SWITCH_CPU_PROFILES[Ship::BOOST] },
+    { Ship::STOCK, Ship::SWITCH_CPU_PROFILES[Ship::STOCK] },
+    { Ship::POWERSAVINGM1, Ship::SWITCH_CPU_PROFILES[Ship::POWERSAVINGM1] },
+    { Ship::POWERSAVINGM2, Ship::SWITCH_CPU_PROFILES[Ship::POWERSAVINGM2] },
+    { Ship::POWERSAVINGM3, Ship::SWITCH_CPU_PROFILES[Ship::POWERSAVINGM3] },
+};
+#endif
 
 static const std::map<int32_t, const char*> menuThemeOptions = {
     { UIWidgets::Colors::Red, "Red" },
@@ -172,6 +187,20 @@ void SohMenu::AddMenuSettings() {
                 CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
         })
         .Options(CheckboxOptions().Tooltip("Makes the cursor always visible, even in full screen."));
+#endif
+#ifdef __SWITCH__
+    AddWidget(path, "Nintendo Switch", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "CPU Performance Profile", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_SWITCH_PERF_MODE)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) { Ship::Switch::ApplyOverclock(); })
+        .Options(ComboboxOptions()
+                     .ComboMap(switchCpuProfileOptions)
+                     .DefaultIndex(Ship::MAXIMUM)
+                     .Tooltip("CPU clock used while the game is running. Every option is a clock the Switch itself "
+                              "uses (1785 MHz is its loading-screen boost clock).\n\nMaximum keeps frame rate "
+                              "steadiest, especially with frame interpolation; lower profiles save battery.\n"
+                              "Clocks return to stock on the HOME menu and when the game closes."));
 #endif
     AddWidget(path, "Search In Sidebar", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("Menu.SidebarSearch"))

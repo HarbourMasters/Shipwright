@@ -69,7 +69,7 @@
 #endif
 
 #ifdef __SWITCH__
-#include <port/switch/SwitchImpl.h>
+#include <ship/port/switch/SwitchImpl.h>
 #elif defined(__WIIU__)
 #include <port/wiiu/WiiUImpl.h>
 #include <coreinit/debug.h> // OSFatal
@@ -123,6 +123,8 @@
 
 #ifdef __WIIU__
 const uint32_t defaultImGuiScale = 3;
+#elif defined(__SWITCH__)
+const uint32_t defaultImGuiScale = 2; // "Large" (1.5x): readable both handheld and on a TV
 #else
 const uint32_t defaultImGuiScale = 1;
 #endif
@@ -330,7 +332,9 @@ OTRGlobals::OTRGlobals() {
     }
 
     previousImGuiScaleIndex = -1;
-    previousImGuiScale = defaultImGuiScale;
+    // ScaleImGui() rescales relative to this, so it has to start at the unscaled style (1.0), not at the
+    // default *index* (which only happened to be correct while the default index was 1 / "Normal").
+    previousImGuiScale = 1.0f;
     ScaleImGui();
 }
 
@@ -427,7 +431,9 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             args.push_back(argv[i]);
         }
     }
+#if !defined(__SWITCH__) && !defined(__WIIU__)
     Extractor extract;
+#endif
     PromptSteps promptStep = PS_FILE_CHECK;
     bool generatedIsMQ = false;
     // Whether generatedIsMQ is set, i.e. the first prompted rom extracted fine
@@ -442,12 +448,16 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     std::string file;
 
 #if defined(__SWITCH__)
-    SohGui::RegisterPopup("Outdated ROM Archives",
-                          "\x1b[2;2HYou've launched the Ship with an old ROM O2R file."
-                          "\x1b[4;2HPlease regenerate a new ROM O2R and relaunch."
-                          "\x1b[6;2HPress the Home button to exit...",
-                          "OK", "", [&]() { exit(1); });
-#elif defined(__WIIU__)
+    // The Switch can't run the ROM extractor, so archives have to come from a PC build of the same version.
+    if (shouldRegen) {
+        SohGui::RegisterPopup("Outdated ROM Archives",
+                              "Your oot.o2r / oot-mq.o2r was made by a different version of SoH.\n"
+                              "Regenerate it with the PC release of this version,\n"
+                              "copy it to /switch/soh/ on your SD card and relaunch.",
+                              "OK", "", [&]() { exit(1); });
+    }
+#else
+#if defined(__WIIU__)
     SohGui::RegisterPopup("Outdated ROM Archives",
                           "You've launched the Ship with an old a ROM O2R file.\n\n"
                           "Please generate a ROM O2R and relaunch.\n\n"
@@ -475,6 +485,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 "OK", "", [&]() { exit(1); });
         }
     }
+#endif // __SWITCH__
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
     std::optional<std::future<void>> extractionTask;
@@ -501,8 +512,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     std::string msg;
 
 #if defined(__SWITCH__)
-                    msg = "\x1b[4;2HPlease re-extract it from the download.\n"
-                          "\x1b[6;2HPress the Home button to exit...";
+                    msg = "Copy soh.o2r from the Switch download into /switch/soh/\n"
+                          "next to soh.nro, then relaunch.";
 #elif defined(__WIIU__)
                     msg = "Please extract the soh.o2r from the Ship of Harkinian download\nto your folder.\n\nPress "
                           "and hold the power\n"
@@ -643,6 +654,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                 break;
             }
             case ES_EXTRACT: {
+#if defined(__SWITCH__) || defined(__WIIU__)
+                extractStep = ES_VERIFY;
+                continue;
+#else
                 switch (promptStep) {
                     case PS_FILE_CHECK: {
                         const bool ootO2RExists =
@@ -732,6 +747,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         break;
                 }
                 break;
+#endif
             }
             case ES_VERIFY: {
                 const bool ootO2RExists =

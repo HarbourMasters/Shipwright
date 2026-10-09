@@ -14,7 +14,7 @@
 #endif
 
 #ifdef __SWITCH__
-#include <port/switch/SwitchImpl.h>
+#include <ship/port/switch/SwitchImpl.h>
 #endif
 
 #include "soh/Enhancements/debugger/MessageViewer.h"

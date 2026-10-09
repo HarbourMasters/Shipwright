@@ -296,25 +296,23 @@ cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## Switch
-1. Requires that your build machine is setup with the tools necessary for your platform above
-2. Requires that you have the switch build tools installed
-3. Clone the Ship of Harkinian repository
-4. Place one or more [compatible](#compatible-roms) roms in the `roms` directory with namings of your choice
+The Switch build lives on the `switch-*` branches and needs devkitPro with `switch-dev` installed.
+The Switch platform layer for libultraship ships as a patch in `switch/`, applied on top of the pinned submodule.
 
 ```bash
 cd Shipwright
-# Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja
-# Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-cmake --build build-cmake --target ExtractAssets
-# Setup cmake project for building for Switch
-cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
-# Build project and generate nro
+git submodule update --init
+git -C libultraship apply ../switch/libultraship-switch.patch
+# Build the port's own asset archive with the PC tools
+cmake -H. -Bbuild-cmake -GNinja -DSOH_TOOLS_ONLY=ON
+cmake --build build-cmake --target GenerateSohOtr
+# Build the .nro
+cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DCMAKE_BUILD_TYPE=Release
 cmake --build build-switch --target soh_nro
-
-# Now you can run the executable in ./build-switch/soh/soh.nro
-# To develop the project open the repository in VSCode (or your preferred editor)
+# Copy build-switch/soh/soh.nro and soh.o2r to /switch/soh/ on the SD card (see switch/README.md)
 ```
+
+GitHub Actions does all of this in `.github/workflows/build-switch.yml` on every push to a `switch-*` branch.
 
 ## Wii U
 1. Requires that your build machine is setup with the tools necessary for your platform above
