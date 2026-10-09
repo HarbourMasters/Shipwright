@@ -88,9 +88,20 @@ static void RegisterBombchuBowlingNoBigCucco() {
 }
 
 static void RegisterBombchuBowlingAmmo() {
+    static s32 bombchuBowlingAmmo = CUCCO_BOWLING_AMMO_DEFAULT;
+    if (CVAR_BOWLING_VALUE && (bombchuBowlingAmmo != CVAR_BOWLING_AMMO_VALUE) &&
+        (gPlayState->bombchuBowlingStatus > 0)) {
+        gPlayState->bombchuBowlingStatus += CVAR_BOWLING_AMMO_VALUE - bombchuBowlingAmmo;
+        if (gPlayState->bombchuBowlingStatus <= 0) {
+            gPlayState->bombchuBowlingStatus = -1;
+        }
+        bombchuBowlingAmmo = CVAR_BOWLING_AMMO_VALUE;
+    }
+
     COND_VB_SHOULD(VB_SET_BOMBCHU_BOWLING_AMMO,
                    CVAR_BOWLING_VALUE && (CVAR_BOWLING_AMMO_VALUE != CUCCO_BOWLING_AMMO_DEFAULT), {
                        gPlayState->bombchuBowlingStatus = CVAR_BOWLING_AMMO_VALUE;
+                       bombchuBowlingAmmo = CVAR_BOWLING_AMMO_VALUE;
                        *should = false;
                    });
 }
