@@ -88,22 +88,22 @@ static void RegisterBombchuBowlingNoBigCucco() {
 }
 
 static void RegisterBombchuBowlingAmmo() {
-    static s32 bombchuBowlingAmmo = CUCCO_BOWLING_AMMO_DEFAULT;
-    if (CVAR_BOWLING_VALUE && (bombchuBowlingAmmo != CVAR_BOWLING_AMMO_VALUE) &&
-        (gPlayState->bombchuBowlingStatus > 0)) {
-        gPlayState->bombchuBowlingStatus += CVAR_BOWLING_AMMO_VALUE - bombchuBowlingAmmo;
+    static s32 prevAmmoValue = CUCCO_BOWLING_AMMO_DEFAULT;
+    s32 nextAmmoValue = CVAR_BOWLING_VALUE ? CVAR_BOWLING_AMMO_VALUE : CUCCO_BOWLING_AMMO_DEFAULT;
+
+    if ((prevAmmoValue != nextAmmoValue) && (gPlayState->bombchuBowlingStatus > 0)) {
+        gPlayState->bombchuBowlingStatus += nextAmmoValue - prevAmmoValue;
         if (gPlayState->bombchuBowlingStatus <= 0) {
             gPlayState->bombchuBowlingStatus = -1;
         }
-        bombchuBowlingAmmo = CVAR_BOWLING_AMMO_VALUE;
+        prevAmmoValue = nextAmmoValue;
     }
 
-    COND_VB_SHOULD(VB_SET_BOMBCHU_BOWLING_AMMO,
-                   CVAR_BOWLING_VALUE && (CVAR_BOWLING_AMMO_VALUE != CUCCO_BOWLING_AMMO_DEFAULT), {
-                       gPlayState->bombchuBowlingStatus = CVAR_BOWLING_AMMO_VALUE;
-                       bombchuBowlingAmmo = CVAR_BOWLING_AMMO_VALUE;
-                       *should = false;
-                   });
+    COND_VB_SHOULD(VB_SET_BOMBCHU_BOWLING_AMMO, nextAmmoValue != CUCCO_BOWLING_AMMO_DEFAULT, {
+        prevAmmoValue = CVAR_BOWLING_AMMO_VALUE;
+        gPlayState->bombchuBowlingStatus = prevAmmoValue;
+        *should = false;
+    });
 }
 
 static void RegisterBombchuBowlingFirstPrize() {
