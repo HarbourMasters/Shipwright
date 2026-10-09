@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x0113FDD0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x2CA0
+  symbol: gN64Heap_object_masterkokirihead

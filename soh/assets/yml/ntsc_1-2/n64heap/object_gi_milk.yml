@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x010F1F70 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x1470
+  symbol: gN64Heap_object_gi_milk

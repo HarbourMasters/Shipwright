@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011851B0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x1800
+  symbol: gN64Heap_object_d_lift

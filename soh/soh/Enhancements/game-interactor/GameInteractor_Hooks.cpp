@@ -255,6 +255,22 @@ void GameInteractor_ExecuteOnPlayDrawEnd() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
 
+void GameInteractor_ExecuteOnZeldaArenaInit() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZeldaArenaInit>();
+}
+
+void GameInteractor_ExecuteOnZeldaArenaAlloc(void* ptr, size_t size, const char* file, bool reverse) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZeldaArenaAlloc>(ptr, size, file, reverse);
+}
+
+void GameInteractor_ExecuteOnZeldaArenaFree(void* ptr) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZeldaArenaFree>(ptr);
+}
+
+void GameInteractor_ExecuteOnCutsceneScriptLoad(uint8_t** script) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCutsceneScriptLoad>(script);
+}
+
 bool GameInteractor_Should(GIVanillaBehavior flag, u32 result, ...) {
     // Only the external function can use the Variadic Function syntax
     // To pass the va args to the next caller must be done using va_list and reading the args into it
