@@ -24,6 +24,8 @@ void FrameInterpolation_DontInterpolateCamera(void);
 
 int FrameInterpolation_GetCameraEpoch(void);
 
+void FrameInterpolation_DontInterpolateChild(const void* a);
+
 void FrameInterpolation_RecordActorPosRotMatrix(void);
 
 void FrameInterpolation_RecordMatrixPush(void);
