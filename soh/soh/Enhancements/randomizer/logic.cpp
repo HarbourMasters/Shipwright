@@ -3198,13 +3198,12 @@ bool Logic::OuterWestHandMQLogic() {
 }
 
 bool Logic::SpiritHandToArch() {
-    if (!((CanJumpslash() && CanMegajump(true) && EffectiveHealth() > 24) ||
-          CanBunnyMegaJumpslash())) {
+    if (!((CanJumpslash() && CanMegajump(true) && EffectiveHealth() > 24) || CanBunnyMegaJumpslash())) {
         return false;
     }
     if (ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
-        return CanHitSwitch() && OuterWestHandMQLogic() &&
-               (HasItem(RG_CLIMB) || CanUse(RG_LONGSHOT)) && HasItem(RG_POWER_BRACELET);
+        return CanHitSwitch() && OuterWestHandMQLogic() && (HasItem(RG_CLIMB) || CanUse(RG_LONGSHOT)) &&
+               HasItem(RG_POWER_BRACELET);
     } else {
         return OuterWestHandLogic();
     }
