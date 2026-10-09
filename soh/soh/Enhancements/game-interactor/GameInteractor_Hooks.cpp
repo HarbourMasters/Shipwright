@@ -207,6 +207,10 @@ void GameInteractor_ExecuteOnBossDefeat(void* actor) {
     GameInteractor::Instance->ExecuteHooksForFilter<GameInteractor::OnBossDefeat>(actor);
 }
 
+void GameInteractor_ExecuteOnBossVaHealthInit(s8* phase4Hp) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnBossVaHealthInit>(phase4Hp);
+}
+
 void GameInteractor_ExecuteOnTimestamp(u8 item) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTimestamp>(item);
 }
