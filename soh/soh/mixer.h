@@ -63,6 +63,10 @@ void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct
                   uint32_t size);
 void aOPUSFree(struct OpusDecState* dec);
 
+bool SOH_OpusStream_ArmContinue(const void* source);
+int32_t SOH_OpusStream_ContinuePos(const void* sampleAddr, uint32_t sampleLength, int32_t fallback);
+void SOH_OpusStream_Update(void);
+
 #define aSegment(pkt, s, b) \
     do {                    \
     } while (0)
