@@ -515,9 +515,8 @@ void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-// Only the frame that appended a sample moves a ribbon; blending the others would collapse
-// the newest segment on every displayed frame. AddVertex sets a new sample's timer to 1, so a
-// timer of 1 marks an end that is still travelling.
+// AddVertex sets a new sample's timer to 1. Only blend on frames that added one,
+// otherwise a finished trail keeps shrinking its last segment.
 static s32 EffectBlure_HeadIsNew(EffectBlure* this) {
     return (this->numElements >= 2) && (this->elements[this->numElements - 1].state == 1) &&
            (this->elements[this->numElements - 1].timer == 1);
@@ -613,7 +612,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
             // Newest end (vtx[2], vtx[3]) slides from the previous sample (vtx[1], vtx[0]).
             static const s16 headPairs[] = { 2, 1, 3, 0 };
 
-            FrameInterpolation_RecordRibbonHead(this, index, vtx, 4, 2, headPairs);
+            FrameInterpolation_RecordRibbonHead(this, vtx, 4, 2, headPairs);
         }
 
         gSPVertex(POLY_XLU_DISP++, vtx, 4, 0);
@@ -791,7 +790,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
                 3, 1, 5, 1, 7, 1, 9, 1, 11, 1, 13, 1, 15, 1, // base edge
             };
 
-            FrameInterpolation_RecordRibbonHead(this, index, vtx, 16, 14, headPairs);
+            FrameInterpolation_RecordRibbonHead(this, vtx, 16, 14, headPairs);
         }
 
         gSPVertex(POLY_XLU_DISP++, vtx, 16, 0);
@@ -1091,7 +1090,7 @@ void EffectBlure_DrawSimple(EffectBlure* this2, GraphicsContext* gfxCtx) {
             // Newest end (vtx[2], vtx[3]) slides from the previous sample (vtx[0], vtx[1]).
             static const s16 headPairs[] = { 2, 0, 3, 1 };
 
-            FrameInterpolation_RecordRibbonHead(this, 0, &vtx[(this->numElements - 2) * 4], 4, 2, headPairs);
+            FrameInterpolation_RecordRibbonHead(this, &vtx[(this->numElements - 2) * 4], 4, 2, headPairs);
         }
 
         EffectBlure_DrawSimpleVertices(gfxCtx, this, vtx);
@@ -1192,7 +1191,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                     // Newest pair slides from the previous pair (j - 4, j - 3).
                     const s16 headPairs[] = { (s16)(j - 2), (s16)(j - 4), (s16)(j - 1), (s16)(j - 3) };
 
-                    FrameInterpolation_RecordRibbonHead(this, 0, vtx, j, 2, headPairs);
+                    FrameInterpolation_RecordRibbonHead(this, vtx, j, 2, headPairs);
                 }
 
                 j = 0;

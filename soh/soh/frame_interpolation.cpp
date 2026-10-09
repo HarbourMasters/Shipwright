@@ -223,18 +223,17 @@ void record_mode(u8 mode) {
     }
 }
 
-// Swept ribbon trails (blure: sword slashes, boomerang, ...) are vertex blocks written on
-// the CPU, one segment per sample of the weapon position. Only the newest end moves during
-// a logical frame, so only it is blended; blending whole blocks would smear the ribbon
-// because the sample indices shift every frame.
-struct IpolVtxHead {
-    Vtx* dest = nullptr;          // vertex buffer of the current logical frame
-    vector<Vtx> current;          // copy of what the game just wrote
-    vector<pair<s16, s16>> pairs; // (destination, source) indices of the moving end
-    uint32_t frameStamp = 0;
+// Ribbon trails (sword slashes, boomerang, arrows) are vertices written on the CPU, one
+// segment per sample of the weapon position. Only the newest end moves within a gameplay
+// frame, so only it gets blended, sliding from the previous sample to the new one.
+struct RibbonHead {
+    Vtx* dest = nullptr;
+    vector<Vtx> cur;
+    vector<pair<s16, s16>> pairs; // (moving vertex, vertex it starts from)
+    uint32_t frame = 0;
 };
 
-map<pair<const void*, int>, IpolVtxHead> ipol_vtx_heads;
+unordered_map<const void*, RibbonHead> ribbon_heads;
 uint32_t record_frame;
 
 Data& append(Op op) {
@@ -505,8 +504,7 @@ void FrameInterpolation_StartRecord(void) {
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
     } else {
-        is_recording = false;
-        ipol_vtx_heads.clear();
+        ribbon_heads.clear();
     }
 }
 
@@ -674,59 +672,43 @@ void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest) {
     FrameInterpolation_RecordMatrixMtxFToMtx(src, dest);
 }
 
-void FrameInterpolation_RecordRibbonHead(void* key, int index, void* dest, u32 vtxCount, u32 pairCount,
-                                         const s16* pairs) {
-    if (!is_recording || dest == nullptr || vtxCount == 0 || pairCount == 0) {
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs) {
+    if (!is_recording) {
         return;
     }
 
-    IpolVtxHead& head = ipol_vtx_heads[{ key, index }];
-
+    RibbonHead& head = ribbon_heads[key];
     head.dest = (Vtx*)dest;
-    head.current.assign((Vtx*)dest, (Vtx*)dest + vtxCount);
+    head.cur.assign(head.dest, head.dest + vtxCount);
     head.pairs.clear();
     for (u32 i = 0; i < pairCount; i++) {
-        const s16 dst = pairs[2 * i];
-        const s16 src = pairs[2 * i + 1];
-        if (dst >= 0 && src >= 0 && (u32)dst < vtxCount && (u32)src < vtxCount) {
-            head.pairs.emplace_back(dst, src);
-        }
+        head.pairs.emplace_back(pairs[2 * i], pairs[2 * i + 1]);
     }
-    head.frameStamp = record_frame;
+    head.frame = record_frame;
 }
 
-void FrameInterpolation_UpdateRibbonHeads(f32 step) {
-    if (ipol_vtx_heads.empty()) {
-        return;
-    }
+void FrameInterpolation_UpdateRibbonHeads(float step) {
+    for (auto it = ribbon_heads.begin(); it != ribbon_heads.end();) {
+        RibbonHead& head = it->second;
 
-    for (auto it = ipol_vtx_heads.begin(); it != ipol_vtx_heads.end();) {
-        IpolVtxHead& head = it->second;
-
-        // Not written this frame: the ribbon ended.
-        if (head.frameStamp != record_frame || head.dest == nullptr) {
-            it = ipol_vtx_heads.erase(it);
+        // Not drawn this frame, the trail ended or stopped growing
+        if (head.frame != record_frame) {
+            it = ribbon_heads.erase(it);
             continue;
         }
 
-        Vtx* dest = head.dest;
-        const Vtx* cur = head.current.data();
-
-        // Restore the reference before blending.
-        std::copy(head.current.begin(), head.current.end(), dest);
-
+        std::copy(head.cur.begin(), head.cur.end(), head.dest);
         if (step < 1.0f) {
-            const f32 w = 1.0f - step;
-
+            float w = 1.0f - step;
             for (const auto& [dst, src] : head.pairs) {
-                // Slide the end from the previous sample (source) to the current one.
-                for (s32 j = 0; j < 3; j++) {
-                    dest[dst].v.ob[j] = (s16)(w * cur[src].v.ob[j] + step * cur[dst].v.ob[j]);
-                    dest[dst].n.n[j] = (s8)(w * (f32)cur[src].n.n[j] + step * (f32)cur[dst].n.n[j]);
+                const Vtx& from = head.cur[src];
+                Vtx& to = head.dest[dst];
+                for (int j = 0; j < 3; j++) {
+                    to.v.ob[j] = (s16)(w * from.v.ob[j] + step * to.v.ob[j]);
                 }
-                // Fade lives in the vertex colour.
-                for (s32 j = 0; j < 4; j++) {
-                    dest[dst].v.cn[j] = (u8)(w * (f32)cur[src].v.cn[j] + step * (f32)cur[dst].v.cn[j]);
+                // Colour carries the fade
+                for (int j = 0; j < 4; j++) {
+                    to.v.cn[j] = (u8)(w * from.v.cn[j] + step * to.v.cn[j]);
                 }
             }
         }

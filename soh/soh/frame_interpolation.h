@@ -58,17 +58,10 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode);
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest);
 
-/**
- * Records a ribbon trail vertex block whose newest end is a moving sample. `dest` holds
- * the vertices written this logical frame; `pairs` lists `pairCount` (destination, source)
- * index pairs the destination collapses onto at the start of the frame. Only call it for a
- * frame that appended a sample: a non-growing ribbon is static and must not be blended.
- */
-void FrameInterpolation_RecordRibbonHead(void* key, int index, void* dest, u32 vtxCount, u32 pairCount,
-                                         const s16* pairs);
+// pairs holds pairCount (moving vertex, vertex it starts from) index pairs
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs);
 
-/** Blends the recorded ribbon ends for the displayed frame `step`. Call once per frame, before running commands. */
-void FrameInterpolation_UpdateRibbonHeads(f32 step);
+void FrameInterpolation_UpdateRibbonHeads(float step);
 
 #ifdef __cplusplus
 }
