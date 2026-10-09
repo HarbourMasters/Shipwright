@@ -8,8 +8,6 @@
     - [ 11, 0x0160D000 ]
     - [ 12, 0x0160D000 ]
     - [ 13, 0x0160D000 ]
-  external_files:
-    - pal_mq_dbg/objects/gameplay_keep.yml
 
 gAnubiceAnim_000A48:
   type: OOT:ANIMATION

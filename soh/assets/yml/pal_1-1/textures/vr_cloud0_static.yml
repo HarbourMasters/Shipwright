@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x01354150 ]
-
+    - [1, 0x01354150]
+  directory: textures/
+  external_files:
+    - pal_1-1/textures/vr_cloud0_pal_static.yml
 gSunriseOvercastSkybox1Tex:
   type: TEXTURE
   offset: 0x0
@@ -11,7 +13,6 @@ gSunriseOvercastSkybox1Tex:
   height: 64
   external_tlut: vr_cloud0_pal_static
   external_tlut_offset: 0x000
-
 gSunriseOvercastSkybox2Tex:
   type: TEXTURE
   offset: 0x2000
@@ -21,7 +22,6 @@ gSunriseOvercastSkybox2Tex:
   height: 64
   external_tlut: vr_cloud0_pal_static
   external_tlut_offset: 0x000
-
 gSunriseOvercastSkybox3Tex:
   type: TEXTURE
   offset: 0x4000
@@ -31,7 +31,6 @@ gSunriseOvercastSkybox3Tex:
   height: 64
   external_tlut: vr_cloud0_pal_static
   external_tlut_offset: 0x000
-
 gSunriseOvercastSkybox4Tex:
   type: TEXTURE
   offset: 0x6000
@@ -41,7 +40,6 @@ gSunriseOvercastSkybox4Tex:
   height: 64
   external_tlut: vr_cloud0_pal_static
   external_tlut_offset: 0x000
-
 gSunriseOvercastSkybox5Tex:
   type: TEXTURE
   offset: 0x8000
@@ -51,4 +49,3 @@ gSunriseOvercastSkybox5Tex:
   height: 128
   external_tlut: vr_cloud0_pal_static
   external_tlut_offset: 0x000
-
