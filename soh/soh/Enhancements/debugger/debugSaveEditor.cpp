@@ -1,7 +1,9 @@
 #include <algorithm>
 #include <array>
 #include <bit>
+#include <cmath>
 #include <map>
+#include <optional>
 #include <string>
 
 #include <fast/Fast3dGui.h>
@@ -2746,6 +2748,320 @@ void ResetBaseOptions() {
         .Tooltip("");
 }
 
+namespace {
+enum class HeartFlagType { Collectible, Chest, ItemGet, Event, Info, Fishing };
+struct HeartFlag {
+    const char* name;
+    HeartFlagType type;
+    uint16_t scene;
+    uint16_t flag;
+};
+
+// Vanilla reward flags, including NPCs and minigames. Ice Cavern uses the same
+// collectible bit in original and Master Quest. Boss containers are not pieces.
+constexpr std::array<HeartFlag, 36> heartFlags = { {
+    { "Lost Woods - Skull Kid", HeartFlagType::ItemGet, SCENE_LOST_WOODS, 22 },
+    { "Lost Woods - Ocarina Memory Game", HeartFlagType::ItemGet, SCENE_LOST_WOODS, 23 },
+    { "Hyrule Field - Tektite Grotto Freestanding PoH", HeartFlagType::Collectible, SCENE_GROTTOS, 0x01 },
+    { "Hyrule Field - Deku Scrub Grotto", HeartFlagType::ItemGet, SCENE_GROTTOS, ITEMGETINF_DEKU_SCRUB_HEART_PIECE },
+    { "Lake Hylia - Child Fishing", HeartFlagType::Fishing, SCENE_FISHING_POND, HS_FISH_PRIZE_CHILD },
+    { "Lake Hylia - Lab Dive", HeartFlagType::ItemGet, SCENE_LAKESIDE_LABORATORY, 16 },
+    { "Lake Hylia - Freestanding PoH", HeartFlagType::Collectible, SCENE_LAKE_HYLIA, 0x1E },
+    { "Gerudo Valley - Waterfall Freestanding PoH", HeartFlagType::Collectible, SCENE_GERUDO_VALLEY, 0x01 },
+    { "Gerudo Valley - Crate Freestanding PoH", HeartFlagType::Collectible, SCENE_GERUDO_VALLEY, 0x02 },
+    { "Gerudo Fortress - Chest", HeartFlagType::Chest, SCENE_GERUDOS_FORTRESS, 0x00 },
+    { "Gerudo Fortress - HBA 1000 Points", HeartFlagType::Info, SCENE_GERUDOS_FORTRESS, INFTABLE_190 },
+    { "Desert Colossus - Freestanding PoH", HeartFlagType::Collectible, SCENE_DESERT_COLOSSUS, 0x0D },
+    { "Market - Treasure Chest Game Reward", HeartFlagType::ItemGet, SCENE_TREASURE_BOX_SHOP, 27 },
+    { "Market - Bombchu Bowling Second Prize", HeartFlagType::ItemGet, SCENE_BOMBCHU_BOWLING_ALLEY, 18 },
+    { "Market - Lost Dog", HeartFlagType::Info, SCENE_DOG_LADY_HOUSE, INFTABLE_191 },
+    { "Kakariko Village - 50 Gold Skulltula Reward", HeartFlagType::Event, SCENE_HOUSE_OF_SKULLTULA,
+      ((EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) | EVENTCHKINF_SKULLTULA_REWARD_50_SHIFT) },
+    { "Kakariko Village - Man on Roof", HeartFlagType::ItemGet, SCENE_KAKARIKO_VILLAGE, 21 },
+    { "Kakariko Village - Impas House Freestanding PoH", HeartFlagType::Collectible, SCENE_IMPAS_HOUSE, 0x01 },
+    { "Kakariko Village - Windmill Freestanding PoH", HeartFlagType::Collectible, SCENE_WINDMILL_AND_DAMPES_GRAVE,
+      0x01 },
+    { "Graveyard - Heart Piece Grave Chest", HeartFlagType::Chest, SCENE_REDEAD_GRAVE, 0x00 },
+    { "Graveyard - Freestanding PoH", HeartFlagType::Collectible, SCENE_GRAVEYARD, 0x04 },
+    { "Graveyard - Dampe Race Freestanding PoH", HeartFlagType::Collectible, SCENE_WINDMILL_AND_DAMPES_GRAVE, 0x07 },
+    { "Graveyard - Dampe Gravedigging Tour", HeartFlagType::Collectible, SCENE_GRAVEYARD, 0x19 },
+    { "Death Mountain Trail - Freestanding PoH", HeartFlagType::Collectible, SCENE_DEATH_MOUNTAIN_TRAIL, 0x1E },
+    { "Goron City - Pot Freestanding PoH", HeartFlagType::Collectible, SCENE_GORON_CITY, 0x1F },
+    { "Death Mountain Crater - Wall Freestanding PoH", HeartFlagType::Collectible, SCENE_DEATH_MOUNTAIN_CRATER, 0x02 },
+    { "Death Mountain Crater - Volcano Freestanding PoH", HeartFlagType::Collectible, SCENE_DEATH_MOUNTAIN_CRATER,
+      0x08 },
+    { "Zora's River - Frogs in the Rain", HeartFlagType::Event, SCENE_ZORAS_RIVER, EVENTCHKINF_SONGS_FOR_FROGS_STORMS },
+    { "Zora's River - Frogs Ocarina Game", HeartFlagType::Event, SCENE_ZORAS_RIVER, EVENTCHKINF_SONGS_FOR_FROGS_CHOIR },
+    { "Zora's River - Near Open Grotto Freestanding PoH", HeartFlagType::Collectible, SCENE_ZORAS_RIVER, 0x04 },
+    { "Zora's River - Near Domain Freestanding PoH", HeartFlagType::Collectible, SCENE_ZORAS_RIVER, 0x0B },
+    { "Zora's Domain - Chest", HeartFlagType::Chest, SCENE_ZORAS_DOMAIN, 0x00 },
+    { "Zora's Fountain - Iceberg Freestanding PoH", HeartFlagType::Collectible, SCENE_ZORAS_FOUNTAIN, 0x01 },
+    { "Zora's Fountain - Bottom Freestanding PoH", HeartFlagType::Collectible, SCENE_ZORAS_FOUNTAIN, 0x14 },
+    { "Lon Lon Ranch - Freestanding PoH", HeartFlagType::Collectible, SCENE_LON_LON_BUILDINGS, 0x01 },
+    { "Ice Cavern - Freestanding PoH", HeartFlagType::Collectible, SCENE_ICE_CAVERN, 0x01 },
+} };
+
+// Boss drops all use collectible 0x1F in their respective boss room.
+// Keep them separate from the 36-piece total.
+constexpr std::array<HeartFlag, 8> bossHeartFlags = { {
+    { "Queen Gohma Heart Container", HeartFlagType::Collectible, SCENE_DEKU_TREE_BOSS, 0x1F },
+    { "King Dodongo Heart Container", HeartFlagType::Collectible, SCENE_DODONGOS_CAVERN_BOSS, 0x1F },
+    { "Barinade Heart Container", HeartFlagType::Collectible, SCENE_JABU_JABU_BOSS, 0x1F },
+    { "Phantom Ganon Heart Container", HeartFlagType::Collectible, SCENE_FOREST_TEMPLE_BOSS, 0x1F },
+    { "Volvagia Heart Container", HeartFlagType::Collectible, SCENE_FIRE_TEMPLE_BOSS, 0x1F },
+    { "Morpha Heart Container", HeartFlagType::Collectible, SCENE_WATER_TEMPLE_BOSS, 0x1F },
+    { "Twinrova Heart Container", HeartFlagType::Collectible, SCENE_SPIRIT_TEMPLE_BOSS, 0x1F },
+    { "Bongo Bongo Heart Container", HeartFlagType::Collectible, SCENE_SHADOW_TEMPLE_BOSS, 0x1F },
+} };
+
+// Child Link's freestanding fortress pickup is separate from the normal chest.
+constexpr std::array<HeartFlag, 1> extraHeartFlags = { {
+    { "Gerudo Fortress - Child Link", HeartFlagType::Collectible, SCENE_GERUDOS_FORTRESS, 0x01 },
+} };
+
+// Read the active scene first: its newly acquired flags may not yet be copied
+// to the save context. This never changes the save or relies on tracker history.
+std::optional<bool> ReadFlag(const HeartFlag& entry, const SaveContext& save, const PlayState* play) {
+    const bool current = play != nullptr && play->sceneNum == entry.scene;
+    switch (entry.type) {
+        case HeartFlagType::Collectible:
+            if (entry.scene >= std::size(save.sceneFlags) || entry.flag >= 32)
+                return std::nullopt;
+            return ((current ? play->actorCtx.flags.collect : save.sceneFlags[entry.scene].collect) &
+                    (uint32_t{ 1 } << entry.flag)) != 0;
+        case HeartFlagType::Chest:
+            if (entry.scene >= std::size(save.sceneFlags) || entry.flag >= 32)
+                return std::nullopt;
+            return ((current ? play->actorCtx.flags.chest : save.sceneFlags[entry.scene].chest) &
+                    (uint32_t{ 1 } << entry.flag)) != 0;
+        case HeartFlagType::ItemGet:
+            if ((entry.flag >> 4) >= std::size(save.itemGetInf))
+                return std::nullopt;
+            return (save.itemGetInf[entry.flag >> 4] & (1u << (entry.flag & 15))) != 0;
+        case HeartFlagType::Event:
+            if ((entry.flag >> 4) >= std::size(save.eventChkInf))
+                return std::nullopt;
+            return (save.eventChkInf[entry.flag >> 4] & (1u << (entry.flag & 15))) != 0;
+        case HeartFlagType::Info:
+            if ((entry.flag >> 4) >= std::size(save.infTable))
+                return std::nullopt;
+            return (save.infTable[entry.flag >> 4] & (1u << (entry.flag & 15))) != 0;
+        case HeartFlagType::Fishing:
+            return (save.highScores[HS_FISHING] & entry.flag) != 0;
+    }
+    return std::nullopt;
+}
+
+bool WriteFlag(const HeartFlag& entry, SaveContext& save, PlayState* play, bool collected) {
+    if (!ReadFlag(entry, save, play).has_value())
+        return false;
+    const auto update = [collected](auto& value, uint32_t mask) {
+        value = collected ? (value | mask) : (value & ~mask);
+    };
+    const bool current = play != nullptr && play->sceneNum == entry.scene;
+    switch (entry.type) {
+        case HeartFlagType::Collectible:
+            update(save.sceneFlags[entry.scene].collect, uint32_t{ 1 } << entry.flag);
+            if (current)
+                update(play->actorCtx.flags.collect, uint32_t{ 1 } << entry.flag);
+            break;
+        case HeartFlagType::Chest:
+            update(save.sceneFlags[entry.scene].chest, uint32_t{ 1 } << entry.flag);
+            if (current)
+                update(play->actorCtx.flags.chest, uint32_t{ 1 } << entry.flag);
+            break;
+        case HeartFlagType::ItemGet:
+            update(save.itemGetInf[entry.flag >> 4], 1u << (entry.flag & 15));
+            break;
+        case HeartFlagType::Event:
+            update(save.eventChkInf[entry.flag >> 4], 1u << (entry.flag & 15));
+            break;
+        case HeartFlagType::Info:
+            update(save.infTable[entry.flag >> 4], 1u << (entry.flag & 15));
+            break;
+        case HeartFlagType::Fishing:
+            update(save.highScores[HS_FISHING], entry.flag);
+            break;
+    }
+    return true;
+}
+// Apply one reward's delta, never reconstruct health from the full flag list.
+// Validate every value before writing so a rejected edit leaves both copies intact.
+// Null means success; an error is displayed by the Save Editor.
+const char* EditReward(const HeartFlag& entry, SaveContext& save, PlayState* play, bool collected, bool isContainer,
+                       bool sync = true, bool hurtContainers = false) {
+    const auto previous = ReadFlag(entry, save, play);
+    if (!previous)
+        return "This reward's flag is unavailable.";
+    if (!sync || *previous == collected) {
+        WriteFlag(entry, save, play, collected);
+        return nullptr;
+    }
+    const int direction = collected ? 1 : -1;
+    const int pieces = (save.inventory.questItems >> 28) & 0xF;
+    const int capacity = save.healthCapacity;
+    if (pieces > 3 || capacity < 16 || capacity > 320 || capacity % 16 != 0)
+        return "Health or piece count is outside its normal range. Finish collecting or correct it before syncing.";
+    int nextPieces = pieces;
+    int heartDelta = isContainer ? direction : 0;
+    if (!isContainer) {
+        nextPieces += direction;
+        if (nextPieces == 4) {
+            nextPieces = 0;
+            heartDelta = 1;
+        } else if (nextPieces == -1) {
+            nextPieces = 3;
+            heartDelta = -1;
+        }
+    }
+    if (hurtContainers)
+        heartDelta = -heartDelta;
+    const int nextCapacity = capacity + heartDelta * 16;
+    if (nextCapacity < 16 || nextCapacity > 320)
+        return "This edit would exceed the 1-20 heart range. Adjust health or use flag-only editing.";
+    auto& statistic = isContainer ? save.ship.stats.heartContainers : save.ship.stats.heartPieces;
+    const int nextStatistic = statistic + direction;
+    if (nextStatistic < 0 || nextStatistic > 255)
+        return "Reward statistic is at its limit. Correct it or use flag-only editing.";
+    WriteFlag(entry, save, play, collected);
+    save.inventory.questItems = (save.inventory.questItems & 0x0FFFFFFFu) | (uint32_t(nextPieces) << 28);
+    save.healthCapacity = nextCapacity;
+    // Match the native health gain, but only clamp current health when capacity falls.
+    if (heartDelta != 0)
+        save.health = std::clamp(int(save.health) + std::max(heartDelta, 0) * 16, 0, nextCapacity);
+    statistic = nextStatistic;
+    return nullptr;
+}
+
+static bool sSyncHeartRewards = true;
+static const char* sHeartEditError = nullptr;
+
+template <size_t N>
+static void DrawHeartFlagCheckboxes(const std::array<HeartFlag, N>& entries, const ImGuiTextFilter& filter,
+                                    bool missingOnly, bool isContainer) {
+    UIWidgets::PushStyleCheckbox(THEME_COLOR);
+    for (size_t i = 0; i < entries.size(); ++i) {
+        const auto& entry = entries[i];
+        const auto state = ReadFlag(entry, gSaveContext, gPlayState);
+        if (!filter.PassFilter(entry.name) || (missingOnly && state == true)) {
+            continue;
+        }
+        bool checked = state.value_or(false);
+        const std::string label = std::string(entry.name) + (state ? "" : " (Unknown)");
+        ImGui::PushID(static_cast<int>(i));
+        ImGui::BeginDisabled(!state.has_value() || CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+        if (ImGui::Checkbox(label.c_str(), &checked)) {
+            sHeartEditError = EditReward(entry, gSaveContext, gPlayState, checked, isContainer, sSyncHeartRewards,
+                                         CVarGetInteger(CVAR_ENHANCEMENT("HurtContainer"), 0));
+        }
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+            ImGui::SetTooltip("Scene: 0x%02X\nFlag: 0x%04X", entry.scene, entry.flag);
+        }
+        ImGui::EndDisabled();
+        ImGui::PopID();
+    }
+    UIWidgets::PopStyleCheckbox();
+}
+
+static void DrawHeartPiecesTab() {
+    if (gPlayState == nullptr || gSaveContext.gameMode != GAMEMODE_NORMAL) {
+        ImGui::TextUnformatted("Load a game to inspect heart-piece flags.");
+        return;
+    }
+    if (IS_RANDO) {
+        ImGui::TextWrapped("This viewer shows original heart-piece rewards. Randomized saves are not supported; use "
+                           "the check tracker.");
+        return;
+    }
+    static ImGuiTextFilter filter;
+    static bool missingOnly = false;
+    static bool showContainers = true;
+    const auto theme = THEME_COLOR;
+    const ImVec2 padding(10.0f, 6.0f);
+    const float availableWidth = ImGui::GetContentRegionAvail().x;
+    UIWidgets::PushStyleInput(theme);
+    const auto background = ImGui::GetStyleColorVec4(ImGuiCol_FrameBg);
+    const auto linear = [](float value) {
+        return value <= 0.04045f ? value / 12.92f : std::pow((value + 0.055f) / 1.055f, 2.4f);
+    };
+    const float luminance =
+        0.2126f * linear(background.x) + 0.7152f * linear(background.y) + 0.0722f * linear(background.z);
+    const float foreground = luminance > 0.179f ? 0.0f : 1.0f;
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(foreground, foreground, foreground, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_TextDisabled, ImVec4(foreground, foreground, foreground, 1.0f));
+    ImGui::SetNextItemWidth(availableWidth);
+    if (ImGui::InputTextWithHint("##HeartSearch", "Search locations...", filter.InputBuf,
+                                 IM_ARRAYSIZE(filter.InputBuf)))
+        filter.Build();
+    ImGui::PopStyleColor(2);
+    UIWidgets::PopStyleInput();
+
+    UIWidgets::PushStyleCheckbox(theme, padding);
+    ImGui::Checkbox("Missing only", &missingOnly);
+    ImGui::SameLine();
+    ImGui::Checkbox("Include boss containers", &showContainers);
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+        ImGui::SetTooltip("Boss containers appear separately and do not count as heart pieces.");
+    ImGui::SameLine();
+    if (ImGui::Checkbox("Sync health & pieces", &sSyncHeartRewards))
+        sHeartEditError = nullptr;
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Apply each reward's change to health and piece count. Disable for flag-only editing. "
+                          "Reload the area to refresh spawned rewards after editing.");
+    UIWidgets::PopStyleCheckbox();
+    if (sHeartEditError)
+        ImGui::TextWrapped("%s", sHeartEditError);
+
+    // Reserve one line below the scrolling list for progress.
+    const float footerHeight = ImGui::GetTextLineHeightWithSpacing();
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
+    ImGui::BeginChild("HeartPieceCheckboxes", ImVec2(0, -footerHeight), true);
+    ImGui::PushID("pieces");
+    DrawHeartFlagCheckboxes(heartFlags, filter, missingOnly, false);
+    ImGui::PopID();
+    if (showContainers) {
+        size_t containers = 0;
+        for (const auto& entry : bossHeartFlags)
+            containers += ReadFlag(entry, gSaveContext, gPlayState) == true;
+        ImGui::SeparatorText("Boss Heart Containers");
+        ImGui::Text("%zu / %zu collected", containers, bossHeartFlags.size());
+        ImGui::PushID("containers");
+        DrawHeartFlagCheckboxes(bossHeartFlags, filter, missingOnly, true);
+        ImGui::PopID();
+    }
+    if (ImGui::CollapsingHeader("Extra Heart Pieces")) {
+        ImGui::TextDisabled("Outside normal progression; not included in the 36-piece total.");
+        ImGui::PushID("extras");
+        DrawHeartFlagCheckboxes(extraHeartFlags, filter, missingOnly, false);
+        ImGui::PopID();
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+
+    size_t total = 0, collected = 0, unknown = 0;
+    for (const auto& entry : heartFlags) {
+        const auto state = ReadFlag(entry, gSaveContext, gPlayState);
+        ++total;
+        collected += state == true;
+        unknown += !state.has_value();
+    }
+    ImGui::TextDisabled("%zu / %zu collected", collected, total);
+    if (!sSyncHeartRewards) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| Flag-only editing");
+    }
+    if (missingOnly) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| %zu missing", total - collected - unknown);
+    }
+    if (unknown) {
+        ImGui::SameLine();
+        ImGui::TextDisabled("| %zu unknown", unknown);
+    }
+}
+
+} // namespace
+
 void SaveEditorWindow::DrawElement() {
     PushStyleTabs(THEME_COLOR);
     ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
@@ -2782,7 +3098,14 @@ void SaveEditorWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        ImGui::EndDisabled();
         ResetBaseOptions();
+        if (ImGui::BeginTabItem("Heart Pieces")) {
+            DrawHeartPiecesTab();
+            ImGui::EndTabItem();
+        }
+        ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+
         if (ImGui::BeginTabItem("Flags")) {
             DrawFlagsTab();
             ImGui::EndTabItem();
