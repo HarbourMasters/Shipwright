@@ -971,6 +971,58 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                 /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne, hinter dem Thron eines Ritters in einem Vulkan#, #[[1]]# enthülle.",
                                                                                 /*french*/ "Selon moi, #appeler le soleil derrière le trône d’un chevalier dans un volcan# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_FIRE_TEMPLE_NEAR_BOSS_GORON] = HintText(CustomMessage("They say that #freeing a Goron near a dragon# gives #[[1]]#.",
+                                                                            /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen nahe eines Drachens# #[[1]]# gäbe.",
+                                                                            /*french*/ "Selon moi, #libérer le Goron près d'un dragon# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BOSS_KEY_GORON] = HintText(CustomMessage("They say that #freeing a Goron beyond a totem# gives #[[1]]#.",
+                                                                           /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen jenseits eines Totems# #[[1]]# gäbe.",
+                                                                           /*french*/ "Selon moi, #libérer le Goron derrière un totem# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_GORON] = HintText(CustomMessage("They say that #freeing a Goron trapped near lava# gives #[[1]]#.",
+                                                                                                /*german*/ "Man erzählt sich, daß das #Befreien eines nahe der Lava gefangenen Goronen# #[[1]]# gäbe.",
+                                                                                                /*french*/ "Selon moi, #libérer le Goron emprisonné près de la lave# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON] = HintText(CustomMessage("They say that #freeing a Goron walled in over a lava pit# gives #[[1]]#.",
+                                                                                             /*german*/ "Man erzählt sich, daß das #Befreien eines eingemauerten Goronen über einem Lavastrom# #[[1]]# gäbe.",
+                                                                                             /*french*/ "Selon moi, #libérer le Goron emmuré dans un lac de lave# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_LOWER_GORON] = HintText(CustomMessage("They say that #freeing a Goron at the end of a maze# gives #[[1]]#.",
+                                                                                     /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen am Ende eines Labyrinths# #[[1]]# gäbe.",
+                                                                                     /*french*/ "Selon moi, #libérer le Goron dans le labyrinthe# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_GORON] = HintText(CustomMessage("They say that #freeing a Goron on a blocked path# gives #[[1]]#.",
+                                                                                        /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen auf einem blockierten Pfad# #[[1]]# gäbe.",
+                                                                                        /*french*/ "Selon moi, #libérer le Goron sous un sol fragile# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_GORON] = HintText(CustomMessage("They say that #freeing a Goron hidden near a maze# gives #[[1]]#.",
+                                                                                         /*german*/ "Man erzählt sich, daß das #Befreien eines nahe eines Labyrinths versteckten Goronen# #[[1]]# gäbe.",
+                                                                                         /*french*/ "Selon moi, #libérer le Goron caché près du labyrinthe# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_UPPER_GORON] = HintText(CustomMessage("They say that #freeing a Goron above a maze# gives #[[1]]#.",
+                                                                                     /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen oberhalb eines Labyrinths# #[[1]]# gäbe.",
+                                                                                     /*french*/ "Selon moi, #libérer le Goron au dessus du labyrinthe# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_HIGHEST_GORON] = HintText(CustomMessage("They say that #freeing a Goron atop the Fire Temple# gives #[[1]]#.",
+                                                                          /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen an der Spitze des Feuertempels# #[[1]]# gäbe.",
+                                                                          /*french*/ "Selon moi, #libérer le Goron au sommet du Temple du Feu# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_MAP_GORON] = HintText(CustomMessage("They say that #freeing a Goron beside a map# gives #[[1]]#.",
+                                                                          /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen neben einer Karte# #[[1]]# gäbe.",
+                                                                          /*french*/ "Selon moi, #libérer le Goron près d'une carte# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_OPEN_DOOR_GORON] = HintText(CustomMessage("They say that #freeing a Goron in a cage above lava# gives #[[1]]#.",
+                                                                          /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen in einem Käfig über der Lava# #[[1]]# gäbe.",
+                                                                          /*french*/ "Selon moi, #libérer le Goron en cage au dessus de la lave# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_GORON] = HintText(CustomMessage("They say that #freeing a Goron behind a blocked lava door# gives #[[1]]#.",
+                                                                          /*german*/ "Man erzählt sich, daß das #Befreien eines Goronen hinter einer blockierten Lavatür# #[[1]]# gäbe.",
+                                                                          /*french*/ "Selon moi, #libérer le Goron derrière la porte bloquée du lac de lave# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_GORON] = HintText(CustomMessage("They say that #freeing a Goron hidden beside a maze# gives #[[1]]#.",
+                                                                          /*german*/ "Man erzählt sich, daß das #Befreien eines neben einem Labyrinth versteckten Goronen# #[[1]]# gäbe.",
+                                                                          /*french*/ "Selon moi, #libérer le Goron caché à côté du labyrinthe# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_CRATE_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Fire Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Feuertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple du Feu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
