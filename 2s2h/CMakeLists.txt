@@ -15,9 +15,6 @@ set(CMAKE_PROJECT_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set(PROJECT_BUILD_NAME ${TWOSHIP_BUILD_NAME})
 set(PROJECT_TEAM ${TWOSHIP_TEAM})
 
-# 2ship didn't pick a C standard before the merge, keep the compiler default
-set(CMAKE_C_STANDARD "")
-
 if(MSVC)
     # We need to remove RTC1 as it is not compatible with O2, which we set for some files in DEBUG
     string(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
@@ -198,6 +195,8 @@ set(ALL_FILES
 # Target
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
+# 2ship didn't pick a C standard before the merge, keep the compiler default
+set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
