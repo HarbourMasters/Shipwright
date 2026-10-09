@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -221,6 +222,19 @@ void record_mode(u8 mode) {
         new_mtx_depth = matrix_depth;
     }
 }
+
+// Ribbon trails (sword slashes, boomerang, arrows) are vertices written on the CPU, one
+// segment per sample of the weapon position. Only the newest end moves within a gameplay
+// frame, so only it gets blended, sliding from the previous sample to the new one.
+struct RibbonHead {
+    Vtx* dest = nullptr;
+    vector<Vtx> cur;
+    vector<pair<s16, s16>> pairs; // (moving vertex, vertex it starts from)
+    uint32_t frame = 0;
+};
+
+unordered_map<const void*, RibbonHead> ribbon_heads;
+uint32_t record_frame;
 
 Data& append(Op op) {
     auto& m = current_path.back()->ops[op];
@@ -486,8 +500,11 @@ void FrameInterpolation_StartRecord(void) {
     current_path.push_back(&current_recording.root_path);
     matrix_depth = 0;
     new_mtx_depth = -1;
+    record_frame++;
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
+    } else {
+        ribbon_heads.clear();
     }
 }
 
@@ -653,6 +670,51 @@ void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest) {
     if (!is_recording)
         return;
     FrameInterpolation_RecordMatrixMtxFToMtx(src, dest);
+}
+
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs) {
+    if (!is_recording) {
+        return;
+    }
+
+    RibbonHead& head = ribbon_heads[key];
+    head.dest = (Vtx*)dest;
+    head.cur.assign(head.dest, head.dest + vtxCount);
+    head.pairs.clear();
+    for (u32 i = 0; i < pairCount; i++) {
+        head.pairs.emplace_back(pairs[2 * i], pairs[2 * i + 1]);
+    }
+    head.frame = record_frame;
+}
+
+void FrameInterpolation_UpdateRibbonHeads(float step) {
+    for (auto it = ribbon_heads.begin(); it != ribbon_heads.end();) {
+        RibbonHead& head = it->second;
+
+        // Not drawn this frame, the trail ended or stopped growing
+        if (head.frame != record_frame) {
+            it = ribbon_heads.erase(it);
+            continue;
+        }
+
+        std::copy(head.cur.begin(), head.cur.end(), head.dest);
+        if (step < 1.0f) {
+            float w = 1.0f - step;
+            for (const auto& [dst, src] : head.pairs) {
+                const Vtx& from = head.cur[src];
+                Vtx& to = head.dest[dst];
+                for (int j = 0; j < 3; j++) {
+                    to.v.ob[j] = (s16)(w * from.v.ob[j] + step * to.v.ob[j]);
+                }
+                // Colour carries the fade
+                for (int j = 0; j < 4; j++) {
+                    to.v.cn[j] = (u8)(w * from.v.cn[j] + step * to.v.cn[j]);
+                }
+            }
+        }
+
+        ++it;
+    }
 }
 
 // https://stackoverflow.com/questions/1148309/inverting-a-4x4-matrix

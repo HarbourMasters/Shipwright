@@ -58,6 +58,11 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode);
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest);
 
+// pairs holds pairCount (moving vertex, vertex it starts from) index pairs
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs);
+
+void FrameInterpolation_UpdateRibbonHeads(float step);
+
 #ifdef __cplusplus
 }
 #endif
