@@ -235,19 +235,14 @@ struct RibbonHead {
 
 unordered_map<const void*, RibbonHead> ribbon_heads;
 
-// ---------------------------------------------------------------------------
-// Skinned limbs (SKIN_LIMB_TYPE_ANIMATED: horse body and legs, etc.).
-// They are deformed by the CPU every logical frame: their vertices are rewritten
-// into a buffer referenced by gSPSegment(0x08, ...) with no recorded matrix, so
-// matrix interpolation cannot touch them. We store the current pose and blend it
-// with the previous one for each displayed frame.
-// ---------------------------------------------------------------------------
+// Skinned limbs (horse body and legs) have their vertices rewritten on the CPU each
+// gameplay frame, so matrix interpolation can't move them. Keep the last two poses and
+// write a blend of them into the game's buffer before each displayed frame.
 struct SkinnedLimb {
-    Vtx* dest = nullptr; // buffer referenced by the current logical frame's commands
-    Vtx* prev = nullptr; // other double-buffer slot = previous logical frame's pose
-    vector<Vtx> current; // untouched copy of the current pose
-    uint32_t frameStamp = 0;
-    bool prevValid = false;
+    Vtx* dest = nullptr;
+    vector<Vtx> prev;
+    vector<Vtx> cur;
+    uint32_t frame = 0;
 };
 
 unordered_map<const void*, SkinnedLimb> skinned_limbs;
@@ -521,7 +516,6 @@ void FrameInterpolation_StartRecord(void) {
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
     } else {
-        is_recording = false;
         ribbon_heads.clear();
         skinned_limbs.clear();
     }
@@ -736,54 +730,47 @@ void FrameInterpolation_UpdateRibbonHeads(float step) {
     }
 }
 
-void FrameInterpolation_RecordSkinnedLimb(void* key, void* dest, void* prev, u32 vtxCount) {
-    if (!is_recording || dest == nullptr || vtxCount == 0) {
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount) {
+    if (!is_recording) {
         return;
     }
 
     SkinnedLimb& limb = skinned_limbs[key];
-
-    // `prev` is only usable if this limb was drawn on the immediately previous logical
-    // frame, otherwise it holds a stale pose.
-    limb.prevValid = (limb.frameStamp + 1 == record_frame) && (limb.current.size() == vtxCount);
+    // Only blend against a pose from the frame right before this one
+    if (limb.frame + 1 == record_frame && limb.cur.size() == vtxCount) {
+        limb.prev.swap(limb.cur);
+    } else {
+        limb.prev.clear();
+    }
     limb.dest = (Vtx*)dest;
-    limb.prev = (Vtx*)prev;
-    limb.current.assign((Vtx*)dest, (Vtx*)dest + vtxCount);
-    limb.frameStamp = record_frame;
+    limb.cur.assign(limb.dest, limb.dest + vtxCount);
+    limb.frame = record_frame;
 }
 
-void FrameInterpolation_UpdateSkinnedVertices(f32 step) {
-    if (skinned_limbs.empty()) {
-        return;
-    }
-
+void FrameInterpolation_UpdateSkinnedVertices(float step) {
     for (auto it = skinned_limbs.begin(); it != skinned_limbs.end();) {
         SkinnedLimb& limb = it->second;
 
-        // Limb not redrawn this logical frame: drop the entry.
-        if (limb.frameStamp != record_frame || limb.dest == nullptr) {
+        // Not drawn this frame, its buffer may be freed
+        if (limb.frame != record_frame) {
             it = skinned_limbs.erase(it);
             continue;
         }
 
-        Vtx* dest = limb.dest;
-        const size_t count = limb.current.size();
-
-        if (limb.prevValid && step < 1.0f) {
-            const Vtx* prevPose = limb.prev;
-            const Vtx* curPose = limb.current.data();
-            const f32 w = 1.0f - step;
-
-            for (size_t i = 0; i < count; i++) {
-                dest[i] = curPose[i];
-                for (s32 j = 0; j < 3; j++) {
-                    dest[i].v.ob[j] = (s16)(w * prevPose[i].v.ob[j] + step * curPose[i].v.ob[j]);
-                    dest[i].n.n[j] = (s8)(w * (f32)prevPose[i].n.n[j] + step * (f32)curPose[i].n.n[j]);
+        if (limb.prev.empty() || step >= 1.0f) {
+            std::copy(limb.cur.begin(), limb.cur.end(), limb.dest);
+        } else {
+            float w = 1.0f - step;
+            for (size_t i = 0; i < limb.cur.size(); i++) {
+                const Vtx& p = limb.prev[i];
+                const Vtx& c = limb.cur[i];
+                Vtx& d = limb.dest[i];
+                d = c;
+                for (int j = 0; j < 3; j++) {
+                    d.n.ob[j] = (s16)(w * p.n.ob[j] + step * c.n.ob[j]);
+                    d.n.n[j] = (s8)(w * p.n.n[j] + step * c.n.n[j]);
                 }
             }
-        } else {
-            // Last displayed frame (or no previous pose): exact pose.
-            std::copy(limb.current.begin(), limb.current.end(), dest);
         }
 
         ++it;

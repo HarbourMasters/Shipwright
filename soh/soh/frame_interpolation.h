@@ -63,18 +63,9 @@ void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCou
 
 void FrameInterpolation_UpdateRibbonHeads(float step);
 
-/**
- * Records the vertices of a skinned limb (SKIN_LIMB_TYPE_ANIMATED).
- * `key` stably identifies the limb, `dest` is the buffer written for this logical frame and
- * `prev` is the other double-buffer slot (the previous logical frame's pose).
- */
-void FrameInterpolation_RecordSkinnedLimb(void* key, void* dest, void* prev, u32 vtxCount);
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount);
 
-/**
- * Blends the skinned limb vertices for the displayed frame of factor `step`.
- * Call once per displayed frame, right before running the commands.
- */
-void FrameInterpolation_UpdateSkinnedVertices(f32 step);
+void FrameInterpolation_UpdateSkinnedVertices(float step);
 
 #ifdef __cplusplus
 }

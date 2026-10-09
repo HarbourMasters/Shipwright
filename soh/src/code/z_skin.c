@@ -127,9 +127,7 @@ void Skin_ApplyLimbModifications(GraphicsContext* gfxCtx, Skin* skin, s32 limbIn
                             vtxBuf, &vtxPoint);
     }
 
-    // Record this limb's pose for vertex interpolation: vtxBuf was just rewritten (this
-    // logical frame's pose) and the other double-buffer slot holds the previous pose.
-    FrameInterpolation_RecordSkinnedLimb(vtxEntry, vtxBuf, vtxEntry->buf[vtxEntry->index ^ 1], data->totalVtxCount);
+    FrameInterpolation_RecordSkinnedLimb(vtxEntry, vtxBuf, data->totalVtxCount);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, vtxEntry->buf[vtxEntry->index]);
 
