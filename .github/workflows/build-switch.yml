@@ -65,13 +65,35 @@ jobs:
         key: switch-ccache-${{ github.ref_name }}
         max-size: 2G
     - name: Configure
+      shell: bash
       run: |
+        set -o pipefail
         cmake -H. -Bbuild-switch -GNinja \
           -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
           -DCMAKE_BUILD_TYPE:STRING=Release \
-          -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache 2>&1 | tee -a switch-build.log
     - name: Build soh.nro
-      run: cmake --build build-switch --target soh_nro -j"$(nproc)"
+      shell: bash
+      run: |
+        set -o pipefail
+        # -k 0 keeps going past the first failing file so one CI run reports as many errors as possible.
+        cmake --build build-switch --target soh_nro -j"$(nproc)" -- -k 0 2>&1 | tee -a switch-build.log
+    - name: Report errors as annotations
+      if: failure()
+      shell: bash
+      run: |
+        [ -f switch-build.log ] || exit 0
+        # Error lines plus a little context, de-duplicated, in chunks GitHub accepts as annotations.
+        grep -nE -B2 -A3 "error:|Error|CMake Error|undefined reference|FAILED:|not found|No such file" switch-build.log \
+          | grep -v "^--$" | awk '!seen[$0]++' | head -n 600 > errors.txt || true
+        [ -s errors.txt ] || tail -n 120 switch-build.log > errors.txt
+        split -l 60 errors.txt chunk_
+        n=0
+        for f in chunk_*; do
+          n=$((n+1)); [ $n -gt 10 ] && break
+          body=$(sed -e 's/%/%25/g' -e 's/\r//g' "$f" | awk 'BEGIN{ORS="%0A"} {print}')
+          echo "::error title=switch build log part $n::$body"
+        done
     - name: Download soh.o2r
       uses: actions/download-artifact@v4
       with:
