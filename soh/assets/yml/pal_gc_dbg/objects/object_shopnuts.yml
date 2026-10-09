@@ -11,25 +11,25 @@
   external_files:
     - pal_gc_dbg/objects/gameplay_keep.yml
 
-gBusinessScrubAnim_139C:
+gBusinessScrubInitialAnim:
   type: OOT:ANIMATION
   offset: 0x139C
-  symbol: gBusinessScrubAnim_139C
+  symbol: gBusinessScrubInitialAnim
 
-gBusinessScrubAnim_1EC:
+gBusinessScrubThrowNutAnim:
   type: OOT:ANIMATION
   offset: 0x1EC
-  symbol: gBusinessScrubAnim_1EC
+  symbol: gBusinessScrubThrowNutAnim
 
-gBusinessScrubAnim_39C:
+gBusinessScrubPeekBurrowAnim:
   type: OOT:ANIMATION
   offset: 0x39C
-  symbol: gBusinessScrubAnim_39C
+  symbol: gBusinessScrubPeekBurrowAnim
 
-gBusinessScrubAnim_4574:
+gBusinessScrubPeekAnim:
   type: OOT:ANIMATION
   offset: 0x4574
-  symbol: gBusinessScrubAnim_4574
+  symbol: gBusinessScrubPeekAnim
 
 gBusinessScrubBodyDL:
   type: GFX
