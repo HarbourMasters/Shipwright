@@ -1,7 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -163,11 +162,11 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB,              logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
-        //Adult Bunny megajump can do directly from lowest platform, otherwise you have to use the middle platform which is an awkward range. Remove bunny/hovers midflight to hit it, then you can jump from there.
+        //Adult Bunny megajump can go directly from lowest platform, otherwise you have to use the middle platform which is an awkward range. Remove bunny/hovers midflight to hit it, then you can jump from there.
         //This may not be "simple" as a result
         ENTRANCE(RR_ICE_CAVERN_FIRE_NOOK,        logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP) || logic->CanBombRecoilHover())) || logic->CanMegajump()),
         //can be done with bunnyhovers from NEAR_BLOCK_SILVER, but it's unintuitive.
-        //megajump without bunny goes to the smaller plaform first, needs somewhat precise removal of hover boots to not fly off or come up short, the hover to the nook
+        //megajump without bunny goes to the smaller platform first, needs somewhat precise removal of hover boots to not fly off or come up short, then hover to the nook
         ENTRANCE(RR_ICE_CAVERN_ICE_NOOK,         logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP))) || logic->CanMegajump() || logic->CanBombRecoilHover()),
         ENTRANCE(RR_ICE_CAVERN_AFTER_BLOCK_ROOM, logic->HasItem(RG_ICE_CAVERN_SILVER_BLOCK) &&
                                                      (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP))) || logic->CanMegajump(true) || logic->CanBombRecoilHover())),
@@ -361,7 +360,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_NOOK] = Region("Ice Cavern MQ Scarecrow Nook", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW, logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
-        }, {
+    }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, true),
     });

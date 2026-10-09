@@ -25,11 +25,11 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 16 || logic->Health() >= 3 * 16) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
                                                    (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
-                                                    ((logic->FireTimer() >= 48  || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())))),
+                                                    ((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())))),
         LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCHoverToPoH()) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
                                                    (((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
-                                                    ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
+                                                    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
     }, {
         //Exits
         ENTRANCE(RR_DMC_CRATE,           true),
@@ -40,9 +40,9 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DMC_BLOCKED_EXIT,    ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCUpperToPots()) ||
                                          ((logic->FireTimer() >= 56 || logic->Health() >= 11 * 16) && logic->DMCUpperToPad())),
         ENTRANCE(RR_DMC_POTS,            ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->DMCUpperToPots()) ||
-                                         ((logic->FireTimer() >= 48  || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
+                                         ((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
         ENTRANCE(RR_DMC_POT_GROTTO_EXIT, ((logic->FireTimer() >= 32 || logic->Health() >= 6 * 16) && logic->DMCUpperToPots()) ||
-                                         ((logic->FireTimer() >= 48  || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
+                                         ((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
         ENTRANCE(RR_DMC_CENTRAL,         ((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
                                          ((logic->FireTimer() >= 48 || logic->Health() >= 9 * 16) && logic->DMCUpperToPad())),
         ENTRANCE(RR_DMC_FAR_PLATFORM,    ((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
@@ -58,11 +58,11 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_WALL_FREESTANDING_POH,    ((logic->FireTimer() >= 8 || logic->Health() >= 2 * 16) && (logic->HasItem(RG_CLIMB) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash()))) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
                                                    (((logic->FireTimer() >= 72 || logic->Health() >= 14 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
-                                                    ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
+                                                    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
         LOCATION(RC_DMC_VOLCANO_FREESTANDING_POH, ((logic->FireTimer() >= 24 || logic->Health() >= 5 * 16) && logic->DMCHoverToPoH()) ||
                                                   (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) &&
                                                    (((logic->FireTimer() >= 64 || logic->Health() >= 12 * 16) && logic->DMCUpperToPots() && logic->DMCPotsToPad()) ||
-                                                    ((logic->FireTimer() >= 40  || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
+                                                    ((logic->FireTimer() >= 40 || logic->Health() >= 8 * 16) && logic->DMCUpperToPad())))),
     }, {
         //Exits
         ENTRANCE(RR_DMC_CRATE,           logic->FireTimer() >= 8 || logic->Health() >= 2 * 16),

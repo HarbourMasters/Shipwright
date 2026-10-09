@@ -1,6 +1,5 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -104,7 +103,7 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),
         //The Deku Baba blocks the setup as Adult, and stunning doesn't last long enough to perform it.
-        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) ||logic->CanMegajump() ||
+        ENTRANCE(RR_KF_LINKS_PORCH,        logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump() ||
                                            ((logic->IsChild || logic->CanKillEnemy(RE_DEKU_BABA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR)) && logic->CanClimbLadder())),
         ENTRANCE(RR_KF_MIDOS_HOUSE,        true),
         ENTRANCE(RR_KF_SARIAS_HOUSE,       true),
@@ -136,7 +135,7 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST,         true),
         ENTRANCE(RR_THE_LOST_WOODS,        true),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMiddairGroundJump() || logic->CanMegajump()),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMidairGroundJump() || logic->CanMegajump()),
         ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 

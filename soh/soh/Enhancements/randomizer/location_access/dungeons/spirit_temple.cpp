@@ -1,7 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -109,7 +108,7 @@ void RegionTable_Init_SpiritTemple() {
         EVENT_ACCESS(LOGIC_SPIRIT_SILVER_RUPEE_BRIDGE_TORCHES, logic->HasFireSource()),
     }, {
         //Locations
-        //if you try to walk over with hover boots you fall down, but recoil momemtum seems to make you stick.
+        //if you try to walk over with hover boots you fall down, but recoil momentum seems to make you stick.
         LOCATION(RC_SPIRIT_TEMPLE_GS_METAL_FENCE, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) ||
                                                       (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->HasItem(RG_CLIMB) && (logic->CanMegajump() || logic->CanBombRecoilHover() || logic->CanRecoilHoverFromActor(ARECOIL_SHORT)))),
     }, {
@@ -401,7 +400,7 @@ void RegionTable_Init_SpiritTemple() {
         //Locations
         //Assumes RR_SPIRIT_TEMPLE_INNER_WEST_HAND access via RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD and RR_SPIRIT_TEMPLE_STATUE_ROOM.
         //If entering via the statue's head, there's a scenario where RC_SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST can be reached without being able to go from 1 hand to the other
-        //This involves using limited means to reach the left hand, playing ZL, dieing, then on respawn jumping to the other hand for the chest
+        //This involves using limited means to reach the left hand, playing ZL, dying, then on respawn jumping to the other hand for the chest
         //Both reloading a save and using FW reload the temp flags and despawn the chest.
         //In addition to being obtuse however there is no reliable, itemless way to die in this room, as the only enemies that can be reached with no items are pots that do 1 hit, break and likely give you a heart to replace it
         //because of all of this, it would be a trick
@@ -585,7 +584,7 @@ void RegionTable_Init_SpiritTemple() {
         //Bunny hood jumps with a jumpslash can reach either hand and with good timing the platform as child.
         //The latter is definitely a trick, the former may not be but I am dissalowing it because I would have to spend a week writing a new branch of spirit key logic.
         //If this interaction with the hands is added, SpiritSharedLogic needs updating for it
-        //RANMDOTODO bunny hood megajumps let child into adult side too, saving for a future PR
+        //RANDOTODO bunny hood megajumps let child into adult side too, saving for a future PR
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,  logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult) || logic->CanMegajump()),
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_LEFT_HAND,  logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult)),
         ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->BunnyHood()))),
@@ -943,8 +942,8 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,       true),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT, logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_HOOKSHOT) || logic->BunnyHood()),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE,       ((logic->IsAdult || ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE)) && (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOOKSHOT))
-                                                        || (logic->IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood()))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE,       ((logic->IsAdult || ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE)) && (ctx->GetTrickOption(RT_LENS_SPIRIT_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOOKSHOT)) ||
+                                                            (logic->IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || logic->BunnyHood()))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_CHEST_LEDGE] = Region("Spirit Temple MQ Chest Ledge", SCENE_SPIRIT_TEMPLE, {}, {
@@ -1122,7 +1121,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_WALL_UPPER] = Region("Spirit Temple MQ Big Wall Upper", SCENE_SPIRIT_TEMPLE, {
         //Events
-        //You can easilly get any 1 silver dropping down, but getting them all only going down is likely impossible
+        //You can easily get any 1 silver dropping down, but getting them all only going down is likely impossible
         EVENT_ACCESS(LOGIC_SPIRIT_MQ_SILVER_BIG_WALL, (logic->CanKillEnemy(RE_KEESE) || logic->CanUse(RG_SKULL_MASK)) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))),
     }, {
         LOCATION(RC_SPIRIT_MQ_LOWEST_WALL_SILVER,   true),

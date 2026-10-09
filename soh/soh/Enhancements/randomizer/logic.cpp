@@ -3,7 +3,6 @@
 #include "logic.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
 #include "randomizerEnumStrings.h"
@@ -703,7 +702,7 @@ bool Logic::CanGroundJumpslash(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
-bool Logic::CanMiddairGroundJump(bool hasBombflower) {
+bool Logic::CanMidairGroundJump(bool hasBombflower) {
     return ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && CanStandingShield() && CanUse(RG_HOVER_BOOTS) &&
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
@@ -722,8 +721,9 @@ bool Logic::CanBunnyMegaJumpslash(bool hasBombflower) {
 
 bool Logic::CanMegadive(bool fallDamage, bool hasBombflower) {
     return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) &&
-               (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) && EffectiveHealth() > 16 ||
-           CanUse(RG_NAYRUS_LOVE) || (EffectiveHealth() > 8 && (fallDamage || CanUse(RG_BOTTLE_WITH_FAIRY)));
+           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) && 
+           (EffectiveHealth() > 16 || CanUse(RG_NAYRUS_LOVE) || 
+            (EffectiveHealth() > 8 && (fallDamage || CanUse(RG_BOTTLE_WITH_FAIRY))));
 }
 
 bool Logic::CanMidairDamageBoost(bool hasBombflower) {
@@ -1435,7 +1435,6 @@ bool Logic::CanRecoilHover(RecoilRequirements req, bool bombFlower) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
     }
-    bool can = false;
     switch (req) {
         case RECOIL_SWORD:
             if (CanJumpslash()) {
@@ -1460,7 +1459,8 @@ bool Logic::CanRecoilHover(RecoilRequirements req, bool bombFlower) {
         case RECOIL_MAX:
             break;
     }
-    if (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) && HasExplosives()) {
+    if (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && TakeDamage(DAMAGE_NO_FAIRY) && 
+        (HasExplosives() || (bombFlower && HasItem(RG_GORONS_BRACELET)))) {
         return true;
     }
     return false;
@@ -1473,13 +1473,13 @@ bool Logic::CanBombRecoilHover(bool bombFlower) {
 
 bool Logic::Water3FCentralToHighEmblem() {
     if (ctx->GetDungeon(WATER_TEMPLE)->IsMQ()) {
-        return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() || CanMegajump() ||
-               (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
-                ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
-    } else {
         return CanUse(RG_HOOKSHOT) || (IsAdult && CanUse(RG_HOVER_BOOTS)) ||
                ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)) || CanMegajump() ||
-               CanMiddairGroundJump();
+               CanMidairGroundJump();
+    } else {
+        return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMidairGroundJump() || CanMegajump() ||
+               ((Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT)) ||
+                ((IsAdult || BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
     }
 }
 
@@ -3082,7 +3082,7 @@ bool Logic::DMCPadToPots() {
 bool Logic::DMCUpperToPad() {
     return (TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) &&
             ((IsAdult && ReachDistantScarecrow()) ||
-             (((IsAdult && CanMegajump(true) || CanBombRecoilHover()) || CanBunnyMegaJumpslash()) &&
+             (((IsAdult && CanMegajump(true)) || CanBombRecoilHover() || CanBunnyMegaJumpslash()) &&
               EffectiveHealth() > 24))) ||
            CanMegajump(true);
 }
@@ -3094,8 +3094,8 @@ bool Logic::DMCHoverToPoH() {
 }
 
 bool Logic::DMCPadToFarPlatform() {
-    // you can go this way as child easilly with a bunny megajump, but not the reverse.
-    //  the difference is ledge grab angles so there's probably some way to make it
+    // you can go this way as child easily with a bunny megajump, but not the reverse.
+    // the difference is ledge grab angles so there's probably some way to make it
     return (IsAdult && (ReachDistantScarecrow() || CanBombRecoilHover())) || CanMegajump(true);
 }
 
@@ -3136,7 +3136,7 @@ bool Logic::SpiritSunBlockSouthLedge() {
 
 bool Logic::SpiritEastToSwitch() {
     return (IsAdult && (ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP) || BunnyHood())) || CanUse(RG_HOVER_BOOTS) ||
-           (CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT) || CanMegajump());
+           ((CanUse(RG_ZELDAS_LULLABY) && CanUse(RG_HOOKSHOT)) || CanMegajump());
 }
 
 // Combines crossing the ledge directly and the jump from the hand
@@ -3198,15 +3198,15 @@ bool Logic::OuterWestHandMQLogic() {
 }
 
 bool Logic::SpiritHandToArch() {
-    if (!((logic->CanJumpslash() && logic->CanMegajump(true) && logic->EffectiveHealth() > 24) ||
-          logic->CanBunnyMegaJumpslash())) {
+    if (!((CanJumpslash() && CanMegajump(true) && EffectiveHealth() > 24) ||
+          CanBunnyMegaJumpslash())) {
         return false;
     }
     if (ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ()) {
-        return logic->CanHitSwitch() && logic->OuterWestHandMQLogic() &&
-               (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);
+        return CanHitSwitch() && OuterWestHandMQLogic() &&
+               (HasItem(RG_CLIMB) || CanUse(RG_LONGSHOT)) && HasItem(RG_POWER_BRACELET);
     } else {
-        return logic->OuterWestHandLogic();
+        return OuterWestHandLogic();
     }
 }
 

@@ -1,7 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -35,7 +34,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_FOYER,            true),
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_PILLAR, logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM)),
-        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_TARGET, logic->FireTimer() >= 16 && logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump()),
+        ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_TARGET, logic->FireTimer() >= 16 && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump())),
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_DOOR,   logic->FireTimer() >= 16 && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->BunnyHood())) || logic->CanMegajump())),
     });
 
@@ -609,7 +608,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,      true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_PILLAR, logic->FireTimer() >= 8 && logic->Get(LOGIC_FIRE_HIT_PLATFORM)),
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 32 && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMegajump()),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_TARGET, logic->FireTimer() >= 32 && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMegajump())),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,   logic->FireTimer() >= 16 && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->BunnyHood())))),
     });
 
@@ -638,7 +637,7 @@ void RegionTable_Init_FireTemple() {
         //Fairies cannot be used for this as it is time sensetive, and NL is only useful with sticks as it disables other magic while in use, so it's tunic or raw damage taking ability.
         //testing tells me you take 3 ticks of lava damage, which is 12 internal damage or 3/4 of a heart at x1 damage multiplier, performing this run
         LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,      logic->CanUse(RG_DINS_FIRE) && logic->HasItem(RG_OPEN_CHEST) &&
-                                                                       (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT)|| logic->CanMegajump() ||
+                                                                       (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) || logic->CanMegajump() ||
                                                                         (logic->IsAdult && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_GORON_TUNIC) || logic->BunnyHood() || logic->EffectiveHealth() > 12 || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_STICKS)))))),
         LOCATION(RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_1,   logic->CanBreakPots()),
         LOCATION(RC_FIRE_TEMPLE_MQ_OUTSIDE_BOSS_POT_2,   logic->CanBreakPots()),
@@ -647,7 +646,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM,       logic->IsAdult && logic->TakeDamage()),
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,       logic->FireTimer() >= 8 && logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump()),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_DOOR,       logic->FireTimer() >= 8 && (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()) || logic->CanMegajump())),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM_UPPER, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)),
     });
 
@@ -1080,8 +1079,8 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_MQ_FIRE_MAZE_SWITCH] = Region("Fire Temple MQ Fire Maze Switch", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_PAST_WALL, true),
-        //this "middair ground jump" is actually a normal ground jump into a hovers run across the poles
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanMiddairGroundJump() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanMegajump()),
+        //this "midair ground jump" is actually a normal ground jump into a hovers run across the poles
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,    ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS) || logic->CanMidairGroundJump() || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->CanMegajump()),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_LOWER,  true),
     });
 

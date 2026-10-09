@@ -4,7 +4,6 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
-#include "soh/Enhancements/randomizer/dungeon.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -685,9 +684,9 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult));}}},
 
     {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT,    {5, 5, 3, 3,
-                                                 []{return logic->OuterWestHandLogic();},
-                                                 []{return logic->OuterWestHandLogic();},
-                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
                                              }},
     //MQ
     {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7,
@@ -736,9 +735,9 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
                                              }},
     {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ, {7, 7, 4, 4,
-                                                 []{return logic->OuterWestHandLogic();},
-                                                 []{return logic->OuterWestHandLogic();},
-                                                 []{return logic->OuterWestHandLogic();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
                                              }},
 };
 // clang-format on

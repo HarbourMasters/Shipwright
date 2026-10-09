@@ -44,7 +44,7 @@ class Logic {
     bool SmallKeys(SceneID scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
-    bool CanMiddairGroundJump(bool hasBombflower = false);
+    bool CanMidairGroundJump(bool hasBombflower = false);
     bool CanMegajump(bool needsBunny = false, bool hasBombflower = false);
     bool CanBunnyMegaJumpslash(bool hasBombflower = false);
     bool CanMegadive(bool fallDamage = true, bool hasBombflower = false);

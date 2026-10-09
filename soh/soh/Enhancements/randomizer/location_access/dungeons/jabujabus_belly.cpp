@@ -1,7 +1,6 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -428,7 +427,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_ALCOVE] = Region("Jabu Jabus Belly MQ Water Switch Room Alcove", SCENE_JABU_JABU, {}, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,            logic->Get(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS)&& logic->CanOpenLargeChest()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,            logic->Get(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS) && logic->CanOpenLargeChest()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_1,           logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_2,           logic->CanBreakPots()),
     }, {
@@ -452,7 +451,7 @@ void RegionTable_Init_JabuJabusBelly() {
                                                                        (logic->Get(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS) && logic->CanUse(RG_HOOKSHOT))),
         //you can also bunnyhovers to force your way through but that's a trick
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER, logic->Get(LOGIC_JABU_MQ_WATER_SWITCH_LIFT_ACCESS) || logic->CanBombRecoilHover()),
-        });
+    });
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER] = Region("Jabu Jabus Belly MQ Water Switch Room Past Geyser", SCENE_JABU_JABU, {}, {}, {
         //Exits
