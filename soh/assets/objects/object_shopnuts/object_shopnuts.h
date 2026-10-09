@@ -81,11 +81,11 @@ static const ALIGN_ASSET(2) char gBusinessScrubDekuNutTex[] = dgBusinessScrubDek
 #define dgBusinessScrubDekuNutDL "__OTR__objects/object_shopnuts/gBusinessScrubDekuNutDL"
 static const ALIGN_ASSET(2) char gBusinessScrubDekuNutDL[] = dgBusinessScrubDekuNutDL;
 
-#define dgBusinessScrubAnim_1EC "__OTR__objects/object_shopnuts/gBusinessScrubAnim_1EC"
-static const ALIGN_ASSET(2) char gBusinessScrubAnim_1EC[] = dgBusinessScrubAnim_1EC;
+#define dgBusinessScrubThrowNutAnim "__OTR__objects/object_shopnuts/gBusinessScrubThrowNutAnim"
+static const ALIGN_ASSET(2) char gBusinessScrubThrowNutAnim[] = dgBusinessScrubThrowNutAnim;
 
-#define dgBusinessScrubAnim_39C "__OTR__objects/object_shopnuts/gBusinessScrubAnim_39C"
-static const ALIGN_ASSET(2) char gBusinessScrubAnim_39C[] = dgBusinessScrubAnim_39C;
+#define dgBusinessScrubPeekBurrowAnim "__OTR__objects/object_shopnuts/gBusinessScrubPeekBurrowAnim"
+static const ALIGN_ASSET(2) char gBusinessScrubPeekBurrowAnim[] = dgBusinessScrubPeekBurrowAnim;
 
 #define dgBusinessScrubRotateAnim "__OTR__objects/object_shopnuts/gBusinessScrubRotateAnim"
 static const ALIGN_ASSET(2) char gBusinessScrubRotateAnim[] = dgBusinessScrubRotateAnim;
@@ -99,14 +99,14 @@ static const ALIGN_ASSET(2) char gBusinessScrubLookAroundAnim[] = dgBusinessScru
 #define dgBusinessScrubNervousIdleAnim "__OTR__objects/object_shopnuts/gBusinessScrubNervousIdleAnim"
 static const ALIGN_ASSET(2) char gBusinessScrubNervousIdleAnim[] = dgBusinessScrubNervousIdleAnim;
 
-#define dgBusinessScrubAnim_139C "__OTR__objects/object_shopnuts/gBusinessScrubAnim_139C"
-static const ALIGN_ASSET(2) char gBusinessScrubAnim_139C[] = dgBusinessScrubAnim_139C;
+#define dgBusinessScrubInitialAnim "__OTR__objects/object_shopnuts/gBusinessScrubInitialAnim"
+static const ALIGN_ASSET(2) char gBusinessScrubInitialAnim[] = dgBusinessScrubInitialAnim;
 
 #define dgBusinessScrubLeaveBurrowAnim "__OTR__objects/object_shopnuts/gBusinessScrubLeaveBurrowAnim"
 static const ALIGN_ASSET(2) char gBusinessScrubLeaveBurrowAnim[] = dgBusinessScrubLeaveBurrowAnim;
 
-#define dgBusinessScrubAnim_4574 "__OTR__objects/object_shopnuts/gBusinessScrubAnim_4574"
-static const ALIGN_ASSET(2) char gBusinessScrubAnim_4574[] = dgBusinessScrubAnim_4574;
+#define dgBusinessScrubPeekAnim "__OTR__objects/object_shopnuts/gBusinessScrubPeekAnim"
+static const ALIGN_ASSET(2) char gBusinessScrubPeekAnim[] = dgBusinessScrubPeekAnim;
 
 
 #endif // OBJECTS_OBJECT_SHOPNUTS_H
