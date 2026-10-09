@@ -1,0 +1,30 @@
+:config:
+  segments:
+    - [1, vr_KR3VR_static]
+  directory: textures/backgrounds/
+  external_files:
+    - common/textures/backgrounds/vr_KR3VR_pal_static.yml
+gBackAlleyHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gBackAlleyHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBackAlleyHouseBg2TLUT
+gBackAlleyHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gBackAlleyHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBackAlleyHouseBg3TLUT
+gBackAlleyHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBackAlleyHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBackAlleyHouseBgTLUT
