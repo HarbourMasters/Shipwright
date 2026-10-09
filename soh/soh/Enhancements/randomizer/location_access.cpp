@@ -682,6 +682,12 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();},
                                                  []{return logic->SpiritEastToSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
                                                  []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult));}}},
+
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT,    {5, 5, 3, 3,
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                             }},
     //MQ
     {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7,
                                                  []{return logic->StatueRoomMQKeyLogic();},
@@ -727,6 +733,11 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->CanHitSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
                                                  []{return true;},
                                                  []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
+                                             }},
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ, {7, 7, 4, 4,
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
                                              }},
 };
 // clang-format on
