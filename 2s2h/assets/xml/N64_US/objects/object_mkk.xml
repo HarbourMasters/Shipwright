@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Object for Black and White Boes -->
+    <File Name="object_mkk" Segment="6">
+        <DList Name="gBlackBoeBodyMaterialDL" Offset="0x30" />
+        <DList Name="gBlackBoeBodyModelDL" Offset="0xB0" />
+        <DList Name="gBlackBoeEndDL" Offset="0xC8" />
+        <DList Name="gBlackBoeEyesDL" Offset="0x140" />
+        <DList Name="gWhiteBoeBodyMaterialDL" Offset="0x1F0" />
+        <DList Name="gWhiteBoeBodyModelDL" Offset="0x278" />
+        <DList Name="gWhiteBoeEndDL" Offset="0x290" />
+        <DList Name="gWhiteBoeEyesDL" Offset="0x310" />
+        <Texture Name="gBlackBoeTex" OutName="black_boe" Format="i4" Width="16" Height="16" Offset="0x390" />
+        <Texture Name="gWhiteBoeTex" OutName="white_boe" Format="i4" Width="16" Height="16" Offset="0x410" />
+        <Texture Name="gBoeEyeTex" OutName="boe_eye" Format="rgba16" Width="8" Height="8" Offset="0x490" />
+    </File>
+</Root>

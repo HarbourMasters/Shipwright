@@ -1,0 +1,31 @@
+﻿<Root>
+    <!-- Object for Lottery Shop -->
+    <File Name="object_kujiya" Segment="6">
+        <Mtx Name="gLotteryShopMaskPosMtx" Offset="0x2A40" />
+        <DList Name="gLotteryShopCylinderDL" Offset="0x2A80" />
+        <DList Name="gLotteryShopBackSignDL" Offset="0x3030" />
+        <DList Name="gLotteryShopOpenBoxDL" Offset="0x3248" />
+        <DList Name="gLotteryShopScrollingEffectsDL" Offset="0x3358" />
+        <DList Name="gLotteryShopRedRupeesDL" Offset="0x34A8" />
+        <DList Name="gLotteryShopGreenRupeesDL" Offset="0x35B8" />
+        <DList Name="gLotteryShopBlueRupeesDL" Offset="0x36B0" />
+        <DList Name="gLotteryShopTargetArrowAndSignDL" Offset="0x37C0" />
+        <DList Name="gLotteryShopScrollingArrowDL" Offset="0x3C80" />
+
+        <!-- Uses the billboard mtx and gLotteryShopMaskPosMtx -->
+        <DList Name="gLotteryShopMaskDL" Offset="0x3D58" />
+
+        <Texture Name="gLotteryShopSignTextTex" OutName="lottery_shop_sign_text" Format="i8" Width="64" Height="16" Offset="0x3E68" />
+        <Texture Name="gLotteryShopMaskTex" OutName="lottery_shop_mask" Format="rgba16" Width="16" Height="32" Offset="0x4268" />
+        <Texture Name="gLotteryShopGradientTex" OutName="lottery_shop_gradient" Format="i8" Width="4" Height="4" Offset="0x4668" /><!-- Used for box and target -->
+        <Texture Name="gLotteryShopCylinderTopBottomTex" OutName="lottery_shop_cylinder_top_bottom" Format="rgba16" Width="16" Height="32" Offset="0x4678" />
+        <Texture Name="gLotteryShopCylinderMiddleStripesTex" OutName="lottery_shop_cylinder_middle_stripes" Format="rgba16" Width="16" Height="32" Offset="0x4A78" />
+        <Texture Name="gLotteryShopSignBorderTex" OutName="lottery_shop_sign_border" Format="rgba16" Width="16" Height="64" Offset="0x4E78" />
+        <Texture Name="gLotteryShopBoxBaseTex" OutName="lottery_shop_box_base" Format="rgba16" Width="16" Height="16" Offset="0x5678" />
+        <Texture Name="gLotteryShopRainbowTex" OutName="lottery_shop_rainbow" Format="rgba16" Width="4" Height="32" Offset="0x5878" />
+        <Texture Name="gLotteryShopRupeesTex" OutName="lottery_shop_rupees" Format="rgba16" Width="32" Height="32" Offset="0x5978" />
+
+        <!-- All used to scroll the rainbow texture -->
+        <TextureAnimation Name="gLotteryShopTexAnim" Offset="0x6198" />
+    </File>
+</Root>

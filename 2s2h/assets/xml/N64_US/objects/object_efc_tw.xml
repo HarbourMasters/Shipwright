@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_efc_tw" Segment="6">
+        <CurveAnimation Name="gTimewarpAnim" SkelOffset="0x12E8" Offset="0x50" />
+
+        <Array Name="gTimewarpVtx" Count="21" Offset="0x60" >
+            <Vtx/>
+        </Array>
+
+        <DList Name="gTimewarpDL" Offset="0x1B0" /> <!-- Original name is "top_fc_mdl" -->
+        <Texture Name="gTimewarpTex" OutName="timewarp" Format="i8" Width="64" Height="64" Offset="0x2C8" />
+
+        <Limb Name="gTimewarp1Limb" Type="Curve" EnumName="TIMEWARP_LIMB_1" Offset="0x12C8" />
+        <Limb Name="gTimewarp2Limb" Type="Curve" EnumName="TIMEWARP_LIMB_2" Offset="0x12D4" />
+        <Skeleton Name="gTimewarpSkel" Type="Curve" LimbType="Curve" LimbNone="TIMEWARP_LIMB_NONE" LimbMax="TIMEWARP_LIMB_MAX" EnumName="TimewarpLimb" Offset="0x12E8" />
+    </File>
+</Root>

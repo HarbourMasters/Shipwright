@@ -1,0 +1,96 @@
+﻿<Root>
+    <!-- Object for the Zoras -->
+    <File Name="object_zo" Segment="6">
+        <!-- Animations -->
+        <Animation Name="gZoraHandsOnHipsTappingFootAnim" Offset="0x598" /> <!-- Original name is "ZS_z1" -->
+        <Animation Name="gZoraArmsOpenAnim" Offset="0xD48" /> <!-- Original name is "ZS_z2" -->
+        <Animation Name="gZoraThrowRupeeAnim" Offset="0x219C" /> <!-- Original name is "Zola_maku" -->
+        <Animation Name="gZoraWalkAnim" Offset="0x2898" /> <!-- Original name is "zo_aruku" -->
+
+        <!-- Effects -->
+        <Texture Name="gZoraBubbleTex" OutName="zora_bubble" Format="ia8" Width="16" Height="16" Offset="0x28B0" />
+        <DList Name="gZoraBubbleMaterialDL" Offset="0x29F0" />
+        <DList Name="gZoraBubbleModelDL" Offset="0x2A50" />
+
+        <Texture Name="gZoraSplashTex" OutName="zora_splash" Format="i8" Width="16" Height="16" Offset="0x2A70" />
+        <DList Name="gZoraSplashMaterialDL" Offset="0x2BA0" />
+        <DList Name="gZoraSplashModelDL" Offset="0x2C10" />
+
+        <!-- Animations -->
+        <Animation Name="gZoraSurfacingAnim" Offset="0x3610" /> <!-- Original name is "zo_mizu_talk" -->
+        <Animation Name="gZoraTreadingWaterAnim" Offset="0x4168" /> <!-- Original name is "zo_mizuwait" -->
+        <Animation Name="gZoraIdleAnim" Offset="0x4248" /> <!-- Original name is "zo_riku_matsu" -->
+
+        <!-- Textures -->
+        <Texture Name="gZoraTLUT" OutName="zora_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4260" />
+        <Texture Name="gZoraFinTex" OutName="zora_fin" Format="ci8" Width="32" Height="32" Offset="0x4460" />
+        <Texture Name="gZoraBackAndHeadTailTex" OutName="zora_back_head_tail" Format="ci8" Width="32" Height="64" Offset="0x4860" />
+        <Texture Name="gZoraSkinTex" OutName="zora_skin" Format="ci8" Width="8" Height="8" Offset="0x5060" />
+        <Texture Name="gZoraEyeOpenTex" OutName="zora_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x50A0" />
+        <Texture Name="gZoraEyeHalfTex" OutName="zora_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x58A0" />
+        <Texture Name="gZoraEyeClosedTex" OutName="zora_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x60A0" />
+        <Texture Name="gZoraMouthTex" OutName="zora_mouth" Format="rgba16" Width="32" Height="32" Offset="0x68A0" />
+        <Texture Name="gZoraHandTex" OutName="zora_hand" Format="ci8" Width="16" Height="16" Offset="0x70A0" />
+        <Texture Name="gZoraKneeTex" OutName="zora_knee" Format="ci8" Width="8" Height="8" Offset="0x71A0" />
+
+        <!-- DLists -->
+        <DList Name="gZoraPelvisDL" Offset="0xA2A0" />
+        <DList Name="gZoraTorsoDL" Offset="0xA448" />
+        <DList Name="gZoraHeadDL" Offset="0xA7C0" />
+        <DList Name="gZoraHeadTail1DL" Offset="0xAA38" />
+        <DList Name="gZoraHeadTail2DL" Offset="0xABD8" />
+        <DList Name="gZoraHeadTail3DL" Offset="0xAD70" />
+        <DList Name="gZoraHeadTailFinDL" Offset="0xAF08" />
+        <DList Name="gZoraRightUpperArmDL" Offset="0xB148" />
+        <DList Name="gZoraRightForearmDL" Offset="0xB3A8" />
+        <DList Name="gZoraRightHandDL" Offset="0xB688" />
+        <DList Name="gZoraLeftUpperArmDL" Offset="0xB890" />
+        <DList Name="gZoraLeftForearmDL" Offset="0xBAF0" />
+        <DList Name="gZoraLeftHandDL" Offset="0xBDD0" />
+        <DList Name="gZoraRightThighDL" Offset="0xBFD8" />
+        <DList Name="gZoraRightShinDL" Offset="0xC2B8" />
+        <DList Name="gZoraRightFootDL" Offset="0xC590" />
+        <DList Name="gZoraLeftThighDL" Offset="0xC858" />
+        <DList Name="gZoraLeftShinDL" Offset="0xCB38" />
+        <DList Name="gZoraLeftFootDL" Offset="0xCE10" />
+
+        <!-- Skeleton -->
+        <Limb Name="gZoraPelvisLimb" Type="Standard" EnumName="ZORA_LIMB_PELVIS" Offset="0xD0D8" />
+        <Limb Name="gZoraLeftThighLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_THIGH" Offset="0xD0E4" />
+        <Limb Name="gZoraLeftShinLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_SHIN" Offset="0xD0F0" />
+        <Limb Name="gZoraLeftFootLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_FOOT" Offset="0xD0FC" />
+        <Limb Name="gZoraRightThighLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_THIGH" Offset="0xD108" />
+        <Limb Name="gZoraRightShinLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_SHIN" Offset="0xD114" />
+        <Limb Name="gZoraRightFootLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_FOOT" Offset="0xD120" />
+        <Limb Name="gZoraTorsoLimb" Type="Standard" EnumName="ZORA_LIMB_TORSO" Offset="0xD12C" />
+        <Limb Name="gZoraLeftUpperArmLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_UPPER_ARM" Offset="0xD138" />
+        <Limb Name="gZoraLeftForearmLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_FOREARM" Offset="0xD144" />
+        <Limb Name="gZoraLeftHandLimb" Type="Standard" EnumName="ZORA_LIMB_LEFT_HAND" Offset="0xD150" />
+        <Limb Name="gZoraRightUpperArmLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_UPPER_ARM" Offset="0xD15C" />
+        <Limb Name="gZoraRightForearmLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_FOREARM" Offset="0xD168" />
+        <Limb Name="gZoraRightHandLimb" Type="Standard" EnumName="ZORA_LIMB_RIGHT_HAND" Offset="0xD174" />
+        <Limb Name="gZoraHeadLimb" Type="Standard" EnumName="ZORA_LIMB_HEAD" Offset="0xD180" />
+        <Limb Name="gZoraHeadTail1Limb" Type="Standard" EnumName="ZORA_LIMB_HEAD_TAIL_1" Offset="0xD18C" />
+        <Limb Name="gZoraHeadTail2Limb" Type="Standard" EnumName="ZORA_LIMB_HEAD_TAIL_2" Offset="0xD198" />
+        <Limb Name="gZoraHeadTail3Limb" Type="Standard" EnumName="ZORA_LIMB_HEAD_TAIL_3" Offset="0xD1A4" />
+        <Limb Name="gZoraHeadTailFinLimb" Type="Standard" EnumName="ZORA_LIMB_HEAD_TAIL_FIN" Offset="0xD1B0" />
+        <Skeleton Name="gZoraSkel" Type="Flex" LimbType="Standard" LimbNone="ZORA_LIMB_NONE" LimbMax="ZORA_LIMB_MAX" EnumName="ZoraLimb" Offset="0xD208" />
+
+        <!-- Effects -->
+        <DList Name="gZoraRippleMaterialDL" Offset="0xD220" />
+        <DList Name="gZoraRippleModelDL" Offset="0xD288" />
+
+        <DList Name="object_zo_DL_00D2A0" Offset="0xD2A0" />
+        <DList Name="object_zo_DL_00D2B8" Offset="0xD2B8" />
+
+        <!-- Animations -->
+        <Animation Name="gZoraStandAnim" Offset="0xDE20" /> <!-- Original name is "zo_wait02" -->
+        <Animation Name="gZoraListenAnim" Offset="0xDF54" /> <!-- Original name is "zora_kiku" -->
+        <Animation Name="gZoraRunAnim" Offset="0xE400" /> <!-- Original name is "zora_run" -->
+        <Animation Name="gZoraBobHandAnim" Offset="0xEDF0" /> <!-- Original name is "zora_rythm_loop" -->
+        <Animation Name="gZoraSitAnim" Offset="0xF4E8" /> <!-- Original name is "zora_suwari_wait" -->
+        <Animation Name="gZoraFixSpeakerStartAnim" Offset="0xFDF0" /> <!-- Original name is "zora_syagami" -->
+        <Animation Name="gZoraFixSpeakerLoopAnim" Offset="0x10B18" /> <!-- Original name is "zora_syagami_loop" -->
+        <Animation Name="gZoraFixSpeakerEndAnim" Offset="0x11424" /> <!-- Original name is "zora_syagami_modori" -->
+    </File>
+</Root>

@@ -1,0 +1,24 @@
+﻿<Root>
+    <File Name="object_crow" Segment="6">
+        <Animation Name="gGuayFlyAnim" Offset="0xF0" /> <!-- Original name is "df_flygue" -->
+        <DList Name="gGuayBodyDL" Offset="0x490" />
+        <DList Name="gGuayRightWingTipDL" Offset="0x5E0" />
+        <DList Name="gGuayRightWingBodyDL" Offset="0x6B0" />
+        <DList Name="gGuayLeftWingTipDL" Offset="0x770" />
+        <DList Name="gGuayLeftWingBodyDL" Offset="0x840" />
+        <DList Name="gGuayTailDL" Offset="0x900" />
+        <DList Name="gGuayUpperTailDL" Offset="0x9A0" />
+        <Texture Name="gGuayBodyTex" OutName="body" Format="rgba16" Width="16" Height="16" Offset="0xA40" />
+        <Texture Name="gGuayEyeTex" OutName="eye" Format="rgba16" Width="16" Height="16" Offset="0xC40" />
+        <Texture Name="gGuayTailTex" OutName="tail" Format="rgba16" Width="16" Height="16" Offset="0xE40" />
+        <Limb Name="gGuayRootLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_ROOT" Offset="0x1040" />
+        <Limb Name="gGuayBodyLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_BODY" Offset="0x104C" />
+        <Limb Name="gGuayRightWingBodyLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_RIGHT_WING_BODY" Offset="0x1058" />
+        <Limb Name="gGuayRightWingTipLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_RIGHT_WING_TIP" Offset="0x1064" />
+        <Limb Name="gGuayLeftWingBodyLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_LEFT_WING_BODY" Offset="0x1070" />
+        <Limb Name="gGuayLeftWingTipLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_LEFT_WING_TIP" Offset="0x107C" />
+        <Limb Name="gGuayUpperTailLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_UPPER_TAIL" Offset="0x1088" />
+        <Limb Name="gGuayTailLimb" Type="Standard" EnumName="OBJECT_CROW_LIMB_TAIL" Offset="0x1094" />
+        <Skeleton Name="gGuaySkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_CROW_LIMB_NONE" LimbMax="OBJECT_CROW_LIMB_MAX" EnumName="ObjectCrowLimb" Offset="0x10C0" />
+    </File>
+</Root>

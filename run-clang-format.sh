@@ -34,3 +34,6 @@ CLANG_FORMAT="${CLANG_FORMAT:-clang-format-14}"
 # xargs over the pipe, so it never passes through eval
 
 find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( \( -name "*.h" -o -name "*.hpp" \) ! -path "soh/src/*" ! -path "soh/include/*" \) \) ! -path "soh/assets/*" -print0 | eval "xargs -0 $CLANG_FORMAT -i --verbose"
+
+# 2s2h: same rules, minus .hpp (2ship never formatted those), and skipping its ZAPDTR/OTRExporter submodules
+find 2s2h -type f \( -name "*.c" -o -name "*.cpp" -o \( -name "*.h" ! -path "2s2h/src/*" ! -path "2s2h/include/*" \) \) ! -path "2s2h/assets/*" ! -path "2s2h/ZAPDTR/*" ! -path "2s2h/OTRExporter/*" -print0 | eval "xargs -0 $CLANG_FORMAT -i --verbose"

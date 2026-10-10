@@ -1,0 +1,148 @@
+﻿<Root>
+    <!-- Assets for Wizrobe, its platforms, and its magical attacks. -->
+    <File Name="object_wiz" Segment="6">
+        <!-- Wizrobe Animation -->
+        <Animation Name="gWizrobeAttackAnim" Offset="0x7B0" /> <!-- Original name is "wiz_atack" -->
+
+        <!-- Assets for the smoke that rises from the ice pool -->
+        <Texture Name="gWizrobeIceSmokeTex" OutName="wizrobe_ice_smoke" Format="i4" Width="32" Height="64" Offset="0x7C0" />
+        <Texture Name="gWizrobeIceSmokeMaskTex" OutName="wizrobe_ice_smoke_mask" Format="i4" Width="32" Height="32" Offset="0xBC0" />
+        <Texture Name="gWizrobeUnusedTex" OutName="wizrobe_unused" Format="i4" Width="16" Height="16" Offset="0xDC0" />
+        <DList Name="gWizrobeIceSmokeMaterialDL" Offset="0xE70" />
+        <DList Name="gWizrobeUnusedIceSmokeMaterialDL" Offset="0xF28" />
+        <DList Name="gWizrobeIceSmokeModelDL" Offset="0xFD8" /> <!-- Original name might have been "wiz_coolball_modelT" or "wiz_icesmoke" -->
+
+        <!-- Assets for the Wizrobe platform -->
+        <DList Name="gWizrobePlatformEmptyDL" Offset="0x10E0" /> <!-- Empty, probably was the transparent version of the following DL -->
+        <DList Name="gWizrobePlatformDL" Offset="0x10E8" /> <!-- Original name is "wiz_daiza_model" ("pedestal") -->
+        <Texture Name="gWizrobePlatformTex" OutName="wizrobe_platform" Format="rgba16" Width="16" Height="32" Offset="0x1198" />
+        <TextureAnimation Name="gWizrobePlatformEmptyTexAnim" Offset="0x15A0" />
+        <Collision Name="gWizrobePlatformCol" Offset="0x1690" />
+
+        <!-- Assets for the light that appears from the platform when the Wizrobe appears -->
+        <DList Name="gWizrobePlatformLightDL" Offset="0x1860" /> <!-- Original name is "wiz_daizalight_model" -->
+        <Texture Name="gWizrobePlatformLightMaskTex" OutName="wizrobe_platform_light_mask" Format="i4" Width="32" Height="32" Offset="0x19F0" />
+        <Texture Name="gWizrobePlatformLightBaseTex" OutName="wizrobe_platform_light_base" Format="i4" Width="16" Height="32" Offset="0x1BF0" />
+        <Texture Name="gWizrobePlatformLightRaysTex" OutName="wizrobe_platform_light_rays" Format="i8" Width="32" Height="32" Offset="0x1CF0" />
+        <TextureAnimation Name="gWizrobePlatformLightTexAnim" Offset="0x211C" />
+
+        <!-- Wizrobe Animations -->
+        <Animation Name="gWizrobeDamageAnim" Offset="0x2218" /> <!-- Original name is "wiz_damage" -->
+        <Animation Name="gWizrobeDanceAnim" Offset="0x2458" /> <!-- Original name is "wiz_dance" -->
+        <Animation Name="gWizrobeRunAnim" Offset="0x25F0" /> <!-- Original name is "wiz_dash" -->
+
+        <!-- Assets for the small flames during the Fire Wizrobe fight -->
+        <DList Name="gWizrobeSmallFlameDL" Offset="0x2630" /> <!-- Original name is "wiz_fire_model" -->
+        <Texture Name="gWizrobeSmallFlameTex" OutName="wizrobe_small_flame" Format="i4" Width="32" Height="32" Offset="0x2700" />
+        <Texture Name="gWizrobeSmallFlameMaskTex" OutName="wizrobe_small_flame_mask" Format="i4" Width="32" Height="32" Offset="0x2900" />
+
+        <!-- An unused texture animation that scrolls textures. It works okay with the small flames, so that was likely its original purpose. -->
+        <TextureAnimation Name="gWizrobeUnusedScrollTexAnim" Offset="0x2B08" />
+
+        <!-- Assets for the Wizrobe's magic projectile -->
+        <DList Name="gWizrobeMagicProjectileDL" Offset="0x2B40" /> <!-- Original name is "wiz_fireball_model" -->
+        <Texture Name="gWizrobeMagicProjectileTex" OutName="wizrobe_magic_projectile" Format="i4" Width="32" Height="32" Offset="0x2BD0" />
+
+        <!-- An unused texture animation that changes. Based on its placement, it may have been originally used with the magic projectile. -->
+        <TextureAnimation Name="gWizrobeUnusedColorChangingTexAnim" Offset="0x2DF4" />
+
+        <!-- Assets for the pool of fire that forms when the Fire Wizrobe's projectile hits something -->
+        <Texture Name="gWizrobeFirePoolTex" OutName="wizrobe_fire_pool" Format="i4" Width="32" Height="32" Offset="0x2E00" />
+        <DList Name="gWizrobeFirePoolDL" Offset="0x3120" /> <!-- Original name is "wiz_firefloor_modelT" -->
+
+        <!-- Assets for the smoke that comes off the Fire Wizrobe's fire -->
+        <Texture Name="gWizrobeFireSmokeTex" OutName="wizrobe_fire_smoke" Format="i4" Width="32" Height="64" Offset="0x31E0" />
+        <DList Name="gWizrobeFireSmokeDL" Offset="0x3640" /> <!-- Original name is "wiz_firesmoke_modelT" -->
+
+        <!-- Assets for the big flame during the Fire Wizrobe fight-->
+        <Texture Name="gWizrobeBigFlameTex" OutName="wizrobe_big_flame" Format="i8" Width="32" Height="32" Offset="0x3700" />
+        <Texture Name="gWizrobeBigFlameMaskTex" OutName="wizrobe_big_flame_mask" Format="i4" Width="32" Height="64" Offset="0x3B00" />
+        <DList Name="gWizrobeBigFlameDL" Offset="0x3FC0" /> <!-- Original name is "wiz_firewall_modelT" -->
+
+        <!-- Texture for the ice pool -->
+        <Texture Name="gWizrobeIcePoolTex" OutName="wizrobe_ice_pool" Format="i8" Width="64" Height="64" Offset="0x40B0" />
+
+        <!-- Unused vertices. Based on its placement, this may have been originally used with the ice pool. -->
+        <Array Name="gWizrobeUnusedVtx" Count="4" Offset="0x50B0">
+            <Vtx/>
+        </Array>
+
+        <!-- DisplayList for the ice pool -->
+        <DList Name="gWizrobeIcePoolDL" Offset="0x5190" /> <!-- Original name is "wiz_icefloor03_modelT" -->
+
+        <!-- Assets for the gleam on top of the ice pool-->
+        <Texture Name="gWizrobeIcePoolShineTex" OutName="wizrobe_ice_pool_shine" Format="i4" Width="32" Height="64" Offset="0x5230" />
+        <Texture Name="gWizrobeIcePoolShineMaskTex" OutName="wizrobe_ice_pool_shine_mask" Format="i4" Width="16" Height="16" Offset="0x5630" />
+        <DList Name="gWizrobeIcePoolShineDL" Offset="0x5750" /> <!-- Original name is "wiz_icefloor03_pika_modelT" ("pika" = onomatopoeic for "sparkle, glisten") -->
+
+        <!-- Assets for the glowing light in the center of the Wizrobe platform -->
+        <DList Name="gWizrobePlatformCenterDL" Offset="0x5870" /> <!-- Original name is "wiz_lighthole_modelT" -->
+        <DList Name="gWizrobePlatformCenterEmptyDL" Offset="0x5938" /> <!-- Empty, was probably the opaque version of the previous DL -->
+        <Texture Name="gWizrobePlatformCenterMaskTex" OutName="wizrobe_platform_center_mask" Format="i4" Width="32" Height="32" Offset="0x5940" />
+        <Texture Name="gWizrobePlatformCenterTex" OutName="wizrobe_platform_center" Format="i4" Width="16" Height="32" Offset="0x5B40" />
+        <TextureAnimation Name="gWizrobePlatformCenterTexAnim" Offset="0x5C64" />
+
+        <!-- Wizrobe Animations -->
+        <Animation Name="gWizrobeWindUpAnim" Offset="0x60E8" /> <!-- Original name is "wiz_preatack" -->
+        <Animation Name="gWizrobeIdleAnim" Offset="0x66C0" /> <!-- Original name is "wiz_wait" -->
+
+        <!-- Wizrobe Limb DisplayLists -->
+        <DList Name="gWizrobePelvisDL" Offset="0x8640" />
+        <DList Name="gWizrobeRightThighDL" Offset="0x86F0" />
+        <DList Name="gWizrobeRightShinDL" Offset="0x8790" />
+        <DList Name="gWizrobeRightFootDL" Offset="0x8868" />
+        <DList Name="gWizrobeLeftThighDL" Offset="0x8938" />
+        <DList Name="gWizrobeLeftShinDL" Offset="0x89D8" />
+        <DList Name="gWizrobeLeftFootDL" Offset="0x8AB0" />
+        <DList Name="gWizrobeLoinclothDL" Offset="0x8B80" />
+        <DList Name="gWizrobeTorsoDL" Offset="0x8C10" />
+        <DList Name="gWizrobeNeckDL" Offset="0x8CE8" /> <!-- Also includes the nose and ears for some reason. -->
+        <DList Name="gWizrobeJawDL" Offset="0x8F18" />
+        <DList Name="gWizrobeHeadDL" Offset="0x91D8" />
+        <DList Name="gWizrobeRightUpperArmDL" Offset="0x9560" />
+        <DList Name="gWizrobeRightForearmDL" Offset="0x9608" />
+        <DList Name="gWizrobeRightHandDL" Offset="0x96E0" />
+        <DList Name="gWizrobeStaffDL" Offset="0x97B8" />
+        <DList Name="gWizrobeLeftUpperArmDL" Offset="0x9918" />
+        <DList Name="gWizrobeLeftForearmDL" Offset="0x99C0" />
+        <DList Name="gWizrobeLeftHandDL" Offset="0x9A98" />
+
+        <!-- Wizrobe Textures -->
+        <Texture Name="gWizrobeFaceSkinTex" OutName="wizrobe_face_skin" Format="rgba16" Width="8" Height="8" Offset="0x9B70" />
+        <Texture Name="gWizrobeRobeTex" OutName="wizrobe_robe" Format="rgba16" Width="32" Height="32" Offset="0x9BF0" />
+        <Texture Name="gWizrobeHairTex" OutName="wizrobe_hair" Format="rgba16" Width="8" Height="16" Offset="0xA3F0" />
+        <Texture Name="gWizrobeEyeOrbitTex" OutName="wizrobe_eye_orbit" Format="rgba16" Width="16" Height="16" Offset="0xA4F0" />
+        <Texture Name="gWizrobeEyeTex" OutName="wizrobe_eye" Format="rgba16" Width="16" Height="16" Offset="0xA6F0" />
+        <Texture Name="gWizrobeLowerLipTex" OutName="wizrobe_lower_lip" Format="rgba16" Width="8" Height="8" Offset="0xA8F0" />
+        <Texture Name="gWizrobeNoseTex" OutName="wizrobe_nose" Format="rgba16" Width="8" Height="16" Offset="0xA970" />
+        <Texture Name="gWizrobeEarTex" OutName="wizrobe_ear" Format="rgba16" Width="16" Height="4" Offset="0xAA70" />
+        <Texture Name="gWizrobeStaffTipTex" OutName="wizrobe_staff_tip" Format="rgba16" Width="16" Height="16" Offset="0xAAF0" />
+        <Texture Name="gWizrobeStaffTex" OutName="wizrobe_staff" Format="rgba16" Width="16" Height="16" Offset="0xACF0" />
+        <Texture Name="gWizrobeBandTex" OutName="wizrobe_band" Format="rgba16" Width="16" Height="16" Offset="0xAEF0" />
+        <Texture Name="gWizrobeFootTex" OutName="wizrobe_foot" Format="rgba16" Width="16" Height="8" Offset="0xB0F0" />
+
+        <!-- Wizrobe Limbs -->
+        <Limb Name="gWizrobePelvisLimb" Type="Standard" EnumName="WIZROBE_LIMB_PELVIS" Offset="0xB1F0" />
+        <Limb Name="gWizrobeTorsoLimb" Type="Standard" EnumName="WIZROBE_LIMB_TORSO" Offset="0xB1FC" />
+        <Limb Name="gWizrobeLeftUpperArmLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_UPPER_ARM" Offset="0xB208" />
+        <Limb Name="gWizrobeLeftForearmLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_FOREARM" Offset="0xB214" />
+        <Limb Name="gWizrobeLeftHandLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_HAND" Offset="0xB220" />
+        <Limb Name="gWizrobeRightUpperArmLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_UPPER_ARM" Offset="0xB22C" />
+        <Limb Name="gWizrobeRightForearmLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_FOREARM" Offset="0xB238" />
+        <Limb Name="gWizrobeRightHandLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_HAND" Offset="0xB244" />
+        <Limb Name="gWizrobeStaffLimb" Type="Standard" EnumName="WIZROBE_LIMB_STAFF" Offset="0xB250" />
+        <Limb Name="gWizrobeNeckLimb" Type="Standard" EnumName="WIZROBE_LIMB_NECK" Offset="0xB25C" />
+        <Limb Name="gWizrobeHeadLimb" Type="Standard" EnumName="WIZROBE_LIMB_HEAD" Offset="0xB268" />
+        <Limb Name="gWizrobeJawLimb" Type="Standard" EnumName="WIZROBE_LIMB_JAW" Offset="0xB274" />
+        <Limb Name="gWizrobeLoinclothLimb" Type="Standard" EnumName="WIZROBE_LIMB_LOINCLOTH" Offset="0xB280" />
+        <Limb Name="gWizrobeLeftThighLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_THIGH" Offset="0xB28C" />
+        <Limb Name="gWizrobeLeftShinLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_SHIN" Offset="0xB298" />
+        <Limb Name="gWizrobeLeftFootLimb" Type="Standard" EnumName="WIZROBE_LIMB_LEFT_FOOT" Offset="0xB2A4" />
+        <Limb Name="gWizrobeRightThighLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_THIGH" Offset="0xB2B0" />
+        <Limb Name="gWizrobeRightShinLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_SHIN" Offset="0xB2BC" />
+        <Limb Name="gWizrobeRightFootLimb" Type="Standard" EnumName="WIZROBE_LIMB_RIGHT_FOOT" Offset="0xB2C8" />
+
+        <!-- Wizrobe Skeleton -->
+        <Skeleton Name="gWizrobeSkel" Type="Flex" LimbType="Standard" LimbNone="WIZROBE_LIMB_NONE" LimbMax="WIZROBE_LIMB_MAX" EnumName="WizrobeLimb" Offset="0xB320" />
+    </File>
+</Root>

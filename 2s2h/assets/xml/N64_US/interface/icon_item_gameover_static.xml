@@ -1,0 +1,10 @@
+<Root>
+    <File Name="icon_item_gameover_static" Segment="12">
+        <Texture Name="gGameOverP1Tex" OutName="game_over_p1" Format="ia8" Width="64" Height="32" Offset="0x0"/>
+        <Texture Name="gGameOverP2Tex" OutName="game_over_p2" Format="ia8" Width="64" Height="32" Offset="0x800"/>
+        <Texture Name="gGameOverP3Tex" OutName="game_over_p3" Format="ia8" Width="64" Height="32" Offset="0x1000"/>
+        <Texture Name="gGameOverMaskTex" OutName="game_over_mask" Format="ia8" Width="64" Height="32" Offset="0x1800"/>
+        <Texture Name="gContinuePlayingJAPTex" OutName="continue_playing_jap" Format="ia8" Width="152" Height="16" Offset="0x2000"/>
+        <Texture Name="gContinuePlayingNESTex" OutName="continue_playing_nes" Format="ia8" Width="152" Height="16" Offset="0x2980"/>
+    </File>
+</Root>

@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_mask_bu_san" Segment="10">
+        <DList Name="object_mask_bu_san_DL_000710" Offset="0x710" />
+        <Texture Name="object_mask_bu_san_TLUT_000B68" OutName="tlut_000B68" Format="rgba16" Width="16" Height="16" Offset="0xB68" />
+        <Texture Name="object_mask_bu_san_Tex_000D68" OutName="tex_000D68" Format="ci8" Width="8" Height="8" Offset="0xD68" />
+        <Texture Name="object_mask_bu_san_Tex_000DA8" OutName="tex_000DA8" Format="rgba16" Width="8" Height="16" Offset="0xDA8" />
+        <Texture Name="object_mask_bu_san_Tex_000EA8" OutName="tex_000EA8" Format="ci8" Width="16" Height="16" Offset="0xEA8" />
+        <Texture Name="object_mask_bu_san_Tex_000FA8" OutName="tex_000FA8" Format="ci8" Width="16" Height="32" Offset="0xFA8" />
+        <Texture Name="object_mask_bu_san_Tex_0011A8" OutName="tex_0011A8" Format="ci8" Width="8" Height="8" Offset="0x11A8" />
+        <Texture Name="object_mask_bu_san_Tex_0011E8" OutName="tex_0011E8" Format="rgba16" Width="16" Height="16" Offset="0x11E8" />
+    </File>
+</Root>

@@ -1,0 +1,12 @@
+<Root>
+    <!-- Ice Arrow assets -->
+    <File Name="ovl_Arrow_Ice" BaseAddress="0x80922430" RangeStart="0x980" RangeEnd="0x1DA0">
+        <Texture Name="gIceArrowTex" OutName="ice_arrow" Format="i8" Width="32" Height="64" Offset="0x980"/>
+        <Texture Name="gIceArrowMaskTex" OutName="ice_arrow_mask" Format="i8" Width="32" Height="64" Offset="0x1180"/>
+        <Array Name="gIceArrowVtx" Count="43" Offset="0x1980">
+            <Vtx/>
+        </Array>
+        <DList Name="gIceArrowMaterialDL" Offset="0x1C30"/>
+        <DList Name="gIceArrowModelDL" Offset="0x1CE0"/> <!-- Original name might be "m_arrow_modelT_ice" -->
+    </File>
+</Root>

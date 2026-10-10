@@ -1,0 +1,9 @@
+<Root>
+    <File Name="ovl_En_Kanban" BaseAddress="0x80954960" RangeStart="0x3440" RangeEnd="0x3500">
+        <Array Name="gEnKanban_D_80957DA0" Count="4" Offset="0x3440">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gEnKanban_D_80957DE0" Offset="0x3480"/>
+    </File>
+</Root>

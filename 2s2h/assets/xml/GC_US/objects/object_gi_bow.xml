@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Bow -->
+    <File Name="object_gi_bow" Segment="6">
+
+        <!-- Bow Display Lists -->
+        <DList Name="gGiBowHandleDL" Offset="0xC80" />
+        <DList Name="gGiBowStringDL" Offset="0xF40" />
+
+        <!-- Bow Textures -->
+        <Texture Name="gGiBowHandleTex" OutName="gi_bow_handle" Format="i8" Width="16" Height="32" Offset="0xFF0" />
+        <Texture Name="gGiBowStringTex" OutName="gi_bow_string" Format="i8" Width="16" Height="16" Offset="0x11F0" />
+    </File>
+</Root>

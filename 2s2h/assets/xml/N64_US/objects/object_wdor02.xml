@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for Post Office / Trading Post Door -->
+    <File Name="object_wdor02" Segment="6">
+        <DList Name="gPostOfficeTradingPostDoorEmptyDL" Offset="0x540" /> <!-- Original name is "w2_door2_modelT" -->
+        <DList Name="gPostOfficeTradingPostDoorDL" Offset="0x548" /> <!-- Original name is "w2_door2_model" -->
+        <Texture Name="gPostOfficeTradingPostDoorTex" OutName="post_office_trading_post_door" Format="rgba16" Width="32" Height="64" Offset="0x6B0" />
+    </File>
+</Root>

@@ -1,0 +1,17 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Magic Arrow -->
+    <File Name="object_gi_m_arrow" Segment="6">
+
+    <!-- Magic Arrow Color Display Lists -->
+        <DList Name="gGiMagicArrowFireColorDL" Offset="0xCA0" />
+        <DList Name="gGiMagicArrowIceColorDL" Offset="0xCC0" />
+        <DList Name="gGiMagicArrowLightColorDL" Offset="0xCE0" />
+
+        <!-- Magic Arrow Common Display Lists -->
+        <DList Name="gGiMagicArrowAmmoDL" Offset="0xAE0" /> <!-- the arrow itself -->
+        <DList Name="gGiMagicArrowGlowDL" Offset="0xD00" />
+    </File>
+</Root>

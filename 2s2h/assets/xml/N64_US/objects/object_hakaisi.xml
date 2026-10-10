@@ -1,0 +1,15 @@
+﻿<Root>
+    <File Name="object_hakaisi" Segment="6">
+        <Texture Name="object_hakaisi_Tex_000000" OutName="tex_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="object_hakaisi_Tex_000200" OutName="tex_000200" Format="i8" Width="8" Height="32" Offset="0x200" />
+        <Texture Name="object_hakaisi_Tex_000300" OutName="tex_000300" Format="rgba16" Width="16" Height="16" Offset="0x300" />
+        <Texture Name="object_hakaisi_Tex_000500" OutName="tex_000500" Format="rgba16" Width="32" Height="64" Offset="0x500" />
+        <Texture Name="object_hakaisi_Tex_001500" OutName="tex_001500" Format="rgba16" Width="16" Height="64" Offset="0x1500" />
+        <DList Name="object_hakaisi_DL_001F10" Offset="0x1F10" /> <!-- Original name is "hahen01_model" -->
+        <DList Name="object_hakaisi_DL_0021B0" Offset="0x21B0" /> <!-- Original name is "hahen02_model" -->
+        <DList Name="object_hakaisi_DL_002650" Offset="0x2650" /> <!-- Original name is "haka_model" -->
+        <DList Name="object_hakaisi_DL_0029C0" Offset="0x29C0" /> <!-- Original name is "haka02_model" -->
+        <DList Name="object_hakaisi_DL_002CC0" Offset="0x2CC0" /> <!-- Original name is "haka03_model" -->
+        <Collision Name="object_hakaisi_Colheader_002FC4" Offset="0x2FC4" /> <!-- Original name is "z2_haka_bgdatainfo" -->
+    </File>
+</Root>

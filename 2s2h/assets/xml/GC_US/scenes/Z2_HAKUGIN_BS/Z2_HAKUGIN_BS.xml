@@ -1,0 +1,10 @@
+<Root>
+    <File Name="Z2_HAKUGIN_BS" Segment="2" Game="MM">
+        <Scene Name="Z2_HAKUGIN_BS" Offset="0x0"/>
+    </File>
+    <File Name="Z2_HAKUGIN_BS_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_HAKUGIN_BS_room_00" Offset="0x0"/>
+        <DList Name="Z2_HAKUGIN_BS_room_00DL_0061E0" Offset="0x61E0"/>
+        <DList Name="Z2_HAKUGIN_BS_room_00DL_006238" Offset="0x6238"/>
+    </File>
+</Root>

@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_mask_yofukasi" Segment="10">
+        <DList Name="object_mask_yofukasi_DL_000490" Offset="0x490" />
+        <Texture Name="object_mask_yofukasi_Tex_0006A0" OutName="tex_0006A0" Format="rgba16" Width="32" Height="32" Offset="0x6A0" />
+        <Texture Name="object_mask_yofukasi_Tex_000EA0" OutName="tex_000EA0" Format="i8" Width="32" Height="32" Offset="0xEA0" />
+        <Texture Name="object_mask_yofukasi_Tex_0012A0" OutName="tex_0012A0" Format="i8" Width="64" Height="32" Offset="0x12A0" />
+    </File>
+</Root>

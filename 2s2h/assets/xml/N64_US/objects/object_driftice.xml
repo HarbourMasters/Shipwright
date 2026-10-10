@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_driftice" Segment="6">
+        <Texture Name="object_driftice_Tex_000000" OutName="tex_000000" Format="rgba16" Width="64" Height="8" Offset="0x0" />
+        <Texture Name="object_driftice_TLUT_000400" OutName="tlut_000400" Format="rgba16" Width="4" Height="4" Offset="0x400" />
+        <Texture Name="object_driftice_TLUT_000420" OutName="tlut_000420" Format="rgba16" Width="4" Height="4" Offset="0x420" />
+        <Texture Name="object_driftice_Tex_000440" OutName="tex_000440" Format="ci4" Width="64" Height="64" Offset="0x440" />
+        <Texture Name="object_driftice_Tex_000C40" OutName="tex_000C40" Format="ci4" Width="64" Height="64" Offset="0xC40" />
+        <DList Name="object_driftice_DL_0016A0" Offset="0x16A0" /> <!-- Original name is "obj_iceblock_model" -->
+        <Collision Name="object_driftice_Colheader_001AA8" Offset="0x1AA8" /> <!-- Original name is "obj_iceblock_bgdatainfo" -->
+    </File>
+</Root>

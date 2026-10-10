@@ -1,0 +1,22 @@
+﻿<Root>
+    <File Name="object_fu_mato" Segment="6">
+        <DList Name="object_fu_mato_DL_0006A0" Offset="0x6A0" /> <!-- Original name is "kago1_model" -->
+        <DList Name="object_fu_mato_DL_000740" Offset="0x740" /> <!-- Original name is "kago2_model" -->
+        <DList Name="object_fu_mato_DL_0007E0" Offset="0x7E0" /> <!-- Original name is "kago3_model" -->
+        <DList Name="object_fu_mato_DL_000880" Offset="0x880" /> <!-- Original name is "kago4_model" -->
+        <DList Name="object_fu_mato_DL_000920" Offset="0x920" /> <!-- Original name is "kago5_model" -->
+        <DList Name="object_fu_mato_DL_0009C0" Offset="0x9C0" /> <!-- Original name is "kago6_model" -->
+        <Texture Name="object_fu_mato_Tex_000A60" OutName="tex_000A60" Format="rgba16" Width="32" Height="32" Offset="0xA60" />
+        <Collision Name="object_fu_mato_Colheader_0015C0" Offset="0x15C0" /> <!-- Original name is "z2_bowling_kago_bgdatainfo" -->
+        <DList Name="object_fu_mato_DL_001C80" Offset="0x1C80" /> <!-- Original name is "mato1_model" -->
+        <DList Name="object_fu_mato_DL_001D68" Offset="0x1D68" /> <!-- Original name is "mato2_model" -->
+        <DList Name="object_fu_mato_DL_001E50" Offset="0x1E50" /> <!-- Original name is "mato3_model" -->
+        <DList Name="object_fu_mato_DL_001F38" Offset="0x1F38" /> <!-- Original name is "mato4_model" -->
+        <DList Name="object_fu_mato_DL_002020" Offset="0x2020" /> <!-- Original name is "mato5_model" -->
+        <DList Name="object_fu_mato_DL_002108" Offset="0x2108" /> <!-- Original name is "mato6_model" -->
+        <Collision Name="object_fu_mato_Colheader_0023D4" Offset="0x23D4" /> <!-- Original name is "z2_bowling_mato_bgdatainfo" -->
+        <DList Name="object_fu_mato_DL_002720" Offset="0x2720" /> <!-- Original name is "mato_model" -->
+        <Texture Name="object_fu_mato_Tex_002850" OutName="tex_002850" Format="rgba16" Width="16" Height="16" Offset="0x2850" />
+        <Texture Name="object_fu_mato_Tex_002A50" OutName="tex_002A50" Format="rgba16" Width="16" Height="64" Offset="0x2A50" />
+    </File>
+</Root>

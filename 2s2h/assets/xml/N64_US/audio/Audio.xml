@@ -1,0 +1,860 @@
+<Root>
+    <File Name="code" OutName="audio" RangeStart="0x0">
+        <Audio Name="audio" Offset="0x00" SoundFontTableOffset="0x13B6C0" SequenceTableOffset="0x13BB70" SampleBankTableOffset="0x13C380" SequenceFontTableOffset="0x13B960">
+            <Sequences>
+                <Sequence Name="Sequence_0"/>
+                <Sequence Name="Sequence_1"/>
+                <Sequence Name="TerminaField_02"/>
+                <Sequence Name="ChaseTheme_03"/>
+                <Sequence Name="MajorasMask_04"/>
+                <Sequence Name="SongOfHealing_05"/>
+                <Sequence Name="StoneTowerTemple_06"/>
+                <Sequence Name="InvertedStoneTowerTemple_07"/>
+                <Sequence Name="EventFaulure1_08"/>
+                <Sequence Name="EventFaulure2_09"/>
+                <Sequence Name="SongOfHealing(HMS)_0A"/>
+                <Sequence Name="SongOfHealing(Organ)_0B"/>
+                <Sequence Name="SouthernSwamp_0C"/>
+                <Sequence Name="Aliens_0D"/>
+                <Sequence Name="MiniGame_0E"/>
+                <Sequence Name="SharpsCurse_0F"/>
+                <Sequence Name="GreatBay_10"/>
+                <Sequence Name="IkanaValley_11"/>
+                <Sequence Name="DekuPalace_12"/>
+                <Sequence Name="MountainVillage_13"/>
+                <Sequence Name="PiratesFortress_14"/>
+                <Sequence Name="ClockTownDay1_15"/>
+                <Sequence Name="ClockTownDay2_16"/>
+                <Sequence Name="ClockTownDay3_17"/>
+                <Sequence Name="FileSelect_18"/>
+                <Sequence Name="ClearEvent_19"/>
+                <Sequence Name="Enemy_1A"/>
+                <Sequence Name="Boss_1B"/>
+                <Sequence Name="WoodfallTemple_1C"/>
+                <Sequence Name="ClockTownMainSequence_1D"/>
+                <Sequence Name="Opening_1E"/>
+                <Sequence Name="Interior_1F"/>
+                <Sequence Name="GameOver_20"/>
+                <Sequence Name="ClearBoss_21"/>
+                <Sequence Name="GetItem_22"/>
+                <Sequence Name="ClockTownDay2Ptr_23"/>
+                <Sequence Name="GetHeart_24"/>
+                <Sequence Name="TimedMinigame_25"/>
+                <Sequence Name="GoronRace_26"/>
+                <Sequence Name="MusicBoxHouse_27"/>
+                <Sequence Name="FairyFountain_28"/>
+                <Sequence Name="ZeldasLullaby_29"/>
+                <Sequence Name="RosaSisters_2A"/>
+                <Sequence Name="OpenChest_2B"/>
+                <Sequence Name="MarineResearchLab_2C"/>
+                <Sequence Name="GiantsTheme_2D"/>
+                <Sequence Name="SongOfStorms(GuruGuru)_2E"/>
+                <Sequence Name="RomaniRanch_2F"/>
+                <Sequence Name="GoronVillage_30"/>
+                <Sequence Name="MayorsOffice_31"/>
+                <Sequence Name="EponasSong(Ocarina)_32"/>
+                <Sequence Name="SunsSong(Ocarina)_33"/>
+                <Sequence Name="SongOfTime(Ocarina)_34"/>
+                <Sequence Name="SongOfStorms(Ocarina)_35"/>
+                <Sequence Name="ZoraHall_36"/>
+                <Sequence Name="GetMask_37"/>
+                <Sequence Name="Miniboss_38"/>
+                <Sequence Name="GetSmallItem_39"/>
+                <Sequence Name="AstralObservatory_3A"/>
+                <Sequence Name="Cavern_3B"/>
+                <Sequence Name="MilkBar_3C"/>
+                <Sequence Name="ZeldaAppear_3D"/>
+                <Sequence Name="SariasSOng_3E"/>
+                <Sequence Name="GoronRaceGoal_3F"/>
+                <Sequence Name="HorseRace_40"/>
+                <Sequence Name="HorseRaceGoal_41"/>
+                <Sequence Name="Ingo_42"/>
+                <Sequence Name="KotakePotionShop_43"/>
+                <Sequence Name="Shop_44"/>
+                <Sequence Name="Owl_45"/>
+                <Sequence Name="ShootingGallery_46"/>
+                <Sequence Name="SongOfSoaring(Ocarina)_47"/>
+                <Sequence Name="SongOfHealing(Ocarina)_48"/>
+                <Sequence Name="InvertedSongOfTime(Ocarina)_49"/>
+                <Sequence Name="SongOfDoubleTime(Ocarina)_4A"/>
+                <Sequence Name="SonataOfAwakening(Ocarina)_4B"/>
+                <Sequence Name="GoronLullaby(Ocarina)_4C"/>
+                <Sequence Name="NewWaveBossaNova_4D"/>
+                <Sequence Name="ElegyOfEmptiness_4E"/>
+                <Sequence Name="OathToOrder_4F"/>
+                <Sequence Name="SwordTrainingHall_50"/>
+                <Sequence Name="LullabyIntro(Ocarina)_51"/>
+                <Sequence Name="BremenMarch_52"/>
+                <Sequence Name="GetSong_53"/>
+                <Sequence Name="BalladOfTheWindFish_54"/>
+                <Sequence Name="SongOfSoaring_55"/>
+                <Sequence Name="MilkBarDuplicate_56"/>
+                <Sequence Name="FinalHours_57"/>
+                <Sequence Name="MikauRiff_58"/>
+                <Sequence Name="MikauFinale_59"/>
+                <Sequence Name="FrogSong_5A"/>
+                <Sequence Name="SonataOfAwakening(Ocarina)_5B"/>
+                <Sequence Name="GoronLullaby(Ocarina)_5C"/>
+                <Sequence Name="NewWaveBossaNova(Ocarina)_5D"/>
+                <Sequence Name="ElegyOfEmptiness(Ocarina)_5E"/>
+                <Sequence Name="OathToOrder(Ocarina)_5F"/>
+                <Sequence Name="MajorasLair_60"/>
+                <Sequence Name="LullabyIntroPtr(Ocarina)_61"/>
+                <Sequence Name="JamSessionBass_62"/>
+                <Sequence Name="PianoSession_63"/>
+                <Sequence Name="IndigoGoSession_64"/>
+                <Sequence Name="SnowheadTemple_65"/>
+                <Sequence Name="GreatBayTemple_66"/>
+                <Sequence Name="NewWaveSaxophone_67"/>
+                <Sequence Name="NewWaveVocal_68"/>
+                <Sequence Name="MajorasWrath_69"/>
+                <Sequence Name="MajorasIncarnation_6A"/>
+                <Sequence Name="MajorasMask_6B"/>
+                <Sequence Name="BassPlay_6C"/>
+                <Sequence Name="DrumsPlay_6D"/>
+                <Sequence Name="PianoPlay_6E"/>
+                <Sequence Name="IkanaCastle_6F"/>
+                <Sequence Name="GatheringGiants_70"/>
+                <Sequence Name="KamaroDance_71"/>
+                <Sequence Name="CremiaCarriage_72"/>
+                <Sequence Name="KeatonQuiz_73"/>
+                <Sequence Name="EndCredits(FirstHalf)_74"/>
+                <Sequence Name="OpeningLoop_75"/>
+                <Sequence Name="TitleTheme_76"/>
+                <Sequence Name="DungeonAppear_77"/>
+                <Sequence Name="WoodfallClear_78"/>
+                <Sequence Name="SnowheadClear_79"/>
+                <Sequence Name="Sequence_122"/>
+                <Sequence Name="IntoTheMoon_7B"/>
+                <Sequence Name="GoodbyeGiants_7C"/>
+                <Sequence Name="TatleAndTale_7D"/>
+                <Sequence Name="MoonsDestruction_7E"/>
+                <Sequence Name="Credits(SecondHalf)_7F"/>
+            </Sequences>
+            <Samples Bank="0">
+                <Sample Name="SAMPLE_0_0" FileName="Sample000" Offset="0x000000" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="InsectChirrup" FileName="InsectChirrup" Offset="0x0006E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="BirdChirp2" FileName="BirdChirp2" Offset="0x0008B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_3" FileName="Sample003" Offset="0x000DA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_4" FileName="Sample004" Offset="0x001870" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="CrowCaws" FileName="CrowCaws" Offset="0x0021B0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="BirdCall" FileName="BirdCall" Offset="0x002FF0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="BirdScreech" FileName="BirdScreech" Offset="0x004530" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="BirdSongUnused" FileName="BirdSongUnused" Offset="0x005760" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_9" FileName="Sample009" Offset="0x007AB0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_10" FileName="Sample010" Offset="0x009010" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SmallBirdChirps" FileName="SmallBirdChirps" Offset="0x00A570" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_12" FileName="Sample012" Offset="0x00AB90" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SlapBass1" FileName="SlapBass1" Offset="0x011260" SampleRate="32000" BaseNote="F3"/>
+                <Sample Name="Howling" FileName="Howling" Offset="0x013A90" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_15" FileName="Sample015" Offset="0x017360" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_16" FileName="Sample016" Offset="0x01D040" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="HowlingWindShort" FileName="HowlingWindShort" Offset="0x0237D0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="CuccoCrows" FileName="CuccoCrows" Offset="0x0293C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="CawingBird" FileName="CawingBird" Offset="0x02D060" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="StepGround" FileName="StepGround" Offset="0x02E330" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="StepSand" FileName="StepSand" Offset="0x02ECB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepRock" FileName="StepRock" Offset="0x02F740" SampleRate="16000" BaseNote="G4"/>
+                <Sample Name="StepJabuJabu" FileName="StepJabuJabu" Offset="0x02FFD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepWater" FileName="StepWater" Offset="0x030A70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepCarpet" FileName="StepCarpet" Offset="0x0314C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepThickCarpet" FileName="StepThickCarpet" Offset="0x0319F0" SampleRate="8000" BaseNote="G3"/>
+                <Sample Name="StepTallGrass" FileName="StepTallGrass" Offset="0x031CA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SynthPadSting" FileName="SynthPadSting" Offset="0x033970" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SmallSplash" FileName="SmallSplash" Offset="0x0367E0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="CrunchyDrop" FileName="CrunchyDrop" Offset="0x038810" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepWood" FileName="StepWood" Offset="0x03A4E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SlidingBlock" FileName="SlidingBlock" Offset="0x03A670" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="BootsSliding" FileName="BootsSliding" Offset="0x03F760" SampleRate="23220" BaseNote="C4"/>
+                <Sample Name="HeavySlide" FileName="HeavySlide" Offset="0x0431E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HighStatic" FileName="HighStatic" Offset="0x045B70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DistortedStatic" FileName="DistortedStatic" Offset="0x047CE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HeavyStatic" FileName="HeavyStatic" Offset="0x04B560" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="LargeWaterSplash" FileName="LargeWaterSplash" Offset="0x04CB70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Swimming" FileName="Swimming" Offset="0x050210" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StoneDoof" FileName="StoneDoof" Offset="0x051B60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepWoodenBridge" FileName="StepWoodenBridge" Offset="0x053320" SampleRate="16000" BaseNote="AF4"/>
+                <Sample Name="StepFire" FileName="StepFire" Offset="0x053B40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StepIce" FileName="StepIce" Offset="0x0545D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_44" FileName="Sample044" Offset="0x054BE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_45" FileName="Sample045" Offset="0x055600" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_46" FileName="Sample046" Offset="0x056D70" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_47" FileName="Sample047" Offset="0x057CE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_48" FileName="Sample048" Offset="0x058AB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="MetalClink" FileName="MetalClink" Offset="0x0593F0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="Whish" FileName="Whish" Offset="0x05A110" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SheatheSword" FileName="SheatheSword" Offset="0x05A580" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="DrawSword" FileName="DrawSword" Offset="0x05B490" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="AirSwish" FileName="AirSwish" Offset="0x05CE50" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="AirWhistle" FileName="AirWhistle" Offset="0x05D810" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_55" FileName="Sample055" Offset="0x05EA00" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SwordStrikingMetalShield" FileName="SwordStrikingMetalShield" Offset="0x061150" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="MovingMetalChain" FileName="MovingMetalChain" Offset="0x062780" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_58" FileName="Sample058" Offset="0x063C70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HeavyThump" FileName="HeavyThump" Offset="0x0652F0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="EggHatching" FileName="EggHatching" Offset="0x065E80" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="ArrowThunkinWood" FileName="ArrowThunkinWood" Offset="0x0692B0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="AirWhoosh" FileName="AirWhoosh" Offset="0x06B570" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="BrokenWood" FileName="BrokenWood" Offset="0x06D6D0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="WhipSnap" FileName="WhipSnap" Offset="0x06DF70" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="BuzzingSynth" FileName="BuzzingSynth" Offset="0x06F0E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SoftThump" FileName="SoftThump" Offset="0x0702E0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SwordStrike" FileName="SwordStrike" Offset="0x0711B0" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="EyeofTruth" FileName="EyeofTruth" Offset="0x072660" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="PoppingCork" FileName="PoppingCork" Offset="0x075310" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="BowstringTwang" FileName="BowstringTwang" Offset="0x075720" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="BombchuMotor" FileName="BombchuMotor" Offset="0x076900" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_72" FileName="Sample072" Offset="0x076D30" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_73" FileName="Sample073" Offset="0x077A20" SampleRate="12000" BaseNote="C0"/>
+                <Sample Name="Rupee" FileName="Rupee" Offset="0x077D60" SampleRate="45530" BaseNote="F1"/>
+                <Sample Name="SAMPLE_0_75" FileName="Sample75" Offset="0x0797C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ClosingWoodenDoor" FileName="ClosingWoodenDoor" Offset="0x07AB10" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="Explosion1" FileName="Explosion1" Offset="0x07C0A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Gallop" FileName="Gallop" Offset="0x080760" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HorseNeigh" FileName="HorseNeigh" Offset="0x0814C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="FlowingCreek" FileName="FlowingCreek" Offset="0x0854B0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="RushingWaterfall" FileName="RushingWaterfall" Offset="0x089FA0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="MechanicallyShiftingStone" FileName="MechanicallyShiftingStone" Offset="0x08CC10" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="RollingBoulder" FileName="RollingBoulder" Offset="0x08DE50" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_84" FileName="Sample084" Offset="0x08EF40" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="RetractingMetalChain" FileName="RetractingMetalChain" Offset="0x0932B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="RelaxedCuccoClucks" FileName="RelaxedCuccoClucks" Offset="0x094DA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="StoneStrike" FileName="StoneStrike" Offset="0x096F60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HorseSnort" FileName="HorseSnort" Offset="0x098460" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="WaterSplish" FileName="WaterSplish" Offset="0x099D20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="WoodenStrike" FileName="WoodenStrike" Offset="0x09C9C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="FlyingFairy" FileName="FlyingFairy" Offset="0x09CED0" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="SettledStoneBlock" FileName="SettledStoneBlock" Offset="0x09DF50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_93" FileName="Sample093" Offset="0x09EE40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="CreakingWood" FileName="CreakingWood" Offset="0x0A06C0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="Ignition" FileName="Ignition" Offset="0x0A2100" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="WarpCircleAmbience" FileName="WarpCircleAmbience" Offset="0x0A3B30" SampleRate="32000" BaseNote="B1"/>
+                <Sample Name="FairyMagic" FileName="FairyMagic" Offset="0x0AC2E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="WaterDrips" FileName="WaterDrips" Offset="0x0AD170" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="UnderwaterBubbles" FileName="UnderwaterBubbles" Offset="0x0B08F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_100" FileName="Sample100" Offset="0x0B2F90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="HeavyPlatformRotating" FileName="HeavyPlatformRotating" Offset="0x0B6920" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="LightRockSlam" FileName="LightRockSlam" Offset="0x0B7340" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="FlappingCloak" FileName="FlappingCloak" Offset="0x0B8FF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_104" FileName="Sample104" Offset="0x0BA9D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ClothRipping" FileName="ClothRipping" Offset="0x0BEEB0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="MechanicalRampUp" FileName="MechanicalRampUp" Offset="0x0C1000" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_107" FileName="Sample107" Offset="0x0C3320" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ShimmeringTreasure" FileName="ShimmeringTreasure" Offset="0x0C52B0" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="Gunshot" FileName="Gunshot" Offset="0x0C5910" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="WolfHowl" FileName="WolfHowl" Offset="0x0C6980" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_111" FileName="Sample111" Offset="0x0CB570" SampleRate="16000" BaseNote="A3"/>
+                <Sample Name="DogYip" FileName="DogYip" Offset="0x0CBDE0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="MetalDoor" FileName="MetalDoor" Offset="0x0CC3D0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="CowMoo" FileName="CowMoo" Offset="0x0CDD60" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_115" FileName="Sample115" Offset="0x0CF9A0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_116" FileName="Sample116" Offset="0x0D67A0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_117" FileName="Sample117" Offset="0x0DA370" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_118" FileName="Sample118" Offset="0x0DBA30" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_119" FileName="Sample119" Offset="0x0E02C0" SampleRate="15950" BaseNote="DF3"/>
+                <Sample Name="SAMPLE_0_120" FileName="Sample120" Offset="0x0E0900" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_121" FileName="Sample121" Offset="0x0E1960" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_122" FileName="Sample122" Offset="0x0E2A20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_123" FileName="Sample123" Offset="0x0E3BA0" SampleRate="16000" BaseNote="C2"/>
+                <Sample Name="SAMPLE_0_124" FileName="Sample124" Offset="0x0E5BB0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_125" FileName="Sample125" Offset="0x0E64A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_126" FileName="Sample126" Offset="0x0E8AB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_127" FileName="Sample127" Offset="0x0E9940" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_128" FileName="Sample128" Offset="0x0EA700" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_129" FileName="Sample129" Offset="0x0EB5D0" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_130" FileName="Sample130" Offset="0x0EC280" SampleRate="12000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_131" FileName="Sample131" Offset="0x0EDED0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_132" FileName="Sample132" Offset="0x0EE7A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_133" FileName="Sample133" Offset="0x0F09A0" SampleRate="8000" BaseNote="AF3"/>
+                <Sample Name="SAMPLE_0_134" FileName="Sample134" Offset="0x0F14B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_135" FileName="Sample135" Offset="0x0F2B20" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_136" FileName="Sample136" Offset="0x0F4810" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_137" FileName="Sample137" Offset="0x0F4A30" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DialogueContinueHarp" FileName="DialogueContinueHarp" Offset="0x0F4C10" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DongFailedLearning" FileName="DongFailedLearning" Offset="0x0F9070" SampleRate="22050" BaseNote="GF3"/>
+                <Sample Name="Whistle" FileName="Whistle" Offset="0x0FB3E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ClangingBells" FileName="ClangingBells" Offset="0x0FBB20" SampleRate="22050" BaseNote="C0"/>
+                <Sample Name="PersonWhistling" FileName="PersonWhistling" Offset="0x0FD330" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="ZTarget" FileName="ZTarget" Offset="0x100DD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="EnemyTargetLockOn" FileName="EnemyTargetLockOn" Offset="0x102290" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_145" FileName="Sample145" Offset="0x104620" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="BrokenPottery" FileName="BrokenPottery" Offset="0x107050" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="ShatteredGlass" FileName="ShatteredGlass" Offset="0x108620" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_148" FileName="Sample148" Offset="0x10A780" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkAttack1" FileName="AdultLinkAttack1" Offset="0x10B800" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_150" FileName="Sample150" Offset="0x10CA60" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkAttack2" FileName="AdultLinkAttack2" Offset="0x10DB90" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_152" FileName="Sample152" Offset="0x10EAF0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkAttack3" FileName="AdultLinkAttack3" Offset="0x10FF20" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_154" FileName="Sample154" Offset="0x110920" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkAttack4" FileName="AdultLinkAttack4" Offset="0x111BE0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_156" FileName="Sample156" Offset="0x112A50" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkHup" FileName="AdultLinkHup" Offset="0x1140E0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkGasp1" FileName="AdultLinkGasp1" Offset="0x114790" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkStrongAttack1" FileName="AdultLinkStrongAttack1" Offset="0x114E20" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_160" FileName="Sample160" Offset="0x1166D0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkStrongAttack2" FileName="AdultLinkStrongAttack2" Offset="0x1195A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_162" FileName="Sample162" Offset="0x11AD20" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_163" FileName="Sample163" Offset="0x11DA10" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_164" FileName="Sample164" Offset="0x11EA00" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_165" FileName="Sample165" Offset="0x11FA20" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_166" FileName="Sample166" Offset="0x120FA0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_167" FileName="Sample167" Offset="0x122370" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_168" FileName="Sample168" Offset="0x122E70" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_169" FileName="Sample169" Offset="0x124070" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_170" FileName="Sample170" Offset="0x1268E0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_171" FileName="Sample171" Offset="0x127730" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_172" FileName="Sample172" Offset="0x128990" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_173" FileName="Sample173" Offset="0x1298F0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_174" FileName="Sample174" Offset="0x12B5D0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_175" FileName="Sample175" Offset="0x12E040" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_176" FileName="Sample176" Offset="0x130340" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_177" FileName="Sample177" Offset="0x1324D0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_178" FileName="Sample178" Offset="0x1347A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkFalling1" FileName="AdultLinkFalling1" Offset="0x136B70" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_180" FileName="Sample180" Offset="0x13D8F0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="AdultLinkFalling2" FileName="AdultLinkFalling2" Offset="0x148670" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_182" FileName="Sample182" Offset="0x14E930" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_183" FileName="Sample183" Offset="0x14F570" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_184" FileName="Sample184" Offset="0x1501C0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_185" FileName="Sample185" Offset="0x151570" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_186" FileName="Sample186" Offset="0x1535B0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_187" FileName="Sample187" Offset="0x154750" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_188" FileName="Sample188" Offset="0x156730" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_189" FileName="Sample189" Offset="0x15D360" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_190" FileName="Sample190" Offset="0x160600" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_191" FileName="Sample191" Offset="0x160C70" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_192" FileName="Sample192" Offset="0x160EE0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_193" FileName="Sample193" Offset="0x162630" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_194" FileName="Sample194" Offset="0x163780" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_195" FileName="Sample195" Offset="0x164A40" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_196" FileName="Sample196" Offset="0x1655C0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_197" FileName="Sample197" Offset="0x165E10" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_198" FileName="Sample198" Offset="0x166440" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkStrongAttack1" FileName="ChildLinkStrongAttack1" Offset="0x167D90" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkStrongAttack2" FileName="ChildLinkStrongAttack2" Offset="0x1697D0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_201" FileName="Sample201" Offset="0x16B850" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_202" FileName="Sample202" Offset="0x16CF30" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_203" FileName="Sample203" Offset="0x16E5D0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_204" FileName="Sample204" Offset="0x16FDF0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_205" FileName="Sample205" Offset="0x170C00" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_206" FileName="Sample206" Offset="0x172180" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_207" FileName="Sample207" Offset="0x173AF0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_208" FileName="Sample208" Offset="0x174F90" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_209" FileName="Sample209" Offset="0x176090" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_210" FileName="Sample210" Offset="0x1768B0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_211" FileName="Sample211" Offset="0x1787C0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_212" FileName="Sample212" Offset="0x17AF50" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_213" FileName="Sample213" Offset="0x17C5F0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_214" FileName="Sample214" Offset="0x1805C0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkGasp1" FileName="ChildLinkGasp1" Offset="0x185470" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkGasp2" FileName="ChildLinkGasp2" Offset="0x186A90" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_217" FileName="Sample217" Offset="0x188150" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_218" FileName="Sample218" Offset="0x18A6A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkGlug" FileName="ChildLinkGlug" Offset="0x18CB50" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_220" FileName="Sample220" Offset="0x18DC40" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkChargeUpUnused" FileName="ChildLinkChargeUpUnused" Offset="0x18F630" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkCastAttackSpell" FileName="ChildLinkCastAttackSpell" Offset="0x190A20" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_223" FileName="Sample223" Offset="0x1927A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_224" FileName="Sample224" Offset="0x195E60" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_225" FileName="Sample225" Offset="0x198A10" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_226" FileName="Sample226" Offset="0x199200" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_227" FileName="Sample227" Offset="0x199980" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkShivers" FileName="ChildLinkShivers" Offset="0x19A5F0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkSneeze" FileName="ChildLinkSneeze" Offset="0x1A0D90" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkGrunt" FileName="ChildLinkGrunt" Offset="0x1A2D30" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkMoansFromHeat" FileName="ChildLinkMoansFromHeat" Offset="0x1A3C40" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkAwakeningGrunt" FileName="ChildLinkAwakeningGrunt" Offset="0x1A88A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkWipingOffSweat" FileName="ChildLinkWipingOffSweat" Offset="0x1A9080" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkYawnStarts" FileName="ChildLinkYawnStarts" Offset="0x1B09A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkYawnandStretch" FileName="ChildLinkYawnandStretch" Offset="0x1B15A0" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="ChildLinkStretchRefreshingly" FileName="ChildLinkStretchRefreshingly" Offset="0x1B5610" SampleRate="20000" BaseNote="C4"/>
+                <Sample Name="GreatFairyLaughter" FileName="GreatFairyLaughter" Offset="0x1B7BF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GreatFairyTitters" FileName="GreatFairyTitters" Offset="0x1BD8E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_239" FileName="Sample239" Offset="0x1C0D40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_240" FileName="Sample240" Offset="0x1C3040" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="IngoYowls" FileName="IngoYowls" Offset="0x1C49D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="IngoExclaims" FileName="IngoExclaims" Offset="0x1C75D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="IngoHyeaaaaugh" FileName="IngoHyeaaaaugh" Offset="0x1CA900" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="IngoHyah" FileName="IngoHyah" Offset="0x1CC4C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_245" FileName="Sample245" Offset="0x1CD430" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_246" FileName="Sample246" Offset="0x1D06C0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_247" FileName="Sample247" Offset="0x1D0B80" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_248" FileName="Sample248" Offset="0x1D17F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_249" FileName="Sample249" Offset="0x1D1F50" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_250" FileName="Sample250" Offset="0x1D30F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_251" FileName="Sample251" Offset="0x1D5770" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_252" FileName="Sample252" Offset="0x1D60E0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_253" FileName="Sample253" Offset="0x1D6B50" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_254" FileName="Sample254" Offset="0x1D86D0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_255" FileName="Sample255" Offset="0x1D9450" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_256" FileName="Sample256" Offset="0x1DAE00" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_257" FileName="Sample257" Offset="0x1DC810" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_258" FileName="Sample258" Offset="0x1DD590" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_259" FileName="Sample259" Offset="0x1DEE90" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_260" FileName="Sample260" Offset="0x1E0470" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_261" FileName="Sample261" Offset="0x1E1970" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_262" FileName="Sample262" Offset="0x1E25A0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_263" FileName="Sample263" Offset="0x1E2DE0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_264" FileName="Sample264" Offset="0x1E36F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_265" FileName="Sample265" Offset="0x1E4670" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_266" FileName="Sample266" Offset="0x1E5DB0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_267" FileName="Sample267" Offset="0x1E6D70" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_268" FileName="Sample268" Offset="0x1E73C0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_269" FileName="Sample269" Offset="0x1E91E0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_270" FileName="Sample270" Offset="0x1EAB30" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_271" FileName="Sample271" Offset="0x1EC5F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_272" FileName="Sample272" Offset="0x1EDCF0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_273" FileName="Sample273" Offset="0x1EF070" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_274" FileName="Sample274" Offset="0x1F2690" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_275" FileName="Sample275" Offset="0x1F3E20" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_276" FileName="Sample276" Offset="0x1F4B70" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_277" FileName="Sample277" Offset="0x1F6770" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_278" FileName="Sample278" Offset="0x1F77E0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_279" FileName="Sample279" Offset="0x1F87A0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_280" FileName="Sample280" Offset="0x1FA1F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_281" FileName="Sample281" Offset="0x1FAD30" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_282" FileName="Sample282" Offset="0x1FB0D0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_283" FileName="Sample283" Offset="0x1FBD20" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_284" FileName="Sample284" Offset="0x1FC4C0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_285" FileName="Sample285" Offset="0x1FD3F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_286" FileName="Sample286" Offset="0x1FDBC0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_287" FileName="Sample287" Offset="0x1FE390" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_288" FileName="Sample288" Offset="0x1FF3F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_289" FileName="Sample289" Offset="0x200050" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_290" FileName="Sample290" Offset="0x2009F0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_291" FileName="Sample291" Offset="0x2027D0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_292" FileName="Sample292" Offset="0x2043E0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_293" FileName="Sample293" Offset="0x206660" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_294" FileName="Sample294" Offset="0x208120" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_295" FileName="Sample295" Offset="0x208C00" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_296" FileName="Sample296" Offset="0x209A00" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_297" FileName="Sample297" Offset="0x20A380" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_298" FileName="Sample298" Offset="0x20B4A0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_299" FileName="Sample299" Offset="0x20D5B0" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_300" FileName="Sample300" Offset="0x20F1A0" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_301" FileName="Sample301" Offset="0x20FBB0" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_302" FileName="Sample302" Offset="0x2112E0" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_303" FileName="Sample303" Offset="0x2117A0" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_304" FileName="Sample304" Offset="0x213510" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_305" FileName="Sample305" Offset="0x215040" SampleRate="24000" BaseNote="F3"/>
+                <Sample Name="SAMPLE_0_306" FileName="Sample306" Offset="0x217170" SampleRate="24000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_307" FileName="Sample307" Offset="0x218B80" SampleRate="12000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_308" FileName="Sample308" Offset="0x219900" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_309" FileName="Sample309" Offset="0x21B470" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_310" FileName="Sample310" Offset="0x21C660" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_311" FileName="Sample311" Offset="0x21D430" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_312" FileName="Sample312" Offset="0x21E100" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_313" FileName="Sample313" Offset="0x21FF50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_314" FileName="Sample314" Offset="0x222620" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_315" FileName="Sample315" Offset="0x2243A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_316" FileName="Sample316" Offset="0x226580" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_317" FileName="Sample317" Offset="0x227AC0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_318" FileName="Sample318" Offset="0x229080" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_319" FileName="Sample319" Offset="0x22B010" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_320" FileName="Sample320" Offset="0x22CD50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_321" FileName="Sample321" Offset="0x22EF10" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_322" FileName="Sample322" Offset="0x230F90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_323" FileName="Sample323" Offset="0x233110" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_324" FileName="Sample324" Offset="0x234560" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_325" FileName="Sample325" Offset="0x235720" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_326" FileName="Sample326" Offset="0x237190" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_327" FileName="Sample327" Offset="0x238E50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_328" FileName="Sample328" Offset="0x23A200" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_329" FileName="Sample329" Offset="0x23B270" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_330" FileName="Sample330" Offset="0x23CDA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_331" FileName="Sample331" Offset="0x23EF70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_332" FileName="Sample332" Offset="0x240E20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_333" FileName="Sample333" Offset="0x241260" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_334" FileName="Sample334" Offset="0x2423E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_335" FileName="Sample335" Offset="0x243E70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_336" FileName="Sample336" Offset="0x245750" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_337" FileName="Sample337" Offset="0x245E40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_338" FileName="Sample338" Offset="0x246780" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_339" FileName="Sample339" Offset="0x2479F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_340" FileName="Sample340" Offset="0x2492E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_341" FileName="Sample341" Offset="0x24AA40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_342" FileName="Sample342" Offset="0x24CA20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_343" FileName="Sample343" Offset="0x24E3C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_344" FileName="Sample344" Offset="0x24FCB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_345" FileName="Sample345" Offset="0x2513B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_346" FileName="Sample346" Offset="0x251EB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_347" FileName="Sample347" Offset="0x2539F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_348" FileName="Sample348" Offset="0x254180" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_349" FileName="Sample349" Offset="0x255CB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_350" FileName="Sample350" Offset="0x256720" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_351" FileName="Sample351" Offset="0x256CA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_352" FileName="Sample352" Offset="0x257B30" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_353" FileName="Sample353" Offset="0x258600" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_354" FileName="Sample354" Offset="0x258FF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_355" FileName="Sample355" Offset="0x25A450" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_356" FileName="Sample356" Offset="0x25B2A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_357" FileName="Sample357" Offset="0x25BB90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_358" FileName="Sample358" Offset="0x25DB00" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_359" FileName="Sample359" Offset="0x25FD80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_360" FileName="Sample360" Offset="0x262630" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_361" FileName="Sample361" Offset="0x264B20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_362" FileName="Sample362" Offset="0x2651F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_363" FileName="Sample363" Offset="0x2665E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_364" FileName="Sample364" Offset="0x267E70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_365" FileName="Sample365" Offset="0x26A7D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_366" FileName="Sample366" Offset="0x26F5F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_367" FileName="Sample367" Offset="0x270430" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_368" FileName="Sample368" Offset="0x271500" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_369" FileName="Sample369" Offset="0x2732E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_370" FileName="Sample370" Offset="0x273AF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_371" FileName="Sample371" Offset="0x275B90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_372" FileName="Sample372" Offset="0x277160" SampleRate="16000" BaseNote="C4"/>
+                <Sample BaseNote="E3" FileName="Ocarina_Looped" Name="Ocarina_Looped" Offset="0x2786B0" SampleRate="32000" />
+                <Sample Name="Accordion" FileName="Accordion" Offset="0x27B930" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Harp1" FileName="Harp1" Offset="0x280060" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="Malon" FileName="Malon" Offset="0x284590" SampleRate="22050" BaseNote="E3"/>
+                <Sample Name="Flute" FileName="Flute" Offset="0x286000" SampleRate="32000" BaseNote="F2"/>
+                <Sample Name="SAMPLE_0_378" FileName="Sample378" Offset="0x28A690" SampleRate="32000" BaseNote="B2"/>
+                <Sample Name="TamboDrum" FileName="TamboDrum" Offset="0x28CFA0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="FingerCymbals" FileName="FingerCymbals" Offset="0x28F270" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_381" FileName="Sample381" Offset="0x2917A0" SampleRate="32000" BaseNote="DF3"/>
+                <Sample Name="SAMPLE_0_382" FileName="Sample382" Offset="0x295040" SampleRate="32000" BaseNote="BF3"/>
+                <Sample Name="SAMPLE_0_383" FileName="Sample383" Offset="0x29A8F0" SampleRate="22050" BaseNote="G4"/>
+                <Sample Name="Timpani" FileName="Timpani" Offset="0x29C360" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_385" FileName="Sample385" Offset="0x2A4740" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="PianoSoft" FileName="PianoSoft" Offset="0x2AFCD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_387" FileName="Sample387" Offset="0x2B6570" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_388" FileName="Sample388" Offset="0x2B82E0" SampleRate="16000" BaseNote="DF4"/>
+                <Sample Name="SAMPLE_0_389" FileName="Sample389" Offset="0x2BB710" SampleRate="44100" BaseNote="GF2"/>
+                <Sample Name="SAMPLE_0_390" FileName="Sample390" Offset="0x2C08A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_391" FileName="Sample391" Offset="0x2C51D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ClatteringSpear" FileName="ClatteringSpear" Offset="0x2C6910" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="GanonsElectricalCharge" FileName="GanonsElectricalCharge" Offset="0x2C7130" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DramaticSwoosh" FileName="DramaticSwoosh" Offset="0x2C7D70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="RustlingLargeWings" FileName="RustlingLargeWings" Offset="0x2C9200" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="CrackingEgg" FileName="CrackingEgg" Offset="0x2C9D30" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Gulp" FileName="Gulp" Offset="0x2CA730" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_398" FileName="Sample398" Offset="0x2CADA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_399" FileName="Sample399" Offset="0x2CC180" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_400" FileName="Sample400" Offset="0x2CD450" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_401" FileName="Sample401" Offset="0x2CF810" SampleRate="8000" BaseNote="G3"/>
+                <Sample Name="SAMPLE_0_402" FileName="Sample402" Offset="0x2D0C60" SampleRate="8000" BaseNote="G3"/>
+                <Sample Name="RustlingThicket" FileName="RustlingThicket" Offset="0x2D2490" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_404" FileName="Sample404" Offset="0x2D2E90" SampleRate="16000" BaseNote="B3"/>
+                <Sample Name="SAMPLE_0_405" FileName="Sample405" Offset="0x2D3880" SampleRate="16000" BaseNote="G3"/>
+                <Sample Name="SAMPLE_0_406" FileName="Sample406" Offset="0x2D4550" SampleRate="16000" BaseNote="B3"/>
+                <Sample Name="SAMPLE_0_407" FileName="Sample407" Offset="0x2D5E20" SampleRate="16000" BaseNote="G3"/>
+                <Sample Name="HeavyGunshot" FileName="HeavyGunshot" Offset="0x2D76A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DodongoInhale" FileName="DodongoInhale" Offset="0x2D8140" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ResoundingSmash" FileName="ResoundingSmash" Offset="0x2DA8A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="CloakingPoe" FileName="CloakingPoe" Offset="0x2DB390" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ChitteringKeese" FileName="ChitteringKeese" Offset="0x2DCE60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GuayHurt" FileName="GuayHurt" Offset="0x2DDA70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Scritch" FileName="Scritch" Offset="0x2DE370" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GruffVoice" FileName="GruffVoice" Offset="0x2DE5E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="LizalfosTriumphantCry" FileName="LizalfosTriumphantCry" Offset="0x2DE850" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="LizalfosFootPatter" FileName="LizalfosFootPatter" Offset="0x2DECB0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="LizalfosLaughter" FileName="LizalfosLaughter" Offset="0x2DEED0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DekuScrubCollapses" FileName="DekuScrubCollapses" Offset="0x2DF720" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="BrokenSmallPottery" FileName="BrokenSmallPottery" Offset="0x2DFE90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="MonstrousGrowl" FileName="MonstrousGrowl" Offset="0x2E0A60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="MoaningPhantomGanon" FileName="MoaningPhantomGanon" Offset="0x2E1910" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="PhantomGanonLaughing" FileName="PhantomGanonLaughing" Offset="0x2E42D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GerudoScimitarSlash" FileName="GerudoScimitarSlash" Offset="0x2E5E50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_425" FileName="Sample425" Offset="0x2E6700" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_426" FileName="Sample426" Offset="0x2E6B00" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_427" FileName="Sample427" Offset="0x2E74B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_428" FileName="Sample428" Offset="0x2E89D0" SampleRate="16000" BaseNote="DF4"/>
+                <Sample Name="SAMPLE_0_429" FileName="Sample429" Offset="0x2E9610" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_430" FileName="Sample430" Offset="0x2EC210" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_431" FileName="Sample431" Offset="0x2ED150" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_432" FileName="Sample432" Offset="0x2EEAA0" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="SAMPLE_0_433" FileName="Sample433" Offset="0x2F0600" SampleRate="16000" BaseNote="F3"/>
+                <Sample Name="SAMPLE_0_434" FileName="Sample434" Offset="0x2F0BF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_435" FileName="Sample435" Offset="0x2F1780" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_436" FileName="Sample436" Offset="0x2F3850" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_437" FileName="Sample437" Offset="0x2F5360" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DekuBabaChomp" FileName="DekuBabaChomp" Offset="0x2F63A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="DekuBabaLunge" FileName="DekuBabaLunge" Offset="0x2F68B0" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="Buzzing" FileName="Buzzing" Offset="0x2F7490" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="ElectricBurst" FileName="ElectricBurst" Offset="0x2F87D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="PhantomGanoninAgon" FileName="PhantomGanoninAgon" Offset="0x2FC270" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GoronandRedeadMoan" FileName="GoronandRedeadMoan" Offset="0x2FFF70" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GoronInquiring" FileName="GoronInquiring" Offset="0x3030E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="GoronRecognizes" FileName="GoronRecognizes" Offset="0x303670" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="GoronYawn" FileName="GoronYawn" Offset="0x304E90" SampleRate="16000" BaseNote="C0"/>
+                <Sample Name="SAMPLE_0_447" FileName="Sample447" Offset="0x306820" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="IronKnuckleAttacks" FileName="IronKnuckleAttacks" Offset="0x308540" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="IronKnuckleGruntUnused" FileName="IronKnuckleGruntUnused" Offset="0x309300" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="IronKnuckleCharges" FileName="IronKnuckleCharges" Offset="0x309DD0" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="IronKnuckleDies" FileName="IronKnuckleDies" Offset="0x30ACA0" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="IronKnuckleGrunts" FileName="IronKnuckleGrunts" Offset="0x30C320" SampleRate="16000" BaseNote="BF3"/>
+                <Sample Name="SAMPLE_0_453" FileName="Sample453" Offset="0x30CF40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_454" FileName="Sample454" Offset="0x30D5D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_455" FileName="Sample455" Offset="0x30E370" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_456" FileName="Sample456" Offset="0x30EEA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_457" FileName="Sample457" Offset="0x310730" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_458" FileName="Sample458" Offset="0x311590" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_459" FileName="Sample459" Offset="0x311B20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_460" FileName="Sample460" Offset="0x312590" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="EnemyStruck" FileName="EnemyStruck" Offset="0x3129E0" SampleRate="22050" BaseNote="BF3"/>
+                <Sample Name="RedeadScream" FileName="RedeadScream" Offset="0x3142D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_463" FileName="Sample463" Offset="0x317850" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_464" FileName="Sample464" Offset="0x31A100" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_465" FileName="Sample465" Offset="0x31C380" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_466" FileName="Sample466" Offset="0x31EE60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="PhantomGanonAttacks" FileName="PhantomGanonAttacks" Offset="0x31F980" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_468" FileName="Sample468" Offset="0x3205A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_469" FileName="Sample469" Offset="0x324A40" SampleRate="16000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_470" FileName="Sample470" Offset="0x324F90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_471" FileName="Sample471" Offset="0x325BE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_472" FileName="Sample472" Offset="0x327550" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_473" FileName="Sample473" Offset="0x3294B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_474" FileName="Sample474" Offset="0x32A520" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_475" FileName="Sample475" Offset="0x32B240" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_476" FileName="Sample476" Offset="0x32F340" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_477" FileName="Sample477" Offset="0x330580" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_478" FileName="Sample478" Offset="0x3318C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_479" FileName="Sample479" Offset="0x332C80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_480" FileName="Sample480" Offset="0x3381F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_481" FileName="Sample481" Offset="0x33B090" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_482" FileName="Sample482" Offset="0x33CB40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_483" FileName="Sample483" Offset="0x341990" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_484" FileName="Sample484" Offset="0x342B90" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="EchoingThunderburs" FileName="EchoingThunderburs" Offset="0x344EA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_486" FileName="Sample486" Offset="0x34A3D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_487" FileName="Sample487" Offset="0x34C430" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_488" FileName="Sample488" Offset="0x34E7C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_489" FileName="Sample489" Offset="0x352D10" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_490" FileName="Sample490" Offset="0x353AD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_491" FileName="Sample491" Offset="0x354560" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_492" FileName="Sample492" Offset="0x356A80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_493" FileName="Sample493" Offset="0x358620" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_494" FileName="Sample494" Offset="0x35B680" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_495" FileName="Sample495" Offset="0x35F640" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_496" FileName="Sample496" Offset="0x362420" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_497" FileName="Sample497" Offset="0x3630C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_498" FileName="Sample498" Offset="0x366D60" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_499" FileName="Sample499" Offset="0x367B00" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_500" FileName="Sample500" Offset="0x36A580" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_501" FileName="Sample501" Offset="0x36B000" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_502" FileName="Sample502" Offset="0x36BA80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_503" FileName="Sample503" Offset="0x36C410" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_504" FileName="Sample504" Offset="0x36CA80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_505" FileName="Sample505" Offset="0x36DDD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_506" FileName="Sample506" Offset="0x36F130" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_507" FileName="Sample507" Offset="0x370080" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_508" FileName="Sample508" Offset="0x370A30" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_509" FileName="Sample509" Offset="0x371C50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_510" FileName="Sample510" Offset="0x372FF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_511" FileName="Sample511" Offset="0x375050" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_512" FileName="Sample512" Offset="0x376D20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_513" FileName="Sample513" Offset="0x378920" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_514" FileName="Sample514" Offset="0x37AD80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_515" FileName="Sample515" Offset="0x37BCE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_516" FileName="Sample516" Offset="0x37E300" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_517" FileName="Sample517" Offset="0x37F0A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_518" FileName="Sample518" Offset="0x3804A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_519" FileName="Sample519" Offset="0x380A80" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_520" FileName="Sample520" Offset="0x381120" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_521" FileName="Sample521" Offset="0x381890" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_522" FileName="Sample522" Offset="0x382370" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_523" FileName="Sample523" Offset="0x382CD0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_524" FileName="Sample524" Offset="0x383220" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_525" FileName="Sample525" Offset="0x386120" SampleRate="32000" BaseNote="C5"/>
+                <Sample Name="SAMPLE_0_526" FileName="Sample526" Offset="0x386320" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_527" FileName="Sample527" Offset="0x386550" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_528" FileName="Sample528" Offset="0x386AE0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_529" FileName="Sample529" Offset="0x387050" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_530" FileName="Sample530" Offset="0x3874B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_531" FileName="Sample531" Offset="0x387CA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_532" FileName="Sample532" Offset="0x388DA0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_533" FileName="Sample533" Offset="0x38B6A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_534" FileName="Sample534" Offset="0x38C420" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_535" FileName="Sample535" Offset="0x38D300" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_536" FileName="Sample536" Offset="0x396B40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_537" FileName="Sample537" Offset="0x397530" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_538" FileName="Sample538" Offset="0x397DB0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_539" FileName="Sample539" Offset="0x3987C0" SampleRate="16000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_540" FileName="Sample540" Offset="0x399C00" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_541" FileName="Sample541" Offset="0x39AC40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_542" FileName="Sample542" Offset="0x39B3B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_543" FileName="Sample543" Offset="0x39B700" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_544" FileName="Sample544" Offset="0x39CE50" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_545" FileName="Sample545" Offset="0x39D590" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_546" FileName="Sample546" Offset="0x39D9F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_547" FileName="Sample547" Offset="0x39F4B0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_548" FileName="Sample548" Offset="0x3A0710" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_549" FileName="Sample549" Offset="0x3A0F30" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_550" FileName="Sample550" Offset="0x3A2400" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_551" FileName="Sample551" Offset="0x3A3090" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_552" FileName="Sample552" Offset="0x3A3500" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_553" FileName="Sample553" Offset="0x3A4340" SampleRate="32000" BaseNote="F3"/>
+                <Sample Name="SAMPLE_0_554" FileName="Sample554" Offset="0x3A4CF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_555" FileName="Sample555" Offset="0x3AB8C0" SampleRate="16000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_556" FileName="Sample556" Offset="0x3AC4B0" SampleRate="16000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_557" FileName="Sample557" Offset="0x3AC6D0" SampleRate="32000" BaseNote="C5"/>
+                <Sample Name="SAMPLE_0_558" FileName="Sample558" Offset="0x3AD6F0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_559" FileName="Sample559" Offset="0x3ADEA0" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_560" FileName="Sample560" Offset="0x3AF120" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_561" FileName="Sample561" Offset="0x3AFC30" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_562" FileName="Sample562" Offset="0x3B1970" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_563" FileName="Sample563" Offset="0x3B1DA0" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_564" FileName="Sample564" Offset="0x3B2D90" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_565" FileName="Sample565" Offset="0x3B3240" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_566" FileName="Sample566" Offset="0x3B4690" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_567" FileName="Sample567" Offset="0x3B4D10" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_568" FileName="Sample568" Offset="0x3B9640" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_569" FileName="Sample569" Offset="0x3BA830" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_570" FileName="Sample570" Offset="0x3BB3C0" SampleRate="16000" BaseNote="D4"/>
+                <Sample Name="SAMPLE_0_571" FileName="Sample571" Offset="0x3BCB80" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="SAMPLE_0_572" FileName="Sample572" Offset="0x3BE0A0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_573" FileName="Sample573" Offset="0x3BE6C0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_574" FileName="Sample574" Offset="0x3BF500" SampleRate="24000" BaseNote="GF3"/>
+                <Sample Name="VocalAahs" FileName="VocalAahs" Offset="0x3C0F20" SampleRate="22050" BaseNote="G3"/>
+                <Sample Name="ResonantVocalAahs" FileName="ResonantVocalAahs" Offset="0x3C83F0" SampleRate="22050" BaseNote="DF3"/>
+                <Sample Name="Harp2" FileName="Harp2" Offset="0x3D0630" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="Glockenspiel" FileName="Glockenspiel" Offset="0x3D42E0" SampleRate="32000" BaseNote="DF3"/>
+                <Sample Name="BassDrum1" FileName="BassDrum1" Offset="0x3D9670" SampleRate="22000" BaseNote="C4"/>
+                <Sample Name="SnareDrum1" FileName="SnareDrum1" Offset="0x3DE410" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SnareDrum2" FileName="SnareDrum2" Offset="0x3E0BA0" SampleRate="32000" BaseNote="D4"/>
+                <Sample Name="Cymbal" FileName="Cymbal" Offset="0x3E3330" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_583" FileName="Sample583" Offset="0x3EBAA0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_584" FileName="Sample584" Offset="0x3EF2C0" SampleRate="32000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_585" FileName="Sample585" Offset="0x3F0780" SampleRate="32000" BaseNote="AF3"/>
+                <Sample Name="SAMPLE_0_586" FileName="Sample586" Offset="0x3F21D0" SampleRate="32000" BaseNote="BF1"/>
+                <Sample Name="DrumSidestick" FileName="DrumSidestick" Offset="0x3F3980" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Trombone" FileName="Trombone" Offset="0x3F43C0" SampleRate="32000" BaseNote="F3"/>
+                <Sample Name="Harpsichord" FileName="Harpsichord" Offset="0x3F9010" SampleRate="22050" BaseNote="A5"/>
+                <Sample Name="Piano" FileName="Piano" Offset="0x4009E0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Viola" FileName="Viola" Offset="0x40A1A0" SampleRate="32000" BaseNote="EF3"/>
+                <Sample Name="SAMPLE_0_592" FileName="Sample592" Offset="0x40E220" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_593" FileName="Sample593" Offset="0x40EBE0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_594" FileName="Sample594" Offset="0x411340" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_595" FileName="Sample595" Offset="0x412620" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_596" FileName="Sample596" Offset="0x414C60" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="StringsLow" FileName="StringsLow" Offset="0x419100" SampleRate="32000" BaseNote="C6"/>
+                <Sample Name="Strings1" FileName="Strings1" Offset="0x41E120" SampleRate="32000" BaseNote="E4"/>
+                <Sample Name="Strings2" FileName="Strings2" Offset="0x4227D0" SampleRate="32000" BaseNote="E3"/>
+                <Sample Name="Oboe" FileName="Oboe" Offset="0x4264C0" SampleRate="32000" BaseNote="AF2"/>
+                <Sample Name="Horn" FileName="Horn" Offset="0x427770" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Trumpet" FileName="Trumpet" Offset="0x42F0D0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Tuba" FileName="Tuba" Offset="0x4328B0" SampleRate="32000" BaseNote="AF5"/>
+                <Sample Name="Fiddle" FileName="Fiddle" Offset="0x435820" SampleRate="32000" BaseNote="E3"/>
+                <Sample Name="AcousticGuitar1" FileName="AcousticGuitar1" Offset="0x437AD0" SampleRate="32000" BaseNote="E4"/>
+                <Sample Name="AcousticGuitar2" FileName="AcousticGuitar2" Offset="0x43BB30" SampleRate="32000" BaseNote="A2"/>
+                <Sample Name="Bassoon" FileName="Bassoon" Offset="0x43E560" SampleRate="32000" BaseNote="EF5"/>
+                <Sample Name="Harp3" FileName="Harp3" Offset="0x43FA60" SampleRate="32000" BaseNote="DF5"/>
+                <Sample Name="PizzicatoViolin" FileName="PizzicatoViolin" Offset="0x442D20" SampleRate="32000" BaseNote="D3"/>
+                <Sample Name="BassGuitar" FileName="BassGuitar" Offset="0x4461A0" SampleRate="24000" BaseNote="AF5"/>
+                <Blob Name="UNACCOUNTED_449930_44A130" Offset="0x449930" Size="0x800" />
+                <Sample Name="CrystalSynth" FileName="CrystalSynth" Offset="0x44A130" SampleRate="48000" BaseNote="D3"/>
+                <Sample Name="HauntingWind" FileName="HauntingWind" Offset="0x4520D0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_613" FileName="Sample613" Offset="0x45D9D0" SampleRate="44100" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_614" FileName="Sample614" Offset="0x4608E0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_615" FileName="Sample615" Offset="0x464970" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_616" FileName="Sample616" Offset="0x46AB90" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_617" FileName="Sample617" Offset="0x46E340" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_618" FileName="Sample618" Offset="0x4728F0" SampleRate="32000" BaseNote="AF4"/>
+                <Sample Name="SAMPLE_0_619" FileName="Sample619" Offset="0x473E10" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_620" FileName="Sample620" Offset="0x478C20" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_621" FileName="Sample621" Offset="0x480600" SampleRate="16000" BaseNote="E4"/>
+                <Sample Name="VocalOohs" FileName="VocalOohs" Offset="0x483620" SampleRate="22050" BaseNote="GF4"/>
+                <Sample Name="VocalEees" FileName="VocalEees" Offset="0x4889B0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_624" FileName="Sample624" Offset="0x48E460" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_625" FileName="Sample625" Offset="0x491090" SampleRate="32000" BaseNote="F2"/>
+                <Sample Name="SAMPLE_0_626" FileName="Sample626" Offset="0x493E70" SampleRate="32000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_627" FileName="Sample627" Offset="0x495240" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_628" FileName="Sample628" Offset="0x496610" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_629" FileName="Sample629" Offset="0x498B50" SampleRate="32000" BaseNote="C5"/>
+                <Sample Name="SAMPLE_0_630" FileName="Sample630" Offset="0x49A670" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_631" FileName="Sample631" Offset="0x49BF60" SampleRate="32000" BaseNote="C2"/>
+                <Sample Name="SAMPLE_0_632" FileName="Sample632" Offset="0x4A5780" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_633" FileName="Sample633" Offset="0x4AB940" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_634" FileName="Sample634" Offset="0x4AEF20" SampleRate="32000" BaseNote="F3"/>
+                <Sample Name="SAMPLE_0_635" FileName="Sample635" Offset="0x4B0BA0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_636" FileName="Sample636" Offset="0x4B0CD0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_637" FileName="Sample637" Offset="0x4B4940" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Sitar" FileName="Sitar" Offset="0x4B6610" SampleRate="32000" BaseNote="BF4"/>
+                <Sample Name="Koto" FileName="Koto" Offset="0x4B9CE0" SampleRate="32000" BaseNote="BF3"/>
+                <Sample Name="SomeMannerofDrum" FileName="SomeMannerofDrum" Offset="0x4BE590" SampleRate="32000" BaseNote="C6"/>
+                <Sample Name="AnotherTypeofDrum" FileName="AnotherTypeofDrum" Offset="0x4BF5B0" SampleRate="32000" BaseNote="G5"/>
+                <Sample Name="QuickDrum" FileName="QuickDrum" Offset="0x4C0DA0" SampleRate="24000" BaseNote="GF5"/>
+                <Sample Name="Gong" FileName="Gong" Offset="0x4C1CC0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Windchimes" FileName="Windchimes" Offset="0x4CC1F0" SampleRate="24000" BaseNote="C4"/>
+                <Sample Name="GoronDrum" FileName="GoronDrum" Offset="0x4D1CF0" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_646" FileName="Sample646" Offset="0x4D4230" SampleRate="32000" BaseNote="F2"/>
+                <Sample Name="HarpsichordHigh" FileName="HarpsichordHigh" Offset="0x4DEB10" SampleRate="32000" BaseNote="F4"/>
+                <Sample Name="SAMPLE_0_648" FileName="Sample648" Offset="0x4E60A0" SampleRate="32000" BaseNote="EF3"/>
+                <Sample Name="SAMPLE_0_649" FileName="Sample649" Offset="0x4E65F0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="Clarinet" FileName="Clarinet" Offset="0x4EC650" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="SAMPLE_0_651" FileName="Sample651" Offset="0x4ED240" SampleRate="32000" BaseNote="EF4"/>
+                <Sample Name="SAMPLE_0_652" FileName="Sample652" Offset="0x4EF640" SampleRate="24000" BaseNote="AF4"/>
+                <Sample Name="BanjoLow" FileName="BanjoLow" Offset="0x4F3440" SampleRate="32000" BaseNote="BF4"/>
+                <Sample Name="Banjo" FileName="Banjo" Offset="0x4F6280" SampleRate="32000" BaseNote="EF4"/>
+                <Sample Name="Drum1" FileName="Drum1" Offset="0x4F8B20" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Drum2" FileName="Drum2" Offset="0x4FADE0" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SlapBass2" FileName="SlapBass2" Offset="0x4FD5B0" SampleRate="22050" BaseNote="F6"/>
+                <Sample Name="Shaker" FileName="Shaker" Offset="0x500080" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="Cowbell" FileName="Cowbell" Offset="0x500FD0" SampleRate="32000" BaseNote="A1"/>
+                <Sample Name="SAMPLE_0_660" FileName="Sample660" Offset="0x501C90" SampleRate="32000" BaseNote="C5"/>
+                <Sample Name="SAMPLE_0_661" FileName="Sample661" Offset="0x50AA40" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="Marimba1" FileName="Marimba1" Offset="0x513220" SampleRate="32000" BaseNote="BF3"/>
+                <Sample Name="Marimba2" FileName="Marimba2" Offset="0x5158C0" SampleRate="32000" BaseNote="BF2"/>
+                <Sample Name="GuitarLow" FileName="GuitarLow" Offset="0x517A50" SampleRate="24000" BaseNote="AF5"/>
+                <Sample Name="Guitar" FileName="Guitar" Offset="0x51A230" SampleRate="24000" BaseNote="F4"/>
+                <Sample Name="GuitarHigh" FileName="GuitarHigh" Offset="0x51C3F0" SampleRate="24000" BaseNote="BF2"/>
+                <Sample Name="ChurchBell" FileName="ChurchBell" Offset="0x51E2C0" SampleRate="22050" BaseNote="C4"/>
+                <Sample Name="SteelDrum" FileName="SteelDrum" Offset="0x522F10" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="SteelDrumHigh" FileName="SteelDrumHigh" Offset="0x527B70" SampleRate="32000" BaseNote="BF2"/>
+                <Sample Name="VocalOhs" FileName="VocalOhs" Offset="0x52A260" SampleRate="24000" BaseNote="C4"/>
+                <Blob Name="UNACCOUNTED_530670_538CC0" Offset="0x530670" Size="0x8650" />
+            </Samples>
+            <Samples Bank="2">
+                <Sample Name="GoronDrum" FileName="GoronDrum" Offset="0x000000" SampleRate="16000" BaseNote="C4"/>
+                <Sample Name="BassSlap" FileName="BassSlap" Offset="0x002540" SampleRate="32000" BaseNote="C4"/>
+                <Sample Name="GoronOoh" FileName="GoronOoh" Offset="0x004800" SampleRate="22050" BaseNote="BF4"/>
+                <Sample Name="GoronOohHigh" FileName="GoronOohHigh" Offset="0x0072D0" SampleRate="16000" BaseNote="DF6"/>
+                <Sample Name="TomDrum" FileName="TomDrum" Offset="0x007B70" SampleRate="22050" BaseNote="B5"/>
+                <Sample Name="ResonantBassMarimba" FileName="ResonantBassMarimba" Offset="0x008630" SampleRate="22050" BaseNote="A3"/>
+            </Samples>
+            <Soundfont Name="Soundfont_0" Index="0"/>
+            <Soundfont Name="Soundfont_1" Index="1"/>
+            <Soundfont Name="Soundfont_2" Index="2"/>
+            <Soundfont Name="Soundfont_3" Index="3"/>
+            <Soundfont Name="Soundfont_4" Index="4"/>
+            <Soundfont Name="Soundfont_5" Index="5"/>
+            <Soundfont Name="Soundfont_6" Index="6"/>
+            <Soundfont Name="Soundfont_7" Index="7"/>
+            <Soundfont Name="Soundfont_8" Index="8"/>
+            <Soundfont Name="Soundfont_9" Index="9"/>
+            <Soundfont Name="Soundfont_10" Index="10"/>
+            <Soundfont Name="Soundfont_11" Index="11"/>
+            <Soundfont Name="Soundfont_12" Index="12"/>
+            <Soundfont Name="Soundfont_13" Index="13"/>
+            <Soundfont Name="Soundfont_14" Index="14"/>
+            <Soundfont Name="Soundfont_15" Index="15"/>
+            <Soundfont Name="Soundfont_16" Index="16"/>
+            <Soundfont Name="Soundfont_17" Index="17"/>
+            <Soundfont Name="Soundfont_18" Index="18"/>
+            <Soundfont Name="Soundfont_19" Index="19"/>
+            <Soundfont Name="Soundfont_20" Index="20"/>
+            <Soundfont Name="Soundfont_21" Index="21"/>
+            <Soundfont Name="Soundfont_22" Index="22"/>
+            <Soundfont Name="Soundfont_23" Index="23"/>
+            <Soundfont Name="Soundfont_24" Index="24"/>
+            <Soundfont Name="Soundfont_25" Index="25"/>
+            <Soundfont Name="Soundfont_26" Index="26"/>
+            <Soundfont Name="Soundfont_27" Index="27"/>
+            <Soundfont Name="Soundfont_28" Index="28"/>
+            <Soundfont Name="Soundfont_29" Index="29"/>
+            <Soundfont Name="Soundfont_30" Index="30"/>
+            <Soundfont Name="Soundfont_31" Index="31"/>
+            <Soundfont Name="Soundfont_32" Index="32"/>
+            <Soundfont Name="Soundfont_33" Index="33"/>
+            <Soundfont Name="Soundfont_34" Index="34"/>
+            <Soundfont Name="Soundfont_35" Index="35"/>
+            <Soundfont Name="Soundfont_36" Index="36"/>
+            <Soundfont Name="Soundfont_37" Index="37"/>
+            <Soundfont Name="Soundfont_38" Index="38"/>
+            <Soundfont Name="Soundfont_39" Index="39"/>
+            <Soundfont Name="Soundfont_40" Index="40"/>
+        </Audio>
+    </File>
+</Root>

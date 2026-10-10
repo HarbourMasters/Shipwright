@@ -1,0 +1,6 @@
+<Root>
+    <File Name="ovl_En_Bom_Bowl_Man" BaseAddress="0x809C4790" RangeStart="0x1A50" RangeEnd="0x1A70">
+        <DList Name="gEnBomBowlMan_D_809C61E0" Offset="0x1A50"/>
+        <DList Name="gEnBomBowlMan_D_809C61F0" Offset="0x1A60"/>
+    </File>
+</Root>

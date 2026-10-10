@@ -1,0 +1,82 @@
+﻿<Root>
+    <!-- Object for Bomb Shop Lady -->
+    <File Name="object_bba" Segment="6">
+        <!-- DLists -->
+        <DList Name="gBombShopLadyUpperLegsDL" Offset="0x2A80" />
+        <DList Name="gBombShopLadyRightHandDL" Offset="0x2B70" />
+        <DList Name="gBombShopLadyRightForearmDL" Offset="0x2D88" />
+        <DList Name="gBombShopLadyRightUpperArmDL" Offset="0x2E90" />
+        <DList Name="gBombShopLadyLeftHandDL" Offset="0x2FA0" />
+        <DList Name="gBombShopLadyLeftForearmDL" Offset="0x31B8" />
+        <DList Name="gBombShopLadyLeftUpperArmDL" Offset="0x32C0" />
+        <DList Name="gBombShopLadyTorsoDL" Offset="0x33D0" />
+        <DList Name="gBombShopLadyBagDL" Offset="0x3618" />
+        <DList Name="gBombShopLadyNeckDL" Offset="0x3760" />
+        <DList Name="gBombShopLadyHeadDL" Offset="0x3968" />
+        <DList Name="gBombShopLadyMiddleLegsDL" Offset="0x3F68" />
+        <DList Name="gBombShopLadyLowerLegsDL" Offset="0x4078" />
+        <DList Name="gBombShopLadyFeetDL" Offset="0x4180" />
+
+        <!-- Animations -->
+        <Animation Name="gBombShopLadySwayAnim" Offset="0x4910" /> <!-- Original name is "sb_ending" -->
+        <Animation Name="gBombShopLadyKnockedOverAnim" Offset="0x5154" /> <!-- Original name is "sb_taore" ("to fall (over, down); to collapse; to take a fall") -->
+        <Animation Name="gBombShopLadyLyingDownAnim" Offset="0x58B8" /> <!-- Original name is "sb_taorewait" -->
+        <Animation Name="gBombShopLadyIdleHoldingBagAnim" Offset="0x5DC4" /> <!-- Original name is "sb_wait01" -->
+
+        <!-- Skeleton -->
+        <Limb Name="gBombShopLadyUpperLegsLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_UPPER_LEGS" Offset="0x5DE0" />
+        <Limb Name="gBombShopLadyMiddleLegsLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_MIDDLE_LEGS" Offset="0x5DEC" />
+        <Limb Name="gBombShopLadyLowerLegsLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_LOWER_LEGS" Offset="0x5DF8" />
+        <Limb Name="gBombShopLadyFeetLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_FEET" Offset="0x5E04" />
+        <Limb Name="gBombShopLadyUpperRootLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_UPPER_ROOT" Offset="0x5E10" />
+        <Limb Name="gBombShopLadyNeckLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_NECK" Offset="0x5E1C" />
+        <Limb Name="gBombShopLadyHeadLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_HEAD" Offset="0x5E28" />
+        <Limb Name="gBombShopLadyBagLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_BAG" Offset="0x5E34" />
+        <Limb Name="gBombShopLadyTorsoLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_TORSO" Offset="0x5E40" />
+        <Limb Name="gBombShopLadyLeftUpperArmLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_LEFT_UPPER_ARM" Offset="0x5E4C" />
+        <Limb Name="gBombShopLadyLeftLowerArmRootLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_LEFT_LOWER_ARM_ROOT" Offset="0x5E58" />
+        <Limb Name="gBombShopLadyLeftForearmLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_LEFT_FOREARM" Offset="0x5E64" />
+        <Limb Name="gBombShopLadyLeftHandLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_LEFT_HAND" Offset="0x5E70" />
+        <Limb Name="gBombShopLadyRightUpperArmLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_RIGHT_UPPER_ARM" Offset="0x5E7C" />
+        <Limb Name="gBombShopLadyRightLowerArmRootLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_RIGHT_LOWER_ARM_ROOT" Offset="0x5E88" />
+        <Limb Name="gBombShopLadyRightForearmLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_RIGHT_FOREARM" Offset="0x5E94" />
+        <Limb Name="gBombShopLadyRightHandLimb" Type="Standard" EnumName="BOMB_SHOP_LADY_LIMB_RIGHT_HAND" Offset="0x5EA0" />
+        <Skeleton Name="gBombShopLadySkel" Type="Flex" LimbType="Standard" LimbNone="BOMB_SHOP_LADY_LIMB_NONE" LimbMax="BOMB_SHOP_LADY_LIMB_MAX" EnumName="BombShopLadyLimb" Offset="0x5EF0" />
+
+         <!-- Animations -->
+        <Animation Name="gBombShopLadyIdleAnim" Offset="0x6550" /> <!-- Original name is "sb_wait02" -->
+        <Animation Name="gBombShopLadyWalkingHoldingBagAnim" Offset="0x6B10" /> <!-- Original name is "sb_walk01" -->
+
+        <!-- TLUT -->
+        <Texture Name="gBombShopLadyTLUT" OutName="bomb_shop_lady_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6B20" />
+
+        <!-- Unused Textures -->
+        <!-- These are just exact copies of the used textures -->
+        <Texture Name="gBombShopLadyHairSkin2Tex" OutName="bomb_shop_lady_hair_skin_2" Format="ci8" Width="32" Height="32" Offset="0x6D20" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyEar2Tex" OutName="bomb_shop_lady_ear_2" Format="ci8" Width="8" Height="8" Offset="0x7120" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyNostril2Tex" OutName="bomb_shop_lady_nostril_2" Format="ci8" Width="8" Height="8" Offset="0x7160" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyEye2Tex" OutName="bomb_shop_lady_eye_2" Format="rgba16" Width="32" Height="32" Offset="0x71A0"/>
+        <Texture Name="gBombShopLadyWrinkles2Tex" OutName="bomb_shop_lady_wrinkles_2" Format="ci8" Width="32" Height="32" Offset="0x79A0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyCheek2Tex" OutName="bomb_shop_lady_cheek_2" Format="ci8" Width="16" Height="16" Offset="0x7DA0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadySkin2Tex" OutName="bomb_shop_lady_skin_2" Format="ci8" Width="8" Height="8" Offset="0x7EA0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyForehead2Tex" OutName="bomb_shop_lady_forehead_2" Format="ci8" Width="32" Height="32" Offset="0x7EE0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyFingers2Tex" OutName="bomb_shop_lady_fingers_2" Format="ci8" Width="16" Height="16" Offset="0x82E0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyShirt2Tex" OutName="bomb_shop_lady_shirt_2" Format="ci8" Width="16" Height="16" Offset="0x83E0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadyBag2Tex" OutName="bomb_shop_lady_bag_2" Format="ci8" Width="16" Height="16" Offset="0x84E0" TlutOffset="0x6B20" />
+        <Texture Name="gBombShopLadySkirt2Tex" OutName="bomb_shop_lady_skirt_2" Format="ci8" Width="16" Height="16" Offset="0x85E0" TlutOffset="0x6B20" />
+
+        <!-- Textures -->
+        <Texture Name="gBombShopLadySkinTex" OutName="bomb_shop_lady_skin" Format="ci8" Width="8" Height="8" Offset="0x86E0" />
+        <Texture Name="gBombShopLadyWrinklesTex" OutName="bomb_shop_lady_wrinkles" Format="ci8" Width="32" Height="32" Offset="0x8720" />
+        <Texture Name="gBombShopLadyHairSkinTex" OutName="bomb_shop_lady_hair_skin" Format="ci8" Width="32" Height="32" Offset="0x8B20" />
+        <Texture Name="gBombShopLadyNostrilTex" OutName="bomb_shop_lady_nostril" Format="ci8" Width="8" Height="8" Offset="0x8F20" />
+        <Texture Name="gBombShopLadyEarTex" OutName="bomb_shop_lady_ear" Format="ci8" Width="8" Height="8" Offset="0x8F60" />
+        <Texture Name="gBombShopLadyFingersTex" OutName="bomb_shop_lady_fingers" Format="ci8" Width="16" Height="16" Offset="0x8FA0" />
+        <Texture Name="gBombShopLadyBagTex" OutName="bomb_shop_lady_bag" Format="ci8" Width="16" Height="16" Offset="0x90A0" />
+        <Texture Name="gBombShopLadySkirtTex" OutName="bomb_shop_lady_skirt" Format="ci8" Width="16" Height="16" Offset="0x91A0" />
+        <Texture Name="gBombShopLadyEyeTex" OutName="bomb_shop_lady_eye" Format="rgba16" Width="32" Height="32" Offset="0x92A0" />
+        <Texture Name="gBombShopLadyCheekTex" OutName="bomb_shop_lady_cheek" Format="ci8" Width="16" Height="16" Offset="0x9AA0" />
+        <Texture Name="gBombShopLadyForeheadTex" OutName="bomb_shop_lady_forehead" Format="ci8" Width="32" Height="32" Offset="0x9BA0" />
+        <Texture Name="gBombShopLadyShirtTex" OutName="bomb_shop_lady_shirt" Format="ci8" Width="16" Height="16" Offset="0x9FA0" />
+    </File>
+</Root>

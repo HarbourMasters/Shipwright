@@ -1,0 +1,12 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_05.xml" OutPath="misc/scene_texture_05/"/>
+    <File Name="Z2_30GYOSON" Segment="2" Game="MM">
+        <Scene Name="Z2_30GYOSON" Offset="0x0"/>
+    </File>
+    <File Name="Z2_30GYOSON_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_30GYOSON_room_00" Offset="0x0"/>
+        <DList Name="Z2_30GYOSON_room_00DL_01C1B0" Offset="0x1C1B0"/>
+        <DList Name="Z2_30GYOSON_room_00DL_01C058" Offset="0x1C058"/>
+        <DList Name="Z2_30GYOSON_room_00DL_01D2B0" Offset="0x1D2B0"/>
+    </File>
+</Root>

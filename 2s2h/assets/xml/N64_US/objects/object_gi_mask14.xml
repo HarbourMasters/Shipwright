@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Great Fairy Mask -->
+    <File Name="object_gi_mask14" Segment="6">
+
+        <!-- Great Fairy Mask Display Lists -->
+        <DList Name="gGiGreatFairyMaskLeavesDL" Offset="0xED0" />
+        <DList Name="gGiGreatFairyMaskFaceDL" Offset="0x1000" />
+
+        <!-- Great Fairy Mask Textures -->
+        <Texture Name="gGiGreatFairyMaskHairTex" OutName="gi_great_fairy_mask_hair" Format="rgba16" Width="16" Height="16" Offset="0x1300" />
+        <Texture Name="gGiGreatFairyMaskLeafTex" OutName="gi_great_fairy_mask_leaf" Format="ia8" Width="32" Height="16" Offset="0x1500" />
+        <Texture Name="gGiGreatFairyMaskEyeTex" OutName="gi_great_fairy_mask_eye" Format="rgba16" Width="24" Height="24" Offset="0x1700" />
+        <Texture Name="gGiGreatFairyMaskMouthTex" OutName="gi_great_fairy_mask_mouth" Format="rgba16" Width="32" Height="16" Offset="0x1B80" />
+    </File>
+</Root>

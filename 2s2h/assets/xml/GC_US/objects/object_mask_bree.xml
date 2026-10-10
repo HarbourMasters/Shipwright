@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_mask_bree" Segment="10">
+        <DList Name="object_mask_bree_DL_0003C0" Offset="0x3C0" />
+        <Texture Name="object_mask_bree_TLUT_000658" OutName="tlut_000658" Format="rgba16" Width="16" Height="16" Offset="0x658" />
+        <Texture Name="object_mask_bree_Tex_000858" OutName="tex_000858" Format="ci8" Width="32" Height="32" Offset="0x858" />
+        <Texture Name="object_mask_bree_Tex_000C58" OutName="tex_000C58" Format="ci8" Width="16" Height="16" Offset="0xC58" />
+        <Texture Name="object_mask_bree_Tex_000D58" OutName="tex_000D58" Format="ci8" Width="8" Height="8" Offset="0xD58" />
+        <Texture Name="object_mask_bree_Tex_000D98" OutName="tex_000D98" Format="rgba16" Width="64" Height="32" Offset="0xD98" />
+    </File>
+</Root>

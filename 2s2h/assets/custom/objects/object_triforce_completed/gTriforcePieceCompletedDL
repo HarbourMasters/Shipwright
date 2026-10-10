@@ -1,0 +1,13 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_triforce_completed/mat_gTriforcePieceCompletedDL_f3dlite_triforce_edges"/>
+	<CallDisplayList Path="objects/object_triforce_completed/gTriforcePieceCompletedDL_tri_0"/>
+	<CallDisplayList Path="objects/object_triforce_completed/mat_gTriforcePieceCompletedDL_f3dlite_triforce_surface"/>
+	<CallDisplayList Path="objects/object_triforce_completed/gTriforcePieceCompletedDL_tri_1"/>
+	<PipeSync/>
+	<SetGeometryMode G_LIGHTING="1" />
+	<ClearGeometryMode G_TEXTURE_GEN="1" />
+	<SetCombineLERP A0="G_CCMUX_0" B0="G_CCMUX_0" C0="G_CCMUX_0" D0="G_CCMUX_SHADE" Aa0="G_ACMUX_0" Ab0="G_ACMUX_0" Ac0="G_ACMUX_0" Ad0="G_ACMUX_ENVIRONMENT" A1="G_CCMUX_0" B1="G_CCMUX_0" C1="G_CCMUX_0" D1="G_CCMUX_SHADE" Aa1="G_ACMUX_0" Ab1="G_ACMUX_0" Ac1="G_ACMUX_0" Ad1="G_ACMUX_ENVIRONMENT"/>
+	<Texture S="65535" T="65535" Level="0" Tile="0" On="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

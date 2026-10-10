@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Kokiri Sword -->
+    <File Name="object_gi_sword_1" Segment="6">
+
+        <!-- Kokiri Sword Display Lists -->
+        <DList Name="gGiKokiriSwordGuardDL" Offset="0x850" />
+        <DList Name="gGiKokiriSwordBladeHiltDL" Offset="0x998" />
+
+        <!-- Kokiri Sword Textures -->
+        <Texture Name="gGiKokiriSwordGuardTex" OutName="gi_kokiri_sword_guard" Format="i8" Width="8" Height="8" Offset="0xD58" />
+        <Texture Name="gGiKokiriSwordHiltTex" OutName="gi_kokiri_sword_hilt" Format="i8" Width="24" Height="24" Offset="0xD98" />
+        <Texture Name="gGiKokiriSwordBladeTex" OutName="gi_kokiri_sword_blade" Format="i8" Width="24" Height="24" Offset="0xFD8" />
+    </File>
+</Root>

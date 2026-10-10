@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for Lottery Shop / Curiosity Shop / Mayor's House Door -->
+    <File Name="object_wdor01" Segment="6">
+        <DList Name="gLotteryCuriosityShopMayorHouseDoorEmptyDL" Offset="0x540" /> <!-- Original name is "w2_door1_modelT" -->
+        <DList Name="gLotteryCuriosityShopMayorHouseDoorDL" Offset="0x548" /> <!-- Original name is "w2_door1_model" -->
+        <Texture Name="gLotteryCuriosityShopMayorHouseDoorTex" OutName="lottery_curiosity_shop_mayor_house_door" Format="rgba16" Width="32" Height="64" Offset="0x6B0" />
+    </File>
+</Root>

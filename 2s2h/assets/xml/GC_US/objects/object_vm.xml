@@ -1,0 +1,41 @@
+﻿<Root>
+    <File Name="object_vm" Segment="6">
+        <!-- Beamos Animations -->
+        <Animation Name="gBeamosAnim" Offset="0x68" /> <!-- Original name is "vm_akesime" -->
+        
+        <!-- Beamos Limb DisplayLists -->
+        <DList Name="gBeamosBodyDL" Offset="0x1E00" />
+        <DList Name="gBeamosTopEyelidDL" Offset="0x22B0" />
+        <DList Name="gBeamosBottomEyelidDL" Offset="0x2460" />
+        <DList Name="gBeamosEyeDL" Offset="0x2610" />
+
+        <!-- Beamos Laser DisplayList -->
+        <DList Name="gBeamosLaserDL" Offset="0x2728" />
+
+        <!-- Beamos DisplayList Textures -->
+        <Texture Name="gBeamosBodyGradientTex" OutName="beamos_body_gradient" Format="rgba16" Width="8" Height="8" Offset="0x27C0" />
+        <Texture Name="gBeamosGrayMetalTex" OutName="beamos_gray_metal" Format="i4" Width="16" Height="32" Offset="0x2840" />
+        <Texture Name="gBeamosBoltAndMetalTex" OutName="beamos_bolt_and_metal" Format="rgba16" Width="16" Height="32" Offset="0x2940" />
+        <Texture Name="gBeamosInnerEyeLidTex" OutName="beamos_inner_eye_lid" Format="rgba16" Width="16" Height="8" Offset="0x2D40" />
+        <Texture Name="gBeamosEyeOutlineTex" OutName="beamos_eye_outline" Format="rgba16" Width="16" Height="16" Offset="0x2E40" />
+        <Texture Name="gBeamosEyeTex" OutName="beamos_eye" Format="rgba16" Width="32" Height="16" Offset="0x3040" />
+        <Texture Name="gBeamosBodyTex" OutName="beamos_body" Format="rgba16" Width="16" Height="16" Offset="0x3440" />
+        <Texture Name="gBeamosLaserTex" OutName="beamos_laser" Format="rgba16" Width="8" Height="8" Offset="0x3640" />
+        <Texture Name="gBeamosTeethTex" OutName="beamos_teeth" Format="rgba16" Width="32" Height="32" Offset="0x36C0" />
+
+        <!-- Beamos Skeleton Limbs -->
+        <Limb Name="gBeamosRootLimb" Type="Standard" EnumName="BEAMOS_LIMB_ROOT" Offset="0x3EC0" />
+        <Limb Name="gBeamosHeadRootLimb" Type="Standard" EnumName="BEAMOS_LIMB_HEAD_ROOT" Offset="0x3ECC" />
+        <Limb Name="gBeamosTopEyelidRootLimb" Type="Standard" EnumName="BEAMOS_LIMB_TOP_EYELID_ROOT" Offset="0x3ED8" />
+        <Limb Name="gBeamosTopEyelidWrapperLimb" Type="Standard" EnumName="BEAMOS_LIMB_TOP_EYELID_WRAPPER" Offset="0x3EE4" />
+        <Limb Name="gBeamosTopEyelidLimb" Type="Standard" EnumName="BEAMOS_LIMB_TOP_EYELID" Offset="0x3EF0" />
+        <Limb Name="gBeamosBottomEyelidRootLimb" Type="Standard" EnumName="BEAMOS_LIMB_BOTTOM_EYELID_ROOT" Offset="0x3EFC" />
+        <Limb Name="gBeamosBottomEyelidWrapperLimb" Type="Standard" EnumName="BEAMOS_LIMB_BOTTOM_EYELID_WRAPPER" Offset="0x3F08" />
+        <Limb Name="gBeamosBottomEyelidLimb" Type="Standard" EnumName="BEAMOS_LIMB_BOTTEM_EYELID" Offset="0x3F14" />
+        <Limb Name="gBeamosEyeLimb" Type="Standard" EnumName="BEAMOS_LIMB_EYE" Offset="0x3F20" />
+        <Limb Name="gBeamosBodyLimb" Type="Standard" EnumName="BEAMOS_LIMB_BODY" Offset="0x3F2C" />
+
+        <!-- Beamos Skeleton -->
+        <Skeleton Name="gBeamosSkel" Type="Normal" LimbType="Standard" LimbNone="BEAMOS_LIMB_NONE" LimbMax="BEAMOS_LIMB_MAX" EnumName="BeamosLimb" Offset="0x3F60" />
+    </File>
+</Root>

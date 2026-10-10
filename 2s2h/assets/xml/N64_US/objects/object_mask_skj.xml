@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_mask_skj" Segment="10">
+        <DList Name="object_mask_skj_DL_0009F0" Offset="0x9F0" />
+        <Texture Name="object_mask_skj_TLUT_000FA0" OutName="tlut_000FA0" Format="rgba16" Width="16" Height="16" Offset="0xFA0" />
+        <Texture Name="object_mask_skj_Tex_0011A0" OutName="tex_0011A0" Format="ci8" Width="16" Height="16" Offset="0x11A0" />
+        <Texture Name="object_mask_skj_Tex_0012A0" OutName="tex_0012A0" Format="ci8" Width="8" Height="16" Offset="0x12A0" />
+        <Texture Name="object_mask_skj_Tex_001320" OutName="tex_001320" Format="ci8" Width="8" Height="8" Offset="0x1320" />
+        <Texture Name="object_mask_skj_Tex_001360" OutName="tex_001360" Format="ci8" Width="16" Height="16" Offset="0x1360" />
+        <Texture Name="object_mask_skj_Tex_001460" OutName="tex_001460" Format="rgba16" Width="8" Height="16" Offset="0x1460" />
+        <Texture Name="object_mask_skj_Tex_001560" OutName="tex_001560" Format="rgba16" Width="16" Height="8" Offset="0x1560" />
+        <Texture Name="object_mask_skj_Tex_001660" OutName="tex_001660" Format="rgba16" Width="8" Height="8" Offset="0x1660" />
+    </File>
+</Root>

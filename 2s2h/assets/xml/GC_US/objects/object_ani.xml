@@ -1,0 +1,67 @@
+﻿<Root>
+    <File Name="object_ani" Segment="6">
+        <Animation Name="gAniTreeHangLosingBalanceAnim" Offset="0x7FC" /> <!-- Original name is "Ani_guratsuku" ("to be unsteady; to reel; to shake​") -->
+        <Animation Name="gAniFallOverHoldingFootAnim" Offset="0xC14" /> <!-- Original name is "Ani_itameru" ("to hurt; to injure; to cause pain") -->
+        <Animation Name="gAniHoldingFootWrithingInPainAnim" Offset="0x11CC" /> <!-- Original name is "Ani_itameru2" -->
+        <Animation Name="gAniUnusedSidesteppingAnim" Offset="0x1584" /> <!-- Original name is "Ani_kaniark" ("kami" = "crab", "ark" = probably short for "aruki", which is "to walk") -->
+        <Animation Name="gAniTreeHangingAnim" Offset="0x1D48" /> <!-- Original name is "Ani_ki01" ("tree") -->
+        <Animation Name="gAniTreeHangingReachAnim" Offset="0x27A0" /> <!-- Original name is "Ani_ki02" -->
+        <Limb Name="gAniPelvisLimb" Type="Standard" EnumName="ANI_LIMB_PELVIS" Offset="0x27B0" />
+        <Limb Name="gAniLeftThighLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_THIGH" Offset="0x27BC" />
+        <Limb Name="gAniLeftShinLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_SHIN" Offset="0x27C8" />
+        <Limb Name="gAniLeftFootLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_FOOT" Offset="0x27D4" />
+        <Limb Name="gAniRightThighLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_THIGH" Offset="0x27E0" />
+        <Limb Name="gAniRightShinLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_SHIN" Offset="0x27EC" />
+        <Limb Name="gAniRightFootLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_FOOT" Offset="0x27F8" />
+        <Limb Name="gAniTorsoLimb" Type="Standard" EnumName="ANI_LIMB_TORSO" Offset="0x2804" />
+        <Limb Name="gAniLeftUpperArmLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_UPPER_ARM" Offset="0x2810" />
+        <Limb Name="gAniLeftForearmLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_FOREARM" Offset="0x281C" />
+        <Limb Name="gAniLeftHandLimb" Type="Standard" EnumName="ANI_LIMB_LEFT_HAND" Offset="0x2828" />
+        <Limb Name="gAniRightUpperArmLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_UPPER_ARM" Offset="0x2834" />
+        <Limb Name="gAniRightForearmLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_FOREARM" Offset="0x2840" />
+        <Limb Name="gAniRightHandLimb" Type="Standard" EnumName="ANI_LIMB_RIGHT_HAND" Offset="0x284C" />
+        <Limb Name="gAniHeadLimb" Type="Standard" EnumName="ANI_LIMB_HEAD" Offset="0x2858" />
+        <Skeleton Name="gAniSkel" Type="Flex" LimbType="Standard" LimbNone="ANI_LIMB_NONE" LimbMax="ANI_LIMB_MAX" EnumName="AniLimb" Offset="0x28A0" />
+        <DList Name="gAniRightHandDL" Offset="0x4860" />
+        <DList Name="gAniRightForearmDL" Offset="0x4A50" />
+        <DList Name="gAniRightUpperArmDL" Offset="0x4B38" />
+        <DList Name="gAniLeftHandDL" Offset="0x4C30" />
+        <DList Name="gAniLeftForearmDL" Offset="0x4E20" />
+        <DList Name="gAniLeftUpperArmDL" Offset="0x4F08" />
+        <DList Name="gAniTorsoDL" Offset="0x5000" />
+        <DList Name="gAniRightFootDL" Offset="0x5270" />
+        <DList Name="gAniRightShinDL" Offset="0x5420" />
+        <DList Name="gAniRightThighDL" Offset="0x5668" />
+        <DList Name="gAniLeftFootDL" Offset="0x5778" />
+        <DList Name="gAniLeftShinDL" Offset="0x5928" />
+        <DList Name="gAniLeftThighDL" Offset="0x5C50" />
+        <DList Name="gAniPelvisDL" Offset="0x5D60" />
+        <Texture Name="gAniGeneralTLUT" OutName="ani_general_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5E58" />
+        <Texture Name="gAniUnkGradientTex" OutName="ani_unk_gradient1" Format="ci8" Width="8" Height="8" Offset="0x6058" />
+        <Texture Name="gAniFingersTex" OutName="ani_fingers" Format="ci8" Width="8" Height="8" Offset="0x6098" />
+        <Texture Name="gAniShirtEdgeTex" OutName="ani_shirt_edge" Format="i8" Width="8" Height="8" Offset="0x60D8" />
+        <Texture Name="gAniSandleBuckleTex" OutName="ani_sandle_buckle" Format="ci8" Width="16" Height="16" Offset="0x6118" />
+        <Texture Name="gAniPantsTex" OutName="ani_pants" Format="ci8" Width="16" Height="16" Offset="0x6218" />
+        <Texture Name="gAniEyeTLUT" OutName="ani_eye_tlut" Format="rgba16" Width="16" Height="12" Offset="0x6318" />
+        <Texture Name="gAniOpenEyeTex" OutName="ani_open_eye" Format="ci8" Width="32" Height="32" Offset="0x6498" TlutOffset="0x6318" />
+        <Texture Name="gAniMouthTex" OutName="ani_mouth" Format="ci8" Width="16" Height="16" Offset="0x6898" />
+        <Texture Name="gAniUnkGradient2Tex" OutName="ani_unk_gradient2" Format="ci8" Width="8" Height="8" Offset="0x6998" />
+        <Texture Name="gAniEarTex" OutName="ani_ear" Format="ci8" Width="8" Height="8" Offset="0x69D8" />
+        <Texture Name="gAniHairTex" OutName="ani_hair" Format="ci8" Width="16" Height="16" Offset="0x6A18" />
+        <Texture Name="gAniClosingEyeTex" OutName="ani_closing_eye" Format="ci8" Width="32" Height="32" Offset="0x6B18" TlutOffset="0x6318"/>
+        <Texture Name="gAniClosedEyeTex" OutName="ani_closed_eye" Format="ci8" Width="32" Height="32" Offset="0x6F18" TlutOffset="0x6318"/>
+        <DList Name="gAniHeadDL" Offset="0x7B58" />
+
+        <!-- Only the first half of the animation is used by EnAni when knocked out of tree -->
+        <Animation Name="gAniLandingThenStandingUpAnim" Offset="0x9220" /> <!-- Original name is "Ani_oriru" ("to go down; to come down​") -->
+        <!-- used by EnOssan -->
+        <Animation Name="gAniHoldUpHandAnim" Offset="0x9734" /> <!-- Original name is "Ani_talk" -->
+        <Animation Name="gAniStandingNormalAnim" Offset="0x9D34" /> <!-- Original name is "Ani_wait" -->
+        <Animation Name="gAniHandBehindHeadApologyAnim" Offset="0xA460" /> <!-- Original name is "Ani_zorawait" -->
+        <!-- left over from OOT firetemple deathmountain cutscene, unused in MM -->
+        <Animation Name="gAniKnockBackAnim" Offset="0xA978" /> <!-- Original name is "ani_bikkuri" ("to be amazed; to be frightened") -->
+        <Animation Name="gAniKnockBackGettingUpAnim" Offset="0xB2B0" /> <!-- Original name is "ani_nanyarona" -->
+        <!-- left over from OOT sitting on roof, unused in MM -->
+        <Animation Name="gAniSittingBackAnim" Offset="0xB8AC" /> <!-- Original name is "ani_suwari_wait" ("sitting") -->
+    </File>
+</Root>

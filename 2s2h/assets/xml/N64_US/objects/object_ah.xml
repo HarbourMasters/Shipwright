@@ -1,0 +1,58 @@
+﻿<Root>
+    <File Name="object_ah" Segment="6">
+        <Animation Name="object_ah_Anim_000968" Offset="0x968" /> <!-- Original name is "ah_deteike" (probably based on her Japanese dialogue, where she tells Kafei to "get out") -->
+        <Animation Name="object_ah_Anim_000DDC" Offset="0xDDC" /> <!-- Original name is "ah_suwari" ("sitting") -->
+        <Animation Name="object_ah_Anim_001860" Offset="0x1860" /> <!-- Original name is "ah_wait" -->
+        <Animation Name="object_ah_Anim_002280" Offset="0x2280" /> <!-- Original name is "ah_wait2deteike" -->
+        <DList Name="object_ah_DL_004A60" Offset="0x4A60" />
+        <DList Name="object_ah_DL_004B70" Offset="0x4B70" />
+        <DList Name="object_ah_DL_004C80" Offset="0x4C80" />
+        <DList Name="object_ah_DL_004E78" Offset="0x4E78" />
+        <DList Name="object_ah_DL_005010" Offset="0x5010" />
+        <DList Name="object_ah_DL_0050E8" Offset="0x50E8" />
+        <DList Name="object_ah_DL_005268" Offset="0x5268" />
+        <DList Name="object_ah_DL_005400" Offset="0x5400" />
+        <DList Name="object_ah_DL_0054D8" Offset="0x54D8" />
+        <DList Name="object_ah_DL_0055F0" Offset="0x55F0" />
+        <DList Name="object_ah_DL_005BA8" Offset="0x5BA8" />
+        <DList Name="object_ah_DL_005D88" Offset="0x5D88" />
+        <DList Name="object_ah_DL_005EB0" Offset="0x5EB0" />
+        <DList Name="object_ah_DL_006090" Offset="0x6090" />
+        <DList Name="object_ah_DL_0061B8" Offset="0x61B8" />
+        <Texture Name="object_ah_TLUT_0064B0" OutName="tlut_0064B0" Format="rgba16" Width="16" Height="16" Offset="0x64B0" />
+        <Texture Name="object_ah_Tex_0066B0" OutName="tex_0066B0" Format="ci8" Width="16" Height="16" Offset="0x66B0" />
+        <Texture Name="object_ah_Tex_0067B0" OutName="tex_0067B0" Format="ci8" Width="16" Height="16" Offset="0x67B0" />
+        <Texture Name="object_ah_Tex_0068B0" OutName="tex_0068B0" Format="ci8" Width="8" Height="8" Offset="0x68B0" />
+        <Texture Name="object_ah_Tex_0068F0" OutName="tex_0068F0" Format="ci8" Width="8" Height="8" Offset="0x68F0" />
+        <Texture Name="object_ah_Tex_006930" OutName="tex_006930" Format="ci8" Width="8" Height="8" Offset="0x6930" />
+        <Texture Name="object_ah_Tex_006970" OutName="tex_006970" Format="ci8" Width="16" Height="16" Offset="0x6970" />
+        <Texture Name="object_ah_Tex_006A70" OutName="tex_006A70" Format="ci8" Width="8" Height="8" Offset="0x6A70" />
+        <Texture Name="object_ah_Tex_006AB0" OutName="tex_006AB0" Format="ci8" Width="16" Height="16" Offset="0x6AB0" />
+        <Texture Name="object_ah_Tex_006BB0" OutName="tex_006BB0" Format="ci8" Width="8" Height="16" Offset="0x6BB0" />
+        <Texture Name="object_ah_Tex_006C30" OutName="tex_006C30" Format="i8" Width="8" Height="8" Offset="0x6C30" />
+        <Texture Name="object_ah_Tex_006C70" OutName="tex_006C70" Format="ci8" Width="16" Height="16" Offset="0x6C70" />
+        <Texture Name="object_ah_Tex_006D70" OutName="tex_006D70" Format="rgba16" Width="32" Height="32" Offset="0x6D70" />
+        <Texture Name="object_ah_Tex_007570" OutName="tex_007570" Format="rgba16" Width="32" Height="32" Offset="0x7570" />
+        <Texture Name="object_ah_Tex_007D70" OutName="tex_007D70" Format="rgba16" Width="32" Height="32" Offset="0x7D70" />
+        <Texture Name="object_ah_Tex_008570" OutName="tex_008570" Format="rgba16" Width="32" Height="32" Offset="0x8570" />
+        <Texture Name="object_ah_Tex_008D70" OutName="tex_008D70" Format="rgba16" Width="32" Height="32" Offset="0x8D70" />
+        <Texture Name="object_ah_Tex_009570" OutName="tex_009570" Format="rgba16" Width="32" Height="32" Offset="0x9570" />
+        <Limb Name="object_ah_Standardlimb_009D70" Type="Standard" EnumName="OBJECT_AH_LIMB_01" Offset="0x9D70" />
+        <Limb Name="object_ah_Standardlimb_009D7C" Type="Standard" EnumName="OBJECT_AH_LIMB_02" Offset="0x9D7C" />
+        <Limb Name="object_ah_Standardlimb_009D88" Type="Standard" EnumName="OBJECT_AH_LIMB_03" Offset="0x9D88" />
+        <Limb Name="object_ah_Standardlimb_009D94" Type="Standard" EnumName="OBJECT_AH_LIMB_04" Offset="0x9D94" />
+        <Limb Name="object_ah_Standardlimb_009DA0" Type="Standard" EnumName="OBJECT_AH_LIMB_05" Offset="0x9DA0" />
+        <Limb Name="object_ah_Standardlimb_009DAC" Type="Standard" EnumName="OBJECT_AH_LIMB_06" Offset="0x9DAC" />
+        <Limb Name="object_ah_Standardlimb_009DB8" Type="Standard" EnumName="OBJECT_AH_LIMB_07" Offset="0x9DB8" />
+        <Limb Name="object_ah_Standardlimb_009DC4" Type="Standard" EnumName="OBJECT_AH_LIMB_08" Offset="0x9DC4" />
+        <Limb Name="object_ah_Standardlimb_009DD0" Type="Standard" EnumName="OBJECT_AH_LIMB_09" Offset="0x9DD0" />
+        <Limb Name="object_ah_Standardlimb_009DDC" Type="Standard" EnumName="OBJECT_AH_LIMB_0A" Offset="0x9DDC" />
+        <Limb Name="object_ah_Standardlimb_009DE8" Type="Standard" EnumName="OBJECT_AH_LIMB_0B" Offset="0x9DE8" />
+        <Limb Name="object_ah_Standardlimb_009DF4" Type="Standard" EnumName="OBJECT_AH_LIMB_0C" Offset="0x9DF4" />
+        <Limb Name="object_ah_Standardlimb_009E00" Type="Standard" EnumName="OBJECT_AH_LIMB_0D" Offset="0x9E00" />
+        <Limb Name="object_ah_Standardlimb_009E0C" Type="Standard" EnumName="OBJECT_AH_LIMB_0E" Offset="0x9E0C" />
+        <Limb Name="object_ah_Standardlimb_009E18" Type="Standard" EnumName="OBJECT_AH_LIMB_0F" Offset="0x9E18" />
+        <Limb Name="object_ah_Standardlimb_009E24" Type="Standard" EnumName="OBJECT_AH_LIMB_10" Offset="0x9E24" />
+        <Skeleton Name="object_ah_Skel_009E70" Type="Flex" LimbType="Standard" LimbNone="OBJECT_AH_LIMB_NONE" LimbMax="OBJECT_AH_LIMB_MAX" EnumName="ObjectAhLimb" Offset="0x9E70" />
+    </File>
+</Root>

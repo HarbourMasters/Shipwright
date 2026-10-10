@@ -1,0 +1,23 @@
+<Root>
+    <!-- Assets for the Powder Keg -->
+    <File Name="ovl_En_Bom" BaseAddress="0x8086D8A0" RangeStart="0x2160" RangeEnd="0x3610">
+        <!-- Texture and DisplayLists for the Powder Keg's fuse -->
+        <Array Name="gPowderKegFuseVtx" Count="8" Offset="0x2160">
+            <Vtx/>
+        </Array>
+        <Texture Name="gPowderKegFuseTex" OutName="powder_keg_fuse" Format="i8" Width="2" Height="2" Offset="0x21E0"/>
+        <DList Name="gPowderKegFuseMaterialDL" Offset="0x21E8"/>
+        <DList Name="gPowderKegFuseModel1DL" Offset="0x2270"/>
+        <DList Name="gPowderKegFuseModel2DL" Offset="0x2290"/>
+
+        <!-- Textures and DisplayList for the Powder Keg -->
+        <Texture Name="gPowderKegBarrelTLUT" OutName="powder_keg_barrel_tlut" Format="rgba16" Width="16" Height="16" Offset="0x22B0"/>
+        <Texture Name="gPowderKegBarrelTex" OutName="powder_keg_barrel" Format="ci8" Width="32" Height="32" Offset="0x24B0"/>
+        <DList Name="gPowderKegBarrelDL" Offset="0x2EF0"/> <!-- Original name is "bb_model_model" -->
+
+        <!-- Textures and DisplayList for the Goron Skull on the side of the Powder Keg -->
+        <Texture Name="gPowderKegGoronSkullTLUT" OutName="powder_keg_goron_skull_tlut" Format="rgba16" Width="16" Height="16" Offset="0x3048"/>
+        <Texture Name="gPowderKegGoronSkullTex" OutName="powder_keg_goron_skull" Format="ci8" Width="16" Height="32" Offset="0x3248"/>
+        <DList Name="gPowderKegGoronSkullDL" Offset="0x3548"/> <!-- Original name is "bb_relief_model" -->
+    </File>
+</Root>

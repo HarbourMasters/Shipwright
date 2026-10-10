@@ -1,0 +1,64 @@
+﻿<Root>
+    <File Name="object_zm" Segment="6">
+        <Animation Name="object_zm_Anim_000C80" Offset="0xC80" /> <!-- Original name is "zM_aisatsu" -->
+        <Animation Name="object_zm_Anim_001324" Offset="0x1324" /> <!-- Original name is "zM_furimuki" -->
+        <Animation Name="object_zm_Anim_0016A4" Offset="0x16A4" /> <!-- Original name is "zM_furimuki2wait" -->
+        <Animation Name="object_zm_Anim_001DF0" Offset="0x1DF0" /> <!-- Original name is "zM_maru" -->
+        <Animation Name="object_zm_Anim_0022C8" Offset="0x22C8" /> <!-- Original name is "zM_ok2furimuki" -->
+        <Animation Name="object_zm_Anim_0028B8" Offset="0x28B8" /> <!-- Original name is "zM_suwaritalk01" -->
+        <Animation Name="object_zm_Anim_002F20" Offset="0x2F20" /> <!-- Original name is "zM_suwaritalk02" -->
+        <Animation Name="object_zm_Anim_003AA8" Offset="0x3AA8" /> <!-- Original name is "zM_suwariwait" -->
+        <DList Name="object_zm_DL_0063A0" Offset="0x63A0" />
+        <DList Name="object_zm_DL_0066D0" Offset="0x66D0" />
+        <DList Name="object_zm_DL_006898" Offset="0x6898" />
+        <DList Name="object_zm_DL_0069D8" Offset="0x69D8" />
+        <DList Name="object_zm_DL_006C38" Offset="0x6C38" />
+        <DList Name="object_zm_DL_006E00" Offset="0x6E00" />
+        <DList Name="object_zm_DL_006F40" Offset="0x6F40" />
+        <DList Name="object_zm_DL_007178" Offset="0x7178" />
+        <DList Name="object_zm_DL_0076F8" Offset="0x76F8" />
+        <DList Name="object_zm_DL_0078A0" Offset="0x78A0" />
+        <DList Name="object_zm_DL_007A18" Offset="0x7A18" />
+        <DList Name="object_zm_DL_007B18" Offset="0x7B18" />
+        <DList Name="object_zm_DL_007C38" Offset="0x7C38" />
+        <DList Name="object_zm_DL_007D60" Offset="0x7D60" />
+        <DList Name="object_zm_DL_007E60" Offset="0x7E60" />
+        <DList Name="object_zm_DL_007F80" Offset="0x7F80" />
+        <Texture Name="object_zm_TLUT_0080A8" OutName="tlut_0080A8" Format="rgba16" Width="16" Height="16" Offset="0x80A8" />
+        <Texture Name="object_zm_Tex_0082A8" OutName="tex_0082A8" Format="ci8" Width="8" Height="8" Offset="0x82A8" />
+        <Texture Name="object_zm_Tex_0082E8" OutName="tex_0082E8" Format="ci8" Width="32" Height="32" Offset="0x82E8" />
+        <Texture Name="object_zm_Tex_0086E8" OutName="tex_0086E8" Format="ci8" Width="32" Height="32" Offset="0x86E8" />
+        <Texture Name="gTotoEyesOpenTex" OutName="toto_eyes_open" Format="ci8" Width="32" Height="32" Offset="0x8AE8" TlutOffset="0x80A8" />
+        <Texture Name="object_zm_Tex_008EE8" OutName="tex_008EE8" Format="ci8" Width="16" Height="16" Offset="0x8EE8" />
+        <Texture Name="object_zm_Tex_008FE8" OutName="tex_008FE8" Format="rgba16" Width="32" Height="32" Offset="0x8FE8" />
+        <Texture Name="object_zm_Tex_0097E8" OutName="tex_0097E8" Format="rgba16" Width="8" Height="8" Offset="0x97E8" />
+        <Texture Name="object_zm_Tex_009868" OutName="tex_009868" Format="ci8" Width="16" Height="16" Offset="0x9868" />
+        <Texture Name="object_zm_Tex_009968" OutName="tex_009968" Format="ci8" Width="16" Height="16" Offset="0x9968" />
+        <Texture Name="object_zm_Tex_009A68" OutName="tex_009A68" Format="rgba16" Width="16" Height="16" Offset="0x9A68" />
+        <Texture Name="object_zm_Tex_009C68" OutName="tex_009C68" Format="ci8" Width="32" Height="32" Offset="0x9C68" />
+        <Texture Name="gTotoEyesHalfTex" OutName="toto_eyes_half" Format="ci8" Width="32" Height="32" Offset="0xA068" TlutOffset="0x80A8" />
+        <Texture Name="gTotoEyesClosedTex" OutName="toto_eyes_closed" Format="ci8" Width="32" Height="32" Offset="0xA468" TlutOffset="0x80A8" />
+        <Limb Name="object_zm_Standardlimb_00A868" Type="Standard" EnumName="OBJECT_ZM_LIMB_01" Offset="0xA868" />
+        <Limb Name="object_zm_Standardlimb_00A874" Type="Standard" EnumName="OBJECT_ZM_LIMB_02" Offset="0xA874" />
+        <Limb Name="object_zm_Standardlimb_00A880" Type="Standard" EnumName="OBJECT_ZM_LIMB_03" Offset="0xA880" />
+        <Limb Name="object_zm_Standardlimb_00A88C" Type="Standard" EnumName="OBJECT_ZM_LIMB_04" Offset="0xA88C" />
+        <Limb Name="object_zm_Standardlimb_00A898" Type="Standard" EnumName="OBJECT_ZM_LIMB_05" Offset="0xA898" />
+        <Limb Name="object_zm_Standardlimb_00A8A4" Type="Standard" EnumName="OBJECT_ZM_LIMB_06" Offset="0xA8A4" />
+        <Limb Name="object_zm_Standardlimb_00A8B0" Type="Standard" EnumName="OBJECT_ZM_LIMB_07" Offset="0xA8B0" />
+        <Limb Name="object_zm_Standardlimb_00A8BC" Type="Standard" EnumName="OBJECT_ZM_LIMB_08" Offset="0xA8BC" />
+        <Limb Name="object_zm_Standardlimb_00A8C8" Type="Standard" EnumName="OBJECT_ZM_LIMB_09" Offset="0xA8C8" />
+        <Limb Name="object_zm_Standardlimb_00A8D4" Type="Standard" EnumName="OBJECT_ZM_LIMB_0A" Offset="0xA8D4" />
+        <Limb Name="object_zm_Standardlimb_00A8E0" Type="Standard" EnumName="OBJECT_ZM_LIMB_0B" Offset="0xA8E0" />
+        <Limb Name="object_zm_Standardlimb_00A8EC" Type="Standard" EnumName="OBJECT_ZM_LIMB_0C" Offset="0xA8EC" />
+        <Limb Name="object_zm_Standardlimb_00A8F8" Type="Standard" EnumName="OBJECT_ZM_LIMB_0D" Offset="0xA8F8" />
+        <Limb Name="object_zm_Standardlimb_00A904" Type="Standard" EnumName="OBJECT_ZM_LIMB_0E" Offset="0xA904" />
+        <Limb Name="object_zm_Standardlimb_00A910" Type="Standard" EnumName="OBJECT_ZM_LIMB_0F" Offset="0xA910" />
+        <Limb Name="object_zm_Standardlimb_00A91C" Type="Standard" EnumName="OBJECT_ZM_LIMB_10" Offset="0xA91C" />
+        <Limb Name="object_zm_Standardlimb_00A928" Type="Standard" EnumName="OBJECT_ZM_LIMB_11" Offset="0xA928" />
+        <Skeleton Name="object_zm_Skel_00A978" Type="Flex" LimbType="Standard" LimbNone="OBJECT_ZM_LIMB_NONE" LimbMax="OBJECT_ZM_LIMB_MAX" EnumName="ObjectZmLimb" Offset="0xA978" />
+        <Animation Name="object_zm_Anim_00B3E0" Offset="0xB3E0" /> <!-- Original name is "zM_talk" -->
+        <Animation Name="object_zm_Anim_00B894" Offset="0xB894" /> <!-- Original name is "zM_talk01TOtalk02" -->
+        <Animation Name="object_zm_Anim_00BC08" Offset="0xBC08" /> <!-- Original name is "zM_talk02TOtalk01" -->
+        <Animation Name="object_zm_Anim_00C880" Offset="0xC880" /> <!-- Original name is "zM_wait" -->
+    </File>
+</Root>

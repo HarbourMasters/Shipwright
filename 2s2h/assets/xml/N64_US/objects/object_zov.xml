@@ -1,0 +1,90 @@
+﻿<Root>
+    <!-- Assets for Lulu - Zora Vocalist -->
+    <File Name="object_zov" Segment="6">
+
+        <!-- Lulu Animations -->
+        <Animation Name="gLuluTurnAndWalkAnim" Offset="0x17D4" /> <!-- Original name is "ruru_aruku" -->
+        <Animation Name="gLuluWalkLoopAnim" Offset="0x23F4" /> <!-- Original name is "ruru_aruku_loop" -->
+        <Animation Name="gLuluSingStartAnim" Offset="0x2B5C" /> <!-- Original name is "ruru_utau" -->
+        <Animation Name="gLuluSingLoopAnim" Offset="0x418C" /> <!-- Original name is "ruru_utau_loop" -->
+        <Animation Name="gLuluLookForwardAndLeftAnim" Offset="0x5A6C" /> <!-- Original name is "ruru_yokomuku" -->
+        <Animation Name="gLuluLookLeftLoopAnim" Offset="0x66A4" /> <!-- Original name is "ruru_yokomuku_loop" -->
+        <Animation Name="gLuluPutHandsDownAnim" Offset="0x8120" /> <!-- Original name is "zV_hokan2wait02" -->
+        <Animation Name="gLuluLookAroundAnim" Offset="0xA888" /> <!-- Original name is "zV_kyoro2talk02" -->
+        <Animation Name="gLuluLookForwardAndDownAnim" Offset="0xB4CC" /> <!-- Original name is "zV_talk01" -->
+        <Animation Name="gLuluAngleHeadAnim" Offset="0xC510" /> <!-- Original name is "zV_talk03" -->
+        <Animation Name="gLuluNodAnim" Offset="0xCAA8" /> <!-- Original name is "zV_talk04" -->
+        <Animation Name="gLuluLookDownAnim" Offset="0xD3EC" /> <!-- Original name is "zV_wait01" -->
+
+        <!-- Lulu Limb DLists -->
+        <DList Name="gLuluTorsoDL" Offset="0x107B0" />
+        <DList Name="gLuluRightUpperArmDL" Offset="0x10BC0" />
+        <DList Name="gLuluRightForearmDL" Offset="0x10E60" />
+        <DList Name="gLuluRightHandDL" Offset="0x10FF0" />
+        <DList Name="gLuluRightArmUpperFinDL" Offset="0x11230" />
+        <DList Name="gLuluRightArmLowerFinDL" Offset="0x11300" />
+        <DList Name="gLuluLeftUpperArmDL" Offset="0x113F0" />
+        <DList Name="gLuluLeftForearmDL" Offset="0x11690" />
+        <DList Name="gLuluLeftHandDL" Offset="0x11820" />
+        <DList Name="gLuluLeftArmUpperFinDL" Offset="0x11A60" />
+        <DList Name="gLuluLeftArmLowerFinDL" Offset="0x11B30" />
+        <DList Name="gLuluHeadDL" Offset="0x11C20" />
+        <DList Name="gLuluPelvisDL" Offset="0x122E0" />
+        <DList Name="gLuluRightThighDL" Offset="0x123C0" />
+        <DList Name="gLuluRightShinDL" Offset="0x12560" />
+        <DList Name="gLuluRightLegFinDL" Offset="0x127D0" />
+        <DList Name="gLuluRightFootDL" Offset="0x12890" />
+        <DList Name="gLuluLeftThighDL" Offset="0x12B20" />
+        <DList Name="gLuluLeftShinDL" Offset="0x12CB8" />
+        <DList Name="gLuluLeftLegFinDL" Offset="0x12F28" />
+        <DList Name="gLuluLeftFootDL" Offset="0x12FE8" />
+
+        <!-- Lulu Textures -->
+        <Texture Name="gLuluTLUT" OutName="lulu_tlut" Format="rgba16" Width="16" Height="16" Offset="0x13278" />
+        <Texture Name="gLuluEarringTex" OutName="lulu_earring" Format="rgba16" Width="8" Height="16" Offset="0x13478" />
+        <Texture Name="gLuluSkinTex" OutName="lulu_skin" Format="ci8" Width="8" Height="8" Offset="0x13578" />
+        <Texture Name="gLuluNostrilTex" OutName="lulu_nostril" Format="ci8" Width="8" Height="8" Offset="0x135B8" />
+        <Texture Name="gLuluMouthClosedTex" OutName="lulu_mouth_closed" Format="ci8" Width="32" Height="32" Offset="0x135F8" />
+        <Texture Name="gLuluHeadSkinTex" OutName="lulu_head_skin" Format="ci8" Width="16" Height="16" Offset="0x139F8" />
+        <Texture Name="gLuluEarCavityTex" OutName="lulu_ear_cavity" Format="ci8" Width="8" Height="8" Offset="0x13AF8" />
+        <Texture Name="gLuluHeadHoleTex" OutName="lulu_head_hole" Format="ci8" Width="16" Height="16" Offset="0x13B38" />
+        <Texture Name="gLuluEyeOpenTex" OutName="lulu_eye_open" Format="ci8" Width="32" Height="32" Offset="0x13C38" />
+        <Texture Name="gLuluEarTex" OutName="lulu_ear" Format="ci8" Width="16" Height="16" Offset="0x14038" />
+        <Texture Name="gLuluEyeClosedTex" OutName="lulu_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x14138" />
+        <Texture Name="gLuluMouthOpenTex" OutName="lulu_mouth_open" Format="ci8" Width="32" Height="32" Offset="0x14538" />
+        <Texture Name="gLuluSpottedSkinTex" OutName="lulu_spotted_skin" Format="ci8" Width="32" Height="32" Offset="0x14938" />
+        <Texture Name="gLuluMouthOpenFullTex" OutName="lulu_mouth_open_full" Format="ci8" Width="32" Height="32" Offset="0x14D38" />
+        <Texture Name="gLuluEyeHalfTex" OutName="lulu_eye_half" Format="ci8" Width="32" Height="32" Offset="0x15138" />
+        <Texture Name="gLuluSkinShadowTex" OutName="lulu_skin_shadow" Format="ci8" Width="8" Height="8" Offset="0x15538" />
+        <Texture Name="gLuluKneeAndElbowTex" OutName="lulu_knee_and_elbow" Format="ci8" Width="16" Height="16" Offset="0x15578" />
+        <Texture Name="gLuluFingersTex" OutName="lulu_fingers" Format="ci8" Width="16" Height="16" Offset="0x15678" />
+        <Texture Name="gLuluDressPatternTex" OutName="lulu_dress_pattern" Format="rgba16" Width="32" Height="32" Offset="0x15778" />
+        <Texture Name="gLuluDressStringTex" OutName="lulu_dress_string" Format="ci8" Width="16" Height="16" Offset="0x15F78" />
+        <Texture Name="gLuluDressLoopTex" OutName="lulu_dress_loop" Format="ci8" Width="8" Height="16" Offset="0x16078" />
+        
+        <!-- Lulu Limbs and Skeleton -->
+        <Limb Name="gLuluRootLimb" Type="Standard" EnumName="LULU_LIMB_ROOT" Offset="0x160F8" />
+        <Limb Name="gLuluPelvisLimb" Type="Standard" EnumName="LULU_LIMB_PELVIS" Offset="0x16104" />
+        <Limb Name="gLuluLeftThighLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_THIGH" Offset="0x16110" />
+        <Limb Name="gLuluLeftShinLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_SHIN" Offset="0x1611C" />
+        <Limb Name="gLuluLeftFootLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_FOOT" Offset="0x16128" />
+        <Limb Name="gLuluLeftLegFinLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_LEG_FIN" Offset="0x16134" />
+        <Limb Name="gLuluRightThighLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_THIGH" Offset="0x16140" />
+        <Limb Name="gLuluRightShinLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_SHIN" Offset="0x1614C" />
+        <Limb Name="gLuluRightFootLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_FOOT" Offset="0x16158" />
+        <Limb Name="gLuluRightLegFinLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_LEG_FIN" Offset="0x16164" />
+        <Limb Name="gLuluTorsoLimb" Type="Standard" EnumName="LULU_LIMB_TORSO" Offset="0x16170" />
+        <Limb Name="gLuluHeadLimb" Type="Standard" EnumName="LULU_LIMB_HEAD" Offset="0x1617C" />
+        <Limb Name="gLuluLeftUpperArmLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_UPPER_ARM" Offset="0x16188" />
+        <Limb Name="gLuluLeftArmUpperFinLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_ARM_UPPER_FIN" Offset="0x16194" />
+        <Limb Name="gLuluLeftArmLowerFinLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_ARM_LOWER_FIN" Offset="0x161A0" />
+        <Limb Name="gLuluLeftForearmLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_FOREARM" Offset="0x161AC" />
+        <Limb Name="gLuluLeftHandLimb" Type="Standard" EnumName="LULU_LIMB_LEFT_HAND" Offset="0x161B8" />
+        <Limb Name="gLuluRightUpperArmLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_UPPER_ARM" Offset="0x161C4" />
+        <Limb Name="gLuluRightArmUpperFinLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_ARM_UPPER_FIN" Offset="0x161D0" />
+        <Limb Name="gLuluRightArmLowerFinLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_ARM_LOWER_FIN" Offset="0x161DC" />
+        <Limb Name="gLuluRightForearmLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_FOREARM" Offset="0x161E8" />
+        <Limb Name="gLuluRightHandLimb" Type="Standard" EnumName="LULU_LIMB_RIGHT_HAND" Offset="0x161F4" />
+        <Skeleton Name="gLuluSkel" Type="Flex" LimbType="Standard" LimbNone="LULU_LIMB_NONE" LimbMax="LULU_LIMB_MAX" EnumName="LuluLimb" Offset="0x16258" />
+    </File>
+</Root>

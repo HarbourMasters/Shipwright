@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_hgdoor" Segment="6">
+        <Texture Name="object_hgdoor_Tex_000000" OutName="tex_000000" Format="rgba16" Width="16" Height="32" Offset="0x0" />
+        <Texture Name="object_hgdoor_Tex_000400" OutName="tex_000400" Format="rgba16" Width="32" Height="64" Offset="0x400" />
+        <Texture Name="object_hgdoor_Tex_001400" OutName="tex_001400" Format="i8" Width="8" Height="32" Offset="0x1400" />
+        <DList Name="object_hgdoor_DL_001670" Offset="0x1670" /> <!-- Original name is "tobira_left_model" -->
+        <DList Name="object_hgdoor_DL_001768" Offset="0x1768" /> <!-- Original name is "huda_l_model" -->
+        <Collision Name="object_hgdoor_Colheader_0018C0" Offset="0x18C0" /> <!-- Original name is "z2_music_box_house_t_l_bgdatainfo" -->
+        <DList Name="object_hgdoor_DL_001AB0" Offset="0x1AB0" /> <!-- Original name is "tobira_right_model" -->
+        <DList Name="object_hgdoor_DL_001BA8" Offset="0x1BA8" /> <!-- Original name is "huda_r_model" -->
+        <Collision Name="object_hgdoor_Colheader_001D10" Offset="0x1D10" /> <!-- Original name is "z2_music_box_house_t_r_bgdatainfo" -->
+    </File>
+</Root>

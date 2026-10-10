@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Bomb Bag Upgrades -->
+    <File Name="object_gi_bombpouch" Segment="6">
+
+        <!-- Bomb Bag Upgrade Color Display Lists -->
+        <DList Name="gGiBombBag20BagColorDL" Offset="0xAD0" />
+        <DList Name="gGiBombBag30BagColorDL" Offset="0xAF0" />
+        <DList Name="gGiBombBag40BagColorDL" Offset="0xB10" />
+        <DList Name="gGiBombBag20RingColorDL" Offset="0xB30" />
+        <DList Name="gGiBombBag30RingColorDL" Offset="0xB50" />
+        <DList Name="gGiBombBag40RingColorDL" Offset="0xB70" />
+
+        <!-- Bomb Bag Upgrade Common Display Lists -->
+        <DList Name="gGiBombBagDL" Offset="0xB90" />
+        <DList Name="gGiBombBagRingDL" Offset="0xD98" />
+    </File>
+</Root>

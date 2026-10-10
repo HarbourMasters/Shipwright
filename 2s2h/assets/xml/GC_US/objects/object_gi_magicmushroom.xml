@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Magic Mushroom -->
+    <File Name="object_gi_magicmushroom" Segment="6">
+
+        <!-- Magic Mushroom Display Lists -->
+        <DList Name="gGiMagicMushroomDL" Offset="0x640" />
+        <DList Name="gGiMagicMushroomEmptyDL" Offset="0x958" />
+
+        <!-- Magic Mushroom Textures -->
+        <Texture Name="gGiMagicMushroomPinkBackgroundTex" OutName="gi_mushroom_pink_background" Format="i4" Width="16" Height="16" Offset="0x960" />
+        <Texture Name="gGiMagicMushroomBluePatternTex" OutName="gi_mushroom_blue_pattern" Format="i4" Width="32" Height="32" Offset="0x9E0" />
+        <Texture Name="gGiMagicMushroomStemTex" OutName="gi_mushroom_stem" Format="i4" Width="32" Height="32" Offset="0xBE0" />
+    </File>
+</Root>

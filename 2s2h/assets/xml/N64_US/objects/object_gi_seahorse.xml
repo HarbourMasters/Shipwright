@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Get Item Draw: Seahorse (not inside a bottle) -->
+    <File Name="object_gi_seahorse" Segment="6">
+
+        <!-- Seahorse Billboard Mtx Rotation -->
+        <Mtx Name="gGiSeahorseBillboardRotMtx" Offset="0xA50" />
+
+        <!-- Seahorse Display Lists -->
+        <DList Name="gGiSeahorseGlowDL" Offset="0xA90" />
+        <DList Name="gGiSeahorseBodyDL" Offset="0xB20" />
+        <DList Name="gGiSeahorseEmptyDL" Offset="0xF08" />
+
+        <!-- Seahorse Textures -->
+        <Texture Name="gGiSeahorseEyeTex" OutName="gi_seahorse_eye" Format="ia8" Width="16" Height="8" Offset="0xF10" />
+        <Texture Name="gGiSeahorseGlowTex" OutName="gi_seahorse_glow" Format="i4" Width="16" Height="8" Offset="0xF90" />
+        <Texture Name="gGiSeahorseTorsoTailTex" OutName="gi_seahorse_torso_tail" Format="i8" Width="32" Height="32" Offset="0xFD0" />
+        <Texture Name="gGiSeahorseFinTex" OutName="gi_seahorse_fin" Format="ia8" Width="32" Height="32" Offset="0x13D0" />
+    </File>
+</Root>

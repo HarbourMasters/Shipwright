@@ -1,0 +1,84 @@
+﻿<Root>
+    <!-- Assets for Gerudo wearing red, i.e. Aveil -->
+    <File Name="object_geldb" Segment="6">
+        <Animation Name="gGerudoRedBegAnim" Offset="0x734" /> <!-- Original name is "ga_asonde" begging? "idle"? -->
+        <Animation Name="gGerudoRedDismissAnim" Offset="0xCB0" /> <!-- Original name is "ga_hayaku" "hurry" -->
+        <Animation Name="gGerudoRedTurnHeadAnim" Offset="0xEE0" /> <!-- Original name is "ga_matu" "wait" -->
+        <Animation Name="gGerudoRedWaitAnim" Offset="0x14CC" /> <!-- Original name is "ga_matu_loop" "wait_loop" -->
+        <Animation Name="gGerudoRedDemandAnim" Offset="0x1AC8" /> <!-- hands on hips leaning forward (demanding?). Original name is "ga_naniyatte" -->
+        <Animation Name="gGerudoRedRunAwayAnim" Offset="0x1DFC" /> <!-- Running away from the bees. Original name is "ga_nigedasu" -->
+        <Animation Name="gGerudoRedHandOnHipWaitAnim" Offset="0x1EFC" /> <!-- Single frame pose with hand on hip. Original name is "gelb_wait" -->
+        <Animation Name="gGerudoRedWalkAnim" Offset="0x28A0" /> <!-- Walking. Original name is "gelb_walk" -->
+
+        <!-- Model, same as OoT object_geldb 0x2500-0xA470 -->
+        <Texture Name="gGerudoRed1TLUT" OutName="gerudo_red_1_tlut" Format="rgba16" Width="16" Height="16" Offset="0x28B0" />
+        <Texture Name="gGerudoRedSkinShadowTex" OutName="gerudo_red_skin_shadow" Format="ci8" Width="8" Height="8" Offset="0x2AB0" TlutOffset="0x28B0" />
+        <Texture Name="gGerudoRedDarkRedFabricTex" OutName="gerudo_red_dark_red_fabric" Format="ci8" Width="8" Height="8" Offset="0x2AF0" TlutOffset="0x28B0" />
+        <Texture Name="gGerudoRedYellowJewel1Tex" OutName="gerudo_red_yellow_jewel_1" Format="ci8" Width="16" Height="16" Offset="0x2B30" /> <!-- also used for gauntlets and greaves -->
+        <Texture Name="gGerudoRedGerudoPatternFabricTex" OutName="gerudo_red_gerudo_pattern_fabric" Format="i8" Width="16" Height="16" Offset="0x2C30" />
+        <Texture Name="gGerudoRedMidriffTex" OutName="gerudo_red_midriff" Format="ci8" Width="16" Height="16" Offset="0x2D30" TlutOffset="0x28B0" />
+        <Texture Name="gGerudoTrousersTex" OutName="gerudo_red_trousers" Format="i8" Width="16" Height="16" Offset="0x2E30" />
+        <Texture Name="gGerudoMail1Tex" OutName="gerudo_red_mail_1" Format="i8" Width="8" Height="16" Offset="0x2F30" />
+        <DList Name="gGerudoRedTorsoDL" Offset="0x4C90" />
+        <DList Name="gGerudoRedRightUpperArmDL" Offset="0x5110" />
+        <DList Name="gGerudoRedRightForearmDL" Offset="0x5248" />
+        <DList Name="gGerudoRedLeftUpperArmDL" Offset="0x5470" />
+        <DList Name="gGerudoRedLeftForearmDL" Offset="0x55A8" />
+        <DList Name="gGerudoRedPelvisDL" Offset="0x57D0" />
+        <DList Name="gGerudoRedRightThighDL" Offset="0x59F0" />
+        <DList Name="gGerudoRedRightLowerLegDL" Offset="0x5AF0" />
+        <DList Name="gGerudoRedLeftThighDL" Offset="0x5D60" />
+        <DList Name="gGerudoRedLeftLowerLegDL" Offset="0x5E60" />
+        <Texture Name="gGerudoRed2TLUT" OutName="gerudo_red_2_tlut" Format="rgba16" Width="18" Height="14" Offset="0x60E0" />
+        <Texture Name="gGerudoRedSkinGradientTex" OutName="gerudo_red_skin_gradient" Format="ci8" Width="8" Height="8" Offset="0x62D8" /> <!-- also used on head -->
+        <Texture Name="gGerudoRedEarTex" OutName="gerudo_red_ear" Format="ci8" Width="8" Height="16" Offset="0x6318" />
+        <Texture Name="gGerudoRedEyeOpenTex" OutName="gerudo_red_eye_open" Format="ci8" Width="32" Height="32" Offset="0x6398" TlutOffset="0x60E0" />
+        <Texture Name="gGerudoRedVeilFabricTex" OutName="gerudo_red_veil_fabric" Format="i8" Width="16" Height="16" Offset="0x6798" />
+        <Texture Name="gGerudoRedShoeUpperTex" OutName="gerudo_red_shoe_upper" Format="ci8" Width="8" Height="16" Offset="0x6898" />
+        <Texture Name="gGerudoRedShoeSoleTex" OutName="gerudo_red_shoe_sole" Format="ci8" Width="8" Height="8" Offset="0x6918" />
+        <Texture Name="gGerudoRedEyeHalfTex" OutName="gerudo_red_eye_half" Format="ci8" Width="32" Height="32" Offset="0x6958" TlutOffset="0x60E0" />
+        <Texture Name="gGerudoRedMail2Tex" OutName="gerudo_red_mail_2" Format="i8" Width="8" Height="16" Offset="0x6D58" />
+        <Texture Name="gGerudoRedHairTex" OutName="gerudo_red_hair" Format="ci8" Width="16" Height="16" Offset="0x6DD8" />
+        <Texture Name="gGerudoRedFingersTex" OutName="gerudo_red_fingers" Format="ci8" Width="16" Height="16" Offset="0x6ED8" />
+        <Texture Name="gGerudoRedYellowJewel2Tex" OutName="gerudo_red_yellow_jewel_2" Format="ci8" Width="16" Height="16" Offset="0x6FD8" /> <!-- used for head and sword guards -->
+        <Texture Name="gGerudoRedEyeClosedTex" OutName="gerudo_red_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x70D8" TlutOffset="0x60E0" />
+        <DList Name="gGerudoRedLeftFootDL" Offset="0x92F8" />
+        <DList Name="gGerudoRedRightFootDL" Offset="0x94B8" />
+        <DList Name="gGerudoRedLeftHandDL" Offset="0x9678" />
+        <DList Name="gGerudoRedLeftSwordDL" Offset="0x9810" />
+        <DList Name="gGerudoRedRightHandDL" Offset="0x99E8" />
+        <DList Name="gGerudoRedRightSwordDL" Offset="0x9B80" />
+        <DList Name="gGerudoRedVeilDL" Offset="0x9D58" />
+        <DList Name="gGerudoRedPonytailDL" Offset="0x9E10" />
+        <DList Name="gGerudoRedHeadDL" Offset="0x9F00" />
+
+        <Limb Name="gGerudoRedRootLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_ROOT" Offset="0xA698" />
+        <Limb Name="gGerudoRedTorsoLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_TORSO" Offset="0xA6A4" />
+        <Limb Name="gGerudoRedNeckLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_NECK" Offset="0xA6B0" />
+        <Limb Name="gGerudoRedPonytailLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_PONYTAIL" Offset="0xA6BC" />
+        <Limb Name="gGerudoRedVeilLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_VEIL" Offset="0xA6C8" />
+        <Limb Name="gGerudoRedHeadLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_HEAD" Offset="0xA6D4" />
+        <Limb Name="gGerudoRedRightUpperArmLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_UPPER_ARM" Offset="0xA6E0" />
+        <Limb Name="gGerudoRedRightForearmLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_FOREARM" Offset="0xA6EC" />
+        <Limb Name="gGerudoRedRightWristLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_WRIST" Offset="0xA6F8" />
+        <Limb Name="gGerudoRedRightHandLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_HAND" Offset="0xA704" />
+        <Limb Name="gGerudoRedRightSwordLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_SWORD" Offset="0xA710" />
+        <Limb Name="gGerudoRedLeftUpperArmLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_UPPER_ARM" Offset="0xA71C" />
+        <Limb Name="gGerudoRedLeftForearmLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_FOREARM" Offset="0xA728" />
+        <Limb Name="gGerudoRedLeftWristLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_WRIST" Offset="0xA734" />
+        <Limb Name="gGerudoRedLeftHandLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_HAND" Offset="0xA740" />
+        <Limb Name="gGerudoRedLeftSwordLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_SWORD" Offset="0xA74C" />
+        <Limb Name="gGerudoRedLeftThighLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_THIGH" Offset="0xA758" />
+        <Limb Name="gGerudoRedLeftLowerLegLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_LOWER_LEG" Offset="0xA764" />
+        <Limb Name="gGerudoRedLeftFootLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_LEFT_FOOT" Offset="0xA770" />
+        <Limb Name="gGerudoRedRightThighLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_THIGH" Offset="0xA77C" />
+        <Limb Name="gGerudoRedRightLowerLegLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_LOWER_LEG" Offset="0xA788" />
+        <Limb Name="gGerudoRedRightFootLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_RIGHT_FOOT" Offset="0xA794" />
+        <Limb Name="gGerudoRedPelvisLimb" Type="Standard" EnumName="GERUDO_RED_LIMB_PELVIS" Offset="0xA7A0" />
+        <Skeleton Name="gGerudoRedSkel" Type="Flex" LimbType="Standard" LimbNone="GERUDO_RED_LIMB_NONE" LimbMax="GERUDO_RED_LIMB_MAX" EnumName="GerudoRedLimb" Offset="0xA808" />
+
+        <!-- Same as OoT object_geldb 0xAE10-end -->
+        <Animation Name="gGerudoRedStandAnim" Offset="0xAA8C" /> <!-- Original name is "geldB_talk" -->
+        <Animation Name="gGerudoRedNeutralAnim" Offset="0xB0E4" /> <!-- Original name is "geldB_wait" -->
+    </File>
+</Root>

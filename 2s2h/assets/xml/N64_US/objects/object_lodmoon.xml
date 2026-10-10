@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Low detail version of the moon used during gameplay (except in Termina Field) -->
+    <File Name="object_lodmoon" Segment="6">
+        <DList Name="gLodmoonEyesDL" Offset="0x10E0" />
+        <DList Name="gLodmoonMoonDL" Offset="0x1158" />
+        <Texture Name="gLodmoonFaceTLUT" OutName="lodmoon_face_tlut" Format="rgba16" Width="4" Height="4" Offset="0x15D8" />
+        <Texture Name="gLodmoonFarSideTLUT" OutName="lodmoon_far_side_tlut" Format="rgba16" Width="4" Height="4" Offset="0x15F8" />
+        <Texture Name="gLodmoonEyesTex" OutName="lodmoon_eyes" Format="rgba16" Width="32" Height="32" Offset="0x1618" />
+        <Texture Name="gLodmoonTeethTex" OutName="lodmoon_teeth" Format="rgba16" Width="64" Height="32" Offset="0x1E18" />
+        <Texture Name="gLodmoonFaceTex" OutName="lodmoon_face" Format="ci4" Width="64" Height="64" Offset="0x2E18" />
+        <Texture Name="gLodmoonFarSideTex" OutName="lodmoon_far_side" Format="ci4" Width="64" Height="64" Offset="0x3618" />
+    </File>
+</Root>

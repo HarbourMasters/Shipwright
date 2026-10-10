@@ -1,0 +1,28 @@
+﻿<Root>
+    <File Name="object_bombiwa" Segment="6">
+        <Texture Name="object_bombiwa_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="object_bombiwa_Tex_000020" OutName="tex_000020" Format="ci4" Width="64" Height="64" Offset="0x20" />
+        <DList Name="object_bombiwa_DL_0009E0" Offset="0x9E0" /> <!-- Original name is "obj_18b_stone_model" -->
+        <DList Name="object_bombiwa_DL_000AF0" Offset="0xAF0" />
+        <Texture Name="object_bombiwa_Tex_000C00" OutName="tex_000C00" Format="i4" Width="64" Height="64" Offset="0xC00" />
+        <DList Name="object_bombiwa_DL_001700" Offset="0x1700" /> <!-- Original name is "obj_bombstone_model" -->
+        <DList Name="object_bombiwa_DL_001800" Offset="0x1800" />
+        <DList Name="object_bombiwa_DL_001820" Offset="0x1820" />
+        <DList Name="object_bombiwa_DL_001990" Offset="0x1990" /> <!-- Original name is "g5_model" -->
+        <Texture Name="object_bombiwa_Tex_001A70" OutName="tex_001A70" Format="rgba16" Width="32" Height="32" Offset="0x1A70" />
+        <Texture Name="object_bombiwa_Tex_002270" OutName="tex_002270" Format="i4" Width="64" Height="64" Offset="0x2270" />
+        <DList Name="object_bombiwa_DL_002F60" Offset="0x2F60" /> <!-- Original name is "g2_model" -->
+        <DList Name="object_bombiwa_DL_003110" Offset="0x3110" />
+        <Texture Name="object_bombiwa_Tex_0031C0" OutName="tex_0031C0" Format="ia8" Width="16" Height="16" Offset="0x31C0" />
+        <Texture Name="object_bombiwa_Tex_0032C0" OutName="tex_0032C0" Format="rgba16" Width="32" Height="32" Offset="0x32C0" />
+        <Texture Name="object_bombiwa_Tex_003AC0" OutName="tex_003AC0" Format="i4" Width="64" Height="64" Offset="0x3AC0" />
+        <DList Name="object_bombiwa_DL_004560" Offset="0x4560" /> <!-- Original name is "g4_model" -->
+        <DList Name="object_bombiwa_DL_004688" Offset="0x4688" />
+        <Texture Name="object_bombiwa_Tex_004730" OutName="tex_004730" Format="ia8" Width="16" Height="16" Offset="0x4730" />
+        <Texture Name="object_bombiwa_Tex_004830" OutName="tex_004830" Format="rgba16" Width="32" Height="32" Offset="0x4830" />
+        <Texture Name="object_bombiwa_Tex_005030" OutName="tex_005030" Format="i4" Width="64" Height="64" Offset="0x5030" />
+        <DList Name="object_bombiwa_DL_005990" Offset="0x5990" /> <!-- Original name is "hahen_model" -->
+        <Texture Name="object_bombiwa_Tex_005A70" OutName="tex_005A70" Format="rgba16" Width="32" Height="32" Offset="0x5A70" />
+        <Texture Name="object_bombiwa_Tex_006270" OutName="tex_006270" Format="i4" Width="64" Height="64" Offset="0x6270" />
+    </File>
+</Root>

@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Assets for the song of soaring pedestal -->
+    <File Name="object_sekihiz" Segment="6">
+        <DList Name="gSongOfSoaringPedestalEmptyDL" Offset="0x510" />
+        <DList Name="gSongOfSoaringPedestalDL" Offset="0x518" />
+        <Texture Name="gSongOfSoaringPedestalStaffNotesTex" OutName="song_of_soaring_pedestal_staff_notes" Format="i8" Width="32" Height="32" Offset="0x728" />
+        <Texture Name="gSongOfSoaringPedestalGraniteTex" OutName="song_of_soaring_pedestal_granite" Format="i8" Width="32" Height="32" Offset="0xB28" />
+        <Collision Name="gSongOfSoaringPedestalCol" Offset="0x1010" />
+    </File>
+</Root>

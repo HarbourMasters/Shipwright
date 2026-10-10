@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_En_Gakufu" BaseAddress="0x80AFC960" RangeStart="0x8D0" RangeEnd="0x950">
+        <Array Name="gGakufuButtonIndexVtx" Count="4" Offset="0x8D0">
+            <Vtx/>
+        </Array>
+        <DList Name="gGakufuButtonIndexDL" Offset="0x910"/> <!-- Original name might be "en_gakufu_draw_common" -->
+    </File>
+</Root>

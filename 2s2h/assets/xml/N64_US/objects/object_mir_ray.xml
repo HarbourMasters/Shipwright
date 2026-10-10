@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_mir_ray" Segment="6">
+        <DList Name="object_mir_ray_DL_000160" Offset="0x160" />
+        <DList Name="object_mir_ray_DL_000168" Offset="0x168" /> <!-- Original name is "cl_sMLightSyl_model" -->
+        <Texture Name="object_mir_ray_Tex_000270" OutName="tex_000270" Format="i4" Width="16" Height="16" Offset="0x270" />
+        <Texture Name="object_mir_ray_Tex_0002F0" OutName="tex_0002F0" Format="i4" Width="16" Height="32" Offset="0x2F0" />
+        <TextureAnimation Name="object_mir_ray_Matanimheader_0003F8" Offset="0x3F8" />
+        <DList Name="object_mir_ray_DL_0004B0" Offset="0x4B0" />
+        <DList Name="object_mir_ray_DL_000550" Offset="0x550" />
+        <Texture Name="object_mir_ray_Tex_000558" OutName="tex_000558" Format="i8" Width="32" Height="64" Offset="0x558" />
+    </File>
+</Root>

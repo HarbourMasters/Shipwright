@@ -1,0 +1,13 @@
+<Root>
+    <File Name="Z2_GORONSHOP" Segment="2" Game="MM">
+        <Texture Name="Z2_GORONSHOPTex_004630" Format="i8" Width="128" Height="64" Offset="0x4630"/>
+        <Texture Name="Z2_GORONSHOPTex_009230" Format="rgba16" Width="64" Height="64" Offset="0x9230"/>
+
+        <Scene Name="Z2_GORONSHOP" Offset="0x0"/>
+    </File>
+    <File Name="Z2_GORONSHOP_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_GORONSHOP_room_00" Offset="0x0"/>
+        <DList Name="Z2_GORONSHOP_room_00DL_008FF8" Offset="0x8FF8"/>
+        <DList Name="Z2_GORONSHOP_room_00DL_009578" Offset="0x9578"/>
+    </File>
+</Root>

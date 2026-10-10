@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Get Item Draw: Kamaro Mask -->
+    <File Name="object_gi_mask17" Segment="6">
+
+        <!-- Kamaro Mask Display Lists -->
+        <DList Name="gGiKamaroMaskEmptyDL" Offset="0xFD0" />
+        <DList Name="gGiKamaroMaskDL" Offset="0xFD8" />
+
+        <!-- Kamaro Mask TLUT -->
+        <Texture Name="gGiKamaroMaskTLUT" OutName="kamaro_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1650" />
+
+        <!-- Kamaro Mask Textures -->
+        <Texture Name="gGiKamaroMaskStitchesTex" OutName="gi_kamaro_mask_stitches" Format="ci8" Width="16" Height="16" Offset="0x1850" />
+        <Texture Name="gGiKamaroMaskEyeTex" OutName="gi_kamaro_mask_eye" Format="ci8" Width="16" Height="16" Offset="0x1950" />
+        <Texture Name="gGiKamaroMaskSpotTex" OutName="gi_kamaro_mask_spot" Format="ci8" Width="8" Height="8" Offset="0x1A50" />
+        <Texture Name="gGiKamaroMaskHairChinTex" OutName="gi_kamaro_mask_hair_chin" Format="ci8" Width="16" Height="16" Offset="0x1A90" />
+        <Texture Name="gGiKamaroMaskNoseEarTex" OutName="gi_kamaro_mask_nose_ear" Format="ci8" Width="8" Height="8" Offset="0x1B90" />
+        <Texture Name="gGiKamaroMaskPonytailTex" OutName="gi_kamaro_mask_ponytail" Format="ci8" Width="8" Height="16" Offset="0x1BD0" />
+    </File>
+</Root>

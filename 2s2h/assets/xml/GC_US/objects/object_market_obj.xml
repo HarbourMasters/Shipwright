@@ -1,0 +1,69 @@
+﻿<Root>
+    <!-- Assets for most of the West Clock Town Market (the section with the shops and the bank) -->
+    <File Name="object_market_obj" Segment="6">
+        <!-- West Clock Town Market Textures -->
+        <Texture Name="gWestClockTownMarketWhitePlasterTLUT" OutName="west_clock_town_market_white_plaster_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gWestClockTownMarketYellowPlasterTLUT" OutName="west_clock_town_market_yellow_plaster_tlut" Format="rgba16" Width="4" Height="4" Offset="0x20" />
+        <Texture Name="gWestClockTownMarketBrownPlasterTLUT" OutName="west_clock_town_market_brown_plaster_tlut" Format="rgba16" Width="4" Height="4" Offset="0x40" />
+        <Texture Name="gWestClockTownMarketStrawTLUT" OutName="west_clock_town_market_straw_tlut" Format="rgba16" Width="4" Height="4" Offset="0x60" />
+        <Texture Name="gWestClockTownMarketStrawFringeTLUT" OutName="west_clock_town_market_straw_fringe_tlut" Format="rgba16" Width="4" Height="4" Offset="0x80" />
+        <Texture Name="gWestClockTownMarketBrownPatternedPlasterTLUT" OutName="west_clock_town_market_brown_patterned_plaster_tlut" Format="rgba16" Width="4" Height="4" Offset="0xA0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster1TLUT" OutName="west_clock_town_market_yellow_patterned_plaster_1_tlut" Format="rgba16" Width="4" Height="4" Offset="0xC0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster2TLUT" OutName="west_clock_town_market_yellow_patterned_plaster_2_tlut" Format="rgba16" Width="4" Height="4" Offset="0xE0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster1TLUT" OutName="west_clock_town_market_white_patterned_plaster_1_tlut" Format="rgba16" Width="4" Height="4" Offset="0x100" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster2TLUT" OutName="west_clock_town_market_white_patterned_plaster_2_tlut" Format="rgba16" Width="4" Height="4" Offset="0x120" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster3TLUT" OutName="west_clock_town_market_yellow_patterned_plaster_3_tlut" Format="rgba16" Width="4" Height="4" Offset="0x140" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster4TLUT" OutName="west_clock_town_market_yellow_patterned_plaster_4_tlut" Format="rgba16" Width="4" Height="4" Offset="0x160" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster5TLUT" OutName="west_clock_town_market_yellow_patterned_plaster_5_tlut" Format="rgba16" Width="4" Height="4" Offset="0x180" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster3TLUT" OutName="west_clock_town_market_white_patterned_plaster_3_tlut" Format="rgba16" Width="4" Height="4" Offset="0x1A0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster4TLUT" OutName="west_clock_town_market_white_patterned_plaster_4_tlut" Format="rgba16" Width="4" Height="4" Offset="0x1C0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster5TLUT" OutName="west_clock_town_market_white_patterned_plaster_5_tlut" Format="rgba16" Width="4" Height="4" Offset="0x1E0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster6TLUT" OutName="west_clock_town_market_white_patterned_plaster_6_tlut" Format="rgba16" Width="4" Height="4" Offset="0x200" />
+        <Texture Name="gWestClockTownMarketCowFrontTLUT" OutName="west_clock_town_market_cow_front_tlut" Format="rgba16" Width="16" Height="16" Offset="0x220" />
+        <Texture Name="gWestClockTownMarketCuriosityShopSignTex" OutName="west_clock_town_market_curiosity_shop_sign" Format="rgba16" Width="32" Height="64" Offset="0x420" />
+        <Texture Name="gWestClockTownMarketBombShopSignTex" OutName="west_clock_town_market_bomb_shop_sign" Format="rgba16" Width="32" Height="64" Offset="0x1420" />
+        <Texture Name="gWestClockTownMarketWhitePlasterTex" OutName="west_clock_town_market_white_plaster" Format="ci4" Width="64" Height="64" Offset="0x2420" />
+        <Texture Name="gWestClockTownMarketClockTownBankSignTex" OutName="west_clock_town_market_clock_town_bank_sign" Format="rgba16" Width="32" Height="63" Offset="0x2C20" />
+        <Texture Name="gWestClockTownMarketTradingPostSignTex" OutName="west_clock_town_market_trading_post_sign" Format="rgba16" Width="32" Height="64" Offset="0x3BE0" />
+        <Texture Name="gWestClockTownMarketYellowPlasterTex" OutName="west_clock_town_market_yellow_plaster" Format="ci4" Width="64" Height="64" Offset="0x4BE0" />
+        <Texture Name="gWestClockTownMarketBrownPlasterTex" OutName="west_clock_town_market_brown_plaster" Format="ci4" Width="64" Height="64" Offset="0x53E0" />
+        <Texture Name="gWestClockTownMarketBankAndDoorFrameTex" OutName="west_clock_town_market_bank_and_door_frame" Format="rgba16" Width="32" Height="32" Offset="0x5BE0" />
+        <Texture Name="gWestClockTownMarketGroundTex" OutName="west_clock_town_market_ground" Format="rgba16" Width="32" Height="32" Offset="0x63E0" />
+        <Texture Name="gWestClockTownBrickBelowWhitePlasterTex" OutName="west_clock_town_market_brick_below_white_plaster" Format="rgba16" Width="64" Height="32" Offset="0x6BE0" />
+        <Texture Name="gWestClockTownMarketStrawTex" OutName="west_clock_town_market_straw" Format="ci4" Width="64" Height="64" Offset="0x7BE0" />
+        <Texture Name="gWestClockTownBrickBelowYellowPlasterTex" OutName="west_clock_town_market_brick_below_yellow_plaster" Format="rgba16" Width="64" Height="32" Offset="0x83E0" />
+        <Texture Name="gWestClockTownBrickBelowBrownPlasterTex" OutName="west_clock_town_market_brick_below_brown_plaster" Format="rgba16" Width="64" Height="32" Offset="0x93E0" />
+        <Texture Name="gWestClockTownMarketStrawFringeTex" OutName="west_clock_town_market_straw_fringe" Format="ci4" Width="64" Height="32" Offset="0xA3E0" />
+        <Texture Name="gWestClockTownMarketBankDoorTex" OutName="west_clock_town_market_bank_door" Format="i4" Width="32" Height="32" Offset="0xA7E0" />
+        <Texture Name="gWestClockTownMarketBrownPatternedPlasterTex" OutName="west_clock_town_market_brown_patterned_plaster" Format="ci4" Width="32" Height="64" Offset="0xA9E0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster1Tex" OutName="west_clock_town_market_yellow_patterned_plaster_1" Format="ci4" Width="64" Height="64" Offset="0xADE0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster2Tex" OutName="west_clock_town_market_yellow_patterned_plaster_2" Format="ci4" Width="64" Height="64" Offset="0xB5E0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster1Tex" OutName="west_clock_town_market_white_patterned_plaster_1" Format="ci4" Width="64" Height="64" Offset="0xBDE0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster2Tex" OutName="west_clock_town_market_white_patterned_plaster_2" Format="ci4" Width="64" Height="64" Offset="0xC5E0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster3Tex" OutName="west_clock_town_market_yellow_patterned_plaster_3" Format="ci4" Width="64" Height="64" Offset="0xCDE0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster4Tex" OutName="west_clock_town_market_yellow_patterned_plaster_4" Format="ci4" Width="64" Height="64" Offset="0xD5E0" />
+        <Texture Name="gWestClockTownMarketYellowPatternedPlaster5Tex" OutName="west_clock_town_market_yellow_patterned_plaster_5" Format="ci4" Width="64" Height="64" Offset="0xDDE0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster3Tex" OutName="west_clock_town_market_white_patterned_plaster_3" Format="ci4" Width="64" Height="64" Offset="0xE5E0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster4Tex" OutName="west_clock_town_market_white_patterned_plaster_4" Format="ci4" Width="64" Height="64" Offset="0xEDE0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster5Tex" OutName="west_clock_town_market_white_patterned_plaster_5" Format="ci4" Width="64" Height="64" Offset="0xF5E0" />
+        <Texture Name="gWestClockTownMarketWhitePatternedPlaster6Tex" OutName="west_clock_town_market_white_patterned_plaster_6" Format="ci4" Width="64" Height="64" Offset="0xFDE0" />
+        <Texture Name="gWestClockTownMarketPoleTex" OutName="west_clock_town_market_pole" Format="rgba16" Width="32" Height="16" Offset="0x105E0" />
+        <Texture Name="gWestClockTownMarketBrickEdgedGroundTex" OutName="west_clock_town_market_brick_edged_ground" Format="rgba16" Width="32" Height="64" Offset="0x109E0" />
+        <Texture Name="gWestClockTownMarketStairRiserTex" OutName="west_clock_town_market_stair_riser" Format="rgba16" Width="32" Height="16" Offset="0x119E0" />
+        <Texture Name="gWestClockTownMarketFlowerBedTopTex" OutName="west_clock_town_market_flower_bed_top" Format="rgba16" Width="32" Height="32" Offset="0x11DE0" />
+        <Texture Name="gWestClockTownMarketFlowerBedSidesTex" OutName="west_clock_town_market_flower_bed_sides" Format="rgba16" Width="32" Height="32" Offset="0x125E0" />
+        <Texture Name="gWestClockTownMarketSafeTex" OutName="west_clock_town_market_safe" Format="rgba16" Width="32" Height="32" Offset="0x12DE0" />
+        <Texture Name="gWestClockTownMarketRugTex" OutName="west_clock_town_market_rug" Format="rgba16" Width="64" Height="16" Offset="0x135E0" />
+        <Texture Name="gWestClockTownMarketBankCurtainTex" OutName="west_clock_town_market_bank_curtain" Format="ia8" Width="32" Height="32" Offset="0x13DE0" />
+        <Texture Name="gWestClockTownMarketCowFrontTex" OutName="west_clock_town_market_cow_front" Format="ci8" Width="8" Height="8" Offset="0x141E0" />
+        <Texture Name="gWestClockTownMarketCowBodyTex" OutName="west_clock_town_market_cow_body" Format="i8" Width="8" Height="8" Offset="0x14220" />
+        <Texture Name="gWestClockTownMarketBankAdvertisementsTex" OutName="west_clock_town_market_bank_advertisements" Format="i4" Width="64" Height="32" Offset="0x14260" />
+        <Texture Name="gWestClockTownMarketSafeWheelAndHandleTex" OutName="west_clock_town_market_safe_wheel_and_handle" Format="rgba16" Width="16" Height="16" Offset="0x14660" />
+
+        <!-- West Clock Town Market DisplayLists -->
+        <DList Name="gWestClockTownMarketBankAdvertisementsAndDoorNightDL" Offset="0x18C60" /> <!-- The door is not interactive, and it's not visible in-game. -->
+        <DList Name="gWestClockTownMarketNightDL" Offset="0x18DA0" />
+        <DList Name="gWestClockTownMarketBankAdvertisementsAndDoorDayDL" Offset="0x1EF10" /> <!-- The door is not interactive, and it's not visible in-game. -->
+        <DList Name="gWestClockTownMarketDayDL" Offset="0x1F050" />
+    </File>
+</Root>

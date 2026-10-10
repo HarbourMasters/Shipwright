@@ -1,0 +1,53 @@
+﻿<Root>
+    <!-- Object for Leevers -->
+    <File Name="object_rb" Segment="6">
+        <Animation Name="gLeeverSpinAnim" Offset="0x1E4" /> <!-- Original name is "reeba_rb_move" -->
+
+        <!-- DLs for visible limbs -->
+        <DList Name="gLeeverBottomHalfDL" Offset="0x200" />
+        <DList Name="gLeeverBottomHalfWrapper2DL" Offset="0x2D0" />
+        <DList Name="gLeeverBottomHalfWrapper1DL" Offset="0x2E0" />
+        <DList Name="gLeeverTopHalfDL" Offset="0x430" />
+        <DList Name="gLeeverTopHalfWrapper2DL" Offset="0x570" />
+        <DList Name="gLeeverTopHalfWrapper1DL" Offset="0x580" />
+        <DList Name="gLeeverSpike1DL" Offset="0x760" />
+        <DList Name="gLeeverSpike1Wrapper2DL" Offset="0x7F8" />
+        <DList Name="gLeeverSpike1Wrapper1DL" Offset="0x808" />
+        <DList Name="gLeeverSpike2DL" Offset="0x8B8" />
+        <DList Name="gLeeverSpike2Wrapper2DL" Offset="0x950" />
+        <DList Name="gLeeverSpike2Wrapper1DL" Offset="0x960" />
+        <DList Name="gLeeverSpike3DL" Offset="0xA10" />
+        <DList Name="gLeeverSpike3Wrapper2DL" Offset="0xAB0" />
+        <DList Name="gLeeverSpike3Wrapper1DL" Offset="0xAC0" />
+        <DList Name="gLeeverSpike4DL" Offset="0xB80" />
+        <DList Name="gLeeverSpike4Wrapper2DL" Offset="0xC18" />
+        <DList Name="gLeeverSpike4Wrapper1DL" Offset="0xC28" />
+
+        <Texture Name="gLeeverSpikeTex" OutName="spike" Format="rgba16" Width="8" Height="16" Offset="0xCD8" />
+        <Texture Name="gLeeverSideTex" OutName="side" Format="rgba16" Width="32" Height="32" Offset="0xDD8" />
+        <Texture Name="gLeeverFlowerTex" OutName="flower" Format="rgba16" Width="32" Height="32" Offset="0x15D8" />
+
+        <!-- Visible limbs -->
+        <Limb Name="gLeeverTopHalfLimb" Type="Standard" EnumName="LEEVER_LIMB_TOP_HALF" Offset="0x1DFC" />
+        <Limb Name="gLeeverSpike1Limb" Type="Standard" EnumName="LEEVER_LIMB_SPIKE_1" Offset="0x1E20" />
+        <Limb Name="gLeeverSpike2Limb" Type="Standard" EnumName="LEEVER_LIMB_SPIKE_2" Offset="0x1E44" />
+        <Limb Name="gLeeverSpike3Limb" Type="Standard" EnumName="LEEVER_LIMB_SPIKE_3" Offset="0x1E68" />
+        <Limb Name="gLeeverSpike4Limb" Type="Standard" EnumName="LEEVER_LIMB_SPIKE_4" Offset="0x1E8C" />
+        <Limb Name="gLeeverBottomHalfLimb" Type="Standard" EnumName="LEEVER_LIMB_BOTTOM_HALF" Offset="0x1E98" />
+
+        <!-- Invisible limbs -->
+        <Limb Name="object_rb_Standardlimb_001DD8" Type="Standard" EnumName="OBJECT_RB_LIMB_01" Offset="0x1DD8" />
+        <Limb Name="object_rb_Standardlimb_001DE4" Type="Standard" EnumName="OBJECT_RB_LIMB_02" Offset="0x1DE4" />
+        <Limb Name="object_rb_Standardlimb_001DF0" Type="Standard" EnumName="OBJECT_RB_LIMB_03" Offset="0x1DF0" />
+        <Limb Name="object_rb_Standardlimb_001E08" Type="Standard" EnumName="OBJECT_RB_LIMB_05" Offset="0x1E08" />
+        <Limb Name="object_rb_Standardlimb_001E14" Type="Standard" EnumName="OBJECT_RB_LIMB_06" Offset="0x1E14" />
+        <Limb Name="object_rb_Standardlimb_001E2C" Type="Standard" EnumName="OBJECT_RB_LIMB_08" Offset="0x1E2C" />
+        <Limb Name="object_rb_Standardlimb_001E38" Type="Standard" EnumName="OBJECT_RB_LIMB_09" Offset="0x1E38" />
+        <Limb Name="object_rb_Standardlimb_001E50" Type="Standard" EnumName="OBJECT_RB_LIMB_0B" Offset="0x1E50" />
+        <Limb Name="object_rb_Standardlimb_001E5C" Type="Standard" EnumName="OBJECT_RB_LIMB_0C" Offset="0x1E5C" />
+        <Limb Name="object_rb_Standardlimb_001E74" Type="Standard" EnumName="OBJECT_RB_LIMB_0E" Offset="0x1E74" />
+        <Limb Name="object_rb_Standardlimb_001E80" Type="Standard" EnumName="OBJECT_RB_LIMB_0F" Offset="0x1E80" />
+
+        <Skeleton Name="gLeeverSkel" Type="Normal" LimbType="Standard" LimbNone="LEEVER_LIMB_NONE" LimbMax="LEEVER_LIMB_MAX" EnumName="LeeverLimb" Offset="0x1EE8" />
+    </File>
+</Root>

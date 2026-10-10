@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_mask_nuts" Segment="10">
+        <Texture Name="object_mask_nuts_Tex_000000" OutName="tex_000000" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="object_mask_nuts_Tex_000800" OutName="tex_000800" Format="rgba16" Width="16" Height="16" Offset="0x800" />
+        <Texture Name="object_mask_nuts_Tex_000A00" OutName="tex_000A00" Format="rgba16" Width="32" Height="32" Offset="0xA00" />
+        <DList Name="object_mask_nuts_DL_001D90" Offset="0x1D90" />
+    </File>
+</Root>

@@ -1,0 +1,18 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_04.xml" OutPath="misc/scene_texture_04/"/>
+    <File Name="Z2_11GORONNOSATO2" Segment="2" Game="MM">
+        <Scene Name="Z2_11GORONNOSATO2" Offset="0x0"/>
+    </File>
+    <File Name="Z2_11GORONNOSATO2_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_11GORONNOSATO2_room_00" Offset="0x0"/>
+        <DList Name="Z2_11GORONNOSATO2_room_00DL_0003D0" Offset="0x3D0"/>
+        <DList Name="Z2_11GORONNOSATO2_room_00DL_00C9B8" Offset="0xC9B8"/>
+        <DList Name="Z2_11GORONNOSATO2_room_00DL_015310" Offset="0x15310"/>
+        <DList Name="Z2_11GORONNOSATO2_room_00DL_0156B0" Offset="0x156B0"/>
+    </File>
+    <File Name="Z2_11GORONNOSATO2_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_11GORONNOSATO2_room_01" Offset="0x0"/>
+        <DList Name="Z2_11GORONNOSATO2_room_01DL_000130" Offset="0x130"/>
+        <DList Name="Z2_11GORONNOSATO2_room_01DL_001E78" Offset="0x1E78"/>
+    </File>
+</Root>

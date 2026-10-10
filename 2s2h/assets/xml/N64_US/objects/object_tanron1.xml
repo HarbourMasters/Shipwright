@@ -1,0 +1,6 @@
+﻿<Root>
+    <!-- This file is empty -->
+    <File Name="object_tanron1" Segment="6">
+        <DList Name="gTanron1EmptyDL" Offset="0x0" />
+    </File>
+</Root>

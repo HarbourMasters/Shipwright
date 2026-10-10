@@ -1,0 +1,7 @@
+﻿<Root>
+    <!-- Object for Oceanside Spider House Door -->
+    <File Name="object_kinsta2_obj" Segment="6">
+        <DList Name="gOceansideSpiderHouseDoorDL" Offset="0x310" /> <!-- Original name is "m2_Kin2DOOR_model" -->
+        <Texture Name="gOceansideSpiderHouseDoorTex" OutName="oceanside_spider_house_door" Format="rgba16" Width="32" Height="64" Offset="0x4E8" />
+    </File>
+</Root>

@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: OoT Songs -->
+    <File Name="object_gi_melody" Segment="6">
+
+        <!-- OoT Songs Display Lists -->
+        <DList Name="gGiMinuetColorDL" Offset="0xA80" />
+        <DList Name="gGiBoleroColorDL" Offset="0xA90" />
+        <DList Name="gGiSerenadeColorDL" Offset="0xAA0" />
+        <DList Name="gGiRequiemColorDL" Offset="0xAB0" />
+        <DList Name="gGiNocturneColorDL" Offset="0xAC0" />
+        <DList Name="gGiPreludeColorDL" Offset="0xAD0" />
+        <DList Name="gGiSongNoteDL" Offset="0xAE0" />
+    </File>
+</Root>

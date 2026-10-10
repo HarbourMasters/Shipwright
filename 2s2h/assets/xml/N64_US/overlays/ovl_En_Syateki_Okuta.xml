@@ -1,0 +1,13 @@
+<Root>
+    <!-- Shooting Gallery Octorok assets -->
+    <File Name="ovl_En_Syateki_Okuta" BaseAddress="0x80A35FF0" RangeStart="0x1640" RangeEnd="0x1B98">
+        <!-- DisplayList that turns certain Octoroks blue -->
+        <DList Name="gShootingGalleryOctorokBlueMaterialDL" Offset="0x1640"/>
+
+        <!-- Textures and DisplayLists for the cross and circle indicators that appear when you shoot an Octorok -->
+        <Texture Name="gShootingGalleryOctorokCrossTex" OutName="shooting_gallery_octorok_cross" Format="ia16" Width="16" Height="16" Offset="0x1658"/>
+        <Texture Name="gShootingGalleryOctorokCircleTex" OutName="shooting_gallery_octorok_circle" Format="ia16" Width="16" Height="16" Offset="0x1858"/>
+        <DList Name="gShootingGalleryOctorokCrossDL" Offset="0x1A98"/> <!-- Original name is "okuta_peke_model" ("peke" = "x (mark); cross") -->
+        <DList Name="gShootingGalleryOctorokCircleDL" Offset="0x1B18"/> <!-- Original name is "okuta_maru_model" ("maru" = "circle") -->
+    </File>
+</Root>

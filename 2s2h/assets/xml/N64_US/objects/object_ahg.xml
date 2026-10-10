@@ -1,0 +1,62 @@
+﻿<Root>
+    <!-- Assets for the bearded man from OOT, body is reused in MM for Cured Swamp Spider House Man (head substituted from overlay data). -->
+    <File Name="object_ahg" Segment="6">
+        <Texture Name="gAhgTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="gAhgHairLineTex" OutName="hair_line" Format="ci8" Width="16" Height="16" Offset="0x200" />
+        <Texture Name="gAhgHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x300" />
+        <Texture Name="gAhgEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x400" />
+        <Texture Name="gAhgSkinGradientTex" OutName="skin" Format="ci8" Width="8" Height="8" Offset="0x440"/>
+        <Texture Name="gAhgEyeOpenTex" OutName="eye_open" Format="ci8" Width="16" Height="16" Offset="0x480" TlutOffset="0x0"/>
+        <Texture Name="gAhgEyeHalfTex" OutName="eye_half" Format="ci8" Width="16" Height="16" Offset="0x580" TlutOffset="0x0"/>
+        <Texture Name="gAhgEyeClosedTex" OutName="eye_closed" Format="ci8" Width="16" Height="16" Offset="0x680" TlutOffset="0x0"/>
+        <Texture Name="gAhgFingersTex" OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0x780" />
+        <Texture Name="gAhgShirtTex" OutName="shirt" Format="i8" Width="8" Height="8" Offset="0x880" />
+        <Texture Name="gAhgShoesTex" OutName="shoes" Format="i8" Width="8" Height="8" Offset="0x8C0" />
+        <Texture Name="gAhgBeltBuckleTex" OutName="belt_buckle" Format="ci8" Width="32" Height="16" Offset="0x900" />
+        <Texture Name="gAhgBeltLoopTex" OutName="belt_loop" Format="ci8" Width="16" Height="16" Offset="0xB00" />
+
+        <!-- This head is overwritten in EnSth draw. -->
+        <DList Name="gAhgBeardedHeadDL" Offset="0x2FF0" />
+        <DList Name="gAhgRightHandDL" Offset="0x3400" />
+        <DList Name="gAhgRightForearmDL" Offset="0x3570" />
+        <DList Name="gAhgRightUpperArmDL" Offset="0x36A0" />
+        <DList Name="gAhgLeftHandDL" Offset="0x37D8" />
+        <DList Name="gAhgLeftForearmDL" Offset="0x3948" />
+        <DList Name="gAhgLeftUpperArmDL" Offset="0x3A78" />
+        <DList Name="gAhgTorsoDL" Offset="0x3BB0" />
+        <DList Name="gAhgRightFootDL" Offset="0x3DD8" />
+        <DList Name="gAhgRightShinDL" Offset="0x3F18" />
+        <DList Name="gAhgRightThighDL" Offset="0x4048" />
+        <DList Name="gAhgLeftFootDL" Offset="0x4180" />
+        <DList Name="gAhgLeftShinDL" Offset="0x42C0" />
+        <DList Name="gAhgLeftThighDL" Offset="0x43F0" />
+        <DList Name="gAhgPelvisDL" Offset="0x4528" />
+
+        <!-- Assets for alternate heads for Ahg, left over from OOT (Unused). -->
+        <Texture Name="gAhg2TLUT" OutName="tlut2" Format="rgba16" Width="16" Height="12" Offset="0x46C8" />
+        <Texture Name="gAhgEar2Tex" OutName="ear2" Format="ci8" Width="8" Height="8" Offset="0x4848" TlutOffset="0x46C8" />
+        <Texture Name="gAhgMouthTex" OutName="mouth" Format="ci8" Width="32" Height="16" Offset="0x4888" TlutOffset="0x46C8"  />
+        <Texture Name="gAhgEyeAndEyebrowTex" OutName="eye_with_eyebrow" Format="ci8" Width="16" Height="16" Offset="0x4A88" TlutOffset="0x46C8"  />
+        <Texture Name="gAhgRedHairTex" OutName="red_hair" Format="ci8" Width="8" Height="16" Offset="0x4B88" TlutOffset="0x46C8"  />
+        <DList Name="gAhgRedHeadDL" Offset="0x5408" />
+        <DList Name="gAhgShortHairHeadDL" Offset="0x5628" />
+
+        <Limb Name="gAhgPelvisLimb" Type="Standard" EnumName="AHG_LIMB_PELVIS" Offset="0x58A8" />
+        <Limb Name="gAhgLeftThighLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_THIGH" Offset="0x58B4" />
+        <Limb Name="gAhgLeftShinLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_SHIN" Offset="0x58C0" />
+        <Limb Name="gAhgLeftFootLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_FOOT" Offset="0x58CC" />
+        <Limb Name="gAhgRightThighLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_THIGH" Offset="0x58D8" />
+        <Limb Name="gAhgRightShinLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_SHIN" Offset="0x58E4" />
+        <Limb Name="gAhgRightFootLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_FOOT" Offset="0x58F0" />
+        <Limb Name="gAhgTorsoLimb" Type="Standard" EnumName="AHG_LIMB_CHEST" Offset="0x58FC" />
+        <Limb Name="gAhgLeftUpperArmLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_UPPER_ARM" Offset="0x5908" />
+        <Limb Name="gAhgLeftForearmLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_FOREARM" Offset="0x5914" />
+        <Limb Name="gAhgLeftHandLimb" Type="Standard" EnumName="AHG_LIMB_LEFT_HAND" Offset="0x5920" />
+        <Limb Name="gAhgRightUpperArmLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_UPPER_ARM" Offset="0x592C" />
+        <Limb Name="gAhgRightForearmLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_FOREARM" Offset="0x5938" />
+        <Limb Name="gAhgRightHandLimb" Type="Standard" EnumName="AHG_LIMB_RIGHT_HAND" Offset="0x5944" />
+        <Limb Name="gAhgHeadLimb" Type="Standard" EnumName="AHG_LIMB_HEAD" Offset="0x5950" />
+        <Skeleton Name="gAhgSkel" Type="Flex" LimbType="Standard" LimbNone="AHG_LIMB_NONE" LimbMax="AHG_LIMB_MAX" EnumName="ObjectAhgLimb" Offset="0x5998" />
+
+    </File>
+</Root>

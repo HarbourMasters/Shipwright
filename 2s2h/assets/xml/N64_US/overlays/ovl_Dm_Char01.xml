@@ -1,0 +1,8 @@
+<Root>
+    <!-- Vertices for the dynamic water that moves when Woodfall Temple is raised. -->
+    <File Name="ovl_Dm_Char01" BaseAddress="0x80AA81E0" RangeStart="0x1BE0" RangeEnd="0x28B0">
+        <Array Name="gWoodfallSceneryDynamicPoisonWaterVtx" Count="205" Offset="0x1BE0">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

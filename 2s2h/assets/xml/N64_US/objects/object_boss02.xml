@@ -1,0 +1,128 @@
+﻿<Root>
+    <!-- Assets for the Twinmold boss fight (Twinmold itself, the props in its arena, its title card, etc.)-->
+    <File Name="object_boss02" Segment="6">
+        <!-- DisplayLists and Textures for the dust that appears wherever Twinmold contacts the ground -->
+        <Texture Name="gTwinmoldDustMaskTex" OutName="dust_mask" Format="i4" Width="32" Height="32" Offset="0x0" />
+        <DList Name="gTwinmoldDustMaterialDL" Offset="0x230" />
+        <DList Name="gTwinmoldDustModelDL" Offset="0x2E0" />
+
+        <!-- Twinmold Textures -->
+        <Texture Name="gTwinmoldSkinTLUT" OutName="twinmold_skin_tlut" Format="rgba16" Width="4" Height="4" Offset="0x300" />
+        <Texture Name="gTwinmoldSnoutTLUT" OutName="twinmold_snout_tlut" Format="rgba16" Width="4" Height="4" Offset="0x320" />
+        <Texture Name="gTwinmoldVeinsTLUT" OutName="twinmold_veins_tlut" Format="rgba16" Width="4" Height="4" Offset="0x340" />
+        <Texture Name="gTwinmoldUndersideTLUT" OutName="twinmold_underside_tlut" Format="rgba16" Width="4" Height="4" Offset="0x360" />
+        <Texture Name="gTwinmoldSpikeAndMandibleTLUT" OutName="twinmold_spike_and_mandible_tlut" Format="rgba16" Width="4" Height="4" Offset="0x380" />
+        <Texture Name="gTwinmoldRedSkinTex" OutName="twinmold_red_skin" Format="ci4" Width="64" Height="64" Offset="0x3A0" TlutOffset="0x300" />
+        <Texture Name="gTwinmoldEyeTex" OutName="twinmold_eye" Format="rgba16" Width="32" Height="32" Offset="0xBA0" />
+        <Texture Name="gTwinmoldSnoutTex" OutName="twinmold_snout" Format="ci4" Width="64" Height="64" Offset="0x13A0" />
+        <Texture Name="gTwinmoldVeinsTex" OutName="twinmold_veins" Format="ci4" Width="64" Height="64" Offset="0x1BA0" />
+        <Texture Name="gTwinmoldTeethTex" OutName="twinmold_teeth" Format="rgba16" Width="16" Height="32" Offset="0x23A0" />
+        <Texture Name="gTwinmoldUndersideTex" OutName="twinmold_underside" Format="ci4" Width="64" Height="64" Offset="0x27A0" />
+        <Texture Name="gTwinmoldSpikeAndMandibleTex" OutName="twinmold_spike_and_mandible" Format="ci4" Width="64" Height="64" Offset="0x2FA0" />
+        <Texture Name="gTwinmoldAntennaTex" OutName="twinmold_antenna" Format="rgba16" Width="16" Height="16" Offset="0x37A0" />
+        <Texture Name="gTwinmoldTailGemTex" OutName="twinmold_tail_gem" Format="rgba16" Width="32" Height="32" Offset="0x39A0" />
+        <Texture Name="gTwinmoldBlueSkinTex" OutName="twinmold_blue_skin" Format="ci4" Width="64" Height="64" Offset="0x41A0" TlutOffset="0x300"/>
+
+        <!-- Unused Empty Texture Animation -->
+        <TextureAnimation Name="gTwinmoldEmpty1TexAnim" Offset="0x49A0" />
+
+        <!-- Unused, completely motionless Twinmold Head animation -->
+        <Animation Name="gTwinmoldHeadStationaryAnim" Offset="0x4A1C" />
+        
+        <!-- Twinmold Head Limb DisplayLists -->
+        <DList Name="gTwinmoldHeadDL" Offset="0x6160" />
+        <DList Name="gTwinmoldHeadLeftAntennaBackDL" Offset="0x6820" />
+        <DList Name="gTwinmoldHeadLeftAntennaFrontDL" Offset="0x68C8" />
+        <DList Name="gTwinmoldHeadRightAntennaBackDL" Offset="0x6970" />
+        <DList Name="gTwinmoldHeadRightAntennaFrontDL" Offset="0x6A18" />
+        <DList Name="gTwinmoldHeadLeftMandibleDL" Offset="0x6AC0" />
+        <DList Name="gTwinmoldHeadRightMandibleDL" Offset="0x6C68" />
+
+        <!-- DisplayLists and Textures for the destructible props in Twinmold's arena -->
+        <DList Name="gTwinmoldRuinPyramidDL" Offset="0x6FD0" />
+        <Texture Name="gTwinmoldRuinPyramidTLUT" OutName="ruin_pyramid_tlut" Format="rgba16" Width="4" Height="4" Offset="0x7158" />
+        <Texture Name="gTwinmoldRuinPyramidTex" OutName="ruin_pyramid" Format="ci4" Width="64" Height="64" Offset="0x7178" />
+        <DList Name="gRuinFragmentDL" Offset="0x7A88" />
+        <DList Name="gTwinmoldRuinPillarDL" Offset="0x7D18" />
+        <Texture Name="gTwinmoldRuinPillarTLUT" OutName="ruin_pillar_tlut" Format="rgba16" Width="4" Height="4" Offset="0x7E30" />
+        <Texture Name="gTwinmoldRuinPillarTex" OutName="ruin_pillar" Format="ci4" Width="64" Height="64" Offset="0x7E50" />
+        
+        <!-- Twinmold Title Card -->
+        <Texture Name="gTwinmoldTitleCardTex" OutName="twinmold_title_card" Format="ia8" Width="128" Height="40" Offset="0x8650" />
+
+        <!-- Twinmold Head Limbs -->
+        <Limb Name="gTwinmoldHeadRootLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_ROOT" Offset="0x9A50" />
+        <Limb Name="gTwinmoldHeadLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_HEAD" Offset="0x9A5C" />
+        <Limb Name="gTwinmoldHeadRightMandibleRootLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_RIGHT_MANDIBLE_ROOT" Offset="0x9A68" />
+        <Limb Name="gTwinmoldHeadRightMandibleLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_RIGHT_MANDIBLE" Offset="0x9A74" />
+        <Limb Name="gTwinmoldHeadLeftMandibleRootLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_LEFT_MANDIBLE_ROOT" Offset="0x9A80" />
+        <Limb Name="gTwinmoldHeadLeftMandibleLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_LEFT_MANDIBLE" Offset="0x9A8C" />
+        <Limb Name="gTwinmoldHeadRightAntennaRootLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_RIGHT_ANTENNA_ROOT" Offset="0x9A98" />
+        <Limb Name="gTwinmoldHeadRightAntennaBackLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_RIGHT_ANTENNA_BACK" Offset="0x9AA4" />
+        <Limb Name="gTwinmoldHeadRightAntennaFrontLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_RIGHT_ANTENNA_FRONT" Offset="0x9AB0" />
+        <Limb Name="gTwinmoldHeadLeftAntennaRootLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_LEFT_ANTENNA_ROOT" Offset="0x9ABC" />
+        <Limb Name="gTwinmoldHeadLeftAntennaBackLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_LEFT_ANTENNA_BACK" Offset="0x9AC8" />
+        <Limb Name="gTwinmoldHeadLeftAntennaFrontLimb" Type="Standard" EnumName="TWINMOLD_HEAD_LIMB_LEFT_ANTENNA_FRONT" Offset="0x9AD4" />
+
+        <!-- Twinmold Head Skeleton -->
+        <Skeleton Name="gTwinmoldHeadSkel" Type="Normal" LimbType="Standard" LimbNone="TWINMOLD_HEAD_LIMB_NONE" LimbMax="TWINMOLD_HEAD_LIMB_MAX" EnumName="TwinmoldHeadLimb" Offset="0x9B10" />
+
+        <!-- The only used animation for Twinmold's Head -->
+        <Animation Name="gTwinmoldHeadFlyAnim" Offset="0x9C78" />
+
+        <!-- Unused Empty Texture Animation -->
+        <TextureAnimation Name="gTwinmoldEmpty2TexAnim" Offset="0x9C90" />
+
+        <!-- Twinmold Body Limb DisplayLists -->
+        <DList Name="gTwinmoldBodySegment1DL" Offset="0xECF0" />
+        <DList Name="gTwinmoldBodySegment2DL" Offset="0xEF90" />
+        <DList Name="gTwinmoldBodySegment3DL" Offset="0xF310" />
+        <DList Name="gTwinmoldBodySegment4DL" Offset="0xF690" />
+        <DList Name="gTwinmoldBodySegment5DL" Offset="0xFA10" />
+        <DList Name="gTwinmoldBodySegment6DL" Offset="0xFD90" />
+        <DList Name="gTwinmoldBodySegment7DL" Offset="0x10110" />
+        <DList Name="gTwinmoldBodySegment8DL" Offset="0x10490" />
+        <DList Name="gTwinmoldBodySegment9DL" Offset="0x10810" />
+        <DList Name="gTwinmoldBodySegment10DL" Offset="0x10B90" />
+        <DList Name="gTwinmoldBodySegment11DL" Offset="0x10F10" />
+        <DList Name="gTwinmoldBodySegment12DL" Offset="0x11290" />
+        <DList Name="gTwinmoldBodySegment13DL" Offset="0x11610" />
+        <DList Name="gTwinmoldBodySegment14DL" Offset="0x11990" />
+        <DList Name="gTwinmoldBodySegment15DL" Offset="0x11D10" />
+        <DList Name="gTwinmoldBodySegment16DL" Offset="0x12090" />
+        <DList Name="gTwinmoldBodySegment17DL" Offset="0x12410" />
+        <DList Name="gTwinmoldBodySegment18DL" Offset="0x12790" />
+        <DList Name="gTwinmoldBodySegment19DL" Offset="0x12B10" />
+        <DList Name="gTwinmoldBodySegment20DL" Offset="0x12E90" />
+        <DList Name="gTwinmoldBodySegment21DL" Offset="0x13210" />
+        <DList Name="gTwinmoldBodyTailDL" Offset="0x13590" />
+
+        <!-- Twinmold Body Limbs -->
+        <Limb Name="gTwinmoldBodyRootLimb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_ROOT" Offset="0x13818" />
+        <Limb Name="gTwinmoldBodySegment1Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_1" Offset="0x13824" />
+        <Limb Name="gTwinmoldBodySegment2Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_2" Offset="0x13830" />
+        <Limb Name="gTwinmoldBodySegment3Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_3" Offset="0x1383C" />
+        <Limb Name="gTwinmoldBodySegment4Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_4" Offset="0x13848" />
+        <Limb Name="gTwinmoldBodySegment5Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_5" Offset="0x13854" />
+        <Limb Name="gTwinmoldBodySegment6Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_6" Offset="0x13860" />
+        <Limb Name="gTwinmoldBodySegment7Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_7" Offset="0x1386C" />
+        <Limb Name="gTwinmoldBodySegment8Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_8" Offset="0x13878" />
+        <Limb Name="gTwinmoldBodySegment9Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_9" Offset="0x13884" />
+        <Limb Name="gTwinmoldBodySegment10Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_10" Offset="0x13890" />
+        <Limb Name="gTwinmoldBodySegment11Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_11" Offset="0x1389C" />
+        <Limb Name="gTwinmoldBodySegment12Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_12" Offset="0x138A8" />
+        <Limb Name="gTwinmoldBodySegment13Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_13" Offset="0x138B4" />
+        <Limb Name="gTwinmoldBodySegment14Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_14" Offset="0x138C0" />
+        <Limb Name="gTwinmoldBodySegment15Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_15" Offset="0x138CC" />
+        <Limb Name="gTwinmoldBodySegment16Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_16" Offset="0x138D8" />
+        <Limb Name="gTwinmoldBodySegment17Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_17" Offset="0x138E4" />
+        <Limb Name="gTwinmoldBodySegment18Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_18" Offset="0x138F0" />
+        <Limb Name="gTwinmoldBodySegment19Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_19" Offset="0x138FC" />
+        <Limb Name="gTwinmoldBodySegment20Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_20" Offset="0x13908" />
+        <Limb Name="gTwinmoldBodySegment21Limb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_SEGMENT_21" Offset="0x13914" />
+        <Limb Name="gTwinmoldBodyTailLimb" Type="Standard" EnumName="TWINMOLD_BODY_LIMB_TAIL" Offset="0x13920" />
+
+        <!-- Unused Twinmold Body Skeleton -->
+        <Skeleton Name="gTwinmoldBodySkel" Type="Flex" LimbType="Standard" LimbNone="TWINMOLD_BODY_LIMB_NONE" LimbMax="TWINMOLD_BODY_LIMB_MAX" EnumName="TwinmoldBodyLimb" Offset="0x13988" />
+    </File>
+</Root>

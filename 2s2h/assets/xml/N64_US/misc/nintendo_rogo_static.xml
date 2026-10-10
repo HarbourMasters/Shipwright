@@ -1,0 +1,8 @@
+<Root>
+    <File Name="nintendo_rogo_static" Segment="1" Game="MM">
+        <Texture Name="gNintendo64LogoTextTex" OutName="nintendo_64_logo_text" Format="i8" Width="192" Height="32" Offset="0x0"/>
+        <Texture Name="gNintendo64LogoTextShineTex" OutName="nintendo_64_logo_text_shine" Format="i8" Width="32" Height="32" Offset="0x1800"/>
+        <DList Name="gNintendo64LogoNDL" Offset="0x2720"/>
+        <Texture Name="gNintendo64LogoNShineTex" OutName="nintendo_64_logo_n_shine" Format="i8" Width="32" Height="32" Offset="0x29C0"/>
+    </File>
+</Root>

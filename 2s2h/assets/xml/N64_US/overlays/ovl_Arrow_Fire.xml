@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Arrow_Fire" BaseAddress="0x80920340" RangeStart="0xAB0" RangeEnd="0x1ED0">
+        <Texture Name="gFireArrowMaskTex" OutName="fire_arrow_mask" Format="i8" Width="32" Height="64" Offset="0x12B0"/>
+        <Texture Name="gFireArrowTex" OutName="fire_arrow" Format="i8" Width="32" Height="64" Offset="0xAB0"/>
+        <Array Name="gFireArrowVtx" Count="43" Offset="0x1AB0">
+            <Vtx/>
+        </Array>
+        <DList Name="gFireArrowMaterialDL" Offset="0x1D60"/>
+        <DList Name="gFireArrowModelDL" Offset="0x1E10"/> <!-- Original name might be "m_arrow_modelT_fire" -->
+    </File>
+</Root>

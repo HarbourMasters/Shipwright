@@ -1,0 +1,11 @@
+﻿<Root>
+    <!-- Get Item Draw: Soldout (unused) -->
+    <File Name="object_gi_soldout" Segment="6">
+
+        <!-- Soldout Textures -->
+        <Texture Name="gGiSoldOutTex" OutName="gi_sold_out" Format="ia8" Width="32" Height="32" Offset="0x0" />
+
+        <!-- Soldout Display Lists -->
+        <DList Name="gGiSoldOutDL" Offset="0x440" />
+    </File>
+</Root>

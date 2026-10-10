@@ -1,0 +1,17 @@
+<Root>
+    <File Name="ovl_Dm_Char08" BaseAddress="0x80AAF050" RangeStart="0x2320" RangeEnd="0x266C">
+        <Array Name="sTurtleGreatBayTempleColPolygons" Count="19" Offset="0x2350">
+            <CollisionPoly/>
+        </Array>
+        <Array Name="sTurtleGreatBayTempleColPolygons2" Count="19" Offset="0x2480">
+            <CollisionPoly/>
+        </Array>
+        <Array Name="sTurtleGreatBayTempleColVertices" Count="12" Offset="0x25B0">
+            <Vector Type="s16" Dimensions="3" />
+        </Array>
+        <Array Name="sTurtleGreatBayTempleColVertices2" Count="12" Offset="0x25F8">
+            <Vector Type="s16" Dimensions="3" />
+        </Array>
+        <Collision Name="sTurtleGreatBayTempleCol" Offset="0x2640"/>
+    </File>
+</Root>

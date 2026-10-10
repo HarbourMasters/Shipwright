@@ -1,0 +1,1540 @@
+﻿<Root>
+    <ExternalFile XmlPath="misc/link_animetion.xml" OutPath="assets/misc/link_animetion/"/>
+    <File Name="gameplay_keep" Segment="4">
+        <!-- Bottles -->
+        <Texture Name="gBottleTex" OutName="bottle" Format="i4" Width="16" Height="16" Offset="0x0" />
+        <DList Name="gBottleContentsDL" Offset="0x320" />
+        <DList Name="gBottleGlassDL" Offset="0x3E0" />
+        <Texture Name="gBottleContentsTex" OutName="bottle_contents" Format="i8" Width="16" Height="32" Offset="0x508" />
+        <Texture Name="gBottleGlassTex" OutName="bottle_glass" Format="i8" Width="8" Height="8" Offset="0x708" />
+
+        <!-- Hookshot -->
+        <DList Name="gHookshotChainDL" Offset="0x8D0" />
+        <Texture Name="gHookshotChainLinkTex" OutName="hookshot_chain_link" Format="rgba16" Width="16" Height="32" Offset="0x988" />
+
+        <!-- Swords -->
+        <DList Name="gRazorSwordHandlePart4DL" Offset="0x19B0" />
+        <DList Name="gRazorSwordHandlePart3DL" Offset="0x1B20" />
+        <DList Name="gRazorSwordHandlePart2DL" Offset="0x1BC8" />
+        <DList Name="gRazorSwordHandlePart1DL" Offset="0x1C60" />
+        <DList Name="gRazorSwordHandleDL" Offset="0x1D00" />
+        <DList Name="gRazorSwordBladePart7DL" Offset="0x1D28" />
+        <DList Name="gRazorSwordBladePart6DL" Offset="0x1DC8" />
+        <DList Name="gRazorSwordBladePart5DL" Offset="0x1E58" />
+        <DList Name="gRazorSwordBladePart4DL" Offset="0x1F08" />
+        <DList Name="gRazorSwordBladePart3DL" Offset="0x1FA8" />
+        <DList Name="gRazorSwordBladePart2DL" Offset="0x2038" />
+        <DList Name="gRazorSwordBladePart1DL" Offset="0x20C8" />
+        <DList Name="gRazorSwordBladeDL" Offset="0x2168" />
+        <DList Name="gKokiriSwordHandleDL" Offset="0x21A8" />
+        <DList Name="gKokiriSwordBladePart8DL" Offset="0x2480" />
+        <DList Name="gKokiriSwordBladePart7DL" Offset="0x2508" />
+        <DList Name="gKokiriSwordBladePart6DL" Offset="0x2590" />
+        <DList Name="gKokiriSwordBladePart5DL" Offset="0x2618" />
+        <DList Name="gKokiriSwordBladePart4DL" Offset="0x26A0" />
+        <DList Name="gKokiriSwordBladePart3DL" Offset="0x2728" />
+        <DList Name="gKokiriSwordBladePart2DL" Offset="0x27B0" />
+        <DList Name="gKokiriSwordBladePart1DL" Offset="0x2838" />
+        <DList Name="gKokiriSwordBladeDL" Offset="0x28C0" />
+        <Texture Name="gKokiriSwordHandleTLUT" OutName="kokiri_sword_handle_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2908" />
+        <Texture Name="gKokiriSwordHandlePommelTex" OutName="kokiri_sword_handle_pommel" Format="rgba16" Width="8" Height="8" Offset="0x2B08" />
+        <Texture Name="gRazorSwordHandleGripTex" OutName="razor_sword_handle_grip" Format="rgba16" Width="16" Height="16" Offset="0x2B88" />
+        <Texture Name="gKokiriSwordHandleCrossGuardTex" OutName="kokiri_sword_handle_cross_gaurd" Format="ci8" Width="8" Height="8" Offset="0x2D88" />
+        <Texture Name="gKokiriSwordHandleGripTex" OutName="kokiri_sword_handle_grip" Format="i8" Width="8" Height="8" Offset="0x2DC8" />
+        <Texture Name="gRazorSwordHandleDesignTex" OutName="razor_sword_handle_design" Format="rgba16" Width="16" Height="16" Offset="0x2E08" />
+        <Texture Name="gSwordMetalTex" OutName="sword_metal" Format="i8" Width="8" Height="8" Offset="0x3008" />
+        <DList Name="gKokiriSwordDL" Offset="0x3050" />
+        <DList Name="gRazorSwordDL" Offset="0x3060" />
+
+        <!-- 2S2H [Port] - Increase referenced texture's extraction size -->
+        <DList Name="gDekuStickDL" Offset="0x32B0" /> <!-- @bug Supplies the wrong size to gsDPLoadTextureBlock, meaning it uses part of gLinkPauseChildJointTable as if it were a texture. -->
+
+        <Array Name="gLinkMaskVtx" Count="157" Offset="0x3400"> <!-- Rendering the vertices shows the same shape as the Link Mask in object_stk -->
+            <Vtx/>
+        </Array>
+
+        <!-- Transformation Masks -->
+        <DList Name="gZoraMaskDL" Offset="0x5360" />
+        <DList Name="gDekuMaskDL" Offset="0x56C0" />
+        <DList Name="gGoronMaskDL" Offset="0x5A10" />
+        <Texture Name="gLinkMaskTLUT" OutName="link_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5DB8" /> <!-- Unused, leftover remnant same as the vertices -->
+        <Texture Name="gGoronMaskTLUT" OutName="goron_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5FB8" />
+        <Texture Name="gZoraMaskTLUT" OutName="zora_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x61B8" />
+        <Texture Name="gGoronMaskMouthTex" OutName="goron_mask_mouth" Format="ci8" Width="64" Height="32" Offset="0x63B8" />
+        <Texture Name="gGoronMaskInsideEyeTex" OutName="goron_mask_inside_eye" Format="ci8" Width="32" Height="32" Offset="0x6BB8" />
+        <Texture Name="gGoronMaskNoseEyebrowTex" OutName="goron_mask_nose_eyebrow" Format="ci8" Width="8" Height="8" Offset="0x6FB8" />
+        <Texture Name="gGoronMaskHairTex" OutName="goron_mask_hair" Format="ci8" Width="16" Height="16" Offset="0x6FF8" />
+        <Texture Name="gGoronMaskEyeTex" OutName="goron_mask_eye" Format="rgba32" Width="32" Height="32" Offset="0x70F8" />
+        <Texture Name="gDekuMaskEyeTex" OutName="deku_mask_eye" Format="rgba16" Width="64" Height="32" Offset="0x80F8" />
+        <Texture Name="gDekuMaskFaceTex" OutName="deku_mask_face" Format="rgba16" Width="16" Height="16" Offset="0x90F8" />
+        <Texture Name="gDekuMaskHairTex" OutName="deku_mask_hair" Format="rgba16" Width="32" Height="32" Offset="0x92F8" />
+        <Texture Name="gZoraMaskInsideEyeTex" OutName="zora_mask_inside_eye" Format="ci8" Width="32" Height="32" Offset="0x9AF8" />
+        <Texture Name="gZoraMaskMouthTex" OutName="zora_mask_mouth" Format="ci8" Width="32" Height="32" Offset="0x9EF8" />
+        <Texture Name="gZoraMaskNoseTex" OutName="zora_mask_nose" Format="ci8" Width="8" Height="8" Offset="0xA2F8" />
+        <Texture Name="gZoraMaskSpotsTex" OutName="zora_mask_spots" Format="ci8" Width="16" Height="32" Offset="0xA338" />
+        <Texture Name="gZoraMaskEyeTex" OutName="zora_mask_eye" Format="i8" Width="32" Height="32" Offset="0xA538" />
+
+        <!-- Fierce Deity Mask-->
+        <DList Name="gFierceDeityMaskDL" Offset="0xB260" />
+        <Texture Name="gFierceDeityMaskTLUT" OutName="fierce_deity_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0xB6B0" />
+        <Texture Name="gFierceDeityMaskHairTex" OutName="fierce_deity_mask_hair" Format="ci8" Width="32" Height="32" Offset="0xB8B0" />
+        <Texture Name="gFierceDeityMaskEyesTex" OutName="fierce_deity_mask_eyes" Format="ci8" Width="64" Height="32" Offset="0xBCB0" />
+        <Texture Name="gFierceDeityMaskMouthTex" OutName="fierce_deity_mask_mouth" Format="ci8" Width="32" Height="16" Offset="0xC4B0" />
+        <Texture Name="gFierceDeityMaskEarTex" OutName="fierce_deity_mask_ear" Format="ci8" Width="16" Height="16" Offset="0xC6B0" />
+        <Texture Name="gFierceDeityMaskHatTex" OutName="fierce_deity_mask_hat" Format="rgba16" Width="8" Height="8" Offset="0xC7B0" />
+
+        <Texture Name="gameplay_keep_Tex_00C830" OutName="tex_00C830" Format="rgba16" Width="16" Height="16" Offset="0xC830" />
+        <Texture Name="gameplay_keep_Tex_00CA30" OutName="tex_00CA30" Format="rgba16" Width="16" Height="16" Offset="0xCA30" />
+        <!-- 2S2H [Port] Additional entry for authentic overflowed texture usage. This entry has its offset off by "one pixel" due to ZAPD not allowing duplicates -->
+        <Texture Name="gameplay_keep_Tex_00CA30_Overflow" OutName="tex_00CA30_overflow" Format="rgba16" Width="32" Height="32" Offset="0xCA2E" />
+
+        <!-- 2S2H [Port] - gDekuStickDL loads this as a 16x16 texture, despite it being 8x8. We need to extract this extra 'garbage' data too -->
+        <Texture Name="gDekuStickTex" OutName="deku_stick" Format="i8" Width="16" Height="16" Offset="0xCC30" />
+
+        <!-- Leftover joint tables from Ocarina of Time's Pause Menu. -->
+        <Array Name="gLinkPauseChildJointTable" Count="24" Offset="0xCC70">
+            <Vector Type="s16" Dimensions="3"/>
+        </Array>
+        <Array Name="gLinkPauseChildDekuShieldJointTable" Count="24" Offset="0xCD00">
+            <Vector Type="s16" Dimensions="3"/>
+        </Array>
+        <Array Name="gLinkPauseAdultBgsJointTable" Count="24" Offset="0xCD90">
+            <Vector Type="s16" Dimensions="3"/>
+        </Array>
+        <Array Name="gLinkPauseAdultJointTable" Count="24" Offset="0xCE20">
+            <Vector Type="s16" Dimensions="3"/>
+        </Array>
+        <Array Name="gLinkPauseAdultShieldJointTable" Count="24" Offset="0xCEB0">
+            <Vector Type="s16" Dimensions="3"/>
+        </Array>
+
+        <!-- Player Animations -->
+        <PlayerAnimation Name="gPlayerAnim_al_elf_tobidasi" Offset="0xCF40" /> <!-- Original name might be "al_elf_tobidasi" -->
+        <PlayerAnimation Name="gPlayerAnim_al_fuwafuwa" Offset="0xCF48" /> <!-- Original name might be "al_fuwafuwa" -->
+        <PlayerAnimation Name="gPlayerAnim_al_fuwafuwa_loop" Offset="0xCF50" /> <!-- Original name might be "al_fuwafuwa_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_al_fuwafuwa_modori" Offset="0xCF58" /> <!-- Original name might be "al_fuwafuwa_modori" -->
+        <PlayerAnimation Name="gPlayerAnim_al_gaku" Offset="0xCF60" /> <!-- Original name might be "al_gaku" -->
+        <PlayerAnimation Name="gPlayerAnim_al_hensin" Offset="0xCF68" /> <!-- Original name might be "al_hensin" -->
+        <PlayerAnimation Name="gPlayerAnim_al_hensin_loop" Offset="0xCF70" /> <!-- Original name might be "al_hensin_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_al_no" Offset="0xCF78" /> <!-- Original name might be "al_no" -->
+        <PlayerAnimation Name="gPlayerAnim_al_unun" Offset="0xCF80" /> <!-- Original name might be "al_unun" -->
+        <PlayerAnimation Name="gPlayerAnim_al_yareyare" Offset="0xCF88" /> <!-- Original name might be "al_yareyare" -->
+        <PlayerAnimation Name="gPlayerAnim_al_yes" Offset="0xCF90" /> <!-- Original name might be "al_yes" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_dance_loop" Offset="0xCF98" /> <!-- Original name might be "alink_dance_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_ee" Offset="0xCFA0" /> <!-- Original name might be "alink_ee" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_ee_loop" Offset="0xCFA8" /> <!-- Original name might be "alink_ee_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_fukitobu" Offset="0xCFB0" /> <!-- Original name might be "alink_fukitobu" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFB8" Offset="0xCFB8" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFC0" Offset="0xCFC0" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFC8" Offset="0xCFC8" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFD0" Offset="0xCFD0" />
+        <PlayerAnimation Name="gPlayerAnim_alink_kaitenmiss" Offset="0xCFD8" /> <!-- Original name might be "alink_kaitenmiss" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_kyoro" Offset="0xCFE0" /> <!-- Original name might be "alink_kyoro" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_kyoro_loop" Offset="0xCFE8" /> <!-- Original name might be "alink_kyoro_loop" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFF0" Offset="0xCFF0" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00CFF8" Offset="0xCFF8" />
+        <PlayerAnimation Name="gPlayerAnim_alink_ozigi" Offset="0xD000" /> <!-- Original name might be "alink_ozigi" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_ozigi_loop" Offset="0xD008" /> <!-- Original name might be "alink_ozigi_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_ozigi_modori" Offset="0xD010" /> <!-- Original name might be "alink_ozigi_modori" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_powerup" Offset="0xD018" /> <!-- Original name might be "alink_powerup" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_powerup_loop" Offset="0xD020" /> <!-- Original name might be "alink_powerup_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_rakkatyu" Offset="0xD028" /> <!-- Original name might be "alink_rakkatyu" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_somukeru" Offset="0xD030" /> <!-- Original name might be "alink_somukeru" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_somukeru_loop" Offset="0xD038" /> <!-- Original name might be "alink_somukeru_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_alink_tereru" Offset="0xD040" /> <!-- Original name might be "alink_tereru" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D048" Offset="0xD048" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D050" Offset="0xD050" />
+        <PlayerAnimation Name="gPlayerAnim_alink_yurayura" Offset="0xD058" /> <!-- Original name might be "alink_yurayura" -->
+        <PlayerAnimation Name="gPlayerAnim_bajyo_furikaeru" Offset="0xD060" /> <!-- Original name might be "bajyo_furikaeru" -->
+        <PlayerAnimation Name="gPlayerAnim_bajyo_walk" Offset="0xD068" /> <!-- Original name might be "bajyo_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_dakisime" Offset="0xD070" /> <!-- Original name might be "cl_dakisime" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_dakisime_loop" Offset="0xD078" /> <!-- Original name might be "cl_dakisime_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_furafura" Offset="0xD080" /> <!-- Original name might be "cl_furafura" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_hoo" Offset="0xD088" /> <!-- Original name might be "cl_hoo" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_jibun_miru" Offset="0xD090" /> <!-- Original name might be "cl_jibun_miru" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_kubisime" Offset="0xD098" /> <!-- Original name might be "cl_kubisime" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D0A0" Offset="0xD0A0" />
+        <PlayerAnimation Name="gPlayerAnim_cl_maskoff" Offset="0xD0A8" /> <!-- Original name might be "cl_maskoff" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_msbowait" Offset="0xD0B0" /> <!-- Original name might be "cl_msbowait" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_nigeru" Offset="0xD0B8" /> <!-- Original name might be "cl_nigeru" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_ononoki" Offset="0xD0C0" /> <!-- Original name might be "cl_ononoki" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_setmask" Offset="0xD0C8" /> <!-- Original name might be "cl_setmask" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_setmaskend" Offset="0xD0D0" /> <!-- Original name might be "cl_setmaskend" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_tewofuru" Offset="0xD0D8" /> <!-- Original name might be "cl_tewofuru" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_tobikakaru" Offset="0xD0E0" /> <!-- Original name might be "cl_tobikakaru" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_uma_leftup" Offset="0xD0E8" /> <!-- Original name might be "cl_uma_leftup" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_uma_rightup" Offset="0xD0F0" /> <!-- Original name might be "cl_uma_rightup" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_umamiage" Offset="0xD0F8" /> <!-- Original name might be "cl_umamiage" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_umamiage_loop" Offset="0xD100" /> <!-- Original name might be "cl_umamiage_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_umanoru" Offset="0xD108" /> <!-- Original name might be "cl_umanoru" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_umanoru_loop" Offset="0xD110" /> <!-- Original name might be "cl_umanoru_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_wakare" Offset="0xD118" /> <!-- Original name might be "cl_wakare" -->
+        <PlayerAnimation Name="gPlayerAnim_cl_wakare_loop" Offset="0xD120" /> <!-- Original name might be "cl_wakare_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_Tbox_open" Offset="0xD128" /> <!-- Original name is "clink_demo_Tbox_open" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_atozusari" Offset="0xD130" /> <!-- Original name is "clink_demo_atozusari" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_bashi" Offset="0xD138" /> <!-- Original name is "clink_demo_bashi" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_doorA_link" Offset="0xD140" /> <!-- Original name is "clink_demo_doorA_link" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_doorB_link" Offset="0xD148" /> <!-- Original name is "clink_demo_doorB_link" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_futtobi" Offset="0xD150" /> <!-- Original name is "clink_demo_futtobi" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_get1" Offset="0xD158" /> <!-- Original name is "clink_demo_get1" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_get2" Offset="0xD160" /> <!-- Original name is "clink_demo_get2" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_get3" Offset="0xD168" /> <!-- Original name is "clink_demo_get3" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_goto_future" Offset="0xD170" /> <!-- Original name is "clink_demo_goto_future" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_koutai" Offset="0xD178" /> <!-- Original name is "clink_demo_koutai" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_koutai_kennuki" Offset="0xD180" /> <!-- Original name is "clink_demo_koutai_kennuki" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_koutai_wait" Offset="0xD188" /> <!-- Original name is "clink_demo_koutai_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_mimawasi" Offset="0xD190" /> <!-- Original name is "clink_demo_mimawasi" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_mimawasi_wait" Offset="0xD198" /> <!-- Original name is "clink_demo_mimawasi_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_miokuri" Offset="0xD1A0" /> <!-- Original name is "clink_demo_miokuri" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_miokuri_wait" Offset="0xD1A8" /> <!-- Original name is "clink_demo_miokuri_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_nozoki" Offset="0xD1B0" /> <!-- Original name is "clink_demo_nozoki" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_return_to_future" Offset="0xD1B8" /> <!-- Original name is "clink_demo_return_to_future" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_standup" Offset="0xD1C0" /> <!-- Original name is "clink_demo_standup" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_demo_standup_wait" Offset="0xD1C8" /> <!-- Original name is "clink_demo_standup_wait" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D1D0" Offset="0xD1D0" />
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_endAL" Offset="0xD1D8" /> <!-- Original name is "clink_normal_climb_endAL" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_endAR" Offset="0xD1E0" /> <!-- Original name is "clink_normal_climb_endAR" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_endBL" Offset="0xD1E8" /> <!-- Original name is "clink_normal_climb_endBL" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_endBR" Offset="0xD1F0" /> <!-- Original name is "clink_normal_climb_endBR" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_startA" Offset="0xD1F8" /> <!-- Original name is "clink_normal_climb_startA" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_startB" Offset="0xD200" /> <!-- Original name is "clink_normal_climb_startB" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_upL" Offset="0xD208" /> <!-- Original name is "clink_normal_climb_upL" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_climb_upR" Offset="0xD210" /> <!-- Original name is "clink_normal_climb_upR" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_defense_ALL" Offset="0xD218" /> <!-- Original name is "clink_normal_defense_ALL" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_okarina_walkB" Offset="0xD220" /> <!-- Original name might be "clink_normal_okarina_walkB" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_normal_okarina_walk" Offset="0xD228" /> <!-- Original name might be "clink_normal_okarina_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_negaeri" Offset="0xD230" /> <!-- Original name is "clink_op3_negaeri" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_okiagari" Offset="0xD238" /> <!-- Original name is "clink_op3_okiagari" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_tatiagari" Offset="0xD240" /> <!-- Original name is "clink_op3_tatiagari" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_wait1" Offset="0xD248" /> <!-- Original name is "clink_op3_wait1" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_wait2" Offset="0xD250" /> <!-- Original name is "clink_op3_wait2" -->
+        <PlayerAnimation Name="gPlayerAnim_clink_op3_wait3" Offset="0xD258" /> <!-- Original name is "clink_op3_wait3" -->
+        <PlayerAnimation Name="gPlayerAnim_d_link_imanodare" Offset="0xD260" /> <!-- Original name is "d_link_imanodare" -->
+        <PlayerAnimation Name="gPlayerAnim_d_link_orooro" Offset="0xD268" /> <!-- Original name is "d_link_orooro" -->
+        <PlayerAnimation Name="gPlayerAnim_d_link_orowait" Offset="0xD270" /> <!-- Original name is "d_link_orowait" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D278" Offset="0xD278" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D280" Offset="0xD280" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D288" Offset="0xD288" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D290" Offset="0xD290" />
+        <PlayerAnimation Name="gPlayerAnim_demo_link_nwait" Offset="0xD298" /> <!-- Original name is "demo_link_nwait" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_link_orosuu" Offset="0xD2A0" /> <!-- Original name is "demo_link_orosuu" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_link_tewatashi" Offset="0xD2A8" /> <!-- Original name is "demo_link_tewatashi" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_link_twait" Offset="0xD2B0" /> <!-- Original name is "demo_link_twait" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D2B8" Offset="0xD2B8" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D2C0" Offset="0xD2C0" />
+        <PlayerAnimation Name="gPlayerAnim_demo_pikupiku" Offset="0xD2C8" /> <!-- Original name might be "demo_pikupiku" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_rakka" Offset="0xD2D0" /> <!-- Original name might be "demo_rakka" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_suwari1" Offset="0xD2D8" /> <!-- Original name might be "demo_suwari1" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_suwari2" Offset="0xD2E0" /> <!-- Original name might be "demo_suwari2" -->
+        <PlayerAnimation Name="gPlayerAnim_demo_suwari3" Offset="0xD2E8" /> <!-- Original name might be "demo_suwari3" -->
+        <PlayerAnimation Name="gPlayerAnim_dl_jibunmiru" Offset="0xD2F0" /> <!-- Original name might be "dl_jibunmiru" -->
+        <PlayerAnimation Name="gPlayerAnim_dl_jibunmiru_wait" Offset="0xD2F8" /> <!-- Original name might be "dl_jibunmiru_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_dl_kokeru" Offset="0xD300" /> <!-- Original name might be "dl_kokeru" -->
+        <PlayerAnimation Name="gPlayerAnim_dl_yusaburu" Offset="0xD308" /> <!-- Original name might be "dl_yusaburu" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D310" Offset="0xD310" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D318" Offset="0xD318" />
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00D320" Offset="0xD320" />
+        <PlayerAnimation Name="gPlayerAnim_kf_awase" Offset="0xD328" /> <!-- Original name might be "kf_awase" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_dakiau" Offset="0xD330" /> <!-- Original name might be "kf_dakiau" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_dakiau_loop" Offset="0xD338" /> <!-- Original name might be "kf_dakiau_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_hanare" Offset="0xD340" /> <!-- Original name might be "kf_hanare" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_hanare_loop" Offset="0xD348" /> <!-- Original name might be "kf_hanare_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_miseau" Offset="0xD350" /> <!-- Original name might be "kf_miseau" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_omen" Offset="0xD358" /> <!-- Original name might be "kf_omen" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_omen_loop" Offset="0xD360" /> <!-- Original name might be "kf_omen_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_kf_tetunagu_loop" Offset="0xD368" /> <!-- Original name might be "kf_tetunagu_loop" -->
+        <PlayerAnimation Name="gPlayerAnim_kolink_odoroki_demo" Offset="0xD370" /> <!-- Original name is "kolink_odoroki_demo" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_LLside_kiru_endL" Offset="0xD378" /> <!-- Original name is "link_anchor_LLside_kiru_endL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_LLside_kiru_finsh_endR" Offset="0xD380" /> <!-- Original name is "link_anchor_LLside_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_LRside_kiru_endR" Offset="0xD388" /> <!-- Original name is "link_anchor_LRside_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_LRside_kiru_finsh_endL" Offset="0xD390" /> <!-- Original name is "link_anchor_LRside_kiru_finsh_endL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lnormal_kiru_endR" Offset="0xD398" /> <!-- Original name is "link_anchor_Lnormal_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR" Offset="0xD3A0" /> <!-- Original name is "link_anchor_Lnormal_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lpierce_kiru_endL" Offset="0xD3A8" /> <!-- Original name is "link_anchor_Lpierce_kiru_endL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR" Offset="0xD3B0" /> <!-- Original name is "link_anchor_Lpierce_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lrolling_kiru_endR" Offset="0xD3B8" /> <!-- Original name is "link_anchor_Lrolling_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lside_kiru_endR" Offset="0xD3C0" /> <!-- Original name is "link_anchor_Lside_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Lside_kiru_finsh_endR" Offset="0xD3C8" /> <!-- Original name is "link_anchor_Lside_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Rside_kiru_endR" Offset="0xD3D0" /> <!-- Original name is "link_anchor_Rside_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_Rside_kiru_finsh_endR" Offset="0xD3D8" /> <!-- Original name is "link_anchor_Rside_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_anchor2fighter" Offset="0xD3E0" /> <!-- Original name is "link_anchor_anchor2fighter" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_back_brake" Offset="0xD3E8" /> <!-- Original name is "link_anchor_back_brake" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_back_hitR" Offset="0xD3F0" /> <!-- Original name is "link_anchor_back_hitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_back_walk" Offset="0xD3F8" /> <!-- Original name is "link_anchor_back_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_defense_hit" Offset="0xD400" /> <!-- Original name is "link_anchor_defense_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_defense_long_hitL" Offset="0xD408" /> <!-- Original name is "link_anchor_defense_long_hitL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_defense_long_hitR" Offset="0xD410" /> <!-- Original name is "link_anchor_defense_long_hitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_front_hitR" Offset="0xD418" /> <!-- Original name is "link_anchor_front_hitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_landingR" Offset="0xD420" /> <!-- Original name is "link_anchor_landingR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_normal_kiru_finsh_endR" Offset="0xD428" /> <!-- Original name is "link_anchor_normal_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_pierce_kiru_endR" Offset="0xD430" /> <!-- Original name is "link_anchor_pierce_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_pierce_kiru_finsh_endR" Offset="0xD438" /> <!-- Original name is "link_anchor_pierce_kiru_finsh_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_rolling_kiru_endR" Offset="0xD440" /> <!-- Original name is "link_anchor_rolling_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_side_walkL" Offset="0xD448" /> <!-- Original name is "link_anchor_side_walkL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_side_walkR" Offset="0xD450" /> <!-- Original name is "link_anchor_side_walkR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitL2defense" Offset="0xD458" /> <!-- Original name is "link_anchor_waitL2defense" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitL2defense_long" Offset="0xD460" /> <!-- Original name is "link_anchor_waitL2defense_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitL" Offset="0xD468" /> <!-- Original name is "link_anchor_waitL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitR2defense" Offset="0xD470" /> <!-- Original name is "link_anchor_waitR2defense" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitR2defense_long" Offset="0xD478" /> <!-- Original name is "link_anchor_waitR2defense_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_anchor_waitR" Offset="0xD480" /> <!-- Original name is "link_anchor_waitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_boom_throw_waitL" Offset="0xD488" /> <!-- Original name is "link_boom_throw_waitL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_boom_throw_waitR" Offset="0xD490" /> <!-- Original name is "link_boom_throw_waitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_bug_in" Offset="0xD498" /> <!-- Original name might be "link_bottle_bug_in" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_bug_miss" Offset="0xD4A0" /> <!-- Original name is "link_bottle_bug_miss" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_bug_out" Offset="0xD4A8" /> <!-- Original name is "link_bottle_bug_out" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_drink_demo_end" Offset="0xD4B0" /> <!-- Original name is "link_bottle_drink_demo_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_drink_demo_start" Offset="0xD4B8" /> <!-- Original name is "link_bottle_drink_demo_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_drink_demo_wait" Offset="0xD4C0" /> <!-- Original name is "link_bottle_drink_demo_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_fish_in" Offset="0xD4C8" /> <!-- Original name might be "link_bottle_fish_in" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_fish_miss" Offset="0xD4D0" /> <!-- Original name is "link_bottle_fish_miss" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_fish_out" Offset="0xD4D8" /> <!-- Original name is "link_bottle_fish_out" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_read" Offset="0xD4E0" /> <!-- Original name is "link_bottle_read" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bottle_read_end" Offset="0xD4E8" /> <!-- Original name is "link_bottle_read_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_bow_ready" Offset="0xD4F0" /> <!-- Original name is "link_bow_bow_ready" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_bow_shoot_end" Offset="0xD4F8" /> <!-- Original name is "link_bow_bow_shoot_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_bow_shoot_next" Offset="0xD500" /> <!-- Original name is "link_bow_bow_shoot_next" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_bow_wait" Offset="0xD508" /> <!-- Original name is "link_bow_bow_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_defense" Offset="0xD510" /> <!-- Original name is "link_bow_defense" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_defense_wait" Offset="0xD518" /> <!-- Original name is "link_bow_defense_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_side_walk" Offset="0xD520" /> <!-- Original name is "link_bow_side_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_bow_walk2ready" Offset="0xD528" /> <!-- Original name is "link_bow_walk2ready" -->
+        <PlayerAnimation Name="gPlayerAnim_link_child_tunnel_end" Offset="0xD530" /> <!-- Original name is "link_child_tunnel_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_child_tunnel_start" Offset="0xD538" /> <!-- Original name is "link_child_tunnel_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_Tbox_open" Offset="0xD540" /> <!-- Original name is "link_demo_Tbox_open" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_back_to_past" Offset="0xD548" /> <!-- Original name is "link_demo_back_to_past" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_baru_op1" Offset="0xD550" /> <!-- Original name is "link_demo_baru_op1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_baru_op2" Offset="0xD558" /> <!-- Original name is "link_demo_baru_op2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_baru_op3" Offset="0xD560" /> <!-- Original name is "link_demo_baru_op3" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_bikkuri" Offset="0xD568" /> <!-- Original name is "link_demo_bikkuri" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_doorA_link" Offset="0xD570" /> <!-- Original name is "link_demo_doorA_link" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_doorA_link_free" Offset="0xD578" /> <!-- Original name is "link_demo_doorA_link_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_doorB_link" Offset="0xD580" /> <!-- Original name is "link_demo_doorB_link" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_doorB_link_free" Offset="0xD588" /> <!-- Original name is "link_demo_doorB_link_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_furimuki2" Offset="0xD590" /> <!-- Original name is "link_demo_furimuki2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_furimuki2_wait" Offset="0xD598" /> <!-- Original name is "link_demo_furimuki2_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_furimuki" Offset="0xD5A0" /> <!-- Original name is "link_demo_furimuki" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_get_itemA" Offset="0xD5A8" /> <!-- Original name is "link_demo_get_itemA" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_get_itemB" Offset="0xD5B0" /> <!-- Original name is "link_demo_get_itemB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_goma_furimuki" Offset="0xD5B8" /> <!-- Original name is "link_demo_goma_furimuki" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_gurad" Offset="0xD5C0" /> <!-- Original name is "link_demo_gurad" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_gurad_wait" Offset="0xD5C8" /> <!-- Original name is "link_demo_gurad_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_jibunmiru" Offset="0xD5D0" /> <!-- Original name is "link_demo_jibunmiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kakeyori" Offset="0xD5D8" /> <!-- Original name is "link_demo_kakeyori" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kakeyori_mimawasi" Offset="0xD5E0" /> <!-- Original name is "link_demo_kakeyori_mimawasi" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kakeyori_miokuri" Offset="0xD5E8" /> <!-- Original name is "link_demo_kakeyori_miokuri" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kakeyori_miokuri_wait" Offset="0xD5F0" /> <!-- Original name is "link_demo_kakeyori_miokuri_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kakeyori_wait" Offset="0xD5F8" /> <!-- Original name is "link_demo_kakeyori_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kaoage" Offset="0xD600" /> <!-- Original name is "link_demo_kaoage" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kaoage_wait" Offset="0xD608" /> <!-- Original name is "link_demo_kaoage_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kenmiru1" Offset="0xD610" /> <!-- Original name is "link_demo_kenmiru1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kenmiru1_wait" Offset="0xD618" /> <!-- Original name is "link_demo_kenmiru1_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kenmiru2" Offset="0xD620" /> <!-- Original name is "link_demo_kenmiru2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kenmiru2_modori" Offset="0xD628" /> <!-- Original name is "link_demo_kenmiru2_modori" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kenmiru2_wait" Offset="0xD630" /> <!-- Original name is "link_demo_kenmiru2_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_kousan" Offset="0xD638" /> <!-- Original name is "link_demo_kousan" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_look_hand" Offset="0xD640" /> <!-- Original name is "link_demo_look_hand" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_look_hand_wait" Offset="0xD648" /> <!-- Original name is "link_demo_look_hand_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_nozokikomi" Offset="0xD650" /> <!-- Original name is "link_demo_nozokikomi" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_nozokikomi_wait" Offset="0xD658" /> <!-- Original name is "link_demo_nozokikomi_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_return_to_past" Offset="0xD660" /> <!-- Original name is "link_demo_return_to_past" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_sita_wait" Offset="0xD668" /> <!-- Original name is "link_demo_sita_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_ue" Offset="0xD670" /> <!-- Original name is "link_demo_ue" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_ue_wait" Offset="0xD678" /> <!-- Original name is "link_demo_ue_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_warp" Offset="0xD680" /> <!-- Original name is "link_demo_warp" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_zeldamiru" Offset="0xD688" /> <!-- Original name is "link_demo_zeldamiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_demo_zeldamiru_wait" Offset="0xD690" /> <!-- Original name is "link_demo_zeldamiru_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_derth_rebirth" Offset="0xD698" /> <!-- Original name is "link_derth_rebirth" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LLside_kiru" Offset="0xD6A0" /> <!-- Original name is "link_fighter_LLside_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LLside_kiru_end" Offset="0xD6A8" /> <!-- Original name is "link_fighter_LLside_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LLside_kiru_finsh" Offset="0xD6B0" /> <!-- Original name is "link_fighter_LLside_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LLside_kiru_finsh_end" Offset="0xD6B8" /> <!-- Original name is "link_fighter_LLside_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LRside_kiru" Offset="0xD6C0" /> <!-- Original name is "link_fighter_LRside_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LRside_kiru_end" Offset="0xD6C8" /> <!-- Original name is "link_fighter_LRside_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LRside_kiru_finsh" Offset="0xD6D0" /> <!-- Original name is "link_fighter_LRside_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_LRside_kiru_finsh_end" Offset="0xD6D8" /> <!-- Original name is "link_fighter_LRside_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lnormal_kiru" Offset="0xD6E0" /> <!-- Original name is "link_fighter_Lnormal_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lnormal_kiru_end" Offset="0xD6E8" /> <!-- Original name is "link_fighter_Lnormal_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lnormal_kiru_finsh" Offset="0xD6F0" /> <!-- Original name is "link_fighter_Lnormal_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end" Offset="0xD6F8" /> <!-- Original name is "link_fighter_Lnormal_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpierce_kiru" Offset="0xD700" /> <!-- Original name is "link_fighter_Lpierce_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpierce_kiru_end" Offset="0xD708" /> <!-- Original name is "link_fighter_Lpierce_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpierce_kiru_finsh" Offset="0xD710" /> <!-- Original name is "link_fighter_Lpierce_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end" Offset="0xD718" /> <!-- Original name is "link_fighter_Lpierce_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_jump_kiru" Offset="0xD720" /> <!-- Original name is "link_fighter_Lpower_jump_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_jump_kiru_end" Offset="0xD728" /> <!-- Original name is "link_fighter_Lpower_jump_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_jump_kiru_hit" Offset="0xD730" /> <!-- Original name is "link_fighter_Lpower_jump_kiru_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_kiru_side_walk" Offset="0xD738" /> <!-- Original name is "link_fighter_Lpower_kiru_side_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_kiru_start" Offset="0xD740" /> <!-- Original name is "link_fighter_Lpower_kiru_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_kiru_wait" Offset="0xD748" /> <!-- Original name is "link_fighter_Lpower_kiru_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_kiru_wait_end" Offset="0xD750" /> <!-- Original name is "link_fighter_Lpower_kiru_wait_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lpower_kiru_walk" Offset="0xD758" /> <!-- Original name is "link_fighter_Lpower_kiru_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lrolling_kiru" Offset="0xD760" /> <!-- Original name is "link_fighter_Lrolling_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lrolling_kiru_end" Offset="0xD768" /> <!-- Original name is "link_fighter_Lrolling_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_jump" Offset="0xD770" /> <!-- Original name is "link_fighter_Lside_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_jump_endL" Offset="0xD778" /> <!-- Original name is "link_fighter_Lside_jump_endL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_jump_end" Offset="0xD780" /> <!-- Original name is "link_fighter_Lside_jump_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_kiru" Offset="0xD788" /> <!-- Original name is "link_fighter_Lside_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_kiru_end" Offset="0xD790" /> <!-- Original name is "link_fighter_Lside_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_kiru_finsh" Offset="0xD798" /> <!-- Original name is "link_fighter_Lside_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Lside_kiru_finsh_end" Offset="0xD7A0" /> <!-- Original name is "link_fighter_Lside_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_jump" Offset="0xD7A8" /> <!-- Original name is "link_fighter_Rside_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_jump_endR" Offset="0xD7B0" /> <!-- Original name is "link_fighter_Rside_jump_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_jump_end" Offset="0xD7B8" /> <!-- Original name is "link_fighter_Rside_jump_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_kiru" Offset="0xD7C0" /> <!-- Original name is "link_fighter_Rside_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_kiru_end" Offset="0xD7C8" /> <!-- Original name is "link_fighter_Rside_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_kiru_finsh" Offset="0xD7D0" /> <!-- Original name is "link_fighter_Rside_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Rside_kiru_finsh_end" Offset="0xD7D8" /> <!-- Original name is "link_fighter_Rside_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Wrolling_kiru" Offset="0xD7E0" /> <!-- Original name is "link_fighter_Wrolling_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_Wrolling_kiru_end" Offset="0xD7E8" /> <!-- Original name is "link_fighter_Wrolling_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_backturn_jump" Offset="0xD7F0" /> <!-- Original name is "link_fighter_backturn_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_backturn_jump_endR" Offset="0xD7F8" /> <!-- Original name is "link_fighter_backturn_jump_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_backturn_jump_end" Offset="0xD800" /> <!-- Original name is "link_fighter_backturn_jump_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_damage_run" Offset="0xD808" /> <!-- Original name is "link_fighter_damage_run" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_damage_run_long" Offset="0xD810" /> <!-- Original name is "link_fighter_damage_run_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_defense_long_hit" Offset="0xD818" /> <!-- Original name is "link_fighter_defense_long_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_fighter2long" Offset="0xD820" /> <!-- Original name is "link_fighter_fighter2long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_front_jump" Offset="0xD828" /> <!-- Original name is "link_fighter_front_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_front_jump_endR" Offset="0xD830" /> <!-- Original name is "link_fighter_front_jump_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_front_jump_end" Offset="0xD838" /> <!-- Original name is "link_fighter_front_jump_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_jump_kiru_finsh" Offset="0xD840" /> <!-- Original name is "link_fighter_jump_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_jump_kiru_finsh_end" Offset="0xD848" /> <!-- Original name is "link_fighter_jump_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_jump_rollkiru" Offset="0xD850" /> <!-- Original name is "link_fighter_jump_rollkiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_landing_roll_long" Offset="0xD858" /> <!-- Original name is "link_fighter_landing_roll_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal2fighter" Offset="0xD860" /> <!-- Original name is "link_fighter_normal2fighter" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal_kiru" Offset="0xD868" /> <!-- Original name is "link_fighter_normal_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal_kiru_endR" Offset="0xD870" /> <!-- Original name is "link_fighter_normal_kiru_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal_kiru_end" Offset="0xD878" /> <!-- Original name is "link_fighter_normal_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal_kiru_finsh" Offset="0xD880" /> <!-- Original name is "link_fighter_normal_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_normal_kiru_finsh_end" Offset="0xD888" /> <!-- Original name is "link_fighter_normal_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_pierce_kiru" Offset="0xD890" /> <!-- Original name is "link_fighter_pierce_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_pierce_kiru_end" Offset="0xD898" /> <!-- Original name is "link_fighter_pierce_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_pierce_kiru_finsh" Offset="0xD8A0" /> <!-- Original name is "link_fighter_pierce_kiru_finsh" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_pierce_kiru_finsh_end" Offset="0xD8A8" /> <!-- Original name is "link_fighter_pierce_kiru_finsh_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_jump_kiru_end" Offset="0xD8B0" /> <!-- Original name is "link_fighter_power_jump_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_side_walk" Offset="0xD8B8" /> <!-- Original name is "link_fighter_power_kiru_side_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_startL" Offset="0xD8C0" /> <!-- Original name is "link_fighter_power_kiru_startL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_start" Offset="0xD8C8" /> <!-- Original name is "link_fighter_power_kiru_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_wait" Offset="0xD8D0" /> <!-- Original name is "link_fighter_power_kiru_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_wait_end" Offset="0xD8D8" /> <!-- Original name is "link_fighter_power_kiru_wait_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_power_kiru_walk" Offset="0xD8E0" /> <!-- Original name is "link_fighter_power_kiru_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_reboundR" Offset="0xD8E8" /> <!-- Original name is "link_fighter_reboundR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_rebound" Offset="0xD8F0" /> <!-- Original name is "link_fighter_rebound" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_rebound_longR" Offset="0xD8F8" /> <!-- Original name is "link_fighter_rebound_longR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_rebound_long" Offset="0xD900" /> <!-- Original name is "link_fighter_rebound_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_rolling_kiru" Offset="0xD908" /> <!-- Original name is "link_fighter_rolling_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_rolling_kiru_end" Offset="0xD910" /> <!-- Original name is "link_fighter_rolling_kiru_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_run" Offset="0xD918" /> <!-- Original name is "link_fighter_run" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_run_long" Offset="0xD920" /> <!-- Original name is "link_fighter_run_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_side_walkL_long" Offset="0xD928" /> <!-- Original name is "link_fighter_side_walkL_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_side_walkR_long" Offset="0xD930" /> <!-- Original name is "link_fighter_side_walkR_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_side_walk_long" Offset="0xD938" /> <!-- Original name is "link_fighter_side_walk_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_turn_kiruL" Offset="0xD940" /> <!-- Original name is "link_fighter_turn_kiruL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_turn_kiruL_end" Offset="0xD948" /> <!-- Original name is "link_fighter_turn_kiruL_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_turn_kiruR" Offset="0xD950" /> <!-- Original name is "link_fighter_turn_kiruR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_turn_kiruR_end" Offset="0xD958" /> <!-- Original name is "link_fighter_turn_kiruR_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_wait2waitR_long" Offset="0xD960" /> <!-- Original name is "link_fighter_wait2waitR_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_waitL2wait_long" Offset="0xD968" /> <!-- Original name is "link_fighter_waitL2wait_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_waitL_long" Offset="0xD970" /> <!-- Original name is "link_fighter_waitL_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_waitR2wait_long" Offset="0xD978" /> <!-- Original name is "link_fighter_waitR2wait_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_waitR_long" Offset="0xD980" /> <!-- Original name is "link_fighter_waitR_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_wait_long" Offset="0xD988" />
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_walk_endL_long" Offset="0xD990" /> <!-- Original name is "link_fighter_walk_endL_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_walk_endR_long" Offset="0xD998" /> <!-- Original name is "link_fighter_walk_endR_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_fighter_walk_long" Offset="0xD9A0" /> <!-- Original name is "link_fighter_walk_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hammer_long2free" Offset="0xD9A8" /> <!-- Original name is "link_hammer_long2free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hammer_long2long" Offset="0xD9B0" /> <!-- Original name is "link_hammer_long2long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hammer_normal2long" Offset="0xD9B8" /> <!-- Original name is "link_hammer_normal2long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hatto_demo" Offset="0xD9C0" /> <!-- Original name is "link_hatto_demo" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hook_fly_start" Offset="0xD9C8" /> <!-- Original name is "link_hook_fly_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hook_fly_wait" Offset="0xD9D0" /> <!-- Original name is "link_hook_fly_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hook_shot_ready" Offset="0xD9D8" /> <!-- Original name is "link_hook_shot_ready" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hook_wait" Offset="0xD9E0" /> <!-- Original name is "link_hook_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_hook_walk2ready" Offset="0xD9E8" /> <!-- Original name is "link_hook_walk2ready" -->
+        <PlayerAnimation Name="gPlayerAnim_link_kei_wait" Offset="0xD9F0" /> <!-- Original name might be "link_kei_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_keirei" Offset="0xD9F8" /> <!-- Original name might be "link_keirei" -->
+        <PlayerAnimation Name="gPlayerAnim_link_last_hit_motion1" Offset="0xDA00" /> <!-- Original name is "link_last_hit_motion1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_last_hit_motion2" Offset="0xDA08" /> <!-- Original name is "link_last_hit_motion2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_honoo1" Offset="0xDA10" /> <!-- Original name is "link_magic_honoo1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_honoo2" Offset="0xDA18" /> <!-- Original name is "link_magic_honoo2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_honoo3" Offset="0xDA20" /> <!-- Original name is "link_magic_honoo3" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_kaze1" Offset="0xDA28" /> <!-- Original name is "link_magic_kaze1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_kaze2" Offset="0xDA30" /> <!-- Original name is "link_magic_kaze2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_kaze3" Offset="0xDA38" /> <!-- Original name is "link_magic_kaze3" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_tamashii1" Offset="0xDA40" /> <!-- Original name is "link_magic_tamashii1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_tamashii2" Offset="0xDA48" /> <!-- Original name is "link_magic_tamashii2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_tamashii3" Offset="0xDA50" /> <!-- Original name is "link_magic_tamashii3" -->
+        <PlayerAnimation Name="gPlayerAnim_link_magic_tame" Offset="0xDA58" /> <!-- Original name is "link_magic_tame" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_100step_up" Offset="0xDA60" /> <!-- Original name is "link_normal_100step_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_150step_up" Offset="0xDA68" /> <!-- Original name is "link_normal_150step_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_250jump_start" Offset="0xDA70" /> <!-- Original name is "link_normal_250jump_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_45_turn" Offset="0xDA78" /> <!-- Original name is "link_normal_45_turn" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_45_turn_free" Offset="0xDA80" /> <!-- Original name is "link_normal_45_turn_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_hold2upL" Offset="0xDA88" /> <!-- Original name is "link_normal_Fclimb_hold2upL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_sideL" Offset="0xDA90" /> <!-- Original name is "link_normal_Fclimb_sideL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_sideR" Offset="0xDA98" /> <!-- Original name is "link_normal_Fclimb_sideR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_startA" Offset="0xDAA0" /> <!-- Original name is "link_normal_Fclimb_startA" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_startB" Offset="0xDAA8" /> <!-- Original name is "link_normal_Fclimb_startB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_upL" Offset="0xDAB0" /> <!-- Original name is "link_normal_Fclimb_upL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_Fclimb_upR" Offset="0xDAB8" /> <!-- Original name is "link_normal_Fclimb_upR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_brake" Offset="0xDAC0" /> <!-- Original name is "link_normal_back_brake" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_brake_end" Offset="0xDAC8" /> <!-- Original name is "link_normal_back_brake_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_downA" Offset="0xDAD0" /> <!-- Original name is "link_normal_back_downA" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_downB" Offset="0xDAD8" /> <!-- Original name is "link_normal_back_downB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_down_wake" Offset="0xDAE0" /> <!-- Original name is "link_normal_back_down_wake" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_hit" Offset="0xDAE8" /> <!-- Original name is "link_normal_back_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_run" Offset="0xDAF0" /> <!-- Original name is "link_normal_back_run" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_shitR" Offset="0xDAF8" /> <!-- Original name is "link_normal_back_shitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_shit" Offset="0xDB00" /> <!-- Original name is "link_normal_back_shit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_back_walk" Offset="0xDB08" /> <!-- Original name is "link_normal_back_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_backspace" Offset="0xDB10" /> <!-- Original name is "link_normal_backspace" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_box_kick" Offset="0xDB18" /> <!-- Original name is "link_normal_box_kick" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_carryB" Offset="0xDB20" /> <!-- Original name is "link_normal_carryB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_carryB_free" Offset="0xDB28" /> <!-- Original name is "link_normal_carryB_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_carryB_wait" Offset="0xDB30" /> <!-- Original name is "link_normal_carryB_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check" Offset="0xDB38" /> <!-- Original name is "link_normal_check" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check_end" Offset="0xDB40" /> <!-- Original name is "link_normal_check_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check_end_free" Offset="0xDB48" /> <!-- Original name is "link_normal_check_end_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check_free" Offset="0xDB50" /> <!-- Original name is "link_normal_check_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check_wait" Offset="0xDB58" /> <!-- Original name is "link_normal_check_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_check_wait_free" Offset="0xDB60" /> <!-- Original name is "link_normal_check_wait_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_down" Offset="0xDB68" /> <!-- Original name is "link_normal_climb_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_endAL" Offset="0xDB70" /> <!-- Original name is "link_normal_climb_endAL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_endAR" Offset="0xDB78" /> <!-- Original name is "link_normal_climb_endAR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_endBL" Offset="0xDB80" /> <!-- Original name is "link_normal_climb_endBL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_endBR" Offset="0xDB88" /> <!-- Original name is "link_normal_climb_endBR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_startA" Offset="0xDB90" /> <!-- Original name is "link_normal_climb_startA" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_startB" Offset="0xDB98" /> <!-- Original name is "link_normal_climb_startB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_upL" Offset="0xDBA0" /> <!-- Original name is "link_normal_climb_upL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_upR" Offset="0xDBA8" /> <!-- Original name is "link_normal_climb_upR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_climb_up" Offset="0xDBB0" /> <!-- Original name is "link_normal_climb_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_damage_run_free" Offset="0xDBB8" /> <!-- Original name is "link_normal_damage_run_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense" Offset="0xDBC0" /> <!-- Original name is "link_normal_defense" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_end" Offset="0xDBC8" /> <!-- Original name is "link_normal_defense_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_end_free" Offset="0xDBD0" /> <!-- Original name is "link_normal_defense_end_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_free" Offset="0xDBD8" /> <!-- Original name is "link_normal_defense_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_hit" Offset="0xDBE0" /> <!-- Original name is "link_normal_defense_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_kiru" Offset="0xDBE8" /> <!-- Original name is "link_normal_defense_kiru" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_wait" Offset="0xDBF0" /> <!-- Original name is "link_normal_defense_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_defense_wait_free" Offset="0xDBF8" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_down_slope_slip" Offset="0xDC00" /> <!-- Original name is "link_normal_down_slope_slip" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_down_slope_slip_end" Offset="0xDC08" /> <!-- Original name is "link_normal_down_slope_slip_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_down_slope_slip_end_free" Offset="0xDC10" /> <!-- Original name is "link_normal_down_slope_slip_end_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_down_slope_slip_end_long" Offset="0xDC18" /> <!-- Original name is "link_normal_down_slope_slip_end_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_electric_shock" Offset="0xDC20" /> <!-- Original name is "link_normal_electric_shock" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_electric_shock_end" Offset="0xDC28" /> <!-- Original name is "link_normal_electric_shock_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_fall" Offset="0xDC30" /> <!-- Original name is "link_normal_fall" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_fall_up" Offset="0xDC38" /> <!-- Original name is "link_normal_fall_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_fall_up_free" Offset="0xDC40" /> <!-- Original name is "link_normal_fall_up_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_fall_wait" Offset="0xDC48" /> <!-- Original name is "link_normal_fall_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_fighter2free" Offset="0xDC50" /> <!-- Original name is "link_normal_fighter2free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_free2bom" Offset="0xDC58" /> <!-- Original name is "link_normal_free2bom" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_free2fighter_free" Offset="0xDC60" /> <!-- Original name is "link_normal_free2fighter_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_free2freeB" Offset="0xDC68" /> <!-- Original name is "link_normal_free2freeB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_free2free" Offset="0xDC70" /> <!-- Original name is "link_normal_free2free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_downA" Offset="0xDC78" /> <!-- Original name is "link_normal_front_downA" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_downB" Offset="0xDC80" /> <!-- Original name is "link_normal_front_downB" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_down_wake" Offset="0xDC88" /> <!-- Original name is "link_normal_front_down_wake" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_hit" Offset="0xDC90" /> <!-- Original name is "link_normal_front_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_shitR" Offset="0xDC98" /> <!-- Original name is "link_normal_front_shitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_front_shit" Offset="0xDCA0" /> <!-- Original name is "link_normal_front_shit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_give_other" Offset="0xDCA8" /> <!-- Original name is "link_normal_give_other" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_hang_up_down" Offset="0xDCB0" /> <!-- Original name is "link_normal_hang_up_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_hip_down" Offset="0xDCB8" /> <!-- Original name is "link_normal_hip_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_hip_down_free" Offset="0xDCC0" /> <!-- Original name is "link_normal_hip_down_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_hip_down_long" Offset="0xDCC8" /> <!-- Original name is "link_normal_hip_down_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_ice_down" Offset="0xDCD0" /> <!-- Original name is "link_normal_ice_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump" Offset="0xDCD8" /> <!-- Original name is "link_normal_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_hold" Offset="0xDCE0" /> <!-- Original name is "link_normal_jump_climb_hold" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_hold_free" Offset="0xDCE8" /> <!-- Original name is "link_normal_jump_climb_hold_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_up" Offset="0xDCF0" /> <!-- Original name is "link_normal_jump_climb_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_up_free" Offset="0xDCF8" /> <!-- Original name is "link_normal_jump_climb_up_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_wait" Offset="0xDD00" /> <!-- Original name is "link_normal_jump_climb_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_jump_climb_wait_free" Offset="0xDD08" /> <!-- Original name is "link_normal_jump_climb_wait_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_landing" Offset="0xDD10" /> <!-- Original name is "link_normal_landing" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_landing_free" Offset="0xDD18" /> <!-- Original name is "link_normal_landing_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_landing_roll" Offset="0xDD20" /> <!-- Original name is "link_normal_landing_roll" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_landing_roll_free" Offset="0xDD28" /> <!-- Original name is "link_normal_landing_roll_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_landing_wait" Offset="0xDD30" /> <!-- Original name is "link_normal_landing_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_light_bom" Offset="0xDD38" /> <!-- Original name is "link_normal_light_bom" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_light_bom_end" Offset="0xDD40" /> <!-- Original name is "link_normal_light_bom_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_long2bom" Offset="0xDD48" /> <!-- Original name is "link_normal_long2bom" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_newroll_jump_20f" Offset="0xDD50" /> <!-- Original name might be "link_normal_newroll_jump_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_newroll_jump_end_20f" Offset="0xDD58" /> <!-- Original name might be "link_normal_newroll_jump_end_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_newside_jump_20f" Offset="0xDD60" /> <!-- Original name might be "link_normal_newside_jump_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_newside_jump_end_20f" Offset="0xDD68" /> <!-- Original name might be "link_normal_newside_jump_end_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_nocarry_free" Offset="0xDD70" /> <!-- Original name is "link_normal_nocarry_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_nocarry_free_end" Offset="0xDD78" /> <!-- Original name is "link_normal_nocarry_free_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_nocarry_free_wait" Offset="0xDD80" /> <!-- Original name is "link_normal_nocarry_free_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_normal2bom" Offset="0xDD88" /> <!-- Original name is "link_normal_normal2bom" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_normal2fighter" Offset="0xDD90" /> <!-- Original name is "link_normal_normal2fighter" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_normal2fighter_free" Offset="0xDD98" /> <!-- Original name is "link_normal_normal2fighter_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_normal2free" Offset="0xDDA0" /> <!-- Original name is "link_normal_normal2free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_okarina_end" Offset="0xDDA8" /> <!-- Original name is "link_normal_okarina_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_okarina_start" Offset="0xDDB0" /> <!-- Original name is "link_normal_okarina_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_okarina_swing" Offset="0xDDB8" /> <!-- Original name is "link_normal_okarina_swing" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pull_end" Offset="0xDDC0" /> <!-- Original name is "link_normal_pull_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pull_end_free" Offset="0xDDC8" /> <!-- Original name is "link_normal_pull_end_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pull_start" Offset="0xDDD0" /> <!-- Original name is "link_normal_pull_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pull_start_free" Offset="0xDDD8" /> <!-- Original name is "link_normal_pull_start_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pulling" Offset="0xDDE0" /> <!-- Original name is "link_normal_pulling" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pulling_free" Offset="0xDDE8" /> <!-- Original name is "link_normal_pulling_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_push_end" Offset="0xDDF0" /> <!-- Original name is "link_normal_push_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_push_start" Offset="0xDDF8" /> <!-- Original name is "link_normal_push_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_push_wait" Offset="0xDE00" /> <!-- Original name is "link_normal_push_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_push_wait_end" Offset="0xDE08" /> <!-- Original name is "link_normal_push_wait_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_pushing" Offset="0xDE10" /> <!-- Original name is "link_normal_pushing" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_put" Offset="0xDE18" /> <!-- Original name is "link_normal_put" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_put_free" Offset="0xDE20" /> <!-- Original name is "link_normal_put_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_re_dead_attack" Offset="0xDE28" /> <!-- Original name is "link_normal_re_dead_attack" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_re_dead_attack_wait" Offset="0xDE30" /> <!-- Original name is "link_normal_re_dead_attack_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run" Offset="0xDE38" /> <!-- Original name is "link_normal_run" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run_free" Offset="0xDE40" /> <!-- Original name is "link_normal_run_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run_jump" Offset="0xDE48" /> <!-- Original name is "link_normal_run_jump" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run_jump_end" Offset="0xDE50" /> <!-- Original name is "link_normal_run_jump_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run_jump_water_fall" Offset="0xDE58" /> <!-- Original name is "link_normal_run_jump_water_fall" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_run_jump_water_fall_wait" Offset="0xDE60" /> <!-- Original name is "link_normal_run_jump_water_fall_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_short_landing" Offset="0xDE68" /> <!-- Original name is "link_normal_short_landing" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_short_landing_free" Offset="0xDE70" /> <!-- Original name is "link_normal_short_landing_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_side_walkL_free" Offset="0xDE78" /> <!-- Original name is "link_normal_side_walkL_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_side_walkR_free" Offset="0xDE80" /> <!-- Original name is "link_normal_side_walkR_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_side_walk" Offset="0xDE88" /> <!-- Original name is "link_normal_side_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_side_walk_free" Offset="0xDE90" /> <!-- Original name is "link_normal_side_walk_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_take_out" Offset="0xDE98" /> <!-- Original name might be "link_normal_take_out" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_talk_free" Offset="0xDEA0" /> <!-- Original name is "link_normal_talk_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_talk_free_wait" Offset="0xDEA8" /> <!-- Original name is "link_normal_talk_free_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_throw" Offset="0xDEB0" /> <!-- Original name is "link_normal_throw" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_throw_free" Offset="0xDEB8" /> <!-- Original name is "link_normal_throw_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_up_slope_slip" Offset="0xDEC0" /> <!-- Original name is "link_normal_up_slope_slip" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_up_slope_slip_end" Offset="0xDEC8" /> <!-- Original name is "link_normal_up_slope_slip_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_up_slope_slip_end_free" Offset="0xDED0" /> <!-- Original name is "link_normal_up_slope_slip_end_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_up_slope_slip_end_long" Offset="0xDED8" /> <!-- Original name is "link_normal_up_slope_slip_end_long" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait2waitR" Offset="0xDEE0" /> <!-- Original name is "link_normal_wait2waitR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitF_typeA_20f" Offset="0xDEE8" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitF_typeB_20f" Offset="0xDEF0" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitF_typeC_20f" Offset="0xDEF8" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitL2wait" Offset="0xDF00" /> <!-- Original name is "link_normal_waitL2wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitL_free" Offset="0xDF08" /> <!-- Original name is "link_normal_waitL_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitR2wait" Offset="0xDF10" /> <!-- Original name is "link_normal_waitR2wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_waitR_free" Offset="0xDF18" /> <!-- Original name is "link_normal_waitR_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait" Offset="0xDF20" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait_free" Offset="0xDF28" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait_typeA_20f" Offset="0xDF30" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait_typeB_20f" Offset="0xDF38" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_wait_typeC_20f" Offset="0xDF40" />
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk" Offset="0xDF48" /> <!-- Original name is "link_normal_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk_endL" Offset="0xDF50" /> <!-- Original name is "link_normal_walk_endL" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk_endL_free" Offset="0xDF58" /> <!-- Original name is "link_normal_walk_endL_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk_endR" Offset="0xDF60" /> <!-- Original name is "link_normal_walk_endR" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk_endR_free" Offset="0xDF68" /> <!-- Original name is "link_normal_walk_endR_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_normal_walk_free" Offset="0xDF70" /> <!-- Original name is "link_normal_walk_free" -->
+        <PlayerAnimation Name="gPlayerAnim_link_okarina_warp_goal" Offset="0xDF78" /> <!-- Original name is "link_okarina_warp_goal" -->
+        <PlayerAnimation Name="gPlayerAnim_link_okiru_demo" Offset="0xDF80" /> <!-- Original name is "link_okiru_demo" -->
+        <PlayerAnimation Name="gPlayerAnim_link_shagamu_demo" Offset="0xDF88" /> <!-- Original name is "link_shagamu_demo" -->
+        <PlayerAnimation Name="gPlayerAnim_link_silver_carry" Offset="0xDF90" /> <!-- Original name is "link_silver_carry" -->
+        <PlayerAnimation Name="gPlayerAnim_link_silver_throw" Offset="0xDF98" /> <!-- Original name is "link_silver_throw" -->
+        <PlayerAnimation Name="gPlayerAnim_link_silver_wait" Offset="0xDFA0" /> <!-- Original name is "link_silver_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_Lside_swim" Offset="0xDFA8" /> <!-- Original name is "link_swimer_Lside_swim" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_Rside_swim" Offset="0xDFB0" /> <!-- Original name is "link_swimer_Rside_swim" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_back_swim" Offset="0xDFB8" /> <!-- Original name is "link_swimer_back_swim" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_land2swim_wait" Offset="0xDFC0" /> <!-- Original name is "link_swimer_land2swim_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_15step_up" Offset="0xDFC8" /> <!-- Original name is "link_swimer_swim_15step_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim" Offset="0xDFD0" /> <!-- Original name is "link_swimer_swim" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_deep_end" Offset="0xDFD8" /> <!-- Original name is "link_swimer_swim_deep_end" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_deep_start" Offset="0xDFE0" /> <!-- Original name is "link_swimer_swim_deep_start" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_down" Offset="0xDFE8" /> <!-- Original name is "link_swimer_swim_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_get" Offset="0xDFF0" /> <!-- Original name is "link_swimer_swim_get" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_hit" Offset="0xDFF8" /> <!-- Original name is "link_swimer_swim_hit" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_swim_wait" Offset="0xE000" /> <!-- Original name is "link_swimer_swim_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_swimer_wait2swim_wait" Offset="0xE008" /> <!-- Original name is "link_swimer_wait2swim_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_fastrun" Offset="0xE010" /> <!-- Original name is "link_uma_anim_fastrun" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_fastrun_muti" Offset="0xE018" /> <!-- Original name is "link_uma_anim_fastrun_muti" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_jump100" Offset="0xE020" /> <!-- Original name is "link_uma_anim_jump100" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_jump200" Offset="0xE028" /> <!-- Original name is "link_uma_anim_jump200" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_slowrun" Offset="0xE030" /> <!-- Original name is "link_uma_anim_slowrun" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_slowrun_muti" Offset="0xE038" /> <!-- Original name is "link_uma_anim_slowrun_muti" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_stand" Offset="0xE040" /> <!-- Original name is "link_uma_anim_stand" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_stop" Offset="0xE048" /> <!-- Original name is "link_uma_anim_stop" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_walk" Offset="0xE050" /> <!-- Original name is "link_uma_anim_walk" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_anim_walk_muti" Offset="0xE058" /> <!-- Original name is "link_uma_anim_walk_muti" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_left_down" Offset="0xE060" /> <!-- Original name is "link_uma_left_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_left_up" Offset="0xE068" /> <!-- Original name is "link_uma_left_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_right_down" Offset="0xE070" /> <!-- Original name is "link_uma_right_down" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_right_up" Offset="0xE078" /> <!-- Original name is "link_uma_right_up" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_stop_muti" Offset="0xE080" /> <!-- Original name is "link_uma_stop_muti" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_wait_1" Offset="0xE088" /> <!-- Original name is "link_uma_wait_1" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_wait_2" Offset="0xE090" /> <!-- Original name is "link_uma_wait_2" -->
+        <PlayerAnimation Name="gPlayerAnim_link_uma_wait_3" Offset="0xE098" /> <!-- Original name is "link_uma_wait_3" -->
+        <PlayerAnimation Name="gPlayerAnim_link_waitF_heat1_20f" Offset="0xE0A0" /> <!-- Original name is "link_waitF_heat1_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_waitF_heat2_20f" Offset="0xE0A8" /> <!-- Original name is "link_waitF_heat2_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_waitF_itemA_20f" Offset="0xE0B0" />
+        <PlayerAnimation Name="gPlayerAnim_link_waitF_itemB_20f" Offset="0xE0B8" />
+        <PlayerAnimation Name="gPlayerAnim_link_waitF_typeD_20f" Offset="0xE0C0" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_heat1_20f" Offset="0xE0C8" /> <!-- Original name is "link_wait_heat1_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_wait_heat2_20f" Offset="0xE0D0" /> <!-- Original name is "link_wait_heat2_20f" -->
+        <PlayerAnimation Name="gPlayerAnim_link_wait_itemA_20f" Offset="0xE0D8" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_itemB_20f" Offset="0xE0E0" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_itemC_20f" Offset="0xE0E8" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_itemD1_20f" Offset="0xE0F0" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_itemD2_20f" Offset="0xE0F8" />
+        <PlayerAnimation Name="gPlayerAnim_link_wait_typeD_20f" Offset="0xE100" />
+        <PlayerAnimation Name="gPlayerAnim_lkt_nwait" Offset="0xE108" /> <!-- Original name is "lkt_nwait" -->
+        <PlayerAnimation Name="gPlayerAnim_lost_horse2" Offset="0xE110" /> <!-- Original name might be "lost_horse2" -->
+        <PlayerAnimation Name="gPlayerAnim_lost_horse" Offset="0xE118" /> <!-- Original name might be "lost_horse" -->
+        <PlayerAnimation Name="gPlayerAnim_lost_horse_wait" Offset="0xE120" /> <!-- Original name might be "lost_horse_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_nw_modoru" Offset="0xE128" /> <!-- Original name is "nw_modoru" -->
+        <PlayerAnimation Name="gPlayerAnim_o_get_ato" Offset="0xE130" /> <!-- Original name is "o_get_ato" -->
+        <PlayerAnimation Name="gPlayerAnim_o_get_mae" Offset="0xE138" /> <!-- Original name is "o_get_mae" -->
+        <PlayerAnimation Name="gPlayerAnim_okarinatori" Offset="0xE140" /> <!-- Original name might be "okarinatori" -->
+        <PlayerAnimation Name="gPlayerAnim_okiagaru" Offset="0xE148" /> <!-- Original name might be "okiagaru" -->
+        <PlayerAnimation Name="gPlayerAnim_okiagaru_tatu" Offset="0xE150" /> <!-- Original name might be "okiagaru_tatu" -->
+        <PlayerAnimation Name="gPlayerAnim_okiagaru_wait" Offset="0xE158" /> <!-- Original name might be "okiagaru_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_om_get" Offset="0xE160" /> <!-- Original name is "om_get" -->
+        <PlayerAnimation Name="gPlayerAnim_om_get_mae" Offset="0xE168" /> <!-- Original name is "om_get_mae" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_Tbox_open" Offset="0xE170" /> <!-- Original name might be "pg_Tbox_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_endAL" Offset="0xE178" /> <!-- Original name might be "pg_climb_endAL" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_endAR" Offset="0xE180" /> <!-- Original name might be "pg_climb_endAR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_endBL" Offset="0xE188" /> <!-- Original name might be "pg_climb_endBL" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_endBR" Offset="0xE190" /> <!-- Original name might be "pg_climb_endBR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_startA" Offset="0xE198" /> <!-- Original name might be "pg_climb_startA" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_startB" Offset="0xE1A0" /> <!-- Original name might be "pg_climb_startB" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_upL" Offset="0xE1A8" /> <!-- Original name might be "pg_climb_upL" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_climb_upR" Offset="0xE1B0" /> <!-- Original name might be "pg_climb_upR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_doorA_open" Offset="0xE1B8" /> <!-- Original name might be "pg_doorA_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_doorB_open" Offset="0xE1C0" /> <!-- Original name might be "pg_doorB_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplayA" Offset="0xE1C8" /> <!-- Original name might be "pg_gakkiplayA" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplayD" Offset="0xE1D0" /> <!-- Original name might be "pg_gakkiplayD" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplayL" Offset="0xE1D8" /> <!-- Original name might be "pg_gakkiplayL" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplayR" Offset="0xE1E0" /> <!-- Original name might be "pg_gakkiplayR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplayU" Offset="0xE1E8" /> <!-- Original name might be "pg_gakkiplayU" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiplay" Offset="0xE1F0" /> <!-- Original name might be "pg_gakkiplay" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkistart" Offset="0xE1F8" /> <!-- Original name might be "pg_gakkistart" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_gakkiwait" Offset="0xE200" /> <!-- Original name might be "pg_gakkiwait" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_maru_change" Offset="0xE208" /> <!-- Original name might be "pg_maru_change" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_maskoffstart" Offset="0xE210" /> <!-- Original name might be "pg_maskoffstart" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchA" Offset="0xE218" /> <!-- Original name might be "pg_punchA" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchAendR" Offset="0xE220" /> <!-- Original name might be "pg_punchAendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchAend" Offset="0xE228" /> <!-- Original name might be "pg_punchAend" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchB" Offset="0xE230" /> <!-- Original name might be "pg_punchB" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchBendR" Offset="0xE238" /> <!-- Original name might be "pg_punchBendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchBend" Offset="0xE240" /> <!-- Original name might be "pg_punchBend" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchC" Offset="0xE248" /> <!-- Original name might be "pg_punchC" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchCendR" Offset="0xE250" /> <!-- Original name might be "pg_punchCendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_punchCend" Offset="0xE258" /> <!-- Original name might be "pg_punchCend" -->
+        <PlayerAnimation Name="gPlayerAnim_pg_wait" Offset="0xE260" /> <!-- Original name might be "pg_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_Tbox_open" Offset="0xE268" /> <!-- Original name might be "pn_Tbox_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_attack" Offset="0xE270" /> <!-- Original name might be "pn_attack" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_batabata" Offset="0xE278" /> <!-- Original name might be "pn_batabata" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_doorA_open" Offset="0xE280" /> <!-- Original name might be "pn_doorA_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_doorB_open" Offset="0xE288" /> <!-- Original name might be "pn_doorB_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_drink" Offset="0xE290" /> <!-- Original name might be "pn_drink" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_drinkend" Offset="0xE298" /> <!-- Original name might be "pn_drinkend" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_drinkstart" Offset="0xE2A0" /> <!-- Original name might be "pn_drinkstart" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_gakkiplay" Offset="0xE2A8" /> <!-- Original name might be "pn_gakkiplay" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_gakkistart" Offset="0xE2B0" /> <!-- Original name might be "pn_gakkistart" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_getA" Offset="0xE2B8" /> <!-- Original name might be "pn_getA" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_getB" Offset="0xE2C0" /> <!-- Original name might be "pn_getB" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_gurd" Offset="0xE2C8" /> <!-- Original name might be "pn_gurd" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_kakku" Offset="0xE2D0" /> <!-- Original name might be "pn_kakku" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_kakkufinish" Offset="0xE2D8" /> <!-- Original name might be "pn_kakkufinish" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_maskoffstart" Offset="0xE2E0" /> <!-- Original name might be "pn_maskoffstart" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_rakkafinish" Offset="0xE2E8" /> <!-- Original name might be "pn_rakkafinish" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_tamahaki" Offset="0xE2F0" /> <!-- Original name might be "pn_tamahaki" -->
+        <PlayerAnimation Name="gPlayerAnim_pn_tamahakidf" Offset="0xE2F8" /> <!-- Original name might be "pn_tamahakidf" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_Tbox_open" Offset="0xE300" /> <!-- Original name might be "pz_Tbox_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackA" Offset="0xE308" /> <!-- Original name might be "pz_attackA" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackAendR" Offset="0xE310" /> <!-- Original name might be "pz_attackAendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackAend" Offset="0xE318" /> <!-- Original name might be "pz_attackAend" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackB" Offset="0xE320" /> <!-- Original name might be "pz_attackB" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackBendR" Offset="0xE328" /> <!-- Original name might be "pz_attackBendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackBend" Offset="0xE330" /> <!-- Original name might be "pz_attackBend" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackC" Offset="0xE338" /> <!-- Original name might be "pz_attackC" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackCendR" Offset="0xE340" /> <!-- Original name might be "pz_attackCendR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_attackCend" Offset="0xE348" /> <!-- Original name might be "pz_attackCend" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_bladeon" Offset="0xE350" /> <!-- Original name might be "pz_bladeon" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_endAL" Offset="0xE358" /> <!-- Original name might be "pz_climb_endAL" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_endAR" Offset="0xE360" /> <!-- Original name might be "pz_climb_endAR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_endBL" Offset="0xE368" /> <!-- Original name might be "pz_climb_endBL" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_endBR" Offset="0xE370" /> <!-- Original name might be "pz_climb_endBR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_startA" Offset="0xE378" /> <!-- Original name might be "pz_climb_startA" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_startB" Offset="0xE380" /> <!-- Original name might be "pz_climb_startB" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_upL" Offset="0xE388" /> <!-- Original name might be "pz_climb_upL" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_climb_upR" Offset="0xE390" /> <!-- Original name might be "pz_climb_upR" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cutterattack" Offset="0xE398" /> <!-- Original name might be "pz_cutterattack" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cuttercatch" Offset="0xE3A0" /> <!-- Original name might be "pz_cuttercatch" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cutterwaitA" Offset="0xE3A8" /> <!-- Original name might be "pz_cutterwaitA" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cutterwaitB" Offset="0xE3B0" /> <!-- Original name might be "pz_cutterwaitB" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cutterwaitC" Offset="0xE3B8" /> <!-- Original name might be "pz_cutterwaitC" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_cutterwaitanim" Offset="0xE3C0" /> <!-- Original name might be "pz_cutterwaitanim" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_doorA_open" Offset="0xE3C8" /> <!-- Original name might be "pz_doorA_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_doorB_open" Offset="0xE3D0" /> <!-- Original name might be "pz_doorB_open" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_fishswim" Offset="0xE3D8" /> <!-- Original name might be "pz_fishswim" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_gakkiplay" Offset="0xE3E0" /> <!-- Original name might be "pz_gakkiplay" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_gakkistart" Offset="0xE3E8" /> <!-- Original name might be "pz_gakkistart" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_jumpAT" Offset="0xE3F0" /> <!-- Original name might be "pz_jumpAT" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_jumpATend" Offset="0xE3F8" /> <!-- Original name might be "pz_jumpATend" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_maskoffstart" Offset="0xE400" /> <!-- Original name might be "pz_maskoffstart" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_swimtowait" Offset="0xE408" /> <!-- Original name might be "pz_swimtowait" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_wait" Offset="0xE410" /> <!-- Original name might be "pz_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_pz_waterroll" Offset="0xE418" /> <!-- Original name might be "pz_waterroll" -->
+        <PlayerAnimation Name="gPlayerAnim_rakka" Offset="0xE420" /> <!-- Original name might be "rakka" -->
+        <PlayerAnimation Name="gPlayerAnim_rakuba" Offset="0xE428" /> <!-- Original name might be "rakuba" -->
+        <PlayerAnimation Name="gPlayerAnim_sirimochi" Offset="0xE430" /> <!-- Original name might be "sirimochi" -->
+        <PlayerAnimation Name="gPlayerAnim_sirimochi_wait" Offset="0xE438" /> <!-- Original name might be "sirimochi_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_spotlight" Offset="0xE440" /> <!-- Original name might be "spotlight" -->
+        <PlayerAnimation Name="gPlayerAnim_spotlight_wait" Offset="0xE448" /> <!-- Original name might be "spotlight_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_sude_nwait" Offset="0xE450" /> <!-- Original name is "sude_nwait" -->
+        <PlayerAnimation Name="gameplay_keep_Linkanim_00E458" Offset="0xE458" />
+        <PlayerAnimation Name="gPlayerAnim_urusai" Offset="0xE460" /> <!-- Original name might be "urusai" -->
+        <PlayerAnimation Name="gPlayerAnim_vs_yousei" Offset="0xE468" /> <!-- Original name might be "vs_yousei" -->
+        <PlayerAnimation Name="gPlayerAnim_L_1kyoro" Offset="0xE470" /> <!-- Original name is "L_1kyoro" -->
+        <PlayerAnimation Name="gPlayerAnim_L_2kyoro" Offset="0xE478" /> <!-- Original name is "L_2kyoro" -->
+        <PlayerAnimation Name="gPlayerAnim_L_bouzen" Offset="0xE480" /> <!-- Original name is "L_bouzen" -->
+        <PlayerAnimation Name="gPlayerAnim_L_hajikareru" Offset="0xE488" /> <!-- Original name is "L_hajikareru" -->
+        <PlayerAnimation Name="gPlayerAnim_L_kamaeru" Offset="0xE490" /> <!-- Original name is "L_kamaeru" -->
+        <PlayerAnimation Name="gPlayerAnim_L_ken_miru" Offset="0xE498" /> <!-- Original name is "L_ken_miru" -->
+        <PlayerAnimation Name="gPlayerAnim_L_kennasi_w" Offset="0xE4A0" /> <!-- Original name is "L_kennasi_w" -->
+        <PlayerAnimation Name="gPlayerAnim_L_kw" Offset="0xE4A8" /> <!-- Original name is "L_kw" -->
+        <PlayerAnimation Name="gPlayerAnim_L_mukinaoru" Offset="0xE4B0" /> <!-- Original name is "L_mukinaoru" -->
+        <PlayerAnimation Name="gPlayerAnim_L_okarina_get" Offset="0xE4B8" /> <!-- Original name is "L_okarina_get" -->
+        <PlayerAnimation Name="gPlayerAnim_L_sagaru" Offset="0xE4C0" /> <!-- Original name is "L_sagaru" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_ha" Offset="0xE4C8" /> <!-- Original name is "Link_ha" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_m_wait" Offset="0xE4D0" /> <!-- Original name is "Link_m_wait" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_miageru" Offset="0xE4D8" /> <!-- Original name is "Link_miageru" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_muku" Offset="0xE4E0" /> <!-- Original name is "Link_muku" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_otituku_w" Offset="0xE4E8" /> <!-- Original name is "Link_otituku_w" -->
+        <PlayerAnimation Name="gPlayerAnim_Link_ue_wait" Offset="0xE4F0" /> <!-- Original name is "Link_ue_wait" -->
+
+        <DList Name="gameplay_keep_DL_00E5C0" Offset="0xE5C0" />
+
+        <!-- Deku Flower -->
+        <Collision Name="gPinkDekuFlowerCol" Offset="0xE710" />
+        <Animation Name="gDekuFlowerBounceAnim" Offset="0xEB7C" /> <!-- Original name is "dnp_boyoyon" ("bounce") -->
+        <DList Name="gPinkDekuFlowerIdleDL" Offset="0xED80" />
+        <DList Name="gPinkDekuFlowerBaseDL" Offset="0xF2B8" />
+        <DList Name="gPinkDekuFlowerCenterDL" Offset="0xF350" />
+        <DList Name="gPinkDekuFlowerBackLeftPetalDL" Offset="0xF438" />
+        <DList Name="gPinkDekuFlowerLeftLeafDL" Offset="0xF4C0" />
+        <DList Name="gPinkDekuFlowerFrontLeftPetalDL" Offset="0xF548" />
+        <DList Name="gPinkDekuFlowerRightLeafDL" Offset="0xF5D0" />
+        <DList Name="gPinkDekuFlowerBackRightPetalDL" Offset="0xF658" />
+        <DList Name="gPinkDekuFlowerFrontRightPetalDL" Offset="0xF6E0" />
+        <DList Name="gPinkDekuFlowerFrontLeafDL" Offset="0xF768" />
+        <DList Name="gPinkDekuFlowerBackLeafDL" Offset="0xF7F0" />
+        <Texture Name="gPinkDekuFlowerPetalAndCenterTex" OutName="pink_deku_flower_petal_and_center" Format="rgba16" Width="16" Height="32" Offset="0xF878" />
+        <Texture Name="gPinkDekuFlowerLeafAndCenterTex" OutName="pink_deku_flower_leaf_and_center" Format="rgba16" Width="16" Height="32" Offset="0xFC78" />
+        <Texture Name="gPinkDekuFlowerBaseLeafTex" OutName="pink_deku_flower_base_leaf" Format="rgba16" Width="32" Height="32" Offset="0x10078" />
+        <Texture Name="gGoldDekuFlowerPetalAndCenterTex" OutName="gold_deku_flower_petal_and_center" Format="rgba16" Width="16" Height="32" Offset="0x10878" />
+        <Texture Name="gGoldDekuFlowerBaseLeafTex" OutName="gold_deku_flower_base_leaf" Format="rgba16" Width="32" Height="32" Offset="0x10C78" />
+        <Limb Name="gPinkDekuFlowerBaseLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_BASE" Offset="0x11478" />
+        <Limb Name="gPinkDekuFlowerCenterLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_CENTER" Offset="0x11484" />
+        <Limb Name="gPinkDekuFlowerBackLeafLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_BACK_LEAF" Offset="0x11490" />
+        <Limb Name="gPinkDekuFlowerFrontLeafLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_FRONT_LEAF" Offset="0x1149C" />
+        <Limb Name="gPinkDekuFlowerFrontRightPetalLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_FRONT_RIGHT_PETAL" Offset="0x114A8" />
+        <Limb Name="gPinkDekuFlowerBackRightPetalLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_BACK_RIGHT_PETAL" Offset="0x114B4" />
+        <Limb Name="gPinkDekuFlowerRightLeafLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_RIGHT_LEAF" Offset="0x114C0" />
+        <Limb Name="gPinkDekuFlowerFrontLeftPetalLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_FRONT_LEFT_PETAL" Offset="0x114CC" />
+        <Limb Name="gPinkDekuFlowerLeftLeafLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_LEFT_LEAF" Offset="0x114D8" />
+        <Limb Name="gPinkDekuFlowerBackLeftPetalLimb" Type="Standard" EnumName="PINK_DEKU_FLOWER_LIMB_BACK_LEFT_PETAL" Offset="0x114E4" />
+        <Skeleton Name="gPinkDekuFlowerSkel" Type="Normal" LimbType="Standard" LimbNone="PINK_DEKU_FLOWER_LIMB_NONE" LimbMax="PINK_DEKU_FLOWER_LIMB_MAX" EnumName="PinkDekuFlowerLimb" Offset="0x11518" />
+        <Animation Name="gDekuFlowerRustleAnim" Offset="0x117A8" /> <!-- Original name is "dnp_zawa" ("rustling") -->
+        <Collision Name="gGoldDekuFlowerCol" Offset="0x118D8" />
+        <DList Name="gGoldDekuFlowerIdleDL" Offset="0x11BD0" />
+        <DList Name="gGoldDekuFlowerBaseDL" Offset="0x121B0" />
+        <DList Name="gGoldDekuFlowerCenterDL" Offset="0x12260" />
+        <DList Name="gGoldDekuFlowerBackLeftPetalDL" Offset="0x12308" />
+        <DList Name="gGoldDekuFlowerLeftPetalDL" Offset="0x12390" />
+        <DList Name="gGoldDekuFlowerFrontLeftPetalDL" Offset="0x12418" />
+        <DList Name="gGoldDekuFlowerRightPetalDL" Offset="0x124A0" />
+        <DList Name="gGoldDekuFlowerBackRightPetalDL" Offset="0x12528" />
+        <DList Name="gGoldDekuFlowerFrontRightPetalDL" Offset="0x125B0" />
+        <DList Name="gGoldDekuFlowerFrontPetalDL" Offset="0x12638" />
+        <DList Name="gGoldDekuFlowerBackPetalDL" Offset="0x126C0" />
+        <Limb Name="gGoldDekuFlowerBaseLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_BASE" Offset="0x12748" />
+        <Limb Name="gGoldDekuFlowerCenterLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_CENTER" Offset="0x12754" />
+        <Limb Name="gGoldDekuFlowerBackPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_BACK_PETAL" Offset="0x12760" />
+        <Limb Name="gGoldDekuFlowerFrontPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_FRONT_PETAL" Offset="0x1276C" />
+        <Limb Name="gGoldDekuFlowerFrontRightPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_FRONT_RIGHT_PETAL" Offset="0x12778" />
+        <Limb Name="gGoldDekuFlowerBackRightPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_BACK_RIGHT_PETAL" Offset="0x12784" />
+        <Limb Name="gGoldDekuFlowerRightPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_RIGHT_PETAL" Offset="0x12790" />
+        <Limb Name="gGoldDekuFlowerFrontLeftPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_FRONT_LEFT_PETAL" Offset="0x1279C" />
+        <Limb Name="gGoldDekuFlowerLeftPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_LEFT_PETAL" Offset="0x127A8" />
+        <Limb Name="gGoldDekuFlowerBackLeftPetalLimb" Type="Standard" EnumName="GOLD_DEKU_FLOWER_LIMB_BACK_LEFT_PETAL" Offset="0x127B4" />
+        <Skeleton Name="gGoldDekuFlowerSkel" Type="Flex" LimbType="Standard" LimbNone="GOLD_DEKU_FLOWER_LIMB_NONE" LimbMax="GOLD_DEKU_FLOWER_LIMB_MAX" EnumName="GoldDekuFlowerLimb" Offset="0x127E8" />
+
+        <Animation Name="gameplay_keep_Anim_012860" Offset="0x12860" />
+        <Animation Name="gameplay_keep_Anim_0128BC" Offset="0x128BC" />
+        <Texture Name="gameplay_keep_Tex_0128D0" OutName="tex_0128D0" Format="rgba16" Width="16" Height="128" Offset="0x128D0" />
+        <Texture Name="gameplay_keep_Tex_0138D0" OutName="tex_0138D0" Format="rgba16" Width="32" Height="16" Offset="0x138D0" />
+        <DList Name="gameplay_keep_DL_013FF0" Offset="0x13FF0" />
+        <DList Name="gameplay_keep_DL_014370" Offset="0x14370" />
+        <Limb Name="gameplay_keep_Lodlimb_014510" Type="LOD" EnumName="ARROW_LIMB_1" Offset="0x14510" />
+        <Limb Name="gameplay_keep_Lodlimb_014520" Type="LOD" EnumName="ARROW_LIMB_2" Offset="0x14520" />
+        <Limb Name="gameplay_keep_Lodlimb_014530" Type="LOD" EnumName="ARROW_LIMB_3" Offset="0x14530" />
+        <Limb Name="gameplay_keep_Lodlimb_014540" Type="LOD" EnumName="ARROW_LIMB_4" Offset="0x14540" />
+        <Skeleton Name="gameplay_keep_Skel_014560" Type="Normal" LimbType="Standard" LimbNone="ARROW_LIMB_NONE" LimbMax="ARROW_LIMB_MAX" EnumName="ArrowLimb" Offset="0x14560" />
+        <Texture Name="gameplay_keep_Tex_014570" OutName="tex_014570" Format="rgba32" Width="16" Height="32" Offset="0x14570" />
+
+        <!-- Bomb -->
+        <Texture Name="gBombBodyTex" OutName="bomb_body" Format="ia8" Width="64" Height="64" Offset="0x14D70" />
+        <DList Name="gBombBodyDL" Offset="0x15DB0" />
+        <Texture Name="gBombCapTex" OutName="bomb_cap" Format="rgba16" Width="8" Height="8" Offset="0x15E40" />
+        <DList Name="gBombCapDL" Offset="0x15FA0" />
+
+        <!-- Bombchu -->
+        <Texture Name="gBombchuBodyTex" OutName="bombchu_body" Format="rgba16" Width="8" Height="8" Offset="0x16060" />
+        <DList Name="gBombchuDL" Offset="0x16360" />
+
+        <Texture Name="gEffBombExplosion1Tex" OutName="eff_bomb_explosion_1" Format="ia16" Width="32" Height="32" Offset="0x164D0" />
+        <Texture Name="gEffBombExplosion2Tex" OutName="eff_bomb_explosion_2" Format="ia16" Width="32" Height="32" Offset="0x16CD0" />
+        <Texture Name="gEffBombExplosion3Tex" OutName="eff_bomb_explosion_3" Format="ia16" Width="32" Height="32" Offset="0x174D0" />
+        <Texture Name="gEffBombExplosion4Tex" OutName="eff_bomb_explosion_4" Format="ia16" Width="32" Height="32" Offset="0x17CD0" />
+        <Texture Name="gEffBombExplosion5Tex" OutName="eff_bomb_explosion_5" Format="ia16" Width="32" Height="32" Offset="0x184D0" />
+        <Texture Name="gEffBombExplosion6Tex" OutName="eff_bomb_explosion_6" Format="ia16" Width="32" Height="32" Offset="0x18CD0" />
+        <Texture Name="gEffBombExplosion7Tex" OutName="eff_bomb_explosion_7" Format="ia16" Width="32" Height="32" Offset="0x194D0" />
+        <Texture Name="gEffBombExplosion8Tex" OutName="eff_bomb_explosion_8" Format="ia16" Width="32" Height="32" Offset="0x19CD0" />
+        <DList Name="gEffBombExplosion1DL" Offset="0x1A4D0" />
+        <DList Name="gEffBombExplosion2DL" Offset="0x1A538" />
+        <DList Name="gEffBombExplosion3DL" Offset="0x1A590" />
+        <DList Name="gEffFragments1DL" Offset="0x1A620" />
+        <Texture Name="gWitheredLeafTex" OutName="withered_leaf" Format="rgba16" Width="16" Height="16" Offset="0x1A6B0" />
+        <Texture Name="gameplay_keep_Tex_01A8B0" OutName="tex_01A8B0" Format="i8" Width="16" Height="32" Offset="0x1A8B0" />
+        <Texture Name="gameplay_keep_Tex_01AAB0" OutName="tex_01AAB0" Format="i8" Width="16" Height="32" Offset="0x1AAB0" />
+        <DList Name="gameplay_keep_DL_01ACF0" Offset="0x1ACF0" />
+
+        <!-- Human Elegy of Emptiness Shell -->
+        <DList Name="gElegyShellHumanDL" Offset="0x1C430" /> <!-- Original name is "pls_zo_model" -->
+        <Texture Name="gElegyShellHumanMouthTex" OutName="elegy_shell_human_mouth" Format="rgba16" Width="32" Height="32" Offset="0x1CAF8" />
+        <Texture Name="gElegyShellHumanEyeAndNoseTex" OutName="elegy_shell_human_eye_and_nose" Format="rgba16" Width="32" Height="64" Offset="0x1D2F8" />
+        <Texture Name="gElegyShellHumanNostrilsAndSkinTex" OutName="elegy_shell_human_nostrils_and_skin" Format="rgba16" Width="16" Height="8" Offset="0x1E2F8" />
+        <Texture Name="gElegyShellHumanBootsTex" OutName="elegy_shell_human_boots" Format="rgba16" Width="16" Height="16" Offset="0x1E3F8" />
+        <Texture Name="gElegyShellHumanPlatformTex" OutName="elegy_shell_human_platform" Format="rgba16" Width="8" Height="16" Offset="0x1E5F8" />
+        <Texture Name="gElegyShellBeltAndTunicTex" OutName="elegy_shell_human_belt_and_tunic" Format="rgba16" Width="32" Height="16" Offset="0x1E6F8" />
+        <Texture Name="gElegyShellHumanHairTex" OutName="elegy_shell_human_hair" Format="rgba16" Width="16" Height="16" Offset="0x1EAF8" />
+
+        <DList Name="gCompassArrowDL" Offset="0x1ED00" />
+        <DList Name="gameplay_keep_DL_01ED90" Offset="0x1ED90" />
+        <DList Name="gLockOnArrowDL" Offset="0x1F0F0" />
+        <Texture Name="gameplay_keep_Tex_01F200" OutName="tex_01F200" Format="i8" Width="8" Height="8" Offset="0x1F200" />
+        <DList Name="gEffFragments2DL" Offset="0x1F300" />
+        <Texture Name="gameplay_keep_Tex_01F340" OutName="tex_01F340" Format="ia8" Width="32" Height="32" Offset="0x1F340" />
+        <Texture Name="gSelectionCursorTex" OutName="selection_cursor" Format="ia4" Width="16" Height="16" Offset="0x1F740" />
+        <Texture Name="gControlStickTex" OutName="control_stick" Format="ia8" Width="16" Height="16" Offset="0x1F7C0" />
+        <Texture Name="gArrowCursorTex" OutName="arrow_cursor" Format="ia8" Width="16" Height="24" Offset="0x1F8C0" />
+
+        <!-- Boulder Fragments -->
+        <DList Name="gBoulderFragmentsDL" Offset="0x1FA40" />
+        <Texture Name="gBoulderFragmentsTex" OutName="boulder_fragments" Format="rgba16" Width="32" Height="32" Offset="0x1FBE0" />
+
+        <Animation Name="gDoorHumanOpenLeftAnim" Offset="0x204B4" />
+        <Animation Name="gDoorHumanOpenRightAnim" Offset="0x205A0" />
+        <Animation Name="gDoorFierceDeityZoraOpenLeftAnim" Offset="0x20658" />
+        <DList Name="gameplay_keep_DL_020B30" Offset="0x20B30" />
+        <DList Name="gDoorLeftDL" Offset="0x20BB8" />
+        <DList Name="gDoorRightDL" Offset="0x20D00" />
+        <Texture Name="gameplay_keep_Tex_020E38" OutName="tex_020E38" Format="rgba16" Width="32" Height="64" Offset="0x20E38" />
+        <DList Name="gameplay_keep_DL_0221B8" Offset="0x221B8" />
+        <Texture Name="gameplay_keep_Tex_0222E8" OutName="tex_0222E8" Format="i4" Width="32" Height="64" Offset="0x222E8" />
+        <Texture Name="gameplay_keep_Tex_0226E8" OutName="tex_0226E8" Format="i8" Width="8" Height="128" Offset="0x226E8" />
+        <Limb Name="gameplay_keep_Standardlimb_022AE8" Type="Standard" EnumName="DOOR_LIMB_1" Offset="0x22AE8" />
+        <Limb Name="gameplay_keep_Standardlimb_022AF4" Type="Standard" EnumName="DOOR_LIMB_2" Offset="0x22AF4" />
+        <Limb Name="gameplay_keep_Standardlimb_022B00" Type="Standard" EnumName="DOOR_LIMB_3" Offset="0x22B00" />
+        <Limb Name="gameplay_keep_Standardlimb_022B0C" Type="Standard" EnumName="DOOR_LIMB_4" Offset="0x22B0C" />
+        <Skeleton Name="gDoorSkel" Type="Normal" LimbType="Standard" LimbNone="DOOR_LIMB_NONE" LimbMax="DOOR_LIMB_MAX" EnumName="DoorLimb" Offset="0x22B28" />
+        <Animation Name="gDoorFierceDeityZoraOpenRightAnim" Offset="0x22BE8" />
+        <Animation Name="gDoorGoronOpenLeftAnim" Offset="0x22CA8" />
+        <Animation Name="gDoorGoronOpenRightAnim" Offset="0x22D90" />
+        <Animation Name="gDoorDekuOpenLeftAnim" Offset="0x22E68" />
+        <Blob Name="gGameplayKeepEmptyBlob" Size="0xA8" Offset="0x22E78" />
+        <Animation Name="gDoorDekuOpenRightAnim" Offset="0x22FF0" />
+        <Collision Name="gFramedDoorCol" Offset="0x23100" />
+        <DList Name="gEffDustDL" Offset="0x23130" />
+        <DList Name="gEffFlash1DL" Offset="0x23210" />
+        <DList Name="gEffFlash2DL" Offset="0x23288" />
+        <DList Name="gLightOrbMaterial1DL" Offset="0x23348" />
+        <DList Name="gLightOrbMaterial2DL" Offset="0x233B8" />
+        <DList Name="gLightOrbModelDL" Offset="0x23428" />
+        <DList Name="gElectricSparkMaterialDL" Offset="0x23480" />
+        <DList Name="gElectricSparkModelDL" Offset="0x234F0" />
+        <Texture Name="gFlashTex" OutName="flash" Format="i8" Width="64" Height="64" Offset="0x23508" />
+
+        <!-- EnMThunder (Spin Attack and Sword Beams) -->
+        <!-- Spin Attack -->
+        <Texture Name="gSpinAttack1Tex" OutName="spin_attack_1" Format="i8" Width="64" Height="32" Offset="0x24510" />
+        <Texture Name="gSpinAttack2Tex" OutName="spin_attack_2" Format="i8" Width="64" Height="32" Offset="0x24D10" />
+        <DList Name="gSpinAttackDiskDL" Offset="0x25850" />
+        <DList Name="gSpinAttackCylinderDL" Offset="0x25970" />
+        <DList Name="gGreatSpinAttackDiskDL" Offset="0x25DD0" />
+        <DList Name="gGreatSpinAttackCylinderDL" Offset="0x25EF0" />
+        <Texture Name="gSpinAttackCharging1Tex" OutName="spin_attack_charging_1" Format="i8" Width="32" Height="32" Offset="0x26010" />
+        <Texture Name="gSpinAttackCharging2Tex" OutName="spin_attack_charging_2" Format="i8" Width="32" Height="32" Offset="0x26410" />
+        <DList Name="gSpinAttackChargingDL" Offset="0x268F0" />
+        <!-- Sword Beam -->
+        <Texture Name="gSwordBeam1Tex" OutName="sword_beam_1" Format="i8" Width="32" Height="64" Offset="0x269E0" />
+        <Texture Name="gSwordBeam2Tex" OutName="sword_beam_2" Format="i8" Width="32" Height="64" Offset="0x271E0" />
+        <DList Name="gSwordBeamDL" Offset="0x27CA0" />
+
+        <KeyFrameAnimation Name="gGameplayKeepKFAnim_281DC" Skel="0x2900C" Offset="0x281DC"/>
+
+        <DList Name="gameplay_keep_DL_0282D0" Offset="0x282D0" />
+        <Texture Name="gameplay_keep_Tex_0283B8" OutName="tex_0283B8" Format="i4" Width="64" Height="64" Offset="0x283B8" />
+        <Texture Name="gameplay_keep_Tex_028BB8" OutName="tex_028BB8" Format="i8" Width="32" Height="32" Offset="0x28BB8" />
+        <TextureAnimation Name="gameplay_keep_Matanimheader_028FEC" Offset="0x28FEC" />
+        <KeyFrameSkel Name="gGameplayKeepKFSkel_2900C" LimbType="Flex" Offset="0x2900C"/>
+        <Animation Name="gameplay_keep_Anim_029140" Offset="0x29140" />
+        <Texture Name="gameplay_keep_Tex_029150" OutName="tex_029150" Format="i8" Width="32" Height="64" Offset="0x29150" />
+        <DList Name="gameplay_keep_DL_029990" Offset="0x29990" />
+        <DList Name="gameplay_keep_DL_029A58" Offset="0x29A58" />
+        <DList Name="gameplay_keep_DL_029B20" Offset="0x29B20" />
+        <DList Name="gameplay_keep_DL_029BE8" Offset="0x29BE8" />
+        <DList Name="gameplay_keep_DL_029CB0" Offset="0x29CB0" />
+        <DList Name="gameplay_keep_DL_029CF0" Offset="0x29CF0" />
+        <DList Name="gameplay_keep_DL_029D10" Offset="0x29D10" /> <!-- Used in ObJ_Kinoko to radiate a purple glow -->
+        <Texture Name="gameplay_keep_Tex_029EF8" OutName="tex_029EF8" Format="rgba16" Width="32" Height="64" Offset="0x29EF8" />
+        <Limb Name="gameplay_keep_Standardlimb_02AEF8" Type="Standard" EnumName="FAIRY_LIMB_1" Offset="0x2AEF8" />
+        <Limb Name="gameplay_keep_Standardlimb_02AF04" Type="Standard" EnumName="FAIRY_LIMB_2" Offset="0x2AF04" />
+        <Limb Name="gameplay_keep_Standardlimb_02AF10" Type="Standard" EnumName="FAIRY_LIMB_3" Offset="0x2AF10" />
+        <Limb Name="gameplay_keep_Standardlimb_02AF1C" Type="Standard" EnumName="FAIRY_LIMB_4" Offset="0x2AF1C" />
+        <Limb Name="gameplay_keep_Standardlimb_02AF28" Type="Standard" EnumName="FAIRY_LIMB_5" Offset="0x2AF28" />
+        <Limb Name="gameplay_keep_Standardlimb_02AF34" Type="Standard" EnumName="FAIRY_LIMB_6" Offset="0x2AF34" />
+        <Skeleton Name="gameplay_keep_Skel_02AF58" Type="Flex" LimbType="Standard" LimbNone="FAIRY_LIMB_NONE" LimbMax="FAIRY_LIMB_MAX" EnumName="FairyLimb" Offset="0x2AF58" />
+        <Animation Name="gameplay_keep_Anim_02B2E8" Offset="0x2B2E8" />
+
+        <!-- Stray Fairy -->
+        <Animation Name="gStrayFairyFlyingAnim" Offset="0x2B494" /> <!-- Original name is "ys_fly01" -->
+        <DList Name="gStrayFairyRightFacingHeadDL" Offset="0x2B6B0" />
+        <DList Name="gStrayFairyLeftFacingHeadDL" Offset="0x2B748" />
+        <DList Name="gStrayFairyGlowDL" Offset="0x2B7E0" />
+        <DList Name="gStrayFairyTorsoDL" Offset="0x2B888" />
+        <DList Name="gStrayFairyLeftArmDL" Offset="0x2B920" />
+        <DList Name="gStrayFairyPelvisAndLegsDL" Offset="0x2B9B8" />
+        <DList Name="gStrayFairyRightArmDL" Offset="0x2BA68" />
+        <DList Name="gStrayFairyRightWingDL" Offset="0x2BB00" />
+        <DList Name="gStrayFairyLeftWingDL" Offset="0x2BB98" />
+        <Texture Name="gStrayFairyRightFacingHeadTex" OutName="stray_fairy_right_facing_head" Format="ia8" Width="32" Height="32" Offset="0x2BC30" />
+        <Texture Name="gStrayFairyBodyTex" OutName="stray_fairy_body" Format="ia8" Width="16" Height="32" Offset="0x2C030" />
+        <Texture Name="gStrayFairyLeftFacingHeadTex" OutName="stray_fairy_left_facing_head" Format="ia8" Width="32" Height="32" Offset="0x2C230" />
+        <Texture Name="gStrayFairyWingTex" OutName="stray_fairy_wing" Format="ia8" Width="16" Height="16" Offset="0x2C630" />
+        <Texture Name="gStrayFairyGlowTex" OutName="stray_fairy_glow" Format="i4" Width="16" Height="16" Offset="0x2C730" />
+        <TextureAnimation Name="gStrayFairyClockTownTexAnim" Offset="0x2C818" />
+        <TextureAnimation Name="gStrayFairySnowheadTexAnim" Offset="0x2C890" />
+        <TextureAnimation Name="gStrayFairyWoodfallTexAnim" Offset="0x2C908" />
+        <TextureAnimation Name="gStrayFairyGreatBayTexAnim" Offset="0x2C980" />
+        <TextureAnimation Name="gStrayFairyStoneTowerTexAnim" Offset="0x2C9F8" />
+        <Limb Name="gStrayFairyRightFacingHeadLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_RIGHT_FACING_HEAD" Offset="0x2CA08" />
+        <Limb Name="gStrayFairyLeftWingLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_LEFT_WING" Offset="0x2CA14" />
+        <Limb Name="gStrayFairyRightWingLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_RIGHT_WING" Offset="0x2CA20" />
+        <Limb Name="gStrayFairyGlowLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_GLOW" Offset="0x2CA2C" />
+        <Limb Name="gStrayFairyTorsoLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_TORSO" Offset="0x2CA38" />
+        <Limb Name="gStrayFairyRightArmLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_RIGHT_ARM" Offset="0x2CA44" />
+        <Limb Name="gStrayFairyPelvisAndLegsLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_PELVIS_AND_LEGS" Offset="0x2CA50" />
+        <Limb Name="gStrayFairyLeftArmLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_LEFT_ARM" Offset="0x2CA5C" />
+        <Limb Name="gStrayFairyLeftFacingHeadLimb" Type="Standard" EnumName="STRAY_FAIRY_LIMB_LEFT_FACING_HEAD" Offset="0x2CA68" />
+        <Skeleton Name="gStrayFairySkel" Type="Flex" LimbType="Standard" LimbNone="STRAY_FAIRY_LIMB_NONE" LimbMax="STRAY_FAIRY_LIMB_MAX" EnumName="StrayFairyLimb" Offset="0x2CA98" />
+
+        <Texture Name="gameplay_keep_Tex_02CAB0" OutName="tex_02CAB0" Format="i4" Width="16" Height="16" Offset="0x2CAB0" />
+        <Texture Name="gameplay_keep_Tex_02CB30" OutName="tex_02CB30" Format="i8" Width="16" Height="16" Offset="0x2CB30" />
+        <Texture Name="gameplay_keep_Tex_02CC30" OutName="tex_02CC30" Format="rgba16" Width="32" Height="32" Offset="0x2CC30" />
+        <Texture Name="gameplay_keep_Tex_02D430" OutName="tex_02D430" Format="i8" Width="32" Height="64" Offset="0x2D430" />
+        <Texture Name="gameplay_keep_Tex_02DC30" OutName="tex_02DC30" Format="i8" Width="32" Height="64" Offset="0x2DC30" />
+        <DList Name="gameplay_keep_DL_02E510" Offset="0x2E510" />
+        <Animation Name="gameplay_keep_Anim_02E65C" Offset="0x2E65C" />
+        <DList Name="gameplay_keep_DL_02E910" Offset="0x2E910" />
+        <DList Name="gameplay_keep_DL_02E9A8" Offset="0x2E9A8" />
+        <DList Name="gameplay_keep_DL_02EAB8" Offset="0x2EAB8" />
+        <Texture Name="gameplay_keep_Tex_02EBC8" OutName="tex_02EBC8" Format="rgba16" Width="16" Height="16" Offset="0x2EBC8" />
+        <Texture Name="gameplay_keep_Tex_02EDC8" OutName="tex_02EDC8" Format="rgba16" Width="32" Height="8" Offset="0x2EDC8" />
+        <Limb Name="gameplay_keep_Standardlimb_02EFC8" Type="Standard" EnumName="FISH_LIMB_1" Offset="0x2EFC8" />
+        <Limb Name="gameplay_keep_Standardlimb_02EFD4" Type="Standard" EnumName="FISH_LIMB_2" Offset="0x2EFD4" />
+        <Limb Name="gameplay_keep_Standardlimb_02EFE0" Type="Standard" EnumName="FISH_LIMB_3" Offset="0x2EFE0" />
+        <Limb Name="gameplay_keep_Standardlimb_02EFEC" Type="Standard" EnumName="FISH_LIMB_4" Offset="0x2EFEC" />
+        <Limb Name="gameplay_keep_Standardlimb_02EFF8" Type="Standard" EnumName="FISH_LIMB_5" Offset="0x2EFF8" />
+        <Limb Name="gameplay_keep_Standardlimb_02F004" Type="Standard" EnumName="FISH_LIMB_6" Offset="0x2F004" />
+        <Skeleton Name="gameplay_keep_Skel_02F028" Type="Flex" LimbType="Standard" LimbNone="FISH_LIMB_NONE" LimbMax="FISH_LIMB_MAX" EnumName="FishLimb" Offset="0x2F028" />
+        <Animation Name="gameplay_keep_Anim_02F0EC" Offset="0x2F0EC" />
+        <Texture Name="gEffShockwaveTex" OutName="eff_shockwave" Format="i8" Width="64" Height="64" Offset="0x2F100" />
+
+        <DList Name="gEffShockwaveDL" Offset="0x30100" />
+        <Array Name="gEffShockwaveVtx" Count="4" Offset="0x30170">
+            <Vtx/>
+        </Array>
+        <DList Name="gEffBubbleDL" Offset="0x301B0" />
+
+        <Texture Name="gEffFireFootprint1Tex" OutName="eff_fire_footprint_1" Format="ia8" Width="32" Height="32" Offset="0x30270" />
+        <Texture Name="gEffFireFootprint2Tex" OutName="eff_fire_footprint_2" Format="ia8" Width="32" Height="32" Offset="0x30670" />
+        <Texture Name="gEffFireFootprint3Tex" OutName="eff_fire_footprint_3" Format="ia8" Width="32" Height="32" Offset="0x30A70" />
+        <Texture Name="gEffFireFootprint4Tex" OutName="eff_fire_footprint_4" Format="ia8" Width="32" Height="32" Offset="0x30E70" />
+        <Texture Name="gEffFireFootprint5Tex" OutName="eff_fire_footprint_5" Format="ia8" Width="32" Height="32" Offset="0x31270" />
+        <Texture Name="gEffFireFootprint6Tex" OutName="eff_fire_footprint_6" Format="ia8" Width="32" Height="32" Offset="0x31670" />
+        <Texture Name="gEffFireFootprint7Tex" OutName="eff_fire_footprint_7" Format="ia8" Width="32" Height="32" Offset="0x31A70" />
+        <Texture Name="gEffFireFootprint8Tex" OutName="eff_fire_footprint_8" Format="ia8" Width="32" Height="32" Offset="0x31E70" />
+        <DList Name="gEffFireFootprintDL" Offset="0x32270" />
+        <Texture Name="gameplay_keep_Tex_032310" OutName="tex_032310" Format="rgba32" Width="16" Height="64" Offset="0x32310" />
+        <Texture Name="gEffHitmarkWhiteMetal1Tex" OutName="eff_hitmark_white_metal_1" Format="i4" Width="32" Height="24" Offset="0x33310" />
+        <Texture Name="gEffHitmarkWhiteMetal2Tex" OutName="eff_hitmark_white_metal_2" Format="i4" Width="32" Height="24" Offset="0x33490" />
+        <Texture Name="gEffHitmarkWhiteMetal3Tex" OutName="eff_hitmark_white_metal_3" Format="i4" Width="32" Height="24" Offset="0x33610" />
+        <Texture Name="gEffHitmarkWhiteMetal4Tex" OutName="eff_hitmark_white_metal_4" Format="i4" Width="32" Height="24" Offset="0x33790" />
+        <Texture Name="gEffHitmarkWhiteMetal5Tex" OutName="eff_hitmark_white_metal_5" Format="i4" Width="32" Height="24" Offset="0x33910" />
+        <Texture Name="gEffHitmarkWhiteMetal6Tex" OutName="eff_hitmark_white_metal_6" Format="i4" Width="32" Height="24" Offset="0x33A90" />
+        <Texture Name="gEffHitmarkWhiteMetal7Tex" OutName="eff_hitmark_white_metal_7" Format="i4" Width="32" Height="24" Offset="0x33C10" />
+        <Texture Name="gEffHitmarkWhiteMetal8Tex" OutName="eff_hitmark_white_metal_8" Format="i4" Width="32" Height="24" Offset="0x33D90" />
+        <Texture Name="gEffHitmarkDust1Tex" OutName="eff_hitmark_dust_1" Format="i4" Width="32" Height="24" Offset="0x33F10" />
+        <Texture Name="gEffHitmarkDust2Tex" OutName="eff_hitmark_dust_2" Format="i4" Width="32" Height="24" Offset="0x34090" />
+        <Texture Name="gEffHitmarkDust3Tex" OutName="eff_hitmark_dust_3" Format="i4" Width="32" Height="24" Offset="0x34210" />
+        <Texture Name="gEffHitmarkDust4Tex" OutName="eff_hitmark_dust_4" Format="i4" Width="32" Height="24" Offset="0x34390" />
+        <Texture Name="gEffHitmarkDust5Tex" OutName="eff_hitmark_dust_5" Format="i4" Width="32" Height="24" Offset="0x34510" />
+        <Texture Name="gEffHitmarkDust6Tex" OutName="eff_hitmark_dust_6" Format="i4" Width="32" Height="24" Offset="0x34690" />
+        <Texture Name="gEffHitmarkDust7Tex" OutName="eff_hitmark_dust_7" Format="i4" Width="32" Height="24" Offset="0x34810" />
+        <Texture Name="gEffHitmarkDust8Tex" OutName="eff_hitmark_dust_8" Format="i4" Width="32" Height="24" Offset="0x34990" />
+        <Texture Name="gEffHitmarkRed1Tex" OutName="eff_hitmark_red_1" Format="i4" Width="32" Height="24" Offset="0x34B10" />
+        <Texture Name="gEffHitmarkRed2Tex" OutName="eff_hitmark_red_2" Format="i4" Width="32" Height="24" Offset="0x34C90" />
+        <Texture Name="gEffHitmarkRed3Tex" OutName="eff_hitmark_red_3" Format="i4" Width="32" Height="24" Offset="0x34E10" />
+        <Texture Name="gEffHitmarkRed4Tex" OutName="eff_hitmark_red_4" Format="i4" Width="32" Height="24" Offset="0x34F90" />
+        <Texture Name="gEffHitmarkRed5Tex" OutName="eff_hitmark_red_5" Format="i4" Width="32" Height="24" Offset="0x35110" />
+        <Texture Name="gEffHitmarkRed6Tex" OutName="eff_hitmark_red_6" Format="i4" Width="32" Height="24" Offset="0x35290" />
+        <Texture Name="gEffHitmarkRed7Tex" OutName="eff_hitmark_red_7" Format="i4" Width="32" Height="24" Offset="0x35410" />
+        <Texture Name="gEffHitmarkRed8Tex" OutName="eff_hitmark_red_8" Format="i4" Width="32" Height="24" Offset="0x35590" />
+        <DList Name="gEffHitmarkDL" Offset="0x35710" />
+        <Texture Name="gameplay_keep_Tex_0357B0" OutName="tex_0357B0" Format="ia8" Width="32" Height="64" Offset="0x357B0" />
+        <Texture Name="gameplay_keep_Tex_035FB0" OutName="tex_035FB0" Format="ia8" Width="32" Height="64" Offset="0x35FB0" />
+        <Texture Name="gEffWaterRippleTex" OutName="eff_water_ripple" Format="i8" Width="64" Height="64" Offset="0x367B0" />
+        <DList Name="gEffWaterRippleDL" Offset="0x377B0" />
+        <DList Name="gEffSparkDL" Offset="0x37850" />
+        <Texture Name="gEffWaterSplash1Tex" OutName="eff_water_splash_1" Format="i8" Width="32" Height="40" Offset="0x378F0" />
+        <Texture Name="gEffWaterSplash2Tex" OutName="eff_water_splash_2" Format="i8" Width="32" Height="40" Offset="0x37DF0" />
+        <Texture Name="gEffWaterSplash3Tex" OutName="eff_water_splash_3" Format="i8" Width="32" Height="40" Offset="0x382F0" />
+        <Texture Name="gEffWaterSplash4Tex" OutName="eff_water_splash_4" Format="i8" Width="32" Height="40" Offset="0x387F0" />
+        <Texture Name="gEffWaterSplash5Tex" OutName="eff_water_splash_5" Format="i8" Width="32" Height="40" Offset="0x38CF0" />
+        <Texture Name="gEffWaterSplash6Tex" OutName="eff_water_splash_6" Format="i8" Width="32" Height="40" Offset="0x391F0" />
+        <Texture Name="gEffWaterSplash7Tex" OutName="eff_water_splash_7" Format="i8" Width="32" Height="40" Offset="0x396F0" />
+        <Texture Name="gEffWaterSplash8Tex" OutName="eff_water_splash_8" Format="i8" Width="32" Height="40" Offset="0x39BF0" />
+        <DList Name="gEffWaterSplashDL" Offset="0x3A0F0" />
+        <Texture Name="gEffStone1Tex" OutName="eff_stone_1" Format="ia8" Width="32" Height="32" Offset="0x3A190" />
+        <Texture Name="gEffStone2Tex" OutName="eff_stone_2" Format="ia8" Width="32" Height="32" Offset="0x3A590" />
+        <Texture Name="gEffStone3Tex" OutName="eff_stone_3" Format="ia8" Width="32" Height="32" Offset="0x3A990" />
+        <Texture Name="gEffStone4Tex" OutName="eff_stone_4" Format="ia8" Width="32" Height="32" Offset="0x3AD90" />
+        <Texture Name="gEffStone5Tex" OutName="eff_stone_5" Format="ia8" Width="32" Height="32" Offset="0x3B190" />
+        <Texture Name="gEffStone6Tex" OutName="eff_stone_6" Format="ia8" Width="32" Height="32" Offset="0x3B590" />
+        <Texture Name="gEffStone7Tex" OutName="eff_stone_7" Format="ia8" Width="32" Height="32" Offset="0x3B990" />
+        <Texture Name="gEffStone8Tex" OutName="eff_stone_8" Format="ia8" Width="32" Height="32" Offset="0x3BD90" />
+        <DList Name="gEffStoneDL" Offset="0x3C190" />
+        <Texture Name="gEffLightning1Tex" OutName="eff_lightning_1" Format="i4" Width="32" Height="96" Offset="0x3C230" />
+        <Texture Name="gEffLightning2Tex" OutName="eff_lightning_2" Format="i4" Width="32" Height="96" Offset="0x3C830" />
+        <Texture Name="gEffLightning3Tex" OutName="eff_lightning_3" Format="i4" Width="32" Height="96" Offset="0x3CE30" />
+        <Texture Name="gEffLightning4Tex" OutName="eff_lightning_4" Format="i4" Width="32" Height="96" Offset="0x3D430" />
+        <Texture Name="gEffLightning5Tex" OutName="eff_lightning_5" Format="i4" Width="32" Height="96" Offset="0x3DA30" />
+        <Texture Name="gEffLightning6Tex" OutName="eff_lightning_6" Format="i4" Width="32" Height="96" Offset="0x3E030" />
+        <Texture Name="gEffLightning7Tex" OutName="eff_lightning_7" Format="i4" Width="32" Height="96" Offset="0x3E630" />
+        <Texture Name="gEffLightning8Tex" OutName="eff_lightning_8" Format="i4" Width="32" Height="96" Offset="0x3EC30" />
+        <DList Name="gEffLightningDL" Offset="0x3F230" />
+        <Texture Name="gEffEnemyDeathFlame1Tex" OutName="eff_enemy_death_flame_1" Format="i8" Width="32" Height="64" Offset="0x3F300" />
+        <Texture Name="gEffEnemyDeathFlame2Tex" OutName="eff_enemy_death_flame_2" Format="i8" Width="32" Height="64" Offset="0x3FB00" />
+        <Texture Name="gEffEnemyDeathFlame3Tex" OutName="eff_enemy_death_flame_3" Format="i8" Width="32" Height="64" Offset="0x40300" />
+        <Texture Name="gEffEnemyDeathFlame4Tex" OutName="eff_enemy_death_flame_4" Format="i8" Width="32" Height="64" Offset="0x40B00" />
+        <Texture Name="gEffEnemyDeathFlame5Tex" OutName="eff_enemy_death_flame_5" Format="i8" Width="32" Height="64" Offset="0x41300" />
+        <Texture Name="gEffEnemyDeathFlame6Tex" OutName="eff_enemy_death_flame_6" Format="i8" Width="32" Height="64" Offset="0x41B00" />
+        <Texture Name="gEffEnemyDeathFlame7Tex" OutName="eff_enemy_death_flame_7" Format="i8" Width="32" Height="64" Offset="0x42300" />
+        <Texture Name="gEffEnemyDeathFlame8Tex" OutName="eff_enemy_death_flame_8" Format="i8" Width="32" Height="64" Offset="0x42B00" />
+        <Texture Name="gEffEnemyDeathFlame9Tex" OutName="eff_enemy_death_flame_9" Format="i8" Width="32" Height="64" Offset="0x43300" />
+        <Texture Name="gEffEnemyDeathFlame10Tex" OutName="eff_enemy_death_flame_10" Format="i8" Width="32" Height="64" Offset="0x43B00" />
+        <DList Name="gEffEnemyDeathFlameDL" Offset="0x44300" />
+        <Texture Name="gameplay_keep_Tex_0443B0" OutName="tex_0443B0" Format="i8" Width="32" Height="32" Offset="0x443B0" />
+        <Texture Name="gameplay_keep_Tex_0447B0" OutName="tex_0447B0" Format="i8" Width="32" Height="32" Offset="0x447B0" />
+        <Texture Name="gameplay_keep_Tex_044BB0" OutName="tex_044BB0" Format="i8" Width="32" Height="32" Offset="0x44BB0" />
+        <Texture Name="gEffIceFragmentTex" OutName="eff_ice_fragment" Format="i8" Width="32" Height="32" Offset="0x44FB0" />
+        <!-- 2S2H [Port] Additional entry for authentic overflowed texture usage. This entry has its offset off by "one pixel" due to ZAPD not allowing duplicates -->
+        <Texture Name="gEffIceFragmentTex_Overflow" OutName="eff_ice_fragment_overflow" Format="ia16" Width="32" Height="32" Offset="0x44FAF" />
+        <Texture Name="gameplay_keep_Tex_0453B0" OutName="tex_0453B0" Format="i8" Width="32" Height="32" Offset="0x453B0" />
+
+        <!-- Goron Elegy of Emptiness Shell -->
+        <DList Name="gElegyShellGoronDL" Offset="0x48DF0" /> <!-- Original name is "pgs_zo_model" -->
+        <Texture Name="gElegyShellGoronTLUT" OutName="elegy_shell_goron_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4A460" />
+        <Texture Name="gElegyShellGoronSkinTex" OutName="elegy_shell_goron_skin" Format="ci8" Width="16" Height="16" Offset="0x4A660" />
+        <Texture Name="gElegyShellGoronHairTex" OutName="elegy_shell_goron_hair" Format="ci8" Width="16" Height="32" Offset="0x4A760" />
+        <Texture Name="gElegyShellGoronSideburnsAndBeardTex" OutName="elegy_shell_goron_sideburns_and_beard" Format="ci8" Width="16" Height="16" Offset="0x4A960" />
+        <Texture Name="gElegyShellGoronNostrilTex" OutName="elegy_shell_goron_nostril" Format="ci8" Width="8" Height="8" Offset="0x4AA60" />
+        <Texture Name="gElegyShellGoronLipsTex" OutName="elegy_shell_goron_lips" Format="ci8" Width="8" Height="8" Offset="0x4AAA0" />
+        <Texture Name="gElegyShellGoronGlovePalmTex" OutName="elegy_shell_goron_glove_palm" Format="ci8" Width="16" Height="16" Offset="0x4AAE0" />
+        <Texture Name="gElegyShellGoronGloveBackTex" OutName="elegy_shell_goron_glove_back" Format="ci8" Width="8" Height="16" Offset="0x4ABE0" />
+        <Texture Name="gElegyShellGoronFingerAndToeTex" OutName="elegy_shell_goron_finger_and_toe" Format="ci8" Width="8" Height="16" Offset="0x4AC60" />
+        <Texture Name="gElegyShellGoronSandalTopAndSideTex" OutName="elegy_shell_goron_sandal_top_and_side" Format="ci8" Width="8" Height="8" Offset="0x4ACE0" />
+        <Texture Name="gElegyShellGoronChestTex" OutName="elegy_shell_goron_chest" Format="ci8" Width="32" Height="32" Offset="0x4AD20" />
+        <Texture Name="gElegyShellGoronBackTex" OutName="elegy_shell_goron_back" Format="ci8" Width="32" Height="64" Offset="0x4B120" />
+        <Texture Name="gElegyShellGoronGoronsRubyTattooTex" OutName="elegy_shell_goron_gorons_ruby_tattoo" Format="ci8" Width="32" Height="64" Offset="0x4B920" />
+        <Texture Name="gElegyShellGoronTribalTattooTex" OutName="elegy_shell_goron_tribal_tattoo" Format="ci8" Width="32" Height="64" Offset="0x4C120" />
+        <Texture Name="gElegyShellGoronLoinclothTex" OutName="elegy_shell_goron_loincloth" Format="ci8" Width="8" Height="16" Offset="0x4C920" />
+        <Texture Name="gElegyShellGoronEyeTex" OutName="elegy_shell_goron_eye" Format="ci8" Width="32" Height="32" Offset="0x4C9A0" />
+        <Texture Name="gElegyShellGoronScarTex" OutName="elegy_shell_goron_scar" Format="rgba16" Width="32" Height="64" Offset="0x4CDA0" />
+        <Texture Name="gElegyShellGoronNecklaceTex" OutName="elegy_shell_goron_necklace" Format="i8" Width="32" Height="32" Offset="0x4DDA0" />
+        <Texture Name="gElegyShellGoronPlatformTex" OutName="elegy_shell_goron_platform" Format="ci8" Width="8" Height="16" Offset="0x4E1A0" />
+
+        <Texture Name="gHookshotReticleTex" OutName="tex_04E220" Format="i8" Width="64" Height="64" Offset="0x4E220" />
+        <DList Name="gHookshotReticleDL" Offset="0x4F250" /> <!-- Original name might be "pointer_modelT" -->
+        <Texture Name="gameplay_keep_Tex_04F2C0" OutName="tex_04F2C0" Format="ia16" Width="32" Height="64" Offset="0x4F2C0" />
+        <DList Name="gEffIceFragment1DL" Offset="0x50550" />
+        <DList Name="gEffIceFragment2MaterialDL" Offset="0x50648" />
+        <DList Name="gEffIceFragment2ModelDL" Offset="0x506E0" />
+        <DList Name="gEffIceFragment3DL" Offset="0x50D10" />
+        <Texture Name="gEffIceSmokeTex" OutName="eff_ice_smoke" Format="i4" Width="32" Height="32" Offset="0x50E80" />
+        <DList Name="gEffIceSmokeDL" Offset="0x510B0" />
+        <DList Name="gFrozenSteamMaterialDL" Offset="0x51180" />
+        <DList Name="gFrozenSteamModelDL" Offset="0x51238" />
+        <Animation Name="gameplay_keep_Anim_05140C" Offset="0x5140C" />
+        <DList Name="gameplay_keep_DL_051420" Offset="0x51420" />
+        <DList Name="gameplay_keep_DL_0514C0" Offset="0x514C0" />
+        <DList Name="gameplay_keep_DL_0514D0" Offset="0x514D0" />
+        <DList Name="gameplay_keep_DL_051510" Offset="0x51510" />
+        <DList Name="gameplay_keep_DL_0515B0" Offset="0x515B0" />
+        <DList Name="gameplay_keep_DL_0515C0" Offset="0x515C0" />
+        <DList Name="gameplay_keep_DL_051600" Offset="0x51600" />
+        <DList Name="gameplay_keep_DL_0516A0" Offset="0x516A0" />
+        <DList Name="gameplay_keep_DL_0516B0" Offset="0x516B0" />
+        <DList Name="gameplay_keep_DL_0516F0" Offset="0x516F0" />
+        <DList Name="gameplay_keep_DL_051790" Offset="0x51790" />
+        <DList Name="gameplay_keep_DL_0517A0" Offset="0x517A0" />
+        <DList Name="gameplay_keep_DL_0517E0" Offset="0x517E0" />
+        <DList Name="gameplay_keep_DL_051880" Offset="0x51880" />
+        <DList Name="gameplay_keep_DL_051890" Offset="0x51890" />
+        <DList Name="gameplay_keep_DL_0518D0" Offset="0x518D0" />
+        <DList Name="gameplay_keep_DL_051970" Offset="0x51970" />
+        <DList Name="gameplay_keep_DL_051980" Offset="0x51980" />
+        <DList Name="gameplay_keep_DL_0519C0" Offset="0x519C0" />
+        <DList Name="gameplay_keep_DL_051A60" Offset="0x51A60" />
+        <DList Name="gameplay_keep_DL_051A70" Offset="0x51A70" />
+        <DList Name="gameplay_keep_DL_051AB0" Offset="0x51AB0" />
+        <DList Name="gameplay_keep_DL_051B50" Offset="0x51B50" />
+        <DList Name="gameplay_keep_DL_051B60" Offset="0x51B60" />
+        <DList Name="gameplay_keep_DL_051BA0" Offset="0x51BA0" />
+        <DList Name="gameplay_keep_DL_051C50" Offset="0x51C50" />
+        <DList Name="gameplay_keep_DL_051C60" Offset="0x51C60" />
+        <Texture Name="gameplay_keep_Tex_051D30" OutName="tex_051D30" Format="rgba16" Width="16" Height="64" Offset="0x51D30" />
+        <Texture Name="gameplay_keep_Tex_052530" OutName="tex_052530" Format="rgba16" Width="8" Height="16" Offset="0x52530" />
+        <Limb Name="gameplay_keep_Standardlimb_052630" Type="Standard" EnumName="BUG_LIMB_01" Offset="0x52630" />
+        <Limb Name="gameplay_keep_Standardlimb_05263C" Type="Standard" EnumName="BUG_LIMB_02" Offset="0x5263C" />
+        <Limb Name="gameplay_keep_Standardlimb_052648" Type="Standard" EnumName="BUG_LIMB_03" Offset="0x52648" />
+        <Limb Name="gameplay_keep_Standardlimb_052654" Type="Standard" EnumName="BUG_LIMB_04" Offset="0x52654" />
+        <Limb Name="gameplay_keep_Standardlimb_052660" Type="Standard" EnumName="BUG_LIMB_05" Offset="0x52660" />
+        <Limb Name="gameplay_keep_Standardlimb_05266C" Type="Standard" EnumName="BUG_LIMB_06" Offset="0x5266C" />
+        <Limb Name="gameplay_keep_Standardlimb_052678" Type="Standard" EnumName="BUG_LIMB_07" Offset="0x52678" />
+        <Limb Name="gameplay_keep_Standardlimb_052684" Type="Standard" EnumName="BUG_LIMB_08" Offset="0x52684" />
+        <Limb Name="gameplay_keep_Standardlimb_052690" Type="Standard" EnumName="BUG_LIMB_09" Offset="0x52690" />
+        <Limb Name="gameplay_keep_Standardlimb_05269C" Type="Standard" EnumName="BUG_LIMB_0A" Offset="0x5269C" />
+        <Limb Name="gameplay_keep_Standardlimb_0526A8" Type="Standard" EnumName="BUG_LIMB_0B" Offset="0x526A8" />
+        <Limb Name="gameplay_keep_Standardlimb_0526B4" Type="Standard" EnumName="BUG_LIMB_0C" Offset="0x526B4" />
+        <Limb Name="gameplay_keep_Standardlimb_0526C0" Type="Standard" EnumName="BUG_LIMB_0D" Offset="0x526C0" />
+        <Limb Name="gameplay_keep_Standardlimb_0526CC" Type="Standard" EnumName="BUG_LIMB_0E" Offset="0x526CC" />
+        <Limb Name="gameplay_keep_Standardlimb_0526D8" Type="Standard" EnumName="BUG_LIMB_0F" Offset="0x526D8" />
+        <Limb Name="gameplay_keep_Standardlimb_0526E4" Type="Standard" EnumName="BUG_LIMB_10" Offset="0x526E4" />
+        <Limb Name="gameplay_keep_Standardlimb_0526F0" Type="Standard" EnumName="BUG_LIMB_11" Offset="0x526F0" />
+        <Limb Name="gameplay_keep_Standardlimb_0526FC" Type="Standard" EnumName="BUG_LIMB_12" Offset="0x526FC" />
+        <Limb Name="gameplay_keep_Standardlimb_052708" Type="Standard" EnumName="BUG_LIMB_13" Offset="0x52708" />
+        <Limb Name="gameplay_keep_Standardlimb_052714" Type="Standard" EnumName="BUG_LIMB_14" Offset="0x52714" />
+        <Limb Name="gameplay_keep_Standardlimb_052720" Type="Standard" EnumName="BUG_LIMB_15" Offset="0x52720" />
+        <Limb Name="gameplay_keep_Standardlimb_05272C" Type="Standard" EnumName="BUG_LIMB_16" Offset="0x5272C" />
+        <Limb Name="gameplay_keep_Standardlimb_052738" Type="Standard" EnumName="BUG_LIMB_17" Offset="0x52738" />
+        <Skeleton Name="gameplay_keep_Skel_0527A0" Type="Normal" LimbType="Standard" LimbNone="BUG_LIMB_NONE" LimbMax="BUG_LIMB_MAX" EnumName="BugLimb" Offset="0x527A0" />
+        <DList Name="gKakeraLeafMiddleDL" Offset="0x527F0" />
+        <DList Name="gKakeraLeafTipDL" Offset="0x528B0" />
+        <Texture Name="gameplay_keep_Tex_052940" OutName="tex_052940" Format="rgba16" Width="32" Height="32" Offset="0x52940" />
+        <Texture Name="gameplay_keep_Tex_053140" OutName="tex_053140" Format="rgba16" Width="32" Height="32" Offset="0x53140" />
+        <Texture Name="gameplay_keep_Tex_053940" OutName="tex_053940" Format="i4" Width="64" Height="64" Offset="0x53940" />
+        <Texture Name="gameplay_keep_Tex_054140" OutName="tex_054140" Format="i4" Width="64" Height="64" Offset="0x54140" />
+        <DList Name="gLensFlareCircleDL" Offset="0x54940" />
+        <DList Name="gLensFlareRingDL" Offset="0x549A8" />
+        <DList Name="gEffSparklesDL" Offset="0x54A90" />
+        <Texture Name="gameplay_keep_Tex_054AF0" OutName="tex_054AF0" Format="i4" Width="16" Height="16" Offset="0x54AF0" />
+        <DList Name="gameplay_keep_DL_054C90" Offset="0x54C90" />
+        <Texture Name="gameplay_keep_Tex_054D90" OutName="tex_054D90" Format="i4" Width="16" Height="16" Offset="0x54D90" />
+        <Texture Name="gameplay_keep_Tex_054E10" OutName="tex_054E10" Format="i8" Width="16" Height="16" Offset="0x54E10" />
+
+        <TextureAnimation Name="gameplay_keep_Matanimheader_054F18" Offset="0x54F18" />
+
+        <Texture Name="gameplay_keep_Tex_054F20" OutName="tex_054F20" Format="i8" Width="32" Height="32" Offset="0x54F20" />
+        <DList Name="gameplay_keep_DL_055360" Offset="0x55360" />
+        <DList Name="gameplay_keep_DL_055620" Offset="0x55620" />
+        <DList Name="gameplay_keep_DL_055628" Offset="0x55628" />
+        <Texture Name="gameplay_keep_Tex_0557F0" OutName="tex_0557F0" Format="rgba16" Width="32" Height="32" Offset="0x557F0" />
+        <Texture Name="gameplay_keep_Tex_055FF0" OutName="tex_055FF0" Format="i4" Width="64" Height="64" Offset="0x55FF0" />
+
+        <!-- Deku Elegy of Emptiness Shell -->
+        <DList Name="gElegyShellDekuDL" Offset="0x57B10" /> <!-- Original name is "pns_zo_model" -->
+        <Texture Name="gElegyShellDekuPlatformTex" OutName="elegy_shell_deku_platform" Format="rgba16" Width="8" Height="16" Offset="0x57FE8" />
+        <Texture Name="gElegyShellDekuSkinTex" OutName="elegy_shell_deku_skin" Format="rgba16" Width="16" Height="16" Offset="0x580E8" />
+        <Texture Name="gElegyShellDekuLeafTex" OutName="elegy_shell_deku_leaf" Format="rgba16" Width="32" Height="32" Offset="0x582E8" />
+        <Texture Name="gElegyShellDekuEyeTex" OutName="elegy_shell_deku_eye" Format="rgba16" Width="8" Height="8" Offset="0x58AE8" />
+
+        <DList Name="gameplay_keep_DL_058BA0" Offset="0x58BA0" />
+        <Texture Name="gameplay_keep_Tex_058C30" OutName="tex_058C30" Format="rgba16" Width="16" Height="16" Offset="0x58C30" />
+        <Collision Name="gameplay_keep_Colheader_058F30" Offset="0x58F30" />
+        <DList Name="gameplay_keep_DL_0590E0" Offset="0x590E0" />
+        <DList Name="gameplay_keep_DL_059310" Offset="0x59310" />
+        <Collision Name="gameplay_keep_Colheader_0594C8" Offset="0x594C8" />
+        <DList Name="gameplay_keep_DL_059680" Offset="0x59680" />
+        <Collision Name="gameplay_keep_Colheader_059840" Offset="0x59840" />
+        <DList Name="gameplay_keep_DL_0599F0" Offset="0x599F0" />
+        <Collision Name="gameplay_keep_Colheader_059BA0" Offset="0x59BA0" />
+        <DList Name="gameplay_keep_DL_059D50" Offset="0x59D50" />
+        <Collision Name="gameplay_keep_Colheader_059F00" Offset="0x59F00" />
+        <DList Name="gameplay_keep_DL_05A0B0" Offset="0x5A0B0" />
+        <Collision Name="gameplay_keep_Colheader_05A270" Offset="0x5A270" />
+        <DList Name="gameplay_keep_DL_05A430" Offset="0x5A430" />
+        <DList Name="gameplay_keep_DL_05A600" Offset="0x5A600" />
+
+        <Texture Name="gHeartShapeTex" OutName="heart_shape" Format="i8" Width="16" Height="16" Offset="0x5A6B0" />
+        <DList Name="gHeartPieceInteriorDL" Offset="0x5AAB0" />
+        <DList Name="gSignRectangularDL" Offset="0x5AED0" />
+        <DList Name="gSignDirectionalDL" Offset="0x5B430" />
+
+        <!-- Item Drops -->
+        <Texture Name="gDropArrows2Tex" OutName="drop_arrows_2" Format="rgba16" Width="32" Height="32" Offset="0x5B6F0" />
+        <Texture Name="gDropArrows1Tex" OutName="drop_arrows_1" Format="rgba16" Width="32" Height="32" Offset="0x5BEF0" />
+        <Texture Name="gDropArrows3Tex" OutName="drop_arrows_3" Format="rgba16" Width="32" Height="32" Offset="0x5C6F0" />
+        <Texture Name="gDropBombTex" OutName="drop_bomb" Format="rgba16" Width="32" Height="32" Offset="0x5CEF0" />
+        <Texture Name="gDropBombchuTex" OutName="drop_bombchu" Format="rgba16" Width="32" Height="32" Offset="0x5D6F0" />
+        <Texture Name="gDropUnknownPouchTex" OutName="drop_unknown_pouch" Format="rgba16" Width="32" Height="32" Offset="0x5DEF0" />
+        <Texture Name="gDropRecoveryHeartTex" OutName="drop_recovery_heart" Format="rgba16" Width="32" Height="32" Offset="0x5E6F0" />
+        <Texture Name="gDropHeartPieceTex" OutName="drop_heart_piece" Format="rgba16" Width="32" Height="32" Offset="0x5EEF0" />
+        <DList Name="gItemDropDL" Offset="0x5F6F0" />
+        <Texture Name="gDropKeySmallTex" OutName="drop_key_small" Format="rgba16" Width="32" Height="32" Offset="0x5F7C0" />
+        <Texture Name="gDropMagicSmallTex" OutName="drop_magic_small" Format="rgba16" Width="32" Height="32" Offset="0x5FFC0" />
+        <Texture Name="gDropDekuNutTex" OutName="drop_deku_nut" Format="rgba16" Width="32" Height="32" Offset="0x607C0" />
+        <Texture Name="gDropDekuStickTex" OutName="drop_deku_stick" Format="rgba16" Width="32" Height="32" Offset="0x60FC0" />
+        <Texture Name="gDropMagicLargeTex" OutName="drop_magic_large" Format="rgba16" Width="32" Height="32" Offset="0x617C0" />
+
+        <!-- Rupees -->
+        <Texture Name="gRupeeGreenTex" OutName="rupee_green" Format="rgba16" Width="4" Height="4" Offset="0x61FC0" />
+        <Texture Name="gRupeeBlueTex" OutName="rupee_blue" Format="rgba16" Width="4" Height="4" Offset="0x61FE0" />
+        <Texture Name="gRupeeRedTex" OutName="rupee_red" Format="rgba16" Width="4" Height="4" Offset="0x62000" />
+        <Texture Name="gRupeePurpleTex" OutName="rupee_purple" Format="rgba16" Width="4" Height="4" Offset="0x62020" />
+        <Texture Name="gRupeeOrangeTex" OutName="rupee_orange" Format="rgba16" Width="4" Height="4" Offset="0x62040" />
+        <Texture Name="gRupeeSilverTex" OutName="rupee_silver" Format="rgba16" Width="4" Height="4" Offset="0x62060" />
+        <DList Name="gRupeeDL" Offset="0x622C0" />
+
+        <Texture Name="gRecoveryHeartTex" OutName="recovery_heart" Format="rgba16" Width="32" Height="32" Offset="0x62390" />
+        <Texture Name="gBombTex" OutName="bomb" Format="rgba16" Width="32" Height="32" Offset="0x62B90" />
+        <Texture Name="gArrowTex" OutName="arrow" Format="rgba16" Width="32" Height="32" Offset="0x63390" />
+        <Texture Name="gRupeeLightRedTex" OutName="rupee_light_red" Format="rgba16" Width="4" Height="4" Offset="0x63B90" />
+        <Texture Name="gRupeeLightBlueTex" OutName="rupee_light_blue" Format="rgba16" Width="4" Height="4" Offset="0x63BB0" />
+        <Texture Name="gHeartContainerTex" OutName="heart_container" Format="rgba16" Width="32" Height="32" Offset="0x63BD0" />
+
+        <Texture Name="gameplay_keep_Tex_0643D0" OutName="tex_0643D0" Format="rgba16" Width="32" Height="32" Offset="0x643D0" />
+        <Texture Name="gameplay_keep_Tex_064BD0" OutName="tex_064BD0" Format="rgba16" Width="32" Height="32" Offset="0x64BD0" />
+        <Texture Name="gameplay_keep_Tex_0653D0" OutName="tex_0653D0" Format="rgba16" Width="32" Height="32" Offset="0x653D0" />
+        <Texture Name="gameplay_keep_Tex_065BD0" OutName="tex_065BD0" Format="rgba16" Width="32" Height="32" Offset="0x65BD0" />
+        <Texture Name="gameplay_keep_Tex_0663D0" OutName="tex_0663D0" Format="rgba16" Width="32" Height="32" Offset="0x663D0" />
+        <Texture Name="gameplay_keep_Tex_066BD0" OutName="tex_066BD0" Format="rgba16" Width="64" Height="32" Offset="0x66BD0" />
+        <Texture Name="gameplay_keep_Tex_067BD0" OutName="tex_067BD0" Format="rgba16" Width="32" Height="32" Offset="0x67BD0" />
+        <Texture Name="gameplay_keep_Tex_0683D0" OutName="tex_0683D0" Format="rgba16" Width="32" Height="32" Offset="0x683D0" />
+
+        <Texture Name="gSignRectangularSideTex" OutName="sign_rectangular_side" Format="rgba16" Width="32" Height="16" Offset="0x68BD0" />
+        <Texture Name="gSignRectangularFrontTex" OutName="sign_rectangular_front" Format="rgba16" Width="32" Height="16" Offset="0x68FD0" />
+        <Texture Name="gSignPostWoodTex" OutName="sign_post_wood" Format="rgba16" Width="64" Height="8" Offset="0x693D0" />
+        <Texture Name="gSignLetteringTex" OutName="sign_lettering" Format="rgba16" Width="64" Height="32" Offset="0x697D0" />
+
+        <DList Name="gameplay_keep_DL_06A800" Offset="0x6A800" />
+        <Texture Name="gameplay_keep_Tex_06A880" OutName="tex_06A880" Format="i8" Width="16" Height="16" Offset="0x6A880" />
+        <DList Name="gameplay_keep_DL_06AB30" Offset="0x6AB30" />
+        <Texture Name="gameplay_keep_Tex_06ABF8" OutName="tex_06ABF8" Format="rgba16" Width="36" Height="36" Offset="0x6ABF8" />
+        <TextureAnimation Name="gameplay_keep_Matanimheader_06B6A0" Offset="0x6B6A0" />
+        <TextureAnimation Name="gameplay_keep_Matanimheader_06B730" Offset="0x6B730" />
+
+        <KeyFrameAnimation Name="gGameplayKeepKFAnim_6BB0C" Skel="0x6EB70" Offset="0x6BB0C"/>
+
+        <DList Name="gameplay_keep_DL_06BFE0" Offset="0x6BFE0" />
+        <DList Name="gameplay_keep_DL_06C098" Offset="0x6C098" />
+        <DList Name="gameplay_keep_DL_06C1E8" Offset="0x6C1E8" />
+        <Texture Name="gameplay_keep_Tex_06C350" OutName="tex_06C350" Format="i4" Width="64" Height="64" Offset="0x6C350" />
+        <Texture Name="gameplay_keep_Tex_06CB50" OutName="tex_06CB50" Format="i4" Width="64" Height="64" Offset="0x6CB50" />
+        <Texture Name="gameplay_keep_Tex_06D350" OutName="tex_06D350" Format="i4" Width="64" Height="64" Offset="0x6D350" />
+        <Texture Name="gameplay_keep_Tex_06DB50" OutName="tex_06DB50" Format="i4" Width="64" Height="64" Offset="0x6DB50" />
+        <Texture Name="gameplay_keep_Tex_06E350" OutName="tex_06E350" Format="i4" Width="64" Height="64" Offset="0x6E350" />
+        
+        <KeyFrameSkel Name="gGameplayKeepKFSkel_6EB70" LimbType="Flex" Offset="0x6EB70"/>
+
+        <Texture Name="gameplay_keep_Tex_06EB80" OutName="tex_06EB80" Format="i4" Width="64" Height="64" Offset="0x6EB80" />
+        <DList Name="gameplay_keep_DL_06F380" Offset="0x6F380" />
+        <DList Name="gameplay_keep_DL_06F9F0" Offset="0x6F9F0" />
+        <DList Name="gameplay_keep_DL_06FAE0" Offset="0x6FAE0" />
+        <DList Name="gameplay_keep_DL_06FE20" Offset="0x6FE20" />
+        <DList Name="gameplay_keep_DL_06FF68" Offset="0x6FF68" />
+        <Texture Name="gameplay_keep_Tex_0700B0" OutName="tex_0700B0" Format="rgba16" Width="16" Height="32" Offset="0x700B0" />
+        <Texture Name="gameplay_keep_Tex_0704B0" OutName="tex_0704B0" Format="rgba16" Width="16" Height="16" Offset="0x704B0" />
+        <DList Name="gFallingRainDropDL" Offset="0x706E0" />
+
+        <!-- Popped Deku Bubbles (EffSsSbn) -->
+
+        <!-- Static Popped Bubbles, can't swap out textures (unused) -->
+        <DList Name="gEffPoppedDekuBubbleStaticDL" Offset="0x70730" />
+        <Texture Name="gEffPoppedDekuBubbleStaticMaskTex" OutName="eff_popped_deku_bubble_static_mask" Format="i4" Width="32" Height="32" Offset="0x707F0" />
+        <Texture Name="gEffPoppedDekuBubbleStaticTex" OutName="eff_popped_deku_bubble_static" Format="i4" Width="64" Height="64" Offset="0x709F0" />
+        <TextureAnimation Name="gEffPoppedDekuBubbleStaticTexAnim" Offset="0x711F8" />
+
+        <!-- Sliding Popped Deku Bubbles -->
+        <DList Name="gEffPoppedDekuBubbleSlidingDL" Offset="0x71230" />
+        <TextureAnimation Name="gEffPoppedDekuBubbleSlidingTexAnim" Offset="0x712F8" /> <!-- Unused -->
+        <Texture Name="gEffPoppedDekuBubbleSliding1Tex" OutName="eff_popped_deku_bubble_sliding_1" Format="i4" Width="32" Height="64" Offset="0x71300" />
+        <Texture Name="gEffPoppedDekuBubbleSliding2Tex" OutName="eff_popped_deku_bubble_sliding_2" Format="i4" Width="32" Height="64" Offset="0x71700" />
+        <Texture Name="gEffPoppedDekuBubbleSliding3Tex" OutName="eff_popped_deku_bubble_sliding_3" Format="i4" Width="32" Height="64" Offset="0x71B00" />
+        <Texture Name="gEffPoppedDekuBubbleSliding4Tex" OutName="eff_popped_deku_bubble_sliding_4" Format="i4" Width="32" Height="64" Offset="0x71F00" />
+        <Texture Name="gEffPoppedDekuBubbleSliding5Tex" OutName="eff_popped_deku_bubble_sliding_5" Format="i4" Width="32" Height="64" Offset="0x72300" />
+        <Texture Name="gEffPoppedDekuBubbleSliding6Tex" OutName="eff_popped_deku_bubble_sliding_6" Format="i4" Width="32" Height="64" Offset="0x72700" />
+        <Texture Name="gEffPoppedDekuBubbleSliding7Tex" OutName="eff_popped_deku_bubble_sliding_7" Format="i4" Width="32" Height="64" Offset="0x72B00" />
+        <Texture Name="gEffPoppedDekuBubbleSliding8Tex" OutName="eff_popped_deku_bubble_sliding_8" Format="i4" Width="32" Height="64" Offset="0x72F00" />
+        <Texture Name="gEffPoppedDekuBubbleSliding9Tex" OutName="eff_popped_deku_bubble_sliding_9" Format="i4" Width="32" Height="64" Offset="0x73300" />
+        <Texture Name="gEffPoppedDekuBubbleSliding10Tex" OutName="eff_popped_deku_bubble_sliding_10" Format="i4" Width="32" Height="64" Offset="0x73700" />
+        <Texture Name="gEffPoppedDekuBubbleSliding11Tex" OutName="eff_popped_deku_bubble_sliding_11" Format="i4" Width="32" Height="64" Offset="0x73B00" />
+        <Texture Name="gEffPoppedDekuBubbleSliding12Tex" OutName="eff_popped_deku_bubble_sliding_12" Format="i4" Width="32" Height="64" Offset="0x73F00" />
+
+        <!-- Regular Popped Deku Bubbles -->
+        <DList Name="gEffPoppedDekuBubbleDL" Offset="0x74330" />
+        <TextureAnimation Name="gEffPoppedDekuBubbleTexAnim" Offset="0x743F0" /> <!-- Empty and unused -->
+        <Texture Name="gEffPoppedDekuBubble1Tex" OutName="eff_popped_deku_bubble_1" Format="i4" Width="32" Height="64" Offset="0x74400" />
+        <Texture Name="gEffPoppedDekuBubble2Tex" OutName="eff_popped_deku_bubble_2" Format="i4" Width="32" Height="64" Offset="0x74800" />
+        <Texture Name="gEffPoppedDekuBubble3Tex" OutName="eff_popped_deku_bubble_3" Format="i4" Width="32" Height="64" Offset="0x74C00" />
+        <Texture Name="gEffPoppedDekuBubble4Tex" OutName="eff_popped_deku_bubble_4" Format="i4" Width="32" Height="64" Offset="0x75000" />
+        <Texture Name="gEffPoppedDekuBubble5Tex" OutName="eff_popped_deku_bubble_5" Format="i4" Width="32" Height="64" Offset="0x75400" />
+        <Texture Name="gEffPoppedDekuBubbleMaskTex" OutName="eff_popped_deku_bubble_mask" Format="i4" Width="32" Height="32" Offset="0x75800" /> <!-- Mask used for both normal and sliding bubbles -->
+
+        <DList Name="gSquareShadowDL" Offset="0x75A40" />
+        <Texture Name="gameplay_keep_Tex_075AA8" OutName="tex_075AA8" Format="i4" Width="16" Height="16" Offset="0x75AA8" />
+        <DList Name="gFootShadowDL" Offset="0x75B30" />
+        <Texture Name="gameplay_keep_Tex_075BC0" OutName="tex_075BC0" Format="ia16" Width="32" Height="64" Offset="0x75BC0" />
+        <DList Name="gCircleShadowDL" Offset="0x76BC0" />
+        <Texture Name="gameplay_keep_Tex_076C40" OutName="tex_076C40" Format="ia16" Width="32" Height="32" Offset="0x76C40" />
+        <DList Name="gHorseShadowDL" Offset="0x77480" />
+        <Texture Name="gameplay_keep_Tex_0774D0" OutName="tex_0774D0" Format="i8" Width="16" Height="64" Offset="0x774D0" />
+        <DList Name="gameplay_keep_DL_077990" Offset="0x77990" />
+        <Texture Name="gameplay_keep_Tex_077A40" OutName="tex_077A40" Format="ia8" Width="32" Height="128" Offset="0x77A40" />
+        <DList Name="gameplay_keep_DL_078A80" Offset="0x78A80" />
+        <Texture Name="gameplay_keep_Tex_078B10" OutName="tex_078B10" Format="rgba16" Width="32" Height="64" Offset="0x78B10" />
+
+        <!-- Sun Textures. These should be 64x64, but they get broken into pieces in gSunDL, and ZAPD cannot currently handle that. -->
+        <!-- #region 2S2H [Port] Treat these properly as 64x64 on extraction-->
+        <Texture Name="gSun1Tex" OutName="sun_1" Format="i4" Width="64" Height="64" Offset="0x79B10" />
+        <!-- <Texture Name="gSun1Tex" OutName="sun_1" Format="i4" Width="64" Height="31" Offset="0x79B10" /> -->
+        <Texture Name="gSun2Tex" OutName="sun_2" Format="i4" Width="64" Height="16" Offset="0x79EF0" />
+        <Texture Name="gSun3Tex" OutName="sun_3" Format="i4" Width="64" Height="17" Offset="0x7A0F0" />
+        <Texture Name="gSunEvening1Tex" OutName="sun_evening_1" Format="i4" Width="64" Height="64" Offset="0x7A310" />
+        <!-- <Texture Name="gSunEvening1Tex" OutName="sun_evening_1" Format="i4" Width="64" Height="31" Offset="0x7A310" /> -->
+        <Texture Name="gSunEvening2Tex" OutName="sun_evening_2" Format="i4" Width="64" Height="16" Offset="0x7A6F0" />
+        <Texture Name="gSunEvening3Tex" OutName="sun_evening_3" Format="i4" Width="64" Height="17" Offset="0x7A8F0" />
+
+        <DList Name="gSunSparkleMaterialDL" Offset="0x7AB10" /> <!-- sun (sparkles when small) displaylist -->
+        <DList Name="gSunSparkleModelDL" Offset="0x7AB58" />
+        <DList Name="gSunDL" Offset="0x7AB70" />
+        <DList Name="gLockOnReticleTriangleDL" Offset="0x7AE00" />
+
+        <!-- The clock that appears when the player is moving through, slowing down, or speeding up time with the Song of Time -->
+        <DList Name="gSongOfTimeClockDL" Offset="0x7AFB0" /> <!-- Original name is "disk_modelT" -->
+        <DList Name="gSongOfTimeClockEmptyDL" Offset="0x7B0B8" /> <!-- Probably was the opaque component for the above DL -->
+        <Texture Name="gSongOfTimeClockTopTex" OutName="song_of_time_clock_top" Format="i8" Width="64" Height="64" Offset="0x7B0C0" />
+        <Texture Name="gSongOfTimeClockBottomTex" OutName="song_of_time_clock_bottom" Format="i8" Width="64" Height="64" Offset="0x7C0C0" />
+
+        <DList Name="gameplay_keep_DL_07D260" Offset="0x7D260" />
+        <DList Name="gameplay_keep_DL_07D348" Offset="0x7D348" />
+        <Texture Name="gameplay_keep_Tex_07D350" OutName="tex_07D350" Format="i8" Width="16" Height="32" Offset="0x7D350" />
+
+        <Array Name="gameplay_keepVtx_07D550" Count="4" Offset="0x7D550">
+            <Vtx/>
+        </Array>
+
+        <DList Name="gEffFire1DL" Offset="0x7D590" />
+        <DList Name="gEffFire2DL" Offset="0x7D650" />
+        <Texture Name="gEffFireMaskTex" OutName="eff_fire_mask" Format="i4" Width="32" Height="128" Offset="0x7D710" />
+        <Texture Name="gEffFireTex" OutName="eff_fire" Format="i8" Width="32" Height="64" Offset="0x7DF10" />
+        <DList Name="gameplay_keep_DL_07E8C0" Offset="0x7E8C0" />
+        <Texture Name="gameplay_keep_Tex_07EA08" OutName="tex_07EA08" Format="i8" Width="32" Height="64" Offset="0x7EA08" />
+        <TextureAnimation Name="gameplay_keep_Matanimheader_07F218" Offset="0x7F218" />
+        <DList Name="gameplay_keep_DL_07F260" Offset="0x7F260" />
+        <Texture Name="gameplay_keep_Tex_07F2E8" OutName="tex_07F2E8" Format="ia16" Width="32" Height="64" Offset="0x7F2E8" />
+        <DList Name="gameplay_keep_DL_080FC0" Offset="0x80FC0" />
+
+        <!-- Song of soaring warp cutscene -->
+        <DList Name="gSoaringWarpCsWindCapsuleDL" Offset="0x80FC8" />
+        <Texture Name="gSoaringWarpCsWindCapsuleTex" OutName="soaring_warp_cs_wind_capsule" Format="i8" Width="16" Height="32" Offset="0x813A0" />
+        <TextureAnimation Name="gSoaringWarpCsWindCapsuleTexAnim" Offset="0x815D0" />
+        <DList Name="gSoaringWarpCsEmptyDL" Offset="0x81620" />
+        <DList Name="gSoaringWarpCsFeatherDL" Offset="0x81628" />
+        <Texture Name="gSoaringWarpCsFeatherTex" OutName="soaring_warp_cs_feather" Format="rgba16" Width="16" Height="32" Offset="0x816C0" />
+        <Blob Name="gameplay_keep_Blob_081AC0" Size="0x1A74" Offset="0x81AC0" />
+        <KeyFrameAnimation Name="gGameplayKeepKFAnim_83534" Skel="0x85640" Offset="0x83534"/>
+        <DList Name="gameplay_keep_DL_084790" Offset="0x84790" />
+        <DList Name="gameplay_keep_DL_0847E0" Offset="0x847E0" />
+        <DList Name="gameplay_keep_DL_084850" Offset="0x84850" />
+        <DList Name="gameplay_keep_DL_0848C0" Offset="0x848C0" />
+        <DList Name="gameplay_keep_DL_084930" Offset="0x84930" />
+        <DList Name="gameplay_keep_DL_0849A0" Offset="0x849A0" />
+        <DList Name="gameplay_keep_DL_084A10" Offset="0x84A10" />
+        <DList Name="gameplay_keep_DL_084A80" Offset="0x84A80" />
+        <DList Name="gameplay_keep_DL_084AF0" Offset="0x84AF0" />
+        <DList Name="gameplay_keep_DL_084B60" Offset="0x84B60" />
+        <DList Name="gameplay_keep_DL_084BD0" Offset="0x84BD0" />
+        <DList Name="gameplay_keep_DL_084C48" Offset="0x84C48" />
+        <DList Name="gameplay_keep_DL_084CF0" Offset="0x84CF0" />
+        <DList Name="gameplay_keep_DL_084D70" Offset="0x84D70" />
+        <DList Name="gameplay_keep_DL_084DD8" Offset="0x84DD8" />
+        <DList Name="gameplay_keep_DL_084E50" Offset="0x84E50" />
+        <DList Name="gameplay_keep_DL_084EA0" Offset="0x84EA0" />
+        <DList Name="gameplay_keep_DL_084F10" Offset="0x84F10" />
+        <DList Name="gameplay_keep_DL_084F80" Offset="0x84F80" />
+        <DList Name="gameplay_keep_DL_084FF0" Offset="0x84FF0" />
+        <DList Name="gameplay_keep_DL_085060" Offset="0x85060" />
+        <DList Name="gameplay_keep_DL_0850D0" Offset="0x850D0" />
+        <DList Name="gameplay_keep_DL_085140" Offset="0x85140" />
+        <DList Name="gameplay_keep_DL_0851B0" Offset="0x851B0" />
+        <DList Name="gameplay_keep_DL_085220" Offset="0x85220" />
+        <DList Name="gameplay_keep_DL_085290" Offset="0x85290" />
+        <DList Name="gameplay_keep_DL_085308" Offset="0x85308" />
+        <DList Name="gameplay_keep_DL_0853B0" Offset="0x853B0" />
+        <DList Name="gameplay_keep_DL_085418" Offset="0x85418" />
+        <DList Name="gameplay_keep_DL_085490" Offset="0x85490" />
+        <Blob Name="gameplay_keep_Blob_085510" Size="0x130" Offset="0x85510" />
+        <KeyFrameSkel Name="gGameplayKeepKFSkel_85640" LimbType="Flex" Offset="0x85640"/>
+
+        <!-- Zora Elegy of Emptiness Shell -->
+        <DList Name="gElegyShellZoraDL" Offset="0x89070" /> <!-- Original name is "pzs_zo_model" -->
+        <Texture Name="gElegyShellZoraTLUT" OutName="elegy_shell_zora_tlut" Format="rgba16" Width="16" Height="16" Offset="0x8A420" />
+        <Texture Name="gElegyShellZoraGuitarJawTex" OutName="elegy_shell_zora_guitar_jaw" Format="rgba16" Width="16" Height="16" Offset="0x8A620" />
+        <Texture Name="gElegyShellZoraGuitarEyeTex" OutName="elegy_shell_zora_guitar_eye" Format="rgba16" Width="16" Height="16" Offset="0x8A820" />
+        <Texture Name="gElegyShellZoraGuitarTeethTex" OutName="elegy_shell_zora_guitar_teeth" Format="rgba16" Width="16" Height="16" Offset="0x8AA20" />
+        <Texture Name="gElegyShellZoraGuitarSpinousTex" OutName="elegy_shell_zora_guitar_spinous" Format="rgba16" Width="16" Height="32" Offset="0x8AC20" />
+        <Texture Name="gElegyShellZoraGuitarBoneTex" OutName="elegy_shell_zora_guitar_bone" Format="rgba16" Width="16" Height="32" Offset="0x8B020" />
+        <Texture Name="gElegyShellZoraSkinTex" OutName="elegy_shell_zora_skin" Format="ci8" Width="8" Height="8" Offset="0x8B420" />
+        <Texture Name="gElegyShellZoraSpottedSkinTex" OutName="elegy_shell_zora_spotted_skin" Format="ci8" Width="32" Height="32" Offset="0x8B460" />
+        <Texture Name="gElegyShellZoraFingersTex" OutName="elegy_shell_zora_fingers" Format="ci8" Width="16" Height="16" Offset="0x8B860" />
+        <Texture Name="gElegyShellZoraBackAndHipSpottedSkinTex" OutName="elegy_shell_zora_back_and_hip_spotted_skin" Format="ci8" Width="32" Height="64" Offset="0x8B960" />
+        <Texture Name="gElegyShellZoraWristbandTex" OutName="elegy_shell_zora_wristband" Format="ci8" Width="8" Height="16" Offset="0x8C160" />
+        <Texture Name="gElegyShellZoraFinTex" OutName="elegy_shell_zora_fin" Format="ci8" Width="16" Height="16" Offset="0x8C1E0" />
+        <Texture Name="gElegyShellZoraEyeTex" OutName="elegy_shell_zora_eye" Format="ci8" Width="32" Height="32" Offset="0x8C2E0" />
+        <Texture Name="gElegyShellZoraMouthTex" OutName="elegy_shell_zora_mouth" Format="ci8" Width="32" Height="32" Offset="0x8C6E0" />
+        <Texture Name="gElegyShellZoraRibsTattooTex" OutName="elegy_shell_zora_ribs_tattoo" Format="ci8" Width="16" Height="32" Offset="0x8CAE0" />
+        <Texture Name="gElegyShellZoraArrowTattooTex" OutName="elegy_shell_zora_arrow_tattoo" Format="ci8" Width="16" Height="32" Offset="0x8CCE0" />
+        <Texture Name="gElegyShellZoraRightShoulderTattooTex" OutName="elegy_shell_zora_right_shoulder_tattoo" Format="ci8" Width="32" Height="32" Offset="0x8CEE0" />
+        <Texture Name="gElegyShellZoraPlatformTex" OutName="elegy_shell_zora_platform" Format="rgba16" Width="8" Height="16" Offset="0x8D2E0" />
+
+        <Texture Name="gameplay_keep_Tex_08D3E0" OutName="tex_08D3E0" Format="i8" Width="64" Height="32" Offset="0x8D3E0" />
+
+        <!-- Dust Textures -->
+        <Texture Name="gEffDust1Tex" OutName="eff_dust_1" Format="i8" Width="32" Height="32" Offset="0x8DBE0" />
+        <Texture Name="gEffDust2Tex" OutName="eff_dust_2" Format="i8" Width="32" Height="32" Offset="0x8DFE0" />
+        <Texture Name="gEffDust3Tex" OutName="eff_dust_3" Format="i8" Width="32" Height="32" Offset="0x8E3E0" />
+        <Texture Name="gEffDust4Tex" OutName="eff_dust_4" Format="i8" Width="32" Height="32" Offset="0x8E7E0" />
+        <Texture Name="gEffDust5Tex" OutName="eff_dust_5" Format="i8" Width="32" Height="32" Offset="0x8EBE0" />
+        <Texture Name="gEffDust6Tex" OutName="eff_dust_6" Format="i8" Width="32" Height="32" Offset="0x8EFE0" />
+        <Texture Name="gEffDust7Tex" OutName="eff_dust_7" Format="i8" Width="32" Height="32" Offset="0x8F3E0" />
+        <Texture Name="gEffDust8Tex" OutName="eff_dust_8" Format="i8" Width="32" Height="32" Offset="0x8F7E0" />
+
+        <Texture Name="gameplay_keep_Tex_08FBE0" OutName="tex_08FBE0" Format="i8" Width="32" Height="64" Offset="0x8FBE0" />
+        <Texture Name="gameplay_keep_Tex_0903E0" OutName="tex_0903E0" Format="i8" Width="32" Height="64" Offset="0x903E0" />
+        <Texture Name="gameplay_keep_Tex_090BE0" OutName="tex_090BE0" Format="i8" Width="32" Height="64" Offset="0x90BE0" />
+        <Texture Name="gameplay_keep_Tex_0913E0" OutName="tex_0913E0" Format="i8" Width="32" Height="64" Offset="0x913E0" />
+        <Texture Name="gEffBubble1Tex" OutName="eff_bubble_1" Format="ia8" Width="16" Height="16" Offset="0x91BE0" />
+        <Texture Name="gEffBubble2Tex" OutName="eff_bubble_2" Format="ia8" Width="16" Height="16" Offset="0x91CE0" />
+
+        <!-- Electric spark textures from Zora-Form attack -->
+        <Texture Name="gElectricSpark1Tex" OutName="electric_spark_1" Format="i4" Width="32" Height="32" Offset="0x91DE0" />
+        <Texture Name="gElectricSpark2Tex" OutName="electric_spark_2" Format="i4" Width="32" Height="32" Offset="0x91FE0" />
+        <Texture Name="gElectricSpark3Tex" OutName="electric_spark_3" Format="i4" Width="32" Height="32" Offset="0x921E0" />
+        <Texture Name="gElectricSpark4Tex" OutName="electric_spark_4" Format="i4" Width="32" Height="32" Offset="0x923E0" />
+    </File>
+</Root>

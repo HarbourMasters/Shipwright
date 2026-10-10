@@ -1,0 +1,73 @@
+﻿<Root>
+    <!-- Contains objects related to the Clock Tower and various wall clocks. -->
+    <File Name="object_obj_tokeidai" Segment="6">
+        <Texture Name="gClockTowerClockFaceTopTLUT" OutName="clock_tower_clock_face_top_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gClockTowerClockFaceBottomTLUT" OutName="clock_tower_clock_face_bottom_tlut" Format="rgba16" Width="4" Height="4" Offset="0x20" />
+        <Texture Name="gClockTowerSpotlightShineTex" OutName="clock_tower_spotlight_shine" Format="i8" Width="64" Height="64" Offset="0x40" />
+
+        <!-- Generic brick texture used for multiple pieces of the Clock Tower (counterweight, unused tower wall, staircase to rooftop) -->
+        <Texture Name="gClockTowerBrickTex" OutName="clock_tower_bricks" Format="rgba16" Width="32" Height="32" Offset="0x1040" />
+        <Texture Name="gClockTowerCounterweightBeamSide1Tex" OutName="clock_tower_counterweight_beam_side1" Format="rgba16" Width="32" Height="32" Offset="0x1840" />
+        <Texture Name="gClockTowerCounterweightBeamSide2Tex" OutName="clock_tower_counterweight_beam_side2" Format="rgba16" Width="32" Height="32" Offset="0x2040" />
+        <Texture Name="gClockTowerExteriorGearFaceTex" OutName="clock_tower_exterior_gear_face" Format="rgba16" Width="32" Height="32" Offset="0x2840" />
+        <Texture Name="gClockTowerExteriorGearSidesAndMinuteRingBackTex" OutName="clock_tower_exterior_gear_sides_and_minute_ring_back" Format="rgba16" Width="16" Height="32" Offset="0x3040" />
+        <Texture Name="gClockTowerClockCenterTex" OutName="clock_tower_clock_center" Format="rgba16" Width="8" Height="32" Offset="0x3440" />
+        <Texture Name="gClockTowerClockCenterSidesTex" OutName="clock_tower_clock_center_sides" Format="rgba16" Width="16" Height="16" Offset="0x3640" />
+        <Texture Name="gClockTowerHandTex" OutName="clock_tower_hand" Format="rgba16" Width="16" Height="16" Offset="0x3840" />
+        <Texture Name="gClockTowerSunAndMoonPanelSidesTex" OutName="clock_tower_sun_and_moon_panel_sides" Format="rgba16" Width="16" Height="16" Offset="0x3A40" />
+        <Texture Name="gClockTowerSunAndMoonPanelMoonTex" OutName="clock_tower_sun_and_moon_panel_moon" Format="rgba16" Width="16" Height="32" Offset="0x3C40" />
+        <Texture Name="gClockTowerSunAndMoonPanelSunTex" OutName="clock_tower_sun_and_moon_panel_sun" Format="rgba16" Width="16" Height="16" Offset="0x4040" />
+        <Texture Name="gClockTowerMinuteRingFace1Tex" OutName="clock_tower_minute_ring_face_1" Format="rgba16" Width="32" Height="16" Offset="0x4240" />
+        <Texture Name="gClockTowerMinuteRingFace2Tex" OutName="clock_tower_minute_ring_face_2" Format="rgba16" Width="32" Height="16" Offset="0x4640" />
+        <Texture Name="gClockTowerMinuteRingFace3Tex" OutName="clock_tower_minute_ring_face_3" Format="rgba16" Width="32" Height="16" Offset="0x4A40" />
+        <Texture Name="gClockTowerMinuteRingSidesTex" OutName="clock_tower_minute_ring_sides" Format="rgba16" Width="32" Height="16" Offset="0x4E40" />
+        <Texture Name="gClockTowerClockFaceTopTex" OutName="clock_tower_clock_face_top" Format="ci4" Width="64" Height="64" Offset="0x5240" />
+        <Texture Name="gClockTowerClockFaceBottomTex" OutName="clock_tower_clock_face_bottom" Format="ci4" Width="64" Height="64" Offset="0x5A40" />
+        <Texture Name="gClockTowerClockFacePanelBarTex" OutName="clock_tower_clock_face_panel_bar" Format="rgba16" Width="8" Height="8" Offset="0x6240" />
+        <Texture Name="gClockTowerUnusedBrickTex" OutName="clock_tower_unused_bricks" Format="rgba16" Width="32" Height="32" Offset="0x62C0" />
+        <Texture Name="gClockTowerUnusedMaskTex" OutName="clock_tower_unused_mask" Format="i4" Width="64" Height="64" Offset="0x6AC0" />
+        <Texture Name="gClockTowerSpotlightBeamTex" OutName="clock_tower_spotlight_beam" Format="ia8" Width="32" Height="64" Offset="0x72C0" />
+        <Texture Name="gClockTowerSpotlightMaskTex" OutName="clock_tower_spotlight_mask" Format="i8" Width="32" Height="32" Offset="0x7AC0" />
+        <Texture Name="gClockTowerCounterweightMaskTex" OutName="clock_tower_counterweight_mask" Format="i4" Width="64" Height="64" Offset="0x7EC0" />
+        <Texture Name="gClockTowerUnusedTowerWallMaskTex" OutName="clock_tower_unused_tower_wall_mask" Format="i4" Width="64" Height="64" Offset="0x86C0" />
+        <Texture Name="gClockTowerStaircaseToRooftopMaskTex" OutName="clock_tower_staircase_to_rooftop_mask" Format="i4" Width="64" Height="64" Offset="0x8EC0" />
+
+        <DList Name="gClockTowerUnusedEmpty1DL" Offset="0x9A00" /> <!-- Not present in MM3D, but it was probably named "z2_00_tokeitou_modelT" -->
+        <DList Name="gClockTowerTerminaFieldWallsDL" Offset="0x9A08" /> <!-- Original name is "z2_00_tokeitou_model" ("clock tower") -->
+        <Texture Name="gClockTowerTerminaFieldWallsBrickTex" OutName="clock_tower_termina_field_walls_brick" Format="rgba16" Width="32" Height="32" Offset="0x9B48" />
+        <Texture Name="gClockTowerTerminaFieldWallsMaskTex" OutName="clock_tower_termina_field_walls_mask" Format="i4" Width="64" Height="64" Offset="0xA348" />
+        <DList Name="gClockTowerSpotlightDL" Offset="0xB0C0" /> <!-- Original name is "z2_atama_modelT" -->
+        <DList Name="gClockTowerCounterweightDL" Offset="0xB208" /> <!-- Original name is "z2_atama_model" -->
+        <TextureAnimation Name="gClockTowerUnusedTexAnim" Offset="0xB4E4" />
+
+        <DList Name="gClockTowerUnusedEmpty2DL" Offset="0xBA70" /> <!-- Not present in MM3D, but it was probably named "z2_hagu_modelT" -->
+        <DList Name="gClockTowerExteriorGearDL" Offset="0xBA78" /> <!-- Original name is "z2_hagu_model" ("gear; cogwheel​") -->
+
+        <DList Name="gClockTowerUnusedEmpty3DL" Offset="0xBEE0" /> <!-- Not present in MM3D, but it was probably named "z2_hari_modelT" -->
+        <DList Name="gClockTowerClockCenterAndHandDL" Offset="0xBEE8" /> <!-- Original name is "z2_hari_model" ("hand (e.g. clock, etc.); pointer​") -->
+
+        <DList Name="gClockTowerUnusedEmpty4DL" Offset="0xC360" /> <!-- Not present in MM3D, but it was probably named "z2_paneru_modelT" -->
+        <DList Name="gClockTowerSunAndMoonPanelDL" Offset="0xC368" /> <!-- Original name is "z2_paneru_model" (probably just literally "panel") -->
+
+        <DList Name="gClockTowerUnusedEmpty5DL" Offset="0xCF20" /> <!-- Not present in MM3D, but it was probably named "z2_tannsin_modelT" -->
+        <DList Name="gClockTowerMinuteRingDL" Offset="0xCF28" /> <!-- Original name is "z2_tannsin_model" ("short hand; hour hand") -->
+
+        <DList Name="gClockTowerUnusedEmpty6DL" Offset="0xD380" /> <!-- Not present in MM3D, but it was probably named "z2_tou_modelT" -->
+        <DList Name="gClockTowerUnusedTowerWallDL" Offset="0xD388" /> <!-- Original name might be "z2_tou_model" ("tower; steeple; spire​") -->
+
+        <!-- Used as the xluDList for Staircase to Rooftop -->
+        <DList Name="gClockTowerEmptyDL" Offset="0xD8E0" /> <!-- Not present in MM3D, but it was probably named "z2_towerkaidan_modelT" -->
+        <DList Name="gClockTowerStaircaseToRooftopDL" Offset="0xD8E8" /> <!-- Original name is "z2_towerkaidan_model" ("kaiden" = "stairs; stairway; staircase​") -->
+        <Texture Name="gClockTowerClockFaceBackTex" OutName="clock_tower_clock_face_back" Format="rgba16" Width="16" Height="32" Offset="0xDAC0" />
+
+        <DList Name="gClockTowerUnusedEmpty7DL" Offset="0xE810" /> <!-- Not present in MM3D, but it was probably named "z2_tyousin_modelT" -->
+        <DList Name="gClockTowerClockFaceDL" Offset="0xE818" /> <!-- Original name is "z2_tyousin_model" ("long hand; minute hand​") -->
+
+        <DList Name="gClockTowerUnusedEmpty8DL" Offset="0xF510" /> <!-- Not present in MM3D, but it was probably named "z2_tyousin_room_modelT" -->
+        <DList Name="gWallClockClockFaceDL" Offset="0xF518" /> <!-- Original name is "z2_tyousin_room_model" -->
+        <Texture Name="gWallClockClockFaceBackTex" OutName="wall_clock_clock_face_back" Format="rgba16" Width="16" Height="32" Offset="0xF7F8" />
+        <Texture Name="gWallClockClockFaceBottomTex" OutName="wall_clock_clock_face_bottom" Format="rgba16" Width="64" Height="32" Offset="0xFBF8" />
+        <Texture Name="gWallClockClockFaceTopTex" OutName="wall_clock_clock_face_top" Format="rgba16" Width="64" Height="32" Offset="0x10BF8" />
+        <Texture Name="gWallClockClockFacePanelBarTex" OutName="wall_clock_clock_face_panel_bar" Format="rgba16" Width="8" Height="8" Offset="0x11BF8" />
+    </File>
+</Root>

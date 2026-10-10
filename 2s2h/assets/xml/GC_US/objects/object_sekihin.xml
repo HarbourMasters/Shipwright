@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Assets for a suns song grave with a kokiri symbol on it -->
+    <File Name="object_sekihin" Segment="6">
+        <DList Name="gSunsSongGraveKokiriSymbolsBaseDL" Offset="0x340" />
+        <DList Name="gSunsSongGraveKokiriSymbolsDL" Offset="0x4A8" />
+        <DList Name="gSunsSongGraveKokiriStoneDL" Offset="0x4B8" />
+        <DList Name="gSunsSongGraveKokiriDL" Offset="0x5C8" />
+        <Texture Name="gSunsSongGraveKokiriGoronTLUT" OutName="suns_song_grave_kokiri_goron_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5E0" />
+        <Texture Name="gSunsSongGraveKokiriTLUT" OutName="suns_song_grave_kokiri_tlut" Format="rgba16" Width="4" Height="4" Offset="0x600" />
+        <Texture Name="gSunsSongGraveKokiriUnknownTLUT" OutName="suns_song_grave_kokiri_unknown_tlut" Format="rgba16" Width="4" Height="4" Offset="0x620" />
+        <Texture Name="gSunsSongGraveKokiriTriforceTLUT" OutName="suns_song_grave_kokiri_triforce_tlut" Format="rgba16" Width="4" Height="4" Offset="0x640" />
+        <Texture Name="gSunsSongGraveKokiriGraniteTex" OutName="suns_song_grave_kokiri_granite" Format="rgba16" Width="32" Height="32" Offset="0x660" />
+        <Texture Name="gSunsSongGraveKokiriMarbleTex" OutName="suns_song_grave_kokiri_marble" Format="rgba16" Width="32" Height="64" Offset="0xE60" />
+        <Texture Name="gSunsSongGraveKokiriSymbolTex" OutName="suns_song_grave_kokiri_symbol" Format="ci4" Width="64" Height="64" Offset="0x1E60" />
+        <Texture Name="gSunsSongGraveKokiriStoneInscriptionTex" OutName="suns_song_grave_kokiri_stone_inscription" Format="ia4" Width="128" Height="16" Offset="0x2660" />
+        <Texture Name="gSunsSongGraveKokiriStaffNotesTex" OutName="suns_song_grave_kokiri_staff_notes" Format="ia4" Width="128" Height="32" Offset="0x2A60" />
+        <Collision Name="gSunsSongGraveKokiriCol" Offset="0x33D8" />
+    </File>
+</Root>

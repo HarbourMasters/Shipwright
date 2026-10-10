@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_mamenoki" Segment="6">
+        <DList Name="object_mamenoki_DL_000090" Offset="0x90" /> <!-- Original name is "c_mame_jr_model" -->
+        <DList Name="object_mamenoki_DL_0002D0" Offset="0x2D0" /> <!-- Original name is "c_mame_lift_model" -->
+        <Collision Name="object_mamenoki_Colheader_0004BC" Offset="0x4BC" /> <!-- Original name is "c_mame_lift_bgdatainfo" -->
+        <DList Name="object_mamenoki_DL_000530" Offset="0x530" /> <!-- Original name is "c_mame_place_model" -->
+        <Texture Name="object_mamenoki_Tex_0005C0" OutName="tex_0005C0" Format="rgba16" Width="32" Height="32" Offset="0x5C0" />
+        <Texture Name="object_mamenoki_Tex_000DC0" OutName="tex_000DC0" Format="rgba16" Width="16" Height="32" Offset="0xDC0" />
+        <Texture Name="object_mamenoki_Tex_0011C0" OutName="tex_0011C0" Format="rgba16" Width="32" Height="32" Offset="0x11C0" />
+        <Texture Name="object_mamenoki_Tex_0019C0" OutName="tex_0019C0" Format="rgba16" Width="16" Height="32" Offset="0x19C0" />
+        <Texture Name="object_mamenoki_Tex_001DC0" OutName="tex_001DC0" Format="rgba16" Width="32" Height="16" Offset="0x1DC0" />
+        <DList Name="object_mamenoki_DL_002200" Offset="0x2200" />
+        <DList Name="object_mamenoki_DL_002208" Offset="0x2208" />
+        <Texture Name="object_mamenoki_Tex_002298" OutName="tex_002298" Format="i8" Width="32" Height="32" Offset="0x2298" />
+    </File>
+</Root>

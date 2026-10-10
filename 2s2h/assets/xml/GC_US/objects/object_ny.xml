@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_ny" Segment="6">
+        <DList Name="object_ny_DL_000030" Offset="0x30" /> <!-- Original name is "ksl_kusari_modelT" -->
+        <DList Name="object_ny_DL_0000B8" Offset="0xB8" />
+        <Texture Name="object_ny_Tex_0000C0" OutName="tex_0000C0" Format="rgba16" Width="8" Height="16" Offset="0xC0" />
+        <Texture Name="object_ny_Tex_0001C0" OutName="tex_0001C0" Format="rgba16" Width="16" Height="16" Offset="0x1C0" />
+        <Texture Name="object_ny_Tex_0003C0" OutName="tex_0003C0" Format="rgba16" Width="32" Height="32" Offset="0x3C0" />
+        <Texture Name="object_ny_Tex_000BC0" OutName="tex_000BC0" Format="rgba16" Width="32" Height="32" Offset="0xBC0" />
+        <DList Name="object_ny_DL_001F90" Offset="0x1F90" />
+        <DList Name="object_ny_DL_002068" Offset="0x2068" />
+        <DList Name="object_ny_DL_002188" Offset="0x2188" />
+    </File>
+</Root>

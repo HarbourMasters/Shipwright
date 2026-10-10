@@ -1,0 +1,62 @@
+﻿<Root>
+    <File Name="object_pr" Segment="6">
+        <Animation Name="object_pr_Anim_000268" Offset="0x268" /> <!-- Original name is "pr_damage" -->
+        <Animation Name="object_pr_Anim_000740" Offset="0x740" /> <!-- Original name is "pr_gattuku" -->
+        <DList Name="object_pr_DL_000F30" Offset="0xF30" />
+        <DList Name="object_pr_DL_001130" Offset="0x1130" />
+        <DList Name="object_pr_DL_0011C8" Offset="0x11C8" />
+        <DList Name="object_pr_DL_001260" Offset="0x1260" />
+        <DList Name="object_pr_DL_0012F8" Offset="0x12F8" />
+        <DList Name="object_pr_DL_0013E8" Offset="0x13E8" />
+        <DList Name="object_pr_DL_001480" Offset="0x1480" />
+        <DList Name="object_pr_DL_001550" Offset="0x1550" />
+        <Texture Name="object_pr_Tex_001608" OutName="tex_001608" Format="rgba16" Width="8" Height="16" Offset="0x1608" />
+        <Texture Name="object_pr_Tex_001708" OutName="tex_001708" Format="rgba16" Width="16" Height="16" Offset="0x1708" />
+        <Texture Name="object_pr_Tex_001908" OutName="tex_001908" Format="rgba16" Width="16" Height="16" Offset="0x1908" />
+        <Texture Name="object_pr_Tex_001B08" OutName="tex_001B08" Format="rgba16" Width="16" Height="16" Offset="0x1B08" />
+        <Texture Name="object_pr_Tex_001D08" OutName="tex_001D08" Format="rgba16" Width="8" Height="8" Offset="0x1D08" />
+        <TextureAnimation Name="object_pr_Matanimheader_001DB0" Offset="0x1DB0" />
+        <Animation Name="object_pr_Anim_001E10" Offset="0x1E10" /> <!-- Original name is "pr_stop" -->
+        <Animation Name="object_pr_Anim_0021E8" Offset="0x21E8" /> <!-- Original name is "pr_swim" -->
+        <DList Name="object_pr_DL_0029E0" Offset="0x29E0" />
+        <DList Name="object_pr_DL_002BD0" Offset="0x2BD0" />
+        <DList Name="object_pr_DL_002C68" Offset="0x2C68" />
+        <DList Name="object_pr_DL_002D00" Offset="0x2D00" />
+        <DList Name="object_pr_DL_002D98" Offset="0x2D98" />
+        <DList Name="object_pr_DL_002E88" Offset="0x2E88" />
+        <DList Name="object_pr_DL_002F20" Offset="0x2F20" />
+        <DList Name="object_pr_DL_002FF0" Offset="0x2FF0" />
+        <Texture Name="object_pr_Tex_0030A8" OutName="tex_0030A8" Format="rgba16" Width="8" Height="16" Offset="0x30A8" />
+        <Texture Name="object_pr_Tex_0031A8" OutName="tex_0031A8" Format="rgba16" Width="16" Height="16" Offset="0x31A8" />
+        <Texture Name="object_pr_Tex_0033A8" OutName="tex_0033A8" Format="rgba16" Width="16" Height="16" Offset="0x33A8" />
+        <Texture Name="object_pr_Tex_0035A8" OutName="tex_0035A8" Format="rgba16" Width="16" Height="16" Offset="0x35A8" />
+        <Texture Name="object_pr_Tex_0037A8" OutName="tex_0037A8" Format="rgba16" Width="8" Height="8" Offset="0x37A8" />
+        <Limb Name="object_pr_Standardlimb_003828" Type="Standard" EnumName="OBJECT_PR_1_LIMB_01" Offset="0x3828" />
+        <Limb Name="object_pr_Standardlimb_003834" Type="Standard" EnumName="OBJECT_PR_1_LIMB_02" Offset="0x3834" />
+        <Limb Name="object_pr_Standardlimb_003840" Type="Standard" EnumName="OBJECT_PR_1_LIMB_03" Offset="0x3840" />
+        <Limb Name="object_pr_Standardlimb_00384C" Type="Standard" EnumName="OBJECT_PR_1_LIMB_04" Offset="0x384C" />
+        <Limb Name="object_pr_Standardlimb_003858" Type="Standard" EnumName="OBJECT_PR_1_LIMB_05" Offset="0x3858" />
+        <Limb Name="object_pr_Standardlimb_003864" Type="Standard" EnumName="OBJECT_PR_1_LIMB_06" Offset="0x3864" />
+        <Limb Name="object_pr_Standardlimb_003870" Type="Standard" EnumName="OBJECT_PR_1_LIMB_07" Offset="0x3870" />
+        <Limb Name="object_pr_Standardlimb_00387C" Type="Standard" EnumName="OBJECT_PR_1_LIMB_08" Offset="0x387C" />
+        <Limb Name="object_pr_Standardlimb_003888" Type="Standard" EnumName="OBJECT_PR_1_LIMB_09" Offset="0x3888" />
+        <Skeleton Name="object_pr_Skel_0038B8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_PR_1_LIMB_NONE" LimbMax="OBJECT_PR_1_LIMB_MAX" EnumName="ObjectPr1Limb" Offset="0x38B8" />
+        <Animation Name="object_pr_Anim_003904" Offset="0x3904" /> <!-- Original name might be "prz_dead" -->
+        <DList Name="object_pr_DL_003AB0" Offset="0x3AB0" />
+        <DList Name="object_pr_DL_003B50" Offset="0x3B50" />
+        <DList Name="object_pr_DL_003C08" Offset="0x3C08" />
+        <DList Name="object_pr_DL_003D10" Offset="0x3D10" />
+        <Texture Name="object_pr_Tex_003DA8" OutName="tex_003DA8" Format="rgba16" Width="8" Height="16" Offset="0x3DA8" />
+        <Texture Name="object_pr_Tex_003EA8" OutName="tex_003EA8" Format="rgba16" Width="8" Height="16" Offset="0x3EA8" />
+        <Texture Name="object_pr_Tex_003FA8" OutName="tex_003FA8" Format="rgba16" Width="8" Height="8" Offset="0x3FA8" />
+        <Texture Name="object_pr_Tex_004028" OutName="tex_004028" Format="rgba16" Width="8" Height="16" Offset="0x4028" />
+        <Texture Name="object_pr_Tex_004128" OutName="tex_004128" Format="rgba16" Width="4" Height="4" Offset="0x4128" />
+        <Limb Name="object_pr_Standardlimb_004148" Type="Standard" EnumName="OBJECT_PR_2_LIMB_01" Offset="0x4148" />
+        <Limb Name="object_pr_Standardlimb_004154" Type="Standard" EnumName="OBJECT_PR_2_LIMB_02" Offset="0x4154" />
+        <Limb Name="object_pr_Standardlimb_004160" Type="Standard" EnumName="OBJECT_PR_2_LIMB_03" Offset="0x4160" />
+        <Limb Name="object_pr_Standardlimb_00416C" Type="Standard" EnumName="OBJECT_PR_2_LIMB_04" Offset="0x416C" />
+        <Skeleton Name="object_pr_Skel_004188" Type="Flex" LimbType="Standard" LimbNone="OBJECT_PR_2_LIMB_NONE" LimbMax="OBJECT_PR_2_LIMB_MAX" EnumName="ObjectPr2Limb" Offset="0x4188" />
+        <Animation Name="object_pr_Anim_004274" Offset="0x4274" /> <!-- Original name is "prz_gattuku" -->
+        <Animation Name="object_pr_Anim_004340" Offset="0x4340" /> <!-- Original name is "prz_swim" -->
+    </File>
+</Root>

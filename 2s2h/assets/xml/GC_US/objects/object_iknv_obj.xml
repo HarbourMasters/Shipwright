@@ -1,0 +1,70 @@
+﻿<Root>
+    <File Name="object_iknv_obj" Segment="6">
+        <Texture Name="object_iknv_obj_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="object_iknv_obj_Tex_000020" OutName="tex_000020" Format="rgba16" Width="32" Height="32" Offset="0x20" />
+        <Texture Name="object_iknv_obj_Tex_000820" OutName="tex_000820" Format="ci4" Width="32" Height="128" Offset="0x820" />
+        <Texture Name="object_iknv_obj_Tex_001020" OutName="tex_001020" Format="rgba16" Width="64" Height="32" Offset="0x1020" />
+        <Texture Name="object_iknv_obj_Tex_002020" OutName="tex_002020" Format="rgba16" Width="32" Height="32" Offset="0x2020" />
+        <Texture Name="object_iknv_obj_Tex_002820" OutName="tex_002820" Format="rgba16" Width="16" Height="16" Offset="0x2820" />
+        <Texture Name="object_iknv_obj_Tex_002A20" OutName="tex_002A20" Format="rgba16" Width="8" Height="8" Offset="0x2A20" />
+        <Texture Name="object_iknv_obj_Tex_002AA0" OutName="tex_002AA0" Format="rgba16" Width="16" Height="16" Offset="0x2AA0" />
+        <Texture Name="object_iknv_obj_Tex_002CA0" OutName="tex_002CA0" Format="rgba16" Width="8" Height="8" Offset="0x2CA0" />
+        <Texture Name="object_iknv_obj_Tex_002D20" OutName="tex_002D20" Format="rgba16" Width="4" Height="4" Offset="0x2D20" />
+        <Texture Name="object_iknv_obj_Tex_002D40" OutName="tex_002D40" Format="ia8" Width="16" Height="16" Offset="0x2D40" />
+        <Texture Name="object_iknv_obj_Tex_002E40" OutName="tex_002E40" Format="rgba16" Width="32" Height="64" Offset="0x2E40" />
+        <Texture Name="object_iknv_obj_Tex_003E40" OutName="tex_003E40" Format="rgba16" Width="32" Height="16" Offset="0x3E40" />
+        <Texture Name="object_iknv_obj_TLUT_004240" OutName="tlut_004240" Format="rgba16" Width="4" Height="4" Offset="0x4240" />
+        <Texture Name="object_iknv_obj_Tex_004260" OutName="tex_004260" Format="rgba16" Width="32" Height="32" Offset="0x4260" />
+        <Texture Name="object_iknv_obj_Tex_004A60" OutName="tex_004A60" Format="rgba16" Width="32" Height="32" Offset="0x4A60" />
+        <Texture Name="object_iknv_obj_Tex_005260" OutName="tex_005260" Format="i4" Width="64" Height="64" Offset="0x5260" />
+        <Texture Name="object_iknv_obj_Tex_005A60" OutName="tex_005A60" Format="i4" Width="64" Height="64" Offset="0x5A60" />
+        <Texture Name="object_iknv_obj_Tex_006260" OutName="tex_006260" Format="ci4" Width="32" Height="128" Offset="0x6260" />
+        <Texture Name="object_iknv_obj_Tex_006A60" OutName="tex_006A60" Format="i8" Width="16" Height="16" Offset="0x6A60" />
+        <Texture Name="object_iknv_obj_Tex_006B60" OutName="tex_006B60" Format="rgba16" Width="32" Height="32" Offset="0x6B60" />
+        <Texture Name="object_iknv_obj_Tex_007360" OutName="tex_007360" Format="i8" Width="32" Height="64" Offset="0x7360" />
+        <Texture Name="object_iknv_obj_Tex_007B60" OutName="tex_007B60" Format="rgba16" Width="32" Height="32" Offset="0x7B60" />
+        <Texture Name="object_iknv_obj_Tex_008360" OutName="tex_008360" Format="i8" Width="32" Height="128" Offset="0x8360" />
+        <DList Name="object_iknv_obj_DL_00DB60" Offset="0xDB60" /> <!-- Original name is "z2_dokuana_modelT" -->
+        <DList Name="object_iknv_obj_DL_00DDD8" Offset="0xDDD8" /> <!-- Original name is "z2_dokuana_model" -->
+        <TextureAnimation Name="object_iknv_obj_Matanimheader_00F1C0" Offset="0xF1C0" />
+        <DList Name="object_iknv_obj_DL_010D90" Offset="0x10D90" /> <!-- Original name is "z2_doukutu_modelT" -->
+        <DList Name="object_iknv_obj_DL_010D98" Offset="0x10D98" /> <!-- Original name is "z2_doukutu_model" -->
+        <TextureAnimation Name="object_iknv_obj_Matanimheader_0113E0" Offset="0x113E0" /> <!-- Empty TexAnim -->
+        <DList Name="object_iknv_obj_DL_0115E0" Offset="0x115E0" /> <!-- Original name is "z2_doumizu_modelT" -->
+        <DList Name="object_iknv_obj_DL_011788" Offset="0x11788" /> <!-- Original name is "z2_doumizu_model" -->
+        <TextureAnimation Name="object_iknv_obj_Matanimheader_0117A0" Offset="0x117A0" />
+        <Collision Name="object_iknv_obj_Colheader_0117C8" Offset="0x117C8" /> <!-- Original name is "z2_doumizu_bgdatainfo" -->
+        <DList Name="object_iknv_obj_DL_011880" Offset="0x11880" /> <!-- Original name is "z2_ikiriguti_modelT" -->
+        <DList Name="object_iknv_obj_DL_011950" Offset="0x11950" /> <!-- Original name is "z2_ikiriguti_model" -->
+        <Collision Name="object_iknv_obj_Colheader_0119D4" Offset="0x119D4" /> <!-- Original name is "z2_ikiriguti_bgdatainfo" -->
+        <DList Name="object_iknv_obj_DL_011E70" Offset="0x11E70" />
+        <DList Name="object_iknv_obj_DL_011F40" Offset="0x11F40" />
+        <DList Name="object_iknv_obj_DL_012020" Offset="0x12020" />
+        <DList Name="object_iknv_obj_DL_0120F0" Offset="0x120F0" />
+        <DList Name="object_iknv_obj_DL_0121C8" Offset="0x121C8" />
+        <DList Name="object_iknv_obj_DL_012298" Offset="0x12298" />
+        <DList Name="object_iknv_obj_DL_012368" Offset="0x12368" />
+        <DList Name="object_iknv_obj_DL_012440" Offset="0x12440" />
+        <DList Name="object_iknv_obj_DL_012460" Offset="0x12460" />
+        <DList Name="object_iknv_obj_DL_012480" Offset="0x12480" />
+        <DList Name="object_iknv_obj_DL_0124A0" Offset="0x124A0" />
+        <DList Name="object_iknv_obj_DL_0124C0" Offset="0x124C0" />
+        <DList Name="object_iknv_obj_DL_0124E0" Offset="0x124E0" />
+        <DList Name="object_iknv_obj_DL_012500" Offset="0x12500" />
+        <DList Name="object_iknv_obj_DL_012518" Offset="0x12518" />
+        <DList Name="object_iknv_obj_DL_012528" Offset="0x12528" />
+        <DList Name="object_iknv_obj_DL_012538" Offset="0x12538" />
+        <DList Name="object_iknv_obj_DL_012550" Offset="0x12550" />
+        <DList Name="object_iknv_obj_DL_0125E0" Offset="0x125E0" />
+        <DList Name="object_iknv_obj_DL_0126D0" Offset="0x126D0" />
+        <DList Name="object_iknv_obj_DL_012700" Offset="0x12700" /> <!-- Original name is "z2_ikkawa_modelT" -->
+        <TextureAnimation Name="object_iknv_obj_Matanimheader_012728" Offset="0x12728" />
+        <Collision Name="object_iknv_obj_Colheader_012788" Offset="0x12788" /> <!-- Original name is "z2_ikkawa_bgdatainfo" -->
+        <DList Name="object_iknv_obj_DL_012880" Offset="0x12880" /> <!-- Original name is "z2_ikkawa_c_model" -->
+        <DList Name="object_iknv_obj_DL_0129C0" Offset="0x129C0" /> <!-- Not present in MM3D, but it was probably named "z2_iwado_model" based on the rest of this object. -->
+        <DList Name="object_iknv_obj_DL_0129C8" Offset="0x129C8" /> <!-- Original name is "z2_iwado_model" -->
+        <Collision Name="object_iknv_obj_Colheader_012CA4" Offset="0x12CA4" /> <!-- Original name is "z2_iwado_bgdatainfo" -->
+        <DList Name="object_iknv_obj_DL_013050" Offset="0x13050" /> <!-- Original name is "z2_suisya_modelT" -->
+        <DList Name="object_iknv_obj_DL_013058" Offset="0x13058" /> <!-- Original name is "z2_suisya_model" -->
+    </File>
+</Root>

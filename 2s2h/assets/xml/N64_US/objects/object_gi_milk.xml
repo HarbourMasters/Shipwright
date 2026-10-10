@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Bottled Milk -->
+    <File Name="object_gi_milk" Segment="6">
+
+        <!-- Bottled Milk Textures -->
+        <Texture Name="gGiMilkBottleLabelTex" OutName="gi_milk_bottle_label" Format="i8" Width="72" Height="24" Offset="0x0" />
+
+        <!-- Bottled Milk Display Lists -->
+        <DList Name="gGiMilkBottleContentsDL" Offset="0x1060" /> <!-- Milk, Label, Cork -->
+        <DList Name="gGiMilkBottleGlassDL" Offset="0x1288" />
+    </File>
+</Root>

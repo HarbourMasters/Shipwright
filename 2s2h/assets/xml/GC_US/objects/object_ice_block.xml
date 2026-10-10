@@ -1,0 +1,28 @@
+﻿<Root>
+    <File Name="object_ice_block" Segment="6">
+        <!-- IceArrow Freezes ChuChu into a Pushable/Climbable Cube block -->
+        <DList Name="gIceBlockCubeDL" Offset="0x1A0" /> <!-- Original name is "ic_block_modelT" -->
+        <DList Name="gIceBlockCubeEndDL" Offset="0x310" /> <!-- Original name is "ic_block_model" -->
+        <!-- this TexAnim is for the cube surface -->
+        <TextureAnimation Name="gIceBlockCubeSublimatingAirTexAnim" Offset="0x328" />
+        <Collision Name="gIceBlockCol" Offset="0x438" /> <!-- Original name is "ic_block_bgdatainfo" -->
+
+        <!-- IceArrow Freezes Octarock into a floating Iceberg platform -->
+        <DList Name="gIceBlockIceBergDL" Offset="0x7F0" /> <!-- Original name is "ic_blockdai_modelT" -->
+        <DList Name="gIceBlockIceBergEndDL" Offset="0x9B8" /> <!-- Original name is "ic_blockdai_model" -->
+        <!-- this TexAnim is for the iceberg surface -->
+        <TextureAnimation Name="gIceBlockIceBergSublimatingAirTexAnim" Offset="0x9D0" />
+
+        <!-- Shard of Ice thrown off of IceBlock (EffectEnIceBlock) -->
+        <!--   IceArrow creates frozen block or platform, throws shards during growing animation -->
+        <!-- too big to be a snow flake, more like thin block of ice, better described as "Chip", or "Shard" or "Plate" -->
+        <DList Name="gIceBlockShardEffectEndDL" Offset="0xA30" /> <!-- Original name is "ic_kakera_modelT" -->
+        <DList Name="gIceBlockShardEffectDL" Offset="0xA38" /> <!-- Original name is "ic_kakera_model" -->
+
+        <!-- These two appear to be identical (but different hash) -->
+        <!-- first is used in CubeDL and ShardDL -->
+        <Texture Name="gIceBlockIce1Tex" OutName="iceblock_ice_1" Format="i4" Width="64" Height="64" Offset="0xAE0" />
+        <!-- second is used in CubeDL and IceBergDL -->
+        <Texture Name="gIceBlockIce2Tex" OutName="iceblock_ice_2" Format="i4" Width="64" Height="64" Offset="0x12E0" />
+    </File>
+</Root>

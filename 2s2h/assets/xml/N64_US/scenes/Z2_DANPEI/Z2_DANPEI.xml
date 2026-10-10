@@ -1,0 +1,44 @@
+<Root>
+    <File Name="Z2_DANPEI" Segment="2" Game="MM">
+        <Scene Name="Z2_DANPEI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_DANPEI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_00" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_00DL_0078D0" Offset="0x78D0"/>
+        <DList Name="Z2_DANPEI_room_00DL_00A3A0" Offset="0xA3A0"/>
+    </File>
+    <File Name="Z2_DANPEI_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_01" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_01DL_005E50" Offset="0x5E50"/>
+        <DList Name="Z2_DANPEI_room_01DL_007A60" Offset="0x7A60"/>
+    </File>
+    <File Name="Z2_DANPEI_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_02" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_02DL_00A070" Offset="0xA070"/>
+    </File>
+    <File Name="Z2_DANPEI_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_03" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_03DL_006E70" Offset="0x6E70"/>
+        <DList Name="Z2_DANPEI_room_03DL_0096F0" Offset="0x96F0"/>
+    </File>
+    <File Name="Z2_DANPEI_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_04" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_04DL_004080" Offset="0x4080"/>
+    </File>
+    <File Name="Z2_DANPEI_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_05" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_05DL_007640" Offset="0x7640"/>
+    </File>
+    <File Name="Z2_DANPEI_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_06" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_06DL_008E18" Offset="0x8E18"/>
+    </File>
+    <File Name="Z2_DANPEI_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_07" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_07DL_00B2B0" Offset="0xB2B0"/>
+    </File>
+    <File Name="Z2_DANPEI_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_DANPEI_room_08" Offset="0x0"/>
+        <DList Name="Z2_DANPEI_room_08DL_003DE8" Offset="0x3DE8"/>
+    </File>
+</Root>

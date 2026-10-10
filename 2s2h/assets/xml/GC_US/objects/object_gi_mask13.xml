@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Couple's Mask -->
+    <File Name="object_gi_mask13" Segment="6">
+
+        <!-- Couple's Mask Display Lists -->
+        <DList Name="gGiCouplesMaskHalfDL" Offset="0x5A0" />
+        <DList Name="gGiCouplesMaskFullDL" Offset="0x6A0" />
+
+        <!-- Couple's Mask Display Lists -->
+        <Texture Name="gGiCouplesMaskLeftInscriptionTex" OutName="gi_couples_mask_left_inscription" Format="i8" Width="32" Height="64" Offset="0x900" />
+        <Texture Name="gGiCouplesMaskRightInscriptionTex" OutName="gi_couples_mask_right_inscription" Format="i4" Width="32" Height="64" Offset="0x1100" />
+        <Texture Name="gGiCouplesMaskBackgroundTex" OutName="gi_couples_mask_background" Format="i4" Width="16" Height="32" Offset="0x1500" />
+    </File>
+</Root>

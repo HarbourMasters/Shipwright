@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Assets for Nejiron -->
+    <File Name="object_gmo" Segment="6">
+        <Animation Name="gNejironIdleAnim" Offset="0x18" /> <!-- Original name might be "gm_default" -->
+        <DList Name="gNejironBodyDL" Offset="0xB70" />
+        <DList Name="gNejironEyesDL" Offset="0xE38" />
+        <Texture Name="gNejironBodyTLUT" OutName="nejiron_body_tlut" Format="rgba16" Width="16" Height="16" Offset="0xEC8" />
+        <Texture Name="gNejironBodyTex" OutName="nejiron_body" Format="ci8" Width="32" Height="32" Offset="0x10C8" />
+        <Texture Name="gNejironEyeOpenTex" OutName="nejiron_eye_open" Format="rgba16" Width="16" Height="32" Offset="0x14C8" />
+        <Texture Name="gNejironEyeHalfTex" OutName="nejiron_eye_half" Format="rgba16" Width="16" Height="32" Offset="0x18C8" />
+        <Texture Name="gNejironEyeClosedTex" OutName="nejiron_eye_closed" Format="rgba16" Width="16" Height="32" Offset="0x1CC8" />
+        <Limb Name="gNejironBodyLimb" Type="Standard" EnumName="NEJIRON_LIMB_BODY" Offset="0x20C8" />
+        <Limb Name="gNejironEyeLimb" Type="Standard" EnumName="NEJIRON_LIMB_EYES" Offset="0x20D4" />
+        <Skeleton Name="gNejironSkel" Type="Normal" LimbType="Standard" LimbNone="NEJIRON_LIMB_NONE" LimbMax="NEJIRON_LIMB_MAX" EnumName="NejironLimb" Offset="0x20E8" />
+    </File>
+</Root>

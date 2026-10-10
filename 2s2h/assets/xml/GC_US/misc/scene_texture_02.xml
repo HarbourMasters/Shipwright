@@ -1,0 +1,14 @@
+<Root>
+    <File Name="scene_texture_02" Segment="6">
+        <Texture Name="scene_texture_02_Tex_000000" OutName="tex_000000" Format="ci8" Width="32" Height="32" Offset="0x0"/>
+        <Texture Name="scene_texture_02_Tex_000400" OutName="tex_000400" Format="ci8" Width="16" Height="32" Offset="0x400"/>
+        <Texture Name="scene_texture_02_Tex_000600" OutName="tex_000600" Format="ci8" Width="32" Height="8" Offset="0x600"/>
+        <Texture Name="scene_texture_02_Tex_000700" OutName="tex_000700" Format="ci8" Width="32" Height="32" Offset="0x700"/>
+        <Texture Name="scene_texture_02_Tex_000B00" OutName="tex_000B00" Format="ci8" Width="32" Height="32" Offset="0xB00"/>
+        <Texture Name="scene_texture_02_Tex_000F00" OutName="tex_000F00" Format="ci8" Width="32" Height="32" Offset="0xF00"/>
+        <Texture Name="scene_texture_02_Tex_001300" OutName="tex_001300" Format="ci8" Width="16" Height="64" Offset="0x1300"/>
+        <Texture Name="scene_texture_02_Tex_001700" OutName="tex_001700" Format="ci8" Width="16" Height="16" Offset="0x1700"/>
+        <Texture Name="scene_texture_02_Tex_001800" OutName="tex_001800" Format="ci8" Width="32" Height="32" Offset="0x1800"/>
+        <Texture Name="scene_texture_02_Tex_001C00" OutName="tex_001C00" Format="ci8" Width="16" Height="16" Offset="0x1C00"/>
+    </File>
+</Root>

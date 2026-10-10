@@ -1,0 +1,57 @@
+﻿<Root>
+    <!-- Cucco Chick: the little baby Cucco you find and raise in the Cucco Shack -->
+    <File Name="object_nwc" Segment="6">
+        <DList Name="gNwcEndDL" Offset="0x2E0" />
+        <DList Name="gNwcBodyDL" Offset="0x2E8" />
+        <Texture Name="gNwcBodyTex" OutName="body" Format="rgba16" Width="8" Height="8" Offset="0x4D0" />
+        <Texture Name="gNwcBeakTex" OutName="beak" Format="rgba16" Width="8" Height="8" Offset="0x550" />
+        <!-- Wing texture is reused for tail feathers -->
+        <Texture Name="gNwcWingTex" OutName="wing" Format="rgba16" Width="16" Height="16" Offset="0x5D0" />
+        <Texture Name="gNwcEyeOpenTex" OutName="eye_opened" Format="rgba16" Width="16" Height="16" Offset="0x7D0" />
+        <Texture Name="gNwcEyeClosedTex" OutName="eye_closed" Format="rgba16" Width="16" Height="16" Offset="0x9D0" />
+        
+        <!-- **************************************************************************************** -->
+        <!-- *** Beyond this point is unused content, including broken display lists and textures *** -->
+        <!-- **************************************************************************************** -->
+
+        <!-- this blinking animated texture seems unused, as the actor cycles through blinking with code -->
+        <TextureAnimation Name="gNwcEyeTexAnim" Offset="0xBEC" />
+        <!-- unused multi-colored texture? -->
+        <Texture Name="object_nwc_Tex_000C00" OutName="tex_000C00" Format="rgba16" Width="32" Height="32" Offset="0xC00" />
+        <DList Name="object_nwc_DL_001440" Offset="0x1440" />
+        <DList Name="object_nwc_DL_0014B8" Offset="0x14B8" />
+        <DList Name="object_nwc_DL_001520" Offset="0x1520" />
+        <!-- dark gold ball texture -->
+        <Texture Name="object_nwc_Tex_001550" OutName="tex_001550" Format="rgba16" Width="16" Height="16" Offset="0x1550" />
+        <!-- gold color pallet? -->
+        <Texture Name="object_nwc_Tex_001750" OutName="tex_001750" Format="rgba16" Width="4" Height="4" Offset="0x1750" />
+      
+        <!-- both of these display lists use the dark gold ball texture -->
+        <DList Name="object_nwc_DL_001860" Offset="0x1860" />
+        <DList Name="object_nwc_DL_0018D0" Offset="0x18D0" />
+
+        <!-- draws two untextured triangles like jack-o-lantern eyes -->
+        <DList Name="object_nwc_DL_001940" Offset="0x1940" />
+
+        <!-- both of these display lists use the yellow pallet texture -->
+        <DList Name="object_nwc_DL_001960" Offset="0x1960" />
+        <DList Name="object_nwc_DL_0019B8" Offset="0x19B8" />
+
+        <!-- in z64utils draws a un-textured tetrahedron -->
+        <DList Name="object_nwc_DL_001A10" Offset="0x1A10" />
+
+        <!-- contains an unsupported texture (i16) used in an unused display list ( @ 0x1B80 ) -->
+        <!-- is type G_IM_FMT_I, G_IM_SIZ_16b, dimensions are best guesses from Texture64 renders -->
+        <Texture Name="object_nwc_Tex_001A40" OutName="broken_tex_gimfmti_001A40" Format="ia16" Width="8" Height="16" Offset="0x1A40" />
+
+        <!-- Z64Utils throws an error for this DL because of the above texture -->
+        <DList Name="object_nwc_DL_001B80" Offset="0x1B80" />
+
+        <!-- requires unassigned segment 0x01 matrix to render, no idea what its doing -->
+        <DList Name="object_nwc_DL_001BE8" Offset="0x1BE8" />
+        <!-- loads a dark spot from gameplay keep -->
+        <DList Name="object_nwc_DL_001C10" Offset="0x1C10" />
+        <!-- unused DL produces a yellow textured triangle -->
+        <DList Name="object_nwc_DL_001C58" Offset="0x1C58" />
+    </File>
+</Root>

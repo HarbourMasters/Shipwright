@@ -1,0 +1,16 @@
+﻿<Root>
+    <File Name="object_horse_game_check" Segment="6">
+        <Texture Name="object_horse_game_check_Tex_000048" OutName="tex_000048" Format="i8" Width="64" Height="64" Offset="0x48" />
+        <DList Name="object_horse_game_check_DL_001048" Offset="0x1048" />
+        <DList Name="object_horse_game_check_DL_0013A0" Offset="0x13A0" />
+        <DList Name="object_horse_game_check_DL_0014B0" Offset="0x14B0" />
+        <Texture Name="object_horse_game_check_Tex_001590" OutName="tex_001590" Format="ia4" Width="64" Height="64" Offset="0x1590" />
+        <Texture Name="object_horse_game_check_Tex_001D90" OutName="tex_001D90" Format="rgba16" Width="32" Height="32" Offset="0x1D90" />
+        <Texture Name="object_horse_game_check_Tex_002590" OutName="tex_002590" Format="i8" Width="64" Height="32" Offset="0x2590" />
+        <Collision Name="object_horse_game_check_Colheader_002FB8" Offset="0x2FB8" />
+        <DList Name="object_horse_game_check_DL_003030" Offset="0x3030" /> <!-- Original name is "z2_umajamp_modelT" -->
+        <DList Name="object_horse_game_check_DL_0030C0" Offset="0x30C0" />
+        <Texture Name="object_horse_game_check_Tex_0030C8" OutName="tex_0030C8" Format="rgba16" Width="32" Height="32" Offset="0x30C8" />
+        <Collision Name="object_horse_game_check_Colheader_003918" Offset="0x3918" /> <!-- Original name is "z2_umajamp_bgdatainfo" -->
+    </File>
+</Root>

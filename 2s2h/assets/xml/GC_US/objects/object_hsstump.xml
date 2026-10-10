@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_hsstump" Segment="6">
+        <DList Name="object_hsstump_DL_0003B0" Offset="0x3B0" />
+        <DList Name="object_hsstump_DL_0003B8" Offset="0x3B8" /> <!-- Original name is "z2_miki_model" -->
+        <Texture Name="object_hsstump_Tex_0005A0" OutName="tex_0005A0" Format="rgba16" Width="16" Height="16" Offset="0x5A0" />
+        <Texture Name="object_hsstump_TLUT_0007A0" OutName="tlut_0007A0" Format="rgba16" Width="4" Height="4" Offset="0x7A0" />
+        <Texture Name="object_hsstump_Tex_0007C0" OutName="tex_0007C0" Format="ci4" Width="64" Height="64" Offset="0x7C0" />
+        <Collision Name="object_hsstump_Colheader_0011B0" Offset="0x11B0" /> <!-- Original name is "z2_miki_bgdatainfo" -->
+    </File>
+</Root>

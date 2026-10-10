@@ -1,0 +1,76 @@
+﻿<Root>
+    <File Name="object_daiku" Segment="6">
+        <Animation Name="object_daiku_Anim_000600" Offset="0x600" /> <!-- Original name is "dk2_hanasi" ("talk") -->
+        <Animation Name="object_daiku_Anim_000C44" Offset="0xC44" /> <!-- Original name is "dk2_hashiru" ("to run​") -->
+        <Animation Name="object_daiku_Anim_001114" Offset="0x1114" /> <!-- Original name is "dk2_katugi" ("to carry") -->
+        <Animation Name="object_daiku_Anim_001A24" Offset="0x1A24" /> <!-- Original name is "dk2_kowasu" ("to break; to destroy; to demolish​") -->
+        <Animation Name="object_daiku_Anim_002134" Offset="0x2134" /> <!-- Original name is "dk2_kowasu2wait" -->
+        <Animation Name="object_daiku_Anim_002FA0" Offset="0x2FA0" /> <!-- Original name is "dk2_matsu" ("to wait​") -->
+        <Texture Name="object_daiku_TLUT_002FB0" OutName="tlut_002FB0" Format="rgba16" Width="16" Height="16" Offset="0x2FB0" />
+        <Texture Name="object_daiku_Tex_0031B0" OutName="tex_0031B0" Format="ci8" Width="8" Height="8" Offset="0x31B0" />
+        <Texture Name="object_daiku_Tex_0031F0" OutName="tex_0031F0" Format="ci8" Width="16" Height="16" Offset="0x31F0" />
+        <Texture Name="object_daiku_Tex_0032F0" OutName="tex_0032F0" Format="rgba16" Width="4" Height="4" Offset="0x32F0" />
+        <Texture Name="object_daiku_Tex_003310" OutName="tex_003310" Format="ci8" Width="8" Height="16" Offset="0x3310" />
+        <Texture Name="object_daiku_Tex_003390" OutName="tex_003390" Format="ci8" Width="8" Height="8" Offset="0x3390" />
+        <Texture Name="object_daiku_Tex_0033D0" OutName="tex_0033D0" Format="ci8" Width="16" Height="16" Offset="0x33D0" />
+        <Texture Name="object_daiku_Tex_0034D0" OutName="tex_0034D0" Format="ci8" Width="8" Height="8" Offset="0x34D0" />
+        <Texture Name="object_daiku_Tex_003510" OutName="tex_003510" Format="rgba16" Width="32" Height="32" Offset="0x3510" />
+        <Texture Name="object_daiku_Tex_003D10" OutName="tex_003D10" Format="ci8" Width="16" Height="16" Offset="0x3D10" />
+        <Texture Name="object_daiku_Tex_003E10" OutName="tex_003E10" Format="ci8" Width="8" Height="8" Offset="0x3E10" />
+        <Texture Name="object_daiku_Tex_003E50" OutName="tex_003E50" Format="ci8" Width="8" Height="8" Offset="0x3E50" />
+        <Texture Name="object_daiku_Tex_003E90" OutName="tex_003E90" Format="ci8" Width="8" Height="8" Offset="0x3E90" />
+        <DList Name="object_daiku_DL_006980" Offset="0x6980" />
+        <DList Name="object_daiku_DL_006D70" Offset="0x6D70" />
+        <DList Name="object_daiku_DL_006E80" Offset="0x6E80" />
+        <DList Name="object_daiku_DL_006FB0" Offset="0x6FB0" />
+        <DList Name="object_daiku_DL_0070C0" Offset="0x70C0" />
+        <DList Name="object_daiku_DL_0071E0" Offset="0x71E0" />
+        <DList Name="object_daiku_DL_007700" Offset="0x7700" />
+        <DList Name="object_daiku_DL_007A10" Offset="0x7A10" />
+        <DList Name="object_daiku_DL_007B40" Offset="0x7B40" />
+        <DList Name="object_daiku_DL_007C70" Offset="0x7C70" />
+        <DList Name="object_daiku_DL_007DE0" Offset="0x7DE0" />
+        <DList Name="object_daiku_DL_007F10" Offset="0x7F10" />
+        <DList Name="object_daiku_DL_008040" Offset="0x8040" />
+        <DList Name="object_daiku_DL_0081B0" Offset="0x81B0" />
+        <DList Name="object_daiku_DL_0083A0" Offset="0x83A0" />
+        <DList Name="object_daiku_DL_008648" Offset="0x8648" />
+        <DList Name="object_daiku_DL_008758" Offset="0x8758" />
+        <DList Name="object_daiku_DL_008870" Offset="0x8870" />
+        <DList Name="object_daiku_DL_008B20" Offset="0x8B20" />
+        <DList Name="object_daiku_DL_008C30" Offset="0x8C30" />
+        <DList Name="object_daiku_DL_008EC8" Offset="0x8EC8" /> <!-- Original name is "dk2_hashira_model" -->
+        <Texture Name="object_daiku_TLUT_008FA8" OutName="tlut_008FA8" Format="rgba16" Width="16" Height="16" Offset="0x8FA8" />
+        <Texture Name="object_daiku_Tex_0091A8" OutName="tex_0091A8" Format="ci8" Width="16" Height="16" Offset="0x91A8" />
+        <DList Name="object_daiku_DL_009638" Offset="0x9638" /> <!-- Original name is "dk2_2_turuhashi_model" -->
+        <Texture Name="object_daiku_TLUT_0097B0" OutName="tlut_0097B0" Format="rgba16" Width="16" Height="16" Offset="0x97B0" />
+        <Texture Name="object_daiku_Tex_0099B0" OutName="tex_0099B0" Format="i8" Width="32" Height="32" Offset="0x99B0" />
+        <Texture Name="object_daiku_Tex_009DB0" OutName="tex_009DB0" Format="ci8" Width="16" Height="16" Offset="0x9DB0" />
+        <DList Name="object_daiku_DL_00A390" Offset="0xA390" />
+        <Texture Name="object_daiku_TLUT_00A4D0" OutName="tlut_00A4D0" Format="rgba16" Width="16" Height="16" Offset="0xA4D0" />
+        <Texture Name="object_daiku_Tex_00A6D0" OutName="tex_00A6D0" Format="ci8" Width="8" Height="16" Offset="0xA6D0" />
+        <Limb Name="object_daiku_Standardlimb_00A750" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_01" Offset="0xA750" />
+        <Limb Name="object_daiku_Standardlimb_00A75C" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_02" Offset="0xA75C" />
+        <Limb Name="object_daiku_Standardlimb_00A768" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_03" Offset="0xA768" />
+        <Limb Name="object_daiku_Standardlimb_00A774" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_04" Offset="0xA774" />
+        <Limb Name="object_daiku_Standardlimb_00A780" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_05" Offset="0xA780" />
+        <Limb Name="object_daiku_Standardlimb_00A78C" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_06" Offset="0xA78C" />
+        <Limb Name="object_daiku_Standardlimb_00A798" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_07" Offset="0xA798" />
+        <Limb Name="object_daiku_Standardlimb_00A7A4" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_08" Offset="0xA7A4" />
+        <Limb Name="object_daiku_Standardlimb_00A7B0" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_09" Offset="0xA7B0" />
+        <Limb Name="object_daiku_Standardlimb_00A7BC" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0A" Offset="0xA7BC" />
+        <Limb Name="object_daiku_Standardlimb_00A7C8" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0B" Offset="0xA7C8" />
+        <Limb Name="object_daiku_Standardlimb_00A7D4" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0C" Offset="0xA7D4" />
+        <Limb Name="object_daiku_Standardlimb_00A7E0" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0D" Offset="0xA7E0" />
+        <Limb Name="object_daiku_Standardlimb_00A7EC" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0E" Offset="0xA7EC" />
+        <Limb Name="object_daiku_Standardlimb_00A7F8" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_0F" Offset="0xA7F8" />
+        <Limb Name="object_daiku_Standardlimb_00A804" Type="Standard" EnumName="OBJECT_DAIKU_LIMB_10" Offset="0xA804" />
+        <Skeleton Name="object_daiku_Skel_00A850" Type="Flex" LimbType="Standard" LimbNone="OBJECT_DAIKU_LIMB_NONE" LimbMax="OBJECT_DAIKU_LIMB_MAX" EnumName="ObjectDaikuLimb" Offset="0xA850" />
+        <Animation Name="object_daiku_Anim_00ACD0" Offset="0xACD0" /> <!-- Original name is "dk2_roya" -->
+        <Animation Name="object_daiku_Anim_00B690" Offset="0xB690" /> <!-- Original name is "dk2_shiji" (perhaps "instructions; directions​"?) -->
+        <Animation Name="object_daiku_Anim_00BEAC" Offset="0xBEAC" /> <!-- Original name is "dk2_shiji02" -->
+        <Animation Name="object_daiku_Anim_00C234" Offset="0xC234" /> <!-- Original name is "dk2_suwari" ("sitting") -->
+        <Animation Name="object_daiku_Anim_00C92C" Offset="0xC92C" /> <!-- Original name is "dk2_tasuke" ("to save; to rescue​") -->
+        <Animation Name="object_daiku_Anim_00D328" Offset="0xD328" /> <!-- Original name is "dk2_turuwait" ("turu" = "to hang; to suspend; to sling") -->
+    </File>
+</Root>

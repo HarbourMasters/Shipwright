@@ -1,0 +1,110 @@
+﻿<Root>
+    <!-- Assets for Bio Deku Baba. The "Head" in this file refers to both the chomping head attached to the lily pad as well as -->
+    <!-- the entity with legs and eyes that spawns from the head after it is detached. The same skeleton and limbs are used for -->
+    <!-- both of these; when the head is attached to the lily pad, the Boss_05 actor is responsible for hiding most of the limbs. -->
+    <File Name="object_boss05" Segment="6">
+        <!-- Bio Deku Baba Head Animations -->
+        <Animation Name="gBioDekuBabaHeadAttackAnim" Offset="0x6A4" /> <!-- Original name is "wdb_atackH" ("H" is almost certainly short for "head") -->
+        <Animation Name="gBioDekuBabaHeadChargeAnim" Offset="0xA5C" /> <!-- Original name is "wdb_atackwalkH" -->
+
+        <!-- Bio Deku Baba Lily Pad Animation. This animation is completely stationary, and all it does is position the limbs in -->
+        <!-- a certain way. The Boss_05 actor manually rotates the limbs to move the lily pad around. -->
+        <Animation Name="gBioDekuBabaLilyPadIdleAnim" Offset="0xABC" /> <!-- Original name might be "wdb_body" -->
+
+        <!-- Bio Deku Baba Lily Pad Limb DisplayLists -->
+        <DList Name="gBioDekuBabaLilyPadRootsDL" Offset="0x11C0" />
+        <DList Name="gBioDekuBabaLilyPadLeafDL" Offset="0x1288" />
+        <DList Name="gBioDekuBabaLilyPadUpperStemDL" Offset="0x1320" />
+        <DList Name="gBioDekuBabaLilyPadMiddleStemDL" Offset="0x13D0" />
+        <DList Name="gBioDekuBabaLilyPadRightUpperArmDL" Offset="0x14A0" />
+        <DList Name="gBioDekuBabaLilyPadRightLowerArmDL" Offset="0x1538" />
+        <DList Name="gBioDekuBabaLilyPadLeftUpperArmDL" Offset="0x15F0" />
+        <DList Name="gBioDekuBabaLilyPadLeftLowerArmDL" Offset="0x1688" />
+        <DList Name="gBioDekuBabaLilyPadLowerStemDL" Offset="0x1740" />
+
+        <!-- Bio Deku Baba Lily Pad Textures -->
+        <Texture Name="gBioDekuBabaLilyPadStemTex" OutName="bio_deku_baba_lily_pad_stem" Format="rgba16" Width="8" Height="8" Offset="0x17D0" />
+        <Texture Name="gBioDekuBabaLilyPadLeafTex" OutName="bio_deku_baba_lily_pad_leaf" Format="rgba16" Width="32" Height="32" Offset="0x1850" />
+        <Texture Name="gBioDekuBabaLilyPadRootsTex" OutName="bio_deku_baba_lily_pad_roots" Format="rgba16" Width="16" Height="32" Offset="0x2050" />
+
+        <!-- Bio Deku Baba Lily Pad Limbs -->
+        <Limb Name="gBioDekuBabaLilyPadRootsLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_ROOTS" Offset="0x2450" />
+        <Limb Name="gBioDekuBabaLilyPadUpperStemLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_UPPER_STEM" Offset="0x245C" />
+        <Limb Name="gBioDekuBabaLilyPadMiddleStemLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_MIDDLE_STEM" Offset="0x2468" />
+        <Limb Name="gBioDekuBabaLilyPadLowerStemLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_LOWER_STEM" Offset="0x2474" />
+        <Limb Name="gBioDekuBabaLilyPadLeftUpperArmLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_LEFT_UPPER_ARM" Offset="0x2480" />
+        <Limb Name="gBioDekuBabaLilyPadLeftLowerArmLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_LEFT_LOWER_ARM" Offset="0x248C" />
+        <Limb Name="gBioDekuBabaLilyPadRightUpperArmLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_RIGHT_UPPER_ARM" Offset="0x2498" />
+        <Limb Name="gBioDekuBabaLilyPadRightLowerArmLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_RIGHT_LOWER_ARM" Offset="0x24A4" />
+        <Limb Name="gBioDekuBabaLilyPadLeafLimb" Type="Standard" EnumName="BIO_DEKU_BABA_LILY_PAD_LIMB_LEAF" Offset="0x24B0" />
+
+        <!-- Bio Deku Baba Lily Pad Skeleton -->
+        <Skeleton Name="gBioDekuBabaLilyPadSkel" Type="Flex" LimbType="Standard" LimbNone="BIO_DEKU_BABA_LILY_PAD_LIMB_NONE" LimbMax="BIO_DEKU_BABA_LILY_PAD_LIMB_MAX" EnumName="BioDekuBabaLilyPadLimb" Offset="0x24E0" />
+
+        <!-- Bio Deku Baba Head Animations -->
+        <Animation Name="gBioDekuBabaHeadDamagedAnim" Offset="0x2F0C" /> <!-- Original name is "wdb_damageH" -->
+        <Animation Name="gBioDekuBabaHeadSpotAnim" Offset="0x3448" /> <!-- Original name is "wdb_hakkenH" ("detection") -->
+        <Animation Name="gBioDekuBabaHeadRapidChompAnim" Offset="0x3500" /> <!-- Unused and one frame long. Original name is "wdb_head" -->
+
+        <!-- Bio Deku Baba Head Limb DisplayLists -->
+        <DList Name="gBioDekuBabaHeadBodyDL" Offset="0x4620" />
+        <DList Name="gBioDekuBabaHeadLeavesDL" Offset="0x46C8" />
+        <DList Name="gBioDekuBabaHeadRightUpperLegDL" Offset="0x4788" />
+        <DList Name="gBioDekuBabaHeadRightLowerLegDL" Offset="0x4830" />
+        <DList Name="gBioDekuBabaHeadRightFootDL" Offset="0x48F0" />
+        <DList Name="gBioDekuBabaHeadRightLowerEyestalkDL" Offset="0x49C0" />
+        <DList Name="gBioDekuBabaHeadRightUpperEyestalkDL" Offset="0x4A58" />
+        <DList Name="gBioDekuBabaHeadRightEyeDL" Offset="0x4B10" />
+        <DList Name="gBioDekuBabaHeadLeftLowerEyestalkDL" Offset="0x4C58" />
+        <DList Name="gBioDekuBabaHeadLeftUpperEyestalkDL" Offset="0x4CF0" />
+        <DList Name="gBioDekuBabaHeadLeftEyeDL" Offset="0x4DA8" />
+        <DList Name="gBioDekuBabaHeadLeftUpperLegDL" Offset="0x4EF8" />
+        <DList Name="gBioDekuBabaHeadLeftLowerLegDL" Offset="0x4FA0" />
+        <DList Name="gBioDekuBabaHeadLeftFootDL" Offset="0x5060" />
+        <DList Name="gBioDekuBabaHeadBackUpperLegDL" Offset="0x5130" />
+        <DList Name="gBioDekuBabaHeadBackLowerLegDL" Offset="0x51D8" />
+        <DList Name="gBioDekuBabaHeadBackFootDL" Offset="0x5298" />
+        <DList Name="gBioDekuBabaHeadUpperJawDL" Offset="0x5348" />
+        <DList Name="gBioDekuBabaHeadLowerJawDL" Offset="0x5460" />
+
+        <!-- Bio Deku Baba Head Textures -->
+        <Texture Name="gBioDekuBabaHeadLeavesTex" OutName="bio_deku_baba_head_leaves" Format="rgba16" Width="16" Height="16" Offset="0x5598" />
+        <Texture Name="gBioDekuBabaHeadJawOuterTex" OutName="bio_deku_baba_head_jaw_outer" Format="rgba16" Width="16" Height="32" Offset="0x5798" />
+        <Texture Name="gBioDekuBabaHeadLegAndEyestalkTex" OutName="bio_deku_baba_head_leg_and_eyestalk" Format="rgba16" Width="8" Height="8" Offset="0x5B98" />
+        <Texture Name="gBioDekuBabaHeadJawInnerTex" OutName="bio_deku_baba_head_jaw_inner" Format="rgba16" Width="16" Height="16" Offset="0x5C18" />
+        <Texture Name="gBioDekuBabaHeadEyeTex" OutName="bio_deku_baba_head_eye" Format="rgba32" Width="16" Height="16" Offset="0x5E18" />
+
+        <!-- Texture Animation that cycles between white and gray to give the Bio Deku Baba's eyes a flashing effect -->
+        <TextureAnimation Name="gBioDekuBabaHeadEyeFlashTexAnim" Offset="0x6240" />
+
+        <!-- Bio Deku Baba Head Limbs -->
+        <Limb Name="gBioDekuBabaHeadBodyLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_BODY" Offset="0x6248" />
+        <Limb Name="gBioDekuBabaHeadLowerJawLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LOWER_JAW" Offset="0x6254" />
+        <Limb Name="gBioDekuBabaHeadUpperJawLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_UPPER_JAW" Offset="0x6260" />
+        <Limb Name="gBioDekuBabaHeadBackUpperLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_BACK_UPPER_LEG" Offset="0x626C" />
+        <Limb Name="gBioDekuBabaHeadBackLowerLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_BACK_LOWER_LEG" Offset="0x6278" />
+        <Limb Name="gBioDekuBabaHeadBackFootLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_BACK_FOOT" Offset="0x6284" />
+        <Limb Name="gBioDekuBabaHeadLeftUpperLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_UPPER_LEG" Offset="0x6290" />
+        <Limb Name="gBioDekuBabaHeadLeftLowerLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_LOWER_LEG" Offset="0x629C" />
+        <Limb Name="gBioDekuBabaHeadLeftFootLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_FOOT" Offset="0x62A8" />
+        <Limb Name="gBioDekuBabaHeadLeftLowerEyestalkLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_LOWER_EYESTALK" Offset="0x62B4" />
+        <Limb Name="gBioDekuBabaHeadLeftUpperEyestalkLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_UPPER_EYESTALK" Offset="0x62C0" />
+        <Limb Name="gBioDekuBabaHeadLeftEyeLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEFT_EYE" Offset="0x62CC" />
+        <Limb Name="gBioDekuBabaHeadRightLowerEyestalkLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_LOWER_EYESTALK" Offset="0x62D8" />
+        <Limb Name="gBioDekuBabaHeadRightUpperEyestalkLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_UPPER_EYESTALK" Offset="0x62E4" />
+        <Limb Name="gBioDekuBabaHeadRightEyeLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_EYE" Offset="0x62F0" />
+        <Limb Name="gBioDekuBabaHeadRightUpperLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_UPPER_LEG" Offset="0x62FC" />
+        <Limb Name="gBioDekuBabaHeadRightLowerLegLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_LOWER_LEG" Offset="0x6308" />
+        <Limb Name="gBioDekuBabaHeadRightFootLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_RIGHT_FOOT" Offset="0x6314" />
+        <Limb Name="gBioDekuBabaHeadLeavesLimb" Type="Standard" EnumName="BIO_DEKU_BABA_HEAD_LIMB_LEAVES" Offset="0x6320" />
+
+        <!-- Bio Deku Baba Head Skeleton -->
+        <Skeleton Name="gBioDekuBabaHeadSkel" Type="Flex" LimbType="Standard" LimbNone="BIO_DEKU_BABA_HEAD_LIMB_NONE" LimbMax="BIO_DEKU_BABA_HEAD_LIMB_MAX" EnumName="BioDekuBabaHeadLimb" Offset="0x6378" />
+
+        <!-- Bio Deku Baba Head Animations -->
+        <Animation Name="gBioDekuBabaHeadChompAnim" Offset="0x6484" /> <!-- Original name is "wdb_pakupaku" ("repeatedly opening and closing (one's mouth)") -->
+        <Animation Name="gBioDekuBabaHeadTransformAnim" Offset="0x6E50" /> <!-- Original name is "wdb_startH" -->
+        <Animation Name="gBioDekuBabaHeadIdleAnim" Offset="0x7488" /> <!-- Original name is "wdb_waitH" -->
+        <Animation Name="gBioDekuBabaHeadWalkAnim" Offset="0x7908" /> <!-- Original name is "wdb_walkH" -->
+    </File>
+</Root>

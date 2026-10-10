@@ -1,0 +1,6 @@
+﻿<Root>
+    <File Name="object_dor03" Segment="6">
+        <DList Name="gSwampDoorDL" Offset="0x3C0" /> <!-- Original name is "z2_dor03_model" -->
+        <Texture Name="gSwampDoorTex" OutName="swamp_door" Format="rgba16" Width="32" Height="64" Offset="0x4D0" />
+    </File>
+</Root>

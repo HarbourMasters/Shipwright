@@ -1,0 +1,193 @@
+﻿<Root>
+    <File Name="object_link_child" Segment="6">
+        <Texture Name="gLinkHumanEyesOpenTex" OutName="eyes_open" Format="ci8" Width="64" Height="32" Offset="0x0" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesHalfTex" OutName="eyes_half" Format="ci8" Width="64" Height="32" Offset="0x800" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesClosedTex" OutName="eyes_closed" Format="ci8" Width="64" Height="32" Offset="0x1000" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesRightTex" OutName="eyes_right" Format="ci8" Width="64" Height="32" Offset="0x1800" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesLeftTex" OutName="eyes_left" Format="ci8" Width="64" Height="32" Offset="0x2000" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesUpTex" OutName="eyes_up" Format="ci8" Width="64" Height="32" Offset="0x2800" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesDownTex" OutName="eyes_down" Format="ci8" Width="64" Height="32" Offset="0x3000" TlutOffset="0x5000" />
+        <Texture Name="gLinkHumanEyesWincingTex" OutName="eyes_wincing" Format="ci8" Width="64" Height="32" Offset="0x3800" TlutOffset="0x5000" />
+
+        <Texture Name="gLinkHumanMouthClosedTex" OutName="mouth_closed" Format="ci8" Width="32" Height="32" Offset="0x4000" TlutOffset="0x5200" />
+        <Texture Name="gLinkHumanMouthHalfTex" OutName="mouth_half" Format="ci8" Width="32" Height="32" Offset="0x4400" TlutOffset="0x5200" />
+        <Texture Name="gLinkHumanMouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="32" Offset="0x4800" TlutOffset="0x5200" />
+        <Texture Name="gLinkHumanMouthSmileTex" OutName="mouth_smile" Format="ci8" Width="32" Height="32" Offset="0x4C00" TlutOffset="0x5200" />
+
+        <Texture Name="gLinkHumanSkinTLUT" OutName="skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5000" />
+        <Texture Name="gLinkHumanMouthTLUT" OutName="mouth_tlut" Format="rgba16" Width="16" Height="16" Offset="0x5200" />
+
+        <Texture Name="object_link_child_Tex_005400" OutName="tex_005400" Format="rgba16" Width="8" Height="16" Offset="0x5400" />
+        <Texture Name="object_link_child_Tex_005500" OutName="tex_005500" Format="ci8" Width="8" Height="8" Offset="0x5500" />
+        <Texture Name="object_link_child_Tex_005540" OutName="tex_005540" Format="ci8" Width="16" Height="16" Offset="0x5540" />
+        <Texture Name="gLinkHumanEarTex" OutName="ear" Format="ci8" Width="16" Height="16" Offset="0x5640" />
+        <Texture Name="gLinkHumanBeltClaspTex" OutName="belt_clasp" Format="rgba16" Width="32" Height="16" Offset="0x5740" />
+        <Texture Name="gLinkHumanBeltTex" OutName="belt" Format="rgba16" Width="8" Height="16" Offset="0x5B40" />
+        <Texture Name="object_link_child_Tex_005C40" OutName="tex_005C40" Format="i8" Width="16" Height="16" Offset="0x5C40" />
+        <Texture Name="object_link_child_Tex_005D40" OutName="tex_005D40" Format="i8" Width="8" Height="8" Offset="0x5D40" />
+        <Texture Name="object_link_child_Tex_005D80" OutName="tex_005D80" Format="i8" Width="8" Height="16" Offset="0x5D80" />
+        <Texture Name="object_link_child_Tex_005E00" OutName="tex_005E00" Format="rgba16" Width="16" Height="32" Offset="0x5E00" />
+        <Texture Name="object_link_child_Tex_006200" OutName="tex_006200" Format="rgba16" Width="32" Height="32" Offset="0x6200" />
+        <Texture Name="object_link_child_Tex_006A00" OutName="tex_006A00" Format="ci8" Width="16" Height="16" Offset="0x6A00" />
+        <Texture Name="object_link_child_Tex_006B00" OutName="tex_006B00" Format="rgba16" Width="16" Height="16" Offset="0x6B00" />
+        <!-- <Blob Name="object_link_child_Blob_006D00" Size="0xA00" Offset="0x6D00" /> -->
+        <Texture Name="object_link_child_Tex_007700" OutName="tex_007700" Format="rgba16" Width="16" Height="16" Offset="0x7700" />
+
+        <DList Name="gLinkHumanRightThighDL" Offset="0xB360" />
+        <DList Name="gLinkHumanRightShinDL" Offset="0xB538" />
+        <DList Name="gLinkHumanRightFootDL" Offset="0xB778" />
+        <DList Name="gLinkHumanLeftThighDL" Offset="0xB888" />
+        <DList Name="gLinkHumanLeftShinDL" Offset="0xBA60" />
+        <DList Name="gLinkHumanLeftFootDL" Offset="0xBCA0" />
+        <DList Name="gLinkHumanWaistDL" Offset="0xBDB0" />
+        <DList Name="gLinkHumanCollarDL" Offset="0xBF88" />
+        <DList Name="gLinkHumanTorsoDL" Offset="0xC048" />
+        <DList Name="gLinkHumanHeadDL" Offset="0xC3E8" />
+        <DList Name="gLinkHumanHatDL" Offset="0xCAA8" />
+        <!-- Unused sword in scabbard -->
+        <DList Name="gLinkHumanSwordScabbardDL" Offset="0xCBC8" />
+        <DList Name="gLinkHumanRightShoulderDL" Offset="0xCCE0" />
+        <DList Name="gLinkHumanRightForearmDL" Offset="0xCF08" />
+        <DList Name="gLinkHumanRightHandOpenDL" Offset="0xD058" />
+        <DList Name="gLinkHumanLeftShoulderDL" Offset="0xD1B0" />
+        <DList Name="gLinkHumanLeftForearmDL" Offset="0xD3D8" />
+        <DList Name="gLinkHumanLeftHandOpenDL" Offset="0xD528" />
+
+        <Texture Name="gLinkHumanOcarinaTex" OutName="ocarina" Format="rgba16" Width="32" Height="16" Offset="0xD680" />
+        <!-- <Blob Name="object_link_child_Blob_00DA80" Size="0x88" Offset="0xDA80" /> -->
+        <Texture Name="object_link_child_Tex_00DB08" OutName="tex_00DB08" Format="ci8" Width="16" Height="16" Offset="0xDB08" />
+
+        <!-- <Blob Name="object_link_child_Blob_00DC08" Size="0x360" Offset="0xDC08" /> -->
+        <DList Name="gLinkHumanLeftHandClosedDL" Offset="0xE1C8" />
+        <!-- <Blob Name="object_link_child_Blob_00E2E8" Size="0x1F0" Offset="0xE2E8" /> -->
+        <DList Name="gLinkHumanRightHandClosedDL" Offset="0xE738" />
+
+        <DList Name="gLinkHumanRightHandHoldingOcarinaDL" Offset="0xED18" />
+        <DList Name="object_link_child_DL_00F1D8" Offset="0xF1D8" />
+        <DList Name="object_link_child_DL_00F548" Offset="0xF548" />
+        <DList Name="object_link_child_DL_00F998" Offset="0xF998" />
+        <DList Name="object_link_child_DL_00FD08" Offset="0xFD08" />
+        <!-- Duplicated of gLinkHumanRightHandHoldingOcarinaDL -->
+        <DList Name="object_link_child_DL_0102E8" Offset="0x102E8" />
+
+        <DList Name="object_link_child_DL_015F98" Offset="0x15F98" />
+        <DList Name="object_link_child_DL_016048" Offset="0x16048" />
+        <DList Name="object_link_child_DL_016058" Offset="0x16058" />
+        <DList Name="object_link_child_DL_0161C8" Offset="0x161C8" />
+        <DList Name="object_link_child_DL_016270" Offset="0x16270" />
+        <DList Name="object_link_child_DL_016320" Offset="0x16320" />
+        <DList Name="object_link_child_DL_0163D0" Offset="0x163D0" />
+        <DList Name="gLinkHumanMirrorShieldDL" Offset="0x16480" />
+
+        <DList Name="object_link_child_DL_0164B8" Offset="0x164B8" />
+        <DList Name="object_link_child_DL_016608" Offset="0x16608" />
+        <DList Name="object_link_child_DL_0166F8" Offset="0x166F8" />
+        <DList Name="object_link_child_DL_0167D0" Offset="0x167D0" />
+        <DList Name="gLinkHumanGreatFairysSwordDL" Offset="0x16898" />
+        <DList Name="object_link_child_DL_0168C0" Offset="0x168C0" />
+        <DList Name="object_link_child_DL_016950" Offset="0x16950" />
+        <DList Name="object_link_child_DL_0169E0" Offset="0x169E0" />
+        <DList Name="gLinkHumanGildedSwordSheathDL" Offset="0x16B80" />
+        <DList Name="object_link_child_DL_016BA0" Offset="0x16BA0" />
+        <DList Name="object_link_child_DL_016C88" Offset="0x16C88" />
+        <DList Name="object_link_child_DL_016D58" Offset="0x16D58" />
+        <DList Name="object_link_child_DL_016E10" Offset="0x16E10" />
+        <DList Name="object_link_child_DL_016F38" Offset="0x16F38" />
+        <DList Name="object_link_child_DL_016FC8" Offset="0x16FC8" />
+        <DList Name="gLinkHumanGildedSwordHandleDL" Offset="0x17058" />
+        <DList Name="object_link_child_DL_017090" Offset="0x17090" />
+        <DList Name="object_link_child_DL_017130" Offset="0x17130" />
+        <DList Name="object_link_child_DL_0171D0" Offset="0x171D0" />
+        <DList Name="object_link_child_DL_017270" Offset="0x17270" />
+        <DList Name="gLinkHumanGildedSwordBladeDL" Offset="0x17310" />
+        <DList Name="gLinkHumanRazorSwordSheathDL" Offset="0x17338" />
+        <DList Name="gLinkHumanHerosShieldDL" Offset="0x17458" />
+        <DList Name="gLinkHumanKokiriSwordSheathDL" Offset="0x17700" />
+        <DList Name="object_link_child_DL_017818" Offset="0x17818" />
+        <DList Name="gLinkHumanHookshotDL" Offset="0x17858" />
+        <DList Name="object_link_child_DL_017B40" Offset="0x17B40" />
+        <DList Name="gLinkHumanBowDL" Offset="0x181C8" />
+        <DList Name="object_link_child_DL_018490" Offset="0x18490" />
+
+        <Texture Name="object_link_child_TLUT_018A40" OutName="tlut_018A40" Format="rgba16" Width="16" Height="16" Offset="0x18A40" />
+        <Texture Name="gLinkHumanHerosShieldFrontTLUT" OutName="hylian_shield_front_tlut" Format="rgba16" Width="16" Height="16" Offset="0x18C40" />
+        <Texture Name="gLinkHumanHerosShieldBackTLUT" OutName="hylian_shield_back_tlut" Format="rgba16" Width="16" Height="16" Offset="0x18E40" />
+        <Texture Name="gLinkHumanShieldHandleTLUT" OutName="shield_handle_tlut" Format="rgba16" Width="16" Height="16" Offset="0x19040" />
+        <Texture Name="object_link_child_Tex_019240" OutName="tex_019240" Format="ci8" Width="8" Height="8" Offset="0x19240" />
+        <Texture Name="gLinkHumanHerosShieldFrontUpperTex" OutName="hylian_shield_front_upper" Format="ci8" Width="64" Height="32" Offset="0x19280" TlutOffset="0x18C40" />
+        <Texture Name="object_link_child_Tex_019A80" OutName="tex_019A80" Format="ci8" Width="32" Height="64" Offset="0x19A80" />
+        <Texture Name="object_link_child_Tex_01A280" OutName="tex_01A280" Format="ci8" Width="16" Height="16" Offset="0x1A280" />
+        <Texture Name="object_link_child_Tex_01A380" OutName="tex_01A380" Format="rgba16" Width="64" Height="32" Offset="0x1A380" />
+        <Texture Name="object_link_child_Tex_01B380" OutName="tex_01B380" Format="ci8" Width="16" Height="16" Offset="0x1B380" />
+        <Texture Name="gLinkHumanHerosShieldFrontLowerTex" OutName="hylian_shield_front_lower" Format="ci8" Width="64" Height="32" Offset="0x1B480" TlutOffset="0x18C40" />
+        <Texture Name="gLinkHumanHerosShieldBackTex" OutName="hylian_shield_back" Format="ci8" Width="16" Height="32" Offset="0x1BC80" TlutOffset="0x18E40" />
+        <Texture Name="gLinkHumanShieldHandleTex" OutName="shield_handle" Format="ci8" Width="8" Height="16" Offset="0x1BE80" TlutOffset="0x19040" />
+        <Texture Name="object_link_child_Tex_01BF00" OutName="tex_01BF00" Format="rgba16" Width="8" Height="8" Offset="0x1BF00" />
+        <Texture Name="object_link_child_Tex_01BF80" OutName="tex_01BF80" Format="rgba16" Width="16" Height="16" Offset="0x1BF80" />
+        <Texture Name="object_link_child_Tex_01C180" OutName="tex_01C180" Format="rgba16" Width="16" Height="16" Offset="0x1C180" />
+        <Texture Name="object_link_child_Tex_01C380" OutName="tex_01C380" Format="rgba16" Width="8" Height="8" Offset="0x1C380" />
+        <Texture Name="object_link_child_Tex_01C400" OutName="tex_01C400" Format="rgba16" Width="16" Height="32" Offset="0x1C400" />
+        <Texture Name="object_link_child_Tex_01C800" OutName="tex_01C800" Format="rgba16" Width="16" Height="8" Offset="0x1C800" />
+        <Texture Name="object_link_child_Tex_01C900" OutName="tex_01C900" Format="rgba16" Width="16" Height="16" Offset="0x1C900" />
+        <Texture Name="object_link_child_Tex_01CB00" OutName="tex_01CB00" Format="i8" Width="32" Height="64" Offset="0x1CB00" />
+        <Texture Name="object_link_child_Tex_01D300" OutName="tex_01D300" Format="i8" Width="8" Height="8" Offset="0x1D300" />
+        <Texture Name="object_link_child_Tex_01D340" OutName="tex_01D340" Format="i8" Width="16" Height="16" Offset="0x1D340" />
+        <Texture Name="object_link_child_Tex_01D440" OutName="tex_01D440" Format="i8" Width="32" Height="32" Offset="0x1D440" />
+        <DList Name="object_link_child_DL_01D960" Offset="0x1D960" />
+
+        <DList Name="gLinkHumanSheathEmptyDL" Offset="0x1DA90" />
+
+        <Mtx Name="gLinkHumanSheathedKokiriSwordMtx" Offset="0x1DA98" />
+        <DList Name="gLinkHumanSheathedKokiriSwordDL" Offset="0x1DAD8" />
+
+        <Mtx Name="gLinkHumanSheathedRazorSwordMtx" Offset="0x1DB00" />
+        <DList Name="gLinkHumanSheathedRazorSwordDL" Offset="0x1DB40" />
+        <DList Name="gLinkHumanSheathedGildedSwordDL" Offset="0x1DB60" />
+        <Mtx Name="gLinkHumanHerosShieldMtx" Offset="0x1DB88" />
+        <DList Name="gLinkHumanHerosShieldWithMtxDL" Offset="0x1DBC8" />
+        <Mtx Name="gLinkHumanMirrorShieldMtx" Offset="0x1DBD8" />
+        <DList Name="gLinkHumanMirrorShieldWithMtxDL" Offset="0x1DC18" />
+
+        <DList Name="gLinkHumanRightHandHoldingHerosShieldDL" Offset="0x1DC28" />
+        <DList Name="object_link_child_DL_01DC38" Offset="0x1DC38" />
+        <DList Name="gLinkHumanRightHandHoldingMirrorShieldDL" Offset="0x1DC48" />
+        <DList Name="object_link_child_DL_01DC58" Offset="0x1DC58" />
+        <DList Name="gLinkHumanLeftHandHoldingKokiriSwordDL" Offset="0x1DC68" />
+        <DList Name="object_link_child_DL_01DC78" Offset="0x1DC78" />
+        <DList Name="gLinkHumanLeftHandHoldingRazorSwordDL" Offset="0x1DC88" />
+        <DList Name="object_link_child_DL_01DC98" Offset="0x1DC98" />
+        <DList Name="gLinkHumanLeftHandHoldingGildedSwordDL" Offset="0x1DCA8" />
+        <DList Name="object_link_child_DL_01DCC0" Offset="0x1DCC0" />
+        <DList Name="gLinkHumanLeftHandHoldingGreatFairysSwordDL" Offset="0x1DCD8" />
+        <DList Name="object_link_child_DL_01DCE8" Offset="0x1DCE8" />
+        <DList Name="gLinkHumanRightHandHoldingHookshotDL" Offset="0x1DCF8" />
+        <DList Name="object_link_child_DL_01DD08" Offset="0x1DD08" />
+        <DList Name="gLinkHumanRightHandHoldingBowDL" Offset="0x1DD18" />
+        <DList Name="object_link_child_DL_01DD28" Offset="0x1DD28" />
+
+        <DList Name="gLinkHumanLeftHandHoldBottleDL" Offset="0x1DFA8" />
+
+        <Limb Name="gLinkHumanRootLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_ROOT" Offset="0x1E0A0" />
+        <Limb Name="gLinkHumanWaistLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_WAIST" Offset="0x1E0B0" />
+        <Limb Name="gLinkHumanLowerRootLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LOWER_ROOT" Offset="0x1E0C0" />
+        <Limb Name="gLinkHumanRightThighLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_THIGH" Offset="0x1E0D0" />
+        <Limb Name="gLinkHumanRightShinLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_SHIN" Offset="0x1E0E0" />
+        <Limb Name="gLinkHumanRightFootLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_FOOT" Offset="0x1E0F0" />
+        <Limb Name="gLinkHumanLeftThighLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_THIGH" Offset="0x1E100" />
+        <Limb Name="gLinkHumanLeftShinLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_SHIN" Offset="0x1E110" />
+        <Limb Name="gLinkHumanLeftFootLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_FOOT" Offset="0x1E120" />
+        <Limb Name="gLinkHumanUpperRootLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_UPPER_ROOT" Offset="0x1E130" />
+        <Limb Name="gLinkHumanHeadLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_HEAD" Offset="0x1E140" />
+        <Limb Name="gLinkHumanHatLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_HAT" Offset="0x1E150" />
+        <Limb Name="gLinkHumanCollarLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_COLLAR" Offset="0x1E160" />
+        <Limb Name="gLinkHumanLeftShoulderLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_SHOULDER" Offset="0x1E170" />
+        <Limb Name="gLinkHumanLeftForearmLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_FOREARM" Offset="0x1E180" />
+        <Limb Name="gLinkHumanLeftHandLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_LEFT_HAND" Offset="0x1E190" />
+        <Limb Name="gLinkHumanRightShoulderLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_SHOULDER" Offset="0x1E1A0" />
+        <Limb Name="gLinkHumanRightForearmLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_FOREARM" Offset="0x1E1B0" />
+        <Limb Name="gLinkHumanRightHandLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_RIGHT_HAND" Offset="0x1E1C0" />
+        <Limb Name="gLinkHumanSheathLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_SHEATH" Offset="0x1E1D0" />
+        <Limb Name="gLinkHumanTorsoLimb" Type="LOD" EnumName="LINK_HUMAN_LIMB_TORSO" Offset="0x1E1E0" />
+        <Skeleton Name="gLinkHumanSkel" Type="Flex" LimbType="LOD" LimbNone="LINK_HUMAN_LIMB_NONE" LimbMax="LINK_HUMAN_LIMB_MAX" EnumName="LinkHumanLimb" Offset="0x1E244" />
+    </File>
+</Root>

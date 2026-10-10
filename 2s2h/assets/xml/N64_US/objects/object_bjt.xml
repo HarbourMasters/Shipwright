@@ -1,0 +1,27 @@
+﻿<Root>
+    <!-- ??? (Hand in Toilet) assets -->
+    <File Name="object_bjt" Segment="6">
+        <!-- ??? animations -->
+        <Animation Name="gToiletHandWaggingFingerAnim" Offset="0xFC" /><!-- Original name is "bjt_chigau" ("different/wrong") -->
+        <Animation Name="gToiletHandFistAnim" Offset="0x218" /><!-- Original name is "bjt_guu" ("fist") -->
+        <Animation Name="gToiletHandThumbsUpAnim" Offset="0x3A8" /><!-- Original name is "bjt_ok" (thumbs up, correct) -->
+        <Animation Name="gToiletHandOpenHandAnim" Offset="0x564" /><!-- Original name is "bjt_par" ("paper"? Open hand, palm up) -->
+        <Animation Name="gToiletHandWaitingAnim" Offset="0x7B8" /><!-- Original name is "bjt_wait" (flopping around grasping at air) -->
+
+        <!-- ??? model -->
+        <DList Name="gToiletHandIndexFingerDL" Offset="0x1570" />
+        <DList Name="gToiletHandThumbDL" Offset="0x1690" />
+        <DList Name="gToiletHandOtherFingersDL" Offset="0x17A0" />
+        <DList Name="gToiletHandPalmDL" Offset="0x18C8" />
+        <DList Name="gToiletHandArmDL" Offset="0x19E8" />
+        <Texture Name="gToiletHandFingersTex" OutName="toilet_hand_fingers" Format="rgba16" Width="32" Height="32" Offset="0x1AB0" />
+        <Texture Name="gToiletHandArmSkinTex" OutName="toilet_hand_arm_skin" Format="rgba16" Width="8" Height="8" Offset="0x22B0" />
+        <Limb Name="gToiletHandRootLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_ROOT" Offset="0x2330" />
+        <Limb Name="gToiletHandArmLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_ARM" Offset="0x233C" />
+        <Limb Name="gToiletHandPalmLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_PALM" Offset="0x2348" />
+        <Limb Name="gToiletHandOtherFingersLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_OTHER_FINGERS" Offset="0x2354" />
+        <Limb Name="gToiletHandThumbLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_THUMB" Offset="0x2360" />
+        <Limb Name="gToiletHandIndexFingerLimb" Type="Standard" EnumName="TOILET_HAND_LIMB_INDEX_FINGER" Offset="0x236C" />
+        <Skeleton Name="gToiletHandSkel" Type="Flex" LimbType="Standard" LimbNone="TOILET_HAND_LIMB_NONE" LimbMax="TOILET_HAND_LIMB_MAX" EnumName="ToiletHandLimb" Offset="0x2390" />
+    </File>
+</Root>

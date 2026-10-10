@@ -1,0 +1,39 @@
+﻿<Root>
+    <!-- Assets for Poe Balloon archery target in Romani Ranch. -->
+    <File Name="object_po_fusen" Segment="6">
+        <!-- Empty: PoFusen is animated directly from its code. -->
+        <Animation Name="gPoeBalloonEmptyAnim" Offset="0x40" /> <!-- Original name is "bal_kihon" -->
+
+        <DList Name="gPoeBalloonChainAndLanternDL" Offset="0x8C0" />
+        <DList Name="gPoeBalloonLeftHandDL" Offset="0xAF8" />
+        <DList Name="gPoeBalloonLeftForearmDL" Offset="0xB90" />
+        <DList Name="gPoeBalloonLeftUpperArmDL" Offset="0xC48" />
+        <DList Name="gPoeBalloonRightHandDL" Offset="0xCD8" />
+        <DList Name="gPoeBalloonRightForearmDL" Offset="0xD70" />
+        <DList Name="gPoeBalloonRightUpperArmDL" Offset="0xE28" />
+        <DList Name="gPoeBalloonBodyDL" Offset="0xEB8" />
+
+        <Texture Name="gPoeBalloonTLUT" OutName="balloon_tlut" Format="rgba16" Width="16" Height="16" Offset="0x10E0" />
+        <!-- The tattered cloth along the eyes are part of the face texture, but not below the chin. -->
+        <Texture Name="gPoeBalloonTatteredChinTex" OutName="tattered_chin" Format="rgba16" Width="16" Height="16" Offset="0x12E0" />
+        <Texture Name="gPoeBalloonLanternTopTex" OutName="lantern_top" Format="rgba16" Width="16" Height="16" Offset="0x14E0" />
+        <Texture Name="gPoeBalloonLanternStandTex" OutName="lantern_stand" Format="rgba16" Width="16" Height="16" Offset="0x16E0" />
+        <Texture Name="gPoeBalloonLanternGlassTex" OutName="lantern_glass" Format="ci8" Width="16" Height="16" Offset="0x18E0" />
+        <Texture Name="gPoeBalloonHandTex" OutName="the_hand" Format="i4" Width="16" Height="16" Offset="0x19E0" />
+        <Texture Name="gPoeBalloonOrangeSkinTex" OutName="orange_skin" Format="rgba16" Width="16" Height="16" Offset="0x1A60" />
+        <Texture Name="gPoeBalloonFaceTex" OutName="face" Format="rgba16" Width="32" Height="16" Offset="0x1C60" />
+        <Texture Name="gPoeBalloonChainLinkTex" OutName="chain_link" Format="rgba16" Width="16" Height="32" Offset="0x2060" />
+
+        <Limb Name="gPoeBalloonRootLimb" Type="Standard" EnumName="POE_BALLOON_LIMB_ROOT" Offset="0x2460" />
+        <Limb Name="gPoeBalloonBodyLimb" Type="Standard" EnumName="POE_BALLOON_LIMB_BODY" Offset="0x246C" />
+        <Limb Name="gPoeBalloonRightUpperArmLimb" Type="Standard" EnumName="POE_BALLOON_RIGHT_UPPER_ARM" Offset="0x2478" />
+        <Limb Name="gPoeBalloonRightForearmLimb" Type="Standard" EnumName="POE_BALLOON_RIGHT_FOREARM" Offset="0x2484" />
+        <Limb Name="gPoeBalloonRightHandLimb" Type="Standard" EnumName="POE_BALLOON_RIGHT_HAND" Offset="0x2490" />
+        <Limb Name="gPoeBalloonLeftUpperArmLimb" Type="Standard" EnumName="POE_BALLOON_LEFT_UPPER_ARM" Offset="0x249C" />
+        <Limb Name="gPoeBalloonLeftForearmLimb" Type="Standard" EnumName="POE_BALLOON_LEFT_FOREARM" Offset="0x24A8" />
+        <Limb Name="gPoeBalloonLeftHandLimb" Type="Standard" EnumName="POE_BALLOON_LEFT_HAND" Offset="0x24B4" />
+        <Limb Name="gPoeBalloonChainAndLanternLimb" Type="Standard" EnumName="POE_BALLOON_LIMB_CHAIN_AND_LANTERN" Offset="0x24C0" />
+
+        <Skeleton Name="gPoeBalloonSkel" Type="Flex" LimbType="Standard" LimbNone="POE_BALLOON_LIMB_NONE" LimbMax="POE_BALLOON_LIMB_MAX" EnumName="PoeBalloonLimb" Offset="0x24F0" />
+    </File>
+</Root>

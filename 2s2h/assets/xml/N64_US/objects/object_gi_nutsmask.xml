@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Deku Mask -->
+    <File Name="object_gi_nutsmask" Segment="6">
+
+        <!-- Deku Mask Display Lists -->
+        <DList Name="gGiDekuMaskDL" Offset="0xB50" />
+        <DList Name="gGiDekuMaskEmptyDL" Offset="0xF20" />
+
+        <!-- Deku Mask Textures -->
+        <Texture Name="gGiDekuMaskHairTex" OutName="gi_deku_mask_hair" Format="i8" Width="32" Height="32" Offset="0xF28" />
+        <Texture Name="gGiDekuMaskFaceTex" OutName="gi_deku_mask_face" Format="i8" Width="16" Height="16" Offset="0x1328" />
+        <Texture Name="gGiDekuMaskEyeTex" OutName="gi_deku_mask_eye" Format="ia8" Width="64" Height="32" Offset="0x1428" />
+    </File>
+</Root>

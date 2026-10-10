@@ -1,0 +1,27 @@
+﻿<Root>
+    <File Name="object_open_obj" Segment="6">
+        <DList Name="object_open_obj_DL_0003E0" Offset="0x3E0" /> <!-- Original name is "m2_OPNshutter_modelT" -->
+        <DList Name="object_open_obj_DL_0003E8" Offset="0x3E8" /> <!-- Original name is "m2_OPNshutter_model" -->
+        <Texture Name="object_open_obj_Tex_000558" OutName="tex_000558" Format="rgba16" Width="32" Height="64" Offset="0x558" />
+        <Collision Name="object_open_obj_Colheader_001640" Offset="0x1640" /> <!-- Original name is "m2_OPNshutter_bgdatainfo" -->
+        <DList Name="gSpotlightLeftDL" Offset="0x1A60" /> <!-- Original name is "m2_SPOT_modelT" -->
+        <DList Name="gSpotlightRightDL" Offset="0x1B40" /> <!-- Original name is "m2_SPOT_model" -->
+        <Texture Name="gSpotlightShapesTex" OutName="spotlight_shapes" Format="rgba16" Width="32" Height="32" Offset="0x1CD0" />
+        <Texture Name="gSpotlightFloorTex" OutName="spotlight_floor" Format="ia8" Width="32" Height="64" Offset="0x24D0" />
+        <TextureAnimation Name="gSpotlightTexAnim" Offset="0x2CE0" />
+        <DList Name="object_open_obj_DL_002D30" Offset="0x2D30" /> <!-- Original name is "rakugaki_modelT" -->
+        <DList Name="object_open_obj_DL_002DC0" Offset="0x2DC0" />
+        <!-- <Blob Name="object_open_obj_Blob_002DC8" Size="0xE608" Offset="0x2DC8" /> -->
+        <Texture Name="object_open_obj_Tex_00DDC8" OutName="tex_00DDC8" Format="i4" Width="32" Height="32" Offset="0xDDC8" />
+        <Texture Name="object_open_obj_Tex_00DFC8" OutName="tex_00DFC8" Format="i4" Width="32" Height="32" Offset="0xDFC8" />
+        <Texture Name="object_open_obj_Tex_00E1C8" OutName="tex_00E1C8" Format="i4" Width="32" Height="32" Offset="0xE1C8" />
+        <Texture Name="object_open_obj_Tex_00E3C8" OutName="tex_00E3C8" Format="i4" Width="32" Height="32" Offset="0xE3C8" />
+        <Texture Name="object_open_obj_Tex_00E5C8" OutName="tex_00E5C8" Format="i4" Width="32" Height="32" Offset="0xE5C8" />
+        <Texture Name="object_open_obj_Tex_00E7C8" OutName="tex_00E7C8" Format="i4" Width="32" Height="32" Offset="0xE7C8" />
+        <Texture Name="object_open_obj_Tex_00E9C8" OutName="tex_00E9C8" Format="i4" Width="32" Height="32" Offset="0xE9C8" />
+        <Texture Name="object_open_obj_Tex_00EBC8" OutName="tex_00EBC8" Format="i4" Width="32" Height="32" Offset="0xEBC8" />
+        <Texture Name="object_open_obj_Tex_00EDC8" OutName="tex_00EDC8" Format="i4" Width="32" Height="32" Offset="0xEDC8" />
+        <Texture Name="object_open_obj_Tex_00EFC8" OutName="tex_00EFC8" Format="i4" Width="32" Height="32" Offset="0xEFC8" />
+        <TextureAnimation Name="object_open_obj_Matanimheader_011458" Offset="0x11458" />
+    </File>
+</Root>

@@ -1,0 +1,14 @@
+<Root>
+    <File Name="ovl_En_Sth2" BaseAddress="0x80BF74E0" RangeStart="0x460" RangeEnd="0x2B30">
+        <Texture Name="gEnSth2SkinBlotchTex" OutName="en_sth2_skin_blotch" Format="rgba16" Width="8" Height="8" Offset="0x460"/>
+        <Texture Name="gEnSth2HairWithSkinTex" OutName="en_sth2_hair_with_skin" Format="rgba16" Width="8" Height="16" Offset="0x4E0"/>
+        <Texture Name="gEnSth2EarTex" OutName="en_sth2_ear" Format="rgba16" Width="8" Height="8" Offset="0x5E0"/>
+        <Texture Name="gEnSth2NoseTex" OutName="en_sth2_nose" Format="rgba16" Width="8" Height="8" Offset="0x660"/>
+        <Texture Name="gEnSth2EyeTex" OutName="en_sth2_eye" Format="rgba16" Width="32" Height="32" Offset="0x6E0"/>
+        <Texture Name="gEnSth2MouthTex" OutName="en_sth2_mouth" Format="rgba16" Width="32" Height="16" Offset="0xEE0"/>
+        <Texture Name="gEnSth2HairTex" OutName="en_sth2_hair" Format="rgba16" Width="8" Height="16" Offset="0x12E0"/>
+        <DList Name="gEnSth2HeadDL" Offset="0x2070"/>
+        <DList Name="gEnSth2HairDL" Offset="0x2390"/>
+        <Animation Name="gEnSth2WavingHandAnim" Offset="0x2B20"/> <!-- Original name is "sth_ko_matsu" ("matsu" = "to wait​") -->
+    </File>
+</Root>

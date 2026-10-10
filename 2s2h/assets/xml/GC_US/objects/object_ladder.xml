@@ -1,0 +1,23 @@
+﻿<Root>
+    <!-- Object for Wooden Ladder -->
+    <File Name="object_ladder" Segment="6">
+        <!-- Wooden Ladder with 12 Rungs -->
+        <DList Name="gWoodenLadder12RungDL" Offset="0xA0" /> <!-- Original name is "m2_HASIGO_45_model" -->
+        <Collision Name="gWoodenLadder12RungCol" Offset="0x1D8" /> <!-- Original name is "m2_HASIGO_45_bgdatainfo" -->
+
+        <!-- Wooden Ladder with 16 Rungs -->
+        <DList Name="gWoodenLadder16RungDL" Offset="0x2D0" /> <!-- Original name is "m2_HASIGO_60_model" -->
+        <Collision Name="gWoodenLadder16RungCol" Offset="0x408" /> <!-- Original name is "m2_HASIGO_60_bgdatainfo" -->
+
+        <!-- Wooden Ladder with 20 Rungs -->
+        <DList Name="gWoodenLadder20RungDL" Offset="0x500" /> <!-- Original name is "m2_HASIGO_75_model" -->
+        <Collision Name="gWoodenLadder20RungCol" Offset="0x638" /> <!-- Original name is "m2_HASIGO_75_bgdatainfo" -->
+
+        <!-- Wooden Ladder with 24 Rungs -->
+        <DList Name="gWoodenLadder24RungDL" Offset="0x730" /> <!-- Original name is "m2_HASIGO_90_model" -->
+        <Collision Name="gWoodenLadder24RungCol" Offset="0x868" /> <!-- Original name is "m2_HASIGO_90_bgdatainfo" -->
+
+        <!-- Wooden Ladder Texture -->
+        <Texture Name="gWoodenLadderTex" OutName="wooden_ladder" Format="rgba16" Width="32" Height="32" Offset="0x8A0" />
+    </File>
+</Root>

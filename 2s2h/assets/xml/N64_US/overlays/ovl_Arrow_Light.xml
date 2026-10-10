@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Arrow_Light" BaseAddress="0x80924300" RangeStart="0x960" RangeEnd="0x1D80">
+        <Texture Name="gLightArrowTex" OutName="light_arrow" Format="i8" Width="32" Height="64" Offset="0x960"/>
+        <Texture Name="gLightArrowMaskTex" OutName="light_arrow_mask" Format="i8" Width="32" Height="64" Offset="0x1160"/>
+        <Array Name="gLightArrowVtx" Count="43" Offset="0x1960">
+          <Vtx/>
+        </Array>
+        <DList Name="gLightArrowMaterialDL" Offset="0x1C10"/>
+        <DList Name="gLightArrowModelDL" Offset="0x1CC0"/> <!-- Original name might be "m_arrow_modelT_light" -->
+    </File>
+</Root>

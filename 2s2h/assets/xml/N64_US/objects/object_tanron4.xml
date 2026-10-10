@@ -1,0 +1,30 @@
+﻿<Root>
+    <!-- Assets for seagulls -->
+    <File Name="object_tanron4" Segment="6">
+        <!-- The glide animation goes unused, instead the flap animation is frozen while it glides -->
+        <Animation Name="gSeagullGlideAnim" Offset="0x58" /> <!-- Original name is "kamome" -->
+        <Animation Name="gSeagullFlapAnim" Offset="0x168" /> <!-- Original name is "kamome_fly" -->
+
+        <DList Name="gSeagullBodyDL" Offset="0x300" />
+        <DList Name="gSeagullRightWingEndDL" Offset="0x3A0" />
+        <DList Name="gSeagullRightWingStartDL" Offset="0x440" />
+        <DList Name="gSeagullLeftWingEndDL" Offset="0x4B0" />
+        <DList Name="gSeagullLeftWingStartDL" Offset="0x550" />
+
+        <Texture Name="gSeagullBodyTex" OutName="seagull_body" Format="rgba16" Width="32" Height="16" Offset="0x5C8" />
+        <Texture Name="gSeagullWingTex" OutName="seagull_wing" Format="rgba16" Width="32" Height="16" Offset="0x9C8" />
+
+        <Limb Name="gSeagullRootLimb" Type="Standard" EnumName="SEAGULL_LIMB_ROOT" Offset="0xDC8" />
+        <Limb Name="gSeagullBodyLimb" Type="Standard" EnumName="SEAGULL_LIMB_BODY" Offset="0xDD4" />
+        <Limb Name="gSeagullLeftWingRootLimb" Type="Standard" EnumName="SEAGULL_LIMB_LEFT_WING_ROOT" Offset="0xDE0" />
+        <Limb Name="gSeagullLeftWingWrapperLimb" Type="Standard" EnumName="SEAGULL_LIMB_LEFT_WING_WRAPPER" Offset="0xDEC" />
+        <Limb Name="gSeagullLeftWingStartLimb" Type="Standard" EnumName="SEAGULL_LIMB_LEFT_WING_START" Offset="0xDF8" />
+        <Limb Name="gSeagullLeftWingEndLimb" Type="Standard" EnumName="SEAGULL_LIMB_LEFT_WING_END" Offset="0xE04" />
+        <Limb Name="gSeagullRightWingRootLimb" Type="Standard" EnumName="SEAGULL_LIMB_RIGHT_WING_ROOT" Offset="0xE10" />
+        <Limb Name="gSeagullRightWingWrapperLimb" Type="Standard" EnumName="SEAGULL_LIMB_RIGHT_WING_WRAPPER" Offset="0xE1C" />
+        <Limb Name="gSeagullRightWingStartLimb" Type="Standard" EnumName="SEAGULL_LIMB_RIGHT_WING_START" Offset="0xE28" />
+        <Limb Name="gSeagullRightWingEndLimb" Type="Standard" EnumName="SEAGULL_LIMB_RIGHT_WING_END" Offset="0xE34" />
+
+        <Skeleton Name="gSeagullSkel" Type="Flex" LimbType="Standard" LimbNone="SEAGULL_LIMB_RIGHT_WING_NONE" LimbMax="SEAGULL_LIMB_RIGHT_WING_MAX" EnumName="ObjectTanron4Limb" Offset="0xE68" />
+    </File>
+</Root>

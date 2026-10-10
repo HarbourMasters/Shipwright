@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_mask_posthat" Segment="10">
+        <DList Name="object_mask_posthat_DL_000290" Offset="0x290" />
+        <Texture Name="object_mask_posthat_TLUT_000488" OutName="tlut_000488" Format="rgba16" Width="16" Height="16" Offset="0x488" />
+        <Texture Name="object_mask_posthat_Tex_000688" OutName="tex_000688" Format="i4" Width="16" Height="16" Offset="0x688" />
+        <Texture Name="object_mask_posthat_Tex_000708" OutName="tex_000708" Format="ci8" Width="32" Height="32" Offset="0x708" />
+        <Texture Name="object_mask_posthat_Tex_000B08" OutName="tex_000B08" Format="ci8" Width="8" Height="8" Offset="0xB08" />
+    </File>
+</Root>

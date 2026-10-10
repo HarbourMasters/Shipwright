@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_umajump" Segment="6">
+        <Texture Name="object_umajump_Tex_000000" OutName="tex_000000" Format="rgba16" Width="16" Height="64" Offset="0x0" />
+        <Texture Name="object_umajump_Tex_000800" OutName="tex_000800" Format="rgba16" Width="16" Height="64" Offset="0x800" />
+        <DList Name="gHorseJumpFenceDL" Offset="0x1220" /> <!-- Original name is "c_uma_jump_160_model" -->
+        <Collision Name="object_umajump_Colheader_001438" Offset="0x1438" /> <!-- Original name is "c_uma_jump_160_bgdatainfo" -->
+        <Collision Name="object_umajump_Colheader_001558" Offset="0x1558" /> <!-- Original name is "c_uma_jump_160_bgdatainfo2" -->
+    </File>
+</Root>

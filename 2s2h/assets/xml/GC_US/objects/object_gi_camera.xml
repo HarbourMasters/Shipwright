@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Picto Box -->
+    <File Name="object_gi_camera" Segment="6">
+
+        <!-- Picto Box Display Lists -->
+        <DList Name="gGiPictoBoxBodyAndLensDL" Offset="0xBC0" />
+        <DList Name="gGiPictoBoxFrameDL" Offset="0xEC8" />
+
+        <!-- Picto Box Textures -->
+        <Texture Name="gGiPictoBoxLensZoomRingTex" OutName="gi_picto_box_lens_zoom_ring" Format="i8" Width="32" Height="32" Offset="0x1058" />
+        <Texture Name="gGiPictoBoxFrameTex" OutName="gi_picto_box_frame" Format="i8" Width="32" Height="16" Offset="0x1458" />
+        <Texture Name="gGiPictoBoxBodyAndLensGlassTex" OutName="gi_picto_box_body_and_lens_glass" Format="i4" Width="32" Height="32" Offset="0x1658" />
+    </File>
+</Root>

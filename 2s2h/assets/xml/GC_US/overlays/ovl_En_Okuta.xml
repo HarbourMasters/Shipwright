@@ -1,0 +1,7 @@
+<Root>
+    <!-- Octorok assets -->
+    <File Name="ovl_En_Okuta" BaseAddress="0x8086DE20" RangeStart="0x2A50" RangeEnd="0x2A60">
+        <!-- DisplayList that turns the Octorok blue. In the final game, the blue Octorok variant is unused. -->
+        <DList Name="gOctorokBlueMaterialDL" Offset="0x2A50"/>
+    </File>
+</Root>

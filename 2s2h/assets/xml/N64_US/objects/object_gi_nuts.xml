@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Deku Nut -->
+    <File Name="object_gi_nuts" Segment="6">
+
+        <!-- Deku Nut Textures -->
+        <Texture Name="gGiNutShellTex" OutName="gi_nut_shell" Format="i8" Width="32" Height="32" Offset="0x0" />
+
+        <!-- Deku Nut Display Lists -->
+        <DList Name="gGiNutDL" Offset="0xE90" />
+    </File>
+</Root>

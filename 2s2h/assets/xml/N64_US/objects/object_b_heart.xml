@@ -1,0 +1,9 @@
+<Root>
+    <!-- Unused Heart Container -->
+    <File Name="object_b_heart" Segment="6">
+        <DList Name="gUnusedHeartContainerDL" Offset="0x240" />
+        <DList Name="gUnusedHeartSpriteDL" Offset="0x348" />
+        <Texture Name="gUnusedHeartContainerTex" OutName="unused_heart_container" Format="i4" Width="32" Height="32" Offset="0x3C0" />
+        <Texture Name="gUnusedHeartSpriteTex" OutName="unused_heart_sprite" Format="i4" Width="16" Height="16" Offset="0x5C0" />
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_02.xml" OutPath="misc/scene_texture_02/"/>
+    <File Name="Z2_KAJIYA" Segment="2" Game="MM">
+        <Scene Name="Z2_KAJIYA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_KAJIYA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_KAJIYA_room_00" Offset="0x0"/>
+        <DList Name="Z2_KAJIYA_room_00DL_00D478" Offset="0xD478"/>
+        <DList Name="Z2_KAJIYA_room_00DL_00D8D0" Offset="0xD8D0"/>
+    </File>
+</Root>

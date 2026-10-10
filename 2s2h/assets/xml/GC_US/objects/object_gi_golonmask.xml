@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Goron Mask -->
+    <File Name="object_gi_golonmask" Segment="6">
+
+        <!-- Goron Mask Display Lists -->
+        <DList Name="gGiGoronMaskDL" Offset="0xBA0" />
+        <DList Name="gGiGoronMaskEmptyDL" Offset="0x10D0" />
+
+        <!-- Goron Mask Textures -->
+        <Texture Name="gGiGoronMaskEyeTex" OutName="gi_goron_mask_eye" Format="ia8" Width="32" Height="32" Offset="0x10D8" />
+        <Texture Name="gGiGoronMaskMouthTex" OutName="gi_goron_mask_mouth" Format="ia8" Width="64" Height="32" Offset="0x14D8" />
+        <Texture Name="gGiGoronMaskNoseEyebrowTex" OutName="gi_goron_mask_nose_eyebrow" Format="ia8" Width="8" Height="8" Offset="0x1CD8" />
+    </File>
+</Root>

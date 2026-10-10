@@ -1,0 +1,67 @@
+﻿<Root>
+    <File Name="object_ikana_obj" Segment="6">
+        <DList Name="object_ikana_obj_DL_000040" Offset="0x40" /> <!-- Original name is "m2_IKA_BOMBfl_modelT" -->
+        <DList Name="object_ikana_obj_DL_000048" Offset="0x48" /> <!-- Original name is "m2_IKA_BOMBfl_model" -->
+        <Collision Name="object_ikana_obj_Colheader_000128" Offset="0x128" /> <!-- Original name is "m2_IKA_BOMBfl_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_000280" Offset="0x280" /> <!-- Original name is "m2_IKA_BOMBhahen_modelT" -->
+        <DList Name="object_ikana_obj_DL_000288" Offset="0x288" /> <!-- Original name is "m2_IKA_BOMBhahen_model" -->
+        <DList Name="object_ikana_obj_DL_000370" Offset="0x370" /> <!-- Original name is "m2_IKA_BOMBwall_modelT" -->
+        <DList Name="object_ikana_obj_DL_000378" Offset="0x378" /> <!-- Original name is "m2_IKA_BOMBwall_model" -->
+        <Collision Name="object_ikana_obj_Colheader_000488" Offset="0x488" /> <!-- Original name is "m2_IKA_BOMBwall_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_0008C0" Offset="0x8C0" /> <!-- Original name is "m2_IKA_Dalma_modelT" -->
+        <DList Name="gStoneTowerTemplePunchablePillarDL" Offset="0x8C8" /> <!-- Original name is "m2_IKA_Dalma_model" -->
+        <Collision Name="gStoneTowerTemplePunchablePillarCol" Offset="0xC50" /> <!-- Original name is "m2_IKA_Dalma_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_000CE0" Offset="0xCE0" /> <!-- Not present in MM3D, but it was probably named "m2_IKA_KOUSI_modelT" based on the rest of this object. -->
+        <DList Name="object_ikana_obj_DL_000CE8" Offset="0xCE8" /> <!-- Original name is "m2_IKA_KOUSI_model" -->
+        <Collision Name="object_ikana_obj_Colheader_000F28" Offset="0xF28" /> <!-- Original name is "m2_IKA_KOUSI_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_001100" Offset="0x1100" /> <!-- Original name is "m2_IKA_LIGHT_modelT" -->
+        <DList Name="object_ikana_obj_DL_001210" Offset="0x1210" /> <!-- Original name is "m2_IKA_LIGHT_model" -->
+        <TextureAnimation Name="object_ikana_obj_Matanimheader_001228" Offset="0x1228" />
+        <DList Name="gStoneTowerTempleMirrorLightAbsorptionDL" Offset="0x14B0" /> <!-- Original name is "m2_IKA_MRin_modelT" -->
+        <DList Name="object_ikana_obj_DL_001660" Offset="0x1660" /> <!-- Original name is "m2_IKA_MRin_model" -->
+        <TextureAnimation Name="gStoneTowerTempleMirrorLightAbsorptionTexAnim" Offset="0x1678" />
+        <DList Name="gStoneTowerTempleMirrorLightEmissionDL" Offset="0x1880" /> <!-- Original name is "m2_IKA_MRout_modelT" -->
+        <DList Name="object_ikana_obj_DL_001AC0" Offset="0x1AC0" /> <!-- Original name is "m2_IKA_MRout_model" -->
+        <TextureAnimation Name="gStoneTowerTempleMirrorLightEmissionTexAnim" Offset="0x1AD8" />
+        <DList Name="object_ikana_obj_DL_001E10" Offset="0x1E10" /> <!-- Original name is "m2_IKA_Mirror_modelT" -->
+        <DList Name="gStoneTowerTempleMirrorDL" Offset="0x1E18" /> <!-- Original name is "m2_IKA_Mirror_model" -->
+        <Collision Name="gStoneTowerTempleMirrorCol" Offset="0x2358" /> <!-- Original name is "m2_IKA_Mirror_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_004710" Offset="0x4710" /> <!-- Not present in MM3D, but it was probably named "m2_IKA_room05_modelT" based on the rest of this object. -->
+        <DList Name="object_ikana_obj_DL_0048A0" Offset="0x48A0" /> <!-- Original name is "m2_IKA_room05_model" -->
+        <Collision Name="object_ikana_obj_Colheader_006368" Offset="0x6368" /> <!-- Original name is "m2_IKA_room05_bgdatainfo" -->
+        <DList Name="object_ikana_obj_DL_007360" Offset="0x7360" /> <!-- Not present in MM3D, but it was probably named "m2_IKA_room06_modelT" based on the rest of this object. -->
+        <DList Name="object_ikana_obj_DL_007448" Offset="0x7448" /> <!-- Original name is "m2_IKA_room06_model" -->
+        <TextureAnimation Name="object_ikana_obj_Matanimheader_007B68" Offset="0x7B68" />
+        <Collision Name="object_ikana_obj_Colheader_0084F8" Offset="0x84F8" /> <!-- Original name is "m2_IKA_room06_bgdatainfo" -->
+        <Texture Name="object_ikana_obj_TLUT_008530" OutName="tlut_008530" Format="rgba16" Width="4" Height="4" Offset="0x8530" />
+        <!-- <Blob Name="object_ikana_obj_Blob_008550" Size="0x40" Offset="0x8550" /> -->
+        <Texture Name="object_ikana_obj_TLUT_008590" OutName="tlut_008590" Format="rgba16" Width="4" Height="4" Offset="0x8590" />
+        <Texture Name="object_ikana_obj_Tex_0085B0" OutName="tex_0085B0" Format="rgba16" Width="16" Height="16" Offset="0x85B0" />
+        <Texture Name="object_ikana_obj_Tex_0087B0" OutName="tex_0087B0" Format="ci4" Width="64" Height="64" Offset="0x87B0" />
+        <Texture Name="gStoneTowerTemplePunchablePillarTex" OutName="stone_tower_temple_punchable_pillar" Format="rgba16" Width="32" Height="64" Offset="0x8FB0" />
+        <Texture Name="gStoneTowerTempleMirrorFrameTex" OutName="stone_tower_temple_mirror_frame" Format="rgba16" Width="16" Height="16" Offset="0x9FB0" />
+        <Texture Name="object_ikana_obj_Tex_00A1B0" OutName="tex_00A1B0" Format="rgba16" Width="16" Height="16" Offset="0xA1B0" />
+        <Texture Name="object_ikana_obj_Tex_00A3B0" OutName="tex_00A3B0" Format="rgba16" Width="32" Height="32" Offset="0xA3B0" />
+        <Texture Name="object_ikana_obj_Tex_00ABB0" OutName="tex_00ABB0" Format="rgba16" Width="32" Height="32" Offset="0xABB0" />
+        <Texture Name="object_ikana_obj_Tex_00B3B0" OutName="tex_00B3B0" Format="rgba16" Width="16" Height="16" Offset="0xB3B0" />
+        <Texture Name="object_ikana_obj_Tex_00B5B0" OutName="tex_00B5B0" Format="rgba16" Width="32" Height="32" Offset="0xB5B0" />
+        <Texture Name="object_ikana_obj_Tex_00BDB0" OutName="tex_00BDB0" Format="ci4" Width="16" Height="128" Offset="0xBDB0" />
+        <Texture Name="object_ikana_obj_Tex_00C1B0" OutName="tex_00C1B0" Format="rgba16" Width="16" Height="64" Offset="0xC1B0" />
+        <Texture Name="object_ikana_obj_Tex_00C9B0" OutName="tex_00C9B0" Format="ia8" Width="32" Height="64" Offset="0xC9B0" />
+        <Texture Name="object_ikana_obj_Tex_00D1B0" OutName="tex_00D1B0" Format="rgba16" Width="16" Height="64" Offset="0xD1B0" />
+        <Texture Name="object_ikana_obj_Tex_00D9B0" OutName="tex_00D9B0" Format="rgba16" Width="32" Height="32" Offset="0xD9B0" />
+        <Texture Name="object_ikana_obj_Tex_00E1B0" OutName="tex_00E1B0" Format="ia8" Width="32" Height="64" Offset="0xE1B0" />
+        <Texture Name="gStoneTowerTempleLightRaysTex" OutName="stone_tower_temple_light_rays" Format="ia16" Width="16" Height="64" Offset="0xE9B0" />
+        <Texture Name="gStoneTowerTempleLightPatternTex" OutName="stone_tower_temple_light_pattern" Format="rgba16" Width="32" Height="32" Offset="0xF1B0" />
+        <Texture Name="gStoneTowerTempleMirrorEmissionLightRaysTex" OutName="stone_tower_temple_mirror_emission_light_rays" Format="ia16" Width="16" Height="64" Offset="0xF9B0" />
+        <Texture Name="gStoneTowerTempleMirrorSurfaceTex" OutName="stone_tower_temple_mirror_surface" Format="rgba16" Width="32" Height="32" Offset="0x101B0" />
+        <Texture Name="gStoneTowerEmblemFrameTex" OutName="stone_tower_temple_emblem_frame" Format="ia8" Width="32" Height="64" Offset="0x109B0" />
+        <Texture Name="object_ikana_obj_Tex_0111B0" OutName="tex_0111B0" Format="rgba16" Width="32" Height="32" Offset="0x111B0" />
+        <Texture Name="object_ikana_obj_Tex_0119B0" OutName="tex_0119B0" Format="rgba16" Width="32" Height="32" Offset="0x119B0" />
+        <DList Name="object_ikana_obj_DL_012B70" Offset="0x12B70" /> <!-- Original name is probably "m2_IKA_RASENsita_model" (the model is just a green cube in MM3D) -->
+        <DList Name="object_ikana_obj_DL_013EA0" Offset="0x13EA0" /> <!-- Original name is probably "m2_IKA_RASENue_modelT" (the model is just a green cube in MM3D) -->
+        <DList Name="object_ikana_obj_DL_013EA8" Offset="0x13EA8" /> <!-- Original name is probably "m2_IKA_RASENue_model" (the model is just a green cube in MM3D) -->
+        <DList Name="object_ikana_obj_DL_014A40" Offset="0x14A40" /> <!-- Original name is "m2_IKA_shutter_model" -->
+        <Texture Name="object_ikana_obj_Tex_014BA0" OutName="tex_014BA0" Format="rgba16" Width="32" Height="64" Offset="0x14BA0" />
+    </File>
+</Root>

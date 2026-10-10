@@ -1,0 +1,112 @@
+﻿<Root>
+    <File Name="object_zog" Segment="6">
+        <Animation Name="object_zog_Anim_001000" Offset="0x1000" /> <!-- Original name is "mikau_aruku" -->
+        <Animation Name="object_zog_Anim_001970" Offset="0x1970" /> <!-- Original name is "mikau_aruku_loop" -->
+        <Animation Name="object_zog_Anim_002344" Offset="0x2344" /> <!-- Original name is "mikau_dream_loop" -->
+        <Animation Name="object_zog_Anim_002894" Offset="0x2894" /> <!-- Original name is "mikau_oya" -->
+        <Animation Name="object_zog_Anim_0030E0" Offset="0x30E0" /> <!-- Original name is "mikau_oya_loop" -->
+        <Animation Name="object_zog_Anim_0037F8" Offset="0x37F8" /> <!-- Original name is "mikau_ruru" -->
+        <Animation Name="object_zog_Anim_0041D0" Offset="0x41D0" /> <!-- Original name is "mikau_ruru_loop" -->
+        <Animation Name="object_zog_Anim_004BDC" Offset="0x4BDC" /> <!-- Original name is "mikau_tyakuchi" -->
+        <Animation Name="object_zog_Anim_0055B4" Offset="0x55B4" /> <!-- Original name is "mikau_tyakuchi_loop" -->
+        <DList Name="gMikauGraveDirtDL" Offset="0x69F0" />
+        <DList Name="gMikauGraveDL" Offset="0x6AA0" /> <!-- Original name is "z2_30_haka_model" -->
+        <Texture Name="gMikauGraveDirtTex" OutName="mikau_grave_dirt" Format="rgba16" Width="16" Height="32" Offset="0x6FD0" />
+        <Texture Name="gMikauGraveJawTex" OutName="mikau_grave_jaw" Format="rgba16" Width="16" Height="16" Offset="0x73D0" />
+        <Texture Name="gMikauGraveEyeTex" OutName="mikau_grave_eye" Format="rgba16" Width="16" Height="16" Offset="0x75D0" />
+        <Texture Name="gMikauGraveTeethTex" OutName="mikau_grave_teeth" Format="rgba16" Width="16" Height="16" Offset="0x77D0" />
+        <Texture Name="gMikauGraveSpinousTex" OutName="mikau_grave_spinous" Format="rgba16" Width="16" Height="32" Offset="0x79D0" />
+        <Texture Name="gMikauGraveBoneTex" OutName="mikau_grave_bone" Format="rgba16" Width="16" Height="32" Offset="0x7DD0" />
+        <Texture Name="gMikauGraveWoodenStickTex" OutName="mikau_grave_wooden_stick" Format="rgba16" Width="32" Height="8" Offset="0x81D0" />
+        <Texture Name="gMikauGraveCordTex" OutName="mikau_grave_cord" Format="rgba16" Width="16" Height="8" Offset="0x83D0" />
+        <Collision Name="gMikauGraveCol" Offset="0x8670" /> <!-- Original name is "z2_30_haka_bgdatainfo" -->
+        <Animation Name="object_zog_Anim_008EB8" Offset="0x8EB8" /> <!-- Original name is "zG_guiter1L" -->
+        <Animation Name="object_zog_Anim_00931C" Offset="0x931C" /> <!-- Original name is "zG_guiter2L" -->
+        <Animation Name="object_zog_Anim_0099A4" Offset="0x99A4" /> <!-- Original name is "zG_guter1L2guiter2L" -->
+        <Animation Name="object_zog_Anim_009EC4" Offset="0x9EC4" /> <!-- Original name is "zG_guter2L2guiter1L" -->
+        <Animation Name="object_zog_Anim_00B01C" Offset="0xB01C" /> <!-- Original name is "zG_jya_n" -->
+        <Animation Name="object_zog_Anim_00BF38" Offset="0xBF38" /> <!-- Original name is "zG_jya_n2neruL" -->
+        <Animation Name="object_zog_Anim_00CA94" Offset="0xCA94" /> <!-- Original name is "zG_neruL" -->
+        <Animation Name="object_zog_Anim_00ECBC" Offset="0xECBC" /> <!-- Original name is "zG_neruL2guiter1L" -->
+        <Animation Name="object_zog_Anim_00F110" Offset="0xF110" /> <!-- Original name is "zG_neruL2talkinlandL" -->
+        <Animation Name="object_zog_Anim_00FC0C" Offset="0xFC0C" /> <!-- Original name is "zG_oboreL" -->
+        <Animation Name="object_zog_Anim_0106B0" Offset="0x106B0" /> <!-- Original name is "zG_oboreL2talkinwater" -->
+        <Animation Name="object_zog_Anim_014B10" Offset="0x14B10" /> <!-- Original name is "zG_standup" -->
+        <Animation Name="object_zog_Anim_01579C" Offset="0x1579C" /> <!-- Original name is "zG_talkinlandL" -->
+        <Animation Name="object_zog_Anim_015B80" Offset="0x15B80" /> <!-- Original name is "zG_talkinlandL2neruL" -->
+        <Animation Name="object_zog_Anim_0166F4" Offset="0x166F4" /> <!-- Original name is "zG_talkinwaterL" -->
+        <Animation Name="object_zog_Anim_017170" Offset="0x17170" /> <!-- Original name is "zG_talkinwaterL2obore" -->
+        <Animation Name="object_zog_Anim_018600" Offset="0x18600" /> <!-- Original name is "zG_walkL" -->
+        <Animation Name="object_zog_Anim_01A06C" Offset="0x1A06C" /> <!-- Original name is "zG_walkL2neruL" -->
+        <Animation Name="object_zog_Anim_01A990" Offset="0x1A990" /> <!-- Original name is "zG_yuurei_talk" -->
+        <Animation Name="object_zog_Anim_01AD58" Offset="0x1AD58" /> <!-- Original name is "zG_yuurei_talk2wait" -->
+        <Animation Name="object_zog_Anim_01B72C" Offset="0x1B72C" /> <!-- Original name is "zG_yuurei_wait" -->
+        <Animation Name="object_zog_Anim_01BC88" Offset="0x1BC88" /> <!-- Original name is "zG_yuurei_wait2talk" -->
+        <DList Name="object_zog_DL_01F830" Offset="0x1F830" />
+        <DList Name="object_zog_DL_01F9A8" Offset="0x1F9A8" />
+        <DList Name="object_zog_DL_01FB40" Offset="0x1FB40" />
+        <DList Name="object_zog_DL_01FFA0" Offset="0x1FFA0" />
+        <DList Name="object_zog_DL_0201C8" Offset="0x201C8" />
+        <DList Name="object_zog_DL_0204D0" Offset="0x204D0" />
+        <DList Name="object_zog_DL_020690" Offset="0x20690" />
+        <DList Name="object_zog_DL_0209B8" Offset="0x209B8" />
+        <DList Name="object_zog_DL_020CC0" Offset="0x20CC0" />
+        <DList Name="object_zog_DL_020E80" Offset="0x20E80" />
+        <DList Name="object_zog_DL_021360" Offset="0x21360" />
+        <DList Name="object_zog_DL_021438" Offset="0x21438" />
+        <DList Name="object_zog_DL_021510" Offset="0x21510" />
+        <DList Name="object_zog_DL_021850" Offset="0x21850" />
+        <DList Name="object_zog_DL_021A88" Offset="0x21A88" />
+        <DList Name="object_zog_DL_021D48" Offset="0x21D48" />
+        <DList Name="object_zog_DL_021FF0" Offset="0x21FF0" />
+        <DList Name="object_zog_DL_022228" Offset="0x22228" />
+        <DList Name="object_zog_DL_0224E8" Offset="0x224E8" />
+        <Texture Name="object_zog_TLUT_022790" OutName="tlut_022790" Format="rgba16" Width="16" Height="16" Offset="0x22790" />
+        <Texture Name="object_zog_TLUT_022990" OutName="tlut_022990" Format="rgba16" Width="16" Height="16" Offset="0x22990" />
+        <Texture Name="object_zog_Tex_022B90" OutName="tex_022B90" Format="ci8" Width="8" Height="8" Offset="0x22B90" />
+        <Texture Name="object_zog_Tex_022BD0" OutName="tex_022BD0" Format="ci8" Width="32" Height="32" Offset="0x22BD0" />
+        <Texture Name="object_zog_Tex_022FD0" OutName="tex_022FD0" Format="ci8" Width="32" Height="32" Offset="0x22FD0" />
+        <Texture Name="object_zog_Tex_0233D0" OutName="tex_0233D0" Format="rgba16" Width="16" Height="16" Offset="0x233D0" />
+        <Texture Name="object_zog_Tex_0235D0" OutName="tex_0235D0" Format="ci8" Width="32" Height="64" Offset="0x235D0" />
+        <Texture Name="object_zog_Tex_023DD0" OutName="tex_023DD0" Format="ci8" Width="8" Height="16" Offset="0x23DD0" />
+        <Texture Name="object_zog_Tex_023E50" OutName="tex_023E50" Format="rgba16" Width="16" Height="16" Offset="0x23E50" />
+        <Texture Name="object_zog_Tex_024050" OutName="tex_024050" Format="ci8" Width="16" Height="16" Offset="0x24050" />
+        <Texture Name="object_zog_Tex_024150" OutName="tex_024150" Format="rgba16" Width="16" Height="16" Offset="0x24150" />
+        <Texture Name="object_zog_Tex_024350" OutName="tex_024350" Format="ci8" Width="16" Height="32" Offset="0x24350" />
+        <Texture Name="object_zog_Tex_024550" OutName="tex_024550" Format="ci8" Width="16" Height="32" Offset="0x24550" />
+        <Texture Name="object_zog_Tex_024750" OutName="tex_024750" Format="rgba16" Width="32" Height="32" Offset="0x24750" />
+        <Texture Name="object_zog_Tex_024F50" OutName="tex_024F50" Format="rgba16" Width="32" Height="32" Offset="0x24F50" />
+        <Texture Name="object_zog_Tex_025750" OutName="tex_025750" Format="rgba16" Width="32" Height="32" Offset="0x25750" />
+        <Texture Name="object_zog_Tex_025F50" OutName="tex_025F50" Format="rgba16" Width="32" Height="32" Offset="0x25F50" />
+        <Texture Name="object_zog_Tex_026750" OutName="tex_026750" Format="rgba16" Width="32" Height="32" Offset="0x26750" />
+
+        <DList Name="object_zog_DL_0280A0" Offset="0x280A0" />
+        <DList Name="object_zog_DL_0280A8" Offset="0x280A8" />
+        <Texture Name="object_zog_Tex_028610" OutName="tex_028610" Format="rgba16" Width="16" Height="16" Offset="0x28610" />
+        <Texture Name="object_zog_Tex_028810" OutName="tex_028810" Format="rgba16" Width="16" Height="32" Offset="0x28810" />
+        <Texture Name="object_zog_Tex_028C10" OutName="tex_028C10" Format="rgba16" Width="16" Height="32" Offset="0x28C10" />
+        <Limb Name="object_zog_Standardlimb_029010" Type="Standard" EnumName="OBJECT_ZOG_LIMB_01" Offset="0x29010" />
+        <Limb Name="object_zog_Standardlimb_02901C" Type="Standard" EnumName="OBJECT_ZOG_LIMB_02" Offset="0x2901C" />
+        <Limb Name="object_zog_Standardlimb_029028" Type="Standard" EnumName="OBJECT_ZOG_LIMB_03" Offset="0x29028" />
+        <Limb Name="object_zog_Standardlimb_029034" Type="Standard" EnumName="OBJECT_ZOG_LIMB_04" Offset="0x29034" />
+        <Limb Name="object_zog_Standardlimb_029040" Type="Standard" EnumName="OBJECT_ZOG_LIMB_05" Offset="0x29040" />
+        <Limb Name="object_zog_Standardlimb_02904C" Type="Standard" EnumName="OBJECT_ZOG_LIMB_06" Offset="0x2904C" />
+        <Limb Name="object_zog_Standardlimb_029058" Type="Standard" EnumName="OBJECT_ZOG_LIMB_07" Offset="0x29058" />
+        <Limb Name="object_zog_Standardlimb_029064" Type="Standard" EnumName="OBJECT_ZOG_LIMB_08" Offset="0x29064" />
+        <Limb Name="object_zog_Standardlimb_029070" Type="Standard" EnumName="OBJECT_ZOG_LIMB_09" Offset="0x29070" />
+        <Limb Name="object_zog_Standardlimb_02907C" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0A" Offset="0x2907C" />
+        <Limb Name="object_zog_Standardlimb_029088" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0B" Offset="0x29088" />
+        <Limb Name="object_zog_Standardlimb_029094" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0C" Offset="0x29094" />
+        <Limb Name="object_zog_Standardlimb_0290A0" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0D" Offset="0x290A0" />
+        <Limb Name="object_zog_Standardlimb_0290AC" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0E" Offset="0x290AC" />
+        <Limb Name="object_zog_Standardlimb_0290B8" Type="Standard" EnumName="OBJECT_ZOG_LIMB_0F" Offset="0x290B8" />
+        <Limb Name="object_zog_Standardlimb_0290C4" Type="Standard" EnumName="OBJECT_ZOG_LIMB_10" Offset="0x290C4" />
+        <Limb Name="object_zog_Standardlimb_0290D0" Type="Standard" EnumName="OBJECT_ZOG_LIMB_11" Offset="0x290D0" />
+        <Limb Name="object_zog_Standardlimb_0290DC" Type="Standard" EnumName="OBJECT_ZOG_LIMB_12" Offset="0x290DC" />
+        <Limb Name="object_zog_Standardlimb_0290E8" Type="Standard" EnumName="OBJECT_ZOG_LIMB_13" Offset="0x290E8" />
+        <Limb Name="object_zog_Standardlimb_0290F4" Type="Standard" EnumName="OBJECT_ZOG_LIMB_14" Offset="0x290F4" />
+        <Limb Name="object_zog_Standardlimb_029100" Type="Standard" EnumName="OBJECT_ZOG_LIMB_15" Offset="0x29100" />
+        <Limb Name="object_zog_Standardlimb_02910C" Type="Standard" EnumName="OBJECT_ZOG_LIMB_16" Offset="0x2910C" />
+        <Skeleton Name="object_zog_Skel_029170" Type="Flex" LimbType="Standard" LimbNone="OBJECT_ZOG_LIMB_NONE" LimbMax="OBJECT_ZOG_LIMB_MAX" EnumName="ObjectZogLimb" Offset="0x29170" />
+    </File>
+</Root>

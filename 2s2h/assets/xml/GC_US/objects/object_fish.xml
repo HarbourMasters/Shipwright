@@ -1,0 +1,315 @@
+﻿<Root>
+    <!-- Assets for fishing -->
+    <File Name="object_fish" Segment="6">
+
+        <!-- Bass -->
+
+        <!-- Bass Animations -->
+        <Animation Name="gFishingBassAnim" Offset="0x7C" /> <!-- Original name is "basu" -->
+
+        <!-- Bass DLs -->
+        <DList Name="gFishingBassTailFinDL" Offset="0x940" />
+        <DList Name="gFishingBassBackSegmentEndDL" Offset="0x9E8" />
+        <DList Name="gFishingBassTopRearFinDL" Offset="0xB00" />
+        <DList Name="gFishingBassBottomRearFinDL" Offset="0xBA0" />
+        <DList Name="gFishingBassBackSegmentDL" Offset="0xC40" />
+        <DList Name="gFishingBassTopFrontFinDL" Offset="0xE30" />
+        <DList Name="gFishingBassBottomFrontFinDL" Offset="0xED0" />
+        <DList Name="gFishingBassMiddleSegmentDL" Offset="0xF70" />
+        <DList Name="gFishingBassHeadDL" Offset="0x10A0" />
+        <DList Name="gFishingBassLeftPectoralFinDL" Offset="0x1260" />
+        <DList Name="gFishingBassRightPectoralFinDL" Offset="0x1300" />
+        <DList Name="gFishingBassJawDL" Offset="0x13A0" />
+
+        <!-- Bass Textures -->
+        <Texture Name="gFishingBassTailFinTex" OutName="fishing_bass_tail_fin" Format="rgba16" Width="16" Height="16" Offset="0x14D0" />
+        <Texture Name="gFishingBassTopScalesTex" OutName="fishing_bass_top_scales" Format="rgba16" Width="16" Height="16" Offset="0x16D0" />
+        <Texture Name="gFishingBassBottomScalesTex" OutName="fishing_bass_bottom_scales" Format="rgba16" Width="16" Height="16" Offset="0x18D0" />
+        <Texture Name="gFishingBassHeadTex" OutName="fishing_bass_head" Format="rgba16" Width="32" Height="32" Offset="0x1AD0" />
+        <Texture Name="gFishingBassFinTex" OutName="fishing_bass_fin" Format="rgba16" Width="16" Height="16" Offset="0x22D0" />
+        <Texture Name="gFishingBassUnusedFinTex" OutName="fishing_bass_unused_fin" Format="rgba16" Width="16" Height="16" Offset="0x24D0" />
+        <Texture Name="gFishingBassSpinyFinTex" OutName="fishing_bass_spiny_fin" Format="rgba16" Width="16" Height="16" Offset="0x26D0" />
+
+        <!-- Bass Limbs and Skel -->
+        <Limb Name="gFishingBassHeadLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_HEAD" Offset="0x28D0" />
+        <Limb Name="gFishingBassMiddleSegmentRootLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_MIDDLE_SEGMENT_ROOT" Offset="0x28DC" />
+        <Limb Name="gFishingBassBackSegmentRootLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_BACK_SEGMENT_ROOT" Offset="0x28E8" />
+        <Limb Name="gFishingBassEndRootLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_END_ROOT" Offset="0x28F4" />
+        <Limb Name="gFishingBassTailFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_TAIL_FIN" Offset="0x2900" />
+        <Limb Name="gFishingBassBackSegmentEndLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_BACK_SEGMENT_END" Offset="0x290C" />
+        <Limb Name="gFishingBassBackSegmentLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_BACK_SEGMENT" Offset="0x2918" />
+        <Limb Name="gFishingBassTopRearFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_TOP_REAR_FIN" Offset="0x2924" />
+        <Limb Name="gFishingBassBottomRearFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_BOTTOM_REAR_FIN" Offset="0x2930" />
+        <Limb Name="gFishingBassMiddleSegmentLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_MIDDLE_SEGMENT" Offset="0x293C" />
+        <Limb Name="gFishingBassTopFrontFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_TOP_FRONT_FIN" Offset="0x2948" />
+        <Limb Name="gFishingBassBottomFrontFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_BOTTOM_FRONT_FIN" Offset="0x2954" />
+        <Limb Name="gFishingBassJawLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_JAW" Offset="0x2960" />
+        <Limb Name="gFishingBassRightPectoralFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_RIGHT_PECTORAL_FIN" Offset="0x296C" />
+        <Limb Name="gFishingBassLeftPectoralFinLimb" Type="Standard" EnumName="FISHING_BASS_LIMB_LEFT_PECTORAL_FIN" Offset="0x2978" />
+        <Skeleton Name="gFishingBassSkel" Type="Flex" LimbType="Standard" LimbNone="FISHING_BASS_LIMB_NONE" LimbMax="FISHING_BASS_LIMB_MAX" EnumName="FishingBassLimb" Offset="0x29C0" />
+
+
+        <!-- Old Lure -->
+
+        <!-- Old Lure Textures -->
+        <Texture Name="gFishingOldLureHookTex" OutName="fishing_old_lure_hook" Format="rgba16" Width="8" Height="16" Offset="0x29D0" />
+        <Texture Name="gFishingOldLureFloatTex" OutName="fishing_old_lure_float" Format="rgba16" Width="8" Height="8" Offset="0x2AD0" />
+        
+        <!-- Old Lure DLs -->
+        <DList Name="gFishingOldLureDL" Offset="0x2BD0" />
+
+
+        <!-- Stream Splash -->
+
+        <!-- Stream Splash Textures -->
+        <Texture Name="gFishingStreamSplashTile1Tex" OutName="fishing_stream_splash_tile_1" Format="i4" Width="32" Height="64" Offset="0x2CE0" />
+        <Texture Name="gFishingStreamSplashTile2Tex" OutName="fishing_stream_splash_tile_2" Format="i4" Width="16" Height="16" Offset="0x30E0" />
+
+        <!-- Stream Splash DLs-->
+        <DList Name="gFishingStreamSplashDL" Offset="0x3230" />
+
+
+        <!-- Bubble -->
+
+        <!-- Bubble Textures-->
+        <Texture Name="gFishingBubbleTex" OutName="fishing_bubble" Format="ia8" Width="16" Height="16" Offset="0x3320" />
+
+        <!-- Bubble DLs-->
+        <DList Name="gFishingBubbleMaterialDL" Offset="0x3460" />
+        <DList Name="gFishingBubbleModelDL" Offset="0x34C0" />
+
+
+        <!-- Dust Splash -->
+
+        <!-- Dust Splash Texture-->
+        <Texture Name="gFishingDustSplashTex" OutName="fishing_dust_splash" Format="i8" Width="16" Height="16" Offset="0x34E0" />
+
+        <!-- Dust Splash DLs-->
+        <DList Name="gFishingDustSplashMaterialDL" Offset="0x3610" />
+        <DList Name="gFishingDustSplashModelDL" Offset="0x3680" />
+
+
+        <!-- Line -->
+
+        <!-- Line DLs -->
+        <DList Name="gFishingUnusedMaterialDL" Offset="0x36E0" />
+        <DList Name="gFishingLineModelDL" Offset="0x3710" />
+
+
+        <!-- Raindrop -->
+
+        <!-- Raindrop DLs -->
+        <DList Name="gFishingRainDropModelDL" Offset="0x3760" />
+
+
+        <!-- Rain Splash -->
+
+        <!-- Rain Splash Textures -->
+        <Texture Name="gFishingRainSplashTex" OutName="fishing_rain_splash" Format="rgba16" Width="16" Height="16" Offset="0x3778" />
+        
+        <!-- Rain Splash DLs -->
+        <DList Name="gFishingRainSplashMaterialDL" Offset="0x39A8" />
+        <DList Name="gFishingRainSplashModelDL" Offset="0x3A18" />
+
+
+        <!-- Owner -->
+
+        <!-- Owner Animations -->
+        <Animation Name="gFishingOwnerAnim" Offset="0x453C" /> <!-- Original name is "fs_matsu" -->
+
+        <!-- Owner DLs -->
+        <DList Name="gFishingOwnerTorsoDL" Offset="0x6F60" />
+        <DList Name="gFishingOwnerHairDL" Offset="0x7350" />
+        <DList Name="gFishingOwnerHatDL" Offset="0x74C8" /> <!-- Original name is "fs_cap_model" -->
+        <DList Name="gFishingOwnerHeadDL" Offset="0x76B8" />
+        <DList Name="gFishingOwnerRightUpperArmDL" Offset="0x7CF8" />
+        <DList Name="gFishingOwnerRightForearmDL" Offset="0x7E48" />
+        <DList Name="gFishingOwnerRightHandDL" Offset="0x7F78" />
+        <DList Name="gFishingOwnerLeftUpperArmDL" Offset="0x8138" />
+        <DList Name="gFishingOwnerLeftForearmDL" Offset="0x8288" />
+        <DList Name="gFishingOwnerLeftHandDL" Offset="0x83B8" />
+
+        <!-- Owner Limbs and Skel -->
+        <Limb Name="gFishingOwnerTorsoLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_TORSO" Offset="0x8578" />
+        <Limb Name="gFishingOwnerLeftUpperArmLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_LEFT_UPPER_ARM" Offset="0x8584" />
+        <Limb Name="gFishingOwnerLeftForearmLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_LEFT_FOREARM" Offset="0x8590" />
+        <Limb Name="gFishingOwnerLeftHandLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_LEFT_HAND" Offset="0x859C" />
+        <Limb Name="gFishingOwnerRightUpperArmLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_RIGHT_UPPER_ARM" Offset="0x85A8" />
+        <Limb Name="gFishingOwnerRightForearmLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_RIGHT_FOREARM" Offset="0x85B4" />
+        <Limb Name="gFishingOwnerRightHandLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_RIGHT_HAND" Offset="0x85C0" />
+        <Limb Name="gFishingOwnerHeadLimb" Type="Standard" EnumName="FISHING_OWNER_LIMB_HEAD" Offset="0x85CC" />
+        <Skeleton Name="gFishingOwnerSkel" Type="Flex" LimbType="Standard" LimbNone="FISHING_OWNER_LIMB_NONE" LimbMax="FISHING_OWNER_LIMB_MAX" EnumName="FishingOwnerLimb" Offset="0x85F8" />
+
+
+        <!-- Ripple -->
+
+        <!-- Ripple DLs -->
+        <DList Name="gFishingRippleMaterialDL" Offset="0x8610" />
+        <DList Name="gFishingRippleModelDL" Offset="0x8678" />
+
+
+        <!-- Water Dust -->
+
+        <!-- Water Dust Textures-->
+        <Texture Name="gFishingWaterDustTex" OutName="fishing_water_dust" Format="i4" Width="32" Height="32" Offset="0x8690" />
+
+        <!-- Water Dust DLs -->
+        <DList Name="gFishingWaterDustMaterialDL" Offset="0x88C0" />
+        <DList Name="gFishingWaterDustModelDL" Offset="0x8970" /> <!-- Original name is "fs_smoke_modelT" -->
+
+        <!-- Owner -->
+
+        <!-- Owner Textures -->
+        <Texture Name="gFishingOwnerTLUT" OutName="fishing_owner_tlut" Format="rgba16" Width="16" Height="16" Offset="0x8990" />
+        <Texture Name="gFishingOwnerSkinTex" OutName="fishing_owner_skin" Format="ci8" Width="8" Height="8" Offset="0x8B90" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerHairFullTex" OutName="fishing_owner_hair_full" Format="ci8" Width="16" Height="16" Offset="0x8BD0" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerHairPartialTex" OutName="fishing_owner_hair_partial" Format="ci8" Width="16" Height="16" Offset="0x8CD0" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerEarTex" OutName="fishing_owner_ear" Format="ci8" Width="8" Height="8" Offset="0x8DD0" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerMouthTex" OutName="fishing_owner_mouth" Format="ci8" Width="32" Height="32" Offset="0x8E10" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerNostrilTex" OutName="fishing_owner_nostril" Format="ci8" Width="8" Height="8" Offset="0x9210" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerEyeOpenTex" OutName="fishing_owner_eye_open" Format="ci8" Width="32" Height="32" Offset="0x9250" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerEyeHalfTex" OutName="fishing_owner_eye_half" Format="ci8" Width="32" Height="32" Offset="0x9650" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerEyeClosedTex" OutName="fishing_owner_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x9A50" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerHatTex" OutName="fishing_owner_hat" Format="ci8" Width="64" Height="32" Offset="0x9E50" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerShirtTex" OutName="fishing_owner_shirt" Format="ci8" Width="8" Height="8" Offset="0xA650" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerFingersTex" OutName="fishing_owner_fingers" Format="ci8" Width="16" Height="16" Offset="0xA690" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerCollarTex" OutName="fishing_owner_collar" Format="ci8" Width="8" Height="16" Offset="0xA790" TlutOffset="0x8990" />
+        <Texture Name="gFishingOwnerVestTex" OutName="fishing_owner_vest" Format="ci8" Width="16" Height="16" Offset="0xA810" TlutOffset="0x8990" />
+
+
+        <!-- Sinking Lure -->
+
+        <!-- Sinking Lure Textures -->
+        <Texture Name="gFishingSinkingLureSegmentTex" OutName="fishing_sinking_lure_segment" Format="ia8" Width="64" Height="64" Offset="0xA910" />
+
+        <!-- Sinking Lure DLs -->
+        <DList Name="gFishingSinkingLureSegmentMaterialDL" Offset="0xB950" />
+        <DList Name="gFishingSinkingLureSegmentModelDL" Offset="0xB9C0" />
+
+
+        <!-- Group Fish -->
+
+        <!-- Group Fish Texture -->
+        <Texture Name="gFishingGroupFishTex" OutName="fishing_group_fish" Format="rgba16" Width="64" Height="16" Offset="0xB9E0" />
+
+        <!-- Group Fish DLs -->
+        <DList Name="gFishingGroupFishMaterialDL" Offset="0xC220" />
+        <DList Name="gFishingGroupFishModelDL" Offset="0xC298" /> <!-- Original name is "minnow_model" -->
+
+
+        <!-- Unused Rock -->
+
+        <!-- Unused Rock DLs -->
+        <DList Name="gFishingUnusedRockDL" Offset="0xC650" />
+
+        <!-- Unused Rock Textures -->
+        <Texture Name="gFishingUnusedRockTex" OutName="fishing_unused_rock" Format="rgba16" Width="32" Height="32" Offset="0xC780" />
+
+
+        <!-- Loach -->
+
+        <!-- Loach Animations -->
+        <Animation Name="gFishingLoachAnim" Offset="0xCFE0" /> <!-- Original name is "nz_namazu" -->
+
+        <!-- Loach DLs -->
+        <DList Name="gFishingLoachHeadDL" Offset="0xDED0" />
+        <DList Name="gFishingLoachLowerFrontFinDL" Offset="0xDFA8" />
+        <DList Name="gFishingLoachFrontSegmentDL" Offset="0xE048" />
+        <DList Name="gFishingLoachMiddleSegmentDL" Offset="0xE168" />
+        <DList Name="gFishingLoachLowerBackFinDL" Offset="0xE460" />
+        <DList Name="gFishingLoachBackSegmentDL" Offset="0xE500" />
+        <DList Name="gFishingLoachTailFinDL" Offset="0xE808" />
+        <DList Name="gFishingLoachTailSegmentDL" Offset="0xE8B0" />
+        <DList Name="gFishingLoachRightPectoralFinDL" Offset="0xEB28" />
+        <DList Name="gFishingLoachLeftPectoralFinDL" Offset="0xEBC8" />
+        <DList Name="gFishingLoachJawDL" Offset="0xEC68" />
+
+        <!-- Loach Textures -->
+        <Texture Name="gFishingLoachTopScalesTex" OutName="fishing_loach_top_scales" Format="rgba16" Width="32" Height="32" Offset="0xED28" />
+        <Texture Name="gFishingLoachBottomScalesTex" OutName="fishing_loach_bottom_scales" Format="rgba16" Width="32" Height="32" Offset="0xF528" />
+        <Texture Name="gFishingLoachGillTex" OutName="fishing_loach_gill" Format="rgba16" Width="32" Height="32" Offset="0xFD28" />
+        <Texture Name="gFishingLoachHeadTex" OutName="fishing_loach_head" Format="rgba16" Width="32" Height="32" Offset="0x10528" />
+        <Texture Name="gFishingLoachTopFinTex" OutName="fishing_loach_top_fin" Format="rgba16" Width="8" Height="8" Offset="0x10D28" />
+        <Texture Name="gFishingLoachFinTex" OutName="fishing_loach_fin" Format="rgba16" Width="16" Height="16" Offset="0x10DA8" />
+
+        <!-- Loach Limbs and Skel -->
+        <Limb Name="gFishingLoachHeadLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_HEAD" Offset="0x10FA8" />
+        <Limb Name="gFishingLoachLowerFrontFinLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_LOWER_FRONT_FIN" Offset="0x10FB4" />
+        <Limb Name="gFishingLoachMiddleSegmentLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_MIDDLE_SEGMENT" Offset="0x10FC0" />
+        <Limb Name="gFishingLoachLowerBackFinLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_LOWER_BACK_FIN" Offset="0x10FCC" />
+        <Limb Name="gFishingLoachTailFinLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_TAIL_FIN" Offset="0x10FD8" />
+        <Limb Name="gFishingLoachTailSegmentLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_TAIL_SEGMENT" Offset="0x10FE4" />
+        <Limb Name="gFishingLoachBackSegmentLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_BACK_SEGMENT" Offset="0x10FF0" />
+        <Limb Name="gFishingLoachFrontSegmentLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_FRONT_SEGMENT" Offset="0x10FFC" />
+        <Limb Name="gFishingLoachLeftPectoralFinLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_LEFT_PECTORAL_FIN" Offset="0x11008" />
+        <Limb Name="gFishingLoachRightPectoralFinLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_RIGHT_PECTORAL_FIN" Offset="0x11014" />
+        <Limb Name="gFishingLoachJawLimb" Type="Standard" EnumName="FISHING_LOACH_LIMB_JAW" Offset="0x11020" />
+        <Skeleton Name="gFishingLoachSkel" Type="Flex" LimbType="Standard" LimbNone="FISHING_LOACH_LIMB_NONE" LimbMax="FISHING_LOACH_LIMB_MAX" EnumName="FishingLoachLimb" Offset="0x11058" />
+
+
+        <!-- Fishing Rod -->
+
+        <!-- Fishing Rod Textures -->
+        <Texture Name="gFishingRodSegmentStripTex" OutName="fishing_rod_segment_strip" Format="rgba16" Width="16" Height="8" Offset="0x11070" />
+        <Texture Name="gFishingRodSegmentBlackTex" OutName="fishing_rod_segment_black" Format="rgba16" Width="16" Height="8" Offset="0x11170" />
+        <Texture Name="gFishingRodSegmentWhiteTex" OutName="fishing_rod_segment_white" Format="rgba16" Width="16" Height="8" Offset="0x11270" />
+
+        <!-- Fishing Rod DLs -->
+        <DList Name="gFishingRodSetupDL" Offset="0x113D0" />
+        <DList Name="gFishingRodSegmentDL" Offset="0x11410" /> <!-- Original name is "rod_model" -->
+
+
+        <!-- Lure -->
+
+        <!-- Lure Textures -->
+        <Texture Name="gFishingLureHookTex" OutName="fishing_lure_hook" Format="rgba16" Width="32" Height="32" Offset="0x11440" />
+        <Texture Name="gFishingLureFloatTex" OutName="fishing_lure_float" Format="rgba16" Width="32" Height="16" Offset="0x11C40" />
+        
+        <!-- Lure DLs -->
+        <DList Name="gFishingLureHookDL" Offset="0x12160" /> <!-- Original name is "rua_hari_model" -->
+        <DList Name="gFishingLureFloatDL" Offset="0x121F0" /> <!-- Original name is "rua_body_model" -->
+
+
+        <!-- Lily Pad and Rock -->
+
+        <!-- Lily Pad and Rock Textures -->
+        <Texture Name="gFishingLilyPadTex" OutName="fishing_lily_pad" Format="rgba16" Width="32" Height="32" Offset="0x122E0" />
+        <Texture Name="gFishingRockTex" OutName="fishing_rock" Format="rgba16" Width="32" Height="32" Offset="0x12AE0" />
+
+        <!-- Lily Pad and Rock DLs -->
+        <DList Name="gFishingLilyPadMaterialDL" Offset="0x13330" />
+        <DList Name="gFishingLilyPadModelDL" Offset="0x133B0" /> <!-- Original name is "turi_hasu_model" -->
+        <DList Name="gFishingRockMaterialDL" Offset="0x13590" />
+        <DList Name="gFishingRockModelDL" Offset="0x13610" />
+
+
+        <!-- Wood Post -->
+
+        <!-- Wood Post Textures -->
+        <Texture Name="gFishingWoodPostTex" OutName="fishing_wood_post" Format="rgba16" Width="32" Height="32" Offset="0x13660" />
+
+        <!-- Wood Post DLs -->
+        <DList Name="gFishingWoodPostMaterialDL" Offset="0x13F50" />
+        <DList Name="gFishingWoodPostModelDL" Offset="0x13FD0" />
+
+
+        <!-- Reed -->
+
+        <!-- Reed DLs -->
+        <DList Name="gFishingReedMaterialDL" Offset="0x14030" />
+        <DList Name="gFishingReedModelDL" Offset="0x140B0" /> <!-- Original name is "turi_kusa_model" -->
+
+
+        <!-- Aquarium -->
+
+        <!-- Aquarium Textures -->
+        <Texture Name="gFishingAquariumBottomTex" OutName="fishing_aquarium_bottom" Format="rgba16" Width="16" Height="16" Offset="0x140D0" />
+        <Texture Name="gFishingAquariumWaterTex" OutName="fishing_aquarium_water" Format="rgba16" Width="32" Height="32" Offset="0x142D0" />
+        <Texture Name="gFishingAquariumGlassTex" OutName="fishing_aquarium_glass" Format="i8" Width="32" Height="32" Offset="0x14AD0" />
+
+        <!-- Aquarium DLs -->
+        <DList Name="gFishingAquariumBottomDL" Offset="0x153D0" />
+        <DList Name="gFishingAquariumContainerDL" Offset="0x15470" /> <!-- Original name is "turi_suisou_modelT" -->
+
+    </File>
+</Root>

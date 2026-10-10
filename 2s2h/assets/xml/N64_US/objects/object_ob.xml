@@ -1,0 +1,101 @@
+﻿<Root>
+    <!-- Object for MoonChild and his four Masks -->
+    <File Name="object_ob" Segment="6">
+    
+        <!-- Moonchild Mask DisplayLists -->
+        <DList Name="gMoonChildOdolwasMaskDL" Offset="0x690" />
+        <DList Name="gMoonChildGyorgsMaskDL" Offset="0x1D80" />
+        <DList Name="gMoonChildGohtsMaskDL" Offset="0x3AD0" />
+        <DList Name="gMoonChildTwinmoldsMaskDL" Offset="0x5020" />
+        <DList Name="gMoonChildMajorasMaskDL" Offset="0x6380" /> <!-- Original name is "mjk_evilmask_model" -->
+        <DList Name="gMoonChildMajorasMaskEyesDL" Offset="0x6730" /> <!-- Original name is "mjk_evLIGHTeye_model" -->
+
+        <!-- Moonchild Mask Textures -->
+        <Texture Name="gMoonChildMajorasMaskTex" OutName="moonchild_majoras_mask" Format="rgba16" Width="32" Height="64" Offset="0x67E0" />
+        <Texture Name="gMoonChildMajorasMaskSpike1Tex" OutName="moonchild_majoras_mask_spike_1" Format="rgba16" Width="16" Height="16" Offset="0x77E0" />
+        <Texture Name="gMoonChildMajorasMaskSpike2Tex" OutName="moonchild_majoras_mask_spike_2" Format="rgba16" Width="16" Height="16" Offset="0x79E0" />
+        <Texture Name="gMoonChildMajorasMaskSpike3Tex" OutName="moonchild_majoras_mask_spike_3" Format="rgba16" Width="16" Height="16" Offset="0x7BE0" />
+        <Texture Name="gMoonChildMajorasMaskSpike4Tex" OutName="moonchild_majoras_mask_spike_4" Format="rgba16" Width="16" Height="16" Offset="0x7DE0" />
+        <Texture Name="gMoonChildMajorasMaskBackTex" OutName="moonchild_majoras_mask_back" Format="rgba16" Width="32" Height="32" Offset="0x7FE0" />
+        <Texture Name="gMoonChildMajorasMaskEyesTex" OutName="moonchild_majoras_mask_eyes" Format="rgba16" Width="32" Height="32" Offset="0x87E0" />
+        <Texture Name="gMoonChildOdolwasMaskFaceTLUT" OutName="moonchild_odolwas_mask_face_tlut" Format="rgba16" Width="4" Height="4" Offset="0x8FE0" />
+        <Texture Name="gMoonChildOdolwasMaskEarTLUT" OutName="moonchild_odolwas_mask_ear_tlut" Format="rgba16" Width="4" Height="4" Offset="0x9000" />
+        <Texture Name="gMoonChildGyorgsMaskSkinTLUT" OutName="moonchild_gyorgs_mask_skin_tlut" Format="rgba16" Width="4" Height="4" Offset="0x9020" />
+        <Texture Name="gMoonChildGyorgsMaskMouthTLUT" OutName="moonchild_gyorgs_mask_mouth_tlut" Format="rgba16" Width="4" Height="4" Offset="0x9040" />
+        <Texture Name="gMoonChildGyorgsMaskToothHornTLUT" OutName="moonchild_gyorgs_mask_tooth_horn_tlut" Format="rgba16" Width="4" Height="4" Offset="0x9060" />
+        <Texture Name="gMoonChildTwinmoldsMaskSkinTLUT" OutName="moonchild_twinmolds_mask_skin_tlut" Format="rgba16" Width="4" Height="4" Offset="0x9080" />
+        <Texture Name="gMoonChildTwinmoldsMaskSnoutTLUT" OutName="moonchild_twinmolds_snout_tlut" Format="rgba16" Width="4" Height="4" Offset="0x90A0" />
+        <Texture Name="gMoonChildOdolwasMaskPlumeTex" OutName="moonchild_odolwas_mask_plume" Format="rgba16" Width="16" Height="16" Offset="0x90C0" />
+        <Texture Name="gMoonChildOdolwasMaskFaceTex" OutName="moonchild_odolwas_mask_face" Format="ci4" Width="64" Height="64" Offset="0x92C0" />
+        <Texture Name="gMoonChildOdolwasMaskEarTex" OutName="moonchild_odolwas_mask_ear" Format="ci4" Width="64" Height="64" Offset="0x9AC0" />
+        <Texture Name="gMoonChildGyorgsTwinmoldsMaskEyeTex" OutName="moonchild_gyorgs_twinmolds_mask_eye" Format="rgba16" Width="32" Height="32" Offset="0xA2C0" />
+        <Texture Name="gMoonChildGyorgsMaskSkinTex" OutName="moonchild_gyorgs_mask_skin" Format="ci4" Width="64" Height="64" Offset="0xAAC0" />
+        <Texture Name="gMoonChildGyorgsMaskMouthTex" OutName="moonchild_gyorgs_mask_mouth" Format="ci4" Width="64" Height="64" Offset="0xB2C0" />
+        <Texture Name="gMoonChildGyorgsMaskToothHornTex" OutName="moonchild_gyorgs_mask_tooth_horn" Format="ci4" Width="16" Height="16" Offset="0xBAC0" />
+        <Texture Name="gMoonChildGohtsMaskEyeTex" OutName="moonchild_gohts_mask_eye" Format="rgba16" Width="32" Height="64" Offset="0xBB40" />
+        <Texture Name="gMoonChildGohtsMaskTopPatternTex" OutName="moonchild_gohts_mask_top_pattern" Format="rgba16" Width="32" Height="64" Offset="0xCB40" />
+        <Texture Name="gMoonChildGohtsTwinmoldsMaskPatternTex" OutName="moonchild_goht_twinmold_mask_pattern" Format="rgba16" Width="32" Height="64" Offset="0xDB40" />
+        <Texture Name="gMoonChildGohtsMaskSpikeTwinmoldsMaskMandibleTex" OutName="moonchild_gohts_mask_spike_twinmolds_mask_mandible" Format="rgba16" Width="32" Height="32" Offset="0xEB40" />
+        <Texture Name="gMoonChildTwinmoldsMaskSkinTex" OutName="moonchild_twinmolds_mask_skin" Format="ci4" Width="64" Height="64" Offset="0xF340" />
+        <Texture Name="gMoonChildTwinmoldsMaskSnoutTex" OutName="moonchild_twinmolds_mask_snout" Format="ci4" Width="64" Height="64" Offset="0xFB40" />
+
+        <!-- Moonchild Moving Animations -->
+        <Animation Name="gMoonChildWalkingAnim" Offset="0x10880" /> <!-- Original name is "mjk_run" -->
+        <Animation Name="gMoonChildRunningAnim" Offset="0x10CD8" /> <!-- Original name is "mjk_run2" -->
+
+        <!-- Moonchild DisplayLists -->
+        <DList Name="gMoonChildPelvisDL" Offset="0x14190" />
+        <DList Name="gMoonChildLeftThighDL" Offset="0x142C0" />
+        <DList Name="gMoonChildLeftLegDL" Offset="0x144D0" />
+        <DList Name="gMoonChildLeftFootDL" Offset="0x14638" />
+        <DList Name="gMoonChildRightThighDL" Offset="0x147A0" />
+        <DList Name="gMoonChildRightLegDL" Offset="0x149B0" />
+        <DList Name="gMoonChildRightFootDL" Offset="0x14B18" />
+        <DList Name="gMoonChildChestBottomDL" Offset="0x14C80" />
+        <DList Name="gMoonChildChestDL" Offset="0x14DA0" />
+        <DList Name="gMoonChildHeadDL" Offset="0x14F18" />
+        <DList Name="gMoonChildLeftArmDL" Offset="0x15380" />
+        <DList Name="gMoonChildLeftForearmDL" Offset="0x154B0" />
+        <DList Name="gMoonChildLeftHandDL" Offset="0x155D0" />
+        <DList Name="gMoonChildRightArmDL" Offset="0x15758" />
+        <DList Name="gMoonChildRightForearmDL" Offset="0x15888" />
+        <DList Name="gMoonChildRightHandDL" Offset="0x159A8" />
+
+        <!-- Moonchild Textures -->
+        <Texture Name="gMoonChildTLUT" OutName="moonchild_tlut" Format="rgba16" Width="16" Height="16" Offset="0x15B28" />
+        <Texture Name="gMoonChildFingersTex" OutName="moonchild_fingers" Format="ci8" Width="16" Height="16" Offset="0x15D28" />
+        <Texture Name="gMoonChildThighSkinTex" OutName="moonchild_thigh_skin" Format="ci8" Width="8" Height="8" Offset="0x15E28" />
+        <Texture Name="gMoonChildTshirtDetailTex" OutName="moonchild_tshirt_detail" Format="ci8" Width="16" Height="32" Offset="0x15E68" />
+        <Texture Name="gMoonChildHairTex" OutName="moonchild_hair" Format="ci8" Width="8" Height="16" Offset="0x16068" />
+        <Texture Name="gMoonChildEarTex" OutName="moonchild_ear" Format="ci8" Width="8" Height="8" Offset="0x160E8" />
+        <Texture Name="gMoonChildBackHairTex" OutName="moonchild_back_hair" Format="ci8" Width="8" Height="16" Offset="0x16128" />
+        <Texture Name="gMoonChildTshirtNecklineTex" OutName="moonchild_tshirt_neckline" Format="ci8" Width="16" Height="32" Offset="0x161A8" />
+
+        <!-- Moonchild Limbs -->
+        <Limb Name="gMoonChildRootLimb" Type="Standard" EnumName="MOONCHILD_LIMB_ROOT" Offset="0x163A8" />
+        <Limb Name="gMoonChildWaistLimb" Type="Standard" EnumName="MOONCHILD_LIMB_WAIST" Offset="0x163B4" />
+        <Limb Name="gMoonChildTorsoLimb" Type="Standard" EnumName="MOONCHILD_LIMB_TORSO" Offset="0x163C0" />
+        <Limb Name="gMoonChildLeftUpperArmLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_UPPER_ARM" Offset="0x163CC" />
+        <Limb Name="gMoonChildLeftForearmLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_FOREARM" Offset="0x163D8" />
+        <Limb Name="gMoonChildLeftHandLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_HAND" Offset="0x163E4" />
+        <Limb Name="gMoonChildRightUpperArmLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_UPPER_ARM" Offset="0x163F0" />
+        <Limb Name="gMoonChildRightForearmLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_FOREARM" Offset="0x163FC" />
+        <Limb Name="gMoonChildRightHandLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_HAND" Offset="0x16408" />
+        <Limb Name="gMoonChildHeadLimb" Type="Standard" EnumName="MOONCHILD_LIMB_HEAD" Offset="0x16414" />
+        <Limb Name="gMoonChildPelvisLimb" Type="Standard" EnumName="MOONCHILD_LIMB_PELVIS" Offset="0x16420" />
+        <Limb Name="gMoonChildLeftThighLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_THIGH" Offset="0x1642C" />
+        <Limb Name="gMoonChildLeftShinLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_SHIN" Offset="0x16438" />
+        <Limb Name="gMoonChildLeftFootLimb" Type="Standard" EnumName="MOONCHILD_LIMB_LEFT_FOOT" Offset="0x16444" />
+        <Limb Name="gMoonChildRightThighLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_THIGH" Offset="0x16450" />
+        <Limb Name="gMoonChildRightShinLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_SHIN" Offset="0x1645C" />
+        <Limb Name="gMoonChildRightFootLimb" Type="Standard" EnumName="MOONCHILD_LIMB_RIGHT_FOOT" Offset="0x16468" />
+
+        <!-- Moonchild Skeleton -->
+        <Skeleton Name="gMoonChildSkel" Type="Flex" LimbType="Standard" LimbNone="MOONCHILD_LIMB_NONE" LimbMax="MOONCHILD_LIMB_MAX" EnumName="MoonchildLimb" Offset="0x164B8" />
+
+        <!-- Moonchild Mask Still Animations -->
+        <Animation Name="gMoonChildGettingUpAnim" Offset="0x16F58" /> <!-- Original name is "mjk_suwari2wait" -->
+        <Animation Name="gMoonChildSittingAnim" Offset="0x1764C" /> <!-- Original name is "mjk_suwariloop" -->
+        <Animation Name="gMoonChildStandingAnim" Offset="0x17E98" /> <!-- Original name is "mjk_wait" -->
+    </File>
+</Root>

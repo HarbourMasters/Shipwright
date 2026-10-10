@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Bottled Chateau Romani -->
+    <File Name="object_gi_bottle_21" Segment="6">
+
+        <!-- Bottled Chateau Romani: Display Lists -->
+        <DList Name="gGiChateauRomaniBottleDL" Offset="0xA50" />
+        <DList Name="gGiChateauRomaniBottleEmptyDL" Offset="0xE90" />
+
+        <!-- Bottled Chateau Romani: Display Lists -->
+        <Texture Name="gGiChateauRomaniBottleCorkTex" OutName="gi_chateau_romani_bottle_cork" Format="i8" Width="16" Height="16" Offset="0xE98" />
+        <Texture Name="gGiChateauRomaniBottleLabelTex" OutName="gi_chateau_romani_bottle_label" Format="i4" Width="96" Height="64" Offset="0xF98" />
+        <Texture Name="gGiChateauRomaniBottleGlassTex" OutName="gi_chateau_romani_bottle_glass" Format="i4" Width="16" Height="32" Offset="0x1B98" />
+    </File>
+</Root>

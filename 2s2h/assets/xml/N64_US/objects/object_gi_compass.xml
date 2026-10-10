@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Dungeon Compass -->
+    <File Name="object_gi_compass" Segment="6">
+
+        <!-- Dungeon Compass Display Lists -->
+        <DList Name="gGiCompassDL" Offset="0x960" />
+        <DList Name="gGiCompassGlassDL" Offset="0xC50" />
+    </File>
+</Root>

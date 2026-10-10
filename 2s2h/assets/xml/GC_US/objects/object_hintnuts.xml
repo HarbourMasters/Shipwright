@@ -1,0 +1,40 @@
+﻿<Root>
+    <File Name="object_hintnuts" Segment="6">
+        <Animation Name="object_hintnuts_Anim_000168" Offset="0x168" /> <!-- Original name is "dnh_atack" -->
+        <DList Name="object_hintnuts_DL_000B30" Offset="0xB30" />
+        <DList Name="object_hintnuts_DL_000C68" Offset="0xC68" />
+        <DList Name="object_hintnuts_DL_000D10" Offset="0xD10" />
+        <DList Name="object_hintnuts_DL_000E28" Offset="0xE28" />
+        <DList Name="object_hintnuts_DL_000EC8" Offset="0xEC8" />
+        <DList Name="object_hintnuts_DL_000F78" Offset="0xF78" />
+        <DList Name="object_hintnuts_DL_001028" Offset="0x1028" />
+        <DList Name="object_hintnuts_DL_0010C8" Offset="0x10C8" />
+        <DList Name="object_hintnuts_DL_001208" Offset="0x1208" />
+        <DList Name="object_hintnuts_DL_0012F0" Offset="0x12F0" /> <!-- Original name is "dnh_ball_model" -->
+        <DList Name="object_hintnuts_DL_0014E0" Offset="0x14E0" />
+        <Texture Name="object_hintnuts_Tex_0015A8" OutName="tex_0015A8" Format="rgba16" Width="32" Height="32" Offset="0x15A8" />
+        <Texture Name="object_hintnuts_Tex_001DA8" OutName="tex_001DA8" Format="rgba16" Width="16" Height="16" Offset="0x1DA8" />
+        <Texture Name="object_hintnuts_Tex_001FA8" OutName="tex_001FA8" Format="rgba16" Width="8" Height="8" Offset="0x1FA8" />
+        <Texture Name="object_hintnuts_Tex_002028" OutName="tex_002028" Format="rgba16" Width="8" Height="8" Offset="0x2028" />
+        <Texture Name="object_hintnuts_Tex_0020A8" OutName="tex_0020A8" Format="rgba16" Width="8" Height="8" Offset="0x20A8" />
+        <Texture Name="object_hintnuts_Tex_002128" OutName="tex_002128" Format="rgba16" Width="16" Height="16" Offset="0x2128" />
+        <Limb Name="object_hintnuts_Standardlimb_002328" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_01" Offset="0x2328" />
+        <Limb Name="object_hintnuts_Standardlimb_002334" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_02" Offset="0x2334" />
+        <Limb Name="object_hintnuts_Standardlimb_002340" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_03" Offset="0x2340" />
+        <Limb Name="object_hintnuts_Standardlimb_00234C" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_04" Offset="0x234C" />
+        <Limb Name="object_hintnuts_Standardlimb_002358" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_05" Offset="0x2358" />
+        <Limb Name="object_hintnuts_Standardlimb_002364" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_06" Offset="0x2364" />
+        <Limb Name="object_hintnuts_Standardlimb_002370" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_07" Offset="0x2370" />
+        <Limb Name="object_hintnuts_Standardlimb_00237C" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_08" Offset="0x237C" />
+        <Limb Name="object_hintnuts_Standardlimb_002388" Type="Standard" EnumName="OBJECT_HINTNUTS_LIMB_09" Offset="0x2388" />
+        <Skeleton Name="object_hintnuts_Skel_0023B8" Type="Flex" LimbType="Standard" LimbNone="OBJECT_HINTNUTS_LIMB_NONE" LimbMax="OBJECT_HINTNUTS_LIMB_MAX" EnumName="ObjectHintnutsLimb" Offset="0x23B8" />
+        <Animation Name="object_hintnuts_Anim_0024CC" Offset="0x24CC" /> <!-- Original name is "dnh_dig" -->
+        <Animation Name="object_hintnuts_Anim_0026C4" Offset="0x26C4" /> <!-- Original name is "dnh_jump" -->
+        <Animation Name="object_hintnuts_Anim_002894" Offset="0x2894" /> <!-- Original name is "dnh_lookaround" -->
+        <Animation Name="object_hintnuts_Anim_0029BC" Offset="0x29BC" /> <!-- Original name is "dnh_mahi" -->
+        <Animation Name="object_hintnuts_Anim_002B90" Offset="0x2B90" /> <!-- Original name is "dnh_start" -->
+        <Animation Name="object_hintnuts_Anim_002E84" Offset="0x2E84" /> <!-- Original name is "dnh_talk" -->
+        <Animation Name="object_hintnuts_Anim_002F7C" Offset="0x2F7C" /> <!-- Original name is "dnh_wait" -->
+        <Animation Name="object_hintnuts_Anim_003128" Offset="0x3128" /> <!-- Original name is "dnh_walk" -->
+    </File>
+</Root>

@@ -1,0 +1,54 @@
+﻿<Root>
+    <File Name="object_ot" Segment="6">
+        <DList Name="object_ot_DL_000040" Offset="0x40" />
+        <DList Name="object_ot_DL_000078" Offset="0x78" /> <!-- Original name is "ot_item_model" -->
+        <Animation Name="object_ot_Anim_000420" Offset="0x420" /> <!-- Original name is "ot_kissing" -->
+        <DList Name="object_ot_DL_0004A0" Offset="0x4A0" /> <!-- Original name is "ot_light_model" -->
+        <Texture Name="object_ot_Tex_000550" OutName="tex_000550" Format="ia16" Width="8" Height="8" Offset="0x550" />
+        <TextureAnimation Name="object_ot_Matanimheader_0005F8" Offset="0x5F8" />
+        <Animation Name="object_ot_Anim_0008D8" Offset="0x8D8" /> <!-- Original name is "ot_swim" -->
+        <DList Name="object_ot_DL_001800" Offset="0x1800" />
+        <DList Name="object_ot_DL_0018D0" Offset="0x18D0" />
+        <DList Name="object_ot_DL_001988" Offset="0x1988" />
+        <DList Name="object_ot_DL_001AA0" Offset="0x1AA0" />
+        <DList Name="object_ot_DL_001B80" Offset="0x1B80" />
+        <DList Name="object_ot_DL_001C38" Offset="0x1C38" />
+        <DList Name="object_ot_DL_001CF0" Offset="0x1CF0" />
+        <DList Name="object_ot_DL_001FD8" Offset="0x1FD8" />
+        <DList Name="object_ot_DL_002090" Offset="0x2090" />
+        <DList Name="object_ot_DL_002220" Offset="0x2220" />
+        <DList Name="object_ot_DL_002318" Offset="0x2318" />
+        <DList Name="object_ot_DL_002410" Offset="0x2410" />
+        <DList Name="object_ot_DL_002508" Offset="0x2508" />
+        <DList Name="object_ot_DL_002600" Offset="0x2600" />
+        <DList Name="object_ot_DL_0026F8" Offset="0x26F8" />
+        <DList Name="object_ot_DL_0027F0" Offset="0x27F0" />
+        <Texture Name="object_ot_TLUT_0028E0" OutName="tlut_0028E0" Format="rgba16" Width="16" Height="16" Offset="0x28E0" />
+        <Texture Name="object_ot_Tex_002AE0" OutName="tex_002AE0" Format="ci8" Width="32" Height="32" Offset="0x2AE0" />
+        <Texture Name="object_ot_Tex_002EE0" OutName="tex_002EE0" Format="ci8" Width="32" Height="64" Offset="0x2EE0" />
+        <Texture Name="object_ot_Tex_0036E0" OutName="tex_0036E0" Format="ci8" Width="32" Height="32" Offset="0x36E0" />
+        <Texture Name="object_ot_Tex_003AE0" OutName="tex_003AE0" Format="ci8" Width="32" Height="32" Offset="0x3AE0" />
+        <Texture Name="object_ot_Tex_003EE0" OutName="tex_003EE0" Format="ci8" Width="32" Height="32" Offset="0x3EE0" />
+        <Texture Name="object_ot_Tex_0042E0" OutName="tex_0042E0" Format="ci8" Width="32" Height="32" Offset="0x42E0" />
+        <Limb Name="object_ot_Standardlimb_0046E0" Type="Standard" EnumName="OBJECT_OT_LIMB_01" Offset="0x46E0" />
+        <Limb Name="object_ot_Standardlimb_0046EC" Type="Standard" EnumName="OBJECT_OT_LIMB_02" Offset="0x46EC" />
+        <Limb Name="object_ot_Standardlimb_0046F8" Type="Standard" EnumName="OBJECT_OT_LIMB_03" Offset="0x46F8" />
+        <Limb Name="object_ot_Standardlimb_004704" Type="Standard" EnumName="OBJECT_OT_LIMB_04" Offset="0x4704" />
+        <Limb Name="object_ot_Standardlimb_004710" Type="Standard" EnumName="OBJECT_OT_LIMB_05" Offset="0x4710" />
+        <Limb Name="object_ot_Standardlimb_00471C" Type="Standard" EnumName="OBJECT_OT_LIMB_06" Offset="0x471C" />
+        <Limb Name="object_ot_Standardlimb_004728" Type="Standard" EnumName="OBJECT_OT_LIMB_07" Offset="0x4728" />
+        <Limb Name="object_ot_Standardlimb_004734" Type="Standard" EnumName="OBJECT_OT_LIMB_08" Offset="0x4734" />
+        <Limb Name="object_ot_Standardlimb_004740" Type="Standard" EnumName="OBJECT_OT_LIMB_09" Offset="0x4740" />
+        <Limb Name="object_ot_Standardlimb_00474C" Type="Standard" EnumName="OBJECT_OT_LIMB_0A" Offset="0x474C" />
+        <Limb Name="object_ot_Standardlimb_004758" Type="Standard" EnumName="OBJECT_OT_LIMB_0B" Offset="0x4758" />
+        <Limb Name="object_ot_Standardlimb_004764" Type="Standard" EnumName="OBJECT_OT_LIMB_0C" Offset="0x4764" />
+        <Limb Name="object_ot_Standardlimb_004770" Type="Standard" EnumName="OBJECT_OT_LIMB_0D" Offset="0x4770" />
+        <Limb Name="object_ot_Standardlimb_00477C" Type="Standard" EnumName="OBJECT_OT_LIMB_0E" Offset="0x477C" />
+        <Limb Name="object_ot_Standardlimb_004788" Type="Standard" EnumName="OBJECT_OT_LIMB_0F" Offset="0x4788" />
+        <Limb Name="object_ot_Standardlimb_004794" Type="Standard" EnumName="OBJECT_OT_LIMB_10" Offset="0x4794" />
+        <Limb Name="object_ot_Standardlimb_0047A0" Type="Standard" EnumName="OBJECT_OT_LIMB_11" Offset="0x47A0" />
+        <Limb Name="object_ot_Standardlimb_0047AC" Type="Standard" EnumName="OBJECT_OT_LIMB_12" Offset="0x47AC" />
+        <Skeleton Name="object_ot_Skel_004800" Type="Flex" LimbType="Standard" LimbNone="OBJECT_OT_LIMB_NONE" LimbMax="OBJECT_OT_LIMB_MAX" EnumName="ObjectOtLimb" Offset="0x4800" />
+        <Animation Name="object_ot_Anim_004B30" Offset="0x4B30" /> <!-- Original name is "ot_wait" -->
+    </File>
+</Root>

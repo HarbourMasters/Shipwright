@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Razor Sword -->
+    <File Name="object_gi_sword_2" Segment="6">
+
+        <!-- Razor Sword Display Lists -->
+        <DList Name="gGiRazorSwordEmptyDL" Offset="0xC00" />
+        <DList Name="gGiRazorSwordDL" Offset="0xC08" />
+
+        <!-- Razor Sword Textures -->
+        <Texture Name="gGiRazorSwordHiltTex" OutName="gi_razor_sword_hilt" Format="rgba16" Width="16" Height="16" Offset="0x1120" />
+        <Texture Name="gGiRazorSwordBladeTex" OutName="gi_razor_sword_blade" Format="rgba16" Width="16" Height="16" Offset="0x1320" />
+        <Texture Name="gGiRazorSwordSpotTex" OutName="gi_razor_sword_spot" Format="i8" Width="8" Height="8" Offset="0x1520" />
+    </File>
+</Root>

@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Hylian Loach (not inside a bottle) -->
+    <File Name="object_gi_loach" Segment="6">
+
+        <!-- Hylian Loach Display Lists -->
+        <DList Name="gGiHylianLoachDL" Offset="0x7F0" />
+        <DList Name="gGiHylianLoachEmptyDL" Offset="0xD30" />
+
+        <!-- Hylian Loach Textures -->
+        <Texture Name="gGiHylianLoachBodyTex" OutName="gi_hylian_loach_body" Format="i8" Width="32" Height="32" Offset="0xD38" />
+        <Texture Name="gGiHylianLoachSideFinTex" OutName="gi_hylian_loach_side_fin" Format="ia8" Width="16" Height="16" Offset="0x1138" />
+        <Texture Name="gGiHylianLoachBackFinTex" OutName="gi_hylian_loach_back_fin" Format="ia8" Width="16" Height="16" Offset="0x1238" />
+        <Texture Name="gGiHylianLoachEyeTex" OutName="gi_hylian_loach_eye" Format="ia8" Width="16" Height="16" Offset="0x1338" />
+    </File>
+</Root>

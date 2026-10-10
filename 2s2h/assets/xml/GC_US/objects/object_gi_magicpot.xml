@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Magic Jar -->
+    <File Name="object_gi_magicpot" Segment="6">
+
+        <!-- Magic Jar Display Lists -->
+        <DList Name="gGiMagicJarSmallDL" Offset="0x580" />
+        <DList Name="gGiMagicJarLargeDL" Offset="0xEE0" />
+    </File>
+</Root>

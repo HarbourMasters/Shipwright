@@ -1,0 +1,6 @@
+<Root>
+    <File Name="ovl_Effect_Ss_Fhg_Flash" BaseAddress="0x8097C990" RangeStart="0x550" RangeEnd="0xA08">
+        <DList Name="gEffFhgFlashDL" Offset="0x590"/>
+        <Texture Name="gEffFhgFlashTex" OutName="eff_fhg_flash" Format="i8" Width="32" Height="32" Offset="0x608" />
+    </File>
+</Root>

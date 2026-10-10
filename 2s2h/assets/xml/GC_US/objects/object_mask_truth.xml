@@ -1,0 +1,6 @@
+﻿<Root>
+    <File Name="object_mask_truth" Segment="10">
+        <DList Name="object_mask_truth_DL_0001A0" Offset="0x1A0" />
+        <Texture Name="object_mask_truth_Tex_000298" OutName="tex_000298" Format="rgba16" Width="32" Height="64" Offset="0x298" />
+    </File>
+</Root>

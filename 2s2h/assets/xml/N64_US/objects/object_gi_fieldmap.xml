@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Get Item Draw: Tingle Map -->
+    <File Name="object_gi_fieldmap" Segment="6">
+
+        <!-- Tingle Map Display Lists -->
+        <DList Name="gGiTingleMapEmptyDL" Offset="0x6E0" />
+        <DList Name="gGiTingleMapDL" Offset="0x6E8" />
+
+        <!-- Tingle Map Textures -->
+        <Texture Name="gGiTingleMapLeftInscriptionsTex" OutName="gi_tingle_map_left_inscriptions" Format="i8" Width="32" Height="40" Offset="0xA20" />
+        <Texture Name="gGiTingleMapRightInscriptionsTex" OutName="gi_tingle_map_right_inscriptions" Format="i8" Width="32" Height="40" Offset="0xF20" />
+        <Texture Name="gGiTingleMapScrollHandleTex" OutName="gi_tingle_map_scroll_handle" Format="i8" Width="32" Height="32" Offset="0x1420" />
+    </File>
+</Root>

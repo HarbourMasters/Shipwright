@@ -1,0 +1,10 @@
+<Root>
+    <File Name="Z2_LAST_ZORA" Segment="2" Game="MM">
+        <Scene Name="Z2_LAST_ZORA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_LAST_ZORA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_ZORA_room_00" Offset="0x0"/>
+        <DList Name="Z2_LAST_ZORA_room_00DL_00DF40" Offset="0xDF40"/>
+        <DList Name="Z2_LAST_ZORA_room_00DL_00E750" Offset="0xE750"/>
+    </File>
+</Root>

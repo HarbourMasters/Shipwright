@@ -1,0 +1,36 @@
+#ifndef KAKUSIANA_KAKUSIANA_ROOM_06_H
+#define KAKUSIANA_KAKUSIANA_ROOM_06_H 1
+
+#include "align_asset_macro.h"
+
+#define dKAKUSIANA_room_06DL_002220 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_002220"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_002220[] = dKAKUSIANA_room_06DL_002220;
+
+#define dKAKUSIANA_room_06DL_001548 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_001548"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_001548[] = dKAKUSIANA_room_06DL_001548;
+
+#define dKAKUSIANA_room_06DL_000AE0 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_000AE0"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_000AE0[] = dKAKUSIANA_room_06DL_000AE0;
+
+#define dKAKUSIANA_room_06DL_000F70 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_000F70"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_000F70[] = dKAKUSIANA_room_06DL_000F70;
+
+#define dKAKUSIANA_room_06Tex_001820 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06Tex_001820"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06Tex_001820[] = dKAKUSIANA_room_06Tex_001820;
+
+#define dKAKUSIANA_room_06DL_0012A0 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_0012A0"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_0012A0[] = dKAKUSIANA_room_06DL_0012A0;
+
+#define dKAKUSIANA_room_06Tex_001620 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06Tex_001620"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06Tex_001620[] = dKAKUSIANA_room_06Tex_001620;
+
+#define dKAKUSIANA_room_06DL_0006C0 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_0006C0"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_0006C0[] = dKAKUSIANA_room_06DL_0006C0;
+
+#define dKAKUSIANA_room_06DL_0015F0 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_0015F0"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_0015F0[] = dKAKUSIANA_room_06DL_0015F0;
+
+#define dKAKUSIANA_room_06DL_002320 "__OTR__scenes/nonmq/KAKUSIANA_scene/KAKUSIANA_room_06DL_002320"
+static const ALIGN_ASSET(2) char KAKUSIANA_room_06DL_002320[] = dKAKUSIANA_room_06DL_002320;
+
+#endif // KAKUSIANA_KAKUSIANA_ROOM_06_H

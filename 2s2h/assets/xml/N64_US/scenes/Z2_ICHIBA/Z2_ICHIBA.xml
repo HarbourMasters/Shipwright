@@ -1,0 +1,11 @@
+<Root>
+    <File Name="Z2_ICHIBA" Segment="2" Game="MM">
+        <Scene Name="Z2_ICHIBA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_ICHIBA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_ICHIBA_room_00" Offset="0x0"/>
+        <DList Name="Z2_ICHIBA_room_00DL_000530" Offset="0x530"/>
+        <DList Name="Z2_ICHIBA_room_00DL_008CF0" Offset="0x8CF0"/>
+        <DList Name="Z2_ICHIBA_room_00DL_00AAB8" Offset="0xAAB8"/>
+    </File>
+</Root>

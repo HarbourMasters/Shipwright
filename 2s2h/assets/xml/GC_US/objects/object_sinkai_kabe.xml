@@ -1,0 +1,6 @@
+﻿<Root>
+    <!-- The collision for the front of the Deep Python's den (the invisible wall) -->
+    <File Name="object_sinkai_kabe" Segment="6">
+        <Collision Name="gPinnacleRockPythonDenCol" Offset="0x48" /> <!-- Original name is "z2_32_kabe_bgdatainfo" -->
+    </File>
+</Root>

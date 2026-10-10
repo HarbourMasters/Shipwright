@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Object for the Goron Shrine Chandelier -->
+    <File Name="object_obj_chan" Segment="6">
+        <DList Name="gChandelierPotHolderDL" Offset="0xA10" /> <!-- Original name is "z2_16_tubo01_modelT" -->
+        <DList Name="gChandelierCenterDL" Offset="0xAF0" /> <!-- Original name is "z2_16_tubo01_model" -->
+        <Texture Name="gChandelierCenterBottomTex" OutName="chandelier_center_bottom" Format="rgba16" Width="32" Height="32" Offset="0xD80" />
+        <Texture Name="gChandelierCenterTopTex" OutName="chandelier_center_top" Format="rgba16" Width="32" Height="32" Offset="0x1580" />
+        <Texture Name="gChandelierChainTex" OutName="chandelier_chain" Format="ia4" Width="16" Height="32" Offset="0x1D80" />
+        <Texture Name="gChandelierPotHolderTex" OutName="chandelier_pot_holder" Format="i8" Width="32" Height="8" Offset="0x1E80" />
+        <DList Name="gChandelierEmptyDL" Offset="0x2350" /> <!-- Original name is "z2_16_tubo02_modelT" -->
+        <DList Name="gChandelierPotDL" Offset="0x2358" /> <!-- Original name is "z2_16_tubo02_model" -->
+        <Texture Name="gChandelierPotTex" OutName="chandelier_pot" Format="rgba16" Width="32" Height="64" Offset="0x24F0" />
+    </File>
+</Root>

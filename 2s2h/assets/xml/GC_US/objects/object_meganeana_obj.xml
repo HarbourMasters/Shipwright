@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_meganeana_obj" Segment="6">
+        <DList Name="object_meganeana_obj_DL_000080" Offset="0x80" />
+        <DList Name="object_meganeana_obj_DL_000110" Offset="0x110" />
+        <Texture Name="object_meganeana_obj_Tex_0001D0" OutName="tex_0001D0" Format="rgba16" Width="32" Height="16" Offset="0x1D0" />
+        <Texture Name="object_meganeana_obj_Tex_0005D0" OutName="tex_0005D0" Format="i4" Width="64" Height="64" Offset="0x5D0" />
+        <Texture Name="object_meganeana_obj_Tex_000DD0" OutName="tex_000DD0" Format="rgba16" Width="32" Height="32" Offset="0xDD0" />
+    </File>
+</Root>

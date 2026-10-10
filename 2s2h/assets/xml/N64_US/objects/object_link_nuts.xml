@@ -1,0 +1,81 @@
+﻿<Root>
+    <File Name="object_link_nuts" Segment="6">
+        <DList Name="gLinkDekuRightThighDL" Offset="0x25D0" />
+        <DList Name="gLinkDekuRightShinDL" Offset="0x26D8" />
+        <DList Name="gLinkDekuRightFootDL" Offset="0x27E0" />
+        <DList Name="gLinkDekuLeftThighDL" Offset="0x28F8" />
+        <DList Name="gLinkDekuLeftShinDL" Offset="0x2A00" />
+        <DList Name="gLinkDekuLeftFootDL" Offset="0x2B08" />
+        <DList Name="gLinkDekuWaistDL" Offset="0x2C20" />
+        <DList Name="gLinkDekuCollarDL" Offset="0x2DD8" />
+        <DList Name="gLinkDekuTorsoDL" Offset="0x2E98" />
+        <DList Name="gLinkDekuHeadDL" Offset="0x2FD0" />
+        <DList Name="gLinkDekuHatDL" Offset="0x3488" />
+        <DList Name="gLinkDekuSheathDL" Offset="0x35F0" />
+        <DList Name="gLinkDekuRightShoulderDL" Offset="0x36B0" />
+        <DList Name="gLinkDekuRightForearmDL" Offset="0x37B8" />
+        <DList Name="gLinkDekuRightHandDL" Offset="0x38C0" />
+        <DList Name="gLinkDekuLeftShoulderDL" Offset="0x39B0" />
+        <DList Name="gLinkDekuLeftForearmDL" Offset="0x3AB8" />
+        <DList Name="gLinkDekuLeftHandDL" Offset="0x3BC0" />
+
+        <Texture Name="object_link_nuts_TLUT_003CB0" OutName="tlut_003CB0" Format="rgba16" Width="16" Height="16" Offset="0x3CB0" />
+        <Texture Name="object_link_nuts_TLUT_003EB0" OutName="tlut_003EB0" Format="rgba16" Width="16" Height="16" Offset="0x3EB0" />
+        <Texture Name="object_link_nuts_Tex_0040B0" OutName="tex_0040B0" Format="ci8" Width="16" Height="16" Offset="0x40B0" />
+        <Texture Name="object_link_nuts_Tex_0041B0" OutName="tex_0041B0" Format="ci8" Width="16" Height="16" Offset="0x41B0" />
+        <Texture Name="object_link_nuts_Tex_0042B0" OutName="tex_0042B0" Format="ci8" Width="16" Height="16" Offset="0x42B0" />
+        <Texture Name="object_link_nuts_Tex_0043B0" OutName="tex_0043B0" Format="ci8" Width="16" Height="16" Offset="0x43B0" />
+        <Texture Name="object_link_nuts_Tex_0044B0" OutName="tex_0044B0" Format="ci8" Width="32" Height="32" Offset="0x44B0" />
+        <Texture Name="object_link_nuts_Tex_0048B0" OutName="tex_0048B0" Format="rgba16" Width="64" Height="32" Offset="0x48B0" />
+        <Texture Name="object_link_nuts_Tex_0058B0" OutName="tex_0058B0" Format="ci8" Width="16" Height="16" Offset="0x58B0" />
+        <DList Name="object_link_nuts_DL_007390" Offset="0x7390" />
+        <DList Name="object_link_nuts_DL_007548" Offset="0x7548" />
+        <DList Name="object_link_nuts_DL_0076A0" Offset="0x76A0" />
+        <DList Name="object_link_nuts_DL_0077D0" Offset="0x77D0" />
+        <DList Name="object_link_nuts_DL_007900" Offset="0x7900" />
+        <DList Name="object_link_nuts_DL_007A28" Offset="0x7A28" />
+        <Texture Name="object_link_nuts_Tex_007B80" OutName="tex_007B80" Format="rgba16" Width="16" Height="16" Offset="0x7B80" />
+        <DList Name="object_link_nuts_DL_008660" Offset="0x8660" />
+        <DList Name="object_link_nuts_DL_008760" Offset="0x8760" />
+        <DList Name="object_link_nuts_DL_008860" Offset="0x8860" />
+        <DList Name="object_link_nuts_DL_008908" Offset="0x8908" />
+        <DList Name="object_link_nuts_DL_0089F0" Offset="0x89F0" />
+        <DList Name="gLinkDekuClosedFlowerDL" Offset="0x8AA0" />
+        <DList Name="object_link_nuts_DL_008AB8" Offset="0x8AB8" />
+        <DList Name="object_link_nuts_DL_008BA0" Offset="0x8BA0" />
+        <DList Name="gLinkDekuOpenFlowerDL" Offset="0x8C50" />
+        <Texture Name="object_link_nuts_Tex_008C68" OutName="tex_008C68" Format="rgba16" Width="16" Height="16" Offset="0x8C68" />
+        <Texture Name="object_link_nuts_Tex_008E68" OutName="tex_008E68" Format="rgba16" Width="16" Height="16" Offset="0x8E68" />
+        <Texture Name="object_link_nuts_Tex_009068" OutName="tex_009068" Format="rgba16" Width="8" Height="8" Offset="0x9068" />
+        <DList Name="object_link_nuts_DL_009AB8" Offset="0x9AB8" />
+        <DList Name="object_link_nuts_DL_009C48" Offset="0x9C48" />
+        <DList Name="object_link_nuts_DL_009DB8" Offset="0x9DB8" />
+        <DList Name="object_link_nuts_DL_00A348" Offset="0xA348" />
+        <Texture Name="object_link_nuts_Tex_00A4E0" OutName="tex_00A4E0" Format="rgba16" Width="32" Height="64" Offset="0xA4E0" />
+        <DList Name="object_link_nuts_DL_00B690" Offset="0xB690" />
+        <Texture Name="object_link_nuts_Tex_00B780" OutName="tex_00B780" Format="ci8" Width="16" Height="16" Offset="0xB780" />
+
+        <Limb Name="gLinkDekuRootLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_ROOT" Offset="0xB880" />
+        <Limb Name="gLinkDekuWaistLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_WAIST" Offset="0xB890" />
+        <Limb Name="gLinkDekuLowerRootLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LOWER_ROOT" Offset="0xB8A0" />
+        <Limb Name="gLinkDekuRightThighLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_THIGH" Offset="0xB8B0" />
+        <Limb Name="gLinkDekuRightShinLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_SHIN" Offset="0xB8C0" />
+        <Limb Name="gLinkDekuRightFootLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_FOOT" Offset="0xB8D0" />
+        <Limb Name="gLinkDekuLeftThighLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_THIGH" Offset="0xB8E0" />
+        <Limb Name="gLinkDekuLeftShinLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_SHIN" Offset="0xB8F0" />
+        <Limb Name="gLinkDekuLeftFootLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_FOOT" Offset="0xB900" />
+        <Limb Name="gLinkDekuUpperRootLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_UPPER_ROOT" Offset="0xB910" />
+        <Limb Name="gLinkDekuHeadLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_HEAD" Offset="0xB920" />
+        <Limb Name="gLinkDekuHatLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_HAT" Offset="0xB930" />
+        <Limb Name="gLinkDekuCollarLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_COLLAR" Offset="0xB940" />
+        <Limb Name="gLinkDekuLeftShoulderLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_SHOULDER" Offset="0xB950" />
+        <Limb Name="gLinkDekuLeftForearmLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_FOREARM" Offset="0xB960" />
+        <Limb Name="gLinkDekuLeftHandLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_LEFT_HAND" Offset="0xB970" />
+        <Limb Name="gLinkDekuRightShoulderLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_SHOULDER" Offset="0xB980" />
+        <Limb Name="gLinkDekuRightForearmLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_FOREARM" Offset="0xB990" />
+        <Limb Name="gLinkDekuRightHandLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_RIGHT_HAND" Offset="0xB9A0" />
+        <Limb Name="gLinkDekuSheathLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_SHEATH" Offset="0xB9B0" />
+        <Limb Name="gLinkDekuTorsoLimb" Type="LOD" EnumName="LINK_DEKU_LIMB_TORSO" Offset="0xB9C0" />
+        <Skeleton Name="gLinkDekuSkel" Type="Flex" LimbType="LOD" LimbNone="LINK_DEKU_LIMB_NONE" LimbMax="LINK_DEKU_LIMB_MAX" EnumName="LinkDekuLimb" Offset="0xBA24" />
+    </File>
+</Root>

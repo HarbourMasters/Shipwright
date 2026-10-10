@@ -1,0 +1,19 @@
+﻿<Root>
+    <!-- Assets for a suns song grave with a triforce symbol on it -->
+    <File Name="object_sekihil" Segment="6">
+        <DList Name="gSunsSongGraveTriforceSymbolsBaseDL" Offset="0x340" />
+        <DList Name="gSunsSongGraveTriforceSymbolsDL" Offset="0x4C0" />
+        <DList Name="gSunsSongGraveTriforceStoneDL" Offset="0x4D0" />
+        <DList Name="gSunsSongGraveTriforceDL" Offset="0x5E0" />
+        <Texture Name="gSunsSongGraveTriforceGoronTLUT" OutName="suns_song_grave_triforce_goron_tlut" Format="rgba16" Width="4" Height="4" Offset="0x5F8" />
+        <Texture Name="gSunsSongGraveTriforceKokiriTLUT" OutName="suns_song_grave_triforce_kokiri_tlut" Format="rgba16" Width="4" Height="4" Offset="0x618" />
+        <Texture Name="gSunsSongGraveTriforceUnknownTLUT" OutName="suns_song_grave_triforce_unknown_tlut" Format="rgba16" Width="4" Height="4" Offset="0x638" />
+        <Texture Name="gSunsSongGraveTriforceTLUT" OutName="sun_song_grave_triforce_tlut" Format="rgba16" Width="4" Height="4" Offset="0x658" />
+        <Texture Name="gSunsSongGraveTriforceGraniteTex" OutName="sun_song_grave_triforce_granite" Format="rgba16" Width="32" Height="32" Offset="0x678" />
+        <Texture Name="gSunsSongGraveTriforceMarbleTex" OutName="sun_song_grave_triforce_marble" Format="rgba16" Width="32" Height="64" Offset="0xE78" />
+        <Texture Name="gSunsSongGraveTriforceSymbolTex" OutName="sun_song_grave_triforce_symbol" Format="ia4" Width="128" Height="16" Offset="0x1E78" />
+        <Texture Name="gSunsSongGraveTriforceStoneInscriptionTex" OutName="sun_song_grave_triforce_stone_inscription" Format="ci4" Width="64" Height="64" Offset="0x2278" />
+        <Texture Name="gSunsSongGraveTriforceStaffNotesTex" OutName="sun_song_grave_triforce_staff_notes" Format="ia4" Width="128" Height="32" Offset="0x2A78" />
+        <Collision Name="gSunsSongGraveTriforceCol" Offset="0x33F8" />
+    </File>
+</Root>

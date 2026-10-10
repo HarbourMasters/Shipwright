@@ -1,0 +1,17 @@
+﻿<Root>
+    <!-- Object file for Chuchus -->
+    <File Name="object_slime" Segment="6">
+        <DList Name="gChuchuBodyDL" Offset="0x4C0" />
+        <DList Name="gChuchuEyesDL" Offset="0x650" />
+        <TextureAnimation Name="gChuchuSlimeFlowTexAnim" Offset="0x828" />
+        <DList Name="gChuchuPuddleDL" Offset="0xA10" /> <!-- Original name is "chuchu_dodai" -->
+        <DList Name="gChuchuEmptyDL" Offset="0xB68" />
+        <Texture Name="gChuchuMouthTex" OutName="chuchu_mouth" Format="rgba16" Width="16" Height="16" Offset="0xB70" />
+        <Texture Name="gChuchuEyeSocketTex" OutName="chuchu_eye_socket" Format="rgba16" Width="16" Height="16" Offset="0xD70" />
+        <Texture Name="gChuchuEyeOpenTex" OutName="chuchu_eye_open" Format="rgba16" Width="16" Height="8" Offset="0xF70" />
+        <Texture Name="gChuchuEyeHalfTex" OutName="chuchu_eye_half" Format="rgba16" Width="16" Height="8" Offset="0x1070" />
+        <Texture Name="gChuchuEyeClosedTex" OutName="chuchu_eye_closed" Format="rgba16" Width="16" Height="8" Offset="0x1170" />
+        <Texture Name="gChuchuSlimeFlowTex" OutName="chuchu_slime_flow" Format="i4" Width="32" Height="32" Offset="0x1270" />
+        <Texture Name="gChuchuSlimeBaseTex" OutName="chuchu_slime_base" Format="i4" Width="64" Height="64" Offset="0x1470" />
+    </File>
+</Root>

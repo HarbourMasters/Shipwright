@@ -1,0 +1,65 @@
+﻿<Root>
+    <!-- Assets for Stalchild -->
+    <File Name="object_skb" Segment="6">
+        <Animation Name="gStalchildIdleAnim" Offset="0x9E4" /> <!-- Original name is "babestl_kaiwa" -->
+        <Animation Name="gStalchildSaluteAnim" Offset="0x15EC" /> <!-- Original name is "babestl_keirei" -->
+        <Animation Name="gStalchildSwingOnBranchAnim" Offset="0x1D1C" /> <!-- Original name is "burasagari_wait" -->
+        <Animation Name="gStalchildAttackAnim" Offset="0x2190" /> <!-- Original name is "stal_baby_attack" -->
+        <Blob Name="gStalchildEmpty1Blob" Size="0x20" Offset="0x21A0" />
+        <Animation Name="gStalchildCollapseAnim" Offset="0x270C" /> <!-- Original name is "stal_baby_down" -->
+        <Blob Name="gStalchildEmpty2Blob" Size="0x20" Offset="0x2720" />
+        <Animation Name="gStalchildStaggerAnim" Offset="0x2AC8" /> <!-- Original name is "stal_baby_hit" -->
+        <Blob Name="gStalchildEmpty3Blob" Size="0x10" Offset="0x2AE0" />
+        <Animation Name="gStalchildStandUpAnim" Offset="0x3584" /> <!-- Original name is "stal_baby_start" -->
+        <Texture Name="gStalchildPelvisTex" OutName="stalchild_pelvis" Format="rgba16" Width="16" Height="16" Offset="0x35A0" />
+        <Texture Name="gStalchildRibcageTex" OutName="stalchild_ribcage" Format="rgba16" Width="8" Height="16" Offset="0x37A0" />
+        <Texture Name="gStalchildSkullTex" OutName="stalchild_skull" Format="rgba16" Width="8" Height="8" Offset="0x38A0" />
+        <Texture Name="gStalchildNoseTex" OutName="stalchild_nose" Format="rgba16" Width="8" Height="8" Offset="0x3920" />
+        <Texture Name="gStalchildBoneTex" OutName="stalchild_bone" Format="rgba16" Width="8" Height="8" Offset="0x39A0" />
+        <Texture Name="gStalchildHandAndFeetTex" OutName="stalchild_hand_and_feet" Format="rgba16" Width="8" Height="16" Offset="0x3A20" />
+        <Texture Name="gStalchildTeethTex" OutName="stalchild_teeth" Format="rgba16" Width="16" Height="8" Offset="0x3B20" />
+        <Texture Name="gStalchildEyeSocketTex" OutName="stalchild_eye_socket" Format="rgba16" Width="16" Height="16" Offset="0x3C20" />
+        <Texture Name="gStalchildEyeTex" OutName="stalchild_eye" Format="rgba16" Width="8" Height="8" Offset="0x3E20" />
+        <DList Name="gStalchildHeadDL" Offset="0x4F30" />
+        <DList Name="gStalchildLowerJawDL" Offset="0x5298" />
+        <DList Name="gStalchildRibcageDL" Offset="0x5340" />
+        <DList Name="gStalchildSpineDL" Offset="0x5408" />
+        <DList Name="gStalchildPelvisDL" Offset="0x54A0" />
+        <DList Name="gStalchildLeftUpperArmDL" Offset="0x55A8" />
+        <DList Name="gStalchildLeftLowerArmDL" Offset="0x5668" />
+        <DList Name="gStalchildLeftHandDL" Offset="0x5710" />
+        <DList Name="gStalchildRightUpperArmDL" Offset="0x57D8" />
+        <DList Name="gStalchildRightLowerArmDL" Offset="0x5898" />
+        <DList Name="gStalchildRightHandDL" Offset="0x5940" />
+        <DList Name="gStalchildLeftThighDL" Offset="0x5A08" />
+        <DList Name="gStalchildLeftShinDL" Offset="0x5AA0" />
+        <DList Name="gStalchildLeftFootDL" Offset="0x5B48" />
+        <DList Name="gStalchildRightThighDL" Offset="0x5BE8" />
+        <DList Name="gStalchildRightShinDL" Offset="0x5C80" />
+        <DList Name="gStalchildRightFootDL" Offset="0x5D28" />
+        <Limb Name="gStalchildRootLimb" Type="Standard" EnumName="STALCHILD_LIMB_ROOT" Offset="0x5DC8" />
+        <Limb Name="gStalchildPelvisLimb" Type="Standard" EnumName="STALCHILD_LIMB_PELVIS" Offset="0x5DD4" />
+        <Limb Name="gStalchildRootLegsLimb" Type="Standard" EnumName="STALCHILD_LIMB_ROOT_LEGS" Offset="0x5DE0" />
+        <Limb Name="gStalchildRightThighLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_THIGH" Offset="0x5DEC" />
+        <Limb Name="gStalchildRightShinLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_SHIN" Offset="0x5DF8" />
+        <Limb Name="gStalchildRightFootLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_FOOT" Offset="0x5E04" />
+        <Limb Name="gStalchildLeftThighLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_THIGH" Offset="0x5E10" />
+        <Limb Name="gStalchildLeftShinLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_SHIN" Offset="0x5E1C" />
+        <Limb Name="gStalchildLeftFootLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_FOOT" Offset="0x5E28" />
+        <Limb Name="gStalchildRibcageLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIBCAGE" Offset="0x5E34" />
+        <Limb Name="gStalchildHeadLimb" Type="Standard" EnumName="STALCHILD_LIMB_HEAD" Offset="0x5E40" />
+        <Limb Name="gStalchildLowerJawLimb" Type="Standard" EnumName="STALCHILD_LIMB_LOWER_JAW" Offset="0x5E4C" />
+        <Limb Name="gStalchildRightUpperArmLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_UPPER_ARM" Offset="0x5E58" />
+        <Limb Name="gStalchildRightLowerArmLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_LOWER_ARM" Offset="0x5E64" />
+        <Limb Name="gStalchildRightHandLimb" Type="Standard" EnumName="STALCHILD_LIMB_RIGHT_HAND" Offset="0x5E70" />
+        <Limb Name="gStalchildLeftUpperArmLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_UPPER_ARM" Offset="0x5E7C" />
+        <Limb Name="gStalchildLeftLowerArmLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_LOWER_ARM" Offset="0x5E88" />
+        <Limb Name="gStalchildLeftHandLimb" Type="Standard" EnumName="STALCHILD_LIMB_LEFT_HAND" Offset="0x5E94" />
+        <Limb Name="gStalchildSpineLimb" Type="Standard" EnumName="STALCHILD_LIMB_SPINE" Offset="0x5EA0" />
+        <Skeleton Name="gStalchildSkel" Type="Normal" LimbType="Standard" LimbNone="STALCHILD_LIMB_NONE" LimbMax="STALCHILD_LIMB_MAX" EnumName="StalchildLimb" Offset="0x5EF8" />
+        <Animation Name="gStalchildWalkAnim" Offset="0x64E0" /> <!-- Original name is "stal_baby_walk" -->
+        <Blob Name="gStalchildEmpty4Blob" Size="0x20" Offset="0x64F0" />
+        <Animation Name="gStalchildSitLaughAnim" Offset="0x697C" /> <!-- Original name is "suwari_wait" -->
+        <Animation Name="gStalchildSitTapToesAnim" Offset="0x6D90" /> <!-- Original name is "yankey_wait" -->
+    </File>
+</Root>

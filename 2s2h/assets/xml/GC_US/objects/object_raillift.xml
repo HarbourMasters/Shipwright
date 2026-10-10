@@ -1,0 +1,26 @@
+﻿<Root>
+    <File Name="object_raillift" Segment="6">
+        <DList Name="object_raillift_DL_000200" Offset="0x200" /> <!-- Original name is "m2_ALL_MoguSima_modelT" -->
+        <DList Name="object_raillift_DL_000208" Offset="0x208" /> <!-- Original name is "m2_ALL_MoguSima_model" -->
+        <Texture Name="object_raillift_Tex_000370" OutName="tex_000370" Format="rgba16" Width="32" Height="32" Offset="0x370" />
+        <Texture Name="object_raillift_Tex_000B70" OutName="tex_000B70" Format="rgba16" Width="32" Height="32" Offset="0xB70" />
+        <Texture Name="object_raillift_Tex_001370" OutName="tex_001370" Format="rgba16" Width="32" Height="32" Offset="0x1370" />
+        <DList Name="object_raillift_DL_001DB0" Offset="0x1DB0" /> <!-- Original name is "m2_OcarinaLift_modelT" -->
+        <DList Name="object_raillift_DL_001E40" Offset="0x1E40" /> <!-- Original name is "m2_OcarinaLift_model" -->
+        <Texture Name="object_raillift_Tex_001FC8" OutName="tex_001FC8" Format="rgba16" Width="32" Height="32" Offset="0x1FC8" />
+        <Texture Name="object_raillift_Tex_0027C8" OutName="tex_0027C8" Format="rgba16" Width="32" Height="32" Offset="0x27C8" />
+        <Texture Name="object_raillift_Tex_002FC8" OutName="tex_002FC8" Format="rgba16" Width="32" Height="32" Offset="0x2FC8" />
+        <Texture Name="object_raillift_Tex_0037C8" OutName="tex_0037C8" Format="ia16" Width="32" Height="64" Offset="0x37C8" />
+        <Collision Name="object_raillift_Colheader_0048D0" Offset="0x48D0" /> <!-- Original name is "m2_OcarinaLift_bgdatainfo" -->
+        <DList Name="object_raillift_DL_004BF0" Offset="0x4BF0" />
+        <Collision Name="object_raillift_Colheader_004FF8" Offset="0x4FF8" />
+        <Texture Name="object_raillift_Tex_005030" OutName="tex_005030" Format="rgba16" Width="32" Height="32" Offset="0x5030" />
+        <Texture Name="object_raillift_Tex_005830" OutName="tex_005830" Format="rgba16" Width="32" Height="32" Offset="0x5830" />
+        <Texture Name="object_raillift_Tex_006030" OutName="tex_006030" Format="rgba16" Width="32" Height="32" Offset="0x6030" />
+        <Texture Name="object_raillift_Tex_006830" OutName="tex_006830" Format="i4" Width="64" Height="64" Offset="0x6830" />
+        <DList Name="object_raillift_DL_0071B0" Offset="0x71B0" /> <!-- Original name is "z2_22_lift_modelT" -->
+        <DList Name="object_raillift_DL_0071B8" Offset="0x71B8" /> <!-- Original name is "z2_22_lift_model" -->
+        <Texture Name="object_raillift_Tex_0072B0" OutName="tex_0072B0" Format="rgba16" Width="32" Height="32" Offset="0x72B0" />
+        <Texture Name="object_raillift_Tex_007AB0" OutName="tex_007AB0" Format="rgba16" Width="32" Height="16" Offset="0x7AB0" />
+    </File>
+</Root>

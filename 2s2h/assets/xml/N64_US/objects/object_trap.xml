@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_trap" Segment="6">
+        <Texture Name="object_trap_Tex_000000" OutName="tex_000000" Format="i8" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="object_trap_Tex_000400" OutName="tex_000400" Format="i8" Width="32" Height="32" Offset="0x400" />
+        <Texture Name="object_trap_Tex_000800" OutName="tex_000800" Format="i8" Width="32" Height="32" Offset="0x800" />
+        <DList Name="object_trap_DL_001400" Offset="0x1400" /> <!-- Original name is "trap_model" -->
+        <DList Name="object_trap_DL_001630" Offset="0x1630" /> <!-- Original name is "trap2_center_model" -->
+        <DList Name="object_trap_DL_001710" Offset="0x1710" />
+        <Texture Name="object_trap_Tex_001BD8" OutName="tex_001BD8" Format="rgba16" Width="32" Height="32" Offset="0x1BD8" />
+    </File>
+</Root>

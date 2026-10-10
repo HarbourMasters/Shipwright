@@ -1,0 +1,29 @@
+<Root>
+    <!-- Map Point Names. Must be ia4 128x16 and continguous with `ItemId` starting from `ITEM_MAP_POINT_GREAT_BAY` -->
+    <File Name="map_name_static">
+        <!-- First entries must be continguous with `RegionId` -->
+        <Texture Name="gMapPointGreatBayENGTex" OutName="map_point_great_bay_eng" Format="ia4" Width="128" Height="16" Offset="0x0" />                <!-- ITEM_MAP_POINT_GREAT_BAY -->
+        <Texture Name="gMapPointZoraHallENGTex" OutName="map_point_zora_hall_eng" Format="ia4" Width="128" Height="16" Offset="0x400" />              <!-- ITEM_MAP_POINT_ZORA_HALL -->
+        <Texture Name="gMapPointRomaniRanchENGTex" OutName="map_point_romani_ranch_eng" Format="ia4" Width="128" Height="16" Offset="0x800" />        <!-- ITEM_MAP_POINT_ROMANI_RANCH -->
+        <Texture Name="gMapPointDekuPalaceENGTex" OutName="map_point_deku_palace_eng" Format="ia4" Width="128" Height="16" Offset="0xC00" />          <!-- ITEM_MAP_POINT_DEKU_PALACE -->
+        <!-- Reused for both region and owl warp map point -->
+        <Texture Name="gMapPointWoodfallENGTex" OutName="map_point_woodfall_eng" Format="ia4" Width="128" Height="16" Offset="0x1000" />              <!-- ITEM_MAP_POINT_WOODFALL -->
+        <!-- Reused for both region and owl warp map point -->
+        <Texture Name="gMapPointClockTownENGTex" OutName="map_point_clock_town_eng" Format="ia4" Width="128" Height="16" Offset="0x1400" />           <!-- ITEM_MAP_POINT_CLOCK_TOWN -->
+        <!-- Reused for both region and owl warp map point -->
+        <Texture Name="gMapPointSnowheadENGTex" OutName="map_point_snowhead_eng" Format="ia4" Width="128" Height="16" Offset="0x1800" />              <!-- ITEM_MAP_POINT_SNOWHEAD -->
+        <Texture Name="gMapPointIkanaGraveyardENGTex" OutName="map_point_ikana_graveyard_eng" Format="ia4" Width="128" Height="16" Offset="0x1C00" /> <!-- ITEM_MAP_POINT_IKANA_GRAVEYARD -->
+        <!-- Reused for both region and owl warp map point -->
+        <Texture Name="gMapPointIkanaCanyonENGTex" OutName="map_point_ikana_canyon_eng" Format="ia4" Width="128" Height="16" Offset="0x2000" />       <!-- ITEM_MAP_POINT_IKANA_CANYON -->
+        <Texture Name="gMapPointGoronVillageENGTex" OutName="map_point_goron_village_eng" Format="ia4" Width="128" Height="16" Offset="0x2400" />     <!-- ITEM_MAP_POINT_GORON_VILLAGE -->
+        <!-- Reused for both region and owl warp map point -->
+        <Texture Name="gMapPointStoneTowerENGTex" OutName="map_point_stone_tower_eng" Format="ia4" Width="128" Height="16" Offset="0x2800" />         <!-- ITEM_MAP_POINT_STONE_TOWER -->
+        
+        <!-- Unique Owl Warp Map Points -->
+        <Texture Name="gMapPointGreatBayCoastENGTex" OutName="map_point_great_bay_coast_eng" Format="ia4" Width="128" Height="16" Offset="0x2C00" />    <!-- ITEM_MAP_POINT_GREAT_BAY_COAST -->
+        <Texture Name="gMapPointSouthernSwampENGTex" OutName="map_point_southern_swamp_eng" Format="ia4" Width="128" Height="16" Offset="0x3000" />     <!-- ITEM_MAP_POINT_SOUTHERN_SWAMP -->
+        <Texture Name="gMapPointMountainVillageENGTex" OutName="map_point_mountain_village_eng" Format="ia4" Width="128" Height="16" Offset="0x3400" /> <!-- ITEM_MAP_POINT_MOUNTAIN_VILLAGE -->
+        <Texture Name="gMapPointMilkRoadENGTex" OutName="map_point_milk_road_eng" Format="ia4" Width="128" Height="16" Offset="0x3800" />               <!-- ITEM_MAP_POINT_MILK_ROAD -->
+        <Texture Name="gMapPointZoraCapeENGTex" OutName="map_point_zora_cape_eng" Format="ia4" Width="128" Height="16" Offset="0x3C00" />               <!-- ITEM_MAP_POINT_ZORA_CAPE -->
+    </File>
+</Root>

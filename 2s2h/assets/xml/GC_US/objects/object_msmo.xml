@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Object for the Moon Mask -->
+    <File Name="object_msmo" Segment="6">
+        <DList Name="gMoonMaskDL" Offset="0xE70" />
+        <Texture Name="gMoonMaskEyeTex" OutName="eye" Format="i8" Width="16" Height="16" Offset="0x1320" />
+        <Texture Name="gMoonMaskPatternTex" OutName="pattern" Format="i8" Width="16" Height="16" Offset="0x1420" />
+        <Texture Name="gMoonMaskSilverTex" OutName="silver" Format="i8" Width="16" Height="16" Offset="0x1520" />
+        <Texture Name="gMoonMaskGoldTex" OutName="gold" Format="i4" Width="16" Height="16" Offset="0x1620" />
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_yado_obj" Segment="6">
+        <DList Name="object_yado_obj_DL_000320" Offset="0x320" />
+        <DList Name="object_yado_obj_DL_000430" Offset="0x430" /> <!-- Original name might be "w2_yad_win_model" -->
+        <Texture Name="object_yado_obj_Tex_0005D8" OutName="tex_0005D8" Format="ia16" Width="16" Height="32" Offset="0x5D8" />
+        <Texture Name="object_yado_obj_Tex_0009D8" OutName="tex_0009D8" Format="rgba16" Width="32" Height="16" Offset="0x9D8" />
+        <Texture Name="object_yado_obj_Tex_000DD8" OutName="tex_000DD8" Format="i8" Width="16" Height="16" Offset="0xDD8" />
+        <Texture Name="object_yado_obj_Tex_000ED8" OutName="tex_000ED8" Format="ia16" Width="16" Height="32" Offset="0xED8" />
+        <TextureAnimation Name="object_yado_obj_Matanimheader_0012E8" Offset="0x12E8" />
+    </File>
+</Root>

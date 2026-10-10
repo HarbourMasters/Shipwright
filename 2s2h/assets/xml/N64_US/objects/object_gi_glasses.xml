@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Lens of Truth -->
+    <File Name="object_gi_glasses" Segment="6">
+
+        <!-- Lens of Truth Display Lists -->
+        <DList Name="gGiLensDL" Offset="0xD80" />
+        <DList Name="gGiLensGlassDL" Offset="0x1010" />
+    </File>
+</Root>

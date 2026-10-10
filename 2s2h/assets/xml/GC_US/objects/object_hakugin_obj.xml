@@ -1,0 +1,91 @@
+﻿<Root>
+    <File Name="object_hakugin_obj" Segment="6">
+        <DList Name="object_hakugin_obj_DL_000120" Offset="0x120" />
+        <DList Name="object_hakugin_obj_DL_000128" Offset="0x128" /> <!-- Original name is "i2_H_shutter1_model" -->
+        <Texture Name="object_hakugin_obj_TLUT_000310" OutName="tlut_000310" Format="rgba16" Width="4" Height="4" Offset="0x310" />
+        <Texture Name="object_hakugin_obj_Tex_000330" OutName="tex_000330" Format="ci4" Width="64" Height="64" Offset="0x330" />
+        <DList Name="object_hakugin_obj_DL_000D30" Offset="0xD30" />
+        <DList Name="object_hakugin_obj_DL_000D38" Offset="0xD38" />
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_000E48" Offset="0xE48" />
+        <Texture Name="object_hakugin_obj_TLUT_000E50" OutName="tlut_000E50" Format="rgba16" Width="4" Height="4" Offset="0xE50" />
+        <Texture Name="object_hakugin_obj_Tex_000E70" OutName="tex_000E70" Format="ci4" Width="64" Height="64" Offset="0xE70" />
+        <DList Name="object_hakugin_obj_DL_0016D0" Offset="0x16D0" />
+        <DList Name="object_hakugin_obj_DL_0016D8" Offset="0x16D8" /> <!-- Original name is "i2_haku041_model" -->
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_0017A8" Offset="0x17A8" />
+        <Texture Name="object_hakugin_obj_TLUT_0017B0" OutName="tlut_0017B0" Format="rgba16" Width="4" Height="4" Offset="0x17B0" />
+        <Texture Name="object_hakugin_obj_Tex_0017D0" OutName="tex_0017D0" Format="ci4" Width="64" Height="64" Offset="0x17D0" />
+        <DList Name="object_hakugin_obj_DL_002010" Offset="0x2010" />
+        <DList Name="object_hakugin_obj_DL_002018" Offset="0x2018" /> <!-- Original name is "i2_haku071_model" -->
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_0020E8" Offset="0x20E8" />
+        <Texture Name="object_hakugin_obj_TLUT_0020F0" OutName="tlut_0020F0" Format="rgba16" Width="4" Height="4" Offset="0x20F0" />
+        <Texture Name="object_hakugin_obj_Tex_002110" OutName="tex_002110" Format="ci4" Width="64" Height="64" Offset="0x2110" />
+        <DList Name="object_hakugin_obj_DL_002970" Offset="0x2970" />
+        <DList Name="object_hakugin_obj_DL_002978" Offset="0x2978" /> <!-- Original name is "i2_haku081_model" -->
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_002A58" Offset="0x2A58" />
+        <DList Name="object_hakugin_obj_DL_0035A0" Offset="0x35A0" />
+        <DList Name="object_hakugin_obj_DL_0035A8" Offset="0x35A8" /> <!-- Original name is "i2_haku091_model" -->
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_003888" Offset="0x3888" />
+        <Texture Name="object_hakugin_obj_TLUT_003890" OutName="tlut_003890" Format="rgba16" Width="4" Height="4" Offset="0x3890" />
+        <Texture Name="object_hakugin_obj_TLUT_0038B0" OutName="tlut_0038B0" Format="rgba16" Width="4" Height="4" Offset="0x38B0" />
+        <Texture Name="object_hakugin_obj_Tex_0038D0" OutName="tex_0038D0" Format="ci4" Width="64" Height="64" Offset="0x38D0" />
+        <Texture Name="object_hakugin_obj_Tex_0040D0" OutName="tex_0040D0" Format="ci4" Width="64" Height="64" Offset="0x40D0" />
+        <DList Name="object_hakugin_obj_DL_004920" Offset="0x4920" />
+        <DList Name="object_hakugin_obj_DL_004928" Offset="0x4928" /> <!-- Original name is "i2_haku0a1_model" -->
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_0049F8" Offset="0x49F8" />
+        <Texture Name="object_hakugin_obj_TLUT_004A00" OutName="tlut_004A00" Format="rgba16" Width="4" Height="4" Offset="0x4A00" />
+        <Texture Name="object_hakugin_obj_Tex_004A20" OutName="tex_004A20" Format="ci4" Width="64" Height="64" Offset="0x4A20" />
+        <DList Name="object_hakugin_obj_DL_005260" Offset="0x5260" />
+        <DList Name="object_hakugin_obj_DL_005268" Offset="0x5268" />
+        <TextureAnimation Name="object_hakugin_obj_Matanimheader_005338" Offset="0x5338" />
+        <Texture Name="object_hakugin_obj_TLUT_005340" OutName="tlut_005340" Format="rgba16" Width="4" Height="4" Offset="0x5340" />
+        <Texture Name="object_hakugin_obj_Tex_005360" OutName="tex_005360" Format="ci4" Width="64" Height="64" Offset="0x5360" />
+        <DList Name="object_hakugin_obj_DL_006120" Offset="0x6120" />
+        <DList Name="object_hakugin_obj_DL_006128" Offset="0x6128" /> <!-- Original name is "i2_H_RASENsita_model" -->
+        <Texture Name="object_hakugin_obj_TLUT_0064C0" OutName="tlut_0064C0" Format="rgba16" Width="4" Height="4" Offset="0x64C0" />
+        <Texture Name="object_hakugin_obj_TLUT_0064E0" OutName="tlut_0064E0" Format="rgba16" Width="4" Height="4" Offset="0x64E0" />
+        <Texture Name="object_hakugin_obj_TLUT_006500" OutName="tlut_006500" Format="rgba16" Width="4" Height="4" Offset="0x6500" />
+        <Texture Name="object_hakugin_obj_Tex_006520" OutName="tex_006520" Format="ci4" Width="64" Height="64" Offset="0x6520" />
+        <Texture Name="object_hakugin_obj_Tex_006D20" OutName="tex_006D20" Format="ci4" Width="64" Height="64" Offset="0x6D20" />
+        <Texture Name="object_hakugin_obj_Tex_007520" OutName="tex_007520" Format="rgba16" Width="32" Height="32" Offset="0x7520" />
+        <Texture Name="object_hakugin_obj_Tex_007D20" OutName="tex_007D20" Format="rgba16" Width="32" Height="32" Offset="0x7D20" />
+        <Texture Name="object_hakugin_obj_Tex_008520" OutName="tex_008520" Format="ci4" Width="64" Height="64" Offset="0x8520" />
+        <DList Name="object_hakugin_obj_DL_009270" Offset="0x9270" />
+        <DList Name="object_hakugin_obj_DL_009278" Offset="0x9278" /> <!-- Original name is "i2_H_RASENue_model" -->
+        <DList Name="object_hakugin_obj_DL_009650" Offset="0x9650" />
+        <DList Name="object_hakugin_obj_DL_009658" Offset="0x9658" /> <!-- Original name is "i2_bomH1_model" -->
+        <Collision Name="object_hakugin_obj_Colheader_009768" Offset="0x9768" /> <!-- Original name is "i2_bomH1_bgdatainfo" -->
+        <DList Name="object_hakugin_obj_DL_009830" Offset="0x9830" /> <!-- Original name is "i2_bomH1_sep_model" -->
+        <DList Name="object_hakugin_obj_DL_0099A0" Offset="0x99A0" />
+        <DList Name="object_hakugin_obj_DL_0099A8" Offset="0x99A8" />
+        <Collision Name="object_hakugin_obj_Colheader_009AF0" Offset="0x9AF0" />
+        <Texture Name="object_hakugin_obj_TLUT_009B20" OutName="tlut_009B20" Format="rgba16" Width="4" Height="4" Offset="0x9B20" />
+        <Texture Name="object_hakugin_obj_TLUT_009B40" OutName="tlut_009B40" Format="rgba16" Width="4" Height="4" Offset="0x9B40" />
+        <Texture Name="object_hakugin_obj_Tex_009B60" OutName="tex_009B60" Format="ci4" Width="64" Height="64" Offset="0x9B60" />
+        <Texture Name="object_hakugin_obj_Tex_00A360" OutName="tex_00A360" Format="ci4" Width="64" Height="64" Offset="0xA360" />
+        <DList Name="object_hakugin_obj_DL_00ACB0" Offset="0xACB0" />
+        <DList Name="object_hakugin_obj_DL_00ACB8" Offset="0xACB8" /> <!-- Original name is "i2_elvH1_model" -->
+        <Texture Name="object_hakugin_obj_TLUT_00AE18" OutName="tlut_00AE18" Format="rgba16" Width="4" Height="4" Offset="0xAE18" />
+        <Texture Name="object_hakugin_obj_TLUT_00AE38" OutName="tlut_00AE38" Format="rgba16" Width="4" Height="4" Offset="0xAE38" />
+        <Texture Name="object_hakugin_obj_Tex_00AE58" OutName="tex_00AE58" Format="ci4" Width="64" Height="64" Offset="0xAE58" />
+        <Texture Name="object_hakugin_obj_Tex_00B658" OutName="tex_00B658" Format="ci4" Width="64" Height="64" Offset="0xB658" />
+        <Collision Name="object_hakugin_obj_Colheader_00BF40" Offset="0xBF40" /> <!-- Original name is "i2_elvH1_bgdatainfo" -->
+        <DList Name="object_hakugin_obj_DL_00C1A0" Offset="0xC1A0" />
+        <DList Name="object_hakugin_obj_DL_00C1A8" Offset="0xC1A8" /> <!-- Original name is "i2_icecol1_model" -->
+        <DList Name="object_hakugin_obj_DL_00C560" Offset="0xC560" />
+        <DList Name="object_hakugin_obj_DL_00C568" Offset="0xC568" /> <!-- Original name is "i2_icecol2_model" -->
+        <DList Name="object_hakugin_obj_DL_00CA30" Offset="0xCA30" />
+        <DList Name="object_hakugin_obj_DL_00CA38" Offset="0xCA38" /> <!-- Original name is "i2_icecolA_model" -->
+        <DList Name="object_hakugin_obj_DL_00CEC0" Offset="0xCEC0" />
+        <DList Name="object_hakugin_obj_DL_00CEC8" Offset="0xCEC8" /> <!-- Original name is "i2_icecolB_model" -->
+        <DList Name="object_hakugin_obj_DL_00D090" Offset="0xD090" />
+        <DList Name="object_hakugin_obj_DL_00D098" Offset="0xD098" /> <!-- Original name is "i2_icecolB_sep_model" -->
+        <Collision Name="object_hakugin_obj_Colheader_00D3B0" Offset="0xD3B0" />
+        <Texture Name="object_hakugin_obj_TLUT_00D3E0" OutName="tlut_00D3E0" Format="rgba16" Width="4" Height="4" Offset="0xD3E0" />
+        <!-- <Blob Name="object_hakugin_obj_Blob_00D400" Size="0x40" Offset="0xD400" /> -->
+        <Texture Name="object_hakugin_obj_Tex_00D440" OutName="tex_00D440" Format="rgba16" Width="64" Height="32" Offset="0xD440" />
+        <Texture Name="object_hakugin_obj_Tex_00E440" OutName="tex_00E440" Format="ci4" Width="64" Height="64" Offset="0xE440" />
+        <Texture Name="object_hakugin_obj_Tex_00EC40" OutName="tex_00EC40" Format="i4" Width="64" Height="64" Offset="0xEC40" />
+        <Texture Name="object_hakugin_obj_Tex_00F440" OutName="tex_00F440" Format="i4" Width="64" Height="64" Offset="0xF440" />
+        <Texture Name="object_hakugin_obj_Tex_00FC40" OutName="tex_00FC40" Format="rgba16" Width="32" Height="32" Offset="0xFC40" />
+    </File>
+</Root>

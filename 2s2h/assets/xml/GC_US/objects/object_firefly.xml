@@ -1,0 +1,83 @@
+﻿<Root>
+    <File Name="object_firefly" Segment="6">
+    
+        <!-- Assets for the Fire Keese-->
+
+        <!-- Fire Keese Flying Animation-->
+        <Animation Name="gFireKeeseFlyAnim" Offset="0x17C" /> <!-- Original name is "firefly_foot_fly" -->
+
+        <!--Fire Keese Textures-->
+        <Texture Name="gFireKeeseBodyTex" OutName="fire_keese_body" Format="rgba16" Width="8" Height="8" Offset="0x210" />
+        <Texture Name="gFireKeeseEyeTex" OutName="fire_keese_eye" Format="rgba16" Width="8" Height="8" Offset="0x290" />
+        <Texture Name="gFireKeeseEarTex" OutName="fire_keese_ear" Format="rgba16" Width="16" Height="8" Offset="0x310" />
+        <Texture Name="gFireKeeseTalonTex" OutName="fire_keese_talon" Format="rgba16" Width="8" Height="16" Offset="0x410" />
+        <Texture Name="gFireKeeseWingTex" OutName="fire_keese_wing" Format="rgba16" Width="4" Height="16" Offset="0x510" />
+
+        <!--Regular Keese Textures-->
+        <Texture Name="gKeeseRedEyeTex" OutName="keese_red_eye" Format="rgba16" Width="8" Height="8" Offset="0x190" />
+        <Texture Name="gKeeseBodyTex" OutName="keese_body" Format="rgba16" Width="8" Height="8" Offset="0x590" />
+        <Texture Name="gKeeseTalonTex" OutName="keese_talon" Format="rgba16" Width="8" Height="16" Offset="0x610" />
+        <Texture Name="gKeeseWingTex" OutName="keese_wing" Format="rgba16" Width="4" Height="16" Offset="0x710" />
+        <Texture Name="gKeeseEarTex" OutName="keese_ear" Format="rgba16" Width="16" Height="8" Offset="0x790" />
+
+        <!--DLists-->
+        <DList Name="gFireKeeseHeadDL" Offset="0xD30" />
+        <DList Name="gFireKeeseBodyDL" Offset="0xF40" />
+        <DList Name="gFireKeeseLeftFootDL" Offset="0x1038" />
+        <DList Name="gFireKeeseRightFootDL" Offset="0x1100" />
+        <DList Name="gFireKeeseRightWingStartDL" Offset="0x11C8" />
+        <DList Name="gFireKeeseRightWingMidDL" Offset="0x1290" />
+        <DList Name="gFireKeeseRightWingEndDL" Offset="0x1358" />
+        <DList Name="gFireKeeseLeftWingEndDL" Offset="0x1420" />
+        <DList Name="gFireKeeseLeftWingMidDL" Offset="0x14E8" />
+        <DList Name="gFireKeeseLeftWingStartDL" Offset="0x15B0" />
+        <DList Name="gKeeseRedEyesDL" Offset="0x1678" />
+
+        <!--Limbs for the whole thing-->
+        <Limb Name="gFireKeeseRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_ROOT" Offset="0x1708" />
+        <Limb Name="gFireKeeseRootWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_ROOT_WRAPPER" Offset="0x1714" />
+
+        <!--Root Limb for all feet-->
+        <Limb Name="gFireKeeseFeetRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_FEET_ROOT" Offset="0x1720" />
+
+        <!--Right Foot Limbs-->
+        <Limb Name="gFireKeeseRightFootRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_FOOT_ROOT" Offset="0x172C" />
+        <Limb Name="gFirekeeseRightFootWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_FOOT_WRAPPER" Offset="0x1738" />
+        <Limb Name="gFireKeeseRightFootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_FOOT" Offset="0x1744" />
+
+        <!--Left Foot Limbs-->
+        <Limb Name="gFireKeeseLeftFootRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_FOOT_ROOT" Offset="0x1750" />
+        <Limb Name="gFireKeeseLeftFootWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_FOOT_WRAPPER" Offset="0x175C" />
+        <Limb Name="gFireKeeseLeftFootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_FOOT" Offset="0x1768" />
+
+        <!--Body Limb-->
+        <Limb Name="gFireKeeseBodyLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_BODY" Offset="0x1774" />
+
+        <!--Left Wing Limbs-->
+        <Limb Name="gFireKeeseLeftWingRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_ROOT" Offset="0x1780" />
+        <Limb Name="gFireKeeseLeftWingWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_WRAPPER" Offset="0x178C" />
+        <Limb Name="gFireKeeseLeftWingEndMidRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_END_MID_ROOT" Offset="0x1798" />
+        <Limb Name="gFireKeeseLeftWingEndRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_END_ROOT" Offset="0x17A4" />
+        <Limb Name="gFireKeeseLeftWingEndLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_END" Offset="0x17B0" />
+        <Limb Name="gFireKeeseLeftWingMidLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_MID" Offset="0x17BC" />
+        <Limb Name="gFireKeeseLeftWingStartLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_LEFT_WING_START" Offset="0x17C8" />
+
+        <!--Right Wing Limbs-->
+        <Limb Name="gFireKeeseRightWingRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_ROOT" Offset="0x17D4" />
+        <Limb Name="gFireKeeseRightWingWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_WRAPPER" Offset="0x17E0" />
+        <Limb Name="gFireKeeseRightWingEndMidRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_END_MID_ROOT" Offset="0x17EC" />
+        <Limb Name="gFireKeeseRightWingEndRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_END_ROOT" Offset="0x17F8" />
+        <Limb Name="gFireKeeseRightWingEndLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_END" Offset="0x1804" />
+        <Limb Name="gFireKeeseRightWingMidLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_MID" Offset="0x1810" />
+        <Limb Name="gFireKeeseRightWingStartLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_RIGHT_WING_START" Offset="0x181C" />
+
+        <!--Head Limbs-->
+        <Limb Name="gFireKeeseHeadRootLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_HEAD_ROOT" Offset="0x1828" />
+        <Limb Name="gFireKeeseHeadWrapperLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_HEAD_WRAPPER" Offset="0x1834" />
+        <Limb Name="gFireKeeseHeadLimb" Type="Standard" EnumName="FIRE_KEESE_LIMB_HEAD" Offset="0x1840" />
+
+        <!--Skeleton-->
+        <Skeleton Name="gFireKeeseSkel" Type="Normal" LimbType="Standard" LimbNone="FIRE_KEESE_LIMB_NONE" LimbMax="FIRE_KEESE_LIMB_MAX" EnumName="FireKeeseLimb" Offset="0x18B8" />
+        
+    </File>
+</Root>

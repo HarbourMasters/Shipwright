@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Postman's Hat -->
+    <File Name="object_gi_mask12" Segment="6">
+
+        <!-- Postman's Hat Display Lists -->
+        <DList Name="gGiPostmanHatBunnyLogoDL" Offset="0x570" />
+        <DList Name="gGiPostmanHatCapDL" Offset="0x608" />
+
+        <!-- Postman's Hat Textures -->
+        <Texture Name="gGiPostmanHatBunnyLogoTex" OutName="gi_postman_hat_bunny_logo" Format="ia8" Width="32" Height="32" Offset="0x900" />
+        <Texture Name="gGiPostmanHatCapTex" OutName="gi_postman_hat_cap" Format="i4" Width="32" Height="32" Offset="0xD00" />
+    </File>
+</Root>

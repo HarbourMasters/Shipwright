@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_boyo" Segment="6">
+        <DList Name="object_boyo_DL_000300" Offset="0x300" />
+        <Texture Name="object_boyo_Tex_000480" OutName="tex_000480" Format="rgba16" Width="32" Height="32" Offset="0x480" />
+        <Texture Name="object_boyo_Tex_000C80" OutName="tex_000C80" Format="rgba16" Width="16" Height="16" Offset="0xC80" />
+        <TextureAnimation Name="object_boyo_Matanimheader_000E88" Offset="0xE88" />
+    </File>
+</Root>

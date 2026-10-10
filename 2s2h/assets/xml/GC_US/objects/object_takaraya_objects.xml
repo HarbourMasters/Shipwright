@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Assets for the Treasure Chest Shop Walls -->
+    <File Name="object_takaraya_objects" Segment="6">
+        <Texture Name="gTreasureChestShopWallWhiteTLUT" OutName="treasure_chest_shop_wall_white_tlut" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="gTreasureChestShopWallBlackTex" OutName="treasure_chest_shop_wall_black" Format="rgba16" Width="32" Height="32" Offset="0x20" />
+        <Texture Name="gTreasureChestShopWallWhiteTex" OutName="treasure_chest_shop_wall_white" Format="ci4" Width="32" Height="32" Offset="0x820" />
+        <DList Name="gTreasureChestShopWallBlackDL" Offset="0xB70" /> <!-- Original name is "z2_takara_box_b_model" -->
+        <DList Name="gTreasureChestShopWallWhiteDL" Offset="0xD60" /> <!-- Original name is "z2_takara_box_w_model" -->
+    </File>
+</Root>

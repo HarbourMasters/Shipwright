@@ -1,0 +1,21 @@
+<Root>
+    <File Name="d2_fine_static">
+        <Texture Name="gSkyboxClear1Tex" OutName="skybox_clear_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+        <Texture Name="gSkyboxClear2Tex" OutName="skybox_clear_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+        <Texture Name="gSkyboxClear3Tex" OutName="skybox_clear_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+        <Texture Name="gSkyboxClear4Tex" OutName="skybox_clear_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+        <Texture Name="gSkyboxClear5Tex" OutName="skybox_clear_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+    </File>
+
+    <File Name="d2_cloud_static">
+        <Texture Name="gSkyboxCloudy1Tex" OutName="skybox_cloudy_1" Format="ci8" Width="128" Height="64" Offset="0x0" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0"/>
+        <Texture Name="gSkyboxCloudy2Tex" OutName="skybox_cloudy_2" Format="ci8" Width="128" Height="64" Offset="0x2000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0" />
+        <Texture Name="gSkyboxCloudy3Tex" OutName="skybox_cloudy_3" Format="ci8" Width="128" Height="64" Offset="0x4000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0" />
+        <Texture Name="gSkyboxCloudy4Tex" OutName="skybox_cloudy_4" Format="ci8" Width="128" Height="64" Offset="0x6000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0" />
+        <Texture Name="gSkyboxCloudy5Tex" OutName="skybox_cloudy_5" Format="ci8" Width="128" Height="128" Offset="0x8000" ExternalTlut="d2_fine_pal_static" ExternalTlutOffset="0x0" />
+    </File>
+
+    <File Name="d2_fine_pal_static">
+        <Texture Name="gSkyboxTLUT" OutName="skybox_tlut" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
+    </File>
+</Root>

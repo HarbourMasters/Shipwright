@@ -1,0 +1,77 @@
+#ifndef ARCHIVES_SCHEDULE_DMA_STATIC_YAR_H
+#define ARCHIVES_SCHEDULE_DMA_STATIC_YAR_H 1
+
+#include "align_asset_macro.h"
+
+#define dgBombersNotebookPhotoAnjuTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoAnjuTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoAnjuTex[] = dgBombersNotebookPhotoAnjuTex;
+
+#define dgBombersNotebookPhotoKafeiTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoKafeiTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoKafeiTex[] = dgBombersNotebookPhotoKafeiTex;
+
+#define dgBombersNotebookPhotoCuriosityShopManTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoCuriosityShopManTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoCuriosityShopManTex[] = dgBombersNotebookPhotoCuriosityShopManTex;
+
+#define dgBombersNotebookPhotoBombShopLadyTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoBombShopLadyTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoBombShopLadyTex[] = dgBombersNotebookPhotoBombShopLadyTex;
+
+#define dgBombersNotebookPhotoRomaniTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoRomaniTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoRomaniTex[] = dgBombersNotebookPhotoRomaniTex;
+
+#define dgBombersNotebookPhotoCremiaTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoCremiaTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoCremiaTex[] = dgBombersNotebookPhotoCremiaTex;
+
+#define dgBombersNotebookPhotoMayorDotourTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoMayorDotourTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoMayorDotourTex[] = dgBombersNotebookPhotoMayorDotourTex;
+
+#define dgBombersNotebookPhotoMadameAromaTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoMadameAromaTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoMadameAromaTex[] = dgBombersNotebookPhotoMadameAromaTex;
+
+#define dgBombersNotebookPhotoTotoTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoTotoTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoTotoTex[] = dgBombersNotebookPhotoTotoTex;
+
+#define dgBombersNotebookPhotoGormanTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoGormanTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoGormanTex[] = dgBombersNotebookPhotoGormanTex;
+
+#define dgBombersNotebookPhotoPostmanTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoPostmanTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoPostmanTex[] = dgBombersNotebookPhotoPostmanTex;
+
+#define dgBombersNotebookPhotoRosaSistersTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoRosaSistersTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoRosaSistersTex[] = dgBombersNotebookPhotoRosaSistersTex;
+
+#define dgBombersNotebookPhotoToiletHandTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoToiletHandTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoToiletHandTex[] = dgBombersNotebookPhotoToiletHandTex;
+
+#define dgBombersNotebookPhotoAnjusGrandmotherTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoAnjusGrandmotherTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoAnjusGrandmotherTex[] = dgBombersNotebookPhotoAnjusGrandmotherTex;
+
+#define dgBombersNotebookPhotoKamaroTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoKamaroTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoKamaroTex[] = dgBombersNotebookPhotoKamaroTex;
+
+#define dgBombersNotebookPhotoGrogTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoGrogTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoGrogTex[] = dgBombersNotebookPhotoGrogTex;
+
+#define dgBombersNotebookPhotoGormanBrothersTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoGormanBrothersTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoGormanBrothersTex[] = dgBombersNotebookPhotoGormanBrothersTex;
+
+#define dgBombersNotebookPhotoShiroTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoShiroTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoShiroTex[] = dgBombersNotebookPhotoShiroTex;
+
+#define dgBombersNotebookPhotoGuruGuruTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoGuruGuruTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoGuruGuruTex[] = dgBombersNotebookPhotoGuruGuruTex;
+
+#define dgBombersNotebookPhotoBombersTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoBombersTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoBombersTex[] = dgBombersNotebookPhotoBombersTex;
+
+#define dgBombersNotebookPhotoMadameAromaBrightTex "__OTR__schedule_dma_static_yar/gBombersNotebookPhotoMadameAromaBrightTex"
+static const ALIGN_ASSET(2) char gBombersNotebookPhotoMadameAromaBrightTex[] = dgBombersNotebookPhotoMadameAromaBrightTex;
+
+#define dgBombersNotebookEntryIconExclamationPointLargeTex "__OTR__schedule_dma_static_yar/gBombersNotebookEntryIconExclamationPointLargeTex"
+static const ALIGN_ASSET(2) char gBombersNotebookEntryIconExclamationPointLargeTex[] = dgBombersNotebookEntryIconExclamationPointLargeTex;
+
+#define dgBombersNotebookEntryIconMaskTex "__OTR__schedule_dma_static_yar/gBombersNotebookEntryIconMaskTex"
+static const ALIGN_ASSET(2) char gBombersNotebookEntryIconMaskTex[] = dgBombersNotebookEntryIconMaskTex;
+
+#define dgBombersNotebookEntryIconRibbonTex "__OTR__schedule_dma_static_yar/gBombersNotebookEntryIconRibbonTex"
+static const ALIGN_ASSET(2) char gBombersNotebookEntryIconRibbonTex[] = dgBombersNotebookEntryIconRibbonTex;
+#endif // ARCHIVES_SCHEDULE_DMA_STATIC_YAR_H

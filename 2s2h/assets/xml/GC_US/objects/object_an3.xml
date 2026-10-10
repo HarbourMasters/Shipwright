@@ -1,0 +1,18 @@
+﻿<Root>
+    <!-- Assets for Anju sweeping on the third day -->
+    <File Name="object_an3" Segment="6">
+        <!-- Empty -->
+        <DList Name="gAnju3EmptyDL" Offset="0x300" />
+
+        <!-- Broom -->
+        <DList Name="gAnju3BroomDL" Offset="0x308" /> <!-- Original name is "an_hoki_model" ("broom") -->
+        <Texture Name="gAnju3BroomCircleTex" OutName="broom_circle" Format="i8" Width="16" Height="16" Offset="0x4C8" />
+        <Texture Name="gAnju3BroomSideTex" OutName="broom_side" Format="rgba16" Width="8" Height="32" Offset="0x5C8" />
+        <Texture Name="gAnju3BroomBaseTex" OutName="broom_base" Format="rgba16" Width="8" Height="8" Offset="0x7C8" />
+
+        <!-- Broom-related animations -->
+        <Animation Name="gAnju3BroomSweepAnim" Offset="0x12C0" /> <!-- Original name is "an_hokihaku" ("haku" = "to sweep; to brush; to clean​") -->
+        <Animation Name="gAnju3BroomIdleAnim" Offset="0x201C" /> <!-- Original name is "an_hokiwait" -->
+        <Animation Name="gAnju3BroomWalkAnim" Offset="0x2A4C" /> <!-- Original name is "an_hokiwalk" -->
+    </File>
+</Root>

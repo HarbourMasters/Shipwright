@@ -1,0 +1,13 @@
+﻿<Root>
+    <!--
+        The Moon's Tear that can be seen falling from the telescope,
+        along with its associated fire trail.
+    -->
+    <File Name="object_moonston" Segment="6">
+        <DList Name="gFallingMoonsTearDL" Offset="0x400" /> <!-- Original name is "moon_stone_g1_FT_model" -->
+        <DList Name="gFallingMoonsTearFireDL" Offset="0x4C8" /> <!-- Original name is "moon_stone_g2_FT_model" -->
+        <Texture Name="gFallingMoonsTearTex" OutName="falling_moons_tear" Format="i8" Width="32" Height="32" Offset="0x608" />
+        <Texture Name="gFallingMoonsTearFireTex" OutName="falling_moons_tear_fire" Format="i8" Width="32" Height="64" Offset="0xA08" />
+        <TextureAnimation Name="gFallingMoonsTearTexAnim" Offset="0x1220" />
+    </File>
+</Root>

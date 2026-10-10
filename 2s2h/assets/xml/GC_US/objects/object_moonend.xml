@@ -1,0 +1,47 @@
+﻿<Root>
+    <File Name="object_moonend" Segment="6">
+        <!--<Blob Name="object_moonend_Blob_000000" Size="0x1214" Offset="0x0" />
+        <Blob Name="object_moonend_Blob_001214" Size="0x1C" Offset="0x1214" />-->
+        <KeyFrameAnimation Name="gMoonendKFAnim_1214" Skel="0xB5A0" Offset="0x1214"/>
+        <DList Name="object_moonend_DL_0055F0" Offset="0x55F0" />
+        <DList Name="object_moonend_DL_0061F8" Offset="0x61F8" />
+        <DList Name="object_moonend_DL_006460" Offset="0x6460" />
+        <DList Name="object_moonend_DL_006588" Offset="0x6588" />
+        <DList Name="object_moonend_DL_0066B0" Offset="0x66B0" />
+        <DList Name="object_moonend_DL_0067D8" Offset="0x67D8" />
+        <DList Name="object_moonend_DL_006900" Offset="0x6900" />
+        <DList Name="object_moonend_DL_006A28" Offset="0x6A28" />
+        <DList Name="object_moonend_DL_006B50" Offset="0x6B50" />
+        <Texture Name="object_moonend_TLUT_006CF0" OutName="tlut_006CF0" Format="rgba16" Width="4" Height="4" Offset="0x6CF0" />
+        <Texture Name="object_moonend_TLUT_006D10" OutName="tlut_006D10" Format="rgba16" Width="4" Height="4" Offset="0x6D10" />
+        <Texture Name="object_moonend_Tex_006D30" OutName="tex_006D30" Format="rgba16" Width="32" Height="32" Offset="0x6D30" />
+        <Texture Name="object_moonend_Tex_007530" OutName="tex_007530" Format="rgba16" Width="64" Height="32" Offset="0x7530" />
+        <Texture Name="object_moonend_Tex_008530" OutName="tex_008530" Format="ci4" Width="64" Height="64" Offset="0x8530" />
+        <Texture Name="object_moonend_Tex_008D30" OutName="tex_008D30" Format="ci4" Width="64" Height="64" Offset="0x8D30" />
+        <Texture Name="object_moonend_Tex_009530" OutName="tex_009530" Format="i8" Width="64" Height="64" Offset="0x9530" />
+        <Texture Name="object_moonend_Tex_00A530" OutName="tex_00A530" Format="i8" Width="64" Height="64" Offset="0xA530" />
+        <TextureAnimation Name="object_moonend_Matanimheader_00B540" Offset="0xB540" />
+
+        <KeyFrameSkel Name="gMoonendKFSkel_B5A0" LimbType="Flex" Offset="0xB5A0"/>
+
+        <!--<Blob Name="object_moonend_Blob_00B550" Size="0x50" Offset="0xB550" />
+        <Blob Name="object_moonend_Blob_00B5A0" Size="0x170" Offset="0xB5A0" />-->
+
+        <DList Name="object_moonend_DL_00CCF0" Offset="0xCCF0" />
+        <DList Name="object_moonend_DL_00CF58" Offset="0xCF58" />
+        <DList Name="object_moonend_DL_00D080" Offset="0xD080" />
+        <DList Name="object_moonend_DL_00D1A8" Offset="0xD1A8" />
+        <DList Name="object_moonend_DL_00D2D0" Offset="0xD2D0" />
+        <DList Name="object_moonend_DL_00D3F8" Offset="0xD3F8" />
+        <DList Name="object_moonend_DL_00D520" Offset="0xD520" />
+        <Texture Name="object_moonend_Tex_00D648" OutName="tex_00D648" Format="i8" Width="64" Height="64" Offset="0xD648" />
+        <TextureAnimation Name="object_moonend_Matanimheader_00E650" Offset="0xE650" />
+        <!-- <Blob Name="object_moonend_Blob_00E658" Size="0x48" Offset="0xE658" /> -->
+        <DList Name="object_moonend_DL_00EB00" Offset="0xEB00" />
+        <Texture Name="object_moonend_Tex_00EC58" OutName="tex_00EC58" Format="i8" Width="64" Height="64" Offset="0xEC58" />
+        <DList Name="object_moonend_DL_010C40" Offset="0x10C40" /> <!-- Original name is "rainbow_model" -->
+        <Texture Name="object_moonend_Tex_0111E0" OutName="tex_0111E0" Format="i8" Width="64" Height="64" Offset="0x111E0" />
+        <Texture Name="object_moonend_Tex_0121E0" OutName="tex_0121E0" Format="i8" Width="32" Height="64" Offset="0x121E0" />
+        <TextureAnimation Name="object_moonend_Matanimheader_0129F0" Offset="0x129F0" />
+    </File>
+</Root>

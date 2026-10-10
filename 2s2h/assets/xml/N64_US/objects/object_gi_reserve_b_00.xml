@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Room Key -->
+    <File Name="object_gi_reserve_b_00" Segment="6">
+
+        <!-- Room Key Display Lists -->
+        <DList Name="gGiRoomKeyDL" Offset="0x7D0" />
+        <DList Name="gGiRoomKeyEmptyDL" Offset="0xC20" />
+
+        <!-- Room Key Textures -->
+        <Texture Name="gGiRoomKeyInscriptionsTex" OutName="gi_room_key_inscriptions" Format="i4" Width="64" Height="16" Offset="0xC28" />
+        <Texture Name="gGiRoomKeyBackgroundTex" OutName="gi_room_key_background" Format="i4" Width="32" Height="32" Offset="0xE28" />
+    </File>
+</Root>

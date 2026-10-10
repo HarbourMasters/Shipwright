@@ -1,0 +1,64 @@
+﻿<Root>
+    <File Name="object_ssh" Segment="6">
+        <DList Name="object_ssh_DL_0000D0" Offset="0xD0" />
+        <DList Name="object_ssh_DL_0000D8" Offset="0xD8" />
+        <Texture Name="object_ssh_Tex_000190" OutName="tex_000190" Format="rgba16" Width="32" Height="64" Offset="0x190" />
+        <Animation Name="object_ssh_Anim_001494" Offset="0x1494" /> <!-- Original name is "st_matsu" -->
+        <Texture Name="object_ssh_TLUT_0014B0" OutName="tlut_0014B0" Format="rgba16" Width="16" Height="16" Offset="0x14B0" />
+        <Texture Name="object_ssh_Tex_0016B0" OutName="tex_0016B0" Format="ci8" Width="8" Height="8" Offset="0x16B0" />
+        <Texture Name="object_ssh_Tex_0016F0" OutName="tex_0016F0" Format="ci8" Width="16" Height="8" Offset="0x16F0" />
+        <Texture Name="object_ssh_Tex_001770" OutName="tex_001770" Format="ci8" Width="8" Height="8" Offset="0x1770" />
+        <Texture Name="object_ssh_Tex_0017B0" OutName="tex_0017B0" Format="i8" Width="16" Height="16" Offset="0x17B0" />
+        <Texture Name="object_ssh_Tex_0018B0" OutName="tex_0018B0" Format="ci8" Width="8" Height="16" Offset="0x18B0" />
+        <Texture Name="object_ssh_Tex_001930" OutName="tex_001930" Format="ci8" Width="8" Height="8" Offset="0x1930" />
+        <Texture Name="object_ssh_Tex_001970" OutName="tex_001970" Format="ci8" Width="32" Height="32" Offset="0x1970" />
+        <Texture Name="object_ssh_Tex_001D70" OutName="tex_001D70" Format="ci8" Width="8" Height="16" Offset="0x1D70" />
+        <Texture Name="object_ssh_Tex_001DF0" OutName="tex_001DF0" Format="ci8" Width="32" Height="32" Offset="0x1DF0" />
+        <Texture Name="object_ssh_Tex_0021F0" OutName="tex_0021F0" Format="ci8" Width="32" Height="32" Offset="0x21F0" />
+        <DList Name="object_ssh_DL_004E60" Offset="0x4E60" />
+        <DList Name="object_ssh_DL_005210" Offset="0x5210" />
+        <DList Name="object_ssh_DL_0056A0" Offset="0x56A0" />
+        <DList Name="object_ssh_DL_005850" Offset="0x5850" />
+        <DList Name="object_ssh_DL_005A08" Offset="0x5A08" />
+        <DList Name="object_ssh_DL_005AD0" Offset="0x5AD0" />
+        <DList Name="object_ssh_DL_005B98" Offset="0x5B98" />
+        <DList Name="object_ssh_DL_005C60" Offset="0x5C60" />
+        <DList Name="object_ssh_DL_005D28" Offset="0x5D28" />
+        <DList Name="object_ssh_DL_005DF0" Offset="0x5DF0" />
+        <DList Name="object_ssh_DL_005EB8" Offset="0x5EB8" />
+        <DList Name="object_ssh_DL_005F78" Offset="0x5F78" />
+        <DList Name="object_ssh_DL_0061D8" Offset="0x61D8" />
+        <Limb Name="object_ssh_Standardlimb_0062A0" Type="Standard" EnumName="OBJECT_SSH_LIMB_01" Offset="0x62A0" />
+        <Limb Name="object_ssh_Standardlimb_0062AC" Type="Standard" EnumName="OBJECT_SSH_LIMB_02" Offset="0x62AC" />
+        <Limb Name="object_ssh_Standardlimb_0062B8" Type="Standard" EnumName="OBJECT_SSH_LIMB_03" Offset="0x62B8" />
+        <Limb Name="object_ssh_Standardlimb_0062C4" Type="Standard" EnumName="OBJECT_SSH_LIMB_04" Offset="0x62C4" />
+        <Limb Name="object_ssh_Standardlimb_0062D0" Type="Standard" EnumName="OBJECT_SSH_LIMB_05" Offset="0x62D0" />
+        <Limb Name="object_ssh_Standardlimb_0062DC" Type="Standard" EnumName="OBJECT_SSH_LIMB_06" Offset="0x62DC" />
+        <Limb Name="object_ssh_Standardlimb_0062E8" Type="Standard" EnumName="OBJECT_SSH_LIMB_07" Offset="0x62E8" />
+        <Limb Name="object_ssh_Standardlimb_0062F4" Type="Standard" EnumName="OBJECT_SSH_LIMB_08" Offset="0x62F4" />
+        <Limb Name="object_ssh_Standardlimb_006300" Type="Standard" EnumName="OBJECT_SSH_LIMB_09" Offset="0x6300" />
+        <Limb Name="object_ssh_Standardlimb_00630C" Type="Standard" EnumName="OBJECT_SSH_LIMB_0A" Offset="0x630C" />
+        <Limb Name="object_ssh_Standardlimb_006318" Type="Standard" EnumName="OBJECT_SSH_LIMB_0B" Offset="0x6318" />
+        <Limb Name="object_ssh_Standardlimb_006324" Type="Standard" EnumName="OBJECT_SSH_LIMB_0C" Offset="0x6324" />
+        <Limb Name="object_ssh_Standardlimb_006330" Type="Standard" EnumName="OBJECT_SSH_LIMB_0D" Offset="0x6330" />
+        <Limb Name="object_ssh_Standardlimb_00633C" Type="Standard" EnumName="OBJECT_SSH_LIMB_0E" Offset="0x633C" />
+        <Limb Name="object_ssh_Standardlimb_006348" Type="Standard" EnumName="OBJECT_SSH_LIMB_0F" Offset="0x6348" />
+        <Limb Name="object_ssh_Standardlimb_006354" Type="Standard" EnumName="OBJECT_SSH_LIMB_10" Offset="0x6354" />
+        <Limb Name="object_ssh_Standardlimb_006360" Type="Standard" EnumName="OBJECT_SSH_LIMB_11" Offset="0x6360" />
+        <Limb Name="object_ssh_Standardlimb_00636C" Type="Standard" EnumName="OBJECT_SSH_LIMB_12" Offset="0x636C" />
+        <Limb Name="object_ssh_Standardlimb_006378" Type="Standard" EnumName="OBJECT_SSH_LIMB_13" Offset="0x6378" />
+        <Limb Name="object_ssh_Standardlimb_006384" Type="Standard" EnumName="OBJECT_SSH_LIMB_14" Offset="0x6384" />
+        <Limb Name="object_ssh_Standardlimb_006390" Type="Standard" EnumName="OBJECT_SSH_LIMB_15" Offset="0x6390" />
+        <Limb Name="object_ssh_Standardlimb_00639C" Type="Standard" EnumName="OBJECT_SSH_LIMB_16" Offset="0x639C" />
+        <Limb Name="object_ssh_Standardlimb_0063A8" Type="Standard" EnumName="OBJECT_SSH_LIMB_17" Offset="0x63A8" />
+        <Limb Name="object_ssh_Standardlimb_0063B4" Type="Standard" EnumName="OBJECT_SSH_LIMB_18" Offset="0x63B4" />
+        <Limb Name="object_ssh_Standardlimb_0063C0" Type="Standard" EnumName="OBJECT_SSH_LIMB_19" Offset="0x63C0" />
+        <Limb Name="object_ssh_Standardlimb_0063CC" Type="Standard" EnumName="OBJECT_SSH_LIMB_1A" Offset="0x63CC" />
+        <Limb Name="object_ssh_Standardlimb_0063D8" Type="Standard" EnumName="OBJECT_SSH_LIMB_1B" Offset="0x63D8" />
+        <Limb Name="object_ssh_Standardlimb_0063E4" Type="Standard" EnumName="OBJECT_SSH_LIMB_1C" Offset="0x63E4" />
+        <Limb Name="object_ssh_Standardlimb_0063F0" Type="Standard" EnumName="OBJECT_SSH_LIMB_1D" Offset="0x63F0" />
+        <Skeleton Name="object_ssh_Skel_006470" Type="Normal" LimbType="Standard" LimbNone="OBJECT_SSH_LIMB_NONE" LimbMax="OBJECT_SSH_LIMB_MAX" EnumName="ObjectSshLimb" Offset="0x6470" />
+        <Animation Name="object_ssh_Anim_006788" Offset="0x6788" /> <!-- Original name is "st_otchiru" -->
+        <Animation Name="object_ssh_Anim_006D78" Offset="0x6D78" /> <!-- Original name is "st_yarare" -->
+    </File>
+</Root>

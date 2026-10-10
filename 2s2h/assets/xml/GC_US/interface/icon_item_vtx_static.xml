@@ -1,0 +1,13 @@
+<Root>
+    <ExternalFile XmlPath="archives/icon_item_static.xml" OutPath="assets/archives/icon_item_static"/>
+    <File Name="icon_item_vtx_static" Segment="11">
+        <DList Name="gItemNamePanelDL" Offset="0x0"/>
+        <DList Name="gZButtonIconDL" Offset="0x90"/>
+        <DList Name="gRButtonIconDL" Offset="0xE0"/>
+        <DList Name="gCButtonIconsDL" Offset="0x130"/>
+        <DList Name="gAButtonIconDL" Offset="0x188"/>
+        <DList Name="gBButtonIconDL" Offset="0x1E0"/>
+        <DList Name="gPromptCursorLeftDL" Offset="0x238"/>
+        <DList Name="gPromptCursorRightDL" Offset="0x288"/>
+    </File>
+</Root>

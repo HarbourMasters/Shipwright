@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Object for green magic pot -->
+    <File Name="object_racetsubo" Segment="6">
+        <DList Name="gMagicPotEmpty1DL" Offset="0x270" />
+        <DList Name="gMagicPotDL" Offset="0x278" /> <!-- Original name is "z2_tubo_model" -->
+        <Texture Name="gMagicPotWallTex" OutName="magic_pot_wall" Format="rgba16" Width="32" Height="64" Offset="0x3E0" />
+        <Texture Name="gMagicPotRimTex" OutName="magic_pot_rim" Format="rgba16" Width="16" Height="16" Offset="0x13E0" />
+        <DList Name="gMagicPotShardDL" Offset="0x1610" /> <!-- Original name is "z2_tubo_hahen_model" -->
+        <DList Name="gMagicPotEmpty2DL" Offset="0x1698" />
+        <Texture Name="gMagicPotShardTex" OutName="magic_pot_shard" Format="rgba16" Width="16" Height="16" Offset="0x16A0" />
+    </File>
+</Root>

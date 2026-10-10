@@ -1,0 +1,44 @@
+<Root>
+    <File Name="ovl_En_Clear_Tag" BaseAddress="0x80947F60" RangeStart="0x2F00" RangeEnd="0x5D00">
+
+        <!-- Debris from explosion -->
+        <DList Name="gClearTagDebrisEffectMaterialDL" Offset="0x3130"/>
+        <Texture Name="gClearTagDebrisEffectTex" OutName="clear_tag_debris_effect" Format="rgba16" Width="16" Height="16" Offset="0x2F00"/>
+        <DList Name="gClearTagDebrisEffectDL" Offset="0x31B0"/>
+        <Array Name="gClearTagDebrisEffectVtx" Count="3" Offset="0x3100">
+            <Vtx/>
+        </Array>
+
+        <!-- Used for inner black smoke cloud from explosion: multi-texture -->
+        <DList Name="gClearTagFireEffectMaterialDL" Offset="0x37F8"/>
+        <Texture Name="gClearTagFireEffectFlickerTex" OutName="clear_tag_fire_effect_flicker" Format="i4" Width="32" Height="64" Offset="0x31C8"/>
+        <Texture Name="gClearTagFireEffectBackgroundTex" OutName="clear_tag_fire_effect_background" Format="i4" Width="32" Height="32" Offset="0x35C8"/>
+        <DList Name="gClearTagFireEffectDL" Offset="0x38A0"/> <!-- Original name might be "a_fireball_model" -->
+        <Array Name="gClearTagFireEffectVtx" Count="3" Offset="0x37C8">
+            <Vtx/>
+        </Array>
+
+        <!-- Used for spherical outer-most white-yellow cloud from explosions -->
+        <DList Name="gClearTagFlashEffectDL" Offset="0x4900"/>
+        <Texture Name="gClearTagFlashEffectTex" OutName="clear_tag_flash_effect" Format="i8" Width="64" Height="64" Offset="0x38C0"/>
+        <Array Name="gClearTagFlashEffectVtx" Count="4" Offset="0x48C0">
+            <Vtx/>
+        </Array>
+
+        <!-- Used for spherical outer-most cloud from explosions applied to floor poly -->
+        <DList Name="gClearTagFlashEffectGroundDL" Offset="0x4BB0"/>
+        <Texture Name="gClearTagFlashEffectGroundTex" OutName="clear_tag_flash_ground_effect" Format="i4" Width="32" Height="32" Offset="0x4980"/>
+        <Array Name="gClearTagFlashEffectGroundVtx" Count="3" Offset="0x4B80">
+            <Vtx/>
+        </Array>
+
+        <!-- Used for spherical glowing light orbs squished thin into light rays -->
+        <DList Name="gClearTagLightRayEffectMaterialDL" Offset="0x5C78"/>
+        <Texture Name="gClearTagLightRayEffectTex" OutName="clear_tag_light_ray_effect" Format="i8" Width="64" Height="64" Offset="0x4C38"/>
+        <DList Name="gClearTagLightRayEffectDL" Offset="0x5CE8"/>
+        <Array Name="gClearTagLightRayEffectVtx" Count="4" Offset="0x5C38">
+            <Vtx/>
+        </Array>
+
+    </File>
+</Root>

@@ -1,0 +1,6 @@
+#ifndef TEXT_STAFF_MESSAGE_DATA_STATIC_H
+#define TEXT_STAFF_MESSAGE_DATA_STATIC_H 1
+
+#include "align_asset_macro.h"
+
+#endif // TEXT_STAFF_MESSAGE_DATA_STATIC_H

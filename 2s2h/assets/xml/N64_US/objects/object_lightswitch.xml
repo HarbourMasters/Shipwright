@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_lightswitch" Segment="6">
+        <DList Name="object_lightswitch_DL_000260" Offset="0x260" /> <!-- Original name is "switch_8_model" -->
+        <DList Name="object_lightswitch_DL_000398" Offset="0x398" /> <!-- Original name is "switch_8_fire1_model" -->
+        <!-- a square, geometry only -->
+        <DList Name="object_lightswitch_DL_000408" Offset="0x408" /> <!-- Original name is "switch_8_fire2_model" -->
+        <Texture Name="object_lightswitch_Tex_000420" OutName="tex_000420" Format="rgba16" Width="32" Height="32" Offset="0x420" /> <!-- eyes open -->
+        <Texture Name="object_lightswitch_Tex_000C20" OutName="tex_000C20" Format="rgba16" Width="32" Height="32" Offset="0xC20" /> <!-- eyes closed -->
+        <Texture Name="object_lightswitch_Tex_001420" OutName="tex_001420" Format="rgba16" Width="32" Height="32" Offset="0x1420" /> <!-- eyes open, smiling -->
+        <Texture Name="object_lightswitch_Tex_001C20" OutName="tex_001C20" Format="rgba16" Width="32" Height="32" Offset="0x1C20" />
+    </File>
+</Root>

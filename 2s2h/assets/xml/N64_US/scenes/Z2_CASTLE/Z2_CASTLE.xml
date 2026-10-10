@@ -1,0 +1,76 @@
+<Root>
+    <File Name="Z2_CASTLE" Segment="2" Game="MM">
+        <Scene Name="Z2_CASTLE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_CASTLE_room_00" Segment="3" Game="MM">
+        <Texture Name="Z2_CASTLE_room_00Tex_00FFB8" Format="rgba16" Width="64" Height="64" Offset="0xFFB8"/>
+        <Texture Name="Z2_CASTLE_room_00Tex_0127B8" Format="rgba16" Width="32" Height="128" Offset="0x127B8"/>
+
+        <Room Name="Z2_CASTLE_room_00" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_00DL_000430" Offset="0x430"/>
+        <DList Name="Z2_CASTLE_room_00DL_00CD30" Offset="0xCD30"/>
+        <DList Name="Z2_CASTLE_room_00DL_017A20" Offset="0x17A20"/>
+        <DList Name="Z2_CASTLE_room_00DL_017E18" Offset="0x17E18"/>
+    </File>
+    <File Name="Z2_CASTLE_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_01" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_01DL_000190" Offset="0x190"/>
+        <DList Name="Z2_CASTLE_room_01DL_004E00" Offset="0x4E00"/>
+        <DList Name="Z2_CASTLE_room_01DL_006240" Offset="0x6240"/>
+        <DList Name="Z2_CASTLE_room_01DL_006250" Offset="0x6250"/>
+    </File>
+    <File Name="Z2_CASTLE_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_02" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_02DL_000180" Offset="0x180"/>
+        <DList Name="Z2_CASTLE_room_02DL_0024C8" Offset="0x24C8"/>
+        <DList Name="Z2_CASTLE_room_02DL_005100" Offset="0x5100"/>
+        <DList Name="Z2_CASTLE_room_02DL_005320" Offset="0x5320"/>
+    </File>
+    <File Name="Z2_CASTLE_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_03" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_03DL_000150" Offset="0x150"/>
+        <DList Name="Z2_CASTLE_room_03DL_003518" Offset="0x3518"/>
+        <DList Name="Z2_CASTLE_room_03DL_005550" Offset="0x5550"/>
+        <DList Name="Z2_CASTLE_room_03DL_005560" Offset="0x5560"/>
+    </File>
+    <File Name="Z2_CASTLE_room_04" Segment="3" Game="MM">
+        <Texture Name="Z2_CASTLE_room_04Tex_004AC0" Format="rgba16" Width="64" Height="64" Offset="0x4AC0"/>
+
+        <Room Name="Z2_CASTLE_room_04" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_04DL_0001E0" Offset="0x1E0"/>
+        <DList Name="Z2_CASTLE_room_04DL_003A80" Offset="0x3A80"/>
+        <DList Name="Z2_CASTLE_room_04DL_0086C0" Offset="0x86C0"/>
+        <DList Name="Z2_CASTLE_room_04DL_0086D0" Offset="0x86D0"/>
+    </File>
+    <File Name="Z2_CASTLE_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_05" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_05DL_000100" Offset="0x100"/>
+        <DList Name="Z2_CASTLE_room_05DL_002C28" Offset="0x2C28"/>
+        <DList Name="Z2_CASTLE_room_05DL_004050" Offset="0x4050"/>
+        <DList Name="Z2_CASTLE_room_05DL_004060" Offset="0x4060"/>
+    </File>
+    <File Name="Z2_CASTLE_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_06" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_06DL_0000D0" Offset="0xD0"/>
+        <DList Name="Z2_CASTLE_room_06DL_001D88" Offset="0x1D88"/>
+        <DList Name="Z2_CASTLE_room_06DL_0025A0" Offset="0x25A0"/>
+        <DList Name="Z2_CASTLE_room_06DL_0025B0" Offset="0x25B0"/>
+    </File>
+    <File Name="Z2_CASTLE_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_07" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_07DL_000100" Offset="0x100"/>
+        <DList Name="Z2_CASTLE_room_07DL_001E28" Offset="0x1E28"/>
+        <DList Name="Z2_CASTLE_room_07DL_002650" Offset="0x2650"/>
+        <DList Name="Z2_CASTLE_room_07DL_002660" Offset="0x2660"/>
+    </File>
+    <File Name="Z2_CASTLE_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_08" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_08DL_000080" Offset="0x80"/>
+        <DList Name="Z2_CASTLE_room_08DL_000AE8" Offset="0xAE8"/>
+    </File>
+    <File Name="Z2_CASTLE_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_CASTLE_room_09" Offset="0x0"/>
+        <DList Name="Z2_CASTLE_room_09DL_000080" Offset="0x80"/>
+        <DList Name="Z2_CASTLE_room_09DL_000AF0" Offset="0xAF0"/>
+    </File>
+</Root>

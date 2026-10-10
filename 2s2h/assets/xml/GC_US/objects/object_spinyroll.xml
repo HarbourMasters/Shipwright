@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_spinyroll" Segment="6">
+        <DList Name="object_spinyroll_DL_000460" Offset="0x460" /> <!-- Original name is "yda5_02_model" -->
+        <Texture Name="object_spinyroll_Tex_0005C0" OutName="tex_0005C0" Format="rgba16" Width="32" Height="32" Offset="0x5C0" />
+        <Collision Name="object_spinyroll_Colheader_000E68" Offset="0xE68" /> <!-- Original name is "spinyroll_bgdatainfo" -->
+        <Collision Name="object_spinyroll_Colheader_000F80" Offset="0xF80" /> <!-- Original name is "vspinyroll_bgdatainfo" -->
+    </File>
+</Root>

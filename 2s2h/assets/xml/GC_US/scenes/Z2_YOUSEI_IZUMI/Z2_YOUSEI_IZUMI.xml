@@ -1,0 +1,30 @@
+<Root>
+    <File Name="Z2_YOUSEI_IZUMI" Segment="2" Game="MM">
+        <Scene Name="Z2_YOUSEI_IZUMI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_YOUSEI_IZUMI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_YOUSEI_IZUMI_room_00" Offset="0x0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_00DL_003DF0" Offset="0x3DF0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_00DL_0050B0" Offset="0x50B0"/>
+    </File>
+    <File Name="Z2_YOUSEI_IZUMI_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_YOUSEI_IZUMI_room_01" Offset="0x0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_01DL_003D68" Offset="0x3D68"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_01DL_005030" Offset="0x5030"/>
+    </File>
+    <File Name="Z2_YOUSEI_IZUMI_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_YOUSEI_IZUMI_room_02" Offset="0x0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_02DL_003D90" Offset="0x3D90"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_02DL_005050" Offset="0x5050"/>
+    </File>
+    <File Name="Z2_YOUSEI_IZUMI_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_YOUSEI_IZUMI_room_03" Offset="0x0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_03DL_003D68" Offset="0x3D68"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_03DL_005030" Offset="0x5030"/>
+    </File>
+    <File Name="Z2_YOUSEI_IZUMI_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_YOUSEI_IZUMI_room_04" Offset="0x0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_04DL_003DA0" Offset="0x3DA0"/>
+        <DList Name="Z2_YOUSEI_IZUMI_room_04DL_005060" Offset="0x5060"/>
+    </File>
+</Root>

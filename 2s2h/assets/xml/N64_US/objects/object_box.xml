@@ -1,0 +1,53 @@
+﻿<Root>
+    <File Name="object_box" Segment="6">
+        <Animation Name="gBoxBigChestOpenChildAnim" Offset="0x128" /> <!-- Original name is "cdemo_box_boxA" -->
+        <Animation Name="gBoxBigChestOpenAdultAnim" Offset="0x24C" /> <!-- Original name is "demo_box_boxA" -->
+        <Blob Name="gBoxChestEmpty1Blob" Size="0xF4" Offset="0x25C" />
+        <Animation Name="gBoxChestOpenAnim" Offset="0x43C" /> <!-- Original name is "demo_box_boxB" -->
+        <Blob Name="gBoxChestEmpty2Blob" Size="0x64" Offset="0x44C" />
+        <DList Name="gBoxChestBaseDL" Offset="0x6F0" />
+        <DList Name="gBoxChestBaseGildedDL" Offset="0xA50" />
+        <DList Name="gBoxChestBaseOrnateDL" Offset="0xDB0" />
+        <DList Name="gBoxChestLidDL" Offset="0x12E8" />
+        <DList Name="gBoxChestLidGildedDL" Offset="0x1850" />
+        <DList Name="gBoxChestLidOrnateDL" Offset="0x1D58" />
+        <Texture Name="gBoxChestLockTex" OutName="chest_lock" Format="rgba16" Width="32" Height="64" Offset="0x1E60" />
+        <Texture Name="gBoxChestCornerTex" OutName="chest_corner" Format="rgba16" Width="32" Height="32" Offset="0x2E60" />
+        <Texture Name="gBoxChestLockGildedTex" OutName="chest_lock_gilded" Format="rgba16" Width="32" Height="64" Offset="0x3660" />
+        <Texture Name="gBoxChestCornerGildedTex" OutName="chest_corner_gilded" Format="rgba16" Width="32" Height="32" Offset="0x4660" />
+        <Texture Name="gBoxChestLockOrnateTex" OutName="chest_lock_ornate" Format="rgba16" Width="32" Height="64" Offset="0x4E60" />
+        <Texture Name="gBoxChestCornerOrnateTex" OutName="chest_corner_ornate" Format="rgba16" Width="32" Height="32" Offset="0x5E60" />
+        <Limb Name="object_box_Standardlimb_006660" Type="Standard" EnumName="OBJECT_BOX_CHEST_LIMB_01" Offset="0x6660" />
+        <Limb Name="object_box_Standardlimb_00666C" Type="Standard" EnumName="OBJECT_BOX_CHEST_LIMB_02" Offset="0x666C" />
+        <Limb Name="object_box_Standardlimb_006678" Type="Standard" EnumName="OBJECT_BOX_CHEST_LIMB_03" Offset="0x6678" />
+        <Limb Name="object_box_Standardlimb_006684" Type="Standard" EnumName="OBJECT_BOX_CHEST_LIMB_04" Offset="0x6684" />
+        <Skeleton Name="gBoxChestSkel" Type="Normal" LimbType="Standard" LimbNone="OBJECT_BOX_CHEST_LIMB_NONE" LimbMax="OBJECT_BOX_CHEST_LIMB_MAX" EnumName="ObjectBoxChestLimb" Offset="0x66A0" />
+        <CurveAnimation Name="gBoxLightAdultCurveAnim" SkelOffset="0x7D78" Offset="0x6A20"/> <!-- Original name is "demo_tre_lgt_c_fcurve_data" -->
+        <CurveAnimation Name="gBoxLightChildCurveAnim" SkelOffset="0x7D78" Offset="0x6E30"/> <!-- Original name is "demo_tre_lgt_fcurve_data" -->
+        <Texture Name="gBoxLightTex" OutName="box_light" Format="i8" Width="64" Height="32" Offset="0x6E40" />
+        <DList Name="object_box_DL_007890" Offset="0x7890" />
+        <DList Name="object_box_DL_007978" Offset="0x7978" />
+        <DList Name="object_box_DL_007A40" Offset="0x7A40" />
+        <DList Name="object_box_DL_007B08" Offset="0x7B08" />
+        <DList Name="object_box_DL_007BD0" Offset="0x7BD0" />
+        <Limb Name="object_box_Curvelimb_007C98" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_01" Offset="0x7C98" />
+        <Limb Name="object_box_Curvelimb_007CA4" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_02" Offset="0x7CA4" />
+        <Limb Name="object_box_Curvelimb_007CB0" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_03" Offset="0x7CB0" />
+        <Limb Name="object_box_Curvelimb_007CBC" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_04" Offset="0x7CBC" />
+        <Limb Name="object_box_Curvelimb_007CC8" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_05" Offset="0x7CC8" />
+        <Limb Name="object_box_Curvelimb_007CD4" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_06" Offset="0x7CD4" />
+        <Limb Name="object_box_Curvelimb_007CE0" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_07" Offset="0x7CE0" />
+        <Limb Name="object_box_Curvelimb_007CEC" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_08" Offset="0x7CEC" />
+        <Limb Name="object_box_Curvelimb_007CF8" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_09" Offset="0x7CF8" />
+        <Limb Name="object_box_Curvelimb_007D04" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_10" Offset="0x7D04" />
+        <Limb Name="object_box_Curvelimb_007D10" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_11" Offset="0x7D10" />
+        <Limb Name="object_box_Curvelimb_007D1C" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_12" Offset="0x7D1C" />
+        <Limb Name="object_box_Curvelimb_007D28" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_13" Offset="0x7D28" />
+        <Limb Name="object_box_Curvelimb_007D34" Type="Curve" EnumName="OBJECT_BOX_LIGHT_LIMB_14" Offset="0x7D34" />
+        <Skeleton Name="gBoxLightCurveSkel" Type="Curve" LimbType="Curve" LimbNone="OBJECT_BOX_LIGHT_LIMB_NONE" LimbMax="OBJECT_BOX_LIGHT_LIMB_MAX" EnumName="ObjectBoxLightLimb" Offset="0x7D78" />
+        <Animation Name="gBoxBigChestOpenGoronAnim" Offset="0x7E54" /> <!-- Original name is "pg_Tbox" -->
+        <Animation Name="gBoxBigChestOpenDekuAnim" Offset="0x7F30" /> <!-- Original name is "pn_Tbox" -->
+        <Blob Name="gBoxChestEmpty3Blob" Size="0xA0" Offset="0x7F40" />
+        <Collision Name="gBoxChestCol" Offset="0x80E8" /> <!-- Original name is "takara_hako_bgdatainfo" -->
+    </File>
+</Root>

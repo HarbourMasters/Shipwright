@@ -1,0 +1,58 @@
+﻿<Root>
+    <!-- Assets for the Carnivorous Lily Pad-->
+    <File Name="object_raf" Segment="6">
+        <!-- Carnivorous Lily Pad Collision -->
+        <Collision Name="gCarnivorousLilyPadCol" Offset="0x108" /> <!-- Original name is "raf_atari_bgdatainfo" -->
+
+        <!-- Unused Textureless Platform DisplayList. Maybe used for testing collision? -->
+        <DList Name="gCarnivorousLilyPadTexturelessPlatformDL" Offset="0x1C0" />
+
+        <!-- Carnivorous Lily Pad Animations -->
+        <Animation Name="gCarnivorousLilyPadConvulseAnim" Offset="0x3FC" /> <!-- Original name is "raf_end01" -->
+        <Animation Name="gCarnivorousLilyPadDeathAnim" Offset="0x7A8" /> <!-- Original name is "raf_end02" -->
+        <Animation Name="gCarnivorousLilyPadSpitAnim" Offset="0xA64" /> <!-- Original name is "raf_haku" ("to spit up") -->
+        <Animation Name="gCarnivorousLilyPadChewAnim" Offset="0xB30" /> <!-- Original name is "raf_mogu" ("chew") -->
+        <Animation Name="gCarnivorousLilyPadCloseAnim" Offset="0xC7C" /> <!-- Original name is "raf_paku" ("devouring")-->
+
+        <!-- Carnivorous Lily Pad Limb DisplayLists -->
+        <DList Name="gCarnivorousLilyPadFlowerDL" Offset="0x1630" />
+        <DList Name="gCarnivorousLilyPadRootsDL" Offset="0x1790" />
+        <DList Name="gCarnivorousLilyPadTrap3LowerSegmentDL" Offset="0x1838" />
+        <DList Name="gCarnivorousLilyPadTrap3MiddleSegmentDL" Offset="0x18D0" />
+        <DList Name="gCarnivorousLilyPadTrap3UpperSegmentDL" Offset="0x1990" />
+        <DList Name="gCarnivorousLilyPadTrap2LowerSegmentDL" Offset="0x1B90" />
+        <DList Name="gCarnivorousLilyPadTrap2MiddleSegmentDL" Offset="0x1C28" />
+        <DList Name="gCarnivorousLilyPadTrap2UpperSegmentDL" Offset="0x1CE8" />
+        <DList Name="gCarnivorousLilyPadTrap1LowerSegmentDL" Offset="0x1EE8" />
+        <DList Name="gCarnivorousLilyPadTrap1MiddleSegmentDL" Offset="0x1F80" />
+        <DList Name="gCarnivorousLilyPadTrap1UpperSegmentDL" Offset="0x2040" />
+
+        <!-- Carnivorous Lily Pad Particle DisplayLists -->
+        <DList Name="gCarnivorousLilyPadParticlePetalDL" Offset="0x2340" />
+        <DList Name="gCarnivorousLilyPadParticleTeethDL" Offset="0x2418" />
+        <DList Name="gCarnivorousLilyPadParticleDL" Offset="0x24E0" />
+
+        <!-- Carnivorous Lily Pad Textures -->
+        <Texture Name="gCarnivorousLilyPadRootsTex" OutName="carnivorous_lily_pad_roots" Format="rgba16" Width="16" Height="32" Offset="0x24F8" />
+        <Texture Name="gCarnivorousLilyPadFlowerPetalTex" OutName="carnivorous_lily_pad_flower_petal" Format="rgba16" Width="16" Height="32" Offset="0x28F8" />
+        <Texture Name="gCarnivorousLilyPadFlowerCenterTex" OutName="carnivorous_lily_pad_flower_center" Format="rgba16" Width="16" Height="16" Offset="0x2CF8" />
+        <Texture Name="gCarnivorousLilyPadTrapPetalTex" OutName="carnivorous_lily_pad_trap_petal" Format="rgba16" Width="16" Height="32" Offset="0x2EF8" />
+        <Texture Name="gCarnivorousLilyPadTrapTeethTex" OutName="carnivorous_lily_pad_trap_teeth" Format="rgba16" Width="8" Height="8" Offset="0x32F8" />
+
+        <!-- Carnivorous Lily Pad Limbs -->
+        <Limb Name="gCarnivorousLilyPadFlowerLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_FLOWER" Offset="0x3378" />
+        <Limb Name="gCarnivorousLilyPadTrap1LowerSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_1_LOWER_SEGMENT" Offset="0x3384" />
+        <Limb Name="gCarnivorousLilyPadTrap1MiddleSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_1_MIDDLE_SEGMENT" Offset="0x3390" />
+        <Limb Name="gCarnivorousLilyPadTrap1UpperSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_1_UPPER_SEGMENT" Offset="0x339C" />
+        <Limb Name="gCarnivorousLilyPadTrap2LowerSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_2_LOWER_SEGMENT" Offset="0x33A8" />
+        <Limb Name="gCarnivorousLilyPadTrap2MiddleSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_2_MIDDLE_SEGMENT" Offset="0x33B4" />
+        <Limb Name="gCarnivorousLilyPadTrap2UpperSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_2_UPPER_SEGMENT" Offset="0x33C0" />
+        <Limb Name="gCarnivorousLilyPadTrap3LowerSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_3_LOWER_SEGMENT" Offset="0x33CC" />
+        <Limb Name="gCarnivorousLilyPadTrap3MiddleSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_3_MIDDLE_SEGMENT" Offset="0x33D8" />
+        <Limb Name="gCarnivorousLilyPadTrap3UpperSegmentLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_TRAP_3_UPPER_SEGMENT" Offset="0x33E4" />
+        <Limb Name="gCarnivorousLilyPadRootsLimb" Type="Standard" EnumName="CARNIVOROUS_LILY_PAD_LIMB_ROOTS" Offset="0x33F0" />
+
+        <!-- Carnivorous Lily Pad Skeleton -->
+        <Skeleton Name="gCarnivorousLilyPadSkel" Type="Flex" LimbType="Standard" LimbNone="CARNIVOROUS_LILY_PAD_LIMB_NONE" LimbMax="CARNIVOROUS_LILY_PAD_LIMB_MAX" EnumName="CarnivorousLilyPadLimb" Offset="0x3428" />
+    </File>
+</Root>

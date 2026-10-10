@@ -1,0 +1,40 @@
+﻿<Root>
+    <!-- Deku Baba and withered Deku Baba assets. Identical to OoT -->
+    <File Name="object_dekubaba" Segment="6">
+
+        <!-- Deku Baba animations -->
+        <Animation Name="gDekuBabaPauseChompAnim" Offset="0x208"/> <!-- Original name is "db_P_kougeki" ("attack; assault") -->
+        <Animation Name="gDekuBabaFastChompAnim" Offset="0x2B8"/> <!-- Original name is "db_P_tobidasu" ("to appear (suddenly)​") -->
+
+        <!-- Deku Baba body DLists (not all are limb DLists) -->
+        <DList Name="gDekuBabaLowerJawDL" Offset="0x580"/>
+        <DList Name="gDekuBabaUpperJawDL" Offset="0xB68"/>
+        <DList Name="gDekuBabaBaseLeavesDL" Offset="0x10F0"/> <!-- Original name is "db_ha_model" ("leaf; blade of grass") -->
+        <DList Name="gDekuBabaStemTopDL" Offset="0x1330"/> <!-- Original name is "db_miki1_model" ("miki" = "trunk") -->
+        <DList Name="gDekuBabaStemMiddleDL" Offset="0x1628"/> <!-- Original name is "db_miki2_model" -->
+        <DList Name="gDekuBabaStemBaseDL" Offset="0x1828"/> <!-- Original name is "db_miki3_model" -->
+
+        <!-- Deku Baba body textures -->
+        <Texture Name="gDekuBabaJawOuterTex" OutName="deku_baba_jaw_outer" Format="rgba16" Width="16" Height="32" Offset="0x18D0"/>
+        <Texture Name="gDekuBabaJawInnerTex" OutName="deku_baba_jaw_inner" Format="rgba16" Width="32" Height="32" Offset="0x1CD0"/>
+        <Texture Name="gDekuBabaLeafTex" OutName="deku_baba_leaf" Format="rgba16" Width="16" Height="32" Offset="0x24D0"/>
+        <Texture Name="gDekuBabaBulbTex" OutName="deku_baba_bulb" Format="rgba16" Width="8" Height="8" Offset="0x28D0"/>
+        <Texture Name="gDekuBabaStemTex" OutName="deku_baba_stem" Format="rgba16" Width="8" Height="8" Offset="0x2950"/>
+
+        <!-- Deku Baba limbs (upper/lower is only based on the "tongue" being in the lower) -->
+        <Limb Name="gDekuBabaRootLimb" Type="Standard" EnumName="DEKUBABA_LIMB_ROOT" Offset="0x29D0" />
+        <Limb Name="gDekuBabaUpperJawRootLimb" Type="Standard" EnumName="DEKUBABA_LIMB_UPPER_JAW_ROOT" Offset="0x29DC" />
+        <Limb Name="gDekuBabaUpperJawRooWrappertLimb" Type="Standard" EnumName="DEKUBABA_LIMB_UPPER_JAW_WRAPPER" Offset="0x29E8" />
+        <Limb Name="gDekuBabaUpperJawLimb" Type="Standard" EnumName="DEKUBABA_LIMB_UPPER_JAW" Offset="0x29F4" />
+        <Limb Name="gDekuBabaLowerJawRootLimb" Type="Standard" EnumName="DEKUBABA_LIMB_LOWER_JAW_ROOT" Offset="0x2A00" />
+        <Limb Name="gDekuBabaLowerJawWrapperLimb" Type="Standard" EnumName="DEKUBABA_LIMB_LOWER_JAW_WRAPPER" Offset="0x2A0C" />
+        <Limb Name="gDekuBabaLowerJawLimb" Type="Standard" EnumName="DEKUBABA_LIMB_LOWER_JAW" Offset="0x2A18" />
+
+        <!-- Deku Baba skeleton (only used for jaws) -->
+        <Skeleton Name="gDekuBabaSkel" Type="Normal" LimbType="Standard" LimbNone="DEKUBABA_LIMB_NONE" LimbMax="DEKUBABA_LIMB_MAX" EnumName="DekuBabaLimb" Offset="0x2A40" />
+
+        <!-- Deku Baba stick drop -->
+        <DList Name="gDekuBabaStickDropDL" Offset="0x3070"/>
+        <Texture Name="gDekuBabaStickDropTex" OutName="deku_baba_stick_drop" Format="rgba16" Width="32" Height="32" Offset="0x31C0"/>
+    </File>
+</Root>

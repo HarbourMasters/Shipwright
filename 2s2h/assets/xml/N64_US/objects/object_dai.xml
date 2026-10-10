@@ -1,0 +1,86 @@
+﻿<Root>
+    <File Name="object_dai" Segment="6">
+        <Texture Name="object_dai_Tex_000000" OutName="tex_000000" Format="i4" Width="32" Height="32" Offset="0x0" />
+        <DList Name="object_dai_DL_000230" Offset="0x230" />
+        <DList Name="object_dai_DL_0002E8" Offset="0x2E8" /> <!-- Original name is "dai_ball_modelT" -->
+        <Animation Name="object_dai_Anim_000CEC" Offset="0xCEC" /> <!-- Original name is "dg_haku" ("to breathe out​") -->
+        <Animation Name="object_dai_Anim_0010F8" Offset="0x10F8" /> <!-- Original name is "dg_iare" ("are" = "huh?; eh?"") -->
+        <Animation Name="object_dai_Anim_0014BC" Offset="0x14BC" /> <!-- Original name is "dg_iareend" -->
+        <Animation Name="object_dai_Anim_001E44" Offset="0x1E44" /> <!-- Original name is "dg_iareloop" -->
+        <Animation Name="object_dai_Anim_002E58" Offset="0x2E58" /> <!-- Original name is "dg_inemuri" ("nemuri" = "to fall asleep") -->
+        <Animation Name="object_dai_Anim_003CAC" Offset="0x3CAC" /> <!-- Original name is "dg_isuwaru" ("suwari" = "to sit" )-->
+        <Animation Name="object_dai_Anim_0040E0" Offset="0x40E0" /> <!-- Original name is "dg_isuwaruloop" -->
+        <Animation Name="object_dai_Anim_0048B4" Offset="0x48B4" /> <!-- Original name is "dg_iwait" -->
+        <Animation Name="object_dai_Anim_005100" Offset="0x5100" /> <!-- Original name is "dg_iwalk" -->
+        <Animation Name="object_dai_Anim_00563C" Offset="0x563C" /> <!-- Original name is "dg_korogeoti" ("to fall off; to tumble down​") -->
+        <Animation Name="object_dai_Anim_006590" Offset="0x6590" /> <!-- Original name is "dg_marumari" ("to roll into a ball") -->
+        <Animation Name="object_dai_Anim_0069DC" Offset="0x69DC" /> <!-- Original name is "dg_modoru" ("to return; to go back​") -->
+        <Animation Name="object_dai_Anim_007354" Offset="0x7354" /> <!-- Original name is "dg_tame" ("to amass; to accumulate; to store​") -->
+        <Animation Name="object_dai_Anim_0079E4" Offset="0x79E4" /> <!-- Original name is "dg_wait" -->
+        <DList Name="object_dai_DL_008710" Offset="0x8710" />
+        <DList Name="object_dai_DL_0087B8" Offset="0x87B8" />
+        <DList Name="object_dai_DL_0089D8" Offset="0x89D8" />
+        <DList Name="object_dai_DL_008B00" Offset="0x8B00" />
+        <Texture Name="object_dai_TLUT_008C58" OutName="tlut_008C58" Format="rgba16" Width="16" Height="16" Offset="0x8C58" />
+        <Texture Name="object_dai_Tex_008E58" OutName="tex_008E58" Format="ci8" Width="32" Height="32" Offset="0x8E58" />
+        <Texture Name="object_dai_Tex_009258" OutName="tex_009258" Format="ci8" Width="8" Height="8" Offset="0x9258" />
+        <Texture Name="object_dai_Tex_009298" OutName="tex_009298" Format="ci8" Width="32" Height="16" Offset="0x9298" />
+        <Texture Name="object_dai_Tex_009498" OutName="tex_009498" Format="rgba16" Width="16" Height="16" Offset="0x9498" />
+        <Texture Name="object_dai_Tex_009698" OutName="tex_009698" Format="ci8" Width="8" Height="8" Offset="0x9698" />
+        <DList Name="object_dai_DL_00C538" Offset="0xC538" />
+        <DList Name="object_dai_DL_00C5D8" Offset="0xC5D8" />
+        <DList Name="object_dai_DL_00C9B8" Offset="0xC9B8" />
+        <DList Name="object_dai_DL_00D068" Offset="0xD068" />
+        <DList Name="object_dai_DL_00D400" Offset="0xD400" />
+        <DList Name="object_dai_DL_00D588" Offset="0xD588" />
+        <DList Name="object_dai_DL_00D6C0" Offset="0xD6C0" />
+        <DList Name="object_dai_DL_00D948" Offset="0xD948" />
+        <DList Name="object_dai_DL_00DAD0" Offset="0xDAD0" />
+        <DList Name="object_dai_DL_00DC08" Offset="0xDC08" />
+        <DList Name="object_dai_DL_00DE18" Offset="0xDE18" />
+        <DList Name="object_dai_DL_00DF78" Offset="0xDF78" />
+        <DList Name="object_dai_DL_00E068" Offset="0xE068" />
+        <DList Name="object_dai_DL_00E1A0" Offset="0xE1A0" />
+        <DList Name="object_dai_DL_00E470" Offset="0xE470" />
+        <DList Name="object_dai_DL_00E560" Offset="0xE560" />
+        <DList Name="object_dai_DL_00E698" Offset="0xE698" />
+        <Texture Name="object_dai_TLUT_00E8F0" OutName="tlut_00E8F0" Format="rgba16" Width="16" Height="16" Offset="0xE8F0" />
+        <Texture Name="object_dai_Tex_00EAF0" OutName="tex_00EAF0" Format="ci8" Width="16" Height="16" Offset="0xEAF0" />
+        <Texture Name="object_dai_Tex_00EBF0" OutName="tex_00EBF0" Format="ci8" Width="16" Height="16" Offset="0xEBF0" />
+        <Texture Name="object_dai_Tex_00ECF0" OutName="tex_00ECF0" Format="ci8" Width="32" Height="32" Offset="0xECF0" />
+        <Texture Name="object_dai_Tex_00F0F0" OutName="tex_00F0F0" Format="ci8" Width="32" Height="16" Offset="0xF0F0" />
+        <Texture Name="object_dai_Tex_00F2F0" OutName="tex_00F2F0" Format="ci8" Width="32" Height="32" Offset="0xF2F0" />
+        <Texture Name="object_dai_Tex_00F6F0" OutName="tex_00F6F0" Format="ci8" Width="8" Height="8" Offset="0xF6F0" />
+        <Texture Name="object_dai_Tex_00F730" OutName="tex_00F730" Format="ci8" Width="8" Height="16" Offset="0xF730" />
+        <Texture Name="object_dai_Tex_00F7B0" OutName="tex_00F7B0" Format="ci8" Width="32" Height="64" Offset="0xF7B0" />
+        <Texture Name="object_dai_Tex_00FFB0" OutName="tex_00FFB0" Format="ci8" Width="16" Height="16" Offset="0xFFB0" />
+        <Texture Name="object_dai_Tex_0100B0" OutName="tex_0100B0" Format="rgba16" Width="8" Height="8" Offset="0x100B0" />
+        <Texture Name="object_dai_Tex_010130" OutName="tex_010130" Format="rgba16" Width="16" Height="16" Offset="0x10130" />
+        <Texture Name="object_dai_Tex_010330" OutName="tex_010330" Format="rgba16" Width="8" Height="8" Offset="0x10330" />
+        <Texture Name="object_dai_Tex_0103B0" OutName="tex_0103B0" Format="rgba16" Width="32" Height="16" Offset="0x103B0" />
+        <Texture Name="object_dai_Tex_0107B0" OutName="tex_0107B0" Format="rgba16" Width="32" Height="32" Offset="0x107B0" />
+        <Texture Name="object_dai_Tex_010FB0" OutName="tex_010FB0" Format="rgba16" Width="32" Height="32" Offset="0x10FB0" />
+        <Texture Name="object_dai_Tex_0117B0" OutName="tex_0117B0" Format="rgba16" Width="32" Height="32" Offset="0x117B0" />
+        <Texture Name="object_dai_Tex_011FB0" OutName="tex_011FB0" Format="rgba16" Width="32" Height="32" Offset="0x11FB0" />
+        <Texture Name="object_dai_Tex_0127B0" OutName="tex_0127B0" Format="rgba16" Width="32" Height="32" Offset="0x127B0" />
+        <Limb Name="object_dai_Standardlimb_012FB0" Type="Standard" EnumName="OBJECT_DAI_LIMB_01" Offset="0x12FB0" />
+        <Limb Name="object_dai_Standardlimb_012FBC" Type="Standard" EnumName="OBJECT_DAI_LIMB_02" Offset="0x12FBC" />
+        <Limb Name="object_dai_Standardlimb_012FC8" Type="Standard" EnumName="OBJECT_DAI_LIMB_03" Offset="0x12FC8" />
+        <Limb Name="object_dai_Standardlimb_012FD4" Type="Standard" EnumName="OBJECT_DAI_LIMB_04" Offset="0x12FD4" />
+        <Limb Name="object_dai_Standardlimb_012FE0" Type="Standard" EnumName="OBJECT_DAI_LIMB_05" Offset="0x12FE0" />
+        <Limb Name="object_dai_Standardlimb_012FEC" Type="Standard" EnumName="OBJECT_DAI_LIMB_06" Offset="0x12FEC" />
+        <Limb Name="object_dai_Standardlimb_012FF8" Type="Standard" EnumName="OBJECT_DAI_LIMB_07" Offset="0x12FF8" />
+        <Limb Name="object_dai_Standardlimb_013004" Type="Standard" EnumName="OBJECT_DAI_LIMB_08" Offset="0x13004" />
+        <Limb Name="object_dai_Standardlimb_013010" Type="Standard" EnumName="OBJECT_DAI_LIMB_09" Offset="0x13010" />
+        <Limb Name="object_dai_Standardlimb_01301C" Type="Standard" EnumName="OBJECT_DAI_LIMB_0A" Offset="0x1301C" />
+        <Limb Name="object_dai_Standardlimb_013028" Type="Standard" EnumName="OBJECT_DAI_LIMB_0B" Offset="0x13028" />
+        <Limb Name="object_dai_Standardlimb_013034" Type="Standard" EnumName="OBJECT_DAI_LIMB_0C" Offset="0x13034" />
+        <Limb Name="object_dai_Standardlimb_013040" Type="Standard" EnumName="OBJECT_DAI_LIMB_0D" Offset="0x13040" />
+        <Limb Name="object_dai_Standardlimb_01304C" Type="Standard" EnumName="OBJECT_DAI_LIMB_0E" Offset="0x1304C" />
+        <Limb Name="object_dai_Standardlimb_013058" Type="Standard" EnumName="OBJECT_DAI_LIMB_0F" Offset="0x13058" />
+        <Limb Name="object_dai_Standardlimb_013064" Type="Standard" EnumName="OBJECT_DAI_LIMB_10" Offset="0x13064" />
+        <Limb Name="object_dai_Standardlimb_013070" Type="Standard" EnumName="OBJECT_DAI_LIMB_11" Offset="0x13070" />
+        <Limb Name="object_dai_Standardlimb_01307C" Type="Standard" EnumName="OBJECT_DAI_LIMB_12" Offset="0x1307C" />
+        <Skeleton Name="object_dai_Skel_0130D0" Type="Flex" LimbType="Standard" LimbNone="OBJECT_DAI_LIMB_NONE" LimbMax="OBJECT_DAI_LIMB_MAX" EnumName="ObjectDaiLimb" Offset="0x130D0" />
+    </File>
+</Root>

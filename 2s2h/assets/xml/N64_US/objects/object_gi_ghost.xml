@@ -1,0 +1,21 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Poe Container (small and big poes inside a bottle) -->
+    <File Name="object_gi_ghost" Segment="6">
+
+        <!-- Poe Container Textures -->
+        <Texture Name="gGiPoeContainerFlameTex" OutName="gi_poe_container_flame" Format="i8" Width="16" Height="32" Offset="0x0" />
+        <Texture Name="gGiPoeContainerPatternTex" OutName="gi_poe_container_pattern" Format="i8" Width="16" Height="32" Offset="0x200" />
+
+        <!-- Poe Container Color Display Lists -->
+        <DList Name="gGiPoeContainerPoeColorDL" Offset="0x950" />
+        <DList Name="gGiPoeContainerBigPoeColorDL" Offset="0x970" />
+
+        <!-- Poe Container Common Display Lists -->
+        <DList Name="gGiPoeContainerLidDL" Offset="0x990" />
+        <DList Name="gGiPoeContainerGlassDL" Offset="0xBE0" />
+        <DList Name="gGiPoeContainerContentsDL" Offset="0xCF0" />
+    </File>
+</Root>

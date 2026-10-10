@@ -1,0 +1,11 @@
+﻿<Root>
+    <!-- Assets for the hookshot post -->
+    <File Name="object_d_hsblock" Segment="6">
+        <DList Name="gHookshotPostDL" Offset="0x210" /> <!-- Original name is "field_fshot_model" -->
+        <DList Name="gHookshotTargetDL" Offset="0x470" /> <!-- Original name is "field_fshot2_model" -->
+        <Collision Name="gHookshotTargetCol" Offset="0x578" /> <!-- Original name is "field_fshot2_bgdatainfo" -->
+        <Collision Name="gHookshotPostCol" Offset="0x730" /> <!-- Original name is "field_fshot_bgdatainfo" -->
+        <Texture Name="gHookshotTargetTex" OutName="tex_000760" Format="i4" Width="64" Height="64" Offset="0x760" />
+        <Texture Name="gHookshotPostTex" OutName="tex_000F60" Format="i8" Width="32" Height="64" Offset="0xF60" />
+    </File>
+</Root>

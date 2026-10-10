@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Get Item Draw: Hookshot -->
+    <File Name="object_gi_hookshot" Segment="6">
+
+        <!-- Hookshot Display Lists -->
+        <DList Name="gGiHookshotDL" Offset="0xA10" />
+        <DList Name="gGiHookshotEmptyDL" Offset="0xE48" />
+
+        <!-- Hookshot Textures -->
+        <Texture Name="gGiHookshot1Tex" OutName="gi_hookshot_1" Format="i8" Width="32" Height="32" Offset="0xE50" />
+        <Texture Name="gGiHookshot2Tex" OutName="gi_hookshot_2" Format="i4" Width="32" Height="32" Offset="0x1250" />
+    </File>
+</Root>

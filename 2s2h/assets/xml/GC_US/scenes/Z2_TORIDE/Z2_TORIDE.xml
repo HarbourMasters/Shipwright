@@ -1,0 +1,13 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_05.xml" OutPath="misc/scene_texture_05/"/>
+    <File Name="Z2_TORIDE" Segment="2" Game="MM">
+        <Scene Name="Z2_TORIDE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_TORIDE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_TORIDE_room_00" Offset="0x0"/>
+        <DList Name="Z2_TORIDE_room_00DL_00C9E0" Offset="0xC9E0"/>
+        <DList Name="Z2_TORIDE_room_00DL_0007B0" Offset="0x7B0"/>
+        <DList Name="Z2_TORIDE_room_00DL_00C900" Offset="0xC900"/>
+        <DList Name="Z2_TORIDE_room_00DL_00D1D0" Offset="0xD1D0"/>
+    </File>
+</Root>

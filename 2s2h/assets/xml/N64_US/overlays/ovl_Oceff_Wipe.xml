@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe" BaseAddress="0x809764B0" RangeStart="0x4F0" RangeEnd="0xCB0">
+        <Texture Name="sSongOfTimeEffectTex" OutName="song_of_time_effect" Format="i8" Width="32" Height="32" Offset="0x4F0"/>
+        <Array Name="sSongOfTimeFrustumVtx" Count="40" Offset="0x8F0">
+            <Vtx/>
+        </Array>
+        <DList Name="sSongOfTimeFrustumMaterialDL" Offset="0xB70"/>
+        <DList Name="sSongOfTimeFrustumModelDL" Offset="0xBF8"/> <!-- Original name might be "efc_ocarina_3_modelT" or "ocarina_time_model" -->
+    </File>
+</Root>

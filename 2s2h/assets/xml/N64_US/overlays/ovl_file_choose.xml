@@ -1,0 +1,19 @@
+<Root>
+    <File Name="ovl_file_choose" BaseAddress="0x80804010" RangeStart="0xFDE0" RangeEnd="0x101E0">
+        <Array Name="D_80813DF0" Count="20" Offset="0xFDE0" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="D_80813F30" Count="32" Offset="0xFF20" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerTopVtx" Count="4" Offset="0x10120" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerMiddleVtx" Count="4" Offset="0x10160" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerBottomVtx" Count="4" Offset="0x101A0" Static="Off">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

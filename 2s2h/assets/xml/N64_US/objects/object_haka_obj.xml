@@ -1,0 +1,32 @@
+﻿<Root>
+    <File Name="object_haka_obj" Segment="6">
+        <DList Name="object_haka_obj_DL_000040" Offset="0x40" /> <!-- Original name is "Y2_bakuKABE_model" -->
+        <Collision Name="object_haka_obj_Colheader_000148" Offset="0x148" /> <!-- Original name is "Y2_bakuKABE_bgdatainfo" -->
+        <DList Name="object_haka_obj_DL_0007B0" Offset="0x7B0" /> <!-- Original name is "Y2_hakaishi_model" -->
+        <Collision Name="object_haka_obj_Colheader_000EE8" Offset="0xEE8" /> <!-- Original name is "Y2_hakaishi_bgdatainfo" -->
+        <DList Name="object_haka_obj_DL_000F70" Offset="0xF70" /> <!-- Original name is "Y2_hakashita00_meganeOBJ_model" -->
+        <DList Name="object_haka_obj_DL_001200" Offset="0x1200" /> <!-- Original name is "Y2_hakashita03_meganeOBJ_model" -->
+        <DList Name="object_haka_obj_DL_001410" Offset="0x1410" /> <!-- Original name is "Y2_hakashitaMAKU_model" -->
+        <Collision Name="object_haka_obj_Colheader_001588" Offset="0x1588" /> <!-- Original name is "Y2_hakashitaMAKU_bgdatainfo" -->
+        <DList Name="object_haka_obj_DL_001680" Offset="0x1680" /> <!-- Original name is "Y2_kakera_model" -->
+        <Texture Name="object_haka_obj_TLUT_001800" OutName="tlut_001800" Format="rgba16" Width="16" Height="16" Offset="0x1800" />
+        <Texture Name="object_haka_obj_TLUT_001A00" OutName="tlut_001A00" Format="rgba16" Width="4" Height="4" Offset="0x1A00" />
+        <Texture Name="object_haka_obj_TLUT_001A20" OutName="tlut_001A20" Format="rgba16" Width="4" Height="4" Offset="0x1A20" />
+        <Texture Name="object_haka_obj_TLUT_001A40" OutName="tlut_001A40" Format="rgba16" Width="16" Height="16" Offset="0x1A40" />
+        <Texture Name="object_haka_obj_Tex_001C40" OutName="tex_001C40" Format="ci8" Width="32" Height="32" Offset="0x1C40" />
+        <Texture Name="object_haka_obj_Tex_002040" OutName="tex_002040" Format="ci8" Width="32" Height="32" Offset="0x2040" />
+        <Texture Name="object_haka_obj_Tex_002440" OutName="tex_002440" Format="rgba16" Width="32" Height="32" Offset="0x2440" />
+        <Texture Name="object_haka_obj_Tex_002C40" OutName="tex_002C40" Format="ci4" Width="64" Height="64" Offset="0x2C40" />
+        <Texture Name="object_haka_obj_Tex_003440" OutName="tex_003440" Format="ci4" Width="64" Height="64" Offset="0x3440" />
+        <Texture Name="object_haka_obj_Tex_003C40" OutName="tex_003C40" Format="ci8" Width="32" Height="64" Offset="0x3C40" />
+        <Texture Name="object_haka_obj_Tex_004440" OutName="tex_004440" Format="ci8" Width="32" Height="32" Offset="0x4440" />
+        <Texture Name="object_haka_obj_Tex_004840" OutName="tex_004840" Format="rgba16" Width="64" Height="8" Offset="0x4840" />
+        <Texture Name="object_haka_obj_Tex_004C40" OutName="tex_004C40" Format="rgba16" Width="16" Height="16" Offset="0x4C40" />
+        <Texture Name="object_haka_obj_Tex_004E40" OutName="tex_004E40" Format="rgba16" Width="32" Height="32" Offset="0x4E40" />
+        <Texture Name="object_haka_obj_Tex_005640" OutName="tex_005640" Format="i4" Width="64" Height="64" Offset="0x5640" />
+        <Texture Name="object_haka_obj_Tex_005E40" OutName="tex_005E40" Format="rgba16" Width="32" Height="32" Offset="0x5E40" />
+        <Texture Name="object_haka_obj_Tex_006640" OutName="tex_006640" Format="i4" Width="64" Height="64" Offset="0x6640" />
+        <Texture Name="object_haka_obj_Tex_006E40" OutName="tex_006E40" Format="rgba16" Width="32" Height="32" Offset="0x6E40" />
+        <Texture Name="object_haka_obj_Tex_007640" OutName="tex_007640" Format="i4" Width="32" Height="32" Offset="0x7640" />
+    </File>
+</Root>

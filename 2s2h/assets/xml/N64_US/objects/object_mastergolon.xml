@@ -1,0 +1,6 @@
+﻿<Root>
+    <!-- Object for the Goron Shopkeeper's animation -->
+    <File Name="object_mastergolon" Segment="6">
+        <Animation Name="gGoronShopkeeperAnim" Offset="0xFC" /> <!-- Original name is "oF1d_omise" -->
+    </File>
+</Root>

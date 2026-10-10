@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Keaton Mask -->
+    <File Name="object_gi_ki_tan_mask" Segment="6">
+
+        <!-- Keaton Mask Textures -->
+        <Texture Name="gGiKeatonMaskEyeTex" OutName="gi_keaton_mask_eye" Format="ia8" Width="8" Height="32" Offset="0x0" />
+
+        <!-- Keaton Mask Display Lists -->
+        <DList Name="gGiKeatonMaskDL" Offset="0xAC0" />
+        <DList Name="gGiKeatonMaskEyesDL" Offset="0xD50" />
+    </File>
+</Root>

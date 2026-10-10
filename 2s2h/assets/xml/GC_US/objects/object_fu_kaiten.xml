@@ -1,0 +1,18 @@
+﻿<Root>
+    <File Name="object_fu_kaiten" Segment="6">
+        <DList Name="object_fu_kaiten_DL_0005D0" Offset="0x5D0" /> <!-- Original name is "dai_model" -->
+        <Texture Name="object_fu_kaiten_TLUT_000858" OutName="tlut_000858" Format="rgba16" Width="4" Height="4" Offset="0x858" />
+        <Texture Name="object_fu_kaiten_Tex_000878" OutName="tex_000878" Format="ci4" Width="64" Height="64" Offset="0x878" />
+        <Texture Name="object_fu_kaiten_Tex_001078" OutName="tex_001078" Format="rgba16" Width="16" Height="64" Offset="0x1078" />
+        <Texture Name="object_fu_kaiten_Tex_001878" OutName="tex_001878" Format="rgba16" Width="32" Height="32" Offset="0x1878" />
+        <Texture Name="object_fu_kaiten_Tex_002078" OutName="tex_002078" Format="rgba16" Width="32" Height="32" Offset="0x2078" />
+        <Collision Name="object_fu_kaiten_Colheader_002D30" Offset="0x2D30" /> <!-- Original name is "z2_bowling_dai_bgdatainfo" -->
+        <DList Name="object_fu_kaiten_DL_002EB0" Offset="0x2EB0" /> <!-- Original name is "z2_bowling_mizu_modelT" -->
+        <DList Name="object_fu_kaiten_DL_002FB0" Offset="0x2FB0" />
+        <DList Name="object_fu_kaiten_DL_002FC0" Offset="0x2FC0" />
+        <Texture Name="object_fu_kaiten_Tex_002FD0" OutName="tex_002FD0" Format="rgba16" Width="32" Height="32" Offset="0x2FD0" />
+        <TextureAnimation Name="object_fu_kaiten_Matanimheader_0037D8" Offset="0x37D8" />
+        <!-- <Blob Name="object_fu_kaiten_Blob_0037E0" Size="0x18" Offset="0x37E0" /> -->
+        <Collision Name="object_fu_kaiten_Colheader_0037F8" Offset="0x37F8" /> <!-- Original name is "z2_bowling_mizu_bgdatainfo" -->
+    </File>
+</Root>

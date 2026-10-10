@@ -1,0 +1,57 @@
+﻿<Root>
+    <!-- Assets for cows -->
+    <File Name="object_cow" Segment="6">
+        <Animation Name="gCowChewAnim" Offset="0x1CC" /> <!-- Original name is "usi_mogmog" (onomatopoeia for chewing) -->
+
+        <!-- Cow Limb DisplayLists -->
+        <DList Name="gCowBodyDL" Offset="0x1A80" />
+        <DList Name="gCowHeadDL" Offset="0x1FE8" />
+        <DList Name="gCowNoseDL" Offset="0x2368" />
+        <DList Name="gCowNoseRingDL" Offset="0x2628" />
+        <DList Name="gCowJawDL" Offset="0x2760" />
+
+        <!-- Cow Palettes -->
+        <Texture Name="gCowTLUT" OutName="cow_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2880" />
+
+        <!-- Cow Textures -->
+        <Texture Name="gCowUdderTex" OutName="cow_udder" Format="ci8" Width="16" Height="16" Offset="0x2A80" />
+        <Texture Name="gCowNoseRingTex" OutName="cow_nose_ring" Format="ci8" Width="8" Height="8" Offset="0x2B80" />
+        <Texture Name="gCowNoseTex" OutName="cow_nose" Format="ci8" Width="16" Height="16" Offset="0x2BC0" />
+        <Texture Name="gCowSpotsTex" OutName="cow_spots" Format="i8" Width="64" Height="64" Offset="0x2CC0" />
+        <Texture Name="gCowEarTex" OutName="cow_ear" Format="ci8" Width="8" Height="16" Offset="0x3CC0" />
+        <Texture Name="gCowEyelidTex" OutName="cow_eyelid" Format="rgba16" Width="16" Height="16" Offset="0x3D40" />
+        <Texture Name="gCowLegAndTailTex" OutName="cow_leg_and_tail" Format="ci8" Width="8" Height="16" Offset="0x3F40" />
+
+        <!-- Cow Limb DisplayLists -->
+        <Limb Name="gCowBodyLimb" Type="Standard" EnumName="COW_LIMB_BODY" Offset="0x3FC0" />
+        <Limb Name="gCowHeadLimb" Type="Standard" EnumName="COW_LIMB_HEAD" Offset="0x3FCC" />
+        <Limb Name="gCowJawLimb" Type="Standard" EnumName="COW_LIMB_JAW" Offset="0x3FD8" />
+        <Limb Name="gCowNoseLimb" Type="Standard" EnumName="COW_LIMB_NOSE" Offset="0x3FE4" />
+        <Limb Name="gCowNoseRingLimb" Type="Standard" EnumName="COW_LIMB_NOSE_RING" Offset="0x3FF0" />
+
+        <!-- Cow Skeleton -->
+        <Skeleton Name="gCowSkel" Type="Flex" LimbType="Standard" LimbNone="COW_LIMB_NONE" LimbMax="COW_LIMB_MAX" EnumName="CowLimb" Offset="0x4010" />
+
+        <Animation Name="gCowMooAnim" Offset="0x4264" /> <!-- Original name is "usi_mooo" -->
+        <Animation Name="gCowTailIdleAnim" Offset="0x4348" /> <!-- Original name is "ust_daran" ("loosely") -->
+
+        <!-- Cow Tail Limb DisplayLists -->
+        <DList Name="gCowTailBaseDL" Offset="0x46F0" />
+        <DList Name="gCowTailUpperDL" Offset="0x47D0" />
+        <DList Name="gCowTailMiddleDL" Offset="0x48D0" />
+        <DList Name="gCowTailLowerDL" Offset="0x49D0" />
+        <DList Name="gCowTailEndDL" Offset="0x4AD0" />
+
+        <!-- Cow Tail Limbs -->
+        <Limb Name="gCowTailBaseLimb" Type="Standard" EnumName="COW_TAIL_LIMB_BASE" Offset="0x4BE0" />
+        <Limb Name="gCowTailUpperLimb" Type="Standard" EnumName="COW_TAIL_LIMB_UPPER" Offset="0x4BEC" />
+        <Limb Name="gCowTailMiddleLimb" Type="Standard" EnumName="COW_TAIL_LIMB_MIDDLE" Offset="0x4BF8" />
+        <Limb Name="gCowTailLowerLimb" Type="Standard" EnumName="COW_TAIL_LIMB_LOWER" Offset="0x4C04" />
+        <Limb Name="gCowTailEndLimb" Type="Standard" EnumName="COW_TAIL_LIMB_END" Offset="0x4C10" />
+
+        <!-- Cow Tail Skeleton -->
+        <Skeleton Name="gCowTailSkel" Type="Flex" LimbType="Standard" LimbNone="COW_TAIL_LIMB_NONE" LimbMax="COW_TAIL_LIMB_MAX" EnumName="CowTailLimb" Offset="0x4C30" />
+
+        <Animation Name="gCowTailSwishAnim" Offset="0x4E98" /> <!-- Original name is "ust_furifuri" ("fluttery") -->
+    </File>
+</Root>

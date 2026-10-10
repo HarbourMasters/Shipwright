@@ -1,0 +1,77 @@
+﻿<Root>
+    <!-- Assets for Eeno -->
+    <File Name="object_snowman" Segment="6">
+        <!-- Eeno Animations -->
+        <Animation Name="gEenoLargeSnowballCreateAnim" Offset="0x404" /> <!-- Original name is "sm_ageA" ("go up/raise A") -->
+        <Animation Name="gEenoSmallSnowballCreateAnim" Offset="0x7B4" /> <!-- Original name is "sm_ageB" ("go up/raise B") -->
+
+        <!-- Eeno Large Snowball DisplayList -->
+        <DList Name="gEenoLargeSnowballDL" Offset="0x10B0" />
+
+        <!-- Eeno Limb DisplayLists -->
+        <DList Name="gEenoBodyBottomDL" Offset="0x2428" />
+        <DList Name="gEenoBodyTopDL" Offset="0x2640" />
+        <DList Name="gEenoRightUpperArmDL" Offset="0x28F0" />
+        <DList Name="gEenoRightForearmDL" Offset="0x29B0" />
+        <DList Name="gEenoRightHandDL" Offset="0x2A50" />
+        <DList Name="gEenoLeftUpperArmDL" Offset="0x2B20" />
+        <DList Name="gEenoLeftForearmDL" Offset="0x2C70" />
+        <DList Name="gEenoLeftHandDL" Offset="0x2D10" />
+        <DList Name="gEenoRightEyeDL" Offset="0x2DE0" />
+        <DList Name="gEenoLeftEyeDL" Offset="0x2E70" />
+
+        <!-- Eeno Textures -->
+        <Texture Name="gEenoFaceTex" OutName="eeno_face" Format="rgba16" Width="32" Height="64" Offset="0x2F00" />
+        <Texture Name="gEenoUpperCheekTex" OutName="eeno_upper_cheek" Format="i4" Width="16" Height="16" Offset="0x3F00" />
+        <Texture Name="gEenoBodyTex" OutName="eeno_body" Format="i8" Width="16" Height="16" Offset="0x3F80" />
+        <Texture Name="gEenoEyeTex" OutName="eeno_eye" Format="rgba16" Width="16" Height="16" Offset="0x4080" />
+
+        <!-- Eeno Small Snowball DisplayList -->
+        <DList Name="gEenoSmallSnowballDL" Offset="0x4400" />
+
+        <!-- Eeno Limbs -->
+        <Limb Name="gEenoRootLimb" Type="Standard" EnumName="EENO_LIMB_ROOT" Offset="0x44F0" />
+        <Limb Name="gEenoBodyTopLimb" Type="Standard" EnumName="EENO_LIMB_BODY_TOP" Offset="0x44FC" />
+        <Limb Name="gEenoLeftEyeLimb" Type="Standard" EnumName="EENO_LIMB_LEFT_EYE" Offset="0x4508" />
+        <Limb Name="gEenoRightEyeLimb" Type="Standard" EnumName="EENO_LIMB_RIGHT_EYE" Offset="0x4514" />
+        <Limb Name="gEenoLeftUpperArmLimb" Type="Standard" EnumName="EENO_LIMB_LEFT_UPPER_ARM" Offset="0x4520" />
+        <Limb Name="gEenoLeftForearmLimb" Type="Standard" EnumName="EENO_LIMB_LEFT_FOREARM" Offset="0x452C" />
+        <Limb Name="gEenoLeftHandLimb" Type="Standard" EnumName="EENO_LIMB_LEFT_HAND" Offset="0x4538" />
+        <Limb Name="gEenoRightUpperArmLimb" Type="Standard" EnumName="EENO_LIMB_RIGHT_UPPER_ARM" Offset="0x4544" />
+        <Limb Name="gEenoRightForearmLimb" Type="Standard" EnumName="EENO_LIMB_RIGHT_FOREARM" Offset="0x4550" />
+        <Limb Name="gEenoRightHandLimb" Type="Standard" EnumName="EENO_LIMB_RIGHT_HAND" Offset="0x455C" />
+        <Limb Name="gEenoBodyBottomLimb" Type="Standard" EnumName="EENO_LIMB_BODY_BOTTOM" Offset="0x4568" />
+
+        <!-- Eeno Skeleton -->
+        <Skeleton Name="gEenoSkel" Type="Flex" LimbType="Standard" LimbNone="EENO_LIMB_NONE" LimbMax="EENO_LIMB_MAX" EnumName="EenoLimb" Offset="0x45A0" />
+
+        <!-- Eeno Animations -->
+        <Animation Name="gEenoDamageAnim" Offset="0x4628" /> <!-- Original name is "sm_damege" -->
+        <Animation Name="gEenoSnowPileMoveAnim" Offset="0x46D8" /> <!-- Original name is "sm_fukurami" ("to swell") -->
+
+        <!-- Eeno Snow Pile Limb DisplayLists -->
+        <DList Name="gEenoSnowPileBottomDL" Offset="0x4960" />
+        <DList Name="gEenoSnowPileTopDL" Offset="0x49E0" />
+
+        <!-- Eeno Snow Pile Limbs -->
+        <Limb Name="gEenoSnowPileBottomLimb" Type="Standard" EnumName="EENO_SNOW_PILE_LIMB_BOTTOM" Offset="0x4A70" />
+        <Limb Name="gEenoSnowPileTopLimb" Type="Standard" EnumName="EENO_SNOW_PILE_LIMB_TOP" Offset="0x4A7C" />
+
+        <!-- Eeno Snow Pile Skeleton -->
+        <Skeleton Name="gEenoSnowPileSkel" Type="Flex" LimbType="Standard" LimbNone="EENO_SNOW_PILE_LIMB_NONE" LimbMax="EENO_SNOW_PILE_LIMB_MAX" EnumName="EenoSnowPileLimb" Offset="0x4A90" />
+        
+        <!-- Eeno Animations -->
+        <Animation Name="gEenoLargeSnowballThrowAnim" Offset="0x4F14" /> <!-- Original name is "sm_nageA" ("throw A") -->
+        <Animation Name="gEenoSmallSnowballThrowAnim" Offset="0x544C" /> <!-- Original name is "sm_nageB" ("throw B") -->
+        <Animation Name="gEenoEmergeAnim" Offset="0x554C" /> <!-- Original name is "sm_tojo" ("appearance") -->
+        <Animation Name="gEenoIdleAnim" Offset="0x58CC" /> <!-- Original name is "sm_wait" -->
+
+        <!-- Eeno Snowball Fragment DisplayLists -->
+        <DList Name="gEenoSnowballFragment1DL" Offset="0x5CB0" />
+        <DList Name="gEenoSnowballFragment2DL" Offset="0x6190" />
+        <DList Name="gEenoSnowballFragment3DL" Offset="0x6620" />
+
+        <!-- Eeno Snowball Fragment Texture -->
+        <Texture Name="gEenoSnowballFragmentTex" OutName="eeno_snowball_fragment" Format="rgba16" Width="32" Height="64" Offset="0x6730" />
+    </File>
+</Root>

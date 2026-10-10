@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- Get Item Draw: Bottled Zora Egg -->
+    <File Name="object_gi_bottle_15" Segment="6">
+
+        <!-- Bottled Zora Egg Display Lists -->
+        <DList Name="gGiZoraEggBottleGlassAndCorkDL" Offset="0xCF0" />
+        <DList Name="gGiZoraEggBottleContentsDL" Offset="0x1010" />
+
+        <!-- Bottled Zora Egg Textures -->
+        <Texture Name="gGiZoraEggBottleCorkTex" OutName="gi_zora_egg_bottle_cork" Format="i8" Width="16" Height="16" Offset="0x10F8" />
+        <Texture Name="gGiZoraEggBottleContentsTex" OutName="gi_zora_egg_bottle_contents" Format="rgba16" Width="32" Height="32" Offset="0x11F8" />
+        <Texture Name="gGiZoraEggBottleGlass1Tex" OutName="gi_zora_egg_bottle_glass_1" Format="i8" Width="32" Height="32" Offset="0x19F8" />
+        <Texture Name="gGiZoraEggBottleGlass2Tex" OutName="gi_zora_egg_bottle_glass_2" Format="i4" Width="32" Height="32" Offset="0x1DF8" />
+    </File>
+</Root>

@@ -1,0 +1,14 @@
+﻿<Root>
+    <File Name="object_goronswitch" Segment="6">
+        <DList Name="object_goronswitch_DL_000260" Offset="0x260" /> <!-- Original name is "i2_H_swit1_modelT" -->
+        <DList Name="object_goronswitch_DL_000268" Offset="0x268" /> <!-- Original name is "i2_H_swit1_model" -->
+        <Collision Name="object_goronswitch_Colheader_0005C8" Offset="0x5C8" /> <!-- Original name is "i2_h_swit1_bgdatainfo" -->
+        <DList Name="object_goronswitch_DL_0007D0" Offset="0x7D0" /> <!-- Original name is "i2_H_swit2_modelT" -->
+        <DList Name="object_goronswitch_DL_0007D8" Offset="0x7D8" /> <!-- Original name is "i2_H_swit2_model" -->
+        <Texture Name="object_goronswitch_TLUT_000970" OutName="tlut_000970" Format="rgba16" Width="4" Height="4" Offset="0x970" />
+        <Texture Name="object_goronswitch_TLUT_000990" OutName="tlut_000990" Format="rgba16" Width="4" Height="4" Offset="0x990" />
+        <Texture Name="object_goronswitch_Tex_0009B0" OutName="tex_0009B0" Format="i8" Width="64" Height="64" Offset="0x9B0" />
+        <Texture Name="object_goronswitch_Tex_0019B0" OutName="tex_0019B0" Format="ci4" Width="64" Height="64" Offset="0x19B0" />
+        <Texture Name="object_goronswitch_Tex_0021B0" OutName="tex_0021B0" Format="ci4" Width="64" Height="64" Offset="0x21B0" />
+    </File>
+</Root>

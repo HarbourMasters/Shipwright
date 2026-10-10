@@ -1,0 +1,73 @@
+<Root>
+    <File Name="Z2_PIRATE" Segment="2" Game="MM">
+        <Scene Name="Z2_PIRATE" Offset="0x0"/>
+    </File>
+    <File Name="Z2_PIRATE_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_00" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_00DL_001DA8" Offset="0x1DA8"/>
+    </File>
+    <File Name="Z2_PIRATE_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_01" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_01DL_0039D0" Offset="0x39D0"/>
+    </File>
+    <File Name="Z2_PIRATE_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_02" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_02DL_004850" Offset="0x4850"/>
+    </File>
+    <File Name="Z2_PIRATE_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_03" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_03DL_011D80" Offset="0x11D80"/>
+        <DList Name="Z2_PIRATE_room_03DL_017948" Offset="0x17948"/>
+    </File>
+    <File Name="Z2_PIRATE_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_04" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_04DL_001F40" Offset="0x1F40"/>
+    </File>
+    <File Name="Z2_PIRATE_room_05" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_05" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_05DL_00ECE8" Offset="0xECE8"/>
+    </File>
+    <File Name="Z2_PIRATE_room_06" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_06" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_06DL_002420" Offset="0x2420"/>
+        <DList Name="Z2_PIRATE_room_06DL_003CE8" Offset="0x3CE8"/>
+    </File>
+    <File Name="Z2_PIRATE_room_07" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_07" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_07DL_00E478" Offset="0xE478"/>
+    </File>
+    <File Name="Z2_PIRATE_room_08" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_08" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_08DL_002308" Offset="0x2308"/>
+        <DList Name="Z2_PIRATE_room_08DL_0037C8" Offset="0x37C8"/>
+    </File>
+    <File Name="Z2_PIRATE_room_09" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_09" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_09DL_006770" Offset="0x6770"/>
+        <DList Name="Z2_PIRATE_room_09DL_009D08" Offset="0x9D08"/>
+    </File>
+    <File Name="Z2_PIRATE_room_10" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_10" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_10DL_007938" Offset="0x7938"/>
+        <DList Name="Z2_PIRATE_room_10DL_00AC40" Offset="0xAC40"/>
+    </File>
+    <File Name="Z2_PIRATE_room_11" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_11" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_11DL_006F30" Offset="0x6F30"/>
+        <DList Name="Z2_PIRATE_room_11DL_009C60" Offset="0x9C60"/>
+    </File>
+    <File Name="Z2_PIRATE_room_12" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_12" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_12DL_00A5E0" Offset="0xA5E0"/>
+        <DList Name="Z2_PIRATE_room_12DL_00D610" Offset="0xD610"/>
+    </File>
+    <File Name="Z2_PIRATE_room_13" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_13" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_13DL_002918" Offset="0x2918"/>
+        <DList Name="Z2_PIRATE_room_13DL_0041D8" Offset="0x41D8"/>
+    </File>
+    <File Name="Z2_PIRATE_room_14" Segment="3" Game="MM">
+        <Room Name="Z2_PIRATE_room_14" Offset="0x0"/>
+        <DList Name="Z2_PIRATE_room_14DL_000B28" Offset="0xB28"/>
+    </File>
+</Root>

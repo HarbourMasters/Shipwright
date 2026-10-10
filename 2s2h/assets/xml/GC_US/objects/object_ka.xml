@@ -1,0 +1,70 @@
+﻿<Root>
+    <!-- Assets for Pierre, the scarecrow -->
+    <File Name="object_ka" Segment="6">
+        <Animation Name="object_ka_Anim_000214" Offset="0x214" /> <!-- Original name is "dance" -->
+        <DList Name="object_ka_DL_001550" Offset="0x1550" />
+        <DList Name="object_ka_DL_001600" Offset="0x1600" />
+        <DList Name="object_ka_DL_0017D8" Offset="0x17D8" />
+        <DList Name="object_ka_DL_001878" Offset="0x1878" />
+        <DList Name="object_ka_DL_001918" Offset="0x1918" />
+        <DList Name="object_ka_DL_0019B8" Offset="0x19B8" />
+        <DList Name="object_ka_DL_001CD8" Offset="0x1CD8" />
+        <DList Name="object_ka_DL_001F68" Offset="0x1F68" />
+        <DList Name="object_ka_DL_002020" Offset="0x2020" />
+        <DList Name="object_ka_DL_0020C0" Offset="0x20C0" />
+        <DList Name="object_ka_DL_002160" Offset="0x2160" />
+        <DList Name="object_ka_DL_002200" Offset="0x2200" />
+        <DList Name="object_ka_DL_0022A0" Offset="0x22A0" />
+        <DList Name="object_ka_DL_002340" Offset="0x2340" />
+        <DList Name="object_ka_DL_002430" Offset="0x2430" />
+        <DList Name="object_ka_DL_0024D0" Offset="0x24D0" />
+        <DList Name="object_ka_DL_002570" Offset="0x2570" />
+        <DList Name="object_ka_DL_002610" Offset="0x2610" />
+        <DList Name="object_ka_DL_0027A0" Offset="0x27A0" />
+        <DList Name="object_ka_DL_002890" Offset="0x2890" />
+        <DList Name="object_ka_DL_002930" Offset="0x2930" />
+        <DList Name="object_ka_DL_0029D0" Offset="0x29D0" />
+        <DList Name="object_ka_DL_002A70" Offset="0x2A70" />
+        <Texture Name="object_ka_Tex_002C00" OutName="tex_002C00" Format="rgba16" Width="32" Height="32" Offset="0x2C00" />
+        <Texture Name="object_ka_Tex_003400" OutName="tex_003400" Format="rgba16" Width="32" Height="32" Offset="0x3400" />
+        <Texture Name="object_ka_Tex_003C00" OutName="tex_003C00" Format="rgba16" Width="32" Height="32" Offset="0x3C00" />
+        <Texture Name="object_ka_Tex_004400" OutName="tex_004400" Format="rgba16" Width="32" Height="32" Offset="0x4400" />
+        <Texture Name="object_ka_Tex_004C00" OutName="tex_004C00" Format="rgba16" Width="32" Height="32" Offset="0x4C00" />
+        <Texture Name="object_ka_Tex_005400" OutName="tex_005400" Format="rgba16" Width="32" Height="32" Offset="0x5400" />
+        <Texture Name="object_ka_Tex_005C00" OutName="tex_005C00" Format="rgba16" Width="32" Height="32" Offset="0x5C00" />
+        <Limb Name="object_ka_Standardlimb_006400" Type="Standard" EnumName="OBJECT_KA_LIMB_01" Offset="0x6400" />
+        <Limb Name="object_ka_Standardlimb_00640C" Type="Standard" EnumName="OBJECT_KA_LIMB_02" Offset="0x640C" />
+        <Limb Name="object_ka_Standardlimb_006418" Type="Standard" EnumName="OBJECT_KA_LIMB_03" Offset="0x6418" />
+        <Limb Name="object_ka_Standardlimb_006424" Type="Standard" EnumName="OBJECT_KA_LIMB_04" Offset="0x6424" />
+        <Limb Name="object_ka_Standardlimb_006430" Type="Standard" EnumName="OBJECT_KA_LIMB_05" Offset="0x6430" />
+        <Limb Name="object_ka_Standardlimb_00643C" Type="Standard" EnumName="OBJECT_KA_LIMB_06" Offset="0x643C" />
+        <Limb Name="object_ka_Standardlimb_006448" Type="Standard" EnumName="OBJECT_KA_LIMB_07" Offset="0x6448" />
+        <Limb Name="object_ka_Standardlimb_006454" Type="Standard" EnumName="OBJECT_KA_LIMB_08" Offset="0x6454" />
+        <Limb Name="object_ka_Standardlimb_006460" Type="Standard" EnumName="OBJECT_KA_LIMB_09" Offset="0x6460" />
+        <Limb Name="object_ka_Standardlimb_00646C" Type="Standard" EnumName="OBJECT_KA_LIMB_0A" Offset="0x646C" />
+        <Limb Name="object_ka_Standardlimb_006478" Type="Standard" EnumName="OBJECT_KA_LIMB_0B" Offset="0x6478" />
+        <Limb Name="object_ka_Standardlimb_006484" Type="Standard" EnumName="OBJECT_KA_LIMB_0C" Offset="0x6484" />
+        <Limb Name="object_ka_Standardlimb_006490" Type="Standard" EnumName="OBJECT_KA_LIMB_0D" Offset="0x6490" />
+        <Limb Name="object_ka_Standardlimb_00649C" Type="Standard" EnumName="OBJECT_KA_LIMB_0E" Offset="0x649C" />
+        <Limb Name="object_ka_Standardlimb_0064A8" Type="Standard" EnumName="OBJECT_KA_LIMB_0F" Offset="0x64A8" />
+        <Limb Name="object_ka_Standardlimb_0064B4" Type="Standard" EnumName="OBJECT_KA_LIMB_10" Offset="0x64B4" />
+        <Limb Name="object_ka_Standardlimb_0064C0" Type="Standard" EnumName="OBJECT_KA_LIMB_11" Offset="0x64C0" />
+        <Limb Name="object_ka_Standardlimb_0064CC" Type="Standard" EnumName="OBJECT_KA_LIMB_12" Offset="0x64CC" />
+        <Limb Name="object_ka_Standardlimb_0064D8" Type="Standard" EnumName="OBJECT_KA_LIMB_13" Offset="0x64D8" />
+        <Limb Name="object_ka_Standardlimb_0064E4" Type="Standard" EnumName="OBJECT_KA_LIMB_14" Offset="0x64E4" />
+        <Limb Name="object_ka_Standardlimb_0064F0" Type="Standard" EnumName="OBJECT_KA_LIMB_15" Offset="0x64F0" />
+        <Limb Name="object_ka_Standardlimb_0064FC" Type="Standard" EnumName="OBJECT_KA_LIMB_16" Offset="0x64FC" />
+        <Limb Name="object_ka_Standardlimb_006508" Type="Standard" EnumName="OBJECT_KA_LIMB_17" Offset="0x6508" />
+        <Limb Name="object_ka_Standardlimb_006514" Type="Standard" EnumName="OBJECT_KA_LIMB_18" Offset="0x6514" />
+        <Limb Name="object_ka_Standardlimb_006520" Type="Standard" EnumName="OBJECT_KA_LIMB_19" Offset="0x6520" />
+        <Limb Name="object_ka_Standardlimb_00652C" Type="Standard" EnumName="OBJECT_KA_LIMB_1A" Offset="0x652C" />
+        <Limb Name="object_ka_Standardlimb_006538" Type="Standard" EnumName="OBJECT_KA_LIMB_1B" Offset="0x6538" />
+        <Skeleton Name="object_ka_Skel_0065B0" Type="Flex" LimbType="Standard" LimbNone="OBJECT_KA_LIMB_NONE" LimbMax="OBJECT_KA_LIMB_MAX" EnumName="ObjectKaLimb" Offset="0x65B0" />
+        <Animation Name="object_ka_Anim_00686C" Offset="0x686C" /> <!-- Original name is "ka_basicdance" -->
+        <Animation Name="object_ka_Anim_006A6C" Offset="0x6A6C" /> <!-- Original name is "ka_dance" (this animation was removed in MM3D, but it's present in OoT3D) -->
+        <Animation Name="object_ka_Anim_0071EC" Offset="0x71EC" /> <!-- Original name is "ka_hello" -->
+        <Animation Name="object_ka_Anim_007444" Offset="0x7444" /> <!-- Original name is "ka_newwait" -->
+        <Animation Name="object_ka_Anim_007B90" Offset="0x7B90" /> <!-- Original name is "ka_onegai" -->
+        <Animation Name="object_ka_Anim_0081A4" Offset="0x81A4" /> <!-- Original name is "ka_turndance" -->
+    </File>
+</Root>

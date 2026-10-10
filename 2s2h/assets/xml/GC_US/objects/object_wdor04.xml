@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_wdor04" Segment="6">
+        <DList Name="gMilkBarDoorEndDL" Offset="0x500"/> <!-- Original name is "w2_door4_modelT" -->
+        <DList Name="gMilkBarDoorDL" Offset="0x508"/> <!-- Original name is "w2_door4_model" -->
+        <Texture Name="gMilkBarDoorTex" OutName="milk_bar_door" Format="rgba16" Width="32" Height="64" Offset="0x670"/>
+    </File>
+</Root>

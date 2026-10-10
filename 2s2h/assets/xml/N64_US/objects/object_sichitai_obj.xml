@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_sichitai_obj" Segment="6">
+        <DList Name="gSichitaiBoatDL" Offset="0x6B0" /> <!-- Original name is "z2_20_hune01_model" -->
+        <Texture Name="gSichitaiThwartTex" OutName="tex_000878" Format="rgba16" Width="16" Height="16" Offset="0x878" />
+        <Texture Name="gSichitaiHullTex" OutName="tex_000A78" Format="rgba16" Width="32" Height="32" Offset="0xA78" />
+        <Collision Name="gSichitaiBoatCol" Offset="0x16DC" /> <!-- Original name is "z2_20_hune01_bgdatainfo" -->
+        <DList Name="object_sichitai_obj_DL_001820" Offset="0x1820" />
+        <Texture Name="object_sichitai_obj_Tex_001908" OutName="tex_001908" Format="rgba16" Width="32" Height="32" Offset="0x1908" />
+        <Texture Name="object_sichitai_obj_Tex_002108" OutName="tex_002108" Format="i4" Width="64" Height="64" Offset="0x2108" />
+    </File>
+</Root>

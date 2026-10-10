@@ -1,0 +1,6 @@
+<Root>
+    <File Name="code" BaseAddress="0x800A6440" RangeStart="0x107218" RangeEnd="0x107238" OutName="actor">
+        <DList Name="D_801AEF88" Offset="0x107218"/>
+        <DList Name="D_801AEFA0" Offset="0x107230"/>
+    </File>
+</Root>

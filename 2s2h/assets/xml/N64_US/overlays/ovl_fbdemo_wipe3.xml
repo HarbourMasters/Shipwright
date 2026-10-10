@@ -1,0 +1,13 @@
+<Root>
+    <File Name="ovl_fbdemo_wipe3" BaseAddress="0x80AC6740" RangeStart="0x520" RangeEnd="0x1C10">
+        <Texture Name="fbdemo_tex_000520" OutName="tex_000520" Format="i8" Width="16" Height="64" Offset="0x520"/>
+        <Texture Name="fbdemo_tex_000920" OutName="tex_000920" Format="i8" Width="16" Height="64" Offset="0x920"/>
+        <Texture Name="fbdemo_tex_000D20" OutName="tex_000D20" Format="i8" Width="16" Height="64" Offset="0xD20"/>
+        <Texture Name="fbdemo_tex_001120" OutName="tex_001120" Format="i8" Width="16" Height="64" Offset="0x1120"/>
+        <Texture Name="fbdemo_tex_001520" OutName="tex_001520" Format="i8" Width="16" Height="64" Offset="0x1520"/>
+        <Array Name="sTransWipe3Vtx" Count="34" Offset="0x1920">
+            <Vtx/>
+        </Array>
+        <DList Name="sTransWipe3DL" Offset="0x1B40"/>
+    </File>
+</Root>

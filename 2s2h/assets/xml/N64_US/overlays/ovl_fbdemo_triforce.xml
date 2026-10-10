@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_fbdemo_triforce" BaseAddress="0x80AC5070" RangeStart="0x5C0" RangeEnd="0x690">
+        <DList Name="sTransTriforceDL" Offset="0x5C0"/>
+        <Array Name="sTransTriforceVtx" Count="10" Offset="0x5F0">
+            <Vtx/>
+        </Array>
+    </File>
+</Root>

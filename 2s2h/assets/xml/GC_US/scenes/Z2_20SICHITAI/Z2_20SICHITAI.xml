@@ -1,0 +1,27 @@
+<Root>
+    <ExternalFile XmlPath="misc/scene_texture_06.xml" OutPath="misc/scene_texture_06/"/>
+    <File Name="Z2_20SICHITAI" Segment="2" Game="MM">
+        <Scene Name="Z2_20SICHITAI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_20SICHITAI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_20SICHITAI_room_00" Offset="0x0"/>
+        <DList Name="Z2_20SICHITAI_room_00DL_0006B0" Offset="0x6B0"/>
+        <DList Name="Z2_20SICHITAI_room_00DL_011A70" Offset="0x11A70"/>
+        <DList Name="Z2_20SICHITAI_room_00DL_01B120" Offset="0x1B120"/>
+        <DList Name="Z2_20SICHITAI_room_00DL_01CAE8" Offset="0x1CAE8"/>
+    </File>
+    <File Name="Z2_20SICHITAI_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_20SICHITAI_room_01" Offset="0x0"/>
+        <DList Name="Z2_20SICHITAI_room_01DL_000570" Offset="0x570"/>
+        <DList Name="Z2_20SICHITAI_room_01DL_00B9F0" Offset="0xB9F0"/>
+        <DList Name="Z2_20SICHITAI_room_01DL_011860" Offset="0x11860"/>
+        <DList Name="Z2_20SICHITAI_room_01DL_013458" Offset="0x13458"/>
+    </File>
+    <File Name="Z2_20SICHITAI_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_20SICHITAI_room_02" Offset="0x0"/>
+        <DList Name="Z2_20SICHITAI_room_02DL_000370" Offset="0x370"/>
+        <DList Name="Z2_20SICHITAI_room_02DL_008BA0" Offset="0x8BA0"/>
+        <DList Name="Z2_20SICHITAI_room_02DL_00D480" Offset="0xD480"/>
+        <DList Name="Z2_20SICHITAI_room_02DL_00DCA0" Offset="0xDCA0"/>
+    </File>
+</Root>

@@ -1,0 +1,61 @@
+﻿<Root>
+    <!-- Assets for actors in Woodfall Temple (doors, staircases, the wooden flower, poisoned/purified water) -->
+    <File Name="object_numa_obj" Segment="6">
+        <DList Name="object_numa_obj_DL_0007A0" Offset="0x7A0" /> <!-- Original name is "m2_NumaRasenSita_modelT" -->
+        <DList Name="object_numa_obj_DL_0007A8" Offset="0x7A8" /> <!-- Original name is "m2_NumaRasenSita_model" -->
+        <DList Name="object_numa_obj_DL_0014C0" Offset="0x14C0" /> <!-- Original name is "m2_NumaRasenSita_PT_modelT" -->
+        <DList Name="object_numa_obj_DL_0014C8" Offset="0x14C8" /> <!-- Original name is "m2_NumaRasenSita_PT_model" -->
+        <Texture Name="object_numa_obj_Tex_001D60" OutName="tex_001D60" Format="rgba16" Width="32" Height="64" Offset="0x1D60" />
+        <Texture Name="object_numa_obj_Tex_002D60" OutName="tex_002D60" Format="rgba16" Width="32" Height="32" Offset="0x2D60" />
+        <Texture Name="object_numa_obj_Tex_003560" OutName="tex_003560" Format="rgba16" Width="32" Height="32" Offset="0x3560" />
+        <DList Name="object_numa_obj_DL_004440" Offset="0x4440" /> <!-- Original name is "m2_NumaRasenUe_modelT" -->
+        <DList Name="object_numa_obj_DL_004448" Offset="0x4448" /> <!-- Original name is "m2_NumaRasenUe_model" -->
+        <DList Name="object_numa_obj_DL_0051B0" Offset="0x51B0" /> <!-- Original name is "m2_NumaRasenUe_PT_modelT" -->
+        <DList Name="object_numa_obj_DL_0051B8" Offset="0x51B8" /> <!-- Original name is "m2_NumaRasenUe_PT_model" -->
+        <DList Name="gWoodfallDoorDL" Offset="0x5DF0" />
+        <Texture Name="object_numa_obj_Tex_005FC0" OutName="tex_005FC0" Format="rgba16" Width="32" Height="64" Offset="0x5FC0" />
+        <DList Name="object_numa_obj_DL_007150" Offset="0x7150" /> <!-- Original name is "m2_N_shutter1_model" -->
+        <Texture Name="object_numa_obj_Tex_0072B0" OutName="tex_0072B0" Format="rgba16" Width="32" Height="64" Offset="0x72B0" />
+        <DList Name="object_numa_obj_DL_008440" Offset="0x8440" /> <!-- Original name is "m2_N_shutter2_model" -->
+        <Texture Name="object_numa_obj_Tex_0085A0" OutName="tex_0085A0" Format="rgba16" Width="32" Height="64" Offset="0x85A0" />
+
+        <!-- Wooden Flower -->
+        <Collision Name="gWoodenFlowerOpenedFlowerCol" Offset="0x9FE0" /> <!-- Original name is "m2_N_HANAafter_bgdatainfo" -->
+        <Collision Name="gWoodenFlowerClosedFlowerCol" Offset="0xA740" /> <!-- Original name is "m2_N_HANAdefault_bgdatainfo" -->
+        <DList Name="gWoodenFlowerEmpty1DL" Offset="0xAB80" /> <!-- Original name might be "m2_N_HANAin_modelT", may have originally been for transparency? -->
+        <DList Name="gWoodenFlowerInnerPetalDL" Offset="0xAB88" /> <!-- Original name is "m2_N_HANAin_model" -->
+        <DList Name="gWoodenFlowerEmpty2DL" Offset="0xB920" /> <!-- Original name might be "m2_N_HANAkuki_modelT", may have originally been for transparency? -->
+        <DList Name="gWoodenFlowerStalkDL" Offset="0xB928" /> <!-- Original name is "m2_N_HANAkuki_model" -->
+        <DList Name="gWoodenFlowerEmpty3DL" Offset="0xBE50" /> <!-- Original name might be "m2_N_HANAout_modelT", may have originally been for transparency? -->
+        <DList Name="gWoodenFlowerOuterPetalDL" Offset="0xBE58" /> <!-- Original name is "m2_N_HANAout_model" -->
+        <Texture Name="gWoodenFlowerPetalSidesTex" OutName="wooden_flower_petal_sides" Format="rgba16" Width="32" Height="32" Offset="0xBFD0" />
+        <Texture Name="gWoodenFlowerInnerPetalTopTex" OutName="wooden_flower_inner_petal_top" Format="rgba16" Width="32" Height="64" Offset="0xC7D0" />
+        <Texture Name="gWoodenFlowerInnerPetalBottomTex" OutName="wooden_flower_inner_petal_bottom" Format="rgba16" Width="32" Height="64" Offset="0xD7D0" />
+        <Texture Name="gWoodenFlowerStalkTopTex" OutName="wooden_flower_stalk_top" Format="rgba16" Width="32" Height="64" Offset="0xE7D0" />
+        <Texture Name="gWoodenFlowerStalkSidesTex" OutName="wooden_flower_stalk_sides" Format="rgba16" Width="32" Height="64" Offset="0xF7D0" />
+        <Texture Name="gWoodenFlowerOuterPetalTopTex" OutName="wooden_flower_outer_petal_top" Format="rgba16" Width="32" Height="64" Offset="0x107D0" />
+        <Texture Name="gWoodenFlowerOuterPetalBottomTex" OutName="wooden_flower_outer_petal_bottom" Format="rgba16" Width="32" Height="64" Offset="0x117D0" />
+
+        <Collision Name="object_numa_obj_Colheader_012818" Offset="0x12818" /> <!-- Original name is "m2_N_DOKUcode_bgdatainfo" -->
+        <DList Name="object_numa_obj_DL_0128E0" Offset="0x128E0" /> <!-- Original name is "m2_N_DOKUwater_modelT" -->
+        <DList Name="object_numa_obj_DL_0129C0" Offset="0x129C0" />
+        <DList Name="object_numa_obj_DL_012A60" Offset="0x12A60" /> <!-- Original name is "m2_N_DOKUwater03_modelT" -->
+        <DList Name="object_numa_obj_DL_012B40" Offset="0x12B40" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_012B58" Offset="0x12B58" />
+        <DList Name="object_numa_obj_DL_012BF0" Offset="0x12BF0" /> <!-- Original name is "m2_N_DOKUwater05_modelT" -->
+        <DList Name="object_numa_obj_DL_012CD0" Offset="0x12CD0" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_012CE8" Offset="0x12CE8" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_012CF8" Offset="0x12CF8" />
+        <DList Name="object_numa_obj_DL_012D90" Offset="0x12D90" /> <!-- Original name is "m2_N_water_modelT" -->
+        <DList Name="object_numa_obj_DL_012E70" Offset="0x12E70" />
+        <DList Name="object_numa_obj_DL_012F10" Offset="0x12F10" /> <!-- Original name is "m2_N_water03_modelT" -->
+        <DList Name="object_numa_obj_DL_012FF0" Offset="0x12FF0" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_013008" Offset="0x13008" />
+        <DList Name="object_numa_obj_DL_0130A0" Offset="0x130A0" /> <!-- Original name is "m2_N_water05_modelT" -->
+        <DList Name="object_numa_obj_DL_013180" Offset="0x13180" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_013198" Offset="0x13198" />
+        <TextureAnimation Name="object_numa_obj_Matanimheader_0131A8" Offset="0x131A8" />
+        <Texture Name="object_numa_obj_Tex_0131B0" OutName="tex_0131B0" Format="rgba16" Width="32" Height="32" Offset="0x131B0" />
+        <Texture Name="object_numa_obj_Tex_0139B0" OutName="tex_0139B0" Format="rgba16" Width="32" Height="32" Offset="0x139B0" />
+    </File>
+</Root>

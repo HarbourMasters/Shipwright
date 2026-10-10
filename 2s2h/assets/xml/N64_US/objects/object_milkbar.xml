@@ -1,0 +1,64 @@
+﻿<Root>
+    <File Name="object_milkbar" Segment="6">
+        <DList Name="object_milkbar_DL_000100" Offset="0x100" /> <!-- Original name is "z2_milk_bar_light_1_modelT" -->
+        <DList Name="object_milkbar_DL_000240" Offset="0x240" />
+        <Texture Name="object_milkbar_Tex_000248" OutName="tex_000248" Format="ia16" Width="16" Height="16" Offset="0x248" />
+        <Texture Name="object_milkbar_Tex_000448" OutName="tex_000448" Format="ia8" Width="16" Height="16" Offset="0x448" />
+        <DList Name="object_milkbar_DL_000650" Offset="0x650" /> <!-- Original name is "z2_milk_bar_light_2_modelT" -->
+        <DList Name="object_milkbar_DL_000790" Offset="0x790" />
+        <Texture Name="object_milkbar_Tex_000798" OutName="tex_000798" Format="ia16" Width="16" Height="16" Offset="0x798" />
+        <Texture Name="object_milkbar_Tex_000998" OutName="tex_000998" Format="ia8" Width="16" Height="16" Offset="0x998" />
+        <DList Name="object_milkbar_DL_000B80" Offset="0xB80" /> <!-- Original name is "z2_milk_bar_light_3_modelT" -->
+        <DList Name="object_milkbar_DL_000CC0" Offset="0xCC0" />
+        <Texture Name="object_milkbar_Tex_000CC8" OutName="tex_000CC8" Format="ia16" Width="16" Height="16" Offset="0xCC8" />
+        <Texture Name="object_milkbar_Tex_000EC8" OutName="tex_000EC8" Format="ia8" Width="16" Height="16" Offset="0xEC8" />
+        <DList Name="object_milkbar_DL_0010D0" Offset="0x10D0" /> <!-- Original name is "z2_milk_bar_light_4_modelT" -->
+        <DList Name="object_milkbar_DL_001210" Offset="0x1210" />
+        <Texture Name="object_milkbar_Tex_001218" OutName="tex_001218" Format="ia16" Width="16" Height="16" Offset="0x1218" />
+        <Texture Name="object_milkbar_Tex_001418" OutName="tex_001418" Format="ia8" Width="16" Height="16" Offset="0x1418" />
+        <DList Name="object_milkbar_DL_0015E0" Offset="0x15E0" /> <!-- Original name is "z2_milk_bar_light_5_modelT" -->
+        <DList Name="object_milkbar_DL_0016B8" Offset="0x16B8" />
+        <Texture Name="object_milkbar_Tex_0016C0" OutName="tex_0016C0" Format="ia16" Width="16" Height="16" Offset="0x16C0" />
+        <Texture Name="object_milkbar_Tex_0018C0" OutName="tex_0018C0" Format="ia8" Width="16" Height="16" Offset="0x18C0" />
+        <DList Name="object_milkbar_DL_002BA0" Offset="0x2BA0" /> <!-- Not present in MM3D, but it was probably named "z2_milk_bar_stage_1_modelT" based on the rest of this object. -->
+        <DList Name="object_milkbar_DL_002CD0" Offset="0x2CD0" /> <!-- Original name is "z2_milk_bar_stage_1_model" -->
+        <Texture Name="object_milkbar_Tex_003320" OutName="tex_003320" Format="i8" Width="64" Height="64" Offset="0x3320" />
+        <Texture Name="object_milkbar_Tex_004320" OutName="tex_004320" Format="i8" Width="32" Height="32" Offset="0x4320" />
+        <Texture Name="object_milkbar_Tex_004720" OutName="tex_004720" Format="ia16" Width="16" Height="32" Offset="0x4720" />
+        <Texture Name="object_milkbar_Tex_004B20" OutName="tex_004B20" Format="i8" Width="32" Height="32" Offset="0x4B20" />
+        <Texture Name="object_milkbar_Tex_004F20" OutName="tex_004F20" Format="ia16" Width="32" Height="32" Offset="0x4F20" />
+        <Texture Name="object_milkbar_Tex_005720" OutName="tex_005720" Format="i8" Width="32" Height="32" Offset="0x5720" />
+        <Texture Name="object_milkbar_Tex_005B20" OutName="tex_005B20" Format="i8" Width="8" Height="8" Offset="0x5B20" />
+        <Texture Name="object_milkbar_Tex_005B60" OutName="tex_005B60" Format="i8" Width="16" Height="32" Offset="0x5B60" />
+        <Texture Name="object_milkbar_Tex_005D60" OutName="tex_005D60" Format="i4" Width="16" Height="32" Offset="0x5D60" />
+        <Texture Name="object_milkbar_Tex_005E60" OutName="tex_005E60" Format="i8" Width="32" Height="32" Offset="0x5E60" />
+        <Texture Name="object_milkbar_Tex_006260" OutName="tex_006260" Format="i4" Width="32" Height="32" Offset="0x6260" />
+        <Collision Name="object_milkbar_Colheader_006688" Offset="0x6688" /> <!-- Original name is "z2_milk_bar_stage_1_bgdatainfo" -->
+        <Mtx Name="object_milkbar_Mtx_0075E0" Offset="0x75E0" />
+        <Mtx Name="object_milkbar_Mtx_007620" Offset="0x7620" />
+        <Mtx Name="object_milkbar_Mtx_007660" Offset="0x7660" />
+        <DList Name="object_milkbar_DL_0076A0" Offset="0x76A0" /> <!-- Original name is "z2_milk_bar_stage_2_modelT" -->
+        <DList Name="object_milkbar_DL_007918" Offset="0x7918" /> <!-- Original name is "z2_milk_bar_stage_2_model" -->
+        <Texture Name="object_milkbar_Tex_007FA0" OutName="tex_007FA0" Format="ia16" Width="64" Height="32" Offset="0x7FA0" />
+        <Texture Name="object_milkbar_Tex_008FA0" OutName="tex_008FA0" Format="rgba16" Width="32" Height="32" Offset="0x8FA0" />
+        <Texture Name="object_milkbar_Tex_0097A0" OutName="tex_0097A0" Format="rgba16" Width="32" Height="32" Offset="0x97A0" />
+        <Texture Name="object_milkbar_Tex_009FA0" OutName="tex_009FA0" Format="ia16" Width="32" Height="32" Offset="0x9FA0" />
+        <Texture Name="object_milkbar_Tex_00A7A0" OutName="tex_00A7A0" Format="i8" Width="32" Height="32" Offset="0xA7A0" />
+        <Texture Name="object_milkbar_Tex_00ABA0" OutName="tex_00ABA0" Format="ia16" Width="32" Height="32" Offset="0xABA0" />
+        <Texture Name="object_milkbar_Tex_00B3A0" OutName="tex_00B3A0" Format="ia8" Width="32" Height="128" Offset="0xB3A0" />
+        <Texture Name="object_milkbar_Tex_00C3A0" OutName="tex_00C3A0" Format="ia8" Width="64" Height="64" Offset="0xC3A0" />
+        <Texture Name="object_milkbar_Tex_00D3A0" OutName="tex_00D3A0" Format="ia16" Width="64" Height="32" Offset="0xD3A0" />
+        <Texture Name="object_milkbar_Tex_00E3A0" OutName="tex_00E3A0" Format="i8" Width="8" Height="8" Offset="0xE3A0" />
+        <Texture Name="object_milkbar_TLUT_00E3E0" OutName="tlut_00E3E0" Format="rgba16" Width="16" Height="16" Offset="0xE3E0" />
+        <Texture Name="object_milkbar_Tex_00E5E0" OutName="tex_00E5E0" Format="rgba16" Width="32" Height="32" Offset="0xE5E0" />
+        <Texture Name="object_milkbar_Tex_00EDE0" OutName="tex_00EDE0" Format="ci8" Width="32" Height="32" Offset="0xEDE0" />
+        <Texture Name="object_milkbar_Tex_00F1E0" OutName="tex_00F1E0" Format="ia16" Width="32" Height="32" Offset="0xF1E0" />
+        <Texture Name="object_milkbar_Tex_00F9E0" OutName="tex_00F9E0" Format="i4" Width="64" Height="64" Offset="0xF9E0" />
+        <Texture Name="object_milkbar_Tex_0101E0" OutName="tex_0101E0" Format="i8" Width="32" Height="32" Offset="0x101E0" />
+        <TextureAnimation Name="object_milkbar_Matanimheader_0105F8" Offset="0x105F8" />
+        <DList Name="object_milkbar_DL_010D60" Offset="0x10D60" />
+        <DList Name="object_milkbar_DL_010D68" Offset="0x10D68" />
+        <Texture Name="object_milkbar_Tex_0110A8" OutName="tex_0110A8" Format="i8" Width="32" Height="32" Offset="0x110A8" />
+        <Texture Name="object_milkbar_Tex_0114A8" OutName="tex_0114A8" Format="ia16" Width="16" Height="32" Offset="0x114A8" />
+    </File>
+</Root>

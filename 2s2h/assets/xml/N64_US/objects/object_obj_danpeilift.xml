@@ -1,0 +1,7 @@
+﻿<Root>
+    <File Name="object_obj_danpeilift" Segment="6">
+        <DList Name="object_obj_danpeilift_DL_000180" Offset="0x180" /> <!-- Original name is "Y2_DANPEI_lift_model2" -->
+        <Texture Name="object_obj_danpeilift_Tex_000298" OutName="tex_000298" Format="rgba16" Width="32" Height="32" Offset="0x298" />
+        <Collision Name="object_obj_danpeilift_Colheader_000BA0" Offset="0xBA0" /> <!-- Original name is "Y2_DANPEI_lift_bgdatainfo2" -->
+    </File>
+</Root>

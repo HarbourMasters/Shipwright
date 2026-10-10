@@ -1,0 +1,26 @@
+﻿<Root>
+    <File Name="object_water_effect" Segment="6">
+        <DList Name="object_water_effect_DL_000180" Offset="0x180" /> <!-- Original name is "spl_hasira_model" -->
+        <DList Name="object_water_effect_DL_000420" Offset="0x420" /> <!-- Original name is "spl_sibuki01_model" -->
+        <DList Name="object_water_effect_DL_000730" Offset="0x730" /> <!-- Original name is "spl_sibuki02_model" -->
+        <DList Name="object_water_effect_DL_000A48" Offset="0xA48" /> <!-- Original name is "spl_sibuki03_model" -->
+        <DList Name="object_water_effect_DL_000CD8" Offset="0xCD8" /> <!-- Original name is "spl_hamon_model" -->
+        <TextureAnimation Name="object_water_effect_Matanimheader_000DD0" Offset="0xDD0" />
+        <TextureAnimation Name="object_water_effect_Matanimheader_000DE0" Offset="0xDE0" />
+        <TextureAnimation Name="object_water_effect_Matanimheader_000E0C" Offset="0xE0C" />
+        <TextureAnimation Name="object_water_effect_Matanimheader_000E40" Offset="0xE40" />
+        <TextureAnimation Name="object_water_effect_Matanimheader_000E58" Offset="0xE58" />
+        <Texture Name="object_water_effect_Tex_000E60" OutName="tex_000E60" Format="i4" Width="32" Height="64" Offset="0xE60" />
+        <Texture Name="object_water_effect_Tex_001260" OutName="tex_001260" Format="i4" Width="64" Height="64" Offset="0x1260" />
+        <Texture Name="object_water_effect_Tex_001A60" OutName="tex_001A60" Format="i8" Width="32" Height="64" Offset="0x1A60" />
+        <Texture Name="object_water_effect_Tex_002260" OutName="tex_002260" Format="i4" Width="64" Height="64" Offset="0x2260" />
+        <Texture Name="object_water_effect_Tex_002A60" OutName="tex_002A60" Format="i4" Width="64" Height="64" Offset="0x2A60" />
+        <Texture Name="object_water_effect_Tex_003260" OutName="tex_003260" Format="i4" Width="64" Height="64" Offset="0x3260" />
+        <Texture Name="object_water_effect_Tex_003A60" OutName="tex_003A60" Format="i4" Width="64" Height="64" Offset="0x3A60" />
+        <DList Name="object_water_effect_DL_004260" Offset="0x4260" />
+        <DList Name="object_water_effect_DL_0042B0" Offset="0x42B0" />
+        <DList Name="object_water_effect_DL_0042F8" Offset="0x42F8" /> <!-- Original name is "we_water2_modelT" -->
+        <DList Name="object_water_effect_DL_004340" Offset="0x4340" />
+        <DList Name="object_water_effect_DL_0043E8" Offset="0x43E8" /> <!-- Original name might be "torch_model" -->
+    </File>
+</Root>

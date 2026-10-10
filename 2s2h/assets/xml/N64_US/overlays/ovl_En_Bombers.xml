@@ -1,0 +1,6 @@
+<Root>
+    <File Name="ovl_En_Bombers" BaseAddress="0x80C03530" RangeStart="0x12C8" RangeEnd="0x12E8">
+        <DList Name="ovl_En_Bombers_DL_12C8" Offset="0x12C8" />
+        <DList Name="ovl_En_Bombers_DL_12D8" Offset="0x12D8" />
+    </File>
+</Root>

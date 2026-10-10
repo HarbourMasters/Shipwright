@@ -1,0 +1,12 @@
+﻿<Root>
+    <File Name="object_tokei_tobira" Segment="6">
+        <Texture Name="object_tokei_tobira_Tex_000000" OutName="tex_000000" Format="rgba16" Width="32" Height="32" Offset="0x0" />
+        <Texture Name="object_tokei_tobira_Tex_000800" OutName="tex_000800" Format="i4" Width="64" Height="64" Offset="0x800" />
+        <DList Name="object_tokei_tobira_DL_001100" Offset="0x1100" /> <!-- Original name is "z2_tobira_h_modelT" -->
+        <DList Name="object_tokei_tobira_DL_001108" Offset="0x1108" /> <!-- Original name is "z2_tobira_h_model" -->
+        <Collision Name="object_tokei_tobira_Colheader_0012B0" Offset="0x12B0" /> <!-- Original name is "z2_tobira_h_bgdatainfo" -->
+        <DList Name="object_tokei_tobira_DL_0013E0" Offset="0x13E0" /> <!-- Original name is "z2_tobira_m_modelT" -->
+        <DList Name="object_tokei_tobira_DL_0013E8" Offset="0x13E8" /> <!-- Original name is "z2_tobira_m_model" -->
+        <Collision Name="object_tokei_tobira_Colheader_001590" Offset="0x1590" /> <!-- Original name is "z2_tobira_m_bgdatainfo" -->
+    </File>
+</Root>

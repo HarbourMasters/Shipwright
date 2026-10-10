@@ -1,0 +1,173 @@
+#ifndef Z2_ICHIBA_Z2_ICHIBA_H
+#define Z2_ICHIBA_Z2_ICHIBA_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_ICHIBACollisionHeader_003A28 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACollisionHeader_003A28"
+static const ALIGN_ASSET(2) char Z2_ICHIBACollisionHeader_003A28[] = dZ2_ICHIBACollisionHeader_003A28;
+
+#define dZ2_ICHIBACutsceneData_000650 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACutsceneData_000650"
+static const ALIGN_ASSET(2) char Z2_ICHIBACutsceneData_000650[] = dZ2_ICHIBACutsceneData_000650;
+
+#define dZ2_ICHIBACutsceneData_0014B0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACutsceneData_0014B0"
+static const ALIGN_ASSET(2) char Z2_ICHIBACutsceneData_0014B0[] = dZ2_ICHIBACutsceneData_0014B0;
+
+#define dZ2_ICHIBACutsceneData_001670 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACutsceneData_001670"
+static const ALIGN_ASSET(2) char Z2_ICHIBACutsceneData_001670[] = dZ2_ICHIBACutsceneData_001670;
+
+#define dZ2_ICHIBATex_014CC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_014CC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_014CC0[] = dZ2_ICHIBATex_014CC0;
+
+#define dZ2_ICHIBATex_009E40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_009E40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_009E40[] = dZ2_ICHIBATex_009E40;
+
+#define dZ2_ICHIBATex_00A040 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00A040"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00A040[] = dZ2_ICHIBATex_00A040;
+
+#define dZ2_ICHIBATex_0140C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0140C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0140C0[] = dZ2_ICHIBATex_0140C0;
+
+#define dZ2_ICHIBATex_00A440 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00A440"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00A440[] = dZ2_ICHIBATex_00A440;
+
+#define dZ2_ICHIBATLUT_015DA0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015DA0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015DA0[] = dZ2_ICHIBATLUT_015DA0;
+
+#define dZ2_ICHIBATex_00EC40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00EC40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00EC40[] = dZ2_ICHIBATex_00EC40;
+
+#define dZ2_ICHIBATLUT_015E00 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015E00"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015E00[] = dZ2_ICHIBATLUT_015E00;
+
+#define dZ2_ICHIBATex_0136C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0136C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0136C0[] = dZ2_ICHIBATex_0136C0;
+
+#define dZ2_ICHIBATLUT_015E20 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015E20"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015E20[] = dZ2_ICHIBATLUT_015E20;
+
+#define dZ2_ICHIBATex_0144C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0144C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0144C0[] = dZ2_ICHIBATex_0144C0;
+
+#define dZ2_ICHIBATex_00CC40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00CC40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00CC40[] = dZ2_ICHIBATex_00CC40;
+
+#define dZ2_ICHIBATex_00E440 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00E440"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00E440[] = dZ2_ICHIBATex_00E440;
+
+#define dZ2_ICHIBATLUT_015D40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015D40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015D40[] = dZ2_ICHIBATLUT_015D40;
+
+#define dZ2_ICHIBATex_006840 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_006840"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_006840[] = dZ2_ICHIBATex_006840;
+
+#define dZ2_ICHIBATex_00DC40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00DC40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00DC40[] = dZ2_ICHIBATex_00DC40;
+
+#define dZ2_ICHIBATex_009040 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_009040"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_009040[] = dZ2_ICHIBATex_009040;
+
+#define dZ2_ICHIBATex_00F640 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00F640"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00F640[] = dZ2_ICHIBATex_00F640;
+
+#define dZ2_ICHIBATex_00B440 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00B440"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00B440[] = dZ2_ICHIBATex_00B440;
+
+#define dZ2_ICHIBATLUT_015DC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015DC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015DC0[] = dZ2_ICHIBATLUT_015DC0;
+
+#define dZ2_ICHIBATex_0126C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0126C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0126C0[] = dZ2_ICHIBATex_0126C0;
+
+#define dZ2_ICHIBATLUT_015DE0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015DE0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015DE0[] = dZ2_ICHIBATLUT_015DE0;
+
+#define dZ2_ICHIBATex_012EC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_012EC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_012EC0[] = dZ2_ICHIBATex_012EC0;
+
+#define dZ2_ICHIBATex_015140 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_015140"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_015140[] = dZ2_ICHIBATex_015140;
+
+#define dZ2_ICHIBATex_010640 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_010640"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_010640[] = dZ2_ICHIBATex_010640;
+
+#define dZ2_ICHIBATex_006640 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_006640"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_006640[] = dZ2_ICHIBATex_006640;
+
+#define dZ2_ICHIBATex_009CC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_009CC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_009CC0[] = dZ2_ICHIBATex_009CC0;
+
+#define dZ2_ICHIBATex_013EC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_013EC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_013EC0[] = dZ2_ICHIBATex_013EC0;
+
+#define dZ2_ICHIBATex_009840 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_009840"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_009840[] = dZ2_ICHIBATex_009840;
+
+#define dZ2_ICHIBATLUT_015D80 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015D80"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015D80[] = dZ2_ICHIBATLUT_015D80;
+
+#define dZ2_ICHIBATex_00C440 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00C440"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00C440[] = dZ2_ICHIBATex_00C440;
+
+#define dZ2_ICHIBATex_0116C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0116C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0116C0[] = dZ2_ICHIBATex_0116C0;
+
+#define dZ2_ICHIBATex_007040 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_007040"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_007040[] = dZ2_ICHIBATex_007040;
+
+#define dZ2_ICHIBATex_010EC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_010EC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_010EC0[] = dZ2_ICHIBATex_010EC0;
+
+#define dZ2_ICHIBATex_008840 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_008840"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_008840[] = dZ2_ICHIBATex_008840;
+
+#define dZ2_ICHIBATex_008040 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_008040"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_008040[] = dZ2_ICHIBATex_008040;
+
+#define dZ2_ICHIBATex_007840 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_007840"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_007840[] = dZ2_ICHIBATex_007840;
+
+#define dZ2_ICHIBATLUT_015D60 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATLUT_015D60"
+static const ALIGN_ASSET(2) char Z2_ICHIBATLUT_015D60[] = dZ2_ICHIBATLUT_015D60;
+
+#define dZ2_ICHIBATex_0098C0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_0098C0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_0098C0[] = dZ2_ICHIBATex_0098C0;
+
+#define dZ2_ICHIBATex_00F440 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00F440"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00F440[] = dZ2_ICHIBATex_00F440;
+
+#define dZ2_ICHIBATex_009DC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_009DC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_009DC0[] = dZ2_ICHIBATex_009DC0;
+
+#define dZ2_ICHIBATex_004E40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_004E40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_004E40[] = dZ2_ICHIBATex_004E40;
+
+#define dZ2_ICHIBATex_003E40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_003E40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_003E40[] = dZ2_ICHIBATex_003E40;
+
+#define dZ2_ICHIBATex_010E40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_010E40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_010E40[] = dZ2_ICHIBATex_010E40;
+
+#define dZ2_ICHIBATex_004640 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_004640"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_004640[] = dZ2_ICHIBATex_004640;
+
+#define dZ2_ICHIBATex_014D40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_014D40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_014D40[] = dZ2_ICHIBATex_014D40;
+
+#define dZ2_ICHIBATex_005640 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_005640"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_005640[] = dZ2_ICHIBATex_005640;
+
+#define dZ2_ICHIBATex_005E40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_005E40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_005E40[] = dZ2_ICHIBATex_005E40;
+
+#define dZ2_ICHIBATex_00FE40 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_00FE40"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_00FE40[] = dZ2_ICHIBATex_00FE40;
+
+#define dZ2_ICHIBATex_015540 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBATex_015540"
+static const ALIGN_ASSET(2) char Z2_ICHIBATex_015540[] = dZ2_ICHIBATex_015540;
+
+#define dZ2_ICHIBACollisionHeader_003A28 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACollisionHeader_003A28"
+
+#define dZ2_ICHIBACutsceneData_003BC0 "__OTR__scenes/nonmq/Z2_ICHIBA/Z2_ICHIBACutsceneData_003BC0"
+static const ALIGN_ASSET(2) char Z2_ICHIBACutsceneData_003BC0[] = dZ2_ICHIBACutsceneData_003BC0;
+
+#endif // Z2_ICHIBA_Z2_ICHIBA_H

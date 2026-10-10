@@ -1,0 +1,19 @@
+<Root>
+    <File Name="daytelop_static" Segment="9">
+        <Texture Name="gDaytelopFirstDayLeftNESTex" OutName="first_day_left_nes" Format="i4" Width="128" Height="64" Offset="0x0"/>
+        <Texture Name="gDaytelopFirstDayRightNESTex" OutName="first_day_right_nes" Format="i4" Width="128" Height="64" Offset="0x1000"/>
+
+        <Texture Name="gDaytelopSecondDayLeftNESTex" OutName="second_day_left_nes" Format="i4" Width="128" Height="64" Offset="0x2000"/>
+        <Texture Name="gDaytelopSecondDayRightNESTex" OutName="second_day_right_nes" Format="i4" Width="128" Height="64" Offset="0x3000"/>
+
+        <Texture Name="gDaytelopFinalDayLeftNESTex" OutName="final_day_left_nes" Format="i4" Width="128" Height="64" Offset="0x4000"/>
+        <Texture Name="gDaytelopFinalDayRightNESTex" OutName="final_day_right_nes" Format="i4" Width="128" Height="64" Offset="0x5000"/>
+
+        <Texture Name="gDaytelopNewDayLeftNESTex" OutName="new_day_left_nes" Format="i4" Width="128" Height="64" Offset="0x6000"/>
+        <Texture Name="gDaytelopNewDayRightNESTex" OutName="new_day_right_nes" Format="i4" Width="128" Height="64" Offset="0x7000"/>
+
+        <Texture Name="gDaytelop72HoursNESTex" OutName="72_hours_nes" Format="i4" Width="144" Height="32" Offset="0x8000"/>
+        <Texture Name="gDaytelop48HoursNESTex" OutName="48_hours_nes" Format="i4" Width="144" Height="32" Offset="0x8900"/>
+        <Texture Name="gDaytelop24HoursNESTex" OutName="24_hours_nes" Format="i4" Width="144" Height="32" Offset="0x9200"/>
+    </File>
+</Root>

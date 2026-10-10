@@ -1,0 +1,12 @@
+<Root>
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+    <File Name="ovl_Oceff_Storm" BaseAddress="0x80981760" RangeStart="0x830" RangeEnd="0x1BC0">
+        <Texture Name="sSongOfStormsEffectTex" OutName="song_of_storms_effect" Format="i8" Width="64" Height="64" Offset="0x830"/>
+        <DList Name="sSongOfStormsMaterialDL" Offset="0x1830"/>
+        <Array Name="sSongOfStormsCylinderVtx" Count="27" Offset="0x18D8">
+            <Vtx/>
+        </Array>
+        <DList Name="sSongOfStormsCylinderMaterialDL" Offset="0x1A88"/>
+        <DList Name="sSongOfStormsCylinderModelDL" Offset="0x1B30"/> <!-- Original name might be "efc_ocarina_2_modelT" or "ocarina_storm_model" -->
+    </File>
+</Root>

@@ -1,0 +1,6 @@
+<Root>
+    <File Name="code" OutName="sub_s" BaseAddress="0x800A5AC0" RangeStart="0x120260" RangeEnd="0x1202F0" >
+        <DList Name="gShadowMaterialDL" Offset="0x1202A0"/>
+        <DList Name="gShadowModelDL" Offset="0x1202C0"/>
+    </File>
+</Root>

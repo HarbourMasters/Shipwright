@@ -1,0 +1,171 @@
+﻿<Root>
+    <!-- Assets for the Beaver Bros. -->
+    <File Name="object_az" Segment="6">
+        <!-- Older Beaver Limb DisplayLists -->
+        <DList Name="gBeaverOlderBrotherHeadDL" Offset="0x1B80" />
+        <DList Name="gBeaverOlderBrotherHairLeftDL" Offset="0x2098" />
+        <DList Name="gBeaverOlderBrotherHairBackDL" Offset="0x2120" />
+        <DList Name="gBeaverOlderBrotherHairRightDL" Offset="0x21A8" />
+        <DList Name="gBeaverOlderBrotherTeethDL" Offset="0x2230" />
+        <DList Name="gBeaverOlderBrotherLeftArmDL" Offset="0x22C8" />
+        <DList Name="gBeaverOlderBrotherRightArmDL" Offset="0x2418" />
+        <DList Name="gBeaverOlderBrotherInnerTubeDL" Offset="0x2568" />
+        <DList Name="gBeaverOlderBrotherTorsoDL" Offset="0x26D8" />
+        <DList Name="gBeaverOlderBrotherTailEndDL" Offset="0x27D0" />
+        <DList Name="gBeaverOlderBrotherTailBaseDL" Offset="0x28D8" />
+        <DList Name="gBeaverOlderBrotherLeftLegDL" Offset="0x2A08" />
+        <DList Name="gBeaverOlderBrotherRightLegDL" Offset="0x2B48" />
+        <DList Name="gBeaverOlderBrotherPelvisDL" Offset="0x2C88" />
+
+        <!-- Older Beaver Textures -->
+        <Texture Name="gBeaverOlderBrotherGoggleTex" OutName="beaver_older_brother_goggle" Format="rgba16" Width="32" Height="32" Offset="0x2DC8" />
+        <Texture Name="gBeaverOlderBrotherMouthTex" OutName="beaver_older_brother_mouth" Format="rgba16" Width="32" Height="32" Offset="0x35C8" />
+        <Texture Name="gBeaverOlderBrotherNoseTex" OutName="beaver_older_brother_nose" Format="rgba16" Width="16" Height="32" Offset="0x3DC8" />
+        <Texture Name="gBeaverOlderBrotherSkinTex" OutName="beaver_older_brother_skin" Format="rgba16" Width="16" Height="16" Offset="0x41C8" />
+        <Texture Name="gBeaverOlderBrotherGoggleStrapTex" OutName="beaver_older_brother_goggle_strap" Format="rgba16" Width="16" Height="16" Offset="0x43C8" />
+        <Texture Name="gBeaverOlderBrotherCapTex" OutName="beaver_older_brother_cap" Format="rgba16" Width="16" Height="16" Offset="0x45C8" />
+        <Texture Name="gBeaverOlderBrotherToothTex" OutName="beaver_older_brother_tooth" Format="rgba16" Width="8" Height="16" Offset="0x47C8" />
+        <Texture Name="gBeaverOlderBrotherHairTex" OutName="beaver_older_brother_hair" Format="rgba16" Width="32" Height="32" Offset="0x48C8" /> <!-- A completely transparent texture -->
+        <Texture Name="gBeaverOlderBrotherHandAndFootTex" OutName="beaver_older_brother_hand_and_foot" Format="rgba16" Width="32" Height="32" Offset="0x50C8" />
+        <Texture Name="gBeaverOlderBrotherTorsoTex" OutName="beaver_older_brother_torso" Format="rgba16" Width="32" Height="32" Offset="0x58C8" />
+        <Texture Name="gBeaverOlderBrotherInnerTubeTex" OutName="beaver_older_brother_inner_tube" Format="rgba16" Width="32" Height="32" Offset="0x60C8" />
+        <Texture Name="gBeaverOlderBrotherTailTex" OutName="beaver_older_brother_tail" Format="rgba16" Width="32" Height="32" Offset="0x68C8" />
+        <Texture Name="gBeaverOlderBrotherPantsTex" OutName="beaver_older_brother_pants" Format="rgba16" Width="16" Height="16" Offset="0x70C8" />
+
+        <!-- Older Beaver Limbs -->
+        <Limb Name="gBeaverOlderBrotherRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_ROOT" Offset="0x72C8" />
+        <Limb Name="gBeaverOlderBrotherPelvisRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_PELVIS_ROOT" Offset="0x72D4" />
+        <Limb Name="gBeaverOlderBrotherPelvisLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_PELVIS" Offset="0x72E0" />
+        <Limb Name="gBeaverOlderBrotherTorsoRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TORSO_ROOT" Offset="0x72EC" />
+        <Limb Name="gBeaverOlderBrotherHeadRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_HEAD_ROOT" Offset="0x72F8" />
+        <Limb Name="gBeaverOlderBrotherHeadLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_HEAD" Offset="0x7304" />
+        <Limb Name="gBeaverOlderBrotherTeethLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TEETH" Offset="0x7310" />
+        <Limb Name="gBeaverOlderBrotherHairRightLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_HAIR_RIGHT" Offset="0x731C" />
+        <Limb Name="gBeaverOlderBrotherHairLeftLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_HAIR_LEFT" Offset="0x7328" />
+        <Limb Name="gBeaverOlderBrotherHairBackLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_HAIR_BACK" Offset="0x7334" />
+        <Limb Name="gBeaverOlderBrotherLeftArmRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_LEFT_ARM_ROOT" Offset="0x7340" />
+        <Limb Name="gBeaverOlderBrotherLeftArmLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_LEFT_ARM" Offset="0x734C" />
+        <Limb Name="gBeaverOlderBrotherRightArmRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_RIGHT_ARM_ROOT" Offset="0x7358" />
+        <Limb Name="gBeaverOlderBrotherRightArmLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_RIGHT_ARM" Offset="0x7364" />
+        <Limb Name="gBeaverOlderBrotherTorsoLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TORSO" Offset="0x7370" />
+        <Limb Name="gBeaverOlderBrotherInnerTubeLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_INNER_TUBE" Offset="0x737C" />
+        <Limb Name="gBeaverOlderBrotherTailRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TAIL_ROOT" Offset="0x7388" />
+        <Limb Name="gBeaverOlderBrotherTailBaseLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TAIL_BASE" Offset="0x7394" />
+        <Limb Name="gBeaverOlderBrotherTailEndLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_TAIL_END" Offset="0x73A0" />
+        <Limb Name="gBeaverOlderBrotherRightLegRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_RIGHT_LEG_ROOT" Offset="0x73AC" />
+        <Limb Name="gBeaverOlderBrotherRightLegLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_RIGHT_LEG" Offset="0x73B8" />
+        <Limb Name="gBeaverOlderBrotherLeftLegRootLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_LEFT_LEG_ROOT" Offset="0x73C4" />
+        <Limb Name="gBeaverOlderBrotherLeftLegLimb" Type="Standard" EnumName="BEAVER_OLDER_BROTHER_LIMB_LEFT_LEG" Offset="0x73D0" />
+
+        <!-- Older Beaver Skeleton -->
+        <Skeleton Name="gBeaverOlderBrotherSkel" Type="Flex" LimbType="Standard" LimbNone="BEAVER_OLDER_BROTHER_LIMB_NONE" LimbMax="BEAVER_OLDER_BROTHER_LIMB_MAX" EnumName="BeaverOlderBrotherLimb" Offset="0x7438" />
+
+        <!-- Beaver Animations -->
+        <Animation Name="gBeaverGlitchyLimbSpinAnim" Offset="0x750C" /> <!-- Original name might be "bea_wait". Unused -->
+        <Animation Name="gBeaverLaughLeftAnim" Offset="0x7D3C" /> <!-- Original name is "bev_chukletoL" -->
+        <Animation Name="gBeaverLaughRightAnim" Offset="0x86AC" /> <!-- Original name is "bev_chukletoR" -->
+        <Animation Name="gBeaverSwimWithSpinningTailAnim" Offset="0x8960" /> <!-- Original name is "bev_propellerswim" -->
+        <Animation Name="gBeaverSwimWithRaisedTailAnim" Offset="0x8BB4" /> <!-- Unused variation of gBeaverSwimWithSpinningTailAnim where the tail just stays upright. Original name is "bev_propellerswim2" -->
+        <Animation Name="gBeaverSwimAnim" Offset="0x8EAC" /> <!-- Original name is "bev_swim" -->
+        <Animation Name="gBeaverTalkAnim" Offset="0x925C" /> <!-- Original name is "bev_talk1" -->
+        <Animation Name="gBeaverTalkWaveArmsAnim" Offset="0x9B4C" /> <!-- Original name is "bev_talk2" -->
+        <Animation Name="gBeaverTalkToLeftAnim" Offset="0xA25C" /> <!-- Original name is "bev_talktoL" -->
+        <Animation Name="gBeaverTalkToRightAnim" Offset="0xAAEC" /> <!-- Original name is "bev_talktoR" -->
+        <Animation Name="gBeaverBowAnim" Offset="0xB94C" /> <!-- Original name is "bev_thankyou" -->
+        <Animation Name="gBeaverIdleAnim" Offset="0xBCFC" /> <!-- Original name is "bev_wait" -->
+        <Animation Name="gBeaverIdleFaceLeftAnim" Offset="0xC0A0" /> <!-- Original name is "bev_waittoL" -->
+        <Animation Name="gBeaverIdleFaceRightAnim" Offset="0xC47C" /> <!-- Original name is "bev_waittoR" -->
+        <Animation Name="gBeaverWalkAnim" Offset="0xC94C" /> <!-- Original name is "bev_walk" -->
+
+        <!-- Younger Beaver Limb DisplayLists -->
+        <DList Name="gBeaverYoungerBrotherHeadDL" Offset="0xE670" />
+        <DList Name="gBeaverYoungerBrotherHairLeftDL" Offset="0xEB58" />
+        <DList Name="gBeaverYoungerBrotherHairRightDL" Offset="0xEBE0" />
+        <DList Name="gBeaverYoungerBrotherHairBackDL" Offset="0xEC68" />
+        <DList Name="gBeaverYoungerBrotherTeethDL" Offset="0xECF0" />
+        <DList Name="gBeaverYoungerBrotherLeftArmDL" Offset="0xED88" />
+        <DList Name="gBeaverYoungerBrotherRightArmDL" Offset="0xEEE0" />
+        <DList Name="gBeaverYoungerBrotherLogsDL" Offset="0xF030" />
+        <DList Name="gBeaverYoungerBrotherTorsoDL" Offset="0xF190" />
+        <DList Name="gBeaverYoungerBrotherTailEndDL" Offset="0xF2B0" />
+        <DList Name="gBeaverYoungerBrotherTailBaseDL" Offset="0xF3B8" />
+        <DList Name="gBeaverYoungerBrotherLeftLegDL" Offset="0xF4E8" />
+        <DList Name="gBeaverYoungerBrotherRightLegDL" Offset="0xF638" />
+        <DList Name="gBeaverYoungerBrotherPelvisDL" Offset="0xF788" />
+
+        <!-- Younger Beaver Textures -->
+        <Texture Name="gBeaverYoungerBrotherEye1Tex" OutName="beaver_younger_brother_eye_1" Format="rgba16" Width="32" Height="32" Offset="0xF918" />
+        <Texture Name="gBeaverYoungerBrotherEye2Tex" OutName="beaver_younger_brother_eye_2" Format="rgba16" Width="32" Height="32" Offset="0x10118" />
+        <Texture Name="gBeaverYoungerBrotherEye3Tex" OutName="beaver_younger_brother_eye_3" Format="rgba16" Width="32" Height="32" Offset="0x10918" />
+        <Texture Name="gBeaverYoungerBrotherEye4Tex" OutName="beaver_younger_brother_eye_4" Format="rgba16" Width="32" Height="32" Offset="0x11118" />
+        <Texture Name="gBeaverYoungerBrotherMouthTex" OutName="beaver_younger_brother_mouth" Format="rgba16" Width="32" Height="32" Offset="0x11918" />
+        <Texture Name="gBeaverYoungerBrotherNoseTex" OutName="beaver_younger_brother_nose" Format="rgba16" Width="16" Height="32" Offset="0x12118" />
+        <Texture Name="gBeaverYoungerBrotherSkinTex" OutName="beaver_younger_brother_skin" Format="rgba16" Width="16" Height="16" Offset="0x12518" />
+        <Texture Name="gBeaverYoungerBrotherClothesTex" OutName="beaver_younger_brother_clothes" Format="rgba16" Width="32" Height="32" Offset="0x12718" />
+        <Texture Name="gBeaverYoungerBrotherHairTex" OutName="beaver_younger_brother_hair" Format="rgba16" Width="32" Height="32" Offset="0x12F18" />
+        <Texture Name="gBeaverYoungerBrotherToothTex" OutName="beaver_younger_brother_tooth" Format="rgba16" Width="8" Height="16" Offset="0x13718" />
+        <Texture Name="gBeaverYoungerBrotherHandAndFootTex" OutName="beaver_younger_brother_hand_and_foot" Format="rgba16" Width="32" Height="32" Offset="0x13818" />
+        <Texture Name="gBeaverYoungerBrotherLogsEndTex" OutName="beaver_younger_brother_logs_end" Format="rgba16" Width="32" Height="32" Offset="0x14018" />
+        <Texture Name="gBeaverYoungerBrotherLogsTex" OutName="beaver_younger_brother_logs" Format="rgba16" Width="32" Height="32" Offset="0x14818" />
+        <Texture Name="gBeaverYoungerBrotherTailTex" OutName="beaver_younger_brother_tail" Format="rgba16" Width="32" Height="32" Offset="0x15018" />
+        <Texture Name="gBeaverYoungerBrotherTailSkinTex" OutName="beaver_younger_brother_tail_skin" Format="rgba16" Width="32" Height="32" Offset="0x15818" />
+        <Texture Name="gBeaverYoungerBrotherBeltRedTex" OutName="beaver_younger_brother_belt_red" Format="rgba16" Width="32" Height="32" Offset="0x16018" />
+        <Texture Name="gBeaverYoungerBrotherBeltGreenTex" OutName="beaver_younger_brother_belt_green" Format="rgba16" Width="32" Height="32" Offset="0x16818" />
+        <Texture Name="gBeaverYoungerBrotherBeltBlueTex" OutName="beaver_younger_brother_belt_blue" Format="rgba16" Width="32" Height="32" Offset="0x17018" />
+
+        <TextureAnimation Name="gBeaverYoungerBrotherEmptyTexAnim" Offset="0x17818" />
+
+        <!-- Younger Beaver Limbs -->
+        <Limb Name="gBeaverYoungerBrotherRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_ROOT" Offset="0x17820" />
+        <Limb Name="gBeaverYoungerBrotherPelvisRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_PELVIS_ROOT" Offset="0x1782C" />
+        <Limb Name="gBeaverYoungerBrotherPelvisLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_PELVIS" Offset="0x17838" />
+        <Limb Name="gBeaverYoungerBrotherTorsoRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TORSO_ROOT" Offset="0x17844" />
+        <Limb Name="gBeaverYoungerBrotherHeadRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_HEAD_ROOT" Offset="0x17850" />
+        <Limb Name="gBeaverYoungerBrotherHeadLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_HEAD" Offset="0x1785C" />
+        <Limb Name="gBeaverYoungerBrotherTeethLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TEETH" Offset="0x17868" />
+        <Limb Name="gBeaverYoungerBrotherHairRightLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_HAIR_RIGHT" Offset="0x17874" />
+        <Limb Name="gBeaverYoungerBrotherHairLeftLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_HAIR_LEFT" Offset="0x17880" />
+        <Limb Name="gBeaverYoungerBrotherHairBackLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_HAIR_BACK" Offset="0x1788C" />
+        <Limb Name="gBeaverYoungerBrotherLeftArmRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_LEFT_ARM_ROOT" Offset="0x17898" />
+        <Limb Name="gBeaverYoungerBrotherLeftArmLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_LEFT_ARM" Offset="0x178A4" />
+        <Limb Name="gBeaverYoungerBrotherRightArmRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_RIGHT_ARM_ROOT" Offset="0x178B0" />
+        <Limb Name="gBeaverYoungerBrotherRightArmLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_RIGHT_ARM" Offset="0x178BC" />
+        <Limb Name="gBeaverYoungerBrotherTorsoLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TORSO" Offset="0x178C8" />
+        <Limb Name="gBeaverYoungerBrotherLogsLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_LOGS" Offset="0x178D4" />
+        <Limb Name="gBeaverYoungerBrotherTailRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TAIL_ROOT" Offset="0x178E0" />
+        <Limb Name="gBeaverYoungerBrotherTailBaseLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TAIL_BASE" Offset="0x178EC" />
+        <Limb Name="gBeaverYoungerBrotherTailEndLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_TAIL_END" Offset="0x178F8" />
+        <Limb Name="gBeaverYoungerBrotherRightLegRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_RIGHT_LEG_ROOT" Offset="0x17904" />
+        <Limb Name="gBeaverYoungerBrotherRightLegLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_RIGHT_LEG" Offset="0x17910" />
+        <Limb Name="gBeaverYoungerBrotherLeftLegRootLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_LEFT_LEG_ROOT" Offset="0x1791C" />
+        <Limb Name="gBeaverYoungerBrotherLeftLegLimb" Type="Standard" EnumName="BEAVER_YOUNGER_BROTHER_LIMB_LEFT_LEG" Offset="0x17928" />
+
+        <!-- Younger Beaver Skeleton -->
+        <Skeleton Name="gBeaverYoungerBrotherSkel" Type="Flex" LimbType="Standard" LimbNone="BEAVER_YOUNGER_BROTHER_LIMB_NONE" LimbMax="BEAVER_YOUNGER_BROTHER_LIMB_MAX" EnumName="BeaverYoungerBrotherLimb" Offset="0x17990" />
+        
+        <!-- Textures for the vortex and splashing effects that appear behind the beavers when they swim. -->
+        <Texture Name="gBeaverUnusedTLUT" OutName="beaver_unused_tlut" Format="rgba16" Width="4" Height="4" Offset="0x179A0" />
+        <Texture Name="gBeaverOlderBrotherTailVortexMaskTex" OutName="beaver_older_brother_tail_vortex_mask" Format="i4" Width="32" Height="64" Offset="0x179C0" />
+        <Texture Name="gBeaverOlderBrotherTailVortexTex" OutName="beaver_older_brother_tail_vortex" Format="i4" Width="64" Height="64" Offset="0x17DC0" />
+        <Texture Name="gBeaverYoungerBrotherTailVortexTex" OutName="beaver_younger_brother_tail_vortex" Format="i4" Width="64" Height="64" Offset="0x185C0" />
+        <Texture Name="gBeaverYoungerBrotherTailVortexMaskTex" OutName="beaver_younger_brother_tail_vortex_mask" Format="i4" Width="64" Height="64" Offset="0x18DC0" />
+        <Texture Name="gBeaverYoungerBrotherTailSplashTex" OutName="beaver_younger_brother_tail_splash" Format="i4" Width="64" Height="64" Offset="0x195C0" />
+        <Texture Name="gBeaverYoungerBrotherTailSplashMaskTex" OutName="beaver_younger_brother_tail_splash_mask" Format="i4" Width="64" Height="64" Offset="0x19DC0" />
+
+        <!-- DisplayLists and TextureAnimations for the vortex effect that appears behind the older beaver brother. All DisplayLists are the same besides a change in alpha. -->
+        <DList Name="gBeaverOlderBrotherTailVortex1DL" Offset="0x1A600" /> <!-- Original name is "vux_001_model" -->
+        <TextureAnimation Name="gBeaverOlderBrotherTailVortex1TexAnim" Offset="0x1A6E8" />
+        <DList Name="gBeaverOlderBrotherTailVortex2DL" Offset="0x1A730" /> <!-- Original name is "vux_002_model" -->
+        <TextureAnimation Name="gBeaverOlderBrotherTailVortex2TexAnim" Offset="0x1A818" />
+        <DList Name="gBeaverOlderBrotherTailVortex3DL" Offset="0x1A860" /> <!-- Original name is "vux_003_model" -->
+        <TextureAnimation Name="gBeaverOlderBrotherTailVortex3TexAnim" Offset="0x1A948" />
+        <DList Name="gBeaverOlderBrotherTailVortex4DL" Offset="0x1A990" /> <!-- Original name is "vux_004_model" -->
+        <TextureAnimation Name="gBeaverOlderBrotherTailVortex4TexAnim" Offset="0x1AA78" />
+        <DList Name="gBeaverOlderBrotherTailVortex5DL" Offset="0x1AAC0" /> <!-- Original name is "vux_005_model" -->
+        <TextureAnimation Name="gBeaverOlderBrotherTailVortex5TexAnim" Offset="0x1ABA8" />
+
+        <!-- DisplayLists for the vortex and splashing effects that appear behind the younger beaver brother. -->
+        <DList Name="gBeaverYoungerBrotherTailVortexDL" Offset="0x1ABF0" /> <!-- Original name is "vuz_01_model" -->
+        <DList Name="gBeaverYoungerBrotherTailSplashDL" Offset="0x1AD00" /> <!-- Original name is "vuz_02_model" -->
+    </File>
+</Root>

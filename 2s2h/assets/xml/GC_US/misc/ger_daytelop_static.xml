@@ -1,0 +1,19 @@
+<Root>
+    <File Name="ger_daytelop_static" Segment="9">
+        <Texture Name="gDaytelopFirstDayLeftGERTex" OutName="first_day_left_ger" Format="i4" Width="128" Height="64" Offset="0x0"/>
+        <Texture Name="gDaytelopFirstDayRightGERTex" OutName="first_day_right_ger" Format="i4" Width="128" Height="64" Offset="0x1000"/>
+
+        <Texture Name="gDaytelopSecondDayLeftGERTex" OutName="second_day_left_ger" Format="i4" Width="128" Height="64" Offset="0x2000"/>
+        <Texture Name="gDaytelopSecondDayRightGERTex" OutName="second_day_right_ger" Format="i4" Width="128" Height="64" Offset="0x3000"/>
+
+        <Texture Name="gDaytelopFinalDayLeftGERTex" OutName="final_day_left_ger" Format="i4" Width="128" Height="64" Offset="0x4000"/>
+        <Texture Name="gDaytelopFinalDayRightGERTex" OutName="final_day_right_ger" Format="i4" Width="128" Height="64" Offset="0x5000"/>
+
+        <Texture Name="gDaytelopNewDayLeftGERTex" OutName="new_day_left_ger" Format="i4" Width="128" Height="64" Offset="0x6000"/>
+        <Texture Name="gDaytelopNewDayRightGERTex" OutName="new_day_right_ger" Format="i4" Width="128" Height="64" Offset="0x7000"/>
+
+        <Texture Name="gDaytelop72HoursGERTex" OutName="72_hours_ger" Format="i4" Width="144" Height="32" Offset="0x8000"/>
+        <Texture Name="gDaytelop48HoursGERTex" OutName="48_hours_ger" Format="i4" Width="144" Height="32" Offset="0x8900"/>
+        <Texture Name="gDaytelop24HoursGERTex" OutName="24_hours_ger" Format="i4" Width="144" Height="32" Offset="0x9200"/>
+    </File>
+</Root>

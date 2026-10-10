@@ -1,0 +1,50 @@
+﻿<Root>
+    <File Name="object_hata" Segment="6">
+        <!-- Flagpole Collision -->
+        <Collision Name="gFlagpoleCol" Offset="0xC0" /> <!-- Original name is "hata_bgdatainfo" -->
+
+        <!-- Flagpole Animation -->
+        <Animation Name="gFlagpoleFlapAnim" Offset="0x444" /> <!-- Original name is "ht_hata" -->
+
+        <!-- Flagpole Textures -->
+        <Texture Name="gFlagpolePoleTex" OutName="flagpole_pole" Format="rgba16" Width="32" Height="32" Offset="0x460" />
+        <Texture Name="gFlagpoleTopTex" OutName="flagpole_top" Format="rgba16" Width="32" Height="32" Offset="0xC60" />
+        <Texture Name="gFlagpoleFlagTex" OutName="flagpole_flag" Format="ia8" Width="128" Height="32" Offset="0x1460" />
+
+        <!-- Flagpole DLists -->
+        <DList Name="gFlagpolePoleDL" Offset="0x26D0"/>
+        <DList Name="gFlagpoleFlag1FlyEndDL" Offset="0x2AC0"/>
+        <DList Name="gFlagpoleFlag1FlyMidDL" Offset="0x29F0"/>
+        <DList Name="gFlagpoleFlag1HoistMidDL" Offset="0x2920"/>
+        <DList Name="gFlagpoleFlag1HoistEndDL" Offset="0x2850"/>
+        <DList Name="gFlagpoleFlag2FlyEndDL" Offset="0x2E00"/>
+        <DList Name="gFlagpoleFlag2FlyMidDL" Offset="0x2D30"/>
+        <DList Name="gFlagpoleFlag2HoistMidDL" Offset="0x2C60"/>
+        <DList Name="gFlagpoleFlag2HoistEndDL" Offset="0x2B90"/>
+
+        <!-- Flagpole Limbs -->
+        <Limb Name="gFlagpolePoleBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_BASE" Offset="0x2E90" />
+        <Limb Name="gFlagpolePoleLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_POLE" Offset="0x2E9C" />
+        <Limb Name="gFlagpoleFlag1BaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_BASE" Offset="0x2EA8" />
+        <Limb Name="gFlagpoleFlag1HoistEndBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_HOIST_END_BASE" Offset="0x2EB4" />
+        <Limb Name="gFlagpoleFlag1HoistMidBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_HOIST_MID_BASE" Offset="0x2EC0" />
+        <Limb Name="gFlagpoleFlag1FlyMidBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_FLY_MID_BASE" Offset="0x2ECC" />
+        <Limb Name="gFlagpoleFlag1FlyEndBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_FLY_END_BASE" Offset="0x2ED8" />
+        <Limb Name="gFlagpoleFlag1FlyEndLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_FLY_END" Offset="0x2EE4" />
+        <Limb Name="gFlagpoleFlag1FlyMidLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_FLY_MID" Offset="0x2EF0" />
+        <Limb Name="gFlagpoleFlag1HoistMidLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_HOIST_MID" Offset="0x2EFC" />
+        <Limb Name="gFlagpoleFlag1HoistEndLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG1_HOIST_END" Offset="0x2F08" />
+        <Limb Name="gFlagpoleFlag2BaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_BASE" Offset="0x2F14" />
+        <Limb Name="gFlagpoleFlag2HoistEndBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_HOIST_END_BASE" Offset="0x2F20" />
+        <Limb Name="gFlagpoleFlag2HoistMidBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_HOIST_MID_BASE" Offset="0x2F2C" />
+        <Limb Name="gFlagpoleFlag2FlyMidBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_FLY_MID_BASE" Offset="0x2F38" />
+        <Limb Name="gFlagpoleFlag2FlyEndBaseLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_FLY_END_BASE" Offset="0x2F44" />
+        <Limb Name="gFlagpoleFlag2FlyEndLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_FLY_END" Offset="0x2F50" />
+        <Limb Name="gFlagpoleFlag2FlyMidLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_FLY_MID" Offset="0x2F5C" />
+        <Limb Name="gFlagpoleFlag2HoistMidLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_HOIST_MID" Offset="0x2F68" />
+        <Limb Name="gFlagpoleFlag2HoistEndLimb" Type="Standard" EnumName="FLAGPOLE_LIMB_FLAG2_HOIST_END" Offset="0x2F74" />
+
+        <!-- Flagpole Skeleton -->
+        <Skeleton Name="gFlagpoleSkel" Type="Normal" LimbType="Standard" LimbNone="FLAGPOLE_LIMB_NONE" LimbMax="FLAGPOLE_LIMB_MAX" EnumName="FlagpoleLimb" Offset="0x2FD0" />
+    </File>
+</Root>

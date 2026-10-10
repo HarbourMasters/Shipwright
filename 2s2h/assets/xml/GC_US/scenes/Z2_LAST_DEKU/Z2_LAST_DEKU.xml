@@ -1,0 +1,13 @@
+<Root>
+    <File Name="Z2_LAST_DEKU" Segment="2" Game="MM">
+        <Scene Name="Z2_LAST_DEKU" Offset="0x0"/>
+    </File>
+    <File Name="Z2_LAST_DEKU_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_DEKU_room_00" Offset="0x0"/>
+        <DList Name="Z2_LAST_DEKU_room_00DL_005A00" Offset="0x5A00"/>
+    </File>
+    <File Name="Z2_LAST_DEKU_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_LAST_DEKU_room_01" Offset="0x0"/>
+        <DList Name="Z2_LAST_DEKU_room_01DL_0016F0" Offset="0x16F0"/>
+    </File>
+</Root>

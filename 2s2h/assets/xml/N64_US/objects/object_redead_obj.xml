@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for the Beneath the Well's Sliding Door  -->
+    <File Name="object_redead_obj" Segment="6">
+        <DList Name="gBeneathTheWellSlidingDoorDL" Offset="0x1A0" /> <!-- Original name is "i2_R_shutter1_model" -->
+        <Texture Name="gBeneathTheWellSlidingDoorTLUT" OutName="beneath_the_well_sliding_door_tlut" Format="rgba16" Width="4" Height="4" Offset="0x390" />
+        <Texture Name="gBeneathTheWellSlidingDoorTex" OutName="beneath_the_well_sliding_door" Format="ci4" Width="64" Height="64" Offset="0x3B0" />
+    </File>
+</Root>

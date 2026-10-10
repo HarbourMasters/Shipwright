@@ -1,0 +1,10 @@
+*.bin
+*.c
+*.h
+*.cfg
+*.vtx.inc
+*.dlist.inc
+
+# Unignore our custom assets and header file
+!custom/**/*
+!2s2h_assets.h

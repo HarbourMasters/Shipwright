@@ -1,0 +1,135 @@
+﻿<Root>
+    <File Name="object_bg" Segment="6">
+        <!-- Animations -->
+        <Animation Name="object_bg_Anim_000968" Offset="0x968" /> <!-- Original name is "bg_asking" -->
+        <Animation Name="object_bg_Anim_000A00" Offset="0xA00" /> <!-- Original name is "bg_getup" -->
+        <Animation Name="object_bg_Anim_001384" Offset="0x1384" /> <!-- Original name is "bg_kunekune" ("wiggling; waving; swaying; twisting and turning​") -->
+        
+        <!-- Treasure Chest Shop Gal Limb DisplayLists -->
+        <DList Name="gTreasureChestShopGalHeadDL" Offset="0x3F50" />
+        <DList Name="gTreasureChestShopGalNeckDL" Offset="0x4558" />
+        <DList Name="gTreasureChestShopGalLeftHandDL" Offset="0x4768" />
+        <DList Name="gTreasureChestShopGalLeftForearmDL" Offset="0x4A38" />
+        <DList Name="gTreasureChestShopGalLeftUpperArmDL" Offset="0x4BC0" />
+        <DList Name="gTreasureChestShopGalRightHandDL" Offset="0x4EE0" />
+        <DList Name="gTreasureChestShopGalRightForearmDL" Offset="0x51B0" />
+        <DList Name="gTreasureChestShopGalRightUpperArmDL" Offset="0x5338" />
+        <DList Name="gTreasureChestShopGalTorsoDL" Offset="0x5658" />
+        <DList Name="gTreasureChestShopGalLeftFootDL" Offset="0x5978" />
+        <DList Name="gTreasureChestShopGalLeftShinDL" Offset="0x5B80" />
+        <DList Name="gTreasureChestShopGalLeftThighDL" Offset="0x5F20" />
+        <DList Name="gTreasureChestShopGalRightFootDL" Offset="0x6090" />
+        <DList Name="gTreasureChestShopGalRightShinDL" Offset="0x6298" />
+        <DList Name="gTreasureChestShopGalRightThighDL" Offset="0x6638" />
+        <DList Name="gTreasureChestShopGalHipsDL" Offset="0x67A8" />
+
+        <!-- Treasure Chest Shop Gal Textures -->
+        <Texture Name="gTreasureChestShopGalTLUT" OutName="treasure_cheat_shop_gal_tlut" Format="rgba16" Width="16" Height="16" Offset="0x68D8" />
+        <Texture Name="gTreasureChestShopGalHairTex" OutName="treasure_cheat_shop_gal_hair" Format="ci8" Width="32" Height="32" Offset="0x6AD8" />
+        <Texture Name="gTreasureChestShopGalHair2Tex" OutName="treasure_cheat_shop_gal_hair2" Format="ci8" Width="8" Height="16" Offset="0x6ED8" />
+        <Texture Name="gTreasureChestShopGalEyeOpenUpTex" OutName="treasure_cheat_shop_gal_eye_open_up" Format="ci8" Width="32" Height="32" Offset="0x6F58" />
+        <Texture Name="gTreasureChestShopGalEyeHalfUpTex" OutName="treasure_cheat_shop_gal_eye_half_up" Format="ci8" Width="32" Height="32" Offset="0x7358" />
+        <Texture Name="gTreasureChestShopGalEyeClosedTex" OutName="treasure_cheat_shop_gal_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x7758" />
+        <Texture Name="gTreasureChestShopGalEyeOpenDownTex" OutName="treasure_cheat_shop_gal_eye_open_down" Format="ci8" Width="32" Height="32" Offset="0x7B58" />
+        <Texture Name="gTreasureChestShopGalEyeHalfDownTex" OutName="treasure_cheat_shop_gal_eye_half_down" Format="ci8" Width="32" Height="32" Offset="0x7F58" />
+        <Texture Name="gTreasureChestShopGalMouthTex" OutName="treasure_cheat_shop_gal_mouth" Format="ci8" Width="32" Height="32" Offset="0x8358" />
+        <Texture Name="gTreasureChestShopGalEarAndBellyButtonTex" OutName="treasure_cheat_shop_gal_ear_and_belly_button" Format="ci8" Width="16" Height="16" Offset="0x8758" />
+        <Texture Name="gTreasureChestShopGalSkinTex" OutName="treasure_cheat_shop_gal_skin" Format="ci8" Width="16" Height="16" Offset="0x8858" />
+        <Texture Name="gTreasureChestShopGalClothesTex" OutName="treasure_cheat_shop_gal_clothes" Format="ci8" Width="32" Height="32" Offset="0x8958" />
+        <Texture Name="gTreasureChestShopGalFingersTex" OutName="treasure_cheat_shop_gal_fingers" Format="ci8" Width="16" Height="16" Offset="0x8D58" /> 
+        
+        <!-- Treasure Chest Shop Gal Limbs -->
+        <Limb Name="gTreasureChestShopGalRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_ROOT" Offset="0x8E58" />
+        <Limb Name="gTreasureChestShopGalHipsLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_HIPS" Offset="0x8E64" />
+        <Limb Name="gTreasureChestShopGalTorsoLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_TORSO" Offset="0x8E70" />
+        <Limb Name="gTreasureChestShopGalNeckLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_NECK" Offset="0x8E7C" />
+        <Limb Name="gTreasureChestShopGalHeadLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_HEAD" Offset="0x8E88" />
+        <Limb Name="gTreasureChestShopGalLeftArmRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_ARM_ROOT" Offset="0x8E94" />
+        <Limb Name="gTreasureChestShopGalLeftUpperArmLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_UPPER_ARM" Offset="0x8EA0" />
+        <Limb Name="gTreasureChestShopGalLeftForearmLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_FOREARM" Offset="0x8EAC" />
+        <Limb Name="gTreasureChestShopGalLeftHandLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_HAND" Offset="0x8EB8" />
+        <Limb Name="gTreasureChestShopGalRightArmRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_ARM_ROOT" Offset="0x8EC4" />
+        <Limb Name="gTreasureChestShopGalRightUpperArmLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_UPPER_ARM" Offset="0x8ED0" />
+        <Limb Name="gTreasureChestShopGalRightForearmLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_FOREARM" Offset="0x8EDC" />
+        <Limb Name="gTreasureChestShopGalRightHandLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_HAND" Offset="0x8EE8" />
+        <Limb Name="gTreasureChestShopGalRightLegRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_LEG_ROOT" Offset="0x8EF4" />
+        <Limb Name="gTreasureChestShopGalRightThighLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_THIGH" Offset="0x8F00" />
+        <Limb Name="gTreasureChestShopGalRightShinLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_SHIN" Offset="0x8F0C" />
+        <Limb Name="gTreasureChestShopGalRightFootRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_FOOT_ROOT" Offset="0x8F18" />
+        <Limb Name="gTreasureChestShopGalRightFootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_RIGHT_FOOT" Offset="0x8F24" />
+        <Limb Name="gTreasureChestShopGalLeftLegRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_LEG_ROOT" Offset="0x8F30" />
+        <Limb Name="gTreasureChestShopGalLeftThighLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_THIGH" Offset="0x8F3C" />
+        <Limb Name="gTreasureChestShopGalLeftShinLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_SHIN" Offset="0x8F48" />
+        <Limb Name="gTreasureChestShopGalLeftFootRootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_FOOT_ROOT" Offset="0x8F54" />
+        <Limb Name="gTreasureChestShopGalLeftFootLimb" Type="Standard" EnumName="TREASURE_CHEST_SHOP_GAL_LIMB_LEFT_FOOT" Offset="0x8F60" />
+        
+        <!-- Treasure Chest Shop Gal Skeleton -->
+        <Skeleton Name="gTreasureChestShopGalSkel" Type="Flex" LimbType="Standard" LimbNone="TREASURE_CHEST_SHOP_GAL_LIMB_NONE" LimbMax="TREASURE_CHEST_SHOP_GAL_LIMB_MAX" EnumName="TreasureChestShopGalLimb" Offset="0x8FC8" />
+        
+        <!-- Animations -->
+        <Animation Name="object_bg_Anim_009890" Offset="0x9890" /> <!-- Original name is "bg_newwait" -->
+        <Animation Name="object_bg_Anim_009F20" Offset="0x9F20" /> <!-- Original name is "bg_sleeping" -->
+        <Animation Name="object_bg_Anim_00A280" Offset="0xA280" /> <!-- Original name is "bg_tokune" (probably the English word "to" and "kunekune") -->
+        <Animation Name="object_bg_Anim_00AD98" Offset="0xAD98" /> <!-- Original name is "bg_up" -->
+        <Animation Name="object_bg_Anim_00B19C" Offset="0xB19C" /> <!-- Original name is "bg_wait" -->
+        
+        <!-- Mayor's receptionist DisplayLists -->
+        <DList Name="object_bg_DL_00D5E0" Offset="0xD5E0" />
+        <DList Name="object_bg_DL_00D780" Offset="0xD780" />
+        <DList Name="object_bg_DL_00DB38" Offset="0xDB38" />
+        <DList Name="object_bg_DL_00DCD8" Offset="0xDCD8" />
+        <DList Name="object_bg_DL_00E1C0" Offset="0xE1C0" />
+        <DList Name="object_bg_DL_00E3F8" Offset="0xE3F8" />
+        <DList Name="object_bg_DL_00E580" Offset="0xE580" />
+        <DList Name="object_bg_DL_00E758" Offset="0xE758" />
+        <DList Name="object_bg_DL_00E990" Offset="0xE990" />
+        <DList Name="object_bg_DL_00EB18" Offset="0xEB18" />
+        <DList Name="object_bg_DL_00ECF0" Offset="0xECF0" />
+        <DList Name="object_bg_DL_00EE50" Offset="0xEE50" />
+        <DList Name="object_bg_DL_00EFE8" Offset="0xEFE8" />
+        <DList Name="object_bg_DL_00F1F0" Offset="0xF1F0" />
+        <DList Name="object_bg_DL_00F350" Offset="0xF350" />
+        <DList Name="object_bg_DL_00F4E8" Offset="0xF4E8" />
+        
+        <!-- Mayor's receptionist Textures -->
+        <Texture Name="object_bg_TLUT_00F6F0" OutName="tlut_00F6F0" Format="rgba16" Width="16" Height="16" Offset="0xF6F0" />
+        <Texture Name="object_bg_Tex_00F8F0" OutName="tex_00F8F0" Format="ci8" Width="32" Height="32" Offset="0xF8F0" />
+        <Texture Name="object_bg_Tex_00FCF0" OutName="tex_00FCF0" Format="ci8" Width="32" Height="32" Offset="0xFCF0" />
+        <Texture Name="object_bg_Tex_0100F0" OutName="tex_0100F0" Format="ci8" Width="32" Height="32" Offset="0x100F0" />
+        <Texture Name="object_bg_Tex_0104F0" OutName="tex_0104F0" Format="ci8" Width="16" Height="32" Offset="0x104F0" />
+        <Texture Name="object_bg_Tex_0106F0" OutName="tex_0106F0" Format="ci8" Width="16" Height="16" Offset="0x106F0" />
+        <Texture Name="object_bg_Tex_0107F0" OutName="tex_0107F0" Format="ci8" Width="64" Height="32" Offset="0x107F0" />
+        <Texture Name="object_bg_Tex_010FF0" OutName="tex_010FF0" Format="ci8" Width="16" Height="16" Offset="0x10FF0" />
+        <Texture Name="object_bg_Tex_0110F0" OutName="tex_0110F0" Format="ci8" Width="32" Height="32" Offset="0x110F0" />
+        <Texture Name="object_bg_Tex_0114F0" OutName="tex_0114F0" Format="ci8" Width="16" Height="16" Offset="0x114F0" />
+        <Texture Name="object_bg_Tex_0115F0" OutName="tex_0115F0" Format="ci8" Width="32" Height="32" Offset="0x115F0" />
+
+        <!-- Mayor's receptionist Limbs -->
+        <Limb Name="object_bg_Standardlimb_0119F0" Type="Standard" EnumName="OBJECT_BG_2_LIMB_01" Offset="0x119F0" />
+        <Limb Name="object_bg_Standardlimb_0119FC" Type="Standard" EnumName="OBJECT_BG_2_LIMB_02" Offset="0x119FC" />
+        <Limb Name="object_bg_Standardlimb_011A08" Type="Standard" EnumName="OBJECT_BG_2_LIMB_03" Offset="0x11A08" />
+        <Limb Name="object_bg_Standardlimb_011A14" Type="Standard" EnumName="OBJECT_BG_2_LIMB_04" Offset="0x11A14" />
+        <Limb Name="object_bg_Standardlimb_011A20" Type="Standard" EnumName="OBJECT_BG_2_LIMB_05" Offset="0x11A20" />
+        <Limb Name="object_bg_Standardlimb_011A2C" Type="Standard" EnumName="OBJECT_BG_2_LIMB_06" Offset="0x11A2C" />
+        <Limb Name="object_bg_Standardlimb_011A38" Type="Standard" EnumName="OBJECT_BG_2_LIMB_07" Offset="0x11A38" />
+        <Limb Name="object_bg_Standardlimb_011A44" Type="Standard" EnumName="OBJECT_BG_2_LIMB_08" Offset="0x11A44" />
+        <Limb Name="object_bg_Standardlimb_011A50" Type="Standard" EnumName="OBJECT_BG_2_LIMB_09" Offset="0x11A50" />
+        <Limb Name="object_bg_Standardlimb_011A5C" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0A" Offset="0x11A5C" />
+        <Limb Name="object_bg_Standardlimb_011A68" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0B" Offset="0x11A68" />
+        <Limb Name="object_bg_Standardlimb_011A74" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0C" Offset="0x11A74" />
+        <Limb Name="object_bg_Standardlimb_011A80" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0D" Offset="0x11A80" />
+        <Limb Name="object_bg_Standardlimb_011A8C" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0E" Offset="0x11A8C" />
+        <Limb Name="object_bg_Standardlimb_011A98" Type="Standard" EnumName="OBJECT_BG_2_LIMB_0F" Offset="0x11A98" />
+        <Limb Name="object_bg_Standardlimb_011AA4" Type="Standard" EnumName="OBJECT_BG_2_LIMB_10" Offset="0x11AA4" />
+        <Limb Name="object_bg_Standardlimb_011AB0" Type="Standard" EnumName="OBJECT_BG_2_LIMB_11" Offset="0x11AB0" />
+        <Limb Name="object_bg_Standardlimb_011ABC" Type="Standard" EnumName="OBJECT_BG_2_LIMB_12" Offset="0x11ABC" />
+        <Limb Name="object_bg_Standardlimb_011AC8" Type="Standard" EnumName="OBJECT_BG_2_LIMB_13" Offset="0x11AC8" />
+        <Limb Name="object_bg_Standardlimb_011AD4" Type="Standard" EnumName="OBJECT_BG_2_LIMB_14" Offset="0x11AD4" />
+        <Limb Name="object_bg_Standardlimb_011AE0" Type="Standard" EnumName="OBJECT_BG_2_LIMB_15" Offset="0x11AE0" />
+        <Limb Name="object_bg_Standardlimb_011AEC" Type="Standard" EnumName="OBJECT_BG_2_LIMB_16" Offset="0x11AEC" />
+        <Limb Name="object_bg_Standardlimb_011AF8" Type="Standard" EnumName="OBJECT_BG_2_LIMB_17" Offset="0x11AF8" />
+
+        <!--Mayor's receptionist Skeleton -->
+        <Skeleton Name="object_bg_Skel_011B60" Type="Flex" LimbType="Standard" LimbNone="OBJECT_BG_2_LIMB_NONE" LimbMax="OBJECT_BG_2_LIMB_MAX" EnumName="ObjectBg2Limb" Offset="0x11B60" />
+    </File>
+</Root>

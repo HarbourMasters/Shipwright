@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Get Item Draw: Don Gero Mask -->
+    <File Name="object_gi_mask16" Segment="6">
+
+        <!-- Don Gero Mask Display Lists -->
+        <DList Name="gGiDonGeroMaskBodyDL" Offset="0x1040" />
+        <DList Name="gGiDonGeroMaskFaceDL" Offset="0x1438" />
+
+        <!-- Don Gero Mask Textures -->
+        <Texture Name="gGiDonGeroMaskToesTex" OutName="gi_don_gero_mask_toes" Format="ia8" Width="16" Height="32" Offset="0x1590" />
+        <Texture Name="gGiDonGeroMaskFrillsTex" OutName="gi_don_gero_mask_frills" Format="ia8" Width="32" Height="16" Offset="0x1790" />
+        <Texture Name="gGiDonGeroMaskEyeTex" OutName="gi_don_gero_mask_eye" Format="rgba16" Width="16" Height="16" Offset="0x1990" />
+        <Texture Name="gGiDonGeroMaskNostrilTex" OutName="gi_don_gero_mask_face" Format="rgba16" Width="16" Height="32" Offset="0x1B90" />
+        <Texture Name="gGiDonGeroMaskMouthTex" OutName="gi_don_gero_mask_mouth" Format="i4" Width="16" Height="8" Offset="0x1F90" />
+    </File>
+</Root>

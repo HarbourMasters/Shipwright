@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Heart Upgrades -->
+    <File Name="object_gi_hearts" Segment="6">
+
+        <!-- Heart Upgrade Display Lists -->
+        <DList Name="gGiHeartBorderDL" Offset="0x1290" />
+        <DList Name="gGiHeartContainerDL" Offset="0x1470" />
+        <DList Name="gGiHeartPieceDL" Offset="0x1590" />
+    </File>
+</Root>

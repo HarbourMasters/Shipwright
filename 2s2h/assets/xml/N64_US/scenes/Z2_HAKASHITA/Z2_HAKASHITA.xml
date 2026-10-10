@@ -1,0 +1,28 @@
+<Root>
+    <File Name="Z2_HAKASHITA" Segment="2" Game="MM">
+        <Scene Name="Z2_HAKASHITA" Offset="0x0"/>
+    </File>
+    <File Name="Z2_HAKASHITA_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_HAKASHITA_room_00" Offset="0x0"/>
+        <DList Name="Z2_HAKASHITA_room_00DL_005B78" Offset="0x5B78"/>
+        <DList Name="Z2_HAKASHITA_room_00DL_007020" Offset="0x7020"/>
+    </File>
+    <File Name="Z2_HAKASHITA_room_01" Segment="3" Game="MM">
+        <Room Name="Z2_HAKASHITA_room_01" Offset="0x0"/>
+        <DList Name="Z2_HAKASHITA_room_01DL_005BF0" Offset="0x5BF0"/>
+    </File>
+    <File Name="Z2_HAKASHITA_room_02" Segment="3" Game="MM">
+        <Room Name="Z2_HAKASHITA_room_02" Offset="0x0"/>
+        <DList Name="Z2_HAKASHITA_room_02DL_0051A0" Offset="0x51A0"/>
+        <DList Name="Z2_HAKASHITA_room_02DL_006FD0" Offset="0x6FD0"/>
+    </File>
+    <File Name="Z2_HAKASHITA_room_03" Segment="3" Game="MM">
+        <Room Name="Z2_HAKASHITA_room_03" Offset="0x0"/>
+        <DList Name="Z2_HAKASHITA_room_03DL_002E50" Offset="0x2E50"/>
+    </File>
+    <File Name="Z2_HAKASHITA_room_04" Segment="3" Game="MM">
+        <Room Name="Z2_HAKASHITA_room_04" Offset="0x0"/>
+        <DList Name="Z2_HAKASHITA_room_04DL_002FB8" Offset="0x2FB8"/>
+        <DList Name="Z2_HAKASHITA_room_04DL_004980" Offset="0x4980"/>
+    </File>
+</Root>

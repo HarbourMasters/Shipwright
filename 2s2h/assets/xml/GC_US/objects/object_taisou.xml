@@ -1,0 +1,13 @@
+﻿<Root>
+    <!-- Animations for Gorons at the Racetrack -->
+    <File Name="object_taisou" Segment="6">
+        <Animation Name="gGoronAthleticsSquatSideToSideAnim" Offset="0x16C8" /> <!-- Original name is "asinobasi" -->
+        <Animation Name="gGoronAthleticsShakeLimbsAnim" Offset="0x283C" /> <!-- Original name is "buruburu" -->
+        <Animation Name="gGoronAthleticsCheerAnim" Offset="0x2C48" /> <!-- Original name is "kansyu_1" -->
+        <Animation Name="gGoronAthleticsShoutAnim" Offset="0x31D8" /> <!-- Original name is "kansyu_2" -->
+        <Animation Name="gGoronAthleticsDoubleArmSideBendAnim" Offset="0x4DD4" /> <!-- Original name is "nobi" -->
+        <Animation Name="gGoronAthleticsHamstringStretchStandingAnim" Offset="0x5790" /> <!-- Original name is "taisou1_osi" -->
+        <Animation Name="gGoronAthleticsHamstringStretchSittingAnim" Offset="0x5EE0" /> <!-- Original name is "taisou1_zenkutu" -->
+        <Animation Name="gGoronAthleticsSingleArmSideBendAnim" Offset="0x7764" /> <!-- Original name is "taisou2" -->
+    </File>
+</Root>

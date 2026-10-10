@@ -1,0 +1,100 @@
+﻿<Root>
+    <!-- Assets for the Deku Princess. -->
+    <File Name="object_dnq" Segment="6">
+        <!-- Deku Princess Animations -->
+        <Animation Name="gDekuPrincessJumpKickAnim" Offset="0x7D8" /> <!-- Original name is "dnq_atack" -->
+        <Animation Name="gDekuPrincessJumpAnim" Offset="0x125C" /> <!-- Original name is "dnq_attack1" -->
+        <Animation Name="gDekuPrincessBounceStartAnim" Offset="0x17F8" /> <!-- Original name is "dnq_attack2" -->
+        <Animation Name="gDekuPrincessBounceLoopAnim" Offset="0x1C1C" /> <!-- Original name is "dnq_attack2_loop" -->
+        <Animation Name="gDekuPrincessHurryAnim" Offset="0x21DC" /> <!-- Original name is "dnq_awate" ("to hurry; to rush; to hasten") -->
+        <Animation Name="gDekuPrincessHurryEndAnim" Offset="0x26B8" /> <!-- Original name is "dnq_awateTOwait" -->
+        <Animation Name="gDekuPrincessScoldAnim" Offset="0x4D08" /> <!-- Original name is "dnq_baka" ("idiot; moron; fool") -->
+        <Animation Name="gDekuPrincessGlareStartAnim" Offset="0x57AC" /> <!-- Original name is "dnq_gekido" ("rage; fury​") -->
+        <Animation Name="gDekuPrincessGlareLoopAnim" Offset="0x625C" /> <!-- Origianl name is "dnq_gekido_loop" -->
+        <Animation Name="gDekuPrincessThinkLoopAnim" Offset="0x674C" /> <!-- Original name is "dnq_hatena" ("question") -->
+        <Animation Name="gDekuPrincessArmsTogetherLoopAnim" Offset="0x6B74" /> <!-- Original name is "dnq_ho" -->
+        <Animation Name="gDekuPrincessLaughStartAnim" Offset="0x71F4" /> <!-- Original name is "dnq_hoTOhohoho" -->
+        <Animation Name="gDekuPrincessLaughLoopAnim" Offset="0x7960" /> <!-- Original name is "dnq_hohoho" -->
+        <Animation Name="gDekuPrincessTurnAroundAnim" Offset="0x8588" /> <!-- Original name is "dnq_maji" (from her Japanese dialogue, like "really?!" or "seriously?!")-->
+        <Animation Name="gDekuPrincessAngryStartAnim" Offset="0x923C" /> <!-- Original name is "dnq_okoru" ("to get angry; to get mad​") -->
+        <Animation Name="gDekuPrincessAngryLoopAnim" Offset="0x9AA0" /> <!-- Original name is "dnq_okoru_loop" -->
+        <Animation Name="gDekuPrincessBowAnim" Offset="0xA900" /> <!-- Original name is "dnq_orei" ("bow") -->
+        <Animation Name="gDekuPrincessRunAnim" Offset="0xAEB8" /> <!-- Original name is "dnq_run" -->
+        <Animation Name="gDekuPrincessIdleAnim" Offset="0xB324" /> <!-- Original name is "dnq_wait" -->
+        <Animation Name="gDekuPrincessThinkStartAnim" Offset="0xB754" /> <!-- Original name is "dnq_waitTOhatena" -->
+        <Animation Name="gDekuPrincessArmsTogetherStartAnim" Offset="0xBAD8" /> <!-- Original name is "dnq_waitTOho" -->
+
+        <!-- Deku Princess Limb DisplayLists -->
+        <DList Name="gDekuPrincessHeadDL" Offset="0xD670" />
+        <DList Name="gDekuPrincessEyesDL" Offset="0xD978" />
+        <DList Name="gDekuPrincessHair9DL" Offset="0xDA08" />
+        <DList Name="gDekuPrincessHair8DL" Offset="0xDAA0" />
+        <DList Name="gDekuPrincessHair7DL" Offset="0xDB38" />
+        <DList Name="gDekuPrincessHair6DL" Offset="0xDBD0" />
+        <DList Name="gDekuPrincessHair5DL" Offset="0xDC68" />
+        <DList Name="gDekuPrincessHair4DL" Offset="0xDD00" />
+        <DList Name="gDekuPrincessHair3DL" Offset="0xDD98" />
+        <DList Name="gDekuPrincessHair2DL" Offset="0xDE30" />
+        <DList Name="gDekuPrincessHair1DL" Offset="0xDEC8" />
+        <DList Name="gDekuPrincessSnoutDL" Offset="0xE018" />
+        <DList Name="gDekuPrincessRightEarringDL" Offset="0xE1C8" />
+        <DList Name="gDekuPrincessLeftEarringDL" Offset="0xE260" />
+        <DList Name="gDekuPrincessNeckDL" Offset="0xE2F8" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gDekuPrincessTorsoDL" Offset="0xE340" />
+        <DList Name="gDekuPrincessRightSleeveEndDL" Offset="0xE410" />
+        <DList Name="gDekuPrincessRightForearmDL" Offset="0xE530" />
+        <DList Name="gDekuPrincessRightUpperArmDL" Offset="0xE650" />
+        <DList Name="gDekuPrincessLeftSleeveEndDL" Offset="0xE768" />
+        <DList Name="gDekuPrincessLeftForearmDL" Offset="0xE888" />
+        <DList Name="gDekuPrincessLeftUpperArmDL" Offset="0xE9A8" />
+        <DList Name="gDekuPrincessDressDL" Offset="0xEAC0" />
+        <DList Name="gDekuPrincessDressTrainDL" Offset="0xEBD8" />
+
+        <!-- Deku Princess Textures -->
+        <Texture Name="gDekuPrincessPetalTex" OutName="deku_princess_petal" Format="rgba16" Width="16" Height="32" Offset="0xECD0" />
+        <Texture Name="gDekuPrincessHairLeafTex" OutName="deku_princess_hair_leaf" Format="rgba16" Width="16" Height="32" Offset="0xF0D0" />
+        <Texture Name="gDekuPrincessHeadTex" OutName="deku_princess_head" Format="rgba16" Width="4" Height="16" Offset="0xF4D0" />
+        <Texture Name="gDekuPrincessMouthTex" OutName="deku_princess_mouth" Format="rgba16" Width="8" Height="8" Offset="0xF550" />
+        <Texture Name="gDekuPrincessFaceTex" OutName="deku_princess_face" Format="rgba16" Width="16" Height="16" Offset="0xF5D0" />
+        <Texture Name="gDekuPrincessDressTex" OutName="deku_princess_dress" Format="rgba16" Width="32" Height="32" Offset="0xF7D0" />
+        <Texture Name="gDekuPrincessSleeveTex" OutName="deku_princess_sleeve" Format="rgba16" Width="16" Height="32" Offset="0xFFD0" />
+        <Texture Name="gDekuPrincessEyeOpenTex" OutName="deku_princess_eye_open" Format="rgba16" Width="16" Height="16" Offset="0x103D0" />
+        <Texture Name="gDekuPrincessEyeHalfTex" OutName="deku_princess_eye_half" Format="rgba16" Width="16" Height="16" Offset="0x105D0" />
+        <Texture Name="gDekuPrincessEyeClosedTex" OutName="deku_princess_eye_closed" Format="rgba16" Width="16" Height="16" Offset="0x107D0" />
+        <Texture Name="gDekuPrincessEyeAngryTex" OutName="deku_princess_eye_angry" Format="rgba16" Width="16" Height="16" Offset="0x109D0" />
+
+        <!-- Deku Princess Limbs -->
+        <Limb Name="gDekuPrincessRootLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_ROOT" Offset="0x10BD0" />
+        <Limb Name="gDekuPrincessDressLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_DRESS" Offset="0x10BDC" />
+        <Limb Name="gDekuPrincessDressTrainLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_DRESS_TRAIN" Offset="0x10BE8" />
+        <Limb Name="gDekuPrincessTorsoLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_TORSO" Offset="0x10BF4" />
+        <Limb Name="gDekuPrincessLeftUpperArmLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_LEFT_UPPER_ARM" Offset="0x10C00" />
+        <Limb Name="gDekuPrincessLeftForearmLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_LEFT_FOREARM" Offset="0x10C0C" />
+        <Limb Name="gDekuPrincessLeftSleeveEndLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_LEFT_SLEEVE_END" Offset="0x10C18" />
+        <Limb Name="gDekuPrincessRightUpperArmLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_RIGHT_UPPER_ARM" Offset="0x10C24" />
+        <Limb Name="gDekuPrincessRightForearmLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_RIGHT_FOREARM" Offset="0x10C30" />
+        <Limb Name="gDekuPrincessRightSleeveEndLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_RIGHT_SLEEVE_END" Offset="0x10C3C" />
+        <Limb Name="gDekuPrincessNeckLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_NECK" Offset="0x10C48" />
+        <Limb Name="gDekuPrincessHeadLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HEAD" Offset="0x10C54" />
+        <Limb Name="gDekuPrincessLeftEarringLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_LEFT_EARRING" Offset="0x10C60" />
+        <Limb Name="gDekuPrincessRightEarringLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_RIGHT_EARRING" Offset="0x10C6C" />
+        <Limb Name="gDekuPrincessSnoutLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_SNOUT" Offset="0x10C78" />
+        <Limb Name="gDekuPrincessHair1Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_1" Offset="0x10C84" />
+        <Limb Name="gDekuPrincessHair2Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_2" Offset="0x10C90" />
+        <Limb Name="gDekuPrincessHair3Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_3" Offset="0x10C9C" />
+        <Limb Name="gDekuPrincessHair4Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_4" Offset="0x10CA8" />
+        <Limb Name="gDekuPrincessHair5Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_5" Offset="0x10CB4" />
+        <Limb Name="gDekuPrincessHair6Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_6" Offset="0x10CC0" />
+        <Limb Name="gDekuPrincessHair7Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_7" Offset="0x10CCC" />
+        <Limb Name="gDekuPrincessHair8Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_8" Offset="0x10CD8" />
+        <Limb Name="gDekuPrincessHair9Limb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_HAIR_9" Offset="0x10CE4" />
+        <Limb Name="gDekuPrincessEyesLimb" Type="Standard" EnumName="DEKU_PRINCESS_LIMB_EYES" Offset="0x10CF0" />
+
+        <!-- Deku Princess Skeleton -->
+        <Skeleton Name="gDekuPrincessSkel" Type="Flex" LimbType="Standard" LimbNone="DEKU_PRINCESS_LIMB_NONE" LimbMax="DEKU_PRINCESS_LIMB_MAX" EnumName="DekuPrincessLimb" Offset="0x10D60" />
+
+        <!-- Deku Princess Animations -->
+        <Animation Name="gDekuPrincessWalkAnim" Offset="0x115B8" /> <!-- Original name is "dnq_walk" -->
+        <Animation Name="gDekuPrincessGreetingAnim" Offset="0x12428" /> <!-- Original name is "dnq_yorosiku" (probably short for "pleased to meet you") -->
+    </File>
+</Root>

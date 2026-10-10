@@ -1,0 +1,6 @@
+<Root>
+    <File Name="ovl_En_Bomjima" BaseAddress="0x80BFE170" RangeStart="0x2998" RangeEnd="0x29B8">
+        <DList Name="gEnBomjima_D_80C00B08" Offset="0x2998"/>
+        <DList Name="gEnBomjima_D_80C00B18" Offset="0x29A8"/>
+    </File>
+</Root>

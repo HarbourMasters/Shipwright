@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Object for Stone Tower Switch -->
+    <File Name="object_f40_switch" Segment="6">
+        <Collision Name="gStoneTowerFloorSwitchCol" Offset="0x118" /> <!-- Original name is "f40_switch_1_bgdatainfo" -->
+        <DList Name="gStoneTowerFloorSwitchOutlineDL" Offset="0x390" /> <!-- Original name is "z2_switch_lb_modelT" -->
+        <DList Name="gStoneTowerFloorSwitchDL" Offset="0x438" /> <!-- Original name is "z2_switch_lb_model" -->
+        <Texture Name="gStoneTowerFloorSwitchOutlineTex" OutName="stone_tower_switch_outline" Format="rgba16" Width="16" Height="64" Offset="0x4E8" />
+        <Texture Name="gStoneTowerFloorSwitchTex" OutName="stone_tower_switch" Format="ia8" Width="16" Height="16" Offset="0xCE8" />
+    </File>
+</Root>

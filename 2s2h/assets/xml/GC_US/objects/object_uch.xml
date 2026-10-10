@@ -1,0 +1,64 @@
+﻿<Root>
+    <!-- Assets for the Ghosts, more-commonly known as the aliens -->
+    <File Name="object_uch" Segment="6">
+        <!-- Assets for the beam of light coming from the alien's eyes. -->
+        <DList Name="gAlienEyeBeamDL" Offset="0x80" />
+        <Texture Name="gAlienEyeBeamMaskTex" OutName="alien_eye_beam_mask" Format="i8" Width="32" Height="32" Offset="0x130" />
+        <TextureAnimation Name="gAlienEyeBeamTexAnim" Offset="0x550" />
+
+        <!-- An empty texture animation, seemingly planned to animate something on the alien's body. -->
+        <TextureAnimation Name="gAlienEmptyTexAnim" Offset="0x560" />
+
+        <!-- Alien Animations -->
+        <Animation Name="gAlienDeathAnim" Offset="0x608" /> <!-- Original name is "uch_die_body" -->
+        <Animation Name="gAlienJerkingAnim" Offset="0x6C8" /> <!-- Original name is "uch_gaku_body" (probably short for the onomatopoeia for "jerking") -->
+
+        <!-- Assets for the flash of light that appears when an alien dies. -->
+        <DList Name="gAlienDeathFlashDL" Offset="0x720" />
+        <Texture Name="gAlienDeathFlashMaskTex" OutName="alien_death_flash_mask" Format="ia16" Width="32" Height="32" Offset="0x7B8" />
+
+        <!-- Alien Animations -->
+        <Animation Name="gAlienHoldingCowAnim" Offset="0x1674" /> <!-- Original name is "uch_take_body" -->
+        <Animation Name="gAlienFloatAnim" Offset="0x1D80" /> <!-- Original name is "uch_wait_body" -->
+
+        <!-- Alien Limb DisplayLists -->
+        <DList Name="gAlienHeadDL" Offset="0x2CD0" />
+        <DList Name="gAlienRightEyeDL" Offset="0x2F08" />
+        <DList Name="gAlienLeftEyeDL" Offset="0x2FA8" />
+        <DList Name="gAlienLeftShoulderDL" Offset="0x3048" />
+        <DList Name="gAlienLeftUpperArmDL" Offset="0x3128" />
+        <DList Name="gAlienLeftForearmDL" Offset="0x3290" />
+        <DList Name="gAlienLeftHandDL" Offset="0x3410" />
+        <DList Name="gAlienTorsoDL" Offset="0x35E8" />
+        <DList Name="gAlienRightShoulderDL" Offset="0x37E0" />
+        <DList Name="gAlienRightUpperArmDL" Offset="0x38C0" />
+        <DList Name="gAlienRightForearmDL" Offset="0x3A28" />
+        <DList Name="gAlienRightHandDL" Offset="0x3BA8" />
+
+        <!-- Alien Textures -->
+        <Texture Name="gAlienTLUT" OutName="alien_tlut" Format="rgba16" Width="16" Height="16" Offset="0x3D80" />
+        <Texture Name="gAlienTorsoTex" OutName="alien_torso" Format="ci8" Width="16" Height="16" Offset="0x3F80" />
+        <Texture Name="gAlienHandsAndTorsoUndersideTex" OutName="alien_hands_and_torso_underside" Format="ci8" Width="16" Height="16" Offset="0x4080" />
+        <Texture Name="gAlienHeadFrontAndArmsTex" OutName="alien_head_front_and_arms" Format="ci8" Width="16" Height="32" Offset="0x4180" />
+        <Texture Name="gAlienHeadBackTex" OutName="alien_head_back" Format="ci8" Width="16" Height="32" Offset="0x4380" />
+        <Texture Name="gAlienEyeTex" OutName="alien_eye" Format="rgba16" Width="32" Height="32" Offset="0x4580" />
+
+        <!-- Alien Limbs -->
+        <Limb Name="gAlienRootLimb" Type="Standard" EnumName="ALIEN_LIMB_ROOT" Offset="0x4D80" />
+        <Limb Name="gAlienTorsoLimb" Type="Standard" EnumName="ALIEN_LIMB_TORSO" Offset="0x4D8C" />
+        <Limb Name="gAlienRightShoulderLimb" Type="Standard" EnumName="ALIEN_LIMB_RIGHT_SHOULDER" Offset="0x4D98" />
+        <Limb Name="gAlienRightUpperArmLimb" Type="Standard" EnumName="ALIEN_LIMB_RIGHT_UPPER_ARM" Offset="0x4DA4" />
+        <Limb Name="gAlienRightForearmLimb" Type="Standard" EnumName="ALIEN_LIMB_RIGHT_FOREARM" Offset="0x4DB0" />
+        <Limb Name="gAlienRightHandLimb" Type="Standard" EnumName="ALIEN_LIMB_RIGHT_HAND" Offset="0x4DBC" />
+        <Limb Name="gAlienLeftShoulderLimb" Type="Standard" EnumName="ALIEN_LIMB_LEFT_SHOULDER" Offset="0x4DC8" />
+        <Limb Name="gAlienLeftUpperArmLimb" Type="Standard" EnumName="ALIEN_LIMB_LEFT_UPPER_ARM" Offset="0x4DD4" />
+        <Limb Name="gAlienLeftForearmLimb" Type="Standard" EnumName="ALIEN_LIMB_LEFT_FOREARM" Offset="0x4DE0" />
+        <Limb Name="gAlienLeftHandLimb" Type="Standard" EnumName="ALIEN_LIMB_LEFT_HAND" Offset="0x4DEC" />
+        <Limb Name="gAlienHeadLimb" Type="Standard" EnumName="ALIEN_LIMB_HEAD" Offset="0x4DF8" />
+        <Limb Name="gAlienLeftEyeLimb" Type="Standard" EnumName="ALIEN_LIMB_LEFT_EYE" Offset="0x4E04" />
+        <Limb Name="gAlienRightEyeLimb" Type="Standard" EnumName="ALIEN_LIMB_RIGHT_EYE" Offset="0x4E10" />
+
+        <!-- Alien Skeleton -->
+        <Skeleton Name="gAlienSkel" Type="Flex" LimbType="Standard" LimbNone="ALIEN_LIMB_NONE" LimbMax="ALIEN_LIMB_MAX" EnumName="AlienLimb" Offset="0x4E50" />
+    </File>
+</Root>

@@ -1,0 +1,74 @@
+﻿<Root>
+    <File Name="object_kgy" Segment="6">
+        <Animation Name="object_kgy_Anim_0008FC" Offset="0x8FC" /> <!-- Original name is "kgy_abareru" -->
+        <Animation Name="object_kgy_Anim_001764" Offset="0x1764" /> <!-- Original name is "kgy_katsugu" -->
+        <Animation Name="object_kgy_Anim_001EA4" Offset="0x1EA4" /> <!-- Original name is "kgy_muki" -->
+        <Animation Name="object_kgy_Anim_00292C" Offset="0x292C" /> <!-- Original name is "kgy_mukiwait" -->
+        <Animation Name="object_kgy_Anim_003334" Offset="0x3334" /> <!-- Original name is "kgy_tataku" -->
+        <Animation Name="object_kgy_Anim_003D88" Offset="0x3D88" /> <!-- Original name is "kgy_tataku02" -->
+        <Animation Name="object_kgy_Anim_0042E4" Offset="0x42E4" /> <!-- Original name is "kgy_utsumuki" -->
+        <Animation Name="object_kgy_Anim_004B98" Offset="0x4B98" /> <!-- Original name is "kgy_wait01" -->
+        <DList Name="object_kgy_DL_009C80" Offset="0x9C80" />
+        <DList Name="object_kgy_DL_009DA0" Offset="0x9DA0" />
+        <DList Name="object_kgy_DL_009F28" Offset="0x9F28" />
+        <DList Name="object_kgy_DL_00A0A0" Offset="0xA0A0" />
+        <DList Name="object_kgy_DL_00A1C0" Offset="0xA1C0" />
+        <DList Name="object_kgy_DL_00A300" Offset="0xA300" />
+        <DList Name="object_kgy_DL_00A490" Offset="0xA490" />
+        <DList Name="object_kgy_DL_00A618" Offset="0xA618" />
+        <DList Name="object_kgy_DL_00A790" Offset="0xA790" />
+        <DList Name="object_kgy_DL_00A998" Offset="0xA998" />
+        <DList Name="object_kgy_DL_00AD60" Offset="0xAD60" />
+        <DList Name="object_kgy_DL_00B028" Offset="0xB028" />
+        <DList Name="object_kgy_DL_00B130" Offset="0xB130" />
+        <DList Name="object_kgy_DL_00B280" Offset="0xB280" />
+        <DList Name="object_kgy_DL_00B3C8" Offset="0xB3C8" />
+        <DList Name="object_kgy_DL_00B678" Offset="0xB678" />
+        <DList Name="object_kgy_DL_00B7B8" Offset="0xB7B8" />
+        <DList Name="object_kgy_DL_00B978" Offset="0xB978" />
+        <Texture Name="object_kgy_TLUT_00BC28" OutName="tlut_00BC28" Format="rgba16" Width="16" Height="16" Offset="0xBC28" />
+        <Texture Name="object_kgy_Tex_00BE28" OutName="tex_00BE28" Format="rgba16" Width="32" Height="32" Offset="0xBE28" />
+        <Texture Name="object_kgy_Tex_00C628" OutName="tex_00C628" Format="ci8" Width="16" Height="16" Offset="0xC628" />
+        <Texture Name="object_kgy_Tex_00C728" OutName="tex_00C728" Format="ci8" Width="16" Height="16" Offset="0xC728" />
+        <Texture Name="object_kgy_Tex_00C828" OutName="tex_00C828" Format="ci8" Width="32" Height="32" Offset="0xC828" />
+        <Texture Name="object_kgy_Tex_00CC28" OutName="tex_00CC28" Format="ci8" Width="32" Height="32" Offset="0xCC28" />
+        <Texture Name="object_kgy_Tex_00D028" OutName="tex_00D028" Format="rgba16" Width="32" Height="32" Offset="0xD028" />
+        <Texture Name="object_kgy_Tex_00D828" OutName="tex_00D828" Format="ci8" Width="16" Height="16" Offset="0xD828" />
+        <Texture Name="object_kgy_Tex_00D928" OutName="tex_00D928" Format="rgba16" Width="32" Height="32" Offset="0xD928" />
+        <Texture Name="object_kgy_Tex_00E128" OutName="tex_00E128" Format="ci8" Width="16" Height="16" Offset="0xE128" />
+        <Texture Name="object_kgy_Tex_00E228" OutName="tex_00E228" Format="i8" Width="32" Height="32" Offset="0xE228" />
+        <Texture Name="object_kgy_Tex_00E628" OutName="tex_00E628" Format="ci8" Width="16" Height="16" Offset="0xE628" />
+        <DList Name="object_kgy_DL_00E8E8" Offset="0xE8E8" />
+        <DList Name="object_kgy_DL_00E8F0" Offset="0xE8F0" /> <!-- Original name is "swordA_model" -->
+        <TextureAnimation Name="object_kgy_Matanimheader_00EE58" Offset="0xEE58" />
+        <DList Name="object_kgy_DL_00F178" Offset="0xF178" />
+        <DList Name="object_kgy_DL_00F180" Offset="0xF180" /> <!-- Original name is "swordB_model" -->
+        <TextureAnimation Name="object_kgy_Matanimheader_00F6A0" Offset="0xF6A0" />
+        <Texture Name="object_kgy_Tex_00F6B0" OutName="tex_00F6B0" Format="i8" Width="16" Height="16" Offset="0xF6B0" />
+        <Limb Name="object_kgy_Standardlimb_00F7B0" Type="Standard" EnumName="OBJECT_KGY_LIMB_01" Offset="0xF7B0" />
+        <Limb Name="object_kgy_Standardlimb_00F7BC" Type="Standard" EnumName="OBJECT_KGY_LIMB_02" Offset="0xF7BC" />
+        <Limb Name="object_kgy_Standardlimb_00F7C8" Type="Standard" EnumName="OBJECT_KGY_LIMB_03" Offset="0xF7C8" />
+        <Limb Name="object_kgy_Standardlimb_00F7D4" Type="Standard" EnumName="OBJECT_KGY_LIMB_04" Offset="0xF7D4" />
+        <Limb Name="object_kgy_Standardlimb_00F7E0" Type="Standard" EnumName="OBJECT_KGY_LIMB_05" Offset="0xF7E0" />
+        <Limb Name="object_kgy_Standardlimb_00F7EC" Type="Standard" EnumName="OBJECT_KGY_LIMB_06" Offset="0xF7EC" />
+        <Limb Name="object_kgy_Standardlimb_00F7F8" Type="Standard" EnumName="OBJECT_KGY_LIMB_07" Offset="0xF7F8" />
+        <Limb Name="object_kgy_Standardlimb_00F804" Type="Standard" EnumName="OBJECT_KGY_LIMB_08" Offset="0xF804" />
+        <Limb Name="object_kgy_Standardlimb_00F810" Type="Standard" EnumName="OBJECT_KGY_LIMB_09" Offset="0xF810" />
+        <Limb Name="object_kgy_Standardlimb_00F81C" Type="Standard" EnumName="OBJECT_KGY_LIMB_0A" Offset="0xF81C" />
+        <Limb Name="object_kgy_Standardlimb_00F828" Type="Standard" EnumName="OBJECT_KGY_LIMB_0B" Offset="0xF828" />
+        <Limb Name="object_kgy_Standardlimb_00F834" Type="Standard" EnumName="OBJECT_KGY_LIMB_0C" Offset="0xF834" />
+        <Limb Name="object_kgy_Standardlimb_00F840" Type="Standard" EnumName="OBJECT_KGY_LIMB_0D" Offset="0xF840" />
+        <Limb Name="object_kgy_Standardlimb_00F84C" Type="Standard" EnumName="OBJECT_KGY_LIMB_0E" Offset="0xF84C" />
+        <Limb Name="object_kgy_Standardlimb_00F858" Type="Standard" EnumName="OBJECT_KGY_LIMB_0F" Offset="0xF858" />
+        <Limb Name="object_kgy_Standardlimb_00F864" Type="Standard" EnumName="OBJECT_KGY_LIMB_10" Offset="0xF864" />
+        <Limb Name="object_kgy_Standardlimb_00F870" Type="Standard" EnumName="OBJECT_KGY_LIMB_11" Offset="0xF870" />
+        <Limb Name="object_kgy_Standardlimb_00F87C" Type="Standard" EnumName="OBJECT_KGY_LIMB_12" Offset="0xF87C" />
+        <Limb Name="object_kgy_Standardlimb_00F888" Type="Standard" EnumName="OBJECT_KGY_LIMB_13" Offset="0xF888" />
+        <Limb Name="object_kgy_Standardlimb_00F894" Type="Standard" EnumName="OBJECT_KGY_LIMB_14" Offset="0xF894" />
+        <Limb Name="object_kgy_Standardlimb_00F8A0" Type="Standard" EnumName="OBJECT_KGY_LIMB_15" Offset="0xF8A0" />
+        <Limb Name="object_kgy_Standardlimb_00F8AC" Type="Standard" EnumName="OBJECT_KGY_LIMB_16" Offset="0xF8AC" />
+        <Skeleton Name="object_kgy_Skel_00F910" Type="Flex" LimbType="Standard" LimbNone="OBJECT_KGY_LIMB_NONE" LimbMax="OBJECT_KGY_LIMB_MAX" EnumName="ObjectKgyLimb" Offset="0xF910" />
+        <Animation Name="object_kgy_Anim_0101F0" Offset="0x101F0" /> <!-- Original name is "kgy_wait02" -->
+        <Animation Name="object_kgy_Anim_010B84" Offset="0x10B84" /> <!-- Original name is "kgy_yorokobu" -->
+    </File>
+</Root>

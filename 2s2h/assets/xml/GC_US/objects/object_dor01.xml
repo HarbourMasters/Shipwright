@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for Astral Observatory / Marine Research Lab Door (Bland metal door) -->
+    <File Name="object_dor01" Segment="6">
+        <DList Name="gObservatoryLabDoorEmptyDL" Offset="0x440" /> <!-- Original name is "z2_dor01_modelT" -->
+        <DList Name="gObservatoryLabDoorDL" Offset="0x448" /> <!-- Original name is "z2_dor01_model" -->
+        <Texture Name="gObservatoryLabDoorTex" OutName="observatory_lab_door" Format="rgba16" Width="16" Height="128" Offset="0x650" />
+    </File>
+</Root>

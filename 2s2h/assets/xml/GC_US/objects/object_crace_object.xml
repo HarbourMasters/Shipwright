@@ -1,0 +1,9 @@
+﻿<Root>
+    <!-- Assets for the sliding doors in the Deku Shrine -->
+    <File Name="object_crace_object" Segment="6">
+        <DList Name="gDekuShrineSlidingDoorDL" Offset="0x3A0" /> <!-- Original name is "Y2_DANPEI_shutter_model" -->
+        <Texture Name="gDekuShrineSlidingDoorTLUT" OutName="deku_shrine_sliding_door_tlut" Format="rgba16" Width="4" Height="4" Offset="0x540" />
+        <Texture Name="gDekuShrineSlidingDoorTex" OutName="deku_shrine_sliding_door" Format="ci4" Width="32" Height="128" Offset="0x560" />
+        <Collision Name="gDekuShrineSlidingDoorCol" Offset="0xE00" /> <!-- Original name is "Y2_DANPEI_shutter_bgdatainfo" -->
+    </File>
+</Root>

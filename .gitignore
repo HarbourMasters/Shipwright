@@ -455,6 +455,10 @@ _packages
 
 soh/src/boot/build.c
 soh/properties.h
+2s2h/src/boot/build.c
+2s2h/windows/properties.h
+2ship2harkinian.json
+2S2HTimeSplitData.json
 
 # Tools
 .clangd

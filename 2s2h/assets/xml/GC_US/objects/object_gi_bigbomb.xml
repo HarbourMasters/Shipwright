@@ -1,0 +1,17 @@
+﻿<Root>
+    <!-- Get Item Draw: Powder Keg -->
+    <File Name="object_gi_bigbomb" Segment="6">
+
+        <!-- Powder Keg Display Lists -->
+        <DList Name="gGiPowderKegGoronSkullAndFuseDL" Offset="0xBC0" />
+        <DList Name="gGiPowderKegBarrelDL" Offset="0xDA0" />
+
+        <!-- Powder Key TLUT -->
+        <Texture Name="gGiPowderKegBarrelTLUT" OutName="gi_powder_keg_barrel_tlut" Format="rgba16" Width="16" Height="16" Offset="0xF30" />
+
+        <!-- Powder Keg Textures -->
+        <Texture Name="gGiPowderKegGoronSkullTex" OutName="gi_powder_keg_goron_skull" Format="ia8" Width="16" Height="32" Offset="0x1130" />
+        <Texture Name="gGiPowderKegBarrelTex" OutName="gi_powder_keg_barrel" Format="ci8" Width="32" Height="32" Offset="0x1330" />
+        <Texture Name="gGiPowderKegFuseTex" OutName="gi_powder_keg_fuse" Format="i8" Width="32" Height="16" Offset="0x1730" />
+    </File>
+</Root>

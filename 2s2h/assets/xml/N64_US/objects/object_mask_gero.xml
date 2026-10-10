@@ -1,0 +1,14 @@
+﻿<Root>
+    <!-- Object for Don Gero's Mask-->
+    <File Name="object_mask_gero" Segment="10">
+        <DList Name="gDonGeroMaskDL" Offset="0xDC0" />
+        <Texture Name="gDonGeroMaskTLUT" OutName="don_gero_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1388" />
+        <Texture Name="gDonGeroMaskBottomTex" OutName="don_gero_mask_bottom" Format="ci8" Width="16" Height="16" Offset="0x1588" />
+        <Texture Name="gDonGeroMaskToesTex" OutName="don_gero_mask_toes" Format="rgba16" Width="32" Height="32" Offset="0x1688" />
+        <Texture Name="gDonGeroMaskTopTex" OutName="don_gero_mask_top" Format="ci8" Width="16" Height="16" Offset="0x1E88" />
+        <Texture Name="gDonGeroMaskNostrilTex" OutName="don_gero_mask_nostril" Format="ci8" Width="32" Height="32" Offset="0x1F88" />
+        <Texture Name="gDonGeroMaskMouthTex" OutName="don_gero_mask_mouth" Format="ci8" Width="16" Height="16" Offset="0x2388" />
+        <Texture Name="gDonGeroMaskFrillsTex" OutName="don_gero_mask_frills" Format="rgba16" Width="32" Height="32" Offset="0x2488" />
+        <Texture Name="gDonGeroMaskEyeTex" OutName="don_gero_mask_eye" Format="rgba16" Width="16" Height="16" Offset="0x2C88" />
+    </File>
+</Root>

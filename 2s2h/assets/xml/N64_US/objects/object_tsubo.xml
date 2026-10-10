@@ -1,0 +1,10 @@
+﻿<Root>
+    <!-- Object for normal brown pot/jar -->
+    <File Name="object_tsubo" Segment="6">
+        <Texture Name="gPotWallTex" OutName="pot_wall" Format="rgba16" Width="32" Height="64" Offset="0x0" />
+        <Texture Name="gPotRimTex" OutName="pot_rim" Format="rgba16" Width="16" Height="16" Offset="0x1000" />
+        <Texture Name="gPotShardTex" OutName="pot_shard" Format="rgba16" Width="16" Height="16" Offset="0x1200" />
+        <DList Name="gPotDL" Offset="0x17C0" /> <!-- Original name is "tubo2_model" -->
+        <DList Name="gPotShardDL" Offset="0x1960" /> <!-- Original name is "tubo2_hahen_model" -->
+    </File>
+</Root>

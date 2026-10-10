@@ -1,0 +1,7 @@
+﻿<Root>
+    <!-- Ring Of Fire used during Garo's encounters -->
+    <File Name="object_big_fwall" Segment="6">
+        <Texture Name="gRingOfFireTex" OutName="ring_of_fire" Format="i8" Width="32" Height="64" Offset="0x0" />
+        <DList Name="gRingOfFireDL" Offset="0x9A0" /> <!-- Original name is "big_firewall_modelT" -->
+    </File>
+</Root>

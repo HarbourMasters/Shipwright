@@ -1,0 +1,65 @@
+﻿<Root>
+    <!-- Trees and the ground of the Lost woods (DmOpstage actor) -->
+    <!-- (DmRavine) uses it as an object, but does not draw or use any of its assets as far as I can tell -->
+    <File Name="object_keikoku_demo" Segment="6">
+        <!-- the following textures have duplicates in Z2_LOSTWOODS scene:  -->
+        <!--   gKeikokuDemoYellowFlowersOnGrassTex, gKeikokuDemoFallLeavesOnGrassTex, unused: gKeikokuDemoWrinkledBarkTex -->
+
+        <!-- DmOpstage draws both an empty XLU and non-empty OPA at the same time, each version has its own empty DL instead of reusing. -->
+        <DList Name="gKeikokuDemoFloorEmptyDL" Offset="0x970" />
+        <DList Name="gKeikokuDemoFloorDL" Offset="0x978" /> <!-- Original name is "daichi_model" -->
+
+        <!-- DmOpstage type DMOPSTAGE_TYPE_GROUND textures -->
+        <Texture Name="gKeikokuDemoYellowFlowersOnGrassTex" OutName="yellow_flowers_on_grass" Format="rgba16" Width="32" Height="32" Offset="0xC50" />
+        <Texture Name="gKeikokuDemoFallLeavesOnGrassTex" OutName="fall_leaves_on_grass" Format="rgba16" Width="32" Height="32" Offset="0x1450" />
+
+        <!-- DmOpstage type DMOPSTAGE_TYPE_GROUND Dyna Collider -->
+        <Collision Name="gKeikokuDemoFloorCol" Offset="0x1C98" /> <!-- Original name is "daichi_bgdatainfo" -->
+
+        <DList Name="gKeikokuDemoTallTreeWithRootBaseEmptyDL" Offset="0x2870" />
+        <DList Name="gKeikokuDemoTallTreeWithRootBaseDL" Offset="0x2878" /> <!-- Original name is "lost_woods_wood1_model" -->
+        <DList Name="gKeikokuDemoTallTreeCutEmptyDL" Offset="0x3060" />
+        <DList Name="gKeikokuDemoTallTreeCutDL" Offset="0x3068" /> <!-- Original name is "lost_woods_wood2_model" -->
+        <DList Name="gKeikokuDemoTallTreeStraightEmptyDL" Offset="0x3720" />
+        <DList Name="gKeikokuDemoTallTreeStraightDL" Offset="0x3728" /> <!-- Original name is "lost_woods_wood3_model" -->
+        <Texture Name="gKeikokuDemoTreeLeavesTex" OutName="tree_leaves" Format="ia16" Width="32" Height="32" Offset="0x3930" />
+        <Texture Name="gKeikokuDemoTreeCutEndGrainTex" OutName="cut_end_grain" Format="rgba16" Width="32" Height="32" Offset="0x4130" />
+
+        <!-- From this point on, all assets are unused. -->
+        
+        <!-- Side texture of raised bed of clover, clover on top of stems seen from side. -->
+        <Texture Name="gKeikokuDemoCloverEdgeTex" OutName="clover_edge" Format="rgba16" Width="64" Height="16" Offset="0x4930" />
+        <!-- Top texture of bed of clover (like the kind of raised grass that hide gold skultula). -->
+        <Texture Name="gKeikokuDemoCloverTopTex" OutName="clover_top" Format="rgba16" Width="32" Height="32" Offset="0x5130" />
+        <!-- Darker brown wrinkly bark with moss on I think, low resolution so not sure.  -->
+        <Texture Name="gKeikokuDemoDarkMossyBarkTex" OutName="dark_mossy_bark" Format="rgba16" Width="32" Height="32" Offset="0x5930" />
+        <Texture Name="gKeikokuDemoDarkGreenMossTex" OutName="dark_moss" Format="rgba16" Width="16" Height="16" Offset="0x6130" />
+        <!-- Bright tan wrinkly bark with moss on I think, low resolution so not sure. -->
+        <Texture Name="gKeikokuDemoBrightMossyBarkTex" OutName="bright_mossy_bark" Format="rgba16" Width="32" Height="32" Offset="0x6330" />
+        <!-- This dirt wall looks similar to OoT:Kokiri forest wall, but brighter sand color.  -->
+        <Texture Name="gKeikokuDemoDirtWallTex" OutName="dirt_wall" Format="rgba16" Width="32" Height="64" Offset="0x6B30" />
+        <!-- Does NOT look like the wall of trees from Lostwoods. -->
+        <Texture Name="gKeikokuDemoTreeWallBackdropTex" OutName="tree_wall_backdrop" Format="i4" Width="64" Height="64" Offset="0x7B30" />
+
+        <Texture Name="gKeikokuDemoHangingMossTex" OutName="hanging_moss" Format="rgba16" Width="32" Height="32" Offset="0x8330" />
+        <Texture Name="gKeikokuDemoStumpRingsDarkTex" OutName="stump_rings_dark" Format="rgba16" Width="32" Height="32" Offset="0x8B30" />
+
+        <!-- Might be mistyped, looks like pink rings to match the following stump rings texture, but pink. -->
+        <Texture Name="gKeikokuDemoStumpRingsPinkTex" OutName="stump_rings_pink" Format="rgba16" Width="16" Height="32" Offset="0x9330" />
+        <!-- Looks like a duplicate of gKeikokuDemoTreeCutEndGrainTex, but rotated clockwise 90deg. -->
+        <Texture Name="gKeikokuDemoTreeCutEndGrain2Tex" OutName="stump_rings" Format="rgba16" Width="32" Height="32" Offset="0x9730" />
+
+        <!-- Duplicates of used textures: -->
+        <Texture Name="gKeikokuDemoYellowFlowersOnGrass2Tex" OutName="yellow_flowers_on_grass2" Format="rgba16" Width="32" Height="32" Offset="0x9F30" />
+        <Texture Name="gKeikokuDemoFallLeavesOnGrass2Tex" OutName="fall_leaves_on_grass2" Format="rgba16" Width="32" Height="32" Offset="0xA730" />
+
+        <Texture Name="gKeikokuDemoYoungerBarkTex" OutName="younger_bark" Format="rgba16" Width="16" Height="64" Offset="0xAF30" />
+        <Texture Name="gKeikokuDemoWrinkledBarkTex" OutName="wrinkled_bark" Format="i4" Width="64" Height="64" Offset="0xB730" />
+        <!-- Could be moss, could be leaves, could be dying grass, hard to tell. -->
+        <Texture Name="gKeikokuDemoGreenSludgeTex" OutName="green_sludge" Format="rgba16" Width="32" Height="32" Offset="0xBF30" />
+        <!-- This might be something else, nothing else looked any more accurate. -->
+        <Texture Name="gKeikokuDemoWhiteYellowArtifactTex" OutName="white_yellow_artifact" Format="rgba16" Width="16" Height="32" Offset="0xC730" />
+        <!-- Seems to be a dimmer version of the bright yellow on grass texture. -->
+        <Texture Name="gKeikokuDemoDullYellowFlowersOnGrassTex" OutName="dull_yellow_flowers_on_grass" Format="rgba16" Width="32" Height="32" Offset="0xCB30" />
+    </File>
+</Root>

@@ -1,0 +1,71 @@
+﻿<Root>
+    <!-- Assets for Woodfall scene objects (temple, water, walls, etc.) -->
+    <File Name="object_mtoride" Segment="6">
+        <!-- Textures for the Woodfall scenery. -->
+        <Texture Name="gWoodfallSceneryUnusedTLUT" OutName="woodfall_scenery_unused_tlut" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="gWoodfallSceneryBranchAndLeavesTLUT" OutName="woodfall_scenery_branch_and_leaves_tlut" Format="rgba16" Width="4" Height="4" Offset="0x200" />
+        <Texture Name="gWoodfallSceneryTreeRingTex" OutName="woodfall_scenery_tree_ring" Format="rgba16" Width="16" Height="16" Offset="0x220" />
+        <Texture Name="gWoodfallSceneryBranchAndLeavesTex" OutName="woodfall_scenery_branch_and_leaves" Format="ci4" Width="32" Height="128" Offset="0x420" />
+        <Texture Name="gWoodfallSceneryEntranceGradientTex" OutName="woodfall_scenery_entrance_gradient" Format="ia8" Width="32" Height="8" Offset="0xC20" />
+        <Texture Name="gWoodfallSceneryTempleEdgeAndRampAndPlatformTopTex" OutName="woodfall_scenery_temple_edges_and_ramp_and_platform_top" Format="rgba16" Width="32" Height="32" Offset="0xD20" />
+        <Texture Name="gWoodfallSceneryTempleEntranceAndRampSidesTex" OutName="woodfall_scenery_temple_entrance_and_ramp_sides" Format="rgba16" Width="32" Height="64" Offset="0x1520" />
+        <Texture Name="gWoodfallSceneryTempleSidesTex" OutName="woodfall_scenery_temple_sides" Format="rgba16" Width="32" Height="64" Offset="0x2520" />
+        <Texture Name="gWoodfallSceneryTempleFloorAndTopTex" OutName="woodfall_scenery_temple_floor_and_top" Format="rgba16" Width="32" Height="32" Offset="0x3520" />
+        <Texture Name="gWoodfallSceneryTreeBarkTex" OutName="woodfall_scenery_tree_bark" Format="rgba16" Width="32" Height="64" Offset="0x3D20" />
+        <Texture Name="gWoodfallSceneryFaceDesignTex" OutName="woodfall_scenery_face_design" Format="rgba16" Width="32" Height="64" Offset="0x4D20" />
+        <Texture Name="gWoodfallSceneryPoisonWaterTex" OutName="woodfall_scenery_poison_water" Format="rgba16" Width="32" Height="32" Offset="0x5D20" />
+        <Texture Name="gWoodfallSceneryPoisonWallsScrollTex" OutName="woodfall_scenery_poison_walls_scroll" Format="rgba16" Width="32" Height="32" Offset="0x6520" />
+        <Texture Name="gWoodfallSceneryPoisonWallsTex" OutName="woodfall_scenery_poison_walls" Format="rgba16" Width="32" Height="32" Offset="0x6D20" />
+        <Texture Name="gWoodfallSceneryPurifiedWalls1Tex" OutName="woodfall_scenery_purified_walls_1" Format="rgba16" Width="16" Height="32" Offset="0x7520" />
+        <Texture Name="gWoodfallSceneryPurifiedWalls2Tex" OutName="woodfall_scenery_purified_walls_2" Format="rgba16" Width="32" Height="32" Offset="0x7920" />
+        <Texture Name="gWoodfallSceneryFloorBackgroundTex" OutName="woodfall_scenery_floor_background" Format="rgba16" Width="32" Height="32" Offset="0x8120" />
+        <Texture Name="gWoodfallSceneryFloorForegroundTex" OutName="woodfall_scenery_floor_foreground" Format="rgba16" Width="32" Height="32" Offset="0x8920" />
+        <Texture Name="gWoodfallSceneryPurifiedWaterTex" OutName="woodfall_scenery_purified_water" Format="rgba16" Width="32" Height="32" Offset="0x9120" />
+
+        <!-- Assets for the poison water whose vertices are dynamically adjusted when Woodfall Temple is raised. -->
+        <DList Name="gWoodfallSceneryDynamicPoisonWaterEmptyDL" Offset="0x9920" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gWoodfallSceneryDynamicPoisonWaterDL" Offset="0x9928" />
+        <TextureAnimation Name="gWoodfallSceneryDynamicPoisonWaterTexAnim" Offset="0x9D70" />
+
+        <!-- When walking or swimming in poisoned Woodfall, this collision is responsible for damaging the player. -->
+        <Collision Name="gWoodfallSceneryPoisonWaterDamageCol" Offset="0x9E4C" />
+        
+        <!-- Assets for the walls of Woodfall when the swamp is still poisoned. -->
+        <DList Name="gWoodfallSceneryPoisonWallsEmptyDL" Offset="0xA390" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gWoodfallSceneryPoisonWallsDL" Offset="0xA398" /> <!-- Original name is "z2_21_DOKUkabe_model" ("doku" = "poison", "kabe" = "wall") -->
+        <TextureAnimation Name="gWoodfallSceneryPoisonWallsTexAnim" Offset="0xA5C0" />
+
+        <!-- Assets for the static poison water in Woodfall. -->
+        <DList Name="gWoodfallSceneryPoisonWaterEmptyDL" Offset="0xA8F0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gWoodfallSceneryPoisonWaterDL" Offset="0xA8F8" /> <!-- Original name is "z2_21_DOKUwater_model" -->
+        <TextureAnimation Name="gWoodfallSceneryPoisonWaterTexAnim" Offset="0xAA50" />
+
+        <!-- Assets for the walls of Woodfall when the swamp is purified. -->
+        <DList Name="gWoodfallSceneryPurifiedWallsEmptyDL" Offset="0xAF90" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gWoodfallSceneryPurifiedWallsDL" Offset="0xAF98" /> <!-- Original name is "z2_21_kabe_model" -->
+        <TextureAnimation Name="gWoodfallSceneryPurifiedWallsTexAnim" Offset="0xB1A0" />
+
+        <!-- DisplayLists for Woodfall Temple. -->
+        <DList Name="gWoodfallSceneryTempleEntrancesDL" Offset="0xDE50" />
+        <DList Name="gWoodfallSceneryTempleDL" Offset="0xDF18" /> <!-- Original name is "z2_21_toride_model" ("fort, fortress") -->
+
+        <!-- Assets for the water the flows over Woodfall Temple during the cutscene where it rises from the water. -->
+        <DList Name="gWoodfallSceneryWaterFlowingOverTempleDL" Offset="0xF3C0" /> <!-- Original name is "z2_21_toride2_modelT" -->
+        <DList Name="gWoodfallSceneryWaterFlowingOverTempleEmptyDL" Offset="0xF758" /> <!-- Probably was the opaque component for the above DL -->
+        <TextureAnimation Name="gWoodfallSceneryWaterFlowingOverTempleTexAnim" Offset="0xF768" />
+
+        <!-- Assets for the ramp and platform that appear next to Woodfall Temple when the swamp is purified. -->
+        <DList Name="gWoodfallSceneryTempleRampAndPlatformEmptyDL" Offset="0xFAE0" /> <!-- Probably was the transparent component for the below DL -->
+        <DList Name="gWoodfallSceneryTempleRampAndPlatformDL" Offset="0xFAE8" /> <!-- Original name is "z2_21_toride3_model" -->
+        <Collision Name="gWoodfallSceneryTempleRampAndPlatformCol" Offset="0xFE5C" />
+
+        <!-- The collision for Woodfall Temple and an empty texture animation that was seemingly intended to be used with the temple. -->
+        <TextureAnimation Name="gWoodfallSceneryTempleTexAnim" Offset="0xFE90" />
+        <Collision Name="gWoodfallSceneryTempleCol" Offset="0x10C3C" />
+
+        <!-- Assets for the purified water in Woodfall, as well as the floor visible beneath the water. -->
+        <DList Name="gWoodfallSceneryPurifiedWaterDL" Offset="0x10EF0" /> <!-- Original name is "z2_21_water_modelT" -->
+        <DList Name="gWoodfallSceneryFloorDL" Offset="0x10FD8" /> <!-- Original name is "z2_21_water_model" -->
+        <TextureAnimation Name="gWoodfallSceneryPurifiedWaterTexAnim" Offset="0x110B8" />
+    </File>
+</Root>

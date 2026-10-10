@@ -1,0 +1,21 @@
+﻿<Root>
+    <!-- Object for the mannequin inside Anju's room which holds her wedding dress --> 
+    <File Name="object_drs" Segment="6">
+        <Animation Name="gWeddingDressMannequinIdleAnim" Offset="0x1C" /> <!-- Original name is "drs_kihon" -->
+        <DList Name="gWeddingDressMannequinDL" Offset="0x3120" />
+        <DList Name="gWeddingDressMannequinPatternDL" Offset="0x3EA8" />
+        <DList Name="gWeddingDressMannequinMaskDL" Offset="0x3F80" />
+        <Texture Name="gWeddingDressMannequinWoodTex" OutName="wood" Format="rgba16" Width="16" Height="16" Offset="0x4008" />
+        <Texture Name="gWeddingDressMannequinWoodCornerTex" OutName="wood_corner" Format="rgba16" Width="16" Height="16" Offset="0x4208" />
+        <Texture Name="gWeddingDressMannequinShoulderGradientTex" OutName="drs_shoulder_gradient" Format="i8" Width="8" Height="8" Offset="0x4408" />
+        <Texture Name="gWeddingDressMannequinPatternTex" OutName="pattern" Format="i8" Width="32" Height="32" Offset="0x4448" />
+        <Texture Name="gWeddingDressMannequinVineTex" OutName="vine" Format="rgba16" Width="32" Height="16" Offset="0x4848" />
+        <Texture Name="gWeddingDressMannequinFlowerTex" OutName="flower" Format="rgba16" Width="16" Height="16" Offset="0x4C48" />
+        <Texture Name="gWeddingDressMannequinFabricHighlightsTex" OutName="fabric_highlight" Format="i8" Width="32" Height="64" Offset="0x4E48" />
+        <Texture Name="gWeddingDressMannequinFabricSheerTex" OutName="fabric_sheer" Format="i8" Width="32" Height="32" Offset="0x5648" />
+        <Limb Name="gWeddingDressMannequinLimb" Type="Standard" EnumName="WEDDING_DRESS_MANNEQUIN_LIMB" Offset="0x5A48" />
+        <Limb Name="gWeddingDressMannequinMaskLimb" Type="Standard" EnumName="WEDDING_DRESS_MANNEQUIN_LIMB_MASK" Offset="0x5A54" />
+        <Limb Name="gWeddingDressMannequinPatternLimb" Type="Standard" EnumName="WEDDING_DRESS_MANNEQUIN_LIMB_PATTERN" Offset="0x5A60" />
+        <Skeleton Name="gWeddingDressMannequinSkel" Type="Flex" LimbType="Standard" LimbNone="WEDDING_DRESS_MANNEQUIN_LIMB_NONE" LimbMax="WEDDING_DRESS_MANNEQUIN_LIMB_MAX" EnumName="WeddingDressMannequinLimb" Offset="0x5A78" />
+    </File>
+</Root>

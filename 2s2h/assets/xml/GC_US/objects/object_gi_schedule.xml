@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Get Item Draw: Bomber's Notebook -->
+    <File Name="object_gi_schedule" Segment="6">
+
+        <!-- Bomber's Notebook Display Lists -->
+        <DList Name="gGiBombersNotebookDL" Offset="0x6C0" />
+        <DList Name="gGiBombersNotebookEmptyDL" Offset="0xB78" />
+
+        <!-- Bomber's Notebook Textures -->
+        <Texture Name="gGiBombersNotebookPagesTex" OutName="gi_bombers_notebook_pages" Format="i4" Width="16" Height="8" Offset="0xB80" />
+        <Texture Name="gGiBombersNotebookCoverBorderTex" OutName="gi_bombers_notebook_cover_border" Format="i4" Width="64" Height="32" Offset="0xBC0" />
+        <Texture Name="gGiBombersNotebookCoverTex" OutName="gi_bombers_notebook_cover" Format="i8" Width="32" Height="32" Offset="0xFC0" />
+        <Texture Name="gGiBombersNotebookLabelTex" OutName="gi_bombers_notebook_label" Format="i4" Width="32" Height="64" Offset="0x13C0" />
+        <Texture Name="gGiBombersNotebookBindingsTex" OutName="gi_bombers_notebook_bindings" Format="i4" Width="16" Height="32" Offset="0x17C0" />
+    </File>
+</Root>

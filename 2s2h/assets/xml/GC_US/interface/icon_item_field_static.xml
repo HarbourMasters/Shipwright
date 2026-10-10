@@ -1,0 +1,40 @@
+<Root>
+    <!-- Assets for the world map -->
+    <File Name="icon_item_field_static" Segment="12">
+        <!-- World map itself -->
+        <Texture Name="gWorldMapImageTex" OutName="world_map_image" Format="ci8" Width="216" Height="128" Offset="0x0" TlutOffset="0x6C00"/>
+        <Texture Name="gWorldMapImageTLUT" OutName="world_map_image_tlut" Format="rgba16" Width="16" Height="16" Offset="0x6C00"/>
+
+        <!-- Identical To OoT -->
+        <Texture Name="gWorldMapDotTex" OutName="world_map_dot" Format="ia8" Width="8" Height="8" Offset="0x6E00"/>
+        <Texture Name="gWorldMapAreaBox1Tex" OutName="world_map_area_box_1" Format="ia4" Width="32" Height="19" Offset="0x6E40"/>
+        <Texture Name="gWorldMapAreaBox2Tex" OutName="world_map_area_box_2" Format="ia4" Width="48" Height="38" Offset="0x6F70"/>
+        <Texture Name="gWorldMapAreaBox3Tex" OutName="world_map_area_box_3" Format="ia4" Width="32" Height="17" Offset="0x7300"/>
+        <Texture Name="gWorldMapAreaBox4Tex" OutName="world_map_area_box_4" Format="ia4" Width="32" Height="13" Offset="0x7410"/>
+        <Texture Name="gWorldMapAreaBox5Tex" OutName="world_map_area_box_5" Format="ia4" Width="32" Height="26" Offset="0x74E0"/>
+        <Texture Name="gWorldMapAreaBox6Tex" OutName="world_map_area_box_6" Format="ia4" Width="48" Height="19" Offset="0x7680"/>
+        <Texture Name="gWorldMapAreaBox7Tex" OutName="world_map_area_box_7" Format="ia4" Width="96" Height="59" Offset="0x7848"/>
+        <Texture Name="gWorldMapAreaBox8Tex" OutName="world_map_area_box_8" Format="ia4" Width="16" Height="16" Offset="0x8358"/>
+        <Texture Name="gWorldMapArrowTex" OutName="world_map_arrow" Format="ia8" Width="8" Height="8" Offset="0x83D8"/>
+
+        <!-- Cloud cover based on tingle maps -->
+        <Texture Name="gWorldMapClockTownCloud1Tex" OutName="world_map_clock_town_cloud_1" Format="ia8" Width="80" Height="40" Offset="0x8418"/>
+        <Texture Name="gWorldMapClockTownCloud2Tex" OutName="world_map_clock_town_cloud_2" Format="ia8" Width="64" Height="31" Offset="0x9098"/>
+        <Texture Name="gWorldMapRomaniRanchCloudTex" OutName="world_map_romani_ranch_cloud" Format="ia8" Width="48" Height="32" Offset="0x9858"/>
+        <Texture Name="gWorldMapGreatBayCloud1Tex" OutName="world_map_great_bay_cloud_1" Format="ia8" Width="64" Height="64" Offset="0x9E58"/>
+        <Texture Name="gWorldMapGreatBayCloud2Tex" OutName="world_map_great_bay_cloud_2" Format="ia8" Width="64" Height="64" Offset="0xAE58"/>
+        <Texture Name="gWorldMapGreatBayCloud3Tex" OutName="world_map_great_bay_cloud_3" Format="ia8" Width="64" Height="64" Offset="0xBE58"/>
+        <Texture Name="gWorldMapGreatBayCloud4Tex" OutName="world_map_great_bay_cloud_4" Format="ia8" Width="64" Height="64" Offset="0xCE58"/>
+        <Texture Name="gWorldMapSnowheadCloud1Tex" OutName="world_map_snowhead_cloud_1" Format="ia8" Width="64" Height="52" Offset="0xDE58"/>
+        <Texture Name="gWorldMapSnowheadCloud2Tex" OutName="world_map_snowhead_cloud_2" Format="ia8" Width="112" Height="35" Offset="0xEB58"/>
+        <Texture Name="gWorldMapSnowheadCloud3Tex" OutName="world_map_snowhead_cloud_3" Format="ia8" Width="112" Height="35" Offset="0xFAA8"/>
+        <Texture Name="gWorldMapStoneTowerCloud1Tex" OutName="world_map_stone_tower_cloud_1" Format="ia8" Width="48" Height="82" Offset="0x109F8"/>
+        <Texture Name="gWorldMapStoneTowerCloud2Tex" OutName="world_map_stone_tower_cloud_2" Format="ia8" Width="64" Height="61" Offset="0x11958"/>
+        <Texture Name="gWorldMapWoodfallCloud1Tex" OutName="world_map_woodfall_cloud_1" Format="ia8" Width="64" Height="53" Offset="0x12898"/>
+        <Texture Name="gWorldMapWoodfallCloud2Tex" OutName="world_map_woodfall_cloud_2" Format="ia8" Width="64" Height="53" Offset="0x135D8"/>
+        <Texture Name="gWorldMapWoodfallCloud3Tex" OutName="world_map_woodfall_cloud_3" Format="ia8" Width="16" Height="53" Offset="0x14318"/>
+
+        <!-- Face of an owl to indicate warp points -->
+        <Texture Name="gWorldMapOwlFaceTex" OutName="world_map_owl_face" Format="rgba32" Width="24" Height="12" Offset="0x14668"/>
+    </File>
+</Root>

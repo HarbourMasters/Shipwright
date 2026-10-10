@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_mask_zacho" Segment="10">
+        <DList Name="object_mask_zacho_DL_000700" Offset="0x700" />
+        <Texture Name="object_mask_zacho_TLUT_000BC8" OutName="tlut_000BC8" Format="rgba16" Width="16" Height="16" Offset="0xBC8" />
+        <Texture Name="object_mask_zacho_Tex_000DC8" OutName="tex_000DC8" Format="rgba16" Width="16" Height="16" Offset="0xDC8" />
+        <Texture Name="object_mask_zacho_Tex_000FC8" OutName="tex_000FC8" Format="ci8" Width="8" Height="8" Offset="0xFC8" />
+        <Texture Name="object_mask_zacho_Tex_001008" OutName="tex_001008" Format="ci8" Width="8" Height="8" Offset="0x1008" />
+        <Texture Name="object_mask_zacho_Tex_001048" OutName="tex_001048" Format="ci8" Width="32" Height="32" Offset="0x1048" />
+        <Texture Name="object_mask_zacho_Tex_001448" OutName="tex_001448" Format="ci8" Width="16" Height="16" Offset="0x1448" />
+        <Texture Name="object_mask_zacho_Tex_001548" OutName="tex_001548" Format="ci8" Width="16" Height="16" Offset="0x1548" />
+        <Texture Name="object_mask_zacho_Tex_001648" OutName="tex_001648" Format="ci8" Width="8" Height="8" Offset="0x1648" />
+    </File>
+</Root>

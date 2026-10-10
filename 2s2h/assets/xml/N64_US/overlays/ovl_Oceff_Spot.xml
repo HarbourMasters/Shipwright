@@ -1,0 +1,7 @@
+<Root>
+    <File Name="ovl_Oceff_Spot" BaseAddress="0x80972680" RangeStart="0x720" RangeEnd="0xDF8">
+        <Texture Name="sSunSongEffectTex" OutName="sun_song_effect" Format="i8" Width="32" Height="32" Offset="0x720"/>
+        <DList Name="sSunSongEffectCylinderMaterialDL" Offset="0xCD0"/>
+        <DList Name="sSunSongEffectCylinderModelDL" Offset="0xD68"/> <!-- Original name might be "efc_ocarina_1_modelT" -->
+    </File>
+</Root>

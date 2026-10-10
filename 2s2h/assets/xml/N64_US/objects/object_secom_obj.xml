@@ -1,0 +1,15 @@
+﻿<Root>
+    <File Name="object_secom_obj" Segment="6">
+        <DList Name="object_secom_obj_DL_000080" Offset="0x80" /> <!-- Original name is "z2_secom_dor_model" -->
+        <Collision Name="object_secom_obj_Colheader_0001C0" Offset="0x1C0" /> <!-- Original name is "z2_secom_dor_bgdatainfo" -->
+        <Texture Name="object_secom_obj_Tex_0001F0" OutName="tex_0001F0" Format="rgba16" Width="32" Height="64" Offset="0x1F0" />
+        <DList Name="object_secom_obj_DL_001230" Offset="0x1230" /> <!-- Original name is "z2_secom_huta_model" -->
+        <DList Name="object_secom_obj_DL_001300" Offset="0x1300" /> <!-- Original name is "z2_secom_huta2_model" -->
+        <Texture Name="object_secom_obj_Tex_001390" OutName="tex_001390" Format="rgba16" Width="15" Height="32" Offset="0x1390" />
+        <Texture Name="object_secom_obj_Tex_001750" OutName="tex_001750" Format="rgba16" Width="16" Height="16" Offset="0x1750" />
+        <DList Name="object_secom_obj_DL_001A50" Offset="0x1A50" />
+        <DList Name="object_secom_obj_DL_001A58" Offset="0x1A58" /> <!-- Original name is "m2_TOGEblockSECOM_model" -->
+        <Texture Name="object_secom_obj_Tex_001B08" OutName="tex_001B08" Format="rgba16" Width="32" Height="64" Offset="0x1B08" />
+        <Collision Name="object_secom_obj_Colheader_002CB8" Offset="0x2CB8" /> <!-- Original name is "pzlblock_secom_bgdatainfo" -->
+    </File>
+</Root>

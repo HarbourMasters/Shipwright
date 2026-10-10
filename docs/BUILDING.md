@@ -1,4 +1,24 @@
-# Building Ship of Harkinian
+# Building Ship of Harkinian and 2 Ship 2 Harkinian
+
+This repo builds two games: Ship of Harkinian (SoH, Ocarina of Time) in `soh/` and 2 Ship 2 Harkinian (2ship, Majora's Mask) in `2s2h/`.
+Both are built by default. To build only one, turn the other off when you run the first cmake command:
+
+| cmake option | builds |
+|---|---|
+| (none) | both games |
+| `-DBUILD_2SHIP=OFF` | SoH only |
+| `-DBUILD_SOH=OFF` | 2ship only |
+
+Each game has its own asset file. A normal build makes it, or you can build just that target:
+
+| game | target | file it makes |
+|---|---|---|
+| SoH | `GenerateSohOtr` | `soh.o2r` |
+| 2ship | `Generate2ShipOtr` | `2ship.o2r` |
+
+`cpack` packages one game at a time. It picks SoH when SoH is built, otherwise 2ship. Add `-DSHIP_PACKAGE_GAME=2ship` (or `soh`) to the cmake command to choose.
+
+The Switch and Wii U steps below build SoH only.
 
 ## Windows
 
@@ -20,9 +40,9 @@ It is recommended that you install Python and Git standalone, the install proces
 
 1. Clone the Ship of Harkinian repository
 
-_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship and torch submodules!_
+_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship, torch, ZAPDTR and OTRExporter submodules!_
 
-2. After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r files.
+2. After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r (SoH) and mm.o2r (2ship) files.
 
 _Note: Instructions assume using powershell_
 ```powershell
@@ -41,7 +61,7 @@ cd Shipwright
 # Add `--config Release` if you're packaging
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64
 
-# Now you can run the executable in .\build\x64 or run in Visual Studio
+# Now you can run the executables in .\build\x64\soh and .\build\x64\2s2h or run in Visual Studio
 ```
 
 ### Developing SoH
@@ -177,7 +197,7 @@ cmake --build build-cmake --target GenerateSohOtr
 # Add `--config Release` if you're packaging
 cmake --build build-cmake
 
-# Now you can run the executable in ./build-cmake/soh/soh.elf
+# Now you can run ./build-cmake/soh/soh.elf (SoH) or ./build-cmake/2s2h/2s2h.elf (2ship)
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
@@ -265,7 +285,8 @@ cmake --build build-cmake --target GenerateSohOtr
 cmake --build build-cmake
 
 # Now you can run the executable file:
-./build-cmake/soh/soh-macos
+./build-cmake/soh/soh-macos    # SoH
+./build-cmake/2s2h/2s2h-macos  # 2ship
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
@@ -304,11 +325,11 @@ cmake --build build-cmake --target ExtractAssetHeaders
 ```bash
 cd Shipwright
 # Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja
+cmake -H. -Bbuild-cmake -GNinja -DBUILD_2SHIP=OFF
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Switch
-cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DBUILD_2SHIP=OFF
 # Build project and generate nro
 cmake --build build-switch --target soh_nro
 
@@ -325,11 +346,11 @@ cmake --build build-switch --target soh_nro
 ```bash
 cd Shipwright
 # Setup cmake project for your host machine
-cmake -H. -Bbuild-cmake -GNinja
+cmake -H. -Bbuild-cmake -GNinja -DBUILD_2SHIP=OFF
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Wii U
-cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DBUILD_2SHIP=OFF # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
 cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 
@@ -338,7 +359,7 @@ cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 ```
 
 # Compatible Roms
-See [`supportedHashes.json`](supportedHashes.json)
+SoH: see [`supportedHashes.json`](supportedHashes.json). 2ship: see [`2s2h/docs/supportedHashes.json`](../2s2h/docs/supportedHashes.json)
 
 ## Getting CI to work on your fork
 

@@ -1,0 +1,10 @@
+<Root>
+    <File Name="Z2_13HUBUKINOMITI" Segment="2" Game="MM">
+        <Scene Name="Z2_13HUBUKINOMITI" Offset="0x0"/>
+    </File>
+    <File Name="Z2_13HUBUKINOMITI_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_13HUBUKINOMITI_room_00" Offset="0x0"/>
+        <DList Name="Z2_13HUBUKINOMITI_room_00DL_004510" Offset="0x4510"/>
+        <DList Name="Z2_13HUBUKINOMITI_room_00DL_0044C0" Offset="0x44C0"/>
+    </File>
+</Root>

@@ -1,0 +1,101 @@
+﻿<Root>
+    <!-- Assets for Cremia -->
+    <File Name="object_ma2" Segment="6">
+        <!-- Cremia Animations -->
+        <Animation Name="gCremiaSpreadArmsLoopAnim" Offset="0xCC0" /> <!-- Original name is "kl_aogu" ("to look up") -->
+        <Animation Name="gCremiaHugStartAnim" Offset="0x1FD0" /> <!-- Original name is "kl_dakisime" ("to hug someone close") -->
+        <Animation Name="gCremiaHugLoopAnim" Offset="0x30B4" /> <!-- Original name is "kl_dakisime_loop" -->
+        <Animation Name="gCremiaSittingLookDownAnim" Offset="0x3D54" /> <!-- Original name is "kl_gakkurisuwari" ("heartbroken" + "sitting") -->
+        <Animation Name="gCremiaClapAnim" Offset="0x4370" /> <!-- Original name is "kl_hakusyu_loop" ("applause") -->
+        <Animation Name="gCremiaThinkAnim" Offset="0x5314" /> <!-- Original name is "kl_kangaeru" ("thinking/contemplating") -->
+
+        <!-- Cremia's Wooden Box DisplayList and Textures. She sits on it when petting the cows in the barn. -->
+        <DList Name="gCremiaWoodenBoxDL" Offset="0x5430" />
+        <Texture Name="gCremiaWoodenBoxTex" OutName="cremia_wooden_box" Format="rgba16" Width="32" Height="64" Offset="0x54E0" />
+
+        <!-- Cremia Animations -->
+        <Animation Name="gCremiaSittingAnim" Offset="0x70EC" /> <!-- Original name is "kl_suwari" ("sitting") -->
+        <Animation Name="gCremiaSittingPetCowAnim" Offset="0x7E28" /> <!-- Original name is "kl_usinades" ("cow" + "stroke" + first letter of "sitting"?) -->
+        <Animation Name="gCremiaPetCowAnim" Offset="0x93E8" /> <!-- Original name is "kl_usinadet" -->
+        <Animation Name="gCremiaIdleAnim" Offset="0xA174" /> <!-- Original name is "kl_wait" -->
+        <Animation Name="gCremiaSpreadArmsStartAnim" Offset="0xAF7C" /> <!-- Original name is "kl_wait2aogu" -->
+
+        <!-- Cremia Limb DisplayLists -->
+        <DList Name="gCremiaDress1DL" Offset="0xE170" />
+        <DList Name="gCremiaDress2DL" Offset="0xE370" />
+        <DList Name="gCremiaDress3DL" Offset="0xE4E0" />
+        <DList Name="gCremiaDress4DL" Offset="0xE6E8" />
+        <DList Name="gCremiaPelvisDL" Offset="0xE7F0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gCremiaRightThighDL" Offset="0xE8B0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gCremiaRightShinDL" Offset="0xE940" />
+        <DList Name="gCremiaRightFootDL" Offset="0xEA20" />
+        <DList Name="gCremiaLeftThighDL" Offset="0xEB30" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gCremiaLeftShinDL" Offset="0xEBC0" />
+        <DList Name="gCremiaLeftFootDL" Offset="0xECA0" />
+        <DList Name="gCremiaTorsoDL" Offset="0xEDB0" />
+        <DList Name="gCremiaHeadDL" Offset="0xF108" />
+        <DList Name="gCremiaHairEndDL" Offset="0xF5A0" />
+        <DList Name="gCremiaRightUpperArmDL" Offset="0xF6E8" />
+        <DList Name="gCremiaRightForearmDL" Offset="0xF8F8" />
+        <DList Name="gCremiaRightHandDL" Offset="0xF9E0" />
+        <DList Name="gCremiaLeftUpperArmDL" Offset="0xFBA8" />
+        <DList Name="gCremiaLeftForearmDL" Offset="0xFDB0" />
+        <DList Name="gCremiaLeftHandDL" Offset="0xFE98" />
+
+        <!-- Cremia Textures -->
+        <Texture Name="gCremiaTLUT" OutName="cremia_tlut" Format="rgba16" Width="16" Height="16" Offset="0x10018" />
+        <Texture Name="gCremiaSkinArmsTex" OutName="cremia_skin_arms" Format="rgba16" Width="8" Height="8" Offset="0x10218" />
+        <Texture Name="gCremiaSkinHeadTex" OutName="cremia_skin_head" Format="rgba16" Width="8" Height="8" Offset="0x10298" />
+        <Texture Name="gCremiaBootTex" OutName="cremia_boot" Format="ci8" Width="64" Height="16" Offset="0x10318" />
+        <Texture Name="gCremiaEarTex" OutName="cremia_ear" Format="rgba16" Width="16" Height="16" Offset="0x10718" />
+        <Texture Name="gCremiaHairTex" OutName="cremia_hair" Format="ci8" Width="16" Height="16" Offset="0x10918" />
+        <Texture Name="gCremiaShawlTex" OutName="cremia_shawl" Format="ci8" Width="8" Height="8" Offset="0x10A18" />
+        <Texture Name="gCremiaBroochTex" OutName="cremia_brooch" Format="rgba16" Width="16" Height="32" Offset="0x10A58" />
+        <Texture Name="gCremiaShirtTex" OutName="cremia_shirt" Format="ci8" Width="16" Height="16" Offset="0x10E58" />
+        <Texture Name="gCremiaSleevesTex" OutName="cremia_sleeves" Format="ci8" Width="8" Height="16" Offset="0x10F58" />
+        <Texture Name="gCremiaBeltTex" OutName="cremia_belt" Format="ci8" Width="32" Height="16" Offset="0x10FD8" />
+        <Texture Name="gCremiaDressPatternTex" OutName="cremia_dress_pattern" Format="ci8" Width="16" Height="32" Offset="0x111D8" />
+        <Texture Name="gCremiaDressTex" OutName="cremia_dress" Format="ci8" Width="16" Height="16" Offset="0x113D8" />
+        <Texture Name="gCremiaApronTex" OutName="cremia_apron" Format="rgba16" Width="16" Height="32" Offset="0x114D8" />
+        <Texture Name="gCremiaHandTex" OutName="cremia_hand" Format="rgba16" Width="16" Height="16" Offset="0x118D8" />
+        <Texture Name="gCremiaEyeOpenTex" OutName="cremia_eye_open" Format="rgba16" Width="32" Height="32" Offset="0x11AD8" />
+        <Texture Name="gCremiaEyeHalfTex" OutName="cremia_eye_half" Format="rgba16" Width="32" Height="32" Offset="0x122D8" />
+        <Texture Name="gCremiaEyeClosedTex" OutName="cremia_eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x12AD8" />
+        <Texture Name="gCremiaEyeHappyTex" OutName="cremia_eye_happy" Format="rgba16" Width="32" Height="32" Offset="0x132D8" />
+        <Texture Name="gCremiaEyeAngryTex" OutName="cremia_eye_angry" Format="rgba16" Width="32" Height="32" Offset="0x13AD8" />
+        <Texture Name="gCremiaEyeSadTex" OutName="cremia_eye_sad" Format="rgba16" Width="32" Height="32" Offset="0x142D8" />
+        <Texture Name="gCremiaMouthNormalTex" OutName="cremia_mouth_normal" Format="rgba16" Width="32" Height="16" Offset="0x14AD8" />
+        <Texture Name="gCremiaMouthSlightSmileTex" OutName="cremia_mouth_slight_smile" Format="rgba16" Width="32" Height="16" Offset="0x14ED8" />
+        <Texture Name="gCremiaMouthFrownTex" OutName="cremia_mouth_frown" Format="rgba16" Width="32" Height="16" Offset="0x152D8" />
+        <Texture Name="gCremiaMouthHangingOpenTex" OutName="cremia_mouth_hanging_open" Format="rgba16" Width="32" Height="16" Offset="0x156D8" />
+        
+        <!-- Cremia Limbs -->
+        <Limb Name="gCremiaRootLimb" Type="Standard" EnumName="CREMIA_LIMB_ROOT" Offset="0x15AD8" />
+        <Limb Name="gCremiaTorsoLimb" Type="Standard" EnumName="CREMIA_LIMB_TORSO" Offset="0x15AE4" />
+        <Limb Name="gCremiaLeftUpperArmLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_UPPER_ARM" Offset="0x15AF0" />
+        <Limb Name="gCremiaLeftForearmLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_FOREARM" Offset="0x15AFC" />
+        <Limb Name="gCremiaLeftHandLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_HAND" Offset="0x15B08" />
+        <Limb Name="gCremiaRightUpperArmLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_UPPER_ARM" Offset="0x15B14" />
+        <Limb Name="gCremiaRightForearmLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_FOREARM" Offset="0x15B20" />
+        <Limb Name="gCremiaRightHandLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_HAND" Offset="0x15B2C" />
+        <Limb Name="gCremiaHeadLimb" Type="Standard" EnumName="CREMIA_LIMB_HEAD" Offset="0x15B38" />
+        <Limb Name="gCremiaHairEndLimb" Type="Standard" EnumName="CREMIA_LIMB_HAIR_END" Offset="0x15B44" />
+        <Limb Name="gCremiaPelvisLimb" Type="Standard" EnumName="CREMIA_LIMB_PELVIS" Offset="0x15B50" />
+        <Limb Name="gCremiaLeftThighLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_THIGH" Offset="0x15B5C" />
+        <Limb Name="gCremiaLeftShinLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_SHIN" Offset="0x15B68" />
+        <Limb Name="gCremiaLeftFootLimb" Type="Standard" EnumName="CREMIA_LIMB_LEFT_FOOT" Offset="0x15B74" />
+        <Limb Name="gCremiaRightThighLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_THIGH" Offset="0x15B80" />
+        <Limb Name="gCremiaRightShinLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_SHIN" Offset="0x15B8C" />
+        <Limb Name="gCremiaRightFootLimb" Type="Standard" EnumName="CREMIA_LIMB_RIGHT_FOOT" Offset="0x15B98" />
+        <Limb Name="gCremiaDress1Limb" Type="Standard" EnumName="CREMIA_LIMB_DRESS_1" Offset="0x15BA4" />
+        <Limb Name="gCremiaDress2Limb" Type="Standard" EnumName="CREMIA_LIMB_DRESS_2" Offset="0x15BB0" />
+        <Limb Name="gCremiaDress3Limb" Type="Standard" EnumName="CREMIA_LIMB_DRESS_3" Offset="0x15BBC" />
+        <Limb Name="gCremiaDress4Limb" Type="Standard" EnumName="CREMIA_LIMB_DRESS_4" Offset="0x15BC8" />
+        
+        <!-- Cremia Skeleton -->
+        <Skeleton Name="gCremiaSkel" Type="Flex" LimbType="Standard" LimbNone="CREMIA_LIMB_NONE" LimbMax="CREMIA_LIMB_MAX" EnumName="CremiaLimb" Offset="0x15C28" />
+
+        <!-- Cremia Animation -->
+        <Animation Name="gCremiaWalkAnim" Offset="0x16720" /> <!-- Original name is "kl_walk" -->
+    </File>
+</Root>

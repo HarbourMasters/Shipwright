@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Assets for the rotating platforms/spikes in the Deku Moon Dungeon -->
+    <File Name="object_rotlift" Segment="6">
+        <!-- Rotating Platforms -->
+        <DList Name="gDekuMoonDungeonRotatingPlatformsDL" Offset="0x400" /> <!-- Original name is "i2_last02a1_model" -->
+        <Texture Name="gDekuMoonDungeonRotatingPlatformsWoodBarkTLUT" OutName="deku_moon_dungeon_rotating_platforms_wood_bark_tlut" Format="rgba16" Width="16" Height="16" Offset="0x590" />
+        <Texture Name="gDekuMoonDungeonRotatingPlatformsWoodBarkTex" OutName="deku_moon_dungeon_rotating_platforms_wood_bark" Format="ci8" Width="32" Height="64" Offset="0x790" />
+        <Texture Name="gDekuMoonDungeonRotatingPlatformsWoodTex" OutName="deku_moon_dungeon_rotating_platforms_wood" Format="rgba16" Width="32" Height="64" Offset="0xF90" />
+        <TextureAnimation Name="gDekuMoonDungeonRotatingPlatformsUnusedTexAnim" Offset="0x1F98" />
+        <Collision Name="gDekuMoonDungeonRotatingPlatformsCol" Offset="0x2190" /> <!-- Original name is "i2_last02a1_bgdatainfo" -->
+
+        <!-- Rotating Spikes -->
+        <DList Name="gDekuMoonDungeonRotatingSpikesDL" Offset="0x2CE0" /> <!-- Original name is "i2_last02b1_model" -->
+        <Texture Name="gDekuMoonDungeonRotatingSpikesWoodBarkTLUT" OutName="deku_moon_dungeon_rotating_spikes_wood_bark_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2FF8" />
+        <Texture Name="gDekuMoonDungeonRotatingSpikesWoodBarkTex" OutName="deku_moon_dungeon_rotating_spikes_wood_bark" Format="ci8" Width="32" Height="64" Offset="0x31F8" />
+        <Texture Name="gDekuMoonDungeonRotatingSpikesWoodTex" OutName="deku_moon_dungeon_rotating_spikes_wood" Format="rgba16" Width="32" Height="64" Offset="0x39F8" />
+        <TextureAnimation Name="gDekuMoonDungeonRotatingSpikesUnusedTexAnim" Offset="0x4A08" />
+        <Collision Name="gDekuMoonDungeonRotatingSpikesCol" Offset="0x4DF0" /> <!-- Original name is "i2_last02b1_bgdatainfo" -->
+    </File>
+</Root>

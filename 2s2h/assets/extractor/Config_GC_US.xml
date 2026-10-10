@@ -1,0 +1,8 @@
+<Root>
+    <SymbolMap File="symbols/SymbolMap_MM.txt"/>
+    <ActorList File="symbols/ActorList_MM.txt"/>
+    <ObjectList File="symbols/ObjectList_MM.txt"/>
+    <EnumData File="EnumData.xml"/>
+    <ExternalXMLFolder Path="assets/xml/GC_US/"/>
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="objects/gameplay_keep/"/>
+</Root>

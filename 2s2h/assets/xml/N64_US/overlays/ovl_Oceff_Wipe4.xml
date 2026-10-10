@@ -1,0 +1,12 @@
+<Root>
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+    <File Name="ovl_Oceff_Wipe4" BaseAddress="0x8099D780" RangeStart="0x430" RangeEnd="0xF18">
+        <Texture Name="sScarecrowSongEffectTex" OutName="scarecrow_song_effect" Format="i8" Width="32" Height="64" Offset="0x430"/>
+        <Array Name="sScarecrowSongFrustumVtx" Count="22" Offset="0xC30">
+            <Vtx/>
+        </Array>
+        <DList Name="sScarecrowSongMaterialDL" Offset="0xD90"/>
+        <DList Name="sScarecrowSongUnusedMaterialDL" Offset="0xDF8"/>
+        <DList Name="sScarecrowSongModelDL" Offset="0xE60"/> <!-- Original name might be "efc_ocarina_5_modelT" or "ocarina_kakashi_model" -->
+    </File>
+</Root>

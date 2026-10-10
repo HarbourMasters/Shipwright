@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_mask_goron" Segment="10">
+        <Texture Name="object_mask_goron_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" />
+        <Texture Name="object_mask_goron_Tex_000200" OutName="tex_000200" Format="ci8" Width="32" Height="64" Offset="0x200" />
+        <Texture Name="object_mask_goron_Tex_000A00" OutName="tex_000A00" Format="ci8" Width="8" Height="8" Offset="0xA00" />
+        <Texture Name="object_mask_goron_Tex_000A40" OutName="tex_000A40" Format="ci8" Width="16" Height="16" Offset="0xA40" />
+        <Texture Name="object_mask_goron_Tex_000B40" OutName="tex_000B40" Format="ci8" Width="32" Height="32" Offset="0xB40" />
+        <DList Name="object_mask_goron_DL_0014A0" Offset="0x14A0" />
+    </File>
+</Root>

@@ -1,0 +1,15 @@
+<Root>
+    <File Name="ovl_En_Sth" BaseAddress="0x80B66D30" RangeStart="0x1890" RangeEnd="0x646C">
+        <DList Name="gEnSthHeadDL" Offset="0x34A0"/>
+        <DList Name="gEnSthExtraHairDL" Offset="0x37C0"/>
+
+        <Animation Name="gEnSthSignalAnim" Offset="0x3F50" /> <!-- Original name is "sth_ko_matsu" ("matsu" = "to wait​") -->
+        <Animation Name="gEnSthBendDownAnim" Offset="0x45B4" /> <!-- Original name is "sth_kibunwaru" ("bad mood") -->
+        <Animation Name="gEnSthTalkWithHandUpAnim" Offset="0x4CC0" /> <!-- Original name is "sth_talk2000" -->
+        <Animation Name="gEnSthWaitAnim" Offset="0x533C" /> <!-- Original name is "sth_wait2000" -->
+        <Animation Name="gEnSthLookUpAnim" Offset="0x59B8" /> <!-- Original name is "sth_miageru" ("look up") -->
+        <Animation Name="gEnSthLookAroundAnim" Offset="0x5E40" /> <!-- Original name is "sth_kyorokyoro" (onomatopoeic for "looking around restlessly") -->
+        <Animation Name="gEnSthPleadAnim" Offset="0x6354" /> <!-- Original name is "sth_onegai" ("request; favor (to ask); wish") -->
+        <Animation Name="gEnSthPanicAnim" Offset="0x645C" /> <!-- Original name is "sth_tasukete" ("help!​") -->
+    </File>
+</Root>

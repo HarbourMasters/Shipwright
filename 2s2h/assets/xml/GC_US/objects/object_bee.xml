@@ -1,0 +1,38 @@
+﻿<Root>
+    <!-- Object for Bee -->
+    <File Name="object_bee" Segment="6">
+        <!-- Bee Animations -->
+        <Animation Name="gBeeFlyingAnim" Offset="0x5C" /> <!-- Original name is "bee_fyl" [sic] -->
+
+        <!-- Bee Limb DisplayLists -->
+        <DList Name="gBeeBodyDL" Offset="0x550" />
+        <DList Name="gBeeHeadDL" Offset="0x780" />
+        <DList Name="gBeeAntennaeDL" Offset="0x848" />
+        <DList Name="gBeeRightWingDL" Offset="0x918" />
+        <DList Name="gBeeLeftWingDL" Offset="0x9D0" />
+
+        <!-- Bee Textures -->
+        <Texture Name="gBeeWingTLUT" OutName="bee_wing_tlut" Format="rgba16" Width="4" Height="4" Offset="0xA88" />
+        <Texture Name="gBeeHeadTLUT" OutName="bee_head_tlut" Format="rgba16" Width="4" Height="4" Offset="0xAA8" />
+        <Texture Name="gBeeBodyTLUT" OutName="bee_body_tlut" Format="rgba16" Width="4" Height="4" Offset="0xAC8" />
+        <Texture Name="gBeeAntennaeTLUT" OutName="bee_antennae_tlut" Format="rgba16" Width="4" Height="4" Offset="0xAE8" />
+        <Texture Name="gBeeWingTex" OutName="bee_wing" Format="ci4" Width="32" Height="32" Offset="0xB08" />
+        <Texture Name="gBeeHeadTex" OutName="bee_head" Format="ci4" Width="32" Height="32" Offset="0xD08" />
+        <Texture Name="gBeeBodyTex" OutName="bee_body" Format="ci4" Width="32" Height="32" Offset="0xF08" />
+        <Texture Name="gBeeAntennaeTex" OutName="bee_antennae" Format="ci4" Width="32" Height="32" Offset="0x1108" />
+
+        <!-- Bee Limbs -->
+        <Limb Name="gBeeRootLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_ROOT" Offset="0x1308" />
+        <Limb Name="gBeeWingsRootLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_WINGS_ROOT" Offset="0x1314" />
+        <Limb Name="gBeeLeftWingRootLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_LEFT_WING_ROOT" Offset="0x1320" />
+        <Limb Name="gBeeLeftWingLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_LEFT_WING" Offset="0x132C" />
+        <Limb Name="gBeeRightWingRootLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_RIGHT_WING_ROOT" Offset="0x1338" />
+        <Limb Name="gBeeRightWingLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_RIGHT_WING" Offset="0x1344" />
+        <Limb Name="gBeeBodyLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_BODY" Offset="0x1350" />
+        <Limb Name="gBeeAntennaeLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_ANTENNAE" Offset="0x135C" />
+        <Limb Name="gBeeHeadLimb" Type="Standard" EnumName="OBJECT_BEE_LIMB_HEAD" Offset="0x1368" />
+
+        <!-- Bee Skeleton -->
+        <Skeleton Name="gBeeSkel" Type="Normal" LimbType="Standard" LimbNone="OBJECT_BEE_LIMB_NONE" LimbMax="OBJECT_BEE_LIMB_MAX" EnumName="ObjectBeeLimb" Offset="0x1398" />
+    </File>
+</Root>

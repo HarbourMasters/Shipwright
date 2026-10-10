@@ -1,0 +1,54 @@
+#ifndef Z2_TOUGITES_Z2_TOUGITES_ROOM_00_H
+#define Z2_TOUGITES_Z2_TOUGITES_ROOM_00_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_TOUGITES_room_00DL_000350 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_000350"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_000350[] = dZ2_TOUGITES_room_00DL_000350;
+
+#define dZ2_TOUGITES_room_00DL_000740 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_000740"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_000740[] = dZ2_TOUGITES_room_00DL_000740;
+
+#define dZ2_TOUGITES_room_00DL_003F50 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_003F50"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_003F50[] = dZ2_TOUGITES_room_00DL_003F50;
+
+#define dZ2_TOUGITES_room_00DL_004090 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_004090"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_004090[] = dZ2_TOUGITES_room_00DL_004090;
+
+#define dZ2_TOUGITES_room_00DL_000F00 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_000F00"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_000F00[] = dZ2_TOUGITES_room_00DL_000F00;
+
+#define dZ2_TOUGITES_room_00DL_001840 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_001840"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_001840[] = dZ2_TOUGITES_room_00DL_001840;
+
+#define dZ2_TOUGITES_room_00DL_0041D8 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_0041D8"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_0041D8[] = dZ2_TOUGITES_room_00DL_0041D8;
+
+#define dZ2_TOUGITES_room_00DL_000A48 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_000A48"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_000A48[] = dZ2_TOUGITES_room_00DL_000A48;
+
+#define dZ2_TOUGITES_room_00DL_001C88 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_001C88"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_001C88[] = dZ2_TOUGITES_room_00DL_001C88;
+
+#define dZ2_TOUGITES_room_00DL_002348 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_002348"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_002348[] = dZ2_TOUGITES_room_00DL_002348;
+
+#define dZ2_TOUGITES_room_00DL_0028C8 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_0028C8"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_0028C8[] = dZ2_TOUGITES_room_00DL_0028C8;
+
+#define dZ2_TOUGITES_room_00DL_002BC0 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_002BC0"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_002BC0[] = dZ2_TOUGITES_room_00DL_002BC0;
+
+#define dZ2_TOUGITES_room_00DL_003A78 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_003A78"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_003A78[] = dZ2_TOUGITES_room_00DL_003A78;
+
+#define dZ2_TOUGITES_room_00DL_0044B8 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_0044B8"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_0044B8[] = dZ2_TOUGITES_room_00DL_0044B8;
+
+#define dZ2_TOUGITES_room_00DL_004030 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_004030"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_004030[] = dZ2_TOUGITES_room_00DL_004030;
+
+#define dZ2_TOUGITES_room_00DL_0045A8 "__OTR__scenes/nonmq/Z2_TOUGITES_scene/Z2_TOUGITES_room_00DL_0045A8"
+static const ALIGN_ASSET(2) char Z2_TOUGITES_room_00DL_0045A8[] = dZ2_TOUGITES_room_00DL_0045A8;
+
+#endif // Z2_TOUGITES_Z2_TOUGITES_ROOM_00_H

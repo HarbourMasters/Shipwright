@@ -1,0 +1,20 @@
+﻿<Root>
+    <!-- Get Item Draw: Mask of Scents -->
+    <File Name="object_gi_mask22" Segment="6">
+
+        <!-- Mask of Scents Display Lists -->
+        <DList Name="gGiMaskOfScentsTeethDL" Offset="0x880" />
+        <DList Name="gGiMaskOfScentsFaceDL" Offset="0x918" />
+
+        <!-- Mask of Scents TLUTs -->
+        <Texture Name="gGiMaskOfScentsTLUT" OutName="gi_mask_of_scents_tlut" Format="rgba16" Width="16" Height="16" Offset="0xD58" />
+
+        <!-- Mask of Scents Textures -->
+        <Texture Name="gGiMaskOfScentsSpotTex" OutName="gi_mask_of_scents_spot" Format="ci8" Width="8" Height="8" Offset="0xF58" />
+        <Texture Name="gGiMaskOfScentsEyeShadowTex" OutName="gi_mask_of_scents_eye_shadow" Format="ci8" Width="16" Height="16" Offset="0xF98" />
+        <Texture Name="gGiMaskOfScentsNostrilTex" OutName="gi_mask_of_scents_nostril" Format="ci8" Width="16" Height="32" Offset="0x1098" />
+        <Texture Name="gGiMaskOfScentsMouthTex" OutName="gi_mask_of_scents_mouth" Format="ci8" Width="8" Height="8" Offset="0x1298" />
+        <Texture Name="gGiMaskOfScentsEyeTex" OutName="gi_mask_of_scents_eye" Format="rgba16" Width="16" Height="16" Offset="0x12D8" />
+        <Texture Name="gGiMaskOfScentsToothTex" OutName="gi_mask_of_scents_tooth" Format="i8" Width="16" Height="32" Offset="0x14D8" />
+    </File>
+</Root>

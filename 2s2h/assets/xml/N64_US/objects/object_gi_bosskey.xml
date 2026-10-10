@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Dungeon Boss Key -->
+    <File Name="object_gi_bosskey" Segment="6">
+
+        <!-- Dungeon Boss Key Display Lists -->
+        <DList Name="gGiBossKeyDL" Offset="0xCA0" />
+        <DList Name="gGiBossKeyGemDL" Offset="0xF08" />
+    </File>
+</Root>

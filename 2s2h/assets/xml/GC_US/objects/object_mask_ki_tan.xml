@@ -1,0 +1,8 @@
+﻿<Root>
+    <File Name="object_mask_ki_tan" Segment="10">
+        <DList Name="object_mask_ki_tan_DL_0004A0" Offset="0x4A0" />
+        <Texture Name="object_mask_ki_tan_TLUT_000688" OutName="tlut_000688" Format="rgba16" Width="16" Height="16" Offset="0x688" />
+        <Texture Name="object_mask_ki_tan_Tex_000888" OutName="tex_000888" Format="ci8" Width="32" Height="16" Offset="0x888" />
+        <Texture Name="object_mask_ki_tan_Tex_000A88" OutName="tex_000A88" Format="ci8" Width="8" Height="8" Offset="0xA88" />
+    </File>
+</Root>

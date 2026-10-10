@@ -1,0 +1,13 @@
+﻿<Root>
+    <File Name="object_astr_obj" Segment="6">
+        <Texture Name="object_astr_obj_TLUT_000000" OutName="tlut_000000" Format="rgba16" Width="4" Height="4" Offset="0x0" />
+        <Texture Name="object_astr_obj_Tex_000020" OutName="tex_000020" Format="rgba16" Width="32" Height="32" Offset="0x20" />
+        <Texture Name="object_astr_obj_Tex_000820" OutName="tex_000820" Format="ci4" Width="64" Height="64" Offset="0x820" />
+        <Texture Name="object_astr_obj_Tex_001020" OutName="tex_001020" Format="ia8" Width="64" Height="64" Offset="0x1020" />
+        <DList Name="object_astr_obj_DL_002170" Offset="0x2170" />
+        <DList Name="object_astr_obj_DL_002178" Offset="0x2178" /> <!-- Original name is "z2_tennmondai_hahen_model" ("tennmondai" = "astronomical observatory​", "hahen" = "fragment") -->
+        <DList Name="object_astr_obj_DL_0022E0" Offset="0x22E0" />
+        <DList Name="object_astr_obj_DL_002380" Offset="0x2380" /> <!-- Original name is "z2_tennmondai_kabe_model" ("tennmondai" = "astronomical observatory​", "kabe" = "wall") -->
+        <Collision Name="object_astr_obj_Colheader_002498" Offset="0x2498" /> <!-- Original name is "z2_tennmondai_kabe_bgdatainfo" -->
+    </File>
+</Root>

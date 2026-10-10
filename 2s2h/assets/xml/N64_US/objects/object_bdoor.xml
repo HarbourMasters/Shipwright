@@ -1,0 +1,31 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_dangeon_keep.xml" OutPath="assets/objects/gameplay_dangeon_keep/"/>
+
+    <!-- Assets for Boss Doors -->
+    <File Name="object_bdoor" Segment="6">
+        <!-- Boss Door, Lock, and Chain DisplayLists -->
+        <DList Name="gBossDoorDL" Offset="0xC0" /> <!-- Original name is "bossdoor_model" -->
+        <DList Name="gBossDoorLockDL" Offset="0x400" /> <!-- Original name is "doorkagiboss_model" ("lock") -->
+        <DList Name="gBossDoorChainDL" Offset="0x530" /> <!-- Original name is "doorkusariboss_model" ("chain") -->
+
+        <!-- One of the Boss Door Textures -->
+        <Texture Name="gBossDoorSnowheadTex" OutName="boss_door_snowhead" Format="rgba16" Width="32" Height="64" Offset="0x5C0" />
+
+        <!-- Assets for an unused set of doors -->
+        <DList Name="gBossDoorUnusedDoor1LeftDL" Offset="0x1790" /> <!-- Original name is "i2_L_d1_model" -->
+        <DList Name="gBossDoorUnusedDoor1RightDL" Offset="0x1850" /> <!-- Original name is "i2_L_d1_2_model" -->
+        <Texture Name="gBossDoorUnusedDoor1Tex" OutName="boss_door_unused_door_1" Format="rgba16" Width="32" Height="64" Offset="0x1910" />
+        <DList Name="gBossDoorUnusedDoor2LeftDL" Offset="0x2A50" /> <!-- Original name is "i2_L_d2_model" -->
+        <DList Name="gBossDoorUnusedDoor2RightDL" Offset="0x2AF8" /> <!-- Original name is "i2_L_d2_2_model" -->
+        <Texture Name="gBossDoorUnusedDoor2Tex" OutName="boss_door_unused_door_2" Format="rgba16" Width="32" Height="64" Offset="0x2BA0" />
+
+        <!-- The rest of the Boss Door Textures -->
+        <Texture Name="gBossDoorStoneTowerTex" OutName="boss_door_stone_tower" Format="rgba16" Width="32" Height="64" Offset="0x3BA0" />
+        <Texture Name="gBossDoorGreatBayTex" OutName="boss_door_great_bay" Format="rgba16" Width="32" Height="64" Offset="0x4BA0" />
+        <Texture Name="gBossDoorWoodfallTex" OutName="boss_door_woodfall" Format="rgba16" Width="32" Height="64" Offset="0x5BA0" />
+
+        <!-- A default texture only used if a Boss Door is present outside of the four main dungeons, which is never the case in the final game. -->
+        <Texture Name="gBossDoorDefaultTex" OutName="boss_door_unused" Format="rgba16" Width="32" Height="64" Offset="0x6BA0" />
+    </File>
+</Root>

@@ -1,0 +1,16 @@
+﻿<Root>
+    <!-- Get Item Draw: Zora Mask -->
+    <File Name="object_gi_zoramask" Segment="6">
+
+        <!-- Zora Mask Display Lists -->
+        <DList Name="gGiZoraMaskDL" Offset="0x7D0" />
+        <DList Name="gGiZoraMaskEmptyDL" Offset="0xC10" />
+
+        <!-- Zora Mask Textures -->
+        <Texture Name="gGiZoraMaskNoseTex" OutName="gi_zora_mask_nose" Format="i8" Width="8" Height="8" Offset="0xC18" />
+        <Texture Name="gGiZoraMaskSpots1Tex" OutName="gi_zora_mask_spots_1" Format="i8" Width="16" Height="32" Offset="0xC58" />
+        <Texture Name="gGiZoraMaskEyeTex" OutName="gi_zora_mask_eye" Format="i8" Width="32" Height="32" Offset="0xE58" />
+        <Texture Name="gGiZoraMaskMouthTex" OutName="gi_zora_mask_mouth" Format="i8" Width="32" Height="32" Offset="0x1258" />
+        <Texture Name="gGiZoraMaskSpots2Tex" OutName="gi_zora_mask_spots_2" Format="i4" Width="16" Height="32" Offset="0x1658" />
+    </File>
+</Root>

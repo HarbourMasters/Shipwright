@@ -1,0 +1,15 @@
+﻿<Root>
+    <!-- This is the object for the Postbox Prop -->
+    <File Name="object_pst" Segment="6">
+        <Animation Name="gPostboxIdleAnim" Offset="0x18" /> <!-- Original name might be "pst_model" -->
+        <DList Name="gPostboxFrameDL" Offset="0x4A0" />
+        <DList Name="gPostboxMailSlotDL" Offset="0x638" />
+        <Texture Name="gPostboxWoodRoofTex" OutName="postbox_wood_roof" Format="rgba16" Width="32" Height="32" Offset="0x760" />
+        <Texture Name="gPostboxWoodBodyTex" OutName="postbox_wood_body" Format="rgba16" Width="32" Height="32" Offset="0xF60" />
+        <Texture Name="gPostboxMetalTex" OutName="postbox_metal" Format="rgba16" Width="16" Height="16" Offset="0x1760" />
+        <Texture Name="gPostboxSlotHoleTex" OutName="postbox_slot_hole" Format="i4" Width="32" Height="16" Offset="0x1960" />
+        <Limb Name="gPostboxFrameLimb" Type="Standard" EnumName="POSTBOX_LIMB_FRAME" Offset="0x1A60" />
+        <Limb Name="gPostboxMailSlotLimb" Type="Standard" EnumName="POSTBOX_LIMB_MAIL_SLOT" Offset="0x1A6C" />
+        <Skeleton Name="gPostboxSkel" Type="Flex" LimbType="Standard" LimbNone="POSTBOX_LIMB_NONE" LimbMax="POSTBOX_LIMB_MAX" EnumName="PostboxLimb" Offset="0x1A80" />
+    </File>
+</Root>

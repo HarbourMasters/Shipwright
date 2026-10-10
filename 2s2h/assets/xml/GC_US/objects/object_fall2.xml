@@ -1,0 +1,35 @@
+﻿<Root>
+    <!--
+        Open-mouth version of the moon and the "warp beam" that emerges from the
+        moon's mouth, both used in the cutscene before warping to the moon.
+    -->
+    <File Name="object_fall2" Segment="6">
+        <DList Name="gOpenMouthMoonDL" Offset="0x2970" /> <!-- Original name is "moon_open" -->
+        <Texture Name="gOpenMouthMoonFarSideTLUT" OutName="open_mouth_moon_far_side_tlut" Format="rgba16" Width="4" Height="4" Offset="0x34A8" />
+        <Texture Name="gOpenMouthMoonFaceTLUT" OutName="open_mouth_moon_face_tlut" Format="rgba16" Width="4" Height="4" Offset="0x34C8" />
+        <Texture Name="gOpenMouthMoonEyesTex" OutName="open_mouth_moon_eyes" Format="rgba16" Width="32" Height="32" Offset="0x34E8" />
+        <Texture Name="gOpenMouthMoonFarSideTex" OutName="open_mouth_moon_far_side" Format="ci4" Width="64" Height="64" Offset="0x3CE8" />
+        <Texture Name="gOpenMouthMoonFaceTex" OutName="open_mouth_moon_face" Format="ci4" Width="64" Height="64" Offset="0x44E8" />
+        <Texture Name="gOpenMouthMoonTeethTex" OutName="open_mouth_moon_teeth" Format="rgba16" Width="64" Height="32" Offset="0x4CE8" />
+        
+        <KeyFrameAnimation Name="gFall2FKAnim_5EF4" Skel="0x8898" Offset="0x5EF4"/>
+        <KeyFrameSkel Name="gFall2KFSkel_8898" LimbType="Flex" Offset="0x8898"/>
+
+        <Array Name="object_fall2_Vtx_005F10" Count="239" Offset="0x5F10">
+            <Vtx />
+        </Array>
+        <DList Name="object_fall2_DL_006E00" Offset="0x6E00" />
+        <DList Name="object_fall2_DL_006EF0" Offset="0x6EF0" />
+        <DList Name="object_fall2_DL_006FF8" Offset="0x6FF8" />
+        <DList Name="object_fall2_DL_007100" Offset="0x7100" />
+        <DList Name="object_fall2_DL_007208" Offset="0x7208" />
+        <DList Name="object_fall2_DL_007310" Offset="0x7310" />
+        <DList Name="object_fall2_DL_007418" Offset="0x7418" />
+        <DList Name="object_fall2_DL_007520" Offset="0x7520" />
+        <DList Name="object_fall2_DL_007628" Offset="0x7628" />
+        <DList Name="object_fall2_DL_007730" Offset="0x7730" />
+        <Texture Name="object_fall2_Tex_007838" OutName="tex_007838" Format="i4" Width="64" Height="64" Offset="0x7838" />
+        <Texture Name="object_fall2_Tex_008038" OutName="tex_008038" Format="i4" Width="64" Height="64" Offset="0x8038" />
+        <TextureAnimation Name="object_fall2_Matanimheader_008840" Offset="0x8840" />
+    </File>
+</Root>

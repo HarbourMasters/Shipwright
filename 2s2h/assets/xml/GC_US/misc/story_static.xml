@@ -1,0 +1,8 @@
+<Root>
+    <File Name="story_static" Segment="7">
+        <Texture Name="gStoryMaskFestivalTex" OutName="story_mask_festival" Format="ci8" Width="320" Height="240" TlutOffset="0x25800" Offset="0x0"/>
+        <Texture Name="gStoryGiantsLeavingTex" OutName="story_giants_leaving" Format="ci8" Width="320" Height="240" TlutOffset="0x25A00" Offset="0x12C00"/>
+        <Texture Name="gStoryMaskFestivalTLUT" OutName="story_mask_festival_tlut" Format="rgba16" Width="16" Height="16" Offset="0x25800"/>
+        <Texture Name="gStoryGiantsLeavingTLUT" OutName="story_giants_leaving_tlut" Format="rgba16" Width="16" Height="16" Offset="0x25A00"/>
+    </File>
+</Root>

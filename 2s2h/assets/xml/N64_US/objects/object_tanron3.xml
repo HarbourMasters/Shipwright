@@ -1,0 +1,17 @@
+﻿<Root>
+    <File Name="object_tanron3" Segment="6">
+        <DList Name="object_tanron3_DL_0004E0" Offset="0x4E0" />
+        <DList Name="object_tanron3_DL_000710" Offset="0x710" />
+        <DList Name="object_tanron3_DL_0007D8" Offset="0x7D8" />
+        <DList Name="object_tanron3_DL_0008A8" Offset="0x8A8" />
+        <DList Name="object_tanron3_DL_000960" Offset="0x960" />
+        <Texture Name="object_tanron3_TLUT_000A18" OutName="tlut_000A18" Format="rgba16" Width="4" Height="4" Offset="0xA18" />
+        <Texture Name="object_tanron3_TLUT_000A38" OutName="tlut_000A38" Format="rgba16" Width="4" Height="4" Offset="0xA38" />
+        <Texture Name="object_tanron3_TLUT_000A58" OutName="tlut_000A58" Format="rgba16" Width="4" Height="4" Offset="0xA58" />
+        <Texture Name="object_tanron3_TLUT_000A78" OutName="tlut_000A78" Format="rgba16" Width="4" Height="4" Offset="0xA78" />
+        <Texture Name="object_tanron3_Tex_000A98" OutName="tex_000A98" Format="ci4" Width="32" Height="32" Offset="0xA98" />
+        <Texture Name="object_tanron3_Tex_000C98" OutName="tex_000C98" Format="ci4" Width="32" Height="32" Offset="0xC98" />
+        <Texture Name="object_tanron3_Tex_000E98" OutName="tex_000E98" Format="ci4" Width="32" Height="32" Offset="0xE98" />
+        <Texture Name="object_tanron3_Tex_001098" OutName="tex_001098" Format="ci4" Width="32" Height="32" Offset="0x1098" />
+    </File>
+</Root>

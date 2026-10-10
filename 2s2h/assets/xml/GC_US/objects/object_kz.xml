@@ -1,0 +1,104 @@
+﻿<Root>
+    <File Name="object_kz" Segment="6">
+        <Animation Name="gFighterPirateSlashAnim" Offset="0x3CC" /> <!-- Original name is "kz_attackA" -->
+        <Animation Name="gFighterPirateSpinAttackAnim" Offset="0xF5C" /> <!-- Original name is "kz_attackB" -->
+        <Animation Name="gFighterPirateFlipAnim" Offset="0x1390" /> <!-- Original name is "kz_back_ten" -->
+        <Animation Name="gFighterPirateBlockAnim" Offset="0x1578" /> <!-- Original name is "kz_defense" -->
+        <Animation Name="gFighterPirateThrowFlashAnim" Offset="0x1E9C" /> <!-- Original name is "kz_doron" -->
+        <!-- This is the old version from OOT, back when she would jump to escape instead of talking and flashing to escape -->
+        <Animation Name="gFighterPirateUnusedDefeatAnim" Offset="0x2730" /> <!-- Original name is "kz_down" -->
+        <Animation Name="gFighterPirateDefeatIdleAnim" Offset="0x2BA0" /> <!-- Original name is "kz_downwait" -->
+        <Animation Name="gFighterPirateDefeatAnim" Offset="0x3A3C" /> <!-- Original name is "kz_downwake" -->
+        <!-- This is used in a threatening stance if the player loses the fight, while she talks to you -->
+        <Animation Name="gFighterPirateDemonstrativeSwordSwingAnim" Offset="0x43E4" /> <!-- Original name is "kz_getout" -->
+        <Animation Name="gFighterPirateDamageAnim" Offset="0x4860" /> <!-- Original name is "kz_hit" -->
+        <Animation Name="gFighterPirateUnsheatheAnim" Offset="0x5644" /> <!-- Original name is "kz_kime" -->
+        <Animation Name="gFighterPirateWalkAnim" Offset="0x58B8" /> <!-- Original name is "kz_run" -->
+
+        <Texture Name="gFighterPirate1TLUT" OutName="tlut1" Format="rgba16" Width="16" Height="16" Offset="0x58D0" />
+        <!-- This is the same skin texture as below, but this one is her arms and back -->
+        <Texture Name="gFighterPirateSkin1Tex" OutName="skin1" Format="ci8" Width="8" Height="8" Offset="0x5AD0" TlutOffset="0x58D0" />
+        <Texture Name="gFighterPirateShirtTopRedGradientTex" OutName="shirt_red" Format="ci8" Width="8" Height="8" Offset="0x5B10" />
+        <!-- Gold armor plates on her shin, forearms, belt. Similar texture as Emblem, but slightly darker. -->
+        <Texture Name="gFighterPirateArmor1Tex" OutName="armor" Format="ci8" Width="16" Height="16" Offset="0x5B50" />
+        <Texture Name="gFighterPirateShirtBottomPatternAndVeilTex" OutName="shirt_pattern1" Format="i8" Width="16" Height="16" Offset="0x5C50" />
+        <Texture Name="gFighterPirateBellyButtonTex" OutName="navel" Format="ci8" Width="16" Height="16" Offset="0x5D50" />
+        <Texture Name="gFighterPiratePantsTex" OutName="pants" Format="i8" Width="16" Height="16" Offset="0x5E50" />
+        <!-- This is the texture at the back of her boots and pants belt center.  -->
+        <Texture Name="gFighterPirateZipper1Tex" OutName="zipper1" Format="i8" Width="8" Height="16" Offset="0x5F50" />
+
+        <DList Name="gFighterPirateTorsoDL" Offset="0x7CB0" />
+        <DList Name="gFighterPirateRightUpperArmDL" Offset="0x8130" />
+        <DList Name="gFighterPirateRightForearmDL" Offset="0x8268" />
+        <DList Name="gFighterPirateLeftUpperArmDL" Offset="0x8490" />
+        <DList Name="gFighterPirateLeftForearmDL" Offset="0x85C8" />
+        <DList Name="gFighterPirateWaistDL" Offset="0x87F0" />
+        <DList Name="gFighterPirateRightThighDL" Offset="0x8A10" />
+        <DList Name="gFighterPirateRightShinDL" Offset="0x8B10" />
+        <DList Name="gFighterPirateLeftThighDL" Offset="0x8D80" />
+        <DList Name="gFighterPirateLeftShinDL" Offset="0x8E80" />
+
+        <!-- <Texture Name="object_kz_TLUT_009100" OutName="tlut_009100" Format="rgba16" Width="16" Height="16" Offset="0x9100" /> -->
+        <!-- <Blob Name="object_kz_Blob_009300" Size="0x38" Offset="0x9300" /> -->
+        <Texture Name="gFighterPirateSkin2Tex" OutName="skin2" Format="ci8" Width="8" Height="8" Offset="0x92F8"  TlutOffset="0x9100"/>
+        <Texture Name="gFighterPirateEarTex" OutName="ear" Format="ci8" Width="8" Height="16" Offset="0x9338" />
+        <Texture Name="gFighterPirateEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x93B8" TlutOffset="0x9100" />
+        <Texture Name="gFighterPirateShirtBottomPatternAndVeil2Tex" OutName="shirt_pattern2" Format="i8" Width="16" Height="16" Offset="0x97B8" />
+        <Texture Name="gFighterPirateShoesTex" OutName="shoe_sides" Format="ci8" Width="8" Height="16" Offset="0x98B8" TlutOffset="0x9100"/>
+        <Texture Name="gFighterPirateShoeBottomTex" OutName="shoe_bottom" Format="ci8" Width="8" Height="8" Offset="0x9938" TlutOffset="0x9100" />
+        <Texture Name="gFighterPirateEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x9978" TlutOffset="0x9100" />
+        <!-- This is the same zipper texture above, but used in different places. hair emblem, back of hands  -->
+        <Texture Name="gFighterPirateZipper2Tex" OutName="zipper2" Format="i8" Width="8" Height="16" Offset="0x9D78"/>
+        <Texture Name="gFighterPirateHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x9DF8" TlutOffset="0x9100" />
+        <Texture Name="gFighterPirateFingersTex" OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0x9EF8" TlutOffset="0x9100" />
+        <!-- Similar to Armor above, but slightly brighter and used in different spots: used for sword guard and her forhead emblem  -->
+        <Texture Name="gFighterPirateYellowSwordGuardAndEmblemTex" OutName="emblem" Format="ci8" Width="16" Height="16" Offset="0x9FF8" />
+        <Texture Name="gFighterPirateEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0xA0F8" TlutOffset="0x9100" />
+
+        <DList Name="gFighterPirateLeftFootDL" Offset="0xC318" />
+        <DList Name="gFighterPirateRightFootDL" Offset="0xC4D8" />
+        <DList Name="gFighterPirateLeftHandDL" Offset="0xC698" />
+        <DList Name="gFighterPirateLeftSwordDL" Offset="0xC830" />
+        <DList Name="gFighterPirateRightHandDL" Offset="0xCA08" />
+        <DList Name="gFighterPirateRightSwordDL" Offset="0xCBA0" />
+        <DList Name="gFighterPirateVeilDL" Offset="0xCD78" />
+        <DList Name="gFighterPiratePonytailDL" Offset="0xCE30" />
+        <DList Name="gFighterPirateHeadDL" Offset="0xCF20" />
+
+        <Limb Name="gFighterPirateRootLimb" Type="Standard" EnumName="KAIZOKU_LIMB_ROOT" Offset="0xD6B8" />
+        <Limb Name="gFighterPirateTorsoLimb" Type="Standard" EnumName="KAIZOKU_LIMB_TORSO" Offset="0xD6C4" />
+        <Limb Name="gFighterPirateNeckLimb" Type="Standard" EnumName="KAIZOKU_LIMB_NECK" Offset="0xD6D0" />
+        <Limb Name="gFighterPiratePonytailLimb" Type="Standard" EnumName="KAIZOKU_LIMB_PONYTAIL" Offset="0xD6DC" />
+        <Limb Name="gFighterPirateVeilLimb" Type="Standard" EnumName="KAIZOKU_LIMB_VEIL" Offset="0xD6E8" />
+        <Limb Name="gFighterPirateHeadLimb" Type="Standard" EnumName="KAIZOKU_LIMB_HEAD" Offset="0xD6F4" />
+        <Limb Name="gFighterPirateRightUpperArmLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_UPPER_ARM" Offset="0xD700" />
+        <Limb Name="gFighterPirateRightForearmLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_FOREARM" Offset="0xD70C" />
+        <Limb Name="gFighterPirateRightWristLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_WRIST" Offset="0xD718" />
+        <Limb Name="gFighterPirateRightHandLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_HAND" Offset="0xD724" />
+        <Limb Name="gFighterPirateRightSwordLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_SWORD" Offset="0xD730" />
+        <Limb Name="gFighterPirateLeftUpperArmLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_UPPER_ARM" Offset="0xD73C" />
+        <Limb Name="gFighterPirateLeftForearmLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_FOREARM" Offset="0xD748" />
+        <Limb Name="gFighterPirateLeftWristLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_WRIST" Offset="0xD754" />
+        <Limb Name="gFighterPirateLeftHandLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_HAND" Offset="0xD760" />
+        <Limb Name="gFighterPirateLeftSwordLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_SWORD" Offset="0xD76C" />
+        <Limb Name="gFighterPirateLeftThighLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_THIGH" Offset="0xD778" />
+        <Limb Name="gFighterPirateLeftShinLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_SHIN" Offset="0xD784" />
+        <Limb Name="gFighterPirateLeftFootLimb" Type="Standard" EnumName="KAIZOKU_LIMB_LEFT_FOOT" Offset="0xD790" />
+        <Limb Name="gFighterPirateRightThighLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_THIGH" Offset="0xD79C" />
+        <Limb Name="gFighterPirateRightShinLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_SHIN" Offset="0xD7A8" />
+        <Limb Name="gFighterPirateRightFootLimb" Type="Standard" EnumName="KAIZOKU_LIMB_RIGHT_FOOT" Offset="0xD7B4" />
+        <Limb Name="gFighterPirateWaistLimb" Type="Standard" EnumName="KAIZOKU_LIMB_WAIST" Offset="0xD7C0" />
+
+
+        <Skeleton Name="gFighterPirateSkel" Type="Flex" LimbType="Standard" LimbNone="KAIZOKU_LIMB_NONE" LimbMax="KAIZOKU_LIMB_MAX" EnumName="KaizokuLimb" Offset="0xD828" />
+
+        <Animation Name="gFighterPirateSidestepAnim" Offset="0xDBE4" /> <!-- Original name is "kz_side_walk" -->
+        <!-- This is the old version from OOT, when they would escape at the end of the fight by jumping away -->
+        <Animation Name="gFighterPirateUnusedJumpAnim" Offset="0xE1C8" /> <!-- Original name is "kz_start" -->
+        <Animation Name="gFighterPirateLandAnim" Offset="0xE8BC" /> <!-- Original name is "kz_syuta" -->
+        <Animation Name="gFighterPirateLandTalkAnim" Offset="0xED1C" /> <!-- Original name is "kz_syutawait" -->
+        <Animation Name="gFighterPirateUnusedTalkAnim" Offset="0xEF9C" /> <!-- Original name is "kz_talk" -->
+        <Animation Name="gFighterPirateLowerWeaponsAnim" Offset="0xF288" /> <!-- Original name is "kz_togetout" -->
+        <Animation Name="gFighterPirateFightingIdleAnim" Offset="0xF8E4" /> <!-- Original name is "kz_wait" -->
+    </File>
+</Root>

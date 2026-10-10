@@ -1,0 +1,72 @@
+﻿<Root>
+    <!-- Assets for Tijo, the drummer of The Indigo-Go's. -->
+    <File Name="object_zod" Segment="6">
+        <!-- Tijo Animations -->
+        <Animation Name="gTijoPlayingVivaceAnim" Offset="0x2E8" /> <!-- Original name is "zD_jitabata" -->
+        <Animation Name="gTijoReadyToPlayAnim" Offset="0x894" /> <!-- Original name is "zD_tokuige" -->
+        <Animation Name="gTijoArmsFoldedAnim" Offset="0xA9C" /> <!-- Original name is "zD_udegumi" -->
+        <Animation Name="gTijoPlayingLentoAnim" Offset="0xD94" /> <!-- Original name is "zD_wait01" -->
+
+        <!-- Tijo DisplayLists -->
+        <DList Name="gTijoLowerBodyChairDL" Offset="0x39A0" />
+        <DList Name="gTijoUpperBodyDL" Offset="0x3DA0" />
+        <DList Name="gTijoRightArmDL" Offset="0x4018" />
+        <DList Name="gTijoRightForearmDL" Offset="0x4130" />
+        <DList Name="gTijoRightHandDL" Offset="0x4258" />
+        <DList Name="gTijoLeftArmDL" Offset="0x43E8" />
+        <DList Name="gTijoLeftForearmDL" Offset="0x4500" />
+        <DList Name="gTijoLeftHandDL" Offset="0x4628" />
+        <DList Name="gTijoHeadDL" Offset="0x47B8" />
+
+        <!-- Tijo Textures /> -->
+        <Texture Name="gTijoSkinTex" OutName="tijo_skin" Format="rgba16" Width="8" Height="8" Offset="0x4B50" />
+        <Texture Name="gTijoChairTex" OutName="tijo_chair" Format="rgba16" Width="32" Height="32" Offset="0x4BD0" />
+        <Texture Name="gTijoHandTex" OutName="tijo_hand" Format="rgba16" Width="16" Height="16" Offset="0x53D0" />
+        <Texture Name="gTijoNoseTex" OutName="tijo_nose" Format="rgba16" Width="8" Height="8" Offset="0x55D0" />
+        <Texture Name="gTijoSkinSpotsTex" OutName="tijo_skin_spots" Format="rgba16" Width="32" Height="32" Offset="0x5650" />
+        <Texture Name="gTijoEyesOpenTex" OutName="tijo_eyes_open" Format="rgba16" Width="32" Height="32" Offset="0x5E50" />
+        <Texture Name="gTijoEyesHalfOpenTex" OutName="tijo_eyes_half_open" Format="rgba16" Width="32" Height="32" Offset="0x6650" />
+        <Texture Name="gTijoEyesClosedTex" OutName="tijo_eyes_closed" Format="rgba16" Width="32" Height="32" Offset="0x6E50" />
+        <Texture Name="gTijoMouthClosedTex" OutName="tijo_mouth_closed" Format="rgba16" Width="32" Height="32" Offset="0x7650" />
+        <Texture Name="gTijoMouthOpenTex" OutName="tijo_mouth_open" Format="rgba16" Width="32" Height="32" Offset="0x7E50" />
+
+        <!-- <Blob Name="object_zod_Blob_008650" Size="0x1E10" Offset="0x8650" /> -->
+
+        <!-- Tijo Drums DisplayLists /> -->
+        <DList Name="gTijoDrumFrameDL" Offset="0xA460" />
+        <DList Name="gTijoRideCymbalDL" Offset="0xA550" />
+        <DList Name="gTijoCrashCymbalDL" Offset="0xA5E0" />
+        <DList Name="gTijoHiHatDL" Offset="0xA670" />
+        <DList Name="gTijoDrum1DL" Offset="0xA700" />
+        <DList Name="gTijoDrum2DL" Offset="0xA8F8" />
+        <DList Name="gTijoDrum3DL" Offset="0xAAF0" />
+        <DList Name="gTijoDrum4DL" Offset="0xACE8" />
+        <DList Name="gTijoDrum5DL" Offset="0xAEE0" />
+        <DList Name="gTijoBassDrumDL" Offset="0xB0D8" />
+
+        <!-- Tijo Drums Textures -->
+        <Texture Name="gTijoDrumFrameTex" OutName="tijo_drum_stands" Format="rgba16" Width="32" Height="32" Offset="0xB348" />
+        <Texture Name="gTijoCymbalHiHatTex" OutName="tijo_cymbal_hihat" Format="rgba16" Width="32" Height="32" Offset="0xBB48" />
+        <Texture Name="gTijoDrumsSkinTex" OutName="tijo_drums_skin" Format="rgba16" Width="8" Height="8" Offset="0xC348" />
+        <Texture Name="gTijoDrumsEyesTex" OutName="tijo_eyes" Format="rgba16" Width="32" Height="32" Offset="0xC3C8" />
+        <Texture Name="gTijoDrumsMouthTex" OutName="tijo_drums_mouth" Format="rgba16" Width="16" Height="16" Offset="0xCBC8" />
+        <Texture Name="gTijoDrumsHairTex" OutName="tijo_drums_hair" Format="rgba16" Width="32" Height="32" Offset="0xCDC8" />
+
+        <!-- Tijo Limbs -->
+        <Limb Name="gTijoLowerBodyChairLimb" Type="Standard" EnumName="TIJO_LIMB_BODY_CHAIR" Offset="0xD5C8" />
+        <Limb Name="gTijoUpperBodyLimb" Type="Standard" EnumName="TIJO_LIMB_UPPER_BODY" Offset="0xD5D4" />
+        <Limb Name="gTijoHeadLimb" Type="Standard" EnumName="TIJO_LIMB_HEAD" Offset="0xD5E0" />
+        <Limb Name="gTijoLeftArmLimb" Type="Standard" EnumName="TIJO_LIMB_LEFT_ARM" Offset="0xD5EC" />
+        <Limb Name="gTijoLeftForearmLimb" Type="Standard" EnumName="TIJO_LIMB_LEFT_FOREARM" Offset="0xD5F8" />
+        <Limb Name="gTijoLeftHandLimb" Type="Standard" EnumName="TIJO_LIMB_LEFT_HAND" Offset="0xD604" />
+        <Limb Name="gTijoRightArmLimb" Type="Standard" EnumName="TIJO_LIMB_RIGHT_ARM" Offset="0xD610" />
+        <Limb Name="gTijoRightForearmLimb" Type="Standard" EnumName="TIJO_LIMB_RIGHT_FOREARM" Offset="0xD61C" />
+        <Limb Name="gTijoRightHandLimb" Type="Standard" EnumName="TIJO_LIMB_RIGHT_HAND" Offset="0xD628" />
+
+        <!-- Tijo Skeleton -->
+        <Skeleton Name="gTijoSkel" Type="Flex" LimbType="Standard" LimbNone="TIJO_LIMB_NONE" LimbMax="TIJO_LIMB_MAX" EnumName="TijoLimb" Offset="0xD658" />
+
+        <!-- Tijo Andantino Animation -->
+        <Animation Name="gTijoPlayingAndantinoAnim" Offset="0xD9B0" /> <!-- Original name is "zD_wait02" -->
+    </File>
+</Root>

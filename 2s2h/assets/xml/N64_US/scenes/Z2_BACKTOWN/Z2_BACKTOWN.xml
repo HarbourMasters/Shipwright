@@ -1,0 +1,11 @@
+<Root>
+    <File Name="Z2_BACKTOWN" Segment="2" Game="MM">
+        <Scene Name="Z2_BACKTOWN" Offset="0x0"/>
+    </File>
+    <File Name="Z2_BACKTOWN_room_00" Segment="3" Game="MM">
+        <Room Name="Z2_BACKTOWN_room_00" Offset="0x0"/>
+        <DList Name="Z2_BACKTOWN_room_00DL_0005E0" Offset="0x5E0"/>
+        <DList Name="Z2_BACKTOWN_room_00DL_008148" Offset="0x8148"/>
+        <DList Name="Z2_BACKTOWN_room_00DL_00A138" Offset="0xA138"/>
+    </File>
+</Root>

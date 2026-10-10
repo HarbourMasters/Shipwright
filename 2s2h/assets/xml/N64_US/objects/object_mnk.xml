@@ -1,0 +1,131 @@
+﻿<Root>
+    <File Name="object_mnk" Segment="6">
+        <DList Name="object_mnk_DL_000F50" Offset="0xF50" />
+        <DList Name="object_mnk_DL_000F58" Offset="0xF58" /> <!-- Original name is "z2_25_tubo_model" -->
+        <Texture Name="object_mnk_TLUT_001620" OutName="tlut_001620" Format="rgba16" Width="16" Height="16" Offset="0x1620" />
+        <Texture Name="object_mnk_Tex_001820" OutName="tex_001820" Format="ci8" Width="16" Height="64" Offset="0x1820" />
+        <Texture Name="object_mnk_Tex_001C20" OutName="tex_001C20" Format="ci8" Width="16" Height="16" Offset="0x1C20" />
+        <Texture Name="object_mnk_Tex_001D20" OutName="tex_001D20" Format="ci8" Width="16" Height="16" Offset="0x1D20" />
+        <Texture Name="object_mnk_Tex_001E20" OutName="tex_001E20" Format="ci8" Width="16" Height="128" Offset="0x1E20" />
+        <Texture Name="object_mnk_Tex_002620" OutName="tex_002620" Format="rgba16" Width="32" Height="32" Offset="0x2620" />
+        <TextureAnimation Name="object_mnk_Matanimheader_002E28" Offset="0x2E28" />
+        <Collision Name="object_mnk_Colheader_0033E8" Offset="0x33E8" /> <!-- Original name is "z2_25_tubo_bgdatainfo" -->
+        <Animation Name="object_mnk_Anim_003504" Offset="0x3504" /> <!-- Original name is "mnk_hashira_hatena" -->
+        <Animation Name="object_mnk_Anim_003584" Offset="0x3584" /> <!-- Original name is "mnk_hashira_mogaku" -->
+        <Animation Name="object_mnk_Anim_0037E8" Offset="0x37E8" /> <!-- Original name is "mnk_hashira_sadtalk" -->
+        <Animation Name="object_mnk_Anim_003854" Offset="0x3854" /> <!-- Original name is "mnk_hashira_sing" -->
+        <DList Name="object_mnk_DL_003C70" Offset="0x3C70" />
+        <DList Name="object_mnk_DL_003D40" Offset="0x3D40" />
+        <DList Name="object_mnk_DL_003DF8" Offset="0x3DF8" />
+        <Texture Name="object_mnk_Tex_003F10" OutName="tex_003F10" Format="rgba16" Width="16" Height="128" Offset="0x3F10" />
+        <Texture Name="object_mnk_Tex_004F10" OutName="tex_004F10" Format="rgba16" Width="16" Height="16" Offset="0x4F10" />
+        <Limb Name="object_mnk_Standardlimb_005110" Type="Standard" EnumName="OBJECT_MNK_1_LIMB_01" Offset="0x5110" />
+        <Limb Name="object_mnk_Standardlimb_00511C" Type="Standard" EnumName="OBJECT_MNK_1_LIMB_02" Offset="0x511C" />
+        <Limb Name="object_mnk_Standardlimb_005128" Type="Standard" EnumName="OBJECT_MNK_1_LIMB_03" Offset="0x5128" />
+        <Limb Name="object_mnk_Standardlimb_005134" Type="Standard" EnumName="OBJECT_MNK_1_LIMB_04" Offset="0x5134" />
+        <Skeleton Name="gMonkeyTiedUpPoleSkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_MNK_1_LIMB_NONE" LimbMax="OBJECT_MNK_1_LIMB_MAX" EnumName="ObjectMnk1Limb" Offset="0x5150" />
+        <Animation Name="object_mnk_Anim_005194" Offset="0x5194" /> <!-- Original name is "mnk_hashira_swing" -->
+        <Animation Name="object_mnk_Anim_0052C4" Offset="0x52C4" /> <!-- Original name is "mnk_hashira_tiedNO" -->
+        <Animation Name="object_mnk_Anim_005390" Offset="0x5390" /> <!-- Original name is "mnk_hashira_tiedtalk" -->
+        <Animation Name="object_mnk_Anim_005414" Offset="0x5414" /> <!-- Original name is "mnk_hashira_tiedtalkroud" -->
+        <Animation Name="object_mnk_Anim_0054B4" Offset="0x54B4" /> <!-- Original name is "mnk_hashira_tiedwait" -->
+        <Animation Name="object_mnk_Anim_005A08" Offset="0x5A08" /> <!-- Original name is "mnk_chuugaeri" -->
+        <Animation Name="object_mnk_Anim_0062D8" Offset="0x62D8" /> <!-- Original name is "mnk_hang_guttari" -->
+        <Animation Name="object_mnk_Anim_007380" Offset="0x7380" /> <!-- Original name is "mnk_hang_hikiage" -->
+        <Animation Name="gMonkeyHangingStruggleAnim" Offset="0x82C8" /> <!-- Original name is "mnk_hang_mogaku" -->
+        <Animation Name="object_mnk_Anim_008814" Offset="0x8814" /> <!-- Original name is "mnk_highjump" -->
+        <Animation Name="object_mnk_Anim_0095B4" Offset="0x95B4" /> <!-- Original name is "mnk_hitting" -->
+        <Animation Name="object_mnk_Anim_0099B0" Offset="0x99B0" /> <!-- Original name is "mnk_hop" -->
+        <Animation Name="object_mnk_Anim_009CC0" Offset="0x9CC0" /> <!-- Original name is "mnk_minijump" -->
+        <Animation Name="object_mnk_Anim_009FE0" Offset="0x9FE0" /> <!-- Original name is "mnk_run" -->
+        <Animation Name="object_mnk_Anim_00B864" Offset="0xB864" /> <!-- Original name is "mnk_scratch" -->
+        <Animation Name="object_mnk_Anim_00C23C" Offset="0xC23C" /> <!-- Original name is "mnk_tied_NO" -->
+        <Animation Name="object_mnk_Anim_00CAE8" Offset="0xCAE8" /> <!-- Original name is "mnk_tied_hatena" -->
+        <Animation Name="object_mnk_Anim_00CD4C" Offset="0xCD4C" /> <!-- Original name is "mnk_tied_legswing" -->
+        <Animation Name="object_mnk_Anim_00D1C8" Offset="0xD1C8" /> <!-- Original name is "mnk_tied_mogaku" -->
+        <Animation Name="object_mnk_Anim_00EC44" Offset="0xEC44" /> <!-- Original name is "mnk_tied_sadtalk" -->
+        <Animation Name="object_mnk_Anim_00F248" Offset="0xF248" /> <!-- Original name is "mnk_tied_sing" -->
+        <Animation Name="object_mnk_Anim_00F9A4" Offset="0xF9A4" /> <!-- Original name is "mnk_tied_talk" -->
+        <Animation Name="object_mnk_Anim_00FE34" Offset="0xFE34" /> <!-- Original name is "mnk_tied_talkroud" -->
+        <Animation Name="object_mnk_Anim_010298" Offset="0x10298" /> <!-- Original name is "mnk_tied_wait" -->
+        <Animation Name="object_mnk_Anim_0105DC" Offset="0x105DC" /> <!-- Original name is "mnk_wait"-->
+        <DList Name="object_mnk_DL_012770" Offset="0x12770" />
+        <DList Name="object_mnk_DL_012918" Offset="0x12918" />
+        <DList Name="object_mnk_DL_0129D0" Offset="0x129D0" />
+        <DList Name="object_mnk_DL_012A60" Offset="0x12A60" />
+        <DList Name="object_mnk_DL_012C10" Offset="0x12C10" />
+        <DList Name="object_mnk_DL_012E60" Offset="0x12E60" />
+        <DList Name="object_mnk_DL_012F48" Offset="0x12F48" />
+        <DList Name="object_mnk_DL_0132A8" Offset="0x132A8" />
+        <DList Name="object_mnk_DL_013430" Offset="0x13430" />
+        <DList Name="object_mnk_DL_013550" Offset="0x13550" />
+        <DList Name="object_mnk_DL_013660" Offset="0x13660" />
+        <DList Name="object_mnk_DL_013818" Offset="0x13818" />
+        <DList Name="object_mnk_DL_013938" Offset="0x13938" />
+        <DList Name="object_mnk_DL_013A48" Offset="0x13A48" />
+        <DList Name="object_mnk_DL_013C00" Offset="0x13C00" />
+        <DList Name="object_mnk_DL_013E80" Offset="0x13E80" />
+        <DList Name="object_mnk_DL_014080" Offset="0x14080" />
+        <DList Name="object_mnk_DL_014310" Offset="0x14310" />
+        <DList Name="object_mnk_DL_014590" Offset="0x14590" />
+        <DList Name="object_mnk_DL_014790" Offset="0x14790" />
+        <Texture Name="object_mnk_TLUT_014A20" OutName="tlut_014A20" Format="rgba16" Width="16" Height="16" Offset="0x14A20" />
+        <Texture Name="object_mnk_Tex_014C20" OutName="tex_014C20" Format="ci8" Width="32" Height="32" Offset="0x14C20" />
+        <Texture Name="object_mnk_Tex_015020" OutName="tex_015020" Format="ci8" Width="32" Height="64" Offset="0x15020" />
+        <Texture Name="object_mnk_Tex_015820" OutName="tex_015820" Format="ci8" Width="16" Height="16" Offset="0x15820" />
+        <Texture Name="object_mnk_Tex_015920" OutName="tex_015920" Format="ci8" Width="32" Height="64" Offset="0x15920" />
+        <Texture Name="object_mnk_Tex_016120" OutName="tex_016120" Format="ci8" Width="32" Height="64" Offset="0x16120" />
+        <Texture Name="object_mnk_Tex_016920" OutName="tex_016920" Format="ci8" Width="32" Height="64" Offset="0x16920" />
+        <Texture Name="object_mnk_Tex_017120" OutName="tex_017120" Format="ci8" Width="32" Height="64" Offset="0x17120" />
+        <Texture Name="object_mnk_Tex_017920" OutName="tex_017920" Format="ci8" Width="32" Height="64" Offset="0x17920" />
+        <Texture Name="object_mnk_Tex_018120" OutName="tex_018120" Format="ci8" Width="32" Height="64" Offset="0x18120" />
+        <Texture Name="object_mnk_Tex_018920" OutName="tex_018920" Format="ci8" Width="16" Height="16" Offset="0x18920" />
+        <Texture Name="object_mnk_Tex_018A20" OutName="tex_018A20" Format="ci8" Width="32" Height="32" Offset="0x18A20" />
+        <Texture Name="object_mnk_Tex_018E20" OutName="tex_018E20" Format="ci8" Width="16" Height="16" Offset="0x18E20" />
+        <Texture Name="object_mnk_Tex_018F20" OutName="tex_018F20" Format="rgba16" Width="32" Height="32" Offset="0x18F20" />
+        <Texture Name="object_mnk_Tex_019720" OutName="tex_019720" Format="ci8" Width="16" Height="16" Offset="0x19720" />
+        <Texture Name="object_mnk_Tex_019820" OutName="tex_019820" Format="ci8" Width="16" Height="16" Offset="0x19820" />
+        <Texture Name="object_mnk_Tex_019920" OutName="tex_019920" Format="ci8" Width="16" Height="16" Offset="0x19920" />
+        <TextureAnimation Name="object_mnk_Matanimheader_019A20" Offset="0x19A20" /> <!-- Empty TexAnim -->
+        <Limb Name="object_mnk_Standardlimb_019A28" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_01" Offset="0x19A28" />
+        <Limb Name="object_mnk_Standardlimb_019A34" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_02" Offset="0x19A34" />
+        <Limb Name="object_mnk_Standardlimb_019A40" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_03" Offset="0x19A40" />
+        <Limb Name="object_mnk_Standardlimb_019A4C" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_04" Offset="0x19A4C" />
+        <Limb Name="object_mnk_Standardlimb_019A58" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_05" Offset="0x19A58" />
+        <Limb Name="object_mnk_Standardlimb_019A64" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_06" Offset="0x19A64" />
+        <Limb Name="object_mnk_Standardlimb_019A70" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_07" Offset="0x19A70" />
+        <Limb Name="object_mnk_Standardlimb_019A7C" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_08" Offset="0x19A7C" />
+        <Limb Name="object_mnk_Standardlimb_019A88" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_09" Offset="0x19A88" />
+        <Limb Name="object_mnk_Standardlimb_019A94" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0A" Offset="0x19A94" />
+        <Limb Name="object_mnk_Standardlimb_019AA0" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0B" Offset="0x19AA0" />
+        <Limb Name="object_mnk_Standardlimb_019AAC" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0C" Offset="0x19AAC" />
+        <Limb Name="object_mnk_Standardlimb_019AB8" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0D" Offset="0x19AB8" />
+        <Limb Name="object_mnk_Standardlimb_019AC4" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0E" Offset="0x19AC4" />
+        <Limb Name="object_mnk_Standardlimb_019AD0" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_0F" Offset="0x19AD0" />
+        <Limb Name="object_mnk_Standardlimb_019ADC" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_10" Offset="0x19ADC" />
+        <Limb Name="object_mnk_Standardlimb_019AE8" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_11" Offset="0x19AE8" />
+        <Limb Name="object_mnk_Standardlimb_019AF4" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_12" Offset="0x19AF4" />
+        <Limb Name="object_mnk_Standardlimb_019B00" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_13" Offset="0x19B00" />
+        <Limb Name="object_mnk_Standardlimb_019B0C" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_14" Offset="0x19B0C" />
+        <Limb Name="object_mnk_Standardlimb_019B18" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_15" Offset="0x19B18" />
+        <Limb Name="object_mnk_Standardlimb_019B24" Type="Standard" EnumName="OBJECT_MNK_2_LIMB_16" Offset="0x19B24" />
+        <Skeleton Name="gMonkeySkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_MNK_2_LIMB_NONE" LimbMax="OBJECT_MNK_2_LIMB_MAX" EnumName="ObjectMnk2Limb" Offset="0x19B88" />
+        <Animation Name="object_mnk_Anim_01A4F8" Offset="0x1A4F8" /> <!-- Original name is "mnk_onnikiruze" -->
+        <Animation Name="object_mnk_Anim_01B468" Offset="0x1B468" /> <!-- Original name is "mnk_wakatte" -->
+        <Animation Name="object_mnk_Anim_01BB0C" Offset="0x1BB0C" /> <!-- Original name is "mnk_wakatte_loop" -->
+        <Animation Name="object_mnk_Anim_01C17C" Offset="0x1C17C" /> <!-- Original name is "mnk_wakatte_modori" -->
+        <Animation Name="object_mnk_Anim_01C1B8" Offset="0x1C1B8" /> <!-- Original name is "mnk_rope_guttari" -->
+        <Animation Name="object_mnk_Anim_01C1F8" Offset="0x1C1F8" /> <!-- Original name is "mnk_rope_hikiage" -->
+        <Animation Name="gMonkeyHangingRopeStruggleAnim" Offset="0x1C3B4" /> <!-- Original name is "mnk_rope_mogaku_mdl" -->
+        <DList Name="object_mnk_DL_01C660" Offset="0x1C660" />
+        <DList Name="object_mnk_DL_01C770" Offset="0x1C770" />
+        <DList Name="object_mnk_DL_01C818" Offset="0x1C818" />
+        <Texture Name="object_mnk_Tex_01C8E8" OutName="tex_01C8E8" Format="rgba16" Width="16" Height="16" Offset="0x1C8E8" />
+        <Texture Name="object_mnk_Tex_01CAE8" OutName="tex_01CAE8" Format="rgba16" Width="32" Height="32" Offset="0x1CAE8" />
+        <Texture Name="object_mnk_Tex_01D2E8" OutName="tex_01D2E8" Format="rgba16" Width="16" Height="16" Offset="0x1D2E8" />
+        <Limb Name="object_mnk_Standardlimb_01D4E8" Type="Standard" EnumName="OBJECT_MNK_3_LIMB_01" Offset="0x1D4E8" />
+        <Limb Name="object_mnk_Standardlimb_01D4F4" Type="Standard" EnumName="OBJECT_MNK_3_LIMB_02" Offset="0x1D4F4" />
+        <Limb Name="object_mnk_Standardlimb_01D500" Type="Standard" EnumName="OBJECT_MNK_3_LIMB_03" Offset="0x1D500" />
+        <Skeleton Name="gMonkeyHangingRopeSkel" Type="Flex" LimbType="Standard" LimbNone="OBJECT_MNK_3_LIMB_NONE" LimbMax="OBJECT_MNK_3_LIMB_MAX" EnumName="ObjectMnk3Limb" Offset="0x1D518" />
+    </File>
+</Root>

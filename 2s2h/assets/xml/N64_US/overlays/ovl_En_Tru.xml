@@ -1,0 +1,24 @@
+<Root>
+    <File Name="ovl_En_Tru" BaseAddress="0x80A85620" RangeStart="0x33B0" RangeEnd="0x5C30">
+        <Texture Name="D_80A889D0" OutName="en_tru_33B0" Format="i4" Width="32" Height="64" Offset="0x33B0"/>
+        <Texture Name="D_80A88DD0" OutName="en_tru_37B0" Format="i4" Width="32" Height="32" Offset="0x37B0"/>
+        <Array Name="D_80A88FD0" Count="3" Offset="0x39B0">
+            <Vtx/>
+        </Array>
+        <DList Name="D_80A89000" Offset="0x39E0"/>
+        <DList Name="D_80A890A8" Offset="0x3A88"/>
+
+        <Texture Name="D_80A890C8" OutName="en_tru_3AA8" Format="i8" Width="64" Height="64" Offset="0x3AA8"/>
+        <Array Name="D_80A8A0C8" Count="4" Offset="0x4AA8">
+            <Vtx/>
+        </Array>
+        <DList Name="D_80A8A108" Offset="0x4AE8"/> <!-- Original name might be "tru_flash_model" -->
+
+        <Texture Name="D_80A8A188" OutName="en_tru_4B68" Format="i8" Width="64" Height="64" Offset="0x4B68"/>
+        <Array Name="D_80A8B188" Count="4" Offset="0x5B68">
+            <Vtx/>
+        </Array>
+        <DList Name="D_80A8B1C8" Offset="0x5BA8"/>
+        <DList Name="D_80A8B238" Offset="0x5C18"/>
+    </File>
+</Root>

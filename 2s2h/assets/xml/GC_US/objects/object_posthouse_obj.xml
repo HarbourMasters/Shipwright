@@ -1,0 +1,11 @@
+﻿<Root>
+    <File Name="object_posthouse_obj" Segment="6">
+        <DList Name="object_posthouse_obj_DL_000A50" Offset="0xA50" /> <!-- Original name is "z2_post_cap_model" -->
+        <Texture Name="object_posthouse_obj_Tex_000DA8" OutName="tex_000DA8" Format="rgba16" Width="8" Height="8" Offset="0xDA8" />
+        <Texture Name="object_posthouse_obj_Tex_000E28" OutName="tex_000E28" Format="rgba16" Width="16" Height="16" Offset="0xE28" />
+        <Texture Name="object_posthouse_obj_Tex_001028" OutName="tex_001028" Format="rgba16" Width="32" Height="32" Offset="0x1028" />
+        <DList Name="object_posthouse_obj_DL_001870" Offset="0x1870" /> <!-- Original name is "z2_post_cloth_model" -->
+        <Texture Name="object_posthouse_obj_Tex_001900" OutName="tex_001900" Format="rgba16" Width="64" Height="32" Offset="0x1900" />
+        <Collision Name="object_posthouse_obj_Colheader_002948" Offset="0x2948" /> <!-- Original name is "z2_post_cloth_bgdatainfo" -->
+    </File>
+</Root>

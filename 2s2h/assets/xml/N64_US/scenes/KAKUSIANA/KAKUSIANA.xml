@@ -1,0 +1,80 @@
+<Root>
+    <File Name="KAKUSIANA" Segment="2" Game="MM">
+        <Scene Name="KAKUSIANA" Offset="0x0"/>
+    </File>
+    <File Name="KAKUSIANA_room_00" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_00" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_00DL_001E70" Offset="0x1E70"/>
+        <DList Name="KAKUSIANA_room_00DL_003A68" Offset="0x3A68"/>
+    </File>
+    <File Name="KAKUSIANA_room_01" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_01" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_01DL_001610" Offset="0x1610"/>
+        <DList Name="KAKUSIANA_room_01DL_004910" Offset="0x4910"/>
+    </File>
+    <File Name="KAKUSIANA_room_02" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_02" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_02DL_001730" Offset="0x1730"/>
+        <DList Name="KAKUSIANA_room_02DL_002188" Offset="0x2188"/>
+    </File>
+    <File Name="KAKUSIANA_room_03" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_03" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_03DL_001038" Offset="0x1038"/>
+        <DList Name="KAKUSIANA_room_03DL_002288" Offset="0x2288"/>
+    </File>
+    <File Name="KAKUSIANA_room_04" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_04" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_04DL_001598" Offset="0x1598"/>
+        <DList Name="KAKUSIANA_room_04DL_001980" Offset="0x1980"/>
+    </File>
+    <File Name="KAKUSIANA_room_05" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_05" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_05DL_000C60" Offset="0xC60"/>
+        <DList Name="KAKUSIANA_room_05DL_0016E0" Offset="0x16E0"/>
+    </File>
+    <File Name="KAKUSIANA_room_06" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_06" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_06DL_0015F0" Offset="0x15F0"/>
+        <DList Name="KAKUSIANA_room_06DL_002320" Offset="0x2320"/>
+    </File>
+    <File Name="KAKUSIANA_room_07" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_07" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_07DL_001018" Offset="0x1018"/>
+        <DList Name="KAKUSIANA_room_07DL_002A68" Offset="0x2A68"/>
+    </File>
+    <File Name="KAKUSIANA_room_08" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_08" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_08DL_001660" Offset="0x1660"/>
+        <DList Name="KAKUSIANA_room_08DL_002D48" Offset="0x2D48"/>
+    </File>
+    <File Name="KAKUSIANA_room_09" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_09" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_09DL_0015A0" Offset="0x15A0"/>
+        <DList Name="KAKUSIANA_room_09DL_0021F8" Offset="0x21F8"/>
+    </File>
+    <File Name="KAKUSIANA_room_10" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_10" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_10DL_001130" Offset="0x1130"/>
+        <DList Name="KAKUSIANA_room_10DL_001388" Offset="0x1388"/>
+    </File>
+    <File Name="KAKUSIANA_room_11" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_11" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_11DL_0013B0" Offset="0x13B0"/>
+        <DList Name="KAKUSIANA_room_11DL_0025D0" Offset="0x25D0"/>
+    </File>
+    <File Name="KAKUSIANA_room_12" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_12" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_12DL_0034A0" Offset="0x34A0"/>
+        <DList Name="KAKUSIANA_room_12DL_0064C8" Offset="0x64C8"/>
+    </File>
+    <File Name="KAKUSIANA_room_13" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_13" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_13DL_001CD0" Offset="0x1CD0"/>
+        <DList Name="KAKUSIANA_room_13DL_003740" Offset="0x3740"/>
+    </File>
+    <File Name="KAKUSIANA_room_14" Segment="3" Game="MM">
+        <Room Name="KAKUSIANA_room_14" Offset="0x0"/>
+        <DList Name="KAKUSIANA_room_14DL_001630" Offset="0x1630"/>
+        <DList Name="KAKUSIANA_room_14DL_0022B0" Offset="0x22B0"/>
+    </File>
+</Root>

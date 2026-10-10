@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Animations for Skull Kid for the game's ending. -->
+    <File Name="object_stk3" Segment="6">
+        <Animation Name="gSkullKidSniffAnim" Offset="0x1374" /> <!-- Original name is "stk_kaoyose" ("face close") -->
+        <Animation Name="gSkullKidLaughAfterSniffAnim" Offset="0x1EDC" /> <!-- Original name is "stk_kaoyose_loop" -->
+        <Animation Name="gSkullKidAshamedStartAnim" Offset="0x2CD8" /> <!-- Original name is "stk_kataf" (maybe a shortened combination of "rattle" and "tremble"?) -->
+        <Animation Name="gSkullKidAshamedLoopAnim" Offset="0x39F0" /> <!-- Original name is "stk_kataf_loop" -->
+        <Animation Name="gSkullKidLookLeftStartAnim" Offset="0x4554" /> <!-- Original name is "stk_migim" ("face right", which is correct if looking at Skull Kid) -->
+        <Animation Name="gSkullKidLookLeftLoopAnim" Offset="0x51C0" /> <!-- Original name is "stk_migim_loop" -->
+        <Animation Name="gSkullKidLookUpAtGiantsAnim" Offset="0x5F44" /> <!-- Original name is "stk_uemuki" ("facing up") -->
+    </File>
+</Root>

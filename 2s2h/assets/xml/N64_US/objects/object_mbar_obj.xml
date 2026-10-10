@@ -1,0 +1,10 @@
+﻿<Root>
+    <File Name="object_mbar_obj" Segment="6">
+        <DList Name="object_mbar_obj_DL_000280" Offset="0x280" />
+        <DList Name="object_mbar_obj_DL_000288" Offset="0x288" />
+        <Texture Name="object_mbar_obj_Tex_000408" OutName="tex_000408" Format="i8" Width="32" Height="64" Offset="0x408" />
+        <Texture Name="object_mbar_obj_Tex_000C08" OutName="tex_000C08" Format="i8" Width="32" Height="32" Offset="0xC08" />
+        <Texture Name="object_mbar_obj_Tex_001008" OutName="tex_001008" Format="ia16" Width="16" Height="64" Offset="0x1008" />
+        <Collision Name="object_mbar_obj_Colheader_0019B4" Offset="0x19B4" />
+    </File>
+</Root>

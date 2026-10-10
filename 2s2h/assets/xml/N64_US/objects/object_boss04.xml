@@ -1,0 +1,46 @@
+﻿<Root>
+    <!-- Assets for Wart and its Bubbles -->
+    <File Name="object_boss04" Segment="6">
+        <!-- Wart Animation -->
+        <Animation Name="gWartIdleAnim" Offset="0x4C" /> <!-- Original name might be "wart". A 20-frame animation where he doesn't move at all. -->
+
+        <!-- Wart Limb DisplayLists -->
+        <DList Name="gWartShellDL" Offset="0x19B0" />
+        <DList Name="gWartBottomEyelidDL" Offset="0x1E58" />
+        <DList Name="gWartTopEyelidDL" Offset="0x1FC8" />
+        <DList Name="gWartEyeDL" Offset="0x2138" />
+
+        <!-- Wart Textures -->
+        <Texture Name="gWartShellTLUT" OutName="wart_shell_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2328" />
+        <Texture Name="gWartRidgesTLUT" OutName="wart_ridges_tlut" Format="rgba16" Width="4" Height="4" Offset="0x2348" />
+        <Texture Name="gWartShellTex" OutName="wart_shell" Format="ci4" Width="64" Height="64" Offset="0x2368" />
+        <Texture Name="gWartRidgesTex" OutName="wart_ridges" Format="ci4" Width="8" Height="16" Offset="0x2B68" />
+        <Texture Name="gWartEyeTex" OutName="wart_eye" Format="rgba16" Width="32" Height="32" Offset="0x2BA8" />
+
+        <!-- Unused DisplayList that can be used to make Bubbles opaque -->
+        <DList Name="gWartBubbleOpaqueMaterialDL" Offset="0x33D8" />
+
+        <!-- Wart Bubble Texture and DisplayLists-->
+        <DList Name="gWartBubbleMaterialDL" Offset="0x3450" />
+        <DList Name="gWartBubbleModelDL" Offset="0x34C8" />
+        <Texture Name="gWartBubbleTex" OutName="wart_bubble" Format="rgba16" Width="32" Height="32" Offset="0x34E0" />
+
+        <!-- Wart and Bubble Shadow Texture and DisplayLists -->
+        <Texture Name="gWartShadowTex" OutName="wart_shadow" Format="ia16" Width="32" Height="32" Offset="0x3D10" />
+        <DList Name="gWartShadowMaterialDL" Offset="0x4510" />
+        <DList Name="gWartShadowModelDL" Offset="0x4550" />
+
+        <!-- Wart Limbs -->
+        <Limb Name="gWartRootLimb" Type="Standard" EnumName="WART_LIMB_ROOT" Offset="0x4568" />
+        <Limb Name="gWartBodyLimb" Type="Standard" EnumName="WART_LIMB_BODY" Offset="0x4574" />
+        <Limb Name="gWartEyeRootLimb" Type="Standard" EnumName="WART_LIMB_EYE_ROOT" Offset="0x4580" />
+        <Limb Name="gWartEyeLimb" Type="Standard" EnumName="WART_LIMB_EYE" Offset="0x458C" />
+        <Limb Name="gWartTopEyelidRootLimb" Type="Standard" EnumName="WART_LIMB_TOP_EYELID_ROOT" Offset="0x4598" />
+        <Limb Name="gWartTopEyelidLimb" Type="Standard" EnumName="WART_LIMB_TOP_EYELID" Offset="0x45A4" />
+        <Limb Name="gWartBottomEyelidRootLimb" Type="Standard" EnumName="WART_LIMB_BOTTOM_EYELID_ROOT" Offset="0x45B0" />
+        <Limb Name="gWartBottomEyelidLimb" Type="Standard" EnumName="WART_LIMB_BOTTOM_EYELID" Offset="0x45BC" />
+
+        <!-- Wart Skeleton -->
+        <Skeleton Name="gWartSkel" Type="Flex" LimbType="Standard" LimbNone="WART_LIMB_NONE" LimbMax="WART_LIMB_MAX" EnumName="WartLimb" Offset="0x45E8" />
+    </File>
+</Root>

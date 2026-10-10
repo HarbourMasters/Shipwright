@@ -1,0 +1,9 @@
+﻿<Root>
+    <File Name="object_mask_meoto" Segment="10">
+        <DList Name="object_mask_meoto_DL_0005A0" Offset="0x5A0" />
+        <Texture Name="object_mask_meoto_Tex_0008C8" OutName="tex_0008C8" Format="i8" Width="32" Height="64" Offset="0x8C8" />
+        <Texture Name="object_mask_meoto_Tex_0010C8" OutName="tex_0010C8" Format="i8" Width="32" Height="64" Offset="0x10C8" />
+        <Texture Name="object_mask_meoto_Tex_0018C8" OutName="tex_0018C8" Format="i8" Width="32" Height="32" Offset="0x18C8" />
+        <TextureAnimation Name="object_mask_meoto_Matanimheader_001CD8" Offset="0x1CD8" />
+    </File>
+</Root>

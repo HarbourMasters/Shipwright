@@ -1,0 +1,106 @@
+﻿<Root>
+    <!-- Assets for business scrubs -->
+    <File Name="object_dnt" Segment="6">
+        <!-- Animations -->
+        <Animation Name="gBusinessScrubShockedPoundAnim" Offset="0x994" /> <!-- Original name is "dnt_banban" -->
+        <Animation Name="gBusinessScrubTakeOffHatAnim" Offset="0x12F4" /> <!-- Original name is "dnt_boyon" -->
+
+        <!-- Additional Eyes DLs -->
+        <DList Name="gBusinessScrubEyesWideDL" Offset="0x1350" />
+        <DList Name="gBusinessScrubEyesSquintDL" Offset="0x1420" />
+
+        <!-- Animations -->
+        <Animation Name="gBusinessScrubFlyLoopAnim" Offset="0x1BC8" /> <!-- Original name is "dnt_fly" -->
+        <Animation Name="gBusinessScrubShockedShakeHeadAnim" Offset="0x1E2C" /> <!-- Original name is "dnt_iyaiya" -->
+        <Animation Name="gBusinessScrubShockedEndAnim" Offset="0x2268" /> <!-- Original name is "dnt_iyaiyaTOmuun" -->
+        <Animation Name="gBusinessScrubFlyEndAnim" Offset="0x2670" /> <!-- Original name is "dnt_kouka" -->
+        <Animation Name="gBusinessScrubBurrowAnim" Offset="0x29E8" /> <!-- Original name is "dnt_moguru" -->
+        <Animation Name="gBusinessScrubThinkAnim" Offset="0x2F08" /> <!-- Original name is "dnt_muun" -->
+        <Animation Name="gBusinessScrubShockedStartAnim" Offset="0x3438" /> <!-- Original name is "dnt_nooo" -->
+        <Animation Name="gBusinessScrubExcitedLoopAnim" Offset="0x38CC" /> <!-- Original name is "dnt_onedari" -->
+        <Animation Name="gBusinessScrubExcitedEndAnim" Offset="0x3CC0" /> <!-- Original name is "dnt_onedariTOwait" -->
+        <TextureAnimation Name="gBusinessScrubEmptyTexAnim" Offset="0x3CD0" />
+        <Animation Name="gBusinessScrubFlyStartAnim" Offset="0x4700" /> <!-- Original name is "dnt_spoon" -->
+        <Animation Name="gBusinessScrubRiseUpAnim" Offset="0x4AA0" /> <!-- Original name is "dnt_tobidasu01" -->
+        <Animation Name="gBusinessScrubJumpAnim" Offset="0x4E38" /> <!-- Original name is "dnt_tobidasu02" -->
+        <Animation Name="gBusinessScrubStandingAnim" Offset="0x5488" /> <!-- Original name is "dnt_wait" -->
+        <Animation Name="gBusinessScrubBobAnim" Offset="0x577C" /> <!-- Original name is "dnt_wait02" --> <!-- used as the idle anim when half burrowed into a deku flower-->
+        <Animation Name="gBusinessScrubExcitedStartAnim" Offset="0x5CA8" /> <!-- Original name is "dnt_waitTOonedari" -->
+
+        <!-- DLs -->
+        <DList Name="gBusinessScrubHeadDL" Offset="0x7EA0" />
+        <DList Name="gBusinessScrubLeftArmBagDL" Offset="0x8048" />
+        <DList Name="gBusinessScrubEyesDL" Offset="0x8290" />
+        <DList Name="gBusinessScrubScalpDL" Offset="0x8320" />
+        <DList Name="gBusinessScrubHatDL" Offset="0x8438" />
+        <DList Name="gBusinessScrubHairDL" Offset="0x85D8" />
+        <DList Name="gBusinessScrubLeftEarDL" Offset="0x8688" />
+        <DList Name="gBusinessScrubLeftHandDL" Offset="0x8718" />
+        <DList Name="gBusinessScrubLeftHandBagDL" Offset="0x8838" />
+        <DList Name="gBusinessScrubLeftForearmDL" Offset="0x8A48" />
+        <DList Name="gBusinessScrubLeftUpperArmDL" Offset="0x8B60" />
+        <DList Name="gBusinessScrubRightHandHatDL" Offset="0x8C10" />
+        <DList Name="gBusinessScrubRightHandDL" Offset="0x8DB0" />
+        <DList Name="gBusinessScrubRightHandBagDL" Offset="0x8ED0" />
+        <DList Name="gBusinessScrubRightForearmDL" Offset="0x90E8" />
+        <DList Name="gBusinessScrubRightUpperArmDL" Offset="0x9200" />
+        <DList Name="gBusinessScrubRightMustacheDL" Offset="0x92B0" />
+        <DList Name="gBusinessScrubRightEarDL" Offset="0x9340" />
+        <DList Name="gBusinessScrubSnoutDL" Offset="0x93D0" />
+        <DList Name="gBusinessScrubBodyDL" Offset="0x94E8" />
+        <DList Name="gBusinessScrubLeftFootDL" Offset="0x9630" />
+        <DList Name="gBusinessScrubLeftShinDL" Offset="0x9740" />
+        <DList Name="gBusinessScrubLeftThighDL" Offset="0x9838" />
+        <DList Name="gBusinessScrubRightFootDL" Offset="0x98D8" />
+        <DList Name="gBusinessScrubRightShinDL" Offset="0x99E8" />
+        <DList Name="gBusinessScrubRightThighDL" Offset="0x9AE0" />
+
+        <!-- Textures -->
+        <Texture Name="gBusinessScrubSkinTex" OutName="business_scrub_skin" Format="rgba16" Width="16" Height="16" Offset="0x9B80" />
+        <Texture Name="gBusinessScrubLeafTex" OutName="business_scrub_leaf" Format="rgba16" Width="16" Height="16" Offset="0x9D80" />
+        <Texture Name="gBusinessScrubBagOpeningTex" OutName="business_scrub_bag_opening" Format="rgba16" Width="8" Height="16" Offset="0x9F80" />
+        <Texture Name="gBusinessScrubBagCordTex" OutName="business_scrub_bag_cord" Format="rgba16" Width="8" Height="16" Offset="0xA080" />
+        <Texture Name="gBusinessScrubBagTex" OutName="business_scrub_bag" Format="rgba16" Width="2" Height="16" Offset="0xA180" />
+        <Texture Name="gBusinessScrubHatTex" OutName="business_scrub_hat" Format="rgba16" Width="8" Height="8" Offset="0xA1C0" />
+        <Texture Name="gBusinessScrubHatLeafTex" OutName="business_scrub_hat_leaf" Format="rgba16" Width="8" Height="16" Offset="0xA240" />
+        <Texture Name="gBusinessScrubHairTex" OutName="business_scrub_hair" Format="rgba16" Width="16" Height="32" Offset="0xA340" />
+        <Texture Name="gBusinessScrubScalpTex" OutName="business_scrub_scalp" Format="rgba16" Width="8" Height="8" Offset="0xA740" />
+        <Texture Name="gBusinessScrubSnoutTex" OutName="business_scrub_snout" Format="rgba16" Width="16" Height="8" Offset="0xA7C0" />
+        <Texture Name="gBusinessScrubEyeTex" OutName="business_scrub_eye" Format="rgba16" Width="16" Height="16" Offset="0xA8C0" />
+
+        <!-- Skeleton -->
+        <Limb Name="gBusinessScrubRootLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_ROOT" Offset="0xAAC0" />
+        <Limb Name="gBusinessScrubBodyLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_BODY" Offset="0xAACC" />
+        <Limb Name="gBusinessScrubRightThighLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_THIGH" Offset="0xAAD8" />
+        <Limb Name="gBusinessScrubRightShinLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_SHIN" Offset="0xAAE4" />
+        <Limb Name="gBusinessScrubRightFootLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_FOOT" Offset="0xAAF0" />
+        <Limb Name="gBusinessScrubLeftThighLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_THIGH" Offset="0xAAFC" />
+        <Limb Name="gBusinessScrubLeftShinLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_SHIN" Offset="0xAB08" />
+        <Limb Name="gBusinessScrubLeftFootLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_FOOT" Offset="0xAB14" />
+        <Limb Name="gBusinessScrubHeadLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_HEAD" Offset="0xAB20" />
+        <Limb Name="gBusinessScrubSnoutLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_SNOUT" Offset="0xAB2C" />
+        <Limb Name="gBusinessScrubRightLeafLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_LEAF" Offset="0xAB38" />
+        <Limb Name="gBusinessScrubRightMustacheLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_MUSTACHE" Offset="0xAB44" />
+        <Limb Name="gBusinessScrubRightUpperArmLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_UPPER_ARM" Offset="0xAB50" />
+        <Limb Name="gBusinessScrubRightForearmLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_FOREARM" Offset="0xAB5C" />
+        <Limb Name="gBusinessScrubRightHandHatLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_HAND_HAT" Offset="0xAB68" />
+        <Limb Name="gBusinessScrubRightHandBagLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_HAND_BAG" Offset="0xAB74" />
+        <Limb Name="gBusinessScrubRightHandLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_RIGHT_HAND" Offset="0xAB80" />
+        <Limb Name="gBusinessScrubLeftUpperArmLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_UPPER_ARM" Offset="0xAB8C" />
+        <Limb Name="gBusinessScrubLeftForearmLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_FOREARM" Offset="0xAB98" />
+        <Limb Name="gBusinessScrubLeftHandLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_HAND" Offset="0xABA4" />
+        <Limb Name="gBusinessScrubLeftHandBagLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_HAND_BAG" Offset="0xABB0" />
+        <Limb Name="gBusinessScrubLeftLeafLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_LEAF" Offset="0xABBC" />
+        <Limb Name="gBusinessScrubScalpLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_SCALP" Offset="0xABC8" />
+        <Limb Name="gBusinessScrubHairLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_HAIR" Offset="0xABD4" />
+        <Limb Name="gBusinessScrubHatLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_HAT" Offset="0xABE0" />
+        <Limb Name="gBusinessScrubEyesLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_EYES" Offset="0xABEC" />
+        <Limb Name="gBusinessScrubLeftArmBagLimb" Type="Standard" EnumName="BUSINESS_SCRUB_LIMB_LEFT_ARM_BAG" Offset="0xABF8" />
+        <Skeleton Name="gBusinessScrubSkel" Type="Flex" LimbType="Standard" LimbNone="BUSINESS_SCRUB_LIMB_NONE" LimbMax="BUSINESS_SCRUB_LIMB_MAX" EnumName="BusinessScrubLimb" Offset="0xAC70" />
+
+        <Animation Name="gBusinessScrubWalkAnim" Offset="0xB0B4" /> <!-- Original name is "dnt_walk" -->
+
+        <!-- An exact copy of gBusinessScrubEyeTex -->
+        <Texture Name="gBusinessScrubEye2Tex" OutName="business_scrub_eye_2" Format="rgba16" Width="16" Height="16" Offset="0xB0D0" />
+    </File>
+</Root>

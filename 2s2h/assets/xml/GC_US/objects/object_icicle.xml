@@ -1,0 +1,8 @@
+﻿<Root>
+    <!-- Object for Icicles -->
+    <File Name="object_icicle" Segment="6">
+        <DList Name="gIcicleDL" Offset="0xD0" /> <!-- Original name is "ice_turara_model" -->
+        <Collision Name="gIcicleCol" Offset="0x294" /> <!-- Original name is "ice_turara_bgdatainfo" -->
+        <Texture Name="gIcicleTex" OutName="icicle" Format="i8" Width="64" Height="64" Offset="0x2C0" />
+    </File>
+</Root>

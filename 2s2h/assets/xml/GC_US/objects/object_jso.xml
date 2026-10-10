@@ -1,0 +1,147 @@
+﻿<Root>
+    <!-- Assets for Garos and the Garo Master -->
+    <File Name="object_jso" Segment="6">
+        <!-- Unused Empty Texture Animations -->
+        <TextureAnimation Name="gGaroEmpty1TexAnim" Offset="0x0" />
+        <TextureAnimation Name="gGaroEmpty2TexAnim" Offset="0x10" />
+
+        <!-- Garo Master Limb DisplayLists -->
+        <DList Name="gGaroMasterLeftThighDL" Offset="0x1210" />
+        <DList Name="gGaroMasterLeftShinDL" Offset="0x1348" />
+        <DList Name="gGaroMasterLeftFootDL" Offset="0x13F8" />
+        <DList Name="gGaroMasterRightThighDL" Offset="0x1508" />
+        <DList Name="gGaroMasterRightShinDL" Offset="0x1640" />
+        <DList Name="gGaroMasterRightFootDL" Offset="0x16F0" />
+        <DList Name="gGaroMasterTorsoDL" Offset="0x1800" />
+        <DList Name="gGaroMasterHeadDL" Offset="0x1908" />
+        <DList Name="gGaroMasterRobeTopDL" Offset="0x1A18" />
+        <DList Name="gGaroMasterRobeFrontDL" Offset="0x1B00" />
+        <DList Name="gGaroMasterRobeRightDL" Offset="0x1C48" />
+        <DList Name="gGaroMasterRobeLeftDL" Offset="0x1D78" />
+        <DList Name="gGaroMasterRobeBackDL" Offset="0x1EA8" />
+        <DList Name="gGaroMasterRightArmDL" Offset="0x1FA8" />
+        <DList Name="gGaroMasterRightSwordDL" Offset="0x1FF8" />
+        <DList Name="gGaroMasterLeftArmDL" Offset="0x20B0" />
+        <DList Name="gGaroMasterLeftSwordDL" Offset="0x2100" />
+
+        <!-- Garo Master Textures -->
+        <Texture Name="gGaroMasterUnusedLegWrappingTex" OutName="garo_master_unused_leg_wrapping" Format="rgba16" Width="8" Height="16" Offset="0x21B8" /> <!-- unused duplicate of gGaroLegWrappingTex -->
+        <Texture Name="gGaroMasterRobeFrontTex" OutName="garo_master_robe_front" Format="rgba16" Width="16" Height="16" Offset="0x22B8" />
+        <Texture Name="gGaroMasterShinTex" OutName="garo_master_shin" Format="rgba16" Width="8" Height="16" Offset="0x24B8" />
+        <Texture Name="gGaroMasterDuplicateEyeTex" OutName="garo_master_duplicate_eye" Format="rgba16" Width="8" Height="8" Offset="0x25B8" /> <!-- unused duplicate of gGaroMasterEyeTex -->
+        <Texture Name="gGaroMasterSwordTex" OutName="garo_master_sword" Format="rgba16" Width="4" Height="4" Offset="0x2638" />
+        <Texture Name="gGaroMasterRobeTex" OutName="garo_master_robe" Format="rgba16" Width="8" Height="32" Offset="0x2658" />
+        <Texture Name="gGaroMasterClothingTLUT" OutName="garo_master_clothing_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2858" />
+        <Texture Name="gGaroMasterMaskTLUT" OutName="garo_master_mask_tlut" Format="rgba16" Width="16" Height="16" Offset="0x2A58" />
+        <Texture Name="gGaroMasterClothingTex" OutName="garo_master_clothing" Format="ci8" Width="16" Height="16" Offset="0x2C58" />
+        <Texture Name="gGaroMasterMaskTex" OutName="garo_master_mask" Format="ci8" Width="16" Height="16" Offset="0x2D58" />
+
+        <!-- Garo Master Eyes Texture and DisplayList -->
+        <DList Name="gGaroMasterEyesDL" Offset="0x2ED8" />
+        <Texture Name="gGaroMasterEyeTex" OutName="garo_master_eye" Format="rgba16" Width="8" Height="8" Offset="0x2FB8" />
+
+        <!-- Garo Master Limbs -->
+        <Limb Name="gGaroMasterRootLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROOT" Offset="0x3038" />
+        <Limb Name="gGaroMasterTorsoLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_TORSO" Offset="0x3044" />
+        <Limb Name="gGaroMasterLeftArmLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LEFT_ARM" Offset="0x3050" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <Limb Name="gGaroMasterLeftSwordLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LEFT_SWORD" Offset="0x305C" />
+        <Limb Name="gGaroMasterRightArmLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_RIGHT_ARM" Offset="0x3068" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <Limb Name="gGaroMasterRightSwordLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_RIGHT_SWORD" Offset="0x3074" />
+        <Limb Name="gGaroMasterRobeTopLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROBE_TOP" Offset="0x3080" />
+        <Limb Name="gGaroMasterRobeBackLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROBE_BACK" Offset="0x308C" />
+        <Limb Name="gGaroMasterRobeLeftLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROBE_LEFT" Offset="0x3098" />
+        <Limb Name="gGaroMasterRobeRightLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROBE_RIGHT" Offset="0x30A4" />
+        <Limb Name="gGaroMasterRobeFrontLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_ROBE_FRONT" Offset="0x30B0" />
+        <Limb Name="gGaroMasterHeadLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_HEAD" Offset="0x30BC" />
+        <Limb Name="gGaroMasterLowerBodyRootLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LOWER_BODY_ROOT" Offset="0x30C8" />
+        <Limb Name="gGaroMasterRightThighLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_RIGHT_THIGH" Offset="0x30D4" />
+        <Limb Name="gGaroMasterRightShinLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_RIGHT_SHIN" Offset="0x30E0" />
+        <Limb Name="gGaroMasterRightFootLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_RIGHT_FOOT" Offset="0x30EC" />
+        <Limb Name="gGaroMasterLeftThighLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LEFT_THIGH" Offset="0x30F8" />
+        <Limb Name="gGaroMasterLeftShinLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LEFT_SHIN" Offset="0x3104" />
+        <Limb Name="gGaroMasterLeftFootLimb" Type="Standard" EnumName="GARO_MASTER_LIMB_LEFT_FOOT" Offset="0x3110" />
+
+        <!-- Garo Master Skeleton -->
+        <Skeleton Name="gGaroMasterSkel" Type="Flex" LimbType="Standard" LimbNone="GARO_MASTER_LIMB_NONE" LimbMax="GARO_MASTER_LIMB_MAX" EnumName="GaroMasterLimb" Offset="0x3168" />
+
+        <!-- Garo and Garo Master Animations -->
+        <Animation Name="gGaroStaticJumpPoseAnim" Offset="0x3238" /> <!-- Unused, one-frame long animation of the Garo jumping or falling. Original name is "jsk_pose" -->
+        <Animation Name="gGaroDashAttackAnim" Offset="0x3530" /> <!-- Original name is "jso_attack1" -->
+        <Animation Name="gGaroSlashStartAnim" Offset="0x378C" /> <!-- Original name is "jso_attack2" -->
+        <Animation Name="gGaroSlashLoopAnim" Offset="0x38AC" /> <!-- Original name is "jso_attack_wait" -->
+        <Animation Name="gGaroJumpBackAnim" Offset="0x3D5C" /> <!-- Original name is "jso_back" -->
+        <Animation Name="gGaroTakeOutBombAnim" Offset="0x4018" /> <!-- Original name is "jso_bomb" -->
+        <Animation Name="gGaroLandAnim" Offset="0x4384" /> <!-- Original name is "jso_chakuchiD" ("chakuchi" = "landing", "D" is probably short for "demo") -->
+        <Animation Name="gGaroDamagedAnim" Offset="0x44F8" /> <!-- Original name is "jso_damage" -->
+        <Animation Name="gGaroGuardAnim" Offset="0x4858" /> <!-- Original name is "jso_defense" -->
+        <Animation Name="gGaroAppearAndDrawSwordsAnim" Offset="0x5778" /> <!-- Original name is "jso_demo_start" -->
+        <Animation Name="gGaroFallDownAnim" Offset="0x5D5C" /> <!-- Original name is "jso_down" -->
+        <Animation Name="gGaroKnockedBackAnim" Offset="0x603C" /> <!-- Original name is "jso_hajiku" ("repelled" or "bounced back") -->
+        <Animation Name="gGaroTrembleAnim" Offset="0x63A4" /> <!-- Original name is "jso_henahena" (onomatopoeic for "weakly; helplessly​") -->
+        <Animation Name="gGaroCollapseAnim" Offset="0x67F0" /> <!-- Original name is "jso_hetari" ("to sink down to the floor") -->
+        <Animation Name="gGaroDrawSwordsAnim" Offset="0x70BC" /> <!-- Original name is "jso_jakin" (possibly onomatopoeic for drawing a sword from a sheath) -->
+        <Animation Name="gGaroJumpDownAnim" Offset="0x71E0" /> <!-- Original name is "jso_jumpD" -->
+        <Animation Name="gGaroSpinAttackAnim" Offset="0x72AC" /> <!-- Original name is "jso_kaiten" ("rotation; turn; spin") -->
+        <Animation Name="gGaroLookAroundAnim" Offset="0x788C" /> <!-- Original name is "jso_kyoro" (onomatopoeic for "looking around restlessly") -->
+        <Animation Name="gGaroCowerAnim" Offset="0x7B04" /> <!-- Original name is "jso_ororo" (possibly onomatopoeic for "in a panic; helplessly" or "sobbing; tearfully") -->
+        <Animation Name="gGaroAppearAnim" Offset="0x81F4" /> <!-- Original name is "jso_start" -->
+
+        <!-- Garo Limb DisplayLists -->
+        <DList Name="gGaroLeftThighDL" Offset="0x8F50" />
+        <DList Name="gGaroLeftShinDL" Offset="0x9008" />
+        <DList Name="gGaroLeftFootDL" Offset="0x90C0" />
+        <DList Name="gGaroRightThighDL" Offset="0x9190" />
+        <DList Name="gGaroRightShinDL" Offset="0x9248" />
+        <DList Name="gGaroRightFootDL" Offset="0x9300" />
+        <DList Name="gGaroTorsoDL" Offset="0x93D0" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gGaroHeadDL" Offset="0x9428" />
+        <DList Name="gGaroRobeTopDL" Offset="0x94E0" />
+        <DList Name="gGaroRobeFrontDL" Offset="0x9758" />
+        <DList Name="gGaroRobeRightDL" Offset="0x98C8" />
+        <DList Name="gGaroRobeLeftDL" Offset="0x99B8" />
+        <DList Name="gGaroRobeBackDL" Offset="0x9AA8" />
+        <DList Name="gGaroRightArmDL" Offset="0x9B80" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gGaroRightSwordDL" Offset="0x9BD8" />
+        <DList Name="gGaroLeftArmDL" Offset="0x9C98" /> <!-- Renders a single triangle instead of a normal-looking limb -->
+        <DList Name="gGaroLeftSwordDL" Offset="0x9CF0" />
+
+        <!-- Garo Textures -->
+        <Texture Name="gGaroLegWrappingTex" OutName="garo_leg_wrapping" Format="rgba16" Width="8" Height="16" Offset="0x9DB0" />
+        <Texture Name="gGaroThighTex" OutName="garo_thigh" Format="rgba16" Width="8" Height="8" Offset="0x9EB0" />
+        <Texture Name="gGaroRobeFrontTex" OutName="garo_robe_front" Format="rgba16" Width="16" Height="32" Offset="0x9F30" />
+        <Texture Name="gGaroRobeTex" OutName="garo_robe" Format="rgba16" Width="16" Height="16" Offset="0xA330" />
+        <Texture Name="gGaroRobeStitchingTex" OutName="garo_robe_stitching" Format="rgba16" Width="16" Height="8" Offset="0xA530" />
+        <Texture Name="gGaroRobeTopTex" OutName="garo_robe_top" Format="rgba16" Width="8" Height="8" Offset="0xA630" />
+        <Texture Name="gGaroEyesTex" OutName="garo_eyes" Format="rgba16" Width="16" Height="16" Offset="0xA6B0" />
+        <Texture Name="gGaroSwordTex" OutName="garo_sword" Format="rgba16" Width="4" Height="4" Offset="0xA8B0" />
+
+        <!-- Garo Limbs -->
+        <Limb Name="gGaroRootLimb" Type="Standard" EnumName="GARO_LIMB_ROOT" Offset="0xA8D0" />
+        <Limb Name="gGaroTorsoLimb" Type="Standard" EnumName="GARO_LIMB_TORSO" Offset="0xA8DC" />
+        <Limb Name="gGaroLeftArmLimb" Type="Standard" EnumName="GARO_LIMB_LEFT_ARM" Offset="0xA8E8" />
+        <Limb Name="gGaroLeftSwordLimb" Type="Standard" EnumName="GARO_LIMB_LEFT_SWORD" Offset="0xA8F4" />
+        <Limb Name="gGaroRightArmLimb" Type="Standard" EnumName="GARO_LIMB_RIGHT_ARM" Offset="0xA900" />
+        <Limb Name="gGaroRightSwordLimb" Type="Standard" EnumName="GARO_LIMB_RIGHT_SWORD" Offset="0xA90C" />
+        <Limb Name="gGaroRobeTopLimb" Type="Standard" EnumName="GARO_LIMB_ROBE_TOP" Offset="0xA918" />
+        <Limb Name="gGaroRobeBackLimb" Type="Standard" EnumName="GARO_LIMB_ROBE_BACK" Offset="0xA924" />
+        <Limb Name="gGaroRobeLeftLimb" Type="Standard" EnumName="GARO_LIMB_ROBE_LEFT" Offset="0xA930" />
+        <Limb Name="gGaroRobeRightLimb" Type="Standard" EnumName="GARO_LIMB_ROBE_RIGHT" Offset="0xA93C" />
+        <Limb Name="gGaroRobeFrontLimb" Type="Standard" EnumName="GARO_LIMB_ROBE_FRONT" Offset="0xA948" />
+        <Limb Name="gGaroHeadLimb" Type="Standard" EnumName="GARO_LIMB_HEAD" Offset="0xA954" />
+        <Limb Name="gGaroLowerBodyRootLimb" Type="Standard" EnumName="GARO_LIMB_LOWER_BODY_ROOT" Offset="0xA960" />
+        <Limb Name="gGaroRightThighLimb" Type="Standard" EnumName="GARO_LIMB_RIGHT_THIGH" Offset="0xA96C" />
+        <Limb Name="gGaroRightShinLimb" Type="Standard" EnumName="GARO_LIMB_RIGHT_SHIN" Offset="0xA978" />
+        <Limb Name="gGaroRightFootLimb" Type="Standard" EnumName="GARO_LIMB_RIGHT_FOOT" Offset="0xA984" />
+        <Limb Name="gGaroLeftThighLimb" Type="Standard" EnumName="GARO_LIMB_LEFT_THIGH" Offset="0xA990" />
+        <Limb Name="gGaroLeftShinLimb" Type="Standard" EnumName="GARO_LIMB_LEFT_SHIN" Offset="0xA99C" />
+        <Limb Name="gGaroLeftFootLimb" Type="Standard" EnumName="GARO_LIMB_LEFT_FOOT" Offset="0xA9A8" />
+
+        <!-- Garo Skeleton -->
+        <Skeleton Name="gGaroSkel" Type="Flex" LimbType="Standard" LimbNone="GARO_LIMB_NONE" LimbMax="GARO_LIMB_MAX" EnumName="GaroLimb" Offset="0xAA00" />
+
+        <!-- Garo and Garo Master Animations -->
+        <Animation Name="gGaroIdleAnim" Offset="0xAE80" /> <!-- Original name is "jso_wait" -->
+        <Animation Name="gGaroLaughAnim" Offset="0xB1DC" /> <!-- Original name is "jso_waitD" -->
+        <Animation Name="gGaroBounceAnim" Offset="0xB5F0" /> <!-- Original name is "jso_walk" -->
+    </File>
+</Root>

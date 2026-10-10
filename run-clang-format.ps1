@@ -40,6 +40,13 @@ $files = Get-ChildItem -Path $basePath\soh -Recurse -File `
                       (($_.Extension -eq '.h' -or $_.Extension -eq '.hpp') -and `
                        (-not ($_.FullName -like "*\soh\src\*" -or $_.FullName -like "*\soh\include\*")))) -and `
                      (-not ($_.FullName -like "*\soh\assets\*" -or $_.FullName -like "*\soh\build\*")) }
+# 2s2h: same rules, minus .hpp (2ship never formatted those), and skipping its ZAPDTR/OTRExporter submodules
+$files += Get-ChildItem -Path $basePath\2s2h -Recurse -File `
+    | Where-Object { ($_.Extension -eq '.c' -or $_.Extension -eq '.cpp' -or `
+                      ($_.Extension -eq '.h' -and `
+                       (-not ($_.FullName -like "*\2s2h\src\*" -or $_.FullName -like "*\2s2h\include\*")))) -and `
+                     (-not ($_.FullName -like "*\2s2h\assets\*" -or $_.FullName -like "*\2s2h\ZAPDTR\*" -or `
+                            $_.FullName -like "*\2s2h\OTRExporter\*")) }
 
 for ($i = 0; $i -lt $files.Length; $i++) {
     $file = $files[$i]

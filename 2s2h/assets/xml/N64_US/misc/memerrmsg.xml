@@ -1,0 +1,6 @@
+<Root>
+	<File Name="memerrmsg" Segment="1">
+		<Texture Name="gExpansionPakNotInstalledErrorTex" OutName="expansion_pak_not_installed_error" Format="i4" Width="128" Height="37" Offset="0x0"/>
+		<Texture Name="gSeeInstructionBookletErrorTex" OutName="see_instruction_booklet_error" Format="i4" Width="128" Height="37" Offset="0x940"/>
+	</File>
+</Root>

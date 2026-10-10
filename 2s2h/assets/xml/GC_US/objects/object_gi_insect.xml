@@ -1,0 +1,12 @@
+﻿<Root>
+    <!-- Dependencies -->
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="assets/objects/gameplay_keep/"/>
+
+    <!-- Get Item Draw: Bug Container (inside a bottle) -->
+    <File Name="object_gi_insect" Segment="6">
+
+        <!-- Bug Container Display Lists -->
+        <DList Name="gGiBugContainerContentsDL" Offset="0x830" /> <!-- bug, green cover, handle -->
+        <DList Name="gGiBugContainerGlassDL" Offset="0xB20" />
+    </File>
+</Root>

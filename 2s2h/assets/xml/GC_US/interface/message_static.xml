@@ -1,0 +1,12 @@
+<Root>
+     <File Name="message_static" Segment="7">
+        <Texture Name="gMessageDefaultBackgroundTex" OutName="message_default_background" Format="ia4" Width="128" Height="64" Offset="0x0"/>
+        <Texture Name="gMessageSignBackgroundTex" OutName="message_sign_background" Format="ia4" Width="128" Height="64" Offset="0x1000"/>
+        <Texture Name="gMessageNoteStaffBackgroundTex" OutName="message_note_staff_background" Format="ia4" Width="128" Height="64" Offset="0x2000"/>
+        <Texture Name="gMessageFadingBackgroundTex" OutName="message_fading_background" Format="i4" Width="128" Height="64" Offset="0x3000"/>
+        <Texture Name="gMessageNotebookBackgroundTex" OutName="message_notebook_background" Format="i4" Width="128" Height="64" Offset="0x4000"/>
+        <Texture Name="gMessageContinueTriangleTex" OutName="message_continue_triangle" Format="i4" Width="16" Height="16" Offset="0x5000"/>
+        <Texture Name="gMessageEndSquareTex" OutName="message_end_square" Format="i4" Width="16" Height="16" Offset="0x5080"/>
+        <Texture Name="gMessageArrowTex" OutName="message_arrow" Format="i4" Width="16" Height="16" Offset="0x5100"/>
+     </File>
+</Root>

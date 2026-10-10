@@ -1,0 +1,8 @@
+<Root>
+    <ExternalFile XmlPath="objects/gameplay_field_keep.xml" OutPath="assets/objects/gameplay_field_keep/"/>
+    <File Name="ovl_Obj_Grass" BaseAddress="0x809A9110" RangeStart="0x18E0" RangeEnd="0x19F0">
+        <DList Name="gObjGrass_D_809AA9F0" Offset="0x18E0"/>
+        <DList Name="gObjGrass_D_809AAA68" Offset="0x1958"/>
+        <DList Name="gObjGrass_D_809AAAE0" Offset="0x19D0"/>
+    </File>
+</Root>
