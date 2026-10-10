@@ -49,9 +49,11 @@ jobs:
       run: |
         dkp-pacman -Sy --noconfirm || true
         for p in switch-sdl2 switch-sdl2_net switch-glad switch-mesa switch-libdrm_nouveau switch-zlib \
-                 switch-bzip2 switch-libzip switch-libogg switch-libvorbis switch-tinyxml2; do
+                 switch-bzip2 switch-libzip switch-libogg switch-libvorbis switch-libopus switch-opusfile; do
           dkp-pacman -S --needed --noconfirm "$p" || echo "::warning::portlib $p not available, will build from source"
         done
+        # tinyxml2 is built from source (11.x); devkitPro's older headers would shadow it on the include path.
+        dkp-pacman -R --noconfirm switch-tinyxml2 2>/dev/null || true
     - name: Mark workspace safe for git
       run: git config --global --add safe.directory '*'
     - uses: actions/checkout@v4

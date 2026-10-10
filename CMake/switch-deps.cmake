@@ -43,27 +43,59 @@ else()
     target_include_directories(soh SYSTEM PRIVATE ${_net_inc})
 endif()
 
-#=================== Ogg / Vorbis ===================
-find_library(SOH_SWITCH_VORBISFILE_LIB vorbisfile PATHS ${_switch_portlibs}/lib NO_DEFAULT_PATH)
-find_library(SOH_SWITCH_VORBIS_LIB vorbis PATHS ${_switch_portlibs}/lib NO_DEFAULT_PATH)
-find_library(SOH_SWITCH_OGG_LIB ogg PATHS ${_switch_portlibs}/lib NO_DEFAULT_PATH)
-if(SOH_SWITCH_VORBISFILE_LIB AND SOH_SWITCH_VORBIS_LIB AND SOH_SWITCH_OGG_LIB)
-    # Link order matters for static archives: vorbisfile -> vorbis -> ogg.
-    set(SOH_SWITCH_VORBIS_LIBRARIES ${SOH_SWITCH_VORBISFILE_LIB} ${SOH_SWITCH_VORBIS_LIB} ${SOH_SWITCH_OGG_LIB})
+#=================== Ogg / Vorbis / Opus ===================
+# Ogg+Vorbis for custom sequences, Opus+opusfile for the mixer. Either all four come from portlibs or all four
+# are built from source, so the two never mix copies of libogg.
+set(_audio_libs vorbisfile vorbis opusfile opus ogg)
+set(_have_all_audio TRUE)
+foreach(_l IN LISTS _audio_libs)
+    find_library(SOH_SWITCH_${_l}_LIB ${_l} PATHS ${_switch_portlibs}/lib NO_DEFAULT_PATH)
+    if(NOT SOH_SWITCH_${_l}_LIB)
+        set(_have_all_audio FALSE)
+    endif()
+endforeach()
+if(NOT EXISTS ${_switch_portlibs}/include/opus/opusfile.h)
+    set(_have_all_audio FALSE)
+endif()
+
+if(_have_all_audio)
+    # Static link order matters: users before the libraries they depend on.
+    set(SOH_SWITCH_VORBIS_LIBRARIES)
+    foreach(_l IN LISTS _audio_libs)
+        list(APPEND SOH_SWITCH_VORBIS_LIBRARIES ${SOH_SWITCH_${_l}_LIB})
+    endforeach()
+    # The game includes <opusfile.h> / <opus.h> without the opus/ prefix.
+    target_include_directories(soh SYSTEM PRIVATE ${_switch_portlibs}/include/opus)
 else()
-    message(STATUS "Switch: Ogg/Vorbis not in portlibs, building from source")
+    message(STATUS "Switch: Ogg/Vorbis/Opus not all in portlibs, building all from source")
     set(INSTALL_DOCS OFF CACHE BOOL "" FORCE)
     set(INSTALL_PKG_CONFIG_MODULE OFF CACHE BOOL "" FORCE)
     set(INSTALL_CMAKE_PACKAGE_MODULE OFF CACHE BOOL "" FORCE)
     set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+    set(OPUS_BUILD_PROGRAMS OFF CACHE BOOL "" FORCE)
+    set(OPUS_BUILD_TESTING OFF CACHE BOOL "" FORCE)
+    set(OPUS_INSTALL_PKG_CONFIG_MODULE OFF CACHE BOOL "" FORCE)
+    set(OPUS_INSTALL_CMAKE_CONFIG_MODULE OFF CACHE BOOL "" FORCE)
+    set(OP_DISABLE_HTTP ON CACHE BOOL "" FORCE)
+    set(OP_DISABLE_DOCS ON CACHE BOOL "" FORCE)
+    set(OP_DISABLE_EXAMPLES ON CACHE BOOL "" FORCE)
+    set(OP_DISABLE_FLOAT_API OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(Ogg
         GIT_REPOSITORY https://github.com/xiph/ogg.git
         GIT_TAG v1.3.5
         OVERRIDE_FIND_PACKAGE)
-    FetchContent_MakeAvailable(Ogg)
+    FetchContent_Declare(Opus
+        GIT_REPOSITORY https://github.com/xiph/opus.git
+        GIT_TAG v1.5.2
+        OVERRIDE_FIND_PACKAGE)
+    FetchContent_MakeAvailable(Ogg Opus)
     FetchContent_Declare(Vorbis
         GIT_REPOSITORY https://github.com/xiph/vorbis.git
         GIT_TAG v1.3.7)
-    FetchContent_MakeAvailable(Vorbis)
-    set(SOH_SWITCH_VORBIS_LIBRARIES Vorbis::vorbisfile Vorbis::vorbis Ogg::ogg)
+    FetchContent_Declare(OpusFile
+        GIT_REPOSITORY https://github.com/xiph/opusfile.git
+        # v0.12 is autotools-only; this main-branch commit adds the CMake build.
+        GIT_TAG 6dfd29e7adb87f2e193575fc3fa88cbf1a0b27df)
+    FetchContent_MakeAvailable(Vorbis OpusFile)
+    set(SOH_SWITCH_VORBIS_LIBRARIES Vorbis::vorbisfile Vorbis::vorbis OpusFile::opusfile Opus::opus Ogg::ogg)
 endif()

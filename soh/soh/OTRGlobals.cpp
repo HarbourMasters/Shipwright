@@ -1522,7 +1522,14 @@ OTRVersion DetectOTRVersion(std::string fileName, bool isMQ) {
 }
 
 extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
+#if defined(__SWITCH__)
+    // No message boxes on the Switch: show it on the text console and wait for HOME.
+    Ship::Switch::PrintErrorMessageToScreen("\x1b[2;2H%s\x1b[4;2H%s", title, body);
+#elif defined(__WIIU__)
+    SPDLOG_ERROR("{}: {}", title, body);
+#else
     Extractor::ShowErrorBox(title, body);
+#endif
 }
 
 bool VerifyArchiveVersion(OTRVersion version) {

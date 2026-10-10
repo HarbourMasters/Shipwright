@@ -126,10 +126,10 @@ index af24c702..53ddbe00 100644
  #include <GLES3/gl3.h>
 diff --git a/include/ship/port/switch/SwitchImpl.h b/include/ship/port/switch/SwitchImpl.h
 new file mode 100644
-index 00000000..badf8931
+index 00000000..7c586dd6
 --- /dev/null
 +++ b/include/ship/port/switch/SwitchImpl.h
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,34 @@
 +#pragma once
 +
 +#include <cstdint>
@@ -156,6 +156,8 @@ index 00000000..badf8931
 +    static void ImGuiProcessEvent(bool wantsTextInput);
 +    static bool IsRunning();
 +    static bool IsDocked();
++    // True if addr lies in mapped memory (stands in for dladdr, which doesn't exist on the Switch).
++    static bool IsAddressMapped(uintptr_t addr);
 +    static void GetDisplaySize(int* width, int* height);
 +    static void ApplyOverclock();
 +    static void ThrowMissingOTR(const std::string& otrPath);
@@ -356,6 +358,31 @@ index 15c5415f..dabdb8e7 100644
      // TODO: destroy _any_ resources used by SDL
      SDL_GL_DeleteContext(mCtx);
      SDL_DestroyWindow(mWnd);
+diff --git a/src/fast/interpreter.cpp b/src/fast/interpreter.cpp
+index 2b51ad7f..d3810181 100644
+--- a/src/fast/interpreter.cpp
++++ b/src/fast/interpreter.cpp
+@@ -7,7 +7,9 @@
+ #include <stdbool.h>
+ #include <assert.h>
+ #include <stdio.h>
+-#ifndef _WIN32
++#if defined(__SWITCH__)
++#include "ship/port/switch/SwitchImpl.h"
++#elif !defined(_WIN32)
+ #include <dlfcn.h>
+ #endif
+ 
+@@ -3974,6 +3976,9 @@ static bool IsValidResolvedAddress(uintptr_t addr) {
+     HMODULE module = nullptr;
+     return GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                               reinterpret_cast<LPCSTR>(addr), &module) != 0;
++#elif defined(__SWITCH__)
++    // No dynamic loader on the Switch; ask the kernel whether anything is mapped there.
++    return Ship::Switch::IsAddressMapped(addr);
+ #else
+     // For non-Windows platforms, check whether the address belongs to a loaded object.
+     Dl_info info;
 diff --git a/src/ship/CMakeLists.txt b/src/ship/CMakeLists.txt
 index e37a3a1d..f66c108c 100644
 --- a/src/ship/CMakeLists.txt
@@ -408,10 +435,10 @@ index 361a1f75..e4db06d7 100644
  
 diff --git a/src/ship/port/switch/SwitchImpl.cpp b/src/ship/port/switch/SwitchImpl.cpp
 new file mode 100644
-index 00000000..ac9260eb
+index 00000000..c3bbdba2
 --- /dev/null
 +++ b/src/ship/port/switch/SwitchImpl.cpp
-@@ -0,0 +1,263 @@
+@@ -0,0 +1,272 @@
 +#ifdef __SWITCH__
 +#include "ship/port/switch/SwitchImpl.h"
 +
@@ -629,6 +656,15 @@ index 00000000..ac9260eb
 +
 +bool Ship::Switch::IsDocked() {
 +    return appletGetOperationMode() == AppletOperationMode_Console;
++}
++
++bool Ship::Switch::IsAddressMapped(uintptr_t addr) {
++    MemoryInfo info = {};
++    u32 pageInfo = 0;
++    if (R_FAILED(svcQueryMemory(&info, &pageInfo, addr))) {
++        return false;
++    }
++    return (info.type & MemState_Type) != MemType_Unmapped;
 +}
 +
 +void Ship::Switch::GetDisplaySize(int* width, int* height) {
