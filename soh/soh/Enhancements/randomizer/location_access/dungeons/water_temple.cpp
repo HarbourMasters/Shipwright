@@ -254,11 +254,11 @@ void RegionTable_Init_WaterTemple() {
         //Implies CanAvoid(RE_STINGER)
         //the full logic for the puzzle, as it is cut down here for optimisation because of how the water rising starts requiring scale
         //EVENT_ACCESS(LOGIC_WATER_PUSHED_B1_BLOCK, logic->HasItem(RG_GORONS_BRACELET) && logic->HasExplosives() &&
-        //                                                   (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logiic->BunnyHood()))),
+        //                                                   (logic->CanUse(RG_HOOKSHOT) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood()))),
     }, {
         //Locations                                           //we can always get the pots by shooting them from afar and diving for the item...
         LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_1, (logic->CanBreakPots(ED_LONGSHOT, true, true) && logic->HasItem(RG_BRONZE_SCALE)) ||
-                                                              //or we can use irons and hookshot the pot, hookshoting to the target door if needed to cross the gap
+                                                              //or we can use irons and hookshot the pot, hookshotting to the target door if needed to cross the gap
                                                               (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8)),
         LOCATION(RC_WATER_TEMPLE_BASEMENT_BLOCK_PUZZLE_POT_2, (logic->CanBreakPots(ED_LONGSHOT, true, true) && logic->HasItem(RG_BRONZE_SCALE)) ||
                                                               (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8)),
@@ -1113,7 +1113,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,  logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
-        //you can also make it with hover boots and good timing, using the momentom of the slope, but it's a trick
+        //you can also make it with hover boots and good timing, using the momentum of the slope, but it's a trick
         ENTRANCE(RR_WATER_TEMPLE_MQ_WATERFALL,   logic->CanUse(RG_LONGSHOT) && logic->CanHitSwitch(ED_FAR)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_STALFOS_PIT, true),
     });
@@ -1133,7 +1133,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_STALFOS_PIT,       logic->CanUse(RG_HOOKSHOT) && (logic->IsAdult || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8))),
         //Child can use the second method (going via the wall target near the half raised target) with bunny hood, but while the first jump is just wall assisted, the second is inconsistent
-        //It is also possible for them to jump around the statue with bunny, or even climb up sometimes. This needs more investigation before catagorisation as they also seem inconsistent without a setup
+        //It is also possible for them to jump around the statue with bunny, or even climb up sometimes. This needs more investigation before categorisation as they also seem inconsistent without a setup
         ENTRANCE(RR_WATER_TEMPLE_MQ_STALFOS_PIT_POTS,  (logic->IsAdult && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_HOOKSHOT) && (logic->IsAdult || logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) && (logic->CanUse(RG_HOVER_BOOTS) || logic->Get(LOGIC_WATER_MQ_STALFOS_PIT)))),
         ENTRANCE(RR_WATER_TEMPLE_MQ_STALFOS_PIT_UPPER, logic->Get(LOGIC_WATER_MQ_STALFOS_PIT) && (logic->IsAdult || logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8) && logic->CanUse(RG_HOOKSHOT)),
     });

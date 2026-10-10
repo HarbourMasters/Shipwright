@@ -447,7 +447,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_MQ_DUNGEON_RANDOM, {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeons"), WIDGET_CVAR_COMBOBOX, RO_MQ_DUNGEONS_NONE, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_RANDOM, {
         switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE)) {
-            // If No MQ Dungeons, add a separator after the combobx and hide
+            // If No MQ Dungeons, add a separator after the combobox and hide
             // the count slider and the toggle for individual dungeon selections.
             case RO_MQ_DUNGEONS_NONE:
                 mOptions[RSK_MQ_DUNGEON_COUNT].Hide();
@@ -1097,7 +1097,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_LOACH_HINT].Enable();
         } else {
             mOptions[RSK_LOACH_HINT].Disable(
-                "Loach hint is only avaliable with \"Fishsanity\" set to \"Shuffle only Hyrule Loach\"\nas that's the only "
+                "Loach hint is only available with \"Fishsanity\" set to \"Shuffle only Hyrule Loach\"\nas that's the only "
                 "setting where you present the loach to the fishing pond owner.");
         }
     });
@@ -2770,7 +2770,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                     mqSet += 1;
                     break;
                 case RO_MQ_SET_RANDOM:
-                    // 50% per dungeon, rolled separatly so people can either have a linear distribtuion
+                    // 50% per dungeon, rolled separately so people can either have a linear distribution
                     // or a bell curve for the number of MQ dungeons per seed.
                     if (Random(0, 2)) {
                         dungeon->SetMQ();
@@ -2814,7 +2814,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             }
             // otherwise, every dungeon is possible
         } else {
-            // if count is MAX_MQ_DUNGEON_COUNT, we know everything is MQ, so can skip some setps and not set Known
+            // if count is MAX_MQ_DUNGEON_COUNT, we know everything is MQ, so can skip some steps and not set Known
             if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_SET_NUMBER) && mqCount == MAX_MQ_DUNGEON_COUNT) {
                 randMQOption.resize(MAX_MQ_DUNGEON_COUNT);
                 for (int i = 0; i < MAX_MQ_DUNGEON_COUNT; i++) {
