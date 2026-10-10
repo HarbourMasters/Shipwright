@@ -13,7 +13,7 @@
 
 // Randomizer tricks and glitches (beta) based on knowledge of what is achievable in Ship of Harkinian randomizer,
 // excludes Item manipulation (e.g. RBA/GIM/SRM) and Wrong Warping and Ganon BK Skip
-// TODO Fill and alphabetize (area based tricks must have area in name and come alphetized after general tricks)
+// TODO Fill and alphabetize (area based tricks must have area in name and come alphabetized after general tricks)
 // TODO test commented out tricks to see if consistent with console on SoH
 // TODO add area specific tricks
 RANDO_ENUM_BEGIN(RandomizerTrick)

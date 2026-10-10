@@ -1048,7 +1048,7 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // RANDOTODO make a function to track our ammo vs his HP when ammo capacity is taken into account in logic
             //  all swords can at least trade blows with dark link, and even with 1 damage a slash it works out
             return CanUseSword() ||
-                   // Boomerang is a relaible, infinite ammo stun, so it enables any way to get enough damage with the
+                   // Boomerang is a reliable, infinite ammo stun, so it enables any way to get enough damage with the
                    // ammo we have Max HP dark link has 40 HP, bows and bombs do 2 so 20 ammo, stick jumpslash does 4 so
                    // 10 sticks
                    (CanUse(RG_BOOMERANG) &&
@@ -1178,7 +1178,7 @@ bool Logic::CanPassEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
 }
 
 // Can we avoid this enemy while climbing up a wall, or doing a difficult platforming challenge?
-// use grounded if the challenge is such that the enemy interfears even if it cannot hit link out of the air
+// use grounded if the challenge is such that the enemy interferes even if it cannot hit link out of the air
 bool Logic::CanAvoidEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool grounded, uint8_t quantity) {
     // DISTANCE AND WALL ASSUMED, add more arguments later if needed
     if (CanKillEnemy(enemy, distance, true, quantity)) {
@@ -1430,7 +1430,7 @@ bool Logic::WaterRisingTargetTo3FCentral() {
  * changed out of logic
  *
  * Extending from these 3, LOGIC_WATER_COULD_LOW_FROM_HIGH and LOGIC_WATER_COULD_HIGH_FROM_MID tell us if we can move
- * from 1 level to the next, without us first having to confirm we can always do the preceeding level first. These allow
+ * from 1 level to the next, without us first having to confirm we can always do the preceding level first. These allow
  * us to check for conditions where we can complete a water level loop and reach any level from any level before we know
  * for sure we have real access. MIDDLE_EMBLEM always requires low water, so FROM_LOW is implied in
  * LOGIC_WATER_COULD_MIDDLE.
@@ -1763,7 +1763,7 @@ uint16_t Logic::FireTimer() {
 }
 
 // Tunic is not required if you are using irons to do something that a simple gold scale dive could do, and you are not
-// in water temple. (celing swimming and long walks through water do not count)
+// in water temple. (ceiling swimming and long walks through water do not count)
 uint16_t Logic::WaterTimer() {
     if (CanUse(RG_ZORA_TUNIC)) {
         return UINT16_MAX;

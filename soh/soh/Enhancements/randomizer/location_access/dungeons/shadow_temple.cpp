@@ -716,7 +716,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_DOOR_PLATFORM, (((ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(logic->IsAdult && AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) ? RG_HOOKSHOT : RG_LONGSHOT)) &&
                                                             //regardless, we can't assume the player does not have the silvers, so we need to cross from the glass to the platform with hovers or a jumpslash jump (as adult)
                                                             (logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanJumpslash()))) ||
-                                                            //alternativly, a middair groundjump from the invisible spikes takes adult directly there
+                                                            //alternatively, a midair groundjump from the invisible spikes takes adult directly there
                                                            ((ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->IsAdult && logic->CanMiddairGroundJump()))
         });
 

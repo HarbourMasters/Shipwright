@@ -630,7 +630,7 @@ void RegionTable_Init_FireTemple() {
         //Only adult is tall enough to use a bow shot without climbing to UPPER
         //Logical ways to cross are hovers, longshot or running through the lava and then climbing back up as adult (child can't reach the ledge).
         //The Damage logic here is for jumping down and running across the lava to get in dins range of the south torch
-        //Fairies cannot be used for this as it is time sensetive, and NL is only useful with sticks as it disables other magic while in use, so it's tunic or raw damage taking ability.
+        //Fairies cannot be used for this as it is time sensitive, and NL is only useful with sticks as it disables other magic while in use, so it's tunic or raw damage taking ability.
         //testing tells me you take 3 ticks of lava damage, which is 12 internal damage or 3/4 of a heart at x1 damage multiplier, performing this run
         LOCATION(RC_FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,      logic->CanUse(RG_DINS_FIRE) && logic->HasItem(RG_OPEN_CHEST) &&
                                                                        (logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_LONGSHOT) ||
