@@ -112,8 +112,40 @@ jobs:
         cp build-switch/soh/soh.nro package/switch/soh/soh.nro
         cp switch/README.md package/README-Switch.txt
         ls -la package/switch/soh
+    - name: Verify soh.nro
+      shell: bash
+      run: |
+        nro=package/switch/soh/soh.nro
+        magic=$(dd if="$nro" bs=1 skip=16 count=4 2>/dev/null)
+        [ "$magic" = "NRO0" ] || { echo "::error::soh.nro has no NRO0 header (got '$magic')"; exit 1; }
+        grep -aq "Ship of Harkinian" "$nro" || { echo "::error::soh.nro is missing its NACP title"; exit 1; }
+        [ -s package/switch/soh/soh.o2r ] || { echo "::error::soh.o2r missing from package"; exit 1; }
+        echo "::notice title=soh.nro::NRO0 header ok, $(stat -c%s "$nro") bytes; soh.o2r $(stat -c%s package/switch/soh/soh.o2r) bytes; built from $GITHUB_SHA"
     - uses: actions/upload-artifact@v4
       with:
         # Unzip onto the root of the SD card: it creates /switch/soh/.
         name: SoH-Dewey-Alpha-Switch
         path: package
+
+  # Publish each green build as a pre-release on this fork: one zip to extract onto the SD card root.
+  publish:
+    needs: build-switch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: SoH-Dewey-Alpha-Switch
+        path: package
+    - name: Create release
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TAG: ${{ github.ref_name }}-latest
+      run: |
+        (cd package && zip -r ../SoH-Dewey-Alpha-Switch.zip .)
+        gh release delete "$TAG" -R "$GITHUB_REPOSITORY" --cleanup-tag -y || true
+        gh release create "$TAG" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
+          --title "SoH 9.3.0 Dewey Alpha for Switch (unofficial, ${GITHUB_SHA::7})" \
+          --notes-file package/README-Switch.txt \
+          SoH-Dewey-Alpha-Switch.zip
