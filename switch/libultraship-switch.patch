@@ -437,10 +437,10 @@ index 361a1f75..e4db06d7 100644
  
 diff --git a/src/ship/port/switch/SwitchImpl.cpp b/src/ship/port/switch/SwitchImpl.cpp
 new file mode 100644
-index 00000000..c3bbdba2
+index 00000000..ba38d390
 --- /dev/null
 +++ b/src/ship/port/switch/SwitchImpl.cpp
-@@ -0,0 +1,272 @@
+@@ -0,0 +1,280 @@
 +#ifdef __SWITCH__
 +#include "ship/port/switch/SwitchImpl.h"
 +
@@ -479,6 +479,7 @@ index 00000000..c3bbdba2
 +static bool sIsShowingVirtualKeyboard = false;
 +static bool sClkrstInitialized = false;
 +static bool sSocketsInitialized = false;
++static bool sPlInitialized = false;
 +
 +static const char* sRandomTexts[] = {
 +    "Psst, don't forget to blame Melon",
@@ -595,6 +596,10 @@ index 00000000..c3bbdba2
 +        pcvExit();
 +    }
 +    appletUnhook(&sAppletHookCookie);
++    if (sPlInitialized) {
++        plExit();
++        sPlInitialized = false;
++    }
 +    appletSetGamePlayRecordingState(false);
 +    if (sSocketsInitialized) {
 +        socketExit();
@@ -603,8 +608,14 @@ index 00000000..c3bbdba2
 +}
 +
 +void Ship::Switch::ImGuiSetupFont(ImFontAtlas* fonts) {
-+    if (R_FAILED(plInitialize(PlServiceType_User))) {
-+        return;
++    // The shared font lives in memory owned by the pl service, and ImGui reads it lazily (on the first frame and
++    // again whenever the game adds fonts and the atlas is rebuilt). plExit() unmaps it, so the service has to stay
++    // open until the app exits; closing it here made the first atlas build read unmapped memory and crash.
++    if (!sPlInitialized) {
++        if (R_FAILED(plInitialize(PlServiceType_User))) {
++            return;
++        }
++        sPlInitialized = true;
 +    }
 +
 +    PlFontData fontStd;
@@ -631,9 +642,6 @@ index 00000000..c3bbdba2
 +        strcpy(config.Name, "Nintendo Ext");
 +        fonts->AddFontFromMemoryTTF(fontExt.address, fontExt.size, 13.0f, &config, ranges);
 +    }
-+
-+    // The shared font memory stays mapped after plExit, so the atlas can keep pointing at it.
-+    plExit();
 +}
 +
 +void Ship::Switch::ImGuiProcessEvent(bool wantsTextInput) {
