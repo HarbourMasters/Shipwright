@@ -175,6 +175,59 @@ target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(OTRExporter)
+
+################################################################################
+# RandoLogicScript
+################################################################################
+
+set(
+    SHIPWRIGHT_RLS_LOGIC_DIR
+    "${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Enhancements/randomizer/logic"
+)
+
+set(
+    SHIPWRIGHT_RLS_COMPILER_DIR
+    "${SHIPWRIGHT_RLS_LOGIC_DIR}/RandoLogicScript"
+)
+
+set(
+    SHIPWRIGHT_RLS_GENERATED_DIR
+    "${SHIPWRIGHT_RLS_LOGIC_DIR}/generated/soh"
+    CACHE PATH
+    "Directory containing RLS-generated Shipwright logic"
+)
+
+if(NOT EXISTS "${SHIPWRIGHT_RLS_LOGIC_DIR}/cmake/RandoLogic.cmake")
+    message(FATAL_ERROR
+        "The ShipOfHarkinian-RandoLogic submodule is not initialized:\n"
+        "  ${SHIPWRIGHT_RLS_LOGIC_DIR}\n"
+        "\n"
+        "Run from the Shipwright repository:\n"
+        "  git submodule update --init --recursive"
+    )
+endif()
+
+include(
+    "${SHIPWRIGHT_RLS_LOGIC_DIR}/cmake/RandoLogic.cmake"
+)
+
+rls_add_logic_generation(
+    LOGIC_DIR
+        "${SHIPWRIGHT_RLS_LOGIC_DIR}"
+
+    COMPILER_DIR
+        "${SHIPWRIGHT_RLS_COMPILER_DIR}"
+
+    OUTPUT_DIR
+        "${SHIPWRIGHT_RLS_GENERATED_DIR}"
+
+    TRANSPILER
+        "soh"
+
+    TARGET_PREFIX
+        "shipwright-rls"
+)
+
 add_subdirectory(soh)
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
