@@ -15,10 +15,10 @@ index 08cc7915..034cff06 100644
      include(cmake/ios-toolchain-populate.cmake)
 diff --git a/cmake/dependencies/switch.cmake b/cmake/dependencies/switch.cmake
 new file mode 100644
-index 00000000..68604c6f
+index 00000000..beac4e49
 --- /dev/null
 +++ b/cmake/dependencies/switch.cmake
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,93 @@
 +# Nintendo Switch (devkitA64 + libnx) dependencies.
 +#
 +# Prefer devkitPro's portlibs. Anything not provided there (or provided without a CMake config) is
@@ -66,7 +66,9 @@ index 00000000..68604c6f
 +target_link_libraries(ImGui PUBLIC glad::glad SDL2::SDL2)
 +target_include_directories(ImGui PRIVATE ${SWITCH_PORTLIBS_INCLUDE})
 +# ImGui's bundled GL loader dlopens libGL, which doesn't exist on the Switch; use glad instead.
-+target_compile_definitions(ImGui PRIVATE IMGUI_IMPL_OPENGL_LOADER_CUSTOM)
++target_compile_definitions(ImGui PRIVATE IMGUI_IMPL_OPENGL_LOADER_CUSTOM
++    # The default "open in shell" handler uses fork/execvp/waitpid, which Horizon doesn't provide.
++    IMGUI_DISABLE_DEFAULT_SHELL_FUNCTIONS)
 +set_source_files_properties(${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 +    PROPERTIES COMPILE_OPTIONS "-include;glad/glad.h")
 +
