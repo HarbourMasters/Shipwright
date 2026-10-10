@@ -86,6 +86,7 @@ class Entrance {
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
     bool DoesSpreadAreas();
+    void SetSpreadAreas(bool spreadAreas);
     const std::string& GetConditionStr() const;
 
   private:

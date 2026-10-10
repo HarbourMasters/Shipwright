@@ -7,3 +7,6 @@
 [submodule "OTRExporter"]
 	path = OTRExporter
 	url = https://github.com/harbourmasters/OTRExporter
+[submodule "soh/soh/Enhancements/randomizer/logic"]
+	path = soh/soh/Enhancements/randomizer/logic
+	url = https://github.com/xxAtrain223/ShipOfHarkinian-RandoLogic.git

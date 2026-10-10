@@ -13,7 +13,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v6
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -81,7 +81,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v6
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -157,7 +157,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v6
       with:
-        submodules: true
+        submodules: recursive
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -275,7 +275,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v6
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure sccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
