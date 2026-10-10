@@ -15,10 +15,10 @@ index 08cc7915..034cff06 100644
      include(cmake/ios-toolchain-populate.cmake)
 diff --git a/cmake/dependencies/switch.cmake b/cmake/dependencies/switch.cmake
 new file mode 100644
-index 00000000..beac4e49
+index 00000000..b414256a
 --- /dev/null
 +++ b/cmake/dependencies/switch.cmake
-@@ -0,0 +1,93 @@
+@@ -0,0 +1,106 @@
 +# Nintendo Switch (devkitA64 + libnx) dependencies.
 +#
 +# Prefer devkitPro's portlibs. Anything not provided there (or provided without a CMake config) is
@@ -71,6 +71,19 @@ index 00000000..beac4e49
 +    IMGUI_DISABLE_DEFAULT_SHELL_FUNCTIONS)
 +set_source_files_properties(${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 +    PROPERTIES COMPILE_OPTIONS "-include;glad/glad.h")
++
++# ImGui scrolls whichever window has focus with the left stick once it passes a hard-coded 8000/32767 (~24%) dead
++# zone. Worn Joy-Cons commonly drift past that, which makes open menus scroll down on their own, and controller
++# navigation is always on for the Switch. Raise the menu dead zone to ~50%; gameplay input has its own dead zones.
++set(_imgui_sdl2_backend ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl2.cpp)
++file(READ ${_imgui_sdl2_backend} _imgui_sdl2_src)
++string(REPLACE "const int thumb_dead_zone = 8000;" "const int thumb_dead_zone = 16384; // Switch: tolerate stick drift"
++       _imgui_sdl2_src_patched "${_imgui_sdl2_src}")
++if(NOT _imgui_sdl2_src_patched STREQUAL _imgui_sdl2_src)
++    file(WRITE ${_imgui_sdl2_backend} "${_imgui_sdl2_src_patched}")
++elseif(NOT _imgui_sdl2_src MATCHES "Switch: tolerate stick drift")
++    message(WARNING "Switch: couldn't find ImGui's SDL2 gamepad dead zone to raise; menus may scroll with stick drift")
++endif()
 +
 +#=================== Libraries with source fallbacks ===================
 +find_package(ZLIB REQUIRED)
