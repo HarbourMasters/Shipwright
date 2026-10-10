@@ -83,11 +83,17 @@ jobs:
       shell: bash
       run: |
         [ -f switch-build.log ] || exit 0
-        # Error lines plus a little context, de-duplicated, in chunks GitHub accepts as annotations.
-        grep -nE -B2 -A3 "error:|Error|CMake Error|undefined reference|FAILED:|not found|No such file" switch-build.log \
-          | grep -v "^--$" | awk '!seen[$0]++' | head -n 600 > errors.txt || true
+        # Compiler command lines are huge and useless here; keep diagnostics only.
+        grep -vE "^(ccache |/opt/devkitpro/.*-(gcc|g\+\+) )" switch-build.log > diag.log || true
+        {
+          echo "FAILED TARGETS:"; grep -E "^FAILED:" diag.log | sort -u
+          echo; echo "FIRST ERROR PER FILE:"
+          grep -E "(error|Error):|undefined reference|CMake Error" diag.log | awk -F: '!seen[$1]++' 
+          echo; echo "ALL ERROR LINES:"
+          grep -E -A2 "(fatal )?error:|undefined reference|CMake Error" diag.log | grep -v "^--$" | awk '!seen[$0]++'
+        } | cut -c1-400 | head -n 900 > errors.txt
         [ -s errors.txt ] || tail -n 120 switch-build.log > errors.txt
-        split -l 60 errors.txt chunk_
+        split -l 90 errors.txt chunk_
         n=0
         for f in chunk_*; do
           n=$((n+1)); [ $n -gt 10 ] && break

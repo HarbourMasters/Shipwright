@@ -167,6 +167,11 @@ endif()
 # soh/Extractor {{{
 list(FILTER ship__ EXCLUDE REGEX "soh/Extractor/*")
 
+if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    # The ROM extractor (Torch) only exists on PC builds.
+    list(FILTER soh__ EXCLUDE REGEX "soh/Extractor/")
+endif()
+
 if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     file(GLOB_RECURSE soh__Extractor CONFIGURE_DEPENDS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "soh/Extractor/*.c"
@@ -527,8 +532,12 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
+                # GCC 14+ made these errors by default; the decomp's C relies on N64-era pointer/int mixing.
+                -Wno-int-conversion
+                -Wno-error=return-mismatch
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
+            -include ${CMAKE_SOURCE_DIR}/switch/switch_compat.h
             $<$<COMPILE_LANGUAGE:CXX>:
                 -Wno-c++11-narrowing
                 -Wno-deprecated-enum-enum-conversion

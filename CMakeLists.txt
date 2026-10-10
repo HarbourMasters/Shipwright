@@ -233,6 +233,10 @@ if(NOT spdlog_FOUND)
     )
     FetchContent_MakeAvailable(spdlog)
 endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch" AND TARGET spdlog)
+    # spdlog builds with -std=c++NN (no GNU extensions), which hides newlib's POSIX stdio (putc_unlocked).
+    set_target_properties(spdlog PROPERTIES CXX_EXTENSIONS ON)
+endif()
 
 set(USE_STANDALONE          OFF CACHE BOOL "" FORCE)  # static lib, no CLI
 set(PORT_VERSION_ENDIANNESS ON  CACHE BOOL "" FORCE)  # 7-byte portVersion
