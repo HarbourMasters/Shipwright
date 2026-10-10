@@ -126,6 +126,14 @@ jobs:
         # Unzip onto the root of the SD card: it creates /switch/soh/.
         name: SoH-Dewey-Alpha-Switch
         path: package
+    - name: Keep symbols for crash reports
+      # The .nro is built from this ELF (linked at address 0), so offsets in an Atmosphere crash report for the
+      # soh module map straight onto it with addr2line.
+      run: xz -T0 -c build-switch/soh/soh.elf > soh.elf.xz
+    - uses: actions/upload-artifact@v4
+      with:
+        name: soh-elf
+        path: soh.elf.xz
 
   # Publish each green build as a pre-release on this fork: one zip to extract onto the SD card root.
   publish:
@@ -138,6 +146,10 @@ jobs:
       with:
         name: SoH-Dewey-Alpha-Switch
         path: package
+    - uses: actions/download-artifact@v4
+      with:
+        name: soh-elf
+        path: .
     - name: Create release
       env:
         GH_TOKEN: ${{ github.token }}
@@ -148,4 +160,4 @@ jobs:
         gh release create "$TAG" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
           --title "SoH 9.3.0 Dewey Alpha for Switch (unofficial, ${GITHUB_SHA::7})" \
           --notes-file package/README-Switch.txt \
-          SoH-Dewey-Alpha-Switch.zip
+          SoH-Dewey-Alpha-Switch.zip soh.elf.xz
