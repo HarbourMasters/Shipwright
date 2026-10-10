@@ -24,6 +24,28 @@ extern "C" {
 #include <vorbis/codec.h>
 #include "vorbis/vorbisfile.h"
 #include <tinyxml2.h>
+#include <thread>
+
+#ifdef __SWITCH__
+#include <BS_thread_pool.hpp>
+
+// Custom-format samples (mp3/ogg/flac) are decoded in the background. On PC each gets its own detached
+// std::thread, but on the Switch that crashes: libnx's pthread_detach is an empty stub, so
+// std::thread::detach() throws and the joinable thread's destructor calls std::terminate. A process also
+// only gets a small number of kernel threads, which a music mod with many samples would exhaust.
+// Decode on a small fixed pool instead (two workers, leaving a core for the game and audio threads).
+static BS::thread_pool& SampleDecoderPool() {
+    static BS::thread_pool pool(2);
+    return pool;
+}
+template <typename Fn, typename... Args> static void StartSampleDecoder(Fn fn, Args... args) {
+    SampleDecoderPool().detach_task([=]() { fn(args...); });
+}
+#else
+template <typename Fn, typename... Args> static void StartSampleDecoder(Fn fn, Args... args) {
+    std::thread(fn, args...).detach();
+}
+#endif
 
 struct OggFileData {
     void* data;
@@ -314,16 +336,13 @@ ResourceFactoryXMLAudioSampleV0::ReadResource(std::shared_ptr<Ship::File> file,
             drwav_read_pcm_frames_s16(&wav, numFrames, (int16_t*)audioSample->sample.sampleAddr);
             return audioSample;
         } else if (strcmp(customFormatStr, "mp3") == 0) {
-            std::thread fileDecoderThread = std::thread(Mp3DecoderWorker, audioSample, sampleFile);
-            fileDecoderThread.detach();
+            StartSampleDecoder(Mp3DecoderWorker, audioSample, sampleFile);
             return audioSample;
         } else if (strcmp(customFormatStr, "ogg") == 0) {
-            std::thread fileDecoderThread = std::thread(OggDecoderWorker, audioSample, sampleFile, initData);
-            fileDecoderThread.detach();
+            StartSampleDecoder(OggDecoderWorker, audioSample, sampleFile, initData);
             return audioSample;
         } else if (strcmp(customFormatStr, "flac") == 0) {
-            std::thread fileDecoderThread = std::thread(FlacDecoderWorker, audioSample, sampleFile);
-            fileDecoderThread.detach();
+            StartSampleDecoder(FlacDecoderWorker, audioSample, sampleFile);
             return audioSample;
         }
     }
