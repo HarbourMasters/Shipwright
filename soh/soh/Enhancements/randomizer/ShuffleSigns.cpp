@@ -63,7 +63,8 @@ void Sign_RandomizerDrawSetup(void* actor) {
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(signActor);
-    if (signIdentity == nullptr) {
+    if (signIdentity == nullptr ||
+        Rando::Context::GetInstance()->GetItemLocation(signIdentity->randomizerCheck)->IsExcluded()) {
         return;
     }
 
