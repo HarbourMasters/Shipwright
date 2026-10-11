@@ -313,8 +313,10 @@ void EnTest_Init(Actor* thisx, PlayState* play) {
 void EnTest_Destroy(Actor* thisx, PlayState* play) {
     EnTest* this = (EnTest*)thisx;
 
-    if ((this->actor.params != STALFOS_TYPE_2) &&
-        !Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f)) {
+    if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC,
+                              (this->actor.params != STALFOS_TYPE_2) &&
+                                  !Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f),
+                              &this->actor)) {
         func_800F5B58();
     }
 
@@ -442,7 +444,7 @@ void EnTest_WaitGround(EnTest* this, PlayState* play) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
 
-        if (this->actor.params != STALFOS_TYPE_2) {
+        if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC_TEST, this->actor.params != STALFOS_TYPE_2, this)) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
         }
     } else {

@@ -265,7 +265,9 @@ void EnGeldB_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnGeldB* this = (EnGeldB*)thisx;
 
-    func_800F5B58();
+    if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC, true, &this->actor)) {
+        func_800F5B58();
+    }
     Effect_Delete(play, this->blureIndex);
     Collider_DestroyTris(play, &this->blockCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
@@ -365,7 +367,7 @@ void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
     } else {
         this->invisible = false;
         this->actor.shape.shadowScale = 90.0f;
-        if (GameInteractor_Should(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, true, this)) {
+        if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC_GELDB, true, this)) {
             func_800F5ACC(NA_BGM_MINI_BOSS);
         }
     }
@@ -1340,7 +1342,9 @@ void EnGeldB_Defeated(EnGeldB* this, PlayState* play) {
         EnGeldB_SetupFlee(this);
     } else if ((s32)this->skelAnime.curFrame == 10) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
-        func_800F5B58();
+        if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC, true, &this->actor)) {
+            func_800F5B58();
+        }
     }
 }
 
