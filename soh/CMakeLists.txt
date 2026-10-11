@@ -132,6 +132,15 @@ source_group("include" FILES ${Header_Files__include})
 # soh (root)
 file(GLOB_RECURSE soh__ CONFIGURE_DEPENDS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h" "soh/*.hpp")
 
+# The logic repository contains the nested RLS compiler, including many C++
+# source files that must not be compiled as part of the Shipwright executable.
+# Generated sources are added explicitly below.
+list(
+    FILTER soh__
+    EXCLUDE REGEX
+    "^soh/Enhancements/randomizer/logic/"
+)
+
 # Add specific files that don't match the pattern
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
 
@@ -221,12 +230,27 @@ set(ALL_FILES
     ${soh__}
     ${soh__Extractor}
     ${src__}
+    ${RLS_GENERATED_SOURCES}
+    ${RLS_GENERATED_HEADERS}
 )
 
 ################################################################################
 # Target
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
+
+if(NOT RLS_GENERATION_TARGET)
+    message(FATAL_ERROR
+        "The Shipwright RLS generation target was not configured. "
+        "RandoLogic.cmake must be included by the root CMakeLists.txt "
+        "before add_subdirectory(soh)."
+    )
+endif()
+
+add_dependencies(
+    ${PROJECT_NAME}
+    "${RLS_GENERATION_TARGET}"
+)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
@@ -327,6 +351,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
     ${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
     ${dr_libs_SOURCE_DIR}
+    ${RLS_GENERATED_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/randomizer
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
