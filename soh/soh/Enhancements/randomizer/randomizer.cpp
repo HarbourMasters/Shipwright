@@ -254,8 +254,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         return Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
     }
 
-    if (Rando::StaticData::RandoGetToRandInf.find(randoGet) != Rando::StaticData::RandoGetToRandInf.end()) {
-        return Flags_GetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(randoGet)->second)
+    if (Rando::StaticData::RandoGetToRandInf[randoGet] != RAND_INF_MAX) {
+        return Flags_GetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf[randoGet])
                    ? CANT_OBTAIN_ALREADY_HAVE
                    : CAN_OBTAIN;
     }
@@ -605,7 +605,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_GERUDO_FORTRESS_SMALL_KEY:
         case RG_GANONS_CASTLE_SMALL_KEY:
         case RG_TREASURE_GAME_SMALL_KEY: {
-            SceneID scene = Rando::Logic::RandoGetToDungeonScene.find(randoGet)->second;
+            SceneID scene = Rando::Logic::RandoGetToDungeonScene[randoGet];
             return Rando::GetSceneTotalSmallKeys(&gSaveContext, scene) < Rando::GetSceneSmallKeyMax(scene)
                        ? CAN_OBTAIN
                        : CANT_OBTAIN_ALREADY_HAVE;
@@ -1163,8 +1163,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     // if it's an item that just sets a randomizerInf, set it
-    if (Rando::StaticData::RandoGetToRandInf.find(item) != Rando::StaticData::RandoGetToRandInf.end()) {
-        Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(item)->second);
+    if (Rando::StaticData::RandoGetToRandInf[item] != RAND_INF_MAX) {
+        Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf[item]);
         if (item == RG_SKELETON_KEY) {
             // This isn't technically necessary, because keys will no longer be consumed,
             // but for the player's sanity we display that they _have_ keys.

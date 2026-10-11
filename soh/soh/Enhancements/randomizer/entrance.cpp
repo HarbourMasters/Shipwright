@@ -5,7 +5,6 @@
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
 #include "rng.h"
-#include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/util.h"
 #include "soh/ShipInit.hpp"
@@ -35,7 +34,6 @@ void Entrance::SetCondition(ConditionFn newCondition) {
 }
 
 bool Entrance::GetConditionsMet() const {
-    auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_OFF)) {
         return condition_function();
     }
@@ -72,13 +70,10 @@ void Entrance::printAgeTimeAccess() {
 }
 
 bool Entrance::ConditionsMet(bool allAgeTimes) const {
-    auto ctx = Rando::Context::GetInstance();
-    StartPerformanceTimer(PT_ENTRANCE_LOGIC);
     Region* parent = RegionTable(parentRegion);
     int conditionsMet = 0;
 
     if (allAgeTimes && !parent->AllAccess()) {
-        StopPerformanceTimer(PT_ENTRANCE_LOGIC);
         return false;
     }
 
@@ -88,7 +83,6 @@ bool Entrance::ConditionsMet(bool allAgeTimes) const {
                     (parent->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay, allAgeTimes)) +
                     (parent->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight, allAgeTimes));
 
-    StopPerformanceTimer(PT_ENTRANCE_LOGIC);
     return conditionsMet && (!allAgeTimes || conditionsMet == 4);
 }
 

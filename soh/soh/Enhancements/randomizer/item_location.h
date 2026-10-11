@@ -21,7 +21,7 @@ class ItemLocation {
     void DelayItem();
     RandomizerRegion GetParentRegionKey() const;
     void SetParentRegion(RandomizerRegion region);
-    std::set<RandomizerArea> GetAreas() const;
+    const std::set<RandomizerArea>& GetAreas() const;
     RandomizerArea GetFirstArea() const;
     RandomizerArea GetRandomArea() const;
     void MergeAreas(std::set<RandomizerArea> newAreas);

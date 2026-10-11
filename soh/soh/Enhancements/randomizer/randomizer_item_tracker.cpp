@@ -964,9 +964,8 @@ void DrawItem(ItemTrackerItem item) {
         }
     } else if (item.kind == ITEM_KIND_RG) {
         actualItemId = item.id;
-        if (Rando::StaticData::RandoGetToRandInf.contains(static_cast<RandomizerGet>(item.id))) {
-            hasItem = Flags_GetRandomizerInf(static_cast<RandomizerInf>(
-                Rando::StaticData::RandoGetToRandInf.at(static_cast<RandomizerGet>(item.id))));
+        if (Rando::StaticData::RandoGetToRandInf[item.id] != RAND_INF_MAX) {
+            hasItem = Flags_GetRandomizerInf(static_cast<RandomizerInf>(Rando::StaticData::RandoGetToRandInf[item.id]));
         }
         auto test = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER);
         switch (item.id) {

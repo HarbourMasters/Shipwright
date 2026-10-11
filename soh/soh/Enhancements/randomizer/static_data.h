@@ -103,7 +103,7 @@ class StaticData {
     static std::vector<RandomizerGet> beanSouls;
     static std::vector<RandomizerGet> overworldKeys;
     static std::vector<RandomizerGet> silverRupees;
-    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
+    static const std::array<uint32_t, RG_MAX> RandoGetToRandInf;
     static std::unordered_map<SceneID, std::set<RandomizerGet>> itemRestrictions;
     static std::set<RandomizerGet> restrictFW;
     static std::set<RandomizerGet> restrictSpells;
