@@ -648,7 +648,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,                logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,                logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,                   (logic->HasItem(RG_CLIMB) && (logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_HOOKSHOT)))) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_LONGSHOT))),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_POT_1,              logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1,            logic->CanCutShrubs()),
