@@ -180,15 +180,18 @@ index 00000000..7c586dd6
 +};
 +}; // namespace Ship
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 45989b66..81463b3c 100644
+index 45989b66..137bda9e 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -134,6 +134,10 @@ endif()
+@@ -134,6 +134,13 @@ endif()
  
  target_link_libraries(libultraship PUBLIC prism monocypher)
  
 +if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
 +    target_link_libraries(libultraship PUBLIC glad::glad SDL2::SDL2 Threads::Threads)
++    # Raise libnx's 128 KiB default pthread stack (see __wrap___syscall_thread_create in SwitchImpl.cpp).
++    # INTERFACE so it lands on the final executable's link line.
++    target_link_options(libultraship INTERFACE "LINKER:--wrap=__syscall_thread_create")
 +endif()
 +
  if(ENABLE_SCRIPTING)
@@ -450,10 +453,10 @@ index 361a1f75..e4db06d7 100644
  
 diff --git a/src/ship/port/switch/SwitchImpl.cpp b/src/ship/port/switch/SwitchImpl.cpp
 new file mode 100644
-index 00000000..ba38d390
+index 00000000..65b59a4b
 --- /dev/null
 +++ b/src/ship/port/switch/SwitchImpl.cpp
-@@ -0,0 +1,280 @@
+@@ -0,0 +1,297 @@
 +#ifdef __SWITCH__
 +#include "ship/port/switch/SwitchImpl.h"
 +
@@ -679,6 +682,23 @@ index 00000000..ba38d390
 +
 +bool Ship::Switch::IsDocked() {
 +    return appletGetOperationMode() == AppletOperationMode_Console;
++}
++
++// libnx gives every pthread (so every std::thread) a fixed 128 KiB stack when the caller doesn't ask for a size.
++// PC platforms give 1-8 MiB, and SoH relies on that: randomizer seed generation recurses deeply through
++// playthrough calculation and the spoiler log writer, and overflowed a 128 KiB stack by ~34 KiB on hardware.
++// The linker routes newlib's pthread_create through this wrapper (--wrap, see cmake/dependencies/switch.cmake)
++// so threads without an explicit size get a desktop-like default instead. Explicit sizes are left alone.
++static constexpr size_t kSwitchDefaultThreadStackSize = 2 * 1024 * 1024;
++
++extern "C" int __real___syscall_thread_create(void** thread, void* (*func)(void*), void* arg, void* stack_addr,
++                                              size_t stack_size);
++extern "C" int __wrap___syscall_thread_create(void** thread, void* (*func)(void*), void* arg, void* stack_addr,
++                                              size_t stack_size) {
++    if (stack_addr == nullptr && stack_size == 0) {
++        stack_size = kSwitchDefaultThreadStackSize;
++    }
++    return __real___syscall_thread_create(thread, func, arg, stack_addr, stack_size);
 +}
 +
 +bool Ship::Switch::IsAddressMapped(uintptr_t addr) {

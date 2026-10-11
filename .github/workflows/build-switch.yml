@@ -119,6 +119,10 @@ jobs:
         magic=$(dd if="$nro" bs=1 skip=16 count=4 2>/dev/null)
         [ "$magic" = "NRO0" ] || { echo "::error::soh.nro has no NRO0 header (got '$magic')"; exit 1; }
         grep -aq "Ship of Harkinian" "$nro" || { echo "::error::soh.nro is missing its NACP title"; exit 1; }
+        # The thread-stack fix only works if the linker actually routed pthread_create through the wrapper.
+        nm=/opt/devkitpro/devkitA64/bin/aarch64-none-elf-nm
+        $nm build-switch/soh/soh.elf | grep -q " T __wrap___syscall_thread_create$" \
+          || { echo "::error::__syscall_thread_create wrapper missing from soh.elf"; exit 1; }
         [ -s package/switch/soh/soh.o2r ] || { echo "::error::soh.o2r missing from package"; exit 1; }
         echo "::notice title=soh.nro::NRO0 header ok, $(stat -c%s "$nro") bytes; soh.o2r $(stat -c%s package/switch/soh/soh.o2r) bytes; built from $GITHUB_SHA"
     - uses: actions/upload-artifact@v4
