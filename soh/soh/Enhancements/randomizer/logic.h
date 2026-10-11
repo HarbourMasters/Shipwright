@@ -1,7 +1,9 @@
 #pragma once
 
-#include "SeedContext.h"
+#include <array>
 #include <stdint.h>
+
+#include "SeedContext.h"
 
 namespace Rando {
 
@@ -165,9 +167,9 @@ class Logic {
     void SetSaveContext(SaveContext* context);
     void InitSaveContext();
     void NewSaveContext();
-    static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
-    static std::map<uint32_t, SceneID> RandoGetToDungeonScene;
-    static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
+    static const std::array<uint32_t, RG_MAX> RandoGetToQuestItem;
+    static const std::array<SceneID, RG_MAX> RandoGetToDungeonScene;
+    static const std::array<uint32_t, RG_MAX> RandoGetToEquipFlag;
     bool IsReverseAccessPossible();
     bool DMCUpperToPots();
     bool DMCPotsToPad();

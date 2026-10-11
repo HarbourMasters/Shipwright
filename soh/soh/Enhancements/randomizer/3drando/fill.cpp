@@ -12,6 +12,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/util.h"
 
+#include <bitset>
 #include <vector>
 #include <list>
 #include <set>
@@ -80,8 +81,6 @@ static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGe
 
 // This function will propagate Time of Day access through the entrance
 static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
-    StartPerformanceTimer(PT_TOD_ACCESS);
-
     bool ageTimePropagated = false;
     Region* parent = entrance->GetParentRegion();
 
@@ -104,7 +103,6 @@ static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
         ageTimePropagated = true;
     }
 
-    StopPerformanceTimer(PT_TOD_ACCESS);
     return ageTimePropagated;
 }
 
@@ -175,12 +173,10 @@ static void ValidateSphereZero(GetAccessibleLocationsStruct& gals) {
 // This function handles each possible exit
 void ProcessExits(Region* region, GetAccessibleLocationsStruct& gals, RandomizerGet ignore = RG_NONE,
                   bool stopOnBeatable = false, bool addToPlaythrough = false) {
-    auto ctx = Rando::Context::GetInstance();
     for (auto& exit : region->exits) {
-        int16_t entranceIndex = exit.GetIndex();
         if (!logic->ACProcessUndiscoveredExits && logic->CalculatingAvailableChecks &&
-            ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() && entranceIndex != -1 &&
-            !Entrance_GetIsEntranceDiscovered(entranceIndex)) {
+            ctx->GetOption(RSK_SHUFFLE_ENTRANCES).Get() && exit.IsShuffled() && exit.GetIndex() != -1 &&
+            !Entrance_GetIsEntranceDiscovered(exit.GetIndex())) {
             continue;
         }
 
@@ -403,21 +399,24 @@ void ApplyOrStoreItem(Rando::ItemLocation* loc, GetAccessibleLocationsStruct& ga
 // Adds the contents of a location to the current progression and optionally playthrough
 bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals, RandomizerGet ignore,
                      bool stopOnBeatable, Region* parentRegion, bool addToPlaythrough = false) {
-    logic->CurrentCheckKey = locPair.GetLocation();
-
-    auto ctx = Rando::Context::GetInstance();
-    StartPerformanceTimer(PT_LOCATION_LOGIC);
     RandomizerCheck loc = locPair.GetLocation();
     Rando::ItemLocation* location = ctx->GetItemLocation(loc);
-    RandomizerGet locItem = location->GetPlacedRandomizerGet();
+    // Most calls hit a location this search already added, so skip those before any other work
+    if (location->IsAddedToPool()) {
+        return false;
+    }
+    logic->CurrentCheckKey = loc;
+
+#ifndef NDEBUG
     RandomizerCheckQuest quest = Rando::StaticData::GetLocation(loc)->GetQuest();
     assert(ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_ON) || quest == RCQUEST_BOTH ||
            (quest == RCQUEST_VANILLA && ctx->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
            (quest == RCQUEST_MQ && ctx->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
+#endif
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks) &&
-        !logic->ShopItemNotForSale(loc)) {
+    if (locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks) && !logic->ShopItemNotForSale(loc)) {
         location->AddToPool();
+        RandomizerGet locItem = location->GetPlacedRandomizerGet();
 
         if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {
             gals.accessibleLocations.push_back(loc); // Empty location, consider for placement
@@ -457,12 +456,10 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
         // All we care about is if the game is beatable, used to pare down playthrough
         if (location->GetPlacedRandomizerGet() == RG_TRIFORCE && stopOnBeatable) {
             logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
-            StopPerformanceTimer(PT_LOCATION_LOGIC);
             return true; // Return early for efficiency
         }
     }
     logic->CurrentCheckKey = RC_UNKNOWN_CHECK;
-    StopPerformanceTimer(PT_LOCATION_LOGIC);
     return false;
 }
 
@@ -559,16 +556,15 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
             ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
         }
     } while (gals.logicUpdated);
-    std::erase_if(gals.accessibleLocations, [&targetLocations, ctx, calculatingAvailableChecks](RandomizerCheck loc) {
+    std::bitset<RC_MAX> isTarget;
+    for (RandomizerCheck allowedLocation : targetLocations) {
+        isTarget.set(allowedLocation);
+    }
+    std::erase_if(gals.accessibleLocations, [&isTarget, ctx, calculatingAvailableChecks](RandomizerCheck loc) {
         if (ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE && !calculatingAvailableChecks) {
             return false;
         }
-        for (RandomizerCheck allowedLocation : targetLocations) {
-            if (loc == allowedLocation) {
-                return false;
-            }
-        }
-        return true;
+        return !isTarget[loc];
     });
     return gals.accessibleLocations;
 }
@@ -788,9 +784,8 @@ static void CalculateWotH() {
     ReachabilitySearch(ctx->allLocations);
 }
 
-static bool FindIfBarren(Rando::ItemLocation* itemLoc, std::array<bool, RA_MAX> NotBarren) {
-    std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
-    for (auto locArea : locAreas) {
+static bool FindIfBarren(Rando::ItemLocation* itemLoc, const std::array<bool, RA_MAX>& NotBarren) {
+    for (auto locArea : itemLoc->GetAreas()) {
         if (NotBarren[locArea]) {
             return false;
         }
@@ -813,8 +808,7 @@ static void CalculateBarren() {
 
     for (RandomizerCheck loc : ctx->allLocations) {
         Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
-        std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
-        for (auto locArea : locAreas) {
+        for (auto locArea : itemLoc->GetAreas()) {
             // If a location has a major item or is a way of the hero location, it is not barren
             if (NotBarren[locArea] == false && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate() ||
                                                 (shieldTunicGate && itemLoc->GetPlacedItem().IsShieldOrTunic()))) {
@@ -1288,7 +1282,7 @@ int Fill() {
     auto ctx = Rando::Context::GetInstance();
     int retries = 0;
     SPDLOG_INFO("Starting seed generation...");
-    while (retries < 5) {
+    while (retries < 10) {
         SPDLOG_INFO("Attempt {}...", retries + 1);
         placementFailure = false;
         // showItemProgress = false;
@@ -1503,7 +1497,7 @@ int Fill() {
             return 1;
         }
         // Unsuccessful placement
-        if (retries < 4) {
+        if (retries < 9) {
             SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
             Regions::ResetAllLocations();
             logic->Reset();

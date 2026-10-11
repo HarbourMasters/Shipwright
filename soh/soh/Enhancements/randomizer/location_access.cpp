@@ -3,7 +3,6 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/entrance.h"
-#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -432,7 +431,6 @@ bool Region::TimePass() {
 
 void Region::ApplyTimePass() {
     if (TimePass()) {
-        StartPerformanceTimer(PT_TOD_ACCESS);
         if (Child()) {
             childDay = true;
             childNight = true;
@@ -445,13 +443,11 @@ void Region::ApplyTimePass() {
             RegionTable(RR_ROOT)->adultDay = true;
             RegionTable(RR_ROOT)->adultNight = true;
         }
-        StopPerformanceTimer(PT_TOD_ACCESS);
     }
 }
 
 bool Region::UpdateEvents() {
     bool eventsUpdated = false;
-    StartPerformanceTimer(PT_EVENT_ACCESS);
     for (EventAccess& event : events) {
         // If the event has already happened, there's no reason to check it
         if (event.GetEvent()) {
@@ -466,7 +462,6 @@ bool Region::UpdateEvents() {
             eventsUpdated = true;
         }
     }
-    StopPerformanceTimer(PT_EVENT_ACCESS);
     return eventsUpdated;
 }
 
@@ -512,7 +507,7 @@ bool Region::AllAccountedFor() const {
     }
 
     for (const LocationAccess& loc : locations) {
-        if (!(Rando::Context::GetInstance()->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
+        if (!(ctx->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
             return false;
         }
     }
@@ -870,8 +865,6 @@ bool AnyAgeTime(ConditionFn condition) {
 }
 
 bool CanPlantBean(const RandomizerGet bean) {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
     return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
            (logic->IsChild || ctx->GetOption(RSK_SKIP_PLANTING_BEANS));
 }
