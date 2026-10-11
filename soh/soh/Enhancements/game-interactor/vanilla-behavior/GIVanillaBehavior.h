@@ -2234,6 +2234,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*BossGanon`
+    // - `u16` text ID
     VB_PLAY_GANONDORF_INTRO_CS,
 
     // #### `result`
