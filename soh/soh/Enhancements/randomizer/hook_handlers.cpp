@@ -11,6 +11,7 @@
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
@@ -478,6 +479,9 @@ static void PlantAllBeans() {
         gSaveContext.sceneFlags[patch.scene].swch |= 1 << patch.swchFlag;
         if (gPlayState->sceneNum == patch.scene) {
             Flags_SetSwitch(gPlayState, patch.swchFlag);
+        } else {
+            // Flags_SetSwitch fires this for the current scene, other scenes need it so Anchor syncs them
+            GameInteractor_ExecuteOnSceneFlagSet(patch.scene, FLAG_SCENE_SWITCH, patch.swchFlag);
         }
     }
     ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
