@@ -115,6 +115,20 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
     }
 }
 
+// Only a track from a music pack is registered as a replacement that cannot itself be replaced.
+static bool IsCustomSequence(const SequenceInfo& sequence) {
+    return !sequence.canBeReplaced && sequence.canBeUsedAsReplacement;
+}
+
+// A music pack can only tag a track "bgm" or "fanfare", so a custom ocarina or ending track can
+// never carry the category those two tabs ask for. Take any custom track there.
+static bool CanUseAsReplacement(const SequenceInfo& candidate, SeqType type) {
+    if ((~(candidate.category) & type) == 0) {
+        return true;
+    }
+    return IsCustomSequence(candidate) && (type == SEQ_OCARINA || type == SEQ_ENDING);
+}
+
 void RandomizeGroup(SeqType type, bool manual = true) {
     std::vector<u16> values;
 
@@ -141,7 +155,7 @@ void RandomizeGroup(SeqType type, bool manual = true) {
     // use a while loop to add duplicates if we don't have enough included sequences
     while (values.size() < AuthenticCountBySequenceType(type)) {
         for (const auto& seqData : AudioCollection::Instance->GetIncludedSequences()) {
-            if (seqData->category & type && seqData->canBeUsedAsReplacement) {
+            if (CanUseAsReplacement(*seqData, type) && seqData->canBeUsedAsReplacement) {
                 values.push_back(seqData->sequenceId);
             }
         }
@@ -358,7 +372,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
             for (const auto& [value, seqData] : map) {
                 // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own
                 // dropdown.
-                if (~(seqData.category) & type ||
+                if (!CanUseAsReplacement(seqData, type) ||
                     (!seqData.canBeUsedAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
                 }
@@ -466,6 +480,8 @@ std::string GetSequenceTypeName(SeqType type) {
             return "Voice";
         case SEQ_INSTRUMENT:
             return "Instrument";
+        case SEQ_ENDING:
+            return "Ending";
         case SEQ_BGM_CUSTOM:
             return "Custom";
         default:
@@ -491,6 +507,8 @@ ImVec4 GetSequenceTypeColor(SeqType type) {
             return ImVec4(0.3f, 0.42f, 0.09f, 1.0f);
         case SEQ_INSTRUMENT:
             return ImVec4(0.0f, 0.25f, 0.5f, 1.0f);
+        case SEQ_ENDING:
+            return ImVec4(0.0f, 0.3f, 0.3f, 1.0f);
         case SEQ_BGM_CUSTOM:
             return ImVec4(0.9f, 0.0f, 0.9f, 1.0f);
         default:
@@ -671,9 +689,9 @@ void AudioEditor::DrawElement() {
             }
 
             static std::map<SeqType, bool> showType{
-                { SEQ_BGM_WORLD, true }, { SEQ_BGM_EVENT, true },  { SEQ_BGM_BATTLE, true },
-                { SEQ_OCARINA, true },   { SEQ_FANFARE, true },    { SEQ_SFX, true },
-                { SEQ_VOICE, true },     { SEQ_INSTRUMENT, true }, { SEQ_BGM_CUSTOM, true },
+                { SEQ_BGM_WORLD, true }, { SEQ_BGM_EVENT, true },  { SEQ_BGM_BATTLE, true }, { SEQ_OCARINA, true },
+                { SEQ_FANFARE, true },   { SEQ_SFX, true },        { SEQ_VOICE, true },      { SEQ_INSTRUMENT, true },
+                { SEQ_ENDING, true },    { SEQ_BGM_CUSTOM, true },
             };
 
             // make temporary sets because removing from the set we're iterating through crashes ImGui
@@ -703,7 +721,7 @@ void AudioEditor::DrawElement() {
                 }
             }
 
-            ImGui::BeginTable("sequenceTypes", 9,
+            ImGui::BeginTable("sequenceTypes", 10,
                               ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
 
             ImGui::TableNextColumn();
@@ -744,6 +762,11 @@ void AudioEditor::DrawElement() {
             ImGui::TableNextColumn();
             ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_INSTRUMENT));
             ImGui::Selectable(GetSequenceTypeName(SEQ_INSTRUMENT).c_str(), &showType[SEQ_INSTRUMENT]);
+            ImGui::PopStyleColor(1);
+
+            ImGui::TableNextColumn();
+            ImGui::PushStyleColor(ImGuiCol_Header, GetSequenceTypeColor(SEQ_ENDING));
+            ImGui::Selectable(GetSequenceTypeName(SEQ_ENDING).c_str(), &showType[SEQ_ENDING]);
             ImGui::PopStyleColor(1);
 
             ImGui::TableNextColumn();
