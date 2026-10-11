@@ -684,8 +684,7 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
                    ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)))) {
                 auto type = entrance->GetType();
                 if (((type == EntranceType::Dungeon || type == EntranceType::GrottoGrave) &&
-                     entrance->GetReverse()->GetName() !=
-                         "Spirit Temple Entryway -> Desert Colossus From Spirit Entryway") ||
+                     entrance->GetReverse()->GetOriginalConnectedRegionKey() != RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) ||
                     (type == EntranceType::Interior &&
                      ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL))) {
                     // In most cases, Dungeon, Grotto/Grave and Simple Interior exits shouldn't be assumed able to give
