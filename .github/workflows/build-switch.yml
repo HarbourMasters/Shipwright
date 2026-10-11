@@ -119,15 +119,15 @@ jobs:
         magic=$(dd if="$nro" bs=1 skip=16 count=4 2>/dev/null)
         [ "$magic" = "NRO0" ] || { echo "::error::soh.nro has no NRO0 header (got '$magic')"; exit 1; }
         grep -aq "Ship of Harkinian" "$nro" || { echo "::error::soh.nro is missing its NACP title"; exit 1; }
-        # The thread-stack fix only works if the linker actually routed pthread_create through the wrapper.
-        nm=/opt/devkitpro/devkitA64/bin/aarch64-none-elf-nm
-        if ! $nm build-switch/soh/soh.elf | grep -q " T __wrap___syscall_thread_create$"; then
-          wraps=$(grep -o -- "--wrap=[A-Za-z_]*" build-switch/build.ninja | sort -u | tr '\n' ' ')
-          syms=$($nm build-switch/soh/soh.elf | grep -i "syscall_thread_create" | tr '\n' ';')
-          lib=$($nm -C build-switch/libultraship/src/libultraship.a 2>/dev/null | grep -i "syscall_thread_create" | tr '\n' ';')
-          echo "::error::thread stack wrapper missing. link wraps: [$wraps] elf: [$syms] lib: [$lib]"
-          exit 1
-        fi
+        # The thread-stack fix only works if pthread_create really calls the wrapper. (Read nm/objdump output from
+        # files: with pipefail, "nm | grep -q" fails spuriously when grep exits early and nm gets SIGPIPE.)
+        bin=/opt/devkitpro/devkitA64/bin/aarch64-none-elf
+        $bin-nm build-switch/soh/soh.elf > syms.txt
+        wrap=$(awk '$3=="__wrap___syscall_thread_create"{print $1}' syms.txt | sed 's/^0*//')
+        [ -n "$wrap" ] || { echo "::error::thread stack wrapper missing from soh.elf"; exit 1; }
+        $bin-objdump -d --disassemble=pthread_create build-switch/soh/soh.elf > pthread_create.s
+        grep -q "bl.*$wrap" pthread_create.s \
+          || { echo "::error::pthread_create does not call the thread stack wrapper"; exit 1; }
         [ -s package/switch/soh/soh.o2r ] || { echo "::error::soh.o2r missing from package"; exit 1; }
         echo "::notice title=soh.nro::NRO0 header ok, $(stat -c%s "$nro") bytes; soh.o2r $(stat -c%s package/switch/soh/soh.o2r) bytes; built from $GITHUB_SHA"
     - uses: actions/upload-artifact@v4
