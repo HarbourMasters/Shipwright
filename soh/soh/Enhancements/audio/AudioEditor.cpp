@@ -22,6 +22,7 @@ extern "C" {
 #include <functions.h>
 #include "z64save.h"
 extern SaveContext gSaveContext;
+extern ActiveSequence gActiveSeqs[4];
 }
 
 Vec3f pos = { 0.0f, 0.0f, 0.0f };
@@ -93,10 +94,16 @@ static const std::map<int32_t, const char*> audioRandomizerModes = {
     { RANDOMIZE_ON_FILE_LOAD_SEEDED, "On File Load (Seeded)" },
 };
 
+// The last BGM sequence the game asked for. Unlike func_800FA0B4 this still works when the area's music is set
+// to "None", where the sequence player sits idle because nothing loaded.
+static u16 GetCurrentBGM() {
+    return gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId;
+}
+
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
-    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    u16 curSeqId = GetCurrentBGM();
     // TODO: replace with Audio_StartSeq when the macro is shared
     // The fade time and audio player flags will always be 0 in the case of replaying the BGM, so they are not set here
     Audio_QueueSeqCmd(0x00000000 | curSeqId);
@@ -109,7 +116,7 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
         return;
     }
 
-    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    u16 curSeqId = GetCurrentBGM();
     if (curSeqId == seqKey) {
         ReplayCurrentBGM();
     }
@@ -265,7 +272,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SeparatorText(tabName.c_str());
     if (UIWidgets::Button(resetAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = GetCurrentBGM();
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         ResetGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -277,7 +284,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(randomizeAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = GetCurrentBGM();
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -289,7 +296,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(lockAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = GetCurrentBGM();
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         LockGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -301,7 +308,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     ImGui::SameLine();
     if (UIWidgets::Button(unlockAllButton.c_str(),
                           UIWidgets::ButtonOptions().Size(UIWidgets::Sizes::Inline).Color(THEME_COLOR))) {
-        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto currentBGM = GetCurrentBGM();
         auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         UnlockGroup(map, type);
         Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
@@ -312,7 +319,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
     }
 
     auto playingFromMenu = CVarGetInteger(CVAR_AUDIO("Playing"), 0);
-    auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+    auto currentBGM = GetCurrentBGM();
 
     // Longest text in Audio Editor
     ImVec2 columnSize = ImGui::CalcTextSize("Navi - Look/Hey/Watchout (Target Enemy)");
@@ -353,11 +360,22 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
+        const bool isNone = currentValue == NA_BGM_DISABLED;
         UIWidgets::PushStyleCombobox(THEME_COLOR);
-        if (ImGui::BeginCombo(hiddenKey.c_str(), map.at(initialValue).label.c_str())) {
+        if (ImGui::BeginCombo(hiddenKey.c_str(), isNone ? "None" : map.at(initialValue).label.c_str())) {
+            if (type == SEQ_BGM_WORLD || type == SEQ_SFX || type == SEQ_VOICE) {
+                if (ImGui::Selectable("None")) {
+                    CVarSetInteger(cvarKey.c_str(), NA_BGM_DISABLED);
+                    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                    UpdateCurrentBGM(defaultValue, type);
+                }
+                if (isNone) {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+
             for (const auto& [value, seqData] : map) {
-                // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own
-                // dropdown.
+                // If excluded as a replacement sequence, don't show in other dropdowns except effect's dropdown.
                 if (~(seqData.category) & type ||
                     (!seqData.canBeUsedAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
@@ -379,9 +397,12 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
         UIWidgets::PopStyleCombobox();
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        DrawPreviewButton((type == SEQ_SFX || type == SEQ_VOICE || type == SEQ_INSTRUMENT) ? defaultValue
-                                                                                           : currentValue,
+        // Nothing to preview when set to "None"
+        ImGui::BeginDisabled(isNone);
+        DrawPreviewButton((type == SEQ_SFX || type == SEQ_VOICE || type == SEQ_INSTRUMENT || isNone) ? defaultValue
+                                                                                                     : currentValue,
                           seqData.sfxKey, type);
+        ImGui::EndDisabled();
         auto locked = CVarGetInteger(cvarLockKey.c_str(), 0) == 1;
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);

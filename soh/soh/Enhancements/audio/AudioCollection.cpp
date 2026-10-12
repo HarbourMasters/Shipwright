@@ -389,7 +389,8 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     const auto& sequenceInfo = sequenceMap.at(seqId);
     const std::string cvarKey = GetCvarKey(sequenceInfo.sfxKey);
     int replacementSeq = CVarGetInteger(cvarKey.c_str(), seqId);
-    if (!sequenceMap.contains(replacementSeq)) {
+    // NA_BGM_DISABLED means the music was set to "None". No sequence has that id, so nothing plays.
+    if (replacementSeq != NA_BGM_DISABLED && !sequenceMap.contains(replacementSeq)) {
         replacementSeq = seqId;
     }
     return static_cast<uint16_t>(replacementSeq);
