@@ -52,7 +52,8 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
 
     const auto beehiveIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&objComb->actor);
     if (RAND_GET_OPTION(RSK_SHUFFLE_BEEHIVES) && beehiveIdentity != nullptr &&
-        !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf)) {
+        !Flags_GetRandomizerInf(beehiveIdentity->randomizerInf) &&
+        !Rando::Context::GetInstance()->GetItemLocation(beehiveIdentity->randomizerCheck)->IsExcluded()) {
         if (objComb->unk_1B0 <= -5000) {
             objComb->unk_1B0 = 1500;
         }

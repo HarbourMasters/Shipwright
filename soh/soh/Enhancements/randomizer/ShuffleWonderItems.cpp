@@ -215,7 +215,8 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
-    if (wonderIdentity == nullptr) {
+    if (wonderIdentity == nullptr ||
+        Rando::Context::GetInstance()->GetItemLocation(wonderIdentity->randomizerCheck)->IsExcluded()) {
         return;
     }
 
