@@ -238,6 +238,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         VS_GLOBAL_KEYWORD "Win32Proj"
     )
+    # main.c opens and hides its own console, same as /SUBSYSTEM:WINDOWS on MSVC
+    if(MINGW)
+        set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
+    endif()
     if(SOH_WINDOWS_64BIT)
         set_target_properties(${PROJECT_NAME} PROPERTIES
             INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
@@ -591,7 +595,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
                 #-fsanitize=address
-            -Wl,-export-dynamic
+            # ELF only, MinGW's PE linker doesn't take it
+            $<$<NOT:$<PLATFORM_ID:Windows>>:-Wl,-export-dynamic>
         )
     endif()
 endif()
@@ -619,7 +624,7 @@ add_dependencies(${PROJECT_NAME}
     torch
 )
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows" AND MSVC)
     find_package(glfw3 REQUIRED)
     find_package(Ogg CONFIG REQUIRED)
     link_libraries(Ogg::ogg)
@@ -712,6 +717,15 @@ else()
     if(MATH_LIBRARY)
         list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES ${MATH_LIBRARY})
     endif()
+    # MinGW ignores #pragma comment(lib), so name the system libraries here
+    if(WIN32)
+        list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES
+            shlwapi
+            dbghelp
+            d3dcompiler
+            dwmapi
+        )
+    endif()
 endif()
 
 find_package(libzip REQUIRED)
@@ -749,7 +763,9 @@ INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (MSVC)
 INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION debug COMPONENT ship)
+endif()
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION . COMPONENT ship)
 endif()
 

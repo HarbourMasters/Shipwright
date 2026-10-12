@@ -44,6 +44,26 @@ cd Shipwright
 # Now you can run the executable in .\build\x64 or run in Visual Studio
 ```
 
+### MSYS2 (without Visual Studio)
+You can build with GCC from [MSYS2](https://www.msys2.org/) instead of Visual Studio. This doesn't use vcpkg, the libraries come from MSYS2's package manager.
+
+Run these from the **MSYS2 UCRT64** shell:
+```sh
+pacman -S --needed git mingw-w64-ucrt-x86_64-{gcc,cmake,ninja,python,SDL2,SDL2_net,glew,libpng,libzip,zlib,bzip2,nlohmann-json,spdlog,libogg,libvorbis,opus,opusfile}
+
+git clone --recursive https://github.com/HarbourMasters/Shipwright.git
+cd Shipwright
+
+# Use a fresh build folder. One made by a Visual Studio configure won't work here.
+cmake -S . -B build/mingw -G Ninja -DCMAKE_BUILD_TYPE:STRING=Release
+cmake --build build/mingw --target GenerateSohOtr
+cmake --build build/mingw
+```
+
+The game uses the DLLs in `C:\msys64\ucrt64\bin`. Start it from the UCRT64 shell, or add that folder to your `PATH`.
+
+If you're using VS Code's CMake Tools, pick the UCRT64 GCC kit and the Ninja generator.
+
 ### Developing SoH
 With the cmake build system you have two options for working on the project:
 
