@@ -1516,6 +1516,14 @@ void SohMenu::AddMenuEnhancements() {
         .Options(IntSliderOptions().Min(-5).Max(5).DefaultValue(0).Format("%+d").Tooltip(
             "-5 will be half as much time, +5 will be 6x as much time. Affects timed switches, torches, GTG statue "
             "eyes, & doors in race with Dampe."));
+    AddWidget(path, "Minimum Heat/Water Timer: %d seconds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("HazardTimerMin"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(150)
+                     .DefaultValue(0)
+                     .Format("%d seconds")
+                     .Tooltip("Limits how low heat timer or underwater timer can start."));
     AddWidget(path, "Always Win Goron Pot", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GoronPot"))
         .Options(CheckboxOptions().Tooltip("Always get the Heart Piece/Purple Rupee from the Spinning Goron Pot."));
