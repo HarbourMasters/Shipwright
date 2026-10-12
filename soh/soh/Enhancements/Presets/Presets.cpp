@@ -1,12 +1,15 @@
 #include "Presets.h"
+#include <algorithm>
 #include <string>
 #include <fstream>
 #include <spdlog/common.h>
 #include <ship/config/Config.h>
 #include <nlohmann/json.hpp>
+#include <ship/resource/archive/ArchiveManager.h>
 #include <ship/resource/type/Json.h>
 #include <ship/Context.h>
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
@@ -16,6 +19,7 @@
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/ShipInit.hpp"
+#include "soh/config/ConfigUpdaters.h"
 
 namespace fs = std::filesystem;
 
@@ -105,8 +109,23 @@ std::string FormatPresetPath(std::string name) {
     return spdlog::fmt_lib::format("{}/{}.json", presetFolder, SanitizeFilename(name));
 }
 
+enum class SectionStrategy {
+    Overwrite,
+    Merge,
+};
+
+static SectionStrategy GetSectionStrategy(const PresetInfo& info, int section) {
+    const std::string& name = blockInfo[section].names[1];
+    if (info.presetValues.contains("blockStrategy") && info.presetValues["blockStrategy"].contains(name) &&
+        info.presetValues["blockStrategy"][name] == "merge") {
+        return SectionStrategy::Merge;
+    }
+    return SectionStrategy::Overwrite;
+}
+
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
     auto& info = presets[presetName];
+    bool randoApplied = false;
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
             if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
@@ -124,18 +143,14 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 }
             }
             auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
-            std::string sectionStrategy = "overwrite";
-            if (info.presetValues.contains("blockStrategy") &&
-                info.presetValues["blockStrategy"].contains(blockInfo[i].names[1])) {
-                sectionStrategy = info.presetValues["blockStrategy"][blockInfo[i].names[1]];
-            }
+            SectionStrategy sectionStrategy = GetSectionStrategy(info, i);
 
             for (auto& item : section.items()) {
                 if (section[item.key()].is_null()) {
                     CVarClearBlock(item.key().c_str());
                 } else {
                     auto block = item.value();
-                    if (sectionStrategy == "merge") {
+                    if (sectionStrategy == SectionStrategy::Merge) {
                         auto currentJson = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
                         if (currentJson.contains("CVars") && currentJson["CVars"].contains(item.key())) {
                             block = currentJson["CVars"][item.key()];
@@ -150,14 +165,101 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
-                Rando::Settings::GetInstance()->UpdateAllOptions();
-                SohGui::UpdateMenuTricks();
-                SohGui::UpdateMenuLocations();
+                randoApplied = true;
             }
         }
     }
+    if (randoApplied) {
+        // Unversioned presets predate v4. Only migrate when rando came from the preset
+        uint32_t presetVersion = SOH::GetConfigVersion(info.presetValues, 3);
+        if (presetVersion < SOH::GetLatestConfigVersion()) {
+            SOH::RunVersionUpdatesFrom(presetVersion);
+            // SetBlock already saved the unmigrated values
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+        Rando::Settings::GetInstance()->UpdateAllOptions();
+        SohGui::UpdateMenuTricks();
+        SohGui::UpdateMenuLocations();
+    }
     ShipInit::InitAll();
     OTRGlobals::Instance->ScaleImGui();
+}
+
+nlohmann::json applyPresetToBlocks(std::string presetName, nlohmann::json blocks,
+                                   std::vector<PresetSection> includeSections) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end()) {
+        return blocks;
+    }
+    auto& info = entry->second;
+
+    for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+        if (!info.apply[i] || !info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
+            continue;
+        }
+        if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
+            continue;
+        }
+
+        auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+        SectionStrategy sectionStrategy = GetSectionStrategy(info, i);
+
+        for (auto& item : section.items()) {
+            if (!blocks.contains(item.key())) {
+                continue;
+            }
+            if (item.value().is_null()) {
+                blocks[item.key()] = nlohmann::json::object();
+            } else if (sectionStrategy == SectionStrategy::Merge) {
+                blocks[item.key()].update(item.value(), true);
+            } else {
+                blocks[item.key()] = item.value();
+            }
+        }
+    }
+
+    return blocks;
+}
+
+std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
+    static const std::string prefix = "Speedrun - ";
+    std::vector<std::pair<std::string, std::string>> found;
+
+    for (auto& [name, info] : presets) {
+        if (info.isBuiltIn && name.rfind(prefix, 0) == 0) {
+            std::string label = name.substr(prefix.size());
+            size_t digits = label.find_first_not_of("0123456789");
+            if (digits > 0 && digits != std::string::npos && label[digits] == ' ') {
+                label = label.substr(digits + 1);
+            }
+            found.emplace_back(label, name);
+        }
+    }
+
+    return found;
+}
+
+nlohmann::json GetPresetExempt(const std::string& presetName) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end() || !entry->second.presetValues.contains("exempt") ||
+        !entry->second.presetValues["exempt"].is_array()) {
+        return nlohmann::json::array();
+    }
+    return entry->second.presetValues["exempt"];
+}
+
+std::string GetPresetFileContents(const std::string& presetName) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end()) {
+        return "";
+    }
+
+    auto file = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+        "presets/" + entry->second.fileName + ".json");
+    if (file == nullptr || file->Buffer == nullptr) {
+        return "";
+    }
+    return std::string(file->Buffer->begin(), file->Buffer->end());
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
@@ -246,6 +348,10 @@ void LoadPresets() {
     }
     if (fs::exists(presetFolder)) {
         for (auto const& preset : fs::directory_iterator(presetFolder)) {
+            // Skip leftover temp files from an interrupted save
+            if (preset.path().extension() != ".json") {
+                continue;
+            }
             try {
                 std::ifstream ifs(preset.path());
                 if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
@@ -284,15 +390,13 @@ void SavePreset(std::string& presetName) {
     }
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
+    presets[presetName].presetValues["ConfigVersion"] = SOH::GetLatestConfigVersion();
 
-    std::ofstream file(FormatPresetPath(presetName));
-    if (!file.is_open()) {
-        spdlog::error("Failed to save preset '{}': Could not create file", presetName);
+    std::string presetPath = FormatPresetPath(presetName);
+    if (!SaveManager::WriteFileSafely(presetPath, presets[presetName].presetValues.dump(4))) {
+        spdlog::error("Failed to save preset '{}'", presetName);
         return;
     }
-
-    file << presets[presetName].presetValues.dump(4);
-    file.close();
     LoadPresets();
 }
 

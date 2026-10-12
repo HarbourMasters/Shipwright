@@ -254,7 +254,7 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         if ((wallType == BWALL_DC_ENTRANCE) && (!Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) {
             Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
             if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_DODONGOS_CAVERN,
-                                      gSaveContext.entranceIndex)) {
+                                      gSaveContext.entranceIndex, gDcOpeningCs)) {
                 Cutscene_SetSegment(play, gDcOpeningCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Player_SetCsActionWithHaltedActors(play, NULL, 0x31);

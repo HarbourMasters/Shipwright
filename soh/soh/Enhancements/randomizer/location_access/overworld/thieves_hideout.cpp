@@ -119,7 +119,8 @@ void RegionTable_Init_ThievesHideout() {
         //"Voidout" here means getting caught by guards
         LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
         LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) &&
+                                                          (logic->BunnyHovers() || logic->CanMegajump() || logic->CanRecoilHover(RECOIL_HAMMER))),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,              true),
@@ -132,7 +133,8 @@ void RegionTable_Init_ThievesHideout() {
         //Locations
         LOCATION(RC_TH_KITCHEN_POT_1,       logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_TH_KITCHEN_POT_2,       logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanBreakPots(ED_BOMB_THROW))),
-        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->BunnyHovers()),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) &&
+                                                          (logic->BunnyHovers() || logic->CanMegajump() || logic->CanRecoilHover(RECOIL_HAMMER))),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,        true),
@@ -149,9 +151,9 @@ void RegionTable_Init_ThievesHideout() {
                                                   (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_TH_BREAK_HALLWAY_OUTER_CRATE, logic->CanBreakCrates()),
         LOCATION(RC_TH_BREAK_HALLWAY_INNER_CRATE, logic->CanBreakCrates()),
-        LOCATION(RC_TH_BREAK_ROOM_RIGHT_CRATE,    (logic->CanPassEnemy(RE_BREAK_ROOM_GUARD) && logic->CanBreakCrates()) || 
+        LOCATION(RC_TH_BREAK_ROOM_RIGHT_CRATE,    (logic->CanPassEnemy(RE_BREAK_ROOM_GUARD) && logic->CanBreakCrates()) ||
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_TH_BREAK_ROOM_LEFT_CRATE,     (logic->CanPassEnemy(RE_BREAK_ROOM_GUARD) && logic->CanBreakCrates()) || 
+        LOCATION(RC_TH_BREAK_ROOM_LEFT_CRATE,     (logic->CanPassEnemy(RE_BREAK_ROOM_GUARD) && logic->CanBreakCrates()) ||
                                                    (logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->HasExplosives() && logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits

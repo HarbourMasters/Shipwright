@@ -124,7 +124,7 @@ typedef struct BossGanon {
     /* 0x02E4 */ u8 shockGlow;
     /* 0x02E6 */ s16 unk_2E6; // timer
     /* 0x02E8 */ s16 unk_2E8; // timer
-    /* 0x02EC */ Vec3f unk_2EC[18]; // body parts pos for ganondorf, used for other things as well 
+    /* 0x02EC */ Vec3f unk_2EC[18]; // body parts pos for ganondorf, used for other things as well
     /* 0x03C4 */ Vec3f unk_3C4[18];
     /* 0x049C */ f32 unk_49C[18];
     /* 0x04E4 */ s16 unk_4E4[18];

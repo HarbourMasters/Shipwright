@@ -30,6 +30,8 @@ class Text {
 
     void DuplicateRandomLetter(uint64_t* randState = nullptr);
 
+    void FillMissingTranslations();
+
     std::string english = "";
     std::string french = "";
     std::string german = "";

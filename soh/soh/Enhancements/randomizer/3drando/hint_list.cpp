@@ -26,11 +26,11 @@ void StaticData::HintTable_Init() {
     ---------------------------*/
     hintTextTable[RHT_NONE] = HintText(CustomMessage("No Hint", "Kein Hinweis", "Pas d'Indice" ));
     hintTextTable[RHT_WAY_OF_THE_HERO] =
-        HintText(CustomMessage( "They say that #[[1]]# is on #the way of the hero#.", 
+        HintText(CustomMessage( "They say that #[[1]]# is on #the way of the hero#.",
                      /*german*/ "Man erzählt sich, daß #[[1]]# #der Weg des Helden# verlaufe.",
                      /*french*/ "Selon moi, #[[1]]# est sur #la voie du héros#.", {QM_RED, QM_LBLUE}));
                  // /*spanish*/ "Según dicen, #[[1]]# conduce a la senda del héroe."
-    hintTextTable[RHT_FOOLISH] = 
+    hintTextTable[RHT_FOOLISH] =
         HintText(CustomMessage( "They say that plundering #[[1]]# is #a foolish choice#.",
                      /*german*/ "Man erzählt sich, daß es #eine törichte Entscheidung# sei #[[1]]# Schätze zu plündern.",
                      /*french*/ "Selon moi, explorer #[[1]]# est #futile#.", {QM_RED, QM_PINK}));
@@ -40,7 +40,7 @@ void StaticData::HintTable_Init() {
                      /*german*/ "Man erzählt sich, daß #[[1]]# #[[2]]# zu finden |sei|seien|.",
                      /*french*/ "Selon moi, #[[1]]# se trouve dans #[[2]]#.", {QM_GREEN, QM_RED}));
                  // /*spanish*/ "Según dicen, #[[1]]# aguarda en #[[2]]#."
-    hintTextTable[RHT_HOARDS] = 
+    hintTextTable[RHT_HOARDS] =
         HintText(CustomMessage( "They say that #[[2]]# hoards #[[1]]#.",
                      /*german*/ "Man erzählt sich, daß #[[2]]# #[[1]]# |horte|horten|.",
                      /*french*/ "Selon moi, #[[2]]# recèle #[[1]]#.", {QM_RED, QM_GREEN}));

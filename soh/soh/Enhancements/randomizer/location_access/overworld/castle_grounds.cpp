@@ -38,6 +38,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         ENTRANCE(RR_CASTLE_GROUNDS, true),
         ENTRANCE(RR_HC_ABOVE_VINE,  logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
+        //Rando changes this guard to always be bribable
         ENTRANCE(RR_HC_PAST_GATE,   logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     });
 
@@ -121,7 +122,7 @@ void RegionTable_Init_CastleGrounds() {
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
         ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_HOVER_BOOTS) ||
-                                      (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
+                                      logic->CanMegajump() || logic->CanMidairDamageBoost()),
     });
 
     areaTable[RR_HC_DRAIN_LEDGE] = Region("Hyrule Castle Drain Ledge", SCENE_HYRULE_CASTLE, {}, {}, {
@@ -230,7 +231,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_GANONS_CASTLE_LEDGE] = Region("Ganon's Castle Ledge", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
+        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE) || logic->CanBunnyMegaJumpslash()),
         ENTRANCE(RR_GANONS_CASTLE_ENTRYWAY, logic->IsAdult),
     });
 

@@ -628,6 +628,16 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !Player_InCsMode(play) && !(player->stateFlags1 & (PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) &&
+    // this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
+    // this->actor.yDistToPlayer <= 15.0f
+    // ```
+    // #### `args`
+    // - None
+    VB_DOOR_ANA_GRAB_PLAYER,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->actor.params & 0x3F)
     // ```
     // #### `args`
@@ -973,6 +983,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_FROGS_OCARINA_GAME_TIMER_TICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon`
+    VB_GANONDORF_DEATH_SCENE,
 
     // #### `result`
     // ```c
@@ -2160,10 +2178,20 @@ typedef enum {
     // ##### In `z_demo.c`:
     // - `int32_t` (entranceCutscene->flag) (promoted from `uint8_t` by va_arg)
     // - `int32_t` (entranceCutscene->entrance) (promoted from `uint16_t` by va_arg)
+    // - `void*` (entranceCutscene->segAddr)
     // ##### In `z_bg_breakwall.c` and `z_bg_toki_swd.c`:
     // - `int32_t` (EVENTCHKINF)
     // - `int32_t` (gSaveContext.entranceIndex)
+    // - `void*` (cutscene)
     VB_PLAY_ENTRANCE_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon2`
+    VB_PLAY_ESCAPED_TOWER_CS,
 
     // #### `result`
     // ```c
@@ -2199,6 +2227,23 @@ typedef enum {
     // #### `args`
     // - `*EnFr`
     VB_PLAY_FROG_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon`
+    VB_PLAY_GANONDORF_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon2`
+    // - `*EnZl3`
+    VB_PLAY_GANON_INTRO_CS,
 
     // #### `result`
     // ```c
@@ -2422,6 +2467,14 @@ typedef enum {
     // #### `args`
     // - `*DemoIm`
     VB_PLAY_ZELDAS_LULLABY_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BossGanon`
+    VB_PLAY_ZELDA_CRYSTAL_CS,
 
     // #### `result`
     // ```c

@@ -8,7 +8,6 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/logic.h"
-#include "soh/Enhancements/randomizer/dungeon.h"
 
 #define TIME_PASSES true
 #define TIME_DOESNT_PASS false
@@ -33,7 +32,6 @@ class EventAccess {
     }
 
     bool ConditionsMet() const {
-        auto ctx = Rando::Context::GetInstance();
         if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_OFF)) {
             return condition_function();
         }
@@ -84,7 +82,6 @@ class LocationAccess {
     }
 
     bool GetConditionsMet() const {
-        auto ctx = Rando::Context::GetInstance();
         if (ctx->GetOption(RSK_NO_LOGIC).Is(RO_GENERIC_OFF)) {
             return condition_function();
         }

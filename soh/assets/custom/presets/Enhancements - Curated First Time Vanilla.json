@@ -56,5 +56,6 @@
         }
     },
     "presetName": "Enhancements - Curated First Time Vanilla",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -5,6 +6,7 @@
 
 #include "frame_interpolation.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
 
 /*
 Frame interpolation.
@@ -39,6 +41,9 @@ given a specific interpolation factor (0=old frame, 0.5=average of frames,
 */
 
 extern "C" {
+#include "z64.h"
+
+extern PlayState* gPlayState;
 
 void Matrix_Init(struct GameState* gameState);
 void Matrix_Push(void);
@@ -190,10 +195,58 @@ uint32_t previous_camera_epoch;
 Recording current_recording;
 Recording previous_recording;
 
+// Children keyed by an object with this attached are drawn as-is on the gameplay frame it names,
+// instead of blended with the previous one
+struct DontInterpolate {
+    uint32_t frame = 0;
+};
+ObjectExtension::Register<DontInterpolate> DontInterpolateRegister;
+
+bool dont_interpolate(const void* key) {
+    const DontInterpolate* d = ObjectExtension::GetInstance().Get<DontInterpolate>(key);
+    return d != nullptr && gPlayState != nullptr && d->frame == gPlayState->gameplayFrames;
+}
+
 bool next_is_actor_pos_rot_matrix;
 bool has_inv_actor_mtx;
 MtxF inv_actor_mtx;
 size_t inv_actor_mtx_path_index;
+
+// Matrix stack depth, and the depth where a matrix was last built from scratch (MTXMODE_NEW).
+// Such matrices don't depend on the actor matrix, so they're stored as-is rather than relative to it.
+int matrix_depth;
+int new_mtx_depth = -1;
+
+void record_mode(u8 mode) {
+    if (mode == MTXMODE_NEW && new_mtx_depth < 0) {
+        new_mtx_depth = matrix_depth;
+    }
+}
+
+// Ribbon trails (sword slashes, boomerang, arrows) are vertices written on the CPU, one
+// segment per sample of the weapon position. Only the newest end moves within a gameplay
+// frame, so only it gets blended, sliding from the previous sample to the new one.
+struct RibbonHead {
+    Vtx* dest = nullptr;
+    vector<Vtx> cur;
+    vector<pair<s16, s16>> pairs; // (moving vertex, vertex it starts from)
+    uint32_t frame = 0;
+};
+
+unordered_map<const void*, RibbonHead> ribbon_heads;
+
+// Skinned limbs (horse body and legs) have their vertices rewritten on the CPU each
+// gameplay frame, so matrix interpolation can't move them. Keep the last two poses and
+// write a blend of them into the game's buffer before each displayed frame.
+struct SkinnedLimb {
+    Vtx* dest = nullptr;
+    vector<Vtx> prev;
+    vector<Vtx> cur;
+    uint32_t frame = 0;
+};
+
+unordered_map<const void*, SkinnedLimb> skinned_limbs;
+uint32_t record_frame;
 
 Data& append(Op op) {
     auto& m = current_path.back()->ops[op];
@@ -298,7 +351,8 @@ struct InterpolateCtx {
 
             if (item.first == Op::OpenChild) {
                 if (auto it = old_path->children.find(new_op.open_child.key);
-                    it != old_path->children.end() && new_op.open_child.idx < it->second.size()) {
+                    it != old_path->children.end() && new_op.open_child.idx < it->second.size() &&
+                    !dont_interpolate(new_op.open_child.key.first)) {
                     interpolate_branch(&it->second[new_op.open_child.idx],
                                        &new_path->children.find(new_op.open_child.key)->second[new_op.open_child.idx]);
                 } else {
@@ -410,10 +464,12 @@ struct InterpolateCtx {
                                 interpolate_mtxf(&tmp_mtxf, &old_op.matrix_to_mtx.src, &new_op.matrix_to_mtx.src);
                                 SkinMatrix_MtxFMtxFMult(&actor_mtx, &tmp_mtxf,
                                                         new_replacement(new_op.matrix_to_mtx.dest));
-                            } else {
+                            } else if (!old_op.matrix_to_mtx.has_adjusted && !new_op.matrix_to_mtx.has_adjusted) {
                                 interpolate_mtxf(new_replacement(new_op.matrix_to_mtx.dest), &old_op.matrix_to_mtx.src,
                                                  &new_op.matrix_to_mtx.src);
                             }
+                            // Otherwise one is relative to the actor and the other isn't, so can't be blended.
+                            // Without a replacement the new frame's matrix is drawn as-is
                             break;
                         }
 
@@ -454,8 +510,14 @@ void FrameInterpolation_StartRecord(void) {
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
+    matrix_depth = 0;
+    new_mtx_depth = -1;
+    record_frame++;
     if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
+    } else {
+        ribbon_heads.clear();
+        skinned_limbs.clear();
     }
 }
 
@@ -479,6 +541,7 @@ void FrameInterpolation_RecordCloseChild(void) {
     // append(Op::CloseChild);
     if (has_inv_actor_mtx && current_path.size() == inv_actor_mtx_path_index) {
         has_inv_actor_mtx = false;
+        new_mtx_depth = -1;
     }
     current_path.pop_back();
 }
@@ -491,6 +554,13 @@ int FrameInterpolation_GetCameraEpoch(void) {
     return (int)camera_epoch;
 }
 
+void FrameInterpolation_DontInterpolateChild(const void* a) {
+    // NULL is shared by the camera and skybox children
+    if (a != NULL && gPlayState != NULL) {
+        ObjectExtension::GetInstance().Set<DontInterpolate>(a, DontInterpolate{ gPlayState->gameplayFrames });
+    }
+}
+
 void FrameInterpolation_RecordActorPosRotMatrix(void) {
     if (!is_recording)
         return;
@@ -501,12 +571,17 @@ void FrameInterpolation_RecordMatrixPush(void) {
     if (!is_recording)
         return;
     append(Op::MatrixPush);
+    matrix_depth++;
 }
 
 void FrameInterpolation_RecordMatrixPop(void) {
     if (!is_recording)
         return;
     append(Op::MatrixPop);
+    matrix_depth--;
+    if (matrix_depth < new_mtx_depth) {
+        new_mtx_depth = -1;
+    }
 }
 
 void FrameInterpolation_RecordMatrixPut(MtxF* src) {
@@ -525,24 +600,28 @@ void FrameInterpolation_RecordMatrixTranslate(f32 x, f32 y, f32 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixTranslate).matrix_translate = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixScale(f32 x, f32 y, f32 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixScale).matrix_scale = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixRotate1Coord(u32 coord, f32 value, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixRotate1Coord).matrix_rotate_1_coord = { coord, value, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixRotateZYX(s16 x, s16 y, s16 z, u8 mode) {
     if (!is_recording)
         return;
     append(Op::MatrixRotateZYX).matrix_rotate_zyx = { x, y, z, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordMatrixTranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
@@ -563,6 +642,9 @@ void FrameInterpolation_RecordMatrixSetTranslateRotateYXZ(f32 translateX, f32 tr
         next_is_actor_pos_rot_matrix = false;
         has_inv_actor_mtx = true;
         inv_actor_mtx_path_index = current_path.size();
+        new_mtx_depth = -1;
+    } else {
+        record_mode(MTXMODE_NEW);
     }
 }
 
@@ -576,7 +658,7 @@ void FrameInterpolation_RecordMatrixToMtx(Mtx* dest, char* file, s32 line) {
     if (!is_recording)
         return;
     auto& d = append(Op::MatrixToMtx).matrix_to_mtx = { dest };
-    if (has_inv_actor_mtx) {
+    if (has_inv_actor_mtx && new_mtx_depth < 0) {
         d.has_adjusted = true;
         SkinMatrix_MtxFMtxFMult(&inv_actor_mtx, Matrix_GetCurrent(), &d.src);
     } else {
@@ -594,12 +676,105 @@ void FrameInterpolation_RecordMatrixRotateAxis(f32 angle, Vec3f* axis, u8 mode) 
     if (!is_recording)
         return;
     append(Op::MatrixRotateAxis).matrix_rotate_axis = { angle, *axis, mode };
+    record_mode(mode);
 }
 
 void FrameInterpolation_RecordSkinMatrixMtxFToMtx(MtxF* src, Mtx* dest) {
     if (!is_recording)
         return;
     FrameInterpolation_RecordMatrixMtxFToMtx(src, dest);
+}
+
+void FrameInterpolation_RecordRibbonHead(const void* key, void* dest, u32 vtxCount, u32 pairCount, const s16* pairs) {
+    if (!is_recording) {
+        return;
+    }
+
+    RibbonHead& head = ribbon_heads[key];
+    head.dest = (Vtx*)dest;
+    head.cur.assign(head.dest, head.dest + vtxCount);
+    head.pairs.clear();
+    for (u32 i = 0; i < pairCount; i++) {
+        head.pairs.emplace_back(pairs[2 * i], pairs[2 * i + 1]);
+    }
+    head.frame = record_frame;
+}
+
+void FrameInterpolation_UpdateRibbonHeads(float step) {
+    for (auto it = ribbon_heads.begin(); it != ribbon_heads.end();) {
+        RibbonHead& head = it->second;
+
+        // Not drawn this frame, the trail ended or stopped growing
+        if (head.frame != record_frame) {
+            it = ribbon_heads.erase(it);
+            continue;
+        }
+
+        std::copy(head.cur.begin(), head.cur.end(), head.dest);
+        if (step < 1.0f) {
+            float w = 1.0f - step;
+            for (const auto& [dst, src] : head.pairs) {
+                const Vtx& from = head.cur[src];
+                Vtx& to = head.dest[dst];
+                for (int j = 0; j < 3; j++) {
+                    to.v.ob[j] = (s16)(w * from.v.ob[j] + step * to.v.ob[j]);
+                }
+                // Colour carries the fade
+                for (int j = 0; j < 4; j++) {
+                    to.v.cn[j] = (u8)(w * from.v.cn[j] + step * to.v.cn[j]);
+                }
+            }
+        }
+
+        ++it;
+    }
+}
+
+void FrameInterpolation_RecordSkinnedLimb(const void* key, void* dest, u32 vtxCount) {
+    if (!is_recording) {
+        return;
+    }
+
+    SkinnedLimb& limb = skinned_limbs[key];
+    // Only blend against a pose from the frame right before this one
+    if (limb.frame + 1 == record_frame && limb.cur.size() == vtxCount) {
+        limb.prev.swap(limb.cur);
+    } else {
+        limb.prev.clear();
+    }
+    limb.dest = (Vtx*)dest;
+    limb.cur.assign(limb.dest, limb.dest + vtxCount);
+    limb.frame = record_frame;
+}
+
+void FrameInterpolation_UpdateSkinnedVertices(float step) {
+    for (auto it = skinned_limbs.begin(); it != skinned_limbs.end();) {
+        SkinnedLimb& limb = it->second;
+
+        // Not drawn this frame, its buffer may be freed
+        if (limb.frame != record_frame) {
+            it = skinned_limbs.erase(it);
+            continue;
+        }
+
+        if (limb.prev.empty() || step >= 1.0f) {
+            std::copy(limb.cur.begin(), limb.cur.end(), limb.dest);
+        } else {
+            float w = 1.0f - step;
+            for (size_t i = 0; i < limb.cur.size(); i++) {
+                const Vtx& p = limb.prev[i];
+                const Vtx& c = limb.cur[i];
+                Vtx& d = limb.dest[i];
+                d = c;
+                for (int j = 0; j < 3; j++) {
+                    d.n.ob[j] = (s16)(w * p.n.ob[j] + step * c.n.ob[j]);
+                    d.n.n[j] = (s8)(w * p.n.n[j] + step * c.n.n[j]);
+                }
+            }
+        }
+
+        ++it;
+    }
 }
 
 // https://stackoverflow.com/questions/1148309/inverting-a-4x4-matrix

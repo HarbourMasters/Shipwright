@@ -3,7 +3,6 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/entrance.h"
-#include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -432,7 +431,6 @@ bool Region::TimePass() {
 
 void Region::ApplyTimePass() {
     if (TimePass()) {
-        StartPerformanceTimer(PT_TOD_ACCESS);
         if (Child()) {
             childDay = true;
             childNight = true;
@@ -445,13 +443,11 @@ void Region::ApplyTimePass() {
             RegionTable(RR_ROOT)->adultDay = true;
             RegionTable(RR_ROOT)->adultNight = true;
         }
-        StopPerformanceTimer(PT_TOD_ACCESS);
     }
 }
 
 bool Region::UpdateEvents() {
     bool eventsUpdated = false;
-    StartPerformanceTimer(PT_EVENT_ACCESS);
     for (EventAccess& event : events) {
         // If the event has already happened, there's no reason to check it
         if (event.GetEvent()) {
@@ -466,7 +462,6 @@ bool Region::UpdateEvents() {
             eventsUpdated = true;
         }
     }
-    StopPerformanceTimer(PT_EVENT_ACCESS);
     return eventsUpdated;
 }
 
@@ -512,7 +507,7 @@ bool Region::AllAccountedFor() const {
     }
 
     for (const LocationAccess& loc : locations) {
-        if (!(Rando::Context::GetInstance()->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
+        if (!(ctx->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
             return false;
         }
     }
@@ -617,7 +612,7 @@ std::array<Region, RR_MAX> areaTable;
 
 // clang-format off
 std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
-    //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks 
+    //Vanilla Child uses ExplosiveKeyLogic here because they need to exist for shared adult checks
     {RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,       {5, 0, 3, 0,
                                                  []{return true;},
                                                  []{return logic->SpiritExplosiveKeyLogic() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
@@ -682,6 +677,12 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->SpiritExplosiveKeyLogic() && logic->CanUse(RG_HOOKSHOT) && logic->SpiritEastToSwitch();},
                                                  []{return logic->SpiritEastToSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_POWER_BRACELET);},
                                                  []{return logic->SpiritEastToSwitch() && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->BunnyHood() && logic->CanJumpslash() && logic->IsAdult));}}},
+
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT,    {5, 5, 3, 3,
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                             }},
     //MQ
     {RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,    {7, 6, 7, 7,
                                                  []{return logic->StatueRoomMQKeyLogic();},
@@ -710,7 +711,7 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                              }},
     {RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM,        {7, 0, 0, 0,
                                                  []{return logic->CanHitSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT));},
-                                                 []{return true;}, 
+                                                 []{return true;},
                                                  []{return true;},
                                              }},
     {RR_SPIRIT_TEMPLE_MQ_SUN_BLOCK_ROOM,     {7, 0, 0, 0,
@@ -727,6 +728,11 @@ std::map<RandomizerRegion, SpiritLogicData> Region::spiritLogicData = {
                                                  []{return logic->CanHitSwitch() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
                                                  []{return true;},
                                                  []{return areaTable[RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR].AnyAgeTime([]{return logic->MQSpiritStatueSouthDoor();});},
+                                             }},
+    {RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ, {7, 7, 4, 4,
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
+                                                 []{return logic->SpiritHandToArch();},
                                              }},
 };
 // clang-format on
@@ -859,8 +865,6 @@ bool AnyAgeTime(ConditionFn condition) {
 }
 
 bool CanPlantBean(const RandomizerGet bean) {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
     return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
            (logic->IsChild || ctx->GetOption(RSK_SKIP_PLANTING_BEANS));
 }

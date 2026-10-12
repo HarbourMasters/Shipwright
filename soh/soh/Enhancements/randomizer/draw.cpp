@@ -220,7 +220,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         (Gfx*)gKeyringIconGanonsCastleDL,         (Gfx*)gKeyringIconTreasureChestGameDL,
     };
 
-    SceneID scene = Rando::Logic::RandoGetToDungeonScene.find(getItemEntry->drawItemId)->second;
+    SceneID scene = Rando::Logic::RandoGetToDungeonScene[getItemEntry->drawItemId];
     uint8_t keyCount = Rando::GetSceneSmallKeyMax(scene);
 
     OPEN_DISPS(play->state.gfxCtx);

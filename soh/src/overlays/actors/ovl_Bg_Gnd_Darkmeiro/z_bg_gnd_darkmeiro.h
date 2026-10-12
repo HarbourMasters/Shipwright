@@ -18,11 +18,11 @@ typedef struct BgGndDarkmeiro {
 
 typedef enum {
     /* 0 */ DARKMEIRO_INVISIBLE_PATH,   // Textures for the invisible path in shadow trial.
-    
+
     /* 1 */ DARKMEIRO_CLEAR_BLOCK,      /* Clear blocks appear when their switch flag is set and
                                            disappear 64 frames after their switch flag is cleared.
                                            Clear blocks with flag 0x3F are always on.             */
-                                      
+
     /* 2 */ DARKMEIRO_BLOCK_TIMER       /* A block timer with switch flag N reacts to switch flags N+1
                                            and N+2 being set, setting its own switch flag and a timer
                                            for 304 frames. There are separate timers for N+1 and N+2,

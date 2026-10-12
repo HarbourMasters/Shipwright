@@ -602,7 +602,7 @@ void DrawGeneralTab() {
     }
 
     PushStyleSlider(Colors::DarkRed);
-    static const int16_t HEART_COUNT_MIN = 3;
+    static const int16_t HEART_COUNT_MIN = 1;
     static const int16_t HEART_COUNT_MAX = 20;
     static const int16_t S16_ZERO = 0;
     int16_t heartCount = (int16_t)gSaveContext.healthCapacity / 16;

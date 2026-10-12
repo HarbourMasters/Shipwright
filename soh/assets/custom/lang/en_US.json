@@ -2658,7 +2658,7 @@
             },
             "water_dragon_jump_dive": {
                 "name": "Water Temple Dragon Statue Jump Dive",
-                "description": "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get into the tunnel without needing either Iron Boots or a Scale. Alternativly, you can do this while equipping irons in middair to get into the tunnel without swim. This trick applies to both Vanilla and Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get through the tunnel before the gate closes."
+                "description": "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get into the tunnel without needing either Iron Boots or a Scale. Alternativly, you can do this while equipping irons in midair to get into the tunnel without swim. This trick applies to both Vanilla and Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get through the tunnel before the gate closes."
             },
             "water_adult_dragon": {
                 "name": "Water Temple Dragon Statue Switch from Above the Water as Adult",
@@ -2734,6 +2734,10 @@
             "shadow_statue": {
                 "name": "Shadow Temple River Statue with Bombchu",
                 "description": "By sending a Bombchu around the edge of the gorge, you can knock down the statue without needing a Bow. Applies in both Vanilla and MQ Shadow."
+            },
+            "shadow_bunny_statue": {
+                "name": "Shadow Temple climb onto the statue as Child with Bunny Hood and Jumpslash",
+                "description": "Child cannot normally jump onto the broken statue from the boss room side of the chasm, however by combining a Bunny Hood jump and a frame perfect Jumpslash they can barely make it on top."
             },
             "shadow_bongo": {
                 "name": "Shadow Temple Bongo Bongo without projectiles",
