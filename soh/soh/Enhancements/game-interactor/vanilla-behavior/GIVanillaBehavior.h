@@ -600,6 +600,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Flags_GetSwitch(play, (this->actor.params & 0xFC00) >> 0xA)
+    // ```
+    // #### `args`
+    // - `*EnGo2`
+    VB_DESPAWN_FREED_FIRE_GORON,
+
+    // #### `result`
+    // ```c
     // Flags_GetItemGetInf(ITEMGETINF_30)
     // ```
     // #### `args`
@@ -1164,6 +1172,14 @@ typedef enum {
     // #### `args`
     // - `*Actor` (EnDivingGame - &this->actor)
     VB_GIVE_ITEM_FROM_DIVING_MINIGAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGo2`
+    VB_GIVE_ITEM_FROM_FIRE_GORON,
 
     // #### `result`
     // ```c

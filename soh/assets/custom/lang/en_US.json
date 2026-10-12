@@ -548,6 +548,14 @@
                     "Red Ice will have a particle effect inside it when it holds a randomized item"
                 ]
             },
+            "shuffle_fire_gorons": {
+                "name": "Shuffle Fire Temple Gorons",
+                "description": [
+                    "The Gorons imprisoned in the Fire Temple will give a randomized item ",
+                    "when talked to after being freed.\n",
+                    "Gorons will have a particle effect above them when they hold a randomized item."
+                ]
+            },
             "shuffle_signs": {
                 "name": "Shuffle Signs",
                 "description": [
