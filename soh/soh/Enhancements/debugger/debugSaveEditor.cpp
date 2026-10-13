@@ -436,6 +436,34 @@ std::string decodeNTSCPlayerNameChar(int code) {
     return ret;
 }
 
+char decodePlayerNameChar(uint8_t code, uint8_t language) {
+    if (language == NAME_LANGUAGE_PAL) {
+        return z2ASCII(code);
+    }
+    const std::string decoded = decodeNTSCPlayerNameChar(code);
+    return (decoded.length() == 1 && decoded[0] >= 32 && decoded[0] <= 126) ? decoded[0] : ' ';
+}
+
+uint8_t encodePlayerNameChar(char c, uint8_t language) {
+    const bool pal = language == NAME_LANGUAGE_PAL;
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    }
+    if (c >= 'A' && c <= 'Z') {
+        return (pal ? 10 : 171) + (c - 'A');
+    }
+    if (c >= 'a' && c <= 'z') {
+        return (pal ? 36 : 197) + (c - 'a');
+    }
+    if (c == '-') {
+        return pal ? 0x3F : 0xE4;
+    }
+    if (c == '.') {
+        return pal ? 0x40 : 0xEA;
+    }
+    return pal ? 0x3E : 0xDF;
+}
+
 enum MagicLevel { MAGIC_LEVEL_NONE, MAGIC_LEVEL_SINGLE, MAGIC_LEVEL_DOUBLE };
 
 std::map<int8_t, const char*> magicLevelMap = {
@@ -528,13 +556,8 @@ void DrawGeneralTab() {
         // Convert current name to ASCII for display
         if (!nameInputInitialized || ImGui::IsWindowFocused()) {
             for (int i = 0; i < 8; i++) {
-                if (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL) {
-                    playerNameInput[i] = z2ASCII(gSaveContext.playerName[i]);
-                } else {
-                    const std::string decoded = decodeNTSCPlayerNameChar(gSaveContext.playerName[i]);
-                    playerNameInput[i] =
-                        (decoded.length() == 1 && decoded[0] >= 32 && decoded[0] <= 126) ? decoded[0] : ' ';
-                }
+                playerNameInput[i] =
+                    decodePlayerNameChar(gSaveContext.playerName[i], gSaveContext.ship.filenameLanguage);
             }
             playerNameInput[8] = '\0';
             nameInputInitialized = true;
@@ -545,12 +568,11 @@ void DrawGeneralTab() {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
         if (ImGui::InputText("##PlayerNameInput", playerNameInput, 9)) {
             // Convert ASCII input back to game encoding
+            bool ended = false;
             for (int i = 0; i < 8; i++) {
-                if (playerNameInput[i] == '\0') {
-                    gSaveContext.playerName[i] = 223;
-                } else {
-                    gSaveContext.playerName[i] = playerNameInput[i];
-                }
+                ended = ended || playerNameInput[i] == '\0';
+                gSaveContext.playerName[i] =
+                    encodePlayerNameChar(ended ? ' ' : playerNameInput[i], gSaveContext.ship.filenameLanguage);
             }
             nameInputInitialized = false;
         }
@@ -563,6 +585,7 @@ void DrawGeneralTab() {
     // Filename encoding
     const bool hasPAL = (sGerMessageEntryTablePtr != nullptr) && (sFraMessageEntryTablePtr != nullptr);
     const bool hasNTSC = (sJpnMessageEntryTablePtr != nullptr);
+    const uint8_t oldNameLanguage = gSaveContext.ship.filenameLanguage;
     if (hasPAL && hasNTSC) {
         Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
                  comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
@@ -575,6 +598,13 @@ void DrawGeneralTab() {
         Combobox("Player Name Language", &gSaveContext.ship.filenameLanguage, filenameLanguageMap,
                  comboboxOptionsBase.Tooltip("Encoding used for Player Name"));
         ImGui::EndDisabled();
+    }
+    if (canEditName && gSaveContext.ship.filenameLanguage != oldNameLanguage) {
+        for (int i = 0; i < 8; i++) {
+            gSaveContext.playerName[i] = encodePlayerNameChar(
+                decodePlayerNameChar(gSaveContext.playerName[i], oldNameLanguage), gSaveContext.ship.filenameLanguage);
+        }
+        nameInputInitialized = false;
     }
     UIWidgets::EndCard();
 
