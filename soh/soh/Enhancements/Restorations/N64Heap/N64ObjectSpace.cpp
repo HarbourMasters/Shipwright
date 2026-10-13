@@ -41,59 +41,28 @@ static uint32_t PauseSegmentStart(uint32_t spaceStart) {
     return (spaceStart + 0x30) & ~0x3Fu;
 }
 
-std::string ObjectSpace::Describe(const Span& span) {
-    if (span.id < 0) {
-        return span.label;
-    }
-    char text[48];
-    if (span.slot >= 0) {
-        snprintf(text, sizeof(text), "%s 0x%03X (slot %d)", span.label, span.id, span.slot);
-    } else {
-        snprintf(text, sizeof(text), "%s 0x%02X file", span.label, span.id);
-    }
-    return text;
-}
-
-void ObjectSpace::Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom, uint32_t base, const char* label,
-                        int16_t id, int16_t slot) {
+void ObjectSpace::Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom, uint32_t base, const char* label) {
     if (size == 0) {
         return;
     }
     mVersion++;
     uint32_t end = start + size;
-    auto it = mSpans.upper_bound(start);
-    if (it != mSpans.begin()) {
-        --it;
-    }
-    while (it != mSpans.end() && it->first < end) {
-        uint32_t spanStart = it->first;
-        Span span = it->second;
-        if (span.end <= start) {
-            ++it;
-            continue;
-        }
-        it = mSpans.erase(it);
-        if (spanStart < start) {
-            Span left = span;
-            left.end = start;
-            mSpans.emplace(spanStart, left);
-        }
-        if (span.end > end) {
-            mSpans.emplace(end, span);
-        }
-    }
-    mSpans.emplace(start, Span{ end, kind, vrom, base, label, id, slot });
+    ClearSpans(mSpans, start, end, [](Span span, uint32_t, uint32_t, uint32_t to) {
+        span.end = to;
+        return span;
+    });
+    mSpans.emplace(start, Span{ end, kind, vrom, base, label });
 }
 
-void ObjectSpace::PaintFile(uint32_t address, const RomFile& file, const char* label, int16_t id, int16_t slot) {
-    Paint(address, file.size, Kind::File, file.vrom, address, label, id, slot);
+void ObjectSpace::PaintFile(uint32_t address, const RomFile& file, const char* label) {
+    Paint(address, file.size, Kind::File, file.vrom, address, label);
 }
 
 void ObjectSpace::PaintRuntimeData(uint32_t address, uint32_t size, const char* label) {
     Paint(address, size, Kind::Runtime, 0, 0, label);
 }
 
-void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
+void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer, const char* sceneName) {
     mSceneId = sceneId;
     mSlotIds.clear();
     mSlotAddresses.clear();
@@ -109,7 +78,7 @@ void ObjectSpace::SceneInit(int16_t sceneId, uint8_t sceneLayer) {
     // The object space sits directly below the scene file
     const SceneEntry& scene = SCENES[sceneId];
     mSpaceStart = scene.base - layout->objectSpaceSize;
-    PaintFile(scene.base, scene.file, "scene", sceneId);
+    PaintFile(scene.base, scene.file, sceneName);
 }
 
 void ObjectSpace::PaintObject(size_t slot) {
@@ -117,7 +86,7 @@ void ObjectSpace::PaintObject(size_t slot) {
     if (id <= 0 || id >= OBJECT_COUNT || OBJECTS[id].size == 0) {
         return;
     }
-    PaintFile(mSlotAddresses[slot], OBJECTS[id], "object", id, static_cast<int16_t>(slot));
+    PaintFile(mSlotAddresses[slot], OBJECTS[id], "object");
 }
 
 void ObjectSpace::SyncObjects(const int16_t* ids, int count) {
@@ -222,10 +191,10 @@ bool ObjectSpace::ReadWord(uint32_t address, const RomReader& rom, uint32_t* val
     --it;
     const Span& span = it->second;
     if (address + 4 > span.end) {
-        *source = address < span.end ? Describe(span) + " (word crosses a boundary)" : "not modelled";
+        *source = address < span.end ? std::string(span.label) + " (word crosses a boundary)" : "not modelled";
         return false;
     }
-    *source = Describe(span) + " +" + Hex(address - span.base);
+    *source = std::string(span.label) + " +" + Hex(address - span.base);
     if (span.kind == Kind::Runtime) {
         return false;
     }
@@ -475,29 +444,7 @@ ScriptSimulation SimulateCutscene(uint32_t address, const WordReader& read) {
 }
 
 void ObjectSpace::Serialize(SaveStateCtx* ctx) {
-    uint32_t count = SaveStateCount(ctx, mSpans.size());
-    if (ctx->mode == SHIP_SAVESTATE_LOAD) {
-        mSpans.clear();
-    }
-    auto span = mSpans.begin();
-    for (uint32_t i = 0; i < count; i++) {
-        uint32_t start = ctx->mode == SHIP_SAVESTATE_LOAD ? 0 : span->first;
-        Span loaded{};
-        Span& entry = ctx->mode == SHIP_SAVESTATE_LOAD ? loaded : span->second;
-        SaveState_Blob(ctx, &start, sizeof(start));
-        SaveState_Blob(ctx, &entry.end, sizeof(entry.end));
-        SaveState_Blob(ctx, &entry.kind, sizeof(entry.kind));
-        SaveState_Blob(ctx, &entry.vrom, sizeof(entry.vrom));
-        SaveState_Blob(ctx, &entry.base, sizeof(entry.base));
-        SaveState_Blob(ctx, &entry.label, sizeof(entry.label));
-        SaveState_Blob(ctx, &entry.id, sizeof(entry.id));
-        SaveState_Blob(ctx, &entry.slot, sizeof(entry.slot));
-        if (ctx->mode == SHIP_SAVESTATE_LOAD) {
-            mSpans.emplace(start, std::move(loaded));
-        } else {
-            ++span;
-        }
-    }
+    SaveStateMap(ctx, mSpans);
     SaveState_Blob(ctx, &mVersion, sizeof(mVersion));
     SaveState_Blob(ctx, &mSceneId, sizeof(mSceneId));
     SaveState_Blob(ctx, &mSpaceStart, sizeof(mSpaceStart));

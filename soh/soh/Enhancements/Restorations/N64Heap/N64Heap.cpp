@@ -20,6 +20,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 #include "soh/cvar_prefixes.h"
+#include "soh/util.h"
 
 extern "C" {
 #include "z64.h"
@@ -125,7 +126,7 @@ void OnSceneInit(int16_t sceneNum) {
     sLastSceneId = sceneNum;
     sLastSceneLayer = gSaveContext.sceneLayer;
     sHostScriptLive = false;
-    sObjectSpace.SceneInit(sceneNum, gSaveContext.sceneLayer);
+    sObjectSpace.SceneInit(sceneNum, gSaveContext.sceneLayer, SohUtils::GetSceneName(sceneNum).c_str());
     sLastPauseState = 0;
     sVerdictDirty = true;
 }
@@ -433,7 +434,7 @@ void* FilterCutsceneScript(void* script) {
 void EnterTitleScreenState() {
     Shadow().Reset();
     sObjectSpace = n64heap::ObjectSpace{};
-    sObjectSpace.SceneInit(TITLE_SCREEN_SCENE, TITLE_SCREEN_LAYER);
+    sObjectSpace.SceneInit(TITLE_SCREEN_SCENE, TITLE_SCREEN_LAYER, SohUtils::GetSceneName(TITLE_SCREEN_SCENE).c_str());
     sLastSceneId = TITLE_SCREEN_SCENE;
     sLastSceneLayer = TITLE_SCREEN_LAYER;
     sLastHostScript = nullptr;

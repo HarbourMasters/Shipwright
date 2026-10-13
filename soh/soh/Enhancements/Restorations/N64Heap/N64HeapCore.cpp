@@ -131,35 +131,13 @@ void Memory::Forget(uint32_t address, uint32_t size) {
     if (size == 0) {
         return;
     }
-    uint32_t end = address + size;
-    auto it = mSpans.upper_bound(address);
-    if (it != mSpans.begin()) {
-        --it;
-    }
-    while (it != mSpans.end() && it->first < end) {
-        uint32_t spanStart = it->first;
-        if (it->second.end <= address) {
-            ++it;
-            continue;
-        }
-        Span span = std::move(it->second);
-        it = mSpans.erase(it);
-        if (spanStart < address) {
-            uint32_t keep = address - spanStart;
-            mSpans.emplace(spanStart, Span{ address, span.origin, span.owner,
-                                            std::vector<uint8_t>(span.bytes.begin(), span.bytes.begin() + keep),
-                                            std::vector<uint8_t>(span.known.begin(), span.known.begin() + keep) });
-        }
-        if (span.end > end) {
-            uint32_t skip = end - spanStart;
-            it = mSpans
-                     .emplace(end, Span{ span.end, span.origin, span.owner,
-                                         std::vector<uint8_t>(span.bytes.begin() + skip, span.bytes.end()),
-                                         std::vector<uint8_t>(span.known.begin() + skip, span.known.end()) })
-                     .first;
-            ++it;
-        }
-    }
+    ClearSpans(mSpans, address, address + size, [](const Span& span, uint32_t spanStart, uint32_t from, uint32_t to) {
+        return Span{
+            to, span.origin, span.owner,
+            std::vector<uint8_t>(span.bytes.begin() + (from - spanStart), span.bytes.begin() + (to - spanStart)),
+            std::vector<uint8_t>(span.known.begin() + (from - spanStart), span.known.begin() + (to - spanStart))
+        };
+    });
 }
 
 void Memory::Write(uint32_t address, const uint8_t* bytes, const uint8_t* known, uint32_t size, int16_t owner) {
@@ -687,47 +665,13 @@ void Arena::Serialize(SaveStateCtx* ctx) {
 }
 
 void Memory::Serialize(SaveStateCtx* ctx) {
-    uint32_t count = SaveStateCount(ctx, mSpans.size());
-    if (ctx->mode == SHIP_SAVESTATE_LOAD) {
-        mSpans.clear();
-    }
-    auto span = mSpans.begin();
-    for (uint32_t i = 0; i < count; i++) {
-        uint32_t start = ctx->mode == SHIP_SAVESTATE_LOAD ? 0 : span->first;
-        Span loaded{};
-        Span& entry = ctx->mode == SHIP_SAVESTATE_LOAD ? loaded : span->second;
-        SaveState_Blob(ctx, &start, sizeof(start));
-        SaveState_Blob(ctx, &entry.end, sizeof(entry.end));
-        SaveState_Blob(ctx, &entry.origin, sizeof(entry.origin));
-        SaveState_Blob(ctx, &entry.owner, sizeof(entry.owner));
-        SaveStateVector(ctx, entry.bytes);
-        SaveStateVector(ctx, entry.known);
-        if (ctx->mode == SHIP_SAVESTATE_LOAD) {
-            mSpans.emplace(start, std::move(loaded));
-        } else {
-            ++span;
-        }
-    }
-}
-
-template <typename M> static void SaveStateMap(SaveStateCtx* ctx, M& map) {
-    uint32_t count = SaveStateCount(ctx, map.size());
-    if (ctx->mode != SHIP_SAVESTATE_LOAD) {
-        for (auto& [key, value] : map) {
-            typename M::key_type savedKey = key;
-            SaveState_Blob(ctx, &savedKey, sizeof(savedKey));
-            SaveState_Blob(ctx, &value, sizeof(value));
-        }
-        return;
-    }
-    map.clear();
-    for (uint32_t i = 0; i < count; i++) {
-        typename M::key_type key{};
-        typename M::mapped_type value{};
-        SaveState_Blob(ctx, &key, sizeof(key));
-        SaveState_Blob(ctx, &value, sizeof(value));
-        map.emplace(key, value);
-    }
+    SaveStateMap(ctx, mSpans, [ctx](Span& span) {
+        SaveState_Blob(ctx, &span.end, sizeof(span.end));
+        SaveState_Blob(ctx, &span.origin, sizeof(span.origin));
+        SaveState_Blob(ctx, &span.owner, sizeof(span.owner));
+        SaveStateVector(ctx, span.bytes);
+        SaveStateVector(ctx, span.known);
+    });
 }
 
 void Core::Serialize(SaveStateCtx* ctx) {

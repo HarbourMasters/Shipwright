@@ -4,9 +4,11 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <map>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "soh/Enhancements/savestate_serialize.h"
@@ -30,6 +32,54 @@ template <typename T> void SaveStateVector(SaveStateCtx* ctx, std::vector<T>& va
     }
     if (count != 0) {
         SaveState_Blob(ctx, values.data(), count * sizeof(T));
+    }
+}
+
+template <typename M, typename F> void SaveStateMap(SaveStateCtx* ctx, M& map, F serializeValue) {
+    uint32_t count = SaveStateCount(ctx, map.size());
+    if (ctx->mode != SHIP_SAVESTATE_LOAD) {
+        for (auto& [key, value] : map) {
+            typename M::key_type savedKey = key;
+            SaveState_Blob(ctx, &savedKey, sizeof(savedKey));
+            serializeValue(value);
+        }
+        return;
+    }
+    map.clear();
+    for (uint32_t i = 0; i < count; i++) {
+        typename M::key_type key{};
+        typename M::mapped_type value{};
+        SaveState_Blob(ctx, &key, sizeof(key));
+        serializeValue(value);
+        map.emplace(key, std::move(value));
+    }
+}
+
+template <typename M> void SaveStateMap(SaveStateCtx* ctx, M& map) {
+    SaveStateMap(ctx, map, [ctx](typename M::mapped_type& value) { SaveState_Blob(ctx, &value, sizeof(value)); });
+}
+
+// Removes [start, end) from spans keyed by their start; keep(span, spanStart, from, to) gives the part of a span kept
+template <typename Span, typename Keep>
+void ClearSpans(std::map<uint32_t, Span>& spans, uint32_t start, uint32_t end, Keep keep) {
+    auto it = spans.upper_bound(start);
+    if (it != spans.begin()) {
+        --it;
+    }
+    while (it != spans.end() && it->first < end) {
+        uint32_t spanStart = it->first;
+        if (it->second.end <= start) {
+            ++it;
+            continue;
+        }
+        Span span = std::move(it->second);
+        it = spans.erase(it);
+        if (spanStart < start) {
+            spans.emplace(spanStart, keep(span, spanStart, spanStart, start));
+        }
+        if (span.end > end) {
+            it = std::next(spans.emplace(end, keep(span, spanStart, end, span.end)).first);
+        }
     }
 }
 
