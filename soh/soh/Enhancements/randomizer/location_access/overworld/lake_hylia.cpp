@@ -194,6 +194,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_HYRULE_LOACH,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_FISHING_POLE_HINT,              logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_LH_FISHING_POND_RECTANGLE_SIGN, logic->CanRead()),
+        LOCATION(RC_FISHERMANS_HAT,                 logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult),
     }, {
         //Exits
         ENTRANCE(RR_LH_FISHING_ISLAND, true),

@@ -97,6 +97,7 @@ bool showDungeonSigns;
 bool showOverworldWonderItems;
 bool showDungeonWonderItems;
 bool showBeggar;
+bool showFishHat;
 bool showIcicles;
 bool showRedIce;
 bool showFrogSongRupees;
@@ -1799,6 +1800,7 @@ void LoadSettings() {
                 break;
         }
         showBeggar = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEGGAR);
+        showFishHat = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FISHERMANS_HAT);
         showIcicles = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ICICLES);
         showRedIce = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_RED_ICE);
     } else { // Vanilla
@@ -1820,6 +1822,7 @@ void LoadSettings() {
         showOverworldSigns = false;
         showDungeonSigns = false;
         showBeggar = false;
+        showFishHat = false;
         showIcicles = false;
         showRedIce = false;
     }
@@ -1911,6 +1914,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                ((loc->GetRCType() != RCTYPE_MERCHANT || (showMerchants && rc != RC_ZR_MAGIC_BEAN_SALESMAN)) ||
                 (rc == RC_ZR_MAGIC_BEAN_SALESMAN && showBeans)) &&
                (loc->GetRCType() != RCTYPE_BEGGAR || showBeggar) &&
+               (loc->GetRCType() != RCTYPE_FISH_HAT || showFishHat) &&
                (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
                (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
