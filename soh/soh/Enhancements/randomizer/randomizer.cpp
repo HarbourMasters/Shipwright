@@ -1398,6 +1398,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
             break;
         case RG_TRIFORCE:
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            gSaveContext.ship.stats.gameComplete = 1;
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             break;
         case RG_TRIFORCE_PIECE:

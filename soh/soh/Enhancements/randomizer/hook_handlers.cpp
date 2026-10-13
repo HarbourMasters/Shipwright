@@ -2743,9 +2743,6 @@ void RandomizerOnPlayerUpdateHandler() {
         // Warp to credits once item queue has drained to avoid losing queued items
         if (GameInteractor::State::TriforceHuntCreditsWarpActive && randomizerQueuedChecks.empty() &&
             randomizerQueuedCheck == RC_UNKNOWN_CHECK) {
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-            gSaveContext.ship.stats.gameComplete = 1;
             Play_PerformSave(gPlayState);
             Notification::Emit({ .message = "Game autosaved" });
             gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
