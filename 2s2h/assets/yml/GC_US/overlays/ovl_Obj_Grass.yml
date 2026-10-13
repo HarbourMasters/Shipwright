@@ -1,0 +1,25 @@
+:config:
+  segments:
+    - [ 128, 0x00C3F760 ]
+    - [ 5, 0x00E3B2A0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x8098AFF0, 0x00C3F760 ]
+  external_files:
+    - GC_US/objects/gameplay_field_keep.yml
+    - GC_US/objects/gameplay_keep.yml
+
+gObjGrass_D_809AA9F0:
+  type: GFX
+  offset: 0x18E0
+  symbol: gObjGrass_D_809AA9F0
+
+gObjGrass_D_809AAA68:
+  type: GFX
+  offset: 0x1958
+  symbol: gObjGrass_D_809AAA68
+
+gObjGrass_D_809AAAE0:
+  type: GFX
+  offset: 0x19D0
+  symbol: gObjGrass_D_809AAAE0
+

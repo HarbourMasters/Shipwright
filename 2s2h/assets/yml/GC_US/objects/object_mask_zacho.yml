@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 10, 0x00E8DC70 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E8DC70 ]
+    - [ 12, 0x00E8DC70 ]
+    - [ 13, 0x00E8DC70 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_zacho_DL_000700:
+  type: GFX
+  offset: 0x700
+  symbol: object_mask_zacho_DL_000700
+
+object_mask_zacho_TLUT_000BC8:
+  type: TEXTURE
+  offset: 0xBC8
+  symbol: object_mask_zacho_TLUT_000BC8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_zacho_Tex_000DC8:
+  type: TEXTURE
+  offset: 0xDC8
+  symbol: object_mask_zacho_Tex_000DC8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_zacho_Tex_000FC8:
+  type: TEXTURE
+  offset: 0xFC8
+  symbol: object_mask_zacho_Tex_000FC8
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_zacho_Tex_001008:
+  type: TEXTURE
+  offset: 0x1008
+  symbol: object_mask_zacho_Tex_001008
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_zacho_Tex_001048:
+  type: TEXTURE
+  offset: 0x1048
+  symbol: object_mask_zacho_Tex_001048
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_zacho_Tex_001448:
+  type: TEXTURE
+  offset: 0x1448
+  symbol: object_mask_zacho_Tex_001448
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_zacho_Tex_001548:
+  type: TEXTURE
+  offset: 0x1548
+  symbol: object_mask_zacho_Tex_001548
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_zacho_Tex_001648:
+  type: TEXTURE
+  offset: 0x1648
+  symbol: object_mask_zacho_Tex_001648
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_mask_zachoVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_zachoVtx_000000
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

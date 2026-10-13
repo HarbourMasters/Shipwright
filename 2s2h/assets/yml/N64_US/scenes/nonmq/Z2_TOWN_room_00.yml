@@ -1,0 +1,3003 @@
+:config:
+  segments:
+    - [ 3, 0x01E1D740 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01E1D740 ]
+    - [ 9, 0x01E1D740 ]
+    - [ 10, 0x01E1D740 ]
+    - [ 11, 0x01E1D740 ]
+    - [ 12, 0x01E1D740 ]
+    - [ 13, 0x01E1D740 ]
+    - [ 2, 0x01E08320 ]
+  directory: scenes/nonmq/Z2_TOWN
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_TOWN.yml
+    - N64_US/scenes/nonmq/Z2_TOWN_room_00Set_000500.yml
+    - N64_US/scenes/nonmq/Z2_TOWN_room_00Set_0007C0.yml
+
+Z2_TOWN_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_TOWN_room_00
+
+Z2_TOWN_room_00DL_000960:
+  type: GFX
+  offset: 0x960
+  symbol: Z2_TOWN_room_00DL_000960
+
+Z2_TOWN_room_00DL_012D98:
+  type: GFX
+  offset: 0x12D98
+  symbol: Z2_TOWN_room_00DL_012D98
+
+Z2_TOWN_room_00DL_017668:
+  type: GFX
+  offset: 0x17668
+  symbol: Z2_TOWN_room_00DL_017668
+
+
+Z2_TOWN_room_00ActorEntry_000084:
+  type: BLOB
+  offset: 0x000084
+  symbol: Z2_TOWN_room_00ActorEntry_000084
+  size: 0
+
+Z2_TOWN_room_00ActorEntry_000564:
+  type: BLOB
+  offset: 0x000564
+  symbol: Z2_TOWN_room_00ActorEntry_000564
+  size: 0
+
+Z2_TOWN_room_00ActorEntry_000818:
+  type: BLOB
+  offset: 0x000818
+  symbol: Z2_TOWN_room_00ActorEntry_000818
+  size: 0
+
+Z2_TOWN_room_00DL_00A3C8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x8E0
+  symbol: Z2_TOWN_room_00DL_00A3C8Mtx_000000
+
+Z2_TOWN_room_00DL_004DD8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x920
+  symbol: Z2_TOWN_room_00DL_004DD8Mtx_000000
+
+Z2_TOWN_room_00Vtx_000968:
+  type: MM:ARRAY
+  offset: 0x000968
+  symbol: Z2_TOWN_room_00Vtx_000968
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_000B38:
+  type: GFX
+  offset: 0x000B38
+  symbol: Z2_TOWN_room_00DL_000B38
+
+Z2_TOWN_room_00Vtx_000C48:
+  type: MM:ARRAY
+  offset: 0x000C48
+  symbol: Z2_TOWN_room_00Vtx_000C48
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_000DC8:
+  type: GFX
+  offset: 0x000DC8
+  symbol: Z2_TOWN_room_00DL_000DC8
+
+Z2_TOWN_room_00DL_000EC0:
+  type: GFX
+  offset: 0x000EC0
+  symbol: Z2_TOWN_room_00DL_000EC0
+
+Z2_TOWN_room_00Vtx_000ED0:
+  type: MM:ARRAY
+  offset: 0x000ED0
+  symbol: Z2_TOWN_room_00Vtx_000ED0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0010C0:
+  type: GFX
+  offset: 0x0010C0
+  symbol: Z2_TOWN_room_00DL_0010C0
+
+Z2_TOWN_room_00Vtx_001210:
+  type: MM:ARRAY
+  offset: 0x001210
+  symbol: Z2_TOWN_room_00Vtx_001210
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_001300:
+  type: GFX
+  offset: 0x001300
+  symbol: Z2_TOWN_room_00DL_001300
+
+Z2_TOWN_room_00DL_0013E0:
+  type: GFX
+  offset: 0x0013E0
+  symbol: Z2_TOWN_room_00DL_0013E0
+
+Z2_TOWN_room_00Vtx_0013F8:
+  type: MM:ARRAY
+  offset: 0x0013F8
+  symbol: Z2_TOWN_room_00Vtx_0013F8
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0019C8:
+  type: GFX
+  offset: 0x0019C8
+  symbol: Z2_TOWN_room_00DL_0019C8
+
+Z2_TOWN_room_00Vtx_001B98:
+  type: MM:ARRAY
+  offset: 0x001B98
+  symbol: Z2_TOWN_room_00Vtx_001B98
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_001DC8:
+  type: GFX
+  offset: 0x001DC8
+  symbol: Z2_TOWN_room_00DL_001DC8
+
+Z2_TOWN_room_00Vtx_001EE8:
+  type: MM:ARRAY
+  offset: 0x001EE8
+  symbol: Z2_TOWN_room_00Vtx_001EE8
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_002888:
+  type: GFX
+  offset: 0x002888
+  symbol: Z2_TOWN_room_00DL_002888
+
+Z2_TOWN_room_00DL_002B50:
+  type: GFX
+  offset: 0x002B50
+  symbol: Z2_TOWN_room_00DL_002B50
+
+Z2_TOWN_room_00Vtx_002B70:
+  type: MM:ARRAY
+  offset: 0x002B70
+  symbol: Z2_TOWN_room_00Vtx_002B70
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_002E40:
+  type: GFX
+  offset: 0x002E40
+  symbol: Z2_TOWN_room_00DL_002E40
+
+Z2_TOWN_room_00Vtx_002FB0:
+  type: MM:ARRAY
+  offset: 0x002FB0
+  symbol: Z2_TOWN_room_00Vtx_002FB0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_003110:
+  type: GFX
+  offset: 0x003110
+  symbol: Z2_TOWN_room_00DL_003110
+
+Z2_TOWN_room_00Vtx_003200:
+  type: MM:ARRAY
+  offset: 0x003200
+  symbol: Z2_TOWN_room_00Vtx_003200
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0033D0:
+  type: GFX
+  offset: 0x0033D0
+  symbol: Z2_TOWN_room_00DL_0033D0
+
+Z2_TOWN_room_00DL_0034C8:
+  type: GFX
+  offset: 0x0034C8
+  symbol: Z2_TOWN_room_00DL_0034C8
+
+Z2_TOWN_room_00Vtx_0034E8:
+  type: MM:ARRAY
+  offset: 0x0034E8
+  symbol: Z2_TOWN_room_00Vtx_0034E8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_003678:
+  type: GFX
+  offset: 0x003678
+  symbol: Z2_TOWN_room_00DL_003678
+
+Z2_TOWN_room_00Vtx_003788:
+  type: MM:ARRAY
+  offset: 0x003788
+  symbol: Z2_TOWN_room_00Vtx_003788
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_003B78:
+  type: GFX
+  offset: 0x003B78
+  symbol: Z2_TOWN_room_00DL_003B78
+
+Z2_TOWN_room_00Vtx_003D78:
+  type: MM:ARRAY
+  offset: 0x003D78
+  symbol: Z2_TOWN_room_00Vtx_003D78
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_003FF8:
+  type: GFX
+  offset: 0x003FF8
+  symbol: Z2_TOWN_room_00DL_003FF8
+
+Z2_TOWN_room_00Vtx_0040D0:
+  type: MM:ARRAY
+  offset: 0x0040D0
+  symbol: Z2_TOWN_room_00Vtx_0040D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0040E0:
+  type: GFX
+  offset: 0x0040E0
+  symbol: Z2_TOWN_room_00DL_0040E0
+
+Z2_TOWN_room_00DL_004100:
+  type: GFX
+  offset: 0x004100
+  symbol: Z2_TOWN_room_00DL_004100
+
+Z2_TOWN_room_00Vtx_004110:
+  type: MM:ARRAY
+  offset: 0x004110
+  symbol: Z2_TOWN_room_00Vtx_004110
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0041D0:
+  type: GFX
+  offset: 0x0041D0
+  symbol: Z2_TOWN_room_00DL_0041D0
+
+Z2_TOWN_room_00DL_004270:
+  type: GFX
+  offset: 0x004270
+  symbol: Z2_TOWN_room_00DL_004270
+
+Z2_TOWN_room_00DL_004288:
+  type: GFX
+  offset: 0x004288
+  symbol: Z2_TOWN_room_00DL_004288
+
+Z2_TOWN_room_00Vtx_0042A8:
+  type: MM:ARRAY
+  offset: 0x0042A8
+  symbol: Z2_TOWN_room_00Vtx_0042A8
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_004508:
+  type: GFX
+  offset: 0x004508
+  symbol: Z2_TOWN_room_00DL_004508
+
+Z2_TOWN_room_00Vtx_004700:
+  type: MM:ARRAY
+  offset: 0x004700
+  symbol: Z2_TOWN_room_00Vtx_004700
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0049F0:
+  type: GFX
+  offset: 0x0049F0
+  symbol: Z2_TOWN_room_00DL_0049F0
+
+Z2_TOWN_room_00Vtx_004B18:
+  type: MM:ARRAY
+  offset: 0x004B18
+  symbol: Z2_TOWN_room_00Vtx_004B18
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_004C38:
+  type: GFX
+  offset: 0x004C38
+  symbol: Z2_TOWN_room_00DL_004C38
+
+Z2_TOWN_room_00Vtx_004D18:
+  type: MM:ARRAY
+  offset: 0x004D18
+  symbol: Z2_TOWN_room_00Vtx_004D18
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_004DD8:
+  type: GFX
+  offset: 0x004DD8
+  symbol: Z2_TOWN_room_00DL_004DD8
+
+Z2_TOWN_room_00DL_004E88:
+  type: GFX
+  offset: 0x004E88
+  symbol: Z2_TOWN_room_00DL_004E88
+
+Z2_TOWN_room_00Vtx_004E98:
+  type: MM:ARRAY
+  offset: 0x004E98
+  symbol: Z2_TOWN_room_00Vtx_004E98
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_005038:
+  type: GFX
+  offset: 0x005038
+  symbol: Z2_TOWN_room_00DL_005038
+
+Z2_TOWN_room_00Vtx_005128:
+  type: MM:ARRAY
+  offset: 0x005128
+  symbol: Z2_TOWN_room_00Vtx_005128
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_005228:
+  type: GFX
+  offset: 0x005228
+  symbol: Z2_TOWN_room_00DL_005228
+
+Z2_TOWN_room_00Vtx_0052D0:
+  type: MM:ARRAY
+  offset: 0x0052D0
+  symbol: Z2_TOWN_room_00Vtx_0052D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0052E0:
+  type: GFX
+  offset: 0x0052E0
+  symbol: Z2_TOWN_room_00DL_0052E0
+
+Z2_TOWN_room_00DL_005300:
+  type: GFX
+  offset: 0x005300
+  symbol: Z2_TOWN_room_00DL_005300
+
+Z2_TOWN_room_00DL_005310:
+  type: GFX
+  offset: 0x005310
+  symbol: Z2_TOWN_room_00DL_005310
+
+Z2_TOWN_room_00Vtx_005348:
+  type: MM:ARRAY
+  offset: 0x005348
+  symbol: Z2_TOWN_room_00Vtx_005348
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0056C8:
+  type: GFX
+  offset: 0x0056C8
+  symbol: Z2_TOWN_room_00DL_0056C8
+
+Z2_TOWN_room_00Vtx_0058B0:
+  type: MM:ARRAY
+  offset: 0x0058B0
+  symbol: Z2_TOWN_room_00Vtx_0058B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0059B0:
+  type: GFX
+  offset: 0x0059B0
+  symbol: Z2_TOWN_room_00DL_0059B0
+
+Z2_TOWN_room_00DL_005A58:
+  type: GFX
+  offset: 0x005A58
+  symbol: Z2_TOWN_room_00DL_005A58
+
+Z2_TOWN_room_00Vtx_005A70:
+  type: MM:ARRAY
+  offset: 0x005A70
+  symbol: Z2_TOWN_room_00Vtx_005A70
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_005DF0:
+  type: GFX
+  offset: 0x005DF0
+  symbol: Z2_TOWN_room_00DL_005DF0
+
+Z2_TOWN_room_00Vtx_005F90:
+  type: MM:ARRAY
+  offset: 0x005F90
+  symbol: Z2_TOWN_room_00Vtx_005F90
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_006200:
+  type: GFX
+  offset: 0x006200
+  symbol: Z2_TOWN_room_00DL_006200
+
+Z2_TOWN_room_00Vtx_0062D8:
+  type: MM:ARRAY
+  offset: 0x0062D8
+  symbol: Z2_TOWN_room_00Vtx_0062D8
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_006568:
+  type: GFX
+  offset: 0x006568
+  symbol: Z2_TOWN_room_00DL_006568
+
+Z2_TOWN_room_00Vtx_006780:
+  type: MM:ARRAY
+  offset: 0x006780
+  symbol: Z2_TOWN_room_00Vtx_006780
+  count: 241
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007690:
+  type: GFX
+  offset: 0x007690
+  symbol: Z2_TOWN_room_00DL_007690
+
+Z2_TOWN_room_00Vtx_007AA8:
+  type: MM:ARRAY
+  offset: 0x007AA8
+  symbol: Z2_TOWN_room_00Vtx_007AA8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007AB8:
+  type: GFX
+  offset: 0x007AB8
+  symbol: Z2_TOWN_room_00DL_007AB8
+
+Z2_TOWN_room_00DL_007AD8:
+  type: GFX
+  offset: 0x007AD8
+  symbol: Z2_TOWN_room_00DL_007AD8
+
+Z2_TOWN_room_00Vtx_007AE8:
+  type: MM:ARRAY
+  offset: 0x007AE8
+  symbol: Z2_TOWN_room_00Vtx_007AE8
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007CD8:
+  type: GFX
+  offset: 0x007CD8
+  symbol: Z2_TOWN_room_00DL_007CD8
+
+Z2_TOWN_room_00Vtx_007DA0:
+  type: MM:ARRAY
+  offset: 0x007DA0
+  symbol: Z2_TOWN_room_00Vtx_007DA0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007DB0:
+  type: GFX
+  offset: 0x007DB0
+  symbol: Z2_TOWN_room_00DL_007DB0
+
+Z2_TOWN_room_00DL_007DD0:
+  type: GFX
+  offset: 0x007DD0
+  symbol: Z2_TOWN_room_00DL_007DD0
+
+Z2_TOWN_room_00Vtx_007DE0:
+  type: MM:ARRAY
+  offset: 0x007DE0
+  symbol: Z2_TOWN_room_00Vtx_007DE0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007EE0:
+  type: GFX
+  offset: 0x007EE0
+  symbol: Z2_TOWN_room_00DL_007EE0
+
+Z2_TOWN_room_00Vtx_007F88:
+  type: MM:ARRAY
+  offset: 0x007F88
+  symbol: Z2_TOWN_room_00Vtx_007F88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_007F98:
+  type: GFX
+  offset: 0x007F98
+  symbol: Z2_TOWN_room_00DL_007F98
+
+Z2_TOWN_room_00DL_007FB8:
+  type: GFX
+  offset: 0x007FB8
+  symbol: Z2_TOWN_room_00DL_007FB8
+
+Z2_TOWN_room_00Vtx_007FC8:
+  type: MM:ARRAY
+  offset: 0x007FC8
+  symbol: Z2_TOWN_room_00Vtx_007FC8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_008088:
+  type: GFX
+  offset: 0x008088
+  symbol: Z2_TOWN_room_00DL_008088
+
+Z2_TOWN_room_00Vtx_008128:
+  type: MM:ARRAY
+  offset: 0x008128
+  symbol: Z2_TOWN_room_00Vtx_008128
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_008138:
+  type: GFX
+  offset: 0x008138
+  symbol: Z2_TOWN_room_00DL_008138
+
+Z2_TOWN_room_00DL_008158:
+  type: GFX
+  offset: 0x008158
+  symbol: Z2_TOWN_room_00DL_008158
+
+Z2_TOWN_room_00Vtx_008168:
+  type: MM:ARRAY
+  offset: 0x008168
+  symbol: Z2_TOWN_room_00Vtx_008168
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_008268:
+  type: GFX
+  offset: 0x008268
+  symbol: Z2_TOWN_room_00DL_008268
+
+Z2_TOWN_room_00DL_008310:
+  type: GFX
+  offset: 0x008310
+  symbol: Z2_TOWN_room_00DL_008310
+
+Z2_TOWN_room_00Vtx_008358:
+  type: MM:ARRAY
+  offset: 0x008358
+  symbol: Z2_TOWN_room_00Vtx_008358
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_008448:
+  type: GFX
+  offset: 0x008448
+  symbol: Z2_TOWN_room_00DL_008448
+
+Z2_TOWN_room_00Vtx_008528:
+  type: MM:ARRAY
+  offset: 0x008528
+  symbol: Z2_TOWN_room_00Vtx_008528
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0085E8:
+  type: GFX
+  offset: 0x0085E8
+  symbol: Z2_TOWN_room_00DL_0085E8
+
+Z2_TOWN_room_00DL_008688:
+  type: GFX
+  offset: 0x008688
+  symbol: Z2_TOWN_room_00DL_008688
+
+Z2_TOWN_room_00Vtx_0086A0:
+  type: MM:ARRAY
+  offset: 0x0086A0
+  symbol: Z2_TOWN_room_00Vtx_0086A0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0089A0:
+  type: GFX
+  offset: 0x0089A0
+  symbol: Z2_TOWN_room_00DL_0089A0
+
+Z2_TOWN_room_00Vtx_008B68:
+  type: MM:ARRAY
+  offset: 0x008B68
+  symbol: Z2_TOWN_room_00Vtx_008B68
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_008D28:
+  type: GFX
+  offset: 0x008D28
+  symbol: Z2_TOWN_room_00DL_008D28
+
+Z2_TOWN_room_00DL_008E28:
+  type: GFX
+  offset: 0x008E28
+  symbol: Z2_TOWN_room_00DL_008E28
+
+Z2_TOWN_room_00Vtx_008E40:
+  type: MM:ARRAY
+  offset: 0x008E40
+  symbol: Z2_TOWN_room_00Vtx_008E40
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0090B0:
+  type: GFX
+  offset: 0x0090B0
+  symbol: Z2_TOWN_room_00DL_0090B0
+
+Z2_TOWN_room_00Vtx_009210:
+  type: MM:ARRAY
+  offset: 0x009210
+  symbol: Z2_TOWN_room_00Vtx_009210
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_009360:
+  type: GFX
+  offset: 0x009360
+  symbol: Z2_TOWN_room_00DL_009360
+
+Z2_TOWN_room_00DL_009450:
+  type: GFX
+  offset: 0x009450
+  symbol: Z2_TOWN_room_00DL_009450
+
+Z2_TOWN_room_00Vtx_009468:
+  type: MM:ARRAY
+  offset: 0x009468
+  symbol: Z2_TOWN_room_00Vtx_009468
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_009838:
+  type: GFX
+  offset: 0x009838
+  symbol: Z2_TOWN_room_00DL_009838
+
+Z2_TOWN_room_00Vtx_0099A0:
+  type: MM:ARRAY
+  offset: 0x0099A0
+  symbol: Z2_TOWN_room_00Vtx_0099A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_009B20:
+  type: GFX
+  offset: 0x009B20
+  symbol: Z2_TOWN_room_00DL_009B20
+
+Z2_TOWN_room_00Vtx_009CF0:
+  type: MM:ARRAY
+  offset: 0x009CF0
+  symbol: Z2_TOWN_room_00Vtx_009CF0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_009DB0:
+  type: GFX
+  offset: 0x009DB0
+  symbol: Z2_TOWN_room_00DL_009DB0
+
+Z2_TOWN_room_00Vtx_009E80:
+  type: MM:ARRAY
+  offset: 0x009E80
+  symbol: Z2_TOWN_room_00Vtx_009E80
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A1F0:
+  type: GFX
+  offset: 0x00A1F0
+  symbol: Z2_TOWN_room_00DL_00A1F0
+
+Z2_TOWN_room_00Vtx_00A308:
+  type: MM:ARRAY
+  offset: 0x00A308
+  symbol: Z2_TOWN_room_00Vtx_00A308
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A3C8:
+  type: GFX
+  offset: 0x00A3C8
+  symbol: Z2_TOWN_room_00DL_00A3C8
+
+Z2_TOWN_room_00DL_00A478:
+  type: GFX
+  offset: 0x00A478
+  symbol: Z2_TOWN_room_00DL_00A478
+
+Z2_TOWN_room_00Vtx_00A488:
+  type: MM:ARRAY
+  offset: 0x00A488
+  symbol: Z2_TOWN_room_00Vtx_00A488
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A598:
+  type: GFX
+  offset: 0x00A598
+  symbol: Z2_TOWN_room_00DL_00A598
+
+Z2_TOWN_room_00Vtx_00A640:
+  type: MM:ARRAY
+  offset: 0x00A640
+  symbol: Z2_TOWN_room_00Vtx_00A640
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A740:
+  type: GFX
+  offset: 0x00A740
+  symbol: Z2_TOWN_room_00DL_00A740
+
+Z2_TOWN_room_00Vtx_00A7F0:
+  type: MM:ARRAY
+  offset: 0x00A7F0
+  symbol: Z2_TOWN_room_00Vtx_00A7F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A800:
+  type: GFX
+  offset: 0x00A800
+  symbol: Z2_TOWN_room_00DL_00A800
+
+Z2_TOWN_room_00DL_00A820:
+  type: GFX
+  offset: 0x00A820
+  symbol: Z2_TOWN_room_00DL_00A820
+
+Z2_TOWN_room_00Vtx_00A830:
+  type: MM:ARRAY
+  offset: 0x00A830
+  symbol: Z2_TOWN_room_00Vtx_00A830
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A930:
+  type: GFX
+  offset: 0x00A930
+  symbol: Z2_TOWN_room_00DL_00A930
+
+Z2_TOWN_room_00Vtx_00A9E0:
+  type: MM:ARRAY
+  offset: 0x00A9E0
+  symbol: Z2_TOWN_room_00Vtx_00A9E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00A9F0:
+  type: GFX
+  offset: 0x00A9F0
+  symbol: Z2_TOWN_room_00DL_00A9F0
+
+Z2_TOWN_room_00DL_00AA10:
+  type: GFX
+  offset: 0x00AA10
+  symbol: Z2_TOWN_room_00DL_00AA10
+
+Z2_TOWN_room_00Vtx_00AA20:
+  type: MM:ARRAY
+  offset: 0x00AA20
+  symbol: Z2_TOWN_room_00Vtx_00AA20
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00AB20:
+  type: GFX
+  offset: 0x00AB20
+  symbol: Z2_TOWN_room_00DL_00AB20
+
+Z2_TOWN_room_00Vtx_00ABD0:
+  type: MM:ARRAY
+  offset: 0x00ABD0
+  symbol: Z2_TOWN_room_00Vtx_00ABD0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00ABE0:
+  type: GFX
+  offset: 0x00ABE0
+  symbol: Z2_TOWN_room_00DL_00ABE0
+
+Z2_TOWN_room_00DL_00AC00:
+  type: GFX
+  offset: 0x00AC00
+  symbol: Z2_TOWN_room_00DL_00AC00
+
+Z2_TOWN_room_00Vtx_00AC10:
+  type: MM:ARRAY
+  offset: 0x00AC10
+  symbol: Z2_TOWN_room_00Vtx_00AC10
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00AD10:
+  type: GFX
+  offset: 0x00AD10
+  symbol: Z2_TOWN_room_00DL_00AD10
+
+Z2_TOWN_room_00Vtx_00ADC0:
+  type: MM:ARRAY
+  offset: 0x00ADC0
+  symbol: Z2_TOWN_room_00Vtx_00ADC0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00ADD0:
+  type: GFX
+  offset: 0x00ADD0
+  symbol: Z2_TOWN_room_00DL_00ADD0
+
+Z2_TOWN_room_00DL_00ADF0:
+  type: GFX
+  offset: 0x00ADF0
+  symbol: Z2_TOWN_room_00DL_00ADF0
+
+Z2_TOWN_room_00Vtx_00AE00:
+  type: MM:ARRAY
+  offset: 0x00AE00
+  symbol: Z2_TOWN_room_00Vtx_00AE00
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00AEE0:
+  type: GFX
+  offset: 0x00AEE0
+  symbol: Z2_TOWN_room_00DL_00AEE0
+
+Z2_TOWN_room_00Vtx_00AF88:
+  type: MM:ARRAY
+  offset: 0x00AF88
+  symbol: Z2_TOWN_room_00Vtx_00AF88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00AF98:
+  type: GFX
+  offset: 0x00AF98
+  symbol: Z2_TOWN_room_00DL_00AF98
+
+Z2_TOWN_room_00DL_00AFB8:
+  type: GFX
+  offset: 0x00AFB8
+  symbol: Z2_TOWN_room_00DL_00AFB8
+
+Z2_TOWN_room_00DL_00AFC8:
+  type: GFX
+  offset: 0x00AFC8
+  symbol: Z2_TOWN_room_00DL_00AFC8
+
+Z2_TOWN_room_00Vtx_00B010:
+  type: MM:ARRAY
+  offset: 0x00B010
+  symbol: Z2_TOWN_room_00Vtx_00B010
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00B0D0:
+  type: GFX
+  offset: 0x00B0D0
+  symbol: Z2_TOWN_room_00DL_00B0D0
+
+Z2_TOWN_room_00Vtx_00B170:
+  type: MM:ARRAY
+  offset: 0x00B170
+  symbol: Z2_TOWN_room_00Vtx_00B170
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00B640:
+  type: GFX
+  offset: 0x00B640
+  symbol: Z2_TOWN_room_00DL_00B640
+
+Z2_TOWN_room_00Vtx_00B8A0:
+  type: MM:ARRAY
+  offset: 0x00B8A0
+  symbol: Z2_TOWN_room_00Vtx_00B8A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00B9A0:
+  type: GFX
+  offset: 0x00B9A0
+  symbol: Z2_TOWN_room_00DL_00B9A0
+
+Z2_TOWN_room_00Vtx_00BA80:
+  type: MM:ARRAY
+  offset: 0x00BA80
+  symbol: Z2_TOWN_room_00Vtx_00BA80
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00BB40:
+  type: GFX
+  offset: 0x00BB40
+  symbol: Z2_TOWN_room_00DL_00BB40
+
+Z2_TOWN_room_00Vtx_00BC10:
+  type: MM:ARRAY
+  offset: 0x00BC10
+  symbol: Z2_TOWN_room_00Vtx_00BC10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00BD50:
+  type: GFX
+  offset: 0x00BD50
+  symbol: Z2_TOWN_room_00DL_00BD50
+
+Z2_TOWN_room_00Vtx_00BE00:
+  type: MM:ARRAY
+  offset: 0x00BE00
+  symbol: Z2_TOWN_room_00Vtx_00BE00
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00BE10:
+  type: GFX
+  offset: 0x00BE10
+  symbol: Z2_TOWN_room_00DL_00BE10
+
+Z2_TOWN_room_00DL_00BE30:
+  type: GFX
+  offset: 0x00BE30
+  symbol: Z2_TOWN_room_00DL_00BE30
+
+Z2_TOWN_room_00DL_00BE40:
+  type: GFX
+  offset: 0x00BE40
+  symbol: Z2_TOWN_room_00DL_00BE40
+
+Z2_TOWN_room_00Vtx_00BE68:
+  type: MM:ARRAY
+  offset: 0x00BE68
+  symbol: Z2_TOWN_room_00Vtx_00BE68
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00BFA8:
+  type: GFX
+  offset: 0x00BFA8
+  symbol: Z2_TOWN_room_00DL_00BFA8
+
+Z2_TOWN_room_00Vtx_00C110:
+  type: MM:ARRAY
+  offset: 0x00C110
+  symbol: Z2_TOWN_room_00Vtx_00C110
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00C310:
+  type: GFX
+  offset: 0x00C310
+  symbol: Z2_TOWN_room_00DL_00C310
+
+Z2_TOWN_room_00DL_00C3D8:
+  type: GFX
+  offset: 0x00C3D8
+  symbol: Z2_TOWN_room_00DL_00C3D8
+
+Z2_TOWN_room_00DL_00C3F0:
+  type: GFX
+  offset: 0x00C3F0
+  symbol: Z2_TOWN_room_00DL_00C3F0
+
+Z2_TOWN_room_00Vtx_00C490:
+  type: MM:ARRAY
+  offset: 0x00C490
+  symbol: Z2_TOWN_room_00Vtx_00C490
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00C5B0:
+  type: GFX
+  offset: 0x00C5B0
+  symbol: Z2_TOWN_room_00DL_00C5B0
+
+Z2_TOWN_room_00Vtx_00C690:
+  type: MM:ARRAY
+  offset: 0x00C690
+  symbol: Z2_TOWN_room_00Vtx_00C690
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00C6A0:
+  type: GFX
+  offset: 0x00C6A0
+  symbol: Z2_TOWN_room_00DL_00C6A0
+
+Z2_TOWN_room_00Vtx_00C6C0:
+  type: MM:ARRAY
+  offset: 0x00C6C0
+  symbol: Z2_TOWN_room_00Vtx_00C6C0
+  count: 237
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00D590:
+  type: GFX
+  offset: 0x00D590
+  symbol: Z2_TOWN_room_00DL_00D590
+
+Z2_TOWN_room_00Vtx_00DD90:
+  type: MM:ARRAY
+  offset: 0x00DD90
+  symbol: Z2_TOWN_room_00Vtx_00DD90
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00DDA0:
+  type: GFX
+  offset: 0x00DDA0
+  symbol: Z2_TOWN_room_00DL_00DDA0
+
+Z2_TOWN_room_00Vtx_00DDC0:
+  type: MM:ARRAY
+  offset: 0x00DDC0
+  symbol: Z2_TOWN_room_00Vtx_00DDC0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00DFC0:
+  type: GFX
+  offset: 0x00DFC0
+  symbol: Z2_TOWN_room_00DL_00DFC0
+
+Z2_TOWN_room_00Vtx_00E0D8:
+  type: MM:ARRAY
+  offset: 0x00E0D8
+  symbol: Z2_TOWN_room_00Vtx_00E0D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E0E8:
+  type: GFX
+  offset: 0x00E0E8
+  symbol: Z2_TOWN_room_00DL_00E0E8
+
+Z2_TOWN_room_00Vtx_00E108:
+  type: MM:ARRAY
+  offset: 0x00E108
+  symbol: Z2_TOWN_room_00Vtx_00E108
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E1C8:
+  type: GFX
+  offset: 0x00E1C8
+  symbol: Z2_TOWN_room_00DL_00E1C8
+
+Z2_TOWN_room_00Vtx_00E268:
+  type: MM:ARRAY
+  offset: 0x00E268
+  symbol: Z2_TOWN_room_00Vtx_00E268
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E278:
+  type: GFX
+  offset: 0x00E278
+  symbol: Z2_TOWN_room_00DL_00E278
+
+Z2_TOWN_room_00Vtx_00E298:
+  type: MM:ARRAY
+  offset: 0x00E298
+  symbol: Z2_TOWN_room_00Vtx_00E298
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E398:
+  type: GFX
+  offset: 0x00E398
+  symbol: Z2_TOWN_room_00DL_00E398
+
+Z2_TOWN_room_00Vtx_00E478:
+  type: MM:ARRAY
+  offset: 0x00E478
+  symbol: Z2_TOWN_room_00Vtx_00E478
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E488:
+  type: GFX
+  offset: 0x00E488
+  symbol: Z2_TOWN_room_00DL_00E488
+
+Z2_TOWN_room_00Vtx_00E4A8:
+  type: MM:ARRAY
+  offset: 0x00E4A8
+  symbol: Z2_TOWN_room_00Vtx_00E4A8
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E608:
+  type: GFX
+  offset: 0x00E608
+  symbol: Z2_TOWN_room_00DL_00E608
+
+Z2_TOWN_room_00Vtx_00E700:
+  type: MM:ARRAY
+  offset: 0x00E700
+  symbol: Z2_TOWN_room_00Vtx_00E700
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E710:
+  type: GFX
+  offset: 0x00E710
+  symbol: Z2_TOWN_room_00DL_00E710
+
+Z2_TOWN_room_00DL_00E730:
+  type: GFX
+  offset: 0x00E730
+  symbol: Z2_TOWN_room_00DL_00E730
+
+Z2_TOWN_room_00Vtx_00E768:
+  type: MM:ARRAY
+  offset: 0x00E768
+  symbol: Z2_TOWN_room_00Vtx_00E768
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E868:
+  type: GFX
+  offset: 0x00E868
+  symbol: Z2_TOWN_room_00DL_00E868
+
+Z2_TOWN_room_00Vtx_00E918:
+  type: MM:ARRAY
+  offset: 0x00E918
+  symbol: Z2_TOWN_room_00Vtx_00E918
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00E928:
+  type: GFX
+  offset: 0x00E928
+  symbol: Z2_TOWN_room_00DL_00E928
+
+Z2_TOWN_room_00DL_00E948:
+  type: GFX
+  offset: 0x00E948
+  symbol: Z2_TOWN_room_00DL_00E948
+
+Z2_TOWN_room_00DL_00E958:
+  type: GFX
+  offset: 0x00E958
+  symbol: Z2_TOWN_room_00DL_00E958
+
+Z2_TOWN_room_00Vtx_00E970:
+  type: MM:ARRAY
+  offset: 0x00E970
+  symbol: Z2_TOWN_room_00Vtx_00E970
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00EB60:
+  type: GFX
+  offset: 0x00EB60
+  symbol: Z2_TOWN_room_00DL_00EB60
+
+Z2_TOWN_room_00Vtx_00EC40:
+  type: MM:ARRAY
+  offset: 0x00EC40
+  symbol: Z2_TOWN_room_00Vtx_00EC40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00EC50:
+  type: GFX
+  offset: 0x00EC50
+  symbol: Z2_TOWN_room_00DL_00EC50
+
+Z2_TOWN_room_00Vtx_00EC70:
+  type: MM:ARRAY
+  offset: 0x00EC70
+  symbol: Z2_TOWN_room_00Vtx_00EC70
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00ED20:
+  type: GFX
+  offset: 0x00ED20
+  symbol: Z2_TOWN_room_00DL_00ED20
+
+Z2_TOWN_room_00Vtx_00EDC0:
+  type: MM:ARRAY
+  offset: 0x00EDC0
+  symbol: Z2_TOWN_room_00Vtx_00EDC0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00EDD0:
+  type: GFX
+  offset: 0x00EDD0
+  symbol: Z2_TOWN_room_00DL_00EDD0
+
+Z2_TOWN_room_00DL_00EDF0:
+  type: GFX
+  offset: 0x00EDF0
+  symbol: Z2_TOWN_room_00DL_00EDF0
+
+Z2_TOWN_room_00DL_00EE08:
+  type: GFX
+  offset: 0x00EE08
+  symbol: Z2_TOWN_room_00DL_00EE08
+
+Z2_TOWN_room_00Vtx_00EE18:
+  type: MM:ARRAY
+  offset: 0x00EE18
+  symbol: Z2_TOWN_room_00Vtx_00EE18
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00F208:
+  type: GFX
+  offset: 0x00F208
+  symbol: Z2_TOWN_room_00DL_00F208
+
+Z2_TOWN_room_00Vtx_00F3F0:
+  type: MM:ARRAY
+  offset: 0x00F3F0
+  symbol: Z2_TOWN_room_00Vtx_00F3F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00F400:
+  type: GFX
+  offset: 0x00F400
+  symbol: Z2_TOWN_room_00DL_00F400
+
+Z2_TOWN_room_00DL_00F420:
+  type: GFX
+  offset: 0x00F420
+  symbol: Z2_TOWN_room_00DL_00F420
+
+Z2_TOWN_room_00DL_00F430:
+  type: GFX
+  offset: 0x00F430
+  symbol: Z2_TOWN_room_00DL_00F430
+
+Z2_TOWN_room_00DL_00F440:
+  type: GFX
+  offset: 0x00F440
+  symbol: Z2_TOWN_room_00DL_00F440
+
+Z2_TOWN_room_00Vtx_00F460:
+  type: MM:ARRAY
+  offset: 0x00F460
+  symbol: Z2_TOWN_room_00Vtx_00F460
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00F990:
+  type: GFX
+  offset: 0x00F990
+  symbol: Z2_TOWN_room_00DL_00F990
+
+Z2_TOWN_room_00Vtx_00FD58:
+  type: MM:ARRAY
+  offset: 0x00FD58
+  symbol: Z2_TOWN_room_00Vtx_00FD58
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00FD68:
+  type: GFX
+  offset: 0x00FD68
+  symbol: Z2_TOWN_room_00DL_00FD68
+
+Z2_TOWN_room_00Vtx_00FD88:
+  type: MM:ARRAY
+  offset: 0x00FD88
+  symbol: Z2_TOWN_room_00Vtx_00FD88
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_00FFC8:
+  type: GFX
+  offset: 0x00FFC8
+  symbol: Z2_TOWN_room_00DL_00FFC8
+
+Z2_TOWN_room_00Vtx_0100E8:
+  type: MM:ARRAY
+  offset: 0x0100E8
+  symbol: Z2_TOWN_room_00Vtx_0100E8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0100F8:
+  type: GFX
+  offset: 0x0100F8
+  symbol: Z2_TOWN_room_00DL_0100F8
+
+Z2_TOWN_room_00DL_010118:
+  type: GFX
+  offset: 0x010118
+  symbol: Z2_TOWN_room_00DL_010118
+
+Z2_TOWN_room_00Vtx_010130:
+  type: MM:ARRAY
+  offset: 0x010130
+  symbol: Z2_TOWN_room_00Vtx_010130
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010330:
+  type: GFX
+  offset: 0x010330
+  symbol: Z2_TOWN_room_00DL_010330
+
+Z2_TOWN_room_00Vtx_010480:
+  type: MM:ARRAY
+  offset: 0x010480
+  symbol: Z2_TOWN_room_00Vtx_010480
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010490:
+  type: GFX
+  offset: 0x010490
+  symbol: Z2_TOWN_room_00DL_010490
+
+Z2_TOWN_room_00DL_0104B0:
+  type: GFX
+  offset: 0x0104B0
+  symbol: Z2_TOWN_room_00DL_0104B0
+
+Z2_TOWN_room_00DL_0104C0:
+  type: GFX
+  offset: 0x0104C0
+  symbol: Z2_TOWN_room_00DL_0104C0
+
+Z2_TOWN_room_00Vtx_0104D8:
+  type: MM:ARRAY
+  offset: 0x0104D8
+  symbol: Z2_TOWN_room_00Vtx_0104D8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010878:
+  type: GFX
+  offset: 0x010878
+  symbol: Z2_TOWN_room_00DL_010878
+
+Z2_TOWN_room_00Vtx_010A08:
+  type: MM:ARRAY
+  offset: 0x010A08
+  symbol: Z2_TOWN_room_00Vtx_010A08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010A18:
+  type: GFX
+  offset: 0x010A18
+  symbol: Z2_TOWN_room_00DL_010A18
+
+Z2_TOWN_room_00DL_010A38:
+  type: GFX
+  offset: 0x010A38
+  symbol: Z2_TOWN_room_00DL_010A38
+
+Z2_TOWN_room_00DL_010A48:
+  type: GFX
+  offset: 0x010A48
+  symbol: Z2_TOWN_room_00DL_010A48
+
+Z2_TOWN_room_00Vtx_010A58:
+  type: MM:ARRAY
+  offset: 0x010A58
+  symbol: Z2_TOWN_room_00Vtx_010A58
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010BA8:
+  type: GFX
+  offset: 0x010BA8
+  symbol: Z2_TOWN_room_00DL_010BA8
+
+Z2_TOWN_room_00Vtx_010C98:
+  type: MM:ARRAY
+  offset: 0x010C98
+  symbol: Z2_TOWN_room_00Vtx_010C98
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_010CA8:
+  type: GFX
+  offset: 0x010CA8
+  symbol: Z2_TOWN_room_00DL_010CA8
+
+Z2_TOWN_room_00Vtx_010CC8:
+  type: MM:ARRAY
+  offset: 0x010CC8
+  symbol: Z2_TOWN_room_00Vtx_010CC8
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0110B8:
+  type: GFX
+  offset: 0x0110B8
+  symbol: Z2_TOWN_room_00DL_0110B8
+
+Z2_TOWN_room_00Vtx_011260:
+  type: MM:ARRAY
+  offset: 0x011260
+  symbol: Z2_TOWN_room_00Vtx_011260
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011270:
+  type: GFX
+  offset: 0x011270
+  symbol: Z2_TOWN_room_00DL_011270
+
+Z2_TOWN_room_00DL_011290:
+  type: GFX
+  offset: 0x011290
+  symbol: Z2_TOWN_room_00DL_011290
+
+Z2_TOWN_room_00Vtx_0112A8:
+  type: MM:ARRAY
+  offset: 0x0112A8
+  symbol: Z2_TOWN_room_00Vtx_0112A8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011368:
+  type: GFX
+  offset: 0x011368
+  symbol: Z2_TOWN_room_00DL_011368
+
+Z2_TOWN_room_00Vtx_011408:
+  type: MM:ARRAY
+  offset: 0x011408
+  symbol: Z2_TOWN_room_00Vtx_011408
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011418:
+  type: GFX
+  offset: 0x011418
+  symbol: Z2_TOWN_room_00DL_011418
+
+Z2_TOWN_room_00DL_011438:
+  type: GFX
+  offset: 0x011438
+  symbol: Z2_TOWN_room_00DL_011438
+
+Z2_TOWN_room_00DL_011448:
+  type: GFX
+  offset: 0x011448
+  symbol: Z2_TOWN_room_00DL_011448
+
+Z2_TOWN_room_00DL_011460:
+  type: GFX
+  offset: 0x011460
+  symbol: Z2_TOWN_room_00DL_011460
+
+Z2_TOWN_room_00Vtx_011480:
+  type: MM:ARRAY
+  offset: 0x011480
+  symbol: Z2_TOWN_room_00Vtx_011480
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0118F0:
+  type: GFX
+  offset: 0x0118F0
+  symbol: Z2_TOWN_room_00DL_0118F0
+
+Z2_TOWN_room_00Vtx_011B68:
+  type: MM:ARRAY
+  offset: 0x011B68
+  symbol: Z2_TOWN_room_00Vtx_011B68
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011B78:
+  type: GFX
+  offset: 0x011B78
+  symbol: Z2_TOWN_room_00DL_011B78
+
+Z2_TOWN_room_00DL_011B98:
+  type: GFX
+  offset: 0x011B98
+  symbol: Z2_TOWN_room_00DL_011B98
+
+Z2_TOWN_room_00Vtx_011BA8:
+  type: MM:ARRAY
+  offset: 0x011BA8
+  symbol: Z2_TOWN_room_00Vtx_011BA8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011D28:
+  type: GFX
+  offset: 0x011D28
+  symbol: Z2_TOWN_room_00DL_011D28
+
+Z2_TOWN_room_00Vtx_011E10:
+  type: MM:ARRAY
+  offset: 0x011E10
+  symbol: Z2_TOWN_room_00Vtx_011E10
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011E20:
+  type: GFX
+  offset: 0x011E20
+  symbol: Z2_TOWN_room_00DL_011E20
+
+Z2_TOWN_room_00Vtx_011E40:
+  type: MM:ARRAY
+  offset: 0x011E40
+  symbol: Z2_TOWN_room_00Vtx_011E40
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_011F50:
+  type: GFX
+  offset: 0x011F50
+  symbol: Z2_TOWN_room_00DL_011F50
+
+Z2_TOWN_room_00Vtx_011FF8:
+  type: MM:ARRAY
+  offset: 0x011FF8
+  symbol: Z2_TOWN_room_00Vtx_011FF8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012008:
+  type: GFX
+  offset: 0x012008
+  symbol: Z2_TOWN_room_00DL_012008
+
+Z2_TOWN_room_00Vtx_012028:
+  type: MM:ARRAY
+  offset: 0x012028
+  symbol: Z2_TOWN_room_00Vtx_012028
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0120F8:
+  type: GFX
+  offset: 0x0120F8
+  symbol: Z2_TOWN_room_00DL_0120F8
+
+Z2_TOWN_room_00Vtx_0121A0:
+  type: MM:ARRAY
+  offset: 0x0121A0
+  symbol: Z2_TOWN_room_00Vtx_0121A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0121B0:
+  type: GFX
+  offset: 0x0121B0
+  symbol: Z2_TOWN_room_00DL_0121B0
+
+Z2_TOWN_room_00DL_0121D0:
+  type: GFX
+  offset: 0x0121D0
+  symbol: Z2_TOWN_room_00DL_0121D0
+
+Z2_TOWN_room_00DL_0121F0:
+  type: GFX
+  offset: 0x0121F0
+  symbol: Z2_TOWN_room_00DL_0121F0
+
+Z2_TOWN_room_00DL_012208:
+  type: GFX
+  offset: 0x012208
+  symbol: Z2_TOWN_room_00DL_012208
+
+Z2_TOWN_room_00Vtx_012218:
+  type: MM:ARRAY
+  offset: 0x012218
+  symbol: Z2_TOWN_room_00Vtx_012218
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012308:
+  type: GFX
+  offset: 0x012308
+  symbol: Z2_TOWN_room_00DL_012308
+
+Z2_TOWN_room_00Vtx_0123F0:
+  type: MM:ARRAY
+  offset: 0x0123F0
+  symbol: Z2_TOWN_room_00Vtx_0123F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012400:
+  type: GFX
+  offset: 0x012400
+  symbol: Z2_TOWN_room_00DL_012400
+
+Z2_TOWN_room_00Vtx_012420:
+  type: MM:ARRAY
+  offset: 0x012420
+  symbol: Z2_TOWN_room_00Vtx_012420
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012740:
+  type: GFX
+  offset: 0x012740
+  symbol: Z2_TOWN_room_00DL_012740
+
+Z2_TOWN_room_00Vtx_0129A0:
+  type: MM:ARRAY
+  offset: 0x0129A0
+  symbol: Z2_TOWN_room_00Vtx_0129A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0129B0:
+  type: GFX
+  offset: 0x0129B0
+  symbol: Z2_TOWN_room_00DL_0129B0
+
+Z2_TOWN_room_00Vtx_0129D0:
+  type: MM:ARRAY
+  offset: 0x0129D0
+  symbol: Z2_TOWN_room_00Vtx_0129D0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012AE0:
+  type: GFX
+  offset: 0x012AE0
+  symbol: Z2_TOWN_room_00DL_012AE0
+
+Z2_TOWN_room_00Vtx_012BC8:
+  type: MM:ARRAY
+  offset: 0x012BC8
+  symbol: Z2_TOWN_room_00Vtx_012BC8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012BD8:
+  type: GFX
+  offset: 0x012BD8
+  symbol: Z2_TOWN_room_00DL_012BD8
+
+Z2_TOWN_room_00DL_012BF8:
+  type: GFX
+  offset: 0x012BF8
+  symbol: Z2_TOWN_room_00DL_012BF8
+
+Z2_TOWN_room_00DL_012C18:
+  type: GFX
+  offset: 0x012C18
+  symbol: Z2_TOWN_room_00DL_012C18
+
+Z2_TOWN_room_00DL_012C28:
+  type: GFX
+  offset: 0x012C28
+  symbol: Z2_TOWN_room_00DL_012C28
+
+Z2_TOWN_room_00Vtx_012C38:
+  type: MM:ARRAY
+  offset: 0x012C38
+  symbol: Z2_TOWN_room_00Vtx_012C38
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012CF8:
+  type: GFX
+  offset: 0x012CF8
+  symbol: Z2_TOWN_room_00DL_012CF8
+
+Z2_TOWN_room_00DL_012DD0:
+  type: GFX
+  offset: 0x012DD0
+  symbol: Z2_TOWN_room_00DL_012DD0
+
+Z2_TOWN_room_00Vtx_012DD8:
+  type: MM:ARRAY
+  offset: 0x012DD8
+  symbol: Z2_TOWN_room_00Vtx_012DD8
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_012F48:
+  type: GFX
+  offset: 0x012F48
+  symbol: Z2_TOWN_room_00DL_012F48
+
+Z2_TOWN_room_00DL_013000:
+  type: GFX
+  offset: 0x013000
+  symbol: Z2_TOWN_room_00DL_013000
+
+Z2_TOWN_room_00DL_013010:
+  type: GFX
+  offset: 0x013010
+  symbol: Z2_TOWN_room_00DL_013010
+
+Z2_TOWN_room_00DL_013018:
+  type: GFX
+  offset: 0x013018
+  symbol: Z2_TOWN_room_00DL_013018
+
+Z2_TOWN_room_00DL_013020:
+  type: GFX
+  offset: 0x013020
+  symbol: Z2_TOWN_room_00DL_013020
+
+Z2_TOWN_room_00Vtx_013030:
+  type: MM:ARRAY
+  offset: 0x013030
+  symbol: Z2_TOWN_room_00Vtx_013030
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0132B0:
+  type: GFX
+  offset: 0x0132B0
+  symbol: Z2_TOWN_room_00DL_0132B0
+
+Z2_TOWN_room_00Vtx_013388:
+  type: MM:ARRAY
+  offset: 0x013388
+  symbol: Z2_TOWN_room_00Vtx_013388
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_013398:
+  type: GFX
+  offset: 0x013398
+  symbol: Z2_TOWN_room_00DL_013398
+
+Z2_TOWN_room_00DL_0133C8:
+  type: GFX
+  offset: 0x0133C8
+  symbol: Z2_TOWN_room_00DL_0133C8
+
+Z2_TOWN_room_00DL_0133D8:
+  type: GFX
+  offset: 0x0133D8
+  symbol: Z2_TOWN_room_00DL_0133D8
+
+Z2_TOWN_room_00DL_0133F8:
+  type: GFX
+  offset: 0x0133F8
+  symbol: Z2_TOWN_room_00DL_0133F8
+
+Z2_TOWN_room_00Vtx_013408:
+  type: MM:ARRAY
+  offset: 0x013408
+  symbol: Z2_TOWN_room_00Vtx_013408
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_013548:
+  type: GFX
+  offset: 0x013548
+  symbol: Z2_TOWN_room_00DL_013548
+
+Z2_TOWN_room_00DL_0135F8:
+  type: GFX
+  offset: 0x0135F8
+  symbol: Z2_TOWN_room_00DL_0135F8
+
+Z2_TOWN_room_00DL_013600:
+  type: GFX
+  offset: 0x013600
+  symbol: Z2_TOWN_room_00DL_013600
+
+Z2_TOWN_room_00Vtx_013610:
+  type: MM:ARRAY
+  offset: 0x013610
+  symbol: Z2_TOWN_room_00Vtx_013610
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_013710:
+  type: GFX
+  offset: 0x013710
+  symbol: Z2_TOWN_room_00DL_013710
+
+Z2_TOWN_room_00Vtx_0137B8:
+  type: MM:ARRAY
+  offset: 0x0137B8
+  symbol: Z2_TOWN_room_00Vtx_0137B8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0137C8:
+  type: GFX
+  offset: 0x0137C8
+  symbol: Z2_TOWN_room_00DL_0137C8
+
+Z2_TOWN_room_00DL_0137F8:
+  type: GFX
+  offset: 0x0137F8
+  symbol: Z2_TOWN_room_00DL_0137F8
+
+Z2_TOWN_room_00DL_013808:
+  type: GFX
+  offset: 0x013808
+  symbol: Z2_TOWN_room_00DL_013808
+
+Z2_TOWN_room_00DL_013810:
+  type: GFX
+  offset: 0x013810
+  symbol: Z2_TOWN_room_00DL_013810
+
+Z2_TOWN_room_00DL_013838:
+  type: GFX
+  offset: 0x013838
+  symbol: Z2_TOWN_room_00DL_013838
+
+Z2_TOWN_room_00DL_013840:
+  type: GFX
+  offset: 0x013840
+  symbol: Z2_TOWN_room_00DL_013840
+
+Z2_TOWN_room_00DL_013850:
+  type: GFX
+  offset: 0x013850
+  symbol: Z2_TOWN_room_00DL_013850
+
+Z2_TOWN_room_00DL_013858:
+  type: GFX
+  offset: 0x013858
+  symbol: Z2_TOWN_room_00DL_013858
+
+Z2_TOWN_room_00DL_013860:
+  type: GFX
+  offset: 0x013860
+  symbol: Z2_TOWN_room_00DL_013860
+
+Z2_TOWN_room_00Vtx_013870:
+  type: MM:ARRAY
+  offset: 0x013870
+  symbol: Z2_TOWN_room_00Vtx_013870
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_013930:
+  type: GFX
+  offset: 0x013930
+  symbol: Z2_TOWN_room_00DL_013930
+
+Z2_TOWN_room_00Vtx_0139D0:
+  type: MM:ARRAY
+  offset: 0x0139D0
+  symbol: Z2_TOWN_room_00Vtx_0139D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0139E0:
+  type: GFX
+  offset: 0x0139E0
+  symbol: Z2_TOWN_room_00DL_0139E0
+
+Z2_TOWN_room_00DL_013A10:
+  type: GFX
+  offset: 0x013A10
+  symbol: Z2_TOWN_room_00DL_013A10
+
+Z2_TOWN_room_00Vtx_013A20:
+  type: MM:ARRAY
+  offset: 0x013A20
+  symbol: Z2_TOWN_room_00Vtx_013A20
+  count: 241
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_014930:
+  type: GFX
+  offset: 0x014930
+  symbol: Z2_TOWN_room_00DL_014930
+
+Z2_TOWN_room_00Vtx_014D48:
+  type: MM:ARRAY
+  offset: 0x014D48
+  symbol: Z2_TOWN_room_00Vtx_014D48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_014D58:
+  type: GFX
+  offset: 0x014D58
+  symbol: Z2_TOWN_room_00DL_014D58
+
+Z2_TOWN_room_00DL_014D88:
+  type: GFX
+  offset: 0x014D88
+  symbol: Z2_TOWN_room_00DL_014D88
+
+Z2_TOWN_room_00Vtx_014D98:
+  type: MM:ARRAY
+  offset: 0x014D98
+  symbol: Z2_TOWN_room_00Vtx_014D98
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_014E58:
+  type: GFX
+  offset: 0x014E58
+  symbol: Z2_TOWN_room_00DL_014E58
+
+Z2_TOWN_room_00Vtx_014EF8:
+  type: MM:ARRAY
+  offset: 0x014EF8
+  symbol: Z2_TOWN_room_00Vtx_014EF8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_014F08:
+  type: GFX
+  offset: 0x014F08
+  symbol: Z2_TOWN_room_00DL_014F08
+
+Z2_TOWN_room_00DL_014F38:
+  type: GFX
+  offset: 0x014F38
+  symbol: Z2_TOWN_room_00DL_014F38
+
+Z2_TOWN_room_00DL_014F48:
+  type: GFX
+  offset: 0x014F48
+  symbol: Z2_TOWN_room_00DL_014F48
+
+Z2_TOWN_room_00DL_014F50:
+  type: GFX
+  offset: 0x014F50
+  symbol: Z2_TOWN_room_00DL_014F50
+
+Z2_TOWN_room_00Vtx_014F60:
+  type: MM:ARRAY
+  offset: 0x014F60
+  symbol: Z2_TOWN_room_00Vtx_014F60
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015060:
+  type: GFX
+  offset: 0x015060
+  symbol: Z2_TOWN_room_00DL_015060
+
+Z2_TOWN_room_00Vtx_015108:
+  type: MM:ARRAY
+  offset: 0x015108
+  symbol: Z2_TOWN_room_00Vtx_015108
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015118:
+  type: GFX
+  offset: 0x015118
+  symbol: Z2_TOWN_room_00DL_015118
+
+Z2_TOWN_room_00DL_015148:
+  type: GFX
+  offset: 0x015148
+  symbol: Z2_TOWN_room_00DL_015148
+
+Z2_TOWN_room_00DL_015158:
+  type: GFX
+  offset: 0x015158
+  symbol: Z2_TOWN_room_00DL_015158
+
+Z2_TOWN_room_00DL_015198:
+  type: GFX
+  offset: 0x015198
+  symbol: Z2_TOWN_room_00DL_015198
+
+Z2_TOWN_room_00DL_0151A0:
+  type: GFX
+  offset: 0x0151A0
+  symbol: Z2_TOWN_room_00DL_0151A0
+
+Z2_TOWN_room_00Vtx_0151B0:
+  type: MM:ARRAY
+  offset: 0x0151B0
+  symbol: Z2_TOWN_room_00Vtx_0151B0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015290:
+  type: GFX
+  offset: 0x015290
+  symbol: Z2_TOWN_room_00DL_015290
+
+Z2_TOWN_room_00Vtx_015338:
+  type: MM:ARRAY
+  offset: 0x015338
+  symbol: Z2_TOWN_room_00Vtx_015338
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015348:
+  type: GFX
+  offset: 0x015348
+  symbol: Z2_TOWN_room_00DL_015348
+
+Z2_TOWN_room_00DL_015378:
+  type: GFX
+  offset: 0x015378
+  symbol: Z2_TOWN_room_00DL_015378
+
+Z2_TOWN_room_00DL_015388:
+  type: GFX
+  offset: 0x015388
+  symbol: Z2_TOWN_room_00DL_015388
+
+Z2_TOWN_room_00DL_015390:
+  type: GFX
+  offset: 0x015390
+  symbol: Z2_TOWN_room_00DL_015390
+
+Z2_TOWN_room_00Vtx_0153A0:
+  type: MM:ARRAY
+  offset: 0x0153A0
+  symbol: Z2_TOWN_room_00Vtx_0153A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0154A0:
+  type: GFX
+  offset: 0x0154A0
+  symbol: Z2_TOWN_room_00DL_0154A0
+
+Z2_TOWN_room_00Vtx_015550:
+  type: MM:ARRAY
+  offset: 0x015550
+  symbol: Z2_TOWN_room_00Vtx_015550
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015560:
+  type: GFX
+  offset: 0x015560
+  symbol: Z2_TOWN_room_00DL_015560
+
+Z2_TOWN_room_00DL_015590:
+  type: GFX
+  offset: 0x015590
+  symbol: Z2_TOWN_room_00DL_015590
+
+Z2_TOWN_room_00DL_0155A0:
+  type: GFX
+  offset: 0x0155A0
+  symbol: Z2_TOWN_room_00DL_0155A0
+
+Z2_TOWN_room_00DL_0155A8:
+  type: GFX
+  offset: 0x0155A8
+  symbol: Z2_TOWN_room_00DL_0155A8
+
+Z2_TOWN_room_00Vtx_0155B8:
+  type: MM:ARRAY
+  offset: 0x0155B8
+  symbol: Z2_TOWN_room_00Vtx_0155B8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0156B8:
+  type: GFX
+  offset: 0x0156B8
+  symbol: Z2_TOWN_room_00DL_0156B8
+
+Z2_TOWN_room_00Vtx_015768:
+  type: MM:ARRAY
+  offset: 0x015768
+  symbol: Z2_TOWN_room_00Vtx_015768
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015778:
+  type: GFX
+  offset: 0x015778
+  symbol: Z2_TOWN_room_00DL_015778
+
+Z2_TOWN_room_00DL_0157A8:
+  type: GFX
+  offset: 0x0157A8
+  symbol: Z2_TOWN_room_00DL_0157A8
+
+Z2_TOWN_room_00DL_0157B8:
+  type: GFX
+  offset: 0x0157B8
+  symbol: Z2_TOWN_room_00DL_0157B8
+
+Z2_TOWN_room_00DL_0157C0:
+  type: GFX
+  offset: 0x0157C0
+  symbol: Z2_TOWN_room_00DL_0157C0
+
+Z2_TOWN_room_00Vtx_0157D0:
+  type: MM:ARRAY
+  offset: 0x0157D0
+  symbol: Z2_TOWN_room_00Vtx_0157D0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0158D0:
+  type: GFX
+  offset: 0x0158D0
+  symbol: Z2_TOWN_room_00DL_0158D0
+
+Z2_TOWN_room_00Vtx_015980:
+  type: MM:ARRAY
+  offset: 0x015980
+  symbol: Z2_TOWN_room_00Vtx_015980
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015990:
+  type: GFX
+  offset: 0x015990
+  symbol: Z2_TOWN_room_00DL_015990
+
+Z2_TOWN_room_00DL_0159C0:
+  type: GFX
+  offset: 0x0159C0
+  symbol: Z2_TOWN_room_00DL_0159C0
+
+Z2_TOWN_room_00DL_0159D0:
+  type: GFX
+  offset: 0x0159D0
+  symbol: Z2_TOWN_room_00DL_0159D0
+
+Z2_TOWN_room_00DL_0159D8:
+  type: GFX
+  offset: 0x0159D8
+  symbol: Z2_TOWN_room_00DL_0159D8
+
+Z2_TOWN_room_00Vtx_0159E8:
+  type: MM:ARRAY
+  offset: 0x0159E8
+  symbol: Z2_TOWN_room_00Vtx_0159E8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015AE8:
+  type: GFX
+  offset: 0x015AE8
+  symbol: Z2_TOWN_room_00DL_015AE8
+
+Z2_TOWN_room_00Vtx_015B98:
+  type: MM:ARRAY
+  offset: 0x015B98
+  symbol: Z2_TOWN_room_00Vtx_015B98
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015BA8:
+  type: GFX
+  offset: 0x015BA8
+  symbol: Z2_TOWN_room_00DL_015BA8
+
+Z2_TOWN_room_00DL_015BD8:
+  type: GFX
+  offset: 0x015BD8
+  symbol: Z2_TOWN_room_00DL_015BD8
+
+Z2_TOWN_room_00DL_015BE8:
+  type: GFX
+  offset: 0x015BE8
+  symbol: Z2_TOWN_room_00DL_015BE8
+
+Z2_TOWN_room_00DL_015BF0:
+  type: GFX
+  offset: 0x015BF0
+  symbol: Z2_TOWN_room_00DL_015BF0
+
+Z2_TOWN_room_00DL_015C50:
+  type: GFX
+  offset: 0x015C50
+  symbol: Z2_TOWN_room_00DL_015C50
+
+Z2_TOWN_room_00DL_015C58:
+  type: GFX
+  offset: 0x015C58
+  symbol: Z2_TOWN_room_00DL_015C58
+
+Z2_TOWN_room_00Vtx_015C68:
+  type: MM:ARRAY
+  offset: 0x015C68
+  symbol: Z2_TOWN_room_00Vtx_015C68
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015DA8:
+  type: GFX
+  offset: 0x015DA8
+  symbol: Z2_TOWN_room_00DL_015DA8
+
+Z2_TOWN_room_00Vtx_015E58:
+  type: MM:ARRAY
+  offset: 0x015E58
+  symbol: Z2_TOWN_room_00Vtx_015E58
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_015E68:
+  type: GFX
+  offset: 0x015E68
+  symbol: Z2_TOWN_room_00DL_015E68
+
+Z2_TOWN_room_00DL_015E98:
+  type: GFX
+  offset: 0x015E98
+  symbol: Z2_TOWN_room_00DL_015E98
+
+Z2_TOWN_room_00DL_015EA8:
+  type: GFX
+  offset: 0x015EA8
+  symbol: Z2_TOWN_room_00DL_015EA8
+
+Z2_TOWN_room_00DL_015EB0:
+  type: GFX
+  offset: 0x015EB0
+  symbol: Z2_TOWN_room_00DL_015EB0
+
+Z2_TOWN_room_00DL_015ED0:
+  type: GFX
+  offset: 0x015ED0
+  symbol: Z2_TOWN_room_00DL_015ED0
+
+Z2_TOWN_room_00Vtx_015F10:
+  type: MM:ARRAY
+  offset: 0x015F10
+  symbol: Z2_TOWN_room_00Vtx_015F10
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016100:
+  type: GFX
+  offset: 0x016100
+  symbol: Z2_TOWN_room_00DL_016100
+
+Z2_TOWN_room_00Vtx_016218:
+  type: MM:ARRAY
+  offset: 0x016218
+  symbol: Z2_TOWN_room_00Vtx_016218
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016228:
+  type: GFX
+  offset: 0x016228
+  symbol: Z2_TOWN_room_00DL_016228
+
+Z2_TOWN_room_00DL_016248:
+  type: GFX
+  offset: 0x016248
+  symbol: Z2_TOWN_room_00DL_016248
+
+Z2_TOWN_room_00DL_016250:
+  type: GFX
+  offset: 0x016250
+  symbol: Z2_TOWN_room_00DL_016250
+
+Z2_TOWN_room_00DL_016268:
+  type: GFX
+  offset: 0x016268
+  symbol: Z2_TOWN_room_00DL_016268
+
+Z2_TOWN_room_00Vtx_016278:
+  type: MM:ARRAY
+  offset: 0x016278
+  symbol: Z2_TOWN_room_00Vtx_016278
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016398:
+  type: GFX
+  offset: 0x016398
+  symbol: Z2_TOWN_room_00DL_016398
+
+Z2_TOWN_room_00Vtx_016448:
+  type: MM:ARRAY
+  offset: 0x016448
+  symbol: Z2_TOWN_room_00Vtx_016448
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016458:
+  type: GFX
+  offset: 0x016458
+  symbol: Z2_TOWN_room_00DL_016458
+
+Z2_TOWN_room_00DL_016478:
+  type: GFX
+  offset: 0x016478
+  symbol: Z2_TOWN_room_00DL_016478
+
+Z2_TOWN_room_00DL_016488:
+  type: GFX
+  offset: 0x016488
+  symbol: Z2_TOWN_room_00DL_016488
+
+Z2_TOWN_room_00Vtx_016498:
+  type: MM:ARRAY
+  offset: 0x016498
+  symbol: Z2_TOWN_room_00Vtx_016498
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016598:
+  type: GFX
+  offset: 0x016598
+  symbol: Z2_TOWN_room_00DL_016598
+
+Z2_TOWN_room_00Vtx_016658:
+  type: MM:ARRAY
+  offset: 0x016658
+  symbol: Z2_TOWN_room_00Vtx_016658
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016668:
+  type: GFX
+  offset: 0x016668
+  symbol: Z2_TOWN_room_00DL_016668
+
+Z2_TOWN_room_00DL_016688:
+  type: GFX
+  offset: 0x016688
+  symbol: Z2_TOWN_room_00DL_016688
+
+Z2_TOWN_room_00DL_016698:
+  type: GFX
+  offset: 0x016698
+  symbol: Z2_TOWN_room_00DL_016698
+
+Z2_TOWN_room_00Vtx_0166A8:
+  type: MM:ARRAY
+  offset: 0x0166A8
+  symbol: Z2_TOWN_room_00Vtx_0166A8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0167C8:
+  type: GFX
+  offset: 0x0167C8
+  symbol: Z2_TOWN_room_00DL_0167C8
+
+Z2_TOWN_room_00Vtx_016888:
+  type: MM:ARRAY
+  offset: 0x016888
+  symbol: Z2_TOWN_room_00Vtx_016888
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016898:
+  type: GFX
+  offset: 0x016898
+  symbol: Z2_TOWN_room_00DL_016898
+
+Z2_TOWN_room_00DL_0168B8:
+  type: GFX
+  offset: 0x0168B8
+  symbol: Z2_TOWN_room_00DL_0168B8
+
+Z2_TOWN_room_00Vtx_0168C8:
+  type: MM:ARRAY
+  offset: 0x0168C8
+  symbol: Z2_TOWN_room_00Vtx_0168C8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016988:
+  type: GFX
+  offset: 0x016988
+  symbol: Z2_TOWN_room_00DL_016988
+
+Z2_TOWN_room_00Vtx_016A28:
+  type: MM:ARRAY
+  offset: 0x016A28
+  symbol: Z2_TOWN_room_00Vtx_016A28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016A38:
+  type: GFX
+  offset: 0x016A38
+  symbol: Z2_TOWN_room_00DL_016A38
+
+Z2_TOWN_room_00DL_016A58:
+  type: GFX
+  offset: 0x016A58
+  symbol: Z2_TOWN_room_00DL_016A58
+
+Z2_TOWN_room_00DL_016A68:
+  type: GFX
+  offset: 0x016A68
+  symbol: Z2_TOWN_room_00DL_016A68
+
+Z2_TOWN_room_00DL_016A80:
+  type: GFX
+  offset: 0x016A80
+  symbol: Z2_TOWN_room_00DL_016A80
+
+Z2_TOWN_room_00Vtx_016AA8:
+  type: MM:ARRAY
+  offset: 0x016AA8
+  symbol: Z2_TOWN_room_00Vtx_016AA8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016B68:
+  type: GFX
+  offset: 0x016B68
+  symbol: Z2_TOWN_room_00DL_016B68
+
+Z2_TOWN_room_00Vtx_016C08:
+  type: MM:ARRAY
+  offset: 0x016C08
+  symbol: Z2_TOWN_room_00Vtx_016C08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016C18:
+  type: GFX
+  offset: 0x016C18
+  symbol: Z2_TOWN_room_00DL_016C18
+
+Z2_TOWN_room_00DL_016C38:
+  type: GFX
+  offset: 0x016C38
+  symbol: Z2_TOWN_room_00DL_016C38
+
+Z2_TOWN_room_00DL_016C48:
+  type: GFX
+  offset: 0x016C48
+  symbol: Z2_TOWN_room_00DL_016C48
+
+Z2_TOWN_room_00Vtx_016C50:
+  type: MM:ARRAY
+  offset: 0x016C50
+  symbol: Z2_TOWN_room_00Vtx_016C50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016D10:
+  type: GFX
+  offset: 0x016D10
+  symbol: Z2_TOWN_room_00DL_016D10
+
+Z2_TOWN_room_00Vtx_016DB0:
+  type: MM:ARRAY
+  offset: 0x016DB0
+  symbol: Z2_TOWN_room_00Vtx_016DB0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016DC0:
+  type: GFX
+  offset: 0x016DC0
+  symbol: Z2_TOWN_room_00DL_016DC0
+
+Z2_TOWN_room_00DL_016DE0:
+  type: GFX
+  offset: 0x016DE0
+  symbol: Z2_TOWN_room_00DL_016DE0
+
+Z2_TOWN_room_00DL_016DF8:
+  type: GFX
+  offset: 0x016DF8
+  symbol: Z2_TOWN_room_00DL_016DF8
+
+Z2_TOWN_room_00DL_016E10:
+  type: GFX
+  offset: 0x016E10
+  symbol: Z2_TOWN_room_00DL_016E10
+
+Z2_TOWN_room_00DL_016E18:
+  type: GFX
+  offset: 0x016E18
+  symbol: Z2_TOWN_room_00DL_016E18
+
+Z2_TOWN_room_00DL_016E28:
+  type: GFX
+  offset: 0x016E28
+  symbol: Z2_TOWN_room_00DL_016E28
+
+Z2_TOWN_room_00DL_016E38:
+  type: GFX
+  offset: 0x016E38
+  symbol: Z2_TOWN_room_00DL_016E38
+
+Z2_TOWN_room_00DL_016E50:
+  type: GFX
+  offset: 0x016E50
+  symbol: Z2_TOWN_room_00DL_016E50
+
+Z2_TOWN_room_00DL_016E58:
+  type: GFX
+  offset: 0x016E58
+  symbol: Z2_TOWN_room_00DL_016E58
+
+Z2_TOWN_room_00DL_016E60:
+  type: GFX
+  offset: 0x016E60
+  symbol: Z2_TOWN_room_00DL_016E60
+
+Z2_TOWN_room_00DL_016E68:
+  type: GFX
+  offset: 0x016E68
+  symbol: Z2_TOWN_room_00DL_016E68
+
+Z2_TOWN_room_00DL_016E88:
+  type: GFX
+  offset: 0x016E88
+  symbol: Z2_TOWN_room_00DL_016E88
+
+Z2_TOWN_room_00DL_016E98:
+  type: GFX
+  offset: 0x016E98
+  symbol: Z2_TOWN_room_00DL_016E98
+
+Z2_TOWN_room_00Vtx_016EA8:
+  type: MM:ARRAY
+  offset: 0x016EA8
+  symbol: Z2_TOWN_room_00Vtx_016EA8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_016FA8:
+  type: GFX
+  offset: 0x016FA8
+  symbol: Z2_TOWN_room_00DL_016FA8
+
+Z2_TOWN_room_00Vtx_017050:
+  type: MM:ARRAY
+  offset: 0x017050
+  symbol: Z2_TOWN_room_00Vtx_017050
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017060:
+  type: GFX
+  offset: 0x017060
+  symbol: Z2_TOWN_room_00DL_017060
+
+Z2_TOWN_room_00DL_017080:
+  type: GFX
+  offset: 0x017080
+  symbol: Z2_TOWN_room_00DL_017080
+
+Z2_TOWN_room_00Vtx_017090:
+  type: MM:ARRAY
+  offset: 0x017090
+  symbol: Z2_TOWN_room_00Vtx_017090
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017150:
+  type: GFX
+  offset: 0x017150
+  symbol: Z2_TOWN_room_00DL_017150
+
+Z2_TOWN_room_00Vtx_0171F0:
+  type: MM:ARRAY
+  offset: 0x0171F0
+  symbol: Z2_TOWN_room_00Vtx_0171F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017200:
+  type: GFX
+  offset: 0x017200
+  symbol: Z2_TOWN_room_00DL_017200
+
+Z2_TOWN_room_00Vtx_017220:
+  type: MM:ARRAY
+  offset: 0x017220
+  symbol: Z2_TOWN_room_00Vtx_017220
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017320:
+  type: GFX
+  offset: 0x017320
+  symbol: Z2_TOWN_room_00DL_017320
+
+Z2_TOWN_room_00Vtx_0173E0:
+  type: MM:ARRAY
+  offset: 0x0173E0
+  symbol: Z2_TOWN_room_00Vtx_0173E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_0173F0:
+  type: GFX
+  offset: 0x0173F0
+  symbol: Z2_TOWN_room_00DL_0173F0
+
+Z2_TOWN_room_00Vtx_017410:
+  type: MM:ARRAY
+  offset: 0x017410
+  symbol: Z2_TOWN_room_00Vtx_017410
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017530:
+  type: GFX
+  offset: 0x017530
+  symbol: Z2_TOWN_room_00DL_017530
+
+Z2_TOWN_room_00Vtx_0175F0:
+  type: MM:ARRAY
+  offset: 0x0175F0
+  symbol: Z2_TOWN_room_00Vtx_0175F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOWN_room_00DL_017600:
+  type: GFX
+  offset: 0x017600
+  symbol: Z2_TOWN_room_00DL_017600
+
+Z2_TOWN_room_00DL_017620:
+  type: GFX
+  offset: 0x017620
+  symbol: Z2_TOWN_room_00DL_017620
+
+Z2_TOWN_room_00DL_017640:
+  type: GFX
+  offset: 0x017640
+  symbol: Z2_TOWN_room_00DL_017640
+
+Z2_TOWN_room_00DL_017658:
+  type: GFX
+  offset: 0x017658
+  symbol: Z2_TOWN_room_00DL_017658

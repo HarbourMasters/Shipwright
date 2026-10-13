@@ -1,0 +1,153 @@
+:config:
+  segments:
+    - [ 2, 0x019D99F0 ]
+
+Z2_DANPEI2TEST:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_DANPEI2TEST
+
+
+Z2_DANPEI2TESTPathwayList_000150:
+  type: MM:PATH
+  offset: 0x000150
+  symbol: Z2_DANPEI2TESTPathwayList_000150
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 160, -17, -160 ]
+        - [ 160, 183, -160 ]
+        - [ 160, 183, -40 ]
+        - [ 160, 183, -40 ]
+        - [ 300, 183, -40 ]
+        - [ 460, 183, -40 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -160, -17, -160 ]
+        - [ -160, 80, -160 ]
+        - [ -160, 80, -160 ]
+        - [ -160, 80, 120 ]
+        - [ -160, 223, 120 ]
+        - [ -320, 223, 120 ]
+        - [ -320, 223, 220 ]
+        - [ -320, 223, 220 ]
+
+Z2_DANPEI2TESTPathwayList_000174:
+  type: MM:PATH
+  offset: 0x000174
+  symbol: Z2_DANPEI2TESTPathwayList_000174
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 160, -17, -160 ]
+        - [ 160, 183, -160 ]
+        - [ 160, 183, -40 ]
+        - [ 160, 183, -40 ]
+        - [ 300, 183, -40 ]
+        - [ 460, 183, -40 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -160, -17, -160 ]
+        - [ -160, 80, -160 ]
+        - [ -160, 80, -160 ]
+        - [ -160, 80, 120 ]
+        - [ -160, 223, 120 ]
+        - [ -320, 223, 120 ]
+        - [ -320, 223, 220 ]
+        - [ -320, 223, 220 ]
+
+Z2_DANPEI2TESTTexAnim_000340:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000340
+  symbol: Z2_DANPEI2TESTTexAnim_000340
+
+Z2_DANPEI2TESTCollisionHeader_0031E4:
+  type: MM:COLLISION
+  offset: 0x0031E4
+  symbol: Z2_DANPEI2TESTCollisionHeader_0031E4
+
+Z2_DANPEI2TESTTex_003210:
+  type: TEXTURE
+  offset: 0x003210
+  symbol: Z2_DANPEI2TESTTex_003210
+  format: I4
+  width: 32
+  height: 32
+
+Z2_DANPEI2TESTTex_003410:
+  type: TEXTURE
+  offset: 0x003410
+  symbol: Z2_DANPEI2TESTTex_003410
+  format: I4
+  width: 64
+  height: 64
+
+Z2_DANPEI2TESTTex_003C10:
+  type: TEXTURE
+  offset: 0x003C10
+  symbol: Z2_DANPEI2TESTTex_003C10
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DANPEI2TESTTex_004410:
+  type: TEXTURE
+  offset: 0x004410
+  symbol: Z2_DANPEI2TESTTex_004410
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_DANPEI2TESTTex_004610:
+  type: TEXTURE
+  offset: 0x004610
+  symbol: Z2_DANPEI2TESTTex_004610
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DANPEI2TESTTex_004A10:
+  type: TEXTURE
+  offset: 0x004A10
+  symbol: Z2_DANPEI2TESTTex_004A10
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_DANPEI2TESTTex_005210:
+  type: TEXTURE
+  offset: 0x005210
+  symbol: Z2_DANPEI2TESTTex_005210
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_DANPEI2TESTTLUT_005A10:
+  type: TEXTURE
+  offset: 0x005A10
+  symbol: Z2_DANPEI2TESTTLUT_005A10
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_DANPEI2TESTTLUT_005A30:
+  type: TEXTURE
+  offset: 0x005A30
+  symbol: Z2_DANPEI2TESTTLUT_005A30
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_DANPEI2TESTTLUT_005A50:
+  type: TEXTURE
+  offset: 0x005A50
+  symbol: Z2_DANPEI2TESTTLUT_005A50
+  format: RGBA16
+  width: 16
+  height: 16

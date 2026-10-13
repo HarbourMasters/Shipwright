@@ -1,0 +1,435 @@
+:config:
+  segments:
+    - [ 3, 0x01D321E0 ]
+    - [ 6, 0x0160ED50 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01D321E0 ]
+    - [ 9, 0x01D321E0 ]
+    - [ 10, 0x01D321E0 ]
+    - [ 11, 0x01D321E0 ]
+    - [ 12, 0x01D321E0 ]
+    - [ 13, 0x01D321E0 ]
+    - [ 2, 0x01D2BE30 ]
+  directory: scenes/nonmq/Z2_17SETUGEN
+  external_files:
+    - N64_US/misc/scene_texture_04.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_17SETUGEN.yml
+
+Z2_17SETUGEN_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_17SETUGEN_room_00
+
+Z2_17SETUGEN_room_00DL_007208:
+  type: GFX
+  offset: 0x7208
+  symbol: Z2_17SETUGEN_room_00DL_007208
+
+Z2_17SETUGEN_room_00DL_0076B8:
+  type: GFX
+  offset: 0x76B8
+  symbol: Z2_17SETUGEN_room_00DL_0076B8
+
+
+Z2_17SETUGEN_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_17SETUGEN_room_00ActorEntry_000058
+  size: 0
+
+Z2_17SETUGEN_room_00Vtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: Z2_17SETUGEN_room_00Vtx_0005F0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0009C0:
+  type: GFX
+  offset: 0x0009C0
+  symbol: Z2_17SETUGEN_room_00DL_0009C0
+
+Z2_17SETUGEN_room_00Vtx_000B18:
+  type: MM:ARRAY
+  offset: 0x000B18
+  symbol: Z2_17SETUGEN_room_00Vtx_000B18
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_000CF8:
+  type: GFX
+  offset: 0x000CF8
+  symbol: Z2_17SETUGEN_room_00DL_000CF8
+
+Z2_17SETUGEN_room_00Vtx_000E08:
+  type: MM:ARRAY
+  offset: 0x000E08
+  symbol: Z2_17SETUGEN_room_00Vtx_000E08
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_001158:
+  type: GFX
+  offset: 0x001158
+  symbol: Z2_17SETUGEN_room_00DL_001158
+
+Z2_17SETUGEN_room_00Vtx_0012C0:
+  type: MM:ARRAY
+  offset: 0x0012C0
+  symbol: Z2_17SETUGEN_room_00Vtx_0012C0
+  count: 162
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_001CE0:
+  type: GFX
+  offset: 0x001CE0
+  symbol: Z2_17SETUGEN_room_00DL_001CE0
+
+Z2_17SETUGEN_room_00Vtx_001F58:
+  type: MM:ARRAY
+  offset: 0x001F58
+  symbol: Z2_17SETUGEN_room_00Vtx_001F58
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_002258:
+  type: GFX
+  offset: 0x002258
+  symbol: Z2_17SETUGEN_room_00DL_002258
+
+Z2_17SETUGEN_room_00Vtx_0023A0:
+  type: MM:ARRAY
+  offset: 0x0023A0
+  symbol: Z2_17SETUGEN_room_00Vtx_0023A0
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_002D80:
+  type: GFX
+  offset: 0x002D80
+  symbol: Z2_17SETUGEN_room_00DL_002D80
+
+Z2_17SETUGEN_room_00Vtx_002FD8:
+  type: MM:ARRAY
+  offset: 0x002FD8
+  symbol: Z2_17SETUGEN_room_00Vtx_002FD8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_003178:
+  type: GFX
+  offset: 0x003178
+  symbol: Z2_17SETUGEN_room_00DL_003178
+
+Z2_17SETUGEN_room_00Vtx_003270:
+  type: MM:ARRAY
+  offset: 0x003270
+  symbol: Z2_17SETUGEN_room_00Vtx_003270
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_003440:
+  type: GFX
+  offset: 0x003440
+  symbol: Z2_17SETUGEN_room_00DL_003440
+
+Z2_17SETUGEN_room_00Vtx_003550:
+  type: MM:ARRAY
+  offset: 0x003550
+  symbol: Z2_17SETUGEN_room_00Vtx_003550
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_003AD0:
+  type: GFX
+  offset: 0x003AD0
+  symbol: Z2_17SETUGEN_room_00DL_003AD0
+
+Z2_17SETUGEN_room_00Vtx_003CB8:
+  type: MM:ARRAY
+  offset: 0x003CB8
+  symbol: Z2_17SETUGEN_room_00Vtx_003CB8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_003DB8:
+  type: GFX
+  offset: 0x003DB8
+  symbol: Z2_17SETUGEN_room_00DL_003DB8
+
+Z2_17SETUGEN_room_00DL_003E98:
+  type: GFX
+  offset: 0x003E98
+  symbol: Z2_17SETUGEN_room_00DL_003E98
+
+Z2_17SETUGEN_room_00Vtx_003EB0:
+  type: MM:ARRAY
+  offset: 0x003EB0
+  symbol: Z2_17SETUGEN_room_00Vtx_003EB0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0042F0:
+  type: GFX
+  offset: 0x0042F0
+  symbol: Z2_17SETUGEN_room_00DL_0042F0
+
+Z2_17SETUGEN_room_00Vtx_0044B0:
+  type: MM:ARRAY
+  offset: 0x0044B0
+  symbol: Z2_17SETUGEN_room_00Vtx_0044B0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0045C0:
+  type: GFX
+  offset: 0x0045C0
+  symbol: Z2_17SETUGEN_room_00DL_0045C0
+
+Z2_17SETUGEN_room_00DL_0046A0:
+  type: GFX
+  offset: 0x0046A0
+  symbol: Z2_17SETUGEN_room_00DL_0046A0
+
+Z2_17SETUGEN_room_00Vtx_0046B8:
+  type: MM:ARRAY
+  offset: 0x0046B8
+  symbol: Z2_17SETUGEN_room_00Vtx_0046B8
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_004C38:
+  type: GFX
+  offset: 0x004C38
+  symbol: Z2_17SETUGEN_room_00DL_004C38
+
+Z2_17SETUGEN_room_00Vtx_004E20:
+  type: MM:ARRAY
+  offset: 0x004E20
+  symbol: Z2_17SETUGEN_room_00Vtx_004E20
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_004F30:
+  type: GFX
+  offset: 0x004F30
+  symbol: Z2_17SETUGEN_room_00DL_004F30
+
+Z2_17SETUGEN_room_00DL_005010:
+  type: GFX
+  offset: 0x005010
+  symbol: Z2_17SETUGEN_room_00DL_005010
+
+Z2_17SETUGEN_room_00Vtx_005028:
+  type: MM:ARRAY
+  offset: 0x005028
+  symbol: Z2_17SETUGEN_room_00Vtx_005028
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0055A8:
+  type: GFX
+  offset: 0x0055A8
+  symbol: Z2_17SETUGEN_room_00DL_0055A8
+
+Z2_17SETUGEN_room_00Vtx_005790:
+  type: MM:ARRAY
+  offset: 0x005790
+  symbol: Z2_17SETUGEN_room_00Vtx_005790
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0058C0:
+  type: GFX
+  offset: 0x0058C0
+  symbol: Z2_17SETUGEN_room_00DL_0058C0
+
+Z2_17SETUGEN_room_00DL_0059A0:
+  type: GFX
+  offset: 0x0059A0
+  symbol: Z2_17SETUGEN_room_00DL_0059A0
+
+Z2_17SETUGEN_room_00Vtx_0059B8:
+  type: MM:ARRAY
+  offset: 0x0059B8
+  symbol: Z2_17SETUGEN_room_00Vtx_0059B8
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_005FB8:
+  type: GFX
+  offset: 0x005FB8
+  symbol: Z2_17SETUGEN_room_00DL_005FB8
+
+Z2_17SETUGEN_room_00Vtx_006158:
+  type: MM:ARRAY
+  offset: 0x006158
+  symbol: Z2_17SETUGEN_room_00Vtx_006158
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0062A8:
+  type: GFX
+  offset: 0x0062A8
+  symbol: Z2_17SETUGEN_room_00DL_0062A8
+
+Z2_17SETUGEN_room_00Vtx_006318:
+  type: MM:ARRAY
+  offset: 0x006318
+  symbol: Z2_17SETUGEN_room_00Vtx_006318
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_006578:
+  type: GFX
+  offset: 0x006578
+  symbol: Z2_17SETUGEN_room_00DL_006578
+
+Z2_17SETUGEN_room_00Vtx_0066D8:
+  type: MM:ARRAY
+  offset: 0x0066D8
+  symbol: Z2_17SETUGEN_room_00Vtx_0066D8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_0069F8:
+  type: GFX
+  offset: 0x0069F8
+  symbol: Z2_17SETUGEN_room_00DL_0069F8
+
+Z2_17SETUGEN_room_00Vtx_006B68:
+  type: MM:ARRAY
+  offset: 0x006B68
+  symbol: Z2_17SETUGEN_room_00Vtx_006B68
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_006D88:
+  type: GFX
+  offset: 0x006D88
+  symbol: Z2_17SETUGEN_room_00DL_006D88
+
+Z2_17SETUGEN_room_00Vtx_006E88:
+  type: MM:ARRAY
+  offset: 0x006E88
+  symbol: Z2_17SETUGEN_room_00Vtx_006E88
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_006F48:
+  type: GFX
+  offset: 0x006F48
+  symbol: Z2_17SETUGEN_room_00DL_006F48
+
+Z2_17SETUGEN_room_00Vtx_006FE8:
+  type: MM:ARRAY
+  offset: 0x006FE8
+  symbol: Z2_17SETUGEN_room_00Vtx_006FE8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_007128:
+  type: GFX
+  offset: 0x007128
+  symbol: Z2_17SETUGEN_room_00DL_007128
+
+Z2_17SETUGEN_room_00DL_0072B0:
+  type: GFX
+  offset: 0x0072B0
+  symbol: Z2_17SETUGEN_room_00DL_0072B0
+
+Z2_17SETUGEN_room_00DL_0072B8:
+  type: GFX
+  offset: 0x0072B8
+  symbol: Z2_17SETUGEN_room_00DL_0072B8
+
+Z2_17SETUGEN_room_00DL_0072C8:
+  type: GFX
+  offset: 0x0072C8
+  symbol: Z2_17SETUGEN_room_00DL_0072C8
+
+Z2_17SETUGEN_room_00DL_0072D0:
+  type: GFX
+  offset: 0x0072D0
+  symbol: Z2_17SETUGEN_room_00DL_0072D0
+
+Z2_17SETUGEN_room_00DL_0072E0:
+  type: GFX
+  offset: 0x0072E0
+  symbol: Z2_17SETUGEN_room_00DL_0072E0
+
+Z2_17SETUGEN_room_00DL_0072E8:
+  type: GFX
+  offset: 0x0072E8
+  symbol: Z2_17SETUGEN_room_00DL_0072E8
+
+Z2_17SETUGEN_room_00DL_0072F8:
+  type: GFX
+  offset: 0x0072F8
+  symbol: Z2_17SETUGEN_room_00DL_0072F8
+
+Z2_17SETUGEN_room_00DL_007300:
+  type: GFX
+  offset: 0x007300
+  symbol: Z2_17SETUGEN_room_00DL_007300
+
+Z2_17SETUGEN_room_00Vtx_007310:
+  type: MM:ARRAY
+  offset: 0x007310
+  symbol: Z2_17SETUGEN_room_00Vtx_007310
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_17SETUGEN_room_00DL_007570:
+  type: GFX
+  offset: 0x007570
+  symbol: Z2_17SETUGEN_room_00DL_007570

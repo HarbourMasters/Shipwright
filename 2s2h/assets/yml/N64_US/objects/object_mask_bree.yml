@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 10, 0x00E91960 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 11, 0x00E91960 ]
+    - [ 12, 0x00E91960 ]
+    - [ 13, 0x00E91960 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_mask_bree_DL_0003C0:
+  type: GFX
+  offset: 0x3C0
+  symbol: object_mask_bree_DL_0003C0
+
+object_mask_bree_TLUT_000658:
+  type: TEXTURE
+  offset: 0x658
+  symbol: object_mask_bree_TLUT_000658
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_bree_Tex_000858:
+  type: TEXTURE
+  offset: 0x858
+  symbol: object_mask_bree_Tex_000858
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_bree_Tex_000C58:
+  type: TEXTURE
+  offset: 0xC58
+  symbol: object_mask_bree_Tex_000C58
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_bree_Tex_000D58:
+  type: TEXTURE
+  offset: 0xD58
+  symbol: object_mask_bree_Tex_000D58
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_bree_Tex_000D98:
+  type: TEXTURE
+  offset: 0xD98
+  symbol: object_mask_bree_Tex_000D98
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_mask_breeVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_breeVtx_000000
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

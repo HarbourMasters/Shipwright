@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 10, 0x00E95FC0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E95FC0 ]
+    - [ 12, 0x00E95FC0 ]
+    - [ 13, 0x00E95FC0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_goron_DL_0014A0:
+  type: GFX
+  offset: 0x14A0
+  symbol: object_mask_goron_DL_0014A0
+
+object_mask_goron_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_mask_goron_TLUT_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_goron_Tex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_mask_goron_Tex_000200
+  format: CI8
+  width: 32
+  height: 64
+
+object_mask_goron_Tex_000A00:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: object_mask_goron_Tex_000A00
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_goron_Tex_000A40:
+  type: TEXTURE
+  offset: 0xA40
+  symbol: object_mask_goron_Tex_000A40
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_goron_Tex_000B40:
+  type: TEXTURE
+  offset: 0xB40
+  symbol: object_mask_goron_Tex_000B40
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_mask_goronVtx_000F40:
+  type: MM:ARRAY
+  offset: 0x000F40
+  symbol: object_mask_goronVtx_000F40
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

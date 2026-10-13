@@ -1,0 +1,101 @@
+:config:
+  segments:
+    - [ 6, 0x01570920 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01570920 ]
+    - [ 9, 0x01570920 ]
+    - [ 10, 0x01570920 ]
+    - [ 11, 0x01570920 ]
+    - [ 12, 0x01570920 ]
+    - [ 13, 0x01570920 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_hunsui_Colheader_000C74:
+  type: MM:COLLISION
+  offset: 0xC74
+  symbol: object_hunsui_Colheader_000C74
+
+object_hunsui_Colheader_00190C:
+  type: MM:COLLISION
+  offset: 0x190C
+  symbol: object_hunsui_Colheader_00190C
+
+object_hunsui_DL_000220:
+  type: GFX
+  offset: 0x220
+  symbol: object_hunsui_DL_000220
+
+object_hunsui_DL_000EC0:
+  type: GFX
+  offset: 0xEC0
+  symbol: object_hunsui_DL_000EC0
+
+object_hunsui_Matanimheader_000BF0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xBF0
+  symbol: object_hunsui_Matanimheader_000BF0
+
+object_hunsui_Matanimheader_001888:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1888
+  symbol: object_hunsui_Matanimheader_001888
+
+object_hunsui_Tex_0003E0:
+  type: TEXTURE
+  offset: 0x3E0
+  symbol: object_hunsui_Tex_0003E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hunsui_Tex_001078:
+  type: TEXTURE
+  offset: 0x1078
+  symbol: object_hunsui_Tex_001078
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_hunsuiVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_hunsuiVtx_000000
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hunsui_Matanimheader_000BF0TexScrollParams_000BE0:
+  type: BLOB
+  offset: 0x000BE0
+  symbol: object_hunsui_Matanimheader_000BF0TexScrollParams_000BE0
+  size: 0
+
+object_hunsui_Matanimheader_000BF0TexScrollParams_000BE8:
+  type: BLOB
+  offset: 0x000BE8
+  symbol: object_hunsui_Matanimheader_000BF0TexScrollParams_000BE8
+  size: 0
+
+object_hunsuiVtx_000CA0:
+  type: MM:ARRAY
+  offset: 0x000CA0
+  symbol: object_hunsuiVtx_000CA0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hunsui_Matanimheader_001888TexScrollParams_001878:
+  type: BLOB
+  offset: 0x001878
+  symbol: object_hunsui_Matanimheader_001888TexScrollParams_001878
+  size: 0
+
+object_hunsui_Matanimheader_001888TexScrollParams_001880:
+  type: BLOB
+  offset: 0x001880
+  symbol: object_hunsui_Matanimheader_001888TexScrollParams_001880
+  size: 0

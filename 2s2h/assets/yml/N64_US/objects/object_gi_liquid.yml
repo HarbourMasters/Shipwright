@@ -1,0 +1,124 @@
+:config:
+  segments:
+    - [ 6, 0x00FA1250 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00FA1250 ]
+    - [ 9, 0x00FA1250 ]
+    - [ 10, 0x00FA1250 ]
+    - [ 11, 0x00FA1250 ]
+    - [ 12, 0x00FA1250 ]
+    - [ 13, 0x00FA1250 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiPotionContainerBlueLiquidColorDL:
+  type: GFX
+  offset: 0x1310
+  symbol: gGiPotionContainerBlueLiquidColorDL
+
+gGiPotionContainerBluePatternColorDL:
+  type: GFX
+  offset: 0x13E0
+  symbol: gGiPotionContainerBluePatternColorDL
+
+gGiPotionContainerBluePatternTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gGiPotionContainerBluePatternTex
+  format: IA8
+  width: 16
+  height: 32
+
+gGiPotionContainerBluePotColorDL:
+  type: GFX
+  offset: 0x12B0
+  symbol: gGiPotionContainerBluePotColorDL
+
+gGiPotionContainerGreenLiquidColorDL:
+  type: GFX
+  offset: 0x12D0
+  symbol: gGiPotionContainerGreenLiquidColorDL
+
+gGiPotionContainerGreenPatternColorDL:
+  type: GFX
+  offset: 0x1330
+  symbol: gGiPotionContainerGreenPatternColorDL
+
+gGiPotionContainerGreenPatternTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGiPotionContainerGreenPatternTex
+  format: IA8
+  width: 16
+  height: 32
+
+gGiPotionContainerGreenPotColorDL:
+  type: GFX
+  offset: 0x1270
+  symbol: gGiPotionContainerGreenPotColorDL
+
+gGiPotionContainerLiquidDL:
+  type: GFX
+  offset: 0x1790
+  symbol: gGiPotionContainerLiquidDL
+
+gGiPotionContainerPatternDL:
+  type: GFX
+  offset: 0x1848
+  symbol: gGiPotionContainerPatternDL
+
+gGiPotionContainerPotDL:
+  type: GFX
+  offset: 0x1438
+  symbol: gGiPotionContainerPotDL
+
+gGiPotionContainerRedLiquidColorDL:
+  type: GFX
+  offset: 0x12F0
+  symbol: gGiPotionContainerRedLiquidColorDL
+
+gGiPotionContainerRedPatternColorDL:
+  type: GFX
+  offset: 0x1388
+  symbol: gGiPotionContainerRedPatternColorDL
+
+gGiPotionContainerRedPatternTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gGiPotionContainerRedPatternTex
+  format: IA8
+  width: 16
+  height: 32
+
+gGiPotionContainerRedPotColorDL:
+  type: GFX
+  offset: 0x1290
+  symbol: gGiPotionContainerRedPotColorDL
+
+
+object_gi_liquidVtx_000600:
+  type: MM:ARRAY
+  offset: 0x000600
+  symbol: object_gi_liquidVtx_000600
+  count: 176
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_liquidVtx_001100:
+  type: MM:ARRAY
+  offset: 0x001100
+  symbol: object_gi_liquidVtx_001100
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_liquidVtx_001170:
+  type: MM:ARRAY
+  offset: 0x001170
+  symbol: object_gi_liquidVtx_001170
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

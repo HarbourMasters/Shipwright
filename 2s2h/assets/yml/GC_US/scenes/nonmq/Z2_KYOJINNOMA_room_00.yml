@@ -1,0 +1,191 @@
+:config:
+  segments:
+    - [ 3, 0x01DE2A10 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01DE2A10 ]
+    - [ 9, 0x01DE2A10 ]
+    - [ 10, 0x01DE2A10 ]
+    - [ 11, 0x01DE2A10 ]
+    - [ 12, 0x01DE2A10 ]
+    - [ 13, 0x01DE2A10 ]
+    - [ 2, 0x01DDE6A0 ]
+  directory: scenes/nonmq/Z2_KYOJINNOMA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000150.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000220.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_0002F0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_0003B0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000410.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000470.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_0004D0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000530.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_000590.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA_room_00Set_0005F0.yml
+
+Z2_KYOJINNOMA_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_KYOJINNOMA_room_00
+
+Z2_KYOJINNOMA_room_00DL_000EF8:
+  type: GFX
+  offset: 0xEF8
+  symbol: Z2_KYOJINNOMA_room_00DL_000EF8
+
+Z2_KYOJINNOMA_room_00DL_001A10:
+  type: GFX
+  offset: 0x1A10
+  symbol: Z2_KYOJINNOMA_room_00DL_001A10
+
+
+Z2_KYOJINNOMA_room_00ActorEntry_000078:
+  type: BLOB
+  offset: 0x000078
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000078
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000198:
+  type: BLOB
+  offset: 0x000198
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000198
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000268:
+  type: BLOB
+  offset: 0x000268
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000268
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000338:
+  type: BLOB
+  offset: 0x000338
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000338
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_0003F4:
+  type: BLOB
+  offset: 0x0003F4
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_0003F4
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000454:
+  type: BLOB
+  offset: 0x000454
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000454
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_0004B4:
+  type: BLOB
+  offset: 0x0004B4
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_0004B4
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000514:
+  type: BLOB
+  offset: 0x000514
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000514
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000574:
+  type: BLOB
+  offset: 0x000574
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000574
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_0005D4:
+  type: BLOB
+  offset: 0x0005D4
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_0005D4
+  size: 0
+
+Z2_KYOJINNOMA_room_00ActorEntry_000638:
+  type: BLOB
+  offset: 0x000638
+  symbol: Z2_KYOJINNOMA_room_00ActorEntry_000638
+  size: 0
+
+Z2_KYOJINNOMA_room_00Vtx_000690:
+  type: MM:ARRAY
+  offset: 0x000690
+  symbol: Z2_KYOJINNOMA_room_00Vtx_000690
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_0007D0:
+  type: GFX
+  offset: 0x0007D0
+  symbol: Z2_KYOJINNOMA_room_00DL_0007D0
+
+Z2_KYOJINNOMA_room_00Vtx_0008C8:
+  type: MM:ARRAY
+  offset: 0x0008C8
+  symbol: Z2_KYOJINNOMA_room_00Vtx_0008C8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_000AC8:
+  type: GFX
+  offset: 0x000AC8
+  symbol: Z2_KYOJINNOMA_room_00DL_000AC8
+
+Z2_KYOJINNOMA_room_00Vtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: Z2_KYOJINNOMA_room_00Vtx_000B90
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_000DD0:
+  type: GFX
+  offset: 0x000DD0
+  symbol: Z2_KYOJINNOMA_room_00DL_000DD0
+
+Z2_KYOJINNOMA_room_00Vtx_000F20:
+  type: MM:ARRAY
+  offset: 0x000F20
+  symbol: Z2_KYOJINNOMA_room_00Vtx_000F20
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_0011A0:
+  type: GFX
+  offset: 0x0011A0
+  symbol: Z2_KYOJINNOMA_room_00DL_0011A0
+
+Z2_KYOJINNOMA_room_00Vtx_0012D0:
+  type: MM:ARRAY
+  offset: 0x0012D0
+  symbol: Z2_KYOJINNOMA_room_00Vtx_0012D0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_001530:
+  type: GFX
+  offset: 0x001530
+  symbol: Z2_KYOJINNOMA_room_00DL_001530
+
+Z2_KYOJINNOMA_room_00Vtx_001660:
+  type: MM:ARRAY
+  offset: 0x001660
+  symbol: Z2_KYOJINNOMA_room_00Vtx_001660
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KYOJINNOMA_room_00DL_0018E0:
+  type: GFX
+  offset: 0x0018E0
+  symbol: Z2_KYOJINNOMA_room_00DL_0018E0

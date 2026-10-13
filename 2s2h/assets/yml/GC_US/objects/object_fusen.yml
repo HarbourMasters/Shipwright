@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 6, 0x015FDCD0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015FDCD0 ]
+    - [ 9, 0x015FDCD0 ]
+    - [ 10, 0x015FDCD0 ]
+    - [ 11, 0x015FDCD0 ]
+    - [ 12, 0x015FDCD0 ]
+    - [ 13, 0x015FDCD0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMajoraBalloonDL:
+  type: GFX
+  offset: 0xA00
+  symbol: gMajoraBalloonDL
+
+gMajoraBalloonKnotDL:
+  type: GFX
+  offset: 0xD78
+  symbol: gMajoraBalloonKnotDL
+
+object_fusen_Colheader_002420:
+  type: MM:COLLISION
+  offset: 0x2420
+  symbol: object_fusen_Colheader_002420
+
+object_fusen_Tex_000E08:
+  type: TEXTURE
+  offset: 0xE08
+  symbol: object_fusen_Tex_000E08
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_fusenVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fusenVtx_000000
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fusenVtx_000940:
+  type: MM:ARRAY
+  offset: 0x000940
+  symbol: object_fusenVtx_000940
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

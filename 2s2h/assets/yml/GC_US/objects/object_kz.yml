@@ -1,0 +1,702 @@
+:config:
+  segments:
+    - [ 6, 0x0144E590 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0144E590 ]
+    - [ 9, 0x0144E590 ]
+    - [ 10, 0x0144E590 ]
+    - [ 11, 0x0144E590 ]
+    - [ 12, 0x0144E590 ]
+    - [ 13, 0x0144E590 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFighterPirate1TLUT:
+  type: TEXTURE
+  offset: 0x58D0
+  symbol: gFighterPirate1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFighterPirateArmor1Tex:
+  type: TEXTURE
+  offset: 0x5B50
+  symbol: gFighterPirateArmor1Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gFighterPirateBellyButtonTex:
+  type: TEXTURE
+  offset: 0x5D50
+  symbol: gFighterPirateBellyButtonTex
+  format: CI8
+  width: 16
+  height: 16
+
+gFighterPirateBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x1578
+  symbol: gFighterPirateBlockAnim
+
+gFighterPirateDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x4860
+  symbol: gFighterPirateDamageAnim
+
+gFighterPirateDefeatAnim:
+  type: OOT:ANIMATION
+  offset: 0x3A3C
+  symbol: gFighterPirateDefeatAnim
+
+gFighterPirateDefeatIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2BA0
+  symbol: gFighterPirateDefeatIdleAnim
+
+gFighterPirateDemonstrativeSwordSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0x43E4
+  symbol: gFighterPirateDemonstrativeSwordSwingAnim
+
+gFighterPirateEarTex:
+  type: TEXTURE
+  offset: 0x9338
+  symbol: gFighterPirateEarTex
+  format: CI8
+  width: 8
+  height: 16
+
+gFighterPirateEyeClosedTex:
+  type: TEXTURE
+  offset: 0xA0F8
+  symbol: gFighterPirateEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9100
+
+gFighterPirateEyeHalfTex:
+  type: TEXTURE
+  offset: 0x9978
+  symbol: gFighterPirateEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9100
+
+gFighterPirateEyeOpenTex:
+  type: TEXTURE
+  offset: 0x93B8
+  symbol: gFighterPirateEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9100
+
+gFighterPirateFightingIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xF8E4
+  symbol: gFighterPirateFightingIdleAnim
+
+gFighterPirateFingersTex:
+  type: TEXTURE
+  offset: 0x9EF8
+  symbol: gFighterPirateFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9100
+
+gFighterPirateFlipAnim:
+  type: OOT:ANIMATION
+  offset: 0x1390
+  symbol: gFighterPirateFlipAnim
+
+gFighterPirateHairTex:
+  type: TEXTURE
+  offset: 0x9DF8
+  symbol: gFighterPirateHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9100
+
+gFighterPirateHeadDL:
+  type: GFX
+  offset: 0xCF20
+  symbol: gFighterPirateHeadDL
+
+gFighterPirateHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD6F4
+  symbol: gFighterPirateHeadLimb
+  limb_type: Standard
+
+gFighterPirateLandAnim:
+  type: OOT:ANIMATION
+  offset: 0xE8BC
+  symbol: gFighterPirateLandAnim
+
+gFighterPirateLandTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xED1C
+  symbol: gFighterPirateLandTalkAnim
+
+gFighterPirateLeftFootDL:
+  type: GFX
+  offset: 0xC318
+  symbol: gFighterPirateLeftFootDL
+
+gFighterPirateLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xD790
+  symbol: gFighterPirateLeftFootLimb
+  limb_type: Standard
+
+gFighterPirateLeftForearmDL:
+  type: GFX
+  offset: 0x85C8
+  symbol: gFighterPirateLeftForearmDL
+
+gFighterPirateLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD748
+  symbol: gFighterPirateLeftForearmLimb
+  limb_type: Standard
+
+gFighterPirateLeftHandDL:
+  type: GFX
+  offset: 0xC698
+  symbol: gFighterPirateLeftHandDL
+
+gFighterPirateLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xD760
+  symbol: gFighterPirateLeftHandLimb
+  limb_type: Standard
+
+gFighterPirateLeftShinDL:
+  type: GFX
+  offset: 0x8E80
+  symbol: gFighterPirateLeftShinDL
+
+gFighterPirateLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xD784
+  symbol: gFighterPirateLeftShinLimb
+  limb_type: Standard
+
+gFighterPirateLeftSwordDL:
+  type: GFX
+  offset: 0xC830
+  symbol: gFighterPirateLeftSwordDL
+
+gFighterPirateLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0xD76C
+  symbol: gFighterPirateLeftSwordLimb
+  limb_type: Standard
+
+gFighterPirateLeftThighDL:
+  type: GFX
+  offset: 0x8D80
+  symbol: gFighterPirateLeftThighDL
+
+gFighterPirateLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xD778
+  symbol: gFighterPirateLeftThighLimb
+  limb_type: Standard
+
+gFighterPirateLeftUpperArmDL:
+  type: GFX
+  offset: 0x8490
+  symbol: gFighterPirateLeftUpperArmDL
+
+gFighterPirateLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xD73C
+  symbol: gFighterPirateLeftUpperArmLimb
+  limb_type: Standard
+
+gFighterPirateLeftWristLimb:
+  type: OOT:LIMB
+  offset: 0xD754
+  symbol: gFighterPirateLeftWristLimb
+  limb_type: Standard
+
+gFighterPirateLowerWeaponsAnim:
+  type: OOT:ANIMATION
+  offset: 0xF288
+  symbol: gFighterPirateLowerWeaponsAnim
+
+gFighterPirateNeckLimb:
+  type: OOT:LIMB
+  offset: 0xD6D0
+  symbol: gFighterPirateNeckLimb
+  limb_type: Standard
+
+gFighterPiratePantsTex:
+  type: TEXTURE
+  offset: 0x5E50
+  symbol: gFighterPiratePantsTex
+  format: I8
+  width: 16
+  height: 16
+
+gFighterPiratePonytailDL:
+  type: GFX
+  offset: 0xCE30
+  symbol: gFighterPiratePonytailDL
+
+gFighterPiratePonytailLimb:
+  type: OOT:LIMB
+  offset: 0xD6DC
+  symbol: gFighterPiratePonytailLimb
+  limb_type: Standard
+
+gFighterPirateRightFootDL:
+  type: GFX
+  offset: 0xC4D8
+  symbol: gFighterPirateRightFootDL
+
+gFighterPirateRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xD7B4
+  symbol: gFighterPirateRightFootLimb
+  limb_type: Standard
+
+gFighterPirateRightForearmDL:
+  type: GFX
+  offset: 0x8268
+  symbol: gFighterPirateRightForearmDL
+
+gFighterPirateRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD70C
+  symbol: gFighterPirateRightForearmLimb
+  limb_type: Standard
+
+gFighterPirateRightHandDL:
+  type: GFX
+  offset: 0xCA08
+  symbol: gFighterPirateRightHandDL
+
+gFighterPirateRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xD724
+  symbol: gFighterPirateRightHandLimb
+  limb_type: Standard
+
+gFighterPirateRightShinDL:
+  type: GFX
+  offset: 0x8B10
+  symbol: gFighterPirateRightShinDL
+
+gFighterPirateRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xD7A8
+  symbol: gFighterPirateRightShinLimb
+  limb_type: Standard
+
+gFighterPirateRightSwordDL:
+  type: GFX
+  offset: 0xCBA0
+  symbol: gFighterPirateRightSwordDL
+
+gFighterPirateRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0xD730
+  symbol: gFighterPirateRightSwordLimb
+  limb_type: Standard
+
+gFighterPirateRightThighDL:
+  type: GFX
+  offset: 0x8A10
+  symbol: gFighterPirateRightThighDL
+
+gFighterPirateRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xD79C
+  symbol: gFighterPirateRightThighLimb
+  limb_type: Standard
+
+gFighterPirateRightUpperArmDL:
+  type: GFX
+  offset: 0x8130
+  symbol: gFighterPirateRightUpperArmDL
+
+gFighterPirateRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xD700
+  symbol: gFighterPirateRightUpperArmLimb
+  limb_type: Standard
+
+gFighterPirateRightWristLimb:
+  type: OOT:LIMB
+  offset: 0xD718
+  symbol: gFighterPirateRightWristLimb
+  limb_type: Standard
+
+gFighterPirateRootLimb:
+  type: OOT:LIMB
+  offset: 0xD6B8
+  symbol: gFighterPirateRootLimb
+  limb_type: Standard
+
+gFighterPirateShirtBottomPatternAndVeil2Tex:
+  type: TEXTURE
+  offset: 0x97B8
+  symbol: gFighterPirateShirtBottomPatternAndVeil2Tex
+  format: I8
+  width: 16
+  height: 16
+
+gFighterPirateShirtBottomPatternAndVeilTex:
+  type: TEXTURE
+  offset: 0x5C50
+  symbol: gFighterPirateShirtBottomPatternAndVeilTex
+  format: I8
+  width: 16
+  height: 16
+
+gFighterPirateShirtTopRedGradientTex:
+  type: TEXTURE
+  offset: 0x5B10
+  symbol: gFighterPirateShirtTopRedGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gFighterPirateShoeBottomTex:
+  type: TEXTURE
+  offset: 0x9938
+  symbol: gFighterPirateShoeBottomTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9100
+
+gFighterPirateShoesTex:
+  type: TEXTURE
+  offset: 0x98B8
+  symbol: gFighterPirateShoesTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x9100
+
+gFighterPirateSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0xDBE4
+  symbol: gFighterPirateSidestepAnim
+
+gFighterPirateSkel:
+  type: MM:SKELETON
+  offset: 0xD828
+  symbol: gFighterPirateSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFighterPirateSkin1Tex:
+  type: TEXTURE
+  offset: 0x5AD0
+  symbol: gFighterPirateSkin1Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x58D0
+
+gFighterPirateSkin2Tex:
+  type: TEXTURE
+  offset: 0x92F8
+  symbol: gFighterPirateSkin2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9100
+
+gFighterPirateSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x3CC
+  symbol: gFighterPirateSlashAnim
+
+gFighterPirateSpinAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0xF5C
+  symbol: gFighterPirateSpinAttackAnim
+
+gFighterPirateThrowFlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E9C
+  symbol: gFighterPirateThrowFlashAnim
+
+gFighterPirateTorsoDL:
+  type: GFX
+  offset: 0x7CB0
+  symbol: gFighterPirateTorsoDL
+
+gFighterPirateTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xD6C4
+  symbol: gFighterPirateTorsoLimb
+  limb_type: Standard
+
+gFighterPirateUnsheatheAnim:
+  type: OOT:ANIMATION
+  offset: 0x5644
+  symbol: gFighterPirateUnsheatheAnim
+
+gFighterPirateUnusedDefeatAnim:
+  type: OOT:ANIMATION
+  offset: 0x2730
+  symbol: gFighterPirateUnusedDefeatAnim
+
+gFighterPirateUnusedJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xE1C8
+  symbol: gFighterPirateUnusedJumpAnim
+
+gFighterPirateUnusedTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xEF9C
+  symbol: gFighterPirateUnusedTalkAnim
+
+gFighterPirateVeilDL:
+  type: GFX
+  offset: 0xCD78
+  symbol: gFighterPirateVeilDL
+
+gFighterPirateVeilLimb:
+  type: OOT:LIMB
+  offset: 0xD6E8
+  symbol: gFighterPirateVeilLimb
+  limb_type: Standard
+
+gFighterPirateWaistDL:
+  type: GFX
+  offset: 0x87F0
+  symbol: gFighterPirateWaistDL
+
+gFighterPirateWaistLimb:
+  type: OOT:LIMB
+  offset: 0xD7C0
+  symbol: gFighterPirateWaistLimb
+  limb_type: Standard
+
+gFighterPirateWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x58B8
+  symbol: gFighterPirateWalkAnim
+
+gFighterPirateYellowSwordGuardAndEmblemTex:
+  type: TEXTURE
+  offset: 0x9FF8
+  symbol: gFighterPirateYellowSwordGuardAndEmblemTex
+  format: CI8
+  width: 16
+  height: 16
+
+gFighterPirateZipper1Tex:
+  type: TEXTURE
+  offset: 0x5F50
+  symbol: gFighterPirateZipper1Tex
+  format: I8
+  width: 8
+  height: 16
+
+gFighterPirateZipper2Tex:
+  type: TEXTURE
+  offset: 0x9D78
+  symbol: gFighterPirateZipper2Tex
+  format: I8
+  width: 8
+  height: 16
+
+
+object_kzVtx_005FD0:
+  type: MM:ARRAY
+  offset: 0x005FD0
+  symbol: object_kzVtx_005FD0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_0061B0:
+  type: MM:ARRAY
+  offset: 0x0061B0
+  symbol: object_kzVtx_0061B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_006340:
+  type: MM:ARRAY
+  offset: 0x006340
+  symbol: object_kzVtx_006340
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_006520:
+  type: MM:ARRAY
+  offset: 0x006520
+  symbol: object_kzVtx_006520
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_0066B0:
+  type: MM:ARRAY
+  offset: 0x0066B0
+  symbol: object_kzVtx_0066B0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_006D00:
+  type: MM:ARRAY
+  offset: 0x006D00
+  symbol: object_kzVtx_006D00
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_007110:
+  type: MM:ARRAY
+  offset: 0x007110
+  symbol: object_kzVtx_007110
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_007300:
+  type: MM:ARRAY
+  offset: 0x007300
+  symbol: object_kzVtx_007300
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_0076D0:
+  type: MM:ARRAY
+  offset: 0x0076D0
+  symbol: object_kzVtx_0076D0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_0078C0:
+  type: MM:ARRAY
+  offset: 0x0078C0
+  symbol: object_kzVtx_0078C0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzTLUT_009100:
+  type: TEXTURE
+  offset: 0x009100
+  symbol: object_kzTLUT_009100
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kzVtx_00A4F8:
+  type: MM:ARRAY
+  offset: 0x00A4F8
+  symbol: object_kzVtx_00A4F8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00A7A8:
+  type: MM:ARRAY
+  offset: 0x00A7A8
+  symbol: object_kzVtx_00A7A8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00AA58:
+  type: MM:ARRAY
+  offset: 0x00AA58
+  symbol: object_kzVtx_00AA58
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00AC78:
+  type: MM:ARRAY
+  offset: 0x00AC78
+  symbol: object_kzVtx_00AC78
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00AEA8:
+  type: MM:ARRAY
+  offset: 0x00AEA8
+  symbol: object_kzVtx_00AEA8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00B0C8:
+  type: MM:ARRAY
+  offset: 0x00B0C8
+  symbol: object_kzVtx_00B0C8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00B2F8:
+  type: MM:ARRAY
+  offset: 0x00B2F8
+  symbol: object_kzVtx_00B2F8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00B3B8:
+  type: MM:ARRAY
+  offset: 0x00B3B8
+  symbol: object_kzVtx_00B3B8
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kzVtx_00B498:
+  type: MM:ARRAY
+  offset: 0x00B498
+  symbol: object_kzVtx_00B498
+  count: 232
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFighterPirateSkelLimbs:
+  type: BLOB
+  offset: 0xD7CC
+  symbol: gFighterPirateSkelLimbs
+  size: 0

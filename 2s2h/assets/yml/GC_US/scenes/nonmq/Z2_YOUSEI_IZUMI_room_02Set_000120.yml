@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x018FFE00 ]
+    - [ 2, 0x018EC080 ]
+  directory: scenes/nonmq/Z2_YOUSEI_IZUMI
+  external_files:
+    - GC_US/scenes/nonmq/Z2_YOUSEI_IZUMI_room_02.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_YOUSEI_IZUMI.yml
+
+Z2_YOUSEI_IZUMI_room_02Set_000120:
+  type: MM:ROOM
+  offset: 0x120
+  symbol: Z2_YOUSEI_IZUMI_room_02Set_000120
+  base_name: Z2_YOUSEI_IZUMI_room_02

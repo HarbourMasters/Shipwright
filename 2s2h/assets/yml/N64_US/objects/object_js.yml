@@ -1,0 +1,370 @@
+:config:
+  segments:
+    - [ 6, 0x01038A80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01038A80 ]
+    - [ 9, 0x01038A80 ]
+    - [ 10, 0x01038A80 ]
+    - [ 11, 0x01038A80 ]
+    - [ 12, 0x01038A80 ]
+    - [ 13, 0x01038A80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_js_Anim_00016C:
+  type: OOT:ANIMATION
+  offset: 0x16C
+  symbol: object_js_Anim_00016C
+
+object_js_Anim_0003DC:
+  type: OOT:ANIMATION
+  offset: 0x3DC
+  symbol: object_js_Anim_0003DC
+
+object_js_Anim_000AD4:
+  type: OOT:ANIMATION
+  offset: 0xAD4
+  symbol: object_js_Anim_000AD4
+
+object_js_Anim_000C7C:
+  type: OOT:ANIMATION
+  offset: 0xC7C
+  symbol: object_js_Anim_000C7C
+
+object_js_Anim_000F4C:
+  type: OOT:ANIMATION
+  offset: 0xF4C
+  symbol: object_js_Anim_000F4C
+
+object_js_Colheader_0069E8:
+  type: MM:COLLISION
+  offset: 0x69E8
+  symbol: object_js_Colheader_0069E8
+
+object_js_DL_003F30:
+  type: GFX
+  offset: 0x3F30
+  symbol: object_js_DL_003F30
+
+object_js_DL_004510:
+  type: GFX
+  offset: 0x4510
+  symbol: object_js_DL_004510
+
+object_js_DL_004688:
+  type: GFX
+  offset: 0x4688
+  symbol: object_js_DL_004688
+
+object_js_DL_004868:
+  type: GFX
+  offset: 0x4868
+  symbol: object_js_DL_004868
+
+object_js_DL_004B60:
+  type: GFX
+  offset: 0x4B60
+  symbol: object_js_DL_004B60
+
+object_js_DL_004EA0:
+  type: GFX
+  offset: 0x4EA0
+  symbol: object_js_DL_004EA0
+
+object_js_DL_004FD0:
+  type: GFX
+  offset: 0x4FD0
+  symbol: object_js_DL_004FD0
+
+object_js_DL_005178:
+  type: GFX
+  offset: 0x5178
+  symbol: object_js_DL_005178
+
+object_js_DL_0052D8:
+  type: GFX
+  offset: 0x52D8
+  symbol: object_js_DL_0052D8
+
+object_js_DL_005408:
+  type: GFX
+  offset: 0x5408
+  symbol: object_js_DL_005408
+
+object_js_DL_0055B0:
+  type: GFX
+  offset: 0x55B0
+  symbol: object_js_DL_0055B0
+
+object_js_Skel_006990:
+  type: MM:SKELETON
+  offset: 0x6990
+  symbol: object_js_Skel_006990
+  limb_type: Standard
+  skel_type: Flex
+
+object_js_Standardlimb_0068D0:
+  type: OOT:LIMB
+  offset: 0x68D0
+  symbol: object_js_Standardlimb_0068D0
+  limb_type: Standard
+
+object_js_Standardlimb_0068DC:
+  type: OOT:LIMB
+  offset: 0x68DC
+  symbol: object_js_Standardlimb_0068DC
+  limb_type: Standard
+
+object_js_Standardlimb_0068E8:
+  type: OOT:LIMB
+  offset: 0x68E8
+  symbol: object_js_Standardlimb_0068E8
+  limb_type: Standard
+
+object_js_Standardlimb_0068F4:
+  type: OOT:LIMB
+  offset: 0x68F4
+  symbol: object_js_Standardlimb_0068F4
+  limb_type: Standard
+
+object_js_Standardlimb_006900:
+  type: OOT:LIMB
+  offset: 0x6900
+  symbol: object_js_Standardlimb_006900
+  limb_type: Standard
+
+object_js_Standardlimb_00690C:
+  type: OOT:LIMB
+  offset: 0x690C
+  symbol: object_js_Standardlimb_00690C
+  limb_type: Standard
+
+object_js_Standardlimb_006918:
+  type: OOT:LIMB
+  offset: 0x6918
+  symbol: object_js_Standardlimb_006918
+  limb_type: Standard
+
+object_js_Standardlimb_006924:
+  type: OOT:LIMB
+  offset: 0x6924
+  symbol: object_js_Standardlimb_006924
+  limb_type: Standard
+
+object_js_Standardlimb_006930:
+  type: OOT:LIMB
+  offset: 0x6930
+  symbol: object_js_Standardlimb_006930
+  limb_type: Standard
+
+object_js_Standardlimb_00693C:
+  type: OOT:LIMB
+  offset: 0x693C
+  symbol: object_js_Standardlimb_00693C
+  limb_type: Standard
+
+object_js_Standardlimb_006948:
+  type: OOT:LIMB
+  offset: 0x6948
+  symbol: object_js_Standardlimb_006948
+  limb_type: Standard
+
+object_js_Standardlimb_006954:
+  type: OOT:LIMB
+  offset: 0x6954
+  symbol: object_js_Standardlimb_006954
+  limb_type: Standard
+
+object_js_TLUT_005710:
+  type: TEXTURE
+  offset: 0x5710
+  symbol: object_js_TLUT_005710
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_js_Tex_005910:
+  type: TEXTURE
+  offset: 0x5910
+  symbol: object_js_Tex_005910
+  format: CI8
+  width: 8
+  height: 16
+
+object_js_Tex_005990:
+  type: TEXTURE
+  offset: 0x5990
+  symbol: object_js_Tex_005990
+  format: CI8
+  width: 16
+  height: 16
+
+object_js_Tex_005A90:
+  type: TEXTURE
+  offset: 0x5A90
+  symbol: object_js_Tex_005A90
+  format: CI8
+  width: 32
+  height: 16
+
+object_js_Tex_005C90:
+  type: TEXTURE
+  offset: 0x5C90
+  symbol: object_js_Tex_005C90
+  format: CI8
+  width: 8
+  height: 8
+
+object_js_Tex_005CD0:
+  type: TEXTURE
+  offset: 0x5CD0
+  symbol: object_js_Tex_005CD0
+  format: CI8
+  width: 32
+  height: 32
+
+object_js_Tex_0060D0:
+  type: TEXTURE
+  offset: 0x60D0
+  symbol: object_js_Tex_0060D0
+  format: CI8
+  width: 16
+  height: 16
+
+object_js_Tex_0061D0:
+  type: TEXTURE
+  offset: 0x61D0
+  symbol: object_js_Tex_0061D0
+  format: CI8
+  width: 16
+  height: 32
+
+object_js_Tex_0063D0:
+  type: TEXTURE
+  offset: 0x63D0
+  symbol: object_js_Tex_0063D0
+  format: CI8
+  width: 16
+  height: 32
+
+object_js_Tex_0065D0:
+  type: TEXTURE
+  offset: 0x65D0
+  symbol: object_js_Tex_0065D0
+  format: CI8
+  width: 16
+  height: 32
+
+object_js_Tex_0067D0:
+  type: TEXTURE
+  offset: 0x67D0
+  symbol: object_js_Tex_0067D0
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_jsVtx_000F60:
+  type: MM:ARRAY
+  offset: 0x000F60
+  symbol: object_jsVtx_000F60
+  count: 318
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002340:
+  type: MM:ARRAY
+  offset: 0x002340
+  symbol: object_jsVtx_002340
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002990:
+  type: MM:ARRAY
+  offset: 0x002990
+  symbol: object_jsVtx_002990
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002BB0:
+  type: MM:ARRAY
+  offset: 0x002BB0
+  symbol: object_jsVtx_002BB0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002D30:
+  type: MM:ARRAY
+  offset: 0x002D30
+  symbol: object_jsVtx_002D30
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_002EB0:
+  type: MM:ARRAY
+  offset: 0x002EB0
+  symbol: object_jsVtx_002EB0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0030D0:
+  type: MM:ARRAY
+  offset: 0x0030D0
+  symbol: object_jsVtx_0030D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_003250:
+  type: MM:ARRAY
+  offset: 0x003250
+  symbol: object_jsVtx_003250
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_0033D0:
+  type: MM:ARRAY
+  offset: 0x0033D0
+  symbol: object_jsVtx_0033D0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_003750:
+  type: MM:ARRAY
+  offset: 0x003750
+  symbol: object_jsVtx_003750
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsVtx_003C20:
+  type: MM:ARRAY
+  offset: 0x003C20
+  symbol: object_jsVtx_003C20
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_js_Skel_006990Limbs:
+  type: BLOB
+  offset: 0x6960
+  symbol: object_js_Skel_006990Limbs
+  size: 0

@@ -1,0 +1,701 @@
+:config:
+  segments:
+    - [ 2, 0x019FC7C0 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_33ZORACITYSet_003FA0.yml
+Z2_33ZORACITY:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_33ZORACITY
+
+
+Z2_33ZORACITYPathwayList_000224:
+  type: MM:PATH
+  offset: 0x000224
+  symbol: Z2_33ZORACITYPathwayList_000224
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYPathwayList_000238:
+  type: MM:PATH
+  offset: 0x000238
+  symbol: Z2_33ZORACITYPathwayList_000238
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYPathwayList_000244:
+  type: MM:PATH
+  offset: 0x000244
+  symbol: Z2_33ZORACITYPathwayList_000244
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYPathwayList_000250:
+  type: MM:PATH
+  offset: 0x000250
+  symbol: Z2_33ZORACITYPathwayList_000250
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYPathwayList_00025C:
+  type: MM:PATH
+  offset: 0x00025C
+  symbol: Z2_33ZORACITYPathwayList_00025C
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYPathwayList_0002AC:
+  type: MM:PATH
+  offset: 0x0002AC
+  symbol: Z2_33ZORACITYPathwayList_0002AC
+  num_paths: 6
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 891, 0, 177 ]
+        - [ 865, 0, 258 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 860, 0, -295 ]
+        - [ 882, 0, -207 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -206, 0, -884 ]
+        - [ -296, 0, -856 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -639, 0, -646 ]
+        - [ -481, 0, -760 ]
+        - [ -353, 0, -776 ]
+        - [ 45, 0, -710 ]
+        - [ 401, 0, -572 ]
+        - [ 708, 0, -298 ]
+        - [ 754, 0, 74 ]
+        - [ 749, 0, 532 ]
+        - [ 1059, 0, 740 ]
+        - [ 755, 67, 1050 ]
+        - [ 297, 333, 1256 ]
+        - [ -166, 557, 1178 ]
+        - [ -113, 557, 774 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -645, 0, 612 ]
+        - [ -421, 0, 739 ]
+        - [ 13, 0, 858 ]
+        - [ 423, 0, 746 ]
+        - [ 677, 0, 485 ]
+
+Z2_33ZORACITYCutsceneData_0002FC:
+  type: MM:CUTSCENE
+  offset: 0x0002FC
+  symbol: Z2_33ZORACITYCutsceneData_0002FC
+  size: 424
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007C0:
+  type: BLOB
+  offset: 0x0007C0
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007C0
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007C8:
+  type: BLOB
+  offset: 0x0007C8
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007C8
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007D0:
+  type: BLOB
+  offset: 0x0007D0
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007D0
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007D8:
+  type: BLOB
+  offset: 0x0007D8
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007D8
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007E0:
+  type: BLOB
+  offset: 0x0007E0
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007E0
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007E8:
+  type: BLOB
+  offset: 0x0007E8
+  symbol: Z2_33ZORACITYTexAnim_0007F0TexScrollParams_0007E8
+  size: 0
+
+Z2_33ZORACITYTexAnim_0007F0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0007F0
+  symbol: Z2_33ZORACITYTexAnim_0007F0
+
+Z2_33ZORACITYCollisionHeader_003F70:
+  type: MM:COLLISION
+  offset: 0x003F70
+  symbol: Z2_33ZORACITYCollisionHeader_003F70
+
+Z2_33ZORACITYPathwayList_0040FC:
+  type: MM:PATH
+  offset: 0x0040FC
+  symbol: Z2_33ZORACITYPathwayList_0040FC
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 202, 48, 809 ]
+        - [ 443, 78, 711 ]
+        - [ 654, 86, 538 ]
+        - [ 771, 55, 391 ]
+        - [ 846, 94, 244 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 734, 124, -467 ]
+        - [ 811, 94, -257 ]
+        - [ 851, 94, -60 ]
+        - [ 875, 71, 113 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 77, 63, 899 ]
+        - [ 440, 71, 770 ]
+        - [ 637, 109, 605 ]
+        - [ 750, 86, 472 ]
+        - [ 847, 86, 279 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+
+Z2_33ZORACITYPathwayList_00411C:
+  type: MM:PATH
+  offset: 0x00411C
+  symbol: Z2_33ZORACITYPathwayList_00411C
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 202, 48, 809 ]
+        - [ 443, 78, 711 ]
+        - [ 654, 86, 538 ]
+        - [ 771, 55, 391 ]
+        - [ 846, 94, 244 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 734, 124, -467 ]
+        - [ 811, 94, -257 ]
+        - [ 851, 94, -60 ]
+        - [ 875, 71, 113 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 77, 63, 899 ]
+        - [ 440, 71, 770 ]
+        - [ 637, 109, 605 ]
+        - [ 750, 86, 472 ]
+        - [ 847, 86, 279 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+
+Z2_33ZORACITYPathwayList_004134:
+  type: MM:PATH
+  offset: 0x004134
+  symbol: Z2_33ZORACITYPathwayList_004134
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 202, 48, 809 ]
+        - [ 443, 78, 711 ]
+        - [ 654, 86, 538 ]
+        - [ 771, 55, 391 ]
+        - [ 846, 94, 244 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 734, 124, -467 ]
+        - [ 811, 94, -257 ]
+        - [ 851, 94, -60 ]
+        - [ 875, 71, 113 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 77, 63, 899 ]
+        - [ 440, 71, 770 ]
+        - [ 637, 109, 605 ]
+        - [ 750, 86, 472 ]
+        - [ 847, 86, 279 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+
+Z2_33ZORACITYPathwayList_004154:
+  type: MM:PATH
+  offset: 0x004154
+  symbol: Z2_33ZORACITYPathwayList_004154
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 202, 48, 809 ]
+        - [ 443, 78, 711 ]
+        - [ 654, 86, 538 ]
+        - [ 771, 55, 391 ]
+        - [ 846, 94, 244 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 734, 124, -467 ]
+        - [ 811, 94, -257 ]
+        - [ 851, 94, -60 ]
+        - [ 875, 71, 113 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 77, 63, 899 ]
+        - [ 440, 71, 770 ]
+        - [ 637, 109, 605 ]
+        - [ 750, 86, 472 ]
+        - [ 847, 86, 279 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 763, 0, -474 ]
+        - [ 8, 0, -913 ]
+        - [ -927, 0, -12 ]
+
+Z2_33ZORACITYCutsceneData_004188:
+  type: MM:CUTSCENE
+  offset: 0x004188
+  symbol: Z2_33ZORACITYCutsceneData_004188
+  size: 536
+
+Z2_33ZORACITYTex_004470:
+  type: TEXTURE
+  offset: 0x004470
+  symbol: Z2_33ZORACITYTex_004470
+  format: I4
+  width: 64
+  height: 64
+
+Z2_33ZORACITYTex_004C70:
+  type: TEXTURE
+  offset: 0x004C70
+  symbol: Z2_33ZORACITYTex_004C70
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_005470:
+  type: TEXTURE
+  offset: 0x005470
+  symbol: Z2_33ZORACITYTex_005470
+  format: I8
+  width: 32
+  height: 128
+
+Z2_33ZORACITYTex_006470:
+  type: TEXTURE
+  offset: 0x006470
+  symbol: Z2_33ZORACITYTex_006470
+  format: I4
+  width: 64
+  height: 64
+
+Z2_33ZORACITYTex_006C70:
+  type: TEXTURE
+  offset: 0x006C70
+  symbol: Z2_33ZORACITYTex_006C70
+  format: I4
+  width: 32
+  height: 64
+
+Z2_33ZORACITYTex_007070:
+  type: TEXTURE
+  offset: 0x007070
+  symbol: Z2_33ZORACITYTex_007070
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_33ZORACITYTex_007870:
+  type: TEXTURE
+  offset: 0x007870
+  symbol: Z2_33ZORACITYTex_007870
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_33ZORACITYTex_008070:
+  type: TEXTURE
+  offset: 0x008070
+  symbol: Z2_33ZORACITYTex_008070
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_008870:
+  type: TEXTURE
+  offset: 0x008870
+  symbol: Z2_33ZORACITYTex_008870
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_009070:
+  type: TEXTURE
+  offset: 0x009070
+  symbol: Z2_33ZORACITYTex_009070
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_009870:
+  type: TEXTURE
+  offset: 0x009870
+  symbol: Z2_33ZORACITYTex_009870
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00A070:
+  type: TEXTURE
+  offset: 0x00A070
+  symbol: Z2_33ZORACITYTex_00A070
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00A470:
+  type: TEXTURE
+  offset: 0x00A470
+  symbol: Z2_33ZORACITYTex_00A470
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00A870:
+  type: TEXTURE
+  offset: 0x00A870
+  symbol: Z2_33ZORACITYTex_00A870
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_33ZORACITYTex_00B070:
+  type: TEXTURE
+  offset: 0x00B070
+  symbol: Z2_33ZORACITYTex_00B070
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_33ZORACITYTex_00B870:
+  type: TEXTURE
+  offset: 0x00B870
+  symbol: Z2_33ZORACITYTex_00B870
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00BC70:
+  type: TEXTURE
+  offset: 0x00BC70
+  symbol: Z2_33ZORACITYTex_00BC70
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00C070:
+  type: TEXTURE
+  offset: 0x00C070
+  symbol: Z2_33ZORACITYTex_00C070
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_33ZORACITYTex_00C470:
+  type: TEXTURE
+  offset: 0x00C470
+  symbol: Z2_33ZORACITYTex_00C470
+  format: IA4
+  width: 32
+  height: 256
+
+Z2_33ZORACITYTex_00D470:
+  type: TEXTURE
+  offset: 0x00D470
+  symbol: Z2_33ZORACITYTex_00D470
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_33ZORACITYTex_00E470:
+  type: TEXTURE
+  offset: 0x00E470
+  symbol: Z2_33ZORACITYTex_00E470
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_33ZORACITYTLUT_00E570:
+  type: TEXTURE
+  offset: 0x00E570
+  symbol: Z2_33ZORACITYTLUT_00E570
+  format: RGBA16
+  width: 16
+  height: 16

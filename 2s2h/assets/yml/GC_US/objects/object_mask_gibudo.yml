@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 10, 0x00E87A40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E87A40 ]
+    - [ 12, 0x00E87A40 ]
+    - [ 13, 0x00E87A40 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_gibudo_DL_000250:
+  type: GFX
+  offset: 0x250
+  symbol: object_mask_gibudo_DL_000250
+
+object_mask_gibudo_Tex_000398:
+  type: TEXTURE
+  offset: 0x398
+  symbol: object_mask_gibudo_Tex_000398
+  format: I8
+  width: 64
+  height: 32
+
+object_mask_gibudo_Tex_000B98:
+  type: TEXTURE
+  offset: 0xB98
+  symbol: object_mask_gibudo_Tex_000B98
+  format: I8
+  width: 32
+  height: 16
+
+
+object_mask_gibudoVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_gibudoVtx_000000
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

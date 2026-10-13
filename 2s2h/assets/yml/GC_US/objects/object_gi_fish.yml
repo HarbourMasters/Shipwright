@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x00FA91E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FA91E0 ]
+    - [ 9, 0x00FA91E0 ]
+    - [ 10, 0x00FA91E0 ]
+    - [ 11, 0x00FA91E0 ]
+    - [ 12, 0x00FA91E0 ]
+    - [ 13, 0x00FA91E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiFishContainerDL:
+  type: GFX
+  offset: 0x600
+  symbol: gGiFishContainerDL
+
+
+object_gi_fishVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_fishVtx_000000
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,62 @@
+:config:
+  segments:
+    - [ 6, 0x014D39A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014D39A0 ]
+    - [ 9, 0x014D39A0 ]
+    - [ 10, 0x014D39A0 ]
+    - [ 11, 0x014D39A0 ]
+    - [ 12, 0x014D39A0 ]
+    - [ 13, 0x014D39A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gStoneTowerFloorSwitchCol:
+  type: MM:COLLISION
+  offset: 0x118
+  symbol: gStoneTowerFloorSwitchCol
+
+gStoneTowerFloorSwitchDL:
+  type: GFX
+  offset: 0x438
+  symbol: gStoneTowerFloorSwitchDL
+
+gStoneTowerFloorSwitchOutlineDL:
+  type: GFX
+  offset: 0x390
+  symbol: gStoneTowerFloorSwitchOutlineDL
+
+gStoneTowerFloorSwitchOutlineTex:
+  type: TEXTURE
+  offset: 0x4E8
+  symbol: gStoneTowerFloorSwitchOutlineTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gStoneTowerFloorSwitchTex:
+  type: TEXTURE
+  offset: 0xCE8
+  symbol: gStoneTowerFloorSwitchTex
+  format: IA8
+  width: 16
+  height: 16
+
+
+object_f40_switchVtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: object_f40_switchVtx_000150
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f40_switchVtx_000290:
+  type: MM:ARRAY
+  offset: 0x000290
+  symbol: object_f40_switchVtx_000290
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

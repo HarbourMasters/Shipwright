@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x011D4D30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011D4D30 ]
+    - [ 9, 0x011D4D30 ]
+    - [ 10, 0x011D4D30 ]
+    - [ 11, 0x011D4D30 ]
+    - [ 12, 0x011D4D30 ]
+    - [ 13, 0x011D4D30 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gDekuShrineSlidingDoorCol:
+  type: MM:COLLISION
+  offset: 0xE00
+  symbol: gDekuShrineSlidingDoorCol
+
+gDekuShrineSlidingDoorDL:
+  type: GFX
+  offset: 0x3A0
+  symbol: gDekuShrineSlidingDoorDL
+
+gDekuShrineSlidingDoorTLUT:
+  type: TEXTURE
+  offset: 0x540
+  symbol: gDekuShrineSlidingDoorTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gDekuShrineSlidingDoorTex:
+  type: TEXTURE
+  offset: 0x560
+  symbol: gDekuShrineSlidingDoorTex
+  format: CI4
+  width: 32
+  height: 128
+
+
+object_crace_objectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_crace_objectVtx_000000
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

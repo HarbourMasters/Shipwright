@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 6, 0x01596B80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01596B80 ]
+    - [ 9, 0x01596B80 ]
+    - [ 10, 0x01596B80 ]
+    - [ 11, 0x01596B80 ]
+    - [ 12, 0x01596B80 ]
+    - [ 13, 0x01596B80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gButlerSonCutoutLeafTex:
+  type: TEXTURE
+  offset: 0x26A0
+  symbol: gButlerSonCutoutLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gButlerSonMainBodyDL:
+  type: GFX
+  offset: 0x1510
+  symbol: gButlerSonMainBodyDL
+
+gButlerSonMainBodyTex:
+  type: TEXTURE
+  offset: 0x1DA0
+  symbol: gButlerSonMainBodyTex
+  format: CI8
+  width: 16
+  height: 16
+
+gButlerSonRootTex:
+  type: TEXTURE
+  offset: 0x1CA0
+  symbol: gButlerSonRootTex
+  format: CI8
+  width: 16
+  height: 16
+
+gButlerSonTLUT:
+  type: TEXTURE
+  offset: 0x1AA0
+  symbol: gButlerSonTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gButlerSonWholeLeafTex:
+  type: TEXTURE
+  offset: 0x1EA0
+  symbol: gButlerSonWholeLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_nnhVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_nnhVtx_000000
+  count: 337
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

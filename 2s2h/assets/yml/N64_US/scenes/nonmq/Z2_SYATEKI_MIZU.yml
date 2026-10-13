@@ -1,0 +1,185 @@
+:config:
+  segments:
+    - [ 2, 0x01829000 ]
+
+Z2_SYATEKI_MIZU:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_SYATEKI_MIZU
+
+
+Z2_SYATEKI_MIZUTexAnim_0001B8TexScrollParams_0001B0:
+  type: BLOB
+  offset: 0x0001B0
+  symbol: Z2_SYATEKI_MIZUTexAnim_0001B8TexScrollParams_0001B0
+  size: 0
+
+Z2_SYATEKI_MIZUTexAnim_0001B8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0001B8
+  symbol: Z2_SYATEKI_MIZUTexAnim_0001B8
+
+Z2_SYATEKI_MIZUCollisionHeader_0013AC:
+  type: MM:COLLISION
+  offset: 0x0013AC
+  symbol: Z2_SYATEKI_MIZUCollisionHeader_0013AC
+
+Z2_SYATEKI_MIZUTex_0013E0:
+  type: TEXTURE
+  offset: 0x0013E0
+  symbol: Z2_SYATEKI_MIZUTex_0013E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SYATEKI_MIZUTex_001BE0:
+  type: TEXTURE
+  offset: 0x001BE0
+  symbol: Z2_SYATEKI_MIZUTex_001BE0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_SYATEKI_MIZUTex_0023E0:
+  type: TEXTURE
+  offset: 0x0023E0
+  symbol: Z2_SYATEKI_MIZUTex_0023E0
+  format: IA4
+  width: 32
+  height: 16
+
+Z2_SYATEKI_MIZUTex_0024E0:
+  type: TEXTURE
+  offset: 0x0024E0
+  symbol: Z2_SYATEKI_MIZUTex_0024E0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_SYATEKI_MIZUTex_002CE0:
+  type: TEXTURE
+  offset: 0x002CE0
+  symbol: Z2_SYATEKI_MIZUTex_002CE0
+  format: IA4
+  width: 16
+  height: 16
+
+Z2_SYATEKI_MIZUTex_002D60:
+  type: TEXTURE
+  offset: 0x002D60
+  symbol: Z2_SYATEKI_MIZUTex_002D60
+  format: IA4
+  width: 16
+  height: 32
+
+Z2_SYATEKI_MIZUTex_002E60:
+  type: TEXTURE
+  offset: 0x002E60
+  symbol: Z2_SYATEKI_MIZUTex_002E60
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SYATEKI_MIZUTex_003660:
+  type: TEXTURE
+  offset: 0x003660
+  symbol: Z2_SYATEKI_MIZUTex_003660
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_SYATEKI_MIZUTex_004660:
+  type: TEXTURE
+  offset: 0x004660
+  symbol: Z2_SYATEKI_MIZUTex_004660
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_SYATEKI_MIZUTex_005660:
+  type: TEXTURE
+  offset: 0x005660
+  symbol: Z2_SYATEKI_MIZUTex_005660
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SYATEKI_MIZUTex_005E60:
+  type: TEXTURE
+  offset: 0x005E60
+  symbol: Z2_SYATEKI_MIZUTex_005E60
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SYATEKI_MIZUTex_006660:
+  type: TEXTURE
+  offset: 0x006660
+  symbol: Z2_SYATEKI_MIZUTex_006660
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_SYATEKI_MIZUTex_006A60:
+  type: TEXTURE
+  offset: 0x006A60
+  symbol: Z2_SYATEKI_MIZUTex_006A60
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_SYATEKI_MIZUTex_006E60:
+  type: TEXTURE
+  offset: 0x006E60
+  symbol: Z2_SYATEKI_MIZUTex_006E60
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_SYATEKI_MIZUTex_007660:
+  type: TEXTURE
+  offset: 0x007660
+  symbol: Z2_SYATEKI_MIZUTex_007660
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SYATEKI_MIZUTex_007E60:
+  type: TEXTURE
+  offset: 0x007E60
+  symbol: Z2_SYATEKI_MIZUTex_007E60
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SYATEKI_MIZUTex_008660:
+  type: TEXTURE
+  offset: 0x008660
+  symbol: Z2_SYATEKI_MIZUTex_008660
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_SYATEKI_MIZUTLUT_009660:
+  type: TEXTURE
+  offset: 0x009660
+  symbol: Z2_SYATEKI_MIZUTLUT_009660
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SYATEKI_MIZUTLUT_009680:
+  type: TEXTURE
+  offset: 0x009680
+  symbol: Z2_SYATEKI_MIZUTLUT_009680
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SYATEKI_MIZUTLUT_0096A0:
+  type: TEXTURE
+  offset: 0x0096A0
+  symbol: Z2_SYATEKI_MIZUTLUT_0096A0
+  format: RGBA16
+  width: 4
+  height: 4

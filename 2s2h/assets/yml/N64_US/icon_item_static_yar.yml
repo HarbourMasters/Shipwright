@@ -1,0 +1,1525 @@
+:config:
+  segments:
+    - [ 8, 0x00980F60 ]
+  compression: CMPDMA
+
+gABtnSymbolTex:
+  type: TEXTURE
+  offset: 0x93C40
+  symbol: gABtnSymbolTex
+  format: IA8
+  width: 24
+  height: 16
+
+gBBtnSymbolTex:
+  type: TEXTURE
+  offset: 0x93DC0
+  symbol: gBBtnSymbolTex
+  format: IA8
+  width: 24
+  height: 16
+
+gCBtnSymbolsTex:
+  type: TEXTURE
+  offset: 0x93F40
+  symbol: gCBtnSymbolsTex
+  format: IA8
+  width: 48
+  height: 16
+
+gItemIconAdultsWalletTex:
+  type: TEXTURE
+  offset: 0x5A000
+  symbol: gItemIconAdultsWalletTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconAllNightMaskTex:
+  type: TEXTURE
+  offset: 0x38000
+  symbol: gItemIconAllNightMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBlastMaskTex:
+  type: TEXTURE
+  offset: 0x47000
+  symbol: gItemIconBlastMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBluePotionTex:
+  type: TEXTURE
+  offset: 0x15000
+  symbol: gItemIconBluePotionTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombBag20Tex:
+  type: TEXTURE
+  offset: 0x56000
+  symbol: gItemIconBombBag20Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombBag30Tex:
+  type: TEXTURE
+  offset: 0x57000
+  symbol: gItemIconBombBag30Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombBag40Tex:
+  type: TEXTURE
+  offset: 0x58000
+  symbol: gItemIconBombBag40Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombTex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gItemIconBombTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombchuTex:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: gItemIconBombchuTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBombersNotebookTex:
+  type: TEXTURE
+  offset: 0x61000
+  symbol: gItemIconBombersNotebookTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledBigPoeTex:
+  type: TEXTURE
+  offset: 0x1E000
+  symbol: gItemIconBottledBigPoeTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledBlueFireTex:
+  type: TEXTURE
+  offset: 0x1C000
+  symbol: gItemIconBottledBlueFireTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledBugTex:
+  type: TEXTURE
+  offset: 0x1B000
+  symbol: gItemIconBottledBugTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledDekuPrincessTex:
+  type: TEXTURE
+  offset: 0x17000
+  symbol: gItemIconBottledDekuPrincessTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledFairyTex:
+  type: TEXTURE
+  offset: 0x16000
+  symbol: gItemIconBottledFairyTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledFishTex:
+  type: TEXTURE
+  offset: 0x1A000
+  symbol: gItemIconBottledFishTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledFullMilkTex:
+  type: TEXTURE
+  offset: 0x18000
+  symbol: gItemIconBottledFullMilkTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledGoldDustTex:
+  type: TEXTURE
+  offset: 0x22000
+  symbol: gItemIconBottledGoldDustTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledHalfMilkTex:
+  type: TEXTURE
+  offset: 0x19000
+  symbol: gItemIconBottledHalfMilkTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledHylianLoachTex:
+  type: TEXTURE
+  offset: 0x26000
+  symbol: gItemIconBottledHylianLoachTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledMushroomTex:
+  type: TEXTURE
+  offset: 0x23000
+  symbol: gItemIconBottledMushroomTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledPoeTex:
+  type: TEXTURE
+  offset: 0x1D000
+  symbol: gItemIconBottledPoeTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledSeahorseTex:
+  type: TEXTURE
+  offset: 0x24000
+  symbol: gItemIconBottledSeahorseTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBottledZoraEggTex:
+  type: TEXTURE
+  offset: 0x21000
+  symbol: gItemIconBottledZoraEggTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBowFireTex:
+  type: TEXTURE
+  offset: 0x4A000
+  symbol: gItemIconBowFireTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBowIceTex:
+  type: TEXTURE
+  offset: 0x4B000
+  symbol: gItemIconBowIceTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBowLightTex:
+  type: TEXTURE
+  offset: 0x4C000
+  symbol: gItemIconBowLightTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBowTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gItemIconBowTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBremenMaskTex:
+  type: TEXTURE
+  offset: 0x46000
+  symbol: gItemIconBremenMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconBunnyHoodTex:
+  type: TEXTURE
+  offset: 0x39000
+  symbol: gItemIconBunnyHoodTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconCaptainsHatTex:
+  type: TEXTURE
+  offset: 0x44000
+  symbol: gItemIconCaptainsHatTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconChateauRomaniTex:
+  type: TEXTURE
+  offset: 0x25000
+  symbol: gItemIconChateauRomaniTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconCircusLeaderMaskTex:
+  type: TEXTURE
+  offset: 0x3D000
+  symbol: gItemIconCircusLeaderMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconCouplesMaskTex:
+  type: TEXTURE
+  offset: 0x3F000
+  symbol: gItemIconCouplesMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconDefaultWalletTex:
+  type: TEXTURE
+  offset: 0x59000
+  symbol: gItemIconDefaultWalletTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconDekuMaskTex:
+  type: TEXTURE
+  offset: 0x32000
+  symbol: gItemIconDekuMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconDekuNutTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gItemIconDekuNutTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconDekuStickTex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gItemIconDekuStickTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconDonGeroMaskTex:
+  type: TEXTURE
+  offset: 0x42000
+  symbol: gItemIconDonGeroMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconEmptyBottle2Tex:
+  type: TEXTURE
+  offset: 0x27000
+  symbol: gItemIconEmptyBottle2Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconEmptyBottleTex:
+  type: TEXTURE
+  offset: 0x12000
+  symbol: gItemIconEmptyBottleTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconFairyOcarinaTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gItemIconFairyOcarinaTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconFierceDeityMaskTex:
+  type: TEXTURE
+  offset: 0x35000
+  symbol: gItemIconFierceDeityMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconFierceDeitySwordTex:
+  type: TEXTURE
+  offset: 0x50000
+  symbol: gItemIconFierceDeitySwordTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconFireArrowTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gItemIconFireArrowTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconFishingRodTex:
+  type: TEXTURE
+  offset: 0x5C000
+  symbol: gItemIconFishingRodTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGaroMaskTex:
+  type: TEXTURE
+  offset: 0x3B000
+  symbol: gItemIconGaroMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGiantsMaskTex:
+  type: TEXTURE
+  offset: 0x49000
+  symbol: gItemIconGiantsMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGiantsWalletTex:
+  type: TEXTURE
+  offset: 0x5B000
+  symbol: gItemIconGiantsWalletTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGibdoMaskTex:
+  type: TEXTURE
+  offset: 0x41000
+  symbol: gItemIconGibdoMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGildedSwordTex:
+  type: TEXTURE
+  offset: 0x4F000
+  symbol: gItemIconGildedSwordTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGohtsRemainsTex:
+  type: TEXTURE
+  offset: 0x5E000
+  symbol: gItemIconGohtsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGoronMaskTex:
+  type: TEXTURE
+  offset: 0x33000
+  symbol: gItemIconGoronMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGreatFairyMaskTex:
+  type: TEXTURE
+  offset: 0x40000
+  symbol: gItemIconGreatFairyMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGreatFairysSwordTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gItemIconGreatFairysSwordTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGreenPotionTex:
+  type: TEXTURE
+  offset: 0x14000
+  symbol: gItemIconGreenPotionTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconGyorgsRemainsTex:
+  type: TEXTURE
+  offset: 0x5F000
+  symbol: gItemIconGyorgsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconHeartPiece1Tex:
+  type: TEXTURE
+  offset: 0x62180
+  symbol: gItemIconHeartPiece1Tex
+  format: IA8
+  width: 48
+  height: 48
+
+gItemIconHeartPiece2Tex:
+  type: TEXTURE
+  offset: 0x62A80
+  symbol: gItemIconHeartPiece2Tex
+  format: IA8
+  width: 48
+  height: 48
+
+gItemIconHeartPiece3Tex:
+  type: TEXTURE
+  offset: 0x63380
+  symbol: gItemIconHeartPiece3Tex
+  format: IA8
+  width: 48
+  height: 48
+
+gItemIconHerosShieldTex:
+  type: TEXTURE
+  offset: 0x51000
+  symbol: gItemIconHerosShieldTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconHookshotTex:
+  type: TEXTURE
+  offset: 0xF000
+  symbol: gItemIconHookshotTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconHotSpringWaterTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gItemIconHotSpringWaterTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconIceArrowTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gItemIconIceArrowTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconKafeisMaskTex:
+  type: TEXTURE
+  offset: 0x37000
+  symbol: gItemIconKafeisMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconKamaroMaskTex:
+  type: TEXTURE
+  offset: 0x43000
+  symbol: gItemIconKamaroMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconKeatonMaskTex:
+  type: TEXTURE
+  offset: 0x3A000
+  symbol: gItemIconKeatonMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconKokiriSwordTex:
+  type: TEXTURE
+  offset: 0x4D000
+  symbol: gItemIconKokiriSwordTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLandDeedTex:
+  type: TEXTURE
+  offset: 0x29000
+  symbol: gItemIconLandDeedTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLensofTruthTex:
+  type: TEXTURE
+  offset: 0xE000
+  symbol: gItemIconLensofTruthTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLetterToKafeiTex:
+  type: TEXTURE
+  offset: 0x2F000
+  symbol: gItemIconLetterToKafeiTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLetterToMamaTex:
+  type: TEXTURE
+  offset: 0x2E000
+  symbol: gItemIconLetterToMamaTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLightArrowTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gItemIconLightArrowTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconLongshotTex:
+  type: TEXTURE
+  offset: 0x11000
+  symbol: gItemIconLongshotTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMagicBeansTex:
+  type: TEXTURE
+  offset: 0xA000
+  symbol: gItemIconMagicBeansTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMaskOfScentsTex:
+  type: TEXTURE
+  offset: 0x48000
+  symbol: gItemIconMaskOfScentsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMaskOfTruthTex:
+  type: TEXTURE
+  offset: 0x36000
+  symbol: gItemIconMaskOfTruthTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMirrorShieldTex:
+  type: TEXTURE
+  offset: 0x52000
+  symbol: gItemIconMirrorShieldTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMoonsTearTex:
+  type: TEXTURE
+  offset: 0x28000
+  symbol: gItemIconMoonsTearTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconMountainDeedTex:
+  type: TEXTURE
+  offset: 0x2B000
+  symbol: gItemIconMountainDeedTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconOcarinaOfTimeTex:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gItemIconOcarinaOfTimeTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconOceanDeedTex:
+  type: TEXTURE
+  offset: 0x2C000
+  symbol: gItemIconOceanDeedTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconOdolwasRemainsTex:
+  type: TEXTURE
+  offset: 0x5D000
+  symbol: gItemIconOdolwasRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconPendantOfMemoriesTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gItemIconPendantOfMemoriesTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconPictographBoxTex:
+  type: TEXTURE
+  offset: 0xD000
+  symbol: gItemIconPictographBoxTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconPostmansHatTex:
+  type: TEXTURE
+  offset: 0x3E000
+  symbol: gItemIconPostmansHatTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconPowderKegTex:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: gItemIconPowderKegTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconQuiver30Tex:
+  type: TEXTURE
+  offset: 0x53000
+  symbol: gItemIconQuiver30Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconQuiver40Tex:
+  type: TEXTURE
+  offset: 0x54000
+  symbol: gItemIconQuiver40Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconQuiver50Tex:
+  type: TEXTURE
+  offset: 0x55000
+  symbol: gItemIconQuiver50Tex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconRazorSwordTex:
+  type: TEXTURE
+  offset: 0x4E000
+  symbol: gItemIconRazorSwordTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconRedPotionTex:
+  type: TEXTURE
+  offset: 0x13000
+  symbol: gItemIconRedPotionTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconRomaniMaskTex:
+  type: TEXTURE
+  offset: 0x3C000
+  symbol: gItemIconRomaniMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconRoomKeyTex:
+  type: TEXTURE
+  offset: 0x2D000
+  symbol: gItemIconRoomKeyTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconSlingshotTex:
+  type: TEXTURE
+  offset: 0xB000
+  symbol: gItemIconSlingshotTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconSongNoteTex:
+  type: TEXTURE
+  offset: 0x62000
+  symbol: gItemIconSongNoteTex
+  format: IA8
+  width: 16
+  height: 24
+
+gItemIconSpringWaterTex:
+  type: TEXTURE
+  offset: 0x1F000
+  symbol: gItemIconSpringWaterTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconStoneMaskTex:
+  type: TEXTURE
+  offset: 0x45000
+  symbol: gItemIconStoneMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconSwampDeedTex:
+  type: TEXTURE
+  offset: 0x2A000
+  symbol: gItemIconSwampDeedTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconTingleMapTex:
+  type: TEXTURE
+  offset: 0x31000
+  symbol: gItemIconTingleMapTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconTwinmoldsRemainsTex:
+  type: TEXTURE
+  offset: 0x60000
+  symbol: gItemIconTwinmoldsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gItemIconZoraMaskTex:
+  type: TEXTURE
+  offset: 0x34000
+  symbol: gItemIconZoraMaskTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gMagicArrowEquipEffectTex:
+  type: TEXTURE
+  offset: 0x95AC0
+  symbol: gMagicArrowEquipEffectTex
+  format: IA8
+  width: 32
+  height: 32
+
+gNamePanelLeftTex:
+  type: TEXTURE
+  offset: 0x94240
+  symbol: gNamePanelLeftTex
+  format: IA8
+  width: 72
+  height: 24
+
+gNamePanelRightTex:
+  type: TEXTURE
+  offset: 0x94900
+  symbol: gNamePanelRightTex
+  format: IA8
+  width: 72
+  height: 24
+
+gPauseGameOver10Tex:
+  type: TEXTURE
+  offset: 0x6DA40
+  symbol: gPauseGameOver10Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap00Tex:
+  type: TEXTURE
+  offset: 0x68040
+  symbol: gPauseMap00Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap01Tex:
+  type: TEXTURE
+  offset: 0x72040
+  symbol: gPauseMap01Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap02Tex:
+  type: TEXTURE
+  offset: 0x7B640
+  symbol: gPauseMap02Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap03Tex:
+  type: TEXTURE
+  offset: 0x84C40
+  symbol: gPauseMap03Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap04Tex:
+  type: TEXTURE
+  offset: 0x8E240
+  symbol: gPauseMap04Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap10JPNTex:
+  type: TEXTURE
+  offset: 0x68A40
+  symbol: gPauseMap10JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap11Tex:
+  type: TEXTURE
+  offset: 0x72A40
+  symbol: gPauseMap11Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap12Tex:
+  type: TEXTURE
+  offset: 0x7C040
+  symbol: gPauseMap12Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap13Tex:
+  type: TEXTURE
+  offset: 0x85640
+  symbol: gPauseMap13Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap14Tex:
+  type: TEXTURE
+  offset: 0x8EC40
+  symbol: gPauseMap14Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap20Tex:
+  type: TEXTURE
+  offset: 0x69440
+  symbol: gPauseMap20Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap21Tex:
+  type: TEXTURE
+  offset: 0x73440
+  symbol: gPauseMap21Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap22Tex:
+  type: TEXTURE
+  offset: 0x7CA40
+  symbol: gPauseMap22Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap23Tex:
+  type: TEXTURE
+  offset: 0x86040
+  symbol: gPauseMap23Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMap24Tex:
+  type: TEXTURE
+  offset: 0x8F640
+  symbol: gPauseMap24Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks00Tex:
+  type: TEXTURE
+  offset: 0x64440
+  symbol: gPauseMasks00Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks01Tex:
+  type: TEXTURE
+  offset: 0x6E440
+  symbol: gPauseMasks01Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks02Tex:
+  type: TEXTURE
+  offset: 0x77A40
+  symbol: gPauseMasks02Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks03Tex:
+  type: TEXTURE
+  offset: 0x81040
+  symbol: gPauseMasks03Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks04Tex:
+  type: TEXTURE
+  offset: 0x8A640
+  symbol: gPauseMasks04Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks10JPNTex:
+  type: TEXTURE
+  offset: 0x64E40
+  symbol: gPauseMasks10JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks11Tex:
+  type: TEXTURE
+  offset: 0x6EE40
+  symbol: gPauseMasks11Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks12Tex:
+  type: TEXTURE
+  offset: 0x78440
+  symbol: gPauseMasks12Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks13Tex:
+  type: TEXTURE
+  offset: 0x81A40
+  symbol: gPauseMasks13Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks14Tex:
+  type: TEXTURE
+  offset: 0x8B040
+  symbol: gPauseMasks14Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks20Tex:
+  type: TEXTURE
+  offset: 0x65840
+  symbol: gPauseMasks20Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks21Tex:
+  type: TEXTURE
+  offset: 0x6F840
+  symbol: gPauseMasks21Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks22Tex:
+  type: TEXTURE
+  offset: 0x78E40
+  symbol: gPauseMasks22Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks23Tex:
+  type: TEXTURE
+  offset: 0x82440
+  symbol: gPauseMasks23Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMasks24Tex:
+  type: TEXTURE
+  offset: 0x8BA40
+  symbol: gPauseMasks24Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseMenuCursorTex:
+  type: TEXTURE
+  offset: 0x64340
+  symbol: gPauseMenuCursorTex
+  format: IA8
+  width: 16
+  height: 16
+
+gPausePromptCursorTex:
+  type: TEXTURE
+  offset: 0x63C80
+  symbol: gPausePromptCursorTex
+  format: I4
+  width: 48
+  height: 48
+
+gPauseQuestStatus00JPNTex:
+  type: TEXTURE
+  offset: 0x69E40
+  symbol: gPauseQuestStatus00JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus01Tex:
+  type: TEXTURE
+  offset: 0x73E40
+  symbol: gPauseQuestStatus01Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus02Tex:
+  type: TEXTURE
+  offset: 0x7D440
+  symbol: gPauseQuestStatus02Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus03Tex:
+  type: TEXTURE
+  offset: 0x86A40
+  symbol: gPauseQuestStatus03Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus04Tex:
+  type: TEXTURE
+  offset: 0x90040
+  symbol: gPauseQuestStatus04Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus10JPNTex:
+  type: TEXTURE
+  offset: 0x6A840
+  symbol: gPauseQuestStatus10JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus11Tex:
+  type: TEXTURE
+  offset: 0x74840
+  symbol: gPauseQuestStatus11Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus12Tex:
+  type: TEXTURE
+  offset: 0x7DE40
+  symbol: gPauseQuestStatus12Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus13Tex:
+  type: TEXTURE
+  offset: 0x87440
+  symbol: gPauseQuestStatus13Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus14Tex:
+  type: TEXTURE
+  offset: 0x90A40
+  symbol: gPauseQuestStatus14Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus20JPNTex:
+  type: TEXTURE
+  offset: 0x6B240
+  symbol: gPauseQuestStatus20JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus21Tex:
+  type: TEXTURE
+  offset: 0x75240
+  symbol: gPauseQuestStatus21Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus22Tex:
+  type: TEXTURE
+  offset: 0x7E840
+  symbol: gPauseQuestStatus22Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus23Tex:
+  type: TEXTURE
+  offset: 0x87E40
+  symbol: gPauseQuestStatus23Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus24Tex:
+  type: TEXTURE
+  offset: 0x91440
+  symbol: gPauseQuestStatus24Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave00Tex:
+  type: TEXTURE
+  offset: 0x6BC40
+  symbol: gPauseSave00Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave01Tex:
+  type: TEXTURE
+  offset: 0x75C40
+  symbol: gPauseSave01Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave02Tex:
+  type: TEXTURE
+  offset: 0x7F240
+  symbol: gPauseSave02Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave03Tex:
+  type: TEXTURE
+  offset: 0x88840
+  symbol: gPauseSave03Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave04Tex:
+  type: TEXTURE
+  offset: 0x91E40
+  symbol: gPauseSave04Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave10JPNTex:
+  type: TEXTURE
+  offset: 0x6C640
+  symbol: gPauseSave10JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave11Tex:
+  type: TEXTURE
+  offset: 0x76640
+  symbol: gPauseSave11Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave12Tex:
+  type: TEXTURE
+  offset: 0x7FC40
+  symbol: gPauseSave12Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave13Tex:
+  type: TEXTURE
+  offset: 0x89240
+  symbol: gPauseSave13Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave14Tex:
+  type: TEXTURE
+  offset: 0x92840
+  symbol: gPauseSave14Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave20Tex:
+  type: TEXTURE
+  offset: 0x6D040
+  symbol: gPauseSave20Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave21Tex:
+  type: TEXTURE
+  offset: 0x77040
+  symbol: gPauseSave21Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave22Tex:
+  type: TEXTURE
+  offset: 0x80640
+  symbol: gPauseSave22Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave23Tex:
+  type: TEXTURE
+  offset: 0x89C40
+  symbol: gPauseSave23Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave24Tex:
+  type: TEXTURE
+  offset: 0x93240
+  symbol: gPauseSave24Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem00JPNTex:
+  type: TEXTURE
+  offset: 0x66240
+  symbol: gPauseSelectItem00JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem01Tex:
+  type: TEXTURE
+  offset: 0x70240
+  symbol: gPauseSelectItem01Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem02Tex:
+  type: TEXTURE
+  offset: 0x79840
+  symbol: gPauseSelectItem02Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem03Tex:
+  type: TEXTURE
+  offset: 0x82E40
+  symbol: gPauseSelectItem03Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem04Tex:
+  type: TEXTURE
+  offset: 0x8C440
+  symbol: gPauseSelectItem04Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem10JPNTex:
+  type: TEXTURE
+  offset: 0x66C40
+  symbol: gPauseSelectItem10JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem11Tex:
+  type: TEXTURE
+  offset: 0x70C40
+  symbol: gPauseSelectItem11Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem12Tex:
+  type: TEXTURE
+  offset: 0x7A240
+  symbol: gPauseSelectItem12Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem13Tex:
+  type: TEXTURE
+  offset: 0x83840
+  symbol: gPauseSelectItem13Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem14Tex:
+  type: TEXTURE
+  offset: 0x8CE40
+  symbol: gPauseSelectItem14Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem20JPNTex:
+  type: TEXTURE
+  offset: 0x67640
+  symbol: gPauseSelectItem20JPNTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem21Tex:
+  type: TEXTURE
+  offset: 0x71640
+  symbol: gPauseSelectItem21Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem22Tex:
+  type: TEXTURE
+  offset: 0x7AC40
+  symbol: gPauseSelectItem22Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem23Tex:
+  type: TEXTURE
+  offset: 0x84240
+  symbol: gPauseSelectItem23Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem24Tex:
+  type: TEXTURE
+  offset: 0x8D840
+  symbol: gPauseSelectItem24Tex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseUnusedCursorTex:
+  type: TEXTURE
+  offset: 0x64100
+  symbol: gPauseUnusedCursorTex
+  format: I8
+  width: 24
+  height: 24
+
+gRButtonTex:
+  type: TEXTURE
+  offset: 0x952C0
+  symbol: gRButtonTex
+  format: IA8
+  width: 24
+  height: 32
+
+gShowAMusicalNoteTex:
+  type: TEXTURE
+  offset: 0x955C0
+  symbol: gShowAMusicalNoteTex
+  format: IA8
+  width: 80
+  height: 16
+
+gZButtonTex:
+  type: TEXTURE
+  offset: 0x94FC0
+  symbol: gZButtonTex
+  format: IA8
+  width: 24
+  height: 32
+

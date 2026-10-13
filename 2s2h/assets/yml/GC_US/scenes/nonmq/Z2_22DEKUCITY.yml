@@ -1,0 +1,2163 @@
+:config:
+  segments:
+    - [ 2, 0x01964420 ]
+    - [ 6, 0x016138B0 ]
+  external_files:
+    - GC_US/misc/scene_texture_06.yml
+
+Z2_22DEKUCITY:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_22DEKUCITY
+
+
+Z2_22DEKUCITYPathwayList_00038C:
+  type: MM:PATH
+  offset: 0x00038C
+  symbol: Z2_22DEKUCITYPathwayList_00038C
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000398:
+  type: MM:PATH
+  offset: 0x000398
+  symbol: Z2_22DEKUCITYPathwayList_000398
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0003A4:
+  type: MM:PATH
+  offset: 0x0003A4
+  symbol: Z2_22DEKUCITYPathwayList_0003A4
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0003B8:
+  type: MM:PATH
+  offset: 0x0003B8
+  symbol: Z2_22DEKUCITYPathwayList_0003B8
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0003C4:
+  type: MM:PATH
+  offset: 0x0003C4
+  symbol: Z2_22DEKUCITYPathwayList_0003C4
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0003E4:
+  type: MM:PATH
+  offset: 0x0003E4
+  symbol: Z2_22DEKUCITYPathwayList_0003E4
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000404:
+  type: MM:PATH
+  offset: 0x000404
+  symbol: Z2_22DEKUCITYPathwayList_000404
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000424:
+  type: MM:PATH
+  offset: 0x000424
+  symbol: Z2_22DEKUCITYPathwayList_000424
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000430:
+  type: MM:PATH
+  offset: 0x000430
+  symbol: Z2_22DEKUCITYPathwayList_000430
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_00043C:
+  type: MM:PATH
+  offset: 0x00043C
+  symbol: Z2_22DEKUCITYPathwayList_00043C
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000448:
+  type: MM:PATH
+  offset: 0x000448
+  symbol: Z2_22DEKUCITYPathwayList_000448
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000460:
+  type: MM:PATH
+  offset: 0x000460
+  symbol: Z2_22DEKUCITYPathwayList_000460
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_000480:
+  type: MM:PATH
+  offset: 0x000480
+  symbol: Z2_22DEKUCITYPathwayList_000480
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0004B0:
+  type: MM:PATH
+  offset: 0x0004B0
+  symbol: Z2_22DEKUCITYPathwayList_0004B0
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0004C4:
+  type: MM:PATH
+  offset: 0x0004C4
+  symbol: Z2_22DEKUCITYPathwayList_0004C4
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0004D0:
+  type: MM:PATH
+  offset: 0x0004D0
+  symbol: Z2_22DEKUCITYPathwayList_0004D0
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYPathwayList_0004F0:
+  type: MM:PATH
+  offset: 0x0004F0
+  symbol: Z2_22DEKUCITYPathwayList_0004F0
+  num_paths: 17
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -942, 125, 1397 ]
+        - [ -755, 125, 1395 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 684, 135, 837 ]
+        - [ 1052, 135, 835 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -923, 165, 846 ]
+        - [ -457, 165, 845 ]
+        - [ -457, 260, 845 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 543, 139, 1471 ]
+        - [ 818, 132, 1471 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1140, 0, 700 ]
+        - [ 960, 0, 700 ]
+        - [ 960, 0, 880 ]
+        - [ 1140, 0, 880 ]
+        - [ 1140, 0, 700 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 790, 0, 880 ]
+        - [ 790, 0, 700 ]
+        - [ 670, 0, 700 ]
+        - [ 670, 0, 880 ]
+        - [ 732, 0, 880 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 576, 0, 1582 ]
+        - [ 576, 0, 1672 ]
+        - [ 693, 0, 1673 ]
+        - [ 693, 0, 1560 ]
+        - [ 576, 0, 1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -656, 0, 1830 ]
+        - [ -656, 0, 2002 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -869, 0, 1456 ]
+        - [ -869, 0, 1636 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -426, 0, 690 ]
+        - [ -857, 0, 690 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1325, 0, 930 ]
+        - [ -1325, 0, 820 ]
+        - [ -1060, 0, 820 ]
+        - [ -1060, 0, 929 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 898, 0, 1716 ]
+        - [ 898, 0, 1838 ]
+        - [ 1032, 0, 1838 ]
+        - [ 1033, 0, 1680 ]
+        - [ 899, 0, 1679 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 33, 1651 ]
+        - [ 2, 42, 2328 ]
+        - [ 21, 0, 2499 ]
+        - [ 19, 0, 2579 ]
+        - [ 4, 0, 2741 ]
+        - [ -4, 3, 2809 ]
+        - [ -3, 3, 2908 ]
+        - [ -5, 0, 3300 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1674, 0, 1000 ]
+        - [ 1674, 280, 1000 ]
+        - [ 1674, 0, 1000 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -750, 0, 1783 ]
+        - [ -903, 0, 1784 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1017, 0, 1333 ]
+        - [ 1017, 0, 1533 ]
+        - [ 813, 0, 1532 ]
+        - [ 1017, 0, 1532 ]
+        - [ 1017, 0, 1331 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1323, 0, 1174 ]
+        - [ -1064, 0, 1174 ]
+        - [ -1064, 0, 1069 ]
+        - [ -1322, 0, 1069 ]
+
+Z2_22DEKUCITYCutsceneData_000590:
+  type: MM:CUTSCENE
+  offset: 0x000590
+  symbol: Z2_22DEKUCITYCutsceneData_000590
+  size: 584
+
+Z2_22DEKUCITYTexAnim_000B40:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000B40
+  symbol: Z2_22DEKUCITYTexAnim_000B40
+
+Z2_22DEKUCITYCollisionHeader_008FE8:
+  type: MM:COLLISION
+  offset: 0x008FE8
+  symbol: Z2_22DEKUCITYCollisionHeader_008FE8
+
+Z2_22DEKUCITYTex_009020:
+  type: TEXTURE
+  offset: 0x009020
+  symbol: Z2_22DEKUCITYTex_009020
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_22DEKUCITYTex_009820:
+  type: TEXTURE
+  offset: 0x009820
+  symbol: Z2_22DEKUCITYTex_009820
+  format: I4
+  width: 64
+  height: 64
+
+Z2_22DEKUCITYTex_00A020:
+  type: TEXTURE
+  offset: 0x00A020
+  symbol: Z2_22DEKUCITYTex_00A020
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_22DEKUCITYTex_00A420:
+  type: TEXTURE
+  offset: 0x00A420
+  symbol: Z2_22DEKUCITYTex_00A420
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_22DEKUCITYTex_00AC20:
+  type: TEXTURE
+  offset: 0x00AC20
+  symbol: Z2_22DEKUCITYTex_00AC20
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_22DEKUCITYTex_00B420:
+  type: TEXTURE
+  offset: 0x00B420
+  symbol: Z2_22DEKUCITYTex_00B420
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_22DEKUCITYTex_00B820:
+  type: TEXTURE
+  offset: 0x00B820
+  symbol: Z2_22DEKUCITYTex_00B820
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_22DEKUCITYTex_00C020:
+  type: TEXTURE
+  offset: 0x00C020
+  symbol: Z2_22DEKUCITYTex_00C020
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_22DEKUCITYTex_00C120:
+  type: TEXTURE
+  offset: 0x00C120
+  symbol: Z2_22DEKUCITYTex_00C120
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_22DEKUCITYTex_00C220:
+  type: TEXTURE
+  offset: 0x00C220
+  symbol: Z2_22DEKUCITYTex_00C220
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_22DEKUCITYTex_00C320:
+  type: TEXTURE
+  offset: 0x00C320
+  symbol: Z2_22DEKUCITYTex_00C320
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_22DEKUCITYTex_00C420:
+  type: TEXTURE
+  offset: 0x00C420
+  symbol: Z2_22DEKUCITYTex_00C420
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_22DEKUCITYTex_00C820:
+  type: TEXTURE
+  offset: 0x00C820
+  symbol: Z2_22DEKUCITYTex_00C820
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_22DEKUCITYTLUT_00D020:
+  type: TEXTURE
+  offset: 0x00D020
+  symbol: Z2_22DEKUCITYTLUT_00D020
+  format: RGBA16
+  width: 16
+  height: 16

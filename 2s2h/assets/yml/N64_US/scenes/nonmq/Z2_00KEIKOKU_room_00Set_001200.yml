@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x019B4C60 ]
+    - [ 2, 0x019920E0 ]
+  directory: scenes/nonmq/Z2_00KEIKOKU
+  external_files:
+    - N64_US/scenes/nonmq/Z2_00KEIKOKU_room_00.yml
+    - N64_US/misc/scene_texture_08.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_00KEIKOKU.yml
+
+Z2_00KEIKOKU_room_00Set_001200:
+  type: MM:ROOM
+  offset: 0x1200
+  symbol: Z2_00KEIKOKU_room_00Set_001200
+  base_name: Z2_00KEIKOKU_room_00

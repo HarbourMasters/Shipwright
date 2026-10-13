@@ -1,0 +1,74 @@
+:config:
+  segments:
+    - [ 3, 0x01DCC7A0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01DCC7A0 ]
+    - [ 9, 0x01DCC7A0 ]
+    - [ 10, 0x01DCC7A0 ]
+    - [ 11, 0x01DCC7A0 ]
+    - [ 12, 0x01DCC7A0 ]
+    - [ 13, 0x01DCC7A0 ]
+    - [ 2, 0x01DBAB90 ]
+  directory: scenes/nonmq/Z2_LAST_LINK
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LAST_LINK.yml
+
+Z2_LAST_LINK_room_07:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_LINK_room_07
+
+Z2_LAST_LINK_room_07DL_000B18:
+  type: GFX
+  offset: 0xB18
+  symbol: Z2_LAST_LINK_room_07DL_000B18
+
+
+Z2_LAST_LINK_room_07ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_LAST_LINK_room_07ActorEntry_000058
+  size: 0
+
+Z2_LAST_LINK_room_07Vtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: Z2_LAST_LINK_room_07Vtx_0000B0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_07DL_000420:
+  type: GFX
+  offset: 0x000420
+  symbol: Z2_LAST_LINK_room_07DL_000420
+
+Z2_LAST_LINK_room_07Vtx_000560:
+  type: MM:ARRAY
+  offset: 0x000560
+  symbol: Z2_LAST_LINK_room_07Vtx_000560
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_07DL_000780:
+  type: GFX
+  offset: 0x000780
+  symbol: Z2_LAST_LINK_room_07DL_000780
+
+Z2_LAST_LINK_room_07Vtx_000910:
+  type: MM:ARRAY
+  offset: 0x000910
+  symbol: Z2_LAST_LINK_room_07Vtx_000910
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_07DL_000A30:
+  type: GFX
+  offset: 0x000A30
+  symbol: Z2_LAST_LINK_room_07DL_000A30

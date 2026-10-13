@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 128, 0x00A77120 ]
+  virtual: [ 0x800A5AC0, 0x00A77120 ]
+
+sCircleTex:
+  type: TEXTURE
+  offset: 0x138DD0
+  symbol: sCircleTex
+  format: I4
+  width: 64
+  height: 64
+

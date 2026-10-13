@@ -1,0 +1,74 @@
+:config:
+  segments:
+    - [ 6, 0x01589AC0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01589AC0 ]
+    - [ 9, 0x01589AC0 ]
+    - [ 10, 0x01589AC0 ]
+    - [ 11, 0x01589AC0 ]
+    - [ 12, 0x01589AC0 ]
+    - [ 13, 0x01589AC0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFallingMoonsTearDL:
+  type: GFX
+  offset: 0x400
+  symbol: gFallingMoonsTearDL
+
+gFallingMoonsTearFireDL:
+  type: GFX
+  offset: 0x4C8
+  symbol: gFallingMoonsTearFireDL
+
+gFallingMoonsTearFireTex:
+  type: TEXTURE
+  offset: 0xA08
+  symbol: gFallingMoonsTearFireTex
+  format: I8
+  width: 32
+  height: 64
+
+gFallingMoonsTearTex:
+  type: TEXTURE
+  offset: 0x608
+  symbol: gFallingMoonsTearTex
+  format: I8
+  width: 32
+  height: 32
+
+gFallingMoonsTearTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1220
+  symbol: gFallingMoonsTearTexAnim
+
+
+object_moonstonVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_moonstonVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonstonVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_moonstonVtx_000240
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFallingMoonsTearTexAnimTexScrollParams_001210:
+  type: BLOB
+  offset: 0x001210
+  symbol: gFallingMoonsTearTexAnimTexScrollParams_001210
+  size: 0
+
+gFallingMoonsTearTexAnimTexScrollParams_001218:
+  type: BLOB
+  offset: 0x001218
+  symbol: gFallingMoonsTearTexAnimTexScrollParams_001218
+  size: 0

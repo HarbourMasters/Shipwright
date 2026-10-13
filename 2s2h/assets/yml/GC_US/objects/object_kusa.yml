@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x010190F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010190F0 ]
+    - [ 9, 0x010190F0 ]
+    - [ 10, 0x010190F0 ]
+    - [ 11, 0x010190F0 ]
+    - [ 12, 0x010190F0 ]
+    - [ 13, 0x010190F0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gKusaSproutDL:
+  type: GFX
+  offset: 0x140
+  symbol: gKusaSproutDL
+
+gKusaStumpDL:
+  type: GFX
+  offset: 0x2E0
+  symbol: gKusaStumpDL
+
+
+object_kusaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kusaVtx_000000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kusaVtx_0001F0:
+  type: MM:ARRAY
+  offset: 0x0001F0
+  symbol: object_kusaVtx_0001F0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

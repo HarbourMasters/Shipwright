@@ -1,0 +1,197 @@
+:config:
+  segments:
+    - [ 7, 0x009CAAF0 ]
+  compression: CMPDMA
+
+gBombersNotebookEntryIconExclamationPointLargeTex:
+  type: TEXTURE
+  offset: 0xA800
+  symbol: gBombersNotebookEntryIconExclamationPointLargeTex
+  format: IA8
+  width: 32
+  height: 32
+
+gBombersNotebookEntryIconMaskTex:
+  type: TEXTURE
+  offset: 0xAC00
+  symbol: gBombersNotebookEntryIconMaskTex
+  format: IA8
+  width: 24
+  height: 28
+
+gBombersNotebookEntryIconRibbonTex:
+  type: TEXTURE
+  offset: 0xAEA0
+  symbol: gBombersNotebookEntryIconRibbonTex
+  format: IA8
+  width: 32
+  height: 28
+
+gBombersNotebookPhotoAnjuTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBombersNotebookPhotoAnjuTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoAnjusGrandmotherTex:
+  type: TEXTURE
+  offset: 0x6800
+  symbol: gBombersNotebookPhotoAnjusGrandmotherTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoBombShopLadyTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gBombersNotebookPhotoBombShopLadyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoBombersTex:
+  type: TEXTURE
+  offset: 0x9800
+  symbol: gBombersNotebookPhotoBombersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoCremiaTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gBombersNotebookPhotoCremiaTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoCuriosityShopManTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gBombersNotebookPhotoCuriosityShopManTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoGormanBrothersTex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gBombersNotebookPhotoGormanBrothersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoGormanTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gBombersNotebookPhotoGormanTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoGrogTex:
+  type: TEXTURE
+  offset: 0x7800
+  symbol: gBombersNotebookPhotoGrogTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoGuruGuruTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gBombersNotebookPhotoGuruGuruTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoKafeiTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gBombersNotebookPhotoKafeiTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoKamaroTex:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: gBombersNotebookPhotoKamaroTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoMadameAromaBrightTex:
+  type: TEXTURE
+  offset: 0xA000
+  symbol: gBombersNotebookPhotoMadameAromaBrightTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoMadameAromaTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gBombersNotebookPhotoMadameAromaTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoMayorDotourTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gBombersNotebookPhotoMayorDotourTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoPostmanTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gBombersNotebookPhotoPostmanTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoRomaniTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gBombersNotebookPhotoRomaniTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoRosaSistersTex:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: gBombersNotebookPhotoRosaSistersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoShiroTex:
+  type: TEXTURE
+  offset: 0x8800
+  symbol: gBombersNotebookPhotoShiroTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoToiletHandTex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gBombersNotebookPhotoToiletHandTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombersNotebookPhotoTotoTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gBombersNotebookPhotoTotoTex
+  format: RGBA16
+  width: 32
+  height: 32
+

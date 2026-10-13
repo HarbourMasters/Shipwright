@@ -1,0 +1,464 @@
+:config:
+  segments:
+    - [ 6, 0x01088C20 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01088C20 ]
+    - [ 9, 0x01088C20 ]
+    - [ 10, 0x01088C20 ]
+    - [ 11, 0x01088C20 ]
+    - [ 12, 0x01088C20 ]
+    - [ 13, 0x01088C20 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBombShopkeeperBombDL:
+  type: GFX
+  offset: 0x970
+  symbol: gBombShopkeeperBombDL
+
+gBombShopkeeperBombFuseTex:
+  type: TEXTURE
+  offset: 0xC08
+  symbol: gBombShopkeeperBombFuseTex
+  format: I8
+  width: 32
+  height: 32
+
+gBombShopkeeperEarTex:
+  type: TEXTURE
+  offset: 0x51D8
+  symbol: gBombShopkeeperEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBombShopkeeperEyeTex:
+  type: TEXTURE
+  offset: 0x5458
+  symbol: gBombShopkeeperEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombShopkeeperFingersTex:
+  type: TEXTURE
+  offset: 0x5358
+  symbol: gBombShopkeeperFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopkeeperHeadDL:
+  type: GFX
+  offset: 0x3AF0
+  symbol: gBombShopkeeperHeadDL
+
+gBombShopkeeperHeadLimb:
+  type: OOT:LIMB
+  offset: 0x91D8
+  symbol: gBombShopkeeperHeadLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftFootDL:
+  type: GFX
+  offset: 0x4E70
+  symbol: gBombShopkeeperLeftFootDL
+
+gBombShopkeeperLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x9154
+  symbol: gBombShopkeeperLeftFootLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftForearmDL:
+  type: GFX
+  offset: 0x4428
+  symbol: gBombShopkeeperLeftForearmDL
+
+gBombShopkeeperLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x919C
+  symbol: gBombShopkeeperLeftForearmLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftHandDL:
+  type: GFX
+  offset: 0x4540
+  symbol: gBombShopkeeperLeftHandDL
+
+gBombShopkeeperLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x91A8
+  symbol: gBombShopkeeperLeftHandLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftShinDL:
+  type: GFX
+  offset: 0x4D20
+  symbol: gBombShopkeeperLeftShinDL
+
+gBombShopkeeperLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x9148
+  symbol: gBombShopkeeperLeftShinLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftThighDL:
+  type: GFX
+  offset: 0x4B88
+  symbol: gBombShopkeeperLeftThighDL
+
+gBombShopkeeperLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x913C
+  symbol: gBombShopkeeperLeftThighLimb
+  limb_type: Standard
+
+gBombShopkeeperLeftUpperArmDL:
+  type: GFX
+  offset: 0x4308
+  symbol: gBombShopkeeperLeftUpperArmDL
+
+gBombShopkeeperLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x9190
+  symbol: gBombShopkeeperLeftUpperArmLimb
+  limb_type: Standard
+
+gBombShopkeeperPelvisDL:
+  type: GFX
+  offset: 0x36F0
+  symbol: gBombShopkeeperPelvisDL
+
+gBombShopkeeperPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x9130
+  symbol: gBombShopkeeperPelvisLimb
+  limb_type: Standard
+
+gBombShopkeeperRightFootDL:
+  type: GFX
+  offset: 0x4A20
+  symbol: gBombShopkeeperRightFootDL
+
+gBombShopkeeperRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x9178
+  symbol: gBombShopkeeperRightFootLimb
+  limb_type: Standard
+
+gBombShopkeeperRightForearmDL:
+  type: GFX
+  offset: 0x3FF0
+  symbol: gBombShopkeeperRightForearmDL
+
+gBombShopkeeperRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x91C0
+  symbol: gBombShopkeeperRightForearmLimb
+  limb_type: Standard
+
+gBombShopkeeperRightHandDL:
+  type: GFX
+  offset: 0x4108
+  symbol: gBombShopkeeperRightHandDL
+
+gBombShopkeeperRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x91CC
+  symbol: gBombShopkeeperRightHandLimb
+  limb_type: Standard
+
+gBombShopkeeperRightShinDL:
+  type: GFX
+  offset: 0x48D0
+  symbol: gBombShopkeeperRightShinDL
+
+gBombShopkeeperRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x916C
+  symbol: gBombShopkeeperRightShinLimb
+  limb_type: Standard
+
+gBombShopkeeperRightThighDL:
+  type: GFX
+  offset: 0x4738
+  symbol: gBombShopkeeperRightThighDL
+
+gBombShopkeeperRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x9160
+  symbol: gBombShopkeeperRightThighLimb
+  limb_type: Standard
+
+gBombShopkeeperRightUpperArmDL:
+  type: GFX
+  offset: 0x3ED0
+  symbol: gBombShopkeeperRightUpperArmDL
+
+gBombShopkeeperRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x91B4
+  symbol: gBombShopkeeperRightUpperArmLimb
+  limb_type: Standard
+
+gBombShopkeeperSandalsTex:
+  type: TEXTURE
+  offset: 0x6658
+  symbol: gBombShopkeeperSandalsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBombShopkeeperShortsTex:
+  type: TEXTURE
+  offset: 0x6458
+  symbol: gBombShopkeeperShortsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombShopkeeperSitAtCounterLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x87BC
+  symbol: gBombShopkeeperSitAtCounterLoopAnim
+
+gBombShopkeeperSitAtCounterStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x8268
+  symbol: gBombShopkeeperSitAtCounterStartAnim
+
+gBombShopkeeperSkel:
+  type: MM:SKELETON
+  offset: 0x9220
+  symbol: gBombShopkeeperSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBombShopkeeperSkinTex:
+  type: TEXTURE
+  offset: 0x5218
+  symbol: gBombShopkeeperSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBombShopkeeperSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x788C
+  symbol: gBombShopkeeperSwayAnim
+
+gBombShopkeeperTLUT:
+  type: TEXTURE
+  offset: 0x4FD8
+  symbol: gBombShopkeeperTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombShopkeeperTatooTex:
+  type: TEXTURE
+  offset: 0x5C58
+  symbol: gBombShopkeeperTatooTex
+  format: CI8
+  width: 32
+  height: 64
+
+gBombShopkeeperToesTex:
+  type: TEXTURE
+  offset: 0x68D8
+  symbol: gBombShopkeeperToesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopkeeperTorsoDL:
+  type: GFX
+  offset: 0x3778
+  symbol: gBombShopkeeperTorsoDL
+
+gBombShopkeeperTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x9184
+  symbol: gBombShopkeeperTorsoLimb
+  limb_type: Standard
+
+gBombShopkeeperTorsoTex:
+  type: TEXTURE
+  offset: 0x5258
+  symbol: gBombShopkeeperTorsoTex
+  format: CI8
+  width: 8
+  height: 32
+
+gBombShopkeeperVestTex:
+  type: TEXTURE
+  offset: 0x66D8
+  symbol: gBombShopkeeperVestTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombShopkeeperWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x9120
+  symbol: gBombShopkeeperWalkAnim
+
+gBombShopkeeperWristBandTex:
+  type: TEXTURE
+  offset: 0x69D8
+  symbol: gBombShopkeeperWristBandTex
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_rsnVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_rsnVtx_000000
+  count: 151
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_001010:
+  type: MM:ARRAY
+  offset: 0x001010
+  symbol: object_rsnVtx_001010
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_0019C0:
+  type: MM:ARRAY
+  offset: 0x0019C0
+  symbol: object_rsnVtx_0019C0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_001C30:
+  type: MM:ARRAY
+  offset: 0x001C30
+  symbol: object_rsnVtx_001C30
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_001DB0:
+  type: MM:ARRAY
+  offset: 0x001DB0
+  symbol: object_rsnVtx_001DB0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_001F50:
+  type: MM:ARRAY
+  offset: 0x001F50
+  symbol: object_rsnVtx_001F50
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_0021D0:
+  type: MM:ARRAY
+  offset: 0x0021D0
+  symbol: object_rsnVtx_0021D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_002350:
+  type: MM:ARRAY
+  offset: 0x002350
+  symbol: object_rsnVtx_002350
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_0024F0:
+  type: MM:ARRAY
+  offset: 0x0024F0
+  symbol: object_rsnVtx_0024F0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_002870:
+  type: MM:ARRAY
+  offset: 0x002870
+  symbol: object_rsnVtx_002870
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_002A50:
+  type: MM:ARRAY
+  offset: 0x002A50
+  symbol: object_rsnVtx_002A50
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_002C70:
+  type: MM:ARRAY
+  offset: 0x002C70
+  symbol: object_rsnVtx_002C70
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_002EB0:
+  type: MM:ARRAY
+  offset: 0x002EB0
+  symbol: object_rsnVtx_002EB0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_003090:
+  type: MM:ARRAY
+  offset: 0x003090
+  symbol: object_rsnVtx_003090
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_0032B0:
+  type: MM:ARRAY
+  offset: 0x0032B0
+  symbol: object_rsnVtx_0032B0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsnVtx_0034F0:
+  type: MM:ARRAY
+  offset: 0x0034F0
+  symbol: object_rsnVtx_0034F0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBombShopkeeperSkelLimbs:
+  type: BLOB
+  offset: 0x91E4
+  symbol: gBombShopkeeperSkelLimbs
+  size: 0

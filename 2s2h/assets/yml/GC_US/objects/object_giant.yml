@@ -1,0 +1,396 @@
+:config:
+  segments:
+    - [ 6, 0x012F7CF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012F7CF0 ]
+    - [ 9, 0x012F7CF0 ]
+    - [ 10, 0x012F7CF0 ]
+    - [ 11, 0x012F7CF0 ]
+    - [ 12, 0x012F7CF0 ]
+    - [ 13, 0x012F7CF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiantBeardDL:
+  type: GFX
+  offset: 0x7610
+  symbol: gGiantBeardDL
+
+gGiantBeardTex:
+  type: TEXTURE
+  offset: 0x76C0
+  symbol: gGiantBeardTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiantBeardVtx:
+  type: MM:ARRAY
+  offset: 0x7580
+  symbol: gGiantBeardVtx
+  count: 9
+  array_type: VTX
+
+gGiantBigCallEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xDE84
+  symbol: gGiantBigCallEndAnim
+
+gGiantBigCallLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xD040
+  symbol: gGiantBigCallLoopAnim
+
+gGiantBigCallStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xA1C4
+  symbol: gGiantBigCallStartAnim
+
+gGiantBodyVtx:
+  type: MM:ARRAY
+  offset: 0x2180
+  symbol: gGiantBodyVtx
+  count: 444
+  array_type: VTX
+
+gGiantFaceEyeClosedTex:
+  type: TEXTURE
+  offset: 0x6A80
+  symbol: gGiantFaceEyeClosedTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x5380
+
+gGiantFaceEyeHalfTex:
+  type: TEXTURE
+  offset: 0x6280
+  symbol: gGiantFaceEyeHalfTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x5380
+
+gGiantFaceEyeOpenTex:
+  type: TEXTURE
+  offset: 0x5A80
+  symbol: gGiantFaceEyeOpenTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x5380
+
+gGiantFallingOverAnim:
+  type: OOT:ANIMATION
+  offset: 0x102A4
+  symbol: gGiantFallingOverAnim
+
+gGiantFootTex:
+  type: TEXTURE
+  offset: 0x5580
+  symbol: gGiantFootTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantForearmAndKneeTex:
+  type: TEXTURE
+  offset: 0x5780
+  symbol: gGiantForearmAndKneeTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantGroinTex:
+  type: TEXTURE
+  offset: 0x7280
+  symbol: gGiantGroinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantHairTex:
+  type: TEXTURE
+  offset: 0x7380
+  symbol: gGiantHairTex
+  format: CI8
+  width: 16
+  height: 32
+
+gGiantHandTex:
+  type: TEXTURE
+  offset: 0x5980
+  symbol: gGiantHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantHeadDL:
+  type: GFX
+  offset: 0x3DD0
+  symbol: gGiantHeadDL
+
+gGiantHeadLimb:
+  type: OOT:LIMB
+  offset: 0x78C0
+  symbol: gGiantHeadLimb
+  limb_type: Standard
+
+gGiantIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x15334
+  symbol: gGiantIdleAnim
+
+gGiantLargeStrideAnim:
+  type: OOT:ANIMATION
+  offset: 0x2168
+  symbol: gGiantLargeStrideAnim
+
+gGiantLeftFootDL:
+  type: GFX
+  offset: 0x48D8
+  symbol: gGiantLeftFootDL
+
+gGiantLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x78E4
+  symbol: gGiantLeftFootLimb
+  limb_type: Standard
+
+gGiantLeftForearmDL:
+  type: GFX
+  offset: 0x50F8
+  symbol: gGiantLeftForearmDL
+
+gGiantLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x792C
+  symbol: gGiantLeftForearmLimb
+  limb_type: Standard
+
+gGiantLeftHandDL:
+  type: GFX
+  offset: 0x5218
+  symbol: gGiantLeftHandDL
+
+gGiantLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x7938
+  symbol: gGiantLeftHandLimb
+  limb_type: Standard
+
+gGiantLeftShinDL:
+  type: GFX
+  offset: 0x46A0
+  symbol: gGiantLeftShinDL
+
+gGiantLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x78D8
+  symbol: gGiantLeftShinLimb
+  limb_type: Standard
+
+gGiantLeftShoulderDL:
+  type: GFX
+  offset: 0x4EC0
+  symbol: gGiantLeftShoulderDL
+
+gGiantLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x7914
+  symbol: gGiantLeftShoulderLimb
+  limb_type: Standard
+
+gGiantLeftThighDL:
+  type: GFX
+  offset: 0x4560
+  symbol: gGiantLeftThighDL
+
+gGiantLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x78CC
+  symbol: gGiantLeftThighLimb
+  limb_type: Standard
+
+gGiantLeftUpperArmDL:
+  type: GFX
+  offset: 0x4FD0
+  symbol: gGiantLeftUpperArmDL
+
+gGiantLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7920
+  symbol: gGiantLeftUpperArmLimb
+  limb_type: Standard
+
+gGiantLookUpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x96E4
+  symbol: gGiantLookUpLoopAnim
+
+gGiantLookUpStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x8394
+  symbol: gGiantLookUpStartAnim
+
+gGiantRaisedArmsLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x12A38
+  symbol: gGiantRaisedArmsLoopAnim
+
+gGiantRaisedArmsStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x116E4
+  symbol: gGiantRaisedArmsStartAnim
+
+gGiantRightFootDL:
+  type: GFX
+  offset: 0x4438
+  symbol: gGiantRightFootDL
+
+gGiantRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7908
+  symbol: gGiantRightFootLimb
+  limb_type: Standard
+
+gGiantRightForearmDL:
+  type: GFX
+  offset: 0x4C38
+  symbol: gGiantRightForearmDL
+
+gGiantRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x795C
+  symbol: gGiantRightForearmLimb
+  limb_type: Standard
+
+gGiantRightHandDL:
+  type: GFX
+  offset: 0x4D58
+  symbol: gGiantRightHandDL
+
+gGiantRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x7968
+  symbol: gGiantRightHandLimb
+  limb_type: Standard
+
+gGiantRightShinDL:
+  type: GFX
+  offset: 0x4200
+  symbol: gGiantRightShinDL
+
+gGiantRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x78FC
+  symbol: gGiantRightShinLimb
+  limb_type: Standard
+
+gGiantRightShoulderDL:
+  type: GFX
+  offset: 0x4A00
+  symbol: gGiantRightShoulderDL
+
+gGiantRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x7944
+  symbol: gGiantRightShoulderLimb
+  limb_type: Standard
+
+gGiantRightThighDL:
+  type: GFX
+  offset: 0x40C0
+  symbol: gGiantRightThighDL
+
+gGiantRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x78F0
+  symbol: gGiantRightThighLimb
+  limb_type: Standard
+
+gGiantRightUpperArmDL:
+  type: GFX
+  offset: 0x4B10
+  symbol: gGiantRightUpperArmDL
+
+gGiantRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7950
+  symbol: gGiantRightUpperArmLimb
+  limb_type: Standard
+
+gGiantShinTex:
+  type: TEXTURE
+  offset: 0x5680
+  symbol: gGiantShinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantSkel:
+  type: MM:SKELETON
+  offset: 0x79B0
+  symbol: gGiantSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGiantSmallCallEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xC5D4
+  symbol: gGiantSmallCallEndAnim
+
+gGiantSmallCallLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xB784
+  symbol: gGiantSmallCallLoopAnim
+
+gGiantSmallCallStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xACA4
+  symbol: gGiantSmallCallStartAnim
+
+gGiantStruggleLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x13FE8
+  symbol: gGiantStruggleLoopAnim
+
+gGiantStruggleStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x13004
+  symbol: gGiantStruggleStartAnim
+
+gGiantTLUT:
+  type: TEXTURE
+  offset: 0x5380
+  symbol: gGiantTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiantUnusedBeardVtx:
+  type: MM:ARRAY
+  offset: 0x3D40
+  symbol: gGiantUnusedBeardVtx
+  count: 9
+  array_type: VTX
+
+gGiantUpperArmAndThighTex:
+  type: TEXTURE
+  offset: 0x5880
+  symbol: gGiantUpperArmAndThighTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiantWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x17944
+  symbol: gGiantWalkingAnim
+
+
+gGiantSkelLimbs:
+  type: BLOB
+  offset: 0x7974
+  symbol: gGiantSkelLimbs
+  size: 0

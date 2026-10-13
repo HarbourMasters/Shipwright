@@ -1,0 +1,529 @@
+:config:
+  segments:
+    - [ 6, 0x010B02B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010B02B0 ]
+    - [ 9, 0x010B02B0 ]
+    - [ 10, 0x010B02B0 ]
+    - [ 11, 0x010B02B0 ]
+    - [ 12, 0x010B02B0 ]
+    - [ 13, 0x010B02B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gHoneyAndDarlingCupCheeksLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F74
+  symbol: gHoneyAndDarlingCupCheeksLoopAnim
+
+gHoneyAndDarlingEarTex:
+  type: TEXTURE
+  offset: 0x5970
+  symbol: gHoneyAndDarlingEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHoneyAndDarlingGameDanceLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x4904
+  symbol: gHoneyAndDarlingGameDanceLoopAnim
+
+gHoneyAndDarlingHandTex:
+  type: TEXTURE
+  offset: 0x5FB0
+  symbol: gHoneyAndDarlingHandTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHoneyAndDarlingHeadSkinTex:
+  type: TEXTURE
+  offset: 0x5830
+  symbol: gHoneyAndDarlingHeadSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHoneyAndDarlingHeartMaterialDL:
+  type: GFX
+  offset: 0xB0A0
+  symbol: gHoneyAndDarlingHeartMaterialDL
+
+gHoneyAndDarlingHeartModelDL:
+  type: GFX
+  offset: 0xB0E0
+  symbol: gHoneyAndDarlingHeartModelDL
+
+gHoneyAndDarlingHoldHandsLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x5304
+  symbol: gHoneyAndDarlingHoldHandsLoopAnim
+
+gHoneyAndDarlingHugLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F64
+  symbol: gHoneyAndDarlingHugLoopAnim
+
+gHoneyAndDarlingIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x53E0
+  symbol: gHoneyAndDarlingIdleAnim
+
+gHoneyAndDarlingJointShadeTex:
+  type: TEXTURE
+  offset: 0x57F0
+  symbol: gHoneyAndDarlingJointShadeTex
+  format: I8
+  width: 8
+  height: 8
+
+gHoneyAndDarlingLegsDL:
+  type: GFX
+  offset: 0x9370
+  symbol: gHoneyAndDarlingLegsDL
+
+gHoneyAndDarlingLegsLimb:
+  type: OOT:LIMB
+  offset: 0xB170
+  symbol: gHoneyAndDarlingLegsLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManEyeTex:
+  type: TEXTURE
+  offset: 0x5BB0
+  symbol: gHoneyAndDarlingManEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gHoneyAndDarlingManHairTex:
+  type: TEXTURE
+  offset: 0x5870
+  symbol: gHoneyAndDarlingManHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHoneyAndDarlingManHeadDL:
+  type: GFX
+  offset: 0xA510
+  symbol: gHoneyAndDarlingManHeadDL
+
+gHoneyAndDarlingManHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB1D0
+  symbol: gHoneyAndDarlingManHeadLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManLeftForearmDL:
+  type: GFX
+  offset: 0xAE58
+  symbol: gHoneyAndDarlingManLeftForearmDL
+
+gHoneyAndDarlingManLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB194
+  symbol: gHoneyAndDarlingManLeftForearmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManLeftHandDL:
+  type: GFX
+  offset: 0xAF58
+  symbol: gHoneyAndDarlingManLeftHandDL
+
+gHoneyAndDarlingManLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB1A0
+  symbol: gHoneyAndDarlingManLeftHandLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManLeftUpperArmDL:
+  type: GFX
+  offset: 0xAD58
+  symbol: gHoneyAndDarlingManLeftUpperArmDL
+
+gHoneyAndDarlingManLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB188
+  symbol: gHoneyAndDarlingManLeftUpperArmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManRightForearmDL:
+  type: GFX
+  offset: 0xAB10
+  symbol: gHoneyAndDarlingManRightForearmDL
+
+gHoneyAndDarlingManRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB1B8
+  symbol: gHoneyAndDarlingManRightForearmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManRightHandDL:
+  type: GFX
+  offset: 0xAC10
+  symbol: gHoneyAndDarlingManRightHandDL
+
+gHoneyAndDarlingManRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB1C4
+  symbol: gHoneyAndDarlingManRightHandLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManRightUpperArmDL:
+  type: GFX
+  offset: 0xAA10
+  symbol: gHoneyAndDarlingManRightUpperArmDL
+
+gHoneyAndDarlingManRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB1AC
+  symbol: gHoneyAndDarlingManRightUpperArmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingManTorsoDL:
+  type: GFX
+  offset: 0xA3C8
+  symbol: gHoneyAndDarlingManTorsoDL
+
+gHoneyAndDarlingManTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB17C
+  symbol: gHoneyAndDarlingManTorsoLimb
+  limb_type: Standard
+
+gHoneyAndDarlingMouthTex:
+  type: TEXTURE
+  offset: 0x59B0
+  symbol: gHoneyAndDarlingMouthTex
+  format: CI8
+  width: 32
+  height: 16
+
+gHoneyAndDarlingShirtsAndShoesTex:
+  type: TEXTURE
+  offset: 0x55F0
+  symbol: gHoneyAndDarlingShirtsAndShoesTex
+  format: I8
+  width: 16
+  height: 16
+
+gHoneyAndDarlingSkel:
+  type: MM:SKELETON
+  offset: 0xB2B0
+  symbol: gHoneyAndDarlingSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHoneyAndDarlingSurpiseAnim:
+  type: OOT:ANIMATION
+  offset: 0xBAC4
+  symbol: gHoneyAndDarlingSurpiseAnim
+
+gHoneyAndDarlingTLUT:
+  type: TEXTURE
+  offset: 0x53F0
+  symbol: gHoneyAndDarlingTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHoneyAndDarlingWomanDressTex:
+  type: TEXTURE
+  offset: 0x56F0
+  symbol: gHoneyAndDarlingWomanDressTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHoneyAndDarlingWomanEyeTex:
+  type: TEXTURE
+  offset: 0x6070
+  symbol: gHoneyAndDarlingWomanEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gHoneyAndDarlingWomanHairTex:
+  type: TEXTURE
+  offset: 0x5FF0
+  symbol: gHoneyAndDarlingWomanHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gHoneyAndDarlingWomanHeadDL:
+  type: GFX
+  offset: 0x96C8
+  symbol: gHoneyAndDarlingWomanHeadDL
+
+gHoneyAndDarlingWomanHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB254
+  symbol: gHoneyAndDarlingWomanHeadLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanLeftForearmDL:
+  type: GFX
+  offset: 0xA058
+  symbol: gHoneyAndDarlingWomanLeftForearmDL
+
+gHoneyAndDarlingWomanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB20C
+  symbol: gHoneyAndDarlingWomanLeftForearmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanLeftForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0xB200
+  symbol: gHoneyAndDarlingWomanLeftForearmRootLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanLeftHandDL:
+  type: GFX
+  offset: 0x9F10
+  symbol: gHoneyAndDarlingWomanLeftHandDL
+
+gHoneyAndDarlingWomanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB218
+  symbol: gHoneyAndDarlingWomanLeftHandLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanLeftUpperArmDL:
+  type: GFX
+  offset: 0xA158
+  symbol: gHoneyAndDarlingWomanLeftUpperArmDL
+
+gHoneyAndDarlingWomanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB1F4
+  symbol: gHoneyAndDarlingWomanLeftUpperArmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanRightForearmDL:
+  type: GFX
+  offset: 0x9D10
+  symbol: gHoneyAndDarlingWomanRightForearmDL
+
+gHoneyAndDarlingWomanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB23C
+  symbol: gHoneyAndDarlingWomanRightForearmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanRightForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0xB230
+  symbol: gHoneyAndDarlingWomanRightForearmRootLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanRightHandDL:
+  type: GFX
+  offset: 0x9BC8
+  symbol: gHoneyAndDarlingWomanRightHandDL
+
+gHoneyAndDarlingWomanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB248
+  symbol: gHoneyAndDarlingWomanRightHandLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanRightUpperArmDL:
+  type: GFX
+  offset: 0x9E10
+  symbol: gHoneyAndDarlingWomanRightUpperArmDL
+
+gHoneyAndDarlingWomanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB224
+  symbol: gHoneyAndDarlingWomanRightUpperArmLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanRootLimb:
+  type: OOT:LIMB
+  offset: 0xB1DC
+  symbol: gHoneyAndDarlingWomanRootLimb
+  limb_type: Standard
+
+gHoneyAndDarlingWomanTorsoDL:
+  type: GFX
+  offset: 0xA258
+  symbol: gHoneyAndDarlingWomanTorsoDL
+
+gHoneyAndDarlingWomanTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB1E8
+  symbol: gHoneyAndDarlingWomanTorsoLimb
+  limb_type: Standard
+
+
+object_muVtx_006470:
+  type: MM:ARRAY
+  offset: 0x006470
+  symbol: object_muVtx_006470
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_006D70:
+  type: MM:ARRAY
+  offset: 0x006D70
+  symbol: object_muVtx_006D70
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_0074D0:
+  type: MM:ARRAY
+  offset: 0x0074D0
+  symbol: object_muVtx_0074D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_007690:
+  type: MM:ARRAY
+  offset: 0x007690
+  symbol: object_muVtx_007690
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_0077E0:
+  type: MM:ARRAY
+  offset: 0x0077E0
+  symbol: object_muVtx_0077E0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_007950:
+  type: MM:ARRAY
+  offset: 0x007950
+  symbol: object_muVtx_007950
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_007B10:
+  type: MM:ARRAY
+  offset: 0x007B10
+  symbol: object_muVtx_007B10
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_007C60:
+  type: MM:ARRAY
+  offset: 0x007C60
+  symbol: object_muVtx_007C60
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_007DD0:
+  type: MM:ARRAY
+  offset: 0x007DD0
+  symbol: object_muVtx_007DD0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_008050:
+  type: MM:ARRAY
+  offset: 0x008050
+  symbol: object_muVtx_008050
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_008620:
+  type: MM:ARRAY
+  offset: 0x008620
+  symbol: object_muVtx_008620
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_0088A0:
+  type: MM:ARRAY
+  offset: 0x0088A0
+  symbol: object_muVtx_0088A0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_0089F0:
+  type: MM:ARRAY
+  offset: 0x0089F0
+  symbol: object_muVtx_0089F0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_008B60:
+  type: MM:ARRAY
+  offset: 0x008B60
+  symbol: object_muVtx_008B60
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_008DE0:
+  type: MM:ARRAY
+  offset: 0x008DE0
+  symbol: object_muVtx_008DE0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_008F30:
+  type: MM:ARRAY
+  offset: 0x008F30
+  symbol: object_muVtx_008F30
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_0090A0:
+  type: MM:ARRAY
+  offset: 0x0090A0
+  symbol: object_muVtx_0090A0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_muVtx_00B130:
+  type: MM:ARRAY
+  offset: 0x00B130
+  symbol: object_muVtx_00B130
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHoneyAndDarlingSkelLimbs:
+  type: BLOB
+  offset: 0xB260
+  symbol: gHoneyAndDarlingSkelLimbs
+  size: 0

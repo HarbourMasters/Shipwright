@@ -1,0 +1,263 @@
+:config:
+  segments:
+    - [ 2, 0x016B69D0 ]
+
+Z2_OMOYA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_OMOYA
+
+
+Z2_OMOYAPathwayList_000150:
+  type: MM:PATH
+  offset: 0x000150
+  symbol: Z2_OMOYAPathwayList_000150
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1062, 0, 56 ]
+        - [ 1112, 0, -24 ]
+        - [ 1098, 0, -87 ]
+        - [ 1055, 0, -94 ]
+        - [ 1037, 0, -38 ]
+        - [ 1044, 0, 41 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 905, 260, -64 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1015, 260, 34 ]
+        - [ 957, 260, 25 ]
+        - [ 968, 260, -40 ]
+        - [ 1027, 260, -21 ]
+        - [ 1054, 260, 21 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -310, 0, 282 ]
+        - [ -310, 0, 156 ]
+        - [ -310, 0, 92 ]
+        - [ -312, 0, 14 ]
+
+Z2_OMOYAPathwayList_000174:
+  type: MM:PATH
+  offset: 0x000174
+  symbol: Z2_OMOYAPathwayList_000174
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1062, 0, 56 ]
+        - [ 1112, 0, -24 ]
+        - [ 1098, 0, -87 ]
+        - [ 1055, 0, -94 ]
+        - [ 1037, 0, -38 ]
+        - [ 1044, 0, 41 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 905, 260, -64 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1015, 260, 34 ]
+        - [ 957, 260, 25 ]
+        - [ 968, 260, -40 ]
+        - [ 1027, 260, -21 ]
+        - [ 1054, 260, 21 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -310, 0, 282 ]
+        - [ -310, 0, 156 ]
+        - [ -310, 0, 92 ]
+        - [ -312, 0, 14 ]
+
+Z2_OMOYAPathwayList_00017C:
+  type: MM:PATH
+  offset: 0x00017C
+  symbol: Z2_OMOYAPathwayList_00017C
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1062, 0, 56 ]
+        - [ 1112, 0, -24 ]
+        - [ 1098, 0, -87 ]
+        - [ 1055, 0, -94 ]
+        - [ 1037, 0, -38 ]
+        - [ 1044, 0, 41 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 905, 260, -64 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1015, 260, 34 ]
+        - [ 957, 260, 25 ]
+        - [ 968, 260, -40 ]
+        - [ 1027, 260, -21 ]
+        - [ 1054, 260, 21 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -310, 0, 282 ]
+        - [ -310, 0, 156 ]
+        - [ -310, 0, 92 ]
+        - [ -312, 0, 14 ]
+
+Z2_OMOYAPathwayList_00019C:
+  type: MM:PATH
+  offset: 0x00019C
+  symbol: Z2_OMOYAPathwayList_00019C
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1062, 0, 56 ]
+        - [ 1112, 0, -24 ]
+        - [ 1098, 0, -87 ]
+        - [ 1055, 0, -94 ]
+        - [ 1037, 0, -38 ]
+        - [ 1044, 0, 41 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 905, 260, -64 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1015, 260, 34 ]
+        - [ 957, 260, 25 ]
+        - [ 968, 260, -40 ]
+        - [ 1027, 260, -21 ]
+        - [ 1054, 260, 21 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -310, 0, 282 ]
+        - [ -310, 0, 156 ]
+        - [ -310, 0, 92 ]
+        - [ -312, 0, 14 ]
+
+Z2_OMOYATexAnim_0003C0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0003C0
+  symbol: Z2_OMOYATexAnim_0003C0
+
+Z2_OMOYACollisionHeader_0079B8:
+  type: MM:COLLISION
+  offset: 0x0079B8
+  symbol: Z2_OMOYACollisionHeader_0079B8
+
+Z2_OMOYATex_0079F0:
+  type: TEXTURE
+  offset: 0x0079F0
+  symbol: Z2_OMOYATex_0079F0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_OMOYATex_0081F0:
+  type: TEXTURE
+  offset: 0x0081F0
+  symbol: Z2_OMOYATex_0081F0
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_OMOYATex_0089F0:
+  type: TEXTURE
+  offset: 0x0089F0
+  symbol: Z2_OMOYATex_0089F0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_OMOYATex_0091F0:
+  type: TEXTURE
+  offset: 0x0091F0
+  symbol: Z2_OMOYATex_0091F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OMOYATex_0095F0:
+  type: TEXTURE
+  offset: 0x0095F0
+  symbol: Z2_OMOYATex_0095F0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_OMOYATex_0096F0:
+  type: TEXTURE
+  offset: 0x0096F0
+  symbol: Z2_OMOYATex_0096F0
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_OMOYATex_009EF0:
+  type: TEXTURE
+  offset: 0x009EF0
+  symbol: Z2_OMOYATex_009EF0
+  format: IA4
+  width: 16
+  height: 32
+
+Z2_OMOYATex_009FF0:
+  type: TEXTURE
+  offset: 0x009FF0
+  symbol: Z2_OMOYATex_009FF0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_OMOYATex_00A7F0:
+  type: TEXTURE
+  offset: 0x00A7F0
+  symbol: Z2_OMOYATex_00A7F0
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_OMOYATex_00A9F0:
+  type: TEXTURE
+  offset: 0x00A9F0
+  symbol: Z2_OMOYATex_00A9F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OMOYATex_00ADF0:
+  type: TEXTURE
+  offset: 0x00ADF0
+  symbol: Z2_OMOYATex_00ADF0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_OMOYATLUT_00B5F0:
+  type: TEXTURE
+  offset: 0x00B5F0
+  symbol: Z2_OMOYATLUT_00B5F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_OMOYATLUT_00B610:
+  type: TEXTURE
+  offset: 0x00B610
+  symbol: Z2_OMOYATLUT_00B610
+  format: RGBA16
+  width: 16
+  height: 16

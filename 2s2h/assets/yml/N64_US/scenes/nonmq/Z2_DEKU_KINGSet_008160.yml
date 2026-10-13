@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01AA2040 ]
+  directory: scenes/nonmq/Z2_DEKU_KING
+  external_files:
+    - N64_US/scenes/nonmq/Z2_DEKU_KING.yml
+
+Z2_DEKU_KINGSet_008160:
+  type: MM:SCENE
+  offset: 0x8160
+  symbol: Z2_DEKU_KINGSet_008160
+  base_name: Z2_DEKU_KING

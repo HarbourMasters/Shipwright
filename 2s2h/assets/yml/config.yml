@@ -1,0 +1,23 @@
+d6133ace5afaa0882cf214cf88daba39e266c078:
+  name: Legend of Zelda, The - Majora's Mask (USA)
+  path: N64_US
+  config:
+    game: MM
+    gbi: F3DEX2_OoT
+    sort: OFFSET
+    logging: CRITICAL
+    primary_virtual_segment: 0x80
+    output:
+      binary: mm.o2r
+
+9743aa026e9269b339eb0e3044cd5830a440c1fd:
+  name: Legend of Zelda, The - Majora's Mask (GC USA)
+  path: GC_US
+  config:
+    game: MM
+    gbi: F3DEX2_OoT
+    sort: OFFSET
+    logging: CRITICAL
+    primary_virtual_segment: 0x80
+    output:
+      binary: mm.o2r

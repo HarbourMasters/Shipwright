@@ -1,0 +1,46 @@
+:config:
+  segments:
+    - [ 3, 0x01D8E150 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01D8E150 ]
+    - [ 9, 0x01D8E150 ]
+    - [ 10, 0x01D8E150 ]
+    - [ 11, 0x01D8E150 ]
+    - [ 12, 0x01D8E150 ]
+    - [ 13, 0x01D8E150 ]
+    - [ 2, 0x01D81A00 ]
+  directory: scenes/nonmq/Z2_INSIDETOWER
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_INSIDETOWER.yml
+
+Z2_INSIDETOWER_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_INSIDETOWER_room_01
+
+Z2_INSIDETOWER_room_01DL_000198:
+  type: GFX
+  offset: 0x198
+  symbol: Z2_INSIDETOWER_room_01DL_000198
+
+
+Z2_INSIDETOWER_room_01ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_INSIDETOWER_room_01ActorEntry_000048
+  size: 0
+
+Z2_INSIDETOWER_room_01Vtx_000090:
+  type: MM:ARRAY
+  offset: 0x000090
+  symbol: Z2_INSIDETOWER_room_01Vtx_000090
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INSIDETOWER_room_01DL_000140:
+  type: GFX
+  offset: 0x000140
+  symbol: Z2_INSIDETOWER_room_01DL_000140

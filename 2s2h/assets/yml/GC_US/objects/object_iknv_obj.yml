@@ -1,0 +1,637 @@
+:config:
+  segments:
+    - [ 6, 0x01525BD0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01525BD0 ]
+    - [ 9, 0x01525BD0 ]
+    - [ 10, 0x01525BD0 ]
+    - [ 11, 0x01525BD0 ]
+    - [ 12, 0x01525BD0 ]
+    - [ 13, 0x01525BD0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_iknv_obj_Colheader_0117C8:
+  type: MM:COLLISION
+  offset: 0x117C8
+  symbol: object_iknv_obj_Colheader_0117C8
+
+object_iknv_obj_Colheader_0119D4:
+  type: MM:COLLISION
+  offset: 0x119D4
+  symbol: object_iknv_obj_Colheader_0119D4
+
+object_iknv_obj_Colheader_012788:
+  type: MM:COLLISION
+  offset: 0x12788
+  symbol: object_iknv_obj_Colheader_012788
+
+object_iknv_obj_Colheader_012CA4:
+  type: MM:COLLISION
+  offset: 0x12CA4
+  symbol: object_iknv_obj_Colheader_012CA4
+
+object_iknv_obj_DL_00DB60:
+  type: GFX
+  offset: 0xDB60
+  symbol: object_iknv_obj_DL_00DB60
+
+object_iknv_obj_DL_00DDD8:
+  type: GFX
+  offset: 0xDDD8
+  symbol: object_iknv_obj_DL_00DDD8
+
+object_iknv_obj_DL_010D90:
+  type: GFX
+  offset: 0x10D90
+  symbol: object_iknv_obj_DL_010D90
+
+object_iknv_obj_DL_010D98:
+  type: GFX
+  offset: 0x10D98
+  symbol: object_iknv_obj_DL_010D98
+
+object_iknv_obj_DL_0115E0:
+  type: GFX
+  offset: 0x115E0
+  symbol: object_iknv_obj_DL_0115E0
+
+object_iknv_obj_DL_011788:
+  type: GFX
+  offset: 0x11788
+  symbol: object_iknv_obj_DL_011788
+
+object_iknv_obj_DL_011880:
+  type: GFX
+  offset: 0x11880
+  symbol: object_iknv_obj_DL_011880
+
+object_iknv_obj_DL_011950:
+  type: GFX
+  offset: 0x11950
+  symbol: object_iknv_obj_DL_011950
+
+object_iknv_obj_DL_011E70:
+  type: GFX
+  offset: 0x11E70
+  symbol: object_iknv_obj_DL_011E70
+
+object_iknv_obj_DL_011F40:
+  type: GFX
+  offset: 0x11F40
+  symbol: object_iknv_obj_DL_011F40
+
+object_iknv_obj_DL_012020:
+  type: GFX
+  offset: 0x12020
+  symbol: object_iknv_obj_DL_012020
+
+object_iknv_obj_DL_0120F0:
+  type: GFX
+  offset: 0x120F0
+  symbol: object_iknv_obj_DL_0120F0
+
+object_iknv_obj_DL_0121C8:
+  type: GFX
+  offset: 0x121C8
+  symbol: object_iknv_obj_DL_0121C8
+
+object_iknv_obj_DL_012298:
+  type: GFX
+  offset: 0x12298
+  symbol: object_iknv_obj_DL_012298
+
+object_iknv_obj_DL_012368:
+  type: GFX
+  offset: 0x12368
+  symbol: object_iknv_obj_DL_012368
+
+object_iknv_obj_DL_012440:
+  type: GFX
+  offset: 0x12440
+  symbol: object_iknv_obj_DL_012440
+
+object_iknv_obj_DL_012460:
+  type: GFX
+  offset: 0x12460
+  symbol: object_iknv_obj_DL_012460
+
+object_iknv_obj_DL_012480:
+  type: GFX
+  offset: 0x12480
+  symbol: object_iknv_obj_DL_012480
+
+object_iknv_obj_DL_0124A0:
+  type: GFX
+  offset: 0x124A0
+  symbol: object_iknv_obj_DL_0124A0
+
+object_iknv_obj_DL_0124C0:
+  type: GFX
+  offset: 0x124C0
+  symbol: object_iknv_obj_DL_0124C0
+
+object_iknv_obj_DL_0124E0:
+  type: GFX
+  offset: 0x124E0
+  symbol: object_iknv_obj_DL_0124E0
+
+object_iknv_obj_DL_012500:
+  type: GFX
+  offset: 0x12500
+  symbol: object_iknv_obj_DL_012500
+
+object_iknv_obj_DL_012518:
+  type: GFX
+  offset: 0x12518
+  symbol: object_iknv_obj_DL_012518
+
+object_iknv_obj_DL_012528:
+  type: GFX
+  offset: 0x12528
+  symbol: object_iknv_obj_DL_012528
+
+object_iknv_obj_DL_012538:
+  type: GFX
+  offset: 0x12538
+  symbol: object_iknv_obj_DL_012538
+
+object_iknv_obj_DL_012550:
+  type: GFX
+  offset: 0x12550
+  symbol: object_iknv_obj_DL_012550
+
+object_iknv_obj_DL_0125E0:
+  type: GFX
+  offset: 0x125E0
+  symbol: object_iknv_obj_DL_0125E0
+
+object_iknv_obj_DL_0126D0:
+  type: GFX
+  offset: 0x126D0
+  symbol: object_iknv_obj_DL_0126D0
+
+object_iknv_obj_DL_012700:
+  type: GFX
+  offset: 0x12700
+  symbol: object_iknv_obj_DL_012700
+
+object_iknv_obj_DL_012880:
+  type: GFX
+  offset: 0x12880
+  symbol: object_iknv_obj_DL_012880
+
+object_iknv_obj_DL_0129C0:
+  type: GFX
+  offset: 0x129C0
+  symbol: object_iknv_obj_DL_0129C0
+
+object_iknv_obj_DL_0129C8:
+  type: GFX
+  offset: 0x129C8
+  symbol: object_iknv_obj_DL_0129C8
+
+object_iknv_obj_DL_013050:
+  type: GFX
+  offset: 0x13050
+  symbol: object_iknv_obj_DL_013050
+
+object_iknv_obj_DL_013058:
+  type: GFX
+  offset: 0x13058
+  symbol: object_iknv_obj_DL_013058
+
+object_iknv_obj_Matanimheader_00F1C0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xF1C0
+  symbol: object_iknv_obj_Matanimheader_00F1C0
+
+object_iknv_obj_Matanimheader_0113E0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x113E0
+  symbol: object_iknv_obj_Matanimheader_0113E0
+
+object_iknv_obj_Matanimheader_0117A0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x117A0
+  symbol: object_iknv_obj_Matanimheader_0117A0
+
+object_iknv_obj_Matanimheader_012728:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12728
+  symbol: object_iknv_obj_Matanimheader_012728
+
+object_iknv_obj_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_iknv_obj_TLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_iknv_obj_TLUT_004240:
+  type: TEXTURE
+  offset: 0x4240
+  symbol: object_iknv_obj_TLUT_004240
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_iknv_obj_Tex_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_iknv_obj_Tex_000020
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_000820:
+  type: TEXTURE
+  offset: 0x820
+  symbol: object_iknv_obj_Tex_000820
+  format: CI4
+  width: 32
+  height: 128
+
+object_iknv_obj_Tex_001020:
+  type: TEXTURE
+  offset: 0x1020
+  symbol: object_iknv_obj_Tex_001020
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_iknv_obj_Tex_002020:
+  type: TEXTURE
+  offset: 0x2020
+  symbol: object_iknv_obj_Tex_002020
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_002820:
+  type: TEXTURE
+  offset: 0x2820
+  symbol: object_iknv_obj_Tex_002820
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_iknv_obj_Tex_002A20:
+  type: TEXTURE
+  offset: 0x2A20
+  symbol: object_iknv_obj_Tex_002A20
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_iknv_obj_Tex_002AA0:
+  type: TEXTURE
+  offset: 0x2AA0
+  symbol: object_iknv_obj_Tex_002AA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_iknv_obj_Tex_002CA0:
+  type: TEXTURE
+  offset: 0x2CA0
+  symbol: object_iknv_obj_Tex_002CA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_iknv_obj_Tex_002D20:
+  type: TEXTURE
+  offset: 0x2D20
+  symbol: object_iknv_obj_Tex_002D20
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_iknv_obj_Tex_002D40:
+  type: TEXTURE
+  offset: 0x2D40
+  symbol: object_iknv_obj_Tex_002D40
+  format: IA8
+  width: 16
+  height: 16
+
+object_iknv_obj_Tex_002E40:
+  type: TEXTURE
+  offset: 0x2E40
+  symbol: object_iknv_obj_Tex_002E40
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_iknv_obj_Tex_003E40:
+  type: TEXTURE
+  offset: 0x3E40
+  symbol: object_iknv_obj_Tex_003E40
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_iknv_obj_Tex_004260:
+  type: TEXTURE
+  offset: 0x4260
+  symbol: object_iknv_obj_Tex_004260
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_004A60:
+  type: TEXTURE
+  offset: 0x4A60
+  symbol: object_iknv_obj_Tex_004A60
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_005260:
+  type: TEXTURE
+  offset: 0x5260
+  symbol: object_iknv_obj_Tex_005260
+  format: I4
+  width: 64
+  height: 64
+
+object_iknv_obj_Tex_005A60:
+  type: TEXTURE
+  offset: 0x5A60
+  symbol: object_iknv_obj_Tex_005A60
+  format: I4
+  width: 64
+  height: 64
+
+object_iknv_obj_Tex_006260:
+  type: TEXTURE
+  offset: 0x6260
+  symbol: object_iknv_obj_Tex_006260
+  format: CI4
+  width: 32
+  height: 128
+
+object_iknv_obj_Tex_006A60:
+  type: TEXTURE
+  offset: 0x6A60
+  symbol: object_iknv_obj_Tex_006A60
+  format: I8
+  width: 16
+  height: 16
+
+object_iknv_obj_Tex_006B60:
+  type: TEXTURE
+  offset: 0x6B60
+  symbol: object_iknv_obj_Tex_006B60
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_007360:
+  type: TEXTURE
+  offset: 0x7360
+  symbol: object_iknv_obj_Tex_007360
+  format: I8
+  width: 32
+  height: 64
+
+object_iknv_obj_Tex_007B60:
+  type: TEXTURE
+  offset: 0x7B60
+  symbol: object_iknv_obj_Tex_007B60
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_iknv_obj_Tex_008360:
+  type: TEXTURE
+  offset: 0x8360
+  symbol: object_iknv_obj_Tex_008360
+  format: I8
+  width: 32
+  height: 128
+
+
+object_iknv_objVtx_009360:
+  type: MM:ARRAY
+  offset: 0x009360
+  symbol: object_iknv_objVtx_009360
+  count: 976
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_00D060:
+  type: MM:ARRAY
+  offset: 0x00D060
+  symbol: object_iknv_objVtx_00D060
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_00D8A0:
+  type: MM:ARRAY
+  offset: 0x00D8A0
+  symbol: object_iknv_objVtx_00D8A0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_obj_Matanimheader_00F1C0TexScrollParams_00F1B0:
+  type: BLOB
+  offset: 0x00F1B0
+  symbol: object_iknv_obj_Matanimheader_00F1C0TexScrollParams_00F1B0
+  size: 0
+
+object_iknv_obj_Matanimheader_00F1C0TexScrollParams_00F1B8:
+  type: BLOB
+  offset: 0x00F1B8
+  symbol: object_iknv_obj_Matanimheader_00F1C0TexScrollParams_00F1B8
+  size: 0
+
+object_iknv_objVtx_00F1D0:
+  type: MM:ARRAY
+  offset: 0x00F1D0
+  symbol: object_iknv_objVtx_00F1D0
+  count: 444
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_0113F0:
+  type: MM:ARRAY
+  offset: 0x0113F0
+  symbol: object_iknv_objVtx_0113F0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_obj_Matanimheader_0117A0TexScrollParams_011790:
+  type: BLOB
+  offset: 0x011790
+  symbol: object_iknv_obj_Matanimheader_0117A0TexScrollParams_011790
+  size: 0
+
+object_iknv_obj_Matanimheader_0117A0TexScrollParams_011798:
+  type: BLOB
+  offset: 0x011798
+  symbol: object_iknv_obj_Matanimheader_0117A0TexScrollParams_011798
+  size: 0
+
+object_iknv_objVtx_011800:
+  type: MM:ARRAY
+  offset: 0x011800
+  symbol: object_iknv_objVtx_011800
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011A00:
+  type: MM:ARRAY
+  offset: 0x011A00
+  symbol: object_iknv_objVtx_011A00
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011B10:
+  type: MM:ARRAY
+  offset: 0x011B10
+  symbol: object_iknv_objVtx_011B10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011B50:
+  type: MM:ARRAY
+  offset: 0x011B50
+  symbol: object_iknv_objVtx_011B50
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011BD0:
+  type: MM:ARRAY
+  offset: 0x011BD0
+  symbol: object_iknv_objVtx_011BD0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011C20:
+  type: MM:ARRAY
+  offset: 0x011C20
+  symbol: object_iknv_objVtx_011C20
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011C80:
+  type: MM:ARRAY
+  offset: 0x011C80
+  symbol: object_iknv_objVtx_011C80
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011D00:
+  type: MM:ARRAY
+  offset: 0x011D00
+  symbol: object_iknv_objVtx_011D00
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011D50:
+  type: MM:ARRAY
+  offset: 0x011D50
+  symbol: object_iknv_objVtx_011D50
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011E00:
+  type: MM:ARRAY
+  offset: 0x011E00
+  symbol: object_iknv_objVtx_011E00
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011E50:
+  type: MM:ARRAY
+  offset: 0x011E50
+  symbol: object_iknv_objVtx_011E50
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_011E60:
+  type: MM:ARRAY
+  offset: 0x011E60
+  symbol: object_iknv_objVtx_011E60
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_obj_Matanimheader_012728TexScrollParams_012710:
+  type: BLOB
+  offset: 0x012710
+  symbol: object_iknv_obj_Matanimheader_012728TexScrollParams_012710
+  size: 0
+
+object_iknv_obj_Matanimheader_012728TexScrollParams_012718:
+  type: BLOB
+  offset: 0x012718
+  symbol: object_iknv_obj_Matanimheader_012728TexScrollParams_012718
+  size: 0
+
+object_iknv_obj_Matanimheader_012728TexScrollParams_012720:
+  type: BLOB
+  offset: 0x012720
+  symbol: object_iknv_obj_Matanimheader_012728TexScrollParams_012720
+  size: 0
+
+object_iknv_objVtx_0127C0:
+  type: MM:ARRAY
+  offset: 0x0127C0
+  symbol: object_iknv_objVtx_0127C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_0128E0:
+  type: MM:ARRAY
+  offset: 0x0128E0
+  symbol: object_iknv_objVtx_0128E0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_iknv_objVtx_012CD0:
+  type: MM:ARRAY
+  offset: 0x012CD0
+  symbol: object_iknv_objVtx_012CD0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

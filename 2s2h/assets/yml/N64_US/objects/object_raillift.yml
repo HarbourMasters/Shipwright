@@ -1,0 +1,207 @@
+:config:
+  segments:
+    - [ 6, 0x011747A0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011747A0 ]
+    - [ 9, 0x011747A0 ]
+    - [ 10, 0x011747A0 ]
+    - [ 11, 0x011747A0 ]
+    - [ 12, 0x011747A0 ]
+    - [ 13, 0x011747A0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_raillift_Colheader_0048D0:
+  type: MM:COLLISION
+  offset: 0x48D0
+  symbol: object_raillift_Colheader_0048D0
+
+object_raillift_Colheader_004FF8:
+  type: MM:COLLISION
+  offset: 0x4FF8
+  symbol: object_raillift_Colheader_004FF8
+
+object_raillift_DL_000200:
+  type: GFX
+  offset: 0x200
+  symbol: object_raillift_DL_000200
+
+object_raillift_DL_000208:
+  type: GFX
+  offset: 0x208
+  symbol: object_raillift_DL_000208
+
+object_raillift_DL_001DB0:
+  type: GFX
+  offset: 0x1DB0
+  symbol: object_raillift_DL_001DB0
+
+object_raillift_DL_001E40:
+  type: GFX
+  offset: 0x1E40
+  symbol: object_raillift_DL_001E40
+
+object_raillift_DL_004BF0:
+  type: GFX
+  offset: 0x4BF0
+  symbol: object_raillift_DL_004BF0
+
+object_raillift_DL_0071B0:
+  type: GFX
+  offset: 0x71B0
+  symbol: object_raillift_DL_0071B0
+
+object_raillift_DL_0071B8:
+  type: GFX
+  offset: 0x71B8
+  symbol: object_raillift_DL_0071B8
+
+object_raillift_Tex_000370:
+  type: TEXTURE
+  offset: 0x370
+  symbol: object_raillift_Tex_000370
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_000B70:
+  type: TEXTURE
+  offset: 0xB70
+  symbol: object_raillift_Tex_000B70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_001370:
+  type: TEXTURE
+  offset: 0x1370
+  symbol: object_raillift_Tex_001370
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_001FC8:
+  type: TEXTURE
+  offset: 0x1FC8
+  symbol: object_raillift_Tex_001FC8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_0027C8:
+  type: TEXTURE
+  offset: 0x27C8
+  symbol: object_raillift_Tex_0027C8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_002FC8:
+  type: TEXTURE
+  offset: 0x2FC8
+  symbol: object_raillift_Tex_002FC8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_0037C8:
+  type: TEXTURE
+  offset: 0x37C8
+  symbol: object_raillift_Tex_0037C8
+  format: IA16
+  width: 32
+  height: 64
+
+object_raillift_Tex_005030:
+  type: TEXTURE
+  offset: 0x5030
+  symbol: object_raillift_Tex_005030
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_005830:
+  type: TEXTURE
+  offset: 0x5830
+  symbol: object_raillift_Tex_005830
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_006030:
+  type: TEXTURE
+  offset: 0x6030
+  symbol: object_raillift_Tex_006030
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_006830:
+  type: TEXTURE
+  offset: 0x6830
+  symbol: object_raillift_Tex_006830
+  format: I4
+  width: 64
+  height: 64
+
+object_raillift_Tex_0072B0:
+  type: TEXTURE
+  offset: 0x72B0
+  symbol: object_raillift_Tex_0072B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_raillift_Tex_007AB0:
+  type: TEXTURE
+  offset: 0x7AB0
+  symbol: object_raillift_Tex_007AB0
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_railliftVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_railliftVtx_000000
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_railliftVtx_001B70:
+  type: MM:ARRAY
+  offset: 0x001B70
+  symbol: object_railliftVtx_001B70
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_railliftVtx_001D70:
+  type: MM:ARRAY
+  offset: 0x001D70
+  symbol: object_railliftVtx_001D70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_railliftVtx_004900:
+  type: MM:ARRAY
+  offset: 0x004900
+  symbol: object_railliftVtx_004900
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_railliftVtx_007030:
+  type: MM:ARRAY
+  offset: 0x007030
+  symbol: object_railliftVtx_007030
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

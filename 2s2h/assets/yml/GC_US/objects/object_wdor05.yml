@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015F10C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015F10C0 ]
+    - [ 9, 0x015F10C0 ]
+    - [ 10, 0x015F10C0 ]
+    - [ 11, 0x015F10C0 ]
+    - [ 12, 0x015F10C0 ]
+    - [ 13, 0x015F10C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMusicBoxHouseDoorDL:
+  type: GFX
+  offset: 0x508
+  symbol: gMusicBoxHouseDoorDL
+
+gMusicBoxHouseDoorTex:
+  type: TEXTURE
+  offset: 0x670
+  symbol: gMusicBoxHouseDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMusicBoxHouseEndDL:
+  type: GFX
+  offset: 0x500
+  symbol: gMusicBoxHouseEndDL
+
+
+object_wdor05Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_wdor05Vtx_000000
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

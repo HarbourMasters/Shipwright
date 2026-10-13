@@ -1,0 +1,505 @@
+:config:
+  segments:
+    - [ 6, 0x00FC8A70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00FC8A70 ]
+    - [ 9, 0x00FC8A70 ]
+    - [ 10, 0x00FC8A70 ]
+    - [ 11, 0x00FC8A70 ]
+    - [ 12, 0x00FC8A70 ]
+    - [ 13, 0x00FC8A70 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gAhg2TLUT:
+  type: TEXTURE
+  offset: 0x46C8
+  symbol: gAhg2TLUT
+  format: RGBA16
+  width: 16
+  height: 12
+
+gAhgBeardedHeadDL:
+  type: GFX
+  offset: 0x2FF0
+  symbol: gAhgBeardedHeadDL
+
+gAhgBeltBuckleTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gAhgBeltBuckleTex
+  format: CI8
+  width: 32
+  height: 16
+
+gAhgBeltLoopTex:
+  type: TEXTURE
+  offset: 0xB00
+  symbol: gAhgBeltLoopTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAhgEar2Tex:
+  type: TEXTURE
+  offset: 0x4848
+  symbol: gAhgEar2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x46C8
+
+gAhgEarTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gAhgEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAhgEyeAndEyebrowTex:
+  type: TEXTURE
+  offset: 0x4A88
+  symbol: gAhgEyeAndEyebrowTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x46C8
+
+gAhgEyeClosedTex:
+  type: TEXTURE
+  offset: 0x680
+  symbol: gAhgEyeClosedTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+gAhgEyeHalfTex:
+  type: TEXTURE
+  offset: 0x580
+  symbol: gAhgEyeHalfTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+gAhgEyeOpenTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gAhgEyeOpenTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+gAhgFingersTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gAhgFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAhgHairLineTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gAhgHairLineTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAhgHairTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gAhgHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAhgHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5950
+  symbol: gAhgHeadLimb
+  limb_type: Standard
+
+gAhgLeftFootDL:
+  type: GFX
+  offset: 0x4180
+  symbol: gAhgLeftFootDL
+
+gAhgLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x58CC
+  symbol: gAhgLeftFootLimb
+  limb_type: Standard
+
+gAhgLeftForearmDL:
+  type: GFX
+  offset: 0x3948
+  symbol: gAhgLeftForearmDL
+
+gAhgLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5914
+  symbol: gAhgLeftForearmLimb
+  limb_type: Standard
+
+gAhgLeftHandDL:
+  type: GFX
+  offset: 0x37D8
+  symbol: gAhgLeftHandDL
+
+gAhgLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5920
+  symbol: gAhgLeftHandLimb
+  limb_type: Standard
+
+gAhgLeftShinDL:
+  type: GFX
+  offset: 0x42C0
+  symbol: gAhgLeftShinDL
+
+gAhgLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x58C0
+  symbol: gAhgLeftShinLimb
+  limb_type: Standard
+
+gAhgLeftThighDL:
+  type: GFX
+  offset: 0x43F0
+  symbol: gAhgLeftThighDL
+
+gAhgLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x58B4
+  symbol: gAhgLeftThighLimb
+  limb_type: Standard
+
+gAhgLeftUpperArmDL:
+  type: GFX
+  offset: 0x3A78
+  symbol: gAhgLeftUpperArmDL
+
+gAhgLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5908
+  symbol: gAhgLeftUpperArmLimb
+  limb_type: Standard
+
+gAhgMouthTex:
+  type: TEXTURE
+  offset: 0x4888
+  symbol: gAhgMouthTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x46C8
+
+gAhgPelvisDL:
+  type: GFX
+  offset: 0x4528
+  symbol: gAhgPelvisDL
+
+gAhgPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x58A8
+  symbol: gAhgPelvisLimb
+  limb_type: Standard
+
+gAhgRedHairTex:
+  type: TEXTURE
+  offset: 0x4B88
+  symbol: gAhgRedHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x46C8
+
+gAhgRedHeadDL:
+  type: GFX
+  offset: 0x5408
+  symbol: gAhgRedHeadDL
+
+gAhgRightFootDL:
+  type: GFX
+  offset: 0x3DD8
+  symbol: gAhgRightFootDL
+
+gAhgRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x58F0
+  symbol: gAhgRightFootLimb
+  limb_type: Standard
+
+gAhgRightForearmDL:
+  type: GFX
+  offset: 0x3570
+  symbol: gAhgRightForearmDL
+
+gAhgRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5938
+  symbol: gAhgRightForearmLimb
+  limb_type: Standard
+
+gAhgRightHandDL:
+  type: GFX
+  offset: 0x3400
+  symbol: gAhgRightHandDL
+
+gAhgRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5944
+  symbol: gAhgRightHandLimb
+  limb_type: Standard
+
+gAhgRightShinDL:
+  type: GFX
+  offset: 0x3F18
+  symbol: gAhgRightShinDL
+
+gAhgRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x58E4
+  symbol: gAhgRightShinLimb
+  limb_type: Standard
+
+gAhgRightThighDL:
+  type: GFX
+  offset: 0x4048
+  symbol: gAhgRightThighDL
+
+gAhgRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x58D8
+  symbol: gAhgRightThighLimb
+  limb_type: Standard
+
+gAhgRightUpperArmDL:
+  type: GFX
+  offset: 0x36A0
+  symbol: gAhgRightUpperArmDL
+
+gAhgRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x592C
+  symbol: gAhgRightUpperArmLimb
+  limb_type: Standard
+
+gAhgShirtTex:
+  type: TEXTURE
+  offset: 0x880
+  symbol: gAhgShirtTex
+  format: I8
+  width: 8
+  height: 8
+
+gAhgShoesTex:
+  type: TEXTURE
+  offset: 0x8C0
+  symbol: gAhgShoesTex
+  format: I8
+  width: 8
+  height: 8
+
+gAhgShortHairHeadDL:
+  type: GFX
+  offset: 0x5628
+  symbol: gAhgShortHairHeadDL
+
+gAhgSkel:
+  type: MM:SKELETON
+  offset: 0x5998
+  symbol: gAhgSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gAhgSkinGradientTex:
+  type: TEXTURE
+  offset: 0x440
+  symbol: gAhgSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAhgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gAhgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAhgTorsoDL:
+  type: GFX
+  offset: 0x3BB0
+  symbol: gAhgTorsoDL
+
+gAhgTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x58FC
+  symbol: gAhgTorsoLimb
+  limb_type: Standard
+
+
+object_ahgVtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: object_ahgVtx_000C00
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0013E0:
+  type: MM:ARRAY
+  offset: 0x0013E0
+  symbol: object_ahgVtx_0013E0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0016D0:
+  type: MM:ARRAY
+  offset: 0x0016D0
+  symbol: object_ahgVtx_0016D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_001850:
+  type: MM:ARRAY
+  offset: 0x001850
+  symbol: object_ahgVtx_001850
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0019E0:
+  type: MM:ARRAY
+  offset: 0x0019E0
+  symbol: object_ahgVtx_0019E0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_001CD0:
+  type: MM:ARRAY
+  offset: 0x001CD0
+  symbol: object_ahgVtx_001CD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_001E50:
+  type: MM:ARRAY
+  offset: 0x001E50
+  symbol: object_ahgVtx_001E50
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_001FE0:
+  type: MM:ARRAY
+  offset: 0x001FE0
+  symbol: object_ahgVtx_001FE0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0023B0:
+  type: MM:ARRAY
+  offset: 0x0023B0
+  symbol: object_ahgVtx_0023B0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0025D0:
+  type: MM:ARRAY
+  offset: 0x0025D0
+  symbol: object_ahgVtx_0025D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_002750:
+  type: MM:ARRAY
+  offset: 0x002750
+  symbol: object_ahgVtx_002750
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_0028F0:
+  type: MM:ARRAY
+  offset: 0x0028F0
+  symbol: object_ahgVtx_0028F0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_002B10:
+  type: MM:ARRAY
+  offset: 0x002B10
+  symbol: object_ahgVtx_002B10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_002C90:
+  type: MM:ARRAY
+  offset: 0x002C90
+  symbol: object_ahgVtx_002C90
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_002E30:
+  type: MM:ARRAY
+  offset: 0x002E30
+  symbol: object_ahgVtx_002E30
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_004C08:
+  type: MM:ARRAY
+  offset: 0x004C08
+  symbol: object_ahgVtx_004C08
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahgVtx_004FE8:
+  type: MM:ARRAY
+  offset: 0x004FE8
+  symbol: object_ahgVtx_004FE8
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAhgSkelLimbs:
+  type: BLOB
+  offset: 0x595C
+  symbol: gAhgSkelLimbs
+  size: 0

@@ -1,0 +1,623 @@
+:config:
+  segments:
+    - [ 2, 0x01CAD0A0 ]
+
+Z2_MUSICHOUSE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_MUSICHOUSE
+
+
+Z2_MUSICHOUSECutsceneData_000120:
+  type: MM:CUTSCENE
+  offset: 0x000120
+  symbol: Z2_MUSICHOUSECutsceneData_000120
+  size: 1192
+
+Z2_MUSICHOUSECutsceneData_0005D0:
+  type: MM:CUTSCENE
+  offset: 0x0005D0
+  symbol: Z2_MUSICHOUSECutsceneData_0005D0
+  size: 3844
+
+Z2_MUSICHOUSECutsceneData_0014E0:
+  type: MM:CUTSCENE
+  offset: 0x0014E0
+  symbol: Z2_MUSICHOUSECutsceneData_0014E0
+  size: 4248
+
+Z2_MUSICHOUSECutsceneData_002580:
+  type: MM:CUTSCENE
+  offset: 0x002580
+  symbol: Z2_MUSICHOUSECutsceneData_002580
+  size: 3844
+
+Z2_MUSICHOUSECutsceneData_003490:
+  type: MM:CUTSCENE
+  offset: 0x003490
+  symbol: Z2_MUSICHOUSECutsceneData_003490
+  size: 3832
+
+Z2_MUSICHOUSETexAnim_004518TexScrollParams_004510:
+  type: BLOB
+  offset: 0x004510
+  symbol: Z2_MUSICHOUSETexAnim_004518TexScrollParams_004510
+  size: 0
+
+Z2_MUSICHOUSETexAnim_004518:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x004518
+  symbol: Z2_MUSICHOUSETexAnim_004518
+
+Z2_MUSICHOUSECollisionHeader_008334:
+  type: MM:COLLISION
+  offset: 0x008334
+  symbol: Z2_MUSICHOUSECollisionHeader_008334
+
+Z2_MUSICHOUSETex_008360:
+  type: TEXTURE
+  offset: 0x008360
+  symbol: Z2_MUSICHOUSETex_008360
+  format: I4
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_008560:
+  type: TEXTURE
+  offset: 0x008560
+  symbol: Z2_MUSICHOUSETex_008560
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_008960:
+  type: TEXTURE
+  offset: 0x008960
+  symbol: Z2_MUSICHOUSETex_008960
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_008A60:
+  type: TEXTURE
+  offset: 0x008A60
+  symbol: Z2_MUSICHOUSETex_008A60
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_008B60:
+  type: TEXTURE
+  offset: 0x008B60
+  symbol: Z2_MUSICHOUSETex_008B60
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_008D60:
+  type: TEXTURE
+  offset: 0x008D60
+  symbol: Z2_MUSICHOUSETex_008D60
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_009160:
+  type: TEXTURE
+  offset: 0x009160
+  symbol: Z2_MUSICHOUSETex_009160
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_009360:
+  type: TEXTURE
+  offset: 0x009360
+  symbol: Z2_MUSICHOUSETex_009360
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETLUT_009B60:
+  type: TEXTURE
+  offset: 0x009B60
+  symbol: Z2_MUSICHOUSETLUT_009B60
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETLUT_009D60:
+  type: TEXTURE
+  offset: 0x009D60
+  symbol: Z2_MUSICHOUSETLUT_009D60
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_MUSICHOUSETex_009D80:
+  type: TEXTURE
+  offset: 0x009D80
+  symbol: Z2_MUSICHOUSETex_009D80
+  format: IA16
+  width: 4
+  height: 8
+
+Z2_MUSICHOUSETex_009DC0:
+  type: TEXTURE
+  offset: 0x009DC0
+  symbol: Z2_MUSICHOUSETex_009DC0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00A1C0:
+  type: TEXTURE
+  offset: 0x00A1C0
+  symbol: Z2_MUSICHOUSETex_00A1C0
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_00A2C0:
+  type: TEXTURE
+  offset: 0x00A2C0
+  symbol: Z2_MUSICHOUSETex_00A2C0
+  format: I8
+  width: 8
+  height: 8
+
+Z2_MUSICHOUSETex_00A300:
+  type: TEXTURE
+  offset: 0x00A300
+  symbol: Z2_MUSICHOUSETex_00A300
+  format: I8
+  width: 32
+  height: 16
+
+Z2_MUSICHOUSETex_00A500:
+  type: TEXTURE
+  offset: 0x00A500
+  symbol: Z2_MUSICHOUSETex_00A500
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00AD00:
+  type: TEXTURE
+  offset: 0x00AD00
+  symbol: Z2_MUSICHOUSETex_00AD00
+  format: IA16
+  width: 16
+  height: 8
+
+Z2_MUSICHOUSETex_00AE00:
+  type: TEXTURE
+  offset: 0x00AE00
+  symbol: Z2_MUSICHOUSETex_00AE00
+  format: IA16
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_00B000:
+  type: TEXTURE
+  offset: 0x00B000
+  symbol: Z2_MUSICHOUSETex_00B000
+  format: I8
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_00B100:
+  type: TEXTURE
+  offset: 0x00B100
+  symbol: Z2_MUSICHOUSETex_00B100
+  format: I8
+  width: 32
+  height: 16
+
+Z2_MUSICHOUSETex_00B300:
+  type: TEXTURE
+  offset: 0x00B300
+  symbol: Z2_MUSICHOUSETex_00B300
+  format: IA16
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_00B700:
+  type: TEXTURE
+  offset: 0x00B700
+  symbol: Z2_MUSICHOUSETex_00B700
+  format: IA16
+  width: 32
+  height: 63
+
+Z2_MUSICHOUSETex_00C6C0:
+  type: TEXTURE
+  offset: 0x00C6C0
+  symbol: Z2_MUSICHOUSETex_00C6C0
+  format: I8
+  width: 32
+  height: 64
+
+Z2_MUSICHOUSETex_00CEC0:
+  type: TEXTURE
+  offset: 0x00CEC0
+  symbol: Z2_MUSICHOUSETex_00CEC0
+  format: IA16
+  width: 32
+  height: 8
+
+Z2_MUSICHOUSETex_00D0C0:
+  type: TEXTURE
+  offset: 0x00D0C0
+  symbol: Z2_MUSICHOUSETex_00D0C0
+  format: IA16
+  width: 32
+  height: 16
+
+Z2_MUSICHOUSETex_00D4C0:
+  type: TEXTURE
+  offset: 0x00D4C0
+  symbol: Z2_MUSICHOUSETex_00D4C0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00D8C0:
+  type: TEXTURE
+  offset: 0x00D8C0
+  symbol: Z2_MUSICHOUSETex_00D8C0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00DCC0:
+  type: TEXTURE
+  offset: 0x00DCC0
+  symbol: Z2_MUSICHOUSETex_00DCC0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00E4C0:
+  type: TEXTURE
+  offset: 0x00E4C0
+  symbol: Z2_MUSICHOUSETex_00E4C0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_00E8C0:
+  type: TEXTURE
+  offset: 0x00E8C0
+  symbol: Z2_MUSICHOUSETex_00E8C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_00EAC0:
+  type: TEXTURE
+  offset: 0x00EAC0
+  symbol: Z2_MUSICHOUSETex_00EAC0
+  format: IA16
+  width: 4
+  height: 32
+
+Z2_MUSICHOUSETex_00EBC0:
+  type: TEXTURE
+  offset: 0x00EBC0
+  symbol: Z2_MUSICHOUSETex_00EBC0
+  format: I4
+  width: 64
+  height: 128
+
+Z2_MUSICHOUSETex_00FBC0:
+  type: TEXTURE
+  offset: 0x00FBC0
+  symbol: Z2_MUSICHOUSETex_00FBC0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_00FCC0:
+  type: TEXTURE
+  offset: 0x00FCC0
+  symbol: Z2_MUSICHOUSETex_00FCC0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_0100C0:
+  type: TEXTURE
+  offset: 0x0100C0
+  symbol: Z2_MUSICHOUSETex_0100C0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_0102C0:
+  type: TEXTURE
+  offset: 0x0102C0
+  symbol: Z2_MUSICHOUSETex_0102C0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_0106C0:
+  type: TEXTURE
+  offset: 0x0106C0
+  symbol: Z2_MUSICHOUSETex_0106C0
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_010EC0:
+  type: TEXTURE
+  offset: 0x010EC0
+  symbol: Z2_MUSICHOUSETex_010EC0
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_0110C0:
+  type: TEXTURE
+  offset: 0x0110C0
+  symbol: Z2_MUSICHOUSETex_0110C0
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_0112C0:
+  type: TEXTURE
+  offset: 0x0112C0
+  symbol: Z2_MUSICHOUSETex_0112C0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_0114C0:
+  type: TEXTURE
+  offset: 0x0114C0
+  symbol: Z2_MUSICHOUSETex_0114C0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_0115C0:
+  type: TEXTURE
+  offset: 0x0115C0
+  symbol: Z2_MUSICHOUSETex_0115C0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_0119C0:
+  type: TEXTURE
+  offset: 0x0119C0
+  symbol: Z2_MUSICHOUSETex_0119C0
+  format: IA16
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_011DC0:
+  type: TEXTURE
+  offset: 0x011DC0
+  symbol: Z2_MUSICHOUSETex_011DC0
+  format: CI8
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_011EC0:
+  type: TEXTURE
+  offset: 0x011EC0
+  symbol: Z2_MUSICHOUSETex_011EC0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_011FC0:
+  type: TEXTURE
+  offset: 0x011FC0
+  symbol: Z2_MUSICHOUSETex_011FC0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_MUSICHOUSETex_012000:
+  type: TEXTURE
+  offset: 0x012000
+  symbol: Z2_MUSICHOUSETex_012000
+  format: I8
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_012400:
+  type: TEXTURE
+  offset: 0x012400
+  symbol: Z2_MUSICHOUSETex_012400
+  format: I8
+  width: 64
+  height: 32
+
+Z2_MUSICHOUSETex_012C00:
+  type: TEXTURE
+  offset: 0x012C00
+  symbol: Z2_MUSICHOUSETex_012C00
+  format: I8
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_012D00:
+  type: TEXTURE
+  offset: 0x012D00
+  symbol: Z2_MUSICHOUSETex_012D00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_013100:
+  type: TEXTURE
+  offset: 0x013100
+  symbol: Z2_MUSICHOUSETex_013100
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_013500:
+  type: TEXTURE
+  offset: 0x013500
+  symbol: Z2_MUSICHOUSETex_013500
+  format: I8
+  width: 32
+  height: 64
+
+Z2_MUSICHOUSETex_013D00:
+  type: TEXTURE
+  offset: 0x013D00
+  symbol: Z2_MUSICHOUSETex_013D00
+  format: IA16
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_013F00:
+  type: TEXTURE
+  offset: 0x013F00
+  symbol: Z2_MUSICHOUSETex_013F00
+  format: I8
+  width: 32
+  height: 16
+
+Z2_MUSICHOUSETex_014100:
+  type: TEXTURE
+  offset: 0x014100
+  symbol: Z2_MUSICHOUSETex_014100
+  format: IA16
+  width: 8
+  height: 32
+
+Z2_MUSICHOUSETex_014300:
+  type: TEXTURE
+  offset: 0x014300
+  symbol: Z2_MUSICHOUSETex_014300
+  format: IA16
+  width: 64
+  height: 32
+
+Z2_MUSICHOUSETex_015300:
+  type: TEXTURE
+  offset: 0x015300
+  symbol: Z2_MUSICHOUSETex_015300
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_015700:
+  type: TEXTURE
+  offset: 0x015700
+  symbol: Z2_MUSICHOUSETex_015700
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_015B00:
+  type: TEXTURE
+  offset: 0x015B00
+  symbol: Z2_MUSICHOUSETex_015B00
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_015D00:
+  type: TEXTURE
+  offset: 0x015D00
+  symbol: Z2_MUSICHOUSETex_015D00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_016100:
+  type: TEXTURE
+  offset: 0x016100
+  symbol: Z2_MUSICHOUSETex_016100
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_016900:
+  type: TEXTURE
+  offset: 0x016900
+  symbol: Z2_MUSICHOUSETex_016900
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MUSICHOUSETex_016B00:
+  type: TEXTURE
+  offset: 0x016B00
+  symbol: Z2_MUSICHOUSETex_016B00
+  format: I8
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_016F00:
+  type: TEXTURE
+  offset: 0x016F00
+  symbol: Z2_MUSICHOUSETex_016F00
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_MUSICHOUSETex_017700:
+  type: TEXTURE
+  offset: 0x017700
+  symbol: Z2_MUSICHOUSETex_017700
+  format: I8
+  width: 64
+  height: 64
+
+Z2_MUSICHOUSETex_018700:
+  type: TEXTURE
+  offset: 0x018700
+  symbol: Z2_MUSICHOUSETex_018700
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_018800:
+  type: TEXTURE
+  offset: 0x018800
+  symbol: Z2_MUSICHOUSETex_018800
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETex_018900:
+  type: TEXTURE
+  offset: 0x018900
+  symbol: Z2_MUSICHOUSETex_018900
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MUSICHOUSETex_018D00:
+  type: TEXTURE
+  offset: 0x018D00
+  symbol: Z2_MUSICHOUSETex_018D00
+  format: I8
+  width: 64
+  height: 32
+
+Z2_MUSICHOUSETex_019500:
+  type: TEXTURE
+  offset: 0x019500
+  symbol: Z2_MUSICHOUSETex_019500
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MUSICHOUSETLUT_019600:
+  type: TEXTURE
+  offset: 0x019600
+  symbol: Z2_MUSICHOUSETLUT_019600
+  format: RGBA16
+  width: 16
+  height: 16

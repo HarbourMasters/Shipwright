@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x01058930 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01058930 ]
+    - [ 9, 0x01058930 ]
+    - [ 10, 0x01058930 ]
+    - [ 11, 0x01058930 ]
+    - [ 12, 0x01058930 ]
+    - [ 13, 0x01058930 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gTowerCollapseBarFlameTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gTowerCollapseBarFlameTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTowerCollapseBarMetalTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTowerCollapseBarMetalTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTowerCollapseBarsCol:
+  type: MM:COLLISION
+  offset: 0x11D4
+  symbol: gTowerCollapseBarsCol
+
+gTowerCollapseBarsDL:
+  type: GFX
+  offset: 0x1080
+  symbol: gTowerCollapseBarsDL
+
+
+object_zgVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_zgVtx_001000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

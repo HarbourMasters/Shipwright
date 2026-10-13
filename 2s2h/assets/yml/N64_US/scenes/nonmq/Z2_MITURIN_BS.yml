@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 2, 0x018256E0 ]
+
+Z2_MITURIN_BS:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_MITURIN_BS
+
+
+Z2_MITURIN_BSTexAnim_0001A0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0001A0
+  symbol: Z2_MITURIN_BSTexAnim_0001A0
+
+Z2_MITURIN_BSCollisionHeader_000778:
+  type: MM:COLLISION
+  offset: 0x000778
+  symbol: Z2_MITURIN_BSCollisionHeader_000778
+
+Z2_MITURIN_BSTex_0007B0:
+  type: TEXTURE
+  offset: 0x0007B0
+  symbol: Z2_MITURIN_BSTex_0007B0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_BSTex_000FB0:
+  type: TEXTURE
+  offset: 0x000FB0
+  symbol: Z2_MITURIN_BSTex_000FB0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_BSTex_0017B0:
+  type: TEXTURE
+  offset: 0x0017B0
+  symbol: Z2_MITURIN_BSTex_0017B0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_BSTex_001FB0:
+  type: TEXTURE
+  offset: 0x001FB0
+  symbol: Z2_MITURIN_BSTex_001FB0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_BSTex_0027B0:
+  type: TEXTURE
+  offset: 0x0027B0
+  symbol: Z2_MITURIN_BSTex_0027B0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_BSTLUT_002FB0:
+  type: TEXTURE
+  offset: 0x002FB0
+  symbol: Z2_MITURIN_BSTLUT_002FB0
+  format: RGBA16
+  width: 16
+  height: 16

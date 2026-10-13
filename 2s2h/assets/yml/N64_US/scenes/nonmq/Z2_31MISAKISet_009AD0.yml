@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 2, 0x01A5B440 ]
+  directory: scenes/nonmq/Z2_31MISAKI
+  external_files:
+    - N64_US/scenes/nonmq/Z2_31MISAKI.yml
+    - N64_US/misc/scene_texture_05.yml
+
+Z2_31MISAKISet_009AD0:
+  type: MM:SCENE
+  offset: 0x9AD0
+  symbol: Z2_31MISAKISet_009AD0
+  base_name: Z2_31MISAKI

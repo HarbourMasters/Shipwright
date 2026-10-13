@@ -1,0 +1,16 @@
+<DisplayList Version="0">
+	<ClearGeometryMode G_LIGHTING="1" />
+	<LoadVertices Path="objects/gameplay_keep/gRandoCuttableGrassTokenDL_vtx_cull" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
+	<SetGeometryMode G_LIGHTING="1" />
+	<CullDisplayList Start="0" End="7"/>
+	<CallDisplayList Path="objects/gameplay_keep/mat_gRandoCuttableGrassTokenDL_f3dlite_Grass"/>
+	<CallDisplayList Path="objects/gameplay_keep/gRandoCuttableGrassTokenDL_tri_0"/>
+	<CallDisplayList Path="objects/gameplay_keep/mat_gRandoCuttableGrassTokenDL_f3dlite_leaf"/>
+	<CallDisplayList Path="objects/gameplay_keep/gRandoCuttableGrassTokenDL_tri_1"/>
+	<CallDisplayList Path="objects/gameplay_keep/mat_gRandoCuttableGrassTokenDL_f3dlite_flower_token"/>
+	<CallDisplayList Path="objects/gameplay_keep/gRandoCuttableGrassTokenDL_tri_2"/>
+	<CallDisplayList Path="objects/gameplay_keep/mat_gRandoCuttableGrassTokenDL_f3dlite_material"/>
+	<CallDisplayList Path="objects/gameplay_keep/gRandoCuttableGrassTokenDL_tri_3"/>
+	<EndDisplayList/>
+</DisplayList>
+

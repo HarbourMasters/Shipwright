@@ -1,0 +1,182 @@
+:config:
+  segments:
+    - [ 6, 0x01576280 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01576280 ]
+    - [ 9, 0x01576280 ]
+    - [ 10, 0x01576280 ]
+    - [ 11, 0x01576280 ]
+    - [ 12, 0x01576280 ]
+    - [ 13, 0x01576280 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSeagullBodyDL:
+  type: GFX
+  offset: 0x300
+  symbol: gSeagullBodyDL
+
+gSeagullBodyLimb:
+  type: OOT:LIMB
+  offset: 0xDD4
+  symbol: gSeagullBodyLimb
+  limb_type: Standard
+
+gSeagullBodyTex:
+  type: TEXTURE
+  offset: 0x5C8
+  symbol: gSeagullBodyTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSeagullFlapAnim:
+  type: OOT:ANIMATION
+  offset: 0x168
+  symbol: gSeagullFlapAnim
+
+gSeagullGlideAnim:
+  type: OOT:ANIMATION
+  offset: 0x58
+  symbol: gSeagullGlideAnim
+
+gSeagullLeftWingEndDL:
+  type: GFX
+  offset: 0x4B0
+  symbol: gSeagullLeftWingEndDL
+
+gSeagullLeftWingEndLimb:
+  type: OOT:LIMB
+  offset: 0xE04
+  symbol: gSeagullLeftWingEndLimb
+  limb_type: Standard
+
+gSeagullLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0xDE0
+  symbol: gSeagullLeftWingRootLimb
+  limb_type: Standard
+
+gSeagullLeftWingStartDL:
+  type: GFX
+  offset: 0x550
+  symbol: gSeagullLeftWingStartDL
+
+gSeagullLeftWingStartLimb:
+  type: OOT:LIMB
+  offset: 0xDF8
+  symbol: gSeagullLeftWingStartLimb
+  limb_type: Standard
+
+gSeagullLeftWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xDEC
+  symbol: gSeagullLeftWingWrapperLimb
+  limb_type: Standard
+
+gSeagullRightWingEndDL:
+  type: GFX
+  offset: 0x3A0
+  symbol: gSeagullRightWingEndDL
+
+gSeagullRightWingEndLimb:
+  type: OOT:LIMB
+  offset: 0xE34
+  symbol: gSeagullRightWingEndLimb
+  limb_type: Standard
+
+gSeagullRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0xE10
+  symbol: gSeagullRightWingRootLimb
+  limb_type: Standard
+
+gSeagullRightWingStartDL:
+  type: GFX
+  offset: 0x440
+  symbol: gSeagullRightWingStartDL
+
+gSeagullRightWingStartLimb:
+  type: OOT:LIMB
+  offset: 0xE28
+  symbol: gSeagullRightWingStartLimb
+  limb_type: Standard
+
+gSeagullRightWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xE1C
+  symbol: gSeagullRightWingWrapperLimb
+  limb_type: Standard
+
+gSeagullRootLimb:
+  type: OOT:LIMB
+  offset: 0xDC8
+  symbol: gSeagullRootLimb
+  limb_type: Standard
+
+gSeagullSkel:
+  type: MM:SKELETON
+  offset: 0xE68
+  symbol: gSeagullSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSeagullWingTex:
+  type: TEXTURE
+  offset: 0x9C8
+  symbol: gSeagullWingTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_tanron4Vtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_tanron4Vtx_000180
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron4Vtx_0001E0:
+  type: MM:ARRAY
+  offset: 0x0001E0
+  symbol: object_tanron4Vtx_0001E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron4Vtx_000230:
+  type: MM:ARRAY
+  offset: 0x000230
+  symbol: object_tanron4Vtx_000230
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron4Vtx_000270:
+  type: MM:ARRAY
+  offset: 0x000270
+  symbol: object_tanron4Vtx_000270
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron4Vtx_0002C0:
+  type: MM:ARRAY
+  offset: 0x0002C0
+  symbol: object_tanron4Vtx_0002C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSeagullSkelLimbs:
+  type: BLOB
+  offset: 0xE40
+  symbol: gSeagullSkelLimbs
+  size: 0

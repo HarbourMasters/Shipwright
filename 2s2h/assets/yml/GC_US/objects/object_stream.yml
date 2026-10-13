@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x0102CE80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0102CE80 ]
+    - [ 9, 0x0102CE80 ]
+    - [ 10, 0x0102CE80 ]
+    - [ 11, 0x0102CE80 ]
+    - [ 12, 0x0102CE80 ]
+    - [ 13, 0x0102CE80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gWaterVortexDL:
+  type: GFX
+  offset: 0x950
+  symbol: gWaterVortexDL
+
+gWaterVortexTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWaterVortexTex
+  format: I4
+  width: 64
+  height: 64
+
+
+object_streamVtx_000800:
+  type: MM:ARRAY
+  offset: 0x000800
+  symbol: object_streamVtx_000800
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

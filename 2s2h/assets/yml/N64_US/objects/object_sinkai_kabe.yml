@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 6, 0x014181C0 ]
+
+gPinnacleRockPythonDenCol:
+  type: MM:COLLISION
+  offset: 0x48
+  symbol: gPinnacleRockPythonDenCol
+

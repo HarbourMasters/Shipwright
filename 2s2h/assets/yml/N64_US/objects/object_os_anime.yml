@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 6, 0x00F58780 ]
+
+object_os_anime_Anim_0000B4:
+  type: OOT:ANIMATION
+  offset: 0xB4
+  symbol: object_os_anime_Anim_0000B4
+
+object_os_anime_Anim_000170:
+  type: OOT:ANIMATION
+  offset: 0x170
+  symbol: object_os_anime_Anim_000170
+
+object_os_anime_Anim_000228:
+  type: OOT:ANIMATION
+  offset: 0x228
+  symbol: object_os_anime_Anim_000228
+
+object_os_anime_Anim_000718:
+  type: OOT:ANIMATION
+  offset: 0x718
+  symbol: object_os_anime_Anim_000718
+
+object_os_anime_Anim_0007D0:
+  type: OOT:ANIMATION
+  offset: 0x7D0
+  symbol: object_os_anime_Anim_0007D0
+
+object_os_anime_Anim_000894:
+  type: OOT:ANIMATION
+  offset: 0x894
+  symbol: object_os_anime_Anim_000894
+
+object_os_anime_Anim_000938:
+  type: OOT:ANIMATION
+  offset: 0x938
+  symbol: object_os_anime_Anim_000938
+
+object_os_anime_Anim_000B80:
+  type: OOT:ANIMATION
+  offset: 0xB80
+  symbol: object_os_anime_Anim_000B80
+
+object_os_anime_Anim_000FF0:
+  type: OOT:ANIMATION
+  offset: 0xFF0
+  symbol: object_os_anime_Anim_000FF0
+
+object_os_anime_Anim_00107C:
+  type: OOT:ANIMATION
+  offset: 0x107C
+  symbol: object_os_anime_Anim_00107C
+
+object_os_anime_Anim_001270:
+  type: OOT:ANIMATION
+  offset: 0x1270
+  symbol: object_os_anime_Anim_001270
+
+object_os_anime_Anim_0012FC:
+  type: OOT:ANIMATION
+  offset: 0x12FC
+  symbol: object_os_anime_Anim_0012FC
+
+object_os_anime_Anim_001458:
+  type: OOT:ANIMATION
+  offset: 0x1458
+  symbol: object_os_anime_Anim_001458
+
+object_os_anime_Anim_0017D8:
+  type: OOT:ANIMATION
+  offset: 0x17D8
+  symbol: object_os_anime_Anim_0017D8
+
+object_os_anime_Anim_001C9C:
+  type: OOT:ANIMATION
+  offset: 0x1C9C
+  symbol: object_os_anime_Anim_001C9C
+
+object_os_anime_Anim_001D44:
+  type: OOT:ANIMATION
+  offset: 0x1D44
+  symbol: object_os_anime_Anim_001D44
+
+object_os_anime_Anim_001EE0:
+  type: OOT:ANIMATION
+  offset: 0x1EE0
+  symbol: object_os_anime_Anim_001EE0
+
+object_os_anime_Anim_001F78:
+  type: OOT:ANIMATION
+  offset: 0x1F78
+  symbol: object_os_anime_Anim_001F78
+
+object_os_anime_Anim_0020F8:
+  type: OOT:ANIMATION
+  offset: 0x20F8
+  symbol: object_os_anime_Anim_0020F8
+
+object_os_anime_Anim_0021B8:
+  type: OOT:ANIMATION
+  offset: 0x21B8
+  symbol: object_os_anime_Anim_0021B8
+
+object_os_anime_Anim_0025E4:
+  type: OOT:ANIMATION
+  offset: 0x25E4
+  symbol: object_os_anime_Anim_0025E4
+
+object_os_anime_Anim_002C80:
+  type: OOT:ANIMATION
+  offset: 0x2C80
+  symbol: object_os_anime_Anim_002C80
+

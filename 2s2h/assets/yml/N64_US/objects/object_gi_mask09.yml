@@ -1,0 +1,89 @@
+:config:
+  segments:
+    - [ 6, 0x01481F30 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01481F30 ]
+    - [ 9, 0x01481F30 ]
+    - [ 10, 0x01481F30 ]
+    - [ 11, 0x01481F30 ]
+    - [ 12, 0x01481F30 ]
+    - [ 13, 0x01481F30 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiGarosMaskCloakDL:
+  type: GFX
+  offset: 0x8F0
+  symbol: gGiGarosMaskCloakDL
+
+gGiGarosMaskCloakTLUT:
+  type: TEXTURE
+  offset: 0xDA0
+  symbol: gGiGarosMaskCloakTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiGarosMaskEyeTex:
+  type: TEXTURE
+  offset: 0xFA0
+  symbol: gGiGarosMaskEyeTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiGarosMaskFaceDL:
+  type: GFX
+  offset: 0x7A0
+  symbol: gGiGarosMaskFaceDL
+
+gGiGarosMaskFrontPatternTex:
+  type: TEXTURE
+  offset: 0x1120
+  symbol: gGiGarosMaskFrontPatternTex
+  format: CI8
+  width: 16
+  height: 32
+
+gGiGarosMaskLowerSidePatternTex:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: gGiGarosMaskLowerSidePatternTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGiGarosMaskTopPatternTex:
+  type: TEXTURE
+  offset: 0x1720
+  symbol: gGiGarosMaskTopPatternTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiGarosMaskUpperSidePatternTex:
+  type: TEXTURE
+  offset: 0x10A0
+  symbol: gGiGarosMaskUpperSidePatternTex
+  format: CI8
+  width: 16
+  height: 8
+
+
+object_gi_mask09Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask09Vtx_000000
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask09Vtx_0005E0:
+  type: MM:ARRAY
+  offset: 0x0005E0
+  symbol: object_gi_mask09Vtx_0005E0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

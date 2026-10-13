@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015F8080 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015F8080 ]
+    - [ 9, 0x015F8080 ]
+    - [ 10, 0x015F8080 ]
+    - [ 11, 0x015F8080 ]
+    - [ 12, 0x015F8080 ]
+    - [ 13, 0x015F8080 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSwampSpiderHouseSlidingDoorDL:
+  type: GFX
+  offset: 0x198
+  symbol: gSwampSpiderHouseSlidingDoorDL
+
+gSwampSpiderHouseSlidingDoorEmptyDL:
+  type: GFX
+  offset: 0x190
+  symbol: gSwampSpiderHouseSlidingDoorEmptyDL
+
+gSwampSpiderHouseSlidingDoorTex:
+  type: TEXTURE
+  offset: 0x2F0
+  symbol: gSwampSpiderHouseSlidingDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_kinsta1_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kinsta1_objVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

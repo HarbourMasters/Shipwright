@@ -1,0 +1,926 @@
+:config:
+  segments:
+    - [ 6, 0x00F10D10 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F10D10 ]
+    - [ 9, 0x00F10D10 ]
+    - [ 10, 0x00F10D10 ]
+    - [ 11, 0x00F10D10 ]
+    - [ 12, 0x00F10D10 ]
+    - [ 13, 0x00F10D10 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGibdoEyeTex:
+  type: TEXTURE
+  offset: 0x2610
+  symbol: gGibdoEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGibdoHeadDL:
+  type: GFX
+  offset: 0x4350
+  symbol: gGibdoHeadDL
+
+gGibdoHeadLimb:
+  type: OOT:LIMB
+  offset: 0x536C
+  symbol: gGibdoHeadLimb
+  limb_type: Standard
+
+gGibdoHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x5360
+  symbol: gGibdoHeadRootLimb
+  limb_type: Standard
+
+gGibdoLeftAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x5288
+  symbol: gGibdoLeftAnkleLimb
+  limb_type: Standard
+
+gGibdoLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x5300
+  symbol: gGibdoLeftArmRootLimb
+  limb_type: Standard
+
+gGibdoLeftFootDL:
+  type: GFX
+  offset: 0x5160
+  symbol: gGibdoLeftFootDL
+
+gGibdoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x5294
+  symbol: gGibdoLeftFootLimb
+  limb_type: Standard
+
+gGibdoLeftForearmDL:
+  type: GFX
+  offset: 0x4A38
+  symbol: gGibdoLeftForearmDL
+
+gGibdoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5318
+  symbol: gGibdoLeftForearmLimb
+  limb_type: Standard
+
+gGibdoLeftHandDL:
+  type: GFX
+  offset: 0x4B38
+  symbol: gGibdoLeftHandDL
+
+gGibdoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5324
+  symbol: gGibdoLeftHandLimb
+  limb_type: Standard
+
+gGibdoLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x5264
+  symbol: gGibdoLeftLegRootLimb
+  limb_type: Standard
+
+gGibdoLeftShinDL:
+  type: GFX
+  offset: 0x5068
+  symbol: gGibdoLeftShinDL
+
+gGibdoLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x527C
+  symbol: gGibdoLeftShinLimb
+  limb_type: Standard
+
+gGibdoLeftShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0x4930
+  symbol: gGibdoLeftShoulderAndUpperArmDL
+
+gGibdoLeftShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x530C
+  symbol: gGibdoLeftShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gGibdoLeftThighDL:
+  type: GFX
+  offset: 0x4F58
+  symbol: gGibdoLeftThighDL
+
+gGibdoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x5270
+  symbol: gGibdoLeftThighLimb
+  limb_type: Standard
+
+gGibdoPelvisDL:
+  type: GFX
+  offset: 0x4270
+  symbol: gGibdoPelvisDL
+
+gGibdoPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x5378
+  symbol: gGibdoPelvisLimb
+  limb_type: Standard
+
+gGibdoRedeadArmsUpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xF1C
+  symbol: gGibdoRedeadArmsUpLoopAnim
+
+gGibdoRedeadArmsUpStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C4
+  symbol: gGibdoRedeadArmsUpStartAnim
+
+gGibdoRedeadClappingDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x11DB8
+  symbol: gGibdoRedeadClappingDanceAnim
+
+gGibdoRedeadConvulsionAnim:
+  type: OOT:ANIMATION
+  offset: 0x1600
+  symbol: gGibdoRedeadConvulsionAnim
+
+gGibdoRedeadDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x9900
+  symbol: gGibdoRedeadDamageAnim
+
+gGibdoRedeadDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x9298
+  symbol: gGibdoRedeadDeathAnim
+
+gGibdoRedeadGrabAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x6678
+  symbol: gGibdoRedeadGrabAttackAnim
+
+gGibdoRedeadGrabEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x6B08
+  symbol: gGibdoRedeadGrabEndAnim
+
+gGibdoRedeadGrabStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x6EEC
+  symbol: gGibdoRedeadGrabStartAnim
+
+gGibdoRedeadIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xABE0
+  symbol: gGibdoRedeadIdleAnim
+
+gGibdoRedeadLookBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x73A4
+  symbol: gGibdoRedeadLookBackAnim
+
+gGibdoRedeadPirouetteAnim:
+  type: OOT:ANIMATION
+  offset: 0x118D8
+  symbol: gGibdoRedeadPirouetteAnim
+
+gGibdoRedeadSlumpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x61E4
+  symbol: gGibdoRedeadSlumpLoopAnim
+
+gGibdoRedeadSlumpStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x5DF4
+  symbol: gGibdoRedeadSlumpStartAnim
+
+gGibdoRedeadSobbingAnim:
+  type: OOT:ANIMATION
+  offset: 0x81A8
+  symbol: gGibdoRedeadSobbingAnim
+
+gGibdoRedeadSquattingDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1216C
+  symbol: gGibdoRedeadSquattingDanceAnim
+
+gGibdoRedeadStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xA450
+  symbol: gGibdoRedeadStandUpAnim
+
+gGibdoRedeadWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x113EC
+  symbol: gGibdoRedeadWalkAnim
+
+gGibdoRedeadWipingTearsAnim:
+  type: OOT:ANIMATION
+  offset: 0x7BBC
+  symbol: gGibdoRedeadWipingTearsAnim
+
+gGibdoRightAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x52C4
+  symbol: gGibdoRightAnkleLimb
+  limb_type: Standard
+
+gGibdoRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x5330
+  symbol: gGibdoRightArmRootLimb
+  limb_type: Standard
+
+gGibdoRightFootDL:
+  type: GFX
+  offset: 0x4E40
+  symbol: gGibdoRightFootDL
+
+gGibdoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x52D0
+  symbol: gGibdoRightFootLimb
+  limb_type: Standard
+
+gGibdoRightForearmDL:
+  type: GFX
+  offset: 0x4730
+  symbol: gGibdoRightForearmDL
+
+gGibdoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5348
+  symbol: gGibdoRightForearmLimb
+  limb_type: Standard
+
+gGibdoRightHandDL:
+  type: GFX
+  offset: 0x4830
+  symbol: gGibdoRightHandDL
+
+gGibdoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5354
+  symbol: gGibdoRightHandLimb
+  limb_type: Standard
+
+gGibdoRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x52A0
+  symbol: gGibdoRightLegRootLimb
+  limb_type: Standard
+
+gGibdoRightShinDL:
+  type: GFX
+  offset: 0x4D48
+  symbol: gGibdoRightShinDL
+
+gGibdoRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x52B8
+  symbol: gGibdoRightShinLimb
+  limb_type: Standard
+
+gGibdoRightShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0x4628
+  symbol: gGibdoRightShoulderAndUpperArmDL
+
+gGibdoRightShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x533C
+  symbol: gGibdoRightShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gGibdoRightThighDL:
+  type: GFX
+  offset: 0x4C38
+  symbol: gGibdoRightThighDL
+
+gGibdoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x52AC
+  symbol: gGibdoRightThighLimb
+  limb_type: Standard
+
+gGibdoRootLimb:
+  type: OOT:LIMB
+  offset: 0x5258
+  symbol: gGibdoRootLimb
+  limb_type: Standard
+
+gGibdoSkel:
+  type: MM:SKELETON
+  offset: 0x53E8
+  symbol: gGibdoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGibdoTorsoDL:
+  type: GFX
+  offset: 0x44C0
+  symbol: gGibdoTorsoDL
+
+gGibdoTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x52F4
+  symbol: gGibdoTorsoLimb
+  limb_type: Standard
+
+gGibdoUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x52E8
+  symbol: gGibdoUpperBodyLimb
+  limb_type: Standard
+
+gGibdoUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x52DC
+  symbol: gGibdoUpperBodyRootLimb
+  limb_type: Standard
+
+gGibdoWrappingTex:
+  type: TEXTURE
+  offset: 0x1610
+  symbol: gGibdoWrappingTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gRedeadBackTex:
+  type: TEXTURE
+  offset: 0xABF0
+  symbol: gRedeadBackTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRedeadFaceTex:
+  type: TEXTURE
+  offset: 0xD7F0
+  symbol: gRedeadFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRedeadFingersAndToesTex:
+  type: TEXTURE
+  offset: 0xCBF0
+  symbol: gRedeadFingersAndToesTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gRedeadHeadDL:
+  type: GFX
+  offset: 0x103B8
+  symbol: gRedeadHeadDL
+
+gRedeadHeadLimb:
+  type: OOT:LIMB
+  offset: 0x10B0C
+  symbol: gRedeadHeadLimb
+  limb_type: Standard
+
+gRedeadHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x10B00
+  symbol: gRedeadHeadRootLimb
+  limb_type: Standard
+
+gRedeadHipsTex:
+  type: TEXTURE
+  offset: 0xE7F0
+  symbol: gRedeadHipsTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRedeadLeftAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x10A28
+  symbol: gRedeadLeftAnkleLimb
+  limb_type: Standard
+
+gRedeadLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10AA0
+  symbol: gRedeadLeftArmRootLimb
+  limb_type: Standard
+
+gRedeadLeftFootDL:
+  type: GFX
+  offset: 0x106A0
+  symbol: gRedeadLeftFootDL
+
+gRedeadLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x10A34
+  symbol: gRedeadLeftFootLimb
+  limb_type: Standard
+
+gRedeadLeftForearmDL:
+  type: GFX
+  offset: 0xFFB0
+  symbol: gRedeadLeftForearmDL
+
+gRedeadLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x10AB8
+  symbol: gRedeadLeftForearmLimb
+  limb_type: Standard
+
+gRedeadLeftHandDL:
+  type: GFX
+  offset: 0x10070
+  symbol: gRedeadLeftHandDL
+
+gRedeadLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x10AC4
+  symbol: gRedeadLeftHandLimb
+  limb_type: Standard
+
+gRedeadLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x10A04
+  symbol: gRedeadLeftLegRootLimb
+  limb_type: Standard
+
+gRedeadLeftShinDL:
+  type: GFX
+  offset: 0x105D8
+  symbol: gRedeadLeftShinDL
+
+gRedeadLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x10A1C
+  symbol: gRedeadLeftShinLimb
+  limb_type: Standard
+
+gRedeadLeftShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0xFED0
+  symbol: gRedeadLeftShoulderAndUpperArmDL
+
+gRedeadLeftShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x10AAC
+  symbol: gRedeadLeftShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gRedeadLeftThighDL:
+  type: GFX
+  offset: 0x104F8
+  symbol: gRedeadLeftThighDL
+
+gRedeadLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x10A10
+  symbol: gRedeadLeftThighLimb
+  limb_type: Standard
+
+gRedeadMaskTex:
+  type: TEXTURE
+  offset: 0xD3F0
+  symbol: gRedeadMaskTex
+  format: I8
+  width: 32
+  height: 32
+
+gRedeadMuscleTex:
+  type: TEXTURE
+  offset: 0xCFF0
+  symbol: gRedeadMuscleTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gRedeadPelvisDL:
+  type: GFX
+  offset: 0xFAB0
+  symbol: gRedeadPelvisDL
+
+gRedeadPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x10B18
+  symbol: gRedeadPelvisLimb
+  limb_type: Standard
+
+gRedeadRightAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x10A64
+  symbol: gRedeadRightAnkleLimb
+  limb_type: Standard
+
+gRedeadRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x10AD0
+  symbol: gRedeadRightArmRootLimb
+  limb_type: Standard
+
+gRedeadRightFootDL:
+  type: GFX
+  offset: 0x10910
+  symbol: gRedeadRightFootDL
+
+gRedeadRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x10A70
+  symbol: gRedeadRightFootLimb
+  limb_type: Standard
+
+gRedeadRightForearmDL:
+  type: GFX
+  offset: 0x10218
+  symbol: gRedeadRightForearmDL
+
+gRedeadRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x10AE8
+  symbol: gRedeadRightForearmLimb
+  limb_type: Standard
+
+gRedeadRightHandDL:
+  type: GFX
+  offset: 0x102E8
+  symbol: gRedeadRightHandDL
+
+gRedeadRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x10AF4
+  symbol: gRedeadRightHandLimb
+  limb_type: Standard
+
+gRedeadRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x10A40
+  symbol: gRedeadRightLegRootLimb
+  limb_type: Standard
+
+gRedeadRightShinDL:
+  type: GFX
+  offset: 0x10848
+  symbol: gRedeadRightShinDL
+
+gRedeadRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x10A58
+  symbol: gRedeadRightShinLimb
+  limb_type: Standard
+
+gRedeadRightShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0x10140
+  symbol: gRedeadRightShoulderAndUpperArmDL
+
+gRedeadRightShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x10ADC
+  symbol: gRedeadRightShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gRedeadRightThighDL:
+  type: GFX
+  offset: 0x10768
+  symbol: gRedeadRightThighDL
+
+gRedeadRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x10A4C
+  symbol: gRedeadRightThighLimb
+  limb_type: Standard
+
+gRedeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x109F8
+  symbol: gRedeadRootLimb
+  limb_type: Standard
+
+gRedeadSkel:
+  type: MM:SKELETON
+  offset: 0x10B88
+  symbol: gRedeadSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRedeadTorsoDL:
+  type: GFX
+  offset: 0xFBD8
+  symbol: gRedeadTorsoDL
+
+gRedeadTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x10A94
+  symbol: gRedeadTorsoLimb
+  limb_type: Standard
+
+gRedeadTorsoTex:
+  type: TEXTURE
+  offset: 0xBBF0
+  symbol: gRedeadTorsoTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRedeadUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x10A88
+  symbol: gRedeadUpperBodyLimb
+  limb_type: Standard
+
+gRedeadUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x10A7C
+  symbol: gRedeadUpperBodyRootLimb
+  limb_type: Standard
+
+
+object_rdVtx_002A10:
+  type: MM:ARRAY
+  offset: 0x002A10
+  symbol: object_rdVtx_002A10
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_002B60:
+  type: MM:ARRAY
+  offset: 0x002B60
+  symbol: object_rdVtx_002B60
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_002CC0:
+  type: MM:ARRAY
+  offset: 0x002CC0
+  symbol: object_rdVtx_002CC0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_002E80:
+  type: MM:ARRAY
+  offset: 0x002E80
+  symbol: object_rdVtx_002E80
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_002FD0:
+  type: MM:ARRAY
+  offset: 0x002FD0
+  symbol: object_rdVtx_002FD0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003130:
+  type: MM:ARRAY
+  offset: 0x003130
+  symbol: object_rdVtx_003130
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_0032F0:
+  type: MM:ARRAY
+  offset: 0x0032F0
+  symbol: object_rdVtx_0032F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_0034D0:
+  type: MM:ARRAY
+  offset: 0x0034D0
+  symbol: object_rdVtx_0034D0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_0037D0:
+  type: MM:ARRAY
+  offset: 0x0037D0
+  symbol: object_rdVtx_0037D0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003930:
+  type: MM:ARRAY
+  offset: 0x003930
+  symbol: object_rdVtx_003930
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003A90:
+  type: MM:ARRAY
+  offset: 0x003A90
+  symbol: object_rdVtx_003A90
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003C70:
+  type: MM:ARRAY
+  offset: 0x003C70
+  symbol: object_rdVtx_003C70
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003E70:
+  type: MM:ARRAY
+  offset: 0x003E70
+  symbol: object_rdVtx_003E70
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_003FC0:
+  type: MM:ARRAY
+  offset: 0x003FC0
+  symbol: object_rdVtx_003FC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_004150:
+  type: MM:ARRAY
+  offset: 0x004150
+  symbol: object_rdVtx_004150
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGibdoSkelLimbs:
+  type: BLOB
+  offset: 0x5384
+  symbol: gGibdoSkelLimbs
+  size: 0
+
+object_rdVtx_00EBF0:
+  type: MM:ARRAY
+  offset: 0x00EBF0
+  symbol: object_rdVtx_00EBF0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00EE40:
+  type: MM:ARRAY
+  offset: 0x00EE40
+  symbol: object_rdVtx_00EE40
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00EF00:
+  type: MM:ARRAY
+  offset: 0x00EF00
+  symbol: object_rdVtx_00EF00
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00EF90:
+  type: MM:ARRAY
+  offset: 0x00EF90
+  symbol: object_rdVtx_00EF90
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F070:
+  type: MM:ARRAY
+  offset: 0x00F070
+  symbol: object_rdVtx_00F070
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F130:
+  type: MM:ARRAY
+  offset: 0x00F130
+  symbol: object_rdVtx_00F130
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F1F0:
+  type: MM:ARRAY
+  offset: 0x00F1F0
+  symbol: object_rdVtx_00F1F0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F2D0:
+  type: MM:ARRAY
+  offset: 0x00F2D0
+  symbol: object_rdVtx_00F2D0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F420:
+  type: MM:ARRAY
+  offset: 0x00F420
+  symbol: object_rdVtx_00F420
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F4E0:
+  type: MM:ARRAY
+  offset: 0x00F4E0
+  symbol: object_rdVtx_00F4E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F5A0:
+  type: MM:ARRAY
+  offset: 0x00F5A0
+  symbol: object_rdVtx_00F5A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F6A0:
+  type: MM:ARRAY
+  offset: 0x00F6A0
+  symbol: object_rdVtx_00F6A0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F7B0:
+  type: MM:ARRAY
+  offset: 0x00F7B0
+  symbol: object_rdVtx_00F7B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F870:
+  type: MM:ARRAY
+  offset: 0x00F870
+  symbol: object_rdVtx_00F870
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rdVtx_00F970:
+  type: MM:ARRAY
+  offset: 0x00F970
+  symbol: object_rdVtx_00F970
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gRedeadSkelLimbs:
+  type: BLOB
+  offset: 0x10B24
+  symbol: gRedeadSkelLimbs
+  size: 0

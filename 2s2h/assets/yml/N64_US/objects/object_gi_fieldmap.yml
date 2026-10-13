@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01571330 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01571330 ]
+    - [ 9, 0x01571330 ]
+    - [ 10, 0x01571330 ]
+    - [ 11, 0x01571330 ]
+    - [ 12, 0x01571330 ]
+    - [ 13, 0x01571330 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiTingleMapDL:
+  type: GFX
+  offset: 0x6E8
+  symbol: gGiTingleMapDL
+
+gGiTingleMapEmptyDL:
+  type: GFX
+  offset: 0x6E0
+  symbol: gGiTingleMapEmptyDL
+
+gGiTingleMapLeftInscriptionsTex:
+  type: TEXTURE
+  offset: 0xA20
+  symbol: gGiTingleMapLeftInscriptionsTex
+  format: I8
+  width: 32
+  height: 40
+
+gGiTingleMapRightInscriptionsTex:
+  type: TEXTURE
+  offset: 0xF20
+  symbol: gGiTingleMapRightInscriptionsTex
+  format: I8
+  width: 32
+  height: 40
+
+gGiTingleMapScrollHandleTex:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: gGiTingleMapScrollHandleTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_fieldmapVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_fieldmapVtx_000000
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

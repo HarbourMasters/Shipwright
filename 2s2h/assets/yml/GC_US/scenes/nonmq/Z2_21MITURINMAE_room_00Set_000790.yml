@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01B40870 ]
+    - [ 2, 0x01B38C00 ]
+  directory: scenes/nonmq/Z2_21MITURINMAE
+  external_files:
+    - GC_US/scenes/nonmq/Z2_21MITURINMAE_room_00.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_21MITURINMAE.yml
+
+Z2_21MITURINMAE_room_00Set_000790:
+  type: MM:ROOM
+  offset: 0x790
+  symbol: Z2_21MITURINMAE_room_00Set_000790
+  base_name: Z2_21MITURINMAE_room_00

@@ -1,0 +1,164 @@
+:config:
+  segments:
+    - [ 3, 0x018FFE00 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x018FFE00 ]
+    - [ 9, 0x018FFE00 ]
+    - [ 10, 0x018FFE00 ]
+    - [ 11, 0x018FFE00 ]
+    - [ 12, 0x018FFE00 ]
+    - [ 13, 0x018FFE00 ]
+    - [ 2, 0x018EC080 ]
+  directory: scenes/nonmq/Z2_YOUSEI_IZUMI
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_YOUSEI_IZUMI.yml
+    - GC_US/scenes/nonmq/Z2_YOUSEI_IZUMI_room_02Set_000120.yml
+
+Z2_YOUSEI_IZUMI_room_02:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_YOUSEI_IZUMI_room_02
+
+Z2_YOUSEI_IZUMI_room_02DL_003D90:
+  type: GFX
+  offset: 0x3D90
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_003D90
+
+Z2_YOUSEI_IZUMI_room_02DL_005050:
+  type: GFX
+  offset: 0x5050
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_005050
+
+
+Z2_YOUSEI_IZUMI_room_02ActorEntry_000050:
+  type: BLOB
+  offset: 0x000050
+  symbol: Z2_YOUSEI_IZUMI_room_02ActorEntry_000050
+  size: 0
+
+Z2_YOUSEI_IZUMI_room_02Vtx_000160:
+  type: MM:ARRAY
+  offset: 0x000160
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_000160
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_000920:
+  type: GFX
+  offset: 0x000920
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_000920
+
+Z2_YOUSEI_IZUMI_room_02Vtx_000B50:
+  type: MM:ARRAY
+  offset: 0x000B50
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_000B50
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_001270:
+  type: GFX
+  offset: 0x001270
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_001270
+
+Z2_YOUSEI_IZUMI_room_02Vtx_001438:
+  type: MM:ARRAY
+  offset: 0x001438
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_001438
+  count: 354
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_002A58:
+  type: GFX
+  offset: 0x002A58
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_002A58
+
+Z2_YOUSEI_IZUMI_room_02Vtx_002F90:
+  type: MM:ARRAY
+  offset: 0x002F90
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_002F90
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_003970:
+  type: GFX
+  offset: 0x003970
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_003970
+
+Z2_YOUSEI_IZUMI_room_02Vtx_003B58:
+  type: MM:ARRAY
+  offset: 0x003B58
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_003B58
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_003CD8:
+  type: GFX
+  offset: 0x003CD8
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_003CD8
+
+Z2_YOUSEI_IZUMI_room_02Vtx_003DC0:
+  type: MM:ARRAY
+  offset: 0x003DC0
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_003DC0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_004200:
+  type: GFX
+  offset: 0x004200
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_004200
+
+Z2_YOUSEI_IZUMI_room_02Vtx_0043C0:
+  type: MM:ARRAY
+  offset: 0x0043C0
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_0043C0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_004700:
+  type: GFX
+  offset: 0x004700
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_004700
+
+Z2_YOUSEI_IZUMI_room_02Vtx_004830:
+  type: MM:ARRAY
+  offset: 0x004830
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_004830
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_004C70:
+  type: GFX
+  offset: 0x004C70
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_004C70
+
+Z2_YOUSEI_IZUMI_room_02Vtx_004E00:
+  type: MM:ARRAY
+  offset: 0x004E00
+  symbol: Z2_YOUSEI_IZUMI_room_02Vtx_004E00
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_YOUSEI_IZUMI_room_02DL_004F50:
+  type: GFX
+  offset: 0x004F50
+  symbol: Z2_YOUSEI_IZUMI_room_02DL_004F50

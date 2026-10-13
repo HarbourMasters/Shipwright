@@ -1,0 +1,173 @@
+:config:
+  segments:
+    - [ 6, 0x01587080 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01587080 ]
+    - [ 9, 0x01587080 ]
+    - [ 10, 0x01587080 ]
+    - [ 11, 0x01587080 ]
+    - [ 12, 0x01587080 ]
+    - [ 13, 0x01587080 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gToiletHandArmDL:
+  type: GFX
+  offset: 0x19E8
+  symbol: gToiletHandArmDL
+
+gToiletHandArmLimb:
+  type: OOT:LIMB
+  offset: 0x233C
+  symbol: gToiletHandArmLimb
+  limb_type: Standard
+
+gToiletHandArmSkinTex:
+  type: TEXTURE
+  offset: 0x22B0
+  symbol: gToiletHandArmSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gToiletHandFingersTex:
+  type: TEXTURE
+  offset: 0x1AB0
+  symbol: gToiletHandFingersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gToiletHandFistAnim:
+  type: OOT:ANIMATION
+  offset: 0x218
+  symbol: gToiletHandFistAnim
+
+gToiletHandIndexFingerDL:
+  type: GFX
+  offset: 0x1570
+  symbol: gToiletHandIndexFingerDL
+
+gToiletHandIndexFingerLimb:
+  type: OOT:LIMB
+  offset: 0x236C
+  symbol: gToiletHandIndexFingerLimb
+  limb_type: Standard
+
+gToiletHandOpenHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x564
+  symbol: gToiletHandOpenHandAnim
+
+gToiletHandOtherFingersDL:
+  type: GFX
+  offset: 0x17A0
+  symbol: gToiletHandOtherFingersDL
+
+gToiletHandOtherFingersLimb:
+  type: OOT:LIMB
+  offset: 0x2354
+  symbol: gToiletHandOtherFingersLimb
+  limb_type: Standard
+
+gToiletHandPalmDL:
+  type: GFX
+  offset: 0x18C8
+  symbol: gToiletHandPalmDL
+
+gToiletHandPalmLimb:
+  type: OOT:LIMB
+  offset: 0x2348
+  symbol: gToiletHandPalmLimb
+  limb_type: Standard
+
+gToiletHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x2330
+  symbol: gToiletHandRootLimb
+  limb_type: Standard
+
+gToiletHandSkel:
+  type: MM:SKELETON
+  offset: 0x2390
+  symbol: gToiletHandSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gToiletHandThumbDL:
+  type: GFX
+  offset: 0x1690
+  symbol: gToiletHandThumbDL
+
+gToiletHandThumbLimb:
+  type: OOT:LIMB
+  offset: 0x2360
+  symbol: gToiletHandThumbLimb
+  limb_type: Standard
+
+gToiletHandThumbsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x3A8
+  symbol: gToiletHandThumbsUpAnim
+
+gToiletHandWaggingFingerAnim:
+  type: OOT:ANIMATION
+  offset: 0xFC
+  symbol: gToiletHandWaggingFingerAnim
+
+gToiletHandWaitingAnim:
+  type: OOT:ANIMATION
+  offset: 0x7B8
+  symbol: gToiletHandWaitingAnim
+
+
+object_bjtVtx_0007D0:
+  type: MM:ARRAY
+  offset: 0x0007D0
+  symbol: object_bjtVtx_0007D0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjtVtx_000A70:
+  type: MM:ARRAY
+  offset: 0x000A70
+  symbol: object_bjtVtx_000A70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjtVtx_000D10:
+  type: MM:ARRAY
+  offset: 0x000D10
+  symbol: object_bjtVtx_000D10
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjtVtx_0010E0:
+  type: MM:ARRAY
+  offset: 0x0010E0
+  symbol: object_bjtVtx_0010E0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjtVtx_0014A0:
+  type: MM:ARRAY
+  offset: 0x0014A0
+  symbol: object_bjtVtx_0014A0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gToiletHandSkelLimbs:
+  type: BLOB
+  offset: 0x2378
+  symbol: gToiletHandSkelLimbs
+  size: 0

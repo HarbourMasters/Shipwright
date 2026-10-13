@@ -1,0 +1,143 @@
+:config:
+  segments:
+    - [ 6, 0x01197050 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01197050 ]
+    - [ 9, 0x01197050 ]
+    - [ 10, 0x01197050 ]
+    - [ 11, 0x01197050 ]
+    - [ 12, 0x01197050 ]
+    - [ 13, 0x01197050 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gOwlStatueClosedDL:
+  type: GFX
+  offset: 0x1D0
+  symbol: gOwlStatueClosedDL
+
+gOwlStatueOpenedDL:
+  type: GFX
+  offset: 0x3770
+  symbol: gOwlStatueOpenedDL
+
+object_sek_DL_001110:
+  type: GFX
+  offset: 0x1110
+  symbol: object_sek_DL_001110
+
+object_sek_TLUT_001610:
+  type: TEXTURE
+  offset: 0x1610
+  symbol: object_sek_TLUT_001610
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_sek_Tex_0003F0:
+  type: TEXTURE
+  offset: 0x3F0
+  symbol: object_sek_Tex_0003F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_0007F0:
+  type: TEXTURE
+  offset: 0x7F0
+  symbol: object_sek_Tex_0007F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_001810:
+  type: TEXTURE
+  offset: 0x1810
+  symbol: object_sek_Tex_001810
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_001C10:
+  type: TEXTURE
+  offset: 0x1C10
+  symbol: object_sek_Tex_001C10
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_002010:
+  type: TEXTURE
+  offset: 0x2010
+  symbol: object_sek_Tex_002010
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_002410:
+  type: TEXTURE
+  offset: 0x2410
+  symbol: object_sek_Tex_002410
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_002810:
+  type: TEXTURE
+  offset: 0x2810
+  symbol: object_sek_Tex_002810
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_002C10:
+  type: TEXTURE
+  offset: 0x2C10
+  symbol: object_sek_Tex_002C10
+  format: CI8
+  width: 32
+  height: 32
+
+object_sek_Tex_003A70:
+  type: TEXTURE
+  offset: 0x3A70
+  symbol: object_sek_Tex_003A70
+  format: CI8
+  width: 32
+  height: 64
+
+object_sek_Tex_004270:
+  type: TEXTURE
+  offset: 0x4270
+  symbol: object_sek_Tex_004270
+  format: CI8
+  width: 32
+  height: 64
+
+
+object_sekVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sekVtx_000000
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sekVtx_000BF0:
+  type: MM:ARRAY
+  offset: 0x000BF0
+  symbol: object_sekVtx_000BF0
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sekVtx_003010:
+  type: MM:ARRAY
+  offset: 0x003010
+  symbol: object_sekVtx_003010
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

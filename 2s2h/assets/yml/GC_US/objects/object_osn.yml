@@ -1,0 +1,943 @@
+:config:
+  segments:
+    - [ 6, 0x0128E350 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0128E350 ]
+    - [ 9, 0x0128E350 ]
+    - [ 10, 0x0128E350 ]
+    - [ 11, 0x0128E350 ]
+    - [ 12, 0x0128E350 ]
+    - [ 13, 0x0128E350 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gDekuMaskFallOverAnim:
+  type: OOT:ANIMATION
+  offset: 0x20530
+  symbol: gDekuMaskFallOverAnim
+
+gDekuMaskLimb:
+  type: OOT:LIMB
+  offset: 0x20540
+  symbol: gDekuMaskLimb
+  limb_type: Standard
+
+gDekuMaskSkel:
+  type: MM:SKELETON
+  offset: 0x20550
+  symbol: gDekuMaskSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHappyMaskSalesmaeClothesEndTex:
+  type: TEXTURE
+  offset: 0x13F78
+  symbol: gHappyMaskSalesmaeClothesEndTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmaeClothesTex:
+  type: TEXTURE
+  offset: 0x13AF8
+  symbol: gHappyMaskSalesmaeClothesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanAbdomenDL:
+  type: GFX
+  offset: 0x10750
+  symbol: gHappyMaskSalesmanAbdomenDL
+
+gHappyMaskSalesmanAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x201DC
+  symbol: gHappyMaskSalesmanAbdomenLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanArmsOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F74
+  symbol: gHappyMaskSalesmanArmsOutAnim
+
+gHappyMaskSalesmanBackpackBottomTex:
+  type: TEXTURE
+  offset: 0x144B8
+  symbol: gHappyMaskSalesmanBackpackBottomTex
+  format: CI8
+  width: 32
+  height: 64
+
+gHappyMaskSalesmanBackpackDL:
+  type: GFX
+  offset: 0x114B8
+  symbol: gHappyMaskSalesmanBackpackDL
+
+gHappyMaskSalesmanBackpackLimb:
+  type: OOT:LIMB
+  offset: 0x2023C
+  symbol: gHappyMaskSalesmanBackpackLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanBackpackPocketTex:
+  type: TEXTURE
+  offset: 0x141B8
+  symbol: gHappyMaskSalesmanBackpackPocketTex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanBackpackPocketTopTex:
+  type: TEXTURE
+  offset: 0x143B8
+  symbol: gHappyMaskSalesmanBackpackPocketTopTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanBackpackRollEndTex:
+  type: TEXTURE
+  offset: 0x14EB8
+  symbol: gHappyMaskSalesmanBackpackRollEndTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanBackpackRollTex:
+  type: TEXTURE
+  offset: 0x14CB8
+  symbol: gHappyMaskSalesmanBackpackRollTex
+  format: CI8
+  width: 32
+  height: 16
+
+gHappyMaskSalesmanBackpackStrapTex:
+  type: TEXTURE
+  offset: 0x14FB8
+  symbol: gHappyMaskSalesmanBackpackStrapTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmanBackpackTLUT:
+  type: TEXTURE
+  offset: 0x13078
+  symbol: gHappyMaskSalesmanBackpackTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanBackpackTopTex:
+  type: TEXTURE
+  offset: 0x13FB8
+  symbol: gHappyMaskSalesmanBackpackTopTex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanBelieveAnim:
+  type: OOT:ANIMATION
+  offset: 0x94E4
+  symbol: gHappyMaskSalesmanBelieveAnim
+
+gHappyMaskSalesmanBodyTLUT:
+  type: TEXTURE
+  offset: 0x12E78
+  symbol: gHappyMaskSalesmanBodyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanBowingAnim:
+  type: OOT:ANIMATION
+  offset: 0x37C4
+  symbol: gHappyMaskSalesmanBowingAnim
+
+gHappyMaskSalesmanChestDL:
+  type: GFX
+  offset: 0x10AB0
+  symbol: gHappyMaskSalesmanChestDL
+
+gHappyMaskSalesmanChestLimb:
+  type: OOT:LIMB
+  offset: 0x201E8
+  symbol: gHappyMaskSalesmanChestLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanChokeAnim:
+  type: OOT:ANIMATION
+  offset: 0x3A1C
+  symbol: gHappyMaskSalesmanChokeAnim
+
+gHappyMaskSalesmanDespairAnim:
+  type: OOT:ANIMATION
+  offset: 0x55F8
+  symbol: gHappyMaskSalesmanDespairAnim
+
+gHappyMaskSalesmanEarTex:
+  type: TEXTURE
+  offset: 0x136B8
+  symbol: gHappyMaskSalesmanEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmanEyeClosedAngryTex:
+  type: TEXTURE
+  offset: 0x176F8
+  symbol: gHappyMaskSalesmanEyeClosedAngryTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHappyMaskSalesmanEyeClosedHappyTex:
+  type: TEXTURE
+  offset: 0x166F8
+  symbol: gHappyMaskSalesmanEyeClosedHappyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHappyMaskSalesmanEyeOpenTex:
+  type: TEXTURE
+  offset: 0x16EF8
+  symbol: gHappyMaskSalesmanEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHappyMaskSalesmanFastBowsAnim:
+  type: OOT:ANIMATION
+  offset: 0x7220
+  symbol: gHappyMaskSalesmanFastBowsAnim
+
+gHappyMaskSalesmanFingersTex:
+  type: TEXTURE
+  offset: 0x139F8
+  symbol: gHappyMaskSalesmanFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanFootTex:
+  type: TEXTURE
+  offset: 0x139B8
+  symbol: gHappyMaskSalesmanFootTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmanFrownTex:
+  type: TEXTURE
+  offset: 0x182F8
+  symbol: gHappyMaskSalesmanFrownTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gHappyMaskSalesmanGoldFabric1Tex:
+  type: TEXTURE
+  offset: 0x137B8
+  symbol: gHappyMaskSalesmanGoldFabric1Tex
+  format: CI8
+  width: 8
+  height: 16
+
+gHappyMaskSalesmanGoldFabric2Tex:
+  type: TEXTURE
+  offset: 0x13838
+  symbol: gHappyMaskSalesmanGoldFabric2Tex
+  format: CI8
+  width: 8
+  height: 16
+
+gHappyMaskSalesmanHairTex:
+  type: TEXTURE
+  offset: 0x13738
+  symbol: gHappyMaskSalesmanHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gHappyMaskSalesmanHairlineTex:
+  type: TEXTURE
+  offset: 0x13BF8
+  symbol: gHappyMaskSalesmanHairlineTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gHappyMaskSalesmanHandOutAnim:
+  type: OOT:ANIMATION
+  offset: 0xA444
+  symbol: gHappyMaskSalesmanHandOutAnim
+
+gHappyMaskSalesmanHandsClaspedAnim:
+  type: OOT:ANIMATION
+  offset: 0x4C8C
+  symbol: gHappyMaskSalesmanHandsClaspedAnim
+
+gHappyMaskSalesmanHeadDL:
+  type: GFX
+  offset: 0x10ED0
+  symbol: gHappyMaskSalesmanHeadDL
+
+gHappyMaskSalesmanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x20248
+  symbol: gHappyMaskSalesmanHeadLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x201BC
+  symbol: gHappyMaskSalesmanIdleAnim
+
+gHappyMaskSalesmanLeftFootDL:
+  type: GFX
+  offset: 0x10518
+  symbol: gHappyMaskSalesmanLeftFootDL
+
+gHappyMaskSalesmanLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x20278
+  symbol: gHappyMaskSalesmanLeftFootLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLeftForearmDL:
+  type: GFX
+  offset: 0x129F0
+  symbol: gHappyMaskSalesmanLeftForearmDL
+
+gHappyMaskSalesmanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x20200
+  symbol: gHappyMaskSalesmanLeftForearmLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLeftHandDL:
+  type: GFX
+  offset: 0x12CE8
+  symbol: gHappyMaskSalesmanLeftHandDL
+
+gHappyMaskSalesmanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x2020C
+  symbol: gHappyMaskSalesmanLeftHandLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLeftShinDL:
+  type: GFX
+  offset: 0x102C0
+  symbol: gHappyMaskSalesmanLeftShinDL
+
+gHappyMaskSalesmanLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x2026C
+  symbol: gHappyMaskSalesmanLeftShinLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLeftThighDL:
+  type: GFX
+  offset: 0xFFC0
+  symbol: gHappyMaskSalesmanLeftThighDL
+
+gHappyMaskSalesmanLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x20260
+  symbol: gHappyMaskSalesmanLeftThighLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLeftUpperArmDL:
+  type: GFX
+  offset: 0x12780
+  symbol: gHappyMaskSalesmanLeftUpperArmDL
+
+gHappyMaskSalesmanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x201F4
+  symbol: gHappyMaskSalesmanLeftUpperArmLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanLyingDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xC4
+  symbol: gHappyMaskSalesmanLyingDownAnim
+
+gHappyMaskSalesmanMajorasMaskBackTex:
+  type: TEXTURE
+  offset: 0x1AF00
+  symbol: gHappyMaskSalesmanMajorasMaskBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHappyMaskSalesmanMajorasMaskDL:
+  type: GFX
+  offset: 0x192A0
+  symbol: gHappyMaskSalesmanMajorasMaskDL
+
+gHappyMaskSalesmanMajorasMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1B700
+  symbol: gHappyMaskSalesmanMajorasMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHappyMaskSalesmanMajorasMaskEyesDL:
+  type: GFX
+  offset: 0x19650
+  symbol: gHappyMaskSalesmanMajorasMaskEyesDL
+
+gHappyMaskSalesmanMajorasMaskFaceTex:
+  type: TEXTURE
+  offset: 0x19700
+  symbol: gHappyMaskSalesmanMajorasMaskFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gHappyMaskSalesmanMajorasMaskSpikes1Tex:
+  type: TEXTURE
+  offset: 0x1A700
+  symbol: gHappyMaskSalesmanMajorasMaskSpikes1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMajorasMaskSpikes2Tex:
+  type: TEXTURE
+  offset: 0x1A900
+  symbol: gHappyMaskSalesmanMajorasMaskSpikes2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMajorasMaskSpikes3Tex:
+  type: TEXTURE
+  offset: 0x1AB00
+  symbol: gHappyMaskSalesmanMajorasMaskSpikes3Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMajorasMaskSpikes4Tex:
+  type: TEXTURE
+  offset: 0x1AD00
+  symbol: gHappyMaskSalesmanMajorasMaskSpikes4Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMask01Tex:
+  type: TEXTURE
+  offset: 0x14FF8
+  symbol: gHappyMaskSalesmanMask01Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask02Tex:
+  type: TEXTURE
+  offset: 0x151F8
+  symbol: gHappyMaskSalesmanMask02Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask03Tex:
+  type: TEXTURE
+  offset: 0x154F8
+  symbol: gHappyMaskSalesmanMask03Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask04Tex:
+  type: TEXTURE
+  offset: 0x156F8
+  symbol: gHappyMaskSalesmanMask04Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask05Tex:
+  type: TEXTURE
+  offset: 0x158F8
+  symbol: gHappyMaskSalesmanMask05Tex
+  format: I8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask06Tex:
+  type: TEXTURE
+  offset: 0x15AF8
+  symbol: gHappyMaskSalesmanMask06Tex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask07Tex:
+  type: TEXTURE
+  offset: 0x15EF8
+  symbol: gHappyMaskSalesmanMask07Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask08Tex:
+  type: TEXTURE
+  offset: 0x160F8
+  symbol: gHappyMaskSalesmanMask08Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask09Tex:
+  type: TEXTURE
+  offset: 0x162F8
+  symbol: gHappyMaskSalesmanMask09Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask10Tex:
+  type: TEXTURE
+  offset: 0x164F8
+  symbol: gHappyMaskSalesmanMask10Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gHappyMaskSalesmanMask1TLUT:
+  type: TEXTURE
+  offset: 0x13278
+  symbol: gHappyMaskSalesmanMask1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMask2TLUT:
+  type: TEXTURE
+  offset: 0x13478
+  symbol: gHappyMaskSalesmanMask2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanMaskLookAtAnim:
+  type: OOT:ANIMATION
+  offset: 0x6D48
+  symbol: gHappyMaskSalesmanMaskLookAtAnim
+
+gHappyMaskSalesmanMaskLookFromLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x6564
+  symbol: gHappyMaskSalesmanMaskLookFromLoopAnim
+
+gHappyMaskSalesmanMaskLookFromStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x5D78
+  symbol: gHappyMaskSalesmanMaskLookFromStartAnim
+
+gHappyMaskSalesmanMouthTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1873C
+  symbol: gHappyMaskSalesmanMouthTexAnim
+
+gHappyMaskSalesmanNostrilTex:
+  type: TEXTURE
+  offset: 0x136F8
+  symbol: gHappyMaskSalesmanNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmanOrganPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x1034
+  symbol: gHappyMaskSalesmanOrganPlayAnim
+
+gHappyMaskSalesmanOrganTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1614
+  symbol: gHappyMaskSalesmanOrganTalkAnim
+
+gHappyMaskSalesmanPelvisDL:
+  type: GFX
+  offset: 0xF5E0
+  symbol: gHappyMaskSalesmanPelvisDL
+
+gHappyMaskSalesmanPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x20254
+  symbol: gHappyMaskSalesmanPelvisLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanReminisceAnim:
+  type: OOT:ANIMATION
+  offset: 0x4320
+  symbol: gHappyMaskSalesmanReminisceAnim
+
+gHappyMaskSalesmanRightFootDL:
+  type: GFX
+  offset: 0xFD88
+  symbol: gHappyMaskSalesmanRightFootDL
+
+gHappyMaskSalesmanRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x2029C
+  symbol: gHappyMaskSalesmanRightFootLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRightForearmDL:
+  type: GFX
+  offset: 0x122F8
+  symbol: gHappyMaskSalesmanRightForearmDL
+
+gHappyMaskSalesmanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x20224
+  symbol: gHappyMaskSalesmanRightForearmLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRightHandDL:
+  type: GFX
+  offset: 0x125F0
+  symbol: gHappyMaskSalesmanRightHandDL
+
+gHappyMaskSalesmanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x20230
+  symbol: gHappyMaskSalesmanRightHandLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRightShinDL:
+  type: GFX
+  offset: 0xFB30
+  symbol: gHappyMaskSalesmanRightShinDL
+
+gHappyMaskSalesmanRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x20290
+  symbol: gHappyMaskSalesmanRightShinLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRightThighDL:
+  type: GFX
+  offset: 0xF830
+  symbol: gHappyMaskSalesmanRightThighDL
+
+gHappyMaskSalesmanRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x20284
+  symbol: gHappyMaskSalesmanRightThighLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRightUpperArmDL:
+  type: GFX
+  offset: 0x12088
+  symbol: gHappyMaskSalesmanRightUpperArmDL
+
+gHappyMaskSalesmanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x20218
+  symbol: gHappyMaskSalesmanRightUpperArmLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanRobeBackTex:
+  type: TEXTURE
+  offset: 0x13D78
+  symbol: gHappyMaskSalesmanRobeBackTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanRobeFrontTex:
+  type: TEXTURE
+  offset: 0x138B8
+  symbol: gHappyMaskSalesmanRobeFrontTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanRootLimb:
+  type: OOT:LIMB
+  offset: 0x201D0
+  symbol: gHappyMaskSalesmanRootLimb
+  limb_type: Standard
+
+gHappyMaskSalesmanScrollTex:
+  type: TEXTURE
+  offset: 0x153F8
+  symbol: gHappyMaskSalesmanScrollTex
+  format: I8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanShakeAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE9C
+  symbol: gHappyMaskSalesmanShakeAnim
+
+gHappyMaskSalesmanShakeHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0xAC60
+  symbol: gHappyMaskSalesmanShakeHeadAnim
+
+gHappyMaskSalesmanShirtTex:
+  type: TEXTURE
+  offset: 0x13E78
+  symbol: gHappyMaskSalesmanShirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHappyMaskSalesmanShoeTex:
+  type: TEXTURE
+  offset: 0x13CF8
+  symbol: gHappyMaskSalesmanShoeTex
+  format: CI8
+  width: 16
+  height: 8
+
+gHappyMaskSalesmanSkel:
+  type: MM:SKELETON
+  offset: 0x202F0
+  symbol: gHappyMaskSalesmanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHappyMaskSalesmanSkinTex:
+  type: TEXTURE
+  offset: 0x13678
+  symbol: gHappyMaskSalesmanSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHappyMaskSalesmanSmileTex:
+  type: TEXTURE
+  offset: 0x17EF8
+  symbol: gHappyMaskSalesmanSmileTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gHappyMaskSalesmanThinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x9BB8
+  symbol: gHappyMaskSalesmanThinkAnim
+
+gHappyMaskSalesmanTurnAroundLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2634
+  symbol: gHappyMaskSalesmanTurnAroundLoopAnim
+
+gHappyMaskSalesmanTurnAroundStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D6C
+  symbol: gHappyMaskSalesmanTurnAroundStartAnim
+
+gHappyMaskSalesmanWalkAwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x8D80
+  symbol: gHappyMaskSalesmanWalkAwayAnim
+
+
+object_osnVtx_00AEB0:
+  type: MM:ARRAY
+  offset: 0x00AEB0
+  symbol: object_osnVtx_00AEB0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00B140:
+  type: MM:ARRAY
+  offset: 0x00B140
+  symbol: object_osnVtx_00B140
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00B380:
+  type: MM:ARRAY
+  offset: 0x00B380
+  symbol: object_osnVtx_00B380
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00B5D0:
+  type: MM:ARRAY
+  offset: 0x00B5D0
+  symbol: object_osnVtx_00B5D0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00B860:
+  type: MM:ARRAY
+  offset: 0x00B860
+  symbol: object_osnVtx_00B860
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00BAA0:
+  type: MM:ARRAY
+  offset: 0x00BAA0
+  symbol: object_osnVtx_00BAA0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00BCF0:
+  type: MM:ARRAY
+  offset: 0x00BCF0
+  symbol: object_osnVtx_00BCF0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00BF30:
+  type: MM:ARRAY
+  offset: 0x00BF30
+  symbol: object_osnVtx_00BF30
+  count: 187
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00CAE0:
+  type: MM:ARRAY
+  offset: 0x00CAE0
+  symbol: object_osnVtx_00CAE0
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00CFB0:
+  type: MM:ARRAY
+  offset: 0x00CFB0
+  symbol: object_osnVtx_00CFB0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00D330:
+  type: MM:ARRAY
+  offset: 0x00D330
+  symbol: object_osnVtx_00D330
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00D530:
+  type: MM:ARRAY
+  offset: 0x00D530
+  symbol: object_osnVtx_00D530
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00DA00:
+  type: MM:ARRAY
+  offset: 0x00DA00
+  symbol: object_osnVtx_00DA00
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00DD80:
+  type: MM:ARRAY
+  offset: 0x00DD80
+  symbol: object_osnVtx_00DD80
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00DF80:
+  type: MM:ARRAY
+  offset: 0x00DF80
+  symbol: object_osnVtx_00DF80
+  count: 230
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00EDE0:
+  type: MM:ARRAY
+  offset: 0x00EDE0
+  symbol: object_osnVtx_00EDE0
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_00F2F0:
+  type: MM:ARRAY
+  offset: 0x00F2F0
+  symbol: object_osnVtx_00F2F0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHappyMaskSalesmanMouthTexAnimTexCycleParams_018710:
+  type: BLOB
+  offset: 0x018710
+  symbol: gHappyMaskSalesmanMouthTexAnimTexCycleParams_018710
+  size: 0
+
+gHappyMaskSalesmanMouthTexAnimTexCycleParams_01872C:
+  type: BLOB
+  offset: 0x01872C
+  symbol: gHappyMaskSalesmanMouthTexAnimTexCycleParams_01872C
+  size: 0
+
+object_osnVtx_018750:
+  type: MM:ARRAY
+  offset: 0x018750
+  symbol: object_osnVtx_018750
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_osnVtx_0191E0:
+  type: MM:ARRAY
+  offset: 0x0191E0
+  symbol: object_osnVtx_0191E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHappyMaskSalesmanSkelLimbs:
+  type: BLOB
+  offset: 0x202A8
+  symbol: gHappyMaskSalesmanSkelLimbs
+  size: 0
+
+gDekuMaskSkelLimbs:
+  type: BLOB
+  offset: 0x2054C
+  symbol: gDekuMaskSkelLimbs
+  size: 0

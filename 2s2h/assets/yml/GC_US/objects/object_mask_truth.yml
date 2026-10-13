@@ -1,0 +1,32 @@
+:config:
+  segments:
+    - [ 10, 0x00E87020 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E87020 ]
+    - [ 12, 0x00E87020 ]
+    - [ 13, 0x00E87020 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_truth_DL_0001A0:
+  type: GFX
+  offset: 0x1A0
+  symbol: object_mask_truth_DL_0001A0
+
+object_mask_truth_Tex_000298:
+  type: TEXTURE
+  offset: 0x298
+  symbol: object_mask_truth_Tex_000298
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_mask_truthVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_truthVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

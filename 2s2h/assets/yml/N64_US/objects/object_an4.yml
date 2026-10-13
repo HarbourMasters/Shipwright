@@ -1,0 +1,59 @@
+:config:
+  segments:
+    - [ 6, 0x015E7420 ]
+
+gAnju4CombineMasks1Anim:
+  type: OOT:ANIMATION
+  offset: 0x60B4
+  symbol: gAnju4CombineMasks1Anim
+
+gAnju4CombineMasks2Anim:
+  type: OOT:ANIMATION
+  offset: 0x41C
+  symbol: gAnju4CombineMasks2Anim
+
+gAnju4HugAnim:
+  type: OOT:ANIMATION
+  offset: 0x13C8
+  symbol: gAnju4HugAnim
+
+gAnju4HugLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2550
+  symbol: gAnju4HugLoopAnim
+
+gAnju4HugReleaseAnim:
+  type: OOT:ANIMATION
+  offset: 0x353C
+  symbol: gAnju4HugReleaseAnim
+
+gAnju4HugReleaseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x4498
+  symbol: gAnju4HugReleaseLoopAnim
+
+gAnju4LookUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4A78
+  symbol: gAnju4LookUpAnim
+
+gAnju4LookUpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x506C
+  symbol: gAnju4LookUpLoopAnim
+
+gAnju4MaskKneelAnim:
+  type: OOT:ANIMATION
+  offset: 0x7E3C
+  symbol: gAnju4MaskKneelAnim
+
+gAnju4MaskKneelLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x88C0
+  symbol: gAnju4MaskKneelLoopAnim
+
+gAnju4MaskStandLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x6CC0
+  symbol: gAnju4MaskStandLoopAnim
+

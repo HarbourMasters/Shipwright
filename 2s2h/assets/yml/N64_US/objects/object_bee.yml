@@ -1,0 +1,219 @@
+:config:
+  segments:
+    - [ 6, 0x013FE430 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x013FE430 ]
+    - [ 9, 0x013FE430 ]
+    - [ 10, 0x013FE430 ]
+    - [ 11, 0x013FE430 ]
+    - [ 12, 0x013FE430 ]
+    - [ 13, 0x013FE430 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBeeAntennaeDL:
+  type: GFX
+  offset: 0x848
+  symbol: gBeeAntennaeDL
+
+gBeeAntennaeLimb:
+  type: OOT:LIMB
+  offset: 0x135C
+  symbol: gBeeAntennaeLimb
+  limb_type: Standard
+
+gBeeAntennaeTLUT:
+  type: TEXTURE
+  offset: 0xAE8
+  symbol: gBeeAntennaeTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBeeAntennaeTex:
+  type: TEXTURE
+  offset: 0x1108
+  symbol: gBeeAntennaeTex
+  format: CI4
+  width: 32
+  height: 32
+
+gBeeBodyDL:
+  type: GFX
+  offset: 0x550
+  symbol: gBeeBodyDL
+
+gBeeBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1350
+  symbol: gBeeBodyLimb
+  limb_type: Standard
+
+gBeeBodyTLUT:
+  type: TEXTURE
+  offset: 0xAC8
+  symbol: gBeeBodyTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBeeBodyTex:
+  type: TEXTURE
+  offset: 0xF08
+  symbol: gBeeBodyTex
+  format: CI4
+  width: 32
+  height: 32
+
+gBeeFlyingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5C
+  symbol: gBeeFlyingAnim
+
+gBeeHeadDL:
+  type: GFX
+  offset: 0x780
+  symbol: gBeeHeadDL
+
+gBeeHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1368
+  symbol: gBeeHeadLimb
+  limb_type: Standard
+
+gBeeHeadTLUT:
+  type: TEXTURE
+  offset: 0xAA8
+  symbol: gBeeHeadTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBeeHeadTex:
+  type: TEXTURE
+  offset: 0xD08
+  symbol: gBeeHeadTex
+  format: CI4
+  width: 32
+  height: 32
+
+gBeeLeftWingDL:
+  type: GFX
+  offset: 0x9D0
+  symbol: gBeeLeftWingDL
+
+gBeeLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x132C
+  symbol: gBeeLeftWingLimb
+  limb_type: Standard
+
+gBeeLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x1320
+  symbol: gBeeLeftWingRootLimb
+  limb_type: Standard
+
+gBeeRightWingDL:
+  type: GFX
+  offset: 0x918
+  symbol: gBeeRightWingDL
+
+gBeeRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x1344
+  symbol: gBeeRightWingLimb
+  limb_type: Standard
+
+gBeeRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x1338
+  symbol: gBeeRightWingRootLimb
+  limb_type: Standard
+
+gBeeRootLimb:
+  type: OOT:LIMB
+  offset: 0x1308
+  symbol: gBeeRootLimb
+  limb_type: Standard
+
+gBeeSkel:
+  type: MM:SKELETON
+  offset: 0x1398
+  symbol: gBeeSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBeeWingTLUT:
+  type: TEXTURE
+  offset: 0xA88
+  symbol: gBeeWingTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBeeWingTex:
+  type: TEXTURE
+  offset: 0xB08
+  symbol: gBeeWingTex
+  format: CI4
+  width: 32
+  height: 32
+
+gBeeWingsRootLimb:
+  type: OOT:LIMB
+  offset: 0x1314
+  symbol: gBeeWingsRootLimb
+  limb_type: Standard
+
+
+object_beeVtx_000070:
+  type: MM:ARRAY
+  offset: 0x000070
+  symbol: object_beeVtx_000070
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_beeVtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: object_beeVtx_0000B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_beeVtx_0000F0:
+  type: MM:ARRAY
+  offset: 0x0000F0
+  symbol: object_beeVtx_0000F0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_beeVtx_0003E0:
+  type: MM:ARRAY
+  offset: 0x0003E0
+  symbol: object_beeVtx_0003E0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_beeVtx_000470:
+  type: MM:ARRAY
+  offset: 0x000470
+  symbol: object_beeVtx_000470
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeeSkelLimbs:
+  type: BLOB
+  offset: 0x1374
+  symbol: gBeeSkelLimbs
+  size: 0

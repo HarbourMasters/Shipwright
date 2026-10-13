@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01DADA10 ]
+    - [ 2, 0x01DA6040 ]
+  directory: scenes/nonmq/Z2_LOST_WOODS
+  external_files:
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS.yml
+
+Z2_LOST_WOODS_room_00Set_0001E0:
+  type: MM:ROOM
+  offset: 0x1E0
+  symbol: Z2_LOST_WOODS_room_00Set_0001E0
+  base_name: Z2_LOST_WOODS_room_00

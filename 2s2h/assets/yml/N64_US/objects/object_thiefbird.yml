@@ -1,0 +1,599 @@
+:config:
+  segments:
+    - [ 6, 0x00EE9B50 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EE9B50 ]
+    - [ 9, 0x00EE9B50 ]
+    - [ 10, 0x00EE9B50 ]
+    - [ 11, 0x00EE9B50 ]
+    - [ 12, 0x00EE9B50 ]
+    - [ 13, 0x00EE9B50 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gTakkuriAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x63C4
+  symbol: gTakkuriAttackAnim
+
+gTakkuriBeakAndLegsTex:
+  type: TEXTURE
+  offset: 0x2D70
+  symbol: gTakkuriBeakAndLegsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTakkuriBodyDL:
+  type: GFX
+  offset: 0x16D0
+  symbol: gTakkuriBodyDL
+
+gTakkuriBodyLimb:
+  type: OOT:LIMB
+  offset: 0x60A0
+  symbol: gTakkuriBodyLimb
+  limb_type: Standard
+
+gTakkuriDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x88
+  symbol: gTakkuriDeathAnim
+
+gTakkuriEarTex:
+  type: TEXTURE
+  offset: 0x2E30
+  symbol: gTakkuriEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTakkuriEyeTex:
+  type: TEXTURE
+  offset: 0x2A70
+  symbol: gTakkuriEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTakkuriEyesDL:
+  type: GFX
+  offset: 0x1CF0
+  symbol: gTakkuriEyesDL
+
+gTakkuriEyesLimb:
+  type: OOT:LIMB
+  offset: 0x6130
+  symbol: gTakkuriEyesLimb
+  limb_type: Standard
+
+gTakkuriFeatherMaterialDL:
+  type: GFX
+  offset: 0x3060
+  symbol: gTakkuriFeatherMaterialDL
+
+gTakkuriFeatherModelDL:
+  type: GFX
+  offset: 0x30D8
+  symbol: gTakkuriFeatherModelDL
+
+gTakkuriFeatherTex:
+  type: TEXTURE
+  offset: 0x30F0
+  symbol: gTakkuriFeatherTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTakkuriFeathersTex:
+  type: TEXTURE
+  offset: 0x2770
+  symbol: gTakkuriFeathersTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTakkuriFeetDL:
+  type: GFX
+  offset: 0x18A8
+  symbol: gTakkuriFeetDL
+
+gTakkuriFeetLimb:
+  type: OOT:LIMB
+  offset: 0x6148
+  symbol: gTakkuriFeetLimb
+  limb_type: Standard
+
+gTakkuriFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x604
+  symbol: gTakkuriFlyAnim
+
+gTakkuriFlyWithItemAnim:
+  type: OOT:ANIMATION
+  offset: 0x278
+  symbol: gTakkuriFlyWithItemAnim
+
+gTakkuriHeadAndNeckTex:
+  type: TEXTURE
+  offset: 0x2C70
+  symbol: gTakkuriHeadAndNeckTex
+  format: I8
+  width: 16
+  height: 16
+
+gTakkuriHeadDL:
+  type: GFX
+  offset: 0x1A18
+  symbol: gTakkuriHeadDL
+
+gTakkuriHeadLimb:
+  type: OOT:LIMB
+  offset: 0x6100
+  symbol: gTakkuriHeadLimb
+  limb_type: Standard
+
+gTakkuriInnerBeakTex:
+  type: TEXTURE
+  offset: 0x2DF0
+  symbol: gTakkuriInnerBeakTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gTakkuriLeftEarDL:
+  type: GFX
+  offset: 0x1FE0
+  symbol: gTakkuriLeftEarDL
+
+gTakkuriLeftEarLimb:
+  type: OOT:LIMB
+  offset: 0x6118
+  symbol: gTakkuriLeftEarLimb
+  limb_type: Standard
+
+gTakkuriLeftWingBaseDL:
+  type: GFX
+  offset: 0x2680
+  symbol: gTakkuriLeftWingBaseDL
+
+gTakkuriLeftWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x60AC
+  symbol: gTakkuriLeftWingBaseLimb
+  limb_type: Standard
+
+gTakkuriLeftWingMiddleDL:
+  type: GFX
+  offset: 0x2590
+  symbol: gTakkuriLeftWingMiddleDL
+
+gTakkuriLeftWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x60B8
+  symbol: gTakkuriLeftWingMiddleLimb
+  limb_type: Standard
+
+gTakkuriLeftWingTipDL:
+  type: GFX
+  offset: 0x24A0
+  symbol: gTakkuriLeftWingTipDL
+
+gTakkuriLeftWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x60C4
+  symbol: gTakkuriLeftWingTipLimb
+  limb_type: Standard
+
+gTakkuriLegsDL:
+  type: GFX
+  offset: 0x1800
+  symbol: gTakkuriLegsDL
+
+gTakkuriLegsLimb:
+  type: OOT:LIMB
+  offset: 0x613C
+  symbol: gTakkuriLegsLimb
+  limb_type: Standard
+
+gTakkuriLowerBeakDL:
+  type: GFX
+  offset: 0x1DA8
+  symbol: gTakkuriLowerBeakDL
+
+gTakkuriLowerBeakLimb:
+  type: OOT:LIMB
+  offset: 0x6124
+  symbol: gTakkuriLowerBeakLimb
+  limb_type: Standard
+
+gTakkuriNeckDL:
+  type: GFX
+  offset: 0x2100
+  symbol: gTakkuriNeckDL
+
+gTakkuriNeckLimb:
+  type: OOT:LIMB
+  offset: 0x60F4
+  symbol: gTakkuriNeckLimb
+  limb_type: Standard
+
+gTakkuriRightEarDL:
+  type: GFX
+  offset: 0x2070
+  symbol: gTakkuriRightEarDL
+
+gTakkuriRightEarLimb:
+  type: OOT:LIMB
+  offset: 0x610C
+  symbol: gTakkuriRightEarLimb
+  limb_type: Standard
+
+gTakkuriRightWingBaseDL:
+  type: GFX
+  offset: 0x23B0
+  symbol: gTakkuriRightWingBaseDL
+
+gTakkuriRightWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x60D0
+  symbol: gTakkuriRightWingBaseLimb
+  limb_type: Standard
+
+gTakkuriRightWingMiddleDL:
+  type: GFX
+  offset: 0x22C0
+  symbol: gTakkuriRightWingMiddleDL
+
+gTakkuriRightWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x60DC
+  symbol: gTakkuriRightWingMiddleLimb
+  limb_type: Standard
+
+gTakkuriRightWingTipDL:
+  type: GFX
+  offset: 0x21D0
+  symbol: gTakkuriRightWingTipDL
+
+gTakkuriRightWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x60E8
+  symbol: gTakkuriRightWingTipLimb
+  limb_type: Standard
+
+gTakkuriSkel:
+  type: MM:SKELETON
+  offset: 0x61A0
+  symbol: gTakkuriSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTakkuriStolenBottleAndGildedSwordGemTex:
+  type: TEXTURE
+  offset: 0x5FE0
+  symbol: gTakkuriStolenBottleAndGildedSwordGemTex
+  format: I8
+  width: 8
+  height: 8
+
+gTakkuriStolenBottleDL:
+  type: GFX
+  offset: 0x33B0
+  symbol: gTakkuriStolenBottleDL
+
+gTakkuriStolenGildedSwordDL:
+  type: GFX
+  offset: 0x55E0
+  symbol: gTakkuriStolenGildedSwordDL
+
+gTakkuriStolenGildedSwordGripAndScabbardTopTex:
+  type: TEXTURE
+  offset: 0x5F60
+  symbol: gTakkuriStolenGildedSwordGripAndScabbardTopTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTakkuriStolenGildedSwordScabbardTex:
+  type: TEXTURE
+  offset: 0x5E60
+  symbol: gTakkuriStolenGildedSwordScabbardTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTakkuriStolenGreatFairysSwordBladeGildedSwordPommelGuardTex:
+  type: TEXTURE
+  offset: 0x6020
+  symbol: gTakkuriStolenGreatFairysSwordBladeGildedSwordPommelGuardTex
+  format: I4
+  width: 16
+  height: 16
+
+gTakkuriStolenGreatFairysSwordCenterAndHiltTex:
+  type: TEXTURE
+  offset: 0x59A0
+  symbol: gTakkuriStolenGreatFairysSwordCenterAndHiltTex
+  format: RGBA16
+  width: 32
+  height: 8
+
+gTakkuriStolenGreatFairysSwordDL:
+  type: GFX
+  offset: 0x3D58
+  symbol: gTakkuriStolenGreatFairysSwordDL
+
+gTakkuriStolenItemDL:
+  type: GFX
+  offset: 0x19D0
+  symbol: gTakkuriStolenItemDL
+
+gTakkuriStolenItemLimb:
+  type: OOT:LIMB
+  offset: 0x6154
+  symbol: gTakkuriStolenItemLimb
+  limb_type: Standard
+
+gTakkuriStolenKokiriAndRazorSwordScabbardTex:
+  type: TEXTURE
+  offset: 0x5C20
+  symbol: gTakkuriStolenKokiriAndRazorSwordScabbardTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTakkuriStolenKokiriSwordDL:
+  type: GFX
+  offset: 0x4348
+  symbol: gTakkuriStolenKokiriSwordDL
+
+gTakkuriStolenKokiriSwordGripTex:
+  type: TEXTURE
+  offset: 0x5D20
+  symbol: gTakkuriStolenKokiriSwordGripTex
+  format: I8
+  width: 8
+  height: 8
+
+gTakkuriStolenKokiriSwordGuardTex:
+  type: TEXTURE
+  offset: 0x5CA0
+  symbol: gTakkuriStolenKokiriSwordGuardTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTakkuriStolenKokiriSwordPommelTex:
+  type: TEXTURE
+  offset: 0x5BA0
+  symbol: gTakkuriStolenKokiriSwordPommelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTakkuriStolenRazorSwordDL:
+  type: GFX
+  offset: 0x4B88
+  symbol: gTakkuriStolenRazorSwordDL
+
+gTakkuriStolenRazorSwordHiltAndScabbardTex:
+  type: TEXTURE
+  offset: 0x5D60
+  symbol: gTakkuriStolenRazorSwordHiltAndScabbardTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTakkuriWingTipTex:
+  type: TEXTURE
+  offset: 0x2870
+  symbol: gTakkuriWingTipTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_thiefbirdVtx_000620:
+  type: MM:ARRAY
+  offset: 0x000620
+  symbol: object_thiefbirdVtx_000620
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0007E0:
+  type: MM:ARRAY
+  offset: 0x0007E0
+  symbol: object_thiefbirdVtx_0007E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: object_thiefbirdVtx_000830
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000880:
+  type: MM:ARRAY
+  offset: 0x000880
+  symbol: object_thiefbirdVtx_000880
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0008D0:
+  type: MM:ARRAY
+  offset: 0x0008D0
+  symbol: object_thiefbirdVtx_0008D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000920:
+  type: MM:ARRAY
+  offset: 0x000920
+  symbol: object_thiefbirdVtx_000920
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000970:
+  type: MM:ARRAY
+  offset: 0x000970
+  symbol: object_thiefbirdVtx_000970
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0009C0:
+  type: MM:ARRAY
+  offset: 0x0009C0
+  symbol: object_thiefbirdVtx_0009C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000A80:
+  type: MM:ARRAY
+  offset: 0x000A80
+  symbol: object_thiefbirdVtx_000A80
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_000FF0:
+  type: MM:ARRAY
+  offset: 0x000FF0
+  symbol: object_thiefbirdVtx_000FF0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_001020:
+  type: MM:ARRAY
+  offset: 0x001020
+  symbol: object_thiefbirdVtx_001020
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_001050:
+  type: MM:ARRAY
+  offset: 0x001050
+  symbol: object_thiefbirdVtx_001050
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0011C0:
+  type: MM:ARRAY
+  offset: 0x0011C0
+  symbol: object_thiefbirdVtx_0011C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0012C0:
+  type: MM:ARRAY
+  offset: 0x0012C0
+  symbol: object_thiefbirdVtx_0012C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_001340:
+  type: MM:ARRAY
+  offset: 0x001340
+  symbol: object_thiefbirdVtx_001340
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0016A0:
+  type: MM:ARRAY
+  offset: 0x0016A0
+  symbol: object_thiefbirdVtx_0016A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_003030:
+  type: MM:ARRAY
+  offset: 0x003030
+  symbol: object_thiefbirdVtx_003030
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0031F0:
+  type: MM:ARRAY
+  offset: 0x0031F0
+  symbol: object_thiefbirdVtx_0031F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_003518:
+  type: MM:ARRAY
+  offset: 0x003518
+  symbol: object_thiefbirdVtx_003518
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_0040A8:
+  type: MM:ARRAY
+  offset: 0x0040A8
+  symbol: object_thiefbirdVtx_0040A8
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_004578:
+  type: MM:ARRAY
+  offset: 0x004578
+  symbol: object_thiefbirdVtx_004578
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_thiefbirdVtx_004E40:
+  type: MM:ARRAY
+  offset: 0x004E40
+  symbol: object_thiefbirdVtx_004E40
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTakkuriSkelLimbs:
+  type: BLOB
+  offset: 0x6160
+  symbol: gTakkuriSkelLimbs
+  size: 0

@@ -1,0 +1,688 @@
+:config:
+  segments:
+    - [ 6, 0x015D6370 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015D6370 ]
+    - [ 9, 0x015D6370 ]
+    - [ 10, 0x015D6370 ]
+    - [ 11, 0x015D6370 ]
+    - [ 12, 0x015D6370 ]
+    - [ 13, 0x015D6370 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gAndBouquetDL:
+  type: GFX
+  offset: 0x56C0
+  symbol: gAndBouquetDL
+
+gAndBouquetLimb:
+  type: OOT:LIMB
+  offset: 0xB25C
+  symbol: gAndBouquetLimb
+  limb_type: Standard
+
+gAndCalvesDL:
+  type: GFX
+  offset: 0x4708
+  symbol: gAndCalvesDL
+
+gAndCalvesLimb:
+  type: OOT:LIMB
+  offset: 0xB304
+  symbol: gAndCalvesLimb
+  limb_type: Standard
+
+gAndCenterLeavesDL:
+  type: GFX
+  offset: 0x5938
+  symbol: gAndCenterLeavesDL
+
+gAndCenterLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xB298
+  symbol: gAndCenterLeavesLimb
+  limb_type: Standard
+
+gAndCenterLeavesTipDL:
+  type: GFX
+  offset: 0x5888
+  symbol: gAndCenterLeavesTipDL
+
+gAndCenterLeavesTipLimb:
+  type: OOT:LIMB
+  offset: 0xB2A4
+  symbol: gAndCenterLeavesTipLimb
+  limb_type: Standard
+
+gAndDressCircleTex:
+  type: TEXTURE
+  offset: 0xADF0
+  symbol: gAndDressCircleTex
+  format: I8
+  width: 32
+  height: 32
+
+gAndDressGradientTex:
+  type: TEXTURE
+  offset: 0x71B0
+  symbol: gAndDressGradientTex
+  format: I8
+  width: 8
+  height: 8
+
+gAndDressSpotsTex:
+  type: TEXTURE
+  offset: 0xA5F0
+  symbol: gAndDressSpotsTex
+  format: I8
+  width: 32
+  height: 64
+
+gAndDressSymbolTex:
+  type: TEXTURE
+  offset: 0x71F0
+  symbol: gAndDressSymbolTex
+  format: I8
+  width: 32
+  height: 32
+
+gAndEarTex:
+  type: TEXTURE
+  offset: 0x6DB0
+  symbol: gAndEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAndEyeClosedTex:
+  type: TEXTURE
+  offset: 0x8DF0
+  symbol: gAndEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAndEyeClosingTex:
+  type: TEXTURE
+  offset: 0x85F0
+  symbol: gAndEyeClosingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAndEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7DF0
+  symbol: gAndEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAndEyeOpeningTex:
+  type: TEXTURE
+  offset: 0x95F0
+  symbol: gAndEyeOpeningTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAndFingersTex:
+  type: TEXTURE
+  offset: 0x6FB0
+  symbol: gAndFingersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAndFlowerTex:
+  type: TEXTURE
+  offset: 0x7BF0
+  symbol: gAndFlowerTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAndHairTex:
+  type: TEXTURE
+  offset: 0x6CB0
+  symbol: gAndHairTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gAndHeadDL:
+  type: GFX
+  offset: 0x5038
+  symbol: gAndHeadDL
+
+gAndHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB2BC
+  symbol: gAndHeadLimb
+  limb_type: Standard
+
+gAndIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x122D0
+  symbol: gAndIdleAnim
+
+gAndLeavesTex:
+  type: TEXTURE
+  offset: 0x77F0
+  symbol: gAndLeavesTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gAndLeftForearmDL:
+  type: GFX
+  offset: 0x63D8
+  symbol: gAndLeftForearmDL
+
+gAndLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB220
+  symbol: gAndLeftForearmLimb
+  limb_type: Standard
+
+gAndLeftHandDL:
+  type: GFX
+  offset: 0x6240
+  symbol: gAndLeftHandDL
+
+gAndLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB22C
+  symbol: gAndLeftHandLimb
+  limb_type: Standard
+
+gAndLeftLeavesDL:
+  type: GFX
+  offset: 0x5C60
+  symbol: gAndLeftLeavesDL
+
+gAndLeftLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xB268
+  symbol: gAndLeftLeavesLimb
+  limb_type: Standard
+
+gAndLeftLeavesTipDL:
+  type: GFX
+  offset: 0x5BA8
+  symbol: gAndLeftLeavesTipDL
+
+gAndLeftLeavesTipLimb:
+  type: OOT:LIMB
+  offset: 0xB274
+  symbol: gAndLeftLeavesTipLimb
+  limb_type: Standard
+
+gAndLeftUpperArmDL:
+  type: GFX
+  offset: 0x64C0
+  symbol: gAndLeftUpperArmDL
+
+gAndLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB214
+  symbol: gAndLeftUpperArmLimb
+  limb_type: Standard
+
+gAndLowerVeilDL:
+  type: GFX
+  offset: 0x4D90
+  symbol: gAndLowerVeilDL
+
+gAndLowerVeilLimb:
+  type: OOT:LIMB
+  offset: 0xB2D4
+  symbol: gAndLowerVeilLimb
+  limb_type: Standard
+
+gAndMouthNeutralTex:
+  type: TEXTURE
+  offset: 0x9DF0
+  symbol: gAndMouthNeutralTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gAndMouthSmileTex:
+  type: TEXTURE
+  offset: 0xA1F0
+  symbol: gAndMouthSmileTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gAndPearlTex:
+  type: TEXTURE
+  offset: 0x75F0
+  symbol: gAndPearlTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAndPelvisDL:
+  type: GFX
+  offset: 0x4BE0
+  symbol: gAndPelvisDL
+
+gAndPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xB2E0
+  symbol: gAndPelvisLimb
+  limb_type: Standard
+
+gAndRaiseHandAnim:
+  type: OOT:ANIMATION
+  offset: 0xEE00
+  symbol: gAndRaiseHandAnim
+
+gAndRaiseHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0xFE64
+  symbol: gAndRaiseHeadAnim
+
+gAndRaisedHandLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xF6C4
+  symbol: gAndRaisedHandLoopAnim
+
+gAndRaisedHandWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x11AFC
+  symbol: gAndRaisedHandWalkAnim
+
+gAndRaisedHeadLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1067C
+  symbol: gAndRaisedHeadLoopAnim
+
+gAndRightForearmDL:
+  type: GFX
+  offset: 0x5F10
+  symbol: gAndRightForearmDL
+
+gAndRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB244
+  symbol: gAndRightForearmLimb
+  limb_type: Standard
+
+gAndRightHandDL:
+  type: GFX
+  offset: 0x5D80
+  symbol: gAndRightHandDL
+
+gAndRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB250
+  symbol: gAndRightHandLimb
+  limb_type: Standard
+
+gAndRightLeavesDL:
+  type: GFX
+  offset: 0x5A80
+  symbol: gAndRightLeavesDL
+
+gAndRightLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xB280
+  symbol: gAndRightLeavesLimb
+  limb_type: Standard
+
+gAndRightLeavesTipDL:
+  type: GFX
+  offset: 0x59C8
+  symbol: gAndRightLeavesTipDL
+
+gAndRightLeavesTipLimb:
+  type: OOT:LIMB
+  offset: 0xB28C
+  symbol: gAndRightLeavesTipLimb
+  limb_type: Standard
+
+gAndRightUpperArmDL:
+  type: GFX
+  offset: 0x5FF8
+  symbol: gAndRightUpperArmDL
+
+gAndRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB238
+  symbol: gAndRightUpperArmLimb
+  limb_type: Standard
+
+gAndRootLimb:
+  type: OOT:LIMB
+  offset: 0xB1F0
+  symbol: gAndRootLimb
+  limb_type: Standard
+
+gAndShinsDL:
+  type: GFX
+  offset: 0x47F0
+  symbol: gAndShinsDL
+
+gAndShinsLimb:
+  type: OOT:LIMB
+  offset: 0xB2F8
+  symbol: gAndShinsLimb
+  limb_type: Standard
+
+gAndSkel:
+  type: MM:SKELETON
+  offset: 0xB380
+  symbol: gAndSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gAndSkinShadowTex:
+  type: TEXTURE
+  offset: 0x6C30
+  symbol: gAndSkinShadowTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gAndStaticAnim:
+  type: OOT:ANIMATION
+  offset: 0xC8
+  symbol: gAndStaticAnim
+
+gAndSymbolDL:
+  type: GFX
+  offset: 0x6708
+  symbol: gAndSymbolDL
+
+gAndSymbolLimb:
+  type: OOT:LIMB
+  offset: 0xB208
+  symbol: gAndSymbolLimb
+  limb_type: Standard
+
+gAndThighsDL:
+  type: GFX
+  offset: 0x4998
+  symbol: gAndThighsDL
+
+gAndThighsLimb:
+  type: OOT:LIMB
+  offset: 0xB2EC
+  symbol: gAndThighsLimb
+  limb_type: Standard
+
+gAndTorsoDL:
+  type: GFX
+  offset: 0x67E0
+  symbol: gAndTorsoDL
+
+gAndTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB1FC
+  symbol: gAndTorsoLimb
+  limb_type: Standard
+
+gAndTrainDL:
+  type: GFX
+  offset: 0x4670
+  symbol: gAndTrainDL
+
+gAndTrainLimb:
+  type: OOT:LIMB
+  offset: 0xB310
+  symbol: gAndTrainLimb
+  limb_type: Standard
+
+gAndUpperVeilDL:
+  type: GFX
+  offset: 0x4E50
+  symbol: gAndUpperVeilDL
+
+gAndUpperVeilLimb:
+  type: OOT:LIMB
+  offset: 0xB2C8
+  symbol: gAndUpperVeilLimb
+  limb_type: Standard
+
+gAndVeilBaseDL:
+  type: GFX
+  offset: 0x4F20
+  symbol: gAndVeilBaseDL
+
+gAndVeilBaseLimb:
+  type: OOT:LIMB
+  offset: 0xB2B0
+  symbol: gAndVeilBaseLimb
+  limb_type: Standard
+
+gAndWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xDA58
+  symbol: gAndWalkAnim
+
+
+object_andVtx_0000E0:
+  type: MM:ARRAY
+  offset: 0x0000E0
+  symbol: object_andVtx_0000E0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0002F0:
+  type: MM:ARRAY
+  offset: 0x0002F0
+  symbol: object_andVtx_0002F0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: object_andVtx_000360
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0006D0:
+  type: MM:ARRAY
+  offset: 0x0006D0
+  symbol: object_andVtx_0006D0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_000A50:
+  type: MM:ARRAY
+  offset: 0x000A50
+  symbol: object_andVtx_000A50
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_000E20:
+  type: MM:ARRAY
+  offset: 0x000E20
+  symbol: object_andVtx_000E20
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_000F30:
+  type: MM:ARRAY
+  offset: 0x000F30
+  symbol: object_andVtx_000F30
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0010A0:
+  type: MM:ARRAY
+  offset: 0x0010A0
+  symbol: object_andVtx_0010A0
+  count: 269
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_002170:
+  type: MM:ARRAY
+  offset: 0x002170
+  symbol: object_andVtx_002170
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_002410:
+  type: MM:ARRAY
+  offset: 0x002410
+  symbol: object_andVtx_002410
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0026A0:
+  type: MM:ARRAY
+  offset: 0x0026A0
+  symbol: object_andVtx_0026A0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_002850:
+  type: MM:ARRAY
+  offset: 0x002850
+  symbol: object_andVtx_002850
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_002A50:
+  type: MM:ARRAY
+  offset: 0x002A50
+  symbol: object_andVtx_002A50
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_002CE0:
+  type: MM:ARRAY
+  offset: 0x002CE0
+  symbol: object_andVtx_002CE0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003370:
+  type: MM:ARRAY
+  offset: 0x003370
+  symbol: object_andVtx_003370
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003410:
+  type: MM:ARRAY
+  offset: 0x003410
+  symbol: object_andVtx_003410
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003540:
+  type: MM:ARRAY
+  offset: 0x003540
+  symbol: object_andVtx_003540
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0035E0:
+  type: MM:ARRAY
+  offset: 0x0035E0
+  symbol: object_andVtx_0035E0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003750:
+  type: MM:ARRAY
+  offset: 0x003750
+  symbol: object_andVtx_003750
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0037A0:
+  type: MM:ARRAY
+  offset: 0x0037A0
+  symbol: object_andVtx_0037A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_0037E0:
+  type: MM:ARRAY
+  offset: 0x0037E0
+  symbol: object_andVtx_0037E0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003990:
+  type: MM:ARRAY
+  offset: 0x003990
+  symbol: object_andVtx_003990
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_003B90:
+  type: MM:ARRAY
+  offset: 0x003B90
+  symbol: object_andVtx_003B90
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_andVtx_004560:
+  type: MM:ARRAY
+  offset: 0x004560
+  symbol: object_andVtx_004560
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAndSkelLimbs:
+  type: BLOB
+  offset: 0xB31C
+  symbol: gAndSkelLimbs
+  size: 0

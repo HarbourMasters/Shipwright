@@ -1,0 +1,577 @@
+:config:
+  segments:
+    - [ 6, 0x014BF750 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014BF750 ]
+    - [ 9, 0x014BF750 ]
+    - [ 10, 0x014BF750 ]
+    - [ 11, 0x014BF750 ]
+    - [ 12, 0x014BF750 ]
+    - [ 13, 0x014BF750 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gEvanArmbandTex:
+  type: TEXTURE
+  offset: 0x10898
+  symbol: gEvanArmbandTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEvanEyeClosedTex:
+  type: TEXTURE
+  offset: 0x11918
+  symbol: gEvanEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanEyeHalfTex:
+  type: TEXTURE
+  offset: 0x11118
+  symbol: gEvanEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanEyeOpenTex:
+  type: TEXTURE
+  offset: 0x10918
+  symbol: gEvanEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanFingersTLUT:
+  type: TEXTURE
+  offset: 0xF018
+  symbol: gEvanFingersTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEvanFingersTex:
+  type: TEXTURE
+  offset: 0xFA18
+  symbol: gEvanFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gEvanHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x16980
+  symbol: gEvanHandsOnHipsAnim
+
+gEvanHeadDL:
+  type: GFX
+  offset: 0xDE78
+  symbol: gEvanHeadDL
+
+gEvanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x15188
+  symbol: gEvanHeadLimb
+  limb_type: Standard
+
+gEvanHeadphoneBoneTex:
+  type: TEXTURE
+  offset: 0x10498
+  symbol: gEvanHeadphoneBoneTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gEvanHeadphoneClamTex:
+  type: TEXTURE
+  offset: 0xFC98
+  symbol: gEvanHeadphoneClamTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanInspiredAnim:
+  type: OOT:ANIMATION
+  offset: 0x48D4
+  symbol: gEvanInspiredAnim
+
+gEvanKeyboardBoneTex:
+  type: TEXTURE
+  offset: 0x14728
+  symbol: gEvanKeyboardBoneTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanKeyboardDL:
+  type: GFX
+  offset: 0x13088
+  symbol: gEvanKeyboardDL
+
+gEvanKeyboardOtherKeysTex:
+  type: TEXTURE
+  offset: 0x14F28
+  symbol: gEvanKeyboardOtherKeysTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEvanKeyboardRibKeysTex:
+  type: TEXTURE
+  offset: 0x13728
+  symbol: gEvanKeyboardRibKeysTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanKeyboardSkullTex:
+  type: TEXTURE
+  offset: 0x13F28
+  symbol: gEvanKeyboardSkullTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanLeanOnKeyboardAndSighAnim:
+  type: OOT:ANIMATION
+  offset: 0x1621C
+  symbol: gEvanLeanOnKeyboardAndSighAnim
+
+gEvanLeanOnKeyboardAnim:
+  type: OOT:ANIMATION
+  offset: 0xA164
+  symbol: gEvanLeanOnKeyboardAnim
+
+gEvanLeftFootDL:
+  type: GFX
+  offset: 0xEE38
+  symbol: gEvanLeftFootDL
+
+gEvanLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1514C
+  symbol: gEvanLeftFootLimb
+  limb_type: Standard
+
+gEvanLeftForearmDL:
+  type: GFX
+  offset: 0xDB90
+  symbol: gEvanLeftForearmDL
+
+gEvanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x151B8
+  symbol: gEvanLeftForearmLimb
+  limb_type: Standard
+
+gEvanLeftHandDL:
+  type: GFX
+  offset: 0xDCE8
+  symbol: gEvanLeftHandDL
+
+gEvanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x151C4
+  symbol: gEvanLeftHandLimb
+  limb_type: Standard
+
+gEvanLeftShinDL:
+  type: GFX
+  offset: 0xEC98
+  symbol: gEvanLeftShinDL
+
+gEvanLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x15140
+  symbol: gEvanLeftShinLimb
+  limb_type: Standard
+
+gEvanLeftThighDL:
+  type: GFX
+  offset: 0xEA80
+  symbol: gEvanLeftThighDL
+
+gEvanLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x15134
+  symbol: gEvanLeftThighLimb
+  limb_type: Standard
+
+gEvanLeftUpperArmDL:
+  type: GFX
+  offset: 0xDA90
+  symbol: gEvanLeftUpperArmDL
+
+gEvanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x151AC
+  symbol: gEvanLeftUpperArmLimb
+  limb_type: Standard
+
+gEvanLowerHeadFinDL:
+  type: GFX
+  offset: 0xE400
+  symbol: gEvanLowerHeadFinDL
+
+gEvanLowerHeadFinLimb:
+  type: OOT:LIMB
+  offset: 0x151A0
+  symbol: gEvanLowerHeadFinLimb
+  limb_type: Standard
+
+gEvanMouthAndFinsTex:
+  type: TEXTURE
+  offset: 0xFB98
+  symbol: gEvanMouthAndFinsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEvanMouthEdgeTex:
+  type: TEXTURE
+  offset: 0xFB18
+  symbol: gEvanMouthEdgeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEvanPelvisDL:
+  type: GFX
+  offset: 0xD2B0
+  symbol: gEvanPelvisDL
+
+gEvanPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x15128
+  symbol: gEvanPelvisLimb
+  limb_type: Standard
+
+gEvanPlayLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0x7334
+  symbol: gEvanPlayLeftAnim
+
+gEvanPlayRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E04
+  symbol: gEvanPlayRightAnim
+
+gEvanRightFootDL:
+  type: GFX
+  offset: 0xE8A0
+  symbol: gEvanRightFootDL
+
+gEvanRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x15170
+  symbol: gEvanRightFootLimb
+  limb_type: Standard
+
+gEvanRightForearmDL:
+  type: GFX
+  offset: 0xD7A8
+  symbol: gEvanRightForearmDL
+
+gEvanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x151DC
+  symbol: gEvanRightForearmLimb
+  limb_type: Standard
+
+gEvanRightHandDL:
+  type: GFX
+  offset: 0xD900
+  symbol: gEvanRightHandDL
+
+gEvanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x151E8
+  symbol: gEvanRightHandLimb
+  limb_type: Standard
+
+gEvanRightShinDL:
+  type: GFX
+  offset: 0xE700
+  symbol: gEvanRightShinDL
+
+gEvanRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x15164
+  symbol: gEvanRightShinLimb
+  limb_type: Standard
+
+gEvanRightThighDL:
+  type: GFX
+  offset: 0xE4C8
+  symbol: gEvanRightThighDL
+
+gEvanRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x15158
+  symbol: gEvanRightThighLimb
+  limb_type: Standard
+
+gEvanRightUpperArmDL:
+  type: GFX
+  offset: 0xD658
+  symbol: gEvanRightUpperArmDL
+
+gEvanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x151D0
+  symbol: gEvanRightUpperArmLimb
+  limb_type: Standard
+
+gEvanSkel:
+  type: MM:SKELETON
+  offset: 0x15238
+  symbol: gEvanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gEvanSkinTex:
+  type: TEXTURE
+  offset: 0xFC18
+  symbol: gEvanSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEvanSlowPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CFC
+  symbol: gEvanSlowPlayAnim
+
+gEvanSpottedSkinTex:
+  type: TEXTURE
+  offset: 0xF218
+  symbol: gEvanSpottedSkinTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEvanTalkArmsOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x90CC
+  symbol: gEvanTalkArmsOutAnim
+
+gEvanTalkFootTapAnim:
+  type: OOT:ANIMATION
+  offset: 0x7C40
+  symbol: gEvanTalkFootTapAnim
+
+gEvanTalkHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x9830
+  symbol: gEvanTalkHandsOnHipsAnim
+
+gEvanTalkLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x8630
+  symbol: gEvanTalkLookDownAnim
+
+gEvanTorsoDL:
+  type: GFX
+  offset: 0xD3E0
+  symbol: gEvanTorsoDL
+
+gEvanTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1517C
+  symbol: gEvanTorsoLimb
+  limb_type: Standard
+
+gEvanUnknownWhiteTriangleDL:
+  type: GFX
+  offset: 0x136E0
+  symbol: gEvanUnknownWhiteTriangleDL
+
+gEvanUpperHeadFinDL:
+  type: GFX
+  offset: 0xE328
+  symbol: gEvanUpperHeadFinDL
+
+gEvanUpperHeadFinLimb:
+  type: OOT:LIMB
+  offset: 0x15194
+  symbol: gEvanUpperHeadFinLimb
+  limb_type: Standard
+
+
+object_zosVtx_00A180:
+  type: MM:ARRAY
+  offset: 0x00A180
+  symbol: object_zosVtx_00A180
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00A2F0:
+  type: MM:ARRAY
+  offset: 0x00A2F0
+  symbol: object_zosVtx_00A2F0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00A480:
+  type: MM:ARRAY
+  offset: 0x00A480
+  symbol: object_zosVtx_00A480
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00ADA0:
+  type: MM:ARRAY
+  offset: 0x00ADA0
+  symbol: object_zosVtx_00ADA0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00B020:
+  type: MM:ARRAY
+  offset: 0x00B020
+  symbol: object_zosVtx_00B020
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00B210:
+  type: MM:ARRAY
+  offset: 0x00B210
+  symbol: object_zosVtx_00B210
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00B4B0:
+  type: MM:ARRAY
+  offset: 0x00B4B0
+  symbol: object_zosVtx_00B4B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00B730:
+  type: MM:ARRAY
+  offset: 0x00B730
+  symbol: object_zosVtx_00B730
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00B920:
+  type: MM:ARRAY
+  offset: 0x00B920
+  symbol: object_zosVtx_00B920
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00BB10:
+  type: MM:ARRAY
+  offset: 0x00BB10
+  symbol: object_zosVtx_00BB10
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00C200:
+  type: MM:ARRAY
+  offset: 0x00C200
+  symbol: object_zosVtx_00C200
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00C410:
+  type: MM:ARRAY
+  offset: 0x00C410
+  symbol: object_zosVtx_00C410
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00C620:
+  type: MM:ARRAY
+  offset: 0x00C620
+  symbol: object_zosVtx_00C620
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00C950:
+  type: MM:ARRAY
+  offset: 0x00C950
+  symbol: object_zosVtx_00C950
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00CB60:
+  type: MM:ARRAY
+  offset: 0x00CB60
+  symbol: object_zosVtx_00CB60
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00CD70:
+  type: MM:ARRAY
+  offset: 0x00CD70
+  symbol: object_zosVtx_00CD70
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_00D0A0:
+  type: MM:ARRAY
+  offset: 0x00D0A0
+  symbol: object_zosVtx_00D0A0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_012118:
+  type: MM:ARRAY
+  offset: 0x012118
+  symbol: object_zosVtx_012118
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zosVtx_012148:
+  type: MM:ARRAY
+  offset: 0x012148
+  symbol: object_zosVtx_012148
+  count: 244
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEvanSkelLimbs:
+  type: BLOB
+  offset: 0x151F4
+  symbol: gEvanSkelLimbs
+  size: 0

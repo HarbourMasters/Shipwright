@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x00F58510 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F58510 ]
+    - [ 9, 0x00F58510 ]
+    - [ 10, 0x00F58510 ]
+    - [ 11, 0x00F58510 ]
+    - [ 12, 0x00F58510 ]
+    - [ 13, 0x00F58510 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiEmptyBottleCorkDL:
+  type: GFX
+  offset: 0x670
+  symbol: gGiEmptyBottleCorkDL
+
+gGiEmptyBottleGlassDL:
+  type: GFX
+  offset: 0x750
+  symbol: gGiEmptyBottleGlassDL
+
+
+object_gi_bottleVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottleVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bottleVtx_0001A0:
+  type: MM:ARRAY
+  offset: 0x0001A0
+  symbol: object_gi_bottleVtx_0001A0
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

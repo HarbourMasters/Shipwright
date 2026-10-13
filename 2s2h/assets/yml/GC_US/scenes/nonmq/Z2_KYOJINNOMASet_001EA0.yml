@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01DDE6A0 ]
+  directory: scenes/nonmq/Z2_KYOJINNOMA
+  external_files:
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMA.yml
+
+Z2_KYOJINNOMASet_001EA0:
+  type: MM:SCENE
+  offset: 0x1EA0
+  symbol: Z2_KYOJINNOMASet_001EA0
+  base_name: Z2_KYOJINNOMA

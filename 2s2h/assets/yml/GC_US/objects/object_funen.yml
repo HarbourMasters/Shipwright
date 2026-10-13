@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x01171DF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01171DF0 ]
+    - [ 9, 0x01171DF0 ]
+    - [ 10, 0x01171DF0 ]
+    - [ 11, 0x01171DF0 ]
+    - [ 12, 0x01171DF0 ]
+    - [ 13, 0x01171DF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gStoneTowerSmokeDL:
+  type: GFX
+  offset: 0xD0
+  symbol: gStoneTowerSmokeDL
+
+gStoneTowerSmokeTex:
+  type: TEXTURE
+  offset: 0x1C0
+  symbol: gStoneTowerSmokeTex
+  format: IA8
+  width: 32
+  height: 32
+
+
+object_funenVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_funenVtx_000000
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 6, 0x015F1ED0 ]
+
+gSkullKidAshamedLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x39F0
+  symbol: gSkullKidAshamedLoopAnim
+
+gSkullKidAshamedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x2CD8
+  symbol: gSkullKidAshamedStartAnim
+
+gSkullKidLaughAfterSniffAnim:
+  type: OOT:ANIMATION
+  offset: 0x1EDC
+  symbol: gSkullKidLaughAfterSniffAnim
+
+gSkullKidLookLeftLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x51C0
+  symbol: gSkullKidLookLeftLoopAnim
+
+gSkullKidLookLeftStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x4554
+  symbol: gSkullKidLookLeftStartAnim
+
+gSkullKidLookUpAtGiantsAnim:
+  type: OOT:ANIMATION
+  offset: 0x5F44
+  symbol: gSkullKidLookUpAtGiantsAnim
+
+gSkullKidSniffAnim:
+  type: OOT:ANIMATION
+  offset: 0x1374
+  symbol: gSkullKidSniffAnim
+

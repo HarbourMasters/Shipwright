@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x017E8CC0 ]
+  directory: scenes/nonmq/Z2_13HUBUKINOMITI
+  external_files:
+    - N64_US/scenes/nonmq/Z2_13HUBUKINOMITI.yml
+
+Z2_13HUBUKINOMITISet_002660:
+  type: MM:SCENE
+  offset: 0x2660
+  symbol: Z2_13HUBUKINOMITISet_002660
+  base_name: Z2_13HUBUKINOMITI

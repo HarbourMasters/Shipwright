@@ -1,0 +1,244 @@
+:config:
+  segments:
+    - [ 2, 0x017B28C0 ]
+
+Z2_MITURIN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_MITURIN
+
+
+Z2_MITURINPathwayList_000398:
+  type: MM:PATH
+  offset: 0x000398
+  symbol: Z2_MITURINPathwayList_000398
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1230, -1498, 0 ]
+        - [ 1230, -1185, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -90, 0, -90 ]
+        - [ -90, 0, 570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 570, 0, 150 ]
+        - [ 270, 0, 150 ]
+        - [ 270, 0, -570 ]
+
+Z2_MITURINPathwayList_0003A4:
+  type: MM:PATH
+  offset: 0x0003A4
+  symbol: Z2_MITURINPathwayList_0003A4
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1230, -1498, 0 ]
+        - [ 1230, -1185, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -90, 0, -90 ]
+        - [ -90, 0, 570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 570, 0, 150 ]
+        - [ 270, 0, 150 ]
+        - [ 270, 0, -570 ]
+
+Z2_MITURINPathwayList_0003B0:
+  type: MM:PATH
+  offset: 0x0003B0
+  symbol: Z2_MITURINPathwayList_0003B0
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1230, -1498, 0 ]
+        - [ 1230, -1185, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -90, 0, -90 ]
+        - [ -90, 0, 570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 570, 0, 150 ]
+        - [ 270, 0, 150 ]
+        - [ 270, 0, -570 ]
+
+Z2_MITURINCutsceneData_0003DC:
+  type: MM:CUTSCENE
+  offset: 0x0003DC
+  symbol: Z2_MITURINCutsceneData_0003DC
+  size: 3736
+
+Z2_MITURINCutsceneData_00127C:
+  type: MM:CUTSCENE
+  offset: 0x00127C
+  symbol: Z2_MITURINCutsceneData_00127C
+  size: 4872
+
+Z2_MITURINCutsceneData_00258C:
+  type: MM:CUTSCENE
+  offset: 0x00258C
+  symbol: Z2_MITURINCutsceneData_00258C
+  size: 424
+
+Z2_MITURINCutsceneData_002734:
+  type: MM:CUTSCENE
+  offset: 0x002734
+  symbol: Z2_MITURINCutsceneData_002734
+  size: 3044
+
+Z2_MITURINTexAnim_003A50TexScrollParams_003A40:
+  type: BLOB
+  offset: 0x003A40
+  symbol: Z2_MITURINTexAnim_003A50TexScrollParams_003A40
+  size: 0
+
+Z2_MITURINTexAnim_003A50TexScrollParams_003A48:
+  type: BLOB
+  offset: 0x003A48
+  symbol: Z2_MITURINTexAnim_003A50TexScrollParams_003A48
+  size: 0
+
+Z2_MITURINTexAnim_003A50:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x003A50
+  symbol: Z2_MITURINTexAnim_003A50
+
+Z2_MITURINCollisionHeader_012458:
+  type: MM:COLLISION
+  offset: 0x012458
+  symbol: Z2_MITURINCollisionHeader_012458
+
+Z2_MITURINTex_012490:
+  type: TEXTURE
+  offset: 0x012490
+  symbol: Z2_MITURINTex_012490
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_MITURINTex_012C90:
+  type: TEXTURE
+  offset: 0x012C90
+  symbol: Z2_MITURINTex_012C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_MITURINTex_013490:
+  type: TEXTURE
+  offset: 0x013490
+  symbol: Z2_MITURINTex_013490
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_MITURINTex_013C90:
+  type: TEXTURE
+  offset: 0x013C90
+  symbol: Z2_MITURINTex_013C90
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURINTex_014490:
+  type: TEXTURE
+  offset: 0x014490
+  symbol: Z2_MITURINTex_014490
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURINTex_014C90:
+  type: TEXTURE
+  offset: 0x014C90
+  symbol: Z2_MITURINTex_014C90
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_MITURINTex_015090:
+  type: TEXTURE
+  offset: 0x015090
+  symbol: Z2_MITURINTex_015090
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTex_015490:
+  type: TEXTURE
+  offset: 0x015490
+  symbol: Z2_MITURINTex_015490
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MITURINTex_015590:
+  type: TEXTURE
+  offset: 0x015590
+  symbol: Z2_MITURINTex_015590
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURINTex_015D90:
+  type: TEXTURE
+  offset: 0x015D90
+  symbol: Z2_MITURINTex_015D90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTex_016190:
+  type: TEXTURE
+  offset: 0x016190
+  symbol: Z2_MITURINTex_016190
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTex_016590:
+  type: TEXTURE
+  offset: 0x016590
+  symbol: Z2_MITURINTex_016590
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTex_016990:
+  type: TEXTURE
+  offset: 0x016990
+  symbol: Z2_MITURINTex_016990
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTex_016D90:
+  type: TEXTURE
+  offset: 0x016D90
+  symbol: Z2_MITURINTex_016D90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURINTLUT_017190:
+  type: TEXTURE
+  offset: 0x017190
+  symbol: Z2_MITURINTLUT_017190
+  format: RGBA16
+  width: 16
+  height: 16

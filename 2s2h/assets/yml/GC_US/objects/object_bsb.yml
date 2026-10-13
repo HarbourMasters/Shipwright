@@ -1,0 +1,622 @@
+:config:
+  segments:
+    - [ 6, 0x015A4E00 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015A4E00 ]
+    - [ 9, 0x015A4E00 ]
+    - [ 10, 0x015A4E00 ]
+    - [ 11, 0x015A4E00 ]
+    - [ 12, 0x015A4E00 ]
+    - [ 13, 0x015A4E00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_bsb_Anim_000400:
+  type: OOT:ANIMATION
+  offset: 0x400
+  symbol: object_bsb_Anim_000400
+
+object_bsb_Anim_000C50:
+  type: OOT:ANIMATION
+  offset: 0xC50
+  symbol: object_bsb_Anim_000C50
+
+object_bsb_Anim_000FF0:
+  type: OOT:ANIMATION
+  offset: 0xFF0
+  symbol: object_bsb_Anim_000FF0
+
+object_bsb_Anim_001390:
+  type: OOT:ANIMATION
+  offset: 0x1390
+  symbol: object_bsb_Anim_001390
+
+object_bsb_Anim_001CD8:
+  type: OOT:ANIMATION
+  offset: 0x1CD8
+  symbol: object_bsb_Anim_001CD8
+
+object_bsb_Anim_001F90:
+  type: OOT:ANIMATION
+  offset: 0x1F90
+  symbol: object_bsb_Anim_001F90
+
+object_bsb_Anim_002590:
+  type: OOT:ANIMATION
+  offset: 0x2590
+  symbol: object_bsb_Anim_002590
+
+object_bsb_Anim_002AF4:
+  type: OOT:ANIMATION
+  offset: 0x2AF4
+  symbol: object_bsb_Anim_002AF4
+
+object_bsb_Anim_003238:
+  type: OOT:ANIMATION
+  offset: 0x3238
+  symbol: object_bsb_Anim_003238
+
+object_bsb_Anim_003E1C:
+  type: OOT:ANIMATION
+  offset: 0x3E1C
+  symbol: object_bsb_Anim_003E1C
+
+object_bsb_Anim_004208:
+  type: OOT:ANIMATION
+  offset: 0x4208
+  symbol: object_bsb_Anim_004208
+
+object_bsb_Anim_0043A4:
+  type: OOT:ANIMATION
+  offset: 0x43A4
+  symbol: object_bsb_Anim_0043A4
+
+object_bsb_Anim_004510:
+  type: OOT:ANIMATION
+  offset: 0x4510
+  symbol: object_bsb_Anim_004510
+
+object_bsb_Anim_004894:
+  type: OOT:ANIMATION
+  offset: 0x4894
+  symbol: object_bsb_Anim_004894
+
+object_bsb_Anim_004E2C:
+  type: OOT:ANIMATION
+  offset: 0x4E2C
+  symbol: object_bsb_Anim_004E2C
+
+object_bsb_Anim_005440:
+  type: OOT:ANIMATION
+  offset: 0x5440
+  symbol: object_bsb_Anim_005440
+
+object_bsb_Anim_00606C:
+  type: OOT:ANIMATION
+  offset: 0x606C
+  symbol: object_bsb_Anim_00606C
+
+object_bsb_Anim_0065D8:
+  type: OOT:ANIMATION
+  offset: 0x65D8
+  symbol: object_bsb_Anim_0065D8
+
+object_bsb_Anim_006C48:
+  type: OOT:ANIMATION
+  offset: 0x6C48
+  symbol: object_bsb_Anim_006C48
+
+object_bsb_Anim_007120:
+  type: OOT:ANIMATION
+  offset: 0x7120
+  symbol: object_bsb_Anim_007120
+
+object_bsb_Anim_007B18:
+  type: OOT:ANIMATION
+  offset: 0x7B18
+  symbol: object_bsb_Anim_007B18
+
+object_bsb_Anim_0086BC:
+  type: OOT:ANIMATION
+  offset: 0x86BC
+  symbol: object_bsb_Anim_0086BC
+
+object_bsb_Anim_00C790:
+  type: OOT:ANIMATION
+  offset: 0xC790
+  symbol: object_bsb_Anim_00C790
+
+object_bsb_Anim_00CD88:
+  type: OOT:ANIMATION
+  offset: 0xCD88
+  symbol: object_bsb_Anim_00CD88
+
+object_bsb_Anim_00D3CC:
+  type: OOT:ANIMATION
+  offset: 0xD3CC
+  symbol: object_bsb_Anim_00D3CC
+
+object_bsb_DL_00A010:
+  type: GFX
+  offset: 0xA010
+  symbol: object_bsb_DL_00A010
+
+object_bsb_DL_00A0D8:
+  type: GFX
+  offset: 0xA0D8
+  symbol: object_bsb_DL_00A0D8
+
+object_bsb_DL_00A188:
+  type: GFX
+  offset: 0xA188
+  symbol: object_bsb_DL_00A188
+
+object_bsb_DL_00A230:
+  type: GFX
+  offset: 0xA230
+  symbol: object_bsb_DL_00A230
+
+object_bsb_DL_00A2F8:
+  type: GFX
+  offset: 0xA2F8
+  symbol: object_bsb_DL_00A2F8
+
+object_bsb_DL_00A3A8:
+  type: GFX
+  offset: 0xA3A8
+  symbol: object_bsb_DL_00A3A8
+
+object_bsb_DL_00A450:
+  type: GFX
+  offset: 0xA450
+  symbol: object_bsb_DL_00A450
+
+object_bsb_DL_00A5D0:
+  type: GFX
+  offset: 0xA5D0
+  symbol: object_bsb_DL_00A5D0
+
+object_bsb_DL_00A708:
+  type: GFX
+  offset: 0xA708
+  symbol: object_bsb_DL_00A708
+
+object_bsb_DL_00AE20:
+  type: GFX
+  offset: 0xAE20
+  symbol: object_bsb_DL_00AE20
+
+object_bsb_DL_00AEA8:
+  type: GFX
+  offset: 0xAEA8
+  symbol: object_bsb_DL_00AEA8
+
+object_bsb_DL_00B038:
+  type: GFX
+  offset: 0xB038
+  symbol: object_bsb_DL_00B038
+
+object_bsb_DL_00B100:
+  type: GFX
+  offset: 0xB100
+  symbol: object_bsb_DL_00B100
+
+object_bsb_DL_00B228:
+  type: GFX
+  offset: 0xB228
+  symbol: object_bsb_DL_00B228
+
+object_bsb_DL_00B2F8:
+  type: GFX
+  offset: 0xB2F8
+  symbol: object_bsb_DL_00B2F8
+
+object_bsb_DL_00B3C0:
+  type: GFX
+  offset: 0xB3C0
+  symbol: object_bsb_DL_00B3C0
+
+object_bsb_DL_00B4E8:
+  type: GFX
+  offset: 0xB4E8
+  symbol: object_bsb_DL_00B4E8
+
+object_bsb_DL_00B5B8:
+  type: GFX
+  offset: 0xB5B8
+  symbol: object_bsb_DL_00B5B8
+
+object_bsb_Matanimheader_00C298:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xC298
+  symbol: object_bsb_Matanimheader_00C298
+
+object_bsb_Skel_00C3E0:
+  type: MM:SKELETON
+  offset: 0xC3E0
+  symbol: object_bsb_Skel_00C3E0
+  limb_type: Standard
+  skel_type: Normal
+
+object_bsb_Standardlimb_00C2A0:
+  type: OOT:LIMB
+  offset: 0xC2A0
+  symbol: object_bsb_Standardlimb_00C2A0
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2AC:
+  type: OOT:LIMB
+  offset: 0xC2AC
+  symbol: object_bsb_Standardlimb_00C2AC
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2B8:
+  type: OOT:LIMB
+  offset: 0xC2B8
+  symbol: object_bsb_Standardlimb_00C2B8
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2C4:
+  type: OOT:LIMB
+  offset: 0xC2C4
+  symbol: object_bsb_Standardlimb_00C2C4
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2D0:
+  type: OOT:LIMB
+  offset: 0xC2D0
+  symbol: object_bsb_Standardlimb_00C2D0
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2DC:
+  type: OOT:LIMB
+  offset: 0xC2DC
+  symbol: object_bsb_Standardlimb_00C2DC
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2E8:
+  type: OOT:LIMB
+  offset: 0xC2E8
+  symbol: object_bsb_Standardlimb_00C2E8
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C2F4:
+  type: OOT:LIMB
+  offset: 0xC2F4
+  symbol: object_bsb_Standardlimb_00C2F4
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C300:
+  type: OOT:LIMB
+  offset: 0xC300
+  symbol: object_bsb_Standardlimb_00C300
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C30C:
+  type: OOT:LIMB
+  offset: 0xC30C
+  symbol: object_bsb_Standardlimb_00C30C
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C318:
+  type: OOT:LIMB
+  offset: 0xC318
+  symbol: object_bsb_Standardlimb_00C318
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C324:
+  type: OOT:LIMB
+  offset: 0xC324
+  symbol: object_bsb_Standardlimb_00C324
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C330:
+  type: OOT:LIMB
+  offset: 0xC330
+  symbol: object_bsb_Standardlimb_00C330
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C33C:
+  type: OOT:LIMB
+  offset: 0xC33C
+  symbol: object_bsb_Standardlimb_00C33C
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C348:
+  type: OOT:LIMB
+  offset: 0xC348
+  symbol: object_bsb_Standardlimb_00C348
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C354:
+  type: OOT:LIMB
+  offset: 0xC354
+  symbol: object_bsb_Standardlimb_00C354
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C360:
+  type: OOT:LIMB
+  offset: 0xC360
+  symbol: object_bsb_Standardlimb_00C360
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C36C:
+  type: OOT:LIMB
+  offset: 0xC36C
+  symbol: object_bsb_Standardlimb_00C36C
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C378:
+  type: OOT:LIMB
+  offset: 0xC378
+  symbol: object_bsb_Standardlimb_00C378
+  limb_type: Standard
+
+object_bsb_Standardlimb_00C384:
+  type: OOT:LIMB
+  offset: 0xC384
+  symbol: object_bsb_Standardlimb_00C384
+  limb_type: Standard
+
+object_bsb_Tex_00B660:
+  type: TEXTURE
+  offset: 0xB660
+  symbol: object_bsb_Tex_00B660
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_bsb_Tex_00B760:
+  type: TEXTURE
+  offset: 0xB760
+  symbol: object_bsb_Tex_00B760
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_bsb_Tex_00B860:
+  type: TEXTURE
+  offset: 0xB860
+  symbol: object_bsb_Tex_00B860
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bsb_Tex_00B8E0:
+  type: TEXTURE
+  offset: 0xB8E0
+  symbol: object_bsb_Tex_00B8E0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bsb_Tex_00BAE0:
+  type: TEXTURE
+  offset: 0xBAE0
+  symbol: object_bsb_Tex_00BAE0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_bsb_Tex_00BBE0:
+  type: TEXTURE
+  offset: 0xBBE0
+  symbol: object_bsb_Tex_00BBE0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bsb_Tex_00BC60:
+  type: TEXTURE
+  offset: 0xBC60
+  symbol: object_bsb_Tex_00BC60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bsb_Tex_00BE60:
+  type: TEXTURE
+  offset: 0xBE60
+  symbol: object_bsb_Tex_00BE60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bsb_Tex_00C060:
+  type: TEXTURE
+  offset: 0xC060
+  symbol: object_bsb_Tex_00C060
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_bsb_Tex_00C160:
+  type: TEXTURE
+  offset: 0xC160
+  symbol: object_bsb_Tex_00C160
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bsb_Tex_00C1E0:
+  type: TEXTURE
+  offset: 0xC1E0
+  symbol: object_bsb_Tex_00C1E0
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_bsbVtx_0086D0:
+  type: MM:ARRAY
+  offset: 0x0086D0
+  symbol: object_bsbVtx_0086D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008720:
+  type: MM:ARRAY
+  offset: 0x008720
+  symbol: object_bsbVtx_008720
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008780:
+  type: MM:ARRAY
+  offset: 0x008780
+  symbol: object_bsbVtx_008780
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008810:
+  type: MM:ARRAY
+  offset: 0x008810
+  symbol: object_bsbVtx_008810
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008860:
+  type: MM:ARRAY
+  offset: 0x008860
+  symbol: object_bsbVtx_008860
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_0088C0:
+  type: MM:ARRAY
+  offset: 0x0088C0
+  symbol: object_bsbVtx_0088C0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008950:
+  type: MM:ARRAY
+  offset: 0x008950
+  symbol: object_bsbVtx_008950
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008AF0:
+  type: MM:ARRAY
+  offset: 0x008AF0
+  symbol: object_bsbVtx_008AF0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008CB0:
+  type: MM:ARRAY
+  offset: 0x008CB0
+  symbol: object_bsbVtx_008CB0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_008D10:
+  type: MM:ARRAY
+  offset: 0x008D10
+  symbol: object_bsbVtx_008D10
+  count: 172
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_0097D0:
+  type: MM:ARRAY
+  offset: 0x0097D0
+  symbol: object_bsbVtx_0097D0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009910:
+  type: MM:ARRAY
+  offset: 0x009910
+  symbol: object_bsbVtx_009910
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009A00:
+  type: MM:ARRAY
+  offset: 0x009A00
+  symbol: object_bsbVtx_009A00
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009AF0:
+  type: MM:ARRAY
+  offset: 0x009AF0
+  symbol: object_bsbVtx_009AF0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009C30:
+  type: MM:ARRAY
+  offset: 0x009C30
+  symbol: object_bsbVtx_009C30
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009D20:
+  type: MM:ARRAY
+  offset: 0x009D20
+  symbol: object_bsbVtx_009D20
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009E10:
+  type: MM:ARRAY
+  offset: 0x009E10
+  symbol: object_bsbVtx_009E10
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsbVtx_009FC0:
+  type: MM:ARRAY
+  offset: 0x009FC0
+  symbol: object_bsbVtx_009FC0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsb_Matanimheader_00C298ColorParams_00C288:
+  type: BLOB
+  offset: 0x00C288
+  symbol: object_bsb_Matanimheader_00C298ColorParams_00C288
+  size: 0
+
+object_bsb_Skel_00C3E0Limbs:
+  type: BLOB
+  offset: 0xC390
+  symbol: object_bsb_Skel_00C3E0Limbs
+  size: 0

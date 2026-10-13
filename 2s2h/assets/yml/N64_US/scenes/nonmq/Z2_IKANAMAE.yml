@@ -1,0 +1,249 @@
+:config:
+  segments:
+    - [ 2, 0x01C9F9C0 ]
+
+Z2_IKANAMAE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_IKANAMAE
+
+
+Z2_IKANAMAEPathwayList_000350:
+  type: MM:PATH
+  offset: 0x000350
+  symbol: Z2_IKANAMAEPathwayList_000350
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -3970, 0, -762 ]
+        - [ -2749, 0, -79 ]
+        - [ -1549, 10, -683 ]
+        - [ 197, 200, -408 ]
+        - [ 1311, 200, -920 ]
+        - [ 1376, 200, 196 ]
+        - [ -424, 200, -759 ]
+        - [ -325, 200, -293 ]
+        - [ 766, 200, -675 ]
+        - [ 1046, 200, -227 ]
+        - [ 1128, 200, -1 ]
+        - [ 1309, 200, 488 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3775, 1462, -1171 ]
+        - [ 3711, 1383, -1095 ]
+        - [ 3640, 567, -976 ]
+        - [ 3283, 528, -750 ]
+        - [ 2924, 488, -608 ]
+        - [ 2731, 475, -494 ]
+        - [ 2547, 475, -334 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4443, 1464, 45 ]
+        - [ 4446, 1472, 9 ]
+        - [ 4408, 575, -54 ]
+        - [ 4097, 575, -365 ]
+        - [ 3602, 575, -627 ]
+        - [ 3362, 537, -959 ]
+        - [ 3199, 519, -1093 ]
+
+Z2_IKANAMAEPathwayList_000398:
+  type: MM:PATH
+  offset: 0x000398
+  symbol: Z2_IKANAMAEPathwayList_000398
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -3970, 0, -762 ]
+        - [ -2749, 0, -79 ]
+        - [ -1549, 10, -683 ]
+        - [ 197, 200, -408 ]
+        - [ 1311, 200, -920 ]
+        - [ 1376, 200, 196 ]
+        - [ -424, 200, -759 ]
+        - [ -325, 200, -293 ]
+        - [ 766, 200, -675 ]
+        - [ 1046, 200, -227 ]
+        - [ 1128, 200, -1 ]
+        - [ 1309, 200, 488 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3775, 1462, -1171 ]
+        - [ 3711, 1383, -1095 ]
+        - [ 3640, 567, -976 ]
+        - [ 3283, 528, -750 ]
+        - [ 2924, 488, -608 ]
+        - [ 2731, 475, -494 ]
+        - [ 2547, 475, -334 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4443, 1464, 45 ]
+        - [ 4446, 1472, 9 ]
+        - [ 4408, 575, -54 ]
+        - [ 4097, 575, -365 ]
+        - [ 3602, 575, -627 ]
+        - [ 3362, 537, -959 ]
+        - [ 3199, 519, -1093 ]
+
+Z2_IKANAMAEPathwayList_0003C4:
+  type: MM:PATH
+  offset: 0x0003C4
+  symbol: Z2_IKANAMAEPathwayList_0003C4
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -3970, 0, -762 ]
+        - [ -2749, 0, -79 ]
+        - [ -1549, 10, -683 ]
+        - [ 197, 200, -408 ]
+        - [ 1311, 200, -920 ]
+        - [ 1376, 200, 196 ]
+        - [ -424, 200, -759 ]
+        - [ -325, 200, -293 ]
+        - [ 766, 200, -675 ]
+        - [ 1046, 200, -227 ]
+        - [ 1128, 200, -1 ]
+        - [ 1309, 200, 488 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3775, 1462, -1171 ]
+        - [ 3711, 1383, -1095 ]
+        - [ 3640, 567, -976 ]
+        - [ 3283, 528, -750 ]
+        - [ 2924, 488, -608 ]
+        - [ 2731, 475, -494 ]
+        - [ 2547, 475, -334 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4443, 1464, 45 ]
+        - [ 4446, 1472, 9 ]
+        - [ 4408, 575, -54 ]
+        - [ 4097, 575, -365 ]
+        - [ 3602, 575, -627 ]
+        - [ 3362, 537, -959 ]
+        - [ 3199, 519, -1093 ]
+
+Z2_IKANAMAETexAnim_0005E0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0005E0
+  symbol: Z2_IKANAMAETexAnim_0005E0
+
+Z2_IKANAMAECollisionHeader_002824:
+  type: MM:COLLISION
+  offset: 0x002824
+  symbol: Z2_IKANAMAECollisionHeader_002824
+
+Z2_IKANAMAETex_002850:
+  type: TEXTURE
+  offset: 0x002850
+  symbol: Z2_IKANAMAETex_002850
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_IKANAMAETex_003050:
+  type: TEXTURE
+  offset: 0x003050
+  symbol: Z2_IKANAMAETex_003050
+  format: I4
+  width: 32
+  height: 128
+
+Z2_IKANAMAETex_003850:
+  type: TEXTURE
+  offset: 0x003850
+  symbol: Z2_IKANAMAETex_003850
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_IKANAMAETex_004050:
+  type: TEXTURE
+  offset: 0x004050
+  symbol: Z2_IKANAMAETex_004050
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_IKANAMAETex_004850:
+  type: TEXTURE
+  offset: 0x004850
+  symbol: Z2_IKANAMAETex_004850
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_IKANAMAETex_005050:
+  type: TEXTURE
+  offset: 0x005050
+  symbol: Z2_IKANAMAETex_005050
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_IKANAMAETex_005850:
+  type: TEXTURE
+  offset: 0x005850
+  symbol: Z2_IKANAMAETex_005850
+  format: I4
+  width: 64
+  height: 64
+
+Z2_IKANAMAETex_006050:
+  type: TEXTURE
+  offset: 0x006050
+  symbol: Z2_IKANAMAETex_006050
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_IKANAMAETex_006850:
+  type: TEXTURE
+  offset: 0x006850
+  symbol: Z2_IKANAMAETex_006850
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_IKANAMAETex_007050:
+  type: TEXTURE
+  offset: 0x007050
+  symbol: Z2_IKANAMAETex_007050
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_IKANAMAETex_007850:
+  type: TEXTURE
+  offset: 0x007850
+  symbol: Z2_IKANAMAETex_007850
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_IKANAMAETLUT_008050:
+  type: TEXTURE
+  offset: 0x008050
+  symbol: Z2_IKANAMAETLUT_008050
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_IKANAMAETLUT_008070:
+  type: TEXTURE
+  offset: 0x008070
+  symbol: Z2_IKANAMAETLUT_008070
+  format: RGBA16
+  width: 4
+  height: 4

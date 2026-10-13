@@ -1,0 +1,134 @@
+:config:
+  segments:
+    - [ 6, 0x01517640 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01517640 ]
+    - [ 9, 0x01517640 ]
+    - [ 10, 0x01517640 ]
+    - [ 11, 0x01517640 ]
+    - [ 12, 0x01517640 ]
+    - [ 13, 0x01517640 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_last_obj_Colheader_000288:
+  type: MM:COLLISION
+  offset: 0x288
+  symbol: object_last_obj_Colheader_000288
+
+object_last_obj_Colheader_001450:
+  type: MM:COLLISION
+  offset: 0x1450
+  symbol: object_last_obj_Colheader_001450
+
+object_last_obj_DL_000090:
+  type: GFX
+  offset: 0x90
+  symbol: object_last_obj_DL_000090
+
+object_last_obj_DL_000098:
+  type: GFX
+  offset: 0x98
+  symbol: object_last_obj_DL_000098
+
+object_last_obj_DL_0001A0:
+  type: GFX
+  offset: 0x1A0
+  symbol: object_last_obj_DL_0001A0
+
+object_last_obj_DL_0001A8:
+  type: GFX
+  offset: 0x1A8
+  symbol: object_last_obj_DL_0001A8
+
+object_last_obj_DL_001310:
+  type: GFX
+  offset: 0x1310
+  symbol: object_last_obj_DL_001310
+
+object_last_obj_DL_001318:
+  type: GFX
+  offset: 0x1318
+  symbol: object_last_obj_DL_001318
+
+object_last_obj_DL_0039C0:
+  type: GFX
+  offset: 0x39C0
+  symbol: object_last_obj_DL_0039C0
+
+object_last_obj_TLUT_001700:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: object_last_obj_TLUT_001700
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_last_obj_Tex_0002C0:
+  type: TEXTURE
+  offset: 0x2C0
+  symbol: object_last_obj_Tex_0002C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_last_obj_Tex_0018A0:
+  type: TEXTURE
+  offset: 0x18A0
+  symbol: object_last_obj_Tex_0018A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_last_obj_Tex_0030A0:
+  type: TEXTURE
+  offset: 0x30A0
+  symbol: object_last_obj_Tex_0030A0
+  format: CI4
+  width: 64
+  height: 64
+
+object_last_obj_Tex_003B20:
+  type: TEXTURE
+  offset: 0x3B20
+  symbol: object_last_obj_Tex_003B20
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_last_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_last_objVtx_000000
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_last_objVtx_000160:
+  type: MM:ARRAY
+  offset: 0x000160
+  symbol: object_last_objVtx_000160
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_last_objVtx_0012C0:
+  type: MM:ARRAY
+  offset: 0x0012C0
+  symbol: object_last_objVtx_0012C0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_last_objVtx_0038A0:
+  type: MM:ARRAY
+  offset: 0x0038A0
+  symbol: object_last_objVtx_0038A0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

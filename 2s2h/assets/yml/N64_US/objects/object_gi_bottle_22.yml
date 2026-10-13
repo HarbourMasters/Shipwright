@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x013FD2C0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x013FD2C0 ]
+    - [ 9, 0x013FD2C0 ]
+    - [ 10, 0x013FD2C0 ]
+    - [ 11, 0x013FD2C0 ]
+    - [ 12, 0x013FD2C0 ]
+    - [ 13, 0x013FD2C0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiHylianLoachBottleContentsDL:
+  type: GFX
+  offset: 0xFB8
+  symbol: gGiHylianLoachBottleContentsDL
+
+gGiHylianLoachBottleCorkTex:
+  type: TEXTURE
+  offset: 0x11C0
+  symbol: gGiHylianLoachBottleCorkTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiHylianLoachBottleGlassCorkWaterDL:
+  type: GFX
+  offset: 0xC90
+  symbol: gGiHylianLoachBottleGlassCorkWaterDL
+
+gGiHylianLoachBottleGlassTex:
+  type: TEXTURE
+  offset: 0x16C0
+  symbol: gGiHylianLoachBottleGlassTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiHylianLoachBottleLoachTex:
+  type: TEXTURE
+  offset: 0x15C0
+  symbol: gGiHylianLoachBottleLoachTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiHylianLoachBottleWaterTex:
+  type: TEXTURE
+  offset: 0x18C0
+  symbol: gGiHylianLoachBottleWaterTex
+  format: I4
+  width: 32
+  height: 32
+
+
+object_gi_bottle_22Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottle_22Vtx_000000
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bottle_22Vtx_0002E0:
+  type: MM:ARRAY
+  offset: 0x0002E0
+  symbol: object_gi_bottle_22Vtx_0002E0
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

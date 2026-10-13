@@ -1,0 +1,1453 @@
+:config:
+  segments:
+    - [ 2, 0x01E27310 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/Z2_ICHIBASet_003A60.yml
+Z2_ICHIBA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_ICHIBA
+
+
+Z2_ICHIBAPathwayList_000434:
+  type: MM:PATH
+  offset: 0x000434
+  symbol: Z2_ICHIBAPathwayList_000434
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_000470:
+  type: MM:PATH
+  offset: 0x000470
+  symbol: Z2_ICHIBAPathwayList_000470
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_00047C:
+  type: MM:PATH
+  offset: 0x00047C
+  symbol: Z2_ICHIBAPathwayList_00047C
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_0004B8:
+  type: MM:PATH
+  offset: 0x0004B8
+  symbol: Z2_ICHIBAPathwayList_0004B8
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_00053C:
+  type: MM:PATH
+  offset: 0x00053C
+  symbol: Z2_ICHIBAPathwayList_00053C
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_00059C:
+  type: MM:PATH
+  offset: 0x00059C
+  symbol: Z2_ICHIBAPathwayList_00059C
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_0005A8:
+  type: MM:PATH
+  offset: 0x0005A8
+  symbol: Z2_ICHIBAPathwayList_0005A8
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_0005B4:
+  type: MM:PATH
+  offset: 0x0005B4
+  symbol: Z2_ICHIBAPathwayList_0005B4
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBAPathwayList_0005FC:
+  type: MM:PATH
+  offset: 0x0005FC
+  symbol: Z2_ICHIBAPathwayList_0005FC
+  num_paths: 9
+  paths:
+    - additional_path_index: 2
+      custom_value: 13
+      points:
+        - [ -1598, 200, -1480 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 5
+      custom_value: 0
+      points:
+        - [ -2038, 200, -1045 ]
+        - [ -1891, 198, -926 ]
+        - [ -1777, 194, -736 ]
+        - [ -1749, 177, -663 ]
+        - [ -1691, 141, -527 ]
+        - [ -1632, 105, -429 ]
+        - [ -1560, 105, -366 ]
+        - [ -1430, 55, -264 ]
+        - [ -1229, 10, -215 ]
+        - [ -1169, 0, -210 ]
+        - [ -1124, 0, -187 ]
+        - [ -1124, 0, -106 ]
+        - [ -1187, 0, -68 ]
+        - [ -1322, 15, -95 ]
+        - [ -1449, 45, -93 ]
+        - [ -1493, 45, -39 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1584, 200, -1312 ]
+        - [ -1553, 200, -1254 ]
+        - [ -1495, 200, -1188 ]
+        - [ -1401, 200, -1127 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1000, 100, -1075 ]
+        - [ -731, 100, -1079 ]
+        - [ -581, 100, -1001 ]
+        - [ -580, 53, -900 ]
+    - additional_path_index: 4
+      custom_value: 23
+      points:
+        - [ -580, 53, -900 ]
+        - [ -591, 100, -1000 ]
+        - [ -727, 100, -1069 ]
+        - [ -1000, 100, -1075 ]
+        - [ -1200, 200, -1081 ]
+        - [ -1399, 200, -1135 ]
+        - [ -1488, 200, -1193 ]
+        - [ -1548, 200, -1259 ]
+        - [ -1577, 200, -1315 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 8
+      custom_value: 11
+      points:
+        - [ -837, 0, -96 ]
+        - [ -910, 0, -96 ]
+        - [ -999, 0, -96 ]
+        - [ -1049, 0, -141 ]
+        - [ -1111, 0, -186 ]
+        - [ -1180, 14, -206 ]
+        - [ -1255, 14, -211 ]
+        - [ -1348, 42, -241 ]
+        - [ -1434, 66, -281 ]
+        - [ -1501, 74, -311 ]
+        - [ -1579, 106, -376 ]
+        - [ -1639, 105, -449 ]
+        - [ -1690, 148, -549 ]
+        - [ -1726, 168, -635 ]
+        - [ -1774, 195, -746 ]
+        - [ -1785, 200, -852 ]
+        - [ -1781, 200, -955 ]
+        - [ -1754, 200, -1050 ]
+        - [ -1719, 200, -1146 ]
+        - [ -1683, 200, -1225 ]
+        - [ -1646, 200, -1289 ]
+        - [ -1598, 200, -1367 ]
+    - additional_path_index: 6
+      custom_value: 1
+      points:
+        - [ -1493, 45, -39 ]
+        - [ -1532, 46, 60 ]
+    - additional_path_index: 7
+      custom_value: 2
+      points:
+        - [ -1541, 45, 60 ]
+        - [ -1502, 45, -46 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -1502, 45, -47 ]
+        - [ -1452, 45, -222 ]
+        - [ -1449, 60, -271 ]
+        - [ -1560, 102, -336 ]
+        - [ -1620, 105, -392 ]
+        - [ -1661, 105, -435 ]
+        - [ -1698, 142, -529 ]
+        - [ -1754, 176, -659 ]
+        - [ -1791, 195, -748 ]
+        - [ -1894, 198, -921 ]
+        - [ -2034, 200, -1036 ]
+        - [ -2273, 201, -1055 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1598, 200, -1367 ]
+        - [ -1598, 200, -1480 ]
+
+Z2_ICHIBACutsceneData_000650:
+  type: MM:CUTSCENE
+  offset: 0x000650
+  symbol: Z2_ICHIBACutsceneData_000650
+  size: 3676
+
+Z2_ICHIBACutsceneData_0014B0:
+  type: MM:CUTSCENE
+  offset: 0x0014B0
+  symbol: Z2_ICHIBACutsceneData_0014B0
+  size: 440
+
+Z2_ICHIBACutsceneData_001670:
+  type: MM:CUTSCENE
+  offset: 0x001670
+  symbol: Z2_ICHIBACutsceneData_001670
+  size: 456
+
+Z2_ICHIBATexAnim_001A80:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001A80
+  symbol: Z2_ICHIBATexAnim_001A80
+
+Z2_ICHIBACollisionHeader_003A28:
+  type: MM:COLLISION
+  offset: 0x003A28
+  symbol: Z2_ICHIBACollisionHeader_003A28
+
+Z2_ICHIBACutsceneData_003BC0:
+  type: MM:CUTSCENE
+  offset: 0x003BC0
+  symbol: Z2_ICHIBACutsceneData_003BC0
+  size: 576
+
+Z2_ICHIBATex_003E40:
+  type: TEXTURE
+  offset: 0x003E40
+  symbol: Z2_ICHIBATex_003E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_004640:
+  type: TEXTURE
+  offset: 0x004640
+  symbol: Z2_ICHIBATex_004640
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_004E40:
+  type: TEXTURE
+  offset: 0x004E40
+  symbol: Z2_ICHIBATex_004E40
+  format: I4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_005640:
+  type: TEXTURE
+  offset: 0x005640
+  symbol: Z2_ICHIBATex_005640
+  format: I4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_005E40:
+  type: TEXTURE
+  offset: 0x005E40
+  symbol: Z2_ICHIBATex_005E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_006640:
+  type: TEXTURE
+  offset: 0x006640
+  symbol: Z2_ICHIBATex_006640
+  format: I8
+  width: 16
+  height: 32
+
+Z2_ICHIBATex_006840:
+  type: TEXTURE
+  offset: 0x006840
+  symbol: Z2_ICHIBATex_006840
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_007040:
+  type: TEXTURE
+  offset: 0x007040
+  symbol: Z2_ICHIBATex_007040
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_007840:
+  type: TEXTURE
+  offset: 0x007840
+  symbol: Z2_ICHIBATex_007840
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_008040:
+  type: TEXTURE
+  offset: 0x008040
+  symbol: Z2_ICHIBATex_008040
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_008840:
+  type: TEXTURE
+  offset: 0x008840
+  symbol: Z2_ICHIBATex_008840
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_009040:
+  type: TEXTURE
+  offset: 0x009040
+  symbol: Z2_ICHIBATex_009040
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_ICHIBATex_009840:
+  type: TEXTURE
+  offset: 0x009840
+  symbol: Z2_ICHIBATex_009840
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_ICHIBATex_0098C0:
+  type: TEXTURE
+  offset: 0x0098C0
+  symbol: Z2_ICHIBATex_0098C0
+  format: CI4
+  width: 64
+  height: 32
+
+Z2_ICHIBATex_009CC0:
+  type: TEXTURE
+  offset: 0x009CC0
+  symbol: Z2_ICHIBATex_009CC0
+  format: IA8
+  width: 16
+  height: 16
+
+Z2_ICHIBATex_009DC0:
+  type: TEXTURE
+  offset: 0x009DC0
+  symbol: Z2_ICHIBATex_009DC0
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_ICHIBATex_009E40:
+  type: TEXTURE
+  offset: 0x009E40
+  symbol: Z2_ICHIBATex_009E40
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_ICHIBATex_00A040:
+  type: TEXTURE
+  offset: 0x00A040
+  symbol: Z2_ICHIBATex_00A040
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_ICHIBATex_00A440:
+  type: TEXTURE
+  offset: 0x00A440
+  symbol: Z2_ICHIBATex_00A440
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_ICHIBATex_00B440:
+  type: TEXTURE
+  offset: 0x00B440
+  symbol: Z2_ICHIBATex_00B440
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_ICHIBATex_00C440:
+  type: TEXTURE
+  offset: 0x00C440
+  symbol: Z2_ICHIBATex_00C440
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_00CC40:
+  type: TEXTURE
+  offset: 0x00CC40
+  symbol: Z2_ICHIBATex_00CC40
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_ICHIBATex_00DC40:
+  type: TEXTURE
+  offset: 0x00DC40
+  symbol: Z2_ICHIBATex_00DC40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_00E440:
+  type: TEXTURE
+  offset: 0x00E440
+  symbol: Z2_ICHIBATex_00E440
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_00EC40:
+  type: TEXTURE
+  offset: 0x00EC40
+  symbol: Z2_ICHIBATex_00EC40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_00F440:
+  type: TEXTURE
+  offset: 0x00F440
+  symbol: Z2_ICHIBATex_00F440
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_ICHIBATex_00F640:
+  type: TEXTURE
+  offset: 0x00F640
+  symbol: Z2_ICHIBATex_00F640
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_00FE40:
+  type: TEXTURE
+  offset: 0x00FE40
+  symbol: Z2_ICHIBATex_00FE40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_010640:
+  type: TEXTURE
+  offset: 0x010640
+  symbol: Z2_ICHIBATex_010640
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATex_010E40:
+  type: TEXTURE
+  offset: 0x010E40
+  symbol: Z2_ICHIBATex_010E40
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_ICHIBATex_010EC0:
+  type: TEXTURE
+  offset: 0x010EC0
+  symbol: Z2_ICHIBATex_010EC0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_ICHIBATex_0116C0:
+  type: TEXTURE
+  offset: 0x0116C0
+  symbol: Z2_ICHIBATex_0116C0
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_ICHIBATex_0126C0:
+  type: TEXTURE
+  offset: 0x0126C0
+  symbol: Z2_ICHIBATex_0126C0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_012EC0:
+  type: TEXTURE
+  offset: 0x012EC0
+  symbol: Z2_ICHIBATex_012EC0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_0136C0:
+  type: TEXTURE
+  offset: 0x0136C0
+  symbol: Z2_ICHIBATex_0136C0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_013EC0:
+  type: TEXTURE
+  offset: 0x013EC0
+  symbol: Z2_ICHIBATex_013EC0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_ICHIBATex_0140C0:
+  type: TEXTURE
+  offset: 0x0140C0
+  symbol: Z2_ICHIBATex_0140C0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_ICHIBATex_0144C0:
+  type: TEXTURE
+  offset: 0x0144C0
+  symbol: Z2_ICHIBATex_0144C0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_ICHIBATex_014CC0:
+  type: TEXTURE
+  offset: 0x014CC0
+  symbol: Z2_ICHIBATex_014CC0
+  format: I4
+  width: 16
+  height: 16
+
+Z2_ICHIBATex_014D40:
+  type: TEXTURE
+  offset: 0x014D40
+  symbol: Z2_ICHIBATex_014D40
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_ICHIBATex_015140:
+  type: TEXTURE
+  offset: 0x015140
+  symbol: Z2_ICHIBATex_015140
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_ICHIBATex_015540:
+  type: TEXTURE
+  offset: 0x015540
+  symbol: Z2_ICHIBATex_015540
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_ICHIBATLUT_015D40:
+  type: TEXTURE
+  offset: 0x015D40
+  symbol: Z2_ICHIBATLUT_015D40
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015D60:
+  type: TEXTURE
+  offset: 0x015D60
+  symbol: Z2_ICHIBATLUT_015D60
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015D80:
+  type: TEXTURE
+  offset: 0x015D80
+  symbol: Z2_ICHIBATLUT_015D80
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015DA0:
+  type: TEXTURE
+  offset: 0x015DA0
+  symbol: Z2_ICHIBATLUT_015DA0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015DC0:
+  type: TEXTURE
+  offset: 0x015DC0
+  symbol: Z2_ICHIBATLUT_015DC0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015DE0:
+  type: TEXTURE
+  offset: 0x015DE0
+  symbol: Z2_ICHIBATLUT_015DE0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015E00:
+  type: TEXTURE
+  offset: 0x015E00
+  symbol: Z2_ICHIBATLUT_015E00
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_ICHIBATLUT_015E20:
+  type: TEXTURE
+  offset: 0x015E20
+  symbol: Z2_ICHIBATLUT_015E20
+  format: RGBA16
+  width: 4
+  height: 4

@@ -1,0 +1,163 @@
+:config:
+  segments:
+    - [ 2, 0x01CCE700 ]
+
+Z2_MAP_SHOP:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_MAP_SHOP
+
+
+Z2_MAP_SHOPTexAnim_000380:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000380
+  symbol: Z2_MAP_SHOPTexAnim_000380
+
+Z2_MAP_SHOPCollisionHeader_001D50:
+  type: MM:COLLISION
+  offset: 0x001D50
+  symbol: Z2_MAP_SHOPCollisionHeader_001D50
+
+Z2_MAP_SHOPTex_001D80:
+  type: TEXTURE
+  offset: 0x001D80
+  symbol: Z2_MAP_SHOPTex_001D80
+  format: CI8
+  width: 32
+  height: 4
+
+Z2_MAP_SHOPTex_001E00:
+  type: TEXTURE
+  offset: 0x001E00
+  symbol: Z2_MAP_SHOPTex_001E00
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_MAP_SHOPTex_002000:
+  type: TEXTURE
+  offset: 0x002000
+  symbol: Z2_MAP_SHOPTex_002000
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_MAP_SHOPTex_002200:
+  type: TEXTURE
+  offset: 0x002200
+  symbol: Z2_MAP_SHOPTex_002200
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_MAP_SHOPTex_002A00:
+  type: TEXTURE
+  offset: 0x002A00
+  symbol: Z2_MAP_SHOPTex_002A00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_002E00:
+  type: TEXTURE
+  offset: 0x002E00
+  symbol: Z2_MAP_SHOPTex_002E00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_003200:
+  type: TEXTURE
+  offset: 0x003200
+  symbol: Z2_MAP_SHOPTex_003200
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MAP_SHOPTex_003A00:
+  type: TEXTURE
+  offset: 0x003A00
+  symbol: Z2_MAP_SHOPTex_003A00
+  format: IA4
+  width: 32
+  height: 64
+
+Z2_MAP_SHOPTex_003E00:
+  type: TEXTURE
+  offset: 0x003E00
+  symbol: Z2_MAP_SHOPTex_003E00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_004200:
+  type: TEXTURE
+  offset: 0x004200
+  symbol: Z2_MAP_SHOPTex_004200
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MAP_SHOPTex_004A00:
+  type: TEXTURE
+  offset: 0x004A00
+  symbol: Z2_MAP_SHOPTex_004A00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_004E00:
+  type: TEXTURE
+  offset: 0x004E00
+  symbol: Z2_MAP_SHOPTex_004E00
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_MAP_SHOPTex_005600:
+  type: TEXTURE
+  offset: 0x005600
+  symbol: Z2_MAP_SHOPTex_005600
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MAP_SHOPTex_005E00:
+  type: TEXTURE
+  offset: 0x005E00
+  symbol: Z2_MAP_SHOPTex_005E00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_006200:
+  type: TEXTURE
+  offset: 0x006200
+  symbol: Z2_MAP_SHOPTex_006200
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MAP_SHOPTex_006600:
+  type: TEXTURE
+  offset: 0x006600
+  symbol: Z2_MAP_SHOPTex_006600
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_MAP_SHOPTLUT_006E00:
+  type: TEXTURE
+  offset: 0x006E00
+  symbol: Z2_MAP_SHOPTLUT_006E00
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_MAP_SHOPTLUT_006E20:
+  type: TEXTURE
+  offset: 0x006E20
+  symbol: Z2_MAP_SHOPTLUT_006E20
+  format: RGBA16
+  width: 16
+  height: 16

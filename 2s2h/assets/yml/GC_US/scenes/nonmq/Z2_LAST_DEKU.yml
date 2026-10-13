@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 2, 0x01954040 ]
+
+Z2_LAST_DEKU:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_LAST_DEKU
+
+
+Z2_LAST_DEKUCutsceneData_000118:
+  type: MM:CUTSCENE
+  offset: 0x000118
+  symbol: Z2_LAST_DEKUCutsceneData_000118
+  size: 336
+
+Z2_LAST_DEKUTexAnim_000360:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000360
+  symbol: Z2_LAST_DEKUTexAnim_000360
+
+Z2_LAST_DEKUCollisionHeader_003558:
+  type: MM:COLLISION
+  offset: 0x003558
+  symbol: Z2_LAST_DEKUCollisionHeader_003558
+
+Z2_LAST_DEKUTex_003590:
+  type: TEXTURE
+  offset: 0x003590
+  symbol: Z2_LAST_DEKUTex_003590
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_DEKUTLUT_003D90:
+  type: TEXTURE
+  offset: 0x003D90
+  symbol: Z2_LAST_DEKUTLUT_003D90
+  format: RGBA16
+  width: 16
+  height: 16

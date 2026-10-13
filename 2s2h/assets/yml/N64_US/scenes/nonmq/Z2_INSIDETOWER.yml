@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 2, 0x01D81A00 ]
+
+Z2_INSIDETOWER:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_INSIDETOWER
+
+
+Z2_INSIDETOWERCutsceneData_000220:
+  type: MM:CUTSCENE
+  offset: 0x000220
+  symbol: Z2_INSIDETOWERCutsceneData_000220
+  size: 4008
+
+Z2_INSIDETOWERCutsceneData_0011D0:
+  type: MM:CUTSCENE
+  offset: 0x0011D0
+  symbol: Z2_INSIDETOWERCutsceneData_0011D0
+  size: 2616
+
+Z2_INSIDETOWERCutsceneData_001C10:
+  type: MM:CUTSCENE
+  offset: 0x001C10
+  symbol: Z2_INSIDETOWERCutsceneData_001C10
+  size: 5352
+
+Z2_INSIDETOWERCutsceneData_003100:
+  type: MM:CUTSCENE
+  offset: 0x003100
+  symbol: Z2_INSIDETOWERCutsceneData_003100
+  size: 688
+
+Z2_INSIDETOWERCutsceneData_0033C0:
+  type: MM:CUTSCENE
+  offset: 0x0033C0
+  symbol: Z2_INSIDETOWERCutsceneData_0033C0
+  size: 368
+
+Z2_INSIDETOWERCutsceneData_003540:
+  type: MM:CUTSCENE
+  offset: 0x003540
+  symbol: Z2_INSIDETOWERCutsceneData_003540
+  size: 1508
+
+Z2_INSIDETOWERCutsceneData_003B30:
+  type: MM:CUTSCENE
+  offset: 0x003B30
+  symbol: Z2_INSIDETOWERCutsceneData_003B30
+  size: 2704
+
+Z2_INSIDETOWERCutsceneData_0045D0:
+  type: MM:CUTSCENE
+  offset: 0x0045D0
+  symbol: Z2_INSIDETOWERCutsceneData_0045D0
+  size: 2584
+
+Z2_INSIDETOWERTexAnim_005198TexScrollParams_005190:
+  type: BLOB
+  offset: 0x005190
+  symbol: Z2_INSIDETOWERTexAnim_005198TexScrollParams_005190
+  size: 0
+
+Z2_INSIDETOWERTexAnim_005198:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x005198
+  symbol: Z2_INSIDETOWERTexAnim_005198
+
+Z2_INSIDETOWERCollisionHeader_007F10:
+  type: MM:COLLISION
+  offset: 0x007F10
+  symbol: Z2_INSIDETOWERCollisionHeader_007F10

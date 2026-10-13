@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01D27980 ]
+    - [ 2, 0x01D21CB0 ]
+  directory: scenes/nonmq/Z2_12HAKUGINMAE
+  external_files:
+    - N64_US/scenes/nonmq/Z2_12HAKUGINMAE_room_00.yml
+    - N64_US/misc/scene_texture_04.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_12HAKUGINMAE.yml
+
+Z2_12HAKUGINMAE_room_00Set_0004C0:
+  type: MM:ROOM
+  offset: 0x4C0
+  symbol: Z2_12HAKUGINMAE_room_00Set_0004C0
+  base_name: Z2_12HAKUGINMAE_room_00

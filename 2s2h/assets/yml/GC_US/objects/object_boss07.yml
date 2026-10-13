@@ -1,0 +1,1755 @@
+:config:
+  segments:
+    - [ 6, 0x01142470 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01142470 ]
+    - [ 9, 0x01142470 ]
+    - [ 10, 0x01142470 ]
+    - [ 11, 0x01142470 ]
+    - [ 12, 0x01142470 ]
+    - [ 13, 0x01142470 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBossMaskGohtDL:
+  type: GFX
+  offset: 0x17DE0
+  symbol: gBossMaskGohtDL
+
+gBossMaskGohtEyeTex:
+  type: TEXTURE
+  offset: 0xFAD0
+  symbol: gBossMaskGohtEyeTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossMaskGohtSpikeTwinmoldMandibleTex:
+  type: TEXTURE
+  offset: 0x12AD0
+  symbol: gBossMaskGohtSpikeTwinmoldMandibleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBossMaskGohtTopPatternTex:
+  type: TEXTURE
+  offset: 0x10AD0
+  symbol: gBossMaskGohtTopPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossMaskGohtTwinmoldPatternTex:
+  type: TEXTURE
+  offset: 0x11AD0
+  symbol: gBossMaskGohtTwinmoldPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossMaskGyorgDL:
+  type: GFX
+  offset: 0x16090
+  symbol: gBossMaskGyorgDL
+
+gBossMaskGyorgMouthTLUT:
+  type: TEXTURE
+  offset: 0xE210
+  symbol: gBossMaskGyorgMouthTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskGyorgMouthTex:
+  type: TEXTURE
+  offset: 0xF250
+  symbol: gBossMaskGyorgMouthTex
+  format: CI4
+  width: 64
+  height: 64
+
+gBossMaskGyorgSkinTLUT:
+  type: TEXTURE
+  offset: 0xE1F0
+  symbol: gBossMaskGyorgSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskGyorgSkinTex:
+  type: TEXTURE
+  offset: 0xEA50
+  symbol: gBossMaskGyorgSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gBossMaskGyorgToothHornTLUT:
+  type: TEXTURE
+  offset: 0xE230
+  symbol: gBossMaskGyorgToothHornTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskGyorgToothHornTex:
+  type: TEXTURE
+  offset: 0xFA50
+  symbol: gBossMaskGyorgToothHornTex
+  format: CI4
+  width: 16
+  height: 16
+
+gBossMaskGyorgTwinmoldEyeTex:
+  type: TEXTURE
+  offset: 0xE250
+  symbol: gBossMaskGyorgTwinmoldEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBossMaskOdolwaDL:
+  type: GFX
+  offset: 0x149A0
+  symbol: gBossMaskOdolwaDL
+
+gBossMaskOdolwaEarTLUT:
+  type: TEXTURE
+  offset: 0xCFD0
+  symbol: gBossMaskOdolwaEarTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskOdolwaEarTex:
+  type: TEXTURE
+  offset: 0xD9F0
+  symbol: gBossMaskOdolwaEarTex
+  format: CI4
+  width: 64
+  height: 64
+
+gBossMaskOdolwaFaceTLUT:
+  type: TEXTURE
+  offset: 0xCFB0
+  symbol: gBossMaskOdolwaFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskOdolwaFaceTex:
+  type: TEXTURE
+  offset: 0xD1F0
+  symbol: gBossMaskOdolwaFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gBossMaskOdolwaPlumeTex:
+  type: TEXTURE
+  offset: 0xCFF0
+  symbol: gBossMaskOdolwaPlumeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBossMaskTwinmoldDL:
+  type: GFX
+  offset: 0x19328
+  symbol: gBossMaskTwinmoldDL
+
+gBossMaskTwinmoldSkinTLUT:
+  type: TEXTURE
+  offset: 0x132D0
+  symbol: gBossMaskTwinmoldSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskTwinmoldSkinTex:
+  type: TEXTURE
+  offset: 0x13310
+  symbol: gBossMaskTwinmoldSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gBossMaskTwinmoldSnoutTLUT:
+  type: TEXTURE
+  offset: 0x132F0
+  symbol: gBossMaskTwinmoldSnoutTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBossMaskTwinmoldSnoutTex:
+  type: TEXTURE
+  offset: 0x13B10
+  symbol: gBossMaskTwinmoldSnoutTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMajoraBloodshotEyeTex:
+  type: TEXTURE
+  offset: 0x41B30
+  symbol: gMajoraBloodshotEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMajoraBodyTex:
+  type: TEXTURE
+  offset: 0x3DD30
+  symbol: gMajoraBodyTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajoraHandTex:
+  type: TEXTURE
+  offset: 0x43330
+  symbol: gMajoraHandTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajoraStripesTex:
+  type: TEXTURE
+  offset: 0x3ED30
+  symbol: gMajoraStripesTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gMajoraVeinsTex:
+  type: TEXTURE
+  offset: 0x40B30
+  symbol: gMajoraVeinsTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajorasIncarnationDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0xD0C
+  symbol: gMajorasIncarnationDamagedAnim
+
+gMajorasIncarnationEnergyBallAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x428
+  symbol: gMajorasIncarnationEnergyBallAttackAnim
+
+gMajorasIncarnationEyestalkDL:
+  type: GFX
+  offset: 0x7930
+  symbol: gMajorasIncarnationEyestalkDL
+
+gMajorasIncarnationEyestalkLimb:
+  type: OOT:LIMB
+  offset: 0x9934
+  symbol: gMajorasIncarnationEyestalkLimb
+  limb_type: Standard
+
+gMajorasIncarnationFallOverLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x9EA8
+  symbol: gMajorasIncarnationFallOverLoopAnim
+
+gMajorasIncarnationFallOverStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C7C
+  symbol: gMajorasIncarnationFallOverStartAnim
+
+gMajorasIncarnationFinalHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x3854
+  symbol: gMajorasIncarnationFinalHitAnim
+
+gMajorasIncarnationIntroDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x2C40
+  symbol: gMajorasIncarnationIntroDanceAnim
+
+gMajorasIncarnationJerkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2D84
+  symbol: gMajorasIncarnationJerkingAnim
+
+gMajorasIncarnationLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x98BC
+  symbol: gMajorasIncarnationLeftArmRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftFootDL:
+  type: GFX
+  offset: 0x7B58
+  symbol: gMajorasIncarnationLeftFootDL
+
+gMajorasIncarnationLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x9928
+  symbol: gMajorasIncarnationLeftFootLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftForearmDL:
+  type: GFX
+  offset: 0x82D8
+  symbol: gMajorasIncarnationLeftForearmDL
+
+gMajorasIncarnationLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x98E0
+  symbol: gMajorasIncarnationLeftForearmLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftHandDL:
+  type: GFX
+  offset: 0x80E0
+  symbol: gMajorasIncarnationLeftHandDL
+
+gMajorasIncarnationLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x98EC
+  symbol: gMajorasIncarnationLeftHandLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x98F8
+  symbol: gMajorasIncarnationLeftLegRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x98D4
+  symbol: gMajorasIncarnationLeftLowerArmRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x9910
+  symbol: gMajorasIncarnationLeftLowerLegRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftShinDL:
+  type: GFX
+  offset: 0x7CC0
+  symbol: gMajorasIncarnationLeftShinDL
+
+gMajorasIncarnationLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x991C
+  symbol: gMajorasIncarnationLeftShinLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftThighDL:
+  type: GFX
+  offset: 0x7F48
+  symbol: gMajorasIncarnationLeftThighDL
+
+gMajorasIncarnationLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x9904
+  symbol: gMajorasIncarnationLeftThighLimb
+  limb_type: Standard
+
+gMajorasIncarnationLeftUpperArmDL:
+  type: GFX
+  offset: 0x8580
+  symbol: gMajorasIncarnationLeftUpperArmDL
+
+gMajorasIncarnationLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x98C8
+  symbol: gMajorasIncarnationLeftUpperArmLimb
+  limb_type: Standard
+
+gMajorasIncarnationMaskDL:
+  type: GFX
+  offset: 0x9418
+  symbol: gMajorasIncarnationMaskDL
+
+gMajorasIncarnationMaskLimb:
+  type: OOT:LIMB
+  offset: 0x9838
+  symbol: gMajorasIncarnationMaskLimb
+  limb_type: Standard
+
+gMajorasIncarnationMaskTex:
+  type: TEXTURE
+  offset: 0x44330
+  symbol: gMajorasIncarnationMaskTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajorasIncarnationMoonwalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xA194
+  symbol: gMajorasIncarnationMoonwalkAnim
+
+gMajorasIncarnationPirouetteAnim:
+  type: OOT:ANIMATION
+  offset: 0x194
+  symbol: gMajorasIncarnationPirouetteAnim
+
+gMajorasIncarnationPumpingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x31E4
+  symbol: gMajorasIncarnationPumpingUpAnim
+
+gMajorasIncarnationRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x9880
+  symbol: gMajorasIncarnationRightArmRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightFootDL:
+  type: GFX
+  offset: 0x8E90
+  symbol: gMajorasIncarnationRightFootDL
+
+gMajorasIncarnationRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x9874
+  symbol: gMajorasIncarnationRightFootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightForearmDL:
+  type: GFX
+  offset: 0x89B0
+  symbol: gMajorasIncarnationRightForearmDL
+
+gMajorasIncarnationRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x98A4
+  symbol: gMajorasIncarnationRightForearmLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightHandDL:
+  type: GFX
+  offset: 0x87B8
+  symbol: gMajorasIncarnationRightHandDL
+
+gMajorasIncarnationRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x98B0
+  symbol: gMajorasIncarnationRightHandLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x9844
+  symbol: gMajorasIncarnationRightLegRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x9898
+  symbol: gMajorasIncarnationRightLowerArmRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x985C
+  symbol: gMajorasIncarnationRightLowerLegRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightShinDL:
+  type: GFX
+  offset: 0x8FF8
+  symbol: gMajorasIncarnationRightShinDL
+
+gMajorasIncarnationRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x9868
+  symbol: gMajorasIncarnationRightShinLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightThighDL:
+  type: GFX
+  offset: 0x9280
+  symbol: gMajorasIncarnationRightThighDL
+
+gMajorasIncarnationRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x9850
+  symbol: gMajorasIncarnationRightThighLimb
+  limb_type: Standard
+
+gMajorasIncarnationRightUpperArmDL:
+  type: GFX
+  offset: 0x8C58
+  symbol: gMajorasIncarnationRightUpperArmDL
+
+gMajorasIncarnationRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x988C
+  symbol: gMajorasIncarnationRightUpperArmLimb
+  limb_type: Standard
+
+gMajorasIncarnationRootLimb:
+  type: OOT:LIMB
+  offset: 0x9820
+  symbol: gMajorasIncarnationRootLimb
+  limb_type: Standard
+
+gMajorasIncarnationRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xA400
+  symbol: gMajorasIncarnationRunAnim
+
+gMajorasIncarnationSkel:
+  type: MM:SKELETON
+  offset: 0x99A0
+  symbol: gMajorasIncarnationSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMajorasIncarnationSquattingDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x3A64
+  symbol: gMajorasIncarnationSquattingDanceAnim
+
+gMajorasIncarnationStationaryAnim:
+  type: OOT:ANIMATION
+  offset: 0x3B3C
+  symbol: gMajorasIncarnationStationaryAnim
+
+gMajorasIncarnationTauntDance1Anim:
+  type: OOT:ANIMATION
+  offset: 0xA6AC
+  symbol: gMajorasIncarnationTauntDance1Anim
+
+gMajorasIncarnationTauntDance2Anim:
+  type: OOT:ANIMATION
+  offset: 0xAB04
+  symbol: gMajorasIncarnationTauntDance2Anim
+
+gMajorasIncarnationTauntJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xAD84
+  symbol: gMajorasIncarnationTauntJumpAnim
+
+gMajorasIncarnationTitleCardTex:
+  type: TEXTURE
+  offset: 0x30C40
+  symbol: gMajorasIncarnationTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gMajorasIncarnationWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x982C
+  symbol: gMajorasIncarnationWrapperLimb
+  limb_type: Standard
+
+gMajorasMaskBeamDL:
+  type: GFX
+  offset: 0xC7D8
+  symbol: gMajorasMaskBeamDL
+
+gMajorasMaskBeamTex:
+  type: TEXTURE
+  offset: 0xC298
+  symbol: gMajorasMaskBeamTex
+  format: I4
+  width: 32
+  height: 64
+
+gMajorasMaskFaceDL:
+  type: GFX
+  offset: 0xBFB0
+  symbol: gMajorasMaskFaceDL
+
+gMajorasMaskFaceLimb:
+  type: OOT:LIMB
+  offset: 0x19B44
+  symbol: gMajorasMaskFaceLimb
+  limb_type: Standard
+
+gMajorasMaskFireDL:
+  type: GFX
+  offset: 0xCEE8
+  symbol: gMajorasMaskFireDL
+
+gMajorasMaskFireMaskTex:
+  type: TEXTURE
+  offset: 0xCCB8
+  symbol: gMajorasMaskFireMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gMajorasMaskFireTex:
+  type: TEXTURE
+  offset: 0xC8B8
+  symbol: gMajorasMaskFireTex
+  format: I4
+  width: 32
+  height: 64
+
+gMajorasMaskFloatingAnim:
+  type: OOT:ANIMATION
+  offset: 0x19E48
+  symbol: gMajorasMaskFloatingAnim
+
+gMajorasMaskJerkingAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE40
+  symbol: gMajorasMaskJerkingAnim
+
+gMajorasMaskLeftSpike1DL:
+  type: GFX
+  offset: 0xBE90
+  symbol: gMajorasMaskLeftSpike1DL
+
+gMajorasMaskLeftSpike1Limb:
+  type: OOT:LIMB
+  offset: 0x19B74
+  symbol: gMajorasMaskLeftSpike1Limb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike1RootLimb:
+  type: OOT:LIMB
+  offset: 0x19B68
+  symbol: gMajorasMaskLeftSpike1RootLimb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike2DL:
+  type: GFX
+  offset: 0xBF20
+  symbol: gMajorasMaskLeftSpike2DL
+
+gMajorasMaskLeftSpike2Limb:
+  type: OOT:LIMB
+  offset: 0x19B5C
+  symbol: gMajorasMaskLeftSpike2Limb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike2RootLimb:
+  type: OOT:LIMB
+  offset: 0x19B50
+  symbol: gMajorasMaskLeftSpike2RootLimb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike3DL:
+  type: GFX
+  offset: 0xBB30
+  symbol: gMajorasMaskLeftSpike3DL
+
+gMajorasMaskLeftSpike3Limb:
+  type: OOT:LIMB
+  offset: 0x19C04
+  symbol: gMajorasMaskLeftSpike3Limb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike3RootLimb:
+  type: OOT:LIMB
+  offset: 0x19BF8
+  symbol: gMajorasMaskLeftSpike3RootLimb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike4DL:
+  type: GFX
+  offset: 0xBBC0
+  symbol: gMajorasMaskLeftSpike4DL
+
+gMajorasMaskLeftSpike4Limb:
+  type: OOT:LIMB
+  offset: 0x19BEC
+  symbol: gMajorasMaskLeftSpike4Limb
+  limb_type: Standard
+
+gMajorasMaskLeftSpike4RootLimb:
+  type: OOT:LIMB
+  offset: 0x19BE0
+  symbol: gMajorasMaskLeftSpike4RootLimb
+  limb_type: Standard
+
+gMajorasMaskRightSpike1DL:
+  type: GFX
+  offset: 0xBE00
+  symbol: gMajorasMaskRightSpike1DL
+
+gMajorasMaskRightSpike1Limb:
+  type: OOT:LIMB
+  offset: 0x19B8C
+  symbol: gMajorasMaskRightSpike1Limb
+  limb_type: Standard
+
+gMajorasMaskRightSpike1RootLimb:
+  type: OOT:LIMB
+  offset: 0x19B80
+  symbol: gMajorasMaskRightSpike1RootLimb
+  limb_type: Standard
+
+gMajorasMaskRightSpike2DL:
+  type: GFX
+  offset: 0xBD70
+  symbol: gMajorasMaskRightSpike2DL
+
+gMajorasMaskRightSpike2Limb:
+  type: OOT:LIMB
+  offset: 0x19BA4
+  symbol: gMajorasMaskRightSpike2Limb
+  limb_type: Standard
+
+gMajorasMaskRightSpike2RootLimb:
+  type: OOT:LIMB
+  offset: 0x19B98
+  symbol: gMajorasMaskRightSpike2RootLimb
+  limb_type: Standard
+
+gMajorasMaskRightSpike3DL:
+  type: GFX
+  offset: 0xBCE0
+  symbol: gMajorasMaskRightSpike3DL
+
+gMajorasMaskRightSpike3Limb:
+  type: OOT:LIMB
+  offset: 0x19BBC
+  symbol: gMajorasMaskRightSpike3Limb
+  limb_type: Standard
+
+gMajorasMaskRightSpike3RootLimb:
+  type: OOT:LIMB
+  offset: 0x19BB0
+  symbol: gMajorasMaskRightSpike3RootLimb
+  limb_type: Standard
+
+gMajorasMaskRightSpike4DL:
+  type: GFX
+  offset: 0xBC50
+  symbol: gMajorasMaskRightSpike4DL
+
+gMajorasMaskRightSpike4Limb:
+  type: OOT:LIMB
+  offset: 0x19BD4
+  symbol: gMajorasMaskRightSpike4Limb
+  limb_type: Standard
+
+gMajorasMaskRightSpike4RootLimb:
+  type: OOT:LIMB
+  offset: 0x19BC8
+  symbol: gMajorasMaskRightSpike4RootLimb
+  limb_type: Standard
+
+gMajorasMaskRootLimb:
+  type: OOT:LIMB
+  offset: 0x19B38
+  symbol: gMajorasMaskRootLimb
+  limb_type: Standard
+
+gMajorasMaskSkel:
+  type: MM:SKELETON
+  offset: 0x19C58
+  symbol: gMajorasMaskSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gMajorasMaskSpikes1Tex:
+  type: TEXTURE
+  offset: 0x45330
+  symbol: gMajorasMaskSpikes1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMajorasMaskSpikes2Tex:
+  type: TEXTURE
+  offset: 0x45530
+  symbol: gMajorasMaskSpikes2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMajorasMaskSpikes3Tex:
+  type: TEXTURE
+  offset: 0x45730
+  symbol: gMajorasMaskSpikes3Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMajorasMaskSpikes4Tex:
+  type: TEXTURE
+  offset: 0x45930
+  symbol: gMajorasMaskSpikes4Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMajorasMaskStationaryAnim:
+  type: OOT:ANIMATION
+  offset: 0xAEDC
+  symbol: gMajorasMaskStationaryAnim
+
+gMajorasMaskTentacleMaterialDL:
+  type: GFX
+  offset: 0xAFB0
+  symbol: gMajorasMaskTentacleMaterialDL
+
+gMajorasMaskTentacleModelDL:
+  type: GFX
+  offset: 0xB020
+  symbol: gMajorasMaskTentacleModelDL
+
+gMajorasMaskTentacleTex:
+  type: TEXTURE
+  offset: 0xAEF0
+  symbol: gMajorasMaskTentacleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMajorasMaskTitleCardTex:
+  type: TEXTURE
+  offset: 0x2F840
+  symbol: gMajorasMaskTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gMajorasMaskWhipShadowMaterialDL:
+  type: GFX
+  offset: 0x2EEC8
+  symbol: gMajorasMaskWhipShadowMaterialDL
+
+gMajorasMaskWithDullEyesTex:
+  type: TEXTURE
+  offset: 0x45B30
+  symbol: gMajorasMaskWithDullEyesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajorasMaskWithNormalEyesTex:
+  type: TEXTURE
+  offset: 0x42330
+  symbol: gMajorasMaskWithNormalEyesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMajorasWrathBackflipAnim:
+  type: OOT:ANIMATION
+  offset: 0x25878
+  symbol: gMajorasWrathBackflipAnim
+
+gMajorasWrathBackflipUppercutAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CFF0
+  symbol: gMajorasWrathBackflipUppercutAttackAnim
+
+gMajorasWrathDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x1DEB4
+  symbol: gMajorasWrathDamagedAnim
+
+gMajorasWrathDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x22BB4
+  symbol: gMajorasWrathDeathAnim
+
+gMajorasWrathDeathLightModelDL:
+  type: GFX
+  offset: 0x2EFE8
+  symbol: gMajorasWrathDeathLightModelDL
+
+gMajorasWrathDoubleKickAndJumpBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C430
+  symbol: gMajorasWrathDoubleKickAndJumpBackAnim
+
+gMajorasWrathDoubleWhipAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x358C4
+  symbol: gMajorasWrathDoubleWhipAttackAnim
+
+gMajorasWrathEarTex:
+  type: TEXTURE
+  offset: 0x40930
+  symbol: gMajorasWrathEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMajorasWrathEyeTex:
+  type: TEXTURE
+  offset: 0x3F130
+  symbol: gMajorasWrathEyeTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMajorasWrathFlipLeftAndSpinAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AE1C
+  symbol: gMajorasWrathFlipLeftAndSpinAnim
+
+gMajorasWrathFlipLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D224
+  symbol: gMajorasWrathFlipLeftAnim
+
+gMajorasWrathFlipRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D7F0
+  symbol: gMajorasWrathFlipRightAnim
+
+gMajorasWrathGrabAnim:
+  type: OOT:ANIMATION
+  offset: 0x26EA0
+  symbol: gMajorasWrathGrabAnim
+
+gMajorasWrathHeadDL:
+  type: GFX
+  offset: 0x2C4D0
+  symbol: gMajorasWrathHeadDL
+
+gMajorasWrathHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3356C
+  symbol: gMajorasWrathHeadLimb
+  limb_type: Standard
+
+gMajorasWrathHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x33560
+  symbol: gMajorasWrathHeadRootLimb
+  limb_type: Standard
+
+gMajorasWrathHeavyBreathingAnim:
+  type: OOT:ANIMATION
+  offset: 0x23DAC
+  symbol: gMajorasWrathHeavyBreathingAnim
+
+gMajorasWrathHighKickAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D974
+  symbol: gMajorasWrathHighKickAnim
+
+gMajorasWrathIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x3CBD0
+  symbol: gMajorasWrathIdleAnim
+
+gMajorasWrathIntroAnim:
+  type: OOT:ANIMATION
+  offset: 0x25018
+  symbol: gMajorasWrathIntroAnim
+
+gMajorasWrathKickAnim:
+  type: OOT:ANIMATION
+  offset: 0x26204
+  symbol: gMajorasWrathKickAnim
+
+gMajorasWrathLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x33524
+  symbol: gMajorasWrathLeftArmRootLimb
+  limb_type: Standard
+
+gMajorasWrathLeftFootDL:
+  type: GFX
+  offset: 0x2E6D0
+  symbol: gMajorasWrathLeftFootDL
+
+gMajorasWrathLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x33488
+  symbol: gMajorasWrathLeftFootLimb
+  limb_type: Standard
+
+gMajorasWrathLeftForearmDL:
+  type: GFX
+  offset: 0x2D3C8
+  symbol: gMajorasWrathLeftForearmDL
+
+gMajorasWrathLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x33548
+  symbol: gMajorasWrathLeftForearmLimb
+  limb_type: Standard
+
+gMajorasWrathLeftHandDL:
+  type: GFX
+  offset: 0x2D1D0
+  symbol: gMajorasWrathLeftHandDL
+
+gMajorasWrathLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x33554
+  symbol: gMajorasWrathLeftHandLimb
+  limb_type: Standard
+
+gMajorasWrathLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x33458
+  symbol: gMajorasWrathLeftLegRootLimb
+  limb_type: Standard
+
+gMajorasWrathLeftLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x3353C
+  symbol: gMajorasWrathLeftLowerArmRootLimb
+  limb_type: Standard
+
+gMajorasWrathLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x33470
+  symbol: gMajorasWrathLeftLowerLegRootLimb
+  limb_type: Standard
+
+gMajorasWrathLeftShinDL:
+  type: GFX
+  offset: 0x2E838
+  symbol: gMajorasWrathLeftShinDL
+
+gMajorasWrathLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x3347C
+  symbol: gMajorasWrathLeftShinLimb
+  limb_type: Standard
+
+gMajorasWrathLeftThighDL:
+  type: GFX
+  offset: 0x2EAC0
+  symbol: gMajorasWrathLeftThighDL
+
+gMajorasWrathLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x33464
+  symbol: gMajorasWrathLeftThighLimb
+  limb_type: Standard
+
+gMajorasWrathLeftUpperArmDL:
+  type: GFX
+  offset: 0x2D670
+  symbol: gMajorasWrathLeftUpperArmDL
+
+gMajorasWrathLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x33530
+  symbol: gMajorasWrathLeftUpperArmLimb
+  limb_type: Standard
+
+gMajorasWrathLongSingleWhipAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x36A7C
+  symbol: gMajorasWrathLongSingleWhipAttackAnim
+
+gMajorasWrathMouthTex:
+  type: TEXTURE
+  offset: 0x40130
+  symbol: gMajorasWrathMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMajorasWrathPelvisDL:
+  type: GFX
+  offset: 0x2C350
+  symbol: gMajorasWrathPelvisDL
+
+gMajorasWrathPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x3344C
+  symbol: gMajorasWrathPelvisLimb
+  limb_type: Standard
+
+gMajorasWrathRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x334E8
+  symbol: gMajorasWrathRightArmRootLimb
+  limb_type: Standard
+
+gMajorasWrathRightFootDL:
+  type: GFX
+  offset: 0x2E0B8
+  symbol: gMajorasWrathRightFootDL
+
+gMajorasWrathRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x334C4
+  symbol: gMajorasWrathRightFootLimb
+  limb_type: Standard
+
+gMajorasWrathRightForearmDL:
+  type: GFX
+  offset: 0x2DB38
+  symbol: gMajorasWrathRightForearmDL
+
+gMajorasWrathRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x3350C
+  symbol: gMajorasWrathRightForearmLimb
+  limb_type: Standard
+
+gMajorasWrathRightHandDL:
+  type: GFX
+  offset: 0x2D940
+  symbol: gMajorasWrathRightHandDL
+
+gMajorasWrathRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x33518
+  symbol: gMajorasWrathRightHandLimb
+  limb_type: Standard
+
+gMajorasWrathRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x33494
+  symbol: gMajorasWrathRightLegRootLimb
+  limb_type: Standard
+
+gMajorasWrathRightLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x33500
+  symbol: gMajorasWrathRightLowerArmRootLimb
+  limb_type: Standard
+
+gMajorasWrathRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x334AC
+  symbol: gMajorasWrathRightLowerLegRootLimb
+  limb_type: Standard
+
+gMajorasWrathRightShinDL:
+  type: GFX
+  offset: 0x2E220
+  symbol: gMajorasWrathRightShinDL
+
+gMajorasWrathRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x334B8
+  symbol: gMajorasWrathRightShinLimb
+  limb_type: Standard
+
+gMajorasWrathRightThighDL:
+  type: GFX
+  offset: 0x2E4A8
+  symbol: gMajorasWrathRightThighDL
+
+gMajorasWrathRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x334A0
+  symbol: gMajorasWrathRightThighLimb
+  limb_type: Standard
+
+gMajorasWrathRightUpperArmDL:
+  type: GFX
+  offset: 0x2DDE0
+  symbol: gMajorasWrathRightUpperArmDL
+
+gMajorasWrathRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x334F4
+  symbol: gMajorasWrathRightUpperArmLimb
+  limb_type: Standard
+
+gMajorasWrathRootLimb:
+  type: OOT:LIMB
+  offset: 0x33440
+  symbol: gMajorasWrathRootLimb
+  limb_type: Standard
+
+gMajorasWrathShadowMaterialDL:
+  type: GFX
+  offset: 0x2EF68
+  symbol: gMajorasWrathShadowMaterialDL
+
+gMajorasWrathShadowModelDL:
+  type: GFX
+  offset: 0x2EF88
+  symbol: gMajorasWrathShadowModelDL
+
+gMajorasWrathShortSingleWhipAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x33F80
+  symbol: gMajorasWrathShortSingleWhipAttackAnim
+
+gMajorasWrathSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0x3DD1C
+  symbol: gMajorasWrathSidestepAnim
+
+gMajorasWrathSkel:
+  type: MM:SKELETON
+  offset: 0x335F0
+  symbol: gMajorasWrathSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMajorasWrathSpinAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x3C4E0
+  symbol: gMajorasWrathSpinAttackAnim
+
+gMajorasWrathSpinningTopDL:
+  type: GFX
+  offset: 0x2F640
+  symbol: gMajorasWrathSpinningTopDL
+
+gMajorasWrathStunAnim:
+  type: OOT:ANIMATION
+  offset: 0x3B330
+  symbol: gMajorasWrathStunAnim
+
+gMajorasWrathTauntAnim:
+  type: OOT:ANIMATION
+  offset: 0x37ADC
+  symbol: gMajorasWrathTauntAnim
+
+gMajorasWrathThirdEyeDL:
+  type: GFX
+  offset: 0x2CB48
+  symbol: gMajorasWrathThirdEyeDL
+
+gMajorasWrathThirdEyeLimb:
+  type: OOT:LIMB
+  offset: 0x33578
+  symbol: gMajorasWrathThirdEyeLimb
+  limb_type: Standard
+
+gMajorasWrathThreeAttackComboAnim:
+  type: OOT:ANIMATION
+  offset: 0x3918C
+  symbol: gMajorasWrathThreeAttackComboAnim
+
+gMajorasWrathThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x27270
+  symbol: gMajorasWrathThrowAnim
+
+gMajorasWrathThrowTopAnim:
+  type: OOT:ANIMATION
+  offset: 0x269EC
+  symbol: gMajorasWrathThrowTopAnim
+
+gMajorasWrathTiptoeWhipAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x23A44
+  symbol: gMajorasWrathTiptoeWhipAttackAnim
+
+gMajorasWrathTitleCardTex:
+  type: TEXTURE
+  offset: 0x32040
+  symbol: gMajorasWrathTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gMajorasWrathTorsoDL:
+  type: GFX
+  offset: 0x2CD40
+  symbol: gMajorasWrathTorsoDL
+
+gMajorasWrathTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x334DC
+  symbol: gMajorasWrathTorsoLimb
+  limb_type: Standard
+
+gMajorasWrathTorsoRootLimb:
+  type: OOT:LIMB
+  offset: 0x334D0
+  symbol: gMajorasWrathTorsoRootLimb
+  limb_type: Standard
+
+gMajorasWrathWhipFlurryAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x34E64
+  symbol: gMajorasWrathWhipFlurryAttackAnim
+
+gMajorasWrathWhipMaterialDL:
+  type: GFX
+  offset: 0x2EE50
+  symbol: gMajorasWrathWhipMaterialDL
+
+gMajorasWrathWhipModelDL:
+  type: GFX
+  offset: 0x2EEF8
+  symbol: gMajorasWrathWhipModelDL
+
+gMajorasWrathWhipTex:
+  type: TEXTURE
+  offset: 0x2ECF0
+  symbol: gMajorasWrathWhipTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_boss07Vtx_003B50:
+  type: MM:ARRAY
+  offset: 0x003B50
+  symbol: object_boss07Vtx_003B50
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0040B0:
+  type: MM:ARRAY
+  offset: 0x0040B0
+  symbol: object_boss07Vtx_0040B0
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_004BF0:
+  type: MM:ARRAY
+  offset: 0x004BF0
+  symbol: object_boss07Vtx_004BF0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: object_boss07Vtx_004FF0
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_005410:
+  type: MM:ARRAY
+  offset: 0x005410
+  symbol: object_boss07Vtx_005410
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0058D0:
+  type: MM:ARRAY
+  offset: 0x0058D0
+  symbol: object_boss07Vtx_0058D0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_005CD0:
+  type: MM:ARRAY
+  offset: 0x005CD0
+  symbol: object_boss07Vtx_005CD0
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0060F0:
+  type: MM:ARRAY
+  offset: 0x0060F0
+  symbol: object_boss07Vtx_0060F0
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0065B0:
+  type: MM:ARRAY
+  offset: 0x0065B0
+  symbol: object_boss07Vtx_0065B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_006830:
+  type: MM:ARRAY
+  offset: 0x006830
+  symbol: object_boss07Vtx_006830
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_006BB0:
+  type: MM:ARRAY
+  offset: 0x006BB0
+  symbol: object_boss07Vtx_006BB0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_006F70:
+  type: MM:ARRAY
+  offset: 0x006F70
+  symbol: object_boss07Vtx_006F70
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0071F0:
+  type: MM:ARRAY
+  offset: 0x0071F0
+  symbol: object_boss07Vtx_0071F0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_007570:
+  type: MM:ARRAY
+  offset: 0x007570
+  symbol: object_boss07Vtx_007570
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMajorasIncarnationSkelLimbs:
+  type: BLOB
+  offset: 0x9940
+  symbol: gMajorasIncarnationSkelLimbs
+  size: 0
+
+object_boss07Vtx_00AF70:
+  type: MM:ARRAY
+  offset: 0x00AF70
+  symbol: object_boss07Vtx_00AF70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00B040:
+  type: MM:ARRAY
+  offset: 0x00B040
+  symbol: object_boss07Vtx_00B040
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00B930:
+  type: MM:ARRAY
+  offset: 0x00B930
+  symbol: object_boss07Vtx_00B930
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00B970:
+  type: MM:ARRAY
+  offset: 0x00B970
+  symbol: object_boss07Vtx_00B970
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00B9B0:
+  type: MM:ARRAY
+  offset: 0x00B9B0
+  symbol: object_boss07Vtx_00B9B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00B9F0:
+  type: MM:ARRAY
+  offset: 0x00B9F0
+  symbol: object_boss07Vtx_00B9F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00BA30:
+  type: MM:ARRAY
+  offset: 0x00BA30
+  symbol: object_boss07Vtx_00BA30
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00BA70:
+  type: MM:ARRAY
+  offset: 0x00BA70
+  symbol: object_boss07Vtx_00BA70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00BAB0:
+  type: MM:ARRAY
+  offset: 0x00BAB0
+  symbol: object_boss07Vtx_00BAB0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00BAF0:
+  type: MM:ARRAY
+  offset: 0x00BAF0
+  symbol: object_boss07Vtx_00BAF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00C698:
+  type: MM:ARRAY
+  offset: 0x00C698
+  symbol: object_boss07Vtx_00C698
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_00CEB8:
+  type: MM:ARRAY
+  offset: 0x00CEB8
+  symbol: object_boss07Vtx_00CEB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_014310:
+  type: MM:ARRAY
+  offset: 0x014310
+  symbol: object_boss07Vtx_014310
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_014CF0:
+  type: MM:ARRAY
+  offset: 0x014CF0
+  symbol: object_boss07Vtx_014CF0
+  count: 314
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_016990:
+  type: MM:ARRAY
+  offset: 0x016990
+  symbol: object_boss07Vtx_016990
+  count: 325
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_018578:
+  type: MM:ARRAY
+  offset: 0x018578
+  symbol: object_boss07Vtx_018578
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMajorasMaskSkelLimbs:
+  type: BLOB
+  offset: 0x19C10
+  symbol: gMajorasMaskSkelLimbs
+  size: 0
+
+object_boss07Vtx_027280:
+  type: MM:ARRAY
+  offset: 0x027280
+  symbol: object_boss07Vtx_027280
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_0275E0:
+  type: MM:ARRAY
+  offset: 0x0275E0
+  symbol: object_boss07Vtx_0275E0
+  count: 227
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_028410:
+  type: MM:ARRAY
+  offset: 0x028410
+  symbol: object_boss07Vtx_028410
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_028890:
+  type: MM:ARRAY
+  offset: 0x028890
+  symbol: object_boss07Vtx_028890
+  count: 184
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_029410:
+  type: MM:ARRAY
+  offset: 0x029410
+  symbol: object_boss07Vtx_029410
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_029810:
+  type: MM:ARRAY
+  offset: 0x029810
+  symbol: object_boss07Vtx_029810
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_029C30:
+  type: MM:ARRAY
+  offset: 0x029C30
+  symbol: object_boss07Vtx_029C30
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02A130:
+  type: MM:ARRAY
+  offset: 0x02A130
+  symbol: object_boss07Vtx_02A130
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02A530:
+  type: MM:ARRAY
+  offset: 0x02A530
+  symbol: object_boss07Vtx_02A530
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02A950:
+  type: MM:ARRAY
+  offset: 0x02A950
+  symbol: object_boss07Vtx_02A950
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02AE50:
+  type: MM:ARRAY
+  offset: 0x02AE50
+  symbol: object_boss07Vtx_02AE50
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02B0D0:
+  type: MM:ARRAY
+  offset: 0x02B0D0
+  symbol: object_boss07Vtx_02B0D0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02B450:
+  type: MM:ARRAY
+  offset: 0x02B450
+  symbol: object_boss07Vtx_02B450
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02B8D0:
+  type: MM:ARRAY
+  offset: 0x02B8D0
+  symbol: object_boss07Vtx_02B8D0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02BB50:
+  type: MM:ARRAY
+  offset: 0x02BB50
+  symbol: object_boss07Vtx_02BB50
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02BED0:
+  type: MM:ARRAY
+  offset: 0x02BED0
+  symbol: object_boss07Vtx_02BED0
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02EDF0:
+  type: MM:ARRAY
+  offset: 0x02EDF0
+  symbol: object_boss07Vtx_02EDF0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02EF28:
+  type: MM:ARRAY
+  offset: 0x02EF28
+  symbol: object_boss07Vtx_02EF28
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02EFB8:
+  type: MM:ARRAY
+  offset: 0x02EFB8
+  symbol: object_boss07Vtx_02EFB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss07Vtx_02F000:
+  type: MM:ARRAY
+  offset: 0x02F000
+  symbol: object_boss07Vtx_02F000
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMajorasWrathSkelLimbs:
+  type: BLOB
+  offset: 0x33584
+  symbol: gMajorasWrathSkelLimbs
+  size: 0

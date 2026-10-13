@@ -1,0 +1,113 @@
+:config:
+  segments:
+    - [ 6, 0x011AD970 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011AD970 ]
+    - [ 9, 0x011AD970 ]
+    - [ 10, 0x011AD970 ]
+    - [ 11, 0x011AD970 ]
+    - [ 12, 0x011AD970 ]
+    - [ 13, 0x011AD970 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBlackBoeBodyMaterialDL:
+  type: GFX
+  offset: 0x30
+  symbol: gBlackBoeBodyMaterialDL
+
+gBlackBoeBodyModelDL:
+  type: GFX
+  offset: 0xB0
+  symbol: gBlackBoeBodyModelDL
+
+gBlackBoeEndDL:
+  type: GFX
+  offset: 0xC8
+  symbol: gBlackBoeEndDL
+
+gBlackBoeEyesDL:
+  type: GFX
+  offset: 0x140
+  symbol: gBlackBoeEyesDL
+
+gBlackBoeTex:
+  type: TEXTURE
+  offset: 0x390
+  symbol: gBlackBoeTex
+  format: I4
+  width: 16
+  height: 16
+
+gBoeEyeTex:
+  type: TEXTURE
+  offset: 0x490
+  symbol: gBoeEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWhiteBoeBodyMaterialDL:
+  type: GFX
+  offset: 0x1F0
+  symbol: gWhiteBoeBodyMaterialDL
+
+gWhiteBoeBodyModelDL:
+  type: GFX
+  offset: 0x278
+  symbol: gWhiteBoeBodyModelDL
+
+gWhiteBoeEndDL:
+  type: GFX
+  offset: 0x290
+  symbol: gWhiteBoeEndDL
+
+gWhiteBoeEyesDL:
+  type: GFX
+  offset: 0x310
+  symbol: gWhiteBoeEyesDL
+
+gWhiteBoeTex:
+  type: TEXTURE
+  offset: 0x410
+  symbol: gWhiteBoeTex
+  format: I4
+  width: 16
+  height: 16
+
+
+object_mkkVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mkkVtx_000000
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkkVtx_0000E0:
+  type: MM:ARRAY
+  offset: 0x0000E0
+  symbol: object_mkkVtx_0000E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkkVtx_0001C0:
+  type: MM:ARRAY
+  offset: 0x0001C0
+  symbol: object_mkkVtx_0001C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkkVtx_0002B0:
+  type: MM:ARRAY
+  offset: 0x0002B0
+  symbol: object_mkkVtx_0002B0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

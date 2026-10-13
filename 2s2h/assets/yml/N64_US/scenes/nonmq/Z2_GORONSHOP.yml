@@ -1,0 +1,207 @@
+:config:
+  segments:
+    - [ 2, 0x01A957B0 ]
+
+Z2_GORONSHOP:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_GORONSHOP
+
+Z2_GORONSHOPTex_004630:
+  type: TEXTURE
+  offset: 0x4630
+  symbol: Z2_GORONSHOPTex_004630
+  format: I8
+  width: 128
+  height: 64
+
+Z2_GORONSHOPTex_009230:
+  type: TEXTURE
+  offset: 0x9230
+  symbol: Z2_GORONSHOPTex_009230
+  format: RGBA16
+  width: 64
+  height: 64
+
+
+Z2_GORONSHOPTexAnim_000284ColorParams_00024C:
+  type: BLOB
+  offset: 0x00024C
+  symbol: Z2_GORONSHOPTexAnim_000284ColorParams_00024C
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284TexScrollParams_00025C:
+  type: BLOB
+  offset: 0x00025C
+  symbol: Z2_GORONSHOPTexAnim_000284TexScrollParams_00025C
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284TexScrollParams_000264:
+  type: BLOB
+  offset: 0x000264
+  symbol: Z2_GORONSHOPTexAnim_000284TexScrollParams_000264
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284TexScrollParams_00026C:
+  type: BLOB
+  offset: 0x00026C
+  symbol: Z2_GORONSHOPTexAnim_000284TexScrollParams_00026C
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284TexScrollParams_000274:
+  type: BLOB
+  offset: 0x000274
+  symbol: Z2_GORONSHOPTexAnim_000284TexScrollParams_000274
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284TexScrollParams_00027C:
+  type: BLOB
+  offset: 0x00027C
+  symbol: Z2_GORONSHOPTexAnim_000284TexScrollParams_00027C
+  size: 0
+
+Z2_GORONSHOPTexAnim_000284:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000284
+  symbol: Z2_GORONSHOPTexAnim_000284
+
+Z2_GORONSHOPCollisionHeader_0008F8:
+  type: MM:COLLISION
+  offset: 0x0008F8
+  symbol: Z2_GORONSHOPCollisionHeader_0008F8
+
+Z2_GORONSHOPTex_000930:
+  type: TEXTURE
+  offset: 0x000930
+  symbol: Z2_GORONSHOPTex_000930
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_001130:
+  type: TEXTURE
+  offset: 0x001130
+  symbol: Z2_GORONSHOPTex_001130
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_001930:
+  type: TEXTURE
+  offset: 0x001930
+  symbol: Z2_GORONSHOPTex_001930
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_002130:
+  type: TEXTURE
+  offset: 0x002130
+  symbol: Z2_GORONSHOPTex_002130
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_GORONSHOPTex_003130:
+  type: TEXTURE
+  offset: 0x003130
+  symbol: Z2_GORONSHOPTex_003130
+  format: RGBA16
+  width: 4
+  height: 32
+
+Z2_GORONSHOPTex_003230:
+  type: TEXTURE
+  offset: 0x003230
+  symbol: Z2_GORONSHOPTex_003230
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_004230:
+  type: TEXTURE
+  offset: 0x004230
+  symbol: Z2_GORONSHOPTex_004230
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_006630:
+  type: TEXTURE
+  offset: 0x006630
+  symbol: Z2_GORONSHOPTex_006630
+  format: I8
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_006A30:
+  type: TEXTURE
+  offset: 0x006A30
+  symbol: Z2_GORONSHOPTex_006A30
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_GORONSHOPTex_007A30:
+  type: TEXTURE
+  offset: 0x007A30
+  symbol: Z2_GORONSHOPTex_007A30
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_GORONSHOPTex_008A30:
+  type: TEXTURE
+  offset: 0x008A30
+  symbol: Z2_GORONSHOPTex_008A30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_008E30:
+  type: TEXTURE
+  offset: 0x008E30
+  symbol: Z2_GORONSHOPTex_008E30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_00B230:
+  type: TEXTURE
+  offset: 0x00B230
+  symbol: Z2_GORONSHOPTex_00B230
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_GORONSHOPTex_00B630:
+  type: TEXTURE
+  offset: 0x00B630
+  symbol: Z2_GORONSHOPTex_00B630
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_GORONSHOPTex_00BE30:
+  type: TEXTURE
+  offset: 0x00BE30
+  symbol: Z2_GORONSHOPTex_00BE30
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_GORONSHOPTex_00BF30:
+  type: TEXTURE
+  offset: 0x00BF30
+  symbol: Z2_GORONSHOPTex_00BF30
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_GORONSHOPTLUT_00C130:
+  type: TEXTURE
+  offset: 0x00C130
+  symbol: Z2_GORONSHOPTLUT_00C130
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,196 @@
+:config:
+  segments:
+    - [ 6, 0x01046D00 ]
+
+gTitleScreenAppearEffectMask00Tex:
+  type: TEXTURE
+  offset: 0xCF40
+  symbol: gTitleScreenAppearEffectMask00Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenAppearEffectMask01Tex:
+  type: TEXTURE
+  offset: 0xD740
+  symbol: gTitleScreenAppearEffectMask01Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenAppearEffectMask02Tex:
+  type: TEXTURE
+  offset: 0xEF40
+  symbol: gTitleScreenAppearEffectMask02Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenAppearEffectMask10Tex:
+  type: TEXTURE
+  offset: 0xDF40
+  symbol: gTitleScreenAppearEffectMask10Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenAppearEffectMask11Tex:
+  type: TEXTURE
+  offset: 0xE740
+  symbol: gTitleScreenAppearEffectMask11Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenAppearEffectMask12Tex:
+  type: TEXTURE
+  offset: 0xF740
+  symbol: gTitleScreenAppearEffectMask12Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenControllerNotConnectedTextTex:
+  type: TEXTURE
+  offset: 0x11740
+  symbol: gTitleScreenControllerNotConnectedTextTex
+  format: I4
+  width: 256
+  height: 9
+
+gTitleScreenCopyright2000NintendoTex:
+  type: TEXTURE
+  offset: 0x10F40
+  symbol: gTitleScreenCopyright2000NintendoTex
+  format: I8
+  width: 128
+  height: 16
+
+gTitleScreenDisplayEffectMask00Tex:
+  type: TEXTURE
+  offset: 0x9F40
+  symbol: gTitleScreenDisplayEffectMask00Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenDisplayEffectMask01Tex:
+  type: TEXTURE
+  offset: 0xA740
+  symbol: gTitleScreenDisplayEffectMask01Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenDisplayEffectMask02Tex:
+  type: TEXTURE
+  offset: 0xBF40
+  symbol: gTitleScreenDisplayEffectMask02Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenDisplayEffectMask10Tex:
+  type: TEXTURE
+  offset: 0xAF40
+  symbol: gTitleScreenDisplayEffectMask10Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenDisplayEffectMask11Tex:
+  type: TEXTURE
+  offset: 0xB740
+  symbol: gTitleScreenDisplayEffectMask11Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenDisplayEffectMask12Tex:
+  type: TEXTURE
+  offset: 0xC740
+  symbol: gTitleScreenDisplayEffectMask12Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleScreenFlame0Tex:
+  type: TEXTURE
+  offset: 0xFF40
+  symbol: gTitleScreenFlame0Tex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleScreenFlame1Tex:
+  type: TEXTURE
+  offset: 0x10340
+  symbol: gTitleScreenFlame1Tex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleScreenFlame2Tex:
+  type: TEXTURE
+  offset: 0x10740
+  symbol: gTitleScreenFlame2Tex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleScreenFlame3Tex:
+  type: TEXTURE
+  offset: 0x10B40
+  symbol: gTitleScreenFlame3Tex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleScreenInsertControllerTextTex:
+  type: TEXTURE
+  offset: 0x11BC0
+  symbol: gTitleScreenInsertControllerTextTex
+  format: I4
+  width: 144
+  height: 9
+
+gTitleScreenMajorasMaskSubtitleMaskTex:
+  type: TEXTURE
+  offset: 0x9680
+  symbol: gTitleScreenMajorasMaskSubtitleMaskTex
+  format: I8
+  width: 104
+  height: 16
+
+gTitleScreenMajorasMaskSubtitleTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gTitleScreenMajorasMaskSubtitleTex
+  format: I8
+  width: 104
+  height: 16
+
+gTitleScreenMajorasMaskTex:
+  type: TEXTURE
+  offset: 0x11E48
+  symbol: gTitleScreenMajorasMaskTex
+  format: RGBA32
+  width: 128
+  height: 112
+
+gTitleScreenTheLegendOfTextTex:
+  type: TEXTURE
+  offset: 0x9D00
+  symbol: gTitleScreenTheLegendOfTextTex
+  format: I8
+  width: 72
+  height: 8
+
+gTitleScreenZeldaLogoTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTitleScreenZeldaLogoTex
+  format: RGBA32
+  width: 144
+  height: 64
+

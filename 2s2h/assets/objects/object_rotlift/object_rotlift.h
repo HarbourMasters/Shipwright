@@ -1,0 +1,42 @@
+#ifndef OBJECTS_OBJECT_ROTLIFT_H
+#define OBJECTS_OBJECT_ROTLIFT_H 1
+
+#include "align_asset_macro.h"
+
+#define dgDekuMoonDungeonRotatingPlatformsDL "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsDL"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsDL[] = dgDekuMoonDungeonRotatingPlatformsDL;
+
+#define dgDekuMoonDungeonRotatingPlatformsWoodBarkTLUT "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsWoodBarkTLUT"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsWoodBarkTLUT[] = dgDekuMoonDungeonRotatingPlatformsWoodBarkTLUT;
+
+#define dgDekuMoonDungeonRotatingPlatformsWoodBarkTex "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsWoodBarkTex"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsWoodBarkTex[] = dgDekuMoonDungeonRotatingPlatformsWoodBarkTex;
+
+#define dgDekuMoonDungeonRotatingPlatformsWoodTex "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsWoodTex"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsWoodTex[] = dgDekuMoonDungeonRotatingPlatformsWoodTex;
+
+#define dgDekuMoonDungeonRotatingPlatformsUnusedTexAnim "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsUnusedTexAnim"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsUnusedTexAnim[] = dgDekuMoonDungeonRotatingPlatformsUnusedTexAnim;
+
+#define dgDekuMoonDungeonRotatingPlatformsCol "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingPlatformsCol"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingPlatformsCol[] = dgDekuMoonDungeonRotatingPlatformsCol;
+
+#define dgDekuMoonDungeonRotatingSpikesDL "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesDL"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesDL[] = dgDekuMoonDungeonRotatingSpikesDL;
+
+#define dgDekuMoonDungeonRotatingSpikesWoodBarkTLUT "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesWoodBarkTLUT"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesWoodBarkTLUT[] = dgDekuMoonDungeonRotatingSpikesWoodBarkTLUT;
+
+#define dgDekuMoonDungeonRotatingSpikesWoodBarkTex "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesWoodBarkTex"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesWoodBarkTex[] = dgDekuMoonDungeonRotatingSpikesWoodBarkTex;
+
+#define dgDekuMoonDungeonRotatingSpikesWoodTex "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesWoodTex"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesWoodTex[] = dgDekuMoonDungeonRotatingSpikesWoodTex;
+
+#define dgDekuMoonDungeonRotatingSpikesUnusedTexAnim "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesUnusedTexAnim"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesUnusedTexAnim[] = dgDekuMoonDungeonRotatingSpikesUnusedTexAnim;
+
+#define dgDekuMoonDungeonRotatingSpikesCol "__OTR__objects/object_rotlift/gDekuMoonDungeonRotatingSpikesCol"
+static const ALIGN_ASSET(2) char gDekuMoonDungeonRotatingSpikesCol[] = dgDekuMoonDungeonRotatingSpikesCol;
+
+#endif // OBJECTS_OBJECT_ROTLIFT_H

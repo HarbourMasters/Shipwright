@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x014BBB10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014BBB10 ]
+    - [ 9, 0x014BBB10 ]
+    - [ 10, 0x014BBB10 ]
+    - [ 11, 0x014BBB10 ]
+    - [ 12, 0x014BBB10 ]
+    - [ 13, 0x014BBB10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiMagicMushroomBluePatternTex:
+  type: TEXTURE
+  offset: 0x9E0
+  symbol: gGiMagicMushroomBluePatternTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiMagicMushroomDL:
+  type: GFX
+  offset: 0x640
+  symbol: gGiMagicMushroomDL
+
+gGiMagicMushroomEmptyDL:
+  type: GFX
+  offset: 0x958
+  symbol: gGiMagicMushroomEmptyDL
+
+gGiMagicMushroomPinkBackgroundTex:
+  type: TEXTURE
+  offset: 0x960
+  symbol: gGiMagicMushroomPinkBackgroundTex
+  format: I4
+  width: 16
+  height: 16
+
+gGiMagicMushroomStemTex:
+  type: TEXTURE
+  offset: 0xBE0
+  symbol: gGiMagicMushroomStemTex
+  format: I4
+  width: 32
+  height: 32
+
+
+object_gi_magicmushroomVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_magicmushroomVtx_000000
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

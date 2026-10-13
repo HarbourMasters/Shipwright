@@ -1,0 +1,161 @@
+:config:
+  segments:
+    - [ 2, 0x01691760 ]
+
+Z2_HAKASHITA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_HAKASHITA
+
+
+Z2_HAKASHITACutsceneData_000190:
+  type: MM:CUTSCENE
+  offset: 0x000190
+  symbol: Z2_HAKASHITACutsceneData_000190
+  size: 4420
+
+Z2_HAKASHITACutsceneData_0012E0:
+  type: MM:CUTSCENE
+  offset: 0x0012E0
+  symbol: Z2_HAKASHITACutsceneData_0012E0
+  size: 2308
+
+Z2_HAKASHITATexAnim_001E78TexScrollParams_001E60:
+  type: BLOB
+  offset: 0x001E60
+  symbol: Z2_HAKASHITATexAnim_001E78TexScrollParams_001E60
+  size: 0
+
+Z2_HAKASHITATexAnim_001E78TexScrollParams_001E68:
+  type: BLOB
+  offset: 0x001E68
+  symbol: Z2_HAKASHITATexAnim_001E78TexScrollParams_001E68
+  size: 0
+
+Z2_HAKASHITATexAnim_001E78TexScrollParams_001E70:
+  type: BLOB
+  offset: 0x001E70
+  symbol: Z2_HAKASHITATexAnim_001E78TexScrollParams_001E70
+  size: 0
+
+Z2_HAKASHITATexAnim_001E78:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001E78
+  symbol: Z2_HAKASHITATexAnim_001E78
+
+Z2_HAKASHITACollisionHeader_008814:
+  type: MM:COLLISION
+  offset: 0x008814
+  symbol: Z2_HAKASHITACollisionHeader_008814
+
+Z2_HAKASHITATex_008840:
+  type: TEXTURE
+  offset: 0x008840
+  symbol: Z2_HAKASHITATex_008840
+  format: I4
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_008A40:
+  type: TEXTURE
+  offset: 0x008A40
+  symbol: Z2_HAKASHITATex_008A40
+  format: I4
+  width: 64
+  height: 64
+
+Z2_HAKASHITATex_009240:
+  type: TEXTURE
+  offset: 0x009240
+  symbol: Z2_HAKASHITATex_009240
+  format: I4
+  width: 64
+  height: 64
+
+Z2_HAKASHITATex_009A40:
+  type: TEXTURE
+  offset: 0x009A40
+  symbol: Z2_HAKASHITATex_009A40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_00A240:
+  type: TEXTURE
+  offset: 0x00A240
+  symbol: Z2_HAKASHITATex_00A240
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_HAKASHITATex_00A440:
+  type: TEXTURE
+  offset: 0x00A440
+  symbol: Z2_HAKASHITATex_00A440
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_00AC40:
+  type: TEXTURE
+  offset: 0x00AC40
+  symbol: Z2_HAKASHITATex_00AC40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKASHITATex_00B440:
+  type: TEXTURE
+  offset: 0x00B440
+  symbol: Z2_HAKASHITATex_00B440
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_00B840:
+  type: TEXTURE
+  offset: 0x00B840
+  symbol: Z2_HAKASHITATex_00B840
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_00BC40:
+  type: TEXTURE
+  offset: 0x00BC40
+  symbol: Z2_HAKASHITATex_00BC40
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_HAKASHITATex_00C040:
+  type: TEXTURE
+  offset: 0x00C040
+  symbol: Z2_HAKASHITATex_00C040
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_HAKASHITATLUT_00C440:
+  type: TEXTURE
+  offset: 0x00C440
+  symbol: Z2_HAKASHITATLUT_00C440
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKASHITATLUT_00C460:
+  type: TEXTURE
+  offset: 0x00C460
+  symbol: Z2_HAKASHITATLUT_00C460
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKASHITATLUT_00C480:
+  type: TEXTURE
+  offset: 0x00C480
+  symbol: Z2_HAKASHITATLUT_00C480
+  format: RGBA16
+  width: 16
+  height: 16

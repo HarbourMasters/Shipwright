@@ -1,0 +1,672 @@
+:config:
+  segments:
+    - [ 6, 0x0130CDB0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0130CDB0 ]
+    - [ 9, 0x0130CDB0 ]
+    - [ 10, 0x0130CDB0 ]
+    - [ 11, 0x0130CDB0 ]
+    - [ 12, 0x0130CDB0 ]
+    - [ 13, 0x0130CDB0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGohtBackLeftHoofDL:
+  type: GFX
+  offset: 0x8380
+  symbol: gGohtBackLeftHoofDL
+
+gGohtBackLeftHoofLimb:
+  type: OOT:LIMB
+  offset: 0x130CC
+  symbol: gGohtBackLeftHoofLimb
+  limb_type: Standard
+
+gGohtBackLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x13084
+  symbol: gGohtBackLeftLegRootLimb
+  limb_type: Standard
+
+gGohtBackLeftLegWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x13090
+  symbol: gGohtBackLeftLegWrapperLimb
+  limb_type: Standard
+
+gGohtBackLeftPasternDL:
+  type: GFX
+  offset: 0x84C0
+  symbol: gGohtBackLeftPasternDL
+
+gGohtBackLeftPasternLimb:
+  type: OOT:LIMB
+  offset: 0x130C0
+  symbol: gGohtBackLeftPasternLimb
+  limb_type: Standard
+
+gGohtBackLeftPasternRootLimb:
+  type: OOT:LIMB
+  offset: 0x130B4
+  symbol: gGohtBackLeftPasternRootLimb
+  limb_type: Standard
+
+gGohtBackLeftShinDL:
+  type: GFX
+  offset: 0x8590
+  symbol: gGohtBackLeftShinDL
+
+gGohtBackLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x130A8
+  symbol: gGohtBackLeftShinLimb
+  limb_type: Standard
+
+gGohtBackLeftThighDL:
+  type: GFX
+  offset: 0x8718
+  symbol: gGohtBackLeftThighDL
+
+gGohtBackLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1309C
+  symbol: gGohtBackLeftThighLimb
+  limb_type: Standard
+
+gGohtBackRightHoofDL:
+  type: GFX
+  offset: 0x89B8
+  symbol: gGohtBackRightHoofDL
+
+gGohtBackRightHoofLimb:
+  type: OOT:LIMB
+  offset: 0x13078
+  symbol: gGohtBackRightHoofLimb
+  limb_type: Standard
+
+gGohtBackRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x13030
+  symbol: gGohtBackRightLegRootLimb
+  limb_type: Standard
+
+gGohtBackRightLegWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x1303C
+  symbol: gGohtBackRightLegWrapperLimb
+  limb_type: Standard
+
+gGohtBackRightPasternDL:
+  type: GFX
+  offset: 0x8AF8
+  symbol: gGohtBackRightPasternDL
+
+gGohtBackRightPasternLimb:
+  type: OOT:LIMB
+  offset: 0x1306C
+  symbol: gGohtBackRightPasternLimb
+  limb_type: Standard
+
+gGohtBackRightPasternRootLimb:
+  type: OOT:LIMB
+  offset: 0x13060
+  symbol: gGohtBackRightPasternRootLimb
+  limb_type: Standard
+
+gGohtBackRightShinDL:
+  type: GFX
+  offset: 0x8BC8
+  symbol: gGohtBackRightShinDL
+
+gGohtBackRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x13054
+  symbol: gGohtBackRightShinLimb
+  limb_type: Standard
+
+gGohtBackRightThighDL:
+  type: GFX
+  offset: 0x8D50
+  symbol: gGohtBackRightThighDL
+
+gGohtBackRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x13048
+  symbol: gGohtBackRightThighLimb
+  limb_type: Standard
+
+gGohtEmptyBlob:
+  type: BLOB
+  offset: 0x11890
+  size: 0x600
+  symbol: gGohtEmptyBlob
+
+gGohtEyeTex:
+  type: TEXTURE
+  offset: 0xDAD8
+  symbol: gGohtEyeTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGohtFaceAndKneePatternTex:
+  type: TEXTURE
+  offset: 0xEAD8
+  symbol: gGohtFaceAndKneePatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGohtFallDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x134D0
+  symbol: gGohtFallDownAnim
+
+gGohtFallOnSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x3088
+  symbol: gGohtFallOnSideAnim
+
+gGohtFrontLeftHoofDL:
+  type: GFX
+  offset: 0x9E18
+  symbol: gGohtFrontLeftHoofDL
+
+gGohtFrontLeftHoofLimb:
+  type: OOT:LIMB
+  offset: 0x12FF4
+  symbol: gGohtFrontLeftHoofLimb
+  limb_type: Standard
+
+gGohtFrontLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x12FC4
+  symbol: gGohtFrontLeftLegRootLimb
+  limb_type: Standard
+
+gGohtFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x9F58
+  symbol: gGohtFrontLeftLowerLegDL
+
+gGohtFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x12FE8
+  symbol: gGohtFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gGohtFrontLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x12FDC
+  symbol: gGohtFrontLeftLowerLegRootLimb
+  limb_type: Standard
+
+gGohtFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0xA170
+  symbol: gGohtFrontLeftUpperLegDL
+
+gGohtFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x12FD0
+  symbol: gGohtFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gGohtFrontRightHoofDL:
+  type: GFX
+  offset: 0xA478
+  symbol: gGohtFrontRightHoofDL
+
+gGohtFrontRightHoofLimb:
+  type: OOT:LIMB
+  offset: 0x12FB8
+  symbol: gGohtFrontRightHoofLimb
+  limb_type: Standard
+
+gGohtFrontRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x12F88
+  symbol: gGohtFrontRightLegRootLimb
+  limb_type: Standard
+
+gGohtFrontRightLowerLegDL:
+  type: GFX
+  offset: 0xA5B8
+  symbol: gGohtFrontRightLowerLegDL
+
+gGohtFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x12FAC
+  symbol: gGohtFrontRightLowerLegLimb
+  limb_type: Standard
+
+gGohtFrontRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x12FA0
+  symbol: gGohtFrontRightLowerLegRootLimb
+  limb_type: Standard
+
+gGohtFrontRightUpperLegDL:
+  type: GFX
+  offset: 0xA7D0
+  symbol: gGohtFrontRightUpperLegDL
+
+gGohtFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x12F94
+  symbol: gGohtFrontRightUpperLegLimb
+  limb_type: Standard
+
+gGohtGetUpFromSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x14024
+  symbol: gGohtGetUpFromSideAnim
+
+gGohtHeadDL:
+  type: GFX
+  offset: 0x8FF0
+  symbol: gGohtHeadDL
+
+gGohtHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1300C
+  symbol: gGohtHeadLimb
+  limb_type: Standard
+
+gGohtHornTex:
+  type: TEXTURE
+  offset: 0xFAD8
+  symbol: gGohtHornTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGohtJawDL:
+  type: GFX
+  offset: 0x9748
+  symbol: gGohtJawDL
+
+gGohtJawLimb:
+  type: OOT:LIMB
+  offset: 0x13024
+  symbol: gGohtJawLimb
+  limb_type: Standard
+
+gGohtJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x13018
+  symbol: gGohtJawRootLimb
+  limb_type: Standard
+
+gGohtLightOrbMaterialDL:
+  type: GFX
+  offset: 0x12ED0
+  symbol: gGohtLightOrbMaterialDL
+
+gGohtLightOrbModelDL:
+  type: GFX
+  offset: 0x12F40
+  symbol: gGohtLightOrbModelDL
+
+gGohtLightOrbTex:
+  type: TEXTURE
+  offset: 0x11E90
+  symbol: gGohtLightOrbTex
+  format: I8
+  width: 64
+  height: 64
+
+gGohtLightningMaterialDL:
+  type: GFX
+  offset: 0x11208
+  symbol: gGohtLightningMaterialDL
+
+gGohtLightningModelDL:
+  type: GFX
+  offset: 0x11278
+  symbol: gGohtLightningModelDL
+
+gGohtLightningTex:
+  type: TEXTURE
+  offset: 0x11290
+  symbol: gGohtLightningTex
+  format: I4
+  width: 32
+  height: 96
+
+gGohtMachineryTex:
+  type: TEXTURE
+  offset: 0xAAD8
+  symbol: gGohtMachineryTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGohtMetalPlateWithCirclePatternTex:
+  type: TEXTURE
+  offset: 0xBAD8
+  symbol: gGohtMetalPlateWithCirclePatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGohtMetalPlateWithMulticoloredPatternTex:
+  type: TEXTURE
+  offset: 0xCAD8
+  symbol: gGohtMetalPlateWithMulticoloredPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGohtPelvisDL:
+  type: GFX
+  offset: 0x8030
+  symbol: gGohtPelvisDL
+
+gGohtPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x12F64
+  symbol: gGohtPelvisLimb
+  limb_type: Standard
+
+gGohtRockMaterialDL:
+  type: GFX
+  offset: 0x10488
+  symbol: gGohtRockMaterialDL
+
+gGohtRockModelDL:
+  type: GFX
+  offset: 0x10500
+  symbol: gGohtRockModelDL
+
+gGohtRockTex:
+  type: TEXTURE
+  offset: 0x10560
+  symbol: gGohtRockTex
+  format: RGBA16
+  width: 36
+  height: 36
+
+gGohtRootLimb:
+  type: OOT:LIMB
+  offset: 0x12F58
+  symbol: gGohtRootLimb
+  limb_type: Standard
+
+gGohtRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x13828
+  symbol: gGohtRunAnim
+
+gGohtSkel:
+  type: MM:SKELETON
+  offset: 0x13158
+  symbol: gGohtSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGohtStalactiteMaterialDL:
+  type: GFX
+  offset: 0x11100
+  symbol: gGohtStalactiteMaterialDL
+
+gGohtStalactiteModelDL:
+  type: GFX
+  offset: 0x11178
+  symbol: gGohtStalactiteModelDL
+
+gGohtStationaryAnim:
+  type: OOT:ANIMATION
+  offset: 0x319C
+  symbol: gGohtStationaryAnim
+
+gGohtThawAndBreakWallAnim:
+  type: OOT:ANIMATION
+  offset: 0x2054
+  symbol: gGohtThawAndBreakWallAnim
+
+gGohtThoraxDL:
+  type: GFX
+  offset: 0x9948
+  symbol: gGohtThoraxDL
+
+gGohtThoraxLimb:
+  type: OOT:LIMB
+  offset: 0x13000
+  symbol: gGohtThoraxLimb
+  limb_type: Standard
+
+gGohtThoraxRootLimb:
+  type: OOT:LIMB
+  offset: 0x12F70
+  symbol: gGohtThoraxRootLimb
+  limb_type: Standard
+
+gGohtThoraxWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x12F7C
+  symbol: gGohtThoraxWrapperLimb
+  limb_type: Standard
+
+gGohtTitleCardTex:
+  type: TEXTURE
+  offset: 0x14040
+  symbol: gGohtTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGohtTwitchOnSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x28D0
+  symbol: gGohtTwitchOnSideAnim
+
+gGohtWritheOnSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x25B0
+  symbol: gGohtWritheOnSideAnim
+
+
+object_boss_hakuginVtx_0031B0:
+  type: MM:ARRAY
+  offset: 0x0031B0
+  symbol: object_boss_hakuginVtx_0031B0
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0036A0:
+  type: MM:ARRAY
+  offset: 0x0036A0
+  symbol: object_boss_hakuginVtx_0036A0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_003A20:
+  type: MM:ARRAY
+  offset: 0x003A20
+  symbol: object_boss_hakuginVtx_003A20
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_003B50:
+  type: MM:ARRAY
+  offset: 0x003B50
+  symbol: object_boss_hakuginVtx_003B50
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_003DB0:
+  type: MM:ARRAY
+  offset: 0x003DB0
+  symbol: object_boss_hakuginVtx_003DB0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0041F0:
+  type: MM:ARRAY
+  offset: 0x0041F0
+  symbol: object_boss_hakuginVtx_0041F0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_004570:
+  type: MM:ARRAY
+  offset: 0x004570
+  symbol: object_boss_hakuginVtx_004570
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0046A0:
+  type: MM:ARRAY
+  offset: 0x0046A0
+  symbol: object_boss_hakuginVtx_0046A0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_004900:
+  type: MM:ARRAY
+  offset: 0x004900
+  symbol: object_boss_hakuginVtx_004900
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_004D40:
+  type: MM:ARRAY
+  offset: 0x004D40
+  symbol: object_boss_hakuginVtx_004D40
+  count: 285
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_005F10:
+  type: MM:ARRAY
+  offset: 0x005F10
+  symbol: object_boss_hakuginVtx_005F10
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_006200:
+  type: MM:ARRAY
+  offset: 0x006200
+  symbol: object_boss_hakuginVtx_006200
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_006AD0:
+  type: MM:ARRAY
+  offset: 0x006AD0
+  symbol: object_boss_hakuginVtx_006AD0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_006E50:
+  type: MM:ARRAY
+  offset: 0x006E50
+  symbol: object_boss_hakuginVtx_006E50
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0071E0:
+  type: MM:ARRAY
+  offset: 0x0071E0
+  symbol: object_boss_hakuginVtx_0071E0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_007580:
+  type: MM:ARRAY
+  offset: 0x007580
+  symbol: object_boss_hakuginVtx_007580
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_007900:
+  type: MM:ARRAY
+  offset: 0x007900
+  symbol: object_boss_hakuginVtx_007900
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_007C90:
+  type: MM:ARRAY
+  offset: 0x007C90
+  symbol: object_boss_hakuginVtx_007C90
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0102D8:
+  type: MM:ARRAY
+  offset: 0x0102D8
+  symbol: object_boss_hakuginVtx_0102D8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_010F80:
+  type: MM:ARRAY
+  offset: 0x010F80
+  symbol: object_boss_hakuginVtx_010F80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_0111C8:
+  type: MM:ARRAY
+  offset: 0x0111C8
+  symbol: object_boss_hakuginVtx_0111C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss_hakuginVtx_012E90:
+  type: MM:ARRAY
+  offset: 0x012E90
+  symbol: object_boss_hakuginVtx_012E90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGohtSkelLimbs:
+  type: BLOB
+  offset: 0x130D8
+  symbol: gGohtSkelLimbs
+  size: 0

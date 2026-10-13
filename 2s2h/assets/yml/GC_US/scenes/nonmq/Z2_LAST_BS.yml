@@ -1,0 +1,127 @@
+:config:
+  segments:
+    - [ 2, 0x01689B20 ]
+
+Z2_LAST_BS:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_LAST_BS
+
+
+Z2_LAST_BSTexAnim_000214ColorParams_0001FC:
+  type: BLOB
+  offset: 0x0001FC
+  symbol: Z2_LAST_BSTexAnim_000214ColorParams_0001FC
+  size: 0
+
+Z2_LAST_BSTexAnim_000214TexScrollParams_00020C:
+  type: BLOB
+  offset: 0x00020C
+  symbol: Z2_LAST_BSTexAnim_000214TexScrollParams_00020C
+  size: 0
+
+Z2_LAST_BSTexAnim_000214:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000214
+  symbol: Z2_LAST_BSTexAnim_000214
+
+Z2_LAST_BSCollisionHeader_002228:
+  type: MM:COLLISION
+  offset: 0x002228
+  symbol: Z2_LAST_BSCollisionHeader_002228
+
+Z2_LAST_BSTex_002260:
+  type: TEXTURE
+  offset: 0x002260
+  symbol: Z2_LAST_BSTex_002260
+  format: I8
+  width: 64
+  height: 32
+
+Z2_LAST_BSTex_002A60:
+  type: TEXTURE
+  offset: 0x002A60
+  symbol: Z2_LAST_BSTex_002A60
+  format: CI4
+  width: 32
+  height: 64
+
+Z2_LAST_BSTex_002E60:
+  type: TEXTURE
+  offset: 0x002E60
+  symbol: Z2_LAST_BSTex_002E60
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_LAST_BSTex_003060:
+  type: TEXTURE
+  offset: 0x003060
+  symbol: Z2_LAST_BSTex_003060
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_LAST_BSTex_003860:
+  type: TEXTURE
+  offset: 0x003860
+  symbol: Z2_LAST_BSTex_003860
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_BSTex_004060:
+  type: TEXTURE
+  offset: 0x004060
+  symbol: Z2_LAST_BSTex_004060
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_LAST_BSTex_004260:
+  type: TEXTURE
+  offset: 0x004260
+  symbol: Z2_LAST_BSTex_004260
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_LAST_BSTex_005260:
+  type: TEXTURE
+  offset: 0x005260
+  symbol: Z2_LAST_BSTex_005260
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_LAST_BSTex_005460:
+  type: TEXTURE
+  offset: 0x005460
+  symbol: Z2_LAST_BSTex_005460
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_LAST_BSTex_006460:
+  type: TEXTURE
+  offset: 0x006460
+  symbol: Z2_LAST_BSTex_006460
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_LAST_BSTex_006860:
+  type: TEXTURE
+  offset: 0x006860
+  symbol: Z2_LAST_BSTex_006860
+  format: I8
+  width: 64
+  height: 64
+
+Z2_LAST_BSTLUT_007860:
+  type: TEXTURE
+  offset: 0x007860
+  symbol: Z2_LAST_BSTLUT_007860
+  format: RGBA16
+  width: 4
+  height: 4

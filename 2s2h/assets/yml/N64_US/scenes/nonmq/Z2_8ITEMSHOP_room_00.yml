@@ -1,0 +1,243 @@
+:config:
+  segments:
+    - [ 3, 0x01A17BB0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01A17BB0 ]
+    - [ 9, 0x01A17BB0 ]
+    - [ 10, 0x01A17BB0 ]
+    - [ 11, 0x01A17BB0 ]
+    - [ 12, 0x01A17BB0 ]
+    - [ 13, 0x01A17BB0 ]
+    - [ 2, 0x01A10F90 ]
+  directory: scenes/nonmq/Z2_8ITEMSHOP
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_8ITEMSHOP.yml
+
+Z2_8ITEMSHOP_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_8ITEMSHOP_room_00
+
+Z2_8ITEMSHOP_room_00DL_00C040:
+  type: GFX
+  offset: 0xC040
+  symbol: Z2_8ITEMSHOP_room_00DL_00C040
+
+Z2_8ITEMSHOP_room_00DL_00C9F0:
+  type: GFX
+  offset: 0xC9F0
+  symbol: Z2_8ITEMSHOP_room_00DL_00C9F0
+
+
+Z2_8ITEMSHOP_room_00ActorEntry_000064:
+  type: BLOB
+  offset: 0x000064
+  symbol: Z2_8ITEMSHOP_room_00ActorEntry_000064
+  size: 0
+
+Z2_8ITEMSHOP_room_00Vtx_000230:
+  type: MM:ARRAY
+  offset: 0x000230
+  symbol: Z2_8ITEMSHOP_room_00Vtx_000230
+  count: 256
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_001230:
+  type: GFX
+  offset: 0x001230
+  symbol: Z2_8ITEMSHOP_room_00DL_001230
+
+Z2_8ITEMSHOP_room_00Vtx_001A78:
+  type: MM:ARRAY
+  offset: 0x001A78
+  symbol: Z2_8ITEMSHOP_room_00Vtx_001A78
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_002448:
+  type: GFX
+  offset: 0x002448
+  symbol: Z2_8ITEMSHOP_room_00DL_002448
+
+Z2_8ITEMSHOP_room_00Vtx_0028C0:
+  type: MM:ARRAY
+  offset: 0x0028C0
+  symbol: Z2_8ITEMSHOP_room_00Vtx_0028C0
+  count: 582
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_004D20:
+  type: GFX
+  offset: 0x004D20
+  symbol: Z2_8ITEMSHOP_room_00DL_004D20
+
+Z2_8ITEMSHOP_room_00Vtx_006F70:
+  type: MM:ARRAY
+  offset: 0x006F70
+  symbol: Z2_8ITEMSHOP_room_00Vtx_006F70
+  count: 261
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_007FC0:
+  type: GFX
+  offset: 0x007FC0
+  symbol: Z2_8ITEMSHOP_room_00DL_007FC0
+
+Z2_8ITEMSHOP_room_00Vtx_008B48:
+  type: MM:ARRAY
+  offset: 0x008B48
+  symbol: Z2_8ITEMSHOP_room_00Vtx_008B48
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_008D08:
+  type: GFX
+  offset: 0x008D08
+  symbol: Z2_8ITEMSHOP_room_00DL_008D08
+
+Z2_8ITEMSHOP_room_00Vtx_008DC0:
+  type: MM:ARRAY
+  offset: 0x008DC0
+  symbol: Z2_8ITEMSHOP_room_00Vtx_008DC0
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_0096E0:
+  type: GFX
+  offset: 0x0096E0
+  symbol: Z2_8ITEMSHOP_room_00DL_0096E0
+
+Z2_8ITEMSHOP_room_00Vtx_009970:
+  type: MM:ARRAY
+  offset: 0x009970
+  symbol: Z2_8ITEMSHOP_room_00Vtx_009970
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_009D60:
+  type: GFX
+  offset: 0x009D60
+  symbol: Z2_8ITEMSHOP_room_00DL_009D60
+
+Z2_8ITEMSHOP_room_00Vtx_009F50:
+  type: MM:ARRAY
+  offset: 0x009F50
+  symbol: Z2_8ITEMSHOP_room_00Vtx_009F50
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00A710:
+  type: GFX
+  offset: 0x00A710
+  symbol: Z2_8ITEMSHOP_room_00DL_00A710
+
+Z2_8ITEMSHOP_room_00Vtx_00AE30:
+  type: MM:ARRAY
+  offset: 0x00AE30
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00AE30
+  count: 245
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00BD80:
+  type: GFX
+  offset: 0x00BD80
+  symbol: Z2_8ITEMSHOP_room_00DL_00BD80
+
+Z2_8ITEMSHOP_room_00Vtx_00C090:
+  type: MM:ARRAY
+  offset: 0x00C090
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00C090
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00C150:
+  type: GFX
+  offset: 0x00C150
+  symbol: Z2_8ITEMSHOP_room_00DL_00C150
+
+Z2_8ITEMSHOP_room_00Vtx_00C228:
+  type: MM:ARRAY
+  offset: 0x00C228
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00C228
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00C2E8:
+  type: GFX
+  offset: 0x00C2E8
+  symbol: Z2_8ITEMSHOP_room_00DL_00C2E8
+
+Z2_8ITEMSHOP_room_00Vtx_00C3C0:
+  type: MM:ARRAY
+  offset: 0x00C3C0
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00C3C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00C4C0:
+  type: GFX
+  offset: 0x00C4C0
+  symbol: Z2_8ITEMSHOP_room_00DL_00C4C0
+
+Z2_8ITEMSHOP_room_00DL_00C578:
+  type: GFX
+  offset: 0x00C578
+  symbol: Z2_8ITEMSHOP_room_00DL_00C578
+
+Z2_8ITEMSHOP_room_00Vtx_00C580:
+  type: MM:ARRAY
+  offset: 0x00C580
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00C580
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00C6C0:
+  type: GFX
+  offset: 0x00C6C0
+  symbol: Z2_8ITEMSHOP_room_00DL_00C6C0
+
+Z2_8ITEMSHOP_room_00DL_00C7B8:
+  type: GFX
+  offset: 0x00C7B8
+  symbol: Z2_8ITEMSHOP_room_00DL_00C7B8
+
+Z2_8ITEMSHOP_room_00Vtx_00C7C0:
+  type: MM:ARRAY
+  offset: 0x00C7C0
+  symbol: Z2_8ITEMSHOP_room_00Vtx_00C7C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_8ITEMSHOP_room_00DL_00C940:
+  type: GFX
+  offset: 0x00C940
+  symbol: Z2_8ITEMSHOP_room_00DL_00C940

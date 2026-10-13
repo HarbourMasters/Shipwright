@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015986E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015986E0 ]
+    - [ 9, 0x015986E0 ]
+    - [ 10, 0x015986E0 ]
+    - [ 11, 0x015986E0 ]
+    - [ 12, 0x015986E0 ]
+    - [ 13, 0x015986E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gUnderwaterGrateCol:
+  type: MM:COLLISION
+  offset: 0x1118
+  symbol: gUnderwaterGrateCol
+
+gUnderwaterGrateDL:
+  type: GFX
+  offset: 0x40
+  symbol: gUnderwaterGrateDL
+
+gUnderwaterGrateTex:
+  type: TEXTURE
+  offset: 0xD0
+  symbol: gUnderwaterGrateTex
+  format: IA8
+  width: 32
+  height: 128
+
+
+object_kzsakuVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kzsakuVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

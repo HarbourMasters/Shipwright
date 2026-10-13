@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01E61E30 ]
+    - [ 2, 0x01E4A8A0 ]
+  directory: scenes/nonmq/Z2_CLOCKTOWER
+  external_files:
+    - N64_US/scenes/nonmq/Z2_CLOCKTOWER_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_CLOCKTOWER.yml
+
+Z2_CLOCKTOWER_room_00Set_000530:
+  type: MM:ROOM
+  offset: 0x530
+  symbol: Z2_CLOCKTOWER_room_00Set_000530
+  base_name: Z2_CLOCKTOWER_room_00

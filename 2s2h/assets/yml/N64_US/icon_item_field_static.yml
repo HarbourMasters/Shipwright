@@ -1,0 +1,229 @@
+:config:
+  segments:
+    - [ 12, 0x00956780 ]
+
+gWorldMapAreaBox1Tex:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: gWorldMapAreaBox1Tex
+  format: IA4
+  width: 32
+  height: 19
+
+gWorldMapAreaBox2Tex:
+  type: TEXTURE
+  offset: 0x6F70
+  symbol: gWorldMapAreaBox2Tex
+  format: IA4
+  width: 48
+  height: 38
+
+gWorldMapAreaBox3Tex:
+  type: TEXTURE
+  offset: 0x7300
+  symbol: gWorldMapAreaBox3Tex
+  format: IA4
+  width: 32
+  height: 17
+
+gWorldMapAreaBox4Tex:
+  type: TEXTURE
+  offset: 0x7410
+  symbol: gWorldMapAreaBox4Tex
+  format: IA4
+  width: 32
+  height: 13
+
+gWorldMapAreaBox5Tex:
+  type: TEXTURE
+  offset: 0x74E0
+  symbol: gWorldMapAreaBox5Tex
+  format: IA4
+  width: 32
+  height: 26
+
+gWorldMapAreaBox6Tex:
+  type: TEXTURE
+  offset: 0x7680
+  symbol: gWorldMapAreaBox6Tex
+  format: IA4
+  width: 48
+  height: 19
+
+gWorldMapAreaBox7Tex:
+  type: TEXTURE
+  offset: 0x7848
+  symbol: gWorldMapAreaBox7Tex
+  format: IA4
+  width: 96
+  height: 59
+
+gWorldMapAreaBox8Tex:
+  type: TEXTURE
+  offset: 0x8358
+  symbol: gWorldMapAreaBox8Tex
+  format: IA4
+  width: 16
+  height: 16
+
+gWorldMapArrowTex:
+  type: TEXTURE
+  offset: 0x83D8
+  symbol: gWorldMapArrowTex
+  format: IA8
+  width: 8
+  height: 8
+
+gWorldMapClockTownCloud1Tex:
+  type: TEXTURE
+  offset: 0x8418
+  symbol: gWorldMapClockTownCloud1Tex
+  format: IA8
+  width: 80
+  height: 40
+
+gWorldMapClockTownCloud2Tex:
+  type: TEXTURE
+  offset: 0x9098
+  symbol: gWorldMapClockTownCloud2Tex
+  format: IA8
+  width: 64
+  height: 31
+
+gWorldMapDotTex:
+  type: TEXTURE
+  offset: 0x6E00
+  symbol: gWorldMapDotTex
+  format: IA8
+  width: 8
+  height: 8
+
+gWorldMapGreatBayCloud1Tex:
+  type: TEXTURE
+  offset: 0x9E58
+  symbol: gWorldMapGreatBayCloud1Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gWorldMapGreatBayCloud2Tex:
+  type: TEXTURE
+  offset: 0xAE58
+  symbol: gWorldMapGreatBayCloud2Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gWorldMapGreatBayCloud3Tex:
+  type: TEXTURE
+  offset: 0xBE58
+  symbol: gWorldMapGreatBayCloud3Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gWorldMapGreatBayCloud4Tex:
+  type: TEXTURE
+  offset: 0xCE58
+  symbol: gWorldMapGreatBayCloud4Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gWorldMapImageTLUT:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gWorldMapImageTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWorldMapImageTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWorldMapImageTex
+  format: CI8
+  width: 216
+  height: 128
+  tlut: 0x6C00
+
+gWorldMapOwlFaceTex:
+  type: TEXTURE
+  offset: 0x14668
+  symbol: gWorldMapOwlFaceTex
+  format: RGBA32
+  width: 24
+  height: 12
+
+gWorldMapRomaniRanchCloudTex:
+  type: TEXTURE
+  offset: 0x9858
+  symbol: gWorldMapRomaniRanchCloudTex
+  format: IA8
+  width: 48
+  height: 32
+
+gWorldMapSnowheadCloud1Tex:
+  type: TEXTURE
+  offset: 0xDE58
+  symbol: gWorldMapSnowheadCloud1Tex
+  format: IA8
+  width: 64
+  height: 52
+
+gWorldMapSnowheadCloud2Tex:
+  type: TEXTURE
+  offset: 0xEB58
+  symbol: gWorldMapSnowheadCloud2Tex
+  format: IA8
+  width: 112
+  height: 35
+
+gWorldMapSnowheadCloud3Tex:
+  type: TEXTURE
+  offset: 0xFAA8
+  symbol: gWorldMapSnowheadCloud3Tex
+  format: IA8
+  width: 112
+  height: 35
+
+gWorldMapStoneTowerCloud1Tex:
+  type: TEXTURE
+  offset: 0x109F8
+  symbol: gWorldMapStoneTowerCloud1Tex
+  format: IA8
+  width: 48
+  height: 82
+
+gWorldMapStoneTowerCloud2Tex:
+  type: TEXTURE
+  offset: 0x11958
+  symbol: gWorldMapStoneTowerCloud2Tex
+  format: IA8
+  width: 64
+  height: 61
+
+gWorldMapWoodfallCloud1Tex:
+  type: TEXTURE
+  offset: 0x12898
+  symbol: gWorldMapWoodfallCloud1Tex
+  format: IA8
+  width: 64
+  height: 53
+
+gWorldMapWoodfallCloud2Tex:
+  type: TEXTURE
+  offset: 0x135D8
+  symbol: gWorldMapWoodfallCloud2Tex
+  format: IA8
+  width: 64
+  height: 53
+
+gWorldMapWoodfallCloud3Tex:
+  type: TEXTURE
+  offset: 0x14318
+  symbol: gWorldMapWoodfallCloud3Tex
+  format: IA8
+  width: 16
+  height: 53
+

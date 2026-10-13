@@ -1,0 +1,327 @@
+:config:
+  segments:
+    - [ 6, 0x010844A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010844A0 ]
+    - [ 9, 0x010844A0 ]
+    - [ 10, 0x010844A0 ]
+    - [ 11, 0x010844A0 ]
+    - [ 12, 0x010844A0 ]
+    - [ 13, 0x010844A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_hintnuts_Anim_000168:
+  type: OOT:ANIMATION
+  offset: 0x168
+  symbol: object_hintnuts_Anim_000168
+
+object_hintnuts_Anim_0024CC:
+  type: OOT:ANIMATION
+  offset: 0x24CC
+  symbol: object_hintnuts_Anim_0024CC
+
+object_hintnuts_Anim_0026C4:
+  type: OOT:ANIMATION
+  offset: 0x26C4
+  symbol: object_hintnuts_Anim_0026C4
+
+object_hintnuts_Anim_002894:
+  type: OOT:ANIMATION
+  offset: 0x2894
+  symbol: object_hintnuts_Anim_002894
+
+object_hintnuts_Anim_0029BC:
+  type: OOT:ANIMATION
+  offset: 0x29BC
+  symbol: object_hintnuts_Anim_0029BC
+
+object_hintnuts_Anim_002B90:
+  type: OOT:ANIMATION
+  offset: 0x2B90
+  symbol: object_hintnuts_Anim_002B90
+
+object_hintnuts_Anim_002E84:
+  type: OOT:ANIMATION
+  offset: 0x2E84
+  symbol: object_hintnuts_Anim_002E84
+
+object_hintnuts_Anim_002F7C:
+  type: OOT:ANIMATION
+  offset: 0x2F7C
+  symbol: object_hintnuts_Anim_002F7C
+
+object_hintnuts_Anim_003128:
+  type: OOT:ANIMATION
+  offset: 0x3128
+  symbol: object_hintnuts_Anim_003128
+
+object_hintnuts_DL_000B30:
+  type: GFX
+  offset: 0xB30
+  symbol: object_hintnuts_DL_000B30
+
+object_hintnuts_DL_000C68:
+  type: GFX
+  offset: 0xC68
+  symbol: object_hintnuts_DL_000C68
+
+object_hintnuts_DL_000D10:
+  type: GFX
+  offset: 0xD10
+  symbol: object_hintnuts_DL_000D10
+
+object_hintnuts_DL_000E28:
+  type: GFX
+  offset: 0xE28
+  symbol: object_hintnuts_DL_000E28
+
+object_hintnuts_DL_000EC8:
+  type: GFX
+  offset: 0xEC8
+  symbol: object_hintnuts_DL_000EC8
+
+object_hintnuts_DL_000F78:
+  type: GFX
+  offset: 0xF78
+  symbol: object_hintnuts_DL_000F78
+
+object_hintnuts_DL_001028:
+  type: GFX
+  offset: 0x1028
+  symbol: object_hintnuts_DL_001028
+
+object_hintnuts_DL_0010C8:
+  type: GFX
+  offset: 0x10C8
+  symbol: object_hintnuts_DL_0010C8
+
+object_hintnuts_DL_001208:
+  type: GFX
+  offset: 0x1208
+  symbol: object_hintnuts_DL_001208
+
+object_hintnuts_DL_0012F0:
+  type: GFX
+  offset: 0x12F0
+  symbol: object_hintnuts_DL_0012F0
+
+object_hintnuts_DL_0014E0:
+  type: GFX
+  offset: 0x14E0
+  symbol: object_hintnuts_DL_0014E0
+
+object_hintnuts_Skel_0023B8:
+  type: MM:SKELETON
+  offset: 0x23B8
+  symbol: object_hintnuts_Skel_0023B8
+  limb_type: Standard
+  skel_type: Flex
+
+object_hintnuts_Standardlimb_002328:
+  type: OOT:LIMB
+  offset: 0x2328
+  symbol: object_hintnuts_Standardlimb_002328
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002334:
+  type: OOT:LIMB
+  offset: 0x2334
+  symbol: object_hintnuts_Standardlimb_002334
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002340:
+  type: OOT:LIMB
+  offset: 0x2340
+  symbol: object_hintnuts_Standardlimb_002340
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_00234C:
+  type: OOT:LIMB
+  offset: 0x234C
+  symbol: object_hintnuts_Standardlimb_00234C
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002358:
+  type: OOT:LIMB
+  offset: 0x2358
+  symbol: object_hintnuts_Standardlimb_002358
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002364:
+  type: OOT:LIMB
+  offset: 0x2364
+  symbol: object_hintnuts_Standardlimb_002364
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002370:
+  type: OOT:LIMB
+  offset: 0x2370
+  symbol: object_hintnuts_Standardlimb_002370
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_00237C:
+  type: OOT:LIMB
+  offset: 0x237C
+  symbol: object_hintnuts_Standardlimb_00237C
+  limb_type: Standard
+
+object_hintnuts_Standardlimb_002388:
+  type: OOT:LIMB
+  offset: 0x2388
+  symbol: object_hintnuts_Standardlimb_002388
+  limb_type: Standard
+
+object_hintnuts_Tex_0015A8:
+  type: TEXTURE
+  offset: 0x15A8
+  symbol: object_hintnuts_Tex_0015A8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hintnuts_Tex_001DA8:
+  type: TEXTURE
+  offset: 0x1DA8
+  symbol: object_hintnuts_Tex_001DA8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_hintnuts_Tex_001FA8:
+  type: TEXTURE
+  offset: 0x1FA8
+  symbol: object_hintnuts_Tex_001FA8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnuts_Tex_002028:
+  type: TEXTURE
+  offset: 0x2028
+  symbol: object_hintnuts_Tex_002028
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnuts_Tex_0020A8:
+  type: TEXTURE
+  offset: 0x20A8
+  symbol: object_hintnuts_Tex_0020A8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnuts_Tex_002128:
+  type: TEXTURE
+  offset: 0x2128
+  symbol: object_hintnuts_Tex_002128
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_hintnutsVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_hintnutsVtx_000180
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0002E0:
+  type: MM:ARRAY
+  offset: 0x0002E0
+  symbol: object_hintnutsVtx_0002E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000340:
+  type: MM:ARRAY
+  offset: 0x000340
+  symbol: object_hintnutsVtx_000340
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: object_hintnutsVtx_000430
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000480:
+  type: MM:ARRAY
+  offset: 0x000480
+  symbol: object_hintnutsVtx_000480
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_hintnutsVtx_0004F0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000560:
+  type: MM:ARRAY
+  offset: 0x000560
+  symbol: object_hintnutsVtx_000560
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0005B0:
+  type: MM:ARRAY
+  offset: 0x0005B0
+  symbol: object_hintnutsVtx_0005B0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0009F0:
+  type: MM:ARRAY
+  offset: 0x0009F0
+  symbol: object_hintnutsVtx_0009F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0012C0:
+  type: MM:ARRAY
+  offset: 0x0012C0
+  symbol: object_hintnutsVtx_0012C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_001380:
+  type: MM:ARRAY
+  offset: 0x001380
+  symbol: object_hintnutsVtx_001380
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnuts_Skel_0023B8Limbs:
+  type: BLOB
+  offset: 0x2394
+  symbol: object_hintnuts_Skel_0023B8Limbs
+  size: 0

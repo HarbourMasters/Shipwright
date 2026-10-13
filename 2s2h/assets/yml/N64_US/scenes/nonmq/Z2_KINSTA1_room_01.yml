@@ -1,0 +1,245 @@
+:config:
+  segments:
+    - [ 3, 0x01911D10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01911D10 ]
+    - [ 9, 0x01911D10 ]
+    - [ 10, 0x01911D10 ]
+    - [ 11, 0x01911D10 ]
+    - [ 12, 0x01911D10 ]
+    - [ 13, 0x01911D10 ]
+    - [ 2, 0x0190A200 ]
+  directory: scenes/nonmq/Z2_KINSTA1
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_KINSTA1.yml
+
+Z2_KINSTA1_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_KINSTA1_room_01
+
+Z2_KINSTA1_room_01DL_008610:
+  type: GFX
+  offset: 0x8610
+  symbol: Z2_KINSTA1_room_01DL_008610
+
+Z2_KINSTA1_room_01DL_0098E8:
+  type: GFX
+  offset: 0x98E8
+  symbol: Z2_KINSTA1_room_01DL_0098E8
+
+
+Z2_KINSTA1_room_01ActorEntry_000068:
+  type: BLOB
+  offset: 0x000068
+  symbol: Z2_KINSTA1_room_01ActorEntry_000068
+  size: 0
+
+Z2_KINSTA1_room_01Vtx_0002F0:
+  type: MM:ARRAY
+  offset: 0x0002F0
+  symbol: Z2_KINSTA1_room_01Vtx_0002F0
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_000C70:
+  type: GFX
+  offset: 0x000C70
+  symbol: Z2_KINSTA1_room_01DL_000C70
+
+Z2_KINSTA1_room_01Vtx_000F88:
+  type: MM:ARRAY
+  offset: 0x000F88
+  symbol: Z2_KINSTA1_room_01Vtx_000F88
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_001068:
+  type: GFX
+  offset: 0x001068
+  symbol: Z2_KINSTA1_room_01DL_001068
+
+Z2_KINSTA1_room_01Vtx_001140:
+  type: MM:ARRAY
+  offset: 0x001140
+  symbol: Z2_KINSTA1_room_01Vtx_001140
+  count: 173
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_001C10:
+  type: GFX
+  offset: 0x001C10
+  symbol: Z2_KINSTA1_room_01DL_001C10
+
+Z2_KINSTA1_room_01Vtx_001E50:
+  type: MM:ARRAY
+  offset: 0x001E50
+  symbol: Z2_KINSTA1_room_01Vtx_001E50
+  count: 394
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_0036F0:
+  type: GFX
+  offset: 0x0036F0
+  symbol: Z2_KINSTA1_room_01DL_0036F0
+
+Z2_KINSTA1_room_01Vtx_003C50:
+  type: MM:ARRAY
+  offset: 0x003C50
+  symbol: Z2_KINSTA1_room_01Vtx_003C50
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_0041D0:
+  type: GFX
+  offset: 0x0041D0
+  symbol: Z2_KINSTA1_room_01DL_0041D0
+
+Z2_KINSTA1_room_01Vtx_0043F0:
+  type: MM:ARRAY
+  offset: 0x0043F0
+  symbol: Z2_KINSTA1_room_01Vtx_0043F0
+  count: 361
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_005A80:
+  type: GFX
+  offset: 0x005A80
+  symbol: Z2_KINSTA1_room_01DL_005A80
+
+Z2_KINSTA1_room_01Vtx_005EF8:
+  type: MM:ARRAY
+  offset: 0x005EF8
+  symbol: Z2_KINSTA1_room_01Vtx_005EF8
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_0063D8:
+  type: GFX
+  offset: 0x0063D8
+  symbol: Z2_KINSTA1_room_01DL_0063D8
+
+Z2_KINSTA1_room_01Vtx_006640:
+  type: MM:ARRAY
+  offset: 0x006640
+  symbol: Z2_KINSTA1_room_01Vtx_006640
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_006840:
+  type: GFX
+  offset: 0x006840
+  symbol: Z2_KINSTA1_room_01DL_006840
+
+Z2_KINSTA1_room_01Vtx_0069C8:
+  type: MM:ARRAY
+  offset: 0x0069C8
+  symbol: Z2_KINSTA1_room_01Vtx_0069C8
+  count: 204
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_007688:
+  type: GFX
+  offset: 0x007688
+  symbol: Z2_KINSTA1_room_01DL_007688
+
+Z2_KINSTA1_room_01Vtx_0079B0:
+  type: MM:ARRAY
+  offset: 0x0079B0
+  symbol: Z2_KINSTA1_room_01Vtx_0079B0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_007FB0:
+  type: GFX
+  offset: 0x007FB0
+  symbol: Z2_KINSTA1_room_01DL_007FB0
+
+Z2_KINSTA1_room_01Vtx_0081B8:
+  type: MM:ARRAY
+  offset: 0x0081B8
+  symbol: Z2_KINSTA1_room_01Vtx_0081B8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_008478:
+  type: GFX
+  offset: 0x008478
+  symbol: Z2_KINSTA1_room_01DL_008478
+
+Z2_KINSTA1_room_01Tex_008670:
+  type: TEXTURE
+  offset: 0x008670
+  symbol: Z2_KINSTA1_room_01Tex_008670
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_KINSTA1_room_01Tex_008E70:
+  type: TEXTURE
+  offset: 0x008E70
+  symbol: Z2_KINSTA1_room_01Tex_008E70
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_KINSTA1_room_01TLUT_009670:
+  type: TEXTURE
+  offset: 0x009670
+  symbol: Z2_KINSTA1_room_01TLUT_009670
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_KINSTA1_room_01TLUT_009690:
+  type: TEXTURE
+  offset: 0x009690
+  symbol: Z2_KINSTA1_room_01TLUT_009690
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_KINSTA1_room_01Vtx_0096B0:
+  type: MM:ARRAY
+  offset: 0x0096B0
+  symbol: Z2_KINSTA1_room_01Vtx_0096B0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_KINSTA1_room_01DL_0097F0:
+  type: GFX
+  offset: 0x0097F0
+  symbol: Z2_KINSTA1_room_01DL_0097F0
+
+Z2_KINSTA1_room_01Tex_0098F8:
+  type: TEXTURE
+  offset: 0x0098F8
+  symbol: Z2_KINSTA1_room_01Tex_0098F8
+  format: RGBA16
+  width: 32
+  height: 32

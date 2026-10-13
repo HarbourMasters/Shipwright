@@ -1,0 +1,129 @@
+:config:
+  segments:
+    - [ 2, 0x017A3540 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/Z2_OPENINGDANSet_008B80.yml
+Z2_OPENINGDAN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_OPENINGDAN
+
+
+Z2_OPENINGDANCutsceneData_0001CC:
+  type: MM:CUTSCENE
+  offset: 0x0001CC
+  symbol: Z2_OPENINGDANCutsceneData_0001CC
+  size: 4988
+
+Z2_OPENINGDANCutsceneData_00154C:
+  type: MM:CUTSCENE
+  offset: 0x00154C
+  symbol: Z2_OPENINGDANCutsceneData_00154C
+  size: 7332
+
+Z2_OPENINGDANCutsceneData_0031FC:
+  type: MM:CUTSCENE
+  offset: 0x0031FC
+  symbol: Z2_OPENINGDANCutsceneData_0031FC
+  size: 1576
+
+Z2_OPENINGDANCutsceneData_00382C:
+  type: MM:CUTSCENE
+  offset: 0x00382C
+  symbol: Z2_OPENINGDANCutsceneData_00382C
+  size: 1348
+
+Z2_OPENINGDANTexAnim_003F88TexScrollParams_003F80:
+  type: BLOB
+  offset: 0x003F80
+  symbol: Z2_OPENINGDANTexAnim_003F88TexScrollParams_003F80
+  size: 0
+
+Z2_OPENINGDANTexAnim_003F88:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x003F88
+  symbol: Z2_OPENINGDANTexAnim_003F88
+
+Z2_OPENINGDANCollisionHeader_008B48:
+  type: MM:COLLISION
+  offset: 0x008B48
+  symbol: Z2_OPENINGDANCollisionHeader_008B48
+
+Z2_OPENINGDANCutsceneData_008CE8:
+  type: MM:CUTSCENE
+  offset: 0x008CE8
+  symbol: Z2_OPENINGDANCutsceneData_008CE8
+  size: 1016
+
+Z2_OPENINGDANTex_009120:
+  type: TEXTURE
+  offset: 0x009120
+  symbol: Z2_OPENINGDANTex_009120
+  format: IA8
+  width: 16
+  height: 16
+
+Z2_OPENINGDANTex_009220:
+  type: TEXTURE
+  offset: 0x009220
+  symbol: Z2_OPENINGDANTex_009220
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_OPENINGDANTex_009420:
+  type: TEXTURE
+  offset: 0x009420
+  symbol: Z2_OPENINGDANTex_009420
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_OPENINGDANTex_009C20:
+  type: TEXTURE
+  offset: 0x009C20
+  symbol: Z2_OPENINGDANTex_009C20
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDANTex_00A020:
+  type: TEXTURE
+  offset: 0x00A020
+  symbol: Z2_OPENINGDANTex_00A020
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_OPENINGDANTex_00A060:
+  type: TEXTURE
+  offset: 0x00A060
+  symbol: Z2_OPENINGDANTex_00A060
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDANTex_00A460:
+  type: TEXTURE
+  offset: 0x00A460
+  symbol: Z2_OPENINGDANTex_00A460
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDANTex_00A860:
+  type: TEXTURE
+  offset: 0x00A860
+  symbol: Z2_OPENINGDANTex_00A860
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDANTLUT_00AC60:
+  type: TEXTURE
+  offset: 0x00AC60
+  symbol: Z2_OPENINGDANTLUT_00AC60
+  format: RGBA16
+  width: 16
+  height: 16

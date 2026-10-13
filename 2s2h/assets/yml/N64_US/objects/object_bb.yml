@@ -1,0 +1,279 @@
+:config:
+  segments:
+    - [ 6, 0x00EFD470 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EFD470 ]
+    - [ 9, 0x00EFD470 ]
+    - [ 10, 0x00EFD470 ]
+    - [ 11, 0x00EFD470 ]
+    - [ 12, 0x00EFD470 ]
+    - [ 13, 0x00EFD470 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBubbleAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x184
+  symbol: gBubbleAttackAnim
+
+gBubbleCraniumDL:
+  type: GFX
+  offset: 0xE08
+  symbol: gBubbleCraniumDL
+
+gBubbleCraniumLimb:
+  type: OOT:LIMB
+  offset: 0x19E8
+  symbol: gBubbleCraniumLimb
+  limb_type: Standard
+
+gBubbleCraniumRootLimb:
+  type: OOT:LIMB
+  offset: 0x194C
+  symbol: gBubbleCraniumRootLimb
+  limb_type: Standard
+
+gBubbleCraniumSidesAndBackTex:
+  type: TEXTURE
+  offset: 0x1540
+  symbol: gBubbleCraniumSidesAndBackTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBubbleCraniumTopTex:
+  type: TEXTURE
+  offset: 0x14C0
+  symbol: gBubbleCraniumTopTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBubbleEyeGlowTex:
+  type: TEXTURE
+  offset: 0x15C0
+  symbol: gBubbleEyeGlowTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBubbleEyeSocketBottomTex:
+  type: TEXTURE
+  offset: 0x1220
+  symbol: gBubbleEyeSocketBottomTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBubbleEyeSocketTopAndJawTex:
+  type: TEXTURE
+  offset: 0x14A0
+  symbol: gBubbleEyeSocketTopAndJawTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBubbleFlyingAnim:
+  type: OOT:ANIMATION
+  offset: 0x444
+  symbol: gBubbleFlyingAnim
+
+gBubbleJawDL:
+  type: GFX
+  offset: 0xD40
+  symbol: gBubbleJawDL
+
+gBubbleJawLimb:
+  type: OOT:LIMB
+  offset: 0x1964
+  symbol: gBubbleJawLimb
+  limb_type: Standard
+
+gBubbleJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x1958
+  symbol: gBubbleJawRootLimb
+  limb_type: Standard
+
+gBubbleLeftWingBoneDL:
+  type: GFX
+  offset: 0xCB0
+  symbol: gBubbleLeftWingBoneDL
+
+gBubbleLeftWingBoneLimb:
+  type: OOT:LIMB
+  offset: 0x19A0
+  symbol: gBubbleLeftWingBoneLimb
+  limb_type: Standard
+
+gBubbleLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x1970
+  symbol: gBubbleLeftWingRootLimb
+  limb_type: Standard
+
+gBubbleLeftWingWebbingDL:
+  type: GFX
+  offset: 0xC20
+  symbol: gBubbleLeftWingWebbingDL
+
+gBubbleLeftWingWebbingLimb:
+  type: OOT:LIMB
+  offset: 0x1994
+  symbol: gBubbleLeftWingWebbingLimb
+  limb_type: Standard
+
+gBubbleLeftWingWebbingRootLimb:
+  type: OOT:LIMB
+  offset: 0x1988
+  symbol: gBubbleLeftWingWebbingRootLimb
+  limb_type: Standard
+
+gBubbleLeftWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x197C
+  symbol: gBubbleLeftWingWrapperLimb
+  limb_type: Standard
+
+gBubbleNostrilTex:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: gBubbleNostrilTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBubblePainAnim:
+  type: OOT:ANIMATION
+  offset: 0x2AC
+  symbol: gBubblePainAnim
+
+gBubbleRightWingBoneDL:
+  type: GFX
+  offset: 0x1100
+  symbol: gBubbleRightWingBoneDL
+
+gBubbleRightWingBoneLimb:
+  type: OOT:LIMB
+  offset: 0x19DC
+  symbol: gBubbleRightWingBoneLimb
+  limb_type: Standard
+
+gBubbleRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x19AC
+  symbol: gBubbleRightWingRootLimb
+  limb_type: Standard
+
+gBubbleRightWingWebbingDL:
+  type: GFX
+  offset: 0x1190
+  symbol: gBubbleRightWingWebbingDL
+
+gBubbleRightWingWebbingLimb:
+  type: OOT:LIMB
+  offset: 0x19D0
+  symbol: gBubbleRightWingWebbingLimb
+  limb_type: Standard
+
+gBubbleRightWingWebbingRootLimb:
+  type: OOT:LIMB
+  offset: 0x19C4
+  symbol: gBubbleRightWingWebbingRootLimb
+  limb_type: Standard
+
+gBubbleRightWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x19B8
+  symbol: gBubbleRightWingWrapperLimb
+  limb_type: Standard
+
+gBubbleRootLimb:
+  type: OOT:LIMB
+  offset: 0x1940
+  symbol: gBubbleRootLimb
+  limb_type: Standard
+
+gBubbleSkel:
+  type: MM:SKELETON
+  offset: 0x1A30
+  symbol: gBubbleSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBubbleWingBoneTex:
+  type: TEXTURE
+  offset: 0x1640
+  symbol: gBubbleWingBoneTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gBubbleWingWebbingTex:
+  type: TEXTURE
+  offset: 0x1740
+  symbol: gBubbleWingWebbingTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_bbVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_bbVtx_000460
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbVtx_0004C0:
+  type: MM:ARRAY
+  offset: 0x0004C0
+  symbol: object_bbVtx_0004C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_bbVtx_0004F0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbVtx_000700:
+  type: MM:ARRAY
+  offset: 0x000700
+  symbol: object_bbVtx_000700
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbVtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: object_bbVtx_000B90
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbVtx_000BC0:
+  type: MM:ARRAY
+  offset: 0x000BC0
+  symbol: object_bbVtx_000BC0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBubbleSkelLimbs:
+  type: BLOB
+  offset: 0x19F4
+  symbol: gBubbleSkelLimbs
+  size: 0

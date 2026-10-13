@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 3, 0x018D0090 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x018D0090 ]
+    - [ 9, 0x018D0090 ]
+    - [ 10, 0x018D0090 ]
+    - [ 11, 0x018D0090 ]
+    - [ 12, 0x018D0090 ]
+    - [ 13, 0x018D0090 ]
+    - [ 2, 0x018909A0 ]
+  directory: scenes/nonmq/Z2_PIRATE
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_PIRATE.yml
+
+Z2_PIRATE_room_14:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_PIRATE_room_14
+
+Z2_PIRATE_room_14DL_000B28:
+  type: GFX
+  offset: 0xB28
+  symbol: Z2_PIRATE_room_14DL_000B28
+
+
+Z2_PIRATE_room_14ActorEntry_000050:
+  type: BLOB
+  offset: 0x000050
+  symbol: Z2_PIRATE_room_14ActorEntry_000050
+  size: 0
+
+Z2_PIRATE_room_14Vtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: Z2_PIRATE_room_14Vtx_0000B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_14DL_000240:
+  type: GFX
+  offset: 0x000240
+  symbol: Z2_PIRATE_room_14DL_000240
+
+Z2_PIRATE_room_14Vtx_000340:
+  type: MM:ARRAY
+  offset: 0x000340
+  symbol: Z2_PIRATE_room_14Vtx_000340
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_14DL_0004E0:
+  type: GFX
+  offset: 0x0004E0
+  symbol: Z2_PIRATE_room_14DL_0004E0
+
+Z2_PIRATE_room_14DL_0005E0:
+  type: GFX
+  offset: 0x0005E0
+  symbol: Z2_PIRATE_room_14DL_0005E0
+
+Z2_PIRATE_room_14Vtx_0005F8:
+  type: MM:ARRAY
+  offset: 0x0005F8
+  symbol: Z2_PIRATE_room_14Vtx_0005F8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_14DL_000788:
+  type: GFX
+  offset: 0x000788
+  symbol: Z2_PIRATE_room_14DL_000788
+
+Z2_PIRATE_room_14Vtx_000888:
+  type: MM:ARRAY
+  offset: 0x000888
+  symbol: Z2_PIRATE_room_14Vtx_000888
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_14DL_000A18:
+  type: GFX
+  offset: 0x000A18
+  symbol: Z2_PIRATE_room_14DL_000A18
+
+Z2_PIRATE_room_14DL_000B10:
+  type: GFX
+  offset: 0x000B10
+  symbol: Z2_PIRATE_room_14DL_000B10
+
+Z2_PIRATE_room_14Tex_000B40:
+  type: TEXTURE
+  offset: 0x000B40
+  symbol: Z2_PIRATE_room_14Tex_000B40
+  format: I4
+  width: 32
+  height: 32
+
+Z2_PIRATE_room_14Tex_000D40:
+  type: TEXTURE
+  offset: 0x000D40
+  symbol: Z2_PIRATE_room_14Tex_000D40
+  format: RGBA16
+  width: 32
+  height: 32

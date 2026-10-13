@@ -1,0 +1,161 @@
+:config:
+  segments:
+    - [ 2, 0x017EE980 ]
+
+Z2_CASTLE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_CASTLE
+
+
+Z2_CASTLEPathwayList_000498:
+  type: MM:PATH
+  offset: 0x000498
+  symbol: Z2_CASTLEPathwayList_000498
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 647, 553, -1223 ]
+        - [ 419, 553, -1223 ]
+
+Z2_CASTLECutsceneData_0004AC:
+  type: MM:CUTSCENE
+  offset: 0x0004AC
+  symbol: Z2_CASTLECutsceneData_0004AC
+  size: 368
+
+Z2_CASTLECutsceneData_00061C:
+  type: MM:CUTSCENE
+  offset: 0x00061C
+  symbol: Z2_CASTLECutsceneData_00061C
+  size: 304
+
+Z2_CASTLETexAnim_000C58TexScrollParams_000C50:
+  type: BLOB
+  offset: 0x000C50
+  symbol: Z2_CASTLETexAnim_000C58TexScrollParams_000C50
+  size: 0
+
+Z2_CASTLETexAnim_000C58:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000C58
+  symbol: Z2_CASTLETexAnim_000C58
+
+Z2_CASTLECollisionHeader_00A840:
+  type: MM:COLLISION
+  offset: 0x00A840
+  symbol: Z2_CASTLECollisionHeader_00A840
+
+Z2_CASTLETex_00A870:
+  type: TEXTURE
+  offset: 0x00A870
+  symbol: Z2_CASTLETex_00A870
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_CASTLETex_00B070:
+  type: TEXTURE
+  offset: 0x00B070
+  symbol: Z2_CASTLETex_00B070
+  format: I4
+  width: 64
+  height: 64
+
+Z2_CASTLETex_00B870:
+  type: TEXTURE
+  offset: 0x00B870
+  symbol: Z2_CASTLETex_00B870
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_CASTLETex_00C070:
+  type: TEXTURE
+  offset: 0x00C070
+  symbol: Z2_CASTLETex_00C070
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_CASTLETex_00C270:
+  type: TEXTURE
+  offset: 0x00C270
+  symbol: Z2_CASTLETex_00C270
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLETex_00C670:
+  type: TEXTURE
+  offset: 0x00C670
+  symbol: Z2_CASTLETex_00C670
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLETex_00CA70:
+  type: TEXTURE
+  offset: 0x00CA70
+  symbol: Z2_CASTLETex_00CA70
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_CASTLETex_00D270:
+  type: TEXTURE
+  offset: 0x00D270
+  symbol: Z2_CASTLETex_00D270
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_CASTLETex_00DA70:
+  type: TEXTURE
+  offset: 0x00DA70
+  symbol: Z2_CASTLETex_00DA70
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_CASTLETex_00E270:
+  type: TEXTURE
+  offset: 0x00E270
+  symbol: Z2_CASTLETex_00E270
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_CASTLETex_00EA70:
+  type: TEXTURE
+  offset: 0x00EA70
+  symbol: Z2_CASTLETex_00EA70
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_CASTLETLUT_00F270:
+  type: TEXTURE
+  offset: 0x00F270
+  symbol: Z2_CASTLETLUT_00F270
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_CASTLETLUT_00F470:
+  type: TEXTURE
+  offset: 0x00F470
+  symbol: Z2_CASTLETLUT_00F470
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_CASTLETLUT_00F670:
+  type: TEXTURE
+  offset: 0x00F670
+  symbol: Z2_CASTLETLUT_00F670
+  format: RGBA16
+  width: 16
+  height: 16

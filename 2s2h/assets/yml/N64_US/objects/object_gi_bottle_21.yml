@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x014DB120 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014DB120 ]
+    - [ 9, 0x014DB120 ]
+    - [ 10, 0x014DB120 ]
+    - [ 11, 0x014DB120 ]
+    - [ 12, 0x014DB120 ]
+    - [ 13, 0x014DB120 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiChateauRomaniBottleCorkTex:
+  type: TEXTURE
+  offset: 0xE98
+  symbol: gGiChateauRomaniBottleCorkTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiChateauRomaniBottleDL:
+  type: GFX
+  offset: 0xA50
+  symbol: gGiChateauRomaniBottleDL
+
+gGiChateauRomaniBottleEmptyDL:
+  type: GFX
+  offset: 0xE90
+  symbol: gGiChateauRomaniBottleEmptyDL
+
+gGiChateauRomaniBottleGlassTex:
+  type: TEXTURE
+  offset: 0x1B98
+  symbol: gGiChateauRomaniBottleGlassTex
+  format: I4
+  width: 16
+  height: 32
+
+gGiChateauRomaniBottleLabelTex:
+  type: TEXTURE
+  offset: 0xF98
+  symbol: gGiChateauRomaniBottleLabelTex
+  format: I4
+  width: 96
+  height: 64
+
+
+object_gi_bottle_21Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottle_21Vtx_000000
+  count: 165
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

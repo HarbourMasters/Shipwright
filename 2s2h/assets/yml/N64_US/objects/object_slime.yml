@@ -1,0 +1,136 @@
+:config:
+  segments:
+    - [ 6, 0x01190D00 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01190D00 ]
+    - [ 9, 0x01190D00 ]
+    - [ 10, 0x01190D00 ]
+    - [ 11, 0x01190D00 ]
+    - [ 12, 0x01190D00 ]
+    - [ 13, 0x01190D00 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gChuchuBodyDL:
+  type: GFX
+  offset: 0x4C0
+  symbol: gChuchuBodyDL
+
+gChuchuEmptyDL:
+  type: GFX
+  offset: 0xB68
+  symbol: gChuchuEmptyDL
+
+gChuchuEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1170
+  symbol: gChuchuEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gChuchuEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1070
+  symbol: gChuchuEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gChuchuEyeOpenTex:
+  type: TEXTURE
+  offset: 0xF70
+  symbol: gChuchuEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gChuchuEyeSocketTex:
+  type: TEXTURE
+  offset: 0xD70
+  symbol: gChuchuEyeSocketTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChuchuEyesDL:
+  type: GFX
+  offset: 0x650
+  symbol: gChuchuEyesDL
+
+gChuchuMouthTex:
+  type: TEXTURE
+  offset: 0xB70
+  symbol: gChuchuMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChuchuPuddleDL:
+  type: GFX
+  offset: 0xA10
+  symbol: gChuchuPuddleDL
+
+gChuchuSlimeBaseTex:
+  type: TEXTURE
+  offset: 0x1470
+  symbol: gChuchuSlimeBaseTex
+  format: I4
+  width: 64
+  height: 64
+
+gChuchuSlimeFlowTex:
+  type: TEXTURE
+  offset: 0x1270
+  symbol: gChuchuSlimeFlowTex
+  format: I4
+  width: 32
+  height: 32
+
+gChuchuSlimeFlowTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x828
+  symbol: gChuchuSlimeFlowTexAnim
+
+
+object_slimeVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_slimeVtx_000000
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_slimeVtx_000260:
+  type: MM:ARRAY
+  offset: 0x000260
+  symbol: object_slimeVtx_000260
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_slimeVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_slimeVtx_000460
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChuchuSlimeFlowTexAnimTexScrollParams_000820:
+  type: BLOB
+  offset: 0x000820
+  symbol: gChuchuSlimeFlowTexAnimTexScrollParams_000820
+  size: 0
+
+object_slimeVtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: object_slimeVtx_000830
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

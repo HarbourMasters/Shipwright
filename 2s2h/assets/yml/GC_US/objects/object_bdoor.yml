@@ -1,0 +1,169 @@
+:config:
+  segments:
+    - [ 6, 0x00F3B4A0 ]
+    - [ 5, 0x00E41C30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F3B4A0 ]
+    - [ 9, 0x00F3B4A0 ]
+    - [ 10, 0x00F3B4A0 ]
+    - [ 11, 0x00F3B4A0 ]
+    - [ 12, 0x00F3B4A0 ]
+    - [ 13, 0x00F3B4A0 ]
+  external_files:
+    - GC_US/objects/gameplay_dangeon_keep.yml
+    - GC_US/objects/gameplay_keep.yml
+
+gBossDoorChainDL:
+  type: GFX
+  offset: 0x530
+  symbol: gBossDoorChainDL
+
+gBossDoorDL:
+  type: GFX
+  offset: 0xC0
+  symbol: gBossDoorDL
+
+gBossDoorDefaultTex:
+  type: TEXTURE
+  offset: 0x6BA0
+  symbol: gBossDoorDefaultTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorGreatBayTex:
+  type: TEXTURE
+  offset: 0x4BA0
+  symbol: gBossDoorGreatBayTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorLockDL:
+  type: GFX
+  offset: 0x400
+  symbol: gBossDoorLockDL
+
+gBossDoorSnowheadTex:
+  type: TEXTURE
+  offset: 0x5C0
+  symbol: gBossDoorSnowheadTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorStoneTowerTex:
+  type: TEXTURE
+  offset: 0x3BA0
+  symbol: gBossDoorStoneTowerTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorUnusedDoor1LeftDL:
+  type: GFX
+  offset: 0x1790
+  symbol: gBossDoorUnusedDoor1LeftDL
+
+gBossDoorUnusedDoor1RightDL:
+  type: GFX
+  offset: 0x1850
+  symbol: gBossDoorUnusedDoor1RightDL
+
+gBossDoorUnusedDoor1Tex:
+  type: TEXTURE
+  offset: 0x1910
+  symbol: gBossDoorUnusedDoor1Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorUnusedDoor2LeftDL:
+  type: GFX
+  offset: 0x2A50
+  symbol: gBossDoorUnusedDoor2LeftDL
+
+gBossDoorUnusedDoor2RightDL:
+  type: GFX
+  offset: 0x2AF8
+  symbol: gBossDoorUnusedDoor2RightDL
+
+gBossDoorUnusedDoor2Tex:
+  type: TEXTURE
+  offset: 0x2BA0
+  symbol: gBossDoorUnusedDoor2Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorWoodfallTex:
+  type: TEXTURE
+  offset: 0x5BA0
+  symbol: gBossDoorWoodfallTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_bdoorVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_bdoorVtx_000000
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_bdoorVtx_000180
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_bdoorVtx_0004F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_0015C0:
+  type: MM:ARRAY
+  offset: 0x0015C0
+  symbol: object_bdoorVtx_0015C0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_0016A0:
+  type: MM:ARRAY
+  offset: 0x0016A0
+  symbol: object_bdoorVtx_0016A0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_002910:
+  type: MM:ARRAY
+  offset: 0x002910
+  symbol: object_bdoorVtx_002910
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_0029B0:
+  type: MM:ARRAY
+  offset: 0x0029B0
+  symbol: object_bdoorVtx_0029B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

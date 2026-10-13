@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01739CF0 ]
+    - [ 2, 0x01731B10 ]
+  directory: scenes/nonmq/Z2_MILK_BAR
+  external_files:
+    - N64_US/scenes/nonmq/Z2_MILK_BAR_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_MILK_BAR.yml
+
+Z2_MILK_BAR_room_00Set_0003F0:
+  type: MM:ROOM
+  offset: 0x3F0
+  symbol: Z2_MILK_BAR_room_00Set_0003F0
+  base_name: Z2_MILK_BAR_room_00

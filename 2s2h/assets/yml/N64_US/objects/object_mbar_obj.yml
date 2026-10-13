@@ -1,0 +1,61 @@
+:config:
+  segments:
+    - [ 6, 0x014449D0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014449D0 ]
+    - [ 9, 0x014449D0 ]
+    - [ 10, 0x014449D0 ]
+    - [ 11, 0x014449D0 ]
+    - [ 12, 0x014449D0 ]
+    - [ 13, 0x014449D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_mbar_obj_Colheader_0019B4:
+  type: MM:COLLISION
+  offset: 0x19B4
+  symbol: object_mbar_obj_Colheader_0019B4
+
+object_mbar_obj_DL_000280:
+  type: GFX
+  offset: 0x280
+  symbol: object_mbar_obj_DL_000280
+
+object_mbar_obj_DL_000288:
+  type: GFX
+  offset: 0x288
+  symbol: object_mbar_obj_DL_000288
+
+object_mbar_obj_Tex_000408:
+  type: TEXTURE
+  offset: 0x408
+  symbol: object_mbar_obj_Tex_000408
+  format: I8
+  width: 32
+  height: 64
+
+object_mbar_obj_Tex_000C08:
+  type: TEXTURE
+  offset: 0xC08
+  symbol: object_mbar_obj_Tex_000C08
+  format: I8
+  width: 32
+  height: 32
+
+object_mbar_obj_Tex_001008:
+  type: TEXTURE
+  offset: 0x1008
+  symbol: object_mbar_obj_Tex_001008
+  format: IA16
+  width: 16
+  height: 64
+
+
+object_mbar_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mbar_objVtx_000000
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 128, 0x00DD3FB0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80BFE170, 0x00DD3FB0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gEnBomjima_D_80C00B08:
+  type: GFX
+  offset: 0x2998
+  symbol: gEnBomjima_D_80C00B08
+
+gEnBomjima_D_80C00B18:
+  type: GFX
+  offset: 0x29A8
+  symbol: gEnBomjima_D_80C00B18
+

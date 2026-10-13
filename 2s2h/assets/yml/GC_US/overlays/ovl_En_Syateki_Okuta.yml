@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 128, 0x00C9B890 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80A17EE0, 0x00C9B890 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gShootingGalleryOctorokBlueMaterialDL:
+  type: GFX
+  offset: 0x1640
+  symbol: gShootingGalleryOctorokBlueMaterialDL
+
+gShootingGalleryOctorokCircleDL:
+  type: GFX
+  offset: 0x1B18
+  symbol: gShootingGalleryOctorokCircleDL
+
+gShootingGalleryOctorokCircleTex:
+  type: TEXTURE
+  offset: 0x1858
+  symbol: gShootingGalleryOctorokCircleTex
+  format: IA16
+  width: 16
+  height: 16
+
+gShootingGalleryOctorokCrossDL:
+  type: GFX
+  offset: 0x1A98
+  symbol: gShootingGalleryOctorokCrossDL
+
+gShootingGalleryOctorokCrossTex:
+  type: TEXTURE
+  offset: 0x1658
+  symbol: gShootingGalleryOctorokCrossTex
+  format: IA16
+  width: 16
+  height: 16
+
+
+ovl_En_Syateki_OkutaVtx_001A58:
+  type: MM:ARRAY
+  offset: 0x001A58
+  symbol: ovl_En_Syateki_OkutaVtx_001A58
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

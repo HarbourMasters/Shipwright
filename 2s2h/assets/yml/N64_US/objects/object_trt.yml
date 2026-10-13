@@ -1,0 +1,821 @@
+:config:
+  segments:
+    - [ 6, 0x01212610 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01212610 ]
+    - [ 9, 0x01212610 ]
+    - [ 10, 0x01212610 ]
+    - [ 11, 0x01212610 ]
+    - [ 12, 0x01212610 ]
+    - [ 13, 0x01212610 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gKotakeBraidEndTex:
+  type: TEXTURE
+  offset: 0xA938
+  symbol: gKotakeBraidEndTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKotakeBroomDL:
+  type: GFX
+  offset: 0x83A0
+  symbol: gKotakeBroomDL
+
+gKotakeBroomHandleTex:
+  type: TEXTURE
+  offset: 0xAAB8
+  symbol: gKotakeBroomHandleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKotakeBroomHeadTex:
+  type: TEXTURE
+  offset: 0xAB38
+  symbol: gKotakeBroomHeadTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gKotakeBroomLimb:
+  type: OOT:LIMB
+  offset: 0xFDEC
+  symbol: gKotakeBroomLimb
+  limb_type: Standard
+
+gKotakeCollarNeckTex:
+  type: TEXTURE
+  offset: 0xA9F8
+  symbol: gKotakeCollarNeckTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gKotakeEarTLUT:
+  type: TEXTURE
+  offset: 0x9078
+  symbol: gKotakeEarTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeEarTex:
+  type: TEXTURE
+  offset: 0xA9B8
+  symbol: gKotakeEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKotakeEyeClosedTex:
+  type: TEXTURE
+  offset: 0xC0B8
+  symbol: gKotakeEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKotakeEyeHalfTex:
+  type: TEXTURE
+  offset: 0xB8B8
+  symbol: gKotakeEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKotakeEyeOpenTex:
+  type: TEXTURE
+  offset: 0xB0B8
+  symbol: gKotakeEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKotakeEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xC988
+  symbol: gKotakeEyeTexAnim
+
+gKotakeFingerTLUT:
+  type: TEXTURE
+  offset: 0x9278
+  symbol: gKotakeFingerTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeFingerTex:
+  type: TEXTURE
+  offset: 0xAA38
+  symbol: gKotakeFingerTex
+  format: CI8
+  width: 8
+  height: 16
+
+gKotakeFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x2CB0
+  symbol: gKotakeFlyAnim
+
+gKotakeFlyDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x2224
+  symbol: gKotakeFlyDownAnim
+
+gKotakeFlyLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x1EF4
+  symbol: gKotakeFlyLookAroundAnim
+
+gKotakeGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x9878
+  symbol: gKotakeGerudoFabricTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKotakeHairTex:
+  type: TEXTURE
+  offset: 0xA738
+  symbol: gKotakeHairTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gKotakeHalfAwakeAnim:
+  type: OOT:ANIMATION
+  offset: 0xEE98
+  symbol: gKotakeHalfAwakeAnim
+
+gKotakeHandsOnCounterAnim:
+  type: OOT:ANIMATION
+  offset: 0xD52C
+  symbol: gKotakeHandsOnCounterAnim
+
+gKotakeHeadDL:
+  type: GFX
+  offset: 0x6808
+  symbol: gKotakeHeadDL
+
+gKotakeHeadLimb:
+  type: OOT:LIMB
+  offset: 0xFE40
+  symbol: gKotakeHeadLimb
+  limb_type: Standard
+
+gKotakeHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0xA44
+  symbol: gKotakeHoverAnim
+
+gKotakeIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xDE68
+  symbol: gKotakeIdleAnim
+
+gKotakeJewelHolderTex:
+  type: TEXTURE
+  offset: 0xAF38
+  symbol: gKotakeJewelHolderTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gKotakeJewelTex:
+  type: TEXTURE
+  offset: 0xC8B8
+  symbol: gKotakeJewelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKotakeLeftBraidEndDL:
+  type: GFX
+  offset: 0x7398
+  symbol: gKotakeLeftBraidEndDL
+
+gKotakeLeftBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0xFE7C
+  symbol: gKotakeLeftBraidEndLimb
+  limb_type: Standard
+
+gKotakeLeftBraidStartDL:
+  type: GFX
+  offset: 0x7298
+  symbol: gKotakeLeftBraidStartDL
+
+gKotakeLeftBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0xFE70
+  symbol: gKotakeLeftBraidStartLimb
+  limb_type: Standard
+
+gKotakeLeftFootDL:
+  type: GFX
+  offset: 0x8BE0
+  symbol: gKotakeLeftFootDL
+
+gKotakeLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xFD74
+  symbol: gKotakeLeftFootLimb
+  limb_type: Standard
+
+gKotakeLeftHandDL:
+  type: GFX
+  offset: 0x80B8
+  symbol: gKotakeLeftHandDL
+
+gKotakeLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xFDE0
+  symbol: gKotakeLeftHandLimb
+  limb_type: Standard
+
+gKotakeLeftShinDL:
+  type: GFX
+  offset: 0x8B30
+  symbol: gKotakeLeftShinDL
+
+gKotakeLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xFD68
+  symbol: gKotakeLeftShinLimb
+  limb_type: Standard
+
+gKotakeLeftSleeveEndDL:
+  type: GFX
+  offset: 0x87B8
+  symbol: gKotakeLeftSleeveEndDL
+
+gKotakeLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0xFDC8
+  symbol: gKotakeLeftSleeveEndLimb
+  limb_type: Standard
+
+gKotakeLeftSleeveFrontDL:
+  type: GFX
+  offset: 0x7F48
+  symbol: gKotakeLeftSleeveFrontDL
+
+gKotakeLeftSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0xFDD4
+  symbol: gKotakeLeftSleeveFrontLimb
+  limb_type: Standard
+
+gKotakeLeftSleeveMidDL:
+  type: GFX
+  offset: 0x86A0
+  symbol: gKotakeLeftSleeveMidDL
+
+gKotakeLeftSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0xFDBC
+  symbol: gKotakeLeftSleeveMidLimb
+  limb_type: Standard
+
+gKotakeLeftSleeveStartDL:
+  type: GFX
+  offset: 0x7E38
+  symbol: gKotakeLeftSleeveStartDL
+
+gKotakeLeftSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0xFDB0
+  symbol: gKotakeLeftSleeveStartLimb
+  limb_type: Standard
+
+gKotakeLeftThighDL:
+  type: GFX
+  offset: 0x8AA0
+  symbol: gKotakeLeftThighDL
+
+gKotakeLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xFD5C
+  symbol: gKotakeLeftThighLimb
+  limb_type: Standard
+
+gKotakeMouthTLUT:
+  type: TEXTURE
+  offset: 0x8E78
+  symbol: gKotakeMouthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeMouthTex:
+  type: TEXTURE
+  offset: 0xA6F8
+  symbol: gKotakeMouthTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKotakeNeckDL:
+  type: GFX
+  offset: 0x66D8
+  symbol: gKotakeNeckDL
+
+gKotakeNeckLimb:
+  type: OOT:LIMB
+  offset: 0xFE34
+  symbol: gKotakeNeckLimb
+  limb_type: Standard
+
+gKotakeNeckTLUT:
+  type: TEXTURE
+  offset: 0x9478
+  symbol: gKotakeNeckTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeNeckTex:
+  type: TEXTURE
+  offset: 0xB038
+  symbol: gKotakeNeckTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKotakeNostrilsTLUT:
+  type: TEXTURE
+  offset: 0x9678
+  symbol: gKotakeNostrilsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeNostrilsTex:
+  type: TEXTURE
+  offset: 0xB078
+  symbol: gKotakeNostrilsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKotakePelvisDL:
+  type: GFX
+  offset: 0x6380
+  symbol: gKotakePelvisDL
+
+gKotakePelvisLimb:
+  type: OOT:LIMB
+  offset: 0xFD50
+  symbol: gKotakePelvisLimb
+  limb_type: Standard
+
+gKotakeRightBraidEndDL:
+  type: GFX
+  offset: 0x75C8
+  symbol: gKotakeRightBraidEndDL
+
+gKotakeRightBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0xFE58
+  symbol: gKotakeRightBraidEndLimb
+  limb_type: Standard
+
+gKotakeRightBraidStartDL:
+  type: GFX
+  offset: 0x74C8
+  symbol: gKotakeRightBraidStartDL
+
+gKotakeRightBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0xFE4C
+  symbol: gKotakeRightBraidStartLimb
+  limb_type: Standard
+
+gKotakeRightFootDL:
+  type: GFX
+  offset: 0x8A08
+  symbol: gKotakeRightFootDL
+
+gKotakeRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xFD98
+  symbol: gKotakeRightFootLimb
+  limb_type: Standard
+
+gKotakeRightHandDL:
+  type: GFX
+  offset: 0x7928
+  symbol: gKotakeRightHandDL
+
+gKotakeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xFE28
+  symbol: gKotakeRightHandLimb
+  limb_type: Standard
+
+gKotakeRightShinDL:
+  type: GFX
+  offset: 0x8958
+  symbol: gKotakeRightShinDL
+
+gKotakeRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xFD8C
+  symbol: gKotakeRightShinLimb
+  limb_type: Standard
+
+gKotakeRightSleeveEndDL:
+  type: GFX
+  offset: 0x7D28
+  symbol: gKotakeRightSleeveEndDL
+
+gKotakeRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0xFE10
+  symbol: gKotakeRightSleeveEndLimb
+  limb_type: Standard
+
+gKotakeRightSleeveFrontDL:
+  type: GFX
+  offset: 0x77B8
+  symbol: gKotakeRightSleeveFrontDL
+
+gKotakeRightSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0xFE1C
+  symbol: gKotakeRightSleeveFrontLimb
+  limb_type: Standard
+
+gKotakeRightSleeveMidDL:
+  type: GFX
+  offset: 0x7C10
+  symbol: gKotakeRightSleeveMidDL
+
+gKotakeRightSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0xFE04
+  symbol: gKotakeRightSleeveMidLimb
+  limb_type: Standard
+
+gKotakeRightSleeveStartDL:
+  type: GFX
+  offset: 0x76A8
+  symbol: gKotakeRightSleeveStartDL
+
+gKotakeRightSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0xFDF8
+  symbol: gKotakeRightSleeveStartLimb
+  limb_type: Standard
+
+gKotakeRightThighDL:
+  type: GFX
+  offset: 0x88C8
+  symbol: gKotakeRightThighDL
+
+gKotakeRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xFD80
+  symbol: gKotakeRightThighLimb
+  limb_type: Standard
+
+gKotakeRobePatternTex:
+  type: TEXTURE
+  offset: 0xA278
+  symbol: gKotakeRobePatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeRobeTex:
+  type: TEXTURE
+  offset: 0xA078
+  symbol: gKotakeRobeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeRobeTrimTex:
+  type: TEXTURE
+  offset: 0xA478
+  symbol: gKotakeRobeTrimTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeSkel:
+  type: MM:SKELETON
+  offset: 0xFEF0
+  symbol: gKotakeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gKotakeSkinTLUT:
+  type: TEXTURE
+  offset: 0x8C78
+  symbol: gKotakeSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKotakeSkinTex:
+  type: TEXTURE
+  offset: 0xA678
+  symbol: gKotakeSkinTex
+  format: CI8
+  width: 16
+  height: 8
+
+gKotakeSleepingAnim:
+  type: OOT:ANIMATION
+  offset: 0xFD34
+  symbol: gKotakeSleepingAnim
+
+gKotakeSurprisedAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D78
+  symbol: gKotakeSurprisedAnim
+
+gKotakeTeethDL:
+  type: GFX
+  offset: 0x7478
+  symbol: gKotakeTeethDL
+
+gKotakeTeethLimb:
+  type: OOT:LIMB
+  offset: 0xFE64
+  symbol: gKotakeTeethLimb
+  limb_type: Standard
+
+gKotakeTorsoDL:
+  type: GFX
+  offset: 0x6590
+  symbol: gKotakeTorsoDL
+
+gKotakeTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xFDA4
+  symbol: gKotakeTorsoLimb
+  limb_type: Standard
+
+gKotakeWakeUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x30EC
+  symbol: gKotakeWakeUpAnim
+
+
+object_trtVtx_003D90:
+  type: MM:ARRAY
+  offset: 0x003D90
+  symbol: object_trtVtx_003D90
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_003E20:
+  type: MM:ARRAY
+  offset: 0x003E20
+  symbol: object_trtVtx_003E20
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_003F80:
+  type: MM:ARRAY
+  offset: 0x003F80
+  symbol: object_trtVtx_003F80
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_004080:
+  type: MM:ARRAY
+  offset: 0x004080
+  symbol: object_trtVtx_004080
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0041D0:
+  type: MM:ARRAY
+  offset: 0x0041D0
+  symbol: object_trtVtx_0041D0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0042C0:
+  type: MM:ARRAY
+  offset: 0x0042C0
+  symbol: object_trtVtx_0042C0
+  count: 151
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_004C30:
+  type: MM:ARRAY
+  offset: 0x004C30
+  symbol: object_trtVtx_004C30
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_004DC0:
+  type: MM:ARRAY
+  offset: 0x004DC0
+  symbol: object_trtVtx_004DC0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0050F0:
+  type: MM:ARRAY
+  offset: 0x0050F0
+  symbol: object_trtVtx_0050F0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005300:
+  type: MM:ARRAY
+  offset: 0x005300
+  symbol: object_trtVtx_005300
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005430:
+  type: MM:ARRAY
+  offset: 0x005430
+  symbol: object_trtVtx_005430
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0054F0:
+  type: MM:ARRAY
+  offset: 0x0054F0
+  symbol: object_trtVtx_0054F0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005610:
+  type: MM:ARRAY
+  offset: 0x005610
+  symbol: object_trtVtx_005610
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005700:
+  type: MM:ARRAY
+  offset: 0x005700
+  symbol: object_trtVtx_005700
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005900:
+  type: MM:ARRAY
+  offset: 0x005900
+  symbol: object_trtVtx_005900
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005A30:
+  type: MM:ARRAY
+  offset: 0x005A30
+  symbol: object_trtVtx_005A30
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005AF0:
+  type: MM:ARRAY
+  offset: 0x005AF0
+  symbol: object_trtVtx_005AF0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005C10:
+  type: MM:ARRAY
+  offset: 0x005C10
+  symbol: object_trtVtx_005C10
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005D00:
+  type: MM:ARRAY
+  offset: 0x005D00
+  symbol: object_trtVtx_005D00
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005F60:
+  type: MM:ARRAY
+  offset: 0x005F60
+  symbol: object_trtVtx_005F60
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_005FC0:
+  type: MM:ARRAY
+  offset: 0x005FC0
+  symbol: object_trtVtx_005FC0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_006050:
+  type: MM:ARRAY
+  offset: 0x006050
+  symbol: object_trtVtx_006050
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_006080:
+  type: MM:ARRAY
+  offset: 0x006080
+  symbol: object_trtVtx_006080
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0060D0:
+  type: MM:ARRAY
+  offset: 0x0060D0
+  symbol: object_trtVtx_0060D0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_006170:
+  type: MM:ARRAY
+  offset: 0x006170
+  symbol: object_trtVtx_006170
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_trtVtx_0061A0:
+  type: MM:ARRAY
+  offset: 0x0061A0
+  symbol: object_trtVtx_0061A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKotakeEyeTexAnimTexCycleParams_00C954:
+  type: BLOB
+  offset: 0x00C954
+  symbol: gKotakeEyeTexAnimTexCycleParams_00C954
+  size: 0
+
+gKotakeEyeTexAnimTexCycleParams_00C978:
+  type: BLOB
+  offset: 0x00C978
+  symbol: gKotakeEyeTexAnimTexCycleParams_00C978
+  size: 0
+
+gKotakeSkelLimbs:
+  type: BLOB
+  offset: 0xFE88
+  symbol: gKotakeSkelLimbs
+  size: 0

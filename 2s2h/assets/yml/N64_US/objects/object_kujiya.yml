@@ -1,0 +1,253 @@
+:config:
+  segments:
+    - [ 6, 0x0159CB70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0159CB70 ]
+    - [ 9, 0x0159CB70 ]
+    - [ 10, 0x0159CB70 ]
+    - [ 11, 0x0159CB70 ]
+    - [ 12, 0x0159CB70 ]
+    - [ 13, 0x0159CB70 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLotteryShopBackSignDL:
+  type: GFX
+  offset: 0x3030
+  symbol: gLotteryShopBackSignDL
+
+gLotteryShopBlueRupeesDL:
+  type: GFX
+  offset: 0x36B0
+  symbol: gLotteryShopBlueRupeesDL
+
+gLotteryShopBoxBaseTex:
+  type: TEXTURE
+  offset: 0x5678
+  symbol: gLotteryShopBoxBaseTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLotteryShopCylinderDL:
+  type: GFX
+  offset: 0x2A80
+  symbol: gLotteryShopCylinderDL
+
+gLotteryShopCylinderMiddleStripesTex:
+  type: TEXTURE
+  offset: 0x4A78
+  symbol: gLotteryShopCylinderMiddleStripesTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLotteryShopCylinderTopBottomTex:
+  type: TEXTURE
+  offset: 0x4678
+  symbol: gLotteryShopCylinderTopBottomTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLotteryShopGradientTex:
+  type: TEXTURE
+  offset: 0x4668
+  symbol: gLotteryShopGradientTex
+  format: I8
+  width: 4
+  height: 4
+
+gLotteryShopGreenRupeesDL:
+  type: GFX
+  offset: 0x35B8
+  symbol: gLotteryShopGreenRupeesDL
+
+gLotteryShopMaskDL:
+  type: GFX
+  offset: 0x3D58
+  symbol: gLotteryShopMaskDL
+
+gLotteryShopMaskPosMtx:
+  type: OOT:MTX
+  offset: 0x2A40
+  symbol: gLotteryShopMaskPosMtx
+
+gLotteryShopMaskTex:
+  type: TEXTURE
+  offset: 0x4268
+  symbol: gLotteryShopMaskTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gLotteryShopOpenBoxDL:
+  type: GFX
+  offset: 0x3248
+  symbol: gLotteryShopOpenBoxDL
+
+gLotteryShopRainbowTex:
+  type: TEXTURE
+  offset: 0x5878
+  symbol: gLotteryShopRainbowTex
+  format: RGBA16
+  width: 4
+  height: 32
+
+gLotteryShopRedRupeesDL:
+  type: GFX
+  offset: 0x34A8
+  symbol: gLotteryShopRedRupeesDL
+
+gLotteryShopRupeesTex:
+  type: TEXTURE
+  offset: 0x5978
+  symbol: gLotteryShopRupeesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLotteryShopScrollingArrowDL:
+  type: GFX
+  offset: 0x3C80
+  symbol: gLotteryShopScrollingArrowDL
+
+gLotteryShopScrollingEffectsDL:
+  type: GFX
+  offset: 0x3358
+  symbol: gLotteryShopScrollingEffectsDL
+
+gLotteryShopSignBorderTex:
+  type: TEXTURE
+  offset: 0x4E78
+  symbol: gLotteryShopSignBorderTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gLotteryShopSignTextTex:
+  type: TEXTURE
+  offset: 0x3E68
+  symbol: gLotteryShopSignTextTex
+  format: I8
+  width: 64
+  height: 16
+
+gLotteryShopTargetArrowAndSignDL:
+  type: GFX
+  offset: 0x37C0
+  symbol: gLotteryShopTargetArrowAndSignDL
+
+gLotteryShopTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x6198
+  symbol: gLotteryShopTexAnim
+
+
+object_kujiyaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kujiyaVtx_000000
+  count: 279
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_001170:
+  type: MM:ARRAY
+  offset: 0x001170
+  symbol: object_kujiyaVtx_001170
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_001490:
+  type: MM:ARRAY
+  offset: 0x001490
+  symbol: object_kujiyaVtx_001490
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_001610:
+  type: MM:ARRAY
+  offset: 0x001610
+  symbol: object_kujiyaVtx_001610
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_0018D0:
+  type: MM:ARRAY
+  offset: 0x0018D0
+  symbol: object_kujiyaVtx_0018D0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_001C30:
+  type: MM:ARRAY
+  offset: 0x001C30
+  symbol: object_kujiyaVtx_001C30
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_001E70:
+  type: MM:ARRAY
+  offset: 0x001E70
+  symbol: object_kujiyaVtx_001E70
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_0021D0:
+  type: MM:ARRAY
+  offset: 0x0021D0
+  symbol: object_kujiyaVtx_0021D0
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_002900:
+  type: MM:ARRAY
+  offset: 0x002900
+  symbol: object_kujiyaVtx_002900
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kujiyaVtx_002980:
+  type: MM:ARRAY
+  offset: 0x002980
+  symbol: object_kujiyaVtx_002980
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLotteryShopTexAnimTexScrollParams_006180:
+  type: BLOB
+  offset: 0x006180
+  symbol: gLotteryShopTexAnimTexScrollParams_006180
+  size: 0
+
+gLotteryShopTexAnimTexScrollParams_006188:
+  type: BLOB
+  offset: 0x006188
+  symbol: gLotteryShopTexAnimTexScrollParams_006188
+  size: 0
+
+gLotteryShopTexAnimTexScrollParams_006190:
+  type: BLOB
+  offset: 0x006190
+  symbol: gLotteryShopTexAnimTexScrollParams_006190
+  size: 0

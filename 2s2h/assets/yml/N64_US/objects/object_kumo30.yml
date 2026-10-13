@@ -1,0 +1,123 @@
+:config:
+  segments:
+    - [ 6, 0x014B7290 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014B7290 ]
+    - [ 9, 0x014B7290 ]
+    - [ 10, 0x014B7290 ]
+    - [ 11, 0x014B7290 ]
+    - [ 12, 0x014B7290 ]
+    - [ 13, 0x014B7290 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_kumo30_DL_000A50:
+  type: GFX
+  offset: 0xA50
+  symbol: object_kumo30_DL_000A50
+
+object_kumo30_DL_000C98:
+  type: GFX
+  offset: 0xC98
+  symbol: object_kumo30_DL_000C98
+
+object_kumo30_DL_002A40:
+  type: GFX
+  offset: 0x2A40
+  symbol: object_kumo30_DL_002A40
+
+object_kumo30_Matanimheader_002890:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2890
+  symbol: object_kumo30_Matanimheader_002890
+
+object_kumo30_Matanimheader_003368:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3368
+  symbol: object_kumo30_Matanimheader_003368
+
+object_kumo30_Tex_000E80:
+  type: TEXTURE
+  offset: 0xE80
+  symbol: object_kumo30_Tex_000E80
+  format: I8
+  width: 64
+  height: 64
+
+object_kumo30_Tex_001E80:
+  type: TEXTURE
+  offset: 0x1E80
+  symbol: object_kumo30_Tex_001E80
+  format: I4
+  width: 32
+  height: 32
+
+object_kumo30_Tex_002080:
+  type: TEXTURE
+  offset: 0x2080
+  symbol: object_kumo30_Tex_002080
+  format: I4
+  width: 64
+  height: 64
+
+object_kumo30_Tex_002B58:
+  type: TEXTURE
+  offset: 0x2B58
+  symbol: object_kumo30_Tex_002B58
+  format: I8
+  width: 32
+  height: 32
+
+object_kumo30_Tex_002F58:
+  type: TEXTURE
+  offset: 0x2F58
+  symbol: object_kumo30_Tex_002F58
+  format: I8
+  width: 32
+  height: 32
+
+
+object_kumo30Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kumo30Vtx_000000
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kumo30Vtx_000520:
+  type: MM:ARRAY
+  offset: 0x000520
+  symbol: object_kumo30Vtx_000520
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kumo30_Matanimheader_002890TexScrollParams_002880:
+  type: BLOB
+  offset: 0x002880
+  symbol: object_kumo30_Matanimheader_002890TexScrollParams_002880
+  size: 0
+
+object_kumo30_Matanimheader_002890TexScrollParams_002888:
+  type: BLOB
+  offset: 0x002888
+  symbol: object_kumo30_Matanimheader_002890TexScrollParams_002888
+  size: 0
+
+object_kumo30Vtx_0028A0:
+  type: MM:ARRAY
+  offset: 0x0028A0
+  symbol: object_kumo30Vtx_0028A0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kumo30_Matanimheader_003368TexScrollParams_003360:
+  type: BLOB
+  offset: 0x003360
+  symbol: object_kumo30_Matanimheader_003368TexScrollParams_003360
+  size: 0

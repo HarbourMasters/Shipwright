@@ -1,0 +1,435 @@
+:config:
+  segments:
+    - [ 6, 0x01363F90 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01363F90 ]
+    - [ 9, 0x01363F90 ]
+    - [ 10, 0x01363F90 ]
+    - [ 11, 0x01363F90 ]
+    - [ 12, 0x01363F90 ]
+    - [ 13, 0x01363F90 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gEenoBodyBottomDL:
+  type: GFX
+  offset: 0x2428
+  symbol: gEenoBodyBottomDL
+
+gEenoBodyBottomLimb:
+  type: OOT:LIMB
+  offset: 0x4568
+  symbol: gEenoBodyBottomLimb
+  limb_type: Standard
+
+gEenoBodyTex:
+  type: TEXTURE
+  offset: 0x3F80
+  symbol: gEenoBodyTex
+  format: I8
+  width: 16
+  height: 16
+
+gEenoBodyTopDL:
+  type: GFX
+  offset: 0x2640
+  symbol: gEenoBodyTopDL
+
+gEenoBodyTopLimb:
+  type: OOT:LIMB
+  offset: 0x44FC
+  symbol: gEenoBodyTopLimb
+  limb_type: Standard
+
+gEenoDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x4628
+  symbol: gEenoDamageAnim
+
+gEenoEmergeAnim:
+  type: OOT:ANIMATION
+  offset: 0x554C
+  symbol: gEenoEmergeAnim
+
+gEenoEyeTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gEenoEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEenoFaceTex:
+  type: TEXTURE
+  offset: 0x2F00
+  symbol: gEenoFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gEenoIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x58CC
+  symbol: gEenoIdleAnim
+
+gEenoLargeSnowballCreateAnim:
+  type: OOT:ANIMATION
+  offset: 0x404
+  symbol: gEenoLargeSnowballCreateAnim
+
+gEenoLargeSnowballDL:
+  type: GFX
+  offset: 0x10B0
+  symbol: gEenoLargeSnowballDL
+
+gEenoLargeSnowballThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x4F14
+  symbol: gEenoLargeSnowballThrowAnim
+
+gEenoLeftEyeDL:
+  type: GFX
+  offset: 0x2E70
+  symbol: gEenoLeftEyeDL
+
+gEenoLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0x4508
+  symbol: gEenoLeftEyeLimb
+  limb_type: Standard
+
+gEenoLeftForearmDL:
+  type: GFX
+  offset: 0x2C70
+  symbol: gEenoLeftForearmDL
+
+gEenoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x452C
+  symbol: gEenoLeftForearmLimb
+  limb_type: Standard
+
+gEenoLeftHandDL:
+  type: GFX
+  offset: 0x2D10
+  symbol: gEenoLeftHandDL
+
+gEenoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x4538
+  symbol: gEenoLeftHandLimb
+  limb_type: Standard
+
+gEenoLeftUpperArmDL:
+  type: GFX
+  offset: 0x2B20
+  symbol: gEenoLeftUpperArmDL
+
+gEenoLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4520
+  symbol: gEenoLeftUpperArmLimb
+  limb_type: Standard
+
+gEenoRightEyeDL:
+  type: GFX
+  offset: 0x2DE0
+  symbol: gEenoRightEyeDL
+
+gEenoRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0x4514
+  symbol: gEenoRightEyeLimb
+  limb_type: Standard
+
+gEenoRightForearmDL:
+  type: GFX
+  offset: 0x29B0
+  symbol: gEenoRightForearmDL
+
+gEenoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x4550
+  symbol: gEenoRightForearmLimb
+  limb_type: Standard
+
+gEenoRightHandDL:
+  type: GFX
+  offset: 0x2A50
+  symbol: gEenoRightHandDL
+
+gEenoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x455C
+  symbol: gEenoRightHandLimb
+  limb_type: Standard
+
+gEenoRightUpperArmDL:
+  type: GFX
+  offset: 0x28F0
+  symbol: gEenoRightUpperArmDL
+
+gEenoRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4544
+  symbol: gEenoRightUpperArmLimb
+  limb_type: Standard
+
+gEenoRootLimb:
+  type: OOT:LIMB
+  offset: 0x44F0
+  symbol: gEenoRootLimb
+  limb_type: Standard
+
+gEenoSkel:
+  type: MM:SKELETON
+  offset: 0x45A0
+  symbol: gEenoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gEenoSmallSnowballCreateAnim:
+  type: OOT:ANIMATION
+  offset: 0x7B4
+  symbol: gEenoSmallSnowballCreateAnim
+
+gEenoSmallSnowballDL:
+  type: GFX
+  offset: 0x4400
+  symbol: gEenoSmallSnowballDL
+
+gEenoSmallSnowballThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x544C
+  symbol: gEenoSmallSnowballThrowAnim
+
+gEenoSnowPileBottomDL:
+  type: GFX
+  offset: 0x4960
+  symbol: gEenoSnowPileBottomDL
+
+gEenoSnowPileBottomLimb:
+  type: OOT:LIMB
+  offset: 0x4A70
+  symbol: gEenoSnowPileBottomLimb
+  limb_type: Standard
+
+gEenoSnowPileMoveAnim:
+  type: OOT:ANIMATION
+  offset: 0x46D8
+  symbol: gEenoSnowPileMoveAnim
+
+gEenoSnowPileSkel:
+  type: MM:SKELETON
+  offset: 0x4A90
+  symbol: gEenoSnowPileSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gEenoSnowPileTopDL:
+  type: GFX
+  offset: 0x49E0
+  symbol: gEenoSnowPileTopDL
+
+gEenoSnowPileTopLimb:
+  type: OOT:LIMB
+  offset: 0x4A7C
+  symbol: gEenoSnowPileTopLimb
+  limb_type: Standard
+
+gEenoSnowballFragment1DL:
+  type: GFX
+  offset: 0x5CB0
+  symbol: gEenoSnowballFragment1DL
+
+gEenoSnowballFragment2DL:
+  type: GFX
+  offset: 0x6190
+  symbol: gEenoSnowballFragment2DL
+
+gEenoSnowballFragment3DL:
+  type: GFX
+  offset: 0x6620
+  symbol: gEenoSnowballFragment3DL
+
+gEenoSnowballFragmentTex:
+  type: TEXTURE
+  offset: 0x6730
+  symbol: gEenoSnowballFragmentTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gEenoUpperCheekTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gEenoUpperCheekTex
+  format: I4
+  width: 16
+  height: 16
+
+
+object_snowmanVtx_0007D0:
+  type: MM:ARRAY
+  offset: 0x0007D0
+  symbol: object_snowmanVtx_0007D0
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001258:
+  type: MM:ARRAY
+  offset: 0x001258
+  symbol: object_snowmanVtx_001258
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_0014B8:
+  type: MM:ARRAY
+  offset: 0x0014B8
+  symbol: object_snowmanVtx_0014B8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_0014E8:
+  type: MM:ARRAY
+  offset: 0x0014E8
+  symbol: object_snowmanVtx_0014E8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001518:
+  type: MM:ARRAY
+  offset: 0x001518
+  symbol: object_snowmanVtx_001518
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001748:
+  type: MM:ARRAY
+  offset: 0x001748
+  symbol: object_snowmanVtx_001748
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_0018B8:
+  type: MM:ARRAY
+  offset: 0x0018B8
+  symbol: object_snowmanVtx_0018B8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_0019B8:
+  type: MM:ARRAY
+  offset: 0x0019B8
+  symbol: object_snowmanVtx_0019B8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001BE8:
+  type: MM:ARRAY
+  offset: 0x001BE8
+  symbol: object_snowmanVtx_001BE8
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001D58:
+  type: MM:ARRAY
+  offset: 0x001D58
+  symbol: object_snowmanVtx_001D58
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_001E58:
+  type: MM:ARRAY
+  offset: 0x001E58
+  symbol: object_snowmanVtx_001E58
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_004280:
+  type: MM:ARRAY
+  offset: 0x004280
+  symbol: object_snowmanVtx_004280
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEenoSkelLimbs:
+  type: BLOB
+  offset: 0x4574
+  symbol: gEenoSkelLimbs
+  size: 0
+
+object_snowmanVtx_0046F0:
+  type: MM:ARRAY
+  offset: 0x0046F0
+  symbol: object_snowmanVtx_0046F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_004870:
+  type: MM:ARRAY
+  offset: 0x004870
+  symbol: object_snowmanVtx_004870
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEenoSnowPileSkelLimbs:
+  type: BLOB
+  offset: 0x4A88
+  symbol: gEenoSnowPileSkelLimbs
+  size: 0
+
+object_snowmanVtx_0058E0:
+  type: MM:ARRAY
+  offset: 0x0058E0
+  symbol: object_snowmanVtx_0058E0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_005DD0:
+  type: MM:ARRAY
+  offset: 0x005DD0
+  symbol: object_snowmanVtx_005DD0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_snowmanVtx_0062B0:
+  type: MM:ARRAY
+  offset: 0x0062B0
+  symbol: object_snowmanVtx_0062B0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

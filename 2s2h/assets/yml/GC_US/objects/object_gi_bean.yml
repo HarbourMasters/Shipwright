@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x00FA8C00 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FA8C00 ]
+    - [ 9, 0x00FA8C00 ]
+    - [ 10, 0x00FA8C00 ]
+    - [ 11, 0x00FA8C00 ]
+    - [ 12, 0x00FA8C00 ]
+    - [ 13, 0x00FA8C00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiBeanDL:
+  type: GFX
+  offset: 0x580
+  symbol: gGiBeanDL
+
+
+object_gi_beanVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_beanVtx_000000
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

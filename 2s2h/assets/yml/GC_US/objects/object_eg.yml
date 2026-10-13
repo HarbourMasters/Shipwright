@@ -1,0 +1,955 @@
+:config:
+  segments:
+    - [ 6, 0x011ECD60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011ECD60 ]
+    - [ 9, 0x011ECD60 ]
+    - [ 10, 0x011ECD60 ]
+    - [ 11, 0x011ECD60 ]
+    - [ 12, 0x011ECD60 ]
+    - [ 13, 0x011ECD60 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEyegoreArmorTex:
+  type: TEXTURE
+  offset: 0x12150
+  symbol: gEyegoreArmorTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEyegoreBeamosBodyGradientTex:
+  type: TEXTURE
+  offset: 0x4280
+  symbol: gEyegoreBeamosBodyGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEyegoreBeamosBodyTex:
+  type: TEXTURE
+  offset: 0x4F00
+  symbol: gEyegoreBeamosBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEyegoreBeamosBoltAndMetalTex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gEyegoreBeamosBoltAndMetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gEyegoreBeamosEyeOutlineTex:
+  type: TEXTURE
+  offset: 0x4900
+  symbol: gEyegoreBeamosEyeOutlineTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEyegoreBeamosEyeTex:
+  type: TEXTURE
+  offset: 0x4B00
+  symbol: gEyegoreBeamosEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gEyegoreBeamosGrayMetalTex:
+  type: TEXTURE
+  offset: 0x4300
+  symbol: gEyegoreBeamosGrayMetalTex
+  format: I4
+  width: 16
+  height: 32
+
+gEyegoreBeamosInnerEyeLidTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gEyegoreBeamosInnerEyeLidTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gEyegoreBeamosTeethTex:
+  type: TEXTURE
+  offset: 0x5180
+  symbol: gEyegoreBeamosTeethTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyegoreBlockCol:
+  type: MM:COLLISION
+  offset: 0x1820
+  symbol: gEyegoreBlockCol
+
+gEyegoreBlockDL:
+  type: GFX
+  offset: 0x1698
+  symbol: gEyegoreBlockDL
+
+gEyegoreBlockTex:
+  type: TEXTURE
+  offset: 0x11E30
+  symbol: gEyegoreBlockTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEyegoreClawTex:
+  type: TEXTURE
+  offset: 0x12030
+  symbol: gEyegoreClawTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gEyegoreDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0xADF8
+  symbol: gEyegoreDamagedAnim
+
+gEyegoreDarkBodyTex:
+  type: TEXTURE
+  offset: 0x11D30
+  symbol: gEyegoreDarkBodyTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEyegoreDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0xBC60
+  symbol: gEyegoreDeathAnim
+
+gEyegoreDuplicateEffectImpactTex:
+  type: TEXTURE
+  offset: 0x10D30
+  symbol: gEyegoreDuplicateEffectImpactTex
+  format: IA8
+  width: 64
+  height: 64
+
+gEyegoreDuplicateStoneTex:
+  type: TEXTURE
+  offset: 0x126D0
+  symbol: gEyegoreDuplicateStoneTex
+  format: RGBA16
+  width: 36
+  height: 36
+
+gEyegoreEffectFlatDebrisDL:
+  type: GFX
+  offset: 0x1BF8
+  symbol: gEyegoreEffectFlatDebrisDL
+
+gEyegoreEffectFlatDebrisTex:
+  type: TEXTURE
+  offset: 0x1C78
+  symbol: gEyegoreEffectFlatDebrisTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEyegoreEffectImpactDL:
+  type: GFX
+  offset: 0x40
+  symbol: gEyegoreEffectImpactDL
+
+gEyegoreEffectImpactTex:
+  type: TEXTURE
+  offset: 0xC0
+  symbol: gEyegoreEffectImpactTex
+  format: IA8
+  width: 64
+  height: 64
+
+gEyegoreEffectLargeBodyPieceDL:
+  type: GFX
+  offset: 0x1170
+  symbol: gEyegoreEffectLargeBodyPieceDL
+
+gEyegoreEffectLargeBodyPieceTex:
+  type: TEXTURE
+  offset: 0x1210
+  symbol: gEyegoreEffectLargeBodyPieceTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEyegoreEffectSmallBodyPieceDL:
+  type: GFX
+  offset: 0x13B0
+  symbol: gEyegoreEffectSmallBodyPieceDL
+
+gEyegoreEffectSmallBodyPieceTex:
+  type: TEXTURE
+  offset: 0x1450
+  symbol: gEyegoreEffectSmallBodyPieceTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEyegoreEffectSolidDebrisDL:
+  type: GFX
+  offset: 0x1918
+  symbol: gEyegoreEffectSolidDebrisDL
+
+gEyegoreEffectSolidDebrisTex:
+  type: TEXTURE
+  offset: 0x19B0
+  symbol: gEyegoreEffectSolidDebrisTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEyegoreEmpty1DL:
+  type: GFX
+  offset: 0x1690
+  symbol: gEyegoreEmpty1DL
+
+gEyegoreEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x10C0
+  symbol: gEyegoreEmpty1TexAnim
+
+gEyegoreEmpty2DL:
+  type: GFX
+  offset: 0x1910
+  symbol: gEyegoreEmpty2DL
+
+gEyegoreEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1BB0
+  symbol: gEyegoreEmpty2TexAnim
+
+gEyegoreEmpty3DL:
+  type: GFX
+  offset: 0x1BF0
+  symbol: gEyegoreEmpty3DL
+
+gEyegoreEmpty3TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1E80
+  symbol: gEyegoreEmpty3TexAnim
+
+gEyegoreEyeColliderLimb:
+  type: OOT:LIMB
+  offset: 0x9590
+  symbol: gEyegoreEyeColliderLimb
+  limb_type: Standard
+
+gEyegoreEyeColliderLimbDL:
+  type: GFX
+  offset: 0x89F8
+  symbol: gEyegoreEyeColliderLimbDL
+
+gEyegoreEyeLaserTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x94E4
+  symbol: gEyegoreEyeLaserTexAnim
+
+gEyegoreEyeballDL:
+  type: GFX
+  offset: 0x88E0
+  symbol: gEyegoreEyeballDL
+
+gEyegoreEyeballLimb:
+  type: OOT:LIMB
+  offset: 0x959C
+  symbol: gEyegoreEyeballLimb
+  limb_type: Standard
+
+gEyegoreEyeballTex:
+  type: TEXTURE
+  offset: 0x130F0
+  symbol: gEyegoreEyeballTex
+  format: I4
+  width: 16
+  height: 32
+
+gEyegoreFauldsDL:
+  type: GFX
+  offset: 0x7DF8
+  symbol: gEyegoreFauldsDL
+
+gEyegoreFauldsLimb:
+  type: OOT:LIMB
+  offset: 0x95FC
+  symbol: gEyegoreFauldsLimb
+  limb_type: Standard
+
+gEyegoreHeadDL:
+  type: GFX
+  offset: 0x8730
+  symbol: gEyegoreHeadDL
+
+gEyegoreHeadLimb:
+  type: OOT:LIMB
+  offset: 0x950C
+  symbol: gEyegoreHeadLimb
+  limb_type: Standard
+
+gEyegoreHeadTex:
+  type: TEXTURE
+  offset: 0x121D0
+  symbol: gEyegoreHeadTex
+  format: I4
+  width: 16
+  height: 32
+
+gEyegoreHipsDL:
+  type: GFX
+  offset: 0x7C80
+  symbol: gEyegoreHipsDL
+
+gEyegoreHipsLimb:
+  type: OOT:LIMB
+  offset: 0x95A8
+  symbol: gEyegoreHipsLimb
+  limb_type: Standard
+
+gEyegoreLaserAnim:
+  type: OOT:ANIMATION
+  offset: 0xA484
+  symbol: gEyegoreLaserAnim
+
+gEyegoreLaserAttachLimb:
+  type: OOT:LIMB
+  offset: 0x9584
+  symbol: gEyegoreLaserAttachLimb
+  limb_type: Standard
+
+gEyegoreLaserAttachLimbDL:
+  type: GFX
+  offset: 0x8A40
+  symbol: gEyegoreLaserAttachLimbDL
+
+gEyegoreLaserDL:
+  type: GFX
+  offset: 0x41F0
+  symbol: gEyegoreLaserDL
+
+gEyegoreLaserTex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gEyegoreLaserTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEyegoreLeftArmDL:
+  type: GFX
+  offset: 0x9250
+  symbol: gEyegoreLeftArmDL
+
+gEyegoreLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x9524
+  symbol: gEyegoreLeftArmLimb
+  limb_type: Standard
+
+gEyegoreLeftFootDL:
+  type: GFX
+  offset: 0x8430
+  symbol: gEyegoreLeftFootDL
+
+gEyegoreLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x95CC
+  symbol: gEyegoreLeftFootLimb
+  limb_type: Standard
+
+gEyegoreLeftHandDL:
+  type: GFX
+  offset: 0x90A0
+  symbol: gEyegoreLeftHandDL
+
+gEyegoreLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x9530
+  symbol: gEyegoreLeftHandLimb
+  limb_type: Standard
+
+gEyegoreLeftPunchAnim:
+  type: OOT:ANIMATION
+  offset: 0xC434
+  symbol: gEyegoreLeftPunchAnim
+
+gEyegoreLeftShinDL:
+  type: GFX
+  offset: 0x82F0
+  symbol: gEyegoreLeftShinDL
+
+gEyegoreLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x95C0
+  symbol: gEyegoreLeftShinLimb
+  limb_type: Standard
+
+gEyegoreLeftShoulderDL:
+  type: GFX
+  offset: 0x91B8
+  symbol: gEyegoreLeftShoulderDL
+
+gEyegoreLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x9518
+  symbol: gEyegoreLeftShoulderLimb
+  limb_type: Standard
+
+gEyegoreLeftThighDL:
+  type: GFX
+  offset: 0x85C0
+  symbol: gEyegoreLeftThighDL
+
+gEyegoreLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x95B4
+  symbol: gEyegoreLeftThighLimb
+  limb_type: Standard
+
+gEyegoreLightBodyTex:
+  type: TEXTURE
+  offset: 0x12050
+  symbol: gEyegoreLightBodyTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEyegoreLowerEyelidDL:
+  type: GFX
+  offset: 0x8B28
+  symbol: gEyegoreLowerEyelidDL
+
+gEyegoreLowerEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x956C
+  symbol: gEyegoreLowerEyelidLimb
+  limb_type: Standard
+
+gEyegorePupilDL:
+  type: GFX
+  offset: 0x8A88
+  symbol: gEyegorePupilDL
+
+gEyegorePupilLimb:
+  type: OOT:LIMB
+  offset: 0x9578
+  symbol: gEyegorePupilLimb
+  limb_type: Standard
+
+gEyegorePupilTex:
+  type: TEXTURE
+  offset: 0x122D0
+  symbol: gEyegorePupilTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gEyegoreRetreatAnim:
+  type: OOT:ANIMATION
+  offset: 0xBEB8
+  symbol: gEyegoreRetreatAnim
+
+gEyegoreRightArmDL:
+  type: GFX
+  offset: 0x8ED8
+  symbol: gEyegoreRightArmDL
+
+gEyegoreRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x9548
+  symbol: gEyegoreRightArmLimb
+  limb_type: Standard
+
+gEyegoreRightFootDL:
+  type: GFX
+  offset: 0x7FF0
+  symbol: gEyegoreRightFootDL
+
+gEyegoreRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x95F0
+  symbol: gEyegoreRightFootLimb
+  limb_type: Standard
+
+gEyegoreRightHandDL:
+  type: GFX
+  offset: 0x8D28
+  symbol: gEyegoreRightHandDL
+
+gEyegoreRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x9554
+  symbol: gEyegoreRightHandLimb
+  limb_type: Standard
+
+gEyegoreRightPunchAnim:
+  type: OOT:ANIMATION
+  offset: 0xC9B4
+  symbol: gEyegoreRightPunchAnim
+
+gEyegoreRightShinDL:
+  type: GFX
+  offset: 0x7EB0
+  symbol: gEyegoreRightShinDL
+
+gEyegoreRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x95E4
+  symbol: gEyegoreRightShinLimb
+  limb_type: Standard
+
+gEyegoreRightShoulderDL:
+  type: GFX
+  offset: 0x8E40
+  symbol: gEyegoreRightShoulderDL
+
+gEyegoreRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x953C
+  symbol: gEyegoreRightShoulderLimb
+  limb_type: Standard
+
+gEyegoreRightThighDL:
+  type: GFX
+  offset: 0x8180
+  symbol: gEyegoreRightThighDL
+
+gEyegoreRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x95D8
+  symbol: gEyegoreRightThighLimb
+  limb_type: Standard
+
+gEyegoreRootLimb:
+  type: OOT:LIMB
+  offset: 0x94F4
+  symbol: gEyegoreRootLimb
+  limb_type: Standard
+
+gEyegoreSitAnim:
+  type: OOT:ANIMATION
+  offset: 0xD3D8
+  symbol: gEyegoreSitAnim
+
+gEyegoreSkel:
+  type: MM:SKELETON
+  offset: 0x9664
+  symbol: gEyegoreSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gEyegoreSlamAnim:
+  type: OOT:ANIMATION
+  offset: 0x2460
+  symbol: gEyegoreSlamAnim
+
+gEyegoreSlamEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xA204
+  symbol: gEyegoreSlamEndAnim
+
+gEyegoreSlamWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D2C
+  symbol: gEyegoreSlamWaitAnim
+
+gEyegoreStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xEE4C
+  symbol: gEyegoreStandAnim
+
+gEyegoreStoneDL:
+  type: GFX
+  offset: 0x10240
+  symbol: gEyegoreStoneDL
+
+gEyegoreStoneTex:
+  type: TEXTURE
+  offset: 0x10310
+  symbol: gEyegoreStoneTex
+  format: RGBA16
+  width: 36
+  height: 36
+
+gEyegoreStunEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xCE54
+  symbol: gEyegoreStunEndAnim
+
+gEyegoreStunnedAnim:
+  type: OOT:ANIMATION
+  offset: 0xCC4C
+  symbol: gEyegoreStunnedAnim
+
+gEyegoreTorsoDL:
+  type: GFX
+  offset: 0x9418
+  symbol: gEyegoreTorsoDL
+
+gEyegoreTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x9500
+  symbol: gEyegoreTorsoLimb
+  limb_type: Standard
+
+gEyegoreUnusedChaseAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA10
+  symbol: gEyegoreUnusedChaseAnim
+
+gEyegoreUnusedIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xFB0C
+  symbol: gEyegoreUnusedIdleAnim
+
+gEyegoreUnusedLaserEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xA73C
+  symbol: gEyegoreUnusedLaserEndAnim
+
+gEyegoreUnusedStoneDL:
+  type: GFX
+  offset: 0xDCC0
+  symbol: gEyegoreUnusedStoneDL
+
+gEyegoreUnusedStoneTex:
+  type: TEXTURE
+  offset: 0xDEA8
+  symbol: gEyegoreUnusedStoneTex
+  format: I4
+  width: 64
+  height: 64
+
+gEyegoreUnusedVtx:
+  type: MM:ARRAY
+  offset: 0x2470
+  symbol: gEyegoreUnusedVtx
+  count: 464
+  array_type: VTX
+
+gEyegoreUnusedWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xF524
+  symbol: gEyegoreUnusedWalkAnim
+
+gEyegoreUpperEyelidDL:
+  type: GFX
+  offset: 0x8C28
+  symbol: gEyegoreUpperEyelidDL
+
+gEyegoreUpperEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x9560
+  symbol: gEyegoreUpperEyelidLimb
+  limb_type: Standard
+
+gEyegoreWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x100C0
+  symbol: gEyegoreWalkAnim
+
+
+object_egVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_egVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0010D0:
+  type: MM:ARRAY
+  offset: 0x0010D0
+  symbol: object_egVtx_0010D0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_001310:
+  type: MM:ARRAY
+  offset: 0x001310
+  symbol: object_egVtx_001310
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_001550:
+  type: MM:ARRAY
+  offset: 0x001550
+  symbol: object_egVtx_001550
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_001850:
+  type: MM:ARRAY
+  offset: 0x001850
+  symbol: object_egVtx_001850
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_001BC0:
+  type: MM:ARRAY
+  offset: 0x001BC0
+  symbol: object_egVtx_001BC0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_004170:
+  type: MM:ARRAY
+  offset: 0x004170
+  symbol: object_egVtx_004170
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_005980:
+  type: MM:ARRAY
+  offset: 0x005980
+  symbol: object_egVtx_005980
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_005B40:
+  type: MM:ARRAY
+  offset: 0x005B40
+  symbol: object_egVtx_005B40
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_005DB0:
+  type: MM:ARRAY
+  offset: 0x005DB0
+  symbol: object_egVtx_005DB0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_005E40:
+  type: MM:ARRAY
+  offset: 0x005E40
+  symbol: object_egVtx_005E40
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006040:
+  type: MM:ARRAY
+  offset: 0x006040
+  symbol: object_egVtx_006040
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0062B0:
+  type: MM:ARRAY
+  offset: 0x0062B0
+  symbol: object_egVtx_0062B0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006340:
+  type: MM:ARRAY
+  offset: 0x006340
+  symbol: object_egVtx_006340
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006490:
+  type: MM:ARRAY
+  offset: 0x006490
+  symbol: object_egVtx_006490
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006560:
+  type: MM:ARRAY
+  offset: 0x006560
+  symbol: object_egVtx_006560
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006630:
+  type: MM:ARRAY
+  offset: 0x006630
+  symbol: object_egVtx_006630
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006680:
+  type: MM:ARRAY
+  offset: 0x006680
+  symbol: object_egVtx_006680
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0066B0:
+  type: MM:ARRAY
+  offset: 0x0066B0
+  symbol: object_egVtx_0066B0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0069B0:
+  type: MM:ARRAY
+  offset: 0x0069B0
+  symbol: object_egVtx_0069B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0069E0:
+  type: MM:ARRAY
+  offset: 0x0069E0
+  symbol: object_egVtx_0069E0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006A90:
+  type: MM:ARRAY
+  offset: 0x006A90
+  symbol: object_egVtx_006A90
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_006DE0:
+  type: MM:ARRAY
+  offset: 0x006DE0
+  symbol: object_egVtx_006DE0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_007010:
+  type: MM:ARRAY
+  offset: 0x007010
+  symbol: object_egVtx_007010
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0071A0:
+  type: MM:ARRAY
+  offset: 0x0071A0
+  symbol: object_egVtx_0071A0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_007500:
+  type: MM:ARRAY
+  offset: 0x007500
+  symbol: object_egVtx_007500
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_007730:
+  type: MM:ARRAY
+  offset: 0x007730
+  symbol: object_egVtx_007730
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0078C0:
+  type: MM:ARRAY
+  offset: 0x0078C0
+  symbol: object_egVtx_0078C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_007AF0:
+  type: MM:ARRAY
+  offset: 0x007AF0
+  symbol: object_egVtx_007AF0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEyegoreEyeLaserTexAnimColorParams_0094CC:
+  type: BLOB
+  offset: 0x0094CC
+  symbol: gEyegoreEyeLaserTexAnimColorParams_0094CC
+  size: 0
+
+gEyegoreEyeLaserTexAnimTexScrollParams_0094DC:
+  type: BLOB
+  offset: 0x0094DC
+  symbol: gEyegoreEyeLaserTexAnimTexScrollParams_0094DC
+  size: 0
+
+gEyegoreSkelLimbs:
+  type: BLOB
+  offset: 0x9608
+  symbol: gEyegoreSkelLimbs
+  size: 0
+
+object_egVtx_00D3F0:
+  type: MM:ARRAY
+  offset: 0x00D3F0
+  symbol: object_egVtx_00D3F0
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_egVtx_0100D0:
+  type: MM:ARRAY
+  offset: 0x0100D0
+  symbol: object_egVtx_0100D0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

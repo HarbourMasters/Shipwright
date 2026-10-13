@@ -1,0 +1,310 @@
+:config:
+  segments:
+    - [ 6, 0x010C4B80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010C4B80 ]
+    - [ 9, 0x010C4B80 ]
+    - [ 10, 0x010C4B80 ]
+    - [ 11, 0x010C4B80 ]
+    - [ 12, 0x010C4B80 ]
+    - [ 13, 0x010C4B80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_ps_Anim_00049C:
+  type: OOT:ANIMATION
+  offset: 0x49C
+  symbol: object_ps_Anim_00049C
+
+object_ps_Anim_0078FC:
+  type: OOT:ANIMATION
+  offset: 0x78FC
+  symbol: object_ps_Anim_0078FC
+
+object_ps_Colheader_0072E0:
+  type: MM:COLLISION
+  offset: 0x72E0
+  symbol: object_ps_Colheader_0072E0
+
+object_ps_DL_001B30:
+  type: GFX
+  offset: 0x1B30
+  symbol: object_ps_DL_001B30
+
+object_ps_DL_001B38:
+  type: GFX
+  offset: 0x1B38
+  symbol: object_ps_DL_001B38
+
+object_ps_DL_001F38:
+  type: GFX
+  offset: 0x1F38
+  symbol: object_ps_DL_001F38
+
+object_ps_DL_002438:
+  type: GFX
+  offset: 0x2438
+  symbol: object_ps_DL_002438
+
+object_ps_DL_002560:
+  type: GFX
+  offset: 0x2560
+  symbol: object_ps_DL_002560
+
+object_ps_DL_002638:
+  type: GFX
+  offset: 0x2638
+  symbol: object_ps_DL_002638
+
+object_ps_DL_002840:
+  type: GFX
+  offset: 0x2840
+  symbol: object_ps_DL_002840
+
+object_ps_DL_002948:
+  type: GFX
+  offset: 0x2948
+  symbol: object_ps_DL_002948
+
+object_ps_DL_002A60:
+  type: GFX
+  offset: 0x2A60
+  symbol: object_ps_DL_002A60
+
+object_ps_DL_002B68:
+  type: GFX
+  offset: 0x2B68
+  symbol: object_ps_DL_002B68
+
+object_ps_Skel_007230:
+  type: MM:SKELETON
+  offset: 0x7230
+  symbol: object_ps_Skel_007230
+  limb_type: Standard
+  skel_type: Flex
+
+object_ps_Standardlimb_007180:
+  type: OOT:LIMB
+  offset: 0x7180
+  symbol: object_ps_Standardlimb_007180
+  limb_type: Standard
+
+object_ps_Standardlimb_00718C:
+  type: OOT:LIMB
+  offset: 0x718C
+  symbol: object_ps_Standardlimb_00718C
+  limb_type: Standard
+
+object_ps_Standardlimb_007198:
+  type: OOT:LIMB
+  offset: 0x7198
+  symbol: object_ps_Standardlimb_007198
+  limb_type: Standard
+
+object_ps_Standardlimb_0071A4:
+  type: OOT:LIMB
+  offset: 0x71A4
+  symbol: object_ps_Standardlimb_0071A4
+  limb_type: Standard
+
+object_ps_Standardlimb_0071B0:
+  type: OOT:LIMB
+  offset: 0x71B0
+  symbol: object_ps_Standardlimb_0071B0
+  limb_type: Standard
+
+object_ps_Standardlimb_0071BC:
+  type: OOT:LIMB
+  offset: 0x71BC
+  symbol: object_ps_Standardlimb_0071BC
+  limb_type: Standard
+
+object_ps_Standardlimb_0071C8:
+  type: OOT:LIMB
+  offset: 0x71C8
+  symbol: object_ps_Standardlimb_0071C8
+  limb_type: Standard
+
+object_ps_Standardlimb_0071D4:
+  type: OOT:LIMB
+  offset: 0x71D4
+  symbol: object_ps_Standardlimb_0071D4
+  limb_type: Standard
+
+object_ps_Standardlimb_0071E0:
+  type: OOT:LIMB
+  offset: 0x71E0
+  symbol: object_ps_Standardlimb_0071E0
+  limb_type: Standard
+
+object_ps_Standardlimb_0071EC:
+  type: OOT:LIMB
+  offset: 0x71EC
+  symbol: object_ps_Standardlimb_0071EC
+  limb_type: Standard
+
+object_ps_Standardlimb_0071F8:
+  type: OOT:LIMB
+  offset: 0x71F8
+  symbol: object_ps_Standardlimb_0071F8
+  limb_type: Standard
+
+object_ps_TLUT_002C80:
+  type: TEXTURE
+  offset: 0x2C80
+  symbol: object_ps_TLUT_002C80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ps_Tex_003F00:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: object_ps_Tex_003F00
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ps_Tex_0062C0:
+  type: TEXTURE
+  offset: 0x62C0
+  symbol: object_ps_Tex_0062C0
+  format: CI8
+  width: 8
+  height: 8
+
+object_ps_Tex_006300:
+  type: TEXTURE
+  offset: 0x6300
+  symbol: object_ps_Tex_006300
+  format: CI8
+  width: 32
+  height: 32
+
+object_ps_Tex_006700:
+  type: TEXTURE
+  offset: 0x6700
+  symbol: object_ps_Tex_006700
+  format: CI8
+  width: 8
+  height: 8
+
+object_ps_Tex_006740:
+  type: TEXTURE
+  offset: 0x6740
+  symbol: object_ps_Tex_006740
+  format: CI8
+  width: 8
+  height: 8
+
+object_ps_Tex_006780:
+  type: TEXTURE
+  offset: 0x6780
+  symbol: object_ps_Tex_006780
+  format: CI8
+  width: 32
+  height: 32
+
+object_ps_Tex_006B80:
+  type: TEXTURE
+  offset: 0x6B80
+  symbol: object_ps_Tex_006B80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ps_Tex_006D80:
+  type: TEXTURE
+  offset: 0x6D80
+  symbol: object_ps_Tex_006D80
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_psVtx_0004B0:
+  type: MM:ARRAY
+  offset: 0x0004B0
+  symbol: object_psVtx_0004B0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_000820:
+  type: MM:ARRAY
+  offset: 0x000820
+  symbol: object_psVtx_000820
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_0008A0:
+  type: MM:ARRAY
+  offset: 0x0008A0
+  symbol: object_psVtx_0008A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_000A20:
+  type: MM:ARRAY
+  offset: 0x000A20
+  symbol: object_psVtx_000A20
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_001090:
+  type: MM:ARRAY
+  offset: 0x001090
+  symbol: object_psVtx_001090
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_001270:
+  type: MM:ARRAY
+  offset: 0x001270
+  symbol: object_psVtx_001270
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_001350:
+  type: MM:ARRAY
+  offset: 0x001350
+  symbol: object_psVtx_001350
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_001530:
+  type: MM:ARRAY
+  offset: 0x001530
+  symbol: object_psVtx_001530
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_psVtx_001610:
+  type: MM:ARRAY
+  offset: 0x001610
+  symbol: object_psVtx_001610
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ps_Skel_007230Limbs:
+  type: BLOB
+  offset: 0x7204
+  symbol: object_ps_Skel_007230Limbs
+  size: 0

@@ -1,0 +1,53 @@
+:config:
+  segments:
+    - [ 6, 0x012EBF30 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012EBF30 ]
+    - [ 9, 0x012EBF30 ]
+    - [ 10, 0x012EBF30 ]
+    - [ 11, 0x012EBF30 ]
+    - [ 12, 0x012EBF30 ]
+    - [ 13, 0x012EBF30 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSunBlockCol:
+  type: MM:COLLISION
+  offset: 0xB80
+  symbol: gSunBlockCol
+
+gSunBlockDL:
+  type: GFX
+  offset: 0x178
+  symbol: gSunBlockDL
+
+gSunBlockEmptyDL:
+  type: GFX
+  offset: 0x170
+  symbol: gSunBlockEmptyDL
+
+gSunBlockTLUT:
+  type: TEXTURE
+  offset: 0x258
+  symbol: gSunBlockTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunBlockTex:
+  type: TEXTURE
+  offset: 0x278
+  symbol: gSunBlockTex
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_lightblockVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_lightblockVtx_000000
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 6, 0x010A5F70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010A5F70 ]
+    - [ 9, 0x010A5F70 ]
+    - [ 10, 0x010A5F70 ]
+    - [ 11, 0x010A5F70 ]
+    - [ 12, 0x010A5F70 ]
+    - [ 13, 0x010A5F70 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gStoneTowerBlockBackgroundTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gStoneTowerBlockBackgroundTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gStoneTowerBlockCol:
+  type: MM:COLLISION
+  offset: 0x4640
+  symbol: gStoneTowerBlockCol
+
+gStoneTowerBlockDL:
+  type: GFX
+  offset: 0x43D0
+  symbol: gStoneTowerBlockDL
+
+gStoneTowerBlockPatternTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gStoneTowerBlockPatternTex
+  format: I4
+  width: 32
+  height: 128
+
+gStoneTowerBlockSidesTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gStoneTowerBlockSidesTex
+  format: I4
+  width: 64
+  height: 64
+
+gStoneTowerPlatformsSidesTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gStoneTowerPlatformsSidesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gStoneTowerPlatformsTopTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gStoneTowerPlatformsTopTex
+  format: I8
+  width: 64
+  height: 64
+
+gStoneTowerTempleSquareElevatorCol:
+  type: MM:COLLISION
+  offset: 0x4240
+  symbol: gStoneTowerTempleSquareElevatorCol
+
+gStoneTowerTempleSquareElevatorDL:
+  type: GFX
+  offset: 0x4038
+  symbol: gStoneTowerTempleSquareElevatorDL
+
+gStoneTowerTempleSquareElevatorEmptyDL:
+  type: GFX
+  offset: 0x4030
+  symbol: gStoneTowerTempleSquareElevatorEmptyDL
+
+gStoneTowerVerticallyOscillatingPlatformCol:
+  type: MM:COLLISION
+  offset: 0x3E80
+  symbol: gStoneTowerVerticallyOscillatingPlatformCol
+
+gStoneTowerVerticallyOscillatingPlatformDL:
+  type: GFX
+  offset: 0x3B08
+  symbol: gStoneTowerVerticallyOscillatingPlatformDL
+
+gStoneTowerVerticallyOscillatingPlatformEmptyDL:
+  type: GFX
+  offset: 0x3B00
+  symbol: gStoneTowerVerticallyOscillatingPlatformEmptyDL
+
+
+object_f40_objVtx_003800:
+  type: MM:ARRAY
+  offset: 0x003800
+  symbol: object_f40_objVtx_003800
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f40_objVtx_003EB0:
+  type: MM:ARRAY
+  offset: 0x003EB0
+  symbol: object_f40_objVtx_003EB0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f40_objVtx_004270:
+  type: MM:ARRAY
+  offset: 0x004270
+  symbol: object_f40_objVtx_004270
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

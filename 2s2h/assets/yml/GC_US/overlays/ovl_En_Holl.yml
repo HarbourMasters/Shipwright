@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x00B942D0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80896450, 0x00B942D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEnHollCentralPlaneDL:
+  type: GFX
+  offset: 0x0C30
+  symbol: gEnHollCentralPlaneDL
+
+gEnHollCentralPlaneVtx:
+  type: MM:ARRAY
+  offset: 0x0BF0
+  symbol: gEnHollCentralPlaneVtx
+  count: 4
+  array_type: VTX
+

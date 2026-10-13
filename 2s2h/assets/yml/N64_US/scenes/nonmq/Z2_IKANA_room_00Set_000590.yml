@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x016FB410 ]
+    - [ 2, 0x016EC2F0 ]
+  directory: scenes/nonmq/Z2_IKANA
+  external_files:
+    - N64_US/scenes/nonmq/Z2_IKANA_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_IKANA.yml
+
+Z2_IKANA_room_00Set_000590:
+  type: MM:ROOM
+  offset: 0x590
+  symbol: Z2_IKANA_room_00Set_000590
+  base_name: Z2_IKANA_room_00

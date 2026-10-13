@@ -1,0 +1,463 @@
+:config:
+  segments:
+    - [ 6, 0x01365610 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01365610 ]
+    - [ 9, 0x01365610 ]
+    - [ 10, 0x01365610 ]
+    - [ 11, 0x01365610 ]
+    - [ 12, 0x01365610 ]
+    - [ 13, 0x01365610 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPoeSistersAmyBodyDL:
+  type: GFX
+  offset: 0x3DC8
+  symbol: gPoeSistersAmyBodyDL
+
+gPoeSistersAmyFaceDL:
+  type: GFX
+  offset: 0x4020
+  symbol: gPoeSistersAmyFaceDL
+
+gPoeSistersAmyHairTieTex:
+  type: TEXTURE
+  offset: 0x62F8
+  symbol: gPoeSistersAmyHairTieTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gPoeSistersAppearDisappearAnim:
+  type: OOT:ANIMATION
+  offset: 0x119C
+  symbol: gPoeSistersAppearDisappearAnim
+
+gPoeSistersArmLongDL:
+  type: GFX
+  offset: 0x2718
+  symbol: gPoeSistersArmLongDL
+
+gPoeSistersArmMedDL:
+  type: GFX
+  offset: 0x2680
+  symbol: gPoeSistersArmMedDL
+
+gPoeSistersArmShortDL:
+  type: GFX
+  offset: 0x25E8
+  symbol: gPoeSistersArmShortDL
+
+gPoeSistersArmTex:
+  type: TEXTURE
+  offset: 0x52D8
+  symbol: gPoeSistersArmTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gPoeSistersAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x114
+  symbol: gPoeSistersAttackAnim
+
+gPoeSistersBethAmyEyesTex:
+  type: TEXTURE
+  offset: 0x5F78
+  symbol: gPoeSistersBethAmyEyesTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPoeSistersBethBodyDL:
+  type: GFX
+  offset: 0x3628
+  symbol: gPoeSistersBethBodyDL
+
+gPoeSistersBethFaceDL:
+  type: GFX
+  offset: 0x3880
+  symbol: gPoeSistersBethFaceDL
+
+gPoeSistersBethHatAndHairTex:
+  type: TEXTURE
+  offset: 0x6078
+  symbol: gPoeSistersBethHatAndHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersBethHatEdgeTex:
+  type: TEXTURE
+  offset: 0x6278
+  symbol: gPoeSistersBethHatEdgeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPoeSistersBurnBodyDL:
+  type: GFX
+  offset: 0x46E0
+  symbol: gPoeSistersBurnBodyDL
+
+gPoeSistersCrispBodyTex:
+  type: TEXTURE
+  offset: 0x6318
+  symbol: gPoeSistersCrispBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x8C0
+  symbol: gPoeSistersDamagedAnim
+
+gPoeSistersFaceLimb:
+  type: OOT:LIMB
+  offset: 0x6584
+  symbol: gPoeSistersFaceLimb
+  limb_type: Standard
+
+gPoeSistersFleeAnim:
+  type: OOT:ANIMATION
+  offset: 0xA54
+  symbol: gPoeSistersFleeAnim
+
+gPoeSistersFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0xD40
+  symbol: gPoeSistersFloatAnim
+
+gPoeSistersJoelleAmyHairTex:
+  type: TEXTURE
+  offset: 0x5D78
+  symbol: gPoeSistersJoelleAmyHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersJoelleBodyDL:
+  type: GFX
+  offset: 0x2F88
+  symbol: gPoeSistersJoelleBodyDL
+
+gPoeSistersJoelleFaceDL:
+  type: GFX
+  offset: 0x2EB8
+  symbol: gPoeSistersJoelleFaceDL
+
+gPoeSistersJoelleHairBandtex:
+  type: TEXTURE
+  offset: 0x5CF8
+  symbol: gPoeSistersJoelleHairBandtex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPoeSistersLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x6524
+  symbol: gPoeSistersLeftArmLimb
+  limb_type: Standard
+
+gPoeSistersLeftHandDL:
+  type: GFX
+  offset: 0x2870
+  symbol: gPoeSistersLeftHandDL
+
+gPoeSistersLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x6530
+  symbol: gPoeSistersLeftHandLimb
+  limb_type: Standard
+
+gPoeSistersLowerBodyDL:
+  type: GFX
+  offset: 0x24A8
+  symbol: gPoeSistersLowerBodyDL
+
+gPoeSistersLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x6590
+  symbol: gPoeSistersLowerBodyLimb
+  limb_type: Standard
+
+gPoeSistersMainBodyLimb:
+  type: OOT:LIMB
+  offset: 0x6578
+  symbol: gPoeSistersMainBodyLimb
+  limb_type: Standard
+
+gPoeSistersMainRobeGradientTex:
+  type: TEXTURE
+  offset: 0x58D8
+  symbol: gPoeSistersMainRobeGradientTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gPoeSistersMainRootLimb:
+  type: OOT:LIMB
+  offset: 0x6518
+  symbol: gPoeSistersMainRootLimb
+  limb_type: Standard
+
+gPoeSistersMegBodyDL:
+  type: GFX
+  offset: 0x1DE0
+  symbol: gPoeSistersMegBodyDL
+
+gPoeSistersMegCryAnim:
+  type: OOT:ANIMATION
+  offset: 0x680
+  symbol: gPoeSistersMegCryAnim
+
+gPoeSistersMegFaceDL:
+  type: GFX
+  offset: 0x1CB0
+  symbol: gPoeSistersMegFaceDL
+
+gPoeSistersMegHairTex:
+  type: TEXTURE
+  offset: 0x5AF8
+  symbol: gPoeSistersMegHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersMegJoelleEyeTex:
+  type: TEXTURE
+  offset: 0x56D8
+  symbol: gPoeSistersMegJoelleEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersMegTiaraTex:
+  type: TEXTURE
+  offset: 0x58F8
+  symbol: gPoeSistersMegTiaraTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeSistersRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6548
+  symbol: gPoeSistersRightForearmLimb
+  limb_type: Standard
+
+gPoeSistersRightHandDL:
+  type: GFX
+  offset: 0x2570
+  symbol: gPoeSistersRightHandDL
+
+gPoeSistersRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x6560
+  symbol: gPoeSistersRightHandLimb
+  limb_type: Standard
+
+gPoeSistersRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x653C
+  symbol: gPoeSistersRightUpperArmLimb
+  limb_type: Standard
+
+gPoeSistersSkel:
+  type: MM:SKELETON
+  offset: 0x65C8
+  symbol: gPoeSistersSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPoeSistersSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x14CC
+  symbol: gPoeSistersSwayAnim
+
+gPoeSistersTatteredRobeTex:
+  type: TEXTURE
+  offset: 0x4AD8
+  symbol: gPoeSistersTatteredRobeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPoeSistersTorchDL:
+  type: GFX
+  offset: 0x27B0
+  symbol: gPoeSistersTorchDL
+
+gPoeSistersTorchLimb:
+  type: OOT:LIMB
+  offset: 0x656C
+  symbol: gPoeSistersTorchLimb
+  limb_type: Standard
+
+gPoeSistersTorchRootLimb:
+  type: OOT:LIMB
+  offset: 0x6554
+  symbol: gPoeSistersTorchRootLimb
+  limb_type: Standard
+
+gPoeSistersTorchTex:
+  type: TEXTURE
+  offset: 0x48D8
+  symbol: gPoeSistersTorchTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_po_sistersVtx_0014E0:
+  type: MM:ARRAY
+  offset: 0x0014E0
+  symbol: object_po_sistersVtx_0014E0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0016B0:
+  type: MM:ARRAY
+  offset: 0x0016B0
+  symbol: object_po_sistersVtx_0016B0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0020A8:
+  type: MM:ARRAY
+  offset: 0x0020A8
+  symbol: object_po_sistersVtx_0020A8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0021D8:
+  type: MM:ARRAY
+  offset: 0x0021D8
+  symbol: object_po_sistersVtx_0021D8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002238:
+  type: MM:ARRAY
+  offset: 0x002238
+  symbol: object_po_sistersVtx_002238
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002298:
+  type: MM:ARRAY
+  offset: 0x002298
+  symbol: object_po_sistersVtx_002298
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0022F8:
+  type: MM:ARRAY
+  offset: 0x0022F8
+  symbol: object_po_sistersVtx_0022F8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002358:
+  type: MM:ARRAY
+  offset: 0x002358
+  symbol: object_po_sistersVtx_002358
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002408:
+  type: MM:ARRAY
+  offset: 0x002408
+  symbol: object_po_sistersVtx_002408
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002908:
+  type: MM:ARRAY
+  offset: 0x002908
+  symbol: object_po_sistersVtx_002908
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_002A38:
+  type: MM:ARRAY
+  offset: 0x002A38
+  symbol: object_po_sistersVtx_002A38
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003208:
+  type: MM:ARRAY
+  offset: 0x003208
+  symbol: object_po_sistersVtx_003208
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003548:
+  type: MM:ARRAY
+  offset: 0x003548
+  symbol: object_po_sistersVtx_003548
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003948:
+  type: MM:ARRAY
+  offset: 0x003948
+  symbol: object_po_sistersVtx_003948
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_003C58:
+  type: MM:ARRAY
+  offset: 0x003C58
+  symbol: object_po_sistersVtx_003C58
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_sistersVtx_0040F0:
+  type: MM:ARRAY
+  offset: 0x0040F0
+  symbol: object_po_sistersVtx_0040F0
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSistersSkelLimbs:
+  type: BLOB
+  offset: 0x659C
+  symbol: gPoeSistersSkelLimbs
+  size: 0

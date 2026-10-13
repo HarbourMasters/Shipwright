@@ -1,0 +1,302 @@
+:config:
+  segments:
+    - [ 6, 0x00EC1680 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EC1680 ]
+    - [ 9, 0x00EC1680 ]
+    - [ 10, 0x00EC1680 ]
+    - [ 11, 0x00EC1680 ]
+    - [ 12, 0x00EC1680 ]
+    - [ 13, 0x00EC1680 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gNiwBaseFeathersTex:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: gNiwBaseFeathersTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNiwBeakTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gNiwBeakTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNiwCombTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gNiwCombTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNiwEyeTex:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: gNiwEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNiwFeatherDL:
+  type: GFX
+  offset: 0x2428
+  symbol: gNiwFeatherDL
+
+gNiwFeatherMaterialDL:
+  type: GFX
+  offset: 0x23B0
+  symbol: gNiwFeatherMaterialDL
+
+gNiwFeatherTex:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: gNiwFeatherTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNiwFootLeftDL:
+  type: GFX
+  offset: 0x1088
+  symbol: gNiwFootLeftDL
+
+gNiwFootRightDL:
+  type: GFX
+  offset: 0x11E0
+  symbol: gNiwFootRightDL
+
+gNiwFootTex:
+  type: TEXTURE
+  offset: 0x2080
+  symbol: gNiwFootTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gNiwHeadDL:
+  type: GFX
+  offset: 0xA98
+  symbol: gNiwHeadDL
+
+gNiwHeadFeathersTex:
+  type: TEXTURE
+  offset: 0x1480
+  symbol: gNiwHeadFeathersTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gNiwHeadLimb:
+  type: OOT:LIMB
+  offset: 0x24E8
+  symbol: gNiwHeadLimb
+  limb_type: Standard
+
+gNiwIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xE8
+  symbol: gNiwIdleAnim
+
+gNiwLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x247C
+  symbol: gNiwLeftFootLimb
+  limb_type: Standard
+
+gNiwLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x2470
+  symbol: gNiwLeftFootRootLimb
+  limb_type: Standard
+
+gNiwLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x2494
+  symbol: gNiwLeftWingLimb
+  limb_type: Standard
+
+gNiwLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x2488
+  symbol: gNiwLeftWingRootLimb
+  limb_type: Standard
+
+gNiwLimb_244C:
+  type: OOT:LIMB
+  offset: 0x244C
+  symbol: gNiwLimb_244C
+  limb_type: Standard
+
+gNiwLimb_2458:
+  type: OOT:LIMB
+  offset: 0x2458
+  symbol: gNiwLimb_2458
+  limb_type: Standard
+
+gNiwNeckDL:
+  type: GFX
+  offset: 0x9C0
+  symbol: gNiwNeckDL
+
+gNiwNeckLimb:
+  type: OOT:LIMB
+  offset: 0x24DC
+  symbol: gNiwNeckLimb
+  limb_type: Standard
+
+gNiwRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x24AC
+  symbol: gNiwRightFootLimb
+  limb_type: Standard
+
+gNiwRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x24A0
+  symbol: gNiwRightFootRootLimb
+  limb_type: Standard
+
+gNiwRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x24C4
+  symbol: gNiwRightWingLimb
+  limb_type: Standard
+
+gNiwRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x24B8
+  symbol: gNiwRightWingRootLimb
+  limb_type: Standard
+
+gNiwRootLimb:
+  type: OOT:LIMB
+  offset: 0x2440
+  symbol: gNiwRootLimb
+  limb_type: Standard
+
+gNiwSkel:
+  type: MM:SKELETON
+  offset: 0x2530
+  symbol: gNiwSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gNiwTailAndUndersideLimb:
+  type: OOT:LIMB
+  offset: 0x2464
+  symbol: gNiwTailAndUndersideLimb
+  limb_type: Standard
+
+gNiwTailDL:
+  type: GFX
+  offset: 0xDF0
+  symbol: gNiwTailDL
+
+gNiwTailFeathersTex:
+  type: TEXTURE
+  offset: 0x1880
+  symbol: gNiwTailFeathersTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x24D0
+  symbol: gNiwUpperBodyRootLimb
+  limb_type: Standard
+
+gNiwWingLeftDL:
+  type: GFX
+  offset: 0xFD0
+  symbol: gNiwWingLeftDL
+
+gNiwWingRightDL:
+  type: GFX
+  offset: 0x1128
+  symbol: gNiwWingRightDL
+
+
+object_niwVtx_000100:
+  type: MM:ARRAY
+  offset: 0x000100
+  symbol: object_niwVtx_000100
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0004E0:
+  type: MM:ARRAY
+  offset: 0x0004E0
+  symbol: object_niwVtx_0004E0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0005D0:
+  type: MM:ARRAY
+  offset: 0x0005D0
+  symbol: object_niwVtx_0005D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000650:
+  type: MM:ARRAY
+  offset: 0x000650
+  symbol: object_niwVtx_000650
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_0006D0:
+  type: MM:ARRAY
+  offset: 0x0006D0
+  symbol: object_niwVtx_0006D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000700:
+  type: MM:ARRAY
+  offset: 0x000700
+  symbol: object_niwVtx_000700
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_000730:
+  type: MM:ARRAY
+  offset: 0x000730
+  symbol: object_niwVtx_000730
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_niwVtx_002380:
+  type: MM:ARRAY
+  offset: 0x002380
+  symbol: object_niwVtx_002380
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNiwSkelLimbs:
+  type: BLOB
+  offset: 0x24F4
+  symbol: gNiwSkelLimbs
+  size: 0

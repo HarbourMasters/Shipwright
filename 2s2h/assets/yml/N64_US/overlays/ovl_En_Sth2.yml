@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 128, 0x00DCF6C0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80BF74E0, 0x00DCF6C0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gEnSth2EarTex:
+  type: TEXTURE
+  offset: 0x5E0
+  symbol: gEnSth2EarTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEnSth2EyeTex:
+  type: TEXTURE
+  offset: 0x6E0
+  symbol: gEnSth2EyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEnSth2HairDL:
+  type: GFX
+  offset: 0x2390
+  symbol: gEnSth2HairDL
+
+gEnSth2HairTex:
+  type: TEXTURE
+  offset: 0x12E0
+  symbol: gEnSth2HairTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEnSth2HairWithSkinTex:
+  type: TEXTURE
+  offset: 0x4E0
+  symbol: gEnSth2HairWithSkinTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gEnSth2HeadDL:
+  type: GFX
+  offset: 0x2070
+  symbol: gEnSth2HeadDL
+
+gEnSth2MouthTex:
+  type: TEXTURE
+  offset: 0xEE0
+  symbol: gEnSth2MouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gEnSth2NoseTex:
+  type: TEXTURE
+  offset: 0x660
+  symbol: gEnSth2NoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEnSth2SkinBlotchTex:
+  type: TEXTURE
+  offset: 0x460
+  symbol: gEnSth2SkinBlotchTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gEnSth2WavingHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B20
+  symbol: gEnSth2WavingHandAnim
+
+
+ovl_En_Sth2Vtx_0013E0:
+  type: MM:ARRAY
+  offset: 0x0013E0
+  symbol: ovl_En_Sth2Vtx_0013E0
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Sth2Vtx_001B60:
+  type: MM:ARRAY
+  offset: 0x001B60
+  symbol: ovl_En_Sth2Vtx_001B60
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

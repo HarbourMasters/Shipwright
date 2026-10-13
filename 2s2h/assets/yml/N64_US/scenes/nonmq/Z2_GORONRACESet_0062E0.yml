@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01DF3BF0 ]
+  directory: scenes/nonmq/Z2_GORONRACE
+  external_files:
+    - N64_US/scenes/nonmq/Z2_GORONRACE.yml
+
+Z2_GORONRACESet_0062E0:
+  type: MM:SCENE
+  offset: 0x62E0
+  symbol: Z2_GORONRACESet_0062E0
+  base_name: Z2_GORONRACE

@@ -1,0 +1,95 @@
+:config:
+  segments:
+    - [ 2, 0x0193AF40 ]
+
+Z2_TENMON_DAI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_TENMON_DAI
+
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000300:
+  type: BLOB
+  offset: 0x000300
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000300
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000308:
+  type: BLOB
+  offset: 0x000308
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000308
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000310:
+  type: BLOB
+  offset: 0x000310
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000310
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000318:
+  type: BLOB
+  offset: 0x000318
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000318
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000320:
+  type: BLOB
+  offset: 0x000320
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000320
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330TexScrollParams_000328:
+  type: BLOB
+  offset: 0x000328
+  symbol: Z2_TENMON_DAITexAnim_000330TexScrollParams_000328
+  size: 0
+
+Z2_TENMON_DAITexAnim_000330:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000330
+  symbol: Z2_TENMON_DAITexAnim_000330
+
+Z2_TENMON_DAICollisionHeader_007514:
+  type: MM:COLLISION
+  offset: 0x007514
+  symbol: Z2_TENMON_DAICollisionHeader_007514
+
+Z2_TENMON_DAITex_007540:
+  type: TEXTURE
+  offset: 0x007540
+  symbol: Z2_TENMON_DAITex_007540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_TENMON_DAITex_007D40:
+  type: TEXTURE
+  offset: 0x007D40
+  symbol: Z2_TENMON_DAITex_007D40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_TENMON_DAITLUT_008540:
+  type: TEXTURE
+  offset: 0x008540
+  symbol: Z2_TENMON_DAITLUT_008540
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_TENMON_DAITLUT_008560:
+  type: TEXTURE
+  offset: 0x008560
+  symbol: Z2_TENMON_DAITLUT_008560
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_TENMON_DAITLUT_008580:
+  type: TEXTURE
+  offset: 0x008580
+  symbol: Z2_TENMON_DAITLUT_008580
+  format: RGBA16
+  width: 16
+  height: 16

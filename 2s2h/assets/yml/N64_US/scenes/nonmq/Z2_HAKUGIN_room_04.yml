@@ -1,0 +1,785 @@
+:config:
+  segments:
+    - [ 3, 0x0185B050 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0185B050 ]
+    - [ 9, 0x0185B050 ]
+    - [ 10, 0x0185B050 ]
+    - [ 11, 0x0185B050 ]
+    - [ 12, 0x0185B050 ]
+    - [ 13, 0x0185B050 ]
+    - [ 2, 0x01831830 ]
+  directory: scenes/nonmq/Z2_HAKUGIN
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_HAKUGIN.yml
+
+Z2_HAKUGIN_room_04:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_HAKUGIN_room_04
+
+Z2_HAKUGIN_room_04DL_0116C0:
+  type: GFX
+  offset: 0x116C0
+  symbol: Z2_HAKUGIN_room_04DL_0116C0
+
+Z2_HAKUGIN_room_04DL_021760:
+  type: GFX
+  offset: 0x21760
+  symbol: Z2_HAKUGIN_room_04DL_021760
+
+
+Z2_HAKUGIN_room_04ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_HAKUGIN_room_04ActorEntry_00006C
+  size: 0
+
+Z2_HAKUGIN_room_04Vtx_000730:
+  type: MM:ARRAY
+  offset: 0x000730
+  symbol: Z2_HAKUGIN_room_04Vtx_000730
+  count: 504
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_0026B0:
+  type: GFX
+  offset: 0x0026B0
+  symbol: Z2_HAKUGIN_room_04DL_0026B0
+
+Z2_HAKUGIN_room_04Vtx_002F10:
+  type: MM:ARRAY
+  offset: 0x002F10
+  symbol: Z2_HAKUGIN_room_04Vtx_002F10
+  count: 153
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_0038A0:
+  type: GFX
+  offset: 0x0038A0
+  symbol: Z2_HAKUGIN_room_04DL_0038A0
+
+Z2_HAKUGIN_room_04Vtx_003B58:
+  type: MM:ARRAY
+  offset: 0x003B58
+  symbol: Z2_HAKUGIN_room_04Vtx_003B58
+  count: 226
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_004978:
+  type: GFX
+  offset: 0x004978
+  symbol: Z2_HAKUGIN_room_04DL_004978
+
+Z2_HAKUGIN_room_04Vtx_004C70:
+  type: MM:ARRAY
+  offset: 0x004C70
+  symbol: Z2_HAKUGIN_room_04Vtx_004C70
+  count: 253
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_005C40:
+  type: GFX
+  offset: 0x005C40
+  symbol: Z2_HAKUGIN_room_04DL_005C40
+
+Z2_HAKUGIN_room_04Vtx_006000:
+  type: MM:ARRAY
+  offset: 0x006000
+  symbol: Z2_HAKUGIN_room_04Vtx_006000
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_006B90:
+  type: GFX
+  offset: 0x006B90
+  symbol: Z2_HAKUGIN_room_04DL_006B90
+
+Z2_HAKUGIN_room_04Vtx_006E18:
+  type: MM:ARRAY
+  offset: 0x006E18
+  symbol: Z2_HAKUGIN_room_04Vtx_006E18
+  count: 257
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_007E28:
+  type: GFX
+  offset: 0x007E28
+  symbol: Z2_HAKUGIN_room_04DL_007E28
+
+Z2_HAKUGIN_room_04Vtx_008340:
+  type: MM:ARRAY
+  offset: 0x008340
+  symbol: Z2_HAKUGIN_room_04Vtx_008340
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_008D70:
+  type: GFX
+  offset: 0x008D70
+  symbol: Z2_HAKUGIN_room_04DL_008D70
+
+Z2_HAKUGIN_room_04Vtx_009088:
+  type: MM:ARRAY
+  offset: 0x009088
+  symbol: Z2_HAKUGIN_room_04Vtx_009088
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_0096B8:
+  type: GFX
+  offset: 0x0096B8
+  symbol: Z2_HAKUGIN_room_04DL_0096B8
+
+Z2_HAKUGIN_room_04Vtx_0098B0:
+  type: MM:ARRAY
+  offset: 0x0098B0
+  symbol: Z2_HAKUGIN_room_04Vtx_0098B0
+  count: 299
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00AB60:
+  type: GFX
+  offset: 0x00AB60
+  symbol: Z2_HAKUGIN_room_04DL_00AB60
+
+Z2_HAKUGIN_room_04Vtx_00B2B8:
+  type: MM:ARRAY
+  offset: 0x00B2B8
+  symbol: Z2_HAKUGIN_room_04Vtx_00B2B8
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00BB88:
+  type: GFX
+  offset: 0x00BB88
+  symbol: Z2_HAKUGIN_room_04DL_00BB88
+
+Z2_HAKUGIN_room_04Vtx_00BF98:
+  type: MM:ARRAY
+  offset: 0x00BF98
+  symbol: Z2_HAKUGIN_room_04Vtx_00BF98
+  count: 172
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00CA58:
+  type: GFX
+  offset: 0x00CA58
+  symbol: Z2_HAKUGIN_room_04DL_00CA58
+
+Z2_HAKUGIN_room_04Vtx_00CE78:
+  type: MM:ARRAY
+  offset: 0x00CE78
+  symbol: Z2_HAKUGIN_room_04Vtx_00CE78
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00D338:
+  type: GFX
+  offset: 0x00D338
+  symbol: Z2_HAKUGIN_room_04DL_00D338
+
+Z2_HAKUGIN_room_04Vtx_00D4D0:
+  type: MM:ARRAY
+  offset: 0x00D4D0
+  symbol: Z2_HAKUGIN_room_04Vtx_00D4D0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00DAD0:
+  type: GFX
+  offset: 0x00DAD0
+  symbol: Z2_HAKUGIN_room_04DL_00DAD0
+
+Z2_HAKUGIN_room_04Vtx_00DC90:
+  type: MM:ARRAY
+  offset: 0x00DC90
+  symbol: Z2_HAKUGIN_room_04Vtx_00DC90
+  count: 197
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00E8E0:
+  type: GFX
+  offset: 0x00E8E0
+  symbol: Z2_HAKUGIN_room_04DL_00E8E0
+
+Z2_HAKUGIN_room_04Vtx_00ED90:
+  type: MM:ARRAY
+  offset: 0x00ED90
+  symbol: Z2_HAKUGIN_room_04Vtx_00ED90
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00EFF0:
+  type: GFX
+  offset: 0x00EFF0
+  symbol: Z2_HAKUGIN_room_04DL_00EFF0
+
+Z2_HAKUGIN_room_04Vtx_00F120:
+  type: MM:ARRAY
+  offset: 0x00F120
+  symbol: Z2_HAKUGIN_room_04Vtx_00F120
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00F380:
+  type: GFX
+  offset: 0x00F380
+  symbol: Z2_HAKUGIN_room_04DL_00F380
+
+Z2_HAKUGIN_room_04Vtx_00F4E0:
+  type: MM:ARRAY
+  offset: 0x00F4E0
+  symbol: Z2_HAKUGIN_room_04Vtx_00F4E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00F5E0:
+  type: GFX
+  offset: 0x00F5E0
+  symbol: Z2_HAKUGIN_room_04DL_00F5E0
+
+Z2_HAKUGIN_room_04Vtx_00F6C0:
+  type: MM:ARRAY
+  offset: 0x00F6C0
+  symbol: Z2_HAKUGIN_room_04Vtx_00F6C0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00FA00:
+  type: GFX
+  offset: 0x00FA00
+  symbol: Z2_HAKUGIN_room_04DL_00FA00
+
+Z2_HAKUGIN_room_04Vtx_00FB48:
+  type: MM:ARRAY
+  offset: 0x00FB48
+  symbol: Z2_HAKUGIN_room_04Vtx_00FB48
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_00FC48:
+  type: GFX
+  offset: 0x00FC48
+  symbol: Z2_HAKUGIN_room_04DL_00FC48
+
+Z2_HAKUGIN_room_04Vtx_00FD28:
+  type: MM:ARRAY
+  offset: 0x00FD28
+  symbol: Z2_HAKUGIN_room_04Vtx_00FD28
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_010478:
+  type: GFX
+  offset: 0x010478
+  symbol: Z2_HAKUGIN_room_04DL_010478
+
+Z2_HAKUGIN_room_04Vtx_010648:
+  type: MM:ARRAY
+  offset: 0x010648
+  symbol: Z2_HAKUGIN_room_04Vtx_010648
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_010768:
+  type: GFX
+  offset: 0x010768
+  symbol: Z2_HAKUGIN_room_04DL_010768
+
+Z2_HAKUGIN_room_04Vtx_010850:
+  type: MM:ARRAY
+  offset: 0x010850
+  symbol: Z2_HAKUGIN_room_04Vtx_010850
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_010950:
+  type: GFX
+  offset: 0x010950
+  symbol: Z2_HAKUGIN_room_04DL_010950
+
+Z2_HAKUGIN_room_04Vtx_010A30:
+  type: MM:ARRAY
+  offset: 0x010A30
+  symbol: Z2_HAKUGIN_room_04Vtx_010A30
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_010F50:
+  type: GFX
+  offset: 0x010F50
+  symbol: Z2_HAKUGIN_room_04DL_010F50
+
+Z2_HAKUGIN_room_04Vtx_0110C8:
+  type: MM:ARRAY
+  offset: 0x0110C8
+  symbol: Z2_HAKUGIN_room_04Vtx_0110C8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_0113D8:
+  type: GFX
+  offset: 0x0113D8
+  symbol: Z2_HAKUGIN_room_04DL_0113D8
+
+Z2_HAKUGIN_room_04Vtx_011500:
+  type: MM:ARRAY
+  offset: 0x011500
+  symbol: Z2_HAKUGIN_room_04Vtx_011500
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_04DL_0115E0:
+  type: GFX
+  offset: 0x0115E0
+  symbol: Z2_HAKUGIN_room_04DL_0115E0
+
+Z2_HAKUGIN_room_04Tex_011790:
+  type: TEXTURE
+  offset: 0x011790
+  symbol: Z2_HAKUGIN_room_04Tex_011790
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_04Tex_011F90:
+  type: TEXTURE
+  offset: 0x011F90
+  symbol: Z2_HAKUGIN_room_04Tex_011F90
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_04Tex_012790:
+  type: TEXTURE
+  offset: 0x012790
+  symbol: Z2_HAKUGIN_room_04Tex_012790
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_04Tex_012F90:
+  type: TEXTURE
+  offset: 0x012F90
+  symbol: Z2_HAKUGIN_room_04Tex_012F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_013790:
+  type: TEXTURE
+  offset: 0x013790
+  symbol: Z2_HAKUGIN_room_04Tex_013790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_013F90:
+  type: TEXTURE
+  offset: 0x013F90
+  symbol: Z2_HAKUGIN_room_04Tex_013F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_014790:
+  type: TEXTURE
+  offset: 0x014790
+  symbol: Z2_HAKUGIN_room_04Tex_014790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_014F90:
+  type: TEXTURE
+  offset: 0x014F90
+  symbol: Z2_HAKUGIN_room_04Tex_014F90
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_015790:
+  type: TEXTURE
+  offset: 0x015790
+  symbol: Z2_HAKUGIN_room_04Tex_015790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_015F90:
+  type: TEXTURE
+  offset: 0x015F90
+  symbol: Z2_HAKUGIN_room_04Tex_015F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_016790:
+  type: TEXTURE
+  offset: 0x016790
+  symbol: Z2_HAKUGIN_room_04Tex_016790
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_017790:
+  type: TEXTURE
+  offset: 0x017790
+  symbol: Z2_HAKUGIN_room_04Tex_017790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_017F90:
+  type: TEXTURE
+  offset: 0x017F90
+  symbol: Z2_HAKUGIN_room_04Tex_017F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_018790:
+  type: TEXTURE
+  offset: 0x018790
+  symbol: Z2_HAKUGIN_room_04Tex_018790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_018F90:
+  type: TEXTURE
+  offset: 0x018F90
+  symbol: Z2_HAKUGIN_room_04Tex_018F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_019790:
+  type: TEXTURE
+  offset: 0x019790
+  symbol: Z2_HAKUGIN_room_04Tex_019790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_019F90:
+  type: TEXTURE
+  offset: 0x019F90
+  symbol: Z2_HAKUGIN_room_04Tex_019F90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01A790:
+  type: TEXTURE
+  offset: 0x01A790
+  symbol: Z2_HAKUGIN_room_04Tex_01A790
+  format: CI4
+  width: 64
+  height: 32
+
+Z2_HAKUGIN_room_04Tex_01AB90:
+  type: TEXTURE
+  offset: 0x01AB90
+  symbol: Z2_HAKUGIN_room_04Tex_01AB90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01B390:
+  type: TEXTURE
+  offset: 0x01B390
+  symbol: Z2_HAKUGIN_room_04Tex_01B390
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01BB90:
+  type: TEXTURE
+  offset: 0x01BB90
+  symbol: Z2_HAKUGIN_room_04Tex_01BB90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_04Tex_01BF90:
+  type: TEXTURE
+  offset: 0x01BF90
+  symbol: Z2_HAKUGIN_room_04Tex_01BF90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01C790:
+  type: TEXTURE
+  offset: 0x01C790
+  symbol: Z2_HAKUGIN_room_04Tex_01C790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01CF90:
+  type: TEXTURE
+  offset: 0x01CF90
+  symbol: Z2_HAKUGIN_room_04Tex_01CF90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01D790:
+  type: TEXTURE
+  offset: 0x01D790
+  symbol: Z2_HAKUGIN_room_04Tex_01D790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01DF90:
+  type: TEXTURE
+  offset: 0x01DF90
+  symbol: Z2_HAKUGIN_room_04Tex_01DF90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01E790:
+  type: TEXTURE
+  offset: 0x01E790
+  symbol: Z2_HAKUGIN_room_04Tex_01E790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01EF90:
+  type: TEXTURE
+  offset: 0x01EF90
+  symbol: Z2_HAKUGIN_room_04Tex_01EF90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01F790:
+  type: TEXTURE
+  offset: 0x01F790
+  symbol: Z2_HAKUGIN_room_04Tex_01F790
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_01FF90:
+  type: TEXTURE
+  offset: 0x01FF90
+  symbol: Z2_HAKUGIN_room_04Tex_01FF90
+  format: CI4
+  width: 32
+  height: 64
+
+Z2_HAKUGIN_room_04Tex_020390:
+  type: TEXTURE
+  offset: 0x020390
+  symbol: Z2_HAKUGIN_room_04Tex_020390
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_HAKUGIN_room_04Tex_020B90:
+  type: TEXTURE
+  offset: 0x020B90
+  symbol: Z2_HAKUGIN_room_04Tex_020B90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_04TLUT_021390:
+  type: TEXTURE
+  offset: 0x021390
+  symbol: Z2_HAKUGIN_room_04TLUT_021390
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0213B0:
+  type: TEXTURE
+  offset: 0x0213B0
+  symbol: Z2_HAKUGIN_room_04TLUT_0213B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0213D0:
+  type: TEXTURE
+  offset: 0x0213D0
+  symbol: Z2_HAKUGIN_room_04TLUT_0213D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0213F0:
+  type: TEXTURE
+  offset: 0x0213F0
+  symbol: Z2_HAKUGIN_room_04TLUT_0213F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021410:
+  type: TEXTURE
+  offset: 0x021410
+  symbol: Z2_HAKUGIN_room_04TLUT_021410
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021430:
+  type: TEXTURE
+  offset: 0x021430
+  symbol: Z2_HAKUGIN_room_04TLUT_021430
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021450:
+  type: TEXTURE
+  offset: 0x021450
+  symbol: Z2_HAKUGIN_room_04TLUT_021450
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021470:
+  type: TEXTURE
+  offset: 0x021470
+  symbol: Z2_HAKUGIN_room_04TLUT_021470
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021490:
+  type: TEXTURE
+  offset: 0x021490
+  symbol: Z2_HAKUGIN_room_04TLUT_021490
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_HAKUGIN_room_04TLUT_021690:
+  type: TEXTURE
+  offset: 0x021690
+  symbol: Z2_HAKUGIN_room_04TLUT_021690
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0216B0:
+  type: TEXTURE
+  offset: 0x0216B0
+  symbol: Z2_HAKUGIN_room_04TLUT_0216B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0216D0:
+  type: TEXTURE
+  offset: 0x0216D0
+  symbol: Z2_HAKUGIN_room_04TLUT_0216D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_0216F0:
+  type: TEXTURE
+  offset: 0x0216F0
+  symbol: Z2_HAKUGIN_room_04TLUT_0216F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04TLUT_021710:
+  type: TEXTURE
+  offset: 0x021710
+  symbol: Z2_HAKUGIN_room_04TLUT_021710
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_04DL_021730:
+  type: GFX
+  offset: 0x021730
+  symbol: Z2_HAKUGIN_room_04DL_021730
+
+Z2_HAKUGIN_room_04DL_021738:
+  type: GFX
+  offset: 0x021738
+  symbol: Z2_HAKUGIN_room_04DL_021738
+
+Z2_HAKUGIN_room_04DL_021740:
+  type: GFX
+  offset: 0x021740
+  symbol: Z2_HAKUGIN_room_04DL_021740
+
+Z2_HAKUGIN_room_04DL_021748:
+  type: GFX
+  offset: 0x021748
+  symbol: Z2_HAKUGIN_room_04DL_021748
+
+Z2_HAKUGIN_room_04DL_021750:
+  type: GFX
+  offset: 0x021750
+  symbol: Z2_HAKUGIN_room_04DL_021750
+
+Z2_HAKUGIN_room_04DL_021758:
+  type: GFX
+  offset: 0x021758
+  symbol: Z2_HAKUGIN_room_04DL_021758

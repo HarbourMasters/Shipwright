@@ -1,0 +1,961 @@
+:config:
+  segments:
+    - [ 6, 0x011B5700 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011B5700 ]
+    - [ 9, 0x011B5700 ]
+    - [ 10, 0x011B5700 ]
+    - [ 11, 0x011B5700 ]
+    - [ 12, 0x011B5700 ]
+    - [ 13, 0x011B5700 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGreatBayTempleObjectDarkMetalTex:
+  type: TEXTURE
+  offset: 0xF1D0
+  symbol: gGreatBayTempleObjectDarkMetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGreatBayTempleObjectDoorDL:
+  type: GFX
+  offset: 0x17D00
+  symbol: gGreatBayTempleObjectDoorDL
+
+gGreatBayTempleObjectDoorTex:
+  type: TEXTURE
+  offset: 0x17E58
+  symbol: gGreatBayTempleObjectDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGreatBayTempleObjectElevatorCol:
+  type: MM:COLLISION
+  offset: 0x5C4
+  symbol: gGreatBayTempleObjectElevatorCol
+
+gGreatBayTempleObjectElevatorDL:
+  type: GFX
+  offset: 0x2C8
+  symbol: gGreatBayTempleObjectElevatorDL
+
+gGreatBayTempleObjectElevatorEmptyDL:
+  type: GFX
+  offset: 0x2C0
+  symbol: gGreatBayTempleObjectElevatorEmptyDL
+
+gGreatBayTempleObjectElevatorRiserTex:
+  type: TEXTURE
+  offset: 0xE0D0
+  symbol: gGreatBayTempleObjectElevatorRiserTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGreatBayTempleObjectFrozenWaterfallDL:
+  type: GFX
+  offset: 0x3770
+  symbol: gGreatBayTempleObjectFrozenWaterfallDL
+
+gGreatBayTempleObjectFrozenWaterfallEmptyDL:
+  type: GFX
+  offset: 0x38D0
+  symbol: gGreatBayTempleObjectFrozenWaterfallEmptyDL
+
+gGreatBayTempleObjectGearShaftDL:
+  type: GFX
+  offset: 0x52B8
+  symbol: gGreatBayTempleObjectGearShaftDL
+
+gGreatBayTempleObjectGearShaftEmptyDL:
+  type: GFX
+  offset: 0x52B0
+  symbol: gGreatBayTempleObjectGearShaftEmptyDL
+
+gGreatBayTempleObjectGearShaftWithPlatformsCol:
+  type: MM:COLLISION
+  offset: 0x5D28
+  symbol: gGreatBayTempleObjectGearShaftWithPlatformsCol
+
+gGreatBayTempleObjectGearShaftWithPlatformsDL:
+  type: GFX
+  offset: 0x4848
+  symbol: gGreatBayTempleObjectGearShaftWithPlatformsDL
+
+gGreatBayTempleObjectGearShaftWithPlatformsEmptyDL:
+  type: GFX
+  offset: 0x4840
+  symbol: gGreatBayTempleObjectGearShaftWithPlatformsEmptyDL
+
+gGreatBayTempleObjectGearTex:
+  type: TEXTURE
+  offset: 0xFDD0
+  symbol: gGreatBayTempleObjectGearTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGreatBayTempleObjectHorizontalWaterFoamTex:
+  type: TEXTURE
+  offset: 0x14770
+  symbol: gGreatBayTempleObjectHorizontalWaterFoamTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectIceStalactiteCol:
+  type: MM:COLLISION
+  offset: 0x3540
+  symbol: gGreatBayTempleObjectIceStalactiteCol
+
+gGreatBayTempleObjectIceStalactiteDL:
+  type: GFX
+  offset: 0x3358
+  symbol: gGreatBayTempleObjectIceStalactiteDL
+
+gGreatBayTempleObjectIceStalactiteRimDL:
+  type: GFX
+  offset: 0x3250
+  symbol: gGreatBayTempleObjectIceStalactiteRimDL
+
+gGreatBayTempleObjectIceStalactiteRimMaskTex:
+  type: TEXTURE
+  offset: 0x15770
+  symbol: gGreatBayTempleObjectIceStalactiteRimMaskTex
+  format: IA8
+  width: 32
+  height: 64
+
+gGreatBayTempleObjectIceTex:
+  type: TEXTURE
+  offset: 0x14F70
+  symbol: gGreatBayTempleObjectIceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectLargeSeesawPlatformCol:
+  type: MM:COLLISION
+  offset: 0xC180
+  symbol: gGreatBayTempleObjectLargeSeesawPlatformCol
+
+gGreatBayTempleObjectLargeSeesawPlatformDL:
+  type: GFX
+  offset: 0xBF48
+  symbol: gGreatBayTempleObjectLargeSeesawPlatformDL
+
+gGreatBayTempleObjectLargeSeesawPlatformEmptyDL:
+  type: GFX
+  offset: 0xBF40
+  symbol: gGreatBayTempleObjectLargeSeesawPlatformEmptyDL
+
+gGreatBayTempleObjectLargeSeesawPlatformTLUT:
+  type: TEXTURE
+  offset: 0xD850
+  symbol: gGreatBayTempleObjectLargeSeesawPlatformTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectLargeSeesawPlatformTex:
+  type: TEXTURE
+  offset: 0x13F70
+  symbol: gGreatBayTempleObjectLargeSeesawPlatformTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGreatBayTempleObjectOneWaySwitchCol:
+  type: MM:COLLISION
+  offset: 0x714C
+  symbol: gGreatBayTempleObjectOneWaySwitchCol
+
+gGreatBayTempleObjectOneWaySwitchDL:
+  type: GFX
+  offset: 0x61B8
+  symbol: gGreatBayTempleObjectOneWaySwitchDL
+
+gGreatBayTempleObjectOneWaySwitchEmptyDL:
+  type: GFX
+  offset: 0x61B0
+  symbol: gGreatBayTempleObjectOneWaySwitchEmptyDL
+
+gGreatBayTempleObjectOneWaySwitchTLUT:
+  type: TEXTURE
+  offset: 0xD410
+  symbol: gGreatBayTempleObjectOneWaySwitchTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectOneWaySwitchTex:
+  type: TEXTURE
+  offset: 0x119D0
+  symbol: gGreatBayTempleObjectOneWaySwitchTex
+  format: CI4
+  width: 8
+  height: 16
+
+gGreatBayTempleObjectPaddleTex:
+  type: TEXTURE
+  offset: 0x101D0
+  symbol: gGreatBayTempleObjectPaddleTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGreatBayTempleObjectPlatformAndWaterwheelBladeTex:
+  type: TEXTURE
+  offset: 0xE1D0
+  symbol: gGreatBayTempleObjectPlatformAndWaterwheelBladeTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGreatBayTempleObjectPlatformSideAndSeesawShaftTex:
+  type: TEXTURE
+  offset: 0xD8D0
+  symbol: gGreatBayTempleObjectPlatformSideAndSeesawShaftTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gGreatBayTempleObjectSeesawShaftCol:
+  type: MM:COLLISION
+  offset: 0xBC08
+  symbol: gGreatBayTempleObjectSeesawShaftCol
+
+gGreatBayTempleObjectSeesawShaftDL:
+  type: GFX
+  offset: 0xB8F8
+  symbol: gGreatBayTempleObjectSeesawShaftDL
+
+gGreatBayTempleObjectSeesawShaftEmptyDL:
+  type: GFX
+  offset: 0xB8F0
+  symbol: gGreatBayTempleObjectSeesawShaftEmptyDL
+
+gGreatBayTempleObjectSeesawSplashDL:
+  type: GFX
+  offset: 0xD110
+  symbol: gGreatBayTempleObjectSeesawSplashDL
+
+gGreatBayTempleObjectSeesawSplashEmptyDL:
+  type: GFX
+  offset: 0xD220
+  symbol: gGreatBayTempleObjectSeesawSplashEmptyDL
+
+gGreatBayTempleObjectSeesawSplashTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xD250
+  symbol: gGreatBayTempleObjectSeesawSplashTexAnim
+
+gGreatBayTempleObjectShaftTex:
+  type: TEXTURE
+  offset: 0xF5D0
+  symbol: gGreatBayTempleObjectShaftTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gGreatBayTempleObjectSmallSeesawPlatformCol:
+  type: MM:COLLISION
+  offset: 0xC700
+  symbol: gGreatBayTempleObjectSmallSeesawPlatformCol
+
+gGreatBayTempleObjectSmallSeesawPlatformDL:
+  type: GFX
+  offset: 0xC4B8
+  symbol: gGreatBayTempleObjectSmallSeesawPlatformDL
+
+gGreatBayTempleObjectSmallSeesawPlatformEmptyDL:
+  type: GFX
+  offset: 0xC4B0
+  symbol: gGreatBayTempleObjectSmallSeesawPlatformEmptyDL
+
+gGreatBayTempleObjectSplashScrollTex:
+  type: TEXTURE
+  offset: 0x17770
+  symbol: gGreatBayTempleObjectSplashScrollTex
+  format: IA8
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectSwitchKnobTex:
+  type: TEXTURE
+  offset: 0x111D0
+  symbol: gGreatBayTempleObjectSwitchKnobTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectSwitchSideTex:
+  type: TEXTURE
+  offset: 0x11A10
+  symbol: gGreatBayTempleObjectSwitchSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectTwoWaySwitchCol:
+  type: MM:COLLISION
+  offset: 0x6EA8
+  symbol: gGreatBayTempleObjectTwoWaySwitchCol
+
+gGreatBayTempleObjectTwoWaySwitchDL:
+  type: GFX
+  offset: 0x69D8
+  symbol: gGreatBayTempleObjectTwoWaySwitchDL
+
+gGreatBayTempleObjectTwoWaySwitchEmptyDL:
+  type: GFX
+  offset: 0x69D0
+  symbol: gGreatBayTempleObjectTwoWaySwitchEmptyDL
+
+gGreatBayTempleObjectUnused10TLUT:
+  type: TEXTURE
+  offset: 0xD570
+  symbol: gGreatBayTempleObjectUnused10TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused11TLUT:
+  type: TEXTURE
+  offset: 0xD590
+  symbol: gGreatBayTempleObjectUnused11TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused12TLUT:
+  type: TEXTURE
+  offset: 0xD5B0
+  symbol: gGreatBayTempleObjectUnused12TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused13TLUT:
+  type: TEXTURE
+  offset: 0xD5D0
+  symbol: gGreatBayTempleObjectUnused13TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused14TLUT:
+  type: TEXTURE
+  offset: 0xD5F0
+  symbol: gGreatBayTempleObjectUnused14TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused15TLUT:
+  type: TEXTURE
+  offset: 0xD610
+  symbol: gGreatBayTempleObjectUnused15TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused16TLUT:
+  type: TEXTURE
+  offset: 0xD650
+  symbol: gGreatBayTempleObjectUnused16TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused17TLUT:
+  type: TEXTURE
+  offset: 0xD690
+  symbol: gGreatBayTempleObjectUnused17TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused18TLUT:
+  type: TEXTURE
+  offset: 0xD6B0
+  symbol: gGreatBayTempleObjectUnused18TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused19TLUT:
+  type: TEXTURE
+  offset: 0xD6D0
+  symbol: gGreatBayTempleObjectUnused19TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused1TLUT:
+  type: TEXTURE
+  offset: 0xD430
+  symbol: gGreatBayTempleObjectUnused1TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused20TLUT:
+  type: TEXTURE
+  offset: 0xD6F0
+  symbol: gGreatBayTempleObjectUnused20TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused21TLUT:
+  type: TEXTURE
+  offset: 0xD710
+  symbol: gGreatBayTempleObjectUnused21TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused22TLUT:
+  type: TEXTURE
+  offset: 0xD730
+  symbol: gGreatBayTempleObjectUnused22TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused23TLUT:
+  type: TEXTURE
+  offset: 0xD750
+  symbol: gGreatBayTempleObjectUnused23TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused24TLUT:
+  type: TEXTURE
+  offset: 0xD770
+  symbol: gGreatBayTempleObjectUnused24TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused25TLUT:
+  type: TEXTURE
+  offset: 0xD790
+  symbol: gGreatBayTempleObjectUnused25TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused26TLUT:
+  type: TEXTURE
+  offset: 0xD7B0
+  symbol: gGreatBayTempleObjectUnused26TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused27TLUT:
+  type: TEXTURE
+  offset: 0xD7D0
+  symbol: gGreatBayTempleObjectUnused27TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused28TLUT:
+  type: TEXTURE
+  offset: 0xD7F0
+  symbol: gGreatBayTempleObjectUnused28TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused29TLUT:
+  type: TEXTURE
+  offset: 0xD810
+  symbol: gGreatBayTempleObjectUnused29TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused2TLUT:
+  type: TEXTURE
+  offset: 0xD450
+  symbol: gGreatBayTempleObjectUnused2TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused30TLUT:
+  type: TEXTURE
+  offset: 0xD830
+  symbol: gGreatBayTempleObjectUnused30TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused31TLUT:
+  type: TEXTURE
+  offset: 0xD870
+  symbol: gGreatBayTempleObjectUnused31TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused32TLUT:
+  type: TEXTURE
+  offset: 0xD890
+  symbol: gGreatBayTempleObjectUnused32TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused33TLUT:
+  type: TEXTURE
+  offset: 0xD8B0
+  symbol: gGreatBayTempleObjectUnused33TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused3TLUT:
+  type: TEXTURE
+  offset: 0xD470
+  symbol: gGreatBayTempleObjectUnused3TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused4TLUT:
+  type: TEXTURE
+  offset: 0xD490
+  symbol: gGreatBayTempleObjectUnused4TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused5TLUT:
+  type: TEXTURE
+  offset: 0xD4B0
+  symbol: gGreatBayTempleObjectUnused5TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused6TLUT:
+  type: TEXTURE
+  offset: 0xD4D0
+  symbol: gGreatBayTempleObjectUnused6TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused7TLUT:
+  type: TEXTURE
+  offset: 0xD4F0
+  symbol: gGreatBayTempleObjectUnused7TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused8TLUT:
+  type: TEXTURE
+  offset: 0xD510
+  symbol: gGreatBayTempleObjectUnused8TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnused9TLUT:
+  type: TEXTURE
+  offset: 0xD550
+  symbol: gGreatBayTempleObjectUnused9TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnusedCol:
+  type: MM:COLLISION
+  offset: 0xD3DC
+  symbol: gGreatBayTempleObjectUnusedCol
+
+gGreatBayTempleObjectUnusedDarkMetalTLUT:
+  type: TEXTURE
+  offset: 0xD630
+  symbol: gGreatBayTempleObjectUnusedDarkMetalTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnusedDarkMetalTex:
+  type: TEXTURE
+  offset: 0x12570
+  symbol: gGreatBayTempleObjectUnusedDarkMetalTex
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0xD630
+
+gGreatBayTempleObjectUnusedGearTLUT:
+  type: TEXTURE
+  offset: 0xD530
+  symbol: gGreatBayTempleObjectUnusedGearTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnusedGearTex:
+  type: TEXTURE
+  offset: 0x12210
+  symbol: gGreatBayTempleObjectUnusedGearTex
+  format: CI4
+  width: 48
+  height: 36
+  tlut: 0xD530
+
+gGreatBayTempleObjectUnusedPaddleTLUT:
+  type: TEXTURE
+  offset: 0xD670
+  symbol: gGreatBayTempleObjectUnusedPaddleTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGreatBayTempleObjectUnusedPaddleTex:
+  type: TEXTURE
+  offset: 0x13770
+  symbol: gGreatBayTempleObjectUnusedPaddleTex
+  format: CI4
+  width: 32
+  height: 128
+  tlut: 0xD670
+
+gGreatBayTempleObjectUnusedShaftTex:
+  type: TEXTURE
+  offset: 0x12770
+  symbol: gGreatBayTempleObjectUnusedShaftTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGreatBayTempleObjectVerticalWaterFoamTex:
+  type: TEXTURE
+  offset: 0x16770
+  symbol: gGreatBayTempleObjectVerticalWaterFoamTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectWaterfallDL:
+  type: GFX
+  offset: 0xB280
+  symbol: gGreatBayTempleObjectWaterfallDL
+
+gGreatBayTempleObjectWaterfallEmptyDL:
+  type: GFX
+  offset: 0xB430
+  symbol: gGreatBayTempleObjectWaterfallEmptyDL
+
+gGreatBayTempleObjectWaterfallTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xB448
+  symbol: gGreatBayTempleObjectWaterfallTexAnim
+
+gGreatBayTempleObjectWaterfallWaterTex:
+  type: TEXTURE
+  offset: 0x15F70
+  symbol: gGreatBayTempleObjectWaterfallWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGreatBayTempleObjectWaterwheelCol:
+  type: MM:COLLISION
+  offset: 0xAED0
+  symbol: gGreatBayTempleObjectWaterwheelCol
+
+gGreatBayTempleObjectWaterwheelDL:
+  type: GFX
+  offset: 0x8778
+  symbol: gGreatBayTempleObjectWaterwheelDL
+
+gGreatBayTempleObjectWaterwheelEmptyDL:
+  type: GFX
+  offset: 0x8770
+  symbol: gGreatBayTempleObjectWaterwheelEmptyDL
+
+gGreatBayTempleObjectWaterwheelSplashDL:
+  type: GFX
+  offset: 0xCD10
+  symbol: gGreatBayTempleObjectWaterwheelSplashDL
+
+gGreatBayTempleObjectWaterwheelSplashEmptyDL:
+  type: GFX
+  offset: 0xCDD8
+  symbol: gGreatBayTempleObjectWaterwheelSplashEmptyDL
+
+gGreatBayTempleObjectWaterwheelSplashTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xCE00
+  symbol: gGreatBayTempleObjectWaterwheelSplashTexAnim
+
+gGreatBayTempleObjectWaterwheelWithFakeGearDL:
+  type: GFX
+  offset: 0xA528
+  symbol: gGreatBayTempleObjectWaterwheelWithFakeGearDL
+
+gGreatBayTempleObjectWaterwheelWithFakeGearEmptyDL:
+  type: GFX
+  offset: 0xA520
+  symbol: gGreatBayTempleObjectWaterwheelWithFakeGearEmptyDL
+
+gGreatBayTempleObjectWaterwheelWithPlatformsCol:
+  type: MM:COLLISION
+  offset: 0x2E78
+  symbol: gGreatBayTempleObjectWaterwheelWithPlatformsCol
+
+gGreatBayTempleObjectWaterwheelWithPlatformsDL:
+  type: GFX
+  offset: 0x1E68
+  symbol: gGreatBayTempleObjectWaterwheelWithPlatformsDL
+
+gGreatBayTempleObjectWaterwheelWithPlatformsEmptyDL:
+  type: GFX
+  offset: 0x1E60
+  symbol: gGreatBayTempleObjectWaterwheelWithPlatformsEmptyDL
+
+gGreatBayTempleObjectWhirlpoolDL:
+  type: GFX
+  offset: 0xCAA0
+  symbol: gGreatBayTempleObjectWhirlpoolDL
+
+gGreatBayTempleObjectWhirlpoolEmptyDL:
+  type: GFX
+  offset: 0xCC08
+  symbol: gGreatBayTempleObjectWhirlpoolEmptyDL
+
+gGreatBayTempleObjectWhirlpoolTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xCC18
+  symbol: gGreatBayTempleObjectWhirlpoolTexAnim
+
+gGreatBayTempleObjectWhirpoolWaterTex:
+  type: TEXTURE
+  offset: 0x16F70
+  symbol: gGreatBayTempleObjectWhirpoolWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_dblue_objectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_dblue_objectVtx_000000
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: object_dblue_objectVtx_0005F0
+  count: 391
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_002EB0:
+  type: MM:ARRAY
+  offset: 0x002EB0
+  symbol: object_dblue_objectVtx_002EB0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_003050:
+  type: MM:ARRAY
+  offset: 0x003050
+  symbol: object_dblue_objectVtx_003050
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_003570:
+  type: MM:ARRAY
+  offset: 0x003570
+  symbol: object_dblue_objectVtx_003570
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_0038E0:
+  type: MM:ARRAY
+  offset: 0x0038E0
+  symbol: object_dblue_objectVtx_0038E0
+  count: 246
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_004D20:
+  type: MM:ARRAY
+  offset: 0x004D20
+  symbol: object_dblue_objectVtx_004D20
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_005D60:
+  type: MM:ARRAY
+  offset: 0x005D60
+  symbol: object_dblue_objectVtx_005D60
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_0063D0:
+  type: MM:ARRAY
+  offset: 0x0063D0
+  symbol: object_dblue_objectVtx_0063D0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_007180:
+  type: MM:ARRAY
+  offset: 0x007180
+  symbol: object_dblue_objectVtx_007180
+  count: 351
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_008DC0:
+  type: MM:ARRAY
+  offset: 0x008DC0
+  symbol: object_dblue_objectVtx_008DC0
+  count: 374
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_00AF00:
+  type: MM:ARRAY
+  offset: 0x00AF00
+  symbol: object_dblue_objectVtx_00AF00
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGreatBayTempleObjectWaterfallTexAnimTexScrollParams_00B440:
+  type: BLOB
+  offset: 0x00B440
+  symbol: gGreatBayTempleObjectWaterfallTexAnimTexScrollParams_00B440
+  size: 0
+
+object_dblue_objectVtx_00B450:
+  type: MM:ARRAY
+  offset: 0x00B450
+  symbol: object_dblue_objectVtx_00B450
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_00BC40:
+  type: MM:ARRAY
+  offset: 0x00BC40
+  symbol: object_dblue_objectVtx_00BC40
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_00C1B0:
+  type: MM:ARRAY
+  offset: 0x00C1B0
+  symbol: object_dblue_objectVtx_00C1B0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dblue_objectVtx_00C730:
+  type: MM:ARRAY
+  offset: 0x00C730
+  symbol: object_dblue_objectVtx_00C730
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGreatBayTempleObjectWhirlpoolTexAnimTexScrollParams_00CC10:
+  type: BLOB
+  offset: 0x00CC10
+  symbol: gGreatBayTempleObjectWhirlpoolTexAnimTexScrollParams_00CC10
+  size: 0
+
+object_dblue_objectVtx_00CC20:
+  type: MM:ARRAY
+  offset: 0x00CC20
+  symbol: object_dblue_objectVtx_00CC20
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGreatBayTempleObjectWaterwheelSplashTexAnimTexCycleParams_00CDE8:
+  type: BLOB
+  offset: 0x00CDE8
+  symbol: gGreatBayTempleObjectWaterwheelSplashTexAnimTexCycleParams_00CDE8
+  size: 0
+
+gGreatBayTempleObjectWaterwheelSplashTexAnimTexScrollParams_00CDF8:
+  type: BLOB
+  offset: 0x00CDF8
+  symbol: gGreatBayTempleObjectWaterwheelSplashTexAnimTexScrollParams_00CDF8
+  size: 0
+
+object_dblue_objectVtx_00CE10:
+  type: MM:ARRAY
+  offset: 0x00CE10
+  symbol: object_dblue_objectVtx_00CE10
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGreatBayTempleObjectSeesawSplashTexAnimTexCycleParams_00D238:
+  type: BLOB
+  offset: 0x00D238
+  symbol: gGreatBayTempleObjectSeesawSplashTexAnimTexCycleParams_00D238
+  size: 0
+
+gGreatBayTempleObjectSeesawSplashTexAnimTexScrollParams_00D248:
+  type: BLOB
+  offset: 0x00D248
+  symbol: gGreatBayTempleObjectSeesawSplashTexAnimTexScrollParams_00D248
+  size: 0
+
+object_dblue_objectVtx_017B70:
+  type: MM:ARRAY
+  offset: 0x017B70
+  symbol: object_dblue_objectVtx_017B70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

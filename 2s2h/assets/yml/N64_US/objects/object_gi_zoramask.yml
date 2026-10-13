@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x01054110 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01054110 ]
+    - [ 9, 0x01054110 ]
+    - [ 10, 0x01054110 ]
+    - [ 11, 0x01054110 ]
+    - [ 12, 0x01054110 ]
+    - [ 13, 0x01054110 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiZoraMaskDL:
+  type: GFX
+  offset: 0x7D0
+  symbol: gGiZoraMaskDL
+
+gGiZoraMaskEmptyDL:
+  type: GFX
+  offset: 0xC10
+  symbol: gGiZoraMaskEmptyDL
+
+gGiZoraMaskEyeTex:
+  type: TEXTURE
+  offset: 0xE58
+  symbol: gGiZoraMaskEyeTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiZoraMaskMouthTex:
+  type: TEXTURE
+  offset: 0x1258
+  symbol: gGiZoraMaskMouthTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiZoraMaskNoseTex:
+  type: TEXTURE
+  offset: 0xC18
+  symbol: gGiZoraMaskNoseTex
+  format: I8
+  width: 8
+  height: 8
+
+gGiZoraMaskSpots1Tex:
+  type: TEXTURE
+  offset: 0xC58
+  symbol: gGiZoraMaskSpots1Tex
+  format: I8
+  width: 16
+  height: 32
+
+gGiZoraMaskSpots2Tex:
+  type: TEXTURE
+  offset: 0x1658
+  symbol: gGiZoraMaskSpots2Tex
+  format: I4
+  width: 16
+  height: 32
+
+
+object_gi_zoramaskVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_zoramaskVtx_000000
+  count: 125
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

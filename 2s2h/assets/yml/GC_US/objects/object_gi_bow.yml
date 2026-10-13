@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x00F9D940 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F9D940 ]
+    - [ 9, 0x00F9D940 ]
+    - [ 10, 0x00F9D940 ]
+    - [ 11, 0x00F9D940 ]
+    - [ 12, 0x00F9D940 ]
+    - [ 13, 0x00F9D940 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiBowHandleDL:
+  type: GFX
+  offset: 0xC80
+  symbol: gGiBowHandleDL
+
+gGiBowHandleTex:
+  type: TEXTURE
+  offset: 0xFF0
+  symbol: gGiBowHandleTex
+  format: I8
+  width: 16
+  height: 32
+
+gGiBowStringDL:
+  type: GFX
+  offset: 0xF40
+  symbol: gGiBowStringDL
+
+gGiBowStringTex:
+  type: TEXTURE
+  offset: 0x11F0
+  symbol: gGiBowStringTex
+  format: I8
+  width: 16
+  height: 16
+
+
+object_gi_bowVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bowVtx_000000
+  count: 188
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bowVtx_000BC0:
+  type: MM:ARRAY
+  offset: 0x000BC0
+  symbol: object_gi_bowVtx_000BC0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

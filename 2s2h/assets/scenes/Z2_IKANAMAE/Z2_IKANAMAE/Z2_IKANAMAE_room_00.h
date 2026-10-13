@@ -1,0 +1,63 @@
+#ifndef Z2_IKANAMAE_Z2_IKANAMAE_ROOM_00_H
+#define Z2_IKANAMAE_Z2_IKANAMAE_ROOM_00_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_IKANAMAE_room_00DL_001DF8 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_001DF8"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_001DF8[] = dZ2_IKANAMAE_room_00DL_001DF8;
+
+#define dZ2_IKANAMAE_room_00DL_002440 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_002440"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_002440[] = dZ2_IKANAMAE_room_00DL_002440;
+
+#define dZ2_IKANAMAE_room_00DL_002A18 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_002A18"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_002A18[] = dZ2_IKANAMAE_room_00DL_002A18;
+
+#define dZ2_IKANAMAE_room_00DL_002DA0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_002DA0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_002DA0[] = dZ2_IKANAMAE_room_00DL_002DA0;
+
+#define dZ2_IKANAMAE_room_00DL_003160 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003160"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003160[] = dZ2_IKANAMAE_room_00DL_003160;
+
+#define dZ2_IKANAMAE_room_00DL_003450 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003450"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003450[] = dZ2_IKANAMAE_room_00DL_003450;
+
+#define dZ2_IKANAMAE_room_00DL_003838 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003838"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003838[] = dZ2_IKANAMAE_room_00DL_003838;
+
+#define dZ2_IKANAMAE_room_00DL_004BA8 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_004BA8"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_004BA8[] = dZ2_IKANAMAE_room_00DL_004BA8;
+
+#define dZ2_IKANAMAE_room_00DL_003B38 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003B38"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003B38[] = dZ2_IKANAMAE_room_00DL_003B38;
+
+#define dZ2_IKANAMAE_room_00DL_003DB0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003DB0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003DB0[] = dZ2_IKANAMAE_room_00DL_003DB0;
+
+#define dZ2_IKANAMAE_room_00DL_003FA0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_003FA0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_003FA0[] = dZ2_IKANAMAE_room_00DL_003FA0;
+
+#define dZ2_IKANAMAE_room_00DL_0013D8 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_0013D8"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_0013D8[] = dZ2_IKANAMAE_room_00DL_0013D8;
+
+#define dZ2_IKANAMAE_room_00DL_0018E0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_0018E0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_0018E0[] = dZ2_IKANAMAE_room_00DL_0018E0;
+
+#define dZ2_IKANAMAE_room_00DL_0041E0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_0041E0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_0041E0[] = dZ2_IKANAMAE_room_00DL_0041E0;
+
+#define dZ2_IKANAMAE_room_00DL_0043C0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_0043C0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_0043C0[] = dZ2_IKANAMAE_room_00DL_0043C0;
+
+#define dZ2_IKANAMAE_room_00DL_004510 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_004510"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_004510[] = dZ2_IKANAMAE_room_00DL_004510;
+
+#define dZ2_IKANAMAE_room_00DL_000650 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_000650"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_000650[] = dZ2_IKANAMAE_room_00DL_000650;
+
+#define dZ2_IKANAMAE_room_00DL_004498 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_004498"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_004498[] = dZ2_IKANAMAE_room_00DL_004498;
+
+#define dZ2_IKANAMAE_room_00DL_004BC0 "__OTR__scenes/nonmq/Z2_IKANAMAE_scene/Z2_IKANAMAE_room_00DL_004BC0"
+static const ALIGN_ASSET(2) char Z2_IKANAMAE_room_00DL_004BC0[] = dZ2_IKANAMAE_room_00DL_004BC0;
+
+#endif // Z2_IKANAMAE_Z2_IKANAMAE_ROOM_00_H

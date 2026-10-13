@@ -1,0 +1,506 @@
+:config:
+  segments:
+    - [ 6, 0x00F9F700 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F9F700 ]
+    - [ 9, 0x00F9F700 ]
+    - [ 10, 0x00F9F700 ]
+    - [ 11, 0x00F9F700 ]
+    - [ 12, 0x00F9F700 ]
+    - [ 13, 0x00F9F700 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gAniClosedEyeTex:
+  type: TEXTURE
+  offset: 0x6F18
+  symbol: gAniClosedEyeTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6318
+
+gAniClosingEyeTex:
+  type: TEXTURE
+  offset: 0x6B18
+  symbol: gAniClosingEyeTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6318
+
+gAniEarTex:
+  type: TEXTURE
+  offset: 0x69D8
+  symbol: gAniEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAniEyeTLUT:
+  type: TEXTURE
+  offset: 0x6318
+  symbol: gAniEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 12
+
+gAniFallOverHoldingFootAnim:
+  type: OOT:ANIMATION
+  offset: 0xC14
+  symbol: gAniFallOverHoldingFootAnim
+
+gAniFingersTex:
+  type: TEXTURE
+  offset: 0x6098
+  symbol: gAniFingersTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAniGeneralTLUT:
+  type: TEXTURE
+  offset: 0x5E58
+  symbol: gAniGeneralTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAniHairTex:
+  type: TEXTURE
+  offset: 0x6A18
+  symbol: gAniHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAniHandBehindHeadApologyAnim:
+  type: OOT:ANIMATION
+  offset: 0xA460
+  symbol: gAniHandBehindHeadApologyAnim
+
+gAniHeadDL:
+  type: GFX
+  offset: 0x7B58
+  symbol: gAniHeadDL
+
+gAniHeadLimb:
+  type: OOT:LIMB
+  offset: 0x2858
+  symbol: gAniHeadLimb
+  limb_type: Standard
+
+gAniHoldUpHandAnim:
+  type: OOT:ANIMATION
+  offset: 0x9734
+  symbol: gAniHoldUpHandAnim
+
+gAniHoldingFootWrithingInPainAnim:
+  type: OOT:ANIMATION
+  offset: 0x11CC
+  symbol: gAniHoldingFootWrithingInPainAnim
+
+gAniKnockBackAnim:
+  type: OOT:ANIMATION
+  offset: 0xA978
+  symbol: gAniKnockBackAnim
+
+gAniKnockBackGettingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xB2B0
+  symbol: gAniKnockBackGettingUpAnim
+
+gAniLandingThenStandingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x9220
+  symbol: gAniLandingThenStandingUpAnim
+
+gAniLeftFootDL:
+  type: GFX
+  offset: 0x5778
+  symbol: gAniLeftFootDL
+
+gAniLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x27D4
+  symbol: gAniLeftFootLimb
+  limb_type: Standard
+
+gAniLeftForearmDL:
+  type: GFX
+  offset: 0x4E20
+  symbol: gAniLeftForearmDL
+
+gAniLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x281C
+  symbol: gAniLeftForearmLimb
+  limb_type: Standard
+
+gAniLeftHandDL:
+  type: GFX
+  offset: 0x4C30
+  symbol: gAniLeftHandDL
+
+gAniLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x2828
+  symbol: gAniLeftHandLimb
+  limb_type: Standard
+
+gAniLeftShinDL:
+  type: GFX
+  offset: 0x5928
+  symbol: gAniLeftShinDL
+
+gAniLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x27C8
+  symbol: gAniLeftShinLimb
+  limb_type: Standard
+
+gAniLeftThighDL:
+  type: GFX
+  offset: 0x5C50
+  symbol: gAniLeftThighDL
+
+gAniLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x27BC
+  symbol: gAniLeftThighLimb
+  limb_type: Standard
+
+gAniLeftUpperArmDL:
+  type: GFX
+  offset: 0x4F08
+  symbol: gAniLeftUpperArmDL
+
+gAniLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x2810
+  symbol: gAniLeftUpperArmLimb
+  limb_type: Standard
+
+gAniMouthTex:
+  type: TEXTURE
+  offset: 0x6898
+  symbol: gAniMouthTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAniOpenEyeTex:
+  type: TEXTURE
+  offset: 0x6498
+  symbol: gAniOpenEyeTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6318
+
+gAniPantsTex:
+  type: TEXTURE
+  offset: 0x6218
+  symbol: gAniPantsTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAniPelvisDL:
+  type: GFX
+  offset: 0x5D60
+  symbol: gAniPelvisDL
+
+gAniPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x27B0
+  symbol: gAniPelvisLimb
+  limb_type: Standard
+
+gAniRightFootDL:
+  type: GFX
+  offset: 0x5270
+  symbol: gAniRightFootDL
+
+gAniRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x27F8
+  symbol: gAniRightFootLimb
+  limb_type: Standard
+
+gAniRightForearmDL:
+  type: GFX
+  offset: 0x4A50
+  symbol: gAniRightForearmDL
+
+gAniRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x2840
+  symbol: gAniRightForearmLimb
+  limb_type: Standard
+
+gAniRightHandDL:
+  type: GFX
+  offset: 0x4860
+  symbol: gAniRightHandDL
+
+gAniRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x284C
+  symbol: gAniRightHandLimb
+  limb_type: Standard
+
+gAniRightShinDL:
+  type: GFX
+  offset: 0x5420
+  symbol: gAniRightShinDL
+
+gAniRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x27EC
+  symbol: gAniRightShinLimb
+  limb_type: Standard
+
+gAniRightThighDL:
+  type: GFX
+  offset: 0x5668
+  symbol: gAniRightThighDL
+
+gAniRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x27E0
+  symbol: gAniRightThighLimb
+  limb_type: Standard
+
+gAniRightUpperArmDL:
+  type: GFX
+  offset: 0x4B38
+  symbol: gAniRightUpperArmDL
+
+gAniRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x2834
+  symbol: gAniRightUpperArmLimb
+  limb_type: Standard
+
+gAniSandleBuckleTex:
+  type: TEXTURE
+  offset: 0x6118
+  symbol: gAniSandleBuckleTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAniShirtEdgeTex:
+  type: TEXTURE
+  offset: 0x60D8
+  symbol: gAniShirtEdgeTex
+  format: I8
+  width: 8
+  height: 8
+
+gAniSittingBackAnim:
+  type: OOT:ANIMATION
+  offset: 0xB8AC
+  symbol: gAniSittingBackAnim
+
+gAniSkel:
+  type: MM:SKELETON
+  offset: 0x28A0
+  symbol: gAniSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gAniStandingNormalAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D34
+  symbol: gAniStandingNormalAnim
+
+gAniTorsoDL:
+  type: GFX
+  offset: 0x5000
+  symbol: gAniTorsoDL
+
+gAniTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x2804
+  symbol: gAniTorsoLimb
+  limb_type: Standard
+
+gAniTreeHangLosingBalanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x7FC
+  symbol: gAniTreeHangLosingBalanceAnim
+
+gAniTreeHangingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D48
+  symbol: gAniTreeHangingAnim
+
+gAniTreeHangingReachAnim:
+  type: OOT:ANIMATION
+  offset: 0x27A0
+  symbol: gAniTreeHangingReachAnim
+
+gAniUnkGradient2Tex:
+  type: TEXTURE
+  offset: 0x6998
+  symbol: gAniUnkGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+
+gAniUnkGradientTex:
+  type: TEXTURE
+  offset: 0x6058
+  symbol: gAniUnkGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAniUnusedSidesteppingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1584
+  symbol: gAniUnusedSidesteppingAnim
+
+
+gAniSkelLimbs:
+  type: BLOB
+  offset: 0x2864
+  symbol: gAniSkelLimbs
+  size: 0
+
+object_aniVtx_0028B0:
+  type: MM:ARRAY
+  offset: 0x0028B0
+  symbol: object_aniVtx_0028B0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_002C90:
+  type: MM:ARRAY
+  offset: 0x002C90
+  symbol: object_aniVtx_002C90
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_002E40:
+  type: MM:ARRAY
+  offset: 0x002E40
+  symbol: object_aniVtx_002E40
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_002FF0:
+  type: MM:ARRAY
+  offset: 0x002FF0
+  symbol: object_aniVtx_002FF0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0033D0:
+  type: MM:ARRAY
+  offset: 0x0033D0
+  symbol: object_aniVtx_0033D0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003580:
+  type: MM:ARRAY
+  offset: 0x003580
+  symbol: object_aniVtx_003580
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003730:
+  type: MM:ARRAY
+  offset: 0x003730
+  symbol: object_aniVtx_003730
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003C40:
+  type: MM:ARRAY
+  offset: 0x003C40
+  symbol: object_aniVtx_003C40
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_003DD0:
+  type: MM:ARRAY
+  offset: 0x003DD0
+  symbol: object_aniVtx_003DD0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004060:
+  type: MM:ARRAY
+  offset: 0x004060
+  symbol: object_aniVtx_004060
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0041D0:
+  type: MM:ARRAY
+  offset: 0x0041D0
+  symbol: object_aniVtx_0041D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004360:
+  type: MM:ARRAY
+  offset: 0x004360
+  symbol: object_aniVtx_004360
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_0045F0:
+  type: MM:ARRAY
+  offset: 0x0045F0
+  symbol: object_aniVtx_0045F0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_004760:
+  type: MM:ARRAY
+  offset: 0x004760
+  symbol: object_aniVtx_004760
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aniVtx_007318:
+  type: MM:ARRAY
+  offset: 0x007318
+  symbol: object_aniVtx_007318
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

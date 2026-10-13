@@ -1,0 +1,419 @@
+:config:
+  segments:
+    - [ 6, 0x015BEDB0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015BEDB0 ]
+    - [ 9, 0x015BEDB0 ]
+    - [ 10, 0x015BEDB0 ]
+    - [ 11, 0x015BEDB0 ]
+    - [ 12, 0x015BEDB0 ]
+    - [ 13, 0x015BEDB0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gMoonendKFAnim_1214:
+  type: MM:KEYFRAME_ANIMATION
+  offset: 0x1214
+  symbol: gMoonendKFAnim_1214
+  skel_offset: 0xB5A0
+  limb_type: Flex
+
+gMoonendKFSkel_B5A0:
+  type: MM:KEYFRAME_SKELETON
+  offset: 0xB5A0
+  symbol: gMoonendKFSkel_B5A0
+  limb_type: Flex
+
+object_moonend_DL_0055F0:
+  type: GFX
+  offset: 0x55F0
+  symbol: object_moonend_DL_0055F0
+
+object_moonend_DL_0061F8:
+  type: GFX
+  offset: 0x61F8
+  symbol: object_moonend_DL_0061F8
+
+object_moonend_DL_006460:
+  type: GFX
+  offset: 0x6460
+  symbol: object_moonend_DL_006460
+
+object_moonend_DL_006588:
+  type: GFX
+  offset: 0x6588
+  symbol: object_moonend_DL_006588
+
+object_moonend_DL_0066B0:
+  type: GFX
+  offset: 0x66B0
+  symbol: object_moonend_DL_0066B0
+
+object_moonend_DL_0067D8:
+  type: GFX
+  offset: 0x67D8
+  symbol: object_moonend_DL_0067D8
+
+object_moonend_DL_006900:
+  type: GFX
+  offset: 0x6900
+  symbol: object_moonend_DL_006900
+
+object_moonend_DL_006A28:
+  type: GFX
+  offset: 0x6A28
+  symbol: object_moonend_DL_006A28
+
+object_moonend_DL_006B50:
+  type: GFX
+  offset: 0x6B50
+  symbol: object_moonend_DL_006B50
+
+object_moonend_DL_00CCF0:
+  type: GFX
+  offset: 0xCCF0
+  symbol: object_moonend_DL_00CCF0
+
+object_moonend_DL_00CF58:
+  type: GFX
+  offset: 0xCF58
+  symbol: object_moonend_DL_00CF58
+
+object_moonend_DL_00D080:
+  type: GFX
+  offset: 0xD080
+  symbol: object_moonend_DL_00D080
+
+object_moonend_DL_00D1A8:
+  type: GFX
+  offset: 0xD1A8
+  symbol: object_moonend_DL_00D1A8
+
+object_moonend_DL_00D2D0:
+  type: GFX
+  offset: 0xD2D0
+  symbol: object_moonend_DL_00D2D0
+
+object_moonend_DL_00D3F8:
+  type: GFX
+  offset: 0xD3F8
+  symbol: object_moonend_DL_00D3F8
+
+object_moonend_DL_00D520:
+  type: GFX
+  offset: 0xD520
+  symbol: object_moonend_DL_00D520
+
+object_moonend_DL_00EB00:
+  type: GFX
+  offset: 0xEB00
+  symbol: object_moonend_DL_00EB00
+
+object_moonend_DL_010C40:
+  type: GFX
+  offset: 0x10C40
+  symbol: object_moonend_DL_010C40
+
+object_moonend_Matanimheader_00B540:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xB540
+  symbol: object_moonend_Matanimheader_00B540
+
+object_moonend_Matanimheader_00E650:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE650
+  symbol: object_moonend_Matanimheader_00E650
+
+object_moonend_Matanimheader_0129F0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x129F0
+  symbol: object_moonend_Matanimheader_0129F0
+
+object_moonend_TLUT_006CF0:
+  type: TEXTURE
+  offset: 0x6CF0
+  symbol: object_moonend_TLUT_006CF0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_moonend_TLUT_006D10:
+  type: TEXTURE
+  offset: 0x6D10
+  symbol: object_moonend_TLUT_006D10
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_moonend_Tex_006D30:
+  type: TEXTURE
+  offset: 0x6D30
+  symbol: object_moonend_Tex_006D30
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_moonend_Tex_007530:
+  type: TEXTURE
+  offset: 0x7530
+  symbol: object_moonend_Tex_007530
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_moonend_Tex_008530:
+  type: TEXTURE
+  offset: 0x8530
+  symbol: object_moonend_Tex_008530
+  format: CI4
+  width: 64
+  height: 64
+
+object_moonend_Tex_008D30:
+  type: TEXTURE
+  offset: 0x8D30
+  symbol: object_moonend_Tex_008D30
+  format: CI4
+  width: 64
+  height: 64
+
+object_moonend_Tex_009530:
+  type: TEXTURE
+  offset: 0x9530
+  symbol: object_moonend_Tex_009530
+  format: I8
+  width: 64
+  height: 64
+
+object_moonend_Tex_00A530:
+  type: TEXTURE
+  offset: 0xA530
+  symbol: object_moonend_Tex_00A530
+  format: I8
+  width: 64
+  height: 64
+
+object_moonend_Tex_00D648:
+  type: TEXTURE
+  offset: 0xD648
+  symbol: object_moonend_Tex_00D648
+  format: I8
+  width: 64
+  height: 64
+
+object_moonend_Tex_00EC58:
+  type: TEXTURE
+  offset: 0xEC58
+  symbol: object_moonend_Tex_00EC58
+  format: I8
+  width: 64
+  height: 64
+
+object_moonend_Tex_0111E0:
+  type: TEXTURE
+  offset: 0x111E0
+  symbol: object_moonend_Tex_0111E0
+  format: I8
+  width: 64
+  height: 64
+
+object_moonend_Tex_0121E0:
+  type: TEXTURE
+  offset: 0x121E0
+  symbol: object_moonend_Tex_0121E0
+  format: I8
+  width: 32
+  height: 64
+
+
+object_moonendVtx_001230:
+  type: MM:ARRAY
+  offset: 0x001230
+  symbol: object_moonendVtx_001230
+  count: 664
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_003BB0:
+  type: MM:ARRAY
+  offset: 0x003BB0
+  symbol: object_moonendVtx_003BB0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_004010:
+  type: MM:ARRAY
+  offset: 0x004010
+  symbol: object_moonendVtx_004010
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_004990:
+  type: MM:ARRAY
+  offset: 0x004990
+  symbol: object_moonendVtx_004990
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_004BA0:
+  type: MM:ARRAY
+  offset: 0x004BA0
+  symbol: object_moonendVtx_004BA0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_004DB0:
+  type: MM:ARRAY
+  offset: 0x004DB0
+  symbol: object_moonendVtx_004DB0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_004FC0:
+  type: MM:ARRAY
+  offset: 0x004FC0
+  symbol: object_moonendVtx_004FC0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_0051D0:
+  type: MM:ARRAY
+  offset: 0x0051D0
+  symbol: object_moonendVtx_0051D0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_0053E0:
+  type: MM:ARRAY
+  offset: 0x0053E0
+  symbol: object_moonendVtx_0053E0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonend_Matanimheader_00B540TexScrollParams_00B530:
+  type: BLOB
+  offset: 0x00B530
+  symbol: object_moonend_Matanimheader_00B540TexScrollParams_00B530
+  size: 0
+
+object_moonend_Matanimheader_00B540TexScrollParams_00B538:
+  type: BLOB
+  offset: 0x00B538
+  symbol: object_moonend_Matanimheader_00B540TexScrollParams_00B538
+  size: 0
+
+object_moonendVtx_00B710:
+  type: MM:ARRAY
+  offset: 0x00B710
+  symbol: object_moonendVtx_00B710
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00C090:
+  type: MM:ARRAY
+  offset: 0x00C090
+  symbol: object_moonendVtx_00C090
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00C2A0:
+  type: MM:ARRAY
+  offset: 0x00C2A0
+  symbol: object_moonendVtx_00C2A0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00C4B0:
+  type: MM:ARRAY
+  offset: 0x00C4B0
+  symbol: object_moonendVtx_00C4B0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00C6C0:
+  type: MM:ARRAY
+  offset: 0x00C6C0
+  symbol: object_moonendVtx_00C6C0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00C8D0:
+  type: MM:ARRAY
+  offset: 0x00C8D0
+  symbol: object_moonendVtx_00C8D0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00CAE0:
+  type: MM:ARRAY
+  offset: 0x00CAE0
+  symbol: object_moonendVtx_00CAE0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonend_Matanimheader_00E650TexScrollParams_00E648:
+  type: BLOB
+  offset: 0x00E648
+  symbol: object_moonend_Matanimheader_00E650TexScrollParams_00E648
+  size: 0
+
+object_moonendVtx_00E6A0:
+  type: MM:ARRAY
+  offset: 0x00E6A0
+  symbol: object_moonendVtx_00E6A0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonendVtx_00FC60:
+  type: MM:ARRAY
+  offset: 0x00FC60
+  symbol: object_moonendVtx_00FC60
+  count: 254
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_moonend_Matanimheader_0129F0TexScrollParams_0129E0:
+  type: BLOB
+  offset: 0x0129E0
+  symbol: object_moonend_Matanimheader_0129F0TexScrollParams_0129E0
+  size: 0
+
+object_moonend_Matanimheader_0129F0TexScrollParams_0129E8:
+  type: BLOB
+  offset: 0x0129E8
+  symbol: object_moonend_Matanimheader_0129F0TexScrollParams_0129E8
+  size: 0

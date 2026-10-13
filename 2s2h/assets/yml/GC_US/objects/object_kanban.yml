@@ -1,0 +1,194 @@
+:config:
+  segments:
+    - [ 6, 0x0101A970 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0101A970 ]
+    - [ 9, 0x0101A970 ]
+    - [ 10, 0x0101A970 ]
+    - [ 11, 0x0101A970 ]
+    - [ 12, 0x0101A970 ]
+    - [ 13, 0x0101A970 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSignLeftSideLowerModelDL:
+  type: GFX
+  offset: 0xE78
+  symbol: gSignLeftSideLowerModelDL
+
+gSignLeftSideUpperModelDL:
+  type: GFX
+  offset: 0xDB8
+  symbol: gSignLeftSideUpperModelDL
+
+gSignLowerSideLeftModelDL:
+  type: GFX
+  offset: 0x10B8
+  symbol: gSignLowerSideLeftModelDL
+
+gSignLowerSideRightModelDL:
+  type: GFX
+  offset: 0x12C8
+  symbol: gSignLowerSideRightModelDL
+
+gSignMaterialDL:
+  type: GFX
+  offset: 0xC30
+  symbol: gSignMaterialDL
+
+gSignParticleDL:
+  type: GFX
+  offset: 0x1630
+  symbol: gSignParticleDL
+
+gSignParticleTex:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: gSignParticleTex
+  format: I8
+  width: 16
+  height: 16
+
+gSignPostLowerModelDL:
+  type: GFX
+  offset: 0x1488
+  symbol: gSignPostLowerModelDL
+
+gSignPostStandModelDL:
+  type: GFX
+  offset: 0x1540
+  symbol: gSignPostStandModelDL
+
+gSignPostUpperModelDL:
+  type: GFX
+  offset: 0x13D0
+  symbol: gSignPostUpperModelDL
+
+gSignRightSideLowerModelDL:
+  type: GFX
+  offset: 0xFF8
+  symbol: gSignRightSideLowerModelDL
+
+gSignRightSideUpperModelDL:
+  type: GFX
+  offset: 0xF38
+  symbol: gSignRightSideUpperModelDL
+
+gSignUpperSideLeftModelDL:
+  type: GFX
+  offset: 0xCB0
+  symbol: gSignUpperSideLeftModelDL
+
+gSignUpperSideRightModelDL:
+  type: GFX
+  offset: 0x11C0
+  symbol: gSignUpperSideRightModelDL
+
+
+object_kanbanVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kanbanVtx_000000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000120:
+  type: MM:ARRAY
+  offset: 0x000120
+  symbol: object_kanbanVtx_000120
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_kanbanVtx_000240
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: object_kanbanVtx_000360
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000480:
+  type: MM:ARRAY
+  offset: 0x000480
+  symbol: object_kanbanVtx_000480
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0005A0:
+  type: MM:ARRAY
+  offset: 0x0005A0
+  symbol: object_kanbanVtx_0005A0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0006C0:
+  type: MM:ARRAY
+  offset: 0x0006C0
+  symbol: object_kanbanVtx_0006C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0007E0:
+  type: MM:ARRAY
+  offset: 0x0007E0
+  symbol: object_kanbanVtx_0007E0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000900:
+  type: MM:ARRAY
+  offset: 0x000900
+  symbol: object_kanbanVtx_000900
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000A20:
+  type: MM:ARRAY
+  offset: 0x000A20
+  symbol: object_kanbanVtx_000A20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000B40:
+  type: MM:ARRAY
+  offset: 0x000B40
+  symbol: object_kanbanVtx_000B40
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_001600:
+  type: MM:ARRAY
+  offset: 0x001600
+  symbol: object_kanbanVtx_001600
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,346 @@
+:config:
+  segments:
+    - [ 3, 0x0182F390 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0182F390 ]
+    - [ 9, 0x0182F390 ]
+    - [ 10, 0x0182F390 ]
+    - [ 11, 0x0182F390 ]
+    - [ 12, 0x0182F390 ]
+    - [ 13, 0x0182F390 ]
+    - [ 2, 0x01829000 ]
+  directory: scenes/nonmq/Z2_SYATEKI_MIZU
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_SYATEKI_MIZU.yml
+
+Z2_SYATEKI_MIZU_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SYATEKI_MIZU_room_00
+
+Z2_SYATEKI_MIZU_room_00DL_005130:
+  type: GFX
+  offset: 0x5130
+  symbol: Z2_SYATEKI_MIZU_room_00DL_005130
+
+Z2_SYATEKI_MIZU_room_00DL_006128:
+  type: GFX
+  offset: 0x6128
+  symbol: Z2_SYATEKI_MIZU_room_00DL_006128
+
+
+Z2_SYATEKI_MIZU_room_00ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_SYATEKI_MIZU_room_00ActorEntry_000048
+  size: 0
+
+Z2_SYATEKI_MIZU_room_00Vtx_000280:
+  type: MM:ARRAY
+  offset: 0x000280
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_000280
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_000740:
+  type: GFX
+  offset: 0x000740
+  symbol: Z2_SYATEKI_MIZU_room_00DL_000740
+
+Z2_SYATEKI_MIZU_room_00Vtx_0008A0:
+  type: MM:ARRAY
+  offset: 0x0008A0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0008A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_0009E0:
+  type: GFX
+  offset: 0x0009E0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_0009E0
+
+Z2_SYATEKI_MIZU_room_00Vtx_000B88:
+  type: MM:ARRAY
+  offset: 0x000B88
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_000B88
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_000E08:
+  type: GFX
+  offset: 0x000E08
+  symbol: Z2_SYATEKI_MIZU_room_00DL_000E08
+
+Z2_SYATEKI_MIZU_room_00Vtx_000F00:
+  type: MM:ARRAY
+  offset: 0x000F00
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_000F00
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_0010C0:
+  type: GFX
+  offset: 0x0010C0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_0010C0
+
+Z2_SYATEKI_MIZU_room_00Vtx_001210:
+  type: MM:ARRAY
+  offset: 0x001210
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_001210
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_001320:
+  type: GFX
+  offset: 0x001320
+  symbol: Z2_SYATEKI_MIZU_room_00DL_001320
+
+Z2_SYATEKI_MIZU_room_00Vtx_0013E8:
+  type: MM:ARRAY
+  offset: 0x0013E8
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0013E8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_0015A8:
+  type: GFX
+  offset: 0x0015A8
+  symbol: Z2_SYATEKI_MIZU_room_00DL_0015A8
+
+Z2_SYATEKI_MIZU_room_00Vtx_0016B0:
+  type: MM:ARRAY
+  offset: 0x0016B0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0016B0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_001870:
+  type: GFX
+  offset: 0x001870
+  symbol: Z2_SYATEKI_MIZU_room_00DL_001870
+
+Z2_SYATEKI_MIZU_room_00Vtx_001978:
+  type: MM:ARRAY
+  offset: 0x001978
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_001978
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_001CF8:
+  type: GFX
+  offset: 0x001CF8
+  symbol: Z2_SYATEKI_MIZU_room_00DL_001CF8
+
+Z2_SYATEKI_MIZU_room_00Vtx_001E40:
+  type: MM:ARRAY
+  offset: 0x001E40
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_001E40
+  count: 209
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_002B50:
+  type: GFX
+  offset: 0x002B50
+  symbol: Z2_SYATEKI_MIZU_room_00DL_002B50
+
+Z2_SYATEKI_MIZU_room_00Vtx_002DD0:
+  type: MM:ARRAY
+  offset: 0x002DD0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_002DD0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_002ED0:
+  type: GFX
+  offset: 0x002ED0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_002ED0
+
+Z2_SYATEKI_MIZU_room_00Vtx_002FC0:
+  type: MM:ARRAY
+  offset: 0x002FC0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_002FC0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_003160:
+  type: GFX
+  offset: 0x003160
+  symbol: Z2_SYATEKI_MIZU_room_00DL_003160
+
+Z2_SYATEKI_MIZU_room_00Vtx_0031C8:
+  type: MM:ARRAY
+  offset: 0x0031C8
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0031C8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_003288:
+  type: GFX
+  offset: 0x003288
+  symbol: Z2_SYATEKI_MIZU_room_00DL_003288
+
+Z2_SYATEKI_MIZU_room_00Vtx_003328:
+  type: MM:ARRAY
+  offset: 0x003328
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_003328
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_003868:
+  type: GFX
+  offset: 0x003868
+  symbol: Z2_SYATEKI_MIZU_room_00DL_003868
+
+Z2_SYATEKI_MIZU_room_00Vtx_0039E0:
+  type: MM:ARRAY
+  offset: 0x0039E0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0039E0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_003C40:
+  type: GFX
+  offset: 0x003C40
+  symbol: Z2_SYATEKI_MIZU_room_00DL_003C40
+
+Z2_SYATEKI_MIZU_room_00Vtx_003D80:
+  type: MM:ARRAY
+  offset: 0x003D80
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_003D80
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_0045D0:
+  type: GFX
+  offset: 0x0045D0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_0045D0
+
+Z2_SYATEKI_MIZU_room_00Vtx_0047D0:
+  type: MM:ARRAY
+  offset: 0x0047D0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0047D0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_004A00:
+  type: GFX
+  offset: 0x004A00
+  symbol: Z2_SYATEKI_MIZU_room_00DL_004A00
+
+Z2_SYATEKI_MIZU_room_00Vtx_004AF0:
+  type: MM:ARRAY
+  offset: 0x004AF0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_004AF0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_004D10:
+  type: GFX
+  offset: 0x004D10
+  symbol: Z2_SYATEKI_MIZU_room_00DL_004D10
+
+Z2_SYATEKI_MIZU_room_00Vtx_004E00:
+  type: MM:ARRAY
+  offset: 0x004E00
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_004E00
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_004F80:
+  type: GFX
+  offset: 0x004F80
+  symbol: Z2_SYATEKI_MIZU_room_00DL_004F80
+
+Z2_SYATEKI_MIZU_room_00DL_005120:
+  type: GFX
+  offset: 0x005120
+  symbol: Z2_SYATEKI_MIZU_room_00DL_005120
+
+Z2_SYATEKI_MIZU_room_00Vtx_0051D0:
+  type: MM:ARRAY
+  offset: 0x0051D0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0051D0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_0052E0:
+  type: GFX
+  offset: 0x0052E0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_0052E0
+
+Z2_SYATEKI_MIZU_room_00Vtx_0053E0:
+  type: MM:ARRAY
+  offset: 0x0053E0
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_0053E0
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_005BE0:
+  type: GFX
+  offset: 0x005BE0
+  symbol: Z2_SYATEKI_MIZU_room_00DL_005BE0
+
+Z2_SYATEKI_MIZU_room_00Vtx_005E88:
+  type: MM:ARRAY
+  offset: 0x005E88
+  symbol: Z2_SYATEKI_MIZU_room_00Vtx_005E88
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SYATEKI_MIZU_room_00DL_005FC8:
+  type: GFX
+  offset: 0x005FC8
+  symbol: Z2_SYATEKI_MIZU_room_00DL_005FC8
+
+Z2_SYATEKI_MIZU_room_00DL_006108:
+  type: GFX
+  offset: 0x006108
+  symbol: Z2_SYATEKI_MIZU_room_00DL_006108
+
+Z2_SYATEKI_MIZU_room_00DL_006110:
+  type: GFX
+  offset: 0x006110
+  symbol: Z2_SYATEKI_MIZU_room_00DL_006110

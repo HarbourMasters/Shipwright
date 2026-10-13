@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 128, 0x00BD5410 ]
+  virtual: [ 0x808F5530, 0x00BD5410 ]
+
+ovl_En_Horse_Game_Check_Colheader_0010C8:
+  type: MM:COLLISION
+  offset: 0x10C8
+  symbol: ovl_En_Horse_Game_Check_Colheader_0010C8
+

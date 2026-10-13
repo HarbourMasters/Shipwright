@@ -1,0 +1,314 @@
+:config:
+  segments:
+    - [ 3, 0x01BA9470 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01BA9470 ]
+    - [ 9, 0x01BA9470 ]
+    - [ 10, 0x01BA9470 ]
+    - [ 11, 0x01BA9470 ]
+    - [ 12, 0x01BA9470 ]
+    - [ 13, 0x01BA9470 ]
+    - [ 2, 0x01B74100 ]
+  directory: scenes/nonmq/Z2_SEA
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_SEA.yml
+
+Z2_SEA_room_11:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SEA_room_11
+
+Z2_SEA_room_11DL_007888:
+  type: GFX
+  offset: 0x7888
+  symbol: Z2_SEA_room_11DL_007888
+
+Z2_SEA_room_11DL_00AAD0:
+  type: GFX
+  offset: 0xAAD0
+  symbol: Z2_SEA_room_11DL_00AAD0
+
+
+Z2_SEA_room_11ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_SEA_room_11ActorEntry_000070
+  size: 0
+
+Z2_SEA_room_11Vtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: Z2_SEA_room_11Vtx_0002A0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_000380:
+  type: GFX
+  offset: 0x000380
+  symbol: Z2_SEA_room_11DL_000380
+
+Z2_SEA_room_11Vtx_000468:
+  type: MM:ARRAY
+  offset: 0x000468
+  symbol: Z2_SEA_room_11Vtx_000468
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_0005A8:
+  type: GFX
+  offset: 0x0005A8
+  symbol: Z2_SEA_room_11DL_0005A8
+
+Z2_SEA_room_11Vtx_0006A0:
+  type: MM:ARRAY
+  offset: 0x0006A0
+  symbol: Z2_SEA_room_11Vtx_0006A0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_0008E0:
+  type: GFX
+  offset: 0x0008E0
+  symbol: Z2_SEA_room_11DL_0008E0
+
+Z2_SEA_room_11Vtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: Z2_SEA_room_11Vtx_000A10
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_001140:
+  type: GFX
+  offset: 0x001140
+  symbol: Z2_SEA_room_11DL_001140
+
+Z2_SEA_room_11Vtx_001388:
+  type: MM:ARRAY
+  offset: 0x001388
+  symbol: Z2_SEA_room_11Vtx_001388
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_0014C8:
+  type: GFX
+  offset: 0x0014C8
+  symbol: Z2_SEA_room_11DL_0014C8
+
+Z2_SEA_room_11Vtx_0015C0:
+  type: MM:ARRAY
+  offset: 0x0015C0
+  symbol: Z2_SEA_room_11Vtx_0015C0
+  count: 262
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_002620:
+  type: GFX
+  offset: 0x002620
+  symbol: Z2_SEA_room_11DL_002620
+
+Z2_SEA_room_11Vtx_002960:
+  type: MM:ARRAY
+  offset: 0x002960
+  symbol: Z2_SEA_room_11Vtx_002960
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_002CD0:
+  type: GFX
+  offset: 0x002CD0
+  symbol: Z2_SEA_room_11DL_002CD0
+
+Z2_SEA_room_11Vtx_002DD8:
+  type: MM:ARRAY
+  offset: 0x002DD8
+  symbol: Z2_SEA_room_11Vtx_002DD8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_002F58:
+  type: GFX
+  offset: 0x002F58
+  symbol: Z2_SEA_room_11DL_002F58
+
+Z2_SEA_room_11Vtx_003040:
+  type: MM:ARRAY
+  offset: 0x003040
+  symbol: Z2_SEA_room_11Vtx_003040
+  count: 109
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_003710:
+  type: GFX
+  offset: 0x003710
+  symbol: Z2_SEA_room_11DL_003710
+
+Z2_SEA_room_11Vtx_003AC0:
+  type: MM:ARRAY
+  offset: 0x003AC0
+  symbol: Z2_SEA_room_11Vtx_003AC0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_003EA0:
+  type: GFX
+  offset: 0x003EA0
+  symbol: Z2_SEA_room_11DL_003EA0
+
+Z2_SEA_room_11Vtx_0040D0:
+  type: MM:ARRAY
+  offset: 0x0040D0
+  symbol: Z2_SEA_room_11Vtx_0040D0
+  count: 288
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_0052D0:
+  type: GFX
+  offset: 0x0052D0
+  symbol: Z2_SEA_room_11DL_0052D0
+
+Z2_SEA_room_11Vtx_0059F0:
+  type: MM:ARRAY
+  offset: 0x0059F0
+  symbol: Z2_SEA_room_11Vtx_0059F0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_006070:
+  type: GFX
+  offset: 0x006070
+  symbol: Z2_SEA_room_11DL_006070
+
+Z2_SEA_room_11Vtx_0063E0:
+  type: MM:ARRAY
+  offset: 0x0063E0
+  symbol: Z2_SEA_room_11Vtx_0063E0
+  count: 165
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_006E30:
+  type: GFX
+  offset: 0x006E30
+  symbol: Z2_SEA_room_11DL_006E30
+
+Z2_SEA_room_11Vtx_007310:
+  type: MM:ARRAY
+  offset: 0x007310
+  symbol: Z2_SEA_room_11Vtx_007310
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_0073D0:
+  type: GFX
+  offset: 0x0073D0
+  symbol: Z2_SEA_room_11DL_0073D0
+
+Z2_SEA_room_11Vtx_0074A0:
+  type: MM:ARRAY
+  offset: 0x0074A0
+  symbol: Z2_SEA_room_11Vtx_0074A0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_007720:
+  type: GFX
+  offset: 0x007720
+  symbol: Z2_SEA_room_11DL_007720
+
+Z2_SEA_room_11Tex_007908:
+  type: TEXTURE
+  offset: 0x007908
+  symbol: Z2_SEA_room_11Tex_007908
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_SEA_room_11Tex_008108:
+  type: TEXTURE
+  offset: 0x008108
+  symbol: Z2_SEA_room_11Tex_008108
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SEA_room_11Tex_008908:
+  type: TEXTURE
+  offset: 0x008908
+  symbol: Z2_SEA_room_11Tex_008908
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_SEA_room_11Tex_009108:
+  type: TEXTURE
+  offset: 0x009108
+  symbol: Z2_SEA_room_11Tex_009108
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_SEA_room_11Tex_009508:
+  type: TEXTURE
+  offset: 0x009508
+  symbol: Z2_SEA_room_11Tex_009508
+  format: I8
+  width: 32
+  height: 32
+
+Z2_SEA_room_11Tex_009908:
+  type: TEXTURE
+  offset: 0x009908
+  symbol: Z2_SEA_room_11Tex_009908
+  format: I8
+  width: 64
+  height: 64
+
+Z2_SEA_room_11DL_00A910:
+  type: GFX
+  offset: 0x00A910
+  symbol: Z2_SEA_room_11DL_00A910
+
+Z2_SEA_room_11Vtx_00A918:
+  type: MM:ARRAY
+  offset: 0x00A918
+  symbol: Z2_SEA_room_11Vtx_00A918
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_11DL_00A9E8:
+  type: GFX
+  offset: 0x00A9E8
+  symbol: Z2_SEA_room_11DL_00A9E8

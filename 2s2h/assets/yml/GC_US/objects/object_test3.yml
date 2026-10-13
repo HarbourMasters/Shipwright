@@ -1,0 +1,691 @@
+:config:
+  segments:
+    - [ 6, 0x00EDB510 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EDB510 ]
+    - [ 9, 0x00EDB510 ]
+    - [ 10, 0x00EDB510 ]
+    - [ 11, 0x00EDB510 ]
+    - [ 12, 0x00EDB510 ]
+    - [ 13, 0x00EDB510 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gKafeiBody1TLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKafeiBody1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKafeiBody2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gKafeiBody2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKafeiBootTex:
+  type: TEXTURE
+  offset: 0x1740
+  symbol: gKafeiBootTex
+  format: CI8
+  width: 32
+  height: 32
+
+gKafeiClothesNeckOpeningTex:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: gKafeiClothesNeckOpeningTex
+  format: CI8
+  width: 32
+  height: 16
+
+gKafeiClothesPatternTex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gKafeiClothesPatternTex
+  format: CI8
+  width: 16
+  height: 64
+
+gKafeiCollarLimb:
+  type: OOT:LIMB
+  offset: 0xF708
+  symbol: gKafeiCollarLimb
+  limb_type: LOD
+
+gKafeiEyesClosedTex:
+  type: TEXTURE
+  offset: 0x3E80
+  symbol: gKafeiEyesClosedTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesDownTex:
+  type: TEXTURE
+  offset: 0x5E80
+  symbol: gKafeiEyesDownTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesHalfTex:
+  type: TEXTURE
+  offset: 0x3680
+  symbol: gKafeiEyesHalfTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesLeftTex:
+  type: TEXTURE
+  offset: 0x4E80
+  symbol: gKafeiEyesLeftTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesOpenTex:
+  type: TEXTURE
+  offset: 0xDC0
+  symbol: gKafeiEyesOpenTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesRightTex:
+  type: TEXTURE
+  offset: 0x4680
+  symbol: gKafeiEyesRightTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesTLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gKafeiEyesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKafeiEyesUpTex:
+  type: TEXTURE
+  offset: 0x5680
+  symbol: gKafeiEyesUpTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiEyesWincingTex:
+  type: TEXTURE
+  offset: 0x6680
+  symbol: gKafeiEyesWincingTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x600
+
+gKafeiFingersTex:
+  type: TEXTURE
+  offset: 0x1640
+  symbol: gKafeiFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gKafeiHairPartAndUndersideTex:
+  type: TEXTURE
+  offset: 0x15C0
+  symbol: gKafeiHairPartAndUndersideTex
+  format: CI8
+  width: 8
+  height: 16
+
+gKafeiHairTex:
+  type: TEXTURE
+  offset: 0x840
+  symbol: gKafeiHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gKafeiHatLimb:
+  type: OOT:LIMB
+  offset: 0xF6F8
+  symbol: gKafeiHatLimb
+  limb_type: LOD
+
+gKafeiHeadDL:
+  type: GFX
+  offset: 0xCF70
+  symbol: gKafeiHeadDL
+
+gKafeiHeadLimb:
+  type: OOT:LIMB
+  offset: 0xF6E8
+  symbol: gKafeiHeadLimb
+  limb_type: LOD
+
+gKafeiInnerSleeveTex:
+  type: TEXTURE
+  offset: 0x1F40
+  symbol: gKafeiInnerSleeveTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKafeiLeftFootDL:
+  type: GFX
+  offset: 0xC870
+  symbol: gKafeiLeftFootDL
+
+gKafeiLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xF6C8
+  symbol: gKafeiLeftFootLimb
+  limb_type: LOD
+
+gKafeiLeftForearmDL:
+  type: GFX
+  offset: 0xDE30
+  symbol: gKafeiLeftForearmDL
+
+gKafeiLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xF728
+  symbol: gKafeiLeftForearmLimb
+  limb_type: LOD
+
+gKafeiLeftHandDL:
+  type: GFX
+  offset: 0xDF70
+  symbol: gKafeiLeftHandDL
+
+gKafeiLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xF738
+  symbol: gKafeiLeftHandLimb
+  limb_type: LOD
+
+gKafeiLeftShinDL:
+  type: GFX
+  offset: 0xC708
+  symbol: gKafeiLeftShinDL
+
+gKafeiLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xF6B8
+  symbol: gKafeiLeftShinLimb
+  limb_type: LOD
+
+gKafeiLeftShoulderDL:
+  type: GFX
+  offset: 0xDCF0
+  symbol: gKafeiLeftShoulderDL
+
+gKafeiLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xF718
+  symbol: gKafeiLeftShoulderLimb
+  limb_type: LOD
+
+gKafeiLeftThighDL:
+  type: GFX
+  offset: 0xC478
+  symbol: gKafeiLeftThighDL
+
+gKafeiLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xF6A8
+  symbol: gKafeiLeftThighLimb
+  limb_type: LOD
+
+gKafeiLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0xF668
+  symbol: gKafeiLowerRootLimb
+  limb_type: LOD
+
+gKafeiMouthClosedTex:
+  type: TEXTURE
+  offset: 0x9C0
+  symbol: gKafeiMouthClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x400
+
+gKafeiMouthHalfTex:
+  type: TEXTURE
+  offset: 0x6E80
+  symbol: gKafeiMouthHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x400
+
+gKafeiMouthOpenTex:
+  type: TEXTURE
+  offset: 0x7280
+  symbol: gKafeiMouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x400
+
+gKafeiMouthSmileTex:
+  type: TEXTURE
+  offset: 0x7680
+  symbol: gKafeiMouthSmileTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x400
+
+gKafeiMouthTLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gKafeiMouthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKafeiNose1DL:
+  type: GFX
+  offset: 0xD670
+  symbol: gKafeiNose1DL
+
+gKafeiNose2DL:
+  type: GFX
+  offset: 0xD730
+  symbol: gKafeiNose2DL
+
+gKafeiNoseTex:
+  type: TEXTURE
+  offset: 0x8C0
+  symbol: gKafeiNoseTex
+  format: CI8
+  width: 16
+  height: 16
+
+gKafeiPendantOfMemoriesDL:
+  type: GFX
+  offset: 0xCB60
+  symbol: gKafeiPendantOfMemoriesDL
+
+gKafeiPendantOfMemoriesTex:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: gKafeiPendantOfMemoriesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gKafeiRightFootDL:
+  type: GFX
+  offset: 0xC300
+  symbol: gKafeiRightFootDL
+
+gKafeiRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xF698
+  symbol: gKafeiRightFootLimb
+  limb_type: LOD
+
+gKafeiRightForearmDL:
+  type: GFX
+  offset: 0xD930
+  symbol: gKafeiRightForearmDL
+
+gKafeiRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xF758
+  symbol: gKafeiRightForearmLimb
+  limb_type: LOD
+
+gKafeiRightHandDL:
+  type: GFX
+  offset: 0xDA70
+  symbol: gKafeiRightHandDL
+
+gKafeiRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xF768
+  symbol: gKafeiRightHandLimb
+  limb_type: LOD
+
+gKafeiRightShinDL:
+  type: GFX
+  offset: 0xC198
+  symbol: gKafeiRightShinDL
+
+gKafeiRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xF688
+  symbol: gKafeiRightShinLimb
+  limb_type: LOD
+
+gKafeiRightShoulderDL:
+  type: GFX
+  offset: 0xD7F0
+  symbol: gKafeiRightShoulderDL
+
+gKafeiRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xF748
+  symbol: gKafeiRightShoulderLimb
+  limb_type: LOD
+
+gKafeiRightThighDL:
+  type: GFX
+  offset: 0xBF10
+  symbol: gKafeiRightThighDL
+
+gKafeiRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xF678
+  symbol: gKafeiRightThighLimb
+  limb_type: LOD
+
+gKafeiRootLimb:
+  type: OOT:LIMB
+  offset: 0xF648
+  symbol: gKafeiRootLimb
+  limb_type: LOD
+
+gKafeiSheathLimb:
+  type: OOT:LIMB
+  offset: 0xF778
+  symbol: gKafeiSheathLimb
+  limb_type: LOD
+
+gKafeiSkel:
+  type: MM:SKELETON
+  offset: 0xF7EC
+  symbol: gKafeiSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gKafeiSkinTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gKafeiSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKafeiSleevePatternTex:
+  type: TEXTURE
+  offset: 0x1B40
+  symbol: gKafeiSleevePatternTex
+  format: CI8
+  width: 32
+  height: 32
+
+gKafeiSunMaskDL:
+  type: GFX
+  offset: 0xEDD0
+  symbol: gKafeiSunMaskDL
+
+gKafeiSunMaskEmptyDL:
+  type: GFX
+  offset: 0xF640
+  symbol: gKafeiSunMaskEmptyDL
+
+gKafeiSunMaskEyeTex:
+  type: TEXTURE
+  offset: 0xF2C0
+  symbol: gKafeiSunMaskEyeTex
+  format: I4
+  width: 16
+  height: 16
+
+gKafeiSunMaskPattern1Tex:
+  type: TEXTURE
+  offset: 0xF340
+  symbol: gKafeiSunMaskPattern1Tex
+  format: I4
+  width: 16
+  height: 16
+
+gKafeiSunMaskPattern2Tex:
+  type: TEXTURE
+  offset: 0xF3C0
+  symbol: gKafeiSunMaskPattern2Tex
+  format: I4
+  width: 16
+  height: 16
+
+gKafeiSunMaskPattern3Tex:
+  type: TEXTURE
+  offset: 0xF440
+  symbol: gKafeiSunMaskPattern3Tex
+  format: I4
+  width: 32
+  height: 32
+
+gKafeiTorsoDL:
+  type: GFX
+  offset: 0xCC20
+  symbol: gKafeiTorsoDL
+
+gKafeiTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xF788
+  symbol: gKafeiTorsoLimb
+  limb_type: LOD
+
+gKafeiTrouserHemTex:
+  type: TEXTURE
+  offset: 0x3580
+  symbol: gKafeiTrouserHemTex
+  format: CI8
+  width: 16
+  height: 16
+
+gKafeiUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0xF6D8
+  symbol: gKafeiUpperRootLimb
+  limb_type: LOD
+
+gKafeiWaistDL:
+  type: GFX
+  offset: 0xC9E8
+  symbol: gKafeiWaistDL
+
+gKafeiWaistLimb:
+  type: OOT:LIMB
+  offset: 0xF658
+  symbol: gKafeiWaistLimb
+  limb_type: LOD
+
+
+object_test3Vtx_007A80:
+  type: MM:ARRAY
+  offset: 0x007A80
+  symbol: object_test3Vtx_007A80
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_007CF0:
+  type: MM:ARRAY
+  offset: 0x007CF0
+  symbol: object_test3Vtx_007CF0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_008010:
+  type: MM:ARRAY
+  offset: 0x008010
+  symbol: object_test3Vtx_008010
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_0083B0:
+  type: MM:ARRAY
+  offset: 0x0083B0
+  symbol: object_test3Vtx_0083B0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_008620:
+  type: MM:ARRAY
+  offset: 0x008620
+  symbol: object_test3Vtx_008620
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_008940:
+  type: MM:ARRAY
+  offset: 0x008940
+  symbol: object_test3Vtx_008940
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_008CE0:
+  type: MM:ARRAY
+  offset: 0x008CE0
+  symbol: object_test3Vtx_008CE0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_009050:
+  type: MM:ARRAY
+  offset: 0x009050
+  symbol: object_test3Vtx_009050
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_009080:
+  type: MM:ARRAY
+  offset: 0x009080
+  symbol: object_test3Vtx_009080
+  count: 362
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00A720:
+  type: MM:ARRAY
+  offset: 0x00A720
+  symbol: object_test3Vtx_00A720
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00A810:
+  type: MM:ARRAY
+  offset: 0x00A810
+  symbol: object_test3Vtx_00A810
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00AC00:
+  type: MM:ARRAY
+  offset: 0x00AC00
+  symbol: object_test3Vtx_00AC00
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00AE50:
+  type: MM:ARRAY
+  offset: 0x00AE50
+  symbol: object_test3Vtx_00AE50
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00B0B0:
+  type: MM:ARRAY
+  offset: 0x00B0B0
+  symbol: object_test3Vtx_00B0B0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00B4A0:
+  type: MM:ARRAY
+  offset: 0x00B4A0
+  symbol: object_test3Vtx_00B4A0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00B6F0:
+  type: MM:ARRAY
+  offset: 0x00B6F0
+  symbol: object_test3Vtx_00B6F0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00B950:
+  type: MM:ARRAY
+  offset: 0x00B950
+  symbol: object_test3Vtx_00B950
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00B980:
+  type: MM:ARRAY
+  offset: 0x00B980
+  symbol: object_test3Vtx_00B980
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_test3Vtx_00E1F0:
+  type: MM:ARRAY
+  offset: 0x00E1F0
+  symbol: object_test3Vtx_00E1F0
+  count: 190
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKafeiSkelLimbs:
+  type: BLOB
+  offset: 0xF798
+  symbol: gKafeiSkelLimbs
+  size: 0

@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01435300 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01435300 ]
+    - [ 9, 0x01435300 ]
+    - [ 10, 0x01435300 ]
+    - [ 11, 0x01435300 ]
+    - [ 12, 0x01435300 ]
+    - [ 13, 0x01435300 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiGildedSwordBladePommelTex:
+  type: TEXTURE
+  offset: 0x1198
+  symbol: gGiGildedSwordBladePommelTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiGildedSwordDL:
+  type: GFX
+  offset: 0x9E8
+  symbol: gGiGildedSwordDL
+
+gGiGildedSwordEmptyDL:
+  type: GFX
+  offset: 0x9E0
+  symbol: gGiGildedSwordEmptyDL
+
+gGiGildedSwordHiltTex:
+  type: TEXTURE
+  offset: 0xF58
+  symbol: gGiGildedSwordHiltTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiGildedSwordSpotTex:
+  type: TEXTURE
+  offset: 0x1158
+  symbol: gGiGildedSwordSpotTex
+  format: I8
+  width: 8
+  height: 8
+
+
+object_gi_sword_3Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sword_3Vtx_000000
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

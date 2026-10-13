@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01056690 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01056690 ]
+    - [ 9, 0x01056690 ]
+    - [ 10, 0x01056690 ]
+    - [ 11, 0x01056690 ]
+    - [ 12, 0x01056690 ]
+    - [ 13, 0x01056690 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiMagicArrowAmmoDL:
+  type: GFX
+  offset: 0xAE0
+  symbol: gGiMagicArrowAmmoDL
+
+gGiMagicArrowFireColorDL:
+  type: GFX
+  offset: 0xCA0
+  symbol: gGiMagicArrowFireColorDL
+
+gGiMagicArrowGlowDL:
+  type: GFX
+  offset: 0xD00
+  symbol: gGiMagicArrowGlowDL
+
+gGiMagicArrowIceColorDL:
+  type: GFX
+  offset: 0xCC0
+  symbol: gGiMagicArrowIceColorDL
+
+gGiMagicArrowLightColorDL:
+  type: GFX
+  offset: 0xCE0
+  symbol: gGiMagicArrowLightColorDL
+
+
+object_gi_m_arrowVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_m_arrowVtx_000000
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_m_arrowVtx_000330:
+  type: MM:ARRAY
+  offset: 0x000330
+  symbol: object_gi_m_arrowVtx_000330
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

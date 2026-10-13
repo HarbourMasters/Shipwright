@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01E1D740 ]
+    - [ 2, 0x01E08320 ]
+  directory: scenes/nonmq/Z2_TOWN
+  external_files:
+    - N64_US/scenes/nonmq/Z2_TOWN_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_TOWN.yml
+
+Z2_TOWN_room_00Set_000500:
+  type: MM:ROOM
+  offset: 0x500
+  symbol: Z2_TOWN_room_00Set_000500
+  base_name: Z2_TOWN_room_00

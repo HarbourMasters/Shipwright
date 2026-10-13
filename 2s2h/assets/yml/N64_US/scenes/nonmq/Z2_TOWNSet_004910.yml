@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E08320 ]
+  directory: scenes/nonmq/Z2_TOWN
+  external_files:
+    - N64_US/scenes/nonmq/Z2_TOWN.yml
+
+Z2_TOWNSet_004910:
+  type: MM:SCENE
+  offset: 0x4910
+  symbol: Z2_TOWNSet_004910
+  base_name: Z2_TOWN

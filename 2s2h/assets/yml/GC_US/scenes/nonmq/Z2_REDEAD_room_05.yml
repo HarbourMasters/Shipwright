@@ -1,0 +1,107 @@
+:config:
+  segments:
+    - [ 3, 0x01BE8F60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01BE8F60 ]
+    - [ 9, 0x01BE8F60 ]
+    - [ 10, 0x01BE8F60 ]
+    - [ 11, 0x01BE8F60 ]
+    - [ 12, 0x01BE8F60 ]
+    - [ 13, 0x01BE8F60 ]
+    - [ 2, 0x01BD2390 ]
+  directory: scenes/nonmq/Z2_REDEAD
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_REDEAD.yml
+
+Z2_REDEAD_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_REDEAD_room_05
+
+Z2_REDEAD_room_05DL_009358:
+  type: GFX
+  offset: 0x9358
+  symbol: Z2_REDEAD_room_05DL_009358
+
+Z2_REDEAD_room_05DL_009390:
+  type: GFX
+  offset: 0x9390
+  symbol: Z2_REDEAD_room_05DL_009390
+
+
+Z2_REDEAD_room_05ActorEntry_000068:
+  type: BLOB
+  offset: 0x000068
+  symbol: Z2_REDEAD_room_05ActorEntry_000068
+  size: 0
+
+Z2_REDEAD_room_05Vtx_000250:
+  type: MM:ARRAY
+  offset: 0x000250
+  symbol: Z2_REDEAD_room_05Vtx_000250
+  count: 331
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_05DL_001700:
+  type: GFX
+  offset: 0x001700
+  symbol: Z2_REDEAD_room_05DL_001700
+
+Z2_REDEAD_room_05Vtx_001D18:
+  type: MM:ARRAY
+  offset: 0x001D18
+  symbol: Z2_REDEAD_room_05Vtx_001D18
+  count: 344
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_05DL_003298:
+  type: GFX
+  offset: 0x003298
+  symbol: Z2_REDEAD_room_05DL_003298
+
+Z2_REDEAD_room_05Vtx_0038B8:
+  type: MM:ARRAY
+  offset: 0x0038B8
+  symbol: Z2_REDEAD_room_05Vtx_0038B8
+  count: 1086
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_05DL_007C98:
+  type: GFX
+  offset: 0x007C98
+  symbol: Z2_REDEAD_room_05DL_007C98
+
+Z2_REDEAD_room_05Vtx_008B70:
+  type: MM:ARRAY
+  offset: 0x008B70
+  symbol: Z2_REDEAD_room_05Vtx_008B70
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_05DL_008FC0:
+  type: GFX
+  offset: 0x008FC0
+  symbol: Z2_REDEAD_room_05DL_008FC0
+
+Z2_REDEAD_room_05Vtx_009120:
+  type: MM:ARRAY
+  offset: 0x009120
+  symbol: Z2_REDEAD_room_05Vtx_009120
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_05DL_009290:
+  type: GFX
+  offset: 0x009290
+  symbol: Z2_REDEAD_room_05DL_009290

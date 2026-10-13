@@ -1,0 +1,330 @@
+:config:
+  segments:
+    - [ 2, 0x016AA270 ]
+    - [ 6, 0x01608C80 ]
+  external_files:
+    - GC_US/misc/scene_texture_02.yml
+
+Z2_AYASHIISHOP:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_AYASHIISHOP
+
+
+Z2_AYASHIISHOPPathwayList_000164:
+  type: MM:PATH
+  offset: 0x000164
+  symbol: Z2_AYASHIISHOPPathwayList_000164
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -260, -96, -779 ]
+        - [ -261, -96, -695 ]
+        - [ -261, -96, -608 ]
+        - [ -261, -96, -562 ]
+        - [ -256, -60, -532 ]
+        - [ -234, -27, -528 ]
+        - [ -190, -27, -537 ]
+        - [ -101, -27, -546 ]
+        - [ -23, -12, -518 ]
+        - [ -12, 0, -407 ]
+        - [ -64, 0, -353 ]
+        - [ -136, 0, -340 ]
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ 14, 0, 322 ]
+        - [ 3, 0, 169 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ 3, 0, 169 ]
+        - [ -16, 12, -16 ]
+    - additional_path_index: 4
+      custom_value: 2
+      points:
+        - [ -16, 12, -16 ]
+        - [ -3, 0, 141 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -3, 0, 141 ]
+        - [ 9, 0, 323 ]
+
+Z2_AYASHIISHOPPathwayList_0001AC:
+  type: MM:PATH
+  offset: 0x0001AC
+  symbol: Z2_AYASHIISHOPPathwayList_0001AC
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -260, -96, -779 ]
+        - [ -261, -96, -695 ]
+        - [ -261, -96, -608 ]
+        - [ -261, -96, -562 ]
+        - [ -256, -60, -532 ]
+        - [ -234, -27, -528 ]
+        - [ -190, -27, -537 ]
+        - [ -101, -27, -546 ]
+        - [ -23, -12, -518 ]
+        - [ -12, 0, -407 ]
+        - [ -64, 0, -353 ]
+        - [ -136, 0, -340 ]
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ 14, 0, 322 ]
+        - [ 3, 0, 169 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ 3, 0, 169 ]
+        - [ -16, 12, -16 ]
+    - additional_path_index: 4
+      custom_value: 2
+      points:
+        - [ -16, 12, -16 ]
+        - [ -3, 0, 141 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -3, 0, 141 ]
+        - [ 9, 0, 323 ]
+
+Z2_AYASHIISHOPPathwayList_0001B8:
+  type: MM:PATH
+  offset: 0x0001B8
+  symbol: Z2_AYASHIISHOPPathwayList_0001B8
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -260, -96, -779 ]
+        - [ -261, -96, -695 ]
+        - [ -261, -96, -608 ]
+        - [ -261, -96, -562 ]
+        - [ -256, -60, -532 ]
+        - [ -234, -27, -528 ]
+        - [ -190, -27, -537 ]
+        - [ -101, -27, -546 ]
+        - [ -23, -12, -518 ]
+        - [ -12, 0, -407 ]
+        - [ -64, 0, -353 ]
+        - [ -136, 0, -340 ]
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ 14, 0, 322 ]
+        - [ 3, 0, 169 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ 3, 0, 169 ]
+        - [ -16, 12, -16 ]
+    - additional_path_index: 4
+      custom_value: 2
+      points:
+        - [ -16, 12, -16 ]
+        - [ -3, 0, 141 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -3, 0, 141 ]
+        - [ 9, 0, 323 ]
+
+Z2_AYASHIISHOPPathwayList_0001C4:
+  type: MM:PATH
+  offset: 0x0001C4
+  symbol: Z2_AYASHIISHOPPathwayList_0001C4
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -260, -96, -779 ]
+        - [ -261, -96, -695 ]
+        - [ -261, -96, -608 ]
+        - [ -261, -96, -562 ]
+        - [ -256, -60, -532 ]
+        - [ -234, -27, -528 ]
+        - [ -190, -27, -537 ]
+        - [ -101, -27, -546 ]
+        - [ -23, -12, -518 ]
+        - [ -12, 0, -407 ]
+        - [ -64, 0, -353 ]
+        - [ -136, 0, -340 ]
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ 14, 0, 322 ]
+        - [ 3, 0, 169 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ 3, 0, 169 ]
+        - [ -16, 12, -16 ]
+    - additional_path_index: 4
+      custom_value: 2
+      points:
+        - [ -16, 12, -16 ]
+        - [ -3, 0, 141 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -3, 0, 141 ]
+        - [ 9, 0, 323 ]
+
+Z2_AYASHIISHOPPathwayList_0001D0:
+  type: MM:PATH
+  offset: 0x0001D0
+  symbol: Z2_AYASHIISHOPPathwayList_0001D0
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -260, -96, -779 ]
+        - [ -261, -96, -695 ]
+        - [ -261, -96, -608 ]
+        - [ -261, -96, -562 ]
+        - [ -256, -60, -532 ]
+        - [ -234, -27, -528 ]
+        - [ -190, -27, -537 ]
+        - [ -101, -27, -546 ]
+        - [ -23, -12, -518 ]
+        - [ -12, 0, -407 ]
+        - [ -64, 0, -353 ]
+        - [ -136, 0, -340 ]
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ 14, 0, 322 ]
+        - [ 3, 0, 169 ]
+    - additional_path_index: 3
+      custom_value: 1
+      points:
+        - [ 3, 0, 169 ]
+        - [ -16, 12, -16 ]
+    - additional_path_index: 4
+      custom_value: 2
+      points:
+        - [ -16, 12, -16 ]
+        - [ -3, 0, 141 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -3, 0, 141 ]
+        - [ 9, 0, 323 ]
+
+Z2_AYASHIISHOPCutsceneData_000204:
+  type: MM:CUTSCENE
+  offset: 0x000204
+  symbol: Z2_AYASHIISHOPCutsceneData_000204
+  size: 1620
+
+Z2_AYASHIISHOPTexAnim_000AB0TexScrollParams_000AA0:
+  type: BLOB
+  offset: 0x000AA0
+  symbol: Z2_AYASHIISHOPTexAnim_000AB0TexScrollParams_000AA0
+  size: 0
+
+Z2_AYASHIISHOPTexAnim_000AB0TexScrollParams_000AA8:
+  type: BLOB
+  offset: 0x000AA8
+  symbol: Z2_AYASHIISHOPTexAnim_000AB0TexScrollParams_000AA8
+  size: 0
+
+Z2_AYASHIISHOPTexAnim_000AB0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000AB0
+  symbol: Z2_AYASHIISHOPTexAnim_000AB0
+
+Z2_AYASHIISHOPCollisionHeader_001B2C:
+  type: MM:COLLISION
+  offset: 0x001B2C
+  symbol: Z2_AYASHIISHOPCollisionHeader_001B2C
+
+Z2_AYASHIISHOPTex_001B60:
+  type: TEXTURE
+  offset: 0x001B60
+  symbol: Z2_AYASHIISHOPTex_001B60
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_AYASHIISHOPTex_001C60:
+  type: TEXTURE
+  offset: 0x001C60
+  symbol: Z2_AYASHIISHOPTex_001C60
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_AYASHIISHOPTex_001CA0:
+  type: TEXTURE
+  offset: 0x001CA0
+  symbol: Z2_AYASHIISHOPTex_001CA0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_AYASHIISHOPTex_0020A0:
+  type: TEXTURE
+  offset: 0x0020A0
+  symbol: Z2_AYASHIISHOPTex_0020A0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_AYASHIISHOPTex_0022A0:
+  type: TEXTURE
+  offset: 0x0022A0
+  symbol: Z2_AYASHIISHOPTex_0022A0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_AYASHIISHOPTex_0023A0:
+  type: TEXTURE
+  offset: 0x0023A0
+  symbol: Z2_AYASHIISHOPTex_0023A0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_AYASHIISHOPTex_002BA0:
+  type: TEXTURE
+  offset: 0x002BA0
+  symbol: Z2_AYASHIISHOPTex_002BA0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_AYASHIISHOPTex_002CA0:
+  type: TEXTURE
+  offset: 0x002CA0
+  symbol: Z2_AYASHIISHOPTex_002CA0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_AYASHIISHOPTLUT_0030A0:
+  type: TEXTURE
+  offset: 0x0030A0
+  symbol: Z2_AYASHIISHOPTLUT_0030A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_AYASHIISHOPTLUT_0032A0:
+  type: TEXTURE
+  offset: 0x0032A0
+  symbol: Z2_AYASHIISHOPTLUT_0032A0
+  format: RGBA16
+  width: 16
+  height: 16

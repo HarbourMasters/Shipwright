@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x016EC2F0 ]
+  directory: scenes/nonmq/Z2_IKANA
+  external_files:
+    - N64_US/scenes/nonmq/Z2_IKANA.yml
+
+Z2_IKANASet_019D20:
+  type: MM:SCENE
+  offset: 0x19D20
+  symbol: Z2_IKANASet_019D20
+  base_name: Z2_IKANA

@@ -1,0 +1,435 @@
+:config:
+  segments:
+    - [ 3, 0x016C29A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x016C29A0 ]
+    - [ 9, 0x016C29A0 ]
+    - [ 10, 0x016C29A0 ]
+    - [ 11, 0x016C29A0 ]
+    - [ 12, 0x016C29A0 ]
+    - [ 13, 0x016C29A0 ]
+    - [ 2, 0x016B69D0 ]
+  directory: scenes/nonmq/Z2_OMOYA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_OMOYA.yml
+
+Z2_OMOYA_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_OMOYA_room_01
+
+Z2_OMOYA_room_01DL_00CE88:
+  type: GFX
+  offset: 0xCE88
+  symbol: Z2_OMOYA_room_01DL_00CE88
+
+Z2_OMOYA_room_01DL_00F690:
+  type: GFX
+  offset: 0xF690
+  symbol: Z2_OMOYA_room_01DL_00F690
+
+
+Z2_OMOYA_room_01ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_OMOYA_room_01ActorEntry_000058
+  size: 0
+
+Z2_OMOYA_room_01Vtx_000290:
+  type: MM:ARRAY
+  offset: 0x000290
+  symbol: Z2_OMOYA_room_01Vtx_000290
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_000620:
+  type: GFX
+  offset: 0x000620
+  symbol: Z2_OMOYA_room_01DL_000620
+
+Z2_OMOYA_room_01Vtx_000760:
+  type: MM:ARRAY
+  offset: 0x000760
+  symbol: Z2_OMOYA_room_01Vtx_000760
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_000F40:
+  type: GFX
+  offset: 0x000F40
+  symbol: Z2_OMOYA_room_01DL_000F40
+
+Z2_OMOYA_room_01Vtx_0012A0:
+  type: MM:ARRAY
+  offset: 0x0012A0
+  symbol: Z2_OMOYA_room_01Vtx_0012A0
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_001940:
+  type: GFX
+  offset: 0x001940
+  symbol: Z2_OMOYA_room_01DL_001940
+
+Z2_OMOYA_room_01Vtx_001B18:
+  type: MM:ARRAY
+  offset: 0x001B18
+  symbol: Z2_OMOYA_room_01Vtx_001B18
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_001EE8:
+  type: GFX
+  offset: 0x001EE8
+  symbol: Z2_OMOYA_room_01DL_001EE8
+
+Z2_OMOYA_room_01Vtx_0020A8:
+  type: MM:ARRAY
+  offset: 0x0020A8
+  symbol: Z2_OMOYA_room_01Vtx_0020A8
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_0023E8:
+  type: GFX
+  offset: 0x0023E8
+  symbol: Z2_OMOYA_room_01DL_0023E8
+
+Z2_OMOYA_room_01Vtx_002620:
+  type: MM:ARRAY
+  offset: 0x002620
+  symbol: Z2_OMOYA_room_01Vtx_002620
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_002B30:
+  type: GFX
+  offset: 0x002B30
+  symbol: Z2_OMOYA_room_01DL_002B30
+
+Z2_OMOYA_room_01Vtx_002CC0:
+  type: MM:ARRAY
+  offset: 0x002CC0
+  symbol: Z2_OMOYA_room_01Vtx_002CC0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_002DD0:
+  type: GFX
+  offset: 0x002DD0
+  symbol: Z2_OMOYA_room_01DL_002DD0
+
+Z2_OMOYA_room_01Vtx_002E38:
+  type: MM:ARRAY
+  offset: 0x002E38
+  symbol: Z2_OMOYA_room_01Vtx_002E38
+  count: 250
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_003DD8:
+  type: GFX
+  offset: 0x003DD8
+  symbol: Z2_OMOYA_room_01DL_003DD8
+
+Z2_OMOYA_room_01Vtx_0042C0:
+  type: MM:ARRAY
+  offset: 0x0042C0
+  symbol: Z2_OMOYA_room_01Vtx_0042C0
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_004C60:
+  type: GFX
+  offset: 0x004C60
+  symbol: Z2_OMOYA_room_01DL_004C60
+
+Z2_OMOYA_room_01Vtx_004EA0:
+  type: MM:ARRAY
+  offset: 0x004EA0
+  symbol: Z2_OMOYA_room_01Vtx_004EA0
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_0056E0:
+  type: GFX
+  offset: 0x0056E0
+  symbol: Z2_OMOYA_room_01DL_0056E0
+
+Z2_OMOYA_room_01Vtx_005A18:
+  type: MM:ARRAY
+  offset: 0x005A18
+  symbol: Z2_OMOYA_room_01Vtx_005A18
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_005D08:
+  type: GFX
+  offset: 0x005D08
+  symbol: Z2_OMOYA_room_01DL_005D08
+
+Z2_OMOYA_room_01Vtx_0060B0:
+  type: MM:ARRAY
+  offset: 0x0060B0
+  symbol: Z2_OMOYA_room_01Vtx_0060B0
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_006870:
+  type: GFX
+  offset: 0x006870
+  symbol: Z2_OMOYA_room_01DL_006870
+
+Z2_OMOYA_room_01Vtx_006B08:
+  type: MM:ARRAY
+  offset: 0x006B08
+  symbol: Z2_OMOYA_room_01Vtx_006B08
+  count: 520
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_008B88:
+  type: GFX
+  offset: 0x008B88
+  symbol: Z2_OMOYA_room_01DL_008B88
+
+Z2_OMOYA_room_01Vtx_009808:
+  type: MM:ARRAY
+  offset: 0x009808
+  symbol: Z2_OMOYA_room_01Vtx_009808
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_0099D8:
+  type: GFX
+  offset: 0x0099D8
+  symbol: Z2_OMOYA_room_01DL_0099D8
+
+Z2_OMOYA_room_01Vtx_009AE0:
+  type: MM:ARRAY
+  offset: 0x009AE0
+  symbol: Z2_OMOYA_room_01Vtx_009AE0
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_009F00:
+  type: GFX
+  offset: 0x009F00
+  symbol: Z2_OMOYA_room_01DL_009F00
+
+Z2_OMOYA_room_01Vtx_00A068:
+  type: MM:ARRAY
+  offset: 0x00A068
+  symbol: Z2_OMOYA_room_01Vtx_00A068
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00AB88:
+  type: GFX
+  offset: 0x00AB88
+  symbol: Z2_OMOYA_room_01DL_00AB88
+
+Z2_OMOYA_room_01Vtx_00B608:
+  type: MM:ARRAY
+  offset: 0x00B608
+  symbol: Z2_OMOYA_room_01Vtx_00B608
+  count: 248
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00C588:
+  type: GFX
+  offset: 0x00C588
+  symbol: Z2_OMOYA_room_01DL_00C588
+
+Z2_OMOYA_room_01Vtx_00C8E0:
+  type: MM:ARRAY
+  offset: 0x00C8E0
+  symbol: Z2_OMOYA_room_01Vtx_00C8E0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00CB10:
+  type: GFX
+  offset: 0x00CB10
+  symbol: Z2_OMOYA_room_01DL_00CB10
+
+Z2_OMOYA_room_01Vtx_00CC18:
+  type: MM:ARRAY
+  offset: 0x00CC18
+  symbol: Z2_OMOYA_room_01Vtx_00CC18
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00CD98:
+  type: GFX
+  offset: 0x00CD98
+  symbol: Z2_OMOYA_room_01DL_00CD98
+
+Z2_OMOYA_room_01Tex_00CF28:
+  type: TEXTURE
+  offset: 0x00CF28
+  symbol: Z2_OMOYA_room_01Tex_00CF28
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OMOYA_room_01Tex_00D328:
+  type: TEXTURE
+  offset: 0x00D328
+  symbol: Z2_OMOYA_room_01Tex_00D328
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_OMOYA_room_01Tex_00D528:
+  type: TEXTURE
+  offset: 0x00D528
+  symbol: Z2_OMOYA_room_01Tex_00D528
+  format: CI8
+  width: 8
+  height: 128
+
+Z2_OMOYA_room_01Tex_00D928:
+  type: TEXTURE
+  offset: 0x00D928
+  symbol: Z2_OMOYA_room_01Tex_00D928
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_OMOYA_room_01Tex_00DD28:
+  type: TEXTURE
+  offset: 0x00DD28
+  symbol: Z2_OMOYA_room_01Tex_00DD28
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OMOYA_room_01Tex_00E128:
+  type: TEXTURE
+  offset: 0x00E128
+  symbol: Z2_OMOYA_room_01Tex_00E128
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_OMOYA_room_01Tex_00E928:
+  type: TEXTURE
+  offset: 0x00E928
+  symbol: Z2_OMOYA_room_01Tex_00E928
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OMOYA_room_01DL_00ED30:
+  type: GFX
+  offset: 0x00ED30
+  symbol: Z2_OMOYA_room_01DL_00ED30
+
+Z2_OMOYA_room_01Vtx_00ED38:
+  type: MM:ARRAY
+  offset: 0x00ED38
+  symbol: Z2_OMOYA_room_01Vtx_00ED38
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00F178:
+  type: GFX
+  offset: 0x00F178
+  symbol: Z2_OMOYA_room_01DL_00F178
+
+Z2_OMOYA_room_01Vtx_00F388:
+  type: MM:ARRAY
+  offset: 0x00F388
+  symbol: Z2_OMOYA_room_01Vtx_00F388
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00F448:
+  type: GFX
+  offset: 0x00F448
+  symbol: Z2_OMOYA_room_01DL_00F448
+
+Z2_OMOYA_room_01DL_00F520:
+  type: GFX
+  offset: 0x00F520
+  symbol: Z2_OMOYA_room_01DL_00F520
+
+Z2_OMOYA_room_01Vtx_00F528:
+  type: MM:ARRAY
+  offset: 0x00F528
+  symbol: Z2_OMOYA_room_01Vtx_00F528
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OMOYA_room_01DL_00F5E8:
+  type: GFX
+  offset: 0x00F5E8
+  symbol: Z2_OMOYA_room_01DL_00F5E8
+
+Z2_OMOYA_room_01Tex_00F6C0:
+  type: TEXTURE
+  offset: 0x00F6C0
+  symbol: Z2_OMOYA_room_01Tex_00F6C0
+  format: IA4
+  width: 16
+  height: 16
+
+Z2_OMOYA_room_01Tex_00F740:
+  type: TEXTURE
+  offset: 0x00F740
+  symbol: Z2_OMOYA_room_01Tex_00F740
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_OMOYA_room_01Tex_00FF40:
+  type: TEXTURE
+  offset: 0x00FF40
+  symbol: Z2_OMOYA_room_01Tex_00FF40
+  format: IA4
+  width: 16
+  height: 33

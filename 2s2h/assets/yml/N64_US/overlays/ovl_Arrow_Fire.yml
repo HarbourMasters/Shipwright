@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 128, 0x00BE0190 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80920340, 0x00BE0190 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gFireArrowMaskTex:
+  type: TEXTURE
+  offset: 0x12B0
+  symbol: gFireArrowMaskTex
+  format: I8
+  width: 32
+  height: 64
+
+gFireArrowMaterialDL:
+  type: GFX
+  offset: 0x1D60
+  symbol: gFireArrowMaterialDL
+
+gFireArrowModelDL:
+  type: GFX
+  offset: 0x1E10
+  symbol: gFireArrowModelDL
+
+gFireArrowTex:
+  type: TEXTURE
+  offset: 0xAB0
+  symbol: gFireArrowTex
+  format: I8
+  width: 32
+  height: 64
+
+gFireArrowVtx:
+  type: MM:ARRAY
+  offset: 0x1AB0
+  symbol: gFireArrowVtx
+  count: 43
+  array_type: VTX
+

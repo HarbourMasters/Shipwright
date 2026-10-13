@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 6, 0x015FD1B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015FD1B0 ]
+    - [ 9, 0x015FD1B0 ]
+    - [ 10, 0x015FD1B0 ]
+    - [ 11, 0x015FD1B0 ]
+    - [ 12, 0x015FD1B0 ]
+    - [ 13, 0x015FD1B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiKamaroMaskDL:
+  type: GFX
+  offset: 0xFD8
+  symbol: gGiKamaroMaskDL
+
+gGiKamaroMaskEmptyDL:
+  type: GFX
+  offset: 0xFD0
+  symbol: gGiKamaroMaskEmptyDL
+
+gGiKamaroMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1950
+  symbol: gGiKamaroMaskEyeTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiKamaroMaskHairChinTex:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: gGiKamaroMaskHairChinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiKamaroMaskNoseEarTex:
+  type: TEXTURE
+  offset: 0x1B90
+  symbol: gGiKamaroMaskNoseEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiKamaroMaskPonytailTex:
+  type: TEXTURE
+  offset: 0x1BD0
+  symbol: gGiKamaroMaskPonytailTex
+  format: CI8
+  width: 8
+  height: 16
+
+gGiKamaroMaskSpotTex:
+  type: TEXTURE
+  offset: 0x1A50
+  symbol: gGiKamaroMaskSpotTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiKamaroMaskStitchesTex:
+  type: TEXTURE
+  offset: 0x1850
+  symbol: gGiKamaroMaskStitchesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiKamaroMaskTLUT:
+  type: TEXTURE
+  offset: 0x1650
+  symbol: gGiKamaroMaskTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_gi_mask17Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask17Vtx_000000
+  count: 253
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

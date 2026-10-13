@@ -1,0 +1,124 @@
+:config:
+  segments:
+    - [ 3, 0x01817FA0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01817FA0 ]
+    - [ 9, 0x01817FA0 ]
+    - [ 10, 0x01817FA0 ]
+    - [ 11, 0x01817FA0 ]
+    - [ 12, 0x01817FA0 ]
+    - [ 13, 0x01817FA0 ]
+    - [ 2, 0x017F25B0 ]
+  directory: scenes/nonmq/Z2_CASTLE
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_CASTLE.yml
+
+Z2_CASTLE_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_CASTLE_room_05
+
+Z2_CASTLE_room_05DL_000100:
+  type: GFX
+  offset: 0x100
+  symbol: Z2_CASTLE_room_05DL_000100
+
+Z2_CASTLE_room_05DL_002C28:
+  type: GFX
+  offset: 0x2C28
+  symbol: Z2_CASTLE_room_05DL_002C28
+
+Z2_CASTLE_room_05DL_004050:
+  type: GFX
+  offset: 0x4050
+  symbol: Z2_CASTLE_room_05DL_004050
+
+Z2_CASTLE_room_05DL_004060:
+  type: GFX
+  offset: 0x4060
+  symbol: Z2_CASTLE_room_05DL_004060
+
+
+Z2_CASTLE_room_05ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_CASTLE_room_05ActorEntry_000058
+  size: 0
+
+Z2_CASTLE_room_05Vtx_000108:
+  type: MM:ARRAY
+  offset: 0x000108
+  symbol: Z2_CASTLE_room_05Vtx_000108
+  count: 373
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_05DL_001858:
+  type: GFX
+  offset: 0x001858
+  symbol: Z2_CASTLE_room_05DL_001858
+
+Z2_CASTLE_room_05Vtx_001F70:
+  type: MM:ARRAY
+  offset: 0x001F70
+  symbol: Z2_CASTLE_room_05Vtx_001F70
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_05DL_002170:
+  type: GFX
+  offset: 0x002170
+  symbol: Z2_CASTLE_room_05DL_002170
+
+Z2_CASTLE_room_05Vtx_002268:
+  type: MM:ARRAY
+  offset: 0x002268
+  symbol: Z2_CASTLE_room_05Vtx_002268
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_05DL_002568:
+  type: GFX
+  offset: 0x002568
+  symbol: Z2_CASTLE_room_05DL_002568
+
+Z2_CASTLE_room_05Vtx_002698:
+  type: MM:ARRAY
+  offset: 0x002698
+  symbol: Z2_CASTLE_room_05Vtx_002698
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_05DL_002A58:
+  type: GFX
+  offset: 0x002A58
+  symbol: Z2_CASTLE_room_05DL_002A58
+
+Z2_CASTLE_room_05Tex_002C50:
+  type: TEXTURE
+  offset: 0x002C50
+  symbol: Z2_CASTLE_room_05Tex_002C50
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_CASTLE_room_05Tex_003050:
+  type: TEXTURE
+  offset: 0x003050
+  symbol: Z2_CASTLE_room_05Tex_003050
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_05DL_004058:
+  type: GFX
+  offset: 0x004058
+  symbol: Z2_CASTLE_room_05DL_004058

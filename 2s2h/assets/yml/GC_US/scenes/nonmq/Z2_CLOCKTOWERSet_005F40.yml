@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E46C70 ]
+  directory: scenes/nonmq/Z2_CLOCKTOWER
+  external_files:
+    - GC_US/scenes/nonmq/Z2_CLOCKTOWER.yml
+
+Z2_CLOCKTOWERSet_005F40:
+  type: MM:SCENE
+  offset: 0x5F40
+  symbol: Z2_CLOCKTOWERSet_005F40
+  base_name: Z2_CLOCKTOWER

@@ -1,0 +1,19 @@
+:config:
+  segments:
+    - [ 2, 0x01A366F0 ]
+
+Z2_INISIE_BS:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_INISIE_BS
+
+
+Z2_INISIE_BSTexAnim_000190:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000190
+  symbol: Z2_INISIE_BSTexAnim_000190
+
+Z2_INISIE_BSCollisionHeader_002BDC:
+  type: MM:COLLISION
+  offset: 0x002BDC
+  symbol: Z2_INISIE_BSCollisionHeader_002BDC

@@ -1,0 +1,75 @@
+:config:
+  segments:
+    - [ 6, 0x01268170 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01268170 ]
+    - [ 9, 0x01268170 ]
+    - [ 10, 0x01268170 ]
+    - [ 11, 0x01268170 ]
+    - [ 12, 0x01268170 ]
+    - [ 13, 0x01268170 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gMagicPotDL:
+  type: GFX
+  offset: 0x278
+  symbol: gMagicPotDL
+
+gMagicPotEmpty1DL:
+  type: GFX
+  offset: 0x270
+  symbol: gMagicPotEmpty1DL
+
+gMagicPotEmpty2DL:
+  type: GFX
+  offset: 0x1698
+  symbol: gMagicPotEmpty2DL
+
+gMagicPotRimTex:
+  type: TEXTURE
+  offset: 0x13E0
+  symbol: gMagicPotRimTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMagicPotShardDL:
+  type: GFX
+  offset: 0x1610
+  symbol: gMagicPotShardDL
+
+gMagicPotShardTex:
+  type: TEXTURE
+  offset: 0x16A0
+  symbol: gMagicPotShardTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMagicPotWallTex:
+  type: TEXTURE
+  offset: 0x3E0
+  symbol: gMagicPotWallTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_racetsuboVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_racetsuboVtx_000000
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_racetsuboVtx_0015E0:
+  type: MM:ARRAY
+  offset: 0x0015E0
+  symbol: object_racetsuboVtx_0015E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

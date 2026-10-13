@@ -1,0 +1,1058 @@
+:config:
+  segments:
+    - [ 2, 0x01A5B440 ]
+    - [ 6, 0x01611E20 ]
+  external_files:
+    - N64_US/misc/scene_texture_05.yml
+    - N64_US/scenes/nonmq/Z2_31MISAKISet_009AD0.yml
+
+Z2_31MISAKI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_31MISAKI
+
+
+Z2_31MISAKIPathwayList_000334:
+  type: MM:PATH
+  offset: 0x000334
+  symbol: Z2_31MISAKIPathwayList_000334
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4703, 0, -430 ]
+        - [ -5257, 0, -68 ]
+        - [ -5891, 0, 429 ]
+        - [ -6570, 0, 656 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -4957, 0, 4141 ]
+        - [ -4942, 0, 4133 ]
+        - [ -4794, 0, 4826 ]
+        - [ -4490, 0, 4966 ]
+        - [ -4127, 0, 5161 ]
+        - [ -3707, 0, 4927 ]
+        - [ -3232, 0, 5013 ]
+        - [ -2920, 0, 5068 ]
+        - [ -2632, 0, 5130 ]
+        - [ -2398, 0, 5223 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+
+Z2_31MISAKIPathwayList_000354:
+  type: MM:PATH
+  offset: 0x000354
+  symbol: Z2_31MISAKIPathwayList_000354
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4703, 0, -430 ]
+        - [ -5257, 0, -68 ]
+        - [ -5891, 0, 429 ]
+        - [ -6570, 0, 656 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -4957, 0, 4141 ]
+        - [ -4942, 0, 4133 ]
+        - [ -4794, 0, 4826 ]
+        - [ -4490, 0, 4966 ]
+        - [ -4127, 0, 5161 ]
+        - [ -3707, 0, 4927 ]
+        - [ -3232, 0, 5013 ]
+        - [ -2920, 0, 5068 ]
+        - [ -2632, 0, 5130 ]
+        - [ -2398, 0, 5223 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+
+Z2_31MISAKIPathwayList_000374:
+  type: MM:PATH
+  offset: 0x000374
+  symbol: Z2_31MISAKIPathwayList_000374
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4703, 0, -430 ]
+        - [ -5257, 0, -68 ]
+        - [ -5891, 0, 429 ]
+        - [ -6570, 0, 656 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -4957, 0, 4141 ]
+        - [ -4942, 0, 4133 ]
+        - [ -4794, 0, 4826 ]
+        - [ -4490, 0, 4966 ]
+        - [ -4127, 0, 5161 ]
+        - [ -3707, 0, 4927 ]
+        - [ -3232, 0, 5013 ]
+        - [ -2920, 0, 5068 ]
+        - [ -2632, 0, 5130 ]
+        - [ -2398, 0, 5223 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+
+Z2_31MISAKIPathwayList_000400:
+  type: MM:PATH
+  offset: 0x000400
+  symbol: Z2_31MISAKIPathwayList_000400
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4703, 0, -430 ]
+        - [ -5257, 0, -68 ]
+        - [ -5891, 0, 429 ]
+        - [ -6570, 0, 656 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -4957, 0, 4141 ]
+        - [ -4942, 0, 4133 ]
+        - [ -4794, 0, 4826 ]
+        - [ -4490, 0, 4966 ]
+        - [ -4127, 0, 5161 ]
+        - [ -3707, 0, 4927 ]
+        - [ -3232, 0, 5013 ]
+        - [ -2920, 0, 5068 ]
+        - [ -2632, 0, 5130 ]
+        - [ -2398, 0, 5223 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+
+Z2_31MISAKIPathwayList_000438:
+  type: MM:PATH
+  offset: 0x000438
+  symbol: Z2_31MISAKIPathwayList_000438
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4703, 0, -430 ]
+        - [ -5257, 0, -68 ]
+        - [ -5891, 0, 429 ]
+        - [ -6570, 0, 656 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -4957, 0, 4141 ]
+        - [ -4942, 0, 4133 ]
+        - [ -4794, 0, 4826 ]
+        - [ -4490, 0, 4966 ]
+        - [ -4127, 0, 5161 ]
+        - [ -3707, 0, 4927 ]
+        - [ -3232, 0, 5013 ]
+        - [ -2920, 0, 5068 ]
+        - [ -2632, 0, 5130 ]
+        - [ -2398, 0, 5223 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+
+Z2_31MISAKICutsceneData_000478:
+  type: MM:CUTSCENE
+  offset: 0x000478
+  symbol: Z2_31MISAKICutsceneData_000478
+  size: 7120
+
+Z2_31MISAKICutsceneData_002058:
+  type: MM:CUTSCENE
+  offset: 0x002058
+  symbol: Z2_31MISAKICutsceneData_002058
+  size: 1096
+
+Z2_31MISAKICutsceneData_0024A8:
+  type: MM:CUTSCENE
+  offset: 0x0024A8
+  symbol: Z2_31MISAKICutsceneData_0024A8
+  size: 568
+
+Z2_31MISAKICutsceneData_0026E8:
+  type: MM:CUTSCENE
+  offset: 0x0026E8
+  symbol: Z2_31MISAKICutsceneData_0026E8
+  size: 4692
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BC0:
+  type: BLOB
+  offset: 0x003BC0
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BC0
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BC8:
+  type: BLOB
+  offset: 0x003BC8
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BC8
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BD0:
+  type: BLOB
+  offset: 0x003BD0
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BD0
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BD8:
+  type: BLOB
+  offset: 0x003BD8
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BD8
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BE0:
+  type: BLOB
+  offset: 0x003BE0
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BE0
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0TexScrollParams_003BE8:
+  type: BLOB
+  offset: 0x003BE8
+  symbol: Z2_31MISAKITexAnim_003BF0TexScrollParams_003BE8
+  size: 0
+
+Z2_31MISAKITexAnim_003BF0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x003BF0
+  symbol: Z2_31MISAKITexAnim_003BF0
+
+Z2_31MISAKICollisionHeader_009A98:
+  type: MM:COLLISION
+  offset: 0x009A98
+  symbol: Z2_31MISAKICollisionHeader_009A98
+
+Z2_31MISAKIPathwayList_009DE0:
+  type: MM:PATH
+  offset: 0x009DE0
+  symbol: Z2_31MISAKIPathwayList_009DE0
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4600, 0, -326 ]
+        - [ -5217, 0, 80 ]
+        - [ -5890, 0, 696 ]
+        - [ -6504, 0, 826 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -5094, 0, 4183 ]
+        - [ -4990, 0, 4873 ]
+        - [ -4935, 0, 5176 ]
+        - [ -2855, 0, 6541 ]
+        - [ -1945, 0, 6723 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+
+Z2_31MISAKIPathwayList_009E00:
+  type: MM:PATH
+  offset: 0x009E00
+  symbol: Z2_31MISAKIPathwayList_009E00
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4600, 0, -326 ]
+        - [ -5217, 0, 80 ]
+        - [ -5890, 0, 696 ]
+        - [ -6504, 0, 826 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -5094, 0, 4183 ]
+        - [ -4990, 0, 4873 ]
+        - [ -4935, 0, 5176 ]
+        - [ -2855, 0, 6541 ]
+        - [ -1945, 0, 6723 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+
+Z2_31MISAKIPathwayList_009E18:
+  type: MM:PATH
+  offset: 0x009E18
+  symbol: Z2_31MISAKIPathwayList_009E18
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4600, 0, -326 ]
+        - [ -5217, 0, 80 ]
+        - [ -5890, 0, 696 ]
+        - [ -6504, 0, 826 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -5094, 0, 4183 ]
+        - [ -4990, 0, 4873 ]
+        - [ -4935, 0, 5176 ]
+        - [ -2855, 0, 6541 ]
+        - [ -1945, 0, 6723 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+
+Z2_31MISAKIPathwayList_009E38:
+  type: MM:PATH
+  offset: 0x009E38
+  symbol: Z2_31MISAKIPathwayList_009E38
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4600, 0, -326 ]
+        - [ -5217, 0, 80 ]
+        - [ -5890, 0, 696 ]
+        - [ -6504, 0, 826 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -5094, 0, 4183 ]
+        - [ -4990, 0, 4873 ]
+        - [ -4935, 0, 5176 ]
+        - [ -2855, 0, 6541 ]
+        - [ -1945, 0, 6723 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+
+Z2_31MISAKIPathwayList_009EA4:
+  type: MM:PATH
+  offset: 0x009EA4
+  symbol: Z2_31MISAKIPathwayList_009EA4
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -698, 0, -4190 ]
+        - [ -10051, 0, -4276 ]
+        - [ -10068, 0, 11677 ]
+        - [ 12000, 0, 11733 ]
+        - [ -658, 0, 428 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4811, 0, 3541 ]
+        - [ 4101, 0, 3767 ]
+        - [ 3945, 0, 4859 ]
+        - [ 4933, 0, 4425 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1232, 60, 691 ]
+        - [ 1376, 60, 676 ]
+        - [ 1469, 60, 805 ]
+        - [ 1391, 60, 935 ]
+        - [ 1347, 60, 795 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -4304, 0, -1578 ]
+        - [ -4638, 0, -1062 ]
+        - [ -4600, 0, -326 ]
+        - [ -5217, 0, 80 ]
+        - [ -5890, 0, 696 ]
+        - [ -6504, 0, 826 ]
+        - [ -7322, 0, 798 ]
+        - [ -8209, 0, 1876 ]
+        - [ -7383, 0, 2778 ]
+        - [ -6619, 0, 2730 ]
+        - [ -6065, 0, 2907 ]
+        - [ -5608, 0, 3269 ]
+        - [ -5274, 0, 3732 ]
+        - [ -5094, 0, 4183 ]
+        - [ -4990, 0, 4873 ]
+        - [ -4935, 0, 5176 ]
+        - [ -2855, 0, 6541 ]
+        - [ -1945, 0, 6723 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -32, 19, -284 ]
+        - [ 643, 12, 861 ]
+        - [ 1778, 12, 1350 ]
+        - [ 3520, 4, 2209 ]
+        - [ 3935, 3, 3169 ]
+        - [ 2874, 5, 1856 ]
+        - [ 2913, 12, 1745 ]
+        - [ 2708, 12, 1632 ]
+        - [ 2633, 5, 1726 ]
+
+Z2_31MISAKICutsceneData_009F04:
+  type: MM:CUTSCENE
+  offset: 0x009F04
+  symbol: Z2_31MISAKICutsceneData_009F04
+  size: 7120
+
+Z2_31MISAKICutsceneData_00BAE4:
+  type: MM:CUTSCENE
+  offset: 0x00BAE4
+  symbol: Z2_31MISAKICutsceneData_00BAE4
+  size: 1096
+
+Z2_31MISAKICutsceneData_00BF34:
+  type: MM:CUTSCENE
+  offset: 0x00BF34
+  symbol: Z2_31MISAKICutsceneData_00BF34
+  size: 568
+
+Z2_31MISAKICutsceneData_00C174:
+  type: MM:CUTSCENE
+  offset: 0x00C174
+  symbol: Z2_31MISAKICutsceneData_00C174
+  size: 344
+
+Z2_31MISAKITex_00C550:
+  type: TEXTURE
+  offset: 0x00C550
+  symbol: Z2_31MISAKITex_00C550
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_00CD50:
+  type: TEXTURE
+  offset: 0x00CD50
+  symbol: Z2_31MISAKITex_00CD50
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_31MISAKITex_00D550:
+  type: TEXTURE
+  offset: 0x00D550
+  symbol: Z2_31MISAKITex_00D550
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_00DD50:
+  type: TEXTURE
+  offset: 0x00DD50
+  symbol: Z2_31MISAKITex_00DD50
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_31MISAKITex_00DDD0:
+  type: TEXTURE
+  offset: 0x00DDD0
+  symbol: Z2_31MISAKITex_00DDD0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_31MISAKITex_00DFD0:
+  type: TEXTURE
+  offset: 0x00DFD0
+  symbol: Z2_31MISAKITex_00DFD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_00E7D0:
+  type: TEXTURE
+  offset: 0x00E7D0
+  symbol: Z2_31MISAKITex_00E7D0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_31MISAKITex_00EFD0:
+  type: TEXTURE
+  offset: 0x00EFD0
+  symbol: Z2_31MISAKITex_00EFD0
+  format: I4
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_00F1D0:
+  type: TEXTURE
+  offset: 0x00F1D0
+  symbol: Z2_31MISAKITex_00F1D0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_00F9D0:
+  type: TEXTURE
+  offset: 0x00F9D0
+  symbol: Z2_31MISAKITex_00F9D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_0101D0:
+  type: TEXTURE
+  offset: 0x0101D0
+  symbol: Z2_31MISAKITex_0101D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_0109D0:
+  type: TEXTURE
+  offset: 0x0109D0
+  symbol: Z2_31MISAKITex_0109D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_0111D0:
+  type: TEXTURE
+  offset: 0x0111D0
+  symbol: Z2_31MISAKITex_0111D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_0119D0:
+  type: TEXTURE
+  offset: 0x0119D0
+  symbol: Z2_31MISAKITex_0119D0
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_0121D0:
+  type: TEXTURE
+  offset: 0x0121D0
+  symbol: Z2_31MISAKITex_0121D0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_31MISAKITex_0129D0:
+  type: TEXTURE
+  offset: 0x0129D0
+  symbol: Z2_31MISAKITex_0129D0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_0131D0:
+  type: TEXTURE
+  offset: 0x0131D0
+  symbol: Z2_31MISAKITex_0131D0
+  format: I4
+  width: 32
+  height: 64
+
+Z2_31MISAKITLUT_0135D0:
+  type: TEXTURE
+  offset: 0x0135D0
+  symbol: Z2_31MISAKITLUT_0135D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_31MISAKITex_0135F0:
+  type: TEXTURE
+  offset: 0x0135F0
+  symbol: Z2_31MISAKITex_0135F0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_31MISAKITex_013DF0:
+  type: TEXTURE
+  offset: 0x013DF0
+  symbol: Z2_31MISAKITex_013DF0
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_31MISAKITex_0145F0:
+  type: TEXTURE
+  offset: 0x0145F0
+  symbol: Z2_31MISAKITex_0145F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_0149F0:
+  type: TEXTURE
+  offset: 0x0149F0
+  symbol: Z2_31MISAKITex_0149F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_014DF0:
+  type: TEXTURE
+  offset: 0x014DF0
+  symbol: Z2_31MISAKITex_014DF0
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_015DF0:
+  type: TEXTURE
+  offset: 0x015DF0
+  symbol: Z2_31MISAKITex_015DF0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_31MISAKITex_015FF0:
+  type: TEXTURE
+  offset: 0x015FF0
+  symbol: Z2_31MISAKITex_015FF0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_31MISAKITex_0163F0:
+  type: TEXTURE
+  offset: 0x0163F0
+  symbol: Z2_31MISAKITex_0163F0
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_31MISAKITex_016BF0:
+  type: TEXTURE
+  offset: 0x016BF0
+  symbol: Z2_31MISAKITex_016BF0
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_31MISAKITex_0173F0:
+  type: TEXTURE
+  offset: 0x0173F0
+  symbol: Z2_31MISAKITex_0173F0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_31MISAKITex_017BF0:
+  type: TEXTURE
+  offset: 0x017BF0
+  symbol: Z2_31MISAKITex_017BF0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_0183F0:
+  type: TEXTURE
+  offset: 0x0183F0
+  symbol: Z2_31MISAKITex_0183F0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_31MISAKITex_018BF0:
+  type: TEXTURE
+  offset: 0x018BF0
+  symbol: Z2_31MISAKITex_018BF0
+  format: IA8
+  width: 32
+  height: 8
+
+Z2_31MISAKITLUT_018CF0:
+  type: TEXTURE
+  offset: 0x018CF0
+  symbol: Z2_31MISAKITLUT_018CF0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_31MISAKITLUT_018D10:
+  type: TEXTURE
+  offset: 0x018D10
+  symbol: Z2_31MISAKITLUT_018D10
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_31MISAKITLUT_018D30:
+  type: TEXTURE
+  offset: 0x018D30
+  symbol: Z2_31MISAKITLUT_018D30
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_31MISAKITLUT_018D50:
+  type: TEXTURE
+  offset: 0x018D50
+  symbol: Z2_31MISAKITLUT_018D50
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_31MISAKITLUT_018F50:
+  type: TEXTURE
+  offset: 0x018F50
+  symbol: Z2_31MISAKITLUT_018F50
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_31MISAKITLUT_018F70:
+  type: TEXTURE
+  offset: 0x018F70
+  symbol: Z2_31MISAKITLUT_018F70
+  format: RGBA16
+  width: 4
+  height: 4

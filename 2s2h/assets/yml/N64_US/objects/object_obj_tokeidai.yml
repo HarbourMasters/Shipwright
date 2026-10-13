@@ -1,0 +1,509 @@
+:config:
+  segments:
+    - [ 6, 0x011E3240 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011E3240 ]
+    - [ 9, 0x011E3240 ]
+    - [ 10, 0x011E3240 ]
+    - [ 11, 0x011E3240 ]
+    - [ 12, 0x011E3240 ]
+    - [ 13, 0x011E3240 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gClockTowerBrickTex:
+  type: TEXTURE
+  offset: 0x1040
+  symbol: gClockTowerBrickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerClockCenterAndHandDL:
+  type: GFX
+  offset: 0xBEE8
+  symbol: gClockTowerClockCenterAndHandDL
+
+gClockTowerClockCenterSidesTex:
+  type: TEXTURE
+  offset: 0x3640
+  symbol: gClockTowerClockCenterSidesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerClockCenterTex:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: gClockTowerClockCenterTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gClockTowerClockFaceBackTex:
+  type: TEXTURE
+  offset: 0xDAC0
+  symbol: gClockTowerClockFaceBackTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gClockTowerClockFaceBottomTLUT:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gClockTowerClockFaceBottomTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTowerClockFaceBottomTex:
+  type: TEXTURE
+  offset: 0x5A40
+  symbol: gClockTowerClockFaceBottomTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTowerClockFaceDL:
+  type: GFX
+  offset: 0xE818
+  symbol: gClockTowerClockFaceDL
+
+gClockTowerClockFacePanelBarTex:
+  type: TEXTURE
+  offset: 0x6240
+  symbol: gClockTowerClockFacePanelBarTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gClockTowerClockFaceTopTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gClockTowerClockFaceTopTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTowerClockFaceTopTex:
+  type: TEXTURE
+  offset: 0x5240
+  symbol: gClockTowerClockFaceTopTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTowerCounterweightBeamSide1Tex:
+  type: TEXTURE
+  offset: 0x1840
+  symbol: gClockTowerCounterweightBeamSide1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerCounterweightBeamSide2Tex:
+  type: TEXTURE
+  offset: 0x2040
+  symbol: gClockTowerCounterweightBeamSide2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerCounterweightDL:
+  type: GFX
+  offset: 0xB208
+  symbol: gClockTowerCounterweightDL
+
+gClockTowerCounterweightMaskTex:
+  type: TEXTURE
+  offset: 0x7EC0
+  symbol: gClockTowerCounterweightMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gClockTowerEmptyDL:
+  type: GFX
+  offset: 0xD8E0
+  symbol: gClockTowerEmptyDL
+
+gClockTowerExteriorGearDL:
+  type: GFX
+  offset: 0xBA78
+  symbol: gClockTowerExteriorGearDL
+
+gClockTowerExteriorGearFaceTex:
+  type: TEXTURE
+  offset: 0x2840
+  symbol: gClockTowerExteriorGearFaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerExteriorGearSidesAndMinuteRingBackTex:
+  type: TEXTURE
+  offset: 0x3040
+  symbol: gClockTowerExteriorGearSidesAndMinuteRingBackTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gClockTowerHandTex:
+  type: TEXTURE
+  offset: 0x3840
+  symbol: gClockTowerHandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerMinuteRingDL:
+  type: GFX
+  offset: 0xCF28
+  symbol: gClockTowerMinuteRingDL
+
+gClockTowerMinuteRingFace1Tex:
+  type: TEXTURE
+  offset: 0x4240
+  symbol: gClockTowerMinuteRingFace1Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gClockTowerMinuteRingFace2Tex:
+  type: TEXTURE
+  offset: 0x4640
+  symbol: gClockTowerMinuteRingFace2Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gClockTowerMinuteRingFace3Tex:
+  type: TEXTURE
+  offset: 0x4A40
+  symbol: gClockTowerMinuteRingFace3Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gClockTowerMinuteRingSidesTex:
+  type: TEXTURE
+  offset: 0x4E40
+  symbol: gClockTowerMinuteRingSidesTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gClockTowerSpotlightBeamTex:
+  type: TEXTURE
+  offset: 0x72C0
+  symbol: gClockTowerSpotlightBeamTex
+  format: IA8
+  width: 32
+  height: 64
+
+gClockTowerSpotlightDL:
+  type: GFX
+  offset: 0xB0C0
+  symbol: gClockTowerSpotlightDL
+
+gClockTowerSpotlightMaskTex:
+  type: TEXTURE
+  offset: 0x7AC0
+  symbol: gClockTowerSpotlightMaskTex
+  format: I8
+  width: 32
+  height: 32
+
+gClockTowerSpotlightShineTex:
+  type: TEXTURE
+  offset: 0x40
+  symbol: gClockTowerSpotlightShineTex
+  format: I8
+  width: 64
+  height: 64
+
+gClockTowerStaircaseToRooftopDL:
+  type: GFX
+  offset: 0xD8E8
+  symbol: gClockTowerStaircaseToRooftopDL
+
+gClockTowerStaircaseToRooftopMaskTex:
+  type: TEXTURE
+  offset: 0x8EC0
+  symbol: gClockTowerStaircaseToRooftopMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gClockTowerSunAndMoonPanelDL:
+  type: GFX
+  offset: 0xC368
+  symbol: gClockTowerSunAndMoonPanelDL
+
+gClockTowerSunAndMoonPanelMoonTex:
+  type: TEXTURE
+  offset: 0x3C40
+  symbol: gClockTowerSunAndMoonPanelMoonTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gClockTowerSunAndMoonPanelSidesTex:
+  type: TEXTURE
+  offset: 0x3A40
+  symbol: gClockTowerSunAndMoonPanelSidesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerSunAndMoonPanelSunTex:
+  type: TEXTURE
+  offset: 0x4040
+  symbol: gClockTowerSunAndMoonPanelSunTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerTerminaFieldWallsBrickTex:
+  type: TEXTURE
+  offset: 0x9B48
+  symbol: gClockTowerTerminaFieldWallsBrickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerTerminaFieldWallsDL:
+  type: GFX
+  offset: 0x9A08
+  symbol: gClockTowerTerminaFieldWallsDL
+
+gClockTowerTerminaFieldWallsMaskTex:
+  type: TEXTURE
+  offset: 0xA348
+  symbol: gClockTowerTerminaFieldWallsMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gClockTowerUnusedBrickTex:
+  type: TEXTURE
+  offset: 0x62C0
+  symbol: gClockTowerUnusedBrickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerUnusedEmpty1DL:
+  type: GFX
+  offset: 0x9A00
+  symbol: gClockTowerUnusedEmpty1DL
+
+gClockTowerUnusedEmpty2DL:
+  type: GFX
+  offset: 0xBA70
+  symbol: gClockTowerUnusedEmpty2DL
+
+gClockTowerUnusedEmpty3DL:
+  type: GFX
+  offset: 0xBEE0
+  symbol: gClockTowerUnusedEmpty3DL
+
+gClockTowerUnusedEmpty4DL:
+  type: GFX
+  offset: 0xC360
+  symbol: gClockTowerUnusedEmpty4DL
+
+gClockTowerUnusedEmpty5DL:
+  type: GFX
+  offset: 0xCF20
+  symbol: gClockTowerUnusedEmpty5DL
+
+gClockTowerUnusedEmpty6DL:
+  type: GFX
+  offset: 0xD380
+  symbol: gClockTowerUnusedEmpty6DL
+
+gClockTowerUnusedEmpty7DL:
+  type: GFX
+  offset: 0xE810
+  symbol: gClockTowerUnusedEmpty7DL
+
+gClockTowerUnusedEmpty8DL:
+  type: GFX
+  offset: 0xF510
+  symbol: gClockTowerUnusedEmpty8DL
+
+gClockTowerUnusedMaskTex:
+  type: TEXTURE
+  offset: 0x6AC0
+  symbol: gClockTowerUnusedMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gClockTowerUnusedTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xB4E4
+  symbol: gClockTowerUnusedTexAnim
+
+gClockTowerUnusedTowerWallDL:
+  type: GFX
+  offset: 0xD388
+  symbol: gClockTowerUnusedTowerWallDL
+
+gClockTowerUnusedTowerWallMaskTex:
+  type: TEXTURE
+  offset: 0x86C0
+  symbol: gClockTowerUnusedTowerWallMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gWallClockClockFaceBackTex:
+  type: TEXTURE
+  offset: 0xF7F8
+  symbol: gWallClockClockFaceBackTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gWallClockClockFaceBottomTex:
+  type: TEXTURE
+  offset: 0xFBF8
+  symbol: gWallClockClockFaceBottomTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gWallClockClockFaceDL:
+  type: GFX
+  offset: 0xF518
+  symbol: gWallClockClockFaceDL
+
+gWallClockClockFacePanelBarTex:
+  type: TEXTURE
+  offset: 0x11BF8
+  symbol: gWallClockClockFacePanelBarTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWallClockClockFaceTopTex:
+  type: TEXTURE
+  offset: 0x10BF8
+  symbol: gWallClockClockFaceTopTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_obj_tokeidaiVtx_0096C0:
+  type: MM:ARRAY
+  offset: 0x0096C0
+  symbol: object_obj_tokeidaiVtx_0096C0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00AB50:
+  type: MM:ARRAY
+  offset: 0x00AB50
+  symbol: object_obj_tokeidaiVtx_00AB50
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00AFA0:
+  type: MM:ARRAY
+  offset: 0x00AFA0
+  symbol: object_obj_tokeidaiVtx_00AFA0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gClockTowerUnusedTexAnimColorParams_00B4CC:
+  type: BLOB
+  offset: 0x00B4CC
+  symbol: gClockTowerUnusedTexAnimColorParams_00B4CC
+  size: 0
+
+gClockTowerUnusedTexAnimTexScrollParams_00B4DC:
+  type: BLOB
+  offset: 0x00B4DC
+  symbol: gClockTowerUnusedTexAnimTexScrollParams_00B4DC
+  size: 0
+
+object_obj_tokeidaiVtx_00B500:
+  type: MM:ARRAY
+  offset: 0x00B500
+  symbol: object_obj_tokeidaiVtx_00B500
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00BC20:
+  type: MM:ARRAY
+  offset: 0x00BC20
+  symbol: object_obj_tokeidaiVtx_00BC20
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00C060:
+  type: MM:ARRAY
+  offset: 0x00C060
+  symbol: object_obj_tokeidaiVtx_00C060
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00C4F0:
+  type: MM:ARRAY
+  offset: 0x00C4F0
+  symbol: object_obj_tokeidaiVtx_00C4F0
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00D260:
+  type: MM:ARRAY
+  offset: 0x00D260
+  symbol: object_obj_tokeidaiVtx_00D260
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00D480:
+  type: MM:ARRAY
+  offset: 0x00D480
+  symbol: object_obj_tokeidaiVtx_00D480
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00DEC0:
+  type: MM:ARRAY
+  offset: 0x00DEC0
+  symbol: object_obj_tokeidaiVtx_00DEC0
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_tokeidaiVtx_00EBE0:
+  type: MM:ARRAY
+  offset: 0x00EBE0
+  symbol: object_obj_tokeidaiVtx_00EBE0
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,116 @@
+:config:
+  segments:
+    - [ 6, 0x01357D80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01357D80 ]
+    - [ 9, 0x01357D80 ]
+    - [ 10, 0x01357D80 ]
+    - [ 11, 0x01357D80 ]
+    - [ 12, 0x01357D80 ]
+    - [ 13, 0x01357D80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_danpei_object_Colheader_000D60:
+  type: MM:COLLISION
+  offset: 0xD60
+  symbol: object_danpei_object_Colheader_000D60
+
+object_danpei_object_DL_000300:
+  type: GFX
+  offset: 0x300
+  symbol: object_danpei_object_DL_000300
+
+object_danpei_object_DL_0012C0:
+  type: GFX
+  offset: 0x12C0
+  symbol: object_danpei_object_DL_0012C0
+
+object_danpei_object_DL_002110:
+  type: GFX
+  offset: 0x2110
+  symbol: object_danpei_object_DL_002110
+
+object_danpei_object_TLUT_000438:
+  type: TEXTURE
+  offset: 0x438
+  symbol: object_danpei_object_TLUT_000438
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_danpei_object_TLUT_002B10:
+  type: TEXTURE
+  offset: 0x2B10
+  symbol: object_danpei_object_TLUT_002B10
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_danpei_object_Tex_000458:
+  type: TEXTURE
+  offset: 0x458
+  symbol: object_danpei_object_Tex_000458
+  format: CI4
+  width: 64
+  height: 64
+
+object_danpei_object_Tex_002D10:
+  type: TEXTURE
+  offset: 0x2D10
+  symbol: object_danpei_object_Tex_002D10
+  format: CI8
+  width: 32
+  height: 64
+
+object_danpei_object_Tex_003510:
+  type: TEXTURE
+  offset: 0x3510
+  symbol: object_danpei_object_Tex_003510
+  format: CI8
+  width: 32
+  height: 32
+
+object_danpei_object_Tex_003910:
+  type: TEXTURE
+  offset: 0x3910
+  symbol: object_danpei_object_Tex_003910
+  format: CI8
+  width: 32
+  height: 32
+
+object_danpei_object_Tex_003D10:
+  type: TEXTURE
+  offset: 0x3D10
+  symbol: object_danpei_object_Tex_003D10
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_danpei_objectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_danpei_objectVtx_000000
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_danpei_objectVtx_000D90:
+  type: MM:ARRAY
+  offset: 0x000D90
+  symbol: object_danpei_objectVtx_000D90
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_danpei_objectVtx_001BC0:
+  type: MM:ARRAY
+  offset: 0x001BC0
+  symbol: object_danpei_objectVtx_001BC0
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

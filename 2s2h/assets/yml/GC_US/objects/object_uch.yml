@@ -1,0 +1,406 @@
+:config:
+  segments:
+    - [ 6, 0x015711C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015711C0 ]
+    - [ 9, 0x015711C0 ]
+    - [ 10, 0x015711C0 ]
+    - [ 11, 0x015711C0 ]
+    - [ 12, 0x015711C0 ]
+    - [ 13, 0x015711C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gAlienDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x608
+  symbol: gAlienDeathAnim
+
+gAlienDeathFlashDL:
+  type: GFX
+  offset: 0x720
+  symbol: gAlienDeathFlashDL
+
+gAlienDeathFlashMaskTex:
+  type: TEXTURE
+  offset: 0x7B8
+  symbol: gAlienDeathFlashMaskTex
+  format: IA16
+  width: 32
+  height: 32
+
+gAlienEmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x560
+  symbol: gAlienEmptyTexAnim
+
+gAlienEyeBeamDL:
+  type: GFX
+  offset: 0x80
+  symbol: gAlienEyeBeamDL
+
+gAlienEyeBeamMaskTex:
+  type: TEXTURE
+  offset: 0x130
+  symbol: gAlienEyeBeamMaskTex
+  format: I8
+  width: 32
+  height: 32
+
+gAlienEyeBeamTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x550
+  symbol: gAlienEyeBeamTexAnim
+
+gAlienEyeTex:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: gAlienEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gAlienFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D80
+  symbol: gAlienFloatAnim
+
+gAlienHandsAndTorsoUndersideTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gAlienHandsAndTorsoUndersideTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAlienHeadBackTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gAlienHeadBackTex
+  format: CI8
+  width: 16
+  height: 32
+
+gAlienHeadDL:
+  type: GFX
+  offset: 0x2CD0
+  symbol: gAlienHeadDL
+
+gAlienHeadFrontAndArmsTex:
+  type: TEXTURE
+  offset: 0x4180
+  symbol: gAlienHeadFrontAndArmsTex
+  format: CI8
+  width: 16
+  height: 32
+
+gAlienHeadLimb:
+  type: OOT:LIMB
+  offset: 0x4DF8
+  symbol: gAlienHeadLimb
+  limb_type: Standard
+
+gAlienHoldingCowAnim:
+  type: OOT:ANIMATION
+  offset: 0x1674
+  symbol: gAlienHoldingCowAnim
+
+gAlienJerkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x6C8
+  symbol: gAlienJerkingAnim
+
+gAlienLeftEyeDL:
+  type: GFX
+  offset: 0x2FA8
+  symbol: gAlienLeftEyeDL
+
+gAlienLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0x4E04
+  symbol: gAlienLeftEyeLimb
+  limb_type: Standard
+
+gAlienLeftForearmDL:
+  type: GFX
+  offset: 0x3290
+  symbol: gAlienLeftForearmDL
+
+gAlienLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x4DE0
+  symbol: gAlienLeftForearmLimb
+  limb_type: Standard
+
+gAlienLeftHandDL:
+  type: GFX
+  offset: 0x3410
+  symbol: gAlienLeftHandDL
+
+gAlienLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x4DEC
+  symbol: gAlienLeftHandLimb
+  limb_type: Standard
+
+gAlienLeftShoulderDL:
+  type: GFX
+  offset: 0x3048
+  symbol: gAlienLeftShoulderDL
+
+gAlienLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x4DC8
+  symbol: gAlienLeftShoulderLimb
+  limb_type: Standard
+
+gAlienLeftUpperArmDL:
+  type: GFX
+  offset: 0x3128
+  symbol: gAlienLeftUpperArmDL
+
+gAlienLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4DD4
+  symbol: gAlienLeftUpperArmLimb
+  limb_type: Standard
+
+gAlienRightEyeDL:
+  type: GFX
+  offset: 0x2F08
+  symbol: gAlienRightEyeDL
+
+gAlienRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0x4E10
+  symbol: gAlienRightEyeLimb
+  limb_type: Standard
+
+gAlienRightForearmDL:
+  type: GFX
+  offset: 0x3A28
+  symbol: gAlienRightForearmDL
+
+gAlienRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x4DB0
+  symbol: gAlienRightForearmLimb
+  limb_type: Standard
+
+gAlienRightHandDL:
+  type: GFX
+  offset: 0x3BA8
+  symbol: gAlienRightHandDL
+
+gAlienRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x4DBC
+  symbol: gAlienRightHandLimb
+  limb_type: Standard
+
+gAlienRightShoulderDL:
+  type: GFX
+  offset: 0x37E0
+  symbol: gAlienRightShoulderDL
+
+gAlienRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x4D98
+  symbol: gAlienRightShoulderLimb
+  limb_type: Standard
+
+gAlienRightUpperArmDL:
+  type: GFX
+  offset: 0x38C0
+  symbol: gAlienRightUpperArmDL
+
+gAlienRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4DA4
+  symbol: gAlienRightUpperArmLimb
+  limb_type: Standard
+
+gAlienRootLimb:
+  type: OOT:LIMB
+  offset: 0x4D80
+  symbol: gAlienRootLimb
+  limb_type: Standard
+
+gAlienSkel:
+  type: MM:SKELETON
+  offset: 0x4E50
+  symbol: gAlienSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gAlienTLUT:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gAlienTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAlienTorsoDL:
+  type: GFX
+  offset: 0x35E8
+  symbol: gAlienTorsoDL
+
+gAlienTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x4D8C
+  symbol: gAlienTorsoLimb
+  limb_type: Standard
+
+gAlienTorsoTex:
+  type: TEXTURE
+  offset: 0x3F80
+  symbol: gAlienTorsoTex
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_uchVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_uchVtx_000000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAlienEyeBeamTexAnimTexCycleParams_000538:
+  type: BLOB
+  offset: 0x000538
+  symbol: gAlienEyeBeamTexAnimTexCycleParams_000538
+  size: 0
+
+gAlienEyeBeamTexAnimTexScrollParams_000548:
+  type: BLOB
+  offset: 0x000548
+  symbol: gAlienEyeBeamTexAnimTexScrollParams_000548
+  size: 0
+
+object_uchVtx_0006E0:
+  type: MM:ARRAY
+  offset: 0x0006E0
+  symbol: object_uchVtx_0006E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_001D90:
+  type: MM:ARRAY
+  offset: 0x001D90
+  symbol: object_uchVtx_001D90
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_001EA0:
+  type: MM:ARRAY
+  offset: 0x001EA0
+  symbol: object_uchVtx_001EA0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002060:
+  type: MM:ARRAY
+  offset: 0x002060
+  symbol: object_uchVtx_002060
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_0021C0:
+  type: MM:ARRAY
+  offset: 0x0021C0
+  symbol: object_uchVtx_0021C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_0022D0:
+  type: MM:ARRAY
+  offset: 0x0022D0
+  symbol: object_uchVtx_0022D0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002340:
+  type: MM:ARRAY
+  offset: 0x002340
+  symbol: object_uchVtx_002340
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002500:
+  type: MM:ARRAY
+  offset: 0x002500
+  symbol: object_uchVtx_002500
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002660:
+  type: MM:ARRAY
+  offset: 0x002660
+  symbol: object_uchVtx_002660
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002770:
+  type: MM:ARRAY
+  offset: 0x002770
+  symbol: object_uchVtx_002770
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_0027E0:
+  type: MM:ARRAY
+  offset: 0x0027E0
+  symbol: object_uchVtx_0027E0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002C30:
+  type: MM:ARRAY
+  offset: 0x002C30
+  symbol: object_uchVtx_002C30
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_uchVtx_002C80:
+  type: MM:ARRAY
+  offset: 0x002C80
+  symbol: object_uchVtx_002C80
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAlienSkelLimbs:
+  type: BLOB
+  offset: 0x4E1C
+  symbol: gAlienSkelLimbs
+  size: 0

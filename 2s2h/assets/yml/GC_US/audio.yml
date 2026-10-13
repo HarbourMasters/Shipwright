@@ -1,0 +1,2264 @@
+:config:
+  segments:
+    - [ 128, 0x00A77120 ]
+    - [ 1, 0x00021060 ]
+    - [ 2, 0x00047450 ]
+    - [ 3, 0x000988D0 ]
+
+audio:
+  type: MM:AUDIO
+  offset: 0x00
+  symbol: audio
+  sound_font_table_offset: 0x138F10
+  sequence_table_offset: 0x1393C0
+  sample_bank_table_offset: 0x139BD0
+  sequence_font_table_offset: 0x1391B0
+  sequences:
+    - Sequence_0
+    - Sequence_1
+    - TerminaField_02
+    - ChaseTheme_03
+    - MajorasMask_04
+    - SongOfHealing_05
+    - StoneTowerTemple_06
+    - InvertedStoneTowerTemple_07
+    - EventFaulure1_08
+    - EventFaulure2_09
+    - SongOfHealing(HMS)_0A
+    - SongOfHealing(Organ)_0B
+    - SouthernSwamp_0C
+    - Aliens_0D
+    - MiniGame_0E
+    - SharpsCurse_0F
+    - GreatBay_10
+    - IkanaValley_11
+    - DekuPalace_12
+    - MountainVillage_13
+    - PiratesFortress_14
+    - ClockTownDay1_15
+    - ClockTownDay2_16
+    - ClockTownDay3_17
+    - FileSelect_18
+    - ClearEvent_19
+    - Enemy_1A
+    - Boss_1B
+    - WoodfallTemple_1C
+    - ClockTownMainSequence_1D
+    - Opening_1E
+    - Interior_1F
+    - GameOver_20
+    - ClearBoss_21
+    - GetItem_22
+    - ClockTownDay2Ptr_23
+    - GetHeart_24
+    - TimedMinigame_25
+    - GoronRace_26
+    - MusicBoxHouse_27
+    - FairyFountain_28
+    - ZeldasLullaby_29
+    - RosaSisters_2A
+    - OpenChest_2B
+    - MarineResearchLab_2C
+    - GiantsTheme_2D
+    - SongOfStorms(GuruGuru)_2E
+    - RomaniRanch_2F
+    - GoronVillage_30
+    - MayorsOffice_31
+    - EponasSong(Ocarina)_32
+    - SunsSong(Ocarina)_33
+    - SongOfTime(Ocarina)_34
+    - SongOfStorms(Ocarina)_35
+    - ZoraHall_36
+    - GetMask_37
+    - Miniboss_38
+    - GetSmallItem_39
+    - AstralObservatory_3A
+    - Cavern_3B
+    - MilkBar_3C
+    - ZeldaAppear_3D
+    - SariasSOng_3E
+    - GoronRaceGoal_3F
+    - HorseRace_40
+    - HorseRaceGoal_41
+    - Ingo_42
+    - KotakePotionShop_43
+    - Shop_44
+    - Owl_45
+    - ShootingGallery_46
+    - SongOfSoaring(Ocarina)_47
+    - SongOfHealing(Ocarina)_48
+    - InvertedSongOfTime(Ocarina)_49
+    - SongOfDoubleTime(Ocarina)_4A
+    - SonataOfAwakening(Ocarina)_4B
+    - GoronLullaby(Ocarina)_4C
+    - NewWaveBossaNova_4D
+    - ElegyOfEmptiness_4E
+    - OathToOrder_4F
+    - SwordTrainingHall_50
+    - LullabyIntro(Ocarina)_51
+    - BremenMarch_52
+    - GetSong_53
+    - BalladOfTheWindFish_54
+    - SongOfSoaring_55
+    - MilkBarDuplicate_56
+    - FinalHours_57
+    - MikauRiff_58
+    - MikauFinale_59
+    - FrogSong_5A
+    - SonataOfAwakening(Ocarina)_5B
+    - GoronLullaby(Ocarina)_5C
+    - NewWaveBossaNova(Ocarina)_5D
+    - ElegyOfEmptiness(Ocarina)_5E
+    - OathToOrder(Ocarina)_5F
+    - MajorasLair_60
+    - LullabyIntroPtr(Ocarina)_61
+    - JamSessionBass_62
+    - PianoSession_63
+    - IndigoGoSession_64
+    - SnowheadTemple_65
+    - GreatBayTemple_66
+    - NewWaveSaxophone_67
+    - NewWaveVocal_68
+    - MajorasWrath_69
+    - MajorasIncarnation_6A
+    - MajorasMask_6B
+    - BassPlay_6C
+    - DrumsPlay_6D
+    - PianoPlay_6E
+    - IkanaCastle_6F
+    - GatheringGiants_70
+    - KamaroDance_71
+    - CremiaCarriage_72
+    - KeatonQuiz_73
+    - EndCredits(FirstHalf)_74
+    - OpeningLoop_75
+    - TitleTheme_76
+    - DungeonAppear_77
+    - WoodfallClear_78
+    - SnowheadClear_79
+    - Sequence_122
+    - IntoTheMoon_7B
+    - GoodbyeGiants_7C
+    - TatleAndTale_7D
+    - MoonsDestruction_7E
+    - Credits(SecondHalf)_7F
+  samples:
+    - bank: 0
+      entries:
+        - name: SAMPLE_0_0
+          offset: 0x000000
+          sample_rate: 16000
+        - name: InsectChirrup
+          offset: 0x0006E0
+          sample_rate: 16000
+        - name: BirdChirp2
+          offset: 0x0008B0
+          sample_rate: 16000
+        - name: SAMPLE_0_3
+          offset: 0x000DA0
+          sample_rate: 16000
+        - name: SAMPLE_0_4
+          offset: 0x001870
+          sample_rate: 16000
+        - name: CrowCaws
+          offset: 0x0021B0
+          sample_rate: 22050
+        - name: BirdCall
+          offset: 0x002FF0
+          sample_rate: 32000
+        - name: BirdScreech
+          offset: 0x004530
+          sample_rate: 32000
+        - name: BirdSongUnused
+          offset: 0x005760
+          sample_rate: 32000
+        - name: SAMPLE_0_9
+          offset: 0x007AB0
+          sample_rate: 22050
+        - name: SAMPLE_0_10
+          offset: 0x009010
+          sample_rate: 16000
+        - name: SmallBirdChirps
+          offset: 0x00A570
+          sample_rate: 32000
+        - name: SAMPLE_0_12
+          offset: 0x00AB90
+          sample_rate: 22050
+        - name: SlapBass1
+          offset: 0x011260
+          sample_rate: 32000
+        - name: Howling
+          offset: 0x013A90
+          sample_rate: 16000
+        - name: SAMPLE_0_15
+          offset: 0x017360
+          sample_rate: 24000
+        - name: SAMPLE_0_16
+          offset: 0x01D040
+          sample_rate: 22050
+        - name: HowlingWindShort
+          offset: 0x0237D0
+          sample_rate: 22050
+        - name: CuccoCrows
+          offset: 0x0293C0
+          sample_rate: 16000
+        - name: CawingBird
+          offset: 0x02D060
+          sample_rate: 32000
+        - name: StepGround
+          offset: 0x02E330
+          sample_rate: 22050
+        - name: StepSand
+          offset: 0x02ECB0
+          sample_rate: 16000
+        - name: StepRock
+          offset: 0x02F740
+          sample_rate: 16000
+        - name: StepJabuJabu
+          offset: 0x02FFD0
+          sample_rate: 16000
+        - name: StepWater
+          offset: 0x030A70
+          sample_rate: 16000
+        - name: StepCarpet
+          offset: 0x0314C0
+          sample_rate: 16000
+        - name: StepThickCarpet
+          offset: 0x0319F0
+          sample_rate: 8000
+        - name: StepTallGrass
+          offset: 0x031CA0
+          sample_rate: 16000
+        - name: SynthPadSting
+          offset: 0x033970
+          sample_rate: 22050
+        - name: SmallSplash
+          offset: 0x0367E0
+          sample_rate: 22050
+        - name: CrunchyDrop
+          offset: 0x038810
+          sample_rate: 16000
+        - name: StepWood
+          offset: 0x03A4E0
+          sample_rate: 16000
+        - name: SlidingBlock
+          offset: 0x03A670
+          sample_rate: 16000
+        - name: BootsSliding
+          offset: 0x03F760
+          sample_rate: 23220
+        - name: HeavySlide
+          offset: 0x0431E0
+          sample_rate: 16000
+        - name: HighStatic
+          offset: 0x045B70
+          sample_rate: 16000
+        - name: DistortedStatic
+          offset: 0x047CE0
+          sample_rate: 16000
+        - name: HeavyStatic
+          offset: 0x04B560
+          sample_rate: 16000
+        - name: LargeWaterSplash
+          offset: 0x04CB70
+          sample_rate: 16000
+        - name: Swimming
+          offset: 0x050210
+          sample_rate: 16000
+        - name: StoneDoof
+          offset: 0x051B60
+          sample_rate: 16000
+        - name: StepWoodenBridge
+          offset: 0x053320
+          sample_rate: 16000
+        - name: StepFire
+          offset: 0x053B40
+          sample_rate: 16000
+        - name: StepIce
+          offset: 0x0545D0
+          sample_rate: 16000
+        - name: SAMPLE_0_44
+          offset: 0x054BE0
+          sample_rate: 16000
+        - name: SAMPLE_0_45
+          offset: 0x055600
+          sample_rate: 16000
+        - name: SAMPLE_0_46
+          offset: 0x056D70
+          sample_rate: 24000
+        - name: SAMPLE_0_47
+          offset: 0x057CE0
+          sample_rate: 16000
+        - name: SAMPLE_0_48
+          offset: 0x058AB0
+          sample_rate: 16000
+        - name: MetalClink
+          offset: 0x0593F0
+          sample_rate: 22050
+        - name: Whish
+          offset: 0x05A110
+          sample_rate: 22050
+        - name: SheatheSword
+          offset: 0x05A580
+          sample_rate: 22050
+        - name: DrawSword
+          offset: 0x05B490
+          sample_rate: 22050
+        - name: AirSwish
+          offset: 0x05CE50
+          sample_rate: 22050
+        - name: AirWhistle
+          offset: 0x05D810
+          sample_rate: 22050
+        - name: SAMPLE_0_55
+          offset: 0x05EA00
+          sample_rate: 22050
+        - name: SwordStrikingMetalShield
+          offset: 0x061150
+          sample_rate: 22050
+        - name: MovingMetalChain
+          offset: 0x062780
+          sample_rate: 22050
+        - name: SAMPLE_0_58
+          offset: 0x063C70
+          sample_rate: 16000
+        - name: HeavyThump
+          offset: 0x0652F0
+          sample_rate: 22050
+        - name: EggHatching
+          offset: 0x065E80
+          sample_rate: 22050
+        - name: ArrowThunkinWood
+          offset: 0x0692B0
+          sample_rate: 22050
+        - name: AirWhoosh
+          offset: 0x06B570
+          sample_rate: 22050
+        - name: BrokenWood
+          offset: 0x06D6D0
+          sample_rate: 22050
+        - name: WhipSnap
+          offset: 0x06DF70
+          sample_rate: 22050
+        - name: BuzzingSynth
+          offset: 0x06F0E0
+          sample_rate: 16000
+        - name: SoftThump
+          offset: 0x0702E0
+          sample_rate: 22050
+        - name: SwordStrike
+          offset: 0x0711B0
+          sample_rate: 22050
+        - name: EyeofTruth
+          offset: 0x072660
+          sample_rate: 22050
+        - name: PoppingCork
+          offset: 0x075310
+          sample_rate: 22050
+        - name: BowstringTwang
+          offset: 0x075720
+          sample_rate: 16000
+        - name: BombchuMotor
+          offset: 0x076900
+          sample_rate: 22050
+        - name: SAMPLE_0_72
+          offset: 0x076D30
+          sample_rate: 16000
+        - name: SAMPLE_0_73
+          offset: 0x077A20
+          sample_rate: 12000
+        - name: Rupee
+          offset: 0x077D60
+          sample_rate: 45530
+        - name: SAMPLE_0_75
+          offset: 0x0797C0
+          sample_rate: 16000
+        - name: ClosingWoodenDoor
+          offset: 0x07AB10
+          sample_rate: 16000
+        - name: Explosion1
+          offset: 0x07C0A0
+          sample_rate: 16000
+        - name: Gallop
+          offset: 0x080760
+          sample_rate: 16000
+        - name: HorseNeigh
+          offset: 0x0814C0
+          sample_rate: 16000
+        - name: FlowingCreek
+          offset: 0x0854B0
+          sample_rate: 22050
+        - name: RushingWaterfall
+          offset: 0x089FA0
+          sample_rate: 16000
+        - name: MechanicallyShiftingStone
+          offset: 0x08CC10
+          sample_rate: 16000
+        - name: RollingBoulder
+          offset: 0x08DE50
+          sample_rate: 22050
+        - name: SAMPLE_0_84
+          offset: 0x08EF40
+          sample_rate: 22050
+        - name: RetractingMetalChain
+          offset: 0x0932B0
+          sample_rate: 16000
+        - name: RelaxedCuccoClucks
+          offset: 0x094DA0
+          sample_rate: 16000
+        - name: StoneStrike
+          offset: 0x096F60
+          sample_rate: 16000
+        - name: HorseSnort
+          offset: 0x098460
+          sample_rate: 16000
+        - name: WaterSplish
+          offset: 0x099D20
+          sample_rate: 16000
+        - name: WoodenStrike
+          offset: 0x09C9C0
+          sample_rate: 16000
+        - name: FlyingFairy
+          offset: 0x09CED0
+          sample_rate: 24000
+        - name: SettledStoneBlock
+          offset: 0x09DF50
+          sample_rate: 16000
+        - name: SAMPLE_0_93
+          offset: 0x09EE40
+          sample_rate: 16000
+        - name: CreakingWood
+          offset: 0x0A06C0
+          sample_rate: 16000
+        - name: Ignition
+          offset: 0x0A2100
+          sample_rate: 16000
+        - name: WarpCircleAmbience
+          offset: 0x0A3B30
+          sample_rate: 32000
+        - name: FairyMagic
+          offset: 0x0AC2E0
+          sample_rate: 16000
+        - name: WaterDrips
+          offset: 0x0AD170
+          sample_rate: 22050
+        - name: UnderwaterBubbles
+          offset: 0x0B08F0
+          sample_rate: 16000
+        - name: SAMPLE_0_100
+          offset: 0x0B2F90
+          sample_rate: 16000
+        - name: HeavyPlatformRotating
+          offset: 0x0B6920
+          sample_rate: 16000
+        - name: LightRockSlam
+          offset: 0x0B7340
+          sample_rate: 16000
+        - name: FlappingCloak
+          offset: 0x0B8FF0
+          sample_rate: 16000
+        - name: SAMPLE_0_104
+          offset: 0x0BA9D0
+          sample_rate: 16000
+        - name: ClothRipping
+          offset: 0x0BEEB0
+          sample_rate: 22050
+        - name: MechanicalRampUp
+          offset: 0x0C1000
+          sample_rate: 16000
+        - name: SAMPLE_0_107
+          offset: 0x0C3320
+          sample_rate: 16000
+        - name: ShimmeringTreasure
+          offset: 0x0C52B0
+          sample_rate: 22050
+        - name: Gunshot
+          offset: 0x0C5910
+          sample_rate: 16000
+        - name: WolfHowl
+          offset: 0x0C6980
+          sample_rate: 16000
+        - name: SAMPLE_0_111
+          offset: 0x0CB570
+          sample_rate: 16000
+        - name: DogYip
+          offset: 0x0CBDE0
+          sample_rate: 16000
+        - name: MetalDoor
+          offset: 0x0CC3D0
+          sample_rate: 16000
+        - name: CowMoo
+          offset: 0x0CDD60
+          sample_rate: 16000
+        - name: SAMPLE_0_115
+          offset: 0x0CF9A0
+          sample_rate: 22050
+        - name: SAMPLE_0_116
+          offset: 0x0D67A0
+          sample_rate: 22050
+        - name: SAMPLE_0_117
+          offset: 0x0DA370
+          sample_rate: 22050
+        - name: SAMPLE_0_118
+          offset: 0x0DBA30
+          sample_rate: 22050
+        - name: SAMPLE_0_119
+          offset: 0x0E02C0
+          sample_rate: 15950
+        - name: SAMPLE_0_120
+          offset: 0x0E0900
+          sample_rate: 16000
+        - name: SAMPLE_0_121
+          offset: 0x0E1960
+          sample_rate: 16000
+        - name: SAMPLE_0_122
+          offset: 0x0E2A20
+          sample_rate: 16000
+        - name: SAMPLE_0_123
+          offset: 0x0E3BA0
+          sample_rate: 16000
+        - name: SAMPLE_0_124
+          offset: 0x0E5BB0
+          sample_rate: 16000
+        - name: SAMPLE_0_125
+          offset: 0x0E64A0
+          sample_rate: 16000
+        - name: SAMPLE_0_126
+          offset: 0x0E8AB0
+          sample_rate: 16000
+        - name: SAMPLE_0_127
+          offset: 0x0E9940
+          sample_rate: 16000
+        - name: SAMPLE_0_128
+          offset: 0x0EA700
+          sample_rate: 16000
+        - name: SAMPLE_0_129
+          offset: 0x0EB5D0
+          sample_rate: 22050
+        - name: SAMPLE_0_130
+          offset: 0x0EC280
+          sample_rate: 12000
+        - name: SAMPLE_0_131
+          offset: 0x0EDED0
+          sample_rate: 16000
+        - name: SAMPLE_0_132
+          offset: 0x0EE7A0
+          sample_rate: 16000
+        - name: SAMPLE_0_133
+          offset: 0x0F09A0
+          sample_rate: 8000
+        - name: SAMPLE_0_134
+          offset: 0x0F14B0
+          sample_rate: 16000
+        - name: SAMPLE_0_135
+          offset: 0x0F2B20
+          sample_rate: 16000
+        - name: SAMPLE_0_136
+          offset: 0x0F4810
+          sample_rate: 16000
+        - name: SAMPLE_0_137
+          offset: 0x0F4A30
+          sample_rate: 16000
+        - name: DialogueContinueHarp
+          offset: 0x0F4C10
+          sample_rate: 16000
+        - name: DongFailedLearning
+          offset: 0x0F9070
+          sample_rate: 22050
+        - name: Whistle
+          offset: 0x0FB3E0
+          sample_rate: 16000
+        - name: ClangingBells
+          offset: 0x0FBB20
+          sample_rate: 22050
+        - name: PersonWhistling
+          offset: 0x0FD330
+          sample_rate: 22050
+        - name: ZTarget
+          offset: 0x100DD0
+          sample_rate: 16000
+        - name: EnemyTargetLockOn
+          offset: 0x102290
+          sample_rate: 16000
+        - name: SAMPLE_0_145
+          offset: 0x104620
+          sample_rate: 16000
+        - name: BrokenPottery
+          offset: 0x107050
+          sample_rate: 16000
+        - name: ShatteredGlass
+          offset: 0x108620
+          sample_rate: 16000
+        - name: SAMPLE_0_148
+          offset: 0x10A780
+          sample_rate: 20000
+        - name: AdultLinkAttack1
+          offset: 0x10B800
+          sample_rate: 20000
+        - name: SAMPLE_0_150
+          offset: 0x10CA60
+          sample_rate: 20000
+        - name: AdultLinkAttack2
+          offset: 0x10DB90
+          sample_rate: 20000
+        - name: SAMPLE_0_152
+          offset: 0x10EAF0
+          sample_rate: 20000
+        - name: AdultLinkAttack3
+          offset: 0x10FF20
+          sample_rate: 20000
+        - name: SAMPLE_0_154
+          offset: 0x110920
+          sample_rate: 20000
+        - name: AdultLinkAttack4
+          offset: 0x111BE0
+          sample_rate: 20000
+        - name: SAMPLE_0_156
+          offset: 0x112A50
+          sample_rate: 20000
+        - name: AdultLinkHup
+          offset: 0x1140E0
+          sample_rate: 20000
+        - name: AdultLinkGasp1
+          offset: 0x114790
+          sample_rate: 20000
+        - name: AdultLinkStrongAttack1
+          offset: 0x114E20
+          sample_rate: 20000
+        - name: SAMPLE_0_160
+          offset: 0x1166D0
+          sample_rate: 20000
+        - name: AdultLinkStrongAttack2
+          offset: 0x1195A0
+          sample_rate: 20000
+        - name: SAMPLE_0_162
+          offset: 0x11AD20
+          sample_rate: 20000
+        - name: SAMPLE_0_163
+          offset: 0x11DA10
+          sample_rate: 20000
+        - name: SAMPLE_0_164
+          offset: 0x11EA00
+          sample_rate: 20000
+        - name: SAMPLE_0_165
+          offset: 0x11FA20
+          sample_rate: 20000
+        - name: SAMPLE_0_166
+          offset: 0x120FA0
+          sample_rate: 20000
+        - name: SAMPLE_0_167
+          offset: 0x122370
+          sample_rate: 20000
+        - name: SAMPLE_0_168
+          offset: 0x122E70
+          sample_rate: 20000
+        - name: SAMPLE_0_169
+          offset: 0x124070
+          sample_rate: 20000
+        - name: SAMPLE_0_170
+          offset: 0x1268E0
+          sample_rate: 20000
+        - name: SAMPLE_0_171
+          offset: 0x127730
+          sample_rate: 20000
+        - name: SAMPLE_0_172
+          offset: 0x128990
+          sample_rate: 20000
+        - name: SAMPLE_0_173
+          offset: 0x1298F0
+          sample_rate: 20000
+        - name: SAMPLE_0_174
+          offset: 0x12B5D0
+          sample_rate: 20000
+        - name: SAMPLE_0_175
+          offset: 0x12E040
+          sample_rate: 20000
+        - name: SAMPLE_0_176
+          offset: 0x130340
+          sample_rate: 20000
+        - name: SAMPLE_0_177
+          offset: 0x1324D0
+          sample_rate: 20000
+        - name: SAMPLE_0_178
+          offset: 0x1347A0
+          sample_rate: 20000
+        - name: AdultLinkFalling1
+          offset: 0x136B70
+          sample_rate: 20000
+        - name: SAMPLE_0_180
+          offset: 0x13D8F0
+          sample_rate: 20000
+        - name: AdultLinkFalling2
+          offset: 0x148670
+          sample_rate: 20000
+        - name: SAMPLE_0_182
+          offset: 0x14E930
+          sample_rate: 20000
+        - name: SAMPLE_0_183
+          offset: 0x14F570
+          sample_rate: 20000
+        - name: SAMPLE_0_184
+          offset: 0x1501C0
+          sample_rate: 20000
+        - name: SAMPLE_0_185
+          offset: 0x151570
+          sample_rate: 20000
+        - name: SAMPLE_0_186
+          offset: 0x1535B0
+          sample_rate: 20000
+        - name: SAMPLE_0_187
+          offset: 0x154750
+          sample_rate: 20000
+        - name: SAMPLE_0_188
+          offset: 0x156730
+          sample_rate: 20000
+        - name: SAMPLE_0_189
+          offset: 0x15D360
+          sample_rate: 20000
+        - name: SAMPLE_0_190
+          offset: 0x160600
+          sample_rate: 20000
+        - name: SAMPLE_0_191
+          offset: 0x160C70
+          sample_rate: 20000
+        - name: SAMPLE_0_192
+          offset: 0x160EE0
+          sample_rate: 20000
+        - name: SAMPLE_0_193
+          offset: 0x162630
+          sample_rate: 20000
+        - name: SAMPLE_0_194
+          offset: 0x163780
+          sample_rate: 20000
+        - name: SAMPLE_0_195
+          offset: 0x164A40
+          sample_rate: 20000
+        - name: SAMPLE_0_196
+          offset: 0x1655C0
+          sample_rate: 20000
+        - name: SAMPLE_0_197
+          offset: 0x165E10
+          sample_rate: 20000
+        - name: SAMPLE_0_198
+          offset: 0x166440
+          sample_rate: 20000
+        - name: ChildLinkStrongAttack1
+          offset: 0x167D90
+          sample_rate: 20000
+        - name: ChildLinkStrongAttack2
+          offset: 0x1697D0
+          sample_rate: 20000
+        - name: SAMPLE_0_201
+          offset: 0x16B850
+          sample_rate: 20000
+        - name: SAMPLE_0_202
+          offset: 0x16CF30
+          sample_rate: 20000
+        - name: SAMPLE_0_203
+          offset: 0x16E5D0
+          sample_rate: 20000
+        - name: SAMPLE_0_204
+          offset: 0x16FDF0
+          sample_rate: 20000
+        - name: SAMPLE_0_205
+          offset: 0x170C00
+          sample_rate: 20000
+        - name: SAMPLE_0_206
+          offset: 0x172180
+          sample_rate: 20000
+        - name: SAMPLE_0_207
+          offset: 0x173AF0
+          sample_rate: 20000
+        - name: SAMPLE_0_208
+          offset: 0x174F90
+          sample_rate: 20000
+        - name: SAMPLE_0_209
+          offset: 0x176090
+          sample_rate: 20000
+        - name: SAMPLE_0_210
+          offset: 0x1768B0
+          sample_rate: 20000
+        - name: SAMPLE_0_211
+          offset: 0x1787C0
+          sample_rate: 20000
+        - name: SAMPLE_0_212
+          offset: 0x17AF50
+          sample_rate: 20000
+        - name: SAMPLE_0_213
+          offset: 0x17C5F0
+          sample_rate: 20000
+        - name: SAMPLE_0_214
+          offset: 0x1805C0
+          sample_rate: 20000
+        - name: ChildLinkGasp1
+          offset: 0x185470
+          sample_rate: 20000
+        - name: ChildLinkGasp2
+          offset: 0x186A90
+          sample_rate: 20000
+        - name: SAMPLE_0_217
+          offset: 0x188150
+          sample_rate: 20000
+        - name: SAMPLE_0_218
+          offset: 0x18A6A0
+          sample_rate: 20000
+        - name: ChildLinkGlug
+          offset: 0x18CB50
+          sample_rate: 20000
+        - name: SAMPLE_0_220
+          offset: 0x18DC40
+          sample_rate: 20000
+        - name: ChildLinkChargeUpUnused
+          offset: 0x18F630
+          sample_rate: 20000
+        - name: ChildLinkCastAttackSpell
+          offset: 0x190A20
+          sample_rate: 20000
+        - name: SAMPLE_0_223
+          offset: 0x1927A0
+          sample_rate: 20000
+        - name: SAMPLE_0_224
+          offset: 0x195E60
+          sample_rate: 20000
+        - name: SAMPLE_0_225
+          offset: 0x198A10
+          sample_rate: 20000
+        - name: SAMPLE_0_226
+          offset: 0x199200
+          sample_rate: 20000
+        - name: SAMPLE_0_227
+          offset: 0x199980
+          sample_rate: 20000
+        - name: ChildLinkShivers
+          offset: 0x19A5F0
+          sample_rate: 20000
+        - name: ChildLinkSneeze
+          offset: 0x1A0D90
+          sample_rate: 20000
+        - name: ChildLinkGrunt
+          offset: 0x1A2D30
+          sample_rate: 20000
+        - name: ChildLinkMoansFromHeat
+          offset: 0x1A3C40
+          sample_rate: 20000
+        - name: ChildLinkAwakeningGrunt
+          offset: 0x1A88A0
+          sample_rate: 20000
+        - name: ChildLinkWipingOffSweat
+          offset: 0x1A9080
+          sample_rate: 20000
+        - name: ChildLinkYawnStarts
+          offset: 0x1B09A0
+          sample_rate: 20000
+        - name: ChildLinkYawnandStretch
+          offset: 0x1B15A0
+          sample_rate: 20000
+        - name: ChildLinkStretchRefreshingly
+          offset: 0x1B5610
+          sample_rate: 20000
+        - name: GreatFairyLaughter
+          offset: 0x1B7BF0
+          sample_rate: 16000
+        - name: GreatFairyTitters
+          offset: 0x1BD8E0
+          sample_rate: 16000
+        - name: SAMPLE_0_239
+          offset: 0x1C0D40
+          sample_rate: 16000
+        - name: SAMPLE_0_240
+          offset: 0x1C3040
+          sample_rate: 16000
+        - name: IngoYowls
+          offset: 0x1C49D0
+          sample_rate: 16000
+        - name: IngoExclaims
+          offset: 0x1C75D0
+          sample_rate: 16000
+        - name: IngoHyeaaaaugh
+          offset: 0x1CA900
+          sample_rate: 16000
+        - name: IngoHyah
+          offset: 0x1CC4C0
+          sample_rate: 16000
+        - name: SAMPLE_0_245
+          offset: 0x1CD430
+          sample_rate: 16000
+        - name: SAMPLE_0_246
+          offset: 0x1D06C0
+          sample_rate: 12000
+        - name: SAMPLE_0_247
+          offset: 0x1D0B80
+          sample_rate: 12000
+        - name: SAMPLE_0_248
+          offset: 0x1D17F0
+          sample_rate: 12000
+        - name: SAMPLE_0_249
+          offset: 0x1D1F50
+          sample_rate: 12000
+        - name: SAMPLE_0_250
+          offset: 0x1D30F0
+          sample_rate: 12000
+        - name: SAMPLE_0_251
+          offset: 0x1D5770
+          sample_rate: 12000
+        - name: SAMPLE_0_252
+          offset: 0x1D60E0
+          sample_rate: 12000
+        - name: SAMPLE_0_253
+          offset: 0x1D6B50
+          sample_rate: 12000
+        - name: SAMPLE_0_254
+          offset: 0x1D86D0
+          sample_rate: 12000
+        - name: SAMPLE_0_255
+          offset: 0x1D9450
+          sample_rate: 12000
+        - name: SAMPLE_0_256
+          offset: 0x1DAE00
+          sample_rate: 12000
+        - name: SAMPLE_0_257
+          offset: 0x1DC810
+          sample_rate: 12000
+        - name: SAMPLE_0_258
+          offset: 0x1DD590
+          sample_rate: 12000
+        - name: SAMPLE_0_259
+          offset: 0x1DEE90
+          sample_rate: 12000
+        - name: SAMPLE_0_260
+          offset: 0x1E0470
+          sample_rate: 12000
+        - name: SAMPLE_0_261
+          offset: 0x1E1970
+          sample_rate: 12000
+        - name: SAMPLE_0_262
+          offset: 0x1E25A0
+          sample_rate: 12000
+        - name: SAMPLE_0_263
+          offset: 0x1E2DE0
+          sample_rate: 12000
+        - name: SAMPLE_0_264
+          offset: 0x1E36F0
+          sample_rate: 12000
+        - name: SAMPLE_0_265
+          offset: 0x1E4670
+          sample_rate: 12000
+        - name: SAMPLE_0_266
+          offset: 0x1E5DB0
+          sample_rate: 12000
+        - name: SAMPLE_0_267
+          offset: 0x1E6D70
+          sample_rate: 12000
+        - name: SAMPLE_0_268
+          offset: 0x1E73C0
+          sample_rate: 12000
+        - name: SAMPLE_0_269
+          offset: 0x1E91E0
+          sample_rate: 12000
+        - name: SAMPLE_0_270
+          offset: 0x1EAB30
+          sample_rate: 12000
+        - name: SAMPLE_0_271
+          offset: 0x1EC5F0
+          sample_rate: 12000
+        - name: SAMPLE_0_272
+          offset: 0x1EDCF0
+          sample_rate: 12000
+        - name: SAMPLE_0_273
+          offset: 0x1EF070
+          sample_rate: 12000
+        - name: SAMPLE_0_274
+          offset: 0x1F2690
+          sample_rate: 12000
+        - name: SAMPLE_0_275
+          offset: 0x1F3E20
+          sample_rate: 12000
+        - name: SAMPLE_0_276
+          offset: 0x1F4B70
+          sample_rate: 12000
+        - name: SAMPLE_0_277
+          offset: 0x1F6770
+          sample_rate: 12000
+        - name: SAMPLE_0_278
+          offset: 0x1F77E0
+          sample_rate: 12000
+        - name: SAMPLE_0_279
+          offset: 0x1F87A0
+          sample_rate: 12000
+        - name: SAMPLE_0_280
+          offset: 0x1FA1F0
+          sample_rate: 12000
+        - name: SAMPLE_0_281
+          offset: 0x1FAD30
+          sample_rate: 12000
+        - name: SAMPLE_0_282
+          offset: 0x1FB0D0
+          sample_rate: 12000
+        - name: SAMPLE_0_283
+          offset: 0x1FBD20
+          sample_rate: 12000
+        - name: SAMPLE_0_284
+          offset: 0x1FC4C0
+          sample_rate: 12000
+        - name: SAMPLE_0_285
+          offset: 0x1FD3F0
+          sample_rate: 12000
+        - name: SAMPLE_0_286
+          offset: 0x1FDBC0
+          sample_rate: 12000
+        - name: SAMPLE_0_287
+          offset: 0x1FE390
+          sample_rate: 12000
+        - name: SAMPLE_0_288
+          offset: 0x1FF3F0
+          sample_rate: 12000
+        - name: SAMPLE_0_289
+          offset: 0x200050
+          sample_rate: 12000
+        - name: SAMPLE_0_290
+          offset: 0x2009F0
+          sample_rate: 12000
+        - name: SAMPLE_0_291
+          offset: 0x2027D0
+          sample_rate: 12000
+        - name: SAMPLE_0_292
+          offset: 0x2043E0
+          sample_rate: 12000
+        - name: SAMPLE_0_293
+          offset: 0x206660
+          sample_rate: 12000
+        - name: SAMPLE_0_294
+          offset: 0x208120
+          sample_rate: 12000
+        - name: SAMPLE_0_295
+          offset: 0x208C00
+          sample_rate: 12000
+        - name: SAMPLE_0_296
+          offset: 0x209A00
+          sample_rate: 12000
+        - name: SAMPLE_0_297
+          offset: 0x20A380
+          sample_rate: 12000
+        - name: SAMPLE_0_298
+          offset: 0x20B4A0
+          sample_rate: 12000
+        - name: SAMPLE_0_299
+          offset: 0x20D5B0
+          sample_rate: 12000
+        - name: SAMPLE_0_300
+          offset: 0x20F1A0
+          sample_rate: 24000
+        - name: SAMPLE_0_301
+          offset: 0x20FBB0
+          sample_rate: 24000
+        - name: SAMPLE_0_302
+          offset: 0x2112E0
+          sample_rate: 24000
+        - name: SAMPLE_0_303
+          offset: 0x2117A0
+          sample_rate: 24000
+        - name: SAMPLE_0_304
+          offset: 0x213510
+          sample_rate: 24000
+        - name: SAMPLE_0_305
+          offset: 0x215040
+          sample_rate: 24000
+        - name: SAMPLE_0_306
+          offset: 0x217170
+          sample_rate: 24000
+        - name: SAMPLE_0_307
+          offset: 0x218B80
+          sample_rate: 12000
+        - name: SAMPLE_0_308
+          offset: 0x219900
+          sample_rate: 16000
+        - name: SAMPLE_0_309
+          offset: 0x21B470
+          sample_rate: 16000
+        - name: SAMPLE_0_310
+          offset: 0x21C660
+          sample_rate: 16000
+        - name: SAMPLE_0_311
+          offset: 0x21D430
+          sample_rate: 16000
+        - name: SAMPLE_0_312
+          offset: 0x21E100
+          sample_rate: 16000
+        - name: SAMPLE_0_313
+          offset: 0x21FF50
+          sample_rate: 16000
+        - name: SAMPLE_0_314
+          offset: 0x222620
+          sample_rate: 16000
+        - name: SAMPLE_0_315
+          offset: 0x2243A0
+          sample_rate: 16000
+        - name: SAMPLE_0_316
+          offset: 0x226580
+          sample_rate: 16000
+        - name: SAMPLE_0_317
+          offset: 0x227AC0
+          sample_rate: 16000
+        - name: SAMPLE_0_318
+          offset: 0x229080
+          sample_rate: 16000
+        - name: SAMPLE_0_319
+          offset: 0x22B010
+          sample_rate: 16000
+        - name: SAMPLE_0_320
+          offset: 0x22CD50
+          sample_rate: 16000
+        - name: SAMPLE_0_321
+          offset: 0x22EF10
+          sample_rate: 16000
+        - name: SAMPLE_0_322
+          offset: 0x230F90
+          sample_rate: 16000
+        - name: SAMPLE_0_323
+          offset: 0x233110
+          sample_rate: 16000
+        - name: SAMPLE_0_324
+          offset: 0x234560
+          sample_rate: 16000
+        - name: SAMPLE_0_325
+          offset: 0x235720
+          sample_rate: 16000
+        - name: SAMPLE_0_326
+          offset: 0x237190
+          sample_rate: 16000
+        - name: SAMPLE_0_327
+          offset: 0x238E50
+          sample_rate: 16000
+        - name: SAMPLE_0_328
+          offset: 0x23A200
+          sample_rate: 16000
+        - name: SAMPLE_0_329
+          offset: 0x23B270
+          sample_rate: 16000
+        - name: SAMPLE_0_330
+          offset: 0x23CDA0
+          sample_rate: 16000
+        - name: SAMPLE_0_331
+          offset: 0x23EF70
+          sample_rate: 16000
+        - name: SAMPLE_0_332
+          offset: 0x240E20
+          sample_rate: 16000
+        - name: SAMPLE_0_333
+          offset: 0x241260
+          sample_rate: 16000
+        - name: SAMPLE_0_334
+          offset: 0x2423E0
+          sample_rate: 16000
+        - name: SAMPLE_0_335
+          offset: 0x243E70
+          sample_rate: 16000
+        - name: SAMPLE_0_336
+          offset: 0x245750
+          sample_rate: 16000
+        - name: SAMPLE_0_337
+          offset: 0x245E40
+          sample_rate: 16000
+        - name: SAMPLE_0_338
+          offset: 0x246780
+          sample_rate: 16000
+        - name: SAMPLE_0_339
+          offset: 0x2479F0
+          sample_rate: 16000
+        - name: SAMPLE_0_340
+          offset: 0x2492E0
+          sample_rate: 16000
+        - name: SAMPLE_0_341
+          offset: 0x24AA40
+          sample_rate: 16000
+        - name: SAMPLE_0_342
+          offset: 0x24CA20
+          sample_rate: 16000
+        - name: SAMPLE_0_343
+          offset: 0x24E3C0
+          sample_rate: 16000
+        - name: SAMPLE_0_344
+          offset: 0x24FCB0
+          sample_rate: 16000
+        - name: SAMPLE_0_345
+          offset: 0x2513B0
+          sample_rate: 16000
+        - name: SAMPLE_0_346
+          offset: 0x251EB0
+          sample_rate: 16000
+        - name: SAMPLE_0_347
+          offset: 0x2539F0
+          sample_rate: 16000
+        - name: SAMPLE_0_348
+          offset: 0x254180
+          sample_rate: 16000
+        - name: SAMPLE_0_349
+          offset: 0x255CB0
+          sample_rate: 16000
+        - name: SAMPLE_0_350
+          offset: 0x256720
+          sample_rate: 16000
+        - name: SAMPLE_0_351
+          offset: 0x256CA0
+          sample_rate: 16000
+        - name: SAMPLE_0_352
+          offset: 0x257B30
+          sample_rate: 16000
+        - name: SAMPLE_0_353
+          offset: 0x258600
+          sample_rate: 16000
+        - name: SAMPLE_0_354
+          offset: 0x258FF0
+          sample_rate: 16000
+        - name: SAMPLE_0_355
+          offset: 0x25A450
+          sample_rate: 16000
+        - name: SAMPLE_0_356
+          offset: 0x25B2A0
+          sample_rate: 16000
+        - name: SAMPLE_0_357
+          offset: 0x25BB90
+          sample_rate: 16000
+        - name: SAMPLE_0_358
+          offset: 0x25DB00
+          sample_rate: 16000
+        - name: SAMPLE_0_359
+          offset: 0x25FD80
+          sample_rate: 16000
+        - name: SAMPLE_0_360
+          offset: 0x262630
+          sample_rate: 16000
+        - name: SAMPLE_0_361
+          offset: 0x264B20
+          sample_rate: 16000
+        - name: SAMPLE_0_362
+          offset: 0x2651F0
+          sample_rate: 16000
+        - name: SAMPLE_0_363
+          offset: 0x2665E0
+          sample_rate: 16000
+        - name: SAMPLE_0_364
+          offset: 0x267E70
+          sample_rate: 16000
+        - name: SAMPLE_0_365
+          offset: 0x26A7D0
+          sample_rate: 16000
+        - name: SAMPLE_0_366
+          offset: 0x26F5F0
+          sample_rate: 16000
+        - name: SAMPLE_0_367
+          offset: 0x270430
+          sample_rate: 16000
+        - name: SAMPLE_0_368
+          offset: 0x271500
+          sample_rate: 16000
+        - name: SAMPLE_0_369
+          offset: 0x2732E0
+          sample_rate: 16000
+        - name: SAMPLE_0_370
+          offset: 0x273AF0
+          sample_rate: 16000
+        - name: SAMPLE_0_371
+          offset: 0x275B90
+          sample_rate: 16000
+        - name: SAMPLE_0_372
+          offset: 0x277160
+          sample_rate: 16000
+        - name: Ocarina_Looped
+          offset: 0x2786B0
+          sample_rate: 32000
+        - name: Accordion
+          offset: 0x27B930
+          sample_rate: 32000
+        - name: Harp1
+          offset: 0x280060
+          sample_rate: 24000
+        - name: Malon
+          offset: 0x284590
+          sample_rate: 22050
+        - name: Flute
+          offset: 0x286000
+          sample_rate: 32000
+        - name: SAMPLE_0_378
+          offset: 0x28A690
+          sample_rate: 32000
+        - name: TamboDrum
+          offset: 0x28CFA0
+          sample_rate: 32000
+        - name: FingerCymbals
+          offset: 0x28F270
+          sample_rate: 32000
+        - name: SAMPLE_0_381
+          offset: 0x2917A0
+          sample_rate: 32000
+        - name: SAMPLE_0_382
+          offset: 0x295040
+          sample_rate: 32000
+        - name: SAMPLE_0_383
+          offset: 0x29A8F0
+          sample_rate: 22050
+        - name: Timpani
+          offset: 0x29C360
+          sample_rate: 32000
+        - name: SAMPLE_0_385
+          offset: 0x2A4740
+          sample_rate: 32000
+        - name: PianoSoft
+          offset: 0x2AFCD0
+          sample_rate: 16000
+        - name: SAMPLE_0_387
+          offset: 0x2B6570
+          sample_rate: 24000
+        - name: SAMPLE_0_388
+          offset: 0x2B82E0
+          sample_rate: 16000
+        - name: SAMPLE_0_389
+          offset: 0x2BB710
+          sample_rate: 44100
+        - name: SAMPLE_0_390
+          offset: 0x2C08A0
+          sample_rate: 16000
+        - name: SAMPLE_0_391
+          offset: 0x2C51D0
+          sample_rate: 16000
+        - name: ClatteringSpear
+          offset: 0x2C6910
+          sample_rate: 16000
+        - name: GanonsElectricalCharge
+          offset: 0x2C7130
+          sample_rate: 16000
+        - name: DramaticSwoosh
+          offset: 0x2C7D70
+          sample_rate: 16000
+        - name: RustlingLargeWings
+          offset: 0x2C9200
+          sample_rate: 16000
+        - name: CrackingEgg
+          offset: 0x2C9D30
+          sample_rate: 16000
+        - name: Gulp
+          offset: 0x2CA730
+          sample_rate: 16000
+        - name: SAMPLE_0_398
+          offset: 0x2CADA0
+          sample_rate: 16000
+        - name: SAMPLE_0_399
+          offset: 0x2CC180
+          sample_rate: 16000
+        - name: SAMPLE_0_400
+          offset: 0x2CD450
+          sample_rate: 16000
+        - name: SAMPLE_0_401
+          offset: 0x2CF810
+          sample_rate: 8000
+        - name: SAMPLE_0_402
+          offset: 0x2D0C60
+          sample_rate: 8000
+        - name: RustlingThicket
+          offset: 0x2D2490
+          sample_rate: 16000
+        - name: SAMPLE_0_404
+          offset: 0x2D2E90
+          sample_rate: 16000
+        - name: SAMPLE_0_405
+          offset: 0x2D3880
+          sample_rate: 16000
+        - name: SAMPLE_0_406
+          offset: 0x2D4550
+          sample_rate: 16000
+        - name: SAMPLE_0_407
+          offset: 0x2D5E20
+          sample_rate: 16000
+        - name: HeavyGunshot
+          offset: 0x2D76A0
+          sample_rate: 16000
+        - name: DodongoInhale
+          offset: 0x2D8140
+          sample_rate: 16000
+        - name: ResoundingSmash
+          offset: 0x2DA8A0
+          sample_rate: 16000
+        - name: CloakingPoe
+          offset: 0x2DB390
+          sample_rate: 16000
+        - name: ChitteringKeese
+          offset: 0x2DCE60
+          sample_rate: 16000
+        - name: GuayHurt
+          offset: 0x2DDA70
+          sample_rate: 16000
+        - name: Scritch
+          offset: 0x2DE370
+          sample_rate: 16000
+        - name: GruffVoice
+          offset: 0x2DE5E0
+          sample_rate: 16000
+        - name: LizalfosTriumphantCry
+          offset: 0x2DE850
+          sample_rate: 16000
+        - name: LizalfosFootPatter
+          offset: 0x2DECB0
+          sample_rate: 16000
+        - name: LizalfosLaughter
+          offset: 0x2DEED0
+          sample_rate: 16000
+        - name: DekuScrubCollapses
+          offset: 0x2DF720
+          sample_rate: 16000
+        - name: BrokenSmallPottery
+          offset: 0x2DFE90
+          sample_rate: 16000
+        - name: MonstrousGrowl
+          offset: 0x2E0A60
+          sample_rate: 16000
+        - name: MoaningPhantomGanon
+          offset: 0x2E1910
+          sample_rate: 16000
+        - name: PhantomGanonLaughing
+          offset: 0x2E42D0
+          sample_rate: 16000
+        - name: GerudoScimitarSlash
+          offset: 0x2E5E50
+          sample_rate: 16000
+        - name: SAMPLE_0_425
+          offset: 0x2E6700
+          sample_rate: 16000
+        - name: SAMPLE_0_426
+          offset: 0x2E6B00
+          sample_rate: 16000
+        - name: SAMPLE_0_427
+          offset: 0x2E74B0
+          sample_rate: 16000
+        - name: SAMPLE_0_428
+          offset: 0x2E89D0
+          sample_rate: 16000
+        - name: SAMPLE_0_429
+          offset: 0x2E9610
+          sample_rate: 16000
+        - name: SAMPLE_0_430
+          offset: 0x2EC210
+          sample_rate: 16000
+        - name: SAMPLE_0_431
+          offset: 0x2ED150
+          sample_rate: 16000
+        - name: SAMPLE_0_432
+          offset: 0x2EEAA0
+          sample_rate: 16000
+        - name: SAMPLE_0_433
+          offset: 0x2F0600
+          sample_rate: 16000
+        - name: SAMPLE_0_434
+          offset: 0x2F0BF0
+          sample_rate: 16000
+        - name: SAMPLE_0_435
+          offset: 0x2F1780
+          sample_rate: 16000
+        - name: SAMPLE_0_436
+          offset: 0x2F3850
+          sample_rate: 16000
+        - name: SAMPLE_0_437
+          offset: 0x2F5360
+          sample_rate: 16000
+        - name: DekuBabaChomp
+          offset: 0x2F63A0
+          sample_rate: 16000
+        - name: DekuBabaLunge
+          offset: 0x2F68B0
+          sample_rate: 16000
+        - name: Buzzing
+          offset: 0x2F7490
+          sample_rate: 16000
+        - name: ElectricBurst
+          offset: 0x2F87D0
+          sample_rate: 16000
+        - name: PhantomGanoninAgon
+          offset: 0x2FC270
+          sample_rate: 16000
+        - name: GoronandRedeadMoan
+          offset: 0x2FFF70
+          sample_rate: 16000
+        - name: GoronInquiring
+          offset: 0x3030E0
+          sample_rate: 16000
+        - name: GoronRecognizes
+          offset: 0x303670
+          sample_rate: 16000
+        - name: GoronYawn
+          offset: 0x304E90
+          sample_rate: 16000
+        - name: SAMPLE_0_447
+          offset: 0x306820
+          sample_rate: 16000
+        - name: IronKnuckleAttacks
+          offset: 0x308540
+          sample_rate: 16000
+        - name: IronKnuckleGruntUnused
+          offset: 0x309300
+          sample_rate: 16000
+        - name: IronKnuckleCharges
+          offset: 0x309DD0
+          sample_rate: 16000
+        - name: IronKnuckleDies
+          offset: 0x30ACA0
+          sample_rate: 16000
+        - name: IronKnuckleGrunts
+          offset: 0x30C320
+          sample_rate: 16000
+        - name: SAMPLE_0_453
+          offset: 0x30CF40
+          sample_rate: 16000
+        - name: SAMPLE_0_454
+          offset: 0x30D5D0
+          sample_rate: 16000
+        - name: SAMPLE_0_455
+          offset: 0x30E370
+          sample_rate: 16000
+        - name: SAMPLE_0_456
+          offset: 0x30EEA0
+          sample_rate: 16000
+        - name: SAMPLE_0_457
+          offset: 0x310730
+          sample_rate: 16000
+        - name: SAMPLE_0_458
+          offset: 0x311590
+          sample_rate: 16000
+        - name: SAMPLE_0_459
+          offset: 0x311B20
+          sample_rate: 16000
+        - name: SAMPLE_0_460
+          offset: 0x312590
+          sample_rate: 16000
+        - name: EnemyStruck
+          offset: 0x3129E0
+          sample_rate: 22050
+        - name: RedeadScream
+          offset: 0x3142D0
+          sample_rate: 16000
+        - name: SAMPLE_0_463
+          offset: 0x317850
+          sample_rate: 16000
+        - name: SAMPLE_0_464
+          offset: 0x31A100
+          sample_rate: 16000
+        - name: SAMPLE_0_465
+          offset: 0x31C380
+          sample_rate: 16000
+        - name: SAMPLE_0_466
+          offset: 0x31EE60
+          sample_rate: 16000
+        - name: PhantomGanonAttacks
+          offset: 0x31F980
+          sample_rate: 16000
+        - name: SAMPLE_0_468
+          offset: 0x3205A0
+          sample_rate: 16000
+        - name: SAMPLE_0_469
+          offset: 0x324A40
+          sample_rate: 16000
+        - name: SAMPLE_0_470
+          offset: 0x324F90
+          sample_rate: 16000
+        - name: SAMPLE_0_471
+          offset: 0x325BE0
+          sample_rate: 16000
+        - name: SAMPLE_0_472
+          offset: 0x327550
+          sample_rate: 16000
+        - name: SAMPLE_0_473
+          offset: 0x3294B0
+          sample_rate: 16000
+        - name: SAMPLE_0_474
+          offset: 0x32A520
+          sample_rate: 16000
+        - name: SAMPLE_0_475
+          offset: 0x32B240
+          sample_rate: 16000
+        - name: SAMPLE_0_476
+          offset: 0x32F340
+          sample_rate: 16000
+        - name: SAMPLE_0_477
+          offset: 0x330580
+          sample_rate: 16000
+        - name: SAMPLE_0_478
+          offset: 0x3318C0
+          sample_rate: 16000
+        - name: SAMPLE_0_479
+          offset: 0x332C80
+          sample_rate: 16000
+        - name: SAMPLE_0_480
+          offset: 0x3381F0
+          sample_rate: 16000
+        - name: SAMPLE_0_481
+          offset: 0x33B090
+          sample_rate: 16000
+        - name: SAMPLE_0_482
+          offset: 0x33CB40
+          sample_rate: 16000
+        - name: SAMPLE_0_483
+          offset: 0x341990
+          sample_rate: 16000
+        - name: SAMPLE_0_484
+          offset: 0x342B90
+          sample_rate: 16000
+        - name: EchoingThunderburs
+          offset: 0x344EA0
+          sample_rate: 16000
+        - name: SAMPLE_0_486
+          offset: 0x34A3D0
+          sample_rate: 16000
+        - name: SAMPLE_0_487
+          offset: 0x34C430
+          sample_rate: 16000
+        - name: SAMPLE_0_488
+          offset: 0x34E7C0
+          sample_rate: 16000
+        - name: SAMPLE_0_489
+          offset: 0x352D10
+          sample_rate: 16000
+        - name: SAMPLE_0_490
+          offset: 0x353AD0
+          sample_rate: 16000
+        - name: SAMPLE_0_491
+          offset: 0x354560
+          sample_rate: 16000
+        - name: SAMPLE_0_492
+          offset: 0x356A80
+          sample_rate: 16000
+        - name: SAMPLE_0_493
+          offset: 0x358620
+          sample_rate: 16000
+        - name: SAMPLE_0_494
+          offset: 0x35B680
+          sample_rate: 16000
+        - name: SAMPLE_0_495
+          offset: 0x35F640
+          sample_rate: 16000
+        - name: SAMPLE_0_496
+          offset: 0x362420
+          sample_rate: 16000
+        - name: SAMPLE_0_497
+          offset: 0x3630C0
+          sample_rate: 16000
+        - name: SAMPLE_0_498
+          offset: 0x366D60
+          sample_rate: 16000
+        - name: SAMPLE_0_499
+          offset: 0x367B00
+          sample_rate: 16000
+        - name: SAMPLE_0_500
+          offset: 0x36A580
+          sample_rate: 16000
+        - name: SAMPLE_0_501
+          offset: 0x36B000
+          sample_rate: 16000
+        - name: SAMPLE_0_502
+          offset: 0x36BA80
+          sample_rate: 16000
+        - name: SAMPLE_0_503
+          offset: 0x36C410
+          sample_rate: 16000
+        - name: SAMPLE_0_504
+          offset: 0x36CA80
+          sample_rate: 16000
+        - name: SAMPLE_0_505
+          offset: 0x36DDD0
+          sample_rate: 16000
+        - name: SAMPLE_0_506
+          offset: 0x36F130
+          sample_rate: 16000
+        - name: SAMPLE_0_507
+          offset: 0x370080
+          sample_rate: 16000
+        - name: SAMPLE_0_508
+          offset: 0x370A30
+          sample_rate: 16000
+        - name: SAMPLE_0_509
+          offset: 0x371C50
+          sample_rate: 16000
+        - name: SAMPLE_0_510
+          offset: 0x372FF0
+          sample_rate: 16000
+        - name: SAMPLE_0_511
+          offset: 0x375050
+          sample_rate: 16000
+        - name: SAMPLE_0_512
+          offset: 0x376D20
+          sample_rate: 16000
+        - name: SAMPLE_0_513
+          offset: 0x378920
+          sample_rate: 16000
+        - name: SAMPLE_0_514
+          offset: 0x37AD80
+          sample_rate: 16000
+        - name: SAMPLE_0_515
+          offset: 0x37BCE0
+          sample_rate: 16000
+        - name: SAMPLE_0_516
+          offset: 0x37E300
+          sample_rate: 16000
+        - name: SAMPLE_0_517
+          offset: 0x37F0A0
+          sample_rate: 16000
+        - name: SAMPLE_0_518
+          offset: 0x3804A0
+          sample_rate: 16000
+        - name: SAMPLE_0_519
+          offset: 0x380A80
+          sample_rate: 16000
+        - name: SAMPLE_0_520
+          offset: 0x381120
+          sample_rate: 22050
+        - name: SAMPLE_0_521
+          offset: 0x381890
+          sample_rate: 16000
+        - name: SAMPLE_0_522
+          offset: 0x382370
+          sample_rate: 16000
+        - name: SAMPLE_0_523
+          offset: 0x382CD0
+          sample_rate: 16000
+        - name: SAMPLE_0_524
+          offset: 0x383220
+          sample_rate: 16000
+        - name: SAMPLE_0_525
+          offset: 0x386120
+          sample_rate: 32000
+        - name: SAMPLE_0_526
+          offset: 0x386320
+          sample_rate: 16000
+        - name: SAMPLE_0_527
+          offset: 0x386550
+          sample_rate: 16000
+        - name: SAMPLE_0_528
+          offset: 0x386AE0
+          sample_rate: 16000
+        - name: SAMPLE_0_529
+          offset: 0x387050
+          sample_rate: 16000
+        - name: SAMPLE_0_530
+          offset: 0x3874B0
+          sample_rate: 16000
+        - name: SAMPLE_0_531
+          offset: 0x387CA0
+          sample_rate: 16000
+        - name: SAMPLE_0_532
+          offset: 0x388DA0
+          sample_rate: 16000
+        - name: SAMPLE_0_533
+          offset: 0x38B6A0
+          sample_rate: 16000
+        - name: SAMPLE_0_534
+          offset: 0x38C420
+          sample_rate: 32000
+        - name: SAMPLE_0_535
+          offset: 0x38D300
+          sample_rate: 16000
+        - name: SAMPLE_0_536
+          offset: 0x396B40
+          sample_rate: 16000
+        - name: SAMPLE_0_537
+          offset: 0x397530
+          sample_rate: 16000
+        - name: SAMPLE_0_538
+          offset: 0x397DB0
+          sample_rate: 16000
+        - name: SAMPLE_0_539
+          offset: 0x3987C0
+          sample_rate: 16000
+        - name: SAMPLE_0_540
+          offset: 0x399C00
+          sample_rate: 16000
+        - name: SAMPLE_0_541
+          offset: 0x39AC40
+          sample_rate: 16000
+        - name: SAMPLE_0_542
+          offset: 0x39B3B0
+          sample_rate: 16000
+        - name: SAMPLE_0_543
+          offset: 0x39B700
+          sample_rate: 16000
+        - name: SAMPLE_0_544
+          offset: 0x39CE50
+          sample_rate: 16000
+        - name: SAMPLE_0_545
+          offset: 0x39D590
+          sample_rate: 16000
+        - name: SAMPLE_0_546
+          offset: 0x39D9F0
+          sample_rate: 16000
+        - name: SAMPLE_0_547
+          offset: 0x39F4B0
+          sample_rate: 16000
+        - name: SAMPLE_0_548
+          offset: 0x3A0710
+          sample_rate: 16000
+        - name: SAMPLE_0_549
+          offset: 0x3A0F30
+          sample_rate: 16000
+        - name: SAMPLE_0_550
+          offset: 0x3A2400
+          sample_rate: 16000
+        - name: SAMPLE_0_551
+          offset: 0x3A3090
+          sample_rate: 16000
+        - name: SAMPLE_0_552
+          offset: 0x3A3500
+          sample_rate: 16000
+        - name: SAMPLE_0_553
+          offset: 0x3A4340
+          sample_rate: 32000
+        - name: SAMPLE_0_554
+          offset: 0x3A4CF0
+          sample_rate: 16000
+        - name: SAMPLE_0_555
+          offset: 0x3AB8C0
+          sample_rate: 16000
+        - name: SAMPLE_0_556
+          offset: 0x3AC4B0
+          sample_rate: 16000
+        - name: SAMPLE_0_557
+          offset: 0x3AC6D0
+          sample_rate: 32000
+        - name: SAMPLE_0_558
+          offset: 0x3AD6F0
+          sample_rate: 16000
+        - name: SAMPLE_0_559
+          offset: 0x3ADEA0
+          sample_rate: 32000
+        - name: SAMPLE_0_560
+          offset: 0x3AF120
+          sample_rate: 32000
+        - name: SAMPLE_0_561
+          offset: 0x3AFC30
+          sample_rate: 32000
+        - name: SAMPLE_0_562
+          offset: 0x3B1970
+          sample_rate: 32000
+        - name: SAMPLE_0_563
+          offset: 0x3B1DA0
+          sample_rate: 32000
+        - name: SAMPLE_0_564
+          offset: 0x3B2D90
+          sample_rate: 32000
+        - name: SAMPLE_0_565
+          offset: 0x3B3240
+          sample_rate: 32000
+        - name: SAMPLE_0_566
+          offset: 0x3B4690
+          sample_rate: 32000
+        - name: SAMPLE_0_567
+          offset: 0x3B4D10
+          sample_rate: 32000
+        - name: SAMPLE_0_568
+          offset: 0x3B9640
+          sample_rate: 32000
+        - name: SAMPLE_0_569
+          offset: 0x3BA830
+          sample_rate: 32000
+        - name: SAMPLE_0_570
+          offset: 0x3BB3C0
+          sample_rate: 16000
+        - name: SAMPLE_0_571
+          offset: 0x3BCB80
+          sample_rate: 32000
+        - name: SAMPLE_0_572
+          offset: 0x3BE0A0
+          sample_rate: 16000
+        - name: SAMPLE_0_573
+          offset: 0x3BE6C0
+          sample_rate: 16000
+        - name: SAMPLE_0_574
+          offset: 0x3BF500
+          sample_rate: 24000
+        - name: VocalAahs
+          offset: 0x3C0F20
+          sample_rate: 22050
+        - name: ResonantVocalAahs
+          offset: 0x3C83F0
+          sample_rate: 22050
+        - name: Harp2
+          offset: 0x3D0630
+          sample_rate: 24000
+        - name: Glockenspiel
+          offset: 0x3D42E0
+          sample_rate: 32000
+        - name: BassDrum1
+          offset: 0x3D9670
+          sample_rate: 22000
+        - name: SnareDrum1
+          offset: 0x3DE410
+          sample_rate: 32000
+        - name: SnareDrum2
+          offset: 0x3E0BA0
+          sample_rate: 32000
+        - name: Cymbal
+          offset: 0x3E3330
+          sample_rate: 32000
+        - name: SAMPLE_0_583
+          offset: 0x3EBAA0
+          sample_rate: 22050
+        - name: SAMPLE_0_584
+          offset: 0x3EF2C0
+          sample_rate: 32000
+        - name: SAMPLE_0_585
+          offset: 0x3F0780
+          sample_rate: 32000
+        - name: SAMPLE_0_586
+          offset: 0x3F21D0
+          sample_rate: 32000
+        - name: DrumSidestick
+          offset: 0x3F3980
+          sample_rate: 32000
+        - name: Trombone
+          offset: 0x3F43C0
+          sample_rate: 32000
+        - name: Harpsichord
+          offset: 0x3F9010
+          sample_rate: 22050
+        - name: Piano
+          offset: 0x4009E0
+          sample_rate: 32000
+        - name: Viola
+          offset: 0x40A1A0
+          sample_rate: 32000
+        - name: SAMPLE_0_592
+          offset: 0x40E220
+          sample_rate: 22050
+        - name: SAMPLE_0_593
+          offset: 0x40EBE0
+          sample_rate: 32000
+        - name: SAMPLE_0_594
+          offset: 0x411340
+          sample_rate: 32000
+        - name: SAMPLE_0_595
+          offset: 0x412620
+          sample_rate: 32000
+        - name: SAMPLE_0_596
+          offset: 0x414C60
+          sample_rate: 32000
+        - name: StringsLow
+          offset: 0x419100
+          sample_rate: 32000
+        - name: Strings1
+          offset: 0x41E120
+          sample_rate: 32000
+        - name: Strings2
+          offset: 0x4227D0
+          sample_rate: 32000
+        - name: Oboe
+          offset: 0x4264C0
+          sample_rate: 32000
+        - name: Horn
+          offset: 0x427770
+          sample_rate: 32000
+        - name: Trumpet
+          offset: 0x42F0D0
+          sample_rate: 16000
+        - name: Tuba
+          offset: 0x4328B0
+          sample_rate: 32000
+        - name: Fiddle
+          offset: 0x435820
+          sample_rate: 32000
+        - name: AcousticGuitar1
+          offset: 0x437AD0
+          sample_rate: 32000
+        - name: AcousticGuitar2
+          offset: 0x43BB30
+          sample_rate: 32000
+        - name: Bassoon
+          offset: 0x43E560
+          sample_rate: 32000
+        - name: Harp3
+          offset: 0x43FA60
+          sample_rate: 32000
+        - name: PizzicatoViolin
+          offset: 0x442D20
+          sample_rate: 32000
+        - name: BassGuitar
+          offset: 0x4461A0
+          sample_rate: 24000
+        - name: CrystalSynth
+          offset: 0x44A130
+          sample_rate: 48000
+        - name: HauntingWind
+          offset: 0x4520D0
+          sample_rate: 22050
+        - name: SAMPLE_0_613
+          offset: 0x45D9D0
+          sample_rate: 44100
+        - name: SAMPLE_0_614
+          offset: 0x4608E0
+          sample_rate: 16000
+        - name: SAMPLE_0_615
+          offset: 0x464970
+          sample_rate: 22050
+        - name: SAMPLE_0_616
+          offset: 0x46AB90
+          sample_rate: 22050
+        - name: SAMPLE_0_617
+          offset: 0x46E340
+          sample_rate: 22050
+        - name: SAMPLE_0_618
+          offset: 0x4728F0
+          sample_rate: 32000
+        - name: SAMPLE_0_619
+          offset: 0x473E10
+          sample_rate: 22050
+        - name: SAMPLE_0_620
+          offset: 0x478C20
+          sample_rate: 22050
+        - name: SAMPLE_0_621
+          offset: 0x480600
+          sample_rate: 16000
+        - name: VocalOohs
+          offset: 0x483620
+          sample_rate: 22050
+        - name: VocalEees
+          offset: 0x4889B0
+          sample_rate: 22050
+        - name: SAMPLE_0_624
+          offset: 0x48E460
+          sample_rate: 32000
+        - name: SAMPLE_0_625
+          offset: 0x491090
+          sample_rate: 32000
+        - name: SAMPLE_0_626
+          offset: 0x493E70
+          sample_rate: 32000
+        - name: SAMPLE_0_627
+          offset: 0x495240
+          sample_rate: 32000
+        - name: SAMPLE_0_628
+          offset: 0x496610
+          sample_rate: 32000
+        - name: SAMPLE_0_629
+          offset: 0x498B50
+          sample_rate: 32000
+        - name: SAMPLE_0_630
+          offset: 0x49A670
+          sample_rate: 16000
+        - name: SAMPLE_0_631
+          offset: 0x49BF60
+          sample_rate: 32000
+        - name: SAMPLE_0_632
+          offset: 0x4A5780
+          sample_rate: 32000
+        - name: SAMPLE_0_633
+          offset: 0x4AB940
+          sample_rate: 22050
+        - name: SAMPLE_0_634
+          offset: 0x4AEF20
+          sample_rate: 32000
+        - name: SAMPLE_0_635
+          offset: 0x4B0BA0
+          sample_rate: 22050
+        - name: SAMPLE_0_636
+          offset: 0x4B0CD0
+          sample_rate: 22050
+        - name: SAMPLE_0_637
+          offset: 0x4B4940
+          sample_rate: 32000
+        - name: Sitar
+          offset: 0x4B6610
+          sample_rate: 32000
+        - name: Koto
+          offset: 0x4B9CE0
+          sample_rate: 32000
+        - name: SomeMannerofDrum
+          offset: 0x4BE590
+          sample_rate: 32000
+        - name: AnotherTypeofDrum
+          offset: 0x4BF5B0
+          sample_rate: 32000
+        - name: QuickDrum
+          offset: 0x4C0DA0
+          sample_rate: 24000
+        - name: Gong
+          offset: 0x4C1CC0
+          sample_rate: 32000
+        - name: Windchimes
+          offset: 0x4CC1F0
+          sample_rate: 24000
+        - name: GoronDrum
+          offset: 0x4D1CF0
+          sample_rate: 16000
+        - name: SAMPLE_0_646
+          offset: 0x4D4230
+          sample_rate: 32000
+        - name: HarpsichordHigh
+          offset: 0x4DEB10
+          sample_rate: 32000
+        - name: SAMPLE_0_648
+          offset: 0x4E60A0
+          sample_rate: 32000
+        - name: SAMPLE_0_649
+          offset: 0x4E65F0
+          sample_rate: 22050
+        - name: Clarinet
+          offset: 0x4EC650
+          sample_rate: 16000
+        - name: SAMPLE_0_651
+          offset: 0x4ED240
+          sample_rate: 32000
+        - name: SAMPLE_0_652
+          offset: 0x4EF640
+          sample_rate: 24000
+        - name: BanjoLow
+          offset: 0x4F3440
+          sample_rate: 32000
+        - name: Banjo
+          offset: 0x4F6280
+          sample_rate: 32000
+        - name: Drum1
+          offset: 0x4F8B20
+          sample_rate: 16000
+        - name: Drum2
+          offset: 0x4FADE0
+          sample_rate: 32000
+        - name: SlapBass2
+          offset: 0x4FD5B0
+          sample_rate: 22050
+        - name: Shaker
+          offset: 0x500080
+          sample_rate: 32000
+        - name: Cowbell
+          offset: 0x500FD0
+          sample_rate: 32000
+        - name: SAMPLE_0_660
+          offset: 0x501C90
+          sample_rate: 32000
+        - name: SAMPLE_0_661
+          offset: 0x50AA40
+          sample_rate: 16000
+        - name: Marimba1
+          offset: 0x513220
+          sample_rate: 32000
+        - name: Marimba2
+          offset: 0x5158C0
+          sample_rate: 32000
+        - name: GuitarLow
+          offset: 0x517A50
+          sample_rate: 24000
+        - name: Guitar
+          offset: 0x51A230
+          sample_rate: 24000
+        - name: GuitarHigh
+          offset: 0x51C3F0
+          sample_rate: 24000
+        - name: ChurchBell
+          offset: 0x51E2C0
+          sample_rate: 22050
+        - name: SteelDrum
+          offset: 0x522F10
+          sample_rate: 32000
+        - name: SteelDrumHigh
+          offset: 0x527B70
+          sample_rate: 32000
+        - name: VocalOhs
+          offset: 0x52A260
+          sample_rate: 24000
+    - bank: 2
+      entries:
+        - name: GoronDrum
+          offset: 0x000000
+          sample_rate: 16000
+        - name: BassSlap
+          offset: 0x002540
+          sample_rate: 32000
+        - name: GoronOoh
+          offset: 0x004800
+          sample_rate: 22050
+        - name: GoronOohHigh
+          offset: 0x0072D0
+          sample_rate: 16000
+        - name: TomDrum
+          offset: 0x007B70
+          sample_rate: 22050
+        - name: ResonantBassMarimba
+          offset: 0x008630
+          sample_rate: 22050
+  fonts:
+    - name: Soundfont_0
+      index: 0
+    - name: Soundfont_1
+      index: 1
+    - name: Soundfont_2
+      index: 2
+    - name: Soundfont_3
+      index: 3
+    - name: Soundfont_4
+      index: 4
+    - name: Soundfont_5
+      index: 5
+    - name: Soundfont_6
+      index: 6
+    - name: Soundfont_7
+      index: 7
+    - name: Soundfont_8
+      index: 8
+    - name: Soundfont_9
+      index: 9
+    - name: Soundfont_10
+      index: 10
+    - name: Soundfont_11
+      index: 11
+    - name: Soundfont_12
+      index: 12
+    - name: Soundfont_13
+      index: 13
+    - name: Soundfont_14
+      index: 14
+    - name: Soundfont_15
+      index: 15
+    - name: Soundfont_16
+      index: 16
+    - name: Soundfont_17
+      index: 17
+    - name: Soundfont_18
+      index: 18
+    - name: Soundfont_19
+      index: 19
+    - name: Soundfont_20
+      index: 20
+    - name: Soundfont_21
+      index: 21
+    - name: Soundfont_22
+      index: 22
+    - name: Soundfont_23
+      index: 23
+    - name: Soundfont_24
+      index: 24
+    - name: Soundfont_25
+      index: 25
+    - name: Soundfont_26
+      index: 26
+    - name: Soundfont_27
+      index: 27
+    - name: Soundfont_28
+      index: 28
+    - name: Soundfont_29
+      index: 29
+    - name: Soundfont_30
+      index: 30
+    - name: Soundfont_31
+      index: 31
+    - name: Soundfont_32
+      index: 32
+    - name: Soundfont_33
+      index: 33
+    - name: Soundfont_34
+      index: 34
+    - name: Soundfont_35
+      index: 35
+    - name: Soundfont_36
+      index: 36
+    - name: Soundfont_37
+      index: 37
+    - name: Soundfont_38
+      index: 38
+    - name: Soundfont_39
+      index: 39
+    - name: Soundfont_40
+      index: 40
+

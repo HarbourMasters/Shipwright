@@ -1,0 +1,84 @@
+:config:
+  segments:
+    - [ 6, 0x0160ED50 ]
+
+scene_texture_04_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: scene_texture_04_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 128
+
+scene_texture_04_Tex_001000:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: scene_texture_04_Tex_001000
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_04_Tex_001800:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: scene_texture_04_Tex_001800
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_04_Tex_002000:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: scene_texture_04_Tex_002000
+  format: RGBA16
+  width: 16
+  height: 64
+
+scene_texture_04_Tex_002800:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: scene_texture_04_Tex_002800
+  format: RGBA16
+  width: 16
+  height: 64
+
+scene_texture_04_Tex_003000:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: scene_texture_04_Tex_003000
+  format: I4
+  width: 64
+  height: 64
+
+scene_texture_04_Tex_003800:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: scene_texture_04_Tex_003800
+  format: I4
+  width: 64
+  height: 64
+
+scene_texture_04_Tex_004000:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: scene_texture_04_Tex_004000
+  format: I4
+  width: 32
+  height: 32
+
+scene_texture_04_Tex_004200:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: scene_texture_04_Tex_004200
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_04_Tex_004A00:
+  type: TEXTURE
+  offset: 0x4A00
+  symbol: scene_texture_04_Tex_004A00
+  format: RGBA16
+  width: 32
+  height: 32
+

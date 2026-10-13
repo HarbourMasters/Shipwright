@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 10, 0x00E97950 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E97950 ]
+    - [ 12, 0x00E97950 ]
+    - [ 13, 0x00E97950 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_nuts_DL_001D90:
+  type: GFX
+  offset: 0x1D90
+  symbol: object_mask_nuts_DL_001D90
+
+object_mask_nuts_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_mask_nuts_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mask_nuts_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_mask_nuts_Tex_000800
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_nuts_Tex_000A00:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: object_mask_nuts_Tex_000A00
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_mask_nutsVtx_001200:
+  type: MM:ARRAY
+  offset: 0x001200
+  symbol: object_mask_nutsVtx_001200
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

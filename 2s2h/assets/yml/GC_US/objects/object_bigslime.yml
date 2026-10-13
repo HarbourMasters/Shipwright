@@ -1,0 +1,932 @@
+:config:
+  segments:
+    - [ 6, 0x01067B70 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01067B70 ]
+    - [ 9, 0x01067B70 ]
+    - [ 10, 0x01067B70 ]
+    - [ 11, 0x01067B70 ]
+    - [ 12, 0x01067B70 ]
+    - [ 13, 0x01067B70 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBigslimeBubbleDL:
+  type: GFX
+  offset: 0xF9D0
+  symbol: gBigslimeBubbleDL
+
+gBigslimeBubbleTex:
+  type: TEXTURE
+  offset: 0x11580
+  symbol: gBigslimeBubbleTex
+  format: I4
+  width: 16
+  height: 16
+
+gBigslimeEmpty1Blob:
+  type: BLOB
+  offset: 0x10028
+  size: 0x400
+  symbol: gBigslimeEmpty1Blob
+
+gBigslimeEmpty2Blob:
+  type: BLOB
+  offset: 0x104A8
+  size: 0x88
+  symbol: gBigslimeEmpty2Blob
+
+gBigslimeFrozen1Tex:
+  type: TEXTURE
+  offset: 0x12A00
+  symbol: gBigslimeFrozen1Tex
+  format: I4
+  width: 64
+  height: 64
+
+gBigslimeFrozen2Tex:
+  type: TEXTURE
+  offset: 0x13200
+  symbol: gBigslimeFrozen2Tex
+  format: I4
+  width: 32
+  height: 32
+
+gBigslimeFrozenMaterialDL:
+  type: GFX
+  offset: 0x10B80
+  symbol: gBigslimeFrozenMaterialDL
+
+gBigslimeFrozenTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x10C48
+  symbol: gBigslimeFrozenTexAnim
+
+gBigslimeIceShardDL:
+  type: GFX
+  offset: 0x10F20
+  symbol: gBigslimeIceShardDL
+
+gBigslimeIceShardTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x11008
+  symbol: gBigslimeIceShardTexAnim
+
+gBigslimeIceShardVtxDL:
+  type: GFX
+  offset: 0x10FE0
+  symbol: gBigslimeIceShardVtxDL
+
+gBigslimeModelDL:
+  type: GFX
+  offset: 0x105E8
+  symbol: gBigslimeModelDL
+
+gBigslimeNormal1Tex:
+  type: TEXTURE
+  offset: 0x11A00
+  symbol: gBigslimeNormal1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBigslimeNormal2Tex:
+  type: TEXTURE
+  offset: 0x12200
+  symbol: gBigslimeNormal2Tex
+  format: I4
+  width: 64
+  height: 64
+
+gBigslimeNormalMaterialDL:
+  type: GFX
+  offset: 0x10530
+  symbol: gBigslimeNormalMaterialDL
+
+gBigslimeShadowDL:
+  type: GFX
+  offset: 0x11050
+  symbol: gBigslimeShadowDL
+
+gBigslimeShadowTex:
+  type: TEXTURE
+  offset: 0x11600
+  symbol: gBigslimeShadowTex
+  format: I8
+  width: 32
+  height: 32
+
+gBigslimeShockwave1Tex:
+  type: TEXTURE
+  offset: 0xFC28
+  symbol: gBigslimeShockwave1Tex
+  format: I4
+  width: 32
+  height: 64
+
+gBigslimeShockwave2Tex:
+  type: TEXTURE
+  offset: 0x10428
+  symbol: gBigslimeShockwave2Tex
+  format: I4
+  width: 16
+  height: 16
+
+gBigslimeShockwaveDL:
+  type: GFX
+  offset: 0xFB40
+  symbol: gBigslimeShockwaveDL
+
+gGekkoArmLegTLUT:
+  type: TEXTURE
+  offset: 0xC028
+  symbol: gGekkoArmLegTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoBellyTex:
+  type: TEXTURE
+  offset: 0xCAA8
+  symbol: gGekkoBellyTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGekkoBodyTLUT:
+  type: TEXTURE
+  offset: 0xC228
+  symbol: gGekkoBodyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoBoxingStanceAnim:
+  type: OOT:ANIMATION
+  offset: 0xF990
+  symbol: gGekkoBoxingStanceAnim
+
+gGekkoCallAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B08
+  symbol: gGekkoCallAnim
+
+gGekkoCrawlAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E14
+  symbol: gGekkoCrawlAnim
+
+gGekkoDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x276C
+  symbol: gGekkoDamagedAnim
+
+gGekkoEyeTex:
+  type: TEXTURE
+  offset: 0xC6A8
+  symbol: gGekkoEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoEyebrowTex:
+  type: TEXTURE
+  offset: 0xD3A8
+  symbol: gGekkoEyebrowTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGekkoFallInAirAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F20
+  symbol: gGekkoFallInAirAnim
+
+gGekkoFallOnGroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x4298
+  symbol: gGekkoFallOnGroundAnim
+
+gGekkoFinTex:
+  type: TEXTURE
+  offset: 0xD428
+  symbol: gGekkoFinTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gGekkoFloorIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x225C
+  symbol: gGekkoFloorIdleAnim
+
+gGekkoFullFistPumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x994
+  symbol: gGekkoFullFistPumpAnim
+
+gGekkoHeadDL:
+  type: GFX
+  offset: 0xA510
+  symbol: gGekkoHeadDL
+
+gGekkoHeadLimb:
+  type: OOT:LIMB
+  offset: 0xDF0C
+  symbol: gGekkoHeadLimb
+  limb_type: Standard
+
+gGekkoHeadTLUT:
+  type: TEXTURE
+  offset: 0xC428
+  symbol: gGekkoHeadTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoHookPunchAnim:
+  type: OOT:ANIMATION
+  offset: 0x70C4
+  symbol: gGekkoHookPunchAnim
+
+gGekkoJabPunchAnim:
+  type: OOT:ANIMATION
+  offset: 0x347C
+  symbol: gGekkoJabPunchAnim
+
+gGekkoJawDL:
+  type: GFX
+  offset: 0xA250
+  symbol: gGekkoJawDL
+
+gGekkoJawLimb:
+  type: OOT:LIMB
+  offset: 0xDF18
+  symbol: gGekkoJawLimb
+  limb_type: Standard
+
+gGekkoJumpForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x39C4
+  symbol: gGekkoJumpForwardAnim
+
+gGekkoJumpOnSnapperAnim:
+  type: OOT:ANIMATION
+  offset: 0x4894
+  symbol: gGekkoJumpOnSnapperAnim
+
+gGekkoJumpUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E0C
+  symbol: gGekkoJumpUpAnim
+
+gGekkoKickAnim:
+  type: OOT:ANIMATION
+  offset: 0x3F28
+  symbol: gGekkoKickAnim
+
+gGekkoKnockbackAnim:
+  type: OOT:ANIMATION
+  offset: 0x5D54
+  symbol: gGekkoKnockbackAnim
+
+gGekkoLandOnSnapperAnim:
+  type: OOT:ANIMATION
+  offset: 0x52EC
+  symbol: gGekkoLandOnSnapperAnim
+
+gGekkoLeftAnkleDL:
+  type: GFX
+  offset: 0xBB30
+  symbol: gGekkoLeftAnkleDL
+
+gGekkoLeftAnkleLimb:
+  type: OOT:LIMB
+  offset: 0xDE58
+  symbol: gGekkoLeftAnkleLimb
+  limb_type: Standard
+
+gGekkoLeftEyeDL:
+  type: GFX
+  offset: 0x9FF0
+  symbol: gGekkoLeftEyeDL
+
+gGekkoLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0xDF24
+  symbol: gGekkoLeftEyeLimb
+  limb_type: Standard
+
+gGekkoLeftFootDL:
+  type: GFX
+  offset: 0xB9A8
+  symbol: gGekkoLeftFootDL
+
+gGekkoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xDE64
+  symbol: gGekkoLeftFootLimb
+  limb_type: Standard
+
+gGekkoLeftForearmDL:
+  type: GFX
+  offset: 0xB030
+  symbol: gGekkoLeftForearmDL
+
+gGekkoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xDEB8
+  symbol: gGekkoLeftForearmLimb
+  limb_type: Standard
+
+gGekkoLeftHandDL:
+  type: GFX
+  offset: 0xAE98
+  symbol: gGekkoLeftHandDL
+
+gGekkoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xDED0
+  symbol: gGekkoLeftHandLimb
+  limb_type: Standard
+
+gGekkoLeftShinDL:
+  type: GFX
+  offset: 0xBC40
+  symbol: gGekkoLeftShinDL
+
+gGekkoLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xDE4C
+  symbol: gGekkoLeftShinLimb
+  limb_type: Standard
+
+gGekkoLeftThighDL:
+  type: GFX
+  offset: 0xBD50
+  symbol: gGekkoLeftThighDL
+
+gGekkoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xDE40
+  symbol: gGekkoLeftThighLimb
+  limb_type: Standard
+
+gGekkoLeftUpperArmDL:
+  type: GFX
+  offset: 0xB140
+  symbol: gGekkoLeftUpperArmDL
+
+gGekkoLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xDEAC
+  symbol: gGekkoLeftUpperArmLimb
+  limb_type: Standard
+
+gGekkoLeftWristDL:
+  type: GFX
+  offset: 0xAF50
+  symbol: gGekkoLeftWristDL
+
+gGekkoLeftWristLimb:
+  type: OOT:LIMB
+  offset: 0xDEC4
+  symbol: gGekkoLeftWristLimb
+  limb_type: Standard
+
+gGekkoLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x66B4
+  symbol: gGekkoLookAroundAnim
+
+gGekkoMouthTex:
+  type: TEXTURE
+  offset: 0xD2A8
+  symbol: gGekkoMouthTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gGekkoNervousIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x69FC
+  symbol: gGekkoNervousIdleAnim
+
+gGekkoNostrilTex:
+  type: TEXTURE
+  offset: 0xC628
+  symbol: gGekkoNostrilTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGekkoQuickFistPumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4D50
+  symbol: gGekkoQuickFistPumpAnim
+
+gGekkoRecoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x30E4
+  symbol: gGekkoRecoverAnim
+
+gGekkoRightAnkleDL:
+  type: GFX
+  offset: 0xB660
+  symbol: gGekkoRightAnkleDL
+
+gGekkoRightAnkleLimb:
+  type: OOT:LIMB
+  offset: 0xDE88
+  symbol: gGekkoRightAnkleLimb
+  limb_type: Standard
+
+gGekkoRightEyeDL:
+  type: GFX
+  offset: 0x9D90
+  symbol: gGekkoRightEyeDL
+
+gGekkoRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0xDF30
+  symbol: gGekkoRightEyeLimb
+  limb_type: Standard
+
+gGekkoRightFootDL:
+  type: GFX
+  offset: 0xB4D8
+  symbol: gGekkoRightFootDL
+
+gGekkoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xDE94
+  symbol: gGekkoRightFootLimb
+  limb_type: Standard
+
+gGekkoRightForearmDL:
+  type: GFX
+  offset: 0xAC78
+  symbol: gGekkoRightForearmDL
+
+gGekkoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xDEE8
+  symbol: gGekkoRightForearmLimb
+  limb_type: Standard
+
+gGekkoRightHandDL:
+  type: GFX
+  offset: 0xAAF8
+  symbol: gGekkoRightHandDL
+
+gGekkoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xDF00
+  symbol: gGekkoRightHandLimb
+  limb_type: Standard
+
+gGekkoRightShinDL:
+  type: GFX
+  offset: 0xB770
+  symbol: gGekkoRightShinDL
+
+gGekkoRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xDE7C
+  symbol: gGekkoRightShinLimb
+  limb_type: Standard
+
+gGekkoRightThighDL:
+  type: GFX
+  offset: 0xB880
+  symbol: gGekkoRightThighDL
+
+gGekkoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xDE70
+  symbol: gGekkoRightThighLimb
+  limb_type: Standard
+
+gGekkoRightUpperArmDL:
+  type: GFX
+  offset: 0xAD88
+  symbol: gGekkoRightUpperArmDL
+
+gGekkoRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xDEDC
+  symbol: gGekkoRightUpperArmLimb
+  limb_type: Standard
+
+gGekkoRightWristDL:
+  type: GFX
+  offset: 0xABB0
+  symbol: gGekkoRightWristDL
+
+gGekkoRightWristLimb:
+  type: OOT:LIMB
+  offset: 0xDEF4
+  symbol: gGekkoRightWristLimb
+  limb_type: Standard
+
+gGekkoRootLimb:
+  type: OOT:LIMB
+  offset: 0xDE28
+  symbol: gGekkoRootLimb
+  limb_type: Standard
+
+gGekkoSkel:
+  type: MM:SKELETON
+  offset: 0xDF98
+  symbol: gGekkoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGekkoSpots1Tex:
+  type: TEXTURE
+  offset: 0xC8A8
+  symbol: gGekkoSpots1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoSpots2Tex:
+  type: TEXTURE
+  offset: 0xCEA8
+  symbol: gGekkoSpots2Tex
+  format: CI8
+  width: 16
+  height: 32
+
+gGekkoSpots3Tex:
+  type: TEXTURE
+  offset: 0xD828
+  symbol: gGekkoSpots3Tex
+  format: CI8
+  width: 32
+  height: 32
+
+gGekkoSqueezeAnim:
+  type: OOT:ANIMATION
+  offset: 0x50B8
+  symbol: gGekkoSqueezeAnim
+
+gGekkoStandingIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4680
+  symbol: gGekkoStandingIdleAnim
+
+gGekkoSurpriseJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x10F4
+  symbol: gGekkoSurpriseJumpAnim
+
+gGekkoSwimForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x7790
+  symbol: gGekkoSwimForwardAnim
+
+gGekkoSwimUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xF3F0
+  symbol: gGekkoSwimUpAnim
+
+gGekkoSwirlTex:
+  type: TEXTURE
+  offset: 0xDC28
+  symbol: gGekkoSwirlTex
+  format: CI8
+  width: 16
+  height: 32
+
+gGekkoToothTex:
+  type: TEXTURE
+  offset: 0xD0A8
+  symbol: gGekkoToothTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGekkoTorsoDL:
+  type: GFX
+  offset: 0xB250
+  symbol: gGekkoTorsoDL
+
+gGekkoTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xDEA0
+  symbol: gGekkoTorsoLimb
+  limb_type: Standard
+
+gGekkoWaistDL:
+  type: GFX
+  offset: 0xBE78
+  symbol: gGekkoWaistDL
+
+gGekkoWaistLimb:
+  type: OOT:LIMB
+  offset: 0xDE34
+  symbol: gGekkoWaistLimb
+  limb_type: Standard
+
+gGekkoWiggleAnim:
+  type: OOT:ANIMATION
+  offset: 0x5694
+  symbol: gGekkoWiggleAnim
+
+gGekkoWindupPunchAnim:
+  type: OOT:ANIMATION
+  offset: 0xF048
+  symbol: gGekkoWindupPunchAnim
+
+gMinislimeFrozenDL:
+  type: GFX
+  offset: 0x10DB0
+  symbol: gMinislimeFrozenDL
+
+gMinislimeFrozenTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x10EC8
+  symbol: gMinislimeFrozenTexAnim
+
+gMinislimeNormalDL:
+  type: GFX
+  offset: 0x113B0
+  symbol: gMinislimeNormalDL
+
+
+object_bigslimeVtx_0077A0:
+  type: MM:ARRAY
+  offset: 0x0077A0
+  symbol: object_bigslimeVtx_0077A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_007980:
+  type: MM:ARRAY
+  offset: 0x007980
+  symbol: object_bigslimeVtx_007980
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_007B60:
+  type: MM:ARRAY
+  offset: 0x007B60
+  symbol: object_bigslimeVtx_007B60
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_007E70:
+  type: MM:ARRAY
+  offset: 0x007E70
+  symbol: object_bigslimeVtx_007E70
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008740:
+  type: MM:ARRAY
+  offset: 0x008740
+  symbol: object_bigslimeVtx_008740
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008790:
+  type: MM:ARRAY
+  offset: 0x008790
+  symbol: object_bigslimeVtx_008790
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008850:
+  type: MM:ARRAY
+  offset: 0x008850
+  symbol: object_bigslimeVtx_008850
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_0089B0:
+  type: MM:ARRAY
+  offset: 0x0089B0
+  symbol: object_bigslimeVtx_0089B0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008AD0:
+  type: MM:ARRAY
+  offset: 0x008AD0
+  symbol: object_bigslimeVtx_008AD0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008B20:
+  type: MM:ARRAY
+  offset: 0x008B20
+  symbol: object_bigslimeVtx_008B20
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008BE0:
+  type: MM:ARRAY
+  offset: 0x008BE0
+  symbol: object_bigslimeVtx_008BE0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008D40:
+  type: MM:ARRAY
+  offset: 0x008D40
+  symbol: object_bigslimeVtx_008D40
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_008E60:
+  type: MM:ARRAY
+  offset: 0x008E60
+  symbol: object_bigslimeVtx_008E60
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_0091B0:
+  type: MM:ARRAY
+  offset: 0x0091B0
+  symbol: object_bigslimeVtx_0091B0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009370:
+  type: MM:ARRAY
+  offset: 0x009370
+  symbol: object_bigslimeVtx_009370
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_0094E0:
+  type: MM:ARRAY
+  offset: 0x0094E0
+  symbol: object_bigslimeVtx_0094E0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009610:
+  type: MM:ARRAY
+  offset: 0x009610
+  symbol: object_bigslimeVtx_009610
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009730:
+  type: MM:ARRAY
+  offset: 0x009730
+  symbol: object_bigslimeVtx_009730
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009880:
+  type: MM:ARRAY
+  offset: 0x009880
+  symbol: object_bigslimeVtx_009880
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_0099F0:
+  type: MM:ARRAY
+  offset: 0x0099F0
+  symbol: object_bigslimeVtx_0099F0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009B20:
+  type: MM:ARRAY
+  offset: 0x009B20
+  symbol: object_bigslimeVtx_009B20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_009C40:
+  type: MM:ARRAY
+  offset: 0x009C40
+  symbol: object_bigslimeVtx_009C40
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGekkoSkelLimbs:
+  type: BLOB
+  offset: 0xDF3C
+  symbol: gGekkoSkelLimbs
+  size: 0
+
+object_bigslimeVtx_00F9A0:
+  type: MM:ARRAY
+  offset: 0x00F9A0
+  symbol: object_bigslimeVtx_00F9A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_00FA70:
+  type: MM:ARRAY
+  offset: 0x00FA70
+  symbol: object_bigslimeVtx_00FA70
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBigslimeFrozenTexAnimTexScrollParams_010C40:
+  type: BLOB
+  offset: 0x010C40
+  symbol: gBigslimeFrozenTexAnimTexScrollParams_010C40
+  size: 0
+
+object_bigslimeVtx_010C50:
+  type: MM:ARRAY
+  offset: 0x010C50
+  symbol: object_bigslimeVtx_010C50
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMinislimeFrozenTexAnimTexScrollParams_010EC0:
+  type: BLOB
+  offset: 0x010EC0
+  symbol: gMinislimeFrozenTexAnimTexScrollParams_010EC0
+  size: 0
+
+object_bigslimeVtx_010ED0:
+  type: MM:ARRAY
+  offset: 0x010ED0
+  symbol: object_bigslimeVtx_010ED0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBigslimeIceShardTexAnimTexScrollParams_011000:
+  type: BLOB
+  offset: 0x011000
+  symbol: gBigslimeIceShardTexAnimTexScrollParams_011000
+  size: 0
+
+object_bigslimeVtx_011010:
+  type: MM:ARRAY
+  offset: 0x011010
+  symbol: object_bigslimeVtx_011010
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigslimeVtx_0110E0:
+  type: MM:ARRAY
+  offset: 0x0110E0
+  symbol: object_bigslimeVtx_0110E0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

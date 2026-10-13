@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 6, 0x01282000 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01282000 ]
+    - [ 9, 0x01282000 ]
+    - [ 10, 0x01282000 ]
+    - [ 11, 0x01282000 ]
+    - [ 12, 0x01282000 ]
+    - [ 13, 0x01282000 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_fu_kaiten_Colheader_002D30:
+  type: MM:COLLISION
+  offset: 0x2D30
+  symbol: object_fu_kaiten_Colheader_002D30
+
+object_fu_kaiten_Colheader_0037F8:
+  type: MM:COLLISION
+  offset: 0x37F8
+  symbol: object_fu_kaiten_Colheader_0037F8
+
+object_fu_kaiten_DL_0005D0:
+  type: GFX
+  offset: 0x5D0
+  symbol: object_fu_kaiten_DL_0005D0
+
+object_fu_kaiten_DL_002EB0:
+  type: GFX
+  offset: 0x2EB0
+  symbol: object_fu_kaiten_DL_002EB0
+
+object_fu_kaiten_DL_002FB0:
+  type: GFX
+  offset: 0x2FB0
+  symbol: object_fu_kaiten_DL_002FB0
+
+object_fu_kaiten_DL_002FC0:
+  type: GFX
+  offset: 0x2FC0
+  symbol: object_fu_kaiten_DL_002FC0
+
+object_fu_kaiten_Matanimheader_0037D8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x37D8
+  symbol: object_fu_kaiten_Matanimheader_0037D8
+
+object_fu_kaiten_TLUT_000858:
+  type: TEXTURE
+  offset: 0x858
+  symbol: object_fu_kaiten_TLUT_000858
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_fu_kaiten_Tex_000878:
+  type: TEXTURE
+  offset: 0x878
+  symbol: object_fu_kaiten_Tex_000878
+  format: CI4
+  width: 64
+  height: 64
+
+object_fu_kaiten_Tex_001078:
+  type: TEXTURE
+  offset: 0x1078
+  symbol: object_fu_kaiten_Tex_001078
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_fu_kaiten_Tex_001878:
+  type: TEXTURE
+  offset: 0x1878
+  symbol: object_fu_kaiten_Tex_001878
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fu_kaiten_Tex_002078:
+  type: TEXTURE
+  offset: 0x2078
+  symbol: object_fu_kaiten_Tex_002078
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fu_kaiten_Tex_002FD0:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: object_fu_kaiten_Tex_002FD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_fu_kaitenVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fu_kaitenVtx_000000
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_kaitenVtx_002D60:
+  type: MM:ARRAY
+  offset: 0x002D60
+  symbol: object_fu_kaitenVtx_002D60
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_kaiten_Matanimheader_0037D8TexScrollParams_0037D0:
+  type: BLOB
+  offset: 0x0037D0
+  symbol: object_fu_kaiten_Matanimheader_0037D8TexScrollParams_0037D0
+  size: 0

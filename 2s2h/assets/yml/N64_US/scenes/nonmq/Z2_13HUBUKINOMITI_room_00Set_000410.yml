@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x017EF7C0 ]
+    - [ 2, 0x017E8CC0 ]
+  directory: scenes/nonmq/Z2_13HUBUKINOMITI
+  external_files:
+    - N64_US/scenes/nonmq/Z2_13HUBUKINOMITI_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_13HUBUKINOMITI.yml
+
+Z2_13HUBUKINOMITI_room_00Set_000410:
+  type: MM:ROOM
+  offset: 0x410
+  symbol: Z2_13HUBUKINOMITI_room_00Set_000410
+  base_name: Z2_13HUBUKINOMITI_room_00

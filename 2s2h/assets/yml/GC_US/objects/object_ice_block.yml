@@ -1,0 +1,119 @@
+:config:
+  segments:
+    - [ 6, 0x01183760 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01183760 ]
+    - [ 9, 0x01183760 ]
+    - [ 10, 0x01183760 ]
+    - [ 11, 0x01183760 ]
+    - [ 12, 0x01183760 ]
+    - [ 13, 0x01183760 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gIceBlockCol:
+  type: MM:COLLISION
+  offset: 0x438
+  symbol: gIceBlockCol
+
+gIceBlockCubeDL:
+  type: GFX
+  offset: 0x1A0
+  symbol: gIceBlockCubeDL
+
+gIceBlockCubeEndDL:
+  type: GFX
+  offset: 0x310
+  symbol: gIceBlockCubeEndDL
+
+gIceBlockCubeSublimatingAirTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x328
+  symbol: gIceBlockCubeSublimatingAirTexAnim
+
+gIceBlockIce1Tex:
+  type: TEXTURE
+  offset: 0xAE0
+  symbol: gIceBlockIce1Tex
+  format: I4
+  width: 64
+  height: 64
+
+gIceBlockIce2Tex:
+  type: TEXTURE
+  offset: 0x12E0
+  symbol: gIceBlockIce2Tex
+  format: I4
+  width: 64
+  height: 64
+
+gIceBlockIceBergDL:
+  type: GFX
+  offset: 0x7F0
+  symbol: gIceBlockIceBergDL
+
+gIceBlockIceBergEndDL:
+  type: GFX
+  offset: 0x9B8
+  symbol: gIceBlockIceBergEndDL
+
+gIceBlockIceBergSublimatingAirTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x9D0
+  symbol: gIceBlockIceBergSublimatingAirTexAnim
+
+gIceBlockShardEffectDL:
+  type: GFX
+  offset: 0xA38
+  symbol: gIceBlockShardEffectDL
+
+gIceBlockShardEffectEndDL:
+  type: GFX
+  offset: 0xA30
+  symbol: gIceBlockShardEffectEndDL
+
+
+object_ice_blockVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ice_blockVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIceBlockCubeSublimatingAirTexAnimTexScrollParams_000320:
+  type: BLOB
+  offset: 0x000320
+  symbol: gIceBlockCubeSublimatingAirTexAnimTexScrollParams_000320
+  size: 0
+
+object_ice_blockVtx_000470:
+  type: MM:ARRAY
+  offset: 0x000470
+  symbol: object_ice_blockVtx_000470
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIceBlockIceBergSublimatingAirTexAnimTexScrollParams_0009C0:
+  type: BLOB
+  offset: 0x0009C0
+  symbol: gIceBlockIceBergSublimatingAirTexAnimTexScrollParams_0009C0
+  size: 0
+
+gIceBlockIceBergSublimatingAirTexAnimTexScrollParams_0009C8:
+  type: BLOB
+  offset: 0x0009C8
+  symbol: gIceBlockIceBergSublimatingAirTexAnimTexScrollParams_0009C8
+  size: 0
+
+object_ice_blockVtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: object_ice_blockVtx_0009E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

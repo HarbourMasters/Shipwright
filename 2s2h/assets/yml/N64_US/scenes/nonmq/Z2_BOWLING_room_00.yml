@@ -1,0 +1,172 @@
+:config:
+  segments:
+    - [ 3, 0x016D5540 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x016D5540 ]
+    - [ 9, 0x016D5540 ]
+    - [ 10, 0x016D5540 ]
+    - [ 11, 0x016D5540 ]
+    - [ 12, 0x016D5540 ]
+    - [ 13, 0x016D5540 ]
+    - [ 2, 0x016D25A0 ]
+  directory: scenes/nonmq/Z2_BOWLING
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_BOWLING.yml
+
+Z2_BOWLING_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_BOWLING_room_00
+
+Z2_BOWLING_room_00DL_004CF0:
+  type: GFX
+  offset: 0x4CF0
+  symbol: Z2_BOWLING_room_00DL_004CF0
+
+
+Z2_BOWLING_room_00ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_BOWLING_room_00ActorEntry_000048
+  size: 0
+
+Z2_BOWLING_room_00Vtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: Z2_BOWLING_room_00Vtx_000150
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_000210:
+  type: GFX
+  offset: 0x000210
+  symbol: Z2_BOWLING_room_00DL_000210
+
+Z2_BOWLING_room_00Vtx_000268:
+  type: MM:ARRAY
+  offset: 0x000268
+  symbol: Z2_BOWLING_room_00Vtx_000268
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_000528:
+  type: GFX
+  offset: 0x000528
+  symbol: Z2_BOWLING_room_00DL_000528
+
+Z2_BOWLING_room_00Vtx_000660:
+  type: MM:ARRAY
+  offset: 0x000660
+  symbol: Z2_BOWLING_room_00Vtx_000660
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_000B50:
+  type: GFX
+  offset: 0x000B50
+  symbol: Z2_BOWLING_room_00DL_000B50
+
+Z2_BOWLING_room_00Vtx_000CF8:
+  type: MM:ARRAY
+  offset: 0x000CF8
+  symbol: Z2_BOWLING_room_00Vtx_000CF8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_000EF8:
+  type: GFX
+  offset: 0x000EF8
+  symbol: Z2_BOWLING_room_00DL_000EF8
+
+Z2_BOWLING_room_00Vtx_001008:
+  type: MM:ARRAY
+  offset: 0x001008
+  symbol: Z2_BOWLING_room_00Vtx_001008
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_001218:
+  type: GFX
+  offset: 0x001218
+  symbol: Z2_BOWLING_room_00DL_001218
+
+Z2_BOWLING_room_00Vtx_001328:
+  type: MM:ARRAY
+  offset: 0x001328
+  symbol: Z2_BOWLING_room_00Vtx_001328
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_001728:
+  type: GFX
+  offset: 0x001728
+  symbol: Z2_BOWLING_room_00DL_001728
+
+Z2_BOWLING_room_00Vtx_001880:
+  type: MM:ARRAY
+  offset: 0x001880
+  symbol: Z2_BOWLING_room_00Vtx_001880
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_001E40:
+  type: GFX
+  offset: 0x001E40
+  symbol: Z2_BOWLING_room_00DL_001E40
+
+Z2_BOWLING_room_00Vtx_001FC8:
+  type: MM:ARRAY
+  offset: 0x001FC8
+  symbol: Z2_BOWLING_room_00Vtx_001FC8
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_002378:
+  type: GFX
+  offset: 0x002378
+  symbol: Z2_BOWLING_room_00DL_002378
+
+Z2_BOWLING_room_00Vtx_0024D0:
+  type: MM:ARRAY
+  offset: 0x0024D0
+  symbol: Z2_BOWLING_room_00Vtx_0024D0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_002610:
+  type: GFX
+  offset: 0x002610
+  symbol: Z2_BOWLING_room_00DL_002610
+
+Z2_BOWLING_room_00Vtx_0026C0:
+  type: MM:ARRAY
+  offset: 0x0026C0
+  symbol: Z2_BOWLING_room_00Vtx_0026C0
+  count: 548
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BOWLING_room_00DL_004900:
+  type: GFX
+  offset: 0x004900
+  symbol: Z2_BOWLING_room_00DL_004900

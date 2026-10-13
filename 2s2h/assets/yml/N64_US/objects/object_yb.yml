@@ -1,0 +1,485 @@
+:config:
+  segments:
+    - [ 6, 0x0157F130 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0157F130 ]
+    - [ 9, 0x0157F130 ]
+    - [ 10, 0x0157F130 ]
+    - [ 11, 0x0157F130 ]
+    - [ 12, 0x0157F130 ]
+    - [ 13, 0x0157F130 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gYbBellybuttonTex:
+  type: TEXTURE
+  offset: 0x5778
+  symbol: gYbBellybuttonTex
+  format: CI8
+  width: 8
+  height: 16
+
+gYbChestRootLimb:
+  type: OOT:LIMB
+  offset: 0x5E64
+  symbol: gYbChestRootLimb
+  limb_type: Standard
+
+gYbEmpty5E88Limb:
+  type: OOT:LIMB
+  offset: 0x5E88
+  symbol: gYbEmpty5E88Limb
+  limb_type: Standard
+
+gYbEmpty5EDCLimb:
+  type: OOT:LIMB
+  offset: 0x5EDC
+  symbol: gYbEmpty5EDCLimb
+  limb_type: Standard
+
+gYbEndDisplayList4108DL:
+  type: GFX
+  offset: 0x4108
+  symbol: gYbEndDisplayList4108DL
+
+gYbEndDisplayList4970DL:
+  type: GFX
+  offset: 0x4970
+  symbol: gYbEndDisplayList4970DL
+
+gYbEyeTex:
+  type: TEXTURE
+  offset: 0x58F8
+  symbol: gYbEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gYbFingersTex:
+  type: TEXTURE
+  offset: 0x5478
+  symbol: gYbFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gYbForeheadBlotchTex:
+  type: TEXTURE
+  offset: 0x53B8
+  symbol: gYbForeheadBlotchTex
+  format: CI8
+  width: 8
+  height: 8
+
+gYbHairlineTex:
+  type: TEXTURE
+  offset: 0x5678
+  symbol: gYbHairlineTex
+  format: CI8
+  width: 16
+  height: 16
+
+gYbHeadDL:
+  type: GFX
+  offset: 0x4310
+  symbol: gYbHeadDL
+
+gYbHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5E70
+  symbol: gYbHeadLimb
+  limb_type: Standard
+
+gYbLeftFootDL:
+  type: GFX
+  offset: 0x3EB8
+  symbol: gYbLeftFootDL
+
+gYbLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x5E58
+  symbol: gYbLeftFootLimb
+  limb_type: Standard
+
+gYbLeftForearmDL:
+  type: GFX
+  offset: 0x4EC0
+  symbol: gYbLeftForearmDL
+
+gYbLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5EA0
+  symbol: gYbLeftForearmLimb
+  limb_type: Standard
+
+gYbLeftHandDL:
+  type: GFX
+  offset: 0x4FE0
+  symbol: gYbLeftHandDL
+
+gYbLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5EAC
+  symbol: gYbLeftHandLimb
+  limb_type: Standard
+
+gYbLeftShinDL:
+  type: GFX
+  offset: 0x3D68
+  symbol: gYbLeftShinDL
+
+gYbLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x5E4C
+  symbol: gYbLeftShinLimb
+  limb_type: Standard
+
+gYbLeftThighDL:
+  type: GFX
+  offset: 0x3BC8
+  symbol: gYbLeftThighDL
+
+gYbLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x5E40
+  symbol: gYbLeftThighLimb
+  limb_type: Standard
+
+gYbLeftUpperArmDL:
+  type: GFX
+  offset: 0x4D98
+  symbol: gYbLeftUpperArmDL
+
+gYbLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5E94
+  symbol: gYbLeftUpperArmLimb
+  limb_type: Standard
+
+gYbLegsRootLimb:
+  type: OOT:LIMB
+  offset: 0x5E10
+  symbol: gYbLegsRootLimb
+  limb_type: Standard
+
+gYbMainRootLimb:
+  type: OOT:LIMB
+  offset: 0x5DF8
+  symbol: gYbMainRootLimb
+  limb_type: Standard
+
+gYbNoseTex:
+  type: TEXTURE
+  offset: 0x57F8
+  symbol: gYbNoseTex
+  format: CI8
+  width: 16
+  height: 16
+
+gYbPantsAndBellyButtonDL:
+  type: GFX
+  offset: 0x3400
+  symbol: gYbPantsAndBellyButtonDL
+
+gYbPantsLimb:
+  type: OOT:LIMB
+  offset: 0x5E04
+  symbol: gYbPantsLimb
+  limb_type: Standard
+
+gYbPantsTex:
+  type: TEXTURE
+  offset: 0x5CF8
+  symbol: gYbPantsTex
+  format: I8
+  width: 16
+  height: 16
+
+gYbPonyTailDL:
+  type: GFX
+  offset: 0x47F8
+  symbol: gYbPonyTailDL
+
+gYbPonyTailLimb:
+  type: OOT:LIMB
+  offset: 0x5E7C
+  symbol: gYbPonyTailLimb
+  limb_type: Standard
+
+gYbPonytailTex:
+  type: TEXTURE
+  offset: 0x53F8
+  symbol: gYbPonytailTex
+  format: CI8
+  width: 8
+  height: 16
+
+gYbRightFoodDL:
+  type: GFX
+  offset: 0x3900
+  symbol: gYbRightFoodDL
+
+gYbRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x5E34
+  symbol: gYbRightFootLimb
+  limb_type: Standard
+
+gYbRightForearmDL:
+  type: GFX
+  offset: 0x4AA0
+  symbol: gYbRightForearmDL
+
+gYbRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5EC4
+  symbol: gYbRightForearmLimb
+  limb_type: Standard
+
+gYbRightHandDL:
+  type: GFX
+  offset: 0x4BC0
+  symbol: gYbRightHandDL
+
+gYbRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5ED0
+  symbol: gYbRightHandLimb
+  limb_type: Standard
+
+gYbRightShinDL:
+  type: GFX
+  offset: 0x37B0
+  symbol: gYbRightShinDL
+
+gYbRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x5E28
+  symbol: gYbRightShinLimb
+  limb_type: Standard
+
+gYbRightThighDL:
+  type: GFX
+  offset: 0x3610
+  symbol: gYbRightThighDL
+
+gYbRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x5E1C
+  symbol: gYbRightThighLimb
+  limb_type: Standard
+
+gYbRightUpperArmDL:
+  type: GFX
+  offset: 0x4978
+  symbol: gYbRightUpperArmDL
+
+gYbRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5EB8
+  symbol: gYbRightUpperArmLimb
+  limb_type: Standard
+
+gYbSkel:
+  type: MM:SKELETON
+  offset: 0x5F48
+  symbol: gYbSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gYbTLUT:
+  type: TEXTURE
+  offset: 0x51B8
+  symbol: gYbTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gYbToesTex:
+  type: TEXTURE
+  offset: 0x5578
+  symbol: gYbToesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gYbUpperTorsoDL:
+  type: GFX
+  offset: 0x4110
+  symbol: gYbUpperTorsoDL
+
+gYbUpperTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x5EE8
+  symbol: gYbUpperTorsoLimb
+  limb_type: Standard
+
+object_yb_Anim_000200:
+  type: OOT:ANIMATION
+  offset: 0x200
+  symbol: object_yb_Anim_000200
+
+object_yb_Vtx_002080:
+  type: MM:ARRAY
+  offset: 0x2080
+  symbol: object_yb_Vtx_002080
+  count: 3
+  array_type: VTX
+
+object_yb_Vtx_002D50:
+  type: MM:ARRAY
+  offset: 0x2D50
+  symbol: object_yb_Vtx_002D50
+  count: 3
+  array_type: VTX
+
+
+object_ybVtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: object_ybVtx_000210
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_ybVtx_0004F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_0006D0:
+  type: MM:ARRAY
+  offset: 0x0006D0
+  symbol: object_ybVtx_0006D0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_000940:
+  type: MM:ARRAY
+  offset: 0x000940
+  symbol: object_ybVtx_000940
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_000C20:
+  type: MM:ARRAY
+  offset: 0x000C20
+  symbol: object_ybVtx_000C20
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_000E00:
+  type: MM:ARRAY
+  offset: 0x000E00
+  symbol: object_ybVtx_000E00
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_001080:
+  type: MM:ARRAY
+  offset: 0x001080
+  symbol: object_ybVtx_001080
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_001320:
+  type: MM:ARRAY
+  offset: 0x001320
+  symbol: object_ybVtx_001320
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_001460:
+  type: MM:ARRAY
+  offset: 0x001460
+  symbol: object_ybVtx_001460
+  count: 194
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_0020B0:
+  type: MM:ARRAY
+  offset: 0x0020B0
+  symbol: object_ybVtx_0020B0
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_0023C0:
+  type: MM:ARRAY
+  offset: 0x0023C0
+  symbol: object_ybVtx_0023C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_002540:
+  type: MM:ARRAY
+  offset: 0x002540
+  symbol: object_ybVtx_002540
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_002700:
+  type: MM:ARRAY
+  offset: 0x002700
+  symbol: object_ybVtx_002700
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_002A10:
+  type: MM:ARRAY
+  offset: 0x002A10
+  symbol: object_ybVtx_002A10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_002B90:
+  type: MM:ARRAY
+  offset: 0x002B90
+  symbol: object_ybVtx_002B90
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ybVtx_002D80:
+  type: MM:ARRAY
+  offset: 0x002D80
+  symbol: object_ybVtx_002D80
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gYbSkelLimbs:
+  type: BLOB
+  offset: 0x5EF4
+  symbol: gYbSkelLimbs
+  size: 0

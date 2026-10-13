@@ -1,0 +1,420 @@
+:config:
+  segments:
+    - [ 3, 0x017A56B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x017A56B0 ]
+    - [ 9, 0x017A56B0 ]
+    - [ 10, 0x017A56B0 ]
+    - [ 11, 0x017A56B0 ]
+    - [ 12, 0x017A56B0 ]
+    - [ 13, 0x017A56B0 ]
+    - [ 2, 0x0179F910 ]
+  directory: scenes/nonmq/Z2_OPENINGDAN
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_OPENINGDAN.yml
+    - GC_US/scenes/nonmq/Z2_OPENINGDAN_room_00Set_000300.yml
+
+Z2_OPENINGDAN_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_OPENINGDAN_room_00
+
+Z2_OPENINGDAN_room_00DL_006B10:
+  type: GFX
+  offset: 0x6B10
+  symbol: Z2_OPENINGDAN_room_00DL_006B10
+
+Z2_OPENINGDAN_room_00DL_00B0C0:
+  type: GFX
+  offset: 0xB0C0
+  symbol: Z2_OPENINGDAN_room_00DL_00B0C0
+
+
+Z2_OPENINGDAN_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_OPENINGDAN_room_00ActorEntry_000058
+  size: 0
+
+Z2_OPENINGDAN_room_00ActorEntry_000338:
+  type: BLOB
+  offset: 0x000338
+  symbol: Z2_OPENINGDAN_room_00ActorEntry_000338
+  size: 0
+
+Z2_OPENINGDAN_room_00Vtx_000350:
+  type: MM:ARRAY
+  offset: 0x000350
+  symbol: Z2_OPENINGDAN_room_00Vtx_000350
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_000710:
+  type: GFX
+  offset: 0x000710
+  symbol: Z2_OPENINGDAN_room_00DL_000710
+
+Z2_OPENINGDAN_room_00Vtx_0008D0:
+  type: MM:ARRAY
+  offset: 0x0008D0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0008D0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_000C00:
+  type: GFX
+  offset: 0x000C00
+  symbol: Z2_OPENINGDAN_room_00DL_000C00
+
+Z2_OPENINGDAN_room_00Vtx_000DA8:
+  type: MM:ARRAY
+  offset: 0x000DA8
+  symbol: Z2_OPENINGDAN_room_00Vtx_000DA8
+  count: 131
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_0015D8:
+  type: GFX
+  offset: 0x0015D8
+  symbol: Z2_OPENINGDAN_room_00DL_0015D8
+
+Z2_OPENINGDAN_room_00Vtx_0019E0:
+  type: MM:ARRAY
+  offset: 0x0019E0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0019E0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_001DE0:
+  type: GFX
+  offset: 0x001DE0
+  symbol: Z2_OPENINGDAN_room_00DL_001DE0
+
+Z2_OPENINGDAN_room_00Vtx_002058:
+  type: MM:ARRAY
+  offset: 0x002058
+  symbol: Z2_OPENINGDAN_room_00Vtx_002058
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_002458:
+  type: GFX
+  offset: 0x002458
+  symbol: Z2_OPENINGDAN_room_00DL_002458
+
+Z2_OPENINGDAN_room_00Vtx_0026B8:
+  type: MM:ARRAY
+  offset: 0x0026B8
+  symbol: Z2_OPENINGDAN_room_00Vtx_0026B8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_002878:
+  type: GFX
+  offset: 0x002878
+  symbol: Z2_OPENINGDAN_room_00DL_002878
+
+Z2_OPENINGDAN_room_00Vtx_0029A0:
+  type: MM:ARRAY
+  offset: 0x0029A0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0029A0
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_002DD0:
+  type: GFX
+  offset: 0x002DD0
+  symbol: Z2_OPENINGDAN_room_00DL_002DD0
+
+Z2_OPENINGDAN_room_00Vtx_002F78:
+  type: MM:ARRAY
+  offset: 0x002F78
+  symbol: Z2_OPENINGDAN_room_00Vtx_002F78
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_0031A8:
+  type: GFX
+  offset: 0x0031A8
+  symbol: Z2_OPENINGDAN_room_00DL_0031A8
+
+Z2_OPENINGDAN_room_00Vtx_003360:
+  type: MM:ARRAY
+  offset: 0x003360
+  symbol: Z2_OPENINGDAN_room_00Vtx_003360
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_003790:
+  type: GFX
+  offset: 0x003790
+  symbol: Z2_OPENINGDAN_room_00DL_003790
+
+Z2_OPENINGDAN_room_00Vtx_0039E0:
+  type: MM:ARRAY
+  offset: 0x0039E0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0039E0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_003C40:
+  type: GFX
+  offset: 0x003C40
+  symbol: Z2_OPENINGDAN_room_00DL_003C40
+
+Z2_OPENINGDAN_room_00Vtx_003DA0:
+  type: MM:ARRAY
+  offset: 0x003DA0
+  symbol: Z2_OPENINGDAN_room_00Vtx_003DA0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_003FC0:
+  type: GFX
+  offset: 0x003FC0
+  symbol: Z2_OPENINGDAN_room_00DL_003FC0
+
+Z2_OPENINGDAN_room_00Vtx_0041C8:
+  type: MM:ARRAY
+  offset: 0x0041C8
+  symbol: Z2_OPENINGDAN_room_00Vtx_0041C8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_004288:
+  type: GFX
+  offset: 0x004288
+  symbol: Z2_OPENINGDAN_room_00DL_004288
+
+Z2_OPENINGDAN_room_00Vtx_004360:
+  type: MM:ARRAY
+  offset: 0x004360
+  symbol: Z2_OPENINGDAN_room_00Vtx_004360
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_004B60:
+  type: GFX
+  offset: 0x004B60
+  symbol: Z2_OPENINGDAN_room_00DL_004B60
+
+Z2_OPENINGDAN_room_00Vtx_004DD8:
+  type: MM:ARRAY
+  offset: 0x004DD8
+  symbol: Z2_OPENINGDAN_room_00Vtx_004DD8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_0052F8:
+  type: GFX
+  offset: 0x0052F8
+  symbol: Z2_OPENINGDAN_room_00DL_0052F8
+
+Z2_OPENINGDAN_room_00Vtx_005480:
+  type: MM:ARRAY
+  offset: 0x005480
+  symbol: Z2_OPENINGDAN_room_00Vtx_005480
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_005770:
+  type: GFX
+  offset: 0x005770
+  symbol: Z2_OPENINGDAN_room_00DL_005770
+
+Z2_OPENINGDAN_room_00Vtx_0058B0:
+  type: MM:ARRAY
+  offset: 0x0058B0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0058B0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_005C00:
+  type: GFX
+  offset: 0x005C00
+  symbol: Z2_OPENINGDAN_room_00DL_005C00
+
+Z2_OPENINGDAN_room_00Vtx_005D50:
+  type: MM:ARRAY
+  offset: 0x005D50
+  symbol: Z2_OPENINGDAN_room_00Vtx_005D50
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_005FB0:
+  type: GFX
+  offset: 0x005FB0
+  symbol: Z2_OPENINGDAN_room_00DL_005FB0
+
+Z2_OPENINGDAN_room_00Vtx_0060F0:
+  type: MM:ARRAY
+  offset: 0x0060F0
+  symbol: Z2_OPENINGDAN_room_00Vtx_0060F0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_0063C0:
+  type: GFX
+  offset: 0x0063C0
+  symbol: Z2_OPENINGDAN_room_00DL_0063C0
+
+Z2_OPENINGDAN_room_00Vtx_0064B8:
+  type: MM:ARRAY
+  offset: 0x0064B8
+  symbol: Z2_OPENINGDAN_room_00Vtx_0064B8
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_006958:
+  type: GFX
+  offset: 0x006958
+  symbol: Z2_OPENINGDAN_room_00DL_006958
+
+Z2_OPENINGDAN_room_00Tex_006BB0:
+  type: TEXTURE
+  offset: 0x006BB0
+  symbol: Z2_OPENINGDAN_room_00Tex_006BB0
+  format: IA8
+  width: 16
+  height: 16
+
+Z2_OPENINGDAN_room_00Tex_006CB0:
+  type: TEXTURE
+  offset: 0x006CB0
+  symbol: Z2_OPENINGDAN_room_00Tex_006CB0
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_OPENINGDAN_room_00Tex_0074B0:
+  type: TEXTURE
+  offset: 0x0074B0
+  symbol: Z2_OPENINGDAN_room_00Tex_0074B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OPENINGDAN_room_00Tex_007CB0:
+  type: TEXTURE
+  offset: 0x007CB0
+  symbol: Z2_OPENINGDAN_room_00Tex_007CB0
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_OPENINGDAN_room_00Tex_007EB0:
+  type: TEXTURE
+  offset: 0x007EB0
+  symbol: Z2_OPENINGDAN_room_00Tex_007EB0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_OPENINGDAN_room_00Tex_0086B0:
+  type: TEXTURE
+  offset: 0x0086B0
+  symbol: Z2_OPENINGDAN_room_00Tex_0086B0
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_OPENINGDAN_room_00Tex_008EB0:
+  type: TEXTURE
+  offset: 0x008EB0
+  symbol: Z2_OPENINGDAN_room_00Tex_008EB0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDAN_room_00Tex_0092B0:
+  type: TEXTURE
+  offset: 0x0092B0
+  symbol: Z2_OPENINGDAN_room_00Tex_0092B0
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_OPENINGDAN_room_00Tex_00A2B0:
+  type: TEXTURE
+  offset: 0x00A2B0
+  symbol: Z2_OPENINGDAN_room_00Tex_00A2B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OPENINGDAN_room_00Tex_00A6B0:
+  type: TEXTURE
+  offset: 0x00A6B0
+  symbol: Z2_OPENINGDAN_room_00Tex_00A6B0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_OPENINGDAN_room_00TLUT_00AEB0:
+  type: TEXTURE
+  offset: 0x00AEB0
+  symbol: Z2_OPENINGDAN_room_00TLUT_00AEB0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_OPENINGDAN_room_00Vtx_00AED0:
+  type: MM:ARRAY
+  offset: 0x00AED0
+  symbol: Z2_OPENINGDAN_room_00Vtx_00AED0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_OPENINGDAN_room_00DL_00AFD0:
+  type: GFX
+  offset: 0x00AFD0
+  symbol: Z2_OPENINGDAN_room_00DL_00AFD0
+
+Z2_OPENINGDAN_room_00Tex_00B0D0:
+  type: TEXTURE
+  offset: 0x00B0D0
+  symbol: Z2_OPENINGDAN_room_00Tex_00B0D0
+  format: RGBA16
+  width: 32
+  height: 32

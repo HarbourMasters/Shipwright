@@ -1,0 +1,595 @@
+:config:
+  segments:
+    - [ 6, 0x00EC8440 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EC8440 ]
+    - [ 9, 0x00EC8440 ]
+    - [ 10, 0x00EC8440 ]
+    - [ 11, 0x00EC8440 ]
+    - [ 12, 0x00EC8440 ]
+    - [ 13, 0x00EC8440 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDinolfosArmorTex:
+  type: TEXTURE
+  offset: 0x86B0
+  symbol: gDinolfosArmorTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x25B4
+  symbol: gDinolfosAttackAnim
+
+gDinolfosClawTex:
+  type: TEXTURE
+  offset: 0x8DB0
+  symbol: gDinolfosClawTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDinolfosCryAnim:
+  type: OOT:ANIMATION
+  offset: 0x9B70
+  symbol: gDinolfosCryAnim
+
+gDinolfosDieAnim:
+  type: OOT:ANIMATION
+  offset: 0xABD0
+  symbol: gDinolfosDieAnim
+
+gDinolfosEyeClosedTex:
+  type: TEXTURE
+  offset: 0x9230
+  symbol: gDinolfosEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosEyeHalfTex:
+  type: TEXTURE
+  offset: 0x9030
+  symbol: gDinolfosEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosEyeHoleTex:
+  type: TEXTURE
+  offset: 0x8CB0
+  symbol: gDinolfosEyeHoleTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gDinolfosEyeOpenTex:
+  type: TEXTURE
+  offset: 0x8E30
+  symbol: gDinolfosEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosFireEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x17B8
+  symbol: gDinolfosFireEndAnim
+
+gDinolfosFireLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x13C0
+  symbol: gDinolfosFireLoopAnim
+
+gDinolfosFireStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1040
+  symbol: gDinolfosFireStartAnim
+
+gDinolfosHeadDL:
+  type: GFX
+  offset: 0x6440
+  symbol: gDinolfosHeadDL
+
+gDinolfosHeadLimb:
+  type: OOT:LIMB
+  offset: 0x94E4
+  symbol: gDinolfosHeadLimb
+  limb_type: Standard
+
+gDinolfosHitAnim:
+  type: OOT:ANIMATION
+  offset: 0xD21C
+  symbol: gDinolfosHitAnim
+
+gDinolfosIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E40
+  symbol: gDinolfosIdleAnim
+
+gDinolfosInnerMouthTex:
+  type: TEXTURE
+  offset: 0x8930
+  symbol: gDinolfosInnerMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosIntroAnim:
+  type: OOT:ANIMATION
+  offset: 0xC974
+  symbol: gDinolfosIntroAnim
+
+gDinolfosJawDL:
+  type: GFX
+  offset: 0x6930
+  symbol: gDinolfosJawDL
+
+gDinolfosJawLimb:
+  type: OOT:LIMB
+  offset: 0x94F0
+  symbol: gDinolfosJawLimb
+  limb_type: Standard
+
+gDinolfosJawTex:
+  type: TEXTURE
+  offset: 0x8BB0
+  symbol: gDinolfosJawTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gDinolfosJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CCC
+  symbol: gDinolfosJumpAnim
+
+gDinolfosKnifeDL:
+  type: GFX
+  offset: 0x5B10
+  symbol: gDinolfosKnifeDL
+
+gDinolfosKnifeHoleTex:
+  type: TEXTURE
+  offset: 0x8B30
+  symbol: gDinolfosKnifeHoleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDinolfosKnifeLimb:
+  type: OOT:LIMB
+  offset: 0x9514
+  symbol: gDinolfosKnifeLimb
+  limb_type: Standard
+
+gDinolfosLandAnim:
+  type: OOT:ANIMATION
+  offset: 0xAF0
+  symbol: gDinolfosLandAnim
+
+gDinolfosLeftClawsDL:
+  type: GFX
+  offset: 0x8058
+  symbol: gDinolfosLeftClawsDL
+
+gDinolfosLeftClawsLimb:
+  type: OOT:LIMB
+  offset: 0x9454
+  symbol: gDinolfosLeftClawsLimb
+  limb_type: Standard
+
+gDinolfosLeftForearmDL:
+  type: GFX
+  offset: 0x71E0
+  symbol: gDinolfosLeftForearmDL
+
+gDinolfosLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x949C
+  symbol: gDinolfosLeftForearmLimb
+  limb_type: Standard
+
+gDinolfosLeftHandDL:
+  type: GFX
+  offset: 0x72D0
+  symbol: gDinolfosLeftHandDL
+
+gDinolfosLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x94A8
+  symbol: gDinolfosLeftHandLimb
+  limb_type: Standard
+
+gDinolfosLeftLowerLegDL:
+  type: GFX
+  offset: 0x7E70
+  symbol: gDinolfosLeftLowerLegDL
+
+gDinolfosLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x9448
+  symbol: gDinolfosLeftLowerLegLimb
+  limb_type: Standard
+
+gDinolfosLeftUpperArmDL:
+  type: GFX
+  offset: 0x70A0
+  symbol: gDinolfosLeftUpperArmDL
+
+gDinolfosLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x9490
+  symbol: gDinolfosLeftUpperArmLimb
+  limb_type: Standard
+
+gDinolfosLeftUpperLegDL:
+  type: GFX
+  offset: 0x7C20
+  symbol: gDinolfosLeftUpperLegDL
+
+gDinolfosLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x943C
+  symbol: gDinolfosLeftUpperLegLimb
+  limb_type: Standard
+
+gDinolfosLowerBodyDL:
+  type: GFX
+  offset: 0x7450
+  symbol: gDinolfosLowerBodyDL
+
+gDinolfosLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9430
+  symbol: gDinolfosLowerBodyLimb
+  limb_type: Standard
+
+gDinolfosLowerTailDL:
+  type: GFX
+  offset: 0x5D00
+  symbol: gDinolfosLowerTailDL
+
+gDinolfosLowerTailLimb:
+  type: OOT:LIMB
+  offset: 0x9508
+  symbol: gDinolfosLowerTailLimb
+  limb_type: Standard
+
+gDinolfosNeckDL:
+  type: GFX
+  offset: 0x61F8
+  symbol: gDinolfosNeckDL
+
+gDinolfosNeckLimb:
+  type: OOT:LIMB
+  offset: 0x94D8
+  symbol: gDinolfosNeckLimb
+  limb_type: Standard
+
+gDinolfosRightClawsDL:
+  type: GFX
+  offset: 0x7AC8
+  symbol: gDinolfosRightClawsDL
+
+gDinolfosRightClawsLimb:
+  type: OOT:LIMB
+  offset: 0x9478
+  symbol: gDinolfosRightClawsLimb
+  limb_type: Standard
+
+gDinolfosRightForearmDL:
+  type: GFX
+  offset: 0x6D68
+  symbol: gDinolfosRightForearmDL
+
+gDinolfosRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x94C0
+  symbol: gDinolfosRightForearmLimb
+  limb_type: Standard
+
+gDinolfosRightHandDL:
+  type: GFX
+  offset: 0x6E58
+  symbol: gDinolfosRightHandDL
+
+gDinolfosRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x94CC
+  symbol: gDinolfosRightHandLimb
+  limb_type: Standard
+
+gDinolfosRightLowerLegDL:
+  type: GFX
+  offset: 0x78E0
+  symbol: gDinolfosRightLowerLegDL
+
+gDinolfosRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x946C
+  symbol: gDinolfosRightLowerLegLimb
+  limb_type: Standard
+
+gDinolfosRightUpperArmDL:
+  type: GFX
+  offset: 0x6C28
+  symbol: gDinolfosRightUpperArmDL
+
+gDinolfosRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x94B4
+  symbol: gDinolfosRightUpperArmLimb
+  limb_type: Standard
+
+gDinolfosRightUpperLegDL:
+  type: GFX
+  offset: 0x7690
+  symbol: gDinolfosRightUpperLegDL
+
+gDinolfosRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x9460
+  symbol: gDinolfosRightUpperLegLimb
+  limb_type: Standard
+
+gDinolfosScaleTex:
+  type: TEXTURE
+  offset: 0x84B0
+  symbol: gDinolfosScaleTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0xD62C
+  symbol: gDinolfosSidestepAnim
+
+gDinolfosSkel:
+  type: MM:SKELETON
+  offset: 0x9570
+  symbol: gDinolfosSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDinolfosSkinTex:
+  type: TEXTURE
+  offset: 0x83B0
+  symbol: gDinolfosSkinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDinolfosSpikeTex:
+  type: TEXTURE
+  offset: 0x88B0
+  symbol: gDinolfosSpikeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDinolfosTLUT:
+  type: TEXTURE
+  offset: 0x81B0
+  symbol: gDinolfosTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDinolfosUpperBodyDL:
+  type: GFX
+  offset: 0x5FC8
+  symbol: gDinolfosUpperBodyDL
+
+gDinolfosUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9484
+  symbol: gDinolfosUpperBodyLimb
+  limb_type: Standard
+
+gDinolfosUpperTailDL:
+  type: GFX
+  offset: 0x5E60
+  symbol: gDinolfosUpperTailDL
+
+gDinolfosUpperTailLimb:
+  type: OOT:LIMB
+  offset: 0x94FC
+  symbol: gDinolfosUpperTailLimb
+  limb_type: Standard
+
+gDinolfosWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x580
+  symbol: gDinolfosWalkAnim
+
+
+object_dinofosVtx_002E50:
+  type: MM:ARRAY
+  offset: 0x002E50
+  symbol: object_dinofosVtx_002E50
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0031C0:
+  type: MM:ARRAY
+  offset: 0x0031C0
+  symbol: object_dinofosVtx_0031C0
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_003880:
+  type: MM:ARRAY
+  offset: 0x003880
+  symbol: object_dinofosVtx_003880
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_003A10:
+  type: MM:ARRAY
+  offset: 0x003A10
+  symbol: object_dinofosVtx_003A10
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_003CE0:
+  type: MM:ARRAY
+  offset: 0x003CE0
+  symbol: object_dinofosVtx_003CE0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_003D60:
+  type: MM:ARRAY
+  offset: 0x003D60
+  symbol: object_dinofosVtx_003D60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_003E20:
+  type: MM:ARRAY
+  offset: 0x003E20
+  symbol: object_dinofosVtx_003E20
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_004050:
+  type: MM:ARRAY
+  offset: 0x004050
+  symbol: object_dinofosVtx_004050
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0040D0:
+  type: MM:ARRAY
+  offset: 0x0040D0
+  symbol: object_dinofosVtx_0040D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_004190:
+  type: MM:ARRAY
+  offset: 0x004190
+  symbol: object_dinofosVtx_004190
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_004600:
+  type: MM:ARRAY
+  offset: 0x004600
+  symbol: object_dinofosVtx_004600
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0046A0:
+  type: MM:ARRAY
+  offset: 0x0046A0
+  symbol: object_dinofosVtx_0046A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0047A0:
+  type: MM:ARRAY
+  offset: 0x0047A0
+  symbol: object_dinofosVtx_0047A0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0049B0:
+  type: MM:ARRAY
+  offset: 0x0049B0
+  symbol: object_dinofosVtx_0049B0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_004B90:
+  type: MM:ARRAY
+  offset: 0x004B90
+  symbol: object_dinofosVtx_004B90
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_004E70:
+  type: MM:ARRAY
+  offset: 0x004E70
+  symbol: object_dinofosVtx_004E70
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0050B0:
+  type: MM:ARRAY
+  offset: 0x0050B0
+  symbol: object_dinofosVtx_0050B0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_005290:
+  type: MM:ARRAY
+  offset: 0x005290
+  symbol: object_dinofosVtx_005290
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_005570:
+  type: MM:ARRAY
+  offset: 0x005570
+  symbol: object_dinofosVtx_005570
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dinofosVtx_0057B0:
+  type: MM:ARRAY
+  offset: 0x0057B0
+  symbol: object_dinofosVtx_0057B0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDinolfosSkelLimbs:
+  type: BLOB
+  offset: 0x9520
+  symbol: gDinolfosSkelLimbs
+  size: 0

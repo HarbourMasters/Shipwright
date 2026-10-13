@@ -1,0 +1,83 @@
+:config:
+  segments:
+    - [ 6, 0x01405C40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01405C40 ]
+    - [ 9, 0x01405C40 ]
+    - [ 10, 0x01405C40 ]
+    - [ 11, 0x01405C40 ]
+    - [ 12, 0x01405C40 ]
+    - [ 13, 0x01405C40 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiSeahorseBillboardRotMtx:
+  type: OOT:MTX
+  offset: 0xA50
+  symbol: gGiSeahorseBillboardRotMtx
+
+gGiSeahorseBodyDL:
+  type: GFX
+  offset: 0xB20
+  symbol: gGiSeahorseBodyDL
+
+gGiSeahorseEmptyDL:
+  type: GFX
+  offset: 0xF08
+  symbol: gGiSeahorseEmptyDL
+
+gGiSeahorseEyeTex:
+  type: TEXTURE
+  offset: 0xF10
+  symbol: gGiSeahorseEyeTex
+  format: IA8
+  width: 16
+  height: 8
+
+gGiSeahorseFinTex:
+  type: TEXTURE
+  offset: 0x13D0
+  symbol: gGiSeahorseFinTex
+  format: IA8
+  width: 32
+  height: 32
+
+gGiSeahorseGlowDL:
+  type: GFX
+  offset: 0xA90
+  symbol: gGiSeahorseGlowDL
+
+gGiSeahorseGlowTex:
+  type: TEXTURE
+  offset: 0xF90
+  symbol: gGiSeahorseGlowTex
+  format: I4
+  width: 16
+  height: 8
+
+gGiSeahorseTorsoTailTex:
+  type: TEXTURE
+  offset: 0xFD0
+  symbol: gGiSeahorseTorsoTailTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_seahorseVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_seahorseVtx_000000
+  count: 161
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_seahorseVtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: object_gi_seahorseVtx_000A10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

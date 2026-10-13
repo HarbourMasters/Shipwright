@@ -1,0 +1,363 @@
+:config:
+  segments:
+    - [ 6, 0x01170390 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01170390 ]
+    - [ 9, 0x01170390 ]
+    - [ 10, 0x01170390 ]
+    - [ 11, 0x01170390 ]
+    - [ 12, 0x01170390 ]
+    - [ 13, 0x01170390 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gCarnivorousLilyPadChewAnim:
+  type: OOT:ANIMATION
+  offset: 0xB30
+  symbol: gCarnivorousLilyPadChewAnim
+
+gCarnivorousLilyPadCloseAnim:
+  type: OOT:ANIMATION
+  offset: 0xC7C
+  symbol: gCarnivorousLilyPadCloseAnim
+
+gCarnivorousLilyPadCol:
+  type: MM:COLLISION
+  offset: 0x108
+  symbol: gCarnivorousLilyPadCol
+
+gCarnivorousLilyPadConvulseAnim:
+  type: OOT:ANIMATION
+  offset: 0x3FC
+  symbol: gCarnivorousLilyPadConvulseAnim
+
+gCarnivorousLilyPadDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x7A8
+  symbol: gCarnivorousLilyPadDeathAnim
+
+gCarnivorousLilyPadFlowerCenterTex:
+  type: TEXTURE
+  offset: 0x2CF8
+  symbol: gCarnivorousLilyPadFlowerCenterTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCarnivorousLilyPadFlowerDL:
+  type: GFX
+  offset: 0x1630
+  symbol: gCarnivorousLilyPadFlowerDL
+
+gCarnivorousLilyPadFlowerLimb:
+  type: OOT:LIMB
+  offset: 0x3378
+  symbol: gCarnivorousLilyPadFlowerLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadFlowerPetalTex:
+  type: TEXTURE
+  offset: 0x28F8
+  symbol: gCarnivorousLilyPadFlowerPetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gCarnivorousLilyPadParticleDL:
+  type: GFX
+  offset: 0x24E0
+  symbol: gCarnivorousLilyPadParticleDL
+
+gCarnivorousLilyPadParticlePetalDL:
+  type: GFX
+  offset: 0x2340
+  symbol: gCarnivorousLilyPadParticlePetalDL
+
+gCarnivorousLilyPadParticleTeethDL:
+  type: GFX
+  offset: 0x2418
+  symbol: gCarnivorousLilyPadParticleTeethDL
+
+gCarnivorousLilyPadRootsDL:
+  type: GFX
+  offset: 0x1790
+  symbol: gCarnivorousLilyPadRootsDL
+
+gCarnivorousLilyPadRootsLimb:
+  type: OOT:LIMB
+  offset: 0x33F0
+  symbol: gCarnivorousLilyPadRootsLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadRootsTex:
+  type: TEXTURE
+  offset: 0x24F8
+  symbol: gCarnivorousLilyPadRootsTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gCarnivorousLilyPadSkel:
+  type: MM:SKELETON
+  offset: 0x3428
+  symbol: gCarnivorousLilyPadSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCarnivorousLilyPadSpitAnim:
+  type: OOT:ANIMATION
+  offset: 0xA64
+  symbol: gCarnivorousLilyPadSpitAnim
+
+gCarnivorousLilyPadTexturelessPlatformDL:
+  type: GFX
+  offset: 0x1C0
+  symbol: gCarnivorousLilyPadTexturelessPlatformDL
+
+gCarnivorousLilyPadTrap1LowerSegmentDL:
+  type: GFX
+  offset: 0x1EE8
+  symbol: gCarnivorousLilyPadTrap1LowerSegmentDL
+
+gCarnivorousLilyPadTrap1LowerSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x3384
+  symbol: gCarnivorousLilyPadTrap1LowerSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap1MiddleSegmentDL:
+  type: GFX
+  offset: 0x1F80
+  symbol: gCarnivorousLilyPadTrap1MiddleSegmentDL
+
+gCarnivorousLilyPadTrap1MiddleSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x3390
+  symbol: gCarnivorousLilyPadTrap1MiddleSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap1UpperSegmentDL:
+  type: GFX
+  offset: 0x2040
+  symbol: gCarnivorousLilyPadTrap1UpperSegmentDL
+
+gCarnivorousLilyPadTrap1UpperSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x339C
+  symbol: gCarnivorousLilyPadTrap1UpperSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap2LowerSegmentDL:
+  type: GFX
+  offset: 0x1B90
+  symbol: gCarnivorousLilyPadTrap2LowerSegmentDL
+
+gCarnivorousLilyPadTrap2LowerSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33A8
+  symbol: gCarnivorousLilyPadTrap2LowerSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap2MiddleSegmentDL:
+  type: GFX
+  offset: 0x1C28
+  symbol: gCarnivorousLilyPadTrap2MiddleSegmentDL
+
+gCarnivorousLilyPadTrap2MiddleSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33B4
+  symbol: gCarnivorousLilyPadTrap2MiddleSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap2UpperSegmentDL:
+  type: GFX
+  offset: 0x1CE8
+  symbol: gCarnivorousLilyPadTrap2UpperSegmentDL
+
+gCarnivorousLilyPadTrap2UpperSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33C0
+  symbol: gCarnivorousLilyPadTrap2UpperSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap3LowerSegmentDL:
+  type: GFX
+  offset: 0x1838
+  symbol: gCarnivorousLilyPadTrap3LowerSegmentDL
+
+gCarnivorousLilyPadTrap3LowerSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33CC
+  symbol: gCarnivorousLilyPadTrap3LowerSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap3MiddleSegmentDL:
+  type: GFX
+  offset: 0x18D0
+  symbol: gCarnivorousLilyPadTrap3MiddleSegmentDL
+
+gCarnivorousLilyPadTrap3MiddleSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33D8
+  symbol: gCarnivorousLilyPadTrap3MiddleSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrap3UpperSegmentDL:
+  type: GFX
+  offset: 0x1990
+  symbol: gCarnivorousLilyPadTrap3UpperSegmentDL
+
+gCarnivorousLilyPadTrap3UpperSegmentLimb:
+  type: OOT:LIMB
+  offset: 0x33E4
+  symbol: gCarnivorousLilyPadTrap3UpperSegmentLimb
+  limb_type: Standard
+
+gCarnivorousLilyPadTrapPetalTex:
+  type: TEXTURE
+  offset: 0x2EF8
+  symbol: gCarnivorousLilyPadTrapPetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gCarnivorousLilyPadTrapTeethTex:
+  type: TEXTURE
+  offset: 0x32F8
+  symbol: gCarnivorousLilyPadTrapTeethTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_rafVtx_000140:
+  type: MM:ARRAY
+  offset: 0x000140
+  symbol: object_rafVtx_000140
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_000C90:
+  type: MM:ARRAY
+  offset: 0x000C90
+  symbol: object_rafVtx_000C90
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_000F00:
+  type: MM:ARRAY
+  offset: 0x000F00
+  symbol: object_rafVtx_000F00
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_000FA0:
+  type: MM:ARRAY
+  offset: 0x000FA0
+  symbol: object_rafVtx_000FA0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_001130:
+  type: MM:ARRAY
+  offset: 0x001130
+  symbol: object_rafVtx_001130
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_0011A0:
+  type: MM:ARRAY
+  offset: 0x0011A0
+  symbol: object_rafVtx_0011A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_0011D0:
+  type: MM:ARRAY
+  offset: 0x0011D0
+  symbol: object_rafVtx_0011D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_001360:
+  type: MM:ARRAY
+  offset: 0x001360
+  symbol: object_rafVtx_001360
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_0013D0:
+  type: MM:ARRAY
+  offset: 0x0013D0
+  symbol: object_rafVtx_0013D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_rafVtx_001400
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_001590:
+  type: MM:ARRAY
+  offset: 0x001590
+  symbol: object_rafVtx_001590
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_001600:
+  type: MM:ARRAY
+  offset: 0x001600
+  symbol: object_rafVtx_001600
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_002240:
+  type: MM:ARRAY
+  offset: 0x002240
+  symbol: object_rafVtx_002240
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rafVtx_0022B0:
+  type: MM:ARRAY
+  offset: 0x0022B0
+  symbol: object_rafVtx_0022B0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCarnivorousLilyPadSkelLimbs:
+  type: BLOB
+  offset: 0x33FC
+  symbol: gCarnivorousLilyPadSkelLimbs
+  size: 0

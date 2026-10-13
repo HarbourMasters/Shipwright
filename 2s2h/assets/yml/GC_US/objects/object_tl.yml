@@ -1,0 +1,503 @@
+:config:
+  segments:
+    - [ 6, 0x012A5740 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012A5740 ]
+    - [ 9, 0x012A5740 ]
+    - [ 10, 0x012A5740 ]
+    - [ 11, 0x012A5740 ]
+    - [ 12, 0x012A5740 ]
+    - [ 13, 0x012A5740 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSnapperBackLeftFootDL:
+  type: GFX
+  offset: 0x7188
+  symbol: gSnapperBackLeftFootDL
+
+gSnapperBackLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7C1C
+  symbol: gSnapperBackLeftFootLimb
+  limb_type: Standard
+
+gSnapperBackLeftLegDL:
+  type: GFX
+  offset: 0x7040
+  symbol: gSnapperBackLeftLegDL
+
+gSnapperBackLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7C10
+  symbol: gSnapperBackLeftLegLimb
+  limb_type: Standard
+
+gSnapperBackRightFootDL:
+  type: GFX
+  offset: 0x6F30
+  symbol: gSnapperBackRightFootDL
+
+gSnapperBackRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7C34
+  symbol: gSnapperBackRightFootLimb
+  limb_type: Standard
+
+gSnapperBackRightLegDL:
+  type: GFX
+  offset: 0x6DE8
+  symbol: gSnapperBackRightLegDL
+
+gSnapperBackRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7C28
+  symbol: gSnapperBackRightLegLimb
+  limb_type: Standard
+
+gSnapperBodyDL:
+  type: GFX
+  offset: 0x6C50
+  symbol: gSnapperBodyDL
+
+gSnapperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x7BB0
+  symbol: gSnapperBodyLimb
+  limb_type: Standard
+
+gSnapperBodyTex:
+  type: TEXTURE
+  offset: 0x4620
+  symbol: gSnapperBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperBouncedUprightAnim:
+  type: OOT:ANIMATION
+  offset: 0x35EC
+  symbol: gSnapperBouncedUprightAnim
+
+gSnapperDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x8B4
+  symbol: gSnapperDamageAnim
+
+gSnapperDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0xAF4
+  symbol: gSnapperDeathAnim
+
+gSnapperEmergeFromShellAnim:
+  type: OOT:ANIMATION
+  offset: 0x31DC
+  symbol: gSnapperEmergeFromShellAnim
+
+gSnapperEyeClosedTex:
+  type: TEXTURE
+  offset: 0x59A0
+  symbol: gSnapperEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperEyeHalfTex:
+  type: TEXTURE
+  offset: 0x57A0
+  symbol: gSnapperEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperEyeOpenTex:
+  type: TEXTURE
+  offset: 0x55A0
+  symbol: gSnapperEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3624
+  symbol: gSnapperEyeTexAnim
+
+gSnapperEyesDL:
+  type: GFX
+  offset: 0x7938
+  symbol: gSnapperEyesDL
+
+gSnapperEyesLimb:
+  type: OOT:LIMB
+  offset: 0x7BD4
+  symbol: gSnapperEyesLimb
+  limb_type: Standard
+
+gSnapperFailToFlipUprightAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F88
+  symbol: gSnapperFailToFlipUprightAnim
+
+gSnapperFlipOverAnim:
+  type: OOT:ANIMATION
+  offset: 0x39C0
+  symbol: gSnapperFlipOverAnim
+
+gSnapperFlipUprightAnim:
+  type: OOT:ANIMATION
+  offset: 0x2510
+  symbol: gSnapperFlipUprightAnim
+
+gSnapperFrontLeftFootDL:
+  type: GFX
+  offset: 0x7638
+  symbol: gSnapperFrontLeftFootDL
+
+gSnapperFrontLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7BEC
+  symbol: gSnapperFrontLeftFootLimb
+  limb_type: Standard
+
+gSnapperFrontLeftLegDL:
+  type: GFX
+  offset: 0x74F0
+  symbol: gSnapperFrontLeftLegDL
+
+gSnapperFrontLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BE0
+  symbol: gSnapperFrontLeftLegLimb
+  limb_type: Standard
+
+gSnapperFrontRightFootDL:
+  type: GFX
+  offset: 0x73E0
+  symbol: gSnapperFrontRightFootDL
+
+gSnapperFrontRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7C04
+  symbol: gSnapperFrontRightFootLimb
+  limb_type: Standard
+
+gSnapperFrontRightLegDL:
+  type: GFX
+  offset: 0x7298
+  symbol: gSnapperFrontRightLegDL
+
+gSnapperFrontRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BF8
+  symbol: gSnapperFrontRightLegLimb
+  limb_type: Standard
+
+gSnapperHeadDL:
+  type: GFX
+  offset: 0x7748
+  symbol: gSnapperHeadDL
+
+gSnapperHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7BBC
+  symbol: gSnapperHeadLimb
+  limb_type: Standard
+
+gSnapperHeadTex:
+  type: TEXTURE
+  offset: 0x4C20
+  symbol: gSnapperHeadTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSnapperHoleTex:
+  type: TEXTURE
+  offset: 0x50A0
+  symbol: gSnapperHoleTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4210
+  symbol: gSnapperIdleAnim
+
+gSnapperJawDL:
+  type: GFX
+  offset: 0x79C8
+  symbol: gSnapperJawDL
+
+gSnapperJawLimb:
+  type: OOT:LIMB
+  offset: 0x7BC8
+  symbol: gSnapperJawLimb
+  limb_type: Standard
+
+gSnapperLegTex:
+  type: TEXTURE
+  offset: 0x4820
+  symbol: gSnapperLegTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gSnapperMouthTex:
+  type: TEXTURE
+  offset: 0x5020
+  symbol: gSnapperMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSnapperRearUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x440
+  symbol: gSnapperRearUpAnim
+
+gSnapperRetreatIntoShellAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C68
+  symbol: gSnapperRetreatIntoShellAnim
+
+gSnapperShellTex:
+  type: TEXTURE
+  offset: 0x4220
+  symbol: gSnapperShellTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gSnapperSkel:
+  type: MM:SKELETON
+  offset: 0x7C70
+  symbol: gSnapperSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSnapperSpikeSkinTex:
+  type: TEXTURE
+  offset: 0x52A0
+  symbol: gSnapperSpikeSkinTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gSnapperSpikeTex:
+  type: TEXTURE
+  offset: 0x53A0
+  symbol: gSnapperSpikeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSnapperWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x823C
+  symbol: gSnapperWalkAnim
+
+gSnapperWiggleLegsAnim:
+  type: OOT:ANIMATION
+  offset: 0x27D8
+  symbol: gSnapperWiggleLegsAnim
+
+gSpikedSnapperBodyDL:
+  type: GFX
+  offset: 0x1550
+  symbol: gSpikedSnapperBodyDL
+
+gSpikedSnapperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1A20
+  symbol: gSpikedSnapperBodyLimb
+  limb_type: Standard
+
+gSpikedSnapperIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xB30
+  symbol: gSpikedSnapperIdleAnim
+
+gSpikedSnapperShellDL:
+  type: GFX
+  offset: 0x1800
+  symbol: gSpikedSnapperShellDL
+
+gSpikedSnapperShellLimb:
+  type: OOT:LIMB
+  offset: 0x1A2C
+  symbol: gSpikedSnapperShellLimb
+  limb_type: Standard
+
+gSpikedSnapperSkel:
+  type: MM:SKELETON
+  offset: 0x1A50
+  symbol: gSpikedSnapperSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSpikedSnapperSpikesDL:
+  type: GFX
+  offset: 0x18E0
+  symbol: gSpikedSnapperSpikesDL
+
+gSpikedSnapperSpikesLimb:
+  type: OOT:LIMB
+  offset: 0x1A38
+  symbol: gSpikedSnapperSpikesLimb
+  limb_type: Standard
+
+
+object_tlVtx_000B40:
+  type: MM:ARRAY
+  offset: 0x000B40
+  symbol: object_tlVtx_000B40
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_0010D0:
+  type: MM:ARRAY
+  offset: 0x0010D0
+  symbol: object_tlVtx_0010D0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_001440:
+  type: MM:ARRAY
+  offset: 0x001440
+  symbol: object_tlVtx_001440
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSpikedSnapperSkelLimbs:
+  type: BLOB
+  offset: 0x1A44
+  symbol: gSpikedSnapperSkelLimbs
+  size: 0
+
+gSnapperEyeTexAnimTexCycleParams_003614:
+  type: BLOB
+  offset: 0x003614
+  symbol: gSnapperEyeTexAnimTexCycleParams_003614
+  size: 0
+
+object_tlVtx_005BA0:
+  type: MM:ARRAY
+  offset: 0x005BA0
+  symbol: object_tlVtx_005BA0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_005E20:
+  type: MM:ARRAY
+  offset: 0x005E20
+  symbol: object_tlVtx_005E20
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_005F70:
+  type: MM:ARRAY
+  offset: 0x005F70
+  symbol: object_tlVtx_005F70
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_006080:
+  type: MM:ARRAY
+  offset: 0x006080
+  symbol: object_tlVtx_006080
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_0061D0:
+  type: MM:ARRAY
+  offset: 0x0061D0
+  symbol: object_tlVtx_0061D0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_0062E0:
+  type: MM:ARRAY
+  offset: 0x0062E0
+  symbol: object_tlVtx_0062E0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_006440:
+  type: MM:ARRAY
+  offset: 0x006440
+  symbol: object_tlVtx_006440
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_006560:
+  type: MM:ARRAY
+  offset: 0x006560
+  symbol: object_tlVtx_006560
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_0066C0:
+  type: MM:ARRAY
+  offset: 0x0066C0
+  symbol: object_tlVtx_0066C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_0067E0:
+  type: MM:ARRAY
+  offset: 0x0067E0
+  symbol: object_tlVtx_0067E0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_006940:
+  type: MM:ARRAY
+  offset: 0x006940
+  symbol: object_tlVtx_006940
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tlVtx_006BE0:
+  type: MM:ARRAY
+  offset: 0x006BE0
+  symbol: object_tlVtx_006BE0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSnapperSkelLimbs:
+  type: BLOB
+  offset: 0x7C40
+  symbol: gSnapperSkelLimbs
+  size: 0

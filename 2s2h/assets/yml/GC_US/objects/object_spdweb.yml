@@ -1,0 +1,85 @@
+:config:
+  segments:
+    - [ 6, 0x01111360 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01111360 ]
+    - [ 9, 0x01111360 ]
+    - [ 10, 0x01111360 ]
+    - [ 11, 0x01111360 ]
+    - [ 12, 0x01111360 ]
+    - [ 13, 0x01111360 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_spdweb_Colheader_0011C0:
+  type: MM:COLLISION
+  offset: 0x11C0
+  symbol: object_spdweb_Colheader_0011C0
+
+object_spdweb_Colheader_002678:
+  type: MM:COLLISION
+  offset: 0x2678
+  symbol: object_spdweb_Colheader_002678
+
+object_spdweb_DL_000060:
+  type: GFX
+  offset: 0x60
+  symbol: object_spdweb_DL_000060
+
+object_spdweb_DL_000130:
+  type: GFX
+  offset: 0x130
+  symbol: object_spdweb_DL_000130
+
+object_spdweb_DL_0012F0:
+  type: GFX
+  offset: 0x12F0
+  symbol: object_spdweb_DL_0012F0
+
+object_spdweb_DL_001400:
+  type: GFX
+  offset: 0x1400
+  symbol: object_spdweb_DL_001400
+
+object_spdweb_Tex_000138:
+  type: TEXTURE
+  offset: 0x138
+  symbol: object_spdweb_Tex_000138
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spdweb_Tex_000938:
+  type: TEXTURE
+  offset: 0x938
+  symbol: object_spdweb_Tex_000938
+  format: IA8
+  width: 32
+  height: 64
+
+object_spdweb_Tex_001408:
+  type: TEXTURE
+  offset: 0x1408
+  symbol: object_spdweb_Tex_001408
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_spdwebVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_spdwebVtx_000000
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spdwebVtx_0011F0:
+  type: MM:ARRAY
+  offset: 0x0011F0
+  symbol: object_spdwebVtx_0011F0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

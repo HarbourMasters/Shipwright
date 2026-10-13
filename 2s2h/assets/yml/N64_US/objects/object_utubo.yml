@@ -1,0 +1,337 @@
+:config:
+  segments:
+    - [ 6, 0x01401340 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01401340 ]
+    - [ 9, 0x01401340 ]
+    - [ 10, 0x01401340 ]
+    - [ 11, 0x01401340 ]
+    - [ 12, 0x01401340 ]
+    - [ 13, 0x01401340 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDeepPythonBodySegment1DL:
+  type: GFX
+  offset: 0x2580
+  symbol: gDeepPythonBodySegment1DL
+
+gDeepPythonBodySegment1FrontTLUT:
+  type: TEXTURE
+  offset: 0x2E68
+  symbol: gDeepPythonBodySegment1FrontTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gDeepPythonBodySegment1FrontTex:
+  type: TEXTURE
+  offset: 0x3EA8
+  symbol: gDeepPythonBodySegment1FrontTex
+  format: CI4
+  width: 32
+  height: 32
+
+gDeepPythonBodySegment1Limb:
+  type: OOT:LIMB
+  offset: 0x4314
+  symbol: gDeepPythonBodySegment1Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment2DL:
+  type: GFX
+  offset: 0x2738
+  symbol: gDeepPythonBodySegment2DL
+
+gDeepPythonBodySegment2Limb:
+  type: OOT:LIMB
+  offset: 0x4308
+  symbol: gDeepPythonBodySegment2Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment3DL:
+  type: GFX
+  offset: 0x28A0
+  symbol: gDeepPythonBodySegment3DL
+
+gDeepPythonBodySegment3Limb:
+  type: OOT:LIMB
+  offset: 0x42F0
+  symbol: gDeepPythonBodySegment3Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment4DL:
+  type: GFX
+  offset: 0x2A08
+  symbol: gDeepPythonBodySegment4DL
+
+gDeepPythonBodySegment4Limb:
+  type: OOT:LIMB
+  offset: 0x42C0
+  symbol: gDeepPythonBodySegment4Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment5DL:
+  type: GFX
+  offset: 0x2D38
+  symbol: gDeepPythonBodySegment5DL
+
+gDeepPythonBodySegment5Limb:
+  type: OOT:LIMB
+  offset: 0x42CC
+  symbol: gDeepPythonBodySegment5Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment6DL:
+  type: GFX
+  offset: 0x2C28
+  symbol: gDeepPythonBodySegment6DL
+
+gDeepPythonBodySegment6Limb:
+  type: OOT:LIMB
+  offset: 0x42D8
+  symbol: gDeepPythonBodySegment6Limb
+  limb_type: Standard
+
+gDeepPythonBodySegment7DL:
+  type: GFX
+  offset: 0x2B18
+  symbol: gDeepPythonBodySegment7DL
+
+gDeepPythonBodySegment7Limb:
+  type: OOT:LIMB
+  offset: 0x42E4
+  symbol: gDeepPythonBodySegment7Limb
+  limb_type: Standard
+
+gDeepPythonBodyTLUT:
+  type: TEXTURE
+  offset: 0x2E88
+  symbol: gDeepPythonBodyTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gDeepPythonBodyTex:
+  type: TEXTURE
+  offset: 0x40A8
+  symbol: gDeepPythonBodyTex
+  format: CI4
+  width: 32
+  height: 32
+
+gDeepPythonCollarDL:
+  type: GFX
+  offset: 0x2440
+  symbol: gDeepPythonCollarDL
+
+gDeepPythonCollarLimb:
+  type: OOT:LIMB
+  offset: 0x432C
+  symbol: gDeepPythonCollarLimb
+  limb_type: Standard
+
+gDeepPythonEyeTex:
+  type: TEXTURE
+  offset: 0x36A8
+  symbol: gDeepPythonEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDeepPythonHeadAndCollarRootLimb:
+  type: OOT:LIMB
+  offset: 0x4320
+  symbol: gDeepPythonHeadAndCollarRootLimb
+  limb_type: Standard
+
+gDeepPythonHeadAndCollarTLUT:
+  type: TEXTURE
+  offset: 0x2E48
+  symbol: gDeepPythonHeadAndCollarTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gDeepPythonHeadAndCollarTex:
+  type: TEXTURE
+  offset: 0x2EA8
+  symbol: gDeepPythonHeadAndCollarTex
+  format: CI4
+  width: 64
+  height: 64
+
+gDeepPythonHeadDL:
+  type: GFX
+  offset: 0x20B0
+  symbol: gDeepPythonHeadDL
+
+gDeepPythonHeadLimb:
+  type: OOT:LIMB
+  offset: 0x4338
+  symbol: gDeepPythonHeadLimb
+  limb_type: Standard
+
+gDeepPythonJawDL:
+  type: GFX
+  offset: 0x2358
+  symbol: gDeepPythonJawDL
+
+gDeepPythonJawLimb:
+  type: OOT:LIMB
+  offset: 0x4350
+  symbol: gDeepPythonJawLimb
+  limb_type: Standard
+
+gDeepPythonJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x4344
+  symbol: gDeepPythonJawRootLimb
+  limb_type: Standard
+
+gDeepPythonLargeSideSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x4ABC
+  symbol: gDeepPythonLargeSideSwayAnim
+
+gDeepPythonMiddleBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x42B4
+  symbol: gDeepPythonMiddleBodyRootLimb
+  limb_type: Standard
+
+gDeepPythonMultiDirectionalSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x82C
+  symbol: gDeepPythonMultiDirectionalSwayAnim
+
+gDeepPythonRootLimb:
+  type: OOT:LIMB
+  offset: 0x42A8
+  symbol: gDeepPythonRootLimb
+  limb_type: Standard
+
+gDeepPythonSkel:
+  type: MM:SKELETON
+  offset: 0x4398
+  symbol: gDeepPythonSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDeepPythonSmallSideSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x48B8
+  symbol: gDeepPythonSmallSideSwayAnim
+
+gDeepPythonUnusedSideSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x4518
+  symbol: gDeepPythonUnusedSideSwayAnim
+
+gDeepPythonUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x42FC
+  symbol: gDeepPythonUpperBodyRootLimb
+  limb_type: Standard
+
+gDeepPythonVerticalSwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x4740
+  symbol: gDeepPythonVerticalSwayAnim
+
+
+object_utuboVtx_000840:
+  type: MM:ARRAY
+  offset: 0x000840
+  symbol: object_utuboVtx_000840
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_000E70:
+  type: MM:ARRAY
+  offset: 0x000E70
+  symbol: object_utuboVtx_000E70
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_000F40:
+  type: MM:ARRAY
+  offset: 0x000F40
+  symbol: object_utuboVtx_000F40
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_0011F0:
+  type: MM:ARRAY
+  offset: 0x0011F0
+  symbol: object_utuboVtx_0011F0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_0014B0:
+  type: MM:ARRAY
+  offset: 0x0014B0
+  symbol: object_utuboVtx_0014B0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_001750:
+  type: MM:ARRAY
+  offset: 0x001750
+  symbol: object_utuboVtx_001750
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_0019F0:
+  type: MM:ARRAY
+  offset: 0x0019F0
+  symbol: object_utuboVtx_0019F0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_001BA0:
+  type: MM:ARRAY
+  offset: 0x001BA0
+  symbol: object_utuboVtx_001BA0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_001D50:
+  type: MM:ARRAY
+  offset: 0x001D50
+  symbol: object_utuboVtx_001D50
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_utuboVtx_001F00:
+  type: MM:ARRAY
+  offset: 0x001F00
+  symbol: object_utuboVtx_001F00
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDeepPythonSkelLimbs:
+  type: BLOB
+  offset: 0x435C
+  symbol: gDeepPythonSkelLimbs
+  size: 0

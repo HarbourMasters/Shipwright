@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 128, 0x00BC8990 ]
+  virtual: [ 0x808E1A60, 0x00BC8990 ]
+
+sBigslimeDynamicState0Vtx:
+  type: MM:ARRAY
+  offset: 0x90A0
+  symbol: sBigslimeDynamicState0Vtx
+  count: 162
+  array_type: VTX
+
+sBigslimeDynamicState1Vtx:
+  type: MM:ARRAY
+  offset: 0x9AC0
+  symbol: sBigslimeDynamicState1Vtx
+  count: 162
+  array_type: VTX
+
+sBigslimeStaticVtx:
+  type: MM:ARRAY
+  offset: 0x8680
+  symbol: sBigslimeStaticVtx
+  count: 162
+  array_type: VTX
+
+sBigslimeTargetVtx:
+  type: MM:ARRAY
+  offset: 0xA4E0
+  symbol: sBigslimeTargetVtx
+  count: 162
+  array_type: VTX
+

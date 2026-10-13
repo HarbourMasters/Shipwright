@@ -1,0 +1,936 @@
+:config:
+  segments:
+    - [ 6, 0x011FA6E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011FA6E0 ]
+    - [ 9, 0x011FA6E0 ]
+    - [ 10, 0x011FA6E0 ]
+    - [ 11, 0x011FA6E0 ]
+    - [ 12, 0x011FA6E0 ]
+    - [ 13, 0x011FA6E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gKoumeBottleDL:
+  type: GFX
+  offset: 0x1F90
+  symbol: gKoumeBottleDL
+
+gKoumeBottleTex:
+  type: TEXTURE
+  offset: 0x2168
+  symbol: gKoumeBottleTex
+  format: I4
+  width: 16
+  height: 16
+
+gKoumeBraidEndTex:
+  type: TEXTURE
+  offset: 0x18820
+  symbol: gKoumeBraidEndTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKoumeBroomDL:
+  type: GFX
+  offset: 0xD738
+  symbol: gKoumeBroomDL
+
+gKoumeBroomHandleTex:
+  type: TEXTURE
+  offset: 0x189A0
+  symbol: gKoumeBroomHandleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKoumeBroomHeadTex:
+  type: TEXTURE
+  offset: 0x18A20
+  symbol: gKoumeBroomHeadTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gKoumeBroomLimb:
+  type: OOT:LIMB
+  offset: 0x1A95C
+  symbol: gKoumeBroomLimb
+  limb_type: Standard
+
+gKoumeChainDL:
+  type: GFX
+  offset: 0x4C8
+  symbol: gKoumeChainDL
+
+gKoumeChainTex:
+  type: TEXTURE
+  offset: 0x560
+  symbol: gKoumeChainTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gKoumeCollarNeckTex:
+  type: TEXTURE
+  offset: 0x188E0
+  symbol: gKoumeCollarNeckTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gKoumeDrinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x7FA0
+  symbol: gKoumeDrinkAnim
+
+gKoumeDustMaterialDL:
+  type: GFX
+  offset: 0x1A820
+  symbol: gKoumeDustMaterialDL
+
+gKoumeDustModelDL:
+  type: GFX
+  offset: 0x1A830
+  symbol: gKoumeDustModelDL
+
+gKoumeEarTLUT:
+  type: TEXTURE
+  offset: 0x16F60
+  symbol: gKoumeEarTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeEarTex:
+  type: TEXTURE
+  offset: 0x188A0
+  symbol: gKoumeEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKoumeEmptyDL:
+  type: GFX
+  offset: 0x2160
+  symbol: gKoumeEmptyDL
+
+gKoumeEyeClosedTex:
+  type: TEXTURE
+  offset: 0x19FA0
+  symbol: gKoumeEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeEyeHalfTex:
+  type: TEXTURE
+  offset: 0x197A0
+  symbol: gKoumeEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeEyeOpenTex:
+  type: TEXTURE
+  offset: 0x18FA0
+  symbol: gKoumeEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeFingerTLUT:
+  type: TEXTURE
+  offset: 0x17160
+  symbol: gKoumeFingerTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeFingerTex:
+  type: TEXTURE
+  offset: 0x18920
+  symbol: gKoumeFingerTex
+  format: CI8
+  width: 8
+  height: 16
+
+gKoumeFinishedDrinkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x16B4C
+  symbol: gKoumeFinishedDrinkingAnim
+
+gKoumeFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x2BD8
+  symbol: gKoumeFlyAnim
+
+gKoumeGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x17760
+  symbol: gKoumeGerudoFabricTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeHairTex:
+  type: TEXTURE
+  offset: 0x18620
+  symbol: gKoumeHairTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gKoumeHeadDL:
+  type: GFX
+  offset: 0xBBB8
+  symbol: gKoumeHeadDL
+
+gKoumeHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1A9B0
+  symbol: gKoumeHeadLimb
+  limb_type: Standard
+
+gKoumeHealedAnim:
+  type: OOT:ANIMATION
+  offset: 0x11F88
+  symbol: gKoumeHealedAnim
+
+gKoumeHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x446C
+  symbol: gKoumeHoverAnim
+
+gKoumeIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x15068
+  symbol: gKoumeIdleAnim
+
+gKoumeInjuredHeadUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x15CA0
+  symbol: gKoumeInjuredHeadUpAnim
+
+gKoumeInjuredLyingDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xF9A0
+  symbol: gKoumeInjuredLyingDownAnim
+
+gKoumeInjuredRaiseHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x9348
+  symbol: gKoumeInjuredRaiseHeadAnim
+
+gKoumeInjuredTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xEEDC
+  symbol: gKoumeInjuredTalkAnim
+
+gKoumeJewelHolderTex:
+  type: TEXTURE
+  offset: 0x18E20
+  symbol: gKoumeJewelHolderTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gKoumeJewelTex:
+  type: TEXTURE
+  offset: 0x1A7A0
+  symbol: gKoumeJewelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKoumeLeftBraidEndDL:
+  type: GFX
+  offset: 0xC730
+  symbol: gKoumeLeftBraidEndDL
+
+gKoumeLeftBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x1A9EC
+  symbol: gKoumeLeftBraidEndLimb
+  limb_type: Standard
+
+gKoumeLeftBraidStartDL:
+  type: GFX
+  offset: 0xC630
+  symbol: gKoumeLeftBraidStartDL
+
+gKoumeLeftBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x1A9E0
+  symbol: gKoumeLeftBraidStartLimb
+  limb_type: Standard
+
+gKoumeLeftFootDL:
+  type: GFX
+  offset: 0xDEC8
+  symbol: gKoumeLeftFootDL
+
+gKoumeLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1A8E4
+  symbol: gKoumeLeftFootLimb
+  limb_type: Standard
+
+gKoumeLeftHandDL:
+  type: GFX
+  offset: 0xD450
+  symbol: gKoumeLeftHandDL
+
+gKoumeLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x1A950
+  symbol: gKoumeLeftHandLimb
+  limb_type: Standard
+
+gKoumeLeftShinDL:
+  type: GFX
+  offset: 0xDE18
+  symbol: gKoumeLeftShinDL
+
+gKoumeLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x1A8D8
+  symbol: gKoumeLeftShinLimb
+  limb_type: Standard
+
+gKoumeLeftSleeveEndDL:
+  type: GFX
+  offset: 0xDB50
+  symbol: gKoumeLeftSleeveEndDL
+
+gKoumeLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x1A938
+  symbol: gKoumeLeftSleeveEndLimb
+  limb_type: Standard
+
+gKoumeLeftSleeveFrontDL:
+  type: GFX
+  offset: 0xD2E0
+  symbol: gKoumeLeftSleeveFrontDL
+
+gKoumeLeftSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x1A944
+  symbol: gKoumeLeftSleeveFrontLimb
+  limb_type: Standard
+
+gKoumeLeftSleeveMidDL:
+  type: GFX
+  offset: 0xDA38
+  symbol: gKoumeLeftSleeveMidDL
+
+gKoumeLeftSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x1A92C
+  symbol: gKoumeLeftSleeveMidLimb
+  limb_type: Standard
+
+gKoumeLeftSleeveStartDL:
+  type: GFX
+  offset: 0xD1D0
+  symbol: gKoumeLeftSleeveStartDL
+
+gKoumeLeftSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x1A920
+  symbol: gKoumeLeftSleeveStartLimb
+  limb_type: Standard
+
+gKoumeLeftThighDL:
+  type: GFX
+  offset: 0xDDD0
+  symbol: gKoumeLeftThighDL
+
+gKoumeLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1A8CC
+  symbol: gKoumeLeftThighLimb
+  limb_type: Standard
+
+gKoumeMouthTLUT:
+  type: TEXTURE
+  offset: 0x16D60
+  symbol: gKoumeMouthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeMouthTex:
+  type: TEXTURE
+  offset: 0x185E0
+  symbol: gKoumeMouthTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKoumeNeckDL:
+  type: GFX
+  offset: 0xBA88
+  symbol: gKoumeNeckDL
+
+gKoumeNeckLimb:
+  type: OOT:LIMB
+  offset: 0x1A9A4
+  symbol: gKoumeNeckLimb
+  limb_type: Standard
+
+gKoumeNeckTLUT:
+  type: TEXTURE
+  offset: 0x17360
+  symbol: gKoumeNeckTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeNeckTex:
+  type: TEXTURE
+  offset: 0x18F20
+  symbol: gKoumeNeckTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKoumeNostrilsTLUT:
+  type: TEXTURE
+  offset: 0x17560
+  symbol: gKoumeNostrilsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeNostrilsTex:
+  type: TEXTURE
+  offset: 0x18F60
+  symbol: gKoumeNostrilsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKoumePelvisDL:
+  type: GFX
+  offset: 0xB730
+  symbol: gKoumePelvisDL
+
+gKoumePelvisLimb:
+  type: OOT:LIMB
+  offset: 0x1A8C0
+  symbol: gKoumePelvisLimb
+  limb_type: Standard
+
+gKoumePotionDL:
+  type: GFX
+  offset: 0x20C8
+  symbol: gKoumePotionDL
+
+gKoumeRightBraidEndDL:
+  type: GFX
+  offset: 0xC960
+  symbol: gKoumeRightBraidEndDL
+
+gKoumeRightBraidEndLimb:
+  type: OOT:LIMB
+  offset: 0x1A9C8
+  symbol: gKoumeRightBraidEndLimb
+  limb_type: Standard
+
+gKoumeRightBraidStartDL:
+  type: GFX
+  offset: 0xC860
+  symbol: gKoumeRightBraidStartDL
+
+gKoumeRightBraidStartLimb:
+  type: OOT:LIMB
+  offset: 0x1A9BC
+  symbol: gKoumeRightBraidStartLimb
+  limb_type: Standard
+
+gKoumeRightFootDL:
+  type: GFX
+  offset: 0xDD38
+  symbol: gKoumeRightFootDL
+
+gKoumeRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1A908
+  symbol: gKoumeRightFootLimb
+  limb_type: Standard
+
+gKoumeRightHandDL:
+  type: GFX
+  offset: 0xCCC0
+  symbol: gKoumeRightHandDL
+
+gKoumeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1A998
+  symbol: gKoumeRightHandLimb
+  limb_type: Standard
+
+gKoumeRightShinDL:
+  type: GFX
+  offset: 0xDC88
+  symbol: gKoumeRightShinDL
+
+gKoumeRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1A8FC
+  symbol: gKoumeRightShinLimb
+  limb_type: Standard
+
+gKoumeRightSleeveEndDL:
+  type: GFX
+  offset: 0xD0C0
+  symbol: gKoumeRightSleeveEndDL
+
+gKoumeRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x1A980
+  symbol: gKoumeRightSleeveEndLimb
+  limb_type: Standard
+
+gKoumeRightSleeveFrontDL:
+  type: GFX
+  offset: 0xCB50
+  symbol: gKoumeRightSleeveFrontDL
+
+gKoumeRightSleeveFrontLimb:
+  type: OOT:LIMB
+  offset: 0x1A98C
+  symbol: gKoumeRightSleeveFrontLimb
+  limb_type: Standard
+
+gKoumeRightSleeveMidDL:
+  type: GFX
+  offset: 0xCFA8
+  symbol: gKoumeRightSleeveMidDL
+
+gKoumeRightSleeveMidLimb:
+  type: OOT:LIMB
+  offset: 0x1A974
+  symbol: gKoumeRightSleeveMidLimb
+  limb_type: Standard
+
+gKoumeRightSleeveStartDL:
+  type: GFX
+  offset: 0xCA40
+  symbol: gKoumeRightSleeveStartDL
+
+gKoumeRightSleeveStartLimb:
+  type: OOT:LIMB
+  offset: 0x1A968
+  symbol: gKoumeRightSleeveStartLimb
+  limb_type: Standard
+
+gKoumeRightThighDL:
+  type: GFX
+  offset: 0xDC40
+  symbol: gKoumeRightThighDL
+
+gKoumeRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1A8F0
+  symbol: gKoumeRightThighLimb
+  limb_type: Standard
+
+gKoumeRobePatternTex:
+  type: TEXTURE
+  offset: 0x18160
+  symbol: gKoumeRobePatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeRobeTex:
+  type: TEXTURE
+  offset: 0x17F60
+  symbol: gKoumeRobeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeRobeTrimTex:
+  type: TEXTURE
+  offset: 0x18360
+  symbol: gKoumeRobeTrimTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeShakeAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B5C4
+  symbol: gKoumeShakeAnim
+
+gKoumeSkel:
+  type: MM:SKELETON
+  offset: 0x1AA60
+  symbol: gKoumeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gKoumeSkinTLUT:
+  type: TEXTURE
+  offset: 0x16B60
+  symbol: gKoumeSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeSkinTex:
+  type: TEXTURE
+  offset: 0x18560
+  symbol: gKoumeSkinTex
+  format: CI8
+  width: 16
+  height: 8
+
+gKoumeTakeAnim:
+  type: OOT:ANIMATION
+  offset: 0x14728
+  symbol: gKoumeTakeAnim
+
+gKoumeTakeOffAnim:
+  type: OOT:ANIMATION
+  offset: 0x3698
+  symbol: gKoumeTakeOffAnim
+
+gKoumeTargetDL:
+  type: GFX
+  offset: 0x390
+  symbol: gKoumeTargetDL
+
+gKoumeTargetFaceTex:
+  type: TEXTURE
+  offset: 0x1160
+  symbol: gKoumeTargetFaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeTargetSideTex:
+  type: TEXTURE
+  offset: 0x960
+  symbol: gKoumeTargetSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeTeethDL:
+  type: GFX
+  offset: 0xC810
+  symbol: gKoumeTeethDL
+
+gKoumeTeethLimb:
+  type: OOT:LIMB
+  offset: 0x1A9D4
+  symbol: gKoumeTeethLimb
+  limb_type: Standard
+
+gKoumeTorsoDL:
+  type: GFX
+  offset: 0xB940
+  symbol: gKoumeTorsoDL
+
+gKoumeTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1A914
+  symbol: gKoumeTorsoLimb
+  limb_type: Standard
+
+gKoumeTryGetUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x108AC
+  symbol: gKoumeTryGetUpAnim
+
+
+object_truVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_truVtx_000000
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_000300:
+  type: MM:ARRAY
+  offset: 0x000300
+  symbol: object_truVtx_000300
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_001960:
+  type: MM:ARRAY
+  offset: 0x001960
+  symbol: object_truVtx_001960
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_001AE0:
+  type: MM:ARRAY
+  offset: 0x001AE0
+  symbol: object_truVtx_001AE0
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_009360:
+  type: MM:ARRAY
+  offset: 0x009360
+  symbol: object_truVtx_009360
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_0093F0:
+  type: MM:ARRAY
+  offset: 0x0093F0
+  symbol: object_truVtx_0093F0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_009540:
+  type: MM:ARRAY
+  offset: 0x009540
+  symbol: object_truVtx_009540
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_0095E0:
+  type: MM:ARRAY
+  offset: 0x0095E0
+  symbol: object_truVtx_0095E0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_009730:
+  type: MM:ARRAY
+  offset: 0x009730
+  symbol: object_truVtx_009730
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_0097D0:
+  type: MM:ARRAY
+  offset: 0x0097D0
+  symbol: object_truVtx_0097D0
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A110:
+  type: MM:ARRAY
+  offset: 0x00A110
+  symbol: object_truVtx_00A110
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A290:
+  type: MM:ARRAY
+  offset: 0x00A290
+  symbol: object_truVtx_00A290
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A590:
+  type: MM:ARRAY
+  offset: 0x00A590
+  symbol: object_truVtx_00A590
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A770:
+  type: MM:ARRAY
+  offset: 0x00A770
+  symbol: object_truVtx_00A770
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A8A0:
+  type: MM:ARRAY
+  offset: 0x00A8A0
+  symbol: object_truVtx_00A8A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00A940:
+  type: MM:ARRAY
+  offset: 0x00A940
+  symbol: object_truVtx_00A940
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00AA60:
+  type: MM:ARRAY
+  offset: 0x00AA60
+  symbol: object_truVtx_00AA60
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00AB50:
+  type: MM:ARRAY
+  offset: 0x00AB50
+  symbol: object_truVtx_00AB50
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00AD30:
+  type: MM:ARRAY
+  offset: 0x00AD30
+  symbol: object_truVtx_00AD30
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00AE60:
+  type: MM:ARRAY
+  offset: 0x00AE60
+  symbol: object_truVtx_00AE60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00AF20:
+  type: MM:ARRAY
+  offset: 0x00AF20
+  symbol: object_truVtx_00AF20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B040:
+  type: MM:ARRAY
+  offset: 0x00B040
+  symbol: object_truVtx_00B040
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B130:
+  type: MM:ARRAY
+  offset: 0x00B130
+  symbol: object_truVtx_00B130
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B390:
+  type: MM:ARRAY
+  offset: 0x00B390
+  symbol: object_truVtx_00B390
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B3D0:
+  type: MM:ARRAY
+  offset: 0x00B3D0
+  symbol: object_truVtx_00B3D0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B440:
+  type: MM:ARRAY
+  offset: 0x00B440
+  symbol: object_truVtx_00B440
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B470:
+  type: MM:ARRAY
+  offset: 0x00B470
+  symbol: object_truVtx_00B470
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B4B0:
+  type: MM:ARRAY
+  offset: 0x00B4B0
+  symbol: object_truVtx_00B4B0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B520:
+  type: MM:ARRAY
+  offset: 0x00B520
+  symbol: object_truVtx_00B520
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_00B550:
+  type: MM:ARRAY
+  offset: 0x00B550
+  symbol: object_truVtx_00B550
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_truVtx_01A880:
+  type: MM:ARRAY
+  offset: 0x01A880
+  symbol: object_truVtx_01A880
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKoumeSkelLimbs:
+  type: BLOB
+  offset: 0x1A9F8
+  symbol: gKoumeSkelLimbs
+  size: 0

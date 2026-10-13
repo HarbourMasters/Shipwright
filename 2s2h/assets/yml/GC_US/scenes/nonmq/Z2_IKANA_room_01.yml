@@ -1,0 +1,79 @@
+:config:
+  segments:
+    - [ 3, 0x017129E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x017129E0 ]
+    - [ 9, 0x017129E0 ]
+    - [ 10, 0x017129E0 ]
+    - [ 11, 0x017129E0 ]
+    - [ 12, 0x017129E0 ]
+    - [ 13, 0x017129E0 ]
+    - [ 2, 0x016E8710 ]
+  directory: scenes/nonmq/Z2_IKANA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_IKANA.yml
+    - GC_US/scenes/nonmq/Z2_IKANA_room_01Set_000100.yml
+    - GC_US/scenes/nonmq/Z2_IKANA_room_01Set_0001C0.yml
+    - GC_US/scenes/nonmq/Z2_IKANA_room_01Set_000230.yml
+    - GC_US/scenes/nonmq/Z2_IKANA_room_01Set_0002D0.yml
+
+Z2_IKANA_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_IKANA_room_01
+
+Z2_IKANA_room_01DL_000340:
+  type: GFX
+  offset: 0x340
+  symbol: Z2_IKANA_room_01DL_000340
+
+Z2_IKANA_room_01DL_000478:
+  type: GFX
+  offset: 0x478
+  symbol: Z2_IKANA_room_01DL_000478
+
+
+Z2_IKANA_room_01ActorEntry_000084:
+  type: BLOB
+  offset: 0x000084
+  symbol: Z2_IKANA_room_01ActorEntry_000084
+  size: 0
+
+Z2_IKANA_room_01ActorEntry_000164:
+  type: BLOB
+  offset: 0x000164
+  symbol: Z2_IKANA_room_01ActorEntry_000164
+  size: 0
+
+Z2_IKANA_room_01ActorEntry_000210:
+  type: BLOB
+  offset: 0x000210
+  symbol: Z2_IKANA_room_01ActorEntry_000210
+  size: 0
+
+Z2_IKANA_room_01ActorEntry_00029C:
+  type: BLOB
+  offset: 0x00029C
+  symbol: Z2_IKANA_room_01ActorEntry_00029C
+  size: 0
+
+Z2_IKANA_room_01ActorEntry_00031C:
+  type: BLOB
+  offset: 0x00031C
+  symbol: Z2_IKANA_room_01ActorEntry_00031C
+  size: 0
+
+Z2_IKANA_room_01Vtx_000348:
+  type: MM:ARRAY
+  offset: 0x000348
+  symbol: Z2_IKANA_room_01Vtx_000348
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKANA_room_01DL_000418:
+  type: GFX
+  offset: 0x000418
+  symbol: Z2_IKANA_room_01DL_000418

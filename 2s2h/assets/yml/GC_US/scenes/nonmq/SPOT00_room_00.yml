@@ -1,0 +1,109 @@
+:config:
+  segments:
+    - [ 3, 0x01E766B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E766B0 ]
+    - [ 9, 0x01E766B0 ]
+    - [ 10, 0x01E766B0 ]
+    - [ 11, 0x01E766B0 ]
+    - [ 12, 0x01E766B0 ]
+    - [ 13, 0x01E766B0 ]
+    - [ 2, 0x01E72FD0 ]
+  directory: scenes/nonmq/SPOT00
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/SPOT00.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000170.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_0001D0.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000310.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_0003A0.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000410.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000550.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000650.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_0006B0.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000720.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000780.yml
+    - GC_US/scenes/nonmq/SPOT00_room_00Set_000810.yml
+
+SPOT00_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: SPOT00_room_00
+
+SPOT00_room_00DL_000900:
+  type: GFX
+  offset: 0x900
+  symbol: SPOT00_room_00DL_000900
+
+
+SPOT00_room_00ActorEntry_000080:
+  type: BLOB
+  offset: 0x000080
+  symbol: SPOT00_room_00ActorEntry_000080
+  size: 0
+
+SPOT00_room_00ActorEntry_0001B4:
+  type: BLOB
+  offset: 0x0001B4
+  symbol: SPOT00_room_00ActorEntry_0001B4
+  size: 0
+
+SPOT00_room_00ActorEntry_000214:
+  type: BLOB
+  offset: 0x000214
+  symbol: SPOT00_room_00ActorEntry_000214
+  size: 0
+
+SPOT00_room_00ActorEntry_00035C:
+  type: BLOB
+  offset: 0x00035C
+  symbol: SPOT00_room_00ActorEntry_00035C
+  size: 0
+
+SPOT00_room_00ActorEntry_0003E8:
+  type: BLOB
+  offset: 0x0003E8
+  symbol: SPOT00_room_00ActorEntry_0003E8
+  size: 0
+
+SPOT00_room_00ActorEntry_00045C:
+  type: BLOB
+  offset: 0x00045C
+  symbol: SPOT00_room_00ActorEntry_00045C
+  size: 0
+
+SPOT00_room_00ActorEntry_000598:
+  type: BLOB
+  offset: 0x000598
+  symbol: SPOT00_room_00ActorEntry_000598
+  size: 0
+
+SPOT00_room_00ActorEntry_000694:
+  type: BLOB
+  offset: 0x000694
+  symbol: SPOT00_room_00ActorEntry_000694
+  size: 0
+
+SPOT00_room_00ActorEntry_0006F4:
+  type: BLOB
+  offset: 0x0006F4
+  symbol: SPOT00_room_00ActorEntry_0006F4
+  size: 0
+
+SPOT00_room_00ActorEntry_000764:
+  type: BLOB
+  offset: 0x000764
+  symbol: SPOT00_room_00ActorEntry_000764
+  size: 0
+
+SPOT00_room_00ActorEntry_0007C8:
+  type: BLOB
+  offset: 0x0007C8
+  symbol: SPOT00_room_00ActorEntry_0007C8
+  size: 0
+
+SPOT00_room_00ActorEntry_000864:
+  type: BLOB
+  offset: 0x000864
+  symbol: SPOT00_room_00ActorEntry_000864
+  size: 0

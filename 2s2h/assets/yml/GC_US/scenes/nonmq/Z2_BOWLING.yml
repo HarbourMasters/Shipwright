@@ -1,0 +1,257 @@
+:config:
+  segments:
+    - [ 2, 0x016CE9C0 ]
+
+Z2_BOWLING:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_BOWLING
+
+
+Z2_BOWLINGPathwayList_000108:
+  type: MM:PATH
+  offset: 0x000108
+  symbol: Z2_BOWLINGPathwayList_000108
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: -1
+      points:
+        - [ 126, 139, -293 ]
+        - [ 210, 200, -210 ]
+        - [ 295, 137, -124 ]
+        - [ 295, 200, 0 ]
+        - [ 295, 138, 127 ]
+        - [ 207, 200, 214 ]
+        - [ 126, 137, 294 ]
+        - [ 0, 200, 298 ]
+        - [ -125, 141, 296 ]
+        - [ -214, 200, 208 ]
+        - [ -292, 140, 127 ]
+        - [ -294, 200, 1 ]
+        - [ -294, 140, -125 ]
+        - [ -211, 200, -208 ]
+        - [ -126, 139, -294 ]
+        - [ 0, 200, -293 ]
+    - additional_path_index: 2
+      custom_value: -1
+      points:
+        - [ 125, 140, 297 ]
+        - [ -125, 80, 297 ]
+        - [ -293, 120, 127 ]
+        - [ -297, 80, -125 ]
+        - [ -125, 100, -295 ]
+        - [ 127, 80, -293 ]
+        - [ 295, 100, -123 ]
+        - [ 297, 120, 130 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -2, 140, 297 ]
+        - [ 209, 200, 211 ]
+        - [ 292, 140, 2 ]
+        - [ 212, 200, -208 ]
+        - [ 0, 140, -290 ]
+        - [ -212, 200, -210 ]
+        - [ -294, 140, 2 ]
+        - [ -212, 200, 208 ]
+
+Z2_BOWLINGPathwayList_000138:
+  type: MM:PATH
+  offset: 0x000138
+  symbol: Z2_BOWLINGPathwayList_000138
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: -1
+      points:
+        - [ 126, 139, -293 ]
+        - [ 210, 200, -210 ]
+        - [ 295, 137, -124 ]
+        - [ 295, 200, 0 ]
+        - [ 295, 138, 127 ]
+        - [ 207, 200, 214 ]
+        - [ 126, 137, 294 ]
+        - [ 0, 200, 298 ]
+        - [ -125, 141, 296 ]
+        - [ -214, 200, 208 ]
+        - [ -292, 140, 127 ]
+        - [ -294, 200, 1 ]
+        - [ -294, 140, -125 ]
+        - [ -211, 200, -208 ]
+        - [ -126, 139, -294 ]
+        - [ 0, 200, -293 ]
+    - additional_path_index: 2
+      custom_value: -1
+      points:
+        - [ 125, 140, 297 ]
+        - [ -125, 80, 297 ]
+        - [ -293, 120, 127 ]
+        - [ -297, 80, -125 ]
+        - [ -125, 100, -295 ]
+        - [ 127, 80, -293 ]
+        - [ 295, 100, -123 ]
+        - [ 297, 120, 130 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -2, 140, 297 ]
+        - [ 209, 200, 211 ]
+        - [ 292, 140, 2 ]
+        - [ 212, 200, -208 ]
+        - [ 0, 140, -290 ]
+        - [ -212, 200, -210 ]
+        - [ -294, 140, 2 ]
+        - [ -212, 200, 208 ]
+
+Z2_BOWLINGPathwayList_000198:
+  type: MM:PATH
+  offset: 0x000198
+  symbol: Z2_BOWLINGPathwayList_000198
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: -1
+      points:
+        - [ 126, 139, -293 ]
+        - [ 210, 200, -210 ]
+        - [ 295, 137, -124 ]
+        - [ 295, 200, 0 ]
+        - [ 295, 138, 127 ]
+        - [ 207, 200, 214 ]
+        - [ 126, 137, 294 ]
+        - [ 0, 200, 298 ]
+        - [ -125, 141, 296 ]
+        - [ -214, 200, 208 ]
+        - [ -292, 140, 127 ]
+        - [ -294, 200, 1 ]
+        - [ -294, 140, -125 ]
+        - [ -211, 200, -208 ]
+        - [ -126, 139, -294 ]
+        - [ 0, 200, -293 ]
+    - additional_path_index: 2
+      custom_value: -1
+      points:
+        - [ 125, 140, 297 ]
+        - [ -125, 80, 297 ]
+        - [ -293, 120, 127 ]
+        - [ -297, 80, -125 ]
+        - [ -125, 100, -295 ]
+        - [ 127, 80, -293 ]
+        - [ 295, 100, -123 ]
+        - [ 297, 120, 130 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -2, 140, 297 ]
+        - [ 209, 200, 211 ]
+        - [ 292, 140, 2 ]
+        - [ 212, 200, -208 ]
+        - [ 0, 140, -290 ]
+        - [ -212, 200, -210 ]
+        - [ -294, 140, 2 ]
+        - [ -212, 200, 208 ]
+
+Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002B0:
+  type: BLOB
+  offset: 0x0002B0
+  symbol: Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002B0
+  size: 0
+
+Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002B8:
+  type: BLOB
+  offset: 0x0002B8
+  symbol: Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002B8
+  size: 0
+
+Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002C0:
+  type: BLOB
+  offset: 0x0002C0
+  symbol: Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002C0
+  size: 0
+
+Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002C8:
+  type: BLOB
+  offset: 0x0002C8
+  symbol: Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002C8
+  size: 0
+
+Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002D0:
+  type: BLOB
+  offset: 0x0002D0
+  symbol: Z2_BOWLINGTexAnim_0002D8TexScrollParams_0002D0
+  size: 0
+
+Z2_BOWLINGTexAnim_0002D8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0002D8
+  symbol: Z2_BOWLINGTexAnim_0002D8
+
+Z2_BOWLINGCollisionHeader_000C74:
+  type: MM:COLLISION
+  offset: 0x000C74
+  symbol: Z2_BOWLINGCollisionHeader_000C74
+
+Z2_BOWLINGTex_000CA0:
+  type: TEXTURE
+  offset: 0x000CA0
+  symbol: Z2_BOWLINGTex_000CA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BOWLINGTex_0014A0:
+  type: TEXTURE
+  offset: 0x0014A0
+  symbol: Z2_BOWLINGTex_0014A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BOWLINGTex_0016A0:
+  type: TEXTURE
+  offset: 0x0016A0
+  symbol: Z2_BOWLINGTex_0016A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BOWLINGTex_001EA0:
+  type: TEXTURE
+  offset: 0x001EA0
+  symbol: Z2_BOWLINGTex_001EA0
+  format: I4
+  width: 32
+  height: 32
+
+Z2_BOWLINGTex_0020A0:
+  type: TEXTURE
+  offset: 0x0020A0
+  symbol: Z2_BOWLINGTex_0020A0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_BOWLINGTex_0028A0:
+  type: TEXTURE
+  offset: 0x0028A0
+  symbol: Z2_BOWLINGTex_0028A0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_BOWLINGTex_0030A0:
+  type: TEXTURE
+  offset: 0x0030A0
+  symbol: Z2_BOWLINGTex_0030A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BOWLINGTex_0038A0:
+  type: TEXTURE
+  offset: 0x0038A0
+  symbol: Z2_BOWLINGTex_0038A0
+  format: RGBA16
+  width: 32
+  height: 32

@@ -1,0 +1,121 @@
+:config:
+  segments:
+    - [ 6, 0x0147D630 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0147D630 ]
+    - [ 9, 0x0147D630 ]
+    - [ 10, 0x0147D630 ]
+    - [ 11, 0x0147D630 ]
+    - [ 12, 0x0147D630 ]
+    - [ 13, 0x0147D630 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDekuMoonDungeonRotatingPlatformsCol:
+  type: MM:COLLISION
+  offset: 0x2190
+  symbol: gDekuMoonDungeonRotatingPlatformsCol
+
+gDekuMoonDungeonRotatingPlatformsDL:
+  type: GFX
+  offset: 0x400
+  symbol: gDekuMoonDungeonRotatingPlatformsDL
+
+gDekuMoonDungeonRotatingPlatformsUnusedTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1F98
+  symbol: gDekuMoonDungeonRotatingPlatformsUnusedTexAnim
+
+gDekuMoonDungeonRotatingPlatformsWoodBarkTLUT:
+  type: TEXTURE
+  offset: 0x590
+  symbol: gDekuMoonDungeonRotatingPlatformsWoodBarkTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuMoonDungeonRotatingPlatformsWoodBarkTex:
+  type: TEXTURE
+  offset: 0x790
+  symbol: gDekuMoonDungeonRotatingPlatformsWoodBarkTex
+  format: CI8
+  width: 32
+  height: 64
+
+gDekuMoonDungeonRotatingPlatformsWoodTex:
+  type: TEXTURE
+  offset: 0xF90
+  symbol: gDekuMoonDungeonRotatingPlatformsWoodTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gDekuMoonDungeonRotatingSpikesCol:
+  type: MM:COLLISION
+  offset: 0x4DF0
+  symbol: gDekuMoonDungeonRotatingSpikesCol
+
+gDekuMoonDungeonRotatingSpikesDL:
+  type: GFX
+  offset: 0x2CE0
+  symbol: gDekuMoonDungeonRotatingSpikesDL
+
+gDekuMoonDungeonRotatingSpikesUnusedTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x4A08
+  symbol: gDekuMoonDungeonRotatingSpikesUnusedTexAnim
+
+gDekuMoonDungeonRotatingSpikesWoodBarkTLUT:
+  type: TEXTURE
+  offset: 0x2FF8
+  symbol: gDekuMoonDungeonRotatingSpikesWoodBarkTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuMoonDungeonRotatingSpikesWoodBarkTex:
+  type: TEXTURE
+  offset: 0x31F8
+  symbol: gDekuMoonDungeonRotatingSpikesWoodBarkTex
+  format: CI8
+  width: 32
+  height: 64
+
+gDekuMoonDungeonRotatingSpikesWoodTex:
+  type: TEXTURE
+  offset: 0x39F8
+  symbol: gDekuMoonDungeonRotatingSpikesWoodTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_rotliftVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_rotliftVtx_000000
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuMoonDungeonRotatingPlatformsUnusedTexAnimTexScrollParams_001F90:
+  type: BLOB
+  offset: 0x001F90
+  symbol: gDekuMoonDungeonRotatingPlatformsUnusedTexAnimTexScrollParams_001F90
+  size: 0
+
+object_rotliftVtx_0021C0:
+  type: MM:ARRAY
+  offset: 0x0021C0
+  symbol: object_rotliftVtx_0021C0
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuMoonDungeonRotatingSpikesUnusedTexAnimTexScrollParams_004A00:
+  type: BLOB
+  offset: 0x004A00
+  symbol: gDekuMoonDungeonRotatingSpikesUnusedTexAnimTexScrollParams_004A00
+  size: 0

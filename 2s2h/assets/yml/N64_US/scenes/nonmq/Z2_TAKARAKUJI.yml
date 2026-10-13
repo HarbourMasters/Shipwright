@@ -1,0 +1,123 @@
+:config:
+  segments:
+    - [ 2, 0x01A78BA0 ]
+
+Z2_TAKARAKUJI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_TAKARAKUJI
+
+
+Z2_TAKARAKUJITexAnim_000200:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000200
+  symbol: Z2_TAKARAKUJITexAnim_000200
+
+Z2_TAKARAKUJICollisionHeader_000B60:
+  type: MM:COLLISION
+  offset: 0x000B60
+  symbol: Z2_TAKARAKUJICollisionHeader_000B60
+
+Z2_TAKARAKUJITex_000B90:
+  type: TEXTURE
+  offset: 0x000B90
+  symbol: Z2_TAKARAKUJITex_000B90
+  format: I8
+  width: 8
+  height: 8
+
+Z2_TAKARAKUJITex_000BD0:
+  type: TEXTURE
+  offset: 0x000BD0
+  symbol: Z2_TAKARAKUJITex_000BD0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_TAKARAKUJITex_000C10:
+  type: TEXTURE
+  offset: 0x000C10
+  symbol: Z2_TAKARAKUJITex_000C10
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_TAKARAKUJITex_000E10:
+  type: TEXTURE
+  offset: 0x000E10
+  symbol: Z2_TAKARAKUJITex_000E10
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_TAKARAKUJITex_000F10:
+  type: TEXTURE
+  offset: 0x000F10
+  symbol: Z2_TAKARAKUJITex_000F10
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TAKARAKUJITex_001310:
+  type: TEXTURE
+  offset: 0x001310
+  symbol: Z2_TAKARAKUJITex_001310
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_TAKARAKUJITex_001410:
+  type: TEXTURE
+  offset: 0x001410
+  symbol: Z2_TAKARAKUJITex_001410
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_TAKARAKUJITex_001810:
+  type: TEXTURE
+  offset: 0x001810
+  symbol: Z2_TAKARAKUJITex_001810
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_TAKARAKUJITex_001A10:
+  type: TEXTURE
+  offset: 0x001A10
+  symbol: Z2_TAKARAKUJITex_001A10
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_TAKARAKUJITex_001C10:
+  type: TEXTURE
+  offset: 0x001C10
+  symbol: Z2_TAKARAKUJITex_001C10
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_TAKARAKUJITex_001E10:
+  type: TEXTURE
+  offset: 0x001E10
+  symbol: Z2_TAKARAKUJITex_001E10
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TAKARAKUJITLUT_002210:
+  type: TEXTURE
+  offset: 0x002210
+  symbol: Z2_TAKARAKUJITLUT_002210
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_TAKARAKUJITLUT_002410:
+  type: TEXTURE
+  offset: 0x002410
+  symbol: Z2_TAKARAKUJITLUT_002410
+  format: RGBA16
+  width: 16
+  height: 16

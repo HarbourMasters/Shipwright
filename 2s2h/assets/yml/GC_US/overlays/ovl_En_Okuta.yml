@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 128, 0x00B77980 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x8086DE20, 0x00B77980 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gOctorokBlueMaterialDL:
+  type: GFX
+  offset: 0x2A50
+  symbol: gOctorokBlueMaterialDL
+

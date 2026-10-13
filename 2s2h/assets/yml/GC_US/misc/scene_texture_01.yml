@@ -1,0 +1,252 @@
+:config:
+  segments:
+    - [ 6, 0x016055F0 ]
+
+scene_texture_01_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: scene_texture_01_Tex_000000
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_000100:
+  type: TEXTURE
+  offset: 0x100
+  symbol: scene_texture_01_Tex_000100
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_000900:
+  type: TEXTURE
+  offset: 0x900
+  symbol: scene_texture_01_Tex_000900
+  format: CI8
+  width: 64
+  height: 16
+
+scene_texture_01_Tex_000D00:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: scene_texture_01_Tex_000D00
+  format: CI8
+  width: 64
+  height: 16
+
+scene_texture_01_Tex_001100:
+  type: TEXTURE
+  offset: 0x1100
+  symbol: scene_texture_01_Tex_001100
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_001200:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: scene_texture_01_Tex_001200
+  format: CI8
+  width: 32
+  height: 16
+
+scene_texture_01_Tex_001400:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: scene_texture_01_Tex_001400
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_001800:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: scene_texture_01_Tex_001800
+  format: RGBA16
+  width: 16
+  height: 8
+
+scene_texture_01_Tex_001900:
+  type: TEXTURE
+  offset: 0x1900
+  symbol: scene_texture_01_Tex_001900
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_001A00:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: scene_texture_01_Tex_001A00
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_001E00:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: scene_texture_01_Tex_001E00
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_002200:
+  type: TEXTURE
+  offset: 0x2200
+  symbol: scene_texture_01_Tex_002200
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_002300:
+  type: TEXTURE
+  offset: 0x2300
+  symbol: scene_texture_01_Tex_002300
+  format: CI8
+  width: 16
+  height: 32
+
+scene_texture_01_Tex_002500:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: scene_texture_01_Tex_002500
+  format: CI8
+  width: 16
+  height: 64
+
+scene_texture_01_Tex_002900:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: scene_texture_01_Tex_002900
+  format: CI8
+  width: 16
+  height: 64
+
+scene_texture_01_Tex_002D00:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: scene_texture_01_Tex_002D00
+  format: I8
+  width: 8
+  height: 8
+
+scene_texture_01_Tex_002D40:
+  type: TEXTURE
+  offset: 0x2D40
+  symbol: scene_texture_01_Tex_002D40
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_002E40:
+  type: TEXTURE
+  offset: 0x2E40
+  symbol: scene_texture_01_Tex_002E40
+  format: CI8
+  width: 16
+  height: 32
+
+scene_texture_01_Tex_003040:
+  type: TEXTURE
+  offset: 0x3040
+  symbol: scene_texture_01_Tex_003040
+  format: CI8
+  width: 32
+  height: 16
+
+scene_texture_01_Tex_003240:
+  type: TEXTURE
+  offset: 0x3240
+  symbol: scene_texture_01_Tex_003240
+  format: CI8
+  width: 8
+  height: 8
+
+scene_texture_01_Tex_003280:
+  type: TEXTURE
+  offset: 0x3280
+  symbol: scene_texture_01_Tex_003280
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_003680:
+  type: TEXTURE
+  offset: 0x3680
+  symbol: scene_texture_01_Tex_003680
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_003A80:
+  type: TEXTURE
+  offset: 0x3A80
+  symbol: scene_texture_01_Tex_003A80
+  format: CI8
+  width: 16
+  height: 32
+
+scene_texture_01_Tex_003C80:
+  type: TEXTURE
+  offset: 0x3C80
+  symbol: scene_texture_01_Tex_003C80
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_004080:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: scene_texture_01_Tex_004080
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_01_Tex_004480:
+  type: TEXTURE
+  offset: 0x4480
+  symbol: scene_texture_01_Tex_004480
+  format: CI8
+  width: 32
+  height: 8
+
+scene_texture_01_Tex_004580:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: scene_texture_01_Tex_004580
+  format: CI8
+  width: 16
+  height: 8
+
+scene_texture_01_Tex_004600:
+  type: TEXTURE
+  offset: 0x4600
+  symbol: scene_texture_01_Tex_004600
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_004700:
+  type: TEXTURE
+  offset: 0x4700
+  symbol: scene_texture_01_Tex_004700
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_01_Tex_004800:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: scene_texture_01_Tex_004800
+  format: CI8
+  width: 16
+  height: 64
+
+scene_texture_01_Tex_004C00:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: scene_texture_01_Tex_004C00
+  format: CI8
+  width: 16
+  height: 16
+

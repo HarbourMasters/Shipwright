@@ -1,0 +1,713 @@
+:config:
+  segments:
+    - [ 6, 0x00E58420 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00E58420 ]
+    - [ 9, 0x00E58420 ]
+    - [ 10, 0x00E58420 ]
+    - [ 11, 0x00E58420 ]
+    - [ 12, 0x00E58420 ]
+    - [ 13, 0x00E58420 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLinkFierceDeityBottleDL:
+  type: GFX
+  offset: 0x7AD0
+  symbol: gLinkFierceDeityBottleDL
+
+gLinkFierceDeityCollarLimb:
+  type: OOT:LIMB
+  offset: 0xD794
+  symbol: gLinkFierceDeityCollarLimb
+  limb_type: LOD
+
+gLinkFierceDeityEarTex:
+  type: TEXTURE
+  offset: 0xAD08
+  symbol: gLinkFierceDeityEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkFierceDeityEmptyDL:
+  type: GFX
+  offset: 0x8100
+  symbol: gLinkFierceDeityEmptyDL
+
+gLinkFierceDeityEyesTex:
+  type: TEXTURE
+  offset: 0x9708
+  symbol: gLinkFierceDeityEyesTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gLinkFierceDeityHandHoldingTLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gLinkFierceDeityHandHoldingTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkFierceDeityHandHoldingTex:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: gLinkFierceDeityHandHoldingTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x400
+
+gLinkFierceDeityHandTLUT:
+  type: TEXTURE
+  offset: 0x81C8
+  symbol: gLinkFierceDeityHandTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLinkFierceDeityHandTex:
+  type: TEXTURE
+  offset: 0xB108
+  symbol: gLinkFierceDeityHandTex
+  format: CI4
+  width: 16
+  height: 16
+  tlut: 0x81C8
+
+gLinkFierceDeityHatDL:
+  type: GFX
+  offset: 0x5928
+  symbol: gLinkFierceDeityHatDL
+
+gLinkFierceDeityHatLimb:
+  type: OOT:LIMB
+  offset: 0xD784
+  symbol: gLinkFierceDeityHatLimb
+  limb_type: LOD
+
+gLinkFierceDeityHeadDL:
+  type: GFX
+  offset: 0x5A78
+  symbol: gLinkFierceDeityHeadDL
+
+gLinkFierceDeityHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD774
+  symbol: gLinkFierceDeityHeadLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftFootDL:
+  type: GFX
+  offset: 0x5818
+  symbol: gLinkFierceDeityLeftFootDL
+
+gLinkFierceDeityLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xD754
+  symbol: gLinkFierceDeityLeftFootLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftForearmDL:
+  type: GFX
+  offset: 0x6C38
+  symbol: gLinkFierceDeityLeftForearmDL
+
+gLinkFierceDeityLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD7B4
+  symbol: gLinkFierceDeityLeftForearmLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftHandDL:
+  type: GFX
+  offset: 0x6EB8
+  symbol: gLinkFierceDeityLeftHandDL
+
+gLinkFierceDeityLeftHandHoldBottleDL:
+  type: GFX
+  offset: 0x7820
+  symbol: gLinkFierceDeityLeftHandHoldBottleDL
+
+gLinkFierceDeityLeftHandHoldingSwordDL:
+  type: GFX
+  offset: 0x80F0
+  symbol: gLinkFierceDeityLeftHandHoldingSwordDL
+
+gLinkFierceDeityLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xD7C4
+  symbol: gLinkFierceDeityLeftHandLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftShinDL:
+  type: GFX
+  offset: 0x55D0
+  symbol: gLinkFierceDeityLeftShinDL
+
+gLinkFierceDeityLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xD744
+  symbol: gLinkFierceDeityLeftShinLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftShoulderDL:
+  type: GFX
+  offset: 0x6A58
+  symbol: gLinkFierceDeityLeftShoulderDL
+
+gLinkFierceDeityLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xD7A4
+  symbol: gLinkFierceDeityLeftShoulderLimb
+  limb_type: LOD
+
+gLinkFierceDeityLeftThighDL:
+  type: GFX
+  offset: 0x52A0
+  symbol: gLinkFierceDeityLeftThighDL
+
+gLinkFierceDeityLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xD734
+  symbol: gLinkFierceDeityLeftThighLimb
+  limb_type: LOD
+
+gLinkFierceDeityLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0xD6F4
+  symbol: gLinkFierceDeityLowerRootLimb
+  limb_type: LOD
+
+gLinkFierceDeityMouthTex:
+  type: TEXTURE
+  offset: 0xA908
+  symbol: gLinkFierceDeityMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gLinkFierceDeityRightFootDL:
+  type: GFX
+  offset: 0x5190
+  symbol: gLinkFierceDeityRightFootDL
+
+gLinkFierceDeityRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xD724
+  symbol: gLinkFierceDeityRightFootLimb
+  limb_type: LOD
+
+gLinkFierceDeityRightForearmDL:
+  type: GFX
+  offset: 0x65E0
+  symbol: gLinkFierceDeityRightForearmDL
+
+gLinkFierceDeityRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD7E4
+  symbol: gLinkFierceDeityRightForearmLimb
+  limb_type: LOD
+
+gLinkFierceDeityRightHandDL:
+  type: GFX
+  offset: 0x67D8
+  symbol: gLinkFierceDeityRightHandDL
+
+gLinkFierceDeityRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xD7F4
+  symbol: gLinkFierceDeityRightHandLimb
+  limb_type: LOD
+
+gLinkFierceDeityRightShinDL:
+  type: GFX
+  offset: 0x4F48
+  symbol: gLinkFierceDeityRightShinDL
+
+gLinkFierceDeityRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xD714
+  symbol: gLinkFierceDeityRightShinLimb
+  limb_type: LOD
+
+gLinkFierceDeityRightShoulderDL:
+  type: GFX
+  offset: 0x6410
+  symbol: gLinkFierceDeityRightShoulderDL
+
+gLinkFierceDeityRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xD7D4
+  symbol: gLinkFierceDeityRightShoulderLimb
+  limb_type: LOD
+
+gLinkFierceDeityRightThighDL:
+  type: GFX
+  offset: 0x4C50
+  symbol: gLinkFierceDeityRightThighDL
+
+gLinkFierceDeityRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xD704
+  symbol: gLinkFierceDeityRightThighLimb
+  limb_type: LOD
+
+gLinkFierceDeityRootLimb:
+  type: OOT:LIMB
+  offset: 0xD6D4
+  symbol: gLinkFierceDeityRootLimb
+  limb_type: LOD
+
+gLinkFierceDeitySheathLimb:
+  type: OOT:LIMB
+  offset: 0xD804
+  symbol: gLinkFierceDeitySheathLimb
+  limb_type: LOD
+
+gLinkFierceDeitySkel:
+  type: MM:SKELETON
+  offset: 0xD878
+  symbol: gLinkFierceDeitySkel
+  limb_type: LOD
+  skel_type: Flex
+
+gLinkFierceDeitySwordDL:
+  type: GFX
+  offset: 0x7F28
+  symbol: gLinkFierceDeitySwordDL
+
+gLinkFierceDeityTorsoDL:
+  type: GFX
+  offset: 0x6148
+  symbol: gLinkFierceDeityTorsoDL
+
+gLinkFierceDeityTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xD814
+  symbol: gLinkFierceDeityTorsoLimb
+  limb_type: LOD
+
+gLinkFierceDeityUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0xD764
+  symbol: gLinkFierceDeityUpperRootLimb
+  limb_type: LOD
+
+gLinkFierceDeityWaistDL:
+  type: GFX
+  offset: 0x49E0
+  symbol: gLinkFierceDeityWaistDL
+
+gLinkFierceDeityWaistLimb:
+  type: OOT:LIMB
+  offset: 0xD6E4
+  symbol: gLinkFierceDeityWaistLimb
+  limb_type: LOD
+
+object_link_boy_DL_0060E8:
+  type: GFX
+  offset: 0x60E8
+  symbol: object_link_boy_DL_0060E8
+
+object_link_boy_DL_006370:
+  type: GFX
+  offset: 0x6370
+  symbol: object_link_boy_DL_006370
+
+object_link_boy_DL_007A50:
+  type: GFX
+  offset: 0x7A50
+  symbol: object_link_boy_DL_007A50
+
+object_link_boy_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_link_boy_TLUT_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_boy_TLUT_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_link_boy_TLUT_000200
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_boy_TLUT_008108:
+  type: TEXTURE
+  offset: 0x8108
+  symbol: object_link_boy_TLUT_008108
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_008128:
+  type: TEXTURE
+  offset: 0x8128
+  symbol: object_link_boy_TLUT_008128
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_008148:
+  type: TEXTURE
+  offset: 0x8148
+  symbol: object_link_boy_TLUT_008148
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_008168:
+  type: TEXTURE
+  offset: 0x8168
+  symbol: object_link_boy_TLUT_008168
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_008188:
+  type: TEXTURE
+  offset: 0x8188
+  symbol: object_link_boy_TLUT_008188
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_0081A8:
+  type: TEXTURE
+  offset: 0x81A8
+  symbol: object_link_boy_TLUT_0081A8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_TLUT_0081E8:
+  type: TEXTURE
+  offset: 0x81E8
+  symbol: object_link_boy_TLUT_0081E8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_link_boy_Tex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: object_link_boy_Tex_000600
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+object_link_boy_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_link_boy_Tex_000800
+  format: CI8
+  width: 16
+  height: 32
+
+object_link_boy_Tex_000B00:
+  type: TEXTURE
+  offset: 0xB00
+  symbol: object_link_boy_Tex_000B00
+  format: I8
+  width: 16
+  height: 16
+
+object_link_boy_Tex_008208:
+  type: TEXTURE
+  offset: 0x8208
+  symbol: object_link_boy_Tex_008208
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_boy_Tex_008408:
+  type: TEXTURE
+  offset: 0x8408
+  symbol: object_link_boy_Tex_008408
+  format: CI4
+  width: 16
+  height: 16
+
+object_link_boy_Tex_008488:
+  type: TEXTURE
+  offset: 0x8488
+  symbol: object_link_boy_Tex_008488
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_boy_Tex_008888:
+  type: TEXTURE
+  offset: 0x8888
+  symbol: object_link_boy_Tex_008888
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_link_boy_Tex_008C88:
+  type: TEXTURE
+  offset: 0x8C88
+  symbol: object_link_boy_Tex_008C88
+  format: CI4
+  width: 16
+  height: 16
+
+object_link_boy_Tex_008D08:
+  type: TEXTURE
+  offset: 0x8D08
+  symbol: object_link_boy_Tex_008D08
+  format: CI4
+  width: 32
+  height: 32
+
+object_link_boy_Tex_008F08:
+  type: TEXTURE
+  offset: 0x8F08
+  symbol: object_link_boy_Tex_008F08
+  format: CI4
+  width: 64
+  height: 64
+
+object_link_boy_Tex_00A708:
+  type: TEXTURE
+  offset: 0xA708
+  symbol: object_link_boy_Tex_00A708
+  format: CI4
+  width: 32
+  height: 32
+
+object_link_boy_Tex_00AF08:
+  type: TEXTURE
+  offset: 0xAF08
+  symbol: object_link_boy_Tex_00AF08
+  format: CI4
+  width: 32
+  height: 32
+
+object_link_boy_Tex_00B188:
+  type: TEXTURE
+  offset: 0xB188
+  symbol: object_link_boy_Tex_00B188
+  format: CI4
+  width: 64
+  height: 64
+
+object_link_boy_Tex_00B988:
+  type: TEXTURE
+  offset: 0xB988
+  symbol: object_link_boy_Tex_00B988
+  format: RGBA16
+  width: 50
+  height: 74
+
+
+object_link_boyVtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: object_link_boyVtx_000C00
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_000E90:
+  type: MM:ARRAY
+  offset: 0x000E90
+  symbol: object_link_boyVtx_000E90
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_001210:
+  type: MM:ARRAY
+  offset: 0x001210
+  symbol: object_link_boyVtx_001210
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_001560:
+  type: MM:ARRAY
+  offset: 0x001560
+  symbol: object_link_boyVtx_001560
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_0017F0:
+  type: MM:ARRAY
+  offset: 0x0017F0
+  symbol: object_link_boyVtx_0017F0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_001B80:
+  type: MM:ARRAY
+  offset: 0x001B80
+  symbol: object_link_boyVtx_001B80
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_001EE0:
+  type: MM:ARRAY
+  offset: 0x001EE0
+  symbol: object_link_boyVtx_001EE0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_002210:
+  type: MM:ARRAY
+  offset: 0x002210
+  symbol: object_link_boyVtx_002210
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_002440:
+  type: MM:ARRAY
+  offset: 0x002440
+  symbol: object_link_boyVtx_002440
+  count: 227
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_003270:
+  type: MM:ARRAY
+  offset: 0x003270
+  symbol: object_link_boyVtx_003270
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_003600:
+  type: MM:ARRAY
+  offset: 0x003600
+  symbol: object_link_boyVtx_003600
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_0038F0:
+  type: MM:ARRAY
+  offset: 0x0038F0
+  symbol: object_link_boyVtx_0038F0
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_003BD0:
+  type: MM:ARRAY
+  offset: 0x003BD0
+  symbol: object_link_boyVtx_003BD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_003D50:
+  type: MM:ARRAY
+  offset: 0x003D50
+  symbol: object_link_boyVtx_003D50
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_0040E0:
+  type: MM:ARRAY
+  offset: 0x0040E0
+  symbol: object_link_boyVtx_0040E0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_0043D0:
+  type: MM:ARRAY
+  offset: 0x0043D0
+  symbol: object_link_boyVtx_0043D0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_004670:
+  type: MM:ARRAY
+  offset: 0x004670
+  symbol: object_link_boyVtx_004670
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_004980:
+  type: MM:ARRAY
+  offset: 0x004980
+  symbol: object_link_boyVtx_004980
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_007110:
+  type: MM:ARRAY
+  offset: 0x007110
+  symbol: object_link_boyVtx_007110
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_0073A0:
+  type: MM:ARRAY
+  offset: 0x0073A0
+  symbol: object_link_boyVtx_0073A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_007440:
+  type: MM:ARRAY
+  offset: 0x007440
+  symbol: object_link_boyVtx_007440
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_boyVtx_007BE8:
+  type: MM:ARRAY
+  offset: 0x007BE8
+  symbol: object_link_boyVtx_007BE8
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLinkFierceDeitySkelLimbs:
+  type: BLOB
+  offset: 0xD824
+  symbol: gLinkFierceDeitySkelLimbs
+  size: 0

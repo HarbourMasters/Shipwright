@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01A49FF0 ]
+    - [ 2, 0x01A34810 ]
+  directory: scenes/nonmq/Z2_30GYOSON
+  external_files:
+    - GC_US/scenes/nonmq/Z2_30GYOSON_room_00.yml
+    - GC_US/misc/scene_texture_05.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_30GYOSON.yml
+
+Z2_30GYOSON_room_00Set_0016D0:
+  type: MM:ROOM
+  offset: 0x16D0
+  symbol: Z2_30GYOSON_room_00Set_0016D0
+  base_name: Z2_30GYOSON_room_00

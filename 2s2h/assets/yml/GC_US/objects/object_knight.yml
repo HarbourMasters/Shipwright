@@ -1,0 +1,1749 @@
+:config:
+  segments:
+    - [ 6, 0x010F3620 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010F3620 ]
+    - [ 9, 0x010F3620 ]
+    - [ 10, 0x010F3620 ]
+    - [ 11, 0x010F3620 ]
+    - [ 12, 0x010F3620 ]
+    - [ 13, 0x010F3620 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gIgosSkel:
+  type: MM:SKELETON
+  offset: 0x201A8
+  symbol: gIgosSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gIkanaThroneRoomCurtainDL:
+  type: GFX
+  offset: 0x193B0
+  symbol: gIkanaThroneRoomCurtainDL
+
+gIkanaThroneRoomCurtainTex:
+  type: TEXTURE
+  offset: 0x19490
+  symbol: gIkanaThroneRoomCurtainTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x19470
+
+gIkanaThroneRoomLightOnFloorDL:
+  type: GFX
+  offset: 0x18DE0
+  symbol: gIkanaThroneRoomLightOnFloorDL
+
+gIkanaThroneRoomLightRayDL:
+  type: GFX
+  offset: 0x18CF0
+  symbol: gIkanaThroneRoomLightRayDL
+
+gIkanaThroneRoomLightRayTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x19360
+  symbol: gIkanaThroneRoomLightRayTexAnim
+
+gIkanaThroneRoomLightRayVtx:
+  type: MM:ARRAY
+  offset: 0x18BD0
+  symbol: gIkanaThroneRoomLightRayVtx
+  count: 18
+  array_type: VTX
+
+gKnightBeginTelegraphHeavyAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x11AAC
+  symbol: gKnightBeginTelegraphHeavyAttackAnim
+
+gKnightBlureState0DL:
+  type: GFX
+  offset: 0x18AF0
+  symbol: gKnightBlureState0DL
+
+gKnightBlureState1DL:
+  type: GFX
+  offset: 0x189F0
+  symbol: gKnightBlureState1DL
+
+gKnightBlureState2DL:
+  type: GFX
+  offset: 0x188F8
+  symbol: gKnightBlureState2DL
+
+gKnightBlureTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x18BC4
+  symbol: gKnightBlureTexAnim
+
+gKnightCaptainsHatCSBeginSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA90
+  symbol: gKnightCaptainsHatCSBeginSittingAnim
+
+gKnightCaptainsHatCSBeginStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0xE7F4
+  symbol: gKnightCaptainsHatCSBeginStandingAnim
+
+gKnightCaptainsHatCSIgosShockedAnim:
+  type: OOT:ANIMATION
+  offset: 0xC7F0
+  symbol: gKnightCaptainsHatCSIgosShockedAnim
+
+gKnightCaptainsHatCSIgosShockedSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x6EF8
+  symbol: gKnightCaptainsHatCSIgosShockedSittingAnim
+
+gKnightCaptainsHatCSIgosShockedStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x6754
+  symbol: gKnightCaptainsHatCSIgosShockedStandingAnim
+
+gKnightCaptainsHatCSIgosSteppingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA88C
+  symbol: gKnightCaptainsHatCSIgosSteppingAnim
+
+gKnightCaptainsHatCSSitBackDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x1024C
+  symbol: gKnightCaptainsHatCSSitBackDownAnim
+
+gKnightDamagedBackAnim:
+  type: OOT:ANIMATION
+  offset: 0xD9C
+  symbol: gKnightDamagedBackAnim
+
+gKnightDamagedFrontAnim:
+  type: OOT:ANIMATION
+  offset: 0x4974
+  symbol: gKnightDamagedFrontAnim
+
+gKnightEndBlockAndSitAnim:
+  type: OOT:ANIMATION
+  offset: 0x89E4
+  symbol: gKnightEndBlockAndSitAnim
+
+gKnightFallBackwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CDC
+  symbol: gKnightFallBackwardsAnim
+
+gKnightFallForwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x5D30
+  symbol: gKnightFallForwardsAnim
+
+gKnightFastBlockSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8524
+  symbol: gKnightFastBlockSittingAnim
+
+gKnightFastBlockStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x31F0
+  symbol: gKnightFastBlockStandingAnim
+
+gKnightFastWalkShieldingAnim:
+  type: OOT:ANIMATION
+  offset: 0x3650
+  symbol: gKnightFastWalkShieldingAnim
+
+gKnightHeavyAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x11298
+  symbol: gKnightHeavyAttackAnim
+
+gKnightIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x40E0
+  symbol: gKnightIdleAnim
+
+gKnightIgosBreathAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x8D80
+  symbol: gKnightIgosBreathAttackAnim
+
+gKnightIgosBreathAttackStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x9538
+  symbol: gKnightIgosBreathAttackStartAnim
+
+gKnightIgosBreathAttackStopAnim:
+  type: OOT:ANIMATION
+  offset: 0xE15C
+  symbol: gKnightIgosBreathAttackStopAnim
+
+gKnightIgosCurtainReactionAngryAnim:
+  type: OOT:ANIMATION
+  offset: 0x9E0
+  symbol: gKnightIgosCurtainReactionAngryAnim
+
+gKnightIgosCurtainReactionShockedAnim:
+  type: OOT:ANIMATION
+  offset: 0x5A8
+  symbol: gKnightIgosCurtainReactionShockedAnim
+
+gKnightIgosLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0x8390
+  symbol: gKnightIgosLaughAnim
+
+gKnightIgosPutHeadBackOnAnim:
+  type: OOT:ANIMATION
+  offset: 0x79D4
+  symbol: gKnightIgosPutHeadBackOnAnim
+
+gKnightIgosRemoveHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x3008
+  symbol: gKnightIgosRemoveHeadAnim
+
+gKnightIgosShrugAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E78
+  symbol: gKnightIgosShrugAnim
+
+gKnightIgosShrugStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x21E34
+  symbol: gKnightIgosShrugStartAnim
+
+gKnightIgosShrugStopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2105C
+  symbol: gKnightIgosShrugStopAnim
+
+gKnightIgosSitDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xA530
+  symbol: gKnightIgosSitDownAnim
+
+gKnightIgosSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0xFC78
+  symbol: gKnightIgosSittingAnim
+
+gKnightIgosStandAndDrawAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D8C
+  symbol: gKnightIgosStandAndDrawAnim
+
+gKnightIntroSitDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x10E98
+  symbol: gKnightIntroSitDownAnim
+
+gKnightIntroWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x21B10
+  symbol: gKnightIntroWalkAnim
+
+gKnightJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xAB68
+  symbol: gKnightJumpAnim
+
+gKnightJumpAttackBeginAnim:
+  type: OOT:ANIMATION
+  offset: 0xAFAC
+  symbol: gKnightJumpAttackBeginAnim
+
+gKnightJumpAttackEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xB5D4
+  symbol: gKnightJumpAttackEndAnim
+
+gKnightJumpBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x2174
+  symbol: gKnightJumpBackAnim
+
+gKnightLaugh1Anim:
+  type: OOT:ANIMATION
+  offset: 0xCDE0
+  symbol: gKnightLaugh1Anim
+
+gKnightLaugh2Anim:
+  type: OOT:ANIMATION
+  offset: 0xD870
+  symbol: gKnightLaugh2Anim
+
+gKnightLeftSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0xBCF4
+  symbol: gKnightLeftSwingAnim
+
+gKnightLowSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0x22728
+  symbol: gKnightLowSwingAnim
+
+gKnightLowSwingEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x22CAC
+  symbol: gKnightLowSwingEndAnim
+
+gKnightMarchAnim:
+  type: OOT:ANIMATION
+  offset: 0xDDCC
+  symbol: gKnightMarchAnim
+
+gKnightRightSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0xC384
+  symbol: gKnightRightSwingAnim
+
+gKnightSkel:
+  type: MM:SKELETON
+  offset: 0x20374
+  symbol: gKnightSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gKnightSlowWalkShieldingAnim:
+  type: OOT:ANIMATION
+  offset: 0x4620
+  symbol: gKnightSlowWalkShieldingAnim
+
+gKnightStrafeAnim:
+  type: OOT:ANIMATION
+  offset: 0xEF44
+  symbol: gKnightStrafeAnim
+
+gKnightStruckByLightRayAnim:
+  type: OOT:ANIMATION
+  offset: 0xE45C
+  symbol: gKnightStruckByLightRayAnim
+
+gKnightTelegraphHeavyAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x20950
+  symbol: gKnightTelegraphHeavyAttackAnim
+
+gKnightUppercutAnim:
+  type: OOT:ANIMATION
+  offset: 0xF90C
+  symbol: gKnightUppercutAnim
+
+gKnightWideHeadDL:
+  type: GFX
+  offset: 0x12400
+  symbol: gKnightWideHeadDL
+
+gKnightWideJawDL:
+  type: GFX
+  offset: 0x12DB0
+  symbol: gKnightWideJawDL
+
+gKnightWideNeckDL:
+  type: GFX
+  offset: 0x13020
+  symbol: gKnightWideNeckDL
+
+object_knight_DL_0153E0:
+  type: GFX
+  offset: 0x153E0
+  symbol: object_knight_DL_0153E0
+
+object_knight_DL_0154B0:
+  type: GFX
+  offset: 0x154B0
+  symbol: object_knight_DL_0154B0
+
+object_knight_DL_0155A0:
+  type: GFX
+  offset: 0x155A0
+  symbol: object_knight_DL_0155A0
+
+object_knight_DL_015660:
+  type: GFX
+  offset: 0x15660
+  symbol: object_knight_DL_015660
+
+object_knight_DL_015730:
+  type: GFX
+  offset: 0x15730
+  symbol: object_knight_DL_015730
+
+object_knight_DL_015820:
+  type: GFX
+  offset: 0x15820
+  symbol: object_knight_DL_015820
+
+object_knight_DL_0158E0:
+  type: GFX
+  offset: 0x158E0
+  symbol: object_knight_DL_0158E0
+
+object_knight_DL_015A40:
+  type: GFX
+  offset: 0x15A40
+  symbol: object_knight_DL_015A40
+
+object_knight_DL_015AE0:
+  type: GFX
+  offset: 0x15AE0
+  symbol: object_knight_DL_015AE0
+
+object_knight_DL_015B88:
+  type: GFX
+  offset: 0x15B88
+  symbol: object_knight_DL_015B88
+
+object_knight_DL_015D78:
+  type: GFX
+  offset: 0x15D78
+  symbol: object_knight_DL_015D78
+
+object_knight_DL_015E38:
+  type: GFX
+  offset: 0x15E38
+  symbol: object_knight_DL_015E38
+
+object_knight_DL_015ED8:
+  type: GFX
+  offset: 0x15ED8
+  symbol: object_knight_DL_015ED8
+
+object_knight_DL_016310:
+  type: GFX
+  offset: 0x16310
+  symbol: object_knight_DL_016310
+
+object_knight_DL_0163C8:
+  type: GFX
+  offset: 0x163C8
+  symbol: object_knight_DL_0163C8
+
+object_knight_DL_016478:
+  type: GFX
+  offset: 0x16478
+  symbol: object_knight_DL_016478
+
+object_knight_DL_016530:
+  type: GFX
+  offset: 0x16530
+  symbol: object_knight_DL_016530
+
+object_knight_DL_0165F0:
+  type: GFX
+  offset: 0x165F0
+  symbol: object_knight_DL_0165F0
+
+object_knight_DL_0166D8:
+  type: GFX
+  offset: 0x166D8
+  symbol: object_knight_DL_0166D8
+
+object_knight_DL_016810:
+  type: GFX
+  offset: 0x16810
+  symbol: object_knight_DL_016810
+
+object_knight_DL_0169C8:
+  type: GFX
+  offset: 0x169C8
+  symbol: object_knight_DL_0169C8
+
+object_knight_DL_016AD0:
+  type: GFX
+  offset: 0x16AD0
+  symbol: object_knight_DL_016AD0
+
+object_knight_DL_016B90:
+  type: GFX
+  offset: 0x16B90
+  symbol: object_knight_DL_016B90
+
+object_knight_DL_016C78:
+  type: GFX
+  offset: 0x16C78
+  symbol: object_knight_DL_016C78
+
+object_knight_DL_016DB0:
+  type: GFX
+  offset: 0x16DB0
+  symbol: object_knight_DL_016DB0
+
+object_knight_DL_016F70:
+  type: GFX
+  offset: 0x16F70
+  symbol: object_knight_DL_016F70
+
+object_knight_DL_018E50:
+  type: GFX
+  offset: 0x18E50
+  symbol: object_knight_DL_018E50
+
+object_knight_DL_0193A8:
+  type: GFX
+  offset: 0x193A8
+  symbol: object_knight_DL_0193A8
+
+object_knight_DL_01D380:
+  type: GFX
+  offset: 0x1D380
+  symbol: object_knight_DL_01D380
+
+object_knight_DL_01D4C0:
+  type: GFX
+  offset: 0x1D4C0
+  symbol: object_knight_DL_01D4C0
+
+object_knight_DL_01D650:
+  type: GFX
+  offset: 0x1D650
+  symbol: object_knight_DL_01D650
+
+object_knight_DL_01D710:
+  type: GFX
+  offset: 0x1D710
+  symbol: object_knight_DL_01D710
+
+object_knight_DL_01D870:
+  type: GFX
+  offset: 0x1D870
+  symbol: object_knight_DL_01D870
+
+object_knight_DL_01DA00:
+  type: GFX
+  offset: 0x1DA00
+  symbol: object_knight_DL_01DA00
+
+object_knight_DL_01DAC0:
+  type: GFX
+  offset: 0x1DAC0
+  symbol: object_knight_DL_01DAC0
+
+object_knight_DL_01DC00:
+  type: GFX
+  offset: 0x1DC00
+  symbol: object_knight_DL_01DC00
+
+object_knight_DL_01DCA0:
+  type: GFX
+  offset: 0x1DCA0
+  symbol: object_knight_DL_01DCA0
+
+object_knight_DL_01DD48:
+  type: GFX
+  offset: 0x1DD48
+  symbol: object_knight_DL_01DD48
+
+object_knight_DL_01DF88:
+  type: GFX
+  offset: 0x1DF88
+  symbol: object_knight_DL_01DF88
+
+object_knight_DL_01E050:
+  type: GFX
+  offset: 0x1E050
+  symbol: object_knight_DL_01E050
+
+object_knight_DL_01E0A0:
+  type: GFX
+  offset: 0x1E0A0
+  symbol: object_knight_DL_01E0A0
+
+object_knight_DL_01E878:
+  type: GFX
+  offset: 0x1E878
+  symbol: object_knight_DL_01E878
+
+object_knight_DL_01EAA8:
+  type: GFX
+  offset: 0x1EAA8
+  symbol: object_knight_DL_01EAA8
+
+object_knight_DL_01EB40:
+  type: GFX
+  offset: 0x1EB40
+  symbol: object_knight_DL_01EB40
+
+object_knight_DL_01EBD8:
+  type: GFX
+  offset: 0x1EBD8
+  symbol: object_knight_DL_01EBD8
+
+object_knight_DL_01EC98:
+  type: GFX
+  offset: 0x1EC98
+  symbol: object_knight_DL_01EC98
+
+object_knight_DL_01EDE0:
+  type: GFX
+  offset: 0x1EDE0
+  symbol: object_knight_DL_01EDE0
+
+object_knight_DL_01EF68:
+  type: GFX
+  offset: 0x1EF68
+  symbol: object_knight_DL_01EF68
+
+object_knight_DL_01F188:
+  type: GFX
+  offset: 0x1F188
+  symbol: object_knight_DL_01F188
+
+object_knight_DL_01F248:
+  type: GFX
+  offset: 0x1F248
+  symbol: object_knight_DL_01F248
+
+object_knight_DL_01F308:
+  type: GFX
+  offset: 0x1F308
+  symbol: object_knight_DL_01F308
+
+object_knight_DL_01F3C0:
+  type: GFX
+  offset: 0x1F3C0
+  symbol: object_knight_DL_01F3C0
+
+object_knight_DL_01F5C0:
+  type: GFX
+  offset: 0x1F5C0
+  symbol: object_knight_DL_01F5C0
+
+object_knight_DL_01F828:
+  type: GFX
+  offset: 0x1F828
+  symbol: object_knight_DL_01F828
+
+object_knight_Standardlimb_01FFE8:
+  type: OOT:LIMB
+  offset: 0x1FFE8
+  symbol: object_knight_Standardlimb_01FFE8
+  limb_type: Standard
+
+object_knight_Standardlimb_01FFF4:
+  type: OOT:LIMB
+  offset: 0x1FFF4
+  symbol: object_knight_Standardlimb_01FFF4
+  limb_type: Standard
+
+object_knight_Standardlimb_020000:
+  type: OOT:LIMB
+  offset: 0x20000
+  symbol: object_knight_Standardlimb_020000
+  limb_type: Standard
+
+object_knight_Standardlimb_02000C:
+  type: OOT:LIMB
+  offset: 0x2000C
+  symbol: object_knight_Standardlimb_02000C
+  limb_type: Standard
+
+object_knight_Standardlimb_020018:
+  type: OOT:LIMB
+  offset: 0x20018
+  symbol: object_knight_Standardlimb_020018
+  limb_type: Standard
+
+object_knight_Standardlimb_020024:
+  type: OOT:LIMB
+  offset: 0x20024
+  symbol: object_knight_Standardlimb_020024
+  limb_type: Standard
+
+object_knight_Standardlimb_020030:
+  type: OOT:LIMB
+  offset: 0x20030
+  symbol: object_knight_Standardlimb_020030
+  limb_type: Standard
+
+object_knight_Standardlimb_02003C:
+  type: OOT:LIMB
+  offset: 0x2003C
+  symbol: object_knight_Standardlimb_02003C
+  limb_type: Standard
+
+object_knight_Standardlimb_020048:
+  type: OOT:LIMB
+  offset: 0x20048
+  symbol: object_knight_Standardlimb_020048
+  limb_type: Standard
+
+object_knight_Standardlimb_020054:
+  type: OOT:LIMB
+  offset: 0x20054
+  symbol: object_knight_Standardlimb_020054
+  limb_type: Standard
+
+object_knight_Standardlimb_020060:
+  type: OOT:LIMB
+  offset: 0x20060
+  symbol: object_knight_Standardlimb_020060
+  limb_type: Standard
+
+object_knight_Standardlimb_02006C:
+  type: OOT:LIMB
+  offset: 0x2006C
+  symbol: object_knight_Standardlimb_02006C
+  limb_type: Standard
+
+object_knight_Standardlimb_020078:
+  type: OOT:LIMB
+  offset: 0x20078
+  symbol: object_knight_Standardlimb_020078
+  limb_type: Standard
+
+object_knight_Standardlimb_020084:
+  type: OOT:LIMB
+  offset: 0x20084
+  symbol: object_knight_Standardlimb_020084
+  limb_type: Standard
+
+object_knight_Standardlimb_020090:
+  type: OOT:LIMB
+  offset: 0x20090
+  symbol: object_knight_Standardlimb_020090
+  limb_type: Standard
+
+object_knight_Standardlimb_02009C:
+  type: OOT:LIMB
+  offset: 0x2009C
+  symbol: object_knight_Standardlimb_02009C
+  limb_type: Standard
+
+object_knight_Standardlimb_0200A8:
+  type: OOT:LIMB
+  offset: 0x200A8
+  symbol: object_knight_Standardlimb_0200A8
+  limb_type: Standard
+
+object_knight_Standardlimb_0200B4:
+  type: OOT:LIMB
+  offset: 0x200B4
+  symbol: object_knight_Standardlimb_0200B4
+  limb_type: Standard
+
+object_knight_Standardlimb_0200C0:
+  type: OOT:LIMB
+  offset: 0x200C0
+  symbol: object_knight_Standardlimb_0200C0
+  limb_type: Standard
+
+object_knight_Standardlimb_0200CC:
+  type: OOT:LIMB
+  offset: 0x200CC
+  symbol: object_knight_Standardlimb_0200CC
+  limb_type: Standard
+
+object_knight_Standardlimb_0200D8:
+  type: OOT:LIMB
+  offset: 0x200D8
+  symbol: object_knight_Standardlimb_0200D8
+  limb_type: Standard
+
+object_knight_Standardlimb_0200E4:
+  type: OOT:LIMB
+  offset: 0x200E4
+  symbol: object_knight_Standardlimb_0200E4
+  limb_type: Standard
+
+object_knight_Standardlimb_0200F0:
+  type: OOT:LIMB
+  offset: 0x200F0
+  symbol: object_knight_Standardlimb_0200F0
+  limb_type: Standard
+
+object_knight_Standardlimb_0200FC:
+  type: OOT:LIMB
+  offset: 0x200FC
+  symbol: object_knight_Standardlimb_0200FC
+  limb_type: Standard
+
+object_knight_Standardlimb_020108:
+  type: OOT:LIMB
+  offset: 0x20108
+  symbol: object_knight_Standardlimb_020108
+  limb_type: Standard
+
+object_knight_Standardlimb_020114:
+  type: OOT:LIMB
+  offset: 0x20114
+  symbol: object_knight_Standardlimb_020114
+  limb_type: Standard
+
+object_knight_Standardlimb_020120:
+  type: OOT:LIMB
+  offset: 0x20120
+  symbol: object_knight_Standardlimb_020120
+  limb_type: Standard
+
+object_knight_Standardlimb_02012C:
+  type: OOT:LIMB
+  offset: 0x2012C
+  symbol: object_knight_Standardlimb_02012C
+  limb_type: Standard
+
+object_knight_Standardlimb_0201B4:
+  type: OOT:LIMB
+  offset: 0x201B4
+  symbol: object_knight_Standardlimb_0201B4
+  limb_type: Standard
+
+object_knight_Standardlimb_0201C0:
+  type: OOT:LIMB
+  offset: 0x201C0
+  symbol: object_knight_Standardlimb_0201C0
+  limb_type: Standard
+
+object_knight_Standardlimb_0201CC:
+  type: OOT:LIMB
+  offset: 0x201CC
+  symbol: object_knight_Standardlimb_0201CC
+  limb_type: Standard
+
+object_knight_Standardlimb_0201D8:
+  type: OOT:LIMB
+  offset: 0x201D8
+  symbol: object_knight_Standardlimb_0201D8
+  limb_type: Standard
+
+object_knight_Standardlimb_0201E4:
+  type: OOT:LIMB
+  offset: 0x201E4
+  symbol: object_knight_Standardlimb_0201E4
+  limb_type: Standard
+
+object_knight_Standardlimb_0201F0:
+  type: OOT:LIMB
+  offset: 0x201F0
+  symbol: object_knight_Standardlimb_0201F0
+  limb_type: Standard
+
+object_knight_Standardlimb_0201FC:
+  type: OOT:LIMB
+  offset: 0x201FC
+  symbol: object_knight_Standardlimb_0201FC
+  limb_type: Standard
+
+object_knight_Standardlimb_020208:
+  type: OOT:LIMB
+  offset: 0x20208
+  symbol: object_knight_Standardlimb_020208
+  limb_type: Standard
+
+object_knight_Standardlimb_020214:
+  type: OOT:LIMB
+  offset: 0x20214
+  symbol: object_knight_Standardlimb_020214
+  limb_type: Standard
+
+object_knight_Standardlimb_020220:
+  type: OOT:LIMB
+  offset: 0x20220
+  symbol: object_knight_Standardlimb_020220
+  limb_type: Standard
+
+object_knight_Standardlimb_02022C:
+  type: OOT:LIMB
+  offset: 0x2022C
+  symbol: object_knight_Standardlimb_02022C
+  limb_type: Standard
+
+object_knight_Standardlimb_020238:
+  type: OOT:LIMB
+  offset: 0x20238
+  symbol: object_knight_Standardlimb_020238
+  limb_type: Standard
+
+object_knight_Standardlimb_020244:
+  type: OOT:LIMB
+  offset: 0x20244
+  symbol: object_knight_Standardlimb_020244
+  limb_type: Standard
+
+object_knight_Standardlimb_020250:
+  type: OOT:LIMB
+  offset: 0x20250
+  symbol: object_knight_Standardlimb_020250
+  limb_type: Standard
+
+object_knight_Standardlimb_02025C:
+  type: OOT:LIMB
+  offset: 0x2025C
+  symbol: object_knight_Standardlimb_02025C
+  limb_type: Standard
+
+object_knight_Standardlimb_020268:
+  type: OOT:LIMB
+  offset: 0x20268
+  symbol: object_knight_Standardlimb_020268
+  limb_type: Standard
+
+object_knight_Standardlimb_020274:
+  type: OOT:LIMB
+  offset: 0x20274
+  symbol: object_knight_Standardlimb_020274
+  limb_type: Standard
+
+object_knight_Standardlimb_020280:
+  type: OOT:LIMB
+  offset: 0x20280
+  symbol: object_knight_Standardlimb_020280
+  limb_type: Standard
+
+object_knight_Standardlimb_02028C:
+  type: OOT:LIMB
+  offset: 0x2028C
+  symbol: object_knight_Standardlimb_02028C
+  limb_type: Standard
+
+object_knight_Standardlimb_020298:
+  type: OOT:LIMB
+  offset: 0x20298
+  symbol: object_knight_Standardlimb_020298
+  limb_type: Standard
+
+object_knight_Standardlimb_0202A4:
+  type: OOT:LIMB
+  offset: 0x202A4
+  symbol: object_knight_Standardlimb_0202A4
+  limb_type: Standard
+
+object_knight_Standardlimb_0202B0:
+  type: OOT:LIMB
+  offset: 0x202B0
+  symbol: object_knight_Standardlimb_0202B0
+  limb_type: Standard
+
+object_knight_Standardlimb_0202BC:
+  type: OOT:LIMB
+  offset: 0x202BC
+  symbol: object_knight_Standardlimb_0202BC
+  limb_type: Standard
+
+object_knight_Standardlimb_0202C8:
+  type: OOT:LIMB
+  offset: 0x202C8
+  symbol: object_knight_Standardlimb_0202C8
+  limb_type: Standard
+
+object_knight_Standardlimb_0202D4:
+  type: OOT:LIMB
+  offset: 0x202D4
+  symbol: object_knight_Standardlimb_0202D4
+  limb_type: Standard
+
+object_knight_Standardlimb_0202E0:
+  type: OOT:LIMB
+  offset: 0x202E0
+  symbol: object_knight_Standardlimb_0202E0
+  limb_type: Standard
+
+object_knight_Standardlimb_0202EC:
+  type: OOT:LIMB
+  offset: 0x202EC
+  symbol: object_knight_Standardlimb_0202EC
+  limb_type: Standard
+
+object_knight_Standardlimb_0202F8:
+  type: OOT:LIMB
+  offset: 0x202F8
+  symbol: object_knight_Standardlimb_0202F8
+  limb_type: Standard
+
+object_knight_TLUT_019470:
+  type: TEXTURE
+  offset: 0x19470
+  symbol: object_knight_TLUT_019470
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_knight_Tex_012760:
+  type: TEXTURE
+  offset: 0x12760
+  symbol: object_knight_Tex_012760
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_012960:
+  type: TEXTURE
+  offset: 0x12960
+  symbol: object_knight_Tex_012960
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_012B60:
+  type: TEXTURE
+  offset: 0x12B60
+  symbol: object_knight_Tex_012B60
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_knight_Tex_012BE0:
+  type: TEXTURE
+  offset: 0x12BE0
+  symbol: object_knight_Tex_012BE0
+  format: IA16
+  width: 8
+  height: 8
+
+object_knight_Tex_012EC0:
+  type: TEXTURE
+  offset: 0x12EC0
+  symbol: object_knight_Tex_012EC0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_012FC0:
+  type: TEXTURE
+  offset: 0x12FC0
+  symbol: object_knight_Tex_012FC0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_knight_Tex_017078:
+  type: TEXTURE
+  offset: 0x17078
+  symbol: object_knight_Tex_017078
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_017278:
+  type: TEXTURE
+  offset: 0x17278
+  symbol: object_knight_Tex_017278
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_knight_Tex_017298:
+  type: TEXTURE
+  offset: 0x17298
+  symbol: object_knight_Tex_017298
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_knight_Tex_0172D8:
+  type: TEXTURE
+  offset: 0x172D8
+  symbol: object_knight_Tex_0172D8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_knight_Tex_017358:
+  type: TEXTURE
+  offset: 0x17358
+  symbol: object_knight_Tex_017358
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_017558:
+  type: TEXTURE
+  offset: 0x17558
+  symbol: object_knight_Tex_017558
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_knight_Tex_0175D8:
+  type: TEXTURE
+  offset: 0x175D8
+  symbol: object_knight_Tex_0175D8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_0176D8:
+  type: TEXTURE
+  offset: 0x176D8
+  symbol: object_knight_Tex_0176D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_0178D8:
+  type: TEXTURE
+  offset: 0x178D8
+  symbol: object_knight_Tex_0178D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_017AD8:
+  type: TEXTURE
+  offset: 0x17AD8
+  symbol: object_knight_Tex_017AD8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_017BD8:
+  type: TEXTURE
+  offset: 0x17BD8
+  symbol: object_knight_Tex_017BD8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_knight_Tex_017DD8:
+  type: TEXTURE
+  offset: 0x17DD8
+  symbol: object_knight_Tex_017DD8
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_knight_Tex_017FD8:
+  type: TEXTURE
+  offset: 0x17FD8
+  symbol: object_knight_Tex_017FD8
+  format: IA8
+  width: 8
+  height: 8
+
+object_knight_Tex_018018:
+  type: TEXTURE
+  offset: 0x18018
+  symbol: object_knight_Tex_018018
+  format: I4
+  width: 16
+  height: 16
+
+object_knight_Tex_018098:
+  type: TEXTURE
+  offset: 0x18098
+  symbol: object_knight_Tex_018098
+  format: I8
+  width: 64
+  height: 32
+
+object_knight_Tex_018E58:
+  type: TEXTURE
+  offset: 0x18E58
+  symbol: object_knight_Tex_018E58
+  format: IA8
+  width: 16
+  height: 16
+
+object_knight_Tex_018F58:
+  type: TEXTURE
+  offset: 0x18F58
+  symbol: object_knight_Tex_018F58
+  format: IA16
+  width: 16
+  height: 32
+
+object_knight_Tex_01F8E8:
+  type: TEXTURE
+  offset: 0x1F8E8
+  symbol: object_knight_Tex_01F8E8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_01F9E8:
+  type: TEXTURE
+  offset: 0x1F9E8
+  symbol: object_knight_Tex_01F9E8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_01FAE8:
+  type: TEXTURE
+  offset: 0x1FAE8
+  symbol: object_knight_Tex_01FAE8
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_knight_Tex_01FBE8:
+  type: TEXTURE
+  offset: 0x1FBE8
+  symbol: object_knight_Tex_01FBE8
+  format: IA8
+  width: 16
+  height: 16
+
+object_knight_Tex_01FCE8:
+  type: TEXTURE
+  offset: 0x1FCE8
+  symbol: object_knight_Tex_01FCE8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_knight_Tex_01FDE8:
+  type: TEXTURE
+  offset: 0x1FDE8
+  symbol: object_knight_Tex_01FDE8
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_knightVtx_011AC0:
+  type: MM:ARRAY
+  offset: 0x011AC0
+  symbol: object_knightVtx_011AC0
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_012C60:
+  type: MM:ARRAY
+  offset: 0x012C60
+  symbol: object_knightVtx_012C60
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_012FE0:
+  type: MM:ARRAY
+  offset: 0x012FE0
+  symbol: object_knightVtx_012FE0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0130B0:
+  type: MM:ARRAY
+  offset: 0x0130B0
+  symbol: object_knightVtx_0130B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0131B0:
+  type: MM:ARRAY
+  offset: 0x0131B0
+  symbol: object_knightVtx_0131B0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013210:
+  type: MM:ARRAY
+  offset: 0x013210
+  symbol: object_knightVtx_013210
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013270:
+  type: MM:ARRAY
+  offset: 0x013270
+  symbol: object_knightVtx_013270
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0132B0:
+  type: MM:ARRAY
+  offset: 0x0132B0
+  symbol: object_knightVtx_0132B0
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013B40:
+  type: MM:ARRAY
+  offset: 0x013B40
+  symbol: object_knightVtx_013B40
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013BC0:
+  type: MM:ARRAY
+  offset: 0x013BC0
+  symbol: object_knightVtx_013BC0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013C70:
+  type: MM:ARRAY
+  offset: 0x013C70
+  symbol: object_knightVtx_013C70
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013D20:
+  type: MM:ARRAY
+  offset: 0x013D20
+  symbol: object_knightVtx_013D20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_013E40:
+  type: MM:ARRAY
+  offset: 0x013E40
+  symbol: object_knightVtx_013E40
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014000:
+  type: MM:ARRAY
+  offset: 0x014000
+  symbol: object_knightVtx_014000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014120:
+  type: MM:ARRAY
+  offset: 0x014120
+  symbol: object_knightVtx_014120
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0141F0:
+  type: MM:ARRAY
+  offset: 0x0141F0
+  symbol: object_knightVtx_0141F0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0144F0:
+  type: MM:ARRAY
+  offset: 0x0144F0
+  symbol: object_knightVtx_0144F0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014610:
+  type: MM:ARRAY
+  offset: 0x014610
+  symbol: object_knightVtx_014610
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014730:
+  type: MM:ARRAY
+  offset: 0x014730
+  symbol: object_knightVtx_014730
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014800:
+  type: MM:ARRAY
+  offset: 0x014800
+  symbol: object_knightVtx_014800
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014850:
+  type: MM:ARRAY
+  offset: 0x014850
+  symbol: object_knightVtx_014850
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014C00:
+  type: MM:ARRAY
+  offset: 0x014C00
+  symbol: object_knightVtx_014C00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014C40:
+  type: MM:ARRAY
+  offset: 0x014C40
+  symbol: object_knightVtx_014C40
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014D80:
+  type: MM:ARRAY
+  offset: 0x014D80
+  symbol: object_knightVtx_014D80
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014EB0:
+  type: MM:ARRAY
+  offset: 0x014EB0
+  symbol: object_knightVtx_014EB0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_014F50:
+  type: MM:ARRAY
+  offset: 0x014F50
+  symbol: object_knightVtx_014F50
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_015090:
+  type: MM:ARRAY
+  offset: 0x015090
+  symbol: object_knightVtx_015090
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0151C0:
+  type: MM:ARRAY
+  offset: 0x0151C0
+  symbol: object_knightVtx_0151C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_015260:
+  type: MM:ARRAY
+  offset: 0x015260
+  symbol: object_knightVtx_015260
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_018898:
+  type: MM:ARRAY
+  offset: 0x018898
+  symbol: object_knightVtx_018898
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_0189B0:
+  type: MM:ARRAY
+  offset: 0x0189B0
+  symbol: object_knightVtx_0189B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_018AA0:
+  type: MM:ARRAY
+  offset: 0x018AA0
+  symbol: object_knightVtx_018AA0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKnightBlureTexAnimColorParams_018BB4:
+  type: BLOB
+  offset: 0x018BB4
+  symbol: gKnightBlureTexAnimColorParams_018BB4
+  size: 0
+
+gIkanaThroneRoomLightRayTexAnimTexScrollParams_019358:
+  type: BLOB
+  offset: 0x019358
+  symbol: gIkanaThroneRoomLightRayTexAnimTexScrollParams_019358
+  size: 0
+
+object_knightVtx_019368:
+  type: MM:ARRAY
+  offset: 0x019368
+  symbol: object_knightVtx_019368
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_019C90:
+  type: MM:ARRAY
+  offset: 0x019C90
+  symbol: object_knightVtx_019C90
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01A170:
+  type: MM:ARRAY
+  offset: 0x01A170
+  symbol: object_knightVtx_01A170
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01A1A0:
+  type: MM:ARRAY
+  offset: 0x01A1A0
+  symbol: object_knightVtx_01A1A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01A1D0:
+  type: MM:ARRAY
+  offset: 0x01A1D0
+  symbol: object_knightVtx_01A1D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01A200:
+  type: MM:ARRAY
+  offset: 0x01A200
+  symbol: object_knightVtx_01A200
+  count: 308
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01B540:
+  type: MM:ARRAY
+  offset: 0x01B540
+  symbol: object_knightVtx_01B540
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01B640:
+  type: MM:ARRAY
+  offset: 0x01B640
+  symbol: object_knightVtx_01B640
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01B6D0:
+  type: MM:ARRAY
+  offset: 0x01B6D0
+  symbol: object_knightVtx_01B6D0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01B760:
+  type: MM:ARRAY
+  offset: 0x01B760
+  symbol: object_knightVtx_01B760
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01B8E0:
+  type: MM:ARRAY
+  offset: 0x01B8E0
+  symbol: object_knightVtx_01B8E0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01BC50:
+  type: MM:ARRAY
+  offset: 0x01BC50
+  symbol: object_knightVtx_01BC50
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01BE30:
+  type: MM:ARRAY
+  offset: 0x01BE30
+  symbol: object_knightVtx_01BE30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01BEB0:
+  type: MM:ARRAY
+  offset: 0x01BEB0
+  symbol: object_knightVtx_01BEB0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C180:
+  type: MM:ARRAY
+  offset: 0x01C180
+  symbol: object_knightVtx_01C180
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C300:
+  type: MM:ARRAY
+  offset: 0x01C300
+  symbol: object_knightVtx_01C300
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C480:
+  type: MM:ARRAY
+  offset: 0x01C480
+  symbol: object_knightVtx_01C480
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C580:
+  type: MM:ARRAY
+  offset: 0x01C580
+  symbol: object_knightVtx_01C580
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C5D0:
+  type: MM:ARRAY
+  offset: 0x01C5D0
+  symbol: object_knightVtx_01C5D0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C890:
+  type: MM:ARRAY
+  offset: 0x01C890
+  symbol: object_knightVtx_01C890
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01C8E0:
+  type: MM:ARRAY
+  offset: 0x01C8E0
+  symbol: object_knightVtx_01C8E0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01CA20:
+  type: MM:ARRAY
+  offset: 0x01CA20
+  symbol: object_knightVtx_01CA20
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01CBC0:
+  type: MM:ARRAY
+  offset: 0x01CBC0
+  symbol: object_knightVtx_01CBC0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01CD20:
+  type: MM:ARRAY
+  offset: 0x01CD20
+  symbol: object_knightVtx_01CD20
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01CE60:
+  type: MM:ARRAY
+  offset: 0x01CE60
+  symbol: object_knightVtx_01CE60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01CFE0:
+  type: MM:ARRAY
+  offset: 0x01CFE0
+  symbol: object_knightVtx_01CFE0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_knightVtx_01D140:
+  type: MM:ARRAY
+  offset: 0x01D140
+  symbol: object_knightVtx_01D140
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIgosSkelLimbs:
+  type: BLOB
+  offset: 0x20138
+  symbol: gIgosSkelLimbs
+  size: 0
+
+gKnightSkelLimbs:
+  type: BLOB
+  offset: 0x20304
+  symbol: gKnightSkelLimbs
+  size: 0

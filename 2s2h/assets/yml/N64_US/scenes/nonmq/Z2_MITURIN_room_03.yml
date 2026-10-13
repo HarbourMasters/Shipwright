@@ -1,0 +1,410 @@
+:config:
+  segments:
+    - [ 3, 0x017CC6E0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x017CC6E0 ]
+    - [ 9, 0x017CC6E0 ]
+    - [ 10, 0x017CC6E0 ]
+    - [ 11, 0x017CC6E0 ]
+    - [ 12, 0x017CC6E0 ]
+    - [ 13, 0x017CC6E0 ]
+    - [ 2, 0x017B28C0 ]
+  directory: scenes/nonmq/Z2_MITURIN
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_MITURIN.yml
+
+Z2_MITURIN_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_MITURIN_room_03
+
+Z2_MITURIN_room_03DL_006BF8:
+  type: GFX
+  offset: 0x6BF8
+  symbol: Z2_MITURIN_room_03DL_006BF8
+
+Z2_MITURIN_room_03DL_009DA8:
+  type: GFX
+  offset: 0x9DA8
+  symbol: Z2_MITURIN_room_03DL_009DA8
+
+
+Z2_MITURIN_room_03ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_MITURIN_room_03ActorEntry_00006C
+  size: 0
+
+Z2_MITURIN_room_03Vtx_000300:
+  type: MM:ARRAY
+  offset: 0x000300
+  symbol: Z2_MITURIN_room_03Vtx_000300
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_000440:
+  type: GFX
+  offset: 0x000440
+  symbol: Z2_MITURIN_room_03DL_000440
+
+Z2_MITURIN_room_03Vtx_000618:
+  type: MM:ARRAY
+  offset: 0x000618
+  symbol: Z2_MITURIN_room_03Vtx_000618
+  count: 151
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_000F88:
+  type: GFX
+  offset: 0x000F88
+  symbol: Z2_MITURIN_room_03DL_000F88
+
+Z2_MITURIN_room_03Vtx_001378:
+  type: MM:ARRAY
+  offset: 0x001378
+  symbol: Z2_MITURIN_room_03Vtx_001378
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_0016B8:
+  type: GFX
+  offset: 0x0016B8
+  symbol: Z2_MITURIN_room_03DL_0016B8
+
+Z2_MITURIN_room_03Vtx_0018D0:
+  type: MM:ARRAY
+  offset: 0x0018D0
+  symbol: Z2_MITURIN_room_03Vtx_0018D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_0019B0:
+  type: GFX
+  offset: 0x0019B0
+  symbol: Z2_MITURIN_room_03DL_0019B0
+
+Z2_MITURIN_room_03Vtx_001A90:
+  type: MM:ARRAY
+  offset: 0x001A90
+  symbol: Z2_MITURIN_room_03Vtx_001A90
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_001BA0:
+  type: GFX
+  offset: 0x001BA0
+  symbol: Z2_MITURIN_room_03DL_001BA0
+
+Z2_MITURIN_room_03Vtx_001C90:
+  type: MM:ARRAY
+  offset: 0x001C90
+  symbol: Z2_MITURIN_room_03Vtx_001C90
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_001FF0:
+  type: GFX
+  offset: 0x001FF0
+  symbol: Z2_MITURIN_room_03DL_001FF0
+
+Z2_MITURIN_room_03Vtx_002228:
+  type: MM:ARRAY
+  offset: 0x002228
+  symbol: Z2_MITURIN_room_03Vtx_002228
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_0023E8:
+  type: GFX
+  offset: 0x0023E8
+  symbol: Z2_MITURIN_room_03DL_0023E8
+
+Z2_MITURIN_room_03Vtx_002570:
+  type: MM:ARRAY
+  offset: 0x002570
+  symbol: Z2_MITURIN_room_03Vtx_002570
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_0028A0:
+  type: GFX
+  offset: 0x0028A0
+  symbol: Z2_MITURIN_room_03DL_0028A0
+
+Z2_MITURIN_room_03Vtx_002A58:
+  type: MM:ARRAY
+  offset: 0x002A58
+  symbol: Z2_MITURIN_room_03Vtx_002A58
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_002BD8:
+  type: GFX
+  offset: 0x002BD8
+  symbol: Z2_MITURIN_room_03DL_002BD8
+
+Z2_MITURIN_room_03Vtx_002D48:
+  type: MM:ARRAY
+  offset: 0x002D48
+  symbol: Z2_MITURIN_room_03Vtx_002D48
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_002ED8:
+  type: GFX
+  offset: 0x002ED8
+  symbol: Z2_MITURIN_room_03DL_002ED8
+
+Z2_MITURIN_room_03Vtx_002FE0:
+  type: MM:ARRAY
+  offset: 0x002FE0
+  symbol: Z2_MITURIN_room_03Vtx_002FE0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_003270:
+  type: GFX
+  offset: 0x003270
+  symbol: Z2_MITURIN_room_03DL_003270
+
+Z2_MITURIN_room_03Vtx_003410:
+  type: MM:ARRAY
+  offset: 0x003410
+  symbol: Z2_MITURIN_room_03Vtx_003410
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_003AA0:
+  type: GFX
+  offset: 0x003AA0
+  symbol: Z2_MITURIN_room_03DL_003AA0
+
+Z2_MITURIN_room_03Vtx_003C90:
+  type: MM:ARRAY
+  offset: 0x003C90
+  symbol: Z2_MITURIN_room_03Vtx_003C90
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_0045D0:
+  type: GFX
+  offset: 0x0045D0
+  symbol: Z2_MITURIN_room_03DL_0045D0
+
+Z2_MITURIN_room_03Vtx_004850:
+  type: MM:ARRAY
+  offset: 0x004850
+  symbol: Z2_MITURIN_room_03Vtx_004850
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_004A90:
+  type: GFX
+  offset: 0x004A90
+  symbol: Z2_MITURIN_room_03DL_004A90
+
+Z2_MITURIN_room_03Vtx_004C20:
+  type: MM:ARRAY
+  offset: 0x004C20
+  symbol: Z2_MITURIN_room_03Vtx_004C20
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_004E60:
+  type: GFX
+  offset: 0x004E60
+  symbol: Z2_MITURIN_room_03DL_004E60
+
+Z2_MITURIN_room_03Vtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: Z2_MITURIN_room_03Vtx_004FF0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_005200:
+  type: GFX
+  offset: 0x005200
+  symbol: Z2_MITURIN_room_03DL_005200
+
+Z2_MITURIN_room_03Vtx_0053F8:
+  type: MM:ARRAY
+  offset: 0x0053F8
+  symbol: Z2_MITURIN_room_03Vtx_0053F8
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_005608:
+  type: GFX
+  offset: 0x005608
+  symbol: Z2_MITURIN_room_03DL_005608
+
+Z2_MITURIN_room_03Vtx_005800:
+  type: MM:ARRAY
+  offset: 0x005800
+  symbol: Z2_MITURIN_room_03Vtx_005800
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_005C80:
+  type: GFX
+  offset: 0x005C80
+  symbol: Z2_MITURIN_room_03DL_005C80
+
+Z2_MITURIN_room_03Vtx_005F08:
+  type: MM:ARRAY
+  offset: 0x005F08
+  symbol: Z2_MITURIN_room_03Vtx_005F08
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_006788:
+  type: GFX
+  offset: 0x006788
+  symbol: Z2_MITURIN_room_03DL_006788
+
+Z2_MITURIN_room_03Vtx_006970:
+  type: MM:ARRAY
+  offset: 0x006970
+  symbol: Z2_MITURIN_room_03Vtx_006970
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_03DL_006B30:
+  type: GFX
+  offset: 0x006B30
+  symbol: Z2_MITURIN_room_03DL_006B30
+
+Z2_MITURIN_room_03Tex_006CA0:
+  type: TEXTURE
+  offset: 0x006CA0
+  symbol: Z2_MITURIN_room_03Tex_006CA0
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_MITURIN_room_03Tex_0074A0:
+  type: TEXTURE
+  offset: 0x0074A0
+  symbol: Z2_MITURIN_room_03Tex_0074A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_007CA0:
+  type: TEXTURE
+  offset: 0x007CA0
+  symbol: Z2_MITURIN_room_03Tex_007CA0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_MITURIN_room_03Tex_007DA0:
+  type: TEXTURE
+  offset: 0x007DA0
+  symbol: Z2_MITURIN_room_03Tex_007DA0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_0081A0:
+  type: TEXTURE
+  offset: 0x0081A0
+  symbol: Z2_MITURIN_room_03Tex_0081A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_0085A0:
+  type: TEXTURE
+  offset: 0x0085A0
+  symbol: Z2_MITURIN_room_03Tex_0085A0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_MITURIN_room_03Tex_0087A0:
+  type: TEXTURE
+  offset: 0x0087A0
+  symbol: Z2_MITURIN_room_03Tex_0087A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_008BA0:
+  type: TEXTURE
+  offset: 0x008BA0
+  symbol: Z2_MITURIN_room_03Tex_008BA0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_008FA0:
+  type: TEXTURE
+  offset: 0x008FA0
+  symbol: Z2_MITURIN_room_03Tex_008FA0
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_MITURIN_room_03Tex_0091A0:
+  type: TEXTURE
+  offset: 0x0091A0
+  symbol: Z2_MITURIN_room_03Tex_0091A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03Tex_0095A0:
+  type: TEXTURE
+  offset: 0x0095A0
+  symbol: Z2_MITURIN_room_03Tex_0095A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_03DL_009DA0:
+  type: GFX
+  offset: 0x009DA0
+  symbol: Z2_MITURIN_room_03DL_009DA0

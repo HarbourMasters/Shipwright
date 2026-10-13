@@ -1,0 +1,724 @@
+:config:
+  segments:
+    - [ 2, 0x016D7250 ]
+    - [ 6, 0x01607B40 ]
+  external_files:
+    - N64_US/misc/scene_texture_01.yml
+
+Z2_SONCHONOIE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_SONCHONOIE
+
+
+Z2_SONCHONOIEPathwayList_0002C0:
+  type: MM:PATH
+  offset: 0x0002C0
+  symbol: Z2_SONCHONOIEPathwayList_0002C0
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_0002CC:
+  type: MM:PATH
+  offset: 0x0002CC
+  symbol: Z2_SONCHONOIEPathwayList_0002CC
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_0002F0:
+  type: MM:PATH
+  offset: 0x0002F0
+  symbol: Z2_SONCHONOIEPathwayList_0002F0
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_000310:
+  type: MM:PATH
+  offset: 0x000310
+  symbol: Z2_SONCHONOIEPathwayList_000310
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_00031C:
+  type: MM:PATH
+  offset: 0x00031C
+  symbol: Z2_SONCHONOIEPathwayList_00031C
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_000334:
+  type: MM:PATH
+  offset: 0x000334
+  symbol: Z2_SONCHONOIEPathwayList_000334
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_00034C:
+  type: MM:PATH
+  offset: 0x00034C
+  symbol: Z2_SONCHONOIEPathwayList_00034C
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_000358:
+  type: MM:PATH
+  offset: 0x000358
+  symbol: Z2_SONCHONOIEPathwayList_000358
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIEPathwayList_000390:
+  type: MM:PATH
+  offset: 0x000390
+  symbol: Z2_SONCHONOIEPathwayList_000390
+  num_paths: 9
+  paths:
+    - additional_path_index: 1
+      custom_value: 0
+      points:
+        - [ 0, 0, 450 ]
+        - [ 1, 0, 306 ]
+    - additional_path_index: 2
+      custom_value: 1
+      points:
+        - [ 1, 0, 306 ]
+        - [ -4, 0, 213 ]
+        - [ -4, 0, 128 ]
+        - [ -3, 0, 63 ]
+        - [ -3, 0, 11 ]
+        - [ -1, 0, -22 ]
+    - additional_path_index: 3
+      custom_value: 2
+      points:
+        - [ -1, 0, -22 ]
+        - [ 44, 0, -21 ]
+        - [ 97, 0, -33 ]
+        - [ 135, 0, -55 ]
+        - [ 176, 0, -106 ]
+    - additional_path_index: 4
+      custom_value: 3
+      points:
+        - [ 176, 0, -106 ]
+        - [ 179, 0, -206 ]
+    - additional_path_index: 5
+      custom_value: 4
+      points:
+        - [ 179, 0, -206 ]
+        - [ 177, 0, -269 ]
+        - [ 160, 0, -320 ]
+        - [ 137, 0, -352 ]
+    - additional_path_index: 6
+      custom_value: 5
+      points:
+        - [ 142, 0, -352 ]
+        - [ 165, 0, -322 ]
+        - [ 173, 0, -268 ]
+        - [ 174, 0, -206 ]
+    - additional_path_index: 7
+      custom_value: 6
+      points:
+        - [ 174, 0, -206 ]
+        - [ 171, 0, -105 ]
+    - additional_path_index: 8
+      custom_value: 7
+      points:
+        - [ 171, 0, -105 ]
+        - [ 158, 0, -51 ]
+        - [ 115, 0, -13 ]
+        - [ 81, 0, 7 ]
+        - [ 24, 0, 30 ]
+        - [ 16, 0, 91 ]
+        - [ 13, 0, 162 ]
+        - [ 13, 0, 233 ]
+        - [ 10, 0, 306 ]
+    - additional_path_index: 255
+      custom_value: 8
+      points:
+        - [ 10, 0, 306 ]
+        - [ 10, 0, 420 ]
+
+Z2_SONCHONOIETexAnim_000890:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000890
+  symbol: Z2_SONCHONOIETexAnim_000890
+
+Z2_SONCHONOIECollisionHeader_0036D4:
+  type: MM:COLLISION
+  offset: 0x0036D4
+  symbol: Z2_SONCHONOIECollisionHeader_0036D4
+
+Z2_SONCHONOIETex_003700:
+  type: TEXTURE
+  offset: 0x003700
+  symbol: Z2_SONCHONOIETex_003700
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_SONCHONOIETex_004700:
+  type: TEXTURE
+  offset: 0x004700
+  symbol: Z2_SONCHONOIETex_004700
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_SONCHONOIETex_005700:
+  type: TEXTURE
+  offset: 0x005700
+  symbol: Z2_SONCHONOIETex_005700
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_SONCHONOIETex_005900:
+  type: TEXTURE
+  offset: 0x005900
+  symbol: Z2_SONCHONOIETex_005900
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_SONCHONOIETex_006900:
+  type: TEXTURE
+  offset: 0x006900
+  symbol: Z2_SONCHONOIETex_006900
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_SONCHONOIETex_006D00:
+  type: TEXTURE
+  offset: 0x006D00
+  symbol: Z2_SONCHONOIETex_006D00
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_SONCHONOIETLUT_006F00:
+  type: TEXTURE
+  offset: 0x006F00
+  symbol: Z2_SONCHONOIETLUT_006F00
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_SONCHONOIETLUT_007100:
+  type: TEXTURE
+  offset: 0x007100
+  symbol: Z2_SONCHONOIETLUT_007100
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_SONCHONOIETLUT_007300:
+  type: TEXTURE
+  offset: 0x007300
+  symbol: Z2_SONCHONOIETLUT_007300
+  format: RGBA16
+  width: 16
+  height: 16

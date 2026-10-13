@@ -1,0 +1,86 @@
+:config:
+  segments:
+    - [ 6, 0x00F2C260 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F2C260 ]
+    - [ 9, 0x00F2C260 ]
+    - [ 10, 0x00F2C260 ]
+    - [ 11, 0x00F2C260 ]
+    - [ 12, 0x00F2C260 ]
+    - [ 13, 0x00F2C260 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mir_ray_DL_000160:
+  type: GFX
+  offset: 0x160
+  symbol: object_mir_ray_DL_000160
+
+object_mir_ray_DL_000168:
+  type: GFX
+  offset: 0x168
+  symbol: object_mir_ray_DL_000168
+
+object_mir_ray_DL_0004B0:
+  type: GFX
+  offset: 0x4B0
+  symbol: object_mir_ray_DL_0004B0
+
+object_mir_ray_DL_000550:
+  type: GFX
+  offset: 0x550
+  symbol: object_mir_ray_DL_000550
+
+object_mir_ray_Matanimheader_0003F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3F8
+  symbol: object_mir_ray_Matanimheader_0003F8
+
+object_mir_ray_Tex_000270:
+  type: TEXTURE
+  offset: 0x270
+  symbol: object_mir_ray_Tex_000270
+  format: I4
+  width: 16
+  height: 16
+
+object_mir_ray_Tex_0002F0:
+  type: TEXTURE
+  offset: 0x2F0
+  symbol: object_mir_ray_Tex_0002F0
+  format: I4
+  width: 16
+  height: 32
+
+object_mir_ray_Tex_000558:
+  type: TEXTURE
+  offset: 0x558
+  symbol: object_mir_ray_Tex_000558
+  format: I8
+  width: 32
+  height: 64
+
+
+object_mir_rayVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mir_rayVtx_000000
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mir_ray_Matanimheader_0003F8TexScrollParams_0003F0:
+  type: BLOB
+  offset: 0x0003F0
+  symbol: object_mir_ray_Matanimheader_0003F8TexScrollParams_0003F0
+  size: 0
+
+object_mir_rayVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_mir_rayVtx_000400
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

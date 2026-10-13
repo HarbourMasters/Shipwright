@@ -1,0 +1,25 @@
+:config:
+  segments:
+    - [ 128, 0x00BF9C90 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80928790, 0x00BF9C90 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+ovl_En_Sda_DL_1498:
+  type: GFX
+  offset: 0x1498
+  symbol: ovl_En_Sda_DL_1498
+
+ovl_En_Sda_DL_14B8:
+  type: GFX
+  offset: 0x14B8
+  symbol: ovl_En_Sda_DL_14B8
+
+ovl_En_Sda_Vtx_1458:
+  type: MM:ARRAY
+  offset: 0x1458
+  symbol: ovl_En_Sda_Vtx_1458
+  count: 4
+  array_type: VTX
+

@@ -1,0 +1,82 @@
+:config:
+  segments:
+    - [ 3, 0x01BAF380 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01BAF380 ]
+    - [ 9, 0x01BAF380 ]
+    - [ 10, 0x01BAF380 ]
+    - [ 11, 0x01BAF380 ]
+    - [ 12, 0x01BAF380 ]
+    - [ 13, 0x01BAF380 ]
+    - [ 2, 0x01B704D0 ]
+  directory: scenes/nonmq/Z2_SEA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_SEA.yml
+
+Z2_SEA_room_14:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SEA_room_14
+
+Z2_SEA_room_14DL_001320:
+  type: GFX
+  offset: 0x1320
+  symbol: Z2_SEA_room_14DL_001320
+
+
+Z2_SEA_room_14ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_SEA_room_14ActorEntry_00006C
+  size: 0
+
+Z2_SEA_room_14Vtx_0001A0:
+  type: MM:ARRAY
+  offset: 0x0001A0
+  symbol: Z2_SEA_room_14Vtx_0001A0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_14DL_000440:
+  type: GFX
+  offset: 0x000440
+  symbol: Z2_SEA_room_14DL_000440
+
+Z2_SEA_room_14Vtx_0006C0:
+  type: MM:ARRAY
+  offset: 0x0006C0
+  symbol: Z2_SEA_room_14Vtx_0006C0
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_14DL_000D00:
+  type: GFX
+  offset: 0x000D00
+  symbol: Z2_SEA_room_14DL_000D00
+
+Z2_SEA_room_14Vtx_0010F8:
+  type: MM:ARRAY
+  offset: 0x0010F8
+  symbol: Z2_SEA_room_14Vtx_0010F8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_14DL_001238:
+  type: GFX
+  offset: 0x001238
+  symbol: Z2_SEA_room_14DL_001238
+
+Z2_SEA_room_14Tex_001340:
+  type: TEXTURE
+  offset: 0x001340
+  symbol: Z2_SEA_room_14Tex_001340
+  format: RGBA16
+  width: 32
+  height: 32

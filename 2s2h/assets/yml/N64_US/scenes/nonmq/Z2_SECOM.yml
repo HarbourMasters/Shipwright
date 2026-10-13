@@ -1,0 +1,145 @@
+:config:
+  segments:
+    - [ 2, 0x01C476E0 ]
+
+Z2_SECOM:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_SECOM
+
+gSakonsHidoutConveyorBeltTex:
+  type: TEXTURE
+  offset: 0x47F0
+  symbol: gSakonsHidoutConveyorBeltTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+Z2_SECOMPathwayList_000120:
+  type: MM:PATH
+  offset: 0x000120
+  symbol: Z2_SECOMPathwayList_000120
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3, 0, 301 ]
+        - [ 2, 0, 289 ]
+        - [ 2, 0, 267 ]
+        - [ 3, 0, 247 ]
+
+Z2_SECOMCutsceneData_000140:
+  type: MM:CUTSCENE
+  offset: 0x000140
+  symbol: Z2_SECOMCutsceneData_000140
+  size: 1880
+
+Z2_SECOMCutsceneData_0008A0:
+  type: MM:CUTSCENE
+  offset: 0x0008A0
+  symbol: Z2_SECOMCutsceneData_0008A0
+  size: 968
+
+Z2_SECOMCutsceneData_000C70:
+  type: MM:CUTSCENE
+  offset: 0x000C70
+  symbol: Z2_SECOMCutsceneData_000C70
+  size: 1088
+
+Z2_SECOMCutsceneData_0010C0:
+  type: MM:CUTSCENE
+  offset: 0x0010C0
+  symbol: Z2_SECOMCutsceneData_0010C0
+  size: 664
+
+Z2_SECOMCutsceneData_001360:
+  type: MM:CUTSCENE
+  offset: 0x001360
+  symbol: Z2_SECOMCutsceneData_001360
+  size: 776
+
+Z2_SECOMTexAnim_001948TexCycleParams_001928:
+  type: BLOB
+  offset: 0x001928
+  symbol: Z2_SECOMTexAnim_001948TexCycleParams_001928
+  size: 0
+
+Z2_SECOMTexAnim_001948TexScrollParams_001938:
+  type: BLOB
+  offset: 0x001938
+  symbol: Z2_SECOMTexAnim_001948TexScrollParams_001938
+  size: 0
+
+Z2_SECOMTexAnim_001948TexScrollParams_001940:
+  type: BLOB
+  offset: 0x001940
+  symbol: Z2_SECOMTexAnim_001948TexScrollParams_001940
+  size: 0
+
+Z2_SECOMTexAnim_001948:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001948
+  symbol: Z2_SECOMTexAnim_001948
+
+Z2_SECOMCollisionHeader_0047B8:
+  type: MM:COLLISION
+  offset: 0x0047B8
+  symbol: Z2_SECOMCollisionHeader_0047B8
+
+Z2_SECOMTex_004FF0:
+  type: TEXTURE
+  offset: 0x004FF0
+  symbol: Z2_SECOMTex_004FF0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SECOMTex_0053F0:
+  type: TEXTURE
+  offset: 0x0053F0
+  symbol: Z2_SECOMTex_0053F0
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_SECOMTex_0057F0:
+  type: TEXTURE
+  offset: 0x0057F0
+  symbol: Z2_SECOMTex_0057F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SECOMTex_005BF0:
+  type: TEXTURE
+  offset: 0x005BF0
+  symbol: Z2_SECOMTex_005BF0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SECOMTex_005FF0:
+  type: TEXTURE
+  offset: 0x005FF0
+  symbol: Z2_SECOMTex_005FF0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SECOMTLUT_0067F0:
+  type: TEXTURE
+  offset: 0x0067F0
+  symbol: Z2_SECOMTLUT_0067F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_SECOMTLUT_0069F0:
+  type: TEXTURE
+  offset: 0x0069F0
+  symbol: Z2_SECOMTLUT_0069F0
+  format: RGBA16
+  width: 4
+  height: 4

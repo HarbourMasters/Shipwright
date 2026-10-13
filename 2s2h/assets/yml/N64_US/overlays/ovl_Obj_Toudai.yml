@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x00C9C0E0 ]
+  virtual: [ 0x80A33B00, 0x00C9C0E0 ]
+
+ovl_Obj_Toudai_Vtx_D_80A34590:
+  type: MM:ARRAY
+  offset: 0xA90
+  symbol: ovl_Obj_Toudai_Vtx_D_80A34590
+  count: 14
+  array_type: VTX
+

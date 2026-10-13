@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 128, 0x00BE35D0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80924300, 0x00BE35D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLightArrowMaskTex:
+  type: TEXTURE
+  offset: 0x1160
+  symbol: gLightArrowMaskTex
+  format: I8
+  width: 32
+  height: 64
+
+gLightArrowMaterialDL:
+  type: GFX
+  offset: 0x1C10
+  symbol: gLightArrowMaterialDL
+
+gLightArrowModelDL:
+  type: GFX
+  offset: 0x1CC0
+  symbol: gLightArrowModelDL
+
+gLightArrowTex:
+  type: TEXTURE
+  offset: 0x960
+  symbol: gLightArrowTex
+  format: I8
+  width: 32
+  height: 64
+
+gLightArrowVtx:
+  type: MM:ARRAY
+  offset: 0x1960
+  symbol: gLightArrowVtx
+  count: 43
+  array_type: VTX
+

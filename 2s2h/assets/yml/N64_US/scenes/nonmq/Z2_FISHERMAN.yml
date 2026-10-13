@@ -1,0 +1,361 @@
+:config:
+  segments:
+    - [ 2, 0x01A8B0A0 ]
+
+Z2_FISHERMAN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_FISHERMAN
+
+
+Z2_FISHERMANTexAnim_000238TexScrollParams_000230:
+  type: BLOB
+  offset: 0x000230
+  symbol: Z2_FISHERMANTexAnim_000238TexScrollParams_000230
+  size: 0
+
+Z2_FISHERMANTexAnim_000238:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000238
+  symbol: Z2_FISHERMANTexAnim_000238
+
+Z2_FISHERMANCollisionHeader_001DB8:
+  type: MM:COLLISION
+  offset: 0x001DB8
+  symbol: Z2_FISHERMANCollisionHeader_001DB8
+
+Z2_FISHERMANTex_001DF0:
+  type: TEXTURE
+  offset: 0x001DF0
+  symbol: Z2_FISHERMANTex_001DF0
+  format: I4
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_001FF0:
+  type: TEXTURE
+  offset: 0x001FF0
+  symbol: Z2_FISHERMANTex_001FF0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_0023F0:
+  type: TEXTURE
+  offset: 0x0023F0
+  symbol: Z2_FISHERMANTex_0023F0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_0027F0:
+  type: TEXTURE
+  offset: 0x0027F0
+  symbol: Z2_FISHERMANTex_0027F0
+  format: I4
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_002870:
+  type: TEXTURE
+  offset: 0x002870
+  symbol: Z2_FISHERMANTex_002870
+  format: IA16
+  width: 8
+  height: 16
+
+Z2_FISHERMANTex_002970:
+  type: TEXTURE
+  offset: 0x002970
+  symbol: Z2_FISHERMANTex_002970
+  format: IA8
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_0029B0:
+  type: TEXTURE
+  offset: 0x0029B0
+  symbol: Z2_FISHERMANTex_0029B0
+  format: IA16
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_002A30:
+  type: TEXTURE
+  offset: 0x002A30
+  symbol: Z2_FISHERMANTex_002A30
+  format: IA16
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_002AB0:
+  type: TEXTURE
+  offset: 0x002AB0
+  symbol: Z2_FISHERMANTex_002AB0
+  format: RGBA32
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_002BB0:
+  type: TEXTURE
+  offset: 0x002BB0
+  symbol: Z2_FISHERMANTex_002BB0
+  format: RGBA32
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_002CB0:
+  type: TEXTURE
+  offset: 0x002CB0
+  symbol: Z2_FISHERMANTex_002CB0
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_FISHERMANTex_002D30:
+  type: TEXTURE
+  offset: 0x002D30
+  symbol: Z2_FISHERMANTex_002D30
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_002F30:
+  type: TEXTURE
+  offset: 0x002F30
+  symbol: Z2_FISHERMANTex_002F30
+  format: RGBA16
+  width: 16
+  height: 8
+
+Z2_FISHERMANTex_003030:
+  type: TEXTURE
+  offset: 0x003030
+  symbol: Z2_FISHERMANTex_003030
+  format: IA16
+  width: 32
+  height: 16
+
+Z2_FISHERMANTex_003430:
+  type: TEXTURE
+  offset: 0x003430
+  symbol: Z2_FISHERMANTex_003430
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_FISHERMANTex_003830:
+  type: TEXTURE
+  offset: 0x003830
+  symbol: Z2_FISHERMANTex_003830
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_003A30:
+  type: TEXTURE
+  offset: 0x003A30
+  symbol: Z2_FISHERMANTex_003A30
+  format: RGBA16
+  width: 8
+  height: 16
+
+Z2_FISHERMANTex_003B30:
+  type: TEXTURE
+  offset: 0x003B30
+  symbol: Z2_FISHERMANTex_003B30
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_003D30:
+  type: TEXTURE
+  offset: 0x003D30
+  symbol: Z2_FISHERMANTex_003D30
+  format: I8
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_003F30:
+  type: TEXTURE
+  offset: 0x003F30
+  symbol: Z2_FISHERMANTex_003F30
+  format: IA16
+  width: 16
+  height: 8
+
+Z2_FISHERMANTex_004030:
+  type: TEXTURE
+  offset: 0x004030
+  symbol: Z2_FISHERMANTex_004030
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_004230:
+  type: TEXTURE
+  offset: 0x004230
+  symbol: Z2_FISHERMANTex_004230
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_004430:
+  type: TEXTURE
+  offset: 0x004430
+  symbol: Z2_FISHERMANTex_004430
+  format: RGBA16
+  width: 8
+  height: 16
+
+Z2_FISHERMANTex_004530:
+  type: TEXTURE
+  offset: 0x004530
+  symbol: Z2_FISHERMANTex_004530
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_004730:
+  type: TEXTURE
+  offset: 0x004730
+  symbol: Z2_FISHERMANTex_004730
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_004B30:
+  type: TEXTURE
+  offset: 0x004B30
+  symbol: Z2_FISHERMANTex_004B30
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_FISHERMANTex_005B30:
+  type: TEXTURE
+  offset: 0x005B30
+  symbol: Z2_FISHERMANTex_005B30
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_005F30:
+  type: TEXTURE
+  offset: 0x005F30
+  symbol: Z2_FISHERMANTex_005F30
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_FISHERMANTex_006130:
+  type: TEXTURE
+  offset: 0x006130
+  symbol: Z2_FISHERMANTex_006130
+  format: IA16
+  width: 8
+  height: 16
+
+Z2_FISHERMANTex_006230:
+  type: TEXTURE
+  offset: 0x006230
+  symbol: Z2_FISHERMANTex_006230
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_006630:
+  type: TEXTURE
+  offset: 0x006630
+  symbol: Z2_FISHERMANTex_006630
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_006A30:
+  type: TEXTURE
+  offset: 0x006A30
+  symbol: Z2_FISHERMANTex_006A30
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_007230:
+  type: TEXTURE
+  offset: 0x007230
+  symbol: Z2_FISHERMANTex_007230
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_007630:
+  type: TEXTURE
+  offset: 0x007630
+  symbol: Z2_FISHERMANTex_007630
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_FISHERMANTex_007E30:
+  type: TEXTURE
+  offset: 0x007E30
+  symbol: Z2_FISHERMANTex_007E30
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_008230:
+  type: TEXTURE
+  offset: 0x008230
+  symbol: Z2_FISHERMANTex_008230
+  format: I8
+  width: 32
+  height: 32
+
+Z2_FISHERMANTex_008630:
+  type: TEXTURE
+  offset: 0x008630
+  symbol: Z2_FISHERMANTex_008630
+  format: IA16
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_008A30:
+  type: TEXTURE
+  offset: 0x008A30
+  symbol: Z2_FISHERMANTex_008A30
+  format: CI8
+  width: 8
+  height: 64
+
+Z2_FISHERMANTex_008C30:
+  type: TEXTURE
+  offset: 0x008C30
+  symbol: Z2_FISHERMANTex_008C30
+  format: I8
+  width: 16
+  height: 32
+
+Z2_FISHERMANTex_008E30:
+  type: TEXTURE
+  offset: 0x008E30
+  symbol: Z2_FISHERMANTex_008E30
+  format: IA16
+  width: 8
+  height: 16
+
+Z2_FISHERMANTLUT_008F30:
+  type: TEXTURE
+  offset: 0x008F30
+  symbol: Z2_FISHERMANTLUT_008F30
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_FISHERMANTLUT_008F50:
+  type: TEXTURE
+  offset: 0x008F50
+  symbol: Z2_FISHERMANTLUT_008F50
+  format: RGBA16
+  width: 16
+  height: 16

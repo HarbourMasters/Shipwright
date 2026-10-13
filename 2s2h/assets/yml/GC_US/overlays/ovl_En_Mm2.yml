@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 128, 0x00C3A570 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80983F10, 0x00C3A570 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sEnMm21Vtx:
+  type: MM:ARRAY
+  offset: 0x840
+  symbol: sEnMm21Vtx
+  count: 10
+  array_type: VTX
+
+sEnMm22Vtx:
+  type: MM:ARRAY
+  offset: 0x8E0
+  symbol: sEnMm22Vtx
+  count: 12
+  array_type: VTX
+
+sEnMm2DL:
+  type: GFX
+  offset: 0x9A8
+  symbol: sEnMm2DL
+
+sEnMm2EmptyDL:
+  type: GFX
+  offset: 0x9A0
+  symbol: sEnMm2EmptyDL
+
+sEnMm2EnvelopeTex:
+  type: TEXTURE
+  offset: 0x240
+  symbol: sEnMm2EnvelopeTex
+  format: I8
+  width: 32
+  height: 32
+
+sEnMm2LetterTex:
+  type: TEXTURE
+  offset: 0x640
+  symbol: sEnMm2LetterTex
+  format: RGBA16
+  width: 16
+  height: 16
+

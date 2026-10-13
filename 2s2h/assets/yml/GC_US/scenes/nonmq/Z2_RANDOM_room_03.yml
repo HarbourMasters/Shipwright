@@ -1,0 +1,228 @@
+:config:
+  segments:
+    - [ 3, 0x01D52F50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01D52F50 ]
+    - [ 9, 0x01D52F50 ]
+    - [ 10, 0x01D52F50 ]
+    - [ 11, 0x01D52F50 ]
+    - [ 12, 0x01D52F50 ]
+    - [ 13, 0x01D52F50 ]
+    - [ 2, 0x01D43040 ]
+  directory: scenes/nonmq/Z2_RANDOM
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_RANDOM.yml
+
+Z2_RANDOM_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_RANDOM_room_03
+
+Z2_RANDOM_room_03DL_004B88:
+  type: GFX
+  offset: 0x4B88
+  symbol: Z2_RANDOM_room_03DL_004B88
+
+Z2_RANDOM_room_03DL_0072D0:
+  type: GFX
+  offset: 0x72D0
+  symbol: Z2_RANDOM_room_03DL_0072D0
+
+
+Z2_RANDOM_room_03ActorEntry_000054:
+  type: BLOB
+  offset: 0x000054
+  symbol: Z2_RANDOM_room_03ActorEntry_000054
+  size: 0
+
+Z2_RANDOM_room_03Vtx_0001D0:
+  type: MM:ARRAY
+  offset: 0x0001D0
+  symbol: Z2_RANDOM_room_03Vtx_0001D0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_0003D0:
+  type: GFX
+  offset: 0x0003D0
+  symbol: Z2_RANDOM_room_03DL_0003D0
+
+Z2_RANDOM_room_03Vtx_0004D0:
+  type: MM:ARRAY
+  offset: 0x0004D0
+  symbol: Z2_RANDOM_room_03Vtx_0004D0
+  count: 171
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_000F80:
+  type: GFX
+  offset: 0x000F80
+  symbol: Z2_RANDOM_room_03DL_000F80
+
+Z2_RANDOM_room_03Vtx_0011E8:
+  type: MM:ARRAY
+  offset: 0x0011E8
+  symbol: Z2_RANDOM_room_03Vtx_0011E8
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_001658:
+  type: GFX
+  offset: 0x001658
+  symbol: Z2_RANDOM_room_03DL_001658
+
+Z2_RANDOM_room_03Vtx_001818:
+  type: MM:ARRAY
+  offset: 0x001818
+  symbol: Z2_RANDOM_room_03Vtx_001818
+  count: 113
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_001F28:
+  type: GFX
+  offset: 0x001F28
+  symbol: Z2_RANDOM_room_03DL_001F28
+
+Z2_RANDOM_room_03Vtx_002130:
+  type: MM:ARRAY
+  offset: 0x002130
+  symbol: Z2_RANDOM_room_03Vtx_002130
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_002240:
+  type: GFX
+  offset: 0x002240
+  symbol: Z2_RANDOM_room_03DL_002240
+
+Z2_RANDOM_room_03Vtx_002330:
+  type: MM:ARRAY
+  offset: 0x002330
+  symbol: Z2_RANDOM_room_03Vtx_002330
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_002E50:
+  type: GFX
+  offset: 0x002E50
+  symbol: Z2_RANDOM_room_03DL_002E50
+
+Z2_RANDOM_room_03Vtx_003208:
+  type: MM:ARRAY
+  offset: 0x003208
+  symbol: Z2_RANDOM_room_03Vtx_003208
+  count: 213
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_003F58:
+  type: GFX
+  offset: 0x003F58
+  symbol: Z2_RANDOM_room_03DL_003F58
+
+Z2_RANDOM_room_03Vtx_004278:
+  type: MM:ARRAY
+  offset: 0x004278
+  symbol: Z2_RANDOM_room_03Vtx_004278
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_0044D8:
+  type: GFX
+  offset: 0x0044D8
+  symbol: Z2_RANDOM_room_03DL_0044D8
+
+Z2_RANDOM_room_03Vtx_0045D8:
+  type: MM:ARRAY
+  offset: 0x0045D8
+  symbol: Z2_RANDOM_room_03Vtx_0045D8
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_0048B8:
+  type: GFX
+  offset: 0x0048B8
+  symbol: Z2_RANDOM_room_03DL_0048B8
+
+Z2_RANDOM_room_03Vtx_0049D8:
+  type: MM:ARRAY
+  offset: 0x0049D8
+  symbol: Z2_RANDOM_room_03Vtx_0049D8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_004AD8:
+  type: GFX
+  offset: 0x004AD8
+  symbol: Z2_RANDOM_room_03DL_004AD8
+
+Z2_RANDOM_room_03Tex_004BE0:
+  type: TEXTURE
+  offset: 0x004BE0
+  symbol: Z2_RANDOM_room_03Tex_004BE0
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_RANDOM_room_03Tex_0053E0:
+  type: TEXTURE
+  offset: 0x0053E0
+  symbol: Z2_RANDOM_room_03Tex_0053E0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_RANDOM_room_03Tex_0063E0:
+  type: TEXTURE
+  offset: 0x0063E0
+  symbol: Z2_RANDOM_room_03Tex_0063E0
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_RANDOM_room_03Tex_006BE0:
+  type: TEXTURE
+  offset: 0x006BE0
+  symbol: Z2_RANDOM_room_03Tex_006BE0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_RANDOM_room_03Vtx_006FE0:
+  type: MM:ARRAY
+  offset: 0x006FE0
+  symbol: Z2_RANDOM_room_03Vtx_006FE0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_RANDOM_room_03DL_0071A0:
+  type: GFX
+  offset: 0x0071A0
+  symbol: Z2_RANDOM_room_03DL_0071A0
+
+Z2_RANDOM_room_03DL_0072C8:
+  type: GFX
+  offset: 0x0072C8
+  symbol: Z2_RANDOM_room_03DL_0072C8

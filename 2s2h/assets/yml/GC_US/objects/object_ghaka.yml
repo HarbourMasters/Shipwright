@@ -1,0 +1,83 @@
+:config:
+  segments:
+    - [ 6, 0x013A58D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x013A58D0 ]
+    - [ 9, 0x013A58D0 ]
+    - [ 10, 0x013A58D0 ]
+    - [ 11, 0x013A58D0 ]
+    - [ 12, 0x013A58D0 ]
+    - [ 13, 0x013A58D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_ghaka_Colheader_0000E8:
+  type: MM:COLLISION
+  offset: 0xE8
+  symbol: object_ghaka_Colheader_0000E8
+
+object_ghaka_Colheader_003CD0:
+  type: MM:COLLISION
+  offset: 0x3CD0
+  symbol: object_ghaka_Colheader_003CD0
+
+object_ghaka_DL_001980:
+  type: GFX
+  offset: 0x1980
+  symbol: object_ghaka_DL_001980
+
+object_ghaka_DL_001A20:
+  type: GFX
+  offset: 0x1A20
+  symbol: object_ghaka_DL_001A20
+
+object_ghaka_Tex_002020:
+  type: TEXTURE
+  offset: 0x2020
+  symbol: object_ghaka_Tex_002020
+  format: I8
+  width: 32
+  height: 64
+
+object_ghaka_Tex_002820:
+  type: TEXTURE
+  offset: 0x2820
+  symbol: object_ghaka_Tex_002820
+  format: IA16
+  width: 16
+  height: 16
+
+object_ghaka_Tex_002A20:
+  type: TEXTURE
+  offset: 0x2A20
+  symbol: object_ghaka_Tex_002A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ghaka_Tex_003220:
+  type: TEXTURE
+  offset: 0x3220
+  symbol: object_ghaka_Tex_003220
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ghakaVtx_000120:
+  type: MM:ARRAY
+  offset: 0x000120
+  symbol: object_ghakaVtx_000120
+  count: 380
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ghakaVtx_0018E0:
+  type: MM:ARRAY
+  offset: 0x0018E0
+  symbol: object_ghakaVtx_0018E0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

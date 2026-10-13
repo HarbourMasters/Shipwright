@@ -1,0 +1,112 @@
+:config:
+  segments:
+    - [ 3, 0x018832F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x018832F0 ]
+    - [ 9, 0x018832F0 ]
+    - [ 10, 0x018832F0 ]
+    - [ 11, 0x018832F0 ]
+    - [ 12, 0x018832F0 ]
+    - [ 13, 0x018832F0 ]
+    - [ 2, 0x0182DC00 ]
+  directory: scenes/nonmq/Z2_HAKUGIN
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_HAKUGIN.yml
+
+Z2_HAKUGIN_room_11:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_HAKUGIN_room_11
+
+Z2_HAKUGIN_room_11DL_001700:
+  type: GFX
+  offset: 0x1700
+  symbol: Z2_HAKUGIN_room_11DL_001700
+
+
+Z2_HAKUGIN_room_11ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_HAKUGIN_room_11ActorEntry_00006C
+  size: 0
+
+Z2_HAKUGIN_room_11Vtx_000110:
+  type: MM:ARRAY
+  offset: 0x000110
+  symbol: Z2_HAKUGIN_room_11Vtx_000110
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_11DL_0003F0:
+  type: GFX
+  offset: 0x0003F0
+  symbol: Z2_HAKUGIN_room_11DL_0003F0
+
+Z2_HAKUGIN_room_11Vtx_000680:
+  type: MM:ARRAY
+  offset: 0x000680
+  symbol: Z2_HAKUGIN_room_11Vtx_000680
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_11DL_000940:
+  type: GFX
+  offset: 0x000940
+  symbol: Z2_HAKUGIN_room_11DL_000940
+
+Z2_HAKUGIN_room_11Vtx_000B18:
+  type: MM:ARRAY
+  offset: 0x000B18
+  symbol: Z2_HAKUGIN_room_11Vtx_000B18
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_11DL_001108:
+  type: GFX
+  offset: 0x001108
+  symbol: Z2_HAKUGIN_room_11DL_001108
+
+Z2_HAKUGIN_room_11Vtx_0012F8:
+  type: MM:ARRAY
+  offset: 0x0012F8
+  symbol: Z2_HAKUGIN_room_11Vtx_0012F8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_11DL_001578:
+  type: GFX
+  offset: 0x001578
+  symbol: Z2_HAKUGIN_room_11DL_001578
+
+Z2_HAKUGIN_room_11Tex_001728:
+  type: TEXTURE
+  offset: 0x001728
+  symbol: Z2_HAKUGIN_room_11Tex_001728
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_11Tex_001F28:
+  type: TEXTURE
+  offset: 0x001F28
+  symbol: Z2_HAKUGIN_room_11Tex_001F28
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_11Tex_002728:
+  type: TEXTURE
+  offset: 0x002728
+  symbol: Z2_HAKUGIN_room_11Tex_002728
+  format: CI4
+  width: 64
+  height: 64

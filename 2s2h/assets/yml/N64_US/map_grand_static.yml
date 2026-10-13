@@ -1,0 +1,789 @@
+:config:
+  segments:
+    - [ 128, 0x00968660 ]
+  compression: CMPDMA
+
+gMapGrandStatic100Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMapGrandStatic100Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic101Tex:
+  type: TEXTURE
+  offset: 0xFF0
+  symbol: gMapGrandStatic101Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic102Tex:
+  type: TEXTURE
+  offset: 0x1FE0
+  symbol: gMapGrandStatic102Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic103Tex:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: gMapGrandStatic103Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic104Tex:
+  type: TEXTURE
+  offset: 0x3FC0
+  symbol: gMapGrandStatic104Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic105Tex:
+  type: TEXTURE
+  offset: 0x4FB0
+  symbol: gMapGrandStatic105Tex
+  format: I4
+  width: 80
+  height: 72
+
+gMapGrandStatic106Tex:
+  type: TEXTURE
+  offset: 0x5AF0
+  symbol: gMapGrandStatic106Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic107Tex:
+  type: TEXTURE
+  offset: 0x6AE0
+  symbol: gMapGrandStatic107Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic108Tex:
+  type: TEXTURE
+  offset: 0x7AD0
+  symbol: gMapGrandStatic108Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic109Tex:
+  type: TEXTURE
+  offset: 0x8AC0
+  symbol: gMapGrandStatic109Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic10ATex:
+  type: TEXTURE
+  offset: 0x9AB0
+  symbol: gMapGrandStatic10ATex
+  format: I4
+  width: 48
+  height: 44
+
+gMapGrandStatic10BTex:
+  type: TEXTURE
+  offset: 0x9ED0
+  symbol: gMapGrandStatic10BTex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic10CTex:
+  type: TEXTURE
+  offset: 0xAEC0
+  symbol: gMapGrandStatic10CTex
+  format: I4
+  width: 48
+  height: 46
+
+gMapGrandStatic10DTex:
+  type: TEXTURE
+  offset: 0xB310
+  symbol: gMapGrandStatic10DTex
+  format: I4
+  width: 64
+  height: 61
+
+gMapGrandStatic10ETex:
+  type: TEXTURE
+  offset: 0xBAB0
+  symbol: gMapGrandStatic10ETex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic10FTex:
+  type: TEXTURE
+  offset: 0xCAA0
+  symbol: gMapGrandStatic10FTex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic110Tex:
+  type: TEXTURE
+  offset: 0xDA90
+  symbol: gMapGrandStatic110Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic111Tex:
+  type: TEXTURE
+  offset: 0xEA80
+  symbol: gMapGrandStatic111Tex
+  format: I4
+  width: 48
+  height: 80
+
+gMapGrandStatic112Tex:
+  type: TEXTURE
+  offset: 0xF200
+  symbol: gMapGrandStatic112Tex
+  format: I4
+  width: 32
+  height: 128
+
+gMapGrandStatic113Tex:
+  type: TEXTURE
+  offset: 0xFA00
+  symbol: gMapGrandStatic113Tex
+  format: I4
+  width: 80
+  height: 53
+
+gMapGrandStatic114Tex:
+  type: TEXTURE
+  offset: 0x10250
+  symbol: gMapGrandStatic114Tex
+  format: I4
+  width: 32
+  height: 81
+
+gMapGrandStatic115Tex:
+  type: TEXTURE
+  offset: 0x10760
+  symbol: gMapGrandStatic115Tex
+  format: I4
+  width: 80
+  height: 45
+
+gMapGrandStatic116Tex:
+  type: TEXTURE
+  offset: 0x10E70
+  symbol: gMapGrandStatic116Tex
+  format: I4
+  width: 64
+  height: 87
+
+gMapGrandStatic117Tex:
+  type: TEXTURE
+  offset: 0x11950
+  symbol: gMapGrandStatic117Tex
+  format: I4
+  width: 64
+  height: 51
+
+gMapGrandStatic118Tex:
+  type: TEXTURE
+  offset: 0x11FB0
+  symbol: gMapGrandStatic118Tex
+  format: I4
+  width: 80
+  height: 79
+
+gMapGrandStatic119Tex:
+  type: TEXTURE
+  offset: 0x12C10
+  symbol: gMapGrandStatic119Tex
+  format: I4
+  width: 96
+  height: 75
+
+gMapGrandStatic11ATex:
+  type: TEXTURE
+  offset: 0x13A20
+  symbol: gMapGrandStatic11ATex
+  format: I4
+  width: 48
+  height: 41
+
+gMapGrandStatic11BTex:
+  type: TEXTURE
+  offset: 0x13E00
+  symbol: gMapGrandStatic11BTex
+  format: I4
+  width: 64
+  height: 45
+
+gMapGrandStatic11CTex:
+  type: TEXTURE
+  offset: 0x143A0
+  symbol: gMapGrandStatic11CTex
+  format: I4
+  width: 80
+  height: 52
+
+gMapGrandStatic11DTex:
+  type: TEXTURE
+  offset: 0x14BC0
+  symbol: gMapGrandStatic11DTex
+  format: I4
+  width: 48
+  height: 45
+
+gMapGrandStatic11ETex:
+  type: TEXTURE
+  offset: 0x15000
+  symbol: gMapGrandStatic11ETex
+  format: I4
+  width: 48
+  height: 59
+
+gMapGrandStatic11FTex:
+  type: TEXTURE
+  offset: 0x15590
+  symbol: gMapGrandStatic11FTex
+  format: I4
+  width: 48
+  height: 60
+
+gMapGrandStatic120Tex:
+  type: TEXTURE
+  offset: 0x15B30
+  symbol: gMapGrandStatic120Tex
+  format: I4
+  width: 48
+  height: 81
+
+gMapGrandStatic121Tex:
+  type: TEXTURE
+  offset: 0x162D0
+  symbol: gMapGrandStatic121Tex
+  format: I4
+  width: 48
+  height: 81
+
+gMapGrandStatic122Tex:
+  type: TEXTURE
+  offset: 0x16A70
+  symbol: gMapGrandStatic122Tex
+  format: I4
+  width: 80
+  height: 89
+
+gMapGrandStatic123Tex:
+  type: TEXTURE
+  offset: 0x17860
+  symbol: gMapGrandStatic123Tex
+  format: I4
+  width: 80
+  height: 53
+
+gMapGrandStatic124Tex:
+  type: TEXTURE
+  offset: 0x180B0
+  symbol: gMapGrandStatic124Tex
+  format: I4
+  width: 64
+  height: 78
+
+gMapGrandStatic125Tex:
+  type: TEXTURE
+  offset: 0x18A70
+  symbol: gMapGrandStatic125Tex
+  format: I4
+  width: 64
+  height: 68
+
+gMapGrandStatic126Tex:
+  type: TEXTURE
+  offset: 0x192F0
+  symbol: gMapGrandStatic126Tex
+  format: I4
+  width: 48
+  height: 68
+
+gMapGrandStatic127Tex:
+  type: TEXTURE
+  offset: 0x19950
+  symbol: gMapGrandStatic127Tex
+  format: I4
+  width: 48
+  height: 36
+
+gMapGrandStatic128Tex:
+  type: TEXTURE
+  offset: 0x19CB0
+  symbol: gMapGrandStatic128Tex
+  format: I4
+  width: 48
+  height: 25
+
+gMapGrandStatic129Tex:
+  type: TEXTURE
+  offset: 0x19F10
+  symbol: gMapGrandStatic129Tex
+  format: I4
+  width: 64
+  height: 75
+
+gMapGrandStatic12ATex:
+  type: TEXTURE
+  offset: 0x1A870
+  symbol: gMapGrandStatic12ATex
+  format: I4
+  width: 32
+  height: 53
+
+gMapGrandStatic12BTex:
+  type: TEXTURE
+  offset: 0x1ABC0
+  symbol: gMapGrandStatic12BTex
+  format: I4
+  width: 80
+  height: 62
+
+gMapGrandStatic12CTex:
+  type: TEXTURE
+  offset: 0x1B570
+  symbol: gMapGrandStatic12CTex
+  format: I4
+  width: 64
+  height: 76
+
+gMapGrandStatic12DTex:
+  type: TEXTURE
+  offset: 0x1BEF0
+  symbol: gMapGrandStatic12DTex
+  format: I4
+  width: 96
+  height: 85
+
+gMapGrandStatic12ETex:
+  type: TEXTURE
+  offset: 0x1CEE0
+  symbol: gMapGrandStatic12ETex
+  format: I4
+  width: 80
+  height: 71
+
+gMapGrandStatic12FTex:
+  type: TEXTURE
+  offset: 0x1DA00
+  symbol: gMapGrandStatic12FTex
+  format: I4
+  width: 80
+  height: 87
+
+gMapGrandStatic130Tex:
+  type: TEXTURE
+  offset: 0x1E7A0
+  symbol: gMapGrandStatic130Tex
+  format: I4
+  width: 64
+  height: 65
+
+gMapGrandStatic131Tex:
+  type: TEXTURE
+  offset: 0x1EFC0
+  symbol: gMapGrandStatic131Tex
+  format: I4
+  width: 48
+  height: 41
+
+gMapGrandStatic132Tex:
+  type: TEXTURE
+  offset: 0x1F3A0
+  symbol: gMapGrandStatic132Tex
+  format: I4
+  width: 64
+  height: 76
+
+gMapGrandStatic133Tex:
+  type: TEXTURE
+  offset: 0x1FD20
+  symbol: gMapGrandStatic133Tex
+  format: I4
+  width: 80
+  height: 60
+
+gMapGrandStatic134Tex:
+  type: TEXTURE
+  offset: 0x20680
+  symbol: gMapGrandStatic134Tex
+  format: I4
+  width: 80
+  height: 47
+
+gMapGrandStatic135Tex:
+  type: TEXTURE
+  offset: 0x20DE0
+  symbol: gMapGrandStatic135Tex
+  format: I4
+  width: 80
+  height: 60
+
+gMapGrandStatic136Tex:
+  type: TEXTURE
+  offset: 0x21740
+  symbol: gMapGrandStatic136Tex
+  format: I4
+  width: 48
+  height: 19
+
+gMapGrandStatic137Tex:
+  type: TEXTURE
+  offset: 0x21910
+  symbol: gMapGrandStatic137Tex
+  format: I4
+  width: 32
+  height: 99
+
+gMapGrandStatic138Tex:
+  type: TEXTURE
+  offset: 0x21F40
+  symbol: gMapGrandStatic138Tex
+  format: I4
+  width: 48
+  height: 69
+
+gMapGrandStatic139Tex:
+  type: TEXTURE
+  offset: 0x225C0
+  symbol: gMapGrandStatic139Tex
+  format: I4
+  width: 48
+  height: 83
+
+gMapGrandStatic13ATex:
+  type: TEXTURE
+  offset: 0x22D90
+  symbol: gMapGrandStatic13ATex
+  format: I4
+  width: 80
+  height: 54
+
+gMapGrandStatic13BTex:
+  type: TEXTURE
+  offset: 0x23600
+  symbol: gMapGrandStatic13BTex
+  format: I4
+  width: 80
+  height: 92
+
+gMapGrandStatic13CTex:
+  type: TEXTURE
+  offset: 0x24460
+  symbol: gMapGrandStatic13CTex
+  format: I4
+  width: 48
+  height: 75
+
+gMapGrandStatic13DTex:
+  type: TEXTURE
+  offset: 0x24B70
+  symbol: gMapGrandStatic13DTex
+  format: I4
+  width: 64
+  height: 49
+
+gMapGrandStatic13ETex:
+  type: TEXTURE
+  offset: 0x25190
+  symbol: gMapGrandStatic13ETex
+  format: I4
+  width: 64
+  height: 49
+
+gMapGrandStatic13FTex:
+  type: TEXTURE
+  offset: 0x257B0
+  symbol: gMapGrandStatic13FTex
+  format: I4
+  width: 64
+  height: 52
+
+gMapGrandStatic140Tex:
+  type: TEXTURE
+  offset: 0x25E30
+  symbol: gMapGrandStatic140Tex
+  format: I4
+  width: 64
+  height: 49
+
+gMapGrandStatic141Tex:
+  type: TEXTURE
+  offset: 0x26450
+  symbol: gMapGrandStatic141Tex
+  format: I4
+  width: 32
+  height: 33
+
+gMapGrandStatic142Tex:
+  type: TEXTURE
+  offset: 0x26660
+  symbol: gMapGrandStatic142Tex
+  format: I4
+  width: 48
+  height: 50
+
+gMapGrandStatic143Tex:
+  type: TEXTURE
+  offset: 0x26B10
+  symbol: gMapGrandStatic143Tex
+  format: I4
+  width: 64
+  height: 52
+
+gMapGrandStatic144Tex:
+  type: TEXTURE
+  offset: 0x27190
+  symbol: gMapGrandStatic144Tex
+  format: I4
+  width: 48
+  height: 35
+
+gMapGrandStatic145Tex:
+  type: TEXTURE
+  offset: 0x274E0
+  symbol: gMapGrandStatic145Tex
+  format: I4
+  width: 64
+  height: 51
+
+gMapGrandStatic146Tex:
+  type: TEXTURE
+  offset: 0x27B40
+  symbol: gMapGrandStatic146Tex
+  format: I4
+  width: 48
+  height: 35
+
+gMapGrandStatic147Tex:
+  type: TEXTURE
+  offset: 0x27E90
+  symbol: gMapGrandStatic147Tex
+  format: I4
+  width: 48
+  height: 53
+
+gMapGrandStatic148Tex:
+  type: TEXTURE
+  offset: 0x28390
+  symbol: gMapGrandStatic148Tex
+  format: I4
+  width: 64
+  height: 53
+
+gMapGrandStatic149Tex:
+  type: TEXTURE
+  offset: 0x28A30
+  symbol: gMapGrandStatic149Tex
+  format: I4
+  width: 64
+  height: 47
+
+gMapGrandStatic14ATex:
+  type: TEXTURE
+  offset: 0x29010
+  symbol: gMapGrandStatic14ATex
+  format: I4
+  width: 64
+  height: 52
+
+gMapGrandStatic14BTex:
+  type: TEXTURE
+  offset: 0x29690
+  symbol: gMapGrandStatic14BTex
+  format: I4
+  width: 48
+  height: 48
+
+gMapGrandStatic14CTex:
+  type: TEXTURE
+  offset: 0x29B10
+  symbol: gMapGrandStatic14CTex
+  format: I4
+  width: 64
+  height: 87
+
+gMapGrandStatic14DTex:
+  type: TEXTURE
+  offset: 0x2A5F0
+  symbol: gMapGrandStatic14DTex
+  format: I4
+  width: 48
+  height: 30
+
+gMapGrandStatic14ETex:
+  type: TEXTURE
+  offset: 0x2A8C0
+  symbol: gMapGrandStatic14ETex
+  format: I4
+  width: 80
+  height: 74
+
+gMapGrandStatic14FTex:
+  type: TEXTURE
+  offset: 0x2B450
+  symbol: gMapGrandStatic14FTex
+  format: I4
+  width: 80
+  height: 87
+
+gMapGrandStatic150Tex:
+  type: TEXTURE
+  offset: 0x2C1F0
+  symbol: gMapGrandStatic150Tex
+  format: I4
+  width: 80
+  height: 56
+
+gMapGrandStatic151Tex:
+  type: TEXTURE
+  offset: 0x2CAB0
+  symbol: gMapGrandStatic151Tex
+  format: I4
+  width: 80
+  height: 65
+
+gMapGrandStatic152Tex:
+  type: TEXTURE
+  offset: 0x2D4E0
+  symbol: gMapGrandStatic152Tex
+  format: I4
+  width: 16
+  height: 38
+
+gMapGrandStatic153Tex:
+  type: TEXTURE
+  offset: 0x2D610
+  symbol: gMapGrandStatic153Tex
+  format: I4
+  width: 80
+  height: 78
+
+gMapGrandStatic154Tex:
+  type: TEXTURE
+  offset: 0x2E240
+  symbol: gMapGrandStatic154Tex
+  format: I4
+  width: 80
+  height: 55
+
+gMapGrandStatic155Tex:
+  type: TEXTURE
+  offset: 0x2EAE0
+  symbol: gMapGrandStatic155Tex
+  format: I4
+  width: 80
+  height: 98
+
+gMapGrandStatic156Tex:
+  type: TEXTURE
+  offset: 0x2FA30
+  symbol: gMapGrandStatic156Tex
+  format: I4
+  width: 80
+  height: 62
+
+gMapGrandStatic157Tex:
+  type: TEXTURE
+  offset: 0x303E0
+  symbol: gMapGrandStatic157Tex
+  format: I4
+  width: 32
+  height: 123
+
+gMapGrandStatic158Tex:
+  type: TEXTURE
+  offset: 0x30B90
+  symbol: gMapGrandStatic158Tex
+  format: I4
+  width: 80
+  height: 60
+
+gMapGrandStatic159Tex:
+  type: TEXTURE
+  offset: 0x314F0
+  symbol: gMapGrandStatic159Tex
+  format: I4
+  width: 48
+  height: 77
+
+gMapGrandStatic15ATex:
+  type: TEXTURE
+  offset: 0x31C30
+  symbol: gMapGrandStatic15ATex
+  format: I4
+  width: 80
+  height: 64
+
+gMapGrandStatic15BTex:
+  type: TEXTURE
+  offset: 0x32630
+  symbol: gMapGrandStatic15BTex
+  format: I4
+  width: 64
+  height: 50
+
+gMapGrandStatic15CTex:
+  type: TEXTURE
+  offset: 0x32C70
+  symbol: gMapGrandStatic15CTex
+  format: I4
+  width: 80
+  height: 65
+
+gMapGrandStatic15DTex:
+  type: TEXTURE
+  offset: 0x336A0
+  symbol: gMapGrandStatic15DTex
+  format: I4
+  width: 32
+  height: 61
+
+gMapGrandStatic15ETex:
+  type: TEXTURE
+  offset: 0x33A70
+  symbol: gMapGrandStatic15ETex
+  format: I4
+  width: 80
+  height: 83
+
+gMapGrandStatic15FTex:
+  type: TEXTURE
+  offset: 0x34770
+  symbol: gMapGrandStatic15FTex
+  format: I4
+  width: 80
+  height: 27
+
+gMapGrandStatic160Tex:
+  type: TEXTURE
+  offset: 0x34BB0
+  symbol: gMapGrandStatic160Tex
+  format: I4
+  width: 80
+  height: 23
+
+gMapGrandStatic161Tex:
+  type: TEXTURE
+  offset: 0x34F50
+  symbol: gMapGrandStatic161Tex
+  format: I4
+  width: 80
+  height: 60
+

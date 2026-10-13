@@ -1,0 +1,203 @@
+:config:
+  segments:
+    - [ 3, 0x01872E50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01872E50 ]
+    - [ 9, 0x01872E50 ]
+    - [ 10, 0x01872E50 ]
+    - [ 11, 0x01872E50 ]
+    - [ 12, 0x01872E50 ]
+    - [ 13, 0x01872E50 ]
+    - [ 2, 0x0182DC00 ]
+  directory: scenes/nonmq/Z2_HAKUGIN
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_HAKUGIN.yml
+
+Z2_HAKUGIN_room_07:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_HAKUGIN_room_07
+
+Z2_HAKUGIN_room_07DL_0029F0:
+  type: GFX
+  offset: 0x29F0
+  symbol: Z2_HAKUGIN_room_07DL_0029F0
+
+Z2_HAKUGIN_room_07DL_006AA0:
+  type: GFX
+  offset: 0x6AA0
+  symbol: Z2_HAKUGIN_room_07DL_006AA0
+
+
+Z2_HAKUGIN_room_07ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_HAKUGIN_room_07ActorEntry_00006C
+  size: 0
+
+Z2_HAKUGIN_room_07Vtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: Z2_HAKUGIN_room_07Vtx_0002A0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_07DL_0005A0:
+  type: GFX
+  offset: 0x0005A0
+  symbol: Z2_HAKUGIN_room_07DL_0005A0
+
+Z2_HAKUGIN_room_07Vtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: Z2_HAKUGIN_room_07Vtx_000830
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_07DL_000BA0:
+  type: GFX
+  offset: 0x000BA0
+  symbol: Z2_HAKUGIN_room_07DL_000BA0
+
+Z2_HAKUGIN_room_07Vtx_000E78:
+  type: MM:ARRAY
+  offset: 0x000E78
+  symbol: Z2_HAKUGIN_room_07Vtx_000E78
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_07DL_001748:
+  type: GFX
+  offset: 0x001748
+  symbol: Z2_HAKUGIN_room_07DL_001748
+
+Z2_HAKUGIN_room_07Vtx_001BA0:
+  type: MM:ARRAY
+  offset: 0x001BA0
+  symbol: Z2_HAKUGIN_room_07Vtx_001BA0
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_07DL_002570:
+  type: GFX
+  offset: 0x002570
+  symbol: Z2_HAKUGIN_room_07DL_002570
+
+Z2_HAKUGIN_room_07Vtx_002858:
+  type: MM:ARRAY
+  offset: 0x002858
+  symbol: Z2_HAKUGIN_room_07Vtx_002858
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_07DL_002918:
+  type: GFX
+  offset: 0x002918
+  symbol: Z2_HAKUGIN_room_07DL_002918
+
+Z2_HAKUGIN_room_07Tex_002A20:
+  type: TEXTURE
+  offset: 0x002A20
+  symbol: Z2_HAKUGIN_room_07Tex_002A20
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_003220:
+  type: TEXTURE
+  offset: 0x003220
+  symbol: Z2_HAKUGIN_room_07Tex_003220
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_003A20:
+  type: TEXTURE
+  offset: 0x003A20
+  symbol: Z2_HAKUGIN_room_07Tex_003A20
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_004220:
+  type: TEXTURE
+  offset: 0x004220
+  symbol: Z2_HAKUGIN_room_07Tex_004220
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_004A20:
+  type: TEXTURE
+  offset: 0x004A20
+  symbol: Z2_HAKUGIN_room_07Tex_004A20
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_005220:
+  type: TEXTURE
+  offset: 0x005220
+  symbol: Z2_HAKUGIN_room_07Tex_005220
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_005A20:
+  type: TEXTURE
+  offset: 0x005A20
+  symbol: Z2_HAKUGIN_room_07Tex_005A20
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07Tex_006220:
+  type: TEXTURE
+  offset: 0x006220
+  symbol: Z2_HAKUGIN_room_07Tex_006220
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_07TLUT_006A20:
+  type: TEXTURE
+  offset: 0x006A20
+  symbol: Z2_HAKUGIN_room_07TLUT_006A20
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_07TLUT_006A40:
+  type: TEXTURE
+  offset: 0x006A40
+  symbol: Z2_HAKUGIN_room_07TLUT_006A40
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_07TLUT_006A60:
+  type: TEXTURE
+  offset: 0x006A60
+  symbol: Z2_HAKUGIN_room_07TLUT_006A60
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_07TLUT_006A80:
+  type: TEXTURE
+  offset: 0x006A80
+  symbol: Z2_HAKUGIN_room_07TLUT_006A80
+  format: RGBA16
+  width: 4
+  height: 4

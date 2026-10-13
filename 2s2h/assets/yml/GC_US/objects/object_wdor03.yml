@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015EF370 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015EF370 ]
+    - [ 9, 0x015EF370 ]
+    - [ 10, 0x015EF370 ]
+    - [ 11, 0x015EF370 ]
+    - [ 12, 0x015EF370 ]
+    - [ 13, 0x015EF370 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gInnSchoolDoorDL:
+  type: GFX
+  offset: 0x548
+  symbol: gInnSchoolDoorDL
+
+gInnSchoolDoorEmptyDL:
+  type: GFX
+  offset: 0x540
+  symbol: gInnSchoolDoorEmptyDL
+
+gInnScoolDoorTex:
+  type: TEXTURE
+  offset: 0x6B0
+  symbol: gInnScoolDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_wdor03Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_wdor03Vtx_000000
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

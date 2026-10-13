@@ -1,0 +1,201 @@
+:config:
+  segments:
+    - [ 2, 0x01E76B00 ]
+
+KAKUSIANA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: KAKUSIANA
+
+
+KAKUSIANAPathwayList_0003A4:
+  type: MM:PATH
+  offset: 0x0003A4
+  symbol: KAKUSIANAPathwayList_0003A4
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1828, 62, 773 ]
+        - [ 1828, 57, 828 ]
+        - [ 1828, 42, 929 ]
+        - [ 1828, 29, 1021 ]
+        - [ 1828, 45, 1108 ]
+        - [ 1828, 83, 1167 ]
+        - [ 1828, 216, 1192 ]
+        - [ 1828, 328, 1211 ]
+        - [ 1828, 502, 1231 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4188, 0, 1218 ]
+        - [ 4188, 260, 1218 ]
+        - [ 4248, 260, 1118 ]
+        - [ 4188, 260, 1038 ]
+        - [ 4128, 260, 1118 ]
+        - [ 4188, 260, 1218 ]
+        - [ 4188, 0, 1218 ]
+
+KAKUSIANAPathwayList_0003DC:
+  type: MM:PATH
+  offset: 0x0003DC
+  symbol: KAKUSIANAPathwayList_0003DC
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1828, 62, 773 ]
+        - [ 1828, 57, 828 ]
+        - [ 1828, 42, 929 ]
+        - [ 1828, 29, 1021 ]
+        - [ 1828, 45, 1108 ]
+        - [ 1828, 83, 1167 ]
+        - [ 1828, 216, 1192 ]
+        - [ 1828, 328, 1211 ]
+        - [ 1828, 502, 1231 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 4188, 0, 1218 ]
+        - [ 4188, 260, 1218 ]
+        - [ 4248, 260, 1118 ]
+        - [ 4188, 260, 1038 ]
+        - [ 4128, 260, 1118 ]
+        - [ 4188, 260, 1218 ]
+        - [ 4188, 0, 1218 ]
+
+KAKUSIANATexAnim_000970TexScrollParams_000940:
+  type: BLOB
+  offset: 0x000940
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000940
+  size: 0
+
+KAKUSIANATexAnim_000970TexScrollParams_000948:
+  type: BLOB
+  offset: 0x000948
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000948
+  size: 0
+
+KAKUSIANATexAnim_000970TexScrollParams_000950:
+  type: BLOB
+  offset: 0x000950
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000950
+  size: 0
+
+KAKUSIANATexAnim_000970TexScrollParams_000958:
+  type: BLOB
+  offset: 0x000958
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000958
+  size: 0
+
+KAKUSIANATexAnim_000970TexScrollParams_000960:
+  type: BLOB
+  offset: 0x000960
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000960
+  size: 0
+
+KAKUSIANATexAnim_000970TexScrollParams_000968:
+  type: BLOB
+  offset: 0x000968
+  symbol: KAKUSIANATexAnim_000970TexScrollParams_000968
+  size: 0
+
+KAKUSIANATexAnim_000970:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000970
+  symbol: KAKUSIANATexAnim_000970
+
+KAKUSIANACollisionHeader_00AC9C:
+  type: MM:COLLISION
+  offset: 0x00AC9C
+  symbol: KAKUSIANACollisionHeader_00AC9C
+
+KAKUSIANATex_00ACD0:
+  type: TEXTURE
+  offset: 0x00ACD0
+  symbol: KAKUSIANATex_00ACD0
+  format: I4
+  width: 64
+  height: 64
+
+KAKUSIANATex_00B4D0:
+  type: TEXTURE
+  offset: 0x00B4D0
+  symbol: KAKUSIANATex_00B4D0
+  format: IA16
+  width: 32
+  height: 16
+
+KAKUSIANATex_00B8D0:
+  type: TEXTURE
+  offset: 0x00B8D0
+  symbol: KAKUSIANATex_00B8D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00C0D0:
+  type: TEXTURE
+  offset: 0x00C0D0
+  symbol: KAKUSIANATex_00C0D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00C8D0:
+  type: TEXTURE
+  offset: 0x00C8D0
+  symbol: KAKUSIANATex_00C8D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00D0D0:
+  type: TEXTURE
+  offset: 0x00D0D0
+  symbol: KAKUSIANATex_00D0D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00D8D0:
+  type: TEXTURE
+  offset: 0x00D8D0
+  symbol: KAKUSIANATex_00D8D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00E0D0:
+  type: TEXTURE
+  offset: 0x00E0D0
+  symbol: KAKUSIANATex_00E0D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00E8D0:
+  type: TEXTURE
+  offset: 0x00E8D0
+  symbol: KAKUSIANATex_00E8D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANATex_00F0D0:
+  type: TEXTURE
+  offset: 0x00F0D0
+  symbol: KAKUSIANATex_00F0D0
+  format: IA8
+  width: 32
+  height: 32
+
+KAKUSIANATex_00F4D0:
+  type: TEXTURE
+  offset: 0x00F4D0
+  symbol: KAKUSIANATex_00F4D0
+  format: RGBA16
+  width: 32
+  height: 32

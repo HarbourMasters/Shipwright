@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 128, 0x00A684D0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x800A5AC0, 0x00A684D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+sDebugDisplay1DL:
+  type: GFX
+  offset: 0x114CD0
+  symbol: sDebugDisplay1DL
+
+sDebugDisplay1Vtx:
+  type: MM:ARRAY
+  offset: 0x114A90
+  symbol: sDebugDisplay1Vtx
+  count: 36
+  array_type: VTX
+
+sDebugDisplay2DL:
+  type: GFX
+  offset: 0x114DB0
+  symbol: sDebugDisplay2DL
+
+sDebugDisplay2Vtx:
+  type: MM:ARRAY
+  offset: 0x114D30
+  symbol: sDebugDisplay2Vtx
+  count: 8
+  array_type: VTX
+
+sDebugDisplay3DL:
+  type: GFX
+  offset: 0x115080
+  symbol: sDebugDisplay3DL
+
+sDebugDisplay3Vtx:
+  type: MM:ARRAY
+  offset: 0x114E00
+  symbol: sDebugDisplay3Vtx
+  count: 40
+  array_type: VTX
+
+sDebugDisplayBallTex:
+  type: TEXTURE
+  offset: 0x1151F8
+  symbol: sDebugDisplayBallTex
+  format: I8
+  width: 16
+  height: 16
+
+sDebugDisplayCircleTex:
+  type: TEXTURE
+  offset: 0x1150F8
+  symbol: sDebugDisplayCircleTex
+  format: I8
+  width: 16
+  height: 16
+
+sDebugDisplayCrossTex:
+  type: TEXTURE
+  offset: 0x1153F8
+  symbol: sDebugDisplayCrossTex
+  format: I8
+  width: 16
+  height: 16
+
+sDebugDisplayCursorTex:
+  type: TEXTURE
+  offset: 0x1152F8
+  symbol: sDebugDisplayCursorTex
+  format: I8
+  width: 16
+  height: 16
+
+sDebugDisplaySpriteDL:
+  type: GFX
+  offset: 0x115538
+  symbol: sDebugDisplaySpriteDL
+
+sDebugDisplaySpriteVtx:
+  type: MM:ARRAY
+  offset: 0x1154F8
+  symbol: sDebugDisplaySpriteVtx
+  count: 4
+  array_type: VTX
+

@@ -1,0 +1,249 @@
+:config:
+  segments:
+    - [ 6, 0x011B2C00 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011B2C00 ]
+    - [ 9, 0x011B2C00 ]
+    - [ 10, 0x011B2C00 ]
+    - [ 11, 0x011B2C00 ]
+    - [ 12, 0x011B2C00 ]
+    - [ 13, 0x011B2C00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_water_effect_DL_000180:
+  type: GFX
+  offset: 0x180
+  symbol: object_water_effect_DL_000180
+
+object_water_effect_DL_000420:
+  type: GFX
+  offset: 0x420
+  symbol: object_water_effect_DL_000420
+
+object_water_effect_DL_000730:
+  type: GFX
+  offset: 0x730
+  symbol: object_water_effect_DL_000730
+
+object_water_effect_DL_000A48:
+  type: GFX
+  offset: 0xA48
+  symbol: object_water_effect_DL_000A48
+
+object_water_effect_DL_000CD8:
+  type: GFX
+  offset: 0xCD8
+  symbol: object_water_effect_DL_000CD8
+
+object_water_effect_DL_004260:
+  type: GFX
+  offset: 0x4260
+  symbol: object_water_effect_DL_004260
+
+object_water_effect_DL_0042B0:
+  type: GFX
+  offset: 0x42B0
+  symbol: object_water_effect_DL_0042B0
+
+object_water_effect_DL_0042F8:
+  type: GFX
+  offset: 0x42F8
+  symbol: object_water_effect_DL_0042F8
+
+object_water_effect_DL_004340:
+  type: GFX
+  offset: 0x4340
+  symbol: object_water_effect_DL_004340
+
+object_water_effect_DL_0043E8:
+  type: GFX
+  offset: 0x43E8
+  symbol: object_water_effect_DL_0043E8
+
+object_water_effect_Matanimheader_000DD0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xDD0
+  symbol: object_water_effect_Matanimheader_000DD0
+
+object_water_effect_Matanimheader_000DE0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xDE0
+  symbol: object_water_effect_Matanimheader_000DE0
+
+object_water_effect_Matanimheader_000E0C:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE0C
+  symbol: object_water_effect_Matanimheader_000E0C
+
+object_water_effect_Matanimheader_000E40:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE40
+  symbol: object_water_effect_Matanimheader_000E40
+
+object_water_effect_Matanimheader_000E58:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE58
+  symbol: object_water_effect_Matanimheader_000E58
+
+object_water_effect_Tex_000E60:
+  type: TEXTURE
+  offset: 0xE60
+  symbol: object_water_effect_Tex_000E60
+  format: I4
+  width: 32
+  height: 64
+
+object_water_effect_Tex_001260:
+  type: TEXTURE
+  offset: 0x1260
+  symbol: object_water_effect_Tex_001260
+  format: I4
+  width: 64
+  height: 64
+
+object_water_effect_Tex_001A60:
+  type: TEXTURE
+  offset: 0x1A60
+  symbol: object_water_effect_Tex_001A60
+  format: I8
+  width: 32
+  height: 64
+
+object_water_effect_Tex_002260:
+  type: TEXTURE
+  offset: 0x2260
+  symbol: object_water_effect_Tex_002260
+  format: I4
+  width: 64
+  height: 64
+
+object_water_effect_Tex_002A60:
+  type: TEXTURE
+  offset: 0x2A60
+  symbol: object_water_effect_Tex_002A60
+  format: I4
+  width: 64
+  height: 64
+
+object_water_effect_Tex_003260:
+  type: TEXTURE
+  offset: 0x3260
+  symbol: object_water_effect_Tex_003260
+  format: I4
+  width: 64
+  height: 64
+
+object_water_effect_Tex_003A60:
+  type: TEXTURE
+  offset: 0x3A60
+  symbol: object_water_effect_Tex_003A60
+  format: I4
+  width: 64
+  height: 64
+
+
+object_water_effectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_water_effectVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effectVtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: object_water_effectVtx_0002A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effectVtx_000530:
+  type: MM:ARRAY
+  offset: 0x000530
+  symbol: object_water_effectVtx_000530
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effectVtx_000848:
+  type: MM:ARRAY
+  offset: 0x000848
+  symbol: object_water_effectVtx_000848
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effectVtx_000B58:
+  type: MM:ARRAY
+  offset: 0x000B58
+  symbol: object_water_effectVtx_000B58
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effect_Matanimheader_000DD0TexScrollParams_000DC8:
+  type: BLOB
+  offset: 0x000DC8
+  symbol: object_water_effect_Matanimheader_000DD0TexScrollParams_000DC8
+  size: 0
+
+object_water_effect_Matanimheader_000DE0TexScrollParams_000DD8:
+  type: BLOB
+  offset: 0x000DD8
+  symbol: object_water_effect_Matanimheader_000DE0TexScrollParams_000DD8
+  size: 0
+
+object_water_effect_Matanimheader_000E0CColorParams_000DF4:
+  type: BLOB
+  offset: 0x000DF4
+  symbol: object_water_effect_Matanimheader_000E0CColorParams_000DF4
+  size: 0
+
+object_water_effect_Matanimheader_000E0CTexScrollParams_000E04:
+  type: BLOB
+  offset: 0x000E04
+  symbol: object_water_effect_Matanimheader_000E0CTexScrollParams_000E04
+  size: 0
+
+object_water_effect_Matanimheader_000E40ColorParams_000E28:
+  type: BLOB
+  offset: 0x000E28
+  symbol: object_water_effect_Matanimheader_000E40ColorParams_000E28
+  size: 0
+
+object_water_effect_Matanimheader_000E40TexScrollParams_000E38:
+  type: BLOB
+  offset: 0x000E38
+  symbol: object_water_effect_Matanimheader_000E40TexScrollParams_000E38
+  size: 0
+
+object_water_effect_Matanimheader_000E58TexScrollParams_000E50:
+  type: BLOB
+  offset: 0x000E50
+  symbol: object_water_effect_Matanimheader_000E58TexScrollParams_000E50
+  size: 0
+
+object_water_effectVtx_0042C8:
+  type: MM:ARRAY
+  offset: 0x0042C8
+  symbol: object_water_effectVtx_0042C8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_water_effectVtx_004310:
+  type: MM:ARRAY
+  offset: 0x004310
+  symbol: object_water_effectVtx_004310
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

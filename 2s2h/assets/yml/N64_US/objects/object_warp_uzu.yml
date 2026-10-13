@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 6, 0x011CC7D0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011CC7D0 ]
+    - [ 9, 0x011CC7D0 ]
+    - [ 10, 0x011CC7D0 ]
+    - [ 11, 0x011CC7D0 ]
+    - [ 12, 0x011CC7D0 ]
+    - [ 13, 0x011CC7D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_warp_uzu_DL_000EC0:
+  type: GFX
+  offset: 0xEC0
+  symbol: object_warp_uzu_DL_000EC0
+
+object_warp_uzu_TLUT_0019D0:
+  type: TEXTURE
+  offset: 0x19D0
+  symbol: object_warp_uzu_TLUT_0019D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_warp_uzu_Tex_001BD0:
+  type: TEXTURE
+  offset: 0x1BD0
+  symbol: object_warp_uzu_Tex_001BD0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_warp_uzu_Tex_001FD0:
+  type: TEXTURE
+  offset: 0x1FD0
+  symbol: object_warp_uzu_Tex_001FD0
+  format: CI8
+  width: 8
+  height: 8
+
+object_warp_uzu_Tex_002010:
+  type: TEXTURE
+  offset: 0x2010
+  symbol: object_warp_uzu_Tex_002010
+  format: CI8
+  width: 32
+  height: 32
+
+object_warp_uzu_Tex_002410:
+  type: TEXTURE
+  offset: 0x2410
+  symbol: object_warp_uzu_Tex_002410
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_warp_uzuVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_warp_uzuVtx_000000
+  count: 236
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

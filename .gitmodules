@@ -4,5 +4,5 @@
 	branch = port-maintenance
 [submodule "torch"]
 	path = torch
-	url = https://github.com/HarbourMasters/Torch.git
-	branch = main
+	url = https://github.com/Jameriquiah/Torch.git
+	branch = mm

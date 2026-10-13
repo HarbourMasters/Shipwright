@@ -1,0 +1,361 @@
+:config:
+  segments:
+    - [ 3, 0x01C18480 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01C18480 ]
+    - [ 9, 0x01C18480 ]
+    - [ 10, 0x01C18480 ]
+    - [ 11, 0x01C18480 ]
+    - [ 12, 0x01C18480 ]
+    - [ 13, 0x01C18480 ]
+    - [ 2, 0x01BFEEF0 ]
+  directory: scenes/nonmq/Z2_BANDROOM
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_BANDROOM.yml
+
+Z2_BANDROOM_room_02:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_BANDROOM_room_02
+
+Z2_BANDROOM_room_02DL_007200:
+  type: GFX
+  offset: 0x7200
+  symbol: Z2_BANDROOM_room_02DL_007200
+
+Z2_BANDROOM_room_02DL_00D100:
+  type: GFX
+  offset: 0xD100
+  symbol: Z2_BANDROOM_room_02DL_00D100
+
+
+Z2_BANDROOM_room_02ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_BANDROOM_room_02ActorEntry_000048
+  size: 0
+
+Z2_BANDROOM_room_02Vtx_000170:
+  type: MM:ARRAY
+  offset: 0x000170
+  symbol: Z2_BANDROOM_room_02Vtx_000170
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_000650:
+  type: GFX
+  offset: 0x000650
+  symbol: Z2_BANDROOM_room_02DL_000650
+
+Z2_BANDROOM_room_02Vtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: Z2_BANDROOM_room_02Vtx_0009E0
+  count: 237
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_0018B0:
+  type: GFX
+  offset: 0x0018B0
+  symbol: Z2_BANDROOM_room_02DL_0018B0
+
+Z2_BANDROOM_room_02Vtx_001BC8:
+  type: MM:ARRAY
+  offset: 0x001BC8
+  symbol: Z2_BANDROOM_room_02Vtx_001BC8
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_0021B8:
+  type: GFX
+  offset: 0x0021B8
+  symbol: Z2_BANDROOM_room_02DL_0021B8
+
+Z2_BANDROOM_room_02Vtx_002378:
+  type: MM:ARRAY
+  offset: 0x002378
+  symbol: Z2_BANDROOM_room_02Vtx_002378
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_002818:
+  type: GFX
+  offset: 0x002818
+  symbol: Z2_BANDROOM_room_02DL_002818
+
+Z2_BANDROOM_room_02Vtx_002B30:
+  type: MM:ARRAY
+  offset: 0x002B30
+  symbol: Z2_BANDROOM_room_02Vtx_002B30
+  count: 210
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_003850:
+  type: GFX
+  offset: 0x003850
+  symbol: Z2_BANDROOM_room_02DL_003850
+
+Z2_BANDROOM_room_02Vtx_003EF8:
+  type: MM:ARRAY
+  offset: 0x003EF8
+  symbol: Z2_BANDROOM_room_02Vtx_003EF8
+  count: 189
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_004AC8:
+  type: GFX
+  offset: 0x004AC8
+  symbol: Z2_BANDROOM_room_02DL_004AC8
+
+Z2_BANDROOM_room_02Vtx_005130:
+  type: MM:ARRAY
+  offset: 0x005130
+  symbol: Z2_BANDROOM_room_02Vtx_005130
+  count: 322
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_006550:
+  type: GFX
+  offset: 0x006550
+  symbol: Z2_BANDROOM_room_02DL_006550
+
+Z2_BANDROOM_room_02Vtx_006ED0:
+  type: MM:ARRAY
+  offset: 0x006ED0
+  symbol: Z2_BANDROOM_room_02Vtx_006ED0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_007090:
+  type: GFX
+  offset: 0x007090
+  symbol: Z2_BANDROOM_room_02DL_007090
+
+Z2_BANDROOM_room_02Tex_007248:
+  type: TEXTURE
+  offset: 0x007248
+  symbol: Z2_BANDROOM_room_02Tex_007248
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_007348:
+  type: TEXTURE
+  offset: 0x007348
+  symbol: Z2_BANDROOM_room_02Tex_007348
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_BANDROOM_room_02Tex_008348:
+  type: TEXTURE
+  offset: 0x008348
+  symbol: Z2_BANDROOM_room_02Tex_008348
+  format: I8
+  width: 64
+  height: 64
+
+Z2_BANDROOM_room_02Tex_009348:
+  type: TEXTURE
+  offset: 0x009348
+  symbol: Z2_BANDROOM_room_02Tex_009348
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_BANDROOM_room_02Tex_009388:
+  type: TEXTURE
+  offset: 0x009388
+  symbol: Z2_BANDROOM_room_02Tex_009388
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_009788:
+  type: TEXTURE
+  offset: 0x009788
+  symbol: Z2_BANDROOM_room_02Tex_009788
+  format: CI8
+  width: 32
+  height: 8
+
+Z2_BANDROOM_room_02Tex_009888:
+  type: TEXTURE
+  offset: 0x009888
+  symbol: Z2_BANDROOM_room_02Tex_009888
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_009988:
+  type: TEXTURE
+  offset: 0x009988
+  symbol: Z2_BANDROOM_room_02Tex_009988
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_009A88:
+  type: TEXTURE
+  offset: 0x009A88
+  symbol: Z2_BANDROOM_room_02Tex_009A88
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_00A288:
+  type: TEXTURE
+  offset: 0x00A288
+  symbol: Z2_BANDROOM_room_02Tex_00A288
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_00A688:
+  type: TEXTURE
+  offset: 0x00A688
+  symbol: Z2_BANDROOM_room_02Tex_00A688
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_00AE88:
+  type: TEXTURE
+  offset: 0x00AE88
+  symbol: Z2_BANDROOM_room_02Tex_00AE88
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_00AF88:
+  type: TEXTURE
+  offset: 0x00AF88
+  symbol: Z2_BANDROOM_room_02Tex_00AF88
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_BANDROOM_room_02Tex_00BF88:
+  type: TEXTURE
+  offset: 0x00BF88
+  symbol: Z2_BANDROOM_room_02Tex_00BF88
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_00C088:
+  type: TEXTURE
+  offset: 0x00C088
+  symbol: Z2_BANDROOM_room_02Tex_00C088
+  format: I8
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_00C488:
+  type: TEXTURE
+  offset: 0x00C488
+  symbol: Z2_BANDROOM_room_02Tex_00C488
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_00C588:
+  type: TEXTURE
+  offset: 0x00C588
+  symbol: Z2_BANDROOM_room_02Tex_00C588
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02DL_00C990:
+  type: GFX
+  offset: 0x00C990
+  symbol: Z2_BANDROOM_room_02DL_00C990
+
+Z2_BANDROOM_room_02Vtx_00C998:
+  type: MM:ARRAY
+  offset: 0x00C998
+  symbol: Z2_BANDROOM_room_02Vtx_00C998
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_00CA58:
+  type: GFX
+  offset: 0x00CA58
+  symbol: Z2_BANDROOM_room_02DL_00CA58
+
+Z2_BANDROOM_room_02Vtx_00CB30:
+  type: MM:ARRAY
+  offset: 0x00CB30
+  symbol: Z2_BANDROOM_room_02Vtx_00CB30
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_00CDD0:
+  type: GFX
+  offset: 0x00CDD0
+  symbol: Z2_BANDROOM_room_02DL_00CDD0
+
+Z2_BANDROOM_room_02DL_00CF50:
+  type: GFX
+  offset: 0x00CF50
+  symbol: Z2_BANDROOM_room_02DL_00CF50
+
+Z2_BANDROOM_room_02Vtx_00CF58:
+  type: MM:ARRAY
+  offset: 0x00CF58
+  symbol: Z2_BANDROOM_room_02Vtx_00CF58
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_02DL_00D058:
+  type: GFX
+  offset: 0x00D058
+  symbol: Z2_BANDROOM_room_02DL_00D058
+
+Z2_BANDROOM_room_02Tex_00D130:
+  type: TEXTURE
+  offset: 0x00D130
+  symbol: Z2_BANDROOM_room_02Tex_00D130
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_02Tex_00E130:
+  type: TEXTURE
+  offset: 0x00E130
+  symbol: Z2_BANDROOM_room_02Tex_00E130
+  format: IA4
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_02Tex_00E1B0:
+  type: TEXTURE
+  offset: 0x00E1B0
+  symbol: Z2_BANDROOM_room_02Tex_00E1B0
+  format: CI8
+  width: 32
+  height: 32

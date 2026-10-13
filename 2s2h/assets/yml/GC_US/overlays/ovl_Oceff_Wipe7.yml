@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 128, 0x00DB0270 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80BAF2E0, 0x00DB0270 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sSongOfHealingEffectFrustumDL:
+  type: GFX
+  offset: 0xCA0
+  symbol: sSongOfHealingEffectFrustumDL
+
+sSongofHealingEffectFrustrumVtx:
+  type: MM:ARRAY
+  offset: 0xB40
+  symbol: sSongofHealingEffectFrustrumVtx
+  count: 22
+  array_type: VTX
+
+sSongofHealingEffectTex:
+  type: TEXTURE
+  offset: 0x330
+  symbol: sSongofHealingEffectTex
+  format: I8
+  width: 32
+  height: 64
+
+sSongofHealingEffectTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xB38
+  symbol: sSongofHealingEffectTexAnim
+
+
+sSongofHealingEffectTexAnimTexScrollParams_000B30:
+  type: BLOB
+  offset: 0x000B30
+  symbol: sSongofHealingEffectTexAnimTexScrollParams_000B30
+  size: 0

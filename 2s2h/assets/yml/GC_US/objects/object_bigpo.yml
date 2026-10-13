@@ -1,0 +1,316 @@
+:config:
+  segments:
+    - [ 6, 0x01406AA0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01406AA0 ]
+    - [ 9, 0x01406AA0 ]
+    - [ 10, 0x01406AA0 ]
+    - [ 11, 0x01406AA0 ]
+    - [ 12, 0x01406AA0 ]
+    - [ 13, 0x01406AA0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBigPoeArmAndGrowthDL:
+  type: GFX
+  offset: 0x4680
+  symbol: gBigPoeArmAndGrowthDL
+
+gBigPoeArmSectionTex:
+  type: TEXTURE
+  offset: 0x2870
+  symbol: gBigPoeArmSectionTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeAwakenSpawnAnim:
+  type: OOT:ANIMATION
+  offset: 0xF9C
+  symbol: gBigPoeAwakenSpawnAnim
+
+gBigPoeAwakenStretchAnim:
+  type: OOT:ANIMATION
+  offset: 0x1360
+  symbol: gBigPoeAwakenStretchAnim
+
+gBigPoeBackpedalAnim:
+  type: OOT:ANIMATION
+  offset: 0x608
+  symbol: gBigPoeBackpedalAnim
+
+gBigPoeBigArmDL:
+  type: GFX
+  offset: 0x45D8
+  symbol: gBigPoeBigArmDL
+
+gBigPoeCrispyBodyDL:
+  type: GFX
+  offset: 0x58B8
+  symbol: gBigPoeCrispyBodyDL
+
+gBigPoeCrispyEyesTex:
+  type: TEXTURE
+  offset: 0x4E98
+  symbol: gBigPoeCrispyEyesTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBigPoeCrispyPiecesTex:
+  type: TEXTURE
+  offset: 0x4C98
+  symbol: gBigPoeCrispyPiecesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeFaceDL:
+  type: GFX
+  offset: 0x4AE8
+  symbol: gBigPoeFaceDL
+
+gBigPoeFaceLimb:
+  type: OOT:LIMB
+  offset: 0x5B88
+  symbol: gBigPoeFaceLimb
+  limb_type: Standard
+
+gBigPoeFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x924
+  symbol: gBigPoeFloatAnim
+
+gBigPoeGlowingEyeTex:
+  type: TEXTURE
+  offset: 0x2DF0
+  symbol: gBigPoeGlowingEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeHandDL:
+  type: GFX
+  offset: 0x4488
+  symbol: gBigPoeHandDL
+
+gBigPoeHatAndCloakLimb:
+  type: OOT:LIMB
+  offset: 0x5BDC
+  symbol: gBigPoeHatAndCloakLimb
+  limb_type: Standard
+
+gBigPoeHoodEdgeTex:
+  type: TEXTURE
+  offset: 0x2A70
+  symbol: gBigPoeHoodEdgeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBigPoeLanternFallingDL:
+  type: GFX
+  offset: 0x41A0
+  symbol: gBigPoeLanternFallingDL
+
+gBigPoeLanternGlassTex:
+  type: TEXTURE
+  offset: 0x1E70
+  symbol: gBigPoeLanternGlassTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeLanternLimb:
+  type: OOT:LIMB
+  offset: 0x5BD0
+  symbol: gBigPoeLanternLimb
+  limb_type: Standard
+
+gBigPoeLanternMainDL:
+  type: GFX
+  offset: 0x42C8
+  symbol: gBigPoeLanternMainDL
+
+gBigPoeLanternPurpleTopDL:
+  type: GFX
+  offset: 0x43F8
+  symbol: gBigPoeLanternPurpleTopDL
+
+gBigPoeLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5BA0
+  symbol: gBigPoeLeftForearmLimb
+  limb_type: Standard
+
+gBigPoeLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5B94
+  symbol: gBigPoeLeftUpperArmLimb
+  limb_type: Standard
+
+gBigPoeLowerRobeDL:
+  type: GFX
+  offset: 0x4BD8
+  symbol: gBigPoeLowerRobeDL
+
+gBigPoeLowerRobeLimb:
+  type: OOT:LIMB
+  offset: 0x5BE8
+  symbol: gBigPoeLowerRobeLimb
+  limb_type: Standard
+
+gBigPoeMediumArmDL:
+  type: GFX
+  offset: 0x4768
+  symbol: gBigPoeMediumArmDL
+
+gBigPoeNecklaceBeadsTex:
+  type: TEXTURE
+  offset: 0x2AF0
+  symbol: gBigPoeNecklaceBeadsTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gBigPoeNecklaceHoodShawlDL:
+  type: GFX
+  offset: 0x4808
+  symbol: gBigPoeNecklaceHoodShawlDL
+
+gBigPoeNecklaceSkullHalfTex:
+  type: TEXTURE
+  offset: 0x1C70
+  symbol: gBigPoeNecklaceSkullHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5BB8
+  symbol: gBigPoeRightForearmLimb
+  limb_type: Standard
+
+gBigPoeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5BC4
+  symbol: gBigPoeRightHandLimb
+  limb_type: Standard
+
+gBigPoeRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5BAC
+  symbol: gBigPoeRightUpperArmLimb
+  limb_type: Standard
+
+gBigPoeShawlTex:
+  type: TEXTURE
+  offset: 0x2BF0
+  symbol: gBigPoeShawlTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigPoeShockAnim:
+  type: OOT:ANIMATION
+  offset: 0x454
+  symbol: gBigPoeShockAnim
+
+gBigPoeSkel:
+  type: MM:SKELETON
+  offset: 0x5C18
+  symbol: gBigPoeSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBigPoeSmallArmDL:
+  type: GFX
+  offset: 0x4538
+  symbol: gBigPoeSmallArmDL
+
+gBigPoeSoulDL:
+  type: GFX
+  offset: 0x1BB0
+  symbol: gBigPoeSoulDL
+
+gBigPoeSoulFaceTex:
+  type: TEXTURE
+  offset: 0x1370
+  symbol: gBigPoeSoulFaceTex
+  format: I8
+  width: 32
+  height: 64
+
+gBigPoeSwingLampAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x158
+  symbol: gBigPoeSwingLampAttackAnim
+
+gBigPoeTornRobeTex:
+  type: TEXTURE
+  offset: 0x2070
+  symbol: gBigPoeTornRobeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFieldPoeArmVtx:
+  type: MM:ARRAY
+  offset: 0x3550
+  symbol: gFieldPoeArmVtx
+  count: 36
+  array_type: VTX
+
+gFieldPoeBodyAndFaceVtx:
+  type: MM:ARRAY
+  offset: 0x3200
+  symbol: gFieldPoeBodyAndFaceVtx
+  count: 53
+  array_type: VTX
+
+gFieldPoeCloakVtx:
+  type: MM:ARRAY
+  offset: 0x3790
+  symbol: gFieldPoeCloakVtx
+  count: 55
+  array_type: VTX
+
+gFieldPoeFaceHoodRobeVtx:
+  type: MM:ARRAY
+  offset: 0x3B00
+  symbol: gFieldPoeFaceHoodRobeVtx
+  count: 106
+  array_type: VTX
+
+gFieldPoeLanternVtx:
+  type: MM:ARRAY
+  offset: 0x2FF0
+  symbol: gFieldPoeLanternVtx
+  count: 33
+  array_type: VTX
+
+
+object_bigpoVtx_001B70:
+  type: MM:ARRAY
+  offset: 0x001B70
+  symbol: object_bigpoVtx_001B70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigpoVtx_004F18:
+  type: MM:ARRAY
+  offset: 0x004F18
+  symbol: object_bigpoVtx_004F18
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBigPoeSkelLimbs:
+  type: BLOB
+  offset: 0x5BF4
+  symbol: gBigPoeSkelLimbs
+  size: 0

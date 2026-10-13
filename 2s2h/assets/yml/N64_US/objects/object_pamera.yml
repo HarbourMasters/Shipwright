@@ -1,0 +1,639 @@
+:config:
+  segments:
+    - [ 6, 0x01534040 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01534040 ]
+    - [ 9, 0x01534040 ]
+    - [ 10, 0x01534040 ]
+    - [ 11, 0x01534040 ]
+    - [ 12, 0x01534040 ]
+    - [ 13, 0x01534040 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gPamelaAbdomenDL:
+  type: GFX
+  offset: 0x2E50
+  symbol: gPamelaAbdomenDL
+
+gPamelaAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x83D8
+  symbol: gPamelaAbdomenLimb
+  limb_type: Standard
+
+gPamelaBackDressDL:
+  type: GFX
+  offset: 0x4C88
+  symbol: gPamelaBackDressDL
+
+gPamelaBackDressLimb:
+  type: OOT:LIMB
+  offset: 0x83CC
+  symbol: gPamelaBackDressLimb
+  limb_type: Standard
+
+gPamelaChestDL:
+  type: GFX
+  offset: 0x31B0
+  symbol: gPamelaChestDL
+
+gPamelaChestLimb:
+  type: OOT:LIMB
+  offset: 0x8360
+  symbol: gPamelaChestLimb
+  limb_type: Standard
+
+gPamelaFrontDressDL:
+  type: GFX
+  offset: 0x4E00
+  symbol: gPamelaFrontDressDL
+
+gPamelaFrontDressLimb:
+  type: OOT:LIMB
+  offset: 0x83C0
+  symbol: gPamelaFrontDressLimb
+  limb_type: Standard
+
+gPamelaHairEndDL:
+  type: GFX
+  offset: 0x4AC0
+  symbol: gPamelaHairEndDL
+
+gPamelaHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x8354
+  symbol: gPamelaHairEndLimb
+  limb_type: Standard
+
+gPamelaHeadDL:
+  type: GFX
+  offset: 0x4520
+  symbol: gPamelaHeadDL
+
+gPamelaHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8348
+  symbol: gPamelaHeadLimb
+  limb_type: Standard
+
+gPamelaLeftFootDL:
+  type: GFX
+  offset: 0x54B8
+  symbol: gPamelaLeftFootDL
+
+gPamelaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8390
+  symbol: gPamelaLeftFootLimb
+  limb_type: Standard
+
+gPamelaLeftForearmDL:
+  type: GFX
+  offset: 0x37B8
+  symbol: gPamelaLeftForearmDL
+
+gPamelaLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x830C
+  symbol: gPamelaLeftForearmLimb
+  limb_type: Standard
+
+gPamelaLeftHandDL:
+  type: GFX
+  offset: 0x39C0
+  symbol: gPamelaLeftHandDL
+
+gPamelaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x8318
+  symbol: gPamelaLeftHandLimb
+  limb_type: Standard
+
+gPamelaLeftLegDL:
+  type: GFX
+  offset: 0x5158
+  symbol: gPamelaLeftLegDL
+
+gPamelaLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x8384
+  symbol: gPamelaLeftLegLimb
+  limb_type: Standard
+
+gPamelaLeftThighDL:
+  type: GFX
+  offset: 0x4F78
+  symbol: gPamelaLeftThighDL
+
+gPamelaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x8378
+  symbol: gPamelaLeftThighLimb
+  limb_type: Standard
+
+gPamelaLeftUpperArmDL:
+  type: GFX
+  offset: 0x3520
+  symbol: gPamelaLeftUpperArmDL
+
+gPamelaLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8300
+  symbol: gPamelaLeftUpperArmLimb
+  limb_type: Standard
+
+gPamelaNeckDL:
+  type: GFX
+  offset: 0x30D0
+  symbol: gPamelaNeckDL
+
+gPamelaNeckLimb:
+  type: OOT:LIMB
+  offset: 0x836C
+  symbol: gPamelaNeckLimb
+  limb_type: Standard
+
+gPamelaPelvisDL:
+  type: GFX
+  offset: 0x2FB8
+  symbol: gPamelaPelvisDL
+
+gPamelaPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x83E4
+  symbol: gPamelaPelvisLimb
+  limb_type: Standard
+
+gPamelaRightFootDL:
+  type: GFX
+  offset: 0x5D70
+  symbol: gPamelaRightFootDL
+
+gPamelaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x83B4
+  symbol: gPamelaRightFootLimb
+  limb_type: Standard
+
+gPamelaRightForearmDL:
+  type: GFX
+  offset: 0x3F78
+  symbol: gPamelaRightForearmDL
+
+gPamelaRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8330
+  symbol: gPamelaRightForearmLimb
+  limb_type: Standard
+
+gPamelaRightHandDL:
+  type: GFX
+  offset: 0x4180
+  symbol: gPamelaRightHandDL
+
+gPamelaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x833C
+  symbol: gPamelaRightHandLimb
+  limb_type: Standard
+
+gPamelaRightLegDL:
+  type: GFX
+  offset: 0x5A10
+  symbol: gPamelaRightLegDL
+
+gPamelaRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x83A8
+  symbol: gPamelaRightLegLimb
+  limb_type: Standard
+
+gPamelaRightThighDL:
+  type: GFX
+  offset: 0x5830
+  symbol: gPamelaRightThighDL
+
+gPamelaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x839C
+  symbol: gPamelaRightThighLimb
+  limb_type: Standard
+
+gPamelaRightUpperArmDL:
+  type: GFX
+  offset: 0x3D60
+  symbol: gPamelaRightUpperArmDL
+
+gPamelaRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8324
+  symbol: gPamelaRightUpperArmLimb
+  limb_type: Standard
+
+gPamelaRootLimb:
+  type: OOT:LIMB
+  offset: 0x82E8
+  symbol: gPamelaRootLimb
+  limb_type: Standard
+
+gPamelaSkel:
+  type: MM:SKELETON
+  offset: 0x8448
+  symbol: gPamelaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPamelaUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x82F4
+  symbol: gPamelaUpperBodyRootLimb
+  limb_type: Standard
+
+object_pamera_Anim_0005BC:
+  type: OOT:ANIMATION
+  offset: 0x5BC
+  symbol: object_pamera_Anim_0005BC
+
+object_pamera_Anim_008AE0:
+  type: OOT:ANIMATION
+  offset: 0x8AE0
+  symbol: object_pamera_Anim_008AE0
+
+object_pamera_Anim_008E38:
+  type: OOT:ANIMATION
+  offset: 0x8E38
+  symbol: object_pamera_Anim_008E38
+
+object_pamera_Anim_009870:
+  type: OOT:ANIMATION
+  offset: 0x9870
+  symbol: object_pamera_Anim_009870
+
+object_pamera_Anim_009F54:
+  type: OOT:ANIMATION
+  offset: 0x9F54
+  symbol: object_pamera_Anim_009F54
+
+object_pamera_Anim_00A844:
+  type: OOT:ANIMATION
+  offset: 0xA844
+  symbol: object_pamera_Anim_00A844
+
+object_pamera_Anim_00B0C4:
+  type: OOT:ANIMATION
+  offset: 0xB0C4
+  symbol: object_pamera_Anim_00B0C4
+
+object_pamera_Anim_00B5B0:
+  type: OOT:ANIMATION
+  offset: 0xB5B0
+  symbol: object_pamera_Anim_00B5B0
+
+object_pamera_Anim_00BCC4:
+  type: OOT:ANIMATION
+  offset: 0xBCC4
+  symbol: object_pamera_Anim_00BCC4
+
+object_pamera_Anim_00C9F4:
+  type: OOT:ANIMATION
+  offset: 0xC9F4
+  symbol: object_pamera_Anim_00C9F4
+
+object_pamera_Anim_00D0F0:
+  type: OOT:ANIMATION
+  offset: 0xD0F0
+  symbol: object_pamera_Anim_00D0F0
+
+object_pamera_Anim_00D9DC:
+  type: OOT:ANIMATION
+  offset: 0xD9DC
+  symbol: object_pamera_Anim_00D9DC
+
+object_pamera_Anim_00E16C:
+  type: OOT:ANIMATION
+  offset: 0xE16C
+  symbol: object_pamera_Anim_00E16C
+
+object_pamera_TLUT_0060E8:
+  type: TEXTURE
+  offset: 0x60E8
+  symbol: object_pamera_TLUT_0060E8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_pamera_Tex_0062E8:
+  type: TEXTURE
+  offset: 0x62E8
+  symbol: object_pamera_Tex_0062E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0063E8:
+  type: TEXTURE
+  offset: 0x63E8
+  symbol: object_pamera_Tex_0063E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0064E8:
+  type: TEXTURE
+  offset: 0x64E8
+  symbol: object_pamera_Tex_0064E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0065E8:
+  type: TEXTURE
+  offset: 0x65E8
+  symbol: object_pamera_Tex_0065E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0066E8:
+  type: TEXTURE
+  offset: 0x66E8
+  symbol: object_pamera_Tex_0066E8
+  format: CI8
+  width: 32
+  height: 32
+
+object_pamera_Tex_006AE8:
+  type: TEXTURE
+  offset: 0x6AE8
+  symbol: object_pamera_Tex_006AE8
+  format: CI8
+  width: 32
+  height: 32
+
+object_pamera_Tex_006EE8:
+  type: TEXTURE
+  offset: 0x6EE8
+  symbol: object_pamera_Tex_006EE8
+  format: CI8
+  width: 32
+  height: 32
+
+object_pamera_Tex_0072E8:
+  type: TEXTURE
+  offset: 0x72E8
+  symbol: object_pamera_Tex_0072E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0073E8:
+  type: TEXTURE
+  offset: 0x73E8
+  symbol: object_pamera_Tex_0073E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0074E8:
+  type: TEXTURE
+  offset: 0x74E8
+  symbol: object_pamera_Tex_0074E8
+  format: CI8
+  width: 32
+  height: 32
+
+object_pamera_Tex_0078E8:
+  type: TEXTURE
+  offset: 0x78E8
+  symbol: object_pamera_Tex_0078E8
+  format: CI8
+  width: 32
+  height: 32
+
+object_pamera_Tex_007CE8:
+  type: TEXTURE
+  offset: 0x7CE8
+  symbol: object_pamera_Tex_007CE8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_007DE8:
+  type: TEXTURE
+  offset: 0x7DE8
+  symbol: object_pamera_Tex_007DE8
+  format: CI8
+  width: 32
+  height: 16
+
+object_pamera_Tex_007FE8:
+  type: TEXTURE
+  offset: 0x7FE8
+  symbol: object_pamera_Tex_007FE8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0080E8:
+  type: TEXTURE
+  offset: 0x80E8
+  symbol: object_pamera_Tex_0080E8
+  format: CI8
+  width: 16
+  height: 16
+
+object_pamera_Tex_0081E8:
+  type: TEXTURE
+  offset: 0x81E8
+  symbol: object_pamera_Tex_0081E8
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_pameraVtx_0005D0:
+  type: MM:ARRAY
+  offset: 0x0005D0
+  symbol: object_pameraVtx_0005D0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_000870:
+  type: MM:ARRAY
+  offset: 0x000870
+  symbol: object_pameraVtx_000870
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_0009F0:
+  type: MM:ARRAY
+  offset: 0x0009F0
+  symbol: object_pameraVtx_0009F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_000B70:
+  type: MM:ARRAY
+  offset: 0x000B70
+  symbol: object_pameraVtx_000B70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_000E10:
+  type: MM:ARRAY
+  offset: 0x000E10
+  symbol: object_pameraVtx_000E10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_000F90:
+  type: MM:ARRAY
+  offset: 0x000F90
+  symbol: object_pameraVtx_000F90
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_001110:
+  type: MM:ARRAY
+  offset: 0x001110
+  symbol: object_pameraVtx_001110
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_001410:
+  type: MM:ARRAY
+  offset: 0x001410
+  symbol: object_pameraVtx_001410
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_001B30:
+  type: MM:ARRAY
+  offset: 0x001B30
+  symbol: object_pameraVtx_001B30
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_001E80:
+  type: MM:ARRAY
+  offset: 0x001E80
+  symbol: object_pameraVtx_001E80
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_001F20:
+  type: MM:ARRAY
+  offset: 0x001F20
+  symbol: object_pameraVtx_001F20
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002160:
+  type: MM:ARRAY
+  offset: 0x002160
+  symbol: object_pameraVtx_002160
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002340:
+  type: MM:ARRAY
+  offset: 0x002340
+  symbol: object_pameraVtx_002340
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002460:
+  type: MM:ARRAY
+  offset: 0x002460
+  symbol: object_pameraVtx_002460
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_0026A0:
+  type: MM:ARRAY
+  offset: 0x0026A0
+  symbol: object_pameraVtx_0026A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002880:
+  type: MM:ARRAY
+  offset: 0x002880
+  symbol: object_pameraVtx_002880
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_0029A0:
+  type: MM:ARRAY
+  offset: 0x0029A0
+  symbol: object_pameraVtx_0029A0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002A70:
+  type: MM:ARRAY
+  offset: 0x002A70
+  symbol: object_pameraVtx_002A70
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002B40:
+  type: MM:ARRAY
+  offset: 0x002B40
+  symbol: object_pameraVtx_002B40
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pameraVtx_002D50:
+  type: MM:ARRAY
+  offset: 0x002D50
+  symbol: object_pameraVtx_002D50
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPamelaSkelLimbs:
+  type: BLOB
+  offset: 0x83F0
+  symbol: gPamelaSkelLimbs
+  size: 0

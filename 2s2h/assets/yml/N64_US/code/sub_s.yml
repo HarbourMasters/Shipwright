@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 128, 0x00A684D0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x800A5AC0, 0x00A684D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gShadowMaterialDL:
+  type: GFX
+  offset: 0x1202A0
+  symbol: gShadowMaterialDL
+
+gShadowModelDL:
+  type: GFX
+  offset: 0x1202C0
+  symbol: gShadowModelDL
+
+
+codeVtx_120260:
+  type: MM:ARRAY
+  offset: 0x120260
+  symbol: codeVtx_120260
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

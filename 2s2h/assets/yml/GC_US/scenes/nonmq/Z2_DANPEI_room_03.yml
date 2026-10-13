@@ -1,0 +1,567 @@
+:config:
+  segments:
+    - [ 3, 0x01C80990 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01C80990 ]
+    - [ 9, 0x01C80990 ]
+    - [ 10, 0x01C80990 ]
+    - [ 11, 0x01C80990 ]
+    - [ 12, 0x01C80990 ]
+    - [ 13, 0x01C80990 ]
+    - [ 2, 0x01C66910 ]
+  directory: scenes/nonmq/Z2_DANPEI
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_DANPEI.yml
+
+Z2_DANPEI_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_DANPEI_room_03
+
+Z2_DANPEI_room_03DL_006E70:
+  type: GFX
+  offset: 0x6E70
+  symbol: Z2_DANPEI_room_03DL_006E70
+
+Z2_DANPEI_room_03DL_0096F0:
+  type: GFX
+  offset: 0x96F0
+  symbol: Z2_DANPEI_room_03DL_0096F0
+
+
+Z2_DANPEI_room_03ActorEntry_000050:
+  type: BLOB
+  offset: 0x000050
+  symbol: Z2_DANPEI_room_03ActorEntry_000050
+  size: 0
+
+Z2_DANPEI_room_03Vtx_000270:
+  type: MM:ARRAY
+  offset: 0x000270
+  symbol: Z2_DANPEI_room_03Vtx_000270
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_000350:
+  type: GFX
+  offset: 0x000350
+  symbol: Z2_DANPEI_room_03DL_000350
+
+Z2_DANPEI_room_03Vtx_000438:
+  type: MM:ARRAY
+  offset: 0x000438
+  symbol: Z2_DANPEI_room_03Vtx_000438
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_000688:
+  type: GFX
+  offset: 0x000688
+  symbol: Z2_DANPEI_room_03DL_000688
+
+Z2_DANPEI_room_03DL_0008A0:
+  type: GFX
+  offset: 0x0008A0
+  symbol: Z2_DANPEI_room_03DL_0008A0
+
+Z2_DANPEI_room_03Vtx_0008B8:
+  type: MM:ARRAY
+  offset: 0x0008B8
+  symbol: Z2_DANPEI_room_03Vtx_0008B8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_000AB8:
+  type: GFX
+  offset: 0x000AB8
+  symbol: Z2_DANPEI_room_03DL_000AB8
+
+Z2_DANPEI_room_03Vtx_000BE0:
+  type: MM:ARRAY
+  offset: 0x000BE0
+  symbol: Z2_DANPEI_room_03Vtx_000BE0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_000CF0:
+  type: GFX
+  offset: 0x000CF0
+  symbol: Z2_DANPEI_room_03DL_000CF0
+
+Z2_DANPEI_room_03Vtx_000DE8:
+  type: MM:ARRAY
+  offset: 0x000DE8
+  symbol: Z2_DANPEI_room_03Vtx_000DE8
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0010C8:
+  type: GFX
+  offset: 0x0010C8
+  symbol: Z2_DANPEI_room_03DL_0010C8
+
+Z2_DANPEI_room_03DL_001308:
+  type: GFX
+  offset: 0x001308
+  symbol: Z2_DANPEI_room_03DL_001308
+
+Z2_DANPEI_room_03Vtx_001328:
+  type: MM:ARRAY
+  offset: 0x001328
+  symbol: Z2_DANPEI_room_03Vtx_001328
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_001528:
+  type: GFX
+  offset: 0x001528
+  symbol: Z2_DANPEI_room_03DL_001528
+
+Z2_DANPEI_room_03Vtx_001650:
+  type: MM:ARRAY
+  offset: 0x001650
+  symbol: Z2_DANPEI_room_03Vtx_001650
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_001810:
+  type: GFX
+  offset: 0x001810
+  symbol: Z2_DANPEI_room_03DL_001810
+
+Z2_DANPEI_room_03Vtx_001930:
+  type: MM:ARRAY
+  offset: 0x001930
+  symbol: Z2_DANPEI_room_03Vtx_001930
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_001AF0:
+  type: GFX
+  offset: 0x001AF0
+  symbol: Z2_DANPEI_room_03DL_001AF0
+
+Z2_DANPEI_room_03Vtx_001CF0:
+  type: MM:ARRAY
+  offset: 0x001CF0
+  symbol: Z2_DANPEI_room_03Vtx_001CF0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_002010:
+  type: GFX
+  offset: 0x002010
+  symbol: Z2_DANPEI_room_03DL_002010
+
+Z2_DANPEI_room_03Vtx_0022C8:
+  type: MM:ARRAY
+  offset: 0x0022C8
+  symbol: Z2_DANPEI_room_03Vtx_0022C8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_002468:
+  type: GFX
+  offset: 0x002468
+  symbol: Z2_DANPEI_room_03DL_002468
+
+Z2_DANPEI_room_03Vtx_0025E8:
+  type: MM:ARRAY
+  offset: 0x0025E8
+  symbol: Z2_DANPEI_room_03Vtx_0025E8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0028D8:
+  type: GFX
+  offset: 0x0028D8
+  symbol: Z2_DANPEI_room_03DL_0028D8
+
+Z2_DANPEI_room_03Vtx_002B90:
+  type: MM:ARRAY
+  offset: 0x002B90
+  symbol: Z2_DANPEI_room_03Vtx_002B90
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_002D30:
+  type: GFX
+  offset: 0x002D30
+  symbol: Z2_DANPEI_room_03DL_002D30
+
+Z2_DANPEI_room_03DL_002E30:
+  type: GFX
+  offset: 0x002E30
+  symbol: Z2_DANPEI_room_03DL_002E30
+
+Z2_DANPEI_room_03Vtx_002E70:
+  type: MM:ARRAY
+  offset: 0x002E70
+  symbol: Z2_DANPEI_room_03Vtx_002E70
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_003080:
+  type: GFX
+  offset: 0x003080
+  symbol: Z2_DANPEI_room_03DL_003080
+
+Z2_DANPEI_room_03Vtx_0031A0:
+  type: MM:ARRAY
+  offset: 0x0031A0
+  symbol: Z2_DANPEI_room_03Vtx_0031A0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_003300:
+  type: GFX
+  offset: 0x003300
+  symbol: Z2_DANPEI_room_03DL_003300
+
+Z2_DANPEI_room_03Vtx_003400:
+  type: MM:ARRAY
+  offset: 0x003400
+  symbol: Z2_DANPEI_room_03Vtx_003400
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_003680:
+  type: GFX
+  offset: 0x003680
+  symbol: Z2_DANPEI_room_03DL_003680
+
+Z2_DANPEI_room_03Vtx_0037A8:
+  type: MM:ARRAY
+  offset: 0x0037A8
+  symbol: Z2_DANPEI_room_03Vtx_0037A8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_003CC8:
+  type: GFX
+  offset: 0x003CC8
+  symbol: Z2_DANPEI_room_03DL_003CC8
+
+Z2_DANPEI_room_03Vtx_003E58:
+  type: MM:ARRAY
+  offset: 0x003E58
+  symbol: Z2_DANPEI_room_03Vtx_003E58
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_004178:
+  type: GFX
+  offset: 0x004178
+  symbol: Z2_DANPEI_room_03DL_004178
+
+Z2_DANPEI_room_03Vtx_0042C0:
+  type: MM:ARRAY
+  offset: 0x0042C0
+  symbol: Z2_DANPEI_room_03Vtx_0042C0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0046C0:
+  type: GFX
+  offset: 0x0046C0
+  symbol: Z2_DANPEI_room_03DL_0046C0
+
+Z2_DANPEI_room_03Vtx_004830:
+  type: MM:ARRAY
+  offset: 0x004830
+  symbol: Z2_DANPEI_room_03Vtx_004830
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0049A0:
+  type: GFX
+  offset: 0x0049A0
+  symbol: Z2_DANPEI_room_03DL_0049A0
+
+Z2_DANPEI_room_03Vtx_004A98:
+  type: MM:ARRAY
+  offset: 0x004A98
+  symbol: Z2_DANPEI_room_03Vtx_004A98
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_004BF8:
+  type: GFX
+  offset: 0x004BF8
+  symbol: Z2_DANPEI_room_03DL_004BF8
+
+Z2_DANPEI_room_03Vtx_004CF0:
+  type: MM:ARRAY
+  offset: 0x004CF0
+  symbol: Z2_DANPEI_room_03Vtx_004CF0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_004F30:
+  type: GFX
+  offset: 0x004F30
+  symbol: Z2_DANPEI_room_03DL_004F30
+
+Z2_DANPEI_room_03DL_005070:
+  type: GFX
+  offset: 0x005070
+  symbol: Z2_DANPEI_room_03DL_005070
+
+Z2_DANPEI_room_03Vtx_0050C0:
+  type: MM:ARRAY
+  offset: 0x0050C0
+  symbol: Z2_DANPEI_room_03Vtx_0050C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0051C0:
+  type: GFX
+  offset: 0x0051C0
+  symbol: Z2_DANPEI_room_03DL_0051C0
+
+Z2_DANPEI_room_03Vtx_0052B0:
+  type: MM:ARRAY
+  offset: 0x0052B0
+  symbol: Z2_DANPEI_room_03Vtx_0052B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_005530:
+  type: GFX
+  offset: 0x005530
+  symbol: Z2_DANPEI_room_03DL_005530
+
+Z2_DANPEI_room_03DL_005760:
+  type: GFX
+  offset: 0x005760
+  symbol: Z2_DANPEI_room_03DL_005760
+
+Z2_DANPEI_room_03Vtx_005778:
+  type: MM:ARRAY
+  offset: 0x005778
+  symbol: Z2_DANPEI_room_03Vtx_005778
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_005948:
+  type: GFX
+  offset: 0x005948
+  symbol: Z2_DANPEI_room_03DL_005948
+
+Z2_DANPEI_room_03Vtx_005A68:
+  type: MM:ARRAY
+  offset: 0x005A68
+  symbol: Z2_DANPEI_room_03Vtx_005A68
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_005F98:
+  type: GFX
+  offset: 0x005F98
+  symbol: Z2_DANPEI_room_03DL_005F98
+
+Z2_DANPEI_room_03Vtx_006140:
+  type: MM:ARRAY
+  offset: 0x006140
+  symbol: Z2_DANPEI_room_03Vtx_006140
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_006300:
+  type: GFX
+  offset: 0x006300
+  symbol: Z2_DANPEI_room_03DL_006300
+
+Z2_DANPEI_room_03Vtx_006430:
+  type: MM:ARRAY
+  offset: 0x006430
+  symbol: Z2_DANPEI_room_03Vtx_006430
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_006660:
+  type: GFX
+  offset: 0x006660
+  symbol: Z2_DANPEI_room_03DL_006660
+
+Z2_DANPEI_room_03Vtx_006790:
+  type: MM:ARRAY
+  offset: 0x006790
+  symbol: Z2_DANPEI_room_03Vtx_006790
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_006930:
+  type: GFX
+  offset: 0x006930
+  symbol: Z2_DANPEI_room_03DL_006930
+
+Z2_DANPEI_room_03DL_006A60:
+  type: GFX
+  offset: 0x006A60
+  symbol: Z2_DANPEI_room_03DL_006A60
+
+Z2_DANPEI_room_03Vtx_006A90:
+  type: MM:ARRAY
+  offset: 0x006A90
+  symbol: Z2_DANPEI_room_03Vtx_006A90
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_006B90:
+  type: GFX
+  offset: 0x006B90
+  symbol: Z2_DANPEI_room_03DL_006B90
+
+Z2_DANPEI_room_03Vtx_006C80:
+  type: MM:ARRAY
+  offset: 0x006C80
+  symbol: Z2_DANPEI_room_03Vtx_006C80
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_006D80:
+  type: GFX
+  offset: 0x006D80
+  symbol: Z2_DANPEI_room_03DL_006D80
+
+Z2_DANPEI_room_03Tex_006EB8:
+  type: TEXTURE
+  offset: 0x006EB8
+  symbol: Z2_DANPEI_room_03Tex_006EB8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_DANPEI_room_03Tex_0076B8:
+  type: TEXTURE
+  offset: 0x0076B8
+  symbol: Z2_DANPEI_room_03Tex_0076B8
+  format: RGBA32
+  width: 16
+  height: 16
+
+Z2_DANPEI_room_03Tex_007AB8:
+  type: TEXTURE
+  offset: 0x007AB8
+  symbol: Z2_DANPEI_room_03Tex_007AB8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DANPEI_room_03Tex_0082B8:
+  type: TEXTURE
+  offset: 0x0082B8
+  symbol: Z2_DANPEI_room_03Tex_0082B8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DANPEI_room_03Tex_008AB8:
+  type: TEXTURE
+  offset: 0x008AB8
+  symbol: Z2_DANPEI_room_03Tex_008AB8
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_DANPEI_room_03Tex_0092B8:
+  type: TEXTURE
+  offset: 0x0092B8
+  symbol: Z2_DANPEI_room_03Tex_0092B8
+  format: CI8
+  width: 16
+  height: 8
+
+Z2_DANPEI_room_03DL_009340:
+  type: GFX
+  offset: 0x009340
+  symbol: Z2_DANPEI_room_03DL_009340
+
+Z2_DANPEI_room_03DL_009348:
+  type: GFX
+  offset: 0x009348
+  symbol: Z2_DANPEI_room_03DL_009348
+
+Z2_DANPEI_room_03Vtx_009350:
+  type: MM:ARRAY
+  offset: 0x009350
+  symbol: Z2_DANPEI_room_03Vtx_009350
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_DANPEI_room_03DL_0095C0:
+  type: GFX
+  offset: 0x0095C0
+  symbol: Z2_DANPEI_room_03DL_0095C0
+
+Z2_DANPEI_room_03Tex_009710:
+  type: TEXTURE
+  offset: 0x009710
+  symbol: Z2_DANPEI_room_03Tex_009710
+  format: RGBA16
+  width: 32
+  height: 32

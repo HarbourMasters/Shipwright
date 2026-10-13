@@ -1,0 +1,1538 @@
+:config:
+  segments:
+    - [ 3, 0x01A81C70 ]
+    - [ 6, 0x0160F8D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01A81C70 ]
+    - [ 9, 0x01A81C70 ]
+    - [ 10, 0x01A81C70 ]
+    - [ 11, 0x01A81C70 ]
+    - [ 12, 0x01A81C70 ]
+    - [ 13, 0x01A81C70 ]
+    - [ 2, 0x01A780E0 ]
+  directory: scenes/nonmq/Z2_TORIDE
+  external_files:
+    - GC_US/misc/scene_texture_05.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_TORIDE.yml
+
+Z2_TORIDE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_TORIDE_room_00
+
+Z2_TORIDE_room_00DL_0007B0:
+  type: GFX
+  offset: 0x7B0
+  symbol: Z2_TORIDE_room_00DL_0007B0
+
+Z2_TORIDE_room_00DL_00C900:
+  type: GFX
+  offset: 0xC900
+  symbol: Z2_TORIDE_room_00DL_00C900
+
+Z2_TORIDE_room_00DL_00C9E0:
+  type: GFX
+  offset: 0xC9E0
+  symbol: Z2_TORIDE_room_00DL_00C9E0
+
+Z2_TORIDE_room_00DL_00D1D0:
+  type: GFX
+  offset: 0xD1D0
+  symbol: Z2_TORIDE_room_00DL_00D1D0
+
+
+Z2_TORIDE_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_TORIDE_room_00ActorEntry_000058
+  size: 0
+
+Z2_TORIDE_room_00DL_00A618Mtx_000000:
+  type: OOT:MTX
+  offset: 0x3B0
+  symbol: Z2_TORIDE_room_00DL_00A618Mtx_000000
+
+Z2_TORIDE_room_00DL_00A7C8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x3F0
+  symbol: Z2_TORIDE_room_00DL_00A7C8Mtx_000000
+
+Z2_TORIDE_room_00DL_00A978Mtx_000000:
+  type: OOT:MTX
+  offset: 0x430
+  symbol: Z2_TORIDE_room_00DL_00A978Mtx_000000
+
+Z2_TORIDE_room_00DL_00AB28Mtx_000000:
+  type: OOT:MTX
+  offset: 0x470
+  symbol: Z2_TORIDE_room_00DL_00AB28Mtx_000000
+
+Z2_TORIDE_room_00DL_00ACD8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x4B0
+  symbol: Z2_TORIDE_room_00DL_00ACD8Mtx_000000
+
+Z2_TORIDE_room_00DL_00AE88Mtx_000000:
+  type: OOT:MTX
+  offset: 0x4F0
+  symbol: Z2_TORIDE_room_00DL_00AE88Mtx_000000
+
+Z2_TORIDE_room_00DL_00B038Mtx_000000:
+  type: OOT:MTX
+  offset: 0x530
+  symbol: Z2_TORIDE_room_00DL_00B038Mtx_000000
+
+Z2_TORIDE_room_00DL_00B1E8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x570
+  symbol: Z2_TORIDE_room_00DL_00B1E8Mtx_000000
+
+Z2_TORIDE_room_00DL_00B398Mtx_000000:
+  type: OOT:MTX
+  offset: 0x5B0
+  symbol: Z2_TORIDE_room_00DL_00B398Mtx_000000
+
+Z2_TORIDE_room_00DL_00B548Mtx_000000:
+  type: OOT:MTX
+  offset: 0x5F0
+  symbol: Z2_TORIDE_room_00DL_00B548Mtx_000000
+
+Z2_TORIDE_room_00DL_00B6F8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x630
+  symbol: Z2_TORIDE_room_00DL_00B6F8Mtx_000000
+
+Z2_TORIDE_room_00DL_00B8A8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x670
+  symbol: Z2_TORIDE_room_00DL_00B8A8Mtx_000000
+
+Z2_TORIDE_room_00DL_00BA58Mtx_000000:
+  type: OOT:MTX
+  offset: 0x6B0
+  symbol: Z2_TORIDE_room_00DL_00BA58Mtx_000000
+
+Z2_TORIDE_room_00DL_00BC08Mtx_000000:
+  type: OOT:MTX
+  offset: 0x6F0
+  symbol: Z2_TORIDE_room_00DL_00BC08Mtx_000000
+
+Z2_TORIDE_room_00DL_00BDB8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x730
+  symbol: Z2_TORIDE_room_00DL_00BDB8Mtx_000000
+
+Z2_TORIDE_room_00DL_00BF68Mtx_000000:
+  type: OOT:MTX
+  offset: 0x770
+  symbol: Z2_TORIDE_room_00DL_00BF68Mtx_000000
+
+Z2_TORIDE_room_00Vtx_0007B8:
+  type: MM:ARRAY
+  offset: 0x0007B8
+  symbol: Z2_TORIDE_room_00Vtx_0007B8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_000978:
+  type: GFX
+  offset: 0x000978
+  symbol: Z2_TORIDE_room_00DL_000978
+
+Z2_TORIDE_room_00Vtx_000A78:
+  type: MM:ARRAY
+  offset: 0x000A78
+  symbol: Z2_TORIDE_room_00Vtx_000A78
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_000C88:
+  type: GFX
+  offset: 0x000C88
+  symbol: Z2_TORIDE_room_00DL_000C88
+
+Z2_TORIDE_room_00Vtx_000D88:
+  type: MM:ARRAY
+  offset: 0x000D88
+  symbol: Z2_TORIDE_room_00Vtx_000D88
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_000FD8:
+  type: GFX
+  offset: 0x000FD8
+  symbol: Z2_TORIDE_room_00DL_000FD8
+
+Z2_TORIDE_room_00Vtx_001100:
+  type: MM:ARRAY
+  offset: 0x001100
+  symbol: Z2_TORIDE_room_00Vtx_001100
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0016B0:
+  type: GFX
+  offset: 0x0016B0
+  symbol: Z2_TORIDE_room_00DL_0016B0
+
+Z2_TORIDE_room_00Vtx_0018B0:
+  type: MM:ARRAY
+  offset: 0x0018B0
+  symbol: Z2_TORIDE_room_00Vtx_0018B0
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_002030:
+  type: GFX
+  offset: 0x002030
+  symbol: Z2_TORIDE_room_00DL_002030
+
+Z2_TORIDE_room_00Vtx_0022A8:
+  type: MM:ARRAY
+  offset: 0x0022A8
+  symbol: Z2_TORIDE_room_00Vtx_0022A8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0024C8:
+  type: GFX
+  offset: 0x0024C8
+  symbol: Z2_TORIDE_room_00DL_0024C8
+
+Z2_TORIDE_room_00Vtx_0025E8:
+  type: MM:ARRAY
+  offset: 0x0025E8
+  symbol: Z2_TORIDE_room_00Vtx_0025E8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0028A8:
+  type: GFX
+  offset: 0x0028A8
+  symbol: Z2_TORIDE_room_00DL_0028A8
+
+Z2_TORIDE_room_00Vtx_0029F8:
+  type: MM:ARRAY
+  offset: 0x0029F8
+  symbol: Z2_TORIDE_room_00Vtx_0029F8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_002F18:
+  type: GFX
+  offset: 0x002F18
+  symbol: Z2_TORIDE_room_00DL_002F18
+
+Z2_TORIDE_room_00Vtx_003098:
+  type: MM:ARRAY
+  offset: 0x003098
+  symbol: Z2_TORIDE_room_00Vtx_003098
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_003358:
+  type: GFX
+  offset: 0x003358
+  symbol: Z2_TORIDE_room_00DL_003358
+
+Z2_TORIDE_room_00Vtx_003480:
+  type: MM:ARRAY
+  offset: 0x003480
+  symbol: Z2_TORIDE_room_00Vtx_003480
+  count: 138
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_003D20:
+  type: GFX
+  offset: 0x003D20
+  symbol: Z2_TORIDE_room_00DL_003D20
+
+Z2_TORIDE_room_00Vtx_003F38:
+  type: MM:ARRAY
+  offset: 0x003F38
+  symbol: Z2_TORIDE_room_00Vtx_003F38
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_004038:
+  type: GFX
+  offset: 0x004038
+  symbol: Z2_TORIDE_room_00DL_004038
+
+Z2_TORIDE_room_00Vtx_004110:
+  type: MM:ARRAY
+  offset: 0x004110
+  symbol: Z2_TORIDE_room_00Vtx_004110
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_004390:
+  type: GFX
+  offset: 0x004390
+  symbol: Z2_TORIDE_room_00DL_004390
+
+Z2_TORIDE_room_00Vtx_004498:
+  type: MM:ARRAY
+  offset: 0x004498
+  symbol: Z2_TORIDE_room_00Vtx_004498
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_004998:
+  type: GFX
+  offset: 0x004998
+  symbol: Z2_TORIDE_room_00DL_004998
+
+Z2_TORIDE_room_00Vtx_004B00:
+  type: MM:ARRAY
+  offset: 0x004B00
+  symbol: Z2_TORIDE_room_00Vtx_004B00
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_004C00:
+  type: GFX
+  offset: 0x004C00
+  symbol: Z2_TORIDE_room_00DL_004C00
+
+Z2_TORIDE_room_00Vtx_004CD8:
+  type: MM:ARRAY
+  offset: 0x004CD8
+  symbol: Z2_TORIDE_room_00Vtx_004CD8
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_004E48:
+  type: GFX
+  offset: 0x004E48
+  symbol: Z2_TORIDE_room_00DL_004E48
+
+Z2_TORIDE_room_00Vtx_004F40:
+  type: MM:ARRAY
+  offset: 0x004F40
+  symbol: Z2_TORIDE_room_00Vtx_004F40
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_005140:
+  type: GFX
+  offset: 0x005140
+  symbol: Z2_TORIDE_room_00DL_005140
+
+Z2_TORIDE_room_00Vtx_0052B8:
+  type: MM:ARRAY
+  offset: 0x0052B8
+  symbol: Z2_TORIDE_room_00Vtx_0052B8
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_005C98:
+  type: GFX
+  offset: 0x005C98
+  symbol: Z2_TORIDE_room_00DL_005C98
+
+Z2_TORIDE_room_00Vtx_006000:
+  type: MM:ARRAY
+  offset: 0x006000
+  symbol: Z2_TORIDE_room_00Vtx_006000
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_006230:
+  type: GFX
+  offset: 0x006230
+  symbol: Z2_TORIDE_room_00DL_006230
+
+Z2_TORIDE_room_00Vtx_006400:
+  type: MM:ARRAY
+  offset: 0x006400
+  symbol: Z2_TORIDE_room_00Vtx_006400
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_006500:
+  type: GFX
+  offset: 0x006500
+  symbol: Z2_TORIDE_room_00DL_006500
+
+Z2_TORIDE_room_00Vtx_0065E0:
+  type: MM:ARRAY
+  offset: 0x0065E0
+  symbol: Z2_TORIDE_room_00Vtx_0065E0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_006870:
+  type: GFX
+  offset: 0x006870
+  symbol: Z2_TORIDE_room_00DL_006870
+
+Z2_TORIDE_room_00Vtx_006A30:
+  type: MM:ARRAY
+  offset: 0x006A30
+  symbol: Z2_TORIDE_room_00Vtx_006A30
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_006E70:
+  type: GFX
+  offset: 0x006E70
+  symbol: Z2_TORIDE_room_00DL_006E70
+
+Z2_TORIDE_room_00Vtx_006FF0:
+  type: MM:ARRAY
+  offset: 0x006FF0
+  symbol: Z2_TORIDE_room_00Vtx_006FF0
+  count: 164
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_007A30:
+  type: GFX
+  offset: 0x007A30
+  symbol: Z2_TORIDE_room_00DL_007A30
+
+Z2_TORIDE_room_00Vtx_007D28:
+  type: MM:ARRAY
+  offset: 0x007D28
+  symbol: Z2_TORIDE_room_00Vtx_007D28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_007D38:
+  type: GFX
+  offset: 0x007D38
+  symbol: Z2_TORIDE_room_00DL_007D38
+
+Z2_TORIDE_room_00Vtx_007D58:
+  type: MM:ARRAY
+  offset: 0x007D58
+  symbol: Z2_TORIDE_room_00Vtx_007D58
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_007F18:
+  type: GFX
+  offset: 0x007F18
+  symbol: Z2_TORIDE_room_00DL_007F18
+
+Z2_TORIDE_room_00Vtx_0080C8:
+  type: MM:ARRAY
+  offset: 0x0080C8
+  symbol: Z2_TORIDE_room_00Vtx_0080C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0080D8:
+  type: GFX
+  offset: 0x0080D8
+  symbol: Z2_TORIDE_room_00DL_0080D8
+
+Z2_TORIDE_room_00DL_0080F8:
+  type: GFX
+  offset: 0x0080F8
+  symbol: Z2_TORIDE_room_00DL_0080F8
+
+Z2_TORIDE_room_00Vtx_008110:
+  type: MM:ARRAY
+  offset: 0x008110
+  symbol: Z2_TORIDE_room_00Vtx_008110
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0082F0:
+  type: GFX
+  offset: 0x0082F0
+  symbol: Z2_TORIDE_room_00DL_0082F0
+
+Z2_TORIDE_room_00Vtx_0083E0:
+  type: MM:ARRAY
+  offset: 0x0083E0
+  symbol: Z2_TORIDE_room_00Vtx_0083E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0083F0:
+  type: GFX
+  offset: 0x0083F0
+  symbol: Z2_TORIDE_room_00DL_0083F0
+
+Z2_TORIDE_room_00Vtx_008410:
+  type: MM:ARRAY
+  offset: 0x008410
+  symbol: Z2_TORIDE_room_00Vtx_008410
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008620:
+  type: GFX
+  offset: 0x008620
+  symbol: Z2_TORIDE_room_00DL_008620
+
+Z2_TORIDE_room_00Vtx_008730:
+  type: MM:ARRAY
+  offset: 0x008730
+  symbol: Z2_TORIDE_room_00Vtx_008730
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008740:
+  type: GFX
+  offset: 0x008740
+  symbol: Z2_TORIDE_room_00DL_008740
+
+Z2_TORIDE_room_00Vtx_008760:
+  type: MM:ARRAY
+  offset: 0x008760
+  symbol: Z2_TORIDE_room_00Vtx_008760
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008980:
+  type: GFX
+  offset: 0x008980
+  symbol: Z2_TORIDE_room_00DL_008980
+
+Z2_TORIDE_room_00Vtx_008A78:
+  type: MM:ARRAY
+  offset: 0x008A78
+  symbol: Z2_TORIDE_room_00Vtx_008A78
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008A88:
+  type: GFX
+  offset: 0x008A88
+  symbol: Z2_TORIDE_room_00DL_008A88
+
+Z2_TORIDE_room_00Vtx_008AA8:
+  type: MM:ARRAY
+  offset: 0x008AA8
+  symbol: Z2_TORIDE_room_00Vtx_008AA8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008BA8:
+  type: GFX
+  offset: 0x008BA8
+  symbol: Z2_TORIDE_room_00DL_008BA8
+
+Z2_TORIDE_room_00Vtx_008C88:
+  type: MM:ARRAY
+  offset: 0x008C88
+  symbol: Z2_TORIDE_room_00Vtx_008C88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008C98:
+  type: GFX
+  offset: 0x008C98
+  symbol: Z2_TORIDE_room_00DL_008C98
+
+Z2_TORIDE_room_00Vtx_008CB8:
+  type: MM:ARRAY
+  offset: 0x008CB8
+  symbol: Z2_TORIDE_room_00Vtx_008CB8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008DD8:
+  type: GFX
+  offset: 0x008DD8
+  symbol: Z2_TORIDE_room_00DL_008DD8
+
+Z2_TORIDE_room_00Vtx_008EB0:
+  type: MM:ARRAY
+  offset: 0x008EB0
+  symbol: Z2_TORIDE_room_00Vtx_008EB0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_008EC0:
+  type: GFX
+  offset: 0x008EC0
+  symbol: Z2_TORIDE_room_00DL_008EC0
+
+Z2_TORIDE_room_00Vtx_008EE0:
+  type: MM:ARRAY
+  offset: 0x008EE0
+  symbol: Z2_TORIDE_room_00Vtx_008EE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009060:
+  type: GFX
+  offset: 0x009060
+  symbol: Z2_TORIDE_room_00DL_009060
+
+Z2_TORIDE_room_00Vtx_009148:
+  type: MM:ARRAY
+  offset: 0x009148
+  symbol: Z2_TORIDE_room_00Vtx_009148
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009158:
+  type: GFX
+  offset: 0x009158
+  symbol: Z2_TORIDE_room_00DL_009158
+
+Z2_TORIDE_room_00Vtx_009178:
+  type: MM:ARRAY
+  offset: 0x009178
+  symbol: Z2_TORIDE_room_00Vtx_009178
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0093E8:
+  type: GFX
+  offset: 0x0093E8
+  symbol: Z2_TORIDE_room_00DL_0093E8
+
+Z2_TORIDE_room_00Vtx_0095C8:
+  type: MM:ARRAY
+  offset: 0x0095C8
+  symbol: Z2_TORIDE_room_00Vtx_0095C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_0095D8:
+  type: GFX
+  offset: 0x0095D8
+  symbol: Z2_TORIDE_room_00DL_0095D8
+
+Z2_TORIDE_room_00Vtx_0095F8:
+  type: MM:ARRAY
+  offset: 0x0095F8
+  symbol: Z2_TORIDE_room_00Vtx_0095F8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009B18:
+  type: GFX
+  offset: 0x009B18
+  symbol: Z2_TORIDE_room_00DL_009B18
+
+Z2_TORIDE_room_00Vtx_009D28:
+  type: MM:ARRAY
+  offset: 0x009D28
+  symbol: Z2_TORIDE_room_00Vtx_009D28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009D38:
+  type: GFX
+  offset: 0x009D38
+  symbol: Z2_TORIDE_room_00DL_009D38
+
+Z2_TORIDE_room_00Vtx_009D58:
+  type: MM:ARRAY
+  offset: 0x009D58
+  symbol: Z2_TORIDE_room_00Vtx_009D58
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009E98:
+  type: GFX
+  offset: 0x009E98
+  symbol: Z2_TORIDE_room_00DL_009E98
+
+Z2_TORIDE_room_00Vtx_009F78:
+  type: MM:ARRAY
+  offset: 0x009F78
+  symbol: Z2_TORIDE_room_00Vtx_009F78
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_009F88:
+  type: GFX
+  offset: 0x009F88
+  symbol: Z2_TORIDE_room_00DL_009F88
+
+Z2_TORIDE_room_00Vtx_009FA8:
+  type: MM:ARRAY
+  offset: 0x009FA8
+  symbol: Z2_TORIDE_room_00Vtx_009FA8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A348:
+  type: GFX
+  offset: 0x00A348
+  symbol: Z2_TORIDE_room_00DL_00A348
+
+Z2_TORIDE_room_00Vtx_00A4D0:
+  type: MM:ARRAY
+  offset: 0x00A4D0
+  symbol: Z2_TORIDE_room_00Vtx_00A4D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A4E0:
+  type: GFX
+  offset: 0x00A4E0
+  symbol: Z2_TORIDE_room_00DL_00A4E0
+
+Z2_TORIDE_room_00DL_00A500:
+  type: GFX
+  offset: 0x00A500
+  symbol: Z2_TORIDE_room_00DL_00A500
+
+Z2_TORIDE_room_00Vtx_00A558:
+  type: MM:ARRAY
+  offset: 0x00A558
+  symbol: Z2_TORIDE_room_00Vtx_00A558
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A618:
+  type: GFX
+  offset: 0x00A618
+  symbol: Z2_TORIDE_room_00DL_00A618
+
+Z2_TORIDE_room_00Vtx_00A6C8:
+  type: MM:ARRAY
+  offset: 0x00A6C8
+  symbol: Z2_TORIDE_room_00Vtx_00A6C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A6D8:
+  type: GFX
+  offset: 0x00A6D8
+  symbol: Z2_TORIDE_room_00DL_00A6D8
+
+Z2_TORIDE_room_00DL_00A6F8:
+  type: GFX
+  offset: 0x00A6F8
+  symbol: Z2_TORIDE_room_00DL_00A6F8
+
+Z2_TORIDE_room_00Vtx_00A708:
+  type: MM:ARRAY
+  offset: 0x00A708
+  symbol: Z2_TORIDE_room_00Vtx_00A708
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A7C8:
+  type: GFX
+  offset: 0x00A7C8
+  symbol: Z2_TORIDE_room_00DL_00A7C8
+
+Z2_TORIDE_room_00Vtx_00A878:
+  type: MM:ARRAY
+  offset: 0x00A878
+  symbol: Z2_TORIDE_room_00Vtx_00A878
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A888:
+  type: GFX
+  offset: 0x00A888
+  symbol: Z2_TORIDE_room_00DL_00A888
+
+Z2_TORIDE_room_00DL_00A8A8:
+  type: GFX
+  offset: 0x00A8A8
+  symbol: Z2_TORIDE_room_00DL_00A8A8
+
+Z2_TORIDE_room_00Vtx_00A8B8:
+  type: MM:ARRAY
+  offset: 0x00A8B8
+  symbol: Z2_TORIDE_room_00Vtx_00A8B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00A978:
+  type: GFX
+  offset: 0x00A978
+  symbol: Z2_TORIDE_room_00DL_00A978
+
+Z2_TORIDE_room_00Vtx_00AA28:
+  type: MM:ARRAY
+  offset: 0x00AA28
+  symbol: Z2_TORIDE_room_00Vtx_00AA28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00AA38:
+  type: GFX
+  offset: 0x00AA38
+  symbol: Z2_TORIDE_room_00DL_00AA38
+
+Z2_TORIDE_room_00DL_00AA58:
+  type: GFX
+  offset: 0x00AA58
+  symbol: Z2_TORIDE_room_00DL_00AA58
+
+Z2_TORIDE_room_00Vtx_00AA68:
+  type: MM:ARRAY
+  offset: 0x00AA68
+  symbol: Z2_TORIDE_room_00Vtx_00AA68
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00AB28:
+  type: GFX
+  offset: 0x00AB28
+  symbol: Z2_TORIDE_room_00DL_00AB28
+
+Z2_TORIDE_room_00Vtx_00ABD8:
+  type: MM:ARRAY
+  offset: 0x00ABD8
+  symbol: Z2_TORIDE_room_00Vtx_00ABD8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00ABE8:
+  type: GFX
+  offset: 0x00ABE8
+  symbol: Z2_TORIDE_room_00DL_00ABE8
+
+Z2_TORIDE_room_00DL_00AC08:
+  type: GFX
+  offset: 0x00AC08
+  symbol: Z2_TORIDE_room_00DL_00AC08
+
+Z2_TORIDE_room_00Vtx_00AC18:
+  type: MM:ARRAY
+  offset: 0x00AC18
+  symbol: Z2_TORIDE_room_00Vtx_00AC18
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00ACD8:
+  type: GFX
+  offset: 0x00ACD8
+  symbol: Z2_TORIDE_room_00DL_00ACD8
+
+Z2_TORIDE_room_00Vtx_00AD88:
+  type: MM:ARRAY
+  offset: 0x00AD88
+  symbol: Z2_TORIDE_room_00Vtx_00AD88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00AD98:
+  type: GFX
+  offset: 0x00AD98
+  symbol: Z2_TORIDE_room_00DL_00AD98
+
+Z2_TORIDE_room_00DL_00ADB8:
+  type: GFX
+  offset: 0x00ADB8
+  symbol: Z2_TORIDE_room_00DL_00ADB8
+
+Z2_TORIDE_room_00Vtx_00ADC8:
+  type: MM:ARRAY
+  offset: 0x00ADC8
+  symbol: Z2_TORIDE_room_00Vtx_00ADC8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00AE88:
+  type: GFX
+  offset: 0x00AE88
+  symbol: Z2_TORIDE_room_00DL_00AE88
+
+Z2_TORIDE_room_00Vtx_00AF38:
+  type: MM:ARRAY
+  offset: 0x00AF38
+  symbol: Z2_TORIDE_room_00Vtx_00AF38
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00AF48:
+  type: GFX
+  offset: 0x00AF48
+  symbol: Z2_TORIDE_room_00DL_00AF48
+
+Z2_TORIDE_room_00DL_00AF68:
+  type: GFX
+  offset: 0x00AF68
+  symbol: Z2_TORIDE_room_00DL_00AF68
+
+Z2_TORIDE_room_00Vtx_00AF78:
+  type: MM:ARRAY
+  offset: 0x00AF78
+  symbol: Z2_TORIDE_room_00Vtx_00AF78
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B038:
+  type: GFX
+  offset: 0x00B038
+  symbol: Z2_TORIDE_room_00DL_00B038
+
+Z2_TORIDE_room_00Vtx_00B0E8:
+  type: MM:ARRAY
+  offset: 0x00B0E8
+  symbol: Z2_TORIDE_room_00Vtx_00B0E8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B0F8:
+  type: GFX
+  offset: 0x00B0F8
+  symbol: Z2_TORIDE_room_00DL_00B0F8
+
+Z2_TORIDE_room_00DL_00B118:
+  type: GFX
+  offset: 0x00B118
+  symbol: Z2_TORIDE_room_00DL_00B118
+
+Z2_TORIDE_room_00Vtx_00B128:
+  type: MM:ARRAY
+  offset: 0x00B128
+  symbol: Z2_TORIDE_room_00Vtx_00B128
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B1E8:
+  type: GFX
+  offset: 0x00B1E8
+  symbol: Z2_TORIDE_room_00DL_00B1E8
+
+Z2_TORIDE_room_00Vtx_00B298:
+  type: MM:ARRAY
+  offset: 0x00B298
+  symbol: Z2_TORIDE_room_00Vtx_00B298
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B2A8:
+  type: GFX
+  offset: 0x00B2A8
+  symbol: Z2_TORIDE_room_00DL_00B2A8
+
+Z2_TORIDE_room_00DL_00B2C8:
+  type: GFX
+  offset: 0x00B2C8
+  symbol: Z2_TORIDE_room_00DL_00B2C8
+
+Z2_TORIDE_room_00Vtx_00B2D8:
+  type: MM:ARRAY
+  offset: 0x00B2D8
+  symbol: Z2_TORIDE_room_00Vtx_00B2D8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B398:
+  type: GFX
+  offset: 0x00B398
+  symbol: Z2_TORIDE_room_00DL_00B398
+
+Z2_TORIDE_room_00Vtx_00B448:
+  type: MM:ARRAY
+  offset: 0x00B448
+  symbol: Z2_TORIDE_room_00Vtx_00B448
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B458:
+  type: GFX
+  offset: 0x00B458
+  symbol: Z2_TORIDE_room_00DL_00B458
+
+Z2_TORIDE_room_00DL_00B478:
+  type: GFX
+  offset: 0x00B478
+  symbol: Z2_TORIDE_room_00DL_00B478
+
+Z2_TORIDE_room_00Vtx_00B488:
+  type: MM:ARRAY
+  offset: 0x00B488
+  symbol: Z2_TORIDE_room_00Vtx_00B488
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B548:
+  type: GFX
+  offset: 0x00B548
+  symbol: Z2_TORIDE_room_00DL_00B548
+
+Z2_TORIDE_room_00Vtx_00B5F8:
+  type: MM:ARRAY
+  offset: 0x00B5F8
+  symbol: Z2_TORIDE_room_00Vtx_00B5F8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B608:
+  type: GFX
+  offset: 0x00B608
+  symbol: Z2_TORIDE_room_00DL_00B608
+
+Z2_TORIDE_room_00DL_00B628:
+  type: GFX
+  offset: 0x00B628
+  symbol: Z2_TORIDE_room_00DL_00B628
+
+Z2_TORIDE_room_00Vtx_00B638:
+  type: MM:ARRAY
+  offset: 0x00B638
+  symbol: Z2_TORIDE_room_00Vtx_00B638
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B6F8:
+  type: GFX
+  offset: 0x00B6F8
+  symbol: Z2_TORIDE_room_00DL_00B6F8
+
+Z2_TORIDE_room_00Vtx_00B7A8:
+  type: MM:ARRAY
+  offset: 0x00B7A8
+  symbol: Z2_TORIDE_room_00Vtx_00B7A8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B7B8:
+  type: GFX
+  offset: 0x00B7B8
+  symbol: Z2_TORIDE_room_00DL_00B7B8
+
+Z2_TORIDE_room_00DL_00B7D8:
+  type: GFX
+  offset: 0x00B7D8
+  symbol: Z2_TORIDE_room_00DL_00B7D8
+
+Z2_TORIDE_room_00Vtx_00B7E8:
+  type: MM:ARRAY
+  offset: 0x00B7E8
+  symbol: Z2_TORIDE_room_00Vtx_00B7E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B8A8:
+  type: GFX
+  offset: 0x00B8A8
+  symbol: Z2_TORIDE_room_00DL_00B8A8
+
+Z2_TORIDE_room_00Vtx_00B958:
+  type: MM:ARRAY
+  offset: 0x00B958
+  symbol: Z2_TORIDE_room_00Vtx_00B958
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00B968:
+  type: GFX
+  offset: 0x00B968
+  symbol: Z2_TORIDE_room_00DL_00B968
+
+Z2_TORIDE_room_00DL_00B988:
+  type: GFX
+  offset: 0x00B988
+  symbol: Z2_TORIDE_room_00DL_00B988
+
+Z2_TORIDE_room_00Vtx_00B998:
+  type: MM:ARRAY
+  offset: 0x00B998
+  symbol: Z2_TORIDE_room_00Vtx_00B998
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BA58:
+  type: GFX
+  offset: 0x00BA58
+  symbol: Z2_TORIDE_room_00DL_00BA58
+
+Z2_TORIDE_room_00Vtx_00BB08:
+  type: MM:ARRAY
+  offset: 0x00BB08
+  symbol: Z2_TORIDE_room_00Vtx_00BB08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BB18:
+  type: GFX
+  offset: 0x00BB18
+  symbol: Z2_TORIDE_room_00DL_00BB18
+
+Z2_TORIDE_room_00DL_00BB38:
+  type: GFX
+  offset: 0x00BB38
+  symbol: Z2_TORIDE_room_00DL_00BB38
+
+Z2_TORIDE_room_00Vtx_00BB48:
+  type: MM:ARRAY
+  offset: 0x00BB48
+  symbol: Z2_TORIDE_room_00Vtx_00BB48
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BC08:
+  type: GFX
+  offset: 0x00BC08
+  symbol: Z2_TORIDE_room_00DL_00BC08
+
+Z2_TORIDE_room_00Vtx_00BCB8:
+  type: MM:ARRAY
+  offset: 0x00BCB8
+  symbol: Z2_TORIDE_room_00Vtx_00BCB8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BCC8:
+  type: GFX
+  offset: 0x00BCC8
+  symbol: Z2_TORIDE_room_00DL_00BCC8
+
+Z2_TORIDE_room_00DL_00BCE8:
+  type: GFX
+  offset: 0x00BCE8
+  symbol: Z2_TORIDE_room_00DL_00BCE8
+
+Z2_TORIDE_room_00Vtx_00BCF8:
+  type: MM:ARRAY
+  offset: 0x00BCF8
+  symbol: Z2_TORIDE_room_00Vtx_00BCF8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BDB8:
+  type: GFX
+  offset: 0x00BDB8
+  symbol: Z2_TORIDE_room_00DL_00BDB8
+
+Z2_TORIDE_room_00Vtx_00BE68:
+  type: MM:ARRAY
+  offset: 0x00BE68
+  symbol: Z2_TORIDE_room_00Vtx_00BE68
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BE78:
+  type: GFX
+  offset: 0x00BE78
+  symbol: Z2_TORIDE_room_00DL_00BE78
+
+Z2_TORIDE_room_00DL_00BE98:
+  type: GFX
+  offset: 0x00BE98
+  symbol: Z2_TORIDE_room_00DL_00BE98
+
+Z2_TORIDE_room_00Vtx_00BEA8:
+  type: MM:ARRAY
+  offset: 0x00BEA8
+  symbol: Z2_TORIDE_room_00Vtx_00BEA8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00BF68:
+  type: GFX
+  offset: 0x00BF68
+  symbol: Z2_TORIDE_room_00DL_00BF68
+
+Z2_TORIDE_room_00Vtx_00C018:
+  type: MM:ARRAY
+  offset: 0x00C018
+  symbol: Z2_TORIDE_room_00Vtx_00C018
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00C028:
+  type: GFX
+  offset: 0x00C028
+  symbol: Z2_TORIDE_room_00DL_00C028
+
+Z2_TORIDE_room_00DL_00C048:
+  type: GFX
+  offset: 0x00C048
+  symbol: Z2_TORIDE_room_00DL_00C048
+
+Z2_TORIDE_room_00DL_00C058:
+  type: GFX
+  offset: 0x00C058
+  symbol: Z2_TORIDE_room_00DL_00C058
+
+Z2_TORIDE_room_00Vtx_00C0E0:
+  type: MM:ARRAY
+  offset: 0x00C0E0
+  symbol: Z2_TORIDE_room_00Vtx_00C0E0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00C5E0:
+  type: GFX
+  offset: 0x00C5E0
+  symbol: Z2_TORIDE_room_00DL_00C5E0
+
+Z2_TORIDE_room_00Vtx_00C758:
+  type: MM:ARRAY
+  offset: 0x00C758
+  symbol: Z2_TORIDE_room_00Vtx_00C758
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00C858:
+  type: GFX
+  offset: 0x00C858
+  symbol: Z2_TORIDE_room_00DL_00C858
+
+Z2_TORIDE_room_00Vtx_00C9E8:
+  type: MM:ARRAY
+  offset: 0x00C9E8
+  symbol: Z2_TORIDE_room_00Vtx_00C9E8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00CC18:
+  type: GFX
+  offset: 0x00CC18
+  symbol: Z2_TORIDE_room_00DL_00CC18
+
+Z2_TORIDE_room_00Vtx_00CDB0:
+  type: MM:ARRAY
+  offset: 0x00CDB0
+  symbol: Z2_TORIDE_room_00Vtx_00CDB0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TORIDE_room_00DL_00CE70:
+  type: GFX
+  offset: 0x00CE70
+  symbol: Z2_TORIDE_room_00DL_00CE70
+
+Z2_TORIDE_room_00DL_00CFA8:
+  type: GFX
+  offset: 0x00CFA8
+  symbol: Z2_TORIDE_room_00DL_00CFA8
+
+Z2_TORIDE_room_00DL_00CFB0:
+  type: GFX
+  offset: 0x00CFB0
+  symbol: Z2_TORIDE_room_00DL_00CFB0
+
+Z2_TORIDE_room_00DL_00CFC0:
+  type: GFX
+  offset: 0x00CFC0
+  symbol: Z2_TORIDE_room_00DL_00CFC0
+
+Z2_TORIDE_room_00DL_00CFC8:
+  type: GFX
+  offset: 0x00CFC8
+  symbol: Z2_TORIDE_room_00DL_00CFC8
+
+Z2_TORIDE_room_00DL_00CFD0:
+  type: GFX
+  offset: 0x00CFD0
+  symbol: Z2_TORIDE_room_00DL_00CFD0
+
+Z2_TORIDE_room_00DL_00CFE0:
+  type: GFX
+  offset: 0x00CFE0
+  symbol: Z2_TORIDE_room_00DL_00CFE0
+
+Z2_TORIDE_room_00DL_00CFE8:
+  type: GFX
+  offset: 0x00CFE8
+  symbol: Z2_TORIDE_room_00DL_00CFE8
+
+Z2_TORIDE_room_00DL_00CFF8:
+  type: GFX
+  offset: 0x00CFF8
+  symbol: Z2_TORIDE_room_00DL_00CFF8
+
+Z2_TORIDE_room_00DL_00D000:
+  type: GFX
+  offset: 0x00D000
+  symbol: Z2_TORIDE_room_00DL_00D000
+
+Z2_TORIDE_room_00DL_00D010:
+  type: GFX
+  offset: 0x00D010
+  symbol: Z2_TORIDE_room_00DL_00D010
+
+Z2_TORIDE_room_00DL_00D018:
+  type: GFX
+  offset: 0x00D018
+  symbol: Z2_TORIDE_room_00DL_00D018
+
+Z2_TORIDE_room_00DL_00D028:
+  type: GFX
+  offset: 0x00D028
+  symbol: Z2_TORIDE_room_00DL_00D028
+
+Z2_TORIDE_room_00DL_00D030:
+  type: GFX
+  offset: 0x00D030
+  symbol: Z2_TORIDE_room_00DL_00D030
+
+Z2_TORIDE_room_00DL_00D040:
+  type: GFX
+  offset: 0x00D040
+  symbol: Z2_TORIDE_room_00DL_00D040
+
+Z2_TORIDE_room_00DL_00D048:
+  type: GFX
+  offset: 0x00D048
+  symbol: Z2_TORIDE_room_00DL_00D048
+
+Z2_TORIDE_room_00DL_00D058:
+  type: GFX
+  offset: 0x00D058
+  symbol: Z2_TORIDE_room_00DL_00D058
+
+Z2_TORIDE_room_00DL_00D060:
+  type: GFX
+  offset: 0x00D060
+  symbol: Z2_TORIDE_room_00DL_00D060
+
+Z2_TORIDE_room_00DL_00D070:
+  type: GFX
+  offset: 0x00D070
+  symbol: Z2_TORIDE_room_00DL_00D070
+
+Z2_TORIDE_room_00DL_00D078:
+  type: GFX
+  offset: 0x00D078
+  symbol: Z2_TORIDE_room_00DL_00D078
+
+Z2_TORIDE_room_00DL_00D088:
+  type: GFX
+  offset: 0x00D088
+  symbol: Z2_TORIDE_room_00DL_00D088
+
+Z2_TORIDE_room_00DL_00D090:
+  type: GFX
+  offset: 0x00D090
+  symbol: Z2_TORIDE_room_00DL_00D090
+
+Z2_TORIDE_room_00DL_00D0A0:
+  type: GFX
+  offset: 0x00D0A0
+  symbol: Z2_TORIDE_room_00DL_00D0A0
+
+Z2_TORIDE_room_00DL_00D0A8:
+  type: GFX
+  offset: 0x00D0A8
+  symbol: Z2_TORIDE_room_00DL_00D0A8
+
+Z2_TORIDE_room_00DL_00D0B8:
+  type: GFX
+  offset: 0x00D0B8
+  symbol: Z2_TORIDE_room_00DL_00D0B8
+
+Z2_TORIDE_room_00DL_00D0C0:
+  type: GFX
+  offset: 0x00D0C0
+  symbol: Z2_TORIDE_room_00DL_00D0C0
+
+Z2_TORIDE_room_00DL_00D0D0:
+  type: GFX
+  offset: 0x00D0D0
+  symbol: Z2_TORIDE_room_00DL_00D0D0
+
+Z2_TORIDE_room_00DL_00D0D8:
+  type: GFX
+  offset: 0x00D0D8
+  symbol: Z2_TORIDE_room_00DL_00D0D8
+
+Z2_TORIDE_room_00DL_00D0E8:
+  type: GFX
+  offset: 0x00D0E8
+  symbol: Z2_TORIDE_room_00DL_00D0E8
+
+Z2_TORIDE_room_00DL_00D0F0:
+  type: GFX
+  offset: 0x00D0F0
+  symbol: Z2_TORIDE_room_00DL_00D0F0
+
+Z2_TORIDE_room_00DL_00D100:
+  type: GFX
+  offset: 0x00D100
+  symbol: Z2_TORIDE_room_00DL_00D100
+
+Z2_TORIDE_room_00DL_00D108:
+  type: GFX
+  offset: 0x00D108
+  symbol: Z2_TORIDE_room_00DL_00D108
+
+Z2_TORIDE_room_00DL_00D118:
+  type: GFX
+  offset: 0x00D118
+  symbol: Z2_TORIDE_room_00DL_00D118
+
+Z2_TORIDE_room_00DL_00D120:
+  type: GFX
+  offset: 0x00D120
+  symbol: Z2_TORIDE_room_00DL_00D120
+
+Z2_TORIDE_room_00DL_00D130:
+  type: GFX
+  offset: 0x00D130
+  symbol: Z2_TORIDE_room_00DL_00D130
+
+Z2_TORIDE_room_00DL_00D138:
+  type: GFX
+  offset: 0x00D138
+  symbol: Z2_TORIDE_room_00DL_00D138
+
+Z2_TORIDE_room_00DL_00D148:
+  type: GFX
+  offset: 0x00D148
+  symbol: Z2_TORIDE_room_00DL_00D148

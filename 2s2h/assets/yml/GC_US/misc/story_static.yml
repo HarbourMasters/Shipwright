@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 7, 0x009E22C0 ]
+
+gStoryGiantsLeavingTLUT:
+  type: TEXTURE
+  offset: 0x25A00
+  symbol: gStoryGiantsLeavingTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStoryGiantsLeavingTex:
+  type: TEXTURE
+  offset: 0x12C00
+  symbol: gStoryGiantsLeavingTex
+  format: CI8
+  width: 320
+  height: 240
+  tlut: 0x25A00
+
+gStoryMaskFestivalTLUT:
+  type: TEXTURE
+  offset: 0x25800
+  symbol: gStoryMaskFestivalTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStoryMaskFestivalTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gStoryMaskFestivalTex
+  format: CI8
+  width: 320
+  height: 240
+  tlut: 0x25800
+

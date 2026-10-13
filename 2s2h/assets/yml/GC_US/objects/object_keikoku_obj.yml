@@ -1,0 +1,242 @@
+:config:
+  segments:
+    - [ 6, 0x011AB640 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011AB640 ]
+    - [ 9, 0x011AB640 ]
+    - [ 10, 0x011AB640 ]
+    - [ 11, 0x011AB640 ]
+    - [ 12, 0x011AB640 ]
+    - [ 13, 0x011AB640 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_keikoku_obj_Colheader_002300:
+  type: MM:COLLISION
+  offset: 0x2300
+  symbol: object_keikoku_obj_Colheader_002300
+
+object_keikoku_obj_DL_000100:
+  type: GFX
+  offset: 0x100
+  symbol: object_keikoku_obj_DL_000100
+
+object_keikoku_obj_DL_000300:
+  type: GFX
+  offset: 0x300
+  symbol: object_keikoku_obj_DL_000300
+
+object_keikoku_obj_DL_000500:
+  type: GFX
+  offset: 0x500
+  symbol: object_keikoku_obj_DL_000500
+
+object_keikoku_obj_DL_001640:
+  type: GFX
+  offset: 0x1640
+  symbol: object_keikoku_obj_DL_001640
+
+object_keikoku_obj_DL_0027D0:
+  type: GFX
+  offset: 0x27D0
+  symbol: object_keikoku_obj_DL_0027D0
+
+object_keikoku_obj_DL_0027D8:
+  type: GFX
+  offset: 0x27D8
+  symbol: object_keikoku_obj_DL_0027D8
+
+object_keikoku_obj_DL_0044A0:
+  type: GFX
+  offset: 0x44A0
+  symbol: object_keikoku_obj_DL_0044A0
+
+object_keikoku_obj_DL_0044A8:
+  type: GFX
+  offset: 0x44A8
+  symbol: object_keikoku_obj_DL_0044A8
+
+object_keikoku_obj_Matanimheader_0001F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1F8
+  symbol: object_keikoku_obj_Matanimheader_0001F8
+
+object_keikoku_obj_Matanimheader_0003F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3F8
+  symbol: object_keikoku_obj_Matanimheader_0003F8
+
+object_keikoku_obj_Matanimheader_0005F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x5F8
+  symbol: object_keikoku_obj_Matanimheader_0005F8
+
+object_keikoku_obj_Matanimheader_004290:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x4290
+  symbol: object_keikoku_obj_Matanimheader_004290
+
+object_keikoku_obj_Tex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: object_keikoku_obj_Tex_000600
+  format: I4
+  width: 64
+  height: 64
+
+object_keikoku_obj_Tex_000E00:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: object_keikoku_obj_Tex_000E00
+  format: I4
+  width: 64
+  height: 64
+
+object_keikoku_obj_Tex_001780:
+  type: TEXTURE
+  offset: 0x1780
+  symbol: object_keikoku_obj_Tex_001780
+  format: IA4
+  width: 32
+  height: 128
+
+object_keikoku_obj_Tex_001F80:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: object_keikoku_obj_Tex_001F80
+  format: IA4
+  width: 16
+  height: 64
+
+object_keikoku_obj_Tex_002180:
+  type: TEXTURE
+  offset: 0x2180
+  symbol: object_keikoku_obj_Tex_002180
+  format: IA8
+  width: 8
+  height: 32
+
+object_keikoku_obj_Tex_002A78:
+  type: TEXTURE
+  offset: 0x2A78
+  symbol: object_keikoku_obj_Tex_002A78
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_keikoku_obj_Tex_003278:
+  type: TEXTURE
+  offset: 0x3278
+  symbol: object_keikoku_obj_Tex_003278
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_keikoku_obj_Tex_003A78:
+  type: TEXTURE
+  offset: 0x3A78
+  symbol: object_keikoku_obj_Tex_003A78
+  format: I4
+  width: 64
+  height: 64
+
+object_keikoku_obj_Tex_004618:
+  type: TEXTURE
+  offset: 0x4618
+  symbol: object_keikoku_obj_Tex_004618
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_keikoku_obj_Tex_004A18:
+  type: TEXTURE
+  offset: 0x4A18
+  symbol: object_keikoku_obj_Tex_004A18
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_keikoku_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_keikoku_objVtx_000000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_obj_Matanimheader_0001F8TexScrollParams_0001F0:
+  type: BLOB
+  offset: 0x0001F0
+  symbol: object_keikoku_obj_Matanimheader_0001F8TexScrollParams_0001F0
+  size: 0
+
+object_keikoku_objVtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_keikoku_objVtx_000200
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_obj_Matanimheader_0003F8TexScrollParams_0003F0:
+  type: BLOB
+  offset: 0x0003F0
+  symbol: object_keikoku_obj_Matanimheader_0003F8TexScrollParams_0003F0
+  size: 0
+
+object_keikoku_objVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_keikoku_objVtx_000400
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_obj_Matanimheader_0005F8TexScrollParams_0005F0:
+  type: BLOB
+  offset: 0x0005F0
+  symbol: object_keikoku_obj_Matanimheader_0005F8TexScrollParams_0005F0
+  size: 0
+
+object_keikoku_objVtx_001600:
+  type: MM:ARRAY
+  offset: 0x001600
+  symbol: object_keikoku_objVtx_001600
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_objVtx_002330:
+  type: MM:ARRAY
+  offset: 0x002330
+  symbol: object_keikoku_objVtx_002330
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_obj_Matanimheader_004290TexScrollParams_004280:
+  type: BLOB
+  offset: 0x004280
+  symbol: object_keikoku_obj_Matanimheader_004290TexScrollParams_004280
+  size: 0
+
+object_keikoku_obj_Matanimheader_004290TexScrollParams_004288:
+  type: BLOB
+  offset: 0x004288
+  symbol: object_keikoku_obj_Matanimheader_004290TexScrollParams_004288
+  size: 0
+
+object_keikoku_objVtx_0042A0:
+  type: MM:ARRAY
+  offset: 0x0042A0
+  symbol: object_keikoku_objVtx_0042A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

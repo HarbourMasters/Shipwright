@@ -1,0 +1,128 @@
+:config:
+  segments:
+    - [ 6, 0x011A2F10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011A2F10 ]
+    - [ 9, 0x011A2F10 ]
+    - [ 10, 0x011A2F10 ]
+    - [ 11, 0x011A2F10 ]
+    - [ 12, 0x011A2F10 ]
+    - [ 13, 0x011A2F10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSunsSongGraveKokiriCol:
+  type: MM:COLLISION
+  offset: 0x33D8
+  symbol: gSunsSongGraveKokiriCol
+
+gSunsSongGraveKokiriDL:
+  type: GFX
+  offset: 0x5C8
+  symbol: gSunsSongGraveKokiriDL
+
+gSunsSongGraveKokiriGoronTLUT:
+  type: TEXTURE
+  offset: 0x5E0
+  symbol: gSunsSongGraveKokiriGoronTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveKokiriGraniteTex:
+  type: TEXTURE
+  offset: 0x660
+  symbol: gSunsSongGraveKokiriGraniteTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSunsSongGraveKokiriMarbleTex:
+  type: TEXTURE
+  offset: 0xE60
+  symbol: gSunsSongGraveKokiriMarbleTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSunsSongGraveKokiriStaffNotesTex:
+  type: TEXTURE
+  offset: 0x2A60
+  symbol: gSunsSongGraveKokiriStaffNotesTex
+  format: IA4
+  width: 128
+  height: 32
+
+gSunsSongGraveKokiriStoneDL:
+  type: GFX
+  offset: 0x4B8
+  symbol: gSunsSongGraveKokiriStoneDL
+
+gSunsSongGraveKokiriStoneInscriptionTex:
+  type: TEXTURE
+  offset: 0x2660
+  symbol: gSunsSongGraveKokiriStoneInscriptionTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongGraveKokiriSymbolTex:
+  type: TEXTURE
+  offset: 0x1E60
+  symbol: gSunsSongGraveKokiriSymbolTex
+  format: CI4
+  width: 64
+  height: 64
+
+gSunsSongGraveKokiriSymbolsBaseDL:
+  type: GFX
+  offset: 0x340
+  symbol: gSunsSongGraveKokiriSymbolsBaseDL
+
+gSunsSongGraveKokiriSymbolsDL:
+  type: GFX
+  offset: 0x4A8
+  symbol: gSunsSongGraveKokiriSymbolsDL
+
+gSunsSongGraveKokiriTLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gSunsSongGraveKokiriTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveKokiriTriforceTLUT:
+  type: TEXTURE
+  offset: 0x640
+  symbol: gSunsSongGraveKokiriTriforceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveKokiriUnknownTLUT:
+  type: TEXTURE
+  offset: 0x620
+  symbol: gSunsSongGraveKokiriUnknownTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+
+object_sekihinVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sekihinVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sekihinVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_sekihinVtx_000240
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

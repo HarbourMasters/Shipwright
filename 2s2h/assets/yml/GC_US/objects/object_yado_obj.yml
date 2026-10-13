@@ -1,0 +1,93 @@
+:config:
+  segments:
+    - [ 6, 0x015B9020 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015B9020 ]
+    - [ 9, 0x015B9020 ]
+    - [ 10, 0x015B9020 ]
+    - [ 11, 0x015B9020 ]
+    - [ 12, 0x015B9020 ]
+    - [ 13, 0x015B9020 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_yado_obj_DL_000320:
+  type: GFX
+  offset: 0x320
+  symbol: object_yado_obj_DL_000320
+
+object_yado_obj_DL_000430:
+  type: GFX
+  offset: 0x430
+  symbol: object_yado_obj_DL_000430
+
+object_yado_obj_Matanimheader_0012E8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12E8
+  symbol: object_yado_obj_Matanimheader_0012E8
+
+object_yado_obj_Tex_0005D8:
+  type: TEXTURE
+  offset: 0x5D8
+  symbol: object_yado_obj_Tex_0005D8
+  format: IA16
+  width: 16
+  height: 32
+
+object_yado_obj_Tex_0009D8:
+  type: TEXTURE
+  offset: 0x9D8
+  symbol: object_yado_obj_Tex_0009D8
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_yado_obj_Tex_000DD8:
+  type: TEXTURE
+  offset: 0xDD8
+  symbol: object_yado_obj_Tex_000DD8
+  format: I8
+  width: 16
+  height: 16
+
+object_yado_obj_Tex_000ED8:
+  type: TEXTURE
+  offset: 0xED8
+  symbol: object_yado_obj_Tex_000ED8
+  format: IA16
+  width: 16
+  height: 32
+
+
+object_yado_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_yado_objVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yado_objVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_yado_objVtx_000180
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yado_objVtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: object_yado_objVtx_0002A0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yado_obj_Matanimheader_0012E8TexScrollParams_0012E0:
+  type: BLOB
+  offset: 0x0012E0
+  symbol: object_yado_obj_Matanimheader_0012E8TexScrollParams_0012E0
+  size: 0

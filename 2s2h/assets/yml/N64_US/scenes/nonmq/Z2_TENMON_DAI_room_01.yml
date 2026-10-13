@@ -1,0 +1,769 @@
+:config:
+  segments:
+    - [ 3, 0x0194BF80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0194BF80 ]
+    - [ 9, 0x0194BF80 ]
+    - [ 10, 0x0194BF80 ]
+    - [ 11, 0x0194BF80 ]
+    - [ 12, 0x0194BF80 ]
+    - [ 13, 0x0194BF80 ]
+    - [ 2, 0x0193EB70 ]
+  directory: scenes/nonmq/Z2_TENMON_DAI
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_TENMON_DAI.yml
+
+Z2_TENMON_DAI_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_TENMON_DAI_room_01
+
+Z2_TENMON_DAI_room_01DL_00C848:
+  type: GFX
+  offset: 0xC848
+  symbol: Z2_TENMON_DAI_room_01DL_00C848
+
+Z2_TENMON_DAI_room_01DL_017580:
+  type: GFX
+  offset: 0x17580
+  symbol: Z2_TENMON_DAI_room_01DL_017580
+
+
+Z2_TENMON_DAI_room_01ActorEntry_000060:
+  type: BLOB
+  offset: 0x000060
+  symbol: Z2_TENMON_DAI_room_01ActorEntry_000060
+  size: 0
+
+Z2_TENMON_DAI_room_01DL_007290Mtx_000000:
+  type: OOT:MTX
+  offset: 0x250
+  symbol: Z2_TENMON_DAI_room_01DL_007290Mtx_000000
+
+Z2_TENMON_DAI_room_01DL_006E20Mtx_000000:
+  type: OOT:MTX
+  offset: 0x290
+  symbol: Z2_TENMON_DAI_room_01DL_006E20Mtx_000000
+
+Z2_TENMON_DAI_room_01DL_0069B0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2D0
+  symbol: Z2_TENMON_DAI_room_01DL_0069B0Mtx_000000
+
+Z2_TENMON_DAI_room_01DL_006540Mtx_000000:
+  type: OOT:MTX
+  offset: 0x310
+  symbol: Z2_TENMON_DAI_room_01DL_006540Mtx_000000
+
+Z2_TENMON_DAI_room_01DL_0060D0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x350
+  symbol: Z2_TENMON_DAI_room_01DL_0060D0Mtx_000000
+
+Z2_TENMON_DAI_room_01DL_005C60Mtx_000000:
+  type: OOT:MTX
+  offset: 0x390
+  symbol: Z2_TENMON_DAI_room_01DL_005C60Mtx_000000
+
+Z2_TENMON_DAI_room_01Vtx_0003D0:
+  type: MM:ARRAY
+  offset: 0x0003D0
+  symbol: Z2_TENMON_DAI_room_01Vtx_0003D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_000560:
+  type: GFX
+  offset: 0x000560
+  symbol: Z2_TENMON_DAI_room_01DL_000560
+
+Z2_TENMON_DAI_room_01Vtx_000628:
+  type: MM:ARRAY
+  offset: 0x000628
+  symbol: Z2_TENMON_DAI_room_01Vtx_000628
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_0007A8:
+  type: GFX
+  offset: 0x0007A8
+  symbol: Z2_TENMON_DAI_room_01DL_0007A8
+
+Z2_TENMON_DAI_room_01Vtx_000898:
+  type: MM:ARRAY
+  offset: 0x000898
+  symbol: Z2_TENMON_DAI_room_01Vtx_000898
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_000EB8:
+  type: GFX
+  offset: 0x000EB8
+  symbol: Z2_TENMON_DAI_room_01DL_000EB8
+
+Z2_TENMON_DAI_room_01Vtx_001098:
+  type: MM:ARRAY
+  offset: 0x001098
+  symbol: Z2_TENMON_DAI_room_01Vtx_001098
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_001628:
+  type: GFX
+  offset: 0x001628
+  symbol: Z2_TENMON_DAI_room_01DL_001628
+
+Z2_TENMON_DAI_room_01Vtx_0017D0:
+  type: MM:ARRAY
+  offset: 0x0017D0
+  symbol: Z2_TENMON_DAI_room_01Vtx_0017D0
+  count: 131
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_002000:
+  type: GFX
+  offset: 0x002000
+  symbol: Z2_TENMON_DAI_room_01DL_002000
+
+Z2_TENMON_DAI_room_01Vtx_002268:
+  type: MM:ARRAY
+  offset: 0x002268
+  symbol: Z2_TENMON_DAI_room_01Vtx_002268
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_002878:
+  type: GFX
+  offset: 0x002878
+  symbol: Z2_TENMON_DAI_room_01DL_002878
+
+Z2_TENMON_DAI_room_01DL_002A88:
+  type: GFX
+  offset: 0x002A88
+  symbol: Z2_TENMON_DAI_room_01DL_002A88
+
+Z2_TENMON_DAI_room_01Vtx_002AC0:
+  type: MM:ARRAY
+  offset: 0x002AC0
+  symbol: Z2_TENMON_DAI_room_01Vtx_002AC0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_002F10:
+  type: GFX
+  offset: 0x002F10
+  symbol: Z2_TENMON_DAI_room_01DL_002F10
+
+Z2_TENMON_DAI_room_01Vtx_0030D8:
+  type: MM:ARRAY
+  offset: 0x0030D8
+  symbol: Z2_TENMON_DAI_room_01Vtx_0030D8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_003358:
+  type: GFX
+  offset: 0x003358
+  symbol: Z2_TENMON_DAI_room_01DL_003358
+
+Z2_TENMON_DAI_room_01Vtx_003500:
+  type: MM:ARRAY
+  offset: 0x003500
+  symbol: Z2_TENMON_DAI_room_01Vtx_003500
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_003800:
+  type: GFX
+  offset: 0x003800
+  symbol: Z2_TENMON_DAI_room_01DL_003800
+
+Z2_TENMON_DAI_room_01Vtx_003968:
+  type: MM:ARRAY
+  offset: 0x003968
+  symbol: Z2_TENMON_DAI_room_01Vtx_003968
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_003C68:
+  type: GFX
+  offset: 0x003C68
+  symbol: Z2_TENMON_DAI_room_01DL_003C68
+
+Z2_TENMON_DAI_room_01Vtx_003DD0:
+  type: MM:ARRAY
+  offset: 0x003DD0
+  symbol: Z2_TENMON_DAI_room_01Vtx_003DD0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_0040D0:
+  type: GFX
+  offset: 0x0040D0
+  symbol: Z2_TENMON_DAI_room_01DL_0040D0
+
+Z2_TENMON_DAI_room_01Vtx_004238:
+  type: MM:ARRAY
+  offset: 0x004238
+  symbol: Z2_TENMON_DAI_room_01Vtx_004238
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_004648:
+  type: GFX
+  offset: 0x004648
+  symbol: Z2_TENMON_DAI_room_01DL_004648
+
+Z2_TENMON_DAI_room_01Vtx_004778:
+  type: MM:ARRAY
+  offset: 0x004778
+  symbol: Z2_TENMON_DAI_room_01Vtx_004778
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_004EA8:
+  type: GFX
+  offset: 0x004EA8
+  symbol: Z2_TENMON_DAI_room_01DL_004EA8
+
+Z2_TENMON_DAI_room_01DL_005140:
+  type: GFX
+  offset: 0x005140
+  symbol: Z2_TENMON_DAI_room_01DL_005140
+
+Z2_TENMON_DAI_room_01Vtx_005180:
+  type: MM:ARRAY
+  offset: 0x005180
+  symbol: Z2_TENMON_DAI_room_01Vtx_005180
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_005730:
+  type: GFX
+  offset: 0x005730
+  symbol: Z2_TENMON_DAI_room_01DL_005730
+
+Z2_TENMON_DAI_room_01Vtx_0058E0:
+  type: MM:ARRAY
+  offset: 0x0058E0
+  symbol: Z2_TENMON_DAI_room_01Vtx_0058E0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_005C60:
+  type: GFX
+  offset: 0x005C60
+  symbol: Z2_TENMON_DAI_room_01DL_005C60
+
+Z2_TENMON_DAI_room_01Vtx_005D50:
+  type: MM:ARRAY
+  offset: 0x005D50
+  symbol: Z2_TENMON_DAI_room_01Vtx_005D50
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_0060D0:
+  type: GFX
+  offset: 0x0060D0
+  symbol: Z2_TENMON_DAI_room_01DL_0060D0
+
+Z2_TENMON_DAI_room_01Vtx_0061C0:
+  type: MM:ARRAY
+  offset: 0x0061C0
+  symbol: Z2_TENMON_DAI_room_01Vtx_0061C0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_006540:
+  type: GFX
+  offset: 0x006540
+  symbol: Z2_TENMON_DAI_room_01DL_006540
+
+Z2_TENMON_DAI_room_01Vtx_006630:
+  type: MM:ARRAY
+  offset: 0x006630
+  symbol: Z2_TENMON_DAI_room_01Vtx_006630
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_0069B0:
+  type: GFX
+  offset: 0x0069B0
+  symbol: Z2_TENMON_DAI_room_01DL_0069B0
+
+Z2_TENMON_DAI_room_01Vtx_006AA0:
+  type: MM:ARRAY
+  offset: 0x006AA0
+  symbol: Z2_TENMON_DAI_room_01Vtx_006AA0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_006E20:
+  type: GFX
+  offset: 0x006E20
+  symbol: Z2_TENMON_DAI_room_01DL_006E20
+
+Z2_TENMON_DAI_room_01Vtx_006F10:
+  type: MM:ARRAY
+  offset: 0x006F10
+  symbol: Z2_TENMON_DAI_room_01Vtx_006F10
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_007290:
+  type: GFX
+  offset: 0x007290
+  symbol: Z2_TENMON_DAI_room_01DL_007290
+
+Z2_TENMON_DAI_room_01Vtx_007380:
+  type: MM:ARRAY
+  offset: 0x007380
+  symbol: Z2_TENMON_DAI_room_01Vtx_007380
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_007EC0:
+  type: GFX
+  offset: 0x007EC0
+  symbol: Z2_TENMON_DAI_room_01DL_007EC0
+
+Z2_TENMON_DAI_room_01DL_008248:
+  type: GFX
+  offset: 0x008248
+  symbol: Z2_TENMON_DAI_room_01DL_008248
+
+Z2_TENMON_DAI_room_01Vtx_008258:
+  type: MM:ARRAY
+  offset: 0x008258
+  symbol: Z2_TENMON_DAI_room_01Vtx_008258
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_008748:
+  type: GFX
+  offset: 0x008748
+  symbol: Z2_TENMON_DAI_room_01DL_008748
+
+Z2_TENMON_DAI_room_01Vtx_0088C8:
+  type: MM:ARRAY
+  offset: 0x0088C8
+  symbol: Z2_TENMON_DAI_room_01Vtx_0088C8
+  count: 415
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00A2B8:
+  type: GFX
+  offset: 0x00A2B8
+  symbol: Z2_TENMON_DAI_room_01DL_00A2B8
+
+Z2_TENMON_DAI_room_01Vtx_00AB68:
+  type: MM:ARRAY
+  offset: 0x00AB68
+  symbol: Z2_TENMON_DAI_room_01Vtx_00AB68
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00ADE8:
+  type: GFX
+  offset: 0x00ADE8
+  symbol: Z2_TENMON_DAI_room_01DL_00ADE8
+
+Z2_TENMON_DAI_room_01Vtx_00AF30:
+  type: MM:ARRAY
+  offset: 0x00AF30
+  symbol: Z2_TENMON_DAI_room_01Vtx_00AF30
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00B500:
+  type: GFX
+  offset: 0x00B500
+  symbol: Z2_TENMON_DAI_room_01DL_00B500
+
+Z2_TENMON_DAI_room_01Vtx_00B678:
+  type: MM:ARRAY
+  offset: 0x00B678
+  symbol: Z2_TENMON_DAI_room_01Vtx_00B678
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00BFC8:
+  type: GFX
+  offset: 0x00BFC8
+  symbol: Z2_TENMON_DAI_room_01DL_00BFC8
+
+Z2_TENMON_DAI_room_01Vtx_00C400:
+  type: MM:ARRAY
+  offset: 0x00C400
+  symbol: Z2_TENMON_DAI_room_01Vtx_00C400
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00C550:
+  type: GFX
+  offset: 0x00C550
+  symbol: Z2_TENMON_DAI_room_01DL_00C550
+
+Z2_TENMON_DAI_room_01Vtx_00C668:
+  type: MM:ARRAY
+  offset: 0x00C668
+  symbol: Z2_TENMON_DAI_room_01Vtx_00C668
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_00C768:
+  type: GFX
+  offset: 0x00C768
+  symbol: Z2_TENMON_DAI_room_01DL_00C768
+
+Z2_TENMON_DAI_room_01Tex_00C8D8:
+  type: TEXTURE
+  offset: 0x00C8D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00C8D8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_00D0D8:
+  type: TEXTURE
+  offset: 0x00D0D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00D0D8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_00D8D8:
+  type: TEXTURE
+  offset: 0x00D8D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00D8D8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_00DCD8:
+  type: TEXTURE
+  offset: 0x00DCD8
+  symbol: Z2_TENMON_DAI_room_01Tex_00DCD8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_00E0D8:
+  type: TEXTURE
+  offset: 0x00E0D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00E0D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01TLUT_00E8D8:
+  type: TEXTURE
+  offset: 0x00E8D8
+  symbol: Z2_TENMON_DAI_room_01TLUT_00E8D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_TENMON_DAI_room_01Tex_00EAD8:
+  type: TEXTURE
+  offset: 0x00EAD8
+  symbol: Z2_TENMON_DAI_room_01Tex_00EAD8
+  format: I8
+  width: 16
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_00EED8:
+  type: TEXTURE
+  offset: 0x00EED8
+  symbol: Z2_TENMON_DAI_room_01Tex_00EED8
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_00F0D8:
+  type: TEXTURE
+  offset: 0x00F0D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00F0D8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_00F4D8:
+  type: TEXTURE
+  offset: 0x00F4D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00F4D8
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_TENMON_DAI_room_01Tex_00F6D8:
+  type: TEXTURE
+  offset: 0x00F6D8
+  symbol: Z2_TENMON_DAI_room_01Tex_00F6D8
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_00FED8:
+  type: TEXTURE
+  offset: 0x00FED8
+  symbol: Z2_TENMON_DAI_room_01Tex_00FED8
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_0102D8:
+  type: TEXTURE
+  offset: 0x0102D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0102D8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_010AD8:
+  type: TEXTURE
+  offset: 0x010AD8
+  symbol: Z2_TENMON_DAI_room_01Tex_010AD8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_010ED8:
+  type: TEXTURE
+  offset: 0x010ED8
+  symbol: Z2_TENMON_DAI_room_01Tex_010ED8
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_0116D8:
+  type: TEXTURE
+  offset: 0x0116D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0116D8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_011AD8:
+  type: TEXTURE
+  offset: 0x011AD8
+  symbol: Z2_TENMON_DAI_room_01Tex_011AD8
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_TENMON_DAI_room_01Tex_011CD8:
+  type: TEXTURE
+  offset: 0x011CD8
+  symbol: Z2_TENMON_DAI_room_01Tex_011CD8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_0120D8:
+  type: TEXTURE
+  offset: 0x0120D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0120D8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_0124D8:
+  type: TEXTURE
+  offset: 0x0124D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0124D8
+  format: I8
+  width: 64
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_012CD8:
+  type: TEXTURE
+  offset: 0x012CD8
+  symbol: Z2_TENMON_DAI_room_01Tex_012CD8
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_0134D8:
+  type: TEXTURE
+  offset: 0x0134D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0134D8
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_013CD8:
+  type: TEXTURE
+  offset: 0x013CD8
+  symbol: Z2_TENMON_DAI_room_01Tex_013CD8
+  format: I8
+  width: 16
+  height: 16
+
+Z2_TENMON_DAI_room_01Tex_013DD8:
+  type: TEXTURE
+  offset: 0x013DD8
+  symbol: Z2_TENMON_DAI_room_01Tex_013DD8
+  format: I4
+  width: 64
+  height: 128
+
+Z2_TENMON_DAI_room_01Tex_014DD8:
+  type: TEXTURE
+  offset: 0x014DD8
+  symbol: Z2_TENMON_DAI_room_01Tex_014DD8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_0151D8:
+  type: TEXTURE
+  offset: 0x0151D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0151D8
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_0159D8:
+  type: TEXTURE
+  offset: 0x0159D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0159D8
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_TENMON_DAI_room_01Tex_0161D8:
+  type: TEXTURE
+  offset: 0x0161D8
+  symbol: Z2_TENMON_DAI_room_01Tex_0161D8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01DL_0165E0:
+  type: GFX
+  offset: 0x0165E0
+  symbol: Z2_TENMON_DAI_room_01DL_0165E0
+
+Z2_TENMON_DAI_room_01Vtx_0165E8:
+  type: MM:ARRAY
+  offset: 0x0165E8
+  symbol: Z2_TENMON_DAI_room_01Vtx_0165E8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_016828:
+  type: GFX
+  offset: 0x016828
+  symbol: Z2_TENMON_DAI_room_01DL_016828
+
+Z2_TENMON_DAI_room_01Vtx_016938:
+  type: MM:ARRAY
+  offset: 0x016938
+  symbol: Z2_TENMON_DAI_room_01Vtx_016938
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_016B58:
+  type: GFX
+  offset: 0x016B58
+  symbol: Z2_TENMON_DAI_room_01DL_016B58
+
+Z2_TENMON_DAI_room_01Vtx_016C80:
+  type: MM:ARRAY
+  offset: 0x016C80
+  symbol: Z2_TENMON_DAI_room_01Vtx_016C80
+  count: 119
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TENMON_DAI_room_01DL_0173F0:
+  type: GFX
+  offset: 0x0173F0
+  symbol: Z2_TENMON_DAI_room_01DL_0173F0
+
+Z2_TENMON_DAI_room_01Tex_0175A8:
+  type: TEXTURE
+  offset: 0x0175A8
+  symbol: Z2_TENMON_DAI_room_01Tex_0175A8
+  format: I8
+  width: 16
+  height: 16
+
+Z2_TENMON_DAI_room_01Tex_0176A8:
+  type: TEXTURE
+  offset: 0x0176A8
+  symbol: Z2_TENMON_DAI_room_01Tex_0176A8
+  format: I8
+  width: 32
+  height: 32
+
+Z2_TENMON_DAI_room_01Tex_017AA8:
+  type: TEXTURE
+  offset: 0x017AA8
+  symbol: Z2_TENMON_DAI_room_01Tex_017AA8
+  format: IA8
+  width: 64
+  height: 64

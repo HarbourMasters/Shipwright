@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 128, 0x016490A0 ]
+
+gSkyboxClear1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSkyboxClear1Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: d2_fine_pal_static
+  external_tlut_offset: 0x0
+
+gSkyboxClear2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gSkyboxClear2Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: d2_fine_pal_static
+  external_tlut_offset: 0x0
+
+gSkyboxClear3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gSkyboxClear3Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: d2_fine_pal_static
+  external_tlut_offset: 0x0
+
+gSkyboxClear4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gSkyboxClear4Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: d2_fine_pal_static
+  external_tlut_offset: 0x0
+
+gSkyboxClear5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gSkyboxClear5Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: d2_fine_pal_static
+  external_tlut_offset: 0x0
+

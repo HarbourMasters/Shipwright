@@ -1,0 +1,1526 @@
+:config:
+  segments:
+    - [ 6, 0x01114DB0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01114DB0 ]
+    - [ 9, 0x01114DB0 ]
+    - [ 10, 0x01114DB0 ]
+    - [ 11, 0x01114DB0 ]
+    - [ 12, 0x01114DB0 ]
+    - [ 13, 0x01114DB0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gOdolwaArmSwingDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CE88
+  symbol: gOdolwaArmSwingDanceAnim
+
+gOdolwaAtAttentionAnim:
+  type: OOT:ANIMATION
+  offset: 0x1A14
+  symbol: gOdolwaAtAttentionAnim
+
+gOdolwaBugBackLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x22214
+  symbol: gOdolwaBugBackLeftLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugBackLeftLowerLegDL:
+  type: GFX
+  offset: 0x215E0
+  symbol: gOdolwaBugBackLeftLowerLegDL
+
+gOdolwaBugBackLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x2222C
+  symbol: gOdolwaBugBackLeftLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugBackLeftUpperLegDL:
+  type: GFX
+  offset: 0x215C0
+  symbol: gOdolwaBugBackLeftUpperLegDL
+
+gOdolwaBugBackLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x22220
+  symbol: gOdolwaBugBackLeftUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugBackRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x22238
+  symbol: gOdolwaBugBackRightLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugBackRightLowerLegDL:
+  type: GFX
+  offset: 0x21590
+  symbol: gOdolwaBugBackRightLowerLegDL
+
+gOdolwaBugBackRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x22250
+  symbol: gOdolwaBugBackRightLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugBackRightUpperLegDL:
+  type: GFX
+  offset: 0x21570
+  symbol: gOdolwaBugBackRightUpperLegDL
+
+gOdolwaBugBackRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x22244
+  symbol: gOdolwaBugBackRightUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugBodyLimb:
+  type: OOT:LIMB
+  offset: 0x2219C
+  symbol: gOdolwaBugBodyLimb
+  limb_type: Standard
+
+gOdolwaBugBodyTex:
+  type: TEXTURE
+  offset: 0x21820
+  symbol: gOdolwaBugBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOdolwaBugBrightLegMaterialDL:
+  type: GFX
+  offset: 0x22118
+  symbol: gOdolwaBugBrightLegMaterialDL
+
+gOdolwaBugCrawlAnim:
+  type: OOT:ANIMATION
+  offset: 0x22550
+  symbol: gOdolwaBugCrawlAnim
+
+gOdolwaBugDarkBodyDL:
+  type: GFX
+  offset: 0x213A8
+  symbol: gOdolwaBugDarkBodyDL
+
+gOdolwaBugDullLegMaterialDL:
+  type: GFX
+  offset: 0x220A0
+  symbol: gOdolwaBugDullLegMaterialDL
+
+gOdolwaBugFrontLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x2225C
+  symbol: gOdolwaBugFrontLeftLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x21538
+  symbol: gOdolwaBugFrontLeftLowerLegDL
+
+gOdolwaBugFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x22274
+  symbol: gOdolwaBugFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0x21518
+  symbol: gOdolwaBugFrontLeftUpperLegDL
+
+gOdolwaBugFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x22268
+  symbol: gOdolwaBugFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugFrontRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x221A8
+  symbol: gOdolwaBugFrontRightLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugFrontRightLowerLegDL:
+  type: GFX
+  offset: 0x216C8
+  symbol: gOdolwaBugFrontRightLowerLegDL
+
+gOdolwaBugFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x221C0
+  symbol: gOdolwaBugFrontRightLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugFrontRightUpperLegDL:
+  type: GFX
+  offset: 0x216A8
+  symbol: gOdolwaBugFrontRightUpperLegDL
+
+gOdolwaBugFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x221B4
+  symbol: gOdolwaBugFrontRightUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugLegTex:
+  type: TEXTURE
+  offset: 0x22020
+  symbol: gOdolwaBugLegTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gOdolwaBugLightBodyDL:
+  type: GFX
+  offset: 0x21230
+  symbol: gOdolwaBugLightBodyDL
+
+gOdolwaBugMiddleLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x221CC
+  symbol: gOdolwaBugMiddleLeftLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugMiddleLeftLowerLegDL:
+  type: GFX
+  offset: 0x21678
+  symbol: gOdolwaBugMiddleLeftLowerLegDL
+
+gOdolwaBugMiddleLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x221E4
+  symbol: gOdolwaBugMiddleLeftLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugMiddleLeftUpperLegDL:
+  type: GFX
+  offset: 0x21658
+  symbol: gOdolwaBugMiddleLeftUpperLegDL
+
+gOdolwaBugMiddleLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x221D8
+  symbol: gOdolwaBugMiddleLeftUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugMiddleRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x221F0
+  symbol: gOdolwaBugMiddleRightLegRootLimb
+  limb_type: Standard
+
+gOdolwaBugMiddleRightLowerLegDL:
+  type: GFX
+  offset: 0x21628
+  symbol: gOdolwaBugMiddleRightLowerLegDL
+
+gOdolwaBugMiddleRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x22208
+  symbol: gOdolwaBugMiddleRightLowerLegLimb
+  limb_type: Standard
+
+gOdolwaBugMiddleRightUpperLegDL:
+  type: GFX
+  offset: 0x21608
+  symbol: gOdolwaBugMiddleRightUpperLegDL
+
+gOdolwaBugMiddleRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x221FC
+  symbol: gOdolwaBugMiddleRightUpperLegLimb
+  limb_type: Standard
+
+gOdolwaBugRootLimb:
+  type: OOT:LIMB
+  offset: 0x22190
+  symbol: gOdolwaBugRootLimb
+  limb_type: Standard
+
+gOdolwaBugSkel:
+  type: MM:SKELETON
+  offset: 0x222D0
+  symbol: gOdolwaBugSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gOdolwaBugUndersideTLUT:
+  type: TEXTURE
+  offset: 0x21700
+  symbol: gOdolwaBugUndersideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaBugUndersideTex:
+  type: TEXTURE
+  offset: 0x21720
+  symbol: gOdolwaBugUndersideTex
+  format: CI4
+  width: 16
+  height: 32
+
+gOdolwaCenterLowerPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEFB8
+  symbol: gOdolwaCenterLowerPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaCenterPlumeBaseDL:
+  type: GFX
+  offset: 0x6368
+  symbol: gOdolwaCenterPlumeBaseDL
+
+gOdolwaCenterPlumeBaseLimb:
+  type: OOT:LIMB
+  offset: 0xEFAC
+  symbol: gOdolwaCenterPlumeBaseLimb
+  limb_type: Standard
+
+gOdolwaCenterPlumeMiddleDL:
+  type: GFX
+  offset: 0x62A8
+  symbol: gOdolwaCenterPlumeMiddleDL
+
+gOdolwaCenterPlumeMiddleLimb:
+  type: OOT:LIMB
+  offset: 0xEFC4
+  symbol: gOdolwaCenterPlumeMiddleLimb
+  limb_type: Standard
+
+gOdolwaCenterPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEFA0
+  symbol: gOdolwaCenterPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaCenterPlumeTipDL:
+  type: GFX
+  offset: 0x61E8
+  symbol: gOdolwaCenterPlumeTipDL
+
+gOdolwaCenterPlumeTipLimb:
+  type: OOT:LIMB
+  offset: 0xEFD0
+  symbol: gOdolwaCenterPlumeTipLimb
+  limb_type: Standard
+
+gOdolwaClimbAnim:
+  type: OOT:ANIMATION
+  offset: 0xF918
+  symbol: gOdolwaClimbAnim
+
+gOdolwaClothTLUT:
+  type: TEXTURE
+  offset: 0x86F8
+  symbol: gOdolwaClothTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaClothTex:
+  type: TEXTURE
+  offset: 0xAB38
+  symbol: gOdolwaClothTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaCrouchAnim:
+  type: OOT:ANIMATION
+  offset: 0x12D10
+  symbol: gOdolwaCrouchAnim
+
+gOdolwaDamagedLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x10980
+  symbol: gOdolwaDamagedLoopAnim
+
+gOdolwaDamagedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xFDEC
+  symbol: gOdolwaDamagedStartAnim
+
+gOdolwaDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x124CC
+  symbol: gOdolwaDeathAnim
+
+gOdolwaDoubleSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E68C
+  symbol: gOdolwaDoubleSlashAnim
+
+gOdolwaEarBangleAndShieldTLUT:
+  type: TEXTURE
+  offset: 0x86D8
+  symbol: gOdolwaEarBangleAndShieldTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaEarBangleAndShieldTex:
+  type: TEXTURE
+  offset: 0x9F38
+  symbol: gOdolwaEarBangleAndShieldTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaEarringTex:
+  type: TEXTURE
+  offset: 0xA738
+  symbol: gOdolwaEarringTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOdolwaEyeDL:
+  type: GFX
+  offset: 0xC5E0
+  symbol: gOdolwaEyeDL
+
+gOdolwaEyeTex:
+  type: TEXTURE
+  offset: 0xC668
+  symbol: gOdolwaEyeTex
+  format: I8
+  width: 16
+  height: 16
+
+gOdolwaFaceAndShoeTLUT:
+  type: TEXTURE
+  offset: 0x8698
+  symbol: gOdolwaFaceAndShoeTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaFaceAndShoeTex:
+  type: TEXTURE
+  offset: 0x8F38
+  symbol: gOdolwaFaceAndShoeTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaFallingBlockDL:
+  type: GFX
+  offset: 0xE3E8
+  symbol: gOdolwaFallingBlockDL
+
+gOdolwaFallingBlockTLUT:
+  type: TEXTURE
+  offset: 0xE558
+  symbol: gOdolwaFallingBlockTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaFallingBlockTex:
+  type: TEXTURE
+  offset: 0xE578
+  symbol: gOdolwaFallingBlockTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaFallingSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x13480
+  symbol: gOdolwaFallingSlashAnim
+
+gOdolwaHeadDL:
+  type: GFX
+  offset: 0x5F98
+  symbol: gOdolwaHeadDL
+
+gOdolwaHeadLimb:
+  type: OOT:LIMB
+  offset: 0xEEEC
+  symbol: gOdolwaHeadLimb
+  limb_type: Standard
+
+gOdolwaHipShakeDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1BA94
+  symbol: gOdolwaHipShakeDanceAnim
+
+gOdolwaHorizontalSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x1884
+  symbol: gOdolwaHorizontalSlashAnim
+
+gOdolwaIntroSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x19C10
+  symbol: gOdolwaIntroSlashAnim
+
+gOdolwaJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x12EBC
+  symbol: gOdolwaJumpAnim
+
+gOdolwaJumpDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x204AC
+  symbol: gOdolwaJumpDanceAnim
+
+gOdolwaKickAnim:
+  type: OOT:ANIMATION
+  offset: 0x1407C
+  symbol: gOdolwaKickAnim
+
+gOdolwaLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xEE2C
+  symbol: gOdolwaLeftArmRootLimb
+  limb_type: Standard
+
+gOdolwaLeftBangleDL:
+  type: GFX
+  offset: 0x74F0
+  symbol: gOdolwaLeftBangleDL
+
+gOdolwaLeftBangleLimb:
+  type: OOT:LIMB
+  offset: 0xEE5C
+  symbol: gOdolwaLeftBangleLimb
+  limb_type: Standard
+
+gOdolwaLeftEarringDL:
+  type: GFX
+  offset: 0x6848
+  symbol: gOdolwaLeftEarringDL
+
+gOdolwaLeftEarringLimb:
+  type: OOT:LIMB
+  offset: 0xEF1C
+  symbol: gOdolwaLeftEarringLimb
+  limb_type: Standard
+
+gOdolwaLeftEarringRootLimb:
+  type: OOT:LIMB
+  offset: 0xEF10
+  symbol: gOdolwaLeftEarringRootLimb
+  limb_type: Standard
+
+gOdolwaLeftFootDL:
+  type: GFX
+  offset: 0x7BD8
+  symbol: gOdolwaLeftFootDL
+
+gOdolwaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xEDFC
+  symbol: gOdolwaLeftFootLimb
+  limb_type: Standard
+
+gOdolwaLeftForearmDL:
+  type: GFX
+  offset: 0x7398
+  symbol: gOdolwaLeftForearmDL
+
+gOdolwaLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xEE50
+  symbol: gOdolwaLeftForearmLimb
+  limb_type: Standard
+
+gOdolwaLeftHandDL:
+  type: GFX
+  offset: 0x71C0
+  symbol: gOdolwaLeftHandDL
+
+gOdolwaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xEE74
+  symbol: gOdolwaLeftHandLimb
+  limb_type: Standard
+
+gOdolwaLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0xEE68
+  symbol: gOdolwaLeftHandRootLimb
+  limb_type: Standard
+
+gOdolwaLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xEDCC
+  symbol: gOdolwaLeftLegRootLimb
+  limb_type: Standard
+
+gOdolwaLeftLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xEE44
+  symbol: gOdolwaLeftLowerArmRootLimb
+  limb_type: Standard
+
+gOdolwaLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xEDE4
+  symbol: gOdolwaLeftLowerLegRootLimb
+  limb_type: Standard
+
+gOdolwaLeftLowerPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEF7C
+  symbol: gOdolwaLeftLowerPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaLeftPlumeBaseDL:
+  type: GFX
+  offset: 0x6588
+  symbol: gOdolwaLeftPlumeBaseDL
+
+gOdolwaLeftPlumeBaseLimb:
+  type: OOT:LIMB
+  offset: 0xEF70
+  symbol: gOdolwaLeftPlumeBaseLimb
+  limb_type: Standard
+
+gOdolwaLeftPlumeMiddleDL:
+  type: GFX
+  offset: 0x64C8
+  symbol: gOdolwaLeftPlumeMiddleDL
+
+gOdolwaLeftPlumeMiddleLimb:
+  type: OOT:LIMB
+  offset: 0xEF88
+  symbol: gOdolwaLeftPlumeMiddleLimb
+  limb_type: Standard
+
+gOdolwaLeftPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEF64
+  symbol: gOdolwaLeftPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaLeftPlumeTipDL:
+  type: GFX
+  offset: 0x6408
+  symbol: gOdolwaLeftPlumeTipDL
+
+gOdolwaLeftPlumeTipLimb:
+  type: OOT:LIMB
+  offset: 0xEF94
+  symbol: gOdolwaLeftPlumeTipLimb
+  limb_type: Standard
+
+gOdolwaLeftShinDL:
+  type: GFX
+  offset: 0x7E40
+  symbol: gOdolwaLeftShinDL
+
+gOdolwaLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xEDF0
+  symbol: gOdolwaLeftShinLimb
+  limb_type: Standard
+
+gOdolwaLeftThighDL:
+  type: GFX
+  offset: 0x7FB0
+  symbol: gOdolwaLeftThighDL
+
+gOdolwaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xEDD8
+  symbol: gOdolwaLeftThighLimb
+  limb_type: Standard
+
+gOdolwaLeftUpperArmDL:
+  type: GFX
+  offset: 0x75E0
+  symbol: gOdolwaLeftUpperArmDL
+
+gOdolwaLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xEE38
+  symbol: gOdolwaLeftUpperArmLimb
+  limb_type: Standard
+
+gOdolwaMothMaterialDL:
+  type: GFX
+  offset: 0xDC58
+  symbol: gOdolwaMothMaterialDL
+
+gOdolwaMothModelDL:
+  type: GFX
+  offset: 0xDCD0
+  symbol: gOdolwaMothModelDL
+
+gOdolwaMothSummonDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x12B70
+  symbol: gOdolwaMothSummonDanceAnim
+
+gOdolwaMothTex:
+  type: TEXTURE
+  offset: 0xDCE8
+  symbol: gOdolwaMothTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gOdolwaPantsAndSwordHiltTLUT:
+  type: TEXTURE
+  offset: 0x8678
+  symbol: gOdolwaPantsAndSwordHiltTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaPantsAndSwordHiltTex:
+  type: TEXTURE
+  offset: 0x8738
+  symbol: gOdolwaPantsAndSwordHiltTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaPelvisDL:
+  type: GFX
+  offset: 0x5E80
+  symbol: gOdolwaPelvisDL
+
+gOdolwaPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xED84
+  symbol: gOdolwaPelvisLimb
+  limb_type: Standard
+
+gOdolwaPlumeTex:
+  type: TEXTURE
+  offset: 0xA938
+  symbol: gOdolwaPlumeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOdolwaReadyAnim:
+  type: OOT:ANIMATION
+  offset: 0x18438
+  symbol: gOdolwaReadyAnim
+
+gOdolwaRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xEE8C
+  symbol: gOdolwaRightArmRootLimb
+  limb_type: Standard
+
+gOdolwaRightBangleDL:
+  type: GFX
+  offset: 0x6E50
+  symbol: gOdolwaRightBangleDL
+
+gOdolwaRightBangleLimb:
+  type: OOT:LIMB
+  offset: 0xEEBC
+  symbol: gOdolwaRightBangleLimb
+  limb_type: Standard
+
+gOdolwaRightEarringDL:
+  type: GFX
+  offset: 0x68F8
+  symbol: gOdolwaRightEarringDL
+
+gOdolwaRightEarringLimb:
+  type: OOT:LIMB
+  offset: 0xEF04
+  symbol: gOdolwaRightEarringLimb
+  limb_type: Standard
+
+gOdolwaRightEarringRootLimb:
+  type: OOT:LIMB
+  offset: 0xEEF8
+  symbol: gOdolwaRightEarringRootLimb
+  limb_type: Standard
+
+gOdolwaRightFootDL:
+  type: GFX
+  offset: 0x8128
+  symbol: gOdolwaRightFootDL
+
+gOdolwaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xEDC0
+  symbol: gOdolwaRightFootLimb
+  limb_type: Standard
+
+gOdolwaRightForearmDL:
+  type: GFX
+  offset: 0x6CF8
+  symbol: gOdolwaRightForearmDL
+
+gOdolwaRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xEEB0
+  symbol: gOdolwaRightForearmLimb
+  limb_type: Standard
+
+gOdolwaRightHandDL:
+  type: GFX
+  offset: 0x6B20
+  symbol: gOdolwaRightHandDL
+
+gOdolwaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xEED4
+  symbol: gOdolwaRightHandLimb
+  limb_type: Standard
+
+gOdolwaRightHandRootLimb:
+  type: OOT:LIMB
+  offset: 0xEEC8
+  symbol: gOdolwaRightHandRootLimb
+  limb_type: Standard
+
+gOdolwaRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xED90
+  symbol: gOdolwaRightLegRootLimb
+  limb_type: Standard
+
+gOdolwaRightLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xEEA4
+  symbol: gOdolwaRightLowerArmRootLimb
+  limb_type: Standard
+
+gOdolwaRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xEDA8
+  symbol: gOdolwaRightLowerLegRootLimb
+  limb_type: Standard
+
+gOdolwaRightLowerPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEF40
+  symbol: gOdolwaRightLowerPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaRightPlumeBaseDL:
+  type: GFX
+  offset: 0x67A8
+  symbol: gOdolwaRightPlumeBaseDL
+
+gOdolwaRightPlumeBaseLimb:
+  type: OOT:LIMB
+  offset: 0xEF34
+  symbol: gOdolwaRightPlumeBaseLimb
+  limb_type: Standard
+
+gOdolwaRightPlumeMiddleDL:
+  type: GFX
+  offset: 0x66E8
+  symbol: gOdolwaRightPlumeMiddleDL
+
+gOdolwaRightPlumeMiddleLimb:
+  type: OOT:LIMB
+  offset: 0xEF4C
+  symbol: gOdolwaRightPlumeMiddleLimb
+  limb_type: Standard
+
+gOdolwaRightPlumeRootLimb:
+  type: OOT:LIMB
+  offset: 0xEF28
+  symbol: gOdolwaRightPlumeRootLimb
+  limb_type: Standard
+
+gOdolwaRightPlumeTipDL:
+  type: GFX
+  offset: 0x6628
+  symbol: gOdolwaRightPlumeTipDL
+
+gOdolwaRightPlumeTipLimb:
+  type: OOT:LIMB
+  offset: 0xEF58
+  symbol: gOdolwaRightPlumeTipLimb
+  limb_type: Standard
+
+gOdolwaRightShinDL:
+  type: GFX
+  offset: 0x8390
+  symbol: gOdolwaRightShinDL
+
+gOdolwaRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xEDB4
+  symbol: gOdolwaRightShinLimb
+  limb_type: Standard
+
+gOdolwaRightThighDL:
+  type: GFX
+  offset: 0x8500
+  symbol: gOdolwaRightThighDL
+
+gOdolwaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xED9C
+  symbol: gOdolwaRightThighLimb
+  limb_type: Standard
+
+gOdolwaRightUpperArmDL:
+  type: GFX
+  offset: 0x6F40
+  symbol: gOdolwaRightUpperArmDL
+
+gOdolwaRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xEE98
+  symbol: gOdolwaRightUpperArmLimb
+  limb_type: Standard
+
+gOdolwaRootLimb:
+  type: OOT:LIMB
+  offset: 0xED78
+  symbol: gOdolwaRootLimb
+  limb_type: Standard
+
+gOdolwaRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x16168
+  symbol: gOdolwaRunAnim
+
+gOdolwaShadowMaterialDL:
+  type: GFX
+  offset: 0xC7A8
+  symbol: gOdolwaShadowMaterialDL
+
+gOdolwaShadowModelDL:
+  type: GFX
+  offset: 0xC7C8
+  symbol: gOdolwaShadowModelDL
+
+gOdolwaShieldBashAnim:
+  type: OOT:ANIMATION
+  offset: 0x15A30
+  symbol: gOdolwaShieldBashAnim
+
+gOdolwaShieldDL:
+  type: GFX
+  offset: 0x70D0
+  symbol: gOdolwaShieldDL
+
+gOdolwaShieldGuardAnim:
+  type: OOT:ANIMATION
+  offset: 0xFF94
+  symbol: gOdolwaShieldGuardAnim
+
+gOdolwaShieldLimb:
+  type: OOT:LIMB
+  offset: 0xEE80
+  symbol: gOdolwaShieldLimb
+  limb_type: Standard
+
+gOdolwaSideToSideDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F6A4
+  symbol: gOdolwaSideToSideDanceAnim
+
+gOdolwaSideToSideHopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1EEA8
+  symbol: gOdolwaSideToSideHopAnim
+
+gOdolwaSkel:
+  type: MM:SKELETON
+  offset: 0xF0A8
+  symbol: gOdolwaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gOdolwaSkinTLUT:
+  type: TEXTURE
+  offset: 0x86B8
+  symbol: gOdolwaSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaSkinTex:
+  type: TEXTURE
+  offset: 0x9738
+  symbol: gOdolwaSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaSpinAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x164CC
+  symbol: gOdolwaSpinAttackAnim
+
+gOdolwaSpinDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1FC10
+  symbol: gOdolwaSpinDanceAnim
+
+gOdolwaSpinSwordAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AAF4
+  symbol: gOdolwaSpinSwordAnim
+
+gOdolwaStunAnim:
+  type: OOT:ANIMATION
+  offset: 0x14F14
+  symbol: gOdolwaStunAnim
+
+gOdolwaSwordBladeTex:
+  type: TEXTURE
+  offset: 0xBB38
+  symbol: gOdolwaSwordBladeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOdolwaSwordDL:
+  type: GFX
+  offset: 0x69A8
+  symbol: gOdolwaSwordDL
+
+gOdolwaSwordGuardAnim:
+  type: OOT:ANIMATION
+  offset: 0x10150
+  symbol: gOdolwaSwordGuardAnim
+
+gOdolwaSwordLimb:
+  type: OOT:LIMB
+  offset: 0xEEE0
+  symbol: gOdolwaSwordLimb
+  limb_type: Standard
+
+gOdolwaSwordTrailDL:
+  type: GFX
+  offset: 0xC498
+  symbol: gOdolwaSwordTrailDL
+
+gOdolwaSwordTrailMaskTex:
+  type: TEXTURE
+  offset: 0xC138
+  symbol: gOdolwaSwordTrailMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gOdolwaSwordTrailTex:
+  type: TEXTURE
+  offset: 0xBD38
+  symbol: gOdolwaSwordTrailTex
+  format: I8
+  width: 32
+  height: 32
+
+gOdolwaSwordTrailVtx:
+  type: MM:ARRAY
+  offset: 0xC338
+  symbol: gOdolwaSwordTrailVtx
+  count: 22
+  array_type: VTX
+
+gOdolwaThurstAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D8C8
+  symbol: gOdolwaThurstAttackAnim
+
+gOdolwaTitleCardTex:
+  type: TEXTURE
+  offset: 0xC7F8
+  symbol: gOdolwaTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gOdolwaTorsoDL:
+  type: GFX
+  offset: 0x7770
+  symbol: gOdolwaTorsoDL
+
+gOdolwaTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xEE20
+  symbol: gOdolwaTorsoLimb
+  limb_type: Standard
+
+gOdolwaTorsoTLUT:
+  type: TEXTURE
+  offset: 0x8718
+  symbol: gOdolwaTorsoTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOdolwaTorsoTex:
+  type: TEXTURE
+  offset: 0xB338
+  symbol: gOdolwaTorsoTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOdolwaUnusedVtx:
+  type: MM:ARRAY
+  offset: 0x206F0
+  symbol: gOdolwaUnusedVtx
+  count: 16
+  array_type: VTX
+
+gOdolwaUpAndDownDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C700
+  symbol: gOdolwaUpAndDownDanceAnim
+
+gOdolwaUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0xEE08
+  symbol: gOdolwaUpperBodyRootLimb
+  limb_type: Standard
+
+gOdolwaUpperBodyWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xEE14
+  symbol: gOdolwaUpperBodyWrapperLimb
+  limb_type: Standard
+
+gOdolwaVerticalHopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AF18
+  symbol: gOdolwaVerticalHopAnim
+
+gOdolwaVerticalSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0xC44
+  symbol: gOdolwaVerticalSlashAnim
+
+
+object_boss01Vtx_001A30:
+  type: MM:ARRAY
+  offset: 0x001A30
+  symbol: object_boss01Vtx_001A30
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_001B70:
+  type: MM:ARRAY
+  offset: 0x001B70
+  symbol: object_boss01Vtx_001B70
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_001E70:
+  type: MM:ARRAY
+  offset: 0x001E70
+  symbol: object_boss01Vtx_001E70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_002110:
+  type: MM:ARRAY
+  offset: 0x002110
+  symbol: object_boss01Vtx_002110
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0023E0:
+  type: MM:ARRAY
+  offset: 0x0023E0
+  symbol: object_boss01Vtx_0023E0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0026E0:
+  type: MM:ARRAY
+  offset: 0x0026E0
+  symbol: object_boss01Vtx_0026E0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_002980:
+  type: MM:ARRAY
+  offset: 0x002980
+  symbol: object_boss01Vtx_002980
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_002C50:
+  type: MM:ARRAY
+  offset: 0x002C50
+  symbol: object_boss01Vtx_002C50
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0030F0:
+  type: MM:ARRAY
+  offset: 0x0030F0
+  symbol: object_boss01Vtx_0030F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003270:
+  type: MM:ARRAY
+  offset: 0x003270
+  symbol: object_boss01Vtx_003270
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0033F0:
+  type: MM:ARRAY
+  offset: 0x0033F0
+  symbol: object_boss01Vtx_0033F0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003440:
+  type: MM:ARRAY
+  offset: 0x003440
+  symbol: object_boss01Vtx_003440
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003490:
+  type: MM:ARRAY
+  offset: 0x003490
+  symbol: object_boss01Vtx_003490
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0034D0:
+  type: MM:ARRAY
+  offset: 0x0034D0
+  symbol: object_boss01Vtx_0034D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003520:
+  type: MM:ARRAY
+  offset: 0x003520
+  symbol: object_boss01Vtx_003520
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003570:
+  type: MM:ARRAY
+  offset: 0x003570
+  symbol: object_boss01Vtx_003570
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0035B0:
+  type: MM:ARRAY
+  offset: 0x0035B0
+  symbol: object_boss01Vtx_0035B0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003600:
+  type: MM:ARRAY
+  offset: 0x003600
+  symbol: object_boss01Vtx_003600
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003650:
+  type: MM:ARRAY
+  offset: 0x003650
+  symbol: object_boss01Vtx_003650
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003690:
+  type: MM:ARRAY
+  offset: 0x003690
+  symbol: object_boss01Vtx_003690
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_003F20:
+  type: MM:ARRAY
+  offset: 0x003F20
+  symbol: object_boss01Vtx_003F20
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0041C0:
+  type: MM:ARRAY
+  offset: 0x0041C0
+  symbol: object_boss01Vtx_0041C0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_004850:
+  type: MM:ARRAY
+  offset: 0x004850
+  symbol: object_boss01Vtx_004850
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_004AD0:
+  type: MM:ARRAY
+  offset: 0x004AD0
+  symbol: object_boss01Vtx_004AD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_004C50:
+  type: MM:ARRAY
+  offset: 0x004C50
+  symbol: object_boss01Vtx_004C50
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_004F90:
+  type: MM:ARRAY
+  offset: 0x004F90
+  symbol: object_boss01Vtx_004F90
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0050B0:
+  type: MM:ARRAY
+  offset: 0x0050B0
+  symbol: object_boss01Vtx_0050B0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_005740:
+  type: MM:ARRAY
+  offset: 0x005740
+  symbol: object_boss01Vtx_005740
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0059C0:
+  type: MM:ARRAY
+  offset: 0x0059C0
+  symbol: object_boss01Vtx_0059C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_005B40:
+  type: MM:ARRAY
+  offset: 0x005B40
+  symbol: object_boss01Vtx_005B40
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_00C5B0:
+  type: MM:ARRAY
+  offset: 0x00C5B0
+  symbol: object_boss01Vtx_00C5B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_00C768:
+  type: MM:ARRAY
+  offset: 0x00C768
+  symbol: object_boss01Vtx_00C768
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_00DBF8:
+  type: MM:ARRAY
+  offset: 0x00DBF8
+  symbol: object_boss01Vtx_00DBF8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_00E0E8:
+  type: MM:ARRAY
+  offset: 0x00E0E8
+  symbol: object_boss01Vtx_00E0E8
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOdolwaSkelLimbs:
+  type: BLOB
+  offset: 0xEFDC
+  symbol: gOdolwaSkelLimbs
+  size: 0
+
+object_boss01Vtx_0204C0:
+  type: MM:ARRAY
+  offset: 0x0204C0
+  symbol: object_boss01Vtx_0204C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0207F0:
+  type: MM:ARRAY
+  offset: 0x0207F0
+  symbol: object_boss01Vtx_0207F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0208B0:
+  type: MM:ARRAY
+  offset: 0x0208B0
+  symbol: object_boss01Vtx_0208B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_0209B0:
+  type: MM:ARRAY
+  offset: 0x0209B0
+  symbol: object_boss01Vtx_0209B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020A70:
+  type: MM:ARRAY
+  offset: 0x020A70
+  symbol: object_boss01Vtx_020A70
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020BD0:
+  type: MM:ARRAY
+  offset: 0x020BD0
+  symbol: object_boss01Vtx_020BD0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020C90:
+  type: MM:ARRAY
+  offset: 0x020C90
+  symbol: object_boss01Vtx_020C90
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020D90:
+  type: MM:ARRAY
+  offset: 0x020D90
+  symbol: object_boss01Vtx_020D90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020E50:
+  type: MM:ARRAY
+  offset: 0x020E50
+  symbol: object_boss01Vtx_020E50
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_020F50:
+  type: MM:ARRAY
+  offset: 0x020F50
+  symbol: object_boss01Vtx_020F50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_021010:
+  type: MM:ARRAY
+  offset: 0x021010
+  symbol: object_boss01Vtx_021010
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss01Vtx_021170:
+  type: MM:ARRAY
+  offset: 0x021170
+  symbol: object_boss01Vtx_021170
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOdolwaBugSkelLimbs:
+  type: BLOB
+  offset: 0x22280
+  symbol: gOdolwaBugSkelLimbs
+  size: 0

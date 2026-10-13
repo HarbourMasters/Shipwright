@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 6, 0x015B9840 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015B9840 ]
+    - [ 9, 0x015B9840 ]
+    - [ 10, 0x015B9840 ]
+    - [ 11, 0x015B9840 ]
+    - [ 12, 0x015B9840 ]
+    - [ 13, 0x015B9840 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_smtower_DL_000520:
+  type: GFX
+  offset: 0x520
+  symbol: object_smtower_DL_000520
+
+object_smtower_Matanimheader_001788:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1788
+  symbol: object_smtower_Matanimheader_001788
+
+object_smtower_Tex_000778:
+  type: TEXTURE
+  offset: 0x778
+  symbol: object_smtower_Tex_000778
+  format: I8
+  width: 64
+  height: 32
+
+object_smtower_Tex_000F78:
+  type: TEXTURE
+  offset: 0xF78
+  symbol: object_smtower_Tex_000F78
+  format: I4
+  width: 64
+  height: 64
+
+
+object_smtowerVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_smtowerVtx_000000
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_smtower_Matanimheader_001788TexScrollParams_001780:
+  type: BLOB
+  offset: 0x001780
+  symbol: object_smtower_Matanimheader_001788TexScrollParams_001780
+  size: 0

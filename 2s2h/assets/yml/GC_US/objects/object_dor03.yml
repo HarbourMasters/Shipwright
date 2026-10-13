@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x01515740 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01515740 ]
+    - [ 9, 0x01515740 ]
+    - [ 10, 0x01515740 ]
+    - [ 11, 0x01515740 ]
+    - [ 12, 0x01515740 ]
+    - [ 13, 0x01515740 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSwampDoorDL:
+  type: GFX
+  offset: 0x3C0
+  symbol: gSwampDoorDL
+
+gSwampDoorTex:
+  type: TEXTURE
+  offset: 0x4D0
+  symbol: gSwampDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_dor03Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_dor03Vtx_000000
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

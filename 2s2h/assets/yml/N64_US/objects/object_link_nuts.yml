@@ -1,0 +1,786 @@
+:config:
+  segments:
+    - [ 6, 0x00E816E0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00E816E0 ]
+    - [ 9, 0x00E816E0 ]
+    - [ 10, 0x00E816E0 ]
+    - [ 11, 0x00E816E0 ]
+    - [ 12, 0x00E816E0 ]
+    - [ 13, 0x00E816E0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLinkDekuClosedFlowerDL:
+  type: GFX
+  offset: 0x8AA0
+  symbol: gLinkDekuClosedFlowerDL
+
+gLinkDekuCollarDL:
+  type: GFX
+  offset: 0x2DD8
+  symbol: gLinkDekuCollarDL
+
+gLinkDekuCollarLimb:
+  type: OOT:LIMB
+  offset: 0xB940
+  symbol: gLinkDekuCollarLimb
+  limb_type: LOD
+
+gLinkDekuHatDL:
+  type: GFX
+  offset: 0x3488
+  symbol: gLinkDekuHatDL
+
+gLinkDekuHatLimb:
+  type: OOT:LIMB
+  offset: 0xB930
+  symbol: gLinkDekuHatLimb
+  limb_type: LOD
+
+gLinkDekuHeadDL:
+  type: GFX
+  offset: 0x2FD0
+  symbol: gLinkDekuHeadDL
+
+gLinkDekuHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB920
+  symbol: gLinkDekuHeadLimb
+  limb_type: LOD
+
+gLinkDekuLeftFootDL:
+  type: GFX
+  offset: 0x2B08
+  symbol: gLinkDekuLeftFootDL
+
+gLinkDekuLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB900
+  symbol: gLinkDekuLeftFootLimb
+  limb_type: LOD
+
+gLinkDekuLeftForearmDL:
+  type: GFX
+  offset: 0x3AB8
+  symbol: gLinkDekuLeftForearmDL
+
+gLinkDekuLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB960
+  symbol: gLinkDekuLeftForearmLimb
+  limb_type: LOD
+
+gLinkDekuLeftHandDL:
+  type: GFX
+  offset: 0x3BC0
+  symbol: gLinkDekuLeftHandDL
+
+gLinkDekuLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB970
+  symbol: gLinkDekuLeftHandLimb
+  limb_type: LOD
+
+gLinkDekuLeftShinDL:
+  type: GFX
+  offset: 0x2A00
+  symbol: gLinkDekuLeftShinDL
+
+gLinkDekuLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xB8F0
+  symbol: gLinkDekuLeftShinLimb
+  limb_type: LOD
+
+gLinkDekuLeftShoulderDL:
+  type: GFX
+  offset: 0x39B0
+  symbol: gLinkDekuLeftShoulderDL
+
+gLinkDekuLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB950
+  symbol: gLinkDekuLeftShoulderLimb
+  limb_type: LOD
+
+gLinkDekuLeftThighDL:
+  type: GFX
+  offset: 0x28F8
+  symbol: gLinkDekuLeftThighDL
+
+gLinkDekuLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB8E0
+  symbol: gLinkDekuLeftThighLimb
+  limb_type: LOD
+
+gLinkDekuLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0xB8A0
+  symbol: gLinkDekuLowerRootLimb
+  limb_type: LOD
+
+gLinkDekuOpenFlowerDL:
+  type: GFX
+  offset: 0x8C50
+  symbol: gLinkDekuOpenFlowerDL
+
+gLinkDekuRightFootDL:
+  type: GFX
+  offset: 0x27E0
+  symbol: gLinkDekuRightFootDL
+
+gLinkDekuRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xB8D0
+  symbol: gLinkDekuRightFootLimb
+  limb_type: LOD
+
+gLinkDekuRightForearmDL:
+  type: GFX
+  offset: 0x37B8
+  symbol: gLinkDekuRightForearmDL
+
+gLinkDekuRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB990
+  symbol: gLinkDekuRightForearmLimb
+  limb_type: LOD
+
+gLinkDekuRightHandDL:
+  type: GFX
+  offset: 0x38C0
+  symbol: gLinkDekuRightHandDL
+
+gLinkDekuRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB9A0
+  symbol: gLinkDekuRightHandLimb
+  limb_type: LOD
+
+gLinkDekuRightShinDL:
+  type: GFX
+  offset: 0x26D8
+  symbol: gLinkDekuRightShinDL
+
+gLinkDekuRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xB8C0
+  symbol: gLinkDekuRightShinLimb
+  limb_type: LOD
+
+gLinkDekuRightShoulderDL:
+  type: GFX
+  offset: 0x36B0
+  symbol: gLinkDekuRightShoulderDL
+
+gLinkDekuRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB980
+  symbol: gLinkDekuRightShoulderLimb
+  limb_type: LOD
+
+gLinkDekuRightThighDL:
+  type: GFX
+  offset: 0x25D0
+  symbol: gLinkDekuRightThighDL
+
+gLinkDekuRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xB8B0
+  symbol: gLinkDekuRightThighLimb
+  limb_type: LOD
+
+gLinkDekuRootLimb:
+  type: OOT:LIMB
+  offset: 0xB880
+  symbol: gLinkDekuRootLimb
+  limb_type: LOD
+
+gLinkDekuSheathDL:
+  type: GFX
+  offset: 0x35F0
+  symbol: gLinkDekuSheathDL
+
+gLinkDekuSheathLimb:
+  type: OOT:LIMB
+  offset: 0xB9B0
+  symbol: gLinkDekuSheathLimb
+  limb_type: LOD
+
+gLinkDekuSkel:
+  type: MM:SKELETON
+  offset: 0xBA24
+  symbol: gLinkDekuSkel
+  limb_type: LOD
+  skel_type: Flex
+
+gLinkDekuTorsoDL:
+  type: GFX
+  offset: 0x2E98
+  symbol: gLinkDekuTorsoDL
+
+gLinkDekuTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB9C0
+  symbol: gLinkDekuTorsoLimb
+  limb_type: LOD
+
+gLinkDekuUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0xB910
+  symbol: gLinkDekuUpperRootLimb
+  limb_type: LOD
+
+gLinkDekuWaistDL:
+  type: GFX
+  offset: 0x2C20
+  symbol: gLinkDekuWaistDL
+
+gLinkDekuWaistLimb:
+  type: OOT:LIMB
+  offset: 0xB890
+  symbol: gLinkDekuWaistLimb
+  limb_type: LOD
+
+object_link_nuts_DL_007390:
+  type: GFX
+  offset: 0x7390
+  symbol: object_link_nuts_DL_007390
+
+object_link_nuts_DL_007548:
+  type: GFX
+  offset: 0x7548
+  symbol: object_link_nuts_DL_007548
+
+object_link_nuts_DL_0076A0:
+  type: GFX
+  offset: 0x76A0
+  symbol: object_link_nuts_DL_0076A0
+
+object_link_nuts_DL_0077D0:
+  type: GFX
+  offset: 0x77D0
+  symbol: object_link_nuts_DL_0077D0
+
+object_link_nuts_DL_007900:
+  type: GFX
+  offset: 0x7900
+  symbol: object_link_nuts_DL_007900
+
+object_link_nuts_DL_007A28:
+  type: GFX
+  offset: 0x7A28
+  symbol: object_link_nuts_DL_007A28
+
+object_link_nuts_DL_008660:
+  type: GFX
+  offset: 0x8660
+  symbol: object_link_nuts_DL_008660
+
+object_link_nuts_DL_008760:
+  type: GFX
+  offset: 0x8760
+  symbol: object_link_nuts_DL_008760
+
+object_link_nuts_DL_008860:
+  type: GFX
+  offset: 0x8860
+  symbol: object_link_nuts_DL_008860
+
+object_link_nuts_DL_008908:
+  type: GFX
+  offset: 0x8908
+  symbol: object_link_nuts_DL_008908
+
+object_link_nuts_DL_0089F0:
+  type: GFX
+  offset: 0x89F0
+  symbol: object_link_nuts_DL_0089F0
+
+object_link_nuts_DL_008AB8:
+  type: GFX
+  offset: 0x8AB8
+  symbol: object_link_nuts_DL_008AB8
+
+object_link_nuts_DL_008BA0:
+  type: GFX
+  offset: 0x8BA0
+  symbol: object_link_nuts_DL_008BA0
+
+object_link_nuts_DL_009AB8:
+  type: GFX
+  offset: 0x9AB8
+  symbol: object_link_nuts_DL_009AB8
+
+object_link_nuts_DL_009C48:
+  type: GFX
+  offset: 0x9C48
+  symbol: object_link_nuts_DL_009C48
+
+object_link_nuts_DL_009DB8:
+  type: GFX
+  offset: 0x9DB8
+  symbol: object_link_nuts_DL_009DB8
+
+object_link_nuts_DL_00A348:
+  type: GFX
+  offset: 0xA348
+  symbol: object_link_nuts_DL_00A348
+
+object_link_nuts_DL_00B690:
+  type: GFX
+  offset: 0xB690
+  symbol: object_link_nuts_DL_00B690
+
+object_link_nuts_TLUT_003CB0:
+  type: TEXTURE
+  offset: 0x3CB0
+  symbol: object_link_nuts_TLUT_003CB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_nuts_TLUT_003EB0:
+  type: TEXTURE
+  offset: 0x3EB0
+  symbol: object_link_nuts_TLUT_003EB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_0040B0:
+  type: TEXTURE
+  offset: 0x40B0
+  symbol: object_link_nuts_Tex_0040B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_0041B0:
+  type: TEXTURE
+  offset: 0x41B0
+  symbol: object_link_nuts_Tex_0041B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_0042B0:
+  type: TEXTURE
+  offset: 0x42B0
+  symbol: object_link_nuts_Tex_0042B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_0043B0:
+  type: TEXTURE
+  offset: 0x43B0
+  symbol: object_link_nuts_Tex_0043B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_0044B0:
+  type: TEXTURE
+  offset: 0x44B0
+  symbol: object_link_nuts_Tex_0044B0
+  format: CI8
+  width: 32
+  height: 32
+
+object_link_nuts_Tex_0048B0:
+  type: TEXTURE
+  offset: 0x48B0
+  symbol: object_link_nuts_Tex_0048B0
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_link_nuts_Tex_0058B0:
+  type: TEXTURE
+  offset: 0x58B0
+  symbol: object_link_nuts_Tex_0058B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_007B80:
+  type: TEXTURE
+  offset: 0x7B80
+  symbol: object_link_nuts_Tex_007B80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_008C68:
+  type: TEXTURE
+  offset: 0x8C68
+  symbol: object_link_nuts_Tex_008C68
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_008E68:
+  type: TEXTURE
+  offset: 0x8E68
+  symbol: object_link_nuts_Tex_008E68
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_nuts_Tex_009068:
+  type: TEXTURE
+  offset: 0x9068
+  symbol: object_link_nuts_Tex_009068
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_link_nuts_Tex_00A4E0:
+  type: TEXTURE
+  offset: 0xA4E0
+  symbol: object_link_nuts_Tex_00A4E0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_link_nuts_Tex_00B780:
+  type: TEXTURE
+  offset: 0xB780
+  symbol: object_link_nuts_Tex_00B780
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_link_nutsVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_link_nutsVtx_000000
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: object_link_nutsVtx_000210
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000310:
+  type: MM:ARRAY
+  offset: 0x000310
+  symbol: object_link_nutsVtx_000310
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000420:
+  type: MM:ARRAY
+  offset: 0x000420
+  symbol: object_link_nutsVtx_000420
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000630:
+  type: MM:ARRAY
+  offset: 0x000630
+  symbol: object_link_nutsVtx_000630
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000730:
+  type: MM:ARRAY
+  offset: 0x000730
+  symbol: object_link_nutsVtx_000730
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000840:
+  type: MM:ARRAY
+  offset: 0x000840
+  symbol: object_link_nutsVtx_000840
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000A40:
+  type: MM:ARRAY
+  offset: 0x000A40
+  symbol: object_link_nutsVtx_000A40
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_000D20:
+  type: MM:ARRAY
+  offset: 0x000D20
+  symbol: object_link_nutsVtx_000D20
+  count: 212
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_001A60:
+  type: MM:ARRAY
+  offset: 0x001A60
+  symbol: object_link_nutsVtx_001A60
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_001A90:
+  type: MM:ARRAY
+  offset: 0x001A90
+  symbol: object_link_nutsVtx_001A90
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_001C40:
+  type: MM:ARRAY
+  offset: 0x001C40
+  symbol: object_link_nutsVtx_001C40
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_001D70:
+  type: MM:ARRAY
+  offset: 0x001D70
+  symbol: object_link_nutsVtx_001D70
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_001EE0:
+  type: MM:ARRAY
+  offset: 0x001EE0
+  symbol: object_link_nutsVtx_001EE0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: object_link_nutsVtx_002090
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0021C0:
+  type: MM:ARRAY
+  offset: 0x0021C0
+  symbol: object_link_nutsVtx_0021C0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_002330:
+  type: MM:ARRAY
+  offset: 0x002330
+  symbol: object_link_nutsVtx_002330
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_002360:
+  type: MM:ARRAY
+  offset: 0x002360
+  symbol: object_link_nutsVtx_002360
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0059B0:
+  type: MM:ARRAY
+  offset: 0x0059B0
+  symbol: object_link_nutsVtx_0059B0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_005E10:
+  type: MM:ARRAY
+  offset: 0x005E10
+  symbol: object_link_nutsVtx_005E10
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_006120:
+  type: MM:ARRAY
+  offset: 0x006120
+  symbol: object_link_nutsVtx_006120
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_006430:
+  type: MM:ARRAY
+  offset: 0x006430
+  symbol: object_link_nutsVtx_006430
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_006710:
+  type: MM:ARRAY
+  offset: 0x006710
+  symbol: object_link_nutsVtx_006710
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_006B50:
+  type: MM:ARRAY
+  offset: 0x006B50
+  symbol: object_link_nutsVtx_006B50
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_007D80:
+  type: MM:ARRAY
+  offset: 0x007D80
+  symbol: object_link_nutsVtx_007D80
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_007E10:
+  type: MM:ARRAY
+  offset: 0x007E10
+  symbol: object_link_nutsVtx_007E10
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_008010:
+  type: MM:ARRAY
+  offset: 0x008010
+  symbol: object_link_nutsVtx_008010
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0080A0:
+  type: MM:ARRAY
+  offset: 0x0080A0
+  symbol: object_link_nutsVtx_0080A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_008280:
+  type: MM:ARRAY
+  offset: 0x008280
+  symbol: object_link_nutsVtx_008280
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_008320:
+  type: MM:ARRAY
+  offset: 0x008320
+  symbol: object_link_nutsVtx_008320
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0084C0:
+  type: MM:ARRAY
+  offset: 0x0084C0
+  symbol: object_link_nutsVtx_0084C0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0090E8:
+  type: MM:ARRAY
+  offset: 0x0090E8
+  symbol: object_link_nutsVtx_0090E8
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_0095D8:
+  type: MM:ARRAY
+  offset: 0x0095D8
+  symbol: object_link_nutsVtx_0095D8
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_009908:
+  type: MM:ARRAY
+  offset: 0x009908
+  symbol: object_link_nutsVtx_009908
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_009ED8:
+  type: MM:ARRAY
+  offset: 0x009ED8
+  symbol: object_link_nutsVtx_009ED8
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_nutsVtx_00B4E0:
+  type: MM:ARRAY
+  offset: 0x00B4E0
+  symbol: object_link_nutsVtx_00B4E0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLinkDekuSkelLimbs:
+  type: BLOB
+  offset: 0xB9D0
+  symbol: gLinkDekuSkelLimbs
+  size: 0

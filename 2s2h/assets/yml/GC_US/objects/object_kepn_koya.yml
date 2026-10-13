@@ -1,0 +1,125 @@
+:config:
+  segments:
+    - [ 6, 0x0158D5A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0158D5A0 ]
+    - [ 9, 0x0158D5A0 ]
+    - [ 10, 0x0158D5A0 ]
+    - [ 11, 0x0158D5A0 ]
+    - [ 12, 0x0158D5A0 ]
+    - [ 13, 0x0158D5A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_kepn_koya_Colheader_00805C:
+  type: MM:COLLISION
+  offset: 0x805C
+  symbol: object_kepn_koya_Colheader_00805C
+
+object_kepn_koya_DL_003470:
+  type: GFX
+  offset: 0x3470
+  symbol: object_kepn_koya_DL_003470
+
+object_kepn_koya_DL_003478:
+  type: GFX
+  offset: 0x3478
+  symbol: object_kepn_koya_DL_003478
+
+object_kepn_koya_TLUT_005118:
+  type: TEXTURE
+  offset: 0x5118
+  symbol: object_kepn_koya_TLUT_005118
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kepn_koya_Tex_005318:
+  type: TEXTURE
+  offset: 0x5318
+  symbol: object_kepn_koya_Tex_005318
+  format: CI8
+  width: 16
+  height: 16
+
+object_kepn_koya_Tex_005418:
+  type: TEXTURE
+  offset: 0x5418
+  symbol: object_kepn_koya_Tex_005418
+  format: CI8
+  width: 64
+  height: 32
+
+object_kepn_koya_Tex_005C18:
+  type: TEXTURE
+  offset: 0x5C18
+  symbol: object_kepn_koya_Tex_005C18
+  format: CI8
+  width: 32
+  height: 64
+
+object_kepn_koya_Tex_006418:
+  type: TEXTURE
+  offset: 0x6418
+  symbol: object_kepn_koya_Tex_006418
+  format: CI8
+  width: 16
+  height: 32
+
+object_kepn_koya_Tex_006618:
+  type: TEXTURE
+  offset: 0x6618
+  symbol: object_kepn_koya_Tex_006618
+  format: CI8
+  width: 16
+  height: 32
+
+object_kepn_koya_Tex_006818:
+  type: TEXTURE
+  offset: 0x6818
+  symbol: object_kepn_koya_Tex_006818
+  format: CI8
+  width: 32
+  height: 16
+
+object_kepn_koya_Tex_006A18:
+  type: TEXTURE
+  offset: 0x6A18
+  symbol: object_kepn_koya_Tex_006A18
+  format: CI8
+  width: 64
+  height: 16
+
+object_kepn_koya_Tex_006E18:
+  type: TEXTURE
+  offset: 0x6E18
+  symbol: object_kepn_koya_Tex_006E18
+  format: CI8
+  width: 32
+  height: 32
+
+object_kepn_koya_Tex_007218:
+  type: TEXTURE
+  offset: 0x7218
+  symbol: object_kepn_koya_Tex_007218
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_kepn_koya_Tex_007298:
+  type: TEXTURE
+  offset: 0x7298
+  symbol: object_kepn_koya_Tex_007298
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_kepn_koyaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kepn_koyaVtx_000000
+  count: 839
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,905 @@
+:config:
+  segments:
+    - [ 6, 0x01566DF0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01566DF0 ]
+    - [ 9, 0x01566DF0 ]
+    - [ 10, 0x01566DF0 ]
+    - [ 11, 0x01566DF0 ]
+    - [ 12, 0x01566DF0 ]
+    - [ 13, 0x01566DF0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_ikn_demo_Anim_0000B8:
+  type: OOT:ANIMATION
+  offset: 0xB8
+  symbol: object_ikn_demo_Anim_0000B8
+
+object_ikn_demo_Anim_003CAC:
+  type: OOT:ANIMATION
+  offset: 0x3CAC
+  symbol: object_ikn_demo_Anim_003CAC
+
+object_ikn_demo_Anim_004208:
+  type: OOT:ANIMATION
+  offset: 0x4208
+  symbol: object_ikn_demo_Anim_004208
+
+object_ikn_demo_Anim_004514:
+  type: OOT:ANIMATION
+  offset: 0x4514
+  symbol: object_ikn_demo_Anim_004514
+
+object_ikn_demo_Anim_004A58:
+  type: OOT:ANIMATION
+  offset: 0x4A58
+  symbol: object_ikn_demo_Anim_004A58
+
+object_ikn_demo_Anim_0065D8:
+  type: OOT:ANIMATION
+  offset: 0x65D8
+  symbol: object_ikn_demo_Anim_0065D8
+
+object_ikn_demo_Anim_0067B8:
+  type: OOT:ANIMATION
+  offset: 0x67B8
+  symbol: object_ikn_demo_Anim_0067B8
+
+object_ikn_demo_Anim_006808:
+  type: OOT:ANIMATION
+  offset: 0x6808
+  symbol: object_ikn_demo_Anim_006808
+
+object_ikn_demo_Anim_0081A8:
+  type: OOT:ANIMATION
+  offset: 0x81A8
+  symbol: object_ikn_demo_Anim_0081A8
+
+object_ikn_demo_Anim_0083F4:
+  type: OOT:ANIMATION
+  offset: 0x83F4
+  symbol: object_ikn_demo_Anim_0083F4
+
+object_ikn_demo_Anim_008724:
+  type: OOT:ANIMATION
+  offset: 0x8724
+  symbol: object_ikn_demo_Anim_008724
+
+object_ikn_demo_Anim_008AF4:
+  type: OOT:ANIMATION
+  offset: 0x8AF4
+  symbol: object_ikn_demo_Anim_008AF4
+
+object_ikn_demo_Anim_008CEC:
+  type: OOT:ANIMATION
+  offset: 0x8CEC
+  symbol: object_ikn_demo_Anim_008CEC
+
+object_ikn_demo_Anim_008F1C:
+  type: OOT:ANIMATION
+  offset: 0x8F1C
+  symbol: object_ikn_demo_Anim_008F1C
+
+object_ikn_demo_Anim_009044:
+  type: OOT:ANIMATION
+  offset: 0x9044
+  symbol: object_ikn_demo_Anim_009044
+
+object_ikn_demo_Anim_009254:
+  type: OOT:ANIMATION
+  offset: 0x9254
+  symbol: object_ikn_demo_Anim_009254
+
+object_ikn_demo_Anim_0098E4:
+  type: OOT:ANIMATION
+  offset: 0x98E4
+  symbol: object_ikn_demo_Anim_0098E4
+
+object_ikn_demo_Anim_009A44:
+  type: OOT:ANIMATION
+  offset: 0x9A44
+  symbol: object_ikn_demo_Anim_009A44
+
+object_ikn_demo_Anim_009CC8:
+  type: OOT:ANIMATION
+  offset: 0x9CC8
+  symbol: object_ikn_demo_Anim_009CC8
+
+object_ikn_demo_Anim_009EA8:
+  type: OOT:ANIMATION
+  offset: 0x9EA8
+  symbol: object_ikn_demo_Anim_009EA8
+
+object_ikn_demo_Anim_009F00:
+  type: OOT:ANIMATION
+  offset: 0x9F00
+  symbol: object_ikn_demo_Anim_009F00
+
+object_ikn_demo_Anim_00B704:
+  type: OOT:ANIMATION
+  offset: 0xB704
+  symbol: object_ikn_demo_Anim_00B704
+
+object_ikn_demo_Anim_00B8C0:
+  type: OOT:ANIMATION
+  offset: 0xB8C0
+  symbol: object_ikn_demo_Anim_00B8C0
+
+object_ikn_demo_Anim_00B9E4:
+  type: OOT:ANIMATION
+  offset: 0xB9E4
+  symbol: object_ikn_demo_Anim_00B9E4
+
+object_ikn_demo_Anim_00BDB4:
+  type: OOT:ANIMATION
+  offset: 0xBDB4
+  symbol: object_ikn_demo_Anim_00BDB4
+
+object_ikn_demo_Anim_00BF04:
+  type: OOT:ANIMATION
+  offset: 0xBF04
+  symbol: object_ikn_demo_Anim_00BF04
+
+object_ikn_demo_Anim_00C154:
+  type: OOT:ANIMATION
+  offset: 0xC154
+  symbol: object_ikn_demo_Anim_00C154
+
+object_ikn_demo_Anim_00C2C4:
+  type: OOT:ANIMATION
+  offset: 0xC2C4
+  symbol: object_ikn_demo_Anim_00C2C4
+
+object_ikn_demo_Anim_00C59C:
+  type: OOT:ANIMATION
+  offset: 0xC59C
+  symbol: object_ikn_demo_Anim_00C59C
+
+object_ikn_demo_Anim_00C804:
+  type: OOT:ANIMATION
+  offset: 0xC804
+  symbol: object_ikn_demo_Anim_00C804
+
+object_ikn_demo_Anim_00CA74:
+  type: OOT:ANIMATION
+  offset: 0xCA74
+  symbol: object_ikn_demo_Anim_00CA74
+
+object_ikn_demo_Anim_00CD28:
+  type: OOT:ANIMATION
+  offset: 0xCD28
+  symbol: object_ikn_demo_Anim_00CD28
+
+object_ikn_demo_Anim_00D044:
+  type: OOT:ANIMATION
+  offset: 0xD044
+  symbol: object_ikn_demo_Anim_00D044
+
+object_ikn_demo_DL_001D20:
+  type: GFX
+  offset: 0x1D20
+  symbol: object_ikn_demo_DL_001D20
+
+object_ikn_demo_DL_002128:
+  type: GFX
+  offset: 0x2128
+  symbol: object_ikn_demo_DL_002128
+
+object_ikn_demo_DL_002208:
+  type: GFX
+  offset: 0x2208
+  symbol: object_ikn_demo_DL_002208
+
+object_ikn_demo_DL_0022D0:
+  type: GFX
+  offset: 0x22D0
+  symbol: object_ikn_demo_DL_0022D0
+
+object_ikn_demo_DL_002420:
+  type: GFX
+  offset: 0x2420
+  symbol: object_ikn_demo_DL_002420
+
+object_ikn_demo_DL_0024E0:
+  type: GFX
+  offset: 0x24E0
+  symbol: object_ikn_demo_DL_0024E0
+
+object_ikn_demo_DL_0025B0:
+  type: GFX
+  offset: 0x25B0
+  symbol: object_ikn_demo_DL_0025B0
+
+object_ikn_demo_DL_002670:
+  type: GFX
+  offset: 0x2670
+  symbol: object_ikn_demo_DL_002670
+
+object_ikn_demo_DL_002740:
+  type: GFX
+  offset: 0x2740
+  symbol: object_ikn_demo_DL_002740
+
+object_ikn_demo_DL_002858:
+  type: GFX
+  offset: 0x2858
+  symbol: object_ikn_demo_DL_002858
+
+object_ikn_demo_DL_002970:
+  type: GFX
+  offset: 0x2970
+  symbol: object_ikn_demo_DL_002970
+
+object_ikn_demo_DL_0029F8:
+  type: GFX
+  offset: 0x29F8
+  symbol: object_ikn_demo_DL_0029F8
+
+object_ikn_demo_DL_002A80:
+  type: GFX
+  offset: 0x2A80
+  symbol: object_ikn_demo_DL_002A80
+
+object_ikn_demo_DL_002B08:
+  type: GFX
+  offset: 0x2B08
+  symbol: object_ikn_demo_DL_002B08
+
+object_ikn_demo_DL_002B90:
+  type: GFX
+  offset: 0x2B90
+  symbol: object_ikn_demo_DL_002B90
+
+object_ikn_demo_DL_002C68:
+  type: GFX
+  offset: 0x2C68
+  symbol: object_ikn_demo_DL_002C68
+
+object_ikn_demo_DL_0072F0:
+  type: GFX
+  offset: 0x72F0
+  symbol: object_ikn_demo_DL_0072F0
+
+object_ikn_demo_DL_007680:
+  type: GFX
+  offset: 0x7680
+  symbol: object_ikn_demo_DL_007680
+
+object_ikn_demo_DL_0077B0:
+  type: GFX
+  offset: 0x77B0
+  symbol: object_ikn_demo_DL_0077B0
+
+object_ikn_demo_DL_0078E0:
+  type: GFX
+  offset: 0x78E0
+  symbol: object_ikn_demo_DL_0078E0
+
+object_ikn_demo_DL_007988:
+  type: GFX
+  offset: 0x7988
+  symbol: object_ikn_demo_DL_007988
+
+object_ikn_demo_DL_007A38:
+  type: GFX
+  offset: 0x7A38
+  symbol: object_ikn_demo_DL_007A38
+
+object_ikn_demo_DL_00AB80:
+  type: GFX
+  offset: 0xAB80
+  symbol: object_ikn_demo_DL_00AB80
+
+object_ikn_demo_DL_00AEA0:
+  type: GFX
+  offset: 0xAEA0
+  symbol: object_ikn_demo_DL_00AEA0
+
+object_ikn_demo_DL_00B028:
+  type: GFX
+  offset: 0xB028
+  symbol: object_ikn_demo_DL_00B028
+
+object_ikn_demo_DL_00B1B0:
+  type: GFX
+  offset: 0xB1B0
+  symbol: object_ikn_demo_DL_00B1B0
+
+object_ikn_demo_DL_00B258:
+  type: GFX
+  offset: 0xB258
+  symbol: object_ikn_demo_DL_00B258
+
+object_ikn_demo_DL_00B308:
+  type: GFX
+  offset: 0xB308
+  symbol: object_ikn_demo_DL_00B308
+
+object_ikn_demo_Skel_0038F0:
+  type: MM:SKELETON
+  offset: 0x38F0
+  symbol: object_ikn_demo_Skel_0038F0
+  limb_type: Standard
+  skel_type: Flex
+
+object_ikn_demo_Skel_007B48:
+  type: MM:SKELETON
+  offset: 0x7B48
+  symbol: object_ikn_demo_Skel_007B48
+  limb_type: Standard
+  skel_type: Flex
+
+object_ikn_demo_Skel_00B490:
+  type: MM:SKELETON
+  offset: 0xB490
+  symbol: object_ikn_demo_Skel_00B490
+  limb_type: Standard
+  skel_type: Flex
+
+object_ikn_demo_Standardlimb_0037F0:
+  type: OOT:LIMB
+  offset: 0x37F0
+  symbol: object_ikn_demo_Standardlimb_0037F0
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_0037FC:
+  type: OOT:LIMB
+  offset: 0x37FC
+  symbol: object_ikn_demo_Standardlimb_0037FC
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003808:
+  type: OOT:LIMB
+  offset: 0x3808
+  symbol: object_ikn_demo_Standardlimb_003808
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003814:
+  type: OOT:LIMB
+  offset: 0x3814
+  symbol: object_ikn_demo_Standardlimb_003814
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003820:
+  type: OOT:LIMB
+  offset: 0x3820
+  symbol: object_ikn_demo_Standardlimb_003820
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00382C:
+  type: OOT:LIMB
+  offset: 0x382C
+  symbol: object_ikn_demo_Standardlimb_00382C
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003838:
+  type: OOT:LIMB
+  offset: 0x3838
+  symbol: object_ikn_demo_Standardlimb_003838
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003844:
+  type: OOT:LIMB
+  offset: 0x3844
+  symbol: object_ikn_demo_Standardlimb_003844
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003850:
+  type: OOT:LIMB
+  offset: 0x3850
+  symbol: object_ikn_demo_Standardlimb_003850
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00385C:
+  type: OOT:LIMB
+  offset: 0x385C
+  symbol: object_ikn_demo_Standardlimb_00385C
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003868:
+  type: OOT:LIMB
+  offset: 0x3868
+  symbol: object_ikn_demo_Standardlimb_003868
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003874:
+  type: OOT:LIMB
+  offset: 0x3874
+  symbol: object_ikn_demo_Standardlimb_003874
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003880:
+  type: OOT:LIMB
+  offset: 0x3880
+  symbol: object_ikn_demo_Standardlimb_003880
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00388C:
+  type: OOT:LIMB
+  offset: 0x388C
+  symbol: object_ikn_demo_Standardlimb_00388C
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_003898:
+  type: OOT:LIMB
+  offset: 0x3898
+  symbol: object_ikn_demo_Standardlimb_003898
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_0038A4:
+  type: OOT:LIMB
+  offset: 0x38A4
+  symbol: object_ikn_demo_Standardlimb_0038A4
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007AE8:
+  type: OOT:LIMB
+  offset: 0x7AE8
+  symbol: object_ikn_demo_Standardlimb_007AE8
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007AF4:
+  type: OOT:LIMB
+  offset: 0x7AF4
+  symbol: object_ikn_demo_Standardlimb_007AF4
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007B00:
+  type: OOT:LIMB
+  offset: 0x7B00
+  symbol: object_ikn_demo_Standardlimb_007B00
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007B0C:
+  type: OOT:LIMB
+  offset: 0x7B0C
+  symbol: object_ikn_demo_Standardlimb_007B0C
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007B18:
+  type: OOT:LIMB
+  offset: 0x7B18
+  symbol: object_ikn_demo_Standardlimb_007B18
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_007B24:
+  type: OOT:LIMB
+  offset: 0x7B24
+  symbol: object_ikn_demo_Standardlimb_007B24
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B430:
+  type: OOT:LIMB
+  offset: 0xB430
+  symbol: object_ikn_demo_Standardlimb_00B430
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B43C:
+  type: OOT:LIMB
+  offset: 0xB43C
+  symbol: object_ikn_demo_Standardlimb_00B43C
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B448:
+  type: OOT:LIMB
+  offset: 0xB448
+  symbol: object_ikn_demo_Standardlimb_00B448
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B454:
+  type: OOT:LIMB
+  offset: 0xB454
+  symbol: object_ikn_demo_Standardlimb_00B454
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B460:
+  type: OOT:LIMB
+  offset: 0xB460
+  symbol: object_ikn_demo_Standardlimb_00B460
+  limb_type: Standard
+
+object_ikn_demo_Standardlimb_00B46C:
+  type: OOT:LIMB
+  offset: 0xB46C
+  symbol: object_ikn_demo_Standardlimb_00B46C
+  limb_type: Standard
+
+object_ikn_demo_Tex_002D50:
+  type: TEXTURE
+  offset: 0x2D50
+  symbol: object_ikn_demo_Tex_002D50
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_ikn_demo_Tex_002D70:
+  type: TEXTURE
+  offset: 0x2D70
+  symbol: object_ikn_demo_Tex_002D70
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_ikn_demo_Tex_002E70:
+  type: TEXTURE
+  offset: 0x2E70
+  symbol: object_ikn_demo_Tex_002E70
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_ikn_demo_Tex_002F70:
+  type: TEXTURE
+  offset: 0x2F70
+  symbol: object_ikn_demo_Tex_002F70
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_ikn_demo_Tex_003070:
+  type: TEXTURE
+  offset: 0x3070
+  symbol: object_ikn_demo_Tex_003070
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_ikn_demo_Tex_0030F0:
+  type: TEXTURE
+  offset: 0x30F0
+  symbol: object_ikn_demo_Tex_0030F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikn_demo_Tex_0032F0:
+  type: TEXTURE
+  offset: 0x32F0
+  symbol: object_ikn_demo_Tex_0032F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikn_demo_Tex_0034F0:
+  type: TEXTURE
+  offset: 0x34F0
+  symbol: object_ikn_demo_Tex_0034F0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_ikn_demo_Tex_0035F0:
+  type: TEXTURE
+  offset: 0x35F0
+  symbol: object_ikn_demo_Tex_0035F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikn_demo_Tex_00D060:
+  type: TEXTURE
+  offset: 0xD060
+  symbol: object_ikn_demo_Tex_00D060
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_ikn_demo_Tex_00D1E0:
+  type: TEXTURE
+  offset: 0xD1E0
+  symbol: object_ikn_demo_Tex_00D1E0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikn_demo_Tex_00D4E0:
+  type: TEXTURE
+  offset: 0xD4E0
+  symbol: object_ikn_demo_Tex_00D4E0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_ikn_demo_Tex_00D600:
+  type: TEXTURE
+  offset: 0xD600
+  symbol: object_ikn_demo_Tex_00D600
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikn_demo_Tex_00D900:
+  type: TEXTURE
+  offset: 0xD900
+  symbol: object_ikn_demo_Tex_00D900
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_ikn_demo_Tex_00D940:
+  type: TEXTURE
+  offset: 0xD940
+  symbol: object_ikn_demo_Tex_00D940
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_ikn_demo_Tex_00DC80:
+  type: TEXTURE
+  offset: 0xDC80
+  symbol: object_ikn_demo_Tex_00DC80
+  format: IA8
+  width: 8
+  height: 8
+
+
+object_ikn_demoVtx_0000D0:
+  type: MM:ARRAY
+  offset: 0x0000D0
+  symbol: object_ikn_demoVtx_0000D0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000410:
+  type: MM:ARRAY
+  offset: 0x000410
+  symbol: object_ikn_demoVtx_000410
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000510:
+  type: MM:ARRAY
+  offset: 0x000510
+  symbol: object_ikn_demoVtx_000510
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_0005D0:
+  type: MM:ARRAY
+  offset: 0x0005D0
+  symbol: object_ikn_demoVtx_0005D0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_0006D0:
+  type: MM:ARRAY
+  offset: 0x0006D0
+  symbol: object_ikn_demoVtx_0006D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000790:
+  type: MM:ARRAY
+  offset: 0x000790
+  symbol: object_ikn_demoVtx_000790
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_0008B0:
+  type: MM:ARRAY
+  offset: 0x0008B0
+  symbol: object_ikn_demoVtx_0008B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000A40:
+  type: MM:ARRAY
+  offset: 0x000A40
+  symbol: object_ikn_demoVtx_000A40
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: object_ikn_demoVtx_000C00
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000D50:
+  type: MM:ARRAY
+  offset: 0x000D50
+  symbol: object_ikn_demoVtx_000D50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000D90:
+  type: MM:ARRAY
+  offset: 0x000D90
+  symbol: object_ikn_demoVtx_000D90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000DD0:
+  type: MM:ARRAY
+  offset: 0x000DD0
+  symbol: object_ikn_demoVtx_000DD0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000E10:
+  type: MM:ARRAY
+  offset: 0x000E10
+  symbol: object_ikn_demoVtx_000E10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000E50:
+  type: MM:ARRAY
+  offset: 0x000E50
+  symbol: object_ikn_demoVtx_000E50
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_000FD0:
+  type: MM:ARRAY
+  offset: 0x000FD0
+  symbol: object_ikn_demoVtx_000FD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_001150:
+  type: MM:ARRAY
+  offset: 0x001150
+  symbol: object_ikn_demoVtx_001150
+  count: 189
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demo_Skel_0038F0Limbs:
+  type: BLOB
+  offset: 0x38B0
+  symbol: object_ikn_demo_Skel_0038F0Limbs
+  size: 0
+
+object_ikn_demoVtx_006820:
+  type: MM:ARRAY
+  offset: 0x006820
+  symbol: object_ikn_demoVtx_006820
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_006E80:
+  type: MM:ARRAY
+  offset: 0x006E80
+  symbol: object_ikn_demoVtx_006E80
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_006F80:
+  type: MM:ARRAY
+  offset: 0x006F80
+  symbol: object_ikn_demoVtx_006F80
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_006FE0:
+  type: MM:ARRAY
+  offset: 0x006FE0
+  symbol: object_ikn_demoVtx_006FE0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_007040:
+  type: MM:ARRAY
+  offset: 0x007040
+  symbol: object_ikn_demoVtx_007040
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_007190:
+  type: MM:ARRAY
+  offset: 0x007190
+  symbol: object_ikn_demoVtx_007190
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demo_Skel_007B48Limbs:
+  type: BLOB
+  offset: 0x7B30
+  symbol: object_ikn_demo_Skel_007B48Limbs
+  size: 0
+
+object_ikn_demoVtx_009F10:
+  type: MM:ARRAY
+  offset: 0x009F10
+  symbol: object_ikn_demoVtx_009F10
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_00A5D0:
+  type: MM:ARRAY
+  offset: 0x00A5D0
+  symbol: object_ikn_demoVtx_00A5D0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_00A720:
+  type: MM:ARRAY
+  offset: 0x00A720
+  symbol: object_ikn_demoVtx_00A720
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_00A780:
+  type: MM:ARRAY
+  offset: 0x00A780
+  symbol: object_ikn_demoVtx_00A780
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_00A7E0:
+  type: MM:ARRAY
+  offset: 0x00A7E0
+  symbol: object_ikn_demoVtx_00A7E0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demoVtx_00A9B0:
+  type: MM:ARRAY
+  offset: 0x00A9B0
+  symbol: object_ikn_demoVtx_00A9B0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikn_demo_Skel_00B490Limbs:
+  type: BLOB
+  offset: 0xB478
+  symbol: object_ikn_demo_Skel_00B490Limbs
+  size: 0

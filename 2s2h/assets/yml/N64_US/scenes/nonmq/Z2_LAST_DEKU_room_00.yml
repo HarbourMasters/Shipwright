@@ -1,0 +1,306 @@
+:config:
+  segments:
+    - [ 3, 0x0195A940 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0195A940 ]
+    - [ 9, 0x0195A940 ]
+    - [ 10, 0x0195A940 ]
+    - [ 11, 0x0195A940 ]
+    - [ 12, 0x0195A940 ]
+    - [ 13, 0x0195A940 ]
+    - [ 2, 0x01957C70 ]
+  directory: scenes/nonmq/Z2_LAST_DEKU
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LAST_DEKU.yml
+
+Z2_LAST_DEKU_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_DEKU_room_00
+
+Z2_LAST_DEKU_room_00DL_005A00:
+  type: GFX
+  offset: 0x5A00
+  symbol: Z2_LAST_DEKU_room_00DL_005A00
+
+
+Z2_LAST_DEKU_room_00ActorEntry_00004C:
+  type: BLOB
+  offset: 0x00004C
+  symbol: Z2_LAST_DEKU_room_00ActorEntry_00004C
+  size: 0
+
+Z2_LAST_DEKU_room_00Vtx_0001E0:
+  type: MM:ARRAY
+  offset: 0x0001E0
+  symbol: Z2_LAST_DEKU_room_00Vtx_0001E0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_000590:
+  type: GFX
+  offset: 0x000590
+  symbol: Z2_LAST_DEKU_room_00DL_000590
+
+Z2_LAST_DEKU_room_00Vtx_000768:
+  type: MM:ARRAY
+  offset: 0x000768
+  symbol: Z2_LAST_DEKU_room_00Vtx_000768
+  count: 245
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_0016B8:
+  type: GFX
+  offset: 0x0016B8
+  symbol: Z2_LAST_DEKU_room_00DL_0016B8
+
+Z2_LAST_DEKU_room_00Vtx_001C28:
+  type: MM:ARRAY
+  offset: 0x001C28
+  symbol: Z2_LAST_DEKU_room_00Vtx_001C28
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_001DD8:
+  type: GFX
+  offset: 0x001DD8
+  symbol: Z2_LAST_DEKU_room_00DL_001DD8
+
+Z2_LAST_DEKU_room_00Vtx_001EE8:
+  type: MM:ARRAY
+  offset: 0x001EE8
+  symbol: Z2_LAST_DEKU_room_00Vtx_001EE8
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_0020D8:
+  type: GFX
+  offset: 0x0020D8
+  symbol: Z2_LAST_DEKU_room_00DL_0020D8
+
+Z2_LAST_DEKU_room_00Vtx_0021D8:
+  type: MM:ARRAY
+  offset: 0x0021D8
+  symbol: Z2_LAST_DEKU_room_00Vtx_0021D8
+  count: 386
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_0039F8:
+  type: GFX
+  offset: 0x0039F8
+  symbol: Z2_LAST_DEKU_room_00DL_0039F8
+
+Z2_LAST_DEKU_room_00Vtx_003FD8:
+  type: MM:ARRAY
+  offset: 0x003FD8
+  symbol: Z2_LAST_DEKU_room_00Vtx_003FD8
+  count: 150
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_004938:
+  type: GFX
+  offset: 0x004938
+  symbol: Z2_LAST_DEKU_room_00DL_004938
+
+Z2_LAST_DEKU_room_00Vtx_004BF8:
+  type: MM:ARRAY
+  offset: 0x004BF8
+  symbol: Z2_LAST_DEKU_room_00Vtx_004BF8
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_DEKU_room_00DL_005678:
+  type: GFX
+  offset: 0x005678
+  symbol: Z2_LAST_DEKU_room_00DL_005678
+
+Z2_LAST_DEKU_room_00Tex_005A40:
+  type: TEXTURE
+  offset: 0x005A40
+  symbol: Z2_LAST_DEKU_room_00Tex_005A40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_006240:
+  type: TEXTURE
+  offset: 0x006240
+  symbol: Z2_LAST_DEKU_room_00Tex_006240
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_006A40:
+  type: TEXTURE
+  offset: 0x006A40
+  symbol: Z2_LAST_DEKU_room_00Tex_006A40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_007240:
+  type: TEXTURE
+  offset: 0x007240
+  symbol: Z2_LAST_DEKU_room_00Tex_007240
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_DEKU_room_00Tex_007A40:
+  type: TEXTURE
+  offset: 0x007A40
+  symbol: Z2_LAST_DEKU_room_00Tex_007A40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_008240:
+  type: TEXTURE
+  offset: 0x008240
+  symbol: Z2_LAST_DEKU_room_00Tex_008240
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_008A40:
+  type: TEXTURE
+  offset: 0x008A40
+  symbol: Z2_LAST_DEKU_room_00Tex_008A40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_009240:
+  type: TEXTURE
+  offset: 0x009240
+  symbol: Z2_LAST_DEKU_room_00Tex_009240
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_009A40:
+  type: TEXTURE
+  offset: 0x009A40
+  symbol: Z2_LAST_DEKU_room_00Tex_009A40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00A240:
+  type: TEXTURE
+  offset: 0x00A240
+  symbol: Z2_LAST_DEKU_room_00Tex_00A240
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00AA40:
+  type: TEXTURE
+  offset: 0x00AA40
+  symbol: Z2_LAST_DEKU_room_00Tex_00AA40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00B240:
+  type: TEXTURE
+  offset: 0x00B240
+  symbol: Z2_LAST_DEKU_room_00Tex_00B240
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00BA40:
+  type: TEXTURE
+  offset: 0x00BA40
+  symbol: Z2_LAST_DEKU_room_00Tex_00BA40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00C240:
+  type: TEXTURE
+  offset: 0x00C240
+  symbol: Z2_LAST_DEKU_room_00Tex_00C240
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00CA40:
+  type: TEXTURE
+  offset: 0x00CA40
+  symbol: Z2_LAST_DEKU_room_00Tex_00CA40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00Tex_00D240:
+  type: TEXTURE
+  offset: 0x00D240
+  symbol: Z2_LAST_DEKU_room_00Tex_00D240
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_DEKU_room_00TLUT_00DA40:
+  type: TEXTURE
+  offset: 0x00DA40
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DA40
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_DEKU_room_00TLUT_00DA60:
+  type: TEXTURE
+  offset: 0x00DA60
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DA60
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_DEKU_room_00TLUT_00DA80:
+  type: TEXTURE
+  offset: 0x00DA80
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DA80
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_DEKU_room_00TLUT_00DAA0:
+  type: TEXTURE
+  offset: 0x00DAA0
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DAA0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_DEKU_room_00TLUT_00DAC0:
+  type: TEXTURE
+  offset: 0x00DAC0
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DAC0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_DEKU_room_00TLUT_00DAE0:
+  type: TEXTURE
+  offset: 0x00DAE0
+  symbol: Z2_LAST_DEKU_room_00TLUT_00DAE0
+  format: RGBA16
+  width: 4
+  height: 4

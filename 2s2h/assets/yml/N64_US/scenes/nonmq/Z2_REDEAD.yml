@@ -1,0 +1,1059 @@
+:config:
+  segments:
+    - [ 2, 0x01BD5FC0 ]
+
+Z2_REDEAD:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_REDEAD
+
+
+Z2_REDEADPathwayList_000250:
+  type: MM:PATH
+  offset: 0x000250
+  symbol: Z2_REDEADPathwayList_000250
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_00025C:
+  type: MM:PATH
+  offset: 0x00025C
+  symbol: Z2_REDEADPathwayList_00025C
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_000268:
+  type: MM:PATH
+  offset: 0x000268
+  symbol: Z2_REDEADPathwayList_000268
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_000274:
+  type: MM:PATH
+  offset: 0x000274
+  symbol: Z2_REDEADPathwayList_000274
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_000280:
+  type: MM:PATH
+  offset: 0x000280
+  symbol: Z2_REDEADPathwayList_000280
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_00028C:
+  type: MM:PATH
+  offset: 0x00028C
+  symbol: Z2_REDEADPathwayList_00028C
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_000298:
+  type: MM:PATH
+  offset: 0x000298
+  symbol: Z2_REDEADPathwayList_000298
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002A4:
+  type: MM:PATH
+  offset: 0x0002A4
+  symbol: Z2_REDEADPathwayList_0002A4
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002B0:
+  type: MM:PATH
+  offset: 0x0002B0
+  symbol: Z2_REDEADPathwayList_0002B0
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002BC:
+  type: MM:PATH
+  offset: 0x0002BC
+  symbol: Z2_REDEADPathwayList_0002BC
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002C8:
+  type: MM:PATH
+  offset: 0x0002C8
+  symbol: Z2_REDEADPathwayList_0002C8
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002D4:
+  type: MM:PATH
+  offset: 0x0002D4
+  symbol: Z2_REDEADPathwayList_0002D4
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADPathwayList_0002E0:
+  type: MM:PATH
+  offset: 0x0002E0
+  symbol: Z2_REDEADPathwayList_0002E0
+  num_paths: 13
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -225, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -75, 0, -2040 ]
+        - [ -150, 0, -2040 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1125, 0, -1980 ]
+        - [ 975, 0, -1980 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, -15, -2025 ]
+        - [ 1050, 165, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 975, 0, -2070 ]
+        - [ 1125, 0, -2070 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1740, 0, -1500 ]
+        - [ 2160, 0, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1680, 0, -1080 ]
+        - [ 1680, 0, -1440 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2220, 0, -1440 ]
+        - [ 2220, 0, -1080 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2160, 0, -1020 ]
+        - [ 1740, 0, -1020 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1050, 165, -2355 ]
+        - [ 1050, -15, -2355 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -705 ]
+        - [ -150, 75, -705 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -765 ]
+        - [ -150, 75, -765 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -150, -15, -825 ]
+        - [ -150, 75, -825 ]
+
+Z2_REDEADTexAnim_0008B0TexScrollParams_000890:
+  type: BLOB
+  offset: 0x000890
+  symbol: Z2_REDEADTexAnim_0008B0TexScrollParams_000890
+  size: 0
+
+Z2_REDEADTexAnim_0008B0TexScrollParams_000898:
+  type: BLOB
+  offset: 0x000898
+  symbol: Z2_REDEADTexAnim_0008B0TexScrollParams_000898
+  size: 0
+
+Z2_REDEADTexAnim_0008B0TexScrollParams_0008A0:
+  type: BLOB
+  offset: 0x0008A0
+  symbol: Z2_REDEADTexAnim_0008B0TexScrollParams_0008A0
+  size: 0
+
+Z2_REDEADTexAnim_0008B0TexScrollParams_0008A8:
+  type: BLOB
+  offset: 0x0008A8
+  symbol: Z2_REDEADTexAnim_0008B0TexScrollParams_0008A8
+  size: 0
+
+Z2_REDEADTexAnim_0008B0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0008B0
+  symbol: Z2_REDEADTexAnim_0008B0
+
+Z2_REDEADCollisionHeader_00A1D8:
+  type: MM:COLLISION
+  offset: 0x00A1D8
+  symbol: Z2_REDEADCollisionHeader_00A1D8
+
+Z2_REDEADTex_00A210:
+  type: TEXTURE
+  offset: 0x00A210
+  symbol: Z2_REDEADTex_00A210
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_REDEADTex_00AA10:
+  type: TEXTURE
+  offset: 0x00AA10
+  symbol: Z2_REDEADTex_00AA10
+  format: CI4
+  width: 64
+  height: 32
+
+Z2_REDEADTex_00AE10:
+  type: TEXTURE
+  offset: 0x00AE10
+  symbol: Z2_REDEADTex_00AE10
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_REDEADTex_00B010:
+  type: TEXTURE
+  offset: 0x00B010
+  symbol: Z2_REDEADTex_00B010
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_REDEADTex_00B210:
+  type: TEXTURE
+  offset: 0x00B210
+  symbol: Z2_REDEADTex_00B210
+  format: CI4
+  width: 32
+  height: 64
+
+Z2_REDEADTex_00B610:
+  type: TEXTURE
+  offset: 0x00B610
+  symbol: Z2_REDEADTex_00B610
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_REDEADTex_00B810:
+  type: TEXTURE
+  offset: 0x00B810
+  symbol: Z2_REDEADTex_00B810
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_REDEADTex_00C010:
+  type: TEXTURE
+  offset: 0x00C010
+  symbol: Z2_REDEADTex_00C010
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_REDEADTex_00C810:
+  type: TEXTURE
+  offset: 0x00C810
+  symbol: Z2_REDEADTex_00C810
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_REDEADTLUT_00D010:
+  type: TEXTURE
+  offset: 0x00D010
+  symbol: Z2_REDEADTLUT_00D010
+  format: RGBA16
+  width: 4
+  height: 4

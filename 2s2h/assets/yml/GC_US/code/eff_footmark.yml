@@ -1,0 +1,25 @@
+:config:
+  segments:
+    - [ 128, 0x00A77120 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x800A6440, 0x00A77120 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEffFootprintMaterialDL:
+  type: GFX
+  offset: 0x1144D0
+  symbol: gEffFootprintMaterialDL
+
+gEffFootprintModelDL:
+  type: GFX
+  offset: 0x114518
+  symbol: gEffFootprintModelDL
+
+gEffFootprintVtx:
+  type: MM:ARRAY
+  offset: 0x1144A0
+  symbol: gEffFootprintVtx
+  count: 3
+  array_type: VTX
+

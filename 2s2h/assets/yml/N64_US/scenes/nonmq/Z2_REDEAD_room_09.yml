@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 3, 0x01BF6530 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01BF6530 ]
+    - [ 9, 0x01BF6530 ]
+    - [ 10, 0x01BF6530 ]
+    - [ 11, 0x01BF6530 ]
+    - [ 12, 0x01BF6530 ]
+    - [ 13, 0x01BF6530 ]
+    - [ 2, 0x01BD5FC0 ]
+  directory: scenes/nonmq/Z2_REDEAD
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_REDEAD.yml
+
+Z2_REDEAD_room_09:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_REDEAD_room_09
+
+Z2_REDEAD_room_09DL_002800:
+  type: GFX
+  offset: 0x2800
+  symbol: Z2_REDEAD_room_09DL_002800
+
+
+Z2_REDEAD_room_09ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_REDEAD_room_09ActorEntry_000070
+  size: 0
+
+Z2_REDEAD_room_09Vtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: Z2_REDEAD_room_09Vtx_000150
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_09DL_0005B0:
+  type: GFX
+  offset: 0x0005B0
+  symbol: Z2_REDEAD_room_09DL_0005B0
+
+Z2_REDEAD_room_09Vtx_0007B0:
+  type: MM:ARRAY
+  offset: 0x0007B0
+  symbol: Z2_REDEAD_room_09Vtx_0007B0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_09DL_000C10:
+  type: GFX
+  offset: 0x000C10
+  symbol: Z2_REDEAD_room_09DL_000C10
+
+Z2_REDEAD_room_09Vtx_000E10:
+  type: MM:ARRAY
+  offset: 0x000E10
+  symbol: Z2_REDEAD_room_09Vtx_000E10
+  count: 293
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_09DL_002060:
+  type: GFX
+  offset: 0x002060
+  symbol: Z2_REDEAD_room_09DL_002060
+
+Z2_REDEAD_room_09Vtx_002540:
+  type: MM:ARRAY
+  offset: 0x002540
+  symbol: Z2_REDEAD_room_09Vtx_002540
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_REDEAD_room_09DL_002700:
+  type: GFX
+  offset: 0x002700
+  symbol: Z2_REDEAD_room_09DL_002700

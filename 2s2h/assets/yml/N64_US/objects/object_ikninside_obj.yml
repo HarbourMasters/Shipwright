@@ -1,0 +1,409 @@
+:config:
+  segments:
+    - [ 6, 0x0151E2A0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0151E2A0 ]
+    - [ 9, 0x0151E2A0 ]
+    - [ 10, 0x0151E2A0 ]
+    - [ 11, 0x0151E2A0 ]
+    - [ 12, 0x0151E2A0 ]
+    - [ 13, 0x0151E2A0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_ikninside_obj_Colheader_00CBAC:
+  type: MM:COLLISION
+  offset: 0xCBAC
+  symbol: object_ikninside_obj_Colheader_00CBAC
+
+object_ikninside_obj_Colheader_00DE48:
+  type: MM:COLLISION
+  offset: 0xDE48
+  symbol: object_ikninside_obj_Colheader_00DE48
+
+object_ikninside_obj_DL_000590:
+  type: GFX
+  offset: 0x590
+  symbol: object_ikninside_obj_DL_000590
+
+object_ikninside_obj_DL_000EA0:
+  type: GFX
+  offset: 0xEA0
+  symbol: object_ikninside_obj_DL_000EA0
+
+object_ikninside_obj_DL_004440:
+  type: GFX
+  offset: 0x4440
+  symbol: object_ikninside_obj_DL_004440
+
+object_ikninside_obj_DL_005260:
+  type: GFX
+  offset: 0x5260
+  symbol: object_ikninside_obj_DL_005260
+
+object_ikninside_obj_DL_00A5A0:
+  type: GFX
+  offset: 0xA5A0
+  symbol: object_ikninside_obj_DL_00A5A0
+
+object_ikninside_obj_DL_00A5A8:
+  type: GFX
+  offset: 0xA5A8
+  symbol: object_ikninside_obj_DL_00A5A8
+
+object_ikninside_obj_DL_00A740:
+  type: GFX
+  offset: 0xA740
+  symbol: object_ikninside_obj_DL_00A740
+
+object_ikninside_obj_DL_00A748:
+  type: GFX
+  offset: 0xA748
+  symbol: object_ikninside_obj_DL_00A748
+
+object_ikninside_obj_DL_00AB10:
+  type: GFX
+  offset: 0xAB10
+  symbol: object_ikninside_obj_DL_00AB10
+
+object_ikninside_obj_DL_00AD50:
+  type: GFX
+  offset: 0xAD50
+  symbol: object_ikninside_obj_DL_00AD50
+
+object_ikninside_obj_DL_00AEC0:
+  type: GFX
+  offset: 0xAEC0
+  symbol: object_ikninside_obj_DL_00AEC0
+
+object_ikninside_obj_DL_00B0A8:
+  type: GFX
+  offset: 0xB0A8
+  symbol: object_ikninside_obj_DL_00B0A8
+
+object_ikninside_obj_DL_00C300:
+  type: GFX
+  offset: 0xC300
+  symbol: object_ikninside_obj_DL_00C300
+
+object_ikninside_obj_DL_00C308:
+  type: GFX
+  offset: 0xC308
+  symbol: object_ikninside_obj_DL_00C308
+
+object_ikninside_obj_DL_00CC70:
+  type: GFX
+  offset: 0xCC70
+  symbol: object_ikninside_obj_DL_00CC70
+
+object_ikninside_obj_DL_00CC78:
+  type: GFX
+  offset: 0xCC78
+  symbol: object_ikninside_obj_DL_00CC78
+
+object_ikninside_obj_Matanimheader_00BCB8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xBCB8
+  symbol: object_ikninside_obj_Matanimheader_00BCB8
+
+object_ikninside_obj_Matanimheader_00BCC8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xBCC8
+  symbol: object_ikninside_obj_Matanimheader_00BCC8
+
+object_ikninside_obj_Matanimheader_00C670:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xC670
+  symbol: object_ikninside_obj_Matanimheader_00C670
+
+object_ikninside_obj_Matanimheader_00DD70:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xDD70
+  symbol: object_ikninside_obj_Matanimheader_00DD70
+
+object_ikninside_obj_TLUT_004620:
+  type: TEXTURE
+  offset: 0x4620
+  symbol: object_ikninside_obj_TLUT_004620
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikninside_obj_Tex_001120:
+  type: TEXTURE
+  offset: 0x1120
+  symbol: object_ikninside_obj_Tex_001120
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ikninside_obj_Tex_002120:
+  type: TEXTURE
+  offset: 0x2120
+  symbol: object_ikninside_obj_Tex_002120
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ikninside_obj_Tex_003120:
+  type: TEXTURE
+  offset: 0x3120
+  symbol: object_ikninside_obj_Tex_003120
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ikninside_obj_Tex_004820:
+  type: TEXTURE
+  offset: 0x4820
+  symbol: object_ikninside_obj_Tex_004820
+  format: CI8
+  width: 32
+  height: 64
+
+object_ikninside_obj_Tex_005020:
+  type: TEXTURE
+  offset: 0x5020
+  symbol: object_ikninside_obj_Tex_005020
+  format: CI8
+  width: 16
+  height: 32
+
+object_ikninside_obj_Tex_0052F0:
+  type: TEXTURE
+  offset: 0x52F0
+  symbol: object_ikninside_obj_Tex_0052F0
+  format: IA16
+  width: 16
+  height: 64
+
+object_ikninside_obj_Tex_005D10:
+  type: TEXTURE
+  offset: 0x5D10
+  symbol: object_ikninside_obj_Tex_005D10
+  format: IA16
+  width: 32
+  height: 32
+
+object_ikninside_obj_Tex_006530:
+  type: TEXTURE
+  offset: 0x6530
+  symbol: object_ikninside_obj_Tex_006530
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ikninside_obj_Tex_007530:
+  type: TEXTURE
+  offset: 0x7530
+  symbol: object_ikninside_obj_Tex_007530
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_ikninside_obj_Tex_007930:
+  type: TEXTURE
+  offset: 0x7930
+  symbol: object_ikninside_obj_Tex_007930
+  format: I4
+  width: 64
+  height: 64
+
+object_ikninside_obj_Tex_008130:
+  type: TEXTURE
+  offset: 0x8130
+  symbol: object_ikninside_obj_Tex_008130
+  format: IA16
+  width: 16
+  height: 32
+
+object_ikninside_obj_Tex_008530:
+  type: TEXTURE
+  offset: 0x8530
+  symbol: object_ikninside_obj_Tex_008530
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikninside_obj_Tex_008D30:
+  type: TEXTURE
+  offset: 0x8D30
+  symbol: object_ikninside_obj_Tex_008D30
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikninside_obj_Tex_009530:
+  type: TEXTURE
+  offset: 0x9530
+  symbol: object_ikninside_obj_Tex_009530
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_ikninside_obj_Tex_009D30:
+  type: TEXTURE
+  offset: 0x9D30
+  symbol: object_ikninside_obj_Tex_009D30
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikninside_obj_Tex_00B0B0:
+  type: TEXTURE
+  offset: 0xB0B0
+  symbol: object_ikninside_obj_Tex_00B0B0
+  format: IA16
+  width: 32
+  height: 32
+
+object_ikninside_obj_Tex_00B8B0:
+  type: TEXTURE
+  offset: 0xB8B0
+  symbol: object_ikninside_obj_Tex_00B8B0
+  format: IA16
+  width: 16
+  height: 32
+
+object_ikninside_obj_Tex_00CD60:
+  type: TEXTURE
+  offset: 0xCD60
+  symbol: object_ikninside_obj_Tex_00CD60
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_ikninside_obj_Tex_00D560:
+  type: TEXTURE
+  offset: 0xD560
+  symbol: object_ikninside_obj_Tex_00D560
+  format: I4
+  width: 64
+  height: 64
+
+
+object_ikninside_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ikninside_objVtx_000000
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_0007F0:
+  type: MM:ARRAY
+  offset: 0x0007F0
+  symbol: object_ikninside_objVtx_0007F0
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_004120:
+  type: MM:ARRAY
+  offset: 0x004120
+  symbol: object_ikninside_objVtx_004120
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_005220:
+  type: MM:ARRAY
+  offset: 0x005220
+  symbol: object_ikninside_objVtx_005220
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_00A530:
+  type: MM:ARRAY
+  offset: 0x00A530
+  symbol: object_ikninside_objVtx_00A530
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_00A680:
+  type: MM:ARRAY
+  offset: 0x00A680
+  symbol: object_ikninside_objVtx_00A680
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_00A8C0:
+  type: MM:ARRAY
+  offset: 0x00A8C0
+  symbol: object_ikninside_objVtx_00A8C0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_objVtx_00AD60:
+  type: MM:ARRAY
+  offset: 0x00AD60
+  symbol: object_ikninside_objVtx_00AD60
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_obj_Matanimheader_00BCB8TexScrollParams_00BCB0:
+  type: BLOB
+  offset: 0x00BCB0
+  symbol: object_ikninside_obj_Matanimheader_00BCB8TexScrollParams_00BCB0
+  size: 0
+
+object_ikninside_obj_Matanimheader_00BCC8TexScrollParams_00BCC0:
+  type: BLOB
+  offset: 0x00BCC0
+  symbol: object_ikninside_obj_Matanimheader_00BCC8TexScrollParams_00BCC0
+  size: 0
+
+object_ikninside_objVtx_00BCD0:
+  type: MM:ARRAY
+  offset: 0x00BCD0
+  symbol: object_ikninside_objVtx_00BCD0
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_obj_Matanimheader_00C670ColorParams_00C658:
+  type: BLOB
+  offset: 0x00C658
+  symbol: object_ikninside_obj_Matanimheader_00C670ColorParams_00C658
+  size: 0
+
+object_ikninside_obj_Matanimheader_00C670TexScrollParams_00C668:
+  type: BLOB
+  offset: 0x00C668
+  symbol: object_ikninside_obj_Matanimheader_00C670TexScrollParams_00C668
+  size: 0
+
+object_ikninside_objVtx_00CBE0:
+  type: MM:ARRAY
+  offset: 0x00CBE0
+  symbol: object_ikninside_objVtx_00CBE0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikninside_obj_Matanimheader_00DD70TexScrollParams_00DD60:
+  type: BLOB
+  offset: 0x00DD60
+  symbol: object_ikninside_obj_Matanimheader_00DD70TexScrollParams_00DD60
+  size: 0
+
+object_ikninside_obj_Matanimheader_00DD70TexScrollParams_00DD68:
+  type: BLOB
+  offset: 0x00DD68
+  symbol: object_ikninside_obj_Matanimheader_00DD70TexScrollParams_00DD68
+  size: 0

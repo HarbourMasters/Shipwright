@@ -1,0 +1,77 @@
+:config:
+  segments:
+    - [ 6, 0x0138F470 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0138F470 ]
+    - [ 9, 0x0138F470 ]
+    - [ 10, 0x0138F470 ]
+    - [ 11, 0x0138F470 ]
+    - [ 12, 0x0138F470 ]
+    - [ 13, 0x0138F470 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_spidertent_Colheader_0011AC:
+  type: MM:COLLISION
+  offset: 0x11AC
+  symbol: object_spidertent_Colheader_0011AC
+
+object_spidertent_Colheader_00238C:
+  type: MM:COLLISION
+  offset: 0x238C
+  symbol: object_spidertent_Colheader_00238C
+
+object_spidertent_DL_000070:
+  type: GFX
+  offset: 0x70
+  symbol: object_spidertent_DL_000070
+
+object_spidertent_DL_000108:
+  type: GFX
+  offset: 0x108
+  symbol: object_spidertent_DL_000108
+
+object_spidertent_DL_001250:
+  type: GFX
+  offset: 0x1250
+  symbol: object_spidertent_DL_001250
+
+object_spidertent_DL_0012E8:
+  type: GFX
+  offset: 0x12E8
+  symbol: object_spidertent_DL_0012E8
+
+object_spidertent_Tex_000110:
+  type: TEXTURE
+  offset: 0x110
+  symbol: object_spidertent_Tex_000110
+  format: IA8
+  width: 64
+  height: 64
+
+object_spidertent_Tex_0012F0:
+  type: TEXTURE
+  offset: 0x12F0
+  symbol: object_spidertent_Tex_0012F0
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_spidertentVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_spidertentVtx_000000
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spidertentVtx_0011E0:
+  type: MM:ARRAY
+  offset: 0x0011E0
+  symbol: object_spidertentVtx_0011E0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,75 @@
+:config:
+  segments:
+    - [ 6, 0x00FFE1E0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00FFE1E0 ]
+    - [ 9, 0x00FFE1E0 ]
+    - [ 10, 0x00FFE1E0 ]
+    - [ 11, 0x00FFE1E0 ]
+    - [ 12, 0x00FFE1E0 ]
+    - [ 13, 0x00FFE1E0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDampeGraveBrownElevatorCol:
+  type: MM:COLLISION
+  offset: 0xF00
+  symbol: gDampeGraveBrownElevatorCol
+
+gDampeGraveBrownElevatorDL:
+  type: GFX
+  offset: 0xD10
+  symbol: gDampeGraveBrownElevatorDL
+
+gDampeGraveBrownElevatorSideTex:
+  type: TEXTURE
+  offset: 0xF30
+  symbol: gDampeGraveBrownElevatorSideTex
+  format: I8
+  width: 64
+  height: 16
+
+gDampeGraveBrownElevatorTopBottomTex:
+  type: TEXTURE
+  offset: 0x1330
+  symbol: gDampeGraveBrownElevatorTopBottomTex
+  format: I8
+  width: 64
+  height: 64
+
+object_d_lift_Colheader_000BA0:
+  type: MM:COLLISION
+  offset: 0xBA0
+  symbol: object_d_lift_Colheader_000BA0
+
+object_d_lift_DL_000180:
+  type: GFX
+  offset: 0x180
+  symbol: object_d_lift_DL_000180
+
+object_d_lift_Tex_000298:
+  type: TEXTURE
+  offset: 0x298
+  symbol: object_d_lift_Tex_000298
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_d_liftVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_d_liftVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_d_liftVtx_000BD0:
+  type: MM:ARRAY
+  offset: 0x000BD0
+  symbol: object_d_liftVtx_000BD0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

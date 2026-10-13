@@ -1,0 +1,147 @@
+:config:
+  segments:
+    - [ 6, 0x015742A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015742A0 ]
+    - [ 9, 0x015742A0 ]
+    - [ 10, 0x015742A0 ]
+    - [ 11, 0x015742A0 ]
+    - [ 12, 0x015742A0 ]
+    - [ 13, 0x015742A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_tanron5_DL_0004E0:
+  type: GFX
+  offset: 0x4E0
+  symbol: object_tanron5_DL_0004E0
+
+object_tanron5_DL_000710:
+  type: GFX
+  offset: 0x710
+  symbol: object_tanron5_DL_000710
+
+object_tanron5_DL_0007D8:
+  type: GFX
+  offset: 0x7D8
+  symbol: object_tanron5_DL_0007D8
+
+object_tanron5_DL_0008A8:
+  type: GFX
+  offset: 0x8A8
+  symbol: object_tanron5_DL_0008A8
+
+object_tanron5_DL_000960:
+  type: GFX
+  offset: 0x960
+  symbol: object_tanron5_DL_000960
+
+object_tanron5_TLUT_000A18:
+  type: TEXTURE
+  offset: 0xA18
+  symbol: object_tanron5_TLUT_000A18
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_tanron5_TLUT_000A38:
+  type: TEXTURE
+  offset: 0xA38
+  symbol: object_tanron5_TLUT_000A38
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_tanron5_TLUT_000A58:
+  type: TEXTURE
+  offset: 0xA58
+  symbol: object_tanron5_TLUT_000A58
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_tanron5_TLUT_000A78:
+  type: TEXTURE
+  offset: 0xA78
+  symbol: object_tanron5_TLUT_000A78
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_tanron5_Tex_000A98:
+  type: TEXTURE
+  offset: 0xA98
+  symbol: object_tanron5_Tex_000A98
+  format: CI4
+  width: 32
+  height: 32
+
+object_tanron5_Tex_000C98:
+  type: TEXTURE
+  offset: 0xC98
+  symbol: object_tanron5_Tex_000C98
+  format: CI4
+  width: 32
+  height: 32
+
+object_tanron5_Tex_000E98:
+  type: TEXTURE
+  offset: 0xE98
+  symbol: object_tanron5_Tex_000E98
+  format: CI4
+  width: 32
+  height: 32
+
+object_tanron5_Tex_001098:
+  type: TEXTURE
+  offset: 0x1098
+  symbol: object_tanron5_Tex_001098
+  format: CI4
+  width: 32
+  height: 32
+
+
+object_tanron5Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_tanron5Vtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron5Vtx_000040:
+  type: MM:ARRAY
+  offset: 0x000040
+  symbol: object_tanron5Vtx_000040
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron5Vtx_000080:
+  type: MM:ARRAY
+  offset: 0x000080
+  symbol: object_tanron5Vtx_000080
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron5Vtx_000370:
+  type: MM:ARRAY
+  offset: 0x000370
+  symbol: object_tanron5Vtx_000370
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tanron5Vtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_tanron5Vtx_000400
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

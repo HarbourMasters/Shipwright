@@ -1,0 +1,368 @@
+:config:
+  segments:
+    - [ 6, 0x010A0510 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010A0510 ]
+    - [ 9, 0x010A0510 ]
+    - [ 10, 0x010A0510 ]
+    - [ 11, 0x010A0510 ]
+    - [ 12, 0x010A0510 ]
+    - [ 13, 0x010A0510 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gKingsChamberDekuGuardBodyTex:
+  type: TEXTURE
+  offset: 0x2668
+  symbol: gKingsChamberDekuGuardBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKingsChamberDekuGuardCenterLeafDL:
+  type: GFX
+  offset: 0x1D40
+  symbol: gKingsChamberDekuGuardCenterLeafDL
+
+gKingsChamberDekuGuardCenterLeafLimb:
+  type: OOT:LIMB
+  offset: 0x2D54
+  symbol: gKingsChamberDekuGuardCenterLeafLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A8
+  symbol: gKingsChamberDekuGuardDanceAnim
+
+gKingsChamberDekuGuardDekuFlowerDL:
+  type: GFX
+  offset: 0x2C48
+  symbol: gKingsChamberDekuGuardDekuFlowerDL
+
+gKingsChamberDekuGuardEyeClosedTex:
+  type: TEXTURE
+  offset: 0x29E8
+  symbol: gKingsChamberDekuGuardEyeClosedTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKingsChamberDekuGuardEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2968
+  symbol: gKingsChamberDekuGuardEyeHalfTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKingsChamberDekuGuardEyeOpenTex:
+  type: TEXTURE
+  offset: 0x28E8
+  symbol: gKingsChamberDekuGuardEyeOpenTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKingsChamberDekuGuardEyesDL:
+  type: GFX
+  offset: 0x1A50
+  symbol: gKingsChamberDekuGuardEyesDL
+
+gKingsChamberDekuGuardEyesLimb:
+  type: OOT:LIMB
+  offset: 0x2D84
+  symbol: gKingsChamberDekuGuardEyesLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardFlipAnim:
+  type: OOT:ANIMATION
+  offset: 0x734
+  symbol: gKingsChamberDekuGuardFlipAnim
+
+gKingsChamberDekuGuardHeadDL:
+  type: GFX
+  offset: 0x18B8
+  symbol: gKingsChamberDekuGuardHeadDL
+
+gKingsChamberDekuGuardHeadLimb:
+  type: OOT:LIMB
+  offset: 0x2D24
+  symbol: gKingsChamberDekuGuardHeadLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x3310
+  symbol: gKingsChamberDekuGuardIdleAnim
+
+gKingsChamberDekuGuardLeafTex:
+  type: TEXTURE
+  offset: 0x1E68
+  symbol: gKingsChamberDekuGuardLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKingsChamberDekuGuardLeftFootDL:
+  type: GFX
+  offset: 0x16F0
+  symbol: gKingsChamberDekuGuardLeftFootDL
+
+gKingsChamberDekuGuardLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x2D90
+  symbol: gKingsChamberDekuGuardLeftFootLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardLeftLeafDL:
+  type: GFX
+  offset: 0x1CB0
+  symbol: gKingsChamberDekuGuardLeftLeafDL
+
+gKingsChamberDekuGuardLeftLeafLimb:
+  type: OOT:LIMB
+  offset: 0x2D3C
+  symbol: gKingsChamberDekuGuardLeftLeafLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardLeftMustacheDL:
+  type: GFX
+  offset: 0x1B90
+  symbol: gKingsChamberDekuGuardLeftMustacheDL
+
+gKingsChamberDekuGuardLeftMustacheLimb:
+  type: OOT:LIMB
+  offset: 0x2D78
+  symbol: gKingsChamberDekuGuardLeftMustacheLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardMouthTex:
+  type: TEXTURE
+  offset: 0x2868
+  symbol: gKingsChamberDekuGuardMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKingsChamberDekuGuardRightFootDL:
+  type: GFX
+  offset: 0x1640
+  symbol: gKingsChamberDekuGuardRightFootDL
+
+gKingsChamberDekuGuardRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x2D9C
+  symbol: gKingsChamberDekuGuardRightFootLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardRightLeafDL:
+  type: GFX
+  offset: 0x1DD8
+  symbol: gKingsChamberDekuGuardRightLeafDL
+
+gKingsChamberDekuGuardRightLeafLimb:
+  type: OOT:LIMB
+  offset: 0x2D48
+  symbol: gKingsChamberDekuGuardRightLeafLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardRightMustacheDL:
+  type: GFX
+  offset: 0x1C20
+  symbol: gKingsChamberDekuGuardRightMustacheDL
+
+gKingsChamberDekuGuardRightMustacheLimb:
+  type: OOT:LIMB
+  offset: 0x2D6C
+  symbol: gKingsChamberDekuGuardRightMustacheLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardRunLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xFEC
+  symbol: gKingsChamberDekuGuardRunLoopAnim
+
+gKingsChamberDekuGuardRunStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xD58
+  symbol: gKingsChamberDekuGuardRunStartAnim
+
+gKingsChamberDekuGuardSkel:
+  type: MM:SKELETON
+  offset: 0x2DD8
+  symbol: gKingsChamberDekuGuardSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gKingsChamberDekuGuardSnoutDL:
+  type: GFX
+  offset: 0x17A0
+  symbol: gKingsChamberDekuGuardSnoutDL
+
+gKingsChamberDekuGuardSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x2D60
+  symbol: gKingsChamberDekuGuardSnoutLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardStalkDL:
+  type: GFX
+  offset: 0x19B8
+  symbol: gKingsChamberDekuGuardStalkDL
+
+gKingsChamberDekuGuardStalkLimb:
+  type: OOT:LIMB
+  offset: 0x2D30
+  symbol: gKingsChamberDekuGuardStalkLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardSurpriseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xBD8
+  symbol: gKingsChamberDekuGuardSurpriseLoopAnim
+
+gKingsChamberDekuGuardSurpriseStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x8F4
+  symbol: gKingsChamberDekuGuardSurpriseStartAnim
+
+gKingsChamberDekuGuardTorsoDL:
+  type: GFX
+  offset: 0x1AD8
+  symbol: gKingsChamberDekuGuardTorsoDL
+
+gKingsChamberDekuGuardTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x2D18
+  symbol: gKingsChamberDekuGuardTorsoLimb
+  limb_type: Standard
+
+gKingsChamberDekuGuardWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x34EC
+  symbol: gKingsChamberDekuGuardWalkAnim
+
+
+object_dnsVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_dnsVtx_001000
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001070:
+  type: MM:ARRAY
+  offset: 0x001070
+  symbol: object_dnsVtx_001070
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0010E0:
+  type: MM:ARRAY
+  offset: 0x0010E0
+  symbol: object_dnsVtx_0010E0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0011D0:
+  type: MM:ARRAY
+  offset: 0x0011D0
+  symbol: object_dnsVtx_0011D0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0013A0:
+  type: MM:ARRAY
+  offset: 0x0013A0
+  symbol: object_dnsVtx_0013A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0013E0:
+  type: MM:ARRAY
+  offset: 0x0013E0
+  symbol: object_dnsVtx_0013E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001440:
+  type: MM:ARRAY
+  offset: 0x001440
+  symbol: object_dnsVtx_001440
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0014E0:
+  type: MM:ARRAY
+  offset: 0x0014E0
+  symbol: object_dnsVtx_0014E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001520:
+  type: MM:ARRAY
+  offset: 0x001520
+  symbol: object_dnsVtx_001520
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001560:
+  type: MM:ARRAY
+  offset: 0x001560
+  symbol: object_dnsVtx_001560
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_0015A0:
+  type: MM:ARRAY
+  offset: 0x0015A0
+  symbol: object_dnsVtx_0015A0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_001600:
+  type: MM:ARRAY
+  offset: 0x001600
+  symbol: object_dnsVtx_001600
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnsVtx_002A68:
+  type: MM:ARRAY
+  offset: 0x002A68
+  symbol: object_dnsVtx_002A68
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKingsChamberDekuGuardSkelLimbs:
+  type: BLOB
+  offset: 0x2DA8
+  symbol: gKingsChamberDekuGuardSkelLimbs
+  size: 0

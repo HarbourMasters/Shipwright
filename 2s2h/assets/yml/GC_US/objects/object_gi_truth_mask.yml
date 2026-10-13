@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x0102C220 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0102C220 ]
+    - [ 9, 0x0102C220 ]
+    - [ 10, 0x0102C220 ]
+    - [ 11, 0x0102C220 ]
+    - [ 12, 0x0102C220 ]
+    - [ 13, 0x0102C220 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiMaskOfTruthAccentsDL:
+  type: GFX
+  offset: 0x16B0
+  symbol: gGiMaskOfTruthAccentsDL
+
+gGiMaskOfTruthDL:
+  type: GFX
+  offset: 0x13D0
+  symbol: gGiMaskOfTruthDL
+
+gGiMaskOfTruthEyebrowTriangleTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGiMaskOfTruthEyebrowTriangleTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiMaskOfTruthSideEtchingTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gGiMaskOfTruthSideEtchingTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_truth_maskVtx_000800:
+  type: MM:ARRAY
+  offset: 0x000800
+  symbol: object_gi_truth_maskVtx_000800
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_truth_maskVtx_0011E0:
+  type: MM:ARRAY
+  offset: 0x0011E0
+  symbol: object_gi_truth_maskVtx_0011E0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

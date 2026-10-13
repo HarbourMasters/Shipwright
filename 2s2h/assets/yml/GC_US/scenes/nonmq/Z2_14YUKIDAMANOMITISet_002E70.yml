@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 2, 0x01D16F20 ]
+  directory: scenes/nonmq/Z2_14YUKIDAMANOMITI
+  external_files:
+    - GC_US/scenes/nonmq/Z2_14YUKIDAMANOMITI.yml
+    - GC_US/misc/scene_texture_04.yml
+
+Z2_14YUKIDAMANOMITISet_002E70:
+  type: MM:SCENE
+  offset: 0x2E70
+  symbol: Z2_14YUKIDAMANOMITISet_002E70
+  base_name: Z2_14YUKIDAMANOMITI

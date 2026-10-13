@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 10, 0x00E8D590 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E8D590 ]
+    - [ 12, 0x00E8D590 ]
+    - [ 13, 0x00E8D590 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_posthat_DL_000290:
+  type: GFX
+  offset: 0x290
+  symbol: object_mask_posthat_DL_000290
+
+object_mask_posthat_TLUT_000488:
+  type: TEXTURE
+  offset: 0x488
+  symbol: object_mask_posthat_TLUT_000488
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_posthat_Tex_000688:
+  type: TEXTURE
+  offset: 0x688
+  symbol: object_mask_posthat_Tex_000688
+  format: I4
+  width: 16
+  height: 16
+
+object_mask_posthat_Tex_000708:
+  type: TEXTURE
+  offset: 0x708
+  symbol: object_mask_posthat_Tex_000708
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_posthat_Tex_000B08:
+  type: TEXTURE
+  offset: 0xB08
+  symbol: object_mask_posthat_Tex_000B08
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_mask_posthatVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_posthatVtx_000000
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

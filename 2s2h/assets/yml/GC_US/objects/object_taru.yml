@@ -1,0 +1,83 @@
+:config:
+  segments:
+    - [ 6, 0x01588840 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01588840 ]
+    - [ 9, 0x01588840 ]
+    - [ 10, 0x01588840 ]
+    - [ 11, 0x01588840 ]
+    - [ 12, 0x01588840 ]
+    - [ 13, 0x01588840 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gObjTaruBarrelDL:
+  type: GFX
+  offset: 0x420
+  symbol: gObjTaruBarrelDL
+
+gObjTaruBarrelSideTex:
+  type: TEXTURE
+  offset: 0x670
+  symbol: gObjTaruBarrelSideTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gObjTaruBarrelTopTex:
+  type: TEXTURE
+  offset: 0xA70
+  symbol: gObjTaruBarrelTopTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gObjTaruBreakablePiratePanelDL:
+  type: GFX
+  offset: 0x1140
+  symbol: gObjTaruBreakablePiratePanelDL
+
+gObjTaruBreakablePiratePanelSkullTex:
+  type: TEXTURE
+  offset: 0x1230
+  symbol: gObjTaruBreakablePiratePanelSkullTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gObjTaruBreakablePiratePanelWoodTex:
+  type: TEXTURE
+  offset: 0x1A30
+  symbol: gObjTaruBreakablePiratePanelWoodTex
+  format: I4
+  width: 32
+  height: 32
+
+object_taru_Colheader_000FC8:
+  type: MM:COLLISION
+  offset: 0xFC8
+  symbol: object_taru_Colheader_000FC8
+
+object_taru_Colheader_001CB0:
+  type: MM:COLLISION
+  offset: 0x1CB0
+  symbol: object_taru_Colheader_001CB0
+
+
+object_taruVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_taruVtx_000000
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_taruVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_taruVtx_001000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,2791 @@
+:config:
+  segments:
+    - [ 3, 0x01A49FF0 ]
+    - [ 6, 0x0160F8D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01A49FF0 ]
+    - [ 9, 0x01A49FF0 ]
+    - [ 10, 0x01A49FF0 ]
+    - [ 11, 0x01A49FF0 ]
+    - [ 12, 0x01A49FF0 ]
+    - [ 13, 0x01A49FF0 ]
+    - [ 2, 0x01A34810 ]
+  directory: scenes/nonmq/Z2_30GYOSON
+  external_files:
+    - GC_US/misc/scene_texture_05.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_30GYOSON.yml
+    - GC_US/scenes/nonmq/Z2_30GYOSON_room_00Set_000D20.yml
+    - GC_US/scenes/nonmq/Z2_30GYOSON_room_00Set_0016D0.yml
+
+Z2_30GYOSON_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_30GYOSON_room_00
+
+Z2_30GYOSON_room_00DL_01C058:
+  type: GFX
+  offset: 0x1C058
+  symbol: Z2_30GYOSON_room_00DL_01C058
+
+Z2_30GYOSON_room_00DL_01C1B0:
+  type: GFX
+  offset: 0x1C1B0
+  symbol: Z2_30GYOSON_room_00DL_01C1B0
+
+Z2_30GYOSON_room_00DL_01D2B0:
+  type: GFX
+  offset: 0x1D2B0
+  symbol: Z2_30GYOSON_room_00DL_01D2B0
+
+
+Z2_30GYOSON_room_00ActorEntry_000080:
+  type: BLOB
+  offset: 0x000080
+  symbol: Z2_30GYOSON_room_00ActorEntry_000080
+  size: 0
+
+Z2_30GYOSON_room_00ActorEntry_000D94:
+  type: BLOB
+  offset: 0x000D94
+  symbol: Z2_30GYOSON_room_00ActorEntry_000D94
+  size: 0
+
+Z2_30GYOSON_room_00ActorEntry_00172C:
+  type: BLOB
+  offset: 0x00172C
+  symbol: Z2_30GYOSON_room_00ActorEntry_00172C
+  size: 0
+
+Z2_30GYOSON_room_00DL_018468Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1860
+  symbol: Z2_30GYOSON_room_00DL_018468Mtx_000000
+
+Z2_30GYOSON_room_00DL_018618Mtx_000000:
+  type: OOT:MTX
+  offset: 0x18A0
+  symbol: Z2_30GYOSON_room_00DL_018618Mtx_000000
+
+Z2_30GYOSON_room_00DL_0187C8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x18E0
+  symbol: Z2_30GYOSON_room_00DL_0187C8Mtx_000000
+
+Z2_30GYOSON_room_00DL_018978Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1920
+  symbol: Z2_30GYOSON_room_00DL_018978Mtx_000000
+
+Z2_30GYOSON_room_00DL_018B28Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1960
+  symbol: Z2_30GYOSON_room_00DL_018B28Mtx_000000
+
+Z2_30GYOSON_room_00DL_018CD8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x19A0
+  symbol: Z2_30GYOSON_room_00DL_018CD8Mtx_000000
+
+Z2_30GYOSON_room_00DL_018E88Mtx_000000:
+  type: OOT:MTX
+  offset: 0x19E0
+  symbol: Z2_30GYOSON_room_00DL_018E88Mtx_000000
+
+Z2_30GYOSON_room_00DL_019038Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1A20
+  symbol: Z2_30GYOSON_room_00DL_019038Mtx_000000
+
+Z2_30GYOSON_room_00DL_0191E8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1A60
+  symbol: Z2_30GYOSON_room_00DL_0191E8Mtx_000000
+
+Z2_30GYOSON_room_00DL_019398Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1AA0
+  symbol: Z2_30GYOSON_room_00DL_019398Mtx_000000
+
+Z2_30GYOSON_room_00DL_019548Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1AE0
+  symbol: Z2_30GYOSON_room_00DL_019548Mtx_000000
+
+Z2_30GYOSON_room_00DL_0196F8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1B20
+  symbol: Z2_30GYOSON_room_00DL_0196F8Mtx_000000
+
+Z2_30GYOSON_room_00DL_0198A8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1B60
+  symbol: Z2_30GYOSON_room_00DL_0198A8Mtx_000000
+
+Z2_30GYOSON_room_00DL_019A58Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1BA0
+  symbol: Z2_30GYOSON_room_00DL_019A58Mtx_000000
+
+Z2_30GYOSON_room_00DL_019C08Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1BE0
+  symbol: Z2_30GYOSON_room_00DL_019C08Mtx_000000
+
+Z2_30GYOSON_room_00DL_019DB8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1C20
+  symbol: Z2_30GYOSON_room_00DL_019DB8Mtx_000000
+
+Z2_30GYOSON_room_00DL_019F68Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1C60
+  symbol: Z2_30GYOSON_room_00DL_019F68Mtx_000000
+
+Z2_30GYOSON_room_00DL_01A118Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1CA0
+  symbol: Z2_30GYOSON_room_00DL_01A118Mtx_000000
+
+Z2_30GYOSON_room_00DL_01A2C8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1CE0
+  symbol: Z2_30GYOSON_room_00DL_01A2C8Mtx_000000
+
+Z2_30GYOSON_room_00DL_01A478Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1D20
+  symbol: Z2_30GYOSON_room_00DL_01A478Mtx_000000
+
+Z2_30GYOSON_room_00DL_01A628Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1D60
+  symbol: Z2_30GYOSON_room_00DL_01A628Mtx_000000
+
+Z2_30GYOSON_room_00DL_01ADC0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1DA0
+  symbol: Z2_30GYOSON_room_00DL_01ADC0Mtx_000000
+
+Z2_30GYOSON_room_00DL_01AF90Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1DE0
+  symbol: Z2_30GYOSON_room_00DL_01AF90Mtx_000000
+
+Z2_30GYOSON_room_00DL_001E20:
+  type: GFX
+  offset: 0x001E20
+  symbol: Z2_30GYOSON_room_00DL_001E20
+
+Z2_30GYOSON_room_00Vtx_001E28:
+  type: MM:ARRAY
+  offset: 0x001E28
+  symbol: Z2_30GYOSON_room_00Vtx_001E28
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0025C8:
+  type: GFX
+  offset: 0x0025C8
+  symbol: Z2_30GYOSON_room_00DL_0025C8
+
+Z2_30GYOSON_room_00Vtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: Z2_30GYOSON_room_00Vtx_002820
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_002D70:
+  type: GFX
+  offset: 0x002D70
+  symbol: Z2_30GYOSON_room_00DL_002D70
+
+Z2_30GYOSON_room_00Vtx_002F50:
+  type: MM:ARRAY
+  offset: 0x002F50
+  symbol: Z2_30GYOSON_room_00Vtx_002F50
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_002F60:
+  type: GFX
+  offset: 0x002F60
+  symbol: Z2_30GYOSON_room_00DL_002F60
+
+Z2_30GYOSON_room_00Vtx_002F80:
+  type: MM:ARRAY
+  offset: 0x002F80
+  symbol: Z2_30GYOSON_room_00Vtx_002F80
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0030C0:
+  type: GFX
+  offset: 0x0030C0
+  symbol: Z2_30GYOSON_room_00DL_0030C0
+
+Z2_30GYOSON_room_00Vtx_0031C0:
+  type: MM:ARRAY
+  offset: 0x0031C0
+  symbol: Z2_30GYOSON_room_00Vtx_0031C0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0031D0:
+  type: GFX
+  offset: 0x0031D0
+  symbol: Z2_30GYOSON_room_00DL_0031D0
+
+Z2_30GYOSON_room_00DL_0031F0:
+  type: GFX
+  offset: 0x0031F0
+  symbol: Z2_30GYOSON_room_00DL_0031F0
+
+Z2_30GYOSON_room_00Vtx_003208:
+  type: MM:ARRAY
+  offset: 0x003208
+  symbol: Z2_30GYOSON_room_00Vtx_003208
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_003948:
+  type: GFX
+  offset: 0x003948
+  symbol: Z2_30GYOSON_room_00DL_003948
+
+Z2_30GYOSON_room_00Vtx_003B70:
+  type: MM:ARRAY
+  offset: 0x003B70
+  symbol: Z2_30GYOSON_room_00Vtx_003B70
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004150:
+  type: GFX
+  offset: 0x004150
+  symbol: Z2_30GYOSON_room_00DL_004150
+
+Z2_30GYOSON_room_00Vtx_004358:
+  type: MM:ARRAY
+  offset: 0x004358
+  symbol: Z2_30GYOSON_room_00Vtx_004358
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004368:
+  type: GFX
+  offset: 0x004368
+  symbol: Z2_30GYOSON_room_00DL_004368
+
+Z2_30GYOSON_room_00DL_004388:
+  type: GFX
+  offset: 0x004388
+  symbol: Z2_30GYOSON_room_00DL_004388
+
+Z2_30GYOSON_room_00Vtx_004398:
+  type: MM:ARRAY
+  offset: 0x004398
+  symbol: Z2_30GYOSON_room_00Vtx_004398
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004588:
+  type: GFX
+  offset: 0x004588
+  symbol: Z2_30GYOSON_room_00DL_004588
+
+Z2_30GYOSON_room_00Vtx_004698:
+  type: MM:ARRAY
+  offset: 0x004698
+  symbol: Z2_30GYOSON_room_00Vtx_004698
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004B58:
+  type: GFX
+  offset: 0x004B58
+  symbol: Z2_30GYOSON_room_00DL_004B58
+
+Z2_30GYOSON_room_00Vtx_004CC0:
+  type: MM:ARRAY
+  offset: 0x004CC0
+  symbol: Z2_30GYOSON_room_00Vtx_004CC0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004CD0:
+  type: GFX
+  offset: 0x004CD0
+  symbol: Z2_30GYOSON_room_00DL_004CD0
+
+Z2_30GYOSON_room_00Vtx_004CF0:
+  type: MM:ARRAY
+  offset: 0x004CF0
+  symbol: Z2_30GYOSON_room_00Vtx_004CF0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_004FC0:
+  type: GFX
+  offset: 0x004FC0
+  symbol: Z2_30GYOSON_room_00DL_004FC0
+
+Z2_30GYOSON_room_00Vtx_0050F0:
+  type: MM:ARRAY
+  offset: 0x0050F0
+  symbol: Z2_30GYOSON_room_00Vtx_0050F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005100:
+  type: GFX
+  offset: 0x005100
+  symbol: Z2_30GYOSON_room_00DL_005100
+
+Z2_30GYOSON_room_00Vtx_005120:
+  type: MM:ARRAY
+  offset: 0x005120
+  symbol: Z2_30GYOSON_room_00Vtx_005120
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0054E0:
+  type: GFX
+  offset: 0x0054E0
+  symbol: Z2_30GYOSON_room_00DL_0054E0
+
+Z2_30GYOSON_room_00Vtx_005640:
+  type: MM:ARRAY
+  offset: 0x005640
+  symbol: Z2_30GYOSON_room_00Vtx_005640
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005650:
+  type: GFX
+  offset: 0x005650
+  symbol: Z2_30GYOSON_room_00DL_005650
+
+Z2_30GYOSON_room_00Vtx_005670:
+  type: MM:ARRAY
+  offset: 0x005670
+  symbol: Z2_30GYOSON_room_00Vtx_005670
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005880:
+  type: GFX
+  offset: 0x005880
+  symbol: Z2_30GYOSON_room_00DL_005880
+
+Z2_30GYOSON_room_00Vtx_005980:
+  type: MM:ARRAY
+  offset: 0x005980
+  symbol: Z2_30GYOSON_room_00Vtx_005980
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005990:
+  type: GFX
+  offset: 0x005990
+  symbol: Z2_30GYOSON_room_00DL_005990
+
+Z2_30GYOSON_room_00DL_0059B0:
+  type: GFX
+  offset: 0x0059B0
+  symbol: Z2_30GYOSON_room_00DL_0059B0
+
+Z2_30GYOSON_room_00Vtx_0059D8:
+  type: MM:ARRAY
+  offset: 0x0059D8
+  symbol: Z2_30GYOSON_room_00Vtx_0059D8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005BB8:
+  type: GFX
+  offset: 0x005BB8
+  symbol: Z2_30GYOSON_room_00DL_005BB8
+
+Z2_30GYOSON_room_00Vtx_005CD0:
+  type: MM:ARRAY
+  offset: 0x005CD0
+  symbol: Z2_30GYOSON_room_00Vtx_005CD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_005E50:
+  type: GFX
+  offset: 0x005E50
+  symbol: Z2_30GYOSON_room_00DL_005E50
+
+Z2_30GYOSON_room_00Vtx_005F38:
+  type: MM:ARRAY
+  offset: 0x005F38
+  symbol: Z2_30GYOSON_room_00Vtx_005F38
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_006378:
+  type: GFX
+  offset: 0x006378
+  symbol: Z2_30GYOSON_room_00DL_006378
+
+Z2_30GYOSON_room_00Vtx_006538:
+  type: MM:ARRAY
+  offset: 0x006538
+  symbol: Z2_30GYOSON_room_00Vtx_006538
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_006D38:
+  type: GFX
+  offset: 0x006D38
+  symbol: Z2_30GYOSON_room_00DL_006D38
+
+Z2_30GYOSON_room_00Vtx_006F60:
+  type: MM:ARRAY
+  offset: 0x006F60
+  symbol: Z2_30GYOSON_room_00Vtx_006F60
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007210:
+  type: GFX
+  offset: 0x007210
+  symbol: Z2_30GYOSON_room_00DL_007210
+
+Z2_30GYOSON_room_00Vtx_007380:
+  type: MM:ARRAY
+  offset: 0x007380
+  symbol: Z2_30GYOSON_room_00Vtx_007380
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007450:
+  type: GFX
+  offset: 0x007450
+  symbol: Z2_30GYOSON_room_00DL_007450
+
+Z2_30GYOSON_room_00Vtx_007528:
+  type: MM:ARRAY
+  offset: 0x007528
+  symbol: Z2_30GYOSON_room_00Vtx_007528
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007538:
+  type: GFX
+  offset: 0x007538
+  symbol: Z2_30GYOSON_room_00DL_007538
+
+Z2_30GYOSON_room_00DL_007568:
+  type: GFX
+  offset: 0x007568
+  symbol: Z2_30GYOSON_room_00DL_007568
+
+Z2_30GYOSON_room_00Vtx_007578:
+  type: MM:ARRAY
+  offset: 0x007578
+  symbol: Z2_30GYOSON_room_00Vtx_007578
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007A58:
+  type: GFX
+  offset: 0x007A58
+  symbol: Z2_30GYOSON_room_00DL_007A58
+
+Z2_30GYOSON_room_00Vtx_007C00:
+  type: MM:ARRAY
+  offset: 0x007C00
+  symbol: Z2_30GYOSON_room_00Vtx_007C00
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007C10:
+  type: GFX
+  offset: 0x007C10
+  symbol: Z2_30GYOSON_room_00DL_007C10
+
+Z2_30GYOSON_room_00DL_007C30:
+  type: GFX
+  offset: 0x007C30
+  symbol: Z2_30GYOSON_room_00DL_007C30
+
+Z2_30GYOSON_room_00Vtx_007C40:
+  type: MM:ARRAY
+  offset: 0x007C40
+  symbol: Z2_30GYOSON_room_00Vtx_007C40
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007D60:
+  type: GFX
+  offset: 0x007D60
+  symbol: Z2_30GYOSON_room_00DL_007D60
+
+Z2_30GYOSON_room_00Vtx_007E40:
+  type: MM:ARRAY
+  offset: 0x007E40
+  symbol: Z2_30GYOSON_room_00Vtx_007E40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_007E50:
+  type: GFX
+  offset: 0x007E50
+  symbol: Z2_30GYOSON_room_00DL_007E50
+
+Z2_30GYOSON_room_00DL_007E70:
+  type: GFX
+  offset: 0x007E70
+  symbol: Z2_30GYOSON_room_00DL_007E70
+
+Z2_30GYOSON_room_00Vtx_007E80:
+  type: MM:ARRAY
+  offset: 0x007E80
+  symbol: Z2_30GYOSON_room_00Vtx_007E80
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0080B0:
+  type: GFX
+  offset: 0x0080B0
+  symbol: Z2_30GYOSON_room_00DL_0080B0
+
+Z2_30GYOSON_room_00Vtx_0081D0:
+  type: MM:ARRAY
+  offset: 0x0081D0
+  symbol: Z2_30GYOSON_room_00Vtx_0081D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0081E0:
+  type: GFX
+  offset: 0x0081E0
+  symbol: Z2_30GYOSON_room_00DL_0081E0
+
+Z2_30GYOSON_room_00DL_008200:
+  type: GFX
+  offset: 0x008200
+  symbol: Z2_30GYOSON_room_00DL_008200
+
+Z2_30GYOSON_room_00Vtx_008210:
+  type: MM:ARRAY
+  offset: 0x008210
+  symbol: Z2_30GYOSON_room_00Vtx_008210
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_008640:
+  type: GFX
+  offset: 0x008640
+  symbol: Z2_30GYOSON_room_00DL_008640
+
+Z2_30GYOSON_room_00Vtx_0087C0:
+  type: MM:ARRAY
+  offset: 0x0087C0
+  symbol: Z2_30GYOSON_room_00Vtx_0087C0
+  count: 224
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0095C0:
+  type: GFX
+  offset: 0x0095C0
+  symbol: Z2_30GYOSON_room_00DL_0095C0
+
+Z2_30GYOSON_room_00Vtx_009918:
+  type: MM:ARRAY
+  offset: 0x009918
+  symbol: Z2_30GYOSON_room_00Vtx_009918
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_009928:
+  type: GFX
+  offset: 0x009928
+  symbol: Z2_30GYOSON_room_00DL_009928
+
+Z2_30GYOSON_room_00Vtx_009948:
+  type: MM:ARRAY
+  offset: 0x009948
+  symbol: Z2_30GYOSON_room_00Vtx_009948
+  count: 224
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00A748:
+  type: GFX
+  offset: 0x00A748
+  symbol: Z2_30GYOSON_room_00DL_00A748
+
+Z2_30GYOSON_room_00Vtx_00AAA0:
+  type: MM:ARRAY
+  offset: 0x00AAA0
+  symbol: Z2_30GYOSON_room_00Vtx_00AAA0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00AAB0:
+  type: GFX
+  offset: 0x00AAB0
+  symbol: Z2_30GYOSON_room_00DL_00AAB0
+
+Z2_30GYOSON_room_00Vtx_00AAD0:
+  type: MM:ARRAY
+  offset: 0x00AAD0
+  symbol: Z2_30GYOSON_room_00Vtx_00AAD0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00AC90:
+  type: GFX
+  offset: 0x00AC90
+  symbol: Z2_30GYOSON_room_00DL_00AC90
+
+Z2_30GYOSON_room_00Vtx_00AE40:
+  type: MM:ARRAY
+  offset: 0x00AE40
+  symbol: Z2_30GYOSON_room_00Vtx_00AE40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00AE50:
+  type: GFX
+  offset: 0x00AE50
+  symbol: Z2_30GYOSON_room_00DL_00AE50
+
+Z2_30GYOSON_room_00DL_00AE70:
+  type: GFX
+  offset: 0x00AE70
+  symbol: Z2_30GYOSON_room_00DL_00AE70
+
+Z2_30GYOSON_room_00Vtx_00AE90:
+  type: MM:ARRAY
+  offset: 0x00AE90
+  symbol: Z2_30GYOSON_room_00Vtx_00AE90
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00AF60:
+  type: GFX
+  offset: 0x00AF60
+  symbol: Z2_30GYOSON_room_00DL_00AF60
+
+Z2_30GYOSON_room_00Vtx_00B038:
+  type: MM:ARRAY
+  offset: 0x00B038
+  symbol: Z2_30GYOSON_room_00Vtx_00B038
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00B048:
+  type: GFX
+  offset: 0x00B048
+  symbol: Z2_30GYOSON_room_00DL_00B048
+
+Z2_30GYOSON_room_00Vtx_00B068:
+  type: MM:ARRAY
+  offset: 0x00B068
+  symbol: Z2_30GYOSON_room_00Vtx_00B068
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00B218:
+  type: GFX
+  offset: 0x00B218
+  symbol: Z2_30GYOSON_room_00DL_00B218
+
+Z2_30GYOSON_room_00Vtx_00B310:
+  type: MM:ARRAY
+  offset: 0x00B310
+  symbol: Z2_30GYOSON_room_00Vtx_00B310
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00B320:
+  type: GFX
+  offset: 0x00B320
+  symbol: Z2_30GYOSON_room_00DL_00B320
+
+Z2_30GYOSON_room_00DL_00B340:
+  type: GFX
+  offset: 0x00B340
+  symbol: Z2_30GYOSON_room_00DL_00B340
+
+Z2_30GYOSON_room_00Vtx_00B358:
+  type: MM:ARRAY
+  offset: 0x00B358
+  symbol: Z2_30GYOSON_room_00Vtx_00B358
+  count: 342
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00C8B8:
+  type: GFX
+  offset: 0x00C8B8
+  symbol: Z2_30GYOSON_room_00DL_00C8B8
+
+Z2_30GYOSON_room_00Vtx_00CED8:
+  type: MM:ARRAY
+  offset: 0x00CED8
+  symbol: Z2_30GYOSON_room_00Vtx_00CED8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00CEE8:
+  type: GFX
+  offset: 0x00CEE8
+  symbol: Z2_30GYOSON_room_00DL_00CEE8
+
+Z2_30GYOSON_room_00Vtx_00CF08:
+  type: MM:ARRAY
+  offset: 0x00CF08
+  symbol: Z2_30GYOSON_room_00Vtx_00CF08
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00D068:
+  type: GFX
+  offset: 0x00D068
+  symbol: Z2_30GYOSON_room_00DL_00D068
+
+Z2_30GYOSON_room_00Vtx_00D120:
+  type: MM:ARRAY
+  offset: 0x00D120
+  symbol: Z2_30GYOSON_room_00Vtx_00D120
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00D130:
+  type: GFX
+  offset: 0x00D130
+  symbol: Z2_30GYOSON_room_00DL_00D130
+
+Z2_30GYOSON_room_00Vtx_00D150:
+  type: MM:ARRAY
+  offset: 0x00D150
+  symbol: Z2_30GYOSON_room_00Vtx_00D150
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00D440:
+  type: GFX
+  offset: 0x00D440
+  symbol: Z2_30GYOSON_room_00DL_00D440
+
+Z2_30GYOSON_room_00Vtx_00D5B0:
+  type: MM:ARRAY
+  offset: 0x00D5B0
+  symbol: Z2_30GYOSON_room_00Vtx_00D5B0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00D5C0:
+  type: GFX
+  offset: 0x00D5C0
+  symbol: Z2_30GYOSON_room_00DL_00D5C0
+
+Z2_30GYOSON_room_00DL_00D5E0:
+  type: GFX
+  offset: 0x00D5E0
+  symbol: Z2_30GYOSON_room_00DL_00D5E0
+
+Z2_30GYOSON_room_00Vtx_00D600:
+  type: MM:ARRAY
+  offset: 0x00D600
+  symbol: Z2_30GYOSON_room_00Vtx_00D600
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00DED0:
+  type: GFX
+  offset: 0x00DED0
+  symbol: Z2_30GYOSON_room_00DL_00DED0
+
+Z2_30GYOSON_room_00Vtx_00E0F0:
+  type: MM:ARRAY
+  offset: 0x00E0F0
+  symbol: Z2_30GYOSON_room_00Vtx_00E0F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00E100:
+  type: GFX
+  offset: 0x00E100
+  symbol: Z2_30GYOSON_room_00DL_00E100
+
+Z2_30GYOSON_room_00DL_00E120:
+  type: GFX
+  offset: 0x00E120
+  symbol: Z2_30GYOSON_room_00DL_00E120
+
+Z2_30GYOSON_room_00Vtx_00E130:
+  type: MM:ARRAY
+  offset: 0x00E130
+  symbol: Z2_30GYOSON_room_00Vtx_00E130
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00E9B0:
+  type: GFX
+  offset: 0x00E9B0
+  symbol: Z2_30GYOSON_room_00DL_00E9B0
+
+Z2_30GYOSON_room_00Vtx_00EC00:
+  type: MM:ARRAY
+  offset: 0x00EC00
+  symbol: Z2_30GYOSON_room_00Vtx_00EC00
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00EC10:
+  type: GFX
+  offset: 0x00EC10
+  symbol: Z2_30GYOSON_room_00DL_00EC10
+
+Z2_30GYOSON_room_00DL_00EC30:
+  type: GFX
+  offset: 0x00EC30
+  symbol: Z2_30GYOSON_room_00DL_00EC30
+
+Z2_30GYOSON_room_00Vtx_00EC40:
+  type: MM:ARRAY
+  offset: 0x00EC40
+  symbol: Z2_30GYOSON_room_00Vtx_00EC40
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00EFC0:
+  type: GFX
+  offset: 0x00EFC0
+  symbol: Z2_30GYOSON_room_00DL_00EFC0
+
+Z2_30GYOSON_room_00Vtx_00F110:
+  type: MM:ARRAY
+  offset: 0x00F110
+  symbol: Z2_30GYOSON_room_00Vtx_00F110
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00F120:
+  type: GFX
+  offset: 0x00F120
+  symbol: Z2_30GYOSON_room_00DL_00F120
+
+Z2_30GYOSON_room_00DL_00F140:
+  type: GFX
+  offset: 0x00F140
+  symbol: Z2_30GYOSON_room_00DL_00F140
+
+Z2_30GYOSON_room_00Vtx_00F150:
+  type: MM:ARRAY
+  offset: 0x00F150
+  symbol: Z2_30GYOSON_room_00Vtx_00F150
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00F830:
+  type: GFX
+  offset: 0x00F830
+  symbol: Z2_30GYOSON_room_00DL_00F830
+
+Z2_30GYOSON_room_00Vtx_00FB90:
+  type: MM:ARRAY
+  offset: 0x00FB90
+  symbol: Z2_30GYOSON_room_00Vtx_00FB90
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00FBA0:
+  type: GFX
+  offset: 0x00FBA0
+  symbol: Z2_30GYOSON_room_00DL_00FBA0
+
+Z2_30GYOSON_room_00DL_00FBC0:
+  type: GFX
+  offset: 0x00FBC0
+  symbol: Z2_30GYOSON_room_00DL_00FBC0
+
+Z2_30GYOSON_room_00Vtx_00FBD0:
+  type: MM:ARRAY
+  offset: 0x00FBD0
+  symbol: Z2_30GYOSON_room_00Vtx_00FBD0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00FDC0:
+  type: GFX
+  offset: 0x00FDC0
+  symbol: Z2_30GYOSON_room_00DL_00FDC0
+
+Z2_30GYOSON_room_00Vtx_00FF48:
+  type: MM:ARRAY
+  offset: 0x00FF48
+  symbol: Z2_30GYOSON_room_00Vtx_00FF48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_00FF58:
+  type: GFX
+  offset: 0x00FF58
+  symbol: Z2_30GYOSON_room_00DL_00FF58
+
+Z2_30GYOSON_room_00DL_00FF78:
+  type: GFX
+  offset: 0x00FF78
+  symbol: Z2_30GYOSON_room_00DL_00FF78
+
+Z2_30GYOSON_room_00Vtx_00FF88:
+  type: MM:ARRAY
+  offset: 0x00FF88
+  symbol: Z2_30GYOSON_room_00Vtx_00FF88
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0101D8:
+  type: GFX
+  offset: 0x0101D8
+  symbol: Z2_30GYOSON_room_00DL_0101D8
+
+Z2_30GYOSON_room_00Vtx_0102E0:
+  type: MM:ARRAY
+  offset: 0x0102E0
+  symbol: Z2_30GYOSON_room_00Vtx_0102E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0102F0:
+  type: GFX
+  offset: 0x0102F0
+  symbol: Z2_30GYOSON_room_00DL_0102F0
+
+Z2_30GYOSON_room_00Vtx_010310:
+  type: MM:ARRAY
+  offset: 0x010310
+  symbol: Z2_30GYOSON_room_00Vtx_010310
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010490:
+  type: GFX
+  offset: 0x010490
+  symbol: Z2_30GYOSON_room_00DL_010490
+
+Z2_30GYOSON_room_00Vtx_010578:
+  type: MM:ARRAY
+  offset: 0x010578
+  symbol: Z2_30GYOSON_room_00Vtx_010578
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010588:
+  type: GFX
+  offset: 0x010588
+  symbol: Z2_30GYOSON_room_00DL_010588
+
+Z2_30GYOSON_room_00DL_0105A8:
+  type: GFX
+  offset: 0x0105A8
+  symbol: Z2_30GYOSON_room_00DL_0105A8
+
+Z2_30GYOSON_room_00Vtx_0105C0:
+  type: MM:ARRAY
+  offset: 0x0105C0
+  symbol: Z2_30GYOSON_room_00Vtx_0105C0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010840:
+  type: GFX
+  offset: 0x010840
+  symbol: Z2_30GYOSON_room_00DL_010840
+
+Z2_30GYOSON_room_00Vtx_010948:
+  type: MM:ARRAY
+  offset: 0x010948
+  symbol: Z2_30GYOSON_room_00Vtx_010948
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010958:
+  type: GFX
+  offset: 0x010958
+  symbol: Z2_30GYOSON_room_00DL_010958
+
+Z2_30GYOSON_room_00Vtx_010978:
+  type: MM:ARRAY
+  offset: 0x010978
+  symbol: Z2_30GYOSON_room_00Vtx_010978
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010CA8:
+  type: GFX
+  offset: 0x010CA8
+  symbol: Z2_30GYOSON_room_00DL_010CA8
+
+Z2_30GYOSON_room_00Vtx_010DE8:
+  type: MM:ARRAY
+  offset: 0x010DE8
+  symbol: Z2_30GYOSON_room_00Vtx_010DE8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_010DF8:
+  type: GFX
+  offset: 0x010DF8
+  symbol: Z2_30GYOSON_room_00DL_010DF8
+
+Z2_30GYOSON_room_00DL_010E18:
+  type: GFX
+  offset: 0x010E18
+  symbol: Z2_30GYOSON_room_00DL_010E18
+
+Z2_30GYOSON_room_00Vtx_010E30:
+  type: MM:ARRAY
+  offset: 0x010E30
+  symbol: Z2_30GYOSON_room_00Vtx_010E30
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011030:
+  type: GFX
+  offset: 0x011030
+  symbol: Z2_30GYOSON_room_00DL_011030
+
+Z2_30GYOSON_room_00Vtx_011128:
+  type: MM:ARRAY
+  offset: 0x011128
+  symbol: Z2_30GYOSON_room_00Vtx_011128
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011138:
+  type: GFX
+  offset: 0x011138
+  symbol: Z2_30GYOSON_room_00DL_011138
+
+Z2_30GYOSON_room_00Vtx_011158:
+  type: MM:ARRAY
+  offset: 0x011158
+  symbol: Z2_30GYOSON_room_00Vtx_011158
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011658:
+  type: GFX
+  offset: 0x011658
+  symbol: Z2_30GYOSON_room_00DL_011658
+
+Z2_30GYOSON_room_00Vtx_011808:
+  type: MM:ARRAY
+  offset: 0x011808
+  symbol: Z2_30GYOSON_room_00Vtx_011808
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011818:
+  type: GFX
+  offset: 0x011818
+  symbol: Z2_30GYOSON_room_00DL_011818
+
+Z2_30GYOSON_room_00DL_011838:
+  type: GFX
+  offset: 0x011838
+  symbol: Z2_30GYOSON_room_00DL_011838
+
+Z2_30GYOSON_room_00Vtx_011850:
+  type: MM:ARRAY
+  offset: 0x011850
+  symbol: Z2_30GYOSON_room_00Vtx_011850
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011A50:
+  type: GFX
+  offset: 0x011A50
+  symbol: Z2_30GYOSON_room_00DL_011A50
+
+Z2_30GYOSON_room_00Vtx_011C20:
+  type: MM:ARRAY
+  offset: 0x011C20
+  symbol: Z2_30GYOSON_room_00Vtx_011C20
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011C30:
+  type: GFX
+  offset: 0x011C30
+  symbol: Z2_30GYOSON_room_00DL_011C30
+
+Z2_30GYOSON_room_00Vtx_011C50:
+  type: MM:ARRAY
+  offset: 0x011C50
+  symbol: Z2_30GYOSON_room_00Vtx_011C50
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_011EC0:
+  type: GFX
+  offset: 0x011EC0
+  symbol: Z2_30GYOSON_room_00DL_011EC0
+
+Z2_30GYOSON_room_00Vtx_012008:
+  type: MM:ARRAY
+  offset: 0x012008
+  symbol: Z2_30GYOSON_room_00Vtx_012008
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_012018:
+  type: GFX
+  offset: 0x012018
+  symbol: Z2_30GYOSON_room_00DL_012018
+
+Z2_30GYOSON_room_00Vtx_012038:
+  type: MM:ARRAY
+  offset: 0x012038
+  symbol: Z2_30GYOSON_room_00Vtx_012038
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0122F8:
+  type: GFX
+  offset: 0x0122F8
+  symbol: Z2_30GYOSON_room_00DL_0122F8
+
+Z2_30GYOSON_room_00Vtx_0124F0:
+  type: MM:ARRAY
+  offset: 0x0124F0
+  symbol: Z2_30GYOSON_room_00Vtx_0124F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_012500:
+  type: GFX
+  offset: 0x012500
+  symbol: Z2_30GYOSON_room_00DL_012500
+
+Z2_30GYOSON_room_00Vtx_012520:
+  type: MM:ARRAY
+  offset: 0x012520
+  symbol: Z2_30GYOSON_room_00Vtx_012520
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_012A40:
+  type: GFX
+  offset: 0x012A40
+  symbol: Z2_30GYOSON_room_00DL_012A40
+
+Z2_30GYOSON_room_00Vtx_012B98:
+  type: MM:ARRAY
+  offset: 0x012B98
+  symbol: Z2_30GYOSON_room_00Vtx_012B98
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_012BA8:
+  type: GFX
+  offset: 0x012BA8
+  symbol: Z2_30GYOSON_room_00DL_012BA8
+
+Z2_30GYOSON_room_00Vtx_012BC8:
+  type: MM:ARRAY
+  offset: 0x012BC8
+  symbol: Z2_30GYOSON_room_00Vtx_012BC8
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0130E8:
+  type: GFX
+  offset: 0x0130E8
+  symbol: Z2_30GYOSON_room_00DL_0130E8
+
+Z2_30GYOSON_room_00Vtx_013278:
+  type: MM:ARRAY
+  offset: 0x013278
+  symbol: Z2_30GYOSON_room_00Vtx_013278
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_013288:
+  type: GFX
+  offset: 0x013288
+  symbol: Z2_30GYOSON_room_00DL_013288
+
+Z2_30GYOSON_room_00Vtx_0132A8:
+  type: MM:ARRAY
+  offset: 0x0132A8
+  symbol: Z2_30GYOSON_room_00Vtx_0132A8
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_013808:
+  type: GFX
+  offset: 0x013808
+  symbol: Z2_30GYOSON_room_00DL_013808
+
+Z2_30GYOSON_room_00Vtx_013970:
+  type: MM:ARRAY
+  offset: 0x013970
+  symbol: Z2_30GYOSON_room_00Vtx_013970
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_013980:
+  type: GFX
+  offset: 0x013980
+  symbol: Z2_30GYOSON_room_00DL_013980
+
+Z2_30GYOSON_room_00Vtx_0139A0:
+  type: MM:ARRAY
+  offset: 0x0139A0
+  symbol: Z2_30GYOSON_room_00Vtx_0139A0
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_014290:
+  type: GFX
+  offset: 0x014290
+  symbol: Z2_30GYOSON_room_00DL_014290
+
+Z2_30GYOSON_room_00Vtx_0144B0:
+  type: MM:ARRAY
+  offset: 0x0144B0
+  symbol: Z2_30GYOSON_room_00Vtx_0144B0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0144C0:
+  type: GFX
+  offset: 0x0144C0
+  symbol: Z2_30GYOSON_room_00DL_0144C0
+
+Z2_30GYOSON_room_00Vtx_0144E0:
+  type: MM:ARRAY
+  offset: 0x0144E0
+  symbol: Z2_30GYOSON_room_00Vtx_0144E0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_014660:
+  type: GFX
+  offset: 0x014660
+  symbol: Z2_30GYOSON_room_00DL_014660
+
+Z2_30GYOSON_room_00Vtx_014720:
+  type: MM:ARRAY
+  offset: 0x014720
+  symbol: Z2_30GYOSON_room_00Vtx_014720
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_014730:
+  type: GFX
+  offset: 0x014730
+  symbol: Z2_30GYOSON_room_00DL_014730
+
+Z2_30GYOSON_room_00DL_014750:
+  type: GFX
+  offset: 0x014750
+  symbol: Z2_30GYOSON_room_00DL_014750
+
+Z2_30GYOSON_room_00Vtx_014798:
+  type: MM:ARRAY
+  offset: 0x014798
+  symbol: Z2_30GYOSON_room_00Vtx_014798
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_014898:
+  type: GFX
+  offset: 0x014898
+  symbol: Z2_30GYOSON_room_00DL_014898
+
+Z2_30GYOSON_room_00Vtx_014978:
+  type: MM:ARRAY
+  offset: 0x014978
+  symbol: Z2_30GYOSON_room_00Vtx_014978
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_014AF8:
+  type: GFX
+  offset: 0x014AF8
+  symbol: Z2_30GYOSON_room_00DL_014AF8
+
+Z2_30GYOSON_room_00Vtx_014C00:
+  type: MM:ARRAY
+  offset: 0x014C00
+  symbol: Z2_30GYOSON_room_00Vtx_014C00
+  count: 166
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_015660:
+  type: GFX
+  offset: 0x015660
+  symbol: Z2_30GYOSON_room_00DL_015660
+
+Z2_30GYOSON_room_00Vtx_015900:
+  type: MM:ARRAY
+  offset: 0x015900
+  symbol: Z2_30GYOSON_room_00Vtx_015900
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0162F0:
+  type: GFX
+  offset: 0x0162F0
+  symbol: Z2_30GYOSON_room_00DL_0162F0
+
+Z2_30GYOSON_room_00Vtx_0165E0:
+  type: MM:ARRAY
+  offset: 0x0165E0
+  symbol: Z2_30GYOSON_room_00Vtx_0165E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0165F0:
+  type: GFX
+  offset: 0x0165F0
+  symbol: Z2_30GYOSON_room_00DL_0165F0
+
+Z2_30GYOSON_room_00Vtx_016610:
+  type: MM:ARRAY
+  offset: 0x016610
+  symbol: Z2_30GYOSON_room_00Vtx_016610
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0168E0:
+  type: GFX
+  offset: 0x0168E0
+  symbol: Z2_30GYOSON_room_00DL_0168E0
+
+Z2_30GYOSON_room_00Vtx_016A18:
+  type: MM:ARRAY
+  offset: 0x016A18
+  symbol: Z2_30GYOSON_room_00Vtx_016A18
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_016A28:
+  type: GFX
+  offset: 0x016A28
+  symbol: Z2_30GYOSON_room_00DL_016A28
+
+Z2_30GYOSON_room_00Vtx_016A48:
+  type: MM:ARRAY
+  offset: 0x016A48
+  symbol: Z2_30GYOSON_room_00Vtx_016A48
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_016B88:
+  type: GFX
+  offset: 0x016B88
+  symbol: Z2_30GYOSON_room_00DL_016B88
+
+Z2_30GYOSON_room_00Vtx_016C78:
+  type: MM:ARRAY
+  offset: 0x016C78
+  symbol: Z2_30GYOSON_room_00Vtx_016C78
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_016C88:
+  type: GFX
+  offset: 0x016C88
+  symbol: Z2_30GYOSON_room_00DL_016C88
+
+Z2_30GYOSON_room_00DL_016CA8:
+  type: GFX
+  offset: 0x016CA8
+  symbol: Z2_30GYOSON_room_00DL_016CA8
+
+Z2_30GYOSON_room_00Vtx_016CC8:
+  type: MM:ARRAY
+  offset: 0x016CC8
+  symbol: Z2_30GYOSON_room_00Vtx_016CC8
+  count: 238
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_017BA8:
+  type: GFX
+  offset: 0x017BA8
+  symbol: Z2_30GYOSON_room_00DL_017BA8
+
+Z2_30GYOSON_room_00Vtx_017E50:
+  type: MM:ARRAY
+  offset: 0x017E50
+  symbol: Z2_30GYOSON_room_00Vtx_017E50
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_017E60:
+  type: GFX
+  offset: 0x017E60
+  symbol: Z2_30GYOSON_room_00DL_017E60
+
+Z2_30GYOSON_room_00Vtx_017E80:
+  type: MM:ARRAY
+  offset: 0x017E80
+  symbol: Z2_30GYOSON_room_00Vtx_017E80
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018250:
+  type: GFX
+  offset: 0x018250
+  symbol: Z2_30GYOSON_room_00DL_018250
+
+Z2_30GYOSON_room_00Vtx_018360:
+  type: MM:ARRAY
+  offset: 0x018360
+  symbol: Z2_30GYOSON_room_00Vtx_018360
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018370:
+  type: GFX
+  offset: 0x018370
+  symbol: Z2_30GYOSON_room_00DL_018370
+
+Z2_30GYOSON_room_00DL_018390:
+  type: GFX
+  offset: 0x018390
+  symbol: Z2_30GYOSON_room_00DL_018390
+
+Z2_30GYOSON_room_00Vtx_0183A8:
+  type: MM:ARRAY
+  offset: 0x0183A8
+  symbol: Z2_30GYOSON_room_00Vtx_0183A8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018468:
+  type: GFX
+  offset: 0x018468
+  symbol: Z2_30GYOSON_room_00DL_018468
+
+Z2_30GYOSON_room_00Vtx_018518:
+  type: MM:ARRAY
+  offset: 0x018518
+  symbol: Z2_30GYOSON_room_00Vtx_018518
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018528:
+  type: GFX
+  offset: 0x018528
+  symbol: Z2_30GYOSON_room_00DL_018528
+
+Z2_30GYOSON_room_00DL_018548:
+  type: GFX
+  offset: 0x018548
+  symbol: Z2_30GYOSON_room_00DL_018548
+
+Z2_30GYOSON_room_00Vtx_018558:
+  type: MM:ARRAY
+  offset: 0x018558
+  symbol: Z2_30GYOSON_room_00Vtx_018558
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018618:
+  type: GFX
+  offset: 0x018618
+  symbol: Z2_30GYOSON_room_00DL_018618
+
+Z2_30GYOSON_room_00Vtx_0186C8:
+  type: MM:ARRAY
+  offset: 0x0186C8
+  symbol: Z2_30GYOSON_room_00Vtx_0186C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0186D8:
+  type: GFX
+  offset: 0x0186D8
+  symbol: Z2_30GYOSON_room_00DL_0186D8
+
+Z2_30GYOSON_room_00DL_0186F8:
+  type: GFX
+  offset: 0x0186F8
+  symbol: Z2_30GYOSON_room_00DL_0186F8
+
+Z2_30GYOSON_room_00Vtx_018708:
+  type: MM:ARRAY
+  offset: 0x018708
+  symbol: Z2_30GYOSON_room_00Vtx_018708
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0187C8:
+  type: GFX
+  offset: 0x0187C8
+  symbol: Z2_30GYOSON_room_00DL_0187C8
+
+Z2_30GYOSON_room_00Vtx_018878:
+  type: MM:ARRAY
+  offset: 0x018878
+  symbol: Z2_30GYOSON_room_00Vtx_018878
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018888:
+  type: GFX
+  offset: 0x018888
+  symbol: Z2_30GYOSON_room_00DL_018888
+
+Z2_30GYOSON_room_00DL_0188A8:
+  type: GFX
+  offset: 0x0188A8
+  symbol: Z2_30GYOSON_room_00DL_0188A8
+
+Z2_30GYOSON_room_00Vtx_0188B8:
+  type: MM:ARRAY
+  offset: 0x0188B8
+  symbol: Z2_30GYOSON_room_00Vtx_0188B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018978:
+  type: GFX
+  offset: 0x018978
+  symbol: Z2_30GYOSON_room_00DL_018978
+
+Z2_30GYOSON_room_00Vtx_018A28:
+  type: MM:ARRAY
+  offset: 0x018A28
+  symbol: Z2_30GYOSON_room_00Vtx_018A28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018A38:
+  type: GFX
+  offset: 0x018A38
+  symbol: Z2_30GYOSON_room_00DL_018A38
+
+Z2_30GYOSON_room_00DL_018A58:
+  type: GFX
+  offset: 0x018A58
+  symbol: Z2_30GYOSON_room_00DL_018A58
+
+Z2_30GYOSON_room_00Vtx_018A68:
+  type: MM:ARRAY
+  offset: 0x018A68
+  symbol: Z2_30GYOSON_room_00Vtx_018A68
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018B28:
+  type: GFX
+  offset: 0x018B28
+  symbol: Z2_30GYOSON_room_00DL_018B28
+
+Z2_30GYOSON_room_00Vtx_018BD8:
+  type: MM:ARRAY
+  offset: 0x018BD8
+  symbol: Z2_30GYOSON_room_00Vtx_018BD8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018BE8:
+  type: GFX
+  offset: 0x018BE8
+  symbol: Z2_30GYOSON_room_00DL_018BE8
+
+Z2_30GYOSON_room_00DL_018C08:
+  type: GFX
+  offset: 0x018C08
+  symbol: Z2_30GYOSON_room_00DL_018C08
+
+Z2_30GYOSON_room_00Vtx_018C18:
+  type: MM:ARRAY
+  offset: 0x018C18
+  symbol: Z2_30GYOSON_room_00Vtx_018C18
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018CD8:
+  type: GFX
+  offset: 0x018CD8
+  symbol: Z2_30GYOSON_room_00DL_018CD8
+
+Z2_30GYOSON_room_00Vtx_018D88:
+  type: MM:ARRAY
+  offset: 0x018D88
+  symbol: Z2_30GYOSON_room_00Vtx_018D88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018D98:
+  type: GFX
+  offset: 0x018D98
+  symbol: Z2_30GYOSON_room_00DL_018D98
+
+Z2_30GYOSON_room_00DL_018DB8:
+  type: GFX
+  offset: 0x018DB8
+  symbol: Z2_30GYOSON_room_00DL_018DB8
+
+Z2_30GYOSON_room_00Vtx_018DC8:
+  type: MM:ARRAY
+  offset: 0x018DC8
+  symbol: Z2_30GYOSON_room_00Vtx_018DC8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018E88:
+  type: GFX
+  offset: 0x018E88
+  symbol: Z2_30GYOSON_room_00DL_018E88
+
+Z2_30GYOSON_room_00Vtx_018F38:
+  type: MM:ARRAY
+  offset: 0x018F38
+  symbol: Z2_30GYOSON_room_00Vtx_018F38
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_018F48:
+  type: GFX
+  offset: 0x018F48
+  symbol: Z2_30GYOSON_room_00DL_018F48
+
+Z2_30GYOSON_room_00DL_018F68:
+  type: GFX
+  offset: 0x018F68
+  symbol: Z2_30GYOSON_room_00DL_018F68
+
+Z2_30GYOSON_room_00Vtx_018F78:
+  type: MM:ARRAY
+  offset: 0x018F78
+  symbol: Z2_30GYOSON_room_00Vtx_018F78
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019038:
+  type: GFX
+  offset: 0x019038
+  symbol: Z2_30GYOSON_room_00DL_019038
+
+Z2_30GYOSON_room_00Vtx_0190E8:
+  type: MM:ARRAY
+  offset: 0x0190E8
+  symbol: Z2_30GYOSON_room_00Vtx_0190E8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0190F8:
+  type: GFX
+  offset: 0x0190F8
+  symbol: Z2_30GYOSON_room_00DL_0190F8
+
+Z2_30GYOSON_room_00DL_019118:
+  type: GFX
+  offset: 0x019118
+  symbol: Z2_30GYOSON_room_00DL_019118
+
+Z2_30GYOSON_room_00Vtx_019128:
+  type: MM:ARRAY
+  offset: 0x019128
+  symbol: Z2_30GYOSON_room_00Vtx_019128
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0191E8:
+  type: GFX
+  offset: 0x0191E8
+  symbol: Z2_30GYOSON_room_00DL_0191E8
+
+Z2_30GYOSON_room_00Vtx_019298:
+  type: MM:ARRAY
+  offset: 0x019298
+  symbol: Z2_30GYOSON_room_00Vtx_019298
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0192A8:
+  type: GFX
+  offset: 0x0192A8
+  symbol: Z2_30GYOSON_room_00DL_0192A8
+
+Z2_30GYOSON_room_00DL_0192C8:
+  type: GFX
+  offset: 0x0192C8
+  symbol: Z2_30GYOSON_room_00DL_0192C8
+
+Z2_30GYOSON_room_00Vtx_0192D8:
+  type: MM:ARRAY
+  offset: 0x0192D8
+  symbol: Z2_30GYOSON_room_00Vtx_0192D8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019398:
+  type: GFX
+  offset: 0x019398
+  symbol: Z2_30GYOSON_room_00DL_019398
+
+Z2_30GYOSON_room_00Vtx_019448:
+  type: MM:ARRAY
+  offset: 0x019448
+  symbol: Z2_30GYOSON_room_00Vtx_019448
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019458:
+  type: GFX
+  offset: 0x019458
+  symbol: Z2_30GYOSON_room_00DL_019458
+
+Z2_30GYOSON_room_00DL_019478:
+  type: GFX
+  offset: 0x019478
+  symbol: Z2_30GYOSON_room_00DL_019478
+
+Z2_30GYOSON_room_00Vtx_019488:
+  type: MM:ARRAY
+  offset: 0x019488
+  symbol: Z2_30GYOSON_room_00Vtx_019488
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019548:
+  type: GFX
+  offset: 0x019548
+  symbol: Z2_30GYOSON_room_00DL_019548
+
+Z2_30GYOSON_room_00Vtx_0195F8:
+  type: MM:ARRAY
+  offset: 0x0195F8
+  symbol: Z2_30GYOSON_room_00Vtx_0195F8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019608:
+  type: GFX
+  offset: 0x019608
+  symbol: Z2_30GYOSON_room_00DL_019608
+
+Z2_30GYOSON_room_00DL_019628:
+  type: GFX
+  offset: 0x019628
+  symbol: Z2_30GYOSON_room_00DL_019628
+
+Z2_30GYOSON_room_00Vtx_019638:
+  type: MM:ARRAY
+  offset: 0x019638
+  symbol: Z2_30GYOSON_room_00Vtx_019638
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0196F8:
+  type: GFX
+  offset: 0x0196F8
+  symbol: Z2_30GYOSON_room_00DL_0196F8
+
+Z2_30GYOSON_room_00Vtx_0197A8:
+  type: MM:ARRAY
+  offset: 0x0197A8
+  symbol: Z2_30GYOSON_room_00Vtx_0197A8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0197B8:
+  type: GFX
+  offset: 0x0197B8
+  symbol: Z2_30GYOSON_room_00DL_0197B8
+
+Z2_30GYOSON_room_00DL_0197D8:
+  type: GFX
+  offset: 0x0197D8
+  symbol: Z2_30GYOSON_room_00DL_0197D8
+
+Z2_30GYOSON_room_00Vtx_0197E8:
+  type: MM:ARRAY
+  offset: 0x0197E8
+  symbol: Z2_30GYOSON_room_00Vtx_0197E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_0198A8:
+  type: GFX
+  offset: 0x0198A8
+  symbol: Z2_30GYOSON_room_00DL_0198A8
+
+Z2_30GYOSON_room_00Vtx_019958:
+  type: MM:ARRAY
+  offset: 0x019958
+  symbol: Z2_30GYOSON_room_00Vtx_019958
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019968:
+  type: GFX
+  offset: 0x019968
+  symbol: Z2_30GYOSON_room_00DL_019968
+
+Z2_30GYOSON_room_00DL_019988:
+  type: GFX
+  offset: 0x019988
+  symbol: Z2_30GYOSON_room_00DL_019988
+
+Z2_30GYOSON_room_00Vtx_019998:
+  type: MM:ARRAY
+  offset: 0x019998
+  symbol: Z2_30GYOSON_room_00Vtx_019998
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019A58:
+  type: GFX
+  offset: 0x019A58
+  symbol: Z2_30GYOSON_room_00DL_019A58
+
+Z2_30GYOSON_room_00Vtx_019B08:
+  type: MM:ARRAY
+  offset: 0x019B08
+  symbol: Z2_30GYOSON_room_00Vtx_019B08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019B18:
+  type: GFX
+  offset: 0x019B18
+  symbol: Z2_30GYOSON_room_00DL_019B18
+
+Z2_30GYOSON_room_00DL_019B38:
+  type: GFX
+  offset: 0x019B38
+  symbol: Z2_30GYOSON_room_00DL_019B38
+
+Z2_30GYOSON_room_00Vtx_019B48:
+  type: MM:ARRAY
+  offset: 0x019B48
+  symbol: Z2_30GYOSON_room_00Vtx_019B48
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019C08:
+  type: GFX
+  offset: 0x019C08
+  symbol: Z2_30GYOSON_room_00DL_019C08
+
+Z2_30GYOSON_room_00Vtx_019CB8:
+  type: MM:ARRAY
+  offset: 0x019CB8
+  symbol: Z2_30GYOSON_room_00Vtx_019CB8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019CC8:
+  type: GFX
+  offset: 0x019CC8
+  symbol: Z2_30GYOSON_room_00DL_019CC8
+
+Z2_30GYOSON_room_00DL_019CE8:
+  type: GFX
+  offset: 0x019CE8
+  symbol: Z2_30GYOSON_room_00DL_019CE8
+
+Z2_30GYOSON_room_00Vtx_019CF8:
+  type: MM:ARRAY
+  offset: 0x019CF8
+  symbol: Z2_30GYOSON_room_00Vtx_019CF8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019DB8:
+  type: GFX
+  offset: 0x019DB8
+  symbol: Z2_30GYOSON_room_00DL_019DB8
+
+Z2_30GYOSON_room_00Vtx_019E68:
+  type: MM:ARRAY
+  offset: 0x019E68
+  symbol: Z2_30GYOSON_room_00Vtx_019E68
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019E78:
+  type: GFX
+  offset: 0x019E78
+  symbol: Z2_30GYOSON_room_00DL_019E78
+
+Z2_30GYOSON_room_00DL_019E98:
+  type: GFX
+  offset: 0x019E98
+  symbol: Z2_30GYOSON_room_00DL_019E98
+
+Z2_30GYOSON_room_00Vtx_019EA8:
+  type: MM:ARRAY
+  offset: 0x019EA8
+  symbol: Z2_30GYOSON_room_00Vtx_019EA8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_019F68:
+  type: GFX
+  offset: 0x019F68
+  symbol: Z2_30GYOSON_room_00DL_019F68
+
+Z2_30GYOSON_room_00Vtx_01A018:
+  type: MM:ARRAY
+  offset: 0x01A018
+  symbol: Z2_30GYOSON_room_00Vtx_01A018
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A028:
+  type: GFX
+  offset: 0x01A028
+  symbol: Z2_30GYOSON_room_00DL_01A028
+
+Z2_30GYOSON_room_00DL_01A048:
+  type: GFX
+  offset: 0x01A048
+  symbol: Z2_30GYOSON_room_00DL_01A048
+
+Z2_30GYOSON_room_00Vtx_01A058:
+  type: MM:ARRAY
+  offset: 0x01A058
+  symbol: Z2_30GYOSON_room_00Vtx_01A058
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A118:
+  type: GFX
+  offset: 0x01A118
+  symbol: Z2_30GYOSON_room_00DL_01A118
+
+Z2_30GYOSON_room_00Vtx_01A1C8:
+  type: MM:ARRAY
+  offset: 0x01A1C8
+  symbol: Z2_30GYOSON_room_00Vtx_01A1C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A1D8:
+  type: GFX
+  offset: 0x01A1D8
+  symbol: Z2_30GYOSON_room_00DL_01A1D8
+
+Z2_30GYOSON_room_00DL_01A1F8:
+  type: GFX
+  offset: 0x01A1F8
+  symbol: Z2_30GYOSON_room_00DL_01A1F8
+
+Z2_30GYOSON_room_00Vtx_01A208:
+  type: MM:ARRAY
+  offset: 0x01A208
+  symbol: Z2_30GYOSON_room_00Vtx_01A208
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A2C8:
+  type: GFX
+  offset: 0x01A2C8
+  symbol: Z2_30GYOSON_room_00DL_01A2C8
+
+Z2_30GYOSON_room_00Vtx_01A378:
+  type: MM:ARRAY
+  offset: 0x01A378
+  symbol: Z2_30GYOSON_room_00Vtx_01A378
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A388:
+  type: GFX
+  offset: 0x01A388
+  symbol: Z2_30GYOSON_room_00DL_01A388
+
+Z2_30GYOSON_room_00DL_01A3A8:
+  type: GFX
+  offset: 0x01A3A8
+  symbol: Z2_30GYOSON_room_00DL_01A3A8
+
+Z2_30GYOSON_room_00Vtx_01A3B8:
+  type: MM:ARRAY
+  offset: 0x01A3B8
+  symbol: Z2_30GYOSON_room_00Vtx_01A3B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A478:
+  type: GFX
+  offset: 0x01A478
+  symbol: Z2_30GYOSON_room_00DL_01A478
+
+Z2_30GYOSON_room_00Vtx_01A528:
+  type: MM:ARRAY
+  offset: 0x01A528
+  symbol: Z2_30GYOSON_room_00Vtx_01A528
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A538:
+  type: GFX
+  offset: 0x01A538
+  symbol: Z2_30GYOSON_room_00DL_01A538
+
+Z2_30GYOSON_room_00DL_01A558:
+  type: GFX
+  offset: 0x01A558
+  symbol: Z2_30GYOSON_room_00DL_01A558
+
+Z2_30GYOSON_room_00Vtx_01A568:
+  type: MM:ARRAY
+  offset: 0x01A568
+  symbol: Z2_30GYOSON_room_00Vtx_01A568
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A628:
+  type: GFX
+  offset: 0x01A628
+  symbol: Z2_30GYOSON_room_00DL_01A628
+
+Z2_30GYOSON_room_00Vtx_01A6D8:
+  type: MM:ARRAY
+  offset: 0x01A6D8
+  symbol: Z2_30GYOSON_room_00Vtx_01A6D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01A6E8:
+  type: GFX
+  offset: 0x01A6E8
+  symbol: Z2_30GYOSON_room_00DL_01A6E8
+
+Z2_30GYOSON_room_00DL_01A708:
+  type: GFX
+  offset: 0x01A708
+  symbol: Z2_30GYOSON_room_00DL_01A708
+
+Z2_30GYOSON_room_00DL_01A718:
+  type: GFX
+  offset: 0x01A718
+  symbol: Z2_30GYOSON_room_00DL_01A718
+
+Z2_30GYOSON_room_00Vtx_01A7C8:
+  type: MM:ARRAY
+  offset: 0x01A7C8
+  symbol: Z2_30GYOSON_room_00Vtx_01A7C8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01AB48:
+  type: GFX
+  offset: 0x01AB48
+  symbol: Z2_30GYOSON_room_00DL_01AB48
+
+Z2_30GYOSON_room_00Vtx_01AD00:
+  type: MM:ARRAY
+  offset: 0x01AD00
+  symbol: Z2_30GYOSON_room_00Vtx_01AD00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01ADC0:
+  type: GFX
+  offset: 0x01ADC0
+  symbol: Z2_30GYOSON_room_00DL_01ADC0
+
+Z2_30GYOSON_room_00Vtx_01AEA0:
+  type: MM:ARRAY
+  offset: 0x01AEA0
+  symbol: Z2_30GYOSON_room_00Vtx_01AEA0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01AEB0:
+  type: GFX
+  offset: 0x01AEB0
+  symbol: Z2_30GYOSON_room_00DL_01AEB0
+
+Z2_30GYOSON_room_00Vtx_01AED0:
+  type: MM:ARRAY
+  offset: 0x01AED0
+  symbol: Z2_30GYOSON_room_00Vtx_01AED0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01AF90:
+  type: GFX
+  offset: 0x01AF90
+  symbol: Z2_30GYOSON_room_00DL_01AF90
+
+Z2_30GYOSON_room_00Vtx_01B070:
+  type: MM:ARRAY
+  offset: 0x01B070
+  symbol: Z2_30GYOSON_room_00Vtx_01B070
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01B080:
+  type: GFX
+  offset: 0x01B080
+  symbol: Z2_30GYOSON_room_00DL_01B080
+
+Z2_30GYOSON_room_00DL_01B0A0:
+  type: GFX
+  offset: 0x01B0A0
+  symbol: Z2_30GYOSON_room_00DL_01B0A0
+
+Z2_30GYOSON_room_00Vtx_01B0B8:
+  type: MM:ARRAY
+  offset: 0x01B0B8
+  symbol: Z2_30GYOSON_room_00Vtx_01B0B8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01B278:
+  type: GFX
+  offset: 0x01B278
+  symbol: Z2_30GYOSON_room_00DL_01B278
+
+Z2_30GYOSON_room_00Vtx_01B3E0:
+  type: MM:ARRAY
+  offset: 0x01B3E0
+  symbol: Z2_30GYOSON_room_00Vtx_01B3E0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01B660:
+  type: GFX
+  offset: 0x01B660
+  symbol: Z2_30GYOSON_room_00DL_01B660
+
+Z2_30GYOSON_room_00Vtx_01B748:
+  type: MM:ARRAY
+  offset: 0x01B748
+  symbol: Z2_30GYOSON_room_00Vtx_01B748
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01B808:
+  type: GFX
+  offset: 0x01B808
+  symbol: Z2_30GYOSON_room_00DL_01B808
+
+Z2_30GYOSON_room_00Vtx_01B8D8:
+  type: MM:ARRAY
+  offset: 0x01B8D8
+  symbol: Z2_30GYOSON_room_00Vtx_01B8D8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01BBF8:
+  type: GFX
+  offset: 0x01BBF8
+  symbol: Z2_30GYOSON_room_00DL_01BBF8
+
+Z2_30GYOSON_room_00Vtx_01BD40:
+  type: MM:ARRAY
+  offset: 0x01BD40
+  symbol: Z2_30GYOSON_room_00Vtx_01BD40
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01BF50:
+  type: GFX
+  offset: 0x01BF50
+  symbol: Z2_30GYOSON_room_00DL_01BF50
+
+Z2_30GYOSON_room_00Vtx_01C1B8:
+  type: MM:ARRAY
+  offset: 0x01C1B8
+  symbol: Z2_30GYOSON_room_00Vtx_01C1B8
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01C958:
+  type: GFX
+  offset: 0x01C958
+  symbol: Z2_30GYOSON_room_00DL_01C958
+
+Z2_30GYOSON_room_00Vtx_01CBD0:
+  type: MM:ARRAY
+  offset: 0x01CBD0
+  symbol: Z2_30GYOSON_room_00Vtx_01CBD0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_30GYOSON_room_00DL_01CE00:
+  type: GFX
+  offset: 0x01CE00
+  symbol: Z2_30GYOSON_room_00DL_01CE00
+
+Z2_30GYOSON_room_00DL_01CF90:
+  type: GFX
+  offset: 0x01CF90
+  symbol: Z2_30GYOSON_room_00DL_01CF90
+
+Z2_30GYOSON_room_00DL_01CF98:
+  type: GFX
+  offset: 0x01CF98
+  symbol: Z2_30GYOSON_room_00DL_01CF98
+
+Z2_30GYOSON_room_00DL_01CFA8:
+  type: GFX
+  offset: 0x01CFA8
+  symbol: Z2_30GYOSON_room_00DL_01CFA8
+
+Z2_30GYOSON_room_00DL_01CFB0:
+  type: GFX
+  offset: 0x01CFB0
+  symbol: Z2_30GYOSON_room_00DL_01CFB0
+
+Z2_30GYOSON_room_00DL_01CFB8:
+  type: GFX
+  offset: 0x01CFB8
+  symbol: Z2_30GYOSON_room_00DL_01CFB8
+
+Z2_30GYOSON_room_00DL_01CFD0:
+  type: GFX
+  offset: 0x01CFD0
+  symbol: Z2_30GYOSON_room_00DL_01CFD0
+
+Z2_30GYOSON_room_00DL_01CFD8:
+  type: GFX
+  offset: 0x01CFD8
+  symbol: Z2_30GYOSON_room_00DL_01CFD8
+
+Z2_30GYOSON_room_00DL_01CFE8:
+  type: GFX
+  offset: 0x01CFE8
+  symbol: Z2_30GYOSON_room_00DL_01CFE8
+
+Z2_30GYOSON_room_00DL_01CFF0:
+  type: GFX
+  offset: 0x01CFF0
+  symbol: Z2_30GYOSON_room_00DL_01CFF0
+
+Z2_30GYOSON_room_00DL_01D000:
+  type: GFX
+  offset: 0x01D000
+  symbol: Z2_30GYOSON_room_00DL_01D000
+
+Z2_30GYOSON_room_00DL_01D008:
+  type: GFX
+  offset: 0x01D008
+  symbol: Z2_30GYOSON_room_00DL_01D008
+
+Z2_30GYOSON_room_00DL_01D010:
+  type: GFX
+  offset: 0x01D010
+  symbol: Z2_30GYOSON_room_00DL_01D010
+
+Z2_30GYOSON_room_00DL_01D020:
+  type: GFX
+  offset: 0x01D020
+  symbol: Z2_30GYOSON_room_00DL_01D020
+
+Z2_30GYOSON_room_00DL_01D028:
+  type: GFX
+  offset: 0x01D028
+  symbol: Z2_30GYOSON_room_00DL_01D028
+
+Z2_30GYOSON_room_00DL_01D038:
+  type: GFX
+  offset: 0x01D038
+  symbol: Z2_30GYOSON_room_00DL_01D038
+
+Z2_30GYOSON_room_00DL_01D040:
+  type: GFX
+  offset: 0x01D040
+  symbol: Z2_30GYOSON_room_00DL_01D040
+
+Z2_30GYOSON_room_00DL_01D050:
+  type: GFX
+  offset: 0x01D050
+  symbol: Z2_30GYOSON_room_00DL_01D050
+
+Z2_30GYOSON_room_00DL_01D058:
+  type: GFX
+  offset: 0x01D058
+  symbol: Z2_30GYOSON_room_00DL_01D058
+
+Z2_30GYOSON_room_00DL_01D068:
+  type: GFX
+  offset: 0x01D068
+  symbol: Z2_30GYOSON_room_00DL_01D068
+
+Z2_30GYOSON_room_00DL_01D070:
+  type: GFX
+  offset: 0x01D070
+  symbol: Z2_30GYOSON_room_00DL_01D070
+
+Z2_30GYOSON_room_00DL_01D080:
+  type: GFX
+  offset: 0x01D080
+  symbol: Z2_30GYOSON_room_00DL_01D080
+
+Z2_30GYOSON_room_00DL_01D088:
+  type: GFX
+  offset: 0x01D088
+  symbol: Z2_30GYOSON_room_00DL_01D088
+
+Z2_30GYOSON_room_00DL_01D098:
+  type: GFX
+  offset: 0x01D098
+  symbol: Z2_30GYOSON_room_00DL_01D098
+
+Z2_30GYOSON_room_00DL_01D0A0:
+  type: GFX
+  offset: 0x01D0A0
+  symbol: Z2_30GYOSON_room_00DL_01D0A0
+
+Z2_30GYOSON_room_00DL_01D0B0:
+  type: GFX
+  offset: 0x01D0B0
+  symbol: Z2_30GYOSON_room_00DL_01D0B0
+
+Z2_30GYOSON_room_00DL_01D0B8:
+  type: GFX
+  offset: 0x01D0B8
+  symbol: Z2_30GYOSON_room_00DL_01D0B8
+
+Z2_30GYOSON_room_00DL_01D0C8:
+  type: GFX
+  offset: 0x01D0C8
+  symbol: Z2_30GYOSON_room_00DL_01D0C8
+
+Z2_30GYOSON_room_00DL_01D0D0:
+  type: GFX
+  offset: 0x01D0D0
+  symbol: Z2_30GYOSON_room_00DL_01D0D0
+
+Z2_30GYOSON_room_00DL_01D0E0:
+  type: GFX
+  offset: 0x01D0E0
+  symbol: Z2_30GYOSON_room_00DL_01D0E0
+
+Z2_30GYOSON_room_00DL_01D0E8:
+  type: GFX
+  offset: 0x01D0E8
+  symbol: Z2_30GYOSON_room_00DL_01D0E8
+
+Z2_30GYOSON_room_00DL_01D0F8:
+  type: GFX
+  offset: 0x01D0F8
+  symbol: Z2_30GYOSON_room_00DL_01D0F8
+
+Z2_30GYOSON_room_00DL_01D100:
+  type: GFX
+  offset: 0x01D100
+  symbol: Z2_30GYOSON_room_00DL_01D100
+
+Z2_30GYOSON_room_00DL_01D110:
+  type: GFX
+  offset: 0x01D110
+  symbol: Z2_30GYOSON_room_00DL_01D110
+
+Z2_30GYOSON_room_00DL_01D118:
+  type: GFX
+  offset: 0x01D118
+  symbol: Z2_30GYOSON_room_00DL_01D118
+
+Z2_30GYOSON_room_00DL_01D128:
+  type: GFX
+  offset: 0x01D128
+  symbol: Z2_30GYOSON_room_00DL_01D128
+
+Z2_30GYOSON_room_00DL_01D130:
+  type: GFX
+  offset: 0x01D130
+  symbol: Z2_30GYOSON_room_00DL_01D130
+
+Z2_30GYOSON_room_00DL_01D140:
+  type: GFX
+  offset: 0x01D140
+  symbol: Z2_30GYOSON_room_00DL_01D140
+
+Z2_30GYOSON_room_00DL_01D148:
+  type: GFX
+  offset: 0x01D148
+  symbol: Z2_30GYOSON_room_00DL_01D148
+
+Z2_30GYOSON_room_00DL_01D158:
+  type: GFX
+  offset: 0x01D158
+  symbol: Z2_30GYOSON_room_00DL_01D158
+
+Z2_30GYOSON_room_00DL_01D160:
+  type: GFX
+  offset: 0x01D160
+  symbol: Z2_30GYOSON_room_00DL_01D160
+
+Z2_30GYOSON_room_00DL_01D170:
+  type: GFX
+  offset: 0x01D170
+  symbol: Z2_30GYOSON_room_00DL_01D170
+
+Z2_30GYOSON_room_00DL_01D178:
+  type: GFX
+  offset: 0x01D178
+  symbol: Z2_30GYOSON_room_00DL_01D178
+
+Z2_30GYOSON_room_00DL_01D188:
+  type: GFX
+  offset: 0x01D188
+  symbol: Z2_30GYOSON_room_00DL_01D188
+
+Z2_30GYOSON_room_00DL_01D190:
+  type: GFX
+  offset: 0x01D190
+  symbol: Z2_30GYOSON_room_00DL_01D190
+
+Z2_30GYOSON_room_00DL_01D1A0:
+  type: GFX
+  offset: 0x01D1A0
+  symbol: Z2_30GYOSON_room_00DL_01D1A0
+
+Z2_30GYOSON_room_00DL_01D1A8:
+  type: GFX
+  offset: 0x01D1A8
+  symbol: Z2_30GYOSON_room_00DL_01D1A8
+
+Z2_30GYOSON_room_00DL_01D1B8:
+  type: GFX
+  offset: 0x01D1B8
+  symbol: Z2_30GYOSON_room_00DL_01D1B8
+
+Z2_30GYOSON_room_00DL_01D1C0:
+  type: GFX
+  offset: 0x01D1C0
+  symbol: Z2_30GYOSON_room_00DL_01D1C0
+
+Z2_30GYOSON_room_00DL_01D1D0:
+  type: GFX
+  offset: 0x01D1D0
+  symbol: Z2_30GYOSON_room_00DL_01D1D0
+
+Z2_30GYOSON_room_00DL_01D1D8:
+  type: GFX
+  offset: 0x01D1D8
+  symbol: Z2_30GYOSON_room_00DL_01D1D8
+
+Z2_30GYOSON_room_00DL_01D1E8:
+  type: GFX
+  offset: 0x01D1E8
+  symbol: Z2_30GYOSON_room_00DL_01D1E8
+
+Z2_30GYOSON_room_00DL_01D1F0:
+  type: GFX
+  offset: 0x01D1F0
+  symbol: Z2_30GYOSON_room_00DL_01D1F0
+
+Z2_30GYOSON_room_00DL_01D200:
+  type: GFX
+  offset: 0x01D200
+  symbol: Z2_30GYOSON_room_00DL_01D200

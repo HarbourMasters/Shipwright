@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x00F6EA60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F6EA60 ]
+    - [ 9, 0x00F6EA60 ]
+    - [ 10, 0x00F6EA60 ]
+    - [ 11, 0x00F6EA60 ]
+    - [ 12, 0x00F6EA60 ]
+    - [ 13, 0x00F6EA60 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiMagicJarLargeDL:
+  type: GFX
+  offset: 0xEE0
+  symbol: gGiMagicJarLargeDL
+
+gGiMagicJarSmallDL:
+  type: GFX
+  offset: 0x580
+  symbol: gGiMagicJarSmallDL
+
+
+object_gi_magicpotVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_magicpotVtx_000000
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_magicpotVtx_0007F0:
+  type: MM:ARRAY
+  offset: 0x0007F0
+  symbol: object_gi_magicpotVtx_0007F0
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

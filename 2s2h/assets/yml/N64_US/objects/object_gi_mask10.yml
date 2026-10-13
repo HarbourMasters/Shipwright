@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x014BE6F0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014BE6F0 ]
+    - [ 9, 0x014BE6F0 ]
+    - [ 10, 0x014BE6F0 ]
+    - [ 11, 0x014BE6F0 ]
+    - [ 12, 0x014BE6F0 ]
+    - [ 13, 0x014BE6F0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiRomaniMaskCapDL:
+  type: GFX
+  offset: 0xB60
+  symbol: gGiRomaniMaskCapDL
+
+gGiRomaniMaskEyeTex:
+  type: TEXTURE
+  offset: 0x18B8
+  symbol: gGiRomaniMaskEyeTex
+  format: IA8
+  width: 32
+  height: 32
+
+gGiRomaniMaskNoseEyeDL:
+  type: GFX
+  offset: 0xA30
+  symbol: gGiRomaniMaskNoseEyeDL
+
+gGiRomaniMaskNoseTex:
+  type: TEXTURE
+  offset: 0x17B8
+  symbol: gGiRomaniMaskNoseTex
+  format: IA8
+  width: 16
+  height: 16
+
+gGiRomaniMaskPlainTex:
+  type: TEXTURE
+  offset: 0x1738
+  symbol: gGiRomaniMaskPlainTex
+  format: I8
+  width: 16
+  height: 8
+
+gGiRomaniMaskSpotsTex:
+  type: TEXTURE
+  offset: 0xF38
+  symbol: gGiRomaniMaskSpotsTex
+  format: I8
+  width: 32
+  height: 64
+
+
+object_gi_mask10Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask10Vtx_000000
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask10Vtx_000900:
+  type: MM:ARRAY
+  offset: 0x000900
+  symbol: object_gi_mask10Vtx_000900
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

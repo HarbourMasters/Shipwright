@@ -1,0 +1,32 @@
+:config:
+  segments:
+    - [ 10, 0x00E8BD50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E8BD50 ]
+    - [ 12, 0x00E8BD50 ]
+    - [ 13, 0x00E8BD50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_kyojin_DL_000380:
+  type: GFX
+  offset: 0x380
+  symbol: object_mask_kyojin_DL_000380
+
+object_mask_kyojin_Tex_000498:
+  type: TEXTURE
+  offset: 0x498
+  symbol: object_mask_kyojin_Tex_000498
+  format: I4
+  width: 64
+  height: 64
+
+
+object_mask_kyojinVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_kyojinVtx_000000
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

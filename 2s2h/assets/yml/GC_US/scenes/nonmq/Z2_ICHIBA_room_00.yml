@@ -1,0 +1,1560 @@
+:config:
+  segments:
+    - [ 3, 0x01E32BC0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E32BC0 ]
+    - [ 9, 0x01E32BC0 ]
+    - [ 10, 0x01E32BC0 ]
+    - [ 11, 0x01E32BC0 ]
+    - [ 12, 0x01E32BC0 ]
+    - [ 13, 0x01E32BC0 ]
+    - [ 2, 0x01E236E0 ]
+  directory: scenes/nonmq/Z2_ICHIBA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_ICHIBA.yml
+    - GC_US/scenes/nonmq/Z2_ICHIBA_room_00Set_000370.yml
+
+Z2_ICHIBA_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_ICHIBA_room_00
+
+Z2_ICHIBA_room_00DL_000530:
+  type: GFX
+  offset: 0x530
+  symbol: Z2_ICHIBA_room_00DL_000530
+
+Z2_ICHIBA_room_00DL_008CF0:
+  type: GFX
+  offset: 0x8CF0
+  symbol: Z2_ICHIBA_room_00DL_008CF0
+
+Z2_ICHIBA_room_00DL_00AAB8:
+  type: GFX
+  offset: 0xAAB8
+  symbol: Z2_ICHIBA_room_00DL_00AAB8
+
+
+Z2_ICHIBA_room_00ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_ICHIBA_room_00ActorEntry_000070
+  size: 0
+
+Z2_ICHIBA_room_00ActorEntry_0003C4:
+  type: BLOB
+  offset: 0x0003C4
+  symbol: Z2_ICHIBA_room_00ActorEntry_0003C4
+  size: 0
+
+Z2_ICHIBA_room_00Vtx_000538:
+  type: MM:ARRAY
+  offset: 0x000538
+  symbol: Z2_ICHIBA_room_00Vtx_000538
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000768:
+  type: GFX
+  offset: 0x000768
+  symbol: Z2_ICHIBA_room_00DL_000768
+
+Z2_ICHIBA_room_00Vtx_0008C8:
+  type: MM:ARRAY
+  offset: 0x0008C8
+  symbol: Z2_ICHIBA_room_00Vtx_0008C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0008D8:
+  type: GFX
+  offset: 0x0008D8
+  symbol: Z2_ICHIBA_room_00DL_0008D8
+
+Z2_ICHIBA_room_00Vtx_0008F8:
+  type: MM:ARRAY
+  offset: 0x0008F8
+  symbol: Z2_ICHIBA_room_00Vtx_0008F8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000AA8:
+  type: GFX
+  offset: 0x000AA8
+  symbol: Z2_ICHIBA_room_00DL_000AA8
+
+Z2_ICHIBA_room_00Vtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: Z2_ICHIBA_room_00Vtx_000C00
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000C10:
+  type: GFX
+  offset: 0x000C10
+  symbol: Z2_ICHIBA_room_00DL_000C10
+
+Z2_ICHIBA_room_00Vtx_000C30:
+  type: MM:ARRAY
+  offset: 0x000C30
+  symbol: Z2_ICHIBA_room_00Vtx_000C30
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000CF0:
+  type: GFX
+  offset: 0x000CF0
+  symbol: Z2_ICHIBA_room_00DL_000CF0
+
+Z2_ICHIBA_room_00Vtx_000DC8:
+  type: MM:ARRAY
+  offset: 0x000DC8
+  symbol: Z2_ICHIBA_room_00Vtx_000DC8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000DD8:
+  type: GFX
+  offset: 0x000DD8
+  symbol: Z2_ICHIBA_room_00DL_000DD8
+
+Z2_ICHIBA_room_00Vtx_000DF8:
+  type: MM:ARRAY
+  offset: 0x000DF8
+  symbol: Z2_ICHIBA_room_00Vtx_000DF8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_000F38:
+  type: GFX
+  offset: 0x000F38
+  symbol: Z2_ICHIBA_room_00DL_000F38
+
+Z2_ICHIBA_room_00Vtx_000FF0:
+  type: MM:ARRAY
+  offset: 0x000FF0
+  symbol: Z2_ICHIBA_room_00Vtx_000FF0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001000:
+  type: GFX
+  offset: 0x001000
+  symbol: Z2_ICHIBA_room_00DL_001000
+
+Z2_ICHIBA_room_00Vtx_001020:
+  type: MM:ARRAY
+  offset: 0x001020
+  symbol: Z2_ICHIBA_room_00Vtx_001020
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001300:
+  type: GFX
+  offset: 0x001300
+  symbol: Z2_ICHIBA_room_00DL_001300
+
+Z2_ICHIBA_room_00Vtx_001430:
+  type: MM:ARRAY
+  offset: 0x001430
+  symbol: Z2_ICHIBA_room_00Vtx_001430
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001440:
+  type: GFX
+  offset: 0x001440
+  symbol: Z2_ICHIBA_room_00DL_001440
+
+Z2_ICHIBA_room_00Vtx_001460:
+  type: MM:ARRAY
+  offset: 0x001460
+  symbol: Z2_ICHIBA_room_00Vtx_001460
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001700:
+  type: GFX
+  offset: 0x001700
+  symbol: Z2_ICHIBA_room_00DL_001700
+
+Z2_ICHIBA_room_00Vtx_0017F8:
+  type: MM:ARRAY
+  offset: 0x0017F8
+  symbol: Z2_ICHIBA_room_00Vtx_0017F8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001808:
+  type: GFX
+  offset: 0x001808
+  symbol: Z2_ICHIBA_room_00DL_001808
+
+Z2_ICHIBA_room_00Vtx_001828:
+  type: MM:ARRAY
+  offset: 0x001828
+  symbol: Z2_ICHIBA_room_00Vtx_001828
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0019A8:
+  type: GFX
+  offset: 0x0019A8
+  symbol: Z2_ICHIBA_room_00DL_0019A8
+
+Z2_ICHIBA_room_00Vtx_001AB0:
+  type: MM:ARRAY
+  offset: 0x001AB0
+  symbol: Z2_ICHIBA_room_00Vtx_001AB0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001AC0:
+  type: GFX
+  offset: 0x001AC0
+  symbol: Z2_ICHIBA_room_00DL_001AC0
+
+Z2_ICHIBA_room_00Vtx_001AE0:
+  type: MM:ARRAY
+  offset: 0x001AE0
+  symbol: Z2_ICHIBA_room_00Vtx_001AE0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001C90:
+  type: GFX
+  offset: 0x001C90
+  symbol: Z2_ICHIBA_room_00DL_001C90
+
+Z2_ICHIBA_room_00Vtx_001E78:
+  type: MM:ARRAY
+  offset: 0x001E78
+  symbol: Z2_ICHIBA_room_00Vtx_001E78
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001E88:
+  type: GFX
+  offset: 0x001E88
+  symbol: Z2_ICHIBA_room_00DL_001E88
+
+Z2_ICHIBA_room_00Vtx_001EA8:
+  type: MM:ARRAY
+  offset: 0x001EA8
+  symbol: Z2_ICHIBA_room_00Vtx_001EA8
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_001F58:
+  type: GFX
+  offset: 0x001F58
+  symbol: Z2_ICHIBA_room_00DL_001F58
+
+Z2_ICHIBA_room_00Vtx_002000:
+  type: MM:ARRAY
+  offset: 0x002000
+  symbol: Z2_ICHIBA_room_00Vtx_002000
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002010:
+  type: GFX
+  offset: 0x002010
+  symbol: Z2_ICHIBA_room_00DL_002010
+
+Z2_ICHIBA_room_00DL_002030:
+  type: GFX
+  offset: 0x002030
+  symbol: Z2_ICHIBA_room_00DL_002030
+
+Z2_ICHIBA_room_00DL_002080:
+  type: GFX
+  offset: 0x002080
+  symbol: Z2_ICHIBA_room_00DL_002080
+
+Z2_ICHIBA_room_00Vtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: Z2_ICHIBA_room_00Vtx_002090
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002170:
+  type: GFX
+  offset: 0x002170
+  symbol: Z2_ICHIBA_room_00DL_002170
+
+Z2_ICHIBA_room_00DL_002218:
+  type: GFX
+  offset: 0x002218
+  symbol: Z2_ICHIBA_room_00DL_002218
+
+Z2_ICHIBA_room_00Vtx_002228:
+  type: MM:ARRAY
+  offset: 0x002228
+  symbol: Z2_ICHIBA_room_00Vtx_002228
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0022E8:
+  type: GFX
+  offset: 0x0022E8
+  symbol: Z2_ICHIBA_room_00DL_0022E8
+
+Z2_ICHIBA_room_00Vtx_0023C0:
+  type: MM:ARRAY
+  offset: 0x0023C0
+  symbol: Z2_ICHIBA_room_00Vtx_0023C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0024D0:
+  type: GFX
+  offset: 0x0024D0
+  symbol: Z2_ICHIBA_room_00DL_0024D0
+
+Z2_ICHIBA_room_00DL_002580:
+  type: GFX
+  offset: 0x002580
+  symbol: Z2_ICHIBA_room_00DL_002580
+
+Z2_ICHIBA_room_00Vtx_002598:
+  type: MM:ARRAY
+  offset: 0x002598
+  symbol: Z2_ICHIBA_room_00Vtx_002598
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002658:
+  type: GFX
+  offset: 0x002658
+  symbol: Z2_ICHIBA_room_00DL_002658
+
+Z2_ICHIBA_room_00Vtx_002730:
+  type: MM:ARRAY
+  offset: 0x002730
+  symbol: Z2_ICHIBA_room_00Vtx_002730
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002840:
+  type: GFX
+  offset: 0x002840
+  symbol: Z2_ICHIBA_room_00DL_002840
+
+Z2_ICHIBA_room_00DL_0028F0:
+  type: GFX
+  offset: 0x0028F0
+  symbol: Z2_ICHIBA_room_00DL_0028F0
+
+Z2_ICHIBA_room_00Vtx_002908:
+  type: MM:ARRAY
+  offset: 0x002908
+  symbol: Z2_ICHIBA_room_00Vtx_002908
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0029C8:
+  type: GFX
+  offset: 0x0029C8
+  symbol: Z2_ICHIBA_room_00DL_0029C8
+
+Z2_ICHIBA_room_00Vtx_002AA0:
+  type: MM:ARRAY
+  offset: 0x002AA0
+  symbol: Z2_ICHIBA_room_00Vtx_002AA0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002BC0:
+  type: GFX
+  offset: 0x002BC0
+  symbol: Z2_ICHIBA_room_00DL_002BC0
+
+Z2_ICHIBA_room_00DL_002C70:
+  type: GFX
+  offset: 0x002C70
+  symbol: Z2_ICHIBA_room_00DL_002C70
+
+Z2_ICHIBA_room_00Vtx_002C88:
+  type: MM:ARRAY
+  offset: 0x002C88
+  symbol: Z2_ICHIBA_room_00Vtx_002C88
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_002E58:
+  type: GFX
+  offset: 0x002E58
+  symbol: Z2_ICHIBA_room_00DL_002E58
+
+Z2_ICHIBA_room_00Vtx_003028:
+  type: MM:ARRAY
+  offset: 0x003028
+  symbol: Z2_ICHIBA_room_00Vtx_003028
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_003218:
+  type: GFX
+  offset: 0x003218
+  symbol: Z2_ICHIBA_room_00DL_003218
+
+Z2_ICHIBA_room_00Vtx_003370:
+  type: MM:ARRAY
+  offset: 0x003370
+  symbol: Z2_ICHIBA_room_00Vtx_003370
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0034B0:
+  type: GFX
+  offset: 0x0034B0
+  symbol: Z2_ICHIBA_room_00DL_0034B0
+
+Z2_ICHIBA_room_00Vtx_003568:
+  type: MM:ARRAY
+  offset: 0x003568
+  symbol: Z2_ICHIBA_room_00Vtx_003568
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_003858:
+  type: GFX
+  offset: 0x003858
+  symbol: Z2_ICHIBA_room_00DL_003858
+
+Z2_ICHIBA_room_00DL_0039E0:
+  type: GFX
+  offset: 0x0039E0
+  symbol: Z2_ICHIBA_room_00DL_0039E0
+
+Z2_ICHIBA_room_00Vtx_0039F8:
+  type: MM:ARRAY
+  offset: 0x0039F8
+  symbol: Z2_ICHIBA_room_00Vtx_0039F8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_003BB8:
+  type: GFX
+  offset: 0x003BB8
+  symbol: Z2_ICHIBA_room_00DL_003BB8
+
+Z2_ICHIBA_room_00DL_003CB8:
+  type: GFX
+  offset: 0x003CB8
+  symbol: Z2_ICHIBA_room_00DL_003CB8
+
+Z2_ICHIBA_room_00Vtx_003CC8:
+  type: MM:ARRAY
+  offset: 0x003CC8
+  symbol: Z2_ICHIBA_room_00Vtx_003CC8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_003F48:
+  type: GFX
+  offset: 0x003F48
+  symbol: Z2_ICHIBA_room_00DL_003F48
+
+Z2_ICHIBA_room_00Vtx_0040C8:
+  type: MM:ARRAY
+  offset: 0x0040C8
+  symbol: Z2_ICHIBA_room_00Vtx_0040C8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004188:
+  type: GFX
+  offset: 0x004188
+  symbol: Z2_ICHIBA_room_00DL_004188
+
+Z2_ICHIBA_room_00Vtx_004230:
+  type: MM:ARRAY
+  offset: 0x004230
+  symbol: Z2_ICHIBA_room_00Vtx_004230
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004440:
+  type: GFX
+  offset: 0x004440
+  symbol: Z2_ICHIBA_room_00DL_004440
+
+Z2_ICHIBA_room_00Vtx_004528:
+  type: MM:ARRAY
+  offset: 0x004528
+  symbol: Z2_ICHIBA_room_00Vtx_004528
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004628:
+  type: GFX
+  offset: 0x004628
+  symbol: Z2_ICHIBA_room_00DL_004628
+
+Z2_ICHIBA_room_00Vtx_0046D8:
+  type: MM:ARRAY
+  offset: 0x0046D8
+  symbol: Z2_ICHIBA_room_00Vtx_0046D8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004A58:
+  type: GFX
+  offset: 0x004A58
+  symbol: Z2_ICHIBA_room_00DL_004A58
+
+Z2_ICHIBA_room_00Vtx_004B60:
+  type: MM:ARRAY
+  offset: 0x004B60
+  symbol: Z2_ICHIBA_room_00Vtx_004B60
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004B70:
+  type: GFX
+  offset: 0x004B70
+  symbol: Z2_ICHIBA_room_00DL_004B70
+
+Z2_ICHIBA_room_00DL_004B90:
+  type: GFX
+  offset: 0x004B90
+  symbol: Z2_ICHIBA_room_00DL_004B90
+
+Z2_ICHIBA_room_00Vtx_004BA0:
+  type: MM:ARRAY
+  offset: 0x004BA0
+  symbol: Z2_ICHIBA_room_00Vtx_004BA0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_004F20:
+  type: GFX
+  offset: 0x004F20
+  symbol: Z2_ICHIBA_room_00DL_004F20
+
+Z2_ICHIBA_room_00Vtx_005028:
+  type: MM:ARRAY
+  offset: 0x005028
+  symbol: Z2_ICHIBA_room_00Vtx_005028
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_005038:
+  type: GFX
+  offset: 0x005038
+  symbol: Z2_ICHIBA_room_00DL_005038
+
+Z2_ICHIBA_room_00DL_005058:
+  type: GFX
+  offset: 0x005058
+  symbol: Z2_ICHIBA_room_00DL_005058
+
+Z2_ICHIBA_room_00Vtx_005068:
+  type: MM:ARRAY
+  offset: 0x005068
+  symbol: Z2_ICHIBA_room_00Vtx_005068
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0053E8:
+  type: GFX
+  offset: 0x0053E8
+  symbol: Z2_ICHIBA_room_00DL_0053E8
+
+Z2_ICHIBA_room_00Vtx_0054F0:
+  type: MM:ARRAY
+  offset: 0x0054F0
+  symbol: Z2_ICHIBA_room_00Vtx_0054F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_005500:
+  type: GFX
+  offset: 0x005500
+  symbol: Z2_ICHIBA_room_00DL_005500
+
+Z2_ICHIBA_room_00DL_005520:
+  type: GFX
+  offset: 0x005520
+  symbol: Z2_ICHIBA_room_00DL_005520
+
+Z2_ICHIBA_room_00Vtx_005530:
+  type: MM:ARRAY
+  offset: 0x005530
+  symbol: Z2_ICHIBA_room_00Vtx_005530
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0057B0:
+  type: GFX
+  offset: 0x0057B0
+  symbol: Z2_ICHIBA_room_00DL_0057B0
+
+Z2_ICHIBA_room_00Vtx_005890:
+  type: MM:ARRAY
+  offset: 0x005890
+  symbol: Z2_ICHIBA_room_00Vtx_005890
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0058A0:
+  type: GFX
+  offset: 0x0058A0
+  symbol: Z2_ICHIBA_room_00DL_0058A0
+
+Z2_ICHIBA_room_00DL_0058C0:
+  type: GFX
+  offset: 0x0058C0
+  symbol: Z2_ICHIBA_room_00DL_0058C0
+
+Z2_ICHIBA_room_00Vtx_0058D0:
+  type: MM:ARRAY
+  offset: 0x0058D0
+  symbol: Z2_ICHIBA_room_00Vtx_0058D0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_005BD0:
+  type: GFX
+  offset: 0x005BD0
+  symbol: Z2_ICHIBA_room_00DL_005BD0
+
+Z2_ICHIBA_room_00Vtx_005D08:
+  type: MM:ARRAY
+  offset: 0x005D08
+  symbol: Z2_ICHIBA_room_00Vtx_005D08
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_005E08:
+  type: GFX
+  offset: 0x005E08
+  symbol: Z2_ICHIBA_room_00DL_005E08
+
+Z2_ICHIBA_room_00DL_005EB8:
+  type: GFX
+  offset: 0x005EB8
+  symbol: Z2_ICHIBA_room_00DL_005EB8
+
+Z2_ICHIBA_room_00Vtx_005F50:
+  type: MM:ARRAY
+  offset: 0x005F50
+  symbol: Z2_ICHIBA_room_00Vtx_005F50
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006250:
+  type: GFX
+  offset: 0x006250
+  symbol: Z2_ICHIBA_room_00DL_006250
+
+Z2_ICHIBA_room_00Vtx_0063D0:
+  type: MM:ARRAY
+  offset: 0x0063D0
+  symbol: Z2_ICHIBA_room_00Vtx_0063D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0063E0:
+  type: GFX
+  offset: 0x0063E0
+  symbol: Z2_ICHIBA_room_00DL_0063E0
+
+Z2_ICHIBA_room_00Vtx_006400:
+  type: MM:ARRAY
+  offset: 0x006400
+  symbol: Z2_ICHIBA_room_00Vtx_006400
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0065F0:
+  type: GFX
+  offset: 0x0065F0
+  symbol: Z2_ICHIBA_room_00DL_0065F0
+
+Z2_ICHIBA_room_00Vtx_006750:
+  type: MM:ARRAY
+  offset: 0x006750
+  symbol: Z2_ICHIBA_room_00Vtx_006750
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006760:
+  type: GFX
+  offset: 0x006760
+  symbol: Z2_ICHIBA_room_00DL_006760
+
+Z2_ICHIBA_room_00Vtx_006780:
+  type: MM:ARRAY
+  offset: 0x006780
+  symbol: Z2_ICHIBA_room_00Vtx_006780
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006980:
+  type: GFX
+  offset: 0x006980
+  symbol: Z2_ICHIBA_room_00DL_006980
+
+Z2_ICHIBA_room_00Vtx_006B00:
+  type: MM:ARRAY
+  offset: 0x006B00
+  symbol: Z2_ICHIBA_room_00Vtx_006B00
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006B10:
+  type: GFX
+  offset: 0x006B10
+  symbol: Z2_ICHIBA_room_00DL_006B10
+
+Z2_ICHIBA_room_00Vtx_006B30:
+  type: MM:ARRAY
+  offset: 0x006B30
+  symbol: Z2_ICHIBA_room_00Vtx_006B30
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006CC0:
+  type: GFX
+  offset: 0x006CC0
+  symbol: Z2_ICHIBA_room_00DL_006CC0
+
+Z2_ICHIBA_room_00Vtx_006D88:
+  type: MM:ARRAY
+  offset: 0x006D88
+  symbol: Z2_ICHIBA_room_00Vtx_006D88
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_006D98:
+  type: GFX
+  offset: 0x006D98
+  symbol: Z2_ICHIBA_room_00DL_006D98
+
+Z2_ICHIBA_room_00Vtx_006DB8:
+  type: MM:ARRAY
+  offset: 0x006DB8
+  symbol: Z2_ICHIBA_room_00Vtx_006DB8
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007008:
+  type: GFX
+  offset: 0x007008
+  symbol: Z2_ICHIBA_room_00DL_007008
+
+Z2_ICHIBA_room_00Vtx_007138:
+  type: MM:ARRAY
+  offset: 0x007138
+  symbol: Z2_ICHIBA_room_00Vtx_007138
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007148:
+  type: GFX
+  offset: 0x007148
+  symbol: Z2_ICHIBA_room_00DL_007148
+
+Z2_ICHIBA_room_00Vtx_007168:
+  type: MM:ARRAY
+  offset: 0x007168
+  symbol: Z2_ICHIBA_room_00Vtx_007168
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007408:
+  type: GFX
+  offset: 0x007408
+  symbol: Z2_ICHIBA_room_00DL_007408
+
+Z2_ICHIBA_room_00Vtx_007580:
+  type: MM:ARRAY
+  offset: 0x007580
+  symbol: Z2_ICHIBA_room_00Vtx_007580
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007590:
+  type: GFX
+  offset: 0x007590
+  symbol: Z2_ICHIBA_room_00DL_007590
+
+Z2_ICHIBA_room_00Vtx_0075B0:
+  type: MM:ARRAY
+  offset: 0x0075B0
+  symbol: Z2_ICHIBA_room_00Vtx_0075B0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0076F0:
+  type: GFX
+  offset: 0x0076F0
+  symbol: Z2_ICHIBA_room_00DL_0076F0
+
+Z2_ICHIBA_room_00Vtx_007828:
+  type: MM:ARRAY
+  offset: 0x007828
+  symbol: Z2_ICHIBA_room_00Vtx_007828
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007838:
+  type: GFX
+  offset: 0x007838
+  symbol: Z2_ICHIBA_room_00DL_007838
+
+Z2_ICHIBA_room_00Vtx_007858:
+  type: MM:ARRAY
+  offset: 0x007858
+  symbol: Z2_ICHIBA_room_00Vtx_007858
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0079D8:
+  type: GFX
+  offset: 0x0079D8
+  symbol: Z2_ICHIBA_room_00DL_0079D8
+
+Z2_ICHIBA_room_00Vtx_007A98:
+  type: MM:ARRAY
+  offset: 0x007A98
+  symbol: Z2_ICHIBA_room_00Vtx_007A98
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007AA8:
+  type: GFX
+  offset: 0x007AA8
+  symbol: Z2_ICHIBA_room_00DL_007AA8
+
+Z2_ICHIBA_room_00Vtx_007AC8:
+  type: MM:ARRAY
+  offset: 0x007AC8
+  symbol: Z2_ICHIBA_room_00Vtx_007AC8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007B88:
+  type: GFX
+  offset: 0x007B88
+  symbol: Z2_ICHIBA_room_00DL_007B88
+
+Z2_ICHIBA_room_00Vtx_007C30:
+  type: MM:ARRAY
+  offset: 0x007C30
+  symbol: Z2_ICHIBA_room_00Vtx_007C30
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007C40:
+  type: GFX
+  offset: 0x007C40
+  symbol: Z2_ICHIBA_room_00DL_007C40
+
+Z2_ICHIBA_room_00DL_007C60:
+  type: GFX
+  offset: 0x007C60
+  symbol: Z2_ICHIBA_room_00DL_007C60
+
+Z2_ICHIBA_room_00DL_007CB0:
+  type: GFX
+  offset: 0x007CB0
+  symbol: Z2_ICHIBA_room_00DL_007CB0
+
+Z2_ICHIBA_room_00Vtx_007CC0:
+  type: MM:ARRAY
+  offset: 0x007CC0
+  symbol: Z2_ICHIBA_room_00Vtx_007CC0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_007F40:
+  type: GFX
+  offset: 0x007F40
+  symbol: Z2_ICHIBA_room_00DL_007F40
+
+Z2_ICHIBA_room_00Vtx_008128:
+  type: MM:ARRAY
+  offset: 0x008128
+  symbol: Z2_ICHIBA_room_00Vtx_008128
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008138:
+  type: GFX
+  offset: 0x008138
+  symbol: Z2_ICHIBA_room_00DL_008138
+
+Z2_ICHIBA_room_00Vtx_008158:
+  type: MM:ARRAY
+  offset: 0x008158
+  symbol: Z2_ICHIBA_room_00Vtx_008158
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0083D8:
+  type: GFX
+  offset: 0x0083D8
+  symbol: Z2_ICHIBA_room_00DL_0083D8
+
+Z2_ICHIBA_room_00Vtx_008558:
+  type: MM:ARRAY
+  offset: 0x008558
+  symbol: Z2_ICHIBA_room_00Vtx_008558
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008568:
+  type: GFX
+  offset: 0x008568
+  symbol: Z2_ICHIBA_room_00DL_008568
+
+Z2_ICHIBA_room_00Vtx_008588:
+  type: MM:ARRAY
+  offset: 0x008588
+  symbol: Z2_ICHIBA_room_00Vtx_008588
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008648:
+  type: GFX
+  offset: 0x008648
+  symbol: Z2_ICHIBA_room_00DL_008648
+
+Z2_ICHIBA_room_00Vtx_0086F0:
+  type: MM:ARRAY
+  offset: 0x0086F0
+  symbol: Z2_ICHIBA_room_00Vtx_0086F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008700:
+  type: GFX
+  offset: 0x008700
+  symbol: Z2_ICHIBA_room_00DL_008700
+
+Z2_ICHIBA_room_00Vtx_008720:
+  type: MM:ARRAY
+  offset: 0x008720
+  symbol: Z2_ICHIBA_room_00Vtx_008720
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008860:
+  type: GFX
+  offset: 0x008860
+  symbol: Z2_ICHIBA_room_00DL_008860
+
+Z2_ICHIBA_room_00Vtx_008910:
+  type: MM:ARRAY
+  offset: 0x008910
+  symbol: Z2_ICHIBA_room_00Vtx_008910
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008920:
+  type: GFX
+  offset: 0x008920
+  symbol: Z2_ICHIBA_room_00DL_008920
+
+Z2_ICHIBA_room_00DL_008940:
+  type: GFX
+  offset: 0x008940
+  symbol: Z2_ICHIBA_room_00DL_008940
+
+Z2_ICHIBA_room_00DL_008968:
+  type: GFX
+  offset: 0x008968
+  symbol: Z2_ICHIBA_room_00DL_008968
+
+Z2_ICHIBA_room_00Vtx_008978:
+  type: MM:ARRAY
+  offset: 0x008978
+  symbol: Z2_ICHIBA_room_00Vtx_008978
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008A38:
+  type: GFX
+  offset: 0x008A38
+  symbol: Z2_ICHIBA_room_00DL_008A38
+
+Z2_ICHIBA_room_00DL_008AE0:
+  type: GFX
+  offset: 0x008AE0
+  symbol: Z2_ICHIBA_room_00DL_008AE0
+
+Z2_ICHIBA_room_00Vtx_008AF0:
+  type: MM:ARRAY
+  offset: 0x008AF0
+  symbol: Z2_ICHIBA_room_00Vtx_008AF0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008BF0:
+  type: GFX
+  offset: 0x008BF0
+  symbol: Z2_ICHIBA_room_00DL_008BF0
+
+Z2_ICHIBA_room_00Vtx_008CA0:
+  type: MM:ARRAY
+  offset: 0x008CA0
+  symbol: Z2_ICHIBA_room_00Vtx_008CA0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008CB0:
+  type: GFX
+  offset: 0x008CB0
+  symbol: Z2_ICHIBA_room_00DL_008CB0
+
+Z2_ICHIBA_room_00DL_008CD0:
+  type: GFX
+  offset: 0x008CD0
+  symbol: Z2_ICHIBA_room_00DL_008CD0
+
+Z2_ICHIBA_room_00DL_008CE0:
+  type: GFX
+  offset: 0x008CE0
+  symbol: Z2_ICHIBA_room_00DL_008CE0
+
+Z2_ICHIBA_room_00DL_008D30:
+  type: GFX
+  offset: 0x008D30
+  symbol: Z2_ICHIBA_room_00DL_008D30
+
+Z2_ICHIBA_room_00DL_008D38:
+  type: GFX
+  offset: 0x008D38
+  symbol: Z2_ICHIBA_room_00DL_008D38
+
+Z2_ICHIBA_room_00DL_008D40:
+  type: GFX
+  offset: 0x008D40
+  symbol: Z2_ICHIBA_room_00DL_008D40
+
+Z2_ICHIBA_room_00DL_008D50:
+  type: GFX
+  offset: 0x008D50
+  symbol: Z2_ICHIBA_room_00DL_008D50
+
+Z2_ICHIBA_room_00Vtx_008D60:
+  type: MM:ARRAY
+  offset: 0x008D60
+  symbol: Z2_ICHIBA_room_00Vtx_008D60
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008E60:
+  type: GFX
+  offset: 0x008E60
+  symbol: Z2_ICHIBA_room_00DL_008E60
+
+Z2_ICHIBA_room_00Vtx_008F10:
+  type: MM:ARRAY
+  offset: 0x008F10
+  symbol: Z2_ICHIBA_room_00Vtx_008F10
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_008F20:
+  type: GFX
+  offset: 0x008F20
+  symbol: Z2_ICHIBA_room_00DL_008F20
+
+Z2_ICHIBA_room_00DL_008F40:
+  type: GFX
+  offset: 0x008F40
+  symbol: Z2_ICHIBA_room_00DL_008F40
+
+Z2_ICHIBA_room_00DL_008F50:
+  type: GFX
+  offset: 0x008F50
+  symbol: Z2_ICHIBA_room_00DL_008F50
+
+Z2_ICHIBA_room_00DL_008F58:
+  type: GFX
+  offset: 0x008F58
+  symbol: Z2_ICHIBA_room_00DL_008F58
+
+Z2_ICHIBA_room_00DL_008F60:
+  type: GFX
+  offset: 0x008F60
+  symbol: Z2_ICHIBA_room_00DL_008F60
+
+Z2_ICHIBA_room_00DL_008F68:
+  type: GFX
+  offset: 0x008F68
+  symbol: Z2_ICHIBA_room_00DL_008F68
+
+Z2_ICHIBA_room_00Vtx_008F78:
+  type: MM:ARRAY
+  offset: 0x008F78
+  symbol: Z2_ICHIBA_room_00Vtx_008F78
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0091F8:
+  type: GFX
+  offset: 0x0091F8
+  symbol: Z2_ICHIBA_room_00DL_0091F8
+
+Z2_ICHIBA_room_00Vtx_0092D8:
+  type: MM:ARRAY
+  offset: 0x0092D8
+  symbol: Z2_ICHIBA_room_00Vtx_0092D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0092E8:
+  type: GFX
+  offset: 0x0092E8
+  symbol: Z2_ICHIBA_room_00DL_0092E8
+
+Z2_ICHIBA_room_00DL_009318:
+  type: GFX
+  offset: 0x009318
+  symbol: Z2_ICHIBA_room_00DL_009318
+
+Z2_ICHIBA_room_00DL_009328:
+  type: GFX
+  offset: 0x009328
+  symbol: Z2_ICHIBA_room_00DL_009328
+
+Z2_ICHIBA_room_00DL_009330:
+  type: GFX
+  offset: 0x009330
+  symbol: Z2_ICHIBA_room_00DL_009330
+
+Z2_ICHIBA_room_00Vtx_009340:
+  type: MM:ARRAY
+  offset: 0x009340
+  symbol: Z2_ICHIBA_room_00Vtx_009340
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0096C0:
+  type: GFX
+  offset: 0x0096C0
+  symbol: Z2_ICHIBA_room_00DL_0096C0
+
+Z2_ICHIBA_room_00Vtx_0097C8:
+  type: MM:ARRAY
+  offset: 0x0097C8
+  symbol: Z2_ICHIBA_room_00Vtx_0097C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_0097D8:
+  type: GFX
+  offset: 0x0097D8
+  symbol: Z2_ICHIBA_room_00DL_0097D8
+
+Z2_ICHIBA_room_00DL_009808:
+  type: GFX
+  offset: 0x009808
+  symbol: Z2_ICHIBA_room_00DL_009808
+
+Z2_ICHIBA_room_00DL_009818:
+  type: GFX
+  offset: 0x009818
+  symbol: Z2_ICHIBA_room_00DL_009818
+
+Z2_ICHIBA_room_00DL_009820:
+  type: GFX
+  offset: 0x009820
+  symbol: Z2_ICHIBA_room_00DL_009820
+
+Z2_ICHIBA_room_00Vtx_009830:
+  type: MM:ARRAY
+  offset: 0x009830
+  symbol: Z2_ICHIBA_room_00Vtx_009830
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_009BB0:
+  type: GFX
+  offset: 0x009BB0
+  symbol: Z2_ICHIBA_room_00DL_009BB0
+
+Z2_ICHIBA_room_00Vtx_009CB8:
+  type: MM:ARRAY
+  offset: 0x009CB8
+  symbol: Z2_ICHIBA_room_00Vtx_009CB8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_009CC8:
+  type: GFX
+  offset: 0x009CC8
+  symbol: Z2_ICHIBA_room_00DL_009CC8
+
+Z2_ICHIBA_room_00DL_009CF8:
+  type: GFX
+  offset: 0x009CF8
+  symbol: Z2_ICHIBA_room_00DL_009CF8
+
+Z2_ICHIBA_room_00DL_009D08:
+  type: GFX
+  offset: 0x009D08
+  symbol: Z2_ICHIBA_room_00DL_009D08
+
+Z2_ICHIBA_room_00DL_009D10:
+  type: GFX
+  offset: 0x009D10
+  symbol: Z2_ICHIBA_room_00DL_009D10
+
+Z2_ICHIBA_room_00Vtx_009D20:
+  type: MM:ARRAY
+  offset: 0x009D20
+  symbol: Z2_ICHIBA_room_00Vtx_009D20
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A0A0:
+  type: GFX
+  offset: 0x00A0A0
+  symbol: Z2_ICHIBA_room_00DL_00A0A0
+
+Z2_ICHIBA_room_00Vtx_00A1A8:
+  type: MM:ARRAY
+  offset: 0x00A1A8
+  symbol: Z2_ICHIBA_room_00Vtx_00A1A8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A1B8:
+  type: GFX
+  offset: 0x00A1B8
+  symbol: Z2_ICHIBA_room_00DL_00A1B8
+
+Z2_ICHIBA_room_00DL_00A1E8:
+  type: GFX
+  offset: 0x00A1E8
+  symbol: Z2_ICHIBA_room_00DL_00A1E8
+
+Z2_ICHIBA_room_00DL_00A1F8:
+  type: GFX
+  offset: 0x00A1F8
+  symbol: Z2_ICHIBA_room_00DL_00A1F8
+
+Z2_ICHIBA_room_00Vtx_00A200:
+  type: MM:ARRAY
+  offset: 0x00A200
+  symbol: Z2_ICHIBA_room_00Vtx_00A200
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A2C0:
+  type: GFX
+  offset: 0x00A2C0
+  symbol: Z2_ICHIBA_room_00DL_00A2C0
+
+Z2_ICHIBA_room_00DL_00A368:
+  type: GFX
+  offset: 0x00A368
+  symbol: Z2_ICHIBA_room_00DL_00A368
+
+Z2_ICHIBA_room_00DL_00A3D0:
+  type: GFX
+  offset: 0x00A3D0
+  symbol: Z2_ICHIBA_room_00DL_00A3D0
+
+Z2_ICHIBA_room_00DL_00A3D8:
+  type: GFX
+  offset: 0x00A3D8
+  symbol: Z2_ICHIBA_room_00DL_00A3D8
+
+Z2_ICHIBA_room_00DL_00A3E0:
+  type: GFX
+  offset: 0x00A3E0
+  symbol: Z2_ICHIBA_room_00DL_00A3E0
+
+Z2_ICHIBA_room_00DL_00A3F8:
+  type: GFX
+  offset: 0x00A3F8
+  symbol: Z2_ICHIBA_room_00DL_00A3F8
+
+Z2_ICHIBA_room_00Vtx_00A408:
+  type: MM:ARRAY
+  offset: 0x00A408
+  symbol: Z2_ICHIBA_room_00Vtx_00A408
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A548:
+  type: GFX
+  offset: 0x00A548
+  symbol: Z2_ICHIBA_room_00DL_00A548
+
+Z2_ICHIBA_room_00Vtx_00A648:
+  type: MM:ARRAY
+  offset: 0x00A648
+  symbol: Z2_ICHIBA_room_00Vtx_00A648
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A658:
+  type: GFX
+  offset: 0x00A658
+  symbol: Z2_ICHIBA_room_00DL_00A658
+
+Z2_ICHIBA_room_00Vtx_00A678:
+  type: MM:ARRAY
+  offset: 0x00A678
+  symbol: Z2_ICHIBA_room_00Vtx_00A678
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A778:
+  type: GFX
+  offset: 0x00A778
+  symbol: Z2_ICHIBA_room_00DL_00A778
+
+Z2_ICHIBA_room_00Vtx_00A840:
+  type: MM:ARRAY
+  offset: 0x00A840
+  symbol: Z2_ICHIBA_room_00Vtx_00A840
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A850:
+  type: GFX
+  offset: 0x00A850
+  symbol: Z2_ICHIBA_room_00DL_00A850
+
+Z2_ICHIBA_room_00DL_00A870:
+  type: GFX
+  offset: 0x00A870
+  symbol: Z2_ICHIBA_room_00DL_00A870
+
+Z2_ICHIBA_room_00DL_00A878:
+  type: GFX
+  offset: 0x00A878
+  symbol: Z2_ICHIBA_room_00DL_00A878
+
+Z2_ICHIBA_room_00DL_00A898:
+  type: GFX
+  offset: 0x00A898
+  symbol: Z2_ICHIBA_room_00DL_00A898
+
+Z2_ICHIBA_room_00DL_00A8A8:
+  type: GFX
+  offset: 0x00A8A8
+  symbol: Z2_ICHIBA_room_00DL_00A8A8
+
+Z2_ICHIBA_room_00DL_00A8B0:
+  type: GFX
+  offset: 0x00A8B0
+  symbol: Z2_ICHIBA_room_00DL_00A8B0
+
+Z2_ICHIBA_room_00DL_00A8B8:
+  type: GFX
+  offset: 0x00A8B8
+  symbol: Z2_ICHIBA_room_00DL_00A8B8
+
+Z2_ICHIBA_room_00DL_00A8D0:
+  type: GFX
+  offset: 0x00A8D0
+  symbol: Z2_ICHIBA_room_00DL_00A8D0
+
+Z2_ICHIBA_room_00Vtx_00A8E0:
+  type: MM:ARRAY
+  offset: 0x00A8E0
+  symbol: Z2_ICHIBA_room_00Vtx_00A8E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ICHIBA_room_00DL_00A9E0:
+  type: GFX
+  offset: 0x00A9E0
+  symbol: Z2_ICHIBA_room_00DL_00A9E0
+
+Z2_ICHIBA_room_00DL_00AAA8:
+  type: GFX
+  offset: 0x00AAA8
+  symbol: Z2_ICHIBA_room_00DL_00AAA8

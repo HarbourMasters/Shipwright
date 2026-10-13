@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E36CA0 ]
+  directory: scenes/nonmq/Z2_BACKTOWN
+  external_files:
+    - GC_US/scenes/nonmq/Z2_BACKTOWN.yml
+
+Z2_BACKTOWNSet_002270:
+  type: MM:SCENE
+  offset: 0x2270
+  symbol: Z2_BACKTOWNSet_002270
+  base_name: Z2_BACKTOWN

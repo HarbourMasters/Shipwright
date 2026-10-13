@@ -1,0 +1,133 @@
+:config:
+  segments:
+    - [ 128, 0x0097F640 ]
+  compression: CMPDMA
+
+gMapPointClockTownENGTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gMapPointClockTownENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointDekuPalaceENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gMapPointDekuPalaceENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointGoronVillageENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gMapPointGoronVillageENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointGreatBayCoastENGTex:
+  type: TEXTURE
+  offset: 0x2C00
+  symbol: gMapPointGreatBayCoastENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointGreatBayENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMapPointGreatBayENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointIkanaCanyonENGTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gMapPointIkanaCanyonENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointIkanaGraveyardENGTex:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: gMapPointIkanaGraveyardENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointMilkRoadENGTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gMapPointMilkRoadENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointMountainVillageENGTex:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: gMapPointMountainVillageENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointRomaniRanchENGTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gMapPointRomaniRanchENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointSnowheadENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gMapPointSnowheadENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointSouthernSwampENGTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gMapPointSouthernSwampENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointStoneTowerENGTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gMapPointStoneTowerENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointWoodfallENGTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gMapPointWoodfallENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointZoraCapeENGTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gMapPointZoraCapeENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMapPointZoraHallENGTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gMapPointZoraHallENGTex
+  format: IA4
+  width: 128
+  height: 16
+

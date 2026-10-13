@@ -1,0 +1,937 @@
+:config:
+  segments:
+    - [ 6, 0x011A3750 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011A3750 ]
+    - [ 9, 0x011A3750 ]
+    - [ 10, 0x011A3750 ]
+    - [ 11, 0x011A3750 ]
+    - [ 12, 0x011A3750 ]
+    - [ 13, 0x011A3750 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gWizrobeAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x7B0
+  symbol: gWizrobeAttackAnim
+
+gWizrobeBandTex:
+  type: TEXTURE
+  offset: 0xAEF0
+  symbol: gWizrobeBandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWizrobeBigFlameDL:
+  type: GFX
+  offset: 0x3FC0
+  symbol: gWizrobeBigFlameDL
+
+gWizrobeBigFlameMaskTex:
+  type: TEXTURE
+  offset: 0x3B00
+  symbol: gWizrobeBigFlameMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gWizrobeBigFlameTex:
+  type: TEXTURE
+  offset: 0x3700
+  symbol: gWizrobeBigFlameTex
+  format: I8
+  width: 32
+  height: 32
+
+gWizrobeDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x2218
+  symbol: gWizrobeDamageAnim
+
+gWizrobeDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x2458
+  symbol: gWizrobeDanceAnim
+
+gWizrobeEarTex:
+  type: TEXTURE
+  offset: 0xAA70
+  symbol: gWizrobeEarTex
+  format: RGBA16
+  width: 16
+  height: 4
+
+gWizrobeEyeOrbitTex:
+  type: TEXTURE
+  offset: 0xA4F0
+  symbol: gWizrobeEyeOrbitTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWizrobeEyeTex:
+  type: TEXTURE
+  offset: 0xA6F0
+  symbol: gWizrobeEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWizrobeFaceSkinTex:
+  type: TEXTURE
+  offset: 0x9B70
+  symbol: gWizrobeFaceSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWizrobeFirePoolDL:
+  type: GFX
+  offset: 0x3120
+  symbol: gWizrobeFirePoolDL
+
+gWizrobeFirePoolTex:
+  type: TEXTURE
+  offset: 0x2E00
+  symbol: gWizrobeFirePoolTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobeFireSmokeDL:
+  type: GFX
+  offset: 0x3640
+  symbol: gWizrobeFireSmokeDL
+
+gWizrobeFireSmokeTex:
+  type: TEXTURE
+  offset: 0x31E0
+  symbol: gWizrobeFireSmokeTex
+  format: I4
+  width: 32
+  height: 64
+
+gWizrobeFootTex:
+  type: TEXTURE
+  offset: 0xB0F0
+  symbol: gWizrobeFootTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gWizrobeHairTex:
+  type: TEXTURE
+  offset: 0xA3F0
+  symbol: gWizrobeHairTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWizrobeHeadDL:
+  type: GFX
+  offset: 0x91D8
+  symbol: gWizrobeHeadDL
+
+gWizrobeHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB268
+  symbol: gWizrobeHeadLimb
+  limb_type: Standard
+
+gWizrobeIcePoolDL:
+  type: GFX
+  offset: 0x5190
+  symbol: gWizrobeIcePoolDL
+
+gWizrobeIcePoolShineDL:
+  type: GFX
+  offset: 0x5750
+  symbol: gWizrobeIcePoolShineDL
+
+gWizrobeIcePoolShineMaskTex:
+  type: TEXTURE
+  offset: 0x5630
+  symbol: gWizrobeIcePoolShineMaskTex
+  format: I4
+  width: 16
+  height: 16
+
+gWizrobeIcePoolShineTex:
+  type: TEXTURE
+  offset: 0x5230
+  symbol: gWizrobeIcePoolShineTex
+  format: I4
+  width: 32
+  height: 64
+
+gWizrobeIcePoolTex:
+  type: TEXTURE
+  offset: 0x40B0
+  symbol: gWizrobeIcePoolTex
+  format: I8
+  width: 64
+  height: 64
+
+gWizrobeIceSmokeMaskTex:
+  type: TEXTURE
+  offset: 0xBC0
+  symbol: gWizrobeIceSmokeMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobeIceSmokeMaterialDL:
+  type: GFX
+  offset: 0xE70
+  symbol: gWizrobeIceSmokeMaterialDL
+
+gWizrobeIceSmokeModelDL:
+  type: GFX
+  offset: 0xFD8
+  symbol: gWizrobeIceSmokeModelDL
+
+gWizrobeIceSmokeTex:
+  type: TEXTURE
+  offset: 0x7C0
+  symbol: gWizrobeIceSmokeTex
+  format: I4
+  width: 32
+  height: 64
+
+gWizrobeIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x66C0
+  symbol: gWizrobeIdleAnim
+
+gWizrobeJawDL:
+  type: GFX
+  offset: 0x8F18
+  symbol: gWizrobeJawDL
+
+gWizrobeJawLimb:
+  type: OOT:LIMB
+  offset: 0xB274
+  symbol: gWizrobeJawLimb
+  limb_type: Standard
+
+gWizrobeLeftFootDL:
+  type: GFX
+  offset: 0x8AB0
+  symbol: gWizrobeLeftFootDL
+
+gWizrobeLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB2A4
+  symbol: gWizrobeLeftFootLimb
+  limb_type: Standard
+
+gWizrobeLeftForearmDL:
+  type: GFX
+  offset: 0x99C0
+  symbol: gWizrobeLeftForearmDL
+
+gWizrobeLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB214
+  symbol: gWizrobeLeftForearmLimb
+  limb_type: Standard
+
+gWizrobeLeftHandDL:
+  type: GFX
+  offset: 0x9A98
+  symbol: gWizrobeLeftHandDL
+
+gWizrobeLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB220
+  symbol: gWizrobeLeftHandLimb
+  limb_type: Standard
+
+gWizrobeLeftShinDL:
+  type: GFX
+  offset: 0x89D8
+  symbol: gWizrobeLeftShinDL
+
+gWizrobeLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xB298
+  symbol: gWizrobeLeftShinLimb
+  limb_type: Standard
+
+gWizrobeLeftThighDL:
+  type: GFX
+  offset: 0x8938
+  symbol: gWizrobeLeftThighDL
+
+gWizrobeLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB28C
+  symbol: gWizrobeLeftThighLimb
+  limb_type: Standard
+
+gWizrobeLeftUpperArmDL:
+  type: GFX
+  offset: 0x9918
+  symbol: gWizrobeLeftUpperArmDL
+
+gWizrobeLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB208
+  symbol: gWizrobeLeftUpperArmLimb
+  limb_type: Standard
+
+gWizrobeLoinclothDL:
+  type: GFX
+  offset: 0x8B80
+  symbol: gWizrobeLoinclothDL
+
+gWizrobeLoinclothLimb:
+  type: OOT:LIMB
+  offset: 0xB280
+  symbol: gWizrobeLoinclothLimb
+  limb_type: Standard
+
+gWizrobeLowerLipTex:
+  type: TEXTURE
+  offset: 0xA8F0
+  symbol: gWizrobeLowerLipTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWizrobeMagicProjectileDL:
+  type: GFX
+  offset: 0x2B40
+  symbol: gWizrobeMagicProjectileDL
+
+gWizrobeMagicProjectileTex:
+  type: TEXTURE
+  offset: 0x2BD0
+  symbol: gWizrobeMagicProjectileTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobeNeckDL:
+  type: GFX
+  offset: 0x8CE8
+  symbol: gWizrobeNeckDL
+
+gWizrobeNeckLimb:
+  type: OOT:LIMB
+  offset: 0xB25C
+  symbol: gWizrobeNeckLimb
+  limb_type: Standard
+
+gWizrobeNoseTex:
+  type: TEXTURE
+  offset: 0xA970
+  symbol: gWizrobeNoseTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWizrobePelvisDL:
+  type: GFX
+  offset: 0x8640
+  symbol: gWizrobePelvisDL
+
+gWizrobePelvisLimb:
+  type: OOT:LIMB
+  offset: 0xB1F0
+  symbol: gWizrobePelvisLimb
+  limb_type: Standard
+
+gWizrobePlatformCenterDL:
+  type: GFX
+  offset: 0x5870
+  symbol: gWizrobePlatformCenterDL
+
+gWizrobePlatformCenterEmptyDL:
+  type: GFX
+  offset: 0x5938
+  symbol: gWizrobePlatformCenterEmptyDL
+
+gWizrobePlatformCenterMaskTex:
+  type: TEXTURE
+  offset: 0x5940
+  symbol: gWizrobePlatformCenterMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobePlatformCenterTex:
+  type: TEXTURE
+  offset: 0x5B40
+  symbol: gWizrobePlatformCenterTex
+  format: I4
+  width: 16
+  height: 32
+
+gWizrobePlatformCenterTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x5C64
+  symbol: gWizrobePlatformCenterTexAnim
+
+gWizrobePlatformCol:
+  type: MM:COLLISION
+  offset: 0x1690
+  symbol: gWizrobePlatformCol
+
+gWizrobePlatformDL:
+  type: GFX
+  offset: 0x10E8
+  symbol: gWizrobePlatformDL
+
+gWizrobePlatformEmptyDL:
+  type: GFX
+  offset: 0x10E0
+  symbol: gWizrobePlatformEmptyDL
+
+gWizrobePlatformEmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x15A0
+  symbol: gWizrobePlatformEmptyTexAnim
+
+gWizrobePlatformLightBaseTex:
+  type: TEXTURE
+  offset: 0x1BF0
+  symbol: gWizrobePlatformLightBaseTex
+  format: I4
+  width: 16
+  height: 32
+
+gWizrobePlatformLightDL:
+  type: GFX
+  offset: 0x1860
+  symbol: gWizrobePlatformLightDL
+
+gWizrobePlatformLightMaskTex:
+  type: TEXTURE
+  offset: 0x19F0
+  symbol: gWizrobePlatformLightMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobePlatformLightRaysTex:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: gWizrobePlatformLightRaysTex
+  format: I8
+  width: 32
+  height: 32
+
+gWizrobePlatformLightTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x211C
+  symbol: gWizrobePlatformLightTexAnim
+
+gWizrobePlatformTex:
+  type: TEXTURE
+  offset: 0x1198
+  symbol: gWizrobePlatformTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gWizrobeRightFootDL:
+  type: GFX
+  offset: 0x8868
+  symbol: gWizrobeRightFootDL
+
+gWizrobeRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xB2C8
+  symbol: gWizrobeRightFootLimb
+  limb_type: Standard
+
+gWizrobeRightForearmDL:
+  type: GFX
+  offset: 0x9608
+  symbol: gWizrobeRightForearmDL
+
+gWizrobeRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB238
+  symbol: gWizrobeRightForearmLimb
+  limb_type: Standard
+
+gWizrobeRightHandDL:
+  type: GFX
+  offset: 0x96E0
+  symbol: gWizrobeRightHandDL
+
+gWizrobeRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB244
+  symbol: gWizrobeRightHandLimb
+  limb_type: Standard
+
+gWizrobeRightShinDL:
+  type: GFX
+  offset: 0x8790
+  symbol: gWizrobeRightShinDL
+
+gWizrobeRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xB2BC
+  symbol: gWizrobeRightShinLimb
+  limb_type: Standard
+
+gWizrobeRightThighDL:
+  type: GFX
+  offset: 0x86F0
+  symbol: gWizrobeRightThighDL
+
+gWizrobeRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xB2B0
+  symbol: gWizrobeRightThighLimb
+  limb_type: Standard
+
+gWizrobeRightUpperArmDL:
+  type: GFX
+  offset: 0x9560
+  symbol: gWizrobeRightUpperArmDL
+
+gWizrobeRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB22C
+  symbol: gWizrobeRightUpperArmLimb
+  limb_type: Standard
+
+gWizrobeRobeTex:
+  type: TEXTURE
+  offset: 0x9BF0
+  symbol: gWizrobeRobeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWizrobeRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x25F0
+  symbol: gWizrobeRunAnim
+
+gWizrobeSkel:
+  type: MM:SKELETON
+  offset: 0xB320
+  symbol: gWizrobeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWizrobeSmallFlameDL:
+  type: GFX
+  offset: 0x2630
+  symbol: gWizrobeSmallFlameDL
+
+gWizrobeSmallFlameMaskTex:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: gWizrobeSmallFlameMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobeSmallFlameTex:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: gWizrobeSmallFlameTex
+  format: I4
+  width: 32
+  height: 32
+
+gWizrobeStaffDL:
+  type: GFX
+  offset: 0x97B8
+  symbol: gWizrobeStaffDL
+
+gWizrobeStaffLimb:
+  type: OOT:LIMB
+  offset: 0xB250
+  symbol: gWizrobeStaffLimb
+  limb_type: Standard
+
+gWizrobeStaffTex:
+  type: TEXTURE
+  offset: 0xACF0
+  symbol: gWizrobeStaffTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWizrobeStaffTipTex:
+  type: TEXTURE
+  offset: 0xAAF0
+  symbol: gWizrobeStaffTipTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWizrobeTorsoDL:
+  type: GFX
+  offset: 0x8C10
+  symbol: gWizrobeTorsoDL
+
+gWizrobeTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xB1FC
+  symbol: gWizrobeTorsoLimb
+  limb_type: Standard
+
+gWizrobeUnusedColorChangingTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2DF4
+  symbol: gWizrobeUnusedColorChangingTexAnim
+
+gWizrobeUnusedIceSmokeMaterialDL:
+  type: GFX
+  offset: 0xF28
+  symbol: gWizrobeUnusedIceSmokeMaterialDL
+
+gWizrobeUnusedScrollTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2B08
+  symbol: gWizrobeUnusedScrollTexAnim
+
+gWizrobeUnusedTex:
+  type: TEXTURE
+  offset: 0xDC0
+  symbol: gWizrobeUnusedTex
+  format: I4
+  width: 16
+  height: 16
+
+gWizrobeUnusedVtx:
+  type: MM:ARRAY
+  offset: 0x50B0
+  symbol: gWizrobeUnusedVtx
+  count: 4
+  array_type: VTX
+
+gWizrobeWindUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x60E8
+  symbol: gWizrobeWindUpAnim
+
+
+object_wizVtx_000E40:
+  type: MM:ARRAY
+  offset: 0x000E40
+  symbol: object_wizVtx_000E40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_wizVtx_001000
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0016C0:
+  type: MM:ARRAY
+  offset: 0x0016C0
+  symbol: object_wizVtx_0016C0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWizrobePlatformLightTexAnimColorParams_0020FC:
+  type: BLOB
+  offset: 0x0020FC
+  symbol: gWizrobePlatformLightTexAnimColorParams_0020FC
+  size: 0
+
+gWizrobePlatformLightTexAnimTexScrollParams_00210C:
+  type: BLOB
+  offset: 0x00210C
+  symbol: gWizrobePlatformLightTexAnimTexScrollParams_00210C
+  size: 0
+
+gWizrobePlatformLightTexAnimTexScrollParams_002114:
+  type: BLOB
+  offset: 0x002114
+  symbol: gWizrobePlatformLightTexAnimTexScrollParams_002114
+  size: 0
+
+object_wizVtx_002600:
+  type: MM:ARRAY
+  offset: 0x002600
+  symbol: object_wizVtx_002600
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWizrobeUnusedScrollTexAnimTexScrollParams_002B00:
+  type: BLOB
+  offset: 0x002B00
+  symbol: gWizrobeUnusedScrollTexAnimTexScrollParams_002B00
+  size: 0
+
+object_wizVtx_002B10:
+  type: MM:ARRAY
+  offset: 0x002B10
+  symbol: object_wizVtx_002B10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWizrobeUnusedColorChangingTexAnimColorParams_002DE4:
+  type: BLOB
+  offset: 0x002DE4
+  symbol: gWizrobeUnusedColorChangingTexAnimColorParams_002DE4
+  size: 0
+
+object_wizVtx_003000:
+  type: MM:ARRAY
+  offset: 0x003000
+  symbol: object_wizVtx_003000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0035E0:
+  type: MM:ARRAY
+  offset: 0x0035E0
+  symbol: object_wizVtx_0035E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_003F00:
+  type: MM:ARRAY
+  offset: 0x003F00
+  symbol: object_wizVtx_003F00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0050F0:
+  type: MM:ARRAY
+  offset: 0x0050F0
+  symbol: object_wizVtx_0050F0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0056B0:
+  type: MM:ARRAY
+  offset: 0x0056B0
+  symbol: object_wizVtx_0056B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_005830:
+  type: MM:ARRAY
+  offset: 0x005830
+  symbol: object_wizVtx_005830
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWizrobePlatformCenterTexAnimColorParams_005C4C:
+  type: BLOB
+  offset: 0x005C4C
+  symbol: gWizrobePlatformCenterTexAnimColorParams_005C4C
+  size: 0
+
+gWizrobePlatformCenterTexAnimTexScrollParams_005C5C:
+  type: BLOB
+  offset: 0x005C5C
+  symbol: gWizrobePlatformCenterTexAnimTexScrollParams_005C5C
+  size: 0
+
+object_wizVtx_0066D0:
+  type: MM:ARRAY
+  offset: 0x0066D0
+  symbol: object_wizVtx_0066D0
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_006DB0:
+  type: MM:ARRAY
+  offset: 0x006DB0
+  symbol: object_wizVtx_006DB0
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007330:
+  type: MM:ARRAY
+  offset: 0x007330
+  symbol: object_wizVtx_007330
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007700:
+  type: MM:ARRAY
+  offset: 0x007700
+  symbol: object_wizVtx_007700
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007920:
+  type: MM:ARRAY
+  offset: 0x007920
+  symbol: object_wizVtx_007920
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007A50:
+  type: MM:ARRAY
+  offset: 0x007A50
+  symbol: object_wizVtx_007A50
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007B80:
+  type: MM:ARRAY
+  offset: 0x007B80
+  symbol: object_wizVtx_007B80
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007BE0:
+  type: MM:ARRAY
+  offset: 0x007BE0
+  symbol: object_wizVtx_007BE0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007D10:
+  type: MM:ARRAY
+  offset: 0x007D10
+  symbol: object_wizVtx_007D10
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007E40:
+  type: MM:ARRAY
+  offset: 0x007E40
+  symbol: object_wizVtx_007E40
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_007EA0:
+  type: MM:ARRAY
+  offset: 0x007EA0
+  symbol: object_wizVtx_007EA0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_008000:
+  type: MM:ARRAY
+  offset: 0x008000
+  symbol: object_wizVtx_008000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_008120:
+  type: MM:ARRAY
+  offset: 0x008120
+  symbol: object_wizVtx_008120
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_008250:
+  type: MM:ARRAY
+  offset: 0x008250
+  symbol: object_wizVtx_008250
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0082B0:
+  type: MM:ARRAY
+  offset: 0x0082B0
+  symbol: object_wizVtx_0082B0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0083D0:
+  type: MM:ARRAY
+  offset: 0x0083D0
+  symbol: object_wizVtx_0083D0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_008500:
+  type: MM:ARRAY
+  offset: 0x008500
+  symbol: object_wizVtx_008500
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_008560:
+  type: MM:ARRAY
+  offset: 0x008560
+  symbol: object_wizVtx_008560
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wizVtx_0085A0:
+  type: MM:ARRAY
+  offset: 0x0085A0
+  symbol: object_wizVtx_0085A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWizrobeSkelLimbs:
+  type: BLOB
+  offset: 0xB2D4
+  symbol: gWizrobeSkelLimbs
+  size: 0

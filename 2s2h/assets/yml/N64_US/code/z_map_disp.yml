@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 128, 0x00A684D0 ]
+  virtual: [ 0x800A5AC0, 0x00A684D0 ]
+
+sWhiteSquareTex:
+  type: TEXTURE
+  offset: 0x119078
+  symbol: sWhiteSquareTex
+  format: I4
+  width: 16
+  height: 16
+

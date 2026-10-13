@@ -1,0 +1,225 @@
+:config:
+  segments:
+    - [ 6, 0x010115D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010115D0 ]
+    - [ 9, 0x010115D0 ]
+    - [ 10, 0x010115D0 ]
+    - [ 11, 0x010115D0 ]
+    - [ 12, 0x010115D0 ]
+    - [ 13, 0x010115D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gNwcBeakTex:
+  type: TEXTURE
+  offset: 0x550
+  symbol: gNwcBeakTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNwcBodyDL:
+  type: GFX
+  offset: 0x2E8
+  symbol: gNwcBodyDL
+
+gNwcBodyTex:
+  type: TEXTURE
+  offset: 0x4D0
+  symbol: gNwcBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gNwcEndDL:
+  type: GFX
+  offset: 0x2E0
+  symbol: gNwcEndDL
+
+gNwcEyeClosedTex:
+  type: TEXTURE
+  offset: 0x9D0
+  symbol: gNwcEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNwcEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7D0
+  symbol: gNwcEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNwcEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xBEC
+  symbol: gNwcEyeTexAnim
+
+gNwcWingTex:
+  type: TEXTURE
+  offset: 0x5D0
+  symbol: gNwcWingTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_nwc_DL_001440:
+  type: GFX
+  offset: 0x1440
+  symbol: object_nwc_DL_001440
+
+object_nwc_DL_0014B8:
+  type: GFX
+  offset: 0x14B8
+  symbol: object_nwc_DL_0014B8
+
+object_nwc_DL_001520:
+  type: GFX
+  offset: 0x1520
+  symbol: object_nwc_DL_001520
+
+object_nwc_DL_001860:
+  type: GFX
+  offset: 0x1860
+  symbol: object_nwc_DL_001860
+
+object_nwc_DL_0018D0:
+  type: GFX
+  offset: 0x18D0
+  symbol: object_nwc_DL_0018D0
+
+object_nwc_DL_001940:
+  type: GFX
+  offset: 0x1940
+  symbol: object_nwc_DL_001940
+
+object_nwc_DL_001960:
+  type: GFX
+  offset: 0x1960
+  symbol: object_nwc_DL_001960
+
+object_nwc_DL_0019B8:
+  type: GFX
+  offset: 0x19B8
+  symbol: object_nwc_DL_0019B8
+
+object_nwc_DL_001A10:
+  type: GFX
+  offset: 0x1A10
+  symbol: object_nwc_DL_001A10
+
+object_nwc_DL_001B80:
+  type: GFX
+  offset: 0x1B80
+  symbol: object_nwc_DL_001B80
+
+object_nwc_DL_001BE8:
+  type: GFX
+  offset: 0x1BE8
+  symbol: object_nwc_DL_001BE8
+
+object_nwc_DL_001C10:
+  type: GFX
+  offset: 0x1C10
+  symbol: object_nwc_DL_001C10
+
+object_nwc_DL_001C58:
+  type: GFX
+  offset: 0x1C58
+  symbol: object_nwc_DL_001C58
+
+object_nwc_Tex_000C00:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: object_nwc_Tex_000C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_nwc_Tex_001550:
+  type: TEXTURE
+  offset: 0x1550
+  symbol: object_nwc_Tex_001550
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_nwc_Tex_001750:
+  type: TEXTURE
+  offset: 0x1750
+  symbol: object_nwc_Tex_001750
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_nwc_Tex_001A40:
+  type: TEXTURE
+  offset: 0x1A40
+  symbol: object_nwc_Tex_001A40
+  format: IA16
+  width: 8
+  height: 16
+
+
+object_nwcVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_nwcVtx_000000
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNwcEyeTexAnimTexCycleParams_000BDC:
+  type: BLOB
+  offset: 0x000BDC
+  symbol: gNwcEyeTexAnimTexCycleParams_000BDC
+  size: 0
+
+object_nwcVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_nwcVtx_001400
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_001770:
+  type: MM:ARRAY
+  offset: 0x001770
+  symbol: object_nwcVtx_001770
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_001800:
+  type: MM:ARRAY
+  offset: 0x001800
+  symbol: object_nwcVtx_001800
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_001B40:
+  type: MM:ARRAY
+  offset: 0x001B40
+  symbol: object_nwcVtx_001B40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_001C70:
+  type: MM:ARRAY
+  offset: 0x001C70
+  symbol: object_nwcVtx_001C70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,1229 @@
+:config:
+  segments:
+    - [ 6, 0x01266B80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01266B80 ]
+    - [ 9, 0x01266B80 ]
+    - [ 10, 0x01266B80 ]
+    - [ 11, 0x01266B80 ]
+    - [ 12, 0x01266B80 ]
+    - [ 13, 0x01266B80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gDonkeyEyeTex:
+  type: TEXTURE
+  offset: 0x13748
+  symbol: gDonkeyEyeTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gDonkeyHarnessTex:
+  type: TEXTURE
+  offset: 0x14D48
+  symbol: gDonkeyHarnessTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDonkeyHeadDL:
+  type: GFX
+  offset: 0x11948
+  symbol: gDonkeyHeadDL
+
+gDonkeyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x14FB4
+  symbol: gDonkeyHeadLimb
+  limb_type: Standard
+
+gDonkeyHeadTex:
+  type: TEXTURE
+  offset: 0x13348
+  symbol: gDonkeyHeadTex
+  format: CI8
+  width: 32
+  height: 32
+
+gDonkeyLeftFrontCannonDL:
+  type: GFX
+  offset: 0x12460
+  symbol: gDonkeyLeftFrontCannonDL
+
+gDonkeyLeftFrontCannonLimb:
+  type: OOT:LIMB
+  offset: 0x14F84
+  symbol: gDonkeyLeftFrontCannonLimb
+  limb_type: Standard
+
+gDonkeyLeftFrontFootDL:
+  type: GFX
+  offset: 0x122C0
+  symbol: gDonkeyLeftFrontFootDL
+
+gDonkeyLeftFrontFootLimb:
+  type: OOT:LIMB
+  offset: 0x14F90
+  symbol: gDonkeyLeftFrontFootLimb
+  limb_type: Standard
+
+gDonkeyLeftFrontForearmDL:
+  type: GFX
+  offset: 0x125E8
+  symbol: gDonkeyLeftFrontForearmDL
+
+gDonkeyLeftFrontForearmLimb:
+  type: OOT:LIMB
+  offset: 0x14F78
+  symbol: gDonkeyLeftFrontForearmLimb
+  limb_type: Standard
+
+gDonkeyLeftFrontLegRootDL:
+  type: GFX
+  offset: 0x127D0
+  symbol: gDonkeyLeftFrontLegRootDL
+
+gDonkeyLeftFrontLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x14F6C
+  symbol: gDonkeyLeftFrontLegRootLimb
+  limb_type: Standard
+
+gDonkeyLeftHindCannonDL:
+  type: GFX
+  offset: 0x10940
+  symbol: gDonkeyLeftHindCannonDL
+
+gDonkeyLeftHindCannonLimb:
+  type: OOT:LIMB
+  offset: 0x1502C
+  symbol: gDonkeyLeftHindCannonLimb
+  limb_type: Standard
+
+gDonkeyLeftHindFootDL:
+  type: GFX
+  offset: 0x107A8
+  symbol: gDonkeyLeftHindFootDL
+
+gDonkeyLeftHindFootLimb:
+  type: OOT:LIMB
+  offset: 0x15038
+  symbol: gDonkeyLeftHindFootLimb
+  limb_type: Standard
+
+gDonkeyLeftHindStifleDL:
+  type: GFX
+  offset: 0x10AE0
+  symbol: gDonkeyLeftHindStifleDL
+
+gDonkeyLeftHindStifleLimb:
+  type: OOT:LIMB
+  offset: 0x15020
+  symbol: gDonkeyLeftHindStifleLimb
+  limb_type: Standard
+
+gDonkeyLeftHindThighDL:
+  type: GFX
+  offset: 0x10CB8
+  symbol: gDonkeyLeftHindThighDL
+
+gDonkeyLeftHindThighLimb:
+  type: OOT:LIMB
+  offset: 0x15014
+  symbol: gDonkeyLeftHindThighLimb
+  limb_type: Standard
+
+gDonkeyLowerNeckDL:
+  type: GFX
+  offset: 0x11F90
+  symbol: gDonkeyLowerNeckDL
+
+gDonkeyLowerNeckLimb:
+  type: OOT:LIMB
+  offset: 0x14F9C
+  symbol: gDonkeyLowerNeckLimb
+  limb_type: Standard
+
+gDonkeyManeTex:
+  type: TEXTURE
+  offset: 0x14748
+  symbol: gDonkeyManeTex
+  format: CI8
+  width: 16
+  height: 32
+
+gDonkeyMouthTex:
+  type: TEXTURE
+  offset: 0x12F48
+  symbol: gDonkeyMouthTex
+  format: CI8
+  width: 32
+  height: 32
+
+gDonkeyPelvisDL:
+  type: GFX
+  offset: 0x11228
+  symbol: gDonkeyPelvisDL
+
+gDonkeyPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x14F54
+  symbol: gDonkeyPelvisLimb
+  limb_type: Standard
+
+gDonkeyRightFrontCannonDL:
+  type: GFX
+  offset: 0x11518
+  symbol: gDonkeyRightFrontCannonDL
+
+gDonkeyRightFrontCannonLimb:
+  type: OOT:LIMB
+  offset: 0x14FD8
+  symbol: gDonkeyRightFrontCannonLimb
+  limb_type: Standard
+
+gDonkeyRightFrontFootDL:
+  type: GFX
+  offset: 0x11378
+  symbol: gDonkeyRightFrontFootDL
+
+gDonkeyRightFrontFootLimb:
+  type: OOT:LIMB
+  offset: 0x14FE4
+  symbol: gDonkeyRightFrontFootLimb
+  limb_type: Standard
+
+gDonkeyRightFrontForearmDL:
+  type: GFX
+  offset: 0x116A8
+  symbol: gDonkeyRightFrontForearmDL
+
+gDonkeyRightFrontForearmLimb:
+  type: OOT:LIMB
+  offset: 0x14FCC
+  symbol: gDonkeyRightFrontForearmLimb
+  limb_type: Standard
+
+gDonkeyRightFrontLegRootDL:
+  type: GFX
+  offset: 0x11888
+  symbol: gDonkeyRightFrontLegRootDL
+
+gDonkeyRightFrontLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x14FC0
+  symbol: gDonkeyRightFrontLegRootLimb
+  limb_type: Standard
+
+gDonkeyRightHindCannonDL:
+  type: GFX
+  offset: 0x10258
+  symbol: gDonkeyRightHindCannonDL
+
+gDonkeyRightHindCannonLimb:
+  type: OOT:LIMB
+  offset: 0x1505C
+  symbol: gDonkeyRightHindCannonLimb
+  limb_type: Standard
+
+gDonkeyRightHindFootDL:
+  type: GFX
+  offset: 0x100B0
+  symbol: gDonkeyRightHindFootDL
+
+gDonkeyRightHindFootLimb:
+  type: OOT:LIMB
+  offset: 0x15068
+  symbol: gDonkeyRightHindFootLimb
+  limb_type: Standard
+
+gDonkeyRightHindStifleDL:
+  type: GFX
+  offset: 0x103F0
+  symbol: gDonkeyRightHindStifleDL
+
+gDonkeyRightHindStifleLimb:
+  type: OOT:LIMB
+  offset: 0x15050
+  symbol: gDonkeyRightHindStifleLimb
+  limb_type: Standard
+
+gDonkeyRightHindThighDL:
+  type: GFX
+  offset: 0x105C8
+  symbol: gDonkeyRightHindThighDL
+
+gDonkeyRightHindThighLimb:
+  type: OOT:LIMB
+  offset: 0x15044
+  symbol: gDonkeyRightHindThighLimb
+  limb_type: Standard
+
+gDonkeyRootLimb:
+  type: OOT:LIMB
+  offset: 0x14F48
+  symbol: gDonkeyRootLimb
+  limb_type: Standard
+
+gDonkeySkel:
+  type: MM:SKELETON
+  offset: 0x150D8
+  symbol: gDonkeySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDonkeySkinTex:
+  type: TEXTURE
+  offset: 0x14948
+  symbol: gDonkeySkinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gDonkeyTLUT:
+  type: TEXTURE
+  offset: 0x12D48
+  symbol: gDonkeyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDonkeyTailAndFeetTex:
+  type: TEXTURE
+  offset: 0x14E48
+  symbol: gDonkeyTailAndFeetTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDonkeyTailDockDL:
+  type: GFX
+  offset: 0x11160
+  symbol: gDonkeyTailDockDL
+
+gDonkeyTailDockLimb:
+  type: OOT:LIMB
+  offset: 0x14FF0
+  symbol: gDonkeyTailDockLimb
+  limb_type: Standard
+
+gDonkeyTailEndDL:
+  type: GFX
+  offset: 0x10E88
+  symbol: gDonkeyTailEndDL
+
+gDonkeyTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x15008
+  symbol: gDonkeyTailEndLimb
+  limb_type: Standard
+
+gDonkeyTailMiddleDL:
+  type: GFX
+  offset: 0x10FE0
+  symbol: gDonkeyTailMiddleDL
+
+gDonkeyTailMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x14FFC
+  symbol: gDonkeyTailMiddleLimb
+  limb_type: Standard
+
+gDonkeyTorsoDL:
+  type: GFX
+  offset: 0x12890
+  symbol: gDonkeyTorsoDL
+
+gDonkeyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x14F60
+  symbol: gDonkeyTorsoLimb
+  limb_type: Standard
+
+gDonkeyUpperNeckDL:
+  type: GFX
+  offset: 0x11E08
+  symbol: gDonkeyUpperNeckDL
+
+gDonkeyUpperNeckLimb:
+  type: OOT:LIMB
+  offset: 0x14FA8
+  symbol: gDonkeyUpperNeckLimb
+  limb_type: Standard
+
+gHorseBanditEyeTex:
+  type: TEXTURE
+  offset: 0x7758
+  symbol: gHorseBanditEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHorseBanditEyebrowTex:
+  type: TEXTURE
+  offset: 0x7358
+  symbol: gHorseBanditEyebrowTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseBanditHeadDL:
+  type: GFX
+  offset: 0x5450
+  symbol: gHorseBanditHeadDL
+
+gHorseBanditHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8B44
+  symbol: gHorseBanditHeadLimb
+  limb_type: Standard
+
+gHorseBanditLeftFrontCannonDL:
+  type: GFX
+  offset: 0x6538
+  symbol: gHorseBanditLeftFrontCannonDL
+
+gHorseBanditLeftFrontCannonLimb:
+  type: OOT:LIMB
+  offset: 0x8B14
+  symbol: gHorseBanditLeftFrontCannonLimb
+  limb_type: Standard
+
+gHorseBanditLeftFrontFootDL:
+  type: GFX
+  offset: 0x6220
+  symbol: gHorseBanditLeftFrontFootDL
+
+gHorseBanditLeftFrontFootLimb:
+  type: OOT:LIMB
+  offset: 0x8B20
+  symbol: gHorseBanditLeftFrontFootLimb
+  limb_type: Standard
+
+gHorseBanditLeftFrontForearmDL:
+  type: GFX
+  offset: 0x6708
+  symbol: gHorseBanditLeftFrontForearmDL
+
+gHorseBanditLeftFrontForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8B08
+  symbol: gHorseBanditLeftFrontForearmLimb
+  limb_type: Standard
+
+gHorseBanditLeftFrontLegRootDL:
+  type: GFX
+  offset: 0x68E8
+  symbol: gHorseBanditLeftFrontLegRootDL
+
+gHorseBanditLeftFrontLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x8AFC
+  symbol: gHorseBanditLeftFrontLegRootLimb
+  limb_type: Standard
+
+gHorseBanditLeftHindCannonDL:
+  type: GFX
+  offset: 0x3DB8
+  symbol: gHorseBanditLeftHindCannonDL
+
+gHorseBanditLeftHindCannonLimb:
+  type: OOT:LIMB
+  offset: 0x8BBC
+  symbol: gHorseBanditLeftHindCannonLimb
+  limb_type: Standard
+
+gHorseBanditLeftHindFootDL:
+  type: GFX
+  offset: 0x3A68
+  symbol: gHorseBanditLeftHindFootDL
+
+gHorseBanditLeftHindFootLimb:
+  type: OOT:LIMB
+  offset: 0x8BC8
+  symbol: gHorseBanditLeftHindFootLimb
+  limb_type: Standard
+
+gHorseBanditLeftHindStifleDL:
+  type: GFX
+  offset: 0x3F78
+  symbol: gHorseBanditLeftHindStifleDL
+
+gHorseBanditLeftHindStifleLimb:
+  type: OOT:LIMB
+  offset: 0x8BB0
+  symbol: gHorseBanditLeftHindStifleLimb
+  limb_type: Standard
+
+gHorseBanditLeftHindThighDL:
+  type: GFX
+  offset: 0x4150
+  symbol: gHorseBanditLeftHindThighDL
+
+gHorseBanditLeftHindThighLimb:
+  type: OOT:LIMB
+  offset: 0x8BA4
+  symbol: gHorseBanditLeftHindThighLimb
+  limb_type: Standard
+
+gHorseBanditLowerNeckDL:
+  type: GFX
+  offset: 0x5F98
+  symbol: gHorseBanditLowerNeckDL
+
+gHorseBanditLowerNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8B2C
+  symbol: gHorseBanditLowerNeckLimb
+  limb_type: Standard
+
+gHorseBanditMaskTex:
+  type: TEXTURE
+  offset: 0x7058
+  symbol: gHorseBanditMaskTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHorseBanditMouthTex:
+  type: TEXTURE
+  offset: 0x7F58
+  symbol: gHorseBanditMouthTex
+  format: CI8
+  width: 32
+  height: 32
+
+gHorseBanditPelvisDL:
+  type: GFX
+  offset: 0x4880
+  symbol: gHorseBanditPelvisDL
+
+gHorseBanditPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x8AE4
+  symbol: gHorseBanditPelvisLimb
+  limb_type: Standard
+
+gHorseBanditRightFrontCannonDL:
+  type: GFX
+  offset: 0x5000
+  symbol: gHorseBanditRightFrontCannonDL
+
+gHorseBanditRightFrontCannonLimb:
+  type: OOT:LIMB
+  offset: 0x8B68
+  symbol: gHorseBanditRightFrontCannonLimb
+  limb_type: Standard
+
+gHorseBanditRightFrontFootDL:
+  type: GFX
+  offset: 0x4CA8
+  symbol: gHorseBanditRightFrontFootDL
+
+gHorseBanditRightFrontFootLimb:
+  type: OOT:LIMB
+  offset: 0x8B74
+  symbol: gHorseBanditRightFrontFootLimb
+  limb_type: Standard
+
+gHorseBanditRightFrontForearmDL:
+  type: GFX
+  offset: 0x51C0
+  symbol: gHorseBanditRightFrontForearmDL
+
+gHorseBanditRightFrontForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8B5C
+  symbol: gHorseBanditRightFrontForearmLimb
+  limb_type: Standard
+
+gHorseBanditRightFrontLegRootDL:
+  type: GFX
+  offset: 0x5390
+  symbol: gHorseBanditRightFrontLegRootDL
+
+gHorseBanditRightFrontLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x8B50
+  symbol: gHorseBanditRightFrontLegRootLimb
+  limb_type: Standard
+
+gHorseBanditRightHindCannonDL:
+  type: GFX
+  offset: 0x3418
+  symbol: gHorseBanditRightHindCannonDL
+
+gHorseBanditRightHindCannonLimb:
+  type: OOT:LIMB
+  offset: 0x8BEC
+  symbol: gHorseBanditRightHindCannonLimb
+  limb_type: Standard
+
+gHorseBanditRightHindFootDL:
+  type: GFX
+  offset: 0x30C0
+  symbol: gHorseBanditRightHindFootDL
+
+gHorseBanditRightHindFootLimb:
+  type: OOT:LIMB
+  offset: 0x8BF8
+  symbol: gHorseBanditRightHindFootLimb
+  limb_type: Standard
+
+gHorseBanditRightHindStifleDL:
+  type: GFX
+  offset: 0x35D8
+  symbol: gHorseBanditRightHindStifleDL
+
+gHorseBanditRightHindStifleLimb:
+  type: OOT:LIMB
+  offset: 0x8BE0
+  symbol: gHorseBanditRightHindStifleLimb
+  limb_type: Standard
+
+gHorseBanditRightHindThighDL:
+  type: GFX
+  offset: 0x37A8
+  symbol: gHorseBanditRightHindThighDL
+
+gHorseBanditRightHindThighLimb:
+  type: OOT:LIMB
+  offset: 0x8BD4
+  symbol: gHorseBanditRightHindThighLimb
+  limb_type: Standard
+
+gHorseBanditRootLimb:
+  type: OOT:LIMB
+  offset: 0x8AD8
+  symbol: gHorseBanditRootLimb
+  limb_type: Standard
+
+gHorseBanditSaddleBackTex:
+  type: TEXTURE
+  offset: 0x8A58
+  symbol: gHorseBanditSaddleBackTex
+  format: CI8
+  width: 8
+  height: 16
+
+gHorseBanditSaddleSideTex:
+  type: TEXTURE
+  offset: 0x8858
+  symbol: gHorseBanditSaddleSideTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHorseBanditSaddleTopTex:
+  type: TEXTURE
+  offset: 0x8958
+  symbol: gHorseBanditSaddleTopTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHorseBanditSkel:
+  type: MM:SKELETON
+  offset: 0x8C68
+  symbol: gHorseBanditSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHorseBanditSpottedDetailTex:
+  type: TEXTURE
+  offset: 0x7158
+  symbol: gHorseBanditSpottedDetailTex
+  format: CI8
+  width: 16
+  height: 32
+
+gHorseBanditSpottedSkinTex:
+  type: TEXTURE
+  offset: 0x8358
+  symbol: gHorseBanditSpottedSkinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gHorseBanditTLUT:
+  type: TEXTURE
+  offset: 0x6E58
+  symbol: gHorseBanditTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseBanditTailAndFeetTex:
+  type: TEXTURE
+  offset: 0x7658
+  symbol: gHorseBanditTailAndFeetTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHorseBanditTailDockDL:
+  type: GFX
+  offset: 0x47A8
+  symbol: gHorseBanditTailDockDL
+
+gHorseBanditTailDockLimb:
+  type: OOT:LIMB
+  offset: 0x8B80
+  symbol: gHorseBanditTailDockLimb
+  limb_type: Standard
+
+gHorseBanditTailEndDL:
+  type: GFX
+  offset: 0x44C0
+  symbol: gHorseBanditTailEndDL
+
+gHorseBanditTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x8B98
+  symbol: gHorseBanditTailEndLimb
+  limb_type: Standard
+
+gHorseBanditTailMiddleDL:
+  type: GFX
+  offset: 0x4628
+  symbol: gHorseBanditTailMiddleDL
+
+gHorseBanditTailMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8B8C
+  symbol: gHorseBanditTailMiddleLimb
+  limb_type: Standard
+
+gHorseBanditTasselTex:
+  type: TEXTURE
+  offset: 0x8758
+  symbol: gHorseBanditTasselTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gHorseBanditTeethTex:
+  type: TEXTURE
+  offset: 0x7558
+  symbol: gHorseBanditTeethTex
+  format: CI8
+  width: 16
+  height: 16
+
+gHorseBanditTorsoDL:
+  type: GFX
+  offset: 0x69A8
+  symbol: gHorseBanditTorsoDL
+
+gHorseBanditTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8AF0
+  symbol: gHorseBanditTorsoLimb
+  limb_type: Standard
+
+gHorseBanditUpperNeckDL:
+  type: GFX
+  offset: 0x5E08
+  symbol: gHorseBanditUpperNeckDL
+
+gHorseBanditUpperNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8B38
+  symbol: gHorseBanditUpperNeckLimb
+  limb_type: Standard
+
+gHorseGallopAnim:
+  type: OOT:ANIMATION
+  offset: 0x9208
+  symbol: gHorseGallopAnim
+
+gHorseIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xC850
+  symbol: gHorseIdleAnim
+
+gHorseJumpHighAnim:
+  type: OOT:ANIMATION
+  offset: 0xA05C
+  symbol: gHorseJumpHighAnim
+
+gHorseJumpLowAnim:
+  type: OOT:ANIMATION
+  offset: 0x9858
+  symbol: gHorseJumpLowAnim
+
+gHorseShakeHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0xCE70
+  symbol: gHorseShakeHeadAnim
+
+gHorseStopAnim:
+  type: OOT:ANIMATION
+  offset: 0xB9C8
+  symbol: gHorseStopAnim
+
+gHorseTrotAnim:
+  type: OOT:ANIMATION
+  offset: 0xA650
+  symbol: gHorseTrotAnim
+
+gHorseUnusedAnim:
+  type: OOT:ANIMATION
+  offset: 0xC4
+  symbol: gHorseUnusedAnim
+
+gHorseWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xD648
+  symbol: gHorseWalkAnim
+
+gHorseWhinnyAnim:
+  type: OOT:ANIMATION
+  offset: 0xB00C
+  symbol: gHorseWhinnyAnim
+
+
+object_haVtx_0000E0:
+  type: MM:ARRAY
+  offset: 0x0000E0
+  symbol: object_haVtx_0000E0
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_0009C0:
+  type: MM:ARRAY
+  offset: 0x0009C0
+  symbol: object_haVtx_0009C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_000AE0:
+  type: MM:ARRAY
+  offset: 0x000AE0
+  symbol: object_haVtx_000AE0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_000C40:
+  type: MM:ARRAY
+  offset: 0x000C40
+  symbol: object_haVtx_000C40
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_000E40:
+  type: MM:ARRAY
+  offset: 0x000E40
+  symbol: object_haVtx_000E40
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_000FC0:
+  type: MM:ARRAY
+  offset: 0x000FC0
+  symbol: object_haVtx_000FC0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_0011F0:
+  type: MM:ARRAY
+  offset: 0x0011F0
+  symbol: object_haVtx_0011F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001220:
+  type: MM:ARRAY
+  offset: 0x001220
+  symbol: object_haVtx_001220
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_haVtx_001400
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_0015A0:
+  type: MM:ARRAY
+  offset: 0x0015A0
+  symbol: object_haVtx_0015A0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_0017D0:
+  type: MM:ARRAY
+  offset: 0x0017D0
+  symbol: object_haVtx_0017D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001800:
+  type: MM:ARRAY
+  offset: 0x001800
+  symbol: object_haVtx_001800
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001C70:
+  type: MM:ARRAY
+  offset: 0x001C70
+  symbol: object_haVtx_001C70
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001CD0:
+  type: MM:ARRAY
+  offset: 0x001CD0
+  symbol: object_haVtx_001CD0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001D90:
+  type: MM:ARRAY
+  offset: 0x001D90
+  symbol: object_haVtx_001D90
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_001E00:
+  type: MM:ARRAY
+  offset: 0x001E00
+  symbol: object_haVtx_001E00
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002180:
+  type: MM:ARRAY
+  offset: 0x002180
+  symbol: object_haVtx_002180
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_0023B0:
+  type: MM:ARRAY
+  offset: 0x0023B0
+  symbol: object_haVtx_0023B0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002520:
+  type: MM:ARRAY
+  offset: 0x002520
+  symbol: object_haVtx_002520
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002730:
+  type: MM:ARRAY
+  offset: 0x002730
+  symbol: object_haVtx_002730
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002940:
+  type: MM:ARRAY
+  offset: 0x002940
+  symbol: object_haVtx_002940
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002B60:
+  type: MM:ARRAY
+  offset: 0x002B60
+  symbol: object_haVtx_002B60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002CE0:
+  type: MM:ARRAY
+  offset: 0x002CE0
+  symbol: object_haVtx_002CE0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_002ED0:
+  type: MM:ARRAY
+  offset: 0x002ED0
+  symbol: object_haVtx_002ED0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseBanditSkelLimbs:
+  type: BLOB
+  offset: 0x8C04
+  symbol: gHorseBanditSkelLimbs
+  size: 0
+
+object_haVtx_00D660:
+  type: MM:ARRAY
+  offset: 0x00D660
+  symbol: object_haVtx_00D660
+  count: 109
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00DD30:
+  type: MM:ARRAY
+  offset: 0x00DD30
+  symbol: object_haVtx_00DD30
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00DE30:
+  type: MM:ARRAY
+  offset: 0x00DE30
+  symbol: object_haVtx_00DE30
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00E0C0:
+  type: MM:ARRAY
+  offset: 0x00E0C0
+  symbol: object_haVtx_00E0C0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00E750:
+  type: MM:ARRAY
+  offset: 0x00E750
+  symbol: object_haVtx_00E750
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00E8B0:
+  type: MM:ARRAY
+  offset: 0x00E8B0
+  symbol: object_haVtx_00E8B0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00E9B0:
+  type: MM:ARRAY
+  offset: 0x00E9B0
+  symbol: object_haVtx_00E9B0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00EB80:
+  type: MM:ARRAY
+  offset: 0x00EB80
+  symbol: object_haVtx_00EB80
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00EBB0:
+  type: MM:ARRAY
+  offset: 0x00EBB0
+  symbol: object_haVtx_00EBB0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00ECF0:
+  type: MM:ARRAY
+  offset: 0x00ECF0
+  symbol: object_haVtx_00ECF0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00EDF0:
+  type: MM:ARRAY
+  offset: 0x00EDF0
+  symbol: object_haVtx_00EDF0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F010:
+  type: MM:ARRAY
+  offset: 0x00F010
+  symbol: object_haVtx_00F010
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F040:
+  type: MM:ARRAY
+  offset: 0x00F040
+  symbol: object_haVtx_00F040
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F0A0:
+  type: MM:ARRAY
+  offset: 0x00F0A0
+  symbol: object_haVtx_00F0A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F160:
+  type: MM:ARRAY
+  offset: 0x00F160
+  symbol: object_haVtx_00F160
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F1B0:
+  type: MM:ARRAY
+  offset: 0x00F1B0
+  symbol: object_haVtx_00F1B0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F410:
+  type: MM:ARRAY
+  offset: 0x00F410
+  symbol: object_haVtx_00F410
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F550:
+  type: MM:ARRAY
+  offset: 0x00F550
+  symbol: object_haVtx_00F550
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F690:
+  type: MM:ARRAY
+  offset: 0x00F690
+  symbol: object_haVtx_00F690
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00F8A0:
+  type: MM:ARRAY
+  offset: 0x00F8A0
+  symbol: object_haVtx_00F8A0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00FA60:
+  type: MM:ARRAY
+  offset: 0x00FA60
+  symbol: object_haVtx_00FA60
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00FBA0:
+  type: MM:ARRAY
+  offset: 0x00FBA0
+  symbol: object_haVtx_00FBA0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00FCE0:
+  type: MM:ARRAY
+  offset: 0x00FCE0
+  symbol: object_haVtx_00FCE0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haVtx_00FF00:
+  type: MM:ARRAY
+  offset: 0x00FF00
+  symbol: object_haVtx_00FF00
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDonkeySkelLimbs:
+  type: BLOB
+  offset: 0x15074
+  symbol: gDonkeySkelLimbs
+  size: 0

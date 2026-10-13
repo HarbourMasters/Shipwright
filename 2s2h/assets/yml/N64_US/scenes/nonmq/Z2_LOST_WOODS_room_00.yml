@@ -1,0 +1,293 @@
+:config:
+  segments:
+    - [ 3, 0x01DADA10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01DADA10 ]
+    - [ 9, 0x01DADA10 ]
+    - [ 10, 0x01DADA10 ]
+    - [ 11, 0x01DADA10 ]
+    - [ 12, 0x01DADA10 ]
+    - [ 13, 0x01DADA10 ]
+    - [ 2, 0x01DA6040 ]
+  directory: scenes/nonmq/Z2_LOST_WOODS
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS.yml
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS_room_00Set_000160.yml
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS_room_00Set_0001B0.yml
+    - N64_US/scenes/nonmq/Z2_LOST_WOODS_room_00Set_0001E0.yml
+
+Z2_LOST_WOODS_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LOST_WOODS_room_00
+
+Z2_LOST_WOODS_room_00DL_0049D0:
+  type: GFX
+  offset: 0x49D0
+  symbol: Z2_LOST_WOODS_room_00DL_0049D0
+
+Z2_LOST_WOODS_room_00DL_0080D8:
+  type: GFX
+  offset: 0x80D8
+  symbol: Z2_LOST_WOODS_room_00DL_0080D8
+
+
+Z2_LOST_WOODS_room_00ActorEntry_00005C:
+  type: BLOB
+  offset: 0x00005C
+  symbol: Z2_LOST_WOODS_room_00ActorEntry_00005C
+  size: 0
+
+Z2_LOST_WOODS_room_00Vtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: Z2_LOST_WOODS_room_00Vtx_000210
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_000C40:
+  type: GFX
+  offset: 0x000C40
+  symbol: Z2_LOST_WOODS_room_00DL_000C40
+
+Z2_LOST_WOODS_room_00Vtx_000F00:
+  type: MM:ARRAY
+  offset: 0x000F00
+  symbol: Z2_LOST_WOODS_room_00Vtx_000F00
+  count: 138
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_0017A0:
+  type: GFX
+  offset: 0x0017A0
+  symbol: Z2_LOST_WOODS_room_00DL_0017A0
+
+Z2_LOST_WOODS_room_00Vtx_0019D8:
+  type: MM:ARRAY
+  offset: 0x0019D8
+  symbol: Z2_LOST_WOODS_room_00Vtx_0019D8
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_002548:
+  type: GFX
+  offset: 0x002548
+  symbol: Z2_LOST_WOODS_room_00DL_002548
+
+Z2_LOST_WOODS_room_00Vtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: Z2_LOST_WOODS_room_00Vtx_002820
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_0029F0:
+  type: GFX
+  offset: 0x0029F0
+  symbol: Z2_LOST_WOODS_room_00DL_0029F0
+
+Z2_LOST_WOODS_room_00Vtx_002AD0:
+  type: MM:ARRAY
+  offset: 0x002AD0
+  symbol: Z2_LOST_WOODS_room_00Vtx_002AD0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_002E00:
+  type: GFX
+  offset: 0x002E00
+  symbol: Z2_LOST_WOODS_room_00DL_002E00
+
+Z2_LOST_WOODS_room_00Vtx_002F50:
+  type: MM:ARRAY
+  offset: 0x002F50
+  symbol: Z2_LOST_WOODS_room_00Vtx_002F50
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_0031A0:
+  type: GFX
+  offset: 0x0031A0
+  symbol: Z2_LOST_WOODS_room_00DL_0031A0
+
+Z2_LOST_WOODS_room_00Vtx_0032D8:
+  type: MM:ARRAY
+  offset: 0x0032D8
+  symbol: Z2_LOST_WOODS_room_00Vtx_0032D8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_003488:
+  type: GFX
+  offset: 0x003488
+  symbol: Z2_LOST_WOODS_room_00DL_003488
+
+Z2_LOST_WOODS_room_00Vtx_0035C8:
+  type: MM:ARRAY
+  offset: 0x0035C8
+  symbol: Z2_LOST_WOODS_room_00Vtx_0035C8
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_003698:
+  type: GFX
+  offset: 0x003698
+  symbol: Z2_LOST_WOODS_room_00DL_003698
+
+Z2_LOST_WOODS_room_00Vtx_0036F8:
+  type: MM:ARRAY
+  offset: 0x0036F8
+  symbol: Z2_LOST_WOODS_room_00Vtx_0036F8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_0038C8:
+  type: GFX
+  offset: 0x0038C8
+  symbol: Z2_LOST_WOODS_room_00DL_0038C8
+
+Z2_LOST_WOODS_room_00DL_0039B0:
+  type: GFX
+  offset: 0x0039B0
+  symbol: Z2_LOST_WOODS_room_00DL_0039B0
+
+Z2_LOST_WOODS_room_00Vtx_0039E0:
+  type: MM:ARRAY
+  offset: 0x0039E0
+  symbol: Z2_LOST_WOODS_room_00Vtx_0039E0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_003F70:
+  type: GFX
+  offset: 0x003F70
+  symbol: Z2_LOST_WOODS_room_00DL_003F70
+
+Z2_LOST_WOODS_room_00Vtx_004138:
+  type: MM:ARRAY
+  offset: 0x004138
+  symbol: Z2_LOST_WOODS_room_00Vtx_004138
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_004338:
+  type: GFX
+  offset: 0x004338
+  symbol: Z2_LOST_WOODS_room_00DL_004338
+
+Z2_LOST_WOODS_room_00Vtx_004418:
+  type: MM:ARRAY
+  offset: 0x004418
+  symbol: Z2_LOST_WOODS_room_00Vtx_004418
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_004898:
+  type: GFX
+  offset: 0x004898
+  symbol: Z2_LOST_WOODS_room_00DL_004898
+
+Z2_LOST_WOODS_room_00Tex_004A18:
+  type: TEXTURE
+  offset: 0x004A18
+  symbol: Z2_LOST_WOODS_room_00Tex_004A18
+  format: I4
+  width: 64
+  height: 64
+
+Z2_LOST_WOODS_room_00Tex_005218:
+  type: TEXTURE
+  offset: 0x005218
+  symbol: Z2_LOST_WOODS_room_00Tex_005218
+  format: I8
+  width: 32
+  height: 64
+
+Z2_LOST_WOODS_room_00Tex_005A18:
+  type: TEXTURE
+  offset: 0x005A18
+  symbol: Z2_LOST_WOODS_room_00Tex_005A18
+  format: I8
+  width: 32
+  height: 64
+
+Z2_LOST_WOODS_room_00Tex_006218:
+  type: TEXTURE
+  offset: 0x006218
+  symbol: Z2_LOST_WOODS_room_00Tex_006218
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LOST_WOODS_room_00Tex_006A18:
+  type: TEXTURE
+  offset: 0x006A18
+  symbol: Z2_LOST_WOODS_room_00Tex_006A18
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LOST_WOODS_room_00Tex_007218:
+  type: TEXTURE
+  offset: 0x007218
+  symbol: Z2_LOST_WOODS_room_00Tex_007218
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LOST_WOODS_room_00Tex_007A18:
+  type: TEXTURE
+  offset: 0x007A18
+  symbol: Z2_LOST_WOODS_room_00Tex_007A18
+  format: I8
+  width: 32
+  height: 32
+
+Z2_LOST_WOODS_room_00Vtx_007E20:
+  type: MM:ARRAY
+  offset: 0x007E20
+  symbol: Z2_LOST_WOODS_room_00Vtx_007E20
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LOST_WOODS_room_00DL_007FE0:
+  type: GFX
+  offset: 0x007FE0
+  symbol: Z2_LOST_WOODS_room_00DL_007FE0
+
+Z2_LOST_WOODS_room_00DL_0080C0:
+  type: GFX
+  offset: 0x0080C0
+  symbol: Z2_LOST_WOODS_room_00DL_0080C0
+
+Z2_LOST_WOODS_room_00DL_0080D0:
+  type: GFX
+  offset: 0x0080D0
+  symbol: Z2_LOST_WOODS_room_00DL_0080D0

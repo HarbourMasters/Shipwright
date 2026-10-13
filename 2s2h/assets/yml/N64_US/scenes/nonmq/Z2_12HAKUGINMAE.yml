@@ -1,0 +1,447 @@
+:config:
+  segments:
+    - [ 2, 0x01D21CB0 ]
+    - [ 6, 0x0160ED50 ]
+  external_files:
+    - N64_US/misc/scene_texture_04.yml
+    - N64_US/scenes/nonmq/Z2_12HAKUGINMAESet_003BB0.yml
+
+Z2_12HAKUGINMAE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_12HAKUGINMAE
+
+
+Z2_12HAKUGINMAEPathwayList_0002A4:
+  type: MM:PATH
+  offset: 0x0002A4
+  symbol: Z2_12HAKUGINMAEPathwayList_0002A4
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 257, 2483, 1221 ]
+        - [ 257, 2483, 1221 ]
+        - [ 257, 1291, 1221 ]
+        - [ 364, 1277, 1183 ]
+        - [ 476, 1259, 1129 ]
+        - [ 585, 1240, 1053 ]
+        - [ 681, 1231, 981 ]
+        - [ 768, 1221, 890 ]
+        - [ 860, 1196, 765 ]
+        - [ 992, 1163, 586 ]
+        - [ 1077, 1133, 440 ]
+        - [ 1136, 1122, 393 ]
+        - [ 1137, 611, 393 ]
+        - [ 1276, 614, 217 ]
+        - [ 1309, 377, 155 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 1049, -24 ]
+        - [ 984, 999, -324 ]
+        - [ 890, 966, -578 ]
+        - [ 802, 943, -740 ]
+        - [ 726, 925, -852 ]
+        - [ 671, 912, -949 ]
+        - [ 671, 611, -949 ]
+        - [ 598, 618, -1183 ]
+        - [ 594, 380, -1210 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -17, 2287, -1044 ]
+        - [ -17, 2287, -1044 ]
+        - [ -17, 796, -1044 ]
+        - [ -309, 730, -984 ]
+        - [ -571, 673, -881 ]
+        - [ -815, 645, -625 ]
+        - [ -985, 622, -229 ]
+        - [ -1131, 611, 210 ]
+        - [ -1320, 608, 668 ]
+        - [ -1334, 358, 702 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -255, 2310, 3747 ]
+        - [ -255, 2310, 3747 ]
+        - [ -255, 211, 3747 ]
+        - [ -416, 211, 3957 ]
+        - [ -494, 211, 4119 ]
+        - [ -617, 211, 4365 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -731, 1961, 4537 ]
+        - [ -731, 1961, 4537 ]
+        - [ -731, 211, 4537 ]
+        - [ -792, 211, 4775 ]
+        - [ -827, 211, 4959 ]
+        - [ -839, 211, 5152 ]
+
+Z2_12HAKUGINMAEPathwayList_000300:
+  type: MM:PATH
+  offset: 0x000300
+  symbol: Z2_12HAKUGINMAEPathwayList_000300
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 257, 2483, 1221 ]
+        - [ 257, 2483, 1221 ]
+        - [ 257, 1291, 1221 ]
+        - [ 364, 1277, 1183 ]
+        - [ 476, 1259, 1129 ]
+        - [ 585, 1240, 1053 ]
+        - [ 681, 1231, 981 ]
+        - [ 768, 1221, 890 ]
+        - [ 860, 1196, 765 ]
+        - [ 992, 1163, 586 ]
+        - [ 1077, 1133, 440 ]
+        - [ 1136, 1122, 393 ]
+        - [ 1137, 611, 393 ]
+        - [ 1276, 614, 217 ]
+        - [ 1309, 377, 155 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 1049, -24 ]
+        - [ 984, 999, -324 ]
+        - [ 890, 966, -578 ]
+        - [ 802, 943, -740 ]
+        - [ 726, 925, -852 ]
+        - [ 671, 912, -949 ]
+        - [ 671, 611, -949 ]
+        - [ 598, 618, -1183 ]
+        - [ 594, 380, -1210 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -17, 2287, -1044 ]
+        - [ -17, 2287, -1044 ]
+        - [ -17, 796, -1044 ]
+        - [ -309, 730, -984 ]
+        - [ -571, 673, -881 ]
+        - [ -815, 645, -625 ]
+        - [ -985, 622, -229 ]
+        - [ -1131, 611, 210 ]
+        - [ -1320, 608, 668 ]
+        - [ -1334, 358, 702 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -255, 2310, 3747 ]
+        - [ -255, 2310, 3747 ]
+        - [ -255, 211, 3747 ]
+        - [ -416, 211, 3957 ]
+        - [ -494, 211, 4119 ]
+        - [ -617, 211, 4365 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -731, 1961, 4537 ]
+        - [ -731, 1961, 4537 ]
+        - [ -731, 211, 4537 ]
+        - [ -792, 211, 4775 ]
+        - [ -827, 211, 4959 ]
+        - [ -839, 211, 5152 ]
+
+Z2_12HAKUGINMAEPathwayList_000344:
+  type: MM:PATH
+  offset: 0x000344
+  symbol: Z2_12HAKUGINMAEPathwayList_000344
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 257, 2483, 1221 ]
+        - [ 257, 2483, 1221 ]
+        - [ 257, 1291, 1221 ]
+        - [ 364, 1277, 1183 ]
+        - [ 476, 1259, 1129 ]
+        - [ 585, 1240, 1053 ]
+        - [ 681, 1231, 981 ]
+        - [ 768, 1221, 890 ]
+        - [ 860, 1196, 765 ]
+        - [ 992, 1163, 586 ]
+        - [ 1077, 1133, 440 ]
+        - [ 1136, 1122, 393 ]
+        - [ 1137, 611, 393 ]
+        - [ 1276, 614, 217 ]
+        - [ 1309, 377, 155 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 1049, -24 ]
+        - [ 984, 999, -324 ]
+        - [ 890, 966, -578 ]
+        - [ 802, 943, -740 ]
+        - [ 726, 925, -852 ]
+        - [ 671, 912, -949 ]
+        - [ 671, 611, -949 ]
+        - [ 598, 618, -1183 ]
+        - [ 594, 380, -1210 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -17, 2287, -1044 ]
+        - [ -17, 2287, -1044 ]
+        - [ -17, 796, -1044 ]
+        - [ -309, 730, -984 ]
+        - [ -571, 673, -881 ]
+        - [ -815, 645, -625 ]
+        - [ -985, 622, -229 ]
+        - [ -1131, 611, 210 ]
+        - [ -1320, 608, 668 ]
+        - [ -1334, 358, 702 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -255, 2310, 3747 ]
+        - [ -255, 2310, 3747 ]
+        - [ -255, 211, 3747 ]
+        - [ -416, 211, 3957 ]
+        - [ -494, 211, 4119 ]
+        - [ -617, 211, 4365 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -731, 1961, 4537 ]
+        - [ -731, 1961, 4537 ]
+        - [ -731, 211, 4537 ]
+        - [ -792, 211, 4775 ]
+        - [ -827, 211, 4959 ]
+        - [ -839, 211, 5152 ]
+
+Z2_12HAKUGINMAEPathwayList_000380:
+  type: MM:PATH
+  offset: 0x000380
+  symbol: Z2_12HAKUGINMAEPathwayList_000380
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 257, 2483, 1221 ]
+        - [ 257, 2483, 1221 ]
+        - [ 257, 1291, 1221 ]
+        - [ 364, 1277, 1183 ]
+        - [ 476, 1259, 1129 ]
+        - [ 585, 1240, 1053 ]
+        - [ 681, 1231, 981 ]
+        - [ 768, 1221, 890 ]
+        - [ 860, 1196, 765 ]
+        - [ 992, 1163, 586 ]
+        - [ 1077, 1133, 440 ]
+        - [ 1136, 1122, 393 ]
+        - [ 1137, 611, 393 ]
+        - [ 1276, 614, 217 ]
+        - [ 1309, 377, 155 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 1049, -24 ]
+        - [ 984, 999, -324 ]
+        - [ 890, 966, -578 ]
+        - [ 802, 943, -740 ]
+        - [ 726, 925, -852 ]
+        - [ 671, 912, -949 ]
+        - [ 671, 611, -949 ]
+        - [ 598, 618, -1183 ]
+        - [ 594, 380, -1210 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -17, 2287, -1044 ]
+        - [ -17, 2287, -1044 ]
+        - [ -17, 796, -1044 ]
+        - [ -309, 730, -984 ]
+        - [ -571, 673, -881 ]
+        - [ -815, 645, -625 ]
+        - [ -985, 622, -229 ]
+        - [ -1131, 611, 210 ]
+        - [ -1320, 608, 668 ]
+        - [ -1334, 358, 702 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -255, 2310, 3747 ]
+        - [ -255, 2310, 3747 ]
+        - [ -255, 211, 3747 ]
+        - [ -416, 211, 3957 ]
+        - [ -494, 211, 4119 ]
+        - [ -617, 211, 4365 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -731, 1961, 4537 ]
+        - [ -731, 1961, 4537 ]
+        - [ -731, 211, 4537 ]
+        - [ -792, 211, 4775 ]
+        - [ -827, 211, 4959 ]
+        - [ -839, 211, 5152 ]
+
+Z2_12HAKUGINMAEPathwayList_0003A4:
+  type: MM:PATH
+  offset: 0x0003A4
+  symbol: Z2_12HAKUGINMAEPathwayList_0003A4
+  num_paths: 5
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 257, 2483, 1221 ]
+        - [ 257, 2483, 1221 ]
+        - [ 257, 1291, 1221 ]
+        - [ 364, 1277, 1183 ]
+        - [ 476, 1259, 1129 ]
+        - [ 585, 1240, 1053 ]
+        - [ 681, 1231, 981 ]
+        - [ 768, 1221, 890 ]
+        - [ 860, 1196, 765 ]
+        - [ 992, 1163, 586 ]
+        - [ 1077, 1133, 440 ]
+        - [ 1136, 1122, 393 ]
+        - [ 1137, 611, 393 ]
+        - [ 1276, 614, 217 ]
+        - [ 1309, 377, 155 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 2519, -24 ]
+        - [ 1066, 1049, -24 ]
+        - [ 984, 999, -324 ]
+        - [ 890, 966, -578 ]
+        - [ 802, 943, -740 ]
+        - [ 726, 925, -852 ]
+        - [ 671, 912, -949 ]
+        - [ 671, 611, -949 ]
+        - [ 598, 618, -1183 ]
+        - [ 594, 380, -1210 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -17, 2287, -1044 ]
+        - [ -17, 2287, -1044 ]
+        - [ -17, 796, -1044 ]
+        - [ -309, 730, -984 ]
+        - [ -571, 673, -881 ]
+        - [ -815, 645, -625 ]
+        - [ -985, 622, -229 ]
+        - [ -1131, 611, 210 ]
+        - [ -1320, 608, 668 ]
+        - [ -1334, 358, 702 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -255, 2310, 3747 ]
+        - [ -255, 2310, 3747 ]
+        - [ -255, 211, 3747 ]
+        - [ -416, 211, 3957 ]
+        - [ -494, 211, 4119 ]
+        - [ -617, 211, 4365 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -731, 1961, 4537 ]
+        - [ -731, 1961, 4537 ]
+        - [ -731, 211, 4537 ]
+        - [ -792, 211, 4775 ]
+        - [ -827, 211, 4959 ]
+        - [ -839, 211, 5152 ]
+
+Z2_12HAKUGINMAECutsceneData_0003F0:
+  type: MM:CUTSCENE
+  offset: 0x0003F0
+  symbol: Z2_12HAKUGINMAECutsceneData_0003F0
+  size: 2248
+
+Z2_12HAKUGINMAECutsceneData_000CC0:
+  type: MM:CUTSCENE
+  offset: 0x000CC0
+  symbol: Z2_12HAKUGINMAECutsceneData_000CC0
+  size: 680
+
+Z2_12HAKUGINMAETexAnim_0010C8TexScrollParams_0010C0:
+  type: BLOB
+  offset: 0x0010C0
+  symbol: Z2_12HAKUGINMAETexAnim_0010C8TexScrollParams_0010C0
+  size: 0
+
+Z2_12HAKUGINMAETexAnim_0010C8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0010C8
+  symbol: Z2_12HAKUGINMAETexAnim_0010C8
+
+Z2_12HAKUGINMAECollisionHeader_003B80:
+  type: MM:COLLISION
+  offset: 0x003B80
+  symbol: Z2_12HAKUGINMAECollisionHeader_003B80
+
+Z2_12HAKUGINMAETex_003F60:
+  type: TEXTURE
+  offset: 0x003F60
+  symbol: Z2_12HAKUGINMAETex_003F60
+  format: I4
+  width: 64
+  height: 64
+
+Z2_12HAKUGINMAETex_004760:
+  type: TEXTURE
+  offset: 0x004760
+  symbol: Z2_12HAKUGINMAETex_004760
+  format: I8
+  width: 32
+  height: 32
+
+Z2_12HAKUGINMAETex_004B60:
+  type: TEXTURE
+  offset: 0x004B60
+  symbol: Z2_12HAKUGINMAETex_004B60
+  format: I4
+  width: 64
+  height: 64
+
+Z2_12HAKUGINMAETex_005360:
+  type: TEXTURE
+  offset: 0x005360
+  symbol: Z2_12HAKUGINMAETex_005360
+  format: I8
+  width: 32
+  height: 128
+
+Z2_12HAKUGINMAETex_006360:
+  type: TEXTURE
+  offset: 0x006360
+  symbol: Z2_12HAKUGINMAETex_006360
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_12HAKUGINMAETex_006B60:
+  type: TEXTURE
+  offset: 0x006B60
+  symbol: Z2_12HAKUGINMAETex_006B60
+  format: IA16
+  width: 32
+  height: 8
+
+Z2_12HAKUGINMAETex_006D60:
+  type: TEXTURE
+  offset: 0x006D60
+  symbol: Z2_12HAKUGINMAETex_006D60
+  format: IA4
+  width: 128
+  height: 32

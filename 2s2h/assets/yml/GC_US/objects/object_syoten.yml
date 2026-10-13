@@ -1,0 +1,335 @@
+:config:
+  segments:
+    - [ 6, 0x015B9DF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015B9DF0 ]
+    - [ 9, 0x015B9DF0 ]
+    - [ 10, 0x015B9DF0 ]
+    - [ 11, 0x015B9DF0 ]
+    - [ 12, 0x015B9DF0 ]
+    - [ 13, 0x015B9DF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSyotenKFAnim_023C:
+  type: MM:KEYFRAME_ANIMATION
+  offset: 0x023C
+  symbol: gSyotenKFAnim_023C
+  skel_offset: 0x1328
+  limb_type: Flex
+
+gSyotenKFSkel_1328:
+  type: MM:KEYFRAME_SKELETON
+  offset: 0x1328
+  symbol: gSyotenKFSkel_1328
+  limb_type: Flex
+
+object_syotenVtx_0018C0:
+  type: MM:ARRAY
+  offset: 0x18C0
+  symbol: object_syotenVtx_0018C0
+  count: 81
+  array_type: VTX
+
+object_syoten_DL_000450:
+  type: GFX
+  offset: 0x450
+  symbol: object_syoten_DL_000450
+
+object_syoten_DL_000518:
+  type: GFX
+  offset: 0x518
+  symbol: object_syoten_DL_000518
+
+object_syoten_DL_0005E0:
+  type: GFX
+  offset: 0x5E0
+  symbol: object_syoten_DL_0005E0
+
+object_syoten_DL_0006A8:
+  type: GFX
+  offset: 0x6A8
+  symbol: object_syoten_DL_0006A8
+
+object_syoten_DL_000770:
+  type: GFX
+  offset: 0x770
+  symbol: object_syoten_DL_000770
+
+object_syoten_DL_000838:
+  type: GFX
+  offset: 0x838
+  symbol: object_syoten_DL_000838
+
+object_syoten_DL_000900:
+  type: GFX
+  offset: 0x900
+  symbol: object_syoten_DL_000900
+
+object_syoten_DL_0009C8:
+  type: GFX
+  offset: 0x9C8
+  symbol: object_syoten_DL_0009C8
+
+object_syoten_DL_001370:
+  type: GFX
+  offset: 0x1370
+  symbol: object_syoten_DL_001370
+
+object_syoten_DL_001730:
+  type: GFX
+  offset: 0x1730
+  symbol: object_syoten_DL_001730
+
+object_syoten_DL_0018A0:
+  type: GFX
+  offset: 0x18A0
+  symbol: object_syoten_DL_0018A0
+
+object_syoten_DL_001DD0:
+  type: GFX
+  offset: 0x1DD0
+  symbol: object_syoten_DL_001DD0
+
+object_syoten_DL_002018:
+  type: GFX
+  offset: 0x2018
+  symbol: object_syoten_DL_002018
+
+object_syoten_DL_002880:
+  type: GFX
+  offset: 0x2880
+  symbol: object_syoten_DL_002880
+
+object_syoten_DL_002A20:
+  type: GFX
+  offset: 0x2A20
+  symbol: object_syoten_DL_002A20
+
+object_syoten_Matanimheader_001298:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1298
+  symbol: object_syoten_Matanimheader_001298
+
+object_syoten_Matanimheader_001448:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1448
+  symbol: object_syoten_Matanimheader_001448
+
+object_syoten_Matanimheader_0018B8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x18B8
+  symbol: object_syoten_Matanimheader_0018B8
+
+object_syoten_Matanimheader_002B88:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2B88
+  symbol: object_syoten_Matanimheader_002B88
+
+object_syoten_Matanimheader_002B98:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2B98
+  symbol: object_syoten_Matanimheader_002B98
+
+object_syoten_Tex_000A90:
+  type: TEXTURE
+  offset: 0xA90
+  symbol: object_syoten_Tex_000A90
+  format: I8
+  width: 32
+  height: 32
+
+object_syoten_Tex_000E90:
+  type: TEXTURE
+  offset: 0xE90
+  symbol: object_syoten_Tex_000E90
+  format: I8
+  width: 32
+  height: 32
+
+object_syoten_Tex_002BA0:
+  type: TEXTURE
+  offset: 0x2BA0
+  symbol: object_syoten_Tex_002BA0
+  format: I8
+  width: 32
+  height: 32
+
+object_syoten_Tex_002FA0:
+  type: TEXTURE
+  offset: 0x2FA0
+  symbol: object_syoten_Tex_002FA0
+  format: I8
+  width: 32
+  height: 32
+
+object_syoten_Tex_0033A0:
+  type: TEXTURE
+  offset: 0x33A0
+  symbol: object_syoten_Tex_0033A0
+  format: I8
+  width: 16
+  height: 128
+
+object_syoten_Tex_003BA0:
+  type: TEXTURE
+  offset: 0x3BA0
+  symbol: object_syoten_Tex_003BA0
+  format: I4
+  width: 32
+  height: 32
+
+object_syoten_Tex_003DA0:
+  type: TEXTURE
+  offset: 0x3DA0
+  symbol: object_syoten_Tex_003DA0
+  format: I8
+  width: 32
+  height: 64
+
+object_syoten_Tex_0045A0:
+  type: TEXTURE
+  offset: 0x45A0
+  symbol: object_syoten_Tex_0045A0
+  format: I8
+  width: 32
+  height: 64
+
+
+object_syotenVtx_000250:
+  type: MM:ARRAY
+  offset: 0x000250
+  symbol: object_syotenVtx_000250
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_000290:
+  type: MM:ARRAY
+  offset: 0x000290
+  symbol: object_syotenVtx_000290
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_0002D0:
+  type: MM:ARRAY
+  offset: 0x0002D0
+  symbol: object_syotenVtx_0002D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_000310:
+  type: MM:ARRAY
+  offset: 0x000310
+  symbol: object_syotenVtx_000310
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_000350:
+  type: MM:ARRAY
+  offset: 0x000350
+  symbol: object_syotenVtx_000350
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_000390:
+  type: MM:ARRAY
+  offset: 0x000390
+  symbol: object_syotenVtx_000390
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_0003D0:
+  type: MM:ARRAY
+  offset: 0x0003D0
+  symbol: object_syotenVtx_0003D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_000410:
+  type: MM:ARRAY
+  offset: 0x000410
+  symbol: object_syotenVtx_000410
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syoten_Matanimheader_001298TexScrollParams_001290:
+  type: BLOB
+  offset: 0x001290
+  symbol: object_syoten_Matanimheader_001298TexScrollParams_001290
+  size: 0
+
+object_syotenVtx_001330:
+  type: MM:ARRAY
+  offset: 0x001330
+  symbol: object_syotenVtx_001330
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syoten_Matanimheader_001448TexScrollParams_001440:
+  type: BLOB
+  offset: 0x001440
+  symbol: object_syoten_Matanimheader_001448TexScrollParams_001440
+  size: 0
+
+object_syotenVtx_001450:
+  type: MM:ARRAY
+  offset: 0x001450
+  symbol: object_syotenVtx_001450
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syoten_Matanimheader_0018B8TexScrollParams_0018B0:
+  type: BLOB
+  offset: 0x0018B0
+  symbol: object_syoten_Matanimheader_0018B8TexScrollParams_0018B0
+  size: 0
+
+object_syotenVtx_002020:
+  type: MM:ARRAY
+  offset: 0x002020
+  symbol: object_syotenVtx_002020
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syotenVtx_002410:
+  type: MM:ARRAY
+  offset: 0x002410
+  symbol: object_syotenVtx_002410
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syoten_Matanimheader_002B88TexScrollParams_002B80:
+  type: BLOB
+  offset: 0x002B80
+  symbol: object_syoten_Matanimheader_002B88TexScrollParams_002B80
+  size: 0
+
+object_syoten_Matanimheader_002B98TexScrollParams_002B90:
+  type: BLOB
+  offset: 0x002B90
+  symbol: object_syoten_Matanimheader_002B98TexScrollParams_002B90
+  size: 0

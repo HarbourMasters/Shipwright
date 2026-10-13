@@ -1,0 +1,664 @@
+:config:
+  segments:
+    - [ 6, 0x0100AD10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0100AD10 ]
+    - [ 9, 0x0100AD10 ]
+    - [ 10, 0x0100AD10 ]
+    - [ 11, 0x0100AD10 ]
+    - [ 12, 0x0100AD10 ]
+    - [ 13, 0x0100AD10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_daiku_Anim_000600:
+  type: OOT:ANIMATION
+  offset: 0x600
+  symbol: object_daiku_Anim_000600
+
+object_daiku_Anim_000C44:
+  type: OOT:ANIMATION
+  offset: 0xC44
+  symbol: object_daiku_Anim_000C44
+
+object_daiku_Anim_001114:
+  type: OOT:ANIMATION
+  offset: 0x1114
+  symbol: object_daiku_Anim_001114
+
+object_daiku_Anim_001A24:
+  type: OOT:ANIMATION
+  offset: 0x1A24
+  symbol: object_daiku_Anim_001A24
+
+object_daiku_Anim_002134:
+  type: OOT:ANIMATION
+  offset: 0x2134
+  symbol: object_daiku_Anim_002134
+
+object_daiku_Anim_002FA0:
+  type: OOT:ANIMATION
+  offset: 0x2FA0
+  symbol: object_daiku_Anim_002FA0
+
+object_daiku_Anim_00ACD0:
+  type: OOT:ANIMATION
+  offset: 0xACD0
+  symbol: object_daiku_Anim_00ACD0
+
+object_daiku_Anim_00B690:
+  type: OOT:ANIMATION
+  offset: 0xB690
+  symbol: object_daiku_Anim_00B690
+
+object_daiku_Anim_00BEAC:
+  type: OOT:ANIMATION
+  offset: 0xBEAC
+  symbol: object_daiku_Anim_00BEAC
+
+object_daiku_Anim_00C234:
+  type: OOT:ANIMATION
+  offset: 0xC234
+  symbol: object_daiku_Anim_00C234
+
+object_daiku_Anim_00C92C:
+  type: OOT:ANIMATION
+  offset: 0xC92C
+  symbol: object_daiku_Anim_00C92C
+
+object_daiku_Anim_00D328:
+  type: OOT:ANIMATION
+  offset: 0xD328
+  symbol: object_daiku_Anim_00D328
+
+object_daiku_DL_006980:
+  type: GFX
+  offset: 0x6980
+  symbol: object_daiku_DL_006980
+
+object_daiku_DL_006D70:
+  type: GFX
+  offset: 0x6D70
+  symbol: object_daiku_DL_006D70
+
+object_daiku_DL_006E80:
+  type: GFX
+  offset: 0x6E80
+  symbol: object_daiku_DL_006E80
+
+object_daiku_DL_006FB0:
+  type: GFX
+  offset: 0x6FB0
+  symbol: object_daiku_DL_006FB0
+
+object_daiku_DL_0070C0:
+  type: GFX
+  offset: 0x70C0
+  symbol: object_daiku_DL_0070C0
+
+object_daiku_DL_0071E0:
+  type: GFX
+  offset: 0x71E0
+  symbol: object_daiku_DL_0071E0
+
+object_daiku_DL_007700:
+  type: GFX
+  offset: 0x7700
+  symbol: object_daiku_DL_007700
+
+object_daiku_DL_007A10:
+  type: GFX
+  offset: 0x7A10
+  symbol: object_daiku_DL_007A10
+
+object_daiku_DL_007B40:
+  type: GFX
+  offset: 0x7B40
+  symbol: object_daiku_DL_007B40
+
+object_daiku_DL_007C70:
+  type: GFX
+  offset: 0x7C70
+  symbol: object_daiku_DL_007C70
+
+object_daiku_DL_007DE0:
+  type: GFX
+  offset: 0x7DE0
+  symbol: object_daiku_DL_007DE0
+
+object_daiku_DL_007F10:
+  type: GFX
+  offset: 0x7F10
+  symbol: object_daiku_DL_007F10
+
+object_daiku_DL_008040:
+  type: GFX
+  offset: 0x8040
+  symbol: object_daiku_DL_008040
+
+object_daiku_DL_0081B0:
+  type: GFX
+  offset: 0x81B0
+  symbol: object_daiku_DL_0081B0
+
+object_daiku_DL_0083A0:
+  type: GFX
+  offset: 0x83A0
+  symbol: object_daiku_DL_0083A0
+
+object_daiku_DL_008648:
+  type: GFX
+  offset: 0x8648
+  symbol: object_daiku_DL_008648
+
+object_daiku_DL_008758:
+  type: GFX
+  offset: 0x8758
+  symbol: object_daiku_DL_008758
+
+object_daiku_DL_008870:
+  type: GFX
+  offset: 0x8870
+  symbol: object_daiku_DL_008870
+
+object_daiku_DL_008B20:
+  type: GFX
+  offset: 0x8B20
+  symbol: object_daiku_DL_008B20
+
+object_daiku_DL_008C30:
+  type: GFX
+  offset: 0x8C30
+  symbol: object_daiku_DL_008C30
+
+object_daiku_DL_008EC8:
+  type: GFX
+  offset: 0x8EC8
+  symbol: object_daiku_DL_008EC8
+
+object_daiku_DL_009638:
+  type: GFX
+  offset: 0x9638
+  symbol: object_daiku_DL_009638
+
+object_daiku_DL_00A390:
+  type: GFX
+  offset: 0xA390
+  symbol: object_daiku_DL_00A390
+
+object_daiku_Skel_00A850:
+  type: MM:SKELETON
+  offset: 0xA850
+  symbol: object_daiku_Skel_00A850
+  limb_type: Standard
+  skel_type: Flex
+
+object_daiku_Standardlimb_00A750:
+  type: OOT:LIMB
+  offset: 0xA750
+  symbol: object_daiku_Standardlimb_00A750
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A75C:
+  type: OOT:LIMB
+  offset: 0xA75C
+  symbol: object_daiku_Standardlimb_00A75C
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A768:
+  type: OOT:LIMB
+  offset: 0xA768
+  symbol: object_daiku_Standardlimb_00A768
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A774:
+  type: OOT:LIMB
+  offset: 0xA774
+  symbol: object_daiku_Standardlimb_00A774
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A780:
+  type: OOT:LIMB
+  offset: 0xA780
+  symbol: object_daiku_Standardlimb_00A780
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A78C:
+  type: OOT:LIMB
+  offset: 0xA78C
+  symbol: object_daiku_Standardlimb_00A78C
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A798:
+  type: OOT:LIMB
+  offset: 0xA798
+  symbol: object_daiku_Standardlimb_00A798
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7A4:
+  type: OOT:LIMB
+  offset: 0xA7A4
+  symbol: object_daiku_Standardlimb_00A7A4
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7B0:
+  type: OOT:LIMB
+  offset: 0xA7B0
+  symbol: object_daiku_Standardlimb_00A7B0
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7BC:
+  type: OOT:LIMB
+  offset: 0xA7BC
+  symbol: object_daiku_Standardlimb_00A7BC
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7C8:
+  type: OOT:LIMB
+  offset: 0xA7C8
+  symbol: object_daiku_Standardlimb_00A7C8
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7D4:
+  type: OOT:LIMB
+  offset: 0xA7D4
+  symbol: object_daiku_Standardlimb_00A7D4
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7E0:
+  type: OOT:LIMB
+  offset: 0xA7E0
+  symbol: object_daiku_Standardlimb_00A7E0
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7EC:
+  type: OOT:LIMB
+  offset: 0xA7EC
+  symbol: object_daiku_Standardlimb_00A7EC
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A7F8:
+  type: OOT:LIMB
+  offset: 0xA7F8
+  symbol: object_daiku_Standardlimb_00A7F8
+  limb_type: Standard
+
+object_daiku_Standardlimb_00A804:
+  type: OOT:LIMB
+  offset: 0xA804
+  symbol: object_daiku_Standardlimb_00A804
+  limb_type: Standard
+
+object_daiku_TLUT_002FB0:
+  type: TEXTURE
+  offset: 0x2FB0
+  symbol: object_daiku_TLUT_002FB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_daiku_TLUT_008FA8:
+  type: TEXTURE
+  offset: 0x8FA8
+  symbol: object_daiku_TLUT_008FA8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_daiku_TLUT_0097B0:
+  type: TEXTURE
+  offset: 0x97B0
+  symbol: object_daiku_TLUT_0097B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_daiku_TLUT_00A4D0:
+  type: TEXTURE
+  offset: 0xA4D0
+  symbol: object_daiku_TLUT_00A4D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_daiku_Tex_0031B0:
+  type: TEXTURE
+  offset: 0x31B0
+  symbol: object_daiku_Tex_0031B0
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_0031F0:
+  type: TEXTURE
+  offset: 0x31F0
+  symbol: object_daiku_Tex_0031F0
+  format: CI8
+  width: 16
+  height: 16
+
+object_daiku_Tex_0032F0:
+  type: TEXTURE
+  offset: 0x32F0
+  symbol: object_daiku_Tex_0032F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_daiku_Tex_003310:
+  type: TEXTURE
+  offset: 0x3310
+  symbol: object_daiku_Tex_003310
+  format: CI8
+  width: 8
+  height: 16
+
+object_daiku_Tex_003390:
+  type: TEXTURE
+  offset: 0x3390
+  symbol: object_daiku_Tex_003390
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_0033D0:
+  type: TEXTURE
+  offset: 0x33D0
+  symbol: object_daiku_Tex_0033D0
+  format: CI8
+  width: 16
+  height: 16
+
+object_daiku_Tex_0034D0:
+  type: TEXTURE
+  offset: 0x34D0
+  symbol: object_daiku_Tex_0034D0
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_003510:
+  type: TEXTURE
+  offset: 0x3510
+  symbol: object_daiku_Tex_003510
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_daiku_Tex_003D10:
+  type: TEXTURE
+  offset: 0x3D10
+  symbol: object_daiku_Tex_003D10
+  format: CI8
+  width: 16
+  height: 16
+
+object_daiku_Tex_003E10:
+  type: TEXTURE
+  offset: 0x3E10
+  symbol: object_daiku_Tex_003E10
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_003E50:
+  type: TEXTURE
+  offset: 0x3E50
+  symbol: object_daiku_Tex_003E50
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_003E90:
+  type: TEXTURE
+  offset: 0x3E90
+  symbol: object_daiku_Tex_003E90
+  format: CI8
+  width: 8
+  height: 8
+
+object_daiku_Tex_0091A8:
+  type: TEXTURE
+  offset: 0x91A8
+  symbol: object_daiku_Tex_0091A8
+  format: CI8
+  width: 16
+  height: 16
+
+object_daiku_Tex_0099B0:
+  type: TEXTURE
+  offset: 0x99B0
+  symbol: object_daiku_Tex_0099B0
+  format: I8
+  width: 32
+  height: 32
+
+object_daiku_Tex_009DB0:
+  type: TEXTURE
+  offset: 0x9DB0
+  symbol: object_daiku_Tex_009DB0
+  format: CI8
+  width: 16
+  height: 16
+
+object_daiku_Tex_00A6D0:
+  type: TEXTURE
+  offset: 0xA6D0
+  symbol: object_daiku_Tex_00A6D0
+  format: CI8
+  width: 8
+  height: 16
+
+
+object_daikuVtx_003ED0:
+  type: MM:ARRAY
+  offset: 0x003ED0
+  symbol: object_daikuVtx_003ED0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_004210:
+  type: MM:ARRAY
+  offset: 0x004210
+  symbol: object_daikuVtx_004210
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_004350:
+  type: MM:ARRAY
+  offset: 0x004350
+  symbol: object_daikuVtx_004350
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0044B0:
+  type: MM:ARRAY
+  offset: 0x0044B0
+  symbol: object_daikuVtx_0044B0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0045C0:
+  type: MM:ARRAY
+  offset: 0x0045C0
+  symbol: object_daikuVtx_0045C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0046C0:
+  type: MM:ARRAY
+  offset: 0x0046C0
+  symbol: object_daikuVtx_0046C0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_004D40:
+  type: MM:ARRAY
+  offset: 0x004D40
+  symbol: object_daikuVtx_004D40
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: object_daikuVtx_004FF0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_005170:
+  type: MM:ARRAY
+  offset: 0x005170
+  symbol: object_daikuVtx_005170
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0052F0:
+  type: MM:ARRAY
+  offset: 0x0052F0
+  symbol: object_daikuVtx_0052F0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0055A0:
+  type: MM:ARRAY
+  offset: 0x0055A0
+  symbol: object_daikuVtx_0055A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_005720:
+  type: MM:ARRAY
+  offset: 0x005720
+  symbol: object_daikuVtx_005720
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0058A0:
+  type: MM:ARRAY
+  offset: 0x0058A0
+  symbol: object_daikuVtx_0058A0
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_005E20:
+  type: MM:ARRAY
+  offset: 0x005E20
+  symbol: object_daikuVtx_005E20
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_005F60:
+  type: MM:ARRAY
+  offset: 0x005F60
+  symbol: object_daikuVtx_005F60
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_006090:
+  type: MM:ARRAY
+  offset: 0x006090
+  symbol: object_daikuVtx_006090
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0062A0:
+  type: MM:ARRAY
+  offset: 0x0062A0
+  symbol: object_daikuVtx_0062A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0063E0:
+  type: MM:ARRAY
+  offset: 0x0063E0
+  symbol: object_daikuVtx_0063E0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_006510:
+  type: MM:ARRAY
+  offset: 0x006510
+  symbol: object_daikuVtx_006510
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_006720:
+  type: MM:ARRAY
+  offset: 0x006720
+  symbol: object_daikuVtx_006720
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_008D48:
+  type: MM:ARRAY
+  offset: 0x008D48
+  symbol: object_daikuVtx_008D48
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_0092A8:
+  type: MM:ARRAY
+  offset: 0x0092A8
+  symbol: object_daikuVtx_0092A8
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daikuVtx_009EB0:
+  type: MM:ARRAY
+  offset: 0x009EB0
+  symbol: object_daikuVtx_009EB0
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiku_Skel_00A850Limbs:
+  type: BLOB
+  offset: 0xA810
+  symbol: object_daiku_Skel_00A850Limbs
+  size: 0

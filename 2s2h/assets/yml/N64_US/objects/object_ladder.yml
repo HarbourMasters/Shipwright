@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x011AD200 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011AD200 ]
+    - [ 9, 0x011AD200 ]
+    - [ 10, 0x011AD200 ]
+    - [ 11, 0x011AD200 ]
+    - [ 12, 0x011AD200 ]
+    - [ 13, 0x011AD200 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gWoodenLadder12RungCol:
+  type: MM:COLLISION
+  offset: 0x1D8
+  symbol: gWoodenLadder12RungCol
+
+gWoodenLadder12RungDL:
+  type: GFX
+  offset: 0xA0
+  symbol: gWoodenLadder12RungDL
+
+gWoodenLadder16RungCol:
+  type: MM:COLLISION
+  offset: 0x408
+  symbol: gWoodenLadder16RungCol
+
+gWoodenLadder16RungDL:
+  type: GFX
+  offset: 0x2D0
+  symbol: gWoodenLadder16RungDL
+
+gWoodenLadder20RungCol:
+  type: MM:COLLISION
+  offset: 0x638
+  symbol: gWoodenLadder20RungCol
+
+gWoodenLadder20RungDL:
+  type: GFX
+  offset: 0x500
+  symbol: gWoodenLadder20RungDL
+
+gWoodenLadder24RungCol:
+  type: MM:COLLISION
+  offset: 0x868
+  symbol: gWoodenLadder24RungCol
+
+gWoodenLadder24RungDL:
+  type: GFX
+  offset: 0x730
+  symbol: gWoodenLadder24RungDL
+
+gWoodenLadderTex:
+  type: TEXTURE
+  offset: 0x8A0
+  symbol: gWoodenLadderTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ladderVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ladderVtx_000000
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ladderVtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: object_ladderVtx_000210
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ladderVtx_000440:
+  type: MM:ARRAY
+  offset: 0x000440
+  symbol: object_ladderVtx_000440
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ladderVtx_000670:
+  type: MM:ARRAY
+  offset: 0x000670
+  symbol: object_ladderVtx_000670
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 9, 0x01640170 ]
+
+gClockDay1stTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gClockDay1stTex
+  format: I8
+  width: 48
+  height: 27
+
+gClockDay2ndTex:
+  type: TEXTURE
+  offset: 0x510
+  symbol: gClockDay2ndTex
+  format: I8
+  width: 48
+  height: 27
+
+gClockDayFinalTex:
+  type: TEXTURE
+  offset: 0xA20
+  symbol: gClockDayFinalTex
+  format: I8
+  width: 48
+  height: 27
+

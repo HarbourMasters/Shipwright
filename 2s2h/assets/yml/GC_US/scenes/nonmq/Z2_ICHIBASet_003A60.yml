@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E236E0 ]
+  directory: scenes/nonmq/Z2_ICHIBA
+  external_files:
+    - GC_US/scenes/nonmq/Z2_ICHIBA.yml
+
+Z2_ICHIBASet_003A60:
+  type: MM:SCENE
+  offset: 0x3A60
+  symbol: Z2_ICHIBASet_003A60
+  base_name: Z2_ICHIBA

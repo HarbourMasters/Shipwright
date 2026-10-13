@@ -1,0 +1,151 @@
+:config:
+  segments:
+    - [ 6, 0x0155DD00 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0155DD00 ]
+    - [ 9, 0x0155DD00 ]
+    - [ 10, 0x0155DD00 ]
+    - [ 11, 0x0155DD00 ]
+    - [ 12, 0x0155DD00 ]
+    - [ 13, 0x0155DD00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_lastday_DL_000060:
+  type: GFX
+  offset: 0x60
+  symbol: object_lastday_DL_000060
+
+object_lastday_DL_000210:
+  type: GFX
+  offset: 0x210
+  symbol: object_lastday_DL_000210
+
+object_lastday_DL_000370:
+  type: GFX
+  offset: 0x370
+  symbol: object_lastday_DL_000370
+
+object_lastday_DL_000510:
+  type: GFX
+  offset: 0x510
+  symbol: object_lastday_DL_000510
+
+object_lastday_Matanimheader_000148:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x148
+  symbol: object_lastday_Matanimheader_000148
+
+object_lastday_Matanimheader_000308:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x308
+  symbol: object_lastday_Matanimheader_000308
+
+object_lastday_Matanimheader_000448:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x448
+  symbol: object_lastday_Matanimheader_000448
+
+object_lastday_Matanimheader_000608:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x608
+  symbol: object_lastday_Matanimheader_000608
+
+object_lastday_Tex_000610:
+  type: TEXTURE
+  offset: 0x610
+  symbol: object_lastday_Tex_000610
+  format: IA16
+  width: 32
+  height: 32
+
+object_lastday_Tex_000E10:
+  type: TEXTURE
+  offset: 0xE10
+  symbol: object_lastday_Tex_000E10
+  format: I8
+  width: 64
+  height: 32
+
+object_lastday_Tex_001610:
+  type: TEXTURE
+  offset: 0x1610
+  symbol: object_lastday_Tex_001610
+  format: I8
+  width: 32
+  height: 64
+
+object_lastday_Tex_001E10:
+  type: TEXTURE
+  offset: 0x1E10
+  symbol: object_lastday_Tex_001E10
+  format: I8
+  width: 32
+  height: 32
+
+object_lastday_Tex_002210:
+  type: TEXTURE
+  offset: 0x2210
+  symbol: object_lastday_Tex_002210
+  format: I8
+  width: 64
+  height: 32
+
+object_lastday_Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x0
+  symbol: object_lastday_Vtx_000000
+  count: 6
+  array_type: VTX
+
+
+object_lastday_Matanimheader_000148TexScrollParams_000140:
+  type: BLOB
+  offset: 0x000140
+  symbol: object_lastday_Matanimheader_000148TexScrollParams_000140
+  size: 0
+
+object_lastdayVtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: object_lastdayVtx_000150
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lastday_Matanimheader_000308TexScrollParams_000300:
+  type: BLOB
+  offset: 0x000300
+  symbol: object_lastday_Matanimheader_000308TexScrollParams_000300
+  size: 0
+
+object_lastdayVtx_000310:
+  type: MM:ARRAY
+  offset: 0x000310
+  symbol: object_lastdayVtx_000310
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lastday_Matanimheader_000448TexScrollParams_000440:
+  type: BLOB
+  offset: 0x000440
+  symbol: object_lastday_Matanimheader_000448TexScrollParams_000440
+  size: 0
+
+object_lastdayVtx_000450:
+  type: MM:ARRAY
+  offset: 0x000450
+  symbol: object_lastdayVtx_000450
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lastday_Matanimheader_000608TexScrollParams_000600:
+  type: BLOB
+  offset: 0x000600
+  symbol: object_lastday_Matanimheader_000608TexScrollParams_000600
+  size: 0

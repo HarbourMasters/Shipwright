@@ -1,0 +1,262 @@
+:config:
+  segments:
+    - [ 3, 0x0189CB50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0189CB50 ]
+    - [ 9, 0x0189CB50 ]
+    - [ 10, 0x0189CB50 ]
+    - [ 11, 0x0189CB50 ]
+    - [ 12, 0x0189CB50 ]
+    - [ 13, 0x0189CB50 ]
+    - [ 2, 0x018909A0 ]
+  directory: scenes/nonmq/Z2_PIRATE
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_PIRATE.yml
+
+Z2_PIRATE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_PIRATE_room_00
+
+Z2_PIRATE_room_00DL_001DA8:
+  type: GFX
+  offset: 0x1DA8
+  symbol: Z2_PIRATE_room_00DL_001DA8
+
+
+Z2_PIRATE_room_00ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_PIRATE_room_00ActorEntry_000048
+  size: 0
+
+Z2_PIRATE_room_00Vtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: Z2_PIRATE_room_00Vtx_0000B0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_0001F0:
+  type: GFX
+  offset: 0x0001F0
+  symbol: Z2_PIRATE_room_00DL_0001F0
+
+Z2_PIRATE_room_00Vtx_0002E8:
+  type: MM:ARRAY
+  offset: 0x0002E8
+  symbol: Z2_PIRATE_room_00Vtx_0002E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_0003A8:
+  type: GFX
+  offset: 0x0003A8
+  symbol: Z2_PIRATE_room_00DL_0003A8
+
+Z2_PIRATE_room_00Vtx_000480:
+  type: MM:ARRAY
+  offset: 0x000480
+  symbol: Z2_PIRATE_room_00Vtx_000480
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_000640:
+  type: GFX
+  offset: 0x000640
+  symbol: Z2_PIRATE_room_00DL_000640
+
+Z2_PIRATE_room_00Vtx_000750:
+  type: MM:ARRAY
+  offset: 0x000750
+  symbol: Z2_PIRATE_room_00Vtx_000750
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_000910:
+  type: GFX
+  offset: 0x000910
+  symbol: Z2_PIRATE_room_00DL_000910
+
+Z2_PIRATE_room_00Vtx_000B10:
+  type: MM:ARRAY
+  offset: 0x000B10
+  symbol: Z2_PIRATE_room_00Vtx_000B10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_000CD0:
+  type: GFX
+  offset: 0x000CD0
+  symbol: Z2_PIRATE_room_00DL_000CD0
+
+Z2_PIRATE_room_00Vtx_000ED0:
+  type: MM:ARRAY
+  offset: 0x000ED0
+  symbol: Z2_PIRATE_room_00Vtx_000ED0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_000F90:
+  type: GFX
+  offset: 0x000F90
+  symbol: Z2_PIRATE_room_00DL_000F90
+
+Z2_PIRATE_room_00DL_001068:
+  type: GFX
+  offset: 0x001068
+  symbol: Z2_PIRATE_room_00DL_001068
+
+Z2_PIRATE_room_00Vtx_0010A0:
+  type: MM:ARRAY
+  offset: 0x0010A0
+  symbol: Z2_PIRATE_room_00Vtx_0010A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001160:
+  type: GFX
+  offset: 0x001160
+  symbol: Z2_PIRATE_room_00DL_001160
+
+Z2_PIRATE_room_00Vtx_001238:
+  type: MM:ARRAY
+  offset: 0x001238
+  symbol: Z2_PIRATE_room_00Vtx_001238
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_0012F8:
+  type: GFX
+  offset: 0x0012F8
+  symbol: Z2_PIRATE_room_00DL_0012F8
+
+Z2_PIRATE_room_00Vtx_0013D0:
+  type: MM:ARRAY
+  offset: 0x0013D0
+  symbol: Z2_PIRATE_room_00Vtx_0013D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001490:
+  type: GFX
+  offset: 0x001490
+  symbol: Z2_PIRATE_room_00DL_001490
+
+Z2_PIRATE_room_00Vtx_001568:
+  type: MM:ARRAY
+  offset: 0x001568
+  symbol: Z2_PIRATE_room_00Vtx_001568
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001628:
+  type: GFX
+  offset: 0x001628
+  symbol: Z2_PIRATE_room_00DL_001628
+
+Z2_PIRATE_room_00Vtx_001700:
+  type: MM:ARRAY
+  offset: 0x001700
+  symbol: Z2_PIRATE_room_00Vtx_001700
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_0017C0:
+  type: GFX
+  offset: 0x0017C0
+  symbol: Z2_PIRATE_room_00DL_0017C0
+
+Z2_PIRATE_room_00Vtx_001898:
+  type: MM:ARRAY
+  offset: 0x001898
+  symbol: Z2_PIRATE_room_00Vtx_001898
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001958:
+  type: GFX
+  offset: 0x001958
+  symbol: Z2_PIRATE_room_00DL_001958
+
+Z2_PIRATE_room_00Vtx_001A30:
+  type: MM:ARRAY
+  offset: 0x001A30
+  symbol: Z2_PIRATE_room_00Vtx_001A30
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001AF0:
+  type: GFX
+  offset: 0x001AF0
+  symbol: Z2_PIRATE_room_00DL_001AF0
+
+Z2_PIRATE_room_00Vtx_001BC8:
+  type: MM:ARRAY
+  offset: 0x001BC8
+  symbol: Z2_PIRATE_room_00Vtx_001BC8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_PIRATE_room_00DL_001C88:
+  type: GFX
+  offset: 0x001C88
+  symbol: Z2_PIRATE_room_00DL_001C88
+
+Z2_PIRATE_room_00DL_001D60:
+  type: GFX
+  offset: 0x001D60
+  symbol: Z2_PIRATE_room_00DL_001D60
+
+Z2_PIRATE_room_00Tex_001DC0:
+  type: TEXTURE
+  offset: 0x001DC0
+  symbol: Z2_PIRATE_room_00Tex_001DC0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_PIRATE_room_00Tex_0025C0:
+  type: TEXTURE
+  offset: 0x0025C0
+  symbol: Z2_PIRATE_room_00Tex_0025C0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_PIRATE_room_00Tex_0027C0:
+  type: TEXTURE
+  offset: 0x0027C0
+  symbol: Z2_PIRATE_room_00Tex_0027C0
+  format: CI8
+  width: 32
+  height: 64

@@ -1,0 +1,337 @@
+:config:
+  segments:
+    - [ 6, 0x00EFB1B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EFB1B0 ]
+    - [ 9, 0x00EFB1B0 ]
+    - [ 10, 0x00EFB1B0 ]
+    - [ 11, 0x00EFB1B0 ]
+    - [ 12, 0x00EFB1B0 ]
+    - [ 13, 0x00EFB1B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDekuScrubBodyDL:
+  type: GFX
+  offset: 0x1050
+  symbol: gDekuScrubBodyDL
+
+gDekuScrubBodyLimb:
+  type: OOT:LIMB
+  offset: 0x23D8
+  symbol: gDekuScrubBodyLimb
+  limb_type: Standard
+
+gDekuScrubBurrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A5C
+  symbol: gDekuScrubBurrowAnim
+
+gDekuScrubCrestDL:
+  type: GFX
+  offset: 0xD90
+  symbol: gDekuScrubCrestDL
+
+gDekuScrubCrestLimb:
+  type: OOT:LIMB
+  offset: 0x23FC
+  symbol: gDekuScrubCrestLimb
+  limb_type: Standard
+
+gDekuScrubDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x259C
+  symbol: gDekuScrubDamageAnim
+
+gDekuScrubDieAnim:
+  type: OOT:ANIMATION
+  offset: 0x2BD4
+  symbol: gDekuScrubDieAnim
+
+gDekuScrubEyeTex:
+  type: TEXTURE
+  offset: 0x19F0
+  symbol: gDekuScrubEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuScrubFlowerDL:
+  type: GFX
+  offset: 0x1E50
+  symbol: gDekuScrubFlowerDL
+
+gDekuScrubFlowerFragmentDL:
+  type: GFX
+  offset: 0x1F50
+  symbol: gDekuScrubFlowerFragmentDL
+
+gDekuScrubFlowerFragmentTex:
+  type: TEXTURE
+  offset: 0x1FD8
+  symbol: gDekuScrubFlowerFragmentTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuScrubHeadDL:
+  type: GFX
+  offset: 0xF20
+  symbol: gDekuScrubHeadDL
+
+gDekuScrubHeadLimb:
+  type: OOT:LIMB
+  offset: 0x23E4
+  symbol: gDekuScrubHeadLimb
+  limb_type: Standard
+
+gDekuScrubHeaddressDL:
+  type: GFX
+  offset: 0xE30
+  symbol: gDekuScrubHeaddressDL
+
+gDekuScrubHeaddressLimb:
+  type: OOT:LIMB
+  offset: 0x23F0
+  symbol: gDekuScrubHeaddressLimb
+  limb_type: Standard
+
+gDekuScrubIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x326C
+  symbol: gDekuScrubIdleAnim
+
+gDekuScrubLeafTex:
+  type: TEXTURE
+  offset: 0x11F0
+  symbol: gDekuScrubLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuScrubLeftFootDL:
+  type: GFX
+  offset: 0xB40
+  symbol: gDekuScrubLeftFootDL
+
+gDekuScrubLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x2420
+  symbol: gDekuScrubLeftFootLimb
+  limb_type: Standard
+
+gDekuScrubLeftLegDL:
+  type: GFX
+  offset: 0xBE8
+  symbol: gDekuScrubLeftLegDL
+
+gDekuScrubLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x2414
+  symbol: gDekuScrubLeftLegLimb
+  limb_type: Standard
+
+gDekuScrubLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2FA4
+  symbol: gDekuScrubLookAroundAnim
+
+gDekuScrubMouthTex:
+  type: TEXTURE
+  offset: 0x1170
+  symbol: gDekuScrubMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuScrubPantingAnim:
+  type: OOT:ANIMATION
+  offset: 0x33E4
+  symbol: gDekuScrubPantingAnim
+
+gDekuScrubRightFootDL:
+  type: GFX
+  offset: 0xA00
+  symbol: gDekuScrubRightFootDL
+
+gDekuScrubRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x2438
+  symbol: gDekuScrubRightFootLimb
+  limb_type: Standard
+
+gDekuScrubRightLegDL:
+  type: GFX
+  offset: 0xAA8
+  symbol: gDekuScrubRightLegDL
+
+gDekuScrubRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x242C
+  symbol: gDekuScrubRightLegLimb
+  limb_type: Standard
+
+gDekuScrubRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x3780
+  symbol: gDekuScrubRunAnim
+
+gDekuScrubSkel:
+  type: MM:SKELETON
+  offset: 0x2468
+  symbol: gDekuScrubSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDekuScrubSkinTex:
+  type: TEXTURE
+  offset: 0x1A70
+  symbol: gDekuScrubSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuScrubSnoutDL:
+  type: GFX
+  offset: 0xC80
+  symbol: gDekuScrubSnoutDL
+
+gDekuScrubSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x2408
+  symbol: gDekuScrubSnoutLimb
+  limb_type: Standard
+
+gDekuScrubSnoutTex:
+  type: TEXTURE
+  offset: 0x10F0
+  symbol: gDekuScrubSnoutTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuScrubSpitAnim:
+  type: OOT:ANIMATION
+  offset: 0x168
+  symbol: gDekuScrubSpitAnim
+
+gDekuScrubStandingIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2950
+  symbol: gDekuScrubStandingIdleAnim
+
+gDekuScrubUnburrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x2DD4
+  symbol: gDekuScrubUnburrowAnim
+
+gDekuScrubUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x3180
+  symbol: gDekuScrubUpAnim
+
+
+object_dekunutsVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_dekunutsVtx_000180
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_000270:
+  type: MM:ARRAY
+  offset: 0x000270
+  symbol: object_dekunutsVtx_000270
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_000520:
+  type: MM:ARRAY
+  offset: 0x000520
+  symbol: object_dekunutsVtx_000520
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_0006A0:
+  type: MM:ARRAY
+  offset: 0x0006A0
+  symbol: object_dekunutsVtx_0006A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_000820:
+  type: MM:ARRAY
+  offset: 0x000820
+  symbol: object_dekunutsVtx_000820
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_000890:
+  type: MM:ARRAY
+  offset: 0x000890
+  symbol: object_dekunutsVtx_000890
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_0008E0:
+  type: MM:ARRAY
+  offset: 0x0008E0
+  symbol: object_dekunutsVtx_0008E0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_000950:
+  type: MM:ARRAY
+  offset: 0x000950
+  symbol: object_dekunutsVtx_000950
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_0009A0:
+  type: MM:ARRAY
+  offset: 0x0009A0
+  symbol: object_dekunutsVtx_0009A0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_001C70:
+  type: MM:ARRAY
+  offset: 0x001C70
+  symbol: object_dekunutsVtx_001C70
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekunutsVtx_001F20:
+  type: MM:ARRAY
+  offset: 0x001F20
+  symbol: object_dekunutsVtx_001F20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuScrubSkelLimbs:
+  type: BLOB
+  offset: 0x2444
+  symbol: gDekuScrubSkelLimbs
+  size: 0

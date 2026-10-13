@@ -1,0 +1,906 @@
+:config:
+  segments:
+    - [ 6, 0x0112BBF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0112BBF0 ]
+    - [ 9, 0x0112BBF0 ]
+    - [ 10, 0x0112BBF0 ]
+    - [ 11, 0x0112BBF0 ]
+    - [ 12, 0x0112BBF0 ]
+    - [ 13, 0x0112BBF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gRuinFragmentDL:
+  type: GFX
+  offset: 0x7A88
+  symbol: gRuinFragmentDL
+
+gTwinmoldAntennaTex:
+  type: TEXTURE
+  offset: 0x37A0
+  symbol: gTwinmoldAntennaTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTwinmoldBlueSkinTex:
+  type: TEXTURE
+  offset: 0x41A0
+  symbol: gTwinmoldBlueSkinTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x300
+
+gTwinmoldBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x13818
+  symbol: gTwinmoldBodyRootLimb
+  limb_type: Standard
+
+gTwinmoldBodySegment10DL:
+  type: GFX
+  offset: 0x10B90
+  symbol: gTwinmoldBodySegment10DL
+
+gTwinmoldBodySegment10Limb:
+  type: OOT:LIMB
+  offset: 0x13890
+  symbol: gTwinmoldBodySegment10Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment11DL:
+  type: GFX
+  offset: 0x10F10
+  symbol: gTwinmoldBodySegment11DL
+
+gTwinmoldBodySegment11Limb:
+  type: OOT:LIMB
+  offset: 0x1389C
+  symbol: gTwinmoldBodySegment11Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment12DL:
+  type: GFX
+  offset: 0x11290
+  symbol: gTwinmoldBodySegment12DL
+
+gTwinmoldBodySegment12Limb:
+  type: OOT:LIMB
+  offset: 0x138A8
+  symbol: gTwinmoldBodySegment12Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment13DL:
+  type: GFX
+  offset: 0x11610
+  symbol: gTwinmoldBodySegment13DL
+
+gTwinmoldBodySegment13Limb:
+  type: OOT:LIMB
+  offset: 0x138B4
+  symbol: gTwinmoldBodySegment13Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment14DL:
+  type: GFX
+  offset: 0x11990
+  symbol: gTwinmoldBodySegment14DL
+
+gTwinmoldBodySegment14Limb:
+  type: OOT:LIMB
+  offset: 0x138C0
+  symbol: gTwinmoldBodySegment14Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment15DL:
+  type: GFX
+  offset: 0x11D10
+  symbol: gTwinmoldBodySegment15DL
+
+gTwinmoldBodySegment15Limb:
+  type: OOT:LIMB
+  offset: 0x138CC
+  symbol: gTwinmoldBodySegment15Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment16DL:
+  type: GFX
+  offset: 0x12090
+  symbol: gTwinmoldBodySegment16DL
+
+gTwinmoldBodySegment16Limb:
+  type: OOT:LIMB
+  offset: 0x138D8
+  symbol: gTwinmoldBodySegment16Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment17DL:
+  type: GFX
+  offset: 0x12410
+  symbol: gTwinmoldBodySegment17DL
+
+gTwinmoldBodySegment17Limb:
+  type: OOT:LIMB
+  offset: 0x138E4
+  symbol: gTwinmoldBodySegment17Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment18DL:
+  type: GFX
+  offset: 0x12790
+  symbol: gTwinmoldBodySegment18DL
+
+gTwinmoldBodySegment18Limb:
+  type: OOT:LIMB
+  offset: 0x138F0
+  symbol: gTwinmoldBodySegment18Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment19DL:
+  type: GFX
+  offset: 0x12B10
+  symbol: gTwinmoldBodySegment19DL
+
+gTwinmoldBodySegment19Limb:
+  type: OOT:LIMB
+  offset: 0x138FC
+  symbol: gTwinmoldBodySegment19Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment1DL:
+  type: GFX
+  offset: 0xECF0
+  symbol: gTwinmoldBodySegment1DL
+
+gTwinmoldBodySegment1Limb:
+  type: OOT:LIMB
+  offset: 0x13824
+  symbol: gTwinmoldBodySegment1Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment20DL:
+  type: GFX
+  offset: 0x12E90
+  symbol: gTwinmoldBodySegment20DL
+
+gTwinmoldBodySegment20Limb:
+  type: OOT:LIMB
+  offset: 0x13908
+  symbol: gTwinmoldBodySegment20Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment21DL:
+  type: GFX
+  offset: 0x13210
+  symbol: gTwinmoldBodySegment21DL
+
+gTwinmoldBodySegment21Limb:
+  type: OOT:LIMB
+  offset: 0x13914
+  symbol: gTwinmoldBodySegment21Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment2DL:
+  type: GFX
+  offset: 0xEF90
+  symbol: gTwinmoldBodySegment2DL
+
+gTwinmoldBodySegment2Limb:
+  type: OOT:LIMB
+  offset: 0x13830
+  symbol: gTwinmoldBodySegment2Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment3DL:
+  type: GFX
+  offset: 0xF310
+  symbol: gTwinmoldBodySegment3DL
+
+gTwinmoldBodySegment3Limb:
+  type: OOT:LIMB
+  offset: 0x1383C
+  symbol: gTwinmoldBodySegment3Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment4DL:
+  type: GFX
+  offset: 0xF690
+  symbol: gTwinmoldBodySegment4DL
+
+gTwinmoldBodySegment4Limb:
+  type: OOT:LIMB
+  offset: 0x13848
+  symbol: gTwinmoldBodySegment4Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment5DL:
+  type: GFX
+  offset: 0xFA10
+  symbol: gTwinmoldBodySegment5DL
+
+gTwinmoldBodySegment5Limb:
+  type: OOT:LIMB
+  offset: 0x13854
+  symbol: gTwinmoldBodySegment5Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment6DL:
+  type: GFX
+  offset: 0xFD90
+  symbol: gTwinmoldBodySegment6DL
+
+gTwinmoldBodySegment6Limb:
+  type: OOT:LIMB
+  offset: 0x13860
+  symbol: gTwinmoldBodySegment6Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment7DL:
+  type: GFX
+  offset: 0x10110
+  symbol: gTwinmoldBodySegment7DL
+
+gTwinmoldBodySegment7Limb:
+  type: OOT:LIMB
+  offset: 0x1386C
+  symbol: gTwinmoldBodySegment7Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment8DL:
+  type: GFX
+  offset: 0x10490
+  symbol: gTwinmoldBodySegment8DL
+
+gTwinmoldBodySegment8Limb:
+  type: OOT:LIMB
+  offset: 0x13878
+  symbol: gTwinmoldBodySegment8Limb
+  limb_type: Standard
+
+gTwinmoldBodySegment9DL:
+  type: GFX
+  offset: 0x10810
+  symbol: gTwinmoldBodySegment9DL
+
+gTwinmoldBodySegment9Limb:
+  type: OOT:LIMB
+  offset: 0x13884
+  symbol: gTwinmoldBodySegment9Limb
+  limb_type: Standard
+
+gTwinmoldBodySkel:
+  type: MM:SKELETON
+  offset: 0x13988
+  symbol: gTwinmoldBodySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTwinmoldBodyTailDL:
+  type: GFX
+  offset: 0x13590
+  symbol: gTwinmoldBodyTailDL
+
+gTwinmoldBodyTailLimb:
+  type: OOT:LIMB
+  offset: 0x13920
+  symbol: gTwinmoldBodyTailLimb
+  limb_type: Standard
+
+gTwinmoldDustMaskTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTwinmoldDustMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gTwinmoldDustMaterialDL:
+  type: GFX
+  offset: 0x230
+  symbol: gTwinmoldDustMaterialDL
+
+gTwinmoldDustModelDL:
+  type: GFX
+  offset: 0x2E0
+  symbol: gTwinmoldDustModelDL
+
+gTwinmoldEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x49A0
+  symbol: gTwinmoldEmpty1TexAnim
+
+gTwinmoldEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x9C90
+  symbol: gTwinmoldEmpty2TexAnim
+
+gTwinmoldEyeTex:
+  type: TEXTURE
+  offset: 0xBA0
+  symbol: gTwinmoldEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldHeadDL:
+  type: GFX
+  offset: 0x6160
+  symbol: gTwinmoldHeadDL
+
+gTwinmoldHeadFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C78
+  symbol: gTwinmoldHeadFlyAnim
+
+gTwinmoldHeadLeftAntennaBackDL:
+  type: GFX
+  offset: 0x6820
+  symbol: gTwinmoldHeadLeftAntennaBackDL
+
+gTwinmoldHeadLeftAntennaBackLimb:
+  type: OOT:LIMB
+  offset: 0x9AC8
+  symbol: gTwinmoldHeadLeftAntennaBackLimb
+  limb_type: Standard
+
+gTwinmoldHeadLeftAntennaFrontDL:
+  type: GFX
+  offset: 0x68C8
+  symbol: gTwinmoldHeadLeftAntennaFrontDL
+
+gTwinmoldHeadLeftAntennaFrontLimb:
+  type: OOT:LIMB
+  offset: 0x9AD4
+  symbol: gTwinmoldHeadLeftAntennaFrontLimb
+  limb_type: Standard
+
+gTwinmoldHeadLeftAntennaRootLimb:
+  type: OOT:LIMB
+  offset: 0x9ABC
+  symbol: gTwinmoldHeadLeftAntennaRootLimb
+  limb_type: Standard
+
+gTwinmoldHeadLeftMandibleDL:
+  type: GFX
+  offset: 0x6AC0
+  symbol: gTwinmoldHeadLeftMandibleDL
+
+gTwinmoldHeadLeftMandibleLimb:
+  type: OOT:LIMB
+  offset: 0x9A8C
+  symbol: gTwinmoldHeadLeftMandibleLimb
+  limb_type: Standard
+
+gTwinmoldHeadLeftMandibleRootLimb:
+  type: OOT:LIMB
+  offset: 0x9A80
+  symbol: gTwinmoldHeadLeftMandibleRootLimb
+  limb_type: Standard
+
+gTwinmoldHeadLimb:
+  type: OOT:LIMB
+  offset: 0x9A5C
+  symbol: gTwinmoldHeadLimb
+  limb_type: Standard
+
+gTwinmoldHeadRightAntennaBackDL:
+  type: GFX
+  offset: 0x6970
+  symbol: gTwinmoldHeadRightAntennaBackDL
+
+gTwinmoldHeadRightAntennaBackLimb:
+  type: OOT:LIMB
+  offset: 0x9AA4
+  symbol: gTwinmoldHeadRightAntennaBackLimb
+  limb_type: Standard
+
+gTwinmoldHeadRightAntennaFrontDL:
+  type: GFX
+  offset: 0x6A18
+  symbol: gTwinmoldHeadRightAntennaFrontDL
+
+gTwinmoldHeadRightAntennaFrontLimb:
+  type: OOT:LIMB
+  offset: 0x9AB0
+  symbol: gTwinmoldHeadRightAntennaFrontLimb
+  limb_type: Standard
+
+gTwinmoldHeadRightAntennaRootLimb:
+  type: OOT:LIMB
+  offset: 0x9A98
+  symbol: gTwinmoldHeadRightAntennaRootLimb
+  limb_type: Standard
+
+gTwinmoldHeadRightMandibleDL:
+  type: GFX
+  offset: 0x6C68
+  symbol: gTwinmoldHeadRightMandibleDL
+
+gTwinmoldHeadRightMandibleLimb:
+  type: OOT:LIMB
+  offset: 0x9A74
+  symbol: gTwinmoldHeadRightMandibleLimb
+  limb_type: Standard
+
+gTwinmoldHeadRightMandibleRootLimb:
+  type: OOT:LIMB
+  offset: 0x9A68
+  symbol: gTwinmoldHeadRightMandibleRootLimb
+  limb_type: Standard
+
+gTwinmoldHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x9A50
+  symbol: gTwinmoldHeadRootLimb
+  limb_type: Standard
+
+gTwinmoldHeadSkel:
+  type: MM:SKELETON
+  offset: 0x9B10
+  symbol: gTwinmoldHeadSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gTwinmoldHeadStationaryAnim:
+  type: OOT:ANIMATION
+  offset: 0x4A1C
+  symbol: gTwinmoldHeadStationaryAnim
+
+gTwinmoldRedSkinTex:
+  type: TEXTURE
+  offset: 0x3A0
+  symbol: gTwinmoldRedSkinTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x300
+
+gTwinmoldRuinPillarDL:
+  type: GFX
+  offset: 0x7D18
+  symbol: gTwinmoldRuinPillarDL
+
+gTwinmoldRuinPillarTLUT:
+  type: TEXTURE
+  offset: 0x7E30
+  symbol: gTwinmoldRuinPillarTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldRuinPillarTex:
+  type: TEXTURE
+  offset: 0x7E50
+  symbol: gTwinmoldRuinPillarTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTwinmoldRuinPyramidDL:
+  type: GFX
+  offset: 0x6FD0
+  symbol: gTwinmoldRuinPyramidDL
+
+gTwinmoldRuinPyramidTLUT:
+  type: TEXTURE
+  offset: 0x7158
+  symbol: gTwinmoldRuinPyramidTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldRuinPyramidTex:
+  type: TEXTURE
+  offset: 0x7178
+  symbol: gTwinmoldRuinPyramidTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTwinmoldSkinTLUT:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gTwinmoldSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldSnoutTLUT:
+  type: TEXTURE
+  offset: 0x320
+  symbol: gTwinmoldSnoutTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldSnoutTex:
+  type: TEXTURE
+  offset: 0x13A0
+  symbol: gTwinmoldSnoutTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTwinmoldSpikeAndMandibleTLUT:
+  type: TEXTURE
+  offset: 0x380
+  symbol: gTwinmoldSpikeAndMandibleTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldSpikeAndMandibleTex:
+  type: TEXTURE
+  offset: 0x2FA0
+  symbol: gTwinmoldSpikeAndMandibleTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTwinmoldTailGemTex:
+  type: TEXTURE
+  offset: 0x39A0
+  symbol: gTwinmoldTailGemTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldTeethTex:
+  type: TEXTURE
+  offset: 0x23A0
+  symbol: gTwinmoldTeethTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gTwinmoldTitleCardTex:
+  type: TEXTURE
+  offset: 0x8650
+  symbol: gTwinmoldTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gTwinmoldUndersideTLUT:
+  type: TEXTURE
+  offset: 0x360
+  symbol: gTwinmoldUndersideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldUndersideTex:
+  type: TEXTURE
+  offset: 0x27A0
+  symbol: gTwinmoldUndersideTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTwinmoldVeinsTLUT:
+  type: TEXTURE
+  offset: 0x340
+  symbol: gTwinmoldVeinsTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTwinmoldVeinsTex:
+  type: TEXTURE
+  offset: 0x1BA0
+  symbol: gTwinmoldVeinsTex
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_boss02Vtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_boss02Vtx_000200
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_004A30:
+  type: MM:ARRAY
+  offset: 0x004A30
+  symbol: object_boss02Vtx_004A30
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005320:
+  type: MM:ARRAY
+  offset: 0x005320
+  symbol: object_boss02Vtx_005320
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005740:
+  type: MM:ARRAY
+  offset: 0x005740
+  symbol: object_boss02Vtx_005740
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005B60:
+  type: MM:ARRAY
+  offset: 0x005B60
+  symbol: object_boss02Vtx_005B60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005CE0:
+  type: MM:ARRAY
+  offset: 0x005CE0
+  symbol: object_boss02Vtx_005CE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005E60:
+  type: MM:ARRAY
+  offset: 0x005E60
+  symbol: object_boss02Vtx_005E60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_005FE0:
+  type: MM:ARRAY
+  offset: 0x005FE0
+  symbol: object_boss02Vtx_005FE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_006E10:
+  type: MM:ARRAY
+  offset: 0x006E10
+  symbol: object_boss02Vtx_006E10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_007978:
+  type: MM:ARRAY
+  offset: 0x007978
+  symbol: object_boss02Vtx_007978
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_007B58:
+  type: MM:ARRAY
+  offset: 0x007B58
+  symbol: object_boss02Vtx_007B58
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinmoldHeadSkelLimbs:
+  type: BLOB
+  offset: 0x9AE0
+  symbol: gTwinmoldHeadSkelLimbs
+  size: 0
+
+object_boss02Vtx_009CA0:
+  type: MM:ARRAY
+  offset: 0x009CA0
+  symbol: object_boss02Vtx_009CA0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_009FD0:
+  type: MM:ARRAY
+  offset: 0x009FD0
+  symbol: object_boss02Vtx_009FD0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00A380:
+  type: MM:ARRAY
+  offset: 0x00A380
+  symbol: object_boss02Vtx_00A380
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00A730:
+  type: MM:ARRAY
+  offset: 0x00A730
+  symbol: object_boss02Vtx_00A730
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00AAE0:
+  type: MM:ARRAY
+  offset: 0x00AAE0
+  symbol: object_boss02Vtx_00AAE0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00AE90:
+  type: MM:ARRAY
+  offset: 0x00AE90
+  symbol: object_boss02Vtx_00AE90
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00B240:
+  type: MM:ARRAY
+  offset: 0x00B240
+  symbol: object_boss02Vtx_00B240
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00B5F0:
+  type: MM:ARRAY
+  offset: 0x00B5F0
+  symbol: object_boss02Vtx_00B5F0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00B9A0:
+  type: MM:ARRAY
+  offset: 0x00B9A0
+  symbol: object_boss02Vtx_00B9A0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00BD50:
+  type: MM:ARRAY
+  offset: 0x00BD50
+  symbol: object_boss02Vtx_00BD50
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00C100:
+  type: MM:ARRAY
+  offset: 0x00C100
+  symbol: object_boss02Vtx_00C100
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00C4B0:
+  type: MM:ARRAY
+  offset: 0x00C4B0
+  symbol: object_boss02Vtx_00C4B0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00C860:
+  type: MM:ARRAY
+  offset: 0x00C860
+  symbol: object_boss02Vtx_00C860
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00CC10:
+  type: MM:ARRAY
+  offset: 0x00CC10
+  symbol: object_boss02Vtx_00CC10
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00CFC0:
+  type: MM:ARRAY
+  offset: 0x00CFC0
+  symbol: object_boss02Vtx_00CFC0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00D370:
+  type: MM:ARRAY
+  offset: 0x00D370
+  symbol: object_boss02Vtx_00D370
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00D720:
+  type: MM:ARRAY
+  offset: 0x00D720
+  symbol: object_boss02Vtx_00D720
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00DAD0:
+  type: MM:ARRAY
+  offset: 0x00DAD0
+  symbol: object_boss02Vtx_00DAD0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00DE80:
+  type: MM:ARRAY
+  offset: 0x00DE80
+  symbol: object_boss02Vtx_00DE80
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00E230:
+  type: MM:ARRAY
+  offset: 0x00E230
+  symbol: object_boss02Vtx_00E230
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00E5E0:
+  type: MM:ARRAY
+  offset: 0x00E5E0
+  symbol: object_boss02Vtx_00E5E0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss02Vtx_00E9D0:
+  type: MM:ARRAY
+  offset: 0x00E9D0
+  symbol: object_boss02Vtx_00E9D0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinmoldBodySkelLimbs:
+  type: BLOB
+  offset: 0x1392C
+  symbol: gTwinmoldBodySkelLimbs
+  size: 0

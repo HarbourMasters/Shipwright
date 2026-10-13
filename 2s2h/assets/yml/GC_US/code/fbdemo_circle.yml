@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 128, 0x00A77120 ]
+  virtual: [ 0x800A6440, 0x00A77120 ]
+
+gCircleTex:
+  type: TEXTURE
+  offset: 0x11E070
+  symbol: gCircleTex
+  format: I4
+  width: 64
+  height: 64
+

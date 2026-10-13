@@ -1,0 +1,53 @@
+:config:
+  segments:
+    - [ 6, 0x012ADA90 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012ADA90 ]
+    - [ 9, 0x012ADA90 ]
+    - [ 10, 0x012ADA90 ]
+    - [ 11, 0x012ADA90 ]
+    - [ 12, 0x012ADA90 ]
+    - [ 13, 0x012ADA90 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDkjailCol:
+  type: MM:COLLISION
+  offset: 0x11A8
+  symbol: gDkjailCol
+
+gDkjailEmptyDL:
+  type: GFX
+  offset: 0x150
+  symbol: gDkjailEmptyDL
+
+gDkjailIvyDL:
+  type: GFX
+  offset: 0x80
+  symbol: gDkjailIvyDL
+
+gDkjailIvyTex:
+  type: TEXTURE
+  offset: 0x158
+  symbol: gDkjailIvyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDkjailMaskTex:
+  type: TEXTURE
+  offset: 0x958
+  symbol: gDkjailMaskTex
+  format: IA8
+  width: 32
+  height: 64
+
+
+object_dkjail_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_dkjail_objVtx_000000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

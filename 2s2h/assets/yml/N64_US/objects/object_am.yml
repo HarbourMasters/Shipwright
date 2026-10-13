@@ -1,0 +1,303 @@
+:config:
+  segments:
+    - [ 6, 0x00EEE620 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EEE620 ]
+    - [ 9, 0x00EEE620 ]
+    - [ 10, 0x00EEE620 ]
+    - [ 11, 0x00EEE620 ]
+    - [ 12, 0x00EEE620 ]
+    - [ 13, 0x00EEE620 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gArmosHopAnim:
+  type: OOT:ANIMATION
+  offset: 0x238
+  symbol: gArmosHopAnim
+
+gArmosPushedBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x33C
+  symbol: gArmosPushedBackAnim
+
+gArmosTakeDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x5B3C
+  symbol: gArmosTakeDamageAnim
+
+object_am_Colheader_000118:
+  type: MM:COLLISION
+  offset: 0x118
+  symbol: object_am_Colheader_000118
+
+object_am_Colheader_005CF8:
+  type: MM:COLLISION
+  offset: 0x5CF8
+  symbol: object_am_Colheader_005CF8
+
+object_am_DL_0005D0:
+  type: GFX
+  offset: 0x5D0
+  symbol: object_am_DL_0005D0
+
+object_am_DL_0007A8:
+  type: GFX
+  offset: 0x7A8
+  symbol: object_am_DL_0007A8
+
+object_am_DL_0016C8:
+  type: GFX
+  offset: 0x16C8
+  symbol: object_am_DL_0016C8
+
+object_am_DL_002278:
+  type: GFX
+  offset: 0x2278
+  symbol: object_am_DL_002278
+
+object_am_DL_002550:
+  type: GFX
+  offset: 0x2550
+  symbol: object_am_DL_002550
+
+object_am_Skel_005948:
+  type: MM:SKELETON
+  offset: 0x5948
+  symbol: object_am_Skel_005948
+  limb_type: Standard
+  skel_type: Normal
+
+object_am_Standardlimb_005878:
+  type: OOT:LIMB
+  offset: 0x5878
+  symbol: object_am_Standardlimb_005878
+  limb_type: Standard
+
+object_am_Standardlimb_005884:
+  type: OOT:LIMB
+  offset: 0x5884
+  symbol: object_am_Standardlimb_005884
+  limb_type: Standard
+
+object_am_Standardlimb_005890:
+  type: OOT:LIMB
+  offset: 0x5890
+  symbol: object_am_Standardlimb_005890
+  limb_type: Standard
+
+object_am_Standardlimb_00589C:
+  type: OOT:LIMB
+  offset: 0x589C
+  symbol: object_am_Standardlimb_00589C
+  limb_type: Standard
+
+object_am_Standardlimb_0058A8:
+  type: OOT:LIMB
+  offset: 0x58A8
+  symbol: object_am_Standardlimb_0058A8
+  limb_type: Standard
+
+object_am_Standardlimb_0058B4:
+  type: OOT:LIMB
+  offset: 0x58B4
+  symbol: object_am_Standardlimb_0058B4
+  limb_type: Standard
+
+object_am_Standardlimb_0058C0:
+  type: OOT:LIMB
+  offset: 0x58C0
+  symbol: object_am_Standardlimb_0058C0
+  limb_type: Standard
+
+object_am_Standardlimb_0058CC:
+  type: OOT:LIMB
+  offset: 0x58CC
+  symbol: object_am_Standardlimb_0058CC
+  limb_type: Standard
+
+object_am_Standardlimb_0058D8:
+  type: OOT:LIMB
+  offset: 0x58D8
+  symbol: object_am_Standardlimb_0058D8
+  limb_type: Standard
+
+object_am_Standardlimb_0058E4:
+  type: OOT:LIMB
+  offset: 0x58E4
+  symbol: object_am_Standardlimb_0058E4
+  limb_type: Standard
+
+object_am_Standardlimb_0058F0:
+  type: OOT:LIMB
+  offset: 0x58F0
+  symbol: object_am_Standardlimb_0058F0
+  limb_type: Standard
+
+object_am_Standardlimb_0058FC:
+  type: OOT:LIMB
+  offset: 0x58FC
+  symbol: object_am_Standardlimb_0058FC
+  limb_type: Standard
+
+object_am_Standardlimb_005908:
+  type: OOT:LIMB
+  offset: 0x5908
+  symbol: object_am_Standardlimb_005908
+  limb_type: Standard
+
+object_am_Tex_002638:
+  type: TEXTURE
+  offset: 0x2638
+  symbol: object_am_Tex_002638
+  format: I4
+  width: 32
+  height: 32
+
+object_am_Tex_002838:
+  type: TEXTURE
+  offset: 0x2838
+  symbol: object_am_Tex_002838
+  format: I4
+  width: 16
+  height: 32
+
+object_am_Tex_002938:
+  type: TEXTURE
+  offset: 0x2938
+  symbol: object_am_Tex_002938
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_am_Tex_002D38:
+  type: TEXTURE
+  offset: 0x2D38
+  symbol: object_am_Tex_002D38
+  format: I4
+  width: 16
+  height: 32
+
+object_am_Tex_002E38:
+  type: TEXTURE
+  offset: 0x2E38
+  symbol: object_am_Tex_002E38
+  format: I4
+  width: 32
+  height: 32
+
+object_am_Tex_003038:
+  type: TEXTURE
+  offset: 0x3038
+  symbol: object_am_Tex_003038
+  format: I4
+  width: 32
+  height: 32
+
+object_am_Tex_003238:
+  type: TEXTURE
+  offset: 0x3238
+  symbol: object_am_Tex_003238
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_am_Tex_003A38:
+  type: TEXTURE
+  offset: 0x3A38
+  symbol: object_am_Tex_003A38
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_am_Tex_003C38:
+  type: TEXTURE
+  offset: 0x3C38
+  symbol: object_am_Tex_003C38
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_am_Tex_004438:
+  type: TEXTURE
+  offset: 0x4438
+  symbol: object_am_Tex_004438
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_am_Tex_004C38:
+  type: TEXTURE
+  offset: 0x4C38
+  symbol: object_am_Tex_004C38
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_am_Tex_005438:
+  type: TEXTURE
+  offset: 0x5438
+  symbol: object_am_Tex_005438
+  format: I4
+  width: 16
+  height: 8
+
+object_am_Tex_005478:
+  type: TEXTURE
+  offset: 0x5478
+  symbol: object_am_Tex_005478
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_amVtx_000350:
+  type: MM:ARRAY
+  offset: 0x000350
+  symbol: object_amVtx_000350
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_amVtx_0006E8:
+  type: MM:ARRAY
+  offset: 0x0006E8
+  symbol: object_amVtx_0006E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_amVtx_000838:
+  type: MM:ARRAY
+  offset: 0x000838
+  symbol: object_amVtx_000838
+  count: 233
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_amVtx_001EA8:
+  type: MM:ARRAY
+  offset: 0x001EA8
+  symbol: object_amVtx_001EA8
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_amVtx_002440:
+  type: MM:ARRAY
+  offset: 0x002440
+  symbol: object_amVtx_002440
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_am_Skel_005948Limbs:
+  type: BLOB
+  offset: 0x5914
+  symbol: object_am_Skel_005948Limbs
+  size: 0

@@ -1,0 +1,42 @@
+#ifndef Z2_HAKASHITA_Z2_HAKASHITA_ROOM_02_H
+#define Z2_HAKASHITA_Z2_HAKASHITA_ROOM_02_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_HAKASHITA_room_02DL_004F30 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_004F30"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_004F30[] = dZ2_HAKASHITA_room_02DL_004F30;
+
+#define dZ2_HAKASHITA_room_02Tex_006BC8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_006BC8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_006BC8[] = dZ2_HAKASHITA_room_02Tex_006BC8;
+
+#define dZ2_HAKASHITA_room_02Tex_0067C8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_0067C8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_0067C8[] = dZ2_HAKASHITA_room_02Tex_0067C8;
+
+#define dZ2_HAKASHITA_room_02DL_003220 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_003220"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_003220[] = dZ2_HAKASHITA_room_02DL_003220;
+
+#define dZ2_HAKASHITA_room_02Tex_0063C8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_0063C8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_0063C8[] = dZ2_HAKASHITA_room_02Tex_0063C8;
+
+#define dZ2_HAKASHITA_room_02Tex_0051C8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_0051C8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_0051C8[] = dZ2_HAKASHITA_room_02Tex_0051C8;
+
+#define dZ2_HAKASHITA_room_02Tex_0053C8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_0053C8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_0053C8[] = dZ2_HAKASHITA_room_02Tex_0053C8;
+
+#define dZ2_HAKASHITA_room_02DL_0007B8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_0007B8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_0007B8[] = dZ2_HAKASHITA_room_02DL_0007B8;
+
+#define dZ2_HAKASHITA_room_02Tex_005BC8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02Tex_005BC8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02Tex_005BC8[] = dZ2_HAKASHITA_room_02Tex_005BC8;
+
+#define dZ2_HAKASHITA_room_02DL_0050B8 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_0050B8"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_0050B8[] = dZ2_HAKASHITA_room_02DL_0050B8;
+
+#define dZ2_HAKASHITA_room_02DL_0051A0 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_0051A0"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_0051A0[] = dZ2_HAKASHITA_room_02DL_0051A0;
+
+#define dZ2_HAKASHITA_room_02DL_006FD0 "__OTR__scenes/nonmq/Z2_HAKASHITA_scene/Z2_HAKASHITA_room_02DL_006FD0"
+static const ALIGN_ASSET(2) char Z2_HAKASHITA_room_02DL_006FD0[] = dZ2_HAKASHITA_room_02DL_006FD0;
+
+#endif // Z2_HAKASHITA_Z2_HAKASHITA_ROOM_02_H

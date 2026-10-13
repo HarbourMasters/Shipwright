@@ -1,0 +1,60 @@
+:config:
+  segments:
+    - [ 128, 0x00CFD400 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80AC6740, 0x00CFD400 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+fbdemo_tex_000520:
+  type: TEXTURE
+  offset: 0x520
+  symbol: fbdemo_tex_000520
+  format: I8
+  width: 16
+  height: 64
+
+fbdemo_tex_000920:
+  type: TEXTURE
+  offset: 0x920
+  symbol: fbdemo_tex_000920
+  format: I8
+  width: 16
+  height: 64
+
+fbdemo_tex_000D20:
+  type: TEXTURE
+  offset: 0xD20
+  symbol: fbdemo_tex_000D20
+  format: I8
+  width: 16
+  height: 64
+
+fbdemo_tex_001120:
+  type: TEXTURE
+  offset: 0x1120
+  symbol: fbdemo_tex_001120
+  format: I8
+  width: 16
+  height: 64
+
+fbdemo_tex_001520:
+  type: TEXTURE
+  offset: 0x1520
+  symbol: fbdemo_tex_001520
+  format: I8
+  width: 16
+  height: 64
+
+sTransWipe3DL:
+  type: GFX
+  offset: 0x1B40
+  symbol: sTransWipe3DL
+
+sTransWipe3Vtx:
+  type: MM:ARRAY
+  offset: 0x1920
+  symbol: sTransWipe3Vtx
+  count: 34
+  array_type: VTX
+

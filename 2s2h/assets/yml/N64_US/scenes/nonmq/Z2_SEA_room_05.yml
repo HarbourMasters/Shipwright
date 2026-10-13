@@ -1,0 +1,131 @@
+:config:
+  segments:
+    - [ 3, 0x01B950B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01B950B0 ]
+    - [ 9, 0x01B950B0 ]
+    - [ 10, 0x01B950B0 ]
+    - [ 11, 0x01B950B0 ]
+    - [ 12, 0x01B950B0 ]
+    - [ 13, 0x01B950B0 ]
+    - [ 2, 0x01B74100 ]
+  directory: scenes/nonmq/Z2_SEA
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_SEA.yml
+
+Z2_SEA_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SEA_room_05
+
+Z2_SEA_room_05DL_003EB0:
+  type: GFX
+  offset: 0x3EB0
+  symbol: Z2_SEA_room_05DL_003EB0
+
+Z2_SEA_room_05DL_0052E0:
+  type: GFX
+  offset: 0x52E0
+  symbol: Z2_SEA_room_05DL_0052E0
+
+
+Z2_SEA_room_05ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_SEA_room_05ActorEntry_000070
+  size: 0
+
+Z2_SEA_room_05Vtx_0001F0:
+  type: MM:ARRAY
+  offset: 0x0001F0
+  symbol: Z2_SEA_room_05Vtx_0001F0
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_05DL_000730:
+  type: GFX
+  offset: 0x000730
+  symbol: Z2_SEA_room_05DL_000730
+
+Z2_SEA_room_05Vtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: Z2_SEA_room_05Vtx_000A10
+  count: 377
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_05DL_0021A0:
+  type: GFX
+  offset: 0x0021A0
+  symbol: Z2_SEA_room_05DL_0021A0
+
+Z2_SEA_room_05Vtx_002890:
+  type: MM:ARRAY
+  offset: 0x002890
+  symbol: Z2_SEA_room_05Vtx_002890
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_05DL_002E90:
+  type: GFX
+  offset: 0x002E90
+  symbol: Z2_SEA_room_05DL_002E90
+
+Z2_SEA_room_05Vtx_003090:
+  type: MM:ARRAY
+  offset: 0x003090
+  symbol: Z2_SEA_room_05Vtx_003090
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_05DL_003290:
+  type: GFX
+  offset: 0x003290
+  symbol: Z2_SEA_room_05DL_003290
+
+Z2_SEA_room_05Vtx_0033C0:
+  type: MM:ARRAY
+  offset: 0x0033C0
+  symbol: Z2_SEA_room_05Vtx_0033C0
+  count: 131
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SEA_room_05DL_003BF0:
+  type: GFX
+  offset: 0x003BF0
+  symbol: Z2_SEA_room_05DL_003BF0
+
+Z2_SEA_room_05Tex_003EE0:
+  type: TEXTURE
+  offset: 0x003EE0
+  symbol: Z2_SEA_room_05Tex_003EE0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SEA_room_05Tex_0046E0:
+  type: TEXTURE
+  offset: 0x0046E0
+  symbol: Z2_SEA_room_05Tex_0046E0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SEA_room_05Tex_004EE0:
+  type: TEXTURE
+  offset: 0x004EE0
+  symbol: Z2_SEA_room_05Tex_004EE0
+  format: CI8
+  width: 32
+  height: 32

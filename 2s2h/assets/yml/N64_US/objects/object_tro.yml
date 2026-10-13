@@ -1,0 +1,131 @@
+:config:
+  segments:
+    - [ 6, 0x014D8E80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014D8E80 ]
+    - [ 9, 0x014D8E80 ]
+    - [ 10, 0x014D8E80 ]
+    - [ 11, 0x014D8E80 ]
+    - [ 12, 0x014D8E80 ]
+    - [ 13, 0x014D8E80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gKoumeKioskDL:
+  type: GFX
+  offset: 0x6B0
+  symbol: gKoumeKioskDL
+
+gKoumeKioskEyeClosedTex:
+  type: TEXTURE
+  offset: 0x2140
+  symbol: gKoumeKioskEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeKioskEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1940
+  symbol: gKoumeKioskEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeKioskEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1140
+  symbol: gKoumeKioskEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKoumeKioskHeadLimb:
+  type: OOT:LIMB
+  offset: 0x2940
+  symbol: gKoumeKioskHeadLimb
+  limb_type: Standard
+
+gKoumeKioskHeadMovingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA0
+  symbol: gKoumeKioskHeadMovingAnim
+
+gKoumeKioskJewelHolderTex:
+  type: TEXTURE
+  offset: 0xF80
+  symbol: gKoumeKioskJewelHolderTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gKoumeKioskJewelTex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gKoumeKioskJewelTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKoumeKioskNoseTLUT:
+  type: TEXTURE
+  offset: 0xAE0
+  symbol: gKoumeKioskNoseTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeKioskNoseTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gKoumeKioskNoseTex
+  format: CI8
+  width: 16
+  height: 8
+
+gKoumeKioskNostrilsTLUT:
+  type: TEXTURE
+  offset: 0xCE0
+  symbol: gKoumeKioskNostrilsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKoumeKioskNostrilsTex:
+  type: TEXTURE
+  offset: 0x1100
+  symbol: gKoumeKioskNostrilsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gKoumeKioskShadowedSkinTex:
+  type: TEXTURE
+  offset: 0xEE0
+  symbol: gKoumeKioskShadowedSkinTex
+  format: RGBA16
+  width: 2
+  height: 8
+
+gKoumeKioskSkel:
+  type: MM:SKELETON
+  offset: 0x2950
+  symbol: gKoumeKioskSkel
+  limb_type: Standard
+  skel_type: Normal
+
+
+object_troVtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: object_troVtx_0000B0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKoumeKioskSkelLimbs:
+  type: BLOB
+  offset: 0x294C
+  symbol: gKoumeKioskSkelLimbs
+  size: 0

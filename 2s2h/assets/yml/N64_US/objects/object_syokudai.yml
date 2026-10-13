@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x00F2AD60 ]
+    - [ 5, 0x00E44210 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00F2AD60 ]
+    - [ 9, 0x00F2AD60 ]
+    - [ 10, 0x00F2AD60 ]
+    - [ 11, 0x00F2AD60 ]
+    - [ 12, 0x00F2AD60 ]
+    - [ 13, 0x00F2AD60 ]
+  external_files:
+    - N64_US/objects/gameplay_dangeon_keep.yml
+    - N64_US/objects/gameplay_keep.yml
+
+gObjectSyokudaiTypeFlameCausesSwitchDL:
+  type: GFX
+  offset: 0xB90
+  symbol: gObjectSyokudaiTypeFlameCausesSwitchDL
+
+gObjectSyokudaiTypeNoSwitchDL:
+  type: GFX
+  offset: 0x870
+  symbol: gObjectSyokudaiTypeNoSwitchDL
+
+gObjectSyokudaiTypeSwitchCausesFlameDL:
+  type: GFX
+  offset: 0x3A0
+  symbol: gObjectSyokudaiTypeSwitchCausesFlameDL
+
+object_syokudai_Tex_000C90:
+  type: TEXTURE
+  offset: 0xC90
+  symbol: object_syokudai_Tex_000C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_syokudai_Tex_001490:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: object_syokudai_Tex_001490
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_syokudai_Tex_002490:
+  type: TEXTURE
+  offset: 0x2490
+  symbol: object_syokudai_Tex_002490
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_syokudai_Tex_002C90:
+  type: TEXTURE
+  offset: 0x2C90
+  symbol: object_syokudai_Tex_002C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_syokudai_Tex_003490:
+  type: TEXTURE
+  offset: 0x3490
+  symbol: object_syokudai_Tex_003490
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_syokudaiVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_syokudaiVtx_000000
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syokudaiVtx_000570:
+  type: MM:ARRAY
+  offset: 0x000570
+  symbol: object_syokudaiVtx_000570
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_syokudaiVtx_0009D0:
+  type: MM:ARRAY
+  offset: 0x0009D0
+  symbol: object_syokudaiVtx_0009D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,285 @@
+:config:
+  segments:
+    - [ 6, 0x01482FF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01482FF0 ]
+    - [ 9, 0x01482FF0 ]
+    - [ 10, 0x01482FF0 ]
+    - [ 11, 0x01482FF0 ]
+    - [ 12, 0x01482FF0 ]
+    - [ 13, 0x01482FF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gTwinmoldArenaCenterPlatformBrickTex:
+  type: TEXTURE
+  offset: 0xA6E0
+  symbol: gTwinmoldArenaCenterPlatformBrickTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaCenterPlatformEmblemTex:
+  type: TEXTURE
+  offset: 0xAEE0
+  symbol: gTwinmoldArenaCenterPlatformEmblemTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaCenterPlatformSlopesAndWallSidesTex:
+  type: TEXTURE
+  offset: 0xB6E0
+  symbol: gTwinmoldArenaCenterPlatformSlopesAndWallSidesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gTwinmoldArenaEmpty1DL:
+  type: GFX
+  offset: 0x90A0
+  symbol: gTwinmoldArenaEmpty1DL
+
+gTwinmoldArenaEmpty2DL:
+  type: GFX
+  offset: 0x9460
+  symbol: gTwinmoldArenaEmpty2DL
+
+gTwinmoldArenaEmpty3DL:
+  type: GFX
+  offset: 0x9A90
+  symbol: gTwinmoldArenaEmpty3DL
+
+gTwinmoldArenaEmpty4DL:
+  type: GFX
+  offset: 0xA020
+  symbol: gTwinmoldArenaEmpty4DL
+
+gTwinmoldArenaEmpty5DL:
+  type: GFX
+  offset: 0xA430
+  symbol: gTwinmoldArenaEmpty5DL
+
+gTwinmoldArenaGiantModeArenaCol:
+  type: MM:COLLISION
+  offset: 0x4BA0
+  symbol: gTwinmoldArenaGiantModeArenaCol
+
+gTwinmoldArenaGiantModeCenterPlatformDL:
+  type: GFX
+  offset: 0x1C10
+  symbol: gTwinmoldArenaGiantModeCenterPlatformDL
+
+gTwinmoldArenaGiantModeSandDL:
+  type: GFX
+  offset: 0x1DC0
+  symbol: gTwinmoldArenaGiantModeSandDL
+
+gTwinmoldArenaGiantModeSandTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2598
+  symbol: gTwinmoldArenaGiantModeSandTexAnim
+
+gTwinmoldArenaNormalModeArenaCol:
+  type: MM:COLLISION
+  offset: 0x8EF4
+  symbol: gTwinmoldArenaNormalModeArenaCol
+
+gTwinmoldArenaNormalModeCenterPlatformDL:
+  type: GFX
+  offset: 0x6140
+  symbol: gTwinmoldArenaNormalModeCenterPlatformDL
+
+gTwinmoldArenaNormalModeSandDL:
+  type: GFX
+  offset: 0x62D8
+  symbol: gTwinmoldArenaNormalModeSandDL
+
+gTwinmoldArenaNormalModeSandTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x6858
+  symbol: gTwinmoldArenaNormalModeSandTexAnim
+
+gTwinmoldArenaPillarSidesTex:
+  type: TEXTURE
+  offset: 0xC6E0
+  symbol: gTwinmoldArenaPillarSidesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaSandDetailTex:
+  type: TEXTURE
+  offset: 0xE6E0
+  symbol: gTwinmoldArenaSandDetailTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaSandTex:
+  type: TEXTURE
+  offset: 0xDEE0
+  symbol: gTwinmoldArenaSandTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaTwistedPillarTopTex:
+  type: TEXTURE
+  offset: 0xCEE0
+  symbol: gTwinmoldArenaTwistedPillarTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTwinmoldArenaUnusedClawShapedPillarCol:
+  type: MM:COLLISION
+  offset: 0x9EA8
+  symbol: gTwinmoldArenaUnusedClawShapedPillarCol
+
+gTwinmoldArenaUnusedClawShapedPillarDL:
+  type: GFX
+  offset: 0x9A98
+  symbol: gTwinmoldArenaUnusedClawShapedPillarDL
+
+gTwinmoldArenaUnusedTrapezoidalPillarCol:
+  type: MM:COLLISION
+  offset: 0x9600
+  symbol: gTwinmoldArenaUnusedTrapezoidalPillarCol
+
+gTwinmoldArenaUnusedTrapezoidalPillarDL:
+  type: GFX
+  offset: 0x9468
+  symbol: gTwinmoldArenaUnusedTrapezoidalPillarDL
+
+gTwinmoldArenaUnusedTwistedPillarCol:
+  type: MM:COLLISION
+  offset: 0x930C
+  symbol: gTwinmoldArenaUnusedTwistedPillarCol
+
+gTwinmoldArenaUnusedTwistedPillarDL:
+  type: GFX
+  offset: 0x90A8
+  symbol: gTwinmoldArenaUnusedTwistedPillarDL
+
+gTwinmoldArenaUnusedWallCol:
+  type: MM:COLLISION
+  offset: 0xA200
+  symbol: gTwinmoldArenaUnusedWallCol
+
+gTwinmoldArenaUnusedWallCornerCol:
+  type: MM:COLLISION
+  offset: 0xA6A8
+  symbol: gTwinmoldArenaUnusedWallCornerCol
+
+gTwinmoldArenaUnusedWallCornerDL:
+  type: GFX
+  offset: 0xA438
+  symbol: gTwinmoldArenaUnusedWallCornerDL
+
+gTwinmoldArenaUnusedWallDL:
+  type: GFX
+  offset: 0xA028
+  symbol: gTwinmoldArenaUnusedWallDL
+
+gTwinmoldArenaWallTopAndClawPillarInteriorTex:
+  type: TEXTURE
+  offset: 0xD6E0
+  symbol: gTwinmoldArenaWallTopAndClawPillarInteriorTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_inibs_objectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_inibs_objectVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_inibs_objectVtx_000240
+  count: 413
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinmoldArenaGiantModeSandTexAnimTexScrollParams_002590:
+  type: BLOB
+  offset: 0x002590
+  symbol: gTwinmoldArenaGiantModeSandTexAnimTexScrollParams_002590
+  size: 0
+
+object_inibs_objectVtx_004BD0:
+  type: MM:ARRAY
+  offset: 0x004BD0
+  symbol: object_inibs_objectVtx_004BD0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_004E00:
+  type: MM:ARRAY
+  offset: 0x004E00
+  symbol: object_inibs_objectVtx_004E00
+  count: 308
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTwinmoldArenaNormalModeSandTexAnimTexScrollParams_006850:
+  type: BLOB
+  offset: 0x006850
+  symbol: gTwinmoldArenaNormalModeSandTexAnimTexScrollParams_006850
+  size: 0
+
+object_inibs_objectVtx_008F20:
+  type: MM:ARRAY
+  offset: 0x008F20
+  symbol: object_inibs_objectVtx_008F20
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_009340:
+  type: MM:ARRAY
+  offset: 0x009340
+  symbol: object_inibs_objectVtx_009340
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_009630:
+  type: MM:ARRAY
+  offset: 0x009630
+  symbol: object_inibs_objectVtx_009630
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_009EE0:
+  type: MM:ARRAY
+  offset: 0x009EE0
+  symbol: object_inibs_objectVtx_009EE0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_inibs_objectVtx_00A230:
+  type: MM:ARRAY
+  offset: 0x00A230
+  symbol: object_inibs_objectVtx_00A230
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

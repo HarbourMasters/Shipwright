@@ -1,0 +1,8 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/gameplay_field_keep/gFieldBushFairyDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="14"/>
+	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="0" V11="3" V12="4" Flag1="0"/>
+	<Triangles2 V00="0" V01="5" V02="6" Flag0="0" V10="7" V11="8" V12="9" Flag1="0"/>
+	<Triangles2 V00="7" V01="10" V02="11" Flag0="0" V10="7" V11="12" V12="13" Flag1="0"/>
+	<EndDisplayList/>
+</DisplayList>
+

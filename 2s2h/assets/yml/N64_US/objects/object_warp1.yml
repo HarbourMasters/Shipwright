@@ -1,0 +1,482 @@
+:config:
+  segments:
+    - [ 6, 0x00EF3E40 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EF3E40 ]
+    - [ 9, 0x00EF3E40 ]
+    - [ 10, 0x00EF3E40 ]
+    - [ 11, 0x00EF3E40 ]
+    - [ 12, 0x00EF3E40 ]
+    - [ 13, 0x00EF3E40 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gWarpBossWarpActivationBeamDL:
+  type: GFX
+  offset: 0x3230
+  symbol: gWarpBossWarpActivationBeamDL
+
+gWarpBossWarpActivationBeamEmptyDL:
+  type: GFX
+  offset: 0x34C8
+  symbol: gWarpBossWarpActivationBeamEmptyDL
+
+gWarpBossWarpActivationBeamMaskTex:
+  type: TEXTURE
+  offset: 0x3CD0
+  symbol: gWarpBossWarpActivationBeamMaskTex
+  format: I8
+  width: 32
+  height: 64
+
+gWarpBossWarpActivationBeamTex:
+  type: TEXTURE
+  offset: 0x34D0
+  symbol: gWarpBossWarpActivationBeamTex
+  format: I8
+  width: 32
+  height: 64
+
+gWarpBossWarpActivationBeamTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x44D8
+  symbol: gWarpBossWarpActivationBeamTexAnim
+
+gWarpBossWarpGlowBottomMaskTex:
+  type: TEXTURE
+  offset: 0x5A30
+  symbol: gWarpBossWarpGlowBottomMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gWarpBossWarpGlowDL:
+  type: GFX
+  offset: 0x58C8
+  symbol: gWarpBossWarpGlowDL
+
+gWarpBossWarpGlowEmptyDL:
+  type: GFX
+  offset: 0x58C0
+  symbol: gWarpBossWarpGlowEmptyDL
+
+gWarpBossWarpGlowTex:
+  type: TEXTURE
+  offset: 0x6A30
+  symbol: gWarpBossWarpGlowTex
+  format: I8
+  width: 32
+  height: 64
+
+gWarpBossWarpGlowTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x7238
+  symbol: gWarpBossWarpGlowTexAnim
+
+gWarpBossWarpGlowTopMaskTex:
+  type: TEXTURE
+  offset: 0x6230
+  symbol: gWarpBossWarpGlowTopMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gWarpBossWarpLightShaftsDL:
+  type: GFX
+  offset: 0x4690
+  symbol: gWarpBossWarpLightShaftsDL
+
+gWarpBossWarpLightShaftsEmptyDL:
+  type: GFX
+  offset: 0x47C8
+  symbol: gWarpBossWarpLightShaftsEmptyDL
+
+gWarpBossWarpLightShaftsMaskTex:
+  type: TEXTURE
+  offset: 0x4FD0
+  symbol: gWarpBossWarpLightShaftsMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gWarpBossWarpLightShaftsTex:
+  type: TEXTURE
+  offset: 0x47D0
+  symbol: gWarpBossWarpLightShaftsTex
+  format: I4
+  width: 64
+  height: 64
+
+gWarpBossWarpLightShaftsTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x57D8
+  symbol: gWarpBossWarpLightShaftsTexAnim
+
+gWarpBossWarpPlatformBottomTLUT:
+  type: TEXTURE
+  offset: 0x78A0
+  symbol: gWarpBossWarpPlatformBottomTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gWarpBossWarpPlatformBottomTex:
+  type: TEXTURE
+  offset: 0x78E0
+  symbol: gWarpBossWarpPlatformBottomTex
+  format: CI4
+  width: 64
+  height: 64
+
+gWarpBossWarpPlatformCol:
+  type: MM:COLLISION
+  offset: 0x8BD4
+  symbol: gWarpBossWarpPlatformCol
+
+gWarpBossWarpPlatformDL:
+  type: GFX
+  offset: 0x76C0
+  symbol: gWarpBossWarpPlatformDL
+
+gWarpBossWarpPlatformTopTLUT:
+  type: TEXTURE
+  offset: 0x78C0
+  symbol: gWarpBossWarpPlatformTopTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gWarpBossWarpPlatformTopTex:
+  type: TEXTURE
+  offset: 0x80E0
+  symbol: gWarpBossWarpPlatformTopTex
+  format: CI4
+  width: 64
+  height: 64
+
+gWarpCrystalAnim:
+  type: OOT:ANIMATION
+  offset: 0x1374
+  symbol: gWarpCrystalAnim
+
+gWarpCrystalBottomDL:
+  type: GFX
+  offset: 0x1750
+  symbol: gWarpCrystalBottomDL
+
+gWarpCrystalBottomLimb:
+  type: OOT:LIMB
+  offset: 0x2B70
+  symbol: gWarpCrystalBottomLimb
+  limb_type: Standard
+
+gWarpCrystalRootLimb:
+  type: OOT:LIMB
+  offset: 0x2B58
+  symbol: gWarpCrystalRootLimb
+  limb_type: Standard
+
+gWarpCrystalSkel:
+  type: MM:SKELETON
+  offset: 0x2CA8
+  symbol: gWarpCrystalSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gWarpCrystalTex:
+  type: TEXTURE
+  offset: 0x1B58
+  symbol: gWarpCrystalTex
+  format: I8
+  width: 64
+  height: 64
+
+gWarpCrystalTopSegment1DL:
+  type: GFX
+  offset: 0x1828
+  symbol: gWarpCrystalTopSegment1DL
+
+gWarpCrystalTopSegment1Limb:
+  type: OOT:LIMB
+  offset: 0x2B94
+  symbol: gWarpCrystalTopSegment1Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment1RootLimb:
+  type: OOT:LIMB
+  offset: 0x2B7C
+  symbol: gWarpCrystalTopSegment1RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment1WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2B88
+  symbol: gWarpCrystalTopSegment1WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment2DL:
+  type: GFX
+  offset: 0x18B0
+  symbol: gWarpCrystalTopSegment2DL
+
+gWarpCrystalTopSegment2Limb:
+  type: OOT:LIMB
+  offset: 0x2BB8
+  symbol: gWarpCrystalTopSegment2Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment2RootLimb:
+  type: OOT:LIMB
+  offset: 0x2BA0
+  symbol: gWarpCrystalTopSegment2RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment2WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2BAC
+  symbol: gWarpCrystalTopSegment2WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment3DL:
+  type: GFX
+  offset: 0x1938
+  symbol: gWarpCrystalTopSegment3DL
+
+gWarpCrystalTopSegment3Limb:
+  type: OOT:LIMB
+  offset: 0x2BDC
+  symbol: gWarpCrystalTopSegment3Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment3RootLimb:
+  type: OOT:LIMB
+  offset: 0x2BC4
+  symbol: gWarpCrystalTopSegment3RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment3WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2BD0
+  symbol: gWarpCrystalTopSegment3WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment4DL:
+  type: GFX
+  offset: 0x19C0
+  symbol: gWarpCrystalTopSegment4DL
+
+gWarpCrystalTopSegment4Limb:
+  type: OOT:LIMB
+  offset: 0x2C00
+  symbol: gWarpCrystalTopSegment4Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment4RootLimb:
+  type: OOT:LIMB
+  offset: 0x2BE8
+  symbol: gWarpCrystalTopSegment4RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment4WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2BF4
+  symbol: gWarpCrystalTopSegment4WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment5DL:
+  type: GFX
+  offset: 0x1A48
+  symbol: gWarpCrystalTopSegment5DL
+
+gWarpCrystalTopSegment5Limb:
+  type: OOT:LIMB
+  offset: 0x2C24
+  symbol: gWarpCrystalTopSegment5Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment5RootLimb:
+  type: OOT:LIMB
+  offset: 0x2C0C
+  symbol: gWarpCrystalTopSegment5RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment5WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2C18
+  symbol: gWarpCrystalTopSegment5WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment6DL:
+  type: GFX
+  offset: 0x1AD0
+  symbol: gWarpCrystalTopSegment6DL
+
+gWarpCrystalTopSegment6Limb:
+  type: OOT:LIMB
+  offset: 0x2C48
+  symbol: gWarpCrystalTopSegment6Limb
+  limb_type: Standard
+
+gWarpCrystalTopSegment6RootLimb:
+  type: OOT:LIMB
+  offset: 0x2C30
+  symbol: gWarpCrystalTopSegment6RootLimb
+  limb_type: Standard
+
+gWarpCrystalTopSegment6WrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2C3C
+  symbol: gWarpCrystalTopSegment6WrapperLimb
+  limb_type: Standard
+
+gWarpCrystalWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x2B64
+  symbol: gWarpCrystalWrapperLimb
+  limb_type: Standard
+
+gWarpPortalDL:
+  type: GFX
+  offset: 0x1A0
+  symbol: gWarpPortalDL
+
+gWarpPortalTex:
+  type: TEXTURE
+  offset: 0x2C0
+  symbol: gWarpPortalTex
+  format: I8
+  width: 64
+  height: 64
+
+
+object_warp1Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_warp1Vtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001390:
+  type: MM:ARRAY
+  offset: 0x001390
+  symbol: object_warp1Vtx_001390
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001630:
+  type: MM:ARRAY
+  offset: 0x001630
+  symbol: object_warp1Vtx_001630
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001660:
+  type: MM:ARRAY
+  offset: 0x001660
+  symbol: object_warp1Vtx_001660
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001690:
+  type: MM:ARRAY
+  offset: 0x001690
+  symbol: object_warp1Vtx_001690
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_0016C0:
+  type: MM:ARRAY
+  offset: 0x0016C0
+  symbol: object_warp1Vtx_0016C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_0016F0:
+  type: MM:ARRAY
+  offset: 0x0016F0
+  symbol: object_warp1Vtx_0016F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_warp1Vtx_001720:
+  type: MM:ARRAY
+  offset: 0x001720
+  symbol: object_warp1Vtx_001720
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpCrystalSkelLimbs:
+  type: BLOB
+  offset: 0x2C54
+  symbol: gWarpCrystalSkelLimbs
+  size: 0
+
+object_warp1Vtx_002CB0:
+  type: MM:ARRAY
+  offset: 0x002CB0
+  symbol: object_warp1Vtx_002CB0
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpBossWarpActivationBeamTexAnimTexScrollParams_0044D0:
+  type: BLOB
+  offset: 0x0044D0
+  symbol: gWarpBossWarpActivationBeamTexAnimTexScrollParams_0044D0
+  size: 0
+
+object_warp1Vtx_0044E0:
+  type: MM:ARRAY
+  offset: 0x0044E0
+  symbol: object_warp1Vtx_0044E0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpBossWarpLightShaftsTexAnimTexScrollParams_0057D0:
+  type: BLOB
+  offset: 0x0057D0
+  symbol: gWarpBossWarpLightShaftsTexAnimTexScrollParams_0057D0
+  size: 0
+
+object_warp1Vtx_0057E0:
+  type: MM:ARRAY
+  offset: 0x0057E0
+  symbol: object_warp1Vtx_0057E0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpBossWarpGlowTexAnimTexScrollParams_007230:
+  type: BLOB
+  offset: 0x007230
+  symbol: gWarpBossWarpGlowTexAnimTexScrollParams_007230
+  size: 0
+
+object_warp1Vtx_007240:
+  type: MM:ARRAY
+  offset: 0x007240
+  symbol: object_warp1Vtx_007240
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 128, 0x00DE4C40 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80C152F0, 0x00DE4C40 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gObjJgameLightCorrectDL:
+  type: GFX
+  offset: 0xDC0
+  symbol: gObjJgameLightCorrectDL
+
+gObjJgameLightIncorrectDL:
+  type: GFX
+  offset: 0xD40
+  symbol: gObjJgameLightIncorrectDL
+
+sObjJgameLightCorrectTex:
+  type: TEXTURE
+  offset: 0xAFC
+  symbol: sObjJgameLightCorrectTex
+  format: IA16
+  width: 16
+  height: 16
+
+sObjJgameLightIncorrectTex:
+  type: TEXTURE
+  offset: 0x8FC
+  symbol: sObjJgameLightIncorrectTex
+  format: IA16
+  width: 16
+  height: 16
+
+
+ovl_Obj_Jgame_LightVtx_000D00:
+  type: MM:ARRAY
+  offset: 0x000D00
+  symbol: ovl_Obj_Jgame_LightVtx_000D00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

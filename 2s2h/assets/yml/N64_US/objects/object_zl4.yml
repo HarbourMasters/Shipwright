@@ -1,0 +1,1004 @@
+:config:
+  segments:
+    - [ 6, 0x010CD800 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010CD800 ]
+    - [ 9, 0x010CD800 ]
+    - [ 10, 0x010CD800 ]
+    - [ 11, 0x010CD800 ]
+    - [ 12, 0x010CD800 ]
+    - [ 13, 0x010CD800 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDmZl4AltDressBeltTex:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: gDmZl4AltDressBeltTex
+  format: CI8
+  width: 32
+  height: 8
+
+gDmZl4AltDressGradientTex:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: gDmZl4AltDressGradientTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDmZl4AltDressLiningTex:
+  type: TEXTURE
+  offset: 0x1BF0
+  symbol: gDmZl4AltDressLiningTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gDmZl4AltDressTex:
+  type: TEXTURE
+  offset: 0x17B0
+  symbol: gDmZl4AltDressTex
+  format: CI8
+  width: 8
+  height: 8
+
+gDmZl4Anim_016328:
+  type: OOT:ANIMATION
+  offset: 0x16328
+  symbol: gDmZl4Anim_016328
+
+gDmZl4Anim_016924:
+  type: OOT:ANIMATION
+  offset: 0x16924
+  symbol: gDmZl4Anim_016924
+
+gDmZl4Anim_016E04:
+  type: OOT:ANIMATION
+  offset: 0x16E04
+  symbol: gDmZl4Anim_016E04
+
+gDmZl4Anim_0175F4:
+  type: OOT:ANIMATION
+  offset: 0x175F4
+  symbol: gDmZl4Anim_0175F4
+
+gDmZl4Anim_018B58:
+  type: OOT:ANIMATION
+  offset: 0x18B58
+  symbol: gDmZl4Anim_018B58
+
+gDmZl4Anim_018FA8:
+  type: OOT:ANIMATION
+  offset: 0x18FA8
+  symbol: gDmZl4Anim_018FA8
+
+gDmZl4Anim_0193F8:
+  type: OOT:ANIMATION
+  offset: 0x193F8
+  symbol: gDmZl4Anim_0193F8
+
+gDmZl4Anim_019894:
+  type: OOT:ANIMATION
+  offset: 0x19894
+  symbol: gDmZl4Anim_019894
+
+gDmZl4Anim_01A344:
+  type: OOT:ANIMATION
+  offset: 0x1A344
+  symbol: gDmZl4Anim_01A344
+
+gDmZl4Anim_01ABB8:
+  type: OOT:ANIMATION
+  offset: 0x1ABB8
+  symbol: gDmZl4Anim_01ABB8
+
+gDmZl4Anim_01AFE0:
+  type: OOT:ANIMATION
+  offset: 0x1AFE0
+  symbol: gDmZl4Anim_01AFE0
+
+gDmZl4Anim_01B388:
+  type: OOT:ANIMATION
+  offset: 0x1B388
+  symbol: gDmZl4Anim_01B388
+
+gDmZl4Anim_01B7B0:
+  type: OOT:ANIMATION
+  offset: 0x1B7B0
+  symbol: gDmZl4Anim_01B7B0
+
+gDmZl4Anim_01BC00:
+  type: OOT:ANIMATION
+  offset: 0x1BC00
+  symbol: gDmZl4Anim_01BC00
+
+gDmZl4Anim_01DC74:
+  type: OOT:ANIMATION
+  offset: 0x1DC74
+  symbol: gDmZl4Anim_01DC74
+
+gDmZl4Anim_01E714:
+  type: OOT:ANIMATION
+  offset: 0x1E714
+  symbol: gDmZl4Anim_01E714
+
+gDmZl4Anim_01EA68:
+  type: OOT:ANIMATION
+  offset: 0x1EA68
+  symbol: gDmZl4Anim_01EA68
+
+gDmZl4Anim_01EFCC:
+  type: OOT:ANIMATION
+  offset: 0x1EFCC
+  symbol: gDmZl4Anim_01EFCC
+
+gDmZl4Anim_01F578:
+  type: OOT:ANIMATION
+  offset: 0x1F578
+  symbol: gDmZl4Anim_01F578
+
+gDmZl4Anim_01FDBC:
+  type: OOT:ANIMATION
+  offset: 0x1FDBC
+  symbol: gDmZl4Anim_01FDBC
+
+gDmZl4Anim_0205F8:
+  type: OOT:ANIMATION
+  offset: 0x205F8
+  symbol: gDmZl4Anim_0205F8
+
+gDmZl4Anim_020E6C:
+  type: OOT:ANIMATION
+  offset: 0x20E6C
+  symbol: gDmZl4Anim_020E6C
+
+gDmZl4Anim_021360:
+  type: OOT:ANIMATION
+  offset: 0x21360
+  symbol: gDmZl4Anim_021360
+
+gDmZl4Anim_02167C:
+  type: OOT:ANIMATION
+  offset: 0x2167C
+  symbol: gDmZl4Anim_02167C
+
+gDmZl4Anim_02205C:
+  type: OOT:ANIMATION
+  offset: 0x2205C
+  symbol: gDmZl4Anim_02205C
+
+gDmZl4Anim_022840:
+  type: OOT:ANIMATION
+  offset: 0x22840
+  symbol: gDmZl4Anim_022840
+
+gDmZl4Anim_022BE8:
+  type: OOT:ANIMATION
+  offset: 0x22BE8
+  symbol: gDmZl4Anim_022BE8
+
+gDmZl4Anim_0235D4:
+  type: OOT:ANIMATION
+  offset: 0x235D4
+  symbol: gDmZl4Anim_0235D4
+
+gDmZl4Anim_023A50:
+  type: OOT:ANIMATION
+  offset: 0x23A50
+  symbol: gDmZl4Anim_023A50
+
+gDmZl4Anim_0241F4:
+  type: OOT:ANIMATION
+  offset: 0x241F4
+  symbol: gDmZl4Anim_0241F4
+
+gDmZl4Anim_024510:
+  type: OOT:ANIMATION
+  offset: 0x24510
+  symbol: gDmZl4Anim_024510
+
+gDmZl4Anim_024B68:
+  type: OOT:ANIMATION
+  offset: 0x24B68
+  symbol: gDmZl4Anim_024B68
+
+gDmZl4BackflipAnim:
+  type: OOT:ANIMATION
+  offset: 0x13934
+  symbol: gDmZl4BackflipAnim
+
+gDmZl4BackflipPrepareAnim:
+  type: OOT:ANIMATION
+  offset: 0x13F2C
+  symbol: gDmZl4BackflipPrepareAnim
+
+gDmZl4BackflipPrepareHoldingReadyAnim:
+  type: OOT:ANIMATION
+  offset: 0x14558
+  symbol: gDmZl4BackflipPrepareHoldingReadyAnim
+
+gDmZl4BlueUndershirtGradient1Tex:
+  type: TEXTURE
+  offset: 0x59F0
+  symbol: gDmZl4BlueUndershirtGradient1Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDmZl4BlueUndershirtGradient2Tex:
+  type: TEXTURE
+  offset: 0x5A70
+  symbol: gDmZl4BlueUndershirtGradient2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4BootLacesTex:
+  type: TEXTURE
+  offset: 0x15B0
+  symbol: gDmZl4BootLacesTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDmZl4BootTex:
+  type: TEXTURE
+  offset: 0x1630
+  symbol: gDmZl4BootTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDmZl4BraceletTex:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: gDmZl4BraceletTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDmZl4ChestDL:
+  type: GFX
+  offset: 0xA630
+  symbol: gDmZl4ChestDL
+
+gDmZl4Dress1DL:
+  type: GFX
+  offset: 0xD0E8
+  symbol: gDmZl4Dress1DL
+
+gDmZl4Dress1Limb:
+  type: OOT:LIMB
+  offset: 0xDF70
+  symbol: gDmZl4Dress1Limb
+  limb_type: Standard
+
+gDmZl4Dress2DL:
+  type: GFX
+  offset: 0xD2A0
+  symbol: gDmZl4Dress2DL
+
+gDmZl4Dress2Limb:
+  type: OOT:LIMB
+  offset: 0xDF7C
+  symbol: gDmZl4Dress2Limb
+  limb_type: Standard
+
+gDmZl4Dress3DL:
+  type: GFX
+  offset: 0xD460
+  symbol: gDmZl4Dress3DL
+
+gDmZl4Dress3Limb:
+  type: OOT:LIMB
+  offset: 0xDF88
+  symbol: gDmZl4Dress3Limb
+  limb_type: Standard
+
+gDmZl4DressGradientTex:
+  type: TEXTURE
+  offset: 0xC70
+  symbol: gDmZl4DressGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gDmZl4DressPurpleTex:
+  type: TEXTURE
+  offset: 0xCB0
+  symbol: gDmZl4DressPurpleTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDmZl4DressTLUT:
+  type: TEXTURE
+  offset: 0x670
+  symbol: gDmZl4DressTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4DressWrinklesTex:
+  type: TEXTURE
+  offset: 0x17F0
+  symbol: gDmZl4DressWrinklesTex
+  format: CI8
+  width: 32
+  height: 32
+
+gDmZl4EarTex:
+  type: TEXTURE
+  offset: 0x24F0
+  symbol: gDmZl4EarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4EmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x24F50
+  symbol: gDmZl4EmptyTexAnim
+
+gDmZl4EyeClosedTex:
+  type: TEXTURE
+  offset: 0x32F0
+  symbol: gDmZl4EyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeHalfTex:
+  type: TEXTURE
+  offset: 0x2EF0
+  symbol: gDmZl4EyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeHappyTex:
+  type: TEXTURE
+  offset: 0x3AF0
+  symbol: gDmZl4EyeHappyTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeOpenLookingLeftTex:
+  type: TEXTURE
+  offset: 0x3EF0
+  symbol: gDmZl4EyeOpenLookingLeftTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeOpenLookingRightTex:
+  type: TEXTURE
+  offset: 0x42F0
+  symbol: gDmZl4EyeOpenLookingRightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeOpenNormalTex:
+  type: TEXTURE
+  offset: 0x2AF0
+  symbol: gDmZl4EyeOpenNormalTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4EyeTLUT:
+  type: TEXTURE
+  offset: 0x870
+  symbol: gDmZl4EyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4EyeWideTex:
+  type: TEXTURE
+  offset: 0x36F0
+  symbol: gDmZl4EyeWideTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x870
+
+gDmZl4FacingAwayHandsOverEmblemLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x15DA0
+  symbol: gDmZl4FacingAwayHandsOverEmblemLoopAnim
+
+gDmZl4FacingAwayIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x11294
+  symbol: gDmZl4FacingAwayIdleAnim
+
+gDmZl4FingersTex:
+  type: TEXTURE
+  offset: 0x56F0
+  symbol: gDmZl4FingersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4FluteDL:
+  type: GFX
+  offset: 0x24D80
+  symbol: gDmZl4FluteDL
+
+gDmZl4FluteHoleTex:
+  type: TEXTURE
+  offset: 0x24E50
+  symbol: gDmZl4FluteHoleTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gDmZl4FluteWrapperDL:
+  type: GFX
+  offset: 0x24E40
+  symbol: gDmZl4FluteWrapperDL
+
+gDmZl4GivingItemLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x122E0
+  symbol: gDmZl4GivingItemLoopAnim
+
+gDmZl4GivingItemStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x11BB8
+  symbol: gDmZl4GivingItemStartAnim
+
+gDmZl4HairOnSideTex:
+  type: TEXTURE
+  offset: 0x26F0
+  symbol: gDmZl4HairOnSideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4HairTex:
+  type: TEXTURE
+  offset: 0x29F0
+  symbol: gDmZl4HairTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gDmZl4HandsOverEmblemLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x15A4C
+  symbol: gDmZl4HandsOverEmblemLoopAnim
+
+gDmZl4HeadDL:
+  type: GFX
+  offset: 0xAFC8
+  symbol: gDmZl4HeadDL
+
+gDmZl4HeadLimb:
+  type: OOT:LIMB
+  offset: 0xDFE8
+  symbol: gDmZl4HeadLimb
+  limb_type: Standard
+
+gDmZl4HeaddressStripeTex:
+  type: TEXTURE
+  offset: 0x22F0
+  symbol: gDmZl4HeaddressStripeTex
+  format: CI8
+  width: 16
+  height: 32
+
+gDmZl4HeadressGradientTex:
+  type: TEXTURE
+  offset: 0x2230
+  symbol: gDmZl4HeadressGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gDmZl4HeadressTriforceEmblemTex:
+  type: TEXTURE
+  offset: 0x1E30
+  symbol: gDmZl4HeadressTriforceEmblemTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDmZl4HoldingFluteInFrontAnim:
+  type: OOT:ANIMATION
+  offset: 0xFDC8
+  symbol: gDmZl4HoldingFluteInFrontAnim
+
+gDmZl4HorseRidingDressDL:
+  type: GFX
+  offset: 0xC410
+  symbol: gDmZl4HorseRidingDressDL
+
+gDmZl4IdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x654
+  symbol: gDmZl4IdleAnim
+
+gDmZl4LeftBootDL:
+  type: GFX
+  offset: 0xD778
+  symbol: gDmZl4LeftBootDL
+
+gDmZl4LeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xDF4C
+  symbol: gDmZl4LeftFootLimb
+  limb_type: Standard
+
+gDmZl4LeftForearmDL:
+  type: GFX
+  offset: 0xC0E0
+  symbol: gDmZl4LeftForearmDL
+
+gDmZl4LeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xDFAC
+  symbol: gDmZl4LeftForearmLimb
+  limb_type: Standard
+
+gDmZl4LeftHandDL:
+  type: GFX
+  offset: 0xC230
+  symbol: gDmZl4LeftHandDL
+
+gDmZl4LeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xDFB8
+  symbol: gDmZl4LeftHandLimb
+  limb_type: Standard
+
+gDmZl4LeftLegDL:
+  type: GFX
+  offset: 0xD728
+  symbol: gDmZl4LeftLegDL
+
+gDmZl4LeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xDF40
+  symbol: gDmZl4LeftLegLimb
+  limb_type: Standard
+
+gDmZl4LeftUpperArmDL:
+  type: GFX
+  offset: 0xBE70
+  symbol: gDmZl4LeftUpperArmDL
+
+gDmZl4LeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xDFA0
+  symbol: gDmZl4LeftUpperArmLimb
+  limb_type: Standard
+
+gDmZl4LowerFluteAfterPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x105C8
+  symbol: gDmZl4LowerFluteAfterPlayAnim
+
+gDmZl4MouthTLUT:
+  type: TEXTURE
+  offset: 0xA70
+  symbol: gDmZl4MouthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDmZl4OcarinaDL:
+  type: GFX
+  offset: 0xDE08
+  symbol: gDmZl4OcarinaDL
+
+gDmZl4OcarinaTex:
+  type: TEXTURE
+  offset: 0xD8B8
+  symbol: gDmZl4OcarinaTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gDmZl4PendantTex:
+  type: TEXTURE
+  offset: 0x5DB0
+  symbol: gDmZl4PendantTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDmZl4PlayingFluteAnim:
+  type: OOT:ANIMATION
+  offset: 0x10D50
+  symbol: gDmZl4PlayingFluteAnim
+
+gDmZl4PlayingOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x1303C
+  symbol: gDmZl4PlayingOcarinaAnim
+
+gDmZl4RaiseFluteToPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x10334
+  symbol: gDmZl4RaiseFluteToPlayAnim
+
+gDmZl4RaisingOcarinaToPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x12A84
+  symbol: gDmZl4RaisingOcarinaToPlayAnim
+
+gDmZl4RightBootDL:
+  type: GFX
+  offset: 0xD5E8
+  symbol: gDmZl4RightBootDL
+
+gDmZl4RightFootLimb:
+  type: OOT:LIMB
+  offset: 0xDF64
+  symbol: gDmZl4RightFootLimb
+  limb_type: Standard
+
+gDmZl4RightForearmDL:
+  type: GFX
+  offset: 0xBB40
+  symbol: gDmZl4RightForearmDL
+
+gDmZl4RightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xDFD0
+  symbol: gDmZl4RightForearmLimb
+  limb_type: Standard
+
+gDmZl4RightHandDL:
+  type: GFX
+  offset: 0xBC90
+  symbol: gDmZl4RightHandDL
+
+gDmZl4RightHandLimb:
+  type: OOT:LIMB
+  offset: 0xDFDC
+  symbol: gDmZl4RightHandLimb
+  limb_type: Standard
+
+gDmZl4RightLegDL:
+  type: GFX
+  offset: 0xD598
+  symbol: gDmZl4RightLegDL
+
+gDmZl4RightLegLimb:
+  type: OOT:LIMB
+  offset: 0xDF58
+  symbol: gDmZl4RightLegLimb
+  limb_type: Standard
+
+gDmZl4RightUpperArmDL:
+  type: GFX
+  offset: 0xB8D8
+  symbol: gDmZl4RightUpperArmDL
+
+gDmZl4RightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xDFC4
+  symbol: gDmZl4RightUpperArmLimb
+  limb_type: Standard
+
+gDmZl4RootLimb:
+  type: OOT:LIMB
+  offset: 0xDF28
+  symbol: gDmZl4RootLimb
+  limb_type: Standard
+
+gDmZl4SkinGradientTex:
+  type: TEXTURE
+  offset: 0x28F0
+  symbol: gDmZl4SkinGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDmZl4StripedShoulderTex:
+  type: TEXTURE
+  offset: 0x5C70
+  symbol: gDmZl4StripedShoulderTex
+  format: CI8
+  width: 8
+  height: 8
+
+gDmZl4TorsoLimb:
+  type: OOT:LIMB
+  offset: 0xDF94
+  symbol: gDmZl4TorsoLimb
+  limb_type: Standard
+
+gDmZl4TriforceSashTex:
+  type: TEXTURE
+  offset: 0xDB0
+  symbol: gDmZl4TriforceSashTex
+  format: CI8
+  width: 32
+  height: 64
+
+gDmZl4TurningAround2Anim:
+  type: OOT:ANIMATION
+  offset: 0x15494
+  symbol: gDmZl4TurningAround2Anim
+
+gDmZl4TurningAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0xF250
+  symbol: gDmZl4TurningAroundAnim
+
+gDmZl4UndershirtWrinklesTex:
+  type: TEXTURE
+  offset: 0x5CB0
+  symbol: gDmZl4UndershirtWrinklesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDmZl4WaistDL:
+  type: GFX
+  offset: 0xC8D0
+  symbol: gDmZl4WaistDL
+
+gDmZl4WaistLimb:
+  type: OOT:LIMB
+  offset: 0xDF34
+  symbol: gDmZl4WaistLimb
+  limb_type: Standard
+
+gDmZl4_001DF0_Tex:
+  type: TEXTURE
+  offset: 0x1DF0
+  symbol: gDmZl4_001DF0_Tex
+  format: CI8
+  width: 8
+  height: 8
+
+gDmZl4_002270_Tex:
+  type: TEXTURE
+  offset: 0x2270
+  symbol: gDmZl4_002270_Tex
+  format: CI8
+  width: 8
+  height: 16
+
+gDmZl4_002970_Tex:
+  type: TEXTURE
+  offset: 0x2970
+  symbol: gDmZl4_002970_Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gZl4MouthFrowningTex:
+  type: TEXTURE
+  offset: 0x4EF0
+  symbol: gZl4MouthFrowningTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xA70
+
+gZl4MouthNeutralTex:
+  type: TEXTURE
+  offset: 0x46F0
+  symbol: gZl4MouthNeutralTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xA70
+
+gZl4MouthOpenSmilingTex:
+  type: TEXTURE
+  offset: 0x4AF0
+  symbol: gZl4MouthOpenSmilingTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xA70
+
+gZl4MouthOpenTex:
+  type: TEXTURE
+  offset: 0x52F0
+  symbol: gZl4MouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xA70
+
+gZl4Skel:
+  type: MM:SKELETON
+  offset: 0xE038
+  symbol: gZl4Skel
+  limb_type: Standard
+  skel_type: Flex
+
+
+object_zl4Vtx_0065B0:
+  type: MM:ARRAY
+  offset: 0x0065B0
+  symbol: object_zl4Vtx_0065B0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0067C0:
+  type: MM:ARRAY
+  offset: 0x0067C0
+  symbol: object_zl4Vtx_0067C0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006A20:
+  type: MM:ARRAY
+  offset: 0x006A20
+  symbol: object_zl4Vtx_006A20
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006C60:
+  type: MM:ARRAY
+  offset: 0x006C60
+  symbol: object_zl4Vtx_006C60
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006EB0:
+  type: MM:ARRAY
+  offset: 0x006EB0
+  symbol: object_zl4Vtx_006EB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006EE0:
+  type: MM:ARRAY
+  offset: 0x006EE0
+  symbol: object_zl4Vtx_006EE0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007130:
+  type: MM:ARRAY
+  offset: 0x007130
+  symbol: object_zl4Vtx_007130
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007160:
+  type: MM:ARRAY
+  offset: 0x007160
+  symbol: object_zl4Vtx_007160
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0076B0:
+  type: MM:ARRAY
+  offset: 0x0076B0
+  symbol: object_zl4Vtx_0076B0
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007EB0:
+  type: MM:ARRAY
+  offset: 0x007EB0
+  symbol: object_zl4Vtx_007EB0
+  count: 191
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008AA0:
+  type: MM:ARRAY
+  offset: 0x008AA0
+  symbol: object_zl4Vtx_008AA0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008D70:
+  type: MM:ARRAY
+  offset: 0x008D70
+  symbol: object_zl4Vtx_008D70
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008FB0:
+  type: MM:ARRAY
+  offset: 0x008FB0
+  symbol: object_zl4Vtx_008FB0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009390:
+  type: MM:ARRAY
+  offset: 0x009390
+  symbol: object_zl4Vtx_009390
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009660:
+  type: MM:ARRAY
+  offset: 0x009660
+  symbol: object_zl4Vtx_009660
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0098A0:
+  type: MM:ARRAY
+  offset: 0x0098A0
+  symbol: object_zl4Vtx_0098A0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009C80:
+  type: MM:ARRAY
+  offset: 0x009C80
+  symbol: object_zl4Vtx_009C80
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_00DCB8:
+  type: MM:ARRAY
+  offset: 0x00DCB8
+  symbol: object_zl4Vtx_00DCB8
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZl4SkelLimbs:
+  type: BLOB
+  offset: 0xDFF4
+  symbol: gZl4SkelLimbs
+  size: 0
+
+object_zl4Vtx_024B80:
+  type: MM:ARRAY
+  offset: 0x024B80
+  symbol: object_zl4Vtx_024B80
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

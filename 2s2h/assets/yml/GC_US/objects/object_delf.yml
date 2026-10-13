@@ -1,0 +1,394 @@
+:config:
+  segments:
+    - [ 6, 0x013749C0 ]
+
+object_delf_Anim_00046C:
+  type: OOT:ANIMATION
+  offset: 0x46C
+  symbol: object_delf_Anim_00046C
+
+object_delf_Anim_00065C:
+  type: OOT:ANIMATION
+  offset: 0x65C
+  symbol: object_delf_Anim_00065C
+
+object_delf_Anim_0008E0:
+  type: OOT:ANIMATION
+  offset: 0x8E0
+  symbol: object_delf_Anim_0008E0
+
+object_delf_Anim_000A94:
+  type: OOT:ANIMATION
+  offset: 0xA94
+  symbol: object_delf_Anim_000A94
+
+object_delf_Anim_000E44:
+  type: OOT:ANIMATION
+  offset: 0xE44
+  symbol: object_delf_Anim_000E44
+
+object_delf_Anim_0010F8:
+  type: OOT:ANIMATION
+  offset: 0x10F8
+  symbol: object_delf_Anim_0010F8
+
+object_delf_Anim_001410:
+  type: OOT:ANIMATION
+  offset: 0x1410
+  symbol: object_delf_Anim_001410
+
+object_delf_Anim_001754:
+  type: OOT:ANIMATION
+  offset: 0x1754
+  symbol: object_delf_Anim_001754
+
+object_delf_Anim_00199C:
+  type: OOT:ANIMATION
+  offset: 0x199C
+  symbol: object_delf_Anim_00199C
+
+object_delf_Anim_001B28:
+  type: OOT:ANIMATION
+  offset: 0x1B28
+  symbol: object_delf_Anim_001B28
+
+object_delf_Anim_001ED4:
+  type: OOT:ANIMATION
+  offset: 0x1ED4
+  symbol: object_delf_Anim_001ED4
+
+object_delf_Anim_003148:
+  type: OOT:ANIMATION
+  offset: 0x3148
+  symbol: object_delf_Anim_003148
+
+object_delf_Anim_00377C:
+  type: OOT:ANIMATION
+  offset: 0x377C
+  symbol: object_delf_Anim_00377C
+
+object_delf_Anim_003BB4:
+  type: OOT:ANIMATION
+  offset: 0x3BB4
+  symbol: object_delf_Anim_003BB4
+
+object_delf_Anim_003FAC:
+  type: OOT:ANIMATION
+  offset: 0x3FAC
+  symbol: object_delf_Anim_003FAC
+
+object_delf_Anim_0042E8:
+  type: OOT:ANIMATION
+  offset: 0x42E8
+  symbol: object_delf_Anim_0042E8
+
+object_delf_Anim_004798:
+  type: OOT:ANIMATION
+  offset: 0x4798
+  symbol: object_delf_Anim_004798
+
+object_delf_Anim_004C44:
+  type: OOT:ANIMATION
+  offset: 0x4C44
+  symbol: object_delf_Anim_004C44
+
+object_delf_Anim_004FF4:
+  type: OOT:ANIMATION
+  offset: 0x4FF4
+  symbol: object_delf_Anim_004FF4
+
+object_delf_Anim_0053A4:
+  type: OOT:ANIMATION
+  offset: 0x53A4
+  symbol: object_delf_Anim_0053A4
+
+object_delf_Anim_005B68:
+  type: OOT:ANIMATION
+  offset: 0x5B68
+  symbol: object_delf_Anim_005B68
+
+object_delf_Anim_006328:
+  type: OOT:ANIMATION
+  offset: 0x6328
+  symbol: object_delf_Anim_006328
+
+object_delf_Anim_006614:
+  type: OOT:ANIMATION
+  offset: 0x6614
+  symbol: object_delf_Anim_006614
+
+object_delf_Anim_006B28:
+  type: OOT:ANIMATION
+  offset: 0x6B28
+  symbol: object_delf_Anim_006B28
+
+object_delf_Anim_006D74:
+  type: OOT:ANIMATION
+  offset: 0x6D74
+  symbol: object_delf_Anim_006D74
+
+object_delf_Anim_00706C:
+  type: OOT:ANIMATION
+  offset: 0x706C
+  symbol: object_delf_Anim_00706C
+
+object_delf_Anim_0072B0:
+  type: OOT:ANIMATION
+  offset: 0x72B0
+  symbol: object_delf_Anim_0072B0
+
+object_delf_Anim_007570:
+  type: OOT:ANIMATION
+  offset: 0x7570
+  symbol: object_delf_Anim_007570
+
+object_delf_Anim_007B04:
+  type: OOT:ANIMATION
+  offset: 0x7B04
+  symbol: object_delf_Anim_007B04
+
+object_delf_Anim_0080A4:
+  type: OOT:ANIMATION
+  offset: 0x80A4
+  symbol: object_delf_Anim_0080A4
+
+object_delf_Anim_00859C:
+  type: OOT:ANIMATION
+  offset: 0x859C
+  symbol: object_delf_Anim_00859C
+
+object_delf_Anim_008A44:
+  type: OOT:ANIMATION
+  offset: 0x8A44
+  symbol: object_delf_Anim_008A44
+
+object_delf_Anim_009010:
+  type: OOT:ANIMATION
+  offset: 0x9010
+  symbol: object_delf_Anim_009010
+
+object_delf_Anim_0091BC:
+  type: OOT:ANIMATION
+  offset: 0x91BC
+  symbol: object_delf_Anim_0091BC
+
+object_delf_Anim_0094B0:
+  type: OOT:ANIMATION
+  offset: 0x94B0
+  symbol: object_delf_Anim_0094B0
+
+object_delf_Anim_0097C4:
+  type: OOT:ANIMATION
+  offset: 0x97C4
+  symbol: object_delf_Anim_0097C4
+
+object_delf_Anim_009C4C:
+  type: OOT:ANIMATION
+  offset: 0x9C4C
+  symbol: object_delf_Anim_009C4C
+
+object_delf_Anim_009F40:
+  type: OOT:ANIMATION
+  offset: 0x9F40
+  symbol: object_delf_Anim_009F40
+
+object_delf_Anim_00A2A4:
+  type: OOT:ANIMATION
+  offset: 0xA2A4
+  symbol: object_delf_Anim_00A2A4
+
+object_delf_Anim_00A4B4:
+  type: OOT:ANIMATION
+  offset: 0xA4B4
+  symbol: object_delf_Anim_00A4B4
+
+object_delf_Anim_00A7B4:
+  type: OOT:ANIMATION
+  offset: 0xA7B4
+  symbol: object_delf_Anim_00A7B4
+
+object_delf_Anim_00AF78:
+  type: OOT:ANIMATION
+  offset: 0xAF78
+  symbol: object_delf_Anim_00AF78
+
+object_delf_Anim_00B2B8:
+  type: OOT:ANIMATION
+  offset: 0xB2B8
+  symbol: object_delf_Anim_00B2B8
+
+object_delf_Anim_00BCD8:
+  type: OOT:ANIMATION
+  offset: 0xBCD8
+  symbol: object_delf_Anim_00BCD8
+
+object_delf_Anim_00BDFC:
+  type: OOT:ANIMATION
+  offset: 0xBDFC
+  symbol: object_delf_Anim_00BDFC
+
+object_delf_Anim_00C0BC:
+  type: OOT:ANIMATION
+  offset: 0xC0BC
+  symbol: object_delf_Anim_00C0BC
+
+object_delf_Anim_00C248:
+  type: OOT:ANIMATION
+  offset: 0xC248
+  symbol: object_delf_Anim_00C248
+
+object_delf_Anim_00C588:
+  type: OOT:ANIMATION
+  offset: 0xC588
+  symbol: object_delf_Anim_00C588
+
+object_delf_Anim_00C690:
+  type: OOT:ANIMATION
+  offset: 0xC690
+  symbol: object_delf_Anim_00C690
+
+object_delf_Anim_00C790:
+  type: OOT:ANIMATION
+  offset: 0xC790
+  symbol: object_delf_Anim_00C790
+
+object_delf_Anim_00CCD4:
+  type: OOT:ANIMATION
+  offset: 0xCCD4
+  symbol: object_delf_Anim_00CCD4
+
+object_delf_Anim_00CEE0:
+  type: OOT:ANIMATION
+  offset: 0xCEE0
+  symbol: object_delf_Anim_00CEE0
+
+object_delf_Anim_00D260:
+  type: OOT:ANIMATION
+  offset: 0xD260
+  symbol: object_delf_Anim_00D260
+
+object_delf_Anim_00E024:
+  type: OOT:ANIMATION
+  offset: 0xE024
+  symbol: object_delf_Anim_00E024
+
+object_delf_Anim_00EB18:
+  type: OOT:ANIMATION
+  offset: 0xEB18
+  symbol: object_delf_Anim_00EB18
+
+object_delf_Anim_00EBB0:
+  type: OOT:ANIMATION
+  offset: 0xEBB0
+  symbol: object_delf_Anim_00EBB0
+
+object_delf_Anim_00EE30:
+  type: OOT:ANIMATION
+  offset: 0xEE30
+  symbol: object_delf_Anim_00EE30
+
+object_delf_Anim_00F0D0:
+  type: OOT:ANIMATION
+  offset: 0xF0D0
+  symbol: object_delf_Anim_00F0D0
+
+object_delf_Anim_00FB30:
+  type: OOT:ANIMATION
+  offset: 0xFB30
+  symbol: object_delf_Anim_00FB30
+
+object_delf_Anim_010590:
+  type: OOT:ANIMATION
+  offset: 0x10590
+  symbol: object_delf_Anim_010590
+
+object_delf_Anim_01088C:
+  type: OOT:ANIMATION
+  offset: 0x1088C
+  symbol: object_delf_Anim_01088C
+
+object_delf_Anim_011088:
+  type: OOT:ANIMATION
+  offset: 0x11088
+  symbol: object_delf_Anim_011088
+
+object_delf_Anim_0118FC:
+  type: OOT:ANIMATION
+  offset: 0x118FC
+  symbol: object_delf_Anim_0118FC
+
+object_delf_Anim_011C70:
+  type: OOT:ANIMATION
+  offset: 0x11C70
+  symbol: object_delf_Anim_011C70
+
+object_delf_Anim_011FE0:
+  type: OOT:ANIMATION
+  offset: 0x11FE0
+  symbol: object_delf_Anim_011FE0
+
+object_delf_Anim_012388:
+  type: OOT:ANIMATION
+  offset: 0x12388
+  symbol: object_delf_Anim_012388
+
+object_delf_Anim_012738:
+  type: OOT:ANIMATION
+  offset: 0x12738
+  symbol: object_delf_Anim_012738
+
+object_delf_Anim_012BBC:
+  type: OOT:ANIMATION
+  offset: 0x12BBC
+  symbol: object_delf_Anim_012BBC
+
+object_delf_Anim_012EF8:
+  type: OOT:ANIMATION
+  offset: 0x12EF8
+  symbol: object_delf_Anim_012EF8
+
+object_delf_Anim_013040:
+  type: OOT:ANIMATION
+  offset: 0x13040
+  symbol: object_delf_Anim_013040
+
+object_delf_Anim_013378:
+  type: OOT:ANIMATION
+  offset: 0x13378
+  symbol: object_delf_Anim_013378
+
+object_delf_Anim_013BE0:
+  type: OOT:ANIMATION
+  offset: 0x13BE0
+  symbol: object_delf_Anim_013BE0
+
+object_delf_Anim_013E80:
+  type: OOT:ANIMATION
+  offset: 0x13E80
+  symbol: object_delf_Anim_013E80
+
+object_delf_Anim_014190:
+  type: OOT:ANIMATION
+  offset: 0x14190
+  symbol: object_delf_Anim_014190
+
+object_delf_Anim_01447C:
+  type: OOT:ANIMATION
+  offset: 0x1447C
+  symbol: object_delf_Anim_01447C
+
+object_delf_Anim_01498C:
+  type: OOT:ANIMATION
+  offset: 0x1498C
+  symbol: object_delf_Anim_01498C
+
+object_delf_Anim_014E9C:
+  type: OOT:ANIMATION
+  offset: 0x14E9C
+  symbol: object_delf_Anim_014E9C
+
+object_delf_Anim_015114:
+  type: OOT:ANIMATION
+  offset: 0x15114
+  symbol: object_delf_Anim_015114
+

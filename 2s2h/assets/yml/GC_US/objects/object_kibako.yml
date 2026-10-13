@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x01196110 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01196110 ]
+    - [ 9, 0x01196110 ]
+    - [ 10, 0x01196110 ]
+    - [ 11, 0x01196110 ]
+    - [ 12, 0x01196110 ]
+    - [ 13, 0x01196110 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSmallCrateDL:
+  type: GFX
+  offset: 0x1180
+  symbol: gSmallCrateDL
+
+gSmallCrateFragmentDL:
+  type: GFX
+  offset: 0x1A70
+  symbol: gSmallCrateFragmentDL
+
+gSmallCrateFragmentTex:
+  type: TEXTURE
+  offset: 0x1240
+  symbol: gSmallCrateFragmentTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gSmallCrateTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSmallCrateTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_kibakoVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_kibakoVtx_001000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kibakoVtx_001A40:
+  type: MM:ARRAY
+  offset: 0x001A40
+  symbol: object_kibakoVtx_001A40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,415 @@
+:config:
+  segments:
+    - [ 5, 0x00E3D880 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00E3D880 ]
+    - [ 9, 0x00E3D880 ]
+    - [ 10, 0x00E3D880 ]
+    - [ 11, 0x00E3D880 ]
+    - [ 12, 0x00E3D880 ]
+    - [ 13, 0x00E3D880 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gFieldSandstorm1Tex:
+  type: TEXTURE
+  offset: 0x79D0
+  symbol: gFieldSandstorm1Tex
+  format: I8
+  width: 64
+  height: 32
+
+gFieldSandstorm2Tex:
+  type: TEXTURE
+  offset: 0x81D0
+  symbol: gFieldSandstorm2Tex
+  format: IA8
+  width: 64
+  height: 32
+
+gFieldSandstormDL:
+  type: GFX
+  offset: 0x89D0
+  symbol: gFieldSandstormDL
+
+gFieldSilverBoulderDL:
+  type: GFX
+  offset: 0x61E8
+  symbol: gFieldSilverBoulderDL
+
+gFieldSilverBoulderDebrisDL:
+  type: GFX
+  offset: 0x6420
+  symbol: gFieldSilverBoulderDebrisDL
+
+gFieldSilverBoulderTLUT:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: gFieldSilverBoulderTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFieldSilverBoulderTex:
+  type: TEXTURE
+  offset: 0x5828
+  symbol: gFieldSilverBoulderTex
+  format: CI4
+  width: 64
+  height: 64
+
+gFieldSmallRockOpaDL:
+  type: GFX
+  offset: 0x66B0
+  symbol: gFieldSmallRockOpaDL
+
+gFieldSmallRockXluDL:
+  type: GFX
+  offset: 0x6760
+  symbol: gFieldSmallRockXluDL
+
+gFieldWoodDoorFrameDL:
+  type: GFX
+  offset: 0x3FD0
+  symbol: gFieldWoodDoorFrameDL
+
+gFieldWoodDoorLeftDL:
+  type: GFX
+  offset: 0x4050
+  symbol: gFieldWoodDoorLeftDL
+
+gFieldWoodDoorRightDL:
+  type: GFX
+  offset: 0x4228
+  symbol: gFieldWoodDoorRightDL
+
+gFieldWoodDoorTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gFieldWoodDoorTex
+  format: I4
+  width: 64
+  height: 128
+
+gKusaBushType1DL:
+  type: GFX
+  offset: 0x78A0
+  symbol: gKusaBushType1DL
+
+gKusaBushType2DL:
+  type: GFX
+  offset: 0x7938
+  symbol: gKusaBushType2DL
+
+gameplay_field_keepVtx_007810:
+  type: MM:ARRAY
+  offset: 0x7810
+  symbol: gameplay_field_keepVtx_007810
+  count: 9
+  array_type: VTX
+
+gameplay_field_keep_Anim_001D20:
+  type: OOT:ANIMATION
+  offset: 0x1D20
+  symbol: gameplay_field_keep_Anim_001D20
+
+gameplay_field_keep_Colheader_003A60:
+  type: MM:COLLISION
+  offset: 0x3A60
+  symbol: gameplay_field_keep_Colheader_003A60
+
+gameplay_field_keep_DL_000C40:
+  type: GFX
+  offset: 0xC40
+  symbol: gameplay_field_keep_DL_000C40
+
+gameplay_field_keep_DL_001D30:
+  type: GFX
+  offset: 0x1D30
+  symbol: gameplay_field_keep_DL_001D30
+
+gameplay_field_keep_DL_001DD0:
+  type: GFX
+  offset: 0x1DD0
+  symbol: gameplay_field_keep_DL_001DD0
+
+gameplay_field_keep_DL_001DE0:
+  type: GFX
+  offset: 0x1DE0
+  symbol: gameplay_field_keep_DL_001DE0
+
+gameplay_field_keep_DL_001E30:
+  type: GFX
+  offset: 0x1E30
+  symbol: gameplay_field_keep_DL_001E30
+
+gameplay_field_keep_DL_001ED0:
+  type: GFX
+  offset: 0x1ED0
+  symbol: gameplay_field_keep_DL_001ED0
+
+gameplay_field_keep_DL_001EE0:
+  type: GFX
+  offset: 0x1EE0
+  symbol: gameplay_field_keep_DL_001EE0
+
+gameplay_field_keep_DL_003870:
+  type: GFX
+  offset: 0x3870
+  symbol: gameplay_field_keep_DL_003870
+
+gameplay_field_keep_DL_003938:
+  type: GFX
+  offset: 0x3938
+  symbol: gameplay_field_keep_DL_003938
+
+gameplay_field_keep_Skel_002FA0:
+  type: MM:SKELETON
+  offset: 0x2FA0
+  symbol: gameplay_field_keep_Skel_002FA0
+  limb_type: Standard
+  skel_type: Normal
+
+gameplay_field_keep_Standardlimb_002F30:
+  type: OOT:LIMB
+  offset: 0x2F30
+  symbol: gameplay_field_keep_Standardlimb_002F30
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F3C:
+  type: OOT:LIMB
+  offset: 0x2F3C
+  symbol: gameplay_field_keep_Standardlimb_002F3C
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F48:
+  type: OOT:LIMB
+  offset: 0x2F48
+  symbol: gameplay_field_keep_Standardlimb_002F48
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F54:
+  type: OOT:LIMB
+  offset: 0x2F54
+  symbol: gameplay_field_keep_Standardlimb_002F54
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F60:
+  type: OOT:LIMB
+  offset: 0x2F60
+  symbol: gameplay_field_keep_Standardlimb_002F60
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F6C:
+  type: OOT:LIMB
+  offset: 0x2F6C
+  symbol: gameplay_field_keep_Standardlimb_002F6C
+  limb_type: Standard
+
+gameplay_field_keep_Standardlimb_002F78:
+  type: OOT:LIMB
+  offset: 0x2F78
+  symbol: gameplay_field_keep_Standardlimb_002F78
+  limb_type: Standard
+
+gameplay_field_keep_TLUT_002FB0:
+  type: TEXTURE
+  offset: 0x2FB0
+  symbol: gameplay_field_keep_TLUT_002FB0
+  format: RGBA16
+  width: 4
+  height: 4
+
+gameplay_field_keep_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gameplay_field_keep_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 32
+
+gameplay_field_keep_Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gameplay_field_keep_Tex_000400
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_field_keep_Tex_000CD0:
+  type: TEXTURE
+  offset: 0xCD0
+  symbol: gameplay_field_keep_Tex_000CD0
+  format: IA16
+  width: 32
+  height: 64
+
+gameplay_field_keep_Tex_001F30:
+  type: TEXTURE
+  offset: 0x1F30
+  symbol: gameplay_field_keep_Tex_001F30
+  format: RGBA16
+  width: 32
+  height: 64
+
+gameplay_field_keep_Tex_002FD0:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: gameplay_field_keep_Tex_002FD0
+  format: CI4
+  width: 32
+  height: 64
+
+gameplay_field_keep_Tex_0033D0:
+  type: TEXTURE
+  offset: 0x33D0
+  symbol: gameplay_field_keep_Tex_0033D0
+  format: CI4
+  width: 32
+  height: 64
+
+gameplay_field_keep_Tex_004400:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gameplay_field_keep_Tex_004400
+  format: RGBA16
+  width: 16
+  height: 16
+
+gameplay_field_keep_Tex_004600:
+  type: TEXTURE
+  offset: 0x4600
+  symbol: gameplay_field_keep_Tex_004600
+  format: RGBA16
+  width: 16
+  height: 16
+
+gameplay_field_keep_Tex_006810:
+  type: TEXTURE
+  offset: 0x6810
+  symbol: gameplay_field_keep_Tex_006810
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_field_keep_Tex_007010:
+  type: TEXTURE
+  offset: 0x7010
+  symbol: gameplay_field_keep_Tex_007010
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_field_keep_Tex_008A90:
+  type: TEXTURE
+  offset: 0x8A90
+  symbol: gameplay_field_keep_Tex_008A90
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+gameplay_field_keepVtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: gameplay_field_keepVtx_000C00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_001DF0:
+  type: MM:ARRAY
+  offset: 0x001DF0
+  symbol: gameplay_field_keepVtx_001DF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_001EF0:
+  type: MM:ARRAY
+  offset: 0x001EF0
+  symbol: gameplay_field_keepVtx_001EF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keep_Skel_002FA0Limbs:
+  type: BLOB
+  offset: 0x2F84
+  symbol: gameplay_field_keep_Skel_002FA0Limbs
+  size: 0
+
+gameplay_field_keepVtx_0037D0:
+  type: MM:ARRAY
+  offset: 0x0037D0
+  symbol: gameplay_field_keepVtx_0037D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_003820:
+  type: MM:ARRAY
+  offset: 0x003820
+  symbol: gameplay_field_keepVtx_003820
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_003A90:
+  type: MM:ARRAY
+  offset: 0x003A90
+  symbol: gameplay_field_keepVtx_003A90
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_003CB0:
+  type: MM:ARRAY
+  offset: 0x003CB0
+  symbol: gameplay_field_keepVtx_003CB0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_003ED0:
+  type: MM:ARRAY
+  offset: 0x003ED0
+  symbol: gameplay_field_keepVtx_003ED0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_006028:
+  type: MM:ARRAY
+  offset: 0x006028
+  symbol: gameplay_field_keepVtx_006028
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_006300:
+  type: MM:ARRAY
+  offset: 0x006300
+  symbol: gameplay_field_keepVtx_006300
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_006500:
+  type: MM:ARRAY
+  offset: 0x006500
+  symbol: gameplay_field_keepVtx_006500
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,155 @@
+:config:
+  segments:
+    - [ 6, 0x015E3110 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015E3110 ]
+    - [ 9, 0x015E3110 ]
+    - [ 10, 0x015E3110 ]
+    - [ 11, 0x015E3110 ]
+    - [ 12, 0x015E3110 ]
+    - [ 13, 0x015E3110 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gWeddingDressMannequinDL:
+  type: GFX
+  offset: 0x3120
+  symbol: gWeddingDressMannequinDL
+
+gWeddingDressMannequinFabricHighlightsTex:
+  type: TEXTURE
+  offset: 0x4E48
+  symbol: gWeddingDressMannequinFabricHighlightsTex
+  format: I8
+  width: 32
+  height: 64
+
+gWeddingDressMannequinFabricSheerTex:
+  type: TEXTURE
+  offset: 0x5648
+  symbol: gWeddingDressMannequinFabricSheerTex
+  format: I8
+  width: 32
+  height: 32
+
+gWeddingDressMannequinFlowerTex:
+  type: TEXTURE
+  offset: 0x4C48
+  symbol: gWeddingDressMannequinFlowerTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWeddingDressMannequinIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C
+  symbol: gWeddingDressMannequinIdleAnim
+
+gWeddingDressMannequinLimb:
+  type: OOT:LIMB
+  offset: 0x5A48
+  symbol: gWeddingDressMannequinLimb
+  limb_type: Standard
+
+gWeddingDressMannequinMaskDL:
+  type: GFX
+  offset: 0x3F80
+  symbol: gWeddingDressMannequinMaskDL
+
+gWeddingDressMannequinMaskLimb:
+  type: OOT:LIMB
+  offset: 0x5A54
+  symbol: gWeddingDressMannequinMaskLimb
+  limb_type: Standard
+
+gWeddingDressMannequinPatternDL:
+  type: GFX
+  offset: 0x3EA8
+  symbol: gWeddingDressMannequinPatternDL
+
+gWeddingDressMannequinPatternLimb:
+  type: OOT:LIMB
+  offset: 0x5A60
+  symbol: gWeddingDressMannequinPatternLimb
+  limb_type: Standard
+
+gWeddingDressMannequinPatternTex:
+  type: TEXTURE
+  offset: 0x4448
+  symbol: gWeddingDressMannequinPatternTex
+  format: I8
+  width: 32
+  height: 32
+
+gWeddingDressMannequinShoulderGradientTex:
+  type: TEXTURE
+  offset: 0x4408
+  symbol: gWeddingDressMannequinShoulderGradientTex
+  format: I8
+  width: 8
+  height: 8
+
+gWeddingDressMannequinSkel:
+  type: MM:SKELETON
+  offset: 0x5A78
+  symbol: gWeddingDressMannequinSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWeddingDressMannequinVineTex:
+  type: TEXTURE
+  offset: 0x4848
+  symbol: gWeddingDressMannequinVineTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gWeddingDressMannequinWoodCornerTex:
+  type: TEXTURE
+  offset: 0x4208
+  symbol: gWeddingDressMannequinWoodCornerTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWeddingDressMannequinWoodTex:
+  type: TEXTURE
+  offset: 0x4008
+  symbol: gWeddingDressMannequinWoodTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_drsVtx_000030:
+  type: MM:ARRAY
+  offset: 0x000030
+  symbol: object_drsVtx_000030
+  count: 763
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_drsVtx_002FE0:
+  type: MM:ARRAY
+  offset: 0x002FE0
+  symbol: object_drsVtx_002FE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_drsVtx_003010:
+  type: MM:ARRAY
+  offset: 0x003010
+  symbol: object_drsVtx_003010
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWeddingDressMannequinSkelLimbs:
+  type: BLOB
+  offset: 0x5A6C
+  symbol: gWeddingDressMannequinSkelLimbs
+  size: 0

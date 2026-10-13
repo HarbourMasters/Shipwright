@@ -1,0 +1,329 @@
+:config:
+  segments:
+    - [ 2, 0x01DD7A40 ]
+
+Z2_BOMYA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_BOMYA
+
+
+Z2_BOMYAPathwayList_000108:
+  type: MM:PATH
+  offset: 0x000108
+  symbol: Z2_BOMYAPathwayList_000108
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 100, -30, -140 ]
+        - [ 160, -30, -111 ]
+        - [ 189, -30, -21 ]
+        - [ 186, -30, -8 ]
+
+Z2_BOMYATexAnim_000290:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000290
+  symbol: Z2_BOMYATexAnim_000290
+
+Z2_BOMYACollisionHeader_000D84:
+  type: MM:COLLISION
+  offset: 0x000D84
+  symbol: Z2_BOMYACollisionHeader_000D84
+
+Z2_BOMYATex_000DB0:
+  type: TEXTURE
+  offset: 0x000DB0
+  symbol: Z2_BOMYATex_000DB0
+  format: I8
+  width: 64
+  height: 64
+
+Z2_BOMYATex_001DB0:
+  type: TEXTURE
+  offset: 0x001DB0
+  symbol: Z2_BOMYATex_001DB0
+  format: I8
+  width: 8
+  height: 8
+
+Z2_BOMYATex_001DF0:
+  type: TEXTURE
+  offset: 0x001DF0
+  symbol: Z2_BOMYATex_001DF0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_BOMYATex_001E30:
+  type: TEXTURE
+  offset: 0x001E30
+  symbol: Z2_BOMYATex_001E30
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_BOMYATex_001EB0:
+  type: TEXTURE
+  offset: 0x001EB0
+  symbol: Z2_BOMYATex_001EB0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_BOMYATex_0022B0:
+  type: TEXTURE
+  offset: 0x0022B0
+  symbol: Z2_BOMYATex_0022B0
+  format: RGBA16
+  width: 8
+  height: 16
+
+Z2_BOMYATex_0023B0:
+  type: TEXTURE
+  offset: 0x0023B0
+  symbol: Z2_BOMYATex_0023B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BOMYATex_0027B0:
+  type: TEXTURE
+  offset: 0x0027B0
+  symbol: Z2_BOMYATex_0027B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BOMYATex_002BB0:
+  type: TEXTURE
+  offset: 0x002BB0
+  symbol: Z2_BOMYATex_002BB0
+  format: I8
+  width: 64
+  height: 64
+
+Z2_BOMYATex_003BB0:
+  type: TEXTURE
+  offset: 0x003BB0
+  symbol: Z2_BOMYATex_003BB0
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_BOMYATex_003FB0:
+  type: TEXTURE
+  offset: 0x003FB0
+  symbol: Z2_BOMYATex_003FB0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BOMYATex_0043B0:
+  type: TEXTURE
+  offset: 0x0043B0
+  symbol: Z2_BOMYATex_0043B0
+  format: CI8
+  width: 32
+  height: 8
+
+Z2_BOMYATex_0044B0:
+  type: TEXTURE
+  offset: 0x0044B0
+  symbol: Z2_BOMYATex_0044B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BOMYATex_0046B0:
+  type: TEXTURE
+  offset: 0x0046B0
+  symbol: Z2_BOMYATex_0046B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BOMYATex_0048B0:
+  type: TEXTURE
+  offset: 0x0048B0
+  symbol: Z2_BOMYATex_0048B0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BOMYATex_0049B0:
+  type: TEXTURE
+  offset: 0x0049B0
+  symbol: Z2_BOMYATex_0049B0
+  format: CI8
+  width: 8
+  height: 16
+
+Z2_BOMYATex_004A30:
+  type: TEXTURE
+  offset: 0x004A30
+  symbol: Z2_BOMYATex_004A30
+  format: CI8
+  width: 8
+  height: 16
+
+Z2_BOMYATex_004AB0:
+  type: TEXTURE
+  offset: 0x004AB0
+  symbol: Z2_BOMYATex_004AB0
+  format: CI8
+  width: 8
+  height: 16
+
+Z2_BOMYATex_004B30:
+  type: TEXTURE
+  offset: 0x004B30
+  symbol: Z2_BOMYATex_004B30
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BOMYATex_004C30:
+  type: TEXTURE
+  offset: 0x004C30
+  symbol: Z2_BOMYATex_004C30
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_BOMYATex_005430:
+  type: TEXTURE
+  offset: 0x005430
+  symbol: Z2_BOMYATex_005430
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_BOMYATex_005C30:
+  type: TEXTURE
+  offset: 0x005C30
+  symbol: Z2_BOMYATex_005C30
+  format: I8
+  width: 64
+  height: 64
+
+Z2_BOMYATex_006C30:
+  type: TEXTURE
+  offset: 0x006C30
+  symbol: Z2_BOMYATex_006C30
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_BOMYATex_007430:
+  type: TEXTURE
+  offset: 0x007430
+  symbol: Z2_BOMYATex_007430
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_BOMYATex_007C30:
+  type: TEXTURE
+  offset: 0x007C30
+  symbol: Z2_BOMYATex_007C30
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BOMYATex_008430:
+  type: TEXTURE
+  offset: 0x008430
+  symbol: Z2_BOMYATex_008430
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BOMYATex_008530:
+  type: TEXTURE
+  offset: 0x008530
+  symbol: Z2_BOMYATex_008530
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_BOMYATex_008930:
+  type: TEXTURE
+  offset: 0x008930
+  symbol: Z2_BOMYATex_008930
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BOMYATex_009130:
+  type: TEXTURE
+  offset: 0x009130
+  symbol: Z2_BOMYATex_009130
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BOMYATex_009530:
+  type: TEXTURE
+  offset: 0x009530
+  symbol: Z2_BOMYATex_009530
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_BOMYATex_00A530:
+  type: TEXTURE
+  offset: 0x00A530
+  symbol: Z2_BOMYATex_00A530
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BOMYATex_00AD30:
+  type: TEXTURE
+  offset: 0x00AD30
+  symbol: Z2_BOMYATex_00AD30
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_BOMYATex_00BD30:
+  type: TEXTURE
+  offset: 0x00BD30
+  symbol: Z2_BOMYATex_00BD30
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BOMYATLUT_00C530:
+  type: TEXTURE
+  offset: 0x00C530
+  symbol: Z2_BOMYATLUT_00C530
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BOMYATLUT_00C730:
+  type: TEXTURE
+  offset: 0x00C730
+  symbol: Z2_BOMYATLUT_00C730
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_BOMYATLUT_00C750:
+  type: TEXTURE
+  offset: 0x00C750
+  symbol: Z2_BOMYATLUT_00C750
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BOMYATLUT_00C950:
+  type: TEXTURE
+  offset: 0x00C950
+  symbol: Z2_BOMYATLUT_00C950
+  format: RGBA16
+  width: 4
+  height: 4

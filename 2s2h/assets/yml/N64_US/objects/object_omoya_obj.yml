@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [ 6, 0x010C8910 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010C8910 ]
+    - [ 9, 0x010C8910 ]
+    - [ 10, 0x010C8910 ]
+    - [ 11, 0x010C8910 ]
+    - [ 12, 0x010C8910 ]
+    - [ 13, 0x010C8910 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_omoya_obj_DL_0001A0:
+  type: GFX
+  offset: 0x1A0
+  symbol: object_omoya_obj_DL_0001A0
+
+object_omoya_obj_TLUT_0002D8:
+  type: TEXTURE
+  offset: 0x2D8
+  symbol: object_omoya_obj_TLUT_0002D8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_omoya_obj_Tex_0002F8:
+  type: TEXTURE
+  offset: 0x2F8
+  symbol: object_omoya_obj_Tex_0002F8
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_omoya_obj_Tex_0012F8:
+  type: TEXTURE
+  offset: 0x12F8
+  symbol: object_omoya_obj_Tex_0012F8
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_omoya_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_omoya_objVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,269 @@
+:config:
+  segments:
+    - [ 2, 0x018EFCB0 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/Z2_YOUSEI_IZUMISet_01BE20.yml
+Z2_YOUSEI_IZUMI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_YOUSEI_IZUMI
+
+
+Z2_YOUSEI_IZUMICutsceneData_0002EC:
+  type: MM:CUTSCENE
+  offset: 0x0002EC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_0002EC
+  size: 3120
+
+Z2_YOUSEI_IZUMICutsceneData_000F2C:
+  type: MM:CUTSCENE
+  offset: 0x000F2C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_000F2C
+  size: 2720
+
+Z2_YOUSEI_IZUMICutsceneData_0019DC:
+  type: MM:CUTSCENE
+  offset: 0x0019DC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_0019DC
+  size: 3944
+
+Z2_YOUSEI_IZUMICutsceneData_00294C:
+  type: MM:CUTSCENE
+  offset: 0x00294C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00294C
+  size: 2384
+
+Z2_YOUSEI_IZUMICutsceneData_0032AC:
+  type: MM:CUTSCENE
+  offset: 0x0032AC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_0032AC
+  size: 3768
+
+Z2_YOUSEI_IZUMICutsceneData_00416C:
+  type: MM:CUTSCENE
+  offset: 0x00416C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00416C
+  size: 3304
+
+Z2_YOUSEI_IZUMICutsceneData_004E5C:
+  type: MM:CUTSCENE
+  offset: 0x004E5C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_004E5C
+  size: 3304
+
+Z2_YOUSEI_IZUMICutsceneData_005B4C:
+  type: MM:CUTSCENE
+  offset: 0x005B4C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_005B4C
+  size: 2848
+
+Z2_YOUSEI_IZUMICutsceneData_00667C:
+  type: MM:CUTSCENE
+  offset: 0x00667C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00667C
+  size: 2848
+
+Z2_YOUSEI_IZUMICutsceneData_0071AC:
+  type: MM:CUTSCENE
+  offset: 0x0071AC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_0071AC
+  size: 3256
+
+Z2_YOUSEI_IZUMICutsceneData_007E6C:
+  type: MM:CUTSCENE
+  offset: 0x007E6C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_007E6C
+  size: 2800
+
+Z2_YOUSEI_IZUMICutsceneData_00896C:
+  type: MM:CUTSCENE
+  offset: 0x00896C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00896C
+  size: 3304
+
+Z2_YOUSEI_IZUMICutsceneData_00965C:
+  type: MM:CUTSCENE
+  offset: 0x00965C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00965C
+  size: 2800
+
+Z2_YOUSEI_IZUMICutsceneData_00A15C:
+  type: MM:CUTSCENE
+  offset: 0x00A15C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00A15C
+  size: 3304
+
+Z2_YOUSEI_IZUMICutsceneData_00AE4C:
+  type: MM:CUTSCENE
+  offset: 0x00AE4C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00AE4C
+  size: 2800
+
+Z2_YOUSEI_IZUMICutsceneData_00B94C:
+  type: MM:CUTSCENE
+  offset: 0x00B94C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00B94C
+  size: 3304
+
+Z2_YOUSEI_IZUMICutsceneData_00C63C:
+  type: MM:CUTSCENE
+  offset: 0x00C63C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00C63C
+  size: 2800
+
+Z2_YOUSEI_IZUMICutsceneData_00D13C:
+  type: MM:CUTSCENE
+  offset: 0x00D13C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00D13C
+  size: 1344
+
+Z2_YOUSEI_IZUMICutsceneData_00D68C:
+  type: MM:CUTSCENE
+  offset: 0x00D68C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00D68C
+  size: 1344
+
+Z2_YOUSEI_IZUMICutsceneData_00DBDC:
+  type: MM:CUTSCENE
+  offset: 0x00DBDC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00DBDC
+  size: 5600
+
+Z2_YOUSEI_IZUMICutsceneData_00F1CC:
+  type: MM:CUTSCENE
+  offset: 0x00F1CC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00F1CC
+  size: 1376
+
+Z2_YOUSEI_IZUMICutsceneData_00F73C:
+  type: MM:CUTSCENE
+  offset: 0x00F73C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00F73C
+  size: 1344
+
+Z2_YOUSEI_IZUMICutsceneData_00FC8C:
+  type: MM:CUTSCENE
+  offset: 0x00FC8C
+  symbol: Z2_YOUSEI_IZUMICutsceneData_00FC8C
+  size: 1344
+
+Z2_YOUSEI_IZUMICutsceneData_0101DC:
+  type: MM:CUTSCENE
+  offset: 0x0101DC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_0101DC
+  size: 5144
+
+Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119E0:
+  type: BLOB
+  offset: 0x0119E0
+  symbol: Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119E0
+  size: 0
+
+Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119E8:
+  type: BLOB
+  offset: 0x0119E8
+  symbol: Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119E8
+  size: 0
+
+Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119F0:
+  type: BLOB
+  offset: 0x0119F0
+  symbol: Z2_YOUSEI_IZUMITexAnim_0119F8TexScrollParams_0119F0
+  size: 0
+
+Z2_YOUSEI_IZUMITexAnim_0119F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0119F8
+  symbol: Z2_YOUSEI_IZUMITexAnim_0119F8
+
+Z2_YOUSEI_IZUMICollisionHeader_01BDE8:
+  type: MM:COLLISION
+  offset: 0x01BDE8
+  symbol: Z2_YOUSEI_IZUMICollisionHeader_01BDE8
+
+Z2_YOUSEI_IZUMICutsceneData_01BFBC:
+  type: MM:CUTSCENE
+  offset: 0x01BFBC
+  symbol: Z2_YOUSEI_IZUMICutsceneData_01BFBC
+  size: 928
+
+Z2_YOUSEI_IZUMITex_01C3C0:
+  type: TEXTURE
+  offset: 0x01C3C0
+  symbol: Z2_YOUSEI_IZUMITex_01C3C0
+  format: I8
+  width: 32
+  height: 64
+
+Z2_YOUSEI_IZUMITex_01CBC0:
+  type: TEXTURE
+  offset: 0x01CBC0
+  symbol: Z2_YOUSEI_IZUMITex_01CBC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_YOUSEI_IZUMITex_01D3C0:
+  type: TEXTURE
+  offset: 0x01D3C0
+  symbol: Z2_YOUSEI_IZUMITex_01D3C0
+  format: I4
+  width: 64
+  height: 128
+
+Z2_YOUSEI_IZUMITex_01E3C0:
+  type: TEXTURE
+  offset: 0x01E3C0
+  symbol: Z2_YOUSEI_IZUMITex_01E3C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_YOUSEI_IZUMITex_01F3C0:
+  type: TEXTURE
+  offset: 0x01F3C0
+  symbol: Z2_YOUSEI_IZUMITex_01F3C0
+  format: IA8
+  width: 64
+  height: 32
+
+Z2_YOUSEI_IZUMITex_01FBC0:
+  type: TEXTURE
+  offset: 0x01FBC0
+  symbol: Z2_YOUSEI_IZUMITex_01FBC0
+  format: I8
+  width: 16
+  height: 256
+
+Z2_YOUSEI_IZUMITex_020BC0:
+  type: TEXTURE
+  offset: 0x020BC0
+  symbol: Z2_YOUSEI_IZUMITex_020BC0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_YOUSEI_IZUMITex_021BC0:
+  type: TEXTURE
+  offset: 0x021BC0
+  symbol: Z2_YOUSEI_IZUMITex_021BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_YOUSEI_IZUMITex_0223C0:
+  type: TEXTURE
+  offset: 0x0223C0
+  symbol: Z2_YOUSEI_IZUMITex_0223C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_YOUSEI_IZUMITex_022BC0:
+  type: TEXTURE
+  offset: 0x022BC0
+  symbol: Z2_YOUSEI_IZUMITex_022BC0
+  format: RGBA16
+  width: 32
+  height: 32

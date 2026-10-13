@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 10, 0x00E876C0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 11, 0x00E876C0 ]
+    - [ 12, 0x00E876C0 ]
+    - [ 13, 0x00E876C0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_mask_ki_tan_DL_0004A0:
+  type: GFX
+  offset: 0x4A0
+  symbol: object_mask_ki_tan_DL_0004A0
+
+object_mask_ki_tan_TLUT_000688:
+  type: TEXTURE
+  offset: 0x688
+  symbol: object_mask_ki_tan_TLUT_000688
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_ki_tan_Tex_000888:
+  type: TEXTURE
+  offset: 0x888
+  symbol: object_mask_ki_tan_Tex_000888
+  format: CI8
+  width: 32
+  height: 16
+
+object_mask_ki_tan_Tex_000A88:
+  type: TEXTURE
+  offset: 0xA88
+  symbol: object_mask_ki_tan_Tex_000A88
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_mask_ki_tanVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_ki_tanVtx_000000
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

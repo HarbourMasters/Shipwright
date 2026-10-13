@@ -1,0 +1,644 @@
+:config:
+  segments:
+    - [ 6, 0x00FA9D40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FA9D40 ]
+    - [ 9, 0x00FA9D40 ]
+    - [ 10, 0x00FA9D40 ]
+    - [ 11, 0x00FA9D40 ]
+    - [ 12, 0x00FA9D40 ]
+    - [ 13, 0x00FA9D40 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gZoraArmsOpenAnim:
+  type: OOT:ANIMATION
+  offset: 0xD48
+  symbol: gZoraArmsOpenAnim
+
+gZoraBackAndHeadTailTex:
+  type: TEXTURE
+  offset: 0x4860
+  symbol: gZoraBackAndHeadTailTex
+  format: CI8
+  width: 32
+  height: 64
+
+gZoraBobHandAnim:
+  type: OOT:ANIMATION
+  offset: 0xEDF0
+  symbol: gZoraBobHandAnim
+
+gZoraBubbleMaterialDL:
+  type: GFX
+  offset: 0x29F0
+  symbol: gZoraBubbleMaterialDL
+
+gZoraBubbleModelDL:
+  type: GFX
+  offset: 0x2A50
+  symbol: gZoraBubbleModelDL
+
+gZoraBubbleTex:
+  type: TEXTURE
+  offset: 0x28B0
+  symbol: gZoraBubbleTex
+  format: IA8
+  width: 16
+  height: 16
+
+gZoraEyeClosedTex:
+  type: TEXTURE
+  offset: 0x60A0
+  symbol: gZoraEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraEyeHalfTex:
+  type: TEXTURE
+  offset: 0x58A0
+  symbol: gZoraEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraEyeOpenTex:
+  type: TEXTURE
+  offset: 0x50A0
+  symbol: gZoraEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraFinTex:
+  type: TEXTURE
+  offset: 0x4460
+  symbol: gZoraFinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraFixSpeakerEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x11424
+  symbol: gZoraFixSpeakerEndAnim
+
+gZoraFixSpeakerLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x10B18
+  symbol: gZoraFixSpeakerLoopAnim
+
+gZoraFixSpeakerStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xFDF0
+  symbol: gZoraFixSpeakerStartAnim
+
+gZoraHandTex:
+  type: TEXTURE
+  offset: 0x70A0
+  symbol: gZoraHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gZoraHandsOnHipsTappingFootAnim:
+  type: OOT:ANIMATION
+  offset: 0x598
+  symbol: gZoraHandsOnHipsTappingFootAnim
+
+gZoraHeadDL:
+  type: GFX
+  offset: 0xA7C0
+  symbol: gZoraHeadDL
+
+gZoraHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD180
+  symbol: gZoraHeadLimb
+  limb_type: Standard
+
+gZoraHeadTail1DL:
+  type: GFX
+  offset: 0xAA38
+  symbol: gZoraHeadTail1DL
+
+gZoraHeadTail1Limb:
+  type: OOT:LIMB
+  offset: 0xD18C
+  symbol: gZoraHeadTail1Limb
+  limb_type: Standard
+
+gZoraHeadTail2DL:
+  type: GFX
+  offset: 0xABD8
+  symbol: gZoraHeadTail2DL
+
+gZoraHeadTail2Limb:
+  type: OOT:LIMB
+  offset: 0xD198
+  symbol: gZoraHeadTail2Limb
+  limb_type: Standard
+
+gZoraHeadTail3DL:
+  type: GFX
+  offset: 0xAD70
+  symbol: gZoraHeadTail3DL
+
+gZoraHeadTail3Limb:
+  type: OOT:LIMB
+  offset: 0xD1A4
+  symbol: gZoraHeadTail3Limb
+  limb_type: Standard
+
+gZoraHeadTailFinDL:
+  type: GFX
+  offset: 0xAF08
+  symbol: gZoraHeadTailFinDL
+
+gZoraHeadTailFinLimb:
+  type: OOT:LIMB
+  offset: 0xD1B0
+  symbol: gZoraHeadTailFinLimb
+  limb_type: Standard
+
+gZoraIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4248
+  symbol: gZoraIdleAnim
+
+gZoraKneeTex:
+  type: TEXTURE
+  offset: 0x71A0
+  symbol: gZoraKneeTex
+  format: CI8
+  width: 8
+  height: 8
+
+gZoraLeftFootDL:
+  type: GFX
+  offset: 0xCE10
+  symbol: gZoraLeftFootDL
+
+gZoraLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xD0FC
+  symbol: gZoraLeftFootLimb
+  limb_type: Standard
+
+gZoraLeftForearmDL:
+  type: GFX
+  offset: 0xBAF0
+  symbol: gZoraLeftForearmDL
+
+gZoraLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD144
+  symbol: gZoraLeftForearmLimb
+  limb_type: Standard
+
+gZoraLeftHandDL:
+  type: GFX
+  offset: 0xBDD0
+  symbol: gZoraLeftHandDL
+
+gZoraLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xD150
+  symbol: gZoraLeftHandLimb
+  limb_type: Standard
+
+gZoraLeftShinDL:
+  type: GFX
+  offset: 0xCB38
+  symbol: gZoraLeftShinDL
+
+gZoraLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xD0F0
+  symbol: gZoraLeftShinLimb
+  limb_type: Standard
+
+gZoraLeftThighDL:
+  type: GFX
+  offset: 0xC858
+  symbol: gZoraLeftThighDL
+
+gZoraLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xD0E4
+  symbol: gZoraLeftThighLimb
+  limb_type: Standard
+
+gZoraLeftUpperArmDL:
+  type: GFX
+  offset: 0xB890
+  symbol: gZoraLeftUpperArmDL
+
+gZoraLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xD138
+  symbol: gZoraLeftUpperArmLimb
+  limb_type: Standard
+
+gZoraListenAnim:
+  type: OOT:ANIMATION
+  offset: 0xDF54
+  symbol: gZoraListenAnim
+
+gZoraMouthTex:
+  type: TEXTURE
+  offset: 0x68A0
+  symbol: gZoraMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZoraPelvisDL:
+  type: GFX
+  offset: 0xA2A0
+  symbol: gZoraPelvisDL
+
+gZoraPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xD0D8
+  symbol: gZoraPelvisLimb
+  limb_type: Standard
+
+gZoraRightFootDL:
+  type: GFX
+  offset: 0xC590
+  symbol: gZoraRightFootDL
+
+gZoraRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xD120
+  symbol: gZoraRightFootLimb
+  limb_type: Standard
+
+gZoraRightForearmDL:
+  type: GFX
+  offset: 0xB3A8
+  symbol: gZoraRightForearmDL
+
+gZoraRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD168
+  symbol: gZoraRightForearmLimb
+  limb_type: Standard
+
+gZoraRightHandDL:
+  type: GFX
+  offset: 0xB688
+  symbol: gZoraRightHandDL
+
+gZoraRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xD174
+  symbol: gZoraRightHandLimb
+  limb_type: Standard
+
+gZoraRightShinDL:
+  type: GFX
+  offset: 0xC2B8
+  symbol: gZoraRightShinDL
+
+gZoraRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xD114
+  symbol: gZoraRightShinLimb
+  limb_type: Standard
+
+gZoraRightThighDL:
+  type: GFX
+  offset: 0xBFD8
+  symbol: gZoraRightThighDL
+
+gZoraRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xD108
+  symbol: gZoraRightThighLimb
+  limb_type: Standard
+
+gZoraRightUpperArmDL:
+  type: GFX
+  offset: 0xB148
+  symbol: gZoraRightUpperArmDL
+
+gZoraRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xD15C
+  symbol: gZoraRightUpperArmLimb
+  limb_type: Standard
+
+gZoraRippleMaterialDL:
+  type: GFX
+  offset: 0xD220
+  symbol: gZoraRippleMaterialDL
+
+gZoraRippleModelDL:
+  type: GFX
+  offset: 0xD288
+  symbol: gZoraRippleModelDL
+
+gZoraRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xE400
+  symbol: gZoraRunAnim
+
+gZoraSitAnim:
+  type: OOT:ANIMATION
+  offset: 0xF4E8
+  symbol: gZoraSitAnim
+
+gZoraSkel:
+  type: MM:SKELETON
+  offset: 0xD208
+  symbol: gZoraSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gZoraSkinTex:
+  type: TEXTURE
+  offset: 0x5060
+  symbol: gZoraSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gZoraSplashMaterialDL:
+  type: GFX
+  offset: 0x2BA0
+  symbol: gZoraSplashMaterialDL
+
+gZoraSplashModelDL:
+  type: GFX
+  offset: 0x2C10
+  symbol: gZoraSplashModelDL
+
+gZoraSplashTex:
+  type: TEXTURE
+  offset: 0x2A70
+  symbol: gZoraSplashTex
+  format: I8
+  width: 16
+  height: 16
+
+gZoraStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xDE20
+  symbol: gZoraStandAnim
+
+gZoraSurfacingAnim:
+  type: OOT:ANIMATION
+  offset: 0x3610
+  symbol: gZoraSurfacingAnim
+
+gZoraTLUT:
+  type: TEXTURE
+  offset: 0x4260
+  symbol: gZoraTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZoraThrowRupeeAnim:
+  type: OOT:ANIMATION
+  offset: 0x219C
+  symbol: gZoraThrowRupeeAnim
+
+gZoraTorsoDL:
+  type: GFX
+  offset: 0xA448
+  symbol: gZoraTorsoDL
+
+gZoraTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xD12C
+  symbol: gZoraTorsoLimb
+  limb_type: Standard
+
+gZoraTreadingWaterAnim:
+  type: OOT:ANIMATION
+  offset: 0x4168
+  symbol: gZoraTreadingWaterAnim
+
+gZoraWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2898
+  symbol: gZoraWalkAnim
+
+object_zo_DL_00D2A0:
+  type: GFX
+  offset: 0xD2A0
+  symbol: object_zo_DL_00D2A0
+
+object_zo_DL_00D2B8:
+  type: GFX
+  offset: 0xD2B8
+  symbol: object_zo_DL_00D2B8
+
+
+object_zoVtx_0029B0:
+  type: MM:ARRAY
+  offset: 0x0029B0
+  symbol: object_zoVtx_0029B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_002B70:
+  type: MM:ARRAY
+  offset: 0x002B70
+  symbol: object_zoVtx_002B70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0071E0:
+  type: MM:ARRAY
+  offset: 0x0071E0
+  symbol: object_zoVtx_0071E0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0073A0:
+  type: MM:ARRAY
+  offset: 0x0073A0
+  symbol: object_zoVtx_0073A0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007500:
+  type: MM:ARRAY
+  offset: 0x007500
+  symbol: object_zoVtx_007500
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007660:
+  type: MM:ARRAY
+  offset: 0x007660
+  symbol: object_zoVtx_007660
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0077E0:
+  type: MM:ARRAY
+  offset: 0x0077E0
+  symbol: object_zoVtx_0077E0
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007C90:
+  type: MM:ARRAY
+  offset: 0x007C90
+  symbol: object_zoVtx_007C90
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_007F20:
+  type: MM:ARRAY
+  offset: 0x007F20
+  symbol: object_zoVtx_007F20
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008130:
+  type: MM:ARRAY
+  offset: 0x008130
+  symbol: object_zoVtx_008130
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008390:
+  type: MM:ARRAY
+  offset: 0x008390
+  symbol: object_zoVtx_008390
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008620:
+  type: MM:ARRAY
+  offset: 0x008620
+  symbol: object_zoVtx_008620
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008830:
+  type: MM:ARRAY
+  offset: 0x008830
+  symbol: object_zoVtx_008830
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_008A90:
+  type: MM:ARRAY
+  offset: 0x008A90
+  symbol: object_zoVtx_008A90
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_009130:
+  type: MM:ARRAY
+  offset: 0x009130
+  symbol: object_zoVtx_009130
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0093A0:
+  type: MM:ARRAY
+  offset: 0x0093A0
+  symbol: object_zoVtx_0093A0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_009630:
+  type: MM:ARRAY
+  offset: 0x009630
+  symbol: object_zoVtx_009630
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_0098F0:
+  type: MM:ARRAY
+  offset: 0x0098F0
+  symbol: object_zoVtx_0098F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_009B60:
+  type: MM:ARRAY
+  offset: 0x009B60
+  symbol: object_zoVtx_009B60
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_009DF0:
+  type: MM:ARRAY
+  offset: 0x009DF0
+  symbol: object_zoVtx_009DF0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoVtx_00A0B0:
+  type: MM:ARRAY
+  offset: 0x00A0B0
+  symbol: object_zoVtx_00A0B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZoraSkelLimbs:
+  type: BLOB
+  offset: 0xD1BC
+  symbol: gZoraSkelLimbs
+  size: 0
+
+object_zoVtx_00D308:
+  type: MM:ARRAY
+  offset: 0x00D308
+  symbol: object_zoVtx_00D308
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

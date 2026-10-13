@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x00F718A0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00F718A0 ]
+    - [ 9, 0x00F718A0 ]
+    - [ 10, 0x00F718A0 ]
+    - [ 11, 0x00F718A0 ]
+    - [ 12, 0x00F718A0 ]
+    - [ 13, 0x00F718A0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiBombDL:
+  type: GFX
+  offset: 0x9A0
+  symbol: gGiBombDL
+
+
+object_gi_bomb_1Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bomb_1Vtx_000000
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

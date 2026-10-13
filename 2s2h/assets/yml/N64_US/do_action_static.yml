@@ -1,0 +1,340 @@
+:config:
+  segments:
+    - [ 9, 0x009EEC00 ]
+
+gDoActionAttackENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDoActionAttackENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionCheckENGTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gDoActionCheckENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionClimbENGTex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gDoActionClimbENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionCurlENGTex:
+  type: TEXTURE
+  offset: 0x3480
+  symbol: gDoActionCurlENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionDanceENGTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gDoActionDanceENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionDecideENGTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gDoActionDecideENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionDiveENGTex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gDoActionDiveENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionDownENGTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDoActionDownENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionDropENGTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gDoActionDropENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionEnterENGTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gDoActionEnterENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionExplodeENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gDoActionExplodeENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionFasterENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gDoActionFasterENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionGrabENGTex:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gDoActionGrabENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionHookENGTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gDoActionHookENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionInfoENGTex:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: gDoActionInfoENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionJumpENGTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gDoActionJumpENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionMarchENGTex:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: gDoActionMarchENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNaviENGTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gDoActionNaviENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNextENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gDoActionNextENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum1ENGTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gDoActionNum1ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum2ENGTex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gDoActionNum2ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum3ENGTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gDoActionNum3ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum4ENGTex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gDoActionNum4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum5ENGTex:
+  type: TEXTURE
+  offset: 0x2E80
+  symbol: gDoActionNum5ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum6ENGTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gDoActionNum6ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum7ENGTex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gDoActionNum7ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionNum8ENGTex:
+  type: TEXTURE
+  offset: 0x3300
+  symbol: gDoActionNum8ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionOpenENGTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gDoActionOpenENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionPoundENGTex:
+  type: TEXTURE
+  offset: 0x3A80
+  symbol: gDoActionPoundENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionPunchENGTex:
+  type: TEXTURE
+  offset: 0x3900
+  symbol: gDoActionPunchENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionPutAwayENGTex:
+  type: TEXTURE
+  offset: 0x1C80
+  symbol: gDoActionPutAwayENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionQuitENGTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gDoActionQuitENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionReelENGTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gDoActionReelENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionReturnENGTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gDoActionReturnENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionShootENGTex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gDoActionShootENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionSnapENGTex:
+  type: TEXTURE
+  offset: 0x2280
+  symbol: gDoActionSnapENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionSpeakENGTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gDoActionSpeakENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionStopENGTex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gDoActionStopENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionSurfaceENGTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gDoActionSurfaceENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionSwimENGTex:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: gDoActionSwimENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionThrowENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDoActionThrowENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDoActionWarpENGTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gDoActionWarpENGTex
+  format: IA4
+  width: 48
+  height: 16
+

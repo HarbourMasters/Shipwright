@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 6, 0x014CFC10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014CFC10 ]
+    - [ 9, 0x014CFC10 ]
+    - [ 10, 0x014CFC10 ]
+    - [ 11, 0x014CFC10 ]
+    - [ 12, 0x014CFC10 ]
+    - [ 13, 0x014CFC10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gAnju2EmptyDL:
+  type: GFX
+  offset: 0x370
+  symbol: gAnju2EmptyDL
+
+gAnju2UmbrellaCircleTex:
+  type: TEXTURE
+  offset: 0x578
+  symbol: gAnju2UmbrellaCircleTex
+  format: I8
+  width: 16
+  height: 16
+
+gAnju2UmbrellaCryAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B80
+  symbol: gAnju2UmbrellaCryAnim
+
+gAnju2UmbrellaDL:
+  type: GFX
+  offset: 0x378
+  symbol: gAnju2UmbrellaDL
+
+gAnju2UmbrellaDesignTex:
+  type: TEXTURE
+  offset: 0x678
+  symbol: gAnju2UmbrellaDesignTex
+  format: I8
+  width: 32
+  height: 32
+
+gAnju2UmbrellaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x28DC
+  symbol: gAnju2UmbrellaIdleAnim
+
+gAnju2UmbrellaSitAnim:
+  type: OOT:ANIMATION
+  offset: 0x38A0
+  symbol: gAnju2UmbrellaSitAnim
+
+gAnju2UmbrellaWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x42CC
+  symbol: gAnju2UmbrellaWalkAnim
+
+
+object_an2Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_an2Vtx_000000
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

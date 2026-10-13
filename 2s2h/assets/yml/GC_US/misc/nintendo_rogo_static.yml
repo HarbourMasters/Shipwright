@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [ 1, 0x0161B5E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0161B5E0 ]
+    - [ 9, 0x0161B5E0 ]
+    - [ 10, 0x0161B5E0 ]
+    - [ 11, 0x0161B5E0 ]
+    - [ 12, 0x0161B5E0 ]
+    - [ 13, 0x0161B5E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gNintendo64LogoNDL:
+  type: GFX
+  offset: 0x2720
+  symbol: gNintendo64LogoNDL
+
+gNintendo64LogoNShineTex:
+  type: TEXTURE
+  offset: 0x29C0
+  symbol: gNintendo64LogoNShineTex
+  format: I8
+  width: 32
+  height: 32
+
+gNintendo64LogoTextShineTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gNintendo64LogoTextShineTex
+  format: I8
+  width: 32
+  height: 32
+
+gNintendo64LogoTextTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gNintendo64LogoTextTex
+  format: I8
+  width: 192
+  height: 32
+
+
+nintendo_rogo_staticVtx_001C00:
+  type: MM:ARRAY
+  offset: 0x001C00
+  symbol: nintendo_rogo_staticVtx_001C00
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

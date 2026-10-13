@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 10, 0x00E857B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E857B0 ]
+    - [ 12, 0x00E857B0 ]
+    - [ 13, 0x00E857B0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_rabit_DL_000610:
+  type: GFX
+  offset: 0x610
+  symbol: object_mask_rabit_DL_000610
+
+object_mask_rabit_Tex_0009A0:
+  type: TEXTURE
+  offset: 0x9A0
+  symbol: object_mask_rabit_Tex_0009A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_rabit_Tex_000BA0:
+  type: TEXTURE
+  offset: 0xBA0
+  symbol: object_mask_rabit_Tex_000BA0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_mask_rabit_Tex_000FA0:
+  type: TEXTURE
+  offset: 0xFA0
+  symbol: object_mask_rabit_Tex_000FA0
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_mask_rabitVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_rabitVtx_000000
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

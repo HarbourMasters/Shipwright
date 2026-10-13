@@ -1,0 +1,665 @@
+:config:
+  segments:
+    - [ 6, 0x014DD380 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014DD380 ]
+    - [ 9, 0x014DD380 ]
+    - [ 10, 0x014DD380 ]
+    - [ 11, 0x014DD380 ]
+    - [ 12, 0x014DD380 ]
+    - [ 13, 0x014DD380 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gTurtleAsleepDL:
+  type: GFX
+  offset: 0x4E70
+  symbol: gTurtleAsleepDL
+
+gTurtleAsleepGrassDirtTex:
+  type: TEXTURE
+  offset: 0x5848
+  symbol: gTurtleAsleepGrassDirtTex
+  format: CI8
+  width: 64
+  height: 32
+
+gTurtleAsleepGrassTex:
+  type: TEXTURE
+  offset: 0x5448
+  symbol: gTurtleAsleepGrassTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTurtleAsleepTLUT:
+  type: TEXTURE
+  offset: 0x5248
+  symbol: gTurtleAsleepTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTurtleBackLeftFlipperDL:
+  type: GFX
+  offset: 0x9C38
+  symbol: gTurtleBackLeftFlipperDL
+
+gTurtleBackLeftFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE644
+  symbol: gTurtleBackLeftFlipperLimb
+  limb_type: Standard
+
+gTurtleBackLeftFlipperRootLimb:
+  type: OOT:LIMB
+  offset: 0xE638
+  symbol: gTurtleBackLeftFlipperRootLimb
+  limb_type: Standard
+
+gTurtleBackRightFlipperDL:
+  type: GFX
+  offset: 0x99B8
+  symbol: gTurtleBackRightFlipperDL
+
+gTurtleBackRightFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE65C
+  symbol: gTurtleBackRightFlipperLimb
+  limb_type: Standard
+
+gTurtleBackRightFlipperRootLimb:
+  type: OOT:LIMB
+  offset: 0xE650
+  symbol: gTurtleBackRightFlipperRootLimb
+  limb_type: Standard
+
+gTurtleCoughAnim:
+  type: OOT:ANIMATION
+  offset: 0x47B8
+  symbol: gTurtleCoughAnim
+
+gTurtleEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2360
+  symbol: gTurtleEmpty1TexAnim
+
+gTurtleEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x6050
+  symbol: gTurtleEmpty2TexAnim
+
+gTurtleEyeClosedTex:
+  type: TEXTURE
+  offset: 0xC6D8
+  symbol: gTurtleEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleEyeHalfLeftTex:
+  type: TEXTURE
+  offset: 0xCAD8
+  symbol: gTurtleEyeHalfLeftTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleEyeHalfStraightTex:
+  type: TEXTURE
+  offset: 0xC2D8
+  symbol: gTurtleEyeHalfStraightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleEyeOpenLeftTex:
+  type: TEXTURE
+  offset: 0xD2D8
+  symbol: gTurtleEyeOpenLeftTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleEyeOpenRightTex:
+  type: TEXTURE
+  offset: 0xCED8
+  symbol: gTurtleEyeOpenRightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleEyeOpenStraightTex:
+  type: TEXTURE
+  offset: 0xBED8
+  symbol: gTurtleEyeOpenStraightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xAAD8
+
+gTurtleFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x12260
+  symbol: gTurtleFloatAnim
+
+gTurtleFrontLeftEndFlipperDL:
+  type: GFX
+  offset: 0x9278
+  symbol: gTurtleFrontLeftEndFlipperDL
+
+gTurtleFrontLeftEndFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE6B0
+  symbol: gTurtleFrontLeftEndFlipperLimb
+  limb_type: Standard
+
+gTurtleFrontLeftFlipperRootLimb:
+  type: OOT:LIMB
+  offset: 0xE68C
+  symbol: gTurtleFrontLeftFlipperRootLimb
+  limb_type: Standard
+
+gTurtleFrontLeftLowerFlipperDL:
+  type: GFX
+  offset: 0x90E8
+  symbol: gTurtleFrontLeftLowerFlipperDL
+
+gTurtleFrontLeftLowerFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE6A4
+  symbol: gTurtleFrontLeftLowerFlipperLimb
+  limb_type: Standard
+
+gTurtleFrontLeftUpperFlipperDL:
+  type: GFX
+  offset: 0x8E18
+  symbol: gTurtleFrontLeftUpperFlipperDL
+
+gTurtleFrontLeftUpperFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE698
+  symbol: gTurtleFrontLeftUpperFlipperLimb
+  limb_type: Standard
+
+gTurtleFrontRightEndFlipperDL:
+  type: GFX
+  offset: 0x9848
+  symbol: gTurtleFrontRightEndFlipperDL
+
+gTurtleFrontRightEndFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE6E0
+  symbol: gTurtleFrontRightEndFlipperLimb
+  limb_type: Standard
+
+gTurtleFrontRightFlipperRootLimb:
+  type: OOT:LIMB
+  offset: 0xE6BC
+  symbol: gTurtleFrontRightFlipperRootLimb
+  limb_type: Standard
+
+gTurtleFrontRightLowerFlipperDL:
+  type: GFX
+  offset: 0x96B8
+  symbol: gTurtleFrontRightLowerFlipperDL
+
+gTurtleFrontRightLowerFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE6D4
+  symbol: gTurtleFrontRightLowerFlipperLimb
+  limb_type: Standard
+
+gTurtleFrontRightUpperFlipperDL:
+  type: GFX
+  offset: 0x93E8
+  symbol: gTurtleFrontRightUpperFlipperDL
+
+gTurtleFrontRightUpperFlipperLimb:
+  type: OOT:LIMB
+  offset: 0xE6C8
+  symbol: gTurtleFrontRightUpperFlipperLimb
+  limb_type: Standard
+
+gTurtleGlitchy1Anim:
+  type: OOT:ANIMATION
+  offset: 0x3980
+  symbol: gTurtleGlitchy1Anim
+
+gTurtleGlitchy2Anim:
+  type: OOT:ANIMATION
+  offset: 0xEF98
+  symbol: gTurtleGlitchy2Anim
+
+gTurtleGlitchyLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x13264
+  symbol: gTurtleGlitchyLookAroundAnim
+
+gTurtleGlitchyRaiseHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x10918
+  symbol: gTurtleGlitchyRaiseHeadAnim
+
+gTurtleHeadDL:
+  type: GFX
+  offset: 0xA118
+  symbol: gTurtleHeadDL
+
+gTurtleHeadLimb:
+  type: OOT:LIMB
+  offset: 0xE608
+  symbol: gTurtleHeadLimb
+  limb_type: Standard
+
+gTurtleHeadTex:
+  type: TEXTURE
+  offset: 0xD6D8
+  symbol: gTurtleHeadTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTurtleIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x48B0
+  symbol: gTurtleIdleAnim
+
+gTurtleInsideLowerMouthTex:
+  type: TEXTURE
+  offset: 0xB3D8
+  symbol: gTurtleInsideLowerMouthTex
+  format: CI8
+  width: 16
+  height: 32
+
+gTurtleInsideUpperMouthTex:
+  type: TEXTURE
+  offset: 0xB2D8
+  symbol: gTurtleInsideUpperMouthTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTurtleLowerMouthDL:
+  type: GFX
+  offset: 0xA7C8
+  symbol: gTurtleLowerMouthDL
+
+gTurtleLowerMouthLimb:
+  type: OOT:LIMB
+  offset: 0xE62C
+  symbol: gTurtleLowerMouthLimb
+  limb_type: Standard
+
+gTurtleLowerMouthRootLimb:
+  type: OOT:LIMB
+  offset: 0xE620
+  symbol: gTurtleLowerMouthRootLimb
+  limb_type: Standard
+
+gTurtleNeckDL:
+  type: GFX
+  offset: 0x9F18
+  symbol: gTurtleNeckDL
+
+gTurtleNeckHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0xE5F0
+  symbol: gTurtleNeckHeadRootLimb
+  limb_type: Standard
+
+gTurtleNeckLimb:
+  type: OOT:LIMB
+  offset: 0xE5FC
+  symbol: gTurtleNeckLimb
+  limb_type: Standard
+
+gTurtleNostrilTex:
+  type: TEXTURE
+  offset: 0xAED8
+  symbol: gTurtleNostrilTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTurtleRootLimb:
+  type: OOT:LIMB
+  offset: 0xE5D8
+  symbol: gTurtleRootLimb
+  limb_type: Standard
+
+gTurtleShellBottomTex:
+  type: TEXTURE
+  offset: 0xE3D8
+  symbol: gTurtleShellBottomTex
+  format: CI8
+  width: 16
+  height: 32
+
+gTurtleShellDL:
+  type: GFX
+  offset: 0x8760
+  symbol: gTurtleShellDL
+
+gTurtleShellGrassTex:
+  type: TEXTURE
+  offset: 0xD7D8
+  symbol: gTurtleShellGrassTex
+  format: CI8
+  width: 32
+  height: 64
+
+gTurtleShellLimb:
+  type: OOT:LIMB
+  offset: 0xE5E4
+  symbol: gTurtleShellLimb
+  limb_type: Standard
+
+gTurtleShellScutesTex:
+  type: TEXTURE
+  offset: 0xDFD8
+  symbol: gTurtleShellScutesTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTurtleSkel:
+  type: MM:SKELETON
+  offset: 0xE748
+  symbol: gTurtleSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTurtleSkinTLUT:
+  type: TEXTURE
+  offset: 0xAAD8
+  symbol: gTurtleSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTurtleSkinTex:
+  type: TEXTURE
+  offset: 0xBDD8
+  symbol: gTurtleSkinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTurtleSpeak1Anim:
+  type: OOT:ANIMATION
+  offset: 0x100CC
+  symbol: gTurtleSpeak1Anim
+
+gTurtleSpeak2Anim:
+  type: OOT:ANIMATION
+  offset: 0x119D4
+  symbol: gTurtleSpeak2Anim
+
+gTurtleSpottedSkinTex:
+  type: TEXTURE
+  offset: 0xB5D8
+  symbol: gTurtleSpottedSkinTex
+  format: CI8
+  width: 64
+  height: 32
+
+gTurtleSwimAnim:
+  type: OOT:ANIMATION
+  offset: 0x6980
+  symbol: gTurtleSwimAnim
+
+gTurtleTLUT:
+  type: TEXTURE
+  offset: 0xACD8
+  symbol: gTurtleTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTurtleTailDL:
+  type: GFX
+  offset: 0x9E38
+  symbol: gTurtleTailDL
+
+gTurtleTailEndRootLimb:
+  type: OOT:LIMB
+  offset: 0xE680
+  symbol: gTurtleTailEndRootLimb
+  limb_type: Standard
+
+gTurtleTailLimb:
+  type: OOT:LIMB
+  offset: 0xE674
+  symbol: gTurtleTailLimb
+  limb_type: Standard
+
+gTurtleTailRootLimb:
+  type: OOT:LIMB
+  offset: 0xE668
+  symbol: gTurtleTailRootLimb
+  limb_type: Standard
+
+gTurtleUnusedCol:
+  type: MM:COLLISION
+  offset: 0x2E04
+  symbol: gTurtleUnusedCol
+
+gTurtleUpperMouthDL:
+  type: GFX
+  offset: 0xA4B8
+  symbol: gTurtleUpperMouthDL
+
+gTurtleUpperMouthLimb:
+  type: OOT:LIMB
+  offset: 0xE614
+  symbol: gTurtleUpperMouthLimb
+  limb_type: Standard
+
+gTurtleWaveDL:
+  type: GFX
+  offset: 0x140
+  symbol: gTurtleWaveDL
+
+gTurtleWaveTex:
+  type: TEXTURE
+  offset: 0xAD8
+  symbol: gTurtleWaveTex
+  format: I8
+  width: 64
+  height: 64
+
+gTurtleWaveTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1AF0
+  symbol: gTurtleWaveTexAnim
+
+gTurtleWaveUnusedTex:
+  type: TEXTURE
+  offset: 0x2D8
+  symbol: gTurtleWaveUnusedTex
+  format: I8
+  width: 32
+  height: 64
+
+gTurtleWaveVtx:
+  type: MM:ARRAY
+  offset: 0x0
+  symbol: gTurtleWaveVtx
+  count: 20
+  array_type: VTX
+
+gTurtleYawnAnim:
+  type: OOT:ANIMATION
+  offset: 0x14E8C
+  symbol: gTurtleYawnAnim
+
+gTurtleZoraCapeAsleepCol:
+  type: MM:COLLISION
+  offset: 0x2328
+  symbol: gTurtleZoraCapeAsleepCol
+
+gTurtleZoraCapeAwakeCol:
+  type: MM:COLLISION
+  offset: 0x2470
+  symbol: gTurtleZoraCapeAwakeCol
+
+
+gTurtleWaveTexAnimTexScrollParams_001AE0:
+  type: BLOB
+  offset: 0x001AE0
+  symbol: gTurtleWaveTexAnimTexScrollParams_001AE0
+  size: 0
+
+gTurtleWaveTexAnimTexScrollParams_001AE8:
+  type: BLOB
+  offset: 0x001AE8
+  symbol: gTurtleWaveTexAnimTexScrollParams_001AE8
+  size: 0
+
+object_kamejimaVtx_0048C0:
+  type: MM:ARRAY
+  offset: 0x0048C0
+  symbol: object_kamejimaVtx_0048C0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_006990:
+  type: MM:ARRAY
+  offset: 0x006990
+  symbol: object_kamejimaVtx_006990
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_006CB0:
+  type: MM:ARRAY
+  offset: 0x006CB0
+  symbol: object_kamejimaVtx_006CB0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_006F00:
+  type: MM:ARRAY
+  offset: 0x006F00
+  symbol: object_kamejimaVtx_006F00
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007440:
+  type: MM:ARRAY
+  offset: 0x007440
+  symbol: object_kamejimaVtx_007440
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_0075C0:
+  type: MM:ARRAY
+  offset: 0x0075C0
+  symbol: object_kamejimaVtx_0075C0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007730:
+  type: MM:ARRAY
+  offset: 0x007730
+  symbol: object_kamejimaVtx_007730
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_0078A0:
+  type: MM:ARRAY
+  offset: 0x0078A0
+  symbol: object_kamejimaVtx_0078A0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007920:
+  type: MM:ARRAY
+  offset: 0x007920
+  symbol: object_kamejimaVtx_007920
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007A60:
+  type: MM:ARRAY
+  offset: 0x007A60
+  symbol: object_kamejimaVtx_007A60
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007C20:
+  type: MM:ARRAY
+  offset: 0x007C20
+  symbol: object_kamejimaVtx_007C20
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007D10:
+  type: MM:ARRAY
+  offset: 0x007D10
+  symbol: object_kamejimaVtx_007D10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_007E50:
+  type: MM:ARRAY
+  offset: 0x007E50
+  symbol: object_kamejimaVtx_007E50
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_008010:
+  type: MM:ARRAY
+  offset: 0x008010
+  symbol: object_kamejimaVtx_008010
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kamejimaVtx_008100:
+  type: MM:ARRAY
+  offset: 0x008100
+  symbol: object_kamejimaVtx_008100
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTurtleSkelLimbs:
+  type: BLOB
+  offset: 0xE6EC
+  symbol: gTurtleSkelLimbs
+  size: 0

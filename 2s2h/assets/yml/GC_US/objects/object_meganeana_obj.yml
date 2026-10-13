@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x01318A50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01318A50 ]
+    - [ 9, 0x01318A50 ]
+    - [ 10, 0x01318A50 ]
+    - [ 11, 0x01318A50 ]
+    - [ 12, 0x01318A50 ]
+    - [ 13, 0x01318A50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_meganeana_obj_DL_000080:
+  type: GFX
+  offset: 0x80
+  symbol: object_meganeana_obj_DL_000080
+
+object_meganeana_obj_DL_000110:
+  type: GFX
+  offset: 0x110
+  symbol: object_meganeana_obj_DL_000110
+
+object_meganeana_obj_Tex_0001D0:
+  type: TEXTURE
+  offset: 0x1D0
+  symbol: object_meganeana_obj_Tex_0001D0
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_meganeana_obj_Tex_0005D0:
+  type: TEXTURE
+  offset: 0x5D0
+  symbol: object_meganeana_obj_Tex_0005D0
+  format: I4
+  width: 64
+  height: 64
+
+object_meganeana_obj_Tex_000DD0:
+  type: TEXTURE
+  offset: 0xDD0
+  symbol: object_meganeana_obj_Tex_000DD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_meganeana_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_meganeana_objVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_meganeana_objVtx_000040:
+  type: MM:ARRAY
+  offset: 0x000040
+  symbol: object_meganeana_objVtx_000040
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

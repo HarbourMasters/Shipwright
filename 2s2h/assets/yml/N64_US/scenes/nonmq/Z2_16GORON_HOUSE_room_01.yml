@@ -1,0 +1,378 @@
+:config:
+  segments:
+    - [ 3, 0x019FCDA0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x019FCDA0 ]
+    - [ 9, 0x019FCDA0 ]
+    - [ 10, 0x019FCDA0 ]
+    - [ 11, 0x019FCDA0 ]
+    - [ 12, 0x019FCDA0 ]
+    - [ 13, 0x019FCDA0 ]
+    - [ 2, 0x019EDDD0 ]
+  directory: scenes/nonmq/Z2_16GORON_HOUSE
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_16GORON_HOUSE.yml
+    - N64_US/scenes/nonmq/Z2_16GORON_HOUSE_room_01Set_000220.yml
+
+Z2_16GORON_HOUSE_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_16GORON_HOUSE_room_01
+
+Z2_16GORON_HOUSE_room_01DL_0056A0:
+  type: GFX
+  offset: 0x56A0
+  symbol: Z2_16GORON_HOUSE_room_01DL_0056A0
+
+Z2_16GORON_HOUSE_room_01DL_007138:
+  type: GFX
+  offset: 0x7138
+  symbol: Z2_16GORON_HOUSE_room_01DL_007138
+
+
+Z2_16GORON_HOUSE_room_01ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_16GORON_HOUSE_room_01ActorEntry_000058
+  size: 0
+
+Z2_16GORON_HOUSE_room_01ActorEntry_00026C:
+  type: BLOB
+  offset: 0x00026C
+  symbol: Z2_16GORON_HOUSE_room_01ActorEntry_00026C
+  size: 0
+
+Z2_16GORON_HOUSE_room_01Vtx_0002D0:
+  type: MM:ARRAY
+  offset: 0x0002D0
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_0002D0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_000830:
+  type: GFX
+  offset: 0x000830
+  symbol: Z2_16GORON_HOUSE_room_01DL_000830
+
+Z2_16GORON_HOUSE_room_01Vtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_0009E0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_000B60:
+  type: GFX
+  offset: 0x000B60
+  symbol: Z2_16GORON_HOUSE_room_01DL_000B60
+
+Z2_16GORON_HOUSE_room_01Vtx_000C20:
+  type: MM:ARRAY
+  offset: 0x000C20
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_000C20
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_000D60:
+  type: GFX
+  offset: 0x000D60
+  symbol: Z2_16GORON_HOUSE_room_01DL_000D60
+
+Z2_16GORON_HOUSE_room_01Vtx_000E40:
+  type: MM:ARRAY
+  offset: 0x000E40
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_000E40
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_000FA0:
+  type: GFX
+  offset: 0x000FA0
+  symbol: Z2_16GORON_HOUSE_room_01DL_000FA0
+
+Z2_16GORON_HOUSE_room_01Vtx_001060:
+  type: MM:ARRAY
+  offset: 0x001060
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_001060
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0011A0:
+  type: GFX
+  offset: 0x0011A0
+  symbol: Z2_16GORON_HOUSE_room_01DL_0011A0
+
+Z2_16GORON_HOUSE_room_01Vtx_001280:
+  type: MM:ARRAY
+  offset: 0x001280
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_001280
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0018F0:
+  type: GFX
+  offset: 0x0018F0
+  symbol: Z2_16GORON_HOUSE_room_01DL_0018F0
+
+Z2_16GORON_HOUSE_room_01Vtx_001B18:
+  type: MM:ARRAY
+  offset: 0x001B18
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_001B18
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0020B8:
+  type: GFX
+  offset: 0x0020B8
+  symbol: Z2_16GORON_HOUSE_room_01DL_0020B8
+
+Z2_16GORON_HOUSE_room_01Vtx_002300:
+  type: MM:ARRAY
+  offset: 0x002300
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_002300
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_002400:
+  type: GFX
+  offset: 0x002400
+  symbol: Z2_16GORON_HOUSE_room_01DL_002400
+
+Z2_16GORON_HOUSE_room_01Vtx_0024D8:
+  type: MM:ARRAY
+  offset: 0x0024D8
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_0024D8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0025D8:
+  type: GFX
+  offset: 0x0025D8
+  symbol: Z2_16GORON_HOUSE_room_01DL_0025D8
+
+Z2_16GORON_HOUSE_room_01Vtx_0026B0:
+  type: MM:ARRAY
+  offset: 0x0026B0
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_0026B0
+  count: 211
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0033E0:
+  type: GFX
+  offset: 0x0033E0
+  symbol: Z2_16GORON_HOUSE_room_01DL_0033E0
+
+Z2_16GORON_HOUSE_room_01Vtx_003A80:
+  type: MM:ARRAY
+  offset: 0x003A80
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_003A80
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_003EC0:
+  type: GFX
+  offset: 0x003EC0
+  symbol: Z2_16GORON_HOUSE_room_01DL_003EC0
+
+Z2_16GORON_HOUSE_room_01Vtx_003FE8:
+  type: MM:ARRAY
+  offset: 0x003FE8
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_003FE8
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0044C8:
+  type: GFX
+  offset: 0x0044C8
+  symbol: Z2_16GORON_HOUSE_room_01DL_0044C8
+
+Z2_16GORON_HOUSE_room_01Vtx_004608:
+  type: MM:ARRAY
+  offset: 0x004608
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_004608
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_004A48:
+  type: GFX
+  offset: 0x004A48
+  symbol: Z2_16GORON_HOUSE_room_01DL_004A48
+
+Z2_16GORON_HOUSE_room_01Vtx_004B70:
+  type: MM:ARRAY
+  offset: 0x004B70
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_004B70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_004C70:
+  type: GFX
+  offset: 0x004C70
+  symbol: Z2_16GORON_HOUSE_room_01DL_004C70
+
+Z2_16GORON_HOUSE_room_01Vtx_004D50:
+  type: MM:ARRAY
+  offset: 0x004D50
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_004D50
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_004E50:
+  type: GFX
+  offset: 0x004E50
+  symbol: Z2_16GORON_HOUSE_room_01DL_004E50
+
+Z2_16GORON_HOUSE_room_01Vtx_004F30:
+  type: MM:ARRAY
+  offset: 0x004F30
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_004F30
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_0051B0:
+  type: GFX
+  offset: 0x0051B0
+  symbol: Z2_16GORON_HOUSE_room_01DL_0051B0
+
+Z2_16GORON_HOUSE_room_01Vtx_005318:
+  type: MM:ARRAY
+  offset: 0x005318
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_005318
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_005598:
+  type: GFX
+  offset: 0x005598
+  symbol: Z2_16GORON_HOUSE_room_01DL_005598
+
+Z2_16GORON_HOUSE_room_01Tex_005730:
+  type: TEXTURE
+  offset: 0x005730
+  symbol: Z2_16GORON_HOUSE_room_01Tex_005730
+  format: I4
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSE_room_01Tex_005930:
+  type: TEXTURE
+  offset: 0x005930
+  symbol: Z2_16GORON_HOUSE_room_01Tex_005930
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSE_room_01Tex_006130:
+  type: TEXTURE
+  offset: 0x006130
+  symbol: Z2_16GORON_HOUSE_room_01Tex_006130
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_16GORON_HOUSE_room_01Tex_006330:
+  type: TEXTURE
+  offset: 0x006330
+  symbol: Z2_16GORON_HOUSE_room_01Tex_006330
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSE_room_01Tex_006730:
+  type: TEXTURE
+  offset: 0x006730
+  symbol: Z2_16GORON_HOUSE_room_01Tex_006730
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSE_room_01DL_006B30:
+  type: GFX
+  offset: 0x006B30
+  symbol: Z2_16GORON_HOUSE_room_01DL_006B30
+
+Z2_16GORON_HOUSE_room_01Vtx_006B38:
+  type: MM:ARRAY
+  offset: 0x006B38
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_006B38
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_006C78:
+  type: GFX
+  offset: 0x006C78
+  symbol: Z2_16GORON_HOUSE_room_01DL_006C78
+
+Z2_16GORON_HOUSE_room_01DL_006DA8:
+  type: GFX
+  offset: 0x006DA8
+  symbol: Z2_16GORON_HOUSE_room_01DL_006DA8
+
+Z2_16GORON_HOUSE_room_01DL_006DB0:
+  type: GFX
+  offset: 0x006DB0
+  symbol: Z2_16GORON_HOUSE_room_01DL_006DB0
+
+Z2_16GORON_HOUSE_room_01DL_006DB8:
+  type: GFX
+  offset: 0x006DB8
+  symbol: Z2_16GORON_HOUSE_room_01DL_006DB8
+
+Z2_16GORON_HOUSE_room_01Vtx_006DC0:
+  type: MM:ARRAY
+  offset: 0x006DC0
+  symbol: Z2_16GORON_HOUSE_room_01Vtx_006DC0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_16GORON_HOUSE_room_01DL_007040:
+  type: GFX
+  offset: 0x007040
+  symbol: Z2_16GORON_HOUSE_room_01DL_007040
+
+Z2_16GORON_HOUSE_room_01Tex_007170:
+  type: TEXTURE
+  offset: 0x007170
+  symbol: Z2_16GORON_HOUSE_room_01Tex_007170
+  format: CI8
+  width: 16
+  height: 32

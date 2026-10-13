@@ -1,0 +1,417 @@
+:config:
+  segments:
+    - [ 6, 0x00E9A1C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00E9A1C0 ]
+    - [ 9, 0x00E9A1C0 ]
+    - [ 10, 0x00E9A1C0 ]
+    - [ 11, 0x00E9A1C0 ]
+    - [ 12, 0x00E9A1C0 ]
+    - [ 13, 0x00E9A1C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBoxBigChestOpenAdultAnim:
+  type: OOT:ANIMATION
+  offset: 0x24C
+  symbol: gBoxBigChestOpenAdultAnim
+
+gBoxBigChestOpenChildAnim:
+  type: OOT:ANIMATION
+  offset: 0x128
+  symbol: gBoxBigChestOpenChildAnim
+
+gBoxBigChestOpenDekuAnim:
+  type: OOT:ANIMATION
+  offset: 0x7F30
+  symbol: gBoxBigChestOpenDekuAnim
+
+gBoxBigChestOpenGoronAnim:
+  type: OOT:ANIMATION
+  offset: 0x7E54
+  symbol: gBoxBigChestOpenGoronAnim
+
+gBoxChestBaseDL:
+  type: GFX
+  offset: 0x6F0
+  symbol: gBoxChestBaseDL
+
+gBoxChestBaseGildedDL:
+  type: GFX
+  offset: 0xA50
+  symbol: gBoxChestBaseGildedDL
+
+gBoxChestBaseOrnateDL:
+  type: GFX
+  offset: 0xDB0
+  symbol: gBoxChestBaseOrnateDL
+
+gBoxChestCol:
+  type: MM:COLLISION
+  offset: 0x80E8
+  symbol: gBoxChestCol
+
+gBoxChestCornerGildedTex:
+  type: TEXTURE
+  offset: 0x4660
+  symbol: gBoxChestCornerGildedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBoxChestCornerOrnateTex:
+  type: TEXTURE
+  offset: 0x5E60
+  symbol: gBoxChestCornerOrnateTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBoxChestCornerTex:
+  type: TEXTURE
+  offset: 0x2E60
+  symbol: gBoxChestCornerTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBoxChestEmpty1Blob:
+  type: BLOB
+  offset: 0x25C
+  size: 0xF4
+  symbol: gBoxChestEmpty1Blob
+
+gBoxChestEmpty2Blob:
+  type: BLOB
+  offset: 0x44C
+  size: 0x64
+  symbol: gBoxChestEmpty2Blob
+
+gBoxChestEmpty3Blob:
+  type: BLOB
+  offset: 0x7F40
+  size: 0xA0
+  symbol: gBoxChestEmpty3Blob
+
+gBoxChestLidDL:
+  type: GFX
+  offset: 0x12E8
+  symbol: gBoxChestLidDL
+
+gBoxChestLidGildedDL:
+  type: GFX
+  offset: 0x1850
+  symbol: gBoxChestLidGildedDL
+
+gBoxChestLidOrnateDL:
+  type: GFX
+  offset: 0x1D58
+  symbol: gBoxChestLidOrnateDL
+
+gBoxChestLockGildedTex:
+  type: TEXTURE
+  offset: 0x3660
+  symbol: gBoxChestLockGildedTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBoxChestLockOrnateTex:
+  type: TEXTURE
+  offset: 0x4E60
+  symbol: gBoxChestLockOrnateTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBoxChestLockTex:
+  type: TEXTURE
+  offset: 0x1E60
+  symbol: gBoxChestLockTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBoxChestOpenAnim:
+  type: OOT:ANIMATION
+  offset: 0x43C
+  symbol: gBoxChestOpenAnim
+
+gBoxChestSkel:
+  type: MM:SKELETON
+  offset: 0x66A0
+  symbol: gBoxChestSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBoxLightAdultCurveAnim:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x6A20
+  symbol: gBoxLightAdultCurveAnim
+  skel_offset: 0x7D78
+
+gBoxLightChildCurveAnim:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x6E30
+  symbol: gBoxLightChildCurveAnim
+  skel_offset: 0x7D78
+
+gBoxLightCurveSkel:
+  type: MM:SKELETON
+  offset: 0x7D78
+  symbol: gBoxLightCurveSkel
+  limb_type: Curve
+  skel_type: Curve
+
+gBoxLightTex:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: gBoxLightTex
+  format: I8
+  width: 64
+  height: 32
+
+object_box_Curvelimb_007C98:
+  type: OOT:LIMB
+  offset: 0x7C98
+  symbol: object_box_Curvelimb_007C98
+  limb_type: Curve
+
+object_box_Curvelimb_007CA4:
+  type: OOT:LIMB
+  offset: 0x7CA4
+  symbol: object_box_Curvelimb_007CA4
+  limb_type: Curve
+
+object_box_Curvelimb_007CB0:
+  type: OOT:LIMB
+  offset: 0x7CB0
+  symbol: object_box_Curvelimb_007CB0
+  limb_type: Curve
+
+object_box_Curvelimb_007CBC:
+  type: OOT:LIMB
+  offset: 0x7CBC
+  symbol: object_box_Curvelimb_007CBC
+  limb_type: Curve
+
+object_box_Curvelimb_007CC8:
+  type: OOT:LIMB
+  offset: 0x7CC8
+  symbol: object_box_Curvelimb_007CC8
+  limb_type: Curve
+
+object_box_Curvelimb_007CD4:
+  type: OOT:LIMB
+  offset: 0x7CD4
+  symbol: object_box_Curvelimb_007CD4
+  limb_type: Curve
+
+object_box_Curvelimb_007CE0:
+  type: OOT:LIMB
+  offset: 0x7CE0
+  symbol: object_box_Curvelimb_007CE0
+  limb_type: Curve
+
+object_box_Curvelimb_007CEC:
+  type: OOT:LIMB
+  offset: 0x7CEC
+  symbol: object_box_Curvelimb_007CEC
+  limb_type: Curve
+
+object_box_Curvelimb_007CF8:
+  type: OOT:LIMB
+  offset: 0x7CF8
+  symbol: object_box_Curvelimb_007CF8
+  limb_type: Curve
+
+object_box_Curvelimb_007D04:
+  type: OOT:LIMB
+  offset: 0x7D04
+  symbol: object_box_Curvelimb_007D04
+  limb_type: Curve
+
+object_box_Curvelimb_007D10:
+  type: OOT:LIMB
+  offset: 0x7D10
+  symbol: object_box_Curvelimb_007D10
+  limb_type: Curve
+
+object_box_Curvelimb_007D1C:
+  type: OOT:LIMB
+  offset: 0x7D1C
+  symbol: object_box_Curvelimb_007D1C
+  limb_type: Curve
+
+object_box_Curvelimb_007D28:
+  type: OOT:LIMB
+  offset: 0x7D28
+  symbol: object_box_Curvelimb_007D28
+  limb_type: Curve
+
+object_box_Curvelimb_007D34:
+  type: OOT:LIMB
+  offset: 0x7D34
+  symbol: object_box_Curvelimb_007D34
+  limb_type: Curve
+
+object_box_DL_007890:
+  type: GFX
+  offset: 0x7890
+  symbol: object_box_DL_007890
+
+object_box_DL_007978:
+  type: GFX
+  offset: 0x7978
+  symbol: object_box_DL_007978
+
+object_box_DL_007A40:
+  type: GFX
+  offset: 0x7A40
+  symbol: object_box_DL_007A40
+
+object_box_DL_007B08:
+  type: GFX
+  offset: 0x7B08
+  symbol: object_box_DL_007B08
+
+object_box_DL_007BD0:
+  type: GFX
+  offset: 0x7BD0
+  symbol: object_box_DL_007BD0
+
+object_box_Standardlimb_006660:
+  type: OOT:LIMB
+  offset: 0x6660
+  symbol: object_box_Standardlimb_006660
+  limb_type: Standard
+
+object_box_Standardlimb_00666C:
+  type: OOT:LIMB
+  offset: 0x666C
+  symbol: object_box_Standardlimb_00666C
+  limb_type: Standard
+
+object_box_Standardlimb_006678:
+  type: OOT:LIMB
+  offset: 0x6678
+  symbol: object_box_Standardlimb_006678
+  limb_type: Standard
+
+object_box_Standardlimb_006684:
+  type: OOT:LIMB
+  offset: 0x6684
+  symbol: object_box_Standardlimb_006684
+  limb_type: Standard
+
+
+object_boxVtx_0004B0:
+  type: MM:ARRAY
+  offset: 0x0004B0
+  symbol: object_boxVtx_0004B0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_000810:
+  type: MM:ARRAY
+  offset: 0x000810
+  symbol: object_boxVtx_000810
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_000B70:
+  type: MM:ARRAY
+  offset: 0x000B70
+  symbol: object_boxVtx_000B70
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_000EC8:
+  type: MM:ARRAY
+  offset: 0x000EC8
+  symbol: object_boxVtx_000EC8
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_001430:
+  type: MM:ARRAY
+  offset: 0x001430
+  symbol: object_boxVtx_001430
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_001998:
+  type: MM:ARRAY
+  offset: 0x001998
+  symbol: object_boxVtx_001998
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBoxChestSkelLimbs:
+  type: BLOB
+  offset: 0x6690
+  symbol: gBoxChestSkelLimbs
+  size: 0
+
+object_boxVtx_007640:
+  type: MM:ARRAY
+  offset: 0x007640
+  symbol: object_boxVtx_007640
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_007790:
+  type: MM:ARRAY
+  offset: 0x007790
+  symbol: object_boxVtx_007790
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_0077D0:
+  type: MM:ARRAY
+  offset: 0x0077D0
+  symbol: object_boxVtx_0077D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_007810:
+  type: MM:ARRAY
+  offset: 0x007810
+  symbol: object_boxVtx_007810
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_007850:
+  type: MM:ARRAY
+  offset: 0x007850
+  symbol: object_boxVtx_007850
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBoxLightCurveSkelLimbs:
+  type: BLOB
+  offset: 0x7D40
+  symbol: gBoxLightCurveSkelLimbs
+  size: 0

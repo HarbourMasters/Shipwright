@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01484130 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01484130 ]
+    - [ 9, 0x01484130 ]
+    - [ 10, 0x01484130 ]
+    - [ 11, 0x01484130 ]
+    - [ 12, 0x01484130 ]
+    - [ 13, 0x01484130 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiGibdoMaskDL:
+  type: GFX
+  offset: 0xB30
+  symbol: gGiGibdoMaskDL
+
+gGiGibdoMaskEmptyDL:
+  type: GFX
+  offset: 0xF58
+  symbol: gGiGibdoMaskEmptyDL
+
+gGiGibdoMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1960
+  symbol: gGiGibdoMaskEyeTex
+  format: IA8
+  width: 32
+  height: 16
+
+gGiGibdoMaskWrapPattern1Tex:
+  type: TEXTURE
+  offset: 0xF60
+  symbol: gGiGibdoMaskWrapPattern1Tex
+  format: I8
+  width: 64
+  height: 32
+
+gGiGibdoMaskWrapPattern2Tex:
+  type: TEXTURE
+  offset: 0x1760
+  symbol: gGiGibdoMaskWrapPattern2Tex
+  format: IA8
+  width: 32
+  height: 16
+
+
+object_gi_mask15Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask15Vtx_000000
+  count: 179
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

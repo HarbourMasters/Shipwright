@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01E46670 ]
+    - [ 2, 0x01E3A8D0 ]
+  directory: scenes/nonmq/Z2_BACKTOWN
+  external_files:
+    - N64_US/scenes/nonmq/Z2_BACKTOWN_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_BACKTOWN.yml
+
+Z2_BACKTOWN_room_00Set_000370:
+  type: MM:ROOM
+  offset: 0x370
+  symbol: Z2_BACKTOWN_room_00Set_000370
+  base_name: Z2_BACKTOWN_room_00

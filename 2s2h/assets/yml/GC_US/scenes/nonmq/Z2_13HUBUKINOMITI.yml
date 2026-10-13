@@ -1,0 +1,149 @@
+:config:
+  segments:
+    - [ 2, 0x017E5090 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_13HUBUKINOMITISet_002660.yml
+Z2_13HUBUKINOMITI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_13HUBUKINOMITI
+
+
+Z2_13HUBUKINOMITIPathwayList_000274:
+  type: MM:PATH
+  offset: 0x000274
+  symbol: Z2_13HUBUKINOMITIPathwayList_000274
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1494, -1046, 7724 ]
+        - [ 1342, -937, 7103 ]
+        - [ 1929, -922, 6705 ]
+        - [ 1610, -925, 6372 ]
+        - [ 1052, -727, 6133 ]
+        - [ 371, -660, 6117 ]
+
+Z2_13HUBUKINOMITITexAnim_0003A0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0003A0
+  symbol: Z2_13HUBUKINOMITITexAnim_0003A0
+
+Z2_13HUBUKINOMITICollisionHeader_002634:
+  type: MM:COLLISION
+  offset: 0x002634
+  symbol: Z2_13HUBUKINOMITICollisionHeader_002634
+
+Z2_13HUBUKINOMITIPathwayList_0028C8:
+  type: MM:PATH
+  offset: 0x0028C8
+  symbol: Z2_13HUBUKINOMITIPathwayList_0028C8
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1506, -1049, 7740 ]
+        - [ 1332, -940, 7114 ]
+        - [ 1947, -922, 6696 ]
+        - [ 1611, -925, 6377 ]
+        - [ 1025, -711, 6122 ]
+        - [ 365, -660, 6099 ]
+
+Z2_13HUBUKINOMITITex_0029F0:
+  type: TEXTURE
+  offset: 0x0029F0
+  symbol: Z2_13HUBUKINOMITITex_0029F0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_002DF0:
+  type: TEXTURE
+  offset: 0x002DF0
+  symbol: Z2_13HUBUKINOMITITex_002DF0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0035F0:
+  type: TEXTURE
+  offset: 0x0035F0
+  symbol: Z2_13HUBUKINOMITITex_0035F0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_13HUBUKINOMITITex_003DF0:
+  type: TEXTURE
+  offset: 0x003DF0
+  symbol: Z2_13HUBUKINOMITITex_003DF0
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0041F0:
+  type: TEXTURE
+  offset: 0x0041F0
+  symbol: Z2_13HUBUKINOMITITex_0041F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0049F0:
+  type: TEXTURE
+  offset: 0x0049F0
+  symbol: Z2_13HUBUKINOMITITex_0049F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0051F0:
+  type: TEXTURE
+  offset: 0x0051F0
+  symbol: Z2_13HUBUKINOMITITex_0051F0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_13HUBUKINOMITITex_0059F0:
+  type: TEXTURE
+  offset: 0x0059F0
+  symbol: Z2_13HUBUKINOMITITex_0059F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0061F0:
+  type: TEXTURE
+  offset: 0x0061F0
+  symbol: Z2_13HUBUKINOMITITex_0061F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0069F0:
+  type: TEXTURE
+  offset: 0x0069F0
+  symbol: Z2_13HUBUKINOMITITex_0069F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_13HUBUKINOMITITex_0071F0:
+  type: TEXTURE
+  offset: 0x0071F0
+  symbol: Z2_13HUBUKINOMITITex_0071F0
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_13HUBUKINOMITITex_0075F0:
+  type: TEXTURE
+  offset: 0x0075F0
+  symbol: Z2_13HUBUKINOMITITex_0075F0
+  format: RGBA16
+  width: 32
+  height: 32

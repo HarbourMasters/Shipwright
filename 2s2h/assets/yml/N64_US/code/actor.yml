@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 128, 0x00A684D0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x800A5AC0, 0x00A684D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+D_801AEF88:
+  type: GFX
+  offset: 0x1094C8
+  symbol: D_801AEF88
+
+D_801AEFA0:
+  type: GFX
+  offset: 0x1094E0
+  symbol: D_801AEFA0
+

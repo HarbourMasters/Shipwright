@@ -1,0 +1,146 @@
+:config:
+  segments:
+    - [ 3, 0x01AC3720 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01AC3720 ]
+    - [ 9, 0x01AC3720 ]
+    - [ 10, 0x01AC3720 ]
+    - [ 11, 0x01AC3720 ]
+    - [ 12, 0x01AC3720 ]
+    - [ 13, 0x01AC3720 ]
+    - [ 2, 0x01AB1290 ]
+  directory: scenes/nonmq/Z2_LAST_GORON
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LAST_GORON.yml
+
+Z2_LAST_GORON_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_GORON_room_01
+
+Z2_LAST_GORON_room_01DL_001438:
+  type: GFX
+  offset: 0x1438
+  symbol: Z2_LAST_GORON_room_01DL_001438
+
+
+Z2_LAST_GORON_room_01ActorEntry_000050:
+  type: BLOB
+  offset: 0x000050
+  symbol: Z2_LAST_GORON_room_01ActorEntry_000050
+  size: 0
+
+Z2_LAST_GORON_room_01Vtx_0000A0:
+  type: MM:ARRAY
+  offset: 0x0000A0
+  symbol: Z2_LAST_GORON_room_01Vtx_0000A0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_01DL_000630:
+  type: GFX
+  offset: 0x000630
+  symbol: Z2_LAST_GORON_room_01DL_000630
+
+Z2_LAST_GORON_room_01Vtx_0009F0:
+  type: MM:ARRAY
+  offset: 0x0009F0
+  symbol: Z2_LAST_GORON_room_01Vtx_0009F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_01DL_000BD0:
+  type: GFX
+  offset: 0x000BD0
+  symbol: Z2_LAST_GORON_room_01DL_000BD0
+
+Z2_LAST_GORON_room_01Vtx_000CD0:
+  type: MM:ARRAY
+  offset: 0x000CD0
+  symbol: Z2_LAST_GORON_room_01Vtx_000CD0
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_01DL_001250:
+  type: GFX
+  offset: 0x001250
+  symbol: Z2_LAST_GORON_room_01DL_001250
+
+Z2_LAST_GORON_room_01Tex_001458:
+  type: TEXTURE
+  offset: 0x001458
+  symbol: Z2_LAST_GORON_room_01Tex_001458
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_01Tex_001C58:
+  type: TEXTURE
+  offset: 0x001C58
+  symbol: Z2_LAST_GORON_room_01Tex_001C58
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_01Tex_002458:
+  type: TEXTURE
+  offset: 0x002458
+  symbol: Z2_LAST_GORON_room_01Tex_002458
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_01Tex_002C58:
+  type: TEXTURE
+  offset: 0x002C58
+  symbol: Z2_LAST_GORON_room_01Tex_002C58
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_01Tex_003458:
+  type: TEXTURE
+  offset: 0x003458
+  symbol: Z2_LAST_GORON_room_01Tex_003458
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_01Tex_003C58:
+  type: TEXTURE
+  offset: 0x003C58
+  symbol: Z2_LAST_GORON_room_01Tex_003C58
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_01TLUT_004458:
+  type: TEXTURE
+  offset: 0x004458
+  symbol: Z2_LAST_GORON_room_01TLUT_004458
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORON_room_01TLUT_004478:
+  type: TEXTURE
+  offset: 0x004478
+  symbol: Z2_LAST_GORON_room_01TLUT_004478
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORON_room_01TLUT_004498:
+  type: TEXTURE
+  offset: 0x004498
+  symbol: Z2_LAST_GORON_room_01TLUT_004498
+  format: RGBA16
+  width: 4
+  height: 4

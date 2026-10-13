@@ -1,0 +1,1034 @@
+:config:
+  segments:
+    - [ 6, 0x010EDE10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010EDE10 ]
+    - [ 9, 0x010EDE10 ]
+    - [ 10, 0x010EDE10 ]
+    - [ 11, 0x010EDE10 ]
+    - [ 12, 0x010EDE10 ]
+    - [ 13, 0x010EDE10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGaroAppearAndDrawSwordsAnim:
+  type: OOT:ANIMATION
+  offset: 0x5778
+  symbol: gGaroAppearAndDrawSwordsAnim
+
+gGaroAppearAnim:
+  type: OOT:ANIMATION
+  offset: 0x81F4
+  symbol: gGaroAppearAnim
+
+gGaroBounceAnim:
+  type: OOT:ANIMATION
+  offset: 0xB5F0
+  symbol: gGaroBounceAnim
+
+gGaroCollapseAnim:
+  type: OOT:ANIMATION
+  offset: 0x67F0
+  symbol: gGaroCollapseAnim
+
+gGaroCowerAnim:
+  type: OOT:ANIMATION
+  offset: 0x7B04
+  symbol: gGaroCowerAnim
+
+gGaroDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x44F8
+  symbol: gGaroDamagedAnim
+
+gGaroDashAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x3530
+  symbol: gGaroDashAttackAnim
+
+gGaroDrawSwordsAnim:
+  type: OOT:ANIMATION
+  offset: 0x70BC
+  symbol: gGaroDrawSwordsAnim
+
+gGaroEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0
+  symbol: gGaroEmpty1TexAnim
+
+gGaroEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x10
+  symbol: gGaroEmpty2TexAnim
+
+gGaroEyesTex:
+  type: TEXTURE
+  offset: 0xA6B0
+  symbol: gGaroEyesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGaroFallDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x5D5C
+  symbol: gGaroFallDownAnim
+
+gGaroGuardAnim:
+  type: OOT:ANIMATION
+  offset: 0x4858
+  symbol: gGaroGuardAnim
+
+gGaroHeadDL:
+  type: GFX
+  offset: 0x9428
+  symbol: gGaroHeadDL
+
+gGaroHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA954
+  symbol: gGaroHeadLimb
+  limb_type: Standard
+
+gGaroIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE80
+  symbol: gGaroIdleAnim
+
+gGaroJumpBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D5C
+  symbol: gGaroJumpBackAnim
+
+gGaroJumpDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x71E0
+  symbol: gGaroJumpDownAnim
+
+gGaroKnockedBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x603C
+  symbol: gGaroKnockedBackAnim
+
+gGaroLandAnim:
+  type: OOT:ANIMATION
+  offset: 0x4384
+  symbol: gGaroLandAnim
+
+gGaroLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0xB1DC
+  symbol: gGaroLaughAnim
+
+gGaroLeftArmDL:
+  type: GFX
+  offset: 0x9C98
+  symbol: gGaroLeftArmDL
+
+gGaroLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xA8E8
+  symbol: gGaroLeftArmLimb
+  limb_type: Standard
+
+gGaroLeftFootDL:
+  type: GFX
+  offset: 0x90C0
+  symbol: gGaroLeftFootDL
+
+gGaroLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xA9A8
+  symbol: gGaroLeftFootLimb
+  limb_type: Standard
+
+gGaroLeftShinDL:
+  type: GFX
+  offset: 0x9008
+  symbol: gGaroLeftShinDL
+
+gGaroLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xA99C
+  symbol: gGaroLeftShinLimb
+  limb_type: Standard
+
+gGaroLeftSwordDL:
+  type: GFX
+  offset: 0x9CF0
+  symbol: gGaroLeftSwordDL
+
+gGaroLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0xA8F4
+  symbol: gGaroLeftSwordLimb
+  limb_type: Standard
+
+gGaroLeftThighDL:
+  type: GFX
+  offset: 0x8F50
+  symbol: gGaroLeftThighDL
+
+gGaroLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xA990
+  symbol: gGaroLeftThighLimb
+  limb_type: Standard
+
+gGaroLegWrappingTex:
+  type: TEXTURE
+  offset: 0x9DB0
+  symbol: gGaroLegWrappingTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGaroLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x788C
+  symbol: gGaroLookAroundAnim
+
+gGaroLowerBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0xA960
+  symbol: gGaroLowerBodyRootLimb
+  limb_type: Standard
+
+gGaroMasterClothingTLUT:
+  type: TEXTURE
+  offset: 0x2858
+  symbol: gGaroMasterClothingTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGaroMasterClothingTex:
+  type: TEXTURE
+  offset: 0x2C58
+  symbol: gGaroMasterClothingTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGaroMasterDuplicateEyeTex:
+  type: TEXTURE
+  offset: 0x25B8
+  symbol: gGaroMasterDuplicateEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGaroMasterEyeTex:
+  type: TEXTURE
+  offset: 0x2FB8
+  symbol: gGaroMasterEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGaroMasterEyesDL:
+  type: GFX
+  offset: 0x2ED8
+  symbol: gGaroMasterEyesDL
+
+gGaroMasterHeadDL:
+  type: GFX
+  offset: 0x1908
+  symbol: gGaroMasterHeadDL
+
+gGaroMasterHeadLimb:
+  type: OOT:LIMB
+  offset: 0x30BC
+  symbol: gGaroMasterHeadLimb
+  limb_type: Standard
+
+gGaroMasterLeftArmDL:
+  type: GFX
+  offset: 0x20B0
+  symbol: gGaroMasterLeftArmDL
+
+gGaroMasterLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x3050
+  symbol: gGaroMasterLeftArmLimb
+  limb_type: Standard
+
+gGaroMasterLeftFootDL:
+  type: GFX
+  offset: 0x13F8
+  symbol: gGaroMasterLeftFootDL
+
+gGaroMasterLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x3110
+  symbol: gGaroMasterLeftFootLimb
+  limb_type: Standard
+
+gGaroMasterLeftShinDL:
+  type: GFX
+  offset: 0x1348
+  symbol: gGaroMasterLeftShinDL
+
+gGaroMasterLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x3104
+  symbol: gGaroMasterLeftShinLimb
+  limb_type: Standard
+
+gGaroMasterLeftSwordDL:
+  type: GFX
+  offset: 0x2100
+  symbol: gGaroMasterLeftSwordDL
+
+gGaroMasterLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0x305C
+  symbol: gGaroMasterLeftSwordLimb
+  limb_type: Standard
+
+gGaroMasterLeftThighDL:
+  type: GFX
+  offset: 0x1210
+  symbol: gGaroMasterLeftThighDL
+
+gGaroMasterLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x30F8
+  symbol: gGaroMasterLeftThighLimb
+  limb_type: Standard
+
+gGaroMasterLowerBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x30C8
+  symbol: gGaroMasterLowerBodyRootLimb
+  limb_type: Standard
+
+gGaroMasterMaskTLUT:
+  type: TEXTURE
+  offset: 0x2A58
+  symbol: gGaroMasterMaskTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGaroMasterMaskTex:
+  type: TEXTURE
+  offset: 0x2D58
+  symbol: gGaroMasterMaskTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGaroMasterRightArmDL:
+  type: GFX
+  offset: 0x1FA8
+  symbol: gGaroMasterRightArmDL
+
+gGaroMasterRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x3068
+  symbol: gGaroMasterRightArmLimb
+  limb_type: Standard
+
+gGaroMasterRightFootDL:
+  type: GFX
+  offset: 0x16F0
+  symbol: gGaroMasterRightFootDL
+
+gGaroMasterRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x30EC
+  symbol: gGaroMasterRightFootLimb
+  limb_type: Standard
+
+gGaroMasterRightShinDL:
+  type: GFX
+  offset: 0x1640
+  symbol: gGaroMasterRightShinDL
+
+gGaroMasterRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x30E0
+  symbol: gGaroMasterRightShinLimb
+  limb_type: Standard
+
+gGaroMasterRightSwordDL:
+  type: GFX
+  offset: 0x1FF8
+  symbol: gGaroMasterRightSwordDL
+
+gGaroMasterRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0x3074
+  symbol: gGaroMasterRightSwordLimb
+  limb_type: Standard
+
+gGaroMasterRightThighDL:
+  type: GFX
+  offset: 0x1508
+  symbol: gGaroMasterRightThighDL
+
+gGaroMasterRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x30D4
+  symbol: gGaroMasterRightThighLimb
+  limb_type: Standard
+
+gGaroMasterRobeBackDL:
+  type: GFX
+  offset: 0x1EA8
+  symbol: gGaroMasterRobeBackDL
+
+gGaroMasterRobeBackLimb:
+  type: OOT:LIMB
+  offset: 0x308C
+  symbol: gGaroMasterRobeBackLimb
+  limb_type: Standard
+
+gGaroMasterRobeFrontDL:
+  type: GFX
+  offset: 0x1B00
+  symbol: gGaroMasterRobeFrontDL
+
+gGaroMasterRobeFrontLimb:
+  type: OOT:LIMB
+  offset: 0x30B0
+  symbol: gGaroMasterRobeFrontLimb
+  limb_type: Standard
+
+gGaroMasterRobeFrontTex:
+  type: TEXTURE
+  offset: 0x22B8
+  symbol: gGaroMasterRobeFrontTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGaroMasterRobeLeftDL:
+  type: GFX
+  offset: 0x1D78
+  symbol: gGaroMasterRobeLeftDL
+
+gGaroMasterRobeLeftLimb:
+  type: OOT:LIMB
+  offset: 0x3098
+  symbol: gGaroMasterRobeLeftLimb
+  limb_type: Standard
+
+gGaroMasterRobeRightDL:
+  type: GFX
+  offset: 0x1C48
+  symbol: gGaroMasterRobeRightDL
+
+gGaroMasterRobeRightLimb:
+  type: OOT:LIMB
+  offset: 0x30A4
+  symbol: gGaroMasterRobeRightLimb
+  limb_type: Standard
+
+gGaroMasterRobeTex:
+  type: TEXTURE
+  offset: 0x2658
+  symbol: gGaroMasterRobeTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gGaroMasterRobeTopDL:
+  type: GFX
+  offset: 0x1A18
+  symbol: gGaroMasterRobeTopDL
+
+gGaroMasterRobeTopLimb:
+  type: OOT:LIMB
+  offset: 0x3080
+  symbol: gGaroMasterRobeTopLimb
+  limb_type: Standard
+
+gGaroMasterRootLimb:
+  type: OOT:LIMB
+  offset: 0x3038
+  symbol: gGaroMasterRootLimb
+  limb_type: Standard
+
+gGaroMasterShinTex:
+  type: TEXTURE
+  offset: 0x24B8
+  symbol: gGaroMasterShinTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGaroMasterSkel:
+  type: MM:SKELETON
+  offset: 0x3168
+  symbol: gGaroMasterSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGaroMasterSwordTex:
+  type: TEXTURE
+  offset: 0x2638
+  symbol: gGaroMasterSwordTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGaroMasterTorsoDL:
+  type: GFX
+  offset: 0x1800
+  symbol: gGaroMasterTorsoDL
+
+gGaroMasterTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x3044
+  symbol: gGaroMasterTorsoLimb
+  limb_type: Standard
+
+gGaroMasterUnusedLegWrappingTex:
+  type: TEXTURE
+  offset: 0x21B8
+  symbol: gGaroMasterUnusedLegWrappingTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGaroRightArmDL:
+  type: GFX
+  offset: 0x9B80
+  symbol: gGaroRightArmDL
+
+gGaroRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xA900
+  symbol: gGaroRightArmLimb
+  limb_type: Standard
+
+gGaroRightFootDL:
+  type: GFX
+  offset: 0x9300
+  symbol: gGaroRightFootDL
+
+gGaroRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xA984
+  symbol: gGaroRightFootLimb
+  limb_type: Standard
+
+gGaroRightShinDL:
+  type: GFX
+  offset: 0x9248
+  symbol: gGaroRightShinDL
+
+gGaroRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xA978
+  symbol: gGaroRightShinLimb
+  limb_type: Standard
+
+gGaroRightSwordDL:
+  type: GFX
+  offset: 0x9BD8
+  symbol: gGaroRightSwordDL
+
+gGaroRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0xA90C
+  symbol: gGaroRightSwordLimb
+  limb_type: Standard
+
+gGaroRightThighDL:
+  type: GFX
+  offset: 0x9190
+  symbol: gGaroRightThighDL
+
+gGaroRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xA96C
+  symbol: gGaroRightThighLimb
+  limb_type: Standard
+
+gGaroRobeBackDL:
+  type: GFX
+  offset: 0x9AA8
+  symbol: gGaroRobeBackDL
+
+gGaroRobeBackLimb:
+  type: OOT:LIMB
+  offset: 0xA924
+  symbol: gGaroRobeBackLimb
+  limb_type: Standard
+
+gGaroRobeFrontDL:
+  type: GFX
+  offset: 0x9758
+  symbol: gGaroRobeFrontDL
+
+gGaroRobeFrontLimb:
+  type: OOT:LIMB
+  offset: 0xA948
+  symbol: gGaroRobeFrontLimb
+  limb_type: Standard
+
+gGaroRobeFrontTex:
+  type: TEXTURE
+  offset: 0x9F30
+  symbol: gGaroRobeFrontTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGaroRobeLeftDL:
+  type: GFX
+  offset: 0x99B8
+  symbol: gGaroRobeLeftDL
+
+gGaroRobeLeftLimb:
+  type: OOT:LIMB
+  offset: 0xA930
+  symbol: gGaroRobeLeftLimb
+  limb_type: Standard
+
+gGaroRobeRightDL:
+  type: GFX
+  offset: 0x98C8
+  symbol: gGaroRobeRightDL
+
+gGaroRobeRightLimb:
+  type: OOT:LIMB
+  offset: 0xA93C
+  symbol: gGaroRobeRightLimb
+  limb_type: Standard
+
+gGaroRobeStitchingTex:
+  type: TEXTURE
+  offset: 0xA530
+  symbol: gGaroRobeStitchingTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gGaroRobeTex:
+  type: TEXTURE
+  offset: 0xA330
+  symbol: gGaroRobeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGaroRobeTopDL:
+  type: GFX
+  offset: 0x94E0
+  symbol: gGaroRobeTopDL
+
+gGaroRobeTopLimb:
+  type: OOT:LIMB
+  offset: 0xA918
+  symbol: gGaroRobeTopLimb
+  limb_type: Standard
+
+gGaroRobeTopTex:
+  type: TEXTURE
+  offset: 0xA630
+  symbol: gGaroRobeTopTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGaroRootLimb:
+  type: OOT:LIMB
+  offset: 0xA8D0
+  symbol: gGaroRootLimb
+  limb_type: Standard
+
+gGaroSkel:
+  type: MM:SKELETON
+  offset: 0xAA00
+  symbol: gGaroSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGaroSlashLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x38AC
+  symbol: gGaroSlashLoopAnim
+
+gGaroSlashStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x378C
+  symbol: gGaroSlashStartAnim
+
+gGaroSpinAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x72AC
+  symbol: gGaroSpinAttackAnim
+
+gGaroStaticJumpPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x3238
+  symbol: gGaroStaticJumpPoseAnim
+
+gGaroSwordTex:
+  type: TEXTURE
+  offset: 0xA8B0
+  symbol: gGaroSwordTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGaroTakeOutBombAnim:
+  type: OOT:ANIMATION
+  offset: 0x4018
+  symbol: gGaroTakeOutBombAnim
+
+gGaroThighTex:
+  type: TEXTURE
+  offset: 0x9EB0
+  symbol: gGaroThighTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGaroTorsoDL:
+  type: GFX
+  offset: 0x93D0
+  symbol: gGaroTorsoDL
+
+gGaroTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xA8DC
+  symbol: gGaroTorsoLimb
+  limb_type: Standard
+
+gGaroTrembleAnim:
+  type: OOT:ANIMATION
+  offset: 0x63A4
+  symbol: gGaroTrembleAnim
+
+
+object_jsoVtx_000020:
+  type: MM:ARRAY
+  offset: 0x000020
+  symbol: object_jsoVtx_000020
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: object_jsoVtx_000150
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: object_jsoVtx_000210
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0003C0:
+  type: MM:ARRAY
+  offset: 0x0003C0
+  symbol: object_jsoVtx_0003C0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_jsoVtx_0004F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0005B0:
+  type: MM:ARRAY
+  offset: 0x0005B0
+  symbol: object_jsoVtx_0005B0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000760:
+  type: MM:ARRAY
+  offset: 0x000760
+  symbol: object_jsoVtx_000760
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0008E0:
+  type: MM:ARRAY
+  offset: 0x0008E0
+  symbol: object_jsoVtx_0008E0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000990:
+  type: MM:ARRAY
+  offset: 0x000990
+  symbol: object_jsoVtx_000990
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0009C0:
+  type: MM:ARRAY
+  offset: 0x0009C0
+  symbol: object_jsoVtx_0009C0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000A70:
+  type: MM:ARRAY
+  offset: 0x000A70
+  symbol: object_jsoVtx_000A70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000AA0:
+  type: MM:ARRAY
+  offset: 0x000AA0
+  symbol: object_jsoVtx_000AA0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: object_jsoVtx_000B90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000C50:
+  type: MM:ARRAY
+  offset: 0x000C50
+  symbol: object_jsoVtx_000C50
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000CC0:
+  type: MM:ARRAY
+  offset: 0x000CC0
+  symbol: object_jsoVtx_000CC0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_000E90:
+  type: MM:ARRAY
+  offset: 0x000E90
+  symbol: object_jsoVtx_000E90
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_001040:
+  type: MM:ARRAY
+  offset: 0x001040
+  symbol: object_jsoVtx_001040
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_002E58:
+  type: MM:ARRAY
+  offset: 0x002E58
+  symbol: object_jsoVtx_002E58
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGaroMasterSkelLimbs:
+  type: BLOB
+  offset: 0x311C
+  symbol: gGaroMasterSkelLimbs
+  size: 0
+
+object_jsoVtx_008210:
+  type: MM:ARRAY
+  offset: 0x008210
+  symbol: object_jsoVtx_008210
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0082A0:
+  type: MM:ARRAY
+  offset: 0x0082A0
+  symbol: object_jsoVtx_0082A0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008310:
+  type: MM:ARRAY
+  offset: 0x008310
+  symbol: object_jsoVtx_008310
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008390:
+  type: MM:ARRAY
+  offset: 0x008390
+  symbol: object_jsoVtx_008390
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008420:
+  type: MM:ARRAY
+  offset: 0x008420
+  symbol: object_jsoVtx_008420
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008490:
+  type: MM:ARRAY
+  offset: 0x008490
+  symbol: object_jsoVtx_008490
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008510:
+  type: MM:ARRAY
+  offset: 0x008510
+  symbol: object_jsoVtx_008510
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008640:
+  type: MM:ARRAY
+  offset: 0x008640
+  symbol: object_jsoVtx_008640
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_0086F0:
+  type: MM:ARRAY
+  offset: 0x0086F0
+  symbol: object_jsoVtx_0086F0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008840:
+  type: MM:ARRAY
+  offset: 0x008840
+  symbol: object_jsoVtx_008840
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008990:
+  type: MM:ARRAY
+  offset: 0x008990
+  symbol: object_jsoVtx_008990
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008D30:
+  type: MM:ARRAY
+  offset: 0x008D30
+  symbol: object_jsoVtx_008D30
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008DA0:
+  type: MM:ARRAY
+  offset: 0x008DA0
+  symbol: object_jsoVtx_008DA0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008E30:
+  type: MM:ARRAY
+  offset: 0x008E30
+  symbol: object_jsoVtx_008E30
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008E60:
+  type: MM:ARRAY
+  offset: 0x008E60
+  symbol: object_jsoVtx_008E60
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008EF0:
+  type: MM:ARRAY
+  offset: 0x008EF0
+  symbol: object_jsoVtx_008EF0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jsoVtx_008F20:
+  type: MM:ARRAY
+  offset: 0x008F20
+  symbol: object_jsoVtx_008F20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGaroSkelLimbs:
+  type: BLOB
+  offset: 0xA9B4
+  symbol: gGaroSkelLimbs
+  size: 0

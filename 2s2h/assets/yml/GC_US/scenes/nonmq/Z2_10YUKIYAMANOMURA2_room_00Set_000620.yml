@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01D03980 ]
+    - [ 2, 0x01CFEFE0 ]
+  directory: scenes/nonmq/Z2_10YUKIYAMANOMURA2
+  external_files:
+    - GC_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2_room_00.yml
+    - GC_US/misc/scene_texture_04.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2.yml
+
+Z2_10YUKIYAMANOMURA2_room_00Set_000620:
+  type: MM:ROOM
+  offset: 0x620
+  symbol: Z2_10YUKIYAMANOMURA2_room_00Set_000620
+  base_name: Z2_10YUKIYAMANOMURA2_room_00

@@ -1,0 +1,76 @@
+:config:
+  segments:
+    - [ 6, 0x0158C890 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0158C890 ]
+    - [ 9, 0x0158C890 ]
+    - [ 10, 0x0158C890 ]
+    - [ 11, 0x0158C890 ]
+    - [ 12, 0x0158C890 ]
+    - [ 13, 0x0158C890 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_zoraband_DL_000180:
+  type: GFX
+  offset: 0x180
+  symbol: object_zoraband_DL_000180
+
+object_zoraband_DL_0002A8:
+  type: GFX
+  offset: 0x2A8
+  symbol: object_zoraband_DL_0002A8
+
+object_zoraband_Matanimheader_000F38:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xF38
+  symbol: object_zoraband_Matanimheader_000F38
+
+object_zoraband_Tex_000330:
+  type: TEXTURE
+  offset: 0x330
+  symbol: object_zoraband_Tex_000330
+  format: I8
+  width: 32
+  height: 32
+
+object_zoraband_Tex_000730:
+  type: TEXTURE
+  offset: 0x730
+  symbol: object_zoraband_Tex_000730
+  format: I8
+  width: 32
+  height: 32
+
+object_zoraband_Tex_000B30:
+  type: TEXTURE
+  offset: 0xB30
+  symbol: object_zoraband_Tex_000B30
+  format: I8
+  width: 32
+  height: 32
+
+
+object_zorabandVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_zorabandVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zorabandVtx_000040:
+  type: MM:ARRAY
+  offset: 0x000040
+  symbol: object_zorabandVtx_000040
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraband_Matanimheader_000F38TexScrollParams_000F30:
+  type: BLOB
+  offset: 0x000F30
+  symbol: object_zoraband_Matanimheader_000F38TexScrollParams_000F30
+  size: 0

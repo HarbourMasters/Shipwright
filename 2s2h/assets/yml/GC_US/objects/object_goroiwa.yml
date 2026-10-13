@@ -1,0 +1,273 @@
+:config:
+  segments:
+    - [ 6, 0x00FFFAA0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FFFAA0 ]
+    - [ 9, 0x00FFFAA0 ]
+    - [ 10, 0x00FFFAA0 ]
+    - [ 11, 0x00FFFAA0 ]
+    - [ 12, 0x00FFFAA0 ]
+    - [ 13, 0x00FFFAA0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_goroiwa_DL_0003B0:
+  type: GFX
+  offset: 0x3B0
+  symbol: object_goroiwa_DL_0003B0
+
+object_goroiwa_DL_0028E0:
+  type: GFX
+  offset: 0x28E0
+  symbol: object_goroiwa_DL_0028E0
+
+object_goroiwa_DL_002D70:
+  type: GFX
+  offset: 0x2D70
+  symbol: object_goroiwa_DL_002D70
+
+object_goroiwa_DL_0032E0:
+  type: GFX
+  offset: 0x32E0
+  symbol: object_goroiwa_DL_0032E0
+
+object_goroiwa_DL_003B40:
+  type: GFX
+  offset: 0x3B40
+  symbol: object_goroiwa_DL_003B40
+
+object_goroiwa_DL_0042B0:
+  type: GFX
+  offset: 0x42B0
+  symbol: object_goroiwa_DL_0042B0
+
+object_goroiwa_DL_004960:
+  type: GFX
+  offset: 0x4960
+  symbol: object_goroiwa_DL_004960
+
+object_goroiwa_DL_004EF0:
+  type: GFX
+  offset: 0x4EF0
+  symbol: object_goroiwa_DL_004EF0
+
+object_goroiwa_DL_005C20:
+  type: GFX
+  offset: 0x5C20
+  symbol: object_goroiwa_DL_005C20
+
+object_goroiwa_DL_0072F0:
+  type: GFX
+  offset: 0x72F0
+  symbol: object_goroiwa_DL_0072F0
+
+object_goroiwa_DL_0077D0:
+  type: GFX
+  offset: 0x77D0
+  symbol: object_goroiwa_DL_0077D0
+
+object_goroiwa_DL_007C60:
+  type: GFX
+  offset: 0x7C60
+  symbol: object_goroiwa_DL_007C60
+
+object_goroiwa_DL_0082D0:
+  type: GFX
+  offset: 0x82D0
+  symbol: object_goroiwa_DL_0082D0
+
+object_goroiwa_DL_008B90:
+  type: GFX
+  offset: 0x8B90
+  symbol: object_goroiwa_DL_008B90
+
+object_goroiwa_TLUT_005EE0:
+  type: TEXTURE
+  offset: 0x5EE0
+  symbol: object_goroiwa_TLUT_005EE0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_goroiwa_TLUT_005F00:
+  type: TEXTURE
+  offset: 0x5F00
+  symbol: object_goroiwa_TLUT_005F00
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_goroiwa_Tex_000520:
+  type: TEXTURE
+  offset: 0x520
+  symbol: object_goroiwa_Tex_000520
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_goroiwa_Tex_000D20:
+  type: TEXTURE
+  offset: 0xD20
+  symbol: object_goroiwa_Tex_000D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_goroiwa_Tex_001520:
+  type: TEXTURE
+  offset: 0x1520
+  symbol: object_goroiwa_Tex_001520
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_goroiwa_Tex_005F20:
+  type: TEXTURE
+  offset: 0x5F20
+  symbol: object_goroiwa_Tex_005F20
+  format: CI4
+  width: 64
+  height: 64
+
+object_goroiwa_Tex_006720:
+  type: TEXTURE
+  offset: 0x6720
+  symbol: object_goroiwa_Tex_006720
+  format: CI4
+  width: 64
+  height: 64
+
+object_goroiwa_Tex_008DA0:
+  type: TEXTURE
+  offset: 0x8DA0
+  symbol: object_goroiwa_Tex_008DA0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_goroiwaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_goroiwaVtx_000000
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_002520:
+  type: MM:ARRAY
+  offset: 0x002520
+  symbol: object_goroiwaVtx_002520
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_002A00:
+  type: MM:ARRAY
+  offset: 0x002A00
+  symbol: object_goroiwaVtx_002A00
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_002E80:
+  type: MM:ARRAY
+  offset: 0x002E80
+  symbol: object_goroiwaVtx_002E80
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_0034F0:
+  type: MM:ARRAY
+  offset: 0x0034F0
+  symbol: object_goroiwaVtx_0034F0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_003DC0:
+  type: MM:ARRAY
+  offset: 0x003DC0
+  symbol: object_goroiwaVtx_003DC0
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_004410:
+  type: MM:ARRAY
+  offset: 0x004410
+  symbol: object_goroiwaVtx_004410
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_004AB0:
+  type: MM:ARRAY
+  offset: 0x004AB0
+  symbol: object_goroiwaVtx_004AB0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_005030:
+  type: MM:ARRAY
+  offset: 0x005030
+  symbol: object_goroiwaVtx_005030
+  count: 191
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_006F20:
+  type: MM:ARRAY
+  offset: 0x006F20
+  symbol: object_goroiwaVtx_006F20
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_007410:
+  type: MM:ARRAY
+  offset: 0x007410
+  symbol: object_goroiwaVtx_007410
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_0078F0:
+  type: MM:ARRAY
+  offset: 0x0078F0
+  symbol: object_goroiwaVtx_0078F0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_007D70:
+  type: MM:ARRAY
+  offset: 0x007D70
+  symbol: object_goroiwaVtx_007D70
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goroiwaVtx_008490:
+  type: MM:ARRAY
+  offset: 0x008490
+  symbol: object_goroiwaVtx_008490
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

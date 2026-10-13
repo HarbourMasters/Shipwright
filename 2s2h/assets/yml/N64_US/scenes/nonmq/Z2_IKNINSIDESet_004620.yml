@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01CC6E00 ]
+  directory: scenes/nonmq/Z2_IKNINSIDE
+  external_files:
+    - N64_US/scenes/nonmq/Z2_IKNINSIDE.yml
+
+Z2_IKNINSIDESet_004620:
+  type: MM:SCENE
+  offset: 0x4620
+  symbol: Z2_IKNINSIDESet_004620
+  base_name: Z2_IKNINSIDE

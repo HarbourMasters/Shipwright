@@ -1,0 +1,270 @@
+:config:
+  segments:
+    - [ 6, 0x0138DE30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0138DE30 ]
+    - [ 9, 0x0138DE30 ]
+    - [ 10, 0x0138DE30 ]
+    - [ 11, 0x0138DE30 ]
+    - [ 12, 0x0138DE30 ]
+    - [ 13, 0x0138DE30 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gZoraBabyEyeClosedTex:
+  type: TEXTURE
+  offset: 0x4830
+  symbol: gZoraBabyEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraBabyEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4430
+  symbol: gZoraBabyEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraBabyEyeOpenTex:
+  type: TEXTURE
+  offset: 0x3430
+  symbol: gZoraBabyEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraBabyFormNoteAnim:
+  type: OOT:ANIMATION
+  offset: 0x4D20
+  symbol: gZoraBabyFormNoteAnim
+
+gZoraBabyHatchAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E08
+  symbol: gZoraBabyHatchAnim
+
+gZoraBabyHeadDL:
+  type: GFX
+  offset: 0x2550
+  symbol: gZoraBabyHeadDL
+
+gZoraBabyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x4C30
+  symbol: gZoraBabyHeadLimb
+  limb_type: Standard
+
+gZoraBabyLeftPectoralFinDL:
+  type: GFX
+  offset: 0x2D30
+  symbol: gZoraBabyLeftPectoralFinDL
+
+gZoraBabyLeftPectoralFinLimb:
+  type: OOT:LIMB
+  offset: 0x4C6C
+  symbol: gZoraBabyLeftPectoralFinLimb
+  limb_type: Standard
+
+gZoraBabyNoteAnim:
+  type: OOT:ANIMATION
+  offset: 0x4FE4
+  symbol: gZoraBabyNoteAnim
+
+gZoraBabyPectoralFinTex:
+  type: TEXTURE
+  offset: 0x4030
+  symbol: gZoraBabyPectoralFinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraBabyRightPectoralFinDL:
+  type: GFX
+  offset: 0x2C70
+  symbol: gZoraBabyRightPectoralFinDL
+
+gZoraBabyRightPectoralFinLimb:
+  type: OOT:LIMB
+  offset: 0x4C60
+  symbol: gZoraBabyRightPectoralFinLimb
+  limb_type: Standard
+
+gZoraBabySkel:
+  type: MM:SKELETON
+  offset: 0x4C90
+  symbol: gZoraBabySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gZoraBabySkinPatternTex:
+  type: TEXTURE
+  offset: 0x3830
+  symbol: gZoraBabySkinPatternTex
+  format: CI8
+  width: 32
+  height: 64
+
+gZoraBabySkinTex:
+  type: TEXTURE
+  offset: 0x33F0
+  symbol: gZoraBabySkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gZoraBabySongLearnedAnim:
+  type: OOT:ANIMATION
+  offset: 0x4E04
+  symbol: gZoraBabySongLearnedAnim
+
+gZoraBabySwimAnim:
+  type: OOT:ANIMATION
+  offset: 0x5098
+  symbol: gZoraBabySwimAnim
+
+gZoraBabySwimUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x5D4
+  symbol: gZoraBabySwimUpAnim
+
+gZoraBabyTLUT:
+  type: TEXTURE
+  offset: 0x2DF0
+  symbol: gZoraBabyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZoraBabyTail1DL:
+  type: GFX
+  offset: 0x27C8
+  symbol: gZoraBabyTail1DL
+
+gZoraBabyTail1Limb:
+  type: OOT:LIMB
+  offset: 0x4C3C
+  symbol: gZoraBabyTail1Limb
+  limb_type: Standard
+
+gZoraBabyTail2DL:
+  type: GFX
+  offset: 0x2A60
+  symbol: gZoraBabyTail2DL
+
+gZoraBabyTail2Limb:
+  type: OOT:LIMB
+  offset: 0x4C48
+  symbol: gZoraBabyTail2Limb
+  limb_type: Standard
+
+gZoraBabyTailFinDL:
+  type: GFX
+  offset: 0x2B60
+  symbol: gZoraBabyTailFinDL
+
+gZoraBabyTailFinLimb:
+  type: OOT:LIMB
+  offset: 0x4C54
+  symbol: gZoraBabyTailFinLimb
+  limb_type: Standard
+
+gZoraBabyTailFinTex:
+  type: TEXTURE
+  offset: 0x2FF0
+  symbol: gZoraBabyTailFinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gZoraEggDL:
+  type: GFX
+  offset: 0x5250
+  symbol: gZoraEggDL
+
+gZoraEggTLUT:
+  type: TEXTURE
+  offset: 0x53B0
+  symbol: gZoraEggTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZoraEggTex:
+  type: TEXTURE
+  offset: 0x55B0
+  symbol: gZoraEggTex
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_zoraeggVtx_001E20:
+  type: MM:ARRAY
+  offset: 0x001E20
+  symbol: object_zoraeggVtx_001E20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraeggVtx_001F40:
+  type: MM:ARRAY
+  offset: 0x001F40
+  symbol: object_zoraeggVtx_001F40
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraeggVtx_002030:
+  type: MM:ARRAY
+  offset: 0x002030
+  symbol: object_zoraeggVtx_002030
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraeggVtx_002200:
+  type: MM:ARRAY
+  offset: 0x002200
+  symbol: object_zoraeggVtx_002200
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraeggVtx_002250:
+  type: MM:ARRAY
+  offset: 0x002250
+  symbol: object_zoraeggVtx_002250
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zoraeggVtx_0022A0:
+  type: MM:ARRAY
+  offset: 0x0022A0
+  symbol: object_zoraeggVtx_0022A0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZoraBabySkelLimbs:
+  type: BLOB
+  offset: 0x4C78
+  symbol: gZoraBabySkelLimbs
+  size: 0
+
+object_zoraeggVtx_0050B0:
+  type: MM:ARRAY
+  offset: 0x0050B0
+  symbol: object_zoraeggVtx_0050B0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,602 @@
+:config:
+  segments:
+    - [ 6, 0x00F99320 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F99320 ]
+    - [ 9, 0x00F99320 ]
+    - [ 10, 0x00F99320 ]
+    - [ 11, 0x00F99320 ]
+    - [ 12, 0x00F99320 ]
+    - [ 13, 0x00F99320 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFrogDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x11C0
+  symbol: gFrogDanceAnim
+
+gFrogDustMaterialDL:
+  type: GFX
+  offset: 0xB328
+  symbol: gFrogDustMaterialDL
+
+gFrogDustModelDL:
+  type: GFX
+  offset: 0xB338
+  symbol: gFrogDustModelDL
+
+gFrogEyeTex:
+  type: TEXTURE
+  offset: 0x5DA0
+  symbol: gFrogEyeTex
+  format: IA16
+  width: 32
+  height: 32
+
+gFrogHandAndToeTex:
+  type: TEXTURE
+  offset: 0x65A0
+  symbol: gFrogHandAndToeTex
+  format: IA16
+  width: 32
+  height: 32
+
+gFrogHeadDL:
+  type: GFX
+  offset: 0x9000
+  symbol: gFrogHeadDL
+
+gFrogHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB3EC
+  symbol: gFrogHeadLimb
+  limb_type: Standard
+
+gFrogHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0xB3E0
+  symbol: gFrogHeadRootLimb
+  limb_type: Standard
+
+gFrogIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1534
+  symbol: gFrogIdleAnim
+
+gFrogIrisClosedTex:
+  type: TEXTURE
+  offset: 0x5BA0
+  symbol: gFrogIrisClosedTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFrogIrisOpenTex:
+  type: TEXTURE
+  offset: 0x59A0
+  symbol: gFrogIrisOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFrogJawDL:
+  type: GFX
+  offset: 0x9468
+  symbol: gFrogJawDL
+
+gFrogJawLimb:
+  type: OOT:LIMB
+  offset: 0xB404
+  symbol: gFrogJawLimb
+  limb_type: Standard
+
+gFrogJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x7BC
+  symbol: gFrogJumpAnim
+
+gFrogLeftEyeDL:
+  type: GFX
+  offset: 0x8F60
+  symbol: gFrogLeftEyeDL
+
+gFrogLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0xB41C
+  symbol: gFrogLeftEyeLimb
+  limb_type: Standard
+
+gFrogLeftForearmDL:
+  type: GFX
+  offset: 0x98B8
+  symbol: gFrogLeftForearmDL
+
+gFrogLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB440
+  symbol: gFrogLeftForearmLimb
+  limb_type: Standard
+
+gFrogLeftHandDL:
+  type: GFX
+  offset: 0x9AE0
+  symbol: gFrogLeftHandDL
+
+gFrogLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB44C
+  symbol: gFrogLeftHandLimb
+  limb_type: Standard
+
+gFrogLeftHeelDL:
+  type: GFX
+  offset: 0xABA8
+  symbol: gFrogLeftHeelDL
+
+gFrogLeftHeelLimb:
+  type: OOT:LIMB
+  offset: 0xB4C4
+  symbol: gFrogLeftHeelLimb
+  limb_type: Standard
+
+gFrogLeftIrisDL:
+  type: GFX
+  offset: 0x93C8
+  symbol: gFrogLeftIrisDL
+
+gFrogLeftIrisLimb:
+  type: OOT:LIMB
+  offset: 0xB428
+  symbol: gFrogLeftIrisLimb
+  limb_type: Standard
+
+gFrogLeftShinDL:
+  type: GFX
+  offset: 0xAED8
+  symbol: gFrogLeftShinDL
+
+gFrogLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xB4B8
+  symbol: gFrogLeftShinLimb
+  limb_type: Standard
+
+gFrogLeftThighDL:
+  type: GFX
+  offset: 0xB0F8
+  symbol: gFrogLeftThighDL
+
+gFrogLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB4AC
+  symbol: gFrogLeftThighLimb
+  limb_type: Standard
+
+gFrogLeftToeDL:
+  type: GFX
+  offset: 0xAE38
+  symbol: gFrogLeftToeDL
+
+gFrogLeftToesLimb:
+  type: OOT:LIMB
+  offset: 0xB4D0
+  symbol: gFrogLeftToesLimb
+  limb_type: Standard
+
+gFrogLeftUpperArmDL:
+  type: GFX
+  offset: 0x9B80
+  symbol: gFrogLeftUpperArmDL
+
+gFrogLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB434
+  symbol: gFrogLeftUpperArmLimb
+  limb_type: Standard
+
+gFrogLimbPatternTex:
+  type: TEXTURE
+  offset: 0x1550
+  symbol: gFrogLimbPatternTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFrogLowerBodyDL:
+  type: GFX
+  offset: 0xA258
+  symbol: gFrogLowerBodyDL
+
+gFrogLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0xB3C8
+  symbol: gFrogLowerBodyLimb
+  limb_type: Standard
+
+gFrogLowerBodyPatternTex:
+  type: TEXTURE
+  offset: 0x55A0
+  symbol: gFrogLowerBodyPatternTex
+  format: I8
+  width: 32
+  height: 32
+
+gFrogLowerInnerMouthTex:
+  type: TEXTURE
+  offset: 0x3BA0
+  symbol: gFrogLowerInnerMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFrogNostrilTex:
+  type: TEXTURE
+  offset: 0x3AA0
+  symbol: gFrogNostrilTex
+  format: I8
+  width: 16
+  height: 16
+
+gFrogQuestionMarkTex:
+  type: TEXTURE
+  offset: 0x1D50
+  symbol: gFrogQuestionMarkTex
+  format: RGBA16
+  width: 50
+  height: 74
+
+gFrogRightEyeDL:
+  type: GFX
+  offset: 0x8EC0
+  symbol: gFrogRightEyeDL
+
+gFrogRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0xB410
+  symbol: gFrogRightEyeLimb
+  limb_type: Standard
+
+gFrogRightForearmDL:
+  type: GFX
+  offset: 0x9D88
+  symbol: gFrogRightForearmDL
+
+gFrogRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xB464
+  symbol: gFrogRightForearmLimb
+  limb_type: Standard
+
+gFrogRightHandDL:
+  type: GFX
+  offset: 0x9FB0
+  symbol: gFrogRightHandDL
+
+gFrogRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB470
+  symbol: gFrogRightHandLimb
+  limb_type: Standard
+
+gFrogRightHeelDL:
+  type: GFX
+  offset: 0xA428
+  symbol: gFrogRightHeelDL
+
+gFrogRightHeelLimb:
+  type: OOT:LIMB
+  offset: 0xB494
+  symbol: gFrogRightHeelLimb
+  limb_type: Standard
+
+gFrogRightIrisDL:
+  type: GFX
+  offset: 0x9328
+  symbol: gFrogRightIrisDL
+
+gFrogRightIrisLimb:
+  type: OOT:LIMB
+  offset: 0xB3F8
+  symbol: gFrogRightIrisLimb
+  limb_type: Standard
+
+gFrogRightShinDL:
+  type: GFX
+  offset: 0xA758
+  symbol: gFrogRightShinDL
+
+gFrogRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xB488
+  symbol: gFrogRightShinLimb
+  limb_type: Standard
+
+gFrogRightThighDL:
+  type: GFX
+  offset: 0xA978
+  symbol: gFrogRightThighDL
+
+gFrogRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xB47C
+  symbol: gFrogRightThighLimb
+  limb_type: Standard
+
+gFrogRightToeDL:
+  type: GFX
+  offset: 0xA6B8
+  symbol: gFrogRightToeDL
+
+gFrogRightToesLimb:
+  type: OOT:LIMB
+  offset: 0xB4A0
+  symbol: gFrogRightToesLimb
+  limb_type: Standard
+
+gFrogRightUpperArmDL:
+  type: GFX
+  offset: 0xA050
+  symbol: gFrogRightUpperArmDL
+
+gFrogRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xB458
+  symbol: gFrogRightUpperArmLimb
+  limb_type: Standard
+
+gFrogSkel:
+  type: MM:SKELETON
+  offset: 0xB538
+  symbol: gFrogSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFrogSkinTex:
+  type: TEXTURE
+  offset: 0x4BA0
+  symbol: gFrogSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFrogUpperBodyDL:
+  type: GFX
+  offset: 0x95A0
+  symbol: gFrogUpperBodyDL
+
+gFrogUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0xB3D4
+  symbol: gFrogUpperBodyLimb
+  limb_type: Standard
+
+gFrogUpperBodyPatternTex:
+  type: TEXTURE
+  offset: 0x4DA0
+  symbol: gFrogUpperBodyPatternTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFrogUpperInnerMouthTex:
+  type: TEXTURE
+  offset: 0x43A0
+  symbol: gFrogUpperInnerMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_frVtx_006DA0:
+  type: MM:ARRAY
+  offset: 0x006DA0
+  symbol: object_frVtx_006DA0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007170:
+  type: MM:ARRAY
+  offset: 0x007170
+  symbol: object_frVtx_007170
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_0071B0:
+  type: MM:ARRAY
+  offset: 0x0071B0
+  symbol: object_frVtx_0071B0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007330:
+  type: MM:ARRAY
+  offset: 0x007330
+  symbol: object_frVtx_007330
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007370:
+  type: MM:ARRAY
+  offset: 0x007370
+  symbol: object_frVtx_007370
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_0073B0:
+  type: MM:ARRAY
+  offset: 0x0073B0
+  symbol: object_frVtx_0073B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_0073F0:
+  type: MM:ARRAY
+  offset: 0x0073F0
+  symbol: object_frVtx_0073F0
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007880:
+  type: MM:ARRAY
+  offset: 0x007880
+  symbol: object_frVtx_007880
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007A80:
+  type: MM:ARRAY
+  offset: 0x007A80
+  symbol: object_frVtx_007A80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007AC0:
+  type: MM:ARRAY
+  offset: 0x007AC0
+  symbol: object_frVtx_007AC0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007C70:
+  type: MM:ARRAY
+  offset: 0x007C70
+  symbol: object_frVtx_007C70
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007E70:
+  type: MM:ARRAY
+  offset: 0x007E70
+  symbol: object_frVtx_007E70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_007EB0:
+  type: MM:ARRAY
+  offset: 0x007EB0
+  symbol: object_frVtx_007EB0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008060:
+  type: MM:ARRAY
+  offset: 0x008060
+  symbol: object_frVtx_008060
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008280:
+  type: MM:ARRAY
+  offset: 0x008280
+  symbol: object_frVtx_008280
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008480:
+  type: MM:ARRAY
+  offset: 0x008480
+  symbol: object_frVtx_008480
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_0084C0:
+  type: MM:ARRAY
+  offset: 0x0084C0
+  symbol: object_frVtx_0084C0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008690:
+  type: MM:ARRAY
+  offset: 0x008690
+  symbol: object_frVtx_008690
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_0088A0:
+  type: MM:ARRAY
+  offset: 0x0088A0
+  symbol: object_frVtx_0088A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008AA0:
+  type: MM:ARRAY
+  offset: 0x008AA0
+  symbol: object_frVtx_008AA0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008AE0:
+  type: MM:ARRAY
+  offset: 0x008AE0
+  symbol: object_frVtx_008AE0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_008CB0:
+  type: MM:ARRAY
+  offset: 0x008CB0
+  symbol: object_frVtx_008CB0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_frVtx_00B388:
+  type: MM:ARRAY
+  offset: 0x00B388
+  symbol: object_frVtx_00B388
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFrogSkelLimbs:
+  type: BLOB
+  offset: 0xB4DC
+  symbol: gFrogSkelLimbs
+  size: 0

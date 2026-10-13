@@ -1,0 +1,1218 @@
+:config:
+  segments:
+    - [ 6, 0x01369700 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01369700 ]
+    - [ 9, 0x01369700 ]
+    - [ 10, 0x01369700 ]
+    - [ 11, 0x01369700 ]
+    - [ 12, 0x01369700 ]
+    - [ 13, 0x01369700 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gHiploopAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0xE14
+  symbol: gHiploopAttackAnim
+
+gHiploopBackCenterTex:
+  type: TEXTURE
+  offset: 0x119D8
+  symbol: gHiploopBackCenterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopBackLeftFootDL:
+  type: GFX
+  offset: 0xC7C0
+  symbol: gHiploopBackLeftFootDL
+
+gHiploopBackLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x126E0
+  symbol: gHiploopBackLeftFootLimb
+  limb_type: Standard
+
+gHiploopBackLeftLowerLegDL:
+  type: GFX
+  offset: 0xC640
+  symbol: gHiploopBackLeftLowerLegDL
+
+gHiploopBackLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x126D4
+  symbol: gHiploopBackLeftLowerLegLimb
+  limb_type: Standard
+
+gHiploopBackLeftUpperLegDL:
+  type: GFX
+  offset: 0xC4B8
+  symbol: gHiploopBackLeftUpperLegDL
+
+gHiploopBackLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x126C8
+  symbol: gHiploopBackLeftUpperLegLimb
+  limb_type: Standard
+
+gHiploopBackRightFootDL:
+  type: GFX
+  offset: 0xD3F0
+  symbol: gHiploopBackRightFootDL
+
+gHiploopBackRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12674
+  symbol: gHiploopBackRightFootLimb
+  limb_type: Standard
+
+gHiploopBackRightLowerLegDL:
+  type: GFX
+  offset: 0xD270
+  symbol: gHiploopBackRightLowerLegDL
+
+gHiploopBackRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x12668
+  symbol: gHiploopBackRightLowerLegLimb
+  limb_type: Standard
+
+gHiploopBackRightUpperLegDL:
+  type: GFX
+  offset: 0xD0E8
+  symbol: gHiploopBackRightUpperLegDL
+
+gHiploopBackRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x1265C
+  symbol: gHiploopBackRightUpperLegLimb
+  limb_type: Standard
+
+gHiploopBackTex:
+  type: TEXTURE
+  offset: 0x101D8
+  symbol: gHiploopBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopBodyDL:
+  type: GFX
+  offset: 0xC090
+  symbol: gHiploopBodyDL
+
+gHiploopBodyLimb:
+  type: OOT:LIMB
+  offset: 0x125D8
+  symbol: gHiploopBodyLimb
+  limb_type: Standard
+
+gHiploopCenterWingBaseDL:
+  type: GFX
+  offset: 0xC940
+  symbol: gHiploopCenterWingBaseDL
+
+gHiploopCenterWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x126A4
+  symbol: gHiploopCenterWingBaseLimb
+  limb_type: Standard
+
+gHiploopCenterWingMiddleDL:
+  type: GFX
+  offset: 0xCA80
+  symbol: gHiploopCenterWingMiddleDL
+
+gHiploopCenterWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x126B0
+  symbol: gHiploopCenterWingMiddleLimb
+  limb_type: Standard
+
+gHiploopCenterWingTex:
+  type: TEXTURE
+  offset: 0x109D8
+  symbol: gHiploopCenterWingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopCenterWingTipDL:
+  type: GFX
+  offset: 0xCB78
+  symbol: gHiploopCenterWingTipDL
+
+gHiploopCenterWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x126BC
+  symbol: gHiploopCenterWingTipLimb
+  limb_type: Standard
+
+gHiploopChargeAnim:
+  type: OOT:ANIMATION
+  offset: 0x1354
+  symbol: gHiploopChargeAnim
+
+gHiploopDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x178C
+  symbol: gHiploopDamageAnim
+
+gHiploopEyeTex:
+  type: TEXTURE
+  offset: 0xE1D8
+  symbol: gHiploopEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopFaceTex:
+  type: TEXTURE
+  offset: 0xF9D8
+  symbol: gHiploopFaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopFrontLeftFootDL:
+  type: GFX
+  offset: 0xE058
+  symbol: gHiploopFrontLeftFootDL
+
+gHiploopFrontLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x125FC
+  symbol: gHiploopFrontLeftFootLimb
+  limb_type: Standard
+
+gHiploopFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0xDED8
+  symbol: gHiploopFrontLeftLowerLegDL
+
+gHiploopFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x125F0
+  symbol: gHiploopFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gHiploopFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0xDD58
+  symbol: gHiploopFrontLeftUpperLegDL
+
+gHiploopFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x125E4
+  symbol: gHiploopFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gHiploopFrontRightFootDL:
+  type: GFX
+  offset: 0xDBD8
+  symbol: gHiploopFrontRightFootDL
+
+gHiploopFrontRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12620
+  symbol: gHiploopFrontRightFootLimb
+  limb_type: Standard
+
+gHiploopFrontRightLowerLegDL:
+  type: GFX
+  offset: 0xDA58
+  symbol: gHiploopFrontRightLowerLegDL
+
+gHiploopFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x12614
+  symbol: gHiploopFrontRightLowerLegLimb
+  limb_type: Standard
+
+gHiploopFrontRightUpperLegDL:
+  type: GFX
+  offset: 0xD8D8
+  symbol: gHiploopFrontRightUpperLegDL
+
+gHiploopFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x12608
+  symbol: gHiploopFrontRightUpperLegLimb
+  limb_type: Standard
+
+gHiploopIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xA844
+  symbol: gHiploopIdleAnim
+
+gHiploopLeftEyeDL:
+  type: GFX
+  offset: 0xC398
+  symbol: gHiploopLeftEyeDL
+
+gHiploopLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0x126F8
+  symbol: gHiploopLeftEyeLimb
+  limb_type: Standard
+
+gHiploopLeftWingBaseDL:
+  type: GFX
+  offset: 0xD570
+  symbol: gHiploopLeftWingBaseDL
+
+gHiploopLeftWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x12638
+  symbol: gHiploopLeftWingBaseLimb
+  limb_type: Standard
+
+gHiploopLeftWingMiddleDL:
+  type: GFX
+  offset: 0xD6F8
+  symbol: gHiploopLeftWingMiddleDL
+
+gHiploopLeftWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x12644
+  symbol: gHiploopLeftWingMiddleLimb
+  limb_type: Standard
+
+gHiploopLeftWingTipDL:
+  type: GFX
+  offset: 0xD7E8
+  symbol: gHiploopLeftWingTipDL
+
+gHiploopLeftWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x12650
+  symbol: gHiploopLeftWingTipLimb
+  limb_type: Standard
+
+gHiploopLegTex:
+  type: TEXTURE
+  offset: 0x121D8
+  symbol: gHiploopLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHiploopMaskDL:
+  type: GFX
+  offset: 0xCFD0
+  symbol: gHiploopMaskDL
+
+gHiploopMaskLimb:
+  type: OOT:LIMB
+  offset: 0x1262C
+  symbol: gHiploopMaskLimb
+  limb_type: Standard
+
+gHiploopMaskTex:
+  type: TEXTURE
+  offset: 0x123D8
+  symbol: gHiploopMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gHiploopRightEyeDL:
+  type: GFX
+  offset: 0xC428
+  symbol: gHiploopRightEyeDL
+
+gHiploopRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0x126EC
+  symbol: gHiploopRightEyeLimb
+  limb_type: Standard
+
+gHiploopRightWingBaseDL:
+  type: GFX
+  offset: 0xCC68
+  symbol: gHiploopRightWingBaseDL
+
+gHiploopRightWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x12680
+  symbol: gHiploopRightWingBaseLimb
+  limb_type: Standard
+
+gHiploopRightWingMiddleDL:
+  type: GFX
+  offset: 0xCDF0
+  symbol: gHiploopRightWingMiddleDL
+
+gHiploopRightWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x1268C
+  symbol: gHiploopRightWingMiddleLimb
+  limb_type: Standard
+
+gHiploopRightWingTipDL:
+  type: GFX
+  offset: 0xCEE0
+  symbol: gHiploopRightWingTipDL
+
+gHiploopRightWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x12698
+  symbol: gHiploopRightWingTipLimb
+  limb_type: Standard
+
+gHiploopRoarAnim:
+  type: OOT:ANIMATION
+  offset: 0x9A74
+  symbol: gHiploopRoarAnim
+
+gHiploopSideWingsTex:
+  type: TEXTURE
+  offset: 0x111D8
+  symbol: gHiploopSideWingsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHiploopSkel:
+  type: MM:SKELETON
+  offset: 0x12768
+  symbol: gHiploopSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHiploopUndersideTex:
+  type: TEXTURE
+  offset: 0xE9D8
+  symbol: gHiploopUndersideTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gHiploopWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x12AE4
+  symbol: gHiploopWalkAnim
+
+gHiploopWindUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xA304
+  symbol: gHiploopWindUpAnim
+
+gUnusedHiploopBackCenterTex:
+  type: TEXTURE
+  offset: 0x8918
+  symbol: gUnusedHiploopBackCenterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopBackLeftFootDL:
+  type: GFX
+  offset: 0x3700
+  symbol: gUnusedHiploopBackLeftFootDL
+
+gUnusedHiploopBackLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x9620
+  symbol: gUnusedHiploopBackLeftFootLimb
+  limb_type: Standard
+
+gUnusedHiploopBackLeftLowerLegDL:
+  type: GFX
+  offset: 0x3580
+  symbol: gUnusedHiploopBackLeftLowerLegDL
+
+gUnusedHiploopBackLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x9614
+  symbol: gUnusedHiploopBackLeftLowerLegLimb
+  limb_type: Standard
+
+gUnusedHiploopBackLeftUpperLegDL:
+  type: GFX
+  offset: 0x33F8
+  symbol: gUnusedHiploopBackLeftUpperLegDL
+
+gUnusedHiploopBackLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x9608
+  symbol: gUnusedHiploopBackLeftUpperLegLimb
+  limb_type: Standard
+
+gUnusedHiploopBackRightFootDL:
+  type: GFX
+  offset: 0x4330
+  symbol: gUnusedHiploopBackRightFootDL
+
+gUnusedHiploopBackRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x95B4
+  symbol: gUnusedHiploopBackRightFootLimb
+  limb_type: Standard
+
+gUnusedHiploopBackRightLowerLegDL:
+  type: GFX
+  offset: 0x41B0
+  symbol: gUnusedHiploopBackRightLowerLegDL
+
+gUnusedHiploopBackRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x95A8
+  symbol: gUnusedHiploopBackRightLowerLegLimb
+  limb_type: Standard
+
+gUnusedHiploopBackRightUpperLegDL:
+  type: GFX
+  offset: 0x4028
+  symbol: gUnusedHiploopBackRightUpperLegDL
+
+gUnusedHiploopBackRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x959C
+  symbol: gUnusedHiploopBackRightUpperLegLimb
+  limb_type: Standard
+
+gUnusedHiploopBackTex:
+  type: TEXTURE
+  offset: 0x7118
+  symbol: gUnusedHiploopBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopBodyDL:
+  type: GFX
+  offset: 0x2FD0
+  symbol: gUnusedHiploopBodyDL
+
+gUnusedHiploopBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9518
+  symbol: gUnusedHiploopBodyLimb
+  limb_type: Standard
+
+gUnusedHiploopCenterWingBaseDL:
+  type: GFX
+  offset: 0x3880
+  symbol: gUnusedHiploopCenterWingBaseDL
+
+gUnusedHiploopCenterWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x95E4
+  symbol: gUnusedHiploopCenterWingBaseLimb
+  limb_type: Standard
+
+gUnusedHiploopCenterWingMiddleDL:
+  type: GFX
+  offset: 0x39C0
+  symbol: gUnusedHiploopCenterWingMiddleDL
+
+gUnusedHiploopCenterWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x95F0
+  symbol: gUnusedHiploopCenterWingMiddleLimb
+  limb_type: Standard
+
+gUnusedHiploopCenterWingTex:
+  type: TEXTURE
+  offset: 0x7918
+  symbol: gUnusedHiploopCenterWingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopCenterWingTipDL:
+  type: GFX
+  offset: 0x3AB8
+  symbol: gUnusedHiploopCenterWingTipDL
+
+gUnusedHiploopCenterWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x95FC
+  symbol: gUnusedHiploopCenterWingTipLimb
+  limb_type: Standard
+
+gUnusedHiploopEyeTex:
+  type: TEXTURE
+  offset: 0x5118
+  symbol: gUnusedHiploopEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopFaceTex:
+  type: TEXTURE
+  offset: 0x6918
+  symbol: gUnusedHiploopFaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopFrontLeftFootDL:
+  type: GFX
+  offset: 0x4F98
+  symbol: gUnusedHiploopFrontLeftFootDL
+
+gUnusedHiploopFrontLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x953C
+  symbol: gUnusedHiploopFrontLeftFootLimb
+  limb_type: Standard
+
+gUnusedHiploopFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x4E18
+  symbol: gUnusedHiploopFrontLeftLowerLegDL
+
+gUnusedHiploopFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x9530
+  symbol: gUnusedHiploopFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gUnusedHiploopFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0x4C98
+  symbol: gUnusedHiploopFrontLeftUpperLegDL
+
+gUnusedHiploopFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x9524
+  symbol: gUnusedHiploopFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gUnusedHiploopFrontRightFootDL:
+  type: GFX
+  offset: 0x4B18
+  symbol: gUnusedHiploopFrontRightFootDL
+
+gUnusedHiploopFrontRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x9560
+  symbol: gUnusedHiploopFrontRightFootLimb
+  limb_type: Standard
+
+gUnusedHiploopFrontRightLowerLegDL:
+  type: GFX
+  offset: 0x4998
+  symbol: gUnusedHiploopFrontRightLowerLegDL
+
+gUnusedHiploopFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x9554
+  symbol: gUnusedHiploopFrontRightLowerLegLimb
+  limb_type: Standard
+
+gUnusedHiploopFrontRightUpperLegDL:
+  type: GFX
+  offset: 0x4818
+  symbol: gUnusedHiploopFrontRightUpperLegDL
+
+gUnusedHiploopFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x9548
+  symbol: gUnusedHiploopFrontRightUpperLegLimb
+  limb_type: Standard
+
+gUnusedHiploopLeftEyeDL:
+  type: GFX
+  offset: 0x32D8
+  symbol: gUnusedHiploopLeftEyeDL
+
+gUnusedHiploopLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0x9638
+  symbol: gUnusedHiploopLeftEyeLimb
+  limb_type: Standard
+
+gUnusedHiploopLeftWingBaseDL:
+  type: GFX
+  offset: 0x44B0
+  symbol: gUnusedHiploopLeftWingBaseDL
+
+gUnusedHiploopLeftWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x9578
+  symbol: gUnusedHiploopLeftWingBaseLimb
+  limb_type: Standard
+
+gUnusedHiploopLeftWingMiddleDL:
+  type: GFX
+  offset: 0x4638
+  symbol: gUnusedHiploopLeftWingMiddleDL
+
+gUnusedHiploopLeftWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x9584
+  symbol: gUnusedHiploopLeftWingMiddleLimb
+  limb_type: Standard
+
+gUnusedHiploopLeftWingTipDL:
+  type: GFX
+  offset: 0x4728
+  symbol: gUnusedHiploopLeftWingTipDL
+
+gUnusedHiploopLeftWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x9590
+  symbol: gUnusedHiploopLeftWingTipLimb
+  limb_type: Standard
+
+gUnusedHiploopLegTex:
+  type: TEXTURE
+  offset: 0x9118
+  symbol: gUnusedHiploopLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedHiploopMaskDL:
+  type: GFX
+  offset: 0x3F10
+  symbol: gUnusedHiploopMaskDL
+
+gUnusedHiploopMaskLimb:
+  type: OOT:LIMB
+  offset: 0x956C
+  symbol: gUnusedHiploopMaskLimb
+  limb_type: Standard
+
+gUnusedHiploopMaskTex:
+  type: TEXTURE
+  offset: 0x9318
+  symbol: gUnusedHiploopMaskTex
+  format: I4
+  width: 32
+  height: 32
+
+gUnusedHiploopRightEyeDL:
+  type: GFX
+  offset: 0x3368
+  symbol: gUnusedHiploopRightEyeDL
+
+gUnusedHiploopRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0x962C
+  symbol: gUnusedHiploopRightEyeLimb
+  limb_type: Standard
+
+gUnusedHiploopRightWingBaseDL:
+  type: GFX
+  offset: 0x3BA8
+  symbol: gUnusedHiploopRightWingBaseDL
+
+gUnusedHiploopRightWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x95C0
+  symbol: gUnusedHiploopRightWingBaseLimb
+  limb_type: Standard
+
+gUnusedHiploopRightWingMiddleDL:
+  type: GFX
+  offset: 0x3D30
+  symbol: gUnusedHiploopRightWingMiddleDL
+
+gUnusedHiploopRightWingMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x95CC
+  symbol: gUnusedHiploopRightWingMiddleLimb
+  limb_type: Standard
+
+gUnusedHiploopRightWingTipDL:
+  type: GFX
+  offset: 0x3E20
+  symbol: gUnusedHiploopRightWingTipDL
+
+gUnusedHiploopRightWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x95D8
+  symbol: gUnusedHiploopRightWingTipLimb
+  limb_type: Standard
+
+gUnusedHiploopSideWingsTex:
+  type: TEXTURE
+  offset: 0x8118
+  symbol: gUnusedHiploopSideWingsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedHiploopSkel:
+  type: MM:SKELETON
+  offset: 0x96A8
+  symbol: gUnusedHiploopSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gUnusedHiploopUndersideTex:
+  type: TEXTURE
+  offset: 0x5918
+  symbol: gUnusedHiploopUndersideTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_ppVtx_0017A0:
+  type: MM:ARRAY
+  offset: 0x0017A0
+  symbol: object_ppVtx_0017A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0017D0:
+  type: MM:ARRAY
+  offset: 0x0017D0
+  symbol: object_ppVtx_0017D0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_001E20:
+  type: MM:ARRAY
+  offset: 0x001E20
+  symbol: object_ppVtx_001E20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_001E50:
+  type: MM:ARRAY
+  offset: 0x001E50
+  symbol: object_ppVtx_001E50
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_001F10:
+  type: MM:ARRAY
+  offset: 0x001F10
+  symbol: object_ppVtx_001F10
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_001FD0:
+  type: MM:ARRAY
+  offset: 0x001FD0
+  symbol: object_ppVtx_001FD0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: object_ppVtx_002090
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002150:
+  type: MM:ARRAY
+  offset: 0x002150
+  symbol: object_ppVtx_002150
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002210:
+  type: MM:ARRAY
+  offset: 0x002210
+  symbol: object_ppVtx_002210
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0022D0:
+  type: MM:ARRAY
+  offset: 0x0022D0
+  symbol: object_ppVtx_0022D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002300:
+  type: MM:ARRAY
+  offset: 0x002300
+  symbol: object_ppVtx_002300
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002350:
+  type: MM:ARRAY
+  offset: 0x002350
+  symbol: object_ppVtx_002350
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0023C0:
+  type: MM:ARRAY
+  offset: 0x0023C0
+  symbol: object_ppVtx_0023C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0023F0:
+  type: MM:ARRAY
+  offset: 0x0023F0
+  symbol: object_ppVtx_0023F0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002460:
+  type: MM:ARRAY
+  offset: 0x002460
+  symbol: object_ppVtx_002460
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0024F0:
+  type: MM:ARRAY
+  offset: 0x0024F0
+  symbol: object_ppVtx_0024F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002520:
+  type: MM:ARRAY
+  offset: 0x002520
+  symbol: object_ppVtx_002520
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002570:
+  type: MM:ARRAY
+  offset: 0x002570
+  symbol: object_ppVtx_002570
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0025E0:
+  type: MM:ARRAY
+  offset: 0x0025E0
+  symbol: object_ppVtx_0025E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0026A0:
+  type: MM:ARRAY
+  offset: 0x0026A0
+  symbol: object_ppVtx_0026A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002760:
+  type: MM:ARRAY
+  offset: 0x002760
+  symbol: object_ppVtx_002760
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: object_ppVtx_002820
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0028E0:
+  type: MM:ARRAY
+  offset: 0x0028E0
+  symbol: object_ppVtx_0028E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_0029A0:
+  type: MM:ARRAY
+  offset: 0x0029A0
+  symbol: object_ppVtx_0029A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_002A60:
+  type: MM:ARRAY
+  offset: 0x002A60
+  symbol: object_ppVtx_002A60
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gUnusedHiploopSkelLimbs:
+  type: BLOB
+  offset: 0x9644
+  symbol: gUnusedHiploopSkelLimbs
+  size: 0
+
+object_ppVtx_00A860:
+  type: MM:ARRAY
+  offset: 0x00A860
+  symbol: object_ppVtx_00A860
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00A890:
+  type: MM:ARRAY
+  offset: 0x00A890
+  symbol: object_ppVtx_00A890
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00AEE0:
+  type: MM:ARRAY
+  offset: 0x00AEE0
+  symbol: object_ppVtx_00AEE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00AF10:
+  type: MM:ARRAY
+  offset: 0x00AF10
+  symbol: object_ppVtx_00AF10
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00AFD0:
+  type: MM:ARRAY
+  offset: 0x00AFD0
+  symbol: object_ppVtx_00AFD0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B090:
+  type: MM:ARRAY
+  offset: 0x00B090
+  symbol: object_ppVtx_00B090
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B150:
+  type: MM:ARRAY
+  offset: 0x00B150
+  symbol: object_ppVtx_00B150
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B210:
+  type: MM:ARRAY
+  offset: 0x00B210
+  symbol: object_ppVtx_00B210
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B2D0:
+  type: MM:ARRAY
+  offset: 0x00B2D0
+  symbol: object_ppVtx_00B2D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B390:
+  type: MM:ARRAY
+  offset: 0x00B390
+  symbol: object_ppVtx_00B390
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B3C0:
+  type: MM:ARRAY
+  offset: 0x00B3C0
+  symbol: object_ppVtx_00B3C0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B410:
+  type: MM:ARRAY
+  offset: 0x00B410
+  symbol: object_ppVtx_00B410
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B480:
+  type: MM:ARRAY
+  offset: 0x00B480
+  symbol: object_ppVtx_00B480
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B4B0:
+  type: MM:ARRAY
+  offset: 0x00B4B0
+  symbol: object_ppVtx_00B4B0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B520:
+  type: MM:ARRAY
+  offset: 0x00B520
+  symbol: object_ppVtx_00B520
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B5B0:
+  type: MM:ARRAY
+  offset: 0x00B5B0
+  symbol: object_ppVtx_00B5B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B5E0:
+  type: MM:ARRAY
+  offset: 0x00B5E0
+  symbol: object_ppVtx_00B5E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B630:
+  type: MM:ARRAY
+  offset: 0x00B630
+  symbol: object_ppVtx_00B630
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B6A0:
+  type: MM:ARRAY
+  offset: 0x00B6A0
+  symbol: object_ppVtx_00B6A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B760:
+  type: MM:ARRAY
+  offset: 0x00B760
+  symbol: object_ppVtx_00B760
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B820:
+  type: MM:ARRAY
+  offset: 0x00B820
+  symbol: object_ppVtx_00B820
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B8E0:
+  type: MM:ARRAY
+  offset: 0x00B8E0
+  symbol: object_ppVtx_00B8E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00B9A0:
+  type: MM:ARRAY
+  offset: 0x00B9A0
+  symbol: object_ppVtx_00B9A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00BA60:
+  type: MM:ARRAY
+  offset: 0x00BA60
+  symbol: object_ppVtx_00BA60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ppVtx_00BB20:
+  type: MM:ARRAY
+  offset: 0x00BB20
+  symbol: object_ppVtx_00BB20
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHiploopSkelLimbs:
+  type: BLOB
+  offset: 0x12704
+  symbol: gHiploopSkelLimbs
+  size: 0

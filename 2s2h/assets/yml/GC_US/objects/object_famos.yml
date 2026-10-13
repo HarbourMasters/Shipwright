@@ -1,0 +1,230 @@
+:config:
+  segments:
+    - [ 6, 0x00EE1E90 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EE1E90 ]
+    - [ 9, 0x00EE1E90 ]
+    - [ 10, 0x00EE1E90 ]
+    - [ 11, 0x00EE1E90 ]
+    - [ 12, 0x00EE1E90 ]
+    - [ 13, 0x00EE1E90 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFamosBodyLimb:
+  type: OOT:LIMB
+  offset: 0x3CE8
+  symbol: gFamosBodyLimb
+  limb_type: Standard
+
+gFamosBodyTLUT:
+  type: TEXTURE
+  offset: 0x2068
+  symbol: gFamosBodyTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFamosBottomTLUT:
+  type: TEXTURE
+  offset: 0x2088
+  symbol: gFamosBottomTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFamosBottomTex:
+  type: TEXTURE
+  offset: 0x28E8
+  symbol: gFamosBottomTex
+  format: CI4
+  width: 32
+  height: 32
+
+gFamosEmblemLimb:
+  type: OOT:LIMB
+  offset: 0x3CF4
+  symbol: gFamosEmblemLimb
+  limb_type: Standard
+
+gFamosFlippedGlowingEmblemTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3E38
+  symbol: gFamosFlippedGlowingEmblemTexAnim
+
+gFamosHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3D18
+  symbol: gFamosHeadLimb
+  limb_type: Standard
+
+gFamosHelmetDL:
+  type: GFX
+  offset: 0x12B0
+  symbol: gFamosHelmetDL
+
+gFamosIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x3DC8
+  symbol: gFamosIdleAnim
+
+gFamosLightSwitchDL:
+  type: GFX
+  offset: 0x1FA8
+  symbol: gFamosLightSwitchDL
+
+gFamosLightSwitchTex:
+  type: TEXTURE
+  offset: 0x34E8
+  symbol: gFamosLightSwitchTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFamosMainBodyDL:
+  type: GFX
+  offset: 0x1528
+  symbol: gFamosMainBodyDL
+
+gFamosMainBodyTex:
+  type: TEXTURE
+  offset: 0x20E8
+  symbol: gFamosMainBodyTex
+  format: CI4
+  width: 64
+  height: 64
+
+gFamosNormalGlowingEmblemTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3E30
+  symbol: gFamosNormalGlowingEmblemTexAnim
+
+gFamosShakeAnim:
+  type: OOT:ANIMATION
+  offset: 0xF8
+  symbol: gFamosShakeAnim
+
+gFamosShieldDL:
+  type: GFX
+  offset: 0x1C88
+  symbol: gFamosShieldDL
+
+gFamosShieldLimb:
+  type: OOT:LIMB
+  offset: 0x3D0C
+  symbol: gFamosShieldLimb
+  limb_type: Standard
+
+gFamosShieldTLUT:
+  type: TEXTURE
+  offset: 0x20A8
+  symbol: gFamosShieldTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFamosShieldTex:
+  type: TEXTURE
+  offset: 0x2AE8
+  symbol: gFamosShieldTex
+  format: CI4
+  width: 64
+  height: 64
+
+gFamosSkel:
+  type: MM:SKELETON
+  offset: 0x3D38
+  symbol: gFamosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gFamosSwordDL:
+  type: GFX
+  offset: 0x1DE8
+  symbol: gFamosSwordDL
+
+gFamosSwordHiltTLUT:
+  type: TEXTURE
+  offset: 0x20C8
+  symbol: gFamosSwordHiltTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFamosSwordHiltTex:
+  type: TEXTURE
+  offset: 0x32E8
+  symbol: gFamosSwordHiltTex
+  format: CI4
+  width: 32
+  height: 32
+
+gFamosSwordLimb:
+  type: OOT:LIMB
+  offset: 0x3D00
+  symbol: gFamosSwordLimb
+  limb_type: Standard
+
+
+object_famosVtx_000110:
+  type: MM:ARRAY
+  offset: 0x000110
+  symbol: object_famosVtx_000110
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_famosVtx_0005B0:
+  type: MM:ARRAY
+  offset: 0x0005B0
+  symbol: object_famosVtx_0005B0
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_famosVtx_000C10:
+  type: MM:ARRAY
+  offset: 0x000C10
+  symbol: object_famosVtx_000C10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_famosVtx_000D90:
+  type: MM:ARRAY
+  offset: 0x000D90
+  symbol: object_famosVtx_000D90
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_famosVtx_000E90:
+  type: MM:ARRAY
+  offset: 0x000E90
+  symbol: object_famosVtx_000E90
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFamosSkelLimbs:
+  type: BLOB
+  offset: 0x3D24
+  symbol: gFamosSkelLimbs
+  size: 0
+
+gFamosNormalGlowingEmblemTexAnimColorParams_003E10:
+  type: BLOB
+  offset: 0x003E10
+  symbol: gFamosNormalGlowingEmblemTexAnimColorParams_003E10
+  size: 0
+
+gFamosFlippedGlowingEmblemTexAnimColorParams_003E20:
+  type: BLOB
+  offset: 0x003E20
+  symbol: gFamosFlippedGlowingEmblemTexAnimColorParams_003E20
+  size: 0

@@ -1,0 +1,81 @@
+:config:
+  segments:
+    - [ 6, 0x0155DCD0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0155DCD0 ]
+    - [ 9, 0x0155DCD0 ]
+    - [ 10, 0x0155DCD0 ]
+    - [ 11, 0x0155DCD0 ]
+    - [ 12, 0x0155DCD0 ]
+    - [ 13, 0x0155DCD0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_obj_dinner_DL_0011E0:
+  type: GFX
+  offset: 0x11E0
+  symbol: object_obj_dinner_DL_0011E0
+
+object_obj_dinner_DL_001AA0:
+  type: GFX
+  offset: 0x1AA0
+  symbol: object_obj_dinner_DL_001AA0
+
+object_obj_dinner_Tex_001B38:
+  type: TEXTURE
+  offset: 0x1B38
+  symbol: object_obj_dinner_Tex_001B38
+  format: RGBA16
+  width: 4
+  height: 32
+
+object_obj_dinner_Tex_001C38:
+  type: TEXTURE
+  offset: 0x1C38
+  symbol: object_obj_dinner_Tex_001C38
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_obj_dinner_Tex_001E38:
+  type: TEXTURE
+  offset: 0x1E38
+  symbol: object_obj_dinner_Tex_001E38
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_obj_dinner_Tex_002038:
+  type: TEXTURE
+  offset: 0x2038
+  symbol: object_obj_dinner_Tex_002038
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_obj_dinner_Tex_002238:
+  type: TEXTURE
+  offset: 0x2238
+  symbol: object_obj_dinner_Tex_002238
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_obj_dinnerVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_obj_dinnerVtx_000000
+  count: 278
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_dinnerVtx_001160:
+  type: MM:ARRAY
+  offset: 0x001160
+  symbol: object_obj_dinnerVtx_001160
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

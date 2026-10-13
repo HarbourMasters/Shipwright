@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x0141CBA0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0141CBA0 ]
+    - [ 9, 0x0141CBA0 ]
+    - [ 10, 0x0141CBA0 ]
+    - [ 11, 0x0141CBA0 ]
+    - [ 12, 0x0141CBA0 ]
+    - [ 13, 0x0141CBA0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSmallRockDL:
+  type: GFX
+  offset: 0x9B0
+  symbol: gSmallRockDL
+
+gSmallRockTex:
+  type: TEXTURE
+  offset: 0x1B0
+  symbol: gSmallRockTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ishiVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ishiVtx_000000
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

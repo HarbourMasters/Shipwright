@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 128, 0x00CC24A0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80A50740, 0x00CC24A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sEnMm3DL:
+  type: GFX
+  offset: 0x13F8
+  symbol: sEnMm3DL
+

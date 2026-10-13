@@ -1,0 +1,77 @@
+:config:
+  segments:
+    - [ 2, 0x01DA2410 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_LOST_WOODSSet_005E30.yml
+    - GC_US/scenes/nonmq/Z2_LOST_WOODSSet_00A660.yml
+    - GC_US/scenes/nonmq/Z2_LOST_WOODSSet_00ADE0.yml
+Z2_LOST_WOODS:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_LOST_WOODS
+
+Z2_LOST_WOODSTex_00B9D0:
+  type: TEXTURE
+  offset: 0xB9D0
+  symbol: Z2_LOST_WOODSTex_00B9D0
+  format: IA16
+  width: 64
+  height: 64
+
+
+Z2_LOST_WOODSCutsceneData_000194:
+  type: MM:CUTSCENE
+  offset: 0x000194
+  symbol: Z2_LOST_WOODSCutsceneData_000194
+  size: 3948
+
+Z2_LOST_WOODSCutsceneData_001104:
+  type: MM:CUTSCENE
+  offset: 0x001104
+  symbol: Z2_LOST_WOODSCutsceneData_001104
+  size: 2516
+
+Z2_LOST_WOODSTexAnim_001BD0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001BD0
+  symbol: Z2_LOST_WOODSTexAnim_001BD0
+
+Z2_LOST_WOODSCollisionHeader_005DF8:
+  type: MM:COLLISION
+  offset: 0x005DF8
+  symbol: Z2_LOST_WOODSCollisionHeader_005DF8
+
+Z2_LOST_WOODSCutsceneData_005F48:
+  type: MM:CUTSCENE
+  offset: 0x005F48
+  symbol: Z2_LOST_WOODSCutsceneData_005F48
+  size: 17968
+
+Z2_LOST_WOODSCutsceneData_00A778:
+  type: MM:CUTSCENE
+  offset: 0x00A778
+  symbol: Z2_LOST_WOODSCutsceneData_00A778
+  size: 1408
+
+Z2_LOST_WOODSCutsceneData_00AEF8:
+  type: MM:CUTSCENE
+  offset: 0x00AEF8
+  symbol: Z2_LOST_WOODSCutsceneData_00AEF8
+  size: 2688
+
+Z2_LOST_WOODSTex_00D9D0:
+  type: TEXTURE
+  offset: 0x00D9D0
+  symbol: Z2_LOST_WOODSTex_00D9D0
+  format: I8
+  width: 64
+  height: 64
+
+Z2_LOST_WOODSTex_00E9D0:
+  type: TEXTURE
+  offset: 0x00E9D0
+  symbol: Z2_LOST_WOODSTex_00E9D0
+  format: IA16
+  width: 64
+  height: 32

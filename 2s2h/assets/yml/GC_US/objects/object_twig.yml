@@ -1,0 +1,85 @@
+:config:
+  segments:
+    - [ 6, 0x0125F8E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0125F8E0 ]
+    - [ 9, 0x0125F8E0 ]
+    - [ 10, 0x0125F8E0 ]
+    - [ 11, 0x0125F8E0 ]
+    - [ 12, 0x0125F8E0 ]
+    - [ 13, 0x0125F8E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_twig_Colheader_0016C0:
+  type: MM:COLLISION
+  offset: 0x16C0
+  symbol: object_twig_Colheader_0016C0
+
+object_twig_Colheader_0020A0:
+  type: MM:COLLISION
+  offset: 0x20A0
+  symbol: object_twig_Colheader_0020A0
+
+object_twig_DL_0014C0:
+  type: GFX
+  offset: 0x14C0
+  symbol: object_twig_DL_0014C0
+
+object_twig_DL_0014C8:
+  type: GFX
+  offset: 0x14C8
+  symbol: object_twig_DL_0014C8
+
+object_twig_DL_001C30:
+  type: GFX
+  offset: 0x1C30
+  symbol: object_twig_DL_001C30
+
+object_twig_DL_001C38:
+  type: GFX
+  offset: 0x1C38
+  symbol: object_twig_DL_001C38
+
+object_twig_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_twig_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_twig_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_twig_Tex_000800
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_twig_Tex_001000:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: object_twig_Tex_001000
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_twigVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_twigVtx_001400
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_twigVtx_0016F0:
+  type: MM:ARRAY
+  offset: 0x0016F0
+  symbol: object_twigVtx_0016F0
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

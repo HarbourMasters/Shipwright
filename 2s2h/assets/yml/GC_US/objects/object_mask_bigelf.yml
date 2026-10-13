@@ -1,0 +1,80 @@
+:config:
+  segments:
+    - [ 10, 0x00E8A1D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E8A1D0 ]
+    - [ 12, 0x00E8A1D0 ]
+    - [ 13, 0x00E8A1D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_bigelf_DL_0016F0:
+  type: GFX
+  offset: 0x16F0
+  symbol: object_mask_bigelf_DL_0016F0
+
+object_mask_bigelf_TLUT_002130:
+  type: TEXTURE
+  offset: 0x2130
+  symbol: object_mask_bigelf_TLUT_002130
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_bigelf_Tex_002330:
+  type: TEXTURE
+  offset: 0x2330
+  symbol: object_mask_bigelf_Tex_002330
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_bigelf_Tex_002370:
+  type: TEXTURE
+  offset: 0x2370
+  symbol: object_mask_bigelf_Tex_002370
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_bigelf_Tex_002770:
+  type: TEXTURE
+  offset: 0x2770
+  symbol: object_mask_bigelf_Tex_002770
+  format: CI8
+  width: 64
+  height: 32
+
+object_mask_bigelf_Tex_002F70:
+  type: TEXTURE
+  offset: 0x2F70
+  symbol: object_mask_bigelf_Tex_002F70
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_bigelf_Tex_003070:
+  type: TEXTURE
+  offset: 0x3070
+  symbol: object_mask_bigelf_Tex_003070
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_bigelf_Tex_0030B0:
+  type: TEXTURE
+  offset: 0x30B0
+  symbol: object_mask_bigelf_Tex_0030B0
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_mask_bigelfVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_bigelfVtx_000000
+  count: 367
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

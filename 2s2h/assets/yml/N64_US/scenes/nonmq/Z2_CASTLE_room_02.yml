@@ -1,0 +1,192 @@
+:config:
+  segments:
+    - [ 3, 0x0180CE70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0180CE70 ]
+    - [ 9, 0x0180CE70 ]
+    - [ 10, 0x0180CE70 ]
+    - [ 11, 0x0180CE70 ]
+    - [ 12, 0x0180CE70 ]
+    - [ 13, 0x0180CE70 ]
+    - [ 2, 0x017F25B0 ]
+  directory: scenes/nonmq/Z2_CASTLE
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_CASTLE.yml
+
+Z2_CASTLE_room_02:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_CASTLE_room_02
+
+Z2_CASTLE_room_02DL_000180:
+  type: GFX
+  offset: 0x180
+  symbol: Z2_CASTLE_room_02DL_000180
+
+Z2_CASTLE_room_02DL_0024C8:
+  type: GFX
+  offset: 0x24C8
+  symbol: Z2_CASTLE_room_02DL_0024C8
+
+Z2_CASTLE_room_02DL_005100:
+  type: GFX
+  offset: 0x5100
+  symbol: Z2_CASTLE_room_02DL_005100
+
+Z2_CASTLE_room_02DL_005320:
+  type: GFX
+  offset: 0x5320
+  symbol: Z2_CASTLE_room_02DL_005320
+
+
+Z2_CASTLE_room_02ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_CASTLE_room_02ActorEntry_000058
+  size: 0
+
+Z2_CASTLE_room_02Vtx_000188:
+  type: MM:ARRAY
+  offset: 0x000188
+  symbol: Z2_CASTLE_room_02Vtx_000188
+  count: 170
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_000C28:
+  type: GFX
+  offset: 0x000C28
+  symbol: Z2_CASTLE_room_02DL_000C28
+
+Z2_CASTLE_room_02Vtx_0012F8:
+  type: MM:ARRAY
+  offset: 0x0012F8
+  symbol: Z2_CASTLE_room_02Vtx_0012F8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_0013F8:
+  type: GFX
+  offset: 0x0013F8
+  symbol: Z2_CASTLE_room_02DL_0013F8
+
+Z2_CASTLE_room_02Vtx_0014D8:
+  type: MM:ARRAY
+  offset: 0x0014D8
+  symbol: Z2_CASTLE_room_02Vtx_0014D8
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_001A68:
+  type: GFX
+  offset: 0x001A68
+  symbol: Z2_CASTLE_room_02DL_001A68
+
+Z2_CASTLE_room_02Vtx_001C30:
+  type: MM:ARRAY
+  offset: 0x001C30
+  symbol: Z2_CASTLE_room_02Vtx_001C30
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_001D30:
+  type: GFX
+  offset: 0x001D30
+  symbol: Z2_CASTLE_room_02DL_001D30
+
+Z2_CASTLE_room_02Vtx_001E18:
+  type: MM:ARRAY
+  offset: 0x001E18
+  symbol: Z2_CASTLE_room_02Vtx_001E18
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_002288:
+  type: GFX
+  offset: 0x002288
+  symbol: Z2_CASTLE_room_02DL_002288
+
+Z2_CASTLE_room_02Tex_0024F8:
+  type: TEXTURE
+  offset: 0x0024F8
+  symbol: Z2_CASTLE_room_02Tex_0024F8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_02Tex_002CF8:
+  type: TEXTURE
+  offset: 0x002CF8
+  symbol: Z2_CASTLE_room_02Tex_002CF8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_CASTLE_room_02Tex_0034F8:
+  type: TEXTURE
+  offset: 0x0034F8
+  symbol: Z2_CASTLE_room_02Tex_0034F8
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_02Tex_0044F8:
+  type: TEXTURE
+  offset: 0x0044F8
+  symbol: Z2_CASTLE_room_02Tex_0044F8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_02Tex_0048F8:
+  type: TEXTURE
+  offset: 0x0048F8
+  symbol: Z2_CASTLE_room_02Tex_0048F8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_02Tex_004CF8:
+  type: TEXTURE
+  offset: 0x004CF8
+  symbol: Z2_CASTLE_room_02Tex_004CF8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_02DL_005108:
+  type: GFX
+  offset: 0x005108
+  symbol: Z2_CASTLE_room_02DL_005108
+
+Z2_CASTLE_room_02Vtx_005110:
+  type: MM:ARRAY
+  offset: 0x005110
+  symbol: Z2_CASTLE_room_02Vtx_005110
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_02DL_005230:
+  type: GFX
+  offset: 0x005230
+  symbol: Z2_CASTLE_room_02DL_005230
+
+Z2_CASTLE_room_02Tex_005338:
+  type: TEXTURE
+  offset: 0x005338
+  symbol: Z2_CASTLE_room_02Tex_005338
+  format: IA8
+  width: 32
+  height: 32

@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 6, 0x015970B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015970B0 ]
+    - [ 9, 0x015970B0 ]
+    - [ 10, 0x015970B0 ]
+    - [ 11, 0x015970B0 ]
+    - [ 12, 0x015970B0 ]
+    - [ 13, 0x015970B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiCircusLeaderMaskEarTex:
+  type: TEXTURE
+  offset: 0x1810
+  symbol: gGiCircusLeaderMaskEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiCircusLeaderMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1850
+  symbol: gGiCircusLeaderMaskEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGiCircusLeaderMaskEyebrowTex:
+  type: TEXTURE
+  offset: 0x13D0
+  symbol: gGiCircusLeaderMaskEyebrowTex
+  format: RGBA32
+  width: 16
+  height: 16
+
+gGiCircusLeaderMaskEyebrowsDL:
+  type: GFX
+  offset: 0xB50
+  symbol: gGiCircusLeaderMaskEyebrowsDL
+
+gGiCircusLeaderMaskFaceDL:
+  type: GFX
+  offset: 0xC00
+  symbol: gGiCircusLeaderMaskFaceDL
+
+gGiCircusLeaderMaskFaceTLUT:
+  type: TEXTURE
+  offset: 0x11D0
+  symbol: gGiCircusLeaderMaskFaceTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiCircusLeaderMaskHairTex:
+  type: TEXTURE
+  offset: 0x17D0
+  symbol: gGiCircusLeaderMaskHairTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiCircusLeaderMaskHairlineTex:
+  type: TEXTURE
+  offset: 0x1C50
+  symbol: gGiCircusLeaderMaskHairlineTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiCircusLeaderMaskSideBurnTex:
+  type: TEXTURE
+  offset: 0x1D50
+  symbol: gGiCircusLeaderMaskSideBurnTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiCircusLeaderMaskSkinTex:
+  type: TEXTURE
+  offset: 0x1E50
+  symbol: gGiCircusLeaderMaskSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_gi_mask11Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask11Vtx_000000
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask11Vtx_000A30:
+  type: MM:ARRAY
+  offset: 0x000A30
+  symbol: object_gi_mask11Vtx_000A30
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

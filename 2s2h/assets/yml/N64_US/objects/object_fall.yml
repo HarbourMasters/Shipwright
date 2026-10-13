@@ -1,0 +1,245 @@
+:config:
+  segments:
+    - [ 6, 0x011CEB40 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011CEB40 ]
+    - [ 9, 0x011CEB40 ]
+    - [ 10, 0x011CEB40 ]
+    - [ 11, 0x011CEB40 ]
+    - [ 12, 0x011CEB40 ]
+    - [ 13, 0x011CEB40 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gMoonDL:
+  type: GFX
+  offset: 0x77F0
+  symbol: gMoonDL
+
+gMoonDebrisMaterialDL:
+  type: GFX
+  offset: 0x198
+  symbol: gMoonDebrisMaterialDL
+
+gMoonDebrisModel1DL:
+  type: GFX
+  offset: 0x220
+  symbol: gMoonDebrisModel1DL
+
+gMoonDebrisModel2DL:
+  type: GFX
+  offset: 0x428
+  symbol: gMoonDebrisModel2DL
+
+gMoonDebrisModel3DL:
+  type: GFX
+  offset: 0x498
+  symbol: gMoonDebrisModel3DL
+
+gMoonDebrisTex:
+  type: TEXTURE
+  offset: 0x260
+  symbol: gMoonDebrisTex
+  format: I8
+  width: 16
+  height: 16
+
+gMoonEmpty1DL:
+  type: GFX
+  offset: 0x190
+  symbol: gMoonEmpty1DL
+
+gMoonEmpty2DL:
+  type: GFX
+  offset: 0x420
+  symbol: gMoonEmpty2DL
+
+gMoonEmpty3DL:
+  type: GFX
+  offset: 0x490
+  symbol: gMoonEmpty3DL
+
+gMoonEyeTex:
+  type: TEXTURE
+  offset: 0x8338
+  symbol: gMoonEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoonFaceTLUT:
+  type: TEXTURE
+  offset: 0x8318
+  symbol: gMoonFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonFaceTex:
+  type: TEXTURE
+  offset: 0xA338
+  symbol: gMoonFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonFarSideTLUT:
+  type: TEXTURE
+  offset: 0x82F8
+  symbol: gMoonFarSideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonFarSideTex:
+  type: TEXTURE
+  offset: 0x9B38
+  symbol: gMoonFarSideTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonFireRingDL:
+  type: GFX
+  offset: 0x3C30
+  symbol: gMoonFireRingDL
+
+gMoonFireRingFlamesTex:
+  type: TEXTURE
+  offset: 0x3E28
+  symbol: gMoonFireRingFlamesTex
+  format: I8
+  width: 32
+  height: 64
+
+gMoonFireRingMaskTex:
+  type: TEXTURE
+  offset: 0x4628
+  symbol: gMoonFireRingMaskTex
+  format: I8
+  width: 32
+  height: 64
+
+gMoonFireRingTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x4E38
+  symbol: gMoonFireRingTexAnim
+
+gMoonFireballDL:
+  type: GFX
+  offset: 0x11D0
+  symbol: gMoonFireballDL
+
+gMoonFireballFlamesTex:
+  type: TEXTURE
+  offset: 0x2688
+  symbol: gMoonFireballFlamesTex
+  format: I4
+  width: 64
+  height: 64
+
+gMoonFireballFlecksTex:
+  type: TEXTURE
+  offset: 0x1688
+  symbol: gMoonFireballFlecksTex
+  format: I8
+  width: 64
+  height: 64
+
+gMoonFireballMaskTex:
+  type: TEXTURE
+  offset: 0x2E88
+  symbol: gMoonFireballMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gMoonFireballVtx:
+  type: MM:ARRAY
+  offset: 0x4C0
+  symbol: gMoonFireballVtx
+  count: 209
+  array_type: VTX
+
+gMoonTeethTex:
+  type: TEXTURE
+  offset: 0x8B38
+  symbol: gMoonTeethTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMoonUnusedFireballTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x4E58
+  symbol: gMoonUnusedFireballTexAnim
+
+
+object_fallVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fallVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fallVtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: object_fallVtx_000360
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fallVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_fallVtx_000460
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fallVtx_003690:
+  type: MM:ARRAY
+  offset: 0x003690
+  symbol: object_fallVtx_003690
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMoonFireRingTexAnimTexScrollParams_004E30:
+  type: BLOB
+  offset: 0x004E30
+  symbol: gMoonFireRingTexAnimTexScrollParams_004E30
+  size: 0
+
+gMoonUnusedFireballTexAnimTexScrollParams_004E40:
+  type: BLOB
+  offset: 0x004E40
+  symbol: gMoonUnusedFireballTexAnimTexScrollParams_004E40
+  size: 0
+
+gMoonUnusedFireballTexAnimTexScrollParams_004E48:
+  type: BLOB
+  offset: 0x004E48
+  symbol: gMoonUnusedFireballTexAnimTexScrollParams_004E48
+  size: 0
+
+gMoonUnusedFireballTexAnimTexScrollParams_004E50:
+  type: BLOB
+  offset: 0x004E50
+  symbol: gMoonUnusedFireballTexAnimTexScrollParams_004E50
+  size: 0
+
+object_fallVtx_004E70:
+  type: MM:ARRAY
+  offset: 0x004E70
+  symbol: object_fallVtx_004E70
+  count: 664
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

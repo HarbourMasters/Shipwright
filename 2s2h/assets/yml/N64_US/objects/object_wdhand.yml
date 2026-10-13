@@ -1,0 +1,238 @@
+:config:
+  segments:
+    - [ 6, 0x012ECF80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012ECF80 ]
+    - [ 9, 0x012ECF80 ]
+    - [ 10, 0x012ECF80 ]
+    - [ 11, 0x012ECF80 ]
+    - [ 12, 0x012ECF80 ]
+    - [ 13, 0x012ECF80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDexihandArmSegmentDL:
+  type: GFX
+  offset: 0x15B0
+  symbol: gDexihandArmSegmentDL
+
+gDexihandBaseDL:
+  type: GFX
+  offset: 0x14C0
+  symbol: gDexihandBaseDL
+
+gDexihandCloseAnim:
+  type: OOT:ANIMATION
+  offset: 0xF4
+  symbol: gDexihandCloseAnim
+
+gDexihandIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x854
+  symbol: gDexihandIdleAnim
+
+gDexihandOpenAnim:
+  type: OOT:ANIMATION
+  offset: 0x534
+  symbol: gDexihandOpenAnim
+
+gDexihandSkel:
+  type: MM:SKELETON
+  offset: 0x1E20
+  symbol: gDexihandSkel
+  limb_type: Standard
+  skel_type: Flex
+
+object_wdhand_Anim_000364:
+  type: OOT:ANIMATION
+  offset: 0x364
+  symbol: object_wdhand_Anim_000364
+
+object_wdhand_DL_001908:
+  type: GFX
+  offset: 0x1908
+  symbol: object_wdhand_DL_001908
+
+object_wdhand_DL_001998:
+  type: GFX
+  offset: 0x1998
+  symbol: object_wdhand_DL_001998
+
+object_wdhand_DL_001A20:
+  type: GFX
+  offset: 0x1A20
+  symbol: object_wdhand_DL_001A20
+
+object_wdhand_DL_001AD0:
+  type: GFX
+  offset: 0x1AD0
+  symbol: object_wdhand_DL_001AD0
+
+object_wdhand_DL_001B80:
+  type: GFX
+  offset: 0x1B80
+  symbol: object_wdhand_DL_001B80
+
+object_wdhand_DL_001C40:
+  type: GFX
+  offset: 0x1C40
+  symbol: object_wdhand_DL_001C40
+
+object_wdhand_DL_001CF0:
+  type: GFX
+  offset: 0x1CF0
+  symbol: object_wdhand_DL_001CF0
+
+object_wdhand_Standardlimb_001DB0:
+  type: OOT:LIMB
+  offset: 0x1DB0
+  symbol: object_wdhand_Standardlimb_001DB0
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DBC:
+  type: OOT:LIMB
+  offset: 0x1DBC
+  symbol: object_wdhand_Standardlimb_001DBC
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DC8:
+  type: OOT:LIMB
+  offset: 0x1DC8
+  symbol: object_wdhand_Standardlimb_001DC8
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DD4:
+  type: OOT:LIMB
+  offset: 0x1DD4
+  symbol: object_wdhand_Standardlimb_001DD4
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DE0:
+  type: OOT:LIMB
+  offset: 0x1DE0
+  symbol: object_wdhand_Standardlimb_001DE0
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DEC:
+  type: OOT:LIMB
+  offset: 0x1DEC
+  symbol: object_wdhand_Standardlimb_001DEC
+  limb_type: Standard
+
+object_wdhand_Standardlimb_001DF8:
+  type: OOT:LIMB
+  offset: 0x1DF8
+  symbol: object_wdhand_Standardlimb_001DF8
+  limb_type: Standard
+
+object_wdhand_Tex_000870:
+  type: TEXTURE
+  offset: 0x870
+  symbol: object_wdhand_Tex_000870
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_wdhand_Tex_000C70:
+  type: TEXTURE
+  offset: 0xC70
+  symbol: object_wdhand_Tex_000C70
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_wdhand_Tex_001070:
+  type: TEXTURE
+  offset: 0x1070
+  symbol: object_wdhand_Tex_001070
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_wdhandVtx_001470:
+  type: MM:ARRAY
+  offset: 0x001470
+  symbol: object_wdhandVtx_001470
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_001550:
+  type: MM:ARRAY
+  offset: 0x001550
+  symbol: object_wdhandVtx_001550
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_001638:
+  type: MM:ARRAY
+  offset: 0x001638
+  symbol: object_wdhandVtx_001638
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_0016F8:
+  type: MM:ARRAY
+  offset: 0x0016F8
+  symbol: object_wdhandVtx_0016F8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_001728:
+  type: MM:ARRAY
+  offset: 0x001728
+  symbol: object_wdhandVtx_001728
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_001768:
+  type: MM:ARRAY
+  offset: 0x001768
+  symbol: object_wdhandVtx_001768
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_0017E8:
+  type: MM:ARRAY
+  offset: 0x0017E8
+  symbol: object_wdhandVtx_0017E8
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_001838:
+  type: MM:ARRAY
+  offset: 0x001838
+  symbol: object_wdhandVtx_001838
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wdhandVtx_0018B8:
+  type: MM:ARRAY
+  offset: 0x0018B8
+  symbol: object_wdhandVtx_0018B8
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDexihandSkelLimbs:
+  type: BLOB
+  offset: 0x1E04
+  symbol: gDexihandSkelLimbs
+  size: 0

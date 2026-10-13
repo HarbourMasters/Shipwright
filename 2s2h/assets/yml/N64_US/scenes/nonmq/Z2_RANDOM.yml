@@ -1,0 +1,112 @@
+:config:
+  segments:
+    - [ 2, 0x01D46C70 ]
+
+Z2_RANDOM:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_RANDOM
+
+
+Z2_RANDOMPathwayList_0001A0:
+  type: MM:PATH
+  offset: 0x0001A0
+  symbol: Z2_RANDOMPathwayList_0001A0
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2, 0, 1169 ]
+        - [ 241, 259, 992 ]
+        - [ 241, 258, 1341 ]
+        - [ 0, 259, 1461 ]
+        - [ -239, 268, 1348 ]
+        - [ -241, 266, 992 ]
+        - [ 2, 0, 1169 ]
+
+Z2_RANDOMCutsceneData_0001D4:
+  type: MM:CUTSCENE
+  offset: 0x0001D4
+  symbol: Z2_RANDOMCutsceneData_0001D4
+  size: 928
+
+Z2_RANDOMTexAnim_000908TexScrollParams_000900:
+  type: BLOB
+  offset: 0x000900
+  symbol: Z2_RANDOMTexAnim_000908TexScrollParams_000900
+  size: 0
+
+Z2_RANDOMTexAnim_000908:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000908
+  symbol: Z2_RANDOMTexAnim_000908
+
+Z2_RANDOMCollisionHeader_0072A8:
+  type: MM:COLLISION
+  offset: 0x0072A8
+  symbol: Z2_RANDOMCollisionHeader_0072A8
+
+Z2_RANDOMTex_0072E0:
+  type: TEXTURE
+  offset: 0x0072E0
+  symbol: Z2_RANDOMTex_0072E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_RANDOMTex_007AE0:
+  type: TEXTURE
+  offset: 0x007AE0
+  symbol: Z2_RANDOMTex_007AE0
+  format: I8
+  width: 64
+  height: 32
+
+Z2_RANDOMTex_0082E0:
+  type: TEXTURE
+  offset: 0x0082E0
+  symbol: Z2_RANDOMTex_0082E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_RANDOMTex_008AE0:
+  type: TEXTURE
+  offset: 0x008AE0
+  symbol: Z2_RANDOMTex_008AE0
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_RANDOMTex_0092E0:
+  type: TEXTURE
+  offset: 0x0092E0
+  symbol: Z2_RANDOMTex_0092E0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_RANDOMTex_00A2E0:
+  type: TEXTURE
+  offset: 0x00A2E0
+  symbol: Z2_RANDOMTex_00A2E0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_RANDOMTex_00AAE0:
+  type: TEXTURE
+  offset: 0x00AAE0
+  symbol: Z2_RANDOMTex_00AAE0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_RANDOMTLUT_00AEE0:
+  type: TEXTURE
+  offset: 0x00AEE0
+  symbol: Z2_RANDOMTLUT_00AEE0
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,179 @@
+:config:
+  segments:
+    - [ 3, 0x017D2410 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x017D2410 ]
+    - [ 9, 0x017D2410 ]
+    - [ 10, 0x017D2410 ]
+    - [ 11, 0x017D2410 ]
+    - [ 12, 0x017D2410 ]
+    - [ 13, 0x017D2410 ]
+    - [ 2, 0x017AEC90 ]
+  directory: scenes/nonmq/Z2_MITURIN
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_MITURIN.yml
+
+Z2_MITURIN_room_07:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_MITURIN_room_07
+
+Z2_MITURIN_room_07DL_002828:
+  type: GFX
+  offset: 0x2828
+  symbol: Z2_MITURIN_room_07DL_002828
+
+Z2_MITURIN_room_07DL_003750:
+  type: GFX
+  offset: 0x3750
+  symbol: Z2_MITURIN_room_07DL_003750
+
+
+Z2_MITURIN_room_07ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_MITURIN_room_07ActorEntry_00006C
+  size: 0
+
+Z2_MITURIN_room_07Vtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: Z2_MITURIN_room_07Vtx_000150
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_000740:
+  type: GFX
+  offset: 0x000740
+  symbol: Z2_MITURIN_room_07DL_000740
+
+Z2_MITURIN_room_07Vtx_000940:
+  type: MM:ARRAY
+  offset: 0x000940
+  symbol: Z2_MITURIN_room_07Vtx_000940
+  count: 118
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_0010A0:
+  type: GFX
+  offset: 0x0010A0
+  symbol: Z2_MITURIN_room_07DL_0010A0
+
+Z2_MITURIN_room_07Vtx_001310:
+  type: MM:ARRAY
+  offset: 0x001310
+  symbol: Z2_MITURIN_room_07Vtx_001310
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_001510:
+  type: GFX
+  offset: 0x001510
+  symbol: Z2_MITURIN_room_07DL_001510
+
+Z2_MITURIN_room_07Vtx_001690:
+  type: MM:ARRAY
+  offset: 0x001690
+  symbol: Z2_MITURIN_room_07Vtx_001690
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_001810:
+  type: GFX
+  offset: 0x001810
+  symbol: Z2_MITURIN_room_07DL_001810
+
+Z2_MITURIN_room_07Vtx_001978:
+  type: MM:ARRAY
+  offset: 0x001978
+  symbol: Z2_MITURIN_room_07Vtx_001978
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_001B68:
+  type: GFX
+  offset: 0x001B68
+  symbol: Z2_MITURIN_room_07DL_001B68
+
+Z2_MITURIN_room_07Vtx_001CF0:
+  type: MM:ARRAY
+  offset: 0x001CF0
+  symbol: Z2_MITURIN_room_07Vtx_001CF0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_001E10:
+  type: GFX
+  offset: 0x001E10
+  symbol: Z2_MITURIN_room_07DL_001E10
+
+Z2_MITURIN_room_07Vtx_001F00:
+  type: MM:ARRAY
+  offset: 0x001F00
+  symbol: Z2_MITURIN_room_07Vtx_001F00
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_002170:
+  type: GFX
+  offset: 0x002170
+  symbol: Z2_MITURIN_room_07DL_002170
+
+Z2_MITURIN_room_07Vtx_0022A8:
+  type: MM:ARRAY
+  offset: 0x0022A8
+  symbol: Z2_MITURIN_room_07Vtx_0022A8
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_002678:
+  type: GFX
+  offset: 0x002678
+  symbol: Z2_MITURIN_room_07DL_002678
+
+Z2_MITURIN_room_07Tex_002870:
+  type: TEXTURE
+  offset: 0x002870
+  symbol: Z2_MITURIN_room_07Tex_002870
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_MITURIN_room_07Tex_002C70:
+  type: TEXTURE
+  offset: 0x002C70
+  symbol: Z2_MITURIN_room_07Tex_002C70
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_MITURIN_room_07Vtx_003470:
+  type: MM:ARRAY
+  offset: 0x003470
+  symbol: Z2_MITURIN_room_07Vtx_003470
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_MITURIN_room_07DL_003620:
+  type: GFX
+  offset: 0x003620
+  symbol: Z2_MITURIN_room_07DL_003620

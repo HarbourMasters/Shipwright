@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x015A5E70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015A5E70 ]
+    - [ 9, 0x015A5E70 ]
+    - [ 10, 0x015A5E70 ]
+    - [ 11, 0x015A5E70 ]
+    - [ 12, 0x015A5E70 ]
+    - [ 13, 0x015A5E70 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_astr_obj_Colheader_002498:
+  type: MM:COLLISION
+  offset: 0x2498
+  symbol: object_astr_obj_Colheader_002498
+
+object_astr_obj_DL_002170:
+  type: GFX
+  offset: 0x2170
+  symbol: object_astr_obj_DL_002170
+
+object_astr_obj_DL_002178:
+  type: GFX
+  offset: 0x2178
+  symbol: object_astr_obj_DL_002178
+
+object_astr_obj_DL_0022E0:
+  type: GFX
+  offset: 0x22E0
+  symbol: object_astr_obj_DL_0022E0
+
+object_astr_obj_DL_002380:
+  type: GFX
+  offset: 0x2380
+  symbol: object_astr_obj_DL_002380
+
+object_astr_obj_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_astr_obj_TLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_astr_obj_Tex_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_astr_obj_Tex_000020
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_astr_obj_Tex_000820:
+  type: TEXTURE
+  offset: 0x820
+  symbol: object_astr_obj_Tex_000820
+  format: CI4
+  width: 64
+  height: 64
+
+object_astr_obj_Tex_001020:
+  type: TEXTURE
+  offset: 0x1020
+  symbol: object_astr_obj_Tex_001020
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_astr_objVtx_002020:
+  type: MM:ARRAY
+  offset: 0x002020
+  symbol: object_astr_objVtx_002020
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_astr_objVtx_002230:
+  type: MM:ARRAY
+  offset: 0x002230
+  symbol: object_astr_objVtx_002230
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_astr_objVtx_002290:
+  type: MM:ARRAY
+  offset: 0x002290
+  symbol: object_astr_objVtx_002290
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

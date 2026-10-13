@@ -1,0 +1,229 @@
+:config:
+  segments:
+    - [ 6, 0x01282150 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01282150 ]
+    - [ 9, 0x01282150 ]
+    - [ 10, 0x01282150 ]
+    - [ 11, 0x01282150 ]
+    - [ 12, 0x01282150 ]
+    - [ 13, 0x01282150 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_fu_mato_Colheader_0015C0:
+  type: MM:COLLISION
+  offset: 0x15C0
+  symbol: object_fu_mato_Colheader_0015C0
+
+object_fu_mato_Colheader_0023D4:
+  type: MM:COLLISION
+  offset: 0x23D4
+  symbol: object_fu_mato_Colheader_0023D4
+
+object_fu_mato_DL_0006A0:
+  type: GFX
+  offset: 0x6A0
+  symbol: object_fu_mato_DL_0006A0
+
+object_fu_mato_DL_000740:
+  type: GFX
+  offset: 0x740
+  symbol: object_fu_mato_DL_000740
+
+object_fu_mato_DL_0007E0:
+  type: GFX
+  offset: 0x7E0
+  symbol: object_fu_mato_DL_0007E0
+
+object_fu_mato_DL_000880:
+  type: GFX
+  offset: 0x880
+  symbol: object_fu_mato_DL_000880
+
+object_fu_mato_DL_000920:
+  type: GFX
+  offset: 0x920
+  symbol: object_fu_mato_DL_000920
+
+object_fu_mato_DL_0009C0:
+  type: GFX
+  offset: 0x9C0
+  symbol: object_fu_mato_DL_0009C0
+
+object_fu_mato_DL_001C80:
+  type: GFX
+  offset: 0x1C80
+  symbol: object_fu_mato_DL_001C80
+
+object_fu_mato_DL_001D68:
+  type: GFX
+  offset: 0x1D68
+  symbol: object_fu_mato_DL_001D68
+
+object_fu_mato_DL_001E50:
+  type: GFX
+  offset: 0x1E50
+  symbol: object_fu_mato_DL_001E50
+
+object_fu_mato_DL_001F38:
+  type: GFX
+  offset: 0x1F38
+  symbol: object_fu_mato_DL_001F38
+
+object_fu_mato_DL_002020:
+  type: GFX
+  offset: 0x2020
+  symbol: object_fu_mato_DL_002020
+
+object_fu_mato_DL_002108:
+  type: GFX
+  offset: 0x2108
+  symbol: object_fu_mato_DL_002108
+
+object_fu_mato_DL_002720:
+  type: GFX
+  offset: 0x2720
+  symbol: object_fu_mato_DL_002720
+
+object_fu_mato_Tex_000A60:
+  type: TEXTURE
+  offset: 0xA60
+  symbol: object_fu_mato_Tex_000A60
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fu_mato_Tex_002850:
+  type: TEXTURE
+  offset: 0x2850
+  symbol: object_fu_mato_Tex_002850
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fu_mato_Tex_002A50:
+  type: TEXTURE
+  offset: 0x2A50
+  symbol: object_fu_mato_Tex_002A50
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_fu_matoVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fu_matoVtx_000000
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_000110:
+  type: MM:ARRAY
+  offset: 0x000110
+  symbol: object_fu_matoVtx_000110
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_000230:
+  type: MM:ARRAY
+  offset: 0x000230
+  symbol: object_fu_matoVtx_000230
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_000340:
+  type: MM:ARRAY
+  offset: 0x000340
+  symbol: object_fu_matoVtx_000340
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_fu_matoVtx_000460
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_000580:
+  type: MM:ARRAY
+  offset: 0x000580
+  symbol: object_fu_matoVtx_000580
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_0015F0:
+  type: MM:ARRAY
+  offset: 0x0015F0
+  symbol: object_fu_matoVtx_0015F0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_001710:
+  type: MM:ARRAY
+  offset: 0x001710
+  symbol: object_fu_matoVtx_001710
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_001810:
+  type: MM:ARRAY
+  offset: 0x001810
+  symbol: object_fu_matoVtx_001810
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_001930:
+  type: MM:ARRAY
+  offset: 0x001930
+  symbol: object_fu_matoVtx_001930
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_001A50:
+  type: MM:ARRAY
+  offset: 0x001A50
+  symbol: object_fu_matoVtx_001A50
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_001B60:
+  type: MM:ARRAY
+  offset: 0x001B60
+  symbol: object_fu_matoVtx_001B60
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fu_matoVtx_002400:
+  type: MM:ARRAY
+  offset: 0x002400
+  symbol: object_fu_matoVtx_002400
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

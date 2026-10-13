@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01B3C830 ]
+  directory: scenes/nonmq/Z2_21MITURINMAE
+  external_files:
+    - N64_US/scenes/nonmq/Z2_21MITURINMAE.yml
+
+Z2_21MITURINMAESet_003D20:
+  type: MM:SCENE
+  offset: 0x3D20
+  symbol: Z2_21MITURINMAESet_003D20
+  base_name: Z2_21MITURINMAE

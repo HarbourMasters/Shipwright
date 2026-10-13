@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 6, 0x010EB260 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010EB260 ]
+    - [ 9, 0x010EB260 ]
+    - [ 10, 0x010EB260 ]
+    - [ 11, 0x010EB260 ]
+    - [ 12, 0x010EB260 ]
+    - [ 13, 0x010EB260 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_boyo_DL_000300:
+  type: GFX
+  offset: 0x300
+  symbol: object_boyo_DL_000300
+
+object_boyo_Matanimheader_000E88:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE88
+  symbol: object_boyo_Matanimheader_000E88
+
+object_boyo_Tex_000480:
+  type: TEXTURE
+  offset: 0x480
+  symbol: object_boyo_Tex_000480
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_boyo_Tex_000C80:
+  type: TEXTURE
+  offset: 0xC80
+  symbol: object_boyo_Tex_000C80
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_boyoVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_boyoVtx_000000
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boyo_Matanimheader_000E88TexScrollParams_000E80:
+  type: BLOB
+  offset: 0x000E80
+  symbol: object_boyo_Matanimheader_000E88TexScrollParams_000E80
+  size: 0

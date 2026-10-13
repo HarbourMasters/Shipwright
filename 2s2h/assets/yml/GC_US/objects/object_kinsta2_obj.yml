@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x015F8F40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015F8F40 ]
+    - [ 9, 0x015F8F40 ]
+    - [ 10, 0x015F8F40 ]
+    - [ 11, 0x015F8F40 ]
+    - [ 12, 0x015F8F40 ]
+    - [ 13, 0x015F8F40 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gOceansideSpiderHouseDoorDL:
+  type: GFX
+  offset: 0x310
+  symbol: gOceansideSpiderHouseDoorDL
+
+gOceansideSpiderHouseDoorTex:
+  type: TEXTURE
+  offset: 0x4E8
+  symbol: gOceansideSpiderHouseDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_kinsta2_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kinsta2_objVtx_000000
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

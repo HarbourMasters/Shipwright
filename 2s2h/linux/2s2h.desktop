@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=2SHIP
+Exec=2s2h.elf
+Terminal=true
+Icon=2s2hIcon
+Type=Application
+Categories=Game;
+X-AppImage-Integrate=false

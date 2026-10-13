@@ -1,0 +1,174 @@
+:config:
+  segments:
+    - [ 6, 0x0119EB70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0119EB70 ]
+    - [ 9, 0x0119EB70 ]
+    - [ 10, 0x0119EB70 ]
+    - [ 11, 0x0119EB70 ]
+    - [ 12, 0x0119EB70 ]
+    - [ 13, 0x0119EB70 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBadBatBodyDL:
+  type: GFX
+  offset: 0xC8
+  symbol: gBadBatBodyDL
+
+gBadBatSetupDL:
+  type: GFX
+  offset: 0xA0
+  symbol: gBadBatSetupDL
+
+gBadBatWingTex:
+  type: TEXTURE
+  offset: 0x9A0
+  symbol: gBadBatWingTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBadBatWingsFrame0DL:
+  type: GFX
+  offset: 0x1B0
+  symbol: gBadBatWingsFrame0DL
+
+gBadBatWingsFrame1DL:
+  type: GFX
+  offset: 0x2A0
+  symbol: gBadBatWingsFrame1DL
+
+gBadBatWingsFrame2DL:
+  type: GFX
+  offset: 0x390
+  symbol: gBadBatWingsFrame2DL
+
+gBadBatWingsFrame3DL:
+  type: GFX
+  offset: 0x480
+  symbol: gBadBatWingsFrame3DL
+
+gBadBatWingsFrame4DL:
+  type: GFX
+  offset: 0x570
+  symbol: gBadBatWingsFrame4DL
+
+gBadBatWingsFrame5DL:
+  type: GFX
+  offset: 0x660
+  symbol: gBadBatWingsFrame5DL
+
+gBadBatWingsFrame6DL:
+  type: GFX
+  offset: 0x750
+  symbol: gBadBatWingsFrame6DL
+
+gBadBatWingsFrame7DL:
+  type: GFX
+  offset: 0x840
+  symbol: gBadBatWingsFrame7DL
+
+gBadBatWingsFrame8DL:
+  type: GFX
+  offset: 0x930
+  symbol: gBadBatWingsFrame8DL
+
+gBatBatBodyTex:
+  type: TEXTURE
+  offset: 0xAA0
+  symbol: gBatBatBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_batVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_batVtx_000000
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_000130:
+  type: MM:ARRAY
+  offset: 0x000130
+  symbol: object_batVtx_000130
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_000220:
+  type: MM:ARRAY
+  offset: 0x000220
+  symbol: object_batVtx_000220
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_000310:
+  type: MM:ARRAY
+  offset: 0x000310
+  symbol: object_batVtx_000310
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_batVtx_000400
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_batVtx_0004F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_0005E0:
+  type: MM:ARRAY
+  offset: 0x0005E0
+  symbol: object_batVtx_0005E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_0006D0:
+  type: MM:ARRAY
+  offset: 0x0006D0
+  symbol: object_batVtx_0006D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_0007C0:
+  type: MM:ARRAY
+  offset: 0x0007C0
+  symbol: object_batVtx_0007C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_batVtx_0008B0:
+  type: MM:ARRAY
+  offset: 0x0008B0
+  symbol: object_batVtx_0008B0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,111 @@
+:config:
+  segments:
+    - [ 6, 0x0119D710 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0119D710 ]
+    - [ 9, 0x0119D710 ]
+    - [ 10, 0x0119D710 ]
+    - [ 11, 0x0119D710 ]
+    - [ 12, 0x0119D710 ]
+    - [ 13, 0x0119D710 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gNejironBodyDL:
+  type: GFX
+  offset: 0xB70
+  symbol: gNejironBodyDL
+
+gNejironBodyLimb:
+  type: OOT:LIMB
+  offset: 0x20C8
+  symbol: gNejironBodyLimb
+  limb_type: Standard
+
+gNejironBodyTLUT:
+  type: TEXTURE
+  offset: 0xEC8
+  symbol: gNejironBodyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNejironBodyTex:
+  type: TEXTURE
+  offset: 0x10C8
+  symbol: gNejironBodyTex
+  format: CI8
+  width: 32
+  height: 32
+
+gNejironEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1CC8
+  symbol: gNejironEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gNejironEyeHalfTex:
+  type: TEXTURE
+  offset: 0x18C8
+  symbol: gNejironEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gNejironEyeLimb:
+  type: OOT:LIMB
+  offset: 0x20D4
+  symbol: gNejironEyeLimb
+  limb_type: Standard
+
+gNejironEyeOpenTex:
+  type: TEXTURE
+  offset: 0x14C8
+  symbol: gNejironEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gNejironEyesDL:
+  type: GFX
+  offset: 0xE38
+  symbol: gNejironEyesDL
+
+gNejironIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x18
+  symbol: gNejironIdleAnim
+
+gNejironSkel:
+  type: MM:SKELETON
+  offset: 0x20E8
+  symbol: gNejironSkel
+  limb_type: Standard
+  skel_type: Normal
+
+
+object_gmoVtx_000030:
+  type: MM:ARRAY
+  offset: 0x000030
+  symbol: object_gmoVtx_000030
+  count: 172
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gmoVtx_000AF0:
+  type: MM:ARRAY
+  offset: 0x000AF0
+  symbol: object_gmoVtx_000AF0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNejironSkelLimbs:
+  type: BLOB
+  offset: 0x20E0
+  symbol: gNejironSkelLimbs
+  size: 0

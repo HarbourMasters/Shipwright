@@ -1,0 +1,103 @@
+:config:
+  segments:
+    - [ 6, 0x013840D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x013840D0 ]
+    - [ 9, 0x013840D0 ]
+    - [ 10, 0x013840D0 ]
+    - [ 11, 0x013840D0 ]
+    - [ 12, 0x013840D0 ]
+    - [ 13, 0x013840D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPostboxFrameDL:
+  type: GFX
+  offset: 0x4A0
+  symbol: gPostboxFrameDL
+
+gPostboxFrameLimb:
+  type: OOT:LIMB
+  offset: 0x1A60
+  symbol: gPostboxFrameLimb
+  limb_type: Standard
+
+gPostboxIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x18
+  symbol: gPostboxIdleAnim
+
+gPostboxMailSlotDL:
+  type: GFX
+  offset: 0x638
+  symbol: gPostboxMailSlotDL
+
+gPostboxMailSlotLimb:
+  type: OOT:LIMB
+  offset: 0x1A6C
+  symbol: gPostboxMailSlotLimb
+  limb_type: Standard
+
+gPostboxMetalTex:
+  type: TEXTURE
+  offset: 0x1760
+  symbol: gPostboxMetalTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPostboxSkel:
+  type: MM:SKELETON
+  offset: 0x1A80
+  symbol: gPostboxSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPostboxSlotHoleTex:
+  type: TEXTURE
+  offset: 0x1960
+  symbol: gPostboxSlotHoleTex
+  format: I4
+  width: 32
+  height: 16
+
+gPostboxWoodBodyTex:
+  type: TEXTURE
+  offset: 0xF60
+  symbol: gPostboxWoodBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPostboxWoodRoofTex:
+  type: TEXTURE
+  offset: 0x760
+  symbol: gPostboxWoodRoofTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_pstVtx_000030:
+  type: MM:ARRAY
+  offset: 0x000030
+  symbol: object_pstVtx_000030
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pstVtx_0003B0:
+  type: MM:ARRAY
+  offset: 0x0003B0
+  symbol: object_pstVtx_0003B0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPostboxSkelLimbs:
+  type: BLOB
+  offset: 0x1A78
+  symbol: gPostboxSkelLimbs
+  size: 0

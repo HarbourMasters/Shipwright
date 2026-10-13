@@ -1,0 +1,534 @@
+:config:
+  segments:
+    - [ 6, 0x0154E780 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0154E780 ]
+    - [ 9, 0x0154E780 ]
+    - [ 10, 0x0154E780 ]
+    - [ 11, 0x0154E780 ]
+    - [ 12, 0x0154E780 ]
+    - [ 13, 0x0154E780 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBartenArmTex:
+  type: TEXTURE
+  offset: 0x6128
+  symbol: gBartenArmTex
+  format: CI8
+  width: 16
+  height: 32
+
+gBartenBeardTex:
+  type: TEXTURE
+  offset: 0x60A8
+  symbol: gBartenBeardTex
+  format: CI8
+  width: 8
+  height: 16
+
+gBartenBowtieTex:
+  type: TEXTURE
+  offset: 0x7728
+  symbol: gBartenBowtieTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBartenBroomHeadTex:
+  type: TEXTURE
+  offset: 0x7228
+  symbol: gBartenBroomHeadTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBartenBroomTex:
+  type: TEXTURE
+  offset: 0x7128
+  symbol: gBartenBroomTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBartenChestDL:
+  type: GFX
+  offset: 0x4F30
+  symbol: gBartenChestDL
+
+gBartenChestLimb:
+  type: OOT:LIMB
+  offset: 0x7E9C
+  symbol: gBartenChestLimb
+  limb_type: Standard
+
+gBartenCollarTex:
+  type: TEXTURE
+  offset: 0x7868
+  symbol: gBartenCollarTex
+  format: CI8
+  width: 8
+  height: 16
+
+gBartenEarTex:
+  type: TEXTURE
+  offset: 0x63E8
+  symbol: gBartenEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBartenEyeClosedTex:
+  type: TEXTURE
+  offset: 0x6D28
+  symbol: gBartenEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBartenEyeHalfOpenTex:
+  type: TEXTURE
+  offset: 0x6928
+  symbol: gBartenEyeHalfOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBartenEyeOpenTex:
+  type: TEXTURE
+  offset: 0x6428
+  symbol: gBartenEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBartenEyeTLUT:
+  type: TEXTURE
+  offset: 0x5EA8
+  symbol: gBartenEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBartenFootTex:
+  type: TEXTURE
+  offset: 0x7A28
+  symbol: gBartenFootTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBartenHairTex:
+  type: TEXTURE
+  offset: 0x6368
+  symbol: gBartenHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gBartenHandTex:
+  type: TEXTURE
+  offset: 0x6828
+  symbol: gBartenHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBartenHeadDL:
+  type: GFX
+  offset: 0x5178
+  symbol: gBartenHeadDL
+
+gBartenHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7EA8
+  symbol: gBartenHeadLimb
+  limb_type: Standard
+
+gBartenIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x758
+  symbol: gBartenIdleAnim
+
+gBartenIdleBarCounterAnim:
+  type: OOT:ANIMATION
+  offset: 0x86AC
+  symbol: gBartenIdleBarCounterAnim
+
+gBartenJacketTex:
+  type: TEXTURE
+  offset: 0x79E8
+  symbol: gBartenJacketTex
+  format: I8
+  width: 8
+  height: 8
+
+gBartenLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7EE4
+  symbol: gBartenLeftArmRootLimb
+  limb_type: Standard
+
+gBartenLeftBroomDL:
+  type: GFX
+  offset: 0x4270
+  symbol: gBartenLeftBroomDL
+
+gBartenLeftBroomLimb:
+  type: OOT:LIMB
+  offset: 0x7F14
+  symbol: gBartenLeftBroomLimb
+  limb_type: Standard
+
+gBartenLeftFootDL:
+  type: GFX
+  offset: 0x5840
+  symbol: gBartenLeftFootDL
+
+gBartenLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7E90
+  symbol: gBartenLeftFootLimb
+  limb_type: Standard
+
+gBartenLeftForearmDL:
+  type: GFX
+  offset: 0x4438
+  symbol: gBartenLeftForearmDL
+
+gBartenLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x7EFC
+  symbol: gBartenLeftForearmLimb
+  limb_type: Standard
+
+gBartenLeftHandDL:
+  type: GFX
+  offset: 0x3EF0
+  symbol: gBartenLeftHandDL
+
+gBartenLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x7F20
+  symbol: gBartenLeftHandLimb
+  limb_type: Standard
+
+gBartenLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x7F08
+  symbol: gBartenLeftHandRootLimb
+  limb_type: Standard
+
+gBartenLeftLegDL:
+  type: GFX
+  offset: 0x5758
+  symbol: gBartenLeftLegDL
+
+gBartenLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7E84
+  symbol: gBartenLeftLegLimb
+  limb_type: Standard
+
+gBartenLeftThighDL:
+  type: GFX
+  offset: 0x5668
+  symbol: gBartenLeftThighDL
+
+gBartenLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x7E78
+  symbol: gBartenLeftThighLimb
+  limb_type: Standard
+
+gBartenLeftUpperArmDL:
+  type: GFX
+  offset: 0x46C8
+  symbol: gBartenLeftUpperArmDL
+
+gBartenLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7EF0
+  symbol: gBartenLeftUpperArmLimb
+  limb_type: Standard
+
+gBartenMouthTex:
+  type: TEXTURE
+  offset: 0x6328
+  symbol: gBartenMouthTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBartenPantsTex:
+  type: TEXTURE
+  offset: 0x7328
+  symbol: gBartenPantsTex
+  format: I8
+  width: 32
+  height: 32
+
+gBartenPelvisDL:
+  type: GFX
+  offset: 0x3E10
+  symbol: gBartenPelvisDL
+
+gBartenPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x7E48
+  symbol: gBartenPelvisLimb
+  limb_type: Standard
+
+gBartenRightFootDL:
+  type: GFX
+  offset: 0x5B60
+  symbol: gBartenRightFootDL
+
+gBartenRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7E6C
+  symbol: gBartenRightFootLimb
+  limb_type: Standard
+
+gBartenRightForearmDL:
+  type: GFX
+  offset: 0x4B70
+  symbol: gBartenRightForearmDL
+
+gBartenRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x7ECC
+  symbol: gBartenRightForearmLimb
+  limb_type: Standard
+
+gBartenRightForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7EC0
+  symbol: gBartenRightForearmRootLimb
+  limb_type: Standard
+
+gBartenRightHandDL:
+  type: GFX
+  offset: 0x47F8
+  symbol: gBartenRightHandDL
+
+gBartenRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x7ED8
+  symbol: gBartenRightHandLimb
+  limb_type: Standard
+
+gBartenRightLegDL:
+  type: GFX
+  offset: 0x5A78
+  symbol: gBartenRightLegDL
+
+gBartenRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7E60
+  symbol: gBartenRightLegLimb
+  limb_type: Standard
+
+gBartenRightThighDL:
+  type: GFX
+  offset: 0x5988
+  symbol: gBartenRightThighDL
+
+gBartenRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x7E54
+  symbol: gBartenRightThighLimb
+  limb_type: Standard
+
+gBartenRightUpperArmDL:
+  type: GFX
+  offset: 0x4E00
+  symbol: gBartenRightUpperArmDL
+
+gBartenRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7EB4
+  symbol: gBartenRightUpperArmLimb
+  limb_type: Standard
+
+gBartenSkel:
+  type: MM:SKELETON
+  offset: 0x7F78
+  symbol: gBartenSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBartenSkinTex:
+  type: TEXTURE
+  offset: 0x7828
+  symbol: gBartenSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBartenSleeveTex:
+  type: TEXTURE
+  offset: 0x78E8
+  symbol: gBartenSleeveTex
+  format: I8
+  width: 16
+  height: 16
+
+gBartenTLUT:
+  type: TEXTURE
+  offset: 0x5CA8
+  symbol: gBartenTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_tabVtx_000770:
+  type: MM:ARRAY
+  offset: 0x000770
+  symbol: object_tabVtx_000770
+  count: 186
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_001310:
+  type: MM:ARRAY
+  offset: 0x001310
+  symbol: object_tabVtx_001310
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_001820:
+  type: MM:ARRAY
+  offset: 0x001820
+  symbol: object_tabVtx_001820
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_001A60:
+  type: MM:ARRAY
+  offset: 0x001A60
+  symbol: object_tabVtx_001A60
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_001C60:
+  type: MM:ARRAY
+  offset: 0x001C60
+  symbol: object_tabVtx_001C60
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_002100:
+  type: MM:ARRAY
+  offset: 0x002100
+  symbol: object_tabVtx_002100
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_0025E0:
+  type: MM:ARRAY
+  offset: 0x0025E0
+  symbol: object_tabVtx_0025E0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: object_tabVtx_002820
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_002A20:
+  type: MM:ARRAY
+  offset: 0x002A20
+  symbol: object_tabVtx_002A20
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_002E30:
+  type: MM:ARRAY
+  offset: 0x002E30
+  symbol: object_tabVtx_002E30
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_003080:
+  type: MM:ARRAY
+  offset: 0x003080
+  symbol: object_tabVtx_003080
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_0032C0:
+  type: MM:ARRAY
+  offset: 0x0032C0
+  symbol: object_tabVtx_0032C0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_003520:
+  type: MM:ARRAY
+  offset: 0x003520
+  symbol: object_tabVtx_003520
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_003740:
+  type: MM:ARRAY
+  offset: 0x003740
+  symbol: object_tabVtx_003740
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_003950:
+  type: MM:ARRAY
+  offset: 0x003950
+  symbol: object_tabVtx_003950
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tabVtx_003BC0:
+  type: MM:ARRAY
+  offset: 0x003BC0
+  symbol: object_tabVtx_003BC0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBartenSkelLimbs:
+  type: BLOB
+  offset: 0x7F2C
+  symbol: gBartenSkelLimbs
+  size: 0

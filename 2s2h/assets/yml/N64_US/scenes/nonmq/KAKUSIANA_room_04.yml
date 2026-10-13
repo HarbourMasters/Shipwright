@@ -1,0 +1,107 @@
+:config:
+  segments:
+    - [ 3, 0x01E90210 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01E90210 ]
+    - [ 9, 0x01E90210 ]
+    - [ 10, 0x01E90210 ]
+    - [ 11, 0x01E90210 ]
+    - [ 12, 0x01E90210 ]
+    - [ 13, 0x01E90210 ]
+    - [ 2, 0x01E7A750 ]
+  directory: scenes/nonmq/KAKUSIANA
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/KAKUSIANA.yml
+
+KAKUSIANA_room_04:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: KAKUSIANA_room_04
+
+KAKUSIANA_room_04DL_001598:
+  type: GFX
+  offset: 0x1598
+  symbol: KAKUSIANA_room_04DL_001598
+
+KAKUSIANA_room_04DL_001980:
+  type: GFX
+  offset: 0x1980
+  symbol: KAKUSIANA_room_04DL_001980
+
+
+KAKUSIANA_room_04ActorEntry_000044:
+  type: BLOB
+  offset: 0x000044
+  symbol: KAKUSIANA_room_04ActorEntry_000044
+  size: 0
+
+KAKUSIANA_room_04Vtx_000210:
+  type: MM:ARRAY
+  offset: 0x000210
+  symbol: KAKUSIANA_room_04Vtx_000210
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_04DL_000AC0:
+  type: GFX
+  offset: 0x000AC0
+  symbol: KAKUSIANA_room_04DL_000AC0
+
+KAKUSIANA_room_04Vtx_000CF0:
+  type: MM:ARRAY
+  offset: 0x000CF0
+  symbol: KAKUSIANA_room_04Vtx_000CF0
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_04DL_001220:
+  type: GFX
+  offset: 0x001220
+  symbol: KAKUSIANA_room_04DL_001220
+
+KAKUSIANA_room_04Vtx_001438:
+  type: MM:ARRAY
+  offset: 0x001438
+  symbol: KAKUSIANA_room_04Vtx_001438
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_04DL_0014F8:
+  type: GFX
+  offset: 0x0014F8
+  symbol: KAKUSIANA_room_04DL_0014F8
+
+KAKUSIANA_room_04Vtx_0015C0:
+  type: MM:ARRAY
+  offset: 0x0015C0
+  symbol: KAKUSIANA_room_04Vtx_0015C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_04DL_001680:
+  type: GFX
+  offset: 0x001680
+  symbol: KAKUSIANA_room_04DL_001680
+
+KAKUSIANA_room_04Vtx_001758:
+  type: MM:ARRAY
+  offset: 0x001758
+  symbol: KAKUSIANA_room_04Vtx_001758
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_04DL_001898:
+  type: GFX
+  offset: 0x001898
+  symbol: KAKUSIANA_room_04DL_001898

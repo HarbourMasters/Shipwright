@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x01253660 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01253660 ]
+    - [ 9, 0x01253660 ]
+    - [ 10, 0x01253660 ]
+    - [ 11, 0x01253660 ]
+    - [ 12, 0x01253660 ]
+    - [ 13, 0x01253660 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiRedPotionBottleCorkTex:
+  type: TEXTURE
+  offset: 0xCC8
+  symbol: gGiRedPotionBottleCorkTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiRedPotionBottleDL:
+  type: GFX
+  offset: 0x9B0
+  symbol: gGiRedPotionBottleDL
+
+gGiRedPotionBottleEmptyDL:
+  type: GFX
+  offset: 0xCC0
+  symbol: gGiRedPotionBottleEmptyDL
+
+gGiRedPotionBottleGlassPotionTex:
+  type: TEXTURE
+  offset: 0xDC8
+  symbol: gGiRedPotionBottleGlassPotionTex
+  format: I4
+  width: 32
+  height: 32
+
+
+object_gi_bottle_redVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottle_redVtx_000000
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

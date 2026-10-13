@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 3, 0x01C47B60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01C47B60 ]
+    - [ 9, 0x01C47B60 ]
+    - [ 10, 0x01C47B60 ]
+    - [ 11, 0x01C47B60 ]
+    - [ 12, 0x01C47B60 ]
+    - [ 13, 0x01C47B60 ]
+    - [ 2, 0x01C43AB0 ]
+  directory: scenes/nonmq/Z2_SECOM
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_SECOM.yml
+
+Z2_SECOM_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SECOM_room_00
+
+Z2_SECOM_room_00DL_0026A0:
+  type: GFX
+  offset: 0x26A0
+  symbol: Z2_SECOM_room_00DL_0026A0
+
+
+Z2_SECOM_room_00Vtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: Z2_SECOM_room_00Vtx_0000B0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SECOM_room_00DL_000260:
+  type: GFX
+  offset: 0x000260
+  symbol: Z2_SECOM_room_00DL_000260
+
+Z2_SECOM_room_00Vtx_000370:
+  type: MM:ARRAY
+  offset: 0x000370
+  symbol: Z2_SECOM_room_00Vtx_000370
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SECOM_room_00DL_000740:
+  type: GFX
+  offset: 0x000740
+  symbol: Z2_SECOM_room_00DL_000740
+
+Z2_SECOM_room_00Vtx_000928:
+  type: MM:ARRAY
+  offset: 0x000928
+  symbol: Z2_SECOM_room_00Vtx_000928
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SECOM_room_00DL_000A98:
+  type: GFX
+  offset: 0x000A98
+  symbol: Z2_SECOM_room_00DL_000A98
+
+Z2_SECOM_room_00Vtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: Z2_SECOM_room_00Vtx_000B90
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SECOM_room_00DL_001700:
+  type: GFX
+  offset: 0x001700
+  symbol: Z2_SECOM_room_00DL_001700
+
+Z2_SECOM_room_00Vtx_001BD8:
+  type: MM:ARRAY
+  offset: 0x001BD8
+  symbol: Z2_SECOM_room_00Vtx_001BD8
+  count: 140
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SECOM_room_00DL_002498:
+  type: GFX
+  offset: 0x002498
+  symbol: Z2_SECOM_room_00DL_002498
+
+Z2_SECOM_room_00Tex_0026D0:
+  type: TEXTURE
+  offset: 0x0026D0
+  symbol: Z2_SECOM_room_00Tex_0026D0
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_SECOM_room_00TLUT_002ED0:
+  type: TEXTURE
+  offset: 0x002ED0
+  symbol: Z2_SECOM_room_00TLUT_002ED0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SECOM_room_00Tex_002EF0:
+  type: TEXTURE
+  offset: 0x002EF0
+  symbol: Z2_SECOM_room_00Tex_002EF0
+  format: CI8
+  width: 32
+  height: 32

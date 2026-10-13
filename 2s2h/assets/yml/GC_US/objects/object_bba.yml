@@ -1,0 +1,565 @@
+:config:
+  segments:
+    - [ 6, 0x00FCD080 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FCD080 ]
+    - [ 9, 0x00FCD080 ]
+    - [ 10, 0x00FCD080 ]
+    - [ 11, 0x00FCD080 ]
+    - [ 12, 0x00FCD080 ]
+    - [ 13, 0x00FCD080 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBombShopLadyBag2Tex:
+  type: TEXTURE
+  offset: 0x84E0
+  symbol: gBombShopLadyBag2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B20
+
+gBombShopLadyBagDL:
+  type: GFX
+  offset: 0x3618
+  symbol: gBombShopLadyBagDL
+
+gBombShopLadyBagLimb:
+  type: OOT:LIMB
+  offset: 0x5E34
+  symbol: gBombShopLadyBagLimb
+  limb_type: Standard
+
+gBombShopLadyBagTex:
+  type: TEXTURE
+  offset: 0x90A0
+  symbol: gBombShopLadyBagTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopLadyCheek2Tex:
+  type: TEXTURE
+  offset: 0x7DA0
+  symbol: gBombShopLadyCheek2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B20
+
+gBombShopLadyCheekTex:
+  type: TEXTURE
+  offset: 0x9AA0
+  symbol: gBombShopLadyCheekTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopLadyEar2Tex:
+  type: TEXTURE
+  offset: 0x7120
+  symbol: gBombShopLadyEar2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6B20
+
+gBombShopLadyEarTex:
+  type: TEXTURE
+  offset: 0x8F60
+  symbol: gBombShopLadyEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBombShopLadyEye2Tex:
+  type: TEXTURE
+  offset: 0x71A0
+  symbol: gBombShopLadyEye2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombShopLadyEyeTex:
+  type: TEXTURE
+  offset: 0x92A0
+  symbol: gBombShopLadyEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBombShopLadyFeetDL:
+  type: GFX
+  offset: 0x4180
+  symbol: gBombShopLadyFeetDL
+
+gBombShopLadyFeetLimb:
+  type: OOT:LIMB
+  offset: 0x5E04
+  symbol: gBombShopLadyFeetLimb
+  limb_type: Standard
+
+gBombShopLadyFingers2Tex:
+  type: TEXTURE
+  offset: 0x82E0
+  symbol: gBombShopLadyFingers2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B20
+
+gBombShopLadyFingersTex:
+  type: TEXTURE
+  offset: 0x8FA0
+  symbol: gBombShopLadyFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopLadyForehead2Tex:
+  type: TEXTURE
+  offset: 0x7EE0
+  symbol: gBombShopLadyForehead2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6B20
+
+gBombShopLadyForeheadTex:
+  type: TEXTURE
+  offset: 0x9BA0
+  symbol: gBombShopLadyForeheadTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBombShopLadyHairSkin2Tex:
+  type: TEXTURE
+  offset: 0x6D20
+  symbol: gBombShopLadyHairSkin2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6B20
+
+gBombShopLadyHairSkinTex:
+  type: TEXTURE
+  offset: 0x8B20
+  symbol: gBombShopLadyHairSkinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBombShopLadyHeadDL:
+  type: GFX
+  offset: 0x3968
+  symbol: gBombShopLadyHeadDL
+
+gBombShopLadyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5E28
+  symbol: gBombShopLadyHeadLimb
+  limb_type: Standard
+
+gBombShopLadyIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x6550
+  symbol: gBombShopLadyIdleAnim
+
+gBombShopLadyIdleHoldingBagAnim:
+  type: OOT:ANIMATION
+  offset: 0x5DC4
+  symbol: gBombShopLadyIdleHoldingBagAnim
+
+gBombShopLadyKnockedOverAnim:
+  type: OOT:ANIMATION
+  offset: 0x5154
+  symbol: gBombShopLadyKnockedOverAnim
+
+gBombShopLadyLeftForearmDL:
+  type: GFX
+  offset: 0x31B8
+  symbol: gBombShopLadyLeftForearmDL
+
+gBombShopLadyLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5E64
+  symbol: gBombShopLadyLeftForearmLimb
+  limb_type: Standard
+
+gBombShopLadyLeftHandDL:
+  type: GFX
+  offset: 0x2FA0
+  symbol: gBombShopLadyLeftHandDL
+
+gBombShopLadyLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5E70
+  symbol: gBombShopLadyLeftHandLimb
+  limb_type: Standard
+
+gBombShopLadyLeftLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x5E58
+  symbol: gBombShopLadyLeftLowerArmRootLimb
+  limb_type: Standard
+
+gBombShopLadyLeftUpperArmDL:
+  type: GFX
+  offset: 0x32C0
+  symbol: gBombShopLadyLeftUpperArmDL
+
+gBombShopLadyLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5E4C
+  symbol: gBombShopLadyLeftUpperArmLimb
+  limb_type: Standard
+
+gBombShopLadyLowerLegsDL:
+  type: GFX
+  offset: 0x4078
+  symbol: gBombShopLadyLowerLegsDL
+
+gBombShopLadyLowerLegsLimb:
+  type: OOT:LIMB
+  offset: 0x5DF8
+  symbol: gBombShopLadyLowerLegsLimb
+  limb_type: Standard
+
+gBombShopLadyLyingDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x58B8
+  symbol: gBombShopLadyLyingDownAnim
+
+gBombShopLadyMiddleLegsDL:
+  type: GFX
+  offset: 0x3F68
+  symbol: gBombShopLadyMiddleLegsDL
+
+gBombShopLadyMiddleLegsLimb:
+  type: OOT:LIMB
+  offset: 0x5DEC
+  symbol: gBombShopLadyMiddleLegsLimb
+  limb_type: Standard
+
+gBombShopLadyNeckDL:
+  type: GFX
+  offset: 0x3760
+  symbol: gBombShopLadyNeckDL
+
+gBombShopLadyNeckLimb:
+  type: OOT:LIMB
+  offset: 0x5E1C
+  symbol: gBombShopLadyNeckLimb
+  limb_type: Standard
+
+gBombShopLadyNostril2Tex:
+  type: TEXTURE
+  offset: 0x7160
+  symbol: gBombShopLadyNostril2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6B20
+
+gBombShopLadyNostrilTex:
+  type: TEXTURE
+  offset: 0x8F20
+  symbol: gBombShopLadyNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBombShopLadyRightForearmDL:
+  type: GFX
+  offset: 0x2D88
+  symbol: gBombShopLadyRightForearmDL
+
+gBombShopLadyRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5E94
+  symbol: gBombShopLadyRightForearmLimb
+  limb_type: Standard
+
+gBombShopLadyRightHandDL:
+  type: GFX
+  offset: 0x2B70
+  symbol: gBombShopLadyRightHandDL
+
+gBombShopLadyRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5EA0
+  symbol: gBombShopLadyRightHandLimb
+  limb_type: Standard
+
+gBombShopLadyRightLowerArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x5E88
+  symbol: gBombShopLadyRightLowerArmRootLimb
+  limb_type: Standard
+
+gBombShopLadyRightUpperArmDL:
+  type: GFX
+  offset: 0x2E90
+  symbol: gBombShopLadyRightUpperArmDL
+
+gBombShopLadyRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5E7C
+  symbol: gBombShopLadyRightUpperArmLimb
+  limb_type: Standard
+
+gBombShopLadyShirt2Tex:
+  type: TEXTURE
+  offset: 0x83E0
+  symbol: gBombShopLadyShirt2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B20
+
+gBombShopLadyShirtTex:
+  type: TEXTURE
+  offset: 0x9FA0
+  symbol: gBombShopLadyShirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopLadySkel:
+  type: MM:SKELETON
+  offset: 0x5EF0
+  symbol: gBombShopLadySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBombShopLadySkin2Tex:
+  type: TEXTURE
+  offset: 0x7EA0
+  symbol: gBombShopLadySkin2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6B20
+
+gBombShopLadySkinTex:
+  type: TEXTURE
+  offset: 0x86E0
+  symbol: gBombShopLadySkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBombShopLadySkirt2Tex:
+  type: TEXTURE
+  offset: 0x85E0
+  symbol: gBombShopLadySkirt2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B20
+
+gBombShopLadySkirtTex:
+  type: TEXTURE
+  offset: 0x91A0
+  symbol: gBombShopLadySkirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBombShopLadySwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x4910
+  symbol: gBombShopLadySwayAnim
+
+gBombShopLadyTLUT:
+  type: TEXTURE
+  offset: 0x6B20
+  symbol: gBombShopLadyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombShopLadyTorsoDL:
+  type: GFX
+  offset: 0x33D0
+  symbol: gBombShopLadyTorsoDL
+
+gBombShopLadyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x5E40
+  symbol: gBombShopLadyTorsoLimb
+  limb_type: Standard
+
+gBombShopLadyUpperLegsDL:
+  type: GFX
+  offset: 0x2A80
+  symbol: gBombShopLadyUpperLegsDL
+
+gBombShopLadyUpperLegsLimb:
+  type: OOT:LIMB
+  offset: 0x5DE0
+  symbol: gBombShopLadyUpperLegsLimb
+  limb_type: Standard
+
+gBombShopLadyUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0x5E10
+  symbol: gBombShopLadyUpperRootLimb
+  limb_type: Standard
+
+gBombShopLadyWalkingHoldingBagAnim:
+  type: OOT:ANIMATION
+  offset: 0x6B10
+  symbol: gBombShopLadyWalkingHoldingBagAnim
+
+gBombShopLadyWrinkles2Tex:
+  type: TEXTURE
+  offset: 0x79A0
+  symbol: gBombShopLadyWrinkles2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6B20
+
+gBombShopLadyWrinklesTex:
+  type: TEXTURE
+  offset: 0x8720
+  symbol: gBombShopLadyWrinklesTex
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_bbaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_bbaVtx_000000
+  count: 173
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_bbaVtx_000AD0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_000C90:
+  type: MM:ARRAY
+  offset: 0x000C90
+  symbol: object_bbaVtx_000C90
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001010:
+  type: MM:ARRAY
+  offset: 0x001010
+  symbol: object_bbaVtx_001010
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0011C0:
+  type: MM:ARRAY
+  offset: 0x0011C0
+  symbol: object_bbaVtx_0011C0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0013B0:
+  type: MM:ARRAY
+  offset: 0x0013B0
+  symbol: object_bbaVtx_0013B0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001730:
+  type: MM:ARRAY
+  offset: 0x001730
+  symbol: object_bbaVtx_001730
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0018E0:
+  type: MM:ARRAY
+  offset: 0x0018E0
+  symbol: object_bbaVtx_0018E0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_001AD0:
+  type: MM:ARRAY
+  offset: 0x001AD0
+  symbol: object_bbaVtx_001AD0
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_0020D0:
+  type: MM:ARRAY
+  offset: 0x0020D0
+  symbol: object_bbaVtx_0020D0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002530:
+  type: MM:ARRAY
+  offset: 0x002530
+  symbol: object_bbaVtx_002530
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002560:
+  type: MM:ARRAY
+  offset: 0x002560
+  symbol: object_bbaVtx_002560
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002720:
+  type: MM:ARRAY
+  offset: 0x002720
+  symbol: object_bbaVtx_002720
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bbaVtx_002920:
+  type: MM:ARRAY
+  offset: 0x002920
+  symbol: object_bbaVtx_002920
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBombShopLadySkelLimbs:
+  type: BLOB
+  offset: 0x5EAC
+  symbol: gBombShopLadySkelLimbs
+  size: 0

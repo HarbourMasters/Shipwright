@@ -1,0 +1,216 @@
+:config:
+  segments:
+    - [ 3, 0x0186EFB0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0186EFB0 ]
+    - [ 9, 0x0186EFB0 ]
+    - [ 10, 0x0186EFB0 ]
+    - [ 11, 0x0186EFB0 ]
+    - [ 12, 0x0186EFB0 ]
+    - [ 13, 0x0186EFB0 ]
+    - [ 2, 0x01831830 ]
+  directory: scenes/nonmq/Z2_HAKUGIN
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_HAKUGIN.yml
+
+Z2_HAKUGIN_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_HAKUGIN_room_05
+
+Z2_HAKUGIN_room_05DL_004410:
+  type: GFX
+  offset: 0x4410
+  symbol: Z2_HAKUGIN_room_05DL_004410
+
+
+Z2_HAKUGIN_room_05ActorEntry_00006C:
+  type: BLOB
+  offset: 0x00006C
+  symbol: Z2_HAKUGIN_room_05ActorEntry_00006C
+  size: 0
+
+Z2_HAKUGIN_room_05Vtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: Z2_HAKUGIN_room_05Vtx_0002A0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_000920:
+  type: GFX
+  offset: 0x000920
+  symbol: Z2_HAKUGIN_room_05DL_000920
+
+Z2_HAKUGIN_room_05Vtx_000B78:
+  type: MM:ARRAY
+  offset: 0x000B78
+  symbol: Z2_HAKUGIN_room_05Vtx_000B78
+  count: 230
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_0019D8:
+  type: GFX
+  offset: 0x0019D8
+  symbol: Z2_HAKUGIN_room_05DL_0019D8
+
+Z2_HAKUGIN_room_05Vtx_001E38:
+  type: MM:ARRAY
+  offset: 0x001E38
+  symbol: Z2_HAKUGIN_room_05Vtx_001E38
+  count: 119
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_0025A8:
+  type: GFX
+  offset: 0x0025A8
+  symbol: Z2_HAKUGIN_room_05DL_0025A8
+
+Z2_HAKUGIN_room_05Vtx_0027D8:
+  type: MM:ARRAY
+  offset: 0x0027D8
+  symbol: Z2_HAKUGIN_room_05Vtx_0027D8
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_003268:
+  type: GFX
+  offset: 0x003268
+  symbol: Z2_HAKUGIN_room_05DL_003268
+
+Z2_HAKUGIN_room_05Vtx_003548:
+  type: MM:ARRAY
+  offset: 0x003548
+  symbol: Z2_HAKUGIN_room_05Vtx_003548
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_003A98:
+  type: GFX
+  offset: 0x003A98
+  symbol: Z2_HAKUGIN_room_05DL_003A98
+
+Z2_HAKUGIN_room_05Vtx_003C40:
+  type: MM:ARRAY
+  offset: 0x003C40
+  symbol: Z2_HAKUGIN_room_05Vtx_003C40
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_003E20:
+  type: GFX
+  offset: 0x003E20
+  symbol: Z2_HAKUGIN_room_05DL_003E20
+
+Z2_HAKUGIN_room_05Vtx_003F48:
+  type: MM:ARRAY
+  offset: 0x003F48
+  symbol: Z2_HAKUGIN_room_05Vtx_003F48
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_004118:
+  type: GFX
+  offset: 0x004118
+  symbol: Z2_HAKUGIN_room_05DL_004118
+
+Z2_HAKUGIN_room_05Vtx_004238:
+  type: MM:ARRAY
+  offset: 0x004238
+  symbol: Z2_HAKUGIN_room_05Vtx_004238
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKUGIN_room_05DL_004328:
+  type: GFX
+  offset: 0x004328
+  symbol: Z2_HAKUGIN_room_05DL_004328
+
+Z2_HAKUGIN_room_05Tex_004458:
+  type: TEXTURE
+  offset: 0x004458
+  symbol: Z2_HAKUGIN_room_05Tex_004458
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_05Tex_004C58:
+  type: TEXTURE
+  offset: 0x004C58
+  symbol: Z2_HAKUGIN_room_05Tex_004C58
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_05Tex_005458:
+  type: TEXTURE
+  offset: 0x005458
+  symbol: Z2_HAKUGIN_room_05Tex_005458
+  format: I4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_05Tex_005C58:
+  type: TEXTURE
+  offset: 0x005C58
+  symbol: Z2_HAKUGIN_room_05Tex_005C58
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_05Tex_006458:
+  type: TEXTURE
+  offset: 0x006458
+  symbol: Z2_HAKUGIN_room_05Tex_006458
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_05Tex_006C58:
+  type: TEXTURE
+  offset: 0x006C58
+  symbol: Z2_HAKUGIN_room_05Tex_006C58
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGIN_room_05Tex_007458:
+  type: TEXTURE
+  offset: 0x007458
+  symbol: Z2_HAKUGIN_room_05Tex_007458
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_HAKUGIN_room_05TLUT_007658:
+  type: TEXTURE
+  offset: 0x007658
+  symbol: Z2_HAKUGIN_room_05TLUT_007658
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGIN_room_05TLUT_007678:
+  type: TEXTURE
+  offset: 0x007678
+  symbol: Z2_HAKUGIN_room_05TLUT_007678
+  format: RGBA16
+  width: 4
+  height: 4

@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x01319E50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01319E50 ]
+    - [ 9, 0x01319E50 ]
+    - [ 10, 0x01319E50 ]
+    - [ 11, 0x01319E50 ]
+    - [ 12, 0x01319E50 ]
+    - [ 13, 0x01319E50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiDekuMaskDL:
+  type: GFX
+  offset: 0xB50
+  symbol: gGiDekuMaskDL
+
+gGiDekuMaskEmptyDL:
+  type: GFX
+  offset: 0xF20
+  symbol: gGiDekuMaskEmptyDL
+
+gGiDekuMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1428
+  symbol: gGiDekuMaskEyeTex
+  format: IA8
+  width: 64
+  height: 32
+
+gGiDekuMaskFaceTex:
+  type: TEXTURE
+  offset: 0x1328
+  symbol: gGiDekuMaskFaceTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiDekuMaskHairTex:
+  type: TEXTURE
+  offset: 0xF28
+  symbol: gGiDekuMaskHairTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_nutsmaskVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_nutsmaskVtx_000000
+  count: 181
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

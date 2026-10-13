@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 6, 0x014B85E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014B85E0 ]
+    - [ 9, 0x014B85E0 ]
+    - [ 10, 0x014B85E0 ]
+    - [ 11, 0x014B85E0 ]
+    - [ 12, 0x014B85E0 ]
+    - [ 13, 0x014B85E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gTanron1EmptyDL:
+  type: GFX
+  offset: 0x0
+  symbol: gTanron1EmptyDL
+

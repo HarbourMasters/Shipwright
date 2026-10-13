@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x014D7F60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014D7F60 ]
+    - [ 9, 0x014D7F60 ]
+    - [ 10, 0x014D7F60 ]
+    - [ 11, 0x014D7F60 ]
+    - [ 12, 0x014D7F60 ]
+    - [ 13, 0x014D7F60 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiGiantMaskDL:
+  type: GFX
+  offset: 0x8C0
+  symbol: gGiGiantMaskDL
+
+gGiGiantMaskEmptyDL:
+  type: GFX
+  offset: 0xC00
+  symbol: gGiGiantMaskEmptyDL
+
+gGiGiantMaskEyeTex:
+  type: TEXTURE
+  offset: 0xC08
+  symbol: gGiGiantMaskEyeTex
+  format: I8
+  width: 32
+  height: 64
+
+gGiGiantMaskMouthTex:
+  type: TEXTURE
+  offset: 0x1408
+  symbol: gGiGiantMaskMouthTex
+  format: I8
+  width: 24
+  height: 11
+
+
+object_gi_mask23Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask23Vtx_000000
+  count: 140
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

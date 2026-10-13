@@ -1,0 +1,128 @@
+:config:
+  segments:
+    - [ 6, 0x011A0F00 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011A0F00 ]
+    - [ 9, 0x011A0F00 ]
+    - [ 10, 0x011A0F00 ]
+    - [ 11, 0x011A0F00 ]
+    - [ 12, 0x011A0F00 ]
+    - [ 13, 0x011A0F00 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSunsSongGraveGoronCol:
+  type: MM:COLLISION
+  offset: 0x33D8
+  symbol: gSunsSongGraveGoronCol
+
+gSunsSongGraveGoronDL:
+  type: GFX
+  offset: 0x5C8
+  symbol: gSunsSongGraveGoronDL
+
+gSunsSongGraveGoronGraniteTex:
+  type: TEXTURE
+  offset: 0x660
+  symbol: gSunsSongGraveGoronGraniteTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSunsSongGraveGoronKokiriTLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gSunsSongGraveGoronKokiriTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveGoronMarbleTex:
+  type: TEXTURE
+  offset: 0xE60
+  symbol: gSunsSongGraveGoronMarbleTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSunsSongGraveGoronStaffNotesTex:
+  type: TEXTURE
+  offset: 0x2A60
+  symbol: gSunsSongGraveGoronStaffNotesTex
+  format: IA4
+  width: 128
+  height: 32
+
+gSunsSongGraveGoronStoneDL:
+  type: GFX
+  offset: 0x4B8
+  symbol: gSunsSongGraveGoronStoneDL
+
+gSunsSongGraveGoronStoneInscriptionTex:
+  type: TEXTURE
+  offset: 0x2660
+  symbol: gSunsSongGraveGoronStoneInscriptionTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongGraveGoronSymbolTex:
+  type: TEXTURE
+  offset: 0x1E60
+  symbol: gSunsSongGraveGoronSymbolTex
+  format: CI4
+  width: 64
+  height: 64
+
+gSunsSongGraveGoronSymbolsBaseDL:
+  type: GFX
+  offset: 0x340
+  symbol: gSunsSongGraveGoronSymbolsBaseDL
+
+gSunsSongGraveGoronSymbolsDL:
+  type: GFX
+  offset: 0x4A8
+  symbol: gSunsSongGraveGoronSymbolsDL
+
+gSunsSongGraveGoronTLUT:
+  type: TEXTURE
+  offset: 0x5E0
+  symbol: gSunsSongGraveGoronTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveGoronTriforceTLUT:
+  type: TEXTURE
+  offset: 0x640
+  symbol: gSunsSongGraveGoronTriforceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveGoronUnknownTLUT:
+  type: TEXTURE
+  offset: 0x620
+  symbol: gSunsSongGraveGoronUnknownTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+
+object_sekihigVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sekihigVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sekihigVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_sekihigVtx_000240
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

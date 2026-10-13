@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01796310 ]
+  directory: scenes/nonmq/Z2_OKUJOU
+  external_files:
+    - N64_US/scenes/nonmq/Z2_OKUJOU.yml
+
+Z2_OKUJOUSet_00AC30:
+  type: MM:SCENE
+  offset: 0xAC30
+  symbol: Z2_OKUJOUSet_00AC30
+  base_name: Z2_OKUJOU

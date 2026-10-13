@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 6, 0x010533C0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010533C0 ]
+    - [ 9, 0x010533C0 ]
+    - [ 10, 0x010533C0 ]
+    - [ 11, 0x010533C0 ]
+    - [ 12, 0x010533C0 ]
+    - [ 13, 0x010533C0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiGoronMaskDL:
+  type: GFX
+  offset: 0xBA0
+  symbol: gGiGoronMaskDL
+
+gGiGoronMaskEmptyDL:
+  type: GFX
+  offset: 0x10D0
+  symbol: gGiGoronMaskEmptyDL
+
+gGiGoronMaskEyeTex:
+  type: TEXTURE
+  offset: 0x10D8
+  symbol: gGiGoronMaskEyeTex
+  format: IA8
+  width: 32
+  height: 32
+
+gGiGoronMaskMouthTex:
+  type: TEXTURE
+  offset: 0x14D8
+  symbol: gGiGoronMaskMouthTex
+  format: IA8
+  width: 64
+  height: 32
+
+gGiGoronMaskNoseEyebrowTex:
+  type: TEXTURE
+  offset: 0x1CD8
+  symbol: gGiGoronMaskNoseEyebrowTex
+  format: IA8
+  width: 8
+  height: 8
+
+
+object_gi_golonmaskVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_golonmaskVtx_000000
+  count: 186
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

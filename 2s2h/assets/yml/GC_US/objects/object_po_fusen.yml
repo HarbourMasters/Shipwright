@@ -1,0 +1,269 @@
+:config:
+  segments:
+    - [ 6, 0x012649B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012649B0 ]
+    - [ 9, 0x012649B0 ]
+    - [ 10, 0x012649B0 ]
+    - [ 11, 0x012649B0 ]
+    - [ 12, 0x012649B0 ]
+    - [ 13, 0x012649B0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPoeBalloonBodyDL:
+  type: GFX
+  offset: 0xEB8
+  symbol: gPoeBalloonBodyDL
+
+gPoeBalloonBodyLimb:
+  type: OOT:LIMB
+  offset: 0x246C
+  symbol: gPoeBalloonBodyLimb
+  limb_type: Standard
+
+gPoeBalloonChainAndLanternDL:
+  type: GFX
+  offset: 0x8C0
+  symbol: gPoeBalloonChainAndLanternDL
+
+gPoeBalloonChainAndLanternLimb:
+  type: OOT:LIMB
+  offset: 0x24C0
+  symbol: gPoeBalloonChainAndLanternLimb
+  limb_type: Standard
+
+gPoeBalloonChainLinkTex:
+  type: TEXTURE
+  offset: 0x2060
+  symbol: gPoeBalloonChainLinkTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gPoeBalloonEmptyAnim:
+  type: OOT:ANIMATION
+  offset: 0x40
+  symbol: gPoeBalloonEmptyAnim
+
+gPoeBalloonFaceTex:
+  type: TEXTURE
+  offset: 0x1C60
+  symbol: gPoeBalloonFaceTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gPoeBalloonHandTex:
+  type: TEXTURE
+  offset: 0x19E0
+  symbol: gPoeBalloonHandTex
+  format: I4
+  width: 16
+  height: 16
+
+gPoeBalloonLanternGlassTex:
+  type: TEXTURE
+  offset: 0x18E0
+  symbol: gPoeBalloonLanternGlassTex
+  format: CI8
+  width: 16
+  height: 16
+
+gPoeBalloonLanternStandTex:
+  type: TEXTURE
+  offset: 0x16E0
+  symbol: gPoeBalloonLanternStandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeBalloonLanternTopTex:
+  type: TEXTURE
+  offset: 0x14E0
+  symbol: gPoeBalloonLanternTopTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeBalloonLeftForearmDL:
+  type: GFX
+  offset: 0xB90
+  symbol: gPoeBalloonLeftForearmDL
+
+gPoeBalloonLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x24A8
+  symbol: gPoeBalloonLeftForearmLimb
+  limb_type: Standard
+
+gPoeBalloonLeftHandDL:
+  type: GFX
+  offset: 0xAF8
+  symbol: gPoeBalloonLeftHandDL
+
+gPoeBalloonLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x24B4
+  symbol: gPoeBalloonLeftHandLimb
+  limb_type: Standard
+
+gPoeBalloonLeftUpperArmDL:
+  type: GFX
+  offset: 0xC48
+  symbol: gPoeBalloonLeftUpperArmDL
+
+gPoeBalloonLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x249C
+  symbol: gPoeBalloonLeftUpperArmLimb
+  limb_type: Standard
+
+gPoeBalloonOrangeSkinTex:
+  type: TEXTURE
+  offset: 0x1A60
+  symbol: gPoeBalloonOrangeSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeBalloonRightForearmDL:
+  type: GFX
+  offset: 0xD70
+  symbol: gPoeBalloonRightForearmDL
+
+gPoeBalloonRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x2484
+  symbol: gPoeBalloonRightForearmLimb
+  limb_type: Standard
+
+gPoeBalloonRightHandDL:
+  type: GFX
+  offset: 0xCD8
+  symbol: gPoeBalloonRightHandDL
+
+gPoeBalloonRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x2490
+  symbol: gPoeBalloonRightHandLimb
+  limb_type: Standard
+
+gPoeBalloonRightUpperArmDL:
+  type: GFX
+  offset: 0xE28
+  symbol: gPoeBalloonRightUpperArmDL
+
+gPoeBalloonRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x2478
+  symbol: gPoeBalloonRightUpperArmLimb
+  limb_type: Standard
+
+gPoeBalloonRootLimb:
+  type: OOT:LIMB
+  offset: 0x2460
+  symbol: gPoeBalloonRootLimb
+  limb_type: Standard
+
+gPoeBalloonSkel:
+  type: MM:SKELETON
+  offset: 0x24F0
+  symbol: gPoeBalloonSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPoeBalloonTLUT:
+  type: TEXTURE
+  offset: 0x10E0
+  symbol: gPoeBalloonTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPoeBalloonTatteredChinTex:
+  type: TEXTURE
+  offset: 0x12E0
+  symbol: gPoeBalloonTatteredChinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_po_fusenVtx_000050:
+  type: MM:ARRAY
+  offset: 0x000050
+  symbol: object_po_fusenVtx_000050
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_0003C0:
+  type: MM:ARRAY
+  offset: 0x0003C0
+  symbol: object_po_fusenVtx_0003C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_po_fusenVtx_000460
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_0004B0:
+  type: MM:ARRAY
+  offset: 0x0004B0
+  symbol: object_po_fusenVtx_0004B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_po_fusenVtx_0004F0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_000590:
+  type: MM:ARRAY
+  offset: 0x000590
+  symbol: object_po_fusenVtx_000590
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_0005E0:
+  type: MM:ARRAY
+  offset: 0x0005E0
+  symbol: object_po_fusenVtx_0005E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_fusenVtx_000620:
+  type: MM:ARRAY
+  offset: 0x000620
+  symbol: object_po_fusenVtx_000620
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeBalloonSkelLimbs:
+  type: BLOB
+  offset: 0x24CC
+  symbol: gPoeBalloonSkelLimbs
+  size: 0

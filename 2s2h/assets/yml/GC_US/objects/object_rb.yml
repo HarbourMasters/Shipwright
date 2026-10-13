@@ -1,0 +1,301 @@
+:config:
+  segments:
+    - [ 6, 0x01441030 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01441030 ]
+    - [ 9, 0x01441030 ]
+    - [ 10, 0x01441030 ]
+    - [ 11, 0x01441030 ]
+    - [ 12, 0x01441030 ]
+    - [ 13, 0x01441030 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gLeeverBottomHalfDL:
+  type: GFX
+  offset: 0x200
+  symbol: gLeeverBottomHalfDL
+
+gLeeverBottomHalfLimb:
+  type: OOT:LIMB
+  offset: 0x1E98
+  symbol: gLeeverBottomHalfLimb
+  limb_type: Standard
+
+gLeeverBottomHalfWrapper1DL:
+  type: GFX
+  offset: 0x2E0
+  symbol: gLeeverBottomHalfWrapper1DL
+
+gLeeverBottomHalfWrapper2DL:
+  type: GFX
+  offset: 0x2D0
+  symbol: gLeeverBottomHalfWrapper2DL
+
+gLeeverFlowerTex:
+  type: TEXTURE
+  offset: 0x15D8
+  symbol: gLeeverFlowerTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLeeverSideTex:
+  type: TEXTURE
+  offset: 0xDD8
+  symbol: gLeeverSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLeeverSkel:
+  type: MM:SKELETON
+  offset: 0x1EE8
+  symbol: gLeeverSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gLeeverSpike1DL:
+  type: GFX
+  offset: 0x760
+  symbol: gLeeverSpike1DL
+
+gLeeverSpike1Limb:
+  type: OOT:LIMB
+  offset: 0x1E20
+  symbol: gLeeverSpike1Limb
+  limb_type: Standard
+
+gLeeverSpike1Wrapper1DL:
+  type: GFX
+  offset: 0x808
+  symbol: gLeeverSpike1Wrapper1DL
+
+gLeeverSpike1Wrapper2DL:
+  type: GFX
+  offset: 0x7F8
+  symbol: gLeeverSpike1Wrapper2DL
+
+gLeeverSpike2DL:
+  type: GFX
+  offset: 0x8B8
+  symbol: gLeeverSpike2DL
+
+gLeeverSpike2Limb:
+  type: OOT:LIMB
+  offset: 0x1E44
+  symbol: gLeeverSpike2Limb
+  limb_type: Standard
+
+gLeeverSpike2Wrapper1DL:
+  type: GFX
+  offset: 0x960
+  symbol: gLeeverSpike2Wrapper1DL
+
+gLeeverSpike2Wrapper2DL:
+  type: GFX
+  offset: 0x950
+  symbol: gLeeverSpike2Wrapper2DL
+
+gLeeverSpike3DL:
+  type: GFX
+  offset: 0xA10
+  symbol: gLeeverSpike3DL
+
+gLeeverSpike3Limb:
+  type: OOT:LIMB
+  offset: 0x1E68
+  symbol: gLeeverSpike3Limb
+  limb_type: Standard
+
+gLeeverSpike3Wrapper1DL:
+  type: GFX
+  offset: 0xAC0
+  symbol: gLeeverSpike3Wrapper1DL
+
+gLeeverSpike3Wrapper2DL:
+  type: GFX
+  offset: 0xAB0
+  symbol: gLeeverSpike3Wrapper2DL
+
+gLeeverSpike4DL:
+  type: GFX
+  offset: 0xB80
+  symbol: gLeeverSpike4DL
+
+gLeeverSpike4Limb:
+  type: OOT:LIMB
+  offset: 0x1E8C
+  symbol: gLeeverSpike4Limb
+  limb_type: Standard
+
+gLeeverSpike4Wrapper1DL:
+  type: GFX
+  offset: 0xC28
+  symbol: gLeeverSpike4Wrapper1DL
+
+gLeeverSpike4Wrapper2DL:
+  type: GFX
+  offset: 0xC18
+  symbol: gLeeverSpike4Wrapper2DL
+
+gLeeverSpikeTex:
+  type: TEXTURE
+  offset: 0xCD8
+  symbol: gLeeverSpikeTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gLeeverSpinAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E4
+  symbol: gLeeverSpinAnim
+
+gLeeverTopHalfDL:
+  type: GFX
+  offset: 0x430
+  symbol: gLeeverTopHalfDL
+
+gLeeverTopHalfLimb:
+  type: OOT:LIMB
+  offset: 0x1DFC
+  symbol: gLeeverTopHalfLimb
+  limb_type: Standard
+
+gLeeverTopHalfWrapper1DL:
+  type: GFX
+  offset: 0x580
+  symbol: gLeeverTopHalfWrapper1DL
+
+gLeeverTopHalfWrapper2DL:
+  type: GFX
+  offset: 0x570
+  symbol: gLeeverTopHalfWrapper2DL
+
+object_rb_Standardlimb_001DD8:
+  type: OOT:LIMB
+  offset: 0x1DD8
+  symbol: object_rb_Standardlimb_001DD8
+  limb_type: Standard
+
+object_rb_Standardlimb_001DE4:
+  type: OOT:LIMB
+  offset: 0x1DE4
+  symbol: object_rb_Standardlimb_001DE4
+  limb_type: Standard
+
+object_rb_Standardlimb_001DF0:
+  type: OOT:LIMB
+  offset: 0x1DF0
+  symbol: object_rb_Standardlimb_001DF0
+  limb_type: Standard
+
+object_rb_Standardlimb_001E08:
+  type: OOT:LIMB
+  offset: 0x1E08
+  symbol: object_rb_Standardlimb_001E08
+  limb_type: Standard
+
+object_rb_Standardlimb_001E14:
+  type: OOT:LIMB
+  offset: 0x1E14
+  symbol: object_rb_Standardlimb_001E14
+  limb_type: Standard
+
+object_rb_Standardlimb_001E2C:
+  type: OOT:LIMB
+  offset: 0x1E2C
+  symbol: object_rb_Standardlimb_001E2C
+  limb_type: Standard
+
+object_rb_Standardlimb_001E38:
+  type: OOT:LIMB
+  offset: 0x1E38
+  symbol: object_rb_Standardlimb_001E38
+  limb_type: Standard
+
+object_rb_Standardlimb_001E50:
+  type: OOT:LIMB
+  offset: 0x1E50
+  symbol: object_rb_Standardlimb_001E50
+  limb_type: Standard
+
+object_rb_Standardlimb_001E5C:
+  type: OOT:LIMB
+  offset: 0x1E5C
+  symbol: object_rb_Standardlimb_001E5C
+  limb_type: Standard
+
+object_rb_Standardlimb_001E74:
+  type: OOT:LIMB
+  offset: 0x1E74
+  symbol: object_rb_Standardlimb_001E74
+  limb_type: Standard
+
+object_rb_Standardlimb_001E80:
+  type: OOT:LIMB
+  offset: 0x1E80
+  symbol: object_rb_Standardlimb_001E80
+  limb_type: Standard
+
+
+object_rbVtx_0002F0:
+  type: MM:ARRAY
+  offset: 0x0002F0
+  symbol: object_rbVtx_0002F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rbVtx_000590:
+  type: MM:ARRAY
+  offset: 0x000590
+  symbol: object_rbVtx_000590
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rbVtx_000818:
+  type: MM:ARRAY
+  offset: 0x000818
+  symbol: object_rbVtx_000818
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rbVtx_000970:
+  type: MM:ARRAY
+  offset: 0x000970
+  symbol: object_rbVtx_000970
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rbVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_rbVtx_000AD0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rbVtx_000C38:
+  type: MM:ARRAY
+  offset: 0x000C38
+  symbol: object_rbVtx_000C38
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLeeverSkelLimbs:
+  type: BLOB
+  offset: 0x1EA4
+  symbol: gLeeverSkelLimbs
+  size: 0

@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 6, 0x00FA7800 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FA7800 ]
+    - [ 9, 0x00FA7800 ]
+    - [ 10, 0x00FA7800 ]
+    - [ 11, 0x00FA7800 ]
+    - [ 12, 0x00FA7800 ]
+    - [ 13, 0x00FA7800 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiMirrorShieldDL:
+  type: GFX
+  offset: 0x770
+  symbol: gGiMirrorShieldDL
+
+gGiMirrorShieldEmptyDL:
+  type: GFX
+  offset: 0xBF8
+  symbol: gGiMirrorShieldEmptyDL
+
+gGiMirrorShieldFaceBackgroundTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gGiMirrorShieldFaceBackgroundTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiMirrorShieldFaceSymbolTex:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: gGiMirrorShieldFaceSymbolTex
+  format: I8
+  width: 32
+  height: 64
+
+gGiMirrorShieldHandleTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gGiMirrorShieldHandleTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiMirrorShieldPatternTex:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: gGiMirrorShieldPatternTex
+  format: I4
+  width: 32
+  height: 32
+
+
+object_gi_shield_3Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_shield_3Vtx_000000
+  count: 119
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

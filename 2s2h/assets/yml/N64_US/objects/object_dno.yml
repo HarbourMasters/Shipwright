@@ -1,0 +1,812 @@
+:config:
+  segments:
+    - [ 6, 0x011D7E60 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011D7E60 ]
+    - [ 9, 0x011D7E60 ]
+    - [ 10, 0x011D7E60 ]
+    - [ 11, 0x011D7E60 ]
+    - [ 12, 0x011D7E60 ]
+    - [ 13, 0x011D7E60 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDekuKingBeardLeavesTex:
+  type: TEXTURE
+  offset: 0x9F40
+  symbol: gDekuKingBeardLeavesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuKingBodyTex:
+  type: TEXTURE
+  offset: 0x8340
+  symbol: gDekuKingBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuKingCrownDL:
+  type: GFX
+  offset: 0xC9B0
+  symbol: gDekuKingCrownDL
+
+gDekuKingCrownLeavesDL:
+  type: GFX
+  offset: 0xCB70
+  symbol: gDekuKingCrownLeavesDL
+
+gDekuKingCrownLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xEABC
+  symbol: gDekuKingCrownLeavesLimb
+  limb_type: Standard
+
+gDekuKingCrownLimb:
+  type: OOT:LIMB
+  offset: 0xEAB0
+  symbol: gDekuKingCrownLimb
+  limb_type: Standard
+
+gDekuKingCrownTex:
+  type: TEXTURE
+  offset: 0x8740
+  symbol: gDekuKingCrownTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuKingEyeTex:
+  type: TEXTURE
+  offset: 0xA740
+  symbol: gDekuKingEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuKingEyesDL:
+  type: GFX
+  offset: 0xCE38
+  symbol: gDekuKingEyesDL
+
+gDekuKingEyesLimb:
+  type: OOT:LIMB
+  offset: 0xEAA4
+  symbol: gDekuKingEyesLimb
+  limb_type: Standard
+
+gDekuKingFootStampLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x5A14
+  symbol: gDekuKingFootStampLoopAnim
+
+gDekuKingFootStampStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E18
+  symbol: gDekuKingFootStampStartAnim
+
+gDekuKingIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x8328
+  symbol: gDekuKingIdleAnim
+
+gDekuKingIntimidateAnim:
+  type: OOT:ANIMATION
+  offset: 0x4EA0
+  symbol: gDekuKingIntimidateAnim
+
+gDekuKingJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x47B8
+  symbol: gDekuKingJumpAnim
+
+gDekuKingJumpedOnEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x2690
+  symbol: gDekuKingJumpedOnEndAnim
+
+gDekuKingJumpedOnLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xBF8
+  symbol: gDekuKingJumpedOnLoopAnim
+
+gDekuKingJumpedOnStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x6F0
+  symbol: gDekuKingJumpedOnStartAnim
+
+gDekuKingLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0x3DBC
+  symbol: gDekuKingLaughAnim
+
+gDekuKingLeavesTex:
+  type: TEXTURE
+  offset: 0x8F40
+  symbol: gDekuKingLeavesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gDekuKingLeftFootDL:
+  type: GFX
+  offset: 0xE630
+  symbol: gDekuKingLeftFootDL
+
+gDekuKingLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xE978
+  symbol: gDekuKingLeftFootLimb
+  limb_type: Standard
+
+gDekuKingLeftForearmDL:
+  type: GFX
+  offset: 0xCFA8
+  symbol: gDekuKingLeftForearmDL
+
+gDekuKingLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xEA74
+  symbol: gDekuKingLeftForearmLimb
+  limb_type: Standard
+
+gDekuKingLeftForearmLowerLeavesDL:
+  type: GFX
+  offset: 0xD050
+  symbol: gDekuKingLeftForearmLowerLeavesDL
+
+gDekuKingLeftForearmLowerLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xEA8C
+  symbol: gDekuKingLeftForearmLowerLeavesLimb
+  limb_type: Standard
+
+gDekuKingLeftForearmUpperLeavesDL:
+  type: GFX
+  offset: 0xD140
+  symbol: gDekuKingLeftForearmUpperLeavesDL
+
+gDekuKingLeftForearmUpperLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xEA80
+  symbol: gDekuKingLeftForearmUpperLeavesLimb
+  limb_type: Standard
+
+gDekuKingLeftHandDL:
+  type: GFX
+  offset: 0xCED0
+  symbol: gDekuKingLeftHandDL
+
+gDekuKingLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xEA98
+  symbol: gDekuKingLeftHandLimb
+  limb_type: Standard
+
+gDekuKingLeftLowerMustacheDL:
+  type: GFX
+  offset: 0xD848
+  symbol: gDekuKingLeftLowerMustacheDL
+
+gDekuKingLeftLowerMustacheLimb:
+  type: OOT:LIMB
+  offset: 0xEA2C
+  symbol: gDekuKingLeftLowerMustacheLimb
+  limb_type: Standard
+
+gDekuKingLeftShinDL:
+  type: GFX
+  offset: 0xE738
+  symbol: gDekuKingLeftShinDL
+
+gDekuKingLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xE96C
+  symbol: gDekuKingLeftShinLimb
+  limb_type: Standard
+
+gDekuKingLeftThighDL:
+  type: GFX
+  offset: 0xE850
+  symbol: gDekuKingLeftThighDL
+
+gDekuKingLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xE960
+  symbol: gDekuKingLeftThighLimb
+  limb_type: Standard
+
+gDekuKingLeftUpperArmDL:
+  type: GFX
+  offset: 0xD230
+  symbol: gDekuKingLeftUpperArmDL
+
+gDekuKingLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xEA50
+  symbol: gDekuKingLeftUpperArmLimb
+  limb_type: Standard
+
+gDekuKingLeftUpperArmLowerLeavesDL:
+  type: GFX
+  offset: 0xD2E8
+  symbol: gDekuKingLeftUpperArmLowerLeavesDL
+
+gDekuKingLeftUpperArmLowerLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xEA68
+  symbol: gDekuKingLeftUpperArmLowerLeavesLimb
+  limb_type: Standard
+
+gDekuKingLeftUpperArmUpperLeavesDL:
+  type: GFX
+  offset: 0xD3D8
+  symbol: gDekuKingLeftUpperArmUpperLeavesDL
+
+gDekuKingLeftUpperArmUpperLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xEA5C
+  symbol: gDekuKingLeftUpperArmUpperLeavesLimb
+  limb_type: Standard
+
+gDekuKingLeftUpperMustacheDL:
+  type: GFX
+  offset: 0xD938
+  symbol: gDekuKingLeftUpperMustacheDL
+
+gDekuKingLeftUpperMustacheLimb:
+  type: OOT:LIMB
+  offset: 0xEA20
+  symbol: gDekuKingLeftUpperMustacheLimb
+  limb_type: Standard
+
+gDekuKingLyingDownTwitchAnim:
+  type: OOT:ANIMATION
+  offset: 0x3408
+  symbol: gDekuKingLyingDownTwitchAnim
+
+gDekuKingMarchAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AEC
+  symbol: gDekuKingMarchAnim
+
+gDekuKingMouthTex:
+  type: TEXTURE
+  offset: 0xAC40
+  symbol: gDekuKingMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuKingMustacheAndLoinclothLeafTex:
+  type: TEXTURE
+  offset: 0x8540
+  symbol: gDekuKingMustacheAndLoinclothLeafTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuKingPelvisDL:
+  type: GFX
+  offset: 0xE1C8
+  symbol: gDekuKingPelvisDL
+
+gDekuKingPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xE954
+  symbol: gDekuKingPelvisLimb
+  limb_type: Standard
+
+gDekuKingPointScepterAnim:
+  type: OOT:ANIMATION
+  offset: 0xF504
+  symbol: gDekuKingPointScepterAnim
+
+gDekuKingRightFootDL:
+  type: GFX
+  offset: 0xE318
+  symbol: gDekuKingRightFootDL
+
+gDekuKingRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xE99C
+  symbol: gDekuKingRightFootLimb
+  limb_type: Standard
+
+gDekuKingRightForearmDL:
+  type: GFX
+  offset: 0xDCA8
+  symbol: gDekuKingRightForearmDL
+
+gDekuKingRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xE9D8
+  symbol: gDekuKingRightForearmLimb
+  limb_type: Standard
+
+gDekuKingRightForearmLowerLeavesDL:
+  type: GFX
+  offset: 0xDD50
+  symbol: gDekuKingRightForearmLowerLeavesDL
+
+gDekuKingRightForearmLowerLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xE9F0
+  symbol: gDekuKingRightForearmLowerLeavesLimb
+  limb_type: Standard
+
+gDekuKingRightForearmUpperLeavesDL:
+  type: GFX
+  offset: 0xDE40
+  symbol: gDekuKingRightForearmUpperLeavesDL
+
+gDekuKingRightForearmUpperLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xE9E4
+  symbol: gDekuKingRightForearmUpperLeavesLimb
+  limb_type: Standard
+
+gDekuKingRightHandDL:
+  type: GFX
+  offset: 0xDA28
+  symbol: gDekuKingRightHandDL
+
+gDekuKingRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xE9FC
+  symbol: gDekuKingRightHandLimb
+  limb_type: Standard
+
+gDekuKingRightLowerMustacheDL:
+  type: GFX
+  offset: 0xD668
+  symbol: gDekuKingRightLowerMustacheDL
+
+gDekuKingRightLowerMustacheLimb:
+  type: OOT:LIMB
+  offset: 0xEA44
+  symbol: gDekuKingRightLowerMustacheLimb
+  limb_type: Standard
+
+gDekuKingRightShinDL:
+  type: GFX
+  offset: 0xE420
+  symbol: gDekuKingRightShinDL
+
+gDekuKingRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xE990
+  symbol: gDekuKingRightShinLimb
+  limb_type: Standard
+
+gDekuKingRightThighDL:
+  type: GFX
+  offset: 0xE538
+  symbol: gDekuKingRightThighDL
+
+gDekuKingRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xE984
+  symbol: gDekuKingRightThighLimb
+  limb_type: Standard
+
+gDekuKingRightUpperArmDL:
+  type: GFX
+  offset: 0xDF30
+  symbol: gDekuKingRightUpperArmDL
+
+gDekuKingRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xE9B4
+  symbol: gDekuKingRightUpperArmLimb
+  limb_type: Standard
+
+gDekuKingRightUpperArmLowerLeavesDL:
+  type: GFX
+  offset: 0xDFE8
+  symbol: gDekuKingRightUpperArmLowerLeavesDL
+
+gDekuKingRightUpperArmLowerLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xE9CC
+  symbol: gDekuKingRightUpperArmLowerLeavesLimb
+  limb_type: Standard
+
+gDekuKingRightUpperArmUpperLeavesDL:
+  type: GFX
+  offset: 0xE0D8
+  symbol: gDekuKingRightUpperArmUpperLeavesDL
+
+gDekuKingRightUpperArmUpperLeavesLimb:
+  type: OOT:LIMB
+  offset: 0xE9C0
+  symbol: gDekuKingRightUpperArmUpperLeavesLimb
+  limb_type: Standard
+
+gDekuKingRightUpperMustacheDL:
+  type: GFX
+  offset: 0xD758
+  symbol: gDekuKingRightUpperMustacheDL
+
+gDekuKingRightUpperMustacheLimb:
+  type: OOT:LIMB
+  offset: 0xEA38
+  symbol: gDekuKingRightUpperMustacheLimb
+  limb_type: Standard
+
+gDekuKingRootLimb:
+  type: OOT:LIMB
+  offset: 0xE948
+  symbol: gDekuKingRootLimb
+  limb_type: Standard
+
+gDekuKingScepterDL:
+  type: GFX
+  offset: 0xDB00
+  symbol: gDekuKingScepterDL
+
+gDekuKingScepterLimb:
+  type: OOT:LIMB
+  offset: 0xEA08
+  symbol: gDekuKingScepterLimb
+  limb_type: Standard
+
+gDekuKingScepterPetalTex:
+  type: TEXTURE
+  offset: 0xA9C0
+  symbol: gDekuKingScepterPetalTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuKingScepterTipTex:
+  type: TEXTURE
+  offset: 0xA940
+  symbol: gDekuKingScepterTipTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuKingSkel:
+  type: MM:SKELETON
+  offset: 0xEB48
+  symbol: gDekuKingSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDekuKingSnoutDL:
+  type: GFX
+  offset: 0xD4C8
+  symbol: gDekuKingSnoutDL
+
+gDekuKingSnoutLimb:
+  type: OOT:LIMB
+  offset: 0xEA14
+  symbol: gDekuKingSnoutLimb
+  limb_type: Standard
+
+gDekuKingSnoutTex:
+  type: TEXTURE
+  offset: 0xABC0
+  symbol: gDekuKingSnoutTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuKingSpinScepterAnim:
+  type: OOT:ANIMATION
+  offset: 0x1100
+  symbol: gDekuKingSpinScepterAnim
+
+gDekuKingSurpriseAnim:
+  type: OOT:ANIMATION
+  offset: 0x7528
+  symbol: gDekuKingSurpriseAnim
+
+gDekuKingUpperBodyDL:
+  type: GFX
+  offset: 0xCC10
+  symbol: gDekuKingUpperBodyDL
+
+gDekuKingUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0xE9A8
+  symbol: gDekuKingUpperBodyLimb
+  limb_type: Standard
+
+gDekuKingWailLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x6984
+  symbol: gDekuKingWailLoopAnim
+
+gDekuKingWailStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x5284
+  symbol: gDekuKingWailStartAnim
+
+
+object_dnoVtx_00ACC0:
+  type: MM:ARRAY
+  offset: 0x00ACC0
+  symbol: object_dnoVtx_00ACC0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00AE80:
+  type: MM:ARRAY
+  offset: 0x00AE80
+  symbol: object_dnoVtx_00AE80
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00AF70:
+  type: MM:ARRAY
+  offset: 0x00AF70
+  symbol: object_dnoVtx_00AF70
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B0A0:
+  type: MM:ARRAY
+  offset: 0x00B0A0
+  symbol: object_dnoVtx_00B0A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B160:
+  type: MM:ARRAY
+  offset: 0x00B160
+  symbol: object_dnoVtx_00B160
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B250:
+  type: MM:ARRAY
+  offset: 0x00B250
+  symbol: object_dnoVtx_00B250
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B380:
+  type: MM:ARRAY
+  offset: 0x00B380
+  symbol: object_dnoVtx_00B380
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B440:
+  type: MM:ARRAY
+  offset: 0x00B440
+  symbol: object_dnoVtx_00B440
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B8A0:
+  type: MM:ARRAY
+  offset: 0x00B8A0
+  symbol: object_dnoVtx_00B8A0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00B990:
+  type: MM:ARRAY
+  offset: 0x00B990
+  symbol: object_dnoVtx_00B990
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00BE50:
+  type: MM:ARRAY
+  offset: 0x00BE50
+  symbol: object_dnoVtx_00BE50
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00BEB0:
+  type: MM:ARRAY
+  offset: 0x00BEB0
+  symbol: object_dnoVtx_00BEB0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00BF70:
+  type: MM:ARRAY
+  offset: 0x00BF70
+  symbol: object_dnoVtx_00BF70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00BFF0:
+  type: MM:ARRAY
+  offset: 0x00BFF0
+  symbol: object_dnoVtx_00BFF0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C040:
+  type: MM:ARRAY
+  offset: 0x00C040
+  symbol: object_dnoVtx_00C040
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C090:
+  type: MM:ARRAY
+  offset: 0x00C090
+  symbol: object_dnoVtx_00C090
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C120:
+  type: MM:ARRAY
+  offset: 0x00C120
+  symbol: object_dnoVtx_00C120
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C170:
+  type: MM:ARRAY
+  offset: 0x00C170
+  symbol: object_dnoVtx_00C170
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C1C0:
+  type: MM:ARRAY
+  offset: 0x00C1C0
+  symbol: object_dnoVtx_00C1C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C280:
+  type: MM:ARRAY
+  offset: 0x00C280
+  symbol: object_dnoVtx_00C280
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C480:
+  type: MM:ARRAY
+  offset: 0x00C480
+  symbol: object_dnoVtx_00C480
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C500:
+  type: MM:ARRAY
+  offset: 0x00C500
+  symbol: object_dnoVtx_00C500
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C550:
+  type: MM:ARRAY
+  offset: 0x00C550
+  symbol: object_dnoVtx_00C550
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C5A0:
+  type: MM:ARRAY
+  offset: 0x00C5A0
+  symbol: object_dnoVtx_00C5A0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C630:
+  type: MM:ARRAY
+  offset: 0x00C630
+  symbol: object_dnoVtx_00C630
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C680:
+  type: MM:ARRAY
+  offset: 0x00C680
+  symbol: object_dnoVtx_00C680
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C6D0:
+  type: MM:ARRAY
+  offset: 0x00C6D0
+  symbol: object_dnoVtx_00C6D0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C8B0:
+  type: MM:ARRAY
+  offset: 0x00C8B0
+  symbol: object_dnoVtx_00C8B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C8E0:
+  type: MM:ARRAY
+  offset: 0x00C8E0
+  symbol: object_dnoVtx_00C8E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C930:
+  type: MM:ARRAY
+  offset: 0x00C930
+  symbol: object_dnoVtx_00C930
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnoVtx_00C960:
+  type: MM:ARRAY
+  offset: 0x00C960
+  symbol: object_dnoVtx_00C960
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuKingSkelLimbs:
+  type: BLOB
+  offset: 0xEAC8
+  symbol: gDekuKingSkelLimbs
+  size: 0

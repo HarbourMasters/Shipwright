@@ -1,0 +1,542 @@
+:config:
+  segments:
+    - [ 6, 0x012EBFA0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012EBFA0 ]
+    - [ 9, 0x012EBFA0 ]
+    - [ 10, 0x012EBFA0 ]
+    - [ 11, 0x012EBFA0 ]
+    - [ 12, 0x012EBFA0 ]
+    - [ 13, 0x012EBFA0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSoldierArmorCoatOfArmsTex:
+  type: TEXTURE
+  offset: 0xCFC0
+  symbol: gSoldierArmorCoatOfArmsTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSoldierArmorEmblemTex:
+  type: TEXTURE
+  offset: 0xC900
+  symbol: gSoldierArmorEmblemTex
+  format: I8
+  width: 32
+  height: 32
+
+gSoldierArmorPlate1Tex:
+  type: TEXTURE
+  offset: 0xC800
+  symbol: gSoldierArmorPlate1Tex
+  format: I8
+  width: 16
+  height: 16
+
+gSoldierArmorPlate2Tex:
+  type: TEXTURE
+  offset: 0xD3C0
+  symbol: gSoldierArmorPlate2Tex
+  format: I8
+  width: 16
+  height: 8
+
+gSoldierArmorStrapTex:
+  type: TEXTURE
+  offset: 0xC400
+  symbol: gSoldierArmorStrapTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSoldierArmorTex:
+  type: TEXTURE
+  offset: 0xCE40
+  symbol: gSoldierArmorTex
+  format: CI8
+  width: 8
+  height: 8
+
+gSoldierBottleContentsDL:
+  type: GFX
+  offset: 0x768
+  symbol: gSoldierBottleContentsDL
+
+gSoldierBottleDL:
+  type: GFX
+  offset: 0x630
+  symbol: gSoldierBottleDL
+
+gSoldierBottleEmptyContentsDL:
+  type: GFX
+  offset: 0x800
+  symbol: gSoldierBottleEmptyContentsDL
+
+gSoldierBottleTex:
+  type: TEXTURE
+  offset: 0x808
+  symbol: gSoldierBottleTex
+  format: I4
+  width: 16
+  height: 16
+
+gSoldierCheerWithSpearAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A84
+  symbol: gSoldierCheerWithSpearAnim
+
+gSoldierComeUpHereAnim:
+  type: OOT:ANIMATION
+  offset: 0x5320
+  symbol: gSoldierComeUpHereAnim
+
+gSoldierDrinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x20D8
+  symbol: gSoldierDrinkAnim
+
+gSoldierFingersTex:
+  type: TEXTURE
+  offset: 0xD440
+  symbol: gSoldierFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSoldierGeneralTLUT:
+  type: TEXTURE
+  offset: 0xC200
+  symbol: gSoldierGeneralTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSoldierHeadDL:
+  type: GFX
+  offset: 0xA1A8
+  symbol: gSoldierHeadDL
+
+gSoldierHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD5F4
+  symbol: gSoldierHeadLimb
+  limb_type: Standard
+
+gSoldierLeftFootDL:
+  type: GFX
+  offset: 0xBEB8
+  symbol: gSoldierLeftFootDL
+
+gSoldierLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xD570
+  symbol: gSoldierLeftFootLimb
+  limb_type: Standard
+
+gSoldierLeftForearmDL:
+  type: GFX
+  offset: 0xAED0
+  symbol: gSoldierLeftForearmDL
+
+gSoldierLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD5B8
+  symbol: gSoldierLeftForearmLimb
+  limb_type: Standard
+
+gSoldierLeftHandDL:
+  type: GFX
+  offset: 0xB120
+  symbol: gSoldierLeftHandDL
+
+gSoldierLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xD5C4
+  symbol: gSoldierLeftHandLimb
+  limb_type: Standard
+
+gSoldierLeftShinDL:
+  type: GFX
+  offset: 0xBBB8
+  symbol: gSoldierLeftShinDL
+
+gSoldierLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xD564
+  symbol: gSoldierLeftShinLimb
+  limb_type: Standard
+
+gSoldierLeftShoulderDL:
+  type: GFX
+  offset: 0xADE0
+  symbol: gSoldierLeftShoulderDL
+
+gSoldierLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xD5AC
+  symbol: gSoldierLeftShoulderLimb
+  limb_type: Standard
+
+gSoldierLeftThighDL:
+  type: GFX
+  offset: 0xBAD0
+  symbol: gSoldierLeftThighDL
+
+gSoldierLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xD558
+  symbol: gSoldierLeftThighLimb
+  limb_type: Standard
+
+gSoldierLipsTex:
+  type: TEXTURE
+  offset: 0xCEC0
+  symbol: gSoldierLipsTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSoldierLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x4AC0
+  symbol: gSoldierLookDownAnim
+
+gSoldierPelvisDL:
+  type: GFX
+  offset: 0xB438
+  symbol: gSoldierPelvisDL
+
+gSoldierPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xD54C
+  symbol: gSoldierPelvisLimb
+  limb_type: Standard
+
+gSoldierRightFootDL:
+  type: GFX
+  offset: 0xB988
+  symbol: gSoldierRightFootDL
+
+gSoldierRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xD594
+  symbol: gSoldierRightFootLimb
+  limb_type: Standard
+
+gSoldierRightForearmDL:
+  type: GFX
+  offset: 0xA768
+  symbol: gSoldierRightForearmDL
+
+gSoldierRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD5DC
+  symbol: gSoldierRightForearmLimb
+  limb_type: Standard
+
+gSoldierRightHandWithSpearDL:
+  type: GFX
+  offset: 0xA9A8
+  symbol: gSoldierRightHandWithSpearDL
+
+gSoldierRightHandWithSpearLimb:
+  type: OOT:LIMB
+  offset: 0xD5E8
+  symbol: gSoldierRightHandWithSpearLimb
+  limb_type: Standard
+
+gSoldierRightShinDL:
+  type: GFX
+  offset: 0xB698
+  symbol: gSoldierRightShinDL
+
+gSoldierRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xD588
+  symbol: gSoldierRightShinLimb
+  limb_type: Standard
+
+gSoldierRightShoulderDL:
+  type: GFX
+  offset: 0xA678
+  symbol: gSoldierRightShoulderDL
+
+gSoldierRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xD5D0
+  symbol: gSoldierRightShoulderLimb
+  limb_type: Standard
+
+gSoldierRightThighDL:
+  type: GFX
+  offset: 0xB5B0
+  symbol: gSoldierRightThighDL
+
+gSoldierRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xD57C
+  symbol: gSoldierRightThighLimb
+  limb_type: Standard
+
+gSoldierRootLimb:
+  type: OOT:LIMB
+  offset: 0xD540
+  symbol: gSoldierRootLimb
+  limb_type: Standard
+
+gSoldierShortsToLegTex:
+  type: TEXTURE
+  offset: 0xCD40
+  symbol: gSoldierShortsToLegTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSoldierSitAndReachAnim:
+  type: OOT:ANIMATION
+  offset: 0x3380
+  symbol: gSoldierSitAndReachAnim
+
+gSoldierSkel:
+  type: MM:SKELETON
+  offset: 0xD640
+  symbol: gSoldierSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSoldierSkinShadowGradient1Tex:
+  type: TEXTURE
+  offset: 0xCE80
+  symbol: gSoldierSkinShadowGradient1Tex
+  format: CI8
+  width: 8
+  height: 8
+
+gSoldierSkinShadowGradient2Tex:
+  type: TEXTURE
+  offset: 0xCD00
+  symbol: gSoldierSkinShadowGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+
+gSoldierSkinTLUT:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: gSoldierSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSoldierStandAndLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xDC7C
+  symbol: gSoldierStandAndLookDownAnim
+
+gSoldierStandHandOnHipAnim:
+  type: OOT:ANIMATION
+  offset: 0x6C18
+  symbol: gSoldierStandHandOnHipAnim
+
+gSoldierStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4770
+  symbol: gSoldierStandUpAnim
+
+gSoldierStandWithHandOnChestAnim:
+  type: OOT:ANIMATION
+  offset: 0xA54
+  symbol: gSoldierStandWithHandOnChestAnim
+
+gSoldierTorsoDL:
+  type: GFX
+  offset: 0x9EB0
+  symbol: gSoldierTorsoDL
+
+gSoldierTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xD5A0
+  symbol: gSoldierTorsoLimb
+  limb_type: Standard
+
+gSoldierWaveAnim:
+  type: OOT:ANIMATION
+  offset: 0x3BFC
+  symbol: gSoldierWaveAnim
+
+object_sdn_Anim_0057BC:
+  type: OOT:ANIMATION
+  offset: 0x57BC
+  symbol: object_sdn_Anim_0057BC
+
+object_sdn_Anim_005D28:
+  type: OOT:ANIMATION
+  offset: 0x5D28
+  symbol: object_sdn_Anim_005D28
+
+object_sdn_Anim_0064C0:
+  type: OOT:ANIMATION
+  offset: 0x64C0
+  symbol: object_sdn_Anim_0064C0
+
+
+object_sdnVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sdnVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_sdnVtx_000180
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_006C30:
+  type: MM:ARRAY
+  offset: 0x006C30
+  symbol: object_sdnVtx_006C30
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_006D20:
+  type: MM:ARRAY
+  offset: 0x006D20
+  symbol: object_sdnVtx_006D20
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_0070E0:
+  type: MM:ARRAY
+  offset: 0x0070E0
+  symbol: object_sdnVtx_0070E0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_007230:
+  type: MM:ARRAY
+  offset: 0x007230
+  symbol: object_sdnVtx_007230
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_007320:
+  type: MM:ARRAY
+  offset: 0x007320
+  symbol: object_sdnVtx_007320
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_0076E0:
+  type: MM:ARRAY
+  offset: 0x0076E0
+  symbol: object_sdnVtx_0076E0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_007830:
+  type: MM:ARRAY
+  offset: 0x007830
+  symbol: object_sdnVtx_007830
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_007A60:
+  type: MM:ARRAY
+  offset: 0x007A60
+  symbol: object_sdnVtx_007A60
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_008280:
+  type: MM:ARRAY
+  offset: 0x008280
+  symbol: object_sdnVtx_008280
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_0088A0:
+  type: MM:ARRAY
+  offset: 0x0088A0
+  symbol: object_sdnVtx_0088A0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_008B40:
+  type: MM:ARRAY
+  offset: 0x008B40
+  symbol: object_sdnVtx_008B40
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_008DA0:
+  type: MM:ARRAY
+  offset: 0x008DA0
+  symbol: object_sdnVtx_008DA0
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_009210:
+  type: MM:ARRAY
+  offset: 0x009210
+  symbol: object_sdnVtx_009210
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_0094B0:
+  type: MM:ARRAY
+  offset: 0x0094B0
+  symbol: object_sdnVtx_0094B0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sdnVtx_009710:
+  type: MM:ARRAY
+  offset: 0x009710
+  symbol: object_sdnVtx_009710
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSoldierSkelLimbs:
+  type: BLOB
+  offset: 0xD600
+  symbol: gSoldierSkelLimbs
+  size: 0

@@ -1,0 +1,142 @@
+:config:
+  segments:
+    - [ 6, 0x01194A80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01194A80 ]
+    - [ 9, 0x01194A80 ]
+    - [ 10, 0x01194A80 ]
+    - [ 11, 0x01194A80 ]
+    - [ 12, 0x01194A80 ]
+    - [ 13, 0x01194A80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_f52_obj_Colheader_001BA8:
+  type: MM:COLLISION
+  offset: 0x1BA8
+  symbol: object_f52_obj_Colheader_001BA8
+
+object_f52_obj_DL_000570:
+  type: GFX
+  offset: 0x570
+  symbol: object_f52_obj_DL_000570
+
+object_f52_obj_DL_000698:
+  type: GFX
+  offset: 0x698
+  symbol: object_f52_obj_DL_000698
+
+object_f52_obj_DL_0007A8:
+  type: GFX
+  offset: 0x7A8
+  symbol: object_f52_obj_DL_0007A8
+
+object_f52_obj_DL_000840:
+  type: GFX
+  offset: 0x840
+  symbol: object_f52_obj_DL_000840
+
+object_f52_obj_DL_0008D0:
+  type: GFX
+  offset: 0x8D0
+  symbol: object_f52_obj_DL_0008D0
+
+object_f52_obj_DL_000960:
+  type: GFX
+  offset: 0x960
+  symbol: object_f52_obj_DL_000960
+
+object_f52_obj_Tex_000A10:
+  type: TEXTURE
+  offset: 0xA10
+  symbol: object_f52_obj_Tex_000A10
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_f52_obj_Tex_000E10:
+  type: TEXTURE
+  offset: 0xE10
+  symbol: object_f52_obj_Tex_000E10
+  format: IA16
+  width: 16
+  height: 16
+
+object_f52_obj_Tex_001010:
+  type: TEXTURE
+  offset: 0x1010
+  symbol: object_f52_obj_Tex_001010
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_f52_obj_Tex_001410:
+  type: TEXTURE
+  offset: 0x1410
+  symbol: object_f52_obj_Tex_001410
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_f52_obj_Tex_001810:
+  type: TEXTURE
+  offset: 0x1810
+  symbol: object_f52_obj_Tex_001810
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_f52_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_f52_objVtx_000000
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f52_objVtx_000220:
+  type: MM:ARRAY
+  offset: 0x000220
+  symbol: object_f52_objVtx_000220
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f52_objVtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: object_f52_objVtx_000360
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f52_objVtx_0003B0:
+  type: MM:ARRAY
+  offset: 0x0003B0
+  symbol: object_f52_objVtx_0003B0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f52_objVtx_0003F0:
+  type: MM:ARRAY
+  offset: 0x0003F0
+  symbol: object_f52_objVtx_0003F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_f52_objVtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: object_f52_objVtx_000430
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

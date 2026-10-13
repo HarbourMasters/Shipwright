@@ -1,0 +1,328 @@
+:config:
+  segments:
+    - [ 6, 0x00EC50A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EC50A0 ]
+    - [ 9, 0x00EC50A0 ]
+    - [ 10, 0x00EC50A0 ]
+    - [ 11, 0x00EC50A0 ]
+    - [ 12, 0x00EC50A0 ]
+    - [ 13, 0x00EC50A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_ph_Anim_000350:
+  type: OOT:ANIMATION
+  offset: 0x350
+  symbol: object_ph_Anim_000350
+
+object_ph_Anim_0005C4:
+  type: OOT:ANIMATION
+  offset: 0x5C4
+  symbol: object_ph_Anim_0005C4
+
+object_ph_Anim_000844:
+  type: OOT:ANIMATION
+  offset: 0x844
+  symbol: object_ph_Anim_000844
+
+object_ph_Anim_0009C4:
+  type: OOT:ANIMATION
+  offset: 0x9C4
+  symbol: object_ph_Anim_0009C4
+
+object_ph_DL_000ED0:
+  type: GFX
+  offset: 0xED0
+  symbol: object_ph_DL_000ED0
+
+object_ph_DL_000F60:
+  type: GFX
+  offset: 0xF60
+  symbol: object_ph_DL_000F60
+
+object_ph_DL_000FF0:
+  type: GFX
+  offset: 0xFF0
+  symbol: object_ph_DL_000FF0
+
+object_ph_DL_001080:
+  type: GFX
+  offset: 0x1080
+  symbol: object_ph_DL_001080
+
+object_ph_DL_001110:
+  type: GFX
+  offset: 0x1110
+  symbol: object_ph_DL_001110
+
+object_ph_DL_0011A0:
+  type: GFX
+  offset: 0x11A0
+  symbol: object_ph_DL_0011A0
+
+object_ph_DL_001230:
+  type: GFX
+  offset: 0x1230
+  symbol: object_ph_DL_001230
+
+object_ph_DL_0012F0:
+  type: GFX
+  offset: 0x12F0
+  symbol: object_ph_DL_0012F0
+
+object_ph_Skel_001C80:
+  type: MM:SKELETON
+  offset: 0x1C80
+  symbol: object_ph_Skel_001C80
+  limb_type: Standard
+  skel_type: Normal
+
+object_ph_Standardlimb_001B10:
+  type: OOT:LIMB
+  offset: 0x1B10
+  symbol: object_ph_Standardlimb_001B10
+  limb_type: Standard
+
+object_ph_Standardlimb_001B1C:
+  type: OOT:LIMB
+  offset: 0x1B1C
+  symbol: object_ph_Standardlimb_001B1C
+  limb_type: Standard
+
+object_ph_Standardlimb_001B28:
+  type: OOT:LIMB
+  offset: 0x1B28
+  symbol: object_ph_Standardlimb_001B28
+  limb_type: Standard
+
+object_ph_Standardlimb_001B34:
+  type: OOT:LIMB
+  offset: 0x1B34
+  symbol: object_ph_Standardlimb_001B34
+  limb_type: Standard
+
+object_ph_Standardlimb_001B40:
+  type: OOT:LIMB
+  offset: 0x1B40
+  symbol: object_ph_Standardlimb_001B40
+  limb_type: Standard
+
+object_ph_Standardlimb_001B4C:
+  type: OOT:LIMB
+  offset: 0x1B4C
+  symbol: object_ph_Standardlimb_001B4C
+  limb_type: Standard
+
+object_ph_Standardlimb_001B58:
+  type: OOT:LIMB
+  offset: 0x1B58
+  symbol: object_ph_Standardlimb_001B58
+  limb_type: Standard
+
+object_ph_Standardlimb_001B64:
+  type: OOT:LIMB
+  offset: 0x1B64
+  symbol: object_ph_Standardlimb_001B64
+  limb_type: Standard
+
+object_ph_Standardlimb_001B70:
+  type: OOT:LIMB
+  offset: 0x1B70
+  symbol: object_ph_Standardlimb_001B70
+  limb_type: Standard
+
+object_ph_Standardlimb_001B7C:
+  type: OOT:LIMB
+  offset: 0x1B7C
+  symbol: object_ph_Standardlimb_001B7C
+  limb_type: Standard
+
+object_ph_Standardlimb_001B88:
+  type: OOT:LIMB
+  offset: 0x1B88
+  symbol: object_ph_Standardlimb_001B88
+  limb_type: Standard
+
+object_ph_Standardlimb_001B94:
+  type: OOT:LIMB
+  offset: 0x1B94
+  symbol: object_ph_Standardlimb_001B94
+  limb_type: Standard
+
+object_ph_Standardlimb_001BA0:
+  type: OOT:LIMB
+  offset: 0x1BA0
+  symbol: object_ph_Standardlimb_001BA0
+  limb_type: Standard
+
+object_ph_Standardlimb_001BAC:
+  type: OOT:LIMB
+  offset: 0x1BAC
+  symbol: object_ph_Standardlimb_001BAC
+  limb_type: Standard
+
+object_ph_Standardlimb_001BB8:
+  type: OOT:LIMB
+  offset: 0x1BB8
+  symbol: object_ph_Standardlimb_001BB8
+  limb_type: Standard
+
+object_ph_Standardlimb_001BC4:
+  type: OOT:LIMB
+  offset: 0x1BC4
+  symbol: object_ph_Standardlimb_001BC4
+  limb_type: Standard
+
+object_ph_Standardlimb_001BD0:
+  type: OOT:LIMB
+  offset: 0x1BD0
+  symbol: object_ph_Standardlimb_001BD0
+  limb_type: Standard
+
+object_ph_Standardlimb_001BDC:
+  type: OOT:LIMB
+  offset: 0x1BDC
+  symbol: object_ph_Standardlimb_001BDC
+  limb_type: Standard
+
+object_ph_Standardlimb_001BE8:
+  type: OOT:LIMB
+  offset: 0x1BE8
+  symbol: object_ph_Standardlimb_001BE8
+  limb_type: Standard
+
+object_ph_Standardlimb_001BF4:
+  type: OOT:LIMB
+  offset: 0x1BF4
+  symbol: object_ph_Standardlimb_001BF4
+  limb_type: Standard
+
+object_ph_Standardlimb_001C00:
+  type: OOT:LIMB
+  offset: 0x1C00
+  symbol: object_ph_Standardlimb_001C00
+  limb_type: Standard
+
+object_ph_Standardlimb_001C0C:
+  type: OOT:LIMB
+  offset: 0x1C0C
+  symbol: object_ph_Standardlimb_001C0C
+  limb_type: Standard
+
+object_ph_Standardlimb_001C18:
+  type: OOT:LIMB
+  offset: 0x1C18
+  symbol: object_ph_Standardlimb_001C18
+  limb_type: Standard
+
+object_ph_Tex_001410:
+  type: TEXTURE
+  offset: 0x1410
+  symbol: object_ph_Tex_001410
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_ph_Tex_001490:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: object_ph_Tex_001490
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_ph_Tex_001890:
+  type: TEXTURE
+  offset: 0x1890
+  symbol: object_ph_Tex_001890
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_ph_Tex_001A90:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: object_ph_Tex_001A90
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_phVtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: object_phVtx_0009E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: object_phVtx_000A10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000A40:
+  type: MM:ARRAY
+  offset: 0x000A40
+  symbol: object_phVtx_000A40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000A70:
+  type: MM:ARRAY
+  offset: 0x000A70
+  symbol: object_phVtx_000A70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000AA0:
+  type: MM:ARRAY
+  offset: 0x000AA0
+  symbol: object_phVtx_000AA0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_phVtx_000AD0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000B00:
+  type: MM:ARRAY
+  offset: 0x000B00
+  symbol: object_phVtx_000B00
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_phVtx_000CB0:
+  type: MM:ARRAY
+  offset: 0x000CB0
+  symbol: object_phVtx_000CB0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ph_Skel_001C80Limbs:
+  type: BLOB
+  offset: 0x1C24
+  symbol: object_ph_Skel_001C80Limbs
+  size: 0

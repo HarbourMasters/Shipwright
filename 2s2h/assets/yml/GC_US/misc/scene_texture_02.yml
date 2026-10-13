@@ -1,0 +1,84 @@
+:config:
+  segments:
+    - [ 6, 0x01608C80 ]
+
+scene_texture_02_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: scene_texture_02_Tex_000000
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_02_Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: scene_texture_02_Tex_000400
+  format: CI8
+  width: 16
+  height: 32
+
+scene_texture_02_Tex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: scene_texture_02_Tex_000600
+  format: CI8
+  width: 32
+  height: 8
+
+scene_texture_02_Tex_000700:
+  type: TEXTURE
+  offset: 0x700
+  symbol: scene_texture_02_Tex_000700
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_02_Tex_000B00:
+  type: TEXTURE
+  offset: 0xB00
+  symbol: scene_texture_02_Tex_000B00
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_02_Tex_000F00:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: scene_texture_02_Tex_000F00
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_02_Tex_001300:
+  type: TEXTURE
+  offset: 0x1300
+  symbol: scene_texture_02_Tex_001300
+  format: CI8
+  width: 16
+  height: 64
+
+scene_texture_02_Tex_001700:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: scene_texture_02_Tex_001700
+  format: CI8
+  width: 16
+  height: 16
+
+scene_texture_02_Tex_001800:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: scene_texture_02_Tex_001800
+  format: CI8
+  width: 32
+  height: 32
+
+scene_texture_02_Tex_001C00:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: scene_texture_02_Tex_001C00
+  format: CI8
+  width: 16
+  height: 16
+

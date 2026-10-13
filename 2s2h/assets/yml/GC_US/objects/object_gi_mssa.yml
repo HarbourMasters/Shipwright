@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x015B66C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015B66C0 ]
+    - [ 9, 0x015B66C0 ]
+    - [ 10, 0x015B66C0 ]
+    - [ 11, 0x015B66C0 ]
+    - [ 12, 0x015B66C0 ]
+    - [ 13, 0x015B66C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiSunMaskEyeTex:
+  type: TEXTURE
+  offset: 0x10F0
+  symbol: gGiSunMaskEyeTex
+  format: I4
+  width: 16
+  height: 16
+
+gGiSunMaskEyesSidePatternsDL:
+  type: GFX
+  offset: 0xC00
+  symbol: gGiSunMaskEyesSidePatternsDL
+
+gGiSunMaskFaceDL:
+  type: GFX
+  offset: 0xDF0
+  symbol: gGiSunMaskFaceDL
+
+gGiSunMaskFacePatternsTex:
+  type: TEXTURE
+  offset: 0x11F0
+  symbol: gGiSunMaskFacePatternsTex
+  format: I4
+  width: 16
+  height: 16
+
+gGiSunMaskManeSwirlTex:
+  type: TEXTURE
+  offset: 0x1270
+  symbol: gGiSunMaskManeSwirlTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiSunMaskSidePatternsTex:
+  type: TEXTURE
+  offset: 0x1170
+  symbol: gGiSunMaskSidePatternsTex
+  format: I4
+  width: 16
+  height: 16
+
+
+object_gi_mssaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mssaVtx_000000
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mssaVtx_000320:
+  type: MM:ARRAY
+  offset: 0x000320
+  symbol: object_gi_mssaVtx_000320
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,220 @@
+:config:
+  segments:
+    - [ 3, 0x016A8990 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x016A8990 ]
+    - [ 9, 0x016A8990 ]
+    - [ 10, 0x016A8990 ]
+    - [ 11, 0x016A8990 ]
+    - [ 12, 0x016A8990 ]
+    - [ 13, 0x016A8990 ]
+    - [ 2, 0x01695340 ]
+  directory: scenes/nonmq/Z2_HAKASHITA
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_HAKASHITA.yml
+
+Z2_HAKASHITA_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_HAKASHITA_room_03
+
+Z2_HAKASHITA_room_03DL_002E50:
+  type: GFX
+  offset: 0x2E50
+  symbol: Z2_HAKASHITA_room_03DL_002E50
+
+
+Z2_HAKASHITA_room_03ActorEntry_000054:
+  type: BLOB
+  offset: 0x000054
+  symbol: Z2_HAKASHITA_room_03ActorEntry_000054
+  size: 0
+
+Z2_HAKASHITA_room_03Vtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: Z2_HAKASHITA_room_03Vtx_000180
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_000320:
+  type: GFX
+  offset: 0x000320
+  symbol: Z2_HAKASHITA_room_03DL_000320
+
+Z2_HAKASHITA_room_03Vtx_000498:
+  type: MM:ARRAY
+  offset: 0x000498
+  symbol: Z2_HAKASHITA_room_03Vtx_000498
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_0007F8:
+  type: GFX
+  offset: 0x0007F8
+  symbol: Z2_HAKASHITA_room_03DL_0007F8
+
+Z2_HAKASHITA_room_03Vtx_000930:
+  type: MM:ARRAY
+  offset: 0x000930
+  symbol: Z2_HAKASHITA_room_03Vtx_000930
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_000AF0:
+  type: GFX
+  offset: 0x000AF0
+  symbol: Z2_HAKASHITA_room_03DL_000AF0
+
+Z2_HAKASHITA_room_03Vtx_000CF0:
+  type: MM:ARRAY
+  offset: 0x000CF0
+  symbol: Z2_HAKASHITA_room_03Vtx_000CF0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_000EB0:
+  type: GFX
+  offset: 0x000EB0
+  symbol: Z2_HAKASHITA_room_03DL_000EB0
+
+Z2_HAKASHITA_room_03DL_0010B0:
+  type: GFX
+  offset: 0x0010B0
+  symbol: Z2_HAKASHITA_room_03DL_0010B0
+
+Z2_HAKASHITA_room_03Vtx_0010D8:
+  type: MM:ARRAY
+  offset: 0x0010D8
+  symbol: Z2_HAKASHITA_room_03Vtx_0010D8
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_001488:
+  type: GFX
+  offset: 0x001488
+  symbol: Z2_HAKASHITA_room_03DL_001488
+
+Z2_HAKASHITA_room_03Vtx_0015E0:
+  type: MM:ARRAY
+  offset: 0x0015E0
+  symbol: Z2_HAKASHITA_room_03Vtx_0015E0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_001760:
+  type: GFX
+  offset: 0x001760
+  symbol: Z2_HAKASHITA_room_03DL_001760
+
+Z2_HAKASHITA_room_03Vtx_001950:
+  type: MM:ARRAY
+  offset: 0x001950
+  symbol: Z2_HAKASHITA_room_03Vtx_001950
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_001AE0:
+  type: GFX
+  offset: 0x001AE0
+  symbol: Z2_HAKASHITA_room_03DL_001AE0
+
+Z2_HAKASHITA_room_03Vtx_001BD8:
+  type: MM:ARRAY
+  offset: 0x001BD8
+  symbol: Z2_HAKASHITA_room_03Vtx_001BD8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_001CD8:
+  type: GFX
+  offset: 0x001CD8
+  symbol: Z2_HAKASHITA_room_03DL_001CD8
+
+Z2_HAKASHITA_room_03Vtx_001DB8:
+  type: MM:ARRAY
+  offset: 0x001DB8
+  symbol: Z2_HAKASHITA_room_03Vtx_001DB8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_0020A8:
+  type: GFX
+  offset: 0x0020A8
+  symbol: Z2_HAKASHITA_room_03DL_0020A8
+
+Z2_HAKASHITA_room_03Vtx_002460:
+  type: MM:ARRAY
+  offset: 0x002460
+  symbol: Z2_HAKASHITA_room_03Vtx_002460
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_0029B0:
+  type: GFX
+  offset: 0x0029B0
+  symbol: Z2_HAKASHITA_room_03DL_0029B0
+
+Z2_HAKASHITA_room_03Vtx_002B18:
+  type: MM:ARRAY
+  offset: 0x002B18
+  symbol: Z2_HAKASHITA_room_03Vtx_002B18
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_HAKASHITA_room_03DL_002D08:
+  type: GFX
+  offset: 0x002D08
+  symbol: Z2_HAKASHITA_room_03DL_002D08
+
+Z2_HAKASHITA_room_03DL_002E10:
+  type: GFX
+  offset: 0x002E10
+  symbol: Z2_HAKASHITA_room_03DL_002E10
+
+Z2_HAKASHITA_room_03Tex_002E68:
+  type: TEXTURE
+  offset: 0x002E68
+  symbol: Z2_HAKASHITA_room_03Tex_002E68
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_HAKASHITA_room_03Tex_003668:
+  type: TEXTURE
+  offset: 0x003668
+  symbol: Z2_HAKASHITA_room_03Tex_003668
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_HAKASHITA_room_03Tex_003E68:
+  type: TEXTURE
+  offset: 0x003E68
+  symbol: Z2_HAKASHITA_room_03Tex_003E68
+  format: CI8
+  width: 32
+  height: 64

@@ -1,0 +1,152 @@
+:config:
+  segments:
+    - [ 6, 0x012CB430 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012CB430 ]
+    - [ 9, 0x012CB430 ]
+    - [ 10, 0x012CB430 ]
+    - [ 11, 0x012CB430 ]
+    - [ 12, 0x012CB430 ]
+    - [ 13, 0x012CB430 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_bigicicle_DL_0009B0:
+  type: GFX
+  offset: 0x9B0
+  symbol: object_bigicicle_DL_0009B0
+
+object_bigicicle_DL_000B20:
+  type: GFX
+  offset: 0xB20
+  symbol: object_bigicicle_DL_000B20
+
+object_bigicicle_DL_000D60:
+  type: GFX
+  offset: 0xD60
+  symbol: object_bigicicle_DL_000D60
+
+object_bigicicle_DL_000F40:
+  type: GFX
+  offset: 0xF40
+  symbol: object_bigicicle_DL_000F40
+
+object_bigicicle_DL_0014F0:
+  type: GFX
+  offset: 0x14F0
+  symbol: object_bigicicle_DL_0014F0
+
+object_bigicicle_DL_001D10:
+  type: GFX
+  offset: 0x1D10
+  symbol: object_bigicicle_DL_001D10
+
+object_bigicicle_DL_002530:
+  type: GFX
+  offset: 0x2530
+  symbol: object_bigicicle_DL_002530
+
+object_bigicicle_DL_002C20:
+  type: GFX
+  offset: 0x2C20
+  symbol: object_bigicicle_DL_002C20
+
+object_bigicicle_Matanimheader_001678:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1678
+  symbol: object_bigicicle_Matanimheader_001678
+
+object_bigicicle_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_bigicicle_Tex_000000
+  format: I4
+  width: 64
+  height: 64
+
+object_bigicicle_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_bigicicle_Tex_000800
+  format: I4
+  width: 16
+  height: 16
+
+
+object_bigicicleVtx_000880:
+  type: MM:ARRAY
+  offset: 0x000880
+  symbol: object_bigicicleVtx_000880
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_000A60:
+  type: MM:ARRAY
+  offset: 0x000A60
+  symbol: object_bigicicleVtx_000A60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_000BE0:
+  type: MM:ARRAY
+  offset: 0x000BE0
+  symbol: object_bigicicleVtx_000BE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_000E40:
+  type: MM:ARRAY
+  offset: 0x000E40
+  symbol: object_bigicicleVtx_000E40
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_bigicicleVtx_001000
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicle_Matanimheader_001678TexScrollParams_001670:
+  type: BLOB
+  offset: 0x001670
+  symbol: object_bigicicle_Matanimheader_001678TexScrollParams_001670
+  size: 0
+
+object_bigicicleVtx_001680:
+  type: MM:ARRAY
+  offset: 0x001680
+  symbol: object_bigicicleVtx_001680
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_001E90:
+  type: MM:ARRAY
+  offset: 0x001E90
+  symbol: object_bigicicleVtx_001E90
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigicicleVtx_0026C0:
+  type: MM:ARRAY
+  offset: 0x0026C0
+  symbol: object_bigicicleVtx_0026C0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

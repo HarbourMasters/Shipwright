@@ -1,0 +1,941 @@
+:config:
+  segments:
+    - [ 2, 0x01E36CA0 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_BACKTOWNSet_002270.yml
+Z2_BACKTOWN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_BACKTOWN
+
+
+Z2_BACKTOWNPathwayList_0003BC:
+  type: MM:PATH
+  offset: 0x0003BC
+  symbol: Z2_BACKTOWNPathwayList_0003BC
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -424, 200, -2713 ]
+        - [ -423, 191, -2424 ]
+        - [ -423, 190, -2225 ]
+        - [ -349, 191, -2029 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -518, 189, -2331 ]
+        - [ -512, 200, -2552 ]
+        - [ -508, 200, -2713 ]
+
+Z2_BACKTOWNPathwayList_0003DC:
+  type: MM:PATH
+  offset: 0x0003DC
+  symbol: Z2_BACKTOWNPathwayList_0003DC
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -424, 200, -2713 ]
+        - [ -423, 191, -2424 ]
+        - [ -423, 190, -2225 ]
+        - [ -349, 191, -2029 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -518, 189, -2331 ]
+        - [ -512, 200, -2552 ]
+        - [ -508, 200, -2713 ]
+
+Z2_BACKTOWNPathwayList_000400:
+  type: MM:PATH
+  offset: 0x000400
+  symbol: Z2_BACKTOWNPathwayList_000400
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -424, 200, -2713 ]
+        - [ -423, 191, -2424 ]
+        - [ -423, 190, -2225 ]
+        - [ -349, 191, -2029 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -518, 189, -2331 ]
+        - [ -512, 200, -2552 ]
+        - [ -508, 200, -2713 ]
+
+Z2_BACKTOWNPathwayList_000420:
+  type: MM:PATH
+  offset: 0x000420
+  symbol: Z2_BACKTOWNPathwayList_000420
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -424, 200, -2713 ]
+        - [ -423, 191, -2424 ]
+        - [ -423, 190, -2225 ]
+        - [ -349, 191, -2029 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -518, 189, -2331 ]
+        - [ -512, 200, -2552 ]
+        - [ -508, 200, -2713 ]
+
+Z2_BACKTOWNPathwayList_00044C:
+  type: MM:PATH
+  offset: 0x00044C
+  symbol: Z2_BACKTOWNPathwayList_00044C
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -424, 200, -2713 ]
+        - [ -423, 191, -2424 ]
+        - [ -423, 190, -2225 ]
+        - [ -349, 191, -2029 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -518, 189, -2331 ]
+        - [ -512, 200, -2552 ]
+        - [ -508, 200, -2713 ]
+
+Z2_BACKTOWNCutsceneData_0004D4:
+  type: MM:CUTSCENE
+  offset: 0x0004D4
+  symbol: Z2_BACKTOWNCutsceneData_0004D4
+  size: 392
+
+Z2_BACKTOWNTexAnim_000970:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000970
+  symbol: Z2_BACKTOWNTexAnim_000970
+
+Z2_BACKTOWNCollisionHeader_002238:
+  type: MM:COLLISION
+  offset: 0x002238
+  symbol: Z2_BACKTOWNCollisionHeader_002238
+
+Z2_BACKTOWNPathwayList_00259C:
+  type: MM:PATH
+  offset: 0x00259C
+  symbol: Z2_BACKTOWNPathwayList_00259C
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -468, 200, -2720 ]
+        - [ -480, 191, -2435 ]
+        - [ -457, 188, -2223 ]
+        - [ -349, 191, -2027 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -452, 188, -2341 ]
+        - [ -477, 200, -2549 ]
+        - [ -440, 200, -2760 ]
+
+Z2_BACKTOWNPathwayList_0025BC:
+  type: MM:PATH
+  offset: 0x0025BC
+  symbol: Z2_BACKTOWNPathwayList_0025BC
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -468, 200, -2720 ]
+        - [ -480, 191, -2435 ]
+        - [ -457, 188, -2223 ]
+        - [ -349, 191, -2027 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -452, 188, -2341 ]
+        - [ -477, 200, -2549 ]
+        - [ -440, 200, -2760 ]
+
+Z2_BACKTOWNPathwayList_0025E0:
+  type: MM:PATH
+  offset: 0x0025E0
+  symbol: Z2_BACKTOWNPathwayList_0025E0
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -468, 200, -2720 ]
+        - [ -480, 191, -2435 ]
+        - [ -457, 188, -2223 ]
+        - [ -349, 191, -2027 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -452, 188, -2341 ]
+        - [ -477, 200, -2549 ]
+        - [ -440, 200, -2760 ]
+
+Z2_BACKTOWNPathwayList_002600:
+  type: MM:PATH
+  offset: 0x002600
+  symbol: Z2_BACKTOWNPathwayList_002600
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -468, 200, -2720 ]
+        - [ -480, 191, -2435 ]
+        - [ -457, 188, -2223 ]
+        - [ -349, 191, -2027 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -452, 188, -2341 ]
+        - [ -477, 200, -2549 ]
+        - [ -440, 200, -2760 ]
+
+Z2_BACKTOWNPathwayList_00262C:
+  type: MM:PATH
+  offset: 0x00262C
+  symbol: Z2_BACKTOWNPathwayList_00262C
+  num_paths: 5
+  paths:
+    - additional_path_index: 3
+      custom_value: 4
+      points:
+        - [ -270, 198, -1543 ]
+        - [ -292, 188, -1756 ]
+        - [ -200, 193, -1870 ]
+        - [ -43, 199, -1880 ]
+        - [ -29, 203, -1906 ]
+    - additional_path_index: 4
+      custom_value: 0
+      points:
+        - [ 460, 240, -2456 ]
+        - [ 452, 232, -2048 ]
+        - [ 365, 200, -1872 ]
+        - [ 255, 193, -1832 ]
+        - [ 137, 190, -1820 ]
+    - additional_path_index: 255
+      custom_value: 0
+      points:
+        - [ -468, 200, -2720 ]
+        - [ -480, 191, -2435 ]
+        - [ -457, 188, -2223 ]
+        - [ -349, 191, -2027 ]
+        - [ -153, 197, -1885 ]
+        - [ -12, 191, -1819 ]
+        - [ 137, 190, -1806 ]
+    - additional_path_index: 255
+      custom_value: 5
+      points:
+        - [ -29, 203, -1906 ]
+        - [ -3, 200, -1882 ]
+        - [ 196, 200, -1850 ]
+        - [ 441, 193, -1819 ]
+        - [ 613, 200, -1800 ]
+        - [ 788, 200, -1785 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ 137, 189, -1820 ]
+        - [ -112, 192, -1793 ]
+        - [ -263, 192, -1845 ]
+        - [ -373, 192, -1808 ]
+        - [ -528, 192, -1779 ]
+        - [ -651, 189, -1738 ]
+        - [ -706, 189, -1808 ]
+        - [ -714, 189, -1911 ]
+        - [ -607, 189, -1959 ]
+        - [ -478, 189, -1974 ]
+        - [ -430, 189, -2117 ]
+        - [ -577, 189, -2150 ]
+        - [ -559, 189, -2227 ]
+        - [ -452, 188, -2341 ]
+        - [ -477, 200, -2549 ]
+        - [ -440, 200, -2760 ]
+
+Z2_BACKTOWNTex_002940:
+  type: TEXTURE
+  offset: 0x002940
+  symbol: Z2_BACKTOWNTex_002940
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_003140:
+  type: TEXTURE
+  offset: 0x003140
+  symbol: Z2_BACKTOWNTex_003140
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_003940:
+  type: TEXTURE
+  offset: 0x003940
+  symbol: Z2_BACKTOWNTex_003940
+  format: RGBA16
+  width: 16
+  height: 8
+
+Z2_BACKTOWNTex_003A40:
+  type: TEXTURE
+  offset: 0x003A40
+  symbol: Z2_BACKTOWNTex_003A40
+  format: I4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_004240:
+  type: TEXTURE
+  offset: 0x004240
+  symbol: Z2_BACKTOWNTex_004240
+  format: I4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_004A40:
+  type: TEXTURE
+  offset: 0x004A40
+  symbol: Z2_BACKTOWNTex_004A40
+  format: I4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_005240:
+  type: TEXTURE
+  offset: 0x005240
+  symbol: Z2_BACKTOWNTex_005240
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_005A40:
+  type: TEXTURE
+  offset: 0x005A40
+  symbol: Z2_BACKTOWNTex_005A40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_006240:
+  type: TEXTURE
+  offset: 0x006240
+  symbol: Z2_BACKTOWNTex_006240
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_006A40:
+  type: TEXTURE
+  offset: 0x006A40
+  symbol: Z2_BACKTOWNTex_006A40
+  format: I4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_007240:
+  type: TEXTURE
+  offset: 0x007240
+  symbol: Z2_BACKTOWNTex_007240
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_007A40:
+  type: TEXTURE
+  offset: 0x007A40
+  symbol: Z2_BACKTOWNTex_007A40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_008240:
+  type: TEXTURE
+  offset: 0x008240
+  symbol: Z2_BACKTOWNTex_008240
+  format: I8
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTLUT_008640:
+  type: TEXTURE
+  offset: 0x008640
+  symbol: Z2_BACKTOWNTLUT_008640
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_BACKTOWNTex_008660:
+  type: TEXTURE
+  offset: 0x008660
+  symbol: Z2_BACKTOWNTex_008660
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_008E60:
+  type: TEXTURE
+  offset: 0x008E60
+  symbol: Z2_BACKTOWNTex_008E60
+  format: I8
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_009260:
+  type: TEXTURE
+  offset: 0x009260
+  symbol: Z2_BACKTOWNTex_009260
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_009A60:
+  type: TEXTURE
+  offset: 0x009A60
+  symbol: Z2_BACKTOWNTex_009A60
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_BACKTOWNTex_00A260:
+  type: TEXTURE
+  offset: 0x00A260
+  symbol: Z2_BACKTOWNTex_00A260
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_00B260:
+  type: TEXTURE
+  offset: 0x00B260
+  symbol: Z2_BACKTOWNTex_00B260
+  format: IA8
+  width: 16
+  height: 16
+
+Z2_BACKTOWNTex_00B360:
+  type: TEXTURE
+  offset: 0x00B360
+  symbol: Z2_BACKTOWNTex_00B360
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_BACKTOWNTex_00B3E0:
+  type: TEXTURE
+  offset: 0x00B3E0
+  symbol: Z2_BACKTOWNTex_00B3E0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_00BBE0:
+  type: TEXTURE
+  offset: 0x00BBE0
+  symbol: Z2_BACKTOWNTex_00BBE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_BACKTOWNTex_00BFE0:
+  type: TEXTURE
+  offset: 0x00BFE0
+  symbol: Z2_BACKTOWNTex_00BFE0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_BACKTOWNTex_00C1E0:
+  type: TEXTURE
+  offset: 0x00C1E0
+  symbol: Z2_BACKTOWNTex_00C1E0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_BACKTOWNTex_00C5E0:
+  type: TEXTURE
+  offset: 0x00C5E0
+  symbol: Z2_BACKTOWNTex_00C5E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BACKTOWNTex_00CDE0:
+  type: TEXTURE
+  offset: 0x00CDE0
+  symbol: Z2_BACKTOWNTex_00CDE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_BACKTOWNTex_00D1E0:
+  type: TEXTURE
+  offset: 0x00D1E0
+  symbol: Z2_BACKTOWNTex_00D1E0
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_BACKTOWNTex_00E1E0:
+  type: TEXTURE
+  offset: 0x00E1E0
+  symbol: Z2_BACKTOWNTex_00E1E0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_BACKTOWNTex_00E5E0:
+  type: TEXTURE
+  offset: 0x00E5E0
+  symbol: Z2_BACKTOWNTex_00E5E0
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_BACKTOWNTex_00E660:
+  type: TEXTURE
+  offset: 0x00E660
+  symbol: Z2_BACKTOWNTex_00E660
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_00EE60:
+  type: TEXTURE
+  offset: 0x00EE60
+  symbol: Z2_BACKTOWNTex_00EE60
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_BACKTOWNTex_00F660:
+  type: TEXTURE
+  offset: 0x00F660
+  symbol: Z2_BACKTOWNTex_00F660
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_BACKTOWNTex_00FE60:
+  type: TEXTURE
+  offset: 0x00FE60
+  symbol: Z2_BACKTOWNTex_00FE60
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_BACKTOWNTLUT_010E60:
+  type: TEXTURE
+  offset: 0x010E60
+  symbol: Z2_BACKTOWNTLUT_010E60
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_BACKTOWNTLUT_010E80:
+  type: TEXTURE
+  offset: 0x010E80
+  symbol: Z2_BACKTOWNTLUT_010E80
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_BACKTOWNTLUT_010EA0:
+  type: TEXTURE
+  offset: 0x010EA0
+  symbol: Z2_BACKTOWNTLUT_010EA0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_BACKTOWNTLUT_010EC0:
+  type: TEXTURE
+  offset: 0x010EC0
+  symbol: Z2_BACKTOWNTLUT_010EC0
+  format: RGBA16
+  width: 4
+  height: 4

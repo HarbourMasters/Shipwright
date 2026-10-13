@@ -1,0 +1,11 @@
+:config:
+  segments:
+    - [ 8, 0x00A0C7E0 ]
+
+message_data_static:
+  type: MM:TEXT
+  offset: 0x0
+  symbol: message_data_static
+  code_offset: 0x11F648
+  code_phys_start: 0x00A77120
+

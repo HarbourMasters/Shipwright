@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 10, 0x00E8E970 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E8E970 ]
+    - [ 12, 0x00E8E970 ]
+    - [ 13, 0x00E8E970 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_stone_DL_000820:
+  type: GFX
+  offset: 0x820
+  symbol: object_mask_stone_DL_000820
+
+object_mask_stone_Tex_000B40:
+  type: TEXTURE
+  offset: 0xB40
+  symbol: object_mask_stone_Tex_000B40
+  format: I8
+  width: 16
+  height: 16
+
+object_mask_stone_Tex_000C40:
+  type: TEXTURE
+  offset: 0xC40
+  symbol: object_mask_stone_Tex_000C40
+  format: I8
+  width: 32
+  height: 32
+
+
+object_mask_stoneVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_stoneVtx_000000
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

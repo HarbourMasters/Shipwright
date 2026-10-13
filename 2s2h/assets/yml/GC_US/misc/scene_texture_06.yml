@@ -1,0 +1,116 @@
+:config:
+  segments:
+    - [ 6, 0x016138B0 ]
+
+scene_texture_06_TLUT_000C00:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: scene_texture_06_TLUT_000C00
+  format: RGBA16
+  width: 4
+  height: 4
+
+scene_texture_06_TLUT_001420:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: scene_texture_06_TLUT_001420
+  format: RGBA16
+  width: 4
+  height: 4
+
+scene_texture_06_TLUT_001C40:
+  type: TEXTURE
+  offset: 0x1C40
+  symbol: scene_texture_06_TLUT_001C40
+  format: RGBA16
+  width: 4
+  height: 4
+
+scene_texture_06_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: scene_texture_06_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 16
+
+scene_texture_06_Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: scene_texture_06_Tex_000400
+  format: CI4
+  width: 128
+  height: 32
+
+scene_texture_06_Tex_000C20:
+  type: TEXTURE
+  offset: 0xC20
+  symbol: scene_texture_06_Tex_000C20
+  format: CI4
+  width: 64
+  height: 64
+
+scene_texture_06_Tex_001440:
+  type: TEXTURE
+  offset: 0x1440
+  symbol: scene_texture_06_Tex_001440
+  format: CI4
+  width: 64
+  height: 64
+
+scene_texture_06_Tex_001C60:
+  type: TEXTURE
+  offset: 0x1C60
+  symbol: scene_texture_06_Tex_001C60
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_06_Tex_002460:
+  type: TEXTURE
+  offset: 0x2460
+  symbol: scene_texture_06_Tex_002460
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_06_Tex_002C60:
+  type: TEXTURE
+  offset: 0x2C60
+  symbol: scene_texture_06_Tex_002C60
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_06_Tex_003460:
+  type: TEXTURE
+  offset: 0x3460
+  symbol: scene_texture_06_Tex_003460
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_06_Tex_003C60:
+  type: TEXTURE
+  offset: 0x3C60
+  symbol: scene_texture_06_Tex_003C60
+  format: I4
+  width: 64
+  height: 64
+
+scene_texture_06_Tex_004460:
+  type: TEXTURE
+  offset: 0x4460
+  symbol: scene_texture_06_Tex_004460
+  format: RGBA16
+  width: 32
+  height: 32
+
+scene_texture_06_Tex_004C60:
+  type: TEXTURE
+  offset: 0x4C60
+  symbol: scene_texture_06_Tex_004C60
+  format: RGBA16
+  width: 32
+  height: 32
+

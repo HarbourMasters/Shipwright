@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 6, 0x0141D360 ]
+
+gGoronSpringLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2704
+  symbol: gGoronSpringLookAroundAnim
+
+gGoronSpringLookAroundLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3378
+  symbol: gGoronSpringLookAroundLoopAnim
+
+gGoronSpringShowAnim:
+  type: OOT:ANIMATION
+  offset: 0x1420
+  symbol: gGoronSpringShowAnim
+
+gGoronSpringShowLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1A4C
+  symbol: gGoronSpringShowLoopAnim
+

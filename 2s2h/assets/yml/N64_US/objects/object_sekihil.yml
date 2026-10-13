@@ -1,0 +1,128 @@
+:config:
+  segments:
+    - [ 6, 0x0119EF60 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0119EF60 ]
+    - [ 9, 0x0119EF60 ]
+    - [ 10, 0x0119EF60 ]
+    - [ 11, 0x0119EF60 ]
+    - [ 12, 0x0119EF60 ]
+    - [ 13, 0x0119EF60 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSunsSongGraveTriforceCol:
+  type: MM:COLLISION
+  offset: 0x33F8
+  symbol: gSunsSongGraveTriforceCol
+
+gSunsSongGraveTriforceDL:
+  type: GFX
+  offset: 0x5E0
+  symbol: gSunsSongGraveTriforceDL
+
+gSunsSongGraveTriforceGoronTLUT:
+  type: TEXTURE
+  offset: 0x5F8
+  symbol: gSunsSongGraveTriforceGoronTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveTriforceGraniteTex:
+  type: TEXTURE
+  offset: 0x678
+  symbol: gSunsSongGraveTriforceGraniteTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSunsSongGraveTriforceKokiriTLUT:
+  type: TEXTURE
+  offset: 0x618
+  symbol: gSunsSongGraveTriforceKokiriTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveTriforceMarbleTex:
+  type: TEXTURE
+  offset: 0xE78
+  symbol: gSunsSongGraveTriforceMarbleTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSunsSongGraveTriforceStaffNotesTex:
+  type: TEXTURE
+  offset: 0x2A78
+  symbol: gSunsSongGraveTriforceStaffNotesTex
+  format: IA4
+  width: 128
+  height: 32
+
+gSunsSongGraveTriforceStoneDL:
+  type: GFX
+  offset: 0x4D0
+  symbol: gSunsSongGraveTriforceStoneDL
+
+gSunsSongGraveTriforceStoneInscriptionTex:
+  type: TEXTURE
+  offset: 0x2278
+  symbol: gSunsSongGraveTriforceStoneInscriptionTex
+  format: CI4
+  width: 64
+  height: 64
+
+gSunsSongGraveTriforceSymbolTex:
+  type: TEXTURE
+  offset: 0x1E78
+  symbol: gSunsSongGraveTriforceSymbolTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongGraveTriforceSymbolsBaseDL:
+  type: GFX
+  offset: 0x340
+  symbol: gSunsSongGraveTriforceSymbolsBaseDL
+
+gSunsSongGraveTriforceSymbolsDL:
+  type: GFX
+  offset: 0x4C0
+  symbol: gSunsSongGraveTriforceSymbolsDL
+
+gSunsSongGraveTriforceTLUT:
+  type: TEXTURE
+  offset: 0x658
+  symbol: gSunsSongGraveTriforceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gSunsSongGraveTriforceUnknownTLUT:
+  type: TEXTURE
+  offset: 0x638
+  symbol: gSunsSongGraveTriforceUnknownTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+
+object_sekihilVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sekihilVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sekihilVtx_000240:
+  type: MM:ARRAY
+  offset: 0x000240
+  symbol: object_sekihilVtx_000240
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

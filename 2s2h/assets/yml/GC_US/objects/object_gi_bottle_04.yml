@@ -1,0 +1,86 @@
+:config:
+  segments:
+    - [ 6, 0x015D58A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015D58A0 ]
+    - [ 9, 0x015D58A0 ]
+    - [ 10, 0x015D58A0 ]
+    - [ 11, 0x015D58A0 ]
+    - [ 12, 0x015D58A0 ]
+    - [ 13, 0x015D58A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiFairyBottleBillboardRotMtx:
+  type: OOT:MTX
+  offset: 0x7B0
+  symbol: gGiFairyBottleBillboardRotMtx
+
+gGiFairyBottleContentsDL:
+  type: GFX
+  offset: 0x7F0
+  symbol: gGiFairyBottleContentsDL
+
+gGiFairyBottleCorkTex:
+  type: TEXTURE
+  offset: 0xB18
+  symbol: gGiFairyBottleCorkTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiFairyBottleEmptyDL:
+  type: GFX
+  offset: 0xB10
+  symbol: gGiFairyBottleEmptyDL
+
+gGiFairyBottleFairyTex:
+  type: TEXTURE
+  offset: 0xC18
+  symbol: gGiFairyBottleFairyTex
+  format: IA8
+  width: 32
+  height: 32
+
+gGiFairyBottleGlassCorkDL:
+  type: GFX
+  offset: 0x8B8
+  symbol: gGiFairyBottleGlassCorkDL
+
+gGiFairyBottleGlassTex:
+  type: TEXTURE
+  offset: 0x1018
+  symbol: gGiFairyBottleGlassTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiFairyBottleTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1254
+  symbol: gGiFairyBottleTexAnim
+
+
+object_gi_bottle_04Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bottle_04Vtx_000000
+  count: 119
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bottle_04Vtx_000770:
+  type: MM:ARRAY
+  offset: 0x000770
+  symbol: object_gi_bottle_04Vtx_000770
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGiFairyBottleTexAnimColorParams_001244:
+  type: BLOB
+  offset: 0x001244
+  symbol: gGiFairyBottleTexAnimColorParams_001244
+  size: 0

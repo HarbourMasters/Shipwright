@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 2, 0x01AB1290 ]
+
+Z2_LAST_GORON:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_LAST_GORON
+
+
+Z2_LAST_GORONCutsceneData_000130:
+  type: MM:CUTSCENE
+  offset: 0x000130
+  symbol: Z2_LAST_GORONCutsceneData_000130
+  size: 560
+
+Z2_LAST_GORONTexAnim_0004A0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0004A0
+  symbol: Z2_LAST_GORONTexAnim_0004A0
+
+Z2_LAST_GORONCollisionHeader_008374:
+  type: MM:COLLISION
+  offset: 0x008374
+  symbol: Z2_LAST_GORONCollisionHeader_008374
+
+Z2_LAST_GORONTex_0083A0:
+  type: TEXTURE
+  offset: 0x0083A0
+  symbol: Z2_LAST_GORONTex_0083A0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORONTex_008BA0:
+  type: TEXTURE
+  offset: 0x008BA0
+  symbol: Z2_LAST_GORONTex_008BA0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORONTLUT_0093A0:
+  type: TEXTURE
+  offset: 0x0093A0
+  symbol: Z2_LAST_GORONTLUT_0093A0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORONTLUT_0093C0:
+  type: TEXTURE
+  offset: 0x0093C0
+  symbol: Z2_LAST_GORONTLUT_0093C0
+  format: RGBA16
+  width: 16
+  height: 16

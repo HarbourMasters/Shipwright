@@ -1,0 +1,863 @@
+:config:
+  segments:
+    - [ 5, 0x00E41C30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00E41C30 ]
+    - [ 9, 0x00E41C30 ]
+    - [ 10, 0x00E41C30 ]
+    - [ 11, 0x00E41C30 ]
+    - [ 12, 0x00E41C30 ]
+    - [ 13, 0x00E41C30 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBossDoorLockTex:
+  type: TEXTURE
+  offset: 0xAC0
+  symbol: gBossDoorLockTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCrystalSwitchBaseDL:
+  type: GFX
+  offset: 0x1C058
+  symbol: gCrystalSwitchBaseDL
+
+gCrystalSwitchCoreDL:
+  type: GFX
+  offset: 0x1BEE0
+  symbol: gCrystalSwitchCoreDL
+
+gCrystalSwitchDiamondDL:
+  type: GFX
+  offset: 0x1BFB8
+  symbol: gCrystalSwitchDiamondDL
+
+gCrystalSwitchTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1C118
+  symbol: gCrystalSwitchTexAnim
+
+gDoorChainDL:
+  type: GFX
+  offset: 0x230
+  symbol: gDoorChainDL
+
+gDoorChainTex:
+  type: TEXTURE
+  offset: 0x12C0
+  symbol: gDoorChainTex
+  format: RGBA16
+  width: 16
+  height: 128
+
+gDoorLockDL:
+  type: GFX
+  offset: 0x140
+  symbol: gDoorLockDL
+
+gDoorLockTex:
+  type: TEXTURE
+  offset: 0x2C0
+  symbol: gDoorLockTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchGoldClosedTex:
+  type: TEXTURE
+  offset: 0x96C0
+  symbol: gEyeSwitchGoldClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchGoldClosingTex:
+  type: TEXTURE
+  offset: 0xA6C0
+  symbol: gEyeSwitchGoldClosingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchGoldDL:
+  type: GFX
+  offset: 0x83F0
+  symbol: gEyeSwitchGoldDL
+
+gEyeSwitchGoldOpenTex:
+  type: TEXTURE
+  offset: 0xAEC0
+  symbol: gEyeSwitchGoldOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchGoldOpeningTex:
+  type: TEXTURE
+  offset: 0x9EC0
+  symbol: gEyeSwitchGoldOpeningTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchSilverClosedTex:
+  type: TEXTURE
+  offset: 0xC6C0
+  symbol: gEyeSwitchSilverClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchSilverDL:
+  type: GFX
+  offset: 0x85F0
+  symbol: gEyeSwitchSilverDL
+
+gEyeSwitchSilverHalfTex:
+  type: TEXTURE
+  offset: 0xBEC0
+  symbol: gEyeSwitchSilverHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gEyeSwitchSilverOpenTex:
+  type: TEXTURE
+  offset: 0xB6C0
+  symbol: gEyeSwitchSilverOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFloorSwitch1DL:
+  type: GFX
+  offset: 0x1B508
+  symbol: gFloorSwitch1DL
+
+gFloorSwitch2DL:
+  type: GFX
+  offset: 0x1B788
+  symbol: gFloorSwitch2DL
+
+gFloorSwitch3DL:
+  type: GFX
+  offset: 0x1B9F8
+  symbol: gFloorSwitch3DL
+
+gFloorSwitchCol:
+  type: MM:COLLISION
+  offset: 0x8018
+  symbol: gFloorSwitchCol
+
+gRustyFloorSwitchDL:
+  type: GFX
+  offset: 0x7E00
+  symbol: gRustyFloorSwitchDL
+
+gWarpTagGoronTrialBaseCol:
+  type: MM:COLLISION
+  offset: 0x2324C
+  symbol: gWarpTagGoronTrialBaseCol
+
+gWarpTagGoronTrialBaseDL:
+  type: GFX
+  offset: 0x21EF0
+  symbol: gWarpTagGoronTrialBaseDL
+
+gWarpTagRainbowTex:
+  type: TEXTURE
+  offset: 0x21FF8
+  symbol: gWarpTagRainbowTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gWarpTagRainbowTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x23008
+  symbol: gWarpTagRainbowTexAnim
+
+gameplay_dangeon_keep_Colheader_007498:
+  type: MM:COLLISION
+  offset: 0x7498
+  symbol: gameplay_dangeon_keep_Colheader_007498
+
+gameplay_dangeon_keep_Colheader_01D488:
+  type: MM:COLLISION
+  offset: 0x1D488
+  symbol: gameplay_dangeon_keep_Colheader_01D488
+
+gameplay_dangeon_keep_DL_007300:
+  type: GFX
+  offset: 0x7300
+  symbol: gameplay_dangeon_keep_DL_007300
+
+gameplay_dangeon_keep_DL_007650:
+  type: GFX
+  offset: 0x7650
+  symbol: gameplay_dangeon_keep_DL_007650
+
+gameplay_dangeon_keep_DL_007890:
+  type: GFX
+  offset: 0x7890
+  symbol: gameplay_dangeon_keep_DL_007890
+
+gameplay_dangeon_keep_DL_007980:
+  type: GFX
+  offset: 0x7980
+  symbol: gameplay_dangeon_keep_DL_007980
+
+gameplay_dangeon_keep_DL_007A50:
+  type: GFX
+  offset: 0x7A50
+  symbol: gameplay_dangeon_keep_DL_007A50
+
+gameplay_dangeon_keep_DL_007B20:
+  type: GFX
+  offset: 0x7B20
+  symbol: gameplay_dangeon_keep_DL_007B20
+
+gameplay_dangeon_keep_DL_007BF0:
+  type: GFX
+  offset: 0x7BF0
+  symbol: gameplay_dangeon_keep_DL_007BF0
+
+gameplay_dangeon_keep_DL_0081D0:
+  type: GFX
+  offset: 0x81D0
+  symbol: gameplay_dangeon_keep_DL_0081D0
+
+gameplay_dangeon_keep_DL_017EA0:
+  type: GFX
+  offset: 0x17EA0
+  symbol: gameplay_dangeon_keep_DL_017EA0
+
+gameplay_dangeon_keep_DL_018090:
+  type: GFX
+  offset: 0x18090
+  symbol: gameplay_dangeon_keep_DL_018090
+
+gameplay_dangeon_keep_DL_0182A0:
+  type: GFX
+  offset: 0x182A0
+  symbol: gameplay_dangeon_keep_DL_0182A0
+
+gameplay_dangeon_keep_DL_0182A8:
+  type: GFX
+  offset: 0x182A8
+  symbol: gameplay_dangeon_keep_DL_0182A8
+
+gameplay_dangeon_keep_DL_01B500:
+  type: GFX
+  offset: 0x1B500
+  symbol: gameplay_dangeon_keep_DL_01B500
+
+gameplay_dangeon_keep_DL_01B780:
+  type: GFX
+  offset: 0x1B780
+  symbol: gameplay_dangeon_keep_DL_01B780
+
+gameplay_dangeon_keep_DL_01B9F0:
+  type: GFX
+  offset: 0x1B9F0
+  symbol: gameplay_dangeon_keep_DL_01B9F0
+
+gameplay_dangeon_keep_DL_01C220:
+  type: GFX
+  offset: 0x1C220
+  symbol: gameplay_dangeon_keep_DL_01C220
+
+gameplay_dangeon_keep_DL_01C228:
+  type: GFX
+  offset: 0x1C228
+  symbol: gameplay_dangeon_keep_DL_01C228
+
+gameplay_dangeon_keep_DL_01D980:
+  type: GFX
+  offset: 0x1D980
+  symbol: gameplay_dangeon_keep_DL_01D980
+
+gameplay_dangeon_keep_DL_0219E0:
+  type: GFX
+  offset: 0x219E0
+  symbol: gameplay_dangeon_keep_DL_0219E0
+
+gameplay_dangeon_keep_Matanimheader_01B370:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1B370
+  symbol: gameplay_dangeon_keep_Matanimheader_01B370
+
+gameplay_dangeon_keep_Tex_0022C8:
+  type: TEXTURE
+  offset: 0x22C8
+  symbol: gameplay_dangeon_keep_Tex_0022C8
+  format: I4
+  width: 96
+  height: 85
+
+gameplay_dangeon_keep_Tex_0032C8:
+  type: TEXTURE
+  offset: 0x32C8
+  symbol: gameplay_dangeon_keep_Tex_0032C8
+  format: I4
+  width: 96
+  height: 85
+
+gameplay_dangeon_keep_Tex_0042C8:
+  type: TEXTURE
+  offset: 0x42C8
+  symbol: gameplay_dangeon_keep_Tex_0042C8
+  format: I4
+  width: 96
+  height: 85
+
+gameplay_dangeon_keep_Tex_0052C8:
+  type: TEXTURE
+  offset: 0x52C8
+  symbol: gameplay_dangeon_keep_Tex_0052C8
+  format: I4
+  width: 96
+  height: 85
+
+gameplay_dangeon_keep_Tex_0062C8:
+  type: TEXTURE
+  offset: 0x62C8
+  symbol: gameplay_dangeon_keep_Tex_0062C8
+  format: I4
+  width: 96
+  height: 85
+
+gameplay_dangeon_keep_Tex_0086C0:
+  type: TEXTURE
+  offset: 0x86C0
+  symbol: gameplay_dangeon_keep_Tex_0086C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_008EC0:
+  type: TEXTURE
+  offset: 0x8EC0
+  symbol: gameplay_dangeon_keep_Tex_008EC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00CEC0:
+  type: TEXTURE
+  offset: 0xCEC0
+  symbol: gameplay_dangeon_keep_Tex_00CEC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00D6C0:
+  type: TEXTURE
+  offset: 0xD6C0
+  symbol: gameplay_dangeon_keep_Tex_00D6C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00DEC0:
+  type: TEXTURE
+  offset: 0xDEC0
+  symbol: gameplay_dangeon_keep_Tex_00DEC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00E6C0:
+  type: TEXTURE
+  offset: 0xE6C0
+  symbol: gameplay_dangeon_keep_Tex_00E6C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00EEC0:
+  type: TEXTURE
+  offset: 0xEEC0
+  symbol: gameplay_dangeon_keep_Tex_00EEC0
+  format: I8
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00F2C0:
+  type: TEXTURE
+  offset: 0xF2C0
+  symbol: gameplay_dangeon_keep_Tex_00F2C0
+  format: I8
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00F6C0:
+  type: TEXTURE
+  offset: 0xF6C0
+  symbol: gameplay_dangeon_keep_Tex_00F6C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_00FEC0:
+  type: TEXTURE
+  offset: 0xFEC0
+  symbol: gameplay_dangeon_keep_Tex_00FEC0
+  format: RGBA16
+  width: 64
+  height: 32
+
+gameplay_dangeon_keep_Tex_010EC0:
+  type: TEXTURE
+  offset: 0x10EC0
+  symbol: gameplay_dangeon_keep_Tex_010EC0
+  format: RGBA16
+  width: 32
+  height: 64
+
+gameplay_dangeon_keep_Tex_011EC0:
+  type: TEXTURE
+  offset: 0x11EC0
+  symbol: gameplay_dangeon_keep_Tex_011EC0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gameplay_dangeon_keep_Tex_0120C0:
+  type: TEXTURE
+  offset: 0x120C0
+  symbol: gameplay_dangeon_keep_Tex_0120C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gameplay_dangeon_keep_Tex_0122C0:
+  type: TEXTURE
+  offset: 0x122C0
+  symbol: gameplay_dangeon_keep_Tex_0122C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+gameplay_dangeon_keep_Tex_0132C0:
+  type: TEXTURE
+  offset: 0x132C0
+  symbol: gameplay_dangeon_keep_Tex_0132C0
+  format: RGBA16
+  width: 64
+  height: 16
+
+gameplay_dangeon_keep_Tex_013AC0:
+  type: TEXTURE
+  offset: 0x13AC0
+  symbol: gameplay_dangeon_keep_Tex_013AC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_0142C0:
+  type: TEXTURE
+  offset: 0x142C0
+  symbol: gameplay_dangeon_keep_Tex_0142C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_014AC0:
+  type: TEXTURE
+  offset: 0x14AC0
+  symbol: gameplay_dangeon_keep_Tex_014AC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_0152C0:
+  type: TEXTURE
+  offset: 0x152C0
+  symbol: gameplay_dangeon_keep_Tex_0152C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_015AC0:
+  type: TEXTURE
+  offset: 0x15AC0
+  symbol: gameplay_dangeon_keep_Tex_015AC0
+  format: I8
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_015EC0:
+  type: TEXTURE
+  offset: 0x15EC0
+  symbol: gameplay_dangeon_keep_Tex_015EC0
+  format: I8
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_0162C0:
+  type: TEXTURE
+  offset: 0x162C0
+  symbol: gameplay_dangeon_keep_Tex_0162C0
+  format: I8
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_0172C0:
+  type: TEXTURE
+  offset: 0x172C0
+  symbol: gameplay_dangeon_keep_Tex_0172C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_017AC0:
+  type: TEXTURE
+  offset: 0x17AC0
+  symbol: gameplay_dangeon_keep_Tex_017AC0
+  format: IA16
+  width: 4
+  height: 4
+
+gameplay_dangeon_keep_Tex_018350:
+  type: TEXTURE
+  offset: 0x18350
+  symbol: gameplay_dangeon_keep_Tex_018350
+  format: I8
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_019350:
+  type: TEXTURE
+  offset: 0x19350
+  symbol: gameplay_dangeon_keep_Tex_019350
+  format: I8
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_01A350:
+  type: TEXTURE
+  offset: 0x1A350
+  symbol: gameplay_dangeon_keep_Tex_01A350
+  format: I8
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_01C2D8:
+  type: TEXTURE
+  offset: 0x1C2D8
+  symbol: gameplay_dangeon_keep_Tex_01C2D8
+  format: RGBA16
+  width: 32
+  height: 64
+
+gameplay_dangeon_keep_Tex_01DC70:
+  type: TEXTURE
+  offset: 0x1DC70
+  symbol: gameplay_dangeon_keep_Tex_01DC70
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_01E470:
+  type: TEXTURE
+  offset: 0x1E470
+  symbol: gameplay_dangeon_keep_Tex_01E470
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_01EC70:
+  type: TEXTURE
+  offset: 0x1EC70
+  symbol: gameplay_dangeon_keep_Tex_01EC70
+  format: RGBA16
+  width: 32
+  height: 32
+
+gameplay_dangeon_keep_Tex_01F470:
+  type: TEXTURE
+  offset: 0x1F470
+  symbol: gameplay_dangeon_keep_Tex_01F470
+  format: I4
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_01FC70:
+  type: TEXTURE
+  offset: 0x1FC70
+  symbol: gameplay_dangeon_keep_Tex_01FC70
+  format: I4
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_020470:
+  type: TEXTURE
+  offset: 0x20470
+  symbol: gameplay_dangeon_keep_Tex_020470
+  format: I4
+  width: 64
+  height: 64
+
+gameplay_dangeon_keep_Tex_020C70:
+  type: TEXTURE
+  offset: 0x20C70
+  symbol: gameplay_dangeon_keep_Tex_020C70
+  format: I4
+  width: 64
+  height: 64
+
+
+gameplay_dangeon_keepVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: gameplay_dangeon_keepVtx_000000
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_0001F0:
+  type: MM:ARRAY
+  offset: 0x0001F0
+  symbol: gameplay_dangeon_keepVtx_0001F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_0072C0:
+  type: MM:ARRAY
+  offset: 0x0072C0
+  symbol: gameplay_dangeon_keepVtx_0072C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_0074D0:
+  type: MM:ARRAY
+  offset: 0x0074D0
+  symbol: gameplay_dangeon_keepVtx_0074D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007710:
+  type: MM:ARRAY
+  offset: 0x007710
+  symbol: gameplay_dangeon_keepVtx_007710
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007950:
+  type: MM:ARRAY
+  offset: 0x007950
+  symbol: gameplay_dangeon_keepVtx_007950
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007A10:
+  type: MM:ARRAY
+  offset: 0x007A10
+  symbol: gameplay_dangeon_keepVtx_007A10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007AE0:
+  type: MM:ARRAY
+  offset: 0x007AE0
+  symbol: gameplay_dangeon_keepVtx_007AE0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007BB0:
+  type: MM:ARRAY
+  offset: 0x007BB0
+  symbol: gameplay_dangeon_keepVtx_007BB0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_007C80:
+  type: MM:ARRAY
+  offset: 0x007C80
+  symbol: gameplay_dangeon_keepVtx_007C80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_008050:
+  type: MM:ARRAY
+  offset: 0x008050
+  symbol: gameplay_dangeon_keepVtx_008050
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_0082D0:
+  type: MM:ARRAY
+  offset: 0x0082D0
+  symbol: gameplay_dangeon_keepVtx_0082D0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_0084C0:
+  type: MM:ARRAY
+  offset: 0x0084C0
+  symbol: gameplay_dangeon_keepVtx_0084C0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_017AE0:
+  type: MM:ARRAY
+  offset: 0x017AE0
+  symbol: gameplay_dangeon_keepVtx_017AE0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_018060:
+  type: MM:ARRAY
+  offset: 0x018060
+  symbol: gameplay_dangeon_keepVtx_018060
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_018120:
+  type: MM:ARRAY
+  offset: 0x018120
+  symbol: gameplay_dangeon_keepVtx_018120
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keep_Matanimheader_01B370TexCycleParams_01B360:
+  type: BLOB
+  offset: 0x01B360
+  symbol: gameplay_dangeon_keep_Matanimheader_01B370TexCycleParams_01B360
+  size: 0
+
+gameplay_dangeon_keepVtx_01B380:
+  type: MM:ARRAY
+  offset: 0x01B380
+  symbol: gameplay_dangeon_keepVtx_01B380
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01B600:
+  type: MM:ARRAY
+  offset: 0x01B600
+  symbol: gameplay_dangeon_keepVtx_01B600
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01B890:
+  type: MM:ARRAY
+  offset: 0x01B890
+  symbol: gameplay_dangeon_keepVtx_01B890
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01BB00:
+  type: MM:ARRAY
+  offset: 0x01BB00
+  symbol: gameplay_dangeon_keepVtx_01BB00
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01BC20:
+  type: MM:ARRAY
+  offset: 0x01BC20
+  symbol: gameplay_dangeon_keepVtx_01BC20
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01BDA0:
+  type: MM:ARRAY
+  offset: 0x01BDA0
+  symbol: gameplay_dangeon_keepVtx_01BDA0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCrystalSwitchTexAnimTexScrollParams_01C110:
+  type: BLOB
+  offset: 0x01C110
+  symbol: gCrystalSwitchTexAnimTexScrollParams_01C110
+  size: 0
+
+gameplay_dangeon_keepVtx_01C120:
+  type: MM:ARRAY
+  offset: 0x01C120
+  symbol: gameplay_dangeon_keepVtx_01C120
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_01D4C0:
+  type: MM:ARRAY
+  offset: 0x01D4C0
+  symbol: gameplay_dangeon_keepVtx_01D4C0
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_021470:
+  type: MM:ARRAY
+  offset: 0x021470
+  symbol: gameplay_dangeon_keepVtx_021470
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_dangeon_keepVtx_021CF0:
+  type: MM:ARRAY
+  offset: 0x021CF0
+  symbol: gameplay_dangeon_keepVtx_021CF0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWarpTagRainbowTexAnimTexScrollParams_023000:
+  type: BLOB
+  offset: 0x023000
+  symbol: gWarpTagRainbowTexAnimTexScrollParams_023000
+  size: 0

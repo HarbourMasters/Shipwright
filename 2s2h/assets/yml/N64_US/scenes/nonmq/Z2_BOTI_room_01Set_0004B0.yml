@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01AFA430 ]
+    - [ 2, 0x01AE8AB0 ]
+  directory: scenes/nonmq/Z2_BOTI
+  external_files:
+    - N64_US/scenes/nonmq/Z2_BOTI_room_01.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_BOTI.yml
+
+Z2_BOTI_room_01Set_0004B0:
+  type: MM:ROOM
+  offset: 0x4B0
+  symbol: Z2_BOTI_room_01Set_0004B0
+  base_name: Z2_BOTI_room_01

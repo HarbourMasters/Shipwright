@@ -1,0 +1,218 @@
+:config:
+  segments:
+    - [ 3, 0x01C1C950 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01C1C950 ]
+    - [ 9, 0x01C1C950 ]
+    - [ 10, 0x01C1C950 ]
+    - [ 11, 0x01C1C950 ]
+    - [ 12, 0x01C1C950 ]
+    - [ 13, 0x01C1C950 ]
+    - [ 2, 0x01BFB2C0 ]
+  directory: scenes/nonmq/Z2_BANDROOM
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_BANDROOM.yml
+
+Z2_BANDROOM_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_BANDROOM_room_03
+
+Z2_BANDROOM_room_03DL_004730:
+  type: GFX
+  offset: 0x4730
+  symbol: Z2_BANDROOM_room_03DL_004730
+
+Z2_BANDROOM_room_03DL_008748:
+  type: GFX
+  offset: 0x8748
+  symbol: Z2_BANDROOM_room_03DL_008748
+
+
+Z2_BANDROOM_room_03ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_BANDROOM_room_03ActorEntry_000048
+  size: 0
+
+Z2_BANDROOM_room_03Vtx_000110:
+  type: MM:ARRAY
+  offset: 0x000110
+  symbol: Z2_BANDROOM_room_03Vtx_000110
+  count: 316
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_0014D0:
+  type: GFX
+  offset: 0x0014D0
+  symbol: Z2_BANDROOM_room_03DL_0014D0
+
+Z2_BANDROOM_room_03Vtx_0019C0:
+  type: MM:ARRAY
+  offset: 0x0019C0
+  symbol: Z2_BANDROOM_room_03Vtx_0019C0
+  count: 198
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_002620:
+  type: GFX
+  offset: 0x002620
+  symbol: Z2_BANDROOM_room_03DL_002620
+
+Z2_BANDROOM_room_03Vtx_002938:
+  type: MM:ARRAY
+  offset: 0x002938
+  symbol: Z2_BANDROOM_room_03Vtx_002938
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_002D68:
+  type: GFX
+  offset: 0x002D68
+  symbol: Z2_BANDROOM_room_03DL_002D68
+
+Z2_BANDROOM_room_03Vtx_002EE0:
+  type: MM:ARRAY
+  offset: 0x002EE0
+  symbol: Z2_BANDROOM_room_03Vtx_002EE0
+  count: 212
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_003C20:
+  type: GFX
+  offset: 0x003C20
+  symbol: Z2_BANDROOM_room_03DL_003C20
+
+Z2_BANDROOM_room_03Vtx_004050:
+  type: MM:ARRAY
+  offset: 0x004050
+  symbol: Z2_BANDROOM_room_03Vtx_004050
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_0045B0:
+  type: GFX
+  offset: 0x0045B0
+  symbol: Z2_BANDROOM_room_03DL_0045B0
+
+Z2_BANDROOM_room_03Tex_004760:
+  type: TEXTURE
+  offset: 0x004760
+  symbol: Z2_BANDROOM_room_03Tex_004760
+  format: I8
+  width: 32
+  height: 128
+
+Z2_BANDROOM_room_03Tex_005760:
+  type: TEXTURE
+  offset: 0x005760
+  symbol: Z2_BANDROOM_room_03Tex_005760
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_03Tex_005B60:
+  type: TEXTURE
+  offset: 0x005B60
+  symbol: Z2_BANDROOM_room_03Tex_005B60
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_BANDROOM_room_03Tex_005C60:
+  type: TEXTURE
+  offset: 0x005C60
+  symbol: Z2_BANDROOM_room_03Tex_005C60
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_BANDROOM_room_03Tex_006460:
+  type: TEXTURE
+  offset: 0x006460
+  symbol: Z2_BANDROOM_room_03Tex_006460
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_BANDROOM_room_03Tex_007460:
+  type: TEXTURE
+  offset: 0x007460
+  symbol: Z2_BANDROOM_room_03Tex_007460
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_BANDROOM_room_03DL_007860:
+  type: GFX
+  offset: 0x007860
+  symbol: Z2_BANDROOM_room_03DL_007860
+
+Z2_BANDROOM_room_03Vtx_007868:
+  type: MM:ARRAY
+  offset: 0x007868
+  symbol: Z2_BANDROOM_room_03Vtx_007868
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_007D48:
+  type: GFX
+  offset: 0x007D48
+  symbol: Z2_BANDROOM_room_03DL_007D48
+
+Z2_BANDROOM_room_03Vtx_007EB8:
+  type: MM:ARRAY
+  offset: 0x007EB8
+  symbol: Z2_BANDROOM_room_03Vtx_007EB8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_007F78:
+  type: GFX
+  offset: 0x007F78
+  symbol: Z2_BANDROOM_room_03DL_007F78
+
+Z2_BANDROOM_room_03Vtx_008050:
+  type: MM:ARRAY
+  offset: 0x008050
+  symbol: Z2_BANDROOM_room_03Vtx_008050
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_BANDROOM_room_03DL_008590:
+  type: GFX
+  offset: 0x008590
+  symbol: Z2_BANDROOM_room_03DL_008590
+
+Z2_BANDROOM_room_03Tex_008770:
+  type: TEXTURE
+  offset: 0x008770
+  symbol: Z2_BANDROOM_room_03Tex_008770
+  format: I8
+  width: 32
+  height: 128
+
+Z2_BANDROOM_room_03Tex_009770:
+  type: TEXTURE
+  offset: 0x009770
+  symbol: Z2_BANDROOM_room_03Tex_009770
+  format: RGBA32
+  width: 32
+  height: 32

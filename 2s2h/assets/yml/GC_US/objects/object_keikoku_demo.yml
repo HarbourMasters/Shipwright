@@ -1,0 +1,270 @@
+:config:
+  segments:
+    - [ 6, 0x011848D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011848D0 ]
+    - [ 9, 0x011848D0 ]
+    - [ 10, 0x011848D0 ]
+    - [ 11, 0x011848D0 ]
+    - [ 12, 0x011848D0 ]
+    - [ 13, 0x011848D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gKeikokuDemoBrightMossyBarkTex:
+  type: TEXTURE
+  offset: 0x6330
+  symbol: gKeikokuDemoBrightMossyBarkTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoCloverEdgeTex:
+  type: TEXTURE
+  offset: 0x4930
+  symbol: gKeikokuDemoCloverEdgeTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gKeikokuDemoCloverTopTex:
+  type: TEXTURE
+  offset: 0x5130
+  symbol: gKeikokuDemoCloverTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoDarkGreenMossTex:
+  type: TEXTURE
+  offset: 0x6130
+  symbol: gKeikokuDemoDarkGreenMossTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKeikokuDemoDarkMossyBarkTex:
+  type: TEXTURE
+  offset: 0x5930
+  symbol: gKeikokuDemoDarkMossyBarkTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoDirtWallTex:
+  type: TEXTURE
+  offset: 0x6B30
+  symbol: gKeikokuDemoDirtWallTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gKeikokuDemoDullYellowFlowersOnGrassTex:
+  type: TEXTURE
+  offset: 0xCB30
+  symbol: gKeikokuDemoDullYellowFlowersOnGrassTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoFallLeavesOnGrass2Tex:
+  type: TEXTURE
+  offset: 0xA730
+  symbol: gKeikokuDemoFallLeavesOnGrass2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoFallLeavesOnGrassTex:
+  type: TEXTURE
+  offset: 0x1450
+  symbol: gKeikokuDemoFallLeavesOnGrassTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoFloorCol:
+  type: MM:COLLISION
+  offset: 0x1C98
+  symbol: gKeikokuDemoFloorCol
+
+gKeikokuDemoFloorDL:
+  type: GFX
+  offset: 0x978
+  symbol: gKeikokuDemoFloorDL
+
+gKeikokuDemoFloorEmptyDL:
+  type: GFX
+  offset: 0x970
+  symbol: gKeikokuDemoFloorEmptyDL
+
+gKeikokuDemoGreenSludgeTex:
+  type: TEXTURE
+  offset: 0xBF30
+  symbol: gKeikokuDemoGreenSludgeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoHangingMossTex:
+  type: TEXTURE
+  offset: 0x8330
+  symbol: gKeikokuDemoHangingMossTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoStumpRingsDarkTex:
+  type: TEXTURE
+  offset: 0x8B30
+  symbol: gKeikokuDemoStumpRingsDarkTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoStumpRingsPinkTex:
+  type: TEXTURE
+  offset: 0x9330
+  symbol: gKeikokuDemoStumpRingsPinkTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gKeikokuDemoTallTreeCutDL:
+  type: GFX
+  offset: 0x3068
+  symbol: gKeikokuDemoTallTreeCutDL
+
+gKeikokuDemoTallTreeCutEmptyDL:
+  type: GFX
+  offset: 0x3060
+  symbol: gKeikokuDemoTallTreeCutEmptyDL
+
+gKeikokuDemoTallTreeStraightDL:
+  type: GFX
+  offset: 0x3728
+  symbol: gKeikokuDemoTallTreeStraightDL
+
+gKeikokuDemoTallTreeStraightEmptyDL:
+  type: GFX
+  offset: 0x3720
+  symbol: gKeikokuDemoTallTreeStraightEmptyDL
+
+gKeikokuDemoTallTreeWithRootBaseDL:
+  type: GFX
+  offset: 0x2878
+  symbol: gKeikokuDemoTallTreeWithRootBaseDL
+
+gKeikokuDemoTallTreeWithRootBaseEmptyDL:
+  type: GFX
+  offset: 0x2870
+  symbol: gKeikokuDemoTallTreeWithRootBaseEmptyDL
+
+gKeikokuDemoTreeCutEndGrain2Tex:
+  type: TEXTURE
+  offset: 0x9730
+  symbol: gKeikokuDemoTreeCutEndGrain2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoTreeCutEndGrainTex:
+  type: TEXTURE
+  offset: 0x4130
+  symbol: gKeikokuDemoTreeCutEndGrainTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoTreeLeavesTex:
+  type: TEXTURE
+  offset: 0x3930
+  symbol: gKeikokuDemoTreeLeavesTex
+  format: IA16
+  width: 32
+  height: 32
+
+gKeikokuDemoTreeWallBackdropTex:
+  type: TEXTURE
+  offset: 0x7B30
+  symbol: gKeikokuDemoTreeWallBackdropTex
+  format: I4
+  width: 64
+  height: 64
+
+gKeikokuDemoWhiteYellowArtifactTex:
+  type: TEXTURE
+  offset: 0xC730
+  symbol: gKeikokuDemoWhiteYellowArtifactTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gKeikokuDemoWrinkledBarkTex:
+  type: TEXTURE
+  offset: 0xB730
+  symbol: gKeikokuDemoWrinkledBarkTex
+  format: I4
+  width: 64
+  height: 64
+
+gKeikokuDemoYellowFlowersOnGrass2Tex:
+  type: TEXTURE
+  offset: 0x9F30
+  symbol: gKeikokuDemoYellowFlowersOnGrass2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoYellowFlowersOnGrassTex:
+  type: TEXTURE
+  offset: 0xC50
+  symbol: gKeikokuDemoYellowFlowersOnGrassTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKeikokuDemoYoungerBarkTex:
+  type: TEXTURE
+  offset: 0xAF30
+  symbol: gKeikokuDemoYoungerBarkTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_keikoku_demoVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_keikoku_demoVtx_000000
+  count: 151
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_demoVtx_001CD0:
+  type: MM:ARRAY
+  offset: 0x001CD0
+  symbol: object_keikoku_demoVtx_001CD0
+  count: 186
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_demoVtx_002BE0:
+  type: MM:ARRAY
+  offset: 0x002BE0
+  symbol: object_keikoku_demoVtx_002BE0
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_keikoku_demoVtx_0032C0:
+  type: MM:ARRAY
+  offset: 0x0032C0
+  symbol: object_keikoku_demoVtx_0032C0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

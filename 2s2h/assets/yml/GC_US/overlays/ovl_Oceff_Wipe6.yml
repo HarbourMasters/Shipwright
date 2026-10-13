@@ -1,0 +1,31 @@
+:config:
+  segments:
+    - [ 128, 0x00DADA80 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80BABBD0, 0x00DADA80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gOceff6DL:
+  type: GFX
+  offset: 0x4A0
+  symbol: gOceff6DL
+
+gOceff6Vtx:
+  type: MM:ARRAY
+  offset: 0x340
+  symbol: gOceff6Vtx
+  count: 22
+  array_type: VTX
+
+ovl_Oceff_Wipe6_Matanimheader_000338:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x338
+  symbol: ovl_Oceff_Wipe6_Matanimheader_000338
+
+
+ovl_Oceff_Wipe6_Matanimheader_000338TexScrollParams_000330:
+  type: BLOB
+  offset: 0x000330
+  symbol: ovl_Oceff_Wipe6_Matanimheader_000338TexScrollParams_000330
+  size: 0

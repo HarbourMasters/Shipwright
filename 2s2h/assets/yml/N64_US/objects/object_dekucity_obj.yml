@@ -1,0 +1,198 @@
+:config:
+  segments:
+    - [ 6, 0x01263560 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01263560 ]
+    - [ 9, 0x01263560 ]
+    - [ 10, 0x01263560 ]
+    - [ 11, 0x01263560 ]
+    - [ 12, 0x01263560 ]
+    - [ 13, 0x01263560 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_dekucity_obj_Colheader_0002AC:
+  type: MM:COLLISION
+  offset: 0x2AC
+  symbol: object_dekucity_obj_Colheader_0002AC
+
+object_dekucity_obj_DL_0004E0:
+  type: GFX
+  offset: 0x4E0
+  symbol: object_dekucity_obj_DL_0004E0
+
+object_dekucity_obj_DL_000610:
+  type: GFX
+  offset: 0x610
+  symbol: object_dekucity_obj_DL_000610
+
+object_dekucity_obj_DL_001030:
+  type: GFX
+  offset: 0x1030
+  symbol: object_dekucity_obj_DL_001030
+
+object_dekucity_obj_DL_001160:
+  type: GFX
+  offset: 0x1160
+  symbol: object_dekucity_obj_DL_001160
+
+object_dekucity_obj_DL_001D80:
+  type: GFX
+  offset: 0x1D80
+  symbol: object_dekucity_obj_DL_001D80
+
+object_dekucity_obj_DL_001ED8:
+  type: GFX
+  offset: 0x1ED8
+  symbol: object_dekucity_obj_DL_001ED8
+
+object_dekucity_obj_DL_003990:
+  type: GFX
+  offset: 0x3990
+  symbol: object_dekucity_obj_DL_003990
+
+object_dekucity_obj_DL_003998:
+  type: GFX
+  offset: 0x3998
+  symbol: object_dekucity_obj_DL_003998
+
+object_dekucity_obj_Matanimheader_000E28:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE28
+  symbol: object_dekucity_obj_Matanimheader_000E28
+
+object_dekucity_obj_Matanimheader_001978:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1978
+  symbol: object_dekucity_obj_Matanimheader_001978
+
+object_dekucity_obj_Matanimheader_003820:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3820
+  symbol: object_dekucity_obj_Matanimheader_003820
+
+object_dekucity_obj_Tex_000618:
+  type: TEXTURE
+  offset: 0x618
+  symbol: object_dekucity_obj_Tex_000618
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dekucity_obj_Tex_001168:
+  type: TEXTURE
+  offset: 0x1168
+  symbol: object_dekucity_obj_Tex_001168
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dekucity_obj_Tex_002008:
+  type: TEXTURE
+  offset: 0x2008
+  symbol: object_dekucity_obj_Tex_002008
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_dekucity_obj_Tex_002808:
+  type: TEXTURE
+  offset: 0x2808
+  symbol: object_dekucity_obj_Tex_002808
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dekucity_obj_Tex_003008:
+  type: TEXTURE
+  offset: 0x3008
+  symbol: object_dekucity_obj_Tex_003008
+  format: I4
+  width: 64
+  height: 64
+
+object_dekucity_obj_Tex_003AC0:
+  type: TEXTURE
+  offset: 0x3AC0
+  symbol: object_dekucity_obj_Tex_003AC0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_dekucity_obj_Tex_003EC0:
+  type: TEXTURE
+  offset: 0x3EC0
+  symbol: object_dekucity_obj_Tex_003EC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_dekucity_objVtx_0002E0:
+  type: MM:ARRAY
+  offset: 0x0002E0
+  symbol: object_dekucity_objVtx_0002E0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekucity_obj_Matanimheader_000E28TexScrollParams_000E20:
+  type: BLOB
+  offset: 0x000E20
+  symbol: object_dekucity_obj_Matanimheader_000E28TexScrollParams_000E20
+  size: 0
+
+object_dekucity_objVtx_000E30:
+  type: MM:ARRAY
+  offset: 0x000E30
+  symbol: object_dekucity_objVtx_000E30
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekucity_obj_Matanimheader_001978TexScrollParams_001970:
+  type: BLOB
+  offset: 0x001970
+  symbol: object_dekucity_obj_Matanimheader_001978TexScrollParams_001970
+  size: 0
+
+object_dekucity_objVtx_001980:
+  type: MM:ARRAY
+  offset: 0x001980
+  symbol: object_dekucity_objVtx_001980
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekucity_objVtx_001AE0:
+  type: MM:ARRAY
+  offset: 0x001AE0
+  symbol: object_dekucity_objVtx_001AE0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekucity_obj_Matanimheader_003820TexScrollParams_003810:
+  type: BLOB
+  offset: 0x003810
+  symbol: object_dekucity_obj_Matanimheader_003820TexScrollParams_003810
+  size: 0
+
+object_dekucity_obj_Matanimheader_003820TexScrollParams_003818:
+  type: BLOB
+  offset: 0x003818
+  symbol: object_dekucity_obj_Matanimheader_003820TexScrollParams_003818
+  size: 0
+
+object_dekucity_objVtx_003830:
+  type: MM:ARRAY
+  offset: 0x003830
+  symbol: object_dekucity_objVtx_003830
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

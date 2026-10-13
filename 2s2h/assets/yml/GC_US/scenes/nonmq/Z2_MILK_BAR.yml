@@ -1,0 +1,658 @@
+:config:
+  segments:
+    - [ 2, 0x0172DEE0 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_MILK_BARSet_002D50.yml
+    - GC_US/scenes/nonmq/Z2_MILK_BARSet_003460.yml
+    - GC_US/scenes/nonmq/Z2_MILK_BARSet_0038B0.yml
+    - GC_US/scenes/nonmq/Z2_MILK_BARSet_0041A0.yml
+Z2_MILK_BAR:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_MILK_BAR
+
+
+Z2_MILK_BARPathwayList_000128:
+  type: MM:PATH
+  offset: 0x000128
+  symbol: Z2_MILK_BARPathwayList_000128
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARPathwayList_000134:
+  type: MM:PATH
+  offset: 0x000134
+  symbol: Z2_MILK_BARPathwayList_000134
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARPathwayList_000164:
+  type: MM:PATH
+  offset: 0x000164
+  symbol: Z2_MILK_BARPathwayList_000164
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARPathwayList_000170:
+  type: MM:PATH
+  offset: 0x000170
+  symbol: Z2_MILK_BARPathwayList_000170
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARPathwayList_0001A8:
+  type: MM:PATH
+  offset: 0x0001A8
+  symbol: Z2_MILK_BARPathwayList_0001A8
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARPathwayList_0001E0:
+  type: MM:PATH
+  offset: 0x0001E0
+  symbol: Z2_MILK_BARPathwayList_0001E0
+  num_paths: 6
+  paths:
+    - additional_path_index: 2
+      custom_value: 0
+      points:
+        - [ -200, 152, 479 ]
+        - [ -200, 152, 349 ]
+    - additional_path_index: 3
+      custom_value: 0
+      points:
+        - [ -196, 152, 463 ]
+        - [ -195, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 1
+      points:
+        - [ -200, 152, 349 ]
+        - [ -200, 152, 256 ]
+        - [ -200, 152, 164 ]
+        - [ -202, 68, 47 ]
+        - [ -200, -7, -59 ]
+        - [ -114, -8, -120 ]
+        - [ 8, 0, -122 ]
+        - [ 40, 0, -122 ]
+    - additional_path_index: 4
+      custom_value: 1
+      points:
+        - [ -195, 152, 349 ]
+        - [ -195, 152, 273 ]
+        - [ -194, 152, 165 ]
+        - [ -196, 70, 48 ]
+        - [ -193, -7, -59 ]
+        - [ -147, -8, -110 ]
+        - [ -89, -8, -77 ]
+        - [ -48, -8, 3 ]
+        - [ -5, -8, 18 ]
+    - additional_path_index: 5
+      custom_value: 2
+      points:
+        - [ -5, -8, 18 ]
+        - [ -45, -8, -3 ]
+        - [ -82, -8, -84 ]
+        - [ -146, -8, -121 ]
+        - [ -188, -7, -59 ]
+        - [ -192, 69, 48 ]
+        - [ -189, 152, 165 ]
+        - [ -189, 152, 258 ]
+        - [ -190, 152, 350 ]
+    - additional_path_index: 255
+      custom_value: 3
+      points:
+        - [ -190, 152, 350 ]
+        - [ -192, 152, 470 ]
+
+Z2_MILK_BARCutsceneData_00021C:
+  type: MM:CUTSCENE
+  offset: 0x00021C
+  symbol: Z2_MILK_BARCutsceneData_00021C
+  size: 1420
+
+Z2_MILK_BARCutsceneData_0007AC:
+  type: MM:CUTSCENE
+  offset: 0x0007AC
+  symbol: Z2_MILK_BARCutsceneData_0007AC
+  size: 632
+
+Z2_MILK_BARTexAnim_000C00:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000C00
+  symbol: Z2_MILK_BARTexAnim_000C00
+
+Z2_MILK_BARCollisionHeader_002D1C:
+  type: MM:COLLISION
+  offset: 0x002D1C
+  symbol: Z2_MILK_BARCollisionHeader_002D1C
+
+Z2_MILK_BARCutsceneData_002E44:
+  type: MM:CUTSCENE
+  offset: 0x002E44
+  symbol: Z2_MILK_BARCutsceneData_002E44
+  size: 1512
+
+Z2_MILK_BARCutsceneData_003554:
+  type: MM:CUTSCENE
+  offset: 0x003554
+  symbol: Z2_MILK_BARCutsceneData_003554
+  size: 808
+
+Z2_MILK_BARCutsceneData_0039AC:
+  type: MM:CUTSCENE
+  offset: 0x0039AC
+  symbol: Z2_MILK_BARCutsceneData_0039AC
+  size: 1936
+
+Z2_MILK_BARCutsceneData_004294:
+  type: MM:CUTSCENE
+  offset: 0x004294
+  symbol: Z2_MILK_BARCutsceneData_004294
+  size: 648
+
+Z2_MILK_BARTex_004550:
+  type: TEXTURE
+  offset: 0x004550
+  symbol: Z2_MILK_BARTex_004550
+  format: I4
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_004750:
+  type: TEXTURE
+  offset: 0x004750
+  symbol: Z2_MILK_BARTex_004750
+  format: I4
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_004850:
+  type: TEXTURE
+  offset: 0x004850
+  symbol: Z2_MILK_BARTex_004850
+  format: I4
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_004950:
+  type: TEXTURE
+  offset: 0x004950
+  symbol: Z2_MILK_BARTex_004950
+  format: I4
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_004B50:
+  type: TEXTURE
+  offset: 0x004B50
+  symbol: Z2_MILK_BARTex_004B50
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_004F50:
+  type: TEXTURE
+  offset: 0x004F50
+  symbol: Z2_MILK_BARTex_004F50
+  format: I4
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_005050:
+  type: TEXTURE
+  offset: 0x005050
+  symbol: Z2_MILK_BARTex_005050
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_005250:
+  type: TEXTURE
+  offset: 0x005250
+  symbol: Z2_MILK_BARTex_005250
+  format: RGBA16
+  width: 8
+  height: 16
+
+Z2_MILK_BARTex_005350:
+  type: TEXTURE
+  offset: 0x005350
+  symbol: Z2_MILK_BARTex_005350
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_MILK_BARTex_005550:
+  type: TEXTURE
+  offset: 0x005550
+  symbol: Z2_MILK_BARTex_005550
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_MILK_BARTex_006550:
+  type: TEXTURE
+  offset: 0x006550
+  symbol: Z2_MILK_BARTex_006550
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_006950:
+  type: TEXTURE
+  offset: 0x006950
+  symbol: Z2_MILK_BARTex_006950
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_007150:
+  type: TEXTURE
+  offset: 0x007150
+  symbol: Z2_MILK_BARTex_007150
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_MILK_BARTex_008150:
+  type: TEXTURE
+  offset: 0x008150
+  symbol: Z2_MILK_BARTex_008150
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_008550:
+  type: TEXTURE
+  offset: 0x008550
+  symbol: Z2_MILK_BARTex_008550
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_008750:
+  type: TEXTURE
+  offset: 0x008750
+  symbol: Z2_MILK_BARTex_008750
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_008950:
+  type: TEXTURE
+  offset: 0x008950
+  symbol: Z2_MILK_BARTex_008950
+  format: I4
+  width: 16
+  height: 8
+
+Z2_MILK_BARTex_008990:
+  type: TEXTURE
+  offset: 0x008990
+  symbol: Z2_MILK_BARTex_008990
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_008D90:
+  type: TEXTURE
+  offset: 0x008D90
+  symbol: Z2_MILK_BARTex_008D90
+  format: IA16
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_009190:
+  type: TEXTURE
+  offset: 0x009190
+  symbol: Z2_MILK_BARTex_009190
+  format: I8
+  width: 8
+  height: 8
+
+Z2_MILK_BARTex_0091D0:
+  type: TEXTURE
+  offset: 0x0091D0
+  symbol: Z2_MILK_BARTex_0091D0
+  format: I8
+  width: 16
+  height: 32
+
+Z2_MILK_BARTex_0093D0:
+  type: TEXTURE
+  offset: 0x0093D0
+  symbol: Z2_MILK_BARTex_0093D0
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_MILK_BARTex_0095D0:
+  type: TEXTURE
+  offset: 0x0095D0
+  symbol: Z2_MILK_BARTex_0095D0
+  format: I8
+  width: 32
+  height: 16
+
+Z2_MILK_BARTex_0097D0:
+  type: TEXTURE
+  offset: 0x0097D0
+  symbol: Z2_MILK_BARTex_0097D0
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MILK_BARTex_0098D0:
+  type: TEXTURE
+  offset: 0x0098D0
+  symbol: Z2_MILK_BARTex_0098D0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_009CD0:
+  type: TEXTURE
+  offset: 0x009CD0
+  symbol: Z2_MILK_BARTex_009CD0
+  format: I8
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_00A0D0:
+  type: TEXTURE
+  offset: 0x00A0D0
+  symbol: Z2_MILK_BARTex_00A0D0
+  format: I8
+  width: 16
+  height: 16
+
+Z2_MILK_BARTex_00A1D0:
+  type: TEXTURE
+  offset: 0x00A1D0
+  symbol: Z2_MILK_BARTex_00A1D0
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_MILK_BARTex_00A9D0:
+  type: TEXTURE
+  offset: 0x00A9D0
+  symbol: Z2_MILK_BARTex_00A9D0
+  format: I8
+  width: 64
+  height: 64
+
+Z2_MILK_BARTex_00B9D0:
+  type: TEXTURE
+  offset: 0x00B9D0
+  symbol: Z2_MILK_BARTex_00B9D0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_MILK_BARTex_00C1D0:
+  type: TEXTURE
+  offset: 0x00C1D0
+  symbol: Z2_MILK_BARTex_00C1D0
+  format: I4
+  width: 32
+  height: 32
+
+Z2_MILK_BARTex_00C3D0:
+  type: TEXTURE
+  offset: 0x00C3D0
+  symbol: Z2_MILK_BARTex_00C3D0
+  format: RGBA16
+  width: 64
+  height: 32

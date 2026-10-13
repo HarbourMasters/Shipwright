@@ -1,0 +1,4174 @@
+:config:
+  segments:
+    - [ 7, 0x0065D340 ]
+
+gPlayerAnimData_033600:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x33600
+  symbol: gPlayerAnimData_033600
+  frame_count: 52
+
+gPlayerAnimData_0435F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x43B30
+  symbol: gPlayerAnimData_0435F0
+  frame_count: 40
+
+gPlayerAnimData_044AE0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x45020
+  symbol: gPlayerAnimData_044AE0
+  frame_count: 33
+
+gPlayerAnimData_04CD10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4D250
+  symbol: gPlayerAnimData_04CD10
+  frame_count: 30
+
+gPlayerAnimData_07A8B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7ADF0
+  symbol: gPlayerAnimData_07A8B0
+  frame_count: 15
+
+gPlayerAnimData_07CA50:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7CF90
+  symbol: gPlayerAnimData_07CA50
+  frame_count: 20
+
+gPlayerAnimData_0B19E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB1F20
+  symbol: gPlayerAnimData_0B19E0
+  frame_count: 30
+
+gPlayerAnimData_0BB1F0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBB730
+  symbol: gPlayerAnimData_0BB1F0
+  frame_count: 30
+
+gPlayerAnimData_0E1EA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE3EA0
+  symbol: gPlayerAnimData_0E1EA0
+  frame_count: 18
+
+gPlayerAnimData_0EBC00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEDC00
+  symbol: gPlayerAnimData_0EBC00
+  frame_count: 20
+
+gPlayerAnimData_0F31E0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF51E0
+  symbol: gPlayerAnimData_0F31E0
+  frame_count: 12
+
+gPlayerAnimData_0F3E00:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF5E00
+  symbol: gPlayerAnimData_0F3E00
+  frame_count: 15
+
+gPlayerAnimData_0FFF10:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x101F10
+  symbol: gPlayerAnimData_0FFF10
+  frame_count: 24
+
+gPlayerAnimData_1746B0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x178740
+  symbol: gPlayerAnimData_1746B0
+  frame_count: 15
+
+gPlayerAnimData_17BEB0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17FF40
+  symbol: gPlayerAnimData_17BEB0
+  frame_count: 20
+
+gPlayerAnimData_189390:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18D420
+  symbol: gPlayerAnimData_189390
+  frame_count: 42
+
+gPlayerAnimData_1B3FA0:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B8360
+  symbol: gPlayerAnimData_1B3FA0
+  frame_count: 45
+
+gPlayerAnimData_297E90:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29CF80
+  symbol: gPlayerAnimData_297E90
+  frame_count: 30
+
+gPlayerAnimData_2C6350:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D4DB0
+  symbol: gPlayerAnimData_2C6350
+  frame_count: 45
+
+gPlayerAnimData_2D8510:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E6F70
+  symbol: gPlayerAnimData_2D8510
+  frame_count: 66
+
+gPlayerAnim_L_1kyoro_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A7DA0
+  symbol: gPlayerAnim_L_1kyoro_Data
+  frame_count: 20
+
+gPlayerAnim_L_2kyoro_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A97E0
+  symbol: gPlayerAnim_L_2kyoro_Data
+  frame_count: 20
+
+gPlayerAnim_L_bouzen_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E0510
+  symbol: gPlayerAnim_L_bouzen_Data
+  frame_count: 15
+
+gPlayerAnim_L_hajikareru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC05D0
+  symbol: gPlayerAnim_L_hajikareru_Data
+  frame_count: 24
+
+gPlayerAnim_L_kamaeru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D9670
+  symbol: gPlayerAnim_L_kamaeru_Data
+  frame_count: 15
+
+gPlayerAnim_L_ken_miru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1404B0
+  symbol: gPlayerAnim_L_ken_miru_Data
+  frame_count: 26
+
+gPlayerAnim_L_kennasi_w_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1175F0
+  symbol: gPlayerAnim_L_kennasi_w_Data
+  frame_count: 20
+
+gPlayerAnim_L_kw_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x300370
+  symbol: gPlayerAnim_L_kw_Data
+  frame_count: 20
+
+gPlayerAnim_L_mukinaoru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C6E0
+  symbol: gPlayerAnim_L_mukinaoru_Data
+  frame_count: 10
+
+gPlayerAnim_L_okarina_get_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C41A0
+  symbol: gPlayerAnim_L_okarina_get_Data
+  frame_count: 30
+
+gPlayerAnim_L_sagaru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA04B0
+  symbol: gPlayerAnim_L_sagaru_Data
+  frame_count: 30
+
+gPlayerAnim_Link_ha_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CFED0
+  symbol: gPlayerAnim_Link_ha_Data
+  frame_count: 35
+
+gPlayerAnim_Link_m_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21B640
+  symbol: gPlayerAnim_Link_m_wait_Data
+  frame_count: 40
+
+gPlayerAnim_Link_miageru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25CAB0
+  symbol: gPlayerAnim_Link_miageru_Data
+  frame_count: 20
+
+gPlayerAnim_Link_muku_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D5B30
+  symbol: gPlayerAnim_Link_muku_Data
+  frame_count: 25
+
+gPlayerAnim_Link_otituku_w_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA4B10
+  symbol: gPlayerAnim_Link_otituku_w_Data
+  frame_count: 20
+
+gPlayerAnim_Link_ue_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x178F20
+  symbol: gPlayerAnim_Link_ue_wait_Data
+  frame_count: 40
+
+gPlayerAnim_al_elf_tobidasi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE1640
+  symbol: gPlayerAnim_al_elf_tobidasi_Data
+  frame_count: 52
+
+gPlayerAnim_al_fuwafuwa_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6BC50
+  symbol: gPlayerAnim_al_fuwafuwa_Data
+  frame_count: 45
+
+gPlayerAnim_al_fuwafuwa_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x195BD0
+  symbol: gPlayerAnim_al_fuwafuwa_loop_Data
+  frame_count: 40
+
+gPlayerAnim_al_fuwafuwa_modori_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x0
+  symbol: gPlayerAnim_al_fuwafuwa_modori_Data
+  frame_count: 54
+
+gPlayerAnim_al_gaku_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x142640
+  symbol: gPlayerAnim_al_gaku_Data
+  frame_count: 29
+
+gPlayerAnim_al_hensin_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE97C0
+  symbol: gPlayerAnim_al_hensin_Data
+  frame_count: 51
+
+gPlayerAnim_al_hensin_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2BA490
+  symbol: gPlayerAnim_al_hensin_loop_Data
+  frame_count: 48
+
+gPlayerAnim_al_no_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x300DF0
+  symbol: gPlayerAnim_al_no_Data
+  frame_count: 25
+
+gPlayerAnim_al_unun_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17F010
+  symbol: gPlayerAnim_al_unun_Data
+  frame_count: 29
+
+gPlayerAnim_al_yareyare_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F7FE0
+  symbol: gPlayerAnim_al_yareyare_Data
+  frame_count: 48
+
+gPlayerAnim_al_yes_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A00F0
+  symbol: gPlayerAnim_al_yes_Data
+  frame_count: 23
+
+gPlayerAnim_alink_dance_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D9EE0
+  symbol: gPlayerAnim_alink_dance_loop_Data
+  frame_count: 145
+
+gPlayerAnim_alink_ee_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A980
+  symbol: gPlayerAnim_alink_ee_Data
+  frame_count: 30
+
+gPlayerAnim_alink_ee_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x146D80
+  symbol: gPlayerAnim_alink_ee_loop_Data
+  frame_count: 28
+
+gPlayerAnim_alink_fukitobu_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x221740
+  symbol: gPlayerAnim_alink_fukitobu_Data
+  frame_count: 20
+
+gPlayerAnim_alink_kaitenmiss_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF0C0
+  symbol: gPlayerAnim_alink_kaitenmiss_Data
+  frame_count: 28
+
+gPlayerAnim_alink_kyoro_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18CC40
+  symbol: gPlayerAnim_alink_kyoro_Data
+  frame_count: 15
+
+gPlayerAnim_alink_kyoro_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE7740
+  symbol: gPlayerAnim_alink_kyoro_loop_Data
+  frame_count: 62
+
+gPlayerAnim_alink_ozigi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D06C0
+  symbol: gPlayerAnim_alink_ozigi_Data
+  frame_count: 30
+
+gPlayerAnim_alink_ozigi_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x130D20
+  symbol: gPlayerAnim_alink_ozigi_loop_Data
+  frame_count: 10
+
+gPlayerAnim_alink_ozigi_modori_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF5830
+  symbol: gPlayerAnim_alink_ozigi_modori_Data
+  frame_count: 11
+
+gPlayerAnim_alink_powerup_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1E4570
+  symbol: gPlayerAnim_alink_powerup_Data
+  frame_count: 80
+
+gPlayerAnim_alink_powerup_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x89F20
+  symbol: gPlayerAnim_alink_powerup_loop_Data
+  frame_count: 29
+
+gPlayerAnim_alink_rakkatyu_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE3180
+  symbol: gPlayerAnim_alink_rakkatyu_Data
+  frame_count: 20
+
+gPlayerAnim_alink_somukeru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3083D0
+  symbol: gPlayerAnim_alink_somukeru_Data
+  frame_count: 8
+
+gPlayerAnim_alink_somukeru_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCDA0
+  symbol: gPlayerAnim_alink_somukeru_loop_Data
+  frame_count: 40
+
+gPlayerAnim_alink_tereru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1809C0
+  symbol: gPlayerAnim_alink_tereru_Data
+  frame_count: 24
+
+gPlayerAnim_alink_yurayura_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2AB150
+  symbol: gPlayerAnim_alink_yurayura_Data
+  frame_count: 40
+
+gPlayerAnim_bajyo_furikaeru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE57D0
+  symbol: gPlayerAnim_bajyo_furikaeru_Data
+  frame_count: 60
+
+gPlayerAnim_bajyo_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEC460
+  symbol: gPlayerAnim_bajyo_walk_Data
+  frame_count: 35
+
+gPlayerAnim_cl_dakisime_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2FA8C0
+  symbol: gPlayerAnim_cl_dakisime_Data
+  frame_count: 40
+
+gPlayerAnim_cl_dakisime_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x77D20
+  symbol: gPlayerAnim_cl_dakisime_loop_Data
+  frame_count: 40
+
+gPlayerAnim_cl_furafura_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6D3E0
+  symbol: gPlayerAnim_cl_furafura_Data
+  frame_count: 136
+
+gPlayerAnim_cl_hoo_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x177240
+  symbol: gPlayerAnim_cl_hoo_Data
+  frame_count: 20
+
+gPlayerAnim_cl_jibun_miru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17A410
+  symbol: gPlayerAnim_cl_jibun_miru_Data
+  frame_count: 43
+
+gPlayerAnim_cl_kubisime_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x102BA0
+  symbol: gPlayerAnim_cl_kubisime_Data
+  frame_count: 6
+
+gPlayerAnim_cl_maskoff_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C1A0
+  symbol: gPlayerAnim_cl_maskoff_Data
+  frame_count: 10
+
+gPlayerAnim_cl_msbowait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B30A0
+  symbol: gPlayerAnim_cl_msbowait_Data
+  frame_count: 79
+
+gPlayerAnim_cl_nigeru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5780
+  symbol: gPlayerAnim_cl_nigeru_Data
+  frame_count: 8
+
+gPlayerAnim_cl_ononoki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2ECA0
+  symbol: gPlayerAnim_cl_ononoki_Data
+  frame_count: 60
+
+gPlayerAnim_cl_setmask_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CB1D0
+  symbol: gPlayerAnim_cl_setmask_Data
+  frame_count: 66
+
+gPlayerAnim_cl_setmaskend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD48B0
+  symbol: gPlayerAnim_cl_setmaskend_Data
+  frame_count: 3
+
+gPlayerAnim_cl_tewofuru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x96C10
+  symbol: gPlayerAnim_cl_tewofuru_Data
+  frame_count: 22
+
+gPlayerAnim_cl_tobikakaru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D160
+  symbol: gPlayerAnim_cl_tobikakaru_Data
+  frame_count: 52
+
+gPlayerAnim_cl_uma_leftup_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E1D30
+  symbol: gPlayerAnim_cl_uma_leftup_Data
+  frame_count: 38
+
+gPlayerAnim_cl_uma_rightup_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA3610
+  symbol: gPlayerAnim_cl_uma_rightup_Data
+  frame_count: 38
+
+gPlayerAnim_cl_umamiage_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E9200
+  symbol: gPlayerAnim_cl_umamiage_Data
+  frame_count: 30
+
+gPlayerAnim_cl_umamiage_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA8E40
+  symbol: gPlayerAnim_cl_umamiage_loop_Data
+  frame_count: 44
+
+gPlayerAnim_cl_umanoru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20820
+  symbol: gPlayerAnim_cl_umanoru_Data
+  frame_count: 74
+
+gPlayerAnim_cl_umanoru_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AABD0
+  symbol: gPlayerAnim_cl_umanoru_loop_Data
+  frame_count: 30
+
+gPlayerAnim_cl_wakare_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9E9F0
+  symbol: gPlayerAnim_cl_wakare_Data
+  frame_count: 51
+
+gPlayerAnim_cl_wakare_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CD9A0
+  symbol: gPlayerAnim_cl_wakare_loop_Data
+  frame_count: 30
+
+gPlayerAnim_clink_demo_Tbox_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F54E0
+  symbol: gPlayerAnim_clink_demo_Tbox_open_Data
+  frame_count: 133
+
+gPlayerAnim_clink_demo_atozusari_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B53A0
+  symbol: gPlayerAnim_clink_demo_atozusari_Data
+  frame_count: 33
+
+gPlayerAnim_clink_demo_bashi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20A840
+  symbol: gPlayerAnim_clink_demo_bashi_Data
+  frame_count: 55
+
+gPlayerAnim_clink_demo_doorA_link_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11CF00
+  symbol: gPlayerAnim_clink_demo_doorA_link_Data
+  frame_count: 100
+
+gPlayerAnim_clink_demo_doorB_link_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x119AA0
+  symbol: gPlayerAnim_clink_demo_doorB_link_Data
+  frame_count: 100
+
+gPlayerAnim_clink_demo_futtobi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x109F0
+  symbol: gPlayerAnim_clink_demo_futtobi_Data
+  frame_count: 40
+
+gPlayerAnim_clink_demo_get1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x218C50
+  symbol: gPlayerAnim_clink_demo_get1_Data
+  frame_count: 40
+
+gPlayerAnim_clink_demo_get2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21ABC0
+  symbol: gPlayerAnim_clink_demo_get2_Data
+  frame_count: 20
+
+gPlayerAnim_clink_demo_get3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21A140
+  symbol: gPlayerAnim_clink_demo_get3_Data
+  frame_count: 20
+
+gPlayerAnim_clink_demo_goto_future_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x98970
+  symbol: gPlayerAnim_clink_demo_goto_future_Data
+  frame_count: 110
+
+gPlayerAnim_clink_demo_koutai_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19B2D0
+  symbol: gPlayerAnim_clink_demo_koutai_Data
+  frame_count: 35
+
+gPlayerAnim_clink_demo_koutai_kennuki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25F980
+  symbol: gPlayerAnim_clink_demo_koutai_kennuki_Data
+  frame_count: 25
+
+gPlayerAnim_clink_demo_koutai_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20F980
+  symbol: gPlayerAnim_clink_demo_koutai_wait_Data
+  frame_count: 20
+
+gPlayerAnim_clink_demo_mimawasi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C26F0
+  symbol: gPlayerAnim_clink_demo_mimawasi_Data
+  frame_count: 15
+
+gPlayerAnim_clink_demo_mimawasi_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFB9F0
+  symbol: gPlayerAnim_clink_demo_mimawasi_wait_Data
+  frame_count: 55
+
+gPlayerAnim_clink_demo_miokuri_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A8820
+  symbol: gPlayerAnim_clink_demo_miokuri_Data
+  frame_count: 30
+
+gPlayerAnim_clink_demo_miokuri_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x35140
+  symbol: gPlayerAnim_clink_demo_miokuri_wait_Data
+  frame_count: 30
+
+gPlayerAnim_clink_demo_nozoki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5B980
+  symbol: gPlayerAnim_clink_demo_nozoki_Data
+  frame_count: 30
+
+gPlayerAnim_clink_demo_return_to_future_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B15E0
+  symbol: gPlayerAnim_clink_demo_return_to_future_Data
+  frame_count: 51
+
+gPlayerAnim_clink_demo_standup_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C60A0
+  symbol: gPlayerAnim_clink_demo_standup_Data
+  frame_count: 78
+
+gPlayerAnim_clink_demo_standup_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE4810
+  symbol: gPlayerAnim_clink_demo_standup_wait_Data
+  frame_count: 30
+
+gPlayerAnim_clink_normal_climb_endAL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x390C0
+  symbol: gPlayerAnim_clink_normal_climb_endAL_Data
+  frame_count: 35
+
+gPlayerAnim_clink_normal_climb_endAR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3A320
+  symbol: gPlayerAnim_clink_normal_climb_endAR_Data
+  frame_count: 36
+
+gPlayerAnim_clink_normal_climb_endBL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3B600
+  symbol: gPlayerAnim_clink_normal_climb_endBL_Data
+  frame_count: 35
+
+gPlayerAnim_clink_normal_climb_endBR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3C860
+  symbol: gPlayerAnim_clink_normal_climb_endBR_Data
+  frame_count: 36
+
+gPlayerAnim_clink_normal_climb_startA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x108CB0
+  symbol: gPlayerAnim_clink_normal_climb_startA_Data
+  frame_count: 30
+
+gPlayerAnim_clink_normal_climb_startB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x107280
+  symbol: gPlayerAnim_clink_normal_climb_startB_Data
+  frame_count: 50
+
+gPlayerAnim_clink_normal_climb_upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x144180
+  symbol: gPlayerAnim_clink_normal_climb_upL_Data
+  frame_count: 21
+
+gPlayerAnim_clink_normal_climb_upR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x145780
+  symbol: gPlayerAnim_clink_normal_climb_upR_Data
+  frame_count: 21
+
+gPlayerAnim_clink_normal_defense_ALL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB1C80
+  symbol: gPlayerAnim_clink_normal_defense_ALL_Data
+  frame_count: 5
+
+gPlayerAnim_clink_normal_okarina_walkB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1626E0
+  symbol: gPlayerAnim_clink_normal_okarina_walkB_Data
+  frame_count: 21
+
+gPlayerAnim_clink_normal_okarina_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x176740
+  symbol: gPlayerAnim_clink_normal_okarina_walk_Data
+  frame_count: 21
+
+gPlayerAnim_clink_op3_negaeri_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DDC30
+  symbol: gPlayerAnim_clink_op3_negaeri_Data
+  frame_count: 55
+
+gPlayerAnim_clink_op3_okiagari_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FE930
+  symbol: gPlayerAnim_clink_op3_okiagari_Data
+  frame_count: 365
+
+gPlayerAnim_clink_op3_tatiagari_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x47FF0
+  symbol: gPlayerAnim_clink_op3_tatiagari_Data
+  frame_count: 110
+
+gPlayerAnim_clink_op3_wait1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x282320
+  symbol: gPlayerAnim_clink_op3_wait1_Data
+  frame_count: 80
+
+gPlayerAnim_clink_op3_wait2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x281360
+  symbol: gPlayerAnim_clink_op3_wait2_Data
+  frame_count: 30
+
+gPlayerAnim_clink_op3_wait3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2803A0
+  symbol: gPlayerAnim_clink_op3_wait3_Data
+  frame_count: 30
+
+gPlayerAnim_d_link_imanodare_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F4A60
+  symbol: gPlayerAnim_d_link_imanodare_Data
+  frame_count: 20
+
+gPlayerAnim_d_link_orooro_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x295D90
+  symbol: gPlayerAnim_d_link_orooro_Data
+  frame_count: 60
+
+gPlayerAnim_d_link_orowait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18F420
+  symbol: gPlayerAnim_d_link_orowait_Data
+  frame_count: 45
+
+gPlayerAnim_demo_link_nwait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18310
+  symbol: gPlayerAnim_demo_link_nwait_Data
+  frame_count: 45
+
+gPlayerAnim_demo_link_orosuu_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x72A40
+  symbol: gPlayerAnim_demo_link_orosuu_Data
+  frame_count: 90
+
+gPlayerAnim_demo_link_tewatashi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x235370
+  symbol: gPlayerAnim_demo_link_tewatashi_Data
+  frame_count: 90
+
+gPlayerAnim_demo_link_twait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16B80
+  symbol: gPlayerAnim_demo_link_twait_Data
+  frame_count: 45
+
+gPlayerAnim_demo_pikupiku_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x277840
+  symbol: gPlayerAnim_demo_pikupiku_Data
+  frame_count: 10
+
+gPlayerAnim_demo_rakka_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC1260
+  symbol: gPlayerAnim_demo_rakka_Data
+  frame_count: 3
+
+gPlayerAnim_demo_suwari1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2EED30
+  symbol: gPlayerAnim_demo_suwari1_Data
+  frame_count: 40
+
+gPlayerAnim_demo_suwari2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F11E0
+  symbol: gPlayerAnim_demo_suwari2_Data
+  frame_count: 80
+
+gPlayerAnim_demo_suwari3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F0220
+  symbol: gPlayerAnim_demo_suwari3_Data
+  frame_count: 30
+
+gPlayerAnim_dl_jibunmiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDA050
+  symbol: gPlayerAnim_dl_jibunmiru_Data
+  frame_count: 48
+
+gPlayerAnim_dl_jibunmiru_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x24D560
+  symbol: gPlayerAnim_dl_jibunmiru_wait_Data
+  frame_count: 20
+
+gPlayerAnim_dl_kokeru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5BB0
+  symbol: gPlayerAnim_dl_kokeru_Data
+  frame_count: 14
+
+gPlayerAnim_dl_yusaburu_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C23C0
+  symbol: gPlayerAnim_dl_yusaburu_Data
+  frame_count: 6
+
+gPlayerAnim_kf_awase_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F7020
+  symbol: gPlayerAnim_kf_awase_Data
+  frame_count: 10
+
+gPlayerAnim_kf_dakiau_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2174A0
+  symbol: gPlayerAnim_kf_dakiau_Data
+  frame_count: 35
+
+gPlayerAnim_kf_dakiau_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x298B30
+  symbol: gPlayerAnim_kf_dakiau_loop_Data
+  frame_count: 40
+
+gPlayerAnim_kf_hanare_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9D140
+  symbol: gPlayerAnim_kf_hanare_Data
+  frame_count: 35
+
+gPlayerAnim_kf_hanare_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D38C0
+  symbol: gPlayerAnim_kf_hanare_loop_Data
+  frame_count: 40
+
+gPlayerAnim_kf_miseau_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9240
+  symbol: gPlayerAnim_kf_miseau_Data
+  frame_count: 40
+
+gPlayerAnim_kf_omen_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DD1B0
+  symbol: gPlayerAnim_kf_omen_Data
+  frame_count: 20
+
+gPlayerAnim_kf_omen_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAAFD0
+  symbol: gPlayerAnim_kf_omen_loop_Data
+  frame_count: 30
+
+gPlayerAnim_kf_tetunagu_loop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2080
+  symbol: gPlayerAnim_kf_tetunagu_loop_Data
+  frame_count: 40
+
+gPlayerAnim_kolink_odoroki_demo_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2FD980
+  symbol: gPlayerAnim_kolink_odoroki_demo_Data
+  frame_count: 60
+
+gPlayerAnim_link_anchor_LLside_kiru_endL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x174170
+  symbol: gPlayerAnim_link_anchor_LLside_kiru_endL_Data
+  frame_count: 11
+
+gPlayerAnim_link_anchor_LLside_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x220EE0
+  symbol: gPlayerAnim_link_anchor_LLside_kiru_finsh_endR_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_LRside_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x174740
+  symbol: gPlayerAnim_link_anchor_LRside_kiru_endR_Data
+  frame_count: 11
+
+gPlayerAnim_link_anchor_LRside_kiru_finsh_endL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20C9D0
+  symbol: gPlayerAnim_link_anchor_LRside_kiru_finsh_endL_Data
+  frame_count: 18
+
+gPlayerAnim_link_anchor_Lnormal_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D99A0
+  symbol: gPlayerAnim_link_anchor_Lnormal_kiru_endR_Data
+  frame_count: 10
+
+gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBB160
+  symbol: gPlayerAnim_link_anchor_Lnormal_kiru_finsh_endR_Data
+  frame_count: 11
+
+gPlayerAnim_link_anchor_Lpierce_kiru_endL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CA7D0
+  symbol: gPlayerAnim_link_anchor_Lpierce_kiru_endL_Data
+  frame_count: 9
+
+gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x11EE0
+  symbol: gPlayerAnim_link_anchor_Lpierce_kiru_finsh_endR_Data
+  frame_count: 13
+
+gPlayerAnim_link_anchor_Lrolling_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9E3A0
+  symbol: gPlayerAnim_link_anchor_Lrolling_kiru_endR_Data
+  frame_count: 12
+
+gPlayerAnim_link_anchor_Lside_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x415E0
+  symbol: gPlayerAnim_link_anchor_Lside_kiru_endR_Data
+  frame_count: 8
+
+gPlayerAnim_link_anchor_Lside_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x210400
+  symbol: gPlayerAnim_link_anchor_Lside_kiru_finsh_endR_Data
+  frame_count: 15
+
+gPlayerAnim_link_anchor_Rside_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x41A10
+  symbol: gPlayerAnim_link_anchor_Rside_kiru_endR_Data
+  frame_count: 18
+
+gPlayerAnim_link_anchor_Rside_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F9A80
+  symbol: gPlayerAnim_link_anchor_Rside_kiru_finsh_endR_Data
+  frame_count: 19
+
+gPlayerAnim_link_anchor_anchor2fighter_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x24FC30
+  symbol: gPlayerAnim_link_anchor_anchor2fighter_Data
+  frame_count: 34
+
+gPlayerAnim_link_anchor_back_brake_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D3CC0
+  symbol: gPlayerAnim_link_anchor_back_brake_Data
+  frame_count: 18
+
+gPlayerAnim_link_anchor_back_hitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA1470
+  symbol: gPlayerAnim_link_anchor_back_hitR_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_back_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20EE80
+  symbol: gPlayerAnim_link_anchor_back_walk_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_defense_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x199790
+  symbol: gPlayerAnim_link_anchor_defense_hit_Data
+  frame_count: 8
+
+gPlayerAnim_link_anchor_defense_long_hitL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x147D0
+  symbol: gPlayerAnim_link_anchor_defense_long_hitL_Data
+  frame_count: 8
+
+gPlayerAnim_link_anchor_defense_long_hitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14420
+  symbol: gPlayerAnim_link_anchor_defense_long_hitR_Data
+  frame_count: 7
+
+gPlayerAnim_link_anchor_front_hitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x855C0
+  symbol: gPlayerAnim_link_anchor_front_hitR_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_landingR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x512D0
+  symbol: gPlayerAnim_link_anchor_landingR_Data
+  frame_count: 21
+
+gPlayerAnim_link_anchor_normal_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19AA0
+  symbol: gPlayerAnim_link_anchor_normal_kiru_finsh_endR_Data
+  frame_count: 19
+
+gPlayerAnim_link_anchor_pierce_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C1F00
+  symbol: gPlayerAnim_link_anchor_pierce_kiru_endR_Data
+  frame_count: 9
+
+gPlayerAnim_link_anchor_pierce_kiru_finsh_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC1BE0
+  symbol: gPlayerAnim_link_anchor_pierce_kiru_finsh_endR_Data
+  frame_count: 32
+
+gPlayerAnim_link_anchor_rolling_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15C40
+  symbol: gPlayerAnim_link_anchor_rolling_kiru_endR_Data
+  frame_count: 14
+
+gPlayerAnim_link_anchor_side_walkL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C9F70
+  symbol: gPlayerAnim_link_anchor_side_walkL_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_side_walkR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C9710
+  symbol: gPlayerAnim_link_anchor_side_walkR_Data
+  frame_count: 16
+
+gPlayerAnim_link_anchor_waitL2defense_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25F640
+  symbol: gPlayerAnim_link_anchor_waitL2defense_Data
+  frame_count: 3
+
+gPlayerAnim_link_anchor_waitL2defense_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA32D0
+  symbol: gPlayerAnim_link_anchor_waitL2defense_long_Data
+  frame_count: 3
+
+gPlayerAnim_link_anchor_waitL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD5980
+  symbol: gPlayerAnim_link_anchor_waitL_Data
+  frame_count: 29
+
+gPlayerAnim_link_anchor_waitR2defense_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25F7E0
+  symbol: gPlayerAnim_link_anchor_waitR2defense_Data
+  frame_count: 3
+
+gPlayerAnim_link_anchor_waitR2defense_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA3470
+  symbol: gPlayerAnim_link_anchor_waitR2defense_long_Data
+  frame_count: 3
+
+gPlayerAnim_link_anchor_waitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD4A50
+  symbol: gPlayerAnim_link_anchor_waitR_Data
+  frame_count: 29
+
+gPlayerAnim_link_boom_throw_waitL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x257010
+  symbol: gPlayerAnim_link_boom_throw_waitL_Data
+  frame_count: 29
+
+gPlayerAnim_link_boom_throw_waitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x257F40
+  symbol: gPlayerAnim_link_boom_throw_waitR_Data
+  frame_count: 29
+
+gPlayerAnim_link_bottle_bug_in_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5DB10
+  symbol: gPlayerAnim_link_bottle_bug_in_Data
+  frame_count: 44
+
+gPlayerAnim_link_bottle_bug_miss_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1ABB90
+  symbol: gPlayerAnim_link_bottle_bug_miss_Data
+  frame_count: 13
+
+gPlayerAnim_link_bottle_bug_out_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x255A0
+  symbol: gPlayerAnim_link_bottle_bug_out_Data
+  frame_count: 131
+
+gPlayerAnim_link_bottle_drink_demo_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD2E80
+  symbol: gPlayerAnim_link_bottle_drink_demo_end_Data
+  frame_count: 50
+
+gPlayerAnim_link_bottle_drink_demo_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD6F80
+  symbol: gPlayerAnim_link_bottle_drink_demo_start_Data
+  frame_count: 47
+
+gPlayerAnim_link_bottle_drink_demo_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFB530
+  symbol: gPlayerAnim_link_bottle_drink_demo_wait_Data
+  frame_count: 9
+
+gPlayerAnim_link_bottle_fish_in_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x126C0
+  symbol: gPlayerAnim_link_bottle_fish_in_Data
+  frame_count: 44
+
+gPlayerAnim_link_bottle_fish_miss_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB05E0
+  symbol: gPlayerAnim_link_bottle_fish_miss_Data
+  frame_count: 21
+
+gPlayerAnim_link_bottle_fish_out_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x288540
+  symbol: gPlayerAnim_link_bottle_fish_out_Data
+  frame_count: 120
+
+gPlayerAnim_link_bottle_read_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F3BC0
+  symbol: gPlayerAnim_link_bottle_read_Data
+  frame_count: 100
+
+gPlayerAnim_link_bottle_read_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x121A80
+  symbol: gPlayerAnim_link_bottle_read_end_Data
+  frame_count: 20
+
+gPlayerAnim_link_bow_bow_ready_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29DF40
+  symbol: gPlayerAnim_link_bow_bow_ready_Data
+  frame_count: 9
+
+gPlayerAnim_link_bow_bow_shoot_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE0A30
+  symbol: gPlayerAnim_link_bow_bow_shoot_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_bow_bow_shoot_next_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB2EE0
+  symbol: gPlayerAnim_link_bow_bow_shoot_next_Data
+  frame_count: 8
+
+gPlayerAnim_link_bow_bow_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB8ED0
+  symbol: gPlayerAnim_link_bow_bow_wait_Data
+  frame_count: 66
+
+gPlayerAnim_link_bow_defense_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20F6E0
+  symbol: gPlayerAnim_link_bow_defense_Data
+  frame_count: 5
+
+gPlayerAnim_link_bow_defense_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14C00
+  symbol: gPlayerAnim_link_bow_defense_wait_Data
+  frame_count: 31
+
+gPlayerAnim_link_bow_side_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CFA30
+  symbol: gPlayerAnim_link_bow_side_walk_Data
+  frame_count: 24
+
+gPlayerAnim_link_bow_walk2ready_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x147F60
+  symbol: gPlayerAnim_link_bow_walk2ready_Data
+  frame_count: 9
+
+gPlayerAnim_link_child_tunnel_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC4B00
+  symbol: gPlayerAnim_link_child_tunnel_end_Data
+  frame_count: 71
+
+gPlayerAnim_link_child_tunnel_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x274E60
+  symbol: gPlayerAnim_link_child_tunnel_start_Data
+  frame_count: 80
+
+gPlayerAnim_link_demo_Tbox_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DFFD0
+  symbol: gPlayerAnim_link_demo_Tbox_open_Data
+  frame_count: 133
+
+gPlayerAnim_link_demo_back_to_past_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF22C0
+  symbol: gPlayerAnim_link_demo_back_to_past_Data
+  frame_count: 90
+
+gPlayerAnim_link_demo_baru_op1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21ED40
+  symbol: gPlayerAnim_link_demo_baru_op1_Data
+  frame_count: 35
+
+gPlayerAnim_link_demo_baru_op2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21CB30
+  symbol: gPlayerAnim_link_demo_baru_op2_Data
+  frame_count: 40
+
+gPlayerAnim_link_demo_baru_op3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21E020
+  symbol: gPlayerAnim_link_demo_baru_op3_Data
+  frame_count: 25
+
+gPlayerAnim_link_demo_bikkuri_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C5620
+  symbol: gPlayerAnim_link_demo_bikkuri_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_doorA_link_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x304F70
+  symbol: gPlayerAnim_link_demo_doorA_link_Data
+  frame_count: 100
+
+gPlayerAnim_link_demo_doorA_link_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x28C410
+  symbol: gPlayerAnim_link_demo_doorA_link_free_Data
+  frame_count: 100
+
+gPlayerAnim_link_demo_doorB_link_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x301B10
+  symbol: gPlayerAnim_link_demo_doorB_link_Data
+  frame_count: 100
+
+gPlayerAnim_link_demo_doorB_link_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2902F0
+  symbol: gPlayerAnim_link_demo_doorB_link_free_Data
+  frame_count: 100
+
+gPlayerAnim_link_demo_furimuki2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x190BB0
+  symbol: gPlayerAnim_link_demo_furimuki2_Data
+  frame_count: 45
+
+gPlayerAnim_link_demo_furimuki2_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FB090
+  symbol: gPlayerAnim_link_demo_furimuki2_wait_Data
+  frame_count: 30
+
+gPlayerAnim_link_demo_furimuki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x113C50
+  symbol: gPlayerAnim_link_demo_furimuki_Data
+  frame_count: 80
+
+gPlayerAnim_link_demo_get_itemA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x120360
+  symbol: gPlayerAnim_link_demo_get_itemA_Data
+  frame_count: 22
+
+gPlayerAnim_link_demo_get_itemB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x120EF0
+  symbol: gPlayerAnim_link_demo_get_itemB_Data
+  frame_count: 22
+
+gPlayerAnim_link_demo_goma_furimuki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19C530
+  symbol: gPlayerAnim_link_demo_goma_furimuki_Data
+  frame_count: 46
+
+gPlayerAnim_link_demo_gurad_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A1AA0
+  symbol: gPlayerAnim_link_demo_gurad_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_gurad_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CAC90
+  symbol: gPlayerAnim_link_demo_gurad_wait_Data
+  frame_count: 10
+
+gPlayerAnim_link_demo_jibunmiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AF870
+  symbol: gPlayerAnim_link_demo_jibunmiru_Data
+  frame_count: 100
+
+gPlayerAnim_link_demo_kakeyori_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAA550
+  symbol: gPlayerAnim_link_demo_kakeyori_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kakeyori_mimawasi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x258E70
+  symbol: gPlayerAnim_link_demo_kakeyori_mimawasi_Data
+  frame_count: 85
+
+gPlayerAnim_link_demo_kakeyori_miokuri_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14BB40
+  symbol: gPlayerAnim_link_demo_kakeyori_miokuri_Data
+  frame_count: 25
+
+gPlayerAnim_link_demo_kakeyori_miokuri_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x32640
+  symbol: gPlayerAnim_link_demo_kakeyori_miokuri_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kakeyori_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6B1D0
+  symbol: gPlayerAnim_link_demo_kakeyori_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kaoage_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x163A0
+  symbol: gPlayerAnim_link_demo_kaoage_Data
+  frame_count: 15
+
+gPlayerAnim_link_demo_kaoage_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA6770
+  symbol: gPlayerAnim_link_demo_kaoage_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kenmiru1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18C700
+  symbol: gPlayerAnim_link_demo_kenmiru1_Data
+  frame_count: 10
+
+gPlayerAnim_link_demo_kenmiru1_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x168EB0
+  symbol: gPlayerAnim_link_demo_kenmiru1_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kenmiru2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18B4A0
+  symbol: gPlayerAnim_link_demo_kenmiru2_Data
+  frame_count: 35
+
+gPlayerAnim_link_demo_kenmiru2_modori_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA5590
+  symbol: gPlayerAnim_link_demo_kenmiru2_modori_Data
+  frame_count: 15
+
+gPlayerAnim_link_demo_kenmiru2_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x169930
+  symbol: gPlayerAnim_link_demo_kenmiru2_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_kousan_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x65AE0
+  symbol: gPlayerAnim_link_demo_kousan_Data
+  frame_count: 28
+
+gPlayerAnim_link_demo_look_hand_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x58380
+  symbol: gPlayerAnim_link_demo_look_hand_Data
+  frame_count: 35
+
+gPlayerAnim_link_demo_look_hand_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC7030
+  symbol: gPlayerAnim_link_demo_look_hand_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_demo_nozokikomi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x6310
+  symbol: gPlayerAnim_link_demo_nozokikomi_Data
+  frame_count: 70
+
+gPlayerAnim_link_demo_nozokikomi_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBB40
+  symbol: gPlayerAnim_link_demo_nozokikomi_wait_Data
+  frame_count: 35
+
+gPlayerAnim_link_demo_return_to_past_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x192340
+  symbol: gPlayerAnim_link_demo_return_to_past_Data
+  frame_count: 80
+
+gPlayerAnim_link_demo_sita_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7B5D0
+  symbol: gPlayerAnim_link_demo_sita_wait_Data
+  frame_count: 30
+
+gPlayerAnim_link_demo_ue_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x143570
+  symbol: gPlayerAnim_link_demo_ue_Data
+  frame_count: 10
+
+gPlayerAnim_link_demo_ue_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F9900
+  symbol: gPlayerAnim_link_demo_ue_wait_Data
+  frame_count: 30
+
+gPlayerAnim_link_demo_warp_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15EE40
+  symbol: gPlayerAnim_link_demo_warp_Data
+  frame_count: 70
+
+gPlayerAnim_link_demo_zeldamiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B64F0
+  symbol: gPlayerAnim_link_demo_zeldamiru_Data
+  frame_count: 15
+
+gPlayerAnim_link_demo_zeldamiru_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB5E10
+  symbol: gPlayerAnim_link_demo_zeldamiru_wait_Data
+  frame_count: 25
+
+gPlayerAnim_link_derth_rebirth_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1551B0
+  symbol: gPlayerAnim_link_derth_rebirth_Data
+  frame_count: 230
+
+gPlayerAnim_link_fighter_LLside_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x287EE0
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_LLside_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A2B0
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_end_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_LLside_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEBFA0
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_finsh_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_LLside_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x175810
+  symbol: gPlayerAnim_link_fighter_LLside_kiru_finsh_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_LRside_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x287BB0
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_LRside_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29CE0
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_end_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_LRside_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF8910
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_finsh_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_LRside_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16A3B0
+  symbol: gPlayerAnim_link_fighter_LRside_kiru_finsh_end_Data
+  frame_count: 17
+
+gPlayerAnim_link_fighter_Lnormal_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAC990
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_Data
+  frame_count: 5
+
+gPlayerAnim_link_fighter_Lnormal_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B8AC0
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_end_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_Lnormal_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25EEE0
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_finsh_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x111C50
+  symbol: gPlayerAnim_link_fighter_Lnormal_kiru_finsh_end_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_Lpierce_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x218AB0
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_Data
+  frame_count: 3
+
+gPlayerAnim_link_fighter_Lpierce_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CC20
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_end_Data
+  frame_count: 10
+
+gPlayerAnim_link_fighter_Lpierce_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x46170
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_finsh_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x176070
+  symbol: gPlayerAnim_link_fighter_Lpierce_kiru_finsh_end_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1044E0
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru_Data
+  frame_count: 10
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F4060
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_fighter_Lpower_jump_kiru_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF65E0
+  symbol: gPlayerAnim_link_fighter_Lpower_jump_kiru_hit_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_Lpower_kiru_side_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x174D10
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_side_walk_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_Lpower_kiru_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x835C0
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_start_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_Lpower_kiru_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2DF2B0
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_wait_Data
+  frame_count: 35
+
+gPlayerAnim_link_fighter_Lpower_kiru_wait_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC1400
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_wait_end_Data
+  frame_count: 15
+
+gPlayerAnim_link_fighter_Lpower_kiru_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E0CF0
+  symbol: gPlayerAnim_link_fighter_Lpower_kiru_walk_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_Lrolling_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25D530
+  symbol: gPlayerAnim_link_fighter_Lrolling_kiru_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_Lrolling_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x79E20
+  symbol: gPlayerAnim_link_fighter_Lrolling_kiru_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_fighter_Lside_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A2260
+  symbol: gPlayerAnim_link_fighter_Lside_jump_Data
+  frame_count: 7
+
+gPlayerAnim_link_fighter_Lside_jump_endL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2393E0
+  symbol: gPlayerAnim_link_fighter_Lside_jump_endL_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_Lside_jump_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x153D30
+  symbol: gPlayerAnim_link_fighter_Lside_jump_end_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_Lside_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x52070
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_Data
+  frame_count: 5
+
+gPlayerAnim_link_fighter_Lside_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4CD90
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_end_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_Lside_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x162220
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_finsh_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_Lside_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA7B60
+  symbol: gPlayerAnim_link_fighter_Lside_kiru_finsh_end_Data
+  frame_count: 15
+
+gPlayerAnim_link_fighter_Rside_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A1EB0
+  symbol: gPlayerAnim_link_fighter_Rside_jump_Data
+  frame_count: 7
+
+gPlayerAnim_link_fighter_Rside_jump_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x239810
+  symbol: gPlayerAnim_link_fighter_Rside_jump_endR_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_Rside_jump_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x153900
+  symbol: gPlayerAnim_link_fighter_Rside_jump_end_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_Rside_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x51DD0
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_Data
+  frame_count: 5
+
+gPlayerAnim_link_fighter_Rside_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4C740
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_fighter_Rside_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x168B00
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_finsh_Data
+  frame_count: 7
+
+gPlayerAnim_link_fighter_Rside_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA71F0
+  symbol: gPlayerAnim_link_fighter_Rside_kiru_finsh_end_Data
+  frame_count: 18
+
+gPlayerAnim_link_fighter_Wrolling_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25DD90
+  symbol: gPlayerAnim_link_fighter_Wrolling_kiru_Data
+  frame_count: 17
+
+gPlayerAnim_link_fighter_Wrolling_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CE960
+  symbol: gPlayerAnim_link_fighter_Wrolling_kiru_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_fighter_backturn_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18ACC0
+  symbol: gPlayerAnim_link_fighter_backturn_jump_Data
+  frame_count: 15
+
+gPlayerAnim_link_fighter_backturn_jump_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1347D0
+  symbol: gPlayerAnim_link_fighter_backturn_jump_endR_Data
+  frame_count: 12
+
+gPlayerAnim_link_fighter_backturn_jump_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x218700
+  symbol: gPlayerAnim_link_fighter_backturn_jump_end_Data
+  frame_count: 7
+
+gPlayerAnim_link_fighter_damage_run_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1897C0
+  symbol: gPlayerAnim_link_fighter_damage_run_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_damage_run_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF6AA0
+  symbol: gPlayerAnim_link_fighter_damage_run_long_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_defense_long_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D1130
+  symbol: gPlayerAnim_link_fighter_defense_long_hit_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_fighter2long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CEFB0
+  symbol: gPlayerAnim_link_fighter_fighter2long_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_front_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2CD460
+  symbol: gPlayerAnim_link_fighter_front_jump_Data
+  frame_count: 10
+
+gPlayerAnim_link_fighter_front_jump_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19DD50
+  symbol: gPlayerAnim_link_fighter_front_jump_endR_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_front_jump_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D4630
+  symbol: gPlayerAnim_link_fighter_front_jump_end_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_jump_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E17F0
+  symbol: gPlayerAnim_link_fighter_jump_kiru_finsh_Data
+  frame_count: 10
+
+gPlayerAnim_link_fighter_jump_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x122500
+  symbol: gPlayerAnim_link_fighter_jump_kiru_finsh_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_fighter_jump_rollkiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF8C40
+  symbol: gPlayerAnim_link_fighter_jump_rollkiru_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_landing_roll_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1ADA80
+  symbol: gPlayerAnim_link_fighter_landing_roll_long_Data
+  frame_count: 32
+
+gPlayerAnim_link_fighter_normal2fighter_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD95D0
+  symbol: gPlayerAnim_link_fighter_normal2fighter_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_normal_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x280100
+  symbol: gPlayerAnim_link_fighter_normal_kiru_Data
+  frame_count: 5
+
+gPlayerAnim_link_fighter_normal_kiru_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7A930
+  symbol: gPlayerAnim_link_fighter_normal_kiru_endR_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_normal_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x799F0
+  symbol: gPlayerAnim_link_fighter_normal_kiru_end_Data
+  frame_count: 8
+
+gPlayerAnim_link_fighter_normal_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F1800
+  symbol: gPlayerAnim_link_fighter_normal_kiru_finsh_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_normal_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xABF90
+  symbol: gPlayerAnim_link_fighter_normal_kiru_finsh_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_fighter_pierce_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD8EF0
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_Data
+  frame_count: 4
+
+gPlayerAnim_link_fighter_pierce_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x223BF0
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_end_Data
+  frame_count: 9
+
+gPlayerAnim_link_fighter_pierce_kiru_finsh_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1170B0
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_finsh_Data
+  frame_count: 10
+
+gPlayerAnim_link_fighter_pierce_kiru_finsh_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F0E00
+  symbol: gPlayerAnim_link_fighter_pierce_kiru_finsh_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_fighter_power_jump_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x220460
+  symbol: gPlayerAnim_link_fighter_power_jump_kiru_end_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_power_kiru_side_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA8340
+  symbol: gPlayerAnim_link_fighter_power_kiru_side_walk_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_power_kiru_startL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2347D0
+  symbol: gPlayerAnim_link_fighter_power_kiru_startL_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_power_kiru_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x256150
+  symbol: gPlayerAnim_link_fighter_power_kiru_start_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_power_kiru_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5C940
+  symbol: gPlayerAnim_link_fighter_power_kiru_wait_Data
+  frame_count: 34
+
+gPlayerAnim_link_fighter_power_kiru_wait_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x79210
+  symbol: gPlayerAnim_link_fighter_power_kiru_wait_end_Data
+  frame_count: 15
+
+gPlayerAnim_link_fighter_power_kiru_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x596F0
+  symbol: gPlayerAnim_link_fighter_power_kiru_walk_Data
+  frame_count: 21
+
+gPlayerAnim_link_fighter_reboundR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x106CB0
+  symbol: gPlayerAnim_link_fighter_reboundR_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_rebound_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA730
+  symbol: gPlayerAnim_link_fighter_rebound_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_rebound_longR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x195500
+  symbol: gPlayerAnim_link_fighter_rebound_longR_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_rebound_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x27CDA0
+  symbol: gPlayerAnim_link_fighter_rebound_long_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_rolling_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DF900
+  symbol: gPlayerAnim_link_fighter_rolling_kiru_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_rolling_kiru_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25E680
+  symbol: gPlayerAnim_link_fighter_rolling_kiru_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_run_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18A240
+  symbol: gPlayerAnim_link_fighter_run_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_run_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x103730
+  symbol: gPlayerAnim_link_fighter_run_long_Data
+  frame_count: 20
+
+gPlayerAnim_link_fighter_side_walkL_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBF270
+  symbol: gPlayerAnim_link_fighter_side_walkL_long_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_side_walkR_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBEA10
+  symbol: gPlayerAnim_link_fighter_side_walkR_long_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_side_walk_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x255220
+  symbol: gPlayerAnim_link_fighter_side_walk_long_Data
+  frame_count: 29
+
+gPlayerAnim_link_fighter_turn_kiruL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x46960
+  symbol: gPlayerAnim_link_fighter_turn_kiruL_Data
+  frame_count: 5
+
+gPlayerAnim_link_fighter_turn_kiruL_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x285FE0
+  symbol: gPlayerAnim_link_fighter_turn_kiruL_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_turn_kiruR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x46630
+  symbol: gPlayerAnim_link_fighter_turn_kiruR_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_turn_kiruR_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x285780
+  symbol: gPlayerAnim_link_fighter_turn_kiruR_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_fighter_wait2waitR_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9CE10
+  symbol: gPlayerAnim_link_fighter_wait2waitR_long_Data
+  frame_count: 6
+
+gPlayerAnim_link_fighter_waitL2wait_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDB970
+  symbol: gPlayerAnim_link_fighter_waitL2wait_long_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_waitL_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC2CA0
+  symbol: gPlayerAnim_link_fighter_waitL_long_Data
+  frame_count: 29
+
+gPlayerAnim_link_fighter_waitR2wait_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDC040
+  symbol: gPlayerAnim_link_fighter_waitR2wait_long_Data
+  frame_count: 13
+
+gPlayerAnim_link_fighter_waitR_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC3BD0
+  symbol: gPlayerAnim_link_fighter_waitR_long_Data
+  frame_count: 29
+
+gPlayerAnim_link_fighter_wait_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x554E0
+  symbol: gPlayerAnim_link_fighter_wait_long_Data
+  frame_count: 89
+
+gPlayerAnim_link_fighter_walk_endL_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x42E90
+  symbol: gPlayerAnim_link_fighter_walk_endL_long_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_walk_endR_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x428C0
+  symbol: gPlayerAnim_link_fighter_walk_endR_long_Data
+  frame_count: 11
+
+gPlayerAnim_link_fighter_walk_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x71B10
+  symbol: gPlayerAnim_link_fighter_walk_long_Data
+  frame_count: 29
+
+gPlayerAnim_link_hammer_long2free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B9AF0
+  symbol: gPlayerAnim_link_hammer_long2free_Data
+  frame_count: 20
+
+gPlayerAnim_link_hammer_long2long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13E290
+  symbol: gPlayerAnim_link_hammer_long2long_Data
+  frame_count: 20
+
+gPlayerAnim_link_hammer_normal2long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x772A0
+  symbol: gPlayerAnim_link_hammer_normal2long_Data
+  frame_count: 20
+
+gPlayerAnim_link_hatto_demo_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x129D00
+  symbol: gPlayerAnim_link_hatto_demo_Data
+  frame_count: 72
+
+gPlayerAnim_link_hook_fly_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BF6A0
+  symbol: gPlayerAnim_link_hook_fly_start_Data
+  frame_count: 9
+
+gPlayerAnim_link_hook_fly_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x134E20
+  symbol: gPlayerAnim_link_hook_fly_wait_Data
+  frame_count: 21
+
+gPlayerAnim_link_hook_shot_ready_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD9110
+  symbol: gPlayerAnim_link_hook_shot_ready_Data
+  frame_count: 9
+
+gPlayerAnim_link_hook_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x15CA20
+  symbol: gPlayerAnim_link_hook_wait_Data
+  frame_count: 69
+
+gPlayerAnim_link_hook_walk2ready_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x21FFA0
+  symbol: gPlayerAnim_link_hook_walk2ready_Data
+  frame_count: 9
+
+gPlayerAnim_link_kei_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D9E50
+  symbol: gPlayerAnim_link_kei_wait_Data
+  frame_count: 30
+
+gPlayerAnim_link_keirei_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E5A80
+  symbol: gPlayerAnim_link_keirei_Data
+  frame_count: 40
+
+gPlayerAnim_link_last_hit_motion1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BCBB0
+  symbol: gPlayerAnim_link_last_hit_motion1_Data
+  frame_count: 82
+
+gPlayerAnim_link_last_hit_motion2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BBD00
+  symbol: gPlayerAnim_link_last_hit_motion2_Data
+  frame_count: 28
+
+gPlayerAnim_link_magic_honoo1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13B780
+  symbol: gPlayerAnim_link_magic_honoo1_Data
+  frame_count: 60
+
+gPlayerAnim_link_magic_honoo2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x138AF0
+  symbol: gPlayerAnim_link_magic_honoo2_Data
+  frame_count: 25
+
+gPlayerAnim_link_magic_honoo3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x139810
+  symbol: gPlayerAnim_link_magic_honoo3_Data
+  frame_count: 60
+
+gPlayerAnim_link_magic_kaze1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1631E0
+  symbol: gPlayerAnim_link_magic_kaze1_Data
+  frame_count: 56
+
+gPlayerAnim_link_magic_kaze2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x165FF0
+  symbol: gPlayerAnim_link_magic_kaze2_Data
+  frame_count: 9
+
+gPlayerAnim_link_magic_kaze3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x164F30
+  symbol: gPlayerAnim_link_magic_kaze3_Data
+  frame_count: 32
+
+gPlayerAnim_link_magic_tamashii1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x250E00
+  symbol: gPlayerAnim_link_magic_tamashii1_Data
+  frame_count: 52
+
+gPlayerAnim_link_magic_tamashii2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2542F0
+  symbol: gPlayerAnim_link_magic_tamashii2_Data
+  frame_count: 29
+
+gPlayerAnim_link_magic_tamashii3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x252940
+  symbol: gPlayerAnim_link_magic_tamashii3_Data
+  frame_count: 49
+
+gPlayerAnim_link_magic_tame_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B6CD0
+  symbol: gPlayerAnim_link_magic_tame_Data
+  frame_count: 43
+
+gPlayerAnim_link_normal_100step_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2EC6F0
+  symbol: gPlayerAnim_link_normal_100step_up_Data
+  frame_count: 28
+
+gPlayerAnim_link_normal_150step_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2ED5A0
+  symbol: gPlayerAnim_link_normal_150step_up_Data
+  frame_count: 45
+
+gPlayerAnim_link_normal_250jump_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBC6F0
+  symbol: gPlayerAnim_link_normal_250jump_start_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_45_turn_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x225FD0
+  symbol: gPlayerAnim_link_normal_45_turn_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_45_turn_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xED6C0
+  symbol: gPlayerAnim_link_normal_45_turn_free_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_Fclimb_hold2upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25BAF0
+  symbol: gPlayerAnim_link_normal_Fclimb_hold2upL_Data
+  frame_count: 30
+
+gPlayerAnim_link_normal_Fclimb_sideL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x148420
+  symbol: gPlayerAnim_link_normal_Fclimb_sideL_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_Fclimb_sideR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x148F20
+  symbol: gPlayerAnim_link_normal_Fclimb_sideR_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_Fclimb_startA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13ED10
+  symbol: gPlayerAnim_link_normal_Fclimb_startA_Data
+  frame_count: 30
+
+gPlayerAnim_link_normal_Fclimb_startB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13FCD0
+  symbol: gPlayerAnim_link_normal_Fclimb_startB_Data
+  frame_count: 15
+
+gPlayerAnim_link_normal_Fclimb_upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA27D0
+  symbol: gPlayerAnim_link_normal_Fclimb_upL_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_Fclimb_upR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA1CD0
+  symbol: gPlayerAnim_link_normal_Fclimb_upR_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_back_brake_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x154160
+  symbol: gPlayerAnim_link_normal_back_brake_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_back_brake_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12D2F0
+  symbol: gPlayerAnim_link_normal_back_brake_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_back_downA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29CC50
+  symbol: gPlayerAnim_link_normal_back_downA_Data
+  frame_count: 6
+
+gPlayerAnim_link_normal_back_downB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29C4F0
+  symbol: gPlayerAnim_link_normal_back_downB_Data
+  frame_count: 14
+
+gPlayerAnim_link_normal_back_down_wake_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AC260
+  symbol: gPlayerAnim_link_normal_back_down_wake_Data
+  frame_count: 36
+
+gPlayerAnim_link_normal_back_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x102ED0
+  symbol: gPlayerAnim_link_normal_back_hit_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_back_run_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23A210
+  symbol: gPlayerAnim_link_normal_back_run_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_back_shitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C50
+  symbol: gPlayerAnim_link_normal_back_shitR_Data
+  frame_count: 8
+
+gPlayerAnim_link_normal_back_shit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4FCD0
+  symbol: gPlayerAnim_link_normal_back_shit_Data
+  frame_count: 8
+
+gPlayerAnim_link_normal_back_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D7780
+  symbol: gPlayerAnim_link_normal_back_walk_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_backspace_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D8FA0
+  symbol: gPlayerAnim_link_normal_backspace_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_box_kick_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x112220
+  symbol: gPlayerAnim_link_normal_box_kick_Data
+  frame_count: 50
+
+gPlayerAnim_link_normal_carryB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x137810
+  symbol: gPlayerAnim_link_normal_carryB_Data
+  frame_count: 36
+
+gPlayerAnim_link_normal_carryB_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B6A40
+  symbol: gPlayerAnim_link_normal_carryB_free_Data
+  frame_count: 17
+
+gPlayerAnim_link_normal_carryB_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2606A0
+  symbol: gPlayerAnim_link_normal_carryB_wait_Data
+  frame_count: 55
+
+gPlayerAnim_link_normal_check_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D8F20
+  symbol: gPlayerAnim_link_normal_check_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_check_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x128880
+  symbol: gPlayerAnim_link_normal_check_end_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_check_end_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F3B20
+  symbol: gPlayerAnim_link_normal_check_end_free_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_check_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F0380
+  symbol: gPlayerAnim_link_normal_check_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_check_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16ACA0
+  symbol: gPlayerAnim_link_normal_check_wait_Data
+  frame_count: 54
+
+gPlayerAnim_link_normal_check_wait_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10F690
+  symbol: gPlayerAnim_link_normal_check_wait_free_Data
+  frame_count: 54
+
+gPlayerAnim_link_normal_climb_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEFB70
+  symbol: gPlayerAnim_link_normal_climb_down_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_climb_endAL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x36FB0
+  symbol: gPlayerAnim_link_normal_climb_endAL_Data
+  frame_count: 27
+
+gPlayerAnim_link_normal_climb_endAR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x37DE0
+  symbol: gPlayerAnim_link_normal_climb_endAR_Data
+  frame_count: 28
+
+gPlayerAnim_link_normal_climb_endBL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3DB40
+  symbol: gPlayerAnim_link_normal_climb_endBL_Data
+  frame_count: 56
+
+gPlayerAnim_link_normal_climb_endBR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3F890
+  symbol: gPlayerAnim_link_normal_climb_endBR_Data
+  frame_count: 56
+
+gPlayerAnim_link_normal_climb_startA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x132FB0
+  symbol: gPlayerAnim_link_normal_climb_startA_Data
+  frame_count: 30
+
+gPlayerAnim_link_normal_climb_startB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x131260
+  symbol: gPlayerAnim_link_normal_climb_startB_Data
+  frame_count: 56
+
+gPlayerAnim_link_normal_climb_upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x144C80
+  symbol: gPlayerAnim_link_normal_climb_upL_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_climb_upR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x146280
+  symbol: gPlayerAnim_link_normal_climb_upR_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_climb_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1864E0
+  symbol: gPlayerAnim_link_normal_climb_up_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_damage_run_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2FF8F0
+  symbol: gPlayerAnim_link_normal_damage_run_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_defense_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x595E0
+  symbol: gPlayerAnim_link_normal_defense_Data
+  frame_count: 2
+
+gPlayerAnim_link_normal_defense_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29A40
+  symbol: gPlayerAnim_link_normal_defense_end_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_defense_end_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD6CE0
+  symbol: gPlayerAnim_link_normal_defense_end_free_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_defense_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE3C00
+  symbol: gPlayerAnim_link_normal_defense_free_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_defense_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x297D00
+  symbol: gPlayerAnim_link_normal_defense_hit_Data
+  frame_count: 9
+
+gPlayerAnim_link_normal_defense_kiru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x256D70
+  symbol: gPlayerAnim_link_normal_defense_kiru_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_defense_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB5390
+  symbol: gPlayerAnim_link_normal_defense_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_defense_wait_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B4920
+  symbol: gPlayerAnim_link_normal_defense_wait_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_down_slope_slip_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A1970
+  symbol: gPlayerAnim_link_normal_down_slope_slip_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_down_slope_slip_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1547B0
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_down_slope_slip_end_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7C590
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end_free_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_down_slope_slip_end_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29BAF0
+  symbol: gPlayerAnim_link_normal_down_slope_slip_end_long_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_electric_shock_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF0AA0
+  symbol: gPlayerAnim_link_normal_electric_shock_Data
+  frame_count: 26
+
+gPlayerAnim_link_normal_electric_shock_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C5160
+  symbol: gPlayerAnim_link_normal_electric_shock_end_Data
+  frame_count: 113
+
+gPlayerAnim_link_normal_fall_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x808B0
+  symbol: gPlayerAnim_link_normal_fall_Data
+  frame_count: 37
+
+gPlayerAnim_link_normal_fall_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8AE50
+  symbol: gPlayerAnim_link_normal_fall_up_Data
+  frame_count: 86
+
+gPlayerAnim_link_normal_fall_up_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2EA1C0
+  symbol: gPlayerAnim_link_normal_fall_up_free_Data
+  frame_count: 61
+
+gPlayerAnim_link_normal_fall_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1F1B30
+  symbol: gPlayerAnim_link_normal_fall_wait_Data
+  frame_count: 61
+
+gPlayerAnim_link_normal_fighter2free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF1840
+  symbol: gPlayerAnim_link_normal_fighter2free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_free2bom_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x28F870
+  symbol: gPlayerAnim_link_normal_free2bom_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_free2fighter_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFF70
+  symbol: gPlayerAnim_link_normal_free2fighter_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_free2freeB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x238960
+  symbol: gPlayerAnim_link_normal_free2freeB_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_free2free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x87C0
+  symbol: gPlayerAnim_link_normal_free2free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_front_downA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D8D00
+  symbol: gPlayerAnim_link_normal_front_downA_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_front_downB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D86B0
+  symbol: gPlayerAnim_link_normal_front_downB_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_front_down_wake_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x85E20
+  symbol: gPlayerAnim_link_normal_front_down_wake_Data
+  frame_count: 39
+
+gPlayerAnim_link_normal_front_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B2CD0
+  symbol: gPlayerAnim_link_normal_front_hit_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_front_shitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD68B0
+  symbol: gPlayerAnim_link_normal_front_shitR_Data
+  frame_count: 8
+
+gPlayerAnim_link_normal_front_shit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x38C90
+  symbol: gPlayerAnim_link_normal_front_shit_Data
+  frame_count: 8
+
+gPlayerAnim_link_normal_give_other_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19E850
+  symbol: gPlayerAnim_link_normal_give_other_Data
+  frame_count: 47
+
+gPlayerAnim_link_normal_hang_up_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD28B0
+  symbol: gPlayerAnim_link_normal_hang_up_down_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_hip_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x36100
+  symbol: gPlayerAnim_link_normal_hip_down_Data
+  frame_count: 28
+
+gPlayerAnim_link_normal_hip_down_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14AC90
+  symbol: gPlayerAnim_link_normal_hip_down_free_Data
+  frame_count: 28
+
+gPlayerAnim_link_normal_hip_down_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBDB60
+  symbol: gPlayerAnim_link_normal_hip_down_long_Data
+  frame_count: 28
+
+gPlayerAnim_link_normal_ice_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A6D60
+  symbol: gPlayerAnim_link_normal_ice_down_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x129840
+  symbol: gPlayerAnim_link_normal_jump_Data
+  frame_count: 9
+
+gPlayerAnim_link_normal_jump_climb_hold_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x98000
+  symbol: gPlayerAnim_link_normal_jump_climb_hold_Data
+  frame_count: 18
+
+gPlayerAnim_link_normal_jump_climb_hold_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2981C0
+  symbol: gPlayerAnim_link_normal_jump_climb_hold_free_Data
+  frame_count: 18
+
+gPlayerAnim_link_normal_jump_climb_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1B3530
+  symbol: gPlayerAnim_link_normal_jump_climb_up_Data
+  frame_count: 38
+
+gPlayerAnim_link_normal_jump_climb_up_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF7520
+  symbol: gPlayerAnim_link_normal_jump_climb_up_free_Data
+  frame_count: 38
+
+gPlayerAnim_link_normal_jump_climb_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x293750
+  symbol: gPlayerAnim_link_normal_jump_climb_wait_Data
+  frame_count: 73
+
+gPlayerAnim_link_normal_jump_climb_wait_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x27A7F0
+  symbol: gPlayerAnim_link_normal_jump_climb_wait_free_Data
+  frame_count: 72
+
+gPlayerAnim_link_normal_landing_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBFAD0
+  symbol: gPlayerAnim_link_normal_landing_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_landing_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FC050
+  symbol: gPlayerAnim_link_normal_landing_free_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_landing_roll_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFA470
+  symbol: gPlayerAnim_link_normal_landing_roll_Data
+  frame_count: 32
+
+gPlayerAnim_link_normal_landing_roll_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xACC30
+  symbol: gPlayerAnim_link_normal_landing_roll_free_Data
+  frame_count: 32
+
+gPlayerAnim_link_normal_landing_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x177CC0
+  symbol: gPlayerAnim_link_normal_landing_wait_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_light_bom_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14A640
+  symbol: gPlayerAnim_link_normal_light_bom_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_light_bom_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B0BE0
+  symbol: gPlayerAnim_link_normal_light_bom_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_long2bom_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20D340
+  symbol: gPlayerAnim_link_normal_long2bom_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_newroll_jump_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x238290
+  symbol: gPlayerAnim_link_normal_newroll_jump_20f_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_newroll_jump_end_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x143AB0
+  symbol: gPlayerAnim_link_normal_newroll_jump_end_20f_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_newside_jump_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2FBDB0
+  symbol: gPlayerAnim_link_normal_newside_jump_20f_Data
+  frame_count: 14
+
+gPlayerAnim_link_normal_newside_jump_end_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x977A0
+  symbol: gPlayerAnim_link_normal_newside_jump_end_20f_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_nocarry_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7A470
+  symbol: gPlayerAnim_link_normal_nocarry_free_Data
+  frame_count: 9
+
+gPlayerAnim_link_normal_nocarry_free_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE1290
+  symbol: gPlayerAnim_link_normal_nocarry_free_end_Data
+  frame_count: 7
+
+gPlayerAnim_link_normal_nocarry_free_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19A100
+  symbol: gPlayerAnim_link_normal_nocarry_free_wait_Data
+  frame_count: 5
+
+gPlayerAnim_link_normal_normal2bom_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x82B40
+  symbol: gPlayerAnim_link_normal_normal2bom_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_normal2fighter_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2C8C90
+  symbol: gPlayerAnim_link_normal_normal2fighter_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_normal2fighter_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x128DC0
+  symbol: gPlayerAnim_link_normal_normal2fighter_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_normal2free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x116630
+  symbol: gPlayerAnim_link_normal_normal2free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_okarina_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1664B0
+  symbol: gPlayerAnim_link_normal_okarina_end_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_okarina_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x83E20
+  symbol: gPlayerAnim_link_normal_okarina_start_Data
+  frame_count: 12
+
+gPlayerAnim_link_normal_okarina_swing_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1DAE10
+  symbol: gPlayerAnim_link_normal_okarina_swing_Data
+  frame_count: 68
+
+gPlayerAnim_link_normal_pull_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BA570
+  symbol: gPlayerAnim_link_normal_pull_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_pull_end_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x133F70
+  symbol: gPlayerAnim_link_normal_pull_end_free_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_pull_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xE290
+  symbol: gPlayerAnim_link_normal_pull_start_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_pull_start_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B940
+  symbol: gPlayerAnim_link_normal_pull_start_free_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_pulling_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB4350
+  symbol: gPlayerAnim_link_normal_pulling_Data
+  frame_count: 31
+
+gPlayerAnim_link_normal_pulling_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDF9F0
+  symbol: gPlayerAnim_link_normal_pulling_free_Data
+  frame_count: 31
+
+gPlayerAnim_link_normal_push_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BADD0
+  symbol: gPlayerAnim_link_normal_push_end_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_push_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1530A0
+  symbol: gPlayerAnim_link_normal_push_start_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_push_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AD540
+  symbol: gPlayerAnim_link_normal_push_wait_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_push_wait_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEAF0
+  symbol: gPlayerAnim_link_normal_push_wait_end_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_pushing_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB3310
+  symbol: gPlayerAnim_link_normal_pushing_Data
+  frame_count: 31
+
+gPlayerAnim_link_normal_put_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x9C310
+  symbol: gPlayerAnim_link_normal_put_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_put_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x27F920
+  symbol: gPlayerAnim_link_normal_put_free_Data
+  frame_count: 15
+
+gPlayerAnim_link_normal_re_dead_attack_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B9FD0
+  symbol: gPlayerAnim_link_normal_re_dead_attack_Data
+  frame_count: 9
+
+gPlayerAnim_link_normal_re_dead_attack_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xADCF0
+  symbol: gPlayerAnim_link_normal_re_dead_attack_wait_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_run_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4B990
+  symbol: gPlayerAnim_link_normal_run_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_run_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x284D00
+  symbol: gPlayerAnim_link_normal_run_free_Data
+  frame_count: 20
+
+gPlayerAnim_link_normal_run_jump_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BB630
+  symbol: gPlayerAnim_link_normal_run_jump_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_run_jump_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AEE70
+  symbol: gPlayerAnim_link_normal_run_jump_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_run_jump_water_fall_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B5A00
+  symbol: gPlayerAnim_link_normal_run_jump_water_fall_Data
+  frame_count: 31
+
+gPlayerAnim_link_normal_run_jump_water_fall_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDC710
+  symbol: gPlayerAnim_link_normal_run_jump_water_fall_wait_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_short_landing_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4F470
+  symbol: gPlayerAnim_link_normal_short_landing_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_short_landing_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x87D90
+  symbol: gPlayerAnim_link_normal_short_landing_free_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_side_walkL_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20DDC0
+  symbol: gPlayerAnim_link_normal_side_walkL_free_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_side_walkR_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20E620
+  symbol: gPlayerAnim_link_normal_side_walkR_free_Data
+  frame_count: 16
+
+gPlayerAnim_link_normal_side_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D6850
+  symbol: gPlayerAnim_link_normal_side_walk_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_side_walk_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CB470
+  symbol: gPlayerAnim_link_normal_side_walk_free_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_take_out_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x46C00
+  symbol: gPlayerAnim_link_normal_take_out_Data
+  frame_count: 38
+
+gPlayerAnim_link_normal_talk_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x167A30
+  symbol: gPlayerAnim_link_normal_talk_free_Data
+  frame_count: 7
+
+gPlayerAnim_link_normal_talk_free_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAF410
+  symbol: gPlayerAnim_link_normal_talk_free_wait_Data
+  frame_count: 34
+
+gPlayerAnim_link_normal_throw_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1525A0
+  symbol: gPlayerAnim_link_normal_throw_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_throw_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x87290
+  symbol: gPlayerAnim_link_normal_throw_free_Data
+  frame_count: 21
+
+gPlayerAnim_link_normal_up_slope_slip_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1BFB60
+  symbol: gPlayerAnim_link_normal_up_slope_slip_Data
+  frame_count: 10
+
+gPlayerAnim_link_normal_up_slope_slip_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x130320
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_up_slope_slip_end_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x18EA20
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end_free_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_up_slope_slip_end_long_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA5D70
+  symbol: gPlayerAnim_link_normal_up_slope_slip_end_long_Data
+  frame_count: 19
+
+gPlayerAnim_link_normal_wait2waitR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4C410
+  symbol: gPlayerAnim_link_normal_wait2waitR_Data
+  frame_count: 6
+
+gPlayerAnim_link_normal_waitF_typeA_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x26EE10
+  symbol: gPlayerAnim_link_normal_waitF_typeA_20f_Data
+  frame_count: 184
+
+gPlayerAnim_link_normal_waitF_typeB_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x268C20
+  symbol: gPlayerAnim_link_normal_waitF_typeB_20f_Data
+  frame_count: 187
+
+gPlayerAnim_link_normal_waitF_typeC_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x262370
+  symbol: gPlayerAnim_link_normal_waitF_typeC_20f_Data
+  frame_count: 200
+
+gPlayerAnim_link_normal_waitL2wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A0D00
+  symbol: gPlayerAnim_link_normal_waitL2wait_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_waitL_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C00A0
+  symbol: gPlayerAnim_link_normal_waitL_free_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_waitR2wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A13D0
+  symbol: gPlayerAnim_link_normal_waitR2wait_Data
+  frame_count: 13
+
+gPlayerAnim_link_normal_waitR_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C0FD0
+  symbol: gPlayerAnim_link_normal_waitR_free_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x7DA10
+  symbol: gPlayerAnim_link_normal_wait_Data
+  frame_count: 89
+
+gPlayerAnim_link_normal_wait_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x181650
+  symbol: gPlayerAnim_link_normal_wait_free_Data
+  frame_count: 89
+
+gPlayerAnim_link_normal_wait_typeA_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x23AA70
+  symbol: gPlayerAnim_link_normal_wait_typeA_20f_Data
+  frame_count: 184
+
+gPlayerAnim_link_normal_wait_typeB_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x240AC0
+  symbol: gPlayerAnim_link_normal_wait_typeB_20f_Data
+  frame_count: 187
+
+gPlayerAnim_link_normal_wait_typeC_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x246CB0
+  symbol: gPlayerAnim_link_normal_wait_typeC_20f_Data
+  frame_count: 200
+
+gPlayerAnim_link_normal_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x81C10
+  symbol: gPlayerAnim_link_normal_walk_Data
+  frame_count: 29
+
+gPlayerAnim_link_normal_walk_endL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB16B0
+  symbol: gPlayerAnim_link_normal_walk_endL_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_walk_endL_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13D6F0
+  symbol: gPlayerAnim_link_normal_walk_endL_free_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_walk_endR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB10E0
+  symbol: gPlayerAnim_link_normal_walk_endR_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_walk_endR_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13DCC0
+  symbol: gPlayerAnim_link_normal_walk_endR_free_Data
+  frame_count: 11
+
+gPlayerAnim_link_normal_walk_free_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x166B00
+  symbol: gPlayerAnim_link_normal_walk_free_Data
+  frame_count: 29
+
+gPlayerAnim_link_okarina_warp_goal_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5A1F0
+  symbol: gPlayerAnim_link_okarina_warp_goal_Data
+  frame_count: 45
+
+gPlayerAnim_link_okiru_demo_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D6540
+  symbol: gPlayerAnim_link_okiru_demo_Data
+  frame_count: 80
+
+gPlayerAnim_link_shagamu_demo_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x43460
+  symbol: gPlayerAnim_link_shagamu_demo_Data
+  frame_count: 13
+
+gPlayerAnim_link_silver_carry_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12D940
+  symbol: gPlayerAnim_link_silver_carry_Data
+  frame_count: 80
+
+gPlayerAnim_link_silver_throw_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x12C2B0
+  symbol: gPlayerAnim_link_silver_throw_Data
+  frame_count: 31
+
+gPlayerAnim_link_silver_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CC3A0
+  symbol: gPlayerAnim_link_silver_wait_Data
+  frame_count: 71
+
+gPlayerAnim_link_swimer_Lside_swim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB7D00
+  symbol: gPlayerAnim_link_swimer_Lside_swim_Data
+  frame_count: 34
+
+gPlayerAnim_link_swimer_Rside_swim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB6B30
+  symbol: gPlayerAnim_link_swimer_Rside_swim_Data
+  frame_count: 34
+
+gPlayerAnim_link_swimer_back_swim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2FC510
+  symbol: gPlayerAnim_link_swimer_back_swim_Data
+  frame_count: 39
+
+gPlayerAnim_link_swimer_land2swim_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C47F0
+  symbol: gPlayerAnim_link_swimer_land2swim_wait_Data
+  frame_count: 27
+
+gPlayerAnim_link_swimer_swim_15step_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x104A20
+  symbol: gPlayerAnim_link_swimer_swim_15step_up_Data
+  frame_count: 66
+
+gPlayerAnim_link_swimer_swim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xBCC30
+  symbol: gPlayerAnim_link_swimer_swim_Data
+  frame_count: 29
+
+gPlayerAnim_link_swimer_swim_deep_end_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x185420
+  symbol: gPlayerAnim_link_swimer_swim_deep_end_Data
+  frame_count: 32
+
+gPlayerAnim_link_swimer_swim_deep_start_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2221C0
+  symbol: gPlayerAnim_link_swimer_swim_deep_start_Data
+  frame_count: 50
+
+gPlayerAnim_link_swimer_swim_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x122B50
+  symbol: gPlayerAnim_link_swimer_swim_down_Data
+  frame_count: 178
+
+gPlayerAnim_link_swimer_swim_get_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x13DD0
+  symbol: gPlayerAnim_link_swimer_swim_get_Data
+  frame_count: 12
+
+gPlayerAnim_link_swimer_swim_hit_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2EC1B0
+  symbol: gPlayerAnim_link_swimer_swim_hit_Data
+  frame_count: 10
+
+gPlayerAnim_link_swimer_swim_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x187410
+  symbol: gPlayerAnim_link_swimer_swim_wait_Data
+  frame_count: 46
+
+gPlayerAnim_link_swimer_wait2swim_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x199BC0
+  symbol: gPlayerAnim_link_swimer_wait2swim_wait_Data
+  frame_count: 10
+
+gPlayerAnim_link_uma_anim_fastrun_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17E380
+  symbol: gPlayerAnim_link_uma_anim_fastrun_Data
+  frame_count: 24
+
+gPlayerAnim_link_uma_anim_fastrun_muti_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x50640
+  symbol: gPlayerAnim_link_uma_anim_fastrun_muti_Data
+  frame_count: 24
+
+gPlayerAnim_link_uma_anim_jump100_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FA480
+  symbol: gPlayerAnim_link_uma_anim_jump100_Data
+  frame_count: 23
+
+gPlayerAnim_link_uma_anim_jump200_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16C8F0
+  symbol: gPlayerAnim_link_uma_anim_jump200_Data
+  frame_count: 30
+
+gPlayerAnim_link_uma_anim_slowrun_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x19A3A0
+  symbol: gPlayerAnim_link_uma_anim_slowrun_Data
+  frame_count: 29
+
+gPlayerAnim_link_uma_anim_slowrun_muti_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1844F0
+  symbol: gPlayerAnim_link_uma_anim_slowrun_muti_Data
+  frame_count: 29
+
+gPlayerAnim_link_uma_anim_stand_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAE2C0
+  symbol: gPlayerAnim_link_uma_anim_stand_Data
+  frame_count: 33
+
+gPlayerAnim_link_uma_anim_stop_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x92A80
+  symbol: gPlayerAnim_link_uma_anim_stop_Data
+  frame_count: 65
+
+gPlayerAnim_link_uma_anim_walk_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xF9210
+  symbol: gPlayerAnim_link_uma_anim_walk_Data
+  frame_count: 35
+
+gPlayerAnim_link_uma_anim_walk_muti_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x885F0
+  symbol: gPlayerAnim_link_uma_anim_walk_muti_Data
+  frame_count: 35
+
+gPlayerAnim_link_uma_left_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x3570
+  symbol: gPlayerAnim_link_uma_left_down_Data
+  frame_count: 65
+
+gPlayerAnim_link_uma_left_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x27D470
+  symbol: gPlayerAnim_link_uma_left_up_Data
+  frame_count: 70
+
+gPlayerAnim_link_uma_right_down_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C2ED0
+  symbol: gPlayerAnim_link_uma_right_down_Data
+  frame_count: 48
+
+gPlayerAnim_link_uma_right_up_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x22EE0
+  symbol: gPlayerAnim_link_uma_right_up_Data
+  frame_count: 74
+
+gPlayerAnim_link_uma_stop_muti_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x52D90
+  symbol: gPlayerAnim_link_uma_stop_muti_Data
+  frame_count: 75
+
+gPlayerAnim_link_uma_wait_1_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x22DAF0
+  symbol: gPlayerAnim_link_uma_wait_1_Data
+  frame_count: 208
+
+gPlayerAnim_link_uma_wait_2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2274D0
+  symbol: gPlayerAnim_link_uma_wait_2_Data
+  frame_count: 195
+
+gPlayerAnim_link_uma_wait_3_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x226510
+  symbol: gPlayerAnim_link_uma_wait_3_Data
+  frame_count: 30
+
+gPlayerAnim_link_waitF_heat1_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17C410
+  symbol: gPlayerAnim_link_waitF_heat1_20f_Data
+  frame_count: 36
+
+gPlayerAnim_link_waitF_heat2_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17D6F0
+  symbol: gPlayerAnim_link_waitF_heat2_20f_Data
+  frame_count: 24
+
+gPlayerAnim_link_waitF_itemA_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A4A0
+  symbol: gPlayerAnim_link_waitF_itemA_20f_Data
+  frame_count: 90
+
+gPlayerAnim_link_waitF_itemB_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D3C0
+  symbol: gPlayerAnim_link_waitF_itemB_20f_Data
+  frame_count: 100
+
+gPlayerAnim_link_waitF_typeD_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A2520
+  symbol: gPlayerAnim_link_waitF_typeD_20f_Data
+  frame_count: 138
+
+gPlayerAnim_link_wait_heat1_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x959B0
+  symbol: gPlayerAnim_link_wait_heat1_20f_Data
+  frame_count: 35
+
+gPlayerAnim_link_wait_heat2_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x94C90
+  symbol: gPlayerAnim_link_wait_heat2_20f_Data
+  frame_count: 25
+
+gPlayerAnim_link_wait_itemA_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1ED460
+  symbol: gPlayerAnim_link_wait_itemA_20f_Data
+  frame_count: 90
+
+gPlayerAnim_link_wait_itemB_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1EA000
+  symbol: gPlayerAnim_link_wait_itemB_20f_Data
+  frame_count: 100
+
+gPlayerAnim_link_wait_itemC_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1E6F50
+  symbol: gPlayerAnim_link_wait_itemC_20f_Data
+  frame_count: 93
+
+gPlayerAnim_link_wait_itemD1_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14C860
+  symbol: gPlayerAnim_link_wait_itemD1_20f_Data
+  frame_count: 70
+
+gPlayerAnim_link_wait_itemD2_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14ED10
+  symbol: gPlayerAnim_link_wait_itemD2_20f_Data
+  frame_count: 108
+
+gPlayerAnim_link_wait_typeD_20f_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x66990
+  symbol: gPlayerAnim_link_wait_typeD_20f_Data
+  frame_count: 138
+
+gPlayerAnim_lkt_nwait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B7330
+  symbol: gPlayerAnim_lkt_nwait_Data
+  frame_count: 45
+
+gPlayerAnim_lost_horse2_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEE680
+  symbol: gPlayerAnim_lost_horse2_Data
+  frame_count: 40
+
+gPlayerAnim_lost_horse_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x277D80
+  symbol: gPlayerAnim_lost_horse_Data
+  frame_count: 81
+
+gPlayerAnim_lost_horse_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x234DA0
+  symbol: gPlayerAnim_lost_horse_wait_Data
+  frame_count: 11
+
+gPlayerAnim_nw_modoru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4E9F0
+  symbol: gPlayerAnim_nw_modoru_Data
+  frame_count: 20
+
+gPlayerAnim_o_get_ato_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2F7560
+  symbol: gPlayerAnim_o_get_ato_Data
+  frame_count: 20
+
+gPlayerAnim_o_get_mae_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8DB60
+  symbol: gPlayerAnim_o_get_mae_Data
+  frame_count: 50
+
+gPlayerAnim_okarinatori_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x188C30
+  symbol: gPlayerAnim_okarinatori_Data
+  frame_count: 22
+
+gPlayerAnim_okiagaru_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2E3120
+  symbol: gPlayerAnim_okiagaru_Data
+  frame_count: 79
+
+gPlayerAnim_okiagaru_tatu_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D2740
+  symbol: gPlayerAnim_okiagaru_tatu_Data
+  frame_count: 41
+
+gPlayerAnim_okiagaru_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C9F80
+  symbol: gPlayerAnim_okiagaru_wait_Data
+  frame_count: 40
+
+gPlayerAnim_om_get_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x141680
+  symbol: gPlayerAnim_om_get_Data
+  frame_count: 30
+
+gPlayerAnim_om_get_mae_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x8F590
+  symbol: gPlayerAnim_om_get_mae_Data
+  frame_count: 50
+
+gPlayerAnim_pg_Tbox_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A6BB0
+  symbol: gPlayerAnim_pg_Tbox_open_Data
+  frame_count: 133
+
+gPlayerAnim_pg_climb_endAL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC88E0
+  symbol: gPlayerAnim_pg_climb_endAL_Data
+  frame_count: 27
+
+gPlayerAnim_pg_climb_endAR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCA540
+  symbol: gPlayerAnim_pg_climb_endAR_Data
+  frame_count: 27
+
+gPlayerAnim_pg_climb_endBL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCD0C0
+  symbol: gPlayerAnim_pg_climb_endBL_Data
+  frame_count: 56
+
+gPlayerAnim_pg_climb_endBR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD0B60
+  symbol: gPlayerAnim_pg_climb_endBR_Data
+  frame_count: 56
+
+gPlayerAnim_pg_climb_startA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10AC30
+  symbol: gPlayerAnim_pg_climb_startA_Data
+  frame_count: 30
+
+gPlayerAnim_pg_climb_startB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10D940
+  symbol: gPlayerAnim_pg_climb_startB_Data
+  frame_count: 56
+
+gPlayerAnim_pg_climb_upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CE8D0
+  symbol: gPlayerAnim_pg_climb_upL_Data
+  frame_count: 21
+
+gPlayerAnim_pg_climb_upR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1CF3D0
+  symbol: gPlayerAnim_pg_climb_upR_Data
+  frame_count: 21
+
+gPlayerAnim_pg_doorA_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x214040
+  symbol: gPlayerAnim_pg_doorA_open_Data
+  frame_count: 100
+
+gPlayerAnim_pg_doorB_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x210BE0
+  symbol: gPlayerAnim_pg_doorB_open_Data
+  frame_count: 100
+
+gPlayerAnim_pg_gakkiplayA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x225B10
+  symbol: gPlayerAnim_pg_gakkiplayA_Data
+  frame_count: 9
+
+gPlayerAnim_pg_gakkiplayD_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x225650
+  symbol: gPlayerAnim_pg_gakkiplayD_Data
+  frame_count: 9
+
+gPlayerAnim_pg_gakkiplayL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x225190
+  symbol: gPlayerAnim_pg_gakkiplayL_Data
+  frame_count: 9
+
+gPlayerAnim_pg_gakkiplayR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x224CD0
+  symbol: gPlayerAnim_pg_gakkiplayR_Data
+  frame_count: 9
+
+gPlayerAnim_pg_gakkiplayU_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x224810
+  symbol: gPlayerAnim_pg_gakkiplayU_Data
+  frame_count: 9
+
+gPlayerAnim_pg_gakkiplay_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1AA260
+  symbol: gPlayerAnim_pg_gakkiplay_Data
+  frame_count: 18
+
+gPlayerAnim_pg_gakkistart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2240B0
+  symbol: gPlayerAnim_pg_gakkistart_Data
+  frame_count: 14
+
+gPlayerAnim_pg_gakkiwait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1112E0
+  symbol: gPlayerAnim_pg_gakkiwait_Data
+  frame_count: 18
+
+gPlayerAnim_pg_maru_change_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x239C40
+  symbol: gPlayerAnim_pg_maru_change_Data
+  frame_count: 11
+
+gPlayerAnim_pg_maskoffstart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1987D0
+  symbol: gPlayerAnim_pg_maskoffstart_Data
+  frame_count: 15
+
+gPlayerAnim_pg_punchA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29B4A0
+  symbol: gPlayerAnim_pg_punchA_Data
+  frame_count: 12
+
+gPlayerAnim_pg_punchAendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D2070
+  symbol: gPlayerAnim_pg_punchAendR_Data
+  frame_count: 13
+
+gPlayerAnim_pg_punchAend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x84EF0
+  symbol: gPlayerAnim_pg_punchAend_Data
+  frame_count: 13
+
+gPlayerAnim_pg_punchB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29AAA0
+  symbol: gPlayerAnim_pg_punchB_Data
+  frame_count: 19
+
+gPlayerAnim_pg_punchBendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D15F0
+  symbol: gPlayerAnim_pg_punchBendR_Data
+  frame_count: 10
+
+gPlayerAnim_pg_punchBend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x84470
+  symbol: gPlayerAnim_pg_punchBend_Data
+  frame_count: 10
+
+gPlayerAnim_pg_punchC_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29A020
+  symbol: gPlayerAnim_pg_punchC_Data
+  frame_count: 20
+
+gPlayerAnim_pg_punchCendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1D1B30
+  symbol: gPlayerAnim_pg_punchCendR_Data
+  frame_count: 10
+
+gPlayerAnim_pg_punchCend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x849B0
+  symbol: gPlayerAnim_pg_punchCend_Data
+  frame_count: 10
+
+gPlayerAnim_pg_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFF5B0
+  symbol: gPlayerAnim_pg_wait_Data
+  frame_count: 79
+
+gPlayerAnim_pn_Tbox_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2AC640
+  symbol: gPlayerAnim_pn_Tbox_open_Data
+  frame_count: 133
+
+gPlayerAnim_pn_attack_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xA4A00
+  symbol: gPlayerAnim_pn_attack_Data
+  frame_count: 2
+
+gPlayerAnim_pn_batabata_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x135920
+  symbol: gPlayerAnim_pn_batabata_Data
+  frame_count: 14
+
+gPlayerAnim_pn_doorA_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x170D10
+  symbol: gPlayerAnim_pn_doorA_open_Data
+  frame_count: 100
+
+gPlayerAnim_pn_doorB_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x16D8B0
+  symbol: gPlayerAnim_pn_doorB_open_Data
+  frame_count: 100
+
+gPlayerAnim_pn_drink_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2DEAD0
+  symbol: gPlayerAnim_pn_drink_Data
+  frame_count: 15
+
+gPlayerAnim_pn_drinkend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x52310
+  symbol: gPlayerAnim_pn_drinkend_Data
+  frame_count: 20
+
+gPlayerAnim_pn_drinkstart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1612F0
+  symbol: gPlayerAnim_pn_drinkstart_Data
+  frame_count: 29
+
+gPlayerAnim_pn_gakkiplay_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A7970
+  symbol: gPlayerAnim_pn_gakkiplay_Data
+  frame_count: 8
+
+gPlayerAnim_pn_gakkistart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x149A20
+  symbol: gPlayerAnim_pn_gakkistart_Data
+  frame_count: 12
+
+gPlayerAnim_pn_getA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x75960
+  symbol: gPlayerAnim_pn_getA_Data
+  frame_count: 22
+
+gPlayerAnim_pn_getB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x764F0
+  symbol: gPlayerAnim_pn_getB_Data
+  frame_count: 22
+
+gPlayerAnim_pn_gurd_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x77080
+  symbol: gPlayerAnim_pn_gurd_Data
+  frame_count: 4
+
+gPlayerAnim_pn_kakku_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x256720
+  symbol: gPlayerAnim_pn_kakku_Data
+  frame_count: 12
+
+gPlayerAnim_pn_kakkufinish_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x194D20
+  symbol: gPlayerAnim_pn_kakkufinish_Data
+  frame_count: 15
+
+gPlayerAnim_pn_maskoffstart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x198FB0
+  symbol: gPlayerAnim_pn_maskoffstart_Data
+  frame_count: 15
+
+gPlayerAnim_pn_rakkafinish_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x14A070
+  symbol: gPlayerAnim_pn_rakkafinish_Data
+  frame_count: 11
+
+gPlayerAnim_pn_tamahaki_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x141250
+  symbol: gPlayerAnim_pn_tamahaki_Data
+  frame_count: 8
+
+gPlayerAnim_pn_tamahakidf_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x125B0
+  symbol: gPlayerAnim_pn_tamahakidf_Data
+  frame_count: 2
+
+gPlayerAnim_pz_Tbox_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2A2610
+  symbol: gPlayerAnim_pz_Tbox_open_Data
+  frame_count: 133
+
+gPlayerAnim_pz_attackA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x287800
+  symbol: gPlayerAnim_pz_attackA_Data
+  frame_count: 7
+
+gPlayerAnim_pz_attackAendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D1B50
+  symbol: gPlayerAnim_pz_attackAendR_Data
+  frame_count: 6
+
+gPlayerAnim_pz_attackAend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B9B10
+  symbol: gPlayerAnim_pz_attackAend_Data
+  frame_count: 9
+
+gPlayerAnim_pz_attackB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2872C0
+  symbol: gPlayerAnim_pz_attackB_Data
+  frame_count: 10
+
+gPlayerAnim_pz_attackBendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D1680
+  symbol: gPlayerAnim_pz_attackBendR_Data
+  frame_count: 6
+
+gPlayerAnim_pz_attackBend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B8F80
+  symbol: gPlayerAnim_pz_attackBend_Data
+  frame_count: 12
+
+gPlayerAnim_pz_attackC_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x286840
+  symbol: gPlayerAnim_pz_attackC_Data
+  frame_count: 20
+
+gPlayerAnim_pz_attackCendR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D19B0
+  symbol: gPlayerAnim_pz_attackCendR_Data
+  frame_count: 3
+
+gPlayerAnim_pz_attackCend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2B95D0
+  symbol: gPlayerAnim_pz_attackCend_Data
+  frame_count: 10
+
+gPlayerAnim_pz_bladeon_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x20C510
+  symbol: gPlayerAnim_pz_bladeon_Data
+  frame_count: 9
+
+gPlayerAnim_pz_climb_endAL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC7AB0
+  symbol: gPlayerAnim_pz_climb_endAL_Data
+  frame_count: 27
+
+gPlayerAnim_pz_climb_endAR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xC9710
+  symbol: gPlayerAnim_pz_climb_endAR_Data
+  frame_count: 27
+
+gPlayerAnim_pz_climb_endBL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCB370
+  symbol: gPlayerAnim_pz_climb_endBL_Data
+  frame_count: 56
+
+gPlayerAnim_pz_climb_endBR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xCEE10
+  symbol: gPlayerAnim_pz_climb_endBR_Data
+  frame_count: 56
+
+gPlayerAnim_pz_climb_startA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x109C70
+  symbol: gPlayerAnim_pz_climb_startA_Data
+  frame_count: 30
+
+gPlayerAnim_pz_climb_startB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x10BBF0
+  symbol: gPlayerAnim_pz_climb_startB_Data
+  frame_count: 56
+
+gPlayerAnim_pz_climb_upL_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C8980
+  symbol: gPlayerAnim_pz_climb_upL_Data
+  frame_count: 21
+
+gPlayerAnim_pz_climb_upR_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1C9480
+  symbol: gPlayerAnim_pz_climb_upR_Data
+  frame_count: 21
+
+gPlayerAnim_pz_cutterattack_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x2D3400
+  symbol: gPlayerAnim_pz_cutterattack_Data
+  frame_count: 9
+
+gPlayerAnim_pz_cuttercatch_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x25F310
+  symbol: gPlayerAnim_pz_cuttercatch_Data
+  frame_count: 6
+
+gPlayerAnim_pz_cutterwaitA_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB680
+  symbol: gPlayerAnim_pz_cutterwaitA_Data
+  frame_count: 9
+
+gPlayerAnim_pz_cutterwaitB_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xAD00
+  symbol: gPlayerAnim_pz_cutterwaitB_Data
+  frame_count: 9
+
+gPlayerAnim_pz_cutterwaitC_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xB1C0
+  symbol: gPlayerAnim_pz_cutterwaitC_Data
+  frame_count: 9
+
+gPlayerAnim_pz_cutterwaitanim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1970C0
+  symbol: gPlayerAnim_pz_cutterwaitanim_Data
+  frame_count: 29
+
+gPlayerAnim_pz_doorA_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x62680
+  symbol: gPlayerAnim_pz_doorA_open_Data
+  frame_count: 100
+
+gPlayerAnim_pz_doorB_open_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x5F220
+  symbol: gPlayerAnim_pz_doorB_open_Data
+  frame_count: 100
+
+gPlayerAnim_pz_fishswim_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x330C0
+  symbol: gPlayerAnim_pz_fishswim_Data
+  frame_count: 10
+
+gPlayerAnim_pz_gakkiplay_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1A75C0
+  symbol: gPlayerAnim_pz_gakkiplay_Data
+  frame_count: 7
+
+gPlayerAnim_pz_gakkistart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x4E210
+  symbol: gPlayerAnim_pz_gakkistart_Data
+  frame_count: 15
+
+gPlayerAnim_pz_jumpAT_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xD8820
+  symbol: gPlayerAnim_pz_jumpAT_Data
+  frame_count: 13
+
+gPlayerAnim_pz_jumpATend_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x89850
+  symbol: gPlayerAnim_pz_jumpATend_Data
+  frame_count: 13
+
+gPlayerAnim_pz_maskoffstart_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x197FF0
+  symbol: gPlayerAnim_pz_maskoffstart_Data
+  frame_count: 15
+
+gPlayerAnim_pz_swimtowait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x50100
+  symbol: gPlayerAnim_pz_swimtowait_Data
+  frame_count: 10
+
+gPlayerAnim_pz_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xFD6C0
+  symbol: gPlayerAnim_pz_wait_Data
+  frame_count: 59
+
+gPlayerAnim_pz_waterroll_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x17BAA0
+  symbol: gPlayerAnim_pz_waterroll_Data
+  frame_count: 18
+
+gPlayerAnim_rakka_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x1FCB50
+  symbol: gPlayerAnim_rakka_Data
+  frame_count: 57
+
+gPlayerAnim_rakuba_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xDE8A0
+  symbol: gPlayerAnim_rakuba_Data
+  frame_count: 33
+
+gPlayerAnim_sirimochi_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x24DFE0
+  symbol: gPlayerAnim_sirimochi_Data
+  frame_count: 54
+
+gPlayerAnim_sirimochi_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0xEB280
+  symbol: gPlayerAnim_sirimochi_wait_Data
+  frame_count: 25
+
+gPlayerAnim_spotlight_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x30C10
+  symbol: gPlayerAnim_spotlight_Data
+  frame_count: 50
+
+gPlayerAnim_spotlight_wait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x167DE0
+  symbol: gPlayerAnim_spotlight_wait_Data
+  frame_count: 25
+
+gPlayerAnim_sude_nwait_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x136080
+  symbol: gPlayerAnim_sude_nwait_Data
+  frame_count: 45
+
+gPlayerAnim_urusai_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x90FC0
+  symbol: gPlayerAnim_urusai_Data
+  frame_count: 51
+
+gPlayerAnim_vs_yousei_Data:
+  type: OOT:PLAYER_ANIMATION_DATA
+  offset: 0x29E400
+  symbol: gPlayerAnim_vs_yousei_Data
+  frame_count: 102
+

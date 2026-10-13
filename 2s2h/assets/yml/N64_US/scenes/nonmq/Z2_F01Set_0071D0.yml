@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01A1C740 ]
+  directory: scenes/nonmq/Z2_F01
+  external_files:
+    - N64_US/scenes/nonmq/Z2_F01.yml
+
+Z2_F01Set_0071D0:
+  type: MM:SCENE
+  offset: 0x71D0
+  symbol: Z2_F01Set_0071D0
+  base_name: Z2_F01

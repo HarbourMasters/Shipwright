@@ -1,0 +1,524 @@
+:config:
+  segments:
+    - [ 6, 0x00F2CC90 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F2CC90 ]
+    - [ 9, 0x00F2CC90 ]
+    - [ 10, 0x00F2CC90 ]
+    - [ 11, 0x00F2CC90 ]
+    - [ 12, 0x00F2CC90 ]
+    - [ 13, 0x00F2CC90 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gClockTowerCeilingCogDL:
+  type: GFX
+  offset: 0x10828
+  symbol: gClockTowerCeilingCogDL
+
+gClockTowerCeilingCogWoodMetalTLUT:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gClockTowerCeilingCogWoodMetalTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTowerCeilingCogWoodMetalTex:
+  type: TEXTURE
+  offset: 0xC60
+  symbol: gClockTowerCeilingCogWoodMetalTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTowerCeilingCogWoodTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gClockTowerCeilingCogWoodTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTowerCeilingCogWoodTex:
+  type: TEXTURE
+  offset: 0x460
+  symbol: gClockTowerCeilingCogWoodTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTowerCenterCogBeamTex:
+  type: TEXTURE
+  offset: 0xC560
+  symbol: gClockTowerCenterCogBeamTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerCenterCogDL:
+  type: GFX
+  offset: 0x17018
+  symbol: gClockTowerCenterCogDL
+
+gClockTowerCenterCogTex:
+  type: TEXTURE
+  offset: 0xCD60
+  symbol: gClockTowerCenterCogTex
+  format: IA8
+  width: 64
+  height: 64
+
+gClockTowerCooridorFoliageTex:
+  type: TEXTURE
+  offset: 0x4060
+  symbol: gClockTowerCooridorFoliageTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gClockTowerCooridorTLUT:
+  type: TEXTURE
+  offset: 0x40
+  symbol: gClockTowerCooridorTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerCorridorCol:
+  type: MM:COLLISION
+  offset: 0x142E8
+  symbol: gClockTowerCorridorCol
+
+gClockTowerCorridorDL:
+  type: GFX
+  offset: 0x12DA0
+  symbol: gClockTowerCorridorDL
+
+gClockTowerCorridorDirtPathTex:
+  type: TEXTURE
+  offset: 0x3C60
+  symbol: gClockTowerCorridorDirtPathTex
+  format: CI8
+  width: 32
+  height: 32
+
+gClockTowerCorridorDirtTex:
+  type: TEXTURE
+  offset: 0x5E60
+  symbol: gClockTowerCorridorDirtTex
+  format: CI8
+  width: 32
+  height: 32
+
+gClockTowerCorridorFoliageDL:
+  type: GFX
+  offset: 0x129D0
+  symbol: gClockTowerCorridorFoliageDL
+
+gClockTowerCorridorGrassyCeilingTex:
+  type: TEXTURE
+  offset: 0x5C60
+  symbol: gClockTowerCorridorGrassyCeilingTex
+  format: CI8
+  width: 8
+  height: 64
+
+gClockTowerCorridorGrassyStoneWallTex:
+  type: TEXTURE
+  offset: 0x2460
+  symbol: gClockTowerCorridorGrassyStoneWallTex
+  format: CI8
+  width: 32
+  height: 64
+
+gClockTowerCorridorStoneCeilingTex:
+  type: TEXTURE
+  offset: 0x3460
+  symbol: gClockTowerCorridorStoneCeilingTex
+  format: CI8
+  width: 32
+  height: 64
+
+gClockTowerCorridorStonePath1Tex:
+  type: TEXTURE
+  offset: 0x1460
+  symbol: gClockTowerCorridorStonePath1Tex
+  format: CI8
+  width: 32
+  height: 32
+
+gClockTowerCorridorStonePath2Tex:
+  type: TEXTURE
+  offset: 0x1860
+  symbol: gClockTowerCorridorStonePath2Tex
+  format: CI8
+  width: 32
+  height: 32
+
+gClockTowerCorridorStonePillarTex:
+  type: TEXTURE
+  offset: 0x2C60
+  symbol: gClockTowerCorridorStonePillarTex
+  format: CI8
+  width: 32
+  height: 64
+
+gClockTowerCorridorStoneWallTex:
+  type: TEXTURE
+  offset: 0x1C60
+  symbol: gClockTowerCorridorStoneWallTex
+  format: CI8
+  width: 32
+  height: 64
+
+gClockTowerCorridorWoodPillarTex:
+  type: TEXTURE
+  offset: 0x5060
+  symbol: gClockTowerCorridorWoodPillarTex
+  format: CI8
+  width: 16
+  height: 64
+
+gClockTowerCorridorWoodWallTex:
+  type: TEXTURE
+  offset: 0x5460
+  symbol: gClockTowerCorridorWoodWallTex
+  format: CI8
+  width: 64
+  height: 32
+
+gClockTowerEmpty1DL:
+  type: GFX
+  offset: 0x10820
+  symbol: gClockTowerEmpty1DL
+
+gClockTowerEmpty2DL:
+  type: GFX
+  offset: 0x17010
+  symbol: gClockTowerEmpty2DL
+
+gClockTowerEmpty3DL:
+  type: GFX
+  offset: 0x18110
+  symbol: gClockTowerEmpty3DL
+
+gClockTowerOrganBackTex:
+  type: TEXTURE
+  offset: 0x6260
+  symbol: gClockTowerOrganBackTex
+  format: CI8
+  width: 16
+  height: 128
+
+gClockTowerOrganCol:
+  type: MM:COLLISION
+  offset: 0x16E70
+  symbol: gClockTowerOrganCol
+
+gClockTowerOrganDL:
+  type: GFX
+  offset: 0x160A0
+  symbol: gClockTowerOrganDL
+
+gClockTowerOrganKeys1Tex:
+  type: TEXTURE
+  offset: 0xF960
+  symbol: gClockTowerOrganKeys1Tex
+  format: I4
+  width: 32
+  height: 16
+
+gClockTowerOrganKeys2Tex:
+  type: TEXTURE
+  offset: 0xFA60
+  symbol: gClockTowerOrganKeys2Tex
+  format: I4
+  width: 32
+  height: 16
+
+gClockTowerOrganKeys3Tex:
+  type: TEXTURE
+  offset: 0xFB60
+  symbol: gClockTowerOrganKeys3Tex
+  format: I4
+  width: 32
+  height: 16
+
+gClockTowerOrganKeys4Tex:
+  type: TEXTURE
+  offset: 0xFC60
+  symbol: gClockTowerOrganKeys4Tex
+  format: I4
+  width: 32
+  height: 16
+
+gClockTowerOrganMetalPiece1Tex:
+  type: TEXTURE
+  offset: 0x8960
+  symbol: gClockTowerOrganMetalPiece1Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gClockTowerOrganMetalPiece2Tex:
+  type: TEXTURE
+  offset: 0x9960
+  symbol: gClockTowerOrganMetalPiece2Tex
+  format: IA8
+  width: 64
+  height: 64
+
+gClockTowerOrganMetalPiece3Tex:
+  type: TEXTURE
+  offset: 0xA960
+  symbol: gClockTowerOrganMetalPiece3Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gClockTowerOrganMetalPiece4Tex:
+  type: TEXTURE
+  offset: 0xB160
+  symbol: gClockTowerOrganMetalPiece4Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gClockTowerOrganMetalPiece5Tex:
+  type: TEXTURE
+  offset: 0xB960
+  symbol: gClockTowerOrganMetalPiece5Tex
+  format: IA16
+  width: 8
+  height: 64
+
+gClockTowerOrganMetalPiece6Tex:
+  type: TEXTURE
+  offset: 0xBD60
+  symbol: gClockTowerOrganMetalPiece6Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gClockTowerOrganPedalTex:
+  type: TEXTURE
+  offset: 0x8360
+  symbol: gClockTowerOrganPedalTex
+  format: IA16
+  width: 16
+  height: 16
+
+gClockTowerOrganPipesDL:
+  type: GFX
+  offset: 0x15F30
+  symbol: gClockTowerOrganPipesDL
+
+gClockTowerOrganPipesThickTex:
+  type: TEXTURE
+  offset: 0xF760
+  symbol: gClockTowerOrganPipesThickTex
+  format: IA4
+  width: 32
+  height: 32
+
+gClockTowerOrganPipesThinTex:
+  type: TEXTURE
+  offset: 0xF560
+  symbol: gClockTowerOrganPipesThinTex
+  format: IA4
+  width: 32
+  height: 32
+
+gClockTowerOrganSeatBackTex:
+  type: TEXTURE
+  offset: 0x7360
+  symbol: gClockTowerOrganSeatBackTex
+  format: IA16
+  width: 32
+  height: 64
+
+gClockTowerOrganSeatCushionTex:
+  type: TEXTURE
+  offset: 0x7260
+  symbol: gClockTowerOrganSeatCushionTex
+  format: CI8
+  width: 16
+  height: 16
+
+gClockTowerOrganSeatLegsTex:
+  type: TEXTURE
+  offset: 0x6A60
+  symbol: gClockTowerOrganSeatLegsTex
+  format: IA16
+  width: 32
+  height: 32
+
+gClockTowerOrganTLUT:
+  type: TEXTURE
+  offset: 0x240
+  symbol: gClockTowerOrganTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClockTowerOrganWoodTex:
+  type: TEXTURE
+  offset: 0x8560
+  symbol: gClockTowerOrganWoodTex
+  format: I8
+  width: 32
+  height: 32
+
+gClockTowerStoneDoorCol:
+  type: MM:COLLISION
+  offset: 0x17650
+  symbol: gClockTowerStoneDoorCol
+
+gClockTowerStoneDoorDL:
+  type: GFX
+  offset: 0x174E0
+  symbol: gClockTowerStoneDoorDL
+
+gClockTowerStoneDoorMainCol:
+  type: MM:COLLISION
+  offset: 0x17410
+  symbol: gClockTowerStoneDoorMainCol
+
+gClockTowerStoneDoorMainDL:
+  type: GFX
+  offset: 0x17220
+  symbol: gClockTowerStoneDoorMainDL
+
+gClockTowerStoneDoorTLUT:
+  type: TEXTURE
+  offset: 0x440
+  symbol: gClockTowerStoneDoorTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTowerStoneDoorTex:
+  type: TEXTURE
+  offset: 0xDD60
+  symbol: gClockTowerStoneDoorTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTowerWaterWheelCol:
+  type: MM:COLLISION
+  offset: 0x18588
+  symbol: gClockTowerWaterWheelCol
+
+gClockTowerWaterWheelDL:
+  type: GFX
+  offset: 0x18118
+  symbol: gClockTowerWaterWheelDL
+
+gClockTowerWaterWheelGrassyWoodTex:
+  type: TEXTURE
+  offset: 0xED60
+  symbol: gClockTowerWaterWheelGrassyWoodTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTowerWaterWheelWoodTex:
+  type: TEXTURE
+  offset: 0xE560
+  symbol: gClockTowerWaterWheelWoodTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ctower_rotVtx_00FD60:
+  type: MM:ARRAY
+  offset: 0x00FD60
+  symbol: object_ctower_rotVtx_00FD60
+  count: 172
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_010C30:
+  type: MM:ARRAY
+  offset: 0x010C30
+  symbol: object_ctower_rotVtx_010C30
+  count: 379
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_0123E0:
+  type: MM:ARRAY
+  offset: 0x0123E0
+  symbol: object_ctower_rotVtx_0123E0
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_014320:
+  type: MM:ARRAY
+  offset: 0x014320
+  symbol: object_ctower_rotVtx_014320
+  count: 317
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_0156F0:
+  type: MM:ARRAY
+  offset: 0x0156F0
+  symbol: object_ctower_rotVtx_0156F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_015870:
+  type: MM:ARRAY
+  offset: 0x015870
+  symbol: object_ctower_rotVtx_015870
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_016EA0:
+  type: MM:ARRAY
+  offset: 0x016EA0
+  symbol: object_ctower_rotVtx_016EA0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_017160:
+  type: MM:ARRAY
+  offset: 0x017160
+  symbol: object_ctower_rotVtx_017160
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_017440:
+  type: MM:ARRAY
+  offset: 0x017440
+  symbol: object_ctower_rotVtx_017440
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ctower_rotVtx_017680:
+  type: MM:ARRAY
+  offset: 0x017680
+  symbol: object_ctower_rotVtx_017680
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 6, 0x00FF3320 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00FF3320 ]
+    - [ 9, 0x00FF3320 ]
+    - [ 10, 0x00FF3320 ]
+    - [ 11, 0x00FF3320 ]
+    - [ 12, 0x00FF3320 ]
+    - [ 13, 0x00FF3320 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_fz_DL_001130:
+  type: GFX
+  offset: 0x1130
+  symbol: object_fz_DL_001130
+
+object_fz_DL_0021A0:
+  type: GFX
+  offset: 0x21A0
+  symbol: object_fz_DL_0021A0
+
+object_fz_DL_002CA0:
+  type: GFX
+  offset: 0x2CA0
+  symbol: object_fz_DL_002CA0
+
+object_fz_DL_0030A0:
+  type: GFX
+  offset: 0x30A0
+  symbol: object_fz_DL_0030A0
+
+object_fz_DL_003158:
+  type: GFX
+  offset: 0x3158
+  symbol: object_fz_DL_003158
+
+object_fz_DL_003260:
+  type: GFX
+  offset: 0x3260
+  symbol: object_fz_DL_003260
+
+object_fz_DL_0033F0:
+  type: GFX
+  offset: 0x33F0
+  symbol: object_fz_DL_0033F0
+
+object_fz_Tex_002E70:
+  type: TEXTURE
+  offset: 0x2E70
+  symbol: object_fz_Tex_002E70
+  format: I4
+  width: 32
+  height: 32
+
+
+object_fzVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fzVtx_000000
+  count: 275
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_0013F0:
+  type: MM:ARRAY
+  offset: 0x0013F0
+  symbol: object_fzVtx_0013F0
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_0023F0:
+  type: MM:ARRAY
+  offset: 0x0023F0
+  symbol: object_fzVtx_0023F0
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003070:
+  type: MM:ARRAY
+  offset: 0x003070
+  symbol: object_fzVtx_003070
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003180:
+  type: MM:ARRAY
+  offset: 0x003180
+  symbol: object_fzVtx_003180
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003310:
+  type: MM:ARRAY
+  offset: 0x003310
+  symbol: object_fzVtx_003310
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

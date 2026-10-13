@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x014B76E0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014B76E0 ]
+    - [ 9, 0x014B76E0 ]
+    - [ 10, 0x014B76E0 ]
+    - [ 11, 0x014B76E0 ]
+    - [ 12, 0x014B76E0 ]
+    - [ 13, 0x014B76E0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPalmTreeCol:
+  type: MM:COLLISION
+  offset: 0x1428
+  symbol: gPalmTreeCol
+
+gPalmTreeDL:
+  type: GFX
+  offset: 0x360
+  symbol: gPalmTreeDL
+
+gPalmTreeDekuNutTex:
+  type: TEXTURE
+  offset: 0xE50
+  symbol: gPalmTreeDekuNutTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPalmTreeFrondTex:
+  type: TEXTURE
+  offset: 0x650
+  symbol: gPalmTreeFrondTex
+  format: CI4
+  width: 32
+  height: 128
+
+gPalmTreeScarredWoodTex:
+  type: TEXTURE
+  offset: 0x1050
+  symbol: gPalmTreeScarredWoodTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPalmTreeTLUT:
+  type: TEXTURE
+  offset: 0x630
+  symbol: gPalmTreeTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gPalmTreeWoodTex:
+  type: TEXTURE
+  offset: 0x1250
+  symbol: gPalmTreeWoodTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_obj_yasiVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_obj_yasiVtx_000000
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

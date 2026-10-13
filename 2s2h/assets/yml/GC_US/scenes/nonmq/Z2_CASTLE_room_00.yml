@@ -1,0 +1,694 @@
+:config:
+  segments:
+    - [ 3, 0x017F86F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x017F86F0 ]
+    - [ 9, 0x017F86F0 ]
+    - [ 10, 0x017F86F0 ]
+    - [ 11, 0x017F86F0 ]
+    - [ 12, 0x017F86F0 ]
+    - [ 13, 0x017F86F0 ]
+    - [ 2, 0x017EE980 ]
+  directory: scenes/nonmq/Z2_CASTLE
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_CASTLE.yml
+
+Z2_CASTLE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_CASTLE_room_00
+
+Z2_CASTLE_room_00DL_000430:
+  type: GFX
+  offset: 0x430
+  symbol: Z2_CASTLE_room_00DL_000430
+
+Z2_CASTLE_room_00DL_00CD30:
+  type: GFX
+  offset: 0xCD30
+  symbol: Z2_CASTLE_room_00DL_00CD30
+
+Z2_CASTLE_room_00DL_017A20:
+  type: GFX
+  offset: 0x17A20
+  symbol: Z2_CASTLE_room_00DL_017A20
+
+Z2_CASTLE_room_00DL_017E18:
+  type: GFX
+  offset: 0x17E18
+  symbol: Z2_CASTLE_room_00DL_017E18
+
+Z2_CASTLE_room_00Tex_00FFB8:
+  type: TEXTURE
+  offset: 0xFFB8
+  symbol: Z2_CASTLE_room_00Tex_00FFB8
+  format: RGBA16
+  width: 64
+  height: 64
+
+Z2_CASTLE_room_00Tex_0127B8:
+  type: TEXTURE
+  offset: 0x127B8
+  symbol: Z2_CASTLE_room_00Tex_0127B8
+  format: RGBA16
+  width: 32
+  height: 128
+
+
+Z2_CASTLE_room_00ActorEntry_000064:
+  type: BLOB
+  offset: 0x000064
+  symbol: Z2_CASTLE_room_00ActorEntry_000064
+  size: 0
+
+Z2_CASTLE_room_00Vtx_000438:
+  type: MM:ARRAY
+  offset: 0x000438
+  symbol: Z2_CASTLE_room_00Vtx_000438
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_0008F8:
+  type: GFX
+  offset: 0x0008F8
+  symbol: Z2_CASTLE_room_00DL_0008F8
+
+Z2_CASTLE_room_00Vtx_000A90:
+  type: MM:ARRAY
+  offset: 0x000A90
+  symbol: Z2_CASTLE_room_00Vtx_000A90
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_000DC0:
+  type: GFX
+  offset: 0x000DC0
+  symbol: Z2_CASTLE_room_00DL_000DC0
+
+Z2_CASTLE_room_00Vtx_000F10:
+  type: MM:ARRAY
+  offset: 0x000F10
+  symbol: Z2_CASTLE_room_00Vtx_000F10
+  count: 560
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_003210:
+  type: GFX
+  offset: 0x003210
+  symbol: Z2_CASTLE_room_00DL_003210
+
+Z2_CASTLE_room_00Vtx_003830:
+  type: MM:ARRAY
+  offset: 0x003830
+  symbol: Z2_CASTLE_room_00Vtx_003830
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_003BF0:
+  type: GFX
+  offset: 0x003BF0
+  symbol: Z2_CASTLE_room_00DL_003BF0
+
+Z2_CASTLE_room_00Vtx_003D38:
+  type: MM:ARRAY
+  offset: 0x003D38
+  symbol: Z2_CASTLE_room_00Vtx_003D38
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_004288:
+  type: GFX
+  offset: 0x004288
+  symbol: Z2_CASTLE_room_00DL_004288
+
+Z2_CASTLE_room_00Vtx_0044B0:
+  type: MM:ARRAY
+  offset: 0x0044B0
+  symbol: Z2_CASTLE_room_00Vtx_0044B0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_0046F0:
+  type: GFX
+  offset: 0x0046F0
+  symbol: Z2_CASTLE_room_00DL_0046F0
+
+Z2_CASTLE_room_00Vtx_004808:
+  type: MM:ARRAY
+  offset: 0x004808
+  symbol: Z2_CASTLE_room_00Vtx_004808
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_004978:
+  type: GFX
+  offset: 0x004978
+  symbol: Z2_CASTLE_room_00DL_004978
+
+Z2_CASTLE_room_00DL_004A78:
+  type: GFX
+  offset: 0x004A78
+  symbol: Z2_CASTLE_room_00DL_004A78
+
+Z2_CASTLE_room_00Vtx_004A90:
+  type: MM:ARRAY
+  offset: 0x004A90
+  symbol: Z2_CASTLE_room_00Vtx_004A90
+  count: 261
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_005AE0:
+  type: GFX
+  offset: 0x005AE0
+  symbol: Z2_CASTLE_room_00DL_005AE0
+
+Z2_CASTLE_room_00Vtx_005E88:
+  type: MM:ARRAY
+  offset: 0x005E88
+  symbol: Z2_CASTLE_room_00Vtx_005E88
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_006298:
+  type: GFX
+  offset: 0x006298
+  symbol: Z2_CASTLE_room_00DL_006298
+
+Z2_CASTLE_room_00DL_0063D8:
+  type: GFX
+  offset: 0x0063D8
+  symbol: Z2_CASTLE_room_00DL_0063D8
+
+Z2_CASTLE_room_00Vtx_006400:
+  type: MM:ARRAY
+  offset: 0x006400
+  symbol: Z2_CASTLE_room_00Vtx_006400
+  count: 212
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_007140:
+  type: GFX
+  offset: 0x007140
+  symbol: Z2_CASTLE_room_00DL_007140
+
+Z2_CASTLE_room_00Vtx_0079D8:
+  type: MM:ARRAY
+  offset: 0x0079D8
+  symbol: Z2_CASTLE_room_00Vtx_0079D8
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_007F08:
+  type: GFX
+  offset: 0x007F08
+  symbol: Z2_CASTLE_room_00DL_007F08
+
+Z2_CASTLE_room_00Vtx_008310:
+  type: MM:ARRAY
+  offset: 0x008310
+  symbol: Z2_CASTLE_room_00Vtx_008310
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_008320:
+  type: GFX
+  offset: 0x008320
+  symbol: Z2_CASTLE_room_00DL_008320
+
+Z2_CASTLE_room_00Vtx_008340:
+  type: MM:ARRAY
+  offset: 0x008340
+  symbol: Z2_CASTLE_room_00Vtx_008340
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_008510:
+  type: GFX
+  offset: 0x008510
+  symbol: Z2_CASTLE_room_00DL_008510
+
+Z2_CASTLE_room_00Vtx_008620:
+  type: MM:ARRAY
+  offset: 0x008620
+  symbol: Z2_CASTLE_room_00Vtx_008620
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_008630:
+  type: GFX
+  offset: 0x008630
+  symbol: Z2_CASTLE_room_00DL_008630
+
+Z2_CASTLE_room_00Vtx_008650:
+  type: MM:ARRAY
+  offset: 0x008650
+  symbol: Z2_CASTLE_room_00Vtx_008650
+  count: 171
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009100:
+  type: GFX
+  offset: 0x009100
+  symbol: Z2_CASTLE_room_00DL_009100
+
+Z2_CASTLE_room_00Vtx_009780:
+  type: MM:ARRAY
+  offset: 0x009780
+  symbol: Z2_CASTLE_room_00Vtx_009780
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009790:
+  type: GFX
+  offset: 0x009790
+  symbol: Z2_CASTLE_room_00DL_009790
+
+Z2_CASTLE_room_00Vtx_0097B0:
+  type: MM:ARRAY
+  offset: 0x0097B0
+  symbol: Z2_CASTLE_room_00Vtx_0097B0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009920:
+  type: GFX
+  offset: 0x009920
+  symbol: Z2_CASTLE_room_00DL_009920
+
+Z2_CASTLE_room_00Vtx_009A28:
+  type: MM:ARRAY
+  offset: 0x009A28
+  symbol: Z2_CASTLE_room_00Vtx_009A28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009A38:
+  type: GFX
+  offset: 0x009A38
+  symbol: Z2_CASTLE_room_00DL_009A38
+
+Z2_CASTLE_room_00DL_009A58:
+  type: GFX
+  offset: 0x009A58
+  symbol: Z2_CASTLE_room_00DL_009A58
+
+Z2_CASTLE_room_00Vtx_009A80:
+  type: MM:ARRAY
+  offset: 0x009A80
+  symbol: Z2_CASTLE_room_00Vtx_009A80
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009CE0:
+  type: GFX
+  offset: 0x009CE0
+  symbol: Z2_CASTLE_room_00DL_009CE0
+
+Z2_CASTLE_room_00Vtx_009E08:
+  type: MM:ARRAY
+  offset: 0x009E08
+  symbol: Z2_CASTLE_room_00Vtx_009E08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_009E18:
+  type: GFX
+  offset: 0x009E18
+  symbol: Z2_CASTLE_room_00DL_009E18
+
+Z2_CASTLE_room_00Vtx_009E38:
+  type: MM:ARRAY
+  offset: 0x009E38
+  symbol: Z2_CASTLE_room_00Vtx_009E38
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00A118:
+  type: GFX
+  offset: 0x00A118
+  symbol: Z2_CASTLE_room_00DL_00A118
+
+Z2_CASTLE_room_00Vtx_00A238:
+  type: MM:ARRAY
+  offset: 0x00A238
+  symbol: Z2_CASTLE_room_00Vtx_00A238
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00A248:
+  type: GFX
+  offset: 0x00A248
+  symbol: Z2_CASTLE_room_00DL_00A248
+
+Z2_CASTLE_room_00Vtx_00A268:
+  type: MM:ARRAY
+  offset: 0x00A268
+  symbol: Z2_CASTLE_room_00Vtx_00A268
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00A7C8:
+  type: GFX
+  offset: 0x00A7C8
+  symbol: Z2_CASTLE_room_00DL_00A7C8
+
+Z2_CASTLE_room_00Vtx_00A970:
+  type: MM:ARRAY
+  offset: 0x00A970
+  symbol: Z2_CASTLE_room_00Vtx_00A970
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00A980:
+  type: GFX
+  offset: 0x00A980
+  symbol: Z2_CASTLE_room_00DL_00A980
+
+Z2_CASTLE_room_00Vtx_00A9A0:
+  type: MM:ARRAY
+  offset: 0x00A9A0
+  symbol: Z2_CASTLE_room_00Vtx_00A9A0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00AB50:
+  type: GFX
+  offset: 0x00AB50
+  symbol: Z2_CASTLE_room_00DL_00AB50
+
+Z2_CASTLE_room_00Vtx_00AC70:
+  type: MM:ARRAY
+  offset: 0x00AC70
+  symbol: Z2_CASTLE_room_00Vtx_00AC70
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00AC80:
+  type: GFX
+  offset: 0x00AC80
+  symbol: Z2_CASTLE_room_00DL_00AC80
+
+Z2_CASTLE_room_00DL_00ACA0:
+  type: GFX
+  offset: 0x00ACA0
+  symbol: Z2_CASTLE_room_00DL_00ACA0
+
+Z2_CASTLE_room_00Vtx_00ACC8:
+  type: MM:ARRAY
+  offset: 0x00ACC8
+  symbol: Z2_CASTLE_room_00Vtx_00ACC8
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00B5C8:
+  type: GFX
+  offset: 0x00B5C8
+  symbol: Z2_CASTLE_room_00DL_00B5C8
+
+Z2_CASTLE_room_00Vtx_00B818:
+  type: MM:ARRAY
+  offset: 0x00B818
+  symbol: Z2_CASTLE_room_00Vtx_00B818
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00BED8:
+  type: GFX
+  offset: 0x00BED8
+  symbol: Z2_CASTLE_room_00DL_00BED8
+
+Z2_CASTLE_room_00Vtx_00C0D8:
+  type: MM:ARRAY
+  offset: 0x00C0D8
+  symbol: Z2_CASTLE_room_00Vtx_00C0D8
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00C628:
+  type: GFX
+  offset: 0x00C628
+  symbol: Z2_CASTLE_room_00DL_00C628
+
+Z2_CASTLE_room_00Vtx_00C850:
+  type: MM:ARRAY
+  offset: 0x00C850
+  symbol: Z2_CASTLE_room_00Vtx_00C850
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_00CB70:
+  type: GFX
+  offset: 0x00CB70
+  symbol: Z2_CASTLE_room_00DL_00CB70
+
+Z2_CASTLE_room_00Tex_00CD98:
+  type: TEXTURE
+  offset: 0x00CD98
+  symbol: Z2_CASTLE_room_00Tex_00CD98
+  format: I8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_00Tex_00D198:
+  type: TEXTURE
+  offset: 0x00D198
+  symbol: Z2_CASTLE_room_00Tex_00D198
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_00Tex_00E198:
+  type: TEXTURE
+  offset: 0x00E198
+  symbol: Z2_CASTLE_room_00Tex_00E198
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_CASTLE_room_00Tex_00E998:
+  type: TEXTURE
+  offset: 0x00E998
+  symbol: Z2_CASTLE_room_00Tex_00E998
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_CASTLE_room_00Tex_00F198:
+  type: TEXTURE
+  offset: 0x00F198
+  symbol: Z2_CASTLE_room_00Tex_00F198
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_00Tex_00F998:
+  type: TEXTURE
+  offset: 0x00F998
+  symbol: Z2_CASTLE_room_00Tex_00F998
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_CASTLE_room_00TLUT_00FD98:
+  type: TEXTURE
+  offset: 0x00FD98
+  symbol: Z2_CASTLE_room_00TLUT_00FD98
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_CASTLE_room_00Tex_00FDB8:
+  type: TEXTURE
+  offset: 0x00FDB8
+  symbol: Z2_CASTLE_room_00Tex_00FDB8
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_CASTLE_room_00Tex_011FB8:
+  type: TEXTURE
+  offset: 0x011FB8
+  symbol: Z2_CASTLE_room_00Tex_011FB8
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_CASTLE_room_00Tex_0147B8:
+  type: TEXTURE
+  offset: 0x0147B8
+  symbol: Z2_CASTLE_room_00Tex_0147B8
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_CASTLE_room_00Tex_0147F8:
+  type: TEXTURE
+  offset: 0x0147F8
+  symbol: Z2_CASTLE_room_00Tex_0147F8
+  format: RGBA16
+  width: 64
+  height: 16
+
+Z2_CASTLE_room_00Tex_014FF8:
+  type: TEXTURE
+  offset: 0x014FF8
+  symbol: Z2_CASTLE_room_00Tex_014FF8
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_00Tex_015FF8:
+  type: TEXTURE
+  offset: 0x015FF8
+  symbol: Z2_CASTLE_room_00Tex_015FF8
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_00Tex_0167F8:
+  type: TEXTURE
+  offset: 0x0167F8
+  symbol: Z2_CASTLE_room_00Tex_0167F8
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_CASTLE_room_00Tex_0169F8:
+  type: TEXTURE
+  offset: 0x0169F8
+  symbol: Z2_CASTLE_room_00Tex_0169F8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_00Tex_016DF8:
+  type: TEXTURE
+  offset: 0x016DF8
+  symbol: Z2_CASTLE_room_00Tex_016DF8
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_CASTLE_room_00Tex_0175F8:
+  type: TEXTURE
+  offset: 0x0175F8
+  symbol: Z2_CASTLE_room_00Tex_0175F8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_CASTLE_room_00TLUT_0179F8:
+  type: TEXTURE
+  offset: 0x0179F8
+  symbol: Z2_CASTLE_room_00TLUT_0179F8
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_CASTLE_room_00DL_017A28:
+  type: GFX
+  offset: 0x017A28
+  symbol: Z2_CASTLE_room_00DL_017A28
+
+Z2_CASTLE_room_00DL_017A30:
+  type: GFX
+  offset: 0x017A30
+  symbol: Z2_CASTLE_room_00DL_017A30
+
+Z2_CASTLE_room_00DL_017A40:
+  type: GFX
+  offset: 0x017A40
+  symbol: Z2_CASTLE_room_00DL_017A40
+
+Z2_CASTLE_room_00Vtx_017A48:
+  type: MM:ARRAY
+  offset: 0x017A48
+  symbol: Z2_CASTLE_room_00Vtx_017A48
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_00DL_017CA8:
+  type: GFX
+  offset: 0x017CA8
+  symbol: Z2_CASTLE_room_00DL_017CA8
+
+Z2_CASTLE_room_00DL_017DF8:
+  type: GFX
+  offset: 0x017DF8
+  symbol: Z2_CASTLE_room_00DL_017DF8
+
+Z2_CASTLE_room_00DL_017E00:
+  type: GFX
+  offset: 0x017E00
+  symbol: Z2_CASTLE_room_00DL_017E00
+
+Z2_CASTLE_room_00Tex_017E38:
+  type: TEXTURE
+  offset: 0x017E38
+  symbol: Z2_CASTLE_room_00Tex_017E38
+  format: IA16
+  width: 16
+  height: 16

@@ -1,0 +1,78 @@
+:config:
+  segments:
+    - [ 6, 0x0147E680 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0147E680 ]
+    - [ 9, 0x0147E680 ]
+    - [ 10, 0x0147E680 ]
+    - [ 11, 0x0147E680 ]
+    - [ 12, 0x0147E680 ]
+    - [ 13, 0x0147E680 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_posthouse_obj_Colheader_002948:
+  type: MM:COLLISION
+  offset: 0x2948
+  symbol: object_posthouse_obj_Colheader_002948
+
+object_posthouse_obj_DL_000A50:
+  type: GFX
+  offset: 0xA50
+  symbol: object_posthouse_obj_DL_000A50
+
+object_posthouse_obj_DL_001870:
+  type: GFX
+  offset: 0x1870
+  symbol: object_posthouse_obj_DL_001870
+
+object_posthouse_obj_Tex_000DA8:
+  type: TEXTURE
+  offset: 0xDA8
+  symbol: object_posthouse_obj_Tex_000DA8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_posthouse_obj_Tex_000E28:
+  type: TEXTURE
+  offset: 0xE28
+  symbol: object_posthouse_obj_Tex_000E28
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_posthouse_obj_Tex_001028:
+  type: TEXTURE
+  offset: 0x1028
+  symbol: object_posthouse_obj_Tex_001028
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_posthouse_obj_Tex_001900:
+  type: TEXTURE
+  offset: 0x1900
+  symbol: object_posthouse_obj_Tex_001900
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_posthouse_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_posthouse_objVtx_000000
+  count: 165
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_posthouse_objVtx_001830:
+  type: MM:ARRAY
+  offset: 0x001830
+  symbol: object_posthouse_objVtx_001830
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,680 @@
+:config:
+  segments:
+    - [ 6, 0x01500030 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01500030 ]
+    - [ 9, 0x01500030 ]
+    - [ 10, 0x01500030 ]
+    - [ 11, 0x01500030 ]
+    - [ 12, 0x01500030 ]
+    - [ 13, 0x01500030 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLuluAngleHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0xC510
+  symbol: gLuluAngleHeadAnim
+
+gLuluDressLoopTex:
+  type: TEXTURE
+  offset: 0x16078
+  symbol: gLuluDressLoopTex
+  format: CI8
+  width: 8
+  height: 16
+
+gLuluDressPatternTex:
+  type: TEXTURE
+  offset: 0x15778
+  symbol: gLuluDressPatternTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLuluDressStringTex:
+  type: TEXTURE
+  offset: 0x15F78
+  symbol: gLuluDressStringTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluEarCavityTex:
+  type: TEXTURE
+  offset: 0x13AF8
+  symbol: gLuluEarCavityTex
+  format: CI8
+  width: 8
+  height: 8
+
+gLuluEarTex:
+  type: TEXTURE
+  offset: 0x14038
+  symbol: gLuluEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluEarringTex:
+  type: TEXTURE
+  offset: 0x13478
+  symbol: gLuluEarringTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gLuluEyeClosedTex:
+  type: TEXTURE
+  offset: 0x14138
+  symbol: gLuluEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluEyeHalfTex:
+  type: TEXTURE
+  offset: 0x15138
+  symbol: gLuluEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluEyeOpenTex:
+  type: TEXTURE
+  offset: 0x13C38
+  symbol: gLuluEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluFingersTex:
+  type: TEXTURE
+  offset: 0x15678
+  symbol: gLuluFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluHeadDL:
+  type: GFX
+  offset: 0x11C20
+  symbol: gLuluHeadDL
+
+gLuluHeadHoleTex:
+  type: TEXTURE
+  offset: 0x13B38
+  symbol: gLuluHeadHoleTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1617C
+  symbol: gLuluHeadLimb
+  limb_type: Standard
+
+gLuluHeadSkinTex:
+  type: TEXTURE
+  offset: 0x139F8
+  symbol: gLuluHeadSkinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluKneeAndElbowTex:
+  type: TEXTURE
+  offset: 0x15578
+  symbol: gLuluKneeAndElbowTex
+  format: CI8
+  width: 16
+  height: 16
+
+gLuluLeftArmLowerFinDL:
+  type: GFX
+  offset: 0x11B30
+  symbol: gLuluLeftArmLowerFinDL
+
+gLuluLeftArmLowerFinLimb:
+  type: OOT:LIMB
+  offset: 0x161A0
+  symbol: gLuluLeftArmLowerFinLimb
+  limb_type: Standard
+
+gLuluLeftArmUpperFinDL:
+  type: GFX
+  offset: 0x11A60
+  symbol: gLuluLeftArmUpperFinDL
+
+gLuluLeftArmUpperFinLimb:
+  type: OOT:LIMB
+  offset: 0x16194
+  symbol: gLuluLeftArmUpperFinLimb
+  limb_type: Standard
+
+gLuluLeftFootDL:
+  type: GFX
+  offset: 0x12FE8
+  symbol: gLuluLeftFootDL
+
+gLuluLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x16128
+  symbol: gLuluLeftFootLimb
+  limb_type: Standard
+
+gLuluLeftForearmDL:
+  type: GFX
+  offset: 0x11690
+  symbol: gLuluLeftForearmDL
+
+gLuluLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x161AC
+  symbol: gLuluLeftForearmLimb
+  limb_type: Standard
+
+gLuluLeftHandDL:
+  type: GFX
+  offset: 0x11820
+  symbol: gLuluLeftHandDL
+
+gLuluLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x161B8
+  symbol: gLuluLeftHandLimb
+  limb_type: Standard
+
+gLuluLeftLegFinDL:
+  type: GFX
+  offset: 0x12F28
+  symbol: gLuluLeftLegFinDL
+
+gLuluLeftLegFinLimb:
+  type: OOT:LIMB
+  offset: 0x16134
+  symbol: gLuluLeftLegFinLimb
+  limb_type: Standard
+
+gLuluLeftShinDL:
+  type: GFX
+  offset: 0x12CB8
+  symbol: gLuluLeftShinDL
+
+gLuluLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x1611C
+  symbol: gLuluLeftShinLimb
+  limb_type: Standard
+
+gLuluLeftThighDL:
+  type: GFX
+  offset: 0x12B20
+  symbol: gLuluLeftThighDL
+
+gLuluLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x16110
+  symbol: gLuluLeftThighLimb
+  limb_type: Standard
+
+gLuluLeftUpperArmDL:
+  type: GFX
+  offset: 0x113F0
+  symbol: gLuluLeftUpperArmDL
+
+gLuluLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x16188
+  symbol: gLuluLeftUpperArmLimb
+  limb_type: Standard
+
+gLuluLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0xA888
+  symbol: gLuluLookAroundAnim
+
+gLuluLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xD3EC
+  symbol: gLuluLookDownAnim
+
+gLuluLookForwardAndDownAnim:
+  type: OOT:ANIMATION
+  offset: 0xB4CC
+  symbol: gLuluLookForwardAndDownAnim
+
+gLuluLookForwardAndLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0x5A6C
+  symbol: gLuluLookForwardAndLeftAnim
+
+gLuluLookLeftLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x66A4
+  symbol: gLuluLookLeftLoopAnim
+
+gLuluMouthClosedTex:
+  type: TEXTURE
+  offset: 0x135F8
+  symbol: gLuluMouthClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluMouthOpenFullTex:
+  type: TEXTURE
+  offset: 0x14D38
+  symbol: gLuluMouthOpenFullTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluMouthOpenTex:
+  type: TEXTURE
+  offset: 0x14538
+  symbol: gLuluMouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluNodAnim:
+  type: OOT:ANIMATION
+  offset: 0xCAA8
+  symbol: gLuluNodAnim
+
+gLuluNostrilTex:
+  type: TEXTURE
+  offset: 0x135B8
+  symbol: gLuluNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+
+gLuluPelvisDL:
+  type: GFX
+  offset: 0x122E0
+  symbol: gLuluPelvisDL
+
+gLuluPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x16104
+  symbol: gLuluPelvisLimb
+  limb_type: Standard
+
+gLuluPutHandsDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x8120
+  symbol: gLuluPutHandsDownAnim
+
+gLuluRightArmLowerFinDL:
+  type: GFX
+  offset: 0x11300
+  symbol: gLuluRightArmLowerFinDL
+
+gLuluRightArmLowerFinLimb:
+  type: OOT:LIMB
+  offset: 0x161DC
+  symbol: gLuluRightArmLowerFinLimb
+  limb_type: Standard
+
+gLuluRightArmUpperFinDL:
+  type: GFX
+  offset: 0x11230
+  symbol: gLuluRightArmUpperFinDL
+
+gLuluRightArmUpperFinLimb:
+  type: OOT:LIMB
+  offset: 0x161D0
+  symbol: gLuluRightArmUpperFinLimb
+  limb_type: Standard
+
+gLuluRightFootDL:
+  type: GFX
+  offset: 0x12890
+  symbol: gLuluRightFootDL
+
+gLuluRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x16158
+  symbol: gLuluRightFootLimb
+  limb_type: Standard
+
+gLuluRightForearmDL:
+  type: GFX
+  offset: 0x10E60
+  symbol: gLuluRightForearmDL
+
+gLuluRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x161E8
+  symbol: gLuluRightForearmLimb
+  limb_type: Standard
+
+gLuluRightHandDL:
+  type: GFX
+  offset: 0x10FF0
+  symbol: gLuluRightHandDL
+
+gLuluRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x161F4
+  symbol: gLuluRightHandLimb
+  limb_type: Standard
+
+gLuluRightLegFinDL:
+  type: GFX
+  offset: 0x127D0
+  symbol: gLuluRightLegFinDL
+
+gLuluRightLegFinLimb:
+  type: OOT:LIMB
+  offset: 0x16164
+  symbol: gLuluRightLegFinLimb
+  limb_type: Standard
+
+gLuluRightShinDL:
+  type: GFX
+  offset: 0x12560
+  symbol: gLuluRightShinDL
+
+gLuluRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1614C
+  symbol: gLuluRightShinLimb
+  limb_type: Standard
+
+gLuluRightThighDL:
+  type: GFX
+  offset: 0x123C0
+  symbol: gLuluRightThighDL
+
+gLuluRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x16140
+  symbol: gLuluRightThighLimb
+  limb_type: Standard
+
+gLuluRightUpperArmDL:
+  type: GFX
+  offset: 0x10BC0
+  symbol: gLuluRightUpperArmDL
+
+gLuluRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x161C4
+  symbol: gLuluRightUpperArmLimb
+  limb_type: Standard
+
+gLuluRootLimb:
+  type: OOT:LIMB
+  offset: 0x160F8
+  symbol: gLuluRootLimb
+  limb_type: Standard
+
+gLuluSingLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x418C
+  symbol: gLuluSingLoopAnim
+
+gLuluSingStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B5C
+  symbol: gLuluSingStartAnim
+
+gLuluSkel:
+  type: MM:SKELETON
+  offset: 0x16258
+  symbol: gLuluSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gLuluSkinShadowTex:
+  type: TEXTURE
+  offset: 0x15538
+  symbol: gLuluSkinShadowTex
+  format: CI8
+  width: 8
+  height: 8
+
+gLuluSkinTex:
+  type: TEXTURE
+  offset: 0x13578
+  symbol: gLuluSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gLuluSpottedSkinTex:
+  type: TEXTURE
+  offset: 0x14938
+  symbol: gLuluSpottedSkinTex
+  format: CI8
+  width: 32
+  height: 32
+
+gLuluTLUT:
+  type: TEXTURE
+  offset: 0x13278
+  symbol: gLuluTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLuluTorsoDL:
+  type: GFX
+  offset: 0x107B0
+  symbol: gLuluTorsoDL
+
+gLuluTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x16170
+  symbol: gLuluTorsoLimb
+  limb_type: Standard
+
+gLuluTurnAndWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x17D4
+  symbol: gLuluTurnAndWalkAnim
+
+gLuluWalkLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x23F4
+  symbol: gLuluWalkLoopAnim
+
+
+object_zovVtx_00D400:
+  type: MM:ARRAY
+  offset: 0x00D400
+  symbol: object_zovVtx_00D400
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00D5E0:
+  type: MM:ARRAY
+  offset: 0x00D5E0
+  symbol: object_zovVtx_00D5E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00D620:
+  type: MM:ARRAY
+  offset: 0x00D620
+  symbol: object_zovVtx_00D620
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00D990:
+  type: MM:ARRAY
+  offset: 0x00D990
+  symbol: object_zovVtx_00D990
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00DC20:
+  type: MM:ARRAY
+  offset: 0x00DC20
+  symbol: object_zovVtx_00DC20
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00DE00:
+  type: MM:ARRAY
+  offset: 0x00DE00
+  symbol: object_zovVtx_00DE00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00DE40:
+  type: MM:ARRAY
+  offset: 0x00DE40
+  symbol: object_zovVtx_00DE40
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00E1B0:
+  type: MM:ARRAY
+  offset: 0x00E1B0
+  symbol: object_zovVtx_00E1B0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00E400:
+  type: MM:ARRAY
+  offset: 0x00E400
+  symbol: object_zovVtx_00E400
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00E580:
+  type: MM:ARRAY
+  offset: 0x00E580
+  symbol: object_zovVtx_00E580
+  count: 175
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F070:
+  type: MM:ARRAY
+  offset: 0x00F070
+  symbol: object_zovVtx_00F070
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F410:
+  type: MM:ARRAY
+  offset: 0x00F410
+  symbol: object_zovVtx_00F410
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F5A0:
+  type: MM:ARRAY
+  offset: 0x00F5A0
+  symbol: object_zovVtx_00F5A0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F650:
+  type: MM:ARRAY
+  offset: 0x00F650
+  symbol: object_zovVtx_00F650
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F6C0:
+  type: MM:ARRAY
+  offset: 0x00F6C0
+  symbol: object_zovVtx_00F6C0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00F8E0:
+  type: MM:ARRAY
+  offset: 0x00F8E0
+  symbol: object_zovVtx_00F8E0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00FC80:
+  type: MM:ARRAY
+  offset: 0x00FC80
+  symbol: object_zovVtx_00FC80
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00FE10:
+  type: MM:ARRAY
+  offset: 0x00FE10
+  symbol: object_zovVtx_00FE10
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00FEC0:
+  type: MM:ARRAY
+  offset: 0x00FEC0
+  symbol: object_zovVtx_00FEC0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_00FF30:
+  type: MM:ARRAY
+  offset: 0x00FF30
+  symbol: object_zovVtx_00FF30
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zovVtx_010150:
+  type: MM:ARRAY
+  offset: 0x010150
+  symbol: object_zovVtx_010150
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLuluSkelLimbs:
+  type: BLOB
+  offset: 0x16200
+  symbol: gLuluSkelLimbs
+  size: 0

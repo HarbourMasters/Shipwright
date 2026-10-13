@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x01433980 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01433980 ]
+    - [ 9, 0x01433980 ]
+    - [ 10, 0x01433980 ]
+    - [ 11, 0x01433980 ]
+    - [ 12, 0x01433980 ]
+    - [ 13, 0x01433980 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiGreatFairysSwordBladeDL:
+  type: GFX
+  offset: 0xAD8
+  symbol: gGiGreatFairysSwordBladeDL
+
+gGiGreatFairysSwordBladeTex:
+  type: TEXTURE
+  offset: 0x1258
+  symbol: gGiGreatFairysSwordBladeTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiGreatFairysSwordEmblemBackgroundTex:
+  type: TEXTURE
+  offset: 0x1358
+  symbol: gGiGreatFairysSwordEmblemBackgroundTex
+  format: I8
+  width: 16
+  height: 16
+
+gGiGreatFairysSwordHiltEmblemDL:
+  type: GFX
+  offset: 0x940
+  symbol: gGiGreatFairysSwordHiltEmblemDL
+
+gGiGreatFairysSwordLeafPatternTex:
+  type: TEXTURE
+  offset: 0xE58
+  symbol: gGiGreatFairysSwordLeafPatternTex
+  format: IA8
+  width: 32
+  height: 32
+
+
+object_gi_sword_4Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sword_4Vtx_000000
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_sword_4Vtx_0005E0:
+  type: MM:ARRAY
+  offset: 0x0005E0
+  symbol: object_gi_sword_4Vtx_0005E0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

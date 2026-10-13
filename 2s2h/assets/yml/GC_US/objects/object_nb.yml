@@ -1,0 +1,388 @@
+:config:
+  segments:
+    - [ 6, 0x014E9940 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014E9940 ]
+    - [ 9, 0x014E9940 ]
+    - [ 10, 0x014E9940 ]
+    - [ 11, 0x014E9940 ]
+    - [ 12, 0x014E9940 ]
+    - [ 13, 0x014E9940 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gNbAngryAnim:
+  type: OOT:ANIMATION
+  offset: 0x52C
+  symbol: gNbAngryAnim
+
+gNbArmsBookDL:
+  type: GFX
+  offset: 0x6390
+  symbol: gNbArmsBookDL
+
+gNbArmsBookLimb:
+  type: OOT:LIMB
+  offset: 0x8BE8
+  symbol: gNbArmsBookLimb
+  limb_type: Standard
+
+gNbBookCoverTex:
+  type: TEXTURE
+  offset: 0x7BD0
+  symbol: gNbBookCoverTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B10
+
+gNbBookPageTex:
+  type: TEXTURE
+  offset: 0x7DD0
+  symbol: gNbBookPageTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6D10
+
+gNbEarTex:
+  type: TEXTURE
+  offset: 0x6F50
+  symbol: gNbEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6910
+
+gNbEyeTex:
+  type: TEXTURE
+  offset: 0x73D0
+  symbol: gNbEyeTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x6910
+
+gNbFingersTex:
+  type: TEXTURE
+  offset: 0x7ED0
+  symbol: gNbFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6910
+
+gNbHairTex:
+  type: TEXTURE
+  offset: 0x71D0
+  symbol: gNbHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x6B10
+
+gNbHeadDL:
+  type: GFX
+  offset: 0x5AA8
+  symbol: gNbHeadDL
+
+gNbHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8C00
+  symbol: gNbHeadLimb
+  limb_type: Standard
+
+gNbIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x990
+  symbol: gNbIdleAnim
+
+gNbLeftWheelDL:
+  type: GFX
+  offset: 0x5430
+  symbol: gNbLeftWheelDL
+
+gNbLeftWheelLimb:
+  type: OOT:LIMB
+  offset: 0x8C0C
+  symbol: gNbLeftWheelLimb
+  limb_type: Standard
+
+gNbLowerEyelidTex:
+  type: TEXTURE
+  offset: 0x7450
+  symbol: gNbLowerEyelidTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x6910
+
+gNbNeckDL:
+  type: GFX
+  offset: 0x5988
+  symbol: gNbNeckDL
+
+gNbNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8BF4
+  symbol: gNbNeckLimb
+  limb_type: Standard
+
+gNbRelievedAnim:
+  type: OOT:ANIMATION
+  offset: 0x6D4
+  symbol: gNbRelievedAnim
+
+gNbRightWheelDL:
+  type: GFX
+  offset: 0x5170
+  symbol: gNbRightWheelDL
+
+gNbRightWheelLimb:
+  type: OOT:LIMB
+  offset: 0x8C18
+  symbol: gNbRightWheelLimb
+  limb_type: Standard
+
+gNbSkel:
+  type: MM:SKELETON
+  offset: 0x8C40
+  symbol: gNbSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gNbSkinTex:
+  type: TEXTURE
+  offset: 0x6F10
+  symbol: gNbSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6910
+
+gNbSkirtTex:
+  type: TEXTURE
+  offset: 0x7CD0
+  symbol: gNbSkirtTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6910
+
+gNbTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x290
+  symbol: gNbTalkAnim
+
+gNbTigerTLUT:
+  type: TEXTURE
+  offset: 0x6D10
+  symbol: gNbTigerTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gNbTigerTex:
+  type: TEXTURE
+  offset: 0x7FD0
+  symbol: gNbTigerTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x6D10
+
+gNbTorsoDL:
+  type: GFX
+  offset: 0x56F0
+  symbol: gNbTorsoDL
+
+gNbTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8BDC
+  symbol: gNbTorsoLimb
+  limb_type: Standard
+
+gNbUpperEyelidTex:
+  type: TEXTURE
+  offset: 0x7150
+  symbol: gNbUpperEyelidTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x6910
+
+gNbWheelchairDL:
+  type: GFX
+  offset: 0x4A70
+  symbol: gNbWheelchairDL
+
+gNbWheelchairLimb:
+  type: OOT:LIMB
+  offset: 0x8BD0
+  symbol: gNbWheelchairLimb
+  limb_type: Standard
+
+object_nb_TLUT_006910:
+  type: TEXTURE
+  offset: 0x6910
+  symbol: object_nb_TLUT_006910
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_nb_TLUT_006B10:
+  type: TEXTURE
+  offset: 0x6B10
+  symbol: object_nb_TLUT_006B10
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_nb_Tex_007050:
+  type: TEXTURE
+  offset: 0x7050
+  symbol: object_nb_Tex_007050
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6910
+
+object_nb_Tex_0074D0:
+  type: TEXTURE
+  offset: 0x74D0
+  symbol: object_nb_Tex_0074D0
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x6D10
+
+object_nb_Tex_007550:
+  type: TEXTURE
+  offset: 0x7550
+  symbol: object_nb_Tex_007550
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B10
+
+object_nb_Tex_007650:
+  type: TEXTURE
+  offset: 0x7650
+  symbol: object_nb_Tex_007650
+  format: I8
+  width: 16
+  height: 16
+
+object_nb_Tex_007750:
+  type: TEXTURE
+  offset: 0x7750
+  symbol: object_nb_Tex_007750
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_nb_Tex_0077D0:
+  type: TEXTURE
+  offset: 0x77D0
+  symbol: object_nb_Tex_0077D0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B10
+
+object_nb_Tex_0078D0:
+  type: TEXTURE
+  offset: 0x78D0
+  symbol: object_nb_Tex_0078D0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6B10
+
+object_nb_Tex_0079D0:
+  type: TEXTURE
+  offset: 0x79D0
+  symbol: object_nb_Tex_0079D0
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x6B10
+
+object_nb_Tex_0087D0:
+  type: TEXTURE
+  offset: 0x87D0
+  symbol: object_nb_Tex_0087D0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6B10
+
+
+object_nbVtx_0009A0:
+  type: MM:ARRAY
+  offset: 0x0009A0
+  symbol: object_nbVtx_0009A0
+  count: 197
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0015F0:
+  type: MM:ARRAY
+  offset: 0x0015F0
+  symbol: object_nbVtx_0015F0
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_001AD0:
+  type: MM:ARRAY
+  offset: 0x001AD0
+  symbol: object_nbVtx_001AD0
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_001FB0:
+  type: MM:ARRAY
+  offset: 0x001FB0
+  symbol: object_nbVtx_001FB0
+  count: 379
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_003760:
+  type: MM:ARRAY
+  offset: 0x003760
+  symbol: object_nbVtx_003760
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_0039D0:
+  type: MM:ARRAY
+  offset: 0x0039D0
+  symbol: object_nbVtx_0039D0
+  count: 212
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nbVtx_004710:
+  type: MM:ARRAY
+  offset: 0x004710
+  symbol: object_nbVtx_004710
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNbSkelLimbs:
+  type: BLOB
+  offset: 0x8C24
+  symbol: gNbSkelLimbs
+  size: 0

@@ -1,0 +1,115 @@
+:config:
+  segments:
+    - [ 2, 0x01C63BF0 ]
+
+Z2_TOUGITES:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_TOUGITES
+
+
+Z2_TOUGITESTexAnim_0001F0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0001F0
+  symbol: Z2_TOUGITESTexAnim_0001F0
+
+Z2_TOUGITESCollisionHeader_000994:
+  type: MM:COLLISION
+  offset: 0x000994
+  symbol: Z2_TOUGITESCollisionHeader_000994
+
+Z2_TOUGITESTex_0009C0:
+  type: TEXTURE
+  offset: 0x0009C0
+  symbol: Z2_TOUGITESTex_0009C0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_TOUGITESTex_0011C0:
+  type: TEXTURE
+  offset: 0x0011C0
+  symbol: Z2_TOUGITESTex_0011C0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_TOUGITESTex_0019C0:
+  type: TEXTURE
+  offset: 0x0019C0
+  symbol: Z2_TOUGITESTex_0019C0
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_TOUGITESTex_0021C0:
+  type: TEXTURE
+  offset: 0x0021C0
+  symbol: Z2_TOUGITESTex_0021C0
+  format: RGBA16
+  width: 8
+  height: 32
+
+Z2_TOUGITESTex_0023C0:
+  type: TEXTURE
+  offset: 0x0023C0
+  symbol: Z2_TOUGITESTex_0023C0
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_TOUGITESTex_0027C0:
+  type: TEXTURE
+  offset: 0x0027C0
+  symbol: Z2_TOUGITESTex_0027C0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_TOUGITESTex_002FC0:
+  type: TEXTURE
+  offset: 0x002FC0
+  symbol: Z2_TOUGITESTex_002FC0
+  format: IA16
+  width: 16
+  height: 32
+
+Z2_TOUGITESTex_0033C0:
+  type: TEXTURE
+  offset: 0x0033C0
+  symbol: Z2_TOUGITESTex_0033C0
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_TOUGITESTex_0037C0:
+  type: TEXTURE
+  offset: 0x0037C0
+  symbol: Z2_TOUGITESTex_0037C0
+  format: I8
+  width: 32
+  height: 64
+
+Z2_TOUGITESTex_003FC0:
+  type: TEXTURE
+  offset: 0x003FC0
+  symbol: Z2_TOUGITESTex_003FC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_TOUGITESTex_0047C0:
+  type: TEXTURE
+  offset: 0x0047C0
+  symbol: Z2_TOUGITESTex_0047C0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_TOUGITESTex_0057C0:
+  type: TEXTURE
+  offset: 0x0057C0
+  symbol: Z2_TOUGITESTex_0057C0
+  format: IA16
+  width: 32
+  height: 64

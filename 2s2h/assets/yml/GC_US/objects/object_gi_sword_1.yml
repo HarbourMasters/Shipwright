@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x010CA770 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010CA770 ]
+    - [ 9, 0x010CA770 ]
+    - [ 10, 0x010CA770 ]
+    - [ 11, 0x010CA770 ]
+    - [ 12, 0x010CA770 ]
+    - [ 13, 0x010CA770 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiKokiriSwordBladeHiltDL:
+  type: GFX
+  offset: 0x998
+  symbol: gGiKokiriSwordBladeHiltDL
+
+gGiKokiriSwordBladeTex:
+  type: TEXTURE
+  offset: 0xFD8
+  symbol: gGiKokiriSwordBladeTex
+  format: I8
+  width: 24
+  height: 24
+
+gGiKokiriSwordGuardDL:
+  type: GFX
+  offset: 0x850
+  symbol: gGiKokiriSwordGuardDL
+
+gGiKokiriSwordGuardTex:
+  type: TEXTURE
+  offset: 0xD58
+  symbol: gGiKokiriSwordGuardTex
+  format: I8
+  width: 8
+  height: 8
+
+gGiKokiriSwordHiltTex:
+  type: TEXTURE
+  offset: 0xD98
+  symbol: gGiKokiriSwordHiltTex
+  format: I8
+  width: 24
+  height: 24
+
+
+object_gi_sword_1Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sword_1Vtx_000000
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_sword_1Vtx_000550:
+  type: MM:ARRAY
+  offset: 0x000550
+  symbol: object_gi_sword_1Vtx_000550
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

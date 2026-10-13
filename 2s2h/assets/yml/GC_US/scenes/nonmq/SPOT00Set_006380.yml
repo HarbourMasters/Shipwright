@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01E72FD0 ]
+  directory: scenes/nonmq/SPOT00
+  external_files:
+    - GC_US/scenes/nonmq/SPOT00.yml
+
+SPOT00Set_006380:
+  type: MM:SCENE
+  offset: 0x6380
+  symbol: SPOT00Set_006380
+  base_name: SPOT00

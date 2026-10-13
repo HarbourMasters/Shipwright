@@ -1,0 +1,332 @@
+:config:
+  segments:
+    - [ 3, 0x016E3070 ]
+    - [ 6, 0x01607B40 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x016E3070 ]
+    - [ 9, 0x016E3070 ]
+    - [ 10, 0x016E3070 ]
+    - [ 11, 0x016E3070 ]
+    - [ 12, 0x016E3070 ]
+    - [ 13, 0x016E3070 ]
+    - [ 2, 0x016D7250 ]
+  directory: scenes/nonmq/Z2_SONCHONOIE
+  external_files:
+    - N64_US/misc/scene_texture_01.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_SONCHONOIE.yml
+
+Z2_SONCHONOIE_room_02:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_SONCHONOIE_room_02
+
+Z2_SONCHONOIE_room_02DL_000160:
+  type: GFX
+  offset: 0x160
+  symbol: Z2_SONCHONOIE_room_02DL_000160
+
+Z2_SONCHONOIE_room_02DL_0084F8:
+  type: GFX
+  offset: 0x84F8
+  symbol: Z2_SONCHONOIE_room_02DL_0084F8
+
+Z2_SONCHONOIE_room_02DL_009540:
+  type: GFX
+  offset: 0x9540
+  symbol: Z2_SONCHONOIE_room_02DL_009540
+
+Z2_SONCHONOIE_room_02DL_009940:
+  type: GFX
+  offset: 0x9940
+  symbol: Z2_SONCHONOIE_room_02DL_009940
+
+
+Z2_SONCHONOIE_room_02ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_SONCHONOIE_room_02ActorEntry_000058
+  size: 0
+
+Z2_SONCHONOIE_room_02Vtx_000168:
+  type: MM:ARRAY
+  offset: 0x000168
+  symbol: Z2_SONCHONOIE_room_02Vtx_000168
+  count: 244
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0010A8:
+  type: GFX
+  offset: 0x0010A8
+  symbol: Z2_SONCHONOIE_room_02DL_0010A8
+
+Z2_SONCHONOIE_room_02Vtx_001B20:
+  type: MM:ARRAY
+  offset: 0x001B20
+  symbol: Z2_SONCHONOIE_room_02Vtx_001B20
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_002460:
+  type: GFX
+  offset: 0x002460
+  symbol: Z2_SONCHONOIE_room_02DL_002460
+
+Z2_SONCHONOIE_room_02Vtx_002868:
+  type: MM:ARRAY
+  offset: 0x002868
+  symbol: Z2_SONCHONOIE_room_02Vtx_002868
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_002D88:
+  type: GFX
+  offset: 0x002D88
+  symbol: Z2_SONCHONOIE_room_02DL_002D88
+
+Z2_SONCHONOIE_room_02Vtx_003010:
+  type: MM:ARRAY
+  offset: 0x003010
+  symbol: Z2_SONCHONOIE_room_02Vtx_003010
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_003950:
+  type: GFX
+  offset: 0x003950
+  symbol: Z2_SONCHONOIE_room_02DL_003950
+
+Z2_SONCHONOIE_room_02Vtx_003EC0:
+  type: MM:ARRAY
+  offset: 0x003EC0
+  symbol: Z2_SONCHONOIE_room_02Vtx_003EC0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_004080:
+  type: GFX
+  offset: 0x004080
+  symbol: Z2_SONCHONOIE_room_02DL_004080
+
+Z2_SONCHONOIE_room_02Vtx_0041F8:
+  type: MM:ARRAY
+  offset: 0x0041F8
+  symbol: Z2_SONCHONOIE_room_02Vtx_0041F8
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_004C78:
+  type: GFX
+  offset: 0x004C78
+  symbol: Z2_SONCHONOIE_room_02DL_004C78
+
+Z2_SONCHONOIE_room_02Vtx_004FD8:
+  type: MM:ARRAY
+  offset: 0x004FD8
+  symbol: Z2_SONCHONOIE_room_02Vtx_004FD8
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0056B8:
+  type: GFX
+  offset: 0x0056B8
+  symbol: Z2_SONCHONOIE_room_02DL_0056B8
+
+Z2_SONCHONOIE_room_02Vtx_005850:
+  type: MM:ARRAY
+  offset: 0x005850
+  symbol: Z2_SONCHONOIE_room_02Vtx_005850
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0059D0:
+  type: GFX
+  offset: 0x0059D0
+  symbol: Z2_SONCHONOIE_room_02DL_0059D0
+
+Z2_SONCHONOIE_room_02DL_005B58:
+  type: GFX
+  offset: 0x005B58
+  symbol: Z2_SONCHONOIE_room_02DL_005B58
+
+Z2_SONCHONOIE_room_02Vtx_005B88:
+  type: MM:ARRAY
+  offset: 0x005B88
+  symbol: Z2_SONCHONOIE_room_02Vtx_005B88
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_006718:
+  type: GFX
+  offset: 0x006718
+  symbol: Z2_SONCHONOIE_room_02DL_006718
+
+Z2_SONCHONOIE_room_02Vtx_006ED8:
+  type: MM:ARRAY
+  offset: 0x006ED8
+  symbol: Z2_SONCHONOIE_room_02Vtx_006ED8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_006EE8:
+  type: GFX
+  offset: 0x006EE8
+  symbol: Z2_SONCHONOIE_room_02DL_006EE8
+
+Z2_SONCHONOIE_room_02Vtx_006F08:
+  type: MM:ARRAY
+  offset: 0x006F08
+  symbol: Z2_SONCHONOIE_room_02Vtx_006F08
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0073E8:
+  type: GFX
+  offset: 0x0073E8
+  symbol: Z2_SONCHONOIE_room_02DL_0073E8
+
+Z2_SONCHONOIE_room_02Vtx_007588:
+  type: MM:ARRAY
+  offset: 0x007588
+  symbol: Z2_SONCHONOIE_room_02Vtx_007588
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_007598:
+  type: GFX
+  offset: 0x007598
+  symbol: Z2_SONCHONOIE_room_02DL_007598
+
+Z2_SONCHONOIE_room_02DL_0075B8:
+  type: GFX
+  offset: 0x0075B8
+  symbol: Z2_SONCHONOIE_room_02DL_0075B8
+
+Z2_SONCHONOIE_room_02Vtx_0075D0:
+  type: MM:ARRAY
+  offset: 0x0075D0
+  symbol: Z2_SONCHONOIE_room_02Vtx_0075D0
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_007C20:
+  type: GFX
+  offset: 0x007C20
+  symbol: Z2_SONCHONOIE_room_02DL_007C20
+
+Z2_SONCHONOIE_room_02Vtx_008030:
+  type: MM:ARRAY
+  offset: 0x008030
+  symbol: Z2_SONCHONOIE_room_02Vtx_008030
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0083B0:
+  type: GFX
+  offset: 0x0083B0
+  symbol: Z2_SONCHONOIE_room_02DL_0083B0
+
+Z2_SONCHONOIE_room_02Tex_008538:
+  type: TEXTURE
+  offset: 0x008538
+  symbol: Z2_SONCHONOIE_room_02Tex_008538
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_SONCHONOIE_room_02Tex_008D38:
+  type: TEXTURE
+  offset: 0x008D38
+  symbol: Z2_SONCHONOIE_room_02Tex_008D38
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SONCHONOIE_room_02Vtx_009548:
+  type: MM:ARRAY
+  offset: 0x009548
+  symbol: Z2_SONCHONOIE_room_02Vtx_009548
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_0096C8:
+  type: GFX
+  offset: 0x0096C8
+  symbol: Z2_SONCHONOIE_room_02DL_0096C8
+
+Z2_SONCHONOIE_room_02DL_0097B0:
+  type: GFX
+  offset: 0x0097B0
+  symbol: Z2_SONCHONOIE_room_02DL_0097B0
+
+Z2_SONCHONOIE_room_02DL_0097B8:
+  type: GFX
+  offset: 0x0097B8
+  symbol: Z2_SONCHONOIE_room_02DL_0097B8
+
+Z2_SONCHONOIE_room_02DL_0097C0:
+  type: GFX
+  offset: 0x0097C0
+  symbol: Z2_SONCHONOIE_room_02DL_0097C0
+
+Z2_SONCHONOIE_room_02Vtx_0097D0:
+  type: MM:ARRAY
+  offset: 0x0097D0
+  symbol: Z2_SONCHONOIE_room_02Vtx_0097D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_SONCHONOIE_room_02DL_009890:
+  type: GFX
+  offset: 0x009890
+  symbol: Z2_SONCHONOIE_room_02DL_009890
+
+Z2_SONCHONOIE_room_02DL_009928:
+  type: GFX
+  offset: 0x009928
+  symbol: Z2_SONCHONOIE_room_02DL_009928
+
+Z2_SONCHONOIE_room_02DL_009930:
+  type: GFX
+  offset: 0x009930
+  symbol: Z2_SONCHONOIE_room_02DL_009930
+
+Z2_SONCHONOIE_room_02Tex_009970:
+  type: TEXTURE
+  offset: 0x009970
+  symbol: Z2_SONCHONOIE_room_02Tex_009970
+  format: RGBA16
+  width: 32
+  height: 32

@@ -1,0 +1,172 @@
+:config:
+  segments:
+    - [ 6, 0x015B0570 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015B0570 ]
+    - [ 9, 0x015B0570 ]
+    - [ 10, 0x015B0570 ]
+    - [ 11, 0x015B0570 ]
+    - [ 12, 0x015B0570 ]
+    - [ 13, 0x015B0570 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFall2FKAnim_5EF4:
+  type: MM:KEYFRAME_ANIMATION
+  offset: 0x5EF4
+  symbol: gFall2FKAnim_5EF4
+  skel_offset: 0x8898
+  limb_type: Flex
+
+gFall2KFSkel_8898:
+  type: MM:KEYFRAME_SKELETON
+  offset: 0x8898
+  symbol: gFall2KFSkel_8898
+  limb_type: Flex
+
+gOpenMouthMoonDL:
+  type: GFX
+  offset: 0x2970
+  symbol: gOpenMouthMoonDL
+
+gOpenMouthMoonEyesTex:
+  type: TEXTURE
+  offset: 0x34E8
+  symbol: gOpenMouthMoonEyesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOpenMouthMoonFaceTLUT:
+  type: TEXTURE
+  offset: 0x34C8
+  symbol: gOpenMouthMoonFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOpenMouthMoonFaceTex:
+  type: TEXTURE
+  offset: 0x44E8
+  symbol: gOpenMouthMoonFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOpenMouthMoonFarSideTLUT:
+  type: TEXTURE
+  offset: 0x34A8
+  symbol: gOpenMouthMoonFarSideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOpenMouthMoonFarSideTex:
+  type: TEXTURE
+  offset: 0x3CE8
+  symbol: gOpenMouthMoonFarSideTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOpenMouthMoonTeethTex:
+  type: TEXTURE
+  offset: 0x4CE8
+  symbol: gOpenMouthMoonTeethTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_fall2_DL_006E00:
+  type: GFX
+  offset: 0x6E00
+  symbol: object_fall2_DL_006E00
+
+object_fall2_DL_006EF0:
+  type: GFX
+  offset: 0x6EF0
+  symbol: object_fall2_DL_006EF0
+
+object_fall2_DL_006FF8:
+  type: GFX
+  offset: 0x6FF8
+  symbol: object_fall2_DL_006FF8
+
+object_fall2_DL_007100:
+  type: GFX
+  offset: 0x7100
+  symbol: object_fall2_DL_007100
+
+object_fall2_DL_007208:
+  type: GFX
+  offset: 0x7208
+  symbol: object_fall2_DL_007208
+
+object_fall2_DL_007310:
+  type: GFX
+  offset: 0x7310
+  symbol: object_fall2_DL_007310
+
+object_fall2_DL_007418:
+  type: GFX
+  offset: 0x7418
+  symbol: object_fall2_DL_007418
+
+object_fall2_DL_007520:
+  type: GFX
+  offset: 0x7520
+  symbol: object_fall2_DL_007520
+
+object_fall2_DL_007628:
+  type: GFX
+  offset: 0x7628
+  symbol: object_fall2_DL_007628
+
+object_fall2_DL_007730:
+  type: GFX
+  offset: 0x7730
+  symbol: object_fall2_DL_007730
+
+object_fall2_Matanimheader_008840:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x8840
+  symbol: object_fall2_Matanimheader_008840
+
+object_fall2_Tex_007838:
+  type: TEXTURE
+  offset: 0x7838
+  symbol: object_fall2_Tex_007838
+  format: I4
+  width: 64
+  height: 64
+
+object_fall2_Tex_008038:
+  type: TEXTURE
+  offset: 0x8038
+  symbol: object_fall2_Tex_008038
+  format: I4
+  width: 64
+  height: 64
+
+object_fall2_Vtx_005F10:
+  type: MM:ARRAY
+  offset: 0x5F10
+  symbol: object_fall2_Vtx_005F10
+  count: 239
+  array_type: VTX
+
+
+object_fall2Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fall2Vtx_000000
+  count: 663
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fall2_Matanimheader_008840TexScrollParams_008838:
+  type: BLOB
+  offset: 0x008838
+  symbol: object_fall2_Matanimheader_008840TexScrollParams_008838
+  size: 0

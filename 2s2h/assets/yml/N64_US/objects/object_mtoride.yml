@@ -1,0 +1,424 @@
+:config:
+  segments:
+    - [ 6, 0x01285F30 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01285F30 ]
+    - [ 9, 0x01285F30 ]
+    - [ 10, 0x01285F30 ]
+    - [ 11, 0x01285F30 ]
+    - [ 12, 0x01285F30 ]
+    - [ 13, 0x01285F30 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gWoodfallSceneryBranchAndLeavesTLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gWoodfallSceneryBranchAndLeavesTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gWoodfallSceneryBranchAndLeavesTex:
+  type: TEXTURE
+  offset: 0x420
+  symbol: gWoodfallSceneryBranchAndLeavesTex
+  format: CI4
+  width: 32
+  height: 128
+
+gWoodfallSceneryDynamicPoisonWaterDL:
+  type: GFX
+  offset: 0x9928
+  symbol: gWoodfallSceneryDynamicPoisonWaterDL
+
+gWoodfallSceneryDynamicPoisonWaterEmptyDL:
+  type: GFX
+  offset: 0x9920
+  symbol: gWoodfallSceneryDynamicPoisonWaterEmptyDL
+
+gWoodfallSceneryDynamicPoisonWaterTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x9D70
+  symbol: gWoodfallSceneryDynamicPoisonWaterTexAnim
+
+gWoodfallSceneryEntranceGradientTex:
+  type: TEXTURE
+  offset: 0xC20
+  symbol: gWoodfallSceneryEntranceGradientTex
+  format: IA8
+  width: 32
+  height: 8
+
+gWoodfallSceneryFaceDesignTex:
+  type: TEXTURE
+  offset: 0x4D20
+  symbol: gWoodfallSceneryFaceDesignTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodfallSceneryFloorBackgroundTex:
+  type: TEXTURE
+  offset: 0x8120
+  symbol: gWoodfallSceneryFloorBackgroundTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryFloorDL:
+  type: GFX
+  offset: 0x10FD8
+  symbol: gWoodfallSceneryFloorDL
+
+gWoodfallSceneryFloorForegroundTex:
+  type: TEXTURE
+  offset: 0x8920
+  symbol: gWoodfallSceneryFloorForegroundTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPoisonWallsDL:
+  type: GFX
+  offset: 0xA398
+  symbol: gWoodfallSceneryPoisonWallsDL
+
+gWoodfallSceneryPoisonWallsEmptyDL:
+  type: GFX
+  offset: 0xA390
+  symbol: gWoodfallSceneryPoisonWallsEmptyDL
+
+gWoodfallSceneryPoisonWallsScrollTex:
+  type: TEXTURE
+  offset: 0x6520
+  symbol: gWoodfallSceneryPoisonWallsScrollTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPoisonWallsTex:
+  type: TEXTURE
+  offset: 0x6D20
+  symbol: gWoodfallSceneryPoisonWallsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPoisonWallsTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xA5C0
+  symbol: gWoodfallSceneryPoisonWallsTexAnim
+
+gWoodfallSceneryPoisonWaterDL:
+  type: GFX
+  offset: 0xA8F8
+  symbol: gWoodfallSceneryPoisonWaterDL
+
+gWoodfallSceneryPoisonWaterDamageCol:
+  type: MM:COLLISION
+  offset: 0x9E4C
+  symbol: gWoodfallSceneryPoisonWaterDamageCol
+
+gWoodfallSceneryPoisonWaterEmptyDL:
+  type: GFX
+  offset: 0xA8F0
+  symbol: gWoodfallSceneryPoisonWaterEmptyDL
+
+gWoodfallSceneryPoisonWaterTex:
+  type: TEXTURE
+  offset: 0x5D20
+  symbol: gWoodfallSceneryPoisonWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPoisonWaterTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xAA50
+  symbol: gWoodfallSceneryPoisonWaterTexAnim
+
+gWoodfallSceneryPurifiedWalls1Tex:
+  type: TEXTURE
+  offset: 0x7520
+  symbol: gWoodfallSceneryPurifiedWalls1Tex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gWoodfallSceneryPurifiedWalls2Tex:
+  type: TEXTURE
+  offset: 0x7920
+  symbol: gWoodfallSceneryPurifiedWalls2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPurifiedWallsDL:
+  type: GFX
+  offset: 0xAF98
+  symbol: gWoodfallSceneryPurifiedWallsDL
+
+gWoodfallSceneryPurifiedWallsEmptyDL:
+  type: GFX
+  offset: 0xAF90
+  symbol: gWoodfallSceneryPurifiedWallsEmptyDL
+
+gWoodfallSceneryPurifiedWallsTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xB1A0
+  symbol: gWoodfallSceneryPurifiedWallsTexAnim
+
+gWoodfallSceneryPurifiedWaterDL:
+  type: GFX
+  offset: 0x10EF0
+  symbol: gWoodfallSceneryPurifiedWaterDL
+
+gWoodfallSceneryPurifiedWaterTex:
+  type: TEXTURE
+  offset: 0x9120
+  symbol: gWoodfallSceneryPurifiedWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryPurifiedWaterTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x110B8
+  symbol: gWoodfallSceneryPurifiedWaterTexAnim
+
+gWoodfallSceneryTempleCol:
+  type: MM:COLLISION
+  offset: 0x10C3C
+  symbol: gWoodfallSceneryTempleCol
+
+gWoodfallSceneryTempleDL:
+  type: GFX
+  offset: 0xDF18
+  symbol: gWoodfallSceneryTempleDL
+
+gWoodfallSceneryTempleEdgeAndRampAndPlatformTopTex:
+  type: TEXTURE
+  offset: 0xD20
+  symbol: gWoodfallSceneryTempleEdgeAndRampAndPlatformTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryTempleEntranceAndRampSidesTex:
+  type: TEXTURE
+  offset: 0x1520
+  symbol: gWoodfallSceneryTempleEntranceAndRampSidesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodfallSceneryTempleEntrancesDL:
+  type: GFX
+  offset: 0xDE50
+  symbol: gWoodfallSceneryTempleEntrancesDL
+
+gWoodfallSceneryTempleFloorAndTopTex:
+  type: TEXTURE
+  offset: 0x3520
+  symbol: gWoodfallSceneryTempleFloorAndTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodfallSceneryTempleRampAndPlatformCol:
+  type: MM:COLLISION
+  offset: 0xFE5C
+  symbol: gWoodfallSceneryTempleRampAndPlatformCol
+
+gWoodfallSceneryTempleRampAndPlatformDL:
+  type: GFX
+  offset: 0xFAE8
+  symbol: gWoodfallSceneryTempleRampAndPlatformDL
+
+gWoodfallSceneryTempleRampAndPlatformEmptyDL:
+  type: GFX
+  offset: 0xFAE0
+  symbol: gWoodfallSceneryTempleRampAndPlatformEmptyDL
+
+gWoodfallSceneryTempleSidesTex:
+  type: TEXTURE
+  offset: 0x2520
+  symbol: gWoodfallSceneryTempleSidesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodfallSceneryTempleTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xFE90
+  symbol: gWoodfallSceneryTempleTexAnim
+
+gWoodfallSceneryTreeBarkTex:
+  type: TEXTURE
+  offset: 0x3D20
+  symbol: gWoodfallSceneryTreeBarkTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodfallSceneryTreeRingTex:
+  type: TEXTURE
+  offset: 0x220
+  symbol: gWoodfallSceneryTreeRingTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWoodfallSceneryUnusedTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWoodfallSceneryUnusedTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWoodfallSceneryWaterFlowingOverTempleDL:
+  type: GFX
+  offset: 0xF3C0
+  symbol: gWoodfallSceneryWaterFlowingOverTempleDL
+
+gWoodfallSceneryWaterFlowingOverTempleEmptyDL:
+  type: GFX
+  offset: 0xF758
+  symbol: gWoodfallSceneryWaterFlowingOverTempleEmptyDL
+
+gWoodfallSceneryWaterFlowingOverTempleTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xF768
+  symbol: gWoodfallSceneryWaterFlowingOverTempleTexAnim
+
+
+gWoodfallSceneryDynamicPoisonWaterTexAnimTexScrollParams_009D60:
+  type: BLOB
+  offset: 0x009D60
+  symbol: gWoodfallSceneryDynamicPoisonWaterTexAnimTexScrollParams_009D60
+  size: 0
+
+gWoodfallSceneryDynamicPoisonWaterTexAnimTexScrollParams_009D68:
+  type: BLOB
+  offset: 0x009D68
+  symbol: gWoodfallSceneryDynamicPoisonWaterTexAnimTexScrollParams_009D68
+  size: 0
+
+object_mtorideVtx_009E80:
+  type: MM:ARRAY
+  offset: 0x009E80
+  symbol: object_mtorideVtx_009E80
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWoodfallSceneryPoisonWallsTexAnimTexScrollParams_00A5B0:
+  type: BLOB
+  offset: 0x00A5B0
+  symbol: gWoodfallSceneryPoisonWallsTexAnimTexScrollParams_00A5B0
+  size: 0
+
+gWoodfallSceneryPoisonWallsTexAnimTexScrollParams_00A5B8:
+  type: BLOB
+  offset: 0x00A5B8
+  symbol: gWoodfallSceneryPoisonWallsTexAnimTexScrollParams_00A5B8
+  size: 0
+
+object_mtorideVtx_00A5D0:
+  type: MM:ARRAY
+  offset: 0x00A5D0
+  symbol: object_mtorideVtx_00A5D0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWoodfallSceneryPoisonWaterTexAnimTexScrollParams_00AA40:
+  type: BLOB
+  offset: 0x00AA40
+  symbol: gWoodfallSceneryPoisonWaterTexAnimTexScrollParams_00AA40
+  size: 0
+
+gWoodfallSceneryPoisonWaterTexAnimTexScrollParams_00AA48:
+  type: BLOB
+  offset: 0x00AA48
+  symbol: gWoodfallSceneryPoisonWaterTexAnimTexScrollParams_00AA48
+  size: 0
+
+object_mtorideVtx_00AA60:
+  type: MM:ARRAY
+  offset: 0x00AA60
+  symbol: object_mtorideVtx_00AA60
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mtorideVtx_00B1B0:
+  type: MM:ARRAY
+  offset: 0x00B1B0
+  symbol: object_mtorideVtx_00B1B0
+  count: 690
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mtorideVtx_00DCD0:
+  type: MM:ARRAY
+  offset: 0x00DCD0
+  symbol: object_mtorideVtx_00DCD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mtorideVtx_00EB90:
+  type: MM:ARRAY
+  offset: 0x00EB90
+  symbol: object_mtorideVtx_00EB90
+  count: 131
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWoodfallSceneryWaterFlowingOverTempleTexAnimTexScrollParams_00F760:
+  type: BLOB
+  offset: 0x00F760
+  symbol: gWoodfallSceneryWaterFlowingOverTempleTexAnimTexScrollParams_00F760
+  size: 0
+
+object_mtorideVtx_00F770:
+  type: MM:ARRAY
+  offset: 0x00F770
+  symbol: object_mtorideVtx_00F770
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mtorideVtx_010C70:
+  type: MM:ARRAY
+  offset: 0x010C70
+  symbol: object_mtorideVtx_010C70
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mtorideVtx_010D10:
+  type: MM:ARRAY
+  offset: 0x010D10
+  symbol: object_mtorideVtx_010D10
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWoodfallSceneryPurifiedWaterTexAnimTexScrollParams_0110B0:
+  type: BLOB
+  offset: 0x0110B0
+  symbol: gWoodfallSceneryPurifiedWaterTexAnimTexScrollParams_0110B0
+  size: 0

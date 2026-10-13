@@ -1,0 +1,995 @@
+:config:
+  segments:
+    - [ 6, 0x01075AB0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01075AB0 ]
+    - [ 9, 0x01075AB0 ]
+    - [ 10, 0x01075AB0 ]
+    - [ 11, 0x01075AB0 ]
+    - [ 12, 0x01075AB0 ]
+    - [ 13, 0x01075AB0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gTreasureChestShopGalClothesTex:
+  type: TEXTURE
+  offset: 0x8958
+  symbol: gTreasureChestShopGalClothesTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalEarAndBellyButtonTex:
+  type: TEXTURE
+  offset: 0x8758
+  symbol: gTreasureChestShopGalEarAndBellyButtonTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTreasureChestShopGalEyeClosedTex:
+  type: TEXTURE
+  offset: 0x7758
+  symbol: gTreasureChestShopGalEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalEyeHalfDownTex:
+  type: TEXTURE
+  offset: 0x7F58
+  symbol: gTreasureChestShopGalEyeHalfDownTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalEyeHalfUpTex:
+  type: TEXTURE
+  offset: 0x7358
+  symbol: gTreasureChestShopGalEyeHalfUpTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalEyeOpenDownTex:
+  type: TEXTURE
+  offset: 0x7B58
+  symbol: gTreasureChestShopGalEyeOpenDownTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalEyeOpenUpTex:
+  type: TEXTURE
+  offset: 0x6F58
+  symbol: gTreasureChestShopGalEyeOpenUpTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalFingersTex:
+  type: TEXTURE
+  offset: 0x8D58
+  symbol: gTreasureChestShopGalFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTreasureChestShopGalHair2Tex:
+  type: TEXTURE
+  offset: 0x6ED8
+  symbol: gTreasureChestShopGalHair2Tex
+  format: CI8
+  width: 8
+  height: 16
+
+gTreasureChestShopGalHairTex:
+  type: TEXTURE
+  offset: 0x6AD8
+  symbol: gTreasureChestShopGalHairTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalHeadDL:
+  type: GFX
+  offset: 0x3F50
+  symbol: gTreasureChestShopGalHeadDL
+
+gTreasureChestShopGalHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8E88
+  symbol: gTreasureChestShopGalHeadLimb
+  limb_type: Standard
+
+gTreasureChestShopGalHipsDL:
+  type: GFX
+  offset: 0x67A8
+  symbol: gTreasureChestShopGalHipsDL
+
+gTreasureChestShopGalHipsLimb:
+  type: OOT:LIMB
+  offset: 0x8E64
+  symbol: gTreasureChestShopGalHipsLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E94
+  symbol: gTreasureChestShopGalLeftArmRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftFootDL:
+  type: GFX
+  offset: 0x5978
+  symbol: gTreasureChestShopGalLeftFootDL
+
+gTreasureChestShopGalLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8F60
+  symbol: gTreasureChestShopGalLeftFootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x8F54
+  symbol: gTreasureChestShopGalLeftFootRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftForearmDL:
+  type: GFX
+  offset: 0x4A38
+  symbol: gTreasureChestShopGalLeftForearmDL
+
+gTreasureChestShopGalLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8EAC
+  symbol: gTreasureChestShopGalLeftForearmLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftHandDL:
+  type: GFX
+  offset: 0x4768
+  symbol: gTreasureChestShopGalLeftHandDL
+
+gTreasureChestShopGalLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x8EB8
+  symbol: gTreasureChestShopGalLeftHandLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x8F30
+  symbol: gTreasureChestShopGalLeftLegRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftShinDL:
+  type: GFX
+  offset: 0x5B80
+  symbol: gTreasureChestShopGalLeftShinDL
+
+gTreasureChestShopGalLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x8F48
+  symbol: gTreasureChestShopGalLeftShinLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftThighDL:
+  type: GFX
+  offset: 0x5F20
+  symbol: gTreasureChestShopGalLeftThighDL
+
+gTreasureChestShopGalLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x8F3C
+  symbol: gTreasureChestShopGalLeftThighLimb
+  limb_type: Standard
+
+gTreasureChestShopGalLeftUpperArmDL:
+  type: GFX
+  offset: 0x4BC0
+  symbol: gTreasureChestShopGalLeftUpperArmDL
+
+gTreasureChestShopGalLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8EA0
+  symbol: gTreasureChestShopGalLeftUpperArmLimb
+  limb_type: Standard
+
+gTreasureChestShopGalMouthTex:
+  type: TEXTURE
+  offset: 0x8358
+  symbol: gTreasureChestShopGalMouthTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTreasureChestShopGalNeckDL:
+  type: GFX
+  offset: 0x4558
+  symbol: gTreasureChestShopGalNeckDL
+
+gTreasureChestShopGalNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8E7C
+  symbol: gTreasureChestShopGalNeckLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x8EC4
+  symbol: gTreasureChestShopGalRightArmRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightFootDL:
+  type: GFX
+  offset: 0x6090
+  symbol: gTreasureChestShopGalRightFootDL
+
+gTreasureChestShopGalRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8F24
+  symbol: gTreasureChestShopGalRightFootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x8F18
+  symbol: gTreasureChestShopGalRightFootRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightForearmDL:
+  type: GFX
+  offset: 0x51B0
+  symbol: gTreasureChestShopGalRightForearmDL
+
+gTreasureChestShopGalRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8EDC
+  symbol: gTreasureChestShopGalRightForearmLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightHandDL:
+  type: GFX
+  offset: 0x4EE0
+  symbol: gTreasureChestShopGalRightHandDL
+
+gTreasureChestShopGalRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x8EE8
+  symbol: gTreasureChestShopGalRightHandLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x8EF4
+  symbol: gTreasureChestShopGalRightLegRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightShinDL:
+  type: GFX
+  offset: 0x6298
+  symbol: gTreasureChestShopGalRightShinDL
+
+gTreasureChestShopGalRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x8F0C
+  symbol: gTreasureChestShopGalRightShinLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightThighDL:
+  type: GFX
+  offset: 0x6638
+  symbol: gTreasureChestShopGalRightThighDL
+
+gTreasureChestShopGalRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8F00
+  symbol: gTreasureChestShopGalRightThighLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRightUpperArmDL:
+  type: GFX
+  offset: 0x5338
+  symbol: gTreasureChestShopGalRightUpperArmDL
+
+gTreasureChestShopGalRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8ED0
+  symbol: gTreasureChestShopGalRightUpperArmLimb
+  limb_type: Standard
+
+gTreasureChestShopGalRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E58
+  symbol: gTreasureChestShopGalRootLimb
+  limb_type: Standard
+
+gTreasureChestShopGalSkel:
+  type: MM:SKELETON
+  offset: 0x8FC8
+  symbol: gTreasureChestShopGalSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTreasureChestShopGalSkinTex:
+  type: TEXTURE
+  offset: 0x8858
+  symbol: gTreasureChestShopGalSkinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTreasureChestShopGalTLUT:
+  type: TEXTURE
+  offset: 0x68D8
+  symbol: gTreasureChestShopGalTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTreasureChestShopGalTorsoDL:
+  type: GFX
+  offset: 0x5658
+  symbol: gTreasureChestShopGalTorsoDL
+
+gTreasureChestShopGalTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8E70
+  symbol: gTreasureChestShopGalTorsoLimb
+  limb_type: Standard
+
+object_bg_Anim_000968:
+  type: OOT:ANIMATION
+  offset: 0x968
+  symbol: object_bg_Anim_000968
+
+object_bg_Anim_000A00:
+  type: OOT:ANIMATION
+  offset: 0xA00
+  symbol: object_bg_Anim_000A00
+
+object_bg_Anim_001384:
+  type: OOT:ANIMATION
+  offset: 0x1384
+  symbol: object_bg_Anim_001384
+
+object_bg_Anim_009890:
+  type: OOT:ANIMATION
+  offset: 0x9890
+  symbol: object_bg_Anim_009890
+
+object_bg_Anim_009F20:
+  type: OOT:ANIMATION
+  offset: 0x9F20
+  symbol: object_bg_Anim_009F20
+
+object_bg_Anim_00A280:
+  type: OOT:ANIMATION
+  offset: 0xA280
+  symbol: object_bg_Anim_00A280
+
+object_bg_Anim_00AD98:
+  type: OOT:ANIMATION
+  offset: 0xAD98
+  symbol: object_bg_Anim_00AD98
+
+object_bg_Anim_00B19C:
+  type: OOT:ANIMATION
+  offset: 0xB19C
+  symbol: object_bg_Anim_00B19C
+
+object_bg_DL_00D5E0:
+  type: GFX
+  offset: 0xD5E0
+  symbol: object_bg_DL_00D5E0
+
+object_bg_DL_00D780:
+  type: GFX
+  offset: 0xD780
+  symbol: object_bg_DL_00D780
+
+object_bg_DL_00DB38:
+  type: GFX
+  offset: 0xDB38
+  symbol: object_bg_DL_00DB38
+
+object_bg_DL_00DCD8:
+  type: GFX
+  offset: 0xDCD8
+  symbol: object_bg_DL_00DCD8
+
+object_bg_DL_00E1C0:
+  type: GFX
+  offset: 0xE1C0
+  symbol: object_bg_DL_00E1C0
+
+object_bg_DL_00E3F8:
+  type: GFX
+  offset: 0xE3F8
+  symbol: object_bg_DL_00E3F8
+
+object_bg_DL_00E580:
+  type: GFX
+  offset: 0xE580
+  symbol: object_bg_DL_00E580
+
+object_bg_DL_00E758:
+  type: GFX
+  offset: 0xE758
+  symbol: object_bg_DL_00E758
+
+object_bg_DL_00E990:
+  type: GFX
+  offset: 0xE990
+  symbol: object_bg_DL_00E990
+
+object_bg_DL_00EB18:
+  type: GFX
+  offset: 0xEB18
+  symbol: object_bg_DL_00EB18
+
+object_bg_DL_00ECF0:
+  type: GFX
+  offset: 0xECF0
+  symbol: object_bg_DL_00ECF0
+
+object_bg_DL_00EE50:
+  type: GFX
+  offset: 0xEE50
+  symbol: object_bg_DL_00EE50
+
+object_bg_DL_00EFE8:
+  type: GFX
+  offset: 0xEFE8
+  symbol: object_bg_DL_00EFE8
+
+object_bg_DL_00F1F0:
+  type: GFX
+  offset: 0xF1F0
+  symbol: object_bg_DL_00F1F0
+
+object_bg_DL_00F350:
+  type: GFX
+  offset: 0xF350
+  symbol: object_bg_DL_00F350
+
+object_bg_DL_00F4E8:
+  type: GFX
+  offset: 0xF4E8
+  symbol: object_bg_DL_00F4E8
+
+object_bg_Skel_011B60:
+  type: MM:SKELETON
+  offset: 0x11B60
+  symbol: object_bg_Skel_011B60
+  limb_type: Standard
+  skel_type: Flex
+
+object_bg_Standardlimb_0119F0:
+  type: OOT:LIMB
+  offset: 0x119F0
+  symbol: object_bg_Standardlimb_0119F0
+  limb_type: Standard
+
+object_bg_Standardlimb_0119FC:
+  type: OOT:LIMB
+  offset: 0x119FC
+  symbol: object_bg_Standardlimb_0119FC
+  limb_type: Standard
+
+object_bg_Standardlimb_011A08:
+  type: OOT:LIMB
+  offset: 0x11A08
+  symbol: object_bg_Standardlimb_011A08
+  limb_type: Standard
+
+object_bg_Standardlimb_011A14:
+  type: OOT:LIMB
+  offset: 0x11A14
+  symbol: object_bg_Standardlimb_011A14
+  limb_type: Standard
+
+object_bg_Standardlimb_011A20:
+  type: OOT:LIMB
+  offset: 0x11A20
+  symbol: object_bg_Standardlimb_011A20
+  limb_type: Standard
+
+object_bg_Standardlimb_011A2C:
+  type: OOT:LIMB
+  offset: 0x11A2C
+  symbol: object_bg_Standardlimb_011A2C
+  limb_type: Standard
+
+object_bg_Standardlimb_011A38:
+  type: OOT:LIMB
+  offset: 0x11A38
+  symbol: object_bg_Standardlimb_011A38
+  limb_type: Standard
+
+object_bg_Standardlimb_011A44:
+  type: OOT:LIMB
+  offset: 0x11A44
+  symbol: object_bg_Standardlimb_011A44
+  limb_type: Standard
+
+object_bg_Standardlimb_011A50:
+  type: OOT:LIMB
+  offset: 0x11A50
+  symbol: object_bg_Standardlimb_011A50
+  limb_type: Standard
+
+object_bg_Standardlimb_011A5C:
+  type: OOT:LIMB
+  offset: 0x11A5C
+  symbol: object_bg_Standardlimb_011A5C
+  limb_type: Standard
+
+object_bg_Standardlimb_011A68:
+  type: OOT:LIMB
+  offset: 0x11A68
+  symbol: object_bg_Standardlimb_011A68
+  limb_type: Standard
+
+object_bg_Standardlimb_011A74:
+  type: OOT:LIMB
+  offset: 0x11A74
+  symbol: object_bg_Standardlimb_011A74
+  limb_type: Standard
+
+object_bg_Standardlimb_011A80:
+  type: OOT:LIMB
+  offset: 0x11A80
+  symbol: object_bg_Standardlimb_011A80
+  limb_type: Standard
+
+object_bg_Standardlimb_011A8C:
+  type: OOT:LIMB
+  offset: 0x11A8C
+  symbol: object_bg_Standardlimb_011A8C
+  limb_type: Standard
+
+object_bg_Standardlimb_011A98:
+  type: OOT:LIMB
+  offset: 0x11A98
+  symbol: object_bg_Standardlimb_011A98
+  limb_type: Standard
+
+object_bg_Standardlimb_011AA4:
+  type: OOT:LIMB
+  offset: 0x11AA4
+  symbol: object_bg_Standardlimb_011AA4
+  limb_type: Standard
+
+object_bg_Standardlimb_011AB0:
+  type: OOT:LIMB
+  offset: 0x11AB0
+  symbol: object_bg_Standardlimb_011AB0
+  limb_type: Standard
+
+object_bg_Standardlimb_011ABC:
+  type: OOT:LIMB
+  offset: 0x11ABC
+  symbol: object_bg_Standardlimb_011ABC
+  limb_type: Standard
+
+object_bg_Standardlimb_011AC8:
+  type: OOT:LIMB
+  offset: 0x11AC8
+  symbol: object_bg_Standardlimb_011AC8
+  limb_type: Standard
+
+object_bg_Standardlimb_011AD4:
+  type: OOT:LIMB
+  offset: 0x11AD4
+  symbol: object_bg_Standardlimb_011AD4
+  limb_type: Standard
+
+object_bg_Standardlimb_011AE0:
+  type: OOT:LIMB
+  offset: 0x11AE0
+  symbol: object_bg_Standardlimb_011AE0
+  limb_type: Standard
+
+object_bg_Standardlimb_011AEC:
+  type: OOT:LIMB
+  offset: 0x11AEC
+  symbol: object_bg_Standardlimb_011AEC
+  limb_type: Standard
+
+object_bg_Standardlimb_011AF8:
+  type: OOT:LIMB
+  offset: 0x11AF8
+  symbol: object_bg_Standardlimb_011AF8
+  limb_type: Standard
+
+object_bg_TLUT_00F6F0:
+  type: TEXTURE
+  offset: 0xF6F0
+  symbol: object_bg_TLUT_00F6F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bg_Tex_00F8F0:
+  type: TEXTURE
+  offset: 0xF8F0
+  symbol: object_bg_Tex_00F8F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_bg_Tex_00FCF0:
+  type: TEXTURE
+  offset: 0xFCF0
+  symbol: object_bg_Tex_00FCF0
+  format: CI8
+  width: 32
+  height: 32
+
+object_bg_Tex_0100F0:
+  type: TEXTURE
+  offset: 0x100F0
+  symbol: object_bg_Tex_0100F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_bg_Tex_0104F0:
+  type: TEXTURE
+  offset: 0x104F0
+  symbol: object_bg_Tex_0104F0
+  format: CI8
+  width: 16
+  height: 32
+
+object_bg_Tex_0106F0:
+  type: TEXTURE
+  offset: 0x106F0
+  symbol: object_bg_Tex_0106F0
+  format: CI8
+  width: 16
+  height: 16
+
+object_bg_Tex_0107F0:
+  type: TEXTURE
+  offset: 0x107F0
+  symbol: object_bg_Tex_0107F0
+  format: CI8
+  width: 64
+  height: 32
+
+object_bg_Tex_010FF0:
+  type: TEXTURE
+  offset: 0x10FF0
+  symbol: object_bg_Tex_010FF0
+  format: CI8
+  width: 16
+  height: 16
+
+object_bg_Tex_0110F0:
+  type: TEXTURE
+  offset: 0x110F0
+  symbol: object_bg_Tex_0110F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_bg_Tex_0114F0:
+  type: TEXTURE
+  offset: 0x114F0
+  symbol: object_bg_Tex_0114F0
+  format: CI8
+  width: 16
+  height: 16
+
+object_bg_Tex_0115F0:
+  type: TEXTURE
+  offset: 0x115F0
+  symbol: object_bg_Tex_0115F0
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_bgVtx_0013A0:
+  type: MM:ARRAY
+  offset: 0x0013A0
+  symbol: object_bgVtx_0013A0
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_001DD0:
+  type: MM:ARRAY
+  offset: 0x001DD0
+  symbol: object_bgVtx_001DD0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_001FB0:
+  type: MM:ARRAY
+  offset: 0x001FB0
+  symbol: object_bgVtx_001FB0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002230:
+  type: MM:ARRAY
+  offset: 0x002230
+  symbol: object_bgVtx_002230
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0023B0:
+  type: MM:ARRAY
+  offset: 0x0023B0
+  symbol: object_bgVtx_0023B0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002620:
+  type: MM:ARRAY
+  offset: 0x002620
+  symbol: object_bgVtx_002620
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0028A0:
+  type: MM:ARRAY
+  offset: 0x0028A0
+  symbol: object_bgVtx_0028A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002A20:
+  type: MM:ARRAY
+  offset: 0x002A20
+  symbol: object_bgVtx_002A20
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002C90:
+  type: MM:ARRAY
+  offset: 0x002C90
+  symbol: object_bgVtx_002C90
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_003230:
+  type: MM:ARRAY
+  offset: 0x003230
+  symbol: object_bgVtx_003230
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0033C0:
+  type: MM:ARRAY
+  offset: 0x0033C0
+  symbol: object_bgVtx_0033C0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_003720:
+  type: MM:ARRAY
+  offset: 0x003720
+  symbol: object_bgVtx_003720
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_003820:
+  type: MM:ARRAY
+  offset: 0x003820
+  symbol: object_bgVtx_003820
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0039B0:
+  type: MM:ARRAY
+  offset: 0x0039B0
+  symbol: object_bgVtx_0039B0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_003D10:
+  type: MM:ARRAY
+  offset: 0x003D10
+  symbol: object_bgVtx_003D10
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_003E10:
+  type: MM:ARRAY
+  offset: 0x003E10
+  symbol: object_bgVtx_003E10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTreasureChestShopGalSkelLimbs:
+  type: BLOB
+  offset: 0x8F6C
+  symbol: gTreasureChestShopGalSkelLimbs
+  size: 0
+
+object_bgVtx_00B1B0:
+  type: MM:ARRAY
+  offset: 0x00B1B0
+  symbol: object_bgVtx_00B1B0
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00B930:
+  type: MM:ARRAY
+  offset: 0x00B930
+  symbol: object_bgVtx_00B930
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00BB10:
+  type: MM:ARRAY
+  offset: 0x00BB10
+  symbol: object_bgVtx_00BB10
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00BD20:
+  type: MM:ARRAY
+  offset: 0x00BD20
+  symbol: object_bgVtx_00BD20
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00BEA0:
+  type: MM:ARRAY
+  offset: 0x00BEA0
+  symbol: object_bgVtx_00BEA0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00C0A0:
+  type: MM:ARRAY
+  offset: 0x00C0A0
+  symbol: object_bgVtx_00C0A0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00C2B0:
+  type: MM:ARRAY
+  offset: 0x00C2B0
+  symbol: object_bgVtx_00C2B0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00C430:
+  type: MM:ARRAY
+  offset: 0x00C430
+  symbol: object_bgVtx_00C430
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00C630:
+  type: MM:ARRAY
+  offset: 0x00C630
+  symbol: object_bgVtx_00C630
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00CB30:
+  type: MM:ARRAY
+  offset: 0x00CB30
+  symbol: object_bgVtx_00CB30
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00CCE0:
+  type: MM:ARRAY
+  offset: 0x00CCE0
+  symbol: object_bgVtx_00CCE0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00CEC0:
+  type: MM:ARRAY
+  offset: 0x00CEC0
+  symbol: object_bgVtx_00CEC0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00CFC0:
+  type: MM:ARRAY
+  offset: 0x00CFC0
+  symbol: object_bgVtx_00CFC0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00D170:
+  type: MM:ARRAY
+  offset: 0x00D170
+  symbol: object_bgVtx_00D170
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00D350:
+  type: MM:ARRAY
+  offset: 0x00D350
+  symbol: object_bgVtx_00D350
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_00D450:
+  type: MM:ARRAY
+  offset: 0x00D450
+  symbol: object_bgVtx_00D450
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bg_Skel_011B60Limbs:
+  type: BLOB
+  offset: 0x11B04
+  symbol: object_bg_Skel_011B60Limbs
+  size: 0

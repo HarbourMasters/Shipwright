@@ -1,0 +1,132 @@
+:config:
+  segments:
+    - [ 128, 0x00D68A00 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80B482F0, 0x00D68A00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEnSthBendDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x45B4
+  symbol: gEnSthBendDownAnim
+
+gEnSthExtraHairDL:
+  type: GFX
+  offset: 0x37C0
+  symbol: gEnSthExtraHairDL
+
+gEnSthHeadDL:
+  type: GFX
+  offset: 0x34A0
+  symbol: gEnSthHeadDL
+
+gEnSthLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E40
+  symbol: gEnSthLookAroundAnim
+
+gEnSthLookUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x59B8
+  symbol: gEnSthLookUpAnim
+
+gEnSthPanicAnim:
+  type: OOT:ANIMATION
+  offset: 0x645C
+  symbol: gEnSthPanicAnim
+
+gEnSthPleadAnim:
+  type: OOT:ANIMATION
+  offset: 0x6354
+  symbol: gEnSthPleadAnim
+
+gEnSthSignalAnim:
+  type: OOT:ANIMATION
+  offset: 0x3F50
+  symbol: gEnSthSignalAnim
+
+gEnSthTalkWithHandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4CC0
+  symbol: gEnSthTalkWithHandUpAnim
+
+gEnSthWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x533C
+  symbol: gEnSthWaitAnim
+
+
+ovl_En_SthTex_001890:
+  type: TEXTURE
+  offset: 0x001890
+  symbol: ovl_En_SthTex_001890
+  format: RGBA16
+  width: 8
+  height: 8
+
+ovl_En_SthTex_001910:
+  type: TEXTURE
+  offset: 0x001910
+  symbol: ovl_En_SthTex_001910
+  format: RGBA16
+  width: 8
+  height: 16
+
+ovl_En_SthTex_001A10:
+  type: TEXTURE
+  offset: 0x001A10
+  symbol: ovl_En_SthTex_001A10
+  format: RGBA16
+  width: 8
+  height: 8
+
+ovl_En_SthTex_001A90:
+  type: TEXTURE
+  offset: 0x001A90
+  symbol: ovl_En_SthTex_001A90
+  format: RGBA16
+  width: 8
+  height: 8
+
+ovl_En_SthTex_001B10:
+  type: TEXTURE
+  offset: 0x001B10
+  symbol: ovl_En_SthTex_001B10
+  format: RGBA16
+  width: 32
+  height: 32
+
+ovl_En_SthTex_002310:
+  type: TEXTURE
+  offset: 0x002310
+  symbol: ovl_En_SthTex_002310
+  format: RGBA16
+  width: 32
+  height: 16
+
+ovl_En_SthTex_002710:
+  type: TEXTURE
+  offset: 0x002710
+  symbol: ovl_En_SthTex_002710
+  format: RGBA16
+  width: 8
+  height: 16
+
+ovl_En_SthVtx_002810:
+  type: MM:ARRAY
+  offset: 0x002810
+  symbol: ovl_En_SthVtx_002810
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_SthVtx_002F90:
+  type: MM:ARRAY
+  offset: 0x002F90
+  symbol: ovl_En_SthVtx_002F90
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

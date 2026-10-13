@@ -1,0 +1,103 @@
+:config:
+  segments:
+    - [ 6, 0x01512390 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01512390 ]
+    - [ 9, 0x01512390 ]
+    - [ 10, 0x01512390 ]
+    - [ 11, 0x01512390 ]
+    - [ 12, 0x01512390 ]
+    - [ 13, 0x01512390 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_hgdoor_Colheader_0018C0:
+  type: MM:COLLISION
+  offset: 0x18C0
+  symbol: object_hgdoor_Colheader_0018C0
+
+object_hgdoor_Colheader_001D10:
+  type: MM:COLLISION
+  offset: 0x1D10
+  symbol: object_hgdoor_Colheader_001D10
+
+object_hgdoor_DL_001670:
+  type: GFX
+  offset: 0x1670
+  symbol: object_hgdoor_DL_001670
+
+object_hgdoor_DL_001768:
+  type: GFX
+  offset: 0x1768
+  symbol: object_hgdoor_DL_001768
+
+object_hgdoor_DL_001AB0:
+  type: GFX
+  offset: 0x1AB0
+  symbol: object_hgdoor_DL_001AB0
+
+object_hgdoor_DL_001BA8:
+  type: GFX
+  offset: 0x1BA8
+  symbol: object_hgdoor_DL_001BA8
+
+object_hgdoor_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_hgdoor_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_hgdoor_Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: object_hgdoor_Tex_000400
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hgdoor_Tex_001400:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: object_hgdoor_Tex_001400
+  format: I8
+  width: 8
+  height: 32
+
+
+object_hgdoorVtx_001500:
+  type: MM:ARRAY
+  offset: 0x001500
+  symbol: object_hgdoorVtx_001500
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hgdoorVtx_0015F0:
+  type: MM:ARRAY
+  offset: 0x0015F0
+  symbol: object_hgdoorVtx_0015F0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hgdoorVtx_0018F0:
+  type: MM:ARRAY
+  offset: 0x0018F0
+  symbol: object_hgdoorVtx_0018F0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hgdoorVtx_0019F0:
+  type: MM:ARRAY
+  offset: 0x0019F0
+  symbol: object_hgdoorVtx_0019F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

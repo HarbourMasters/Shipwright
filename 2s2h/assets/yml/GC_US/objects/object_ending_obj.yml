@@ -1,0 +1,201 @@
+:config:
+  segments:
+    - [ 6, 0x015FF430 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015FF430 ]
+    - [ 9, 0x015FF430 ]
+    - [ 10, 0x015FF430 ]
+    - [ 11, 0x015FF430 ]
+    - [ 12, 0x015FF430 ]
+    - [ 13, 0x015FF430 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_ending_obj_DL_0003D0:
+  type: GFX
+  offset: 0x3D0
+  symbol: object_ending_obj_DL_0003D0
+
+object_ending_obj_DL_0005E0:
+  type: GFX
+  offset: 0x5E0
+  symbol: object_ending_obj_DL_0005E0
+
+object_ending_obj_DL_0031A0:
+  type: GFX
+  offset: 0x31A0
+  symbol: object_ending_obj_DL_0031A0
+
+object_ending_obj_DL_003440:
+  type: GFX
+  offset: 0x3440
+  symbol: object_ending_obj_DL_003440
+
+object_ending_obj_Matanimheader_001FF8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1FF8
+  symbol: object_ending_obj_Matanimheader_001FF8
+
+object_ending_obj_Tex_0005E8:
+  type: TEXTURE
+  offset: 0x5E8
+  symbol: object_ending_obj_Tex_0005E8
+  format: I8
+  width: 32
+  height: 64
+
+object_ending_obj_Tex_000DE8:
+  type: TEXTURE
+  offset: 0xDE8
+  symbol: object_ending_obj_Tex_000DE8
+  format: I8
+  width: 8
+  height: 64
+
+object_ending_obj_Tex_000FE8:
+  type: TEXTURE
+  offset: 0xFE8
+  symbol: object_ending_obj_Tex_000FE8
+  format: IA8
+  width: 64
+  height: 64
+
+object_ending_obj_Tex_003958:
+  type: TEXTURE
+  offset: 0x3958
+  symbol: object_ending_obj_Tex_003958
+  format: IA4
+  width: 128
+  height: 64
+
+object_ending_obj_Tex_004958:
+  type: TEXTURE
+  offset: 0x4958
+  symbol: object_ending_obj_Tex_004958
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ending_obj_Tex_005158:
+  type: TEXTURE
+  offset: 0x5158
+  symbol: object_ending_obj_Tex_005158
+  format: IA16
+  width: 16
+  height: 64
+
+object_ending_obj_Tex_005958:
+  type: TEXTURE
+  offset: 0x5958
+  symbol: object_ending_obj_Tex_005958
+  format: IA16
+  width: 8
+  height: 32
+
+object_ending_obj_Tex_005B58:
+  type: TEXTURE
+  offset: 0x5B58
+  symbol: object_ending_obj_Tex_005B58
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ending_obj_Tex_005D58:
+  type: TEXTURE
+  offset: 0x5D58
+  symbol: object_ending_obj_Tex_005D58
+  format: IA16
+  width: 32
+  height: 32
+
+object_ending_obj_Tex_006558:
+  type: TEXTURE
+  offset: 0x6558
+  symbol: object_ending_obj_Tex_006558
+  format: IA8
+  width: 64
+  height: 64
+
+object_ending_obj_Tex_007558:
+  type: TEXTURE
+  offset: 0x7558
+  symbol: object_ending_obj_Tex_007558
+  format: IA8
+  width: 8
+  height: 16
+
+object_ending_obj_Tex_0075D8:
+  type: TEXTURE
+  offset: 0x75D8
+  symbol: object_ending_obj_Tex_0075D8
+  format: I8
+  width: 32
+  height: 64
+
+object_ending_obj_Tex_007DD8:
+  type: TEXTURE
+  offset: 0x7DD8
+  symbol: object_ending_obj_Tex_007DD8
+  format: I4
+  width: 64
+  height: 64
+
+object_ending_obj_Tex_0085D8:
+  type: TEXTURE
+  offset: 0x85D8
+  symbol: object_ending_obj_Tex_0085D8
+  format: I4
+  width: 32
+  height: 32
+
+
+object_ending_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ending_objVtx_000000
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ending_obj_Matanimheader_001FF8TexScrollParams_001FF0:
+  type: BLOB
+  offset: 0x001FF0
+  symbol: object_ending_obj_Matanimheader_001FF8TexScrollParams_001FF0
+  size: 0
+
+object_ending_objVtx_002000:
+  type: MM:ARRAY
+  offset: 0x002000
+  symbol: object_ending_objVtx_002000
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ending_objVtx_0026B0:
+  type: MM:ARRAY
+  offset: 0x0026B0
+  symbol: object_ending_objVtx_0026B0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ending_objVtx_002910:
+  type: MM:ARRAY
+  offset: 0x002910
+  symbol: object_ending_objVtx_002910
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ending_objVtx_003050:
+  type: MM:ARRAY
+  offset: 0x003050
+  symbol: object_ending_objVtx_003050
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

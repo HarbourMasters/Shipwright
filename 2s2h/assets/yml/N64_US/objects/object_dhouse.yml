@@ -1,0 +1,335 @@
+:config:
+  segments:
+    - [ 6, 0x0135A1B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0135A1B0 ]
+    - [ 9, 0x0135A1B0 ]
+    - [ 10, 0x0135A1B0 ]
+    - [ 11, 0x0135A1B0 ]
+    - [ 12, 0x0135A1B0 ]
+    - [ 13, 0x0135A1B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_dhouse_Colheader_008040:
+  type: MM:COLLISION
+  offset: 0x8040
+  symbol: object_dhouse_Colheader_008040
+
+object_dhouse_DL_004920:
+  type: GFX
+  offset: 0x4920
+  symbol: object_dhouse_DL_004920
+
+object_dhouse_DL_004928:
+  type: GFX
+  offset: 0x4928
+  symbol: object_dhouse_DL_004928
+
+object_dhouse_DL_005A70:
+  type: GFX
+  offset: 0x5A70
+  symbol: object_dhouse_DL_005A70
+
+object_dhouse_DL_005A78:
+  type: GFX
+  offset: 0x5A78
+  symbol: object_dhouse_DL_005A78
+
+object_dhouse_DL_006CE0:
+  type: GFX
+  offset: 0x6CE0
+  symbol: object_dhouse_DL_006CE0
+
+object_dhouse_DL_006E28:
+  type: GFX
+  offset: 0x6E28
+  symbol: object_dhouse_DL_006E28
+
+object_dhouse_DL_006EF8:
+  type: GFX
+  offset: 0x6EF8
+  symbol: object_dhouse_DL_006EF8
+
+object_dhouse_DL_0070A8:
+  type: GFX
+  offset: 0x70A8
+  symbol: object_dhouse_DL_0070A8
+
+object_dhouse_DL_007190:
+  type: GFX
+  offset: 0x7190
+  symbol: object_dhouse_DL_007190
+
+object_dhouse_DL_007348:
+  type: GFX
+  offset: 0x7348
+  symbol: object_dhouse_DL_007348
+
+object_dhouse_DL_007438:
+  type: GFX
+  offset: 0x7438
+  symbol: object_dhouse_DL_007438
+
+object_dhouse_DL_007568:
+  type: GFX
+  offset: 0x7568
+  symbol: object_dhouse_DL_007568
+
+object_dhouse_DL_007638:
+  type: GFX
+  offset: 0x7638
+  symbol: object_dhouse_DL_007638
+
+object_dhouse_DL_007780:
+  type: GFX
+  offset: 0x7780
+  symbol: object_dhouse_DL_007780
+
+object_dhouse_DL_007850:
+  type: GFX
+  offset: 0x7850
+  symbol: object_dhouse_DL_007850
+
+object_dhouse_DL_007A00:
+  type: GFX
+  offset: 0x7A00
+  symbol: object_dhouse_DL_007A00
+
+object_dhouse_DL_007AE8:
+  type: GFX
+  offset: 0x7AE8
+  symbol: object_dhouse_DL_007AE8
+
+object_dhouse_DL_007C98:
+  type: GFX
+  offset: 0x7C98
+  symbol: object_dhouse_DL_007C98
+
+object_dhouse_DL_0081D0:
+  type: GFX
+  offset: 0x81D0
+  symbol: object_dhouse_DL_0081D0
+
+object_dhouse_DL_0081D8:
+  type: GFX
+  offset: 0x81D8
+  symbol: object_dhouse_DL_0081D8
+
+object_dhouse_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_dhouse_TLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_dhouse_TLUT_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_dhouse_TLUT_000020
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_dhouse_Tex_000040:
+  type: TEXTURE
+  offset: 0x40
+  symbol: object_dhouse_Tex_000040
+  format: CI4
+  width: 64
+  height: 64
+
+object_dhouse_Tex_000840:
+  type: TEXTURE
+  offset: 0x840
+  symbol: object_dhouse_Tex_000840
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dhouse_Tex_001040:
+  type: TEXTURE
+  offset: 0x1040
+  symbol: object_dhouse_Tex_001040
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_dhouse_Tex_002040:
+  type: TEXTURE
+  offset: 0x2040
+  symbol: object_dhouse_Tex_002040
+  format: CI4
+  width: 64
+  height: 64
+
+object_dhouse_Tex_002840:
+  type: TEXTURE
+  offset: 0x2840
+  symbol: object_dhouse_Tex_002840
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dhouse_Tex_003040:
+  type: TEXTURE
+  offset: 0x3040
+  symbol: object_dhouse_Tex_003040
+  format: I4
+  width: 64
+  height: 64
+
+
+object_dhouseVtx_003840:
+  type: MM:ARRAY
+  offset: 0x003840
+  symbol: object_dhouseVtx_003840
+  count: 270
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_004E30:
+  type: MM:ARRAY
+  offset: 0x004E30
+  symbol: object_dhouseVtx_004E30
+  count: 196
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_005E20:
+  type: MM:ARRAY
+  offset: 0x005E20
+  symbol: object_dhouseVtx_005E20
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_005EE0:
+  type: MM:ARRAY
+  offset: 0x005EE0
+  symbol: object_dhouseVtx_005EE0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_005FA0:
+  type: MM:ARRAY
+  offset: 0x005FA0
+  symbol: object_dhouseVtx_005FA0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_0060F0:
+  type: MM:ARRAY
+  offset: 0x0060F0
+  symbol: object_dhouseVtx_0060F0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006220:
+  type: MM:ARRAY
+  offset: 0x006220
+  symbol: object_dhouseVtx_006220
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006360:
+  type: MM:ARRAY
+  offset: 0x006360
+  symbol: object_dhouseVtx_006360
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_0064D0:
+  type: MM:ARRAY
+  offset: 0x0064D0
+  symbol: object_dhouseVtx_0064D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_0065B0:
+  type: MM:ARRAY
+  offset: 0x0065B0
+  symbol: object_dhouseVtx_0065B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006670:
+  type: MM:ARRAY
+  offset: 0x006670
+  symbol: object_dhouseVtx_006670
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006730:
+  type: MM:ARRAY
+  offset: 0x006730
+  symbol: object_dhouseVtx_006730
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_0067F0:
+  type: MM:ARRAY
+  offset: 0x0067F0
+  symbol: object_dhouseVtx_0067F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006930:
+  type: MM:ARRAY
+  offset: 0x006930
+  symbol: object_dhouseVtx_006930
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006A60:
+  type: MM:ARRAY
+  offset: 0x006A60
+  symbol: object_dhouseVtx_006A60
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_006B90:
+  type: MM:ARRAY
+  offset: 0x006B90
+  symbol: object_dhouseVtx_006B90
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dhouseVtx_008070:
+  type: MM:ARRAY
+  offset: 0x008070
+  symbol: object_dhouseVtx_008070
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

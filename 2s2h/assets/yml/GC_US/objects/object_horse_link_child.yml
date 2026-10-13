@@ -1,0 +1,621 @@
+:config:
+  segments:
+    - [ 6, 0x00F1DBE0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F1DBE0 ]
+    - [ 9, 0x00F1DBE0 ]
+    - [ 10, 0x00F1DBE0 ]
+    - [ 11, 0x00F1DBE0 ]
+    - [ 12, 0x00F1DBE0 ]
+    - [ 13, 0x00F1DBE0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEponaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1B28
+  symbol: gEponaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gEponaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1928
+  symbol: gEponaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gEponaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1D28
+  symbol: gEponaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1728
+
+gEponaGallopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F98
+  symbol: gEponaGallopAnim
+
+gEponaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x6D44
+  symbol: gEponaIdleAnim
+
+gEponaSkel:
+  type: MM:SKELETON
+  offset: 0xA480
+  symbol: gEponaSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gEponaTLUT:
+  type: TEXTURE
+  offset: 0x1728
+  symbol: gEponaTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gEponaTrotAnim:
+  type: OOT:ANIMATION
+  offset: 0x43AC
+  symbol: gEponaTrotAnim
+
+gEponaWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D50
+  symbol: gEponaWalkAnim
+
+gEponaWhinnyAnim:
+  type: OOT:ANIMATION
+  offset: 0x7468
+  symbol: gEponaWhinnyAnim
+
+object_horse_link_child_Anim_0035B0:
+  type: OOT:ANIMATION
+  offset: 0x35B0
+  symbol: object_horse_link_child_Anim_0035B0
+
+object_horse_link_child_Anim_003D38:
+  type: OOT:ANIMATION
+  offset: 0x3D38
+  symbol: object_horse_link_child_Anim_003D38
+
+object_horse_link_child_Anim_004DE8:
+  type: OOT:ANIMATION
+  offset: 0x4DE8
+  symbol: object_horse_link_child_Anim_004DE8
+
+object_horse_link_child_Anim_005F64:
+  type: OOT:ANIMATION
+  offset: 0x5F64
+  symbol: object_horse_link_child_Anim_005F64
+
+object_horse_link_child_Anim_00A8DC:
+  type: OOT:ANIMATION
+  offset: 0xA8DC
+  symbol: object_horse_link_child_Anim_00A8DC
+
+object_horse_link_child_Anim_00AD08:
+  type: OOT:ANIMATION
+  offset: 0xAD08
+  symbol: object_horse_link_child_Anim_00AD08
+
+object_horse_link_child_Anim_00B3E0:
+  type: OOT:ANIMATION
+  offset: 0xB3E0
+  symbol: object_horse_link_child_Anim_00B3E0
+
+object_horse_link_child_Anim_00BDE0:
+  type: OOT:ANIMATION
+  offset: 0xBDE0
+  symbol: object_horse_link_child_Anim_00BDE0
+
+object_horse_link_child_Anim_00D178:
+  type: OOT:ANIMATION
+  offset: 0xD178
+  symbol: object_horse_link_child_Anim_00D178
+
+object_horse_link_child_Anim_00D4E8:
+  type: OOT:ANIMATION
+  offset: 0xD4E8
+  symbol: object_horse_link_child_Anim_00D4E8
+
+object_horse_link_child_DL_000C70:
+  type: GFX
+  offset: 0xC70
+  symbol: object_horse_link_child_DL_000C70
+
+object_horse_link_child_DL_001028:
+  type: GFX
+  offset: 0x1028
+  symbol: object_horse_link_child_DL_001028
+
+object_horse_link_child_DL_0010D8:
+  type: GFX
+  offset: 0x10D8
+  symbol: object_horse_link_child_DL_0010D8
+
+object_horse_link_child_DL_0011E8:
+  type: GFX
+  offset: 0x11E8
+  symbol: object_horse_link_child_DL_0011E8
+
+object_horse_link_child_DL_001298:
+  type: GFX
+  offset: 0x1298
+  symbol: object_horse_link_child_DL_001298
+
+object_horse_link_child_DL_0013A8:
+  type: GFX
+  offset: 0x13A8
+  symbol: object_horse_link_child_DL_0013A8
+
+object_horse_link_child_DL_0014B8:
+  type: GFX
+  offset: 0x14B8
+  symbol: object_horse_link_child_DL_0014B8
+
+object_horse_link_child_DL_001568:
+  type: GFX
+  offset: 0x1568
+  symbol: object_horse_link_child_DL_001568
+
+object_horse_link_child_DL_001678:
+  type: GFX
+  offset: 0x1678
+  symbol: object_horse_link_child_DL_001678
+
+object_horse_link_child_Skinlimb_00A0E8:
+  type: OOT:LIMB
+  offset: 0xA0E8
+  symbol: object_horse_link_child_Skinlimb_00A0E8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A0F8:
+  type: OOT:LIMB
+  offset: 0xA0F8
+  symbol: object_horse_link_child_Skinlimb_00A0F8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A108:
+  type: OOT:LIMB
+  offset: 0xA108
+  symbol: object_horse_link_child_Skinlimb_00A108
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A118:
+  type: OOT:LIMB
+  offset: 0xA118
+  symbol: object_horse_link_child_Skinlimb_00A118
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A128:
+  type: OOT:LIMB
+  offset: 0xA128
+  symbol: object_horse_link_child_Skinlimb_00A128
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A138:
+  type: OOT:LIMB
+  offset: 0xA138
+  symbol: object_horse_link_child_Skinlimb_00A138
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A148:
+  type: OOT:LIMB
+  offset: 0xA148
+  symbol: object_horse_link_child_Skinlimb_00A148
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A158:
+  type: OOT:LIMB
+  offset: 0xA158
+  symbol: object_horse_link_child_Skinlimb_00A158
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A168:
+  type: OOT:LIMB
+  offset: 0xA168
+  symbol: object_horse_link_child_Skinlimb_00A168
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A178:
+  type: OOT:LIMB
+  offset: 0xA178
+  symbol: object_horse_link_child_Skinlimb_00A178
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A188:
+  type: OOT:LIMB
+  offset: 0xA188
+  symbol: object_horse_link_child_Skinlimb_00A188
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A198:
+  type: OOT:LIMB
+  offset: 0xA198
+  symbol: object_horse_link_child_Skinlimb_00A198
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1A8:
+  type: OOT:LIMB
+  offset: 0xA1A8
+  symbol: object_horse_link_child_Skinlimb_00A1A8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1B8:
+  type: OOT:LIMB
+  offset: 0xA1B8
+  symbol: object_horse_link_child_Skinlimb_00A1B8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1C8:
+  type: OOT:LIMB
+  offset: 0xA1C8
+  symbol: object_horse_link_child_Skinlimb_00A1C8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1D8:
+  type: OOT:LIMB
+  offset: 0xA1D8
+  symbol: object_horse_link_child_Skinlimb_00A1D8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1E8:
+  type: OOT:LIMB
+  offset: 0xA1E8
+  symbol: object_horse_link_child_Skinlimb_00A1E8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A1F8:
+  type: OOT:LIMB
+  offset: 0xA1F8
+  symbol: object_horse_link_child_Skinlimb_00A1F8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A208:
+  type: OOT:LIMB
+  offset: 0xA208
+  symbol: object_horse_link_child_Skinlimb_00A208
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A218:
+  type: OOT:LIMB
+  offset: 0xA218
+  symbol: object_horse_link_child_Skinlimb_00A218
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A228:
+  type: OOT:LIMB
+  offset: 0xA228
+  symbol: object_horse_link_child_Skinlimb_00A228
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A238:
+  type: OOT:LIMB
+  offset: 0xA238
+  symbol: object_horse_link_child_Skinlimb_00A238
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A248:
+  type: OOT:LIMB
+  offset: 0xA248
+  symbol: object_horse_link_child_Skinlimb_00A248
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A258:
+  type: OOT:LIMB
+  offset: 0xA258
+  symbol: object_horse_link_child_Skinlimb_00A258
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A268:
+  type: OOT:LIMB
+  offset: 0xA268
+  symbol: object_horse_link_child_Skinlimb_00A268
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A278:
+  type: OOT:LIMB
+  offset: 0xA278
+  symbol: object_horse_link_child_Skinlimb_00A278
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A288:
+  type: OOT:LIMB
+  offset: 0xA288
+  symbol: object_horse_link_child_Skinlimb_00A288
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A298:
+  type: OOT:LIMB
+  offset: 0xA298
+  symbol: object_horse_link_child_Skinlimb_00A298
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2A8:
+  type: OOT:LIMB
+  offset: 0xA2A8
+  symbol: object_horse_link_child_Skinlimb_00A2A8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2B8:
+  type: OOT:LIMB
+  offset: 0xA2B8
+  symbol: object_horse_link_child_Skinlimb_00A2B8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2C8:
+  type: OOT:LIMB
+  offset: 0xA2C8
+  symbol: object_horse_link_child_Skinlimb_00A2C8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2D8:
+  type: OOT:LIMB
+  offset: 0xA2D8
+  symbol: object_horse_link_child_Skinlimb_00A2D8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2E8:
+  type: OOT:LIMB
+  offset: 0xA2E8
+  symbol: object_horse_link_child_Skinlimb_00A2E8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A2F8:
+  type: OOT:LIMB
+  offset: 0xA2F8
+  symbol: object_horse_link_child_Skinlimb_00A2F8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A308:
+  type: OOT:LIMB
+  offset: 0xA308
+  symbol: object_horse_link_child_Skinlimb_00A308
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A318:
+  type: OOT:LIMB
+  offset: 0xA318
+  symbol: object_horse_link_child_Skinlimb_00A318
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A328:
+  type: OOT:LIMB
+  offset: 0xA328
+  symbol: object_horse_link_child_Skinlimb_00A328
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A338:
+  type: OOT:LIMB
+  offset: 0xA338
+  symbol: object_horse_link_child_Skinlimb_00A338
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A348:
+  type: OOT:LIMB
+  offset: 0xA348
+  symbol: object_horse_link_child_Skinlimb_00A348
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A358:
+  type: OOT:LIMB
+  offset: 0xA358
+  symbol: object_horse_link_child_Skinlimb_00A358
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A368:
+  type: OOT:LIMB
+  offset: 0xA368
+  symbol: object_horse_link_child_Skinlimb_00A368
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A378:
+  type: OOT:LIMB
+  offset: 0xA378
+  symbol: object_horse_link_child_Skinlimb_00A378
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A388:
+  type: OOT:LIMB
+  offset: 0xA388
+  symbol: object_horse_link_child_Skinlimb_00A388
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A398:
+  type: OOT:LIMB
+  offset: 0xA398
+  symbol: object_horse_link_child_Skinlimb_00A398
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A3A8:
+  type: OOT:LIMB
+  offset: 0xA3A8
+  symbol: object_horse_link_child_Skinlimb_00A3A8
+  limb_type: Skin
+
+object_horse_link_child_Skinlimb_00A3B8:
+  type: OOT:LIMB
+  offset: 0xA3B8
+  symbol: object_horse_link_child_Skinlimb_00A3B8
+  limb_type: Skin
+
+object_horse_link_child_Tex_001F28:
+  type: TEXTURE
+  offset: 0x1F28
+  symbol: object_horse_link_child_Tex_001F28
+  format: RGBA16
+  width: 4
+  height: 8
+
+object_horse_link_child_Tex_001F68:
+  type: TEXTURE
+  offset: 0x1F68
+  symbol: object_horse_link_child_Tex_001F68
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_child_Tex_002168:
+  type: TEXTURE
+  offset: 0x2168
+  symbol: object_horse_link_child_Tex_002168
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_child_Tex_002368:
+  type: TEXTURE
+  offset: 0x2368
+  symbol: object_horse_link_child_Tex_002368
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_child_Tex_002568:
+  type: TEXTURE
+  offset: 0x2568
+  symbol: object_horse_link_child_Tex_002568
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_horse_link_child_Tex_002588:
+  type: TEXTURE
+  offset: 0x2588
+  symbol: object_horse_link_child_Tex_002588
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_horse_link_child_Tex_002788:
+  type: TEXTURE
+  offset: 0x2788
+  symbol: object_horse_link_child_Tex_002788
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_child_Tex_00DAF0:
+  type: TEXTURE
+  offset: 0xDAF0
+  symbol: object_horse_link_child_Tex_00DAF0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_link_child_Tex_00DCF0:
+  type: TEXTURE
+  offset: 0xDCF0
+  symbol: object_horse_link_child_Tex_00DCF0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_horse_link_childVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_horse_link_childVtx_000000
+  count: 95
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: object_horse_link_childVtx_0005F0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000690:
+  type: MM:ARRAY
+  offset: 0x000690
+  symbol: object_horse_link_childVtx_000690
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000790:
+  type: MM:ARRAY
+  offset: 0x000790
+  symbol: object_horse_link_childVtx_000790
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: object_horse_link_childVtx_000830
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000930:
+  type: MM:ARRAY
+  offset: 0x000930
+  symbol: object_horse_link_childVtx_000930
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000A30:
+  type: MM:ARRAY
+  offset: 0x000A30
+  symbol: object_horse_link_childVtx_000A30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_horse_link_childVtx_000AD0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_link_childVtx_000BD0:
+  type: MM:ARRAY
+  offset: 0x000BD0
+  symbol: object_horse_link_childVtx_000BD0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gEponaSkelLimbs:
+  type: BLOB
+  offset: 0xA3C8
+  symbol: gEponaSkelLimbs
+  size: 0
+
+object_horse_link_child_Skinlimb_00A138SkinLimbDL_00D500:
+  type: GFX
+  offset: 0x00D500
+  symbol: object_horse_link_child_Skinlimb_00A138SkinLimbDL_00D500
+  duplicate_of: objects/object_horse_link_child/object_horse_link_child_DL_00D500
+
+object_horse_link_child_DL_00D500:
+  type: GFX
+  offset: 0xD500
+  symbol: object_horse_link_child_DL_00D500

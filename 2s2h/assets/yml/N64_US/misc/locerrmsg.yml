@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 1, 0x0163FC10 ]
+
+gNotDesignedForSystemErrorTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gNotDesignedForSystemErrorTex
+  format: I4
+  width: 208
+  height: 16
+

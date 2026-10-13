@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x0179F910 ]
+  directory: scenes/nonmq/Z2_OPENINGDAN
+  external_files:
+    - GC_US/scenes/nonmq/Z2_OPENINGDAN.yml
+
+Z2_OPENINGDANSet_008B80:
+  type: MM:SCENE
+  offset: 0x8B80
+  symbol: Z2_OPENINGDANSet_008B80
+  base_name: Z2_OPENINGDAN

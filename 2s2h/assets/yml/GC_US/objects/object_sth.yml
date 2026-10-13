@@ -1,0 +1,372 @@
+:config:
+  segments:
+    - [ 6, 0x015B5130 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015B5130 ]
+    - [ 9, 0x015B5130 ]
+    - [ 10, 0x015B5130 ]
+    - [ 11, 0x015B5130 ]
+    - [ 12, 0x015B5130 ]
+    - [ 13, 0x015B5130 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSthBeltBuckleTex:
+  type: TEXTURE
+  offset: 0x3088
+  symbol: gSthBeltBuckleTex
+  format: CI8
+  width: 8
+  height: 8
+
+gSthFingerTex:
+  type: TEXTURE
+  offset: 0x2F48
+  symbol: gSthFingerTex
+  format: CI8
+  width: 8
+  height: 8
+
+gSthHeadDL:
+  type: GFX
+  offset: 0x1C30
+  symbol: gSthHeadDL
+
+gSthHeadLimb:
+  type: OOT:LIMB
+  offset: 0x31B0
+  symbol: gSthHeadLimb
+  limb_type: Standard
+
+gSthLeftFootDL:
+  type: GFX
+  offset: 0x27F0
+  symbol: gSthLeftFootDL
+
+gSthLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x312C
+  symbol: gSthLeftFootLimb
+  limb_type: Standard
+
+gSthLeftForearmDL:
+  type: GFX
+  offset: 0x20D8
+  symbol: gSthLeftForearmDL
+
+gSthLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x3174
+  symbol: gSthLeftForearmLimb
+  limb_type: Standard
+
+gSthLeftHandDL:
+  type: GFX
+  offset: 0x1F90
+  symbol: gSthLeftHandDL
+
+gSthLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x3180
+  symbol: gSthLeftHandLimb
+  limb_type: Standard
+
+gSthLeftShinDL:
+  type: GFX
+  offset: 0x2908
+  symbol: gSthLeftShinDL
+
+gSthLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x3120
+  symbol: gSthLeftShinLimb
+  limb_type: Standard
+
+gSthLeftThighDL:
+  type: GFX
+  offset: 0x2A18
+  symbol: gSthLeftThighDL
+
+gSthLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x3114
+  symbol: gSthLeftThighLimb
+  limb_type: Standard
+
+gSthLeftUpperArmDL:
+  type: GFX
+  offset: 0x21E0
+  symbol: gSthLeftUpperArmDL
+
+gSthLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x3168
+  symbol: gSthLeftUpperArmLimb
+  limb_type: Standard
+
+gSthPantsTex:
+  type: TEXTURE
+  offset: 0x30C8
+  symbol: gSthPantsTex
+  format: I8
+  width: 8
+  height: 8
+
+gSthPelvisDL:
+  type: GFX
+  offset: 0x2B20
+  symbol: gSthPelvisDL
+
+gSthPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x3108
+  symbol: gSthPelvisLimb
+  limb_type: Standard
+
+gSthRightFootDL:
+  type: GFX
+  offset: 0x24C0
+  symbol: gSthRightFootDL
+
+gSthRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x3150
+  symbol: gSthRightFootLimb
+  limb_type: Standard
+
+gSthRightForearmDL:
+  type: GFX
+  offset: 0x1D80
+  symbol: gSthRightForearmDL
+
+gSthRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x3198
+  symbol: gSthRightForearmLimb
+  limb_type: Standard
+
+gSthRightHandDL:
+  type: GFX
+  offset: 0x1C38
+  symbol: gSthRightHandDL
+
+gSthRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x31A4
+  symbol: gSthRightHandLimb
+  limb_type: Standard
+
+gSthRightShinDL:
+  type: GFX
+  offset: 0x25D8
+  symbol: gSthRightShinDL
+
+gSthRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x3144
+  symbol: gSthRightShinLimb
+  limb_type: Standard
+
+gSthRightThighDL:
+  type: GFX
+  offset: 0x26E8
+  symbol: gSthRightThighDL
+
+gSthRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x3138
+  symbol: gSthRightThighLimb
+  limb_type: Standard
+
+gSthRightUpperArmDL:
+  type: GFX
+  offset: 0x1E88
+  symbol: gSthRightUpperArmDL
+
+gSthRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x318C
+  symbol: gSthRightUpperArmLimb
+  limb_type: Standard
+
+gSthShirtTex:
+  type: TEXTURE
+  offset: 0x2F88
+  symbol: gSthShirtTex
+  format: I8
+  width: 16
+  height: 16
+
+gSthSkel:
+  type: MM:SKELETON
+  offset: 0x31F8
+  symbol: gSthSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSthSkinTex:
+  type: TEXTURE
+  offset: 0x2F08
+  symbol: gSthSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gSthTLUT:
+  type: TEXTURE
+  offset: 0x2D08
+  symbol: gSthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSthTorsoDL:
+  type: GFX
+  offset: 0x22E8
+  symbol: gSthTorsoDL
+
+gSthTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x315C
+  symbol: gSthTorsoLimb
+  limb_type: Standard
+
+gSthUnusedHeadVtx:
+  type: MM:ARRAY
+  offset: 0x0
+  symbol: gSthUnusedHeadVtx
+  count: 83
+  array_type: VTX
+
+
+object_sthVtx_000530:
+  type: MM:ARRAY
+  offset: 0x000530
+  symbol: object_sthVtx_000530
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_0006F0:
+  type: MM:ARRAY
+  offset: 0x0006F0
+  symbol: object_sthVtx_0006F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_000870:
+  type: MM:ARRAY
+  offset: 0x000870
+  symbol: object_sthVtx_000870
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: object_sthVtx_000A10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_000BD0:
+  type: MM:ARRAY
+  offset: 0x000BD0
+  symbol: object_sthVtx_000BD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_000D50:
+  type: MM:ARRAY
+  offset: 0x000D50
+  symbol: object_sthVtx_000D50
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_000EF0:
+  type: MM:ARRAY
+  offset: 0x000EF0
+  symbol: object_sthVtx_000EF0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_001190:
+  type: MM:ARRAY
+  offset: 0x001190
+  symbol: object_sthVtx_001190
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_0012B0:
+  type: MM:ARRAY
+  offset: 0x0012B0
+  symbol: object_sthVtx_0012B0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_001460:
+  type: MM:ARRAY
+  offset: 0x001460
+  symbol: object_sthVtx_001460
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_0015D0:
+  type: MM:ARRAY
+  offset: 0x0015D0
+  symbol: object_sthVtx_0015D0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_0016F0:
+  type: MM:ARRAY
+  offset: 0x0016F0
+  symbol: object_sthVtx_0016F0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_0018A0:
+  type: MM:ARRAY
+  offset: 0x0018A0
+  symbol: object_sthVtx_0018A0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sthVtx_001A10:
+  type: MM:ARRAY
+  offset: 0x001A10
+  symbol: object_sthVtx_001A10
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSthSkelLimbs:
+  type: BLOB
+  offset: 0x31BC
+  symbol: gSthSkelLimbs
+  size: 0

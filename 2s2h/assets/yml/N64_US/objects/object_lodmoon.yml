@@ -1,0 +1,89 @@
+:config:
+  segments:
+    - [ 6, 0x014D67D0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014D67D0 ]
+    - [ 9, 0x014D67D0 ]
+    - [ 10, 0x014D67D0 ]
+    - [ 11, 0x014D67D0 ]
+    - [ 12, 0x014D67D0 ]
+    - [ 13, 0x014D67D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLodmoonEyesDL:
+  type: GFX
+  offset: 0x10E0
+  symbol: gLodmoonEyesDL
+
+gLodmoonEyesTex:
+  type: TEXTURE
+  offset: 0x1618
+  symbol: gLodmoonEyesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gLodmoonFaceTLUT:
+  type: TEXTURE
+  offset: 0x15D8
+  symbol: gLodmoonFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLodmoonFaceTex:
+  type: TEXTURE
+  offset: 0x2E18
+  symbol: gLodmoonFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gLodmoonFarSideTLUT:
+  type: TEXTURE
+  offset: 0x15F8
+  symbol: gLodmoonFarSideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLodmoonFarSideTex:
+  type: TEXTURE
+  offset: 0x3618
+  symbol: gLodmoonFarSideTex
+  format: CI4
+  width: 64
+  height: 64
+
+gLodmoonMoonDL:
+  type: GFX
+  offset: 0x1158
+  symbol: gLodmoonMoonDL
+
+gLodmoonTeethTex:
+  type: TEXTURE
+  offset: 0x1E18
+  symbol: gLodmoonTeethTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_lodmoonVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_lodmoonVtx_000000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lodmoonVtx_000080:
+  type: MM:ARRAY
+  offset: 0x000080
+  symbol: object_lodmoonVtx_000080
+  count: 262
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,155 @@
+:config:
+  segments:
+    - [ 6, 0x010EBC80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010EBC80 ]
+    - [ 9, 0x010EBC80 ]
+    - [ 10, 0x010EBC80 ]
+    - [ 11, 0x010EBC80 ]
+    - [ 12, 0x010EBC80 ]
+    - [ 13, 0x010EBC80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gFireTempleBigVerticalFlame0Tex:
+  type: TEXTURE
+  offset: 0xA0
+  symbol: gFireTempleBigVerticalFlame0Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame1Tex:
+  type: TEXTURE
+  offset: 0x820
+  symbol: gFireTempleBigVerticalFlame1Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame2Tex:
+  type: TEXTURE
+  offset: 0xFA0
+  symbol: gFireTempleBigVerticalFlame2Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame3Tex:
+  type: TEXTURE
+  offset: 0x1720
+  symbol: gFireTempleBigVerticalFlame3Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame4Tex:
+  type: TEXTURE
+  offset: 0x1EA0
+  symbol: gFireTempleBigVerticalFlame4Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame5Tex:
+  type: TEXTURE
+  offset: 0x2620
+  symbol: gFireTempleBigVerticalFlame5Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame6Tex:
+  type: TEXTURE
+  offset: 0x2DA0
+  symbol: gFireTempleBigVerticalFlame6Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFireTempleBigVerticalFlame7Tex:
+  type: TEXTURE
+  offset: 0x3520
+  symbol: gFireTempleBigVerticalFlame7Tex
+  format: IA8
+  width: 24
+  height: 80
+
+gFwallFireball0Tex:
+  type: TEXTURE
+  offset: 0x3CA0
+  symbol: gFwallFireball0Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball1Tex:
+  type: TEXTURE
+  offset: 0x40A0
+  symbol: gFwallFireball1Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball2Tex:
+  type: TEXTURE
+  offset: 0x44A0
+  symbol: gFwallFireball2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball3Tex:
+  type: TEXTURE
+  offset: 0x48A0
+  symbol: gFwallFireball3Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball4Tex:
+  type: TEXTURE
+  offset: 0x4CA0
+  symbol: gFwallFireball4Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball5Tex:
+  type: TEXTURE
+  offset: 0x50A0
+  symbol: gFwallFireball5Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball6Tex:
+  type: TEXTURE
+  offset: 0x54A0
+  symbol: gFwallFireball6Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gFwallFireball7Tex:
+  type: TEXTURE
+  offset: 0x58A0
+  symbol: gFwallFireball7Tex
+  format: IA8
+  width: 32
+  height: 32
+
+object_fwall_DL_000040:
+  type: GFX
+  offset: 0x40
+  symbol: object_fwall_DL_000040
+
+
+object_fwallVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_fwallVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

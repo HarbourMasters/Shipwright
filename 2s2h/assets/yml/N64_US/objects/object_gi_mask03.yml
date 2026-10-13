@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x0155B1B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0155B1B0 ]
+    - [ 9, 0x0155B1B0 ]
+    - [ 10, 0x0155B1B0 ]
+    - [ 11, 0x0155B1B0 ]
+    - [ 12, 0x0155B1B0 ]
+    - [ 13, 0x0155B1B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiFierceDeityMaskEarTex:
+  type: TEXTURE
+  offset: 0x1570
+  symbol: gGiFierceDeityMaskEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiFierceDeityMaskEyeTLUT:
+  type: TEXTURE
+  offset: 0x1170
+  symbol: gGiFierceDeityMaskEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiFierceDeityMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1670
+  symbol: gGiFierceDeityMaskEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGiFierceDeityMaskFaceDL:
+  type: GFX
+  offset: 0xB90
+  symbol: gGiFierceDeityMaskFaceDL
+
+gGiFierceDeityMaskHairAndHatDL:
+  type: GFX
+  offset: 0x9B0
+  symbol: gGiFierceDeityMaskHairAndHatDL
+
+gGiFierceDeityMaskHairTex:
+  type: TEXTURE
+  offset: 0x1AB0
+  symbol: gGiFierceDeityMaskHairTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiFierceDeityMaskHatTex:
+  type: TEXTURE
+  offset: 0x1A70
+  symbol: gGiFierceDeityMaskHatTex
+  format: I8
+  width: 8
+  height: 8
+
+gGiFierceDeityMaskMouthAndEarTLUT:
+  type: TEXTURE
+  offset: 0xF70
+  symbol: gGiFierceDeityMaskMouthAndEarTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiFierceDeityMaskMouthTex:
+  type: TEXTURE
+  offset: 0x1370
+  symbol: gGiFierceDeityMaskMouthTex
+  format: CI8
+  width: 32
+  height: 16
+
+
+object_gi_mask03Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask03Vtx_000000
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask03Vtx_000520:
+  type: MM:ARRAY
+  offset: 0x000520
+  symbol: object_gi_mask03Vtx_000520
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

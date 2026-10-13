@@ -1,0 +1,724 @@
+:config:
+  segments:
+    - [ 6, 0x0113F830 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0113F830 ]
+    - [ 9, 0x0113F830 ]
+    - [ 10, 0x0113F830 ]
+    - [ 11, 0x0113F830 ]
+    - [ 12, 0x0113F830 ]
+    - [ 13, 0x0113F830 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBioDekuBabaHeadAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x6A4
+  symbol: gBioDekuBabaHeadAttackAnim
+
+gBioDekuBabaHeadBackFootDL:
+  type: GFX
+  offset: 0x5298
+  symbol: gBioDekuBabaHeadBackFootDL
+
+gBioDekuBabaHeadBackFootLimb:
+  type: OOT:LIMB
+  offset: 0x6284
+  symbol: gBioDekuBabaHeadBackFootLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadBackLowerLegDL:
+  type: GFX
+  offset: 0x51D8
+  symbol: gBioDekuBabaHeadBackLowerLegDL
+
+gBioDekuBabaHeadBackLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x6278
+  symbol: gBioDekuBabaHeadBackLowerLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadBackUpperLegDL:
+  type: GFX
+  offset: 0x5130
+  symbol: gBioDekuBabaHeadBackUpperLegDL
+
+gBioDekuBabaHeadBackUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x626C
+  symbol: gBioDekuBabaHeadBackUpperLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadBodyDL:
+  type: GFX
+  offset: 0x4620
+  symbol: gBioDekuBabaHeadBodyDL
+
+gBioDekuBabaHeadBodyLimb:
+  type: OOT:LIMB
+  offset: 0x6248
+  symbol: gBioDekuBabaHeadBodyLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadChargeAnim:
+  type: OOT:ANIMATION
+  offset: 0xA5C
+  symbol: gBioDekuBabaHeadChargeAnim
+
+gBioDekuBabaHeadChompAnim:
+  type: OOT:ANIMATION
+  offset: 0x6484
+  symbol: gBioDekuBabaHeadChompAnim
+
+gBioDekuBabaHeadDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F0C
+  symbol: gBioDekuBabaHeadDamagedAnim
+
+gBioDekuBabaHeadEyeFlashTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x6240
+  symbol: gBioDekuBabaHeadEyeFlashTexAnim
+
+gBioDekuBabaHeadEyeTex:
+  type: TEXTURE
+  offset: 0x5E18
+  symbol: gBioDekuBabaHeadEyeTex
+  format: RGBA32
+  width: 16
+  height: 16
+
+gBioDekuBabaHeadIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7488
+  symbol: gBioDekuBabaHeadIdleAnim
+
+gBioDekuBabaHeadJawInnerTex:
+  type: TEXTURE
+  offset: 0x5C18
+  symbol: gBioDekuBabaHeadJawInnerTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBioDekuBabaHeadJawOuterTex:
+  type: TEXTURE
+  offset: 0x5798
+  symbol: gBioDekuBabaHeadJawOuterTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBioDekuBabaHeadLeavesDL:
+  type: GFX
+  offset: 0x46C8
+  symbol: gBioDekuBabaHeadLeavesDL
+
+gBioDekuBabaHeadLeavesLimb:
+  type: OOT:LIMB
+  offset: 0x6320
+  symbol: gBioDekuBabaHeadLeavesLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeavesTex:
+  type: TEXTURE
+  offset: 0x5598
+  symbol: gBioDekuBabaHeadLeavesTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBioDekuBabaHeadLeftEyeDL:
+  type: GFX
+  offset: 0x4DA8
+  symbol: gBioDekuBabaHeadLeftEyeDL
+
+gBioDekuBabaHeadLeftEyeLimb:
+  type: OOT:LIMB
+  offset: 0x62CC
+  symbol: gBioDekuBabaHeadLeftEyeLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeftFootDL:
+  type: GFX
+  offset: 0x5060
+  symbol: gBioDekuBabaHeadLeftFootDL
+
+gBioDekuBabaHeadLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x62A8
+  symbol: gBioDekuBabaHeadLeftFootLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeftLowerEyestalkDL:
+  type: GFX
+  offset: 0x4C58
+  symbol: gBioDekuBabaHeadLeftLowerEyestalkDL
+
+gBioDekuBabaHeadLeftLowerEyestalkLimb:
+  type: OOT:LIMB
+  offset: 0x62B4
+  symbol: gBioDekuBabaHeadLeftLowerEyestalkLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeftLowerLegDL:
+  type: GFX
+  offset: 0x4FA0
+  symbol: gBioDekuBabaHeadLeftLowerLegDL
+
+gBioDekuBabaHeadLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x629C
+  symbol: gBioDekuBabaHeadLeftLowerLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeftUpperEyestalkDL:
+  type: GFX
+  offset: 0x4CF0
+  symbol: gBioDekuBabaHeadLeftUpperEyestalkDL
+
+gBioDekuBabaHeadLeftUpperEyestalkLimb:
+  type: OOT:LIMB
+  offset: 0x62C0
+  symbol: gBioDekuBabaHeadLeftUpperEyestalkLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLeftUpperLegDL:
+  type: GFX
+  offset: 0x4EF8
+  symbol: gBioDekuBabaHeadLeftUpperLegDL
+
+gBioDekuBabaHeadLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x6290
+  symbol: gBioDekuBabaHeadLeftUpperLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadLegAndEyestalkTex:
+  type: TEXTURE
+  offset: 0x5B98
+  symbol: gBioDekuBabaHeadLegAndEyestalkTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBioDekuBabaHeadLowerJawDL:
+  type: GFX
+  offset: 0x5460
+  symbol: gBioDekuBabaHeadLowerJawDL
+
+gBioDekuBabaHeadLowerJawLimb:
+  type: OOT:LIMB
+  offset: 0x6254
+  symbol: gBioDekuBabaHeadLowerJawLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRapidChompAnim:
+  type: OOT:ANIMATION
+  offset: 0x3500
+  symbol: gBioDekuBabaHeadRapidChompAnim
+
+gBioDekuBabaHeadRightEyeDL:
+  type: GFX
+  offset: 0x4B10
+  symbol: gBioDekuBabaHeadRightEyeDL
+
+gBioDekuBabaHeadRightEyeLimb:
+  type: OOT:LIMB
+  offset: 0x62F0
+  symbol: gBioDekuBabaHeadRightEyeLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRightFootDL:
+  type: GFX
+  offset: 0x48F0
+  symbol: gBioDekuBabaHeadRightFootDL
+
+gBioDekuBabaHeadRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x6314
+  symbol: gBioDekuBabaHeadRightFootLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRightLowerEyestalkDL:
+  type: GFX
+  offset: 0x49C0
+  symbol: gBioDekuBabaHeadRightLowerEyestalkDL
+
+gBioDekuBabaHeadRightLowerEyestalkLimb:
+  type: OOT:LIMB
+  offset: 0x62D8
+  symbol: gBioDekuBabaHeadRightLowerEyestalkLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRightLowerLegDL:
+  type: GFX
+  offset: 0x4830
+  symbol: gBioDekuBabaHeadRightLowerLegDL
+
+gBioDekuBabaHeadRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x6308
+  symbol: gBioDekuBabaHeadRightLowerLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRightUpperEyestalkDL:
+  type: GFX
+  offset: 0x4A58
+  symbol: gBioDekuBabaHeadRightUpperEyestalkDL
+
+gBioDekuBabaHeadRightUpperEyestalkLimb:
+  type: OOT:LIMB
+  offset: 0x62E4
+  symbol: gBioDekuBabaHeadRightUpperEyestalkLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadRightUpperLegDL:
+  type: GFX
+  offset: 0x4788
+  symbol: gBioDekuBabaHeadRightUpperLegDL
+
+gBioDekuBabaHeadRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x62FC
+  symbol: gBioDekuBabaHeadRightUpperLegLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadSkel:
+  type: MM:SKELETON
+  offset: 0x6378
+  symbol: gBioDekuBabaHeadSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBioDekuBabaHeadSpotAnim:
+  type: OOT:ANIMATION
+  offset: 0x3448
+  symbol: gBioDekuBabaHeadSpotAnim
+
+gBioDekuBabaHeadTransformAnim:
+  type: OOT:ANIMATION
+  offset: 0x6E50
+  symbol: gBioDekuBabaHeadTransformAnim
+
+gBioDekuBabaHeadUpperJawDL:
+  type: GFX
+  offset: 0x5348
+  symbol: gBioDekuBabaHeadUpperJawDL
+
+gBioDekuBabaHeadUpperJawLimb:
+  type: OOT:LIMB
+  offset: 0x6260
+  symbol: gBioDekuBabaHeadUpperJawLimb
+  limb_type: Standard
+
+gBioDekuBabaHeadWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x7908
+  symbol: gBioDekuBabaHeadWalkAnim
+
+gBioDekuBabaLilyPadIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xABC
+  symbol: gBioDekuBabaLilyPadIdleAnim
+
+gBioDekuBabaLilyPadLeafDL:
+  type: GFX
+  offset: 0x1288
+  symbol: gBioDekuBabaLilyPadLeafDL
+
+gBioDekuBabaLilyPadLeafLimb:
+  type: OOT:LIMB
+  offset: 0x24B0
+  symbol: gBioDekuBabaLilyPadLeafLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadLeafTex:
+  type: TEXTURE
+  offset: 0x1850
+  symbol: gBioDekuBabaLilyPadLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBioDekuBabaLilyPadLeftLowerArmDL:
+  type: GFX
+  offset: 0x1688
+  symbol: gBioDekuBabaLilyPadLeftLowerArmDL
+
+gBioDekuBabaLilyPadLeftLowerArmLimb:
+  type: OOT:LIMB
+  offset: 0x248C
+  symbol: gBioDekuBabaLilyPadLeftLowerArmLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadLeftUpperArmDL:
+  type: GFX
+  offset: 0x15F0
+  symbol: gBioDekuBabaLilyPadLeftUpperArmDL
+
+gBioDekuBabaLilyPadLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x2480
+  symbol: gBioDekuBabaLilyPadLeftUpperArmLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadLowerStemDL:
+  type: GFX
+  offset: 0x1740
+  symbol: gBioDekuBabaLilyPadLowerStemDL
+
+gBioDekuBabaLilyPadLowerStemLimb:
+  type: OOT:LIMB
+  offset: 0x2474
+  symbol: gBioDekuBabaLilyPadLowerStemLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadMiddleStemDL:
+  type: GFX
+  offset: 0x13D0
+  symbol: gBioDekuBabaLilyPadMiddleStemDL
+
+gBioDekuBabaLilyPadMiddleStemLimb:
+  type: OOT:LIMB
+  offset: 0x2468
+  symbol: gBioDekuBabaLilyPadMiddleStemLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadRightLowerArmDL:
+  type: GFX
+  offset: 0x1538
+  symbol: gBioDekuBabaLilyPadRightLowerArmDL
+
+gBioDekuBabaLilyPadRightLowerArmLimb:
+  type: OOT:LIMB
+  offset: 0x24A4
+  symbol: gBioDekuBabaLilyPadRightLowerArmLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadRightUpperArmDL:
+  type: GFX
+  offset: 0x14A0
+  symbol: gBioDekuBabaLilyPadRightUpperArmDL
+
+gBioDekuBabaLilyPadRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x2498
+  symbol: gBioDekuBabaLilyPadRightUpperArmLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadRootsDL:
+  type: GFX
+  offset: 0x11C0
+  symbol: gBioDekuBabaLilyPadRootsDL
+
+gBioDekuBabaLilyPadRootsLimb:
+  type: OOT:LIMB
+  offset: 0x2450
+  symbol: gBioDekuBabaLilyPadRootsLimb
+  limb_type: Standard
+
+gBioDekuBabaLilyPadRootsTex:
+  type: TEXTURE
+  offset: 0x2050
+  symbol: gBioDekuBabaLilyPadRootsTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBioDekuBabaLilyPadSkel:
+  type: MM:SKELETON
+  offset: 0x24E0
+  symbol: gBioDekuBabaLilyPadSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBioDekuBabaLilyPadStemTex:
+  type: TEXTURE
+  offset: 0x17D0
+  symbol: gBioDekuBabaLilyPadStemTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBioDekuBabaLilyPadUpperStemDL:
+  type: GFX
+  offset: 0x1320
+  symbol: gBioDekuBabaLilyPadUpperStemDL
+
+gBioDekuBabaLilyPadUpperStemLimb:
+  type: OOT:LIMB
+  offset: 0x245C
+  symbol: gBioDekuBabaLilyPadUpperStemLimb
+  limb_type: Standard
+
+
+object_boss05Vtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_boss05Vtx_000AD0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: object_boss05Vtx_000C00
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000DC0:
+  type: MM:ARRAY
+  offset: 0x000DC0
+  symbol: object_boss05Vtx_000DC0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000E50:
+  type: MM:ARRAY
+  offset: 0x000E50
+  symbol: object_boss05Vtx_000E50
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000EE0:
+  type: MM:ARRAY
+  offset: 0x000EE0
+  symbol: object_boss05Vtx_000EE0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000F40:
+  type: MM:ARRAY
+  offset: 0x000F40
+  symbol: object_boss05Vtx_000F40
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_000FD0:
+  type: MM:ARRAY
+  offset: 0x000FD0
+  symbol: object_boss05Vtx_000FD0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_001030:
+  type: MM:ARRAY
+  offset: 0x001030
+  symbol: object_boss05Vtx_001030
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_0010A0:
+  type: MM:ARRAY
+  offset: 0x0010A0
+  symbol: object_boss05Vtx_0010A0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBioDekuBabaLilyPadSkelLimbs:
+  type: BLOB
+  offset: 0x24BC
+  symbol: gBioDekuBabaLilyPadSkelLimbs
+  size: 0
+
+object_boss05Vtx_003510:
+  type: MM:ARRAY
+  offset: 0x003510
+  symbol: object_boss05Vtx_003510
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_0037B0:
+  type: MM:ARRAY
+  offset: 0x0037B0
+  symbol: object_boss05Vtx_0037B0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_0039E0:
+  type: MM:ARRAY
+  offset: 0x0039E0
+  symbol: object_boss05Vtx_0039E0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003A70:
+  type: MM:ARRAY
+  offset: 0x003A70
+  symbol: object_boss05Vtx_003A70
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003B10:
+  type: MM:ARRAY
+  offset: 0x003B10
+  symbol: object_boss05Vtx_003B10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003B50:
+  type: MM:ARRAY
+  offset: 0x003B50
+  symbol: object_boss05Vtx_003B50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003C70:
+  type: MM:ARRAY
+  offset: 0x003C70
+  symbol: object_boss05Vtx_003C70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003D70:
+  type: MM:ARRAY
+  offset: 0x003D70
+  symbol: object_boss05Vtx_003D70
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003DD0:
+  type: MM:ARRAY
+  offset: 0x003DD0
+  symbol: object_boss05Vtx_003DD0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003E60:
+  type: MM:ARRAY
+  offset: 0x003E60
+  symbol: object_boss05Vtx_003E60
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003F00:
+  type: MM:ARRAY
+  offset: 0x003F00
+  symbol: object_boss05Vtx_003F00
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_003F40:
+  type: MM:ARRAY
+  offset: 0x003F40
+  symbol: object_boss05Vtx_003F40
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_004060:
+  type: MM:ARRAY
+  offset: 0x004060
+  symbol: object_boss05Vtx_004060
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_004160:
+  type: MM:ARRAY
+  offset: 0x004160
+  symbol: object_boss05Vtx_004160
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_0041C0:
+  type: MM:ARRAY
+  offset: 0x0041C0
+  symbol: object_boss05Vtx_0041C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_004220:
+  type: MM:ARRAY
+  offset: 0x004220
+  symbol: object_boss05Vtx_004220
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_004320:
+  type: MM:ARRAY
+  offset: 0x004320
+  symbol: object_boss05Vtx_004320
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_004380:
+  type: MM:ARRAY
+  offset: 0x004380
+  symbol: object_boss05Vtx_004380
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss05Vtx_0045C0:
+  type: MM:ARRAY
+  offset: 0x0045C0
+  symbol: object_boss05Vtx_0045C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBioDekuBabaHeadEyeFlashTexAnimColorParams_006230:
+  type: BLOB
+  offset: 0x006230
+  symbol: gBioDekuBabaHeadEyeFlashTexAnimColorParams_006230
+  size: 0
+
+gBioDekuBabaHeadSkelLimbs:
+  type: BLOB
+  offset: 0x632C
+  symbol: gBioDekuBabaHeadSkelLimbs
+  size: 0

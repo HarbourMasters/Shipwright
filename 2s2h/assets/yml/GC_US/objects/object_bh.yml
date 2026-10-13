@@ -1,0 +1,147 @@
+:config:
+  segments:
+    - [ 6, 0x015F9CE0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015F9CE0 ]
+    - [ 9, 0x015F9CE0 ]
+    - [ 10, 0x015F9CE0 ]
+    - [ 11, 0x015F9CE0 ]
+    - [ 12, 0x015F9CE0 ]
+    - [ 13, 0x015F9CE0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBhBodyDL:
+  type: GFX
+  offset: 0x2B0
+  symbol: gBhBodyDL
+
+gBhBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1E10
+  symbol: gBhBodyLimb
+  limb_type: Standard
+
+gBhBodyTex:
+  type: TEXTURE
+  offset: 0x610
+  symbol: gBhBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBhFlyingAnim:
+  type: OOT:ANIMATION
+  offset: 0x74
+  symbol: gBhFlyingAnim
+
+gBhLeftWingToBodyDL:
+  type: GFX
+  offset: 0x588
+  symbol: gBhLeftWingToBodyDL
+
+gBhLeftWingToBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1E34
+  symbol: gBhLeftWingToBodyLimb
+  limb_type: Standard
+
+gBhLeftWingToEdgeDL:
+  type: GFX
+  offset: 0x4D8
+  symbol: gBhLeftWingToEdgeDL
+
+gBhLeftWingToEdgeLimb:
+  type: OOT:LIMB
+  offset: 0x1E40
+  symbol: gBhLeftWingToEdgeLimb
+  limb_type: Standard
+
+gBhRightWingToBodyDL:
+  type: GFX
+  offset: 0x450
+  symbol: gBhRightWingToBodyDL
+
+gBhRightWingToBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1E1C
+  symbol: gBhRightWingToBodyLimb
+  limb_type: Standard
+
+gBhRightWingToEdgeDL:
+  type: GFX
+  offset: 0x3A0
+  symbol: gBhRightWingToEdgeDL
+
+gBhRightWingToEdgeLimb:
+  type: OOT:LIMB
+  offset: 0x1E28
+  symbol: gBhRightWingToEdgeLimb
+  limb_type: Standard
+
+gBhSkel:
+  type: MM:SKELETON
+  offset: 0x1E60
+  symbol: gBhSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBhWingTex:
+  type: TEXTURE
+  offset: 0xE10
+  symbol: gBhWingTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_bhVtx_000090:
+  type: MM:ARRAY
+  offset: 0x000090
+  symbol: object_bhVtx_000090
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bhVtx_000190:
+  type: MM:ARRAY
+  offset: 0x000190
+  symbol: object_bhVtx_000190
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bhVtx_0001E0:
+  type: MM:ARRAY
+  offset: 0x0001E0
+  symbol: object_bhVtx_0001E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bhVtx_000220:
+  type: MM:ARRAY
+  offset: 0x000220
+  symbol: object_bhVtx_000220
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bhVtx_000270:
+  type: MM:ARRAY
+  offset: 0x000270
+  symbol: object_bhVtx_000270
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBhSkelLimbs:
+  type: BLOB
+  offset: 0x1E4C
+  symbol: gBhSkelLimbs
+  size: 0

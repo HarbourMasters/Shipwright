@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 10, 0x00E88810 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E88810 ]
+    - [ 12, 0x00E88810 ]
+    - [ 13, 0x00E88810 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_json_DL_0004C0:
+  type: GFX
+  offset: 0x4C0
+  symbol: object_mask_json_DL_0004C0
+
+object_mask_json_TLUT_0008A0:
+  type: TEXTURE
+  offset: 0x8A0
+  symbol: object_mask_json_TLUT_0008A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_json_Tex_000AA0:
+  type: TEXTURE
+  offset: 0xAA0
+  symbol: object_mask_json_Tex_000AA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_json_Tex_000CA0:
+  type: TEXTURE
+  offset: 0xCA0
+  symbol: object_mask_json_Tex_000CA0
+  format: CI8
+  width: 16
+  height: 8
+
+object_mask_json_Tex_000D20:
+  type: TEXTURE
+  offset: 0xD20
+  symbol: object_mask_json_Tex_000D20
+  format: CI8
+  width: 16
+  height: 32
+
+object_mask_json_Tex_000F20:
+  type: TEXTURE
+  offset: 0xF20
+  symbol: object_mask_json_Tex_000F20
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_json_Tex_001320:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: object_mask_json_Tex_001320
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_mask_jsonVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_jsonVtx_000000
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

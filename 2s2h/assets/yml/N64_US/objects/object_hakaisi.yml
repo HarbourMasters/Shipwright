@@ -1,0 +1,128 @@
+:config:
+  segments:
+    - [ 6, 0x0135F0F0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0135F0F0 ]
+    - [ 9, 0x0135F0F0 ]
+    - [ 10, 0x0135F0F0 ]
+    - [ 11, 0x0135F0F0 ]
+    - [ 12, 0x0135F0F0 ]
+    - [ 13, 0x0135F0F0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_hakaisi_Colheader_002FC4:
+  type: MM:COLLISION
+  offset: 0x2FC4
+  symbol: object_hakaisi_Colheader_002FC4
+
+object_hakaisi_DL_001F10:
+  type: GFX
+  offset: 0x1F10
+  symbol: object_hakaisi_DL_001F10
+
+object_hakaisi_DL_0021B0:
+  type: GFX
+  offset: 0x21B0
+  symbol: object_hakaisi_DL_0021B0
+
+object_hakaisi_DL_002650:
+  type: GFX
+  offset: 0x2650
+  symbol: object_hakaisi_DL_002650
+
+object_hakaisi_DL_0029C0:
+  type: GFX
+  offset: 0x29C0
+  symbol: object_hakaisi_DL_0029C0
+
+object_hakaisi_DL_002CC0:
+  type: GFX
+  offset: 0x2CC0
+  symbol: object_hakaisi_DL_002CC0
+
+object_hakaisi_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_hakaisi_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_hakaisi_Tex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_hakaisi_Tex_000200
+  format: I8
+  width: 8
+  height: 32
+
+object_hakaisi_Tex_000300:
+  type: TEXTURE
+  offset: 0x300
+  symbol: object_hakaisi_Tex_000300
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_hakaisi_Tex_000500:
+  type: TEXTURE
+  offset: 0x500
+  symbol: object_hakaisi_Tex_000500
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_hakaisi_Tex_001500:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: object_hakaisi_Tex_001500
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_hakaisiVtx_001D00:
+  type: MM:ARRAY
+  offset: 0x001D00
+  symbol: object_hakaisiVtx_001D00
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakaisiVtx_002030:
+  type: MM:ARRAY
+  offset: 0x002030
+  symbol: object_hakaisiVtx_002030
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakaisiVtx_0022B0:
+  type: MM:ARRAY
+  offset: 0x0022B0
+  symbol: object_hakaisiVtx_0022B0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakaisiVtx_0027C0:
+  type: MM:ARRAY
+  offset: 0x0027C0
+  symbol: object_hakaisiVtx_0027C0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakaisiVtx_002AE0:
+  type: MM:ARRAY
+  offset: 0x002AE0
+  symbol: object_hakaisiVtx_002AE0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

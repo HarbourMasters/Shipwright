@@ -1,0 +1,427 @@
+:config:
+  segments:
+    - [ 6, 0x00EB9BB0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EB9BB0 ]
+    - [ 9, 0x00EB9BB0 ]
+    - [ 10, 0x00EB9BB0 ]
+    - [ 11, 0x00EB9BB0 ]
+    - [ 12, 0x00EB9BB0 ]
+    - [ 13, 0x00EB9BB0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFireKeeseBodyDL:
+  type: GFX
+  offset: 0xF40
+  symbol: gFireKeeseBodyDL
+
+gFireKeeseBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1774
+  symbol: gFireKeeseBodyLimb
+  limb_type: Standard
+
+gFireKeeseBodyTex:
+  type: TEXTURE
+  offset: 0x210
+  symbol: gFireKeeseBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFireKeeseEarTex:
+  type: TEXTURE
+  offset: 0x310
+  symbol: gFireKeeseEarTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gFireKeeseEyeTex:
+  type: TEXTURE
+  offset: 0x290
+  symbol: gFireKeeseEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFireKeeseFeetRootLimb:
+  type: OOT:LIMB
+  offset: 0x1720
+  symbol: gFireKeeseFeetRootLimb
+  limb_type: Standard
+
+gFireKeeseFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x17C
+  symbol: gFireKeeseFlyAnim
+
+gFireKeeseHeadDL:
+  type: GFX
+  offset: 0xD30
+  symbol: gFireKeeseHeadDL
+
+gFireKeeseHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1840
+  symbol: gFireKeeseHeadLimb
+  limb_type: Standard
+
+gFireKeeseHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x1828
+  symbol: gFireKeeseHeadRootLimb
+  limb_type: Standard
+
+gFireKeeseHeadWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x1834
+  symbol: gFireKeeseHeadWrapperLimb
+  limb_type: Standard
+
+gFireKeeseLeftFootDL:
+  type: GFX
+  offset: 0x1038
+  symbol: gFireKeeseLeftFootDL
+
+gFireKeeseLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1768
+  symbol: gFireKeeseLeftFootLimb
+  limb_type: Standard
+
+gFireKeeseLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x1750
+  symbol: gFireKeeseLeftFootRootLimb
+  limb_type: Standard
+
+gFireKeeseLeftFootWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x175C
+  symbol: gFireKeeseLeftFootWrapperLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingEndDL:
+  type: GFX
+  offset: 0x1420
+  symbol: gFireKeeseLeftWingEndDL
+
+gFireKeeseLeftWingEndLimb:
+  type: OOT:LIMB
+  offset: 0x17B0
+  symbol: gFireKeeseLeftWingEndLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingEndMidRootLimb:
+  type: OOT:LIMB
+  offset: 0x1798
+  symbol: gFireKeeseLeftWingEndMidRootLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingEndRootLimb:
+  type: OOT:LIMB
+  offset: 0x17A4
+  symbol: gFireKeeseLeftWingEndRootLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingMidDL:
+  type: GFX
+  offset: 0x14E8
+  symbol: gFireKeeseLeftWingMidDL
+
+gFireKeeseLeftWingMidLimb:
+  type: OOT:LIMB
+  offset: 0x17BC
+  symbol: gFireKeeseLeftWingMidLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x1780
+  symbol: gFireKeeseLeftWingRootLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingStartDL:
+  type: GFX
+  offset: 0x15B0
+  symbol: gFireKeeseLeftWingStartDL
+
+gFireKeeseLeftWingStartLimb:
+  type: OOT:LIMB
+  offset: 0x17C8
+  symbol: gFireKeeseLeftWingStartLimb
+  limb_type: Standard
+
+gFireKeeseLeftWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x178C
+  symbol: gFireKeeseLeftWingWrapperLimb
+  limb_type: Standard
+
+gFireKeeseRightFootDL:
+  type: GFX
+  offset: 0x1100
+  symbol: gFireKeeseRightFootDL
+
+gFireKeeseRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1744
+  symbol: gFireKeeseRightFootLimb
+  limb_type: Standard
+
+gFireKeeseRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x172C
+  symbol: gFireKeeseRightFootRootLimb
+  limb_type: Standard
+
+gFireKeeseRightWingEndDL:
+  type: GFX
+  offset: 0x1358
+  symbol: gFireKeeseRightWingEndDL
+
+gFireKeeseRightWingEndLimb:
+  type: OOT:LIMB
+  offset: 0x1804
+  symbol: gFireKeeseRightWingEndLimb
+  limb_type: Standard
+
+gFireKeeseRightWingEndMidRootLimb:
+  type: OOT:LIMB
+  offset: 0x17EC
+  symbol: gFireKeeseRightWingEndMidRootLimb
+  limb_type: Standard
+
+gFireKeeseRightWingEndRootLimb:
+  type: OOT:LIMB
+  offset: 0x17F8
+  symbol: gFireKeeseRightWingEndRootLimb
+  limb_type: Standard
+
+gFireKeeseRightWingMidDL:
+  type: GFX
+  offset: 0x1290
+  symbol: gFireKeeseRightWingMidDL
+
+gFireKeeseRightWingMidLimb:
+  type: OOT:LIMB
+  offset: 0x1810
+  symbol: gFireKeeseRightWingMidLimb
+  limb_type: Standard
+
+gFireKeeseRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x17D4
+  symbol: gFireKeeseRightWingRootLimb
+  limb_type: Standard
+
+gFireKeeseRightWingStartDL:
+  type: GFX
+  offset: 0x11C8
+  symbol: gFireKeeseRightWingStartDL
+
+gFireKeeseRightWingStartLimb:
+  type: OOT:LIMB
+  offset: 0x181C
+  symbol: gFireKeeseRightWingStartLimb
+  limb_type: Standard
+
+gFireKeeseRightWingWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x17E0
+  symbol: gFireKeeseRightWingWrapperLimb
+  limb_type: Standard
+
+gFireKeeseRootLimb:
+  type: OOT:LIMB
+  offset: 0x1708
+  symbol: gFireKeeseRootLimb
+  limb_type: Standard
+
+gFireKeeseRootWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x1714
+  symbol: gFireKeeseRootWrapperLimb
+  limb_type: Standard
+
+gFireKeeseSkel:
+  type: MM:SKELETON
+  offset: 0x18B8
+  symbol: gFireKeeseSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gFireKeeseTalonTex:
+  type: TEXTURE
+  offset: 0x410
+  symbol: gFireKeeseTalonTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gFireKeeseWingTex:
+  type: TEXTURE
+  offset: 0x510
+  symbol: gFireKeeseWingTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gFirekeeseRightFootWrapperLimb:
+  type: OOT:LIMB
+  offset: 0x1738
+  symbol: gFirekeeseRightFootWrapperLimb
+  limb_type: Standard
+
+gKeeseBodyTex:
+  type: TEXTURE
+  offset: 0x590
+  symbol: gKeeseBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKeeseEarTex:
+  type: TEXTURE
+  offset: 0x790
+  symbol: gKeeseEarTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gKeeseRedEyeTex:
+  type: TEXTURE
+  offset: 0x190
+  symbol: gKeeseRedEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gKeeseRedEyesDL:
+  type: GFX
+  offset: 0x1678
+  symbol: gKeeseRedEyesDL
+
+gKeeseTalonTex:
+  type: TEXTURE
+  offset: 0x610
+  symbol: gKeeseTalonTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gKeeseWingTex:
+  type: TEXTURE
+  offset: 0x710
+  symbol: gKeeseWingTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+
+object_fireflyVtx_000890:
+  type: MM:ARRAY
+  offset: 0x000890
+  symbol: object_fireflyVtx_000890
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000A30:
+  type: MM:ARRAY
+  offset: 0x000A30
+  symbol: object_fireflyVtx_000A30
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000B40:
+  type: MM:ARRAY
+  offset: 0x000B40
+  symbol: object_fireflyVtx_000B40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000B70:
+  type: MM:ARRAY
+  offset: 0x000B70
+  symbol: object_fireflyVtx_000B70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000BB0:
+  type: MM:ARRAY
+  offset: 0x000BB0
+  symbol: object_fireflyVtx_000BB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000BE0:
+  type: MM:ARRAY
+  offset: 0x000BE0
+  symbol: object_fireflyVtx_000BE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C10:
+  type: MM:ARRAY
+  offset: 0x000C10
+  symbol: object_fireflyVtx_000C10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C40:
+  type: MM:ARRAY
+  offset: 0x000C40
+  symbol: object_fireflyVtx_000C40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000C70:
+  type: MM:ARRAY
+  offset: 0x000C70
+  symbol: object_fireflyVtx_000C70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000CA0:
+  type: MM:ARRAY
+  offset: 0x000CA0
+  symbol: object_fireflyVtx_000CA0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fireflyVtx_000CD0:
+  type: MM:ARRAY
+  offset: 0x000CD0
+  symbol: object_fireflyVtx_000CD0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFireKeeseSkelLimbs:
+  type: BLOB
+  offset: 0x184C
+  symbol: gFireKeeseSkelLimbs
+  size: 0

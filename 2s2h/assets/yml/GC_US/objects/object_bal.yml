@@ -1,0 +1,651 @@
+:config:
+  segments:
+    - [ 6, 0x011C17F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011C17F0 ]
+    - [ 9, 0x011C17F0 ]
+    - [ 10, 0x011C17F0 ]
+    - [ 11, 0x011C17F0 ]
+    - [ 12, 0x011C17F0 ]
+    - [ 13, 0x011C17F0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gTingleBackpackTex:
+  type: TEXTURE
+  offset: 0x5FD0
+  symbol: gTingleBackpackTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTingleBalloonDL:
+  type: GFX
+  offset: 0x52A0
+  symbol: gTingleBalloonDL
+
+gTingleBalloonLimb:
+  type: OOT:LIMB
+  offset: 0xA50C
+  symbol: gTingleBalloonLimb
+  limb_type: Standard
+
+gTingleBalloonRootLimb:
+  type: OOT:LIMB
+  offset: 0xA500
+  symbol: gTingleBalloonRootLimb
+  limb_type: Standard
+
+gTingleBalloonTex:
+  type: TEXTURE
+  offset: 0x5DD0
+  symbol: gTingleBalloonTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTingleBodysuitTex:
+  type: TEXTURE
+  offset: 0x7050
+  symbol: gTingleBodysuitTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTingleBriefsTex:
+  type: TEXTURE
+  offset: 0x53D0
+  symbol: gTingleBriefsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTingleConfettiDL:
+  type: GFX
+  offset: 0xD5A0
+  symbol: gTingleConfettiDL
+
+gTingleEyeClosedTex:
+  type: TEXTURE
+  offset: 0x94D0
+  symbol: gTingleEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gTingleEyeOpenTex:
+  type: TEXTURE
+  offset: 0x6050
+  symbol: gTingleEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gTingleFallAnim:
+  type: OOT:ANIMATION
+  offset: 0x840
+  symbol: gTingleFallAnim
+
+gTingleFloatHideFaceAnim:
+  type: OOT:ANIMATION
+  offset: 0xCB78
+  symbol: gTingleFloatHideFaceAnim
+
+gTingleFloatIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x5FC
+  symbol: gTingleFloatIdleAnim
+
+gTingleFloatThrowConfettiAnim:
+  type: OOT:ANIMATION
+  offset: 0x1804
+  symbol: gTingleFloatThrowConfettiAnim
+
+gTingleHandTex:
+  type: TEXTURE
+  offset: 0x86D0
+  symbol: gTingleHandTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gTingleHappyDanceAnim:
+  type: OOT:ANIMATION
+  offset: 0xC8D8
+  symbol: gTingleHappyDanceAnim
+
+gTingleHeadDL:
+  type: GFX
+  offset: 0x45C8
+  symbol: gTingleHeadDL
+
+gTingleHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA5CC
+  symbol: gTingleHeadLimb
+  limb_type: Standard
+
+gTingleHeldMapLimb:
+  type: OOT:LIMB
+  offset: 0xA5B4
+  symbol: gTingleHeldMapLimb
+  limb_type: Standard
+
+gTingleHeldPenLimb:
+  type: OOT:LIMB
+  offset: 0xA560
+  symbol: gTingleHeldPenLimb
+  limb_type: Standard
+
+gTingleIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xD530
+  symbol: gTingleIdleAnim
+
+gTingleLandAnim:
+  type: OOT:ANIMATION
+  offset: 0xA7DC
+  symbol: gTingleLandAnim
+
+gTingleLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xA56C
+  symbol: gTingleLeftArmRootLimb
+  limb_type: Standard
+
+gTingleLeftArmWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xA578
+  symbol: gTingleLeftArmWrapperLimb
+  limb_type: Standard
+
+gTingleLeftFootDL:
+  type: GFX
+  offset: 0x4108
+  symbol: gTingleLeftFootDL
+
+gTingleLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xA644
+  symbol: gTingleLeftFootLimb
+  limb_type: Standard
+
+gTingleLeftForearmDL:
+  type: GFX
+  offset: 0x4D58
+  symbol: gTingleLeftForearmDL
+
+gTingleLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xA590
+  symbol: gTingleLeftForearmLimb
+  limb_type: Standard
+
+gTingleLeftHandDL:
+  type: GFX
+  offset: 0x4BA0
+  symbol: gTingleLeftHandDL
+
+gTingleLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xA5A8
+  symbol: gTingleLeftHandLimb
+  limb_type: Standard
+
+gTingleLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0xA59C
+  symbol: gTingleLeftHandRootLimb
+  limb_type: Standard
+
+gTingleLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xA614
+  symbol: gTingleLeftLegRootLimb
+  limb_type: Standard
+
+gTingleLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xA62C
+  symbol: gTingleLeftLowerLegRootLimb
+  limb_type: Standard
+
+gTingleLeftShinDL:
+  type: GFX
+  offset: 0x41E8
+  symbol: gTingleLeftShinDL
+
+gTingleLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xA638
+  symbol: gTingleLeftShinLimb
+  limb_type: Standard
+
+gTingleLeftThighDL:
+  type: GFX
+  offset: 0x42A8
+  symbol: gTingleLeftThighDL
+
+gTingleLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xA620
+  symbol: gTingleLeftThighLimb
+  limb_type: Standard
+
+gTingleLeftUpperArmDL:
+  type: GFX
+  offset: 0x4E40
+  symbol: gTingleLeftUpperArmDL
+
+gTingleLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xA584
+  symbol: gTingleLeftUpperArmLimb
+  limb_type: Standard
+
+gTingleMapDL:
+  type: GFX
+  offset: 0x4CA0
+  symbol: gTingleMapDL
+
+gTingleMapTLUT:
+  type: TEXTURE
+  offset: 0x53B0
+  symbol: gTingleMapTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gTingleMapTex:
+  type: TEXTURE
+  offset: 0x8CD0
+  symbol: gTingleMapTex
+  format: CI4
+  width: 64
+  height: 64
+
+gTingleMouthTex:
+  type: TEXTURE
+  offset: 0x72D0
+  symbol: gTingleMouthTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gTingleNoseSideTex:
+  type: TEXTURE
+  offset: 0x82D0
+  symbol: gTingleNoseSideTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gTingleNostrilTex:
+  type: TEXTURE
+  offset: 0x70D0
+  symbol: gTingleNostrilTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTinglePelvisDL:
+  type: GFX
+  offset: 0x4000
+  symbol: gTinglePelvisDL
+
+gTinglePelvisLimb:
+  type: OOT:LIMB
+  offset: 0xA4DC
+  symbol: gTinglePelvisLimb
+  limb_type: Standard
+
+gTinglePenDL:
+  type: GFX
+  offset: 0x5000
+  symbol: gTinglePenDL
+
+gTinglePenTopTex:
+  type: TEXTURE
+  offset: 0x8AD0
+  symbol: gTinglePenTopTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTingleRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0xA518
+  symbol: gTingleRightArmRootLimb
+  limb_type: Standard
+
+gTingleRightArmWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xA524
+  symbol: gTingleRightArmWrapperLimb
+  limb_type: Standard
+
+gTingleRightFootDL:
+  type: GFX
+  offset: 0x4368
+  symbol: gTingleRightFootDL
+
+gTingleRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xA608
+  symbol: gTingleRightFootLimb
+  limb_type: Standard
+
+gTingleRightForearmDL:
+  type: GFX
+  offset: 0x50F8
+  symbol: gTingleRightForearmDL
+
+gTingleRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xA53C
+  symbol: gTingleRightForearmLimb
+  limb_type: Standard
+
+gTingleRightHandDL:
+  type: GFX
+  offset: 0x4F00
+  symbol: gTingleRightHandDL
+
+gTingleRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xA554
+  symbol: gTingleRightHandLimb
+  limb_type: Standard
+
+gTingleRightHandRootLimb:
+  type: OOT:LIMB
+  offset: 0xA548
+  symbol: gTingleRightHandRootLimb
+  limb_type: Standard
+
+gTingleRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xA5D8
+  symbol: gTingleRightLegRootLimb
+  limb_type: Standard
+
+gTingleRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0xA5F0
+  symbol: gTingleRightLowerLegRootLimb
+  limb_type: Standard
+
+gTingleRightShinDL:
+  type: GFX
+  offset: 0x4448
+  symbol: gTingleRightShinDL
+
+gTingleRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xA5FC
+  symbol: gTingleRightShinLimb
+  limb_type: Standard
+
+gTingleRightThighDL:
+  type: GFX
+  offset: 0x4508
+  symbol: gTingleRightThighDL
+
+gTingleRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xA5E4
+  symbol: gTingleRightThighLimb
+  limb_type: Standard
+
+gTingleRightUpperArmDL:
+  type: GFX
+  offset: 0x51E0
+  symbol: gTingleRightUpperArmDL
+
+gTingleRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xA530
+  symbol: gTingleRightUpperArmLimb
+  limb_type: Standard
+
+gTingleRootLimb:
+  type: OOT:LIMB
+  offset: 0xA4D0
+  symbol: gTingleRootLimb
+  limb_type: Standard
+
+gTingleSkel:
+  type: MM:SKELETON
+  offset: 0xA6D0
+  symbol: gTingleSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTingleSpinAnim:
+  type: OOT:ANIMATION
+  offset: 0xC78
+  symbol: gTingleSpinAnim
+
+gTingleTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xB604
+  symbol: gTingleTalkAnim
+
+gTingleThrowConfettiAnim:
+  type: OOT:ANIMATION
+  offset: 0xC498
+  symbol: gTingleThrowConfettiAnim
+
+gTingleTopFrontTex:
+  type: TEXTURE
+  offset: 0x55D0
+  symbol: gTingleTopFrontTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTingleTorsoDL:
+  type: GFX
+  offset: 0x4980
+  symbol: gTingleTorsoDL
+
+gTingleTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xA5C0
+  symbol: gTingleTorsoLimb
+  limb_type: Standard
+
+gTingleTwistAnim:
+  type: OOT:ANIMATION
+  offset: 0xB1E8
+  symbol: gTingleTwistAnim
+
+gTingleUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0xA4E8
+  symbol: gTingleUpperBodyRootLimb
+  limb_type: Standard
+
+gTingleUpperBodyWrapperLimb:
+  type: OOT:LIMB
+  offset: 0xA4F4
+  symbol: gTingleUpperBodyWrapperLimb
+  limb_type: Standard
+
+
+object_balVtx_001820:
+  type: MM:ARRAY
+  offset: 0x001820
+  symbol: object_balVtx_001820
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_001B20:
+  type: MM:ARRAY
+  offset: 0x001B20
+  symbol: object_balVtx_001B20
+  count: 138
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0023C0:
+  type: MM:ARRAY
+  offset: 0x0023C0
+  symbol: object_balVtx_0023C0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_002500:
+  type: MM:ARRAY
+  offset: 0x002500
+  symbol: object_balVtx_002500
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0027D0:
+  type: MM:ARRAY
+  offset: 0x0027D0
+  symbol: object_balVtx_0027D0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0029B0:
+  type: MM:ARRAY
+  offset: 0x0029B0
+  symbol: object_balVtx_0029B0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_002BF0:
+  type: MM:ARRAY
+  offset: 0x002BF0
+  symbol: object_balVtx_002BF0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_002D30:
+  type: MM:ARRAY
+  offset: 0x002D30
+  symbol: object_balVtx_002D30
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0031D0:
+  type: MM:ARRAY
+  offset: 0x0031D0
+  symbol: object_balVtx_0031D0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0034A0:
+  type: MM:ARRAY
+  offset: 0x0034A0
+  symbol: object_balVtx_0034A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0034E0:
+  type: MM:ARRAY
+  offset: 0x0034E0
+  symbol: object_balVtx_0034E0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003720:
+  type: MM:ARRAY
+  offset: 0x003720
+  symbol: object_balVtx_003720
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003860:
+  type: MM:ARRAY
+  offset: 0x003860
+  symbol: object_balVtx_003860
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_0039F0:
+  type: MM:ARRAY
+  offset: 0x0039F0
+  symbol: object_balVtx_0039F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003B30:
+  type: MM:ARRAY
+  offset: 0x003B30
+  symbol: object_balVtx_003B30
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003C30:
+  type: MM:ARRAY
+  offset: 0x003C30
+  symbol: object_balVtx_003C30
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003DC0:
+  type: MM:ARRAY
+  offset: 0x003DC0
+  symbol: object_balVtx_003DC0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_balVtx_003F00:
+  type: MM:ARRAY
+  offset: 0x003F00
+  symbol: object_balVtx_003F00
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTingleSkelLimbs:
+  type: BLOB
+  offset: 0xA650
+  symbol: gTingleSkelLimbs
+  size: 0
+
+object_balVtx_00D540:
+  type: MM:ARRAY
+  offset: 0x00D540
+  symbol: object_balVtx_00D540
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

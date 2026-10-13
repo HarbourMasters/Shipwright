@@ -1,0 +1,621 @@
+:config:
+  segments:
+    - [ 6, 0x012B3BA0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012B3BA0 ]
+    - [ 9, 0x012B3BA0 ]
+    - [ 10, 0x012B3BA0 ]
+    - [ 11, 0x012B3BA0 ]
+    - [ 12, 0x012B3BA0 ]
+    - [ 13, 0x012B3BA0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDs2nBeltTieTex:
+  type: TEXTURE
+  offset: 0x48D8
+  symbol: gDs2nBeltTieTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3CD8
+
+gDs2nEyeClosedTex:
+  type: TEXTURE
+  offset: 0x50D8
+  symbol: gDs2nEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x40D8
+
+gDs2nEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4CD8
+  symbol: gDs2nEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x40D8
+
+gDs2nEyeOpen2Tex:
+  type: TEXTURE
+  offset: 0x7990
+  symbol: gDs2nEyeOpen2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6850
+
+gDs2nEyeOpenTex:
+  type: TEXTURE
+  offset: 0x5E18
+  symbol: gDs2nEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x40D8
+
+gDs2nEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x6444
+  symbol: gDs2nEyeTexAnim
+
+gDs2nEyes2TLUT:
+  type: TEXTURE
+  offset: 0x6850
+  symbol: gDs2nEyes2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nEyesTLUT:
+  type: TEXTURE
+  offset: 0x40D8
+  symbol: gDs2nEyesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nFingers2TLUT:
+  type: TEXTURE
+  offset: 0x6650
+  symbol: gDs2nFingers2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nFingers2Tex:
+  type: TEXTURE
+  offset: 0x7050
+  symbol: gDs2nFingers2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6650
+
+gDs2nFingersTLUT:
+  type: TEXTURE
+  offset: 0x3ED8
+  symbol: gDs2nFingersTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nFingersTex:
+  type: TEXTURE
+  offset: 0x54D8
+  symbol: gDs2nFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3ED8
+
+gDs2nHair2Tex:
+  type: TEXTURE
+  offset: 0x7190
+  symbol: gDs2nHair2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nHairTex:
+  type: TEXTURE
+  offset: 0x5618
+  symbol: gDs2nHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nHairline2Tex:
+  type: TEXTURE
+  offset: 0x7390
+  symbol: gDs2nHairline2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6450
+
+gDs2nHairlineTex:
+  type: TEXTURE
+  offset: 0x5818
+  symbol: gDs2nHairlineTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDs2nHeadDL:
+  type: GFX
+  offset: 0x2740
+  symbol: gDs2nHeadDL
+
+gDs2nHeadLimb:
+  type: OOT:LIMB
+  offset: 0x811C
+  symbol: gDs2nHeadLimb
+  limb_type: Standard
+
+gDs2nHipsDL:
+  type: GFX
+  offset: 0x3528
+  symbol: gDs2nHipsDL
+
+gDs2nHipsLimb:
+  type: OOT:LIMB
+  offset: 0x8050
+  symbol: gDs2nHipsLimb
+  limb_type: Standard
+
+gDs2nIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x8038
+  symbol: gDs2nIdleAnim
+
+gDs2nLeftFootDL:
+  type: GFX
+  offset: 0x3B40
+  symbol: gDs2nLeftFootDL
+
+gDs2nLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8074
+  symbol: gDs2nLeftFootLimb
+  limb_type: Standard
+
+gDs2nLeftForearmDL:
+  type: GFX
+  offset: 0x31F8
+  symbol: gDs2nLeftForearmDL
+
+gDs2nLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x80E0
+  symbol: gDs2nLeftForearmLimb
+  limb_type: Standard
+
+gDs2nLeftHandDL:
+  type: GFX
+  offset: 0x33B0
+  symbol: gDs2nLeftHandDL
+
+gDs2nLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x80EC
+  symbol: gDs2nLeftHandLimb
+  limb_type: Standard
+
+gDs2nLeftShinDL:
+  type: GFX
+  offset: 0x3A68
+  symbol: gDs2nLeftShinDL
+
+gDs2nLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x8068
+  symbol: gDs2nLeftShinLimb
+  limb_type: Standard
+
+gDs2nLeftThighDL:
+  type: GFX
+  offset: 0x3988
+  symbol: gDs2nLeftThighDL
+
+gDs2nLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x805C
+  symbol: gDs2nLeftThighLimb
+  limb_type: Standard
+
+gDs2nLeftUpperArmDL:
+  type: GFX
+  offset: 0x30E0
+  symbol: gDs2nLeftUpperArmDL
+
+gDs2nLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x80D4
+  symbol: gDs2nLeftUpperArmLimb
+  limb_type: Standard
+
+gDs2nLimb_008098:
+  type: OOT:LIMB
+  offset: 0x80A4
+  symbol: gDs2nLimb_008098
+  limb_type: Standard
+
+gDs2nLimb_0080B0:
+  type: OOT:LIMB
+  offset: 0x80B0
+  symbol: gDs2nLimb_0080B0
+  limb_type: Standard
+
+gDs2nLimb_0080BC:
+  type: OOT:LIMB
+  offset: 0x80BC
+  symbol: gDs2nLimb_0080BC
+  limb_type: Standard
+
+gDs2nMain2TLUT:
+  type: TEXTURE
+  offset: 0x6450
+  symbol: gDs2nMain2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nMainTLUT:
+  type: TEXTURE
+  offset: 0x3CD8
+  symbol: gDs2nMainTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nMouthOpen2Tex:
+  type: TEXTURE
+  offset: 0x7D90
+  symbol: gDs2nMouthOpen2Tex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x6450
+
+gDs2nMouthOpenTex:
+  type: TEXTURE
+  offset: 0x6218
+  symbol: gDs2nMouthOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x3CD8
+
+gDs2nPantsAndShirtBottom2Tex:
+  type: TEXTURE
+  offset: 0x6A50
+  symbol: gDs2nPantsAndShirtBottom2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nPantsAndShirtBottomTex:
+  type: TEXTURE
+  offset: 0x42D8
+  symbol: gDs2nPantsAndShirtBottomTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nRightFootDL:
+  type: GFX
+  offset: 0x37A8
+  symbol: gDs2nRightFootDL
+
+gDs2nRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8098
+  symbol: gDs2nRightFootLimb
+  limb_type: Standard
+
+gDs2nRightForearmDL:
+  type: GFX
+  offset: 0x2D38
+  symbol: gDs2nRightForearmDL
+
+gDs2nRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8104
+  symbol: gDs2nRightForearmLimb
+  limb_type: Standard
+
+gDs2nRightHandDL:
+  type: GFX
+  offset: 0x2F68
+  symbol: gDs2nRightHandDL
+
+gDs2nRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x8110
+  symbol: gDs2nRightHandLimb
+  limb_type: Standard
+
+gDs2nRightShinDL:
+  type: GFX
+  offset: 0x36D0
+  symbol: gDs2nRightShinDL
+
+gDs2nRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x808C
+  symbol: gDs2nRightShinLimb
+  limb_type: Standard
+
+gDs2nRightThighDL:
+  type: GFX
+  offset: 0x35F0
+  symbol: gDs2nRightThighDL
+
+gDs2nRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8080
+  symbol: gDs2nRightThighLimb
+  limb_type: Standard
+
+gDs2nRightUpperArmDL:
+  type: GFX
+  offset: 0x2C20
+  symbol: gDs2nRightUpperArmDL
+
+gDs2nRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x80F8
+  symbol: gDs2nRightUpperArmLimb
+  limb_type: Standard
+
+gDs2nShirt2Tex:
+  type: TEXTURE
+  offset: 0x7890
+  symbol: gDs2nShirt2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x6450
+
+gDs2nShirtButtons2Tex:
+  type: TEXTURE
+  offset: 0x7490
+  symbol: gDs2nShirtButtons2Tex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x6450
+
+gDs2nShirtButtonsTex:
+  type: TEXTURE
+  offset: 0x5918
+  symbol: gDs2nShirtButtonsTex
+  format: CI8
+  width: 16
+  height: 32
+
+gDs2nShirtTex:
+  type: TEXTURE
+  offset: 0x5D18
+  symbol: gDs2nShirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDs2nShoes2Tex:
+  type: TEXTURE
+  offset: 0x6C50
+  symbol: gDs2nShoes2Tex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDs2nShoesTex:
+  type: TEXTURE
+  offset: 0x44D8
+  symbol: gDs2nShoesTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDs2nSkel:
+  type: MM:SKELETON
+  offset: 0x8170
+  symbol: gDs2nSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDs2nSkinGradient2Tex:
+  type: TEXTURE
+  offset: 0x7150
+  symbol: gDs2nSkinGradient2Tex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x6450
+
+gDs2nSkinGradientTex:
+  type: TEXTURE
+  offset: 0x55D8
+  symbol: gDs2nSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gDs2nTorsoDL:
+  type: GFX
+  offset: 0x2420
+  symbol: gDs2nTorsoDL
+
+gDs2nTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x80C8
+  symbol: gDs2nTorsoLimb
+  limb_type: Standard
+
+gDs2nVest2Tex:
+  type: TEXTURE
+  offset: 0x7690
+  symbol: gDs2nVest2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDs2nVestTex:
+  type: TEXTURE
+  offset: 0x5B18
+  symbol: gDs2nVestTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_ds2nVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ds2nVtx_000000
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000230:
+  type: MM:ARRAY
+  offset: 0x000230
+  symbol: object_ds2nVtx_000230
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000390:
+  type: MM:ARRAY
+  offset: 0x000390
+  symbol: object_ds2nVtx_000390
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000500:
+  type: MM:ARRAY
+  offset: 0x000500
+  symbol: object_ds2nVtx_000500
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000730:
+  type: MM:ARRAY
+  offset: 0x000730
+  symbol: object_ds2nVtx_000730
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000890:
+  type: MM:ARRAY
+  offset: 0x000890
+  symbol: object_ds2nVtx_000890
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_000A00:
+  type: MM:ARRAY
+  offset: 0x000A00
+  symbol: object_ds2nVtx_000A00
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_0011B0:
+  type: MM:ARRAY
+  offset: 0x0011B0
+  symbol: object_ds2nVtx_0011B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_001430:
+  type: MM:ARRAY
+  offset: 0x001430
+  symbol: object_ds2nVtx_001430
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_001630:
+  type: MM:ARRAY
+  offset: 0x001630
+  symbol: object_ds2nVtx_001630
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_0017C0:
+  type: MM:ARRAY
+  offset: 0x0017C0
+  symbol: object_ds2nVtx_0017C0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_001A40:
+  type: MM:ARRAY
+  offset: 0x001A40
+  symbol: object_ds2nVtx_001A40
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_001C40:
+  type: MM:ARRAY
+  offset: 0x001C40
+  symbol: object_ds2nVtx_001C40
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_001DD0:
+  type: MM:ARRAY
+  offset: 0x001DD0
+  symbol: object_ds2nVtx_001DD0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ds2nVtx_002220:
+  type: MM:ARRAY
+  offset: 0x002220
+  symbol: object_ds2nVtx_002220
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDs2nEyeTexAnimTexCycleParams_006434:
+  type: BLOB
+  offset: 0x006434
+  symbol: gDs2nEyeTexAnimTexCycleParams_006434
+  size: 0
+
+gDs2nSkelLimbs:
+  type: BLOB
+  offset: 0x8128
+  symbol: gDs2nSkelLimbs
+  size: 0

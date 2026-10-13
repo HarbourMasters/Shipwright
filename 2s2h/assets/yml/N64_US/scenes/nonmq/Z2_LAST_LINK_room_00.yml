@@ -1,0 +1,126 @@
+:config:
+  segments:
+    - [ 3, 0x01DC0830 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01DC0830 ]
+    - [ 9, 0x01DC0830 ]
+    - [ 10, 0x01DC0830 ]
+    - [ 11, 0x01DC0830 ]
+    - [ 12, 0x01DC0830 ]
+    - [ 13, 0x01DC0830 ]
+    - [ 2, 0x01DBAB90 ]
+  directory: scenes/nonmq/Z2_LAST_LINK
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LAST_LINK.yml
+
+Z2_LAST_LINK_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_LINK_room_00
+
+Z2_LAST_LINK_room_00DL_001990:
+  type: GFX
+  offset: 0x1990
+  symbol: Z2_LAST_LINK_room_00DL_001990
+
+
+Z2_LAST_LINK_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_LAST_LINK_room_00ActorEntry_000058
+  size: 0
+
+Z2_LAST_LINK_room_00Vtx_000150:
+  type: MM:ARRAY
+  offset: 0x000150
+  symbol: Z2_LAST_LINK_room_00Vtx_000150
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_00DL_0002C0:
+  type: GFX
+  offset: 0x0002C0
+  symbol: Z2_LAST_LINK_room_00DL_0002C0
+
+Z2_LAST_LINK_room_00Vtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: Z2_LAST_LINK_room_00Vtx_000430
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_00DL_000500:
+  type: GFX
+  offset: 0x000500
+  symbol: Z2_LAST_LINK_room_00DL_000500
+
+Z2_LAST_LINK_room_00Vtx_0005D8:
+  type: MM:ARRAY
+  offset: 0x0005D8
+  symbol: Z2_LAST_LINK_room_00Vtx_0005D8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_00DL_0007A8:
+  type: GFX
+  offset: 0x0007A8
+  symbol: Z2_LAST_LINK_room_00DL_0007A8
+
+Z2_LAST_LINK_room_00Vtx_0008B8:
+  type: MM:ARRAY
+  offset: 0x0008B8
+  symbol: Z2_LAST_LINK_room_00Vtx_0008B8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_00DL_000A88:
+  type: GFX
+  offset: 0x000A88
+  symbol: Z2_LAST_LINK_room_00DL_000A88
+
+Z2_LAST_LINK_room_00Vtx_000B88:
+  type: MM:ARRAY
+  offset: 0x000B88
+  symbol: Z2_LAST_LINK_room_00Vtx_000B88
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_00DL_001608:
+  type: GFX
+  offset: 0x001608
+  symbol: Z2_LAST_LINK_room_00DL_001608
+
+Z2_LAST_LINK_room_00Tex_0019C0:
+  type: TEXTURE
+  offset: 0x0019C0
+  symbol: Z2_LAST_LINK_room_00Tex_0019C0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_LINK_room_00Tex_0021C0:
+  type: TEXTURE
+  offset: 0x0021C0
+  symbol: Z2_LAST_LINK_room_00Tex_0021C0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_LINK_room_00Tex_0029C0:
+  type: TEXTURE
+  offset: 0x0029C0
+  symbol: Z2_LAST_LINK_room_00Tex_0029C0
+  format: CI8
+  width: 32
+  height: 64

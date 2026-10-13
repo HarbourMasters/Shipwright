@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x012A4F20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012A4F20 ]
+    - [ 9, 0x012A4F20 ]
+    - [ 10, 0x012A4F20 ]
+    - [ 11, 0x012A4F20 ]
+    - [ 12, 0x012A4F20 ]
+    - [ 13, 0x012A4F20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gLilyPadCol:
+  type: MM:COLLISION
+  offset: 0xA20
+  symbol: gLilyPadCol
+
+gLilyPadDL:
+  type: GFX
+  offset: 0x40
+  symbol: gLilyPadDL
+
+gLilyPadTLUT:
+  type: TEXTURE
+  offset: 0x100
+  symbol: gLilyPadTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gLilyPadTex:
+  type: TEXTURE
+  offset: 0x120
+  symbol: gLilyPadTex
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_lotusVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_lotusVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,846 @@
+:config:
+  segments:
+    - [ 6, 0x012BFE20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x012BFE20 ]
+    - [ 9, 0x012BFE20 ]
+    - [ 10, 0x012BFE20 ]
+    - [ 11, 0x012BFE20 ]
+    - [ 12, 0x012BFE20 ]
+    - [ 13, 0x012BFE20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBurlyGuyBodyHairTex:
+  type: TEXTURE
+  offset: 0x7A08
+  symbol: gBurlyGuyBodyHairTex
+  format: CI8
+  width: 32
+  height: 32
+
+gBurlyGuyChinScratchAnim:
+  type: OOT:ANIMATION
+  offset: 0xE6C4
+  symbol: gBurlyGuyChinScratchAnim
+
+gBurlyGuyEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x8050
+  symbol: gBurlyGuyEmpty1TexAnim
+
+gBurlyGuyEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x11210
+  symbol: gBurlyGuyEmpty2TexAnim
+
+gBurlyGuyEmptyAnim:
+  type: OOT:ANIMATION
+  offset: 0xD3AC
+  symbol: gBurlyGuyEmptyAnim
+
+gBurlyGuyEmptyDL:
+  type: GFX
+  offset: 0xB730
+  symbol: gBurlyGuyEmptyDL
+
+gBurlyGuyHandTex:
+  type: TEXTURE
+  offset: 0x7908
+  symbol: gBurlyGuyHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBurlyGuyHandsOnTableAnim:
+  type: OOT:ANIMATION
+  offset: 0xD9D0
+  symbol: gBurlyGuyHandsOnTableAnim
+
+gBurlyGuyHeadLimb:
+  type: OOT:LIMB
+  offset: 0xE788
+  symbol: gBurlyGuyHeadLimb
+  limb_type: Standard
+
+gBurlyGuyHeadScratchEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xD2F8
+  symbol: gBurlyGuyHeadScratchEndAnim
+
+gBurlyGuyHeadScratchLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xDFEC
+  symbol: gBurlyGuyHeadScratchLoopAnim
+
+gBurlyGuyLeftFootDL:
+  type: GFX
+  offset: 0x54C0
+  symbol: gBurlyGuyLeftFootDL
+
+gBurlyGuyLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xE704
+  symbol: gBurlyGuyLeftFootLimb
+  limb_type: Standard
+
+gBurlyGuyLeftForearmDL:
+  type: GFX
+  offset: 0x48B8
+  symbol: gBurlyGuyLeftForearmDL
+
+gBurlyGuyLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xE74C
+  symbol: gBurlyGuyLeftForearmLimb
+  limb_type: Standard
+
+gBurlyGuyLeftHandDL:
+  type: GFX
+  offset: 0x4B60
+  symbol: gBurlyGuyLeftHandDL
+
+gBurlyGuyLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xE758
+  symbol: gBurlyGuyLeftHandLimb
+  limb_type: Standard
+
+gBurlyGuyLeftShinDL:
+  type: GFX
+  offset: 0x53B8
+  symbol: gBurlyGuyLeftShinDL
+
+gBurlyGuyLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xE6F8
+  symbol: gBurlyGuyLeftShinLimb
+  limb_type: Standard
+
+gBurlyGuyLeftShoulderDL:
+  type: GFX
+  offset: 0x4620
+  symbol: gBurlyGuyLeftShoulderDL
+
+gBurlyGuyLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xE740
+  symbol: gBurlyGuyLeftShoulderLimb
+  limb_type: Standard
+
+gBurlyGuyLeftThighDL:
+  type: GFX
+  offset: 0x5298
+  symbol: gBurlyGuyLeftThighDL
+
+gBurlyGuyLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xE6EC
+  symbol: gBurlyGuyLeftThighLimb
+  limb_type: Standard
+
+gBurlyGuyPantsTex:
+  type: TEXTURE
+  offset: 0x7F08
+  symbol: gBurlyGuyPantsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBurlyGuyRightFootDL:
+  type: GFX
+  offset: 0x50D0
+  symbol: gBurlyGuyRightFootDL
+
+gBurlyGuyRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xE728
+  symbol: gBurlyGuyRightFootLimb
+  limb_type: Standard
+
+gBurlyGuyRightForearmDL:
+  type: GFX
+  offset: 0x4038
+  symbol: gBurlyGuyRightForearmDL
+
+gBurlyGuyRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xE770
+  symbol: gBurlyGuyRightForearmLimb
+  limb_type: Standard
+
+gBurlyGuyRightHandDL:
+  type: GFX
+  offset: 0x42E0
+  symbol: gBurlyGuyRightHandDL
+
+gBurlyGuyRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xE77C
+  symbol: gBurlyGuyRightHandLimb
+  limb_type: Standard
+
+gBurlyGuyRightShinDL:
+  type: GFX
+  offset: 0x4FC8
+  symbol: gBurlyGuyRightShinDL
+
+gBurlyGuyRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xE71C
+  symbol: gBurlyGuyRightShinLimb
+  limb_type: Standard
+
+gBurlyGuyRightShoulderDL:
+  type: GFX
+  offset: 0x3DA0
+  symbol: gBurlyGuyRightShoulderDL
+
+gBurlyGuyRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xE764
+  symbol: gBurlyGuyRightShoulderLimb
+  limb_type: Standard
+
+gBurlyGuyRightThighDL:
+  type: GFX
+  offset: 0x4EA8
+  symbol: gBurlyGuyRightThighDL
+
+gBurlyGuyRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xE710
+  symbol: gBurlyGuyRightThighLimb
+  limb_type: Standard
+
+gBurlyGuyShoesTex:
+  type: TEXTURE
+  offset: 0x7F48
+  symbol: gBurlyGuyShoesTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBurlyGuySkel:
+  type: MM:SKELETON
+  offset: 0xE7D0
+  symbol: gBurlyGuySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBurlyGuySkinTex:
+  type: TEXTURE
+  offset: 0x5A88
+  symbol: gBurlyGuySkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gBurlyGuyTLUT:
+  type: TEXTURE
+  offset: 0x5888
+  symbol: gBurlyGuyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBurlyGuyTorsoDL:
+  type: GFX
+  offset: 0x3600
+  symbol: gBurlyGuyTorsoDL
+
+gBurlyGuyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xE734
+  symbol: gBurlyGuyTorsoLimb
+  limb_type: Standard
+
+gBurlyGuyVestTex:
+  type: TEXTURE
+  offset: 0x7E08
+  symbol: gBurlyGuyVestTex
+  format: CI8
+  width: 16
+  height: 16
+
+gBurlyGuyWaistDL:
+  type: GFX
+  offset: 0x3510
+  symbol: gBurlyGuyWaistDL
+
+gBurlyGuyWaistLimb:
+  type: OOT:LIMB
+  offset: 0xE6E0
+  symbol: gBurlyGuyWaistLimb
+  limb_type: Standard
+
+gSwampGuideEyeTex:
+  type: TEXTURE
+  offset: 0xC518
+  symbol: gSwampGuideEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSwampGuideGoggleStrapTex:
+  type: TEXTURE
+  offset: 0xC918
+  symbol: gSwampGuideGoggleStrapTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSwampGuideHairAndBeardTex:
+  type: TEXTURE
+  offset: 0xC218
+  symbol: gSwampGuideHairAndBeardTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSwampGuideHairFabricAndSkinTLUT:
+  type: TEXTURE
+  offset: 0xBCD8
+  symbol: gSwampGuideHairFabricAndSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSwampGuideHatAndGogglesMetalTex:
+  type: TEXTURE
+  offset: 0xC318
+  symbol: gSwampGuideHatAndGogglesMetalTex
+  format: CI8
+  width: 32
+  height: 16
+
+gSwampGuideHatFabricTex:
+  type: TEXTURE
+  offset: 0xC118
+  symbol: gSwampGuideHatFabricTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSwampGuideHeadDL:
+  type: GFX
+  offset: 0xB738
+  symbol: gSwampGuideHeadDL
+
+gSwampGuideMouthGoggleAndEyeTLUT:
+  type: TEXTURE
+  offset: 0xBED8
+  symbol: gSwampGuideMouthGoggleAndEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSwampGuideMouthTex:
+  type: TEXTURE
+  offset: 0xCA98
+  symbol: gSwampGuideMouthTex
+  format: CI8
+  width: 16
+  height: 32
+
+gSwampGuideNoseTex:
+  type: TEXTURE
+  offset: 0xCA18
+  symbol: gSwampGuideNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSwampGuideSkinTex:
+  type: TEXTURE
+  offset: 0xC0D8
+  symbol: gSwampGuideSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gSwampShootingGalleryManBeardAndLipsTex:
+  type: TEXTURE
+  offset: 0x7408
+  symbol: gSwampShootingGalleryManBeardAndLipsTex
+  format: CI8
+  width: 32
+  height: 32
+
+gSwampShootingGalleryManEarTex:
+  type: TEXTURE
+  offset: 0x72C8
+  symbol: gSwampShootingGalleryManEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSwampShootingGalleryManEyeClosedTex:
+  type: TEXTURE
+  offset: 0x6AC8
+  symbol: gSwampShootingGalleryManEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSwampShootingGalleryManEyeHalfTex:
+  type: TEXTURE
+  offset: 0x62C8
+  symbol: gSwampShootingGalleryManEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSwampShootingGalleryManEyeOpenTex:
+  type: TEXTURE
+  offset: 0x5AC8
+  symbol: gSwampShootingGalleryManEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSwampShootingGalleryManHairTex:
+  type: TEXTURE
+  offset: 0x7808
+  symbol: gSwampShootingGalleryManHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gSwampShootingGalleryManHeadDL:
+  type: GFX
+  offset: 0x39A0
+  symbol: gSwampShootingGalleryManHeadDL
+
+gSwampShootingGalleryManNoseTLUT:
+  type: TEXTURE
+  offset: 0x5688
+  symbol: gSwampShootingGalleryManNoseTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSwampShootingGalleryManNoseTex:
+  type: TEXTURE
+  offset: 0x73C8
+  symbol: gSwampShootingGalleryManNoseTex
+  format: CI8
+  width: 8
+  height: 8
+
+gTownShootingGalleryManBeardAndLipsTex:
+  type: TEXTURE
+  offset: 0x10B90
+  symbol: gTownShootingGalleryManBeardAndLipsTex
+  format: CI8
+  width: 32
+  height: 32
+
+gTownShootingGalleryManEarTex:
+  type: TEXTURE
+  offset: 0x10FD0
+  symbol: gTownShootingGalleryManEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTownShootingGalleryManEyeClosedTex:
+  type: TEXTURE
+  offset: 0x10390
+  symbol: gTownShootingGalleryManEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTownShootingGalleryManEyeOpenTex:
+  type: TEXTURE
+  offset: 0xFB90
+  symbol: gTownShootingGalleryManEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTownShootingGalleryManHairTex:
+  type: TEXTURE
+  offset: 0x110D0
+  symbol: gTownShootingGalleryManHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gTownShootingGalleryManHeadDL:
+  type: GFX
+  offset: 0xF2D0
+  symbol: gTownShootingGalleryManHeadDL
+
+gTownShootingGalleryManHeadTLUT:
+  type: TEXTURE
+  offset: 0xF990
+  symbol: gTownShootingGalleryManHeadTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTownShootingGalleryManNoseTLUT:
+  type: TEXTURE
+  offset: 0xF790
+  symbol: gTownShootingGalleryManNoseTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTownShootingGalleryManNoseTex:
+  type: TEXTURE
+  offset: 0x10F90
+  symbol: gTownShootingGalleryManNoseTex
+  format: CI8
+  width: 8
+  height: 8
+
+gTownShootingGalleryManSkinTex:
+  type: TEXTURE
+  offset: 0x111D0
+  symbol: gTownShootingGalleryManSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gUnusedTownShootingGalleryManBeardAndLipsTLUT:
+  type: TEXTURE
+  offset: 0x91D8
+  symbol: gUnusedTownShootingGalleryManBeardAndLipsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManBeardAndLipsTex:
+  type: TEXTURE
+  offset: 0x9DD8
+  symbol: gUnusedTownShootingGalleryManBeardAndLipsTex
+  format: CI8
+  width: 32
+  height: 32
+
+gUnusedTownShootingGalleryManEarTLUT:
+  type: TEXTURE
+  offset: 0x95D8
+  symbol: gUnusedTownShootingGalleryManEarTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManEarTex:
+  type: TEXTURE
+  offset: 0xA2D8
+  symbol: gUnusedTownShootingGalleryManEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManEarsDL:
+  type: GFX
+  offset: 0x8E48
+  symbol: gUnusedTownShootingGalleryManEarsDL
+
+gUnusedTownShootingGalleryManEyeTLUT:
+  type: TEXTURE
+  offset: 0x99D8
+  symbol: gUnusedTownShootingGalleryManEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManEyeTex:
+  type: TEXTURE
+  offset: 0xA418
+  symbol: gUnusedTownShootingGalleryManEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gUnusedTownShootingGalleryManEyesDL:
+  type: GFX
+  offset: 0x8BA0
+  symbol: gUnusedTownShootingGalleryManEyesDL
+
+gUnusedTownShootingGalleryManFaceAndChinDL:
+  type: GFX
+  offset: 0x9040
+  symbol: gUnusedTownShootingGalleryManFaceAndChinDL
+
+gUnusedTownShootingGalleryManHairAndSideburnsDL:
+  type: GFX
+  offset: 0x8F00
+  symbol: gUnusedTownShootingGalleryManHairAndSideburnsDL
+
+gUnusedTownShootingGalleryManHairTLUT:
+  type: TEXTURE
+  offset: 0x93D8
+  symbol: gUnusedTownShootingGalleryManHairTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManHairTex:
+  type: TEXTURE
+  offset: 0xA1D8
+  symbol: gUnusedTownShootingGalleryManHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManLipsDL:
+  type: GFX
+  offset: 0x8C70
+  symbol: gUnusedTownShootingGalleryManLipsDL
+
+gUnusedTownShootingGalleryManNoseDL:
+  type: GFX
+  offset: 0x8D90
+  symbol: gUnusedTownShootingGalleryManNoseDL
+
+gUnusedTownShootingGalleryManNoseTLUT:
+  type: TEXTURE
+  offset: 0x97D8
+  symbol: gUnusedTownShootingGalleryManNoseTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManNoseTex:
+  type: TEXTURE
+  offset: 0xA3D8
+  symbol: gUnusedTownShootingGalleryManNoseTex
+  format: CI8
+  width: 8
+  height: 8
+
+gUnusedTownShootingGalleryManSkinTLUT:
+  type: TEXTURE
+  offset: 0x9BD8
+  symbol: gUnusedTownShootingGalleryManSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gUnusedTownShootingGalleryManSkinTex:
+  type: TEXTURE
+  offset: 0xA818
+  symbol: gUnusedTownShootingGalleryManSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+
+object_shnVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_shnVtx_000000
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0008B0:
+  type: MM:ARRAY
+  offset: 0x0008B0
+  symbol: object_shnVtx_0008B0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_000C00:
+  type: MM:ARRAY
+  offset: 0x000C00
+  symbol: object_shnVtx_000C00
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_000E90:
+  type: MM:ARRAY
+  offset: 0x000E90
+  symbol: object_shnVtx_000E90
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_001190:
+  type: MM:ARRAY
+  offset: 0x001190
+  symbol: object_shnVtx_001190
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0014B0:
+  type: MM:ARRAY
+  offset: 0x0014B0
+  symbol: object_shnVtx_0014B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_001730:
+  type: MM:ARRAY
+  offset: 0x001730
+  symbol: object_shnVtx_001730
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_001A30:
+  type: MM:ARRAY
+  offset: 0x001A30
+  symbol: object_shnVtx_001A30
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_002240:
+  type: MM:ARRAY
+  offset: 0x002240
+  symbol: object_shnVtx_002240
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_002620:
+  type: MM:ARRAY
+  offset: 0x002620
+  symbol: object_shnVtx_002620
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: object_shnVtx_002820
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_002A80:
+  type: MM:ARRAY
+  offset: 0x002A80
+  symbol: object_shnVtx_002A80
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_002ED0:
+  type: MM:ARRAY
+  offset: 0x002ED0
+  symbol: object_shnVtx_002ED0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0030D0:
+  type: MM:ARRAY
+  offset: 0x0030D0
+  symbol: object_shnVtx_0030D0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_003330:
+  type: MM:ARRAY
+  offset: 0x003330
+  symbol: object_shnVtx_003330
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_008060:
+  type: MM:ARRAY
+  offset: 0x008060
+  symbol: object_shnVtx_008060
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_008100:
+  type: MM:ARRAY
+  offset: 0x008100
+  symbol: object_shnVtx_008100
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0084B0:
+  type: MM:ARRAY
+  offset: 0x0084B0
+  symbol: object_shnVtx_0084B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0084E0:
+  type: MM:ARRAY
+  offset: 0x0084E0
+  symbol: object_shnVtx_0084E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_008540:
+  type: MM:ARRAY
+  offset: 0x008540
+  symbol: object_shnVtx_008540
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_0087B0:
+  type: MM:ARRAY
+  offset: 0x0087B0
+  symbol: object_shnVtx_0087B0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_shnVtx_00A860:
+  type: MM:ARRAY
+  offset: 0x00A860
+  symbol: object_shnVtx_00A860
+  count: 237
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBurlyGuySkelLimbs:
+  type: BLOB
+  offset: 0xE794
+  symbol: gBurlyGuySkelLimbs
+  size: 0
+
+object_shnVtx_00E7E0:
+  type: MM:ARRAY
+  offset: 0x00E7E0
+  symbol: object_shnVtx_00E7E0
+  count: 175
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

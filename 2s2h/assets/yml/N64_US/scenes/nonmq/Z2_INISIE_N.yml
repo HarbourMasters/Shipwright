@@ -1,0 +1,261 @@
+:config:
+  segments:
+    - [ 2, 0x0173DF80 ]
+
+Z2_INISIE_N:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_INISIE_N
+
+
+Z2_INISIE_NPathwayList_000460:
+  type: MM:PATH
+  offset: 0x000460
+  symbol: Z2_INISIE_NPathwayList_000460
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, 0, -900 ]
+        - [ 0, 0, -1200 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -245, -2025 ]
+        - [ 0, -95, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -270, -2340 ]
+        - [ 0, -270, -2100 ]
+
+Z2_INISIE_NPathwayList_00046C:
+  type: MM:PATH
+  offset: 0x00046C
+  symbol: Z2_INISIE_NPathwayList_00046C
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, 0, -900 ]
+        - [ 0, 0, -1200 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -245, -2025 ]
+        - [ 0, -95, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -270, -2340 ]
+        - [ 0, -270, -2100 ]
+
+Z2_INISIE_NPathwayList_000478:
+  type: MM:PATH
+  offset: 0x000478
+  symbol: Z2_INISIE_NPathwayList_000478
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, 0, -900 ]
+        - [ 0, 0, -1200 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -245, -2025 ]
+        - [ 0, -95, -2025 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, -270, -2340 ]
+        - [ 0, -270, -2100 ]
+
+Z2_INISIE_NCutsceneData_00049C:
+  type: MM:CUTSCENE
+  offset: 0x00049C
+  symbol: Z2_INISIE_NCutsceneData_00049C
+  size: 456
+
+Z2_INISIE_NTexAnim_000F58TexScrollParams_000F40:
+  type: BLOB
+  offset: 0x000F40
+  symbol: Z2_INISIE_NTexAnim_000F58TexScrollParams_000F40
+  size: 0
+
+Z2_INISIE_NTexAnim_000F58TexScrollParams_000F48:
+  type: BLOB
+  offset: 0x000F48
+  symbol: Z2_INISIE_NTexAnim_000F58TexScrollParams_000F48
+  size: 0
+
+Z2_INISIE_NTexAnim_000F58TexScrollParams_000F50:
+  type: BLOB
+  offset: 0x000F50
+  symbol: Z2_INISIE_NTexAnim_000F58TexScrollParams_000F50
+  size: 0
+
+Z2_INISIE_NTexAnim_000F58:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000F58
+  symbol: Z2_INISIE_NTexAnim_000F58
+
+Z2_INISIE_NCollisionHeader_00D780:
+  type: MM:COLLISION
+  offset: 0x00D780
+  symbol: Z2_INISIE_NCollisionHeader_00D780
+
+Z2_INISIE_NTex_00D7B0:
+  type: TEXTURE
+  offset: 0x00D7B0
+  symbol: Z2_INISIE_NTex_00D7B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_00DFB0:
+  type: TEXTURE
+  offset: 0x00DFB0
+  symbol: Z2_INISIE_NTex_00DFB0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_INISIE_NTex_00E0B0:
+  type: TEXTURE
+  offset: 0x00E0B0
+  symbol: Z2_INISIE_NTex_00E0B0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_INISIE_NTex_00E2B0:
+  type: TEXTURE
+  offset: 0x00E2B0
+  symbol: Z2_INISIE_NTex_00E2B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_00E6B0:
+  type: TEXTURE
+  offset: 0x00E6B0
+  symbol: Z2_INISIE_NTex_00E6B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_00EAB0:
+  type: TEXTURE
+  offset: 0x00EAB0
+  symbol: Z2_INISIE_NTex_00EAB0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_INISIE_NTex_00F2B0:
+  type: TEXTURE
+  offset: 0x00F2B0
+  symbol: Z2_INISIE_NTex_00F2B0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_INISIE_NTex_0102B0:
+  type: TEXTURE
+  offset: 0x0102B0
+  symbol: Z2_INISIE_NTex_0102B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_0106B0:
+  type: TEXTURE
+  offset: 0x0106B0
+  symbol: Z2_INISIE_NTex_0106B0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_INISIE_NTex_0107B0:
+  type: TEXTURE
+  offset: 0x0107B0
+  symbol: Z2_INISIE_NTex_0107B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_010BB0:
+  type: TEXTURE
+  offset: 0x010BB0
+  symbol: Z2_INISIE_NTex_010BB0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_010FB0:
+  type: TEXTURE
+  offset: 0x010FB0
+  symbol: Z2_INISIE_NTex_010FB0
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_INISIE_NTex_0111B0:
+  type: TEXTURE
+  offset: 0x0111B0
+  symbol: Z2_INISIE_NTex_0111B0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_INISIE_NTex_0112B0:
+  type: TEXTURE
+  offset: 0x0112B0
+  symbol: Z2_INISIE_NTex_0112B0
+  format: CI8
+  width: 8
+  height: 16
+
+Z2_INISIE_NTex_011330:
+  type: TEXTURE
+  offset: 0x011330
+  symbol: Z2_INISIE_NTex_011330
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_NTex_011730:
+  type: TEXTURE
+  offset: 0x011730
+  symbol: Z2_INISIE_NTex_011730
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_INISIE_NTex_011830:
+  type: TEXTURE
+  offset: 0x011830
+  symbol: Z2_INISIE_NTex_011830
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_INISIE_NTex_011C30:
+  type: TEXTURE
+  offset: 0x011C30
+  symbol: Z2_INISIE_NTex_011C30
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_INISIE_NTLUT_012430:
+  type: TEXTURE
+  offset: 0x012430
+  symbol: Z2_INISIE_NTLUT_012430
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,78 @@
+:config:
+  segments:
+    - [ 6, 0x011AEC90 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011AEC90 ]
+    - [ 9, 0x011AEC90 ]
+    - [ 10, 0x011AEC90 ]
+    - [ 11, 0x011AEC90 ]
+    - [ 12, 0x011AEC90 ]
+    - [ 13, 0x011AEC90 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gSichitaiBoatCol:
+  type: MM:COLLISION
+  offset: 0x16DC
+  symbol: gSichitaiBoatCol
+
+gSichitaiBoatDL:
+  type: GFX
+  offset: 0x6B0
+  symbol: gSichitaiBoatDL
+
+gSichitaiHullTex:
+  type: TEXTURE
+  offset: 0xA78
+  symbol: gSichitaiHullTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSichitaiThwartTex:
+  type: TEXTURE
+  offset: 0x878
+  symbol: gSichitaiThwartTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_sichitai_obj_DL_001820:
+  type: GFX
+  offset: 0x1820
+  symbol: object_sichitai_obj_DL_001820
+
+object_sichitai_obj_Tex_001908:
+  type: TEXTURE
+  offset: 0x1908
+  symbol: object_sichitai_obj_Tex_001908
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_sichitai_obj_Tex_002108:
+  type: TEXTURE
+  offset: 0x2108
+  symbol: object_sichitai_obj_Tex_002108
+  format: I4
+  width: 64
+  height: 64
+
+
+object_sichitai_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sichitai_objVtx_000000
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sichitai_objVtx_001710:
+  type: MM:ARRAY
+  offset: 0x001710
+  symbol: object_sichitai_objVtx_001710
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

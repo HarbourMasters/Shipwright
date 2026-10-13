@@ -1,0 +1,61 @@
+:config:
+  segments:
+    - [ 6, 0x0153BF90 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0153BF90 ]
+    - [ 9, 0x0153BF90 ]
+    - [ 10, 0x0153BF90 ]
+    - [ 11, 0x0153BF90 ]
+    - [ 12, 0x0153BF90 ]
+    - [ 13, 0x0153BF90 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_hsstump_Colheader_0011B0:
+  type: MM:COLLISION
+  offset: 0x11B0
+  symbol: object_hsstump_Colheader_0011B0
+
+object_hsstump_DL_0003B0:
+  type: GFX
+  offset: 0x3B0
+  symbol: object_hsstump_DL_0003B0
+
+object_hsstump_DL_0003B8:
+  type: GFX
+  offset: 0x3B8
+  symbol: object_hsstump_DL_0003B8
+
+object_hsstump_TLUT_0007A0:
+  type: TEXTURE
+  offset: 0x7A0
+  symbol: object_hsstump_TLUT_0007A0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hsstump_Tex_0005A0:
+  type: TEXTURE
+  offset: 0x5A0
+  symbol: object_hsstump_Tex_0005A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_hsstump_Tex_0007C0:
+  type: TEXTURE
+  offset: 0x7C0
+  symbol: object_hsstump_Tex_0007C0
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_hsstumpVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_hsstumpVtx_000000
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

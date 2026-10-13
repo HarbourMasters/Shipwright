@@ -1,0 +1,496 @@
+:config:
+  segments:
+    - [ 6, 0x00EA2DC0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00EA2DC0 ]
+    - [ 9, 0x00EA2DC0 ]
+    - [ 10, 0x00EA2DC0 ]
+    - [ 11, 0x00EA2DC0 ]
+    - [ 12, 0x00EA2DC0 ]
+    - [ 13, 0x00EA2DC0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gFloormasterTapFingerAnim:
+  type: OOT:ANIMATION
+  offset: 0x39B0
+  symbol: gFloormasterTapFingerAnim
+
+gFloormasterTurnAnim:
+  type: OOT:ANIMATION
+  offset: 0x2158
+  symbol: gFloormasterTurnAnim
+
+gWallmasterDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x590
+  symbol: gWallmasterDamageAnim
+
+gWallmasterFingerTipTex:
+  type: TEXTURE
+  offset: 0x8B70
+  symbol: gWallmasterFingerTipTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gWallmasterHandBackTex:
+  type: TEXTURE
+  offset: 0x8AF0
+  symbol: gWallmasterHandBackTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWallmasterHandDL:
+  type: GFX
+  offset: 0x7E98
+  symbol: gWallmasterHandDL
+
+gWallmasterHandLimb:
+  type: OOT:LIMB
+  offset: 0x8E3C
+  symbol: gWallmasterHandLimb
+  limb_type: Standard
+
+gWallmasterHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x9520
+  symbol: gWallmasterHoverAnim
+
+gWallmasterIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x9DB0
+  symbol: gWallmasterIdleAnim
+
+gWallmasterIndexFingerDistalDL:
+  type: GFX
+  offset: 0x7978
+  symbol: gWallmasterIndexFingerDistalDL
+
+gWallmasterIndexFingerDistalLimb:
+  type: OOT:LIMB
+  offset: 0x8E78
+  symbol: gWallmasterIndexFingerDistalLimb
+  limb_type: Standard
+
+gWallmasterIndexFingerDistalRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E60
+  symbol: gWallmasterIndexFingerDistalRootLimb
+  limb_type: Standard
+
+gWallmasterIndexFingerMiddleDL:
+  type: GFX
+  offset: 0x7B18
+  symbol: gWallmasterIndexFingerMiddleDL
+
+gWallmasterIndexFingerMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8E6C
+  symbol: gWallmasterIndexFingerMiddleLimb
+  limb_type: Standard
+
+gWallmasterIndexFingerProximalDL:
+  type: GFX
+  offset: 0x7CE8
+  symbol: gWallmasterIndexFingerProximalDL
+
+gWallmasterIndexFingerProximalLimb:
+  type: OOT:LIMB
+  offset: 0x8E54
+  symbol: gWallmasterIndexFingerProximalLimb
+  limb_type: Standard
+
+gWallmasterIndexFingerRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E48
+  symbol: gWallmasterIndexFingerRootLimb
+  limb_type: Standard
+
+gWallmasterJointsAndSidesTex:
+  type: TEXTURE
+  offset: 0x8BF0
+  symbol: gWallmasterJointsAndSidesTex
+  format: RGBA16
+  width: 4
+  height: 8
+
+gWallmasterJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x19CC
+  symbol: gWallmasterJumpAnim
+
+gWallmasterKnuckleAndFingerTopTex:
+  type: TEXTURE
+  offset: 0x8D30
+  symbol: gWallmasterKnuckleAndFingerTopTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterLittleFingerDL:
+  type: GFX
+  offset: 0x8688
+  symbol: gWallmasterLittleFingerDL
+
+gWallmasterLungeAnim:
+  type: OOT:ANIMATION
+  offset: 0x299C
+  symbol: gWallmasterLungeAnim
+
+gWallmasterMiddleFingerDistalDL:
+  type: GFX
+  offset: 0x6E98
+  symbol: gWallmasterMiddleFingerDistalDL
+
+gWallmasterMiddleFingerDistalLimb:
+  type: OOT:LIMB
+  offset: 0x8EF0
+  symbol: gWallmasterMiddleFingerDistalLimb
+  limb_type: Standard
+
+gWallmasterMiddleFingerDistalRootLimb:
+  type: OOT:LIMB
+  offset: 0x8ED8
+  symbol: gWallmasterMiddleFingerDistalRootLimb
+  limb_type: Standard
+
+gWallmasterMiddleFingerMiddleDL:
+  type: GFX
+  offset: 0x7038
+  symbol: gWallmasterMiddleFingerMiddleDL
+
+gWallmasterMiddleFingerMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8EE4
+  symbol: gWallmasterMiddleFingerMiddleLimb
+  limb_type: Standard
+
+gWallmasterMiddleFingerProximalDL:
+  type: GFX
+  offset: 0x7258
+  symbol: gWallmasterMiddleFingerProximalDL
+
+gWallmasterMiddleFingerProximalLimb:
+  type: OOT:LIMB
+  offset: 0x8ECC
+  symbol: gWallmasterMiddleFingerProximalLimb
+  limb_type: Standard
+
+gWallmasterMiddleFingerRootLimb:
+  type: OOT:LIMB
+  offset: 0x8EC0
+  symbol: gWallmasterMiddleFingerRootLimb
+  limb_type: Standard
+
+gWallmasterMissAnim:
+  type: OOT:ANIMATION
+  offset: 0x3120
+  symbol: gWallmasterMissAnim
+
+gWallmasterPalmAndFingerPadTex:
+  type: TEXTURE
+  offset: 0x8C30
+  symbol: gWallmasterPalmAndFingerPadTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterRecoverFromDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA4
+  symbol: gWallmasterRecoverFromDamageAnim
+
+gWallmasterRingFingerDistalDL:
+  type: GFX
+  offset: 0x7408
+  symbol: gWallmasterRingFingerDistalDL
+
+gWallmasterRingFingerDistalLimb:
+  type: OOT:LIMB
+  offset: 0x8EB4
+  symbol: gWallmasterRingFingerDistalLimb
+  limb_type: Standard
+
+gWallmasterRingFingerDistalRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E9C
+  symbol: gWallmasterRingFingerDistalRootLimb
+  limb_type: Standard
+
+gWallmasterRingFingerMiddleDL:
+  type: GFX
+  offset: 0x75A8
+  symbol: gWallmasterRingFingerMiddleDL
+
+gWallmasterRingFingerMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8EA8
+  symbol: gWallmasterRingFingerMiddleLimb
+  limb_type: Standard
+
+gWallmasterRingFingerProximalDL:
+  type: GFX
+  offset: 0x77C8
+  symbol: gWallmasterRingFingerProximalDL
+
+gWallmasterRingFingerProximalLimb:
+  type: OOT:LIMB
+  offset: 0x8E90
+  symbol: gWallmasterRingFingerProximalLimb
+  limb_type: Standard
+
+gWallmasterRingFingerRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E84
+  symbol: gWallmasterRingFingerRootLimb
+  limb_type: Standard
+
+gWallmasterRootLimb:
+  type: OOT:LIMB
+  offset: 0x8E30
+  symbol: gWallmasterRootLimb
+  limb_type: Standard
+
+gWallmasterSkel:
+  type: MM:SKELETON
+  offset: 0x8FB0
+  symbol: gWallmasterSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWallmasterStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xA054
+  symbol: gWallmasterStandUpAnim
+
+gWallmasterStopWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x9244
+  symbol: gWallmasterStopWalkAnim
+
+gWallmasterThumbDistalDL:
+  type: GFX
+  offset: 0x6660
+  symbol: gWallmasterThumbDistalDL
+
+gWallmasterThumbDistalLimb:
+  type: OOT:LIMB
+  offset: 0x8F44
+  symbol: gWallmasterThumbDistalLimb
+  limb_type: Standard
+
+gWallmasterThumbDistalRootLimb:
+  type: OOT:LIMB
+  offset: 0x8F2C
+  symbol: gWallmasterThumbDistalRootLimb
+  limb_type: Standard
+
+gWallmasterThumbMiddleDL:
+  type: GFX
+  offset: 0x6800
+  symbol: gWallmasterThumbMiddleDL
+
+gWallmasterThumbMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8F38
+  symbol: gWallmasterThumbMiddleLimb
+  limb_type: Standard
+
+gWallmasterThumbProximalDL:
+  type: GFX
+  offset: 0x6A20
+  symbol: gWallmasterThumbProximalDL
+
+gWallmasterThumbProximalLimb:
+  type: OOT:LIMB
+  offset: 0x8F20
+  symbol: gWallmasterThumbProximalLimb
+  limb_type: Standard
+
+gWallmasterThumbRootLimb:
+  type: OOT:LIMB
+  offset: 0x8F14
+  symbol: gWallmasterThumbRootLimb
+  limb_type: Standard
+
+gWallmasterWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x41F4
+  symbol: gWallmasterWalkAnim
+
+gWallmasterWristDL:
+  type: GFX
+  offset: 0x6C58
+  symbol: gWallmasterWristDL
+
+gWallmasterWristLimb:
+  type: OOT:LIMB
+  offset: 0x8F08
+  symbol: gWallmasterWristLimb
+  limb_type: Standard
+
+gWallmasterWristRootLimb:
+  type: OOT:LIMB
+  offset: 0x8EFC
+  symbol: gWallmasterWristRootLimb
+  limb_type: Standard
+
+gWallmasterWristSidesTex:
+  type: TEXTURE
+  offset: 0x89F0
+  symbol: gWallmasterWristSidesTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWallmasterWristTopTex:
+  type: TEXTURE
+  offset: 0x88F0
+  symbol: gWallmasterWristTopTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_wallmasterVtx_004210:
+  type: MM:ARRAY
+  offset: 0x004210
+  symbol: object_wallmasterVtx_004210
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0044C0:
+  type: MM:ARRAY
+  offset: 0x0044C0
+  symbol: object_wallmasterVtx_0044C0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0046B0:
+  type: MM:ARRAY
+  offset: 0x0046B0
+  symbol: object_wallmasterVtx_0046B0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0049D0:
+  type: MM:ARRAY
+  offset: 0x0049D0
+  symbol: object_wallmasterVtx_0049D0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_004BA0:
+  type: MM:ARRAY
+  offset: 0x004BA0
+  symbol: object_wallmasterVtx_004BA0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_004D90:
+  type: MM:ARRAY
+  offset: 0x004D90
+  symbol: object_wallmasterVtx_004D90
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0050C0:
+  type: MM:ARRAY
+  offset: 0x0050C0
+  symbol: object_wallmasterVtx_0050C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0052F0:
+  type: MM:ARRAY
+  offset: 0x0052F0
+  symbol: object_wallmasterVtx_0052F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0054D0:
+  type: MM:ARRAY
+  offset: 0x0054D0
+  symbol: object_wallmasterVtx_0054D0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005800:
+  type: MM:ARRAY
+  offset: 0x005800
+  symbol: object_wallmasterVtx_005800
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005A20:
+  type: MM:ARRAY
+  offset: 0x005A20
+  symbol: object_wallmasterVtx_005A20
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005C10:
+  type: MM:ARRAY
+  offset: 0x005C10
+  symbol: object_wallmasterVtx_005C10
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_005F40:
+  type: MM:ARRAY
+  offset: 0x005F40
+  symbol: object_wallmasterVtx_005F40
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_006180:
+  type: MM:ARRAY
+  offset: 0x006180
+  symbol: object_wallmasterVtx_006180
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wallmasterVtx_0082E8:
+  type: MM:ARRAY
+  offset: 0x0082E8
+  symbol: object_wallmasterVtx_0082E8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWallmasterSkelLimbs:
+  type: BLOB
+  offset: 0x8F50
+  symbol: gWallmasterSkelLimbs
+  size: 0

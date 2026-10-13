@@ -6,9 +6,13 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdint>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "TorchExtract.h"
@@ -23,6 +27,27 @@ static void Usage(const char* argv0) {
 static bool IsRom(const fs::path& path) {
     const std::string ext = path.extension().string();
     return ext == ".z64" || ext == ".n64" || ext == ".v64";
+}
+
+// Reads a rom and puts it in big-endian (.z64) order, since config.yml only lists hashes of
+// big-endian dumps. .v64 swaps each pair of bytes, .n64 is little-endian 32-bit words.
+static std::vector<uint8_t> ReadRomBigEndian(const std::string& path) {
+    std::ifstream file(path, std::ios::binary);
+    std::vector<uint8_t> rom((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    if (rom.size() < 4) {
+        return rom;
+    }
+    if (rom[0] == 0x37) {
+        for (size_t i = 0; i + 1 < rom.size(); i += 2) {
+            std::swap(rom[i], rom[i + 1]);
+        }
+    } else if (rom[0] == 0x40) {
+        for (size_t i = 0; i + 3 < rom.size(); i += 4) {
+            std::swap(rom[i], rom[i + 3]);
+            std::swap(rom[i + 1], rom[i + 2]);
+        }
+    }
+    return rom;
 }
 
 // A directory argument extracts every rom directly inside it, which is how the target is
@@ -98,7 +123,7 @@ int main(int argc, char** argv) {
 
     for (const auto& rom : roms) {
         // A fresh extraction per ROM; torch names the archive from config.yml.
-        const std::string archive = SohTorch::Extract(rom, src, dest, version, nullptr);
+        const std::string archive = SohTorch::Extract(ReadRomBigEndian(rom), src, dest, version, nullptr);
         if (archive.empty()) {
             fprintf(stderr, "failed to extract %s\n", rom.c_str());
             return 1;

@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 128, 0x00C6AB00 ]
+  virtual: [ 0x809D03B0, 0x00C6AB00 ]
+
+sBioBabaLilypadCol:
+  type: MM:COLLISION
+  offset: 0x3620
+  symbol: sBioBabaLilypadCol
+

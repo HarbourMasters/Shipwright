@@ -1,0 +1,178 @@
+:config:
+  segments:
+    - [ 2, 0x01DDE6A0 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_001EA0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_002DA0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_003AC0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_004FC0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_005560.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_005B00.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_0060A0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_006640.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_006BE0.yml
+    - GC_US/scenes/nonmq/Z2_KYOJINNOMASet_007180.yml
+Z2_KYOJINNOMA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_KYOJINNOMA
+
+
+Z2_KYOJINNOMACutsceneData_00010C:
+  type: MM:CUTSCENE
+  offset: 0x00010C
+  symbol: Z2_KYOJINNOMACutsceneData_00010C
+  size: 6688
+
+Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C00:
+  type: BLOB
+  offset: 0x001C00
+  symbol: Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C00
+  size: 0
+
+Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C08:
+  type: BLOB
+  offset: 0x001C08
+  symbol: Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C08
+  size: 0
+
+Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C10:
+  type: BLOB
+  offset: 0x001C10
+  symbol: Z2_KYOJINNOMATexAnim_001C18TexScrollParams_001C10
+  size: 0
+
+Z2_KYOJINNOMATexAnim_001C18:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001C18
+  symbol: Z2_KYOJINNOMATexAnim_001C18
+
+Z2_KYOJINNOMACollisionHeader_001E70:
+  type: MM:COLLISION
+  offset: 0x001E70
+  symbol: Z2_KYOJINNOMACollisionHeader_001E70
+
+Z2_KYOJINNOMACutsceneData_001F7C:
+  type: MM:CUTSCENE
+  offset: 0x001F7C
+  symbol: Z2_KYOJINNOMACutsceneData_001F7C
+  size: 3416
+
+Z2_KYOJINNOMACutsceneData_002E7C:
+  type: MM:CUTSCENE
+  offset: 0x002E7C
+  symbol: Z2_KYOJINNOMACutsceneData_002E7C
+  size: 2936
+
+Z2_KYOJINNOMACutsceneData_003B9C:
+  type: MM:CUTSCENE
+  offset: 0x003B9C
+  symbol: Z2_KYOJINNOMACutsceneData_003B9C
+  size: 4952
+
+Z2_KYOJINNOMACutsceneData_00509C:
+  type: MM:CUTSCENE
+  offset: 0x00509C
+  symbol: Z2_KYOJINNOMACutsceneData_00509C
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_00563C:
+  type: MM:CUTSCENE
+  offset: 0x00563C
+  symbol: Z2_KYOJINNOMACutsceneData_00563C
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_005BDC:
+  type: MM:CUTSCENE
+  offset: 0x005BDC
+  symbol: Z2_KYOJINNOMACutsceneData_005BDC
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_00617C:
+  type: MM:CUTSCENE
+  offset: 0x00617C
+  symbol: Z2_KYOJINNOMACutsceneData_00617C
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_00671C:
+  type: MM:CUTSCENE
+  offset: 0x00671C
+  symbol: Z2_KYOJINNOMACutsceneData_00671C
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_006CBC:
+  type: MM:CUTSCENE
+  offset: 0x006CBC
+  symbol: Z2_KYOJINNOMACutsceneData_006CBC
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_00725C:
+  type: MM:CUTSCENE
+  offset: 0x00725C
+  symbol: Z2_KYOJINNOMACutsceneData_00725C
+  size: 3416
+
+Z2_KYOJINNOMACutsceneData_007FBC:
+  type: MM:CUTSCENE
+  offset: 0x007FBC
+  symbol: Z2_KYOJINNOMACutsceneData_007FBC
+  size: 2936
+
+Z2_KYOJINNOMACutsceneData_008B3C:
+  type: MM:CUTSCENE
+  offset: 0x008B3C
+  symbol: Z2_KYOJINNOMACutsceneData_008B3C
+  size: 4952
+
+Z2_KYOJINNOMACutsceneData_009E9C:
+  type: MM:CUTSCENE
+  offset: 0x009E9C
+  symbol: Z2_KYOJINNOMACutsceneData_009E9C
+  size: 1016
+
+Z2_KYOJINNOMACutsceneData_00A29C:
+  type: MM:CUTSCENE
+  offset: 0x00A29C
+  symbol: Z2_KYOJINNOMACutsceneData_00A29C
+  size: 6688
+
+Z2_KYOJINNOMATex_00BDB0:
+  type: TEXTURE
+  offset: 0x00BDB0
+  symbol: Z2_KYOJINNOMATex_00BDB0
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_KYOJINNOMATex_00CDB0:
+  type: TEXTURE
+  offset: 0x00CDB0
+  symbol: Z2_KYOJINNOMATex_00CDB0
+  format: IA4
+  width: 128
+  height: 32
+
+Z2_KYOJINNOMATex_00D5B0:
+  type: TEXTURE
+  offset: 0x00D5B0
+  symbol: Z2_KYOJINNOMATex_00D5B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KYOJINNOMATex_00DDB0:
+  type: TEXTURE
+  offset: 0x00DDB0
+  symbol: Z2_KYOJINNOMATex_00DDB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KYOJINNOMATex_00E5B0:
+  type: TEXTURE
+  offset: 0x00E5B0
+  symbol: Z2_KYOJINNOMATex_00E5B0
+  format: RGBA16
+  width: 32
+  height: 32

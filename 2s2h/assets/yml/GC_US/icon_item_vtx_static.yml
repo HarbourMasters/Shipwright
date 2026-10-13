@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [ 11, 0x00975DE0 ]
+    - [ 8, 0x0098FAE0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 12, 0x00975DE0 ]
+    - [ 13, 0x00975DE0 ]
+  external_files:
+    - GC_US/icon_item_static_yar.yml
+    - GC_US/objects/gameplay_keep.yml
+
+gAButtonIconDL:
+  type: GFX
+  offset: 0x188
+  symbol: gAButtonIconDL
+
+gBButtonIconDL:
+  type: GFX
+  offset: 0x1E0
+  symbol: gBButtonIconDL
+
+gCButtonIconsDL:
+  type: GFX
+  offset: 0x130
+  symbol: gCButtonIconsDL
+
+gItemNamePanelDL:
+  type: GFX
+  offset: 0x0
+  symbol: gItemNamePanelDL
+
+gPromptCursorLeftDL:
+  type: GFX
+  offset: 0x238
+  symbol: gPromptCursorLeftDL
+
+gPromptCursorRightDL:
+  type: GFX
+  offset: 0x288
+  symbol: gPromptCursorRightDL
+
+gRButtonIconDL:
+  type: GFX
+  offset: 0xE0
+  symbol: gRButtonIconDL
+
+gZButtonIconDL:
+  type: GFX
+  offset: 0x90
+  symbol: gZButtonIconDL
+

@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x010A2110 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010A2110 ]
+    - [ 9, 0x010A2110 ]
+    - [ 10, 0x010A2110 ]
+    - [ 11, 0x010A2110 ]
+    - [ 12, 0x010A2110 ]
+    - [ 13, 0x010A2110 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiBugContainerContentsDL:
+  type: GFX
+  offset: 0x830
+  symbol: gGiBugContainerContentsDL
+
+gGiBugContainerGlassDL:
+  type: GFX
+  offset: 0xB20
+  symbol: gGiBugContainerGlassDL
+
+
+object_gi_insectVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_insectVtx_000000
+  count: 113
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_insectVtx_000710:
+  type: MM:ARRAY
+  offset: 0x000710
+  symbol: object_gi_insectVtx_000710
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

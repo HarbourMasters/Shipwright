@@ -1,0 +1,1022 @@
+:config:
+  segments:
+    - [ 6, 0x0122BBA0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0122BBA0 ]
+    - [ 9, 0x0122BBA0 ]
+    - [ 10, 0x0122BBA0 ]
+    - [ 11, 0x0122BBA0 ]
+    - [ 12, 0x0122BBA0 ]
+    - [ 13, 0x0122BBA0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSkullKidBeakTex:
+  type: TEXTURE
+  offset: 0x1A620
+  symbol: gSkullKidBeakTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidBentOverHeadTwitchAnim:
+  type: OOT:ANIMATION
+  offset: 0x15C14
+  symbol: gSkullKidBentOverHeadTwitchAnim
+
+gSkullKidBentOverLookUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x16508
+  symbol: gSkullKidBentOverLookUpAnim
+
+gSkullKidCallDownMoonLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3068
+  symbol: gSkullKidCallDownMoonLoopAnim
+
+gSkullKidCallDownMoonStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x2774
+  symbol: gSkullKidCallDownMoonStartAnim
+
+gSkullKidClothingFringeTex:
+  type: TEXTURE
+  offset: 0x117D8
+  symbol: gSkullKidClothingFringeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSkullKidEmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x117D0
+  symbol: gSkullKidEmptyTexAnim
+
+gSkullKidEyeTex:
+  type: TEXTURE
+  offset: 0x1A5A0
+  symbol: gSkullKidEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSkullKidFluteDL:
+  type: GFX
+  offset: 0x16620
+  symbol: gSkullKidFluteDL
+
+gSkullKidFluteHoldingLeftHandDL:
+  type: GFX
+  offset: 0x8A80
+  symbol: gSkullKidFluteHoldingLeftHandDL
+
+gSkullKidFluteHoleTex:
+  type: TEXTURE
+  offset: 0x1AEA0
+  symbol: gSkullKidFluteHoleTex
+  format: IA16
+  width: 16
+  height: 8
+
+gSkullKidFluteTex:
+  type: TEXTURE
+  offset: 0x1AE20
+  symbol: gSkullKidFluteTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSkullKidHandTex:
+  type: TEXTURE
+  offset: 0x1A1A0
+  symbol: gSkullKidHandTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gSkullKidHatBrimDL:
+  type: GFX
+  offset: 0xFA78
+  symbol: gSkullKidHatBrimDL
+
+gSkullKidHatBrimLimb:
+  type: OOT:LIMB
+  offset: 0x132A4
+  symbol: gSkullKidHatBrimLimb
+  limb_type: Standard
+
+gSkullKidHatNarrowSectionDL:
+  type: GFX
+  offset: 0xFCE8
+  symbol: gSkullKidHatNarrowSectionDL
+
+gSkullKidHatNarrowSectionLimb:
+  type: OOT:LIMB
+  offset: 0x132BC
+  symbol: gSkullKidHatNarrowSectionLimb
+  limb_type: Standard
+
+gSkullKidHatRingsDL:
+  type: GFX
+  offset: 0xFBD0
+  symbol: gSkullKidHatRingsDL
+
+gSkullKidHatRingsLimb:
+  type: OOT:LIMB
+  offset: 0x132B0
+  symbol: gSkullKidHatRingsLimb
+  limb_type: Standard
+
+gSkullKidHatTopDL:
+  type: GFX
+  offset: 0xFDF8
+  symbol: gSkullKidHatTopDL
+
+gSkullKidHatTopLimb:
+  type: OOT:LIMB
+  offset: 0x132C8
+  symbol: gSkullKidHatTopLimb
+  limb_type: Standard
+
+gSkullKidHeadLimb:
+  type: OOT:LIMB
+  offset: 0x13298
+  symbol: gSkullKidHeadLimb
+  limb_type: Standard
+
+gSkullKidHeadSkinTex:
+  type: TEXTURE
+  offset: 0x1A820
+  symbol: gSkullKidHeadSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidHeadWithLipsDL:
+  type: GFX
+  offset: 0xF908
+  symbol: gSkullKidHeadWithLipsDL
+
+gSkullKidHipShakeAndJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x14920
+  symbol: gSkullKidHipShakeAndJumpAnim
+
+gSkullKidIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D008
+  symbol: gSkullKidIdleAnim
+
+gSkullKidLaughingEyesDL:
+  type: GFX
+  offset: 0xAE30
+  symbol: gSkullKidLaughingEyesDL
+
+gSkullKidLaughingHeadDL:
+  type: GFX
+  offset: 0xAEC0
+  symbol: gSkullKidLaughingHeadDL
+
+gSkullKidLeftFootDL:
+  type: GFX
+  offset: 0x111A8
+  symbol: gSkullKidLeftFootDL
+
+gSkullKidLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1322C
+  symbol: gSkullKidLeftFootLimb
+  limb_type: Standard
+
+gSkullKidLeftForearmDL:
+  type: GFX
+  offset: 0x10868
+  symbol: gSkullKidLeftForearmDL
+
+gSkullKidLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x13250
+  symbol: gSkullKidLeftForearmLimb
+  limb_type: Standard
+
+gSkullKidLeftHandAndFluteDL:
+  type: GFX
+  offset: 0x10A50
+  symbol: gSkullKidLeftHandAndFluteDL
+
+gSkullKidLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x1325C
+  symbol: gSkullKidLeftHandLimb
+  limb_type: Standard
+
+gSkullKidLeftShinDL:
+  type: GFX
+  offset: 0x11080
+  symbol: gSkullKidLeftShinDL
+
+gSkullKidLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x13220
+  symbol: gSkullKidLeftShinLimb
+  limb_type: Standard
+
+gSkullKidLeftThighDL:
+  type: GFX
+  offset: 0x10E30
+  symbol: gSkullKidLeftThighDL
+
+gSkullKidLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x13214
+  symbol: gSkullKidLeftThighLimb
+  limb_type: Standard
+
+gSkullKidLeftUpperArmDL:
+  type: GFX
+  offset: 0x10560
+  symbol: gSkullKidLeftUpperArmDL
+
+gSkullKidLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x13244
+  symbol: gSkullKidLeftUpperArmLimb
+  limb_type: Standard
+
+gSkullKidLinkMask1DL:
+  type: GFX
+  offset: 0x39A0
+  symbol: gSkullKidLinkMask1DL
+
+gSkullKidLinkMask2DL:
+  type: GFX
+  offset: 0x46B0
+  symbol: gSkullKidLinkMask2DL
+
+gSkullKidLinkMask3DL:
+  type: GFX
+  offset: 0x53C0
+  symbol: gSkullKidLinkMask3DL
+
+gSkullKidLinkMaskEarTex:
+  type: TEXTURE
+  offset: 0x17720
+  symbol: gSkullKidLinkMaskEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidLinkMaskEyeTex:
+  type: TEXTURE
+  offset: 0x16720
+  symbol: gSkullKidLinkMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSkullKidLinkMaskHairTex:
+  type: TEXTURE
+  offset: 0x17420
+  symbol: gSkullKidLinkMaskHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidLinkMaskHatTex:
+  type: TEXTURE
+  offset: 0x17620
+  symbol: gSkullKidLinkMaskHatTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gSkullKidLinkMaskMouthTex:
+  type: TEXTURE
+  offset: 0x17020
+  symbol: gSkullKidLinkMaskMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSkullKidLinkMaskNoseTex:
+  type: TEXTURE
+  offset: 0x16F20
+  symbol: gSkullKidLinkMaskNoseTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gSkullKidLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x1030
+  symbol: gSkullKidLookAroundAnim
+
+gSkullKidMajorasMask1DL:
+  type: GFX
+  offset: 0x6BB0
+  symbol: gSkullKidMajorasMask1DL
+
+gSkullKidMajorasMask2DL:
+  type: GFX
+  offset: 0x79F0
+  symbol: gSkullKidMajorasMask2DL
+
+gSkullKidMajorasMaskBackTex:
+  type: TEXTURE
+  offset: 0x19920
+  symbol: gSkullKidMajorasMaskBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSkullKidMajorasMaskEyeTex:
+  type: TEXTURE
+  offset: 0x5920
+  symbol: gSkullKidMajorasMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSkullKidMajorasMaskEyesDL:
+  type: GFX
+  offset: 0x5870
+  symbol: gSkullKidMajorasMaskEyesDL
+
+gSkullKidMajorasMaskFaceTex:
+  type: TEXTURE
+  offset: 0x18120
+  symbol: gSkullKidMajorasMaskFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSkullKidMajorasMaskSpikes1Tex:
+  type: TEXTURE
+  offset: 0x19120
+  symbol: gSkullKidMajorasMaskSpikes1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidMajorasMaskSpikes2Tex:
+  type: TEXTURE
+  offset: 0x19320
+  symbol: gSkullKidMajorasMaskSpikes2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidMajorasMaskSpikes3Tex:
+  type: TEXTURE
+  offset: 0x19520
+  symbol: gSkullKidMajorasMaskSpikes3Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidMajorasMaskSpikes4Tex:
+  type: TEXTURE
+  offset: 0x19720
+  symbol: gSkullKidMajorasMaskSpikes4Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidMaskHoldingRightHandDL:
+  type: GFX
+  offset: 0x9710
+  symbol: gSkullKidMaskHoldingRightHandDL
+
+gSkullKidNeckDL:
+  type: GFX
+  offset: 0xF8B8
+  symbol: gSkullKidNeckDL
+
+gSkullKidNeckLimb:
+  type: OOT:LIMB
+  offset: 0x1328C
+  symbol: gSkullKidNeckLimb
+  limb_type: Standard
+
+gSkullKidNormalEyesDL:
+  type: GFX
+  offset: 0xA530
+  symbol: gSkullKidNormalEyesDL
+
+gSkullKidNormalHeadDL:
+  type: GFX
+  offset: 0xA5C0
+  symbol: gSkullKidNormalHeadDL
+
+gSkullKidOcarinaHoldingRightHandDL:
+  type: GFX
+  offset: 0x9DA0
+  symbol: gSkullKidOcarinaHoldingRightHandDL
+
+gSkullKidOcarinaOfTimeDL:
+  type: GFX
+  offset: 0xCAD0
+  symbol: gSkullKidOcarinaOfTimeDL
+
+gSkullKidOcarinaOfTimeTex:
+  type: TEXTURE
+  offset: 0x1AA20
+  symbol: gSkullKidOcarinaOfTimeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSkullKidOoTStyleMouthTex:
+  type: TEXTURE
+  offset: 0x11FD8
+  symbol: gSkullKidOoTStyleMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidOpenLeftHandDL:
+  type: GFX
+  offset: 0x87B0
+  symbol: gSkullKidOpenLeftHandDL
+
+gSkullKidPantsAndWristsTex:
+  type: TEXTURE
+  offset: 0x121D8
+  symbol: gSkullKidPantsAndWristsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidPelvisDL:
+  type: GFX
+  offset: 0x10C60
+  symbol: gSkullKidPelvisDL
+
+gSkullKidPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x131E4
+  symbol: gSkullKidPelvisLimb
+  limb_type: Standard
+
+gSkullKidRightFootDL:
+  type: GFX
+  offset: 0x11688
+  symbol: gSkullKidRightFootDL
+
+gSkullKidRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x13208
+  symbol: gSkullKidRightFootLimb
+  limb_type: Standard
+
+gSkullKidRightForearmDL:
+  type: GFX
+  offset: 0x10230
+  symbol: gSkullKidRightForearmDL
+
+gSkullKidRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x13274
+  symbol: gSkullKidRightForearmLimb
+  limb_type: Standard
+
+gSkullKidRightHandDL:
+  type: GFX
+  offset: 0x10428
+  symbol: gSkullKidRightHandDL
+
+gSkullKidRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x13280
+  symbol: gSkullKidRightHandLimb
+  limb_type: Standard
+
+gSkullKidRightShinDL:
+  type: GFX
+  offset: 0x11560
+  symbol: gSkullKidRightShinDL
+
+gSkullKidRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x131FC
+  symbol: gSkullKidRightShinLimb
+  limb_type: Standard
+
+gSkullKidRightThighDL:
+  type: GFX
+  offset: 0x112F0
+  symbol: gSkullKidRightThighDL
+
+gSkullKidRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x131F0
+  symbol: gSkullKidRightThighLimb
+  limb_type: Standard
+
+gSkullKidRightUpperArmDL:
+  type: GFX
+  offset: 0xFF30
+  symbol: gSkullKidRightUpperArmDL
+
+gSkullKidRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x13268
+  symbol: gSkullKidRightUpperArmLimb
+  limb_type: Standard
+
+gSkullKidRingTex:
+  type: TEXTURE
+  offset: 0x11BD8
+  symbol: gSkullKidRingTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSkullKidRootLimb:
+  type: OOT:LIMB
+  offset: 0x131D8
+  symbol: gSkullKidRootLimb
+  limb_type: Standard
+
+gSkullKidShakeHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C21C
+  symbol: gSkullKidShakeHeadAnim
+
+gSkullKidShawlTex:
+  type: TEXTURE
+  offset: 0x125D8
+  symbol: gSkullKidShawlTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSkullKidShoeTex:
+  type: TEXTURE
+  offset: 0x12DD8
+  symbol: gSkullKidShoeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSkullKidSkel:
+  type: MM:SKELETON
+  offset: 0x13328
+  symbol: gSkullKidSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSkullKidSkinTex:
+  type: TEXTURE
+  offset: 0x123D8
+  symbol: gSkullKidSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gSkullKidSpankAnim:
+  type: OOT:ANIMATION
+  offset: 0x15028
+  symbol: gSkullKidSpankAnim
+
+gSkullKidTPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0xCC94
+  symbol: gSkullKidTPoseAnim
+
+gSkullKidTelescopeLookUpLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xC964
+  symbol: gSkullKidTelescopeLookUpLoopAnim
+
+gSkullKidTelescopeLookUpStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xBB2C
+  symbol: gSkullKidTelescopeLookUpStartAnim
+
+gSkullKidTorsoDL:
+  type: GFX
+  offset: 0xF6F0
+  symbol: gSkullKidTorsoDL
+
+gSkullKidTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x13238
+  symbol: gSkullKidTorsoLimb
+  limb_type: Standard
+
+gSkullKidTwoFingersExtendedLeftHandDL:
+  type: GFX
+  offset: 0x90C0
+  symbol: gSkullKidTwoFingersExtendedLeftHandDL
+
+gSkullKidUntexturedLeftHandDL:
+  type: GFX
+  offset: 0x84C0
+  symbol: gSkullKidUntexturedLeftHandDL
+
+gSkullKidUntexturedRightHandDL:
+  type: GFX
+  offset: 0x9AC0
+  symbol: gSkullKidUntexturedRightHandDL
+
+gSkullKidUnusedEye2Tex:
+  type: TEXTURE
+  offset: 0x1A120
+  symbol: gSkullKidUnusedEye2Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSkullKidUnusedEyeTex:
+  type: TEXTURE
+  offset: 0x7EA0
+  symbol: gSkullKidUnusedEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gSkullKidUnusedEyesDL:
+  type: GFX
+  offset: 0x7E10
+  symbol: gSkullKidUnusedEyesDL
+
+gSkullKidUnusedMajorasMaskEyeTex:
+  type: TEXTURE
+  offset: 0x17920
+  symbol: gSkullKidUnusedMajorasMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSkullKidWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D3D0
+  symbol: gSkullKidWalkAnim
+
+
+object_stkVtx_003080:
+  type: MM:ARRAY
+  offset: 0x003080
+  symbol: object_stkVtx_003080
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_003D90:
+  type: MM:ARRAY
+  offset: 0x003D90
+  symbol: object_stkVtx_003D90
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_004AA0:
+  type: MM:ARRAY
+  offset: 0x004AA0
+  symbol: object_stkVtx_004AA0
+  count: 146
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_0057B0:
+  type: MM:ARRAY
+  offset: 0x0057B0
+  symbol: object_stkVtx_0057B0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_006120:
+  type: MM:ARRAY
+  offset: 0x006120
+  symbol: object_stkVtx_006120
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_006F60:
+  type: MM:ARRAY
+  offset: 0x006F60
+  symbol: object_stkVtx_006F60
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_007DA0:
+  type: MM:ARRAY
+  offset: 0x007DA0
+  symbol: object_stkVtx_007DA0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_007F20:
+  type: MM:ARRAY
+  offset: 0x007F20
+  symbol: object_stkVtx_007F20
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_008640:
+  type: MM:ARRAY
+  offset: 0x008640
+  symbol: object_stkVtx_008640
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_0088E0:
+  type: MM:ARRAY
+  offset: 0x0088E0
+  symbol: object_stkVtx_0088E0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_008BB0:
+  type: MM:ARRAY
+  offset: 0x008BB0
+  symbol: object_stkVtx_008BB0
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_009240:
+  type: MM:ARRAY
+  offset: 0x009240
+  symbol: object_stkVtx_009240
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_0098D0:
+  type: MM:ARRAY
+  offset: 0x0098D0
+  symbol: object_stkVtx_0098D0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_009BF0:
+  type: MM:ARRAY
+  offset: 0x009BF0
+  symbol: object_stkVtx_009BF0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_009EF0:
+  type: MM:ARRAY
+  offset: 0x009EF0
+  symbol: object_stkVtx_009EF0
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00A490:
+  type: MM:ARRAY
+  offset: 0x00A490
+  symbol: object_stkVtx_00A490
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00A7F0:
+  type: MM:ARRAY
+  offset: 0x00A7F0
+  symbol: object_stkVtx_00A7F0
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00AD90:
+  type: MM:ARRAY
+  offset: 0x00AD90
+  symbol: object_stkVtx_00AD90
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00C980:
+  type: MM:ARRAY
+  offset: 0x00C980
+  symbol: object_stkVtx_00C980
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00CCB0:
+  type: MM:ARRAY
+  offset: 0x00CCB0
+  symbol: object_stkVtx_00CCB0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00CE90:
+  type: MM:ARRAY
+  offset: 0x00CE90
+  symbol: object_stkVtx_00CE90
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00CFA0:
+  type: MM:ARRAY
+  offset: 0x00CFA0
+  symbol: object_stkVtx_00CFA0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D0D0:
+  type: MM:ARRAY
+  offset: 0x00D0D0
+  symbol: object_stkVtx_00D0D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D260:
+  type: MM:ARRAY
+  offset: 0x00D260
+  symbol: object_stkVtx_00D260
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D4A0:
+  type: MM:ARRAY
+  offset: 0x00D4A0
+  symbol: object_stkVtx_00D4A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D4D0:
+  type: MM:ARRAY
+  offset: 0x00D4D0
+  symbol: object_stkVtx_00D4D0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D6E0:
+  type: MM:ARRAY
+  offset: 0x00D6E0
+  symbol: object_stkVtx_00D6E0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00D910:
+  type: MM:ARRAY
+  offset: 0x00D910
+  symbol: object_stkVtx_00D910
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00DCE0:
+  type: MM:ARRAY
+  offset: 0x00DCE0
+  symbol: object_stkVtx_00DCE0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00DE50:
+  type: MM:ARRAY
+  offset: 0x00DE50
+  symbol: object_stkVtx_00DE50
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00E070:
+  type: MM:ARRAY
+  offset: 0x00E070
+  symbol: object_stkVtx_00E070
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00E490:
+  type: MM:ARRAY
+  offset: 0x00E490
+  symbol: object_stkVtx_00E490
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00E7F0:
+  type: MM:ARRAY
+  offset: 0x00E7F0
+  symbol: object_stkVtx_00E7F0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00E990:
+  type: MM:ARRAY
+  offset: 0x00E990
+  symbol: object_stkVtx_00E990
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00EAF0:
+  type: MM:ARRAY
+  offset: 0x00EAF0
+  symbol: object_stkVtx_00EAF0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00EE20:
+  type: MM:ARRAY
+  offset: 0x00EE20
+  symbol: object_stkVtx_00EE20
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00EFC0:
+  type: MM:ARRAY
+  offset: 0x00EFC0
+  symbol: object_stkVtx_00EFC0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00F120:
+  type: MM:ARRAY
+  offset: 0x00F120
+  symbol: object_stkVtx_00F120
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stkVtx_00F450:
+  type: MM:ARRAY
+  offset: 0x00F450
+  symbol: object_stkVtx_00F450
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSkullKidSkelLimbs:
+  type: BLOB
+  offset: 0x132D4
+  symbol: gSkullKidSkelLimbs
+  size: 0
+
+object_stkVtx_016520:
+  type: MM:ARRAY
+  offset: 0x016520
+  symbol: object_stkVtx_016520
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

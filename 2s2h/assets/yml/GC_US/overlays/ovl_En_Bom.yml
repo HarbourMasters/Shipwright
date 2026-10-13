@@ -1,0 +1,98 @@
+:config:
+  segments:
+    - [ 128, 0x00B79AC0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x8086D8A0, 0x00B79AC0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPowderKegBarrelDL:
+  type: GFX
+  offset: 0x2EF0
+  symbol: gPowderKegBarrelDL
+
+gPowderKegBarrelTLUT:
+  type: TEXTURE
+  offset: 0x22B0
+  symbol: gPowderKegBarrelTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPowderKegBarrelTex:
+  type: TEXTURE
+  offset: 0x24B0
+  symbol: gPowderKegBarrelTex
+  format: CI8
+  width: 32
+  height: 32
+
+gPowderKegFuseMaterialDL:
+  type: GFX
+  offset: 0x21E8
+  symbol: gPowderKegFuseMaterialDL
+
+gPowderKegFuseModel1DL:
+  type: GFX
+  offset: 0x2270
+  symbol: gPowderKegFuseModel1DL
+
+gPowderKegFuseModel2DL:
+  type: GFX
+  offset: 0x2290
+  symbol: gPowderKegFuseModel2DL
+
+gPowderKegFuseTex:
+  type: TEXTURE
+  offset: 0x21E0
+  symbol: gPowderKegFuseTex
+  format: I8
+  width: 2
+  height: 2
+
+gPowderKegFuseVtx:
+  type: MM:ARRAY
+  offset: 0x2160
+  symbol: gPowderKegFuseVtx
+  count: 8
+  array_type: VTX
+
+gPowderKegGoronSkullDL:
+  type: GFX
+  offset: 0x3548
+  symbol: gPowderKegGoronSkullDL
+
+gPowderKegGoronSkullTLUT:
+  type: TEXTURE
+  offset: 0x3048
+  symbol: gPowderKegGoronSkullTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPowderKegGoronSkullTex:
+  type: TEXTURE
+  offset: 0x3248
+  symbol: gPowderKegGoronSkullTex
+  format: CI8
+  width: 16
+  height: 32
+
+
+ovl_En_BomVtx_0028B0:
+  type: MM:ARRAY
+  offset: 0x0028B0
+  symbol: ovl_En_BomVtx_0028B0
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_BomVtx_003448:
+  type: MM:ARRAY
+  offset: 0x003448
+  symbol: ovl_En_BomVtx_003448
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

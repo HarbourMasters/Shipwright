@@ -1,0 +1,420 @@
+:config:
+  segments:
+    - [ 6, 0x00FC90C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FC90C0 ]
+    - [ 9, 0x00FC90C0 ]
+    - [ 10, 0x00FC90C0 ]
+    - [ 11, 0x00FC90C0 ]
+    - [ 12, 0x00FC90C0 ]
+    - [ 13, 0x00FC90C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gHylianYoungWomanBrownHairFaceTex:
+  type: TEXTURE
+  offset: 0x3FC
+  symbol: gHylianYoungWomanBrownHairFaceTex
+  format: CI8
+  width: 8
+  height: 16
+
+gHylianYoungWomanBrownHairSkinTex:
+  type: TEXTURE
+  offset: 0x3BC
+  symbol: gHylianYoungWomanBrownHairSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHylianYoungWomanBrownHairTex:
+  type: TEXTURE
+  offset: 0x33C
+  symbol: gHylianYoungWomanBrownHairTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHylianYoungWomanDressNeckTex:
+  type: TEXTURE
+  offset: 0x4BC
+  symbol: gHylianYoungWomanDressNeckTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHylianYoungWomanDressTex:
+  type: TEXTURE
+  offset: 0x47C
+  symbol: gHylianYoungWomanDressTex
+  format: I8
+  width: 8
+  height: 8
+
+gHylianYoungWomanHandTex:
+  type: TEXTURE
+  offset: 0x37C
+  symbol: gHylianYoungWomanHandTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHylianYoungWomanHeadBrownHairDL:
+  type: GFX
+  offset: 0x1300
+  symbol: gHylianYoungWomanHeadBrownHairDL
+
+gHylianYoungWomanHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: gHylianYoungWomanHeadLimb
+  limb_type: Standard
+
+gHylianYoungWomanHeadOrangeHairDL:
+  type: GFX
+  offset: 0x2860
+  symbol: gHylianYoungWomanHeadOrangeHairDL
+
+gHylianYoungWomanLeftFootDL:
+  type: GFX
+  offset: 0x20A8
+  symbol: gHylianYoungWomanLeftFootDL
+
+gHylianYoungWomanLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: gHylianYoungWomanLeftFootLimb
+  limb_type: Standard
+
+gHylianYoungWomanLeftForearmDL:
+  type: GFX
+  offset: 0x19A8
+  symbol: gHylianYoungWomanLeftForearmDL
+
+gHylianYoungWomanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: gHylianYoungWomanLeftForearmLimb
+  limb_type: Standard
+
+gHylianYoungWomanLeftHandDL:
+  type: GFX
+  offset: 0x18C8
+  symbol: gHylianYoungWomanLeftHandDL
+
+gHylianYoungWomanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: gHylianYoungWomanLeftHandLimb
+  limb_type: Standard
+
+gHylianYoungWomanLeftShinDL:
+  type: GFX
+  offset: 0x2170
+  symbol: gHylianYoungWomanLeftShinDL
+
+gHylianYoungWomanLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: gHylianYoungWomanLeftShinLimb
+  limb_type: Standard
+
+gHylianYoungWomanLeftThighDL:
+  type: GFX
+  offset: 0x2238
+  symbol: gHylianYoungWomanLeftThighDL
+
+gHylianYoungWomanLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: gHylianYoungWomanLeftThighLimb
+  limb_type: Standard
+
+gHylianYoungWomanLeftUpperArmDL:
+  type: GFX
+  offset: 0x1AC8
+  symbol: gHylianYoungWomanLeftUpperArmDL
+
+gHylianYoungWomanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: gHylianYoungWomanLeftUpperArmLimb
+  limb_type: Standard
+
+gHylianYoungWomanOrangeHairFaceTex:
+  type: TEXTURE
+  offset: 0x23D0
+  symbol: gHylianYoungWomanOrangeHairFaceTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gHylianYoungWomanOrangeHairSkinTex:
+  type: TEXTURE
+  offset: 0x24D0
+  symbol: gHylianYoungWomanOrangeHairSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gHylianYoungWomanPelvisDL:
+  type: GFX
+  offset: 0x2300
+  symbol: gHylianYoungWomanPelvisDL
+
+gHylianYoungWomanPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: gHylianYoungWomanPelvisLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightFootDL:
+  type: GFX
+  offset: 0x1E50
+  symbol: gHylianYoungWomanRightFootDL
+
+gHylianYoungWomanRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: gHylianYoungWomanRightFootLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightForearmDL:
+  type: GFX
+  offset: 0x16E8
+  symbol: gHylianYoungWomanRightForearmDL
+
+gHylianYoungWomanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: gHylianYoungWomanRightForearmLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightHandDL:
+  type: GFX
+  offset: 0x1608
+  symbol: gHylianYoungWomanRightHandDL
+
+gHylianYoungWomanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: gHylianYoungWomanRightHandLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightShinDL:
+  type: GFX
+  offset: 0x1F18
+  symbol: gHylianYoungWomanRightShinDL
+
+gHylianYoungWomanRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: gHylianYoungWomanRightShinLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightThighDL:
+  type: GFX
+  offset: 0x1FE0
+  symbol: gHylianYoungWomanRightThighDL
+
+gHylianYoungWomanRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: gHylianYoungWomanRightThighLimb
+  limb_type: Standard
+
+gHylianYoungWomanRightUpperArmDL:
+  type: GFX
+  offset: 0x1808
+  symbol: gHylianYoungWomanRightUpperArmDL
+
+gHylianYoungWomanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: gHylianYoungWomanRightUpperArmLimb
+  limb_type: Standard
+
+gHylianYoungWomanSkel:
+  type: MM:SKELETON
+  offset: 0xF0
+  symbol: gHylianYoungWomanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHylianYoungWomanSkinTex:
+  type: TEXTURE
+  offset: 0x2FC
+  symbol: gHylianYoungWomanSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gHylianYoungWomanTLUT:
+  type: TEXTURE
+  offset: 0xFC
+  symbol: gHylianYoungWomanTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHylianYoungWomanTorsoDL:
+  type: GFX
+  offset: 0x1B88
+  symbol: gHylianYoungWomanTorsoDL
+
+gHylianYoungWomanTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: gHylianYoungWomanTorsoLimb
+  limb_type: Standard
+
+
+gHylianYoungWomanSkelLimbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: gHylianYoungWomanSkelLimbs
+  size: 0
+
+object_cneVtx_000500:
+  type: MM:ARRAY
+  offset: 0x000500
+  symbol: object_cneVtx_000500
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000530:
+  type: MM:ARRAY
+  offset: 0x000530
+  symbol: object_cneVtx_000530
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000560:
+  type: MM:ARRAY
+  offset: 0x000560
+  symbol: object_cneVtx_000560
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000590:
+  type: MM:ARRAY
+  offset: 0x000590
+  symbol: object_cneVtx_000590
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_0005C0:
+  type: MM:ARRAY
+  offset: 0x0005C0
+  symbol: object_cneVtx_0005C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: object_cneVtx_0005F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000620:
+  type: MM:ARRAY
+  offset: 0x000620
+  symbol: object_cneVtx_000620
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000A70:
+  type: MM:ARRAY
+  offset: 0x000A70
+  symbol: object_cneVtx_000A70
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_cneVtx_000AD0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000BE0:
+  type: MM:ARRAY
+  offset: 0x000BE0
+  symbol: object_cneVtx_000BE0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000C90:
+  type: MM:ARRAY
+  offset: 0x000C90
+  symbol: object_cneVtx_000C90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000CF0:
+  type: MM:ARRAY
+  offset: 0x000CF0
+  symbol: object_cneVtx_000CF0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000E00:
+  type: MM:ARRAY
+  offset: 0x000E00
+  symbol: object_cneVtx_000E00
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_000EB0:
+  type: MM:ARRAY
+  offset: 0x000EB0
+  symbol: object_cneVtx_000EB0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_001230:
+  type: MM:ARRAY
+  offset: 0x001230
+  symbol: object_cneVtx_001230
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cneVtx_002550:
+  type: MM:ARRAY
+  offset: 0x002550
+  symbol: object_cneVtx_002550
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

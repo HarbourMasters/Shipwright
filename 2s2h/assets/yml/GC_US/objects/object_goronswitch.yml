@@ -1,0 +1,96 @@
+:config:
+  segments:
+    - [ 6, 0x013728B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x013728B0 ]
+    - [ 9, 0x013728B0 ]
+    - [ 10, 0x013728B0 ]
+    - [ 11, 0x013728B0 ]
+    - [ 12, 0x013728B0 ]
+    - [ 13, 0x013728B0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_goronswitch_Colheader_0005C8:
+  type: MM:COLLISION
+  offset: 0x5C8
+  symbol: object_goronswitch_Colheader_0005C8
+
+object_goronswitch_DL_000260:
+  type: GFX
+  offset: 0x260
+  symbol: object_goronswitch_DL_000260
+
+object_goronswitch_DL_000268:
+  type: GFX
+  offset: 0x268
+  symbol: object_goronswitch_DL_000268
+
+object_goronswitch_DL_0007D0:
+  type: GFX
+  offset: 0x7D0
+  symbol: object_goronswitch_DL_0007D0
+
+object_goronswitch_DL_0007D8:
+  type: GFX
+  offset: 0x7D8
+  symbol: object_goronswitch_DL_0007D8
+
+object_goronswitch_TLUT_000970:
+  type: TEXTURE
+  offset: 0x970
+  symbol: object_goronswitch_TLUT_000970
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_goronswitch_TLUT_000990:
+  type: TEXTURE
+  offset: 0x990
+  symbol: object_goronswitch_TLUT_000990
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_goronswitch_Tex_0009B0:
+  type: TEXTURE
+  offset: 0x9B0
+  symbol: object_goronswitch_Tex_0009B0
+  format: I8
+  width: 64
+  height: 64
+
+object_goronswitch_Tex_0019B0:
+  type: TEXTURE
+  offset: 0x19B0
+  symbol: object_goronswitch_Tex_0019B0
+  format: CI4
+  width: 64
+  height: 64
+
+object_goronswitch_Tex_0021B0:
+  type: TEXTURE
+  offset: 0x21B0
+  symbol: object_goronswitch_Tex_0021B0
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_goronswitchVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_goronswitchVtx_000000
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_goronswitchVtx_000600:
+  type: MM:ARRAY
+  offset: 0x000600
+  symbol: object_goronswitchVtx_000600
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

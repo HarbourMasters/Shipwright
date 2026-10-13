@@ -1,0 +1,97 @@
+:config:
+  segments:
+    - [ 6, 0x015FE270 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015FE270 ]
+    - [ 9, 0x015FE270 ]
+    - [ 10, 0x015FE270 ]
+    - [ 11, 0x015FE270 ]
+    - [ 12, 0x015FE270 ]
+    - [ 13, 0x015FE270 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiMaskOfScentsEyeShadowTex:
+  type: TEXTURE
+  offset: 0xF98
+  symbol: gGiMaskOfScentsEyeShadowTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiMaskOfScentsEyeTex:
+  type: TEXTURE
+  offset: 0x12D8
+  symbol: gGiMaskOfScentsEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiMaskOfScentsFaceDL:
+  type: GFX
+  offset: 0x918
+  symbol: gGiMaskOfScentsFaceDL
+
+gGiMaskOfScentsMouthTex:
+  type: TEXTURE
+  offset: 0x1298
+  symbol: gGiMaskOfScentsMouthTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiMaskOfScentsNostrilTex:
+  type: TEXTURE
+  offset: 0x1098
+  symbol: gGiMaskOfScentsNostrilTex
+  format: CI8
+  width: 16
+  height: 32
+
+gGiMaskOfScentsSpotTex:
+  type: TEXTURE
+  offset: 0xF58
+  symbol: gGiMaskOfScentsSpotTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiMaskOfScentsTLUT:
+  type: TEXTURE
+  offset: 0xD58
+  symbol: gGiMaskOfScentsTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiMaskOfScentsTeethDL:
+  type: GFX
+  offset: 0x880
+  symbol: gGiMaskOfScentsTeethDL
+
+gGiMaskOfScentsToothTex:
+  type: TEXTURE
+  offset: 0x14D8
+  symbol: gGiMaskOfScentsToothTex
+  format: I8
+  width: 16
+  height: 32
+
+
+object_gi_mask22Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask22Vtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask22Vtx_000800:
+  type: MM:ARRAY
+  offset: 0x000800
+  symbol: object_gi_mask22Vtx_000800
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

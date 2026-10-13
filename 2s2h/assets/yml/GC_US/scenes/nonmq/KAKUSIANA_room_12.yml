@@ -1,0 +1,239 @@
+:config:
+  segments:
+    - [ 3, 0x01E96CC0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E96CC0 ]
+    - [ 9, 0x01E96CC0 ]
+    - [ 10, 0x01E96CC0 ]
+    - [ 11, 0x01E96CC0 ]
+    - [ 12, 0x01E96CC0 ]
+    - [ 13, 0x01E96CC0 ]
+    - [ 2, 0x01E76B00 ]
+  directory: scenes/nonmq/KAKUSIANA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/KAKUSIANA.yml
+
+KAKUSIANA_room_12:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: KAKUSIANA_room_12
+
+KAKUSIANA_room_12DL_0034A0:
+  type: GFX
+  offset: 0x34A0
+  symbol: KAKUSIANA_room_12DL_0034A0
+
+KAKUSIANA_room_12DL_0064C8:
+  type: GFX
+  offset: 0x64C8
+  symbol: KAKUSIANA_room_12DL_0064C8
+
+
+KAKUSIANA_room_12ActorEntry_00004C:
+  type: BLOB
+  offset: 0x00004C
+  symbol: KAKUSIANA_room_12ActorEntry_00004C
+  size: 0
+
+KAKUSIANA_room_12Vtx_0001D0:
+  type: MM:ARRAY
+  offset: 0x0001D0
+  symbol: KAKUSIANA_room_12Vtx_0001D0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_0005B0:
+  type: GFX
+  offset: 0x0005B0
+  symbol: KAKUSIANA_room_12DL_0005B0
+
+KAKUSIANA_room_12Vtx_000740:
+  type: MM:ARRAY
+  offset: 0x000740
+  symbol: KAKUSIANA_room_12Vtx_000740
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_000E80:
+  type: GFX
+  offset: 0x000E80
+  symbol: KAKUSIANA_room_12DL_000E80
+
+KAKUSIANA_room_12Vtx_001100:
+  type: MM:ARRAY
+  offset: 0x001100
+  symbol: KAKUSIANA_room_12Vtx_001100
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_001300:
+  type: GFX
+  offset: 0x001300
+  symbol: KAKUSIANA_room_12DL_001300
+
+KAKUSIANA_room_12Vtx_0013C8:
+  type: MM:ARRAY
+  offset: 0x0013C8
+  symbol: KAKUSIANA_room_12Vtx_0013C8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_0014C8:
+  type: GFX
+  offset: 0x0014C8
+  symbol: KAKUSIANA_room_12DL_0014C8
+
+KAKUSIANA_room_12Vtx_001630:
+  type: MM:ARRAY
+  offset: 0x001630
+  symbol: KAKUSIANA_room_12Vtx_001630
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_001710:
+  type: GFX
+  offset: 0x001710
+  symbol: KAKUSIANA_room_12DL_001710
+
+KAKUSIANA_room_12Vtx_0017B8:
+  type: MM:ARRAY
+  offset: 0x0017B8
+  symbol: KAKUSIANA_room_12Vtx_0017B8
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_001A78:
+  type: GFX
+  offset: 0x001A78
+  symbol: KAKUSIANA_room_12DL_001A78
+
+KAKUSIANA_room_12Vtx_001BA0:
+  type: MM:ARRAY
+  offset: 0x001BA0
+  symbol: KAKUSIANA_room_12Vtx_001BA0
+  count: 238
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_002A80:
+  type: GFX
+  offset: 0x002A80
+  symbol: KAKUSIANA_room_12DL_002A80
+
+KAKUSIANA_room_12Vtx_002F48:
+  type: MM:ARRAY
+  offset: 0x002F48
+  symbol: KAKUSIANA_room_12Vtx_002F48
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_003228:
+  type: GFX
+  offset: 0x003228
+  symbol: KAKUSIANA_room_12DL_003228
+
+KAKUSIANA_room_12Vtx_003340:
+  type: MM:ARRAY
+  offset: 0x003340
+  symbol: KAKUSIANA_room_12Vtx_003340
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_003400:
+  type: GFX
+  offset: 0x003400
+  symbol: KAKUSIANA_room_12DL_003400
+
+KAKUSIANA_room_12Tex_0034F0:
+  type: TEXTURE
+  offset: 0x0034F0
+  symbol: KAKUSIANA_room_12Tex_0034F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+KAKUSIANA_room_12Tex_0036F0:
+  type: TEXTURE
+  offset: 0x0036F0
+  symbol: KAKUSIANA_room_12Tex_0036F0
+  format: RGBA16
+  width: 64
+  height: 16
+
+KAKUSIANA_room_12Tex_003EF0:
+  type: TEXTURE
+  offset: 0x003EF0
+  symbol: KAKUSIANA_room_12Tex_003EF0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANA_room_12Tex_0046F0:
+  type: TEXTURE
+  offset: 0x0046F0
+  symbol: KAKUSIANA_room_12Tex_0046F0
+  format: RGBA16
+  width: 32
+  height: 64
+
+KAKUSIANA_room_12Tex_0056F0:
+  type: TEXTURE
+  offset: 0x0056F0
+  symbol: KAKUSIANA_room_12Tex_0056F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+KAKUSIANA_room_12Tex_0058F0:
+  type: TEXTURE
+  offset: 0x0058F0
+  symbol: KAKUSIANA_room_12Tex_0058F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANA_room_12Vtx_0060F0:
+  type: MM:ARRAY
+  offset: 0x0060F0
+  symbol: KAKUSIANA_room_12Vtx_0060F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_006230:
+  type: GFX
+  offset: 0x006230
+  symbol: KAKUSIANA_room_12DL_006230
+
+KAKUSIANA_room_12Vtx_006318:
+  type: MM:ARRAY
+  offset: 0x006318
+  symbol: KAKUSIANA_room_12Vtx_006318
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_12DL_0063E8:
+  type: GFX
+  offset: 0x0063E8
+  symbol: KAKUSIANA_room_12DL_0063E8

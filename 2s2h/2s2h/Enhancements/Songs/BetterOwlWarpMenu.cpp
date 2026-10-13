@@ -1,0 +1,604 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include "2s2h/GameInteractor/GameInteractor.h"
+#include "2s2h/ShipInit.hpp"
+
+extern "C" {
+#include "src/overlays/kaleido_scope/ovl_kaleido_scope/z_kaleido_scope.h"
+#include "z64scene.h"
+
+extern PlayState* gPlayState;
+extern u16 sOwlWarpPauseItems[];
+}
+
+#define CVAR_NAME "gEnhancements.Songs.BetterOwlWarpMenu"
+#define CVAR CVarGetInteger(CVAR_NAME, 0)
+
+static constexpr s16 NAV_BLOCK_SIZE = OWL_WARP_STONE_TOWER - OWL_WARP_GREAT_BAY_COAST;
+
+// Arrays indicating the order of navigation from each owl warp point on the menu. There is one array for each compass
+// direction. Each array is broken up into segments relating to each warp point where the cursor is currently. The
+// navigation will iterate through each entry in the segment and find the first point that is unlocked. Ten warp points
+// means there are ten segments, with nine entries (one fewer) per segment.
+static s16 sOwlWarpPauseNavigationLeft[] = {
+    // OWL_WARP_GREAT_BAY_COAST
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_ZORA_CAPE,
+
+    // OWL_WARP_ZORA_CAPE
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_SNOWHEAD
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_CLOCK_TOWN,
+
+    // OWL_WARP_MOUNTAIN_VILLAGE
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+
+    // OWL_WARP_CLOCK_TOWN
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_MILK_ROAD
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_WOODFALL
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_SOUTHERN_SWAMP
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+
+    // OWL_WARP_IKANA_CANYON
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_STONE_TOWER
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+};
+
+static s16 sOwlWarpPauseNavigationRight[] = {
+    // OWL_WARP_GREAT_BAY_COAST
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_ZORA_CAPE
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_GREAT_BAY_COAST,
+
+    // OWL_WARP_SNOWHEAD
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+
+    // OWL_WARP_MOUNTAIN_VILLAGE
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_WOODFALL,
+
+    // OWL_WARP_CLOCK_TOWN
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_MILK_ROAD
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+
+    // OWL_WARP_WOODFALL
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+
+    // OWL_WARP_SOUTHERN_SWAMP
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+
+    // OWL_WARP_IKANA_CANYON
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SOUTHERN_SWAMP,
+
+    // OWL_WARP_STONE_TOWER
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+};
+
+static s16 sOwlWarpPauseNavigationUp[] = {
+    // OWL_WARP_GREAT_BAY_COAST
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+
+    // OWL_WARP_ZORA_CAPE
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_SNOWHEAD
+    OWL_WARP_WOODFALL,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_MOUNTAIN_VILLAGE
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_CLOCK_TOWN
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_IKANA_CANYON,
+
+    // OWL_WARP_MILK_ROAD
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_GREAT_BAY_COAST,
+
+    // OWL_WARP_WOODFALL
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+
+    // OWL_WARP_SOUTHERN_SWAMP
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_WOODFALL,
+
+    // OWL_WARP_IKANA_CANYON
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_MILK_ROAD,
+
+    // OWL_WARP_STONE_TOWER
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_CLOCK_TOWN,
+};
+
+static s16 sOwlWarpPauseNavigationDown[] = {
+    // OWL_WARP_GREAT_BAY_COAST
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_MILK_ROAD,
+
+    // OWL_WARP_ZORA_CAPE
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+
+    // OWL_WARP_SNOWHEAD
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_MOUNTAIN_VILLAGE
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_SNOWHEAD,
+
+    // OWL_WARP_CLOCK_TOWN
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_STONE_TOWER,
+
+    // OWL_WARP_MILK_ROAD
+    OWL_WARP_WOODFALL,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+
+    // OWL_WARP_WOODFALL
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_SOUTHERN_SWAMP,
+
+    // OWL_WARP_SOUTHERN_SWAMP
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_WOODFALL,
+
+    // OWL_WARP_IKANA_CANYON
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_STONE_TOWER,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_GREAT_BAY_COAST,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_CLOCK_TOWN,
+
+    // OWL_WARP_STONE_TOWER
+    OWL_WARP_IKANA_CANYON,
+    OWL_WARP_SOUTHERN_SWAMP,
+    OWL_WARP_MOUNTAIN_VILLAGE,
+    OWL_WARP_CLOCK_TOWN,
+    OWL_WARP_SNOWHEAD,
+    OWL_WARP_WOODFALL,
+    OWL_WARP_MILK_ROAD,
+    OWL_WARP_ZORA_CAPE,
+    OWL_WARP_GREAT_BAY_COAST,
+};
+
+// Arrays indicating how many points are considered to be to the left or right of each Owl Warp Statue.
+static s16 sOwlWarpCutoffLeft[] = {
+    0, // OWL_WARP_GREAT_BAY_COAST
+    1, // OWL_WARP_ZORA_CAPE
+    3, // OWL_WARP_SNOWHEAD
+    5, // OWL_WARP_MOUNTAIN_VILLAGE
+    3, // OWL_WARP_CLOCK_TOWN
+    2, // OWL_WARP_MILK_ROAD
+    4, // OWL_WARP_WOODFALL
+    7, // OWL_WARP_SOUTHERN_SWAMP
+    8, // OWL_WARP_IKANA_CANYON
+    9, // OWL_WARP_STONE_TOWER
+};
+
+static s16 sOwlWarpCutoffRight[] = {
+    9, // OWL_WARP_GREAT_BAY_COAST
+    8, // OWL_WARP_ZORA_CAPE
+    4, // OWL_WARP_SNOWHEAD
+    3, // OWL_WARP_MOUNTAIN_VILLAGE
+    4, // OWL_WARP_CLOCK_TOWN
+    7, // OWL_WARP_MILK_ROAD
+    3, // OWL_WARP_WOODFALL
+    2, // OWL_WARP_SOUTHERN_SWAMP
+    1, // OWL_WARP_IKANA_CANYON
+    0, // OWL_WARP_STONE_TOWER
+};
+
+// Used by Pause Owl Warp to figure out when to move the cursor onto the page turn slots.
+extern "C" bool BetterOwlWarp_IsCutoffOnSide(s16 cursorPoint, PauseContext* pauseCtx) {
+    if (!CVAR || cursorPoint < OWL_WARP_GREAT_BAY_COAST || cursorPoint > OWL_WARP_STONE_TOWER) {
+        return false;
+    }
+
+    bool goingLeft = pauseCtx->stickAdjX < -30;
+    bool goingRight = pauseCtx->stickAdjX > 30;
+
+    if (CVarGetInteger("gModes.MirroredWorld.State", 0) && (goingLeft || goingRight)) {
+        goingLeft = !goingLeft;
+        goingRight = !goingRight;
+    }
+
+    s16* navPoints;
+    s16 navCutoff;
+
+    if (goingLeft) {
+        navPoints = sOwlWarpPauseNavigationLeft;
+        navCutoff = sOwlWarpCutoffLeft[cursorPoint];
+    } else if (goingRight) {
+        navPoints = sOwlWarpPauseNavigationRight;
+        navCutoff = sOwlWarpCutoffRight[cursorPoint];
+    } else {
+        return false;
+    }
+
+    s16 i;
+    for (i = 0; i < navCutoff; i++) {
+        if (pauseCtx->worldMapPoints[navPoints[cursorPoint * NAV_BLOCK_SIZE + i]]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+extern "C" bool BetterOwlWarp_NextCursorPoint(s16* cursorPoint, PauseContext* pauseCtx) {
+    if (*cursorPoint < OWL_WARP_GREAT_BAY_COAST || *cursorPoint > OWL_WARP_STONE_TOWER) {
+        return false;
+    }
+
+    bool goingLeft = pauseCtx->stickAdjX < -30;
+    bool goingRight = pauseCtx->stickAdjX > 30;
+    bool goingUp = pauseCtx->stickAdjY > 30;
+    bool goingDown = pauseCtx->stickAdjY < -30;
+
+    s16 tmpCursorPoint, i;
+    s16* navigationMap = nullptr;
+
+    if (CVarGetInteger("gModes.MirroredWorld.State", 0) && (goingLeft || goingRight)) {
+        goingLeft = !goingLeft;
+        goingRight = !goingRight;
+    }
+
+    if (goingLeft) {
+        navigationMap = sOwlWarpPauseNavigationLeft;
+    } else if (goingRight) {
+        navigationMap = sOwlWarpPauseNavigationRight;
+    } else if (goingUp) {
+        navigationMap = sOwlWarpPauseNavigationUp;
+    } else if (goingDown) {
+        navigationMap = sOwlWarpPauseNavigationDown;
+    }
+
+    if (navigationMap == nullptr) {
+        return false;
+    }
+
+    for (i = 0; i < NAV_BLOCK_SIZE; i++) {
+        tmpCursorPoint = navigationMap[*cursorPoint * NAV_BLOCK_SIZE + i];
+        if (pauseCtx->worldMapPoints[tmpCursorPoint]) {
+            *cursorPoint = tmpCursorPoint;
+            break;
+        }
+    }
+
+    return true;
+}
+
+static void HandleBetterOwlWarpMenuNavigation() {
+    PauseContext* pauseCtx = &gPlayState->pauseCtx;
+    s16 nextCursorPoint = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
+
+    if (BetterOwlWarp_NextCursorPoint(&nextCursorPoint, pauseCtx)) {
+        pauseCtx->cursorShrinkRate = 4.0f;
+
+        if (pauseCtx->cursorPoint[PAUSE_WORLD_MAP] != nextCursorPoint) {
+            pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = nextCursorPoint;
+            Audio_PlaySfx(NA_SE_SY_CURSOR);
+        }
+    }
+
+    pauseCtx->cursorColorSet = PAUSE_CURSOR_COLOR_SET_BLUE;
+    pauseCtx->cursorItem[PAUSE_MAP] = sOwlWarpPauseItems[nextCursorPoint] - ITEM_MAP_POINT_GREAT_BAY;
+    pauseCtx->cursorSlot[PAUSE_MAP] = 31 + nextCursorPoint;
+}
+
+static void RegisterBetterOwlWarpMenu() {
+    COND_VB_SHOULD(VB_OWL_WARP_MENU_USE_LINEAR_CURSOR, CVAR, {
+        if (*should) {
+            HandleBetterOwlWarpMenuNavigation();
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterBetterOwlWarpMenu, { CVAR_NAME });

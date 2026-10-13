@@ -1,0 +1,127 @@
+:config:
+  segments:
+    - [ 6, 0x00FFDB20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FFDB20 ]
+    - [ 9, 0x00FFDB20 ]
+    - [ 10, 0x00FFDB20 ]
+    - [ 11, 0x00FFDB20 ]
+    - [ 12, 0x00FFDB20 ]
+    - [ 13, 0x00FFDB20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mamenoki_Colheader_0004BC:
+  type: MM:COLLISION
+  offset: 0x4BC
+  symbol: object_mamenoki_Colheader_0004BC
+
+object_mamenoki_DL_000090:
+  type: GFX
+  offset: 0x90
+  symbol: object_mamenoki_DL_000090
+
+object_mamenoki_DL_0002D0:
+  type: GFX
+  offset: 0x2D0
+  symbol: object_mamenoki_DL_0002D0
+
+object_mamenoki_DL_000530:
+  type: GFX
+  offset: 0x530
+  symbol: object_mamenoki_DL_000530
+
+object_mamenoki_DL_002200:
+  type: GFX
+  offset: 0x2200
+  symbol: object_mamenoki_DL_002200
+
+object_mamenoki_DL_002208:
+  type: GFX
+  offset: 0x2208
+  symbol: object_mamenoki_DL_002208
+
+object_mamenoki_Tex_0005C0:
+  type: TEXTURE
+  offset: 0x5C0
+  symbol: object_mamenoki_Tex_0005C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mamenoki_Tex_000DC0:
+  type: TEXTURE
+  offset: 0xDC0
+  symbol: object_mamenoki_Tex_000DC0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_mamenoki_Tex_0011C0:
+  type: TEXTURE
+  offset: 0x11C0
+  symbol: object_mamenoki_Tex_0011C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mamenoki_Tex_0019C0:
+  type: TEXTURE
+  offset: 0x19C0
+  symbol: object_mamenoki_Tex_0019C0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_mamenoki_Tex_001DC0:
+  type: TEXTURE
+  offset: 0x1DC0
+  symbol: object_mamenoki_Tex_001DC0
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_mamenoki_Tex_002298:
+  type: TEXTURE
+  offset: 0x2298
+  symbol: object_mamenoki_Tex_002298
+  format: I8
+  width: 32
+  height: 32
+
+
+object_mamenokiVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mamenokiVtx_000000
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_000130:
+  type: MM:ARRAY
+  offset: 0x000130
+  symbol: object_mamenokiVtx_000130
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_0004F0:
+  type: MM:ARRAY
+  offset: 0x0004F0
+  symbol: object_mamenokiVtx_0004F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mamenokiVtx_0021C0:
+  type: MM:ARRAY
+  offset: 0x0021C0
+  symbol: object_mamenokiVtx_0021C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

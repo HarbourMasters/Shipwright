@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01A003F0 ]
+  directory: scenes/nonmq/Z2_33ZORACITY
+  external_files:
+    - N64_US/scenes/nonmq/Z2_33ZORACITY.yml
+
+Z2_33ZORACITYSet_003FA0:
+  type: MM:SCENE
+  offset: 0x3FA0
+  symbol: Z2_33ZORACITYSet_003FA0
+  base_name: Z2_33ZORACITY

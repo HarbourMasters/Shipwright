@@ -1,0 +1,741 @@
+:config:
+  segments:
+    - [ 6, 0x015C7700 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015C7700 ]
+    - [ 9, 0x015C7700 ]
+    - [ 10, 0x015C7700 ]
+    - [ 11, 0x015C7700 ]
+    - [ 12, 0x015C7700 ]
+    - [ 13, 0x015C7700 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMoonChildBackHairTex:
+  type: TEXTURE
+  offset: 0x16128
+  symbol: gMoonChildBackHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gMoonChildChestBottomDL:
+  type: GFX
+  offset: 0x14C80
+  symbol: gMoonChildChestBottomDL
+
+gMoonChildChestDL:
+  type: GFX
+  offset: 0x14DA0
+  symbol: gMoonChildChestDL
+
+gMoonChildEarTex:
+  type: TEXTURE
+  offset: 0x160E8
+  symbol: gMoonChildEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMoonChildFingersTex:
+  type: TEXTURE
+  offset: 0x15D28
+  symbol: gMoonChildFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMoonChildGettingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x16F58
+  symbol: gMoonChildGettingUpAnim
+
+gMoonChildGohtsMaskDL:
+  type: GFX
+  offset: 0x3AD0
+  symbol: gMoonChildGohtsMaskDL
+
+gMoonChildGohtsMaskEyeTex:
+  type: TEXTURE
+  offset: 0xBB40
+  symbol: gMoonChildGohtsMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMoonChildGohtsMaskSpikeTwinmoldsMaskMandibleTex:
+  type: TEXTURE
+  offset: 0xEB40
+  symbol: gMoonChildGohtsMaskSpikeTwinmoldsMaskMandibleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoonChildGohtsMaskTopPatternTex:
+  type: TEXTURE
+  offset: 0xCB40
+  symbol: gMoonChildGohtsMaskTopPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMoonChildGohtsTwinmoldsMaskPatternTex:
+  type: TEXTURE
+  offset: 0xDB40
+  symbol: gMoonChildGohtsTwinmoldsMaskPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMoonChildGyorgsMaskDL:
+  type: GFX
+  offset: 0x1D80
+  symbol: gMoonChildGyorgsMaskDL
+
+gMoonChildGyorgsMaskMouthTLUT:
+  type: TEXTURE
+  offset: 0x9040
+  symbol: gMoonChildGyorgsMaskMouthTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildGyorgsMaskMouthTex:
+  type: TEXTURE
+  offset: 0xB2C0
+  symbol: gMoonChildGyorgsMaskMouthTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildGyorgsMaskSkinTLUT:
+  type: TEXTURE
+  offset: 0x9020
+  symbol: gMoonChildGyorgsMaskSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildGyorgsMaskSkinTex:
+  type: TEXTURE
+  offset: 0xAAC0
+  symbol: gMoonChildGyorgsMaskSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildGyorgsMaskToothHornTLUT:
+  type: TEXTURE
+  offset: 0x9060
+  symbol: gMoonChildGyorgsMaskToothHornTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildGyorgsMaskToothHornTex:
+  type: TEXTURE
+  offset: 0xBAC0
+  symbol: gMoonChildGyorgsMaskToothHornTex
+  format: CI4
+  width: 16
+  height: 16
+
+gMoonChildGyorgsTwinmoldsMaskEyeTex:
+  type: TEXTURE
+  offset: 0xA2C0
+  symbol: gMoonChildGyorgsTwinmoldsMaskEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoonChildHairTex:
+  type: TEXTURE
+  offset: 0x16068
+  symbol: gMoonChildHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gMoonChildHeadDL:
+  type: GFX
+  offset: 0x14F18
+  symbol: gMoonChildHeadDL
+
+gMoonChildHeadLimb:
+  type: OOT:LIMB
+  offset: 0x16414
+  symbol: gMoonChildHeadLimb
+  limb_type: Standard
+
+gMoonChildLeftArmDL:
+  type: GFX
+  offset: 0x15380
+  symbol: gMoonChildLeftArmDL
+
+gMoonChildLeftFootDL:
+  type: GFX
+  offset: 0x14638
+  symbol: gMoonChildLeftFootDL
+
+gMoonChildLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x16444
+  symbol: gMoonChildLeftFootLimb
+  limb_type: Standard
+
+gMoonChildLeftForearmDL:
+  type: GFX
+  offset: 0x154B0
+  symbol: gMoonChildLeftForearmDL
+
+gMoonChildLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x163D8
+  symbol: gMoonChildLeftForearmLimb
+  limb_type: Standard
+
+gMoonChildLeftHandDL:
+  type: GFX
+  offset: 0x155D0
+  symbol: gMoonChildLeftHandDL
+
+gMoonChildLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x163E4
+  symbol: gMoonChildLeftHandLimb
+  limb_type: Standard
+
+gMoonChildLeftLegDL:
+  type: GFX
+  offset: 0x144D0
+  symbol: gMoonChildLeftLegDL
+
+gMoonChildLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x16438
+  symbol: gMoonChildLeftShinLimb
+  limb_type: Standard
+
+gMoonChildLeftThighDL:
+  type: GFX
+  offset: 0x142C0
+  symbol: gMoonChildLeftThighDL
+
+gMoonChildLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1642C
+  symbol: gMoonChildLeftThighLimb
+  limb_type: Standard
+
+gMoonChildLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x163CC
+  symbol: gMoonChildLeftUpperArmLimb
+  limb_type: Standard
+
+gMoonChildMajorasMaskBackTex:
+  type: TEXTURE
+  offset: 0x7FE0
+  symbol: gMoonChildMajorasMaskBackTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoonChildMajorasMaskDL:
+  type: GFX
+  offset: 0x6380
+  symbol: gMoonChildMajorasMaskDL
+
+gMoonChildMajorasMaskEyesDL:
+  type: GFX
+  offset: 0x6730
+  symbol: gMoonChildMajorasMaskEyesDL
+
+gMoonChildMajorasMaskEyesTex:
+  type: TEXTURE
+  offset: 0x87E0
+  symbol: gMoonChildMajorasMaskEyesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMoonChildMajorasMaskSpike1Tex:
+  type: TEXTURE
+  offset: 0x77E0
+  symbol: gMoonChildMajorasMaskSpike1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildMajorasMaskSpike2Tex:
+  type: TEXTURE
+  offset: 0x79E0
+  symbol: gMoonChildMajorasMaskSpike2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildMajorasMaskSpike3Tex:
+  type: TEXTURE
+  offset: 0x7BE0
+  symbol: gMoonChildMajorasMaskSpike3Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildMajorasMaskSpike4Tex:
+  type: TEXTURE
+  offset: 0x7DE0
+  symbol: gMoonChildMajorasMaskSpike4Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildMajorasMaskTex:
+  type: TEXTURE
+  offset: 0x67E0
+  symbol: gMoonChildMajorasMaskTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMoonChildOdolwasMaskDL:
+  type: GFX
+  offset: 0x690
+  symbol: gMoonChildOdolwasMaskDL
+
+gMoonChildOdolwasMaskEarTLUT:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gMoonChildOdolwasMaskEarTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildOdolwasMaskEarTex:
+  type: TEXTURE
+  offset: 0x9AC0
+  symbol: gMoonChildOdolwasMaskEarTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildOdolwasMaskFaceTLUT:
+  type: TEXTURE
+  offset: 0x8FE0
+  symbol: gMoonChildOdolwasMaskFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildOdolwasMaskFaceTex:
+  type: TEXTURE
+  offset: 0x92C0
+  symbol: gMoonChildOdolwasMaskFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildOdolwasMaskPlumeTex:
+  type: TEXTURE
+  offset: 0x90C0
+  symbol: gMoonChildOdolwasMaskPlumeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildPelvisDL:
+  type: GFX
+  offset: 0x14190
+  symbol: gMoonChildPelvisDL
+
+gMoonChildPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x16420
+  symbol: gMoonChildPelvisLimb
+  limb_type: Standard
+
+gMoonChildRightArmDL:
+  type: GFX
+  offset: 0x15758
+  symbol: gMoonChildRightArmDL
+
+gMoonChildRightFootDL:
+  type: GFX
+  offset: 0x14B18
+  symbol: gMoonChildRightFootDL
+
+gMoonChildRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x16468
+  symbol: gMoonChildRightFootLimb
+  limb_type: Standard
+
+gMoonChildRightForearmDL:
+  type: GFX
+  offset: 0x15888
+  symbol: gMoonChildRightForearmDL
+
+gMoonChildRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x163FC
+  symbol: gMoonChildRightForearmLimb
+  limb_type: Standard
+
+gMoonChildRightHandDL:
+  type: GFX
+  offset: 0x159A8
+  symbol: gMoonChildRightHandDL
+
+gMoonChildRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x16408
+  symbol: gMoonChildRightHandLimb
+  limb_type: Standard
+
+gMoonChildRightLegDL:
+  type: GFX
+  offset: 0x149B0
+  symbol: gMoonChildRightLegDL
+
+gMoonChildRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1645C
+  symbol: gMoonChildRightShinLimb
+  limb_type: Standard
+
+gMoonChildRightThighDL:
+  type: GFX
+  offset: 0x147A0
+  symbol: gMoonChildRightThighDL
+
+gMoonChildRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x16450
+  symbol: gMoonChildRightThighLimb
+  limb_type: Standard
+
+gMoonChildRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x163F0
+  symbol: gMoonChildRightUpperArmLimb
+  limb_type: Standard
+
+gMoonChildRootLimb:
+  type: OOT:LIMB
+  offset: 0x163A8
+  symbol: gMoonChildRootLimb
+  limb_type: Standard
+
+gMoonChildRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0x10CD8
+  symbol: gMoonChildRunningAnim
+
+gMoonChildSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x1764C
+  symbol: gMoonChildSittingAnim
+
+gMoonChildSkel:
+  type: MM:SKELETON
+  offset: 0x164B8
+  symbol: gMoonChildSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMoonChildStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x17E98
+  symbol: gMoonChildStandingAnim
+
+gMoonChildTLUT:
+  type: TEXTURE
+  offset: 0x15B28
+  symbol: gMoonChildTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMoonChildThighSkinTex:
+  type: TEXTURE
+  offset: 0x15E28
+  symbol: gMoonChildThighSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMoonChildTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x163C0
+  symbol: gMoonChildTorsoLimb
+  limb_type: Standard
+
+gMoonChildTshirtDetailTex:
+  type: TEXTURE
+  offset: 0x15E68
+  symbol: gMoonChildTshirtDetailTex
+  format: CI8
+  width: 16
+  height: 32
+
+gMoonChildTshirtNecklineTex:
+  type: TEXTURE
+  offset: 0x161A8
+  symbol: gMoonChildTshirtNecklineTex
+  format: CI8
+  width: 16
+  height: 32
+
+gMoonChildTwinmoldsMaskDL:
+  type: GFX
+  offset: 0x5020
+  symbol: gMoonChildTwinmoldsMaskDL
+
+gMoonChildTwinmoldsMaskSkinTLUT:
+  type: TEXTURE
+  offset: 0x9080
+  symbol: gMoonChildTwinmoldsMaskSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildTwinmoldsMaskSkinTex:
+  type: TEXTURE
+  offset: 0xF340
+  symbol: gMoonChildTwinmoldsMaskSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildTwinmoldsMaskSnoutTLUT:
+  type: TEXTURE
+  offset: 0x90A0
+  symbol: gMoonChildTwinmoldsMaskSnoutTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gMoonChildTwinmoldsMaskSnoutTex:
+  type: TEXTURE
+  offset: 0xFB40
+  symbol: gMoonChildTwinmoldsMaskSnoutTex
+  format: CI4
+  width: 64
+  height: 64
+
+gMoonChildWaistLimb:
+  type: OOT:LIMB
+  offset: 0x163B4
+  symbol: gMoonChildWaistLimb
+  limb_type: Standard
+
+gMoonChildWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x10880
+  symbol: gMoonChildWalkingAnim
+
+
+object_obVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_obVtx_000000
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: object_obVtx_0009E0
+  count: 314
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_002680:
+  type: MM:ARRAY
+  offset: 0x002680
+  symbol: object_obVtx_002680
+  count: 325
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_004270:
+  type: MM:ARRAY
+  offset: 0x004270
+  symbol: object_obVtx_004270
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_005830:
+  type: MM:ARRAY
+  offset: 0x005830
+  symbol: object_obVtx_005830
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_0062C0:
+  type: MM:ARRAY
+  offset: 0x0062C0
+  symbol: object_obVtx_0062C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_010CF0:
+  type: MM:ARRAY
+  offset: 0x010CF0
+  symbol: object_obVtx_010CF0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_010FC0:
+  type: MM:ARRAY
+  offset: 0x010FC0
+  symbol: object_obVtx_010FC0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_011230:
+  type: MM:ARRAY
+  offset: 0x011230
+  symbol: object_obVtx_011230
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_011630:
+  type: MM:ARRAY
+  offset: 0x011630
+  symbol: object_obVtx_011630
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_011900:
+  type: MM:ARRAY
+  offset: 0x011900
+  symbol: object_obVtx_011900
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_011B70:
+  type: MM:ARRAY
+  offset: 0x011B70
+  symbol: object_obVtx_011B70
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_011F70:
+  type: MM:ARRAY
+  offset: 0x011F70
+  symbol: object_obVtx_011F70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_012210:
+  type: MM:ARRAY
+  offset: 0x012210
+  symbol: object_obVtx_012210
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_012AE0:
+  type: MM:ARRAY
+  offset: 0x012AE0
+  symbol: object_obVtx_012AE0
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_012FB0:
+  type: MM:ARRAY
+  offset: 0x012FB0
+  symbol: object_obVtx_012FB0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_013160:
+  type: MM:ARRAY
+  offset: 0x013160
+  symbol: object_obVtx_013160
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_013340:
+  type: MM:ARRAY
+  offset: 0x013340
+  symbol: object_obVtx_013340
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_013810:
+  type: MM:ARRAY
+  offset: 0x013810
+  symbol: object_obVtx_013810
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_0139C0:
+  type: MM:ARRAY
+  offset: 0x0139C0
+  symbol: object_obVtx_0139C0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_013BA0:
+  type: MM:ARRAY
+  offset: 0x013BA0
+  symbol: object_obVtx_013BA0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obVtx_013F40:
+  type: MM:ARRAY
+  offset: 0x013F40
+  symbol: object_obVtx_013F40
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMoonChildSkelLimbs:
+  type: BLOB
+  offset: 0x16474
+  symbol: gMoonChildSkelLimbs
+  size: 0

@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x019F7300 ]
+    - [ 2, 0x019EDDD0 ]
+  directory: scenes/nonmq/Z2_16GORON_HOUSE
+  external_files:
+    - N64_US/scenes/nonmq/Z2_16GORON_HOUSE_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_16GORON_HOUSE.yml
+
+Z2_16GORON_HOUSE_room_00Set_000440:
+  type: MM:ROOM
+  offset: 0x440
+  symbol: Z2_16GORON_HOUSE_room_00Set_000440
+  base_name: Z2_16GORON_HOUSE_room_00

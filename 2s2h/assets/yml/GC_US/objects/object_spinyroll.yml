@@ -1,0 +1,45 @@
+:config:
+  segments:
+    - [ 6, 0x01182B70 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01182B70 ]
+    - [ 9, 0x01182B70 ]
+    - [ 10, 0x01182B70 ]
+    - [ 11, 0x01182B70 ]
+    - [ 12, 0x01182B70 ]
+    - [ 13, 0x01182B70 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_spinyroll_Colheader_000E68:
+  type: MM:COLLISION
+  offset: 0xE68
+  symbol: object_spinyroll_Colheader_000E68
+
+object_spinyroll_Colheader_000F80:
+  type: MM:COLLISION
+  offset: 0xF80
+  symbol: object_spinyroll_Colheader_000F80
+
+object_spinyroll_DL_000460:
+  type: GFX
+  offset: 0x460
+  symbol: object_spinyroll_DL_000460
+
+object_spinyroll_Tex_0005C0:
+  type: TEXTURE
+  offset: 0x5C0
+  symbol: object_spinyroll_Tex_0005C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_spinyrollVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_spinyrollVtx_000000
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

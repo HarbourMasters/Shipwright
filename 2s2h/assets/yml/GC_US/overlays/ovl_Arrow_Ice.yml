@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 128, 0x00BDFD10 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x809042F0, 0x00BDFD10 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gIceArrowMaskTex:
+  type: TEXTURE
+  offset: 0x1180
+  symbol: gIceArrowMaskTex
+  format: I8
+  width: 32
+  height: 64
+
+gIceArrowMaterialDL:
+  type: GFX
+  offset: 0x1C30
+  symbol: gIceArrowMaterialDL
+
+gIceArrowModelDL:
+  type: GFX
+  offset: 0x1CE0
+  symbol: gIceArrowModelDL
+
+gIceArrowTex:
+  type: TEXTURE
+  offset: 0x980
+  symbol: gIceArrowTex
+  format: I8
+  width: 32
+  height: 64
+
+gIceArrowVtx:
+  type: MM:ARRAY
+  offset: 0x1980
+  symbol: gIceArrowVtx
+  count: 43
+  array_type: VTX
+

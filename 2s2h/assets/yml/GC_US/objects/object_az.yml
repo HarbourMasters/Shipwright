@@ -1,0 +1,1244 @@
+:config:
+  segments:
+    - [ 6, 0x01252D80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01252D80 ]
+    - [ 9, 0x01252D80 ]
+    - [ 10, 0x01252D80 ]
+    - [ 11, 0x01252D80 ]
+    - [ 12, 0x01252D80 ]
+    - [ 13, 0x01252D80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBeaverBowAnim:
+  type: OOT:ANIMATION
+  offset: 0xB94C
+  symbol: gBeaverBowAnim
+
+gBeaverGlitchyLimbSpinAnim:
+  type: OOT:ANIMATION
+  offset: 0x750C
+  symbol: gBeaverGlitchyLimbSpinAnim
+
+gBeaverIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xBCFC
+  symbol: gBeaverIdleAnim
+
+gBeaverIdleFaceLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xC0A0
+  symbol: gBeaverIdleFaceLeftAnim
+
+gBeaverIdleFaceRightAnim:
+  type: OOT:ANIMATION
+  offset: 0xC47C
+  symbol: gBeaverIdleFaceRightAnim
+
+gBeaverLaughLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D3C
+  symbol: gBeaverLaughLeftAnim
+
+gBeaverLaughRightAnim:
+  type: OOT:ANIMATION
+  offset: 0x86AC
+  symbol: gBeaverLaughRightAnim
+
+gBeaverOlderBrotherCapTex:
+  type: TEXTURE
+  offset: 0x45C8
+  symbol: gBeaverOlderBrotherCapTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeaverOlderBrotherGoggleStrapTex:
+  type: TEXTURE
+  offset: 0x43C8
+  symbol: gBeaverOlderBrotherGoggleStrapTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeaverOlderBrotherGoggleTex:
+  type: TEXTURE
+  offset: 0x2DC8
+  symbol: gBeaverOlderBrotherGoggleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherHairBackDL:
+  type: GFX
+  offset: 0x2120
+  symbol: gBeaverOlderBrotherHairBackDL
+
+gBeaverOlderBrotherHairBackLimb:
+  type: OOT:LIMB
+  offset: 0x7334
+  symbol: gBeaverOlderBrotherHairBackLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherHairLeftDL:
+  type: GFX
+  offset: 0x2098
+  symbol: gBeaverOlderBrotherHairLeftDL
+
+gBeaverOlderBrotherHairLeftLimb:
+  type: OOT:LIMB
+  offset: 0x7328
+  symbol: gBeaverOlderBrotherHairLeftLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherHairRightDL:
+  type: GFX
+  offset: 0x21A8
+  symbol: gBeaverOlderBrotherHairRightDL
+
+gBeaverOlderBrotherHairRightLimb:
+  type: OOT:LIMB
+  offset: 0x731C
+  symbol: gBeaverOlderBrotherHairRightLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherHairTex:
+  type: TEXTURE
+  offset: 0x48C8
+  symbol: gBeaverOlderBrotherHairTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherHandAndFootTex:
+  type: TEXTURE
+  offset: 0x50C8
+  symbol: gBeaverOlderBrotherHandAndFootTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherHeadDL:
+  type: GFX
+  offset: 0x1B80
+  symbol: gBeaverOlderBrotherHeadDL
+
+gBeaverOlderBrotherHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7304
+  symbol: gBeaverOlderBrotherHeadLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x72F8
+  symbol: gBeaverOlderBrotherHeadRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherInnerTubeDL:
+  type: GFX
+  offset: 0x2568
+  symbol: gBeaverOlderBrotherInnerTubeDL
+
+gBeaverOlderBrotherInnerTubeLimb:
+  type: OOT:LIMB
+  offset: 0x737C
+  symbol: gBeaverOlderBrotherInnerTubeLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherInnerTubeTex:
+  type: TEXTURE
+  offset: 0x60C8
+  symbol: gBeaverOlderBrotherInnerTubeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherLeftArmDL:
+  type: GFX
+  offset: 0x22C8
+  symbol: gBeaverOlderBrotherLeftArmDL
+
+gBeaverOlderBrotherLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x734C
+  symbol: gBeaverOlderBrotherLeftArmLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7340
+  symbol: gBeaverOlderBrotherLeftArmRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherLeftLegDL:
+  type: GFX
+  offset: 0x2A08
+  symbol: gBeaverOlderBrotherLeftLegDL
+
+gBeaverOlderBrotherLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x73D0
+  symbol: gBeaverOlderBrotherLeftLegLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x73C4
+  symbol: gBeaverOlderBrotherLeftLegRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherMouthTex:
+  type: TEXTURE
+  offset: 0x35C8
+  symbol: gBeaverOlderBrotherMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherNoseTex:
+  type: TEXTURE
+  offset: 0x3DC8
+  symbol: gBeaverOlderBrotherNoseTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBeaverOlderBrotherPantsTex:
+  type: TEXTURE
+  offset: 0x70C8
+  symbol: gBeaverOlderBrotherPantsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeaverOlderBrotherPelvisDL:
+  type: GFX
+  offset: 0x2C88
+  symbol: gBeaverOlderBrotherPelvisDL
+
+gBeaverOlderBrotherPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x72E0
+  symbol: gBeaverOlderBrotherPelvisLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherPelvisRootLimb:
+  type: OOT:LIMB
+  offset: 0x72D4
+  symbol: gBeaverOlderBrotherPelvisRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherRightArmDL:
+  type: GFX
+  offset: 0x2418
+  symbol: gBeaverOlderBrotherRightArmDL
+
+gBeaverOlderBrotherRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x7364
+  symbol: gBeaverOlderBrotherRightArmLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7358
+  symbol: gBeaverOlderBrotherRightArmRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherRightLegDL:
+  type: GFX
+  offset: 0x2B48
+  symbol: gBeaverOlderBrotherRightLegDL
+
+gBeaverOlderBrotherRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x73B8
+  symbol: gBeaverOlderBrotherRightLegLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x73AC
+  symbol: gBeaverOlderBrotherRightLegRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherRootLimb:
+  type: OOT:LIMB
+  offset: 0x72C8
+  symbol: gBeaverOlderBrotherRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherSkel:
+  type: MM:SKELETON
+  offset: 0x7438
+  symbol: gBeaverOlderBrotherSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBeaverOlderBrotherSkinTex:
+  type: TEXTURE
+  offset: 0x41C8
+  symbol: gBeaverOlderBrotherSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeaverOlderBrotherTailBaseDL:
+  type: GFX
+  offset: 0x28D8
+  symbol: gBeaverOlderBrotherTailBaseDL
+
+gBeaverOlderBrotherTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x7394
+  symbol: gBeaverOlderBrotherTailBaseLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherTailEndDL:
+  type: GFX
+  offset: 0x27D0
+  symbol: gBeaverOlderBrotherTailEndDL
+
+gBeaverOlderBrotherTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x73A0
+  symbol: gBeaverOlderBrotherTailEndLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x7388
+  symbol: gBeaverOlderBrotherTailRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherTailTex:
+  type: TEXTURE
+  offset: 0x68C8
+  symbol: gBeaverOlderBrotherTailTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverOlderBrotherTailVortex1DL:
+  type: GFX
+  offset: 0x1A600
+  symbol: gBeaverOlderBrotherTailVortex1DL
+
+gBeaverOlderBrotherTailVortex1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1A6E8
+  symbol: gBeaverOlderBrotherTailVortex1TexAnim
+
+gBeaverOlderBrotherTailVortex2DL:
+  type: GFX
+  offset: 0x1A730
+  symbol: gBeaverOlderBrotherTailVortex2DL
+
+gBeaverOlderBrotherTailVortex2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1A818
+  symbol: gBeaverOlderBrotherTailVortex2TexAnim
+
+gBeaverOlderBrotherTailVortex3DL:
+  type: GFX
+  offset: 0x1A860
+  symbol: gBeaverOlderBrotherTailVortex3DL
+
+gBeaverOlderBrotherTailVortex3TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1A948
+  symbol: gBeaverOlderBrotherTailVortex3TexAnim
+
+gBeaverOlderBrotherTailVortex4DL:
+  type: GFX
+  offset: 0x1A990
+  symbol: gBeaverOlderBrotherTailVortex4DL
+
+gBeaverOlderBrotherTailVortex4TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1AA78
+  symbol: gBeaverOlderBrotherTailVortex4TexAnim
+
+gBeaverOlderBrotherTailVortex5DL:
+  type: GFX
+  offset: 0x1AAC0
+  symbol: gBeaverOlderBrotherTailVortex5DL
+
+gBeaverOlderBrotherTailVortex5TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1ABA8
+  symbol: gBeaverOlderBrotherTailVortex5TexAnim
+
+gBeaverOlderBrotherTailVortexMaskTex:
+  type: TEXTURE
+  offset: 0x179C0
+  symbol: gBeaverOlderBrotherTailVortexMaskTex
+  format: I4
+  width: 32
+  height: 64
+
+gBeaverOlderBrotherTailVortexTex:
+  type: TEXTURE
+  offset: 0x17DC0
+  symbol: gBeaverOlderBrotherTailVortexTex
+  format: I4
+  width: 64
+  height: 64
+
+gBeaverOlderBrotherTeethDL:
+  type: GFX
+  offset: 0x2230
+  symbol: gBeaverOlderBrotherTeethDL
+
+gBeaverOlderBrotherTeethLimb:
+  type: OOT:LIMB
+  offset: 0x7310
+  symbol: gBeaverOlderBrotherTeethLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherToothTex:
+  type: TEXTURE
+  offset: 0x47C8
+  symbol: gBeaverOlderBrotherToothTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBeaverOlderBrotherTorsoDL:
+  type: GFX
+  offset: 0x26D8
+  symbol: gBeaverOlderBrotherTorsoDL
+
+gBeaverOlderBrotherTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x7370
+  symbol: gBeaverOlderBrotherTorsoLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherTorsoRootLimb:
+  type: OOT:LIMB
+  offset: 0x72EC
+  symbol: gBeaverOlderBrotherTorsoRootLimb
+  limb_type: Standard
+
+gBeaverOlderBrotherTorsoTex:
+  type: TEXTURE
+  offset: 0x58C8
+  symbol: gBeaverOlderBrotherTorsoTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverSwimAnim:
+  type: OOT:ANIMATION
+  offset: 0x8EAC
+  symbol: gBeaverSwimAnim
+
+gBeaverSwimWithRaisedTailAnim:
+  type: OOT:ANIMATION
+  offset: 0x8BB4
+  symbol: gBeaverSwimWithRaisedTailAnim
+
+gBeaverSwimWithSpinningTailAnim:
+  type: OOT:ANIMATION
+  offset: 0x8960
+  symbol: gBeaverSwimWithSpinningTailAnim
+
+gBeaverTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x925C
+  symbol: gBeaverTalkAnim
+
+gBeaverTalkToLeftAnim:
+  type: OOT:ANIMATION
+  offset: 0xA25C
+  symbol: gBeaverTalkToLeftAnim
+
+gBeaverTalkToRightAnim:
+  type: OOT:ANIMATION
+  offset: 0xAAEC
+  symbol: gBeaverTalkToRightAnim
+
+gBeaverTalkWaveArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x9B4C
+  symbol: gBeaverTalkWaveArmsAnim
+
+gBeaverUnusedTLUT:
+  type: TEXTURE
+  offset: 0x179A0
+  symbol: gBeaverUnusedTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gBeaverWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xC94C
+  symbol: gBeaverWalkAnim
+
+gBeaverYoungerBrotherBeltBlueTex:
+  type: TEXTURE
+  offset: 0x17018
+  symbol: gBeaverYoungerBrotherBeltBlueTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherBeltGreenTex:
+  type: TEXTURE
+  offset: 0x16818
+  symbol: gBeaverYoungerBrotherBeltGreenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherBeltRedTex:
+  type: TEXTURE
+  offset: 0x16018
+  symbol: gBeaverYoungerBrotherBeltRedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherClothesTex:
+  type: TEXTURE
+  offset: 0x12718
+  symbol: gBeaverYoungerBrotherClothesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherEmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x17818
+  symbol: gBeaverYoungerBrotherEmptyTexAnim
+
+gBeaverYoungerBrotherEye1Tex:
+  type: TEXTURE
+  offset: 0xF918
+  symbol: gBeaverYoungerBrotherEye1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherEye2Tex:
+  type: TEXTURE
+  offset: 0x10118
+  symbol: gBeaverYoungerBrotherEye2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherEye3Tex:
+  type: TEXTURE
+  offset: 0x10918
+  symbol: gBeaverYoungerBrotherEye3Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherEye4Tex:
+  type: TEXTURE
+  offset: 0x11118
+  symbol: gBeaverYoungerBrotherEye4Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherHairBackDL:
+  type: GFX
+  offset: 0xEC68
+  symbol: gBeaverYoungerBrotherHairBackDL
+
+gBeaverYoungerBrotherHairBackLimb:
+  type: OOT:LIMB
+  offset: 0x1788C
+  symbol: gBeaverYoungerBrotherHairBackLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherHairLeftDL:
+  type: GFX
+  offset: 0xEB58
+  symbol: gBeaverYoungerBrotherHairLeftDL
+
+gBeaverYoungerBrotherHairLeftLimb:
+  type: OOT:LIMB
+  offset: 0x17880
+  symbol: gBeaverYoungerBrotherHairLeftLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherHairRightDL:
+  type: GFX
+  offset: 0xEBE0
+  symbol: gBeaverYoungerBrotherHairRightDL
+
+gBeaverYoungerBrotherHairRightLimb:
+  type: OOT:LIMB
+  offset: 0x17874
+  symbol: gBeaverYoungerBrotherHairRightLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherHairTex:
+  type: TEXTURE
+  offset: 0x12F18
+  symbol: gBeaverYoungerBrotherHairTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherHandAndFootTex:
+  type: TEXTURE
+  offset: 0x13818
+  symbol: gBeaverYoungerBrotherHandAndFootTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherHeadDL:
+  type: GFX
+  offset: 0xE670
+  symbol: gBeaverYoungerBrotherHeadDL
+
+gBeaverYoungerBrotherHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1785C
+  symbol: gBeaverYoungerBrotherHeadLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x17850
+  symbol: gBeaverYoungerBrotherHeadRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLeftArmDL:
+  type: GFX
+  offset: 0xED88
+  symbol: gBeaverYoungerBrotherLeftArmDL
+
+gBeaverYoungerBrotherLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x178A4
+  symbol: gBeaverYoungerBrotherLeftArmLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x17898
+  symbol: gBeaverYoungerBrotherLeftArmRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLeftLegDL:
+  type: GFX
+  offset: 0xF4E8
+  symbol: gBeaverYoungerBrotherLeftLegDL
+
+gBeaverYoungerBrotherLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x17928
+  symbol: gBeaverYoungerBrotherLeftLegLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x1791C
+  symbol: gBeaverYoungerBrotherLeftLegRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLogsDL:
+  type: GFX
+  offset: 0xF030
+  symbol: gBeaverYoungerBrotherLogsDL
+
+gBeaverYoungerBrotherLogsEndTex:
+  type: TEXTURE
+  offset: 0x14018
+  symbol: gBeaverYoungerBrotherLogsEndTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherLogsLimb:
+  type: OOT:LIMB
+  offset: 0x178D4
+  symbol: gBeaverYoungerBrotherLogsLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherLogsTex:
+  type: TEXTURE
+  offset: 0x14818
+  symbol: gBeaverYoungerBrotherLogsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherMouthTex:
+  type: TEXTURE
+  offset: 0x11918
+  symbol: gBeaverYoungerBrotherMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherNoseTex:
+  type: TEXTURE
+  offset: 0x12118
+  symbol: gBeaverYoungerBrotherNoseTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBeaverYoungerBrotherPelvisDL:
+  type: GFX
+  offset: 0xF788
+  symbol: gBeaverYoungerBrotherPelvisDL
+
+gBeaverYoungerBrotherPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x17838
+  symbol: gBeaverYoungerBrotherPelvisLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherPelvisRootLimb:
+  type: OOT:LIMB
+  offset: 0x1782C
+  symbol: gBeaverYoungerBrotherPelvisRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherRightArmDL:
+  type: GFX
+  offset: 0xEEE0
+  symbol: gBeaverYoungerBrotherRightArmDL
+
+gBeaverYoungerBrotherRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x178BC
+  symbol: gBeaverYoungerBrotherRightArmLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x178B0
+  symbol: gBeaverYoungerBrotherRightArmRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherRightLegDL:
+  type: GFX
+  offset: 0xF638
+  symbol: gBeaverYoungerBrotherRightLegDL
+
+gBeaverYoungerBrotherRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x17910
+  symbol: gBeaverYoungerBrotherRightLegLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x17904
+  symbol: gBeaverYoungerBrotherRightLegRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherRootLimb:
+  type: OOT:LIMB
+  offset: 0x17820
+  symbol: gBeaverYoungerBrotherRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherSkel:
+  type: MM:SKELETON
+  offset: 0x17990
+  symbol: gBeaverYoungerBrotherSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBeaverYoungerBrotherSkinTex:
+  type: TEXTURE
+  offset: 0x12518
+  symbol: gBeaverYoungerBrotherSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBeaverYoungerBrotherTailBaseDL:
+  type: GFX
+  offset: 0xF3B8
+  symbol: gBeaverYoungerBrotherTailBaseDL
+
+gBeaverYoungerBrotherTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x178EC
+  symbol: gBeaverYoungerBrotherTailBaseLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherTailEndDL:
+  type: GFX
+  offset: 0xF2B0
+  symbol: gBeaverYoungerBrotherTailEndDL
+
+gBeaverYoungerBrotherTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x178F8
+  symbol: gBeaverYoungerBrotherTailEndLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x178E0
+  symbol: gBeaverYoungerBrotherTailRootLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherTailSkinTex:
+  type: TEXTURE
+  offset: 0x15818
+  symbol: gBeaverYoungerBrotherTailSkinTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherTailSplashDL:
+  type: GFX
+  offset: 0x1AD00
+  symbol: gBeaverYoungerBrotherTailSplashDL
+
+gBeaverYoungerBrotherTailSplashMaskTex:
+  type: TEXTURE
+  offset: 0x19DC0
+  symbol: gBeaverYoungerBrotherTailSplashMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gBeaverYoungerBrotherTailSplashTex:
+  type: TEXTURE
+  offset: 0x195C0
+  symbol: gBeaverYoungerBrotherTailSplashTex
+  format: I4
+  width: 64
+  height: 64
+
+gBeaverYoungerBrotherTailTex:
+  type: TEXTURE
+  offset: 0x15018
+  symbol: gBeaverYoungerBrotherTailTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBeaverYoungerBrotherTailVortexDL:
+  type: GFX
+  offset: 0x1ABF0
+  symbol: gBeaverYoungerBrotherTailVortexDL
+
+gBeaverYoungerBrotherTailVortexMaskTex:
+  type: TEXTURE
+  offset: 0x18DC0
+  symbol: gBeaverYoungerBrotherTailVortexMaskTex
+  format: I4
+  width: 64
+  height: 64
+
+gBeaverYoungerBrotherTailVortexTex:
+  type: TEXTURE
+  offset: 0x185C0
+  symbol: gBeaverYoungerBrotherTailVortexTex
+  format: I4
+  width: 64
+  height: 64
+
+gBeaverYoungerBrotherTeethDL:
+  type: GFX
+  offset: 0xECF0
+  symbol: gBeaverYoungerBrotherTeethDL
+
+gBeaverYoungerBrotherTeethLimb:
+  type: OOT:LIMB
+  offset: 0x17868
+  symbol: gBeaverYoungerBrotherTeethLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherToothTex:
+  type: TEXTURE
+  offset: 0x13718
+  symbol: gBeaverYoungerBrotherToothTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBeaverYoungerBrotherTorsoDL:
+  type: GFX
+  offset: 0xF190
+  symbol: gBeaverYoungerBrotherTorsoDL
+
+gBeaverYoungerBrotherTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x178C8
+  symbol: gBeaverYoungerBrotherTorsoLimb
+  limb_type: Standard
+
+gBeaverYoungerBrotherTorsoRootLimb:
+  type: OOT:LIMB
+  offset: 0x17844
+  symbol: gBeaverYoungerBrotherTorsoRootLimb
+  limb_type: Standard
+
+
+object_azVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_azVtx_000000
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000A30:
+  type: MM:ARRAY
+  offset: 0x000A30
+  symbol: object_azVtx_000A30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000AB0:
+  type: MM:ARRAY
+  offset: 0x000AB0
+  symbol: object_azVtx_000AB0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000AF0:
+  type: MM:ARRAY
+  offset: 0x000AF0
+  symbol: object_azVtx_000AF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000B30:
+  type: MM:ARRAY
+  offset: 0x000B30
+  symbol: object_azVtx_000B30
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000B70:
+  type: MM:ARRAY
+  offset: 0x000B70
+  symbol: object_azVtx_000B70
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000D90:
+  type: MM:ARRAY
+  offset: 0x000D90
+  symbol: object_azVtx_000D90
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_000FB0:
+  type: MM:ARRAY
+  offset: 0x000FB0
+  symbol: object_azVtx_000FB0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_0011C0:
+  type: MM:ARRAY
+  offset: 0x0011C0
+  symbol: object_azVtx_0011C0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_0013A0:
+  type: MM:ARRAY
+  offset: 0x0013A0
+  symbol: object_azVtx_0013A0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_001550:
+  type: MM:ARRAY
+  offset: 0x001550
+  symbol: object_azVtx_001550
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_0016D0:
+  type: MM:ARRAY
+  offset: 0x0016D0
+  symbol: object_azVtx_0016D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_001850:
+  type: MM:ARRAY
+  offset: 0x001850
+  symbol: object_azVtx_001850
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_0019D0:
+  type: MM:ARRAY
+  offset: 0x0019D0
+  symbol: object_azVtx_0019D0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherSkelLimbs:
+  type: BLOB
+  offset: 0x73DC
+  symbol: gBeaverOlderBrotherSkelLimbs
+  size: 0
+
+object_azVtx_00C960:
+  type: MM:ARRAY
+  offset: 0x00C960
+  symbol: object_azVtx_00C960
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D3E0:
+  type: MM:ARRAY
+  offset: 0x00D3E0
+  symbol: object_azVtx_00D3E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D440:
+  type: MM:ARRAY
+  offset: 0x00D440
+  symbol: object_azVtx_00D440
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D480:
+  type: MM:ARRAY
+  offset: 0x00D480
+  symbol: object_azVtx_00D480
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D4C0:
+  type: MM:ARRAY
+  offset: 0x00D4C0
+  symbol: object_azVtx_00D4C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D500:
+  type: MM:ARRAY
+  offset: 0x00D500
+  symbol: object_azVtx_00D500
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D710:
+  type: MM:ARRAY
+  offset: 0x00D710
+  symbol: object_azVtx_00D710
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00D920:
+  type: MM:ARRAY
+  offset: 0x00D920
+  symbol: object_azVtx_00D920
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00DBB0:
+  type: MM:ARRAY
+  offset: 0x00DBB0
+  symbol: object_azVtx_00DBB0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00DE30:
+  type: MM:ARRAY
+  offset: 0x00DE30
+  symbol: object_azVtx_00DE30
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00E020:
+  type: MM:ARRAY
+  offset: 0x00E020
+  symbol: object_azVtx_00E020
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00E1C0:
+  type: MM:ARRAY
+  offset: 0x00E1C0
+  symbol: object_azVtx_00E1C0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00E320:
+  type: MM:ARRAY
+  offset: 0x00E320
+  symbol: object_azVtx_00E320
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_00E480:
+  type: MM:ARRAY
+  offset: 0x00E480
+  symbol: object_azVtx_00E480
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverYoungerBrotherSkelLimbs:
+  type: BLOB
+  offset: 0x17934
+  symbol: gBeaverYoungerBrotherSkelLimbs
+  size: 0
+
+object_azVtx_01A5C0:
+  type: MM:ARRAY
+  offset: 0x01A5C0
+  symbol: object_azVtx_01A5C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherTailVortex1TexAnimTexScrollParams_01A6E0:
+  type: BLOB
+  offset: 0x01A6E0
+  symbol: gBeaverOlderBrotherTailVortex1TexAnimTexScrollParams_01A6E0
+  size: 0
+
+object_azVtx_01A6F0:
+  type: MM:ARRAY
+  offset: 0x01A6F0
+  symbol: object_azVtx_01A6F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherTailVortex2TexAnimTexScrollParams_01A810:
+  type: BLOB
+  offset: 0x01A810
+  symbol: gBeaverOlderBrotherTailVortex2TexAnimTexScrollParams_01A810
+  size: 0
+
+object_azVtx_01A820:
+  type: MM:ARRAY
+  offset: 0x01A820
+  symbol: object_azVtx_01A820
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherTailVortex3TexAnimTexScrollParams_01A940:
+  type: BLOB
+  offset: 0x01A940
+  symbol: gBeaverOlderBrotherTailVortex3TexAnimTexScrollParams_01A940
+  size: 0
+
+object_azVtx_01A950:
+  type: MM:ARRAY
+  offset: 0x01A950
+  symbol: object_azVtx_01A950
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherTailVortex4TexAnimTexScrollParams_01AA70:
+  type: BLOB
+  offset: 0x01AA70
+  symbol: gBeaverOlderBrotherTailVortex4TexAnimTexScrollParams_01AA70
+  size: 0
+
+object_azVtx_01AA80:
+  type: MM:ARRAY
+  offset: 0x01AA80
+  symbol: object_azVtx_01AA80
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBeaverOlderBrotherTailVortex5TexAnimTexScrollParams_01ABA0:
+  type: BLOB
+  offset: 0x01ABA0
+  symbol: gBeaverOlderBrotherTailVortex5TexAnimTexScrollParams_01ABA0
+  size: 0
+
+object_azVtx_01ABB0:
+  type: MM:ARRAY
+  offset: 0x01ABB0
+  symbol: object_azVtx_01ABB0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_azVtx_01ACC0:
+  type: MM:ARRAY
+  offset: 0x01ACC0
+  symbol: object_azVtx_01ACC0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

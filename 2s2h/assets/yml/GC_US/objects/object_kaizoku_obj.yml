@@ -1,0 +1,336 @@
+:config:
+  segments:
+    - [ 6, 0x0148C770 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0148C770 ]
+    - [ 9, 0x0148C770 ]
+    - [ 10, 0x0148C770 ]
+    - [ 11, 0x0148C770 ]
+    - [ 12, 0x0148C770 ]
+    - [ 13, 0x0148C770 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPirateBarredShutterCol:
+  type: MM:COLLISION
+  offset: 0x35B0
+  symbol: gPirateBarredShutterCol
+
+gPirateBarredShutterDL:
+  type: GFX
+  offset: 0x32A0
+  symbol: gPirateBarredShutterDL
+
+gPirateGratedShutterCol:
+  type: MM:COLLISION
+  offset: 0x5EC8
+  symbol: gPirateGratedShutterCol
+
+gPirateGratedShutterDL:
+  type: GFX
+  offset: 0x5720
+  symbol: gPirateGratedShutterDL
+
+gPirateLiftPlatformCol:
+  type: MM:COLLISION
+  offset: 0x19B0
+  symbol: gPirateLiftPlatformCol
+
+gPirateLiftPlatformDL:
+  type: GFX
+  offset: 0x1680
+  symbol: gPirateLiftPlatformDL
+
+gPiratesFortressDoorDL:
+  type: GFX
+  offset: 0x9F20
+  symbol: gPiratesFortressDoorDL
+
+gPiratesFortressDoorTex:
+  type: TEXTURE
+  offset: 0xA210
+  symbol: gPiratesFortressDoorTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_kaizoku_obj_Colheader_009A88:
+  type: MM:COLLISION
+  offset: 0x9A88
+  symbol: object_kaizoku_obj_Colheader_009A88
+
+object_kaizoku_obj_Colheader_00B868:
+  type: MM:COLLISION
+  offset: 0xB868
+  symbol: object_kaizoku_obj_Colheader_00B868
+
+object_kaizoku_obj_DL_0001A0:
+  type: GFX
+  offset: 0x1A0
+  symbol: object_kaizoku_obj_DL_0001A0
+
+object_kaizoku_obj_DL_007630:
+  type: GFX
+  offset: 0x7630
+  symbol: object_kaizoku_obj_DL_007630
+
+object_kaizoku_obj_DL_00AD50:
+  type: GFX
+  offset: 0xAD50
+  symbol: object_kaizoku_obj_DL_00AD50
+
+object_kaizoku_obj_TLUT_005F00:
+  type: TEXTURE
+  offset: 0x5F00
+  symbol: object_kaizoku_obj_TLUT_005F00
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_kaizoku_obj_TLUT_0083C8:
+  type: TEXTURE
+  offset: 0x83C8
+  symbol: object_kaizoku_obj_TLUT_0083C8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kaizoku_obj_TLUT_0085C8:
+  type: TEXTURE
+  offset: 0x85C8
+  symbol: object_kaizoku_obj_TLUT_0085C8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_kaizoku_obj_TLUT_0085E8:
+  type: TEXTURE
+  offset: 0x85E8
+  symbol: object_kaizoku_obj_TLUT_0085E8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_kaizoku_obj_TLUT_00AF38:
+  type: TEXTURE
+  offset: 0xAF38
+  symbol: object_kaizoku_obj_TLUT_00AF38
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_kaizoku_obj_TLUT_00AF58:
+  type: TEXTURE
+  offset: 0xAF58
+  symbol: object_kaizoku_obj_TLUT_00AF58
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_kaizoku_obj_Tex_000300:
+  type: TEXTURE
+  offset: 0x300
+  symbol: object_kaizoku_obj_Tex_000300
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_kaizoku_obj_Tex_0019E0:
+  type: TEXTURE
+  offset: 0x19E0
+  symbol: object_kaizoku_obj_Tex_0019E0
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_kaizoku_obj_Tex_0029E0:
+  type: TEXTURE
+  offset: 0x29E0
+  symbol: object_kaizoku_obj_Tex_0029E0
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_kaizoku_obj_Tex_002DE0:
+  type: TEXTURE
+  offset: 0x2DE0
+  symbol: object_kaizoku_obj_Tex_002DE0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kaizoku_obj_Tex_0035E0:
+  type: TEXTURE
+  offset: 0x35E0
+  symbol: object_kaizoku_obj_Tex_0035E0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_kaizoku_obj_Tex_0045E0:
+  type: TEXTURE
+  offset: 0x45E0
+  symbol: object_kaizoku_obj_Tex_0045E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_kaizoku_obj_Tex_004DE0:
+  type: TEXTURE
+  offset: 0x4DE0
+  symbol: object_kaizoku_obj_Tex_004DE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_kaizoku_obj_Tex_005F20:
+  type: TEXTURE
+  offset: 0x5F20
+  symbol: object_kaizoku_obj_Tex_005F20
+  format: CI4
+  width: 64
+  height: 64
+
+object_kaizoku_obj_Tex_008608:
+  type: TEXTURE
+  offset: 0x8608
+  symbol: object_kaizoku_obj_Tex_008608
+  format: CI8
+  width: 16
+  height: 32
+
+object_kaizoku_obj_Tex_008808:
+  type: TEXTURE
+  offset: 0x8808
+  symbol: object_kaizoku_obj_Tex_008808
+  format: CI8
+  width: 32
+  height: 16
+
+object_kaizoku_obj_Tex_008A08:
+  type: TEXTURE
+  offset: 0x8A08
+  symbol: object_kaizoku_obj_Tex_008A08
+  format: CI8
+  width: 16
+  height: 16
+
+object_kaizoku_obj_Tex_008B08:
+  type: TEXTURE
+  offset: 0x8B08
+  symbol: object_kaizoku_obj_Tex_008B08
+  format: CI4
+  width: 32
+  height: 32
+
+object_kaizoku_obj_Tex_008D08:
+  type: TEXTURE
+  offset: 0x8D08
+  symbol: object_kaizoku_obj_Tex_008D08
+  format: CI8
+  width: 32
+  height: 32
+
+object_kaizoku_obj_Tex_009108:
+  type: TEXTURE
+  offset: 0x9108
+  symbol: object_kaizoku_obj_Tex_009108
+  format: CI8
+  width: 32
+  height: 32
+
+object_kaizoku_obj_Tex_009508:
+  type: TEXTURE
+  offset: 0x9508
+  symbol: object_kaizoku_obj_Tex_009508
+  format: CI4
+  width: 4
+  height: 4
+
+object_kaizoku_obj_Tex_00AA10:
+  type: TEXTURE
+  offset: 0xAA10
+  symbol: object_kaizoku_obj_Tex_00AA10
+  format: I4
+  width: 32
+  height: 32
+
+object_kaizoku_obj_Tex_00AF78:
+  type: TEXTURE
+  offset: 0xAF78
+  symbol: object_kaizoku_obj_Tex_00AF78
+  format: CI4
+  width: 32
+  height: 64
+
+object_kaizoku_obj_Tex_00B378:
+  type: TEXTURE
+  offset: 0xB378
+  symbol: object_kaizoku_obj_Tex_00B378
+  format: CI4
+  width: 32
+  height: 64
+
+
+object_kaizoku_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kaizoku_objVtx_000000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_001300:
+  type: MM:ARRAY
+  offset: 0x001300
+  symbol: object_kaizoku_objVtx_001300
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_002FE0:
+  type: MM:ARRAY
+  offset: 0x002FE0
+  symbol: object_kaizoku_objVtx_002FE0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_0051E0:
+  type: MM:ARRAY
+  offset: 0x0051E0
+  symbol: object_kaizoku_objVtx_0051E0
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_006720:
+  type: MM:ARRAY
+  offset: 0x006720
+  symbol: object_kaizoku_objVtx_006720
+  count: 241
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_009AC0:
+  type: MM:ARRAY
+  offset: 0x009AC0
+  symbol: object_kaizoku_objVtx_009AC0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kaizoku_objVtx_00AC10:
+  type: MM:ARRAY
+  offset: 0x00AC10
+  symbol: object_kaizoku_objVtx_00AC10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

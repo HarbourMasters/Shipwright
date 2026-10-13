@@ -1,0 +1,499 @@
+:config:
+  segments:
+    - [ 6, 0x014B0620 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014B0620 ]
+    - [ 9, 0x014B0620 ]
+    - [ 10, 0x014B0620 ]
+    - [ 11, 0x014B0620 ]
+    - [ 12, 0x014B0620 ]
+    - [ 13, 0x014B0620 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gTijoArmsFoldedAnim:
+  type: OOT:ANIMATION
+  offset: 0xA9C
+  symbol: gTijoArmsFoldedAnim
+
+gTijoBassDrumDL:
+  type: GFX
+  offset: 0xB0D8
+  symbol: gTijoBassDrumDL
+
+gTijoChairTex:
+  type: TEXTURE
+  offset: 0x4BD0
+  symbol: gTijoChairTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoCrashCymbalDL:
+  type: GFX
+  offset: 0xA5E0
+  symbol: gTijoCrashCymbalDL
+
+gTijoCymbalHiHatTex:
+  type: TEXTURE
+  offset: 0xBB48
+  symbol: gTijoCymbalHiHatTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoDrum1DL:
+  type: GFX
+  offset: 0xA700
+  symbol: gTijoDrum1DL
+
+gTijoDrum2DL:
+  type: GFX
+  offset: 0xA8F8
+  symbol: gTijoDrum2DL
+
+gTijoDrum3DL:
+  type: GFX
+  offset: 0xAAF0
+  symbol: gTijoDrum3DL
+
+gTijoDrum4DL:
+  type: GFX
+  offset: 0xACE8
+  symbol: gTijoDrum4DL
+
+gTijoDrum5DL:
+  type: GFX
+  offset: 0xAEE0
+  symbol: gTijoDrum5DL
+
+gTijoDrumFrameDL:
+  type: GFX
+  offset: 0xA460
+  symbol: gTijoDrumFrameDL
+
+gTijoDrumFrameTex:
+  type: TEXTURE
+  offset: 0xB348
+  symbol: gTijoDrumFrameTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoDrumsEyesTex:
+  type: TEXTURE
+  offset: 0xC3C8
+  symbol: gTijoDrumsEyesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoDrumsHairTex:
+  type: TEXTURE
+  offset: 0xCDC8
+  symbol: gTijoDrumsHairTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoDrumsMouthTex:
+  type: TEXTURE
+  offset: 0xCBC8
+  symbol: gTijoDrumsMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTijoDrumsSkinTex:
+  type: TEXTURE
+  offset: 0xC348
+  symbol: gTijoDrumsSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTijoEyesClosedTex:
+  type: TEXTURE
+  offset: 0x6E50
+  symbol: gTijoEyesClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoEyesHalfOpenTex:
+  type: TEXTURE
+  offset: 0x6650
+  symbol: gTijoEyesHalfOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoEyesOpenTex:
+  type: TEXTURE
+  offset: 0x5E50
+  symbol: gTijoEyesOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoHandTex:
+  type: TEXTURE
+  offset: 0x53D0
+  symbol: gTijoHandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTijoHeadDL:
+  type: GFX
+  offset: 0x47B8
+  symbol: gTijoHeadDL
+
+gTijoHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD5E0
+  symbol: gTijoHeadLimb
+  limb_type: Standard
+
+gTijoHiHatDL:
+  type: GFX
+  offset: 0xA670
+  symbol: gTijoHiHatDL
+
+gTijoLeftArmDL:
+  type: GFX
+  offset: 0x43E8
+  symbol: gTijoLeftArmDL
+
+gTijoLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xD5EC
+  symbol: gTijoLeftArmLimb
+  limb_type: Standard
+
+gTijoLeftForearmDL:
+  type: GFX
+  offset: 0x4500
+  symbol: gTijoLeftForearmDL
+
+gTijoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD5F8
+  symbol: gTijoLeftForearmLimb
+  limb_type: Standard
+
+gTijoLeftHandDL:
+  type: GFX
+  offset: 0x4628
+  symbol: gTijoLeftHandDL
+
+gTijoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xD604
+  symbol: gTijoLeftHandLimb
+  limb_type: Standard
+
+gTijoLowerBodyChairDL:
+  type: GFX
+  offset: 0x39A0
+  symbol: gTijoLowerBodyChairDL
+
+gTijoLowerBodyChairLimb:
+  type: OOT:LIMB
+  offset: 0xD5C8
+  symbol: gTijoLowerBodyChairLimb
+  limb_type: Standard
+
+gTijoMouthClosedTex:
+  type: TEXTURE
+  offset: 0x7650
+  symbol: gTijoMouthClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoMouthOpenTex:
+  type: TEXTURE
+  offset: 0x7E50
+  symbol: gTijoMouthOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoNoseTex:
+  type: TEXTURE
+  offset: 0x55D0
+  symbol: gTijoNoseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTijoPlayingAndantinoAnim:
+  type: OOT:ANIMATION
+  offset: 0xD9B0
+  symbol: gTijoPlayingAndantinoAnim
+
+gTijoPlayingLentoAnim:
+  type: OOT:ANIMATION
+  offset: 0xD94
+  symbol: gTijoPlayingLentoAnim
+
+gTijoPlayingVivaceAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E8
+  symbol: gTijoPlayingVivaceAnim
+
+gTijoReadyToPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x894
+  symbol: gTijoReadyToPlayAnim
+
+gTijoRideCymbalDL:
+  type: GFX
+  offset: 0xA550
+  symbol: gTijoRideCymbalDL
+
+gTijoRightArmDL:
+  type: GFX
+  offset: 0x4018
+  symbol: gTijoRightArmDL
+
+gTijoRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xD610
+  symbol: gTijoRightArmLimb
+  limb_type: Standard
+
+gTijoRightForearmDL:
+  type: GFX
+  offset: 0x4130
+  symbol: gTijoRightForearmDL
+
+gTijoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xD61C
+  symbol: gTijoRightForearmLimb
+  limb_type: Standard
+
+gTijoRightHandDL:
+  type: GFX
+  offset: 0x4258
+  symbol: gTijoRightHandDL
+
+gTijoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xD628
+  symbol: gTijoRightHandLimb
+  limb_type: Standard
+
+gTijoSkel:
+  type: MM:SKELETON
+  offset: 0xD658
+  symbol: gTijoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gTijoSkinSpotsTex:
+  type: TEXTURE
+  offset: 0x5650
+  symbol: gTijoSkinSpotsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTijoSkinTex:
+  type: TEXTURE
+  offset: 0x4B50
+  symbol: gTijoSkinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTijoUpperBodyDL:
+  type: GFX
+  offset: 0x3DA0
+  symbol: gTijoUpperBodyDL
+
+gTijoUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0xD5D4
+  symbol: gTijoUpperBodyLimb
+  limb_type: Standard
+
+
+object_zodVtx_000DB0:
+  type: MM:ARRAY
+  offset: 0x000DB0
+  symbol: object_zodVtx_000DB0
+  count: 224
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_001BB0:
+  type: MM:ARRAY
+  offset: 0x001BB0
+  symbol: object_zodVtx_001BB0
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_002180:
+  type: MM:ARRAY
+  offset: 0x002180
+  symbol: object_zodVtx_002180
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_0025E0:
+  type: MM:ARRAY
+  offset: 0x0025E0
+  symbol: object_zodVtx_0025E0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_002820:
+  type: MM:ARRAY
+  offset: 0x002820
+  symbol: object_zodVtx_002820
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_002A40:
+  type: MM:ARRAY
+  offset: 0x002A40
+  symbol: object_zodVtx_002A40
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_002EA0:
+  type: MM:ARRAY
+  offset: 0x002EA0
+  symbol: object_zodVtx_002EA0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_0030E0:
+  type: MM:ARRAY
+  offset: 0x0030E0
+  symbol: object_zodVtx_0030E0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_003300:
+  type: MM:ARRAY
+  offset: 0x003300
+  symbol: object_zodVtx_003300
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_008650:
+  type: MM:ARRAY
+  offset: 0x008650
+  symbol: object_zodVtx_008650
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_008960:
+  type: MM:ARRAY
+  offset: 0x008960
+  symbol: object_zodVtx_008960
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_0089B0:
+  type: MM:ARRAY
+  offset: 0x0089B0
+  symbol: object_zodVtx_0089B0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_008A00:
+  type: MM:ARRAY
+  offset: 0x008A00
+  symbol: object_zodVtx_008A00
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_008A50:
+  type: MM:ARRAY
+  offset: 0x008A50
+  symbol: object_zodVtx_008A50
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_008E90:
+  type: MM:ARRAY
+  offset: 0x008E90
+  symbol: object_zodVtx_008E90
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_0092D0:
+  type: MM:ARRAY
+  offset: 0x0092D0
+  symbol: object_zodVtx_0092D0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_009710:
+  type: MM:ARRAY
+  offset: 0x009710
+  symbol: object_zodVtx_009710
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_009B50:
+  type: MM:ARRAY
+  offset: 0x009B50
+  symbol: object_zodVtx_009B50
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zodVtx_009F90:
+  type: MM:ARRAY
+  offset: 0x009F90
+  symbol: object_zodVtx_009F90
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTijoSkelLimbs:
+  type: BLOB
+  offset: 0xD634
+  symbol: gTijoSkelLimbs
+  size: 0

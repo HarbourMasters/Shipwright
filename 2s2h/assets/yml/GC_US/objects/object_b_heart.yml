@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x00EF8730 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00EF8730 ]
+    - [ 9, 0x00EF8730 ]
+    - [ 10, 0x00EF8730 ]
+    - [ 11, 0x00EF8730 ]
+    - [ 12, 0x00EF8730 ]
+    - [ 13, 0x00EF8730 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gUnusedHeartContainerDL:
+  type: GFX
+  offset: 0x240
+  symbol: gUnusedHeartContainerDL
+
+gUnusedHeartContainerTex:
+  type: TEXTURE
+  offset: 0x3C0
+  symbol: gUnusedHeartContainerTex
+  format: I4
+  width: 32
+  height: 32
+
+gUnusedHeartSpriteDL:
+  type: GFX
+  offset: 0x348
+  symbol: gUnusedHeartSpriteDL
+
+gUnusedHeartSpriteTex:
+  type: TEXTURE
+  offset: 0x5C0
+  symbol: gUnusedHeartSpriteTex
+  format: I4
+  width: 16
+  height: 16
+
+
+object_b_heartVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_b_heartVtx_000000
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_b_heartVtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_b_heartVtx_000200
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

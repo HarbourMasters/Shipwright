@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 6, 0x01353C50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01353C50 ]
+    - [ 9, 0x01353C50 ]
+    - [ 10, 0x01353C50 ]
+    - [ 11, 0x01353C50 ]
+    - [ 12, 0x01353C50 ]
+    - [ 13, 0x01353C50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGoronDoorCol:
+  type: MM:COLLISION
+  offset: 0x11C0
+  symbol: gGoronDoorCol
+
+gGoronDoorDL:
+  type: GFX
+  offset: 0x88
+  symbol: gGoronDoorDL
+
+gGoronDoorTex:
+  type: TEXTURE
+  offset: 0x120
+  symbol: gGoronDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gSpot11EmptyDL:
+  type: GFX
+  offset: 0x80
+  symbol: gSpot11EmptyDL
+
+gWoodStepCol:
+  type: MM:COLLISION
+  offset: 0x1EB8
+  symbol: gWoodStepCol
+
+gWoodStepDL:
+  type: GFX
+  offset: 0x13F0
+  symbol: gWoodStepDL
+
+gWoodStepSideTex:
+  type: TEXTURE
+  offset: 0x1B60
+  symbol: gWoodStepSideTex
+  format: CI8
+  width: 32
+  height: 16
+
+gWoodStepTopTex:
+  type: TEXTURE
+  offset: 0x1760
+  symbol: gWoodStepTopTex
+  format: CI8
+  width: 32
+  height: 32
+
+gWoodTLUT:
+  type: TEXTURE
+  offset: 0x1560
+  symbol: gWoodTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_spot11_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_spot11_objVtx_000000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot11_objVtx_0011F0:
+  type: MM:ARRAY
+  offset: 0x0011F0
+  symbol: object_spot11_objVtx_0011F0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

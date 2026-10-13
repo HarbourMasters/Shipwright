@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01DE6640 ]
+    - [ 2, 0x01DE22D0 ]
+  directory: scenes/nonmq/Z2_KYOJINNOMA
+  external_files:
+    - N64_US/scenes/nonmq/Z2_KYOJINNOMA_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_KYOJINNOMA.yml
+
+Z2_KYOJINNOMA_room_00Set_0004D0:
+  type: MM:ROOM
+  offset: 0x4D0
+  symbol: Z2_KYOJINNOMA_room_00Set_0004D0
+  base_name: Z2_KYOJINNOMA_room_00

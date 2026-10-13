@@ -1,0 +1,496 @@
+:config:
+  segments:
+    - [ 6, 0x0150CF80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0150CF80 ]
+    - [ 9, 0x0150CF80 ]
+    - [ 10, 0x0150CF80 ]
+    - [ 11, 0x0150CF80 ]
+    - [ 12, 0x0150CF80 ]
+    - [ 13, 0x0150CF80 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_ah_Anim_000968:
+  type: OOT:ANIMATION
+  offset: 0x968
+  symbol: object_ah_Anim_000968
+
+object_ah_Anim_000DDC:
+  type: OOT:ANIMATION
+  offset: 0xDDC
+  symbol: object_ah_Anim_000DDC
+
+object_ah_Anim_001860:
+  type: OOT:ANIMATION
+  offset: 0x1860
+  symbol: object_ah_Anim_001860
+
+object_ah_Anim_002280:
+  type: OOT:ANIMATION
+  offset: 0x2280
+  symbol: object_ah_Anim_002280
+
+object_ah_DL_004A60:
+  type: GFX
+  offset: 0x4A60
+  symbol: object_ah_DL_004A60
+
+object_ah_DL_004B70:
+  type: GFX
+  offset: 0x4B70
+  symbol: object_ah_DL_004B70
+
+object_ah_DL_004C80:
+  type: GFX
+  offset: 0x4C80
+  symbol: object_ah_DL_004C80
+
+object_ah_DL_004E78:
+  type: GFX
+  offset: 0x4E78
+  symbol: object_ah_DL_004E78
+
+object_ah_DL_005010:
+  type: GFX
+  offset: 0x5010
+  symbol: object_ah_DL_005010
+
+object_ah_DL_0050E8:
+  type: GFX
+  offset: 0x50E8
+  symbol: object_ah_DL_0050E8
+
+object_ah_DL_005268:
+  type: GFX
+  offset: 0x5268
+  symbol: object_ah_DL_005268
+
+object_ah_DL_005400:
+  type: GFX
+  offset: 0x5400
+  symbol: object_ah_DL_005400
+
+object_ah_DL_0054D8:
+  type: GFX
+  offset: 0x54D8
+  symbol: object_ah_DL_0054D8
+
+object_ah_DL_0055F0:
+  type: GFX
+  offset: 0x55F0
+  symbol: object_ah_DL_0055F0
+
+object_ah_DL_005BA8:
+  type: GFX
+  offset: 0x5BA8
+  symbol: object_ah_DL_005BA8
+
+object_ah_DL_005D88:
+  type: GFX
+  offset: 0x5D88
+  symbol: object_ah_DL_005D88
+
+object_ah_DL_005EB0:
+  type: GFX
+  offset: 0x5EB0
+  symbol: object_ah_DL_005EB0
+
+object_ah_DL_006090:
+  type: GFX
+  offset: 0x6090
+  symbol: object_ah_DL_006090
+
+object_ah_DL_0061B8:
+  type: GFX
+  offset: 0x61B8
+  symbol: object_ah_DL_0061B8
+
+object_ah_Skel_009E70:
+  type: MM:SKELETON
+  offset: 0x9E70
+  symbol: object_ah_Skel_009E70
+  limb_type: Standard
+  skel_type: Flex
+
+object_ah_Standardlimb_009D70:
+  type: OOT:LIMB
+  offset: 0x9D70
+  symbol: object_ah_Standardlimb_009D70
+  limb_type: Standard
+
+object_ah_Standardlimb_009D7C:
+  type: OOT:LIMB
+  offset: 0x9D7C
+  symbol: object_ah_Standardlimb_009D7C
+  limb_type: Standard
+
+object_ah_Standardlimb_009D88:
+  type: OOT:LIMB
+  offset: 0x9D88
+  symbol: object_ah_Standardlimb_009D88
+  limb_type: Standard
+
+object_ah_Standardlimb_009D94:
+  type: OOT:LIMB
+  offset: 0x9D94
+  symbol: object_ah_Standardlimb_009D94
+  limb_type: Standard
+
+object_ah_Standardlimb_009DA0:
+  type: OOT:LIMB
+  offset: 0x9DA0
+  symbol: object_ah_Standardlimb_009DA0
+  limb_type: Standard
+
+object_ah_Standardlimb_009DAC:
+  type: OOT:LIMB
+  offset: 0x9DAC
+  symbol: object_ah_Standardlimb_009DAC
+  limb_type: Standard
+
+object_ah_Standardlimb_009DB8:
+  type: OOT:LIMB
+  offset: 0x9DB8
+  symbol: object_ah_Standardlimb_009DB8
+  limb_type: Standard
+
+object_ah_Standardlimb_009DC4:
+  type: OOT:LIMB
+  offset: 0x9DC4
+  symbol: object_ah_Standardlimb_009DC4
+  limb_type: Standard
+
+object_ah_Standardlimb_009DD0:
+  type: OOT:LIMB
+  offset: 0x9DD0
+  symbol: object_ah_Standardlimb_009DD0
+  limb_type: Standard
+
+object_ah_Standardlimb_009DDC:
+  type: OOT:LIMB
+  offset: 0x9DDC
+  symbol: object_ah_Standardlimb_009DDC
+  limb_type: Standard
+
+object_ah_Standardlimb_009DE8:
+  type: OOT:LIMB
+  offset: 0x9DE8
+  symbol: object_ah_Standardlimb_009DE8
+  limb_type: Standard
+
+object_ah_Standardlimb_009DF4:
+  type: OOT:LIMB
+  offset: 0x9DF4
+  symbol: object_ah_Standardlimb_009DF4
+  limb_type: Standard
+
+object_ah_Standardlimb_009E00:
+  type: OOT:LIMB
+  offset: 0x9E00
+  symbol: object_ah_Standardlimb_009E00
+  limb_type: Standard
+
+object_ah_Standardlimb_009E0C:
+  type: OOT:LIMB
+  offset: 0x9E0C
+  symbol: object_ah_Standardlimb_009E0C
+  limb_type: Standard
+
+object_ah_Standardlimb_009E18:
+  type: OOT:LIMB
+  offset: 0x9E18
+  symbol: object_ah_Standardlimb_009E18
+  limb_type: Standard
+
+object_ah_Standardlimb_009E24:
+  type: OOT:LIMB
+  offset: 0x9E24
+  symbol: object_ah_Standardlimb_009E24
+  limb_type: Standard
+
+object_ah_TLUT_0064B0:
+  type: TEXTURE
+  offset: 0x64B0
+  symbol: object_ah_TLUT_0064B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ah_Tex_0066B0:
+  type: TEXTURE
+  offset: 0x66B0
+  symbol: object_ah_Tex_0066B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_ah_Tex_0067B0:
+  type: TEXTURE
+  offset: 0x67B0
+  symbol: object_ah_Tex_0067B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_ah_Tex_0068B0:
+  type: TEXTURE
+  offset: 0x68B0
+  symbol: object_ah_Tex_0068B0
+  format: CI8
+  width: 8
+  height: 8
+
+object_ah_Tex_0068F0:
+  type: TEXTURE
+  offset: 0x68F0
+  symbol: object_ah_Tex_0068F0
+  format: CI8
+  width: 8
+  height: 8
+
+object_ah_Tex_006930:
+  type: TEXTURE
+  offset: 0x6930
+  symbol: object_ah_Tex_006930
+  format: CI8
+  width: 8
+  height: 8
+
+object_ah_Tex_006970:
+  type: TEXTURE
+  offset: 0x6970
+  symbol: object_ah_Tex_006970
+  format: CI8
+  width: 16
+  height: 16
+
+object_ah_Tex_006A70:
+  type: TEXTURE
+  offset: 0x6A70
+  symbol: object_ah_Tex_006A70
+  format: CI8
+  width: 8
+  height: 8
+
+object_ah_Tex_006AB0:
+  type: TEXTURE
+  offset: 0x6AB0
+  symbol: object_ah_Tex_006AB0
+  format: CI8
+  width: 16
+  height: 16
+
+object_ah_Tex_006BB0:
+  type: TEXTURE
+  offset: 0x6BB0
+  symbol: object_ah_Tex_006BB0
+  format: CI8
+  width: 8
+  height: 16
+
+object_ah_Tex_006C30:
+  type: TEXTURE
+  offset: 0x6C30
+  symbol: object_ah_Tex_006C30
+  format: I8
+  width: 8
+  height: 8
+
+object_ah_Tex_006C70:
+  type: TEXTURE
+  offset: 0x6C70
+  symbol: object_ah_Tex_006C70
+  format: CI8
+  width: 16
+  height: 16
+
+object_ah_Tex_006D70:
+  type: TEXTURE
+  offset: 0x6D70
+  symbol: object_ah_Tex_006D70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ah_Tex_007570:
+  type: TEXTURE
+  offset: 0x7570
+  symbol: object_ah_Tex_007570
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ah_Tex_007D70:
+  type: TEXTURE
+  offset: 0x7D70
+  symbol: object_ah_Tex_007D70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ah_Tex_008570:
+  type: TEXTURE
+  offset: 0x8570
+  symbol: object_ah_Tex_008570
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ah_Tex_008D70:
+  type: TEXTURE
+  offset: 0x8D70
+  symbol: object_ah_Tex_008D70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ah_Tex_009570:
+  type: TEXTURE
+  offset: 0x9570
+  symbol: object_ah_Tex_009570
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ahVtx_002290:
+  type: MM:ARRAY
+  offset: 0x002290
+  symbol: object_ahVtx_002290
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002420:
+  type: MM:ARRAY
+  offset: 0x002420
+  symbol: object_ahVtx_002420
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002610:
+  type: MM:ARRAY
+  offset: 0x002610
+  symbol: object_ahVtx_002610
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_0026B0:
+  type: MM:ARRAY
+  offset: 0x0026B0
+  symbol: object_ahVtx_0026B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002840:
+  type: MM:ARRAY
+  offset: 0x002840
+  symbol: object_ahVtx_002840
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002A30:
+  type: MM:ARRAY
+  offset: 0x002A30
+  symbol: object_ahVtx_002A30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002AD0:
+  type: MM:ARRAY
+  offset: 0x002AD0
+  symbol: object_ahVtx_002AD0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002C40:
+  type: MM:ARRAY
+  offset: 0x002C40
+  symbol: object_ahVtx_002C40
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002DB0:
+  type: MM:ARRAY
+  offset: 0x002DB0
+  symbol: object_ahVtx_002DB0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_002EF0:
+  type: MM:ARRAY
+  offset: 0x002EF0
+  symbol: object_ahVtx_002EF0
+  count: 196
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_003B30:
+  type: MM:ARRAY
+  offset: 0x003B30
+  symbol: object_ahVtx_003B30
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_003E50:
+  type: MM:ARRAY
+  offset: 0x003E50
+  symbol: object_ahVtx_003E50
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_003FF0:
+  type: MM:ARRAY
+  offset: 0x003FF0
+  symbol: object_ahVtx_003FF0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_004310:
+  type: MM:ARRAY
+  offset: 0x004310
+  symbol: object_ahVtx_004310
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ahVtx_0044B0:
+  type: MM:ARRAY
+  offset: 0x0044B0
+  symbol: object_ahVtx_0044B0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ah_Skel_009E70Limbs:
+  type: BLOB
+  offset: 0x9E30
+  symbol: object_ah_Skel_009E70Limbs
+  size: 0

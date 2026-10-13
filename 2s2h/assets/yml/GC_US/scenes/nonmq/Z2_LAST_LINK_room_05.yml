@@ -1,0 +1,166 @@
+:config:
+  segments:
+    - [ 3, 0x01DC57F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01DC57F0 ]
+    - [ 9, 0x01DC57F0 ]
+    - [ 10, 0x01DC57F0 ]
+    - [ 11, 0x01DC57F0 ]
+    - [ 12, 0x01DC57F0 ]
+    - [ 13, 0x01DC57F0 ]
+    - [ 2, 0x01DB6F60 ]
+  directory: scenes/nonmq/Z2_LAST_LINK
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_LAST_LINK.yml
+
+Z2_LAST_LINK_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_LINK_room_05
+
+Z2_LAST_LINK_room_05DL_0016A0:
+  type: GFX
+  offset: 0x16A0
+  symbol: Z2_LAST_LINK_room_05DL_0016A0
+
+
+Z2_LAST_LINK_room_05ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_LAST_LINK_room_05ActorEntry_000058
+  size: 0
+
+Z2_LAST_LINK_room_05Vtx_0000D0:
+  type: MM:ARRAY
+  offset: 0x0000D0
+  symbol: Z2_LAST_LINK_room_05Vtx_0000D0
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_05DL_0003E0:
+  type: GFX
+  offset: 0x0003E0
+  symbol: Z2_LAST_LINK_room_05DL_0003E0
+
+Z2_LAST_LINK_room_05Vtx_0005B0:
+  type: MM:ARRAY
+  offset: 0x0005B0
+  symbol: Z2_LAST_LINK_room_05Vtx_0005B0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_05DL_000680:
+  type: GFX
+  offset: 0x000680
+  symbol: Z2_LAST_LINK_room_05DL_000680
+
+Z2_LAST_LINK_room_05Vtx_000758:
+  type: MM:ARRAY
+  offset: 0x000758
+  symbol: Z2_LAST_LINK_room_05Vtx_000758
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_05DL_000AB8:
+  type: GFX
+  offset: 0x000AB8
+  symbol: Z2_LAST_LINK_room_05DL_000AB8
+
+Z2_LAST_LINK_room_05Vtx_000C68:
+  type: MM:ARRAY
+  offset: 0x000C68
+  symbol: Z2_LAST_LINK_room_05Vtx_000C68
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_05DL_000E38:
+  type: GFX
+  offset: 0x000E38
+  symbol: Z2_LAST_LINK_room_05DL_000E38
+
+Z2_LAST_LINK_room_05Vtx_000F38:
+  type: MM:ARRAY
+  offset: 0x000F38
+  symbol: Z2_LAST_LINK_room_05Vtx_000F38
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_05DL_0014B8:
+  type: GFX
+  offset: 0x0014B8
+  symbol: Z2_LAST_LINK_room_05DL_0014B8
+
+Z2_LAST_LINK_room_05Tex_0016D0:
+  type: TEXTURE
+  offset: 0x0016D0
+  symbol: Z2_LAST_LINK_room_05Tex_0016D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_LINK_room_05Tex_001ED0:
+  type: TEXTURE
+  offset: 0x001ED0
+  symbol: Z2_LAST_LINK_room_05Tex_001ED0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_LINK_room_05Tex_0026D0:
+  type: TEXTURE
+  offset: 0x0026D0
+  symbol: Z2_LAST_LINK_room_05Tex_0026D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_LINK_room_05Tex_002ED0:
+  type: TEXTURE
+  offset: 0x002ED0
+  symbol: Z2_LAST_LINK_room_05Tex_002ED0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_LINK_room_05Tex_0036D0:
+  type: TEXTURE
+  offset: 0x0036D0
+  symbol: Z2_LAST_LINK_room_05Tex_0036D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_LINK_room_05TLUT_003ED0:
+  type: TEXTURE
+  offset: 0x003ED0
+  symbol: Z2_LAST_LINK_room_05TLUT_003ED0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_LINK_room_05TLUT_003EF0:
+  type: TEXTURE
+  offset: 0x003EF0
+  symbol: Z2_LAST_LINK_room_05TLUT_003EF0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_LINK_room_05TLUT_003F10:
+  type: TEXTURE
+  offset: 0x003F10
+  symbol: Z2_LAST_LINK_room_05TLUT_003F10
+  format: RGBA16
+  width: 4
+  height: 4

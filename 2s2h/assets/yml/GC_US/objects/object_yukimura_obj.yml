@@ -1,0 +1,153 @@
+:config:
+  segments:
+    - [ 6, 0x00F1C6F0 ]
+    - [ 128, 0x00A77120 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F1C6F0 ]
+    - [ 9, 0x00F1C6F0 ]
+    - [ 10, 0x00F1C6F0 ]
+    - [ 11, 0x00F1C6F0 ]
+    - [ 12, 0x00F1C6F0 ]
+    - [ 13, 0x00F1C6F0 ]
+  external_files:
+    - GC_US/code/actor.yml
+    - GC_US/objects/gameplay_keep.yml
+
+object_yukimura_obj_DL_000640:
+  type: GFX
+  offset: 0x640
+  symbol: object_yukimura_obj_DL_000640
+
+object_yukimura_obj_DL_000758:
+  type: GFX
+  offset: 0x758
+  symbol: object_yukimura_obj_DL_000758
+
+object_yukimura_obj_DL_000870:
+  type: GFX
+  offset: 0x870
+  symbol: object_yukimura_obj_DL_000870
+
+object_yukimura_obj_DL_000890:
+  type: GFX
+  offset: 0x890
+  symbol: object_yukimura_obj_DL_000890
+
+object_yukimura_obj_DL_0008C0:
+  type: GFX
+  offset: 0x8C0
+  symbol: object_yukimura_obj_DL_0008C0
+
+object_yukimura_obj_DL_000EB0:
+  type: GFX
+  offset: 0xEB0
+  symbol: object_yukimura_obj_DL_000EB0
+
+object_yukimura_obj_DL_000F98:
+  type: GFX
+  offset: 0xF98
+  symbol: object_yukimura_obj_DL_000F98
+
+object_yukimura_obj_Matanimheader_002090:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2090
+  symbol: object_yukimura_obj_Matanimheader_002090
+
+object_yukimura_obj_Tex_0008D8:
+  type: TEXTURE
+  offset: 0x8D8
+  symbol: object_yukimura_obj_Tex_0008D8
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_yukimura_obj_Tex_0009D8:
+  type: TEXTURE
+  offset: 0x9D8
+  symbol: object_yukimura_obj_Tex_0009D8
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_yukimura_obj_Tex_001078:
+  type: TEXTURE
+  offset: 0x1078
+  symbol: object_yukimura_obj_Tex_001078
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_yukimura_obj_Tex_001878:
+  type: TEXTURE
+  offset: 0x1878
+  symbol: object_yukimura_obj_Tex_001878
+  format: I4
+  width: 64
+  height: 64
+
+
+object_yukimura_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_yukimura_objVtx_000000
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_objVtx_000320:
+  type: MM:ARRAY
+  offset: 0x000320
+  symbol: object_yukimura_objVtx_000320
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_objVtx_000620:
+  type: MM:ARRAY
+  offset: 0x000620
+  symbol: object_yukimura_objVtx_000620
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_objVtx_000630:
+  type: MM:ARRAY
+  offset: 0x000630
+  symbol: object_yukimura_objVtx_000630
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_objVtx_000DE0:
+  type: MM:ARRAY
+  offset: 0x000DE0
+  symbol: object_yukimura_objVtx_000DE0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_objVtx_000E50:
+  type: MM:ARRAY
+  offset: 0x000E50
+  symbol: object_yukimura_objVtx_000E50
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_yukimura_obj_Matanimheader_002090TexScrollParams_002080:
+  type: BLOB
+  offset: 0x002080
+  symbol: object_yukimura_obj_Matanimheader_002090TexScrollParams_002080
+  size: 0
+
+object_yukimura_obj_Matanimheader_002090TexScrollParams_002088:
+  type: BLOB
+  offset: 0x002088
+  symbol: object_yukimura_obj_Matanimheader_002090TexScrollParams_002088
+  size: 0

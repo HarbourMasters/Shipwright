@@ -7,7 +7,17 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(Ship VERSION 9.3.0 LANGUAGES C CXX)
-include(CMake/soh-cvars.cmake)
+
+option(BUILD_SOH "Build Ship of Harkinian (OoT)" ON)
+option(BUILD_2SHIP "Build 2 Ship 2 Harkinian (MM)" ON)
+if(NOT BUILD_SOH AND NOT BUILD_2SHIP)
+    message(FATAL_ERROR "Turn on BUILD_SOH, BUILD_2SHIP, or both")
+endif()
+
+# Each game sets its own cvar prefixes in its directory, they differ (gCosmetics vs gCosmetic).
+# libultraship only needs these two, which both games share.
+set(CVAR_PREFIX_SETTING "gSettings")
+set(CVAR_PREFIX_WINDOW "gOpenWindows")
 include(CMake/lus-cvars.cmake)
 set(SPDLOG_LEVEL_TRACE 0)
 set(SPDLOG_LEVEL_OFF 6)
@@ -237,7 +247,9 @@ set(BUILD_UI                OFF CACHE BOOL "" FORCE)  # would fetch a 2nd libult
 set(BUILD_STORMLIB          OFF CACHE BOOL "" FORCE)  # target name clashes with LUS's `storm`
 set(BUILD_NAUDIO            OFF CACHE BOOL "" FORCE)
 
+# torch's MM factories build on its OoT ones, so OoT stays on for 2ship too
 set(BUILD_OOT               ON  CACHE BOOL "" FORCE)
+set(BUILD_MM                ${BUILD_2SHIP} CACHE BOOL "" FORCE)
 foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
     set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
 endforeach()
@@ -280,11 +292,16 @@ function(quiet_dependency_tree dir)
     endforeach()
 endfunction()
 
+# Extract every game that is turned on. Each game adds its own targets to these.
+add_custom_target(ExtractAssets)
+add_custom_target(ExtractAssetHeaders)
+
 add_subdirectory(torch SYSTEM)
 quiet_dependency_tree(${CMAKE_CURRENT_SOURCE_DIR}/torch)
 
 target_compile_definitions(torch INTERFACE YAML_CPP_STATIC_DEFINE)
 
+if(BUILD_SOH)
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
 add_executable(soh-torch EXCLUDE_FROM_ALL
@@ -310,7 +327,7 @@ endif()
 # in one run. soh.o2r comes from GenerateSohOtr, chained below.
 set(SOH_ROM_PATH "${CMAKE_SOURCE_DIR}/roms" CACHE STRING "Roms, or directories of roms, to extract")
 add_custom_target(
-    ExtractAssets
+    ExtractAssetsSoh
     COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/oot.o2r ${CMAKE_BINARY_DIR}/soh/oot-mq.o2r
     COMMAND $<TARGET_FILE:soh-torch>
             --src ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/yml
@@ -328,13 +345,15 @@ add_custom_target(
 # src/factories/oot/ is REGISTER(Binary, ...) -- and it emits no `#define d<sym>` line, which
 # soh source references ~24k times. Kept so the failure explains itself.
 add_custom_target(
-    ExtractAssetHeaders
-    COMMAND ${CMAKE_COMMAND} -E echo "ExtractAssetHeaders is currently unavailable: torch does not emit OoT asset headers yet."
+    ExtractAssetHeadersSoh
+    COMMAND ${CMAKE_COMMAND} -E echo "ExtractAssetHeadersSoh is currently unavailable: torch does not emit OoT asset headers yet."
     COMMAND ${CMAKE_COMMAND} -E echo "The checked-in headers under soh/assets are unaffected. See docs/BUILDING.md."
     COMMAND ${CMAKE_COMMAND} -E false
 )
 
 # soh.o2r is rebuilt only when its inputs change, and is part of ALL so `install` never ships a stale one.
+# A tools-only configure never adds soh/, so make its build dir for the packer.
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/soh)
 file(GLOB_RECURSE SOH_O2R_ASSETS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/*)
 list(FILTER SOH_O2R_ASSETS EXCLUDE REGEX "/soh/assets/custom/shaders/")
 file(GLOB_RECURSE SOH_O2R_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/*)
@@ -357,13 +376,19 @@ add_custom_command(
 add_custom_target(GenerateSohOtr ALL DEPENDS ${CMAKE_BINARY_DIR}/soh/soh.o2r)
 
 # ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
-add_dependencies(ExtractAssets GenerateSohOtr)
+add_dependencies(ExtractAssetsSoh GenerateSohOtr)
+add_dependencies(ExtractAssets ExtractAssetsSoh)
+add_dependencies(ExtractAssetHeaders ExtractAssetHeadersSoh)
+endif()
 
-# The asset tools only need torch, so a tools-only configure can skip libultraship and soh
-# entirely -- that is all CI needs to produce soh.o2r.
-option(SOH_TOOLS_ONLY "Configure only the asset tools, skipping libultraship and soh" OFF)
-if(SOH_TOOLS_ONLY)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/soh)
+if(BUILD_2SHIP)
+    include(2s2h/2ship-tools.cmake)
+endif()
+
+# The asset tools only need torch, so a tools-only configure can skip libultraship and the
+# games entirely -- that is all CI needs to produce soh.o2r and 2ship.o2r.
+option(SHIP_TOOLS_ONLY "Configure only the asset tools, skipping libultraship and the games" OFF)
+if(SHIP_TOOLS_ONLY)
     return()
 endif()
 
@@ -373,6 +398,12 @@ endif()
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship SYSTEM)
 quiet_target(libultraship "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
+
+if(BUILD_2SHIP)
+    include(2s2h/2ship.cmake)
+endif()
+
+if(BUILD_SOH)
 add_subdirectory(soh)
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
@@ -433,6 +464,14 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
 install(FILES ${CMAKE_SOURCE_DIR}/README.md DESTINATION . COMPONENT ship RENAME readme.txt )
+endif()
+endif()
+
+# CPack makes one package per configure, so release builds turn on one game
+if(BUILD_SOH)
+    set(SHIP_PACKAGE_GAME soh CACHE STRING "Game to package: soh or 2ship")
+else()
+    set(SHIP_PACKAGE_GAME 2ship CACHE STRING "Game to package: soh or 2ship")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")

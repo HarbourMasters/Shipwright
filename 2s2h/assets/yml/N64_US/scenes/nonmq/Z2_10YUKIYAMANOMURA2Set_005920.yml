@@ -1,0 +1,13 @@
+:config:
+  segments:
+    - [ 2, 0x01D02C10 ]
+  directory: scenes/nonmq/Z2_10YUKIYAMANOMURA2
+  external_files:
+    - N64_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2.yml
+    - N64_US/misc/scene_texture_04.yml
+
+Z2_10YUKIYAMANOMURA2Set_005920:
+  type: MM:SCENE
+  offset: 0x5920
+  symbol: Z2_10YUKIYAMANOMURA2Set_005920
+  base_name: Z2_10YUKIYAMANOMURA2

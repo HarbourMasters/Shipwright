@@ -1,0 +1,1247 @@
+:config:
+  segments:
+    - [ 3, 0x01B27140 ]
+    - [ 6, 0x01615E00 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01B27140 ]
+    - [ 9, 0x01B27140 ]
+    - [ 10, 0x01B27140 ]
+    - [ 11, 0x01B27140 ]
+    - [ 12, 0x01B27140 ]
+    - [ 13, 0x01B27140 ]
+    - [ 2, 0x01B08650 ]
+  directory: scenes/nonmq/Z2_20SICHITAI
+  external_files:
+    - N64_US/misc/scene_texture_06.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_20SICHITAI.yml
+
+Z2_20SICHITAI_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_20SICHITAI_room_01
+
+Z2_20SICHITAI_room_01DL_000570:
+  type: GFX
+  offset: 0x570
+  symbol: Z2_20SICHITAI_room_01DL_000570
+
+Z2_20SICHITAI_room_01DL_00B9F0:
+  type: GFX
+  offset: 0xB9F0
+  symbol: Z2_20SICHITAI_room_01DL_00B9F0
+
+Z2_20SICHITAI_room_01DL_011860:
+  type: GFX
+  offset: 0x11860
+  symbol: Z2_20SICHITAI_room_01DL_011860
+
+Z2_20SICHITAI_room_01DL_013458:
+  type: GFX
+  offset: 0x13458
+  symbol: Z2_20SICHITAI_room_01DL_013458
+
+
+Z2_20SICHITAI_room_01ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_20SICHITAI_room_01ActorEntry_000070
+  size: 0
+
+Z2_20SICHITAI_room_01Vtx_000578:
+  type: MM:ARRAY
+  offset: 0x000578
+  symbol: Z2_20SICHITAI_room_01Vtx_000578
+  count: 190
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_001158:
+  type: GFX
+  offset: 0x001158
+  symbol: Z2_20SICHITAI_room_01DL_001158
+
+Z2_20SICHITAI_room_01Vtx_0016B0:
+  type: MM:ARRAY
+  offset: 0x0016B0
+  symbol: Z2_20SICHITAI_room_01Vtx_0016B0
+  count: 123
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_001E60:
+  type: GFX
+  offset: 0x001E60
+  symbol: Z2_20SICHITAI_room_01DL_001E60
+
+Z2_20SICHITAI_room_01Vtx_0020B8:
+  type: MM:ARRAY
+  offset: 0x0020B8
+  symbol: Z2_20SICHITAI_room_01Vtx_0020B8
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_002568:
+  type: GFX
+  offset: 0x002568
+  symbol: Z2_20SICHITAI_room_01DL_002568
+
+Z2_20SICHITAI_room_01Vtx_002710:
+  type: MM:ARRAY
+  offset: 0x002710
+  symbol: Z2_20SICHITAI_room_01Vtx_002710
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_002C20:
+  type: GFX
+  offset: 0x002C20
+  symbol: Z2_20SICHITAI_room_01DL_002C20
+
+Z2_20SICHITAI_room_01Vtx_002DB0:
+  type: MM:ARRAY
+  offset: 0x002DB0
+  symbol: Z2_20SICHITAI_room_01Vtx_002DB0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_003030:
+  type: GFX
+  offset: 0x003030
+  symbol: Z2_20SICHITAI_room_01DL_003030
+
+Z2_20SICHITAI_room_01Vtx_0031A8:
+  type: MM:ARRAY
+  offset: 0x0031A8
+  symbol: Z2_20SICHITAI_room_01Vtx_0031A8
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_003588:
+  type: GFX
+  offset: 0x003588
+  symbol: Z2_20SICHITAI_room_01DL_003588
+
+Z2_20SICHITAI_room_01Vtx_0036F8:
+  type: MM:ARRAY
+  offset: 0x0036F8
+  symbol: Z2_20SICHITAI_room_01Vtx_0036F8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0039A8:
+  type: GFX
+  offset: 0x0039A8
+  symbol: Z2_20SICHITAI_room_01DL_0039A8
+
+Z2_20SICHITAI_room_01Vtx_003B48:
+  type: MM:ARRAY
+  offset: 0x003B48
+  symbol: Z2_20SICHITAI_room_01Vtx_003B48
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_003DA8:
+  type: GFX
+  offset: 0x003DA8
+  symbol: Z2_20SICHITAI_room_01DL_003DA8
+
+Z2_20SICHITAI_room_01Vtx_003EC8:
+  type: MM:ARRAY
+  offset: 0x003EC8
+  symbol: Z2_20SICHITAI_room_01Vtx_003EC8
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0041C8:
+  type: GFX
+  offset: 0x0041C8
+  symbol: Z2_20SICHITAI_room_01DL_0041C8
+
+Z2_20SICHITAI_room_01Vtx_004318:
+  type: MM:ARRAY
+  offset: 0x004318
+  symbol: Z2_20SICHITAI_room_01Vtx_004318
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_004758:
+  type: GFX
+  offset: 0x004758
+  symbol: Z2_20SICHITAI_room_01DL_004758
+
+Z2_20SICHITAI_room_01Vtx_004908:
+  type: MM:ARRAY
+  offset: 0x004908
+  symbol: Z2_20SICHITAI_room_01Vtx_004908
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_004D48:
+  type: GFX
+  offset: 0x004D48
+  symbol: Z2_20SICHITAI_room_01DL_004D48
+
+Z2_20SICHITAI_room_01Vtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: Z2_20SICHITAI_room_01Vtx_004FF0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_005000:
+  type: GFX
+  offset: 0x005000
+  symbol: Z2_20SICHITAI_room_01DL_005000
+
+Z2_20SICHITAI_room_01DL_005020:
+  type: GFX
+  offset: 0x005020
+  symbol: Z2_20SICHITAI_room_01DL_005020
+
+Z2_20SICHITAI_room_01Vtx_005030:
+  type: MM:ARRAY
+  offset: 0x005030
+  symbol: Z2_20SICHITAI_room_01Vtx_005030
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0058B0:
+  type: GFX
+  offset: 0x0058B0
+  symbol: Z2_20SICHITAI_room_01DL_0058B0
+
+Z2_20SICHITAI_room_01Vtx_005B08:
+  type: MM:ARRAY
+  offset: 0x005B08
+  symbol: Z2_20SICHITAI_room_01Vtx_005B08
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_006448:
+  type: GFX
+  offset: 0x006448
+  symbol: Z2_20SICHITAI_room_01DL_006448
+
+Z2_20SICHITAI_room_01Vtx_006728:
+  type: MM:ARRAY
+  offset: 0x006728
+  symbol: Z2_20SICHITAI_room_01Vtx_006728
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0068C8:
+  type: GFX
+  offset: 0x0068C8
+  symbol: Z2_20SICHITAI_room_01DL_0068C8
+
+Z2_20SICHITAI_room_01Vtx_0069C8:
+  type: MM:ARRAY
+  offset: 0x0069C8
+  symbol: Z2_20SICHITAI_room_01Vtx_0069C8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_006B08:
+  type: GFX
+  offset: 0x006B08
+  symbol: Z2_20SICHITAI_room_01DL_006B08
+
+Z2_20SICHITAI_room_01Vtx_006BE8:
+  type: MM:ARRAY
+  offset: 0x006BE8
+  symbol: Z2_20SICHITAI_room_01Vtx_006BE8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_006F08:
+  type: GFX
+  offset: 0x006F08
+  symbol: Z2_20SICHITAI_room_01DL_006F08
+
+Z2_20SICHITAI_room_01Vtx_007070:
+  type: MM:ARRAY
+  offset: 0x007070
+  symbol: Z2_20SICHITAI_room_01Vtx_007070
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007290:
+  type: GFX
+  offset: 0x007290
+  symbol: Z2_20SICHITAI_room_01DL_007290
+
+Z2_20SICHITAI_room_01Vtx_0073D0:
+  type: MM:ARRAY
+  offset: 0x0073D0
+  symbol: Z2_20SICHITAI_room_01Vtx_0073D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0073E0:
+  type: GFX
+  offset: 0x0073E0
+  symbol: Z2_20SICHITAI_room_01DL_0073E0
+
+Z2_20SICHITAI_room_01DL_007400:
+  type: GFX
+  offset: 0x007400
+  symbol: Z2_20SICHITAI_room_01DL_007400
+
+Z2_20SICHITAI_room_01Vtx_007410:
+  type: MM:ARRAY
+  offset: 0x007410
+  symbol: Z2_20SICHITAI_room_01Vtx_007410
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007630:
+  type: GFX
+  offset: 0x007630
+  symbol: Z2_20SICHITAI_room_01DL_007630
+
+Z2_20SICHITAI_room_01Vtx_007770:
+  type: MM:ARRAY
+  offset: 0x007770
+  symbol: Z2_20SICHITAI_room_01Vtx_007770
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007780:
+  type: GFX
+  offset: 0x007780
+  symbol: Z2_20SICHITAI_room_01DL_007780
+
+Z2_20SICHITAI_room_01DL_0077A0:
+  type: GFX
+  offset: 0x0077A0
+  symbol: Z2_20SICHITAI_room_01DL_0077A0
+
+Z2_20SICHITAI_room_01Vtx_0077B0:
+  type: MM:ARRAY
+  offset: 0x0077B0
+  symbol: Z2_20SICHITAI_room_01Vtx_0077B0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0079D0:
+  type: GFX
+  offset: 0x0079D0
+  symbol: Z2_20SICHITAI_room_01DL_0079D0
+
+Z2_20SICHITAI_room_01Vtx_007B10:
+  type: MM:ARRAY
+  offset: 0x007B10
+  symbol: Z2_20SICHITAI_room_01Vtx_007B10
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007B20:
+  type: GFX
+  offset: 0x007B20
+  symbol: Z2_20SICHITAI_room_01DL_007B20
+
+Z2_20SICHITAI_room_01DL_007B40:
+  type: GFX
+  offset: 0x007B40
+  symbol: Z2_20SICHITAI_room_01DL_007B40
+
+Z2_20SICHITAI_room_01Vtx_007B50:
+  type: MM:ARRAY
+  offset: 0x007B50
+  symbol: Z2_20SICHITAI_room_01Vtx_007B50
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007DD0:
+  type: GFX
+  offset: 0x007DD0
+  symbol: Z2_20SICHITAI_room_01DL_007DD0
+
+Z2_20SICHITAI_room_01Vtx_007EF8:
+  type: MM:ARRAY
+  offset: 0x007EF8
+  symbol: Z2_20SICHITAI_room_01Vtx_007EF8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_007F08:
+  type: GFX
+  offset: 0x007F08
+  symbol: Z2_20SICHITAI_room_01DL_007F08
+
+Z2_20SICHITAI_room_01DL_007F28:
+  type: GFX
+  offset: 0x007F28
+  symbol: Z2_20SICHITAI_room_01DL_007F28
+
+Z2_20SICHITAI_room_01Vtx_007F38:
+  type: MM:ARRAY
+  offset: 0x007F38
+  symbol: Z2_20SICHITAI_room_01Vtx_007F38
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0081B8:
+  type: GFX
+  offset: 0x0081B8
+  symbol: Z2_20SICHITAI_room_01DL_0081B8
+
+Z2_20SICHITAI_room_01Vtx_0082E0:
+  type: MM:ARRAY
+  offset: 0x0082E0
+  symbol: Z2_20SICHITAI_room_01Vtx_0082E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0082F0:
+  type: GFX
+  offset: 0x0082F0
+  symbol: Z2_20SICHITAI_room_01DL_0082F0
+
+Z2_20SICHITAI_room_01DL_008310:
+  type: GFX
+  offset: 0x008310
+  symbol: Z2_20SICHITAI_room_01DL_008310
+
+Z2_20SICHITAI_room_01Vtx_008320:
+  type: MM:ARRAY
+  offset: 0x008320
+  symbol: Z2_20SICHITAI_room_01Vtx_008320
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0085A0:
+  type: GFX
+  offset: 0x0085A0
+  symbol: Z2_20SICHITAI_room_01DL_0085A0
+
+Z2_20SICHITAI_room_01Vtx_0086C8:
+  type: MM:ARRAY
+  offset: 0x0086C8
+  symbol: Z2_20SICHITAI_room_01Vtx_0086C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0086D8:
+  type: GFX
+  offset: 0x0086D8
+  symbol: Z2_20SICHITAI_room_01DL_0086D8
+
+Z2_20SICHITAI_room_01DL_0086F8:
+  type: GFX
+  offset: 0x0086F8
+  symbol: Z2_20SICHITAI_room_01DL_0086F8
+
+Z2_20SICHITAI_room_01Vtx_008708:
+  type: MM:ARRAY
+  offset: 0x008708
+  symbol: Z2_20SICHITAI_room_01Vtx_008708
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_008988:
+  type: GFX
+  offset: 0x008988
+  symbol: Z2_20SICHITAI_room_01DL_008988
+
+Z2_20SICHITAI_room_01Vtx_008AB0:
+  type: MM:ARRAY
+  offset: 0x008AB0
+  symbol: Z2_20SICHITAI_room_01Vtx_008AB0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_008AC0:
+  type: GFX
+  offset: 0x008AC0
+  symbol: Z2_20SICHITAI_room_01DL_008AC0
+
+Z2_20SICHITAI_room_01DL_008AE0:
+  type: GFX
+  offset: 0x008AE0
+  symbol: Z2_20SICHITAI_room_01DL_008AE0
+
+Z2_20SICHITAI_room_01Vtx_008AF0:
+  type: MM:ARRAY
+  offset: 0x008AF0
+  symbol: Z2_20SICHITAI_room_01Vtx_008AF0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_008FF0:
+  type: GFX
+  offset: 0x008FF0
+  symbol: Z2_20SICHITAI_room_01DL_008FF0
+
+Z2_20SICHITAI_room_01Vtx_009218:
+  type: MM:ARRAY
+  offset: 0x009218
+  symbol: Z2_20SICHITAI_room_01Vtx_009218
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_009228:
+  type: GFX
+  offset: 0x009228
+  symbol: Z2_20SICHITAI_room_01DL_009228
+
+Z2_20SICHITAI_room_01DL_009248:
+  type: GFX
+  offset: 0x009248
+  symbol: Z2_20SICHITAI_room_01DL_009248
+
+Z2_20SICHITAI_room_01Vtx_009258:
+  type: MM:ARRAY
+  offset: 0x009258
+  symbol: Z2_20SICHITAI_room_01Vtx_009258
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_009758:
+  type: GFX
+  offset: 0x009758
+  symbol: Z2_20SICHITAI_room_01DL_009758
+
+Z2_20SICHITAI_room_01Vtx_009980:
+  type: MM:ARRAY
+  offset: 0x009980
+  symbol: Z2_20SICHITAI_room_01Vtx_009980
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_009990:
+  type: GFX
+  offset: 0x009990
+  symbol: Z2_20SICHITAI_room_01DL_009990
+
+Z2_20SICHITAI_room_01DL_0099B0:
+  type: GFX
+  offset: 0x0099B0
+  symbol: Z2_20SICHITAI_room_01DL_0099B0
+
+Z2_20SICHITAI_room_01Vtx_0099C0:
+  type: MM:ARRAY
+  offset: 0x0099C0
+  symbol: Z2_20SICHITAI_room_01Vtx_0099C0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_009EC0:
+  type: GFX
+  offset: 0x009EC0
+  symbol: Z2_20SICHITAI_room_01DL_009EC0
+
+Z2_20SICHITAI_room_01Vtx_00A0E8:
+  type: MM:ARRAY
+  offset: 0x00A0E8
+  symbol: Z2_20SICHITAI_room_01Vtx_00A0E8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00A0F8:
+  type: GFX
+  offset: 0x00A0F8
+  symbol: Z2_20SICHITAI_room_01DL_00A0F8
+
+Z2_20SICHITAI_room_01DL_00A118:
+  type: GFX
+  offset: 0x00A118
+  symbol: Z2_20SICHITAI_room_01DL_00A118
+
+Z2_20SICHITAI_room_01Vtx_00A128:
+  type: MM:ARRAY
+  offset: 0x00A128
+  symbol: Z2_20SICHITAI_room_01Vtx_00A128
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00A628:
+  type: GFX
+  offset: 0x00A628
+  symbol: Z2_20SICHITAI_room_01DL_00A628
+
+Z2_20SICHITAI_room_01Vtx_00A850:
+  type: MM:ARRAY
+  offset: 0x00A850
+  symbol: Z2_20SICHITAI_room_01Vtx_00A850
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00A860:
+  type: GFX
+  offset: 0x00A860
+  symbol: Z2_20SICHITAI_room_01DL_00A860
+
+Z2_20SICHITAI_room_01DL_00A880:
+  type: GFX
+  offset: 0x00A880
+  symbol: Z2_20SICHITAI_room_01DL_00A880
+
+Z2_20SICHITAI_room_01Vtx_00A890:
+  type: MM:ARRAY
+  offset: 0x00A890
+  symbol: Z2_20SICHITAI_room_01Vtx_00A890
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00AA50:
+  type: GFX
+  offset: 0x00AA50
+  symbol: Z2_20SICHITAI_room_01DL_00AA50
+
+Z2_20SICHITAI_room_01Vtx_00AB40:
+  type: MM:ARRAY
+  offset: 0x00AB40
+  symbol: Z2_20SICHITAI_room_01Vtx_00AB40
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00AF40:
+  type: GFX
+  offset: 0x00AF40
+  symbol: Z2_20SICHITAI_room_01DL_00AF40
+
+Z2_20SICHITAI_room_01Vtx_00B180:
+  type: MM:ARRAY
+  offset: 0x00B180
+  symbol: Z2_20SICHITAI_room_01Vtx_00B180
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00B330:
+  type: GFX
+  offset: 0x00B330
+  symbol: Z2_20SICHITAI_room_01DL_00B330
+
+Z2_20SICHITAI_room_01Vtx_00B428:
+  type: MM:ARRAY
+  offset: 0x00B428
+  symbol: Z2_20SICHITAI_room_01Vtx_00B428
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00B628:
+  type: GFX
+  offset: 0x00B628
+  symbol: Z2_20SICHITAI_room_01DL_00B628
+
+Z2_20SICHITAI_room_01Vtx_00B728:
+  type: MM:ARRAY
+  offset: 0x00B728
+  symbol: Z2_20SICHITAI_room_01Vtx_00B728
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_00B928:
+  type: GFX
+  offset: 0x00B928
+  symbol: Z2_20SICHITAI_room_01DL_00B928
+
+Z2_20SICHITAI_room_01Tex_00BAF8:
+  type: TEXTURE
+  offset: 0x00BAF8
+  symbol: Z2_20SICHITAI_room_01Tex_00BAF8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_00C2F8:
+  type: TEXTURE
+  offset: 0x00C2F8
+  symbol: Z2_20SICHITAI_room_01Tex_00C2F8
+  format: I4
+  width: 64
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_00CAF8:
+  type: TEXTURE
+  offset: 0x00CAF8
+  symbol: Z2_20SICHITAI_room_01Tex_00CAF8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_00D2F8:
+  type: TEXTURE
+  offset: 0x00D2F8
+  symbol: Z2_20SICHITAI_room_01Tex_00D2F8
+  format: RGBA16
+  width: 64
+  height: 16
+
+Z2_20SICHITAI_room_01Tex_00DAF8:
+  type: TEXTURE
+  offset: 0x00DAF8
+  symbol: Z2_20SICHITAI_room_01Tex_00DAF8
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_00DEF8:
+  type: TEXTURE
+  offset: 0x00DEF8
+  symbol: Z2_20SICHITAI_room_01Tex_00DEF8
+  format: CI8
+  width: 128
+  height: 16
+
+Z2_20SICHITAI_room_01Tex_00E6F8:
+  type: TEXTURE
+  offset: 0x00E6F8
+  symbol: Z2_20SICHITAI_room_01Tex_00E6F8
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_00EEF8:
+  type: TEXTURE
+  offset: 0x00EEF8
+  symbol: Z2_20SICHITAI_room_01Tex_00EEF8
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_00F6F8:
+  type: TEXTURE
+  offset: 0x00F6F8
+  symbol: Z2_20SICHITAI_room_01Tex_00F6F8
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_00FEF8:
+  type: TEXTURE
+  offset: 0x00FEF8
+  symbol: Z2_20SICHITAI_room_01Tex_00FEF8
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_0102F8:
+  type: TEXTURE
+  offset: 0x0102F8
+  symbol: Z2_20SICHITAI_room_01Tex_0102F8
+  format: CI4
+  width: 32
+  height: 64
+
+Z2_20SICHITAI_room_01Tex_0106F8:
+  type: TEXTURE
+  offset: 0x0106F8
+  symbol: Z2_20SICHITAI_room_01Tex_0106F8
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_20SICHITAI_room_01Tex_0107F8:
+  type: TEXTURE
+  offset: 0x0107F8
+  symbol: Z2_20SICHITAI_room_01Tex_0107F8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_010BF8:
+  type: TEXTURE
+  offset: 0x010BF8
+  symbol: Z2_20SICHITAI_room_01Tex_010BF8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_010FF8:
+  type: TEXTURE
+  offset: 0x010FF8
+  symbol: Z2_20SICHITAI_room_01Tex_010FF8
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_20SICHITAI_room_01TLUT_0117F8:
+  type: TEXTURE
+  offset: 0x0117F8
+  symbol: Z2_20SICHITAI_room_01TLUT_0117F8
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_20SICHITAI_room_01TLUT_011818:
+  type: TEXTURE
+  offset: 0x011818
+  symbol: Z2_20SICHITAI_room_01TLUT_011818
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_20SICHITAI_room_01TLUT_011838:
+  type: TEXTURE
+  offset: 0x011838
+  symbol: Z2_20SICHITAI_room_01TLUT_011838
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_20SICHITAI_room_01Vtx_011868:
+  type: MM:ARRAY
+  offset: 0x011868
+  symbol: Z2_20SICHITAI_room_01Vtx_011868
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_011DE8:
+  type: GFX
+  offset: 0x011DE8
+  symbol: Z2_20SICHITAI_room_01DL_011DE8
+
+Z2_20SICHITAI_room_01DL_011FC8:
+  type: GFX
+  offset: 0x011FC8
+  symbol: Z2_20SICHITAI_room_01DL_011FC8
+
+Z2_20SICHITAI_room_01DL_011FD0:
+  type: GFX
+  offset: 0x011FD0
+  symbol: Z2_20SICHITAI_room_01DL_011FD0
+
+Z2_20SICHITAI_room_01DL_011FD8:
+  type: GFX
+  offset: 0x011FD8
+  symbol: Z2_20SICHITAI_room_01DL_011FD8
+
+Z2_20SICHITAI_room_01Vtx_011FE0:
+  type: MM:ARRAY
+  offset: 0x011FE0
+  symbol: Z2_20SICHITAI_room_01Vtx_011FE0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012190:
+  type: GFX
+  offset: 0x012190
+  symbol: Z2_20SICHITAI_room_01DL_012190
+
+Z2_20SICHITAI_room_01Vtx_0122A8:
+  type: MM:ARRAY
+  offset: 0x0122A8
+  symbol: Z2_20SICHITAI_room_01Vtx_0122A8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0122B8:
+  type: GFX
+  offset: 0x0122B8
+  symbol: Z2_20SICHITAI_room_01DL_0122B8
+
+Z2_20SICHITAI_room_01DL_0122D8:
+  type: GFX
+  offset: 0x0122D8
+  symbol: Z2_20SICHITAI_room_01DL_0122D8
+
+Z2_20SICHITAI_room_01Vtx_0122E8:
+  type: MM:ARRAY
+  offset: 0x0122E8
+  symbol: Z2_20SICHITAI_room_01Vtx_0122E8
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012448:
+  type: GFX
+  offset: 0x012448
+  symbol: Z2_20SICHITAI_room_01DL_012448
+
+Z2_20SICHITAI_room_01Vtx_012540:
+  type: MM:ARRAY
+  offset: 0x012540
+  symbol: Z2_20SICHITAI_room_01Vtx_012540
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012550:
+  type: GFX
+  offset: 0x012550
+  symbol: Z2_20SICHITAI_room_01DL_012550
+
+Z2_20SICHITAI_room_01DL_012570:
+  type: GFX
+  offset: 0x012570
+  symbol: Z2_20SICHITAI_room_01DL_012570
+
+Z2_20SICHITAI_room_01Vtx_012580:
+  type: MM:ARRAY
+  offset: 0x012580
+  symbol: Z2_20SICHITAI_room_01Vtx_012580
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0126E0:
+  type: GFX
+  offset: 0x0126E0
+  symbol: Z2_20SICHITAI_room_01DL_0126E0
+
+Z2_20SICHITAI_room_01Vtx_0127D8:
+  type: MM:ARRAY
+  offset: 0x0127D8
+  symbol: Z2_20SICHITAI_room_01Vtx_0127D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0127E8:
+  type: GFX
+  offset: 0x0127E8
+  symbol: Z2_20SICHITAI_room_01DL_0127E8
+
+Z2_20SICHITAI_room_01DL_012808:
+  type: GFX
+  offset: 0x012808
+  symbol: Z2_20SICHITAI_room_01DL_012808
+
+Z2_20SICHITAI_room_01Vtx_012818:
+  type: MM:ARRAY
+  offset: 0x012818
+  symbol: Z2_20SICHITAI_room_01Vtx_012818
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0129C8:
+  type: GFX
+  offset: 0x0129C8
+  symbol: Z2_20SICHITAI_room_01DL_0129C8
+
+Z2_20SICHITAI_room_01Vtx_012AE0:
+  type: MM:ARRAY
+  offset: 0x012AE0
+  symbol: Z2_20SICHITAI_room_01Vtx_012AE0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012AF0:
+  type: GFX
+  offset: 0x012AF0
+  symbol: Z2_20SICHITAI_room_01DL_012AF0
+
+Z2_20SICHITAI_room_01DL_012B10:
+  type: GFX
+  offset: 0x012B10
+  symbol: Z2_20SICHITAI_room_01DL_012B10
+
+Z2_20SICHITAI_room_01Vtx_012B20:
+  type: MM:ARRAY
+  offset: 0x012B20
+  symbol: Z2_20SICHITAI_room_01Vtx_012B20
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012C20:
+  type: GFX
+  offset: 0x012C20
+  symbol: Z2_20SICHITAI_room_01DL_012C20
+
+Z2_20SICHITAI_room_01DL_012D08:
+  type: GFX
+  offset: 0x012D08
+  symbol: Z2_20SICHITAI_room_01DL_012D08
+
+Z2_20SICHITAI_room_01DL_012D10:
+  type: GFX
+  offset: 0x012D10
+  symbol: Z2_20SICHITAI_room_01DL_012D10
+
+Z2_20SICHITAI_room_01DL_012D20:
+  type: GFX
+  offset: 0x012D20
+  symbol: Z2_20SICHITAI_room_01DL_012D20
+
+Z2_20SICHITAI_room_01DL_012D28:
+  type: GFX
+  offset: 0x012D28
+  symbol: Z2_20SICHITAI_room_01DL_012D28
+
+Z2_20SICHITAI_room_01DL_012D38:
+  type: GFX
+  offset: 0x012D38
+  symbol: Z2_20SICHITAI_room_01DL_012D38
+
+Z2_20SICHITAI_room_01DL_012D40:
+  type: GFX
+  offset: 0x012D40
+  symbol: Z2_20SICHITAI_room_01DL_012D40
+
+Z2_20SICHITAI_room_01DL_012D50:
+  type: GFX
+  offset: 0x012D50
+  symbol: Z2_20SICHITAI_room_01DL_012D50
+
+Z2_20SICHITAI_room_01DL_012D58:
+  type: GFX
+  offset: 0x012D58
+  symbol: Z2_20SICHITAI_room_01DL_012D58
+
+Z2_20SICHITAI_room_01Vtx_012D68:
+  type: MM:ARRAY
+  offset: 0x012D68
+  symbol: Z2_20SICHITAI_room_01Vtx_012D68
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012EA8:
+  type: GFX
+  offset: 0x012EA8
+  symbol: Z2_20SICHITAI_room_01DL_012EA8
+
+Z2_20SICHITAI_room_01Vtx_012F58:
+  type: MM:ARRAY
+  offset: 0x012F58
+  symbol: Z2_20SICHITAI_room_01Vtx_012F58
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_012F68:
+  type: GFX
+  offset: 0x012F68
+  symbol: Z2_20SICHITAI_room_01DL_012F68
+
+Z2_20SICHITAI_room_01DL_012F88:
+  type: GFX
+  offset: 0x012F88
+  symbol: Z2_20SICHITAI_room_01DL_012F88
+
+Z2_20SICHITAI_room_01Vtx_012F98:
+  type: MM:ARRAY
+  offset: 0x012F98
+  symbol: Z2_20SICHITAI_room_01Vtx_012F98
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0130D8:
+  type: GFX
+  offset: 0x0130D8
+  symbol: Z2_20SICHITAI_room_01DL_0130D8
+
+Z2_20SICHITAI_room_01Vtx_013188:
+  type: MM:ARRAY
+  offset: 0x013188
+  symbol: Z2_20SICHITAI_room_01Vtx_013188
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_013198:
+  type: GFX
+  offset: 0x013198
+  symbol: Z2_20SICHITAI_room_01DL_013198
+
+Z2_20SICHITAI_room_01DL_0131B8:
+  type: GFX
+  offset: 0x0131B8
+  symbol: Z2_20SICHITAI_room_01DL_0131B8
+
+Z2_20SICHITAI_room_01Vtx_0131C8:
+  type: MM:ARRAY
+  offset: 0x0131C8
+  symbol: Z2_20SICHITAI_room_01Vtx_0131C8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_013308:
+  type: GFX
+  offset: 0x013308
+  symbol: Z2_20SICHITAI_room_01DL_013308
+
+Z2_20SICHITAI_room_01Vtx_0133B8:
+  type: MM:ARRAY
+  offset: 0x0133B8
+  symbol: Z2_20SICHITAI_room_01Vtx_0133B8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_20SICHITAI_room_01DL_0133C8:
+  type: GFX
+  offset: 0x0133C8
+  symbol: Z2_20SICHITAI_room_01DL_0133C8
+
+Z2_20SICHITAI_room_01DL_0133E8:
+  type: GFX
+  offset: 0x0133E8
+  symbol: Z2_20SICHITAI_room_01DL_0133E8
+
+Z2_20SICHITAI_room_01DL_0133F8:
+  type: GFX
+  offset: 0x0133F8
+  symbol: Z2_20SICHITAI_room_01DL_0133F8
+
+Z2_20SICHITAI_room_01DL_013400:
+  type: GFX
+  offset: 0x013400
+  symbol: Z2_20SICHITAI_room_01DL_013400
+
+Z2_20SICHITAI_room_01DL_013410:
+  type: GFX
+  offset: 0x013410
+  symbol: Z2_20SICHITAI_room_01DL_013410
+
+Z2_20SICHITAI_room_01DL_013418:
+  type: GFX
+  offset: 0x013418
+  symbol: Z2_20SICHITAI_room_01DL_013418
+
+Z2_20SICHITAI_room_01DL_013428:
+  type: GFX
+  offset: 0x013428
+  symbol: Z2_20SICHITAI_room_01DL_013428
+
+Z2_20SICHITAI_room_01DL_013430:
+  type: GFX
+  offset: 0x013430
+  symbol: Z2_20SICHITAI_room_01DL_013430
+
+Z2_20SICHITAI_room_01DL_013440:
+  type: GFX
+  offset: 0x013440
+  symbol: Z2_20SICHITAI_room_01DL_013440
+
+Z2_20SICHITAI_room_01DL_013448:
+  type: GFX
+  offset: 0x013448
+  symbol: Z2_20SICHITAI_room_01DL_013448
+
+Z2_20SICHITAI_room_01Tex_013500:
+  type: TEXTURE
+  offset: 0x013500
+  symbol: Z2_20SICHITAI_room_01Tex_013500
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_013900:
+  type: TEXTURE
+  offset: 0x013900
+  symbol: Z2_20SICHITAI_room_01Tex_013900
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_20SICHITAI_room_01Tex_014100:
+  type: TEXTURE
+  offset: 0x014100
+  symbol: Z2_20SICHITAI_room_01Tex_014100
+  format: IA4
+  width: 32
+  height: 64

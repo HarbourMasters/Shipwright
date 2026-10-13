@@ -1,0 +1,82 @@
+:config:
+  segments:
+    - [ 3, 0x01D15E30 ]
+    - [ 6, 0x0160C800 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01D15E30 ]
+    - [ 9, 0x01D15E30 ]
+    - [ 10, 0x01D15E30 ]
+    - [ 11, 0x01D15E30 ]
+    - [ 12, 0x01D15E30 ]
+    - [ 13, 0x01D15E30 ]
+    - [ 2, 0x01CFEFE0 ]
+  directory: scenes/nonmq/Z2_10YUKIYAMANOMURA2
+  external_files:
+    - GC_US/misc/scene_texture_04.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2.yml
+    - GC_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2_room_01Set_000240.yml
+
+Z2_10YUKIYAMANOMURA2_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_10YUKIYAMANOMURA2_room_01
+
+Z2_10YUKIYAMANOMURA2_room_01DL_0002C0:
+  type: GFX
+  offset: 0x2C0
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_0002C0
+
+Z2_10YUKIYAMANOMURA2_room_01DL_001A18:
+  type: GFX
+  offset: 0x1A18
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_001A18
+
+
+Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000074:
+  type: BLOB
+  offset: 0x000074
+  symbol: Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000074
+  size: 0
+
+Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000284:
+  type: BLOB
+  offset: 0x000284
+  symbol: Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000284
+  size: 0
+
+Z2_10YUKIYAMANOMURA2_room_01Vtx_0002C8:
+  type: MM:ARRAY
+  offset: 0x0002C8
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Vtx_0002C8
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_10YUKIYAMANOMURA2_room_01DL_000C68:
+  type: GFX
+  offset: 0x000C68
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_000C68
+
+Z2_10YUKIYAMANOMURA2_room_01Vtx_000ED8:
+  type: MM:ARRAY
+  offset: 0x000ED8
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Vtx_000ED8
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_10YUKIYAMANOMURA2_room_01DL_001728:
+  type: GFX
+  offset: 0x001728
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_001728
+
+Z2_10YUKIYAMANOMURA2_room_01Tex_001A30:
+  type: TEXTURE
+  offset: 0x001A30
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Tex_001A30
+  format: CI8
+  width: 32
+  height: 32

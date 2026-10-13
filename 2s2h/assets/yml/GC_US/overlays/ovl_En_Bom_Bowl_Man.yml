@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 128, 0x00C51AA0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x809A6660, 0x00C51AA0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gEnBomBowlMan_D_809C61E0:
+  type: GFX
+  offset: 0x1A50
+  symbol: gEnBomBowlMan_D_809C61E0
+
+gEnBomBowlMan_D_809C61F0:
+  type: GFX
+  offset: 0x1A60
+  symbol: gEnBomBowlMan_D_809C61F0
+

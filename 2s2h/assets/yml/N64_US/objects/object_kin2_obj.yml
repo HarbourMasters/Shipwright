@@ -1,0 +1,265 @@
+:config:
+  segments:
+    - [ 6, 0x01418220 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01418220 ]
+    - [ 9, 0x01418220 ]
+    - [ 10, 0x01418220 ]
+    - [ 11, 0x01418220 ]
+    - [ 12, 0x01418220 ]
+    - [ 13, 0x01418220 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gOceanSpiderHouseBombableWallCol:
+  type: MM:COLLISION
+  offset: 0x490
+  symbol: gOceanSpiderHouseBombableWallCol
+
+gOceanSpiderHouseBombableWallCrackDL:
+  type: GFX
+  offset: 0x2C0
+  symbol: gOceanSpiderHouseBombableWallCrackDL
+
+gOceanSpiderHouseBombableWallCrackTex:
+  type: TEXTURE
+  offset: 0x13C0
+  symbol: gOceanSpiderHouseBombableWallCrackTex
+  format: IA8
+  width: 64
+  height: 64
+
+gOceanSpiderHouseBombableWallDL:
+  type: GFX
+  offset: 0x360
+  symbol: gOceanSpiderHouseBombableWallDL
+
+gOceanSpiderHouseBombableWallDebrisDL:
+  type: GFX
+  offset: 0x128
+  symbol: gOceanSpiderHouseBombableWallDebrisDL
+
+gOceanSpiderHouseBombableWallDebrisTex1:
+  type: TEXTURE
+  offset: 0x73C0
+  symbol: gOceanSpiderHouseBombableWallDebrisTex1
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOceanSpiderHouseBombableWallDebrisTex2:
+  type: TEXTURE
+  offset: 0x7BC0
+  symbol: gOceanSpiderHouseBombableWallDebrisTex2
+  format: I4
+  width: 64
+  height: 64
+
+gOceanSpiderHouseBookshelfBooksTex:
+  type: TEXTURE
+  offset: 0x63C0
+  symbol: gOceanSpiderHouseBookshelfBooksTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gOceanSpiderHouseBookshelfCol:
+  type: MM:COLLISION
+  offset: 0xF80
+  symbol: gOceanSpiderHouseBookshelfCol
+
+gOceanSpiderHouseBookshelfDL:
+  type: GFX
+  offset: 0xCA8
+  symbol: gOceanSpiderHouseBookshelfDL
+
+gOceanSpiderHouseBookshelfWoodTex:
+  type: TEXTURE
+  offset: 0x23C0
+  symbol: gOceanSpiderHouseBookshelfWoodTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOceanSpiderHouseChestOfDrawersBackTex:
+  type: TEXTURE
+  offset: 0x4BC0
+  symbol: gOceanSpiderHouseChestOfDrawersBackTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gOceanSpiderHouseChestOfDrawersCol:
+  type: MM:COLLISION
+  offset: 0x1328
+  symbol: gOceanSpiderHouseChestOfDrawersCol
+
+gOceanSpiderHouseChestOfDrawersDL:
+  type: GFX
+  offset: 0x10F8
+  symbol: gOceanSpiderHouseChestOfDrawersDL
+
+gOceanSpiderHouseChestOfDrawersFrontTex:
+  type: TEXTURE
+  offset: 0x3BC0
+  symbol: gOceanSpiderHouseChestOfDrawersFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gOceanSpiderHouseChestOfDrawersTopTex:
+  type: TEXTURE
+  offset: 0x5BC0
+  symbol: gOceanSpiderHouseChestOfDrawersTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOceanSpiderHouseEmpty1DL:
+  type: GFX
+  offset: 0x120
+  symbol: gOceanSpiderHouseEmpty1DL
+
+gOceanSpiderHouseEmpty2DL:
+  type: GFX
+  offset: 0x650
+  symbol: gOceanSpiderHouseEmpty2DL
+
+gOceanSpiderHouseEmpty3DL:
+  type: GFX
+  offset: 0x820
+  symbol: gOceanSpiderHouseEmpty3DL
+
+gOceanSpiderHouseEmpty4DL:
+  type: GFX
+  offset: 0xCA0
+  symbol: gOceanSpiderHouseEmpty4DL
+
+gOceanSpiderHouseEmpty5DL:
+  type: GFX
+  offset: 0x10F0
+  symbol: gOceanSpiderHouseEmpty5DL
+
+gOceanSpiderHouseFireplaceGrateCol:
+  type: MM:COLLISION
+  offset: 0x908
+  symbol: gOceanSpiderHouseFireplaceGrateCol
+
+gOceanSpiderHouseFireplaceGrateDL:
+  type: GFX
+  offset: 0x828
+  symbol: gOceanSpiderHouseFireplaceGrateDL
+
+gOceanSpiderHouseFireplaceGrateTex:
+  type: TEXTURE
+  offset: 0x2BC0
+  symbol: gOceanSpiderHouseFireplaceGrateTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOceanSpiderHouseSkullkidPaintingCol:
+  type: MM:COLLISION
+  offset: 0x798
+  symbol: gOceanSpiderHouseSkullkidPaintingCol
+
+gOceanSpiderHouseSkullkidPaintingDL:
+  type: GFX
+  offset: 0x658
+  symbol: gOceanSpiderHouseSkullkidPaintingDL
+
+gOceanSpiderHouseSkullkidPaintingTex:
+  type: TEXTURE
+  offset: 0x33C0
+  symbol: gOceanSpiderHouseSkullkidPaintingTex
+  format: CI4
+  width: 64
+  height: 64
+
+gOceanSpiderHouseTLUT:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gOceanSpiderHouseTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOceanSpiderHouseUnused1TLUT:
+  type: TEXTURE
+  offset: 0x1360
+  symbol: gOceanSpiderHouseUnused1TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gOceanSpiderHouseUnused2TLUT:
+  type: TEXTURE
+  offset: 0x13A0
+  symbol: gOceanSpiderHouseUnused2TLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+
+object_kin2_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_kin2_objVtx_000000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_kin2_objVtx_000200
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_000260:
+  type: MM:ARRAY
+  offset: 0x000260
+  symbol: object_kin2_objVtx_000260
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_0004C0:
+  type: MM:ARRAY
+  offset: 0x0004C0
+  symbol: object_kin2_objVtx_0004C0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_0007D0:
+  type: MM:ARRAY
+  offset: 0x0007D0
+  symbol: object_kin2_objVtx_0007D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_000940:
+  type: MM:ARRAY
+  offset: 0x000940
+  symbol: object_kin2_objVtx_000940
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kin2_objVtx_000FB0:
+  type: MM:ARRAY
+  offset: 0x000FB0
+  symbol: object_kin2_objVtx_000FB0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

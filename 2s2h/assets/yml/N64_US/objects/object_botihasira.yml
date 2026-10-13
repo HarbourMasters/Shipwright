@@ -1,0 +1,63 @@
+:config:
+  segments:
+    - [ 6, 0x01384660 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01384660 ]
+    - [ 9, 0x01384660 ]
+    - [ 10, 0x01384660 ]
+    - [ 11, 0x01384660 ]
+    - [ 12, 0x01384660 ]
+    - [ 13, 0x01384660 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_botihasira_Colheader_001BD8:
+  type: MM:COLLISION
+  offset: 0x1BD8
+  symbol: object_botihasira_Colheader_001BD8
+
+object_botihasira_DL_0004A0:
+  type: GFX
+  offset: 0x4A0
+  symbol: object_botihasira_DL_0004A0
+
+object_botihasira_DL_000628:
+  type: GFX
+  offset: 0x628
+  symbol: object_botihasira_DL_000628
+
+object_botihasira_DL_000638:
+  type: GFX
+  offset: 0x638
+  symbol: object_botihasira_DL_000638
+
+object_botihasira_Matanimheader_001A48:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1A50
+  symbol: object_botihasira_Matanimheader_001A48
+
+object_botihasira_Tex_000648:
+  type: TEXTURE
+  offset: 0x648
+  symbol: object_botihasira_Tex_000648
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_botihasira_Tex_001648:
+  type: TEXTURE
+  offset: 0x1648
+  symbol: object_botihasira_Tex_001648
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_botihasiraVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_botihasiraVtx_000000
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

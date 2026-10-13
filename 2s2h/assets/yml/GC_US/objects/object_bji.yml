@@ -1,0 +1,501 @@
+:config:
+  segments:
+    - [ 6, 0x00FCA2D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FCA2D0 ]
+    - [ 9, 0x00FCA2D0 ]
+    - [ 10, 0x00FCA2D0 ]
+    - [ 11, 0x00FCA2D0 ]
+    - [ 12, 0x00FCA2D0 ]
+    - [ 13, 0x00FCA2D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gShikashiEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x5694
+  symbol: gShikashiEyeTexAnim
+
+gShikashiHeadDL:
+  type: GFX
+  offset: 0x23A0
+  symbol: gShikashiHeadDL
+
+gShikashiHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5744
+  symbol: gShikashiHeadLimb
+  limb_type: Standard
+
+gShikashiLeftArmDL:
+  type: GFX
+  offset: 0x2D68
+  symbol: gShikashiLeftArmDL
+
+gShikashiLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x56FC
+  symbol: gShikashiLeftArmLimb
+  limb_type: Standard
+
+gShikashiLeftFootDL:
+  type: GFX
+  offset: 0x3330
+  symbol: gShikashiLeftFootDL
+
+gShikashiLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x56C0
+  symbol: gShikashiLeftFootLimb
+  limb_type: Standard
+
+gShikashiLeftForearmDL:
+  type: GFX
+  offset: 0x2C68
+  symbol: gShikashiLeftForearmDL
+
+gShikashiLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5708
+  symbol: gShikashiLeftForearmLimb
+  limb_type: Standard
+
+gShikashiLeftHandDL:
+  type: GFX
+  offset: 0x2BA8
+  symbol: gShikashiLeftHandDL
+
+gShikashiLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x5714
+  symbol: gShikashiLeftHandLimb
+  limb_type: Standard
+
+gShikashiLeftLegDL:
+  type: GFX
+  offset: 0x33F0
+  symbol: gShikashiLeftLegDL
+
+gShikashiLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x56B4
+  symbol: gShikashiLeftLegLimb
+  limb_type: Standard
+
+gShikashiLeftThighDL:
+  type: GFX
+  offset: 0x34B0
+  symbol: gShikashiLeftThighDL
+
+gShikashiLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x56A8
+  symbol: gShikashiLeftThighLimb
+  limb_type: Standard
+
+gShikashiPelvisDL:
+  type: GFX
+  offset: 0x3570
+  symbol: gShikashiPelvisDL
+
+gShikashiPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x569C
+  symbol: gShikashiPelvisLimb
+  limb_type: Standard
+
+gShikashiRightArmDL:
+  type: GFX
+  offset: 0x2A98
+  symbol: gShikashiRightArmDL
+
+gShikashiRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x5720
+  symbol: gShikashiRightArmLimb
+  limb_type: Standard
+
+gShikashiRightFootDL:
+  type: GFX
+  offset: 0x30F0
+  symbol: gShikashiRightFootDL
+
+gShikashiRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x56E4
+  symbol: gShikashiRightFootLimb
+  limb_type: Standard
+
+gShikashiRightForearmDL:
+  type: GFX
+  offset: 0x2998
+  symbol: gShikashiRightForearmDL
+
+gShikashiRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x572C
+  symbol: gShikashiRightForearmLimb
+  limb_type: Standard
+
+gShikashiRightHandDL:
+  type: GFX
+  offset: 0x28D8
+  symbol: gShikashiRightHandDL
+
+gShikashiRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x5738
+  symbol: gShikashiRightHandLimb
+  limb_type: Standard
+
+gShikashiRightLegDL:
+  type: GFX
+  offset: 0x31B0
+  symbol: gShikashiRightLegDL
+
+gShikashiRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x56D8
+  symbol: gShikashiRightLegLimb
+  limb_type: Standard
+
+gShikashiRightThighDL:
+  type: GFX
+  offset: 0x3270
+  symbol: gShikashiRightThighDL
+
+gShikashiRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x56CC
+  symbol: gShikashiRightThighLimb
+  limb_type: Standard
+
+gShikashiSkel:
+  type: MM:SKELETON
+  offset: 0x578C
+  symbol: gShikashiSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gShikashiTorsoDL:
+  type: GFX
+  offset: 0x2E78
+  symbol: gShikashiTorsoDL
+
+gShikashiTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x56F0
+  symbol: gShikashiTorsoLimb
+  limb_type: Standard
+
+object_bji_Anim_00066C:
+  type: OOT:ANIMATION
+  offset: 0x66C
+  symbol: object_bji_Anim_00066C
+
+object_bji_Anim_000AB0:
+  type: OOT:ANIMATION
+  offset: 0xAB0
+  symbol: object_bji_Anim_000AB0
+
+object_bji_Anim_000FDC:
+  type: OOT:ANIMATION
+  offset: 0xFDC
+  symbol: object_bji_Anim_000FDC
+
+object_bji_Anim_005B58:
+  type: OOT:ANIMATION
+  offset: 0x5B58
+  symbol: object_bji_Anim_005B58
+
+object_bji_TLUT_003730:
+  type: TEXTURE
+  offset: 0x3730
+  symbol: object_bji_TLUT_003730
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_003930:
+  type: TEXTURE
+  offset: 0x3930
+  symbol: object_bji_TLUT_003930
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_003B30:
+  type: TEXTURE
+  offset: 0x3B30
+  symbol: object_bji_TLUT_003B30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_003D30:
+  type: TEXTURE
+  offset: 0x3D30
+  symbol: object_bji_TLUT_003D30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_003F30:
+  type: TEXTURE
+  offset: 0x3F30
+  symbol: object_bji_TLUT_003F30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_004330:
+  type: TEXTURE
+  offset: 0x4330
+  symbol: object_bji_TLUT_004330
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_TLUT_004530:
+  type: TEXTURE
+  offset: 0x4530
+  symbol: object_bji_TLUT_004530
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_Tex_004130:
+  type: TEXTURE
+  offset: 0x4130
+  symbol: object_bji_Tex_004130
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_Tex_004730:
+  type: TEXTURE
+  offset: 0x4730
+  symbol: object_bji_Tex_004730
+  format: CI8
+  width: 8
+  height: 8
+
+object_bji_Tex_004770:
+  type: TEXTURE
+  offset: 0x4770
+  symbol: object_bji_Tex_004770
+  format: CI8
+  width: 16
+  height: 16
+
+object_bji_Tex_004870:
+  type: TEXTURE
+  offset: 0x4870
+  symbol: object_bji_Tex_004870
+  format: CI8
+  width: 8
+  height: 8
+
+object_bji_Tex_0048B0:
+  type: TEXTURE
+  offset: 0x48B0
+  symbol: object_bji_Tex_0048B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_bji_Tex_0049B0:
+  type: TEXTURE
+  offset: 0x49B0
+  symbol: object_bji_Tex_0049B0
+  format: CI8
+  width: 8
+  height: 8
+
+object_bji_Tex_0049F0:
+  type: TEXTURE
+  offset: 0x49F0
+  symbol: object_bji_Tex_0049F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_bji_Tex_004DF0:
+  type: TEXTURE
+  offset: 0x4DF0
+  symbol: object_bji_Tex_004DF0
+  format: CI8
+  width: 8
+  height: 8
+
+object_bji_Tex_004E30:
+  type: TEXTURE
+  offset: 0x4E30
+  symbol: object_bji_Tex_004E30
+  format: CI8
+  width: 8
+  height: 8
+
+object_bji_Tex_004E70:
+  type: TEXTURE
+  offset: 0x4E70
+  symbol: object_bji_Tex_004E70
+  format: CI8
+  width: 32
+  height: 32
+
+object_bji_Tex_005270:
+  type: TEXTURE
+  offset: 0x5270
+  symbol: object_bji_Tex_005270
+  format: CI8
+  width: 32
+  height: 32
+
+
+object_bjiVtx_000FF0:
+  type: MM:ARRAY
+  offset: 0x000FF0
+  symbol: object_bjiVtx_000FF0
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0016E0:
+  type: MM:ARRAY
+  offset: 0x0016E0
+  symbol: object_bjiVtx_0016E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001710:
+  type: MM:ARRAY
+  offset: 0x001710
+  symbol: object_bjiVtx_001710
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001840:
+  type: MM:ARRAY
+  offset: 0x001840
+  symbol: object_bjiVtx_001840
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0019C0:
+  type: MM:ARRAY
+  offset: 0x0019C0
+  symbol: object_bjiVtx_0019C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0019F0:
+  type: MM:ARRAY
+  offset: 0x0019F0
+  symbol: object_bjiVtx_0019F0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001B20:
+  type: MM:ARRAY
+  offset: 0x001B20
+  symbol: object_bjiVtx_001B20
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001CA0:
+  type: MM:ARRAY
+  offset: 0x001CA0
+  symbol: object_bjiVtx_001CA0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002030:
+  type: MM:ARRAY
+  offset: 0x002030
+  symbol: object_bjiVtx_002030
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002060:
+  type: MM:ARRAY
+  offset: 0x002060
+  symbol: object_bjiVtx_002060
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: object_bjiVtx_002090
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0020C0:
+  type: MM:ARRAY
+  offset: 0x0020C0
+  symbol: object_bjiVtx_0020C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0020F0:
+  type: MM:ARRAY
+  offset: 0x0020F0
+  symbol: object_bjiVtx_0020F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002120:
+  type: MM:ARRAY
+  offset: 0x002120
+  symbol: object_bjiVtx_002120
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002150:
+  type: MM:ARRAY
+  offset: 0x002150
+  symbol: object_bjiVtx_002150
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gShikashiEyeTexAnimTexCycleParams_005684:
+  type: BLOB
+  offset: 0x005684
+  symbol: gShikashiEyeTexAnimTexCycleParams_005684
+  size: 0
+
+gShikashiSkelLimbs:
+  type: BLOB
+  offset: 0x5750
+  symbol: gShikashiSkelLimbs
+  size: 0

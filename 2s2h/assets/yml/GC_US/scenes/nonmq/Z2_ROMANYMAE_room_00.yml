@@ -1,0 +1,189 @@
+:config:
+  segments:
+    - [ 3, 0x0188EC00 ]
+    - [ 6, 0x01616C40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0188EC00 ]
+    - [ 9, 0x0188EC00 ]
+    - [ 10, 0x0188EC00 ]
+    - [ 11, 0x0188EC00 ]
+    - [ 12, 0x0188EC00 ]
+    - [ 13, 0x0188EC00 ]
+    - [ 2, 0x0188C3F0 ]
+  directory: scenes/nonmq/Z2_ROMANYMAE
+  external_files:
+    - GC_US/misc/scene_texture_08.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_ROMANYMAE.yml
+
+Z2_ROMANYMAE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_ROMANYMAE_room_00
+
+Z2_ROMANYMAE_room_00DL_003010:
+  type: GFX
+  offset: 0x3010
+  symbol: Z2_ROMANYMAE_room_00DL_003010
+
+Z2_ROMANYMAE_room_00DL_003338:
+  type: GFX
+  offset: 0x3338
+  symbol: Z2_ROMANYMAE_room_00DL_003338
+
+
+Z2_ROMANYMAE_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_ROMANYMAE_room_00ActorEntry_000058
+  size: 0
+
+Z2_ROMANYMAE_room_00Vtx_000280:
+  type: MM:ARRAY
+  offset: 0x000280
+  symbol: Z2_ROMANYMAE_room_00Vtx_000280
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_000940:
+  type: GFX
+  offset: 0x000940
+  symbol: Z2_ROMANYMAE_room_00DL_000940
+
+Z2_ROMANYMAE_room_00Vtx_000B68:
+  type: MM:ARRAY
+  offset: 0x000B68
+  symbol: Z2_ROMANYMAE_room_00Vtx_000B68
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_001468:
+  type: GFX
+  offset: 0x001468
+  symbol: Z2_ROMANYMAE_room_00DL_001468
+
+Z2_ROMANYMAE_room_00Vtx_0016E0:
+  type: MM:ARRAY
+  offset: 0x0016E0
+  symbol: Z2_ROMANYMAE_room_00Vtx_0016E0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_0018C0:
+  type: GFX
+  offset: 0x0018C0
+  symbol: Z2_ROMANYMAE_room_00DL_0018C0
+
+Z2_ROMANYMAE_room_00Vtx_0019D8:
+  type: MM:ARRAY
+  offset: 0x0019D8
+  symbol: Z2_ROMANYMAE_room_00Vtx_0019D8
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_001CB8:
+  type: GFX
+  offset: 0x001CB8
+  symbol: Z2_ROMANYMAE_room_00DL_001CB8
+
+Z2_ROMANYMAE_room_00Vtx_001E00:
+  type: MM:ARRAY
+  offset: 0x001E00
+  symbol: Z2_ROMANYMAE_room_00Vtx_001E00
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_002380:
+  type: GFX
+  offset: 0x002380
+  symbol: Z2_ROMANYMAE_room_00DL_002380
+
+Z2_ROMANYMAE_room_00Vtx_002538:
+  type: MM:ARRAY
+  offset: 0x002538
+  symbol: Z2_ROMANYMAE_room_00Vtx_002538
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_002738:
+  type: GFX
+  offset: 0x002738
+  symbol: Z2_ROMANYMAE_room_00DL_002738
+
+Z2_ROMANYMAE_room_00Vtx_002840:
+  type: MM:ARRAY
+  offset: 0x002840
+  symbol: Z2_ROMANYMAE_room_00Vtx_002840
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_002980:
+  type: GFX
+  offset: 0x002980
+  symbol: Z2_ROMANYMAE_room_00DL_002980
+
+Z2_ROMANYMAE_room_00Vtx_002A60:
+  type: MM:ARRAY
+  offset: 0x002A60
+  symbol: Z2_ROMANYMAE_room_00Vtx_002A60
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_002B20:
+  type: GFX
+  offset: 0x002B20
+  symbol: Z2_ROMANYMAE_room_00DL_002B20
+
+Z2_ROMANYMAE_room_00Vtx_002BF0:
+  type: MM:ARRAY
+  offset: 0x002BF0
+  symbol: Z2_ROMANYMAE_room_00Vtx_002BF0
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_002ED0:
+  type: GFX
+  offset: 0x002ED0
+  symbol: Z2_ROMANYMAE_room_00DL_002ED0
+
+Z2_ROMANYMAE_room_00DL_003060:
+  type: GFX
+  offset: 0x003060
+  symbol: Z2_ROMANYMAE_room_00DL_003060
+
+Z2_ROMANYMAE_room_00DL_003068:
+  type: GFX
+  offset: 0x003068
+  symbol: Z2_ROMANYMAE_room_00DL_003068
+
+Z2_ROMANYMAE_room_00Vtx_003070:
+  type: MM:ARRAY
+  offset: 0x003070
+  symbol: Z2_ROMANYMAE_room_00Vtx_003070
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ROMANYMAE_room_00DL_003230:
+  type: GFX
+  offset: 0x003230
+  symbol: Z2_ROMANYMAE_room_00DL_003230

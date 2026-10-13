@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 128, 0x00DD79A0 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80C03530, 0x00DD79A0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+ovl_En_Bombers_DL_12C8:
+  type: GFX
+  offset: 0x12C8
+  symbol: ovl_En_Bombers_DL_12C8
+
+ovl_En_Bombers_DL_12D8:
+  type: GFX
+  offset: 0x12D8
+  symbol: ovl_En_Bombers_DL_12D8
+

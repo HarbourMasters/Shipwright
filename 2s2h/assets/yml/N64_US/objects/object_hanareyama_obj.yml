@@ -1,0 +1,823 @@
+:config:
+  segments:
+    - [ 6, 0x011D5710 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011D5710 ]
+    - [ 9, 0x011D5710 ]
+    - [ 10, 0x011D5710 ]
+    - [ 11, 0x011D5710 ]
+    - [ 12, 0x011D5710 ]
+    - [ 13, 0x011D5710 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_hanareyama_obj_Colheader_004D8C:
+  type: MM:COLLISION
+  offset: 0x4D8C
+  symbol: object_hanareyama_obj_Colheader_004D8C
+
+object_hanareyama_obj_DLArray_004638:
+  type: MM:ARRAY
+  offset: 0x4638
+  symbol: object_hanareyama_obj_DLArray_004638
+  count: 54
+  array_type: Pointer
+
+object_hanareyama_obj_DL_000000:
+  type: GFX
+  offset: 0x0
+  symbol: object_hanareyama_obj_DL_000000
+
+object_hanareyama_obj_DL_000020:
+  type: GFX
+  offset: 0x20
+  symbol: object_hanareyama_obj_DL_000020
+
+object_hanareyama_obj_DL_000D70:
+  type: GFX
+  offset: 0xD70
+  symbol: object_hanareyama_obj_DL_000D70
+
+object_hanareyama_obj_DL_000E30:
+  type: GFX
+  offset: 0xE30
+  symbol: object_hanareyama_obj_DL_000E30
+
+object_hanareyama_obj_DL_000EF0:
+  type: GFX
+  offset: 0xEF0
+  symbol: object_hanareyama_obj_DL_000EF0
+
+object_hanareyama_obj_DL_000FB8:
+  type: GFX
+  offset: 0xFB8
+  symbol: object_hanareyama_obj_DL_000FB8
+
+object_hanareyama_obj_DL_001078:
+  type: GFX
+  offset: 0x1078
+  symbol: object_hanareyama_obj_DL_001078
+
+object_hanareyama_obj_DL_001138:
+  type: GFX
+  offset: 0x1138
+  symbol: object_hanareyama_obj_DL_001138
+
+object_hanareyama_obj_DL_001200:
+  type: GFX
+  offset: 0x1200
+  symbol: object_hanareyama_obj_DL_001200
+
+object_hanareyama_obj_DL_0012C0:
+  type: GFX
+  offset: 0x12C0
+  symbol: object_hanareyama_obj_DL_0012C0
+
+object_hanareyama_obj_DL_001380:
+  type: GFX
+  offset: 0x1380
+  symbol: object_hanareyama_obj_DL_001380
+
+object_hanareyama_obj_DL_001448:
+  type: GFX
+  offset: 0x1448
+  symbol: object_hanareyama_obj_DL_001448
+
+object_hanareyama_obj_DL_001508:
+  type: GFX
+  offset: 0x1508
+  symbol: object_hanareyama_obj_DL_001508
+
+object_hanareyama_obj_DL_0015C8:
+  type: GFX
+  offset: 0x15C8
+  symbol: object_hanareyama_obj_DL_0015C8
+
+object_hanareyama_obj_DL_001690:
+  type: GFX
+  offset: 0x1690
+  symbol: object_hanareyama_obj_DL_001690
+
+object_hanareyama_obj_DL_001750:
+  type: GFX
+  offset: 0x1750
+  symbol: object_hanareyama_obj_DL_001750
+
+object_hanareyama_obj_DL_001810:
+  type: GFX
+  offset: 0x1810
+  symbol: object_hanareyama_obj_DL_001810
+
+object_hanareyama_obj_DL_0018D8:
+  type: GFX
+  offset: 0x18D8
+  symbol: object_hanareyama_obj_DL_0018D8
+
+object_hanareyama_obj_DL_001998:
+  type: GFX
+  offset: 0x1998
+  symbol: object_hanareyama_obj_DL_001998
+
+object_hanareyama_obj_DL_001A58:
+  type: GFX
+  offset: 0x1A58
+  symbol: object_hanareyama_obj_DL_001A58
+
+object_hanareyama_obj_DL_001B20:
+  type: GFX
+  offset: 0x1B20
+  symbol: object_hanareyama_obj_DL_001B20
+
+object_hanareyama_obj_DL_001BE0:
+  type: GFX
+  offset: 0x1BE0
+  symbol: object_hanareyama_obj_DL_001BE0
+
+object_hanareyama_obj_DL_001CA0:
+  type: GFX
+  offset: 0x1CA0
+  symbol: object_hanareyama_obj_DL_001CA0
+
+object_hanareyama_obj_DL_001D68:
+  type: GFX
+  offset: 0x1D68
+  symbol: object_hanareyama_obj_DL_001D68
+
+object_hanareyama_obj_DL_001E28:
+  type: GFX
+  offset: 0x1E28
+  symbol: object_hanareyama_obj_DL_001E28
+
+object_hanareyama_obj_DL_001EE8:
+  type: GFX
+  offset: 0x1EE8
+  symbol: object_hanareyama_obj_DL_001EE8
+
+object_hanareyama_obj_DL_001FB0:
+  type: GFX
+  offset: 0x1FB0
+  symbol: object_hanareyama_obj_DL_001FB0
+
+object_hanareyama_obj_DL_002070:
+  type: GFX
+  offset: 0x2070
+  symbol: object_hanareyama_obj_DL_002070
+
+object_hanareyama_obj_DL_002130:
+  type: GFX
+  offset: 0x2130
+  symbol: object_hanareyama_obj_DL_002130
+
+object_hanareyama_obj_DL_0021F0:
+  type: GFX
+  offset: 0x21F0
+  symbol: object_hanareyama_obj_DL_0021F0
+
+object_hanareyama_obj_DL_0022B0:
+  type: GFX
+  offset: 0x22B0
+  symbol: object_hanareyama_obj_DL_0022B0
+
+object_hanareyama_obj_DL_002370:
+  type: GFX
+  offset: 0x2370
+  symbol: object_hanareyama_obj_DL_002370
+
+object_hanareyama_obj_DL_002430:
+  type: GFX
+  offset: 0x2430
+  symbol: object_hanareyama_obj_DL_002430
+
+object_hanareyama_obj_DL_0024F0:
+  type: GFX
+  offset: 0x24F0
+  symbol: object_hanareyama_obj_DL_0024F0
+
+object_hanareyama_obj_DL_0025B0:
+  type: GFX
+  offset: 0x25B0
+  symbol: object_hanareyama_obj_DL_0025B0
+
+object_hanareyama_obj_DL_002670:
+  type: GFX
+  offset: 0x2670
+  symbol: object_hanareyama_obj_DL_002670
+
+object_hanareyama_obj_DL_002730:
+  type: GFX
+  offset: 0x2730
+  symbol: object_hanareyama_obj_DL_002730
+
+object_hanareyama_obj_DL_0027F0:
+  type: GFX
+  offset: 0x27F0
+  symbol: object_hanareyama_obj_DL_0027F0
+
+object_hanareyama_obj_DL_0028B0:
+  type: GFX
+  offset: 0x28B0
+  symbol: object_hanareyama_obj_DL_0028B0
+
+object_hanareyama_obj_DL_002970:
+  type: GFX
+  offset: 0x2970
+  symbol: object_hanareyama_obj_DL_002970
+
+object_hanareyama_obj_DL_002A30:
+  type: GFX
+  offset: 0x2A30
+  symbol: object_hanareyama_obj_DL_002A30
+
+object_hanareyama_obj_DL_002AF0:
+  type: GFX
+  offset: 0x2AF0
+  symbol: object_hanareyama_obj_DL_002AF0
+
+object_hanareyama_obj_DL_002BB0:
+  type: GFX
+  offset: 0x2BB0
+  symbol: object_hanareyama_obj_DL_002BB0
+
+object_hanareyama_obj_DL_002C70:
+  type: GFX
+  offset: 0x2C70
+  symbol: object_hanareyama_obj_DL_002C70
+
+object_hanareyama_obj_DL_002D30:
+  type: GFX
+  offset: 0x2D30
+  symbol: object_hanareyama_obj_DL_002D30
+
+object_hanareyama_obj_DL_002DF0:
+  type: GFX
+  offset: 0x2DF0
+  symbol: object_hanareyama_obj_DL_002DF0
+
+object_hanareyama_obj_DL_002EB0:
+  type: GFX
+  offset: 0x2EB0
+  symbol: object_hanareyama_obj_DL_002EB0
+
+object_hanareyama_obj_DL_002F78:
+  type: GFX
+  offset: 0x2F78
+  symbol: object_hanareyama_obj_DL_002F78
+
+object_hanareyama_obj_DL_003038:
+  type: GFX
+  offset: 0x3038
+  symbol: object_hanareyama_obj_DL_003038
+
+object_hanareyama_obj_DL_0030F8:
+  type: GFX
+  offset: 0x30F8
+  symbol: object_hanareyama_obj_DL_0030F8
+
+object_hanareyama_obj_DL_0031B8:
+  type: GFX
+  offset: 0x31B8
+  symbol: object_hanareyama_obj_DL_0031B8
+
+object_hanareyama_obj_DL_003278:
+  type: GFX
+  offset: 0x3278
+  symbol: object_hanareyama_obj_DL_003278
+
+object_hanareyama_obj_DL_003338:
+  type: GFX
+  offset: 0x3338
+  symbol: object_hanareyama_obj_DL_003338
+
+object_hanareyama_obj_DL_0033F8:
+  type: GFX
+  offset: 0x33F8
+  symbol: object_hanareyama_obj_DL_0033F8
+
+object_hanareyama_obj_DL_0034B8:
+  type: GFX
+  offset: 0x34B8
+  symbol: object_hanareyama_obj_DL_0034B8
+
+object_hanareyama_obj_DL_003578:
+  type: GFX
+  offset: 0x3578
+  symbol: object_hanareyama_obj_DL_003578
+
+object_hanareyama_obj_Tex_003638:
+  type: TEXTURE
+  offset: 0x3638
+  symbol: object_hanareyama_obj_Tex_003638
+  format: I4
+  width: 64
+  height: 64
+
+object_hanareyama_obj_Tex_003E38:
+  type: TEXTURE
+  offset: 0x3E38
+  symbol: object_hanareyama_obj_Tex_003E38
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hanareyama_obj_Vec_004710:
+  type: MM:ARRAY
+  offset: 0x4710
+  symbol: object_hanareyama_obj_Vec_004710
+  count: 54
+  array_type: Vec3s
+
+
+object_hanareyama_objVtx_000070:
+  type: MM:ARRAY
+  offset: 0x000070
+  symbol: object_hanareyama_objVtx_000070
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0000B0:
+  type: MM:ARRAY
+  offset: 0x0000B0
+  symbol: object_hanareyama_objVtx_0000B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0000E0:
+  type: MM:ARRAY
+  offset: 0x0000E0
+  symbol: object_hanareyama_objVtx_0000E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000110:
+  type: MM:ARRAY
+  offset: 0x000110
+  symbol: object_hanareyama_objVtx_000110
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000140:
+  type: MM:ARRAY
+  offset: 0x000140
+  symbol: object_hanareyama_objVtx_000140
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000170:
+  type: MM:ARRAY
+  offset: 0x000170
+  symbol: object_hanareyama_objVtx_000170
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0001A0:
+  type: MM:ARRAY
+  offset: 0x0001A0
+  symbol: object_hanareyama_objVtx_0001A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0001D0:
+  type: MM:ARRAY
+  offset: 0x0001D0
+  symbol: object_hanareyama_objVtx_0001D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_hanareyama_objVtx_000200
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000230:
+  type: MM:ARRAY
+  offset: 0x000230
+  symbol: object_hanareyama_objVtx_000230
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000270:
+  type: MM:ARRAY
+  offset: 0x000270
+  symbol: object_hanareyama_objVtx_000270
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0002C0:
+  type: MM:ARRAY
+  offset: 0x0002C0
+  symbol: object_hanareyama_objVtx_0002C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000300:
+  type: MM:ARRAY
+  offset: 0x000300
+  symbol: object_hanareyama_objVtx_000300
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000330:
+  type: MM:ARRAY
+  offset: 0x000330
+  symbol: object_hanareyama_objVtx_000330
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: object_hanareyama_objVtx_000360
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0003A0:
+  type: MM:ARRAY
+  offset: 0x0003A0
+  symbol: object_hanareyama_objVtx_0003A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0003D0:
+  type: MM:ARRAY
+  offset: 0x0003D0
+  symbol: object_hanareyama_objVtx_0003D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_hanareyama_objVtx_000400
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: object_hanareyama_objVtx_000430
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_hanareyama_objVtx_000460
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000490:
+  type: MM:ARRAY
+  offset: 0x000490
+  symbol: object_hanareyama_objVtx_000490
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0004C0:
+  type: MM:ARRAY
+  offset: 0x0004C0
+  symbol: object_hanareyama_objVtx_0004C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000500:
+  type: MM:ARRAY
+  offset: 0x000500
+  symbol: object_hanareyama_objVtx_000500
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000530:
+  type: MM:ARRAY
+  offset: 0x000530
+  symbol: object_hanareyama_objVtx_000530
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000560:
+  type: MM:ARRAY
+  offset: 0x000560
+  symbol: object_hanareyama_objVtx_000560
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000590:
+  type: MM:ARRAY
+  offset: 0x000590
+  symbol: object_hanareyama_objVtx_000590
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0005C0:
+  type: MM:ARRAY
+  offset: 0x0005C0
+  symbol: object_hanareyama_objVtx_0005C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: object_hanareyama_objVtx_0005F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000620:
+  type: MM:ARRAY
+  offset: 0x000620
+  symbol: object_hanareyama_objVtx_000620
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000650:
+  type: MM:ARRAY
+  offset: 0x000650
+  symbol: object_hanareyama_objVtx_000650
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000680:
+  type: MM:ARRAY
+  offset: 0x000680
+  symbol: object_hanareyama_objVtx_000680
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0006C0:
+  type: MM:ARRAY
+  offset: 0x0006C0
+  symbol: object_hanareyama_objVtx_0006C0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000730:
+  type: MM:ARRAY
+  offset: 0x000730
+  symbol: object_hanareyama_objVtx_000730
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000760:
+  type: MM:ARRAY
+  offset: 0x000760
+  symbol: object_hanareyama_objVtx_000760
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000790:
+  type: MM:ARRAY
+  offset: 0x000790
+  symbol: object_hanareyama_objVtx_000790
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000800:
+  type: MM:ARRAY
+  offset: 0x000800
+  symbol: object_hanareyama_objVtx_000800
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: object_hanareyama_objVtx_000830
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000860:
+  type: MM:ARRAY
+  offset: 0x000860
+  symbol: object_hanareyama_objVtx_000860
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0008D0:
+  type: MM:ARRAY
+  offset: 0x0008D0
+  symbol: object_hanareyama_objVtx_0008D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000900:
+  type: MM:ARRAY
+  offset: 0x000900
+  symbol: object_hanareyama_objVtx_000900
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000930:
+  type: MM:ARRAY
+  offset: 0x000930
+  symbol: object_hanareyama_objVtx_000930
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0009A0:
+  type: MM:ARRAY
+  offset: 0x0009A0
+  symbol: object_hanareyama_objVtx_0009A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_0009D0:
+  type: MM:ARRAY
+  offset: 0x0009D0
+  symbol: object_hanareyama_objVtx_0009D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000A00:
+  type: MM:ARRAY
+  offset: 0x000A00
+  symbol: object_hanareyama_objVtx_000A00
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000A70:
+  type: MM:ARRAY
+  offset: 0x000A70
+  symbol: object_hanareyama_objVtx_000A70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000AA0:
+  type: MM:ARRAY
+  offset: 0x000AA0
+  symbol: object_hanareyama_objVtx_000AA0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000AD0:
+  type: MM:ARRAY
+  offset: 0x000AD0
+  symbol: object_hanareyama_objVtx_000AD0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000B60:
+  type: MM:ARRAY
+  offset: 0x000B60
+  symbol: object_hanareyama_objVtx_000B60
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: object_hanareyama_objVtx_000B90
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000BC0:
+  type: MM:ARRAY
+  offset: 0x000BC0
+  symbol: object_hanareyama_objVtx_000BC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000C40:
+  type: MM:ARRAY
+  offset: 0x000C40
+  symbol: object_hanareyama_objVtx_000C40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000C70:
+  type: MM:ARRAY
+  offset: 0x000C70
+  symbol: object_hanareyama_objVtx_000C70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000CA0:
+  type: MM:ARRAY
+  offset: 0x000CA0
+  symbol: object_hanareyama_objVtx_000CA0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000D10:
+  type: MM:ARRAY
+  offset: 0x000D10
+  symbol: object_hanareyama_objVtx_000D10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanareyama_objVtx_000D40:
+  type: MM:ARRAY
+  offset: 0x000D40
+  symbol: object_hanareyama_objVtx_000D40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

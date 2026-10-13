@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x01019340 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01019340 ]
+    - [ 9, 0x01019340 ]
+    - [ 10, 0x01019340 ]
+    - [ 11, 0x01019340 ]
+    - [ 12, 0x01019340 ]
+    - [ 13, 0x01019340 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPotDL:
+  type: GFX
+  offset: 0x17C0
+  symbol: gPotDL
+
+gPotRimTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gPotRimTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPotShardDL:
+  type: GFX
+  offset: 0x1960
+  symbol: gPotShardDL
+
+gPotShardTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gPotShardTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPotWallTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gPotWallTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_tsuboVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_tsuboVtx_001400
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tsuboVtx_001930:
+  type: MM:ARRAY
+  offset: 0x001930
+  symbol: object_tsuboVtx_001930
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

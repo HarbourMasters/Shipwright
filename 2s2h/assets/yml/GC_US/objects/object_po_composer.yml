@@ -1,0 +1,485 @@
+:config:
+  segments:
+    - [ 6, 0x010A7230 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010A7230 ]
+    - [ 9, 0x010A7230 ]
+    - [ 10, 0x010A7230 ]
+    - [ 11, 0x010A7230 ]
+    - [ 12, 0x010A7230 ]
+    - [ 13, 0x010A7230 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gPoeComposerAppearDisappearAnim:
+  type: OOT:ANIMATION
+  offset: 0x3954
+  symbol: gPoeComposerAppearDisappearAnim
+
+gPoeComposerArmsRaisedAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F44
+  symbol: gPoeComposerArmsRaisedAnim
+
+gPoeComposerAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x20C
+  symbol: gPoeComposerAttackAnim
+
+gPoeComposerBeginPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0xA58
+  symbol: gPoeComposerBeginPlayAnim
+
+gPoeComposerBeginRollAnim:
+  type: OOT:ANIMATION
+  offset: 0x3024
+  symbol: gPoeComposerBeginRollAnim
+
+gPoeComposerBurnDL:
+  type: GFX
+  offset: 0x7BC0
+  symbol: gPoeComposerBurnDL
+
+gPoeComposerConductorBatonLimb:
+  type: OOT:LIMB
+  offset: 0x98B0
+  symbol: gPoeComposerConductorBatonLimb
+  limb_type: Standard
+
+gPoeComposerFlatHeadDL:
+  type: GFX
+  offset: 0x6FD8
+  symbol: gPoeComposerFlatHeadDL
+
+gPoeComposerFleeAnim:
+  type: OOT:ANIMATION
+  offset: 0x15B8
+  symbol: gPoeComposerFleeAnim
+
+gPoeComposerHeadLimb:
+  type: OOT:LIMB
+  offset: 0x98EC
+  symbol: gPoeComposerHeadLimb
+  limb_type: Standard
+
+gPoeComposerIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x188C
+  symbol: gPoeComposerIdleAnim
+
+gPoeComposerLanternBaseDL:
+  type: GFX
+  offset: 0x6E08
+  symbol: gPoeComposerLanternBaseDL
+
+gPoeComposerLanternGlassDL:
+  type: GFX
+  offset: 0x6F38
+  symbol: gPoeComposerLanternGlassDL
+
+gPoeComposerLanternLimb:
+  type: OOT:LIMB
+  offset: 0x98E0
+  symbol: gPoeComposerLanternLimb
+  limb_type: Standard
+
+gPoeComposerLanternTopDL:
+  type: GFX
+  offset: 0x6EA8
+  symbol: gPoeComposerLanternTopDL
+
+gPoeComposerLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x9898
+  symbol: gPoeComposerLeftArmLimb
+  limb_type: Standard
+
+gPoeComposerLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x98A4
+  symbol: gPoeComposerLeftHandLimb
+  limb_type: Standard
+
+gPoeComposerLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x988C
+  symbol: gPoeComposerLeftShoulderLimb
+  limb_type: Standard
+
+gPoeComposerLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x2AE0
+  symbol: gPoeComposerLookDownAnim
+
+gPoeComposerLowerArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x23E8
+  symbol: gPoeComposerLowerArmsAnim
+
+gPoeComposerLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x98F8
+  symbol: gPoeComposerLowerBodyLimb
+  limb_type: Standard
+
+gPoeComposerPlayAnim:
+  type: OOT:ANIMATION
+  offset: 0x1420
+  symbol: gPoeComposerPlayAnim
+
+gPoeComposerRaiseArmsAnim:
+  type: OOT:ANIMATION
+  offset: 0x570
+  symbol: gPoeComposerRaiseArmsAnim
+
+gPoeComposerRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x98C8
+  symbol: gPoeComposerRightArmLimb
+  limb_type: Standard
+
+gPoeComposerRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x98D4
+  symbol: gPoeComposerRightHandLimb
+  limb_type: Standard
+
+gPoeComposerRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x98BC
+  symbol: gPoeComposerRightShoulderLimb
+  limb_type: Standard
+
+gPoeComposerRollAnim:
+  type: OOT:ANIMATION
+  offset: 0x334C
+  symbol: gPoeComposerRollAnim
+
+gPoeComposerSharpHeadDL:
+  type: GFX
+  offset: 0x6A70
+  symbol: gPoeComposerSharpHeadDL
+
+gPoeComposerSkel:
+  type: MM:SKELETON
+  offset: 0x9930
+  symbol: gPoeComposerSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPoeComposerSoulTex:
+  type: TEXTURE
+  offset: 0x3DC0
+  symbol: gPoeComposerSoulTex
+  format: I8
+  width: 32
+  height: 64
+
+gPoeComposerStillAnim:
+  type: OOT:ANIMATION
+  offset: 0x3DB0
+  symbol: gPoeComposerStillAnim
+
+gPoeComposerUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9880
+  symbol: gPoeComposerUpperBodyLimb
+  limb_type: Standard
+
+object_po_composer_DL_004600:
+  type: GFX
+  offset: 0x4600
+  symbol: object_po_composer_DL_004600
+
+object_po_composer_DL_006D80:
+  type: GFX
+  offset: 0x6D80
+  symbol: object_po_composer_DL_006D80
+
+object_po_composer_Tex_007E80:
+  type: TEXTURE
+  offset: 0x7E80
+  symbol: object_po_composer_Tex_007E80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008080:
+  type: TEXTURE
+  offset: 0x8080
+  symbol: object_po_composer_Tex_008080
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008280:
+  type: TEXTURE
+  offset: 0x8280
+  symbol: object_po_composer_Tex_008280
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008480:
+  type: TEXTURE
+  offset: 0x8480
+  symbol: object_po_composer_Tex_008480
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008680:
+  type: TEXTURE
+  offset: 0x8680
+  symbol: object_po_composer_Tex_008680
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_po_composer_Tex_008A80:
+  type: TEXTURE
+  offset: 0x8A80
+  symbol: object_po_composer_Tex_008A80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008C80:
+  type: TEXTURE
+  offset: 0x8C80
+  symbol: object_po_composer_Tex_008C80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_008E80:
+  type: TEXTURE
+  offset: 0x8E80
+  symbol: object_po_composer_Tex_008E80
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_009080:
+  type: TEXTURE
+  offset: 0x9080
+  symbol: object_po_composer_Tex_009080
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_009280:
+  type: TEXTURE
+  offset: 0x9280
+  symbol: object_po_composer_Tex_009280
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_009480:
+  type: TEXTURE
+  offset: 0x9480
+  symbol: object_po_composer_Tex_009480
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_po_composer_Tex_009680:
+  type: TEXTURE
+  offset: 0x9680
+  symbol: object_po_composer_Tex_009680
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_po_composerVtx_0045C0:
+  type: MM:ARRAY
+  offset: 0x0045C0
+  symbol: object_po_composerVtx_0045C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_0046C0:
+  type: MM:ARRAY
+  offset: 0x0046C0
+  symbol: object_po_composerVtx_0046C0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004810:
+  type: MM:ARRAY
+  offset: 0x004810
+  symbol: object_po_composerVtx_004810
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004AA0:
+  type: MM:ARRAY
+  offset: 0x004AA0
+  symbol: object_po_composerVtx_004AA0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004B00:
+  type: MM:ARRAY
+  offset: 0x004B00
+  symbol: object_po_composerVtx_004B00
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004B80:
+  type: MM:ARRAY
+  offset: 0x004B80
+  symbol: object_po_composerVtx_004B80
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004E70:
+  type: MM:ARRAY
+  offset: 0x004E70
+  symbol: object_po_composerVtx_004E70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004F70:
+  type: MM:ARRAY
+  offset: 0x004F70
+  symbol: object_po_composerVtx_004F70
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: object_po_composerVtx_004FF0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeComposerUpperBodyLimbDL_0052E0:
+  type: GFX
+  offset: 0x0052E0
+  symbol: gPoeComposerUpperBodyLimbDL_0052E0
+
+gPoeComposerLowerBodyLimbDL_0054E0:
+  type: GFX
+  offset: 0x0054E0
+  symbol: gPoeComposerLowerBodyLimbDL_0054E0
+
+gPoeComposerRightShoulderLimbDL_0055D0:
+  type: GFX
+  offset: 0x0055D0
+  symbol: gPoeComposerRightShoulderLimbDL_0055D0
+
+gPoeComposerRightArmLimbDL_005898:
+  type: GFX
+  offset: 0x005898
+  symbol: gPoeComposerRightArmLimbDL_005898
+
+gPoeComposerRightHandLimbDL_005948:
+  type: GFX
+  offset: 0x005948
+  symbol: gPoeComposerRightHandLimbDL_005948
+
+gPoeComposerLeftShoulderLimbDL_005A00:
+  type: GFX
+  offset: 0x005A00
+  symbol: gPoeComposerLeftShoulderLimbDL_005A00
+
+gPoeComposerLeftArmLimbDL_005CB8:
+  type: GFX
+  offset: 0x005CB8
+  symbol: gPoeComposerLeftArmLimbDL_005CB8
+
+gPoeComposerLeftHandLimbDL_005D68:
+  type: GFX
+  offset: 0x005D68
+  symbol: gPoeComposerLeftHandLimbDL_005D68
+
+object_po_composerVtx_005E70:
+  type: MM:ARRAY
+  offset: 0x005E70
+  symbol: object_po_composerVtx_005E70
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_0062C0:
+  type: MM:ARRAY
+  offset: 0x0062C0
+  symbol: object_po_composerVtx_0062C0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_006350:
+  type: MM:ARRAY
+  offset: 0x006350
+  symbol: object_po_composerVtx_006350
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_0063C0:
+  type: MM:ARRAY
+  offset: 0x0063C0
+  symbol: object_po_composerVtx_0063C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_006460:
+  type: MM:ARRAY
+  offset: 0x006460
+  symbol: object_po_composerVtx_006460
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_006530:
+  type: MM:ARRAY
+  offset: 0x006530
+  symbol: object_po_composerVtx_006530
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_po_composerVtx_0073D0:
+  type: MM:ARRAY
+  offset: 0x0073D0
+  symbol: object_po_composerVtx_0073D0
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeComposerSkelLimbs:
+  type: BLOB
+  offset: 0x9904
+  symbol: gPoeComposerSkelLimbs
+  size: 0

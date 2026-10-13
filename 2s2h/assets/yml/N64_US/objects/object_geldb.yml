@@ -1,0 +1,654 @@
+:config:
+  segments:
+    - [ 6, 0x01094A30 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01094A30 ]
+    - [ 9, 0x01094A30 ]
+    - [ 10, 0x01094A30 ]
+    - [ 11, 0x01094A30 ]
+    - [ 12, 0x01094A30 ]
+    - [ 13, 0x01094A30 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGerudoMail1Tex:
+  type: TEXTURE
+  offset: 0x2F30
+  symbol: gGerudoMail1Tex
+  format: I8
+  width: 8
+  height: 16
+
+gGerudoRed1TLUT:
+  type: TEXTURE
+  offset: 0x28B0
+  symbol: gGerudoRed1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGerudoRed2TLUT:
+  type: TEXTURE
+  offset: 0x60E0
+  symbol: gGerudoRed2TLUT
+  format: RGBA16
+  width: 18
+  height: 14
+
+gGerudoRedBegAnim:
+  type: OOT:ANIMATION
+  offset: 0x734
+  symbol: gGerudoRedBegAnim
+
+gGerudoRedDarkRedFabricTex:
+  type: TEXTURE
+  offset: 0x2AF0
+  symbol: gGerudoRedDarkRedFabricTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x28B0
+
+gGerudoRedDemandAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AC8
+  symbol: gGerudoRedDemandAnim
+
+gGerudoRedDismissAnim:
+  type: OOT:ANIMATION
+  offset: 0xCB0
+  symbol: gGerudoRedDismissAnim
+
+gGerudoRedEarTex:
+  type: TEXTURE
+  offset: 0x6318
+  symbol: gGerudoRedEarTex
+  format: CI8
+  width: 8
+  height: 16
+
+gGerudoRedEyeClosedTex:
+  type: TEXTURE
+  offset: 0x70D8
+  symbol: gGerudoRedEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x60E0
+
+gGerudoRedEyeHalfTex:
+  type: TEXTURE
+  offset: 0x6958
+  symbol: gGerudoRedEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x60E0
+
+gGerudoRedEyeOpenTex:
+  type: TEXTURE
+  offset: 0x6398
+  symbol: gGerudoRedEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x60E0
+
+gGerudoRedFingersTex:
+  type: TEXTURE
+  offset: 0x6ED8
+  symbol: gGerudoRedFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGerudoRedGerudoPatternFabricTex:
+  type: TEXTURE
+  offset: 0x2C30
+  symbol: gGerudoRedGerudoPatternFabricTex
+  format: I8
+  width: 16
+  height: 16
+
+gGerudoRedHairTex:
+  type: TEXTURE
+  offset: 0x6DD8
+  symbol: gGerudoRedHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGerudoRedHandOnHipWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x1EFC
+  symbol: gGerudoRedHandOnHipWaitAnim
+
+gGerudoRedHeadDL:
+  type: GFX
+  offset: 0x9F00
+  symbol: gGerudoRedHeadDL
+
+gGerudoRedHeadLimb:
+  type: OOT:LIMB
+  offset: 0xA6D4
+  symbol: gGerudoRedHeadLimb
+  limb_type: Standard
+
+gGerudoRedLeftFootDL:
+  type: GFX
+  offset: 0x92F8
+  symbol: gGerudoRedLeftFootDL
+
+gGerudoRedLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xA770
+  symbol: gGerudoRedLeftFootLimb
+  limb_type: Standard
+
+gGerudoRedLeftForearmDL:
+  type: GFX
+  offset: 0x55A8
+  symbol: gGerudoRedLeftForearmDL
+
+gGerudoRedLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xA728
+  symbol: gGerudoRedLeftForearmLimb
+  limb_type: Standard
+
+gGerudoRedLeftHandDL:
+  type: GFX
+  offset: 0x9678
+  symbol: gGerudoRedLeftHandDL
+
+gGerudoRedLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xA740
+  symbol: gGerudoRedLeftHandLimb
+  limb_type: Standard
+
+gGerudoRedLeftLowerLegDL:
+  type: GFX
+  offset: 0x5E60
+  symbol: gGerudoRedLeftLowerLegDL
+
+gGerudoRedLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0xA764
+  symbol: gGerudoRedLeftLowerLegLimb
+  limb_type: Standard
+
+gGerudoRedLeftSwordDL:
+  type: GFX
+  offset: 0x9810
+  symbol: gGerudoRedLeftSwordDL
+
+gGerudoRedLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0xA74C
+  symbol: gGerudoRedLeftSwordLimb
+  limb_type: Standard
+
+gGerudoRedLeftThighDL:
+  type: GFX
+  offset: 0x5D60
+  symbol: gGerudoRedLeftThighDL
+
+gGerudoRedLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xA758
+  symbol: gGerudoRedLeftThighLimb
+  limb_type: Standard
+
+gGerudoRedLeftUpperArmDL:
+  type: GFX
+  offset: 0x5470
+  symbol: gGerudoRedLeftUpperArmDL
+
+gGerudoRedLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xA71C
+  symbol: gGerudoRedLeftUpperArmLimb
+  limb_type: Standard
+
+gGerudoRedLeftWristLimb:
+  type: OOT:LIMB
+  offset: 0xA734
+  symbol: gGerudoRedLeftWristLimb
+  limb_type: Standard
+
+gGerudoRedMail2Tex:
+  type: TEXTURE
+  offset: 0x6D58
+  symbol: gGerudoRedMail2Tex
+  format: I8
+  width: 8
+  height: 16
+
+gGerudoRedMidriffTex:
+  type: TEXTURE
+  offset: 0x2D30
+  symbol: gGerudoRedMidriffTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x28B0
+
+gGerudoRedNeckLimb:
+  type: OOT:LIMB
+  offset: 0xA6B0
+  symbol: gGerudoRedNeckLimb
+  limb_type: Standard
+
+gGerudoRedNeutralAnim:
+  type: OOT:ANIMATION
+  offset: 0xB0E4
+  symbol: gGerudoRedNeutralAnim
+
+gGerudoRedPelvisDL:
+  type: GFX
+  offset: 0x57D0
+  symbol: gGerudoRedPelvisDL
+
+gGerudoRedPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xA7A0
+  symbol: gGerudoRedPelvisLimb
+  limb_type: Standard
+
+gGerudoRedPonytailDL:
+  type: GFX
+  offset: 0x9E10
+  symbol: gGerudoRedPonytailDL
+
+gGerudoRedPonytailLimb:
+  type: OOT:LIMB
+  offset: 0xA6BC
+  symbol: gGerudoRedPonytailLimb
+  limb_type: Standard
+
+gGerudoRedRightFootDL:
+  type: GFX
+  offset: 0x94B8
+  symbol: gGerudoRedRightFootDL
+
+gGerudoRedRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xA794
+  symbol: gGerudoRedRightFootLimb
+  limb_type: Standard
+
+gGerudoRedRightForearmDL:
+  type: GFX
+  offset: 0x5248
+  symbol: gGerudoRedRightForearmDL
+
+gGerudoRedRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xA6EC
+  symbol: gGerudoRedRightForearmLimb
+  limb_type: Standard
+
+gGerudoRedRightHandDL:
+  type: GFX
+  offset: 0x99E8
+  symbol: gGerudoRedRightHandDL
+
+gGerudoRedRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xA704
+  symbol: gGerudoRedRightHandLimb
+  limb_type: Standard
+
+gGerudoRedRightLowerLegDL:
+  type: GFX
+  offset: 0x5AF0
+  symbol: gGerudoRedRightLowerLegDL
+
+gGerudoRedRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0xA788
+  symbol: gGerudoRedRightLowerLegLimb
+  limb_type: Standard
+
+gGerudoRedRightSwordDL:
+  type: GFX
+  offset: 0x9B80
+  symbol: gGerudoRedRightSwordDL
+
+gGerudoRedRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0xA710
+  symbol: gGerudoRedRightSwordLimb
+  limb_type: Standard
+
+gGerudoRedRightThighDL:
+  type: GFX
+  offset: 0x59F0
+  symbol: gGerudoRedRightThighDL
+
+gGerudoRedRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xA77C
+  symbol: gGerudoRedRightThighLimb
+  limb_type: Standard
+
+gGerudoRedRightUpperArmDL:
+  type: GFX
+  offset: 0x5110
+  symbol: gGerudoRedRightUpperArmDL
+
+gGerudoRedRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xA6E0
+  symbol: gGerudoRedRightUpperArmLimb
+  limb_type: Standard
+
+gGerudoRedRightWristLimb:
+  type: OOT:LIMB
+  offset: 0xA6F8
+  symbol: gGerudoRedRightWristLimb
+  limb_type: Standard
+
+gGerudoRedRootLimb:
+  type: OOT:LIMB
+  offset: 0xA698
+  symbol: gGerudoRedRootLimb
+  limb_type: Standard
+
+gGerudoRedRunAwayAnim:
+  type: OOT:ANIMATION
+  offset: 0x1DFC
+  symbol: gGerudoRedRunAwayAnim
+
+gGerudoRedShoeSoleTex:
+  type: TEXTURE
+  offset: 0x6918
+  symbol: gGerudoRedShoeSoleTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGerudoRedShoeUpperTex:
+  type: TEXTURE
+  offset: 0x6898
+  symbol: gGerudoRedShoeUpperTex
+  format: CI8
+  width: 8
+  height: 16
+
+gGerudoRedSkel:
+  type: MM:SKELETON
+  offset: 0xA808
+  symbol: gGerudoRedSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGerudoRedSkinGradientTex:
+  type: TEXTURE
+  offset: 0x62D8
+  symbol: gGerudoRedSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGerudoRedSkinShadowTex:
+  type: TEXTURE
+  offset: 0x2AB0
+  symbol: gGerudoRedSkinShadowTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x28B0
+
+gGerudoRedStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xAA8C
+  symbol: gGerudoRedStandAnim
+
+gGerudoRedTorsoDL:
+  type: GFX
+  offset: 0x4C90
+  symbol: gGerudoRedTorsoDL
+
+gGerudoRedTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xA6A4
+  symbol: gGerudoRedTorsoLimb
+  limb_type: Standard
+
+gGerudoRedTurnHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0xEE0
+  symbol: gGerudoRedTurnHeadAnim
+
+gGerudoRedVeilDL:
+  type: GFX
+  offset: 0x9D58
+  symbol: gGerudoRedVeilDL
+
+gGerudoRedVeilFabricTex:
+  type: TEXTURE
+  offset: 0x6798
+  symbol: gGerudoRedVeilFabricTex
+  format: I8
+  width: 16
+  height: 16
+
+gGerudoRedVeilLimb:
+  type: OOT:LIMB
+  offset: 0xA6C8
+  symbol: gGerudoRedVeilLimb
+  limb_type: Standard
+
+gGerudoRedWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x14CC
+  symbol: gGerudoRedWaitAnim
+
+gGerudoRedWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x28A0
+  symbol: gGerudoRedWalkAnim
+
+gGerudoRedYellowJewel1Tex:
+  type: TEXTURE
+  offset: 0x2B30
+  symbol: gGerudoRedYellowJewel1Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gGerudoRedYellowJewel2Tex:
+  type: TEXTURE
+  offset: 0x6FD8
+  symbol: gGerudoRedYellowJewel2Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gGerudoTrousersTex:
+  type: TEXTURE
+  offset: 0x2E30
+  symbol: gGerudoTrousersTex
+  format: I8
+  width: 16
+  height: 16
+
+
+object_geldbVtx_002FB0:
+  type: MM:ARRAY
+  offset: 0x002FB0
+  symbol: object_geldbVtx_002FB0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003190:
+  type: MM:ARRAY
+  offset: 0x003190
+  symbol: object_geldbVtx_003190
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003320:
+  type: MM:ARRAY
+  offset: 0x003320
+  symbol: object_geldbVtx_003320
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003500:
+  type: MM:ARRAY
+  offset: 0x003500
+  symbol: object_geldbVtx_003500
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003690:
+  type: MM:ARRAY
+  offset: 0x003690
+  symbol: object_geldbVtx_003690
+  count: 101
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_003CE0:
+  type: MM:ARRAY
+  offset: 0x003CE0
+  symbol: object_geldbVtx_003CE0
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0040F0:
+  type: MM:ARRAY
+  offset: 0x0040F0
+  symbol: object_geldbVtx_0040F0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0042E0:
+  type: MM:ARRAY
+  offset: 0x0042E0
+  symbol: object_geldbVtx_0042E0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0046B0:
+  type: MM:ARRAY
+  offset: 0x0046B0
+  symbol: object_geldbVtx_0046B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0048A0:
+  type: MM:ARRAY
+  offset: 0x0048A0
+  symbol: object_geldbVtx_0048A0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0074D8:
+  type: MM:ARRAY
+  offset: 0x0074D8
+  symbol: object_geldbVtx_0074D8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007788:
+  type: MM:ARRAY
+  offset: 0x007788
+  symbol: object_geldbVtx_007788
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007A38:
+  type: MM:ARRAY
+  offset: 0x007A38
+  symbol: object_geldbVtx_007A38
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007C58:
+  type: MM:ARRAY
+  offset: 0x007C58
+  symbol: object_geldbVtx_007C58
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_007E88:
+  type: MM:ARRAY
+  offset: 0x007E88
+  symbol: object_geldbVtx_007E88
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0080A8:
+  type: MM:ARRAY
+  offset: 0x0080A8
+  symbol: object_geldbVtx_0080A8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_0082D8:
+  type: MM:ARRAY
+  offset: 0x0082D8
+  symbol: object_geldbVtx_0082D8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_008398:
+  type: MM:ARRAY
+  offset: 0x008398
+  symbol: object_geldbVtx_008398
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_geldbVtx_008478:
+  type: MM:ARRAY
+  offset: 0x008478
+  symbol: object_geldbVtx_008478
+  count: 232
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGerudoRedSkelLimbs:
+  type: BLOB
+  offset: 0xA7AC
+  symbol: gGerudoRedSkelLimbs
+  size: 0

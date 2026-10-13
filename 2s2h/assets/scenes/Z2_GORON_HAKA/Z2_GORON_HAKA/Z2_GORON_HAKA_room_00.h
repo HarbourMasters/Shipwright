@@ -1,0 +1,39 @@
+#ifndef Z2_GORON_HAKA_Z2_GORON_HAKA_ROOM_00_H
+#define Z2_GORON_HAKA_Z2_GORON_HAKA_ROOM_00_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_GORON_HAKA_room_00DL_005338 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_005338"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_005338[] = dZ2_GORON_HAKA_room_00DL_005338;
+
+#define dZ2_GORON_HAKA_room_00DL_002810 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_002810"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_002810[] = dZ2_GORON_HAKA_room_00DL_002810;
+
+#define dZ2_GORON_HAKA_room_00DL_007C88 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_007C88"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_007C88[] = dZ2_GORON_HAKA_room_00DL_007C88;
+
+#define dZ2_GORON_HAKA_room_00DL_006370 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_006370"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_006370[] = dZ2_GORON_HAKA_room_00DL_006370;
+
+#define dZ2_GORON_HAKA_room_00DL_006810 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_006810"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_006810[] = dZ2_GORON_HAKA_room_00DL_006810;
+
+#define dZ2_GORON_HAKA_room_00DL_007AC0 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_007AC0"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_007AC0[] = dZ2_GORON_HAKA_room_00DL_007AC0;
+
+#define dZ2_GORON_HAKA_room_00DL_0050B0 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_0050B0"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_0050B0[] = dZ2_GORON_HAKA_room_00DL_0050B0;
+
+#define dZ2_GORON_HAKA_room_00DL_007618 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_007618"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_007618[] = dZ2_GORON_HAKA_room_00DL_007618;
+
+#define dZ2_GORON_HAKA_room_00DL_0066D8 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_0066D8"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_0066D8[] = dZ2_GORON_HAKA_room_00DL_0066D8;
+
+#define dZ2_GORON_HAKA_room_00DL_007A80 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_007A80"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_007A80[] = dZ2_GORON_HAKA_room_00DL_007A80;
+
+#define dZ2_GORON_HAKA_room_00DL_007D98 "__OTR__scenes/nonmq/Z2_GORON_HAKA_scene/Z2_GORON_HAKA_room_00DL_007D98"
+static const ALIGN_ASSET(2) char Z2_GORON_HAKA_room_00DL_007D98[] = dZ2_GORON_HAKA_room_00DL_007D98;
+
+#endif // Z2_GORON_HAKA_Z2_GORON_HAKA_ROOM_00_H

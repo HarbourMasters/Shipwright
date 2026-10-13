@@ -1,0 +1,106 @@
+:config:
+  segments:
+    - [ 6, 0x00F9A860 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00F9A860 ]
+    - [ 9, 0x00F9A860 ]
+    - [ 10, 0x00F9A860 ]
+    - [ 11, 0x00F9A860 ]
+    - [ 12, 0x00F9A860 ]
+    - [ 13, 0x00F9A860 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_ny_DL_000030:
+  type: GFX
+  offset: 0x30
+  symbol: object_ny_DL_000030
+
+object_ny_DL_0000B8:
+  type: GFX
+  offset: 0xB8
+  symbol: object_ny_DL_0000B8
+
+object_ny_DL_001F90:
+  type: GFX
+  offset: 0x1F90
+  symbol: object_ny_DL_001F90
+
+object_ny_DL_002068:
+  type: GFX
+  offset: 0x2068
+  symbol: object_ny_DL_002068
+
+object_ny_DL_002188:
+  type: GFX
+  offset: 0x2188
+  symbol: object_ny_DL_002188
+
+object_ny_Tex_0000C0:
+  type: TEXTURE
+  offset: 0xC0
+  symbol: object_ny_Tex_0000C0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_ny_Tex_0001C0:
+  type: TEXTURE
+  offset: 0x1C0
+  symbol: object_ny_Tex_0001C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ny_Tex_0003C0:
+  type: TEXTURE
+  offset: 0x3C0
+  symbol: object_ny_Tex_0003C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ny_Tex_000BC0:
+  type: TEXTURE
+  offset: 0xBC0
+  symbol: object_ny_Tex_000BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_nyVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_nyVtx_000000
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nyVtx_0013C0:
+  type: MM:ARRAY
+  offset: 0x0013C0
+  symbol: object_nyVtx_0013C0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nyVtx_0016C0:
+  type: MM:ARRAY
+  offset: 0x0016C0
+  symbol: object_nyVtx_0016C0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nyVtx_0017B0:
+  type: MM:ARRAY
+  offset: 0x0017B0
+  symbol: object_nyVtx_0017B0
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,1357 @@
+:config:
+  segments:
+    - [ 2, 0x019065D0 ]
+
+Z2_KINSTA1:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_KINSTA1
+
+
+Z2_KINSTA1PathwayList_0001A8:
+  type: MM:PATH
+  offset: 0x0001A8
+  symbol: Z2_KINSTA1PathwayList_0001A8
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_0001C8:
+  type: MM:PATH
+  offset: 0x0001C8
+  symbol: Z2_KINSTA1PathwayList_0001C8
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_0001D4:
+  type: MM:PATH
+  offset: 0x0001D4
+  symbol: Z2_KINSTA1PathwayList_0001D4
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_0001E0:
+  type: MM:PATH
+  offset: 0x0001E0
+  symbol: Z2_KINSTA1PathwayList_0001E0
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000218:
+  type: MM:PATH
+  offset: 0x000218
+  symbol: Z2_KINSTA1PathwayList_000218
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000224:
+  type: MM:PATH
+  offset: 0x000224
+  symbol: Z2_KINSTA1PathwayList_000224
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_00023C:
+  type: MM:PATH
+  offset: 0x00023C
+  symbol: Z2_KINSTA1PathwayList_00023C
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000248:
+  type: MM:PATH
+  offset: 0x000248
+  symbol: Z2_KINSTA1PathwayList_000248
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000254:
+  type: MM:PATH
+  offset: 0x000254
+  symbol: Z2_KINSTA1PathwayList_000254
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000274:
+  type: MM:PATH
+  offset: 0x000274
+  symbol: Z2_KINSTA1PathwayList_000274
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_000280:
+  type: MM:PATH
+  offset: 0x000280
+  symbol: Z2_KINSTA1PathwayList_000280
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1PathwayList_0002B0:
+  type: MM:PATH
+  offset: 0x0002B0
+  symbol: Z2_KINSTA1PathwayList_0002B0
+  num_paths: 12
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -270, 180, -1617 ]
+        - [ 0, 180, -1618 ]
+        - [ 0, 325, -1618 ]
+        - [ 0, 180, -1618 ]
+        - [ -270, 180, -1617 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 150, 330, -1560 ]
+        - [ 150, 31, -1560 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 210, 120, -2250 ]
+        - [ -209, 120, -2250 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -480, 0, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -840, 175, -830 ]
+        - [ -840, 175, -249 ]
+        - [ -570, 175, -249 ]
+        - [ -840, 175, -255 ]
+        - [ -840, 175, -830 ]
+        - [ -480, 175, -830 ]
+        - [ -480, 0, -830 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 208, 41, -840 ]
+        - [ 209, 444, -839 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 525, 580, -1500 ]
+        - [ 509, 454, -1500 ]
+        - [ 577, 334, -1500 ]
+        - [ 506, 200, -1500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -900, 230, -840 ]
+        - [ -900, 229, -241 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -660, 274, -600 ]
+        - [ -660, 226, -480 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -141, 120, 157 ]
+        - [ -23, 120, 118 ]
+        - [ 137, 120, -16 ]
+        - [ 134, 120, 134 ]
+        - [ -130, 120, 18 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -66, 120, -2712 ]
+        - [ -248, 134, -2561 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 120, -20, -360 ]
+        - [ 120, -20, -780 ]
+        - [ -121, -20, -780 ]
+        - [ -120, -20, -1019 ]
+        - [ 120, -20, -1021 ]
+        - [ 120, -20, -811 ]
+        - [ -121, -20, -810 ]
+        - [ -120, -20, -360 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 513, 0, -1093 ]
+        - [ 470, 0, -849 ]
+        - [ 549, 0, -696 ]
+        - [ 581, 0, -575 ]
+        - [ 628, 0, -547 ]
+        - [ 689, 0, -570 ]
+        - [ 719, 0, -638 ]
+        - [ 632, 0, -734 ]
+        - [ 587, 0, -885 ]
+        - [ 604, 0, -1078 ]
+        - [ 597, 0, -1184 ]
+
+Z2_KINSTA1TexAnim_000768TexScrollParams_000760:
+  type: BLOB
+  offset: 0x000760
+  symbol: Z2_KINSTA1TexAnim_000768TexScrollParams_000760
+  size: 0
+
+Z2_KINSTA1TexAnim_000768:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000768
+  symbol: Z2_KINSTA1TexAnim_000768
+
+Z2_KINSTA1CollisionHeader_005CF4:
+  type: MM:COLLISION
+  offset: 0x005CF4
+  symbol: Z2_KINSTA1CollisionHeader_005CF4
+
+Z2_KINSTA1Tex_005D20:
+  type: TEXTURE
+  offset: 0x005D20
+  symbol: Z2_KINSTA1Tex_005D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_006520:
+  type: TEXTURE
+  offset: 0x006520
+  symbol: Z2_KINSTA1Tex_006520
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_006920:
+  type: TEXTURE
+  offset: 0x006920
+  symbol: Z2_KINSTA1Tex_006920
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_006D20:
+  type: TEXTURE
+  offset: 0x006D20
+  symbol: Z2_KINSTA1Tex_006D20
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_007120:
+  type: TEXTURE
+  offset: 0x007120
+  symbol: Z2_KINSTA1Tex_007120
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_007520:
+  type: TEXTURE
+  offset: 0x007520
+  symbol: Z2_KINSTA1Tex_007520
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_007920:
+  type: TEXTURE
+  offset: 0x007920
+  symbol: Z2_KINSTA1Tex_007920
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_007D20:
+  type: TEXTURE
+  offset: 0x007D20
+  symbol: Z2_KINSTA1Tex_007D20
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINSTA1Tex_007E20:
+  type: TEXTURE
+  offset: 0x007E20
+  symbol: Z2_KINSTA1Tex_007E20
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_008220:
+  type: TEXTURE
+  offset: 0x008220
+  symbol: Z2_KINSTA1Tex_008220
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_008620:
+  type: TEXTURE
+  offset: 0x008620
+  symbol: Z2_KINSTA1Tex_008620
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KINSTA1Tex_008820:
+  type: TEXTURE
+  offset: 0x008820
+  symbol: Z2_KINSTA1Tex_008820
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_KINSTA1Tex_009020:
+  type: TEXTURE
+  offset: 0x009020
+  symbol: Z2_KINSTA1Tex_009020
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KINSTA1Tex_009220:
+  type: TEXTURE
+  offset: 0x009220
+  symbol: Z2_KINSTA1Tex_009220
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_009620:
+  type: TEXTURE
+  offset: 0x009620
+  symbol: Z2_KINSTA1Tex_009620
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_009A20:
+  type: TEXTURE
+  offset: 0x009A20
+  symbol: Z2_KINSTA1Tex_009A20
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1Tex_009E20:
+  type: TEXTURE
+  offset: 0x009E20
+  symbol: Z2_KINSTA1Tex_009E20
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_KINSTA1Tex_00A620:
+  type: TEXTURE
+  offset: 0x00A620
+  symbol: Z2_KINSTA1Tex_00A620
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINSTA1TLUT_00AA20:
+  type: TEXTURE
+  offset: 0x00AA20
+  symbol: Z2_KINSTA1TLUT_00AA20
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_KINSTA1TLUT_00AA40:
+  type: TEXTURE
+  offset: 0x00AA40
+  symbol: Z2_KINSTA1TLUT_00AA40
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_KINSTA1TLUT_00AA60:
+  type: TEXTURE
+  offset: 0x00AA60
+  symbol: Z2_KINSTA1TLUT_00AA60
+  format: RGBA16
+  width: 16
+  height: 16

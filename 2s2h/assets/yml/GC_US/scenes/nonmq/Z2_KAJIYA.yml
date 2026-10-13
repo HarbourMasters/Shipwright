@@ -1,0 +1,236 @@
+:config:
+  segments:
+    - [ 2, 0x019838F0 ]
+    - [ 6, 0x01608C80 ]
+  external_files:
+    - GC_US/misc/scene_texture_02.yml
+
+Z2_KAJIYA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_KAJIYA
+
+
+Z2_KAJIYATexAnim_000308TexScrollParams_000300:
+  type: BLOB
+  offset: 0x000300
+  symbol: Z2_KAJIYATexAnim_000308TexScrollParams_000300
+  size: 0
+
+Z2_KAJIYATexAnim_000308:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000308
+  symbol: Z2_KAJIYATexAnim_000308
+
+Z2_KAJIYACollisionHeader_0008DC:
+  type: MM:COLLISION
+  offset: 0x0008DC
+  symbol: Z2_KAJIYACollisionHeader_0008DC
+
+Z2_KAJIYATex_000910:
+  type: TEXTURE
+  offset: 0x000910
+  symbol: Z2_KAJIYATex_000910
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KAJIYATex_001110:
+  type: TEXTURE
+  offset: 0x001110
+  symbol: Z2_KAJIYATex_001110
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KAJIYATex_001910:
+  type: TEXTURE
+  offset: 0x001910
+  symbol: Z2_KAJIYATex_001910
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_001A10:
+  type: TEXTURE
+  offset: 0x001A10
+  symbol: Z2_KAJIYATex_001A10
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_001B10:
+  type: TEXTURE
+  offset: 0x001B10
+  symbol: Z2_KAJIYATex_001B10
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_001C10:
+  type: TEXTURE
+  offset: 0x001C10
+  symbol: Z2_KAJIYATex_001C10
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_001D10:
+  type: TEXTURE
+  offset: 0x001D10
+  symbol: Z2_KAJIYATex_001D10
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_KAJIYATex_002510:
+  type: TEXTURE
+  offset: 0x002510
+  symbol: Z2_KAJIYATex_002510
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_KAJIYATex_002550:
+  type: TEXTURE
+  offset: 0x002550
+  symbol: Z2_KAJIYATex_002550
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_KAJIYATex_002590:
+  type: TEXTURE
+  offset: 0x002590
+  symbol: Z2_KAJIYATex_002590
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_KAJIYATex_0025D0:
+  type: TEXTURE
+  offset: 0x0025D0
+  symbol: Z2_KAJIYATex_0025D0
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_KAJIYATex_0035D0:
+  type: TEXTURE
+  offset: 0x0035D0
+  symbol: Z2_KAJIYATex_0035D0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KAJIYATex_0039D0:
+  type: TEXTURE
+  offset: 0x0039D0
+  symbol: Z2_KAJIYATex_0039D0
+  format: IA16
+  width: 16
+  height: 64
+
+Z2_KAJIYATex_0041D0:
+  type: TEXTURE
+  offset: 0x0041D0
+  symbol: Z2_KAJIYATex_0041D0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_0042D0:
+  type: TEXTURE
+  offset: 0x0042D0
+  symbol: Z2_KAJIYATex_0042D0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_KAJIYATex_004AD0:
+  type: TEXTURE
+  offset: 0x004AD0
+  symbol: Z2_KAJIYATex_004AD0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KAJIYATex_004CD0:
+  type: TEXTURE
+  offset: 0x004CD0
+  symbol: Z2_KAJIYATex_004CD0
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_KAJIYATex_004ED0:
+  type: TEXTURE
+  offset: 0x004ED0
+  symbol: Z2_KAJIYATex_004ED0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KAJIYATex_0050D0:
+  type: TEXTURE
+  offset: 0x0050D0
+  symbol: Z2_KAJIYATex_0050D0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KAJIYATex_0052D0:
+  type: TEXTURE
+  offset: 0x0052D0
+  symbol: Z2_KAJIYATex_0052D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_KAJIYATex_005AD0:
+  type: TEXTURE
+  offset: 0x005AD0
+  symbol: Z2_KAJIYATex_005AD0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_005BD0:
+  type: TEXTURE
+  offset: 0x005BD0
+  symbol: Z2_KAJIYATex_005BD0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_KAJIYATex_005DD0:
+  type: TEXTURE
+  offset: 0x005DD0
+  symbol: Z2_KAJIYATex_005DD0
+  format: I8
+  width: 64
+  height: 64
+
+Z2_KAJIYATex_006DD0:
+  type: TEXTURE
+  offset: 0x006DD0
+  symbol: Z2_KAJIYATex_006DD0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_KAJIYATLUT_0075D0:
+  type: TEXTURE
+  offset: 0x0075D0
+  symbol: Z2_KAJIYATLUT_0075D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_KAJIYATLUT_0077D0:
+  type: TEXTURE
+  offset: 0x0077D0
+  symbol: Z2_KAJIYATLUT_0077D0
+  format: RGBA16
+  width: 16
+  height: 16

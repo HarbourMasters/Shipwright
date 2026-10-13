@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x00CFC970 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80AC57B0, 0x00CFC970 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+sTransWipe1DL:
+  type: GFX
+  offset: 0xE00
+  symbol: sTransWipe1DL
+
+sTransWipe1Tex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: sTransWipe1Tex
+  format: I4
+  width: 64
+  height: 64
+
+sTransWipe1Vtx:
+  type: MM:ARRAY
+  offset: 0x470
+  symbol: sTransWipe1Vtx
+  count: 25
+  array_type: VTX
+

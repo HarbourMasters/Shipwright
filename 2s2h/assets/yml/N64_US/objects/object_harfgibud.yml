@@ -1,0 +1,1041 @@
+:config:
+  segments:
+    - [ 6, 0x014F0EF0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014F0EF0 ]
+    - [ 9, 0x014F0EF0 ]
+    - [ 10, 0x014F0EF0 ]
+    - [ 11, 0x014F0EF0 ]
+    - [ 12, 0x014F0EF0 ]
+    - [ 13, 0x014F0EF0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gPamelasFatherArmsFoldedAnim:
+  type: OOT:ANIMATION
+  offset: 0xB644
+  symbol: gPamelasFatherArmsFoldedAnim
+
+gPamelasFatherAstonishedAnim:
+  type: OOT:ANIMATION
+  offset: 0x13684
+  symbol: gPamelasFatherAstonishedAnim
+
+gPamelasFatherConsoleAnim:
+  type: OOT:ANIMATION
+  offset: 0x15C70
+  symbol: gPamelasFatherConsoleAnim
+
+gPamelasFatherConsoleHeadUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x165F0
+  symbol: gPamelasFatherConsoleHeadUpAnim
+
+gPamelasFatherCrouchedPanicAnim:
+  type: OOT:ANIMATION
+  offset: 0x1960
+  symbol: gPamelasFatherCrouchedPanicAnim
+
+gPamelasFatherCurlUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x15D4
+  symbol: gPamelasFatherCurlUpAnim
+
+gPamelasFatherEyeTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xAE50
+  symbol: gPamelasFatherEyeTexAnim
+
+gPamelasFatherGibdoAbdomenDL:
+  type: GFX
+  offset: 0x6F98
+  symbol: gPamelasFatherGibdoAbdomenDL
+
+gPamelasFatherGibdoAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x846C
+  symbol: gPamelasFatherGibdoAbdomenLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoBandageWrappingsTex:
+  type: TEXTURE
+  offset: 0x72A0
+  symbol: gPamelasFatherGibdoBandageWrappingsTex
+  format: I8
+  width: 64
+  height: 32
+
+gPamelasFatherGibdoBloodshotEyeTex:
+  type: TEXTURE
+  offset: 0x7BE0
+  symbol: gPamelasFatherGibdoBloodshotEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gPamelasFatherGibdoChestDL:
+  type: GFX
+  offset: 0x65B0
+  symbol: gPamelasFatherGibdoChestDL
+
+gPamelasFatherGibdoChestLimb:
+  type: OOT:LIMB
+  offset: 0x8478
+  symbol: gPamelasFatherGibdoChestLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoEarTex:
+  type: TEXTURE
+  offset: 0x7B60
+  symbol: gPamelasFatherGibdoEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoEyebrowTex:
+  type: TEXTURE
+  offset: 0x80E0
+  symbol: gPamelasFatherGibdoEyebrowTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPamelasFatherGibdoEyebrowsDL:
+  type: GFX
+  offset: 0x5E28
+  symbol: gPamelasFatherGibdoEyebrowsDL
+
+gPamelasFatherGibdoEyebrowsLimb:
+  type: OOT:LIMB
+  offset: 0x84CC
+  symbol: gPamelasFatherGibdoEyebrowsLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoFingernailTex:
+  type: TEXTURE
+  offset: 0x83A0
+  symbol: gPamelasFatherGibdoFingernailTex
+  format: CI8
+  width: 16
+  height: 8
+
+gPamelasFatherGibdoHairTex:
+  type: TEXTURE
+  offset: 0x7FE0
+  symbol: gPamelasFatherGibdoHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gPamelasFatherGibdoHeadDL:
+  type: GFX
+  offset: 0x5ED0
+  symbol: gPamelasFatherGibdoHeadDL
+
+gPamelasFatherGibdoHeadLimb:
+  type: OOT:LIMB
+  offset: 0x84D8
+  symbol: gPamelasFatherGibdoHeadLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLabCoatCuffTex:
+  type: TEXTURE
+  offset: 0x8420
+  symbol: gPamelasFatherGibdoLabCoatCuffTex
+  format: I8
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoLabCoatSleeveTex:
+  type: TEXTURE
+  offset: 0x82E0
+  symbol: gPamelasFatherGibdoLabCoatSleeveTex
+  format: I8
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoLeftFootDL:
+  type: GFX
+  offset: 0x5B50
+  symbol: gPamelasFatherGibdoLeftFootDL
+
+gPamelasFatherGibdoLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8508
+  symbol: gPamelasFatherGibdoLeftFootLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLeftForearmDL:
+  type: GFX
+  offset: 0x6DB8
+  symbol: gPamelasFatherGibdoLeftForearmDL
+
+gPamelasFatherGibdoLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8490
+  symbol: gPamelasFatherGibdoLeftForearmLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLeftHandDL:
+  type: GFX
+  offset: 0x6C80
+  symbol: gPamelasFatherGibdoLeftHandDL
+
+gPamelasFatherGibdoLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x849C
+  symbol: gPamelasFatherGibdoLeftHandLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLeftLegDL:
+  type: GFX
+  offset: 0x5C50
+  symbol: gPamelasFatherGibdoLeftLegDL
+
+gPamelasFatherGibdoLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x84FC
+  symbol: gPamelasFatherGibdoLeftShinLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLeftThighDL:
+  type: GFX
+  offset: 0x5D38
+  symbol: gPamelasFatherGibdoLeftThighDL
+
+gPamelasFatherGibdoLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x84F0
+  symbol: gPamelasFatherGibdoLeftThighLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLeftUpperArmDL:
+  type: GFX
+  offset: 0x6EA0
+  symbol: gPamelasFatherGibdoLeftUpperArmDL
+
+gPamelasFatherGibdoLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8484
+  symbol: gPamelasFatherGibdoLeftUpperArmLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoLipTex:
+  type: TEXTURE
+  offset: 0x7BA0
+  symbol: gPamelasFatherGibdoLipTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoPelvisDL:
+  type: GFX
+  offset: 0x5790
+  symbol: gPamelasFatherGibdoPelvisDL
+
+gPamelasFatherGibdoPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x84E4
+  symbol: gPamelasFatherGibdoPelvisLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightFootDL:
+  type: GFX
+  offset: 0x5878
+  symbol: gPamelasFatherGibdoRightFootDL
+
+gPamelasFatherGibdoRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x852C
+  symbol: gPamelasFatherGibdoRightFootLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightForearmDL:
+  type: GFX
+  offset: 0x6988
+  symbol: gPamelasFatherGibdoRightForearmDL
+
+gPamelasFatherGibdoRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x84B4
+  symbol: gPamelasFatherGibdoRightForearmLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightHandDL:
+  type: GFX
+  offset: 0x67C8
+  symbol: gPamelasFatherGibdoRightHandDL
+
+gPamelasFatherGibdoRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x84C0
+  symbol: gPamelasFatherGibdoRightHandLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightLegDL:
+  type: GFX
+  offset: 0x5978
+  symbol: gPamelasFatherGibdoRightLegDL
+
+gPamelasFatherGibdoRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x8520
+  symbol: gPamelasFatherGibdoRightShinLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightThighDL:
+  type: GFX
+  offset: 0x5A60
+  symbol: gPamelasFatherGibdoRightThighDL
+
+gPamelasFatherGibdoRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8514
+  symbol: gPamelasFatherGibdoRightThighLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRightUpperArmDL:
+  type: GFX
+  offset: 0x6B80
+  symbol: gPamelasFatherGibdoRightUpperArmDL
+
+gPamelasFatherGibdoRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x84A8
+  symbol: gPamelasFatherGibdoRightUpperArmLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoRootLimb:
+  type: OOT:LIMB
+  offset: 0x8460
+  symbol: gPamelasFatherGibdoRootLimb
+  limb_type: Standard
+
+gPamelasFatherGibdoShirtPieceTex:
+  type: TEXTURE
+  offset: 0x8320
+  symbol: gPamelasFatherGibdoShirtPieceTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoSideHairTex:
+  type: TEXTURE
+  offset: 0x7AE0
+  symbol: gPamelasFatherGibdoSideHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gPamelasFatherGibdoSkel:
+  type: MM:SKELETON
+  offset: 0x8580
+  symbol: gPamelasFatherGibdoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPamelasFatherGibdoSkinGradientTex:
+  type: TEXTURE
+  offset: 0x7AA0
+  symbol: gPamelasFatherGibdoSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherGibdoTLUT:
+  type: TEXTURE
+  offset: 0x70A0
+  symbol: gPamelasFatherGibdoTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPamelasFatherHumanAbdomenDL:
+  type: GFX
+  offset: 0x103C0
+  symbol: gPamelasFatherHumanAbdomenDL
+
+gPamelasFatherHumanAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x12944
+  symbol: gPamelasFatherHumanAbdomenLimb
+  limb_type: Standard
+
+gPamelasFatherHumanBeltTex:
+  type: TEXTURE
+  offset: 0x10978
+  symbol: gPamelasFatherHumanBeltTex
+  format: CI8
+  width: 32
+  height: 16
+
+gPamelasFatherHumanChestDL:
+  type: GFX
+  offset: 0xF838
+  symbol: gPamelasFatherHumanChestDL
+
+gPamelasFatherHumanChestLimb:
+  type: OOT:LIMB
+  offset: 0x12950
+  symbol: gPamelasFatherHumanChestLimb
+  limb_type: Standard
+
+gPamelasFatherHumanEarTex:
+  type: TEXTURE
+  offset: 0x10938
+  symbol: gPamelasFatherHumanEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherHumanEyeClosedTex:
+  type: TEXTURE
+  offset: 0x12138
+  symbol: gPamelasFatherHumanEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPamelasFatherHumanEyeHalfTex:
+  type: TEXTURE
+  offset: 0x11938
+  symbol: gPamelasFatherHumanEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPamelasFatherHumanEyeOpenTex:
+  type: TEXTURE
+  offset: 0x11138
+  symbol: gPamelasFatherHumanEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gPamelasFatherHumanEyebrowTex:
+  type: TEXTURE
+  offset: 0x10CB8
+  symbol: gPamelasFatherHumanEyebrowTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPamelasFatherHumanEyebrowsDL:
+  type: GFX
+  offset: 0xF248
+  symbol: gPamelasFatherHumanEyebrowsDL
+
+gPamelasFatherHumanEyebrowsLimb:
+  type: OOT:LIMB
+  offset: 0x129A4
+  symbol: gPamelasFatherHumanEyebrowsLimb
+  limb_type: Standard
+
+gPamelasFatherHumanHandTex:
+  type: TEXTURE
+  offset: 0x107B8
+  symbol: gPamelasFatherHumanHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gPamelasFatherHumanHeadDL:
+  type: GFX
+  offset: 0xF2F0
+  symbol: gPamelasFatherHumanHeadDL
+
+gPamelasFatherHumanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x129B0
+  symbol: gPamelasFatherHumanHeadLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLabCoatCuffTex:
+  type: TEXTURE
+  offset: 0x110F8
+  symbol: gPamelasFatherHumanLabCoatCuffTex
+  format: I8
+  width: 8
+  height: 8
+
+gPamelasFatherHumanLabCoatTex:
+  type: TEXTURE
+  offset: 0x10EB8
+  symbol: gPamelasFatherHumanLabCoatTex
+  format: I8
+  width: 8
+  height: 8
+
+gPamelasFatherHumanLeftFootDL:
+  type: GFX
+  offset: 0xEE50
+  symbol: gPamelasFatherHumanLeftFootDL
+
+gPamelasFatherHumanLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x129E0
+  symbol: gPamelasFatherHumanLeftFootLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLeftForearmDL:
+  type: GFX
+  offset: 0x10078
+  symbol: gPamelasFatherHumanLeftForearmDL
+
+gPamelasFatherHumanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x12968
+  symbol: gPamelasFatherHumanLeftForearmLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLeftHandDL:
+  type: GFX
+  offset: 0xFF10
+  symbol: gPamelasFatherHumanLeftHandDL
+
+gPamelasFatherHumanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x12974
+  symbol: gPamelasFatherHumanLeftHandLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x129D4
+  symbol: gPamelasFatherHumanLeftLegLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLeftShinDL:
+  type: GFX
+  offset: 0xEF98
+  symbol: gPamelasFatherHumanLeftShinDL
+
+gPamelasFatherHumanLeftThighDL:
+  type: GFX
+  offset: 0xF0B8
+  symbol: gPamelasFatherHumanLeftThighDL
+
+gPamelasFatherHumanLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x129C8
+  symbol: gPamelasFatherHumanLeftThighLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLeftUpperArmDL:
+  type: GFX
+  offset: 0x102B8
+  symbol: gPamelasFatherHumanLeftUpperArmDL
+
+gPamelasFatherHumanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1295C
+  symbol: gPamelasFatherHumanLeftUpperArmLimb
+  limb_type: Standard
+
+gPamelasFatherHumanLipTex:
+  type: TEXTURE
+  offset: 0x10B78
+  symbol: gPamelasFatherHumanLipTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherHumanPelvisDL:
+  type: GFX
+  offset: 0xE860
+  symbol: gPamelasFatherHumanPelvisDL
+
+gPamelasFatherHumanPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x129BC
+  symbol: gPamelasFatherHumanPelvisLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightFootDL:
+  type: GFX
+  offset: 0xE9E0
+  symbol: gPamelasFatherHumanRightFootDL
+
+gPamelasFatherHumanRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12A04
+  symbol: gPamelasFatherHumanRightFootLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightForearmDL:
+  type: GFX
+  offset: 0xFC10
+  symbol: gPamelasFatherHumanRightForearmDL
+
+gPamelasFatherHumanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1298C
+  symbol: gPamelasFatherHumanRightForearmLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightHandDL:
+  type: GFX
+  offset: 0xFAA8
+  symbol: gPamelasFatherHumanRightHandDL
+
+gPamelasFatherHumanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x12998
+  symbol: gPamelasFatherHumanRightHandLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x129F8
+  symbol: gPamelasFatherHumanRightLegLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightShinDL:
+  type: GFX
+  offset: 0xEB28
+  symbol: gPamelasFatherHumanRightShinDL
+
+gPamelasFatherHumanRightThighDL:
+  type: GFX
+  offset: 0xEC48
+  symbol: gPamelasFatherHumanRightThighDL
+
+gPamelasFatherHumanRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x129EC
+  symbol: gPamelasFatherHumanRightThighLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRightUpperArmDL:
+  type: GFX
+  offset: 0xFE08
+  symbol: gPamelasFatherHumanRightUpperArmDL
+
+gPamelasFatherHumanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x12980
+  symbol: gPamelasFatherHumanRightUpperArmLimb
+  limb_type: Standard
+
+gPamelasFatherHumanRootLimb:
+  type: OOT:LIMB
+  offset: 0x12938
+  symbol: gPamelasFatherHumanRootLimb
+  limb_type: Standard
+
+gPamelasFatherHumanShirtTex:
+  type: TEXTURE
+  offset: 0x10BB8
+  symbol: gPamelasFatherHumanShirtTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gPamelasFatherHumanSideHairTex:
+  type: TEXTURE
+  offset: 0x108B8
+  symbol: gPamelasFatherHumanSideHairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gPamelasFatherHumanSkel:
+  type: MM:SKELETON
+  offset: 0x12A58
+  symbol: gPamelasFatherHumanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPamelasFatherHumanSkinGradientTex:
+  type: TEXTURE
+  offset: 0x10778
+  symbol: gPamelasFatherHumanSkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+
+gPamelasFatherHumanSockTex:
+  type: TEXTURE
+  offset: 0x10EF8
+  symbol: gPamelasFatherHumanSockTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPamelasFatherHumanTLUT:
+  type: TEXTURE
+  offset: 0x10578
+  symbol: gPamelasFatherHumanTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPamelasFatherIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x260C
+  symbol: gPamelasFatherIdleAnim
+
+gPamelasFatherKneelDownAndHugAnim:
+  type: OOT:ANIMATION
+  offset: 0x152EC
+  symbol: gPamelasFatherKneelDownAndHugAnim
+
+gPamelasFatherLeanForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x370
+  symbol: gPamelasFatherLeanForwardAnim
+
+gPamelasFatherLurchForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D44
+  symbol: gPamelasFatherLurchForwardAnim
+
+gPamelasFatherPanicAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE1C
+  symbol: gPamelasFatherPanicAnim
+
+gPamelasFatherReachDownToLiftAnim:
+  type: OOT:ANIMATION
+  offset: 0x14220
+  symbol: gPamelasFatherReachDownToLiftAnim
+
+gPamelasFatherReachForwardAnim:
+  type: OOT:ANIMATION
+  offset: 0x1138
+  symbol: gPamelasFatherReachForwardAnim
+
+gPamelasFatherRecoilFromHitAnim:
+  type: OOT:ANIMATION
+  offset: 0xA164
+  symbol: gPamelasFatherRecoilFromHitAnim
+
+gPamelasFatherTossAnim:
+  type: OOT:ANIMATION
+  offset: 0x14A9C
+  symbol: gPamelasFatherTossAnim
+
+
+object_harfgibudVtx_002620:
+  type: MM:ARRAY
+  offset: 0x002620
+  symbol: object_harfgibudVtx_002620
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_0027C0:
+  type: MM:ARRAY
+  offset: 0x0027C0
+  symbol: object_harfgibudVtx_0027C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_002940:
+  type: MM:ARRAY
+  offset: 0x002940
+  symbol: object_harfgibudVtx_002940
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_002AE0:
+  type: MM:ARRAY
+  offset: 0x002AE0
+  symbol: object_harfgibudVtx_002AE0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_002C80:
+  type: MM:ARRAY
+  offset: 0x002C80
+  symbol: object_harfgibudVtx_002C80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_002E00:
+  type: MM:ARRAY
+  offset: 0x002E00
+  symbol: object_harfgibudVtx_002E00
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_002FA0:
+  type: MM:ARRAY
+  offset: 0x002FA0
+  symbol: object_harfgibudVtx_002FA0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_003120:
+  type: MM:ARRAY
+  offset: 0x003120
+  symbol: object_harfgibudVtx_003120
+  count: 229
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_003F70:
+  type: MM:ARRAY
+  offset: 0x003F70
+  symbol: object_harfgibudVtx_003F70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_003FB0:
+  type: MM:ARRAY
+  offset: 0x003FB0
+  symbol: object_harfgibudVtx_003FB0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_004260:
+  type: MM:ARRAY
+  offset: 0x004260
+  symbol: object_harfgibudVtx_004260
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_004410:
+  type: MM:ARRAY
+  offset: 0x004410
+  symbol: object_harfgibudVtx_004410
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_004600:
+  type: MM:ARRAY
+  offset: 0x004600
+  symbol: object_harfgibudVtx_004600
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_004C60:
+  type: MM:ARRAY
+  offset: 0x004C60
+  symbol: object_harfgibudVtx_004C60
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_004F10:
+  type: MM:ARRAY
+  offset: 0x004F10
+  symbol: object_harfgibudVtx_004F10
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_005100:
+  type: MM:ARRAY
+  offset: 0x005100
+  symbol: object_harfgibudVtx_005100
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_005530:
+  type: MM:ARRAY
+  offset: 0x005530
+  symbol: object_harfgibudVtx_005530
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPamelasFatherGibdoSkelLimbs:
+  type: BLOB
+  offset: 0x8538
+  symbol: gPamelasFatherGibdoSkelLimbs
+  size: 0
+
+gPamelasFatherEyeTexAnimTexCycleParams_00AE40:
+  type: BLOB
+  offset: 0x00AE40
+  symbol: gPamelasFatherEyeTexAnimTexCycleParams_00AE40
+  size: 0
+
+object_harfgibudVtx_00B660:
+  type: MM:ARRAY
+  offset: 0x00B660
+  symbol: object_harfgibudVtx_00B660
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00B800:
+  type: MM:ARRAY
+  offset: 0x00B800
+  symbol: object_harfgibudVtx_00B800
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00B9C0:
+  type: MM:ARRAY
+  offset: 0x00B9C0
+  symbol: object_harfgibudVtx_00B9C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00BBF0:
+  type: MM:ARRAY
+  offset: 0x00BBF0
+  symbol: object_harfgibudVtx_00BBF0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00BD90:
+  type: MM:ARRAY
+  offset: 0x00BD90
+  symbol: object_harfgibudVtx_00BD90
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00BF50:
+  type: MM:ARRAY
+  offset: 0x00BF50
+  symbol: object_harfgibudVtx_00BF50
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00C180:
+  type: MM:ARRAY
+  offset: 0x00C180
+  symbol: object_harfgibudVtx_00C180
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00C340:
+  type: MM:ARRAY
+  offset: 0x00C340
+  symbol: object_harfgibudVtx_00C340
+  count: 228
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00D180:
+  type: MM:ARRAY
+  offset: 0x00D180
+  symbol: object_harfgibudVtx_00D180
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00D1E0:
+  type: MM:ARRAY
+  offset: 0x00D1E0
+  symbol: object_harfgibudVtx_00D1E0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00D550:
+  type: MM:ARRAY
+  offset: 0x00D550
+  symbol: object_harfgibudVtx_00D550
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00D800:
+  type: MM:ARRAY
+  offset: 0x00D800
+  symbol: object_harfgibudVtx_00D800
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00D9F0:
+  type: MM:ARRAY
+  offset: 0x00D9F0
+  symbol: object_harfgibudVtx_00D9F0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00DD60:
+  type: MM:ARRAY
+  offset: 0x00DD60
+  symbol: object_harfgibudVtx_00DD60
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00E010:
+  type: MM:ARRAY
+  offset: 0x00E010
+  symbol: object_harfgibudVtx_00E010
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00E200:
+  type: MM:ARRAY
+  offset: 0x00E200
+  symbol: object_harfgibudVtx_00E200
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_harfgibudVtx_00E5F0:
+  type: MM:ARRAY
+  offset: 0x00E5F0
+  symbol: object_harfgibudVtx_00E5F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPamelasFatherHumanSkelLimbs:
+  type: BLOB
+  offset: 0x12A10
+  symbol: gPamelasFatherHumanSkelLimbs
+  size: 0

@@ -1,0 +1,765 @@
+:config:
+  segments:
+    - [ 6, 0x00FE0B20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FE0B20 ]
+    - [ 9, 0x00FE0B20 ]
+    - [ 10, 0x00FE0B20 ]
+    - [ 11, 0x00FE0B20 ]
+    - [ 12, 0x00FE0B20 ]
+    - [ 13, 0x00FE0B20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBombShopBagDL:
+  type: GFX
+  offset: 0x13380
+  symbol: gBombShopBagDL
+
+gBombShopBagTLUT:
+  type: TEXTURE
+  offset: 0x134C0
+  symbol: gBombShopBagTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombShopBagTex:
+  type: TEXTURE
+  offset: 0x136C0
+  symbol: gBombShopBagTex
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Anim_00041C:
+  type: OOT:ANIMATION
+  offset: 0x41C
+  symbol: object_boj_Anim_00041C
+
+object_boj_Anim_0004D0:
+  type: OOT:ANIMATION
+  offset: 0x4D0
+  symbol: object_boj_Anim_0004D0
+
+object_boj_Anim_00071C:
+  type: OOT:ANIMATION
+  offset: 0x71C
+  symbol: object_boj_Anim_00071C
+
+object_boj_Anim_0008C0:
+  type: OOT:ANIMATION
+  offset: 0x8C0
+  symbol: object_boj_Anim_0008C0
+
+object_boj_Anim_000AC4:
+  type: OOT:ANIMATION
+  offset: 0xAC4
+  symbol: object_boj_Anim_000AC4
+
+object_boj_Anim_001494:
+  type: OOT:ANIMATION
+  offset: 0x1494
+  symbol: object_boj_Anim_001494
+
+object_boj_Anim_001908:
+  type: OOT:ANIMATION
+  offset: 0x1908
+  symbol: object_boj_Anim_001908
+
+object_boj_Anim_002734:
+  type: OOT:ANIMATION
+  offset: 0x2734
+  symbol: object_boj_Anim_002734
+
+object_boj_Anim_0033B0:
+  type: OOT:ANIMATION
+  offset: 0x33B0
+  symbol: object_boj_Anim_0033B0
+
+object_boj_Anim_004078:
+  type: OOT:ANIMATION
+  offset: 0x4078
+  symbol: object_boj_Anim_004078
+
+object_boj_Anim_0043F0:
+  type: OOT:ANIMATION
+  offset: 0x43F0
+  symbol: object_boj_Anim_0043F0
+
+object_boj_Anim_004A7C:
+  type: OOT:ANIMATION
+  offset: 0x4A7C
+  symbol: object_boj_Anim_004A7C
+
+object_boj_Anim_004F40:
+  type: OOT:ANIMATION
+  offset: 0x4F40
+  symbol: object_boj_Anim_004F40
+
+object_boj_Anim_005CE4:
+  type: OOT:ANIMATION
+  offset: 0x5CE4
+  symbol: object_boj_Anim_005CE4
+
+object_boj_Anim_005D9C:
+  type: OOT:ANIMATION
+  offset: 0x5D9C
+  symbol: object_boj_Anim_005D9C
+
+object_boj_Anim_00DED8:
+  type: OOT:ANIMATION
+  offset: 0xDED8
+  symbol: object_boj_Anim_00DED8
+
+object_boj_Anim_00F920:
+  type: OOT:ANIMATION
+  offset: 0xF920
+  symbol: object_boj_Anim_00F920
+
+object_boj_Anim_00FC1C:
+  type: OOT:ANIMATION
+  offset: 0xFC1C
+  symbol: object_boj_Anim_00FC1C
+
+object_boj_Anim_00FEE4:
+  type: OOT:ANIMATION
+  offset: 0xFEE4
+  symbol: object_boj_Anim_00FEE4
+
+object_boj_Anim_010330:
+  type: OOT:ANIMATION
+  offset: 0x10330
+  symbol: object_boj_Anim_010330
+
+object_boj_Anim_010BDC:
+  type: OOT:ANIMATION
+  offset: 0x10BDC
+  symbol: object_boj_Anim_010BDC
+
+object_boj_Anim_01139C:
+  type: OOT:ANIMATION
+  offset: 0x1139C
+  symbol: object_boj_Anim_01139C
+
+object_boj_Anim_011C38:
+  type: OOT:ANIMATION
+  offset: 0x11C38
+  symbol: object_boj_Anim_011C38
+
+object_boj_Anim_011F84:
+  type: OOT:ANIMATION
+  offset: 0x11F84
+  symbol: object_boj_Anim_011F84
+
+object_boj_Anim_0128F4:
+  type: OOT:ANIMATION
+  offset: 0x128F4
+  symbol: object_boj_Anim_0128F4
+
+object_boj_Anim_012E84:
+  type: OOT:ANIMATION
+  offset: 0x12E84
+  symbol: object_boj_Anim_012E84
+
+object_boj_DL_0083A0:
+  type: GFX
+  offset: 0x83A0
+  symbol: object_boj_DL_0083A0
+
+object_boj_DL_008778:
+  type: GFX
+  offset: 0x8778
+  symbol: object_boj_DL_008778
+
+object_boj_DL_0088C0:
+  type: GFX
+  offset: 0x88C0
+  symbol: object_boj_DL_0088C0
+
+object_boj_DL_0089C8:
+  type: GFX
+  offset: 0x89C8
+  symbol: object_boj_DL_0089C8
+
+object_boj_DL_008AD0:
+  type: GFX
+  offset: 0x8AD0
+  symbol: object_boj_DL_008AD0
+
+object_boj_DL_008C18:
+  type: GFX
+  offset: 0x8C18
+  symbol: object_boj_DL_008C18
+
+object_boj_DL_008D20:
+  type: GFX
+  offset: 0x8D20
+  symbol: object_boj_DL_008D20
+
+object_boj_DL_008E28:
+  type: GFX
+  offset: 0x8E28
+  symbol: object_boj_DL_008E28
+
+object_boj_DL_009000:
+  type: GFX
+  offset: 0x9000
+  symbol: object_boj_DL_009000
+
+object_boj_DL_009118:
+  type: GFX
+  offset: 0x9118
+  symbol: object_boj_DL_009118
+
+object_boj_DL_009228:
+  type: GFX
+  offset: 0x9228
+  symbol: object_boj_DL_009228
+
+object_boj_DL_009330:
+  type: GFX
+  offset: 0x9330
+  symbol: object_boj_DL_009330
+
+object_boj_DL_009448:
+  type: GFX
+  offset: 0x9448
+  symbol: object_boj_DL_009448
+
+object_boj_DL_009558:
+  type: GFX
+  offset: 0x9558
+  symbol: object_boj_DL_009558
+
+object_boj_DL_009660:
+  type: GFX
+  offset: 0x9660
+  symbol: object_boj_DL_009660
+
+object_boj_DL_00AF90:
+  type: GFX
+  offset: 0xAF90
+  symbol: object_boj_DL_00AF90
+
+object_boj_DL_00B1D8:
+  type: GFX
+  offset: 0xB1D8
+  symbol: object_boj_DL_00B1D8
+
+object_boj_DL_00B3E8:
+  type: GFX
+  offset: 0xB3E8
+  symbol: object_boj_DL_00B3E8
+
+object_boj_DL_00B660:
+  type: GFX
+  offset: 0xB660
+  symbol: object_boj_DL_00B660
+
+object_boj_DL_00B878:
+  type: GFX
+  offset: 0xB878
+  symbol: object_boj_DL_00B878
+
+object_boj_DL_00BA28:
+  type: GFX
+  offset: 0xBA28
+  symbol: object_boj_DL_00BA28
+
+object_boj_DL_00BA30:
+  type: GFX
+  offset: 0xBA30
+  symbol: object_boj_DL_00BA30
+
+object_boj_DL_00BCC8:
+  type: GFX
+  offset: 0xBCC8
+  symbol: object_boj_DL_00BCC8
+
+object_boj_Skel_00C240:
+  type: MM:SKELETON
+  offset: 0xC240
+  symbol: object_boj_Skel_00C240
+  limb_type: Standard
+  skel_type: Flex
+
+object_boj_Standardlimb_00C150:
+  type: OOT:LIMB
+  offset: 0xC150
+  symbol: object_boj_Standardlimb_00C150
+  limb_type: Standard
+
+object_boj_Standardlimb_00C15C:
+  type: OOT:LIMB
+  offset: 0xC15C
+  symbol: object_boj_Standardlimb_00C15C
+  limb_type: Standard
+
+object_boj_Standardlimb_00C168:
+  type: OOT:LIMB
+  offset: 0xC168
+  symbol: object_boj_Standardlimb_00C168
+  limb_type: Standard
+
+object_boj_Standardlimb_00C174:
+  type: OOT:LIMB
+  offset: 0xC174
+  symbol: object_boj_Standardlimb_00C174
+  limb_type: Standard
+
+object_boj_Standardlimb_00C180:
+  type: OOT:LIMB
+  offset: 0xC180
+  symbol: object_boj_Standardlimb_00C180
+  limb_type: Standard
+
+object_boj_Standardlimb_00C18C:
+  type: OOT:LIMB
+  offset: 0xC18C
+  symbol: object_boj_Standardlimb_00C18C
+  limb_type: Standard
+
+object_boj_Standardlimb_00C198:
+  type: OOT:LIMB
+  offset: 0xC198
+  symbol: object_boj_Standardlimb_00C198
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1A4:
+  type: OOT:LIMB
+  offset: 0xC1A4
+  symbol: object_boj_Standardlimb_00C1A4
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1B0:
+  type: OOT:LIMB
+  offset: 0xC1B0
+  symbol: object_boj_Standardlimb_00C1B0
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1BC:
+  type: OOT:LIMB
+  offset: 0xC1BC
+  symbol: object_boj_Standardlimb_00C1BC
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1C8:
+  type: OOT:LIMB
+  offset: 0xC1C8
+  symbol: object_boj_Standardlimb_00C1C8
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1D4:
+  type: OOT:LIMB
+  offset: 0xC1D4
+  symbol: object_boj_Standardlimb_00C1D4
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1E0:
+  type: OOT:LIMB
+  offset: 0xC1E0
+  symbol: object_boj_Standardlimb_00C1E0
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1EC:
+  type: OOT:LIMB
+  offset: 0xC1EC
+  symbol: object_boj_Standardlimb_00C1EC
+  limb_type: Standard
+
+object_boj_Standardlimb_00C1F8:
+  type: OOT:LIMB
+  offset: 0xC1F8
+  symbol: object_boj_Standardlimb_00C1F8
+  limb_type: Standard
+
+object_boj_TLUT_005DB0:
+  type: TEXTURE
+  offset: 0x5DB0
+  symbol: object_boj_TLUT_005DB0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_boj_Tex_005FB0:
+  type: TEXTURE
+  offset: 0x5FB0
+  symbol: object_boj_Tex_005FB0
+  format: CI8
+  width: 8
+  height: 16
+
+object_boj_Tex_006030:
+  type: TEXTURE
+  offset: 0x6030
+  symbol: object_boj_Tex_006030
+  format: CI8
+  width: 8
+  height: 8
+
+object_boj_Tex_006070:
+  type: TEXTURE
+  offset: 0x6070
+  symbol: object_boj_Tex_006070
+  format: CI8
+  width: 32
+  height: 16
+
+object_boj_Tex_006270:
+  type: TEXTURE
+  offset: 0x6270
+  symbol: object_boj_Tex_006270
+  format: CI8
+  width: 8
+  height: 8
+
+object_boj_Tex_0062B0:
+  type: TEXTURE
+  offset: 0x62B0
+  symbol: object_boj_Tex_0062B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_0063B0:
+  type: TEXTURE
+  offset: 0x63B0
+  symbol: object_boj_Tex_0063B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_0064B0:
+  type: TEXTURE
+  offset: 0x64B0
+  symbol: object_boj_Tex_0064B0
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_0065B0:
+  type: TEXTURE
+  offset: 0x65B0
+  symbol: object_boj_Tex_0065B0
+  format: CI8
+  width: 8
+  height: 8
+
+object_boj_Tex_0065F0:
+  type: TEXTURE
+  offset: 0x65F0
+  symbol: object_boj_Tex_0065F0
+  format: I8
+  width: 16
+  height: 16
+
+object_boj_Tex_0066F0:
+  type: TEXTURE
+  offset: 0x66F0
+  symbol: object_boj_Tex_0066F0
+  format: CI8
+  width: 8
+  height: 8
+
+object_boj_Tex_006730:
+  type: TEXTURE
+  offset: 0x6730
+  symbol: object_boj_Tex_006730
+  format: I8
+  width: 8
+  height: 8
+
+object_boj_Tex_009A40:
+  type: TEXTURE
+  offset: 0x9A40
+  symbol: object_boj_Tex_009A40
+  format: CI8
+  width: 8
+  height: 8
+
+object_boj_Tex_009A80:
+  type: TEXTURE
+  offset: 0x9A80
+  symbol: object_boj_Tex_009A80
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_009B80:
+  type: TEXTURE
+  offset: 0x9B80
+  symbol: object_boj_Tex_009B80
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_009C80:
+  type: TEXTURE
+  offset: 0x9C80
+  symbol: object_boj_Tex_009C80
+  format: CI8
+  width: 8
+  height: 16
+
+object_boj_Tex_009D00:
+  type: TEXTURE
+  offset: 0x9D00
+  symbol: object_boj_Tex_009D00
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_009E00:
+  type: TEXTURE
+  offset: 0x9E00
+  symbol: object_boj_Tex_009E00
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_009F00:
+  type: TEXTURE
+  offset: 0x9F00
+  symbol: object_boj_Tex_009F00
+  format: CI8
+  width: 16
+  height: 16
+
+object_boj_Tex_00BB88:
+  type: TEXTURE
+  offset: 0xBB88
+  symbol: object_boj_Tex_00BB88
+  format: I8
+  width: 16
+  height: 16
+
+object_boj_Tex_00BD50:
+  type: TEXTURE
+  offset: 0xBD50
+  symbol: object_boj_Tex_00BD50
+  format: I8
+  width: 32
+  height: 32
+
+
+object_bojVtx_006770:
+  type: MM:ARRAY
+  offset: 0x006770
+  symbol: object_bojVtx_006770
+  count: 83
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_006CA0:
+  type: MM:ARRAY
+  offset: 0x006CA0
+  symbol: object_bojVtx_006CA0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_006E60:
+  type: MM:ARRAY
+  offset: 0x006E60
+  symbol: object_bojVtx_006E60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_006FE0:
+  type: MM:ARRAY
+  offset: 0x006FE0
+  symbol: object_bojVtx_006FE0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007180:
+  type: MM:ARRAY
+  offset: 0x007180
+  symbol: object_bojVtx_007180
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007340:
+  type: MM:ARRAY
+  offset: 0x007340
+  symbol: object_bojVtx_007340
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_0074C0:
+  type: MM:ARRAY
+  offset: 0x0074C0
+  symbol: object_bojVtx_0074C0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007660:
+  type: MM:ARRAY
+  offset: 0x007660
+  symbol: object_bojVtx_007660
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007900:
+  type: MM:ARRAY
+  offset: 0x007900
+  symbol: object_bojVtx_007900
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007A20:
+  type: MM:ARRAY
+  offset: 0x007A20
+  symbol: object_bojVtx_007A20
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007BD0:
+  type: MM:ARRAY
+  offset: 0x007BD0
+  symbol: object_bojVtx_007BD0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007D40:
+  type: MM:ARRAY
+  offset: 0x007D40
+  symbol: object_bojVtx_007D40
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_007E60:
+  type: MM:ARRAY
+  offset: 0x007E60
+  symbol: object_bojVtx_007E60
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_008010:
+  type: MM:ARRAY
+  offset: 0x008010
+  symbol: object_bojVtx_008010
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_008180:
+  type: MM:ARRAY
+  offset: 0x008180
+  symbol: object_bojVtx_008180
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojTLUT_009848:
+  type: TEXTURE
+  offset: 0x009848
+  symbol: object_bojTLUT_009848
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bojVtx_00A000:
+  type: MM:ARRAY
+  offset: 0x00A000
+  symbol: object_bojVtx_00A000
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00A340:
+  type: MM:ARRAY
+  offset: 0x00A340
+  symbol: object_bojVtx_00A340
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00A620:
+  type: MM:ARRAY
+  offset: 0x00A620
+  symbol: object_bojVtx_00A620
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00AA90:
+  type: MM:ARRAY
+  offset: 0x00AA90
+  symbol: object_bojVtx_00AA90
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00AF00:
+  type: MM:ARRAY
+  offset: 0x00AF00
+  symbol: object_bojVtx_00AF00
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00B968:
+  type: MM:ARRAY
+  offset: 0x00B968
+  symbol: object_bojVtx_00B968
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bojVtx_00BC88:
+  type: MM:ARRAY
+  offset: 0x00BC88
+  symbol: object_bojVtx_00BC88
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boj_Skel_00C240Limbs:
+  type: BLOB
+  offset: 0xC204
+  symbol: object_boj_Skel_00C240Limbs
+  size: 0
+
+object_bojVtx_012EA0:
+  type: MM:ARRAY
+  offset: 0x012EA0
+  symbol: object_bojVtx_012EA0
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

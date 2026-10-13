@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x0158ABD0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0158ABD0 ]
+    - [ 9, 0x0158ABD0 ]
+    - [ 10, 0x0158ABD0 ]
+    - [ 11, 0x0158ABD0 ]
+    - [ 12, 0x0158ABD0 ]
+    - [ 13, 0x0158ABD0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiBombersNotebookBindingsTex:
+  type: TEXTURE
+  offset: 0x17C0
+  symbol: gGiBombersNotebookBindingsTex
+  format: I4
+  width: 16
+  height: 32
+
+gGiBombersNotebookCoverBorderTex:
+  type: TEXTURE
+  offset: 0xBC0
+  symbol: gGiBombersNotebookCoverBorderTex
+  format: I4
+  width: 64
+  height: 32
+
+gGiBombersNotebookCoverTex:
+  type: TEXTURE
+  offset: 0xFC0
+  symbol: gGiBombersNotebookCoverTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiBombersNotebookDL:
+  type: GFX
+  offset: 0x6C0
+  symbol: gGiBombersNotebookDL
+
+gGiBombersNotebookEmptyDL:
+  type: GFX
+  offset: 0xB78
+  symbol: gGiBombersNotebookEmptyDL
+
+gGiBombersNotebookLabelTex:
+  type: TEXTURE
+  offset: 0x13C0
+  symbol: gGiBombersNotebookLabelTex
+  format: I4
+  width: 32
+  height: 64
+
+gGiBombersNotebookPagesTex:
+  type: TEXTURE
+  offset: 0xB80
+  symbol: gGiBombersNotebookPagesTex
+  format: I4
+  width: 16
+  height: 8
+
+
+object_gi_scheduleVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_scheduleVtx_000000
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

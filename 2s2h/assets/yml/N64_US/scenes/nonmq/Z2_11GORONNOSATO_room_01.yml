@@ -1,0 +1,119 @@
+:config:
+  segments:
+    - [ 3, 0x01C3C3F0 ]
+    - [ 6, 0x0160ED50 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01C3C3F0 ]
+    - [ 9, 0x01C3C3F0 ]
+    - [ 10, 0x01C3C3F0 ]
+    - [ 11, 0x01C3C3F0 ]
+    - [ 12, 0x01C3C3F0 ]
+    - [ 13, 0x01C3C3F0 ]
+    - [ 2, 0x01C2C4A0 ]
+  directory: scenes/nonmq/Z2_11GORONNOSATO
+  external_files:
+    - N64_US/misc/scene_texture_04.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_11GORONNOSATO.yml
+
+Z2_11GORONNOSATO_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_11GORONNOSATO_room_01
+
+Z2_11GORONNOSATO_room_01DL_0000F0:
+  type: GFX
+  offset: 0xF0
+  symbol: Z2_11GORONNOSATO_room_01DL_0000F0
+
+Z2_11GORONNOSATO_room_01DL_001E38:
+  type: GFX
+  offset: 0x1E38
+  symbol: Z2_11GORONNOSATO_room_01DL_001E38
+
+
+Z2_11GORONNOSATO_room_01ActorEntry_000060:
+  type: BLOB
+  offset: 0x000060
+  symbol: Z2_11GORONNOSATO_room_01ActorEntry_000060
+  size: 0
+
+Z2_11GORONNOSATO_room_01Vtx_0000F8:
+  type: MM:ARRAY
+  offset: 0x0000F8
+  symbol: Z2_11GORONNOSATO_room_01Vtx_0000F8
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_11GORONNOSATO_room_01DL_000978:
+  type: GFX
+  offset: 0x000978
+  symbol: Z2_11GORONNOSATO_room_01DL_000978
+
+Z2_11GORONNOSATO_room_01Vtx_000BA8:
+  type: MM:ARRAY
+  offset: 0x000BA8
+  symbol: Z2_11GORONNOSATO_room_01Vtx_000BA8
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_11GORONNOSATO_room_01DL_0013C8:
+  type: GFX
+  offset: 0x0013C8
+  symbol: Z2_11GORONNOSATO_room_01DL_0013C8
+
+Z2_11GORONNOSATO_room_01Vtx_0016B8:
+  type: MM:ARRAY
+  offset: 0x0016B8
+  symbol: Z2_11GORONNOSATO_room_01Vtx_0016B8
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_11GORONNOSATO_room_01DL_001988:
+  type: GFX
+  offset: 0x001988
+  symbol: Z2_11GORONNOSATO_room_01DL_001988
+
+Z2_11GORONNOSATO_room_01Vtx_001AC8:
+  type: MM:ARRAY
+  offset: 0x001AC8
+  symbol: Z2_11GORONNOSATO_room_01Vtx_001AC8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_11GORONNOSATO_room_01DL_001CC8:
+  type: GFX
+  offset: 0x001CC8
+  symbol: Z2_11GORONNOSATO_room_01DL_001CC8
+
+Z2_11GORONNOSATO_room_01Tex_001E60:
+  type: TEXTURE
+  offset: 0x001E60
+  symbol: Z2_11GORONNOSATO_room_01Tex_001E60
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_11GORONNOSATO_room_01Tex_002260:
+  type: TEXTURE
+  offset: 0x002260
+  symbol: Z2_11GORONNOSATO_room_01Tex_002260
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_11GORONNOSATO_room_01Tex_002660:
+  type: TEXTURE
+  offset: 0x002660
+  symbol: Z2_11GORONNOSATO_room_01Tex_002660
+  format: CI8
+  width: 32
+  height: 32

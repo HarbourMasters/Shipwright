@@ -1,0 +1,132 @@
+:config:
+  segments:
+    - [ 6, 0x0130CB90 ]
+    - [ 5, 0x00E3B2A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0130CB90 ]
+    - [ 9, 0x0130CB90 ]
+    - [ 10, 0x0130CB90 ]
+    - [ 11, 0x0130CB90 ]
+    - [ 12, 0x0130CB90 ]
+    - [ 13, 0x0130CB90 ]
+  external_files:
+    - GC_US/objects/gameplay_field_keep.yml
+    - GC_US/objects/gameplay_keep.yml
+
+gGraveyardFlower1DL:
+  type: GFX
+  offset: 0x0
+  symbol: gGraveyardFlower1DL
+
+gGraveyardFlower2DL:
+  type: GFX
+  offset: 0xA0
+  symbol: gGraveyardFlower2DL
+
+gGraveyardFlower3DL:
+  type: GFX
+  offset: 0x140
+  symbol: gGraveyardFlower3DL
+
+gGraveyardFlowerLeaf1DL:
+  type: GFX
+  offset: 0x1E0
+  symbol: gGraveyardFlowerLeaf1DL
+
+gGraveyardFlowerLeaf2DL:
+  type: GFX
+  offset: 0x280
+  symbol: gGraveyardFlowerLeaf2DL
+
+gGraveyardFlowerLeaf3DL:
+  type: GFX
+  offset: 0x320
+  symbol: gGraveyardFlowerLeaf3DL
+
+gGraveyardFlowerLeaf4DL:
+  type: GFX
+  offset: 0x3C0
+  symbol: gGraveyardFlowerLeaf4DL
+
+gGraveyardFlowerLeaf5DL:
+  type: GFX
+  offset: 0x460
+  symbol: gGraveyardFlowerLeaf5DL
+
+gGraveyardFlowersDL:
+  type: GFX
+  offset: 0x500
+  symbol: gGraveyardFlowersDL
+
+
+object_hanaVtx_000548:
+  type: MM:ARRAY
+  offset: 0x000548
+  symbol: object_hanaVtx_000548
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_000588:
+  type: MM:ARRAY
+  offset: 0x000588
+  symbol: object_hanaVtx_000588
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_0005C8:
+  type: MM:ARRAY
+  offset: 0x0005C8
+  symbol: object_hanaVtx_0005C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_000608:
+  type: MM:ARRAY
+  offset: 0x000608
+  symbol: object_hanaVtx_000608
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_000648:
+  type: MM:ARRAY
+  offset: 0x000648
+  symbol: object_hanaVtx_000648
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_000688:
+  type: MM:ARRAY
+  offset: 0x000688
+  symbol: object_hanaVtx_000688
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_0006C8:
+  type: MM:ARRAY
+  offset: 0x0006C8
+  symbol: object_hanaVtx_0006C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hanaVtx_000708:
+  type: MM:ARRAY
+  offset: 0x000708
+  symbol: object_hanaVtx_000708
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

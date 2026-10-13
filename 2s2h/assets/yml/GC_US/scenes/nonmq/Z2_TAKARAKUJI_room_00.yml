@@ -1,0 +1,98 @@
+:config:
+  segments:
+    - [ 3, 0x01A76F30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01A76F30 ]
+    - [ 9, 0x01A76F30 ]
+    - [ 10, 0x01A76F30 ]
+    - [ 11, 0x01A76F30 ]
+    - [ 12, 0x01A76F30 ]
+    - [ 13, 0x01A76F30 ]
+    - [ 2, 0x01A74F70 ]
+  directory: scenes/nonmq/Z2_TAKARAKUJI
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_TAKARAKUJI.yml
+
+Z2_TAKARAKUJI_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_TAKARAKUJI_room_00
+
+Z2_TAKARAKUJI_room_00DL_002E00:
+  type: GFX
+  offset: 0x2E00
+  symbol: Z2_TAKARAKUJI_room_00DL_002E00
+
+Z2_TAKARAKUJI_room_00DL_002E38:
+  type: GFX
+  offset: 0x2E38
+  symbol: Z2_TAKARAKUJI_room_00DL_002E38
+
+
+Z2_TAKARAKUJI_room_00ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_TAKARAKUJI_room_00ActorEntry_000048
+  size: 0
+
+Z2_TAKARAKUJI_room_00Vtx_000100:
+  type: MM:ARRAY
+  offset: 0x000100
+  symbol: Z2_TAKARAKUJI_room_00Vtx_000100
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TAKARAKUJI_room_00DL_0008E0:
+  type: GFX
+  offset: 0x0008E0
+  symbol: Z2_TAKARAKUJI_room_00DL_0008E0
+
+Z2_TAKARAKUJI_room_00Vtx_000EB0:
+  type: MM:ARRAY
+  offset: 0x000EB0
+  symbol: Z2_TAKARAKUJI_room_00Vtx_000EB0
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TAKARAKUJI_room_00DL_0018B0:
+  type: GFX
+  offset: 0x0018B0
+  symbol: Z2_TAKARAKUJI_room_00DL_0018B0
+
+Z2_TAKARAKUJI_room_00Vtx_001D08:
+  type: MM:ARRAY
+  offset: 0x001D08
+  symbol: Z2_TAKARAKUJI_room_00Vtx_001D08
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TAKARAKUJI_room_00DL_002178:
+  type: GFX
+  offset: 0x002178
+  symbol: Z2_TAKARAKUJI_room_00DL_002178
+
+Z2_TAKARAKUJI_room_00Vtx_002400:
+  type: MM:ARRAY
+  offset: 0x002400
+  symbol: Z2_TAKARAKUJI_room_00Vtx_002400
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TAKARAKUJI_room_00DL_002C00:
+  type: GFX
+  offset: 0x002C00
+  symbol: Z2_TAKARAKUJI_room_00DL_002C00
+
+Z2_TAKARAKUJI_room_00DL_002E30:
+  type: GFX
+  offset: 0x002E30
+  symbol: Z2_TAKARAKUJI_room_00DL_002E30

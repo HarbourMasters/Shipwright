@@ -1,0 +1,184 @@
+:config:
+  segments:
+    - [ 2, 0x01AC31D0 ]
+    - [ 6, 0x01616C40 ]
+  external_files:
+    - GC_US/misc/scene_texture_08.yml
+
+Z2_24KEMONOMITI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_24KEMONOMITI
+
+
+Z2_24KEMONOMITIPathwayList_000298:
+  type: MM:PATH
+  offset: 0x000298
+  symbol: Z2_24KEMONOMITIPathwayList_000298
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 579, -94, -67 ]
+        - [ 281, -148, 260 ]
+        - [ 445, -181, 1374 ]
+        - [ 1037, -182, 2238 ]
+        - [ 2556, -182, 2621 ]
+        - [ 642, -213, 2559 ]
+        - [ 531, -236, 3560 ]
+        - [ 247, -237, 4041 ]
+        - [ 2995, -182, 2848 ]
+        - [ 2531, -182, 3204 ]
+
+Z2_24KEMONOMITITexAnim_000438TexScrollParams_000430:
+  type: BLOB
+  offset: 0x000430
+  symbol: Z2_24KEMONOMITITexAnim_000438TexScrollParams_000430
+  size: 0
+
+Z2_24KEMONOMITITexAnim_000438:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000438
+  symbol: Z2_24KEMONOMITITexAnim_000438
+
+Z2_24KEMONOMITICollisionHeader_0026F8:
+  type: MM:COLLISION
+  offset: 0x0026F8
+  symbol: Z2_24KEMONOMITICollisionHeader_0026F8
+
+Z2_24KEMONOMITITex_002730:
+  type: TEXTURE
+  offset: 0x002730
+  symbol: Z2_24KEMONOMITITex_002730
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_24KEMONOMITITex_002F30:
+  type: TEXTURE
+  offset: 0x002F30
+  symbol: Z2_24KEMONOMITITex_002F30
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_24KEMONOMITITex_003730:
+  type: TEXTURE
+  offset: 0x003730
+  symbol: Z2_24KEMONOMITITex_003730
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_24KEMONOMITITex_003B30:
+  type: TEXTURE
+  offset: 0x003B30
+  symbol: Z2_24KEMONOMITITex_003B30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_24KEMONOMITITex_003F30:
+  type: TEXTURE
+  offset: 0x003F30
+  symbol: Z2_24KEMONOMITITex_003F30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_24KEMONOMITITex_004330:
+  type: TEXTURE
+  offset: 0x004330
+  symbol: Z2_24KEMONOMITITex_004330
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_24KEMONOMITITex_004530:
+  type: TEXTURE
+  offset: 0x004530
+  symbol: Z2_24KEMONOMITITex_004530
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_24KEMONOMITITex_004730:
+  type: TEXTURE
+  offset: 0x004730
+  symbol: Z2_24KEMONOMITITex_004730
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_24KEMONOMITITex_004F30:
+  type: TEXTURE
+  offset: 0x004F30
+  symbol: Z2_24KEMONOMITITex_004F30
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_24KEMONOMITITex_005730:
+  type: TEXTURE
+  offset: 0x005730
+  symbol: Z2_24KEMONOMITITex_005730
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_24KEMONOMITITex_005B30:
+  type: TEXTURE
+  offset: 0x005B30
+  symbol: Z2_24KEMONOMITITex_005B30
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_24KEMONOMITITex_005F30:
+  type: TEXTURE
+  offset: 0x005F30
+  symbol: Z2_24KEMONOMITITex_005F30
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_24KEMONOMITITex_006730:
+  type: TEXTURE
+  offset: 0x006730
+  symbol: Z2_24KEMONOMITITex_006730
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_24KEMONOMITITex_006830:
+  type: TEXTURE
+  offset: 0x006830
+  symbol: Z2_24KEMONOMITITex_006830
+  format: IA8
+  width: 64
+  height: 64
+
+Z2_24KEMONOMITITex_007830:
+  type: TEXTURE
+  offset: 0x007830
+  symbol: Z2_24KEMONOMITITex_007830
+  format: IA8
+  width: 32
+  height: 8
+
+Z2_24KEMONOMITITLUT_007930:
+  type: TEXTURE
+  offset: 0x007930
+  symbol: Z2_24KEMONOMITITLUT_007930
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_24KEMONOMITITLUT_007950:
+  type: TEXTURE
+  offset: 0x007950
+  symbol: Z2_24KEMONOMITITLUT_007950
+  format: RGBA16
+  width: 16
+  height: 16

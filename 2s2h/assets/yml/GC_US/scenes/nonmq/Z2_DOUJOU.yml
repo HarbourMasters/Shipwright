@@ -1,0 +1,207 @@
+:config:
+  segments:
+    - [ 2, 0x01CA5060 ]
+    - [ 6, 0x016055F0 ]
+  external_files:
+    - GC_US/misc/scene_texture_01.yml
+
+Z2_DOUJOU:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_DOUJOU
+
+
+Z2_DOUJOUPathwayList_000110:
+  type: MM:PATH
+  offset: 0x000110
+  symbol: Z2_DOUJOUPathwayList_000110
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, 4, 92 ]
+        - [ -37, 4, 286 ]
+        - [ -105, 4, 250 ]
+        - [ -135, 4, 181 ]
+        - [ 37, 4, 287 ]
+        - [ 106, 4, 251 ]
+        - [ 135, 4, 182 ]
+
+Z2_DOUJOUTexAnim_000230:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000230
+  symbol: Z2_DOUJOUTexAnim_000230
+
+Z2_DOUJOUCollisionHeader_000CB8:
+  type: MM:COLLISION
+  offset: 0x000CB8
+  symbol: Z2_DOUJOUCollisionHeader_000CB8
+
+Z2_DOUJOUTex_000CF0:
+  type: TEXTURE
+  offset: 0x000CF0
+  symbol: Z2_DOUJOUTex_000CF0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_0014F0:
+  type: TEXTURE
+  offset: 0x0014F0
+  symbol: Z2_DOUJOUTex_0014F0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTLUT_0018F0:
+  type: TEXTURE
+  offset: 0x0018F0
+  symbol: Z2_DOUJOUTLUT_0018F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DOUJOUTex_001AF0:
+  type: TEXTURE
+  offset: 0x001AF0
+  symbol: Z2_DOUJOUTex_001AF0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_DOUJOUTex_001B30:
+  type: TEXTURE
+  offset: 0x001B30
+  symbol: Z2_DOUJOUTex_001B30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_001F30:
+  type: TEXTURE
+  offset: 0x001F30
+  symbol: Z2_DOUJOUTex_001F30
+  format: CI8
+  width: 64
+  height: 16
+
+Z2_DOUJOUTex_002330:
+  type: TEXTURE
+  offset: 0x002330
+  symbol: Z2_DOUJOUTex_002330
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_002730:
+  type: TEXTURE
+  offset: 0x002730
+  symbol: Z2_DOUJOUTex_002730
+  format: I8
+  width: 64
+  height: 64
+
+Z2_DOUJOUTex_003730:
+  type: TEXTURE
+  offset: 0x003730
+  symbol: Z2_DOUJOUTex_003730
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_DOUJOUTex_003B30:
+  type: TEXTURE
+  offset: 0x003B30
+  symbol: Z2_DOUJOUTex_003B30
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_DOUJOUTex_003C30:
+  type: TEXTURE
+  offset: 0x003C30
+  symbol: Z2_DOUJOUTex_003C30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_004030:
+  type: TEXTURE
+  offset: 0x004030
+  symbol: Z2_DOUJOUTex_004030
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_DOUJOUTex_004130:
+  type: TEXTURE
+  offset: 0x004130
+  symbol: Z2_DOUJOUTex_004130
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_DOUJOUTex_004530:
+  type: TEXTURE
+  offset: 0x004530
+  symbol: Z2_DOUJOUTex_004530
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_004930:
+  type: TEXTURE
+  offset: 0x004930
+  symbol: Z2_DOUJOUTex_004930
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_005130:
+  type: TEXTURE
+  offset: 0x005130
+  symbol: Z2_DOUJOUTex_005130
+  format: I8
+  width: 64
+  height: 64
+
+Z2_DOUJOUTex_006130:
+  type: TEXTURE
+  offset: 0x006130
+  symbol: Z2_DOUJOUTex_006130
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_DOUJOUTex_006930:
+  type: TEXTURE
+  offset: 0x006930
+  symbol: Z2_DOUJOUTex_006930
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DOUJOUTex_006D30:
+  type: TEXTURE
+  offset: 0x006D30
+  symbol: Z2_DOUJOUTex_006D30
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_DOUJOUTLUT_007130:
+  type: TEXTURE
+  offset: 0x007130
+  symbol: Z2_DOUJOUTLUT_007130
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DOUJOUTLUT_007330:
+  type: TEXTURE
+  offset: 0x007330
+  symbol: Z2_DOUJOUTLUT_007330
+  format: RGBA16
+  width: 16
+  height: 16

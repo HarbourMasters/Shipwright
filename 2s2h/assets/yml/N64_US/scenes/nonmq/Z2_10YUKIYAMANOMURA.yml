@@ -1,0 +1,404 @@
+:config:
+  segments:
+    - [ 2, 0x01C542F0 ]
+    - [ 6, 0x0160ED50 ]
+  external_files:
+    - N64_US/misc/scene_texture_04.yml
+
+Z2_10YUKIYAMANOMURA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_10YUKIYAMANOMURA
+
+
+Z2_10YUKIYAMANOMURAPathwayList_000314:
+  type: MM:PATH
+  offset: 0x000314
+  symbol: Z2_10YUKIYAMANOMURAPathwayList_000314
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 192, 0, -408 ]
+        - [ 338, 0, -512 ]
+        - [ 316, 0, -743 ]
+        - [ 83, 0, -821 ]
+        - [ -53, 0, -649 ]
+        - [ -15, 0, -451 ]
+        - [ 192, 0, -408 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 988, 0, -692 ]
+        - [ 954, 0, -508 ]
+        - [ 774, 0, -418 ]
+        - [ 638, 0, -573 ]
+        - [ 675, 0, -778 ]
+        - [ 856, 0, -848 ]
+        - [ 988, 0, -692 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1412, 11, 588 ]
+        - [ 830, 172, 295 ]
+        - [ 540, 8, -258 ]
+        - [ 437, 1408, -1137 ]
+        - [ 447, 1408, -1403 ]
+        - [ 566, 1410, -2047 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -197, 8, -172 ]
+        - [ -240, 8, 84 ]
+        - [ -405, 8, 212 ]
+        - [ -477, 8, 154 ]
+
+Z2_10YUKIYAMANOMURAPathwayList_000340:
+  type: MM:PATH
+  offset: 0x000340
+  symbol: Z2_10YUKIYAMANOMURAPathwayList_000340
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 192, 0, -408 ]
+        - [ 338, 0, -512 ]
+        - [ 316, 0, -743 ]
+        - [ 83, 0, -821 ]
+        - [ -53, 0, -649 ]
+        - [ -15, 0, -451 ]
+        - [ 192, 0, -408 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 988, 0, -692 ]
+        - [ 954, 0, -508 ]
+        - [ 774, 0, -418 ]
+        - [ 638, 0, -573 ]
+        - [ 675, 0, -778 ]
+        - [ 856, 0, -848 ]
+        - [ 988, 0, -692 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1412, 11, 588 ]
+        - [ 830, 172, 295 ]
+        - [ 540, 8, -258 ]
+        - [ 437, 1408, -1137 ]
+        - [ 447, 1408, -1403 ]
+        - [ 566, 1410, -2047 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -197, 8, -172 ]
+        - [ -240, 8, 84 ]
+        - [ -405, 8, 212 ]
+        - [ -477, 8, 154 ]
+
+Z2_10YUKIYAMANOMURAPathwayList_00036C:
+  type: MM:PATH
+  offset: 0x00036C
+  symbol: Z2_10YUKIYAMANOMURAPathwayList_00036C
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 192, 0, -408 ]
+        - [ 338, 0, -512 ]
+        - [ 316, 0, -743 ]
+        - [ 83, 0, -821 ]
+        - [ -53, 0, -649 ]
+        - [ -15, 0, -451 ]
+        - [ 192, 0, -408 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 988, 0, -692 ]
+        - [ 954, 0, -508 ]
+        - [ 774, 0, -418 ]
+        - [ 638, 0, -573 ]
+        - [ 675, 0, -778 ]
+        - [ 856, 0, -848 ]
+        - [ 988, 0, -692 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1412, 11, 588 ]
+        - [ 830, 172, 295 ]
+        - [ 540, 8, -258 ]
+        - [ 437, 1408, -1137 ]
+        - [ 447, 1408, -1403 ]
+        - [ 566, 1410, -2047 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -197, 8, -172 ]
+        - [ -240, 8, 84 ]
+        - [ -405, 8, 212 ]
+        - [ -477, 8, 154 ]
+
+Z2_10YUKIYAMANOMURAPathwayList_000390:
+  type: MM:PATH
+  offset: 0x000390
+  symbol: Z2_10YUKIYAMANOMURAPathwayList_000390
+  num_paths: 4
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 192, 0, -408 ]
+        - [ 338, 0, -512 ]
+        - [ 316, 0, -743 ]
+        - [ 83, 0, -821 ]
+        - [ -53, 0, -649 ]
+        - [ -15, 0, -451 ]
+        - [ 192, 0, -408 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 988, 0, -692 ]
+        - [ 954, 0, -508 ]
+        - [ 774, 0, -418 ]
+        - [ 638, 0, -573 ]
+        - [ 675, 0, -778 ]
+        - [ 856, 0, -848 ]
+        - [ 988, 0, -692 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1412, 11, 588 ]
+        - [ 830, 172, 295 ]
+        - [ 540, 8, -258 ]
+        - [ 437, 1408, -1137 ]
+        - [ 447, 1408, -1403 ]
+        - [ 566, 1410, -2047 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -197, 8, -172 ]
+        - [ -240, 8, 84 ]
+        - [ -405, 8, 212 ]
+        - [ -477, 8, 154 ]
+
+Z2_10YUKIYAMANOMURACutsceneData_0003C8:
+  type: MM:CUTSCENE
+  offset: 0x0003C8
+  symbol: Z2_10YUKIYAMANOMURACutsceneData_0003C8
+  size: 432
+
+Z2_10YUKIYAMANOMURACutsceneData_000578:
+  type: MM:CUTSCENE
+  offset: 0x000578
+  symbol: Z2_10YUKIYAMANOMURACutsceneData_000578
+  size: 4728
+
+Z2_10YUKIYAMANOMURACutsceneData_0017F8:
+  type: MM:CUTSCENE
+  offset: 0x0017F8
+  symbol: Z2_10YUKIYAMANOMURACutsceneData_0017F8
+  size: 4728
+
+Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E10:
+  type: BLOB
+  offset: 0x002E10
+  symbol: Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E10
+  size: 0
+
+Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E18:
+  type: BLOB
+  offset: 0x002E18
+  symbol: Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E18
+  size: 0
+
+Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E20:
+  type: BLOB
+  offset: 0x002E20
+  symbol: Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E20
+  size: 0
+
+Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E28:
+  type: BLOB
+  offset: 0x002E28
+  symbol: Z2_10YUKIYAMANOMURATexAnim_002E30TexScrollParams_002E28
+  size: 0
+
+Z2_10YUKIYAMANOMURATexAnim_002E30:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x002E30
+  symbol: Z2_10YUKIYAMANOMURATexAnim_002E30
+
+Z2_10YUKIYAMANOMURACollisionHeader_007004:
+  type: MM:COLLISION
+  offset: 0x007004
+  symbol: Z2_10YUKIYAMANOMURACollisionHeader_007004
+
+Z2_10YUKIYAMANOMURATex_007030:
+  type: TEXTURE
+  offset: 0x007030
+  symbol: Z2_10YUKIYAMANOMURATex_007030
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_007830:
+  type: TEXTURE
+  offset: 0x007830
+  symbol: Z2_10YUKIYAMANOMURATex_007830
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_008030:
+  type: TEXTURE
+  offset: 0x008030
+  symbol: Z2_10YUKIYAMANOMURATex_008030
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_008830:
+  type: TEXTURE
+  offset: 0x008830
+  symbol: Z2_10YUKIYAMANOMURATex_008830
+  format: I4
+  width: 64
+  height: 64
+
+Z2_10YUKIYAMANOMURATex_009030:
+  type: TEXTURE
+  offset: 0x009030
+  symbol: Z2_10YUKIYAMANOMURATex_009030
+  format: I4
+  width: 32
+  height: 128
+
+Z2_10YUKIYAMANOMURATex_009830:
+  type: TEXTURE
+  offset: 0x009830
+  symbol: Z2_10YUKIYAMANOMURATex_009830
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_10YUKIYAMANOMURATex_00A030:
+  type: TEXTURE
+  offset: 0x00A030
+  symbol: Z2_10YUKIYAMANOMURATex_00A030
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00A430:
+  type: TEXTURE
+  offset: 0x00A430
+  symbol: Z2_10YUKIYAMANOMURATex_00A430
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00AC30:
+  type: TEXTURE
+  offset: 0x00AC30
+  symbol: Z2_10YUKIYAMANOMURATex_00AC30
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_10YUKIYAMANOMURATex_00B430:
+  type: TEXTURE
+  offset: 0x00B430
+  symbol: Z2_10YUKIYAMANOMURATex_00B430
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_10YUKIYAMANOMURATex_00BC30:
+  type: TEXTURE
+  offset: 0x00BC30
+  symbol: Z2_10YUKIYAMANOMURATex_00BC30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00C030:
+  type: TEXTURE
+  offset: 0x00C030
+  symbol: Z2_10YUKIYAMANOMURATex_00C030
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_10YUKIYAMANOMURATex_00C230:
+  type: TEXTURE
+  offset: 0x00C230
+  symbol: Z2_10YUKIYAMANOMURATex_00C230
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00C630:
+  type: TEXTURE
+  offset: 0x00C630
+  symbol: Z2_10YUKIYAMANOMURATex_00C630
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00CA30:
+  type: TEXTURE
+  offset: 0x00CA30
+  symbol: Z2_10YUKIYAMANOMURATex_00CA30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00CE30:
+  type: TEXTURE
+  offset: 0x00CE30
+  symbol: Z2_10YUKIYAMANOMURATex_00CE30
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00D630:
+  type: TEXTURE
+  offset: 0x00D630
+  symbol: Z2_10YUKIYAMANOMURATex_00D630
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_10YUKIYAMANOMURATex_00DE30:
+  type: TEXTURE
+  offset: 0x00DE30
+  symbol: Z2_10YUKIYAMANOMURATex_00DE30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_10YUKIYAMANOMURATex_00E230:
+  type: TEXTURE
+  offset: 0x00E230
+  symbol: Z2_10YUKIYAMANOMURATex_00E230
+  format: IA16
+  width: 32
+  height: 8
+
+Z2_10YUKIYAMANOMURATLUT_00E430:
+  type: TEXTURE
+  offset: 0x00E430
+  symbol: Z2_10YUKIYAMANOMURATLUT_00E430
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_10YUKIYAMANOMURATLUT_00E450:
+  type: TEXTURE
+  offset: 0x00E450
+  symbol: Z2_10YUKIYAMANOMURATLUT_00E450
+  format: RGBA16
+  width: 16
+  height: 16

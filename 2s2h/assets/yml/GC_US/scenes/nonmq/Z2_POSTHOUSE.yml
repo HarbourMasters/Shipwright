@@ -1,0 +1,298 @@
+:config:
+  segments:
+    - [ 2, 0x019C33D0 ]
+
+Z2_POSTHOUSE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_POSTHOUSE
+
+
+Z2_POSTHOUSEPathwayList_000110:
+  type: MM:PATH
+  offset: 0x000110
+  symbol: Z2_POSTHOUSEPathwayList_000110
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: 43
+      points:
+        - [ 32, 0, -165 ]
+        - [ -30, 0, -186 ]
+        - [ -61, 0, -238 ]
+        - [ -81, 0, -317 ]
+    - additional_path_index: 2
+      custom_value: 44
+      points:
+        - [ -81, 0, -317 ]
+        - [ -96, 0, -227 ]
+        - [ -116, 0, -132 ]
+        - [ -142, 0, -32 ]
+        - [ -142, 0, 79 ]
+        - [ -79, 0, 180 ]
+        - [ -11, 0, 255 ]
+    - additional_path_index: 255
+      custom_value: 45
+      points:
+        - [ -11, 0, 255 ]
+        - [ -9, 0, 366 ]
+
+Z2_POSTHOUSEPathwayList_000128:
+  type: MM:PATH
+  offset: 0x000128
+  symbol: Z2_POSTHOUSEPathwayList_000128
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: 43
+      points:
+        - [ 32, 0, -165 ]
+        - [ -30, 0, -186 ]
+        - [ -61, 0, -238 ]
+        - [ -81, 0, -317 ]
+    - additional_path_index: 2
+      custom_value: 44
+      points:
+        - [ -81, 0, -317 ]
+        - [ -96, 0, -227 ]
+        - [ -116, 0, -132 ]
+        - [ -142, 0, -32 ]
+        - [ -142, 0, 79 ]
+        - [ -79, 0, 180 ]
+        - [ -11, 0, 255 ]
+    - additional_path_index: 255
+      custom_value: 45
+      points:
+        - [ -11, 0, 255 ]
+        - [ -9, 0, 366 ]
+
+Z2_POSTHOUSEPathwayList_000154:
+  type: MM:PATH
+  offset: 0x000154
+  symbol: Z2_POSTHOUSEPathwayList_000154
+  num_paths: 3
+  paths:
+    - additional_path_index: 1
+      custom_value: 43
+      points:
+        - [ 32, 0, -165 ]
+        - [ -30, 0, -186 ]
+        - [ -61, 0, -238 ]
+        - [ -81, 0, -317 ]
+    - additional_path_index: 2
+      custom_value: 44
+      points:
+        - [ -81, 0, -317 ]
+        - [ -96, 0, -227 ]
+        - [ -116, 0, -132 ]
+        - [ -142, 0, -32 ]
+        - [ -142, 0, 79 ]
+        - [ -79, 0, 180 ]
+        - [ -11, 0, 255 ]
+    - additional_path_index: 255
+      custom_value: 45
+      points:
+        - [ -11, 0, 255 ]
+        - [ -9, 0, 366 ]
+
+Z2_POSTHOUSETexAnim_000260:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000260
+  symbol: Z2_POSTHOUSETexAnim_000260
+
+Z2_POSTHOUSECollisionHeader_002158:
+  type: MM:COLLISION
+  offset: 0x002158
+  symbol: Z2_POSTHOUSECollisionHeader_002158
+
+Z2_POSTHOUSETex_002190:
+  type: TEXTURE
+  offset: 0x002190
+  symbol: Z2_POSTHOUSETex_002190
+  format: I8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_002590:
+  type: TEXTURE
+  offset: 0x002590
+  symbol: Z2_POSTHOUSETex_002590
+  format: I4
+  width: 16
+  height: 128
+
+Z2_POSTHOUSETex_002990:
+  type: TEXTURE
+  offset: 0x002990
+  symbol: Z2_POSTHOUSETex_002990
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_003190:
+  type: TEXTURE
+  offset: 0x003190
+  symbol: Z2_POSTHOUSETex_003190
+  format: I4
+  width: 64
+  height: 16
+
+Z2_POSTHOUSETex_003390:
+  type: TEXTURE
+  offset: 0x003390
+  symbol: Z2_POSTHOUSETex_003390
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_003790:
+  type: TEXTURE
+  offset: 0x003790
+  symbol: Z2_POSTHOUSETex_003790
+  format: I4
+  width: 128
+  height: 64
+
+Z2_POSTHOUSETex_004790:
+  type: TEXTURE
+  offset: 0x004790
+  symbol: Z2_POSTHOUSETex_004790
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_POSTHOUSETex_004F90:
+  type: TEXTURE
+  offset: 0x004F90
+  symbol: Z2_POSTHOUSETex_004F90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_005390:
+  type: TEXTURE
+  offset: 0x005390
+  symbol: Z2_POSTHOUSETex_005390
+  format: IA4
+  width: 16
+  height: 32
+
+Z2_POSTHOUSETex_005490:
+  type: TEXTURE
+  offset: 0x005490
+  symbol: Z2_POSTHOUSETex_005490
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_POSTHOUSETex_005C90:
+  type: TEXTURE
+  offset: 0x005C90
+  symbol: Z2_POSTHOUSETex_005C90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_006090:
+  type: TEXTURE
+  offset: 0x006090
+  symbol: Z2_POSTHOUSETex_006090
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_POSTHOUSETex_006890:
+  type: TEXTURE
+  offset: 0x006890
+  symbol: Z2_POSTHOUSETex_006890
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_POSTHOUSETex_007090:
+  type: TEXTURE
+  offset: 0x007090
+  symbol: Z2_POSTHOUSETex_007090
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_POSTHOUSETex_007890:
+  type: TEXTURE
+  offset: 0x007890
+  symbol: Z2_POSTHOUSETex_007890
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_POSTHOUSETex_007A90:
+  type: TEXTURE
+  offset: 0x007A90
+  symbol: Z2_POSTHOUSETex_007A90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_007E90:
+  type: TEXTURE
+  offset: 0x007E90
+  symbol: Z2_POSTHOUSETex_007E90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_008290:
+  type: TEXTURE
+  offset: 0x008290
+  symbol: Z2_POSTHOUSETex_008290
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_POSTHOUSETex_008390:
+  type: TEXTURE
+  offset: 0x008390
+  symbol: Z2_POSTHOUSETex_008390
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_008790:
+  type: TEXTURE
+  offset: 0x008790
+  symbol: Z2_POSTHOUSETex_008790
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_POSTHOUSETex_008990:
+  type: TEXTURE
+  offset: 0x008990
+  symbol: Z2_POSTHOUSETex_008990
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_POSTHOUSETex_008D90:
+  type: TEXTURE
+  offset: 0x008D90
+  symbol: Z2_POSTHOUSETex_008D90
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_POSTHOUSETLUT_009590:
+  type: TEXTURE
+  offset: 0x009590
+  symbol: Z2_POSTHOUSETLUT_009590
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_POSTHOUSETLUT_0095B0:
+  type: TEXTURE
+  offset: 0x0095B0
+  symbol: Z2_POSTHOUSETLUT_0095B0
+  format: RGBA16
+  width: 16
+  height: 16

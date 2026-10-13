@@ -1,0 +1,96 @@
+:config:
+  segments:
+    - [ 3, 0x01DC4A80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01DC4A80 ]
+    - [ 9, 0x01DC4A80 ]
+    - [ 10, 0x01DC4A80 ]
+    - [ 11, 0x01DC4A80 ]
+    - [ 12, 0x01DC4A80 ]
+    - [ 13, 0x01DC4A80 ]
+    - [ 2, 0x01DB6F60 ]
+  directory: scenes/nonmq/Z2_LAST_LINK
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_LAST_LINK.yml
+
+Z2_LAST_LINK_room_04:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_LINK_room_04
+
+Z2_LAST_LINK_room_04DL_001168:
+  type: GFX
+  offset: 0x1168
+  symbol: Z2_LAST_LINK_room_04DL_001168
+
+
+Z2_LAST_LINK_room_04ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_LAST_LINK_room_04ActorEntry_000058
+  size: 0
+
+Z2_LAST_LINK_room_04Vtx_0000F0:
+  type: MM:ARRAY
+  offset: 0x0000F0
+  symbol: Z2_LAST_LINK_room_04Vtx_0000F0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_04DL_000200:
+  type: GFX
+  offset: 0x000200
+  symbol: Z2_LAST_LINK_room_04DL_000200
+
+Z2_LAST_LINK_room_04Vtx_0002D8:
+  type: MM:ARRAY
+  offset: 0x0002D8
+  symbol: Z2_LAST_LINK_room_04Vtx_0002D8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_04DL_000418:
+  type: GFX
+  offset: 0x000418
+  symbol: Z2_LAST_LINK_room_04DL_000418
+
+Z2_LAST_LINK_room_04Vtx_000580:
+  type: MM:ARRAY
+  offset: 0x000580
+  symbol: Z2_LAST_LINK_room_04Vtx_000580
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_04DL_000A40:
+  type: GFX
+  offset: 0x000A40
+  symbol: Z2_LAST_LINK_room_04DL_000A40
+
+Z2_LAST_LINK_room_04Vtx_000CC8:
+  type: MM:ARRAY
+  offset: 0x000CC8
+  symbol: Z2_LAST_LINK_room_04Vtx_000CC8
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_04DL_001028:
+  type: GFX
+  offset: 0x001028
+  symbol: Z2_LAST_LINK_room_04DL_001028
+
+Z2_LAST_LINK_room_04Tex_001190:
+  type: TEXTURE
+  offset: 0x001190
+  symbol: Z2_LAST_LINK_room_04Tex_001190
+  format: CI8
+  width: 32
+  height: 64

@@ -1,0 +1,489 @@
+:config:
+  segments:
+    - [ 6, 0x0159DA60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0159DA60 ]
+    - [ 9, 0x0159DA60 ]
+    - [ 10, 0x0159DA60 ]
+    - [ 11, 0x0159DA60 ]
+    - [ 12, 0x0159DA60 ]
+    - [ 13, 0x0159DA60 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gKeatonCelebrateAnim:
+  type: OOT:ANIMATION
+  offset: 0x190C
+  symbol: gKeatonCelebrateAnim
+
+gKeatonChuckleAnim:
+  type: OOT:ANIMATION
+  offset: 0xCE8
+  symbol: gKeatonChuckleAnim
+
+gKeatonHeadLimb:
+  type: OOT:LIMB
+  offset: 0x7E80
+  symbol: gKeatonHeadLimb
+  limb_type: Standard
+
+gKeatonIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2770
+  symbol: gKeatonIdleAnim
+
+gKeatonLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x7E98
+  symbol: gKeatonLeftArmLimb
+  limb_type: Standard
+
+gKeatonLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7EE0
+  symbol: gKeatonLeftFootLimb
+  limb_type: Standard
+
+gKeatonLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7ED4
+  symbol: gKeatonLeftLegLimb
+  limb_type: Standard
+
+gKeatonLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x7E8C
+  symbol: gKeatonLeftShoulderLimb
+  limb_type: Standard
+
+gKeatonLeftTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x7F34
+  symbol: gKeatonLeftTailBaseLimb
+  limb_type: Standard
+
+gKeatonLeftTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x7F4C
+  symbol: gKeatonLeftTailEndLimb
+  limb_type: Standard
+
+gKeatonLeftTailMidLimb:
+  type: OOT:LIMB
+  offset: 0x7F40
+  symbol: gKeatonLeftTailMidLimb
+  limb_type: Standard
+
+gKeatonLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x7E68
+  symbol: gKeatonLowerBodyLimb
+  limb_type: Standard
+
+gKeatonMiddleTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x7F10
+  symbol: gKeatonMiddleTailBaseLimb
+  limb_type: Standard
+
+gKeatonMiddleTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x7F28
+  symbol: gKeatonMiddleTailEndLimb
+  limb_type: Standard
+
+gKeatonMiddleTailMidLimb:
+  type: OOT:LIMB
+  offset: 0x7F1C
+  symbol: gKeatonMiddleTailMidLimb
+  limb_type: Standard
+
+gKeatonRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x7EB0
+  symbol: gKeatonRightArmLimb
+  limb_type: Standard
+
+gKeatonRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7EC8
+  symbol: gKeatonRightFootLimb
+  limb_type: Standard
+
+gKeatonRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7EBC
+  symbol: gKeatonRightLegLimb
+  limb_type: Standard
+
+gKeatonRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x7EA4
+  symbol: gKeatonRightShoulderLimb
+  limb_type: Standard
+
+gKeatonRightTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x7EEC
+  symbol: gKeatonRightTailBaseLimb
+  limb_type: Standard
+
+gKeatonRightTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x7F04
+  symbol: gKeatonRightTailEndLimb
+  limb_type: Standard
+
+gKeatonRightTailMidLimb:
+  type: OOT:LIMB
+  offset: 0x7EF8
+  symbol: gKeatonRightTailMidLimb
+  limb_type: Standard
+
+gKeatonSkel:
+  type: MM:SKELETON
+  offset: 0x7FA8
+  symbol: gKeatonSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gKeatonUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x7E74
+  symbol: gKeatonUpperBodyLimb
+  limb_type: Standard
+
+object_kitan_DL_004C40:
+  type: GFX
+  offset: 0x4C40
+  symbol: object_kitan_DL_004C40
+
+object_kitan_DL_004DF0:
+  type: GFX
+  offset: 0x4DF0
+  symbol: object_kitan_DL_004DF0
+
+object_kitan_DL_005160:
+  type: GFX
+  offset: 0x5160
+  symbol: object_kitan_DL_005160
+
+object_kitan_DL_005628:
+  type: GFX
+  offset: 0x5628
+  symbol: object_kitan_DL_005628
+
+object_kitan_DL_005928:
+  type: GFX
+  offset: 0x5928
+  symbol: object_kitan_DL_005928
+
+object_kitan_DL_005B48:
+  type: GFX
+  offset: 0x5B48
+  symbol: object_kitan_DL_005B48
+
+object_kitan_DL_005E48:
+  type: GFX
+  offset: 0x5E48
+  symbol: object_kitan_DL_005E48
+
+object_kitan_DL_006068:
+  type: GFX
+  offset: 0x6068
+  symbol: object_kitan_DL_006068
+
+object_kitan_DL_0063E8:
+  type: GFX
+  offset: 0x63E8
+  symbol: object_kitan_DL_0063E8
+
+object_kitan_DL_0065E0:
+  type: GFX
+  offset: 0x65E0
+  symbol: object_kitan_DL_0065E0
+
+object_kitan_DL_0066A8:
+  type: GFX
+  offset: 0x66A8
+  symbol: object_kitan_DL_0066A8
+
+object_kitan_DL_006810:
+  type: GFX
+  offset: 0x6810
+  symbol: object_kitan_DL_006810
+
+object_kitan_DL_006990:
+  type: GFX
+  offset: 0x6990
+  symbol: object_kitan_DL_006990
+
+object_kitan_DL_006A58:
+  type: GFX
+  offset: 0x6A58
+  symbol: object_kitan_DL_006A58
+
+object_kitan_DL_006BC0:
+  type: GFX
+  offset: 0x6BC0
+  symbol: object_kitan_DL_006BC0
+
+object_kitan_DL_006D40:
+  type: GFX
+  offset: 0x6D40
+  symbol: object_kitan_DL_006D40
+
+object_kitan_DL_006E08:
+  type: GFX
+  offset: 0x6E08
+  symbol: object_kitan_DL_006E08
+
+object_kitan_DL_006F70:
+  type: GFX
+  offset: 0x6F70
+  symbol: object_kitan_DL_006F70
+
+object_kitan_DL_0070F0:
+  type: GFX
+  offset: 0x70F0
+  symbol: object_kitan_DL_0070F0
+
+object_kitan_DL_007470:
+  type: GFX
+  offset: 0x7470
+  symbol: object_kitan_DL_007470
+
+object_kitan_TLUT_007668:
+  type: TEXTURE
+  offset: 0x7668
+  symbol: object_kitan_TLUT_007668
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_kitan_Tex_007868:
+  type: TEXTURE
+  offset: 0x7868
+  symbol: object_kitan_Tex_007868
+  format: CI8
+  width: 32
+  height: 16
+
+object_kitan_Tex_007A68:
+  type: TEXTURE
+  offset: 0x7A68
+  symbol: object_kitan_Tex_007A68
+  format: CI8
+  width: 16
+  height: 16
+
+object_kitan_Tex_007B68:
+  type: TEXTURE
+  offset: 0x7B68
+  symbol: object_kitan_Tex_007B68
+  format: CI8
+  width: 16
+  height: 16
+
+object_kitan_Tex_007C68:
+  type: TEXTURE
+  offset: 0x7C68
+  symbol: object_kitan_Tex_007C68
+  format: CI8
+  width: 16
+  height: 16
+
+object_kitan_Tex_007D68:
+  type: TEXTURE
+  offset: 0x7D68
+  symbol: object_kitan_Tex_007D68
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_kitanVtx_002780:
+  type: MM:ARRAY
+  offset: 0x002780
+  symbol: object_kitanVtx_002780
+  count: 134
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_002FE0:
+  type: MM:ARRAY
+  offset: 0x002FE0
+  symbol: object_kitanVtx_002FE0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_0031B0:
+  type: MM:ARRAY
+  offset: 0x0031B0
+  symbol: object_kitanVtx_0031B0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_0033A0:
+  type: MM:ARRAY
+  offset: 0x0033A0
+  symbol: object_kitanVtx_0033A0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003570:
+  type: MM:ARRAY
+  offset: 0x003570
+  symbol: object_kitanVtx_003570
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003760:
+  type: MM:ARRAY
+  offset: 0x003760
+  symbol: object_kitanVtx_003760
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003980:
+  type: MM:ARRAY
+  offset: 0x003980
+  symbol: object_kitanVtx_003980
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003B10:
+  type: MM:ARRAY
+  offset: 0x003B10
+  symbol: object_kitanVtx_003B10
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003D30:
+  type: MM:ARRAY
+  offset: 0x003D30
+  symbol: object_kitanVtx_003D30
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_003EC0:
+  type: MM:ARRAY
+  offset: 0x003EC0
+  symbol: object_kitanVtx_003EC0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_0040E0:
+  type: MM:ARRAY
+  offset: 0x0040E0
+  symbol: object_kitanVtx_0040E0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004290:
+  type: MM:ARRAY
+  offset: 0x004290
+  symbol: object_kitanVtx_004290
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_0043D0:
+  type: MM:ARRAY
+  offset: 0x0043D0
+  symbol: object_kitanVtx_0043D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004420:
+  type: MM:ARRAY
+  offset: 0x004420
+  symbol: object_kitanVtx_004420
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_0045D0:
+  type: MM:ARRAY
+  offset: 0x0045D0
+  symbol: object_kitanVtx_0045D0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004710:
+  type: MM:ARRAY
+  offset: 0x004710
+  symbol: object_kitanVtx_004710
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004760:
+  type: MM:ARRAY
+  offset: 0x004760
+  symbol: object_kitanVtx_004760
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004910:
+  type: MM:ARRAY
+  offset: 0x004910
+  symbol: object_kitanVtx_004910
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004A50:
+  type: MM:ARRAY
+  offset: 0x004A50
+  symbol: object_kitanVtx_004A50
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kitanVtx_004AA0:
+  type: MM:ARRAY
+  offset: 0x004AA0
+  symbol: object_kitanVtx_004AA0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gKeatonSkelLimbs:
+  type: BLOB
+  offset: 0x7F58
+  symbol: gKeatonSkelLimbs
+  size: 0

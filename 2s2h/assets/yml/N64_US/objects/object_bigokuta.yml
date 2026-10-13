@@ -1,0 +1,511 @@
+:config:
+  segments:
+    - [ 6, 0x01274000 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01274000 ]
+    - [ 9, 0x01274000 ]
+    - [ 10, 0x01274000 ]
+    - [ 11, 0x01274000 ]
+    - [ 12, 0x01274000 ]
+    - [ 13, 0x01274000 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gBigOctoArmBottomTex:
+  type: TEXTURE
+  offset: 0x6890
+  symbol: gBigOctoArmBottomTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoArmTopTex:
+  type: TEXTURE
+  offset: 0x5B90
+  symbol: gBigOctoArmTopTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoBackLeftArmBaseDL:
+  type: GFX
+  offset: 0x53B0
+  symbol: gBigOctoBackLeftArmBaseDL
+
+gBigOctoBackLeftArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6ACC
+  symbol: gBigOctoBackLeftArmBaseLimb
+  limb_type: Standard
+
+gBigOctoBackLeftArmEndDL:
+  type: GFX
+  offset: 0x5470
+  symbol: gBigOctoBackLeftArmEndDL
+
+gBigOctoBackLeftArmEndLimb:
+  type: OOT:LIMB
+  offset: 0x6AD8
+  symbol: gBigOctoBackLeftArmEndLimb
+  limb_type: Standard
+
+gBigOctoBackRightArmBaseDL:
+  type: GFX
+  offset: 0x5110
+  symbol: gBigOctoBackRightArmBaseDL
+
+gBigOctoBackRightArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6AE4
+  symbol: gBigOctoBackRightArmBaseLimb
+  limb_type: Standard
+
+gBigOctoBackRightArmEndDL:
+  type: GFX
+  offset: 0x51D0
+  symbol: gBigOctoBackRightArmEndDL
+
+gBigOctoBackRightArmEndLimb:
+  type: OOT:LIMB
+  offset: 0x6AF0
+  symbol: gBigOctoBackRightArmEndLimb
+  limb_type: Standard
+
+gBigOctoBetweenEyesTex:
+  type: TEXTURE
+  offset: 0x6310
+  symbol: gBigOctoBetweenEyesTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBigOctoBodyDL:
+  type: GFX
+  offset: 0x4090
+  symbol: gBigOctoBodyDL
+
+gBigOctoBodyLimb:
+  type: OOT:LIMB
+  offset: 0x6A90
+  symbol: gBigOctoBodyLimb
+  limb_type: Standard
+
+gBigOctoCenterSnoutDL:
+  type: GFX
+  offset: 0x4158
+  symbol: gBigOctoCenterSnoutDL
+
+gBigOctoCenterSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x6B50
+  symbol: gBigOctoCenterSnoutLimb
+  limb_type: Standard
+
+gBigOctoDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0xA74
+  symbol: gBigOctoDeathAnim
+
+gBigOctoEyeShellTex:
+  type: TEXTURE
+  offset: 0x6590
+  symbol: gBigOctoEyeShellTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoEyeTex:
+  type: TEXTURE
+  offset: 0x5E90
+  symbol: gBigOctoEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoFrontLeftArmBaseDL:
+  type: GFX
+  offset: 0x5650
+  symbol: gBigOctoFrontLeftArmBaseDL
+
+gBigOctoFrontLeftArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6AB4
+  symbol: gBigOctoFrontLeftArmBaseLimb
+  limb_type: Standard
+
+gBigOctoFrontLeftArmEndDL:
+  type: GFX
+  offset: 0x5710
+  symbol: gBigOctoFrontLeftArmEndDL
+
+gBigOctoFrontLeftArmEndLimb:
+  type: OOT:LIMB
+  offset: 0x6AC0
+  symbol: gBigOctoFrontLeftArmEndLimb
+  limb_type: Standard
+
+gBigOctoFrontRightArmBaseDL:
+  type: GFX
+  offset: 0x58F0
+  symbol: gBigOctoFrontRightArmBaseDL
+
+gBigOctoFrontRightArmBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6A9C
+  symbol: gBigOctoFrontRightArmBaseLimb
+  limb_type: Standard
+
+gBigOctoFrontRightArmEndDL:
+  type: GFX
+  offset: 0x59B0
+  symbol: gBigOctoFrontRightArmEndDL
+
+gBigOctoFrontRightArmEndLimb:
+  type: OOT:LIMB
+  offset: 0x6AA8
+  symbol: gBigOctoFrontRightArmEndLimb
+  limb_type: Standard
+
+gBigOctoHeadBaseTex:
+  type: TEXTURE
+  offset: 0x6290
+  symbol: gBigOctoHeadBaseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBigOctoHeadShellDL:
+  type: GFX
+  offset: 0x44F8
+  symbol: gBigOctoHeadShellDL
+
+gBigOctoHeadShellLimb:
+  type: OOT:LIMB
+  offset: 0x6AFC
+  symbol: gBigOctoHeadShellLimb
+  limb_type: Standard
+
+gBigOctoHeadUndersideTex:
+  type: TEXTURE
+  offset: 0x6390
+  symbol: gBigOctoHeadUndersideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoHitAnim:
+  type: OOT:ANIMATION
+  offset: 0xD1C
+  symbol: gBigOctoHitAnim
+
+gBigOctoIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x14B8
+  symbol: gBigOctoIdleAnim
+
+gBigOctoLeftSnoutDL:
+  type: GFX
+  offset: 0x42A8
+  symbol: gBigOctoLeftSnoutDL
+
+gBigOctoLeftSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x6B68
+  symbol: gBigOctoLeftSnoutLimb
+  limb_type: Standard
+
+gBigOctoLeftTentacleBaseDL:
+  type: GFX
+  offset: 0x4F90
+  symbol: gBigOctoLeftTentacleBaseDL
+
+gBigOctoLeftTentacleBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6B08
+  symbol: gBigOctoLeftTentacleBaseLimb
+  limb_type: Standard
+
+gBigOctoLeftTentacleTipDL:
+  type: GFX
+  offset: 0x5038
+  symbol: gBigOctoLeftTentacleTipDL
+
+gBigOctoLeftTentacleTipLimb:
+  type: OOT:LIMB
+  offset: 0x6B14
+  symbol: gBigOctoLeftTentacleTipLimb
+  limb_type: Standard
+
+gBigOctoLeftWeakPointDL:
+  type: GFX
+  offset: 0x4CA0
+  symbol: gBigOctoLeftWeakPointDL
+
+gBigOctoLeftWeakPointLimb:
+  type: OOT:LIMB
+  offset: 0x6B38
+  symbol: gBigOctoLeftWeakPointLimb
+  limb_type: Standard
+
+gBigOctoRightSnoutDL:
+  type: GFX
+  offset: 0x43D0
+  symbol: gBigOctoRightSnoutDL
+
+gBigOctoRightSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x6B5C
+  symbol: gBigOctoRightSnoutLimb
+  limb_type: Standard
+
+gBigOctoRightTentacleBaseDL:
+  type: GFX
+  offset: 0x4E10
+  symbol: gBigOctoRightTentacleBaseDL
+
+gBigOctoRightTentacleBaseLimb:
+  type: OOT:LIMB
+  offset: 0x6B20
+  symbol: gBigOctoRightTentacleBaseLimb
+  limb_type: Standard
+
+gBigOctoRightTentacleTipDL:
+  type: GFX
+  offset: 0x4EB8
+  symbol: gBigOctoRightTentacleTipDL
+
+gBigOctoRightTentacleTipLimb:
+  type: OOT:LIMB
+  offset: 0x6B2C
+  symbol: gBigOctoRightTentacleTipLimb
+  limb_type: Standard
+
+gBigOctoRightWeakPointDL:
+  type: GFX
+  offset: 0x4AB8
+  symbol: gBigOctoRightWeakPointDL
+
+gBigOctoRightWeakPointLimb:
+  type: OOT:LIMB
+  offset: 0x6B44
+  symbol: gBigOctoRightWeakPointLimb
+  limb_type: Standard
+
+gBigOctoRiseOutOfWaterAnim:
+  type: OOT:ANIMATION
+  offset: 0x444
+  symbol: gBigOctoRiseOutOfWaterAnim
+
+gBigOctoShellTex:
+  type: TEXTURE
+  offset: 0x6090
+  symbol: gBigOctoShellTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBigOctoSkel:
+  type: MM:SKELETON
+  offset: 0x6BC0
+  symbol: gBigOctoSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBigOctoSnoutEdgeTex:
+  type: TEXTURE
+  offset: 0x6790
+  symbol: gBigOctoSnoutEdgeTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBigOctoWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x1CA4
+  symbol: gBigOctoWalkAnim
+
+gBigOctoWeakPointCoverTex:
+  type: TEXTURE
+  offset: 0x5D90
+  symbol: gBigOctoWeakPointCoverTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+
+object_bigokutaVtx_001CC0:
+  type: MM:ARRAY
+  offset: 0x001CC0
+  symbol: object_bigokutaVtx_001CC0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_001D80:
+  type: MM:ARRAY
+  offset: 0x001D80
+  symbol: object_bigokutaVtx_001D80
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_001DE0:
+  type: MM:ARRAY
+  offset: 0x001DE0
+  symbol: object_bigokutaVtx_001DE0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_001EA0:
+  type: MM:ARRAY
+  offset: 0x001EA0
+  symbol: object_bigokutaVtx_001EA0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_001F00:
+  type: MM:ARRAY
+  offset: 0x001F00
+  symbol: object_bigokutaVtx_001F00
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: object_bigokutaVtx_002090
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_002210:
+  type: MM:ARRAY
+  offset: 0x002210
+  symbol: object_bigokutaVtx_002210
+  count: 288
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003410:
+  type: MM:ARRAY
+  offset: 0x003410
+  symbol: object_bigokutaVtx_003410
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_0035F0:
+  type: MM:ARRAY
+  offset: 0x0035F0
+  symbol: object_bigokutaVtx_0035F0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_0036D0:
+  type: MM:ARRAY
+  offset: 0x0036D0
+  symbol: object_bigokutaVtx_0036D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_0037B0:
+  type: MM:ARRAY
+  offset: 0x0037B0
+  symbol: object_bigokutaVtx_0037B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003850:
+  type: MM:ARRAY
+  offset: 0x003850
+  symbol: object_bigokutaVtx_003850
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_0039E0:
+  type: MM:ARRAY
+  offset: 0x0039E0
+  symbol: object_bigokutaVtx_0039E0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003A70:
+  type: MM:ARRAY
+  offset: 0x003A70
+  symbol: object_bigokutaVtx_003A70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003C00:
+  type: MM:ARRAY
+  offset: 0x003C00
+  symbol: object_bigokutaVtx_003C00
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003C80:
+  type: MM:ARRAY
+  offset: 0x003C80
+  symbol: object_bigokutaVtx_003C80
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003E10:
+  type: MM:ARRAY
+  offset: 0x003E10
+  symbol: object_bigokutaVtx_003E10
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_003E90:
+  type: MM:ARRAY
+  offset: 0x003E90
+  symbol: object_bigokutaVtx_003E90
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bigokutaVtx_004020:
+  type: MM:ARRAY
+  offset: 0x004020
+  symbol: object_bigokutaVtx_004020
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBigOctoSkelLimbs:
+  type: BLOB
+  offset: 0x6B74
+  symbol: gBigOctoSkelLimbs
+  size: 0

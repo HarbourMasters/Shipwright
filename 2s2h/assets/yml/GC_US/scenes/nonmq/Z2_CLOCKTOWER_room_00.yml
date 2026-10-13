@@ -1,0 +1,2610 @@
+:config:
+  segments:
+    - [ 3, 0x01E5E200 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E5E200 ]
+    - [ 9, 0x01E5E200 ]
+    - [ 10, 0x01E5E200 ]
+    - [ 11, 0x01E5E200 ]
+    - [ 12, 0x01E5E200 ]
+    - [ 13, 0x01E5E200 ]
+    - [ 2, 0x01E46C70 ]
+  directory: scenes/nonmq/Z2_CLOCKTOWER
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_CLOCKTOWER.yml
+    - GC_US/scenes/nonmq/Z2_CLOCKTOWER_room_00Set_000420.yml
+    - GC_US/scenes/nonmq/Z2_CLOCKTOWER_room_00Set_000530.yml
+    - GC_US/scenes/nonmq/Z2_CLOCKTOWER_room_00Set_000610.yml
+
+Z2_CLOCKTOWER_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_CLOCKTOWER_room_00
+
+Z2_CLOCKTOWER_room_00DL_011708:
+  type: GFX
+  offset: 0x11708
+  symbol: Z2_CLOCKTOWER_room_00DL_011708
+
+Z2_CLOCKTOWER_room_00DL_013880:
+  type: GFX
+  offset: 0x13880
+  symbol: Z2_CLOCKTOWER_room_00DL_013880
+
+
+Z2_CLOCKTOWER_room_00ActorEntry_000084:
+  type: BLOB
+  offset: 0x000084
+  symbol: Z2_CLOCKTOWER_room_00ActorEntry_000084
+  size: 0
+
+Z2_CLOCKTOWER_room_00ActorEntry_000470:
+  type: BLOB
+  offset: 0x000470
+  symbol: Z2_CLOCKTOWER_room_00ActorEntry_000470
+  size: 0
+
+Z2_CLOCKTOWER_room_00ActorEntry_00057C:
+  type: BLOB
+  offset: 0x00057C
+  symbol: Z2_CLOCKTOWER_room_00ActorEntry_00057C
+  size: 0
+
+Z2_CLOCKTOWER_room_00ActorEntry_000678:
+  type: BLOB
+  offset: 0x000678
+  symbol: Z2_CLOCKTOWER_room_00ActorEntry_000678
+  size: 0
+
+Z2_CLOCKTOWER_room_00DL_00C5E8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x850
+  symbol: Z2_CLOCKTOWER_room_00DL_00C5E8Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00C468Mtx_000000:
+  type: OOT:MTX
+  offset: 0x890
+  symbol: Z2_CLOCKTOWER_room_00DL_00C468Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00C2E8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x8D0
+  symbol: Z2_CLOCKTOWER_room_00DL_00C2E8Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00C168Mtx_000000:
+  type: OOT:MTX
+  offset: 0x910
+  symbol: Z2_CLOCKTOWER_room_00DL_00C168Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00BFE8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x950
+  symbol: Z2_CLOCKTOWER_room_00DL_00BFE8Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00BE68Mtx_000000:
+  type: OOT:MTX
+  offset: 0x990
+  symbol: Z2_CLOCKTOWER_room_00DL_00BE68Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_00BCE8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x9D0
+  symbol: Z2_CLOCKTOWER_room_00DL_00BCE8Mtx_000000
+
+Z2_CLOCKTOWER_room_00DL_000A10:
+  type: GFX
+  offset: 0x000A10
+  symbol: Z2_CLOCKTOWER_room_00DL_000A10
+
+Z2_CLOCKTOWER_room_00Vtx_000A18:
+  type: MM:ARRAY
+  offset: 0x000A18
+  symbol: Z2_CLOCKTOWER_room_00Vtx_000A18
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_000BB8:
+  type: GFX
+  offset: 0x000BB8
+  symbol: Z2_CLOCKTOWER_room_00DL_000BB8
+
+Z2_CLOCKTOWER_room_00Vtx_000D00:
+  type: MM:ARRAY
+  offset: 0x000D00
+  symbol: Z2_CLOCKTOWER_room_00Vtx_000D00
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_000F30:
+  type: GFX
+  offset: 0x000F30
+  symbol: Z2_CLOCKTOWER_room_00DL_000F30
+
+Z2_CLOCKTOWER_room_00Vtx_001010:
+  type: MM:ARRAY
+  offset: 0x001010
+  symbol: Z2_CLOCKTOWER_room_00Vtx_001010
+  count: 156
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0019D0:
+  type: GFX
+  offset: 0x0019D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0019D0
+
+Z2_CLOCKTOWER_room_00Vtx_001C18:
+  type: MM:ARRAY
+  offset: 0x001C18
+  symbol: Z2_CLOCKTOWER_room_00Vtx_001C18
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_001E58:
+  type: GFX
+  offset: 0x001E58
+  symbol: Z2_CLOCKTOWER_room_00DL_001E58
+
+Z2_CLOCKTOWER_room_00Vtx_001F78:
+  type: MM:ARRAY
+  offset: 0x001F78
+  symbol: Z2_CLOCKTOWER_room_00Vtx_001F78
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_002098:
+  type: GFX
+  offset: 0x002098
+  symbol: Z2_CLOCKTOWER_room_00DL_002098
+
+Z2_CLOCKTOWER_room_00Vtx_002140:
+  type: MM:ARRAY
+  offset: 0x002140
+  symbol: Z2_CLOCKTOWER_room_00Vtx_002140
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_002300:
+  type: GFX
+  offset: 0x002300
+  symbol: Z2_CLOCKTOWER_room_00DL_002300
+
+Z2_CLOCKTOWER_room_00Vtx_0023F0:
+  type: MM:ARRAY
+  offset: 0x0023F0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0023F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_002570:
+  type: GFX
+  offset: 0x002570
+  symbol: Z2_CLOCKTOWER_room_00DL_002570
+
+Z2_CLOCKTOWER_room_00Vtx_002678:
+  type: MM:ARRAY
+  offset: 0x002678
+  symbol: Z2_CLOCKTOWER_room_00Vtx_002678
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_002738:
+  type: GFX
+  offset: 0x002738
+  symbol: Z2_CLOCKTOWER_room_00DL_002738
+
+Z2_CLOCKTOWER_room_00DL_0027D8:
+  type: GFX
+  offset: 0x0027D8
+  symbol: Z2_CLOCKTOWER_room_00DL_0027D8
+
+Z2_CLOCKTOWER_room_00Vtx_002810:
+  type: MM:ARRAY
+  offset: 0x002810
+  symbol: Z2_CLOCKTOWER_room_00Vtx_002810
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0029D0:
+  type: GFX
+  offset: 0x0029D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0029D0
+
+Z2_CLOCKTOWER_room_00Vtx_002A90:
+  type: MM:ARRAY
+  offset: 0x002A90
+  symbol: Z2_CLOCKTOWER_room_00Vtx_002A90
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0032D0:
+  type: GFX
+  offset: 0x0032D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0032D0
+
+Z2_CLOCKTOWER_room_00Vtx_003528:
+  type: MM:ARRAY
+  offset: 0x003528
+  symbol: Z2_CLOCKTOWER_room_00Vtx_003528
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_003628:
+  type: GFX
+  offset: 0x003628
+  symbol: Z2_CLOCKTOWER_room_00DL_003628
+
+Z2_CLOCKTOWER_room_00Vtx_003708:
+  type: MM:ARRAY
+  offset: 0x003708
+  symbol: Z2_CLOCKTOWER_room_00Vtx_003708
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0037F8:
+  type: GFX
+  offset: 0x0037F8
+  symbol: Z2_CLOCKTOWER_room_00DL_0037F8
+
+Z2_CLOCKTOWER_room_00Vtx_0038D8:
+  type: MM:ARRAY
+  offset: 0x0038D8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0038D8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_003A88:
+  type: GFX
+  offset: 0x003A88
+  symbol: Z2_CLOCKTOWER_room_00DL_003A88
+
+Z2_CLOCKTOWER_room_00DL_003B98:
+  type: GFX
+  offset: 0x003B98
+  symbol: Z2_CLOCKTOWER_room_00DL_003B98
+
+Z2_CLOCKTOWER_room_00Vtx_003BB8:
+  type: MM:ARRAY
+  offset: 0x003BB8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_003BB8
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_003C98:
+  type: GFX
+  offset: 0x003C98
+  symbol: Z2_CLOCKTOWER_room_00DL_003C98
+
+Z2_CLOCKTOWER_room_00Vtx_003D70:
+  type: MM:ARRAY
+  offset: 0x003D70
+  symbol: Z2_CLOCKTOWER_room_00Vtx_003D70
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_003E90:
+  type: GFX
+  offset: 0x003E90
+  symbol: Z2_CLOCKTOWER_room_00DL_003E90
+
+Z2_CLOCKTOWER_room_00Vtx_003F78:
+  type: MM:ARRAY
+  offset: 0x003F78
+  symbol: Z2_CLOCKTOWER_room_00Vtx_003F78
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0040B8:
+  type: GFX
+  offset: 0x0040B8
+  symbol: Z2_CLOCKTOWER_room_00DL_0040B8
+
+Z2_CLOCKTOWER_room_00DL_004168:
+  type: GFX
+  offset: 0x004168
+  symbol: Z2_CLOCKTOWER_room_00DL_004168
+
+Z2_CLOCKTOWER_room_00Vtx_004188:
+  type: MM:ARRAY
+  offset: 0x004188
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004188
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004278:
+  type: GFX
+  offset: 0x004278
+  symbol: Z2_CLOCKTOWER_room_00DL_004278
+
+Z2_CLOCKTOWER_room_00Vtx_004350:
+  type: MM:ARRAY
+  offset: 0x004350
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004350
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004450:
+  type: GFX
+  offset: 0x004450
+  symbol: Z2_CLOCKTOWER_room_00DL_004450
+
+Z2_CLOCKTOWER_room_00Vtx_004538:
+  type: MM:ARRAY
+  offset: 0x004538
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004538
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004658:
+  type: GFX
+  offset: 0x004658
+  symbol: Z2_CLOCKTOWER_room_00DL_004658
+
+Z2_CLOCKTOWER_room_00DL_004738:
+  type: GFX
+  offset: 0x004738
+  symbol: Z2_CLOCKTOWER_room_00DL_004738
+
+Z2_CLOCKTOWER_room_00Vtx_004758:
+  type: MM:ARRAY
+  offset: 0x004758
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004758
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004818:
+  type: GFX
+  offset: 0x004818
+  symbol: Z2_CLOCKTOWER_room_00DL_004818
+
+Z2_CLOCKTOWER_room_00Vtx_0048E8:
+  type: MM:ARRAY
+  offset: 0x0048E8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0048E8
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004AE8:
+  type: GFX
+  offset: 0x004AE8
+  symbol: Z2_CLOCKTOWER_room_00DL_004AE8
+
+Z2_CLOCKTOWER_room_00Vtx_004BE8:
+  type: MM:ARRAY
+  offset: 0x004BE8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004BE8
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_004CC8:
+  type: GFX
+  offset: 0x004CC8
+  symbol: Z2_CLOCKTOWER_room_00DL_004CC8
+
+Z2_CLOCKTOWER_room_00DL_004DA0:
+  type: GFX
+  offset: 0x004DA0
+  symbol: Z2_CLOCKTOWER_room_00DL_004DA0
+
+Z2_CLOCKTOWER_room_00Vtx_004DC0:
+  type: MM:ARRAY
+  offset: 0x004DC0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_004DC0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0050C0:
+  type: GFX
+  offset: 0x0050C0
+  symbol: Z2_CLOCKTOWER_room_00DL_0050C0
+
+Z2_CLOCKTOWER_room_00Vtx_0051B0:
+  type: MM:ARRAY
+  offset: 0x0051B0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0051B0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005560:
+  type: GFX
+  offset: 0x005560
+  symbol: Z2_CLOCKTOWER_room_00DL_005560
+
+Z2_CLOCKTOWER_room_00Vtx_0056F8:
+  type: MM:ARRAY
+  offset: 0x0056F8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0056F8
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005908:
+  type: GFX
+  offset: 0x005908
+  symbol: Z2_CLOCKTOWER_room_00DL_005908
+
+Z2_CLOCKTOWER_room_00Vtx_0059E8:
+  type: MM:ARRAY
+  offset: 0x0059E8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0059E8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005B28:
+  type: GFX
+  offset: 0x005B28
+  symbol: Z2_CLOCKTOWER_room_00DL_005B28
+
+Z2_CLOCKTOWER_room_00Vtx_005BD8:
+  type: MM:ARRAY
+  offset: 0x005BD8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_005BD8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005BE8:
+  type: GFX
+  offset: 0x005BE8
+  symbol: Z2_CLOCKTOWER_room_00DL_005BE8
+
+Z2_CLOCKTOWER_room_00Vtx_005C08:
+  type: MM:ARRAY
+  offset: 0x005C08
+  symbol: Z2_CLOCKTOWER_room_00Vtx_005C08
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005DB8:
+  type: GFX
+  offset: 0x005DB8
+  symbol: Z2_CLOCKTOWER_room_00DL_005DB8
+
+Z2_CLOCKTOWER_room_00Vtx_005EC8:
+  type: MM:ARRAY
+  offset: 0x005EC8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_005EC8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_005ED8:
+  type: GFX
+  offset: 0x005ED8
+  symbol: Z2_CLOCKTOWER_room_00DL_005ED8
+
+Z2_CLOCKTOWER_room_00DL_005EF8:
+  type: GFX
+  offset: 0x005EF8
+  symbol: Z2_CLOCKTOWER_room_00DL_005EF8
+
+Z2_CLOCKTOWER_room_00Vtx_005F10:
+  type: MM:ARRAY
+  offset: 0x005F10
+  symbol: Z2_CLOCKTOWER_room_00Vtx_005F10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006090:
+  type: GFX
+  offset: 0x006090
+  symbol: Z2_CLOCKTOWER_room_00DL_006090
+
+Z2_CLOCKTOWER_room_00Vtx_006150:
+  type: MM:ARRAY
+  offset: 0x006150
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006150
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006160:
+  type: GFX
+  offset: 0x006160
+  symbol: Z2_CLOCKTOWER_room_00DL_006160
+
+Z2_CLOCKTOWER_room_00Vtx_006180:
+  type: MM:ARRAY
+  offset: 0x006180
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006180
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006370:
+  type: GFX
+  offset: 0x006370
+  symbol: Z2_CLOCKTOWER_room_00DL_006370
+
+Z2_CLOCKTOWER_room_00Vtx_006438:
+  type: MM:ARRAY
+  offset: 0x006438
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006438
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006448:
+  type: GFX
+  offset: 0x006448
+  symbol: Z2_CLOCKTOWER_room_00DL_006448
+
+Z2_CLOCKTOWER_room_00DL_006468:
+  type: GFX
+  offset: 0x006468
+  symbol: Z2_CLOCKTOWER_room_00DL_006468
+
+Z2_CLOCKTOWER_room_00DL_006480:
+  type: GFX
+  offset: 0x006480
+  symbol: Z2_CLOCKTOWER_room_00DL_006480
+
+Z2_CLOCKTOWER_room_00Vtx_006490:
+  type: MM:ARRAY
+  offset: 0x006490
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006490
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006680:
+  type: GFX
+  offset: 0x006680
+  symbol: Z2_CLOCKTOWER_room_00DL_006680
+
+Z2_CLOCKTOWER_room_00Vtx_006748:
+  type: MM:ARRAY
+  offset: 0x006748
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006748
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006758:
+  type: GFX
+  offset: 0x006758
+  symbol: Z2_CLOCKTOWER_room_00DL_006758
+
+Z2_CLOCKTOWER_room_00Vtx_006788:
+  type: MM:ARRAY
+  offset: 0x006788
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006788
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006908:
+  type: GFX
+  offset: 0x006908
+  symbol: Z2_CLOCKTOWER_room_00DL_006908
+
+Z2_CLOCKTOWER_room_00Vtx_0069C8:
+  type: MM:ARRAY
+  offset: 0x0069C8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0069C8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0069D8:
+  type: GFX
+  offset: 0x0069D8
+  symbol: Z2_CLOCKTOWER_room_00DL_0069D8
+
+Z2_CLOCKTOWER_room_00DL_006A08:
+  type: GFX
+  offset: 0x006A08
+  symbol: Z2_CLOCKTOWER_room_00DL_006A08
+
+Z2_CLOCKTOWER_room_00DL_006A20:
+  type: GFX
+  offset: 0x006A20
+  symbol: Z2_CLOCKTOWER_room_00DL_006A20
+
+Z2_CLOCKTOWER_room_00Vtx_006A30:
+  type: MM:ARRAY
+  offset: 0x006A30
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006A30
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006C20:
+  type: GFX
+  offset: 0x006C20
+  symbol: Z2_CLOCKTOWER_room_00DL_006C20
+
+Z2_CLOCKTOWER_room_00Vtx_006CE8:
+  type: MM:ARRAY
+  offset: 0x006CE8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006CE8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006CF8:
+  type: GFX
+  offset: 0x006CF8
+  symbol: Z2_CLOCKTOWER_room_00DL_006CF8
+
+Z2_CLOCKTOWER_room_00Vtx_006D28:
+  type: MM:ARRAY
+  offset: 0x006D28
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006D28
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006EA8:
+  type: GFX
+  offset: 0x006EA8
+  symbol: Z2_CLOCKTOWER_room_00DL_006EA8
+
+Z2_CLOCKTOWER_room_00Vtx_006F68:
+  type: MM:ARRAY
+  offset: 0x006F68
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006F68
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_006F78:
+  type: GFX
+  offset: 0x006F78
+  symbol: Z2_CLOCKTOWER_room_00DL_006F78
+
+Z2_CLOCKTOWER_room_00DL_006FA8:
+  type: GFX
+  offset: 0x006FA8
+  symbol: Z2_CLOCKTOWER_room_00DL_006FA8
+
+Z2_CLOCKTOWER_room_00DL_006FC0:
+  type: GFX
+  offset: 0x006FC0
+  symbol: Z2_CLOCKTOWER_room_00DL_006FC0
+
+Z2_CLOCKTOWER_room_00Vtx_006FD0:
+  type: MM:ARRAY
+  offset: 0x006FD0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_006FD0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0070D0:
+  type: GFX
+  offset: 0x0070D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0070D0
+
+Z2_CLOCKTOWER_room_00Vtx_007178:
+  type: MM:ARRAY
+  offset: 0x007178
+  symbol: Z2_CLOCKTOWER_room_00Vtx_007178
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_007188:
+  type: GFX
+  offset: 0x007188
+  symbol: Z2_CLOCKTOWER_room_00DL_007188
+
+Z2_CLOCKTOWER_room_00DL_0071A8:
+  type: GFX
+  offset: 0x0071A8
+  symbol: Z2_CLOCKTOWER_room_00DL_0071A8
+
+Z2_CLOCKTOWER_room_00Vtx_0071B8:
+  type: MM:ARRAY
+  offset: 0x0071B8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0071B8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0072F8:
+  type: GFX
+  offset: 0x0072F8
+  symbol: Z2_CLOCKTOWER_room_00DL_0072F8
+
+Z2_CLOCKTOWER_room_00Vtx_0073A8:
+  type: MM:ARRAY
+  offset: 0x0073A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0073A8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0073B8:
+  type: GFX
+  offset: 0x0073B8
+  symbol: Z2_CLOCKTOWER_room_00DL_0073B8
+
+Z2_CLOCKTOWER_room_00DL_0073D8:
+  type: GFX
+  offset: 0x0073D8
+  symbol: Z2_CLOCKTOWER_room_00DL_0073D8
+
+Z2_CLOCKTOWER_room_00DL_0073E8:
+  type: GFX
+  offset: 0x0073E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0073E8
+
+Z2_CLOCKTOWER_room_00Vtx_007480:
+  type: MM:ARRAY
+  offset: 0x007480
+  symbol: Z2_CLOCKTOWER_room_00Vtx_007480
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_007870:
+  type: GFX
+  offset: 0x007870
+  symbol: Z2_CLOCKTOWER_room_00DL_007870
+
+Z2_CLOCKTOWER_room_00Vtx_007A08:
+  type: MM:ARRAY
+  offset: 0x007A08
+  symbol: Z2_CLOCKTOWER_room_00Vtx_007A08
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_007BB8:
+  type: GFX
+  offset: 0x007BB8
+  symbol: Z2_CLOCKTOWER_room_00DL_007BB8
+
+Z2_CLOCKTOWER_room_00Vtx_007CC0:
+  type: MM:ARRAY
+  offset: 0x007CC0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_007CC0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_007E40:
+  type: GFX
+  offset: 0x007E40
+  symbol: Z2_CLOCKTOWER_room_00DL_007E40
+
+Z2_CLOCKTOWER_room_00DL_007F48:
+  type: GFX
+  offset: 0x007F48
+  symbol: Z2_CLOCKTOWER_room_00DL_007F48
+
+Z2_CLOCKTOWER_room_00Vtx_007F68:
+  type: MM:ARRAY
+  offset: 0x007F68
+  symbol: Z2_CLOCKTOWER_room_00Vtx_007F68
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_008088:
+  type: GFX
+  offset: 0x008088
+  symbol: Z2_CLOCKTOWER_room_00DL_008088
+
+Z2_CLOCKTOWER_room_00DL_008130:
+  type: GFX
+  offset: 0x008130
+  symbol: Z2_CLOCKTOWER_room_00DL_008130
+
+Z2_CLOCKTOWER_room_00Vtx_008140:
+  type: MM:ARRAY
+  offset: 0x008140
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008140
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0082C0:
+  type: GFX
+  offset: 0x0082C0
+  symbol: Z2_CLOCKTOWER_room_00DL_0082C0
+
+Z2_CLOCKTOWER_room_00Vtx_008400:
+  type: MM:ARRAY
+  offset: 0x008400
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008400
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_008580:
+  type: GFX
+  offset: 0x008580
+  symbol: Z2_CLOCKTOWER_room_00DL_008580
+
+Z2_CLOCKTOWER_room_00DL_008638:
+  type: GFX
+  offset: 0x008638
+  symbol: Z2_CLOCKTOWER_room_00DL_008638
+
+Z2_CLOCKTOWER_room_00Vtx_008650:
+  type: MM:ARRAY
+  offset: 0x008650
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008650
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0087F0:
+  type: GFX
+  offset: 0x0087F0
+  symbol: Z2_CLOCKTOWER_room_00DL_0087F0
+
+Z2_CLOCKTOWER_room_00Vtx_0088F8:
+  type: MM:ARRAY
+  offset: 0x0088F8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0088F8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_008AB8:
+  type: GFX
+  offset: 0x008AB8
+  symbol: Z2_CLOCKTOWER_room_00DL_008AB8
+
+Z2_CLOCKTOWER_room_00DL_008BC8:
+  type: GFX
+  offset: 0x008BC8
+  symbol: Z2_CLOCKTOWER_room_00DL_008BC8
+
+Z2_CLOCKTOWER_room_00Vtx_008BE0:
+  type: MM:ARRAY
+  offset: 0x008BE0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008BE0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_008CE0:
+  type: GFX
+  offset: 0x008CE0
+  symbol: Z2_CLOCKTOWER_room_00DL_008CE0
+
+Z2_CLOCKTOWER_room_00DL_008DB8:
+  type: GFX
+  offset: 0x008DB8
+  symbol: Z2_CLOCKTOWER_room_00DL_008DB8
+
+Z2_CLOCKTOWER_room_00Vtx_008DC8:
+  type: MM:ARRAY
+  offset: 0x008DC8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008DC8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_008ED8:
+  type: GFX
+  offset: 0x008ED8
+  symbol: Z2_CLOCKTOWER_room_00DL_008ED8
+
+Z2_CLOCKTOWER_room_00Vtx_008FD0:
+  type: MM:ARRAY
+  offset: 0x008FD0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_008FD0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_009170:
+  type: GFX
+  offset: 0x009170
+  symbol: Z2_CLOCKTOWER_room_00DL_009170
+
+Z2_CLOCKTOWER_room_00Vtx_0092F8:
+  type: MM:ARRAY
+  offset: 0x0092F8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0092F8
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_009458:
+  type: GFX
+  offset: 0x009458
+  symbol: Z2_CLOCKTOWER_room_00DL_009458
+
+Z2_CLOCKTOWER_room_00Vtx_0095C0:
+  type: MM:ARRAY
+  offset: 0x0095C0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0095C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0096D0:
+  type: GFX
+  offset: 0x0096D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0096D0
+
+Z2_CLOCKTOWER_room_00Vtx_009830:
+  type: MM:ARRAY
+  offset: 0x009830
+  symbol: Z2_CLOCKTOWER_room_00Vtx_009830
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_009920:
+  type: GFX
+  offset: 0x009920
+  symbol: Z2_CLOCKTOWER_room_00DL_009920
+
+Z2_CLOCKTOWER_room_00Vtx_009A80:
+  type: MM:ARRAY
+  offset: 0x009A80
+  symbol: Z2_CLOCKTOWER_room_00Vtx_009A80
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_009D00:
+  type: GFX
+  offset: 0x009D00
+  symbol: Z2_CLOCKTOWER_room_00DL_009D00
+
+Z2_CLOCKTOWER_room_00Vtx_009EB0:
+  type: MM:ARRAY
+  offset: 0x009EB0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_009EB0
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00A700:
+  type: GFX
+  offset: 0x00A700
+  symbol: Z2_CLOCKTOWER_room_00DL_00A700
+
+Z2_CLOCKTOWER_room_00DL_00A958:
+  type: GFX
+  offset: 0x00A958
+  symbol: Z2_CLOCKTOWER_room_00DL_00A958
+
+Z2_CLOCKTOWER_room_00Vtx_00A990:
+  type: MM:ARRAY
+  offset: 0x00A990
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00A990
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00AA90:
+  type: GFX
+  offset: 0x00AA90
+  symbol: Z2_CLOCKTOWER_room_00DL_00AA90
+
+Z2_CLOCKTOWER_room_00Vtx_00ABF0:
+  type: MM:ARRAY
+  offset: 0x00ABF0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00ABF0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00AD70:
+  type: GFX
+  offset: 0x00AD70
+  symbol: Z2_CLOCKTOWER_room_00DL_00AD70
+
+Z2_CLOCKTOWER_room_00Vtx_00AE28:
+  type: MM:ARRAY
+  offset: 0x00AE28
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00AE28
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00AF48:
+  type: GFX
+  offset: 0x00AF48
+  symbol: Z2_CLOCKTOWER_room_00DL_00AF48
+
+Z2_CLOCKTOWER_room_00Vtx_00B028:
+  type: MM:ARRAY
+  offset: 0x00B028
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00B028
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00B148:
+  type: GFX
+  offset: 0x00B148
+  symbol: Z2_CLOCKTOWER_room_00DL_00B148
+
+Z2_CLOCKTOWER_room_00Vtx_00B228:
+  type: MM:ARRAY
+  offset: 0x00B228
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00B228
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00B3C8:
+  type: GFX
+  offset: 0x00B3C8
+  symbol: Z2_CLOCKTOWER_room_00DL_00B3C8
+
+Z2_CLOCKTOWER_room_00Vtx_00B4A8:
+  type: MM:ARRAY
+  offset: 0x00B4A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00B4A8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00B668:
+  type: GFX
+  offset: 0x00B668
+  symbol: Z2_CLOCKTOWER_room_00DL_00B668
+
+Z2_CLOCKTOWER_room_00Vtx_00B728:
+  type: MM:ARRAY
+  offset: 0x00B728
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00B728
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00B8E8:
+  type: GFX
+  offset: 0x00B8E8
+  symbol: Z2_CLOCKTOWER_room_00DL_00B8E8
+
+Z2_CLOCKTOWER_room_00Vtx_00B9A8:
+  type: MM:ARRAY
+  offset: 0x00B9A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00B9A8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00BB68:
+  type: GFX
+  offset: 0x00BB68
+  symbol: Z2_CLOCKTOWER_room_00DL_00BB68
+
+Z2_CLOCKTOWER_room_00Vtx_00BC28:
+  type: MM:ARRAY
+  offset: 0x00BC28
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00BC28
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00BCE8:
+  type: GFX
+  offset: 0x00BCE8
+  symbol: Z2_CLOCKTOWER_room_00DL_00BCE8
+
+Z2_CLOCKTOWER_room_00DL_00BD98:
+  type: GFX
+  offset: 0x00BD98
+  symbol: Z2_CLOCKTOWER_room_00DL_00BD98
+
+Z2_CLOCKTOWER_room_00Vtx_00BDA8:
+  type: MM:ARRAY
+  offset: 0x00BDA8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00BDA8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00BE68:
+  type: GFX
+  offset: 0x00BE68
+  symbol: Z2_CLOCKTOWER_room_00DL_00BE68
+
+Z2_CLOCKTOWER_room_00DL_00BF18:
+  type: GFX
+  offset: 0x00BF18
+  symbol: Z2_CLOCKTOWER_room_00DL_00BF18
+
+Z2_CLOCKTOWER_room_00Vtx_00BF28:
+  type: MM:ARRAY
+  offset: 0x00BF28
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00BF28
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00BFE8:
+  type: GFX
+  offset: 0x00BFE8
+  symbol: Z2_CLOCKTOWER_room_00DL_00BFE8
+
+Z2_CLOCKTOWER_room_00DL_00C098:
+  type: GFX
+  offset: 0x00C098
+  symbol: Z2_CLOCKTOWER_room_00DL_00C098
+
+Z2_CLOCKTOWER_room_00Vtx_00C0A8:
+  type: MM:ARRAY
+  offset: 0x00C0A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C0A8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C168:
+  type: GFX
+  offset: 0x00C168
+  symbol: Z2_CLOCKTOWER_room_00DL_00C168
+
+Z2_CLOCKTOWER_room_00DL_00C218:
+  type: GFX
+  offset: 0x00C218
+  symbol: Z2_CLOCKTOWER_room_00DL_00C218
+
+Z2_CLOCKTOWER_room_00Vtx_00C228:
+  type: MM:ARRAY
+  offset: 0x00C228
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C228
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C2E8:
+  type: GFX
+  offset: 0x00C2E8
+  symbol: Z2_CLOCKTOWER_room_00DL_00C2E8
+
+Z2_CLOCKTOWER_room_00DL_00C398:
+  type: GFX
+  offset: 0x00C398
+  symbol: Z2_CLOCKTOWER_room_00DL_00C398
+
+Z2_CLOCKTOWER_room_00Vtx_00C3A8:
+  type: MM:ARRAY
+  offset: 0x00C3A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C3A8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C468:
+  type: GFX
+  offset: 0x00C468
+  symbol: Z2_CLOCKTOWER_room_00DL_00C468
+
+Z2_CLOCKTOWER_room_00DL_00C518:
+  type: GFX
+  offset: 0x00C518
+  symbol: Z2_CLOCKTOWER_room_00DL_00C518
+
+Z2_CLOCKTOWER_room_00Vtx_00C528:
+  type: MM:ARRAY
+  offset: 0x00C528
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C528
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C5E8:
+  type: GFX
+  offset: 0x00C5E8
+  symbol: Z2_CLOCKTOWER_room_00DL_00C5E8
+
+Z2_CLOCKTOWER_room_00DL_00C698:
+  type: GFX
+  offset: 0x00C698
+  symbol: Z2_CLOCKTOWER_room_00DL_00C698
+
+Z2_CLOCKTOWER_room_00Vtx_00C6A8:
+  type: MM:ARRAY
+  offset: 0x00C6A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C6A8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C7A8:
+  type: GFX
+  offset: 0x00C7A8
+  symbol: Z2_CLOCKTOWER_room_00DL_00C7A8
+
+Z2_CLOCKTOWER_room_00Vtx_00C858:
+  type: MM:ARRAY
+  offset: 0x00C858
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C858
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C868:
+  type: GFX
+  offset: 0x00C868
+  symbol: Z2_CLOCKTOWER_room_00DL_00C868
+
+Z2_CLOCKTOWER_room_00DL_00C888:
+  type: GFX
+  offset: 0x00C888
+  symbol: Z2_CLOCKTOWER_room_00DL_00C888
+
+Z2_CLOCKTOWER_room_00Vtx_00C898:
+  type: MM:ARRAY
+  offset: 0x00C898
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00C898
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00C998:
+  type: GFX
+  offset: 0x00C998
+  symbol: Z2_CLOCKTOWER_room_00DL_00C998
+
+Z2_CLOCKTOWER_room_00Vtx_00CA48:
+  type: MM:ARRAY
+  offset: 0x00CA48
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CA48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CA58:
+  type: GFX
+  offset: 0x00CA58
+  symbol: Z2_CLOCKTOWER_room_00DL_00CA58
+
+Z2_CLOCKTOWER_room_00DL_00CA78:
+  type: GFX
+  offset: 0x00CA78
+  symbol: Z2_CLOCKTOWER_room_00DL_00CA78
+
+Z2_CLOCKTOWER_room_00Vtx_00CA88:
+  type: MM:ARRAY
+  offset: 0x00CA88
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CA88
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CB88:
+  type: GFX
+  offset: 0x00CB88
+  symbol: Z2_CLOCKTOWER_room_00DL_00CB88
+
+Z2_CLOCKTOWER_room_00Vtx_00CC38:
+  type: MM:ARRAY
+  offset: 0x00CC38
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CC38
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CC48:
+  type: GFX
+  offset: 0x00CC48
+  symbol: Z2_CLOCKTOWER_room_00DL_00CC48
+
+Z2_CLOCKTOWER_room_00DL_00CC68:
+  type: GFX
+  offset: 0x00CC68
+  symbol: Z2_CLOCKTOWER_room_00DL_00CC68
+
+Z2_CLOCKTOWER_room_00Vtx_00CC78:
+  type: MM:ARRAY
+  offset: 0x00CC78
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CC78
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CD78:
+  type: GFX
+  offset: 0x00CD78
+  symbol: Z2_CLOCKTOWER_room_00DL_00CD78
+
+Z2_CLOCKTOWER_room_00Vtx_00CE28:
+  type: MM:ARRAY
+  offset: 0x00CE28
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CE28
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CE38:
+  type: GFX
+  offset: 0x00CE38
+  symbol: Z2_CLOCKTOWER_room_00DL_00CE38
+
+Z2_CLOCKTOWER_room_00DL_00CE58:
+  type: GFX
+  offset: 0x00CE58
+  symbol: Z2_CLOCKTOWER_room_00DL_00CE58
+
+Z2_CLOCKTOWER_room_00Vtx_00CE68:
+  type: MM:ARRAY
+  offset: 0x00CE68
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00CE68
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00CF68:
+  type: GFX
+  offset: 0x00CF68
+  symbol: Z2_CLOCKTOWER_room_00DL_00CF68
+
+Z2_CLOCKTOWER_room_00Vtx_00D018:
+  type: MM:ARRAY
+  offset: 0x00D018
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00D018
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00D028:
+  type: GFX
+  offset: 0x00D028
+  symbol: Z2_CLOCKTOWER_room_00DL_00D028
+
+Z2_CLOCKTOWER_room_00DL_00D048:
+  type: GFX
+  offset: 0x00D048
+  symbol: Z2_CLOCKTOWER_room_00DL_00D048
+
+Z2_CLOCKTOWER_room_00Vtx_00D058:
+  type: MM:ARRAY
+  offset: 0x00D058
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00D058
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00D258:
+  type: GFX
+  offset: 0x00D258
+  symbol: Z2_CLOCKTOWER_room_00DL_00D258
+
+Z2_CLOCKTOWER_room_00Vtx_00D350:
+  type: MM:ARRAY
+  offset: 0x00D350
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00D350
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00D570:
+  type: GFX
+  offset: 0x00D570
+  symbol: Z2_CLOCKTOWER_room_00DL_00D570
+
+Z2_CLOCKTOWER_room_00Vtx_00D670:
+  type: MM:ARRAY
+  offset: 0x00D670
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00D670
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00D890:
+  type: GFX
+  offset: 0x00D890
+  symbol: Z2_CLOCKTOWER_room_00DL_00D890
+
+Z2_CLOCKTOWER_room_00DL_00D990:
+  type: GFX
+  offset: 0x00D990
+  symbol: Z2_CLOCKTOWER_room_00DL_00D990
+
+Z2_CLOCKTOWER_room_00Vtx_00DA88:
+  type: MM:ARRAY
+  offset: 0x00DA88
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00DA88
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E1A8:
+  type: GFX
+  offset: 0x00E1A8
+  symbol: Z2_CLOCKTOWER_room_00DL_00E1A8
+
+Z2_CLOCKTOWER_room_00Vtx_00E4B0:
+  type: MM:ARRAY
+  offset: 0x00E4B0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E4B0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E4C0:
+  type: GFX
+  offset: 0x00E4C0
+  symbol: Z2_CLOCKTOWER_room_00DL_00E4C0
+
+Z2_CLOCKTOWER_room_00Vtx_00E4E0:
+  type: MM:ARRAY
+  offset: 0x00E4E0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E4E0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E5A0:
+  type: GFX
+  offset: 0x00E5A0
+  symbol: Z2_CLOCKTOWER_room_00DL_00E5A0
+
+Z2_CLOCKTOWER_room_00Vtx_00E670:
+  type: MM:ARRAY
+  offset: 0x00E670
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E670
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E680:
+  type: GFX
+  offset: 0x00E680
+  symbol: Z2_CLOCKTOWER_room_00DL_00E680
+
+Z2_CLOCKTOWER_room_00Vtx_00E6A0:
+  type: MM:ARRAY
+  offset: 0x00E6A0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E6A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E760:
+  type: GFX
+  offset: 0x00E760
+  symbol: Z2_CLOCKTOWER_room_00DL_00E760
+
+Z2_CLOCKTOWER_room_00Vtx_00E800:
+  type: MM:ARRAY
+  offset: 0x00E800
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E800
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E810:
+  type: GFX
+  offset: 0x00E810
+  symbol: Z2_CLOCKTOWER_room_00DL_00E810
+
+Z2_CLOCKTOWER_room_00DL_00E830:
+  type: GFX
+  offset: 0x00E830
+  symbol: Z2_CLOCKTOWER_room_00DL_00E830
+
+Z2_CLOCKTOWER_room_00Vtx_00E848:
+  type: MM:ARRAY
+  offset: 0x00E848
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00E848
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00E948:
+  type: GFX
+  offset: 0x00E948
+  symbol: Z2_CLOCKTOWER_room_00DL_00E948
+
+Z2_CLOCKTOWER_room_00Vtx_00EA38:
+  type: MM:ARRAY
+  offset: 0x00EA38
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00EA38
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00EA48:
+  type: GFX
+  offset: 0x00EA48
+  symbol: Z2_CLOCKTOWER_room_00DL_00EA48
+
+Z2_CLOCKTOWER_room_00DL_00EA68:
+  type: GFX
+  offset: 0x00EA68
+  symbol: Z2_CLOCKTOWER_room_00DL_00EA68
+
+Z2_CLOCKTOWER_room_00Vtx_00EA88:
+  type: MM:ARRAY
+  offset: 0x00EA88
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00EA88
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00EB88:
+  type: GFX
+  offset: 0x00EB88
+  symbol: Z2_CLOCKTOWER_room_00DL_00EB88
+
+Z2_CLOCKTOWER_room_00Vtx_00EC30:
+  type: MM:ARRAY
+  offset: 0x00EC30
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00EC30
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00EDB0:
+  type: GFX
+  offset: 0x00EDB0
+  symbol: Z2_CLOCKTOWER_room_00DL_00EDB0
+
+Z2_CLOCKTOWER_room_00Vtx_00EEB8:
+  type: MM:ARRAY
+  offset: 0x00EEB8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00EEB8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00EEC8:
+  type: GFX
+  offset: 0x00EEC8
+  symbol: Z2_CLOCKTOWER_room_00DL_00EEC8
+
+Z2_CLOCKTOWER_room_00DL_00EEE8:
+  type: GFX
+  offset: 0x00EEE8
+  symbol: Z2_CLOCKTOWER_room_00DL_00EEE8
+
+Z2_CLOCKTOWER_room_00DL_00EF00:
+  type: GFX
+  offset: 0x00EF00
+  symbol: Z2_CLOCKTOWER_room_00DL_00EF00
+
+Z2_CLOCKTOWER_room_00Vtx_00EF18:
+  type: MM:ARRAY
+  offset: 0x00EF18
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00EF18
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00F0D8:
+  type: GFX
+  offset: 0x00F0D8
+  symbol: Z2_CLOCKTOWER_room_00DL_00F0D8
+
+Z2_CLOCKTOWER_room_00Vtx_00F198:
+  type: MM:ARRAY
+  offset: 0x00F198
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00F198
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00F1A8:
+  type: GFX
+  offset: 0x00F1A8
+  symbol: Z2_CLOCKTOWER_room_00DL_00F1A8
+
+Z2_CLOCKTOWER_room_00Vtx_00F1C8:
+  type: MM:ARRAY
+  offset: 0x00F1C8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00F1C8
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00FAB8:
+  type: GFX
+  offset: 0x00FAB8
+  symbol: Z2_CLOCKTOWER_room_00DL_00FAB8
+
+Z2_CLOCKTOWER_room_00Vtx_00FE18:
+  type: MM:ARRAY
+  offset: 0x00FE18
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00FE18
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00FE28:
+  type: GFX
+  offset: 0x00FE28
+  symbol: Z2_CLOCKTOWER_room_00DL_00FE28
+
+Z2_CLOCKTOWER_room_00Vtx_00FE48:
+  type: MM:ARRAY
+  offset: 0x00FE48
+  symbol: Z2_CLOCKTOWER_room_00Vtx_00FE48
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_00FF48:
+  type: GFX
+  offset: 0x00FF48
+  symbol: Z2_CLOCKTOWER_room_00DL_00FF48
+
+Z2_CLOCKTOWER_room_00Vtx_010020:
+  type: MM:ARRAY
+  offset: 0x010020
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010020
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010030:
+  type: GFX
+  offset: 0x010030
+  symbol: Z2_CLOCKTOWER_room_00DL_010030
+
+Z2_CLOCKTOWER_room_00Vtx_010050:
+  type: MM:ARRAY
+  offset: 0x010050
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010050
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0101B0:
+  type: GFX
+  offset: 0x0101B0
+  symbol: Z2_CLOCKTOWER_room_00DL_0101B0
+
+Z2_CLOCKTOWER_room_00Vtx_0102A0:
+  type: MM:ARRAY
+  offset: 0x0102A0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0102A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0102B0:
+  type: GFX
+  offset: 0x0102B0
+  symbol: Z2_CLOCKTOWER_room_00DL_0102B0
+
+Z2_CLOCKTOWER_room_00Vtx_0102D0:
+  type: MM:ARRAY
+  offset: 0x0102D0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0102D0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0104D0:
+  type: GFX
+  offset: 0x0104D0
+  symbol: Z2_CLOCKTOWER_room_00DL_0104D0
+
+Z2_CLOCKTOWER_room_00Vtx_010618:
+  type: MM:ARRAY
+  offset: 0x010618
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010618
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010628:
+  type: GFX
+  offset: 0x010628
+  symbol: Z2_CLOCKTOWER_room_00DL_010628
+
+Z2_CLOCKTOWER_room_00Vtx_010648:
+  type: MM:ARRAY
+  offset: 0x010648
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010648
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0107E8:
+  type: GFX
+  offset: 0x0107E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0107E8
+
+Z2_CLOCKTOWER_room_00Vtx_0108E0:
+  type: MM:ARRAY
+  offset: 0x0108E0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0108E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0108F0:
+  type: GFX
+  offset: 0x0108F0
+  symbol: Z2_CLOCKTOWER_room_00DL_0108F0
+
+Z2_CLOCKTOWER_room_00Vtx_010910:
+  type: MM:ARRAY
+  offset: 0x010910
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010910
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010A40:
+  type: GFX
+  offset: 0x010A40
+  symbol: Z2_CLOCKTOWER_room_00DL_010A40
+
+Z2_CLOCKTOWER_room_00Vtx_010B40:
+  type: MM:ARRAY
+  offset: 0x010B40
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010B40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010B50:
+  type: GFX
+  offset: 0x010B50
+  symbol: Z2_CLOCKTOWER_room_00DL_010B50
+
+Z2_CLOCKTOWER_room_00Vtx_010B70:
+  type: MM:ARRAY
+  offset: 0x010B70
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010B70
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010E60:
+  type: GFX
+  offset: 0x010E60
+  symbol: Z2_CLOCKTOWER_room_00DL_010E60
+
+Z2_CLOCKTOWER_room_00Vtx_010FD0:
+  type: MM:ARRAY
+  offset: 0x010FD0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_010FD0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_010FE0:
+  type: GFX
+  offset: 0x010FE0
+  symbol: Z2_CLOCKTOWER_room_00DL_010FE0
+
+Z2_CLOCKTOWER_room_00DL_011000:
+  type: GFX
+  offset: 0x011000
+  symbol: Z2_CLOCKTOWER_room_00DL_011000
+
+Z2_CLOCKTOWER_room_00DL_011048:
+  type: GFX
+  offset: 0x011048
+  symbol: Z2_CLOCKTOWER_room_00DL_011048
+
+Z2_CLOCKTOWER_room_00Vtx_011058:
+  type: MM:ARRAY
+  offset: 0x011058
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011058
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011198:
+  type: GFX
+  offset: 0x011198
+  symbol: Z2_CLOCKTOWER_room_00DL_011198
+
+Z2_CLOCKTOWER_room_00Vtx_011248:
+  type: MM:ARRAY
+  offset: 0x011248
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011248
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011258:
+  type: GFX
+  offset: 0x011258
+  symbol: Z2_CLOCKTOWER_room_00DL_011258
+
+Z2_CLOCKTOWER_room_00Vtx_011278:
+  type: MM:ARRAY
+  offset: 0x011278
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011278
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011338:
+  type: GFX
+  offset: 0x011338
+  symbol: Z2_CLOCKTOWER_room_00DL_011338
+
+Z2_CLOCKTOWER_room_00Vtx_0113D8:
+  type: MM:ARRAY
+  offset: 0x0113D8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0113D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0113E8:
+  type: GFX
+  offset: 0x0113E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0113E8
+
+Z2_CLOCKTOWER_room_00DL_011408:
+  type: GFX
+  offset: 0x011408
+  symbol: Z2_CLOCKTOWER_room_00DL_011408
+
+Z2_CLOCKTOWER_room_00DL_011420:
+  type: GFX
+  offset: 0x011420
+  symbol: Z2_CLOCKTOWER_room_00DL_011420
+
+Z2_CLOCKTOWER_room_00DL_011430:
+  type: GFX
+  offset: 0x011430
+  symbol: Z2_CLOCKTOWER_room_00DL_011430
+
+Z2_CLOCKTOWER_room_00Vtx_011448:
+  type: MM:ARRAY
+  offset: 0x011448
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011448
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011508:
+  type: GFX
+  offset: 0x011508
+  symbol: Z2_CLOCKTOWER_room_00DL_011508
+
+Z2_CLOCKTOWER_room_00Vtx_0115A8:
+  type: MM:ARRAY
+  offset: 0x0115A8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0115A8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011668:
+  type: GFX
+  offset: 0x011668
+  symbol: Z2_CLOCKTOWER_room_00DL_011668
+
+Z2_CLOCKTOWER_room_00DL_011740:
+  type: GFX
+  offset: 0x011740
+  symbol: Z2_CLOCKTOWER_room_00DL_011740
+
+Z2_CLOCKTOWER_room_00DL_011748:
+  type: GFX
+  offset: 0x011748
+  symbol: Z2_CLOCKTOWER_room_00DL_011748
+
+Z2_CLOCKTOWER_room_00Vtx_011750:
+  type: MM:ARRAY
+  offset: 0x011750
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011750
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011A20:
+  type: GFX
+  offset: 0x011A20
+  symbol: Z2_CLOCKTOWER_room_00DL_011A20
+
+Z2_CLOCKTOWER_room_00DL_011B10:
+  type: GFX
+  offset: 0x011B10
+  symbol: Z2_CLOCKTOWER_room_00DL_011B10
+
+Z2_CLOCKTOWER_room_00DL_011B28:
+  type: GFX
+  offset: 0x011B28
+  symbol: Z2_CLOCKTOWER_room_00DL_011B28
+
+Z2_CLOCKTOWER_room_00DL_011B30:
+  type: GFX
+  offset: 0x011B30
+  symbol: Z2_CLOCKTOWER_room_00DL_011B30
+
+Z2_CLOCKTOWER_room_00Vtx_011B40:
+  type: MM:ARRAY
+  offset: 0x011B40
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011B40
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011C80:
+  type: GFX
+  offset: 0x011C80
+  symbol: Z2_CLOCKTOWER_room_00DL_011C80
+
+Z2_CLOCKTOWER_room_00Vtx_011D30:
+  type: MM:ARRAY
+  offset: 0x011D30
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011D30
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011D40:
+  type: GFX
+  offset: 0x011D40
+  symbol: Z2_CLOCKTOWER_room_00DL_011D40
+
+Z2_CLOCKTOWER_room_00DL_011D70:
+  type: GFX
+  offset: 0x011D70
+  symbol: Z2_CLOCKTOWER_room_00DL_011D70
+
+Z2_CLOCKTOWER_room_00DL_011D80:
+  type: GFX
+  offset: 0x011D80
+  symbol: Z2_CLOCKTOWER_room_00DL_011D80
+
+Z2_CLOCKTOWER_room_00DL_011D88:
+  type: GFX
+  offset: 0x011D88
+  symbol: Z2_CLOCKTOWER_room_00DL_011D88
+
+Z2_CLOCKTOWER_room_00Vtx_011D98:
+  type: MM:ARRAY
+  offset: 0x011D98
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011D98
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011E98:
+  type: GFX
+  offset: 0x011E98
+  symbol: Z2_CLOCKTOWER_room_00DL_011E98
+
+Z2_CLOCKTOWER_room_00Vtx_011F40:
+  type: MM:ARRAY
+  offset: 0x011F40
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011F40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_011F50:
+  type: GFX
+  offset: 0x011F50
+  symbol: Z2_CLOCKTOWER_room_00DL_011F50
+
+Z2_CLOCKTOWER_room_00DL_011F80:
+  type: GFX
+  offset: 0x011F80
+  symbol: Z2_CLOCKTOWER_room_00DL_011F80
+
+Z2_CLOCKTOWER_room_00Vtx_011F90:
+  type: MM:ARRAY
+  offset: 0x011F90
+  symbol: Z2_CLOCKTOWER_room_00Vtx_011F90
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012090:
+  type: GFX
+  offset: 0x012090
+  symbol: Z2_CLOCKTOWER_room_00DL_012090
+
+Z2_CLOCKTOWER_room_00Vtx_012170:
+  type: MM:ARRAY
+  offset: 0x012170
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012170
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012180:
+  type: GFX
+  offset: 0x012180
+  symbol: Z2_CLOCKTOWER_room_00DL_012180
+
+Z2_CLOCKTOWER_room_00DL_0121A0:
+  type: GFX
+  offset: 0x0121A0
+  symbol: Z2_CLOCKTOWER_room_00DL_0121A0
+
+Z2_CLOCKTOWER_room_00DL_0121B0:
+  type: GFX
+  offset: 0x0121B0
+  symbol: Z2_CLOCKTOWER_room_00DL_0121B0
+
+Z2_CLOCKTOWER_room_00Vtx_0121C0:
+  type: MM:ARRAY
+  offset: 0x0121C0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0121C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0122C0:
+  type: GFX
+  offset: 0x0122C0
+  symbol: Z2_CLOCKTOWER_room_00DL_0122C0
+
+Z2_CLOCKTOWER_room_00Vtx_0123A0:
+  type: MM:ARRAY
+  offset: 0x0123A0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0123A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0123B0:
+  type: GFX
+  offset: 0x0123B0
+  symbol: Z2_CLOCKTOWER_room_00DL_0123B0
+
+Z2_CLOCKTOWER_room_00DL_0123E0:
+  type: GFX
+  offset: 0x0123E0
+  symbol: Z2_CLOCKTOWER_room_00DL_0123E0
+
+Z2_CLOCKTOWER_room_00DL_0123F0:
+  type: GFX
+  offset: 0x0123F0
+  symbol: Z2_CLOCKTOWER_room_00DL_0123F0
+
+Z2_CLOCKTOWER_room_00DL_012400:
+  type: GFX
+  offset: 0x012400
+  symbol: Z2_CLOCKTOWER_room_00DL_012400
+
+Z2_CLOCKTOWER_room_00Vtx_012440:
+  type: MM:ARRAY
+  offset: 0x012440
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012440
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012500:
+  type: GFX
+  offset: 0x012500
+  symbol: Z2_CLOCKTOWER_room_00DL_012500
+
+Z2_CLOCKTOWER_room_00DL_0125A0:
+  type: GFX
+  offset: 0x0125A0
+  symbol: Z2_CLOCKTOWER_room_00DL_0125A0
+
+Z2_CLOCKTOWER_room_00Vtx_0125B0:
+  type: MM:ARRAY
+  offset: 0x0125B0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0125B0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012730:
+  type: GFX
+  offset: 0x012730
+  symbol: Z2_CLOCKTOWER_room_00DL_012730
+
+Z2_CLOCKTOWER_room_00DL_0127E8:
+  type: GFX
+  offset: 0x0127E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0127E8
+
+Z2_CLOCKTOWER_room_00DL_0127F8:
+  type: GFX
+  offset: 0x0127F8
+  symbol: Z2_CLOCKTOWER_room_00DL_0127F8
+
+Z2_CLOCKTOWER_room_00DL_012800:
+  type: GFX
+  offset: 0x012800
+  symbol: Z2_CLOCKTOWER_room_00DL_012800
+
+Z2_CLOCKTOWER_room_00DL_012808:
+  type: GFX
+  offset: 0x012808
+  symbol: Z2_CLOCKTOWER_room_00DL_012808
+
+Z2_CLOCKTOWER_room_00DL_012810:
+  type: GFX
+  offset: 0x012810
+  symbol: Z2_CLOCKTOWER_room_00DL_012810
+
+Z2_CLOCKTOWER_room_00DL_012818:
+  type: GFX
+  offset: 0x012818
+  symbol: Z2_CLOCKTOWER_room_00DL_012818
+
+Z2_CLOCKTOWER_room_00Vtx_012828:
+  type: MM:ARRAY
+  offset: 0x012828
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012828
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012928:
+  type: GFX
+  offset: 0x012928
+  symbol: Z2_CLOCKTOWER_room_00DL_012928
+
+Z2_CLOCKTOWER_room_00Vtx_0129D8:
+  type: MM:ARRAY
+  offset: 0x0129D8
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0129D8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0129E8:
+  type: GFX
+  offset: 0x0129E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0129E8
+
+Z2_CLOCKTOWER_room_00DL_012A18:
+  type: GFX
+  offset: 0x012A18
+  symbol: Z2_CLOCKTOWER_room_00DL_012A18
+
+Z2_CLOCKTOWER_room_00DL_012A28:
+  type: GFX
+  offset: 0x012A28
+  symbol: Z2_CLOCKTOWER_room_00DL_012A28
+
+Z2_CLOCKTOWER_room_00DL_012A30:
+  type: GFX
+  offset: 0x012A30
+  symbol: Z2_CLOCKTOWER_room_00DL_012A30
+
+Z2_CLOCKTOWER_room_00Vtx_012A40:
+  type: MM:ARRAY
+  offset: 0x012A40
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012A40
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012B40:
+  type: GFX
+  offset: 0x012B40
+  symbol: Z2_CLOCKTOWER_room_00DL_012B40
+
+Z2_CLOCKTOWER_room_00Vtx_012BF0:
+  type: MM:ARRAY
+  offset: 0x012BF0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012BF0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012C00:
+  type: GFX
+  offset: 0x012C00
+  symbol: Z2_CLOCKTOWER_room_00DL_012C00
+
+Z2_CLOCKTOWER_room_00DL_012C30:
+  type: GFX
+  offset: 0x012C30
+  symbol: Z2_CLOCKTOWER_room_00DL_012C30
+
+Z2_CLOCKTOWER_room_00DL_012C40:
+  type: GFX
+  offset: 0x012C40
+  symbol: Z2_CLOCKTOWER_room_00DL_012C40
+
+Z2_CLOCKTOWER_room_00DL_012C48:
+  type: GFX
+  offset: 0x012C48
+  symbol: Z2_CLOCKTOWER_room_00DL_012C48
+
+Z2_CLOCKTOWER_room_00Vtx_012C58:
+  type: MM:ARRAY
+  offset: 0x012C58
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012C58
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012D58:
+  type: GFX
+  offset: 0x012D58
+  symbol: Z2_CLOCKTOWER_room_00DL_012D58
+
+Z2_CLOCKTOWER_room_00Vtx_012E08:
+  type: MM:ARRAY
+  offset: 0x012E08
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012E08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012E18:
+  type: GFX
+  offset: 0x012E18
+  symbol: Z2_CLOCKTOWER_room_00DL_012E18
+
+Z2_CLOCKTOWER_room_00DL_012E48:
+  type: GFX
+  offset: 0x012E48
+  symbol: Z2_CLOCKTOWER_room_00DL_012E48
+
+Z2_CLOCKTOWER_room_00DL_012E58:
+  type: GFX
+  offset: 0x012E58
+  symbol: Z2_CLOCKTOWER_room_00DL_012E58
+
+Z2_CLOCKTOWER_room_00DL_012E60:
+  type: GFX
+  offset: 0x012E60
+  symbol: Z2_CLOCKTOWER_room_00DL_012E60
+
+Z2_CLOCKTOWER_room_00Vtx_012E70:
+  type: MM:ARRAY
+  offset: 0x012E70
+  symbol: Z2_CLOCKTOWER_room_00Vtx_012E70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_012F70:
+  type: GFX
+  offset: 0x012F70
+  symbol: Z2_CLOCKTOWER_room_00DL_012F70
+
+Z2_CLOCKTOWER_room_00Vtx_013020:
+  type: MM:ARRAY
+  offset: 0x013020
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013020
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013030:
+  type: GFX
+  offset: 0x013030
+  symbol: Z2_CLOCKTOWER_room_00DL_013030
+
+Z2_CLOCKTOWER_room_00DL_013060:
+  type: GFX
+  offset: 0x013060
+  symbol: Z2_CLOCKTOWER_room_00DL_013060
+
+Z2_CLOCKTOWER_room_00DL_013070:
+  type: GFX
+  offset: 0x013070
+  symbol: Z2_CLOCKTOWER_room_00DL_013070
+
+Z2_CLOCKTOWER_room_00DL_013078:
+  type: GFX
+  offset: 0x013078
+  symbol: Z2_CLOCKTOWER_room_00DL_013078
+
+Z2_CLOCKTOWER_room_00Vtx_013088:
+  type: MM:ARRAY
+  offset: 0x013088
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013088
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013188:
+  type: GFX
+  offset: 0x013188
+  symbol: Z2_CLOCKTOWER_room_00DL_013188
+
+Z2_CLOCKTOWER_room_00Vtx_013238:
+  type: MM:ARRAY
+  offset: 0x013238
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013238
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013248:
+  type: GFX
+  offset: 0x013248
+  symbol: Z2_CLOCKTOWER_room_00DL_013248
+
+Z2_CLOCKTOWER_room_00DL_013278:
+  type: GFX
+  offset: 0x013278
+  symbol: Z2_CLOCKTOWER_room_00DL_013278
+
+Z2_CLOCKTOWER_room_00Vtx_013288:
+  type: MM:ARRAY
+  offset: 0x013288
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013288
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013348:
+  type: GFX
+  offset: 0x013348
+  symbol: Z2_CLOCKTOWER_room_00DL_013348
+
+Z2_CLOCKTOWER_room_00DL_0133E8:
+  type: GFX
+  offset: 0x0133E8
+  symbol: Z2_CLOCKTOWER_room_00DL_0133E8
+
+Z2_CLOCKTOWER_room_00Vtx_013470:
+  type: MM:ARRAY
+  offset: 0x013470
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013470
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013530:
+  type: GFX
+  offset: 0x013530
+  symbol: Z2_CLOCKTOWER_room_00DL_013530
+
+Z2_CLOCKTOWER_room_00Vtx_0135D0:
+  type: MM:ARRAY
+  offset: 0x0135D0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0135D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0135E0:
+  type: GFX
+  offset: 0x0135E0
+  symbol: Z2_CLOCKTOWER_room_00DL_0135E0
+
+Z2_CLOCKTOWER_room_00DL_013600:
+  type: GFX
+  offset: 0x013600
+  symbol: Z2_CLOCKTOWER_room_00DL_013600
+
+Z2_CLOCKTOWER_room_00DL_013610:
+  type: GFX
+  offset: 0x013610
+  symbol: Z2_CLOCKTOWER_room_00DL_013610
+
+Z2_CLOCKTOWER_room_00DL_013618:
+  type: GFX
+  offset: 0x013618
+  symbol: Z2_CLOCKTOWER_room_00DL_013618
+
+Z2_CLOCKTOWER_room_00Vtx_013620:
+  type: MM:ARRAY
+  offset: 0x013620
+  symbol: Z2_CLOCKTOWER_room_00Vtx_013620
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_013720:
+  type: GFX
+  offset: 0x013720
+  symbol: Z2_CLOCKTOWER_room_00DL_013720
+
+Z2_CLOCKTOWER_room_00Vtx_0137D0:
+  type: MM:ARRAY
+  offset: 0x0137D0
+  symbol: Z2_CLOCKTOWER_room_00Vtx_0137D0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CLOCKTOWER_room_00DL_0137E0:
+  type: GFX
+  offset: 0x0137E0
+  symbol: Z2_CLOCKTOWER_room_00DL_0137E0
+
+Z2_CLOCKTOWER_room_00DL_013800:
+  type: GFX
+  offset: 0x013800
+  symbol: Z2_CLOCKTOWER_room_00DL_013800
+
+Z2_CLOCKTOWER_room_00DL_013820:
+  type: GFX
+  offset: 0x013820
+  symbol: Z2_CLOCKTOWER_room_00DL_013820
+
+Z2_CLOCKTOWER_room_00DL_013838:
+  type: GFX
+  offset: 0x013838
+  symbol: Z2_CLOCKTOWER_room_00DL_013838
+
+Z2_CLOCKTOWER_room_00DL_013840:
+  type: GFX
+  offset: 0x013840
+  symbol: Z2_CLOCKTOWER_room_00DL_013840
+
+Z2_CLOCKTOWER_room_00DL_013848:
+  type: GFX
+  offset: 0x013848
+  symbol: Z2_CLOCKTOWER_room_00DL_013848
+
+Z2_CLOCKTOWER_room_00DL_013860:
+  type: GFX
+  offset: 0x013860
+  symbol: Z2_CLOCKTOWER_room_00DL_013860
+
+Z2_CLOCKTOWER_room_00DL_013870:
+  type: GFX
+  offset: 0x013870
+  symbol: Z2_CLOCKTOWER_room_00DL_013870

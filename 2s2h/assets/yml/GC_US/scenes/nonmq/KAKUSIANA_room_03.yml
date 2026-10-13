@@ -1,0 +1,109 @@
+:config:
+  segments:
+    - [ 3, 0x01E8AE80 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E8AE80 ]
+    - [ 9, 0x01E8AE80 ]
+    - [ 10, 0x01E8AE80 ]
+    - [ 11, 0x01E8AE80 ]
+    - [ 12, 0x01E8AE80 ]
+    - [ 13, 0x01E8AE80 ]
+    - [ 2, 0x01E76B00 ]
+  directory: scenes/nonmq/KAKUSIANA
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/KAKUSIANA.yml
+
+KAKUSIANA_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: KAKUSIANA_room_03
+
+KAKUSIANA_room_03DL_001038:
+  type: GFX
+  offset: 0x1038
+  symbol: KAKUSIANA_room_03DL_001038
+
+KAKUSIANA_room_03DL_002288:
+  type: GFX
+  offset: 0x2288
+  symbol: KAKUSIANA_room_03DL_002288
+
+
+KAKUSIANA_room_03ActorEntry_000044:
+  type: BLOB
+  offset: 0x000044
+  symbol: KAKUSIANA_room_03ActorEntry_000044
+  size: 0
+
+KAKUSIANA_room_03Vtx_0000F0:
+  type: MM:ARRAY
+  offset: 0x0000F0
+  symbol: KAKUSIANA_room_03Vtx_0000F0
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_03DL_0008F0:
+  type: GFX
+  offset: 0x0008F0
+  symbol: KAKUSIANA_room_03DL_0008F0
+
+KAKUSIANA_room_03Vtx_000B28:
+  type: MM:ARRAY
+  offset: 0x000B28
+  symbol: KAKUSIANA_room_03Vtx_000B28
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_03DL_000D88:
+  type: GFX
+  offset: 0x000D88
+  symbol: KAKUSIANA_room_03DL_000D88
+
+KAKUSIANA_room_03Vtx_000ED8:
+  type: MM:ARRAY
+  offset: 0x000ED8
+  symbol: KAKUSIANA_room_03Vtx_000ED8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_03DL_000F98:
+  type: GFX
+  offset: 0x000F98
+  symbol: KAKUSIANA_room_03DL_000F98
+
+KAKUSIANA_room_03Tex_001058:
+  type: TEXTURE
+  offset: 0x001058
+  symbol: KAKUSIANA_room_03Tex_001058
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANA_room_03Tex_001858:
+  type: TEXTURE
+  offset: 0x001858
+  symbol: KAKUSIANA_room_03Tex_001858
+  format: RGBA16
+  width: 32
+  height: 32
+
+KAKUSIANA_room_03Vtx_002060:
+  type: MM:ARRAY
+  offset: 0x002060
+  symbol: KAKUSIANA_room_03Vtx_002060
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+KAKUSIANA_room_03DL_0021A0:
+  type: GFX
+  offset: 0x0021A0
+  symbol: KAKUSIANA_room_03DL_0021A0

@@ -1,0 +1,131 @@
+:config:
+  segments:
+    - [ 128, 0x00BFAB10 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80929E20, 0x00BFAB10 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gClearTagDebrisEffectDL:
+  type: GFX
+  offset: 0x31B0
+  symbol: gClearTagDebrisEffectDL
+
+gClearTagDebrisEffectMaterialDL:
+  type: GFX
+  offset: 0x3130
+  symbol: gClearTagDebrisEffectMaterialDL
+
+gClearTagDebrisEffectTex:
+  type: TEXTURE
+  offset: 0x2F00
+  symbol: gClearTagDebrisEffectTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gClearTagDebrisEffectVtx:
+  type: MM:ARRAY
+  offset: 0x3100
+  symbol: gClearTagDebrisEffectVtx
+  count: 3
+  array_type: VTX
+
+gClearTagFireEffectBackgroundTex:
+  type: TEXTURE
+  offset: 0x35C8
+  symbol: gClearTagFireEffectBackgroundTex
+  format: I4
+  width: 32
+  height: 32
+
+gClearTagFireEffectDL:
+  type: GFX
+  offset: 0x38A0
+  symbol: gClearTagFireEffectDL
+
+gClearTagFireEffectFlickerTex:
+  type: TEXTURE
+  offset: 0x31C8
+  symbol: gClearTagFireEffectFlickerTex
+  format: I4
+  width: 32
+  height: 64
+
+gClearTagFireEffectMaterialDL:
+  type: GFX
+  offset: 0x37F8
+  symbol: gClearTagFireEffectMaterialDL
+
+gClearTagFireEffectVtx:
+  type: MM:ARRAY
+  offset: 0x37C8
+  symbol: gClearTagFireEffectVtx
+  count: 3
+  array_type: VTX
+
+gClearTagFlashEffectDL:
+  type: GFX
+  offset: 0x4900
+  symbol: gClearTagFlashEffectDL
+
+gClearTagFlashEffectGroundDL:
+  type: GFX
+  offset: 0x4BB0
+  symbol: gClearTagFlashEffectGroundDL
+
+gClearTagFlashEffectGroundTex:
+  type: TEXTURE
+  offset: 0x4980
+  symbol: gClearTagFlashEffectGroundTex
+  format: I4
+  width: 32
+  height: 32
+
+gClearTagFlashEffectGroundVtx:
+  type: MM:ARRAY
+  offset: 0x4B80
+  symbol: gClearTagFlashEffectGroundVtx
+  count: 3
+  array_type: VTX
+
+gClearTagFlashEffectTex:
+  type: TEXTURE
+  offset: 0x38C0
+  symbol: gClearTagFlashEffectTex
+  format: I8
+  width: 64
+  height: 64
+
+gClearTagFlashEffectVtx:
+  type: MM:ARRAY
+  offset: 0x48C0
+  symbol: gClearTagFlashEffectVtx
+  count: 4
+  array_type: VTX
+
+gClearTagLightRayEffectDL:
+  type: GFX
+  offset: 0x5CE8
+  symbol: gClearTagLightRayEffectDL
+
+gClearTagLightRayEffectMaterialDL:
+  type: GFX
+  offset: 0x5C78
+  symbol: gClearTagLightRayEffectMaterialDL
+
+gClearTagLightRayEffectTex:
+  type: TEXTURE
+  offset: 0x4C38
+  symbol: gClearTagLightRayEffectTex
+  format: I8
+  width: 64
+  height: 64
+
+gClearTagLightRayEffectVtx:
+  type: MM:ARRAY
+  offset: 0x5C38
+  symbol: gClearTagLightRayEffectVtx
+  count: 4
+  array_type: VTX
+

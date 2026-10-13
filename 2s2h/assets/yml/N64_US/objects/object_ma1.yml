@@ -1,0 +1,818 @@
+:config:
+  segments:
+    - [ 6, 0x00F87580 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00F87580 ]
+    - [ 9, 0x00F87580 ]
+    - [ 10, 0x00F87580 ]
+    - [ 11, 0x00F87580 ]
+    - [ 12, 0x00F87580 ]
+    - [ 13, 0x00F87580 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gRomaniAbductedAnim:
+  type: OOT:ANIMATION
+  offset: 0x16588
+  symbol: gRomaniAbductedAnim
+
+gRomaniBootTex:
+  type: TEXTURE
+  offset: 0xFB48
+  symbol: gRomaniBootTex
+  format: CI8
+  width: 64
+  height: 16
+
+gRomaniBowDL:
+  type: GFX
+  offset: 0x3B0
+  symbol: gRomaniBowDL
+
+gRomaniBowHandleTex:
+  type: TEXTURE
+  offset: 0x7E0
+  symbol: gRomaniBowHandleTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniBowLimbTex:
+  type: TEXTURE
+  offset: 0x8E0
+  symbol: gRomaniBowLimbTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniBowTLUT:
+  type: TEXTURE
+  offset: 0x5E0
+  symbol: gRomaniBowTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRomaniBroochTex:
+  type: TEXTURE
+  offset: 0xF648
+  symbol: gRomaniBroochTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gRomaniDress1DL:
+  type: GFX
+  offset: 0xE618
+  symbol: gRomaniDress1DL
+
+gRomaniDress1Limb:
+  type: OOT:LIMB
+  offset: 0x13828
+  symbol: gRomaniDress1Limb
+  limb_type: Standard
+
+gRomaniDress2DL:
+  type: GFX
+  offset: 0xE710
+  symbol: gRomaniDress2DL
+
+gRomaniDress2Limb:
+  type: OOT:LIMB
+  offset: 0x13834
+  symbol: gRomaniDress2Limb
+  limb_type: Standard
+
+gRomaniDress3DL:
+  type: GFX
+  offset: 0xE838
+  symbol: gRomaniDress3DL
+
+gRomaniDress3Limb:
+  type: OOT:LIMB
+  offset: 0x13840
+  symbol: gRomaniDress3Limb
+  limb_type: Standard
+
+gRomaniDress4DL:
+  type: GFX
+  offset: 0xE980
+  symbol: gRomaniDress4DL
+
+gRomaniDress4Limb:
+  type: OOT:LIMB
+  offset: 0x1384C
+  symbol: gRomaniDress4Limb
+  limb_type: Standard
+
+gRomaniDressPatternTex:
+  type: TEXTURE
+  offset: 0xFF48
+  symbol: gRomaniDressPatternTex
+  format: CI8
+  width: 8
+  height: 16
+
+gRomaniDressTex:
+  type: TEXTURE
+  offset: 0xF388
+  symbol: gRomaniDressTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniEarTex:
+  type: TEXTURE
+  offset: 0xF4C8
+  symbol: gRomaniEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniEyeClosedTex:
+  type: TEXTURE
+  offset: 0x10FC8
+  symbol: gRomaniEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniEyeHalfTex:
+  type: TEXTURE
+  offset: 0x107C8
+  symbol: gRomaniEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniEyeHappyTex:
+  type: TEXTURE
+  offset: 0x117C8
+  symbol: gRomaniEyeHappyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniEyeOpenTex:
+  type: TEXTURE
+  offset: 0xFFC8
+  symbol: gRomaniEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniEyeSadTex:
+  type: TEXTURE
+  offset: 0x11FC8
+  symbol: gRomaniEyeSadTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniHairTex:
+  type: TEXTURE
+  offset: 0xF508
+  symbol: gRomaniHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniHandTex:
+  type: TEXTURE
+  offset: 0xFA48
+  symbol: gRomaniHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniHeadDL:
+  type: GFX
+  offset: 0xDEC0
+  symbol: gRomaniHeadDL
+
+gRomaniHeadLimb:
+  type: OOT:LIMB
+  offset: 0x13864
+  symbol: gRomaniHeadLimb
+  limb_type: Standard
+
+gRomaniIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x9E58
+  symbol: gRomaniIdleAnim
+
+gRomaniLeftFootDL:
+  type: GFX
+  offset: 0xF068
+  symbol: gRomaniLeftFootDL
+
+gRomaniLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x137F8
+  symbol: gRomaniLeftFootLimb
+  limb_type: Standard
+
+gRomaniLeftForearmDL:
+  type: GFX
+  offset: 0xDBC8
+  symbol: gRomaniLeftForearmDL
+
+gRomaniLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x13894
+  symbol: gRomaniLeftForearmLimb
+  limb_type: Standard
+
+gRomaniLeftHandDL:
+  type: GFX
+  offset: 0xDCE0
+  symbol: gRomaniLeftHandDL
+
+gRomaniLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x138A0
+  symbol: gRomaniLeftHandLimb
+  limb_type: Standard
+
+gRomaniLeftShinDL:
+  type: GFX
+  offset: 0xEEE8
+  symbol: gRomaniLeftShinDL
+
+gRomaniLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x137EC
+  symbol: gRomaniLeftShinLimb
+  limb_type: Standard
+
+gRomaniLeftThighDL:
+  type: GFX
+  offset: 0xEE28
+  symbol: gRomaniLeftThighDL
+
+gRomaniLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x137E0
+  symbol: gRomaniLeftThighLimb
+  limb_type: Standard
+
+gRomaniLeftUpperArmDL:
+  type: GFX
+  offset: 0xD980
+  symbol: gRomaniLeftUpperArmDL
+
+gRomaniLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x13888
+  symbol: gRomaniLeftUpperArmLimb
+  limb_type: Standard
+
+gRomaniLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A8C
+  symbol: gRomaniLookAroundAnim
+
+gRomaniLowerHairDL:
+  type: GFX
+  offset: 0xE510
+  symbol: gRomaniLowerHairDL
+
+gRomaniLowerHairLimb:
+  type: OOT:LIMB
+  offset: 0x1387C
+  symbol: gRomaniLowerHairLimb
+  limb_type: Standard
+
+gRomaniMouthFrownTex:
+  type: TEXTURE
+  offset: 0x12BC8
+  symbol: gRomaniMouthFrownTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRomaniMouthHangingOpenTex:
+  type: TEXTURE
+  offset: 0x12FC8
+  symbol: gRomaniMouthHangingOpenTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRomaniMouthHappyTex:
+  type: TEXTURE
+  offset: 0x127C8
+  symbol: gRomaniMouthHappyTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRomaniMouthSmileTex:
+  type: TEXTURE
+  offset: 0x133C8
+  symbol: gRomaniMouthSmileTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRomaniPelvisDL:
+  type: GFX
+  offset: 0xEA80
+  symbol: gRomaniPelvisDL
+
+gRomaniPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x137D4
+  symbol: gRomaniPelvisLimb
+  limb_type: Standard
+
+gRomaniRightFootDL:
+  type: GFX
+  offset: 0xED08
+  symbol: gRomaniRightFootDL
+
+gRomaniRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1381C
+  symbol: gRomaniRightFootLimb
+  limb_type: Standard
+
+gRomaniRightForearmDL:
+  type: GFX
+  offset: 0xD688
+  symbol: gRomaniRightForearmDL
+
+gRomaniRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x138B8
+  symbol: gRomaniRightForearmLimb
+  limb_type: Standard
+
+gRomaniRightHandDL:
+  type: GFX
+  offset: 0xD7A0
+  symbol: gRomaniRightHandDL
+
+gRomaniRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x138C4
+  symbol: gRomaniRightHandLimb
+  limb_type: Standard
+
+gRomaniRightShinDL:
+  type: GFX
+  offset: 0xEB88
+  symbol: gRomaniRightShinDL
+
+gRomaniRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x13810
+  symbol: gRomaniRightShinLimb
+  limb_type: Standard
+
+gRomaniRightThighDL:
+  type: GFX
+  offset: 0xEAC8
+  symbol: gRomaniRightThighDL
+
+gRomaniRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x13804
+  symbol: gRomaniRightThighLimb
+  limb_type: Standard
+
+gRomaniRightUpperArmDL:
+  type: GFX
+  offset: 0xD440
+  symbol: gRomaniRightUpperArmDL
+
+gRomaniRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x138AC
+  symbol: gRomaniRightUpperArmLimb
+  limb_type: Standard
+
+gRomaniRootLimb:
+  type: OOT:LIMB
+  offset: 0x137C8
+  symbol: gRomaniRootLimb
+  limb_type: Standard
+
+gRomaniRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x7328
+  symbol: gRomaniRunAnim
+
+gRomaniShawlTex:
+  type: TEXTURE
+  offset: 0xF608
+  symbol: gRomaniShawlTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniShootBowAnim:
+  type: OOT:ANIMATION
+  offset: 0x15B7C
+  symbol: gRomaniShootBowAnim
+
+gRomaniSingLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B76C
+  symbol: gRomaniSingLoopAnim
+
+gRomaniSingStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x18948
+  symbol: gRomaniSingStartAnim
+
+gRomaniSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D98
+  symbol: gRomaniSittingAnim
+
+gRomaniSittingHeadShakeAnim:
+  type: OOT:ANIMATION
+  offset: 0x852C
+  symbol: gRomaniSittingHeadShakeAnim
+
+gRomaniSittingLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x8F6C
+  symbol: gRomaniSittingLookDownAnim
+
+gRomaniSkel:
+  type: MM:SKELETON
+  offset: 0x13928
+  symbol: gRomaniSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRomaniSkinTex:
+  type: TEXTURE
+  offset: 0xF488
+  symbol: gRomaniSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniSleepingBlanketTex:
+  type: TEXTURE
+  offset: 0x5AF8
+  symbol: gRomaniSleepingBlanketTex
+  format: RGBA16
+  width: 16
+  height: 128
+
+gRomaniSleepingDL:
+  type: GFX
+  offset: 0x43A0
+  symbol: gRomaniSleepingDL
+
+gRomaniSleepingDressPatternAndPillowTex:
+  type: TEXTURE
+  offset: 0x5278
+  symbol: gRomaniSleepingDressPatternAndPillowTex
+  format: CI8
+  width: 8
+  height: 16
+
+gRomaniSleepingDressTex:
+  type: TEXTURE
+  offset: 0x4EF8
+  symbol: gRomaniSleepingDressTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniSleepingEarTex:
+  type: TEXTURE
+  offset: 0x5038
+  symbol: gRomaniSleepingEarTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniSleepingEyeTex:
+  type: TEXTURE
+  offset: 0x52F8
+  symbol: gRomaniSleepingEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRomaniSleepingHairTex:
+  type: TEXTURE
+  offset: 0x5078
+  symbol: gRomaniSleepingHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniSleepingHandTex:
+  type: TEXTURE
+  offset: 0x5178
+  symbol: gRomaniSleepingHandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gRomaniSleepingMouthTex:
+  type: TEXTURE
+  offset: 0x6AF8
+  symbol: gRomaniSleepingMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gRomaniSleepingSkinTex:
+  type: TEXTURE
+  offset: 0x4FF8
+  symbol: gRomaniSleepingSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gRomaniSleepingTLUT:
+  type: TEXTURE
+  offset: 0x4CF8
+  symbol: gRomaniSleepingTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRomaniTLUT:
+  type: TEXTURE
+  offset: 0xF188
+  symbol: gRomaniTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRomaniTorsoDL:
+  type: GFX
+  offset: 0xD060
+  symbol: gRomaniTorsoDL
+
+gRomaniTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x13858
+  symbol: gRomaniTorsoLimb
+  limb_type: Standard
+
+gRomaniTurnAroundAndFlickHairAnim:
+  type: OOT:ANIMATION
+  offset: 0x180DC
+  symbol: gRomaniTurnAroundAndFlickHairAnim
+
+gRomaniUpperHairDL:
+  type: GFX
+  offset: 0xE410
+  symbol: gRomaniUpperHairDL
+
+gRomaniUpperHairLimb:
+  type: OOT:LIMB
+  offset: 0x13870
+  symbol: gRomaniUpperHairLimb
+  limb_type: Standard
+
+gRomaniWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x14088
+  symbol: gRomaniWalkAnim
+
+gRomaniWoodenBoxDL:
+  type: GFX
+  offset: 0xA20
+  symbol: gRomaniWoodenBoxDL
+
+gRomaniWoodenBoxTex:
+  type: TEXTURE
+  offset: 0xAD0
+  symbol: gRomaniWoodenBoxTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_ma1Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ma1Vtx_000000
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_000920:
+  type: MM:ARRAY
+  offset: 0x000920
+  symbol: object_ma1Vtx_000920
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_002AA0:
+  type: MM:ARRAY
+  offset: 0x002AA0
+  symbol: object_ma1Vtx_002AA0
+  count: 400
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_009E70:
+  type: MM:ARRAY
+  offset: 0x009E70
+  symbol: object_ma1Vtx_009E70
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_009FC0:
+  type: MM:ARRAY
+  offset: 0x009FC0
+  symbol: object_ma1Vtx_009FC0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00A270:
+  type: MM:ARRAY
+  offset: 0x00A270
+  symbol: object_ma1Vtx_00A270
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00A480:
+  type: MM:ARRAY
+  offset: 0x00A480
+  symbol: object_ma1Vtx_00A480
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00A590:
+  type: MM:ARRAY
+  offset: 0x00A590
+  symbol: object_ma1Vtx_00A590
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00A760:
+  type: MM:ARRAY
+  offset: 0x00A760
+  symbol: object_ma1Vtx_00A760
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00A910:
+  type: MM:ARRAY
+  offset: 0x00A910
+  symbol: object_ma1Vtx_00A910
+  count: 205
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00B5E0:
+  type: MM:ARRAY
+  offset: 0x00B5E0
+  symbol: object_ma1Vtx_00B5E0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00B860:
+  type: MM:ARRAY
+  offset: 0x00B860
+  symbol: object_ma1Vtx_00B860
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00B9E0:
+  type: MM:ARRAY
+  offset: 0x00B9E0
+  symbol: object_ma1Vtx_00B9E0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00BC60:
+  type: MM:ARRAY
+  offset: 0x00BC60
+  symbol: object_ma1Vtx_00BC60
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00BEE0:
+  type: MM:ARRAY
+  offset: 0x00BEE0
+  symbol: object_ma1Vtx_00BEE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00C060:
+  type: MM:ARRAY
+  offset: 0x00C060
+  symbol: object_ma1Vtx_00C060
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00C2E0:
+  type: MM:ARRAY
+  offset: 0x00C2E0
+  symbol: object_ma1Vtx_00C2E0
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00CA10:
+  type: MM:ARRAY
+  offset: 0x00CA10
+  symbol: object_ma1Vtx_00CA10
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00CBE0:
+  type: MM:ARRAY
+  offset: 0x00CBE0
+  symbol: object_ma1Vtx_00CBE0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00CCF0:
+  type: MM:ARRAY
+  offset: 0x00CCF0
+  symbol: object_ma1Vtx_00CCF0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00CD20:
+  type: MM:ARRAY
+  offset: 0x00CD20
+  symbol: object_ma1Vtx_00CD20
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00CEF0:
+  type: MM:ARRAY
+  offset: 0x00CEF0
+  symbol: object_ma1Vtx_00CEF0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00D000:
+  type: MM:ARRAY
+  offset: 0x00D000
+  symbol: object_ma1Vtx_00D000
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_00D030:
+  type: MM:ARRAY
+  offset: 0x00D030
+  symbol: object_ma1Vtx_00D030
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gRomaniSkelLimbs:
+  type: BLOB
+  offset: 0x138D0
+  symbol: gRomaniSkelLimbs
+  size: 0

@@ -1,0 +1,116 @@
+:config:
+  segments:
+    - [ 6, 0x01553200 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01553200 ]
+    - [ 9, 0x01553200 ]
+    - [ 10, 0x01553200 ]
+    - [ 11, 0x01553200 ]
+    - [ 12, 0x01553200 ]
+    - [ 13, 0x01553200 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_secom_obj_Colheader_0001C0:
+  type: MM:COLLISION
+  offset: 0x1C0
+  symbol: object_secom_obj_Colheader_0001C0
+
+object_secom_obj_Colheader_002CB8:
+  type: MM:COLLISION
+  offset: 0x2CB8
+  symbol: object_secom_obj_Colheader_002CB8
+
+object_secom_obj_DL_000080:
+  type: GFX
+  offset: 0x80
+  symbol: object_secom_obj_DL_000080
+
+object_secom_obj_DL_001230:
+  type: GFX
+  offset: 0x1230
+  symbol: object_secom_obj_DL_001230
+
+object_secom_obj_DL_001300:
+  type: GFX
+  offset: 0x1300
+  symbol: object_secom_obj_DL_001300
+
+object_secom_obj_DL_001A50:
+  type: GFX
+  offset: 0x1A50
+  symbol: object_secom_obj_DL_001A50
+
+object_secom_obj_DL_001A58:
+  type: GFX
+  offset: 0x1A58
+  symbol: object_secom_obj_DL_001A58
+
+object_secom_obj_Tex_0001F0:
+  type: TEXTURE
+  offset: 0x1F0
+  symbol: object_secom_obj_Tex_0001F0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_secom_obj_Tex_001390:
+  type: TEXTURE
+  offset: 0x1390
+  symbol: object_secom_obj_Tex_001390
+  format: RGBA16
+  width: 15
+  height: 32
+
+object_secom_obj_Tex_001750:
+  type: TEXTURE
+  offset: 0x1750
+  symbol: object_secom_obj_Tex_001750
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_secom_obj_Tex_001B08:
+  type: TEXTURE
+  offset: 0x1B08
+  symbol: object_secom_obj_Tex_001B08
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_secom_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_secom_objVtx_000000
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_secom_objVtx_0011F0:
+  type: MM:ARRAY
+  offset: 0x0011F0
+  symbol: object_secom_objVtx_0011F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_secom_objVtx_0012C0:
+  type: MM:ARRAY
+  offset: 0x0012C0
+  symbol: object_secom_objVtx_0012C0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_secom_objVtx_001950:
+  type: MM:ARRAY
+  offset: 0x001950
+  symbol: object_secom_objVtx_001950
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

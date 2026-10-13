@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x01595C20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01595C20 ]
+    - [ 9, 0x01595C20 ]
+    - [ 10, 0x01595C20 ]
+    - [ 11, 0x01595C20 ]
+    - [ 12, 0x01595C20 ]
+    - [ 13, 0x01595C20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiBremenMaskBeakBaseTex:
+  type: TEXTURE
+  offset: 0x1300
+  symbol: gGiBremenMaskBeakBaseTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGiBremenMaskBeakNostrilTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gGiBremenMaskBeakNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGiBremenMaskDL:
+  type: GFX
+  offset: 0x808
+  symbol: gGiBremenMaskDL
+
+gGiBremenMaskEmptyDL:
+  type: GFX
+  offset: 0x800
+  symbol: gGiBremenMaskEmptyDL
+
+gGiBremenMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1440
+  symbol: gGiBremenMaskEyeTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGiBremenMaskFeathersTex:
+  type: TEXTURE
+  offset: 0xE80
+  symbol: gGiBremenMaskFeathersTex
+  format: IA8
+  width: 48
+  height: 24
+
+gGiBremenMaskTLUT:
+  type: TEXTURE
+  offset: 0xC80
+  symbol: gGiBremenMaskTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_gi_mask20Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask20Vtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

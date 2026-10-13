@@ -1,0 +1,716 @@
+:config:
+  segments:
+    - [ 6, 0x0140D1B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0140D1B0 ]
+    - [ 9, 0x0140D1B0 ]
+    - [ 10, 0x0140D1B0 ]
+    - [ 11, 0x0140D1B0 ]
+    - [ 12, 0x0140D1B0 ]
+    - [ 13, 0x0140D1B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDekuButlerBodyAndCandleHolderTex:
+  type: TEXTURE
+  offset: 0xD3C8
+  symbol: gDekuButlerBodyAndCandleHolderTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuButlerBowtieCenterTex:
+  type: TEXTURE
+  offset: 0xDF48
+  symbol: gDekuButlerBowtieCenterTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gDekuButlerCandleDL:
+  type: GFX
+  offset: 0xBEF0
+  symbol: gDekuButlerCandleDL
+
+gDekuButlerCandleLimb:
+  type: OOT:LIMB
+  offset: 0xE168
+  symbol: gDekuButlerCandleLimb
+  limb_type: Standard
+
+gDekuButlerCandleTex:
+  type: TEXTURE
+  offset: 0xDC48
+  symbol: gDekuButlerCandleTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gDekuButlerCandleWickDL:
+  type: GFX
+  offset: 0xC118
+  symbol: gDekuButlerCandleWickDL
+
+gDekuButlerCandleWickLimb:
+  type: OOT:LIMB
+  offset: 0xE174
+  symbol: gDekuButlerCandleWickLimb
+  limb_type: Standard
+
+gDekuButlerCloseParasolAnim:
+  type: OOT:ANIMATION
+  offset: 0x41CC
+  symbol: gDekuButlerCloseParasolAnim
+
+gDekuButlerEyeTex:
+  type: TEXTURE
+  offset: 0xD1C8
+  symbol: gDekuButlerEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuButlerEyesDL:
+  type: GFX
+  offset: 0xB7C0
+  symbol: gDekuButlerEyesDL
+
+gDekuButlerEyesLimb:
+  type: OOT:LIMB
+  offset: 0xE0A8
+  symbol: gDekuButlerEyesLimb
+  limb_type: Standard
+
+gDekuButlerFarewellAnim:
+  type: OOT:ANIMATION
+  offset: 0x1A50
+  symbol: gDekuButlerFarewellAnim
+
+gDekuButlerFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0xF6C
+  symbol: gDekuButlerFlyAnim
+
+gDekuButlerGreetingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2530
+  symbol: gDekuButlerGreetingAnim
+
+gDekuButlerGreetingWithCandleAnim:
+  type: OOT:ANIMATION
+  offset: 0x3320
+  symbol: gDekuButlerGreetingWithCandleAnim
+
+gDekuButlerGrieveAnim:
+  type: OOT:ANIMATION
+  offset: 0x6F84
+  symbol: gDekuButlerGrieveAnim
+
+gDekuButlerHairTex:
+  type: TEXTURE
+  offset: 0xDD48
+  symbol: gDekuButlerHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuButlerIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7CA4
+  symbol: gDekuButlerIdleAnim
+
+gDekuButlerIdleWithCandleAnim:
+  type: OOT:ANIMATION
+  offset: 0x8324
+  symbol: gDekuButlerIdleWithCandleAnim
+
+gDekuButlerImploreEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x6488
+  symbol: gDekuButlerImploreEndAnim
+
+gDekuButlerImploreLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x5F98
+  symbol: gDekuButlerImploreLoopAnim
+
+gDekuButlerImploreStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x9100
+  symbol: gDekuButlerImploreStartAnim
+
+gDekuButlerLeafTex:
+  type: TEXTURE
+  offset: 0xD648
+  symbol: gDekuButlerLeafTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuButlerLeftFootDL:
+  type: GFX
+  offset: 0xCE00
+  symbol: gDekuButlerLeftFootDL
+
+gDekuButlerLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xE09C
+  symbol: gDekuButlerLeftFootLimb
+  limb_type: Standard
+
+gDekuButlerLeftForearmDL:
+  type: GFX
+  offset: 0xBC68
+  symbol: gDekuButlerLeftForearmDL
+
+gDekuButlerLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xE150
+  symbol: gDekuButlerLeftForearmLimb
+  limb_type: Standard
+
+gDekuButlerLeftHandDL:
+  type: GFX
+  offset: 0xBDD8
+  symbol: gDekuButlerLeftHandDL
+
+gDekuButlerLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xE15C
+  symbol: gDekuButlerLeftHandLimb
+  limb_type: Standard
+
+gDekuButlerLeftMustacheBaseDL:
+  type: GFX
+  offset: 0xC5C0
+  symbol: gDekuButlerLeftMustacheBaseDL
+
+gDekuButlerLeftMustacheBaseLimb:
+  type: OOT:LIMB
+  offset: 0xE114
+  symbol: gDekuButlerLeftMustacheBaseLimb
+  limb_type: Standard
+
+gDekuButlerLeftMustacheCurlDL:
+  type: GFX
+  offset: 0xC4E0
+  symbol: gDekuButlerLeftMustacheCurlDL
+
+gDekuButlerLeftMustacheCurlLimb:
+  type: OOT:LIMB
+  offset: 0xE120
+  symbol: gDekuButlerLeftMustacheCurlLimb
+  limb_type: Standard
+
+gDekuButlerLeftShinDL:
+  type: GFX
+  offset: 0xCD48
+  symbol: gDekuButlerLeftShinDL
+
+gDekuButlerLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xE090
+  symbol: gDekuButlerLeftShinLimb
+  limb_type: Standard
+
+gDekuButlerLeftThighDL:
+  type: GFX
+  offset: 0xCEC8
+  symbol: gDekuButlerLeftThighDL
+
+gDekuButlerLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xE084
+  symbol: gDekuButlerLeftThighLimb
+  limb_type: Standard
+
+gDekuButlerLeftUpperArmDL:
+  type: GFX
+  offset: 0xC1A0
+  symbol: gDekuButlerLeftUpperArmDL
+
+gDekuButlerLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xE144
+  symbol: gDekuButlerLeftUpperArmLimb
+  limb_type: Standard
+
+gDekuButlerMouthTex:
+  type: TEXTURE
+  offset: 0xD5C8
+  symbol: gDekuButlerMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuButlerOpenParasolAnim:
+  type: OOT:ANIMATION
+  offset: 0x4DD8
+  symbol: gDekuButlerOpenParasolAnim
+
+gDekuButlerParasolHandleDL:
+  type: GFX
+  offset: 0xCAE8
+  symbol: gDekuButlerParasolHandleDL
+
+gDekuButlerParasolHandleLimb:
+  type: OOT:LIMB
+  offset: 0xE0D8
+  symbol: gDekuButlerParasolHandleLimb
+  limb_type: Standard
+
+gDekuButlerParasolLowerPetalsDL:
+  type: GFX
+  offset: 0xCA38
+  symbol: gDekuButlerParasolLowerPetalsDL
+
+gDekuButlerParasolLowerPetalsLimb:
+  type: OOT:LIMB
+  offset: 0xE0F0
+  symbol: gDekuButlerParasolLowerPetalsLimb
+  limb_type: Standard
+
+gDekuButlerParasolMiddlePetalsDL:
+  type: GFX
+  offset: 0xC988
+  symbol: gDekuButlerParasolMiddlePetalsDL
+
+gDekuButlerParasolMiddlePetalsLimb:
+  type: OOT:LIMB
+  offset: 0xE0FC
+  symbol: gDekuButlerParasolMiddlePetalsLimb
+  limb_type: Standard
+
+gDekuButlerParasolPetalTex:
+  type: TEXTURE
+  offset: 0xD848
+  symbol: gDekuButlerParasolPetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuButlerParasolUpperPetalsDL:
+  type: GFX
+  offset: 0xC8D8
+  symbol: gDekuButlerParasolUpperPetalsDL
+
+gDekuButlerParasolUpperPetalsLimb:
+  type: OOT:LIMB
+  offset: 0xE0E4
+  symbol: gDekuButlerParasolUpperPetalsLimb
+  limb_type: Standard
+
+gDekuButlerPelvisDL:
+  type: GFX
+  offset: 0xCC90
+  symbol: gDekuButlerPelvisDL
+
+gDekuButlerPelvisLimb:
+  type: OOT:LIMB
+  offset: 0xE054
+  symbol: gDekuButlerPelvisLimb
+  limb_type: Standard
+
+gDekuButlerPrayerLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x36D0
+  symbol: gDekuButlerPrayerLoopAnim
+
+gDekuButlerPrayerStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x8AE4
+  symbol: gDekuButlerPrayerStartAnim
+
+gDekuButlerRightFootDL:
+  type: GFX
+  offset: 0xD040
+  symbol: gDekuButlerRightFootDL
+
+gDekuButlerRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xE078
+  symbol: gDekuButlerRightFootLimb
+  limb_type: Standard
+
+gDekuButlerRightForearmDL:
+  type: GFX
+  offset: 0xC650
+  symbol: gDekuButlerRightForearmDL
+
+gDekuButlerRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xE0C0
+  symbol: gDekuButlerRightForearmLimb
+  limb_type: Standard
+
+gDekuButlerRightHandDL:
+  type: GFX
+  offset: 0xC7C0
+  symbol: gDekuButlerRightHandDL
+
+gDekuButlerRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xE0CC
+  symbol: gDekuButlerRightHandLimb
+  limb_type: Standard
+
+gDekuButlerRightMustacheBaseDL:
+  type: GFX
+  offset: 0xC450
+  symbol: gDekuButlerRightMustacheBaseDL
+
+gDekuButlerRightMustacheBaseLimb:
+  type: OOT:LIMB
+  offset: 0xE12C
+  symbol: gDekuButlerRightMustacheBaseLimb
+  limb_type: Standard
+
+gDekuButlerRightMustacheCurlDL:
+  type: GFX
+  offset: 0xC370
+  symbol: gDekuButlerRightMustacheCurlDL
+
+gDekuButlerRightMustacheCurlLimb:
+  type: OOT:LIMB
+  offset: 0xE138
+  symbol: gDekuButlerRightMustacheCurlLimb
+  limb_type: Standard
+
+gDekuButlerRightShinDL:
+  type: GFX
+  offset: 0xCF88
+  symbol: gDekuButlerRightShinDL
+
+gDekuButlerRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xE06C
+  symbol: gDekuButlerRightShinLimb
+  limb_type: Standard
+
+gDekuButlerRightThighDL:
+  type: GFX
+  offset: 0xD108
+  symbol: gDekuButlerRightThighDL
+
+gDekuButlerRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xE060
+  symbol: gDekuButlerRightThighLimb
+  limb_type: Standard
+
+gDekuButlerRightUpperArmDL:
+  type: GFX
+  offset: 0xCBE8
+  symbol: gDekuButlerRightUpperArmDL
+
+gDekuButlerRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xE0B4
+  symbol: gDekuButlerRightUpperArmLimb
+  limb_type: Standard
+
+gDekuButlerRootLimb:
+  type: OOT:LIMB
+  offset: 0xE048
+  symbol: gDekuButlerRootLimb
+  limb_type: Standard
+
+gDekuButlerShockLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x5E20
+  symbol: gDekuButlerShockLoopAnim
+
+gDekuButlerShockStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x51E4
+  symbol: gDekuButlerShockStartAnim
+
+gDekuButlerSkel:
+  type: MM:SKELETON
+  offset: 0xE1F8
+  symbol: gDekuButlerSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDekuButlerSnoutDL:
+  type: GFX
+  offset: 0xC248
+  symbol: gDekuButlerSnoutDL
+
+gDekuButlerSnoutLimb:
+  type: OOT:LIMB
+  offset: 0xE108
+  symbol: gDekuButlerSnoutLimb
+  limb_type: Standard
+
+gDekuButlerStartRaceEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x8F0
+  symbol: gDekuButlerStartRaceEndAnim
+
+gDekuButlerStartRaceStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x470
+  symbol: gDekuButlerStartRaceStartAnim
+
+gDekuButlerTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x73E4
+  symbol: gDekuButlerTalkAnim
+
+gDekuButlerTalkWithParasolAndCandleAnim:
+  type: OOT:ANIMATION
+  offset: 0x77A8
+  symbol: gDekuButlerTalkWithParasolAndCandleAnim
+
+gDekuButlerUpperBodyDL:
+  type: GFX
+  offset: 0xB850
+  symbol: gDekuButlerUpperBodyDL
+
+gDekuButlerUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0xE180
+  symbol: gDekuButlerUpperBodyLimb
+  limb_type: Standard
+
+
+object_dnjVtx_009110:
+  type: MM:ARRAY
+  offset: 0x009110
+  symbol: object_dnjVtx_009110
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_0091A0:
+  type: MM:ARRAY
+  offset: 0x0091A0
+  symbol: object_dnjVtx_0091A0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009360:
+  type: MM:ARRAY
+  offset: 0x009360
+  symbol: object_dnjVtx_009360
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009460:
+  type: MM:ARRAY
+  offset: 0x009460
+  symbol: object_dnjVtx_009460
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_0094D0:
+  type: MM:ARRAY
+  offset: 0x0094D0
+  symbol: object_dnjVtx_0094D0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_0095D0:
+  type: MM:ARRAY
+  offset: 0x0095D0
+  symbol: object_dnjVtx_0095D0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009640:
+  type: MM:ARRAY
+  offset: 0x009640
+  symbol: object_dnjVtx_009640
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009800:
+  type: MM:ARRAY
+  offset: 0x009800
+  symbol: object_dnjVtx_009800
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_0099D0:
+  type: MM:ARRAY
+  offset: 0x0099D0
+  symbol: object_dnjVtx_0099D0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009B50:
+  type: MM:ARRAY
+  offset: 0x009B50
+  symbol: object_dnjVtx_009B50
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009CD0:
+  type: MM:ARRAY
+  offset: 0x009CD0
+  symbol: object_dnjVtx_009CD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009E50:
+  type: MM:ARRAY
+  offset: 0x009E50
+  symbol: object_dnjVtx_009E50
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_009FC0:
+  type: MM:ARRAY
+  offset: 0x009FC0
+  symbol: object_dnjVtx_009FC0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A030:
+  type: MM:ARRAY
+  offset: 0x00A030
+  symbol: object_dnjVtx_00A030
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A1F0:
+  type: MM:ARRAY
+  offset: 0x00A1F0
+  symbol: object_dnjVtx_00A1F0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A3C0:
+  type: MM:ARRAY
+  offset: 0x00A3C0
+  symbol: object_dnjVtx_00A3C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A3F0:
+  type: MM:ARRAY
+  offset: 0x00A3F0
+  symbol: object_dnjVtx_00A3F0
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A800:
+  type: MM:ARRAY
+  offset: 0x00A800
+  symbol: object_dnjVtx_00A800
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00A870:
+  type: MM:ARRAY
+  offset: 0x00A870
+  symbol: object_dnjVtx_00A870
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B1C0:
+  type: MM:ARRAY
+  offset: 0x00B1C0
+  symbol: object_dnjVtx_00B1C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B280:
+  type: MM:ARRAY
+  offset: 0x00B280
+  symbol: object_dnjVtx_00B280
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B370:
+  type: MM:ARRAY
+  offset: 0x00B370
+  symbol: object_dnjVtx_00B370
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B450:
+  type: MM:ARRAY
+  offset: 0x00B450
+  symbol: object_dnjVtx_00B450
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B510:
+  type: MM:ARRAY
+  offset: 0x00B510
+  symbol: object_dnjVtx_00B510
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B600:
+  type: MM:ARRAY
+  offset: 0x00B600
+  symbol: object_dnjVtx_00B600
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnjVtx_00B6E0:
+  type: MM:ARRAY
+  offset: 0x00B6E0
+  symbol: object_dnjVtx_00B6E0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuButlerSkelLimbs:
+  type: BLOB
+  offset: 0xE18C
+  symbol: gDekuButlerSkelLimbs
+  size: 0

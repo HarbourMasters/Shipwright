@@ -1,0 +1,569 @@
+:config:
+  segments:
+    - [ 6, 0x012CD880 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x012CD880 ]
+    - [ 9, 0x012CD880 ]
+    - [ 10, 0x012CD880 ]
+    - [ 11, 0x012CD880 ]
+    - [ 12, 0x012CD880 ]
+    - [ 13, 0x012CD880 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_tk_Anim_001144:
+  type: OOT:ANIMATION
+  offset: 0x1144
+  symbol: object_tk_Anim_001144
+
+object_tk_Anim_001FA8:
+  type: OOT:ANIMATION
+  offset: 0x1FA8
+  symbol: object_tk_Anim_001FA8
+
+object_tk_Anim_0020C8:
+  type: OOT:ANIMATION
+  offset: 0x20C8
+  symbol: object_tk_Anim_0020C8
+
+object_tk_Anim_0030A4:
+  type: OOT:ANIMATION
+  offset: 0x30A4
+  symbol: object_tk_Anim_0030A4
+
+object_tk_Anim_003724:
+  type: OOT:ANIMATION
+  offset: 0x3724
+  symbol: object_tk_Anim_003724
+
+object_tk_Anim_003B10:
+  type: OOT:ANIMATION
+  offset: 0x3B10
+  symbol: object_tk_Anim_003B10
+
+object_tk_Anim_003FB8:
+  type: OOT:ANIMATION
+  offset: 0x3FB8
+  symbol: object_tk_Anim_003FB8
+
+object_tk_DL_008870:
+  type: GFX
+  offset: 0x8870
+  symbol: object_tk_DL_008870
+
+object_tk_DL_0089B0:
+  type: GFX
+  offset: 0x89B0
+  symbol: object_tk_DL_0089B0
+
+object_tk_DL_008B40:
+  type: GFX
+  offset: 0x8B40
+  symbol: object_tk_DL_008B40
+
+object_tk_DL_008C60:
+  type: GFX
+  offset: 0x8C60
+  symbol: object_tk_DL_008C60
+
+object_tk_DL_0091A8:
+  type: GFX
+  offset: 0x91A8
+  symbol: object_tk_DL_0091A8
+
+object_tk_DL_0094F0:
+  type: GFX
+  offset: 0x94F0
+  symbol: object_tk_DL_0094F0
+
+object_tk_DL_009620:
+  type: GFX
+  offset: 0x9620
+  symbol: object_tk_DL_009620
+
+object_tk_DL_009750:
+  type: GFX
+  offset: 0x9750
+  symbol: object_tk_DL_009750
+
+object_tk_DL_009960:
+  type: GFX
+  offset: 0x9960
+  symbol: object_tk_DL_009960
+
+object_tk_DL_009A90:
+  type: GFX
+  offset: 0x9A90
+  symbol: object_tk_DL_009A90
+
+object_tk_DL_009BC0:
+  type: GFX
+  offset: 0x9BC0
+  symbol: object_tk_DL_009BC0
+
+object_tk_DL_009DD0:
+  type: GFX
+  offset: 0x9DD0
+  symbol: object_tk_DL_009DD0
+
+object_tk_DL_009F88:
+  type: GFX
+  offset: 0x9F88
+  symbol: object_tk_DL_009F88
+
+object_tk_DL_00A068:
+  type: GFX
+  offset: 0xA068
+  symbol: object_tk_DL_00A068
+
+object_tk_DL_00A220:
+  type: GFX
+  offset: 0xA220
+  symbol: object_tk_DL_00A220
+
+object_tk_DL_00B260:
+  type: GFX
+  offset: 0xB260
+  symbol: object_tk_DL_00B260
+
+object_tk_DL_00B3C8:
+  type: GFX
+  offset: 0xB3C8
+  symbol: object_tk_DL_00B3C8
+
+object_tk_DL_00B530:
+  type: GFX
+  offset: 0xB530
+  symbol: object_tk_DL_00B530
+
+object_tk_Skel_00B9E8:
+  type: MM:SKELETON
+  offset: 0xB9E8
+  symbol: object_tk_Skel_00B9E8
+  limb_type: Standard
+  skel_type: Flex
+
+object_tk_Standardlimb_00B8D8:
+  type: OOT:LIMB
+  offset: 0xB8D8
+  symbol: object_tk_Standardlimb_00B8D8
+  limb_type: Standard
+
+object_tk_Standardlimb_00B8E4:
+  type: OOT:LIMB
+  offset: 0xB8E4
+  symbol: object_tk_Standardlimb_00B8E4
+  limb_type: Standard
+
+object_tk_Standardlimb_00B8F0:
+  type: OOT:LIMB
+  offset: 0xB8F0
+  symbol: object_tk_Standardlimb_00B8F0
+  limb_type: Standard
+
+object_tk_Standardlimb_00B8FC:
+  type: OOT:LIMB
+  offset: 0xB8FC
+  symbol: object_tk_Standardlimb_00B8FC
+  limb_type: Standard
+
+object_tk_Standardlimb_00B908:
+  type: OOT:LIMB
+  offset: 0xB908
+  symbol: object_tk_Standardlimb_00B908
+  limb_type: Standard
+
+object_tk_Standardlimb_00B914:
+  type: OOT:LIMB
+  offset: 0xB914
+  symbol: object_tk_Standardlimb_00B914
+  limb_type: Standard
+
+object_tk_Standardlimb_00B920:
+  type: OOT:LIMB
+  offset: 0xB920
+  symbol: object_tk_Standardlimb_00B920
+  limb_type: Standard
+
+object_tk_Standardlimb_00B92C:
+  type: OOT:LIMB
+  offset: 0xB92C
+  symbol: object_tk_Standardlimb_00B92C
+  limb_type: Standard
+
+object_tk_Standardlimb_00B938:
+  type: OOT:LIMB
+  offset: 0xB938
+  symbol: object_tk_Standardlimb_00B938
+  limb_type: Standard
+
+object_tk_Standardlimb_00B944:
+  type: OOT:LIMB
+  offset: 0xB944
+  symbol: object_tk_Standardlimb_00B944
+  limb_type: Standard
+
+object_tk_Standardlimb_00B950:
+  type: OOT:LIMB
+  offset: 0xB950
+  symbol: object_tk_Standardlimb_00B950
+  limb_type: Standard
+
+object_tk_Standardlimb_00B95C:
+  type: OOT:LIMB
+  offset: 0xB95C
+  symbol: object_tk_Standardlimb_00B95C
+  limb_type: Standard
+
+object_tk_Standardlimb_00B968:
+  type: OOT:LIMB
+  offset: 0xB968
+  symbol: object_tk_Standardlimb_00B968
+  limb_type: Standard
+
+object_tk_Standardlimb_00B974:
+  type: OOT:LIMB
+  offset: 0xB974
+  symbol: object_tk_Standardlimb_00B974
+  limb_type: Standard
+
+object_tk_Standardlimb_00B980:
+  type: OOT:LIMB
+  offset: 0xB980
+  symbol: object_tk_Standardlimb_00B980
+  limb_type: Standard
+
+object_tk_Standardlimb_00B98C:
+  type: OOT:LIMB
+  offset: 0xB98C
+  symbol: object_tk_Standardlimb_00B98C
+  limb_type: Standard
+
+object_tk_Standardlimb_00B998:
+  type: OOT:LIMB
+  offset: 0xB998
+  symbol: object_tk_Standardlimb_00B998
+  limb_type: Standard
+
+object_tk_TLUT_003FD0:
+  type: TEXTURE
+  offset: 0x3FD0
+  symbol: object_tk_TLUT_003FD0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tk_TLUT_00A300:
+  type: TEXTURE
+  offset: 0xA300
+  symbol: object_tk_TLUT_00A300
+  format: RGBA16
+  width: 40
+  height: 1
+
+object_tk_Tex_0041D0:
+  type: TEXTURE
+  offset: 0x41D0
+  symbol: object_tk_Tex_0041D0
+  format: CI8
+  width: 8
+  height: 8
+
+object_tk_Tex_004210:
+  type: TEXTURE
+  offset: 0x4210
+  symbol: object_tk_Tex_004210
+  format: CI8
+  width: 8
+  height: 8
+
+object_tk_Tex_004250:
+  type: TEXTURE
+  offset: 0x4250
+  symbol: object_tk_Tex_004250
+  format: CI8
+  width: 8
+  height: 8
+
+object_tk_Tex_004290:
+  type: TEXTURE
+  offset: 0x4290
+  symbol: object_tk_Tex_004290
+  format: CI8
+  width: 16
+  height: 16
+
+object_tk_Tex_004390:
+  type: TEXTURE
+  offset: 0x4390
+  symbol: object_tk_Tex_004390
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_tk_Tex_004B90:
+  type: TEXTURE
+  offset: 0x4B90
+  symbol: object_tk_Tex_004B90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_tk_Tex_005390:
+  type: TEXTURE
+  offset: 0x5390
+  symbol: object_tk_Tex_005390
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_tk_Tex_005B90:
+  type: TEXTURE
+  offset: 0x5B90
+  symbol: object_tk_Tex_005B90
+  format: CI8
+  width: 16
+  height: 16
+
+object_tk_Tex_005C90:
+  type: TEXTURE
+  offset: 0x5C90
+  symbol: object_tk_Tex_005C90
+  format: CI8
+  width: 16
+  height: 16
+
+object_tk_Tex_005D90:
+  type: TEXTURE
+  offset: 0x5D90
+  symbol: object_tk_Tex_005D90
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3FD0
+
+object_tk_Tex_005E90:
+  type: TEXTURE
+  offset: 0x5E90
+  symbol: object_tk_Tex_005E90
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x3FD0
+
+object_tk_Tex_005F10:
+  type: TEXTURE
+  offset: 0x5F10
+  symbol: object_tk_Tex_005F10
+  format: CI8
+  width: 16
+  height: 16
+
+object_tk_Tex_00A350:
+  type: TEXTURE
+  offset: 0xA350
+  symbol: object_tk_Tex_00A350
+  format: CI8
+  width: 16
+  height: 16
+
+object_tk_Tex_00A450:
+  type: TEXTURE
+  offset: 0xA450
+  symbol: object_tk_Tex_00A450
+  format: CI8
+  width: 8
+  height: 16
+
+object_tk_Tex_00A4D0:
+  type: TEXTURE
+  offset: 0xA4D0
+  symbol: object_tk_Tex_00A4D0
+  format: I8
+  width: 8
+  height: 8
+
+object_tk_Tex_00A510:
+  type: TEXTURE
+  offset: 0xA510
+  symbol: object_tk_Tex_00A510
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_tk_Tex_00A590:
+  type: TEXTURE
+  offset: 0xA590
+  symbol: object_tk_Tex_00A590
+  format: I4
+  width: 16
+  height: 32
+
+
+object_tkVtx_006010:
+  type: MM:ARRAY
+  offset: 0x006010
+  symbol: object_tkVtx_006010
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006270:
+  type: MM:ARRAY
+  offset: 0x006270
+  symbol: object_tkVtx_006270
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006A80:
+  type: MM:ARRAY
+  offset: 0x006A80
+  symbol: object_tkVtx_006A80
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006C40:
+  type: MM:ARRAY
+  offset: 0x006C40
+  symbol: object_tkVtx_006C40
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_006FD0:
+  type: MM:ARRAY
+  offset: 0x006FD0
+  symbol: object_tkVtx_006FD0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007150:
+  type: MM:ARRAY
+  offset: 0x007150
+  symbol: object_tkVtx_007150
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007300:
+  type: MM:ARRAY
+  offset: 0x007300
+  symbol: object_tkVtx_007300
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007690:
+  type: MM:ARRAY
+  offset: 0x007690
+  symbol: object_tkVtx_007690
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007810:
+  type: MM:ARRAY
+  offset: 0x007810
+  symbol: object_tkVtx_007810
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_0079C0:
+  type: MM:ARRAY
+  offset: 0x0079C0
+  symbol: object_tkVtx_0079C0
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007F30:
+  type: MM:ARRAY
+  offset: 0x007F30
+  symbol: object_tkVtx_007F30
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_007F90:
+  type: MM:ARRAY
+  offset: 0x007F90
+  symbol: object_tkVtx_007F90
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_0081A0:
+  type: MM:ARRAY
+  offset: 0x0081A0
+  symbol: object_tkVtx_0081A0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_008200:
+  type: MM:ARRAY
+  offset: 0x008200
+  symbol: object_tkVtx_008200
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_008410:
+  type: MM:ARRAY
+  offset: 0x008410
+  symbol: object_tkVtx_008410
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00A690:
+  type: MM:ARRAY
+  offset: 0x00A690
+  symbol: object_tkVtx_00A690
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00A940:
+  type: MM:ARRAY
+  offset: 0x00A940
+  symbol: object_tkVtx_00A940
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tkVtx_00ABF0:
+  type: MM:ARRAY
+  offset: 0x00ABF0
+  symbol: object_tkVtx_00ABF0
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tk_Skel_00B9E8Limbs:
+  type: BLOB
+  offset: 0xB9A4
+  symbol: object_tk_Skel_00B9E8Limbs
+  size: 0

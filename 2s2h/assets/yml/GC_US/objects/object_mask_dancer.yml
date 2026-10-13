@@ -1,0 +1,80 @@
+:config:
+  segments:
+    - [ 10, 0x00E93710 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E93710 ]
+    - [ 12, 0x00E93710 ]
+    - [ 13, 0x00E93710 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_dancer_DL_000EF0:
+  type: GFX
+  offset: 0xEF0
+  symbol: object_mask_dancer_DL_000EF0
+
+object_mask_dancer_TLUT_001548:
+  type: TEXTURE
+  offset: 0x1548
+  symbol: object_mask_dancer_TLUT_001548
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_dancer_Tex_001748:
+  type: TEXTURE
+  offset: 0x1748
+  symbol: object_mask_dancer_Tex_001748
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_dancer_Tex_001848:
+  type: TEXTURE
+  offset: 0x1848
+  symbol: object_mask_dancer_Tex_001848
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_dancer_Tex_001888:
+  type: TEXTURE
+  offset: 0x1888
+  symbol: object_mask_dancer_Tex_001888
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_dancer_Tex_001988:
+  type: TEXTURE
+  offset: 0x1988
+  symbol: object_mask_dancer_Tex_001988
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_dancer_Tex_0019C8:
+  type: TEXTURE
+  offset: 0x19C8
+  symbol: object_mask_dancer_Tex_0019C8
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_dancer_Tex_001AC8:
+  type: TEXTURE
+  offset: 0x1AC8
+  symbol: object_mask_dancer_Tex_001AC8
+  format: CI8
+  width: 8
+  height: 16
+
+
+object_mask_dancerVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_dancerVtx_000000
+  count: 239
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

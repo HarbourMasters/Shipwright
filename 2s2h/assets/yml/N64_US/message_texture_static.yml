@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 9, 0x009F7C80 ]
+
+gMessageXLeftTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMessageXLeftTex
+  format: I4
+  width: 96
+  height: 48
+
+gMessageXRightTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gMessageXRightTex
+  format: I4
+  width: 96
+  height: 48
+

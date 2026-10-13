@@ -1,0 +1,251 @@
+:config:
+  segments:
+    - [ 2, 0x01796310 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/Z2_OKUJOUSet_00AC30.yml
+    - N64_US/scenes/nonmq/Z2_OKUJOUSet_00B5A0.yml
+    - N64_US/scenes/nonmq/Z2_OKUJOUSet_012CC0.yml
+Z2_OKUJOU:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_OKUJOU
+
+
+Z2_OKUJOUPathwayList_00036C:
+  type: MM:PATH
+  offset: 0x00036C
+  symbol: Z2_OKUJOUPathwayList_00036C
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 0, 4000, -200 ]
+        - [ 0, 3000, -200 ]
+
+Z2_OKUJOUCutsceneData_000380:
+  type: MM:CUTSCENE
+  offset: 0x000380
+  symbol: Z2_OKUJOUCutsceneData_000380
+  size: 6240
+
+Z2_OKUJOUCutsceneData_001BF0:
+  type: MM:CUTSCENE
+  offset: 0x001BF0
+  symbol: Z2_OKUJOUCutsceneData_001BF0
+  size: 1672
+
+Z2_OKUJOUCutsceneData_002280:
+  type: MM:CUTSCENE
+  offset: 0x002280
+  symbol: Z2_OKUJOUCutsceneData_002280
+  size: 4644
+
+Z2_OKUJOUCutsceneData_0034B0:
+  type: MM:CUTSCENE
+  offset: 0x0034B0
+  symbol: Z2_OKUJOUCutsceneData_0034B0
+  size: 2860
+
+Z2_OKUJOUCutsceneData_003FE0:
+  type: MM:CUTSCENE
+  offset: 0x003FE0
+  symbol: Z2_OKUJOUCutsceneData_003FE0
+  size: 13360
+
+Z2_OKUJOUCutsceneData_007420:
+  type: MM:CUTSCENE
+  offset: 0x007420
+  symbol: Z2_OKUJOUCutsceneData_007420
+  size: 8588
+
+Z2_OKUJOUCutsceneData_0095B0:
+  type: MM:CUTSCENE
+  offset: 0x0095B0
+  symbol: Z2_OKUJOUCutsceneData_0095B0
+  size: 1632
+
+Z2_OKUJOUCutsceneData_009C20:
+  type: MM:CUTSCENE
+  offset: 0x009C20
+  symbol: Z2_OKUJOUCutsceneData_009C20
+  size: 808
+
+Z2_OKUJOUTexAnim_00A0C0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x00A0C0
+  symbol: Z2_OKUJOUTexAnim_00A0C0
+
+Z2_OKUJOUCollisionHeader_00AC00:
+  type: MM:COLLISION
+  offset: 0x00AC00
+  symbol: Z2_OKUJOUCollisionHeader_00AC00
+
+Z2_OKUJOUCutsceneData_00AF70:
+  type: MM:CUTSCENE
+  offset: 0x00AF70
+  symbol: Z2_OKUJOUCutsceneData_00AF70
+  size: 1376
+
+Z2_OKUJOUCutsceneData_00B904:
+  type: MM:CUTSCENE
+  offset: 0x00B904
+  symbol: Z2_OKUJOUCutsceneData_00B904
+  size: 13360
+
+Z2_OKUJOUCutsceneData_00ED44:
+  type: MM:CUTSCENE
+  offset: 0x00ED44
+  symbol: Z2_OKUJOUCutsceneData_00ED44
+  size: 8624
+
+Z2_OKUJOUCutsceneData_010F04:
+  type: MM:CUTSCENE
+  offset: 0x010F04
+  symbol: Z2_OKUJOUCutsceneData_010F04
+  size: 7364
+
+Z2_OKUJOUTex_0130A0:
+  type: TEXTURE
+  offset: 0x0130A0
+  symbol: Z2_OKUJOUTex_0130A0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_OKUJOUTex_0138A0:
+  type: TEXTURE
+  offset: 0x0138A0
+  symbol: Z2_OKUJOUTex_0138A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0140A0:
+  type: TEXTURE
+  offset: 0x0140A0
+  symbol: Z2_OKUJOUTex_0140A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0148A0:
+  type: TEXTURE
+  offset: 0x0148A0
+  symbol: Z2_OKUJOUTex_0148A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0150A0:
+  type: TEXTURE
+  offset: 0x0150A0
+  symbol: Z2_OKUJOUTex_0150A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0158A0:
+  type: TEXTURE
+  offset: 0x0158A0
+  symbol: Z2_OKUJOUTex_0158A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0160A0:
+  type: TEXTURE
+  offset: 0x0160A0
+  symbol: Z2_OKUJOUTex_0160A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0168A0:
+  type: TEXTURE
+  offset: 0x0168A0
+  symbol: Z2_OKUJOUTex_0168A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0170A0:
+  type: TEXTURE
+  offset: 0x0170A0
+  symbol: Z2_OKUJOUTex_0170A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_0178A0:
+  type: TEXTURE
+  offset: 0x0178A0
+  symbol: Z2_OKUJOUTex_0178A0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_OKUJOUTex_0188A0:
+  type: TEXTURE
+  offset: 0x0188A0
+  symbol: Z2_OKUJOUTex_0188A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_018CA0:
+  type: TEXTURE
+  offset: 0x018CA0
+  symbol: Z2_OKUJOUTex_018CA0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_OKUJOUTex_0194A0:
+  type: TEXTURE
+  offset: 0x0194A0
+  symbol: Z2_OKUJOUTex_0194A0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_OKUJOUTex_019CA0:
+  type: TEXTURE
+  offset: 0x019CA0
+  symbol: Z2_OKUJOUTex_019CA0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_OKUJOUTex_01A4A0:
+  type: TEXTURE
+  offset: 0x01A4A0
+  symbol: Z2_OKUJOUTex_01A4A0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_OKUJOUTex_01A5A0:
+  type: TEXTURE
+  offset: 0x01A5A0
+  symbol: Z2_OKUJOUTex_01A5A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OKUJOUTex_01A9A0:
+  type: TEXTURE
+  offset: 0x01A9A0
+  symbol: Z2_OKUJOUTex_01A9A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_OKUJOUTLUT_01ADA0:
+  type: TEXTURE
+  offset: 0x01ADA0
+  symbol: Z2_OKUJOUTLUT_01ADA0
+  format: RGBA16
+  width: 16
+  height: 16

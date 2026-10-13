@@ -1,0 +1,429 @@
+:config:
+  segments:
+    - [ 6, 0x0131AF30 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0131AF30 ]
+    - [ 9, 0x0131AF30 ]
+    - [ 10, 0x0131AF30 ]
+    - [ 11, 0x0131AF30 ]
+    - [ 12, 0x0131AF30 ]
+    - [ 13, 0x0131AF30 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gClockTowerOcarinaOfTimeDL:
+  type: GFX
+  offset: 0xA840
+  symbol: gClockTowerOcarinaOfTimeDL
+
+gClockTowerOcarinaOfTimeFallAnim:
+  type: OOT:ANIMATION
+  offset: 0xA104
+  symbol: gClockTowerOcarinaOfTimeFallAnim
+
+gClockTowerOcarinaOfTimeHitGroundAnim:
+  type: OOT:ANIMATION
+  offset: 0xA2BC
+  symbol: gClockTowerOcarinaOfTimeHitGroundAnim
+
+gClockTowerOcarinaOfTimeJuggleAnim:
+  type: OOT:ANIMATION
+  offset: 0xA6D4
+  symbol: gClockTowerOcarinaOfTimeJuggleAnim
+
+gClockTowerOcarinaOfTimeRootLimb:
+  type: OOT:LIMB
+  offset: 0xAD58
+  symbol: gClockTowerOcarinaOfTimeRootLimb
+  limb_type: Standard
+
+gClockTowerOcarinaOfTimeSkel:
+  type: MM:SKELETON
+  offset: 0xAD68
+  symbol: gClockTowerOcarinaOfTimeSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gClockTowerOcarinaOfTimeTex:
+  type: TEXTURE
+  offset: 0xA958
+  symbol: gClockTowerOcarinaOfTimeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gClockTowerOcarinaOfTimeTurnAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0xA4C4
+  symbol: gClockTowerOcarinaOfTimeTurnAroundAnim
+
+gSkullKidCartwheelAnim:
+  type: OOT:ANIMATION
+  offset: 0x37B94
+  symbol: gSkullKidCartwheelAnim
+
+gSkullKidCurseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x130C
+  symbol: gSkullKidCurseLoopAnim
+
+gSkullKidCurseStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x55C
+  symbol: gSkullKidCurseStartAnim
+
+gSkullKidDangleFromMaskLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x3A8F8
+  symbol: gSkullKidDangleFromMaskLoopAnim
+
+gSkullKidDangleFromMaskStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x3967C
+  symbol: gSkullKidDangleFromMaskStartAnim
+
+gSkullKidDeflectAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x2AD54
+  symbol: gSkullKidDeflectAttackAnim
+
+gSkullKidDrawAnim:
+  type: OOT:ANIMATION
+  offset: 0x36964
+  symbol: gSkullKidDrawAnim
+
+gSkullKidDropOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F9E4
+  symbol: gSkullKidDropOcarinaAnim
+
+gSkullKidDroppedFromMaskAnim:
+  type: OOT:ANIMATION
+  offset: 0x34FD8
+  symbol: gSkullKidDroppedFromMaskAnim
+
+gSkullKidFloatingArmsCrossedAnim:
+  type: OOT:ANIMATION
+  offset: 0x29A04
+  symbol: gSkullKidFloatingArmsCrossedAnim
+
+gSkullKidFloatingTurnAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2200C
+  symbol: gSkullKidFloatingTurnAroundAnim
+
+gSkullKidGlitchyHorseRideStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x70DC
+  symbol: gSkullKidGlitchyHorseRideStartAnim
+
+gSkullKidHideOcarinaLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D07C
+  symbol: gSkullKidHideOcarinaLoopAnim
+
+gSkullKidHideOcarinaStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AA80
+  symbol: gSkullKidHideOcarinaStartAnim
+
+gSkullKidHitByBubbleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A2D8
+  symbol: gSkullKidHitByBubbleAnim
+
+gSkullKidHoldHeadAndScreamLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x28F28
+  symbol: gSkullKidHoldHeadAndScreamLoopAnim
+
+gSkullKidHoldHeadAndScreamStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x27CF4
+  symbol: gSkullKidHoldHeadAndScreamStartAnim
+
+gSkullKidHoldHeadAndShakeLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xEEC0
+  symbol: gSkullKidHoldHeadAndShakeLoopAnim
+
+gSkullKidHoldHeadAndShakeStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xE6EC
+  symbol: gSkullKidHoldHeadAndShakeStartAnim
+
+gSkullKidHoldUpMaskLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x32AE0
+  symbol: gSkullKidHoldUpMaskLoopAnim
+
+gSkullKidHoldUpMaskStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x322FC
+  symbol: gSkullKidHoldUpMaskStartAnim
+
+gSkullKidHorseRideAndRotateAnim:
+  type: OOT:ANIMATION
+  offset: 0x4580
+  symbol: gSkullKidHorseRideAndRotateAnim
+
+gSkullKidHorseRideLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x49C8
+  symbol: gSkullKidHorseRideLoopAnim
+
+gSkullKidHorseRideStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x35C8
+  symbol: gSkullKidHorseRideStartAnim
+
+gSkullKidHuddleWithFairiesAnim:
+  type: OOT:ANIMATION
+  offset: 0x3323C
+  symbol: gSkullKidHuddleWithFairiesAnim
+
+gSkullKidJumpWhileHidingOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C114
+  symbol: gSkullKidJumpWhileHidingOcarinaAnim
+
+gSkullKidKickOverLinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2DC64
+  symbol: gSkullKidKickOverLinkAnim
+
+gSkullKidLaughLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xCBB8
+  symbol: gSkullKidLaughLoopAnim
+
+gSkullKidLaughStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xC270
+  symbol: gSkullKidLaughStartAnim
+
+gSkullKidLookAroundForGiantsLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x141E4
+  symbol: gSkullKidLookAroundForGiantsLoopAnim
+
+gSkullKidLookAroundForGiantsStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x12A58
+  symbol: gSkullKidLookAroundForGiantsStartAnim
+
+gSkullKidLookAtOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x1EF50
+  symbol: gSkullKidLookAtOcarinaAnim
+
+gSkullKidLowerMaskAnim:
+  type: OOT:ANIMATION
+  offset: 0x26CF4
+  symbol: gSkullKidLowerMaskAnim
+
+gSkullKidMajorasMaskCurseOverlayDL:
+  type: GFX
+  offset: 0x7840
+  symbol: gSkullKidMajorasMaskCurseOverlayDL
+
+gSkullKidMajorasMaskCurseOverlayElectricityTex:
+  type: TEXTURE
+  offset: 0x7E48
+  symbol: gSkullKidMajorasMaskCurseOverlayElectricityTex
+  format: I8
+  width: 32
+  height: 64
+
+gSkullKidMajorasMaskCurseOverlayMaskTex:
+  type: TEXTURE
+  offset: 0x7A48
+  symbol: gSkullKidMajorasMaskCurseOverlayMaskTex
+  format: I8
+  width: 32
+  height: 32
+
+gSkullKidMajorasMaskCurseOverlayTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x8658
+  symbol: gSkullKidMajorasMaskCurseOverlayTexAnim
+
+gSkullKidOcarinaJuggleAnim:
+  type: OOT:ANIMATION
+  offset: 0x2336C
+  symbol: gSkullKidOcarinaJuggleAnim
+
+gSkullKidPickUpOcarinaAndStartPlayingAnim:
+  type: OOT:ANIMATION
+  offset: 0x16910
+  symbol: gSkullKidPickUpOcarinaAndStartPlayingAnim
+
+gSkullKidPickUpOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x1DDE0
+  symbol: gSkullKidPickUpOcarinaAnim
+
+gSkullKidPlayFluteAnim:
+  type: OOT:ANIMATION
+  offset: 0x2FA70
+  symbol: gSkullKidPlayFluteAnim
+
+gSkullKidPlayOcarinaAndLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0x18ED0
+  symbol: gSkullKidPlayOcarinaAndLaughAnim
+
+gSkullKidPlayOcarinaWhileFloatingAnim:
+  type: OOT:ANIMATION
+  offset: 0x20CAC
+  symbol: gSkullKidPlayOcarinaWhileFloatingAnim
+
+gSkullKidRaiseMaskLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x266C8
+  symbol: gSkullKidRaiseMaskLoopAnim
+
+gSkullKidRaiseMaskStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x259F4
+  symbol: gSkullKidRaiseMaskStartAnim
+
+gSkullKidRecliningFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0xD830
+  symbol: gSkullKidRecliningFloatAnim
+
+gSkullKidSearchLinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E9A0
+  symbol: gSkullKidSearchLinkAnim
+
+gSkullKidSearchMaskSalesmanAnim:
+  type: OOT:ANIMATION
+  offset: 0x31210
+  symbol: gSkullKidSearchMaskSalesmanAnim
+
+gSkullKidShiverAnim:
+  type: OOT:ANIMATION
+  offset: 0x3021C
+  symbol: gSkullKidShiverAnim
+
+gSkullKidSmackFairyLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x10B60
+  symbol: gSkullKidSmackFairyLoopAnim
+
+gSkullKidSmackFairyStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x101A4
+  symbol: gSkullKidSmackFairyStartAnim
+
+gSkullKidSurpriseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x11FB0
+  symbol: gSkullKidSurpriseLoopAnim
+
+gSkullKidSurpriseStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x110B4
+  symbol: gSkullKidSurpriseStartAnim
+
+object_stk2_DL_008920:
+  type: GFX
+  offset: 0x8920
+  symbol: object_stk2_DL_008920
+
+object_stk2_DL_008A38:
+  type: GFX
+  offset: 0x8A38
+  symbol: object_stk2_DL_008A38
+
+object_stk2_Matanimheader_009F60:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x9F60
+  symbol: object_stk2_Matanimheader_009F60
+
+object_stk2_Tex_008B50:
+  type: TEXTURE
+  offset: 0x8B50
+  symbol: object_stk2_Tex_008B50
+  format: I8
+  width: 32
+  height: 64
+
+object_stk2_Tex_009350:
+  type: TEXTURE
+  offset: 0x9350
+  symbol: object_stk2_Tex_009350
+  format: I8
+  width: 32
+  height: 32
+
+object_stk2_Tex_009750:
+  type: TEXTURE
+  offset: 0x9750
+  symbol: object_stk2_Tex_009750
+  format: I8
+  width: 32
+  height: 64
+
+
+object_stk2Vtx_0070F0:
+  type: MM:ARRAY
+  offset: 0x0070F0
+  symbol: object_stk2Vtx_0070F0
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSkullKidMajorasMaskCurseOverlayTexAnimTexScrollParams_008650:
+  type: BLOB
+  offset: 0x008650
+  symbol: gSkullKidMajorasMaskCurseOverlayTexAnimTexScrollParams_008650
+  size: 0
+
+object_stk2Vtx_008660:
+  type: MM:ARRAY
+  offset: 0x008660
+  symbol: object_stk2Vtx_008660
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stk2Vtx_0087C0:
+  type: MM:ARRAY
+  offset: 0x0087C0
+  symbol: object_stk2Vtx_0087C0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_stk2_Matanimheader_009F60TexScrollParams_009F50:
+  type: BLOB
+  offset: 0x009F50
+  symbol: object_stk2_Matanimheader_009F60TexScrollParams_009F50
+  size: 0
+
+object_stk2_Matanimheader_009F60TexScrollParams_009F58:
+  type: BLOB
+  offset: 0x009F58
+  symbol: object_stk2_Matanimheader_009F60TexScrollParams_009F58
+  size: 0
+
+object_stk2Vtx_00A6F0:
+  type: MM:ARRAY
+  offset: 0x00A6F0
+  symbol: object_stk2Vtx_00A6F0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gClockTowerOcarinaOfTimeSkelLimbs:
+  type: BLOB
+  offset: 0xAD64
+  symbol: gClockTowerOcarinaOfTimeSkelLimbs
+  size: 0

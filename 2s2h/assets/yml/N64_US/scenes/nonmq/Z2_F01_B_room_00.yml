@@ -1,0 +1,493 @@
+:config:
+  segments:
+    - [ 3, 0x01AD9810 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01AD9810 ]
+    - [ 9, 0x01AD9810 ]
+    - [ 10, 0x01AD9810 ]
+    - [ 11, 0x01AD9810 ]
+    - [ 12, 0x01AD9810 ]
+    - [ 13, 0x01AD9810 ]
+    - [ 2, 0x01AD00E0 ]
+  directory: scenes/nonmq/Z2_F01_B
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_F01_B.yml
+
+Z2_F01_B_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_F01_B_room_00
+
+Z2_F01_B_room_00DL_006C20:
+  type: GFX
+  offset: 0x6C20
+  symbol: Z2_F01_B_room_00DL_006C20
+
+Z2_F01_B_room_00DL_007250:
+  type: GFX
+  offset: 0x7250
+  symbol: Z2_F01_B_room_00DL_007250
+
+
+Z2_F01_B_room_00ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_F01_B_room_00ActorEntry_000058
+  size: 0
+
+Z2_F01_B_room_00Vtx_0001F0:
+  type: MM:ARRAY
+  offset: 0x0001F0
+  symbol: Z2_F01_B_room_00Vtx_0001F0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_000590:
+  type: GFX
+  offset: 0x000590
+  symbol: Z2_F01_B_room_00DL_000590
+
+Z2_F01_B_room_00Vtx_0006E8:
+  type: MM:ARRAY
+  offset: 0x0006E8
+  symbol: Z2_F01_B_room_00Vtx_0006E8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_000A88:
+  type: GFX
+  offset: 0x000A88
+  symbol: Z2_F01_B_room_00DL_000A88
+
+Z2_F01_B_room_00Vtx_000BB8:
+  type: MM:ARRAY
+  offset: 0x000BB8
+  symbol: Z2_F01_B_room_00Vtx_000BB8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_000E38:
+  type: GFX
+  offset: 0x000E38
+  symbol: Z2_F01_B_room_00DL_000E38
+
+Z2_F01_B_room_00Vtx_000FC0:
+  type: MM:ARRAY
+  offset: 0x000FC0
+  symbol: Z2_F01_B_room_00Vtx_000FC0
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_001390:
+  type: GFX
+  offset: 0x001390
+  symbol: Z2_F01_B_room_00DL_001390
+
+Z2_F01_B_room_00Vtx_0014F8:
+  type: MM:ARRAY
+  offset: 0x0014F8
+  symbol: Z2_F01_B_room_00Vtx_0014F8
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_001918:
+  type: GFX
+  offset: 0x001918
+  symbol: Z2_F01_B_room_00DL_001918
+
+Z2_F01_B_room_00Vtx_001AE8:
+  type: MM:ARRAY
+  offset: 0x001AE8
+  symbol: Z2_F01_B_room_00Vtx_001AE8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_001D28:
+  type: GFX
+  offset: 0x001D28
+  symbol: Z2_F01_B_room_00DL_001D28
+
+Z2_F01_B_room_00Vtx_001E20:
+  type: MM:ARRAY
+  offset: 0x001E20
+  symbol: Z2_F01_B_room_00Vtx_001E20
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0021A0:
+  type: GFX
+  offset: 0x0021A0
+  symbol: Z2_F01_B_room_00DL_0021A0
+
+Z2_F01_B_room_00Vtx_0022A0:
+  type: MM:ARRAY
+  offset: 0x0022A0
+  symbol: Z2_F01_B_room_00Vtx_0022A0
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0026C0:
+  type: GFX
+  offset: 0x0026C0
+  symbol: Z2_F01_B_room_00DL_0026C0
+
+Z2_F01_B_room_00Vtx_002858:
+  type: MM:ARRAY
+  offset: 0x002858
+  symbol: Z2_F01_B_room_00Vtx_002858
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_002948:
+  type: GFX
+  offset: 0x002948
+  symbol: Z2_F01_B_room_00DL_002948
+
+Z2_F01_B_room_00DL_002A20:
+  type: GFX
+  offset: 0x002A20
+  symbol: Z2_F01_B_room_00DL_002A20
+
+Z2_F01_B_room_00Vtx_002A58:
+  type: MM:ARRAY
+  offset: 0x002A58
+  symbol: Z2_F01_B_room_00Vtx_002A58
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_003118:
+  type: GFX
+  offset: 0x003118
+  symbol: Z2_F01_B_room_00DL_003118
+
+Z2_F01_B_room_00Vtx_003298:
+  type: MM:ARRAY
+  offset: 0x003298
+  symbol: Z2_F01_B_room_00Vtx_003298
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0033C8:
+  type: GFX
+  offset: 0x0033C8
+  symbol: Z2_F01_B_room_00DL_0033C8
+
+Z2_F01_B_room_00Vtx_003528:
+  type: MM:ARRAY
+  offset: 0x003528
+  symbol: Z2_F01_B_room_00Vtx_003528
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_003658:
+  type: GFX
+  offset: 0x003658
+  symbol: Z2_F01_B_room_00DL_003658
+
+Z2_F01_B_room_00Vtx_0037B8:
+  type: MM:ARRAY
+  offset: 0x0037B8
+  symbol: Z2_F01_B_room_00Vtx_0037B8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0038E8:
+  type: GFX
+  offset: 0x0038E8
+  symbol: Z2_F01_B_room_00DL_0038E8
+
+Z2_F01_B_room_00Vtx_003A48:
+  type: MM:ARRAY
+  offset: 0x003A48
+  symbol: Z2_F01_B_room_00Vtx_003A48
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_003B78:
+  type: GFX
+  offset: 0x003B78
+  symbol: Z2_F01_B_room_00DL_003B78
+
+Z2_F01_B_room_00Vtx_003CD8:
+  type: MM:ARRAY
+  offset: 0x003CD8
+  symbol: Z2_F01_B_room_00Vtx_003CD8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_003E08:
+  type: GFX
+  offset: 0x003E08
+  symbol: Z2_F01_B_room_00DL_003E08
+
+Z2_F01_B_room_00Vtx_003F68:
+  type: MM:ARRAY
+  offset: 0x003F68
+  symbol: Z2_F01_B_room_00Vtx_003F68
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004098:
+  type: GFX
+  offset: 0x004098
+  symbol: Z2_F01_B_room_00DL_004098
+
+Z2_F01_B_room_00Vtx_0041F8:
+  type: MM:ARRAY
+  offset: 0x0041F8
+  symbol: Z2_F01_B_room_00Vtx_0041F8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004328:
+  type: GFX
+  offset: 0x004328
+  symbol: Z2_F01_B_room_00DL_004328
+
+Z2_F01_B_room_00Vtx_004488:
+  type: MM:ARRAY
+  offset: 0x004488
+  symbol: Z2_F01_B_room_00Vtx_004488
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0045B8:
+  type: GFX
+  offset: 0x0045B8
+  symbol: Z2_F01_B_room_00DL_0045B8
+
+Z2_F01_B_room_00Vtx_004718:
+  type: MM:ARRAY
+  offset: 0x004718
+  symbol: Z2_F01_B_room_00Vtx_004718
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004848:
+  type: GFX
+  offset: 0x004848
+  symbol: Z2_F01_B_room_00DL_004848
+
+Z2_F01_B_room_00Vtx_0049A8:
+  type: MM:ARRAY
+  offset: 0x0049A8
+  symbol: Z2_F01_B_room_00Vtx_0049A8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004AD8:
+  type: GFX
+  offset: 0x004AD8
+  symbol: Z2_F01_B_room_00DL_004AD8
+
+Z2_F01_B_room_00Vtx_004C38:
+  type: MM:ARRAY
+  offset: 0x004C38
+  symbol: Z2_F01_B_room_00Vtx_004C38
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004D68:
+  type: GFX
+  offset: 0x004D68
+  symbol: Z2_F01_B_room_00DL_004D68
+
+Z2_F01_B_room_00Vtx_004EC8:
+  type: MM:ARRAY
+  offset: 0x004EC8
+  symbol: Z2_F01_B_room_00Vtx_004EC8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_004FF8:
+  type: GFX
+  offset: 0x004FF8
+  symbol: Z2_F01_B_room_00DL_004FF8
+
+Z2_F01_B_room_00Vtx_005158:
+  type: MM:ARRAY
+  offset: 0x005158
+  symbol: Z2_F01_B_room_00Vtx_005158
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_005288:
+  type: GFX
+  offset: 0x005288
+  symbol: Z2_F01_B_room_00DL_005288
+
+Z2_F01_B_room_00Vtx_0053E8:
+  type: MM:ARRAY
+  offset: 0x0053E8
+  symbol: Z2_F01_B_room_00Vtx_0053E8
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_005518:
+  type: GFX
+  offset: 0x005518
+  symbol: Z2_F01_B_room_00DL_005518
+
+Z2_F01_B_room_00Vtx_005678:
+  type: MM:ARRAY
+  offset: 0x005678
+  symbol: Z2_F01_B_room_00Vtx_005678
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_0057A8:
+  type: GFX
+  offset: 0x0057A8
+  symbol: Z2_F01_B_room_00DL_0057A8
+
+Z2_F01_B_room_00Vtx_005908:
+  type: MM:ARRAY
+  offset: 0x005908
+  symbol: Z2_F01_B_room_00Vtx_005908
+  count: 144
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_006208:
+  type: GFX
+  offset: 0x006208
+  symbol: Z2_F01_B_room_00DL_006208
+
+Z2_F01_B_room_00DL_006400:
+  type: GFX
+  offset: 0x006400
+  symbol: Z2_F01_B_room_00DL_006400
+
+Z2_F01_B_room_00Vtx_006488:
+  type: MM:ARRAY
+  offset: 0x006488
+  symbol: Z2_F01_B_room_00Vtx_006488
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_006588:
+  type: GFX
+  offset: 0x006588
+  symbol: Z2_F01_B_room_00DL_006588
+
+Z2_F01_B_room_00Vtx_006660:
+  type: MM:ARRAY
+  offset: 0x006660
+  symbol: Z2_F01_B_room_00Vtx_006660
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_006AC0:
+  type: GFX
+  offset: 0x006AC0
+  symbol: Z2_F01_B_room_00DL_006AC0
+
+Z2_F01_B_room_00DL_006C70:
+  type: GFX
+  offset: 0x006C70
+  symbol: Z2_F01_B_room_00DL_006C70
+
+Z2_F01_B_room_00Vtx_006C78:
+  type: MM:ARRAY
+  offset: 0x006C78
+  symbol: Z2_F01_B_room_00Vtx_006C78
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_F01_B_room_00DL_007098:
+  type: GFX
+  offset: 0x007098
+  symbol: Z2_F01_B_room_00DL_007098
+
+Z2_F01_B_room_00DL_0071F8:
+  type: GFX
+  offset: 0x0071F8
+  symbol: Z2_F01_B_room_00DL_0071F8
+
+Z2_F01_B_room_00DL_007200:
+  type: GFX
+  offset: 0x007200
+  symbol: Z2_F01_B_room_00DL_007200
+
+Z2_F01_B_room_00DL_007208:
+  type: GFX
+  offset: 0x007208
+  symbol: Z2_F01_B_room_00DL_007208
+
+Z2_F01_B_room_00DL_007210:
+  type: GFX
+  offset: 0x007210
+  symbol: Z2_F01_B_room_00DL_007210
+
+Z2_F01_B_room_00DL_007218:
+  type: GFX
+  offset: 0x007218
+  symbol: Z2_F01_B_room_00DL_007218
+
+Z2_F01_B_room_00DL_007238:
+  type: GFX
+  offset: 0x007238
+  symbol: Z2_F01_B_room_00DL_007238
+
+Z2_F01_B_room_00DL_007240:
+  type: GFX
+  offset: 0x007240
+  symbol: Z2_F01_B_room_00DL_007240

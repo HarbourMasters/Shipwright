@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 6, 0x013D5B80 ]
+
+gGoronAthleticsCheerAnim:
+  type: OOT:ANIMATION
+  offset: 0x2C48
+  symbol: gGoronAthleticsCheerAnim
+
+gGoronAthleticsDoubleArmSideBendAnim:
+  type: OOT:ANIMATION
+  offset: 0x4DD4
+  symbol: gGoronAthleticsDoubleArmSideBendAnim
+
+gGoronAthleticsHamstringStretchSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5EE0
+  symbol: gGoronAthleticsHamstringStretchSittingAnim
+
+gGoronAthleticsHamstringStretchStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5790
+  symbol: gGoronAthleticsHamstringStretchStandingAnim
+
+gGoronAthleticsShakeLimbsAnim:
+  type: OOT:ANIMATION
+  offset: 0x283C
+  symbol: gGoronAthleticsShakeLimbsAnim
+
+gGoronAthleticsShoutAnim:
+  type: OOT:ANIMATION
+  offset: 0x31D8
+  symbol: gGoronAthleticsShoutAnim
+
+gGoronAthleticsSingleArmSideBendAnim:
+  type: OOT:ANIMATION
+  offset: 0x7764
+  symbol: gGoronAthleticsSingleArmSideBendAnim
+
+gGoronAthleticsSquatSideToSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x16C8
+  symbol: gGoronAthleticsSquatSideToSideAnim
+

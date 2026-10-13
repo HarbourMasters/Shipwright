@@ -1,0 +1,563 @@
+:config:
+  segments:
+    - [ 2, 0x0191B300 ]
+
+Z2_KINDAN2:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_KINDAN2
+
+
+Z2_KINDAN2PathwayList_0001C0:
+  type: MM:PATH
+  offset: 0x0001C0
+  symbol: Z2_KINDAN2PathwayList_0001C0
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_0001CC:
+  type: MM:PATH
+  offset: 0x0001CC
+  symbol: Z2_KINDAN2PathwayList_0001CC
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_0001D8:
+  type: MM:PATH
+  offset: 0x0001D8
+  symbol: Z2_KINDAN2PathwayList_0001D8
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_0001E4:
+  type: MM:PATH
+  offset: 0x0001E4
+  symbol: Z2_KINDAN2PathwayList_0001E4
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_0001F0:
+  type: MM:PATH
+  offset: 0x0001F0
+  symbol: Z2_KINDAN2PathwayList_0001F0
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_0001FC:
+  type: MM:PATH
+  offset: 0x0001FC
+  symbol: Z2_KINDAN2PathwayList_0001FC
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_000208:
+  type: MM:PATH
+  offset: 0x000208
+  symbol: Z2_KINDAN2PathwayList_000208
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2PathwayList_000214:
+  type: MM:PATH
+  offset: 0x000214
+  symbol: Z2_KINDAN2PathwayList_000214
+  num_paths: 8
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -196, 420, -1204 ]
+        - [ 0, 420, -1204 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 138, 70, -1020 ]
+        - [ 138, 70, -1528 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -390, 400, -1400 ]
+        - [ -960, 400, -1400 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 55, 100, -1010 ]
+        - [ -267, 100, -1012 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 30, 325, -390 ]
+        - [ 30, 584, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -220, 22, -1570 ]
+        - [ -220, -57, -1570 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -60, 450, -120 ]
+        - [ -60, 264, -389 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -285, 234, -1377 ]
+        - [ -285, 301, -1377 ]
+
+Z2_KINDAN2TexAnim_000600:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000600
+  symbol: Z2_KINDAN2TexAnim_000600
+
+Z2_KINDAN2CollisionHeader_00AE8C:
+  type: MM:COLLISION
+  offset: 0x00AE8C
+  symbol: Z2_KINDAN2CollisionHeader_00AE8C
+
+Z2_KINDAN2Tex_00AEC0:
+  type: TEXTURE
+  offset: 0x00AEC0
+  symbol: Z2_KINDAN2Tex_00AEC0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_KINDAN2Tex_00B6C0:
+  type: TEXTURE
+  offset: 0x00B6C0
+  symbol: Z2_KINDAN2Tex_00B6C0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_KINDAN2Tex_00BEC0:
+  type: TEXTURE
+  offset: 0x00BEC0
+  symbol: Z2_KINDAN2Tex_00BEC0
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_KINDAN2Tex_00C6C0:
+  type: TEXTURE
+  offset: 0x00C6C0
+  symbol: Z2_KINDAN2Tex_00C6C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00CEC0:
+  type: TEXTURE
+  offset: 0x00CEC0
+  symbol: Z2_KINDAN2Tex_00CEC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00D6C0:
+  type: TEXTURE
+  offset: 0x00D6C0
+  symbol: Z2_KINDAN2Tex_00D6C0
+  format: RGBA16
+  width: 8
+  height: 32
+
+Z2_KINDAN2Tex_00D8C0:
+  type: TEXTURE
+  offset: 0x00D8C0
+  symbol: Z2_KINDAN2Tex_00D8C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00E0C0:
+  type: TEXTURE
+  offset: 0x00E0C0
+  symbol: Z2_KINDAN2Tex_00E0C0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINDAN2Tex_00E1C0:
+  type: TEXTURE
+  offset: 0x00E1C0
+  symbol: Z2_KINDAN2Tex_00E1C0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_KINDAN2Tex_00E200:
+  type: TEXTURE
+  offset: 0x00E200
+  symbol: Z2_KINDAN2Tex_00E200
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00E600:
+  type: TEXTURE
+  offset: 0x00E600
+  symbol: Z2_KINDAN2Tex_00E600
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00EA00:
+  type: TEXTURE
+  offset: 0x00EA00
+  symbol: Z2_KINDAN2Tex_00EA00
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00EE00:
+  type: TEXTURE
+  offset: 0x00EE00
+  symbol: Z2_KINDAN2Tex_00EE00
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINDAN2Tex_00EF00:
+  type: TEXTURE
+  offset: 0x00EF00
+  symbol: Z2_KINDAN2Tex_00EF00
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINDAN2Tex_00F000:
+  type: TEXTURE
+  offset: 0x00F000
+  symbol: Z2_KINDAN2Tex_00F000
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_KINDAN2Tex_00F040:
+  type: TEXTURE
+  offset: 0x00F040
+  symbol: Z2_KINDAN2Tex_00F040
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINDAN2Tex_00F140:
+  type: TEXTURE
+  offset: 0x00F140
+  symbol: Z2_KINDAN2Tex_00F140
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KINDAN2Tex_00F340:
+  type: TEXTURE
+  offset: 0x00F340
+  symbol: Z2_KINDAN2Tex_00F340
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_KINDAN2Tex_00F440:
+  type: TEXTURE
+  offset: 0x00F440
+  symbol: Z2_KINDAN2Tex_00F440
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINDAN2Tex_00F840:
+  type: TEXTURE
+  offset: 0x00F840
+  symbol: Z2_KINDAN2Tex_00F840
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_KINDAN2TLUT_00FC40:
+  type: TEXTURE
+  offset: 0x00FC40
+  symbol: Z2_KINDAN2TLUT_00FC40
+  format: RGBA16
+  width: 16
+  height: 16

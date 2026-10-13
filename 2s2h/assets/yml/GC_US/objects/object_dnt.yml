@@ -1,0 +1,771 @@
+:config:
+  segments:
+    - [ 6, 0x013EC140 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x013EC140 ]
+    - [ 9, 0x013EC140 ]
+    - [ 10, 0x013EC140 ]
+    - [ 11, 0x013EC140 ]
+    - [ 12, 0x013EC140 ]
+    - [ 13, 0x013EC140 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gBusinessScrubBagCordTex:
+  type: TEXTURE
+  offset: 0xA080
+  symbol: gBusinessScrubBagCordTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBusinessScrubBagOpeningTex:
+  type: TEXTURE
+  offset: 0x9F80
+  symbol: gBusinessScrubBagOpeningTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBusinessScrubBagTex:
+  type: TEXTURE
+  offset: 0xA180
+  symbol: gBusinessScrubBagTex
+  format: RGBA16
+  width: 2
+  height: 16
+
+gBusinessScrubBobAnim:
+  type: OOT:ANIMATION
+  offset: 0x577C
+  symbol: gBusinessScrubBobAnim
+
+gBusinessScrubBodyDL:
+  type: GFX
+  offset: 0x94E8
+  symbol: gBusinessScrubBodyDL
+
+gBusinessScrubBodyLimb:
+  type: OOT:LIMB
+  offset: 0xAACC
+  symbol: gBusinessScrubBodyLimb
+  limb_type: Standard
+
+gBusinessScrubBurrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x29E8
+  symbol: gBusinessScrubBurrowAnim
+
+gBusinessScrubEmptyTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3CD0
+  symbol: gBusinessScrubEmptyTexAnim
+
+gBusinessScrubExcitedEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x3CC0
+  symbol: gBusinessScrubExcitedEndAnim
+
+gBusinessScrubExcitedLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x38CC
+  symbol: gBusinessScrubExcitedLoopAnim
+
+gBusinessScrubExcitedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x5CA8
+  symbol: gBusinessScrubExcitedStartAnim
+
+gBusinessScrubEye2Tex:
+  type: TEXTURE
+  offset: 0xB0D0
+  symbol: gBusinessScrubEye2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBusinessScrubEyeTex:
+  type: TEXTURE
+  offset: 0xA8C0
+  symbol: gBusinessScrubEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBusinessScrubEyesDL:
+  type: GFX
+  offset: 0x8290
+  symbol: gBusinessScrubEyesDL
+
+gBusinessScrubEyesLimb:
+  type: OOT:LIMB
+  offset: 0xABEC
+  symbol: gBusinessScrubEyesLimb
+  limb_type: Standard
+
+gBusinessScrubEyesSquintDL:
+  type: GFX
+  offset: 0x1420
+  symbol: gBusinessScrubEyesSquintDL
+
+gBusinessScrubEyesWideDL:
+  type: GFX
+  offset: 0x1350
+  symbol: gBusinessScrubEyesWideDL
+
+gBusinessScrubFlyEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x2670
+  symbol: gBusinessScrubFlyEndAnim
+
+gBusinessScrubFlyLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1BC8
+  symbol: gBusinessScrubFlyLoopAnim
+
+gBusinessScrubFlyStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x4700
+  symbol: gBusinessScrubFlyStartAnim
+
+gBusinessScrubHairDL:
+  type: GFX
+  offset: 0x85D8
+  symbol: gBusinessScrubHairDL
+
+gBusinessScrubHairLimb:
+  type: OOT:LIMB
+  offset: 0xABD4
+  symbol: gBusinessScrubHairLimb
+  limb_type: Standard
+
+gBusinessScrubHairTex:
+  type: TEXTURE
+  offset: 0xA340
+  symbol: gBusinessScrubHairTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBusinessScrubHatDL:
+  type: GFX
+  offset: 0x8438
+  symbol: gBusinessScrubHatDL
+
+gBusinessScrubHatLeafTex:
+  type: TEXTURE
+  offset: 0xA240
+  symbol: gBusinessScrubHatLeafTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gBusinessScrubHatLimb:
+  type: OOT:LIMB
+  offset: 0xABE0
+  symbol: gBusinessScrubHatLimb
+  limb_type: Standard
+
+gBusinessScrubHatTex:
+  type: TEXTURE
+  offset: 0xA1C0
+  symbol: gBusinessScrubHatTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBusinessScrubHeadDL:
+  type: GFX
+  offset: 0x7EA0
+  symbol: gBusinessScrubHeadDL
+
+gBusinessScrubHeadLimb:
+  type: OOT:LIMB
+  offset: 0xAB20
+  symbol: gBusinessScrubHeadLimb
+  limb_type: Standard
+
+gBusinessScrubJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4E38
+  symbol: gBusinessScrubJumpAnim
+
+gBusinessScrubLeafTex:
+  type: TEXTURE
+  offset: 0x9D80
+  symbol: gBusinessScrubLeafTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBusinessScrubLeftArmBagDL:
+  type: GFX
+  offset: 0x8048
+  symbol: gBusinessScrubLeftArmBagDL
+
+gBusinessScrubLeftArmBagLimb:
+  type: OOT:LIMB
+  offset: 0xABF8
+  symbol: gBusinessScrubLeftArmBagLimb
+  limb_type: Standard
+
+gBusinessScrubLeftEarDL:
+  type: GFX
+  offset: 0x8688
+  symbol: gBusinessScrubLeftEarDL
+
+gBusinessScrubLeftFootDL:
+  type: GFX
+  offset: 0x9630
+  symbol: gBusinessScrubLeftFootDL
+
+gBusinessScrubLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xAB14
+  symbol: gBusinessScrubLeftFootLimb
+  limb_type: Standard
+
+gBusinessScrubLeftForearmDL:
+  type: GFX
+  offset: 0x8A48
+  symbol: gBusinessScrubLeftForearmDL
+
+gBusinessScrubLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xAB98
+  symbol: gBusinessScrubLeftForearmLimb
+  limb_type: Standard
+
+gBusinessScrubLeftHandBagDL:
+  type: GFX
+  offset: 0x8838
+  symbol: gBusinessScrubLeftHandBagDL
+
+gBusinessScrubLeftHandBagLimb:
+  type: OOT:LIMB
+  offset: 0xABB0
+  symbol: gBusinessScrubLeftHandBagLimb
+  limb_type: Standard
+
+gBusinessScrubLeftHandDL:
+  type: GFX
+  offset: 0x8718
+  symbol: gBusinessScrubLeftHandDL
+
+gBusinessScrubLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xABA4
+  symbol: gBusinessScrubLeftHandLimb
+  limb_type: Standard
+
+gBusinessScrubLeftLeafLimb:
+  type: OOT:LIMB
+  offset: 0xABBC
+  symbol: gBusinessScrubLeftLeafLimb
+  limb_type: Standard
+
+gBusinessScrubLeftShinDL:
+  type: GFX
+  offset: 0x9740
+  symbol: gBusinessScrubLeftShinDL
+
+gBusinessScrubLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xAB08
+  symbol: gBusinessScrubLeftShinLimb
+  limb_type: Standard
+
+gBusinessScrubLeftThighDL:
+  type: GFX
+  offset: 0x9838
+  symbol: gBusinessScrubLeftThighDL
+
+gBusinessScrubLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xAAFC
+  symbol: gBusinessScrubLeftThighLimb
+  limb_type: Standard
+
+gBusinessScrubLeftUpperArmDL:
+  type: GFX
+  offset: 0x8B60
+  symbol: gBusinessScrubLeftUpperArmDL
+
+gBusinessScrubLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xAB8C
+  symbol: gBusinessScrubLeftUpperArmLimb
+  limb_type: Standard
+
+gBusinessScrubRightEarDL:
+  type: GFX
+  offset: 0x9340
+  symbol: gBusinessScrubRightEarDL
+
+gBusinessScrubRightFootDL:
+  type: GFX
+  offset: 0x98D8
+  symbol: gBusinessScrubRightFootDL
+
+gBusinessScrubRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xAAF0
+  symbol: gBusinessScrubRightFootLimb
+  limb_type: Standard
+
+gBusinessScrubRightForearmDL:
+  type: GFX
+  offset: 0x90E8
+  symbol: gBusinessScrubRightForearmDL
+
+gBusinessScrubRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xAB5C
+  symbol: gBusinessScrubRightForearmLimb
+  limb_type: Standard
+
+gBusinessScrubRightHandBagDL:
+  type: GFX
+  offset: 0x8ED0
+  symbol: gBusinessScrubRightHandBagDL
+
+gBusinessScrubRightHandBagLimb:
+  type: OOT:LIMB
+  offset: 0xAB74
+  symbol: gBusinessScrubRightHandBagLimb
+  limb_type: Standard
+
+gBusinessScrubRightHandDL:
+  type: GFX
+  offset: 0x8DB0
+  symbol: gBusinessScrubRightHandDL
+
+gBusinessScrubRightHandHatDL:
+  type: GFX
+  offset: 0x8C10
+  symbol: gBusinessScrubRightHandHatDL
+
+gBusinessScrubRightHandHatLimb:
+  type: OOT:LIMB
+  offset: 0xAB68
+  symbol: gBusinessScrubRightHandHatLimb
+  limb_type: Standard
+
+gBusinessScrubRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xAB80
+  symbol: gBusinessScrubRightHandLimb
+  limb_type: Standard
+
+gBusinessScrubRightLeafLimb:
+  type: OOT:LIMB
+  offset: 0xAB38
+  symbol: gBusinessScrubRightLeafLimb
+  limb_type: Standard
+
+gBusinessScrubRightMustacheDL:
+  type: GFX
+  offset: 0x92B0
+  symbol: gBusinessScrubRightMustacheDL
+
+gBusinessScrubRightMustacheLimb:
+  type: OOT:LIMB
+  offset: 0xAB44
+  symbol: gBusinessScrubRightMustacheLimb
+  limb_type: Standard
+
+gBusinessScrubRightShinDL:
+  type: GFX
+  offset: 0x99E8
+  symbol: gBusinessScrubRightShinDL
+
+gBusinessScrubRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xAAE4
+  symbol: gBusinessScrubRightShinLimb
+  limb_type: Standard
+
+gBusinessScrubRightThighDL:
+  type: GFX
+  offset: 0x9AE0
+  symbol: gBusinessScrubRightThighDL
+
+gBusinessScrubRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xAAD8
+  symbol: gBusinessScrubRightThighLimb
+  limb_type: Standard
+
+gBusinessScrubRightUpperArmDL:
+  type: GFX
+  offset: 0x9200
+  symbol: gBusinessScrubRightUpperArmDL
+
+gBusinessScrubRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xAB50
+  symbol: gBusinessScrubRightUpperArmLimb
+  limb_type: Standard
+
+gBusinessScrubRiseUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x4AA0
+  symbol: gBusinessScrubRiseUpAnim
+
+gBusinessScrubRootLimb:
+  type: OOT:LIMB
+  offset: 0xAAC0
+  symbol: gBusinessScrubRootLimb
+  limb_type: Standard
+
+gBusinessScrubScalpDL:
+  type: GFX
+  offset: 0x8320
+  symbol: gBusinessScrubScalpDL
+
+gBusinessScrubScalpLimb:
+  type: OOT:LIMB
+  offset: 0xABC8
+  symbol: gBusinessScrubScalpLimb
+  limb_type: Standard
+
+gBusinessScrubScalpTex:
+  type: TEXTURE
+  offset: 0xA740
+  symbol: gBusinessScrubScalpTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gBusinessScrubShockedEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x2268
+  symbol: gBusinessScrubShockedEndAnim
+
+gBusinessScrubShockedPoundAnim:
+  type: OOT:ANIMATION
+  offset: 0x994
+  symbol: gBusinessScrubShockedPoundAnim
+
+gBusinessScrubShockedShakeHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E2C
+  symbol: gBusinessScrubShockedShakeHeadAnim
+
+gBusinessScrubShockedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x3438
+  symbol: gBusinessScrubShockedStartAnim
+
+gBusinessScrubSkel:
+  type: MM:SKELETON
+  offset: 0xAC70
+  symbol: gBusinessScrubSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBusinessScrubSkinTex:
+  type: TEXTURE
+  offset: 0x9B80
+  symbol: gBusinessScrubSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBusinessScrubSnoutDL:
+  type: GFX
+  offset: 0x93D0
+  symbol: gBusinessScrubSnoutDL
+
+gBusinessScrubSnoutLimb:
+  type: OOT:LIMB
+  offset: 0xAB2C
+  symbol: gBusinessScrubSnoutLimb
+  limb_type: Standard
+
+gBusinessScrubSnoutTex:
+  type: TEXTURE
+  offset: 0xA7C0
+  symbol: gBusinessScrubSnoutTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gBusinessScrubStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5488
+  symbol: gBusinessScrubStandingAnim
+
+gBusinessScrubTakeOffHatAnim:
+  type: OOT:ANIMATION
+  offset: 0x12F4
+  symbol: gBusinessScrubTakeOffHatAnim
+
+gBusinessScrubThinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F08
+  symbol: gBusinessScrubThinkAnim
+
+gBusinessScrubWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xB0B4
+  symbol: gBusinessScrubWalkAnim
+
+
+object_dntVtx_001310:
+  type: MM:ARRAY
+  offset: 0x001310
+  symbol: object_dntVtx_001310
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0013E0:
+  type: MM:ARRAY
+  offset: 0x0013E0
+  symbol: object_dntVtx_0013E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_005CC0:
+  type: MM:ARRAY
+  offset: 0x005CC0
+  symbol: object_dntVtx_005CC0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_005DE0:
+  type: MM:ARRAY
+  offset: 0x005DE0
+  symbol: object_dntVtx_005DE0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_005EA0:
+  type: MM:ARRAY
+  offset: 0x005EA0
+  symbol: object_dntVtx_005EA0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_005F00:
+  type: MM:ARRAY
+  offset: 0x005F00
+  symbol: object_dntVtx_005F00
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006020:
+  type: MM:ARRAY
+  offset: 0x006020
+  symbol: object_dntVtx_006020
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0060E0:
+  type: MM:ARRAY
+  offset: 0x0060E0
+  symbol: object_dntVtx_0060E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006140:
+  type: MM:ARRAY
+  offset: 0x006140
+  symbol: object_dntVtx_006140
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006390:
+  type: MM:ARRAY
+  offset: 0x006390
+  symbol: object_dntVtx_006390
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0063D0:
+  type: MM:ARRAY
+  offset: 0x0063D0
+  symbol: object_dntVtx_0063D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006410:
+  type: MM:ARRAY
+  offset: 0x006410
+  symbol: object_dntVtx_006410
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006760:
+  type: MM:ARRAY
+  offset: 0x006760
+  symbol: object_dntVtx_006760
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006910:
+  type: MM:ARRAY
+  offset: 0x006910
+  symbol: object_dntVtx_006910
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006A70:
+  type: MM:ARRAY
+  offset: 0x006A70
+  symbol: object_dntVtx_006A70
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006BA0:
+  type: MM:ARRAY
+  offset: 0x006BA0
+  symbol: object_dntVtx_006BA0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006C10:
+  type: MM:ARRAY
+  offset: 0x006C10
+  symbol: object_dntVtx_006C10
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_006F70:
+  type: MM:ARRAY
+  offset: 0x006F70
+  symbol: object_dntVtx_006F70
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0070D0:
+  type: MM:ARRAY
+  offset: 0x0070D0
+  symbol: object_dntVtx_0070D0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007200:
+  type: MM:ARRAY
+  offset: 0x007200
+  symbol: object_dntVtx_007200
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007270:
+  type: MM:ARRAY
+  offset: 0x007270
+  symbol: object_dntVtx_007270
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007400:
+  type: MM:ARRAY
+  offset: 0x007400
+  symbol: object_dntVtx_007400
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007550:
+  type: MM:ARRAY
+  offset: 0x007550
+  symbol: object_dntVtx_007550
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007690:
+  type: MM:ARRAY
+  offset: 0x007690
+  symbol: object_dntVtx_007690
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0077A0:
+  type: MM:ARRAY
+  offset: 0x0077A0
+  symbol: object_dntVtx_0077A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_0077D0:
+  type: MM:ARRAY
+  offset: 0x0077D0
+  symbol: object_dntVtx_0077D0
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007B40:
+  type: MM:ARRAY
+  offset: 0x007B40
+  symbol: object_dntVtx_007B40
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dntVtx_007B80:
+  type: MM:ARRAY
+  offset: 0x007B80
+  symbol: object_dntVtx_007B80
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBusinessScrubSkelLimbs:
+  type: BLOB
+  offset: 0xAC04
+  symbol: gBusinessScrubSkelLimbs
+  size: 0

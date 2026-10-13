@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 1, 0x0163F490 ]
+
+gExpansionPakNotInstalledErrorTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gExpansionPakNotInstalledErrorTex
+  format: I4
+  width: 128
+  height: 37
+
+gSeeInstructionBookletErrorTex:
+  type: TEXTURE
+  offset: 0x940
+  symbol: gSeeInstructionBookletErrorTex
+  format: I4
+  width: 128
+  height: 37
+

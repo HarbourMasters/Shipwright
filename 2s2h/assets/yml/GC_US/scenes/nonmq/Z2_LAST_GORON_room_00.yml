@@ -1,0 +1,292 @@
+:config:
+  segments:
+    - [ 3, 0x01AB3130 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01AB3130 ]
+    - [ 9, 0x01AB3130 ]
+    - [ 10, 0x01AB3130 ]
+    - [ 11, 0x01AB3130 ]
+    - [ 12, 0x01AB3130 ]
+    - [ 13, 0x01AB3130 ]
+    - [ 2, 0x01AAD660 ]
+  directory: scenes/nonmq/Z2_LAST_GORON
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_LAST_GORON.yml
+
+Z2_LAST_GORON_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_GORON_room_00
+
+Z2_LAST_GORON_room_00DL_00D3C8:
+  type: GFX
+  offset: 0xD3C8
+  symbol: Z2_LAST_GORON_room_00DL_00D3C8
+
+Z2_LAST_GORON_room_00DL_015E78:
+  type: GFX
+  offset: 0x15E78
+  symbol: Z2_LAST_GORON_room_00DL_015E78
+
+
+Z2_LAST_GORON_room_00ActorEntry_000050:
+  type: BLOB
+  offset: 0x000050
+  symbol: Z2_LAST_GORON_room_00ActorEntry_000050
+  size: 0
+
+Z2_LAST_GORON_room_00Vtx_000390:
+  type: MM:ARRAY
+  offset: 0x000390
+  symbol: Z2_LAST_GORON_room_00Vtx_000390
+  count: 1340
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_005750:
+  type: GFX
+  offset: 0x005750
+  symbol: Z2_LAST_GORON_room_00DL_005750
+
+Z2_LAST_GORON_room_00Vtx_0067C8:
+  type: MM:ARRAY
+  offset: 0x0067C8
+  symbol: Z2_LAST_GORON_room_00Vtx_0067C8
+  count: 744
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_009648:
+  type: GFX
+  offset: 0x009648
+  symbol: Z2_LAST_GORON_room_00DL_009648
+
+Z2_LAST_GORON_room_00Vtx_00A328:
+  type: MM:ARRAY
+  offset: 0x00A328
+  symbol: Z2_LAST_GORON_room_00Vtx_00A328
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_00A528:
+  type: GFX
+  offset: 0x00A528
+  symbol: Z2_LAST_GORON_room_00DL_00A528
+
+Z2_LAST_GORON_room_00Vtx_00A628:
+  type: MM:ARRAY
+  offset: 0x00A628
+  symbol: Z2_LAST_GORON_room_00Vtx_00A628
+  count: 254
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_00B608:
+  type: GFX
+  offset: 0x00B608
+  symbol: Z2_LAST_GORON_room_00DL_00B608
+
+Z2_LAST_GORON_room_00Vtx_00BA38:
+  type: MM:ARRAY
+  offset: 0x00BA38
+  symbol: Z2_LAST_GORON_room_00Vtx_00BA38
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_00C4B8:
+  type: GFX
+  offset: 0x00C4B8
+  symbol: Z2_LAST_GORON_room_00DL_00C4B8
+
+Z2_LAST_GORON_room_00Vtx_00C840:
+  type: MM:ARRAY
+  offset: 0x00C840
+  symbol: Z2_LAST_GORON_room_00Vtx_00C840
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_00CAA0:
+  type: GFX
+  offset: 0x00CAA0
+  symbol: Z2_LAST_GORON_room_00DL_00CAA0
+
+Z2_LAST_GORON_room_00Vtx_00CBD0:
+  type: MM:ARRAY
+  offset: 0x00CBD0
+  symbol: Z2_LAST_GORON_room_00Vtx_00CBD0
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_GORON_room_00DL_00D210:
+  type: GFX
+  offset: 0x00D210
+  symbol: Z2_LAST_GORON_room_00DL_00D210
+
+Z2_LAST_GORON_room_00Tex_00D408:
+  type: TEXTURE
+  offset: 0x00D408
+  symbol: Z2_LAST_GORON_room_00Tex_00D408
+  format: I4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_00DC08:
+  type: TEXTURE
+  offset: 0x00DC08
+  symbol: Z2_LAST_GORON_room_00Tex_00DC08
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_00E408:
+  type: TEXTURE
+  offset: 0x00E408
+  symbol: Z2_LAST_GORON_room_00Tex_00E408
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_00EC08:
+  type: TEXTURE
+  offset: 0x00EC08
+  symbol: Z2_LAST_GORON_room_00Tex_00EC08
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_00F408:
+  type: TEXTURE
+  offset: 0x00F408
+  symbol: Z2_LAST_GORON_room_00Tex_00F408
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_010408:
+  type: TEXTURE
+  offset: 0x010408
+  symbol: Z2_LAST_GORON_room_00Tex_010408
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_011408:
+  type: TEXTURE
+  offset: 0x011408
+  symbol: Z2_LAST_GORON_room_00Tex_011408
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_011608:
+  type: TEXTURE
+  offset: 0x011608
+  symbol: Z2_LAST_GORON_room_00Tex_011608
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_011E08:
+  type: TEXTURE
+  offset: 0x011E08
+  symbol: Z2_LAST_GORON_room_00Tex_011E08
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_012608:
+  type: TEXTURE
+  offset: 0x012608
+  symbol: Z2_LAST_GORON_room_00Tex_012608
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_012E08:
+  type: TEXTURE
+  offset: 0x012E08
+  symbol: Z2_LAST_GORON_room_00Tex_012E08
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_013608:
+  type: TEXTURE
+  offset: 0x013608
+  symbol: Z2_LAST_GORON_room_00Tex_013608
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_GORON_room_00Tex_013E08:
+  type: TEXTURE
+  offset: 0x013E08
+  symbol: Z2_LAST_GORON_room_00Tex_013E08
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_014608:
+  type: TEXTURE
+  offset: 0x014608
+  symbol: Z2_LAST_GORON_room_00Tex_014608
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_014E08:
+  type: TEXTURE
+  offset: 0x014E08
+  symbol: Z2_LAST_GORON_room_00Tex_014E08
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_00Tex_015608:
+  type: TEXTURE
+  offset: 0x015608
+  symbol: Z2_LAST_GORON_room_00Tex_015608
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_GORON_room_00TLUT_015E08:
+  type: TEXTURE
+  offset: 0x015E08
+  symbol: Z2_LAST_GORON_room_00TLUT_015E08
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORON_room_00TLUT_015E28:
+  type: TEXTURE
+  offset: 0x015E28
+  symbol: Z2_LAST_GORON_room_00TLUT_015E28
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORON_room_00TLUT_015E48:
+  type: TEXTURE
+  offset: 0x015E48
+  symbol: Z2_LAST_GORON_room_00TLUT_015E48
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_GORON_room_00DL_015E70:
+  type: GFX
+  offset: 0x015E70
+  symbol: Z2_LAST_GORON_room_00DL_015E70

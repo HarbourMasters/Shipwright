@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x0172C180 ]
+    - [ 2, 0x017203F0 ]
+  directory: scenes/nonmq/Z2_KAIZOKU
+  external_files:
+    - N64_US/scenes/nonmq/Z2_KAIZOKU_room_00.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_KAIZOKU.yml
+
+Z2_KAIZOKU_room_00Set_000630:
+  type: MM:ROOM
+  offset: 0x630
+  symbol: Z2_KAIZOKU_room_00Set_000630
+  base_name: Z2_KAIZOKU_room_00

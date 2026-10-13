@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x014935A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014935A0 ]
+    - [ 9, 0x014935A0 ]
+    - [ 10, 0x014935A0 ]
+    - [ 11, 0x014935A0 ]
+    - [ 12, 0x014935A0 ]
+    - [ 13, 0x014935A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiRoomKeyBackgroundTex:
+  type: TEXTURE
+  offset: 0xE28
+  symbol: gGiRoomKeyBackgroundTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiRoomKeyDL:
+  type: GFX
+  offset: 0x7D0
+  symbol: gGiRoomKeyDL
+
+gGiRoomKeyEmptyDL:
+  type: GFX
+  offset: 0xC20
+  symbol: gGiRoomKeyEmptyDL
+
+gGiRoomKeyInscriptionsTex:
+  type: TEXTURE
+  offset: 0xC28
+  symbol: gGiRoomKeyInscriptionsTex
+  format: I4
+  width: 64
+  height: 16
+
+
+object_gi_reserve_b_00Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_reserve_b_00Vtx_000000
+  count: 125
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

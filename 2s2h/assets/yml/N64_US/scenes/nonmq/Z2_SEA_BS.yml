@@ -1,0 +1,153 @@
+:config:
+  segments:
+    - [ 2, 0x01D40550 ]
+
+Z2_SEA_BS:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_SEA_BS
+
+
+Z2_SEA_BSTexAnim_0001B8TexScrollParams_0001B0:
+  type: BLOB
+  offset: 0x0001B0
+  symbol: Z2_SEA_BSTexAnim_0001B8TexScrollParams_0001B0
+  size: 0
+
+Z2_SEA_BSTexAnim_0001B8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0001B8
+  symbol: Z2_SEA_BSTexAnim_0001B8
+
+Z2_SEA_BSCollisionHeader_000A64:
+  type: MM:COLLISION
+  offset: 0x000A64
+  symbol: Z2_SEA_BSCollisionHeader_000A64
+
+Z2_SEA_BSTex_000A90:
+  type: TEXTURE
+  offset: 0x000A90
+  symbol: Z2_SEA_BSTex_000A90
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SEA_BSTex_001290:
+  type: TEXTURE
+  offset: 0x001290
+  symbol: Z2_SEA_BSTex_001290
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SEA_BSTex_001A90:
+  type: TEXTURE
+  offset: 0x001A90
+  symbol: Z2_SEA_BSTex_001A90
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_SEA_BSTex_001C90:
+  type: TEXTURE
+  offset: 0x001C90
+  symbol: Z2_SEA_BSTex_001C90
+  format: CI8
+  width: 64
+  height: 16
+
+Z2_SEA_BSTex_002090:
+  type: TEXTURE
+  offset: 0x002090
+  symbol: Z2_SEA_BSTex_002090
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_SEA_BSTex_002890:
+  type: TEXTURE
+  offset: 0x002890
+  symbol: Z2_SEA_BSTex_002890
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_SEA_BSTex_003090:
+  type: TEXTURE
+  offset: 0x003090
+  symbol: Z2_SEA_BSTex_003090
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SEA_BSTex_003490:
+  type: TEXTURE
+  offset: 0x003490
+  symbol: Z2_SEA_BSTex_003490
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SEA_BSTex_003890:
+  type: TEXTURE
+  offset: 0x003890
+  symbol: Z2_SEA_BSTex_003890
+  format: CI4
+  width: 16
+  height: 128
+
+Z2_SEA_BSTex_003C90:
+  type: TEXTURE
+  offset: 0x003C90
+  symbol: Z2_SEA_BSTex_003C90
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SEA_BSTex_004490:
+  type: TEXTURE
+  offset: 0x004490
+  symbol: Z2_SEA_BSTex_004490
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_SEA_BSTex_004C90:
+  type: TEXTURE
+  offset: 0x004C90
+  symbol: Z2_SEA_BSTex_004C90
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_SEA_BSTLUT_005090:
+  type: TEXTURE
+  offset: 0x005090
+  symbol: Z2_SEA_BSTLUT_005090
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SEA_BSTLUT_0050B0:
+  type: TEXTURE
+  offset: 0x0050B0
+  symbol: Z2_SEA_BSTLUT_0050B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SEA_BSTLUT_0050D0:
+  type: TEXTURE
+  offset: 0x0050D0
+  symbol: Z2_SEA_BSTLUT_0050D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SEA_BSTLUT_0050F0:
+  type: TEXTURE
+  offset: 0x0050F0
+  symbol: Z2_SEA_BSTLUT_0050F0
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,748 @@
+:config:
+  segments:
+    - [ 1, 0x0161CD50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0161CD50 ]
+    - [ 9, 0x0161CD50 ]
+    - [ 10, 0x0161CD50 ]
+    - [ 11, 0x0161CD50 ]
+    - [ 12, 0x0161CD50 ]
+    - [ 13, 0x0161CD50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gFileSel0QuarterHeartENGTex:
+  type: TEXTURE
+  offset: 0x2E2F0
+  symbol: gFileSel0QuarterHeartENGTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSel1QuarterHeartENGTex:
+  type: TEXTURE
+  offset: 0x2E470
+  symbol: gFileSel1QuarterHeartENGTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSel2QuarterHeartENGTex:
+  type: TEXTURE
+  offset: 0x2E5F0
+  symbol: gFileSel2QuarterHeartENGTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSel3QuarterHeartENGTex:
+  type: TEXTURE
+  offset: 0x2E770
+  symbol: gFileSel3QuarterHeartENGTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSelAreYouSureCopyENGTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gFileSelAreYouSureCopyENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelAreYouSureEraseENGTex:
+  type: TEXTURE
+  offset: 0x4D80
+  symbol: gFileSelAreYouSureEraseENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelBackspaceButtonTex:
+  type: TEXTURE
+  offset: 0x1F530
+  symbol: gFileSelBackspaceButtonTex
+  format: IA16
+  width: 28
+  height: 16
+
+gFileSelBigButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x282B0
+  symbol: gFileSelBigButtonHighlightTex
+  format: I8
+  width: 72
+  height: 24
+
+gFileSelBlankButtonTex:
+  type: TEXTURE
+  offset: 0x27830
+  symbol: gFileSelBlankButtonTex
+  format: IA16
+  width: 52
+  height: 16
+
+gFileSelBrightnessCheckTex:
+  type: TEXTURE
+  offset: 0x27FB0
+  symbol: gFileSelBrightnessCheckTex
+  format: IA4
+  width: 96
+  height: 16
+
+gFileSelCharHighlightTex:
+  type: TEXTURE
+  offset: 0x28970
+  symbol: gFileSelCharHighlightTex
+  format: I8
+  width: 24
+  height: 24
+
+gFileSelCheckBrightnessIA4ENGTex:
+  type: TEXTURE
+  offset: 0x90B0
+  symbol: gFileSelCheckBrightnessIA4ENGTex
+  format: IA4
+  width: 96
+  height: 16
+
+gFileSelConnectorTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gFileSelConnectorTex
+  format: IA8
+  width: 24
+  height: 16
+
+gFileSelCopyButtonENGTex:
+  type: TEXTURE
+  offset: 0x1BFB0
+  symbol: gFileSelCopyButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelCopyToWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x1D80
+  symbol: gFileSelCopyToWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelCopyWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: gFileSelCopyWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelDecideCancelENGTex:
+  type: TEXTURE
+  offset: 0x6DB0
+  symbol: gFileSelDecideCancelENGTex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelDecideSaveENGTex:
+  type: TEXTURE
+  offset: 0x6430
+  symbol: gFileSelDecideSaveENGTex
+  format: IA8
+  width: 152
+  height: 16
+
+gFileSelDolbySurroundLogoENGTex:
+  type: TEXTURE
+  offset: 0x6100
+  symbol: gFileSelDolbySurroundLogoENGTex
+  format: I8
+  width: 48
+  height: 17
+
+gFileSelENDButtonENGTex:
+  type: TEXTURE
+  offset: 0x1EFB0
+  symbol: gFileSelENDButtonENGTex
+  format: IA16
+  width: 44
+  height: 16
+
+gFileSelEraseButtonENGTex:
+  type: TEXTURE
+  offset: 0x1E7B0
+  symbol: gFileSelEraseButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelEraseWhichFileENGTex:
+  type: TEXTURE
+  offset: 0x4580
+  symbol: gFileSelEraseWhichFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFile1ButtonENGTex:
+  type: TEXTURE
+  offset: 0x1C7B0
+  symbol: gFileSelFile1ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile2ButtonENGTex:
+  type: TEXTURE
+  offset: 0x1CFB0
+  symbol: gFileSelFile2ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFile3ButtonENGTex:
+  type: TEXTURE
+  offset: 0x1D7B0
+  symbol: gFileSelFile3ButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelFileCopiedENGTex:
+  type: TEXTURE
+  offset: 0x2D80
+  symbol: gFileSelFileCopiedENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileEmptyIA4ENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gFileSelFileEmptyIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelFileErasedENGTex:
+  type: TEXTURE
+  offset: 0x5580
+  symbol: gFileSelFileErasedENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelFileExtraInfoBox0Tex:
+  type: TEXTURE
+  offset: 0x25FB0
+  symbol: gFileSelFileExtraInfoBox0Tex
+  format: IA16
+  width: 28
+  height: 56
+
+gFileSelFileExtraInfoBox1Tex:
+  type: TEXTURE
+  offset: 0x26BF0
+  symbol: gFileSelFileExtraInfoBox1Tex
+  format: IA16
+  width: 28
+  height: 56
+
+gFileSelFileInUseIA4ENGTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gFileSelFileInUseIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelFileInfoBox0Tex:
+  type: TEXTURE
+  offset: 0x20630
+  symbol: gFileSelFileInfoBox0Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox1Tex:
+  type: TEXTURE
+  offset: 0x215F0
+  symbol: gFileSelFileInfoBox1Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox2Tex:
+  type: TEXTURE
+  offset: 0x225B0
+  symbol: gFileSelFileInfoBox2Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox3Tex:
+  type: TEXTURE
+  offset: 0x23570
+  symbol: gFileSelFileInfoBox3Tex
+  format: IA16
+  width: 36
+  height: 56
+
+gFileSelFileInfoBox4Tex:
+  type: TEXTURE
+  offset: 0x24530
+  symbol: gFileSelFileInfoBox4Tex
+  format: IA16
+  width: 24
+  height: 56
+
+gFileSelFileNameBoxTex:
+  type: TEXTURE
+  offset: 0x1F8B0
+  symbol: gFileSelFileNameBoxTex
+  format: IA16
+  width: 108
+  height: 16
+
+gFileSelFinalDayENGTex:
+  type: TEXTURE
+  offset: 0x2DDB0
+  symbol: gFileSelFinalDayENGTex
+  format: I4
+  width: 48
+  height: 24
+
+gFileSelFirstDayENGTex:
+  type: TEXTURE
+  offset: 0x2D930
+  symbol: gFileSelFirstDayENGTex
+  format: I4
+  width: 48
+  height: 24
+
+gFileSelGohtsRemainsTex:
+  type: TEXTURE
+  offset: 0x2A4B0
+  symbol: gFileSelGohtsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gFileSelGyorgsRemainsTex:
+  type: TEXTURE
+  offset: 0x2B4B0
+  symbol: gFileSelGyorgsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gFileSelHeadsetIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8530
+  symbol: gFileSelHeadsetIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelHoldIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8F30
+  symbol: gFileSelHoldIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelMASKSENGTex:
+  type: TEXTURE
+  offset: 0x2E0F0
+  symbol: gFileSelMASKSENGTex
+  format: I4
+  width: 64
+  height: 16
+
+gFileSelMediumButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x28BB0
+  symbol: gFileSelMediumButtonHighlightTex
+  format: I8
+  width: 56
+  height: 24
+
+gFileSelMonoIA4ENGTex:
+  type: TEXTURE
+  offset: 0x86B0
+  symbol: gFileSelMonoIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelNameENGTex:
+  type: TEXTURE
+  offset: 0x5D80
+  symbol: gFileSelNameENGTex
+  format: IA8
+  width: 56
+  height: 16
+
+gFileSelNoEmptyFileIA4ENGTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gFileSelNoEmptyFileIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelNoFileToCopyIA4ENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFileSelNoFileToCopyIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelNoFileToEraseIA4ENGTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gFileSelNoFileToEraseIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelOdolwasRemainsTex:
+  type: TEXTURE
+  offset: 0x294B0
+  symbol: gFileSelOdolwasRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gFileSelOpenThisFileENGTex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gFileSelOpenThisFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelOptionsButtonENGTex:
+  type: TEXTURE
+  offset: 0x24FB0
+  symbol: gFileSelOptionsButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelOptionsDividerTex:
+  type: TEXTURE
+  offset: 0x27EB0
+  symbol: gFileSelOptionsDividerTex
+  format: IA4
+  width: 256
+  height: 2
+
+gFileSelOptionsIA4ENGTex:
+  type: TEXTURE
+  offset: 0x7FB0
+  symbol: gFileSelOptionsIA4ENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFileSelOwlSaveIconTex:
+  type: TEXTURE
+  offset: 0x2D4B0
+  symbol: gFileSelOwlSaveIconTex
+  format: RGBA32
+  width: 24
+  height: 12
+
+gFileSelPleaseSelectAFileENGTex:
+  type: TEXTURE
+  offset: 0x3580
+  symbol: gFileSelPleaseSelectAFileENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gFileSelPleaseWaitENGTex:
+  type: TEXTURE
+  offset: 0x76B0
+  symbol: gFileSelPleaseWaitENGTex
+  format: IA8
+  width: 144
+  height: 16
+
+gFileSelQuitButtonENGTex:
+  type: TEXTURE
+  offset: 0x257B0
+  symbol: gFileSelQuitButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+
+gFileSelRupeeTex:
+  type: TEXTURE
+  offset: 0x2E8F0
+  symbol: gFileSelRupeeTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFileSelSaveXJPNTex:
+  type: TEXTURE
+  offset: 0x2DFF0
+  symbol: gFileSelSaveXJPNTex
+  format: I4
+  width: 32
+  height: 16
+
+gFileSelSecondDayENGTex:
+  type: TEXTURE
+  offset: 0x2DB70
+  symbol: gFileSelSecondDayENGTex
+  format: I4
+  width: 48
+  height: 24
+
+gFileSelSmallButtonHighlightTex:
+  type: TEXTURE
+  offset: 0x290F0
+  symbol: gFileSelSmallButtonHighlightTex
+  format: I8
+  width: 40
+  height: 24
+
+gFileSelSoundIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8830
+  symbol: gFileSelSoundIA4ENGTex
+  format: IA4
+  width: 64
+  height: 16
+
+gFileSelStereoIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8A30
+  symbol: gFileSelStereoIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelSurroundIA4ENGTex:
+  type: TEXTURE
+  offset: 0x83B0
+  symbol: gFileSelSurroundIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelSwitchIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8DB0
+  symbol: gFileSelSwitchIA4ENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFileSelTargetingIA4ENGTex:
+  type: TEXTURE
+  offset: 0x8BB0
+  symbol: gFileSelTargetingIA4ENGTex
+  format: IA4
+  width: 64
+  height: 16
+
+gFileSelTwinmoldsRemainsTex:
+  type: TEXTURE
+  offset: 0x2C4B0
+  symbol: gFileSelTwinmoldsRemainsTex
+  format: RGBA32
+  width: 32
+  height: 32
+
+gFileSelWindow00Tex:
+  type: TEXTURE
+  offset: 0x93B0
+  symbol: gFileSelWindow00Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow01Tex:
+  type: TEXTURE
+  offset: 0xA3B0
+  symbol: gFileSelWindow01Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow02Tex:
+  type: TEXTURE
+  offset: 0xB3B0
+  symbol: gFileSelWindow02Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow03Tex:
+  type: TEXTURE
+  offset: 0xC3B0
+  symbol: gFileSelWindow03Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow10Tex:
+  type: TEXTURE
+  offset: 0xCFB0
+  symbol: gFileSelWindow10Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow11Tex:
+  type: TEXTURE
+  offset: 0xDFB0
+  symbol: gFileSelWindow11Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow12Tex:
+  type: TEXTURE
+  offset: 0xEFB0
+  symbol: gFileSelWindow12Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow13Tex:
+  type: TEXTURE
+  offset: 0xFFB0
+  symbol: gFileSelWindow13Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow1DL:
+  type: GFX
+  offset: 0x2E9F0
+  symbol: gFileSelWindow1DL
+
+gFileSelWindow20Tex:
+  type: TEXTURE
+  offset: 0x10BB0
+  symbol: gFileSelWindow20Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow21Tex:
+  type: TEXTURE
+  offset: 0x11BB0
+  symbol: gFileSelWindow21Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow22Tex:
+  type: TEXTURE
+  offset: 0x12BB0
+  symbol: gFileSelWindow22Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow23Tex:
+  type: TEXTURE
+  offset: 0x13BB0
+  symbol: gFileSelWindow23Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow2DL:
+  type: GFX
+  offset: 0x2EC08
+  symbol: gFileSelWindow2DL
+
+gFileSelWindow30Tex:
+  type: TEXTURE
+  offset: 0x147B0
+  symbol: gFileSelWindow30Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow31Tex:
+  type: TEXTURE
+  offset: 0x157B0
+  symbol: gFileSelWindow31Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow32Tex:
+  type: TEXTURE
+  offset: 0x167B0
+  symbol: gFileSelWindow32Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow33Tex:
+  type: TEXTURE
+  offset: 0x177B0
+  symbol: gFileSelWindow33Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelWindow3DL:
+  type: GFX
+  offset: 0x2EE18
+  symbol: gFileSelWindow3DL
+
+gFileSelWindow40Tex:
+  type: TEXTURE
+  offset: 0x183B0
+  symbol: gFileSelWindow40Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow41Tex:
+  type: TEXTURE
+  offset: 0x193B0
+  symbol: gFileSelWindow41Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow42Tex:
+  type: TEXTURE
+  offset: 0x1A3B0
+  symbol: gFileSelWindow42Tex
+  format: IA16
+  width: 64
+  height: 32
+
+gFileSelWindow43Tex:
+  type: TEXTURE
+  offset: 0x1B3B0
+  symbol: gFileSelWindow43Tex
+  format: IA16
+  width: 48
+  height: 32
+
+gFileSelYesButtonENGTex:
+  type: TEXTURE
+  offset: 0x1DFB0
+  symbol: gFileSelYesButtonENGTex
+  format: IA16
+  width: 64
+  height: 16
+

@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015166D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x015166D0 ]
+    - [ 9, 0x015166D0 ]
+    - [ 10, 0x015166D0 ]
+    - [ 11, 0x015166D0 ]
+    - [ 12, 0x015166D0 ]
+    - [ 13, 0x015166D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMagicHagPotionShopDoorDL:
+  type: GFX
+  offset: 0x468
+  symbol: gMagicHagPotionShopDoorDL
+
+gMagicHagPotionShopDoorEmptyDL:
+  type: GFX
+  offset: 0x460
+  symbol: gMagicHagPotionShopDoorEmptyDL
+
+gMagicHagPotionShopDoorTex:
+  type: TEXTURE
+  offset: 0x658
+  symbol: gMagicHagPotionShopDoorTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_dor04Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_dor04Vtx_000000
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

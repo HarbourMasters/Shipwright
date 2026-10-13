@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundleName</key>
+    <string>2 Ship 2 Harkinian</string>
+    <key>CFBundleExecutable</key>
+    <string>2s2h</string>
+    <key>CFBundleGetInfoString</key>
+    <string>@CMAKE_PROJECT_VERSION@</string>
+    <key>CFBundleIconFile</key>
+    <string>2s2h.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.2ship2harkinian.2s2h</string>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+    </array>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>@CMAKE_PROJECT_VERSION@</string>
+    <key>CFBundleSignature</key>
+    <string>ZMM</string>
+    <key>CFBundleVersion</key>
+    <string>@CMAKE_PROJECT_VERSION@</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright 2024 HarbourMasters.</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.games</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.15</string>
+    <key>LSEnvironment</key>
+    <dict>
+        <key>SHIP_HOME</key>
+        <string>~/Library/Application Support/com.2ship2harkinian.2s2h</string>
+    </dict>
+    <key>LSArchitecturePriority</key>
+    <array>
+        <string>arm64</string>
+        <string>x86_64</string>
+    </array>
+</dict>
+</plist>

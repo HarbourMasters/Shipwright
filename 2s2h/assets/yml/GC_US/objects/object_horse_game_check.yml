@@ -1,0 +1,124 @@
+:config:
+  segments:
+    - [ 6, 0x01226F60 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01226F60 ]
+    - [ 9, 0x01226F60 ]
+    - [ 10, 0x01226F60 ]
+    - [ 11, 0x01226F60 ]
+    - [ 12, 0x01226F60 ]
+    - [ 13, 0x01226F60 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_horse_game_check_Colheader_002FB8:
+  type: MM:COLLISION
+  offset: 0x2FB8
+  symbol: object_horse_game_check_Colheader_002FB8
+
+object_horse_game_check_Colheader_003918:
+  type: MM:COLLISION
+  offset: 0x3918
+  symbol: object_horse_game_check_Colheader_003918
+
+object_horse_game_check_DL_001048:
+  type: GFX
+  offset: 0x1048
+  symbol: object_horse_game_check_DL_001048
+
+object_horse_game_check_DL_0013A0:
+  type: GFX
+  offset: 0x13A0
+  symbol: object_horse_game_check_DL_0013A0
+
+object_horse_game_check_DL_0014B0:
+  type: GFX
+  offset: 0x14B0
+  symbol: object_horse_game_check_DL_0014B0
+
+object_horse_game_check_DL_003030:
+  type: GFX
+  offset: 0x3030
+  symbol: object_horse_game_check_DL_003030
+
+object_horse_game_check_DL_0030C0:
+  type: GFX
+  offset: 0x30C0
+  symbol: object_horse_game_check_DL_0030C0
+
+object_horse_game_check_Tex_000048:
+  type: TEXTURE
+  offset: 0x48
+  symbol: object_horse_game_check_Tex_000048
+  format: I8
+  width: 64
+  height: 64
+
+object_horse_game_check_Tex_001590:
+  type: TEXTURE
+  offset: 0x1590
+  symbol: object_horse_game_check_Tex_001590
+  format: IA4
+  width: 64
+  height: 64
+
+object_horse_game_check_Tex_001D90:
+  type: TEXTURE
+  offset: 0x1D90
+  symbol: object_horse_game_check_Tex_001D90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_horse_game_check_Tex_002590:
+  type: TEXTURE
+  offset: 0x2590
+  symbol: object_horse_game_check_Tex_002590
+  format: I8
+  width: 64
+  height: 32
+
+object_horse_game_check_Tex_0030C8:
+  type: TEXTURE
+  offset: 0x30C8
+  symbol: object_horse_game_check_Tex_0030C8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_horse_game_checkVtx_000008:
+  type: MM:ARRAY
+  offset: 0x000008
+  symbol: object_horse_game_checkVtx_000008
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_game_checkVtx_0010A0:
+  type: MM:ARRAY
+  offset: 0x0010A0
+  symbol: object_horse_game_checkVtx_0010A0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_game_checkVtx_001320:
+  type: MM:ARRAY
+  offset: 0x001320
+  symbol: object_horse_game_checkVtx_001320
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_game_checkVtx_002FF0:
+  type: MM:ARRAY
+  offset: 0x002FF0
+  symbol: object_horse_game_checkVtx_002FF0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,201 @@
+:config:
+  segments:
+    - [ 6, 0x010C7660 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010C7660 ]
+    - [ 9, 0x010C7660 ]
+    - [ 10, 0x010C7660 ]
+    - [ 11, 0x010C7660 ]
+    - [ 12, 0x010C7660 ]
+    - [ 13, 0x010C7660 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGuayBodyDL:
+  type: GFX
+  offset: 0x490
+  symbol: gGuayBodyDL
+
+gGuayBodyLimb:
+  type: OOT:LIMB
+  offset: 0x104C
+  symbol: gGuayBodyLimb
+  limb_type: Standard
+
+gGuayBodyTex:
+  type: TEXTURE
+  offset: 0xA40
+  symbol: gGuayBodyTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuayEyeTex:
+  type: TEXTURE
+  offset: 0xC40
+  symbol: gGuayEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuayFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0xF0
+  symbol: gGuayFlyAnim
+
+gGuayLeftWingBodyDL:
+  type: GFX
+  offset: 0x840
+  symbol: gGuayLeftWingBodyDL
+
+gGuayLeftWingBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1070
+  symbol: gGuayLeftWingBodyLimb
+  limb_type: Standard
+
+gGuayLeftWingTipDL:
+  type: GFX
+  offset: 0x770
+  symbol: gGuayLeftWingTipDL
+
+gGuayLeftWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x107C
+  symbol: gGuayLeftWingTipLimb
+  limb_type: Standard
+
+gGuayRightWingBodyDL:
+  type: GFX
+  offset: 0x6B0
+  symbol: gGuayRightWingBodyDL
+
+gGuayRightWingBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1058
+  symbol: gGuayRightWingBodyLimb
+  limb_type: Standard
+
+gGuayRightWingTipDL:
+  type: GFX
+  offset: 0x5E0
+  symbol: gGuayRightWingTipDL
+
+gGuayRightWingTipLimb:
+  type: OOT:LIMB
+  offset: 0x1064
+  symbol: gGuayRightWingTipLimb
+  limb_type: Standard
+
+gGuayRootLimb:
+  type: OOT:LIMB
+  offset: 0x1040
+  symbol: gGuayRootLimb
+  limb_type: Standard
+
+gGuaySkel:
+  type: MM:SKELETON
+  offset: 0x10C0
+  symbol: gGuaySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGuayTailDL:
+  type: GFX
+  offset: 0x900
+  symbol: gGuayTailDL
+
+gGuayTailLimb:
+  type: OOT:LIMB
+  offset: 0x1094
+  symbol: gGuayTailLimb
+  limb_type: Standard
+
+gGuayTailTex:
+  type: TEXTURE
+  offset: 0xE40
+  symbol: gGuayTailTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuayUpperTailDL:
+  type: GFX
+  offset: 0x9A0
+  symbol: gGuayUpperTailDL
+
+gGuayUpperTailLimb:
+  type: OOT:LIMB
+  offset: 0x1088
+  symbol: gGuayUpperTailLimb
+  limb_type: Standard
+
+
+object_crowVtx_000100:
+  type: MM:ARRAY
+  offset: 0x000100
+  symbol: object_crowVtx_000100
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_crowVtx_000180
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_0001D0:
+  type: MM:ARRAY
+  offset: 0x0001D0
+  symbol: object_crowVtx_0001D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000250:
+  type: MM:ARRAY
+  offset: 0x000250
+  symbol: object_crowVtx_000250
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_0002A0:
+  type: MM:ARRAY
+  offset: 0x0002A0
+  symbol: object_crowVtx_0002A0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: object_crowVtx_000430
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_crowVtx_000460:
+  type: MM:ARRAY
+  offset: 0x000460
+  symbol: object_crowVtx_000460
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGuaySkelLimbs:
+  type: BLOB
+  offset: 0x10A0
+  symbol: gGuaySkelLimbs
+  size: 0

@@ -1,0 +1,299 @@
+:config:
+  segments:
+    - [ 2, 0x01AA2040 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/Z2_DEKU_KINGSet_008160.yml
+Z2_DEKU_KING:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_DEKU_KING
+
+
+Z2_DEKU_KINGCutsceneData_000140:
+  type: MM:CUTSCENE
+  offset: 0x000140
+  symbol: Z2_DEKU_KINGCutsceneData_000140
+  size: 2068
+
+Z2_DEKU_KINGCutsceneData_000960:
+  type: MM:CUTSCENE
+  offset: 0x000960
+  symbol: Z2_DEKU_KINGCutsceneData_000960
+  size: 520
+
+Z2_DEKU_KINGCutsceneData_000B70:
+  type: MM:CUTSCENE
+  offset: 0x000B70
+  symbol: Z2_DEKU_KINGCutsceneData_000B70
+  size: 592
+
+Z2_DEKU_KINGCutsceneData_000DD0:
+  type: MM:CUTSCENE
+  offset: 0x000DD0
+  symbol: Z2_DEKU_KINGCutsceneData_000DD0
+  size: 5512
+
+Z2_DEKU_KINGCutsceneData_002360:
+  type: MM:CUTSCENE
+  offset: 0x002360
+  symbol: Z2_DEKU_KINGCutsceneData_002360
+  size: 4200
+
+Z2_DEKU_KINGCutsceneData_0033D0:
+  type: MM:CUTSCENE
+  offset: 0x0033D0
+  symbol: Z2_DEKU_KINGCutsceneData_0033D0
+  size: 2160
+
+Z2_DEKU_KINGCutsceneData_003C50:
+  type: MM:CUTSCENE
+  offset: 0x003C50
+  symbol: Z2_DEKU_KINGCutsceneData_003C50
+  size: 5712
+
+Z2_DEKU_KINGTexAnim_005468TexScrollParams_005460:
+  type: BLOB
+  offset: 0x005460
+  symbol: Z2_DEKU_KINGTexAnim_005468TexScrollParams_005460
+  size: 0
+
+Z2_DEKU_KINGTexAnim_005468:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x005468
+  symbol: Z2_DEKU_KINGTexAnim_005468
+
+Z2_DEKU_KINGCollisionHeader_00812C:
+  type: MM:COLLISION
+  offset: 0x00812C
+  symbol: Z2_DEKU_KINGCollisionHeader_00812C
+
+Z2_DEKU_KINGCutsceneData_008258:
+  type: MM:CUTSCENE
+  offset: 0x008258
+  symbol: Z2_DEKU_KINGCutsceneData_008258
+  size: 896
+
+Z2_DEKU_KINGTex_008620:
+  type: TEXTURE
+  offset: 0x008620
+  symbol: Z2_DEKU_KINGTex_008620
+  format: I4
+  width: 64
+  height: 64
+
+Z2_DEKU_KINGTex_008E20:
+  type: TEXTURE
+  offset: 0x008E20
+  symbol: Z2_DEKU_KINGTex_008E20
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_DEKU_KINGTex_009220:
+  type: TEXTURE
+  offset: 0x009220
+  symbol: Z2_DEKU_KINGTex_009220
+  format: I4
+  width: 64
+  height: 64
+
+Z2_DEKU_KINGTex_009A20:
+  type: TEXTURE
+  offset: 0x009A20
+  symbol: Z2_DEKU_KINGTex_009A20
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_DEKU_KINGTex_00A220:
+  type: TEXTURE
+  offset: 0x00A220
+  symbol: Z2_DEKU_KINGTex_00A220
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_00AA20:
+  type: TEXTURE
+  offset: 0x00AA20
+  symbol: Z2_DEKU_KINGTex_00AA20
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_00B220:
+  type: TEXTURE
+  offset: 0x00B220
+  symbol: Z2_DEKU_KINGTex_00B220
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_00BA20:
+  type: TEXTURE
+  offset: 0x00BA20
+  symbol: Z2_DEKU_KINGTex_00BA20
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_DEKU_KINGTex_00BAA0:
+  type: TEXTURE
+  offset: 0x00BAA0
+  symbol: Z2_DEKU_KINGTex_00BAA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00BCA0:
+  type: TEXTURE
+  offset: 0x00BCA0
+  symbol: Z2_DEKU_KINGTex_00BCA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00BEA0:
+  type: TEXTURE
+  offset: 0x00BEA0
+  symbol: Z2_DEKU_KINGTex_00BEA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00C0A0:
+  type: TEXTURE
+  offset: 0x00C0A0
+  symbol: Z2_DEKU_KINGTex_00C0A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00C2A0:
+  type: TEXTURE
+  offset: 0x00C2A0
+  symbol: Z2_DEKU_KINGTex_00C2A0
+  format: RGBA16
+  width: 16
+  height: 128
+
+Z2_DEKU_KINGTex_00D2A0:
+  type: TEXTURE
+  offset: 0x00D2A0
+  symbol: Z2_DEKU_KINGTex_00D2A0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00D3A0:
+  type: TEXTURE
+  offset: 0x00D3A0
+  symbol: Z2_DEKU_KINGTex_00D3A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_00D7A0:
+  type: TEXTURE
+  offset: 0x00D7A0
+  symbol: Z2_DEKU_KINGTex_00D7A0
+  format: CI4
+  width: 128
+  height: 32
+
+Z2_DEKU_KINGTex_00DFA0:
+  type: TEXTURE
+  offset: 0x00DFA0
+  symbol: Z2_DEKU_KINGTex_00DFA0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_DEKU_KINGTex_00E7A0:
+  type: TEXTURE
+  offset: 0x00E7A0
+  symbol: Z2_DEKU_KINGTex_00E7A0
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_DEKU_KINGTex_00F7A0:
+  type: TEXTURE
+  offset: 0x00F7A0
+  symbol: Z2_DEKU_KINGTex_00F7A0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00F8A0:
+  type: TEXTURE
+  offset: 0x00F8A0
+  symbol: Z2_DEKU_KINGTex_00F8A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_00FCA0:
+  type: TEXTURE
+  offset: 0x00FCA0
+  symbol: Z2_DEKU_KINGTex_00FCA0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_DEKU_KINGTex_00FDA0:
+  type: TEXTURE
+  offset: 0x00FDA0
+  symbol: Z2_DEKU_KINGTex_00FDA0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_0101A0:
+  type: TEXTURE
+  offset: 0x0101A0
+  symbol: Z2_DEKU_KINGTex_0101A0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_0105A0:
+  type: TEXTURE
+  offset: 0x0105A0
+  symbol: Z2_DEKU_KINGTex_0105A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTex_010DA0:
+  type: TEXTURE
+  offset: 0x010DA0
+  symbol: Z2_DEKU_KINGTex_010DA0
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_DEKU_KINGTex_0111A0:
+  type: TEXTURE
+  offset: 0x0111A0
+  symbol: Z2_DEKU_KINGTex_0111A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_DEKU_KINGTLUT_0119A0:
+  type: TEXTURE
+  offset: 0x0119A0
+  symbol: Z2_DEKU_KINGTLUT_0119A0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_DEKU_KINGTLUT_0119C0:
+  type: TEXTURE
+  offset: 0x0119C0
+  symbol: Z2_DEKU_KINGTLUT_0119C0
+  format: RGBA16
+  width: 16
+  height: 16

@@ -1,0 +1,53 @@
+:config:
+  segments:
+    - [ 6, 0x00FB4DD0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FB4DD0 ]
+    - [ 9, 0x00FB4DD0 ]
+    - [ 10, 0x00FB4DD0 ]
+    - [ 11, 0x00FB4DD0 ]
+    - [ 12, 0x00FB4DD0 ]
+    - [ 13, 0x00FB4DD0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gHorseJumpFenceDL:
+  type: GFX
+  offset: 0x1220
+  symbol: gHorseJumpFenceDL
+
+object_umajump_Colheader_001438:
+  type: MM:COLLISION
+  offset: 0x1438
+  symbol: object_umajump_Colheader_001438
+
+object_umajump_Colheader_001558:
+  type: MM:COLLISION
+  offset: 0x1558
+  symbol: object_umajump_Colheader_001558
+
+object_umajump_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_umajump_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_umajump_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_umajump_Tex_000800
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_umajumpVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_umajumpVtx_001000
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,666 @@
+:config:
+  segments:
+    - [ 6, 0x01543A70 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01543A70 ]
+    - [ 9, 0x01543A70 ]
+    - [ 10, 0x01543A70 ]
+    - [ 11, 0x01543A70 ]
+    - [ 12, 0x01543A70 ]
+    - [ 13, 0x01543A70 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMadameAromaChestTex:
+  type: TEXTURE
+  offset: 0x8D38
+  symbol: gMadameAromaChestTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMadameAromaDressLowerTex:
+  type: TEXTURE
+  offset: 0x83B8
+  symbol: gMadameAromaDressLowerTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMadameAromaEarringsTex:
+  type: TEXTURE
+  offset: 0x8E38
+  symbol: gMadameAromaEarringsTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gMadameAromaEarsTex:
+  type: TEXTURE
+  offset: 0x6878
+  symbol: gMadameAromaEarsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMadameAromaEyesTex:
+  type: TEXTURE
+  offset: 0x79B8
+  symbol: gMadameAromaEyesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMadameAromaFingersTex:
+  type: TEXTURE
+  offset: 0x8C38
+  symbol: gMadameAromaFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMadameAromaHairHolderTex:
+  type: TEXTURE
+  offset: 0x8BB8
+  symbol: gMadameAromaHairHolderTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMadameAromaHairLoopDL:
+  type: GFX
+  offset: 0x4FA8
+  symbol: gMadameAromaHairLoopDL
+
+gMadameAromaHairLoopLimb:
+  type: OOT:LIMB
+  offset: 0x9FF8
+  symbol: gMadameAromaHairLoopLimb
+  limb_type: Standard
+
+gMadameAromaHairToSkinTex:
+  type: TEXTURE
+  offset: 0x68B8
+  symbol: gMadameAromaHairToSkinTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMadameAromaHeadDL:
+  type: GFX
+  offset: 0x50B0
+  symbol: gMadameAromaHeadDL
+
+gMadameAromaHeadLimb:
+  type: OOT:LIMB
+  offset: 0x9FEC
+  symbol: gMadameAromaHeadLimb
+  limb_type: Standard
+
+gMadameAromaLeftArmDL:
+  type: GFX
+  offset: 0x5C10
+  symbol: gMadameAromaLeftArmDL
+
+gMadameAromaLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x9F98
+  symbol: gMadameAromaLeftArmLimb
+  limb_type: Standard
+
+gMadameAromaLeftFootDL:
+  type: GFX
+  offset: 0x4738
+  symbol: gMadameAromaLeftFootDL
+
+gMadameAromaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xA058
+  symbol: gMadameAromaLeftFootLimb
+  limb_type: Standard
+
+gMadameAromaLeftHairDL:
+  type: GFX
+  offset: 0x4EE8
+  symbol: gMadameAromaLeftHairDL
+
+gMadameAromaLeftHairEdgeDL:
+  type: GFX
+  offset: 0x4DD0
+  symbol: gMadameAromaLeftHairEdgeDL
+
+gMadameAromaLeftHairEdgeLimb:
+  type: OOT:LIMB
+  offset: 0xA010
+  symbol: gMadameAromaLeftHairEdgeLimb
+  limb_type: Standard
+
+gMadameAromaLeftHairLimb:
+  type: OOT:LIMB
+  offset: 0xA004
+  symbol: gMadameAromaLeftHairLimb
+  limb_type: Standard
+
+gMadameAromaLeftHandDL:
+  type: GFX
+  offset: 0x59E8
+  symbol: gMadameAromaLeftHandDL
+
+gMadameAromaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x9FA4
+  symbol: gMadameAromaLeftHandLimb
+  limb_type: Standard
+
+gMadameAromaLeftShoulderDL:
+  type: GFX
+  offset: 0x5D28
+  symbol: gMadameAromaLeftShoulderDL
+
+gMadameAromaLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x9F8C
+  symbol: gMadameAromaLeftShoulderLimb
+  limb_type: Standard
+
+gMadameAromaLegsDL:
+  type: GFX
+  offset: 0x4880
+  symbol: gMadameAromaLegsDL
+
+gMadameAromaLegsLimb:
+  type: OOT:LIMB
+  offset: 0xA04C
+  symbol: gMadameAromaLegsLimb
+  limb_type: Standard
+
+gMadameAromaLowerBodyDL:
+  type: GFX
+  offset: 0x4A50
+  symbol: gMadameAromaLowerBodyDL
+
+gMadameAromaLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0xA040
+  symbol: gMadameAromaLowerBodyLimb
+  limb_type: Standard
+
+gMadameAromaMiddleBodyDL:
+  type: GFX
+  offset: 0x4B30
+  symbol: gMadameAromaMiddleBodyDL
+
+gMadameAromaMiddleBodyLimb:
+  type: OOT:LIMB
+  offset: 0xA034
+  symbol: gMadameAromaMiddleBodyLimb
+  limb_type: Standard
+
+gMadameAromaMouthTex:
+  type: TEXTURE
+  offset: 0x69B8
+  symbol: gMadameAromaMouthTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gMadameAromaNecklaceDL:
+  type: GFX
+  offset: 0x64E0
+  symbol: gMadameAromaNecklaceDL
+
+gMadameAromaNecklaceLimb:
+  type: OOT:LIMB
+  offset: 0x9F5C
+  symbol: gMadameAromaNecklaceLimb
+  limb_type: Standard
+
+gMadameAromaRightArmDL:
+  type: GFX
+  offset: 0x5FF8
+  symbol: gMadameAromaRightArmDL
+
+gMadameAromaRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x9F74
+  symbol: gMadameAromaRightArmLimb
+  limb_type: Standard
+
+gMadameAromaRightFootDL:
+  type: GFX
+  offset: 0x45F0
+  symbol: gMadameAromaRightFootDL
+
+gMadameAromaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xA064
+  symbol: gMadameAromaRightFootLimb
+  limb_type: Standard
+
+gMadameAromaRightHairDL:
+  type: GFX
+  offset: 0x4D10
+  symbol: gMadameAromaRightHairDL
+
+gMadameAromaRightHairEdgeDL:
+  type: GFX
+  offset: 0x4BF8
+  symbol: gMadameAromaRightHairEdgeDL
+
+gMadameAromaRightHairEdgeLimb:
+  type: OOT:LIMB
+  offset: 0xA028
+  symbol: gMadameAromaRightHairEdgeLimb
+  limb_type: Standard
+
+gMadameAromaRightHairLimb:
+  type: OOT:LIMB
+  offset: 0xA01C
+  symbol: gMadameAromaRightHairLimb
+  limb_type: Standard
+
+gMadameAromaRightHandDL:
+  type: GFX
+  offset: 0x5E48
+  symbol: gMadameAromaRightHandDL
+
+gMadameAromaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x9F80
+  symbol: gMadameAromaRightHandLimb
+  limb_type: Standard
+
+gMadameAromaRightShoulderDL:
+  type: GFX
+  offset: 0x6190
+  symbol: gMadameAromaRightShoulderDL
+
+gMadameAromaRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x9F68
+  symbol: gMadameAromaRightShoulderLimb
+  limb_type: Standard
+
+gMadameAromaRingTex:
+  type: TEXTURE
+  offset: 0x9E38
+  symbol: gMadameAromaRingTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gMadameAromaRootLimb:
+  type: OOT:LIMB
+  offset: 0x9F38
+  symbol: gMadameAromaRootLimb
+  limb_type: Standard
+
+gMadameAromaShawlLeftLowerDL:
+  type: GFX
+  offset: 0x57D0
+  symbol: gMadameAromaShawlLeftLowerDL
+
+gMadameAromaShawlLeftLowerLimb:
+  type: OOT:LIMB
+  offset: 0x9FC8
+  symbol: gMadameAromaShawlLeftLowerLimb
+  limb_type: Standard
+
+gMadameAromaShawlLeftLowerMiddleDL:
+  type: GFX
+  offset: 0x5878
+  symbol: gMadameAromaShawlLeftLowerMiddleDL
+
+gMadameAromaShawlLeftLowerMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x9FBC
+  symbol: gMadameAromaShawlLeftLowerMiddleLimb
+  limb_type: Standard
+
+gMadameAromaShawlMiddleDL:
+  type: GFX
+  offset: 0x6598
+  symbol: gMadameAromaShawlMiddleDL
+
+gMadameAromaShawlMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x9F50
+  symbol: gMadameAromaShawlMiddleLimb
+  limb_type: Standard
+
+gMadameAromaShawlRightLowerDL:
+  type: GFX
+  offset: 0x5680
+  symbol: gMadameAromaShawlRightLowerDL
+
+gMadameAromaShawlRightLowerLimb:
+  type: OOT:LIMB
+  offset: 0x9FE0
+  symbol: gMadameAromaShawlRightLowerLimb
+  limb_type: Standard
+
+gMadameAromaShawlRightLowerMiddleDL:
+  type: GFX
+  offset: 0x5728
+  symbol: gMadameAromaShawlRightLowerMiddleDL
+
+gMadameAromaShawlRightLowerMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x9FD4
+  symbol: gMadameAromaShawlRightLowerMiddleLimb
+  limb_type: Standard
+
+gMadameAromaShawlUpperDL:
+  type: GFX
+  offset: 0x5920
+  symbol: gMadameAromaShawlUpperDL
+
+gMadameAromaShawlUpperLimb:
+  type: OOT:LIMB
+  offset: 0x9FB0
+  symbol: gMadameAromaShawlUpperLimb
+  limb_type: Standard
+
+gMadameAromaShoeTex:
+  type: TEXTURE
+  offset: 0x81B8
+  symbol: gMadameAromaShoeTex
+  format: CI8
+  width: 32
+  height: 16
+
+gMadameAromaSkel:
+  type: MM:SKELETON
+  offset: 0xA0D8
+  symbol: gMadameAromaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMadameAromaSkinBlotchTex:
+  type: TEXTURE
+  offset: 0x6838
+  symbol: gMadameAromaSkinBlotchTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMadameAromaTLUT:
+  type: TEXTURE
+  offset: 0x6638
+  symbol: gMadameAromaTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMadameAromaUpperBodyDL:
+  type: GFX
+  offset: 0x62B0
+  symbol: gMadameAromaUpperBodyDL
+
+gMadameAromaUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x9F44
+  symbol: gMadameAromaUpperBodyLimb
+  limb_type: Standard
+
+object_al_Anim_000C54:
+  type: OOT:ANIMATION
+  offset: 0xC54
+  symbol: object_al_Anim_000C54
+
+object_al_Anim_00A764:
+  type: OOT:ANIMATION
+  offset: 0xA764
+  symbol: object_al_Anim_00A764
+
+object_al_Anim_00ACA0:
+  type: OOT:ANIMATION
+  offset: 0xACA0
+  symbol: object_al_Anim_00ACA0
+
+object_al_Anim_00BCA4:
+  type: OOT:ANIMATION
+  offset: 0xBCA4
+  symbol: object_al_Anim_00BCA4
+
+object_al_Anim_00CA28:
+  type: OOT:ANIMATION
+  offset: 0xCA28
+  symbol: object_al_Anim_00CA28
+
+object_al_Anim_00DBE0:
+  type: OOT:ANIMATION
+  offset: 0xDBE0
+  symbol: object_al_Anim_00DBE0
+
+
+object_alVtx_000C70:
+  type: MM:ARRAY
+  offset: 0x000C70
+  symbol: object_alVtx_000C70
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_000F20:
+  type: MM:ARRAY
+  offset: 0x000F20
+  symbol: object_alVtx_000F20
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_0011D0:
+  type: MM:ARRAY
+  offset: 0x0011D0
+  symbol: object_alVtx_0011D0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001560:
+  type: MM:ARRAY
+  offset: 0x001560
+  symbol: object_alVtx_001560
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001730:
+  type: MM:ARRAY
+  offset: 0x001730
+  symbol: object_alVtx_001730
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001880:
+  type: MM:ARRAY
+  offset: 0x001880
+  symbol: object_alVtx_001880
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001A30:
+  type: MM:ARRAY
+  offset: 0x001A30
+  symbol: object_alVtx_001A30
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001B30:
+  type: MM:ARRAY
+  offset: 0x001B30
+  symbol: object_alVtx_001B30
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001BF0:
+  type: MM:ARRAY
+  offset: 0x001BF0
+  symbol: object_alVtx_001BF0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001CF0:
+  type: MM:ARRAY
+  offset: 0x001CF0
+  symbol: object_alVtx_001CF0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_001DB0:
+  type: MM:ARRAY
+  offset: 0x001DB0
+  symbol: object_alVtx_001DB0
+  count: 202
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_002A50:
+  type: MM:ARRAY
+  offset: 0x002A50
+  symbol: object_alVtx_002A50
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_002FE0:
+  type: MM:ARRAY
+  offset: 0x002FE0
+  symbol: object_alVtx_002FE0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003200:
+  type: MM:ARRAY
+  offset: 0x003200
+  symbol: object_alVtx_003200
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_0033E0:
+  type: MM:ARRAY
+  offset: 0x0033E0
+  symbol: object_alVtx_0033E0
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003A10:
+  type: MM:ARRAY
+  offset: 0x003A10
+  symbol: object_alVtx_003A10
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003B90:
+  type: MM:ARRAY
+  offset: 0x003B90
+  symbol: object_alVtx_003B90
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003D70:
+  type: MM:ARRAY
+  offset: 0x003D70
+  symbol: object_alVtx_003D70
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003E70:
+  type: MM:ARRAY
+  offset: 0x003E70
+  symbol: object_alVtx_003E70
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003EC0:
+  type: MM:ARRAY
+  offset: 0x003EC0
+  symbol: object_alVtx_003EC0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003F10:
+  type: MM:ARRAY
+  offset: 0x003F10
+  symbol: object_alVtx_003F10
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003F60:
+  type: MM:ARRAY
+  offset: 0x003F60
+  symbol: object_alVtx_003F60
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_003FB0:
+  type: MM:ARRAY
+  offset: 0x003FB0
+  symbol: object_alVtx_003FB0
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_004470:
+  type: MM:ARRAY
+  offset: 0x004470
+  symbol: object_alVtx_004470
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_alVtx_004530:
+  type: MM:ARRAY
+  offset: 0x004530
+  symbol: object_alVtx_004530
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMadameAromaSkelLimbs:
+  type: BLOB
+  offset: 0xA070
+  symbol: gMadameAromaSkelLimbs
+  size: 0

@@ -1,0 +1,503 @@
+<DisplayList Version="0">
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="15" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="30" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="45" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="60" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="75" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="90" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="105" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="120" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="135" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="150" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="165" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="180" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="195" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="210" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="225" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="240" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="255" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="270" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="285" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="300" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="315" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="330" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="345" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="360" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="375" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="390" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="405" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="420" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="435" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="450" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="465" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="480" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="495" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="510" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="525" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="540" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="555" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="570" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="585" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="600" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="615" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="630" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="645" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="660" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="675" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="690" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="705" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="720" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="735" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="750" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="765" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="780" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="795" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="810" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="825" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="840" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="855" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="870" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="885" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="900" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="915" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="930" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="945" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="960" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="975" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="990" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1005" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1020" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1035" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1050" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="3" V02="1"/>
+	<Triangle1 V00="3" V01="4" V02="1"/>
+	<Triangle1 V00="3" V01="5" V02="4"/>
+	<Triangle1 V00="5" V01="6" V02="4"/>
+	<Triangle1 V00="4" V01="6" V02="7"/>
+	<Triangle1 V00="6" V01="8" V02="7"/>
+	<Triangle1 V00="9" V01="7" V02="8"/>
+	<Triangle1 V00="8" V01="10" V02="9"/>
+	<Triangle1 V00="8" V01="11" V02="10"/>
+	<Triangle1 V00="11" V01="12" V02="10"/>
+	<Triangle1 V00="10" V01="12" V02="9"/>
+	<Triangle1 V00="13" V01="14" V02="15"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1066" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="1" V01="3" V02="2"/>
+	<Triangle1 V00="1" V01="4" V02="3"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="5" V01="8" V02="6"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="9" V01="12" V02="10"/>
+	<Triangle1 V00="13" V01="14" V02="15"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1082" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="2" V02="1"/>
+	<Triangle1 V00="3" V01="1" V02="4"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="5" V01="8" V02="6"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="9" V01="12" V02="10"/>
+	<Triangle1 V00="13" V01="14" V02="15"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1098" Count="15"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="2" V01="1" V02="3"/>
+	<Triangle1 V00="1" V01="4" V02="3"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="5" V01="8" V02="6"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="11" V02="10"/>
+	<Triangle1 V00="10" V01="13" V02="12"/>
+	<Triangle1 V00="13" V01="14" V02="12"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1113" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="2" V01="3" V02="0"/>
+	<Triangle1 V00="3" V01="4" V02="0"/>
+	<Triangle1 V00="4" V01="5" V02="0"/>
+	<Triangle1 V00="6" V01="7" V02="8"/>
+	<Triangle1 V00="8" V01="9" V02="6"/>
+	<Triangle1 V00="9" V01="10" V02="6"/>
+	<Triangle1 V00="10" V01="11" V02="6"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<Triangle1 V00="12" V01="15" V02="13"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1129" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="2" V01="3" V02="0"/>
+	<Triangle1 V00="3" V01="4" V02="0"/>
+	<Triangle1 V00="5" V01="6" V02="7"/>
+	<Triangle1 V00="7" V01="8" V02="5"/>
+	<Triangle1 V00="8" V01="9" V02="5"/>
+	<Triangle1 V00="9" V01="10" V02="5"/>
+	<Triangle1 V00="11" V01="12" V02="13"/>
+	<Triangle1 V00="13" V01="14" V02="11"/>
+	<Triangle1 V00="14" V01="15" V02="11"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1145" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="4" V02="5"/>
+	<Triangle1 V00="3" V01="6" V02="4"/>
+	<Triangle1 V00="7" V01="8" V02="9"/>
+	<Triangle1 V00="9" V01="10" V02="7"/>
+	<Triangle1 V00="10" V01="11" V02="7"/>
+	<Triangle1 V00="12" V01="13" V02="14"/>
+	<Triangle1 V00="12" V01="14" V02="15"/>
+	<LoadVertices Path="misc/nintendo_rogo_static/gShipLogoDL_vtx_1" VertexBufferIndex="0" VertexOffset="1161" Count="10"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="0" V01="3" V02="1"/>
+	<Triangle1 V00="4" V01="5" V02="6"/>
+	<Triangle1 V00="4" V01="6" V02="7"/>
+	<Triangle1 V00="7" V01="8" V02="4"/>
+	<Triangle1 V00="7" V01="9" V02="8"/>
+	<EndDisplayList/>
+</DisplayList>

@@ -1,0 +1,229 @@
+:config:
+  segments:
+    - [ 6, 0x01385520 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01385520 ]
+    - [ 9, 0x01385520 ]
+    - [ 10, 0x01385520 ]
+    - [ 11, 0x01385520 ]
+    - [ 12, 0x01385520 ]
+    - [ 13, 0x01385520 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gRemainsGohtDL:
+  type: GFX
+  offset: 0x3AD0
+  symbol: gRemainsGohtDL
+
+gRemainsGohtEyeTex:
+  type: TEXTURE
+  offset: 0x8390
+  symbol: gRemainsGohtEyeTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRemainsGohtSpikeTwinmoldMandibleTex:
+  type: TEXTURE
+  offset: 0xB390
+  symbol: gRemainsGohtSpikeTwinmoldMandibleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRemainsGohtTopPatternTex:
+  type: TEXTURE
+  offset: 0x9390
+  symbol: gRemainsGohtTopPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRemainsGohtTwinmoldPatternTex:
+  type: TEXTURE
+  offset: 0xA390
+  symbol: gRemainsGohtTwinmoldPatternTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gRemainsGyorgDL:
+  type: GFX
+  offset: 0x1D80
+  symbol: gRemainsGyorgDL
+
+gRemainsGyorgMouthTLUT:
+  type: TEXTURE
+  offset: 0x5890
+  symbol: gRemainsGyorgMouthTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsGyorgMouthTex:
+  type: TEXTURE
+  offset: 0x7B10
+  symbol: gRemainsGyorgMouthTex
+  format: CI4
+  width: 64
+  height: 64
+
+gRemainsGyorgSkinTLUT:
+  type: TEXTURE
+  offset: 0x5870
+  symbol: gRemainsGyorgSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsGyorgSkinTex:
+  type: TEXTURE
+  offset: 0x7310
+  symbol: gRemainsGyorgSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gRemainsGyorgToothHornTLUT:
+  type: TEXTURE
+  offset: 0x58B0
+  symbol: gRemainsGyorgToothHornTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsGyorgToothHornTex:
+  type: TEXTURE
+  offset: 0x8310
+  symbol: gRemainsGyorgToothHornTex
+  format: CI4
+  width: 16
+  height: 16
+
+gRemainsGyorgTwinmoldEyeTex:
+  type: TEXTURE
+  offset: 0x6B10
+  symbol: gRemainsGyorgTwinmoldEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gRemainsOdolwaDL:
+  type: GFX
+  offset: 0x690
+  symbol: gRemainsOdolwaDL
+
+gRemainsOdolwaEarTLUT:
+  type: TEXTURE
+  offset: 0x5850
+  symbol: gRemainsOdolwaEarTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsOdolwaEarTex:
+  type: TEXTURE
+  offset: 0x6310
+  symbol: gRemainsOdolwaEarTex
+  format: CI4
+  width: 64
+  height: 64
+
+gRemainsOdolwaFaceTLUT:
+  type: TEXTURE
+  offset: 0x5830
+  symbol: gRemainsOdolwaFaceTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsOdolwaFaceTex:
+  type: TEXTURE
+  offset: 0x5B10
+  symbol: gRemainsOdolwaFaceTex
+  format: CI4
+  width: 64
+  height: 64
+
+gRemainsOdolwaPlumeTex:
+  type: TEXTURE
+  offset: 0x5910
+  symbol: gRemainsOdolwaPlumeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRemainsTwinmoldDL:
+  type: GFX
+  offset: 0x5020
+  symbol: gRemainsTwinmoldDL
+
+gRemainsTwinmoldSkinTLUT:
+  type: TEXTURE
+  offset: 0x58D0
+  symbol: gRemainsTwinmoldSkinTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsTwinmoldSkinTex:
+  type: TEXTURE
+  offset: 0xBB90
+  symbol: gRemainsTwinmoldSkinTex
+  format: CI4
+  width: 64
+  height: 64
+
+gRemainsTwinmoldSnoutTLUT:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: gRemainsTwinmoldSnoutTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gRemainsTwinmoldSnoutTex:
+  type: TEXTURE
+  offset: 0xC390
+  symbol: gRemainsTwinmoldSnoutTex
+  format: CI4
+  width: 64
+  height: 64
+
+
+object_bsmaskVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_bsmaskVtx_000000
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsmaskVtx_0009E0:
+  type: MM:ARRAY
+  offset: 0x0009E0
+  symbol: object_bsmaskVtx_0009E0
+  count: 314
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsmaskVtx_002680:
+  type: MM:ARRAY
+  offset: 0x002680
+  symbol: object_bsmaskVtx_002680
+  count: 325
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bsmaskVtx_004270:
+  type: MM:ARRAY
+  offset: 0x004270
+  symbol: object_bsmaskVtx_004270
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,285 @@
+:config:
+  segments:
+    - [ 2, 0x01B466C0 ]
+
+Z2_LAST_ZORA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_LAST_ZORA
+
+
+Z2_LAST_ZORACutsceneData_000108:
+  type: MM:CUTSCENE
+  offset: 0x000108
+  symbol: Z2_LAST_ZORACutsceneData_000108
+  size: 624
+
+Z2_LAST_ZORATexAnim_000490TexScrollParams_000480:
+  type: BLOB
+  offset: 0x000480
+  symbol: Z2_LAST_ZORATexAnim_000490TexScrollParams_000480
+  size: 0
+
+Z2_LAST_ZORATexAnim_000490TexScrollParams_000488:
+  type: BLOB
+  offset: 0x000488
+  symbol: Z2_LAST_ZORATexAnim_000490TexScrollParams_000488
+  size: 0
+
+Z2_LAST_ZORATexAnim_000490:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000490
+  symbol: Z2_LAST_ZORATexAnim_000490
+
+Z2_LAST_ZORACollisionHeader_008D10:
+  type: MM:COLLISION
+  offset: 0x008D10
+  symbol: Z2_LAST_ZORACollisionHeader_008D10
+
+Z2_LAST_ZORATex_008D40:
+  type: TEXTURE
+  offset: 0x008D40
+  symbol: Z2_LAST_ZORATex_008D40
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_LAST_ZORATex_009D40:
+  type: TEXTURE
+  offset: 0x009D40
+  symbol: Z2_LAST_ZORATex_009D40
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LAST_ZORATex_00A540:
+  type: TEXTURE
+  offset: 0x00A540
+  symbol: Z2_LAST_ZORATex_00A540
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_LAST_ZORATex_00AD40:
+  type: TEXTURE
+  offset: 0x00AD40
+  symbol: Z2_LAST_ZORATex_00AD40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_00B540:
+  type: TEXTURE
+  offset: 0x00B540
+  symbol: Z2_LAST_ZORATex_00B540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_00BD40:
+  type: TEXTURE
+  offset: 0x00BD40
+  symbol: Z2_LAST_ZORATex_00BD40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_00C540:
+  type: TEXTURE
+  offset: 0x00C540
+  symbol: Z2_LAST_ZORATex_00C540
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_LAST_ZORATex_00C940:
+  type: TEXTURE
+  offset: 0x00C940
+  symbol: Z2_LAST_ZORATex_00C940
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_LAST_ZORATex_00CD40:
+  type: TEXTURE
+  offset: 0x00CD40
+  symbol: Z2_LAST_ZORATex_00CD40
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_ZORATex_00D540:
+  type: TEXTURE
+  offset: 0x00D540
+  symbol: Z2_LAST_ZORATex_00D540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_00DD40:
+  type: TEXTURE
+  offset: 0x00DD40
+  symbol: Z2_LAST_ZORATex_00DD40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_00E540:
+  type: TEXTURE
+  offset: 0x00E540
+  symbol: Z2_LAST_ZORATex_00E540
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_00ED40:
+  type: TEXTURE
+  offset: 0x00ED40
+  symbol: Z2_LAST_ZORATex_00ED40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_00F540:
+  type: TEXTURE
+  offset: 0x00F540
+  symbol: Z2_LAST_ZORATex_00F540
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_00FD40:
+  type: TEXTURE
+  offset: 0x00FD40
+  symbol: Z2_LAST_ZORATex_00FD40
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_ZORATex_010540:
+  type: TEXTURE
+  offset: 0x010540
+  symbol: Z2_LAST_ZORATex_010540
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_010D40:
+  type: TEXTURE
+  offset: 0x010D40
+  symbol: Z2_LAST_ZORATex_010D40
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_011540:
+  type: TEXTURE
+  offset: 0x011540
+  symbol: Z2_LAST_ZORATex_011540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_011D40:
+  type: TEXTURE
+  offset: 0x011D40
+  symbol: Z2_LAST_ZORATex_011D40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_012540:
+  type: TEXTURE
+  offset: 0x012540
+  symbol: Z2_LAST_ZORATex_012540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_012D40:
+  type: TEXTURE
+  offset: 0x012D40
+  symbol: Z2_LAST_ZORATex_012D40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATex_013540:
+  type: TEXTURE
+  offset: 0x013540
+  symbol: Z2_LAST_ZORATex_013540
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_LAST_ZORATex_013D40:
+  type: TEXTURE
+  offset: 0x013D40
+  symbol: Z2_LAST_ZORATex_013D40
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_ZORATLUT_014540:
+  type: TEXTURE
+  offset: 0x014540
+  symbol: Z2_LAST_ZORATLUT_014540
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_014560:
+  type: TEXTURE
+  offset: 0x014560
+  symbol: Z2_LAST_ZORATLUT_014560
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_014580:
+  type: TEXTURE
+  offset: 0x014580
+  symbol: Z2_LAST_ZORATLUT_014580
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_0145A0:
+  type: TEXTURE
+  offset: 0x0145A0
+  symbol: Z2_LAST_ZORATLUT_0145A0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_0145C0:
+  type: TEXTURE
+  offset: 0x0145C0
+  symbol: Z2_LAST_ZORATLUT_0145C0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_0145E0:
+  type: TEXTURE
+  offset: 0x0145E0
+  symbol: Z2_LAST_ZORATLUT_0145E0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_014600:
+  type: TEXTURE
+  offset: 0x014600
+  symbol: Z2_LAST_ZORATLUT_014600
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_LAST_ZORATLUT_014620:
+  type: TEXTURE
+  offset: 0x014620
+  symbol: Z2_LAST_ZORATLUT_014620
+  format: RGBA16
+  width: 16
+  height: 16

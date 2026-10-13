@@ -1,0 +1,82 @@
+:config:
+  segments:
+    - [ 3, 0x01D19A60 ]
+    - [ 6, 0x0160ED50 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01D19A60 ]
+    - [ 9, 0x01D19A60 ]
+    - [ 10, 0x01D19A60 ]
+    - [ 11, 0x01D19A60 ]
+    - [ 12, 0x01D19A60 ]
+    - [ 13, 0x01D19A60 ]
+    - [ 2, 0x01D02C10 ]
+  directory: scenes/nonmq/Z2_10YUKIYAMANOMURA2
+  external_files:
+    - N64_US/misc/scene_texture_04.yml
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2.yml
+    - N64_US/scenes/nonmq/Z2_10YUKIYAMANOMURA2_room_01Set_000240.yml
+
+Z2_10YUKIYAMANOMURA2_room_01:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_10YUKIYAMANOMURA2_room_01
+
+Z2_10YUKIYAMANOMURA2_room_01DL_0002C0:
+  type: GFX
+  offset: 0x2C0
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_0002C0
+
+Z2_10YUKIYAMANOMURA2_room_01DL_001A18:
+  type: GFX
+  offset: 0x1A18
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_001A18
+
+
+Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000074:
+  type: BLOB
+  offset: 0x000074
+  symbol: Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000074
+  size: 0
+
+Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000284:
+  type: BLOB
+  offset: 0x000284
+  symbol: Z2_10YUKIYAMANOMURA2_room_01ActorEntry_000284
+  size: 0
+
+Z2_10YUKIYAMANOMURA2_room_01Vtx_0002C8:
+  type: MM:ARRAY
+  offset: 0x0002C8
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Vtx_0002C8
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_10YUKIYAMANOMURA2_room_01DL_000C68:
+  type: GFX
+  offset: 0x000C68
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_000C68
+
+Z2_10YUKIYAMANOMURA2_room_01Vtx_000ED8:
+  type: MM:ARRAY
+  offset: 0x000ED8
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Vtx_000ED8
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_10YUKIYAMANOMURA2_room_01DL_001728:
+  type: GFX
+  offset: 0x001728
+  symbol: Z2_10YUKIYAMANOMURA2_room_01DL_001728
+
+Z2_10YUKIYAMANOMURA2_room_01Tex_001A30:
+  type: TEXTURE
+  offset: 0x001A30
+  symbol: Z2_10YUKIYAMANOMURA2_room_01Tex_001A30
+  format: CI8
+  width: 32
+  height: 32

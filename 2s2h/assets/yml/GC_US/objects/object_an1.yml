@@ -1,0 +1,738 @@
+:config:
+  segments:
+    - [ 6, 0x00FD2760 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FD2760 ]
+    - [ 9, 0x00FD2760 ]
+    - [ 10, 0x00FD2760 ]
+    - [ 11, 0x00FD2760 ]
+    - [ 12, 0x00FD2760 ]
+    - [ 13, 0x00FD2760 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gAnju1BowAnim:
+  type: OOT:ANIMATION
+  offset: 0x544C
+  symbol: gAnju1BowAnim
+
+gAnju1ChopsticksDL:
+  type: GFX
+  offset: 0x12478
+  symbol: gAnju1ChopsticksDL
+
+gAnju1CircleTex:
+  type: TEXTURE
+  offset: 0x12128
+  symbol: gAnju1CircleTex
+  format: I8
+  width: 16
+  height: 16
+
+gAnju1CookAnim:
+  type: OOT:ANIMATION
+  offset: 0x65C8
+  symbol: gAnju1CookAnim
+
+gAnju1EarTex:
+  type: TEXTURE
+  offset: 0xE5E0
+  symbol: gAnju1EarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAnju1EmptyDL:
+  type: GFX
+  offset: 0x111E0
+  symbol: gAnju1EmptyDL
+
+gAnju1EyeClosedTex:
+  type: TEXTURE
+  offset: 0xF3A0
+  symbol: gAnju1EyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyeComfortTex:
+  type: TEXTURE
+  offset: 0xFDA0
+  symbol: gAnju1EyeComfortTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyeHalfTex:
+  type: TEXTURE
+  offset: 0xEFA0
+  symbol: gAnju1EyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyeOpenTex:
+  type: TEXTURE
+  offset: 0xE1E0
+  symbol: gAnju1EyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyeRelievedClosedTex:
+  type: TEXTURE
+  offset: 0x103A0
+  symbol: gAnju1EyeRelievedClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyeSadTex:
+  type: TEXTURE
+  offset: 0xF9A0
+  symbol: gAnju1EyeSadTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xDD20
+
+gAnju1EyesTLUT:
+  type: TEXTURE
+  offset: 0xDD20
+  symbol: gAnju1EyesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAnju1Food1Tex:
+  type: TEXTURE
+  offset: 0x11D28
+  symbol: gAnju1Food1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAnju1Food2Tex:
+  type: TEXTURE
+  offset: 0x11F28
+  symbol: gAnju1Food2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAnju1FoodTrayDL:
+  type: GFX
+  offset: 0x111E8
+  symbol: gAnju1FoodTrayDL
+
+gAnju1HairTex:
+  type: TEXTURE
+  offset: 0xE160
+  symbol: gAnju1HairTex
+  format: CI8
+  width: 8
+  height: 16
+
+gAnju1HandTex:
+  type: TEXTURE
+  offset: 0xE920
+  symbol: gAnju1HandTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAnju1HeadDL:
+  type: GFX
+  offset: 0xC940
+  symbol: gAnju1HeadDL
+
+gAnju1HeadLimb:
+  type: OOT:LIMB
+  offset: 0x12538
+  symbol: gAnju1HeadLimb
+  limb_type: Standard
+
+gAnju1HoldHandsAnim:
+  type: OOT:ANIMATION
+  offset: 0x13E1C
+  symbol: gAnju1HoldHandsAnim
+
+gAnju1IdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x8B6C
+  symbol: gAnju1IdleAnim
+
+gAnju1LeftFootDL:
+  type: GFX
+  offset: 0xC080
+  symbol: gAnju1LeftFootDL
+
+gAnju1LeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1258C
+  symbol: gAnju1LeftFootLimb
+  limb_type: Standard
+
+gAnju1LeftForearmDL:
+  type: GFX
+  offset: 0xD618
+  symbol: gAnju1LeftForearmDL
+
+gAnju1LeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x124FC
+  symbol: gAnju1LeftForearmLimb
+  limb_type: Standard
+
+gAnju1LeftHandDL:
+  type: GFX
+  offset: 0xD440
+  symbol: gAnju1LeftHandDL
+
+gAnju1LeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x12508
+  symbol: gAnju1LeftHandLimb
+  limb_type: Standard
+
+gAnju1LeftShinDL:
+  type: GFX
+  offset: 0xC2E8
+  symbol: gAnju1LeftShinDL
+
+gAnju1LeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x12580
+  symbol: gAnju1LeftShinLimb
+  limb_type: Standard
+
+gAnju1LeftThighDL:
+  type: GFX
+  offset: 0xC3C0
+  symbol: gAnju1LeftThighDL
+
+gAnju1LeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x12574
+  symbol: gAnju1LeftThighLimb
+  limb_type: Standard
+
+gAnju1LeftUpperArmDL:
+  type: GFX
+  offset: 0xD730
+  symbol: gAnju1LeftUpperArmDL
+
+gAnju1LeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x124F0
+  symbol: gAnju1LeftUpperArmLimb
+  limb_type: Standard
+
+gAnju1LookUpRelievedAnim:
+  type: OOT:ANIMATION
+  offset: 0x1E74
+  symbol: gAnju1LookUpRelievedAnim
+
+gAnju1MouthClosedTex:
+  type: TEXTURE
+  offset: 0xE6E0
+  symbol: gAnju1MouthClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xDF20
+
+gAnju1MouthHappyTex:
+  type: TEXTURE
+  offset: 0xF7A0
+  symbol: gAnju1MouthHappyTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xDF20
+
+gAnju1MouthOpenTex:
+  type: TEXTURE
+  offset: 0x101A0
+  symbol: gAnju1MouthOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xDF20
+
+gAnju1MouthTLUT:
+  type: TEXTURE
+  offset: 0xDF20
+  symbol: gAnju1MouthTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAnju1PelvisDL:
+  type: GFX
+  offset: 0xC880
+  symbol: gAnju1PelvisDL
+
+gAnju1PelvisLimb:
+  type: OOT:LIMB
+  offset: 0x12544
+  symbol: gAnju1PelvisLimb
+  limb_type: Standard
+
+gAnju1PlateTex:
+  type: TEXTURE
+  offset: 0x11928
+  symbol: gAnju1PlateTex
+  format: I8
+  width: 32
+  height: 32
+
+gAnju1RightFootDL:
+  type: GFX
+  offset: 0xC480
+  symbol: gAnju1RightFootDL
+
+gAnju1RightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12568
+  symbol: gAnju1RightFootLimb
+  limb_type: Standard
+
+gAnju1RightForearmDL:
+  type: GFX
+  offset: 0xD208
+  symbol: gAnju1RightForearmDL
+
+gAnju1RightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x12520
+  symbol: gAnju1RightForearmLimb
+  limb_type: Standard
+
+gAnju1RightHandDL:
+  type: GFX
+  offset: 0xD030
+  symbol: gAnju1RightHandDL
+
+gAnju1RightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1252C
+  symbol: gAnju1RightHandLimb
+  limb_type: Standard
+
+gAnju1RightShinDL:
+  type: GFX
+  offset: 0xC6E8
+  symbol: gAnju1RightShinDL
+
+gAnju1RightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1255C
+  symbol: gAnju1RightShinLimb
+  limb_type: Standard
+
+gAnju1RightThighDL:
+  type: GFX
+  offset: 0xC7C0
+  symbol: gAnju1RightThighDL
+
+gAnju1RightThighLimb:
+  type: OOT:LIMB
+  offset: 0x12550
+  symbol: gAnju1RightThighLimb
+  limb_type: Standard
+
+gAnju1RightUpperArmDL:
+  type: GFX
+  offset: 0xD320
+  symbol: gAnju1RightUpperArmDL
+
+gAnju1RightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x12514
+  symbol: gAnju1RightUpperArmLimb
+  limb_type: Standard
+
+gAnju1RootLimb:
+  type: OOT:LIMB
+  offset: 0x124D8
+  symbol: gAnju1RootLimb
+  limb_type: Standard
+
+gAnju1ShirtButtonTex:
+  type: TEXTURE
+  offset: 0xE8E0
+  symbol: gAnju1ShirtButtonTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAnju1ShirtTex:
+  type: TEXTURE
+  offset: 0xEE20
+  symbol: gAnju1ShirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gAnju1SitAnim:
+  type: OOT:ANIMATION
+  offset: 0x71E8
+  symbol: gAnju1SitAnim
+
+gAnju1SittingInDisbeliefAnim:
+  type: OOT:ANIMATION
+  offset: 0x7E08
+  symbol: gAnju1SittingInDisbeliefAnim
+
+gAnju1Skel:
+  type: MM:SKELETON
+  offset: 0x12618
+  symbol: gAnju1Skel
+  limb_type: Standard
+  skel_type: Flex
+
+gAnju1SkinTex:
+  type: TEXTURE
+  offset: 0xE120
+  symbol: gAnju1SkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gAnju1Skirt1DL:
+  type: GFX
+  offset: 0xBF88
+  symbol: gAnju1Skirt1DL
+
+gAnju1Skirt1Limb:
+  type: OOT:LIMB
+  offset: 0x12598
+  symbol: gAnju1Skirt1Limb
+  limb_type: Standard
+
+gAnju1Skirt2DL:
+  type: GFX
+  offset: 0xBE60
+  symbol: gAnju1Skirt2DL
+
+gAnju1Skirt2Limb:
+  type: OOT:LIMB
+  offset: 0x125A4
+  symbol: gAnju1Skirt2Limb
+  limb_type: Standard
+
+gAnju1Skirt3DL:
+  type: GFX
+  offset: 0xBD20
+  symbol: gAnju1Skirt3DL
+
+gAnju1Skirt3Limb:
+  type: OOT:LIMB
+  offset: 0x125B0
+  symbol: gAnju1Skirt3Limb
+  limb_type: Standard
+
+gAnju1Skirt4DL:
+  type: GFX
+  offset: 0xBC20
+  symbol: gAnju1Skirt4DL
+
+gAnju1Skirt4Limb:
+  type: OOT:LIMB
+  offset: 0x125BC
+  symbol: gAnju1Skirt4Limb
+  limb_type: Standard
+
+gAnju1SkirtTex:
+  type: TEXTURE
+  offset: 0xEA20
+  symbol: gAnju1SkirtTex
+  format: CI8
+  width: 32
+  height: 32
+
+gAnju1SleeveTex:
+  type: TEXTURE
+  offset: 0xEF20
+  symbol: gAnju1SleeveTex
+  format: CI8
+  width: 8
+  height: 16
+
+gAnju1Steam1Tex:
+  type: TEXTURE
+  offset: 0x12228
+  symbol: gAnju1Steam1Tex
+  format: I4
+  width: 16
+  height: 16
+
+gAnju1Steam2Tex:
+  type: TEXTURE
+  offset: 0x122A8
+  symbol: gAnju1Steam2Tex
+  format: I8
+  width: 16
+  height: 16
+
+gAnju1SurprisedAnim:
+  type: OOT:ANIMATION
+  offset: 0x26B4
+  symbol: gAnju1SurprisedAnim
+
+gAnju1TLUT:
+  type: TEXTURE
+  offset: 0xDB20
+  symbol: gAnju1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gAnju1TasteAnim:
+  type: OOT:ANIMATION
+  offset: 0x1090
+  symbol: gAnju1TasteAnim
+
+gAnju1TasteEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x144C
+  symbol: gAnju1TasteEndAnim
+
+gAnju1TorsoDL:
+  type: GFX
+  offset: 0xD850
+  symbol: gAnju1TorsoDL
+
+gAnju1TorsoLimb:
+  type: OOT:LIMB
+  offset: 0x124E4
+  symbol: gAnju1TorsoLimb
+  limb_type: Standard
+
+gAnju1UnusedTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x123B0
+  symbol: gAnju1UnusedTexAnim
+
+gAnju1WaitWithTrayAnim:
+  type: OOT:ANIMATION
+  offset: 0x341C
+  symbol: gAnju1WaitWithTrayAnim
+
+gAnju1WalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x13048
+  symbol: gAnju1WalkAnim
+
+gAnju1WalkWithTrayAnim:
+  type: OOT:ANIMATION
+  offset: 0x3EA8
+  symbol: gAnju1WalkWithTrayAnim
+
+
+object_an1Vtx_008B80:
+  type: MM:ARRAY
+  offset: 0x008B80
+  symbol: object_an1Vtx_008B80
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_008CD0:
+  type: MM:ARRAY
+  offset: 0x008CD0
+  symbol: object_an1Vtx_008CD0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_008F80:
+  type: MM:ARRAY
+  offset: 0x008F80
+  symbol: object_an1Vtx_008F80
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009190:
+  type: MM:ARRAY
+  offset: 0x009190
+  symbol: object_an1Vtx_009190
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_0092B0:
+  type: MM:ARRAY
+  offset: 0x0092B0
+  symbol: object_an1Vtx_0092B0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_0095E0:
+  type: MM:ARRAY
+  offset: 0x0095E0
+  symbol: object_an1Vtx_0095E0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009660:
+  type: MM:ARRAY
+  offset: 0x009660
+  symbol: object_an1Vtx_009660
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009690:
+  type: MM:ARRAY
+  offset: 0x009690
+  symbol: object_an1Vtx_009690
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_0099C0:
+  type: MM:ARRAY
+  offset: 0x0099C0
+  symbol: object_an1Vtx_0099C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009A40:
+  type: MM:ARRAY
+  offset: 0x009A40
+  symbol: object_an1Vtx_009A40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009A70:
+  type: MM:ARRAY
+  offset: 0x009A70
+  symbol: object_an1Vtx_009A70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_009AA0:
+  type: MM:ARRAY
+  offset: 0x009AA0
+  symbol: object_an1Vtx_009AA0
+  count: 245
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00A9F0:
+  type: MM:ARRAY
+  offset: 0x00A9F0
+  symbol: object_an1Vtx_00A9F0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00AC60:
+  type: MM:ARRAY
+  offset: 0x00AC60
+  symbol: object_an1Vtx_00AC60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00ADE0:
+  type: MM:ARRAY
+  offset: 0x00ADE0
+  symbol: object_an1Vtx_00ADE0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00AFA0:
+  type: MM:ARRAY
+  offset: 0x00AFA0
+  symbol: object_an1Vtx_00AFA0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00B210:
+  type: MM:ARRAY
+  offset: 0x00B210
+  symbol: object_an1Vtx_00B210
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00B390:
+  type: MM:ARRAY
+  offset: 0x00B390
+  symbol: object_an1Vtx_00B390
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_00B550:
+  type: MM:ARRAY
+  offset: 0x00B550
+  symbol: object_an1Vtx_00B550
+  count: 109
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_an1Vtx_0107A0:
+  type: MM:ARRAY
+  offset: 0x0107A0
+  symbol: object_an1Vtx_0107A0
+  count: 164
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAnju1UnusedTexAnimTexScrollParams_0123A8:
+  type: BLOB
+  offset: 0x0123A8
+  symbol: gAnju1UnusedTexAnimTexScrollParams_0123A8
+  size: 0
+
+object_an1Vtx_0123B8:
+  type: MM:ARRAY
+  offset: 0x0123B8
+  symbol: object_an1Vtx_0123B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAnju1SkelLimbs:
+  type: BLOB
+  offset: 0x125C8
+  symbol: gAnju1SkelLimbs
+  size: 0

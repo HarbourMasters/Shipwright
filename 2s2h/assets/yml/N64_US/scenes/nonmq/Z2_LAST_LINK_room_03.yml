@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 3, 0x01DC5D70 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01DC5D70 ]
+    - [ 9, 0x01DC5D70 ]
+    - [ 10, 0x01DC5D70 ]
+    - [ 11, 0x01DC5D70 ]
+    - [ 12, 0x01DC5D70 ]
+    - [ 13, 0x01DC5D70 ]
+    - [ 2, 0x01DBAB90 ]
+  directory: scenes/nonmq/Z2_LAST_LINK
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_LAST_LINK.yml
+
+Z2_LAST_LINK_room_03:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_LAST_LINK_room_03
+
+Z2_LAST_LINK_room_03DL_001B20:
+  type: GFX
+  offset: 0x1B20
+  symbol: Z2_LAST_LINK_room_03DL_001B20
+
+
+Z2_LAST_LINK_room_03ActorEntry_000058:
+  type: BLOB
+  offset: 0x000058
+  symbol: Z2_LAST_LINK_room_03ActorEntry_000058
+  size: 0
+
+Z2_LAST_LINK_room_03Vtx_000120:
+  type: MM:ARRAY
+  offset: 0x000120
+  symbol: Z2_LAST_LINK_room_03Vtx_000120
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_03DL_000480:
+  type: GFX
+  offset: 0x000480
+  symbol: Z2_LAST_LINK_room_03DL_000480
+
+Z2_LAST_LINK_room_03Vtx_0006C0:
+  type: MM:ARRAY
+  offset: 0x0006C0
+  symbol: Z2_LAST_LINK_room_03Vtx_0006C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_03DL_0007E0:
+  type: GFX
+  offset: 0x0007E0
+  symbol: Z2_LAST_LINK_room_03DL_0007E0
+
+Z2_LAST_LINK_room_03Vtx_000938:
+  type: MM:ARRAY
+  offset: 0x000938
+  symbol: Z2_LAST_LINK_room_03Vtx_000938
+  count: 140
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_03DL_0011F8:
+  type: GFX
+  offset: 0x0011F8
+  symbol: Z2_LAST_LINK_room_03DL_0011F8
+
+Z2_LAST_LINK_room_03Vtx_001680:
+  type: MM:ARRAY
+  offset: 0x001680
+  symbol: Z2_LAST_LINK_room_03Vtx_001680
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_LAST_LINK_room_03DL_0019E0:
+  type: GFX
+  offset: 0x0019E0
+  symbol: Z2_LAST_LINK_room_03DL_0019E0
+
+Z2_LAST_LINK_room_03Tex_001B48:
+  type: TEXTURE
+  offset: 0x001B48
+  symbol: Z2_LAST_LINK_room_03Tex_001B48
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_LINK_room_03Tex_002348:
+  type: TEXTURE
+  offset: 0x002348
+  symbol: Z2_LAST_LINK_room_03Tex_002348
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_LAST_LINK_room_03Tex_002B48:
+  type: TEXTURE
+  offset: 0x002B48
+  symbol: Z2_LAST_LINK_room_03Tex_002B48
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_LAST_LINK_room_03Tex_003348:
+  type: TEXTURE
+  offset: 0x003348
+  symbol: Z2_LAST_LINK_room_03Tex_003348
+  format: CI8
+  width: 64
+  height: 32

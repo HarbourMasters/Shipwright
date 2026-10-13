@@ -1,0 +1,464 @@
+:config:
+  segments:
+    - [ 3, 0x01E6F210 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01E6F210 ]
+    - [ 9, 0x01E6F210 ]
+    - [ 10, 0x01E6F210 ]
+    - [ 11, 0x01E6F210 ]
+    - [ 12, 0x01E6F210 ]
+    - [ 13, 0x01E6F210 ]
+    - [ 2, 0x01E651E0 ]
+  directory: scenes/nonmq/Z2_ALLEY
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_ALLEY.yml
+
+Z2_ALLEY_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_ALLEY_room_00
+
+Z2_ALLEY_room_00DL_007390:
+  type: GFX
+  offset: 0x7390
+  symbol: Z2_ALLEY_room_00DL_007390
+
+Z2_ALLEY_room_00DL_008CC0:
+  type: GFX
+  offset: 0x8CC0
+  symbol: Z2_ALLEY_room_00DL_008CC0
+
+
+Z2_ALLEY_room_00ActorEntry_00005C:
+  type: BLOB
+  offset: 0x00005C
+  symbol: Z2_ALLEY_room_00ActorEntry_00005C
+  size: 0
+
+Z2_ALLEY_room_00Vtx_000360:
+  type: MM:ARRAY
+  offset: 0x000360
+  symbol: Z2_ALLEY_room_00Vtx_000360
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_000440:
+  type: GFX
+  offset: 0x000440
+  symbol: Z2_ALLEY_room_00DL_000440
+
+Z2_ALLEY_room_00Vtx_000518:
+  type: MM:ARRAY
+  offset: 0x000518
+  symbol: Z2_ALLEY_room_00Vtx_000518
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0005E8:
+  type: GFX
+  offset: 0x0005E8
+  symbol: Z2_ALLEY_room_00DL_0005E8
+
+Z2_ALLEY_room_00Vtx_0006C0:
+  type: MM:ARRAY
+  offset: 0x0006C0
+  symbol: Z2_ALLEY_room_00Vtx_0006C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0007D0:
+  type: GFX
+  offset: 0x0007D0
+  symbol: Z2_ALLEY_room_00DL_0007D0
+
+Z2_ALLEY_room_00Vtx_0008B0:
+  type: MM:ARRAY
+  offset: 0x0008B0
+  symbol: Z2_ALLEY_room_00Vtx_0008B0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0009F0:
+  type: GFX
+  offset: 0x0009F0
+  symbol: Z2_ALLEY_room_00DL_0009F0
+
+Z2_ALLEY_room_00Vtx_000AD8:
+  type: MM:ARRAY
+  offset: 0x000AD8
+  symbol: Z2_ALLEY_room_00Vtx_000AD8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_000BE8:
+  type: GFX
+  offset: 0x000BE8
+  symbol: Z2_ALLEY_room_00DL_000BE8
+
+Z2_ALLEY_room_00DL_000CC8:
+  type: GFX
+  offset: 0x000CC8
+  symbol: Z2_ALLEY_room_00DL_000CC8
+
+Z2_ALLEY_room_00Vtx_000CF0:
+  type: MM:ARRAY
+  offset: 0x000CF0
+  symbol: Z2_ALLEY_room_00Vtx_000CF0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_000E70:
+  type: GFX
+  offset: 0x000E70
+  symbol: Z2_ALLEY_room_00DL_000E70
+
+Z2_ALLEY_room_00DL_000F60:
+  type: GFX
+  offset: 0x000F60
+  symbol: Z2_ALLEY_room_00DL_000F60
+
+Z2_ALLEY_room_00Vtx_000F70:
+  type: MM:ARRAY
+  offset: 0x000F70
+  symbol: Z2_ALLEY_room_00Vtx_000F70
+  count: 192
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_001B70:
+  type: GFX
+  offset: 0x001B70
+  symbol: Z2_ALLEY_room_00DL_001B70
+
+Z2_ALLEY_room_00Vtx_001E58:
+  type: MM:ARRAY
+  offset: 0x001E58
+  symbol: Z2_ALLEY_room_00Vtx_001E58
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_002098:
+  type: GFX
+  offset: 0x002098
+  symbol: Z2_ALLEY_room_00DL_002098
+
+Z2_ALLEY_room_00Vtx_002198:
+  type: MM:ARRAY
+  offset: 0x002198
+  symbol: Z2_ALLEY_room_00Vtx_002198
+  count: 185
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_002D28:
+  type: GFX
+  offset: 0x002D28
+  symbol: Z2_ALLEY_room_00DL_002D28
+
+Z2_ALLEY_room_00Vtx_003090:
+  type: MM:ARRAY
+  offset: 0x003090
+  symbol: Z2_ALLEY_room_00Vtx_003090
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_003A60:
+  type: GFX
+  offset: 0x003A60
+  symbol: Z2_ALLEY_room_00DL_003A60
+
+Z2_ALLEY_room_00Vtx_003E50:
+  type: MM:ARRAY
+  offset: 0x003E50
+  symbol: Z2_ALLEY_room_00Vtx_003E50
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_003FF0:
+  type: GFX
+  offset: 0x003FF0
+  symbol: Z2_ALLEY_room_00DL_003FF0
+
+Z2_ALLEY_room_00Vtx_0040F0:
+  type: MM:ARRAY
+  offset: 0x0040F0
+  symbol: Z2_ALLEY_room_00Vtx_0040F0
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0048E0:
+  type: GFX
+  offset: 0x0048E0
+  symbol: Z2_ALLEY_room_00DL_0048E0
+
+Z2_ALLEY_room_00Vtx_004AE8:
+  type: MM:ARRAY
+  offset: 0x004AE8
+  symbol: Z2_ALLEY_room_00Vtx_004AE8
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_004FA8:
+  type: GFX
+  offset: 0x004FA8
+  symbol: Z2_ALLEY_room_00DL_004FA8
+
+Z2_ALLEY_room_00Vtx_005200:
+  type: MM:ARRAY
+  offset: 0x005200
+  symbol: Z2_ALLEY_room_00Vtx_005200
+  count: 208
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_005F00:
+  type: GFX
+  offset: 0x005F00
+  symbol: Z2_ALLEY_room_00DL_005F00
+
+Z2_ALLEY_room_00Vtx_006180:
+  type: MM:ARRAY
+  offset: 0x006180
+  symbol: Z2_ALLEY_room_00Vtx_006180
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_006300:
+  type: GFX
+  offset: 0x006300
+  symbol: Z2_ALLEY_room_00DL_006300
+
+Z2_ALLEY_room_00Vtx_0063F8:
+  type: MM:ARRAY
+  offset: 0x0063F8
+  symbol: Z2_ALLEY_room_00Vtx_0063F8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0064B8:
+  type: GFX
+  offset: 0x0064B8
+  symbol: Z2_ALLEY_room_00DL_0064B8
+
+Z2_ALLEY_room_00Vtx_006588:
+  type: MM:ARRAY
+  offset: 0x006588
+  symbol: Z2_ALLEY_room_00Vtx_006588
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_006B08:
+  type: GFX
+  offset: 0x006B08
+  symbol: Z2_ALLEY_room_00DL_006B08
+
+Z2_ALLEY_room_00Vtx_006CF0:
+  type: MM:ARRAY
+  offset: 0x006CF0
+  symbol: Z2_ALLEY_room_00Vtx_006CF0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_006DB0:
+  type: GFX
+  offset: 0x006DB0
+  symbol: Z2_ALLEY_room_00DL_006DB0
+
+Z2_ALLEY_room_00Vtx_006E90:
+  type: MM:ARRAY
+  offset: 0x006E90
+  symbol: Z2_ALLEY_room_00Vtx_006E90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_006F50:
+  type: GFX
+  offset: 0x006F50
+  symbol: Z2_ALLEY_room_00DL_006F50
+
+Z2_ALLEY_room_00Vtx_007030:
+  type: MM:ARRAY
+  offset: 0x007030
+  symbol: Z2_ALLEY_room_00Vtx_007030
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_007150:
+  type: GFX
+  offset: 0x007150
+  symbol: Z2_ALLEY_room_00DL_007150
+
+Z2_ALLEY_room_00Vtx_007230:
+  type: MM:ARRAY
+  offset: 0x007230
+  symbol: Z2_ALLEY_room_00Vtx_007230
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0072F0:
+  type: GFX
+  offset: 0x0072F0
+  symbol: Z2_ALLEY_room_00DL_0072F0
+
+Z2_ALLEY_room_00DL_007430:
+  type: GFX
+  offset: 0x007430
+  symbol: Z2_ALLEY_room_00DL_007430
+
+Z2_ALLEY_room_00DL_007438:
+  type: GFX
+  offset: 0x007438
+  symbol: Z2_ALLEY_room_00DL_007438
+
+Z2_ALLEY_room_00DL_007440:
+  type: GFX
+  offset: 0x007440
+  symbol: Z2_ALLEY_room_00DL_007440
+
+Z2_ALLEY_room_00DL_007448:
+  type: GFX
+  offset: 0x007448
+  symbol: Z2_ALLEY_room_00DL_007448
+
+Z2_ALLEY_room_00Vtx_007450:
+  type: MM:ARRAY
+  offset: 0x007450
+  symbol: Z2_ALLEY_room_00Vtx_007450
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_007570:
+  type: GFX
+  offset: 0x007570
+  symbol: Z2_ALLEY_room_00DL_007570
+
+Z2_ALLEY_room_00Vtx_0076C0:
+  type: MM:ARRAY
+  offset: 0x0076C0
+  symbol: Z2_ALLEY_room_00Vtx_0076C0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_007A60:
+  type: GFX
+  offset: 0x007A60
+  symbol: Z2_ALLEY_room_00DL_007A60
+
+Z2_ALLEY_room_00Vtx_007C20:
+  type: MM:ARRAY
+  offset: 0x007C20
+  symbol: Z2_ALLEY_room_00Vtx_007C20
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_007FA0:
+  type: GFX
+  offset: 0x007FA0
+  symbol: Z2_ALLEY_room_00DL_007FA0
+
+Z2_ALLEY_room_00Vtx_0080F0:
+  type: MM:ARRAY
+  offset: 0x0080F0
+  symbol: Z2_ALLEY_room_00Vtx_0080F0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0082D0:
+  type: GFX
+  offset: 0x0082D0
+  symbol: Z2_ALLEY_room_00DL_0082D0
+
+Z2_ALLEY_room_00Vtx_0083D8:
+  type: MM:ARRAY
+  offset: 0x0083D8
+  symbol: Z2_ALLEY_room_00Vtx_0083D8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0085B8:
+  type: GFX
+  offset: 0x0085B8
+  symbol: Z2_ALLEY_room_00DL_0085B8
+
+Z2_ALLEY_room_00Vtx_0086C0:
+  type: MM:ARRAY
+  offset: 0x0086C0
+  symbol: Z2_ALLEY_room_00Vtx_0086C0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_0087F0:
+  type: GFX
+  offset: 0x0087F0
+  symbol: Z2_ALLEY_room_00DL_0087F0
+
+Z2_ALLEY_room_00Vtx_008938:
+  type: MM:ARRAY
+  offset: 0x008938
+  symbol: Z2_ALLEY_room_00Vtx_008938
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_ALLEY_room_00DL_008B58:
+  type: GFX
+  offset: 0x008B58
+  symbol: Z2_ALLEY_room_00DL_008B58
+
+Z2_ALLEY_room_00DL_008C80:
+  type: GFX
+  offset: 0x008C80
+  symbol: Z2_ALLEY_room_00DL_008C80

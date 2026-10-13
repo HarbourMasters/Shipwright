@@ -1,0 +1,30 @@
+#ifndef Z2_MITURIN_BS_Z2_MITURIN_BS_ROOM_00_H
+#define Z2_MITURIN_BS_Z2_MITURIN_BS_ROOM_00_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_MITURIN_BS_room_00DL_000D58 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_000D58"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_000D58[] = dZ2_MITURIN_BS_room_00DL_000D58;
+
+#define dZ2_MITURIN_BS_room_00DL_0014F0 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_0014F0"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_0014F0[] = dZ2_MITURIN_BS_room_00DL_0014F0;
+
+#define dZ2_MITURIN_BS_room_00DL_001B90 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_001B90"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_001B90[] = dZ2_MITURIN_BS_room_00DL_001B90;
+
+#define dZ2_MITURIN_BS_room_00DL_0019F0 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_0019F0"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_0019F0[] = dZ2_MITURIN_BS_room_00DL_0019F0;
+
+#define dZ2_MITURIN_BS_room_00DL_0011A0 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_0011A0"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_0011A0[] = dZ2_MITURIN_BS_room_00DL_0011A0;
+
+#define dZ2_MITURIN_BS_room_00DL_001830 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_001830"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_001830[] = dZ2_MITURIN_BS_room_00DL_001830;
+
+#define dZ2_MITURIN_BS_room_00DL_000660 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_000660"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_000660[] = dZ2_MITURIN_BS_room_00DL_000660;
+
+#define dZ2_MITURIN_BS_room_00DL_001C68 "__OTR__scenes/nonmq/Z2_MITURIN_BS_scene/Z2_MITURIN_BS_room_00DL_001C68"
+static const ALIGN_ASSET(2) char Z2_MITURIN_BS_room_00DL_001C68[] = dZ2_MITURIN_BS_room_00DL_001C68;
+
+#endif // Z2_MITURIN_BS_Z2_MITURIN_BS_ROOM_00_H

@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x00D20210 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80ADDF20, 0x00D20210 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGakufuButtonIndexDL:
+  type: GFX
+  offset: 0x910
+  symbol: gGakufuButtonIndexDL
+
+gGakufuButtonIndexVtx:
+  type: MM:ARRAY
+  offset: 0x8D0
+  symbol: gGakufuButtonIndexVtx
+  count: 4
+  array_type: VTX
+

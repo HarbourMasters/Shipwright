@@ -1,0 +1,267 @@
+:config:
+  segments:
+    - [ 2, 0x01D28200 ]
+    - [ 6, 0x0160C800 ]
+  external_files:
+    - GC_US/misc/scene_texture_04.yml
+
+Z2_17SETUGEN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_17SETUGEN
+
+
+Z2_17SETUGENPathwayList_000290:
+  type: MM:PATH
+  offset: 0x000290
+  symbol: Z2_17SETUGENPathwayList_000290
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 879, 196, 112 ]
+        - [ 624, 195, -28 ]
+        - [ 381, 195, -90 ]
+        - [ -261, 139, -96 ]
+        - [ -551, 139, -7 ]
+        - [ -577, 139, 296 ]
+        - [ -827, 211, 791 ]
+        - [ -1293, 200, 823 ]
+        - [ -1588, 200, 1194 ]
+        - [ -2035, 200, 1293 ]
+        - [ -3061, 236, 939 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1001, 0, -426 ]
+        - [ 848, 0, -580 ]
+        - [ 714, 0, -676 ]
+        - [ 590, 0, -738 ]
+        - [ 385, 0, -813 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -395, 0, 677 ]
+        - [ -294, 0, 696 ]
+        - [ -206, 0, 733 ]
+        - [ -161, 0, 804 ]
+        - [ -167, 0, 892 ]
+        - [ -216, 0, 963 ]
+        - [ -283, 0, 992 ]
+
+Z2_17SETUGENPathwayList_0002D4:
+  type: MM:PATH
+  offset: 0x0002D4
+  symbol: Z2_17SETUGENPathwayList_0002D4
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 879, 196, 112 ]
+        - [ 624, 195, -28 ]
+        - [ 381, 195, -90 ]
+        - [ -261, 139, -96 ]
+        - [ -551, 139, -7 ]
+        - [ -577, 139, 296 ]
+        - [ -827, 211, 791 ]
+        - [ -1293, 200, 823 ]
+        - [ -1588, 200, 1194 ]
+        - [ -2035, 200, 1293 ]
+        - [ -3061, 236, 939 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1001, 0, -426 ]
+        - [ 848, 0, -580 ]
+        - [ 714, 0, -676 ]
+        - [ 590, 0, -738 ]
+        - [ 385, 0, -813 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -395, 0, 677 ]
+        - [ -294, 0, 696 ]
+        - [ -206, 0, 733 ]
+        - [ -161, 0, 804 ]
+        - [ -167, 0, 892 ]
+        - [ -216, 0, 963 ]
+        - [ -283, 0, 992 ]
+
+Z2_17SETUGENPathwayList_0002F4:
+  type: MM:PATH
+  offset: 0x0002F4
+  symbol: Z2_17SETUGENPathwayList_0002F4
+  num_paths: 3
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 879, 196, 112 ]
+        - [ 624, 195, -28 ]
+        - [ 381, 195, -90 ]
+        - [ -261, 139, -96 ]
+        - [ -551, 139, -7 ]
+        - [ -577, 139, 296 ]
+        - [ -827, 211, 791 ]
+        - [ -1293, 200, 823 ]
+        - [ -1588, 200, 1194 ]
+        - [ -2035, 200, 1293 ]
+        - [ -3061, 236, 939 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 1001, 0, -426 ]
+        - [ 848, 0, -580 ]
+        - [ 714, 0, -676 ]
+        - [ 590, 0, -738 ]
+        - [ 385, 0, -813 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -395, 0, 677 ]
+        - [ -294, 0, 696 ]
+        - [ -206, 0, 733 ]
+        - [ -161, 0, 804 ]
+        - [ -167, 0, 892 ]
+        - [ -216, 0, 963 ]
+        - [ -283, 0, 992 ]
+
+Z2_17SETUGENCutsceneData_000338:
+  type: MM:CUTSCENE
+  offset: 0x000338
+  symbol: Z2_17SETUGENCutsceneData_000338
+  size: 4728
+
+Z2_17SETUGENCutsceneData_0015B8:
+  type: MM:CUTSCENE
+  offset: 0x0015B8
+  symbol: Z2_17SETUGENCutsceneData_0015B8
+  size: 4728
+
+Z2_17SETUGENTexAnim_002B20TexScrollParams_002B10:
+  type: BLOB
+  offset: 0x002B10
+  symbol: Z2_17SETUGENTexAnim_002B20TexScrollParams_002B10
+  size: 0
+
+Z2_17SETUGENTexAnim_002B20TexScrollParams_002B18:
+  type: BLOB
+  offset: 0x002B18
+  symbol: Z2_17SETUGENTexAnim_002B20TexScrollParams_002B18
+  size: 0
+
+Z2_17SETUGENTexAnim_002B20:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x002B20
+  symbol: Z2_17SETUGENTexAnim_002B20
+
+Z2_17SETUGENCollisionHeader_005678:
+  type: MM:COLLISION
+  offset: 0x005678
+  symbol: Z2_17SETUGENCollisionHeader_005678
+
+Z2_17SETUGENTex_0056B0:
+  type: TEXTURE
+  offset: 0x0056B0
+  symbol: Z2_17SETUGENTex_0056B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_005EB0:
+  type: TEXTURE
+  offset: 0x005EB0
+  symbol: Z2_17SETUGENTex_005EB0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_17SETUGENTex_0066B0:
+  type: TEXTURE
+  offset: 0x0066B0
+  symbol: Z2_17SETUGENTex_0066B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_006EB0:
+  type: TEXTURE
+  offset: 0x006EB0
+  symbol: Z2_17SETUGENTex_006EB0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_17SETUGENTex_0076B0:
+  type: TEXTURE
+  offset: 0x0076B0
+  symbol: Z2_17SETUGENTex_0076B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_007EB0:
+  type: TEXTURE
+  offset: 0x007EB0
+  symbol: Z2_17SETUGENTex_007EB0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_0082B0:
+  type: TEXTURE
+  offset: 0x0082B0
+  symbol: Z2_17SETUGENTex_0082B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_0086B0:
+  type: TEXTURE
+  offset: 0x0086B0
+  symbol: Z2_17SETUGENTex_0086B0
+  format: IA16
+  width: 32
+  height: 8
+
+Z2_17SETUGENTex_0088B0:
+  type: TEXTURE
+  offset: 0x0088B0
+  symbol: Z2_17SETUGENTex_0088B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_17SETUGENTex_008CB0:
+  type: TEXTURE
+  offset: 0x008CB0
+  symbol: Z2_17SETUGENTex_008CB0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_17SETUGENTex_008DB0:
+  type: TEXTURE
+  offset: 0x008DB0
+  symbol: Z2_17SETUGENTex_008DB0
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_17SETUGENTex_0095B0:
+  type: TEXTURE
+  offset: 0x0095B0
+  symbol: Z2_17SETUGENTex_0095B0
+  format: IA8
+  width: 32
+  height: 32
+
+Z2_17SETUGENTLUT_0099B0:
+  type: TEXTURE
+  offset: 0x0099B0
+  symbol: Z2_17SETUGENTLUT_0099B0
+  format: RGBA16
+  width: 16
+  height: 16

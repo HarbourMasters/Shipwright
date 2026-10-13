@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x00F42E70 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F42E70 ]
+    - [ 9, 0x00F42E70 ]
+    - [ 10, 0x00F42E70 ]
+    - [ 11, 0x00F42E70 ]
+    - [ 12, 0x00F42E70 ]
+    - [ 13, 0x00F42E70 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiNutDL:
+  type: GFX
+  offset: 0xE90
+  symbol: gGiNutDL
+
+gGiNutShellTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGiNutShellTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_gi_nutsVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_gi_nutsVtx_000400
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

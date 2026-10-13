@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 10, 0x00E904F0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E904F0 ]
+    - [ 12, 0x00E904F0 ]
+    - [ 13, 0x00E904F0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gDonGeroMaskBottomTex:
+  type: TEXTURE
+  offset: 0x1588
+  symbol: gDonGeroMaskBottomTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDonGeroMaskDL:
+  type: GFX
+  offset: 0xDC0
+  symbol: gDonGeroMaskDL
+
+gDonGeroMaskEyeTex:
+  type: TEXTURE
+  offset: 0x2C88
+  symbol: gDonGeroMaskEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDonGeroMaskFrillsTex:
+  type: TEXTURE
+  offset: 0x2488
+  symbol: gDonGeroMaskFrillsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDonGeroMaskMouthTex:
+  type: TEXTURE
+  offset: 0x2388
+  symbol: gDonGeroMaskMouthTex
+  format: CI8
+  width: 16
+  height: 16
+
+gDonGeroMaskNostrilTex:
+  type: TEXTURE
+  offset: 0x1F88
+  symbol: gDonGeroMaskNostrilTex
+  format: CI8
+  width: 32
+  height: 32
+
+gDonGeroMaskTLUT:
+  type: TEXTURE
+  offset: 0x1388
+  symbol: gDonGeroMaskTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDonGeroMaskToesTex:
+  type: TEXTURE
+  offset: 0x1688
+  symbol: gDonGeroMaskToesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDonGeroMaskTopTex:
+  type: TEXTURE
+  offset: 0x1E88
+  symbol: gDonGeroMaskTopTex
+  format: CI8
+  width: 16
+  height: 16
+
+
+object_mask_geroVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_geroVtx_000000
+  count: 220
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

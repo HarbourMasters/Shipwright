@@ -1,0 +1,469 @@
+:config:
+  segments:
+    - [ 128, 0x00967350 ]
+  compression: CMPDMA
+
+gMapIStatic00Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMapIStatic00Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapIStatic01Tex:
+  type: TEXTURE
+  offset: 0xFF0
+  symbol: gMapIStatic01Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapIStatic02Tex:
+  type: TEXTURE
+  offset: 0x1FE0
+  symbol: gMapIStatic02Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapIStatic03Tex:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: gMapIStatic03Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapIStatic04Tex:
+  type: TEXTURE
+  offset: 0x3FC0
+  symbol: gMapIStatic04Tex
+  format: I4
+  width: 96
+  height: 85
+
+gMapIStatic05Tex:
+  type: TEXTURE
+  offset: 0x4FB0
+  symbol: gMapIStatic05Tex
+  format: I4
+  width: 32
+  height: 29
+
+gMapIStatic06Tex:
+  type: TEXTURE
+  offset: 0x5180
+  symbol: gMapIStatic06Tex
+  format: I4
+  width: 32
+  height: 27
+
+gMapIStatic07Tex:
+  type: TEXTURE
+  offset: 0x5330
+  symbol: gMapIStatic07Tex
+  format: I4
+  width: 32
+  height: 30
+
+gMapIStatic08Tex:
+  type: TEXTURE
+  offset: 0x5510
+  symbol: gMapIStatic08Tex
+  format: I4
+  width: 16
+  height: 32
+
+gMapIStatic09Tex:
+  type: TEXTURE
+  offset: 0x5610
+  symbol: gMapIStatic09Tex
+  format: I4
+  width: 16
+  height: 12
+
+gMapIStatic0ATex:
+  type: TEXTURE
+  offset: 0x5670
+  symbol: gMapIStatic0ATex
+  format: I4
+  width: 32
+  height: 27
+
+gMapIStatic0BTex:
+  type: TEXTURE
+  offset: 0x5820
+  symbol: gMapIStatic0BTex
+  format: I4
+  width: 16
+  height: 14
+
+gMapIStatic0CTex:
+  type: TEXTURE
+  offset: 0x5890
+  symbol: gMapIStatic0CTex
+  format: I4
+  width: 32
+  height: 19
+
+gMapIStatic0DTex:
+  type: TEXTURE
+  offset: 0x59C0
+  symbol: gMapIStatic0DTex
+  format: I4
+  width: 32
+  height: 26
+
+gMapIStatic0ETex:
+  type: TEXTURE
+  offset: 0x5B60
+  symbol: gMapIStatic0ETex
+  format: I4
+  width: 16
+  height: 32
+
+gMapIStatic0FTex:
+  type: TEXTURE
+  offset: 0x5C60
+  symbol: gMapIStatic0FTex
+  format: I4
+  width: 32
+  height: 27
+
+gMapIStatic10Tex:
+  type: TEXTURE
+  offset: 0x5E10
+  symbol: gMapIStatic10Tex
+  format: I4
+  width: 16
+  height: 35
+
+gMapIStatic11Tex:
+  type: TEXTURE
+  offset: 0x5F30
+  symbol: gMapIStatic11Tex
+  format: I4
+  width: 32
+  height: 18
+
+gMapIStatic12Tex:
+  type: TEXTURE
+  offset: 0x6050
+  symbol: gMapIStatic12Tex
+  format: I4
+  width: 32
+  height: 38
+
+gMapIStatic13Tex:
+  type: TEXTURE
+  offset: 0x62B0
+  symbol: gMapIStatic13Tex
+  format: I4
+  width: 32
+  height: 21
+
+gMapIStatic14Tex:
+  type: TEXTURE
+  offset: 0x6400
+  symbol: gMapIStatic14Tex
+  format: I4
+  width: 32
+  height: 34
+
+gMapIStatic15Tex:
+  type: TEXTURE
+  offset: 0x6620
+  symbol: gMapIStatic15Tex
+  format: I4
+  width: 48
+  height: 32
+
+gMapIStatic16Tex:
+  type: TEXTURE
+  offset: 0x6920
+  symbol: gMapIStatic16Tex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic17Tex:
+  type: TEXTURE
+  offset: 0x6A30
+  symbol: gMapIStatic17Tex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic18Tex:
+  type: TEXTURE
+  offset: 0x6B40
+  symbol: gMapIStatic18Tex
+  format: I4
+  width: 32
+  height: 21
+
+gMapIStatic19Tex:
+  type: TEXTURE
+  offset: 0x6C90
+  symbol: gMapIStatic19Tex
+  format: I4
+  width: 32
+  height: 18
+
+gMapIStatic1ATex:
+  type: TEXTURE
+  offset: 0x6DB0
+  symbol: gMapIStatic1ATex
+  format: I4
+  width: 16
+  height: 24
+
+gMapIStatic1BTex:
+  type: TEXTURE
+  offset: 0x6E70
+  symbol: gMapIStatic1BTex
+  format: I4
+  width: 16
+  height: 25
+
+gMapIStatic1CTex:
+  type: TEXTURE
+  offset: 0x6F40
+  symbol: gMapIStatic1CTex
+  format: I4
+  width: 32
+  height: 35
+
+gMapIStatic1DTex:
+  type: TEXTURE
+  offset: 0x7170
+  symbol: gMapIStatic1DTex
+  format: I4
+  width: 16
+  height: 19
+
+gMapIStatic1ETex:
+  type: TEXTURE
+  offset: 0x7210
+  symbol: gMapIStatic1ETex
+  format: I4
+  width: 32
+  height: 28
+
+gMapIStatic1FTex:
+  type: TEXTURE
+  offset: 0x73D0
+  symbol: gMapIStatic1FTex
+  format: I4
+  width: 32
+  height: 16
+
+gMapIStatic20Tex:
+  type: TEXTURE
+  offset: 0x74D0
+  symbol: gMapIStatic20Tex
+  format: I4
+  width: 32
+  height: 24
+
+gMapIStatic21Tex:
+  type: TEXTURE
+  offset: 0x7650
+  symbol: gMapIStatic21Tex
+  format: I4
+  width: 32
+  height: 21
+
+gMapIStatic22Tex:
+  type: TEXTURE
+  offset: 0x77A0
+  symbol: gMapIStatic22Tex
+  format: I4
+  width: 16
+  height: 21
+
+gMapIStatic23Tex:
+  type: TEXTURE
+  offset: 0x7850
+  symbol: gMapIStatic23Tex
+  format: I4
+  width: 16
+  height: 10
+
+gMapIStatic24Tex:
+  type: TEXTURE
+  offset: 0x78A0
+  symbol: gMapIStatic24Tex
+  format: I4
+  width: 16
+  height: 7
+
+gMapIStatic25Tex:
+  type: TEXTURE
+  offset: 0x78E0
+  symbol: gMapIStatic25Tex
+  format: I4
+  width: 32
+  height: 23
+
+gMapIStatic26Tex:
+  type: TEXTURE
+  offset: 0x7A50
+  symbol: gMapIStatic26Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMapIStatic27Tex:
+  type: TEXTURE
+  offset: 0x7AD0
+  symbol: gMapIStatic27Tex
+  format: I4
+  width: 16
+  height: 17
+
+gMapIStatic28Tex:
+  type: TEXTURE
+  offset: 0x7B60
+  symbol: gMapIStatic28Tex
+  format: I4
+  width: 16
+  height: 23
+
+gMapIStatic29Tex:
+  type: TEXTURE
+  offset: 0x7C20
+  symbol: gMapIStatic29Tex
+  format: I4
+  width: 16
+  height: 15
+
+gMapIStatic2ATex:
+  type: TEXTURE
+  offset: 0x7CA0
+  symbol: gMapIStatic2ATex
+  format: I4
+  width: 32
+  height: 15
+
+gMapIStatic2BTex:
+  type: TEXTURE
+  offset: 0x7D90
+  symbol: gMapIStatic2BTex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic2CTex:
+  type: TEXTURE
+  offset: 0x7EA0
+  symbol: gMapIStatic2CTex
+  format: I4
+  width: 32
+  height: 16
+
+gMapIStatic2DTex:
+  type: TEXTURE
+  offset: 0x7FA0
+  symbol: gMapIStatic2DTex
+  format: I4
+  width: 16
+  height: 10
+
+gMapIStatic2ETex:
+  type: TEXTURE
+  offset: 0x7FF0
+  symbol: gMapIStatic2ETex
+  format: I4
+  width: 16
+  height: 17
+
+gMapIStatic2FTex:
+  type: TEXTURE
+  offset: 0x8080
+  symbol: gMapIStatic2FTex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic30Tex:
+  type: TEXTURE
+  offset: 0x8190
+  symbol: gMapIStatic30Tex
+  format: I4
+  width: 16
+  height: 11
+
+gMapIStatic31Tex:
+  type: TEXTURE
+  offset: 0x81F0
+  symbol: gMapIStatic31Tex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic32Tex:
+  type: TEXTURE
+  offset: 0x8300
+  symbol: gMapIStatic32Tex
+  format: I4
+  width: 16
+  height: 12
+
+gMapIStatic33Tex:
+  type: TEXTURE
+  offset: 0x8360
+  symbol: gMapIStatic33Tex
+  format: I4
+  width: 16
+  height: 18
+
+gMapIStatic34Tex:
+  type: TEXTURE
+  offset: 0x83F0
+  symbol: gMapIStatic34Tex
+  format: I4
+  width: 32
+  height: 17
+
+gMapIStatic35Tex:
+  type: TEXTURE
+  offset: 0x8500
+  symbol: gMapIStatic35Tex
+  format: I4
+  width: 32
+  height: 15
+
+gMapIStatic36Tex:
+  type: TEXTURE
+  offset: 0x85F0
+  symbol: gMapIStatic36Tex
+  format: I4
+  width: 16
+  height: 18
+
+gMapIStatic37Tex:
+  type: TEXTURE
+  offset: 0x8680
+  symbol: gMapIStatic37Tex
+  format: I4
+  width: 16
+  height: 16
+
+gMapIStatic38Tex:
+  type: TEXTURE
+  offset: 0x8700
+  symbol: gMapIStatic38Tex
+  format: I4
+  width: 16
+  height: 30
+
+gMapIStatic39Tex:
+  type: TEXTURE
+  offset: 0x87F0
+  symbol: gMapIStatic39Tex
+  format: I4
+  width: 16
+  height: 9
+

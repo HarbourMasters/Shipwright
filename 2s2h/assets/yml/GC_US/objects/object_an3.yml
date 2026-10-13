@@ -1,0 +1,71 @@
+:config:
+  segments:
+    - [ 6, 0x014D12D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014D12D0 ]
+    - [ 9, 0x014D12D0 ]
+    - [ 10, 0x014D12D0 ]
+    - [ 11, 0x014D12D0 ]
+    - [ 12, 0x014D12D0 ]
+    - [ 13, 0x014D12D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gAnju3BroomBaseTex:
+  type: TEXTURE
+  offset: 0x7C8
+  symbol: gAnju3BroomBaseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gAnju3BroomCircleTex:
+  type: TEXTURE
+  offset: 0x4C8
+  symbol: gAnju3BroomCircleTex
+  format: I8
+  width: 16
+  height: 16
+
+gAnju3BroomDL:
+  type: GFX
+  offset: 0x308
+  symbol: gAnju3BroomDL
+
+gAnju3BroomIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x201C
+  symbol: gAnju3BroomIdleAnim
+
+gAnju3BroomSideTex:
+  type: TEXTURE
+  offset: 0x5C8
+  symbol: gAnju3BroomSideTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+gAnju3BroomSweepAnim:
+  type: OOT:ANIMATION
+  offset: 0x12C0
+  symbol: gAnju3BroomSweepAnim
+
+gAnju3BroomWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A4C
+  symbol: gAnju3BroomWalkAnim
+
+gAnju3EmptyDL:
+  type: GFX
+  offset: 0x300
+  symbol: gAnju3EmptyDL
+
+
+object_an3Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_an3Vtx_000000
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

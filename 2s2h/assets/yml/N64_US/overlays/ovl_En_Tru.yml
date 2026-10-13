@@ -1,0 +1,86 @@
+:config:
+  segments:
+    - [ 128, 0x00CD4170 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x80A85620, 0x00CD4170 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+D_80A889D0:
+  type: TEXTURE
+  offset: 0x33B0
+  symbol: D_80A889D0
+  format: I4
+  width: 32
+  height: 64
+
+D_80A88DD0:
+  type: TEXTURE
+  offset: 0x37B0
+  symbol: D_80A88DD0
+  format: I4
+  width: 32
+  height: 32
+
+D_80A88FD0:
+  type: MM:ARRAY
+  offset: 0x39B0
+  symbol: D_80A88FD0
+  count: 3
+  array_type: VTX
+
+D_80A89000:
+  type: GFX
+  offset: 0x39E0
+  symbol: D_80A89000
+
+D_80A890A8:
+  type: GFX
+  offset: 0x3A88
+  symbol: D_80A890A8
+
+D_80A890C8:
+  type: TEXTURE
+  offset: 0x3AA8
+  symbol: D_80A890C8
+  format: I8
+  width: 64
+  height: 64
+
+D_80A8A0C8:
+  type: MM:ARRAY
+  offset: 0x4AA8
+  symbol: D_80A8A0C8
+  count: 4
+  array_type: VTX
+
+D_80A8A108:
+  type: GFX
+  offset: 0x4AE8
+  symbol: D_80A8A108
+
+D_80A8A188:
+  type: TEXTURE
+  offset: 0x4B68
+  symbol: D_80A8A188
+  format: I8
+  width: 64
+  height: 64
+
+D_80A8B188:
+  type: MM:ARRAY
+  offset: 0x5B68
+  symbol: D_80A8B188
+  count: 4
+  array_type: VTX
+
+D_80A8B1C8:
+  type: GFX
+  offset: 0x5BA8
+  symbol: D_80A8B1C8
+
+D_80A8B238:
+  type: GFX
+  offset: 0x5C18
+  symbol: D_80A8B238
+

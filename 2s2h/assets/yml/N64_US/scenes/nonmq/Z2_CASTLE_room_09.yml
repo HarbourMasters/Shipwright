@@ -1,0 +1,81 @@
+:config:
+  segments:
+    - [ 3, 0x0181CC90 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0181CC90 ]
+    - [ 9, 0x0181CC90 ]
+    - [ 10, 0x0181CC90 ]
+    - [ 11, 0x0181CC90 ]
+    - [ 12, 0x0181CC90 ]
+    - [ 13, 0x0181CC90 ]
+    - [ 2, 0x017F25B0 ]
+  directory: scenes/nonmq/Z2_CASTLE
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_CASTLE.yml
+
+Z2_CASTLE_room_09:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_CASTLE_room_09
+
+Z2_CASTLE_room_09DL_000080:
+  type: GFX
+  offset: 0x80
+  symbol: Z2_CASTLE_room_09DL_000080
+
+Z2_CASTLE_room_09DL_000AF0:
+  type: GFX
+  offset: 0xAF0
+  symbol: Z2_CASTLE_room_09DL_000AF0
+
+
+Z2_CASTLE_room_09Vtx_000088:
+  type: MM:ARRAY
+  offset: 0x000088
+  symbol: Z2_CASTLE_room_09Vtx_000088
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_09DL_000248:
+  type: GFX
+  offset: 0x000248
+  symbol: Z2_CASTLE_room_09DL_000248
+
+Z2_CASTLE_room_09Vtx_000338:
+  type: MM:ARRAY
+  offset: 0x000338
+  symbol: Z2_CASTLE_room_09Vtx_000338
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_09DL_0003F8:
+  type: GFX
+  offset: 0x0003F8
+  symbol: Z2_CASTLE_room_09DL_0003F8
+
+Z2_CASTLE_room_09Vtx_0004D0:
+  type: MM:ARRAY
+  offset: 0x0004D0
+  symbol: Z2_CASTLE_room_09Vtx_0004D0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_CASTLE_room_09DL_000850:
+  type: GFX
+  offset: 0x000850
+  symbol: Z2_CASTLE_room_09DL_000850
+
+Z2_CASTLE_room_09Tex_000B10:
+  type: TEXTURE
+  offset: 0x000B10
+  symbol: Z2_CASTLE_room_09Tex_000B10
+  format: CI8
+  width: 16
+  height: 64

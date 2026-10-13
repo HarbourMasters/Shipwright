@@ -1,0 +1,725 @@
+:config:
+  segments:
+    - [ 6, 0x013B7540 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x013B7540 ]
+    - [ 9, 0x013B7540 ]
+    - [ 10, 0x013B7540 ]
+    - [ 11, 0x013B7540 ]
+    - [ 12, 0x013B7540 ]
+    - [ 13, 0x013B7540 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_dai_Anim_000CEC:
+  type: OOT:ANIMATION
+  offset: 0xCEC
+  symbol: object_dai_Anim_000CEC
+
+object_dai_Anim_0010F8:
+  type: OOT:ANIMATION
+  offset: 0x10F8
+  symbol: object_dai_Anim_0010F8
+
+object_dai_Anim_0014BC:
+  type: OOT:ANIMATION
+  offset: 0x14BC
+  symbol: object_dai_Anim_0014BC
+
+object_dai_Anim_001E44:
+  type: OOT:ANIMATION
+  offset: 0x1E44
+  symbol: object_dai_Anim_001E44
+
+object_dai_Anim_002E58:
+  type: OOT:ANIMATION
+  offset: 0x2E58
+  symbol: object_dai_Anim_002E58
+
+object_dai_Anim_003CAC:
+  type: OOT:ANIMATION
+  offset: 0x3CAC
+  symbol: object_dai_Anim_003CAC
+
+object_dai_Anim_0040E0:
+  type: OOT:ANIMATION
+  offset: 0x40E0
+  symbol: object_dai_Anim_0040E0
+
+object_dai_Anim_0048B4:
+  type: OOT:ANIMATION
+  offset: 0x48B4
+  symbol: object_dai_Anim_0048B4
+
+object_dai_Anim_005100:
+  type: OOT:ANIMATION
+  offset: 0x5100
+  symbol: object_dai_Anim_005100
+
+object_dai_Anim_00563C:
+  type: OOT:ANIMATION
+  offset: 0x563C
+  symbol: object_dai_Anim_00563C
+
+object_dai_Anim_006590:
+  type: OOT:ANIMATION
+  offset: 0x6590
+  symbol: object_dai_Anim_006590
+
+object_dai_Anim_0069DC:
+  type: OOT:ANIMATION
+  offset: 0x69DC
+  symbol: object_dai_Anim_0069DC
+
+object_dai_Anim_007354:
+  type: OOT:ANIMATION
+  offset: 0x7354
+  symbol: object_dai_Anim_007354
+
+object_dai_Anim_0079E4:
+  type: OOT:ANIMATION
+  offset: 0x79E4
+  symbol: object_dai_Anim_0079E4
+
+object_dai_DL_000230:
+  type: GFX
+  offset: 0x230
+  symbol: object_dai_DL_000230
+
+object_dai_DL_0002E8:
+  type: GFX
+  offset: 0x2E8
+  symbol: object_dai_DL_0002E8
+
+object_dai_DL_008710:
+  type: GFX
+  offset: 0x8710
+  symbol: object_dai_DL_008710
+
+object_dai_DL_0087B8:
+  type: GFX
+  offset: 0x87B8
+  symbol: object_dai_DL_0087B8
+
+object_dai_DL_0089D8:
+  type: GFX
+  offset: 0x89D8
+  symbol: object_dai_DL_0089D8
+
+object_dai_DL_008B00:
+  type: GFX
+  offset: 0x8B00
+  symbol: object_dai_DL_008B00
+
+object_dai_DL_00C538:
+  type: GFX
+  offset: 0xC538
+  symbol: object_dai_DL_00C538
+
+object_dai_DL_00C5D8:
+  type: GFX
+  offset: 0xC5D8
+  symbol: object_dai_DL_00C5D8
+
+object_dai_DL_00C9B8:
+  type: GFX
+  offset: 0xC9B8
+  symbol: object_dai_DL_00C9B8
+
+object_dai_DL_00D068:
+  type: GFX
+  offset: 0xD068
+  symbol: object_dai_DL_00D068
+
+object_dai_DL_00D400:
+  type: GFX
+  offset: 0xD400
+  symbol: object_dai_DL_00D400
+
+object_dai_DL_00D588:
+  type: GFX
+  offset: 0xD588
+  symbol: object_dai_DL_00D588
+
+object_dai_DL_00D6C0:
+  type: GFX
+  offset: 0xD6C0
+  symbol: object_dai_DL_00D6C0
+
+object_dai_DL_00D948:
+  type: GFX
+  offset: 0xD948
+  symbol: object_dai_DL_00D948
+
+object_dai_DL_00DAD0:
+  type: GFX
+  offset: 0xDAD0
+  symbol: object_dai_DL_00DAD0
+
+object_dai_DL_00DC08:
+  type: GFX
+  offset: 0xDC08
+  symbol: object_dai_DL_00DC08
+
+object_dai_DL_00DE18:
+  type: GFX
+  offset: 0xDE18
+  symbol: object_dai_DL_00DE18
+
+object_dai_DL_00DF78:
+  type: GFX
+  offset: 0xDF78
+  symbol: object_dai_DL_00DF78
+
+object_dai_DL_00E068:
+  type: GFX
+  offset: 0xE068
+  symbol: object_dai_DL_00E068
+
+object_dai_DL_00E1A0:
+  type: GFX
+  offset: 0xE1A0
+  symbol: object_dai_DL_00E1A0
+
+object_dai_DL_00E470:
+  type: GFX
+  offset: 0xE470
+  symbol: object_dai_DL_00E470
+
+object_dai_DL_00E560:
+  type: GFX
+  offset: 0xE560
+  symbol: object_dai_DL_00E560
+
+object_dai_DL_00E698:
+  type: GFX
+  offset: 0xE698
+  symbol: object_dai_DL_00E698
+
+object_dai_Skel_0130D0:
+  type: MM:SKELETON
+  offset: 0x130D0
+  symbol: object_dai_Skel_0130D0
+  limb_type: Standard
+  skel_type: Flex
+
+object_dai_Standardlimb_012FB0:
+  type: OOT:LIMB
+  offset: 0x12FB0
+  symbol: object_dai_Standardlimb_012FB0
+  limb_type: Standard
+
+object_dai_Standardlimb_012FBC:
+  type: OOT:LIMB
+  offset: 0x12FBC
+  symbol: object_dai_Standardlimb_012FBC
+  limb_type: Standard
+
+object_dai_Standardlimb_012FC8:
+  type: OOT:LIMB
+  offset: 0x12FC8
+  symbol: object_dai_Standardlimb_012FC8
+  limb_type: Standard
+
+object_dai_Standardlimb_012FD4:
+  type: OOT:LIMB
+  offset: 0x12FD4
+  symbol: object_dai_Standardlimb_012FD4
+  limb_type: Standard
+
+object_dai_Standardlimb_012FE0:
+  type: OOT:LIMB
+  offset: 0x12FE0
+  symbol: object_dai_Standardlimb_012FE0
+  limb_type: Standard
+
+object_dai_Standardlimb_012FEC:
+  type: OOT:LIMB
+  offset: 0x12FEC
+  symbol: object_dai_Standardlimb_012FEC
+  limb_type: Standard
+
+object_dai_Standardlimb_012FF8:
+  type: OOT:LIMB
+  offset: 0x12FF8
+  symbol: object_dai_Standardlimb_012FF8
+  limb_type: Standard
+
+object_dai_Standardlimb_013004:
+  type: OOT:LIMB
+  offset: 0x13004
+  symbol: object_dai_Standardlimb_013004
+  limb_type: Standard
+
+object_dai_Standardlimb_013010:
+  type: OOT:LIMB
+  offset: 0x13010
+  symbol: object_dai_Standardlimb_013010
+  limb_type: Standard
+
+object_dai_Standardlimb_01301C:
+  type: OOT:LIMB
+  offset: 0x1301C
+  symbol: object_dai_Standardlimb_01301C
+  limb_type: Standard
+
+object_dai_Standardlimb_013028:
+  type: OOT:LIMB
+  offset: 0x13028
+  symbol: object_dai_Standardlimb_013028
+  limb_type: Standard
+
+object_dai_Standardlimb_013034:
+  type: OOT:LIMB
+  offset: 0x13034
+  symbol: object_dai_Standardlimb_013034
+  limb_type: Standard
+
+object_dai_Standardlimb_013040:
+  type: OOT:LIMB
+  offset: 0x13040
+  symbol: object_dai_Standardlimb_013040
+  limb_type: Standard
+
+object_dai_Standardlimb_01304C:
+  type: OOT:LIMB
+  offset: 0x1304C
+  symbol: object_dai_Standardlimb_01304C
+  limb_type: Standard
+
+object_dai_Standardlimb_013058:
+  type: OOT:LIMB
+  offset: 0x13058
+  symbol: object_dai_Standardlimb_013058
+  limb_type: Standard
+
+object_dai_Standardlimb_013064:
+  type: OOT:LIMB
+  offset: 0x13064
+  symbol: object_dai_Standardlimb_013064
+  limb_type: Standard
+
+object_dai_Standardlimb_013070:
+  type: OOT:LIMB
+  offset: 0x13070
+  symbol: object_dai_Standardlimb_013070
+  limb_type: Standard
+
+object_dai_Standardlimb_01307C:
+  type: OOT:LIMB
+  offset: 0x1307C
+  symbol: object_dai_Standardlimb_01307C
+  limb_type: Standard
+
+object_dai_TLUT_008C58:
+  type: TEXTURE
+  offset: 0x8C58
+  symbol: object_dai_TLUT_008C58
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dai_TLUT_00E8F0:
+  type: TEXTURE
+  offset: 0xE8F0
+  symbol: object_dai_TLUT_00E8F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dai_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_dai_Tex_000000
+  format: I4
+  width: 32
+  height: 32
+
+object_dai_Tex_008E58:
+  type: TEXTURE
+  offset: 0x8E58
+  symbol: object_dai_Tex_008E58
+  format: CI8
+  width: 32
+  height: 32
+
+object_dai_Tex_009258:
+  type: TEXTURE
+  offset: 0x9258
+  symbol: object_dai_Tex_009258
+  format: CI8
+  width: 8
+  height: 8
+
+object_dai_Tex_009298:
+  type: TEXTURE
+  offset: 0x9298
+  symbol: object_dai_Tex_009298
+  format: CI8
+  width: 32
+  height: 16
+
+object_dai_Tex_009498:
+  type: TEXTURE
+  offset: 0x9498
+  symbol: object_dai_Tex_009498
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dai_Tex_009698:
+  type: TEXTURE
+  offset: 0x9698
+  symbol: object_dai_Tex_009698
+  format: CI8
+  width: 8
+  height: 8
+
+object_dai_Tex_00EAF0:
+  type: TEXTURE
+  offset: 0xEAF0
+  symbol: object_dai_Tex_00EAF0
+  format: CI8
+  width: 16
+  height: 16
+
+object_dai_Tex_00EBF0:
+  type: TEXTURE
+  offset: 0xEBF0
+  symbol: object_dai_Tex_00EBF0
+  format: CI8
+  width: 16
+  height: 16
+
+object_dai_Tex_00ECF0:
+  type: TEXTURE
+  offset: 0xECF0
+  symbol: object_dai_Tex_00ECF0
+  format: CI8
+  width: 32
+  height: 32
+
+object_dai_Tex_00F0F0:
+  type: TEXTURE
+  offset: 0xF0F0
+  symbol: object_dai_Tex_00F0F0
+  format: CI8
+  width: 32
+  height: 16
+
+object_dai_Tex_00F2F0:
+  type: TEXTURE
+  offset: 0xF2F0
+  symbol: object_dai_Tex_00F2F0
+  format: CI8
+  width: 32
+  height: 32
+
+object_dai_Tex_00F6F0:
+  type: TEXTURE
+  offset: 0xF6F0
+  symbol: object_dai_Tex_00F6F0
+  format: CI8
+  width: 8
+  height: 8
+
+object_dai_Tex_00F730:
+  type: TEXTURE
+  offset: 0xF730
+  symbol: object_dai_Tex_00F730
+  format: CI8
+  width: 8
+  height: 16
+
+object_dai_Tex_00F7B0:
+  type: TEXTURE
+  offset: 0xF7B0
+  symbol: object_dai_Tex_00F7B0
+  format: CI8
+  width: 32
+  height: 64
+
+object_dai_Tex_00FFB0:
+  type: TEXTURE
+  offset: 0xFFB0
+  symbol: object_dai_Tex_00FFB0
+  format: CI8
+  width: 16
+  height: 16
+
+object_dai_Tex_0100B0:
+  type: TEXTURE
+  offset: 0x100B0
+  symbol: object_dai_Tex_0100B0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dai_Tex_010130:
+  type: TEXTURE
+  offset: 0x10130
+  symbol: object_dai_Tex_010130
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dai_Tex_010330:
+  type: TEXTURE
+  offset: 0x10330
+  symbol: object_dai_Tex_010330
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_dai_Tex_0103B0:
+  type: TEXTURE
+  offset: 0x103B0
+  symbol: object_dai_Tex_0103B0
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_dai_Tex_0107B0:
+  type: TEXTURE
+  offset: 0x107B0
+  symbol: object_dai_Tex_0107B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dai_Tex_010FB0:
+  type: TEXTURE
+  offset: 0x10FB0
+  symbol: object_dai_Tex_010FB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dai_Tex_0117B0:
+  type: TEXTURE
+  offset: 0x117B0
+  symbol: object_dai_Tex_0117B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dai_Tex_011FB0:
+  type: TEXTURE
+  offset: 0x11FB0
+  symbol: object_dai_Tex_011FB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_dai_Tex_0127B0:
+  type: TEXTURE
+  offset: 0x127B0
+  symbol: object_dai_Tex_0127B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_daiVtx_000200:
+  type: MM:ARRAY
+  offset: 0x000200
+  symbol: object_daiVtx_000200
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_007A00:
+  type: MM:ARRAY
+  offset: 0x007A00
+  symbol: object_daiVtx_007A00
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_007B50:
+  type: MM:ARRAY
+  offset: 0x007B50
+  symbol: object_daiVtx_007B50
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_0081B0:
+  type: MM:ARRAY
+  offset: 0x0081B0
+  symbol: object_daiVtx_0081B0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_008350:
+  type: MM:ARRAY
+  offset: 0x008350
+  symbol: object_daiVtx_008350
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_0096D8:
+  type: MM:ARRAY
+  offset: 0x0096D8
+  symbol: object_daiVtx_0096D8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_0099E8:
+  type: MM:ARRAY
+  offset: 0x0099E8
+  symbol: object_daiVtx_0099E8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_009C18:
+  type: MM:ARRAY
+  offset: 0x009C18
+  symbol: object_daiVtx_009C18
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_009CB8:
+  type: MM:ARRAY
+  offset: 0x009CB8
+  symbol: object_daiVtx_009CB8
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_009FC8:
+  type: MM:ARRAY
+  offset: 0x009FC8
+  symbol: object_daiVtx_009FC8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00A1F8:
+  type: MM:ARRAY
+  offset: 0x00A1F8
+  symbol: object_daiVtx_00A1F8
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00A298:
+  type: MM:ARRAY
+  offset: 0x00A298
+  symbol: object_daiVtx_00A298
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00A388:
+  type: MM:ARRAY
+  offset: 0x00A388
+  symbol: object_daiVtx_00A388
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00AC78:
+  type: MM:ARRAY
+  offset: 0x00AC78
+  symbol: object_daiVtx_00AC78
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00B308:
+  type: MM:ARRAY
+  offset: 0x00B308
+  symbol: object_daiVtx_00B308
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00B368:
+  type: MM:ARRAY
+  offset: 0x00B368
+  symbol: object_daiVtx_00B368
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00B6C8:
+  type: MM:ARRAY
+  offset: 0x00B6C8
+  symbol: object_daiVtx_00B6C8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00B868:
+  type: MM:ARRAY
+  offset: 0x00B868
+  symbol: object_daiVtx_00B868
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00B9C8:
+  type: MM:ARRAY
+  offset: 0x00B9C8
+  symbol: object_daiVtx_00B9C8
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00BD28:
+  type: MM:ARRAY
+  offset: 0x00BD28
+  symbol: object_daiVtx_00BD28
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00BEC8:
+  type: MM:ARRAY
+  offset: 0x00BEC8
+  symbol: object_daiVtx_00BEC8
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_daiVtx_00C028:
+  type: MM:ARRAY
+  offset: 0x00C028
+  symbol: object_daiVtx_00C028
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dai_Skel_0130D0Limbs:
+  type: BLOB
+  offset: 0x13088
+  symbol: object_dai_Skel_0130D0Limbs
+  size: 0

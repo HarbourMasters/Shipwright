@@ -1,0 +1,831 @@
+:config:
+  segments:
+    - [ 6, 0x0141E3A0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0141E3A0 ]
+    - [ 9, 0x0141E3A0 ]
+    - [ 10, 0x0141E3A0 ]
+    - [ 11, 0x0141E3A0 ]
+    - [ 12, 0x0141E3A0 ]
+    - [ 13, 0x0141E3A0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGoronElderAngryAnim:
+  type: OOT:ANIMATION
+  offset: 0x1436C
+  symbol: gGoronElderAngryAnim
+
+gGoronElderBackTex:
+  type: TEXTURE
+  offset: 0x16E00
+  symbol: gGoronElderBackTex
+  format: CI8
+  width: 32
+  height: 64
+
+gGoronElderBeardRootLimb:
+  type: OOT:LIMB
+  offset: 0x1AED8
+  symbol: gGoronElderBeardRootLimb
+  limb_type: Standard
+
+gGoronElderBrowTex:
+  type: TEXTURE
+  offset: 0x156C0
+  symbol: gGoronElderBrowTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGoronElderCheekTex:
+  type: TEXTURE
+  offset: 0x15680
+  symbol: gGoronElderCheekTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGoronElderChestTex:
+  type: TEXTURE
+  offset: 0x16A00
+  symbol: gGoronElderChestTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGoronElderCradleAnim:
+  type: OOT:ANIMATION
+  offset: 0xA07C
+  symbol: gGoronElderCradleAnim
+
+gGoronElderDepressedAnim:
+  type: OOT:ANIMATION
+  offset: 0x18CE4
+  symbol: gGoronElderDepressedAnim
+
+gGoronElderDrumDL:
+  type: GFX
+  offset: 0xA3B0
+  symbol: gGoronElderDrumDL
+
+gGoronElderDrumIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x129F4
+  symbol: gGoronElderDrumIdleAnim
+
+gGoronElderDrumLimb:
+  type: OOT:LIMB
+  offset: 0x1B200
+  symbol: gGoronElderDrumLimb
+  limb_type: Standard
+
+gGoronElderDrumSidesTex:
+  type: TEXTURE
+  offset: 0xA530
+  symbol: gGoronElderDrumSidesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGoronElderDrumSkel:
+  type: MM:SKELETON
+  offset: 0x1B210
+  symbol: gGoronElderDrumSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gGoronElderDrumTakeOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x1B1E8
+  symbol: gGoronElderDrumTakeOutAnim
+
+gGoronElderDrumTopTex:
+  type: TEXTURE
+  offset: 0xAD30
+  symbol: gGoronElderDrumTopTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGoronElderFingersTex:
+  type: TEXTURE
+  offset: 0x16700
+  symbol: gGoronElderFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGoronElderFootBottomTex:
+  type: TEXTURE
+  offset: 0x147C0
+  symbol: gGoronElderFootBottomTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGoronElderGoronRubyTattooTex:
+  type: TEXTURE
+  offset: 0x16800
+  symbol: gGoronElderGoronRubyTattooTex
+  format: CI8
+  width: 16
+  height: 32
+
+gGoronElderHairBackDL:
+  type: GFX
+  offset: 0x5770
+  symbol: gGoronElderHairBackDL
+
+gGoronElderHairBackLimb:
+  type: OOT:LIMB
+  offset: 0x1AEB4
+  symbol: gGoronElderHairBackLimb
+  limb_type: Standard
+
+gGoronElderHairEndTex:
+  type: TEXTURE
+  offset: 0x15700
+  symbol: gGoronElderHairEndTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronElderHairTex:
+  type: TEXTURE
+  offset: 0x15240
+  symbol: gGoronElderHairTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGoronElderHeadDL:
+  type: GFX
+  offset: 0x4F50
+  symbol: gGoronElderHeadDL
+
+gGoronElderHeadLimb:
+  type: OOT:LIMB
+  offset: 0x1AEC0
+  symbol: gGoronElderHeadLimb
+  limb_type: Standard
+
+gGoronElderHeadShakeAnim:
+  type: OOT:ANIMATION
+  offset: 0xC7A8
+  symbol: gGoronElderHeadShakeAnim
+
+gGoronElderIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x1ADC0
+  symbol: gGoronElderIdleAnim
+
+gGoronElderLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x1AE00
+  symbol: gGoronElderLeftArmRootLimb
+  limb_type: Standard
+
+gGoronElderLeftFingersDL:
+  type: GFX
+  offset: 0x67A8
+  symbol: gGoronElderLeftFingersDL
+
+gGoronElderLeftFingersLimb:
+  type: OOT:LIMB
+  offset: 0x1AE3C
+  symbol: gGoronElderLeftFingersLimb
+  limb_type: Standard
+
+gGoronElderLeftFootDL:
+  type: GFX
+  offset: 0x4928
+  symbol: gGoronElderLeftFootDL
+
+gGoronElderLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x1AF2C
+  symbol: gGoronElderLeftFootLimb
+  limb_type: Standard
+
+gGoronElderLeftForearmDL:
+  type: GFX
+  offset: 0x6678
+  symbol: gGoronElderLeftForearmDL
+
+gGoronElderLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1AE18
+  symbol: gGoronElderLeftForearmLimb
+  limb_type: Standard
+
+gGoronElderLeftHairEndDL:
+  type: GFX
+  offset: 0x5A48
+  symbol: gGoronElderLeftHairEndDL
+
+gGoronElderLeftHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x1AE9C
+  symbol: gGoronElderLeftHairEndLimb
+  limb_type: Standard
+
+gGoronElderLeftHandAndThumbDL:
+  type: GFX
+  offset: 0x68C0
+  symbol: gGoronElderLeftHandAndThumbDL
+
+gGoronElderLeftHandAndThumbLimb:
+  type: OOT:LIMB
+  offset: 0x1AE30
+  symbol: gGoronElderLeftHandAndThumbLimb
+  limb_type: Standard
+
+gGoronElderLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x1AF08
+  symbol: gGoronElderLeftLegRootLimb
+  limb_type: Standard
+
+gGoronElderLeftShinDL:
+  type: GFX
+  offset: 0x4688
+  symbol: gGoronElderLeftShinDL
+
+gGoronElderLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x1AF20
+  symbol: gGoronElderLeftShinLimb
+  limb_type: Standard
+
+gGoronElderLeftShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0x6B08
+  symbol: gGoronElderLeftShoulderAndUpperArmDL
+
+gGoronElderLeftShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1AE0C
+  symbol: gGoronElderLeftShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gGoronElderLeftThighDL:
+  type: GFX
+  offset: 0x4CD0
+  symbol: gGoronElderLeftThighDL
+
+gGoronElderLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x1AF14
+  symbol: gGoronElderLeftThighLimb
+  limb_type: Standard
+
+gGoronElderLeftWristLimb:
+  type: OOT:LIMB
+  offset: 0x1AE24
+  symbol: gGoronElderLeftWristLimb
+  limb_type: Standard
+
+gGoronElderLipTex:
+  type: TEXTURE
+  offset: 0x151C0
+  symbol: gGoronElderLipTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGoronElderLowerBeardDL:
+  type: GFX
+  offset: 0x5440
+  symbol: gGoronElderLowerBeardDL
+
+gGoronElderLowerBeardLimb:
+  type: OOT:LIMB
+  offset: 0x1AEF0
+  symbol: gGoronElderLowerBeardLimb
+  limb_type: Standard
+
+gGoronElderLowerLipDL:
+  type: GFX
+  offset: 0x55A8
+  symbol: gGoronElderLowerLipDL
+
+gGoronElderLowerLipLimb:
+  type: OOT:LIMB
+  offset: 0x1AECC
+  symbol: gGoronElderLowerLipLimb
+  limb_type: Standard
+
+gGoronElderLowerLipTex:
+  type: TEXTURE
+  offset: 0x150C0
+  symbol: gGoronElderLowerLipTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGoronElderLowerTorsoDL:
+  type: GFX
+  offset: 0x6E08
+  symbol: gGoronElderLowerTorsoDL
+
+gGoronElderLowerTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1ADE8
+  symbol: gGoronElderLowerTorsoLimb
+  limb_type: Standard
+
+gGoronElderNeckLimb:
+  type: OOT:LIMB
+  offset: 0x1AE90
+  symbol: gGoronElderNeckLimb
+  limb_type: Standard
+
+gGoronElderNostrilAndBellyButtonTex:
+  type: TEXTURE
+  offset: 0x15640
+  symbol: gGoronElderNostrilAndBellyButtonTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGoronElderPelvisDL:
+  type: GFX
+  offset: 0x3C50
+  symbol: gGoronElderPelvisDL
+
+gGoronElderPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x1AEFC
+  symbol: gGoronElderPelvisLimb
+  limb_type: Standard
+
+gGoronElderPlayingDrumAnim:
+  type: OOT:ANIMATION
+  offset: 0x13DD8
+  symbol: gGoronElderPlayingDrumAnim
+
+gGoronElderRememberingAnim:
+  type: OOT:ANIMATION
+  offset: 0xD630
+  symbol: gGoronElderRememberingAnim
+
+gGoronElderRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x1AE48
+  symbol: gGoronElderRightArmRootLimb
+  limb_type: Standard
+
+gGoronElderRightFingersDL:
+  type: GFX
+  offset: 0x6018
+  symbol: gGoronElderRightFingersDL
+
+gGoronElderRightFingersLimb:
+  type: OOT:LIMB
+  offset: 0x1AE84
+  symbol: gGoronElderRightFingersLimb
+  limb_type: Standard
+
+gGoronElderRightFootDL:
+  type: GFX
+  offset: 0x4068
+  symbol: gGoronElderRightFootDL
+
+gGoronElderRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x1AF5C
+  symbol: gGoronElderRightFootLimb
+  limb_type: Standard
+
+gGoronElderRightForearmDL:
+  type: GFX
+  offset: 0x5EE8
+  symbol: gGoronElderRightForearmDL
+
+gGoronElderRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x1AE60
+  symbol: gGoronElderRightForearmLimb
+  limb_type: Standard
+
+gGoronElderRightHairEndDL:
+  type: GFX
+  offset: 0x5968
+  symbol: gGoronElderRightHairEndDL
+
+gGoronElderRightHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x1AEA8
+  symbol: gGoronElderRightHairEndLimb
+  limb_type: Standard
+
+gGoronElderRightHandAndThumbDL:
+  type: GFX
+  offset: 0x6130
+  symbol: gGoronElderRightHandAndThumbDL
+
+gGoronElderRightHandAndThumbLimb:
+  type: OOT:LIMB
+  offset: 0x1AE78
+  symbol: gGoronElderRightHandAndThumbLimb
+  limb_type: Standard
+
+gGoronElderRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x1AF38
+  symbol: gGoronElderRightLegRootLimb
+  limb_type: Standard
+
+gGoronElderRightShinDL:
+  type: GFX
+  offset: 0x3DC8
+  symbol: gGoronElderRightShinDL
+
+gGoronElderRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x1AF50
+  symbol: gGoronElderRightShinLimb
+  limb_type: Standard
+
+gGoronElderRightShoulderAndUpperArmDL:
+  type: GFX
+  offset: 0x6378
+  symbol: gGoronElderRightShoulderAndUpperArmDL
+
+gGoronElderRightShoulderAndUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1AE54
+  symbol: gGoronElderRightShoulderAndUpperArmLimb
+  limb_type: Standard
+
+gGoronElderRightThighDL:
+  type: GFX
+  offset: 0x4410
+  symbol: gGoronElderRightThighDL
+
+gGoronElderRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x1AF44
+  symbol: gGoronElderRightThighLimb
+  limb_type: Standard
+
+gGoronElderRightWristLimb:
+  type: OOT:LIMB
+  offset: 0x1AE6C
+  symbol: gGoronElderRightWristLimb
+  limb_type: Standard
+
+gGoronElderRootLimb:
+  type: OOT:LIMB
+  offset: 0x1ADD0
+  symbol: gGoronElderRootLimb
+  limb_type: Standard
+
+gGoronElderSkel:
+  type: MM:SKELETON
+  offset: 0x1AFF0
+  symbol: gGoronElderSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGoronElderSkinTex:
+  type: TEXTURE
+  offset: 0x14580
+  symbol: gGoronElderSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gGoronElderSpotsTex:
+  type: TEXTURE
+  offset: 0x14FC0
+  symbol: gGoronElderSpotsTex
+  format: CI8
+  width: 16
+  height: 16
+
+gGoronElderStrongRememberingAnim:
+  type: OOT:ANIMATION
+  offset: 0xFE48
+  symbol: gGoronElderStrongRememberingAnim
+
+gGoronElderSurpriseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xE8FC
+  symbol: gGoronElderSurpriseLoopAnim
+
+gGoronElderSurpriseStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xDB54
+  symbol: gGoronElderSurpriseStartAnim
+
+gGoronElderTLUT:
+  type: TEXTURE
+  offset: 0x14380
+  symbol: gGoronElderTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGoronElderTakeOutDrumAnim:
+  type: OOT:ANIMATION
+  offset: 0x11F50
+  symbol: gGoronElderTakeOutDrumAnim
+
+gGoronElderThinkingAnim:
+  type: OOT:ANIMATION
+  offset: 0x77CC
+  symbol: gGoronElderThinkingAnim
+
+gGoronElderToesTex:
+  type: TEXTURE
+  offset: 0x145C0
+  symbol: gGoronElderToesTex
+  format: CI8
+  width: 32
+  height: 16
+
+gGoronElderUpperBeardDL:
+  type: GFX
+  offset: 0x54F0
+  symbol: gGoronElderUpperBeardDL
+
+gGoronElderUpperBeardLimb:
+  type: OOT:LIMB
+  offset: 0x1AEE4
+  symbol: gGoronElderUpperBeardLimb
+  limb_type: Standard
+
+gGoronElderUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x1ADDC
+  symbol: gGoronElderUpperBodyRootLimb
+  limb_type: Standard
+
+gGoronElderUpperTorsoDL:
+  type: GFX
+  offset: 0x5B28
+  symbol: gGoronElderUpperTorsoDL
+
+gGoronElderUpperTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x1ADF4
+  symbol: gGoronElderUpperTorsoLimb
+  limb_type: Standard
+
+gGoronElderVeinsTex:
+  type: TEXTURE
+  offset: 0x14BC0
+  symbol: gGoronElderVeinsTex
+  format: CI8
+  width: 32
+  height: 32
+
+gGoronElderWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x9440
+  symbol: gGoronElderWalkAnim
+
+gGoronElderWavingAnim:
+  type: OOT:ANIMATION
+  offset: 0xBDD8
+  symbol: gGoronElderWavingAnim
+
+
+object_jgVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_jgVtx_000000
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_000320:
+  type: MM:ARRAY
+  offset: 0x000320
+  symbol: object_jgVtx_000320
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0005F0:
+  type: MM:ARRAY
+  offset: 0x0005F0
+  symbol: object_jgVtx_0005F0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0007E0:
+  type: MM:ARRAY
+  offset: 0x0007E0
+  symbol: object_jgVtx_0007E0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_000B00:
+  type: MM:ARRAY
+  offset: 0x000B00
+  symbol: object_jgVtx_000B00
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_000DD0:
+  type: MM:ARRAY
+  offset: 0x000DD0
+  symbol: object_jgVtx_000DD0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_000FC0:
+  type: MM:ARRAY
+  offset: 0x000FC0
+  symbol: object_jgVtx_000FC0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001100:
+  type: MM:ARRAY
+  offset: 0x001100
+  symbol: object_jgVtx_001100
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001320:
+  type: MM:ARRAY
+  offset: 0x001320
+  symbol: object_jgVtx_001320
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0013A0:
+  type: MM:ARRAY
+  offset: 0x0013A0
+  symbol: object_jgVtx_0013A0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001480:
+  type: MM:ARRAY
+  offset: 0x001480
+  symbol: object_jgVtx_001480
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001BC0:
+  type: MM:ARRAY
+  offset: 0x001BC0
+  symbol: object_jgVtx_001BC0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001C50:
+  type: MM:ARRAY
+  offset: 0x001C50
+  symbol: object_jgVtx_001C50
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_001CE0:
+  type: MM:ARRAY
+  offset: 0x001CE0
+  symbol: object_jgVtx_001CE0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_002030:
+  type: MM:ARRAY
+  offset: 0x002030
+  symbol: object_jgVtx_002030
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_002210:
+  type: MM:ARRAY
+  offset: 0x002210
+  symbol: object_jgVtx_002210
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0024A0:
+  type: MM:ARRAY
+  offset: 0x0024A0
+  symbol: object_jgVtx_0024A0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0026D0:
+  type: MM:ARRAY
+  offset: 0x0026D0
+  symbol: object_jgVtx_0026D0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_0028C0:
+  type: MM:ARRAY
+  offset: 0x0028C0
+  symbol: object_jgVtx_0028C0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_002AA0:
+  type: MM:ARRAY
+  offset: 0x002AA0
+  symbol: object_jgVtx_002AA0
+  count: 41
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_002D30:
+  type: MM:ARRAY
+  offset: 0x002D30
+  symbol: object_jgVtx_002D30
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_002F60:
+  type: MM:ARRAY
+  offset: 0x002F60
+  symbol: object_jgVtx_002F60
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_003150:
+  type: MM:ARRAY
+  offset: 0x003150
+  symbol: object_jgVtx_003150
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_003950:
+  type: MM:ARRAY
+  offset: 0x003950
+  symbol: object_jgVtx_003950
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jgVtx_00A090:
+  type: MM:ARRAY
+  offset: 0x00A090
+  symbol: object_jgVtx_00A090
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGoronElderSkelLimbs:
+  type: BLOB
+  offset: 0x1AF68
+  symbol: gGoronElderSkelLimbs
+  size: 0
+
+gGoronElderDrumSkelLimbs:
+  type: BLOB
+  offset: 0x1B20C
+  symbol: gGoronElderDrumSkelLimbs
+  size: 0

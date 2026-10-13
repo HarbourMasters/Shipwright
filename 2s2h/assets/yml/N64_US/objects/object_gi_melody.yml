@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x00F43F10 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00F43F10 ]
+    - [ 9, 0x00F43F10 ]
+    - [ 10, 0x00F43F10 ]
+    - [ 11, 0x00F43F10 ]
+    - [ 12, 0x00F43F10 ]
+    - [ 13, 0x00F43F10 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiBoleroColorDL:
+  type: GFX
+  offset: 0xA90
+  symbol: gGiBoleroColorDL
+
+gGiMinuetColorDL:
+  type: GFX
+  offset: 0xA80
+  symbol: gGiMinuetColorDL
+
+gGiNocturneColorDL:
+  type: GFX
+  offset: 0xAC0
+  symbol: gGiNocturneColorDL
+
+gGiPreludeColorDL:
+  type: GFX
+  offset: 0xAD0
+  symbol: gGiPreludeColorDL
+
+gGiRequiemColorDL:
+  type: GFX
+  offset: 0xAB0
+  symbol: gGiRequiemColorDL
+
+gGiSerenadeColorDL:
+  type: GFX
+  offset: 0xAA0
+  symbol: gGiSerenadeColorDL
+
+gGiSongNoteDL:
+  type: GFX
+  offset: 0xAE0
+  symbol: gGiSongNoteDL
+
+
+object_gi_melodyVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_melodyVtx_000000
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

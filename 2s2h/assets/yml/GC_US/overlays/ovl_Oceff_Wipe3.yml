@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 128, 0x00C27C00 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x809698C0, 0x00C27C00 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sSariaSongEffectTex:
+  type: TEXTURE
+  offset: 0x430
+  symbol: sSariaSongEffectTex
+  format: I8
+  width: 64
+  height: 64
+
+sSariaSongFrustrumMaterialDL:
+  type: GFX
+  offset: 0x1590
+  symbol: sSariaSongFrustrumMaterialDL
+
+sSariaSongFrustumModelDL:
+  type: GFX
+  offset: 0x1618
+  symbol: sSariaSongFrustumModelDL
+
+sSariaSongFrustumVtx:
+  type: MM:ARRAY
+  offset: 0x1430
+  symbol: sSariaSongFrustumVtx
+  count: 22
+  array_type: VTX
+

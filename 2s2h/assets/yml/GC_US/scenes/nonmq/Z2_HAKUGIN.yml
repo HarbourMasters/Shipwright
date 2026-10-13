@@ -1,0 +1,281 @@
+:config:
+  segments:
+    - [ 2, 0x0182DC00 ]
+
+Z2_HAKUGIN:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_HAKUGIN
+
+
+Z2_HAKUGINPathwayList_000440:
+  type: MM:PATH
+  offset: 0x000440
+  symbol: Z2_HAKUGINPathwayList_000440
+  num_paths: 1
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 846, -600, 378 ]
+        - [ 623, -605, 712 ]
+        - [ 1035, -605, 1041 ]
+        - [ 1244, -605, 664 ]
+
+Z2_HAKUGINCutsceneData_000460:
+  type: MM:CUTSCENE
+  offset: 0x000460
+  symbol: Z2_HAKUGINCutsceneData_000460
+  size: 488
+
+Z2_HAKUGINCutsceneData_000648:
+  type: MM:CUTSCENE
+  offset: 0x000648
+  symbol: Z2_HAKUGINCutsceneData_000648
+  size: 2716
+
+Z2_HAKUGINCutsceneData_0010E8:
+  type: MM:CUTSCENE
+  offset: 0x0010E8
+  symbol: Z2_HAKUGINCutsceneData_0010E8
+  size: 1016
+
+Z2_HAKUGINTexAnim_002118TexScrollParams_002110:
+  type: BLOB
+  offset: 0x002110
+  symbol: Z2_HAKUGINTexAnim_002118TexScrollParams_002110
+  size: 0
+
+Z2_HAKUGINTexAnim_002118:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x002118
+  symbol: Z2_HAKUGINTexAnim_002118
+
+Z2_HAKUGINCollisionHeader_0169A0:
+  type: MM:COLLISION
+  offset: 0x0169A0
+  symbol: Z2_HAKUGINCollisionHeader_0169A0
+
+Z2_HAKUGINTex_0169D0:
+  type: TEXTURE
+  offset: 0x0169D0
+  symbol: Z2_HAKUGINTex_0169D0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_0171D0:
+  type: TEXTURE
+  offset: 0x0171D0
+  symbol: Z2_HAKUGINTex_0171D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_HAKUGINTex_0179D0:
+  type: TEXTURE
+  offset: 0x0179D0
+  symbol: Z2_HAKUGINTex_0179D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_HAKUGINTex_0181D0:
+  type: TEXTURE
+  offset: 0x0181D0
+  symbol: Z2_HAKUGINTex_0181D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_0189D0:
+  type: TEXTURE
+  offset: 0x0189D0
+  symbol: Z2_HAKUGINTex_0189D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_0191D0:
+  type: TEXTURE
+  offset: 0x0191D0
+  symbol: Z2_HAKUGINTex_0191D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_0199D0:
+  type: TEXTURE
+  offset: 0x0199D0
+  symbol: Z2_HAKUGINTex_0199D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_01A1D0:
+  type: TEXTURE
+  offset: 0x01A1D0
+  symbol: Z2_HAKUGINTex_01A1D0
+  format: CI4
+  width: 32
+  height: 32
+
+Z2_HAKUGINTex_01A3D0:
+  type: TEXTURE
+  offset: 0x01A3D0
+  symbol: Z2_HAKUGINTex_01A3D0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTex_01ABD0:
+  type: TEXTURE
+  offset: 0x01ABD0
+  symbol: Z2_HAKUGINTex_01ABD0
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_HAKUGINTLUT_01B3D0:
+  type: TEXTURE
+  offset: 0x01B3D0
+  symbol: Z2_HAKUGINTLUT_01B3D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B3F0:
+  type: TEXTURE
+  offset: 0x01B3F0
+  symbol: Z2_HAKUGINTLUT_01B3F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B410:
+  type: TEXTURE
+  offset: 0x01B410
+  symbol: Z2_HAKUGINTLUT_01B410
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_HAKUGINTLUT_01B610:
+  type: TEXTURE
+  offset: 0x01B610
+  symbol: Z2_HAKUGINTLUT_01B610
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B630:
+  type: TEXTURE
+  offset: 0x01B630
+  symbol: Z2_HAKUGINTLUT_01B630
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B650:
+  type: TEXTURE
+  offset: 0x01B650
+  symbol: Z2_HAKUGINTLUT_01B650
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B670:
+  type: TEXTURE
+  offset: 0x01B670
+  symbol: Z2_HAKUGINTLUT_01B670
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B690:
+  type: TEXTURE
+  offset: 0x01B690
+  symbol: Z2_HAKUGINTLUT_01B690
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B6B0:
+  type: TEXTURE
+  offset: 0x01B6B0
+  symbol: Z2_HAKUGINTLUT_01B6B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B6D0:
+  type: TEXTURE
+  offset: 0x01B6D0
+  symbol: Z2_HAKUGINTLUT_01B6D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_HAKUGINTLUT_01B8D0:
+  type: TEXTURE
+  offset: 0x01B8D0
+  symbol: Z2_HAKUGINTLUT_01B8D0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B8F0:
+  type: TEXTURE
+  offset: 0x01B8F0
+  symbol: Z2_HAKUGINTLUT_01B8F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B910:
+  type: TEXTURE
+  offset: 0x01B910
+  symbol: Z2_HAKUGINTLUT_01B910
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B930:
+  type: TEXTURE
+  offset: 0x01B930
+  symbol: Z2_HAKUGINTLUT_01B930
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B950:
+  type: TEXTURE
+  offset: 0x01B950
+  symbol: Z2_HAKUGINTLUT_01B950
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B970:
+  type: TEXTURE
+  offset: 0x01B970
+  symbol: Z2_HAKUGINTLUT_01B970
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B990:
+  type: TEXTURE
+  offset: 0x01B990
+  symbol: Z2_HAKUGINTLUT_01B990
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_HAKUGINTLUT_01B9B0:
+  type: TEXTURE
+  offset: 0x01B9B0
+  symbol: Z2_HAKUGINTLUT_01B9B0
+  format: RGBA16
+  width: 4
+  height: 4

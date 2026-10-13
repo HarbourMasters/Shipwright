@@ -1,0 +1,93 @@
+:config:
+  segments:
+    - [ 6, 0x01181BF0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01181BF0 ]
+    - [ 9, 0x01181BF0 ]
+    - [ 10, 0x01181BF0 ]
+    - [ 11, 0x01181BF0 ]
+    - [ 12, 0x01181BF0 ]
+    - [ 13, 0x01181BF0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_flowerpot_DL_0012E0:
+  type: GFX
+  offset: 0x12E0
+  symbol: object_flowerpot_DL_0012E0
+
+object_flowerpot_DL_001408:
+  type: GFX
+  offset: 0x1408
+  symbol: object_flowerpot_DL_001408
+
+object_flowerpot_DL_0014F0:
+  type: GFX
+  offset: 0x14F0
+  symbol: object_flowerpot_DL_0014F0
+
+object_flowerpot_DL_0015B0:
+  type: GFX
+  offset: 0x15B0
+  symbol: object_flowerpot_DL_0015B0
+
+object_flowerpot_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_flowerpot_Tex_000000
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_flowerpot_Tex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: object_flowerpot_Tex_000400
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_flowerpot_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_flowerpot_Tex_000800
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_flowerpotVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_flowerpotVtx_001000
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_flowerpotVtx_0011A0:
+  type: MM:ARRAY
+  offset: 0x0011A0
+  symbol: object_flowerpotVtx_0011A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_flowerpotVtx_0014C0:
+  type: MM:ARRAY
+  offset: 0x0014C0
+  symbol: object_flowerpotVtx_0014C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_flowerpotVtx_001580:
+  type: MM:ARRAY
+  offset: 0x001580
+  symbol: object_flowerpotVtx_001580
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

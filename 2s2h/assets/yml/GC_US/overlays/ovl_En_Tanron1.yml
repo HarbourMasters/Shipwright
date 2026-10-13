@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 128, 0x00D9E6C0 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80B96430, 0x00D9E6C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+ovl_En_Tanron1_DL_001428:
+  type: TEXTURE
+  offset: 0x1428
+  symbol: ovl_En_Tanron1_DL_001428
+  format: RGBA16
+  width: 16
+  height: 32
+
+ovl_En_Tanron1_DL_001888:
+  type: GFX
+  offset: 0x1888
+  symbol: ovl_En_Tanron1_DL_001888
+
+ovl_En_Tanron1_DL_001900:
+  type: GFX
+  offset: 0x1900
+  symbol: ovl_En_Tanron1_DL_001900
+
+
+ovl_En_Tanron1Tex_001028:
+  type: TEXTURE
+  offset: 0x001028
+  symbol: ovl_En_Tanron1Tex_001028
+  format: RGBA16
+  width: 16
+  height: 32
+
+ovl_En_Tanron1Vtx_001828:
+  type: MM:ARRAY
+  offset: 0x001828
+  symbol: ovl_En_Tanron1Vtx_001828
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

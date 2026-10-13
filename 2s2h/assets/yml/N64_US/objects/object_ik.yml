@@ -1,0 +1,754 @@
+:config:
+  segments:
+    - [ 6, 0x00FBC130 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00FBC130 ]
+    - [ 9, 0x00FBC130 ]
+    - [ 10, 0x00FBC130 ]
+    - [ 11, 0x00FBC130 ]
+    - [ 12, 0x00FBC130 ]
+    - [ 13, 0x00FBC130 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gIronKnuckleArmLeftDL:
+  type: GFX
+  offset: 0xF270
+  symbol: gIronKnuckleArmLeftDL
+
+gIronKnuckleArmRightDL:
+  type: GFX
+  offset: 0xF690
+  symbol: gIronKnuckleArmRightDL
+
+gIronKnuckleArmorBackDL:
+  type: GFX
+  offset: 0x9BC8
+  symbol: gIronKnuckleArmorBackDL
+
+gIronKnuckleArmorEmblemTex:
+  type: TEXTURE
+  offset: 0x11DA0
+  symbol: gIronKnuckleArmorEmblemTex
+  format: IA16
+  width: 32
+  height: 32
+
+gIronKnuckleArmorFrontDL:
+  type: GFX
+  offset: 0x9A40
+  symbol: gIronKnuckleArmorFrontDL
+
+gIronKnuckleArmorRivet2Tex:
+  type: TEXTURE
+  offset: 0x12EA0
+  symbol: gIronKnuckleArmorRivet2Tex
+  format: IA8
+  width: 16
+  height: 16
+
+gIronKnuckleArmorTLUT:
+  type: TEXTURE
+  offset: 0x12FA0
+  symbol: gIronKnuckleArmorTLUT
+  format: RGBA16
+  width: 120
+  height: 1
+
+gIronKnuckleAxeDL:
+  type: GFX
+  offset: 0x9D20
+  symbol: gIronKnuckleAxeDL
+
+gIronKnuckleAxeLimb:
+  type: OOT:LIMB
+  offset: 0x13590
+  symbol: gIronKnuckleAxeLimb
+  limb_type: Standard
+
+gIronKnuckleAxePomelJewel1Tex:
+  type: TEXTURE
+  offset: 0x10F30
+  symbol: gIronKnuckleAxePomelJewel1Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleAxeRootLimb:
+  type: OOT:LIMB
+  offset: 0x13584
+  symbol: gIronKnuckleAxeRootLimb
+  limb_type: Standard
+
+gIronKnuckleAxeTLUT:
+  type: TEXTURE
+  offset: 0x11030
+  symbol: gIronKnuckleAxeTLUT
+  format: RGBA16
+  width: 183
+  height: 1
+
+gIronKnuckleBackHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x367C
+  symbol: gIronKnuckleBackHitAnim
+
+gIronKnuckleBasMarkingDL:
+  type: GFX
+  offset: 0xBF80
+  symbol: gIronKnuckleBasMarkingDL
+
+gIronKnuckleBlackArmorMaterialDL:
+  type: GFX
+  offset: 0xD080
+  symbol: gIronKnuckleBlackArmorMaterialDL
+
+gIronKnuckleBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x391C
+  symbol: gIronKnuckleBlockAnim
+
+gIronKnuckleBlockPatternTex:
+  type: TEXTURE
+  offset: 0x119A0
+  symbol: gIronKnuckleBlockPatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIronKnuckleBootTipLeftDL:
+  type: GFX
+  offset: 0xFD68
+  symbol: gIronKnuckleBootTipLeftDL
+
+gIronKnuckleBootTipRightDL:
+  type: GFX
+  offset: 0x104A0
+  symbol: gIronKnuckleBootTipRightDL
+
+gIronKnuckleBronzeArmorMaterialDL:
+  type: GFX
+  offset: 0xD050
+  symbol: gIronKnuckleBronzeArmorMaterialDL
+
+gIronKnuckleBrownArmorMaterialDL:
+  type: GFX
+  offset: 0xD098
+  symbol: gIronKnuckleBrownArmorMaterialDL
+
+gIronKnuckleChainMailTLUT:
+  type: TEXTURE
+  offset: 0x10A30
+  symbol: gIronKnuckleChainMailTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIronKnuckleChainMailTex:
+  type: TEXTURE
+  offset: 0x11BA0
+  symbol: gIronKnuckleChainMailTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIronKnuckleChestArmorBackLimb:
+  type: OOT:LIMB
+  offset: 0x13608
+  symbol: gIronKnuckleChestArmorBackLimb
+  limb_type: Standard
+
+gIronKnuckleChestArmorFrontLimb:
+  type: OOT:LIMB
+  offset: 0x135FC
+  symbol: gIronKnuckleChestArmorFrontLimb
+  limb_type: Standard
+
+gIronKnuckleChestJewelTex:
+  type: TEXTURE
+  offset: 0x12DA0
+  symbol: gIronKnuckleChestJewelTex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x4A04
+  symbol: gIronKnuckleDeathAnim
+
+gIronKnuckleEarTex:
+  type: TEXTURE
+  offset: 0x132D0
+  symbol: gIronKnuckleEarTex
+  format: CI8
+  width: 8
+  height: 16
+
+gIronKnuckleEndHorizontalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E7C
+  symbol: gIronKnuckleEndHorizontalAttackAnim
+
+gIronKnuckleEndVerticalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x1ABC
+  symbol: gIronKnuckleEndVerticalAttackAnim
+
+gIronKnuckleFireTex:
+  type: TEXTURE
+  offset: 0x111A0
+  symbol: gIronKnuckleFireTex
+  format: I4
+  width: 32
+  height: 64
+
+gIronKnuckleFireTex_Overflow:
+  type: TEXTURE
+  offset: 0x1119F
+  symbol: gIronKnuckleFireTex_Overflow
+  format: I8
+  width: 32
+  height: 64
+
+gIronKnuckleForeheadDecal1Tex:
+  type: TEXTURE
+  offset: 0x13350
+  symbol: gIronKnuckleForeheadDecal1Tex
+  format: CI8
+  width: 8
+  height: 16
+
+gIronKnuckleForeheadDecal2Tex:
+  type: TEXTURE
+  offset: 0x133D0
+  symbol: gIronKnuckleForeheadDecal2Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleForeheadJewelTex:
+  type: TEXTURE
+  offset: 0x13090
+  symbol: gIronKnuckleForeheadJewelTex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleFrontHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x5254
+  symbol: gIronKnuckleFrontHitAnim
+
+gIronKnuckleFrontTorsoArmorMarkingDL:
+  type: GFX
+  offset: 0xA5D8
+  symbol: gIronKnuckleFrontTorsoArmorMarkingDL
+
+gIronKnuckleGerudoEyeTex:
+  type: TEXTURE
+  offset: 0x125A0
+  symbol: gIronKnuckleGerudoEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gIronKnuckleGerudoHeadDL:
+  type: GFX
+  offset: 0xC200
+  symbol: gIronKnuckleGerudoHeadDL
+
+gIronKnuckleGerudoSkinTex:
+  type: TEXTURE
+  offset: 0x13190
+  symbol: gIronKnuckleGerudoSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gIronKnuckleGoldArmorMaterialDL:
+  type: GFX
+  offset: 0xD0C8
+  symbol: gIronKnuckleGoldArmorMaterialDL
+
+gIronKnuckleHair1Tex:
+  type: TEXTURE
+  offset: 0x10E30
+  symbol: gIronKnuckleHair1Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleHair2Tex:
+  type: TEXTURE
+  offset: 0x131D0
+  symbol: gIronKnuckleHair2Tex
+  format: CI8
+  width: 16
+  height: 16
+
+gIronKnuckleHandDL:
+  type: GFX
+  offset: 0xF818
+  symbol: gIronKnuckleHandDL
+
+gIronKnuckleHeadLimb:
+  type: OOT:LIMB
+  offset: 0x13560
+  symbol: gIronKnuckleHeadLimb
+  limb_type: Standard
+
+gIronKnuckleHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x13548
+  symbol: gIronKnuckleHeadRootLimb
+  limb_type: Standard
+
+gIronKnuckleHelmetArmorLimb:
+  type: OOT:LIMB
+  offset: 0x13554
+  symbol: gIronKnuckleHelmetArmorLimb
+  limb_type: Standard
+
+gIronKnuckleHelmetMarkingDL:
+  type: GFX
+  offset: 0xCF08
+  symbol: gIronKnuckleHelmetMarkingDL
+
+gIronKnuckleHorizontalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x2484
+  symbol: gIronKnuckleHorizontalAttackAnim
+
+gIronKnuckleLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x13524
+  symbol: gIronKnuckleLeftFootLimb
+  limb_type: Standard
+
+gIronKnuckleLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x135B4
+  symbol: gIronKnuckleLeftForearmLimb
+  limb_type: Standard
+
+gIronKnuckleLeftHandDL:
+  type: GFX
+  offset: 0xA1F0
+  symbol: gIronKnuckleLeftHandDL
+
+gIronKnuckleLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x135C0
+  symbol: gIronKnuckleLeftHandLimb
+  limb_type: Standard
+
+gIronKnuckleLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x13518
+  symbol: gIronKnuckleLeftLegLimb
+  limb_type: Standard
+
+gIronKnuckleLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x135A8
+  symbol: gIronKnuckleLeftUpperArmLimb
+  limb_type: Standard
+
+gIronKnuckleLowerLeftPauldronDL:
+  type: GFX
+  offset: 0xA348
+  symbol: gIronKnuckleLowerLeftPauldronDL
+
+gIronKnuckleLowerLeftPauldronLimb:
+  type: OOT:LIMB
+  offset: 0x135D8
+  symbol: gIronKnuckleLowerLeftPauldronLimb
+  limb_type: Standard
+
+gIronKnuckleLowerRightPauldronDL:
+  type: GFX
+  offset: 0xA130
+  symbol: gIronKnuckleLowerRightPauldronDL
+
+gIronKnuckleLowerRightPauldronLimb:
+  type: OOT:LIMB
+  offset: 0x135F0
+  symbol: gIronKnuckleLowerRightPauldronLimb
+  limb_type: Standard
+
+gIronKnucklePauldronLeftDL:
+  type: GFX
+  offset: 0xFC20
+  symbol: gIronKnucklePauldronLeftDL
+
+gIronKnucklePauldronRightDL:
+  type: GFX
+  offset: 0x10358
+  symbol: gIronKnucklePauldronRightDL
+
+gIronKnuckleRearTorsoArmorMarkingDL:
+  type: GFX
+  offset: 0xA6D0
+  symbol: gIronKnuckleRearTorsoArmorMarkingDL
+
+gIronKnuckleRecoverVerticalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x15F8
+  symbol: gIronKnuckleRecoverVerticalAttackAnim
+
+gIronKnuckleRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x13500
+  symbol: gIronKnuckleRightFootLimb
+  limb_type: Standard
+
+gIronKnuckleRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x13578
+  symbol: gIronKnuckleRightForearmLimb
+  limb_type: Standard
+
+gIronKnuckleRightHandDL:
+  type: GFX
+  offset: 0x9FD8
+  symbol: gIronKnuckleRightHandDL
+
+gIronKnuckleRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x1359C
+  symbol: gIronKnuckleRightHandLimb
+  limb_type: Standard
+
+gIronKnuckleRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x134F4
+  symbol: gIronKnuckleRightLegLimb
+  limb_type: Standard
+
+gIronKnuckleRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x1356C
+  symbol: gIronKnuckleRightUpperArmLimb
+  limb_type: Standard
+
+gIronKnuckleRivet1Tex:
+  type: TEXTURE
+  offset: 0x10C30
+  symbol: gIronKnuckleRivet1Tex
+  format: IA16
+  width: 16
+  height: 16
+
+gIronKnuckleRivet2Tex:
+  type: TEXTURE
+  offset: 0x115A0
+  symbol: gIronKnuckleRivet2Tex
+  format: IA8
+  width: 32
+  height: 32
+
+gIronKnuckleRivetsMarking1DL:
+  type: GFX
+  offset: 0xA780
+  symbol: gIronKnuckleRivetsMarking1DL
+
+gIronKnuckleRivetsMarking2DL:
+  type: GFX
+  offset: 0xA820
+  symbol: gIronKnuckleRivetsMarking2DL
+
+gIronKnuckleRootLimb:
+  type: OOT:LIMB
+  offset: 0x134D0
+  symbol: gIronKnuckleRootLimb
+  limb_type: Standard
+
+gIronKnuckleRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x57F4
+  symbol: gIronKnuckleRunAnim
+
+gIronKnuckleSilverArmorMaterialDL:
+  type: GFX
+  offset: 0xD068
+  symbol: gIronKnuckleSilverArmorMaterialDL
+
+gIronKnuckleSkel:
+  type: MM:SKELETON
+  offset: 0x136A0
+  symbol: gIronKnuckleSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gIronKnuckleTanArmorMaterialDL:
+  type: GFX
+  offset: 0xD038
+  symbol: gIronKnuckleTanArmorMaterialDL
+
+gIronKnuckleTassetCenterLimb:
+  type: OOT:LIMB
+  offset: 0x134DC
+  symbol: gIronKnuckleTassetCenterLimb
+  limb_type: Standard
+
+gIronKnuckleTassetLeftLimb:
+  type: OOT:LIMB
+  offset: 0x1350C
+  symbol: gIronKnuckleTassetLeftLimb
+  limb_type: Standard
+
+gIronKnuckleTassetRightLimb:
+  type: OOT:LIMB
+  offset: 0x134E8
+  symbol: gIronKnuckleTassetRightLimb
+  limb_type: Standard
+
+gIronKnuckleTorsoDL:
+  type: GFX
+  offset: 0xEC20
+  symbol: gIronKnuckleTorsoDL
+
+gIronKnuckleTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x13614
+  symbol: gIronKnuckleTorsoLimb
+  limb_type: Standard
+
+gIronKnuckleUnkRootLimb:
+  type: OOT:LIMB
+  offset: 0x1353C
+  symbol: gIronKnuckleUnkRootLimb
+  limb_type: Standard
+
+gIronKnuckleUpperBodyRoot:
+  type: OOT:LIMB
+  offset: 0x13530
+  symbol: gIronKnuckleUpperBodyRoot
+  limb_type: Standard
+
+gIronKnuckleUpperLeftPauldronDL:
+  type: GFX
+  offset: 0xA4F0
+  symbol: gIronKnuckleUpperLeftPauldronDL
+
+gIronKnuckleUpperLeftPauldronLimb:
+  type: OOT:LIMB
+  offset: 0x135CC
+  symbol: gIronKnuckleUpperLeftPauldronLimb
+  limb_type: Standard
+
+gIronKnuckleUpperRightPauldronDL:
+  type: GFX
+  offset: 0xA408
+  symbol: gIronKnuckleUpperRightPauldronDL
+
+gIronKnuckleUpperRightPauldronLimb:
+  type: OOT:LIMB
+  offset: 0x135E4
+  symbol: gIronKnuckleUpperRightPauldronLimb
+  limb_type: Standard
+
+gIronKnuckleVambraceLeftDL:
+  type: GFX
+  offset: 0xEFD8
+  symbol: gIronKnuckleVambraceLeftDL
+
+gIronKnuckleVambraceRightDL:
+  type: GFX
+  offset: 0xF3F8
+  symbol: gIronKnuckleVambraceRightDL
+
+gIronKnuckleVerticalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0xCE8
+  symbol: gIronKnuckleVerticalAttackAnim
+
+gIronKnuckleWaistArmorLeftDL:
+  type: GFX
+  offset: 0xFFA8
+  symbol: gIronKnuckleWaistArmorLeftDL
+
+gIronKnuckleWaistArmorRightDL:
+  type: GFX
+  offset: 0x106E0
+  symbol: gIronKnuckleWaistArmorRightDL
+
+gIronKnuckleWaistDL:
+  type: GFX
+  offset: 0xF8E0
+  symbol: gIronKnuckleWaistDL
+
+gIronKnuckleWaistLimb:
+  type: OOT:LIMB
+  offset: 0x13620
+  symbol: gIronKnuckleWaistLimb
+  limb_type: Standard
+
+gIronKnuckleWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x6294
+  symbol: gIronKnuckleWalkAnim
+
+gIronKnuckleWhiteArmorMaterialDL:
+  type: GFX
+  offset: 0xD0B0
+  symbol: gIronKnuckleWhiteArmorMaterialDL
+
+gObjectIkVtx_0062B0:
+  type: MM:ARRAY
+  offset: 0x62B0
+  symbol: gObjectIkVtx_0062B0
+  count: 889
+  array_type: VTX
+
+
+object_ikVtx_00A8C0:
+  type: MM:ARRAY
+  offset: 0x00A8C0
+  symbol: object_ikVtx_00A8C0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00AF50:
+  type: MM:ARRAY
+  offset: 0x00AF50
+  symbol: object_ikVtx_00AF50
+  count: 208
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00BC50:
+  type: MM:ARRAY
+  offset: 0x00BC50
+  symbol: object_ikVtx_00BC50
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D0E0:
+  type: MM:ARRAY
+  offset: 0x00D0E0
+  symbol: object_ikVtx_00D0E0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D2A0:
+  type: MM:ARRAY
+  offset: 0x00D2A0
+  symbol: object_ikVtx_00D2A0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D390:
+  type: MM:ARRAY
+  offset: 0x00D390
+  symbol: object_ikVtx_00D390
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D5A0:
+  type: MM:ARRAY
+  offset: 0x00D5A0
+  symbol: object_ikVtx_00D5A0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D760:
+  type: MM:ARRAY
+  offset: 0x00D760
+  symbol: object_ikVtx_00D760
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00D850:
+  type: MM:ARRAY
+  offset: 0x00D850
+  symbol: object_ikVtx_00D850
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00DA70:
+  type: MM:ARRAY
+  offset: 0x00DA70
+  symbol: object_ikVtx_00DA70
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00DE50:
+  type: MM:ARRAY
+  offset: 0x00DE50
+  symbol: object_ikVtx_00DE50
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00E060:
+  type: MM:ARRAY
+  offset: 0x00E060
+  symbol: object_ikVtx_00E060
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00E1F0:
+  type: MM:ARRAY
+  offset: 0x00E1F0
+  symbol: object_ikVtx_00E1F0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00E400:
+  type: MM:ARRAY
+  offset: 0x00E400
+  symbol: object_ikVtx_00E400
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00E590:
+  type: MM:ARRAY
+  offset: 0x00E590
+  symbol: object_ikVtx_00E590
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_00EA80:
+  type: MM:ARRAY
+  offset: 0x00EA80
+  symbol: object_ikVtx_00EA80
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIronKnuckleSkelLimbs:
+  type: BLOB
+  offset: 0x1362C
+  symbol: gIronKnuckleSkelLimbs
+  size: 0

@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x0179E730 ]
+    - [ 2, 0x017926E0 ]
+  directory: scenes/nonmq/Z2_OKUJOU
+  external_files:
+    - GC_US/scenes/nonmq/Z2_OKUJOU_room_00.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_OKUJOU.yml
+
+Z2_OKUJOU_room_00Set_0001D0:
+  type: MM:ROOM
+  offset: 0x1D0
+  symbol: Z2_OKUJOU_room_00Set_0001D0
+  base_name: Z2_OKUJOU_room_00

@@ -1,0 +1,270 @@
+:config:
+  segments:
+    - [ 2, 0x018E3230 ]
+    - [ 6, 0x01611E20 ]
+  external_files:
+    - N64_US/misc/scene_texture_05.yml
+
+Z2_SINKAI:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_SINKAI
+
+
+Z2_SINKAIPathwayList_0002EC:
+  type: MM:PATH
+  offset: 0x0002EC
+  symbol: Z2_SINKAIPathwayList_0002EC
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 6586, 800, 700 ]
+        - [ 5908, 800, 1471 ]
+        - [ 4912, 800, 956 ]
+        - [ 4765, 800, 466 ]
+        - [ 4410, 800, 466 ]
+        - [ 4140, 800, 37 ]
+        - [ 4132, 800, -476 ]
+        - [ 4138, 800, 355 ]
+        - [ 4113, 800, 882 ]
+        - [ 3807, 800, 1446 ]
+        - [ 3279, 800, 1458 ]
+        - [ 1851, 800, 3194 ]
+        - [ 12, 800, 3740 ]
+        - [ -1848, 800, 3264 ]
+        - [ -3284, 800, 1920 ]
+        - [ -3704, 800, 2 ]
+        - [ -3270, 800, -1910 ]
+        - [ -1912, 800, -3310 ]
+        - [ 6, 800, -3786 ]
+        - [ 1922, 800, -3324 ]
+        - [ 3127, 800, -1812 ]
+        - [ 3362, 800, -683 ]
+        - [ 3180, 800, -235 ]
+        - [ 3270, 800, 639 ]
+        - [ 3361, 800, -748 ]
+        - [ 3662, 800, -1336 ]
+        - [ 4550, 800, -1348 ]
+        - [ 4838, 800, -944 ]
+        - [ 4850, 800, -331 ]
+        - [ 5018, 800, -735 ]
+        - [ 5300, 800, -919 ]
+        - [ 5815, 800, -1422 ]
+        - [ 6469, 800, -999 ]
+        - [ 6600, 800, -500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 5014, 100, 61 ]
+        - [ 4597, 100, 61 ]
+        - [ 4511, 100, -404 ]
+        - [ 4425, 100, -931 ]
+        - [ 3788, 100, -931 ]
+        - [ 3702, 100, -392 ]
+        - [ 3702, 100, 392 ]
+        - [ 3568, 100, 940 ]
+        - [ 3004, 100, 950 ]
+        - [ 2832, 90, 74 ]
+        - [ 2423, 100, 61 ]
+
+Z2_SINKAIPathwayList_0003B8:
+  type: MM:PATH
+  offset: 0x0003B8
+  symbol: Z2_SINKAIPathwayList_0003B8
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 6586, 800, 700 ]
+        - [ 5908, 800, 1471 ]
+        - [ 4912, 800, 956 ]
+        - [ 4765, 800, 466 ]
+        - [ 4410, 800, 466 ]
+        - [ 4140, 800, 37 ]
+        - [ 4132, 800, -476 ]
+        - [ 4138, 800, 355 ]
+        - [ 4113, 800, 882 ]
+        - [ 3807, 800, 1446 ]
+        - [ 3279, 800, 1458 ]
+        - [ 1851, 800, 3194 ]
+        - [ 12, 800, 3740 ]
+        - [ -1848, 800, 3264 ]
+        - [ -3284, 800, 1920 ]
+        - [ -3704, 800, 2 ]
+        - [ -3270, 800, -1910 ]
+        - [ -1912, 800, -3310 ]
+        - [ 6, 800, -3786 ]
+        - [ 1922, 800, -3324 ]
+        - [ 3127, 800, -1812 ]
+        - [ 3362, 800, -683 ]
+        - [ 3180, 800, -235 ]
+        - [ 3270, 800, 639 ]
+        - [ 3361, 800, -748 ]
+        - [ 3662, 800, -1336 ]
+        - [ 4550, 800, -1348 ]
+        - [ 4838, 800, -944 ]
+        - [ 4850, 800, -331 ]
+        - [ 5018, 800, -735 ]
+        - [ 5300, 800, -919 ]
+        - [ 5815, 800, -1422 ]
+        - [ 6469, 800, -999 ]
+        - [ 6600, 800, -500 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 5014, 100, 61 ]
+        - [ 4597, 100, 61 ]
+        - [ 4511, 100, -404 ]
+        - [ 4425, 100, -931 ]
+        - [ 3788, 100, -931 ]
+        - [ 3702, 100, -392 ]
+        - [ 3702, 100, 392 ]
+        - [ 3568, 100, 940 ]
+        - [ 3004, 100, 950 ]
+        - [ 2832, 90, 74 ]
+        - [ 2423, 100, 61 ]
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000870:
+  type: BLOB
+  offset: 0x000870
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000870
+  size: 0
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000878:
+  type: BLOB
+  offset: 0x000878
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000878
+  size: 0
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000880:
+  type: BLOB
+  offset: 0x000880
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000880
+  size: 0
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000888:
+  type: BLOB
+  offset: 0x000888
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000888
+  size: 0
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000890:
+  type: BLOB
+  offset: 0x000890
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000890
+  size: 0
+
+Z2_SINKAITexAnim_0008A0TexScrollParams_000898:
+  type: BLOB
+  offset: 0x000898
+  symbol: Z2_SINKAITexAnim_0008A0TexScrollParams_000898
+  size: 0
+
+Z2_SINKAITexAnim_0008A0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0008A0
+  symbol: Z2_SINKAITexAnim_0008A0
+
+Z2_SINKAICollisionHeader_003E54:
+  type: MM:COLLISION
+  offset: 0x003E54
+  symbol: Z2_SINKAICollisionHeader_003E54
+
+Z2_SINKAITex_003E80:
+  type: TEXTURE
+  offset: 0x003E80
+  symbol: Z2_SINKAITex_003E80
+  format: I4
+  width: 64
+  height: 64
+
+Z2_SINKAITex_004680:
+  type: TEXTURE
+  offset: 0x004680
+  symbol: Z2_SINKAITex_004680
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SINKAITex_004E80:
+  type: TEXTURE
+  offset: 0x004E80
+  symbol: Z2_SINKAITex_004E80
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_SINKAITex_005680:
+  type: TEXTURE
+  offset: 0x005680
+  symbol: Z2_SINKAITex_005680
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SINKAITex_005E80:
+  type: TEXTURE
+  offset: 0x005E80
+  symbol: Z2_SINKAITex_005E80
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_SINKAITex_006680:
+  type: TEXTURE
+  offset: 0x006680
+  symbol: Z2_SINKAITex_006680
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SINKAITex_006E80:
+  type: TEXTURE
+  offset: 0x006E80
+  symbol: Z2_SINKAITex_006E80
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SINKAITex_007680:
+  type: TEXTURE
+  offset: 0x007680
+  symbol: Z2_SINKAITex_007680
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_SINKAITex_007E80:
+  type: TEXTURE
+  offset: 0x007E80
+  symbol: Z2_SINKAITex_007E80
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_SINKAITex_008680:
+  type: TEXTURE
+  offset: 0x008680
+  symbol: Z2_SINKAITex_008680
+  format: RGBA16
+  width: 16
+  height: 64
+
+Z2_SINKAITLUT_008E80:
+  type: TEXTURE
+  offset: 0x008E80
+  symbol: Z2_SINKAITLUT_008E80
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_SINKAITex_008EA0:
+  type: TEXTURE
+  offset: 0x008EA0
+  symbol: Z2_SINKAITex_008EA0
+  format: IA4
+  width: 32
+  height: 256

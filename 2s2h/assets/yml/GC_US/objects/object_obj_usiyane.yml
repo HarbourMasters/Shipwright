@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 6, 0x01592690 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01592690 ]
+    - [ 9, 0x01592690 ]
+    - [ 10, 0x01592690 ]
+    - [ 11, 0x01592690 ]
+    - [ 12, 0x01592690 ]
+    - [ 13, 0x01592690 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_obj_usiyane_Colheader_0022AC:
+  type: MM:COLLISION
+  offset: 0x22AC
+  symbol: object_obj_usiyane_Colheader_0022AC
+
+object_obj_usiyane_DL_000090:
+  type: GFX
+  offset: 0x90
+  symbol: object_obj_usiyane_DL_000090
+
+object_obj_usiyane_DL_000098:
+  type: GFX
+  offset: 0x98
+  symbol: object_obj_usiyane_DL_000098
+
+object_obj_usiyane_DL_000830:
+  type: GFX
+  offset: 0x830
+  symbol: object_obj_usiyane_DL_000830
+
+object_obj_usiyane_DL_000838:
+  type: GFX
+  offset: 0x838
+  symbol: object_obj_usiyane_DL_000838
+
+object_obj_usiyane_TLUT_0009C8:
+  type: TEXTURE
+  offset: 0x9C8
+  symbol: object_obj_usiyane_TLUT_0009C8
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_obj_usiyane_Tex_000130:
+  type: TEXTURE
+  offset: 0x130
+  symbol: object_obj_usiyane_Tex_000130
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_obj_usiyane_Tex_0009E8:
+  type: TEXTURE
+  offset: 0x9E8
+  symbol: object_obj_usiyane_Tex_0009E8
+  format: CI4
+  width: 64
+  height: 64
+
+object_obj_usiyane_Tex_0011E8:
+  type: TEXTURE
+  offset: 0x11E8
+  symbol: object_obj_usiyane_Tex_0011E8
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_obj_usiyaneVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_obj_usiyaneVtx_000000
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_obj_usiyaneVtx_000530:
+  type: MM:ARRAY
+  offset: 0x000530
+  symbol: object_obj_usiyaneVtx_000530
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,223 @@
+:config:
+  segments:
+    - [ 2, 0x01E76C00 ]
+
+  external_files:
+    - N64_US/scenes/nonmq/SPOT00Set_001310.yml
+    - N64_US/scenes/nonmq/SPOT00Set_0017F0.yml
+    - N64_US/scenes/nonmq/SPOT00Set_002AE0.yml
+    - N64_US/scenes/nonmq/SPOT00Set_0035E0.yml
+    - N64_US/scenes/nonmq/SPOT00Set_004470.yml
+    - N64_US/scenes/nonmq/SPOT00Set_006380.yml
+    - N64_US/scenes/nonmq/SPOT00Set_006DE0.yml
+    - N64_US/scenes/nonmq/SPOT00Set_008570.yml
+    - N64_US/scenes/nonmq/SPOT00Set_0090A0.yml
+    - N64_US/scenes/nonmq/SPOT00Set_00A050.yml
+    - N64_US/scenes/nonmq/SPOT00Set_00B870.yml
+SPOT00:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: SPOT00
+
+
+SPOT00CutsceneData_000120:
+  type: MM:CUTSCENE
+  offset: 0x000120
+  symbol: SPOT00CutsceneData_000120
+  size: 4316
+
+SPOT00TexAnim_001230:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001230
+  symbol: SPOT00TexAnim_001230
+
+SPOT00CollisionHeader_0012E0:
+  type: MM:COLLISION
+  offset: 0x0012E0
+  symbol: SPOT00CollisionHeader_0012E0
+
+SPOT00CutsceneData_001444:
+  type: MM:CUTSCENE
+  offset: 0x001444
+  symbol: SPOT00CutsceneData_001444
+  size: 872
+
+SPOT00CutsceneData_0018F8:
+  type: MM:CUTSCENE
+  offset: 0x0018F8
+  symbol: SPOT00CutsceneData_0018F8
+  size: 4496
+
+SPOT00CutsceneData_002C10:
+  type: MM:CUTSCENE
+  offset: 0x002C10
+  symbol: SPOT00CutsceneData_002C10
+  size: 2424
+
+SPOT00CutsceneData_0036BC:
+  type: MM:CUTSCENE
+  offset: 0x0036BC
+  symbol: SPOT00CutsceneData_0036BC
+  size: 3452
+
+SPOT00CutsceneData_004570:
+  type: MM:CUTSCENE
+  offset: 0x004570
+  symbol: SPOT00CutsceneData_004570
+  size: 3684
+
+SPOT00CutsceneData_0053E0:
+  type: MM:CUTSCENE
+  offset: 0x0053E0
+  symbol: SPOT00CutsceneData_0053E0
+  size: 2520
+
+SPOT00CutsceneData_005DC0:
+  type: MM:CUTSCENE
+  offset: 0x005DC0
+  symbol: SPOT00CutsceneData_005DC0
+  size: 1368
+
+SPOT00CutsceneData_006488:
+  type: MM:CUTSCENE
+  offset: 0x006488
+  symbol: SPOT00CutsceneData_006488
+  size: 2324
+
+SPOT00CutsceneData_006F04:
+  type: MM:CUTSCENE
+  offset: 0x006F04
+  symbol: SPOT00CutsceneData_006F04
+  size: 512
+
+SPOT00CutsceneData_007114:
+  type: MM:CUTSCENE
+  offset: 0x007114
+  symbol: SPOT00CutsceneData_007114
+  size: 1936
+
+SPOT00CutsceneData_0078B4:
+  type: MM:CUTSCENE
+  offset: 0x0078B4
+  symbol: SPOT00CutsceneData_0078B4
+  size: 512
+
+SPOT00CutsceneData_007AC4:
+  type: MM:CUTSCENE
+  offset: 0x007AC4
+  symbol: SPOT00CutsceneData_007AC4
+  size: 1452
+
+SPOT00CutsceneData_008074:
+  type: MM:CUTSCENE
+  offset: 0x008074
+  symbol: SPOT00CutsceneData_008074
+  size: 512
+
+SPOT00CutsceneData_008284:
+  type: MM:CUTSCENE
+  offset: 0x008284
+  symbol: SPOT00CutsceneData_008284
+  size: 560
+
+SPOT00CutsceneData_00864C:
+  type: MM:CUTSCENE
+  offset: 0x00864C
+  symbol: SPOT00CutsceneData_00864C
+  size: 2556
+
+SPOT00CutsceneData_0091A0:
+  type: MM:CUTSCENE
+  offset: 0x0091A0
+  symbol: SPOT00CutsceneData_0091A0
+  size: 672
+
+SPOT00CutsceneData_009450:
+  type: MM:CUTSCENE
+  offset: 0x009450
+  symbol: SPOT00CutsceneData_009450
+  size: 688
+
+SPOT00CutsceneData_009710:
+  type: MM:CUTSCENE
+  offset: 0x009710
+  symbol: SPOT00CutsceneData_009710
+  size: 1160
+
+SPOT00CutsceneData_009BA0:
+  type: MM:CUTSCENE
+  offset: 0x009BA0
+  symbol: SPOT00CutsceneData_009BA0
+  size: 1064
+
+SPOT00CutsceneData_00A1B8:
+  type: MM:CUTSCENE
+  offset: 0x00A1B8
+  symbol: SPOT00CutsceneData_00A1B8
+  size: 3348
+
+SPOT00CutsceneData_00AED8:
+  type: MM:CUTSCENE
+  offset: 0x00AED8
+  symbol: SPOT00CutsceneData_00AED8
+  size: 848
+
+SPOT00CutsceneData_00B238:
+  type: MM:CUTSCENE
+  offset: 0x00B238
+  symbol: SPOT00CutsceneData_00B238
+  size: 1484
+
+SPOT00CutsceneData_00BA08:
+  type: MM:CUTSCENE
+  offset: 0x00BA08
+  symbol: SPOT00CutsceneData_00BA08
+  size: 320
+
+SPOT00CutsceneData_00BB58:
+  type: MM:CUTSCENE
+  offset: 0x00BB58
+  symbol: SPOT00CutsceneData_00BB58
+  size: 320
+
+SPOT00CutsceneData_00BCA8:
+  type: MM:CUTSCENE
+  offset: 0x00BCA8
+  symbol: SPOT00CutsceneData_00BCA8
+  size: 344
+
+SPOT00CutsceneData_00BE08:
+  type: MM:CUTSCENE
+  offset: 0x00BE08
+  symbol: SPOT00CutsceneData_00BE08
+  size: 320
+
+SPOT00CutsceneData_00BF58:
+  type: MM:CUTSCENE
+  offset: 0x00BF58
+  symbol: SPOT00CutsceneData_00BF58
+  size: 320
+
+SPOT00CutsceneData_00C0A8:
+  type: MM:CUTSCENE
+  offset: 0x00C0A8
+  symbol: SPOT00CutsceneData_00C0A8
+  size: 320
+
+SPOT00CutsceneData_00C1F8:
+  type: MM:CUTSCENE
+  offset: 0x00C1F8
+  symbol: SPOT00CutsceneData_00C1F8
+  size: 448
+
+SPOT00CutsceneData_00C3C8:
+  type: MM:CUTSCENE
+  offset: 0x00C3C8
+  symbol: SPOT00CutsceneData_00C3C8
+  size: 344
+
+SPOT00CutsceneData_00C528:
+  type: MM:CUTSCENE
+  offset: 0x00C528
+  symbol: SPOT00CutsceneData_00C528
+  size: 320

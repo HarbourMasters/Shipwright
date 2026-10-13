@@ -1,0 +1,46 @@
+:config:
+  segments:
+    - [ 3, 0x0178BFA0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0178BFA0 ]
+    - [ 9, 0x0178BFA0 ]
+    - [ 10, 0x0178BFA0 ]
+    - [ 11, 0x0178BFA0 ]
+    - [ 12, 0x0178BFA0 ]
+    - [ 13, 0x0178BFA0 ]
+    - [ 2, 0x0176D4A0 ]
+  directory: scenes/nonmq/Z2_INISIE_R
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_INISIE_R.yml
+
+Z2_INISIE_R_room_05:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_INISIE_R_room_05
+
+Z2_INISIE_R_room_05DL_000250:
+  type: GFX
+  offset: 0x250
+  symbol: Z2_INISIE_R_room_05DL_000250
+
+
+Z2_INISIE_R_room_05ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_INISIE_R_room_05ActorEntry_000070
+  size: 0
+
+Z2_INISIE_R_room_05Vtx_0000C0:
+  type: MM:ARRAY
+  offset: 0x0000C0
+  symbol: Z2_INISIE_R_room_05Vtx_0000C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_05DL_000180:
+  type: GFX
+  offset: 0x000180
+  symbol: Z2_INISIE_R_room_05DL_000180

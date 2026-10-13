@@ -1,0 +1,607 @@
+:config:
+  segments:
+    - [ 2, 0x01D7A340 ]
+
+Z2_KONPEKI_ENT:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_KONPEKI_ENT
+
+Z2_KONPEKI_ENTTex_005020:
+  type: TEXTURE
+  offset: 0x5020
+  symbol: Z2_KONPEKI_ENTTex_005020
+  format: RGBA16
+  width: 64
+  height: 64
+
+
+Z2_KONPEKI_ENTPathwayList_00024C:
+  type: MM:PATH
+  offset: 0x00024C
+  symbol: Z2_KONPEKI_ENTPathwayList_00024C
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_000278:
+  type: MM:PATH
+  offset: 0x000278
+  symbol: Z2_KONPEKI_ENTPathwayList_000278
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_000284:
+  type: MM:PATH
+  offset: 0x000284
+  symbol: Z2_KONPEKI_ENTPathwayList_000284
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_0002B0:
+  type: MM:PATH
+  offset: 0x0002B0
+  symbol: Z2_KONPEKI_ENTPathwayList_0002B0
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_0002D4:
+  type: MM:PATH
+  offset: 0x0002D4
+  symbol: Z2_KONPEKI_ENTPathwayList_0002D4
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_0002F8:
+  type: MM:PATH
+  offset: 0x0002F8
+  symbol: Z2_KONPEKI_ENTPathwayList_0002F8
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTPathwayList_000330:
+  type: MM:PATH
+  offset: 0x000330
+  symbol: Z2_KONPEKI_ENTPathwayList_000330
+  num_paths: 7
+  paths:
+    - additional_path_index: 6
+      custom_value: -1
+      points:
+        - [ 5016, 0, 0 ]
+        - [ 2056, 0, 0 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2211, 300, 20 ]
+        - [ 2133, 801, -595 ]
+        - [ 1928, 1515, -1183 ]
+        - [ 1633, 1893, -1827 ]
+        - [ 1123, 2473, -2285 ]
+        - [ -455, 3270, -3260 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2151, 332, -134 ]
+        - [ 2154, 983, -609 ]
+        - [ 1766, 1436, -1360 ]
+        - [ 1593, 2033, -1927 ]
+        - [ 951, 2461, -2422 ]
+        - [ -440, 3597, -3329 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 3128, 439, -55 ]
+        - [ 3114, 439, -62 ]
+        - [ 3103, 439, -68 ]
+        - [ 2238, 620, -616 ]
+        - [ 1989, 1231, -857 ]
+        - [ 1643, 1683, -1569 ]
+        - [ 1339, 2284, -2167 ]
+        - [ 555, 2777, -2600 ]
+        - [ -466, 3401, -3184 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2697, 267, 78 ]
+        - [ 2117, 1093, -740 ]
+        - [ 1754, 1300, -1137 ]
+        - [ 1646, 1803, -1677 ]
+        - [ 1159, 2084, -2175 ]
+        - [ 686, 2690, -2696 ]
+        - [ -436, 3014, -3109 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ 2121, 409, -77 ]
+        - [ 1865, 1431, -1267 ]
+        - [ 1473, 1917, -2026 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2705, -2401 ]
+        - [ 953, 2679, -2541 ]
+        - [ -425, 3461, -3409 ]
+
+Z2_KONPEKI_ENTCutsceneData_000394:
+  type: MM:CUTSCENE
+  offset: 0x000394
+  symbol: Z2_KONPEKI_ENTCutsceneData_000394
+  size: 2516
+
+Z2_KONPEKI_ENTTexAnim_000E38TexScrollParams_000E30:
+  type: BLOB
+  offset: 0x000E30
+  symbol: Z2_KONPEKI_ENTTexAnim_000E38TexScrollParams_000E30
+  size: 0
+
+Z2_KONPEKI_ENTTexAnim_000E38:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000E38
+  symbol: Z2_KONPEKI_ENTTexAnim_000E38
+
+Z2_KONPEKI_ENTCollisionHeader_003454:
+  type: MM:COLLISION
+  offset: 0x003454
+  symbol: Z2_KONPEKI_ENTCollisionHeader_003454
+
+Z2_KONPEKI_ENTTex_003480:
+  type: TEXTURE
+  offset: 0x003480
+  symbol: Z2_KONPEKI_ENTTex_003480
+  format: CI4
+  width: 64
+  height: 64
+
+Z2_KONPEKI_ENTTLUT_003C80:
+  type: TEXTURE
+  offset: 0x003C80
+  symbol: Z2_KONPEKI_ENTTLUT_003C80
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_KONPEKI_ENTTex_003CA0:
+  type: TEXTURE
+  offset: 0x003CA0
+  symbol: Z2_KONPEKI_ENTTex_003CA0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_KONPEKI_ENTTex_0044A0:
+  type: TEXTURE
+  offset: 0x0044A0
+  symbol: Z2_KONPEKI_ENTTex_0044A0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_KONPEKI_ENTTex_004CA0:
+  type: TEXTURE
+  offset: 0x004CA0
+  symbol: Z2_KONPEKI_ENTTex_004CA0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_KONPEKI_ENTTex_004EA0:
+  type: TEXTURE
+  offset: 0x004EA0
+  symbol: Z2_KONPEKI_ENTTex_004EA0
+  format: RGBA16
+  width: 8
+  height: 8
+
+Z2_KONPEKI_ENTTex_004F20:
+  type: TEXTURE
+  offset: 0x004F20
+  symbol: Z2_KONPEKI_ENTTex_004F20
+  format: IA8
+  width: 32
+  height: 8
+
+Z2_KONPEKI_ENTTLUT_007020:
+  type: TEXTURE
+  offset: 0x007020
+  symbol: Z2_KONPEKI_ENTTLUT_007020
+  format: RGBA16
+  width: 16
+  height: 16

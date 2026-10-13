@@ -472,7 +472,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     }
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
-    std::optional<std::future<void>> extractionTask;
+    // Holds whether extraction made an archive
+    std::optional<std::future<bool>> extractionTask;
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
     CheckAndCreateModFolder();
@@ -612,17 +613,20 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     if (std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive)) {
                         std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
-                            extractionTask = threadPool->submit_task([&]() -> void {
-                                extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                  &extractCount, &totalExtract);
+                            extractionTask = threadPool->submit_task([&]() -> bool {
+                                bool ok =
+                                    extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                      &extractCount, &totalExtract);
                                 extractCount = totalExtract = 0;
+                                return ok;
                             });
                         });
                     } else {
-                        extractionTask = threadPool->submit_task([&]() -> void {
-                            extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                              &extractCount, &totalExtract);
+                        extractionTask = threadPool->submit_task([&]() -> bool {
+                            bool ok = extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                        &extractCount, &totalExtract);
                             extractCount = totalExtract = 0;
+                            return ok;
                         });
                     }
                 } else {
@@ -676,13 +680,15 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                             promptStep = PS_FILE_CHECK;
                             continue;
                         }
-                        extractionTask = threadPool->submit_task([&]() -> void {
-                            extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                              &extractCount, &totalExtract);
+                        extractionTask = threadPool->submit_task([&]() -> bool {
+                            bool ok = extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                        &extractCount, &totalExtract);
                             generatedIsMQ = extract.IsMasterQuest();
-                            promptStep = PS_SECOND;
+                            // On failure, ask to generate again rather than say it worked
+                            promptStep = ok ? PS_SECOND : PS_FILE_CHECK;
                             extractCount = 0;
                             totalExtract = 0;
+                            return ok;
                         });
                         continue;
                     }
@@ -694,12 +700,14 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                                                                             : RomSearchMode::MQ)) {
                                     extractStep = ES_VERIFY;
                                 } else {
-                                    extractionTask = threadPool->submit_task([&]() -> void {
-                                        extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                          &extractCount, &totalExtract);
+                                    extractionTask = threadPool->submit_task([&]() -> bool {
+                                        bool ok = extract.CallTorch(installPath,
+                                                                    Ship::Context::GetAppDirectoryPath(appShortName),
+                                                                    &extractCount, &totalExtract);
                                         extractStep = ES_VERIFY;
                                         extractCount = 0;
                                         totalExtract = 0;
+                                        return ok;
                                     });
                                 }
                             },
@@ -717,11 +725,13 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs("oot.o2r", appShortName));
 
                 if (!ootO2RExists) {
+                    // Stay in the loop so the popup shows, the game can't start without a ROM archive
                     SohGui::RegisterPopup("No ROM Archives",
                                           "No ROM O2R files detected. Please generate a ROM O2R and relaunch.", "OK",
                                           "", [&]() { exit(0); });
+                } else {
+                    extractDone = true;
                 }
-                extractDone = true;
                 continue;
             }
             default:
@@ -750,7 +760,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             auto status = extractionTask->wait_for(std::chrono::milliseconds(0));
             if (status == std::future_status::ready) {
                 try {
-                    extractionTask->get();
+                    if (!extractionTask->get()) {
+                        SohGui::RegisterPopup("Extraction Failed",
+                                              "Could not generate a ROM O2R from the ROM.\nSee the log for details.");
+                    }
                 } catch (const std::exception& e) {
                     SohGui::RegisterPopup("Extraction Crashed", e.what(), "Close", "", []() { exit(1); });
                 }

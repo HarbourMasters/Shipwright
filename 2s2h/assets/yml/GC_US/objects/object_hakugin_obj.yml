@@ -1,0 +1,770 @@
+:config:
+  segments:
+    - [ 6, 0x01219690 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01219690 ]
+    - [ 9, 0x01219690 ]
+    - [ 10, 0x01219690 ]
+    - [ 11, 0x01219690 ]
+    - [ 12, 0x01219690 ]
+    - [ 13, 0x01219690 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_hakugin_obj_Colheader_009768:
+  type: MM:COLLISION
+  offset: 0x9768
+  symbol: object_hakugin_obj_Colheader_009768
+
+object_hakugin_obj_Colheader_009AF0:
+  type: MM:COLLISION
+  offset: 0x9AF0
+  symbol: object_hakugin_obj_Colheader_009AF0
+
+object_hakugin_obj_Colheader_00BF40:
+  type: MM:COLLISION
+  offset: 0xBF40
+  symbol: object_hakugin_obj_Colheader_00BF40
+
+object_hakugin_obj_Colheader_00D3B0:
+  type: MM:COLLISION
+  offset: 0xD3B0
+  symbol: object_hakugin_obj_Colheader_00D3B0
+
+object_hakugin_obj_DL_000120:
+  type: GFX
+  offset: 0x120
+  symbol: object_hakugin_obj_DL_000120
+
+object_hakugin_obj_DL_000128:
+  type: GFX
+  offset: 0x128
+  symbol: object_hakugin_obj_DL_000128
+
+object_hakugin_obj_DL_000D30:
+  type: GFX
+  offset: 0xD30
+  symbol: object_hakugin_obj_DL_000D30
+
+object_hakugin_obj_DL_000D38:
+  type: GFX
+  offset: 0xD38
+  symbol: object_hakugin_obj_DL_000D38
+
+object_hakugin_obj_DL_0016D0:
+  type: GFX
+  offset: 0x16D0
+  symbol: object_hakugin_obj_DL_0016D0
+
+object_hakugin_obj_DL_0016D8:
+  type: GFX
+  offset: 0x16D8
+  symbol: object_hakugin_obj_DL_0016D8
+
+object_hakugin_obj_DL_002010:
+  type: GFX
+  offset: 0x2010
+  symbol: object_hakugin_obj_DL_002010
+
+object_hakugin_obj_DL_002018:
+  type: GFX
+  offset: 0x2018
+  symbol: object_hakugin_obj_DL_002018
+
+object_hakugin_obj_DL_002970:
+  type: GFX
+  offset: 0x2970
+  symbol: object_hakugin_obj_DL_002970
+
+object_hakugin_obj_DL_002978:
+  type: GFX
+  offset: 0x2978
+  symbol: object_hakugin_obj_DL_002978
+
+object_hakugin_obj_DL_0035A0:
+  type: GFX
+  offset: 0x35A0
+  symbol: object_hakugin_obj_DL_0035A0
+
+object_hakugin_obj_DL_0035A8:
+  type: GFX
+  offset: 0x35A8
+  symbol: object_hakugin_obj_DL_0035A8
+
+object_hakugin_obj_DL_004920:
+  type: GFX
+  offset: 0x4920
+  symbol: object_hakugin_obj_DL_004920
+
+object_hakugin_obj_DL_004928:
+  type: GFX
+  offset: 0x4928
+  symbol: object_hakugin_obj_DL_004928
+
+object_hakugin_obj_DL_005260:
+  type: GFX
+  offset: 0x5260
+  symbol: object_hakugin_obj_DL_005260
+
+object_hakugin_obj_DL_005268:
+  type: GFX
+  offset: 0x5268
+  symbol: object_hakugin_obj_DL_005268
+
+object_hakugin_obj_DL_006120:
+  type: GFX
+  offset: 0x6120
+  symbol: object_hakugin_obj_DL_006120
+
+object_hakugin_obj_DL_006128:
+  type: GFX
+  offset: 0x6128
+  symbol: object_hakugin_obj_DL_006128
+
+object_hakugin_obj_DL_009270:
+  type: GFX
+  offset: 0x9270
+  symbol: object_hakugin_obj_DL_009270
+
+object_hakugin_obj_DL_009278:
+  type: GFX
+  offset: 0x9278
+  symbol: object_hakugin_obj_DL_009278
+
+object_hakugin_obj_DL_009650:
+  type: GFX
+  offset: 0x9650
+  symbol: object_hakugin_obj_DL_009650
+
+object_hakugin_obj_DL_009658:
+  type: GFX
+  offset: 0x9658
+  symbol: object_hakugin_obj_DL_009658
+
+object_hakugin_obj_DL_009830:
+  type: GFX
+  offset: 0x9830
+  symbol: object_hakugin_obj_DL_009830
+
+object_hakugin_obj_DL_0099A0:
+  type: GFX
+  offset: 0x99A0
+  symbol: object_hakugin_obj_DL_0099A0
+
+object_hakugin_obj_DL_0099A8:
+  type: GFX
+  offset: 0x99A8
+  symbol: object_hakugin_obj_DL_0099A8
+
+object_hakugin_obj_DL_00ACB0:
+  type: GFX
+  offset: 0xACB0
+  symbol: object_hakugin_obj_DL_00ACB0
+
+object_hakugin_obj_DL_00ACB8:
+  type: GFX
+  offset: 0xACB8
+  symbol: object_hakugin_obj_DL_00ACB8
+
+object_hakugin_obj_DL_00C1A0:
+  type: GFX
+  offset: 0xC1A0
+  symbol: object_hakugin_obj_DL_00C1A0
+
+object_hakugin_obj_DL_00C1A8:
+  type: GFX
+  offset: 0xC1A8
+  symbol: object_hakugin_obj_DL_00C1A8
+
+object_hakugin_obj_DL_00C560:
+  type: GFX
+  offset: 0xC560
+  symbol: object_hakugin_obj_DL_00C560
+
+object_hakugin_obj_DL_00C568:
+  type: GFX
+  offset: 0xC568
+  symbol: object_hakugin_obj_DL_00C568
+
+object_hakugin_obj_DL_00CA30:
+  type: GFX
+  offset: 0xCA30
+  symbol: object_hakugin_obj_DL_00CA30
+
+object_hakugin_obj_DL_00CA38:
+  type: GFX
+  offset: 0xCA38
+  symbol: object_hakugin_obj_DL_00CA38
+
+object_hakugin_obj_DL_00CEC0:
+  type: GFX
+  offset: 0xCEC0
+  symbol: object_hakugin_obj_DL_00CEC0
+
+object_hakugin_obj_DL_00CEC8:
+  type: GFX
+  offset: 0xCEC8
+  symbol: object_hakugin_obj_DL_00CEC8
+
+object_hakugin_obj_DL_00D090:
+  type: GFX
+  offset: 0xD090
+  symbol: object_hakugin_obj_DL_00D090
+
+object_hakugin_obj_DL_00D098:
+  type: GFX
+  offset: 0xD098
+  symbol: object_hakugin_obj_DL_00D098
+
+object_hakugin_obj_Matanimheader_000E48:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xE48
+  symbol: object_hakugin_obj_Matanimheader_000E48
+
+object_hakugin_obj_Matanimheader_0017A8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x17A8
+  symbol: object_hakugin_obj_Matanimheader_0017A8
+
+object_hakugin_obj_Matanimheader_0020E8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x20E8
+  symbol: object_hakugin_obj_Matanimheader_0020E8
+
+object_hakugin_obj_Matanimheader_002A58:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x2A58
+  symbol: object_hakugin_obj_Matanimheader_002A58
+
+object_hakugin_obj_Matanimheader_003888:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x3888
+  symbol: object_hakugin_obj_Matanimheader_003888
+
+object_hakugin_obj_Matanimheader_0049F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x49F8
+  symbol: object_hakugin_obj_Matanimheader_0049F8
+
+object_hakugin_obj_Matanimheader_005338:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x5338
+  symbol: object_hakugin_obj_Matanimheader_005338
+
+object_hakugin_obj_TLUT_000310:
+  type: TEXTURE
+  offset: 0x310
+  symbol: object_hakugin_obj_TLUT_000310
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_000E50:
+  type: TEXTURE
+  offset: 0xE50
+  symbol: object_hakugin_obj_TLUT_000E50
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_0017B0:
+  type: TEXTURE
+  offset: 0x17B0
+  symbol: object_hakugin_obj_TLUT_0017B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_0020F0:
+  type: TEXTURE
+  offset: 0x20F0
+  symbol: object_hakugin_obj_TLUT_0020F0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_003890:
+  type: TEXTURE
+  offset: 0x3890
+  symbol: object_hakugin_obj_TLUT_003890
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_0038B0:
+  type: TEXTURE
+  offset: 0x38B0
+  symbol: object_hakugin_obj_TLUT_0038B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_004A00:
+  type: TEXTURE
+  offset: 0x4A00
+  symbol: object_hakugin_obj_TLUT_004A00
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_005340:
+  type: TEXTURE
+  offset: 0x5340
+  symbol: object_hakugin_obj_TLUT_005340
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_0064C0:
+  type: TEXTURE
+  offset: 0x64C0
+  symbol: object_hakugin_obj_TLUT_0064C0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_0064E0:
+  type: TEXTURE
+  offset: 0x64E0
+  symbol: object_hakugin_obj_TLUT_0064E0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_006500:
+  type: TEXTURE
+  offset: 0x6500
+  symbol: object_hakugin_obj_TLUT_006500
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_009B20:
+  type: TEXTURE
+  offset: 0x9B20
+  symbol: object_hakugin_obj_TLUT_009B20
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_009B40:
+  type: TEXTURE
+  offset: 0x9B40
+  symbol: object_hakugin_obj_TLUT_009B40
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_00AE18:
+  type: TEXTURE
+  offset: 0xAE18
+  symbol: object_hakugin_obj_TLUT_00AE18
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_00AE38:
+  type: TEXTURE
+  offset: 0xAE38
+  symbol: object_hakugin_obj_TLUT_00AE38
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_TLUT_00D3E0:
+  type: TEXTURE
+  offset: 0xD3E0
+  symbol: object_hakugin_obj_TLUT_00D3E0
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_hakugin_obj_Tex_000330:
+  type: TEXTURE
+  offset: 0x330
+  symbol: object_hakugin_obj_Tex_000330
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_000E70:
+  type: TEXTURE
+  offset: 0xE70
+  symbol: object_hakugin_obj_Tex_000E70
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_0017D0:
+  type: TEXTURE
+  offset: 0x17D0
+  symbol: object_hakugin_obj_Tex_0017D0
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_002110:
+  type: TEXTURE
+  offset: 0x2110
+  symbol: object_hakugin_obj_Tex_002110
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_0038D0:
+  type: TEXTURE
+  offset: 0x38D0
+  symbol: object_hakugin_obj_Tex_0038D0
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_0040D0:
+  type: TEXTURE
+  offset: 0x40D0
+  symbol: object_hakugin_obj_Tex_0040D0
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_004A20:
+  type: TEXTURE
+  offset: 0x4A20
+  symbol: object_hakugin_obj_Tex_004A20
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_005360:
+  type: TEXTURE
+  offset: 0x5360
+  symbol: object_hakugin_obj_Tex_005360
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_006520:
+  type: TEXTURE
+  offset: 0x6520
+  symbol: object_hakugin_obj_Tex_006520
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_006D20:
+  type: TEXTURE
+  offset: 0x6D20
+  symbol: object_hakugin_obj_Tex_006D20
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_007520:
+  type: TEXTURE
+  offset: 0x7520
+  symbol: object_hakugin_obj_Tex_007520
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hakugin_obj_Tex_007D20:
+  type: TEXTURE
+  offset: 0x7D20
+  symbol: object_hakugin_obj_Tex_007D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hakugin_obj_Tex_008520:
+  type: TEXTURE
+  offset: 0x8520
+  symbol: object_hakugin_obj_Tex_008520
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_009B60:
+  type: TEXTURE
+  offset: 0x9B60
+  symbol: object_hakugin_obj_Tex_009B60
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00A360:
+  type: TEXTURE
+  offset: 0xA360
+  symbol: object_hakugin_obj_Tex_00A360
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00AE58:
+  type: TEXTURE
+  offset: 0xAE58
+  symbol: object_hakugin_obj_Tex_00AE58
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00B658:
+  type: TEXTURE
+  offset: 0xB658
+  symbol: object_hakugin_obj_Tex_00B658
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00D440:
+  type: TEXTURE
+  offset: 0xD440
+  symbol: object_hakugin_obj_Tex_00D440
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_hakugin_obj_Tex_00E440:
+  type: TEXTURE
+  offset: 0xE440
+  symbol: object_hakugin_obj_Tex_00E440
+  format: CI4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00EC40:
+  type: TEXTURE
+  offset: 0xEC40
+  symbol: object_hakugin_obj_Tex_00EC40
+  format: I4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00F440:
+  type: TEXTURE
+  offset: 0xF440
+  symbol: object_hakugin_obj_Tex_00F440
+  format: I4
+  width: 64
+  height: 64
+
+object_hakugin_obj_Tex_00FC40:
+  type: TEXTURE
+  offset: 0xFC40
+  symbol: object_hakugin_obj_Tex_00FC40
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_hakugin_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_hakugin_objVtx_000000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_000B30:
+  type: MM:ARRAY
+  offset: 0x000B30
+  symbol: object_hakugin_objVtx_000B30
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_000E48TexScrollParams_000E40:
+  type: BLOB
+  offset: 0x000E40
+  symbol: object_hakugin_obj_Matanimheader_000E48TexScrollParams_000E40
+  size: 0
+
+object_hakugin_objVtx_001670:
+  type: MM:ARRAY
+  offset: 0x001670
+  symbol: object_hakugin_objVtx_001670
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_0017A8TexScrollParams_0017A0:
+  type: BLOB
+  offset: 0x0017A0
+  symbol: object_hakugin_obj_Matanimheader_0017A8TexScrollParams_0017A0
+  size: 0
+
+object_hakugin_objVtx_001FD0:
+  type: MM:ARRAY
+  offset: 0x001FD0
+  symbol: object_hakugin_objVtx_001FD0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_0020E8TexScrollParams_0020E0:
+  type: BLOB
+  offset: 0x0020E0
+  symbol: object_hakugin_obj_Matanimheader_0020E8TexScrollParams_0020E0
+  size: 0
+
+object_hakugin_objVtx_002910:
+  type: MM:ARRAY
+  offset: 0x002910
+  symbol: object_hakugin_objVtx_002910
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_002A58TexScrollParams_002A50:
+  type: BLOB
+  offset: 0x002A50
+  symbol: object_hakugin_obj_Matanimheader_002A58TexScrollParams_002A50
+  size: 0
+
+object_hakugin_objVtx_002A60:
+  type: MM:ARRAY
+  offset: 0x002A60
+  symbol: object_hakugin_objVtx_002A60
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_003888TexScrollParams_003880:
+  type: BLOB
+  offset: 0x003880
+  symbol: object_hakugin_obj_Matanimheader_003888TexScrollParams_003880
+  size: 0
+
+object_hakugin_objVtx_0048D0:
+  type: MM:ARRAY
+  offset: 0x0048D0
+  symbol: object_hakugin_objVtx_0048D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_0049F8TexScrollParams_0049F0:
+  type: BLOB
+  offset: 0x0049F0
+  symbol: object_hakugin_obj_Matanimheader_0049F8TexScrollParams_0049F0
+  size: 0
+
+object_hakugin_objVtx_005220:
+  type: MM:ARRAY
+  offset: 0x005220
+  symbol: object_hakugin_objVtx_005220
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_obj_Matanimheader_005338TexScrollParams_005330:
+  type: BLOB
+  offset: 0x005330
+  symbol: object_hakugin_obj_Matanimheader_005338TexScrollParams_005330
+  size: 0
+
+object_hakugin_objVtx_005B60:
+  type: MM:ARRAY
+  offset: 0x005B60
+  symbol: object_hakugin_objVtx_005B60
+  count: 92
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_008D20:
+  type: MM:ARRAY
+  offset: 0x008D20
+  symbol: object_hakugin_objVtx_008D20
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_009600:
+  type: MM:ARRAY
+  offset: 0x009600
+  symbol: object_hakugin_objVtx_009600
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_0097A0:
+  type: MM:ARRAY
+  offset: 0x0097A0
+  symbol: object_hakugin_objVtx_0097A0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_009920:
+  type: MM:ARRAY
+  offset: 0x009920
+  symbol: object_hakugin_objVtx_009920
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00AB60:
+  type: MM:ARRAY
+  offset: 0x00AB60
+  symbol: object_hakugin_objVtx_00AB60
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00BF70:
+  type: MM:ARRAY
+  offset: 0x00BF70
+  symbol: object_hakugin_objVtx_00BF70
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00C330:
+  type: MM:ARRAY
+  offset: 0x00C330
+  symbol: object_hakugin_objVtx_00C330
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00C6F0:
+  type: MM:ARRAY
+  offset: 0x00C6F0
+  symbol: object_hakugin_objVtx_00C6F0
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00CB80:
+  type: MM:ARRAY
+  offset: 0x00CB80
+  symbol: object_hakugin_objVtx_00CB80
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakugin_objVtx_00D020:
+  type: MM:ARRAY
+  offset: 0x00D020
+  symbol: object_hakugin_objVtx_00D020
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

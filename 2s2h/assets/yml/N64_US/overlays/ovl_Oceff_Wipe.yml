@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 128, 0x00C1B880 ]
+    - [ 4, 0x00DF1210 ]
+  virtual: [ 0x809764B0, 0x00C1B880 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+sSongOfTimeEffectTex:
+  type: TEXTURE
+  offset: 0x4F0
+  symbol: sSongOfTimeEffectTex
+  format: I8
+  width: 32
+  height: 32
+
+sSongOfTimeFrustumMaterialDL:
+  type: GFX
+  offset: 0xB70
+  symbol: sSongOfTimeFrustumMaterialDL
+
+sSongOfTimeFrustumModelDL:
+  type: GFX
+  offset: 0xBF8
+  symbol: sSongOfTimeFrustumModelDL
+
+sSongOfTimeFrustumVtx:
+  type: MM:ARRAY
+  offset: 0x8F0
+  symbol: sSongOfTimeFrustumVtx
+  count: 40
+  array_type: VTX
+

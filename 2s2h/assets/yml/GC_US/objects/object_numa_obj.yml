@@ -1,0 +1,503 @@
+:config:
+  segments:
+    - [ 6, 0x011771B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x011771B0 ]
+    - [ 9, 0x011771B0 ]
+    - [ 10, 0x011771B0 ]
+    - [ 11, 0x011771B0 ]
+    - [ 12, 0x011771B0 ]
+    - [ 13, 0x011771B0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gWoodenFlowerClosedFlowerCol:
+  type: MM:COLLISION
+  offset: 0xA740
+  symbol: gWoodenFlowerClosedFlowerCol
+
+gWoodenFlowerEmpty1DL:
+  type: GFX
+  offset: 0xAB80
+  symbol: gWoodenFlowerEmpty1DL
+
+gWoodenFlowerEmpty2DL:
+  type: GFX
+  offset: 0xB920
+  symbol: gWoodenFlowerEmpty2DL
+
+gWoodenFlowerEmpty3DL:
+  type: GFX
+  offset: 0xBE50
+  symbol: gWoodenFlowerEmpty3DL
+
+gWoodenFlowerInnerPetalBottomTex:
+  type: TEXTURE
+  offset: 0xD7D0
+  symbol: gWoodenFlowerInnerPetalBottomTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodenFlowerInnerPetalDL:
+  type: GFX
+  offset: 0xAB88
+  symbol: gWoodenFlowerInnerPetalDL
+
+gWoodenFlowerInnerPetalTopTex:
+  type: TEXTURE
+  offset: 0xC7D0
+  symbol: gWoodenFlowerInnerPetalTopTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodenFlowerOpenedFlowerCol:
+  type: MM:COLLISION
+  offset: 0x9FE0
+  symbol: gWoodenFlowerOpenedFlowerCol
+
+gWoodenFlowerOuterPetalBottomTex:
+  type: TEXTURE
+  offset: 0x117D0
+  symbol: gWoodenFlowerOuterPetalBottomTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodenFlowerOuterPetalDL:
+  type: GFX
+  offset: 0xBE58
+  symbol: gWoodenFlowerOuterPetalDL
+
+gWoodenFlowerOuterPetalTopTex:
+  type: TEXTURE
+  offset: 0x107D0
+  symbol: gWoodenFlowerOuterPetalTopTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodenFlowerPetalSidesTex:
+  type: TEXTURE
+  offset: 0xBFD0
+  symbol: gWoodenFlowerPetalSidesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWoodenFlowerStalkDL:
+  type: GFX
+  offset: 0xB928
+  symbol: gWoodenFlowerStalkDL
+
+gWoodenFlowerStalkSidesTex:
+  type: TEXTURE
+  offset: 0xF7D0
+  symbol: gWoodenFlowerStalkSidesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodenFlowerStalkTopTex:
+  type: TEXTURE
+  offset: 0xE7D0
+  symbol: gWoodenFlowerStalkTopTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gWoodfallDoorDL:
+  type: GFX
+  offset: 0x5DF0
+  symbol: gWoodfallDoorDL
+
+object_numa_obj_Colheader_012818:
+  type: MM:COLLISION
+  offset: 0x12818
+  symbol: object_numa_obj_Colheader_012818
+
+object_numa_obj_DL_0007A0:
+  type: GFX
+  offset: 0x7A0
+  symbol: object_numa_obj_DL_0007A0
+
+object_numa_obj_DL_0007A8:
+  type: GFX
+  offset: 0x7A8
+  symbol: object_numa_obj_DL_0007A8
+
+object_numa_obj_DL_0014C0:
+  type: GFX
+  offset: 0x14C0
+  symbol: object_numa_obj_DL_0014C0
+
+object_numa_obj_DL_0014C8:
+  type: GFX
+  offset: 0x14C8
+  symbol: object_numa_obj_DL_0014C8
+
+object_numa_obj_DL_004440:
+  type: GFX
+  offset: 0x4440
+  symbol: object_numa_obj_DL_004440
+
+object_numa_obj_DL_004448:
+  type: GFX
+  offset: 0x4448
+  symbol: object_numa_obj_DL_004448
+
+object_numa_obj_DL_0051B0:
+  type: GFX
+  offset: 0x51B0
+  symbol: object_numa_obj_DL_0051B0
+
+object_numa_obj_DL_0051B8:
+  type: GFX
+  offset: 0x51B8
+  symbol: object_numa_obj_DL_0051B8
+
+object_numa_obj_DL_007150:
+  type: GFX
+  offset: 0x7150
+  symbol: object_numa_obj_DL_007150
+
+object_numa_obj_DL_008440:
+  type: GFX
+  offset: 0x8440
+  symbol: object_numa_obj_DL_008440
+
+object_numa_obj_DL_0128E0:
+  type: GFX
+  offset: 0x128E0
+  symbol: object_numa_obj_DL_0128E0
+
+object_numa_obj_DL_0129C0:
+  type: GFX
+  offset: 0x129C0
+  symbol: object_numa_obj_DL_0129C0
+
+object_numa_obj_DL_012A60:
+  type: GFX
+  offset: 0x12A60
+  symbol: object_numa_obj_DL_012A60
+
+object_numa_obj_DL_012B40:
+  type: GFX
+  offset: 0x12B40
+  symbol: object_numa_obj_DL_012B40
+
+object_numa_obj_DL_012BF0:
+  type: GFX
+  offset: 0x12BF0
+  symbol: object_numa_obj_DL_012BF0
+
+object_numa_obj_DL_012CD0:
+  type: GFX
+  offset: 0x12CD0
+  symbol: object_numa_obj_DL_012CD0
+
+object_numa_obj_DL_012D90:
+  type: GFX
+  offset: 0x12D90
+  symbol: object_numa_obj_DL_012D90
+
+object_numa_obj_DL_012E70:
+  type: GFX
+  offset: 0x12E70
+  symbol: object_numa_obj_DL_012E70
+
+object_numa_obj_DL_012F10:
+  type: GFX
+  offset: 0x12F10
+  symbol: object_numa_obj_DL_012F10
+
+object_numa_obj_DL_012FF0:
+  type: GFX
+  offset: 0x12FF0
+  symbol: object_numa_obj_DL_012FF0
+
+object_numa_obj_DL_0130A0:
+  type: GFX
+  offset: 0x130A0
+  symbol: object_numa_obj_DL_0130A0
+
+object_numa_obj_DL_013180:
+  type: GFX
+  offset: 0x13180
+  symbol: object_numa_obj_DL_013180
+
+object_numa_obj_Matanimheader_012B58:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12B58
+  symbol: object_numa_obj_Matanimheader_012B58
+
+object_numa_obj_Matanimheader_012CE8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12CE8
+  symbol: object_numa_obj_Matanimheader_012CE8
+
+object_numa_obj_Matanimheader_012CF8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12CF8
+  symbol: object_numa_obj_Matanimheader_012CF8
+
+object_numa_obj_Matanimheader_013008:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x13008
+  symbol: object_numa_obj_Matanimheader_013008
+
+object_numa_obj_Matanimheader_013198:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x13198
+  symbol: object_numa_obj_Matanimheader_013198
+
+object_numa_obj_Matanimheader_0131A8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x131A8
+  symbol: object_numa_obj_Matanimheader_0131A8
+
+object_numa_obj_Tex_001D60:
+  type: TEXTURE
+  offset: 0x1D60
+  symbol: object_numa_obj_Tex_001D60
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_numa_obj_Tex_002D60:
+  type: TEXTURE
+  offset: 0x2D60
+  symbol: object_numa_obj_Tex_002D60
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_numa_obj_Tex_003560:
+  type: TEXTURE
+  offset: 0x3560
+  symbol: object_numa_obj_Tex_003560
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_numa_obj_Tex_005FC0:
+  type: TEXTURE
+  offset: 0x5FC0
+  symbol: object_numa_obj_Tex_005FC0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_numa_obj_Tex_0072B0:
+  type: TEXTURE
+  offset: 0x72B0
+  symbol: object_numa_obj_Tex_0072B0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_numa_obj_Tex_0085A0:
+  type: TEXTURE
+  offset: 0x85A0
+  symbol: object_numa_obj_Tex_0085A0
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_numa_obj_Tex_0131B0:
+  type: TEXTURE
+  offset: 0x131B0
+  symbol: object_numa_obj_Tex_0131B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_numa_obj_Tex_0139B0:
+  type: TEXTURE
+  offset: 0x139B0
+  symbol: object_numa_obj_Tex_0139B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_numa_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_numa_objVtx_000000
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_000A10:
+  type: MM:ARRAY
+  offset: 0x000A10
+  symbol: object_numa_objVtx_000A10
+  count: 171
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_003D60:
+  type: MM:ARRAY
+  offset: 0x003D60
+  symbol: object_numa_objVtx_003D60
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_004690:
+  type: MM:ARRAY
+  offset: 0x004690
+  symbol: object_numa_objVtx_004690
+  count: 178
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_005B00:
+  type: MM:ARRAY
+  offset: 0x005B00
+  symbol: object_numa_objVtx_005B00
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_006FC0:
+  type: MM:ARRAY
+  offset: 0x006FC0
+  symbol: object_numa_objVtx_006FC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_0082B0:
+  type: MM:ARRAY
+  offset: 0x0082B0
+  symbol: object_numa_objVtx_0082B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_00A770:
+  type: MM:ARRAY
+  offset: 0x00A770
+  symbol: object_numa_objVtx_00A770
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_00AD50:
+  type: MM:ARRAY
+  offset: 0x00AD50
+  symbol: object_numa_objVtx_00AD50
+  count: 189
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_00BBF0:
+  type: MM:ARRAY
+  offset: 0x00BBF0
+  symbol: object_numa_objVtx_00BBF0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_012850:
+  type: MM:ARRAY
+  offset: 0x012850
+  symbol: object_numa_objVtx_012850
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_0129D0:
+  type: MM:ARRAY
+  offset: 0x0129D0
+  symbol: object_numa_objVtx_0129D0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_obj_Matanimheader_012B58TexScrollParams_012B50:
+  type: BLOB
+  offset: 0x012B50
+  symbol: object_numa_obj_Matanimheader_012B58TexScrollParams_012B50
+  size: 0
+
+object_numa_objVtx_012B60:
+  type: MM:ARRAY
+  offset: 0x012B60
+  symbol: object_numa_objVtx_012B60
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_obj_Matanimheader_012CE8TexScrollParams_012CE0:
+  type: BLOB
+  offset: 0x012CE0
+  symbol: object_numa_obj_Matanimheader_012CE8TexScrollParams_012CE0
+  size: 0
+
+object_numa_obj_Matanimheader_012CF8TexScrollParams_012CF0:
+  type: BLOB
+  offset: 0x012CF0
+  symbol: object_numa_obj_Matanimheader_012CF8TexScrollParams_012CF0
+  size: 0
+
+object_numa_objVtx_012D00:
+  type: MM:ARRAY
+  offset: 0x012D00
+  symbol: object_numa_objVtx_012D00
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_objVtx_012E80:
+  type: MM:ARRAY
+  offset: 0x012E80
+  symbol: object_numa_objVtx_012E80
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_obj_Matanimheader_013008TexScrollParams_013000:
+  type: BLOB
+  offset: 0x013000
+  symbol: object_numa_obj_Matanimheader_013008TexScrollParams_013000
+  size: 0
+
+object_numa_objVtx_013010:
+  type: MM:ARRAY
+  offset: 0x013010
+  symbol: object_numa_objVtx_013010
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_numa_obj_Matanimheader_013198TexScrollParams_013190:
+  type: BLOB
+  offset: 0x013190
+  symbol: object_numa_obj_Matanimheader_013198TexScrollParams_013190
+  size: 0
+
+object_numa_obj_Matanimheader_0131A8TexScrollParams_0131A0:
+  type: BLOB
+  offset: 0x0131A0
+  symbol: object_numa_obj_Matanimheader_0131A8TexScrollParams_0131A0
+  size: 0

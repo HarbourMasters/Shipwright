@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x015F2610 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x015F2610 ]
+    - [ 9, 0x015F2610 ]
+    - [ 10, 0x015F2610 ]
+    - [ 11, 0x015F2610 ]
+    - [ 12, 0x015F2610 ]
+    - [ 13, 0x015F2610 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gMilkBarDoorDL:
+  type: GFX
+  offset: 0x508
+  symbol: gMilkBarDoorDL
+
+gMilkBarDoorEndDL:
+  type: GFX
+  offset: 0x500
+  symbol: gMilkBarDoorEndDL
+
+gMilkBarDoorTex:
+  type: TEXTURE
+  offset: 0x670
+  symbol: gMilkBarDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_wdor04Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_wdor04Vtx_000000
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

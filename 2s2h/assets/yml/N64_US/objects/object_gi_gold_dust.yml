@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x013FB8D0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x013FB8D0 ]
+    - [ 9, 0x013FB8D0 ]
+    - [ 10, 0x013FB8D0 ]
+    - [ 11, 0x013FB8D0 ]
+    - [ 12, 0x013FB8D0 ]
+    - [ 13, 0x013FB8D0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiGoldDustPowderClothTex:
+  type: TEXTURE
+  offset: 0xB40
+  symbol: gGiGoldDustPowderClothTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiGoldDustPowderContentTex:
+  type: TEXTURE
+  offset: 0xF40
+  symbol: gGiGoldDustPowderContentTex
+  format: I4
+  width: 32
+  height: 32
+
+gGiGoldDustPowderDL:
+  type: GFX
+  offset: 0x888
+  symbol: gGiGoldDustPowderDL
+
+gGiGoldDustPowderEmptyDL:
+  type: GFX
+  offset: 0x880
+  symbol: gGiGoldDustPowderEmptyDL
+
+
+object_gi_gold_dustVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_gold_dustVtx_000000
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

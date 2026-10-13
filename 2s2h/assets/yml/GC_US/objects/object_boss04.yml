@@ -1,0 +1,234 @@
+:config:
+  segments:
+    - [ 6, 0x0113AC20 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0113AC20 ]
+    - [ 9, 0x0113AC20 ]
+    - [ 10, 0x0113AC20 ]
+    - [ 11, 0x0113AC20 ]
+    - [ 12, 0x0113AC20 ]
+    - [ 13, 0x0113AC20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gWartBodyLimb:
+  type: OOT:LIMB
+  offset: 0x4574
+  symbol: gWartBodyLimb
+  limb_type: Standard
+
+gWartBottomEyelidDL:
+  type: GFX
+  offset: 0x1E58
+  symbol: gWartBottomEyelidDL
+
+gWartBottomEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x45BC
+  symbol: gWartBottomEyelidLimb
+  limb_type: Standard
+
+gWartBottomEyelidRootLimb:
+  type: OOT:LIMB
+  offset: 0x45B0
+  symbol: gWartBottomEyelidRootLimb
+  limb_type: Standard
+
+gWartBubbleMaterialDL:
+  type: GFX
+  offset: 0x3450
+  symbol: gWartBubbleMaterialDL
+
+gWartBubbleModelDL:
+  type: GFX
+  offset: 0x34C8
+  symbol: gWartBubbleModelDL
+
+gWartBubbleOpaqueMaterialDL:
+  type: GFX
+  offset: 0x33D8
+  symbol: gWartBubbleOpaqueMaterialDL
+
+gWartBubbleTex:
+  type: TEXTURE
+  offset: 0x34E0
+  symbol: gWartBubbleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWartEyeDL:
+  type: GFX
+  offset: 0x2138
+  symbol: gWartEyeDL
+
+gWartEyeLimb:
+  type: OOT:LIMB
+  offset: 0x458C
+  symbol: gWartEyeLimb
+  limb_type: Standard
+
+gWartEyeRootLimb:
+  type: OOT:LIMB
+  offset: 0x4580
+  symbol: gWartEyeRootLimb
+  limb_type: Standard
+
+gWartEyeTex:
+  type: TEXTURE
+  offset: 0x2BA8
+  symbol: gWartEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWartIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4C
+  symbol: gWartIdleAnim
+
+gWartRidgesTLUT:
+  type: TEXTURE
+  offset: 0x2348
+  symbol: gWartRidgesTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gWartRidgesTex:
+  type: TEXTURE
+  offset: 0x2B68
+  symbol: gWartRidgesTex
+  format: CI4
+  width: 8
+  height: 16
+
+gWartRootLimb:
+  type: OOT:LIMB
+  offset: 0x4568
+  symbol: gWartRootLimb
+  limb_type: Standard
+
+gWartShadowMaterialDL:
+  type: GFX
+  offset: 0x4510
+  symbol: gWartShadowMaterialDL
+
+gWartShadowModelDL:
+  type: GFX
+  offset: 0x4550
+  symbol: gWartShadowModelDL
+
+gWartShadowTex:
+  type: TEXTURE
+  offset: 0x3D10
+  symbol: gWartShadowTex
+  format: IA16
+  width: 32
+  height: 32
+
+gWartShellDL:
+  type: GFX
+  offset: 0x19B0
+  symbol: gWartShellDL
+
+gWartShellTLUT:
+  type: TEXTURE
+  offset: 0x2328
+  symbol: gWartShellTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gWartShellTex:
+  type: TEXTURE
+  offset: 0x2368
+  symbol: gWartShellTex
+  format: CI4
+  width: 64
+  height: 64
+
+gWartSkel:
+  type: MM:SKELETON
+  offset: 0x45E8
+  symbol: gWartSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWartTopEyelidDL:
+  type: GFX
+  offset: 0x1FC8
+  symbol: gWartTopEyelidDL
+
+gWartTopEyelidLimb:
+  type: OOT:LIMB
+  offset: 0x45A4
+  symbol: gWartTopEyelidLimb
+  limb_type: Standard
+
+gWartTopEyelidRootLimb:
+  type: OOT:LIMB
+  offset: 0x4598
+  symbol: gWartTopEyelidRootLimb
+  limb_type: Standard
+
+
+object_boss04Vtx_000060:
+  type: MM:ARRAY
+  offset: 0x000060
+  symbol: object_boss04Vtx_000060
+  count: 208
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss04Vtx_000D60:
+  type: MM:ARRAY
+  offset: 0x000D60
+  symbol: object_boss04Vtx_000D60
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss04Vtx_001100:
+  type: MM:ARRAY
+  offset: 0x001100
+  symbol: object_boss04Vtx_001100
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss04Vtx_0014A0:
+  type: MM:ARRAY
+  offset: 0x0014A0
+  symbol: object_boss04Vtx_0014A0
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss04Vtx_0033A8:
+  type: MM:ARRAY
+  offset: 0x0033A8
+  symbol: object_boss04Vtx_0033A8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss04Vtx_003CE0:
+  type: MM:ARRAY
+  offset: 0x003CE0
+  symbol: object_boss04Vtx_003CE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWartSkelLimbs:
+  type: BLOB
+  offset: 0x45C8
+  symbol: gWartSkelLimbs
+  size: 0

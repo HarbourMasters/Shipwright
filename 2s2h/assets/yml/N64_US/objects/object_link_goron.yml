@@ -1,0 +1,1043 @@
+:config:
+  segments:
+    - [ 6, 0x00E6CEB0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00E6CEB0 ]
+    - [ 9, 0x00E6CEB0 ]
+    - [ 10, 0x00E6CEB0 ]
+    - [ 11, 0x00E6CEB0 ]
+    - [ 12, 0x00E6CEB0 ]
+    - [ 13, 0x00E6CEB0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLinkGoronCollarDL:
+  type: GFX
+  offset: 0x8C98
+  symbol: gLinkGoronCollarDL
+
+gLinkGoronCollarLimb:
+  type: OOT:LIMB
+  offset: 0x179A0
+  symbol: gLinkGoronCollarLimb
+  limb_type: LOD
+
+gLinkGoronCurledDL:
+  type: GFX
+  offset: 0xBDD8
+  symbol: gLinkGoronCurledDL
+
+gLinkGoronEyesClosedTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gLinkGoronEyesClosedTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x2200
+
+gLinkGoronEyesHalfTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gLinkGoronEyesHalfTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x2200
+
+gLinkGoronEyesOpenTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLinkGoronEyesOpenTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x2200
+
+gLinkGoronEyesSurprisedTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gLinkGoronEyesSurprisedTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x2200
+
+gLinkGoronGoronPunchEffectDL:
+  type: GFX
+  offset: 0x11AB8
+  symbol: gLinkGoronGoronPunchEffectDL
+
+gLinkGoronHatDL:
+  type: GFX
+  offset: 0x9898
+  symbol: gLinkGoronHatDL
+
+gLinkGoronHatLimb:
+  type: OOT:LIMB
+  offset: 0x17990
+  symbol: gLinkGoronHatLimb
+  limb_type: LOD
+
+gLinkGoronHeadDL:
+  type: GFX
+  offset: 0x91F0
+  symbol: gLinkGoronHeadDL
+
+gLinkGoronHeadLimb:
+  type: OOT:LIMB
+  offset: 0x17980
+  symbol: gLinkGoronHeadLimb
+  limb_type: LOD
+
+gLinkGoronLeftFootDL:
+  type: GFX
+  offset: 0x8A60
+  symbol: gLinkGoronLeftFootDL
+
+gLinkGoronLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x17960
+  symbol: gLinkGoronLeftFootLimb
+  limb_type: LOD
+
+gLinkGoronLeftForearmDL:
+  type: GFX
+  offset: 0xA220
+  symbol: gLinkGoronLeftForearmDL
+
+gLinkGoronLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x179C0
+  symbol: gLinkGoronLeftForearmLimb
+  limb_type: LOD
+
+gLinkGoronLeftHandClosedDL:
+  type: GFX
+  offset: 0xDE68
+  symbol: gLinkGoronLeftHandClosedDL
+
+gLinkGoronLeftHandHoldBottleDL:
+  type: GFX
+  offset: 0x11468
+  symbol: gLinkGoronLeftHandHoldBottleDL
+
+gLinkGoronLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x179D0
+  symbol: gLinkGoronLeftHandLimb
+  limb_type: LOD
+
+gLinkGoronLeftHandOpenDL:
+  type: GFX
+  offset: 0xA500
+  symbol: gLinkGoronLeftHandOpenDL
+
+gLinkGoronLeftShinDL:
+  type: GFX
+  offset: 0x8790
+  symbol: gLinkGoronLeftShinDL
+
+gLinkGoronLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x17950
+  symbol: gLinkGoronLeftShinLimb
+  limb_type: LOD
+
+gLinkGoronLeftShoulderDL:
+  type: GFX
+  offset: 0xA0A0
+  symbol: gLinkGoronLeftShoulderDL
+
+gLinkGoronLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x179B0
+  symbol: gLinkGoronLeftShoulderLimb
+  limb_type: LOD
+
+gLinkGoronLeftThighDL:
+  type: GFX
+  offset: 0x86A0
+  symbol: gLinkGoronLeftThighDL
+
+gLinkGoronLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x17940
+  symbol: gLinkGoronLeftThighLimb
+  limb_type: LOD
+
+gLinkGoronLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0x17900
+  symbol: gLinkGoronLowerRootLimb
+  limb_type: LOD
+
+gLinkGoronRightFootDL:
+  type: GFX
+  offset: 0x8500
+  symbol: gLinkGoronRightFootDL
+
+gLinkGoronRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x17930
+  symbol: gLinkGoronRightFootLimb
+  limb_type: LOD
+
+gLinkGoronRightForearmDL:
+  type: GFX
+  offset: 0x9C18
+  symbol: gLinkGoronRightForearmDL
+
+gLinkGoronRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x179F0
+  symbol: gLinkGoronRightForearmLimb
+  limb_type: LOD
+
+gLinkGoronRightHandClosedDL:
+  type: GFX
+  offset: 0xE7E8
+  symbol: gLinkGoronRightHandClosedDL
+
+gLinkGoronRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x17A00
+  symbol: gLinkGoronRightHandLimb
+  limb_type: LOD
+
+gLinkGoronRightHandOpenDL:
+  type: GFX
+  offset: 0x9EF8
+  symbol: gLinkGoronRightHandOpenDL
+
+gLinkGoronRightShinDL:
+  type: GFX
+  offset: 0x8230
+  symbol: gLinkGoronRightShinDL
+
+gLinkGoronRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x17920
+  symbol: gLinkGoronRightShinLimb
+  limb_type: LOD
+
+gLinkGoronRightShoulderDL:
+  type: GFX
+  offset: 0x9A98
+  symbol: gLinkGoronRightShoulderDL
+
+gLinkGoronRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x179E0
+  symbol: gLinkGoronRightShoulderLimb
+  limb_type: LOD
+
+gLinkGoronRightThighDL:
+  type: GFX
+  offset: 0x8140
+  symbol: gLinkGoronRightThighDL
+
+gLinkGoronRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x17910
+  symbol: gLinkGoronRightThighLimb
+  limb_type: LOD
+
+gLinkGoronRollingSpikesAndEffectDL:
+  type: GFX
+  offset: 0x14690
+  symbol: gLinkGoronRollingSpikesAndEffectDL
+
+gLinkGoronRootLimb:
+  type: OOT:LIMB
+  offset: 0x178E0
+  symbol: gLinkGoronRootLimb
+  limb_type: LOD
+
+gLinkGoronSheathDL:
+  type: GFX
+  offset: 0x99D8
+  symbol: gLinkGoronSheathDL
+
+gLinkGoronSheathLimb:
+  type: OOT:LIMB
+  offset: 0x17A10
+  symbol: gLinkGoronSheathLimb
+  limb_type: LOD
+
+gLinkGoronShieldingAnim:
+  type: OOT:ANIMATION
+  offset: 0x178D0
+  symbol: gLinkGoronShieldingAnim
+
+gLinkGoronShieldingArmsAndLegsLimb:
+  type: OOT:LIMB
+  offset: 0x1779C
+  symbol: gLinkGoronShieldingArmsAndLegsLimb
+  limb_type: Standard
+
+gLinkGoronShieldingBodyLimb:
+  type: OOT:LIMB
+  offset: 0x17784
+  symbol: gLinkGoronShieldingBodyLimb
+  limb_type: Standard
+
+gLinkGoronShieldingHeadLimb:
+  type: OOT:LIMB
+  offset: 0x17790
+  symbol: gLinkGoronShieldingHeadLimb
+  limb_type: Standard
+
+gLinkGoronShieldingRootLimb:
+  type: OOT:LIMB
+  offset: 0x17778
+  symbol: gLinkGoronShieldingRootLimb
+  limb_type: Standard
+
+gLinkGoronShieldingSkel:
+  type: MM:SKELETON
+  offset: 0x177B8
+  symbol: gLinkGoronShieldingSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gLinkGoronSkel:
+  type: MM:SKELETON
+  offset: 0x17A84
+  symbol: gLinkGoronSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gLinkGoronSkinTLUT:
+  type: TEXTURE
+  offset: 0x2200
+  symbol: gLinkGoronSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkGoronTorsoDL:
+  type: GFX
+  offset: 0x8F18
+  symbol: gLinkGoronTorsoDL
+
+gLinkGoronTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x17A20
+  symbol: gLinkGoronTorsoLimb
+  limb_type: LOD
+
+gLinkGoronUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0x17970
+  symbol: gLinkGoronUpperRootLimb
+  limb_type: LOD
+
+gLinkGoronWaistDL:
+  type: GFX
+  offset: 0x8C00
+  symbol: gLinkGoronWaistDL
+
+gLinkGoronWaistLimb:
+  type: OOT:LIMB
+  offset: 0x178F0
+  symbol: gLinkGoronWaistLimb
+  limb_type: LOD
+
+object_link_goron_DL_00C540:
+  type: GFX
+  offset: 0xC540
+  symbol: object_link_goron_DL_00C540
+
+object_link_goron_DL_00FC18:
+  type: GFX
+  offset: 0xFC18
+  symbol: object_link_goron_DL_00FC18
+
+object_link_goron_DL_00FCF0:
+  type: GFX
+  offset: 0xFCF0
+  symbol: object_link_goron_DL_00FCF0
+
+object_link_goron_DL_00FF18:
+  type: GFX
+  offset: 0xFF18
+  symbol: object_link_goron_DL_00FF18
+
+object_link_goron_DL_010140:
+  type: GFX
+  offset: 0x10140
+  symbol: object_link_goron_DL_010140
+
+object_link_goron_DL_010368:
+  type: GFX
+  offset: 0x10368
+  symbol: object_link_goron_DL_010368
+
+object_link_goron_DL_010590:
+  type: GFX
+  offset: 0x10590
+  symbol: object_link_goron_DL_010590
+
+object_link_goron_DL_0127B0:
+  type: GFX
+  offset: 0x127B0
+  symbol: object_link_goron_DL_0127B0
+
+object_link_goron_DL_0134D0:
+  type: GFX
+  offset: 0x134D0
+  symbol: object_link_goron_DL_0134D0
+
+object_link_goron_DL_016A88:
+  type: GFX
+  offset: 0x16A88
+  symbol: object_link_goron_DL_016A88
+
+object_link_goron_DL_017180:
+  type: GFX
+  offset: 0x17180
+  symbol: object_link_goron_DL_017180
+
+object_link_goron_DL_017620:
+  type: GFX
+  offset: 0x17620
+  symbol: object_link_goron_DL_017620
+
+object_link_goron_Matanimheader_013138:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x13138
+  symbol: object_link_goron_Matanimheader_013138
+
+object_link_goron_Matanimheader_014684:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x14684
+  symbol: object_link_goron_Matanimheader_014684
+
+object_link_goron_TLUT_002000:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: object_link_goron_TLUT_002000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_goron_TLUT_0107B8:
+  type: TEXTURE
+  offset: 0x107B8
+  symbol: object_link_goron_TLUT_0107B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_goron_Tex_002400:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: object_link_goron_Tex_002400
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_link_goron_Tex_002600:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: object_link_goron_Tex_002600
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_002700:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: object_link_goron_Tex_002700
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_link_goron_Tex_002780:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: object_link_goron_Tex_002780
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_link_goron_Tex_002880:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: object_link_goron_Tex_002880
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_link_goron_Tex_002900:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: object_link_goron_Tex_002900
+  format: CI8
+  width: 8
+  height: 8
+
+object_link_goron_Tex_002940:
+  type: TEXTURE
+  offset: 0x2940
+  symbol: object_link_goron_Tex_002940
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_link_goron_Tex_002D40:
+  type: TEXTURE
+  offset: 0x2D40
+  symbol: object_link_goron_Tex_002D40
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_goron_Tex_003140:
+  type: TEXTURE
+  offset: 0x3140
+  symbol: object_link_goron_Tex_003140
+  format: CI8
+  width: 32
+  height: 64
+
+object_link_goron_Tex_003940:
+  type: TEXTURE
+  offset: 0x3940
+  symbol: object_link_goron_Tex_003940
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_003A40:
+  type: TEXTURE
+  offset: 0x3A40
+  symbol: object_link_goron_Tex_003A40
+  format: CI8
+  width: 32
+  height: 32
+
+object_link_goron_Tex_003E40:
+  type: TEXTURE
+  offset: 0x3E40
+  symbol: object_link_goron_Tex_003E40
+  format: CI8
+  width: 32
+  height: 32
+
+object_link_goron_Tex_004240:
+  type: TEXTURE
+  offset: 0x4240
+  symbol: object_link_goron_Tex_004240
+  format: CI8
+  width: 8
+  height: 32
+
+object_link_goron_Tex_004340:
+  type: TEXTURE
+  offset: 0x4340
+  symbol: object_link_goron_Tex_004340
+  format: I8
+  width: 8
+  height: 8
+
+object_link_goron_Tex_00C6B8:
+  type: TEXTURE
+  offset: 0xC6B8
+  symbol: object_link_goron_Tex_00C6B8
+  format: CI8
+  width: 32
+  height: 64
+
+object_link_goron_Tex_00CEB8:
+  type: TEXTURE
+  offset: 0xCEB8
+  symbol: object_link_goron_Tex_00CEB8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_link_goron_Tex_00CFB8:
+  type: TEXTURE
+  offset: 0xCFB8
+  symbol: object_link_goron_Tex_00CFB8
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_00D0B8:
+  type: TEXTURE
+  offset: 0xD0B8
+  symbol: object_link_goron_Tex_00D0B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_goron_Tex_00D2B8:
+  type: TEXTURE
+  offset: 0xD2B8
+  symbol: object_link_goron_Tex_00D2B8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_link_goron_Tex_00D3B8:
+  type: TEXTURE
+  offset: 0xD3B8
+  symbol: object_link_goron_Tex_00D3B8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_link_goron_Tex_00D4B8:
+  type: TEXTURE
+  offset: 0xD4B8
+  symbol: object_link_goron_Tex_00D4B8
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_goron_Tex_00D8B8:
+  type: TEXTURE
+  offset: 0xD8B8
+  symbol: object_link_goron_Tex_00D8B8
+  format: I8
+  width: 8
+  height: 8
+
+object_link_goron_Tex_00E078:
+  type: TEXTURE
+  offset: 0xE078
+  symbol: object_link_goron_Tex_00E078
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_goron_Tex_0109B8:
+  type: TEXTURE
+  offset: 0x109B8
+  symbol: object_link_goron_Tex_0109B8
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_010AB8:
+  type: TEXTURE
+  offset: 0x10AB8
+  symbol: object_link_goron_Tex_010AB8
+  format: CI8
+  width: 16
+  height: 8
+
+object_link_goron_Tex_010B38:
+  type: TEXTURE
+  offset: 0x10B38
+  symbol: object_link_goron_Tex_010B38
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_010C38:
+  type: TEXTURE
+  offset: 0x10C38
+  symbol: object_link_goron_Tex_010C38
+  format: CI8
+  width: 32
+  height: 32
+
+object_link_goron_Tex_011628:
+  type: TEXTURE
+  offset: 0x11628
+  symbol: object_link_goron_Tex_011628
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_goron_Tex_011728:
+  type: TEXTURE
+  offset: 0x11728
+  symbol: object_link_goron_Tex_011728
+  format: RGBA16
+  width: 8
+  height: 32
+
+object_link_goron_Tex_011C10:
+  type: TEXTURE
+  offset: 0x11C10
+  symbol: object_link_goron_Tex_011C10
+  format: I4
+  width: 32
+  height: 32
+
+object_link_goron_Tex_011E10:
+  type: TEXTURE
+  offset: 0x11E10
+  symbol: object_link_goron_Tex_011E10
+  format: I4
+  width: 64
+  height: 64
+
+object_link_goron_Tex_012930:
+  type: TEXTURE
+  offset: 0x12930
+  symbol: object_link_goron_Tex_012930
+  format: I4
+  width: 64
+  height: 64
+
+object_link_goron_Tex_013660:
+  type: TEXTURE
+  offset: 0x13660
+  symbol: object_link_goron_Tex_013660
+  format: I4
+  width: 64
+  height: 64
+
+object_link_goron_Tex_013E60:
+  type: TEXTURE
+  offset: 0x13E60
+  symbol: object_link_goron_Tex_013E60
+  format: I4
+  width: 64
+  height: 64
+
+
+object_link_goronVtx_004380:
+  type: MM:ARRAY
+  offset: 0x004380
+  symbol: object_link_goronVtx_004380
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_004670:
+  type: MM:ARRAY
+  offset: 0x004670
+  symbol: object_link_goronVtx_004670
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_004A50:
+  type: MM:ARRAY
+  offset: 0x004A50
+  symbol: object_link_goronVtx_004A50
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_004B60:
+  type: MM:ARRAY
+  offset: 0x004B60
+  symbol: object_link_goronVtx_004B60
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_004E50:
+  type: MM:ARRAY
+  offset: 0x004E50
+  symbol: object_link_goronVtx_004E50
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_005230:
+  type: MM:ARRAY
+  offset: 0x005230
+  symbol: object_link_goronVtx_005230
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_005340:
+  type: MM:ARRAY
+  offset: 0x005340
+  symbol: object_link_goronVtx_005340
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_0053A0:
+  type: MM:ARRAY
+  offset: 0x0053A0
+  symbol: object_link_goronVtx_0053A0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_0055E0:
+  type: MM:ARRAY
+  offset: 0x0055E0
+  symbol: object_link_goronVtx_0055E0
+  count: 234
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_006480:
+  type: MM:ARRAY
+  offset: 0x006480
+  symbol: object_link_goronVtx_006480
+  count: 156
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_006E40:
+  type: MM:ARRAY
+  offset: 0x006E40
+  symbol: object_link_goronVtx_006E40
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007240:
+  type: MM:ARRAY
+  offset: 0x007240
+  symbol: object_link_goronVtx_007240
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_0074F0:
+  type: MM:ARRAY
+  offset: 0x0074F0
+  symbol: object_link_goronVtx_0074F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007630:
+  type: MM:ARRAY
+  offset: 0x007630
+  symbol: object_link_goronVtx_007630
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007A30:
+  type: MM:ARRAY
+  offset: 0x007A30
+  symbol: object_link_goronVtx_007A30
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007CE0:
+  type: MM:ARRAY
+  offset: 0x007CE0
+  symbol: object_link_goronVtx_007CE0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007E20:
+  type: MM:ARRAY
+  offset: 0x007E20
+  symbol: object_link_goronVtx_007E20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_007E50:
+  type: MM:ARRAY
+  offset: 0x007E50
+  symbol: object_link_goronVtx_007E50
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00A6A8:
+  type: MM:ARRAY
+  offset: 0x00A6A8
+  symbol: object_link_goronVtx_00A6A8
+  count: 294
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00B908:
+  type: MM:ARRAY
+  offset: 0x00B908
+  symbol: object_link_goronVtx_00B908
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00D8F8:
+  type: MM:ARRAY
+  offset: 0x00D8F8
+  symbol: object_link_goronVtx_00D8F8
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00E278:
+  type: MM:ARRAY
+  offset: 0x00E278
+  symbol: object_link_goronVtx_00E278
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00E9F8:
+  type: MM:ARRAY
+  offset: 0x00E9F8
+  symbol: object_link_goronVtx_00E9F8
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00ED58:
+  type: MM:ARRAY
+  offset: 0x00ED58
+  symbol: object_link_goronVtx_00ED58
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00F0B8:
+  type: MM:ARRAY
+  offset: 0x00F0B8
+  symbol: object_link_goronVtx_00F0B8
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00F418:
+  type: MM:ARRAY
+  offset: 0x00F418
+  symbol: object_link_goronVtx_00F418
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00F778:
+  type: MM:ARRAY
+  offset: 0x00F778
+  symbol: object_link_goronVtx_00F778
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_00FAD8:
+  type: MM:ARRAY
+  offset: 0x00FAD8
+  symbol: object_link_goronVtx_00FAD8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_011038:
+  type: MM:ARRAY
+  offset: 0x011038
+  symbol: object_link_goronVtx_011038
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_011928:
+  type: MM:ARRAY
+  offset: 0x011928
+  symbol: object_link_goronVtx_011928
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_012610:
+  type: MM:ARRAY
+  offset: 0x012610
+  symbol: object_link_goronVtx_012610
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goron_Matanimheader_013138TexScrollParams_013130:
+  type: BLOB
+  offset: 0x013130
+  symbol: object_link_goron_Matanimheader_013138TexScrollParams_013130
+  size: 0
+
+object_link_goronVtx_013140:
+  type: MM:ARRAY
+  offset: 0x013140
+  symbol: object_link_goronVtx_013140
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goron_Matanimheader_014684ColorParams_014674:
+  type: BLOB
+  offset: 0x014674
+  symbol: object_link_goron_Matanimheader_014684ColorParams_014674
+  size: 0
+
+object_link_goronVtx_0146B8:
+  type: MM:ARRAY
+  offset: 0x0146B8
+  symbol: object_link_goronVtx_0146B8
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_014A48:
+  type: MM:ARRAY
+  offset: 0x014A48
+  symbol: object_link_goronVtx_014A48
+  count: 153
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_goronVtx_0153D8:
+  type: MM:ARRAY
+  offset: 0x0153D8
+  symbol: object_link_goronVtx_0153D8
+  count: 363
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gLinkGoronShieldingSkelLimbs:
+  type: BLOB
+  offset: 0x177A8
+  symbol: gLinkGoronShieldingSkelLimbs
+  size: 0
+
+gLinkGoronSkelLimbs:
+  type: BLOB
+  offset: 0x17A30
+  symbol: gLinkGoronSkelLimbs
+  size: 0

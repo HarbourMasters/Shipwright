@@ -1,0 +1,618 @@
+:config:
+  segments:
+    - [ 6, 0x0108E5B0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0108E5B0 ]
+    - [ 9, 0x0108E5B0 ]
+    - [ 10, 0x0108E5B0 ]
+    - [ 11, 0x0108E5B0 ]
+    - [ 12, 0x0108E5B0 ]
+    - [ 13, 0x0108E5B0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGerudoPurple1TLUT:
+  type: TEXTURE
+  offset: 0x4BF8
+  symbol: gGerudoPurple1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGerudoPurple2TLUT:
+  type: TEXTURE
+  offset: 0x5178
+  symbol: gGerudoPurple2TLUT
+  format: RGBA16
+  width: 18
+  height: 12
+
+gGerudoPurpleChargingAnim:
+  type: OOT:ANIMATION
+  offset: 0x91D0
+  symbol: gGerudoPurpleChargingAnim
+
+gGerudoPurpleChestJewelTex:
+  type: TEXTURE
+  offset: 0x4F78
+  symbol: gGerudoPurpleChestJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4BF8
+
+gGerudoPurpleCrouchingLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x1FAC
+  symbol: gGerudoPurpleCrouchingLookAroundAnim
+
+gGerudoPurpleDarkFabricTex:
+  type: TEXTURE
+  offset: 0x4E38
+  symbol: gGerudoPurpleDarkFabricTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4BF8
+
+gGerudoPurpleEarTex:
+  type: TEXTURE
+  offset: 0x5368
+  symbol: gGerudoPurpleEarTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x5178
+
+gGerudoPurpleEyeClosedTex:
+  type: TEXTURE
+  offset: 0x6068
+  symbol: gGerudoPurpleEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5178
+
+gGerudoPurpleEyeHalfTex:
+  type: TEXTURE
+  offset: 0x59E8
+  symbol: gGerudoPurpleEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5178
+
+gGerudoPurpleEyeOpenTex:
+  type: TEXTURE
+  offset: 0x53E8
+  symbol: gGerudoPurpleEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5178
+
+gGerudoPurpleFabricFoldTex:
+  type: TEXTURE
+  offset: 0x5078
+  symbol: gGerudoPurpleFabricFoldTex
+  format: I8
+  width: 16
+  height: 16
+
+gGerudoPurpleFallingToGroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x1664
+  symbol: gGerudoPurpleFallingToGroundAnim
+
+gGerudoPurpleGlaiveBladeFabricPatternTex:
+  type: TEXTURE
+  offset: 0x5828
+  symbol: gGerudoPurpleGlaiveBladeFabricPatternTex
+  format: I8
+  width: 16
+  height: 16
+
+gGerudoPurpleGlaiveDL:
+  type: GFX
+  offset: 0x7FA8
+  symbol: gGerudoPurpleGlaiveDL
+
+gGerudoPurpleGlaiveGuardTex:
+  type: TEXTURE
+  offset: 0x57E8
+  symbol: gGerudoPurpleGlaiveGuardTex
+  format: I8
+  width: 8
+  height: 8
+
+gGerudoPurpleGlaiveHaftShoeSoleTex:
+  type: TEXTURE
+  offset: 0x59A8
+  symbol: gGerudoPurpleGlaiveHaftShoeSoleTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5178
+
+gGerudoPurpleGlaiveLimb:
+  type: OOT:LIMB
+  offset: 0x8D00
+  symbol: gGerudoPurpleGlaiveLimb
+  limb_type: Standard
+
+gGerudoPurpleGreatBayCutsceneAnim:
+  type: OOT:ANIMATION
+  offset: 0x460
+  symbol: gGerudoPurpleGreatBayCutsceneAnim
+
+gGerudoPurpleHairTex:
+  type: TEXTURE
+  offset: 0x5E68
+  symbol: gGerudoPurpleHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x5178
+
+gGerudoPurpleHeadDL:
+  type: GFX
+  offset: 0x87D0
+  symbol: gGerudoPurpleHeadDL
+
+gGerudoPurpleHeadLimb:
+  type: OOT:LIMB
+  offset: 0x8CC4
+  symbol: gGerudoPurpleHeadLimb
+  limb_type: Standard
+
+gGerudoPurpleHorizontalSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0x794
+  symbol: gGerudoPurpleHorizontalSlashAnim
+
+gGerudoPurpleLeftFootDL:
+  type: GFX
+  offset: 0x82D0
+  symbol: gGerudoPurpleLeftFootDL
+
+gGerudoPurpleLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8D48
+  symbol: gGerudoPurpleLeftFootLimb
+  limb_type: Standard
+
+gGerudoPurpleLeftForearmDL:
+  type: GFX
+  offset: 0x3F88
+  symbol: gGerudoPurpleLeftForearmDL
+
+gGerudoPurpleLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8D18
+  symbol: gGerudoPurpleLeftForearmLimb
+  limb_type: Standard
+
+gGerudoPurpleLeftHandDL:
+  type: GFX
+  offset: 0x8168
+  symbol: gGerudoPurpleLeftHandDL
+
+gGerudoPurpleLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x8D24
+  symbol: gGerudoPurpleLeftHandLimb
+  limb_type: Standard
+
+gGerudoPurpleLeftShinDL:
+  type: GFX
+  offset: 0x4A38
+  symbol: gGerudoPurpleLeftShinDL
+
+gGerudoPurpleLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x8D3C
+  symbol: gGerudoPurpleLeftShinLimb
+  limb_type: Standard
+
+gGerudoPurpleLeftThighDL:
+  type: GFX
+  offset: 0x4928
+  symbol: gGerudoPurpleLeftThighDL
+
+gGerudoPurpleLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x8D30
+  symbol: gGerudoPurpleLeftThighLimb
+  limb_type: Standard
+
+gGerudoPurpleLeftUpperArmDL:
+  type: GFX
+  offset: 0x3E50
+  symbol: gGerudoPurpleLeftUpperArmDL
+
+gGerudoPurpleLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8D0C
+  symbol: gGerudoPurpleLeftUpperArmLimb
+  limb_type: Standard
+
+gGerudoPurpleLipsFingersTex:
+  type: TEXTURE
+  offset: 0x5F68
+  symbol: gGerudoPurpleLipsFingersTex
+  format: I8
+  width: 16
+  height: 16
+
+gGerudoPurpleLookingAboutAnim:
+  type: OOT:ANIMATION
+  offset: 0x9D1C
+  symbol: gGerudoPurpleLookingAboutAnim
+
+gGerudoPurpleMetalTex:
+  type: TEXTURE
+  offset: 0x5DE8
+  symbol: gGerudoPurpleMetalTex
+  format: I8
+  width: 8
+  height: 16
+
+gGerudoPurpleNavelTex:
+  type: TEXTURE
+  offset: 0x4E78
+  symbol: gGerudoPurpleNavelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4BF8
+
+gGerudoPurpleNeckLimb:
+  type: OOT:LIMB
+  offset: 0x8CA0
+  symbol: gGerudoPurpleNeckLimb
+  limb_type: Standard
+
+gGerudoPurplePonytailDL:
+  type: GFX
+  offset: 0x86E0
+  symbol: gGerudoPurplePonytailDL
+
+gGerudoPurplePonytailLimb:
+  type: OOT:LIMB
+  offset: 0x8CAC
+  symbol: gGerudoPurplePonytailLimb
+  limb_type: Standard
+
+gGerudoPurpleRightFootDL:
+  type: GFX
+  offset: 0x8438
+  symbol: gGerudoPurpleRightFootDL
+
+gGerudoPurpleRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8D6C
+  symbol: gGerudoPurpleRightFootLimb
+  limb_type: Standard
+
+gGerudoPurpleRightForearmDL:
+  type: GFX
+  offset: 0x42C0
+  symbol: gGerudoPurpleRightForearmDL
+
+gGerudoPurpleRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x8CDC
+  symbol: gGerudoPurpleRightForearmLimb
+  limb_type: Standard
+
+gGerudoPurpleRightHandDL:
+  type: GFX
+  offset: 0x7DE8
+  symbol: gGerudoPurpleRightHandDL
+
+gGerudoPurpleRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x8CF4
+  symbol: gGerudoPurpleRightHandLimb
+  limb_type: Standard
+
+gGerudoPurpleRightShinDL:
+  type: GFX
+  offset: 0x4768
+  symbol: gGerudoPurpleRightShinDL
+
+gGerudoPurpleRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x8D60
+  symbol: gGerudoPurpleRightShinLimb
+  limb_type: Standard
+
+gGerudoPurpleRightThighDL:
+  type: GFX
+  offset: 0x4658
+  symbol: gGerudoPurpleRightThighDL
+
+gGerudoPurpleRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8D54
+  symbol: gGerudoPurpleRightThighLimb
+  limb_type: Standard
+
+gGerudoPurpleRightUpperArmDL:
+  type: GFX
+  offset: 0x4188
+  symbol: gGerudoPurpleRightUpperArmDL
+
+gGerudoPurpleRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x8CD0
+  symbol: gGerudoPurpleRightUpperArmLimb
+  limb_type: Standard
+
+gGerudoPurpleRightWristLimb:
+  type: OOT:LIMB
+  offset: 0x8CE8
+  symbol: gGerudoPurpleRightWristLimb
+  limb_type: Standard
+
+gGerudoPurpleRootLimb:
+  type: OOT:LIMB
+  offset: 0x8C88
+  symbol: gGerudoPurpleRootLimb
+  limb_type: Standard
+
+gGerudoPurpleRunningAwayCutsceneAnim:
+  type: OOT:ANIMATION
+  offset: 0x30C
+  symbol: gGerudoPurpleRunningAwayCutsceneAnim
+
+gGerudoPurpleShoeUpperTex:
+  type: TEXTURE
+  offset: 0x5928
+  symbol: gGerudoPurpleShoeUpperTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x5178
+
+gGerudoPurpleSkel:
+  type: MM:SKELETON
+  offset: 0x8DD8
+  symbol: gGerudoPurpleSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGerudoPurpleSkinEdgeTex:
+  type: TEXTURE
+  offset: 0x5328
+  symbol: gGerudoPurpleSkinEdgeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x5178
+
+gGerudoPurpleSkinShadowTex:
+  type: TEXTURE
+  offset: 0x4DF8
+  symbol: gGerudoPurpleSkinShadowTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4BF8
+
+gGerudoPurpleSlashToStandingAnim:
+  type: OOT:ANIMATION
+  offset: 0xBF0
+  symbol: gGerudoPurpleSlashToStandingAnim
+
+gGerudoPurpleStandingToCrouchAnim:
+  type: OOT:ANIMATION
+  offset: 0x1A40
+  symbol: gGerudoPurpleStandingToCrouchAnim
+
+gGerudoPurpleTorsoDL:
+  type: GFX
+  offset: 0x39B0
+  symbol: gGerudoPurpleTorsoDL
+
+gGerudoPurpleTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x8C94
+  symbol: gGerudoPurpleTorsoLimb
+  limb_type: Standard
+
+gGerudoPurpleVeilDL:
+  type: GFX
+  offset: 0x8628
+  symbol: gGerudoPurpleVeilDL
+
+gGerudoPurpleVeilLimb:
+  type: OOT:LIMB
+  offset: 0x8CB8
+  symbol: gGerudoPurpleVeilLimb
+  limb_type: Standard
+
+gGerudoPurpleWaistDL:
+  type: GFX
+  offset: 0x44C0
+  symbol: gGerudoPurpleWaistDL
+
+gGerudoPurpleWaistLimb:
+  type: OOT:LIMB
+  offset: 0x8D78
+  symbol: gGerudoPurpleWaistLimb
+  limb_type: Standard
+
+gGerudoPurpleWalkingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA344
+  symbol: gGerudoPurpleWalkingAnim
+
+
+object_glaVtx_001FC0:
+  type: MM:ARRAY
+  offset: 0x001FC0
+  symbol: object_glaVtx_001FC0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_0021A0:
+  type: MM:ARRAY
+  offset: 0x0021A0
+  symbol: object_glaVtx_0021A0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_002330:
+  type: MM:ARRAY
+  offset: 0x002330
+  symbol: object_glaVtx_002330
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_002510:
+  type: MM:ARRAY
+  offset: 0x002510
+  symbol: object_glaVtx_002510
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_0026A0:
+  type: MM:ARRAY
+  offset: 0x0026A0
+  symbol: object_glaVtx_0026A0
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_002CB0:
+  type: MM:ARRAY
+  offset: 0x002CB0
+  symbol: object_glaVtx_002CB0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_003000:
+  type: MM:ARRAY
+  offset: 0x003000
+  symbol: object_glaVtx_003000
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_003200:
+  type: MM:ARRAY
+  offset: 0x003200
+  symbol: object_glaVtx_003200
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_003550:
+  type: MM:ARRAY
+  offset: 0x003550
+  symbol: object_glaVtx_003550
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_003750:
+  type: MM:ARRAY
+  offset: 0x003750
+  symbol: object_glaVtx_003750
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_006468:
+  type: MM:ARRAY
+  offset: 0x006468
+  symbol: object_glaVtx_006468
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_006718:
+  type: MM:ARRAY
+  offset: 0x006718
+  symbol: object_glaVtx_006718
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_0069C8:
+  type: MM:ARRAY
+  offset: 0x0069C8
+  symbol: object_glaVtx_0069C8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_006BE8:
+  type: MM:ARRAY
+  offset: 0x006BE8
+  symbol: object_glaVtx_006BE8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_006E08:
+  type: MM:ARRAY
+  offset: 0x006E08
+  symbol: object_glaVtx_006E08
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_006F98:
+  type: MM:ARRAY
+  offset: 0x006F98
+  symbol: object_glaVtx_006F98
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_007058:
+  type: MM:ARRAY
+  offset: 0x007058
+  symbol: object_glaVtx_007058
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_glaVtx_007138:
+  type: MM:ARRAY
+  offset: 0x007138
+  symbol: object_glaVtx_007138
+  count: 203
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGerudoPurpleSkelLimbs:
+  type: BLOB
+  offset: 0x8D84
+  symbol: gGerudoPurpleSkelLimbs
+  size: 0

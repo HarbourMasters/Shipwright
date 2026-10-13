@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 10, 0x00E96E50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E96E50 ]
+    - [ 12, 0x00E96E50 ]
+    - [ 13, 0x00E96E50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_zora_DL_000DB0:
+  type: GFX
+  offset: 0xDB0
+  symbol: object_mask_zora_DL_000DB0
+
+object_mask_zora_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_mask_zora_TLUT_000000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_zora_Tex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_mask_zora_Tex_000200
+  format: CI8
+  width: 32
+  height: 32
+
+object_mask_zora_Tex_000600:
+  type: TEXTURE
+  offset: 0x600
+  symbol: object_mask_zora_Tex_000600
+  format: CI8
+  width: 16
+  height: 32
+
+object_mask_zora_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_mask_zora_Tex_000800
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_zora_Tex_000840:
+  type: TEXTURE
+  offset: 0x840
+  symbol: object_mask_zora_Tex_000840
+  format: CI8
+  width: 16
+  height: 32
+
+
+object_mask_zoraVtx_000A40:
+  type: MM:ARRAY
+  offset: 0x000A40
+  symbol: object_mask_zoraVtx_000A40
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

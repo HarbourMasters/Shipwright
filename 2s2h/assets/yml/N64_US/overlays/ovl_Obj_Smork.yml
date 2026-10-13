@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x00CA2F70 ]
+  virtual: [ 0x80A3D680, 0x00CA2F70 ]
+
+ovl_Obj_Smork_Vtx_000C10:
+  type: MM:ARRAY
+  offset: 0xC10
+  symbol: ovl_Obj_Smork_Vtx_000C10
+  count: 7
+  array_type: VTX
+

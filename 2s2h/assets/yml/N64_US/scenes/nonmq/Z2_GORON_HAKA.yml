@@ -1,0 +1,165 @@
+:config:
+  segments:
+    - [ 2, 0x01C3DDD0 ]
+
+Z2_GORON_HAKA:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_GORON_HAKA
+
+
+Z2_GORON_HAKACutsceneData_000268:
+  type: MM:CUTSCENE
+  offset: 0x000268
+  symbol: Z2_GORON_HAKACutsceneData_000268
+  size: 688
+
+Z2_GORON_HAKACutsceneData_000528:
+  type: MM:CUTSCENE
+  offset: 0x000528
+  symbol: Z2_GORON_HAKACutsceneData_000528
+  size: 2416
+
+Z2_GORON_HAKATexAnim_001008TexScrollParams_001000:
+  type: BLOB
+  offset: 0x001000
+  symbol: Z2_GORON_HAKATexAnim_001008TexScrollParams_001000
+  size: 0
+
+Z2_GORON_HAKATexAnim_001008:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001008
+  symbol: Z2_GORON_HAKATexAnim_001008
+
+Z2_GORON_HAKACollisionHeader_0030DC:
+  type: MM:COLLISION
+  offset: 0x0030DC
+  symbol: Z2_GORON_HAKACollisionHeader_0030DC
+
+Z2_GORON_HAKATex_003110:
+  type: TEXTURE
+  offset: 0x003110
+  symbol: Z2_GORON_HAKATex_003110
+  format: I8
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_003510:
+  type: TEXTURE
+  offset: 0x003510
+  symbol: Z2_GORON_HAKATex_003510
+  format: I4
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_003710:
+  type: TEXTURE
+  offset: 0x003710
+  symbol: Z2_GORON_HAKATex_003710
+  format: I8
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_003B10:
+  type: TEXTURE
+  offset: 0x003B10
+  symbol: Z2_GORON_HAKATex_003B10
+  format: I8
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_003F10:
+  type: TEXTURE
+  offset: 0x003F10
+  symbol: Z2_GORON_HAKATex_003F10
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_004710:
+  type: TEXTURE
+  offset: 0x004710
+  symbol: Z2_GORON_HAKATex_004710
+  format: RGBA16
+  width: 32
+  height: 16
+
+Z2_GORON_HAKATex_004B10:
+  type: TEXTURE
+  offset: 0x004B10
+  symbol: Z2_GORON_HAKATex_004B10
+  format: RGBA16
+  width: 8
+  height: 32
+
+Z2_GORON_HAKATex_004D10:
+  type: TEXTURE
+  offset: 0x004D10
+  symbol: Z2_GORON_HAKATex_004D10
+  format: IA4
+  width: 64
+  height: 64
+
+Z2_GORON_HAKATex_005510:
+  type: TEXTURE
+  offset: 0x005510
+  symbol: Z2_GORON_HAKATex_005510
+  format: IA16
+  width: 8
+  height: 8
+
+Z2_GORON_HAKATex_005590:
+  type: TEXTURE
+  offset: 0x005590
+  symbol: Z2_GORON_HAKATex_005590
+  format: IA4
+  width: 32
+  height: 32
+
+Z2_GORON_HAKATex_005790:
+  type: TEXTURE
+  offset: 0x005790
+  symbol: Z2_GORON_HAKATex_005790
+  format: IA16
+  width: 32
+  height: 64
+
+Z2_GORON_HAKATex_006790:
+  type: TEXTURE
+  offset: 0x006790
+  symbol: Z2_GORON_HAKATex_006790
+  format: IA8
+  width: 16
+  height: 32
+
+Z2_GORON_HAKATex_006990:
+  type: TEXTURE
+  offset: 0x006990
+  symbol: Z2_GORON_HAKATex_006990
+  format: I8
+  width: 64
+  height: 64
+
+Z2_GORON_HAKATex_007990:
+  type: TEXTURE
+  offset: 0x007990
+  symbol: Z2_GORON_HAKATex_007990
+  format: RGBA16
+  width: 64
+  height: 16
+
+Z2_GORON_HAKATex_008190:
+  type: TEXTURE
+  offset: 0x008190
+  symbol: Z2_GORON_HAKATex_008190
+  format: I8
+  width: 16
+  height: 32
+
+Z2_GORON_HAKATex_008390:
+  type: TEXTURE
+  offset: 0x008390
+  symbol: Z2_GORON_HAKATex_008390
+  format: I8
+  width: 32
+  height: 32

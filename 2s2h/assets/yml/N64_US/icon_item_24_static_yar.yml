@@ -1,0 +1,117 @@
+:config:
+  segments:
+    - [ 9, 0x009C6230 ]
+  compression: CMPDMA
+
+gQuestIconBigMagicJarTex:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gQuestIconBigMagicJarTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconBossKeyTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gQuestIconBossKeyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconCompassTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gQuestIconCompassTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconDungeonMapTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gQuestIconDungeonMapTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconGoldSkulltula2Tex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gQuestIconGoldSkulltula2Tex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconGoldSkulltulaTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gQuestIconGoldSkulltulaTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconHeartContainer2Tex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gQuestIconHeartContainer2Tex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconHeartContainer3Tex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gQuestIconHeartContainer3Tex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconHeartContainerTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gQuestIconHeartContainerTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconLinkHumanFaceTex:
+  type: TEXTURE
+  offset: 0x7500
+  symbol: gQuestIconLinkHumanFaceTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gQuestIconPieceOfHeart2Tex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gQuestIconPieceOfHeart2Tex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconPieceOfHeartTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gQuestIconPieceOfHeartTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconSmallKeyTex:
+  type: TEXTURE
+  offset: 0x5A00
+  symbol: gQuestIconSmallKeyTex
+  format: RGBA32
+  width: 24
+  height: 24
+
+gQuestIconSmallMagicJarTex:
+  type: TEXTURE
+  offset: 0x6300
+  symbol: gQuestIconSmallMagicJarTex
+  format: RGBA32
+  width: 24
+  height: 24
+

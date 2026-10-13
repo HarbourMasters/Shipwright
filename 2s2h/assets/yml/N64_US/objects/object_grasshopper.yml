@@ -1,0 +1,584 @@
+:config:
+  segments:
+    - [ 6, 0x010E7A20 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010E7A20 ]
+    - [ 9, 0x010E7A20 ]
+    - [ 10, 0x010E7A20 ]
+    - [ 11, 0x010E7A20 ]
+    - [ 12, 0x010E7A20 ]
+    - [ 13, 0x010E7A20 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDragonflyAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x66C
+  symbol: gDragonflyAttackAnim
+
+gDragonflyBackLeftFootDL:
+  type: GFX
+  offset: 0x3BE0
+  symbol: gDragonflyBackLeftFootDL
+
+gDragonflyBackLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x3E14
+  symbol: gDragonflyBackLeftFootLimb
+  limb_type: Standard
+
+gDragonflyBackLeftLowerLegDL:
+  type: GFX
+  offset: 0x2C70
+  symbol: gDragonflyBackLeftLowerLegDL
+
+gDragonflyBackLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E08
+  symbol: gDragonflyBackLeftLowerLegLimb
+  limb_type: Standard
+
+gDragonflyBackLeftUpperLegDL:
+  type: GFX
+  offset: 0x31A8
+  symbol: gDragonflyBackLeftUpperLegDL
+
+gDragonflyBackLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3DFC
+  symbol: gDragonflyBackLeftUpperLegLimb
+  limb_type: Standard
+
+gDragonflyBackRightFootDL:
+  type: GFX
+  offset: 0x2BE0
+  symbol: gDragonflyBackRightFootDL
+
+gDragonflyBackRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x3E38
+  symbol: gDragonflyBackRightFootLimb
+  limb_type: Standard
+
+gDragonflyBackRightLowerLegDL:
+  type: GFX
+  offset: 0x2D00
+  symbol: gDragonflyBackRightLowerLegDL
+
+gDragonflyBackRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E2C
+  symbol: gDragonflyBackRightLowerLegLimb
+  limb_type: Standard
+
+gDragonflyBackRightUpperLegDL:
+  type: GFX
+  offset: 0x3110
+  symbol: gDragonflyBackRightUpperLegDL
+
+gDragonflyBackRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E20
+  symbol: gDragonflyBackRightUpperLegLimb
+  limb_type: Standard
+
+gDragonflyDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x47AC
+  symbol: gDragonflyDamageAnim
+
+gDragonflyDeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x8D4
+  symbol: gDragonflyDeadAnim
+
+gDragonflyEyeTex:
+  type: TEXTURE
+  offset: 0x1A30
+  symbol: gDragonflyEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDragonflyFaceTex:
+  type: TEXTURE
+  offset: 0x1AB0
+  symbol: gDragonflyFaceTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDragonflyFallAnim:
+  type: OOT:ANIMATION
+  offset: 0x9E0
+  symbol: gDragonflyFallAnim
+
+gDragonflyFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0xF9C
+  symbol: gDragonflyFlyAnim
+
+gDragonflyFrontLeftFootDL:
+  type: GFX
+  offset: 0x3C70
+  symbol: gDragonflyFrontLeftFootDL
+
+gDragonflyFrontLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x3E5C
+  symbol: gDragonflyFrontLeftFootLimb
+  limb_type: Standard
+
+gDragonflyFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x2EC0
+  symbol: gDragonflyFrontLeftLowerLegDL
+
+gDragonflyFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E50
+  symbol: gDragonflyFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gDragonflyFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0x2D90
+  symbol: gDragonflyFrontLeftUpperLegDL
+
+gDragonflyFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E44
+  symbol: gDragonflyFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gDragonflyFrontRightFootDL:
+  type: GFX
+  offset: 0x3D00
+  symbol: gDragonflyFrontRightFootDL
+
+gDragonflyFrontRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x3E80
+  symbol: gDragonflyFrontRightFootLimb
+  limb_type: Standard
+
+gDragonflyFrontRightLowerLegDL:
+  type: GFX
+  offset: 0x2F50
+  symbol: gDragonflyFrontRightLowerLegDL
+
+gDragonflyFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E74
+  symbol: gDragonflyFrontRightLowerLegLimb
+  limb_type: Standard
+
+gDragonflyFrontRightUpperLegDL:
+  type: GFX
+  offset: 0x2E28
+  symbol: gDragonflyFrontRightUpperLegDL
+
+gDragonflyFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3E68
+  symbol: gDragonflyFrontRightUpperLegLimb
+  limb_type: Standard
+
+gDragonflyHeadAndTailTipTex:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: gDragonflyHeadAndTailTipTex
+  format: RGBA16
+  width: 32
+  height: 8
+
+gDragonflyHeadDL:
+  type: GFX
+  offset: 0x39E0
+  symbol: gDragonflyHeadDL
+
+gDragonflyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3E8C
+  symbol: gDragonflyHeadLimb
+  limb_type: Standard
+
+gDragonflyHoverAnim:
+  type: OOT:ANIMATION
+  offset: 0x524C
+  symbol: gDragonflyHoverAnim
+
+gDragonflyJawDL:
+  type: GFX
+  offset: 0x3900
+  symbol: gDragonflyJawDL
+
+gDragonflyJawLimb:
+  type: OOT:LIMB
+  offset: 0x3E98
+  symbol: gDragonflyJawLimb
+  limb_type: Standard
+
+gDragonflyLeftWingDL:
+  type: GFX
+  offset: 0x2FE0
+  symbol: gDragonflyLeftWingDL
+
+gDragonflyLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x3DE4
+  symbol: gDragonflyLeftWingLimb
+  limb_type: Standard
+
+gDragonflyLowerTailAnim:
+  type: OOT:ANIMATION
+  offset: 0x4BC8
+  symbol: gDragonflyLowerTailAnim
+
+gDragonflyMouthAndTailSegmentUndersideTex:
+  type: TEXTURE
+  offset: 0xFB0
+  symbol: gDragonflyMouthAndTailSegmentUndersideTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDragonflyRaiseTailAnim:
+  type: OOT:ANIMATION
+  offset: 0x42F0
+  symbol: gDragonflyRaiseTailAnim
+
+gDragonflyRightWingDL:
+  type: GFX
+  offset: 0x3078
+  symbol: gDragonflyRightWingDL
+
+gDragonflyRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x3DF0
+  symbol: gDragonflyRightWingLimb
+  limb_type: Standard
+
+gDragonflyRootLimb:
+  type: OOT:LIMB
+  offset: 0x3D90
+  symbol: gDragonflyRootLimb
+  limb_type: Standard
+
+gDragonflySkel:
+  type: MM:SKELETON
+  offset: 0x3F00
+  symbol: gDragonflySkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDragonflyStripeTex:
+  type: TEXTURE
+  offset: 0x1630
+  symbol: gDragonflyStripeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDragonflyTailBackTex:
+  type: TEXTURE
+  offset: 0x1030
+  symbol: gDragonflyTailBackTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDragonflyTailSegment1DL:
+  type: GFX
+  offset: 0x3660
+  symbol: gDragonflyTailSegment1DL
+
+gDragonflyTailSegment1Limb:
+  type: OOT:LIMB
+  offset: 0x3D9C
+  symbol: gDragonflyTailSegment1Limb
+  limb_type: Standard
+
+gDragonflyTailSegment2DL:
+  type: GFX
+  offset: 0x3520
+  symbol: gDragonflyTailSegment2DL
+
+gDragonflyTailSegment2Limb:
+  type: OOT:LIMB
+  offset: 0x3DA8
+  symbol: gDragonflyTailSegment2Limb
+  limb_type: Standard
+
+gDragonflyTailSegment3DL:
+  type: GFX
+  offset: 0x33E0
+  symbol: gDragonflyTailSegment3DL
+
+gDragonflyTailSegment3Limb:
+  type: OOT:LIMB
+  offset: 0x3DB4
+  symbol: gDragonflyTailSegment3Limb
+  limb_type: Standard
+
+gDragonflyTailSegment4DL:
+  type: GFX
+  offset: 0x32E8
+  symbol: gDragonflyTailSegment4DL
+
+gDragonflyTailSegment4Limb:
+  type: OOT:LIMB
+  offset: 0x3DC0
+  symbol: gDragonflyTailSegment4Limb
+  limb_type: Standard
+
+gDragonflyTailTipDL:
+  type: GFX
+  offset: 0x3240
+  symbol: gDragonflyTailTipDL
+
+gDragonflyTailTipLimb:
+  type: OOT:LIMB
+  offset: 0x3DCC
+  symbol: gDragonflyTailTipLimb
+  limb_type: Standard
+
+gDragonflyThoraxBackAndLegsTex:
+  type: TEXTURE
+  offset: 0x1430
+  symbol: gDragonflyThoraxBackAndLegsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDragonflyThoraxDL:
+  type: GFX
+  offset: 0x3798
+  symbol: gDragonflyThoraxDL
+
+gDragonflyThoraxLimb:
+  type: OOT:LIMB
+  offset: 0x3DD8
+  symbol: gDragonflyThoraxLimb
+  limb_type: Standard
+
+gDragonflyThoraxSidesTex:
+  type: TEXTURE
+  offset: 0x18B0
+  symbol: gDragonflyThoraxSidesTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gDragonflyWingTex:
+  type: TEXTURE
+  offset: 0x19B0
+  symbol: gDragonflyWingTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_grasshopperVtx_001CB0:
+  type: MM:ARRAY
+  offset: 0x001CB0
+  symbol: object_grasshopperVtx_001CB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001CE0:
+  type: MM:ARRAY
+  offset: 0x001CE0
+  symbol: object_grasshopperVtx_001CE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001D10:
+  type: MM:ARRAY
+  offset: 0x001D10
+  symbol: object_grasshopperVtx_001D10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001D40:
+  type: MM:ARRAY
+  offset: 0x001D40
+  symbol: object_grasshopperVtx_001D40
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001E00:
+  type: MM:ARRAY
+  offset: 0x001E00
+  symbol: object_grasshopperVtx_001E00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001EC0:
+  type: MM:ARRAY
+  offset: 0x001EC0
+  symbol: object_grasshopperVtx_001EC0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001EF0:
+  type: MM:ARRAY
+  offset: 0x001EF0
+  symbol: object_grasshopperVtx_001EF0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001F20:
+  type: MM:ARRAY
+  offset: 0x001F20
+  symbol: object_grasshopperVtx_001F20
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_001FB0:
+  type: MM:ARRAY
+  offset: 0x001FB0
+  symbol: object_grasshopperVtx_001FB0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002040:
+  type: MM:ARRAY
+  offset: 0x002040
+  symbol: object_grasshopperVtx_002040
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002100:
+  type: MM:ARRAY
+  offset: 0x002100
+  symbol: object_grasshopperVtx_002100
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_0021C0:
+  type: MM:ARRAY
+  offset: 0x0021C0
+  symbol: object_grasshopperVtx_0021C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_0022C0:
+  type: MM:ARRAY
+  offset: 0x0022C0
+  symbol: object_grasshopperVtx_0022C0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002370:
+  type: MM:ARRAY
+  offset: 0x002370
+  symbol: object_grasshopperVtx_002370
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002440:
+  type: MM:ARRAY
+  offset: 0x002440
+  symbol: object_grasshopperVtx_002440
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002510:
+  type: MM:ARRAY
+  offset: 0x002510
+  symbol: object_grasshopperVtx_002510
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_0025C0:
+  type: MM:ARRAY
+  offset: 0x0025C0
+  symbol: object_grasshopperVtx_0025C0
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_0028D0:
+  type: MM:ARRAY
+  offset: 0x0028D0
+  symbol: object_grasshopperVtx_0028D0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002960:
+  type: MM:ARRAY
+  offset: 0x002960
+  symbol: object_grasshopperVtx_002960
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002B50:
+  type: MM:ARRAY
+  offset: 0x002B50
+  symbol: object_grasshopperVtx_002B50
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002B80:
+  type: MM:ARRAY
+  offset: 0x002B80
+  symbol: object_grasshopperVtx_002B80
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grasshopperVtx_002BB0:
+  type: MM:ARRAY
+  offset: 0x002BB0
+  symbol: object_grasshopperVtx_002BB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDragonflySkelLimbs:
+  type: BLOB
+  offset: 0x3EA4
+  symbol: gDragonflySkelLimbs
+  size: 0

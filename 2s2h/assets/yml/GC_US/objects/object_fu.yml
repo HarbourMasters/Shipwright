@@ -1,0 +1,469 @@
+:config:
+  segments:
+    - [ 6, 0x01026850 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01026850 ]
+    - [ 9, 0x01026850 ]
+    - [ 10, 0x01026850 ]
+    - [ 11, 0x01026850 ]
+    - [ 12, 0x01026850 ]
+    - [ 13, 0x01026850 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGuruGuruBlueTriangleDL:
+  type: GFX
+  offset: 0x4390
+  symbol: gGuruGuruBlueTriangleDL
+
+gGuruGuruChestAndMusicBoxPipeDL:
+  type: GFX
+  offset: 0x3320
+  symbol: gGuruGuruChestAndMusicBoxPipeDL
+
+gGuruGuruChestAndMusicBoxPipeLimb:
+  type: OOT:LIMB
+  offset: 0x6BF4
+  symbol: gGuruGuruChestAndMusicBoxPipeLimb
+  limb_type: Standard
+
+gGuruGuruClothesTLUT:
+  type: TEXTURE
+  offset: 0x4C60
+  symbol: gGuruGuruClothesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuruGuruEarTex:
+  type: TEXTURE
+  offset: 0x56A0
+  symbol: gGuruGuruEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4E60
+
+gGuruGuruEyeAngryTex:
+  type: TEXTURE
+  offset: 0x6320
+  symbol: gGuruGuruEyeAngryTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4E60
+
+gGuruGuruEyeClosedTex:
+  type: TEXTURE
+  offset: 0x5F20
+  symbol: gGuruGuruEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4E60
+
+gGuruGuruFingersAndToesTex:
+  type: TEXTURE
+  offset: 0x55A0
+  symbol: gGuruGuruFingersAndToesTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4E60
+
+gGuruGuruHairTex:
+  type: TEXTURE
+  offset: 0x6B20
+  symbol: gGuruGuruHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4E60
+
+gGuruGuruHeadDL:
+  type: GFX
+  offset: 0x36A0
+  symbol: gGuruGuruHeadDL
+
+gGuruGuruHeadLimb:
+  type: OOT:LIMB
+  offset: 0x6C3C
+  symbol: gGuruGuruHeadLimb
+  limb_type: Standard
+
+gGuruGuruHeadSkinTex:
+  type: TEXTURE
+  offset: 0x5160
+  symbol: gGuruGuruHeadSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4E60
+
+gGuruGuruHornAndPipeTex:
+  type: TEXTURE
+  offset: 0x5EE0
+  symbol: gGuruGuruHornAndPipeTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4C60
+
+gGuruGuruHornDL:
+  type: GFX
+  offset: 0x3130
+  symbol: gGuruGuruHornDL
+
+gGuruGuruHornLimb:
+  type: OOT:LIMB
+  offset: 0x6C48
+  symbol: gGuruGuruHornLimb
+  limb_type: Standard
+
+gGuruGuruLeftArmAndMusicBoxDL:
+  type: GFX
+  offset: 0x40E0
+  symbol: gGuruGuruLeftArmAndMusicBoxDL
+
+gGuruGuruLeftArmAndMusicBoxLimb:
+  type: OOT:LIMB
+  offset: 0x6C00
+  symbol: gGuruGuruLeftArmAndMusicBoxLimb
+  limb_type: Standard
+
+gGuruGuruLeftFootDL:
+  type: GFX
+  offset: 0x4B58
+  symbol: gGuruGuruLeftFootDL
+
+gGuruGuruLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x6BC4
+  symbol: gGuruGuruLeftFootLimb
+  limb_type: Standard
+
+gGuruGuruLeftLegDL:
+  type: GFX
+  offset: 0x4A08
+  symbol: gGuruGuruLeftLegDL
+
+gGuruGuruLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x6BB8
+  symbol: gGuruGuruLeftLegLimb
+  limb_type: Standard
+
+gGuruGuruLeftThighDL:
+  type: GFX
+  offset: 0x48E8
+  symbol: gGuruGuruLeftThighDL
+
+gGuruGuruLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x6BAC
+  symbol: gGuruGuruLeftThighLimb
+  limb_type: Standard
+
+gGuruGuruMouthAngryTex:
+  type: TEXTURE
+  offset: 0x6920
+  symbol: gGuruGuruMouthAngryTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4E60
+
+gGuruGuruMouthOpenTex:
+  type: TEXTURE
+  offset: 0x6720
+  symbol: gGuruGuruMouthOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x4E60
+
+gGuruGuruMusicBoxTex:
+  type: TEXTURE
+  offset: 0x51A0
+  symbol: gGuruGuruMusicBoxTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+gGuruGuruPantsTex:
+  type: TEXTURE
+  offset: 0x5060
+  symbol: gGuruGuruPantsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4C60
+
+gGuruGuruPlayAndMoveHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x57C
+  symbol: gGuruGuruPlayAndMoveHeadAnim
+
+gGuruGuruPlayStillAnim:
+  type: OOT:ANIMATION
+  offset: 0xB04
+  symbol: gGuruGuruPlayStillAnim
+
+gGuruGuruRightArmDL:
+  type: GFX
+  offset: 0x3D08
+  symbol: gGuruGuruRightArmDL
+
+gGuruGuruRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x6C24
+  symbol: gGuruGuruRightArmLimb
+  limb_type: Standard
+
+gGuruGuruRightFootDL:
+  type: GFX
+  offset: 0x47E0
+  symbol: gGuruGuruRightFootDL
+
+gGuruGuruRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x6BE8
+  symbol: gGuruGuruRightFootLimb
+  limb_type: Standard
+
+gGuruGuruRightHandAndCrankDL:
+  type: GFX
+  offset: 0x3E38
+  symbol: gGuruGuruRightHandAndCrankDL
+
+gGuruGuruRightHandAndCrankLimb:
+  type: OOT:LIMB
+  offset: 0x6C30
+  symbol: gGuruGuruRightHandAndCrankLimb
+  limb_type: Standard
+
+gGuruGuruRightLegDL:
+  type: GFX
+  offset: 0x4690
+  symbol: gGuruGuruRightLegDL
+
+gGuruGuruRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x6BDC
+  symbol: gGuruGuruRightLegLimb
+  limb_type: Standard
+
+gGuruGuruRightShoulderDL:
+  type: GFX
+  offset: 0x3BD8
+  symbol: gGuruGuruRightShoulderDL
+
+gGuruGuruRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x6C18
+  symbol: gGuruGuruRightShoulderLimb
+  limb_type: Standard
+
+gGuruGuruRightThighDL:
+  type: GFX
+  offset: 0x4570
+  symbol: gGuruGuruRightThighDL
+
+gGuruGuruRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x6BD0
+  symbol: gGuruGuruRightThighLimb
+  limb_type: Standard
+
+gGuruGuruShirtTex:
+  type: TEXTURE
+  offset: 0x5AE0
+  symbol: gGuruGuruShirtTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+gGuruGuruSkel:
+  type: MM:SKELETON
+  offset: 0x6C90
+  symbol: gGuruGuruSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGuruGuruSkinTLUT:
+  type: TEXTURE
+  offset: 0x4E60
+  symbol: gGuruGuruSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGuruGuruTorsoDL:
+  type: GFX
+  offset: 0x4460
+  symbol: gGuruGuruTorsoDL
+
+gGuruGuruTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x6BA0
+  symbol: gGuruGuruTorsoLimb
+  limb_type: Standard
+
+gGuruGuruTriangleLimb:
+  type: OOT:LIMB
+  offset: 0x6C0C
+  symbol: gGuruGuruTriangleLimb
+  limb_type: Standard
+
+gGuruGuruUpperHornAndCrankTex:
+  type: TEXTURE
+  offset: 0x56E0
+  symbol: gGuruGuruUpperHornAndCrankTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4C60
+
+
+object_fuVtx_000B20:
+  type: MM:ARRAY
+  offset: 0x000B20
+  symbol: object_fuVtx_000B20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_000B50:
+  type: MM:ARRAY
+  offset: 0x000B50
+  symbol: object_fuVtx_000B50
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_000F00:
+  type: MM:ARRAY
+  offset: 0x000F00
+  symbol: object_fuVtx_000F00
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0012A0:
+  type: MM:ARRAY
+  offset: 0x0012A0
+  symbol: object_fuVtx_0012A0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_001420:
+  type: MM:ARRAY
+  offset: 0x001420
+  symbol: object_fuVtx_001420
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0015A0:
+  type: MM:ARRAY
+  offset: 0x0015A0
+  symbol: object_fuVtx_0015A0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0018A0:
+  type: MM:ARRAY
+  offset: 0x0018A0
+  symbol: object_fuVtx_0018A0
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0020F0:
+  type: MM:ARRAY
+  offset: 0x0020F0
+  symbol: object_fuVtx_0020F0
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0027F0:
+  type: MM:ARRAY
+  offset: 0x0027F0
+  symbol: object_fuVtx_0027F0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_0028D0:
+  type: MM:ARRAY
+  offset: 0x0028D0
+  symbol: object_fuVtx_0028D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002A90:
+  type: MM:ARRAY
+  offset: 0x002A90
+  symbol: object_fuVtx_002A90
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002C00:
+  type: MM:ARRAY
+  offset: 0x002C00
+  symbol: object_fuVtx_002C00
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002CE0:
+  type: MM:ARRAY
+  offset: 0x002CE0
+  symbol: object_fuVtx_002CE0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_002EA0:
+  type: MM:ARRAY
+  offset: 0x002EA0
+  symbol: object_fuVtx_002EA0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fuVtx_003010:
+  type: MM:ARRAY
+  offset: 0x003010
+  symbol: object_fuVtx_003010
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGuruGuruSkelLimbs:
+  type: BLOB
+  offset: 0x6C54
+  symbol: gGuruGuruSkelLimbs
+  size: 0

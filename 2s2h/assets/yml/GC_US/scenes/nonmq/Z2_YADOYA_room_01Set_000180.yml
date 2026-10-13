@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01D6C880 ]
+    - [ 2, 0x01D5A160 ]
+  directory: scenes/nonmq/Z2_YADOYA
+  external_files:
+    - GC_US/scenes/nonmq/Z2_YADOYA_room_01.yml
+    - GC_US/misc/scene_texture_01.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_YADOYA.yml
+
+Z2_YADOYA_room_01Set_000180:
+  type: MM:ROOM
+  offset: 0x180
+  symbol: Z2_YADOYA_room_01Set_000180
+  base_name: Z2_YADOYA_room_01

@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x00F58F40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F58F40 ]
+    - [ 9, 0x00F58F40 ]
+    - [ 10, 0x00F58F40 ]
+    - [ 11, 0x00F58F40 ]
+    - [ 12, 0x00F58F40 ]
+    - [ 13, 0x00F58F40 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiDungeonMapDL:
+  type: GFX
+  offset: 0x3C0
+  symbol: gGiDungeonMapDL
+
+gGiDungeonMapInscriptionsTex:
+  type: TEXTURE
+  offset: 0xD60
+  symbol: gGiDungeonMapInscriptionsTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiStoneOfAgonyDL:
+  type: GFX
+  offset: 0xB70
+  symbol: gGiStoneOfAgonyDL
+
+
+object_gi_mapVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mapVtx_000000
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mapVtx_0005C0:
+  type: MM:ARRAY
+  offset: 0x0005C0
+  symbol: object_gi_mapVtx_0005C0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

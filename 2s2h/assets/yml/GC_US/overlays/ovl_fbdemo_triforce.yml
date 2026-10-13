@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x00CF9E20 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x80AA6630, 0x00CF9E20 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sTransTriforceDL:
+  type: GFX
+  offset: 0x5C0
+  symbol: sTransTriforceDL
+
+sTransTriforceVtx:
+  type: MM:ARRAY
+  offset: 0x5F0
+  symbol: sTransTriforceVtx
+  count: 10
+  array_type: VTX
+

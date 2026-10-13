@@ -1,0 +1,876 @@
+:config:
+  segments:
+    - [ 6, 0x0101B000 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0101B000 ]
+    - [ 9, 0x0101B000 ]
+    - [ 10, 0x0101B000 ]
+    - [ 11, 0x0101B000 ]
+    - [ 12, 0x0101B000 ]
+    - [ 13, 0x0101B000 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gOwlBeakTex:
+  type: TEXTURE
+  offset: 0x86B8
+  symbol: gOwlBeakTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlChinMarking1Tex:
+  type: TEXTURE
+  offset: 0x76B8
+  symbol: gOwlChinMarking1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlChinMarking2Tex:
+  type: TEXTURE
+  offset: 0x9AB8
+  symbol: gOwlChinMarking2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlEyeClosedTex:
+  type: TEXTURE
+  offset: 0x96B8
+  symbol: gOwlEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+
+gOwlEyeHalfTex:
+  type: TEXTURE
+  offset: 0x92B8
+  symbol: gOwlEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+
+gOwlEyeOpenTex:
+  type: TEXTURE
+  offset: 0x8EB8
+  symbol: gOwlEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+
+gOwlEyebrowTex:
+  type: TEXTURE
+  offset: 0xA4B8
+  symbol: gOwlEyebrowTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gOwlFeatherDL:
+  type: GFX
+  offset: 0x1200
+  symbol: gOwlFeatherDL
+
+gOwlFeatherTex:
+  type: TEXTURE
+  offset: 0x1290
+  symbol: gOwlFeatherTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gOwlFeathersTex:
+  type: TEXTURE
+  offset: 0xA2B8
+  symbol: gOwlFeathersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOwlFlightFeathers1Tex:
+  type: TEXTURE
+  offset: 0xB4B8
+  symbol: gOwlFlightFeathers1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlFlightFeathers2Tex:
+  type: TEXTURE
+  offset: 0xBCB8
+  symbol: gOwlFlightFeathers2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x1ADC
+  symbol: gOwlFlyAnim
+
+gOwlFlyingEyeTLUT:
+  type: TEXTURE
+  offset: 0x74B8
+  symbol: gOwlFlyingEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOwlFlyingHeadDL:
+  type: GFX
+  offset: 0x52F0
+  symbol: gOwlFlyingHeadDL
+
+gOwlFlyingHeadLimb:
+  type: OOT:LIMB
+  offset: 0xC4D0
+  symbol: gOwlFlyingHeadLimb
+  limb_type: Standard
+
+gOwlFlyingLeftEyebrowDL:
+  type: GFX
+  offset: 0x5828
+  symbol: gOwlFlyingLeftEyebrowDL
+
+gOwlFlyingLeftEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0xC4E8
+  symbol: gOwlFlyingLeftEyebrowLimb
+  limb_type: Standard
+
+gOwlFlyingLeftTalonDL:
+  type: GFX
+  offset: 0x7120
+  symbol: gOwlFlyingLeftTalonDL
+
+gOwlFlyingLeftTalonLimb:
+  type: OOT:LIMB
+  offset: 0xC590
+  symbol: gOwlFlyingLeftTalonLimb
+  limb_type: Standard
+
+gOwlFlyingLowerBodyDL:
+  type: GFX
+  offset: 0x5050
+  symbol: gOwlFlyingLowerBodyDL
+
+gOwlFlyingLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0xC4B8
+  symbol: gOwlFlyingLowerBodyLimb
+  limb_type: Standard
+
+gOwlFlyingLowerLeftLegDL:
+  type: GFX
+  offset: 0x7030
+  symbol: gOwlFlyingLowerLeftLegDL
+
+gOwlFlyingLowerLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xC584
+  symbol: gOwlFlyingLowerLeftLegLimb
+  limb_type: Standard
+
+gOwlFlyingLowerLeftWingDL:
+  type: GFX
+  offset: 0x5C30
+  symbol: gOwlFlyingLowerLeftWingDL
+
+gOwlFlyingLowerLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0xC4F4
+  symbol: gOwlFlyingLowerLeftWingLimb
+  limb_type: Standard
+
+gOwlFlyingLowerRightLegDL:
+  type: GFX
+  offset: 0x59A8
+  symbol: gOwlFlyingLowerRightLegDL
+
+gOwlFlyingLowerRightLegLimb:
+  type: OOT:LIMB
+  offset: 0xC560
+  symbol: gOwlFlyingLowerRightLegLimb
+  limb_type: Standard
+
+gOwlFlyingLowerRightWingDL:
+  type: GFX
+  offset: 0x6578
+  symbol: gOwlFlyingLowerRightWingDL
+
+gOwlFlyingLowerRightWingLimb:
+  type: OOT:LIMB
+  offset: 0xC524
+  symbol: gOwlFlyingLowerRightWingLimb
+  limb_type: Standard
+
+gOwlFlyingMiddleLeftWing1DL:
+  type: GFX
+  offset: 0x5E70
+  symbol: gOwlFlyingMiddleLeftWing1DL
+
+gOwlFlyingMiddleLeftWing1Limb:
+  type: OOT:LIMB
+  offset: 0xC500
+  symbol: gOwlFlyingMiddleLeftWing1Limb
+  limb_type: Standard
+
+gOwlFlyingMiddleLeftWing2DL:
+  type: GFX
+  offset: 0x60C8
+  symbol: gOwlFlyingMiddleLeftWing2DL
+
+gOwlFlyingMiddleLeftWing2Limb:
+  type: OOT:LIMB
+  offset: 0xC50C
+  symbol: gOwlFlyingMiddleLeftWing2Limb
+  limb_type: Standard
+
+gOwlFlyingMiddleRightWing1DL:
+  type: GFX
+  offset: 0x67B8
+  symbol: gOwlFlyingMiddleRightWing1DL
+
+gOwlFlyingMiddleRightWing1Limb:
+  type: OOT:LIMB
+  offset: 0xC530
+  symbol: gOwlFlyingMiddleRightWing1Limb
+  limb_type: Standard
+
+gOwlFlyingMiddleRightWing2DL:
+  type: GFX
+  offset: 0x6A10
+  symbol: gOwlFlyingMiddleRightWing2DL
+
+gOwlFlyingMiddleRightWing2Limb:
+  type: OOT:LIMB
+  offset: 0xC53C
+  symbol: gOwlFlyingMiddleRightWing2Limb
+  limb_type: Standard
+
+gOwlFlyingRightEyebrowDL:
+  type: GFX
+  offset: 0x5770
+  symbol: gOwlFlyingRightEyebrowDL
+
+gOwlFlyingRightEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0xC4DC
+  symbol: gOwlFlyingRightEyebrowLimb
+  limb_type: Standard
+
+gOwlFlyingRightTalonDL:
+  type: GFX
+  offset: 0x5A98
+  symbol: gOwlFlyingRightTalonDL
+
+gOwlFlyingRightTalonLimb:
+  type: OOT:LIMB
+  offset: 0xC56C
+  symbol: gOwlFlyingRightTalonLimb
+  limb_type: Standard
+
+gOwlFlyingSkel:
+  type: MM:SKELETON
+  offset: 0xC5F8
+  symbol: gOwlFlyingSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gOwlFlyingTailDL:
+  type: GFX
+  offset: 0x6EC0
+  symbol: gOwlFlyingTailDL
+
+gOwlFlyingTailLimb:
+  type: OOT:LIMB
+  offset: 0xC59C
+  symbol: gOwlFlyingTailLimb
+  limb_type: Standard
+
+gOwlFlyingUpperBodyDL:
+  type: GFX
+  offset: 0x51C8
+  symbol: gOwlFlyingUpperBodyDL
+
+gOwlFlyingUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0xC4C4
+  symbol: gOwlFlyingUpperBodyLimb
+  limb_type: Standard
+
+gOwlFlyingUpperLeftLegDL:
+  type: GFX
+  offset: 0x6F68
+  symbol: gOwlFlyingUpperLeftLegDL
+
+gOwlFlyingUpperLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xC578
+  symbol: gOwlFlyingUpperLeftLegLimb
+  limb_type: Standard
+
+gOwlFlyingUpperLeftWingDL:
+  type: GFX
+  offset: 0x62F8
+  symbol: gOwlFlyingUpperLeftWingDL
+
+gOwlFlyingUpperLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0xC518
+  symbol: gOwlFlyingUpperLeftWingLimb
+  limb_type: Standard
+
+gOwlFlyingUpperRightLegDL:
+  type: GFX
+  offset: 0x58E0
+  symbol: gOwlFlyingUpperRightLegDL
+
+gOwlFlyingUpperRightLegLimb:
+  type: OOT:LIMB
+  offset: 0xC554
+  symbol: gOwlFlyingUpperRightLegLimb
+  limb_type: Standard
+
+gOwlFlyingUpperRightWingDL:
+  type: GFX
+  offset: 0x6C40
+  symbol: gOwlFlyingUpperRightWingDL
+
+gOwlFlyingUpperRightWingLimb:
+  type: OOT:LIMB
+  offset: 0xC548
+  symbol: gOwlFlyingUpperRightWingLimb
+  limb_type: Standard
+
+gOwlForeheadMarkingTex:
+  type: TEXTURE
+  offset: 0x7EB8
+  symbol: gOwlForeheadMarkingTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gOwlGlideAnim:
+  type: OOT:ANIMATION
+  offset: 0xC6D4
+  symbol: gOwlGlideAnim
+
+gOwlPerchAnim:
+  type: OOT:ANIMATION
+  offset: 0xCDB0
+  symbol: gOwlPerchAnim
+
+gOwlPerchingEyeTLUT:
+  type: TEXTURE
+  offset: 0x72B8
+  symbol: gOwlPerchingEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gOwlPerchingHeadDL:
+  type: GFX
+  offset: 0xF840
+  symbol: gOwlPerchingHeadDL
+
+gOwlPerchingHeadLimb:
+  type: OOT:LIMB
+  offset: 0x104E8
+  symbol: gOwlPerchingHeadLimb
+  limb_type: Standard
+
+gOwlPerchingLeftEyebrowDL:
+  type: GFX
+  offset: 0xFD78
+  symbol: gOwlPerchingLeftEyebrowDL
+
+gOwlPerchingLeftEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0x10500
+  symbol: gOwlPerchingLeftEyebrowLimb
+  limb_type: Standard
+
+gOwlPerchingLeftTalonDL:
+  type: GFX
+  offset: 0xFFE8
+  symbol: gOwlPerchingLeftTalonDL
+
+gOwlPerchingLeftTalonLimb:
+  type: OOT:LIMB
+  offset: 0x10548
+  symbol: gOwlPerchingLeftTalonLimb
+  limb_type: Standard
+
+gOwlPerchingLeftWingDL:
+  type: GFX
+  offset: 0xF220
+  symbol: gOwlPerchingLeftWingDL
+
+gOwlPerchingLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x10524
+  symbol: gOwlPerchingLeftWingLimb
+  limb_type: Standard
+
+gOwlPerchingLowerBodyDL:
+  type: GFX
+  offset: 0xF5E8
+  symbol: gOwlPerchingLowerBodyDL
+
+gOwlPerchingLowerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1050C
+  symbol: gOwlPerchingLowerBodyLimb
+  limb_type: Standard
+
+gOwlPerchingLowerLeftLegDL:
+  type: GFX
+  offset: 0xFEF8
+  symbol: gOwlPerchingLowerLeftLegDL
+
+gOwlPerchingLowerLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x1053C
+  symbol: gOwlPerchingLowerLeftLegLimb
+  limb_type: Standard
+
+gOwlPerchingLowerRightLegDL:
+  type: GFX
+  offset: 0x10248
+  symbol: gOwlPerchingLowerRightLegDL
+
+gOwlPerchingLowerRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x10560
+  symbol: gOwlPerchingLowerRightLegLimb
+  limb_type: Standard
+
+gOwlPerchingRightEyebrowDL:
+  type: GFX
+  offset: 0xFCC0
+  symbol: gOwlPerchingRightEyebrowDL
+
+gOwlPerchingRightEyebrowLimb:
+  type: OOT:LIMB
+  offset: 0x104F4
+  symbol: gOwlPerchingRightEyebrowLimb
+  limb_type: Standard
+
+gOwlPerchingRightTalonDL:
+  type: GFX
+  offset: 0x10338
+  symbol: gOwlPerchingRightTalonDL
+
+gOwlPerchingRightTalonLimb:
+  type: OOT:LIMB
+  offset: 0x1056C
+  symbol: gOwlPerchingRightTalonLimb
+  limb_type: Standard
+
+gOwlPerchingRightWingDL:
+  type: GFX
+  offset: 0xF3B0
+  symbol: gOwlPerchingRightWingDL
+
+gOwlPerchingRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x10518
+  symbol: gOwlPerchingRightWingLimb
+  limb_type: Standard
+
+gOwlPerchingRootLimb:
+  type: OOT:LIMB
+  offset: 0x104D0
+  symbol: gOwlPerchingRootLimb
+  limb_type: Standard
+
+gOwlPerchingSkel:
+  type: MM:SKELETON
+  offset: 0x105C0
+  symbol: gOwlPerchingSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gOwlPerchingTailDL:
+  type: GFX
+  offset: 0xF540
+  symbol: gOwlPerchingTailDL
+
+gOwlPerchingTailLimb:
+  type: OOT:LIMB
+  offset: 0x10578
+  symbol: gOwlPerchingTailLimb
+  limb_type: Standard
+
+gOwlPerchingUpperBodyDL:
+  type: GFX
+  offset: 0xF6D0
+  symbol: gOwlPerchingUpperBodyDL
+
+gOwlPerchingUpperBodyLimb:
+  type: OOT:LIMB
+  offset: 0x104DC
+  symbol: gOwlPerchingUpperBodyLimb
+  limb_type: Standard
+
+gOwlPerchingUpperLeftLegDL:
+  type: GFX
+  offset: 0xFE30
+  symbol: gOwlPerchingUpperLeftLegDL
+
+gOwlPerchingUpperLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x10530
+  symbol: gOwlPerchingUpperLeftLegLimb
+  limb_type: Standard
+
+gOwlPerchingUpperRightLegDL:
+  type: GFX
+  offset: 0x10180
+  symbol: gOwlPerchingUpperRightLegDL
+
+gOwlPerchingUpperRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x10554
+  symbol: gOwlPerchingUpperRightLegLimb
+  limb_type: Standard
+
+gOwlTakeoffAnim:
+  type: OOT:ANIMATION
+  offset: 0x1168
+  symbol: gOwlTakeoffAnim
+
+gOwlUnfoldWingsAnim:
+  type: OOT:ANIMATION
+  offset: 0xCB94
+  symbol: gOwlUnfoldWingsAnim
+
+
+object_owlVtx_001180:
+  type: MM:ARRAY
+  offset: 0x001180
+  symbol: object_owlVtx_001180
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_001AF0:
+  type: MM:ARRAY
+  offset: 0x001AF0
+  symbol: object_owlVtx_001AF0
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_0024A0:
+  type: MM:ARRAY
+  offset: 0x0024A0
+  symbol: object_owlVtx_0024A0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_002560:
+  type: MM:ARRAY
+  offset: 0x002560
+  symbol: object_owlVtx_002560
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_002620:
+  type: MM:ARRAY
+  offset: 0x002620
+  symbol: object_owlVtx_002620
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_0028E0:
+  type: MM:ARRAY
+  offset: 0x0028E0
+  symbol: object_owlVtx_0028E0
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_002E00:
+  type: MM:ARRAY
+  offset: 0x002E00
+  symbol: object_owlVtx_002E00
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003030:
+  type: MM:ARRAY
+  offset: 0x003030
+  symbol: object_owlVtx_003030
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003270:
+  type: MM:ARRAY
+  offset: 0x003270
+  symbol: object_owlVtx_003270
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003520:
+  type: MM:ARRAY
+  offset: 0x003520
+  symbol: object_owlVtx_003520
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003760:
+  type: MM:ARRAY
+  offset: 0x003760
+  symbol: object_owlVtx_003760
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003990:
+  type: MM:ARRAY
+  offset: 0x003990
+  symbol: object_owlVtx_003990
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003BD0:
+  type: MM:ARRAY
+  offset: 0x003BD0
+  symbol: object_owlVtx_003BD0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_003E80:
+  type: MM:ARRAY
+  offset: 0x003E80
+  symbol: object_owlVtx_003E80
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_0040D0:
+  type: MM:ARRAY
+  offset: 0x0040D0
+  symbol: object_owlVtx_0040D0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_004660:
+  type: MM:ARRAY
+  offset: 0x004660
+  symbol: object_owlVtx_004660
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_0047B0:
+  type: MM:ARRAY
+  offset: 0x0047B0
+  symbol: object_owlVtx_0047B0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_004860:
+  type: MM:ARRAY
+  offset: 0x004860
+  symbol: object_owlVtx_004860
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_004DF0:
+  type: MM:ARRAY
+  offset: 0x004DF0
+  symbol: object_owlVtx_004DF0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_004F40:
+  type: MM:ARRAY
+  offset: 0x004F40
+  symbol: object_owlVtx_004F40
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_004FF0:
+  type: MM:ARRAY
+  offset: 0x004FF0
+  symbol: object_owlVtx_004FF0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOwlFlyingSkelLimbs:
+  type: BLOB
+  offset: 0xC5A8
+  symbol: gOwlFlyingSkelLimbs
+  size: 0
+
+object_owlVtx_00CDC0:
+  type: MM:ARRAY
+  offset: 0x00CDC0
+  symbol: object_owlVtx_00CDC0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00CE80:
+  type: MM:ARRAY
+  offset: 0x00CE80
+  symbol: object_owlVtx_00CE80
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00CF40:
+  type: MM:ARRAY
+  offset: 0x00CF40
+  symbol: object_owlVtx_00CF40
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00D8F0:
+  type: MM:ARRAY
+  offset: 0x00D8F0
+  symbol: object_owlVtx_00D8F0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00DCB0:
+  type: MM:ARRAY
+  offset: 0x00DCB0
+  symbol: object_owlVtx_00DCB0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00DDC0:
+  type: MM:ARRAY
+  offset: 0x00DDC0
+  symbol: object_owlVtx_00DDC0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00E030:
+  type: MM:ARRAY
+  offset: 0x00E030
+  symbol: object_owlVtx_00E030
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00E2A0:
+  type: MM:ARRAY
+  offset: 0x00E2A0
+  symbol: object_owlVtx_00E2A0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00E830:
+  type: MM:ARRAY
+  offset: 0x00E830
+  symbol: object_owlVtx_00E830
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00E980:
+  type: MM:ARRAY
+  offset: 0x00E980
+  symbol: object_owlVtx_00E980
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00EA30:
+  type: MM:ARRAY
+  offset: 0x00EA30
+  symbol: object_owlVtx_00EA30
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00EFC0:
+  type: MM:ARRAY
+  offset: 0x00EFC0
+  symbol: object_owlVtx_00EFC0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00F110:
+  type: MM:ARRAY
+  offset: 0x00F110
+  symbol: object_owlVtx_00F110
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_owlVtx_00F1C0:
+  type: MM:ARRAY
+  offset: 0x00F1C0
+  symbol: object_owlVtx_00F1C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gOwlPerchingSkelLimbs:
+  type: BLOB
+  offset: 0x10584
+  symbol: gOwlPerchingSkelLimbs
+  size: 0

@@ -1,0 +1,224 @@
+:config:
+  segments:
+    - [ 3, 0x01C648B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01C648B0 ]
+    - [ 9, 0x01C648B0 ]
+    - [ 10, 0x01C648B0 ]
+    - [ 11, 0x01C648B0 ]
+    - [ 12, 0x01C648B0 ]
+    - [ 13, 0x01C648B0 ]
+    - [ 2, 0x01C5FFC0 ]
+  directory: scenes/nonmq/Z2_TOUGITES
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_TOUGITES.yml
+
+Z2_TOUGITES_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_TOUGITES_room_00
+
+Z2_TOUGITES_room_00DL_004030:
+  type: GFX
+  offset: 0x4030
+  symbol: Z2_TOUGITES_room_00DL_004030
+
+Z2_TOUGITES_room_00DL_0045A8:
+  type: GFX
+  offset: 0x45A8
+  symbol: Z2_TOUGITES_room_00DL_0045A8
+
+
+Z2_TOUGITES_room_00ActorEntry_000048:
+  type: BLOB
+  offset: 0x000048
+  symbol: Z2_TOUGITES_room_00ActorEntry_000048
+  size: 0
+
+Z2_TOUGITES_room_00Vtx_000160:
+  type: MM:ARRAY
+  offset: 0x000160
+  symbol: Z2_TOUGITES_room_00Vtx_000160
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_000350:
+  type: GFX
+  offset: 0x000350
+  symbol: Z2_TOUGITES_room_00DL_000350
+
+Z2_TOUGITES_room_00Vtx_000430:
+  type: MM:ARRAY
+  offset: 0x000430
+  symbol: Z2_TOUGITES_room_00Vtx_000430
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_000740:
+  type: GFX
+  offset: 0x000740
+  symbol: Z2_TOUGITES_room_00DL_000740
+
+Z2_TOUGITES_room_00Vtx_000888:
+  type: MM:ARRAY
+  offset: 0x000888
+  symbol: Z2_TOUGITES_room_00Vtx_000888
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_000A48:
+  type: GFX
+  offset: 0x000A48
+  symbol: Z2_TOUGITES_room_00DL_000A48
+
+Z2_TOUGITES_room_00Vtx_000B60:
+  type: MM:ARRAY
+  offset: 0x000B60
+  symbol: Z2_TOUGITES_room_00Vtx_000B60
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_000F00:
+  type: GFX
+  offset: 0x000F00
+  symbol: Z2_TOUGITES_room_00DL_000F00
+
+Z2_TOUGITES_room_00Vtx_001080:
+  type: MM:ARRAY
+  offset: 0x001080
+  symbol: Z2_TOUGITES_room_00Vtx_001080
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_001840:
+  type: GFX
+  offset: 0x001840
+  symbol: Z2_TOUGITES_room_00DL_001840
+
+Z2_TOUGITES_room_00Vtx_001A78:
+  type: MM:ARRAY
+  offset: 0x001A78
+  symbol: Z2_TOUGITES_room_00Vtx_001A78
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_001C88:
+  type: GFX
+  offset: 0x001C88
+  symbol: Z2_TOUGITES_room_00DL_001C88
+
+Z2_TOUGITES_room_00Vtx_001D98:
+  type: MM:ARRAY
+  offset: 0x001D98
+  symbol: Z2_TOUGITES_room_00Vtx_001D98
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_002348:
+  type: GFX
+  offset: 0x002348
+  symbol: Z2_TOUGITES_room_00DL_002348
+
+Z2_TOUGITES_room_00Vtx_002548:
+  type: MM:ARRAY
+  offset: 0x002548
+  symbol: Z2_TOUGITES_room_00Vtx_002548
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_0028C8:
+  type: GFX
+  offset: 0x0028C8
+  symbol: Z2_TOUGITES_room_00DL_0028C8
+
+Z2_TOUGITES_room_00Vtx_002A70:
+  type: MM:ARRAY
+  offset: 0x002A70
+  symbol: Z2_TOUGITES_room_00Vtx_002A70
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_002BC0:
+  type: GFX
+  offset: 0x002BC0
+  symbol: Z2_TOUGITES_room_00DL_002BC0
+
+Z2_TOUGITES_room_00Vtx_002CC8:
+  type: MM:ARRAY
+  offset: 0x002CC8
+  symbol: Z2_TOUGITES_room_00Vtx_002CC8
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_003A78:
+  type: GFX
+  offset: 0x003A78
+  symbol: Z2_TOUGITES_room_00DL_003A78
+
+Z2_TOUGITES_room_00Vtx_003DE0:
+  type: MM:ARRAY
+  offset: 0x003DE0
+  symbol: Z2_TOUGITES_room_00Vtx_003DE0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_003F50:
+  type: GFX
+  offset: 0x003F50
+  symbol: Z2_TOUGITES_room_00DL_003F50
+
+Z2_TOUGITES_room_00DL_004090:
+  type: GFX
+  offset: 0x004090
+  symbol: Z2_TOUGITES_room_00DL_004090
+
+Z2_TOUGITES_room_00Vtx_004098:
+  type: MM:ARRAY
+  offset: 0x004098
+  symbol: Z2_TOUGITES_room_00Vtx_004098
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_0041D8:
+  type: GFX
+  offset: 0x0041D8
+  symbol: Z2_TOUGITES_room_00DL_0041D8
+
+Z2_TOUGITES_room_00Vtx_004298:
+  type: MM:ARRAY
+  offset: 0x004298
+  symbol: Z2_TOUGITES_room_00Vtx_004298
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_TOUGITES_room_00DL_0044B8:
+  type: GFX
+  offset: 0x0044B8
+  symbol: Z2_TOUGITES_room_00DL_0044B8

@@ -1,0 +1,211 @@
+:config:
+  segments:
+    - [ 6, 0x014AD3A0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x014AD3A0 ]
+    - [ 9, 0x014AD3A0 ]
+    - [ 10, 0x014AD3A0 ]
+    - [ 11, 0x014AD3A0 ]
+    - [ 12, 0x014AD3A0 ]
+    - [ 13, 0x014AD3A0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_dmask_Anim_00017C:
+  type: OOT:ANIMATION
+  offset: 0x17C
+  symbol: object_dmask_Anim_00017C
+
+object_dmask_Anim_0001A8:
+  type: OOT:ANIMATION
+  offset: 0x1A8
+  symbol: object_dmask_Anim_0001A8
+
+object_dmask_Anim_001090:
+  type: OOT:ANIMATION
+  offset: 0x1090
+  symbol: object_dmask_Anim_001090
+
+object_dmask_Anim_0011A0:
+  type: OOT:ANIMATION
+  offset: 0x11A0
+  symbol: object_dmask_Anim_0011A0
+
+object_dmask_Anim_0013A4:
+  type: OOT:ANIMATION
+  offset: 0x13A4
+  symbol: object_dmask_Anim_0013A4
+
+object_dmask_Anim_004288:
+  type: OOT:ANIMATION
+  offset: 0x4288
+  symbol: object_dmask_Anim_004288
+
+object_dmask_DL_000430:
+  type: GFX
+  offset: 0x430
+  symbol: object_dmask_DL_000430
+
+object_dmask_DL_001E70:
+  type: GFX
+  offset: 0x1E70
+  symbol: object_dmask_DL_001E70
+
+object_dmask_Skel_001D0:
+  type: MM:SKELETON
+  offset: 0x1D0
+  symbol: object_dmask_Skel_001D0
+  limb_type: Standard
+  skel_type: Flex
+
+object_dmask_Skel_010B0:
+  type: MM:SKELETON
+  offset: 0x10B0
+  symbol: object_dmask_Skel_010B0
+  limb_type: Standard
+  skel_type: Normal
+
+object_dmask_Skel_013D0:
+  type: MM:SKELETON
+  offset: 0x13D0
+  symbol: object_dmask_Skel_013D0
+  limb_type: Standard
+  skel_type: Normal
+
+object_dmask_Skel_042B0:
+  type: MM:SKELETON
+  offset: 0x42B0
+  symbol: object_dmask_Skel_042B0
+  limb_type: Standard
+  skel_type: Normal
+
+object_dmask_Standardlimb_010A0:
+  type: OOT:LIMB
+  offset: 0x10A0
+  symbol: object_dmask_Standardlimb_010A0
+  limb_type: Standard
+
+object_dmask_Standardlimb_013C0:
+  type: OOT:LIMB
+  offset: 0x13C0
+  symbol: object_dmask_Standardlimb_013C0
+  limb_type: Standard
+
+object_dmask_Standardlimb_01C0:
+  type: OOT:LIMB
+  offset: 0x1C0
+  symbol: object_dmask_Standardlimb_01C0
+  limb_type: Standard
+
+object_dmask_Standardlimb_042A0:
+  type: OOT:LIMB
+  offset: 0x42A0
+  symbol: object_dmask_Standardlimb_042A0
+  limb_type: Standard
+
+object_dmask_Tex_000578:
+  type: TEXTURE
+  offset: 0x578
+  symbol: object_dmask_Tex_000578
+  format: I8
+  width: 64
+  height: 32
+
+object_dmask_Tex_000D78:
+  type: TEXTURE
+  offset: 0xD78
+  symbol: object_dmask_Tex_000D78
+  format: I8
+  width: 32
+  height: 16
+
+object_dmask_Tex_002220:
+  type: TEXTURE
+  offset: 0x2220
+  symbol: object_dmask_Tex_002220
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_dmask_Tex_003220:
+  type: TEXTURE
+  offset: 0x3220
+  symbol: object_dmask_Tex_003220
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dmask_Tex_003420:
+  type: TEXTURE
+  offset: 0x3420
+  symbol: object_dmask_Tex_003420
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dmask_Tex_003620:
+  type: TEXTURE
+  offset: 0x3620
+  symbol: object_dmask_Tex_003620
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dmask_Tex_003820:
+  type: TEXTURE
+  offset: 0x3820
+  symbol: object_dmask_Tex_003820
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dmask_Tex_003A20:
+  type: TEXTURE
+  offset: 0x3A20
+  symbol: object_dmask_Tex_003A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_dmask_Skel_001D0Limbs:
+  type: BLOB
+  offset: 0x1CC
+  symbol: object_dmask_Skel_001D0Limbs
+  size: 0
+
+object_dmaskVtx_0001E0:
+  type: MM:ARRAY
+  offset: 0x0001E0
+  symbol: object_dmaskVtx_0001E0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dmask_Skel_010B0Limbs:
+  type: BLOB
+  offset: 0x10AC
+  symbol: object_dmask_Skel_010B0Limbs
+  size: 0
+
+object_dmask_Skel_013D0Limbs:
+  type: BLOB
+  offset: 0x13CC
+  symbol: object_dmask_Skel_013D0Limbs
+  size: 0
+
+object_dmaskVtx_0013E0:
+  type: MM:ARRAY
+  offset: 0x0013E0
+  symbol: object_dmaskVtx_0013E0
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dmask_Skel_042B0Limbs:
+  type: BLOB
+  offset: 0x42AC
+  symbol: object_dmask_Skel_042B0Limbs
+  size: 0

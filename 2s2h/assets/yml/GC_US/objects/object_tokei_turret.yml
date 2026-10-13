@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 6, 0x01459AC0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01459AC0 ]
+    - [ 9, 0x01459AC0 ]
+    - [ 10, 0x01459AC0 ]
+    - [ 11, 0x01459AC0 ]
+    - [ 12, 0x01459AC0 ]
+    - [ 13, 0x01459AC0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gClockTownFlagsDL:
+  type: GFX
+  offset: 0x3038
+  symbol: gClockTownFlagsDL
+
+gClockTownFlagsTex:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: gClockTownFlagsTex
+  format: RGBA16
+  width: 128
+  height: 16
+
+gClockTownTurretBaseCol:
+  type: MM:COLLISION
+  offset: 0x26A0
+  symbol: gClockTownTurretBaseCol
+
+gClockTownTurretEmpty0DL:
+  type: GFX
+  offset: 0x2500
+  symbol: gClockTownTurretEmpty0DL
+
+gClockTownTurretEmpty1DL:
+  type: GFX
+  offset: 0x2A80
+  symbol: gClockTownTurretEmpty1DL
+
+gClockTownTurretEmpty2DL:
+  type: GFX
+  offset: 0x3030
+  symbol: gClockTownTurretEmpty2DL
+
+gClockTownTurretFabricTex:
+  type: TEXTURE
+  offset: 0x820
+  symbol: gClockTownTurretFabricTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gClockTownTurretPlatformBaseDL:
+  type: GFX
+  offset: 0x2508
+  symbol: gClockTownTurretPlatformBaseDL
+
+gClockTownTurretPlatformCol:
+  type: MM:COLLISION
+  offset: 0x2D80
+  symbol: gClockTownTurretPlatformCol
+
+gClockTownTurretPlatformTopDL:
+  type: GFX
+  offset: 0x2A88
+  symbol: gClockTownTurretPlatformTopDL
+
+gClockTownTurretTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gClockTownTurretTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gClockTownTurretTextTex:
+  type: TEXTURE
+  offset: 0x20
+  symbol: gClockTownTurretTextTex
+  format: CI4
+  width: 64
+  height: 64
+
+gClockTownTurretWoodTex:
+  type: TEXTURE
+  offset: 0x1020
+  symbol: gClockTownTurretWoodTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_tokei_turretVtx_002420:
+  type: MM:ARRAY
+  offset: 0x002420
+  symbol: object_tokei_turretVtx_002420
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tokei_turretVtx_0026D0:
+  type: MM:ARRAY
+  offset: 0x0026D0
+  symbol: object_tokei_turretVtx_0026D0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tokei_turretVtx_002DB0:
+  type: MM:ARRAY
+  offset: 0x002DB0
+  symbol: object_tokei_turretVtx_002DB0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

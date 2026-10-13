@@ -1,0 +1,194 @@
+:config:
+  segments:
+    - [ 2, 0x01B38C00 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_21MITURINMAESet_003D20.yml
+    - GC_US/scenes/nonmq/Z2_21MITURINMAESet_004320.yml
+Z2_21MITURINMAE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_21MITURINMAE
+
+
+Z2_21MITURINMAECutsceneData_000314:
+  type: MM:CUTSCENE
+  offset: 0x000314
+  symbol: Z2_21MITURINMAECutsceneData_000314
+  size: 484
+
+Z2_21MITURINMAECutsceneData_000504:
+  type: MM:CUTSCENE
+  offset: 0x000504
+  symbol: Z2_21MITURINMAECutsceneData_000504
+  size: 560
+
+Z2_21MITURINMAETexAnim_000910TexScrollParams_000900:
+  type: BLOB
+  offset: 0x000900
+  symbol: Z2_21MITURINMAETexAnim_000910TexScrollParams_000900
+  size: 0
+
+Z2_21MITURINMAETexAnim_000910TexScrollParams_000908:
+  type: BLOB
+  offset: 0x000908
+  symbol: Z2_21MITURINMAETexAnim_000910TexScrollParams_000908
+  size: 0
+
+Z2_21MITURINMAETexAnim_000910:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000910
+  symbol: Z2_21MITURINMAETexAnim_000910
+
+Z2_21MITURINMAECollisionHeader_003CEC:
+  type: MM:COLLISION
+  offset: 0x003CEC
+  symbol: Z2_21MITURINMAECollisionHeader_003CEC
+
+Z2_21MITURINMAECutsceneData_003FF0:
+  type: MM:CUTSCENE
+  offset: 0x003FF0
+  symbol: Z2_21MITURINMAECutsceneData_003FF0
+  size: 764
+
+Z2_21MITURINMAECutsceneData_004624:
+  type: MM:CUTSCENE
+  offset: 0x004624
+  symbol: Z2_21MITURINMAECutsceneData_004624
+  size: 468
+
+Z2_21MITURINMAETex_004990:
+  type: TEXTURE
+  offset: 0x004990
+  symbol: Z2_21MITURINMAETex_004990
+  format: I4
+  width: 64
+  height: 64
+
+Z2_21MITURINMAETex_005190:
+  type: TEXTURE
+  offset: 0x005190
+  symbol: Z2_21MITURINMAETex_005190
+  format: RGBA16
+  width: 16
+  height: 32
+
+Z2_21MITURINMAETex_005590:
+  type: TEXTURE
+  offset: 0x005590
+  symbol: Z2_21MITURINMAETex_005590
+  format: IA8
+  width: 8
+  height: 8
+
+Z2_21MITURINMAETex_0055D0:
+  type: TEXTURE
+  offset: 0x0055D0
+  symbol: Z2_21MITURINMAETex_0055D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_21MITURINMAETex_005DD0:
+  type: TEXTURE
+  offset: 0x005DD0
+  symbol: Z2_21MITURINMAETex_005DD0
+  format: CI4
+  width: 32
+  height: 128
+
+Z2_21MITURINMAETex_0065D0:
+  type: TEXTURE
+  offset: 0x0065D0
+  symbol: Z2_21MITURINMAETex_0065D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_21MITURINMAETex_006DD0:
+  type: TEXTURE
+  offset: 0x006DD0
+  symbol: Z2_21MITURINMAETex_006DD0
+  format: RGBA16
+  width: 128
+  height: 16
+
+Z2_21MITURINMAETex_007DD0:
+  type: TEXTURE
+  offset: 0x007DD0
+  symbol: Z2_21MITURINMAETex_007DD0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_21MITURINMAETex_007ED0:
+  type: TEXTURE
+  offset: 0x007ED0
+  symbol: Z2_21MITURINMAETex_007ED0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_21MITURINMAETex_0086D0:
+  type: TEXTURE
+  offset: 0x0086D0
+  symbol: Z2_21MITURINMAETex_0086D0
+  format: CI8
+  width: 16
+  height: 64
+
+Z2_21MITURINMAETex_008AD0:
+  type: TEXTURE
+  offset: 0x008AD0
+  symbol: Z2_21MITURINMAETex_008AD0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_21MITURINMAETex_0092D0:
+  type: TEXTURE
+  offset: 0x0092D0
+  symbol: Z2_21MITURINMAETex_0092D0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_21MITURINMAETex_009AD0:
+  type: TEXTURE
+  offset: 0x009AD0
+  symbol: Z2_21MITURINMAETex_009AD0
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_21MITURINMAETex_009BD0:
+  type: TEXTURE
+  offset: 0x009BD0
+  symbol: Z2_21MITURINMAETex_009BD0
+  format: CI8
+  width: 16
+  height: 32
+
+Z2_21MITURINMAETex_009DD0:
+  type: TEXTURE
+  offset: 0x009DD0
+  symbol: Z2_21MITURINMAETex_009DD0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_21MITURINMAETLUT_00ADD0:
+  type: TEXTURE
+  offset: 0x00ADD0
+  symbol: Z2_21MITURINMAETLUT_00ADD0
+  format: RGBA16
+  width: 4
+  height: 4
+
+Z2_21MITURINMAETLUT_00ADF0:
+  type: TEXTURE
+  offset: 0x00ADF0
+  symbol: Z2_21MITURINMAETLUT_00ADF0
+  format: RGBA16
+  width: 16
+  height: 16

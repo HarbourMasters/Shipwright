@@ -1,0 +1,53 @@
+:config:
+  segments:
+    - [ 6, 0x011A4F30 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011A4F30 ]
+    - [ 9, 0x011A4F30 ]
+    - [ 10, 0x011A4F30 ]
+    - [ 11, 0x011A4F30 ]
+    - [ 12, 0x011A4F30 ]
+    - [ 13, 0x011A4F30 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gSongOfSoaringPedestalCol:
+  type: MM:COLLISION
+  offset: 0x1010
+  symbol: gSongOfSoaringPedestalCol
+
+gSongOfSoaringPedestalDL:
+  type: GFX
+  offset: 0x518
+  symbol: gSongOfSoaringPedestalDL
+
+gSongOfSoaringPedestalEmptyDL:
+  type: GFX
+  offset: 0x510
+  symbol: gSongOfSoaringPedestalEmptyDL
+
+gSongOfSoaringPedestalGraniteTex:
+  type: TEXTURE
+  offset: 0xB28
+  symbol: gSongOfSoaringPedestalGraniteTex
+  format: I8
+  width: 32
+  height: 32
+
+gSongOfSoaringPedestalStaffNotesTex:
+  type: TEXTURE
+  offset: 0x728
+  symbol: gSongOfSoaringPedestalStaffNotesTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_sekihizVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_sekihizVtx_000000
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

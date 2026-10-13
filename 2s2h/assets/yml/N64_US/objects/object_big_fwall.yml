@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x01572600 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01572600 ]
+    - [ 9, 0x01572600 ]
+    - [ 10, 0x01572600 ]
+    - [ 11, 0x01572600 ]
+    - [ 12, 0x01572600 ]
+    - [ 13, 0x01572600 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gRingOfFireDL:
+  type: GFX
+  offset: 0x9A0
+  symbol: gRingOfFireDL
+
+gRingOfFireTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gRingOfFireTex
+  format: I8
+  width: 32
+  height: 64
+
+
+object_big_fwallVtx_000800:
+  type: MM:ARRAY
+  offset: 0x000800
+  symbol: object_big_fwallVtx_000800
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

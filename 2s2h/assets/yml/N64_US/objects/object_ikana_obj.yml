@@ -1,0 +1,575 @@
+:config:
+  segments:
+    - [ 6, 0x01445D20 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01445D20 ]
+    - [ 9, 0x01445D20 ]
+    - [ 10, 0x01445D20 ]
+    - [ 11, 0x01445D20 ]
+    - [ 12, 0x01445D20 ]
+    - [ 13, 0x01445D20 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gStoneTowerEmblemFrameTex:
+  type: TEXTURE
+  offset: 0x109B0
+  symbol: gStoneTowerEmblemFrameTex
+  format: IA8
+  width: 32
+  height: 64
+
+gStoneTowerTempleLightPatternTex:
+  type: TEXTURE
+  offset: 0xF1B0
+  symbol: gStoneTowerTempleLightPatternTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gStoneTowerTempleLightRaysTex:
+  type: TEXTURE
+  offset: 0xE9B0
+  symbol: gStoneTowerTempleLightRaysTex
+  format: IA16
+  width: 16
+  height: 64
+
+gStoneTowerTempleMirrorCol:
+  type: MM:COLLISION
+  offset: 0x2358
+  symbol: gStoneTowerTempleMirrorCol
+
+gStoneTowerTempleMirrorDL:
+  type: GFX
+  offset: 0x1E18
+  symbol: gStoneTowerTempleMirrorDL
+
+gStoneTowerTempleMirrorEmissionLightRaysTex:
+  type: TEXTURE
+  offset: 0xF9B0
+  symbol: gStoneTowerTempleMirrorEmissionLightRaysTex
+  format: IA16
+  width: 16
+  height: 64
+
+gStoneTowerTempleMirrorFrameTex:
+  type: TEXTURE
+  offset: 0x9FB0
+  symbol: gStoneTowerTempleMirrorFrameTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStoneTowerTempleMirrorLightAbsorptionDL:
+  type: GFX
+  offset: 0x14B0
+  symbol: gStoneTowerTempleMirrorLightAbsorptionDL
+
+gStoneTowerTempleMirrorLightAbsorptionTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1678
+  symbol: gStoneTowerTempleMirrorLightAbsorptionTexAnim
+
+gStoneTowerTempleMirrorLightEmissionDL:
+  type: GFX
+  offset: 0x1880
+  symbol: gStoneTowerTempleMirrorLightEmissionDL
+
+gStoneTowerTempleMirrorLightEmissionTexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1AD8
+  symbol: gStoneTowerTempleMirrorLightEmissionTexAnim
+
+gStoneTowerTempleMirrorSurfaceTex:
+  type: TEXTURE
+  offset: 0x101B0
+  symbol: gStoneTowerTempleMirrorSurfaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gStoneTowerTemplePunchablePillarCol:
+  type: MM:COLLISION
+  offset: 0xC50
+  symbol: gStoneTowerTemplePunchablePillarCol
+
+gStoneTowerTemplePunchablePillarDL:
+  type: GFX
+  offset: 0x8C8
+  symbol: gStoneTowerTemplePunchablePillarDL
+
+gStoneTowerTemplePunchablePillarTex:
+  type: TEXTURE
+  offset: 0x8FB0
+  symbol: gStoneTowerTemplePunchablePillarTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_ikana_obj_Colheader_000128:
+  type: MM:COLLISION
+  offset: 0x128
+  symbol: object_ikana_obj_Colheader_000128
+
+object_ikana_obj_Colheader_000488:
+  type: MM:COLLISION
+  offset: 0x488
+  symbol: object_ikana_obj_Colheader_000488
+
+object_ikana_obj_Colheader_000F28:
+  type: MM:COLLISION
+  offset: 0xF28
+  symbol: object_ikana_obj_Colheader_000F28
+
+object_ikana_obj_Colheader_006368:
+  type: MM:COLLISION
+  offset: 0x6368
+  symbol: object_ikana_obj_Colheader_006368
+
+object_ikana_obj_Colheader_0084F8:
+  type: MM:COLLISION
+  offset: 0x84F8
+  symbol: object_ikana_obj_Colheader_0084F8
+
+object_ikana_obj_DL_000040:
+  type: GFX
+  offset: 0x40
+  symbol: object_ikana_obj_DL_000040
+
+object_ikana_obj_DL_000048:
+  type: GFX
+  offset: 0x48
+  symbol: object_ikana_obj_DL_000048
+
+object_ikana_obj_DL_000280:
+  type: GFX
+  offset: 0x280
+  symbol: object_ikana_obj_DL_000280
+
+object_ikana_obj_DL_000288:
+  type: GFX
+  offset: 0x288
+  symbol: object_ikana_obj_DL_000288
+
+object_ikana_obj_DL_000370:
+  type: GFX
+  offset: 0x370
+  symbol: object_ikana_obj_DL_000370
+
+object_ikana_obj_DL_000378:
+  type: GFX
+  offset: 0x378
+  symbol: object_ikana_obj_DL_000378
+
+object_ikana_obj_DL_0008C0:
+  type: GFX
+  offset: 0x8C0
+  symbol: object_ikana_obj_DL_0008C0
+
+object_ikana_obj_DL_000CE0:
+  type: GFX
+  offset: 0xCE0
+  symbol: object_ikana_obj_DL_000CE0
+
+object_ikana_obj_DL_000CE8:
+  type: GFX
+  offset: 0xCE8
+  symbol: object_ikana_obj_DL_000CE8
+
+object_ikana_obj_DL_001100:
+  type: GFX
+  offset: 0x1100
+  symbol: object_ikana_obj_DL_001100
+
+object_ikana_obj_DL_001210:
+  type: GFX
+  offset: 0x1210
+  symbol: object_ikana_obj_DL_001210
+
+object_ikana_obj_DL_001660:
+  type: GFX
+  offset: 0x1660
+  symbol: object_ikana_obj_DL_001660
+
+object_ikana_obj_DL_001AC0:
+  type: GFX
+  offset: 0x1AC0
+  symbol: object_ikana_obj_DL_001AC0
+
+object_ikana_obj_DL_001E10:
+  type: GFX
+  offset: 0x1E10
+  symbol: object_ikana_obj_DL_001E10
+
+object_ikana_obj_DL_004710:
+  type: GFX
+  offset: 0x4710
+  symbol: object_ikana_obj_DL_004710
+
+object_ikana_obj_DL_0048A0:
+  type: GFX
+  offset: 0x48A0
+  symbol: object_ikana_obj_DL_0048A0
+
+object_ikana_obj_DL_007360:
+  type: GFX
+  offset: 0x7360
+  symbol: object_ikana_obj_DL_007360
+
+object_ikana_obj_DL_007448:
+  type: GFX
+  offset: 0x7448
+  symbol: object_ikana_obj_DL_007448
+
+object_ikana_obj_DL_012B70:
+  type: GFX
+  offset: 0x12B70
+  symbol: object_ikana_obj_DL_012B70
+
+object_ikana_obj_DL_013EA0:
+  type: GFX
+  offset: 0x13EA0
+  symbol: object_ikana_obj_DL_013EA0
+
+object_ikana_obj_DL_013EA8:
+  type: GFX
+  offset: 0x13EA8
+  symbol: object_ikana_obj_DL_013EA8
+
+object_ikana_obj_DL_014A40:
+  type: GFX
+  offset: 0x14A40
+  symbol: object_ikana_obj_DL_014A40
+
+object_ikana_obj_Matanimheader_001228:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x1228
+  symbol: object_ikana_obj_Matanimheader_001228
+
+object_ikana_obj_Matanimheader_007B68:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x7B68
+  symbol: object_ikana_obj_Matanimheader_007B68
+
+object_ikana_obj_TLUT_008530:
+  type: TEXTURE
+  offset: 0x8530
+  symbol: object_ikana_obj_TLUT_008530
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_ikana_obj_TLUT_008590:
+  type: TEXTURE
+  offset: 0x8590
+  symbol: object_ikana_obj_TLUT_008590
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_ikana_obj_Tex_0085B0:
+  type: TEXTURE
+  offset: 0x85B0
+  symbol: object_ikana_obj_Tex_0085B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikana_obj_Tex_0087B0:
+  type: TEXTURE
+  offset: 0x87B0
+  symbol: object_ikana_obj_Tex_0087B0
+  format: CI4
+  width: 64
+  height: 64
+
+object_ikana_obj_Tex_00A1B0:
+  type: TEXTURE
+  offset: 0xA1B0
+  symbol: object_ikana_obj_Tex_00A1B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikana_obj_Tex_00A3B0:
+  type: TEXTURE
+  offset: 0xA3B0
+  symbol: object_ikana_obj_Tex_00A3B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_00ABB0:
+  type: TEXTURE
+  offset: 0xABB0
+  symbol: object_ikana_obj_Tex_00ABB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_00B3B0:
+  type: TEXTURE
+  offset: 0xB3B0
+  symbol: object_ikana_obj_Tex_00B3B0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ikana_obj_Tex_00B5B0:
+  type: TEXTURE
+  offset: 0xB5B0
+  symbol: object_ikana_obj_Tex_00B5B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_00BDB0:
+  type: TEXTURE
+  offset: 0xBDB0
+  symbol: object_ikana_obj_Tex_00BDB0
+  format: CI4
+  width: 16
+  height: 128
+
+object_ikana_obj_Tex_00C1B0:
+  type: TEXTURE
+  offset: 0xC1B0
+  symbol: object_ikana_obj_Tex_00C1B0
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_ikana_obj_Tex_00C9B0:
+  type: TEXTURE
+  offset: 0xC9B0
+  symbol: object_ikana_obj_Tex_00C9B0
+  format: IA8
+  width: 32
+  height: 64
+
+object_ikana_obj_Tex_00D1B0:
+  type: TEXTURE
+  offset: 0xD1B0
+  symbol: object_ikana_obj_Tex_00D1B0
+  format: RGBA16
+  width: 16
+  height: 64
+
+object_ikana_obj_Tex_00D9B0:
+  type: TEXTURE
+  offset: 0xD9B0
+  symbol: object_ikana_obj_Tex_00D9B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_00E1B0:
+  type: TEXTURE
+  offset: 0xE1B0
+  symbol: object_ikana_obj_Tex_00E1B0
+  format: IA8
+  width: 32
+  height: 64
+
+object_ikana_obj_Tex_0111B0:
+  type: TEXTURE
+  offset: 0x111B0
+  symbol: object_ikana_obj_Tex_0111B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_0119B0:
+  type: TEXTURE
+  offset: 0x119B0
+  symbol: object_ikana_obj_Tex_0119B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ikana_obj_Tex_014BA0:
+  type: TEXTURE
+  offset: 0x14BA0
+  symbol: object_ikana_obj_Tex_014BA0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_ikana_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_ikana_objVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_000160:
+  type: MM:ARRAY
+  offset: 0x000160
+  symbol: object_ikana_objVtx_000160
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_000330:
+  type: MM:ARRAY
+  offset: 0x000330
+  symbol: object_ikana_objVtx_000330
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_0004C0:
+  type: MM:ARRAY
+  offset: 0x0004C0
+  symbol: object_ikana_objVtx_0004C0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_000C80:
+  type: MM:ARRAY
+  offset: 0x000C80
+  symbol: object_ikana_objVtx_000C80
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_000F60:
+  type: MM:ARRAY
+  offset: 0x000F60
+  symbol: object_ikana_objVtx_000F60
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_obj_Matanimheader_001228TexScrollParams_001220:
+  type: BLOB
+  offset: 0x001220
+  symbol: object_ikana_obj_Matanimheader_001228TexScrollParams_001220
+  size: 0
+
+object_ikana_objVtx_001230:
+  type: MM:ARRAY
+  offset: 0x001230
+  symbol: object_ikana_objVtx_001230
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gStoneTowerTempleMirrorLightAbsorptionTexAnimTexScrollParams_001670:
+  type: BLOB
+  offset: 0x001670
+  symbol: gStoneTowerTempleMirrorLightAbsorptionTexAnimTexScrollParams_001670
+  size: 0
+
+object_ikana_objVtx_001680:
+  type: MM:ARRAY
+  offset: 0x001680
+  symbol: object_ikana_objVtx_001680
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gStoneTowerTempleMirrorLightEmissionTexAnimTexScrollParams_001AD0:
+  type: BLOB
+  offset: 0x001AD0
+  symbol: gStoneTowerTempleMirrorLightEmissionTexAnimTexScrollParams_001AD0
+  size: 0
+
+object_ikana_objVtx_001AE0:
+  type: MM:ARRAY
+  offset: 0x001AE0
+  symbol: object_ikana_objVtx_001AE0
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_002390:
+  type: MM:ARRAY
+  offset: 0x002390
+  symbol: object_ikana_objVtx_002390
+  count: 512
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_004390:
+  type: MM:ARRAY
+  offset: 0x004390
+  symbol: object_ikana_objVtx_004390
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_004510:
+  type: MM:ARRAY
+  offset: 0x004510
+  symbol: object_ikana_objVtx_004510
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_0063A0:
+  type: MM:ARRAY
+  offset: 0x0063A0
+  symbol: object_ikana_objVtx_0063A0
+  count: 242
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_0072C0:
+  type: MM:ARRAY
+  offset: 0x0072C0
+  symbol: object_ikana_objVtx_0072C0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_obj_Matanimheader_007B68TexScrollParams_007B60:
+  type: BLOB
+  offset: 0x007B60
+  symbol: object_ikana_obj_Matanimheader_007B68TexScrollParams_007B60
+  size: 0
+
+object_ikana_objVtx_0121B0:
+  type: MM:ARRAY
+  offset: 0x0121B0
+  symbol: object_ikana_objVtx_0121B0
+  count: 156
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_013480:
+  type: MM:ARRAY
+  offset: 0x013480
+  symbol: object_ikana_objVtx_013480
+  count: 162
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikana_objVtx_0148B0:
+  type: MM:ARRAY
+  offset: 0x0148B0
+  symbol: object_ikana_objVtx_0148B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

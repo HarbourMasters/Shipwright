@@ -1,0 +1,714 @@
+:config:
+  segments:
+    - [ 6, 0x00F6F8D0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00F6F8D0 ]
+    - [ 9, 0x00F6F8D0 ]
+    - [ 10, 0x00F6F8D0 ]
+    - [ 11, 0x00F6F8D0 ]
+    - [ 12, 0x00F6F8D0 ]
+    - [ 13, 0x00F6F8D0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gCremiaApronTex:
+  type: TEXTURE
+  offset: 0x114D8
+  symbol: gCremiaApronTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gCremiaBeltTex:
+  type: TEXTURE
+  offset: 0x10FD8
+  symbol: gCremiaBeltTex
+  format: CI8
+  width: 32
+  height: 16
+
+gCremiaBootTex:
+  type: TEXTURE
+  offset: 0x10318
+  symbol: gCremiaBootTex
+  format: CI8
+  width: 64
+  height: 16
+
+gCremiaBroochTex:
+  type: TEXTURE
+  offset: 0x10A58
+  symbol: gCremiaBroochTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gCremiaClapAnim:
+  type: OOT:ANIMATION
+  offset: 0x4370
+  symbol: gCremiaClapAnim
+
+gCremiaDress1DL:
+  type: GFX
+  offset: 0xE170
+  symbol: gCremiaDress1DL
+
+gCremiaDress1Limb:
+  type: OOT:LIMB
+  offset: 0x15BA4
+  symbol: gCremiaDress1Limb
+  limb_type: Standard
+
+gCremiaDress2DL:
+  type: GFX
+  offset: 0xE370
+  symbol: gCremiaDress2DL
+
+gCremiaDress2Limb:
+  type: OOT:LIMB
+  offset: 0x15BB0
+  symbol: gCremiaDress2Limb
+  limb_type: Standard
+
+gCremiaDress3DL:
+  type: GFX
+  offset: 0xE4E0
+  symbol: gCremiaDress3DL
+
+gCremiaDress3Limb:
+  type: OOT:LIMB
+  offset: 0x15BBC
+  symbol: gCremiaDress3Limb
+  limb_type: Standard
+
+gCremiaDress4DL:
+  type: GFX
+  offset: 0xE6E8
+  symbol: gCremiaDress4DL
+
+gCremiaDress4Limb:
+  type: OOT:LIMB
+  offset: 0x15BC8
+  symbol: gCremiaDress4Limb
+  limb_type: Standard
+
+gCremiaDressPatternTex:
+  type: TEXTURE
+  offset: 0x111D8
+  symbol: gCremiaDressPatternTex
+  format: CI8
+  width: 16
+  height: 32
+
+gCremiaDressTex:
+  type: TEXTURE
+  offset: 0x113D8
+  symbol: gCremiaDressTex
+  format: CI8
+  width: 16
+  height: 16
+
+gCremiaEarTex:
+  type: TEXTURE
+  offset: 0x10718
+  symbol: gCremiaEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCremiaEyeAngryTex:
+  type: TEXTURE
+  offset: 0x13AD8
+  symbol: gCremiaEyeAngryTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x12AD8
+  symbol: gCremiaEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x122D8
+  symbol: gCremiaEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaEyeHappyTex:
+  type: TEXTURE
+  offset: 0x132D8
+  symbol: gCremiaEyeHappyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x11AD8
+  symbol: gCremiaEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaEyeSadTex:
+  type: TEXTURE
+  offset: 0x142D8
+  symbol: gCremiaEyeSadTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCremiaHairEndDL:
+  type: GFX
+  offset: 0xF5A0
+  symbol: gCremiaHairEndDL
+
+gCremiaHairEndLimb:
+  type: OOT:LIMB
+  offset: 0x15B44
+  symbol: gCremiaHairEndLimb
+  limb_type: Standard
+
+gCremiaHairTex:
+  type: TEXTURE
+  offset: 0x10918
+  symbol: gCremiaHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gCremiaHandTex:
+  type: TEXTURE
+  offset: 0x118D8
+  symbol: gCremiaHandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCremiaHeadDL:
+  type: GFX
+  offset: 0xF108
+  symbol: gCremiaHeadDL
+
+gCremiaHeadLimb:
+  type: OOT:LIMB
+  offset: 0x15B38
+  symbol: gCremiaHeadLimb
+  limb_type: Standard
+
+gCremiaHugLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x30B4
+  symbol: gCremiaHugLoopAnim
+
+gCremiaHugStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x1FD0
+  symbol: gCremiaHugStartAnim
+
+gCremiaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xA174
+  symbol: gCremiaIdleAnim
+
+gCremiaLeftFootDL:
+  type: GFX
+  offset: 0xECA0
+  symbol: gCremiaLeftFootDL
+
+gCremiaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x15B74
+  symbol: gCremiaLeftFootLimb
+  limb_type: Standard
+
+gCremiaLeftForearmDL:
+  type: GFX
+  offset: 0xFDB0
+  symbol: gCremiaLeftForearmDL
+
+gCremiaLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x15AFC
+  symbol: gCremiaLeftForearmLimb
+  limb_type: Standard
+
+gCremiaLeftHandDL:
+  type: GFX
+  offset: 0xFE98
+  symbol: gCremiaLeftHandDL
+
+gCremiaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x15B08
+  symbol: gCremiaLeftHandLimb
+  limb_type: Standard
+
+gCremiaLeftShinDL:
+  type: GFX
+  offset: 0xEBC0
+  symbol: gCremiaLeftShinDL
+
+gCremiaLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x15B68
+  symbol: gCremiaLeftShinLimb
+  limb_type: Standard
+
+gCremiaLeftThighDL:
+  type: GFX
+  offset: 0xEB30
+  symbol: gCremiaLeftThighDL
+
+gCremiaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x15B5C
+  symbol: gCremiaLeftThighLimb
+  limb_type: Standard
+
+gCremiaLeftUpperArmDL:
+  type: GFX
+  offset: 0xFBA8
+  symbol: gCremiaLeftUpperArmDL
+
+gCremiaLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x15AF0
+  symbol: gCremiaLeftUpperArmLimb
+  limb_type: Standard
+
+gCremiaMouthFrownTex:
+  type: TEXTURE
+  offset: 0x152D8
+  symbol: gCremiaMouthFrownTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gCremiaMouthHangingOpenTex:
+  type: TEXTURE
+  offset: 0x156D8
+  symbol: gCremiaMouthHangingOpenTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gCremiaMouthNormalTex:
+  type: TEXTURE
+  offset: 0x14AD8
+  symbol: gCremiaMouthNormalTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gCremiaMouthSlightSmileTex:
+  type: TEXTURE
+  offset: 0x14ED8
+  symbol: gCremiaMouthSlightSmileTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gCremiaPelvisDL:
+  type: GFX
+  offset: 0xE7F0
+  symbol: gCremiaPelvisDL
+
+gCremiaPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x15B50
+  symbol: gCremiaPelvisLimb
+  limb_type: Standard
+
+gCremiaPetCowAnim:
+  type: OOT:ANIMATION
+  offset: 0x93E8
+  symbol: gCremiaPetCowAnim
+
+gCremiaRightFootDL:
+  type: GFX
+  offset: 0xEA20
+  symbol: gCremiaRightFootDL
+
+gCremiaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x15B98
+  symbol: gCremiaRightFootLimb
+  limb_type: Standard
+
+gCremiaRightForearmDL:
+  type: GFX
+  offset: 0xF8F8
+  symbol: gCremiaRightForearmDL
+
+gCremiaRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x15B20
+  symbol: gCremiaRightForearmLimb
+  limb_type: Standard
+
+gCremiaRightHandDL:
+  type: GFX
+  offset: 0xF9E0
+  symbol: gCremiaRightHandDL
+
+gCremiaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x15B2C
+  symbol: gCremiaRightHandLimb
+  limb_type: Standard
+
+gCremiaRightShinDL:
+  type: GFX
+  offset: 0xE940
+  symbol: gCremiaRightShinDL
+
+gCremiaRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x15B8C
+  symbol: gCremiaRightShinLimb
+  limb_type: Standard
+
+gCremiaRightThighDL:
+  type: GFX
+  offset: 0xE8B0
+  symbol: gCremiaRightThighDL
+
+gCremiaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x15B80
+  symbol: gCremiaRightThighLimb
+  limb_type: Standard
+
+gCremiaRightUpperArmDL:
+  type: GFX
+  offset: 0xF6E8
+  symbol: gCremiaRightUpperArmDL
+
+gCremiaRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x15B14
+  symbol: gCremiaRightUpperArmLimb
+  limb_type: Standard
+
+gCremiaRootLimb:
+  type: OOT:LIMB
+  offset: 0x15AD8
+  symbol: gCremiaRootLimb
+  limb_type: Standard
+
+gCremiaShawlTex:
+  type: TEXTURE
+  offset: 0x10A18
+  symbol: gCremiaShawlTex
+  format: CI8
+  width: 8
+  height: 8
+
+gCremiaShirtTex:
+  type: TEXTURE
+  offset: 0x10E58
+  symbol: gCremiaShirtTex
+  format: CI8
+  width: 16
+  height: 16
+
+gCremiaSittingAnim:
+  type: OOT:ANIMATION
+  offset: 0x70EC
+  symbol: gCremiaSittingAnim
+
+gCremiaSittingLookDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D54
+  symbol: gCremiaSittingLookDownAnim
+
+gCremiaSittingPetCowAnim:
+  type: OOT:ANIMATION
+  offset: 0x7E28
+  symbol: gCremiaSittingPetCowAnim
+
+gCremiaSkel:
+  type: MM:SKELETON
+  offset: 0x15C28
+  symbol: gCremiaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCremiaSkinArmsTex:
+  type: TEXTURE
+  offset: 0x10218
+  symbol: gCremiaSkinArmsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gCremiaSkinHeadTex:
+  type: TEXTURE
+  offset: 0x10298
+  symbol: gCremiaSkinHeadTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gCremiaSleevesTex:
+  type: TEXTURE
+  offset: 0x10F58
+  symbol: gCremiaSleevesTex
+  format: CI8
+  width: 8
+  height: 16
+
+gCremiaSpreadArmsLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xCC0
+  symbol: gCremiaSpreadArmsLoopAnim
+
+gCremiaSpreadArmsStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xAF7C
+  symbol: gCremiaSpreadArmsStartAnim
+
+gCremiaTLUT:
+  type: TEXTURE
+  offset: 0x10018
+  symbol: gCremiaTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCremiaThinkAnim:
+  type: OOT:ANIMATION
+  offset: 0x5314
+  symbol: gCremiaThinkAnim
+
+gCremiaTorsoDL:
+  type: GFX
+  offset: 0xEDB0
+  symbol: gCremiaTorsoDL
+
+gCremiaTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x15AE4
+  symbol: gCremiaTorsoLimb
+  limb_type: Standard
+
+gCremiaWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x16720
+  symbol: gCremiaWalkAnim
+
+gCremiaWoodenBoxDL:
+  type: GFX
+  offset: 0x5430
+  symbol: gCremiaWoodenBoxDL
+
+gCremiaWoodenBoxTex:
+  type: TEXTURE
+  offset: 0x54E0
+  symbol: gCremiaWoodenBoxTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_ma2Vtx_005330:
+  type: MM:ARRAY
+  offset: 0x005330
+  symbol: object_ma2Vtx_005330
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00AF90:
+  type: MM:ARRAY
+  offset: 0x00AF90
+  symbol: object_ma2Vtx_00AF90
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00B0E0:
+  type: MM:ARRAY
+  offset: 0x00B0E0
+  symbol: object_ma2Vtx_00B0E0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00B3A0:
+  type: MM:ARRAY
+  offset: 0x00B3A0
+  symbol: object_ma2Vtx_00B3A0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00B5C0:
+  type: MM:ARRAY
+  offset: 0x00B5C0
+  symbol: object_ma2Vtx_00B5C0
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00B8D0:
+  type: MM:ARRAY
+  offset: 0x00B8D0
+  symbol: object_ma2Vtx_00B8D0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BAC0:
+  type: MM:ARRAY
+  offset: 0x00BAC0
+  symbol: object_ma2Vtx_00BAC0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BBE0:
+  type: MM:ARRAY
+  offset: 0x00BBE0
+  symbol: object_ma2Vtx_00BBE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BC10:
+  type: MM:ARRAY
+  offset: 0x00BC10
+  symbol: object_ma2Vtx_00BC10
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BE00:
+  type: MM:ARRAY
+  offset: 0x00BE00
+  symbol: object_ma2Vtx_00BE00
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BF20:
+  type: MM:ARRAY
+  offset: 0x00BF20
+  symbol: object_ma2Vtx_00BF20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BF50:
+  type: MM:ARRAY
+  offset: 0x00BF50
+  symbol: object_ma2Vtx_00BF50
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00BF80:
+  type: MM:ARRAY
+  offset: 0x00BF80
+  symbol: object_ma2Vtx_00BF80
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00C280:
+  type: MM:ARRAY
+  offset: 0x00C280
+  symbol: object_ma2Vtx_00C280
+  count: 194
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00CEA0:
+  type: MM:ARRAY
+  offset: 0x00CEA0
+  symbol: object_ma2Vtx_00CEA0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00D120:
+  type: MM:ARRAY
+  offset: 0x00D120
+  symbol: object_ma2Vtx_00D120
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00D2C0:
+  type: MM:ARRAY
+  offset: 0x00D2C0
+  symbol: object_ma2Vtx_00D2C0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00D540:
+  type: MM:ARRAY
+  offset: 0x00D540
+  symbol: object_ma2Vtx_00D540
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00D7C0:
+  type: MM:ARRAY
+  offset: 0x00D7C0
+  symbol: object_ma2Vtx_00D7C0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00D960:
+  type: MM:ARRAY
+  offset: 0x00D960
+  symbol: object_ma2Vtx_00D960
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma2Vtx_00DBE0:
+  type: MM:ARRAY
+  offset: 0x00DBE0
+  symbol: object_ma2Vtx_00DBE0
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCremiaSkelLimbs:
+  type: BLOB
+  offset: 0x15BD4
+  symbol: gCremiaSkelLimbs
+  size: 0

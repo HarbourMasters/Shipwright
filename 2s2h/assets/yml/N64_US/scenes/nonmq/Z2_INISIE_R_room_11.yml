@@ -1,0 +1,150 @@
+:config:
+  segments:
+    - [ 3, 0x017945C0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x017945C0 ]
+    - [ 9, 0x017945C0 ]
+    - [ 10, 0x017945C0 ]
+    - [ 11, 0x017945C0 ]
+    - [ 12, 0x017945C0 ]
+    - [ 13, 0x017945C0 ]
+    - [ 2, 0x017710D0 ]
+  directory: scenes/nonmq/Z2_INISIE_R
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+    - N64_US/scenes/nonmq/Z2_INISIE_R.yml
+
+Z2_INISIE_R_room_11:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_INISIE_R_room_11
+
+Z2_INISIE_R_room_11DL_002EA0:
+  type: GFX
+  offset: 0x2EA0
+  symbol: Z2_INISIE_R_room_11DL_002EA0
+
+Z2_INISIE_R_room_11DL_0042E8:
+  type: GFX
+  offset: 0x42E8
+  symbol: Z2_INISIE_R_room_11DL_0042E8
+
+
+Z2_INISIE_R_room_11ActorEntry_000070:
+  type: BLOB
+  offset: 0x000070
+  symbol: Z2_INISIE_R_room_11ActorEntry_000070
+  size: 0
+
+Z2_INISIE_R_room_11Vtx_000140:
+  type: MM:ARRAY
+  offset: 0x000140
+  symbol: Z2_INISIE_R_room_11Vtx_000140
+  count: 281
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_0012D0:
+  type: GFX
+  offset: 0x0012D0
+  symbol: Z2_INISIE_R_room_11DL_0012D0
+
+Z2_INISIE_R_room_11Vtx_0018C8:
+  type: MM:ARRAY
+  offset: 0x0018C8
+  symbol: Z2_INISIE_R_room_11Vtx_0018C8
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_001E98:
+  type: GFX
+  offset: 0x001E98
+  symbol: Z2_INISIE_R_room_11DL_001E98
+
+Z2_INISIE_R_room_11Vtx_002198:
+  type: MM:ARRAY
+  offset: 0x002198
+  symbol: Z2_INISIE_R_room_11Vtx_002198
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_002588:
+  type: GFX
+  offset: 0x002588
+  symbol: Z2_INISIE_R_room_11DL_002588
+
+Z2_INISIE_R_room_11Vtx_002758:
+  type: MM:ARRAY
+  offset: 0x002758
+  symbol: Z2_INISIE_R_room_11Vtx_002758
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_002878:
+  type: GFX
+  offset: 0x002878
+  symbol: Z2_INISIE_R_room_11DL_002878
+
+Z2_INISIE_R_room_11Vtx_002958:
+  type: MM:ARRAY
+  offset: 0x002958
+  symbol: Z2_INISIE_R_room_11Vtx_002958
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_002BA8:
+  type: GFX
+  offset: 0x002BA8
+  symbol: Z2_INISIE_R_room_11DL_002BA8
+
+Z2_INISIE_R_room_11Vtx_002C80:
+  type: MM:ARRAY
+  offset: 0x002C80
+  symbol: Z2_INISIE_R_room_11Vtx_002C80
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_INISIE_R_room_11DL_002DC0:
+  type: GFX
+  offset: 0x002DC0
+  symbol: Z2_INISIE_R_room_11DL_002DC0
+
+Z2_INISIE_R_room_11Tex_002ED8:
+  type: TEXTURE
+  offset: 0x002ED8
+  symbol: Z2_INISIE_R_room_11Tex_002ED8
+  format: IA8
+  width: 32
+  height: 64
+
+Z2_INISIE_R_room_11Tex_0036D8:
+  type: TEXTURE
+  offset: 0x0036D8
+  symbol: Z2_INISIE_R_room_11Tex_0036D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_INISIE_R_room_11Tex_003ED8:
+  type: TEXTURE
+  offset: 0x003ED8
+  symbol: Z2_INISIE_R_room_11Tex_003ED8
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_INISIE_R_room_11DL_0042E0:
+  type: GFX
+  offset: 0x0042E0
+  symbol: Z2_INISIE_R_room_11DL_0042E0

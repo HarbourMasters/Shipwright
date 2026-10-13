@@ -1,0 +1,221 @@
+:config:
+  segments:
+    - [ 3, 0x01D964B0 ]
+    - [ 6, 0x016138B0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01D964B0 ]
+    - [ 9, 0x01D964B0 ]
+    - [ 10, 0x01D964B0 ]
+    - [ 11, 0x01D964B0 ]
+    - [ 12, 0x01D964B0 ]
+    - [ 13, 0x01D964B0 ]
+    - [ 2, 0x01D8A620 ]
+  directory: scenes/nonmq/Z2_26SARUNOMORI
+  external_files:
+    - GC_US/misc/scene_texture_06.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_26SARUNOMORI.yml
+
+Z2_26SARUNOMORI_room_02:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_26SARUNOMORI_room_02
+
+Z2_26SARUNOMORI_room_02DL_002F80:
+  type: GFX
+  offset: 0x2F80
+  symbol: Z2_26SARUNOMORI_room_02DL_002F80
+
+Z2_26SARUNOMORI_room_02DL_003A28:
+  type: GFX
+  offset: 0x3A28
+  symbol: Z2_26SARUNOMORI_room_02DL_003A28
+
+
+Z2_26SARUNOMORI_room_02ActorEntry_00004C:
+  type: BLOB
+  offset: 0x00004C
+  symbol: Z2_26SARUNOMORI_room_02ActorEntry_00004C
+  size: 0
+
+Z2_26SARUNOMORI_room_02Vtx_000160:
+  type: MM:ARRAY
+  offset: 0x000160
+  symbol: Z2_26SARUNOMORI_room_02Vtx_000160
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_000B50:
+  type: GFX
+  offset: 0x000B50
+  symbol: Z2_26SARUNOMORI_room_02DL_000B50
+
+Z2_26SARUNOMORI_room_02Vtx_000DC8:
+  type: MM:ARRAY
+  offset: 0x000DC8
+  symbol: Z2_26SARUNOMORI_room_02Vtx_000DC8
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_0010E8:
+  type: GFX
+  offset: 0x0010E8
+  symbol: Z2_26SARUNOMORI_room_02DL_0010E8
+
+Z2_26SARUNOMORI_room_02Vtx_001230:
+  type: MM:ARRAY
+  offset: 0x001230
+  symbol: Z2_26SARUNOMORI_room_02Vtx_001230
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_0014B0:
+  type: GFX
+  offset: 0x0014B0
+  symbol: Z2_26SARUNOMORI_room_02DL_0014B0
+
+Z2_26SARUNOMORI_room_02Vtx_0015E8:
+  type: MM:ARRAY
+  offset: 0x0015E8
+  symbol: Z2_26SARUNOMORI_room_02Vtx_0015E8
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_001AB8:
+  type: GFX
+  offset: 0x001AB8
+  symbol: Z2_26SARUNOMORI_room_02DL_001AB8
+
+Z2_26SARUNOMORI_room_02Vtx_001C68:
+  type: MM:ARRAY
+  offset: 0x001C68
+  symbol: Z2_26SARUNOMORI_room_02Vtx_001C68
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_001D88:
+  type: GFX
+  offset: 0x001D88
+  symbol: Z2_26SARUNOMORI_room_02DL_001D88
+
+Z2_26SARUNOMORI_room_02Vtx_001DF0:
+  type: MM:ARRAY
+  offset: 0x001DF0
+  symbol: Z2_26SARUNOMORI_room_02Vtx_001DF0
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_002400:
+  type: GFX
+  offset: 0x002400
+  symbol: Z2_26SARUNOMORI_room_02DL_002400
+
+Z2_26SARUNOMORI_room_02Vtx_002600:
+  type: MM:ARRAY
+  offset: 0x002600
+  symbol: Z2_26SARUNOMORI_room_02Vtx_002600
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_0027A0:
+  type: GFX
+  offset: 0x0027A0
+  symbol: Z2_26SARUNOMORI_room_02DL_0027A0
+
+Z2_26SARUNOMORI_room_02Vtx_0028A8:
+  type: MM:ARRAY
+  offset: 0x0028A8
+  symbol: Z2_26SARUNOMORI_room_02Vtx_0028A8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_002A88:
+  type: GFX
+  offset: 0x002A88
+  symbol: Z2_26SARUNOMORI_room_02DL_002A88
+
+Z2_26SARUNOMORI_room_02Vtx_002BA0:
+  type: MM:ARRAY
+  offset: 0x002BA0
+  symbol: Z2_26SARUNOMORI_room_02Vtx_002BA0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_002E00:
+  type: GFX
+  offset: 0x002E00
+  symbol: Z2_26SARUNOMORI_room_02DL_002E00
+
+Z2_26SARUNOMORI_room_02DL_002FD0:
+  type: GFX
+  offset: 0x002FD0
+  symbol: Z2_26SARUNOMORI_room_02DL_002FD0
+
+Z2_26SARUNOMORI_room_02DL_002FD8:
+  type: GFX
+  offset: 0x002FD8
+  symbol: Z2_26SARUNOMORI_room_02DL_002FD8
+
+Z2_26SARUNOMORI_room_02DL_002FE0:
+  type: GFX
+  offset: 0x002FE0
+  symbol: Z2_26SARUNOMORI_room_02DL_002FE0
+
+Z2_26SARUNOMORI_room_02DL_002FE8:
+  type: GFX
+  offset: 0x002FE8
+  symbol: Z2_26SARUNOMORI_room_02DL_002FE8
+
+Z2_26SARUNOMORI_room_02Vtx_002FF0:
+  type: MM:ARRAY
+  offset: 0x002FF0
+  symbol: Z2_26SARUNOMORI_room_02Vtx_002FF0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_0032C0:
+  type: GFX
+  offset: 0x0032C0
+  symbol: Z2_26SARUNOMORI_room_02DL_0032C0
+
+Z2_26SARUNOMORI_room_02Vtx_0033E0:
+  type: MM:ARRAY
+  offset: 0x0033E0
+  symbol: Z2_26SARUNOMORI_room_02Vtx_0033E0
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_26SARUNOMORI_room_02DL_0038E0:
+  type: GFX
+  offset: 0x0038E0
+  symbol: Z2_26SARUNOMORI_room_02DL_0038E0
+
+Z2_26SARUNOMORI_room_02Tex_003A60:
+  type: TEXTURE
+  offset: 0x003A60
+  symbol: Z2_26SARUNOMORI_room_02Tex_003A60
+  format: IA4
+  width: 64
+  height: 64

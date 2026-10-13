@@ -1,0 +1,937 @@
+:config:
+  segments:
+    - [ 6, 0x00E78E60 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x00E78E60 ]
+    - [ 9, 0x00E78E60 ]
+    - [ 10, 0x00E78E60 ]
+    - [ 11, 0x00E78E60 ]
+    - [ 12, 0x00E78E60 ]
+    - [ 13, 0x00E78E60 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gLinkZoraCollarDL:
+  type: GFX
+  offset: 0xAD38
+  symbol: gLinkZoraCollarDL
+
+gLinkZoraCollarLimb:
+  type: OOT:LIMB
+  offset: 0x12B50
+  symbol: gLinkZoraCollarLimb
+  limb_type: LOD
+
+gLinkZoraEyesClosedTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gLinkZoraEyesClosedTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesDownTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gLinkZoraEyesDownTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesHalfTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gLinkZoraEyesHalfTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesLeftTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gLinkZoraEyesLeftTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesOpenTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLinkZoraEyesOpenTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesRightTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gLinkZoraEyesRightTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesUpTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gLinkZoraEyesUpTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraEyesWincingTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gLinkZoraEyesWincingTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraHatDL:
+  type: GFX
+  offset: 0xB630
+  symbol: gLinkZoraHatDL
+
+gLinkZoraHatLimb:
+  type: OOT:LIMB
+  offset: 0x12B40
+  symbol: gLinkZoraHatLimb
+  limb_type: LOD
+
+gLinkZoraHeadDL:
+  type: GFX
+  offset: 0xB170
+  symbol: gLinkZoraHeadDL
+
+gLinkZoraHeadLimb:
+  type: OOT:LIMB
+  offset: 0x12B30
+  symbol: gLinkZoraHeadLimb
+  limb_type: LOD
+
+gLinkZoraLeftFootDL:
+  type: GFX
+  offset: 0xAA10
+  symbol: gLinkZoraLeftFootDL
+
+gLinkZoraLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x12B10
+  symbol: gLinkZoraLeftFootLimb
+  limb_type: LOD
+
+gLinkZoraLeftForearmDL:
+  type: GFX
+  offset: 0xC020
+  symbol: gLinkZoraLeftForearmDL
+
+gLinkZoraLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x12B70
+  symbol: gLinkZoraLeftForearmLimb
+  limb_type: LOD
+
+gLinkZoraLeftHandClosedDL:
+  type: GFX
+  offset: 0xC270
+  symbol: gLinkZoraLeftHandClosedDL
+
+gLinkZoraLeftHandHoldBottleDL:
+  type: GFX
+  offset: 0x10D08
+  symbol: gLinkZoraLeftHandHoldBottleDL
+
+gLinkZoraLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x12B80
+  symbol: gLinkZoraLeftHandLimb
+  limb_type: LOD
+
+gLinkZoraLeftHandOpenDL:
+  type: GFX
+  offset: 0xFDF0
+  symbol: gLinkZoraLeftHandOpenDL
+
+gLinkZoraLeftShinDL:
+  type: GFX
+  offset: 0xA7A8
+  symbol: gLinkZoraLeftShinDL
+
+gLinkZoraLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x12B00
+  symbol: gLinkZoraLeftShinLimb
+  limb_type: LOD
+
+gLinkZoraLeftShoulderDL:
+  type: GFX
+  offset: 0xBEE8
+  symbol: gLinkZoraLeftShoulderDL
+
+gLinkZoraLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x12B60
+  symbol: gLinkZoraLeftShoulderLimb
+  limb_type: LOD
+
+gLinkZoraLeftThighDL:
+  type: GFX
+  offset: 0xA4A0
+  symbol: gLinkZoraLeftThighDL
+
+gLinkZoraLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x12AF0
+  symbol: gLinkZoraLeftThighLimb
+  limb_type: LOD
+
+gLinkZoraLowerRootLimb:
+  type: OOT:LIMB
+  offset: 0x12AB0
+  symbol: gLinkZoraLowerRootLimb
+  limb_type: LOD
+
+gLinkZoraMouthClosedTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gLinkZoraMouthClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraMouthHalfTex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gLinkZoraMouthHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraMouthOpenTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gLinkZoraMouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraMouthSmileTex:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: gLinkZoraMouthSmileTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x5200
+
+gLinkZoraRightFootDL:
+  type: GFX
+  offset: 0xA370
+  symbol: gLinkZoraRightFootDL
+
+gLinkZoraRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x12AE0
+  symbol: gLinkZoraRightFootLimb
+  limb_type: LOD
+
+gLinkZoraRightForearmDL:
+  type: GFX
+  offset: 0xB990
+  symbol: gLinkZoraRightForearmDL
+
+gLinkZoraRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x12BA0
+  symbol: gLinkZoraRightForearmLimb
+  limb_type: LOD
+
+gLinkZoraRightHandClosedDL:
+  type: GFX
+  offset: 0xBBE0
+  symbol: gLinkZoraRightHandClosedDL
+
+gLinkZoraRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x12BB0
+  symbol: gLinkZoraRightHandLimb
+  limb_type: LOD
+
+gLinkZoraRightHandOpenDL:
+  type: GFX
+  offset: 0xFBB8
+  symbol: gLinkZoraRightHandOpenDL
+
+gLinkZoraRightShinDL:
+  type: GFX
+  offset: 0xA108
+  symbol: gLinkZoraRightShinDL
+
+gLinkZoraRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x12AD0
+  symbol: gLinkZoraRightShinLimb
+  limb_type: LOD
+
+gLinkZoraRightShoulderDL:
+  type: GFX
+  offset: 0xB820
+  symbol: gLinkZoraRightShoulderDL
+
+gLinkZoraRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x12B90
+  symbol: gLinkZoraRightShoulderLimb
+  limb_type: LOD
+
+gLinkZoraRightThighDL:
+  type: GFX
+  offset: 0x9E00
+  symbol: gLinkZoraRightThighDL
+
+gLinkZoraRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x12AC0
+  symbol: gLinkZoraRightThighLimb
+  limb_type: LOD
+
+gLinkZoraRootLimb:
+  type: OOT:LIMB
+  offset: 0x12A90
+  symbol: gLinkZoraRootLimb
+  limb_type: LOD
+
+gLinkZoraSheathDL:
+  type: GFX
+  offset: 0xB768
+  symbol: gLinkZoraSheathDL
+
+gLinkZoraSheathLimb:
+  type: OOT:LIMB
+  offset: 0x12BC0
+  symbol: gLinkZoraSheathLimb
+  limb_type: LOD
+
+gLinkZoraSkel:
+  type: MM:SKELETON
+  offset: 0x12C34
+  symbol: gLinkZoraSkel
+  limb_type: LOD
+  skel_type: Flex
+
+gLinkZoraSkinTLUT:
+  type: TEXTURE
+  offset: 0x5200
+  symbol: gLinkZoraSkinTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLinkZoraTorsoDL:
+  type: GFX
+  offset: 0xADF0
+  symbol: gLinkZoraTorsoDL
+
+gLinkZoraTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x12BD0
+  symbol: gLinkZoraTorsoLimb
+  limb_type: LOD
+
+gLinkZoraUpperRootLimb:
+  type: OOT:LIMB
+  offset: 0x12B20
+  symbol: gLinkZoraUpperRootLimb
+  limb_type: LOD
+
+gLinkZoraWaistDL:
+  type: GFX
+  offset: 0xAB40
+  symbol: gLinkZoraWaistDL
+
+gLinkZoraWaistLimb:
+  type: OOT:LIMB
+  offset: 0x12AA0
+  symbol: gLinkZoraWaistLimb
+  limb_type: LOD
+
+object_link_zora_DL_00CC38:
+  type: GFX
+  offset: 0xCC38
+  symbol: object_link_zora_DL_00CC38
+
+object_link_zora_DL_00CDA0:
+  type: GFX
+  offset: 0xCDA0
+  symbol: object_link_zora_DL_00CDA0
+
+object_link_zora_DL_00E088:
+  type: GFX
+  offset: 0xE088
+  symbol: object_link_zora_DL_00E088
+
+object_link_zora_DL_00E2A0:
+  type: GFX
+  offset: 0xE2A0
+  symbol: object_link_zora_DL_00E2A0
+
+object_link_zora_DL_010868:
+  type: GFX
+  offset: 0x10868
+  symbol: object_link_zora_DL_010868
+
+object_link_zora_DL_010978:
+  type: GFX
+  offset: 0x10978
+  symbol: object_link_zora_DL_010978
+
+object_link_zora_DL_0110A8:
+  type: GFX
+  offset: 0x110A8
+  symbol: object_link_zora_DL_0110A8
+
+object_link_zora_DL_011760:
+  type: GFX
+  offset: 0x11760
+  symbol: object_link_zora_DL_011760
+
+object_link_zora_DL_011A58:
+  type: GFX
+  offset: 0x11A58
+  symbol: object_link_zora_DL_011A58
+
+object_link_zora_Matanimheader_012A68:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12A68
+  symbol: object_link_zora_Matanimheader_012A68
+
+object_link_zora_Matanimheader_012A80:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x12A80
+  symbol: object_link_zora_Matanimheader_012A80
+
+object_link_zora_TLUT_005000:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: object_link_zora_TLUT_005000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_TLUT_00C578:
+  type: TEXTURE
+  offset: 0xC578
+  symbol: object_link_zora_TLUT_00C578
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_Tex_005400:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: object_link_zora_Tex_005400
+  format: CI8
+  width: 32
+  height: 32
+
+object_link_zora_Tex_005800:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: object_link_zora_Tex_005800
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_005900:
+  type: TEXTURE
+  offset: 0x5900
+  symbol: object_link_zora_Tex_005900
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_005A00:
+  type: TEXTURE
+  offset: 0x5A00
+  symbol: object_link_zora_Tex_005A00
+  format: CI8
+  width: 8
+  height: 16
+
+object_link_zora_Tex_005A80:
+  type: TEXTURE
+  offset: 0x5A80
+  symbol: object_link_zora_Tex_005A80
+  format: CI8
+  width: 8
+  height: 16
+
+object_link_zora_Tex_005B00:
+  type: TEXTURE
+  offset: 0x5B00
+  symbol: object_link_zora_Tex_005B00
+  format: CI8
+  width: 32
+  height: 16
+
+object_link_zora_Tex_005D00:
+  type: TEXTURE
+  offset: 0x5D00
+  symbol: object_link_zora_Tex_005D00
+  format: CI8
+  width: 16
+  height: 32
+
+object_link_zora_Tex_005F00:
+  type: TEXTURE
+  offset: 0x5F00
+  symbol: object_link_zora_Tex_005F00
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_006000:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: object_link_zora_Tex_006000
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_006100:
+  type: TEXTURE
+  offset: 0x6100
+  symbol: object_link_zora_Tex_006100
+  format: CI8
+  width: 8
+  height: 16
+
+object_link_zora_Tex_006180:
+  type: TEXTURE
+  offset: 0x6180
+  symbol: object_link_zora_Tex_006180
+  format: CI8
+  width: 8
+  height: 8
+
+object_link_zora_Tex_0061C0:
+  type: TEXTURE
+  offset: 0x61C0
+  symbol: object_link_zora_Tex_0061C0
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00C778:
+  type: TEXTURE
+  offset: 0xC778
+  symbol: object_link_zora_Tex_00C778
+  format: CI8
+  width: 16
+  height: 32
+
+object_link_zora_Tex_00C978:
+  type: TEXTURE
+  offset: 0xC978
+  symbol: object_link_zora_Tex_00C978
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00E678:
+  type: TEXTURE
+  offset: 0xE678
+  symbol: object_link_zora_Tex_00E678
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00E778:
+  type: TEXTURE
+  offset: 0xE778
+  symbol: object_link_zora_Tex_00E778
+  format: CI8
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00E878:
+  type: TEXTURE
+  offset: 0xE878
+  symbol: object_link_zora_Tex_00E878
+  format: CI8
+  width: 8
+  height: 16
+
+object_link_zora_Tex_00E8F8:
+  type: TEXTURE
+  offset: 0xE8F8
+  symbol: object_link_zora_Tex_00E8F8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00EAF8:
+  type: TEXTURE
+  offset: 0xEAF8
+  symbol: object_link_zora_Tex_00EAF8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00ECF8:
+  type: TEXTURE
+  offset: 0xECF8
+  symbol: object_link_zora_Tex_00ECF8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_Tex_00EEF8:
+  type: TEXTURE
+  offset: 0xEEF8
+  symbol: object_link_zora_Tex_00EEF8
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_zora_Tex_00F2F8:
+  type: TEXTURE
+  offset: 0xF2F8
+  symbol: object_link_zora_Tex_00F2F8
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_zora_Tex_010028:
+  type: TEXTURE
+  offset: 0x10028
+  symbol: object_link_zora_Tex_010028
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_link_zora_Tex_010228:
+  type: TEXTURE
+  offset: 0x10228
+  symbol: object_link_zora_Tex_010228
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_link_zora_Tex_011A60:
+  type: TEXTURE
+  offset: 0x11A60
+  symbol: object_link_zora_Tex_011A60
+  format: I8
+  width: 64
+  height: 32
+
+object_link_zora_Tex_012260:
+  type: TEXTURE
+  offset: 0x12260
+  symbol: object_link_zora_Tex_012260
+  format: I8
+  width: 32
+  height: 64
+
+object_link_zora_U8_011710:
+  type: MM:ARRAY
+  offset: 0x011710
+  symbol: object_link_zora_U8_011710
+  count: 80
+  array_type: Scalar
+  scalar_type: 3
+
+object_link_zora_Vtx_011210:
+  type: MM:ARRAY
+  offset: 0x011210
+  symbol: object_link_zora_Vtx_011210
+  count: 80
+  array_type: VTX
+
+
+object_link_zoraVtx_0062C0:
+  type: MM:ARRAY
+  offset: 0x0062C0
+  symbol: object_link_zoraVtx_0062C0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_006580:
+  type: MM:ARRAY
+  offset: 0x006580
+  symbol: object_link_zoraVtx_006580
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_006910:
+  type: MM:ARRAY
+  offset: 0x006910
+  symbol: object_link_zoraVtx_006910
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_006BF0:
+  type: MM:ARRAY
+  offset: 0x006BF0
+  symbol: object_link_zoraVtx_006BF0
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_006EB0:
+  type: MM:ARRAY
+  offset: 0x006EB0
+  symbol: object_link_zoraVtx_006EB0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_007240:
+  type: MM:ARRAY
+  offset: 0x007240
+  symbol: object_link_zoraVtx_007240
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_007520:
+  type: MM:ARRAY
+  offset: 0x007520
+  symbol: object_link_zoraVtx_007520
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_007850:
+  type: MM:ARRAY
+  offset: 0x007850
+  symbol: object_link_zoraVtx_007850
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_007AB0:
+  type: MM:ARRAY
+  offset: 0x007AB0
+  symbol: object_link_zoraVtx_007AB0
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_0083E0:
+  type: MM:ARRAY
+  offset: 0x0083E0
+  symbol: object_link_zoraVtx_0083E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_008410:
+  type: MM:ARRAY
+  offset: 0x008410
+  symbol: object_link_zoraVtx_008410
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_008700:
+  type: MM:ARRAY
+  offset: 0x008700
+  symbol: object_link_zoraVtx_008700
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_0089F0:
+  type: MM:ARRAY
+  offset: 0x0089F0
+  symbol: object_link_zoraVtx_0089F0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_008CC0:
+  type: MM:ARRAY
+  offset: 0x008CC0
+  symbol: object_link_zoraVtx_008CC0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_008FB0:
+  type: MM:ARRAY
+  offset: 0x008FB0
+  symbol: object_link_zoraVtx_008FB0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_0092A0:
+  type: MM:ARRAY
+  offset: 0x0092A0
+  symbol: object_link_zoraVtx_0092A0
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_0095F0:
+  type: MM:ARRAY
+  offset: 0x0095F0
+  symbol: object_link_zoraVtx_0095F0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_009620:
+  type: MM:ARRAY
+  offset: 0x009620
+  symbol: object_link_zoraVtx_009620
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00CA78:
+  type: MM:ARRAY
+  offset: 0x00CA78
+  symbol: object_link_zoraVtx_00CA78
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00CB58:
+  type: MM:ARRAY
+  offset: 0x00CB58
+  symbol: object_link_zoraVtx_00CB58
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00CF08:
+  type: MM:ARRAY
+  offset: 0x00CF08
+  symbol: object_link_zoraVtx_00CF08
+  count: 252
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00DEC8:
+  type: MM:ARRAY
+  offset: 0x00DEC8
+  symbol: object_link_zoraVtx_00DEC8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00F6F8:
+  type: MM:ARRAY
+  offset: 0x00F6F8
+  symbol: object_link_zoraVtx_00F6F8
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_00F958:
+  type: MM:ARRAY
+  offset: 0x00F958
+  symbol: object_link_zoraVtx_00F958
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_010628:
+  type: MM:ARRAY
+  offset: 0x010628
+  symbol: object_link_zoraVtx_010628
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_010748:
+  type: MM:ARRAY
+  offset: 0x010748
+  symbol: object_link_zoraVtx_010748
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_010A88:
+  type: MM:ARRAY
+  offset: 0x010A88
+  symbol: object_link_zoraVtx_010A88
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zoraVtx_010F38:
+  type: MM:ARRAY
+  offset: 0x010F38
+  symbol: object_link_zoraVtx_010F38
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_link_zora_Matanimheader_012A68TexScrollParams_012A60:
+  type: BLOB
+  offset: 0x012A60
+  symbol: object_link_zora_Matanimheader_012A68TexScrollParams_012A60
+  size: 0
+
+object_link_zora_Matanimheader_012A80TexScrollParams_012A70:
+  type: BLOB
+  offset: 0x012A70
+  symbol: object_link_zora_Matanimheader_012A80TexScrollParams_012A70
+  size: 0
+
+object_link_zora_Matanimheader_012A80TexScrollParams_012A78:
+  type: BLOB
+  offset: 0x012A78
+  symbol: object_link_zora_Matanimheader_012A80TexScrollParams_012A78
+  size: 0
+
+gLinkZoraSkelLimbs:
+  type: BLOB
+  offset: 0x12BE0
+  symbol: gLinkZoraSkelLimbs
+  size: 0

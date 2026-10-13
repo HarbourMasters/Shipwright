@@ -1,0 +1,240 @@
+:config:
+  segments:
+    - [ 6, 0x011B4470 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x011B4470 ]
+    - [ 9, 0x011B4470 ]
+    - [ 10, 0x011B4470 ]
+    - [ 11, 0x011B4470 ]
+    - [ 12, 0x011B4470 ]
+    - [ 13, 0x011B4470 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gRealBombchuBackLeftLegDL:
+  type: GFX
+  offset: 0xC78
+  symbol: gRealBombchuBackLeftLegDL
+
+gRealBombchuBackLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x1810
+  symbol: gRealBombchuBackLeftLegLimb
+  limb_type: Standard
+
+gRealBombchuBackRightLegDL:
+  type: GFX
+  offset: 0xB18
+  symbol: gRealBombchuBackRightLegDL
+
+gRealBombchuBackRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x1828
+  symbol: gRealBombchuBackRightLegLimb
+  limb_type: Standard
+
+gRealBombchuBodyDL:
+  type: GFX
+  offset: 0xA50
+  symbol: gRealBombchuBodyDL
+
+gRealBombchuBodyLimb:
+  type: OOT:LIMB
+  offset: 0x17C8
+  symbol: gRealBombchuBodyLimb
+  limb_type: Standard
+
+gRealBombchuEyeTex:
+  type: TEXTURE
+  offset: 0x15C8
+  symbol: gRealBombchuEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRealBombchuFrontLeftLegDL:
+  type: GFX
+  offset: 0xD28
+  symbol: gRealBombchuFrontLeftLegDL
+
+gRealBombchuFrontLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x1804
+  symbol: gRealBombchuFrontLeftLegLimb
+  limb_type: Standard
+
+gRealBombchuFrontRightLegDL:
+  type: GFX
+  offset: 0xBC8
+  symbol: gRealBombchuFrontRightLegDL
+
+gRealBombchuFrontRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x181C
+  symbol: gRealBombchuFrontRightLegLimb
+  limb_type: Standard
+
+gRealBombchuHeadDL:
+  type: GFX
+  offset: 0xED8
+  symbol: gRealBombchuHeadDL
+
+gRealBombchuHeadLimb:
+  type: OOT:LIMB
+  offset: 0x17D4
+  symbol: gRealBombchuHeadLimb
+  limb_type: Standard
+
+gRealBombchuMouthTex:
+  type: TEXTURE
+  offset: 0x13C8
+  symbol: gRealBombchuMouthTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRealBombchuRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x26C
+  symbol: gRealBombchuRunAnim
+
+gRealBombchuSkel:
+  type: MM:SKELETON
+  offset: 0x1858
+  symbol: gRealBombchuSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gRealBombchuSkinTex:
+  type: TEXTURE
+  offset: 0x11C8
+  symbol: gRealBombchuSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRealBombchuSpotAnim:
+  type: OOT:ANIMATION
+  offset: 0x174
+  symbol: gRealBombchuSpotAnim
+
+gRealBombchuTailBaseDL:
+  type: GFX
+  offset: 0xDD8
+  symbol: gRealBombchuTailBaseDL
+
+gRealBombchuTailBaseLimb:
+  type: OOT:LIMB
+  offset: 0x17E0
+  symbol: gRealBombchuTailBaseLimb
+  limb_type: Standard
+
+gRealBombchuTailEndDL:
+  type: GFX
+  offset: 0xE90
+  symbol: gRealBombchuTailEndDL
+
+gRealBombchuTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x17F8
+  symbol: gRealBombchuTailEndLimb
+  limb_type: Standard
+
+gRealBombchuTailMiddleDL:
+  type: GFX
+  offset: 0xE20
+  symbol: gRealBombchuTailMiddleDL
+
+gRealBombchuTailMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x17EC
+  symbol: gRealBombchuTailMiddleLimb
+  limb_type: Standard
+
+
+object_ratVtx_000280:
+  type: MM:ARRAY
+  offset: 0x000280
+  symbol: object_ratVtx_000280
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000370:
+  type: MM:ARRAY
+  offset: 0x000370
+  symbol: object_ratVtx_000370
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000830:
+  type: MM:ARRAY
+  offset: 0x000830
+  symbol: object_ratVtx_000830
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000860:
+  type: MM:ARRAY
+  offset: 0x000860
+  symbol: object_ratVtx_000860
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000890:
+  type: MM:ARRAY
+  offset: 0x000890
+  symbol: object_ratVtx_000890
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_0008D0:
+  type: MM:ARRAY
+  offset: 0x0008D0
+  symbol: object_ratVtx_0008D0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000930:
+  type: MM:ARRAY
+  offset: 0x000930
+  symbol: object_ratVtx_000930
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_000990:
+  type: MM:ARRAY
+  offset: 0x000990
+  symbol: object_ratVtx_000990
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ratVtx_0009F0:
+  type: MM:ARRAY
+  offset: 0x0009F0
+  symbol: object_ratVtx_0009F0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gRealBombchuSkelLimbs:
+  type: BLOB
+  offset: 0x1834
+  symbol: gRealBombchuSkelLimbs
+  size: 0

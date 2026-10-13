@@ -1,0 +1,715 @@
+:config:
+  segments:
+    - [ 6, 0x013AAA80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x013AAA80 ]
+    - [ 9, 0x013AAA80 ]
+    - [ 10, 0x013AAA80 ]
+    - [ 11, 0x013AAA80 ]
+    - [ 12, 0x013AAA80 ]
+    - [ 13, 0x013AAA80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDekuPrincessAngryLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x9AA0
+  symbol: gDekuPrincessAngryLoopAnim
+
+gDekuPrincessAngryStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x923C
+  symbol: gDekuPrincessAngryStartAnim
+
+gDekuPrincessArmsTogetherLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x6B74
+  symbol: gDekuPrincessArmsTogetherLoopAnim
+
+gDekuPrincessArmsTogetherStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xBAD8
+  symbol: gDekuPrincessArmsTogetherStartAnim
+
+gDekuPrincessBounceLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C1C
+  symbol: gDekuPrincessBounceLoopAnim
+
+gDekuPrincessBounceStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x17F8
+  symbol: gDekuPrincessBounceStartAnim
+
+gDekuPrincessBowAnim:
+  type: OOT:ANIMATION
+  offset: 0xA900
+  symbol: gDekuPrincessBowAnim
+
+gDekuPrincessDressDL:
+  type: GFX
+  offset: 0xEAC0
+  symbol: gDekuPrincessDressDL
+
+gDekuPrincessDressLimb:
+  type: OOT:LIMB
+  offset: 0x10BDC
+  symbol: gDekuPrincessDressLimb
+  limb_type: Standard
+
+gDekuPrincessDressTex:
+  type: TEXTURE
+  offset: 0xF7D0
+  symbol: gDekuPrincessDressTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuPrincessDressTrainDL:
+  type: GFX
+  offset: 0xEBD8
+  symbol: gDekuPrincessDressTrainDL
+
+gDekuPrincessDressTrainLimb:
+  type: OOT:LIMB
+  offset: 0x10BE8
+  symbol: gDekuPrincessDressTrainLimb
+  limb_type: Standard
+
+gDekuPrincessEyeAngryTex:
+  type: TEXTURE
+  offset: 0x109D0
+  symbol: gDekuPrincessEyeAngryTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPrincessEyeClosedTex:
+  type: TEXTURE
+  offset: 0x107D0
+  symbol: gDekuPrincessEyeClosedTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPrincessEyeHalfTex:
+  type: TEXTURE
+  offset: 0x105D0
+  symbol: gDekuPrincessEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPrincessEyeOpenTex:
+  type: TEXTURE
+  offset: 0x103D0
+  symbol: gDekuPrincessEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPrincessEyesDL:
+  type: GFX
+  offset: 0xD978
+  symbol: gDekuPrincessEyesDL
+
+gDekuPrincessEyesLimb:
+  type: OOT:LIMB
+  offset: 0x10CF0
+  symbol: gDekuPrincessEyesLimb
+  limb_type: Standard
+
+gDekuPrincessFaceTex:
+  type: TEXTURE
+  offset: 0xF5D0
+  symbol: gDekuPrincessFaceTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPrincessGlareLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x625C
+  symbol: gDekuPrincessGlareLoopAnim
+
+gDekuPrincessGlareStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x57AC
+  symbol: gDekuPrincessGlareStartAnim
+
+gDekuPrincessGreetingAnim:
+  type: OOT:ANIMATION
+  offset: 0x12428
+  symbol: gDekuPrincessGreetingAnim
+
+gDekuPrincessHair1DL:
+  type: GFX
+  offset: 0xDEC8
+  symbol: gDekuPrincessHair1DL
+
+gDekuPrincessHair1Limb:
+  type: OOT:LIMB
+  offset: 0x10C84
+  symbol: gDekuPrincessHair1Limb
+  limb_type: Standard
+
+gDekuPrincessHair2DL:
+  type: GFX
+  offset: 0xDE30
+  symbol: gDekuPrincessHair2DL
+
+gDekuPrincessHair2Limb:
+  type: OOT:LIMB
+  offset: 0x10C90
+  symbol: gDekuPrincessHair2Limb
+  limb_type: Standard
+
+gDekuPrincessHair3DL:
+  type: GFX
+  offset: 0xDD98
+  symbol: gDekuPrincessHair3DL
+
+gDekuPrincessHair3Limb:
+  type: OOT:LIMB
+  offset: 0x10C9C
+  symbol: gDekuPrincessHair3Limb
+  limb_type: Standard
+
+gDekuPrincessHair4DL:
+  type: GFX
+  offset: 0xDD00
+  symbol: gDekuPrincessHair4DL
+
+gDekuPrincessHair4Limb:
+  type: OOT:LIMB
+  offset: 0x10CA8
+  symbol: gDekuPrincessHair4Limb
+  limb_type: Standard
+
+gDekuPrincessHair5DL:
+  type: GFX
+  offset: 0xDC68
+  symbol: gDekuPrincessHair5DL
+
+gDekuPrincessHair5Limb:
+  type: OOT:LIMB
+  offset: 0x10CB4
+  symbol: gDekuPrincessHair5Limb
+  limb_type: Standard
+
+gDekuPrincessHair6DL:
+  type: GFX
+  offset: 0xDBD0
+  symbol: gDekuPrincessHair6DL
+
+gDekuPrincessHair6Limb:
+  type: OOT:LIMB
+  offset: 0x10CC0
+  symbol: gDekuPrincessHair6Limb
+  limb_type: Standard
+
+gDekuPrincessHair7DL:
+  type: GFX
+  offset: 0xDB38
+  symbol: gDekuPrincessHair7DL
+
+gDekuPrincessHair7Limb:
+  type: OOT:LIMB
+  offset: 0x10CCC
+  symbol: gDekuPrincessHair7Limb
+  limb_type: Standard
+
+gDekuPrincessHair8DL:
+  type: GFX
+  offset: 0xDAA0
+  symbol: gDekuPrincessHair8DL
+
+gDekuPrincessHair8Limb:
+  type: OOT:LIMB
+  offset: 0x10CD8
+  symbol: gDekuPrincessHair8Limb
+  limb_type: Standard
+
+gDekuPrincessHair9DL:
+  type: GFX
+  offset: 0xDA08
+  symbol: gDekuPrincessHair9DL
+
+gDekuPrincessHair9Limb:
+  type: OOT:LIMB
+  offset: 0x10CE4
+  symbol: gDekuPrincessHair9Limb
+  limb_type: Standard
+
+gDekuPrincessHairLeafTex:
+  type: TEXTURE
+  offset: 0xF0D0
+  symbol: gDekuPrincessHairLeafTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuPrincessHeadDL:
+  type: GFX
+  offset: 0xD670
+  symbol: gDekuPrincessHeadDL
+
+gDekuPrincessHeadLimb:
+  type: OOT:LIMB
+  offset: 0x10C54
+  symbol: gDekuPrincessHeadLimb
+  limb_type: Standard
+
+gDekuPrincessHeadTex:
+  type: TEXTURE
+  offset: 0xF4D0
+  symbol: gDekuPrincessHeadTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gDekuPrincessHurryAnim:
+  type: OOT:ANIMATION
+  offset: 0x21DC
+  symbol: gDekuPrincessHurryAnim
+
+gDekuPrincessHurryEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x26B8
+  symbol: gDekuPrincessHurryEndAnim
+
+gDekuPrincessIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xB324
+  symbol: gDekuPrincessIdleAnim
+
+gDekuPrincessJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x125C
+  symbol: gDekuPrincessJumpAnim
+
+gDekuPrincessJumpKickAnim:
+  type: OOT:ANIMATION
+  offset: 0x7D8
+  symbol: gDekuPrincessJumpKickAnim
+
+gDekuPrincessLaughLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x7960
+  symbol: gDekuPrincessLaughLoopAnim
+
+gDekuPrincessLaughStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x71F4
+  symbol: gDekuPrincessLaughStartAnim
+
+gDekuPrincessLeftEarringDL:
+  type: GFX
+  offset: 0xE260
+  symbol: gDekuPrincessLeftEarringDL
+
+gDekuPrincessLeftEarringLimb:
+  type: OOT:LIMB
+  offset: 0x10C60
+  symbol: gDekuPrincessLeftEarringLimb
+  limb_type: Standard
+
+gDekuPrincessLeftForearmDL:
+  type: GFX
+  offset: 0xE888
+  symbol: gDekuPrincessLeftForearmDL
+
+gDekuPrincessLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x10C0C
+  symbol: gDekuPrincessLeftForearmLimb
+  limb_type: Standard
+
+gDekuPrincessLeftSleeveEndDL:
+  type: GFX
+  offset: 0xE768
+  symbol: gDekuPrincessLeftSleeveEndDL
+
+gDekuPrincessLeftSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x10C18
+  symbol: gDekuPrincessLeftSleeveEndLimb
+  limb_type: Standard
+
+gDekuPrincessLeftUpperArmDL:
+  type: GFX
+  offset: 0xE9A8
+  symbol: gDekuPrincessLeftUpperArmDL
+
+gDekuPrincessLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x10C00
+  symbol: gDekuPrincessLeftUpperArmLimb
+  limb_type: Standard
+
+gDekuPrincessMouthTex:
+  type: TEXTURE
+  offset: 0xF550
+  symbol: gDekuPrincessMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPrincessNeckDL:
+  type: GFX
+  offset: 0xE2F8
+  symbol: gDekuPrincessNeckDL
+
+gDekuPrincessNeckLimb:
+  type: OOT:LIMB
+  offset: 0x10C48
+  symbol: gDekuPrincessNeckLimb
+  limb_type: Standard
+
+gDekuPrincessPetalTex:
+  type: TEXTURE
+  offset: 0xECD0
+  symbol: gDekuPrincessPetalTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuPrincessRightEarringDL:
+  type: GFX
+  offset: 0xE1C8
+  symbol: gDekuPrincessRightEarringDL
+
+gDekuPrincessRightEarringLimb:
+  type: OOT:LIMB
+  offset: 0x10C6C
+  symbol: gDekuPrincessRightEarringLimb
+  limb_type: Standard
+
+gDekuPrincessRightForearmDL:
+  type: GFX
+  offset: 0xE530
+  symbol: gDekuPrincessRightForearmDL
+
+gDekuPrincessRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x10C30
+  symbol: gDekuPrincessRightForearmLimb
+  limb_type: Standard
+
+gDekuPrincessRightSleeveEndDL:
+  type: GFX
+  offset: 0xE410
+  symbol: gDekuPrincessRightSleeveEndDL
+
+gDekuPrincessRightSleeveEndLimb:
+  type: OOT:LIMB
+  offset: 0x10C3C
+  symbol: gDekuPrincessRightSleeveEndLimb
+  limb_type: Standard
+
+gDekuPrincessRightUpperArmDL:
+  type: GFX
+  offset: 0xE650
+  symbol: gDekuPrincessRightUpperArmDL
+
+gDekuPrincessRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x10C24
+  symbol: gDekuPrincessRightUpperArmLimb
+  limb_type: Standard
+
+gDekuPrincessRootLimb:
+  type: OOT:LIMB
+  offset: 0x10BD0
+  symbol: gDekuPrincessRootLimb
+  limb_type: Standard
+
+gDekuPrincessRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xAEB8
+  symbol: gDekuPrincessRunAnim
+
+gDekuPrincessScoldAnim:
+  type: OOT:ANIMATION
+  offset: 0x4D08
+  symbol: gDekuPrincessScoldAnim
+
+gDekuPrincessSkel:
+  type: MM:SKELETON
+  offset: 0x10D60
+  symbol: gDekuPrincessSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gDekuPrincessSleeveTex:
+  type: TEXTURE
+  offset: 0xFFD0
+  symbol: gDekuPrincessSleeveTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuPrincessSnoutDL:
+  type: GFX
+  offset: 0xE018
+  symbol: gDekuPrincessSnoutDL
+
+gDekuPrincessSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x10C78
+  symbol: gDekuPrincessSnoutLimb
+  limb_type: Standard
+
+gDekuPrincessThinkLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x674C
+  symbol: gDekuPrincessThinkLoopAnim
+
+gDekuPrincessThinkStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xB754
+  symbol: gDekuPrincessThinkStartAnim
+
+gDekuPrincessTorsoDL:
+  type: GFX
+  offset: 0xE340
+  symbol: gDekuPrincessTorsoDL
+
+gDekuPrincessTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x10BF4
+  symbol: gDekuPrincessTorsoLimb
+  limb_type: Standard
+
+gDekuPrincessTurnAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x8588
+  symbol: gDekuPrincessTurnAroundAnim
+
+gDekuPrincessWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x115B8
+  symbol: gDekuPrincessWalkAnim
+
+
+object_dnqVtx_00BAF0:
+  type: MM:ARRAY
+  offset: 0x00BAF0
+  symbol: object_dnqVtx_00BAF0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BB90:
+  type: MM:ARRAY
+  offset: 0x00BB90
+  symbol: object_dnqVtx_00BB90
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BC30:
+  type: MM:ARRAY
+  offset: 0x00BC30
+  symbol: object_dnqVtx_00BC30
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BCD0:
+  type: MM:ARRAY
+  offset: 0x00BCD0
+  symbol: object_dnqVtx_00BCD0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BD70:
+  type: MM:ARRAY
+  offset: 0x00BD70
+  symbol: object_dnqVtx_00BD70
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BE10:
+  type: MM:ARRAY
+  offset: 0x00BE10
+  symbol: object_dnqVtx_00BE10
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BEB0:
+  type: MM:ARRAY
+  offset: 0x00BEB0
+  symbol: object_dnqVtx_00BEB0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BF50:
+  type: MM:ARRAY
+  offset: 0x00BF50
+  symbol: object_dnqVtx_00BF50
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00BFF0:
+  type: MM:ARRAY
+  offset: 0x00BFF0
+  symbol: object_dnqVtx_00BFF0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C130:
+  type: MM:ARRAY
+  offset: 0x00C130
+  symbol: object_dnqVtx_00C130
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C180:
+  type: MM:ARRAY
+  offset: 0x00C180
+  symbol: object_dnqVtx_00C180
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C1D0:
+  type: MM:ARRAY
+  offset: 0x00C1D0
+  symbol: object_dnqVtx_00C1D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C390:
+  type: MM:ARRAY
+  offset: 0x00C390
+  symbol: object_dnqVtx_00C390
+  count: 93
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C960:
+  type: MM:ARRAY
+  offset: 0x00C960
+  symbol: object_dnqVtx_00C960
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C9C0:
+  type: MM:ARRAY
+  offset: 0x00C9C0
+  symbol: object_dnqVtx_00C9C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00C9F0:
+  type: MM:ARRAY
+  offset: 0x00C9F0
+  symbol: object_dnqVtx_00C9F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00CB30:
+  type: MM:ARRAY
+  offset: 0x00CB30
+  symbol: object_dnqVtx_00CB30
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00CCC0:
+  type: MM:ARRAY
+  offset: 0x00CCC0
+  symbol: object_dnqVtx_00CCC0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00CE60:
+  type: MM:ARRAY
+  offset: 0x00CE60
+  symbol: object_dnqVtx_00CE60
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00CFC0:
+  type: MM:ARRAY
+  offset: 0x00CFC0
+  symbol: object_dnqVtx_00CFC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00D150:
+  type: MM:ARRAY
+  offset: 0x00D150
+  symbol: object_dnqVtx_00D150
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00D2F0:
+  type: MM:ARRAY
+  offset: 0x00D2F0
+  symbol: object_dnqVtx_00D2F0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00D450:
+  type: MM:ARRAY
+  offset: 0x00D450
+  symbol: object_dnqVtx_00D450
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnqVtx_00D4E0:
+  type: MM:ARRAY
+  offset: 0x00D4E0
+  symbol: object_dnqVtx_00D4E0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuPrincessSkelLimbs:
+  type: BLOB
+  offset: 0x10CFC
+  symbol: gDekuPrincessSkelLimbs
+  size: 0

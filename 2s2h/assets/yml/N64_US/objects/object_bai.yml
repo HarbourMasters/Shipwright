@@ -1,0 +1,459 @@
+:config:
+  segments:
+    - [ 6, 0x01562390 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01562390 ]
+    - [ 9, 0x01562390 ]
+    - [ 10, 0x01562390 ]
+    - [ 11, 0x01562390 ]
+    - [ 12, 0x01562390 ]
+    - [ 13, 0x01562390 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_bai_Anim_0008B4:
+  type: OOT:ANIMATION
+  offset: 0x8B4
+  symbol: object_bai_Anim_0008B4
+
+object_bai_Anim_0011C0:
+  type: OOT:ANIMATION
+  offset: 0x11C0
+  symbol: object_bai_Anim_0011C0
+
+object_bai_Anim_008198:
+  type: OOT:ANIMATION
+  offset: 0x8198
+  symbol: object_bai_Anim_008198
+
+object_bai_DL_0049C0:
+  type: GFX
+  offset: 0x49C0
+  symbol: object_bai_DL_0049C0
+
+object_bai_DL_004BA8:
+  type: GFX
+  offset: 0x4BA8
+  symbol: object_bai_DL_004BA8
+
+object_bai_DL_004EC0:
+  type: GFX
+  offset: 0x4EC0
+  symbol: object_bai_DL_004EC0
+
+object_bai_DL_004FF0:
+  type: GFX
+  offset: 0x4FF0
+  symbol: object_bai_DL_004FF0
+
+object_bai_DL_0050F8:
+  type: GFX
+  offset: 0x50F8
+  symbol: object_bai_DL_0050F8
+
+object_bai_DL_005410:
+  type: GFX
+  offset: 0x5410
+  symbol: object_bai_DL_005410
+
+object_bai_DL_005540:
+  type: GFX
+  offset: 0x5540
+  symbol: object_bai_DL_005540
+
+object_bai_DL_005648:
+  type: GFX
+  offset: 0x5648
+  symbol: object_bai_DL_005648
+
+object_bai_DL_005A30:
+  type: GFX
+  offset: 0x5A30
+  symbol: object_bai_DL_005A30
+
+object_bai_DL_005EA8:
+  type: GFX
+  offset: 0x5EA8
+  symbol: object_bai_DL_005EA8
+
+object_bai_DL_005FC8:
+  type: GFX
+  offset: 0x5FC8
+  symbol: object_bai_DL_005FC8
+
+object_bai_DL_0060D0:
+  type: GFX
+  offset: 0x60D0
+  symbol: object_bai_DL_0060D0
+
+object_bai_DL_0062F8:
+  type: GFX
+  offset: 0x62F8
+  symbol: object_bai_DL_0062F8
+
+object_bai_DL_006410:
+  type: GFX
+  offset: 0x6410
+  symbol: object_bai_DL_006410
+
+object_bai_DL_006518:
+  type: GFX
+  offset: 0x6518
+  symbol: object_bai_DL_006518
+
+object_bai_DL_006740:
+  type: GFX
+  offset: 0x6740
+  symbol: object_bai_DL_006740
+
+object_bai_Skel_007908:
+  type: MM:SKELETON
+  offset: 0x7908
+  symbol: object_bai_Skel_007908
+  limb_type: Standard
+  skel_type: Flex
+
+object_bai_Standardlimb_0077D8:
+  type: OOT:LIMB
+  offset: 0x77D8
+  symbol: object_bai_Standardlimb_0077D8
+  limb_type: Standard
+
+object_bai_Standardlimb_0077E4:
+  type: OOT:LIMB
+  offset: 0x77E4
+  symbol: object_bai_Standardlimb_0077E4
+  limb_type: Standard
+
+object_bai_Standardlimb_0077F0:
+  type: OOT:LIMB
+  offset: 0x77F0
+  symbol: object_bai_Standardlimb_0077F0
+  limb_type: Standard
+
+object_bai_Standardlimb_0077FC:
+  type: OOT:LIMB
+  offset: 0x77FC
+  symbol: object_bai_Standardlimb_0077FC
+  limb_type: Standard
+
+object_bai_Standardlimb_007808:
+  type: OOT:LIMB
+  offset: 0x7808
+  symbol: object_bai_Standardlimb_007808
+  limb_type: Standard
+
+object_bai_Standardlimb_007814:
+  type: OOT:LIMB
+  offset: 0x7814
+  symbol: object_bai_Standardlimb_007814
+  limb_type: Standard
+
+object_bai_Standardlimb_007820:
+  type: OOT:LIMB
+  offset: 0x7820
+  symbol: object_bai_Standardlimb_007820
+  limb_type: Standard
+
+object_bai_Standardlimb_00782C:
+  type: OOT:LIMB
+  offset: 0x782C
+  symbol: object_bai_Standardlimb_00782C
+  limb_type: Standard
+
+object_bai_Standardlimb_007838:
+  type: OOT:LIMB
+  offset: 0x7838
+  symbol: object_bai_Standardlimb_007838
+  limb_type: Standard
+
+object_bai_Standardlimb_007844:
+  type: OOT:LIMB
+  offset: 0x7844
+  symbol: object_bai_Standardlimb_007844
+  limb_type: Standard
+
+object_bai_Standardlimb_007850:
+  type: OOT:LIMB
+  offset: 0x7850
+  symbol: object_bai_Standardlimb_007850
+  limb_type: Standard
+
+object_bai_Standardlimb_00785C:
+  type: OOT:LIMB
+  offset: 0x785C
+  symbol: object_bai_Standardlimb_00785C
+  limb_type: Standard
+
+object_bai_Standardlimb_007868:
+  type: OOT:LIMB
+  offset: 0x7868
+  symbol: object_bai_Standardlimb_007868
+  limb_type: Standard
+
+object_bai_Standardlimb_007874:
+  type: OOT:LIMB
+  offset: 0x7874
+  symbol: object_bai_Standardlimb_007874
+  limb_type: Standard
+
+object_bai_Standardlimb_007880:
+  type: OOT:LIMB
+  offset: 0x7880
+  symbol: object_bai_Standardlimb_007880
+  limb_type: Standard
+
+object_bai_Standardlimb_00788C:
+  type: OOT:LIMB
+  offset: 0x788C
+  symbol: object_bai_Standardlimb_00788C
+  limb_type: Standard
+
+object_bai_Standardlimb_007898:
+  type: OOT:LIMB
+  offset: 0x7898
+  symbol: object_bai_Standardlimb_007898
+  limb_type: Standard
+
+object_bai_Standardlimb_0078A4:
+  type: OOT:LIMB
+  offset: 0x78A4
+  symbol: object_bai_Standardlimb_0078A4
+  limb_type: Standard
+
+object_bai_Standardlimb_0078B0:
+  type: OOT:LIMB
+  offset: 0x78B0
+  symbol: object_bai_Standardlimb_0078B0
+  limb_type: Standard
+
+object_bai_TLUT_006858:
+  type: TEXTURE
+  offset: 0x6858
+  symbol: object_bai_TLUT_006858
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bai_Tex_006A58:
+  type: TEXTURE
+  offset: 0x6A58
+  symbol: object_bai_Tex_006A58
+  format: CI8
+  width: 32
+  height: 64
+
+object_bai_Tex_007258:
+  type: TEXTURE
+  offset: 0x7258
+  symbol: object_bai_Tex_007258
+  format: CI8
+  width: 8
+  height: 8
+
+object_bai_Tex_007298:
+  type: TEXTURE
+  offset: 0x7298
+  symbol: object_bai_Tex_007298
+  format: CI8
+  width: 8
+  height: 8
+
+object_bai_Tex_0072D8:
+  type: TEXTURE
+  offset: 0x72D8
+  symbol: object_bai_Tex_0072D8
+  format: CI8
+  width: 8
+  height: 8
+
+object_bai_Tex_007318:
+  type: TEXTURE
+  offset: 0x7318
+  symbol: object_bai_Tex_007318
+  format: CI8
+  width: 8
+  height: 16
+
+object_bai_Tex_007398:
+  type: TEXTURE
+  offset: 0x7398
+  symbol: object_bai_Tex_007398
+  format: CI8
+  width: 8
+  height: 8
+
+object_bai_Tex_0073D8:
+  type: TEXTURE
+  offset: 0x73D8
+  symbol: object_bai_Tex_0073D8
+  format: CI8
+  width: 16
+  height: 16
+
+object_bai_Tex_0074D8:
+  type: TEXTURE
+  offset: 0x74D8
+  symbol: object_bai_Tex_0074D8
+  format: CI8
+  width: 16
+  height: 16
+
+object_bai_Tex_0075D8:
+  type: TEXTURE
+  offset: 0x75D8
+  symbol: object_bai_Tex_0075D8
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_baiVtx_0011D0:
+  type: MM:ARRAY
+  offset: 0x0011D0
+  symbol: object_baiVtx_0011D0
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_001AC0:
+  type: MM:ARRAY
+  offset: 0x001AC0
+  symbol: object_baiVtx_001AC0
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_001E50:
+  type: MM:ARRAY
+  offset: 0x001E50
+  symbol: object_baiVtx_001E50
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_002090:
+  type: MM:ARRAY
+  offset: 0x002090
+  symbol: object_baiVtx_002090
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_0023B0:
+  type: MM:ARRAY
+  offset: 0x0023B0
+  symbol: object_baiVtx_0023B0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_002610:
+  type: MM:ARRAY
+  offset: 0x002610
+  symbol: object_baiVtx_002610
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_0029A0:
+  type: MM:ARRAY
+  offset: 0x0029A0
+  symbol: object_baiVtx_0029A0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_002CC0:
+  type: MM:ARRAY
+  offset: 0x002CC0
+  symbol: object_baiVtx_002CC0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_002F20:
+  type: MM:ARRAY
+  offset: 0x002F20
+  symbol: object_baiVtx_002F20
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_003720:
+  type: MM:ARRAY
+  offset: 0x003720
+  symbol: object_baiVtx_003720
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_003960:
+  type: MM:ARRAY
+  offset: 0x003960
+  symbol: object_baiVtx_003960
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_003D00:
+  type: MM:ARRAY
+  offset: 0x003D00
+  symbol: object_baiVtx_003D00
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_003ED0:
+  type: MM:ARRAY
+  offset: 0x003ED0
+  symbol: object_baiVtx_003ED0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_004110:
+  type: MM:ARRAY
+  offset: 0x004110
+  symbol: object_baiVtx_004110
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_0044B0:
+  type: MM:ARRAY
+  offset: 0x0044B0
+  symbol: object_baiVtx_0044B0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_baiVtx_004680:
+  type: MM:ARRAY
+  offset: 0x004680
+  symbol: object_baiVtx_004680
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bai_Skel_007908Limbs:
+  type: BLOB
+  offset: 0x78BC
+  symbol: object_bai_Skel_007908Limbs
+  size: 0

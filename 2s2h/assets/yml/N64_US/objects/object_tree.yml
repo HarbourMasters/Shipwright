@@ -1,0 +1,62 @@
+:config:
+  segments:
+    - [ 6, 0x0148DAE0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x0148DAE0 ]
+    - [ 9, 0x0148DAE0 ]
+    - [ 10, 0x0148DAE0 ]
+    - [ 11, 0x0148DAE0 ]
+    - [ 12, 0x0148DAE0 ]
+    - [ 13, 0x0148DAE0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gTreeBodyDL:
+  type: GFX
+  offset: 0x680
+  symbol: gTreeBodyDL
+
+gTreeBodyTex:
+  type: TEXTURE
+  offset: 0x8B8
+  symbol: gTreeBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTreeLeavesDL:
+  type: GFX
+  offset: 0x7C8
+  symbol: gTreeLeavesDL
+
+gTreeLeavesTex:
+  type: TEXTURE
+  offset: 0x10B8
+  symbol: gTreeLeavesTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTreeTopCol:
+  type: MM:COLLISION
+  offset: 0x1B2C
+  symbol: gTreeTopCol
+
+
+object_treeVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_treeVtx_000000
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_treeVtx_000440:
+  type: MM:ARRAY
+  offset: 0x000440
+  symbol: object_treeVtx_000440
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

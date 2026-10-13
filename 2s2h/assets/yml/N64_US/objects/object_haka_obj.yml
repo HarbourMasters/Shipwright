@@ -1,0 +1,264 @@
+:config:
+  segments:
+    - [ 6, 0x013E8F40 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x013E8F40 ]
+    - [ 9, 0x013E8F40 ]
+    - [ 10, 0x013E8F40 ]
+    - [ 11, 0x013E8F40 ]
+    - [ 12, 0x013E8F40 ]
+    - [ 13, 0x013E8F40 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_haka_obj_Colheader_000148:
+  type: MM:COLLISION
+  offset: 0x148
+  symbol: object_haka_obj_Colheader_000148
+
+object_haka_obj_Colheader_000EE8:
+  type: MM:COLLISION
+  offset: 0xEE8
+  symbol: object_haka_obj_Colheader_000EE8
+
+object_haka_obj_Colheader_001588:
+  type: MM:COLLISION
+  offset: 0x1588
+  symbol: object_haka_obj_Colheader_001588
+
+object_haka_obj_DL_000040:
+  type: GFX
+  offset: 0x40
+  symbol: object_haka_obj_DL_000040
+
+object_haka_obj_DL_0007B0:
+  type: GFX
+  offset: 0x7B0
+  symbol: object_haka_obj_DL_0007B0
+
+object_haka_obj_DL_000F70:
+  type: GFX
+  offset: 0xF70
+  symbol: object_haka_obj_DL_000F70
+
+object_haka_obj_DL_001200:
+  type: GFX
+  offset: 0x1200
+  symbol: object_haka_obj_DL_001200
+
+object_haka_obj_DL_001410:
+  type: GFX
+  offset: 0x1410
+  symbol: object_haka_obj_DL_001410
+
+object_haka_obj_DL_001680:
+  type: GFX
+  offset: 0x1680
+  symbol: object_haka_obj_DL_001680
+
+object_haka_obj_TLUT_001800:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: object_haka_obj_TLUT_001800
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_haka_obj_TLUT_001A00:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: object_haka_obj_TLUT_001A00
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_haka_obj_TLUT_001A20:
+  type: TEXTURE
+  offset: 0x1A20
+  symbol: object_haka_obj_TLUT_001A20
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_haka_obj_TLUT_001A40:
+  type: TEXTURE
+  offset: 0x1A40
+  symbol: object_haka_obj_TLUT_001A40
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_haka_obj_Tex_001C40:
+  type: TEXTURE
+  offset: 0x1C40
+  symbol: object_haka_obj_Tex_001C40
+  format: CI8
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_002040:
+  type: TEXTURE
+  offset: 0x2040
+  symbol: object_haka_obj_Tex_002040
+  format: CI8
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_002440:
+  type: TEXTURE
+  offset: 0x2440
+  symbol: object_haka_obj_Tex_002440
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_002C40:
+  type: TEXTURE
+  offset: 0x2C40
+  symbol: object_haka_obj_Tex_002C40
+  format: CI4
+  width: 64
+  height: 64
+
+object_haka_obj_Tex_003440:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: object_haka_obj_Tex_003440
+  format: CI4
+  width: 64
+  height: 64
+
+object_haka_obj_Tex_003C40:
+  type: TEXTURE
+  offset: 0x3C40
+  symbol: object_haka_obj_Tex_003C40
+  format: CI8
+  width: 32
+  height: 64
+
+object_haka_obj_Tex_004440:
+  type: TEXTURE
+  offset: 0x4440
+  symbol: object_haka_obj_Tex_004440
+  format: CI8
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_004840:
+  type: TEXTURE
+  offset: 0x4840
+  symbol: object_haka_obj_Tex_004840
+  format: RGBA16
+  width: 64
+  height: 8
+
+object_haka_obj_Tex_004C40:
+  type: TEXTURE
+  offset: 0x4C40
+  symbol: object_haka_obj_Tex_004C40
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_haka_obj_Tex_004E40:
+  type: TEXTURE
+  offset: 0x4E40
+  symbol: object_haka_obj_Tex_004E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_005640:
+  type: TEXTURE
+  offset: 0x5640
+  symbol: object_haka_obj_Tex_005640
+  format: I4
+  width: 64
+  height: 64
+
+object_haka_obj_Tex_005E40:
+  type: TEXTURE
+  offset: 0x5E40
+  symbol: object_haka_obj_Tex_005E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_006640:
+  type: TEXTURE
+  offset: 0x6640
+  symbol: object_haka_obj_Tex_006640
+  format: I4
+  width: 64
+  height: 64
+
+object_haka_obj_Tex_006E40:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: object_haka_obj_Tex_006E40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_haka_obj_Tex_007640:
+  type: TEXTURE
+  offset: 0x7640
+  symbol: object_haka_obj_Tex_007640
+  format: I4
+  width: 32
+  height: 32
+
+
+object_haka_objVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_haka_objVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_objVtx_000180:
+  type: MM:ARRAY
+  offset: 0x000180
+  symbol: object_haka_objVtx_000180
+  count: 99
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_objVtx_000F20:
+  type: MM:ARRAY
+  offset: 0x000F20
+  symbol: object_haka_objVtx_000F20
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_objVtx_001040:
+  type: MM:ARRAY
+  offset: 0x001040
+  symbol: object_haka_objVtx_001040
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_objVtx_001390:
+  type: MM:ARRAY
+  offset: 0x001390
+  symbol: object_haka_objVtx_001390
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_haka_objVtx_0015C0:
+  type: MM:ARRAY
+  offset: 0x0015C0
+  symbol: object_haka_objVtx_0015C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

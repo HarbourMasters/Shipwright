@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 10, 0x00E86010 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 11, 0x00E86010 ]
+    - [ 12, 0x00E86010 ]
+    - [ 13, 0x00E86010 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_mask_skj_DL_0009F0:
+  type: GFX
+  offset: 0x9F0
+  symbol: object_mask_skj_DL_0009F0
+
+object_mask_skj_TLUT_000FA0:
+  type: TEXTURE
+  offset: 0xFA0
+  symbol: object_mask_skj_TLUT_000FA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mask_skj_Tex_0011A0:
+  type: TEXTURE
+  offset: 0x11A0
+  symbol: object_mask_skj_Tex_0011A0
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_skj_Tex_0012A0:
+  type: TEXTURE
+  offset: 0x12A0
+  symbol: object_mask_skj_Tex_0012A0
+  format: CI8
+  width: 8
+  height: 16
+
+object_mask_skj_Tex_001320:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: object_mask_skj_Tex_001320
+  format: CI8
+  width: 8
+  height: 8
+
+object_mask_skj_Tex_001360:
+  type: TEXTURE
+  offset: 0x1360
+  symbol: object_mask_skj_Tex_001360
+  format: CI8
+  width: 16
+  height: 16
+
+object_mask_skj_Tex_001460:
+  type: TEXTURE
+  offset: 0x1460
+  symbol: object_mask_skj_Tex_001460
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_mask_skj_Tex_001560:
+  type: TEXTURE
+  offset: 0x1560
+  symbol: object_mask_skj_Tex_001560
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_mask_skj_Tex_001660:
+  type: TEXTURE
+  offset: 0x1660
+  symbol: object_mask_skj_Tex_001660
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_mask_skjVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_skjVtx_000000
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

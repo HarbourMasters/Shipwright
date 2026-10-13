@@ -1,0 +1,381 @@
+:config:
+  segments:
+    - [ 6, 0x010A0550 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x010A0550 ]
+    - [ 9, 0x010A0550 ]
+    - [ 10, 0x010A0550 ]
+    - [ 11, 0x010A0550 ]
+    - [ 12, 0x010A0550 ]
+    - [ 13, 0x010A0550 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gDekuPalaceGuardAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x31C
+  symbol: gDekuPalaceGuardAttackAnim
+
+gDekuPalaceGuardCenterLeaf2DL:
+  type: GFX
+  offset: 0x2030
+  symbol: gDekuPalaceGuardCenterLeaf2DL
+
+gDekuPalaceGuardCenterLeafDL:
+  type: GFX
+  offset: 0x1FA0
+  symbol: gDekuPalaceGuardCenterLeafDL
+
+gDekuPalaceGuardCenterLeafLimb:
+  type: OOT:LIMB
+  offset: 0x27D8
+  symbol: gDekuPalaceGuardCenterLeafLimb
+  limb_type: Standard
+
+gDekuPalaceGuardDigAnim:
+  type: OOT:ANIMATION
+  offset: 0x430
+  symbol: gDekuPalaceGuardDigAnim
+
+gDekuPalaceGuardEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1780
+  symbol: gDekuPalaceGuardEyeClosedTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPalaceGuardEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: gDekuPalaceGuardEyeHalfTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPalaceGuardEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gDekuPalaceGuardEyeOpenTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPalaceGuardEyes2DL:
+  type: GFX
+  offset: 0x2188
+  symbol: gDekuPalaceGuardEyes2DL
+
+gDekuPalaceGuardEyesDL:
+  type: GFX
+  offset: 0x2100
+  symbol: gDekuPalaceGuardEyesDL
+
+gDekuPalaceGuardEyesLimb:
+  type: OOT:LIMB
+  offset: 0x27FC
+  symbol: gDekuPalaceGuardEyesLimb
+  limb_type: Standard
+
+gDekuPalaceGuardFlowerDL:
+  type: GFX
+  offset: 0x2700
+  symbol: gDekuPalaceGuardFlowerDL
+
+gDekuPalaceGuardFootTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDekuPalaceGuardFootTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDekuPalaceGuardHappyAnim:
+  type: OOT:ANIMATION
+  offset: 0x6CC
+  symbol: gDekuPalaceGuardHappyAnim
+
+gDekuPalaceGuardHead2DL:
+  type: GFX
+  offset: 0x2400
+  symbol: gDekuPalaceGuardHead2DL
+
+gDekuPalaceGuardHeadDL:
+  type: GFX
+  offset: 0x2308
+  symbol: gDekuPalaceGuardHeadDL
+
+gDekuPalaceGuardHeadLimb:
+  type: OOT:LIMB
+  offset: 0x27B4
+  symbol: gDekuPalaceGuardHeadLimb
+  limb_type: Standard
+
+gDekuPalaceGuardHeadTex:
+  type: TEXTURE
+  offset: 0x1580
+  symbol: gDekuPalaceGuardHeadTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPalaceGuardJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x894
+  symbol: gDekuPalaceGuardJumpAnim
+
+gDekuPalaceGuardLeafTorsoTex:
+  type: TEXTURE
+  offset: 0xB80
+  symbol: gDekuPalaceGuardLeafTorsoTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuPalaceGuardLeftFoot2DL:
+  type: GFX
+  offset: 0x22F8
+  symbol: gDekuPalaceGuardLeftFoot2DL
+
+gDekuPalaceGuardLeftFootDL:
+  type: GFX
+  offset: 0x2250
+  symbol: gDekuPalaceGuardLeftFootDL
+
+gDekuPalaceGuardLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x2808
+  symbol: gDekuPalaceGuardLeftFootLimb
+  limb_type: Standard
+
+gDekuPalaceGuardLeftLeaf2DL:
+  type: GFX
+  offset: 0x1EF0
+  symbol: gDekuPalaceGuardLeftLeaf2DL
+
+gDekuPalaceGuardLeftLeafDL:
+  type: GFX
+  offset: 0x1E68
+  symbol: gDekuPalaceGuardLeftLeafDL
+
+gDekuPalaceGuardLeftLeafLimb:
+  type: OOT:LIMB
+  offset: 0x27C0
+  symbol: gDekuPalaceGuardLeftLeafLimb
+  limb_type: Standard
+
+gDekuPalaceGuardMouthTex:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: gDekuPalaceGuardMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuPalaceGuardRearLeaf2DL:
+  type: GFX
+  offset: 0x1F90
+  symbol: gDekuPalaceGuardRearLeaf2DL
+
+gDekuPalaceGuardRearLeafDL:
+  type: GFX
+  offset: 0x1F00
+  symbol: gDekuPalaceGuardRearLeafDL
+
+gDekuPalaceGuardRearLeafLimb:
+  type: OOT:LIMB
+  offset: 0x27E4
+  symbol: gDekuPalaceGuardRearLeafLimb
+  limb_type: Standard
+
+gDekuPalaceGuardRightFoot2DL:
+  type: GFX
+  offset: 0x2240
+  symbol: gDekuPalaceGuardRightFoot2DL
+
+gDekuPalaceGuardRightFootDL:
+  type: GFX
+  offset: 0x2198
+  symbol: gDekuPalaceGuardRightFootDL
+
+gDekuPalaceGuardRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x2814
+  symbol: gDekuPalaceGuardRightFootLimb
+  limb_type: Standard
+
+gDekuPalaceGuardRightLeaf2DL:
+  type: GFX
+  offset: 0x1E58
+  symbol: gDekuPalaceGuardRightLeaf2DL
+
+gDekuPalaceGuardRightLeafDL:
+  type: GFX
+  offset: 0x1DD0
+  symbol: gDekuPalaceGuardRightLeafDL
+
+gDekuPalaceGuardRightLeafLimb:
+  type: OOT:LIMB
+  offset: 0x27CC
+  symbol: gDekuPalaceGuardRightLeafLimb
+  limb_type: Standard
+
+gDekuPalaceGuardSkel:
+  type: MM:SKELETON
+  offset: 0x2848
+  symbol: gDekuPalaceGuardSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDekuPalaceGuardSnout2DL:
+  type: GFX
+  offset: 0x2510
+  symbol: gDekuPalaceGuardSnout2DL
+
+gDekuPalaceGuardSnoutDL:
+  type: GFX
+  offset: 0x2410
+  symbol: gDekuPalaceGuardSnoutDL
+
+gDekuPalaceGuardSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x27F0
+  symbol: gDekuPalaceGuardSnoutLimb
+  limb_type: Standard
+
+gDekuPalaceGuardStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xB70
+  symbol: gDekuPalaceGuardStartAnim
+
+gDekuPalaceGuardTorso2DL:
+  type: GFX
+  offset: 0x20F0
+  symbol: gDekuPalaceGuardTorso2DL
+
+gDekuPalaceGuardTorsoDL:
+  type: GFX
+  offset: 0x2040
+  symbol: gDekuPalaceGuardTorsoDL
+
+gDekuPalaceGuardTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x27A8
+  symbol: gDekuPalaceGuardTorsoLimb
+  limb_type: Standard
+
+gDekuPalaceGuardWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A08
+  symbol: gDekuPalaceGuardWaitAnim
+
+gDekuPalaceGuardWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B6C
+  symbol: gDekuPalaceGuardWalkAnim
+
+
+object_dnkVtx_001800:
+  type: MM:ARRAY
+  offset: 0x001800
+  symbol: object_dnkVtx_001800
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_0018F0:
+  type: MM:ARRAY
+  offset: 0x0018F0
+  symbol: object_dnkVtx_0018F0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001AB0:
+  type: MM:ARRAY
+  offset: 0x001AB0
+  symbol: object_dnkVtx_001AB0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001B20:
+  type: MM:ARRAY
+  offset: 0x001B20
+  symbol: object_dnkVtx_001B20
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001B90:
+  type: MM:ARRAY
+  offset: 0x001B90
+  symbol: object_dnkVtx_001B90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001BF0:
+  type: MM:ARRAY
+  offset: 0x001BF0
+  symbol: object_dnkVtx_001BF0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001C90:
+  type: MM:ARRAY
+  offset: 0x001C90
+  symbol: object_dnkVtx_001C90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001CF0:
+  type: MM:ARRAY
+  offset: 0x001CF0
+  symbol: object_dnkVtx_001CF0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001D50:
+  type: MM:ARRAY
+  offset: 0x001D50
+  symbol: object_dnkVtx_001D50
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_001D90:
+  type: MM:ARRAY
+  offset: 0x001D90
+  symbol: object_dnkVtx_001D90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dnkVtx_002520:
+  type: MM:ARRAY
+  offset: 0x002520
+  symbol: object_dnkVtx_002520
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuPalaceGuardSkelLimbs:
+  type: BLOB
+  offset: 0x2820
+  symbol: gDekuPalaceGuardSkelLimbs
+  size: 0

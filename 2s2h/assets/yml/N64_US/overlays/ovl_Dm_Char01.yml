@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x00CE8FC0 ]
+  virtual: [ 0x80AA81E0, 0x00CE8FC0 ]
+
+gWoodfallSceneryDynamicPoisonWaterVtx:
+  type: MM:ARRAY
+  offset: 0x1BE0
+  symbol: gWoodfallSceneryDynamicPoisonWaterVtx
+  count: 205
+  array_type: VTX
+

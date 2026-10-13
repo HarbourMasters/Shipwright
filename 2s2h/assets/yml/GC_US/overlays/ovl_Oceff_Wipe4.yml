@@ -1,0 +1,38 @@
+:config:
+  segments:
+    - [ 128, 0x00C36C90 ]
+    - [ 4, 0x00DEEC10 ]
+  virtual: [ 0x8097F660, 0x00C36C90 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+sScarecrowSongEffectTex:
+  type: TEXTURE
+  offset: 0x430
+  symbol: sScarecrowSongEffectTex
+  format: I8
+  width: 32
+  height: 64
+
+sScarecrowSongFrustumVtx:
+  type: MM:ARRAY
+  offset: 0xC30
+  symbol: sScarecrowSongFrustumVtx
+  count: 22
+  array_type: VTX
+
+sScarecrowSongMaterialDL:
+  type: GFX
+  offset: 0xD90
+  symbol: sScarecrowSongMaterialDL
+
+sScarecrowSongModelDL:
+  type: GFX
+  offset: 0xE60
+  symbol: sScarecrowSongModelDL
+
+sScarecrowSongUnusedMaterialDL:
+  type: GFX
+  offset: 0xDF8
+  symbol: sScarecrowSongUnusedMaterialDL
+

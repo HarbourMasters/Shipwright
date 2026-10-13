@@ -1,0 +1,253 @@
+:config:
+  segments:
+    - [ 6, 0x010811C0 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010811C0 ]
+    - [ 9, 0x010811C0 ]
+    - [ 10, 0x010811C0 ]
+    - [ 11, 0x010811C0 ]
+    - [ 12, 0x010811C0 ]
+    - [ 13, 0x010811C0 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_bombiwa_DL_0009E0:
+  type: GFX
+  offset: 0x9E0
+  symbol: object_bombiwa_DL_0009E0
+
+object_bombiwa_DL_000AF0:
+  type: GFX
+  offset: 0xAF0
+  symbol: object_bombiwa_DL_000AF0
+
+object_bombiwa_DL_001700:
+  type: GFX
+  offset: 0x1700
+  symbol: object_bombiwa_DL_001700
+
+object_bombiwa_DL_001800:
+  type: GFX
+  offset: 0x1800
+  symbol: object_bombiwa_DL_001800
+
+object_bombiwa_DL_001820:
+  type: GFX
+  offset: 0x1820
+  symbol: object_bombiwa_DL_001820
+
+object_bombiwa_DL_001990:
+  type: GFX
+  offset: 0x1990
+  symbol: object_bombiwa_DL_001990
+
+object_bombiwa_DL_002F60:
+  type: GFX
+  offset: 0x2F60
+  symbol: object_bombiwa_DL_002F60
+
+object_bombiwa_DL_003110:
+  type: GFX
+  offset: 0x3110
+  symbol: object_bombiwa_DL_003110
+
+object_bombiwa_DL_004560:
+  type: GFX
+  offset: 0x4560
+  symbol: object_bombiwa_DL_004560
+
+object_bombiwa_DL_004688:
+  type: GFX
+  offset: 0x4688
+  symbol: object_bombiwa_DL_004688
+
+object_bombiwa_DL_005990:
+  type: GFX
+  offset: 0x5990
+  symbol: object_bombiwa_DL_005990
+
+object_bombiwa_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_bombiwa_TLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_bombiwa_Tex_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_bombiwa_Tex_000020
+  format: CI4
+  width: 64
+  height: 64
+
+object_bombiwa_Tex_000C00:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: object_bombiwa_Tex_000C00
+  format: I4
+  width: 64
+  height: 64
+
+object_bombiwa_Tex_001A70:
+  type: TEXTURE
+  offset: 0x1A70
+  symbol: object_bombiwa_Tex_001A70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bombiwa_Tex_002270:
+  type: TEXTURE
+  offset: 0x2270
+  symbol: object_bombiwa_Tex_002270
+  format: I4
+  width: 64
+  height: 64
+
+object_bombiwa_Tex_0031C0:
+  type: TEXTURE
+  offset: 0x31C0
+  symbol: object_bombiwa_Tex_0031C0
+  format: IA8
+  width: 16
+  height: 16
+
+object_bombiwa_Tex_0032C0:
+  type: TEXTURE
+  offset: 0x32C0
+  symbol: object_bombiwa_Tex_0032C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bombiwa_Tex_003AC0:
+  type: TEXTURE
+  offset: 0x3AC0
+  symbol: object_bombiwa_Tex_003AC0
+  format: I4
+  width: 64
+  height: 64
+
+object_bombiwa_Tex_004730:
+  type: TEXTURE
+  offset: 0x4730
+  symbol: object_bombiwa_Tex_004730
+  format: IA8
+  width: 16
+  height: 16
+
+object_bombiwa_Tex_004830:
+  type: TEXTURE
+  offset: 0x4830
+  symbol: object_bombiwa_Tex_004830
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bombiwa_Tex_005030:
+  type: TEXTURE
+  offset: 0x5030
+  symbol: object_bombiwa_Tex_005030
+  format: I4
+  width: 64
+  height: 64
+
+object_bombiwa_Tex_005A70:
+  type: TEXTURE
+  offset: 0x5A70
+  symbol: object_bombiwa_Tex_005A70
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bombiwa_Tex_006270:
+  type: TEXTURE
+  offset: 0x6270
+  symbol: object_bombiwa_Tex_006270
+  format: I4
+  width: 64
+  height: 64
+
+
+object_bombiwaVtx_000820:
+  type: MM:ARRAY
+  offset: 0x000820
+  symbol: object_bombiwaVtx_000820
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_001400:
+  type: MM:ARRAY
+  offset: 0x001400
+  symbol: object_bombiwaVtx_001400
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_0016F0:
+  type: MM:ARRAY
+  offset: 0x0016F0
+  symbol: object_bombiwaVtx_0016F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_001830:
+  type: MM:ARRAY
+  offset: 0x001830
+  symbol: object_bombiwaVtx_001830
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_002A70:
+  type: MM:ARRAY
+  offset: 0x002A70
+  symbol: object_bombiwaVtx_002A70
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_002DE0:
+  type: MM:ARRAY
+  offset: 0x002DE0
+  symbol: object_bombiwaVtx_002DE0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_0042C0:
+  type: MM:ARRAY
+  offset: 0x0042C0
+  symbol: object_bombiwaVtx_0042C0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_004420:
+  type: MM:ARRAY
+  offset: 0x004420
+  symbol: object_bombiwaVtx_004420
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bombiwaVtx_005830:
+  type: MM:ARRAY
+  offset: 0x005830
+  symbol: object_bombiwaVtx_005830
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

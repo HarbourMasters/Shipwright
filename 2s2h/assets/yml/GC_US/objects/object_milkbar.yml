@@ -1,0 +1,565 @@
+:config:
+  segments:
+    - [ 6, 0x0149F090 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x0149F090 ]
+    - [ 9, 0x0149F090 ]
+    - [ 10, 0x0149F090 ]
+    - [ 11, 0x0149F090 ]
+    - [ 12, 0x0149F090 ]
+    - [ 13, 0x0149F090 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_milkbar_Colheader_006688:
+  type: MM:COLLISION
+  offset: 0x6688
+  symbol: object_milkbar_Colheader_006688
+
+object_milkbar_DL_000100:
+  type: GFX
+  offset: 0x100
+  symbol: object_milkbar_DL_000100
+
+object_milkbar_DL_000240:
+  type: GFX
+  offset: 0x240
+  symbol: object_milkbar_DL_000240
+
+object_milkbar_DL_000650:
+  type: GFX
+  offset: 0x650
+  symbol: object_milkbar_DL_000650
+
+object_milkbar_DL_000790:
+  type: GFX
+  offset: 0x790
+  symbol: object_milkbar_DL_000790
+
+object_milkbar_DL_000B80:
+  type: GFX
+  offset: 0xB80
+  symbol: object_milkbar_DL_000B80
+
+object_milkbar_DL_000CC0:
+  type: GFX
+  offset: 0xCC0
+  symbol: object_milkbar_DL_000CC0
+
+object_milkbar_DL_0010D0:
+  type: GFX
+  offset: 0x10D0
+  symbol: object_milkbar_DL_0010D0
+
+object_milkbar_DL_001210:
+  type: GFX
+  offset: 0x1210
+  symbol: object_milkbar_DL_001210
+
+object_milkbar_DL_0015E0:
+  type: GFX
+  offset: 0x15E0
+  symbol: object_milkbar_DL_0015E0
+
+object_milkbar_DL_0016B8:
+  type: GFX
+  offset: 0x16B8
+  symbol: object_milkbar_DL_0016B8
+
+object_milkbar_DL_002BA0:
+  type: GFX
+  offset: 0x2BA0
+  symbol: object_milkbar_DL_002BA0
+
+object_milkbar_DL_002CD0:
+  type: GFX
+  offset: 0x2CD0
+  symbol: object_milkbar_DL_002CD0
+
+object_milkbar_DL_0076A0:
+  type: GFX
+  offset: 0x76A0
+  symbol: object_milkbar_DL_0076A0
+
+object_milkbar_DL_007918:
+  type: GFX
+  offset: 0x7918
+  symbol: object_milkbar_DL_007918
+
+object_milkbar_DL_010D60:
+  type: GFX
+  offset: 0x10D60
+  symbol: object_milkbar_DL_010D60
+
+object_milkbar_DL_010D68:
+  type: GFX
+  offset: 0x10D68
+  symbol: object_milkbar_DL_010D68
+
+object_milkbar_Matanimheader_0105F8:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x105F8
+  symbol: object_milkbar_Matanimheader_0105F8
+
+object_milkbar_Mtx_0075E0:
+  type: OOT:MTX
+  offset: 0x75E0
+  symbol: object_milkbar_Mtx_0075E0
+
+object_milkbar_Mtx_007620:
+  type: OOT:MTX
+  offset: 0x7620
+  symbol: object_milkbar_Mtx_007620
+
+object_milkbar_Mtx_007660:
+  type: OOT:MTX
+  offset: 0x7660
+  symbol: object_milkbar_Mtx_007660
+
+object_milkbar_TLUT_00E3E0:
+  type: TEXTURE
+  offset: 0xE3E0
+  symbol: object_milkbar_TLUT_00E3E0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000248:
+  type: TEXTURE
+  offset: 0x248
+  symbol: object_milkbar_Tex_000248
+  format: IA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000448:
+  type: TEXTURE
+  offset: 0x448
+  symbol: object_milkbar_Tex_000448
+  format: IA8
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000798:
+  type: TEXTURE
+  offset: 0x798
+  symbol: object_milkbar_Tex_000798
+  format: IA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000998:
+  type: TEXTURE
+  offset: 0x998
+  symbol: object_milkbar_Tex_000998
+  format: IA8
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000CC8:
+  type: TEXTURE
+  offset: 0xCC8
+  symbol: object_milkbar_Tex_000CC8
+  format: IA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_000EC8:
+  type: TEXTURE
+  offset: 0xEC8
+  symbol: object_milkbar_Tex_000EC8
+  format: IA8
+  width: 16
+  height: 16
+
+object_milkbar_Tex_001218:
+  type: TEXTURE
+  offset: 0x1218
+  symbol: object_milkbar_Tex_001218
+  format: IA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_001418:
+  type: TEXTURE
+  offset: 0x1418
+  symbol: object_milkbar_Tex_001418
+  format: IA8
+  width: 16
+  height: 16
+
+object_milkbar_Tex_0016C0:
+  type: TEXTURE
+  offset: 0x16C0
+  symbol: object_milkbar_Tex_0016C0
+  format: IA16
+  width: 16
+  height: 16
+
+object_milkbar_Tex_0018C0:
+  type: TEXTURE
+  offset: 0x18C0
+  symbol: object_milkbar_Tex_0018C0
+  format: IA8
+  width: 16
+  height: 16
+
+object_milkbar_Tex_003320:
+  type: TEXTURE
+  offset: 0x3320
+  symbol: object_milkbar_Tex_003320
+  format: I8
+  width: 64
+  height: 64
+
+object_milkbar_Tex_004320:
+  type: TEXTURE
+  offset: 0x4320
+  symbol: object_milkbar_Tex_004320
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_004720:
+  type: TEXTURE
+  offset: 0x4720
+  symbol: object_milkbar_Tex_004720
+  format: IA16
+  width: 16
+  height: 32
+
+object_milkbar_Tex_004B20:
+  type: TEXTURE
+  offset: 0x4B20
+  symbol: object_milkbar_Tex_004B20
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_004F20:
+  type: TEXTURE
+  offset: 0x4F20
+  symbol: object_milkbar_Tex_004F20
+  format: IA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_005720:
+  type: TEXTURE
+  offset: 0x5720
+  symbol: object_milkbar_Tex_005720
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_005B20:
+  type: TEXTURE
+  offset: 0x5B20
+  symbol: object_milkbar_Tex_005B20
+  format: I8
+  width: 8
+  height: 8
+
+object_milkbar_Tex_005B60:
+  type: TEXTURE
+  offset: 0x5B60
+  symbol: object_milkbar_Tex_005B60
+  format: I8
+  width: 16
+  height: 32
+
+object_milkbar_Tex_005D60:
+  type: TEXTURE
+  offset: 0x5D60
+  symbol: object_milkbar_Tex_005D60
+  format: I4
+  width: 16
+  height: 32
+
+object_milkbar_Tex_005E60:
+  type: TEXTURE
+  offset: 0x5E60
+  symbol: object_milkbar_Tex_005E60
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_006260:
+  type: TEXTURE
+  offset: 0x6260
+  symbol: object_milkbar_Tex_006260
+  format: I4
+  width: 32
+  height: 32
+
+object_milkbar_Tex_007FA0:
+  type: TEXTURE
+  offset: 0x7FA0
+  symbol: object_milkbar_Tex_007FA0
+  format: IA16
+  width: 64
+  height: 32
+
+object_milkbar_Tex_008FA0:
+  type: TEXTURE
+  offset: 0x8FA0
+  symbol: object_milkbar_Tex_008FA0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_0097A0:
+  type: TEXTURE
+  offset: 0x97A0
+  symbol: object_milkbar_Tex_0097A0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_009FA0:
+  type: TEXTURE
+  offset: 0x9FA0
+  symbol: object_milkbar_Tex_009FA0
+  format: IA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00A7A0:
+  type: TEXTURE
+  offset: 0xA7A0
+  symbol: object_milkbar_Tex_00A7A0
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00ABA0:
+  type: TEXTURE
+  offset: 0xABA0
+  symbol: object_milkbar_Tex_00ABA0
+  format: IA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00B3A0:
+  type: TEXTURE
+  offset: 0xB3A0
+  symbol: object_milkbar_Tex_00B3A0
+  format: IA8
+  width: 32
+  height: 128
+
+object_milkbar_Tex_00C3A0:
+  type: TEXTURE
+  offset: 0xC3A0
+  symbol: object_milkbar_Tex_00C3A0
+  format: IA8
+  width: 64
+  height: 64
+
+object_milkbar_Tex_00D3A0:
+  type: TEXTURE
+  offset: 0xD3A0
+  symbol: object_milkbar_Tex_00D3A0
+  format: IA16
+  width: 64
+  height: 32
+
+object_milkbar_Tex_00E3A0:
+  type: TEXTURE
+  offset: 0xE3A0
+  symbol: object_milkbar_Tex_00E3A0
+  format: I8
+  width: 8
+  height: 8
+
+object_milkbar_Tex_00E5E0:
+  type: TEXTURE
+  offset: 0xE5E0
+  symbol: object_milkbar_Tex_00E5E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00EDE0:
+  type: TEXTURE
+  offset: 0xEDE0
+  symbol: object_milkbar_Tex_00EDE0
+  format: CI8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00F1E0:
+  type: TEXTURE
+  offset: 0xF1E0
+  symbol: object_milkbar_Tex_00F1E0
+  format: IA16
+  width: 32
+  height: 32
+
+object_milkbar_Tex_00F9E0:
+  type: TEXTURE
+  offset: 0xF9E0
+  symbol: object_milkbar_Tex_00F9E0
+  format: I4
+  width: 64
+  height: 64
+
+object_milkbar_Tex_0101E0:
+  type: TEXTURE
+  offset: 0x101E0
+  symbol: object_milkbar_Tex_0101E0
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_0110A8:
+  type: TEXTURE
+  offset: 0x110A8
+  symbol: object_milkbar_Tex_0110A8
+  format: I8
+  width: 32
+  height: 32
+
+object_milkbar_Tex_0114A8:
+  type: TEXTURE
+  offset: 0x114A8
+  symbol: object_milkbar_Tex_0114A8
+  format: IA16
+  width: 16
+  height: 32
+
+
+object_milkbarVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_milkbarVtx_000000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_000550:
+  type: MM:ARRAY
+  offset: 0x000550
+  symbol: object_milkbarVtx_000550
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_000AA0:
+  type: MM:ARRAY
+  offset: 0x000AA0
+  symbol: object_milkbarVtx_000AA0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_000FD0:
+  type: MM:ARRAY
+  offset: 0x000FD0
+  symbol: object_milkbarVtx_000FD0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_001520:
+  type: MM:ARRAY
+  offset: 0x001520
+  symbol: object_milkbarVtx_001520
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_0019C0:
+  type: MM:ARRAY
+  offset: 0x0019C0
+  symbol: object_milkbarVtx_0019C0
+  count: 211
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_0026F0:
+  type: MM:ARRAY
+  offset: 0x0026F0
+  symbol: object_milkbarVtx_0026F0
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_002AB0:
+  type: MM:ARRAY
+  offset: 0x002AB0
+  symbol: object_milkbarVtx_002AB0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_0066C0:
+  type: MM:ARRAY
+  offset: 0x0066C0
+  symbol: object_milkbarVtx_0066C0
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_006E80:
+  type: MM:ARRAY
+  offset: 0x006E80
+  symbol: object_milkbarVtx_006E80
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_006F70:
+  type: MM:ARRAY
+  offset: 0x006F70
+  symbol: object_milkbarVtx_006F70
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbarVtx_007460:
+  type: MM:ARRAY
+  offset: 0x007460
+  symbol: object_milkbarVtx_007460
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_milkbar_Matanimheader_0105F8TexScrollParams_0105E0:
+  type: BLOB
+  offset: 0x0105E0
+  symbol: object_milkbar_Matanimheader_0105F8TexScrollParams_0105E0
+  size: 0
+
+object_milkbar_Matanimheader_0105F8TexScrollParams_0105E8:
+  type: BLOB
+  offset: 0x0105E8
+  symbol: object_milkbar_Matanimheader_0105F8TexScrollParams_0105E8
+  size: 0
+
+object_milkbar_Matanimheader_0105F8TexScrollParams_0105F0:
+  type: BLOB
+  offset: 0x0105F0
+  symbol: object_milkbar_Matanimheader_0105F8TexScrollParams_0105F0
+  size: 0
+
+object_milkbarVtx_010610:
+  type: MM:ARRAY
+  offset: 0x010610
+  symbol: object_milkbarVtx_010610
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

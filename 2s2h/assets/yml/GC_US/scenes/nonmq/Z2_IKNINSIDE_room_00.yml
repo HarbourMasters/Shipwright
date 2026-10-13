@@ -1,0 +1,119 @@
+:config:
+  segments:
+    - [ 3, 0x01CCA040 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01CCA040 ]
+    - [ 9, 0x01CCA040 ]
+    - [ 10, 0x01CCA040 ]
+    - [ 11, 0x01CCA040 ]
+    - [ 12, 0x01CCA040 ]
+    - [ 13, 0x01CCA040 ]
+    - [ 2, 0x01CC31D0 ]
+  directory: scenes/nonmq/Z2_IKNINSIDE
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_IKNINSIDE.yml
+    - GC_US/scenes/nonmq/Z2_IKNINSIDE_room_00Set_000120.yml
+
+Z2_IKNINSIDE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_IKNINSIDE_room_00
+
+Z2_IKNINSIDE_room_00DL_002988:
+  type: GFX
+  offset: 0x2988
+  symbol: Z2_IKNINSIDE_room_00DL_002988
+
+Z2_IKNINSIDE_room_00DL_0029C8:
+  type: GFX
+  offset: 0x29C8
+  symbol: Z2_IKNINSIDE_room_00DL_0029C8
+
+
+Z2_IKNINSIDE_room_00ActorEntry_000054:
+  type: BLOB
+  offset: 0x000054
+  symbol: Z2_IKNINSIDE_room_00ActorEntry_000054
+  size: 0
+
+Z2_IKNINSIDE_room_00ActorEntry_000168:
+  type: BLOB
+  offset: 0x000168
+  symbol: Z2_IKNINSIDE_room_00ActorEntry_000168
+  size: 0
+
+Z2_IKNINSIDE_room_00Vtx_000190:
+  type: MM:ARRAY
+  offset: 0x000190
+  symbol: Z2_IKNINSIDE_room_00Vtx_000190
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKNINSIDE_room_00DL_0002F0:
+  type: GFX
+  offset: 0x0002F0
+  symbol: Z2_IKNINSIDE_room_00DL_0002F0
+
+Z2_IKNINSIDE_room_00Vtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: Z2_IKNINSIDE_room_00Vtx_000400
+  count: 319
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKNINSIDE_room_00DL_0017F0:
+  type: GFX
+  offset: 0x0017F0
+  symbol: Z2_IKNINSIDE_room_00DL_0017F0
+
+Z2_IKNINSIDE_room_00Vtx_002020:
+  type: MM:ARRAY
+  offset: 0x002020
+  symbol: Z2_IKNINSIDE_room_00Vtx_002020
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKNINSIDE_room_00DL_0021D0:
+  type: GFX
+  offset: 0x0021D0
+  symbol: Z2_IKNINSIDE_room_00DL_0021D0
+
+Z2_IKNINSIDE_room_00Vtx_0022E8:
+  type: MM:ARRAY
+  offset: 0x0022E8
+  symbol: Z2_IKNINSIDE_room_00Vtx_0022E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKNINSIDE_room_00DL_0023A8:
+  type: GFX
+  offset: 0x0023A8
+  symbol: Z2_IKNINSIDE_room_00DL_0023A8
+
+Z2_IKNINSIDE_room_00Vtx_002480:
+  type: MM:ARRAY
+  offset: 0x002480
+  symbol: Z2_IKNINSIDE_room_00Vtx_002480
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_IKNINSIDE_room_00DL_002800:
+  type: GFX
+  offset: 0x002800
+  symbol: Z2_IKNINSIDE_room_00DL_002800
+
+Z2_IKNINSIDE_room_00DL_0029C0:
+  type: GFX
+  offset: 0x0029C0
+  symbol: Z2_IKNINSIDE_room_00DL_0029C0

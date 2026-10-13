@@ -1,0 +1,74 @@
+#ifndef Z2_PIRATE_Z2_PIRATE_H
+#define Z2_PIRATE_Z2_PIRATE_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_PIRATECollisionHeader_010618 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATECollisionHeader_010618"
+static const ALIGN_ASSET(2) char Z2_PIRATECollisionHeader_010618[] = dZ2_PIRATECollisionHeader_010618;
+
+#define dZ2_PIRATECutsceneData_000870 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATECutsceneData_000870"
+static const ALIGN_ASSET(2) char Z2_PIRATECutsceneData_000870[] = dZ2_PIRATECutsceneData_000870;
+
+#define dZ2_PIRATECutsceneData_002680 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATECutsceneData_002680"
+static const ALIGN_ASSET(2) char Z2_PIRATECutsceneData_002680[] = dZ2_PIRATECutsceneData_002680;
+
+#define dZ2_PIRATETLUT_0141F0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_0141F0"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_0141F0[] = dZ2_PIRATETLUT_0141F0;
+
+#define dZ2_PIRATETLUT_0141D0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_0141D0"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_0141D0[] = dZ2_PIRATETLUT_0141D0;
+
+#define dZ2_PIRATETex_011ED0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011ED0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011ED0[] = dZ2_PIRATETex_011ED0;
+
+#define dZ2_PIRATETLUT_014610 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_014610"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_014610[] = dZ2_PIRATETLUT_014610;
+
+#define dZ2_PIRATETex_0137D0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_0137D0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_0137D0[] = dZ2_PIRATETex_0137D0;
+
+#define dZ2_PIRATETex_010650 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_010650"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_010650[] = dZ2_PIRATETex_010650;
+
+#define dZ2_PIRATETLUT_0143F0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_0143F0"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_0143F0[] = dZ2_PIRATETLUT_0143F0;
+
+#define dZ2_PIRATETex_0126D0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_0126D0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_0126D0[] = dZ2_PIRATETex_0126D0;
+
+#define dZ2_PIRATETex_012BD0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_012BD0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_012BD0[] = dZ2_PIRATETex_012BD0;
+
+#define dZ2_PIRATETLUT_0145F0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_0145F0"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_0145F0[] = dZ2_PIRATETLUT_0145F0;
+
+#define dZ2_PIRATETex_012FD0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_012FD0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_012FD0[] = dZ2_PIRATETex_012FD0;
+
+#define dZ2_PIRATETex_011C90 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011C90"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011C90[] = dZ2_PIRATETex_011C90;
+
+#define dZ2_PIRATETex_011E90 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011E90"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011E90[] = dZ2_PIRATETex_011E90;
+
+#define dZ2_PIRATETLUT_014630 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETLUT_014630"
+static const ALIGN_ASSET(2) char Z2_PIRATETLUT_014630[] = dZ2_PIRATETLUT_014630;
+
+#define dZ2_PIRATETex_013FD0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_013FD0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_013FD0[] = dZ2_PIRATETex_013FD0;
+
+#define dZ2_PIRATETex_011890 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011890"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011890[] = dZ2_PIRATETex_011890;
+
+#define dZ2_PIRATETex_010850 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_010850"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_010850[] = dZ2_PIRATETex_010850;
+
+#define dZ2_PIRATETex_011050 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011050"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011050[] = dZ2_PIRATETex_011050;
+
+#define dZ2_PIRATETex_011850 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_011850"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_011850[] = dZ2_PIRATETex_011850;
+
+#define dZ2_PIRATETex_012AD0 "__OTR__scenes/nonmq/Z2_PIRATE/Z2_PIRATETex_012AD0"
+static const ALIGN_ASSET(2) char Z2_PIRATETex_012AD0[] = dZ2_PIRATETex_012AD0;
+#endif // Z2_PIRATE_Z2_PIRATE_H

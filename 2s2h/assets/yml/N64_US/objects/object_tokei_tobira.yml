@@ -1,0 +1,77 @@
+:config:
+  segments:
+    - [ 6, 0x01254020 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01254020 ]
+    - [ 9, 0x01254020 ]
+    - [ 10, 0x01254020 ]
+    - [ 11, 0x01254020 ]
+    - [ 12, 0x01254020 ]
+    - [ 13, 0x01254020 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+object_tokei_tobira_Colheader_0012B0:
+  type: MM:COLLISION
+  offset: 0x12B0
+  symbol: object_tokei_tobira_Colheader_0012B0
+
+object_tokei_tobira_Colheader_001590:
+  type: MM:COLLISION
+  offset: 0x1590
+  symbol: object_tokei_tobira_Colheader_001590
+
+object_tokei_tobira_DL_001100:
+  type: GFX
+  offset: 0x1100
+  symbol: object_tokei_tobira_DL_001100
+
+object_tokei_tobira_DL_001108:
+  type: GFX
+  offset: 0x1108
+  symbol: object_tokei_tobira_DL_001108
+
+object_tokei_tobira_DL_0013E0:
+  type: GFX
+  offset: 0x13E0
+  symbol: object_tokei_tobira_DL_0013E0
+
+object_tokei_tobira_DL_0013E8:
+  type: GFX
+  offset: 0x13E8
+  symbol: object_tokei_tobira_DL_0013E8
+
+object_tokei_tobira_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_tokei_tobira_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_tokei_tobira_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_tokei_tobira_Tex_000800
+  format: I4
+  width: 64
+  height: 64
+
+
+object_tokei_tobiraVtx_001000:
+  type: MM:ARRAY
+  offset: 0x001000
+  symbol: object_tokei_tobiraVtx_001000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tokei_tobiraVtx_0012E0:
+  type: MM:ARRAY
+  offset: 0x0012E0
+  symbol: object_tokei_tobiraVtx_0012E0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

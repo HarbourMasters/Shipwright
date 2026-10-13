@@ -1,0 +1,92 @@
+:config:
+  segments:
+    - [ 9, 0x016410A0 ]
+
+gDaytelop24HoursNESTex:
+  type: TEXTURE
+  offset: 0x9200
+  symbol: gDaytelop24HoursNESTex
+  format: I4
+  width: 144
+  height: 32
+
+gDaytelop48HoursNESTex:
+  type: TEXTURE
+  offset: 0x8900
+  symbol: gDaytelop48HoursNESTex
+  format: I4
+  width: 144
+  height: 32
+
+gDaytelop72HoursNESTex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gDaytelop72HoursNESTex
+  format: I4
+  width: 144
+  height: 32
+
+gDaytelopFinalDayLeftNESTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gDaytelopFinalDayLeftNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopFinalDayRightNESTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gDaytelopFinalDayRightNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopFirstDayLeftNESTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDaytelopFirstDayLeftNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopFirstDayRightNESTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gDaytelopFirstDayRightNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopNewDayLeftNESTex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gDaytelopNewDayLeftNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopNewDayRightNESTex:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: gDaytelopNewDayRightNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopSecondDayLeftNESTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gDaytelopSecondDayLeftNESTex
+  format: I4
+  width: 128
+  height: 64
+
+gDaytelopSecondDayRightNESTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gDaytelopSecondDayRightNESTex
+  format: I4
+  width: 128
+  height: 64
+

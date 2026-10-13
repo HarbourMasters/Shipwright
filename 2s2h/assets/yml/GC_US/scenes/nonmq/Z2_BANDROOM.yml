@@ -1,0 +1,159 @@
+:config:
+  segments:
+    - [ 2, 0x01BFB2C0 ]
+
+Z2_BANDROOM:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_BANDROOM
+
+
+Z2_BANDROOMPathwayList_0001EC:
+  type: MM:PATH
+  offset: 0x0001EC
+  symbol: Z2_BANDROOMPathwayList_0001EC
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1550, 101, -351 ]
+        - [ -1240, 107, -296 ]
+        - [ -1306, 113, -488 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -2357, 207, 233 ]
+        - [ -2373, 227, 122 ]
+        - [ -2335, 240, 63 ]
+        - [ -2250, 254, 62 ]
+        - [ -2226, 276, 88 ]
+        - [ -2218, 335, 102 ]
+        - [ -2213, 816, 110 ]
+
+Z2_BANDROOMPathwayList_000200:
+  type: MM:PATH
+  offset: 0x000200
+  symbol: Z2_BANDROOMPathwayList_000200
+  num_paths: 2
+  paths:
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -1550, 101, -351 ]
+        - [ -1240, 107, -296 ]
+        - [ -1306, 113, -488 ]
+    - additional_path_index: 255
+      custom_value: -1
+      points:
+        - [ -2357, 207, 233 ]
+        - [ -2373, 227, 122 ]
+        - [ -2335, 240, 63 ]
+        - [ -2250, 254, 62 ]
+        - [ -2226, 276, 88 ]
+        - [ -2218, 335, 102 ]
+        - [ -2213, 816, 110 ]
+
+Z2_BANDROOMCutsceneData_00023C:
+  type: MM:CUTSCENE
+  offset: 0x00023C
+  symbol: Z2_BANDROOMCutsceneData_00023C
+  size: 432
+
+Z2_BANDROOMCutsceneData_0003FC:
+  type: MM:CUTSCENE
+  offset: 0x0003FC
+  symbol: Z2_BANDROOMCutsceneData_0003FC
+  size: 496
+
+Z2_BANDROOMCutsceneData_0005FC:
+  type: MM:CUTSCENE
+  offset: 0x0005FC
+  symbol: Z2_BANDROOMCutsceneData_0005FC
+  size: 664
+
+Z2_BANDROOMCutsceneData_00089C:
+  type: MM:CUTSCENE
+  offset: 0x00089C
+  symbol: Z2_BANDROOMCutsceneData_00089C
+  size: 416
+
+Z2_BANDROOMTexAnim_000D48TexScrollParams_000D20:
+  type: BLOB
+  offset: 0x000D20
+  symbol: Z2_BANDROOMTexAnim_000D48TexScrollParams_000D20
+  size: 0
+
+Z2_BANDROOMTexAnim_000D48TexScrollParams_000D28:
+  type: BLOB
+  offset: 0x000D28
+  symbol: Z2_BANDROOMTexAnim_000D48TexScrollParams_000D28
+  size: 0
+
+Z2_BANDROOMTexAnim_000D48TexScrollParams_000D30:
+  type: BLOB
+  offset: 0x000D30
+  symbol: Z2_BANDROOMTexAnim_000D48TexScrollParams_000D30
+  size: 0
+
+Z2_BANDROOMTexAnim_000D48TexScrollParams_000D38:
+  type: BLOB
+  offset: 0x000D38
+  symbol: Z2_BANDROOMTexAnim_000D48TexScrollParams_000D38
+  size: 0
+
+Z2_BANDROOMTexAnim_000D48TexScrollParams_000D40:
+  type: BLOB
+  offset: 0x000D40
+  symbol: Z2_BANDROOMTexAnim_000D48TexScrollParams_000D40
+  size: 0
+
+Z2_BANDROOMTexAnim_000D48:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x000D48
+  symbol: Z2_BANDROOMTexAnim_000D48
+
+Z2_BANDROOMCollisionHeader_009880:
+  type: MM:COLLISION
+  offset: 0x009880
+  symbol: Z2_BANDROOMCollisionHeader_009880
+
+Z2_BANDROOMTex_0098B0:
+  type: TEXTURE
+  offset: 0x0098B0
+  symbol: Z2_BANDROOMTex_0098B0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_BANDROOMTex_00A0B0:
+  type: TEXTURE
+  offset: 0x00A0B0
+  symbol: Z2_BANDROOMTex_00A0B0
+  format: RGBA16
+  width: 64
+  height: 32
+
+Z2_BANDROOMTex_00B0B0:
+  type: TEXTURE
+  offset: 0x00B0B0
+  symbol: Z2_BANDROOMTex_00B0B0
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_BANDROOMTex_00B2B0:
+  type: TEXTURE
+  offset: 0x00B2B0
+  symbol: Z2_BANDROOMTex_00B2B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_BANDROOMTLUT_00B6B0:
+  type: TEXTURE
+  offset: 0x00B6B0
+  symbol: Z2_BANDROOMTLUT_00B6B0
+  format: RGBA16
+  width: 16
+  height: 16

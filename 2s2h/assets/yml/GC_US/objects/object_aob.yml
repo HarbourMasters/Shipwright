@@ -1,0 +1,452 @@
+:config:
+  segments:
+    - [ 6, 0x00FB6290 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x00FB6290 ]
+    - [ 9, 0x00FB6290 ]
+    - [ 10, 0x00FB6290 ]
+    - [ 11, 0x00FB6290 ]
+    - [ 12, 0x00FB6290 ]
+    - [ 13, 0x00FB6290 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gMamamuYanDressDL:
+  type: GFX
+  offset: 0x5618
+  symbol: gMamamuYanDressDL
+
+gMamamuYanDressLimb:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: gMamamuYanDressLimb
+  limb_type: Standard
+
+gMamamuYanDressTex:
+  type: TEXTURE
+  offset: 0x1F98
+  symbol: gMamamuYanDressTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMamamuYanEarTex:
+  type: TEXTURE
+  offset: 0x4D8
+  symbol: gMamamuYanEarTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMamamuYanEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1658
+  symbol: gMamamuYanEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMamamuYanEyeHalfTex:
+  type: TEXTURE
+  offset: 0xE58
+  symbol: gMamamuYanEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMamamuYanEyeOpenTex:
+  type: TEXTURE
+  offset: 0x658
+  symbol: gMamamuYanEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gMamamuYanFingersTex:
+  type: TEXTURE
+  offset: 0x1E58
+  symbol: gMamamuYanFingersTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMamamuYanHairTex:
+  type: TEXTURE
+  offset: 0x398
+  symbol: gMamamuYanHairTex
+  format: CI8
+  width: 16
+  height: 16
+
+gMamamuYanHeadDL:
+  type: GFX
+  offset: 0x3D18
+  symbol: gMamamuYanHeadDL
+
+gMamamuYanHeadLimb:
+  type: OOT:LIMB
+  offset: 0x138
+  symbol: gMamamuYanHeadLimb
+  limb_type: Standard
+
+gMamamuYanIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7758
+  symbol: gMamamuYanIdleAnim
+
+gMamamuYanLaughLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x700C
+  symbol: gMamamuYanLaughLoopAnim
+
+gMamamuYanLaughStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x68B4
+  symbol: gMamamuYanLaughStartAnim
+
+gMamamuYanLeftFootDL:
+  type: GFX
+  offset: 0x53A8
+  symbol: gMamamuYanLeftFootDL
+
+gMamamuYanLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB4
+  symbol: gMamamuYanLeftFootLimb
+  limb_type: Standard
+
+gMamamuYanLeftForearmDL:
+  type: GFX
+  offset: 0x4BC0
+  symbol: gMamamuYanLeftForearmDL
+
+gMamamuYanLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xFC
+  symbol: gMamamuYanLeftForearmLimb
+  limb_type: Standard
+
+gMamamuYanLeftHandDL:
+  type: GFX
+  offset: 0x49B8
+  symbol: gMamamuYanLeftHandDL
+
+gMamamuYanLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x108
+  symbol: gMamamuYanLeftHandLimb
+  limb_type: Standard
+
+gMamamuYanLeftShinDL:
+  type: GFX
+  offset: 0x5478
+  symbol: gMamamuYanLeftShinDL
+
+gMamamuYanLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: gMamamuYanLeftShinLimb
+  limb_type: Standard
+
+gMamamuYanLeftThighDL:
+  type: GFX
+  offset: 0x5548
+  symbol: gMamamuYanLeftThighDL
+
+gMamamuYanLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: gMamamuYanLeftThighLimb
+  limb_type: Standard
+
+gMamamuYanLeftUpperArmDL:
+  type: GFX
+  offset: 0x4CF0
+  symbol: gMamamuYanLeftUpperArmDL
+
+gMamamuYanLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xF0
+  symbol: gMamamuYanLeftUpperArmLimb
+  limb_type: Standard
+
+gMamamuYanLipsTex:
+  type: TEXTURE
+  offset: 0x5D8
+  symbol: gMamamuYanLipsTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMamamuYanNostrilTex:
+  type: TEXTURE
+  offset: 0x618
+  symbol: gMamamuYanNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMamamuYanRightFootDL:
+  type: GFX
+  offset: 0x5138
+  symbol: gMamamuYanRightFootDL
+
+gMamamuYanRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xD8
+  symbol: gMamamuYanRightFootLimb
+  limb_type: Standard
+
+gMamamuYanRightForearmDL:
+  type: GFX
+  offset: 0x46E0
+  symbol: gMamamuYanRightForearmDL
+
+gMamamuYanRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x120
+  symbol: gMamamuYanRightForearmLimb
+  limb_type: Standard
+
+gMamamuYanRightHandDL:
+  type: GFX
+  offset: 0x44D8
+  symbol: gMamamuYanRightHandDL
+
+gMamamuYanRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x12C
+  symbol: gMamamuYanRightHandLimb
+  limb_type: Standard
+
+gMamamuYanRightShinDL:
+  type: GFX
+  offset: 0x5208
+  symbol: gMamamuYanRightShinDL
+
+gMamamuYanRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xCC
+  symbol: gMamamuYanRightShinLimb
+  limb_type: Standard
+
+gMamamuYanRightThighDL:
+  type: GFX
+  offset: 0x52D8
+  symbol: gMamamuYanRightThighDL
+
+gMamamuYanRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xC0
+  symbol: gMamamuYanRightThighLimb
+  limb_type: Standard
+
+gMamamuYanRightUpperArmDL:
+  type: GFX
+  offset: 0x4810
+  symbol: gMamamuYanRightUpperArmDL
+
+gMamamuYanRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x114
+  symbol: gMamamuYanRightUpperArmLimb
+  limb_type: Standard
+
+gMamamuYanSkel:
+  type: MM:SKELETON
+  offset: 0x180
+  symbol: gMamamuYanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMamamuYanSkinTex:
+  type: TEXTURE
+  offset: 0x498
+  symbol: gMamamuYanSkinTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMamamuYanSleevesTex:
+  type: TEXTURE
+  offset: 0x1F58
+  symbol: gMamamuYanSleevesTex
+  format: CI8
+  width: 8
+  height: 8
+
+gMamamuYanSurpriseLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x6040
+  symbol: gMamamuYanSurpriseLoopAnim
+
+gMamamuYanSurpriseStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x58EC
+  symbol: gMamamuYanSurpriseStartAnim
+
+gMamamuYanTLUT:
+  type: TEXTURE
+  offset: 0x198
+  symbol: gMamamuYanTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMamamuYanTorsoDL:
+  type: GFX
+  offset: 0x4E98
+  symbol: gMamamuYanTorsoDL
+
+gMamamuYanTorsoLimb:
+  type: OOT:LIMB
+  offset: 0xE4
+  symbol: gMamamuYanTorsoLimb
+  limb_type: Standard
+
+gMamamuYanUnusedIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7C
+  symbol: gMamamuYanUnusedIdleAnim
+
+
+gMamamuYanSkelLimbs:
+  type: BLOB
+  offset: 0x144
+  symbol: gMamamuYanSkelLimbs
+  size: 0
+
+object_aobVtx_001FD8:
+  type: MM:ARRAY
+  offset: 0x001FD8
+  symbol: object_aobVtx_001FD8
+  count: 174
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002AB8:
+  type: MM:ARRAY
+  offset: 0x002AB8
+  symbol: object_aobVtx_002AB8
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002D88:
+  type: MM:ARRAY
+  offset: 0x002D88
+  symbol: object_aobVtx_002D88
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_002F08:
+  type: MM:ARRAY
+  offset: 0x002F08
+  symbol: object_aobVtx_002F08
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003098:
+  type: MM:ARRAY
+  offset: 0x003098
+  symbol: object_aobVtx_003098
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003368:
+  type: MM:ARRAY
+  offset: 0x003368
+  symbol: object_aobVtx_003368
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_0034E8:
+  type: MM:ARRAY
+  offset: 0x0034E8
+  symbol: object_aobVtx_0034E8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003678:
+  type: MM:ARRAY
+  offset: 0x003678
+  symbol: object_aobVtx_003678
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003AB8:
+  type: MM:ARRAY
+  offset: 0x003AB8
+  symbol: object_aobVtx_003AB8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003AE8:
+  type: MM:ARRAY
+  offset: 0x003AE8
+  symbol: object_aobVtx_003AE8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003B18:
+  type: MM:ARRAY
+  offset: 0x003B18
+  symbol: object_aobVtx_003B18
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003B48:
+  type: MM:ARRAY
+  offset: 0x003B48
+  symbol: object_aobVtx_003B48
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003B78:
+  type: MM:ARRAY
+  offset: 0x003B78
+  symbol: object_aobVtx_003B78
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003BA8:
+  type: MM:ARRAY
+  offset: 0x003BA8
+  symbol: object_aobVtx_003BA8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_aobVtx_003BD8:
+  type: MM:ARRAY
+  offset: 0x003BD8
+  symbol: object_aobVtx_003BD8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

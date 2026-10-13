@@ -1,0 +1,89 @@
+:config:
+  segments:
+    - [ 6, 0x01559F50 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01559F50 ]
+    - [ 9, 0x01559F50 ]
+    - [ 10, 0x01559F50 ]
+    - [ 11, 0x01559F50 ]
+    - [ 12, 0x01559F50 ]
+    - [ 13, 0x01559F50 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+object_cha_DL_000710:
+  type: GFX
+  offset: 0x710
+  symbol: object_cha_DL_000710
+
+object_cha_DL_000958:
+  type: GFX
+  offset: 0x958
+  symbol: object_cha_DL_000958
+
+object_cha_TLUT_000B08:
+  type: TEXTURE
+  offset: 0xB08
+  symbol: object_cha_TLUT_000B08
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_cha_Tex_000D08:
+  type: TEXTURE
+  offset: 0xD08
+  symbol: object_cha_Tex_000D08
+  format: CI8
+  width: 32
+  height: 32
+
+object_cha_Tex_001108:
+  type: TEXTURE
+  offset: 0x1108
+  symbol: object_cha_Tex_001108
+  format: CI8
+  width: 32
+  height: 32
+
+object_cha_Tex_001508:
+  type: TEXTURE
+  offset: 0x1508
+  symbol: object_cha_Tex_001508
+  format: CI8
+  width: 16
+  height: 16
+
+object_cha_Tex_001608:
+  type: TEXTURE
+  offset: 0x1608
+  symbol: object_cha_Tex_001608
+  format: CI8
+  width: 32
+  height: 32
+
+object_cha_Tex_001A08:
+  type: TEXTURE
+  offset: 0x1A08
+  symbol: object_cha_Tex_001A08
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_chaVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_chaVtx_000000
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_chaVtx_000540:
+  type: MM:ARRAY
+  offset: 0x000540
+  symbol: object_chaVtx_000540
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

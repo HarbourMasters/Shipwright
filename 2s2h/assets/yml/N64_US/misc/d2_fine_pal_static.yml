@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x016545F0 ]
+
+gSkyboxTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSkyboxTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

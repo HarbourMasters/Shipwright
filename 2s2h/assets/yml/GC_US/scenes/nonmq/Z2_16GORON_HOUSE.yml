@@ -1,0 +1,177 @@
+:config:
+  segments:
+    - [ 2, 0x019EA1A0 ]
+
+  external_files:
+    - GC_US/scenes/nonmq/Z2_16GORON_HOUSESet_005BB0.yml
+Z2_16GORON_HOUSE:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_16GORON_HOUSE
+
+
+Z2_16GORON_HOUSECutsceneData_000148:
+  type: MM:CUTSCENE
+  offset: 0x000148
+  symbol: Z2_16GORON_HOUSECutsceneData_000148
+  size: 1040
+
+Z2_16GORON_HOUSECutsceneData_000568:
+  type: MM:CUTSCENE
+  offset: 0x000568
+  symbol: Z2_16GORON_HOUSECutsceneData_000568
+  size: 1856
+
+Z2_16GORON_HOUSECutsceneData_000CB8:
+  type: MM:CUTSCENE
+  offset: 0x000CB8
+  symbol: Z2_16GORON_HOUSECutsceneData_000CB8
+  size: 688
+
+Z2_16GORON_HOUSETexAnim_001158TexScrollParams_001150:
+  type: BLOB
+  offset: 0x001150
+  symbol: Z2_16GORON_HOUSETexAnim_001158TexScrollParams_001150
+  size: 0
+
+Z2_16GORON_HOUSETexAnim_001158:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x001158
+  symbol: Z2_16GORON_HOUSETexAnim_001158
+
+Z2_16GORON_HOUSECollisionHeader_005B84:
+  type: MM:COLLISION
+  offset: 0x005B84
+  symbol: Z2_16GORON_HOUSECollisionHeader_005B84
+
+Z2_16GORON_HOUSECutsceneData_005CD8:
+  type: MM:CUTSCENE
+  offset: 0x005CD8
+  symbol: Z2_16GORON_HOUSECutsceneData_005CD8
+  size: 1040
+
+Z2_16GORON_HOUSECutsceneData_0060F8:
+  type: MM:CUTSCENE
+  offset: 0x0060F8
+  symbol: Z2_16GORON_HOUSECutsceneData_0060F8
+  size: 1856
+
+Z2_16GORON_HOUSETex_006BC0:
+  type: TEXTURE
+  offset: 0x006BC0
+  symbol: Z2_16GORON_HOUSETex_006BC0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_16GORON_HOUSETex_0073C0:
+  type: TEXTURE
+  offset: 0x0073C0
+  symbol: Z2_16GORON_HOUSETex_0073C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_007BC0:
+  type: TEXTURE
+  offset: 0x007BC0
+  symbol: Z2_16GORON_HOUSETex_007BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_0083C0:
+  type: TEXTURE
+  offset: 0x0083C0
+  symbol: Z2_16GORON_HOUSETex_0083C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_008BC0:
+  type: TEXTURE
+  offset: 0x008BC0
+  symbol: Z2_16GORON_HOUSETex_008BC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_0093C0:
+  type: TEXTURE
+  offset: 0x0093C0
+  symbol: Z2_16GORON_HOUSETex_0093C0
+  format: I4
+  width: 64
+  height: 64
+
+Z2_16GORON_HOUSETex_009BC0:
+  type: TEXTURE
+  offset: 0x009BC0
+  symbol: Z2_16GORON_HOUSETex_009BC0
+  format: CI8
+  width: 16
+  height: 128
+
+Z2_16GORON_HOUSETex_00A3C0:
+  type: TEXTURE
+  offset: 0x00A3C0
+  symbol: Z2_16GORON_HOUSETex_00A3C0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_00A7C0:
+  type: TEXTURE
+  offset: 0x00A7C0
+  symbol: Z2_16GORON_HOUSETex_00A7C0
+  format: IA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_00AFC0:
+  type: TEXTURE
+  offset: 0x00AFC0
+  symbol: Z2_16GORON_HOUSETex_00AFC0
+  format: IA4
+  width: 32
+  height: 64
+
+Z2_16GORON_HOUSETex_00B3C0:
+  type: TEXTURE
+  offset: 0x00B3C0
+  symbol: Z2_16GORON_HOUSETex_00B3C0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_16GORON_HOUSETex_00BBC0:
+  type: TEXTURE
+  offset: 0x00BBC0
+  symbol: Z2_16GORON_HOUSETex_00BBC0
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_16GORON_HOUSETex_00C3C0:
+  type: TEXTURE
+  offset: 0x00C3C0
+  symbol: Z2_16GORON_HOUSETex_00C3C0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETex_00C7C0:
+  type: TEXTURE
+  offset: 0x00C7C0
+  symbol: Z2_16GORON_HOUSETex_00C7C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+Z2_16GORON_HOUSETLUT_00CFC0:
+  type: TEXTURE
+  offset: 0x00CFC0
+  symbol: Z2_16GORON_HOUSETLUT_00CFC0
+  format: RGBA16
+  width: 16
+  height: 16

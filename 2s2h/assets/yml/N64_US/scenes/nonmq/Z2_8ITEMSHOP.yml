@@ -1,0 +1,295 @@
+:config:
+  segments:
+    - [ 2, 0x01A10F90 ]
+
+Z2_8ITEMSHOP:
+  type: MM:SCENE
+  offset: 0x0
+  symbol: Z2_8ITEMSHOP
+
+
+Z2_8ITEMSHOPTexAnim_0002E0TexScrollParams_0002D0:
+  type: BLOB
+  offset: 0x0002D0
+  symbol: Z2_8ITEMSHOPTexAnim_0002E0TexScrollParams_0002D0
+  size: 0
+
+Z2_8ITEMSHOPTexAnim_0002E0TexScrollParams_0002D8:
+  type: BLOB
+  offset: 0x0002D8
+  symbol: Z2_8ITEMSHOPTexAnim_0002E0TexScrollParams_0002D8
+  size: 0
+
+Z2_8ITEMSHOPTexAnim_0002E0:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x0002E0
+  symbol: Z2_8ITEMSHOPTexAnim_0002E0
+
+Z2_8ITEMSHOPCollisionHeader_001738:
+  type: MM:COLLISION
+  offset: 0x001738
+  symbol: Z2_8ITEMSHOPCollisionHeader_001738
+
+Z2_8ITEMSHOPTex_001770:
+  type: TEXTURE
+  offset: 0x001770
+  symbol: Z2_8ITEMSHOPTex_001770
+  format: I8
+  width: 8
+  height: 8
+
+Z2_8ITEMSHOPTex_0017B0:
+  type: TEXTURE
+  offset: 0x0017B0
+  symbol: Z2_8ITEMSHOPTex_0017B0
+  format: RGBA32
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_0027B0:
+  type: TEXTURE
+  offset: 0x0027B0
+  symbol: Z2_8ITEMSHOPTex_0027B0
+  format: I8
+  width: 8
+  height: 8
+
+Z2_8ITEMSHOPTex_0027F0:
+  type: TEXTURE
+  offset: 0x0027F0
+  symbol: Z2_8ITEMSHOPTex_0027F0
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_8ITEMSHOPTex_002830:
+  type: TEXTURE
+  offset: 0x002830
+  symbol: Z2_8ITEMSHOPTex_002830
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_002C30:
+  type: TEXTURE
+  offset: 0x002C30
+  symbol: Z2_8ITEMSHOPTex_002C30
+  format: IA16
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTex_002E30:
+  type: TEXTURE
+  offset: 0x002E30
+  symbol: Z2_8ITEMSHOPTex_002E30
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_8ITEMSHOPTex_003030:
+  type: TEXTURE
+  offset: 0x003030
+  symbol: Z2_8ITEMSHOPTex_003030
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTex_003130:
+  type: TEXTURE
+  offset: 0x003130
+  symbol: Z2_8ITEMSHOPTex_003130
+  format: I4
+  width: 64
+  height: 64
+
+Z2_8ITEMSHOPTex_003930:
+  type: TEXTURE
+  offset: 0x003930
+  symbol: Z2_8ITEMSHOPTex_003930
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_8ITEMSHOPTex_004130:
+  type: TEXTURE
+  offset: 0x004130
+  symbol: Z2_8ITEMSHOPTex_004130
+  format: CI8
+  width: 64
+  height: 32
+
+Z2_8ITEMSHOPTex_004930:
+  type: TEXTURE
+  offset: 0x004930
+  symbol: Z2_8ITEMSHOPTex_004930
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTex_004A30:
+  type: TEXTURE
+  offset: 0x004A30
+  symbol: Z2_8ITEMSHOPTex_004A30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_004E30:
+  type: TEXTURE
+  offset: 0x004E30
+  symbol: Z2_8ITEMSHOPTex_004E30
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_005230:
+  type: TEXTURE
+  offset: 0x005230
+  symbol: Z2_8ITEMSHOPTex_005230
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_8ITEMSHOPTex_005430:
+  type: TEXTURE
+  offset: 0x005430
+  symbol: Z2_8ITEMSHOPTex_005430
+  format: CI8
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTex_005530:
+  type: TEXTURE
+  offset: 0x005530
+  symbol: Z2_8ITEMSHOPTex_005530
+  format: CI8
+  width: 64
+  height: 16
+
+Z2_8ITEMSHOPTex_005930:
+  type: TEXTURE
+  offset: 0x005930
+  symbol: Z2_8ITEMSHOPTex_005930
+  format: I8
+  width: 64
+  height: 64
+
+Z2_8ITEMSHOPTex_006930:
+  type: TEXTURE
+  offset: 0x006930
+  symbol: Z2_8ITEMSHOPTex_006930
+  format: CI8
+  width: 8
+  height: 16
+
+Z2_8ITEMSHOPTex_0069B0:
+  type: TEXTURE
+  offset: 0x0069B0
+  symbol: Z2_8ITEMSHOPTex_0069B0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_006DB0:
+  type: TEXTURE
+  offset: 0x006DB0
+  symbol: Z2_8ITEMSHOPTex_006DB0
+  format: RGBA16
+  width: 32
+  height: 64
+
+Z2_8ITEMSHOPTex_007DB0:
+  type: TEXTURE
+  offset: 0x007DB0
+  symbol: Z2_8ITEMSHOPTex_007DB0
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_0081B0:
+  type: TEXTURE
+  offset: 0x0081B0
+  symbol: Z2_8ITEMSHOPTex_0081B0
+  format: IA16
+  width: 8
+  height: 8
+
+Z2_8ITEMSHOPTex_008230:
+  type: TEXTURE
+  offset: 0x008230
+  symbol: Z2_8ITEMSHOPTex_008230
+  format: CI8
+  width: 8
+  height: 8
+
+Z2_8ITEMSHOPTex_008270:
+  type: TEXTURE
+  offset: 0x008270
+  symbol: Z2_8ITEMSHOPTex_008270
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_008670:
+  type: TEXTURE
+  offset: 0x008670
+  symbol: Z2_8ITEMSHOPTex_008670
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_008A70:
+  type: TEXTURE
+  offset: 0x008A70
+  symbol: Z2_8ITEMSHOPTex_008A70
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTex_008C70:
+  type: TEXTURE
+  offset: 0x008C70
+  symbol: Z2_8ITEMSHOPTex_008C70
+  format: CI8
+  width: 32
+  height: 64
+
+Z2_8ITEMSHOPTex_009470:
+  type: TEXTURE
+  offset: 0x009470
+  symbol: Z2_8ITEMSHOPTex_009470
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_009870:
+  type: TEXTURE
+  offset: 0x009870
+  symbol: Z2_8ITEMSHOPTex_009870
+  format: CI8
+  width: 32
+  height: 32
+
+Z2_8ITEMSHOPTex_009C70:
+  type: TEXTURE
+  offset: 0x009C70
+  symbol: Z2_8ITEMSHOPTex_009C70
+  format: CI8
+  width: 32
+  height: 16
+
+Z2_8ITEMSHOPTLUT_009E70:
+  type: TEXTURE
+  offset: 0x009E70
+  symbol: Z2_8ITEMSHOPTLUT_009E70
+  format: RGBA16
+  width: 16
+  height: 16
+
+Z2_8ITEMSHOPTLUT_00A070:
+  type: TEXTURE
+  offset: 0x00A070
+  symbol: Z2_8ITEMSHOPTLUT_00A070
+  format: RGBA16
+  width: 16
+  height: 16

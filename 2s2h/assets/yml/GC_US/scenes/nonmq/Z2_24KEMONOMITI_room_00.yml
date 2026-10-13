@@ -1,0 +1,463 @@
+:config:
+  segments:
+    - [ 3, 0x01AC8FF0 ]
+    - [ 6, 0x01616C40 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01AC8FF0 ]
+    - [ 9, 0x01AC8FF0 ]
+    - [ 10, 0x01AC8FF0 ]
+    - [ 11, 0x01AC8FF0 ]
+    - [ 12, 0x01AC8FF0 ]
+    - [ 13, 0x01AC8FF0 ]
+    - [ 2, 0x01AC31D0 ]
+  directory: scenes/nonmq/Z2_24KEMONOMITI
+  external_files:
+    - GC_US/misc/scene_texture_08.yml
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_24KEMONOMITI.yml
+
+Z2_24KEMONOMITI_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_24KEMONOMITI_room_00
+
+Z2_24KEMONOMITI_room_00DL_000480:
+  type: GFX
+  offset: 0x480
+  symbol: Z2_24KEMONOMITI_room_00DL_000480
+
+Z2_24KEMONOMITI_room_00DL_005940:
+  type: GFX
+  offset: 0x5940
+  symbol: Z2_24KEMONOMITI_room_00DL_005940
+
+Z2_24KEMONOMITI_room_00DL_0059C0:
+  type: GFX
+  offset: 0x59C0
+  symbol: Z2_24KEMONOMITI_room_00DL_0059C0
+
+Z2_24KEMONOMITI_room_00DL_006190:
+  type: GFX
+  offset: 0x6190
+  symbol: Z2_24KEMONOMITI_room_00DL_006190
+
+
+Z2_24KEMONOMITI_room_00ActorEntry_00005C:
+  type: BLOB
+  offset: 0x00005C
+  symbol: Z2_24KEMONOMITI_room_00ActorEntry_00005C
+  size: 0
+
+Z2_24KEMONOMITI_room_00Vtx_000488:
+  type: MM:ARRAY
+  offset: 0x000488
+  symbol: Z2_24KEMONOMITI_room_00Vtx_000488
+  count: 135
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_000CF8:
+  type: GFX
+  offset: 0x000CF8
+  symbol: Z2_24KEMONOMITI_room_00DL_000CF8
+
+Z2_24KEMONOMITI_room_00Vtx_000F48:
+  type: MM:ARRAY
+  offset: 0x000F48
+  symbol: Z2_24KEMONOMITI_room_00Vtx_000F48
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_001678:
+  type: GFX
+  offset: 0x001678
+  symbol: Z2_24KEMONOMITI_room_00DL_001678
+
+Z2_24KEMONOMITI_room_00Vtx_0018B8:
+  type: MM:ARRAY
+  offset: 0x0018B8
+  symbol: Z2_24KEMONOMITI_room_00Vtx_0018B8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_001A68:
+  type: GFX
+  offset: 0x001A68
+  symbol: Z2_24KEMONOMITI_room_00DL_001A68
+
+Z2_24KEMONOMITI_room_00Vtx_001B78:
+  type: MM:ARRAY
+  offset: 0x001B78
+  symbol: Z2_24KEMONOMITI_room_00Vtx_001B78
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_001C38:
+  type: GFX
+  offset: 0x001C38
+  symbol: Z2_24KEMONOMITI_room_00DL_001C38
+
+Z2_24KEMONOMITI_room_00Vtx_001D08:
+  type: MM:ARRAY
+  offset: 0x001D08
+  symbol: Z2_24KEMONOMITI_room_00Vtx_001D08
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_001E88:
+  type: GFX
+  offset: 0x001E88
+  symbol: Z2_24KEMONOMITI_room_00DL_001E88
+
+Z2_24KEMONOMITI_room_00Vtx_001F90:
+  type: MM:ARRAY
+  offset: 0x001F90
+  symbol: Z2_24KEMONOMITI_room_00Vtx_001F90
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_001FA0:
+  type: GFX
+  offset: 0x001FA0
+  symbol: Z2_24KEMONOMITI_room_00DL_001FA0
+
+Z2_24KEMONOMITI_room_00Vtx_001FC0:
+  type: MM:ARRAY
+  offset: 0x001FC0
+  symbol: Z2_24KEMONOMITI_room_00Vtx_001FC0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_002260:
+  type: GFX
+  offset: 0x002260
+  symbol: Z2_24KEMONOMITI_room_00DL_002260
+
+Z2_24KEMONOMITI_room_00Vtx_002380:
+  type: MM:ARRAY
+  offset: 0x002380
+  symbol: Z2_24KEMONOMITI_room_00Vtx_002380
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_002390:
+  type: GFX
+  offset: 0x002390
+  symbol: Z2_24KEMONOMITI_room_00DL_002390
+
+Z2_24KEMONOMITI_room_00DL_0023B0:
+  type: GFX
+  offset: 0x0023B0
+  symbol: Z2_24KEMONOMITI_room_00DL_0023B0
+
+Z2_24KEMONOMITI_room_00Vtx_0023C8:
+  type: MM:ARRAY
+  offset: 0x0023C8
+  symbol: Z2_24KEMONOMITI_room_00Vtx_0023C8
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_002968:
+  type: GFX
+  offset: 0x002968
+  symbol: Z2_24KEMONOMITI_room_00DL_002968
+
+Z2_24KEMONOMITI_room_00Vtx_002E48:
+  type: MM:ARRAY
+  offset: 0x002E48
+  symbol: Z2_24KEMONOMITI_room_00Vtx_002E48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_002E58:
+  type: GFX
+  offset: 0x002E58
+  symbol: Z2_24KEMONOMITI_room_00DL_002E58
+
+Z2_24KEMONOMITI_room_00Vtx_002E78:
+  type: MM:ARRAY
+  offset: 0x002E78
+  symbol: Z2_24KEMONOMITI_room_00Vtx_002E78
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003258:
+  type: GFX
+  offset: 0x003258
+  symbol: Z2_24KEMONOMITI_room_00DL_003258
+
+Z2_24KEMONOMITI_room_00Vtx_0033E0:
+  type: MM:ARRAY
+  offset: 0x0033E0
+  symbol: Z2_24KEMONOMITI_room_00Vtx_0033E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_0033F0:
+  type: GFX
+  offset: 0x0033F0
+  symbol: Z2_24KEMONOMITI_room_00DL_0033F0
+
+Z2_24KEMONOMITI_room_00Vtx_003410:
+  type: MM:ARRAY
+  offset: 0x003410
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003410
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003570:
+  type: GFX
+  offset: 0x003570
+  symbol: Z2_24KEMONOMITI_room_00DL_003570
+
+Z2_24KEMONOMITI_room_00Vtx_003668:
+  type: MM:ARRAY
+  offset: 0x003668
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003668
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003678:
+  type: GFX
+  offset: 0x003678
+  symbol: Z2_24KEMONOMITI_room_00DL_003678
+
+Z2_24KEMONOMITI_room_00Vtx_003698:
+  type: MM:ARRAY
+  offset: 0x003698
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003698
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003A18:
+  type: GFX
+  offset: 0x003A18
+  symbol: Z2_24KEMONOMITI_room_00DL_003A18
+
+Z2_24KEMONOMITI_room_00Vtx_003B48:
+  type: MM:ARRAY
+  offset: 0x003B48
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003B48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003B58:
+  type: GFX
+  offset: 0x003B58
+  symbol: Z2_24KEMONOMITI_room_00DL_003B58
+
+Z2_24KEMONOMITI_room_00DL_003B78:
+  type: GFX
+  offset: 0x003B78
+  symbol: Z2_24KEMONOMITI_room_00DL_003B78
+
+Z2_24KEMONOMITI_room_00Vtx_003BA0:
+  type: MM:ARRAY
+  offset: 0x003BA0
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003BA0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003CE0:
+  type: GFX
+  offset: 0x003CE0
+  symbol: Z2_24KEMONOMITI_room_00DL_003CE0
+
+Z2_24KEMONOMITI_room_00Vtx_003DC0:
+  type: MM:ARRAY
+  offset: 0x003DC0
+  symbol: Z2_24KEMONOMITI_room_00Vtx_003DC0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_003FC0:
+  type: GFX
+  offset: 0x003FC0
+  symbol: Z2_24KEMONOMITI_room_00DL_003FC0
+
+Z2_24KEMONOMITI_room_00Vtx_004088:
+  type: MM:ARRAY
+  offset: 0x004088
+  symbol: Z2_24KEMONOMITI_room_00Vtx_004088
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_0046E8:
+  type: GFX
+  offset: 0x0046E8
+  symbol: Z2_24KEMONOMITI_room_00DL_0046E8
+
+Z2_24KEMONOMITI_room_00Vtx_004898:
+  type: MM:ARRAY
+  offset: 0x004898
+  symbol: Z2_24KEMONOMITI_room_00Vtx_004898
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_004F78:
+  type: GFX
+  offset: 0x004F78
+  symbol: Z2_24KEMONOMITI_room_00DL_004F78
+
+Z2_24KEMONOMITI_room_00Vtx_005170:
+  type: MM:ARRAY
+  offset: 0x005170
+  symbol: Z2_24KEMONOMITI_room_00Vtx_005170
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_0052B0:
+  type: GFX
+  offset: 0x0052B0
+  symbol: Z2_24KEMONOMITI_room_00DL_0052B0
+
+Z2_24KEMONOMITI_room_00Vtx_005370:
+  type: MM:ARRAY
+  offset: 0x005370
+  symbol: Z2_24KEMONOMITI_room_00Vtx_005370
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_005460:
+  type: GFX
+  offset: 0x005460
+  symbol: Z2_24KEMONOMITI_room_00DL_005460
+
+Z2_24KEMONOMITI_room_00Vtx_005538:
+  type: MM:ARRAY
+  offset: 0x005538
+  symbol: Z2_24KEMONOMITI_room_00Vtx_005538
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_005638:
+  type: GFX
+  offset: 0x005638
+  symbol: Z2_24KEMONOMITI_room_00DL_005638
+
+Z2_24KEMONOMITI_room_00Vtx_005710:
+  type: MM:ARRAY
+  offset: 0x005710
+  symbol: Z2_24KEMONOMITI_room_00Vtx_005710
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_005850:
+  type: GFX
+  offset: 0x005850
+  symbol: Z2_24KEMONOMITI_room_00DL_005850
+
+Z2_24KEMONOMITI_room_00DL_0059C8:
+  type: GFX
+  offset: 0x0059C8
+  symbol: Z2_24KEMONOMITI_room_00DL_0059C8
+
+Z2_24KEMONOMITI_room_00DL_0059D0:
+  type: GFX
+  offset: 0x0059D0
+  symbol: Z2_24KEMONOMITI_room_00DL_0059D0
+
+Z2_24KEMONOMITI_room_00DL_0059D8:
+  type: GFX
+  offset: 0x0059D8
+  symbol: Z2_24KEMONOMITI_room_00DL_0059D8
+
+Z2_24KEMONOMITI_room_00DL_0059E0:
+  type: GFX
+  offset: 0x0059E0
+  symbol: Z2_24KEMONOMITI_room_00DL_0059E0
+
+Z2_24KEMONOMITI_room_00Vtx_0059E8:
+  type: MM:ARRAY
+  offset: 0x0059E8
+  symbol: Z2_24KEMONOMITI_room_00Vtx_0059E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_005AA8:
+  type: GFX
+  offset: 0x005AA8
+  symbol: Z2_24KEMONOMITI_room_00DL_005AA8
+
+Z2_24KEMONOMITI_room_00DL_005B80:
+  type: GFX
+  offset: 0x005B80
+  symbol: Z2_24KEMONOMITI_room_00DL_005B80
+
+Z2_24KEMONOMITI_room_00DL_005B88:
+  type: GFX
+  offset: 0x005B88
+  symbol: Z2_24KEMONOMITI_room_00DL_005B88
+
+Z2_24KEMONOMITI_room_00DL_005B98:
+  type: GFX
+  offset: 0x005B98
+  symbol: Z2_24KEMONOMITI_room_00DL_005B98
+
+Z2_24KEMONOMITI_room_00DL_005BA0:
+  type: GFX
+  offset: 0x005BA0
+  symbol: Z2_24KEMONOMITI_room_00DL_005BA0
+
+Z2_24KEMONOMITI_room_00Vtx_005BB0:
+  type: MM:ARRAY
+  offset: 0x005BB0
+  symbol: Z2_24KEMONOMITI_room_00Vtx_005BB0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_24KEMONOMITI_room_00DL_005FF0:
+  type: GFX
+  offset: 0x005FF0
+  symbol: Z2_24KEMONOMITI_room_00DL_005FF0

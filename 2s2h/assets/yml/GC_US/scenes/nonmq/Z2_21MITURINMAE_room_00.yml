@@ -1,0 +1,1196 @@
+:config:
+  segments:
+    - [ 3, 0x01B40870 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x01B40870 ]
+    - [ 9, 0x01B40870 ]
+    - [ 10, 0x01B40870 ]
+    - [ 11, 0x01B40870 ]
+    - [ 12, 0x01B40870 ]
+    - [ 13, 0x01B40870 ]
+    - [ 2, 0x01B38C00 ]
+  directory: scenes/nonmq/Z2_21MITURINMAE
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+    - GC_US/scenes/nonmq/Z2_21MITURINMAE.yml
+    - GC_US/scenes/nonmq/Z2_21MITURINMAE_room_00Set_000530.yml
+    - GC_US/scenes/nonmq/Z2_21MITURINMAE_room_00Set_000790.yml
+
+Z2_21MITURINMAE_room_00:
+  type: MM:ROOM
+  offset: 0x0
+  symbol: Z2_21MITURINMAE_room_00
+
+Z2_21MITURINMAE_room_00DL_000AC0:
+  type: GFX
+  offset: 0xAC0
+  symbol: Z2_21MITURINMAE_room_00DL_000AC0
+
+Z2_21MITURINMAE_room_00DL_00FA68:
+  type: GFX
+  offset: 0xFA68
+  symbol: Z2_21MITURINMAE_room_00DL_00FA68
+
+Z2_21MITURINMAE_room_00DL_00FB30:
+  type: GFX
+  offset: 0xFB30
+  symbol: Z2_21MITURINMAE_room_00DL_00FB30
+
+Z2_21MITURINMAE_room_00DL_00FBF8:
+  type: GFX
+  offset: 0xFBF8
+  symbol: Z2_21MITURINMAE_room_00DL_00FBF8
+
+
+Z2_21MITURINMAE_room_00ActorEntry_000064:
+  type: BLOB
+  offset: 0x000064
+  symbol: Z2_21MITURINMAE_room_00ActorEntry_000064
+  size: 0
+
+Z2_21MITURINMAE_room_00ActorEntry_000578:
+  type: BLOB
+  offset: 0x000578
+  symbol: Z2_21MITURINMAE_room_00ActorEntry_000578
+  size: 0
+
+Z2_21MITURINMAE_room_00ActorEntry_0007E4:
+  type: BLOB
+  offset: 0x0007E4
+  symbol: Z2_21MITURINMAE_room_00ActorEntry_0007E4
+  size: 0
+
+Z2_21MITURINMAE_room_00Vtx_000AC8:
+  type: MM:ARRAY
+  offset: 0x000AC8
+  symbol: Z2_21MITURINMAE_room_00Vtx_000AC8
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_001398:
+  type: GFX
+  offset: 0x001398
+  symbol: Z2_21MITURINMAE_room_00DL_001398
+
+Z2_21MITURINMAE_room_00Vtx_001768:
+  type: MM:ARRAY
+  offset: 0x001768
+  symbol: Z2_21MITURINMAE_room_00Vtx_001768
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_001C48:
+  type: GFX
+  offset: 0x001C48
+  symbol: Z2_21MITURINMAE_room_00DL_001C48
+
+Z2_21MITURINMAE_room_00Vtx_001E10:
+  type: MM:ARRAY
+  offset: 0x001E10
+  symbol: Z2_21MITURINMAE_room_00Vtx_001E10
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_002110:
+  type: GFX
+  offset: 0x002110
+  symbol: Z2_21MITURINMAE_room_00DL_002110
+
+Z2_21MITURINMAE_room_00Vtx_002270:
+  type: MM:ARRAY
+  offset: 0x002270
+  symbol: Z2_21MITURINMAE_room_00Vtx_002270
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_002380:
+  type: GFX
+  offset: 0x002380
+  symbol: Z2_21MITURINMAE_room_00DL_002380
+
+Z2_21MITURINMAE_room_00Vtx_0023E8:
+  type: MM:ARRAY
+  offset: 0x0023E8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0023E8
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_002BE8:
+  type: GFX
+  offset: 0x002BE8
+  symbol: Z2_21MITURINMAE_room_00DL_002BE8
+
+Z2_21MITURINMAE_room_00Vtx_002E30:
+  type: MM:ARRAY
+  offset: 0x002E30
+  symbol: Z2_21MITURINMAE_room_00Vtx_002E30
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003130:
+  type: GFX
+  offset: 0x003130
+  symbol: Z2_21MITURINMAE_room_00DL_003130
+
+Z2_21MITURINMAE_room_00Vtx_003330:
+  type: MM:ARRAY
+  offset: 0x003330
+  symbol: Z2_21MITURINMAE_room_00Vtx_003330
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003340:
+  type: GFX
+  offset: 0x003340
+  symbol: Z2_21MITURINMAE_room_00DL_003340
+
+Z2_21MITURINMAE_room_00Vtx_003360:
+  type: MM:ARRAY
+  offset: 0x003360
+  symbol: Z2_21MITURINMAE_room_00Vtx_003360
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003420:
+  type: GFX
+  offset: 0x003420
+  symbol: Z2_21MITURINMAE_room_00DL_003420
+
+Z2_21MITURINMAE_room_00Vtx_0034F0:
+  type: MM:ARRAY
+  offset: 0x0034F0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0034F0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003500:
+  type: GFX
+  offset: 0x003500
+  symbol: Z2_21MITURINMAE_room_00DL_003500
+
+Z2_21MITURINMAE_room_00DL_003520:
+  type: GFX
+  offset: 0x003520
+  symbol: Z2_21MITURINMAE_room_00DL_003520
+
+Z2_21MITURINMAE_room_00Vtx_003538:
+  type: MM:ARRAY
+  offset: 0x003538
+  symbol: Z2_21MITURINMAE_room_00Vtx_003538
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0036D8:
+  type: GFX
+  offset: 0x0036D8
+  symbol: Z2_21MITURINMAE_room_00DL_0036D8
+
+Z2_21MITURINMAE_room_00Vtx_0037E0:
+  type: MM:ARRAY
+  offset: 0x0037E0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0037E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0037F0:
+  type: GFX
+  offset: 0x0037F0
+  symbol: Z2_21MITURINMAE_room_00DL_0037F0
+
+Z2_21MITURINMAE_room_00Vtx_003810:
+  type: MM:ARRAY
+  offset: 0x003810
+  symbol: Z2_21MITURINMAE_room_00Vtx_003810
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003990:
+  type: GFX
+  offset: 0x003990
+  symbol: Z2_21MITURINMAE_room_00DL_003990
+
+Z2_21MITURINMAE_room_00Vtx_003A78:
+  type: MM:ARRAY
+  offset: 0x003A78
+  symbol: Z2_21MITURINMAE_room_00Vtx_003A78
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003A88:
+  type: GFX
+  offset: 0x003A88
+  symbol: Z2_21MITURINMAE_room_00DL_003A88
+
+Z2_21MITURINMAE_room_00DL_003AA8:
+  type: GFX
+  offset: 0x003AA8
+  symbol: Z2_21MITURINMAE_room_00DL_003AA8
+
+Z2_21MITURINMAE_room_00Vtx_003AC0:
+  type: MM:ARRAY
+  offset: 0x003AC0
+  symbol: Z2_21MITURINMAE_room_00Vtx_003AC0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003CE0:
+  type: GFX
+  offset: 0x003CE0
+  symbol: Z2_21MITURINMAE_room_00DL_003CE0
+
+Z2_21MITURINMAE_room_00Vtx_003E08:
+  type: MM:ARRAY
+  offset: 0x003E08
+  symbol: Z2_21MITURINMAE_room_00Vtx_003E08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003E18:
+  type: GFX
+  offset: 0x003E18
+  symbol: Z2_21MITURINMAE_room_00DL_003E18
+
+Z2_21MITURINMAE_room_00Vtx_003E38:
+  type: MM:ARRAY
+  offset: 0x003E38
+  symbol: Z2_21MITURINMAE_room_00Vtx_003E38
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_003FB8:
+  type: GFX
+  offset: 0x003FB8
+  symbol: Z2_21MITURINMAE_room_00DL_003FB8
+
+Z2_21MITURINMAE_room_00Vtx_0040A0:
+  type: MM:ARRAY
+  offset: 0x0040A0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0040A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0040B0:
+  type: GFX
+  offset: 0x0040B0
+  symbol: Z2_21MITURINMAE_room_00DL_0040B0
+
+Z2_21MITURINMAE_room_00DL_0040D0:
+  type: GFX
+  offset: 0x0040D0
+  symbol: Z2_21MITURINMAE_room_00DL_0040D0
+
+Z2_21MITURINMAE_room_00Vtx_0040E8:
+  type: MM:ARRAY
+  offset: 0x0040E8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0040E8
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0043C8:
+  type: GFX
+  offset: 0x0043C8
+  symbol: Z2_21MITURINMAE_room_00DL_0043C8
+
+Z2_21MITURINMAE_room_00Vtx_004590:
+  type: MM:ARRAY
+  offset: 0x004590
+  symbol: Z2_21MITURINMAE_room_00Vtx_004590
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0045A0:
+  type: GFX
+  offset: 0x0045A0
+  symbol: Z2_21MITURINMAE_room_00DL_0045A0
+
+Z2_21MITURINMAE_room_00Vtx_0045C0:
+  type: MM:ARRAY
+  offset: 0x0045C0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0045C0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0046C0:
+  type: GFX
+  offset: 0x0046C0
+  symbol: Z2_21MITURINMAE_room_00DL_0046C0
+
+Z2_21MITURINMAE_room_00Vtx_004798:
+  type: MM:ARRAY
+  offset: 0x004798
+  symbol: Z2_21MITURINMAE_room_00Vtx_004798
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0047A8:
+  type: GFX
+  offset: 0x0047A8
+  symbol: Z2_21MITURINMAE_room_00DL_0047A8
+
+Z2_21MITURINMAE_room_00DL_0047C8:
+  type: GFX
+  offset: 0x0047C8
+  symbol: Z2_21MITURINMAE_room_00DL_0047C8
+
+Z2_21MITURINMAE_room_00Vtx_0047E0:
+  type: MM:ARRAY
+  offset: 0x0047E0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0047E0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_004A10:
+  type: GFX
+  offset: 0x004A10
+  symbol: Z2_21MITURINMAE_room_00DL_004A10
+
+Z2_21MITURINMAE_room_00Vtx_004B38:
+  type: MM:ARRAY
+  offset: 0x004B38
+  symbol: Z2_21MITURINMAE_room_00Vtx_004B38
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_004B48:
+  type: GFX
+  offset: 0x004B48
+  symbol: Z2_21MITURINMAE_room_00DL_004B48
+
+Z2_21MITURINMAE_room_00Vtx_004B68:
+  type: MM:ARRAY
+  offset: 0x004B68
+  symbol: Z2_21MITURINMAE_room_00Vtx_004B68
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_004CE8:
+  type: GFX
+  offset: 0x004CE8
+  symbol: Z2_21MITURINMAE_room_00DL_004CE8
+
+Z2_21MITURINMAE_room_00Vtx_004DD0:
+  type: MM:ARRAY
+  offset: 0x004DD0
+  symbol: Z2_21MITURINMAE_room_00Vtx_004DD0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_004DE0:
+  type: GFX
+  offset: 0x004DE0
+  symbol: Z2_21MITURINMAE_room_00DL_004DE0
+
+Z2_21MITURINMAE_room_00DL_004E00:
+  type: GFX
+  offset: 0x004E00
+  symbol: Z2_21MITURINMAE_room_00DL_004E00
+
+Z2_21MITURINMAE_room_00Vtx_004E18:
+  type: MM:ARRAY
+  offset: 0x004E18
+  symbol: Z2_21MITURINMAE_room_00Vtx_004E18
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_004FF8:
+  type: GFX
+  offset: 0x004FF8
+  symbol: Z2_21MITURINMAE_room_00DL_004FF8
+
+Z2_21MITURINMAE_room_00Vtx_005100:
+  type: MM:ARRAY
+  offset: 0x005100
+  symbol: Z2_21MITURINMAE_room_00Vtx_005100
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005110:
+  type: GFX
+  offset: 0x005110
+  symbol: Z2_21MITURINMAE_room_00DL_005110
+
+Z2_21MITURINMAE_room_00Vtx_005130:
+  type: MM:ARRAY
+  offset: 0x005130
+  symbol: Z2_21MITURINMAE_room_00Vtx_005130
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0052B0:
+  type: GFX
+  offset: 0x0052B0
+  symbol: Z2_21MITURINMAE_room_00DL_0052B0
+
+Z2_21MITURINMAE_room_00Vtx_005398:
+  type: MM:ARRAY
+  offset: 0x005398
+  symbol: Z2_21MITURINMAE_room_00Vtx_005398
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0053A8:
+  type: GFX
+  offset: 0x0053A8
+  symbol: Z2_21MITURINMAE_room_00DL_0053A8
+
+Z2_21MITURINMAE_room_00DL_0053C8:
+  type: GFX
+  offset: 0x0053C8
+  symbol: Z2_21MITURINMAE_room_00DL_0053C8
+
+Z2_21MITURINMAE_room_00Vtx_0053E0:
+  type: MM:ARRAY
+  offset: 0x0053E0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0053E0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005600:
+  type: GFX
+  offset: 0x005600
+  symbol: Z2_21MITURINMAE_room_00DL_005600
+
+Z2_21MITURINMAE_room_00Vtx_005728:
+  type: MM:ARRAY
+  offset: 0x005728
+  symbol: Z2_21MITURINMAE_room_00Vtx_005728
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005738:
+  type: GFX
+  offset: 0x005738
+  symbol: Z2_21MITURINMAE_room_00DL_005738
+
+Z2_21MITURINMAE_room_00Vtx_005758:
+  type: MM:ARRAY
+  offset: 0x005758
+  symbol: Z2_21MITURINMAE_room_00Vtx_005758
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0058D8:
+  type: GFX
+  offset: 0x0058D8
+  symbol: Z2_21MITURINMAE_room_00DL_0058D8
+
+Z2_21MITURINMAE_room_00Vtx_0059C0:
+  type: MM:ARRAY
+  offset: 0x0059C0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0059C0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0059D0:
+  type: GFX
+  offset: 0x0059D0
+  symbol: Z2_21MITURINMAE_room_00DL_0059D0
+
+Z2_21MITURINMAE_room_00DL_0059F0:
+  type: GFX
+  offset: 0x0059F0
+  symbol: Z2_21MITURINMAE_room_00DL_0059F0
+
+Z2_21MITURINMAE_room_00Vtx_005A08:
+  type: MM:ARRAY
+  offset: 0x005A08
+  symbol: Z2_21MITURINMAE_room_00Vtx_005A08
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005B68:
+  type: GFX
+  offset: 0x005B68
+  symbol: Z2_21MITURINMAE_room_00DL_005B68
+
+Z2_21MITURINMAE_room_00Vtx_005C60:
+  type: MM:ARRAY
+  offset: 0x005C60
+  symbol: Z2_21MITURINMAE_room_00Vtx_005C60
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005C70:
+  type: GFX
+  offset: 0x005C70
+  symbol: Z2_21MITURINMAE_room_00DL_005C70
+
+Z2_21MITURINMAE_room_00Vtx_005C90:
+  type: MM:ARRAY
+  offset: 0x005C90
+  symbol: Z2_21MITURINMAE_room_00Vtx_005C90
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005E10:
+  type: GFX
+  offset: 0x005E10
+  symbol: Z2_21MITURINMAE_room_00DL_005E10
+
+Z2_21MITURINMAE_room_00Vtx_005EF8:
+  type: MM:ARRAY
+  offset: 0x005EF8
+  symbol: Z2_21MITURINMAE_room_00Vtx_005EF8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_005F08:
+  type: GFX
+  offset: 0x005F08
+  symbol: Z2_21MITURINMAE_room_00DL_005F08
+
+Z2_21MITURINMAE_room_00DL_005F28:
+  type: GFX
+  offset: 0x005F28
+  symbol: Z2_21MITURINMAE_room_00DL_005F28
+
+Z2_21MITURINMAE_room_00Vtx_005F40:
+  type: MM:ARRAY
+  offset: 0x005F40
+  symbol: Z2_21MITURINMAE_room_00Vtx_005F40
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006200:
+  type: GFX
+  offset: 0x006200
+  symbol: Z2_21MITURINMAE_room_00DL_006200
+
+Z2_21MITURINMAE_room_00Vtx_0063E0:
+  type: MM:ARRAY
+  offset: 0x0063E0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0063E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0063F0:
+  type: GFX
+  offset: 0x0063F0
+  symbol: Z2_21MITURINMAE_room_00DL_0063F0
+
+Z2_21MITURINMAE_room_00Vtx_006410:
+  type: MM:ARRAY
+  offset: 0x006410
+  symbol: Z2_21MITURINMAE_room_00Vtx_006410
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006510:
+  type: GFX
+  offset: 0x006510
+  symbol: Z2_21MITURINMAE_room_00DL_006510
+
+Z2_21MITURINMAE_room_00Vtx_0065E8:
+  type: MM:ARRAY
+  offset: 0x0065E8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0065E8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0065F8:
+  type: GFX
+  offset: 0x0065F8
+  symbol: Z2_21MITURINMAE_room_00DL_0065F8
+
+Z2_21MITURINMAE_room_00DL_006618:
+  type: GFX
+  offset: 0x006618
+  symbol: Z2_21MITURINMAE_room_00DL_006618
+
+Z2_21MITURINMAE_room_00Vtx_006630:
+  type: MM:ARRAY
+  offset: 0x006630
+  symbol: Z2_21MITURINMAE_room_00Vtx_006630
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006920:
+  type: GFX
+  offset: 0x006920
+  symbol: Z2_21MITURINMAE_room_00DL_006920
+
+Z2_21MITURINMAE_room_00Vtx_006A70:
+  type: MM:ARRAY
+  offset: 0x006A70
+  symbol: Z2_21MITURINMAE_room_00Vtx_006A70
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006A80:
+  type: GFX
+  offset: 0x006A80
+  symbol: Z2_21MITURINMAE_room_00DL_006A80
+
+Z2_21MITURINMAE_room_00Vtx_006AA0:
+  type: MM:ARRAY
+  offset: 0x006AA0
+  symbol: Z2_21MITURINMAE_room_00Vtx_006AA0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006BA0:
+  type: GFX
+  offset: 0x006BA0
+  symbol: Z2_21MITURINMAE_room_00DL_006BA0
+
+Z2_21MITURINMAE_room_00Vtx_006C80:
+  type: MM:ARRAY
+  offset: 0x006C80
+  symbol: Z2_21MITURINMAE_room_00Vtx_006C80
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006C90:
+  type: GFX
+  offset: 0x006C90
+  symbol: Z2_21MITURINMAE_room_00DL_006C90
+
+Z2_21MITURINMAE_room_00DL_006CB0:
+  type: GFX
+  offset: 0x006CB0
+  symbol: Z2_21MITURINMAE_room_00DL_006CB0
+
+Z2_21MITURINMAE_room_00Vtx_006CC8:
+  type: MM:ARRAY
+  offset: 0x006CC8
+  symbol: Z2_21MITURINMAE_room_00Vtx_006CC8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_006FB8:
+  type: GFX
+  offset: 0x006FB8
+  symbol: Z2_21MITURINMAE_room_00DL_006FB8
+
+Z2_21MITURINMAE_room_00Vtx_007108:
+  type: MM:ARRAY
+  offset: 0x007108
+  symbol: Z2_21MITURINMAE_room_00Vtx_007108
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007118:
+  type: GFX
+  offset: 0x007118
+  symbol: Z2_21MITURINMAE_room_00DL_007118
+
+Z2_21MITURINMAE_room_00Vtx_007138:
+  type: MM:ARRAY
+  offset: 0x007138
+  symbol: Z2_21MITURINMAE_room_00Vtx_007138
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007238:
+  type: GFX
+  offset: 0x007238
+  symbol: Z2_21MITURINMAE_room_00DL_007238
+
+Z2_21MITURINMAE_room_00Vtx_007318:
+  type: MM:ARRAY
+  offset: 0x007318
+  symbol: Z2_21MITURINMAE_room_00Vtx_007318
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007328:
+  type: GFX
+  offset: 0x007328
+  symbol: Z2_21MITURINMAE_room_00DL_007328
+
+Z2_21MITURINMAE_room_00DL_007348:
+  type: GFX
+  offset: 0x007348
+  symbol: Z2_21MITURINMAE_room_00DL_007348
+
+Z2_21MITURINMAE_room_00Vtx_007360:
+  type: MM:ARRAY
+  offset: 0x007360
+  symbol: Z2_21MITURINMAE_room_00Vtx_007360
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007480:
+  type: GFX
+  offset: 0x007480
+  symbol: Z2_21MITURINMAE_room_00DL_007480
+
+Z2_21MITURINMAE_room_00Vtx_007568:
+  type: MM:ARRAY
+  offset: 0x007568
+  symbol: Z2_21MITURINMAE_room_00Vtx_007568
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007578:
+  type: GFX
+  offset: 0x007578
+  symbol: Z2_21MITURINMAE_room_00DL_007578
+
+Z2_21MITURINMAE_room_00Vtx_007598:
+  type: MM:ARRAY
+  offset: 0x007598
+  symbol: Z2_21MITURINMAE_room_00Vtx_007598
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007698:
+  type: GFX
+  offset: 0x007698
+  symbol: Z2_21MITURINMAE_room_00DL_007698
+
+Z2_21MITURINMAE_room_00Vtx_007770:
+  type: MM:ARRAY
+  offset: 0x007770
+  symbol: Z2_21MITURINMAE_room_00Vtx_007770
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007780:
+  type: GFX
+  offset: 0x007780
+  symbol: Z2_21MITURINMAE_room_00DL_007780
+
+Z2_21MITURINMAE_room_00DL_0077A0:
+  type: GFX
+  offset: 0x0077A0
+  symbol: Z2_21MITURINMAE_room_00DL_0077A0
+
+Z2_21MITURINMAE_room_00Vtx_0077B8:
+  type: MM:ARRAY
+  offset: 0x0077B8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0077B8
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007A68:
+  type: GFX
+  offset: 0x007A68
+  symbol: Z2_21MITURINMAE_room_00DL_007A68
+
+Z2_21MITURINMAE_room_00Vtx_007C48:
+  type: MM:ARRAY
+  offset: 0x007C48
+  symbol: Z2_21MITURINMAE_room_00Vtx_007C48
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007C58:
+  type: GFX
+  offset: 0x007C58
+  symbol: Z2_21MITURINMAE_room_00DL_007C58
+
+Z2_21MITURINMAE_room_00Vtx_007C78:
+  type: MM:ARRAY
+  offset: 0x007C78
+  symbol: Z2_21MITURINMAE_room_00Vtx_007C78
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007D38:
+  type: GFX
+  offset: 0x007D38
+  symbol: Z2_21MITURINMAE_room_00DL_007D38
+
+Z2_21MITURINMAE_room_00Vtx_007E08:
+  type: MM:ARRAY
+  offset: 0x007E08
+  symbol: Z2_21MITURINMAE_room_00Vtx_007E08
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_007E18:
+  type: GFX
+  offset: 0x007E18
+  symbol: Z2_21MITURINMAE_room_00DL_007E18
+
+Z2_21MITURINMAE_room_00DL_007E38:
+  type: GFX
+  offset: 0x007E38
+  symbol: Z2_21MITURINMAE_room_00DL_007E38
+
+Z2_21MITURINMAE_room_00Vtx_007E50:
+  type: MM:ARRAY
+  offset: 0x007E50
+  symbol: Z2_21MITURINMAE_room_00Vtx_007E50
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_008100:
+  type: GFX
+  offset: 0x008100
+  symbol: Z2_21MITURINMAE_room_00DL_008100
+
+Z2_21MITURINMAE_room_00Vtx_0082E0:
+  type: MM:ARRAY
+  offset: 0x0082E0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0082E0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0082F0:
+  type: GFX
+  offset: 0x0082F0
+  symbol: Z2_21MITURINMAE_room_00DL_0082F0
+
+Z2_21MITURINMAE_room_00Vtx_008310:
+  type: MM:ARRAY
+  offset: 0x008310
+  symbol: Z2_21MITURINMAE_room_00Vtx_008310
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0083D0:
+  type: GFX
+  offset: 0x0083D0
+  symbol: Z2_21MITURINMAE_room_00DL_0083D0
+
+Z2_21MITURINMAE_room_00Vtx_0084A0:
+  type: MM:ARRAY
+  offset: 0x0084A0
+  symbol: Z2_21MITURINMAE_room_00Vtx_0084A0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_0084B0:
+  type: GFX
+  offset: 0x0084B0
+  symbol: Z2_21MITURINMAE_room_00DL_0084B0
+
+Z2_21MITURINMAE_room_00DL_0084D0:
+  type: GFX
+  offset: 0x0084D0
+  symbol: Z2_21MITURINMAE_room_00DL_0084D0
+
+Z2_21MITURINMAE_room_00Vtx_0084E8:
+  type: MM:ARRAY
+  offset: 0x0084E8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0084E8
+  count: 158
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_008EC8:
+  type: GFX
+  offset: 0x008EC8
+  symbol: Z2_21MITURINMAE_room_00DL_008EC8
+
+Z2_21MITURINMAE_room_00Vtx_0091C8:
+  type: MM:ARRAY
+  offset: 0x0091C8
+  symbol: Z2_21MITURINMAE_room_00Vtx_0091C8
+  count: 396
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00AA88:
+  type: GFX
+  offset: 0x00AA88
+  symbol: Z2_21MITURINMAE_room_00DL_00AA88
+
+Z2_21MITURINMAE_room_00Vtx_00AF40:
+  type: MM:ARRAY
+  offset: 0x00AF40
+  symbol: Z2_21MITURINMAE_room_00Vtx_00AF40
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00AF50:
+  type: GFX
+  offset: 0x00AF50
+  symbol: Z2_21MITURINMAE_room_00DL_00AF50
+
+Z2_21MITURINMAE_room_00Vtx_00AF70:
+  type: MM:ARRAY
+  offset: 0x00AF70
+  symbol: Z2_21MITURINMAE_room_00Vtx_00AF70
+  count: 464
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00CC70:
+  type: GFX
+  offset: 0x00CC70
+  symbol: Z2_21MITURINMAE_room_00DL_00CC70
+
+Z2_21MITURINMAE_room_00Vtx_00D1C0:
+  type: MM:ARRAY
+  offset: 0x00D1C0
+  symbol: Z2_21MITURINMAE_room_00Vtx_00D1C0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00D1D0:
+  type: GFX
+  offset: 0x00D1D0
+  symbol: Z2_21MITURINMAE_room_00DL_00D1D0
+
+Z2_21MITURINMAE_room_00Vtx_00D1F0:
+  type: MM:ARRAY
+  offset: 0x00D1F0
+  symbol: Z2_21MITURINMAE_room_00Vtx_00D1F0
+  count: 432
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00ECF0:
+  type: GFX
+  offset: 0x00ECF0
+  symbol: Z2_21MITURINMAE_room_00DL_00ECF0
+
+Z2_21MITURINMAE_room_00Vtx_00F1F8:
+  type: MM:ARRAY
+  offset: 0x00F1F8
+  symbol: Z2_21MITURINMAE_room_00Vtx_00F1F8
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00F208:
+  type: GFX
+  offset: 0x00F208
+  symbol: Z2_21MITURINMAE_room_00DL_00F208
+
+Z2_21MITURINMAE_room_00DL_00F228:
+  type: GFX
+  offset: 0x00F228
+  symbol: Z2_21MITURINMAE_room_00DL_00F228
+
+Z2_21MITURINMAE_room_00Vtx_00F248:
+  type: MM:ARRAY
+  offset: 0x00F248
+  symbol: Z2_21MITURINMAE_room_00Vtx_00F248
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00F6C8:
+  type: GFX
+  offset: 0x00F6C8
+  symbol: Z2_21MITURINMAE_room_00DL_00F6C8
+
+Z2_21MITURINMAE_room_00Vtx_00F908:
+  type: MM:ARRAY
+  offset: 0x00F908
+  symbol: Z2_21MITURINMAE_room_00Vtx_00F908
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Z2_21MITURINMAE_room_00DL_00F9C8:
+  type: GFX
+  offset: 0x00F9C8
+  symbol: Z2_21MITURINMAE_room_00DL_00F9C8
+
+Z2_21MITURINMAE_room_00DL_00FB38:
+  type: GFX
+  offset: 0x00FB38
+  symbol: Z2_21MITURINMAE_room_00DL_00FB38
+
+Z2_21MITURINMAE_room_00DL_00FB40:
+  type: GFX
+  offset: 0x00FB40
+  symbol: Z2_21MITURINMAE_room_00DL_00FB40
+
+Z2_21MITURINMAE_room_00DL_00FB48:
+  type: GFX
+  offset: 0x00FB48
+  symbol: Z2_21MITURINMAE_room_00DL_00FB48
+
+Z2_21MITURINMAE_room_00DL_00FB50:
+  type: GFX
+  offset: 0x00FB50
+  symbol: Z2_21MITURINMAE_room_00DL_00FB50
+
+Z2_21MITURINMAE_room_00DL_00FB58:
+  type: GFX
+  offset: 0x00FB58
+  symbol: Z2_21MITURINMAE_room_00DL_00FB58
+
+Z2_21MITURINMAE_room_00DL_00FB60:
+  type: GFX
+  offset: 0x00FB60
+  symbol: Z2_21MITURINMAE_room_00DL_00FB60
+
+Z2_21MITURINMAE_room_00DL_00FB80:
+  type: GFX
+  offset: 0x00FB80
+  symbol: Z2_21MITURINMAE_room_00DL_00FB80
+
+Z2_21MITURINMAE_room_00DL_00FB88:
+  type: GFX
+  offset: 0x00FB88
+  symbol: Z2_21MITURINMAE_room_00DL_00FB88
+
+Z2_21MITURINMAE_room_00DL_00FB98:
+  type: GFX
+  offset: 0x00FB98
+  symbol: Z2_21MITURINMAE_room_00DL_00FB98
+
+Z2_21MITURINMAE_room_00DL_00FBA0:
+  type: GFX
+  offset: 0x00FBA0
+  symbol: Z2_21MITURINMAE_room_00DL_00FBA0
+
+Z2_21MITURINMAE_room_00DL_00FBB0:
+  type: GFX
+  offset: 0x00FBB0
+  symbol: Z2_21MITURINMAE_room_00DL_00FBB0
+
+Z2_21MITURINMAE_room_00DL_00FBB8:
+  type: GFX
+  offset: 0x00FBB8
+  symbol: Z2_21MITURINMAE_room_00DL_00FBB8
+
+Z2_21MITURINMAE_room_00DL_00FBC8:
+  type: GFX
+  offset: 0x00FBC8
+  symbol: Z2_21MITURINMAE_room_00DL_00FBC8
+
+Z2_21MITURINMAE_room_00DL_00FBD0:
+  type: GFX
+  offset: 0x00FBD0
+  symbol: Z2_21MITURINMAE_room_00DL_00FBD0
+
+Z2_21MITURINMAE_room_00DL_00FBE0:
+  type: GFX
+  offset: 0x00FBE0
+  symbol: Z2_21MITURINMAE_room_00DL_00FBE0
+
+Z2_21MITURINMAE_room_00DL_00FBE8:
+  type: GFX
+  offset: 0x00FBE8
+  symbol: Z2_21MITURINMAE_room_00DL_00FBE8

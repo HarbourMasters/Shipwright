@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 6, 0x014807C0 ]
+    - [ 4, 0x00DEEC10 ]
+    - [ 8, 0x014807C0 ]
+    - [ 9, 0x014807C0 ]
+    - [ 10, 0x014807C0 ]
+    - [ 11, 0x014807C0 ]
+    - [ 12, 0x014807C0 ]
+    - [ 13, 0x014807C0 ]
+  external_files:
+    - GC_US/objects/gameplay_keep.yml
+
+gGiGreatFairyMaskEyeTex:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: gGiGreatFairyMaskEyeTex
+  format: RGBA16
+  width: 24
+  height: 24
+
+gGiGreatFairyMaskFaceDL:
+  type: GFX
+  offset: 0x1000
+  symbol: gGiGreatFairyMaskFaceDL
+
+gGiGreatFairyMaskHairTex:
+  type: TEXTURE
+  offset: 0x1300
+  symbol: gGiGreatFairyMaskHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGiGreatFairyMaskLeafTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gGiGreatFairyMaskLeafTex
+  format: IA8
+  width: 32
+  height: 16
+
+gGiGreatFairyMaskLeavesDL:
+  type: GFX
+  offset: 0xED0
+  symbol: gGiGreatFairyMaskLeavesDL
+
+gGiGreatFairyMaskMouthTex:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: gGiGreatFairyMaskMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_gi_mask14Vtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_gi_mask14Vtx_000000
+  count: 143
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_mask14Vtx_0008F0:
+  type: MM:ARRAY
+  offset: 0x0008F0
+  symbol: object_gi_mask14Vtx_0008F0
+  count: 94
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

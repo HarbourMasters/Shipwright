@@ -1,0 +1,818 @@
+:config:
+  segments:
+    - [ 6, 0x01135D20 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01135D20 ]
+    - [ 9, 0x01135D20 ]
+    - [ 10, 0x01135D20 ]
+    - [ 11, 0x01135D20 ]
+    - [ 12, 0x01135D20 ]
+    - [ 13, 0x01135D20 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGyorgBackingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C14
+  symbol: gGyorgBackingUpAnim
+
+gGyorgBellyAndFinFleshTLUT:
+  type: TEXTURE
+  offset: 0x53F0
+  symbol: gGyorgBellyAndFinFleshTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgBellyAndFinFleshTex:
+  type: TEXTURE
+  offset: 0x7410
+  symbol: gGyorgBellyAndFinFleshTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x92E0
+  symbol: gGyorgBodyRootLimb
+  limb_type: Standard
+
+gGyorgBubbleMaterialDL:
+  type: GFX
+  offset: 0x7E50
+  symbol: gGyorgBubbleMaterialDL
+
+gGyorgBubbleModelDL:
+  type: GFX
+  offset: 0x7EB0
+  symbol: gGyorgBubbleModelDL
+
+gGyorgCrawlingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA6C8
+  symbol: gGyorgCrawlingAnim
+
+gGyorgEmpty1TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0x5388
+  symbol: gGyorgEmpty1TexAnim
+
+gGyorgEmpty2TexAnim:
+  type: MM:TEXTURE_ANIMATION
+  offset: 0xBB00
+  symbol: gGyorgEmpty2TexAnim
+
+gGyorgEyeTex:
+  type: TEXTURE
+  offset: 0x5410
+  symbol: gGyorgEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGyorgFastSwimmingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9CF8
+  symbol: gGyorgFastSwimmingAnim
+
+gGyorgFinsSpikesAndJawTLUT:
+  type: TEXTURE
+  offset: 0x5390
+  symbol: gGyorgFinsSpikesAndJawTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgFinsSpikesAndJawTex:
+  type: TEXTURE
+  offset: 0x5C10
+  symbol: gGyorgFinsSpikesAndJawTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgFloppingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9554
+  symbol: gGyorgFloppingAnim
+
+gGyorgGentleSwimmingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA020
+  symbol: gGyorgGentleSwimmingAnim
+
+gGyorgHeadDL:
+  type: GFX
+  offset: 0x3398
+  symbol: gGyorgHeadDL
+
+gGyorgHeadLimb:
+  type: OOT:LIMB
+  offset: 0x92D4
+  symbol: gGyorgHeadLimb
+  limb_type: Standard
+
+gGyorgHornsTeethAndClawsTex:
+  type: TEXTURE
+  offset: 0x7C10
+  symbol: gGyorgHornsTeethAndClawsTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGyorgIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x88
+  symbol: gGyorgIdleAnim
+
+gGyorgJawDL:
+  type: GFX
+  offset: 0x3A78
+  symbol: gGyorgJawDL
+
+gGyorgJawLimb:
+  type: OOT:LIMB
+  offset: 0x9364
+  symbol: gGyorgJawLimb
+  limb_type: Standard
+
+gGyorgJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x9358
+  symbol: gGyorgJawRootLimb
+  limb_type: Standard
+
+gGyorgJumpingAnim:
+  type: OOT:ANIMATION
+  offset: 0x98F0
+  symbol: gGyorgJumpingAnim
+
+gGyorgLeftFinRootLimb:
+  type: OOT:LIMB
+  offset: 0x9334
+  symbol: gGyorgLeftFinRootLimb
+  limb_type: Standard
+
+gGyorgLowerLeftFinDL:
+  type: GFX
+  offset: 0x3FB8
+  symbol: gGyorgLowerLeftFinDL
+
+gGyorgLowerLeftFinLimb:
+  type: OOT:LIMB
+  offset: 0x934C
+  symbol: gGyorgLowerLeftFinLimb
+  limb_type: Standard
+
+gGyorgLowerRightFinDL:
+  type: GFX
+  offset: 0x4450
+  symbol: gGyorgLowerRightFinDL
+
+gGyorgLowerRightFinLimb:
+  type: OOT:LIMB
+  offset: 0x9328
+  symbol: gGyorgLowerRightFinLimb
+  limb_type: Standard
+
+gGyorgLowerTrunkDL:
+  type: GFX
+  offset: 0x4AC0
+  symbol: gGyorgLowerTrunkDL
+
+gGyorgLowerTrunkLimb:
+  type: OOT:LIMB
+  offset: 0x92F8
+  symbol: gGyorgLowerTrunkLimb
+  limb_type: Standard
+
+gGyorgMouthAndSpikeBacksideTLUT:
+  type: TEXTURE
+  offset: 0x53D0
+  symbol: gGyorgMouthAndSpikeBacksideTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgMouthAndSpikeBacksideTex:
+  type: TEXTURE
+  offset: 0x6C10
+  symbol: gGyorgMouthAndSpikeBacksideTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgRightFinRootLimb:
+  type: OOT:LIMB
+  offset: 0x9310
+  symbol: gGyorgRightFinRootLimb
+  limb_type: Standard
+
+gGyorgRootLimb:
+  type: OOT:LIMB
+  offset: 0x92C8
+  symbol: gGyorgRootLimb
+  limb_type: Standard
+
+gGyorgSeaweedPiece1DL:
+  type: GFX
+  offset: 0xA8B0
+  symbol: gGyorgSeaweedPiece1DL
+
+gGyorgSeaweedPiece2DL:
+  type: GFX
+  offset: 0xA948
+  symbol: gGyorgSeaweedPiece2DL
+
+gGyorgSeaweedPiece3DL:
+  type: GFX
+  offset: 0xA978
+  symbol: gGyorgSeaweedPiece3DL
+
+gGyorgSeaweedPiece4DL:
+  type: GFX
+  offset: 0xA9A8
+  symbol: gGyorgSeaweedPiece4DL
+
+gGyorgSeaweedPiece5DL:
+  type: GFX
+  offset: 0xA9D8
+  symbol: gGyorgSeaweedPiece5DL
+
+gGyorgSeaweedTLUT:
+  type: TEXTURE
+  offset: 0xAAE0
+  symbol: gGyorgSeaweedTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgSeaweedTex:
+  type: TEXTURE
+  offset: 0xB300
+  symbol: gGyorgSeaweedTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgSeaweedTopDL:
+  type: GFX
+  offset: 0xAA08
+  symbol: gGyorgSeaweedTopDL
+
+gGyorgSeaweedTopTLUT:
+  type: TEXTURE
+  offset: 0xAAC0
+  symbol: gGyorgSeaweedTopTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgSeaweedTopTex:
+  type: TEXTURE
+  offset: 0xAB00
+  symbol: gGyorgSeaweedTopTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgSidesTLUT:
+  type: TEXTURE
+  offset: 0x53B0
+  symbol: gGyorgSidesTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgSidesTex:
+  type: TEXTURE
+  offset: 0x6410
+  symbol: gGyorgSidesTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgSkel:
+  type: MM:SKELETON
+  offset: 0x93A8
+  symbol: gGyorgSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGyorgSmallFishBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0xD99C
+  symbol: gGyorgSmallFishBodyRootLimb
+  limb_type: Standard
+
+gGyorgSmallFishDorsalFinDL:
+  type: GFX
+  offset: 0xCF18
+  symbol: gGyorgSmallFishDorsalFinDL
+
+gGyorgSmallFishDorsalFinLimb:
+  type: OOT:LIMB
+  offset: 0xD9D8
+  symbol: gGyorgSmallFishDorsalFinLimb
+  limb_type: Standard
+
+gGyorgSmallFishHeadDL:
+  type: GFX
+  offset: 0xCCC0
+  symbol: gGyorgSmallFishHeadDL
+
+gGyorgSmallFishHeadLimb:
+  type: OOT:LIMB
+  offset: 0xD9F0
+  symbol: gGyorgSmallFishHeadLimb
+  limb_type: Standard
+
+gGyorgSmallFishLeftFinDL:
+  type: GFX
+  offset: 0xCFE8
+  symbol: gGyorgSmallFishLeftFinDL
+
+gGyorgSmallFishLeftFinLimb:
+  type: OOT:LIMB
+  offset: 0xD9CC
+  symbol: gGyorgSmallFishLeftFinLimb
+  limb_type: Standard
+
+gGyorgSmallFishRightFinDL:
+  type: GFX
+  offset: 0xCE60
+  symbol: gGyorgSmallFishRightFinDL
+
+gGyorgSmallFishRightFinLimb:
+  type: OOT:LIMB
+  offset: 0xD9E4
+  symbol: gGyorgSmallFishRightFinLimb
+  limb_type: Standard
+
+gGyorgSmallFishRootLimb:
+  type: OOT:LIMB
+  offset: 0xD990
+  symbol: gGyorgSmallFishRootLimb
+  limb_type: Standard
+
+gGyorgSmallFishSkel:
+  type: MM:SKELETON
+  offset: 0xDA20
+  symbol: gGyorgSmallFishSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGyorgSmallFishSwimAnim:
+  type: OOT:ANIMATION
+  offset: 0xDAAC
+  symbol: gGyorgSmallFishSwimAnim
+
+gGyorgSmallFishTLUT:
+  type: TEXTURE
+  offset: 0xD170
+  symbol: gGyorgSmallFishTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGyorgSmallFishTailFinDL:
+  type: GFX
+  offset: 0xD0A0
+  symbol: gGyorgSmallFishTailFinDL
+
+gGyorgSmallFishTailFinLimb:
+  type: OOT:LIMB
+  offset: 0xD9B4
+  symbol: gGyorgSmallFishTailFinLimb
+  limb_type: Standard
+
+gGyorgSmallFishTex:
+  type: TEXTURE
+  offset: 0xD190
+  symbol: gGyorgSmallFishTex
+  format: CI4
+  width: 64
+  height: 64
+
+gGyorgSmallFishTrunkDL:
+  type: GFX
+  offset: 0xCD80
+  symbol: gGyorgSmallFishTrunkDL
+
+gGyorgSmallFishTrunkLimb:
+  type: OOT:LIMB
+  offset: 0xD9C0
+  symbol: gGyorgSmallFishTrunkLimb
+  limb_type: Standard
+
+gGyorgSmallFishTrunkRootLimb:
+  type: OOT:LIMB
+  offset: 0xD9A8
+  symbol: gGyorgSmallFishTrunkRootLimb
+  limb_type: Standard
+
+gGyorgStunnedAnim:
+  type: OOT:ANIMATION
+  offset: 0x99D0
+  symbol: gGyorgStunnedAnim
+
+gGyorgTailDL:
+  type: GFX
+  offset: 0x5010
+  symbol: gGyorgTailDL
+
+gGyorgTailLimb:
+  type: OOT:LIMB
+  offset: 0x9304
+  symbol: gGyorgTailLimb
+  limb_type: Standard
+
+gGyorgTailSweepAnim:
+  type: OOT:ANIMATION
+  offset: 0xA134
+  symbol: gGyorgTailSweepAnim
+
+gGyorgTitleCardTex:
+  type: TEXTURE
+  offset: 0x7EC8
+  symbol: gGyorgTitleCardTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGyorgUnusedMajorasWrathWhipDL1:
+  type: GFX
+  offset: 0x200
+  symbol: gGyorgUnusedMajorasWrathWhipDL1
+
+gGyorgUnusedMajorasWrathWhipDL2:
+  type: GFX
+  offset: 0x278
+  symbol: gGyorgUnusedMajorasWrathWhipDL2
+
+gGyorgUnusedMajorasWrathWhipDL3:
+  type: GFX
+  offset: 0x2A8
+  symbol: gGyorgUnusedMajorasWrathWhipDL3
+
+gGyorgUnusedMajorasWrathWhipTex:
+  type: TEXTURE
+  offset: 0xA0
+  symbol: gGyorgUnusedMajorasWrathWhipTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGyorgUpperLeftFinDL:
+  type: GFX
+  offset: 0x3E38
+  symbol: gGyorgUpperLeftFinDL
+
+gGyorgUpperLeftFinLimb:
+  type: OOT:LIMB
+  offset: 0x9340
+  symbol: gGyorgUpperLeftFinLimb
+  limb_type: Standard
+
+gGyorgUpperRightFinDL:
+  type: GFX
+  offset: 0x42D0
+  symbol: gGyorgUpperRightFinDL
+
+gGyorgUpperRightFinLimb:
+  type: OOT:LIMB
+  offset: 0x931C
+  symbol: gGyorgUpperRightFinLimb
+  limb_type: Standard
+
+gGyorgUpperTrunkDL:
+  type: GFX
+  offset: 0x4768
+  symbol: gGyorgUpperTrunkDL
+
+gGyorgUpperTrunkLimb:
+  type: OOT:LIMB
+  offset: 0x92EC
+  symbol: gGyorgUpperTrunkLimb
+  limb_type: Standard
+
+gUnusedGyorgSmallFishDorsalFinDL:
+  type: GFX
+  offset: 0xBFD8
+  symbol: gUnusedGyorgSmallFishDorsalFinDL
+
+gUnusedGyorgSmallFishHeadDL:
+  type: GFX
+  offset: 0xBD80
+  symbol: gUnusedGyorgSmallFishHeadDL
+
+gUnusedGyorgSmallFishLeftFinDL:
+  type: GFX
+  offset: 0xC0A8
+  symbol: gUnusedGyorgSmallFishLeftFinDL
+
+gUnusedGyorgSmallFishRightFinDL:
+  type: GFX
+  offset: 0xBF20
+  symbol: gUnusedGyorgSmallFishRightFinDL
+
+gUnusedGyorgSmallFishTLUT:
+  type: TEXTURE
+  offset: 0xC230
+  symbol: gUnusedGyorgSmallFishTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gUnusedGyorgSmallFishTailFinDL:
+  type: GFX
+  offset: 0xC160
+  symbol: gUnusedGyorgSmallFishTailFinDL
+
+gUnusedGyorgSmallFishTex:
+  type: TEXTURE
+  offset: 0xC250
+  symbol: gUnusedGyorgSmallFishTex
+  format: CI4
+  width: 64
+  height: 64
+
+gUnusedGyorgSmallFishTrunkDL:
+  type: GFX
+  offset: 0xBE40
+  symbol: gUnusedGyorgSmallFishTrunkDL
+
+
+object_boss03Vtx_0001A0:
+  type: MM:ARRAY
+  offset: 0x0001A0
+  symbol: object_boss03Vtx_0001A0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_0002D8:
+  type: MM:ARRAY
+  offset: 0x0002D8
+  symbol: object_boss03Vtx_0002D8
+  count: 220
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_001098:
+  type: MM:ARRAY
+  offset: 0x001098
+  symbol: object_boss03Vtx_001098
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_001478:
+  type: MM:ARRAY
+  offset: 0x001478
+  symbol: object_boss03Vtx_001478
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_001678:
+  type: MM:ARRAY
+  offset: 0x001678
+  symbol: object_boss03Vtx_001678
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_001A58:
+  type: MM:ARRAY
+  offset: 0x001A58
+  symbol: object_boss03Vtx_001A58
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_001C58:
+  type: MM:ARRAY
+  offset: 0x001C58
+  symbol: object_boss03Vtx_001C58
+  count: 122
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_0023F8:
+  type: MM:ARRAY
+  offset: 0x0023F8
+  symbol: object_boss03Vtx_0023F8
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_0028A8:
+  type: MM:ARRAY
+  offset: 0x0028A8
+  symbol: object_boss03Vtx_0028A8
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_002F88:
+  type: MM:ARRAY
+  offset: 0x002F88
+  symbol: object_boss03Vtx_002F88
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_007E10:
+  type: MM:ARRAY
+  offset: 0x007E10
+  symbol: object_boss03Vtx_007E10
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGyorgSkelLimbs:
+  type: BLOB
+  offset: 0x9370
+  symbol: gGyorgSkelLimbs
+  size: 0
+
+object_boss03Vtx_00A6E0:
+  type: MM:ARRAY
+  offset: 0x00A6E0
+  symbol: object_boss03Vtx_00A6E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00A730:
+  type: MM:ARRAY
+  offset: 0x00A730
+  symbol: object_boss03Vtx_00A730
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00A780:
+  type: MM:ARRAY
+  offset: 0x00A780
+  symbol: object_boss03Vtx_00A780
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00A7D0:
+  type: MM:ARRAY
+  offset: 0x00A7D0
+  symbol: object_boss03Vtx_00A7D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00A820:
+  type: MM:ARRAY
+  offset: 0x00A820
+  symbol: object_boss03Vtx_00A820
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00A870:
+  type: MM:ARRAY
+  offset: 0x00A870
+  symbol: object_boss03Vtx_00A870
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BB10:
+  type: MM:ARRAY
+  offset: 0x00BB10
+  symbol: object_boss03Vtx_00BB10
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BBB0:
+  type: MM:ARRAY
+  offset: 0x00BBB0
+  symbol: object_boss03Vtx_00BBB0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BC10:
+  type: MM:ARRAY
+  offset: 0x00BC10
+  symbol: object_boss03Vtx_00BC10
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BCC0:
+  type: MM:ARRAY
+  offset: 0x00BCC0
+  symbol: object_boss03Vtx_00BCC0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BD20:
+  type: MM:ARRAY
+  offset: 0x00BD20
+  symbol: object_boss03Vtx_00BD20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00BD50:
+  type: MM:ARRAY
+  offset: 0x00BD50
+  symbol: object_boss03Vtx_00BD50
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CA50:
+  type: MM:ARRAY
+  offset: 0x00CA50
+  symbol: object_boss03Vtx_00CA50
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CAF0:
+  type: MM:ARRAY
+  offset: 0x00CAF0
+  symbol: object_boss03Vtx_00CAF0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CB50:
+  type: MM:ARRAY
+  offset: 0x00CB50
+  symbol: object_boss03Vtx_00CB50
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CC00:
+  type: MM:ARRAY
+  offset: 0x00CC00
+  symbol: object_boss03Vtx_00CC00
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CC60:
+  type: MM:ARRAY
+  offset: 0x00CC60
+  symbol: object_boss03Vtx_00CC60
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boss03Vtx_00CC90:
+  type: MM:ARRAY
+  offset: 0x00CC90
+  symbol: object_boss03Vtx_00CC90
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGyorgSmallFishSkelLimbs:
+  type: BLOB
+  offset: 0xD9FC
+  symbol: gGyorgSmallFishSkelLimbs
+  size: 0

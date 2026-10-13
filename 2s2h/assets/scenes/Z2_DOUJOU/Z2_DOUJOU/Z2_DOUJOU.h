@@ -1,0 +1,71 @@
+#ifndef Z2_DOUJOU_Z2_DOUJOU_H
+#define Z2_DOUJOU_Z2_DOUJOU_H 1
+
+#include "align_asset_macro.h"
+
+#define dZ2_DOUJOUCollisionHeader_000CB8 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUCollisionHeader_000CB8"
+static const ALIGN_ASSET(2) char Z2_DOUJOUCollisionHeader_000CB8[] = dZ2_DOUJOUCollisionHeader_000CB8;
+
+#define dZ2_DOUJOUTex_004930 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_004930"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_004930[] = dZ2_DOUJOUTex_004930;
+
+#define dZ2_DOUJOUTex_005130 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_005130"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_005130[] = dZ2_DOUJOUTex_005130;
+
+#define dZ2_DOUJOUTLUT_007330 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTLUT_007330"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTLUT_007330[] = dZ2_DOUJOUTLUT_007330;
+
+#define dZ2_DOUJOUTex_004530 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_004530"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_004530[] = dZ2_DOUJOUTex_004530;
+
+#define dZ2_DOUJOUTex_001B30 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_001B30"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_001B30[] = dZ2_DOUJOUTex_001B30;
+
+#define dZ2_DOUJOUTex_002730 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_002730"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_002730[] = dZ2_DOUJOUTex_002730;
+
+#define dZ2_DOUJOUTex_004130 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_004130"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_004130[] = dZ2_DOUJOUTex_004130;
+
+#define dZ2_DOUJOUTex_006130 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_006130"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_006130[] = dZ2_DOUJOUTex_006130;
+
+#define dZ2_DOUJOUTex_006D30 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_006D30"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_006D30[] = dZ2_DOUJOUTex_006D30;
+
+#define dZ2_DOUJOUTex_001F30 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_001F30"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_001F30[] = dZ2_DOUJOUTex_001F30;
+
+#define dZ2_DOUJOUTex_002330 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_002330"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_002330[] = dZ2_DOUJOUTex_002330;
+
+#define dZ2_DOUJOUTex_006930 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_006930"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_006930[] = dZ2_DOUJOUTex_006930;
+
+#define dZ2_DOUJOUTex_000CF0 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_000CF0"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_000CF0[] = dZ2_DOUJOUTex_000CF0;
+
+#define dZ2_DOUJOUTex_003B30 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_003B30"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_003B30[] = dZ2_DOUJOUTex_003B30;
+
+#define dZ2_DOUJOUTex_004030 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_004030"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_004030[] = dZ2_DOUJOUTex_004030;
+
+#define dZ2_DOUJOUTex_003730 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_003730"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_003730[] = dZ2_DOUJOUTex_003730;
+
+#define dZ2_DOUJOUTLUT_007130 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTLUT_007130"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTLUT_007130[] = dZ2_DOUJOUTLUT_007130;
+
+#define dZ2_DOUJOUTex_001AF0 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_001AF0"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_001AF0[] = dZ2_DOUJOUTex_001AF0;
+
+#define dZ2_DOUJOUTex_003C30 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_003C30"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_003C30[] = dZ2_DOUJOUTex_003C30;
+
+#define dZ2_DOUJOUTLUT_0018F0 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTLUT_0018F0"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTLUT_0018F0[] = dZ2_DOUJOUTLUT_0018F0;
+
+#define dZ2_DOUJOUTex_0014F0 "__OTR__scenes/nonmq/Z2_DOUJOU/Z2_DOUJOUTex_0014F0"
+static const ALIGN_ASSET(2) char Z2_DOUJOUTex_0014F0[] = dZ2_DOUJOUTex_0014F0;
+#endif // Z2_DOUJOU_Z2_DOUJOU_H

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 128, 0x00A684D0 ]
+  virtual: [ 0x800A5AC0, 0x00A684D0 ]
+
+sEffShieldParticleVtx:
+  type: MM:ARRAY
+  offset: 0x108830
+  symbol: sEffShieldParticleVtx
+  count: 4
+  array_type: VTX
+

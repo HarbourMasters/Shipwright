@@ -1,0 +1,63 @@
+:config:
+  segments:
+    - [ 6, 0x010A5750 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x010A5750 ]
+    - [ 9, 0x010A5750 ]
+    - [ 10, 0x010A5750 ]
+    - [ 11, 0x010A5750 ]
+    - [ 12, 0x010A5750 ]
+    - [ 13, 0x010A5750 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gGiFairyContainerBaseCapDL:
+  type: GFX
+  offset: 0xBD0
+  symbol: gGiFairyContainerBaseCapDL
+
+gGiFairyContainerContentsDL:
+  type: GFX
+  offset: 0xEF0
+  symbol: gGiFairyContainerContentsDL
+
+gGiFairyContainerFairyTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGiFairyContainerFairyTex
+  format: I8
+  width: 32
+  height: 32
+
+gGiFairyContainerGlassDL:
+  type: GFX
+  offset: 0xDB8
+  symbol: gGiFairyContainerGlassDL
+
+
+object_gi_soulVtx_000400:
+  type: MM:ARRAY
+  offset: 0x000400
+  symbol: object_gi_soulVtx_000400
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_soulVtx_000850:
+  type: MM:ARRAY
+  offset: 0x000850
+  symbol: object_gi_soulVtx_000850
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_soulVtx_000B90:
+  type: MM:ARRAY
+  offset: 0x000B90
+  symbol: object_gi_soulVtx_000B90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

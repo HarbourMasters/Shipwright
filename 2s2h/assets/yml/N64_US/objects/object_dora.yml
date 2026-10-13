@@ -1,0 +1,159 @@
+:config:
+  segments:
+    - [ 6, 0x01403A60 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 8, 0x01403A60 ]
+    - [ 9, 0x01403A60 ]
+    - [ 10, 0x01403A60 ]
+    - [ 11, 0x01403A60 ]
+    - [ 12, 0x01403A60 ]
+    - [ 13, 0x01403A60 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gDoraChainDL:
+  type: GFX
+  offset: 0x4160
+  symbol: gDoraChainDL
+
+gDoraChainTex:
+  type: TEXTURE
+  offset: 0x4A08
+  symbol: gDoraChainTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gDoraGongDL:
+  type: GFX
+  offset: 0x3FD0
+  symbol: gDoraGongDL
+
+gDoraGongTex:
+  type: TEXTURE
+  offset: 0x4208
+  symbol: gDoraGongTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKendoKanbanBottomLeftDL:
+  type: GFX
+  offset: 0x2280
+  symbol: gKendoKanbanBottomLeftDL
+
+gKendoKanbanBottomRightDL:
+  type: GFX
+  offset: 0x2380
+  symbol: gKendoKanbanBottomRightDL
+
+gKendoKanbanDL:
+  type: GFX
+  offset: 0x180
+  symbol: gKendoKanbanDL
+
+gKendoKanbanFrontTex:
+  type: TEXTURE
+  offset: 0x280
+  symbol: gKendoKanbanFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gKendoKanbanSideTex:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: gKendoKanbanSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKendoKanbanSplitFrontTex:
+  type: TEXTURE
+  offset: 0x2480
+  symbol: gKendoKanbanSplitFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gKendoKanbanSplitSideTex:
+  type: TEXTURE
+  offset: 0x3480
+  symbol: gKendoKanbanSplitSideTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKendoKanbanTopLeftDL:
+  type: GFX
+  offset: 0x2180
+  symbol: gKendoKanbanTopLeftDL
+
+gKendoKanbanTopRightDL:
+  type: GFX
+  offset: 0x2080
+  symbol: gKendoKanbanTopRightDL
+
+
+object_doraVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_doraVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_001A80:
+  type: MM:ARRAY
+  offset: 0x001A80
+  symbol: object_doraVtx_001A80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_001C00:
+  type: MM:ARRAY
+  offset: 0x001C00
+  symbol: object_doraVtx_001C00
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_001D80:
+  type: MM:ARRAY
+  offset: 0x001D80
+  symbol: object_doraVtx_001D80
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_001F00:
+  type: MM:ARRAY
+  offset: 0x001F00
+  symbol: object_doraVtx_001F00
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_003C80:
+  type: MM:ARRAY
+  offset: 0x003C80
+  symbol: object_doraVtx_003C80
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_doraVtx_003ED0:
+  type: MM:ARRAY
+  offset: 0x003ED0
+  symbol: object_doraVtx_003ED0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

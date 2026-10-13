@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 10, 0x00E8BA80 ]
+    - [ 4, 0x00DF1210 ]
+    - [ 11, 0x00E8BA80 ]
+    - [ 12, 0x00E8BA80 ]
+    - [ 13, 0x00E8BA80 ]
+  external_files:
+    - N64_US/objects/gameplay_keep.yml
+
+gKafeisMaskDL:
+  type: GFX
+  offset: 0xD40
+  symbol: gKafeisMaskDL
+
+gKafeisMaskEyebrowTex:
+  type: TEXTURE
+  offset: 0x1540
+  symbol: gKafeisMaskEyebrowTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x1140
+
+gKafeisMaskHairPartAndUndersideTex:
+  type: TEXTURE
+  offset: 0x14C0
+  symbol: gKafeisMaskHairPartAndUndersideTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1140
+
+gKafeisMaskHairTex:
+  type: TEXTURE
+  offset: 0x1440
+  symbol: gKafeisMaskHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x1140
+
+gKafeisMaskHoleTex:
+  type: TEXTURE
+  offset: 0x1340
+  symbol: gKafeisMaskHoleTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1140
+
+gKafeisMaskTLUT:
+  type: TEXTURE
+  offset: 0x1140
+  symbol: gKafeisMaskTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_mask_kerfayVtx_000000:
+  type: MM:ARRAY
+  offset: 0x000000
+  symbol: object_mask_kerfayVtx_000000
+  count: 212
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
