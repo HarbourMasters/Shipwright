@@ -1,13 +1,10 @@
-#include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/randomizer/RCToRandInf.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Hy/z_en_hy.h"
-extern PlayState* gPlayState;
 }
 
 void Fishing_GiveHatItem(uint16_t* textId, bool* loadFromMessageTable) {
