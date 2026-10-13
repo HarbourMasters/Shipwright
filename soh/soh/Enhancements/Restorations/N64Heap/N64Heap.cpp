@@ -211,12 +211,9 @@ void UpdatePointer(bool segmentReadable = false) {
     std::string what;
     bool resolved;
     if (memcmp(script, "__OTR__", 7) == 0) {
-        char path[256];
-        strncpy(path, static_cast<const char*>(script), sizeof(path) - 1);
-        path[sizeof(path) - 1] = '\0';
-        resolved = Shadow().ResolvePath(path, &value, &what);
+        resolved = Shadow().ResolvePath(static_cast<const char*>(script), &value, &what);
         if (!resolved) {
-            SPDLOG_WARN("[N64Heap] unrecognised cutscene path {}", path);
+            SPDLOG_WARN("[N64Heap] unrecognised cutscene path {}", static_cast<const char*>(script));
         }
     } else {
         int32_t words[4];
