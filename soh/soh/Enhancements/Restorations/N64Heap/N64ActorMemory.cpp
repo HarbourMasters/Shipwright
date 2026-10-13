@@ -1,8 +1,7 @@
 #include "N64ActorMemory.h"
-#include "N64HeapTables.h"
 
+#include <algorithm>
 #include <cstring>
-#include <memory>
 
 extern "C" {
 #include "z64.h"
@@ -10,15 +9,15 @@ extern "C" {
 
 namespace n64heap {
 
-ActorMemory::ActorMemory(const Actor* actor, uint32_t size, const std::function<uint32_t(const void*)>& addressOf)
-    : mAddressOf(addressOf), mBytes(size, 0), mKnown(size, true) {
+ActorMemory::ActorMemory(const Actor* actor, const std::function<uint32_t(const void*)>& addressOf)
+    : mAddressOf(addressOf) {
     // Actor_Spawn clears the instance, so bytes no field writes to are zero; actor-specific fields are not modelled
+    mKnown.fill(1);
     WriteActorBase(actor);
-    std::fill(mKnown.begin() + ACTOR_BASE_SIZE, mKnown.end(), false);
 }
 
 bool ActorMemory::ReadWord(uint32_t offset, uint32_t* value) const {
-    if (offset + 4 > mBytes.size()) {
+    if (offset + 4 > ACTOR_BASE_SIZE) {
         return false;
     }
     for (uint32_t i = 0; i < 4; i++) {
@@ -33,7 +32,7 @@ bool ActorMemory::ReadWord(uint32_t offset, uint32_t* value) const {
 
 void ActorMemory::Put8(uint32_t offset, uint8_t value) {
     mBytes[offset] = value;
-    mKnown[offset] = true;
+    mKnown[offset] = 1;
 }
 
 void ActorMemory::Put16(uint32_t offset, uint16_t value) {
@@ -68,7 +67,7 @@ void ActorMemory::PutActor(uint32_t offset, const void* actor) {
     uint32_t address = actor != nullptr ? mAddressOf(actor) : 0;
     Put32(offset, address);
     if (actor != nullptr && address == 0) {
-        std::fill(mKnown.begin() + offset, mKnown.begin() + offset + 4, false);
+        std::fill(mKnown.begin() + offset, mKnown.begin() + offset + 4, 0);
     }
 }
 
@@ -76,7 +75,7 @@ void ActorMemory::PutActor(uint32_t offset, const void* actor) {
 void ActorMemory::PutUnknownPointer(uint32_t offset, const void* pointer) {
     Put32(offset, 0);
     if (pointer != nullptr) {
-        std::fill(mKnown.begin() + offset, mKnown.begin() + offset + 4, false);
+        std::fill(mKnown.begin() + offset, mKnown.begin() + offset + 4, 0);
     }
 }
 

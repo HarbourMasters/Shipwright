@@ -4,9 +4,9 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 #include "soh/Enhancements/savestate_serialize.h"
@@ -70,20 +70,21 @@ class Memory {
   public:
     void Forget(uint32_t address, uint32_t size);
     // owner is the id of the actor whose instance held the bytes
-    void Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner);
+    void Write(uint32_t address, const uint8_t* bytes, const uint8_t* known, uint32_t size, int16_t owner);
     bool ReadWord(uint32_t address, uint32_t* value) const;
     bool Owner(uint32_t address, int16_t* owner, uint32_t* origin) const;
     void Serialize(SaveStateCtx* ctx);
 
   private:
-    struct Source {
+    struct Span {
+        uint32_t end;
         uint32_t origin;
         int16_t owner;
+        std::vector<uint8_t> bytes;
+        std::vector<uint8_t> known;
     };
-    void Reserve(uint32_t end);
-    std::vector<uint8_t> mBytes;
-    std::vector<bool> mKnown;
-    std::vector<Source> mSources;
+    const Span* Find(uint32_t address, uint32_t* start) const;
+    std::map<uint32_t, Span> mSpans;
 };
 
 struct Stats {
@@ -124,8 +125,7 @@ class Core {
     const void* FindActorAt(uint32_t address, uint32_t* instanceAddress) const;
     bool FindActor(const void* host, uint32_t* address, int16_t* actorId) const;
     // Keeps the N64 bytes of an instance about to be freed, as the memory still holds them afterwards
-    void RecordLeftover(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known,
-                        int16_t actorId);
+    void RecordLeftover(uint32_t address, const uint8_t* bytes, const uint8_t* known, uint32_t size, int16_t actorId);
     bool ReadLeftover(uint32_t address, uint32_t* value) const;
     uint32_t LargestFree() const;
     std::string DescribeAddress(uint32_t address) const;
@@ -169,7 +169,6 @@ class Core {
     bool mActive = false;
     uint32_t mArenaSize = 0;
     std::unordered_map<const void*, Live> mLive;
-    std::unordered_set<const void*> mIgnored;
     std::unordered_map<int16_t, Overlay> mOverlays;
     std::unordered_map<int32_t, uint32_t> mEffects;
     PendingSpawn mSpawn;

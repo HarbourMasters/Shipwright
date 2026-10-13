@@ -59,11 +59,15 @@ class ObjectSpace {
         Kind kind;
         uint32_t vrom;
         uint32_t base;
-        std::string label;
+        const char* label;
+        int16_t id;
+        int16_t slot;
     };
-    void Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom, uint32_t base, const std::string& label);
-    void PaintFile(uint32_t address, const RomFile& file, const std::string& label);
-    void PaintRuntimeData(uint32_t address, uint32_t size, const std::string& label);
+    static std::string Describe(const Span& span);
+    void Paint(uint32_t start, uint32_t size, Kind kind, uint32_t vrom, uint32_t base, const char* label,
+               int16_t id = -1, int16_t slot = -1);
+    void PaintFile(uint32_t address, const RomFile& file, const char* label, int16_t id = -1, int16_t slot = -1);
+    void PaintRuntimeData(uint32_t address, uint32_t size, const char* label);
     void PaintObject(size_t slot);
     uint32_t PaintIconFiles(uint32_t address, const RomFile& areaIcons, const char* areaLabel, bool japanese);
 

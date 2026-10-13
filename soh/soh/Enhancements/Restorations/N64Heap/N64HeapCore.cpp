@@ -127,63 +127,86 @@ bool Arena::Locate(uint32_t address, uint32_t* payload, uint32_t* size, bool* fr
     return false;
 }
 
-void Memory::Reserve(uint32_t end) {
-    uint32_t size = end - ZELDA_ARENA_START;
-    if (size > mBytes.size()) {
-        mBytes.resize(size, 0);
-        mKnown.resize(size, false);
-        mSources.resize(size, Source{ 0, -1 });
+void Memory::Forget(uint32_t address, uint32_t size) {
+    if (size == 0) {
+        return;
+    }
+    uint32_t end = address + size;
+    auto it = mSpans.upper_bound(address);
+    if (it != mSpans.begin()) {
+        --it;
+    }
+    while (it != mSpans.end() && it->first < end) {
+        uint32_t spanStart = it->first;
+        if (it->second.end <= address) {
+            ++it;
+            continue;
+        }
+        Span span = std::move(it->second);
+        it = mSpans.erase(it);
+        if (spanStart < address) {
+            uint32_t keep = address - spanStart;
+            mSpans.emplace(spanStart, Span{ address, span.origin, span.owner,
+                                            std::vector<uint8_t>(span.bytes.begin(), span.bytes.begin() + keep),
+                                            std::vector<uint8_t>(span.known.begin(), span.known.begin() + keep) });
+        }
+        if (span.end > end) {
+            uint32_t skip = end - spanStart;
+            it = mSpans
+                     .emplace(end, Span{ span.end, span.origin, span.owner,
+                                         std::vector<uint8_t>(span.bytes.begin() + skip, span.bytes.end()),
+                                         std::vector<uint8_t>(span.known.begin() + skip, span.known.end()) })
+                     .first;
+            ++it;
+        }
     }
 }
 
-void Memory::Forget(uint32_t address, uint32_t size) {
+void Memory::Write(uint32_t address, const uint8_t* bytes, const uint8_t* known, uint32_t size, int16_t owner) {
     if (address < ZELDA_ARENA_START || size == 0) {
         return;
     }
-    Reserve(address + size);
-    uint32_t start = address - ZELDA_ARENA_START;
-    std::fill(mKnown.begin() + start, mKnown.begin() + start + size, false);
-    std::fill(mSources.begin() + start, mSources.begin() + start + size, Source{ 0, -1 });
+    Forget(address, size);
+    mSpans.emplace(address, Span{ address + size, address, owner, std::vector<uint8_t>(bytes, bytes + size),
+                                  std::vector<uint8_t>(known, known + size) });
 }
 
-void Memory::Write(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known, int16_t owner) {
-    if (address < ZELDA_ARENA_START || bytes.empty()) {
-        return;
+const Memory::Span* Memory::Find(uint32_t address, uint32_t* start) const {
+    auto it = mSpans.upper_bound(address);
+    if (it == mSpans.begin()) {
+        return nullptr;
     }
-    uint32_t size = static_cast<uint32_t>(bytes.size());
-    Reserve(address + size);
-    uint32_t start = address - ZELDA_ARENA_START;
-    for (uint32_t i = 0; i < size; i++) {
-        mBytes[start + i] = bytes[i];
-        mKnown[start + i] = known[i];
-        mSources[start + i] = Source{ address, owner };
+    --it;
+    if (address >= it->second.end) {
+        return nullptr;
     }
+    *start = it->first;
+    return &it->second;
 }
 
 bool Memory::ReadWord(uint32_t address, uint32_t* value) const {
-    if (address < ZELDA_ARENA_START || address + 4 - ZELDA_ARENA_START > mBytes.size()) {
-        return false;
-    }
-    uint32_t start = address - ZELDA_ARENA_START;
     uint32_t word = 0;
     for (uint32_t i = 0; i < 4; i++) {
-        if (!mKnown[start + i]) {
+        uint32_t start;
+        const Span* span = Find(address + i, &start);
+        if (span == nullptr || !span->known[address + i - start]) {
             return false;
         }
-        word = (word << 8) | mBytes[start + i];
+        word = (word << 8) | span->bytes[address + i - start];
     }
     *value = word;
     return true;
 }
 
 bool Memory::Owner(uint32_t address, int16_t* owner, uint32_t* origin) const {
-    if (address < ZELDA_ARENA_START || address - ZELDA_ARENA_START >= mSources.size()) {
+    uint32_t start;
+    const Span* span = Find(address, &start);
+    if (span == nullptr || span->owner < 0) {
         return false;
     }
-    const Source& source = mSources[address - ZELDA_ARENA_START];
-    *owner = source.owner;
-    *origin = source.origin;
-    return source.owner >= 0;
+    *owner = span->owner;
+    *origin = span->origin;
+    return true;
 }
 
 Core::Core(const HostSizes& hostSizes) : mHost(hostSizes) {
@@ -203,7 +226,6 @@ void Core::ArenaInit(uint32_t arenaSize, bool skipNextMagicDark) {
     mArenaSize = arenaSize;
     mArena.Init(ZELDA_ARENA_START, arenaSize);
     mLive.clear();
-    mIgnored.clear();
     mOverlays.clear();
     mEffects.clear();
     mSpawn = PendingSpawn{};
@@ -424,7 +446,7 @@ void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse
         if (mSpawn.address != 0) {
             mLive[host] = Live{ mSpawn.address, mSpawn.actorId };
         } else {
-            mIgnored.insert(host);
+            mLive[host] = Live{ 0, -1 };
         }
         mSpawn = PendingSpawn{};
         return;
@@ -433,7 +455,7 @@ void Core::OnAlloc(const void* host, size_t size, const char* file, bool reverse
     if (address == 0) {
         // Only recorded: failing this in SoH could crash where the N64 would misbehave
         mStats.failedAllocs++;
-        mIgnored.insert(host);
+        mLive[host] = Live{ 0, -1 };
         return;
     }
     mStats.allocs++;
@@ -445,9 +467,6 @@ void Core::OnFree(const void* host) {
     if (!mActive) {
         return;
     }
-    if (mIgnored.erase(host) != 0) {
-        return;
-    }
     auto it = mLive.find(host);
     if (it == mLive.end()) {
         mStats.unknownFrees++;
@@ -455,6 +474,9 @@ void Core::OnFree(const void* host) {
     }
     Live live = it->second;
     mLive.erase(it);
+    if (live.address == 0) {
+        return;
+    }
     mArena.Free(live.address);
     mStats.frees++;
     if (live.actorId >= 0) {
@@ -568,9 +590,9 @@ bool Core::FindActor(const void* host, uint32_t* address, int16_t* actorId) cons
     return true;
 }
 
-void Core::RecordLeftover(uint32_t address, const std::vector<uint8_t>& bytes, const std::vector<bool>& known,
+void Core::RecordLeftover(uint32_t address, const uint8_t* bytes, const uint8_t* known, uint32_t size,
                           int16_t actorId) {
-    mMemory.Write(address, bytes, known, actorId);
+    mMemory.Write(address, bytes, known, size, actorId);
 }
 
 bool Core::ReadLeftover(uint32_t address, uint32_t* value) const {
@@ -665,21 +687,29 @@ void Arena::Serialize(SaveStateCtx* ctx) {
 }
 
 void Memory::Serialize(SaveStateCtx* ctx) {
-    SaveStateVector(ctx, mBytes);
-    // std::vector<bool> is packed, so its bits go one byte each
-    uint32_t count = SaveStateCount(ctx, mKnown.size());
+    uint32_t count = SaveStateCount(ctx, mSpans.size());
     if (ctx->mode == SHIP_SAVESTATE_LOAD) {
-        mKnown.assign(count, false);
+        mSpans.clear();
     }
+    auto span = mSpans.begin();
     for (uint32_t i = 0; i < count; i++) {
-        uint8_t known = mKnown[i] ? 1 : 0;
-        SaveState_Blob(ctx, &known, sizeof(known));
-        mKnown[i] = known != 0;
+        uint32_t start = ctx->mode == SHIP_SAVESTATE_LOAD ? 0 : span->first;
+        Span loaded{};
+        Span& entry = ctx->mode == SHIP_SAVESTATE_LOAD ? loaded : span->second;
+        SaveState_Blob(ctx, &start, sizeof(start));
+        SaveState_Blob(ctx, &entry.end, sizeof(entry.end));
+        SaveState_Blob(ctx, &entry.origin, sizeof(entry.origin));
+        SaveState_Blob(ctx, &entry.owner, sizeof(entry.owner));
+        SaveStateVector(ctx, entry.bytes);
+        SaveStateVector(ctx, entry.known);
+        if (ctx->mode == SHIP_SAVESTATE_LOAD) {
+            mSpans.emplace(start, std::move(loaded));
+        } else {
+            ++span;
+        }
     }
-    SaveStateVector(ctx, mSources);
 }
 
-// Keys and values are plain data; a set is a map without values
 template <typename M> static void SaveStateMap(SaveStateCtx* ctx, M& map) {
     uint32_t count = SaveStateCount(ctx, map.size());
     if (ctx->mode != SHIP_SAVESTATE_LOAD) {
@@ -700,29 +730,12 @@ template <typename M> static void SaveStateMap(SaveStateCtx* ctx, M& map) {
     }
 }
 
-template <typename S> static void SaveStateSet(SaveStateCtx* ctx, S& set) {
-    uint32_t count = SaveStateCount(ctx, set.size());
-    if (ctx->mode != SHIP_SAVESTATE_LOAD) {
-        for (typename S::key_type key : set) {
-            SaveState_Blob(ctx, &key, sizeof(key));
-        }
-        return;
-    }
-    set.clear();
-    for (uint32_t i = 0; i < count; i++) {
-        typename S::key_type key{};
-        SaveState_Blob(ctx, &key, sizeof(key));
-        set.insert(key);
-    }
-}
-
 void Core::Serialize(SaveStateCtx* ctx) {
     mArena.Serialize(ctx);
     mMemory.Serialize(ctx);
     SaveState_Blob(ctx, &mActive, sizeof(mActive));
     SaveState_Blob(ctx, &mArenaSize, sizeof(mArenaSize));
     SaveStateMap(ctx, mLive);
-    SaveStateSet(ctx, mIgnored);
     SaveStateMap(ctx, mOverlays);
     SaveStateMap(ctx, mEffects);
     SaveState_Blob(ctx, &mSpawn, sizeof(mSpawn));

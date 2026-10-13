@@ -236,8 +236,7 @@ bool InActorHeap(uint32_t address) {
 }
 
 n64heap::ActorMemory RebuildActor(const Actor* actor) {
-    return n64heap::ActorMemory(actor, n64heap::ACTORS[actor->id].instanceSize,
-                                [](const void* host) { return Shadow().AddressOf(host); });
+    return n64heap::ActorMemory(actor, [](const void* host) { return Shadow().AddressOf(host); });
 }
 
 const n64heap::ActorMemory& ActorMemoryFor(const Actor* actor) {
@@ -335,7 +334,8 @@ void OnArenaFree(void* ptr) {
     int16_t actorId;
     if (Shadow().FindActor(ptr, &address, &actorId)) {
         n64heap::ActorMemory memory = RebuildActor(static_cast<const Actor*>(ptr));
-        Shadow().RecordLeftover(address, memory.Bytes(), memory.Known(), actorId);
+        Shadow().RecordLeftover(address, memory.Bytes().data(), memory.Known().data(), n64heap::ACTOR_BASE_SIZE,
+                                actorId);
     }
     if (sActorMemory.actor == ptr) {
         sActorMemory = ActorMemoryCache{};

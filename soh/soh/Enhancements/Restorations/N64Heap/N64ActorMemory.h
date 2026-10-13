@@ -2,9 +2,11 @@
 
 // Rebuilds the NTSC 1.2 bytes of a live actor from SoH's copy of it
 
+#include <array>
 #include <cstdint>
 #include <functional>
-#include <vector>
+
+#include "N64HeapTables.h"
 
 struct Actor;
 
@@ -13,12 +15,12 @@ namespace n64heap {
 class ActorMemory {
   public:
     // addressOf maps a host actor to its N64 address, 0 when the shadow heap does not hold it
-    ActorMemory(const Actor* actor, uint32_t size, const std::function<uint32_t(const void*)>& addressOf);
+    ActorMemory(const Actor* actor, const std::function<uint32_t(const void*)>& addressOf);
     bool ReadWord(uint32_t offset, uint32_t* value) const;
-    const std::vector<uint8_t>& Bytes() const {
+    const std::array<uint8_t, ACTOR_BASE_SIZE>& Bytes() const {
         return mBytes;
     }
-    const std::vector<bool>& Known() const {
+    const std::array<uint8_t, ACTOR_BASE_SIZE>& Known() const {
         return mKnown;
     }
 
@@ -34,8 +36,8 @@ class ActorMemory {
     void WriteActorBase(const Actor* actor);
 
     std::function<uint32_t(const void*)> mAddressOf;
-    std::vector<uint8_t> mBytes;
-    std::vector<bool> mKnown;
+    std::array<uint8_t, ACTOR_BASE_SIZE> mBytes{};
+    std::array<uint8_t, ACTOR_BASE_SIZE> mKnown{};
 };
 
 } // namespace n64heap
