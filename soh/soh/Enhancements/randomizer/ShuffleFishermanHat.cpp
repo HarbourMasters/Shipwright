@@ -35,5 +35,5 @@ void Rando::StaticData::RegisterFishermansHatLocation() {
     // clang-format on
 }
 
-static RegisterShipInitFunc registerShuffleBeggar(RegisterShuffleFishermansHat, { "IS_RANDO" });
-static RegisterShipInitFunc registerBeggarLocations(Rando::StaticData::RegisterFishermansHatLocation);
+static RegisterShipInitFunc registerShuffleFishermansHat(RegisterShuffleFishermansHat, { "IS_RANDO" });
+static RegisterShipInitFunc registerFishermansHatLocation(Rando::StaticData::RegisterFishermansHatLocation);
