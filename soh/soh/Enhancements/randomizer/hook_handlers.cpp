@@ -1891,7 +1891,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 *should = false;
             }
             if (item == ITEM_NAYRUS_LOVE) {
-                return RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get() > 0;
+                *should = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get() > 0;
             }
             break;
         }
