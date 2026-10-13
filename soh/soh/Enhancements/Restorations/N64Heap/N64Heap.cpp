@@ -405,7 +405,7 @@ void* FilterCutsceneScript(void* script) {
             replacement = { 0, INT32_MAX, n64heap::CS_CMD_END_OF_SCRIPT, 0 };
             break;
         case Outcome::RunsCommands:
-            replacement = sim.script;
+            replacement = std::move(sim.script);
             break;
         default:
             if (sHostScriptLive) {
