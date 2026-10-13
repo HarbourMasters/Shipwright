@@ -1495,6 +1495,13 @@
                     "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic."
                 ]
             },
+            "nayrus_love_uses": {
+                "name": "Nayru's Love Uses",
+                "description": [
+                    "Limits Nayru's Love to a set number of casts. Each Nayru's Love you find adds one use, and this sets ",
+                    "how many are placed in the item pool. Starting with Nayru's Love counts as one. 0 keeps it unlimited."
+                ]
+            },
             "slingbow_break_beehives": {
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."

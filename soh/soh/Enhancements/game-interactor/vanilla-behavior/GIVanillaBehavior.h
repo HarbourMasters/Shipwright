@@ -702,6 +702,11 @@ typedef enum {
     // ```c
     // true
     // ```
+    // In `ItemInSlotUsesAmmo` (pause menu, with Better Ammo Rendering):
+    // ```c
+    // item == ITEM_STICK || item == ITEM_NUT || item == ITEM_BOMB || item == ITEM_BOW ||
+    //     item == ITEM_SLINGSHOT || item == ITEM_BOMBCHU || item == ITEM_BEAN
+    // ```
     // #### `args`
     // - `*int16_t` (item id)
     VB_DRAW_AMMO_COUNT,
@@ -2024,6 +2029,16 @@ typedef enum {
     // #### `args`
     // - `*EnKo`
     VB_OPEN_KOKIRI_FOREST,
+
+    // #### `result`
+    // In `Interface_DrawAmmoCount` and `KaleidoScope_DrawAmmoCount`:
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*int16_t` (item id)
+    // - `*int16_t` (ammo count)
+    VB_OVERRIDE_AMMO_COUNT,
 
     // #### `result`
     // ```c

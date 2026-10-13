@@ -552,8 +552,12 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return true; // AmmoCanDrop || (HasBottle() && Get(LOGIC_BUY_MAGIC_POTION))
         case RG_DINS_FIRE:
         case RG_FARORES_WIND:
-        case RG_NAYRUS_LOVE:
         case RG_LENS_OF_TRUTH:
+            return CanUse(RG_MAGIC_SINGLE);
+        case RG_NAYRUS_LOVE:
+            if (ctx->GetOption(RSK_NAYRUS_LOVE_USES).Get() > 0) {
+                return false;
+            }
             return CanUse(RG_MAGIC_SINGLE);
         case RG_FIRE_ARROWS:
         case RG_ICE_ARROWS:

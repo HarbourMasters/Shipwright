@@ -437,6 +437,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_FARORES_WIND:
             return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_NAYRUS_LOVE:
+            if (GetRandoSettingValue(RSK_NAYRUS_LOVE_USES) > 0) {
+                return CAN_OBTAIN;
+            }
             if (!GetRandoSettingValue(RSK_ROCS_FEATHER)) {
                 return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
             } else {

@@ -533,6 +533,13 @@ void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
     }
 }
 
+// Roc's Feather shares Nayru's Love's slot, so the slot being filled isn't enough
+static bool HasNayrusLove() {
+    return IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)
+               ? Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE)
+               : INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NAYRUS_LOVE;
+}
+
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
     ItemTrackerNumbers result;
     result.currentCapacity = 0;
@@ -598,6 +605,15 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                 result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
                 result.maxCapacity = 10;
                 result.currentAmmo = AMMO(ITEM_BEAN);
+                break;
+            case ITEM_NAYRUS_LOVE:
+                if (IS_RANDO) {
+                    const uint8_t nlUses = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get();
+                    if (nlUses > 0 && HasNayrusLove()) {
+                        result.currentCapacity = result.maxCapacity = nlUses;
+                        result.currentAmmo = gSaveContext.ship.quest.data.randomizer.nayrusLoveUses;
+                    }
+                }
                 break;
             case ITEM_HEART_CONTAINER:
                 result.maxCapacity = result.currentCapacity = 8;
@@ -770,8 +786,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
             // These items have a static capacity, so display ammo instead
             (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) ||
-            (item.kind == ITEM_KIND_ITEM &&
-             (item.id == ITEM_BEAN || item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
+            (item.kind == ITEM_KIND_ITEM && (item.id == ITEM_BEAN || item.id == ITEM_NAYRUS_LOVE ||
+                                             item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
                                   trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);

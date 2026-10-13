@@ -175,7 +175,12 @@ void GenerateItemPool() {
     if (!ctx->GetOption(RSK_STARTING_LIGHT_ARROWS))  AddItemToPool(RG_LIGHT_ARROWS, 2, 1, 1, 1);
     if (!ctx->GetOption(RSK_STARTING_DINS_FIRE))     AddItemToPool(RG_DINS_FIRE, 2, 1, 1, 1);
     if (!ctx->GetOption(RSK_STARTING_FARORES_WIND))  AddItemToPool(RG_FARORES_WIND, 2, 1, 1, 0);
-    if (!ctx->GetOption(RSK_STARTING_NAYRUS_LOVE))   AddItemToPool(RG_NAYRUS_LOVE, 2, 1, 1, 0);
+    if (ctx->GetOption(RSK_NAYRUS_LOVE_USES).Get() > 0) {
+        AddFixedItemToPool(RG_NAYRUS_LOVE, ctx->GetOption(RSK_NAYRUS_LOVE_USES).Get() -
+                                           (ctx->GetOption(RSK_STARTING_NAYRUS_LOVE) ? 1 : 0));
+    } else if (!ctx->GetOption(RSK_STARTING_NAYRUS_LOVE)) {
+        AddItemToPool(RG_NAYRUS_LOVE, 2, 1, 1, 0);
+    }
     AddItemToPool(RG_GREG_RUPEE, 1, 1, 1, 1);
     AddFixedItemToPool(RG_PROGRESSIVE_HOOKSHOT, 2 - ctx->GetOption(RSK_STARTING_HOOKSHOT).Get());
     if (!ctx->GetOption(RSK_STARTING_HYLIAN_SHIELD)) AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
