@@ -987,7 +987,7 @@
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_1
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_2
 
-### Unknown:
+### [Tawling](https://github.com/Tawling):
 * /assets/custom/textures/buttons/ABtnOutline.png
 * /assets/custom/textures/buttons/ABtn.png
 * /assets/custom/textures/buttons/AnalogStickOutline.png
@@ -1026,6 +1026,7 @@
 * /assets/custom/textures/buttons/ZBtnOutline.png
 * /assets/custom/textures/buttons/ZBtn.png
 
+### Unknown:
 * /assets/custom/textures/mapping-xbox.png
 
 * /assets/custom/textures/parameter_static/gArrowDown.ia16.png
