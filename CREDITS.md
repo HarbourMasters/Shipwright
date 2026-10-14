@@ -837,6 +837,9 @@
 * /assets/custom/objects/object_rocs_feather/gGiRocsFeatherDL_vtx_1
 * /assets/custom/textures/icon_item_static/gRocsFeatherTex.rgba32.png
 
+### [MelonSpeedruns](https://github.com/MelonSpeedruns):
+* /assets/custom/textures/parameter_static/gDPad.ia16.png
+
 ### [MrEveryDay98](https://github.com/MrEveryDay98):
 * /assets/custom/objects/object_boss_soul/BarkOrHorns
 * /assets/custom/objects/object_boss_soul/gGIBossSoulSkullDL
@@ -878,6 +881,7 @@
 * /assets/custom/textures/nintendo_rogo_static/mat_revert_gShipLogoDL_f3d_material_003
 * /assets/custom/textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000
 * /assets/custom/textures/nintendo_rogo_static/SoHShiny
+* /assets/custom/textures/parameter_static/gBossSoul.rgba32.png
 
 ### [nickel246](https://github.com/nickel246):
 * /assets/custom/objects/object_gi_climb/gGiClimbDL
@@ -986,6 +990,8 @@
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_0
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_1
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_2
+* /assets/custom/textures/parameter_static/gTriforcePiece.rgba32.png
+* /assets/custom/textures/parameter_static/gWTriforcePiece.rgba32.png
 
 ### [Tawling](https://github.com/Tawling):
 * /assets/custom/textures/buttons/ABtnOutline.png
@@ -1031,13 +1037,8 @@
 
 * /assets/custom/textures/parameter_static/gArrowDown.ia16.png
 * /assets/custom/textures/parameter_static/gArrowUp.ia16.png
-* /assets/custom/textures/parameter_static/gBossSoul.rgba32.png
-* /assets/custom/textures/parameter_static/gDPad.ia16.png
 * /assets/custom/textures/parameter_static/gMoon.rgba32.png
 * /assets/custom/textures/parameter_static/gNavi.rgba32.png
 * /assets/custom/textures/parameter_static/gSplitEntrance.rgba32.png
 * /assets/custom/textures/parameter_static/gSun.rgba32.png
-* /assets/custom/textures/parameter_static/gTriforcePiece.rgba32.png
-* /assets/custom/textures/parameter_static/gWTriforcePiece.rgba32.png
 
-* /assets/custom/textures/virtual/gEmptyTexture.rgba32.png
