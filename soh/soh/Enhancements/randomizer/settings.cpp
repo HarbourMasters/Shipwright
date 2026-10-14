@@ -294,8 +294,10 @@ void Settings::CreateOptions() {
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {
             mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Hide();
+            mOptions[RSK_SHUFFLE_GANONS_BOSS_DOOR].Hide();
         } else {
             mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Unhide();
+            mOptions[RSK_SHUFFLE_GANONS_BOSS_DOOR].Unhide();
         }
 
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBossEntrances"), RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
@@ -307,6 +309,7 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE, CVAR_RANDOMIZER_SETTING("ShuffleGanonTowerEntrance"));
+    OPT_BOOL(RSK_SHUFFLE_GANONS_BOSS_DOOR, CVAR_RANDOMIZER_SETTING("ShuffleGanonBossDoor"));
     OPT_BOOL(RSK_SHUFFLE_OVERWORLD_ENTRANCES, CVAR_RANDOMIZER_SETTING("ShuffleOverworldEntrances"));
     OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_ENTRANCES, {
         HandleMixedEntrancePoolsUI();
@@ -1955,13 +1958,14 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_ENTRANCES] = OptionGroup::SubGroup(
         "Entrances",
         { &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES], &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
-          &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
-          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
-          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
-          &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
+          &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_GANONS_BOSS_DOOR],
+          &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES], &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES],
+          &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
+          &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ENTRANCES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_ENTRANCES] }, WidgetContainerType::COLUMN);
@@ -2206,6 +2210,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_SHUFFLE_DUNGEON_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_BOSS_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE],
+                                                                 &mOptions[RSK_SHUFFLE_GANONS_BOSS_DOOR],
                                                                  &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES],
                                                                  &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
@@ -2682,6 +2687,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
 
     if (mOptions[RSK_SHUFFLE_BOSS_ENTRANCES].Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
         mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE].Set(RO_GENERIC_OFF);
+        mOptions[RSK_SHUFFLE_GANONS_BOSS_DOOR].Set(RO_GENERIC_OFF);
     }
 
     if (mOptions[RSK_SHUFFLE_DUNGEON_REWARDS].Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
