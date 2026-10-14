@@ -826,6 +826,9 @@
 * /assets/custom/objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL
 * /assets/custom/objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL_vtx_0
 * /assets/custom/objects/object_ocarina_c_up_button/gOcarinaCUpButtonDL_vtx_1
+* /assets/custom/objects/object_mystery_item/gMysteryItemDL
+* /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_0
+* /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_1
 
 ### [sitton76](https://github.com/sitton76):
 * /assets/custom/objects/object_triforce_completed/gTriforcePieceCompletedDL
@@ -946,7 +949,3 @@
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_inside_layerOpaque
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_layerOpaque
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_lock_layerTransparent
-
-* /assets/custom/objects/object_mystery_item/gMysteryItemDL
-* /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_0
-* /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_1
