@@ -2,19 +2,11 @@
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 
 * [Website](https://www.shipofharkinian.com)
-* [Discord](https://discord.com/invite/harbourmasters)\
-If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels.\
-Please keep in mind that we do not condone piracy.
+* [Discord](https://discord.com/invite/harbourmasters)
 
-Ship of Harkinian includes original **assets**\* which are licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>.<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">\
-Anyone may use, share, and adapt them, as long as they give appropriate credit to their creators, and do not use the assets for commercial purposes.\
-By submitting, contributors confirm the work is theirs to release. Released work stays under its license permanently, including outside the Harbour Masters organisation. Artists and contributors should keep this in mind before submitting.
+If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
-\*"Assets" may include models, textures, audio, and other creative content.
-
-**A polite request**\
-Although the CC BY-NC 4.0 license doesn't require it, we kindly ask anyone outside the project who wants to use our assets elsewhere to reach out to the artist first and ask for their blessing. It's a small gesture of respect toward the people who made the work.\
-See CREDITS.md for authorship details.
+Ship of Harkinian includes original assets made by its contributors. See [ASSETS-LICENSE.md](ASSETS-LICENSE.md) for how they may be used, and [CREDITS.md](CREDITS.md) for who made them.
 
 # Quick Start
 
