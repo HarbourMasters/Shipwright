@@ -2,13 +2,23 @@
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 
 * [Website](https://www.shipofharkinian.com)
-* [Discord](https://discord.com/invite/harbourmasters)
+* [Discord](https://discord.com/invite/harbourmasters)\
+If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels.\
+Please keep in mind that we do not condone piracy.
 
-If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
+Ship of Harkinian includes original **assets**\* which are licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>.<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">\
+Anyone may use, share, and adapt them, as long as they give appropriate credit to their creators, and do not use the assets for commercial purposes.\
+By submitting, contributors confirm the work is theirs to release. Released work stays under its license permanently, including outside the Harbour Masters organisation. Artists and contributors should keep this in mind before submitting.
+
+\*"Assets" may include models, textures, audio, and other creative content.
+
+**A polite request**\
+Although the CC BY-NC 4.0 license doesn't require it, we kindly ask anyone outside the project who wants to use our assets elsewhere to reach out to the artist first and ask for their blessing. It's a small gesture of respect toward the people who made the work.\
+See CREDITS.md for authorship details.
 
 # Quick Start
 
-The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
+The Ship does not include any of the original game's copyright assets.  You are required to provide a supported copy of the game.
 
 ### 1. Verify your ROM dump
 You can verify you have dumped a supported copy of the game by using the compatibility checker at https://ship.equipment/. If you'd prefer to manually validate your ROM dump, you can cross-reference its `sha1` hash with the hashes [here](docs/supportedHashes.json).
@@ -69,16 +79,16 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 # Project Overview
 Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependent on the source code provided by the OOT decompilation project.
 
-In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific rom. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
+In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific ROM. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
 
 ### Graphics Backends
 Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL (all platforms), and Metal (MacOS). You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
 
 # Custom Assets
 
-Custom assets are packed in `.otr` archive files. To use custom assets, place them in the `mods` folder.
+Custom assets are packed in `.otr` and `.o2r` archive files. To use custom assets, place them in the `mods` folder.
 
-If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
+If you're interested in creating and/or packing your own custom asset `.otr` or `.o2r` files, check out the following tools:
 * [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
 * [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
 
