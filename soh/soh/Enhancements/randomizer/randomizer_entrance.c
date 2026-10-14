@@ -345,38 +345,6 @@ void Entrance_SetGameOverEntrance(void) {
         // Normalize boss scene range to 0 on lookup and handle for grotto entrances
         gSaveContext.entranceIndex =
             Grotto_OverrideSpecialEntrance(bossSceneSaveDeathWarps[scene - SCENE_DEKU_TREE_BOSS]);
-        return;
-    }
-
-    // Set the current entrance depending on which entrance the player last came through
-    switch (gSaveContext.entranceIndex) {
-        case ENTR_DEKU_TREE_BOSS_ENTRANCE: // Deku Tree Boss Room
-            gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
-            return;
-        case ENTR_DODONGOS_CAVERN_BOSS_ENTRANCE: // Dodongos Cavern Boss Room
-            gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
-            return;
-        case ENTR_JABU_JABU_BOSS_ENTRANCE: // Jabu Jabus Belly Boss Room
-            gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
-            return;
-        case ENTR_FOREST_TEMPLE_BOSS_ENTRANCE: // Forest Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_FIRE_TEMPLE_BOSS_ENTRANCE: // Fire Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_WATER_TEMPLE_BOSS_ENTRANCE: // Water Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_SPIRIT_TEMPLE_BOSS_ENTRANCE: // Spirit Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_SHADOW_TEMPLE_BOSS_ENTRANCE: // Shadow Temple Boss Room
-            gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
-            return;
-        case ENTR_GANONDORF_BOSS_0: // Ganondorf Boss Room
-            gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
-            return;
     }
 }
 
