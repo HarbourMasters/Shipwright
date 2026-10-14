@@ -1,6 +1,6 @@
 # Asset License
 
-Ship of Harkinian includes original assets made by its contributors: models, textures, animations, audio and other creative content. [CREDITS.md](CREDITS.md) lists them and who made them.
+Ship of Harkinian includes original assets made by its contributors: "Assets" may include models, textures, animations, audio and other creative content. [CREDITS.md](CREDITS.md) lists them and who made them.
 
 These assets are licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/), with the extra permission below.
 
@@ -17,8 +17,6 @@ Like the license itself, this permission can't be withdrawn later. It only appli
 ## Ownership
 
 Artists keep the copyright to their work. This license only gives permission to use it.
-
-Some assets are based on Nintendo's originals. For those, these terms only cover the contributor's own changes.
 
 ## Contributing assets
 
