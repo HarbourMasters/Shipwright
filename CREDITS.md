@@ -178,10 +178,7 @@
 * /assets/custom/objects/gameplay_keep/flower_silver_tex.rgba16
 * /assets/custom/objects/gameplay_keep/flower_token_tex.rgba16
 * /assets/custom/objects/gameplay_keep/gChestLockTex
-* /assets/custom/objects/gameplay_keep/gGiScaleMtx
 * /assets/custom/objects/gameplay_keep/gGrassBunchTex.rgba16
-* /assets/custom/objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump
-* /assets/custom/objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump_Data
 * /assets/custom/objects/gameplay_keep/gRandoCuttableGrassBossKeyDL
 * /assets/custom/objects/gameplay_keep/gRandoCuttableGrassBossKeyDL_tri_0
 * /assets/custom/objects/gameplay_keep/gRandoCuttableGrassBossKeyDL_tri_1
@@ -833,9 +830,12 @@
 * /assets/custom/objects/object_box/mat_gChestLidTokenDL_TokenSides_layerOpaque
 
 ### [krm01](https://github.com/krm01):
+* /assets/custom/objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump
+* /assets/custom/objects/gameplay_keep/gPlayerAnim_link_rocs_feather_jump_Data
 * /assets/custom/objects/object_rocs_feather/gGiRocsFeatherDL
 * /assets/custom/objects/object_rocs_feather/gGiRocsFeatherDL_vtx_0
 * /assets/custom/objects/object_rocs_feather/gGiRocsFeatherDL_vtx_1
+* /assets/custom/textures/icon_item_static/gRocsFeatherTex.rgba32.png
 
 ### [MrEveryDay98](https://github.com/MrEveryDay98):
 * /assets/custom/objects/object_boss_soul/BarkOrHorns
@@ -858,6 +858,26 @@
 * /assets/custom/objects/object_boss_soul/mat_gGIBossSoulSkullDL_Horns
 * /assets/custom/objects/object_boss_soul/mat_gGIBossSoulSkullDL_Jewel
 * /assets/custom/objects/object_boss_soul/mat_gGIBossSoulSkullDL_Skull1
+* /assets/custom/textures/icons/gIcon.png
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_tri_0
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_tri_1
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_tri_2
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_tri_3
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_vtx_0
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_vtx_1
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_vtx_2
+* /assets/custom/textures/nintendo_rogo_static/gShipLogoDL_vtx_3
+* /assets/custom/textures/nintendo_rogo_static/mat_gShipLogoDL_f3d_material
+* /assets/custom/textures/nintendo_rogo_static/mat_gShipLogoDL_f3d_material_001
+* /assets/custom/textures/nintendo_rogo_static/mat_gShipLogoDL_f3d_material_002
+* /assets/custom/textures/nintendo_rogo_static/mat_gShipLogoDL_f3d_material_003
+* /assets/custom/textures/nintendo_rogo_static/mat_revert_gShipLogoDL_f3d_material
+* /assets/custom/textures/nintendo_rogo_static/mat_revert_gShipLogoDL_f3d_material_001
+* /assets/custom/textures/nintendo_rogo_static/mat_revert_gShipLogoDL_f3d_material_002
+* /assets/custom/textures/nintendo_rogo_static/mat_revert_gShipLogoDL_f3d_material_003
+* /assets/custom/textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000
+* /assets/custom/textures/nintendo_rogo_static/SoHShiny
 
 ### [nickel246](https://github.com/nickel246):
 * /assets/custom/objects/object_gi_climb/gGiClimbDL
@@ -910,6 +930,10 @@
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_inside_layerOpaque
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_layerOpaque
 * /assets/custom/objects/object_gi_chest/mat_gGiOpenChestsDL_chest_lock_layerTransparent
+* /assets/custom/textures/icon_item_static/gClimbTex.rgba32.png
+* /assets/custom/textures/icon_item_static/gCrawlTex.rgba32.png
+* /assets/custom/textures/icon_item_static/gGrabTex.rgba32.png
+* /assets/custom/textures/icon_item_static/gOpenChestsTex.rgba32.png
 
 ### [PurpleHato](https://github.com/PurpleHato):
 * /assets/custom/objects/object_mag/gTitleBossRushSubtitleTex.rgba32.png
@@ -932,6 +956,9 @@
 * /assets/custom/objects/object_mystery_item/gMysteryItemDL
 * /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_0
 * /assets/custom/objects/object_mystery_item/gMysteryItemDL_vtx_1
+* /assets/custom/textures/item_name_static/gRocsFeatherItemNameENGTex.ia4.png
+* /assets/custom/textures/item_name_static/gRocsFeatherItemNameFRATex.ia4.png
+* /assets/custom/textures/item_name_static/gRocsFeatherItemNameGERTex.ia4.png
 * /assets/custom/textures/title_static/gFileSelMQButtonTex.ia16.png
 * /assets/custom/textures/title_static/gFileSelRANDButtonTex.ia16.png
 * /assets/custom/textures/title_static/gFileSelBossRushSettingsENGTex.ia8.png
@@ -942,6 +969,7 @@
 * /assets/custom/textures/title_static/gFileSelPleaseChooseAQuestFRATex.ia8.png
 * /assets/custom/textures/title_static/gFileSelPleaseChooseAQuestGERTex.ia8.png
 * /assets/custom/textures/title_static/gFileSelPleaseChooseAQuestJPNTex.ia8.png
+
 
 ### [sitton76](https://github.com/sitton76):
 * /assets/custom/objects/object_triforce_completed/gTriforcePieceCompletedDL
@@ -958,3 +986,57 @@
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_0
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_1
 * /assets/custom/objects/object_triforce_piece_2/gTriforcePiece2DL_vtx_2
+
+### Unknown:
+* /assets/custom/textures/buttons/ABtnOutline.png
+* /assets/custom/textures/buttons/ABtn.png
+* /assets/custom/textures/buttons/AnalogStickOutline.png
+* /assets/custom/textures/buttons/AnalogStick.png
+* /assets/custom/textures/buttons/BBtnOutline.png
+* /assets/custom/textures/buttons/BBtn.png
+* /assets/custom/textures/buttons/CDownOutline.png
+* /assets/custom/textures/buttons/CDown.png
+* /assets/custom/textures/buttons/CLeftOutline.png
+* /assets/custom/textures/buttons/CLeft.png
+* /assets/custom/textures/buttons/CRightOutline.png
+* /assets/custom/textures/buttons/CRight.png
+* /assets/custom/textures/buttons/CUpOutline.png
+* /assets/custom/textures/buttons/CUp.png
+* /assets/custom/textures/buttons/DPadDownOutline.png
+* /assets/custom/textures/buttons/DPadDown.png
+* /assets/custom/textures/buttons/DPadLeftOutline.png
+* /assets/custom/textures/buttons/DPadLeft.png
+* /assets/custom/textures/buttons/DPadRightOutline.png
+* /assets/custom/textures/buttons/DPadRight.png
+* /assets/custom/textures/buttons/DPadUpOutline.png
+* /assets/custom/textures/buttons/DPadUp.png
+* /assets/custom/textures/buttons/InputViewerBackground.png
+* /assets/custom/textures/buttons/LBtnOutline.png
+* /assets/custom/textures/buttons/LBtn.png
+* /assets/custom/textures/buttons/Mod1Outline.png
+* /assets/custom/textures/buttons/Mod1.png
+* /assets/custom/textures/buttons/Mod2Outline.png
+* /assets/custom/textures/buttons/Mod2.png
+* /assets/custom/textures/buttons/RBtnOutline.png
+* /assets/custom/textures/buttons/RBtn.png
+* /assets/custom/textures/buttons/RightStickOutline.png
+* /assets/custom/textures/buttons/RightStick.png
+* /assets/custom/textures/buttons/StartBtnOutline.png
+* /assets/custom/textures/buttons/StartBtn.png
+* /assets/custom/textures/buttons/ZBtnOutline.png
+* /assets/custom/textures/buttons/ZBtn.png
+
+* /assets/custom/textures/mapping-xbox.png
+
+* /assets/custom/textures/parameter_static/gArrowDown.ia16.png
+* /assets/custom/textures/parameter_static/gArrowUp.ia16.png
+* /assets/custom/textures/parameter_static/gBossSoul.rgba32.png
+* /assets/custom/textures/parameter_static/gDPad.ia16.png
+* /assets/custom/textures/parameter_static/gMoon.rgba32.png
+* /assets/custom/textures/parameter_static/gNavi.rgba32.png
+* /assets/custom/textures/parameter_static/gSplitEntrance.rgba32.png
+* /assets/custom/textures/parameter_static/gSun.rgba32.png
+* /assets/custom/textures/parameter_static/gTriforcePiece.rgba32.png
+* /assets/custom/textures/parameter_static/gWTriforcePiece.rgba32.png
+
+* /assets/custom/textures/virtual/gEmptyTexture.rgba32.png
