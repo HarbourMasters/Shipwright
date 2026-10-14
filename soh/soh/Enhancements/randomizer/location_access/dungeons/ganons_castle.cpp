@@ -623,7 +623,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_MQ_FIRE_TRIAL_POT_2, logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, true),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_BARRED, true),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM] = Region("Ganon's Castle MQ Water Trial Geyser Room", SCENE_INSIDE_GANONS_CASTLE, {
@@ -919,7 +919,7 @@ void RegionTable_Init_GanonsCastle() {
         //Exits
         //I got the trick going backwards, but only while taking damage. this isn't relevant anyway though
         ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_BOULDER_ROOM_FRONT, logic->CanUse(RG_HOOKSHOT) || ctx->GetTrickOption(RT_GANON_MQ_LIGHT_TRIAL) || (logic->IsAdult && logic->CanGroundJump())),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_FINAL_ROOM,         logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3)),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_FAKE_FINAL_ROOM,    logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3)),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_FAKE_FINAL_ROOM] = Region("Ganon's Castle MQ Light Trial Fake Final Room", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
@@ -935,10 +935,7 @@ void RegionTable_Init_GanonsCastle() {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_POT_1, logic->CanBreakPots()),
         LOCATION(RC_GANONS_CASTLE_MQ_LIGHT_TRIAL_POT_2, logic->CanBreakPots()),
-    }, {
-        //Exits
-        ENTRANCE(RR_GANONS_CASTLE_MQ_LIGHT_TRIAL_BOULDER_ROOM_BACK, logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3)),
-    });
+    }, {});
 
 #pragma endregion
 
