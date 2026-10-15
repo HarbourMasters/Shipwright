@@ -1039,6 +1039,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT, {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MerchantTycoonWalletWeight"), WIDGET_CVAR_SLIDER_INT, 10, true, nullptr, IMFLAG_NONE);
     OPT_BOOL(RSK_MERCHANT_PRICES_AFFORDABLE, CVAR_RANDOMIZER_SETTING("MerchantPricesAffordable"));
     OPT_BOOL(RSK_SHUFFLE_BEGGAR, CVAR_RANDOMIZER_SETTING("ShuffleBeggar"));
+    OPT_BOOL(RSK_SHUFFLE_FISHERMANS_HAT, CVAR_RANDOMIZER_SETTING("ShuffleFishermansHat"));
     OPT_BOOL(RSK_SHUFFLE_FROG_SONG_RUPEES, CVAR_RANDOMIZER_SETTING("ShuffleFrogSongRupees"));
     OPT_BOOL(RSK_SHUFFLE_ADULT_TRADE, CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"));
     OPT_CALLBACK(RSK_SHUFFLE_ADULT_TRADE, {
@@ -2106,6 +2107,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT],
                                   &mOptions[RSK_MERCHANT_PRICES_AFFORDABLE],
                                   &mOptions[RSK_SHUFFLE_BEGGAR],
+                                  &mOptions[RSK_SHUFFLE_FISHERMANS_HAT],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_SHOP_SHUFFLES] =
@@ -2308,6 +2310,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT],
                                             &mOptions[RSK_MERCHANT_PRICES_AFFORDABLE],
                                             &mOptions[RSK_SHUFFLE_BEGGAR],
+                                            &mOptions[RSK_SHUFFLE_FISHERMANS_HAT],
                                             &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
                                             &mOptions[RSK_SHUFFLE_ADULT_TRADE],
                                             &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],

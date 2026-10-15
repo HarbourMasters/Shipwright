@@ -892,6 +892,10 @@
                     "The Beggar will give separate rewards to child and adult."
                 ]
             },
+            "shuffle_fishermans_hat": {
+                "name": "Shuffle Fisherman's Hat",
+                "description": "The Fisherman gives a reward for returning his hat."
+            },
             "shuffle_adult_trade": {
                 "name": "Shuffle Adult Trade",
                 "description": [
