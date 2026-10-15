@@ -579,6 +579,8 @@ void SetAllEntrancesData() {
 
         { { EntranceType::GanonTower, RR_GANONS_TOWER_ENTRYWAY,  RR_GANONS_TOWER_STAIRS_1, ENTR_GANONS_TOWER_0 },
           { EntranceType::GanonTower, RR_GANONS_TOWER_STAIRS_1,  RR_GANONS_TOWER_ENTRYWAY, ENTR_INSIDE_GANONS_CASTLE_1 } },
+        { { EntranceType::GanonBoss, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, RR_GANONS_TOWER_GANONDORF_LAIR,        ENTR_GANONDORF_BOSS_0 },
+          { EntranceType::GanonBoss, RR_GANONS_TOWER_GANONDORF_LAIR,        RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, ENTR_GANONS_TOWER_1 } },
 
         { { EntranceType::BlueWarp, RR_DEKU_TREE_BOSS_ROOM,        RR_KF_OUTSIDE_DEKU_TREE,      ENTR_KOKIRI_FOREST_DEKU_TREE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
@@ -1242,6 +1244,10 @@ int EntranceShuffler::ShuffleAllEntrances() {
                 SohUtils::AppendVector(entrancePools[EntranceType::Boss],
                                        GetShuffleableEntrances(EntranceType::GanonTower));
             }
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_BOSS_DOOR)) {
+                SohUtils::AppendVector(entrancePools[EntranceType::Boss],
+                                       GetShuffleableEntrances(EntranceType::GanonBoss));
+            }
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
@@ -1254,6 +1260,10 @@ int EntranceShuffler::ShuffleAllEntrances() {
             if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
                 SohUtils::AppendVector(entrancePools[EntranceType::AdultBoss],
                                        GetShuffleableEntrances(EntranceType::GanonTower));
+            }
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_BOSS_DOOR)) {
+                SohUtils::AppendVector(entrancePools[EntranceType::AdultBoss],
+                                       GetShuffleableEntrances(EntranceType::GanonBoss));
             }
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -1534,7 +1544,9 @@ int EntranceShuffler::ShuffleAllEntrances() {
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION) },
             { EntranceNameByRegions(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY),
-              GetEntrance(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) }
+              GetEntrance(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) },
+            { EntranceNameByRegions(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR),
+              GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY) }
         };
 
         // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make
