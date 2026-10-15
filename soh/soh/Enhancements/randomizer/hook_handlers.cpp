@@ -1872,7 +1872,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_GANONS_TOWER);
                 randomizerQueuedChecks.push(RC_GANON);
                 CheckTriggers();
-                gPlayState->nextEntranceIndex = ENTR_OUTSIDE_GANONS_CASTLE_1_2;
+                gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_OUTSIDE_GANONS_CASTLE_1_2);
                 gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                 gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
