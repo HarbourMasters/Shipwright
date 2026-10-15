@@ -177,6 +177,11 @@ int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, const SceneID scen
     return FindCurrentSmallKeys(saveContext, scene);
 }
 
+int8_t GetSceneUnspentSmallKeyMax(const SaveContext* saveContext, const SceneID scene) {
+    int8_t used = GetSceneTotalSmallKeys(saveContext, scene) - FindCurrentSmallKeys(saveContext, scene);
+    return GetSceneSmallKeyMax(scene) - used;
+}
+
 int8_t DungeonInfo::GetUsedSmallKeys(SaveContext* saveContext) const {
     return FindUsedSmallKeys(saveContext, scene, GetDoorFlags());
 }
