@@ -1890,6 +1890,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                  gPlayState->bombchuBowlingStatus < 1)) {
                 *should = false;
             }
+            if (item == ITEM_NAYRUS_LOVE) {
+                *should = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get() > 0;
+            }
             break;
         }
         case VB_HAVE_OCARINA_NOTE_A4: {

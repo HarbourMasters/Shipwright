@@ -140,6 +140,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  RO_SHUFFLE_MERCHANTS_OFF) &&
             (location.GetRCType() != RCTYPE_BEGGAR ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeggar"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_FISH_HAT ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFishermansHat"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_SONG_LOCATION ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
                   RO_SONG_SHUFFLE_SONG_LOCATIONS &&
@@ -210,6 +212,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleIcicles"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_RED_ICE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleRedIce"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_FIRE_GORON ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFireGorons"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FISH ||
              Rando::Fishsanity::GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||

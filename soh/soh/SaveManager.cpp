@@ -303,6 +303,7 @@ void SaveManager::LoadRandomizer() {
     SaveManager::Instance->LoadData("triforcePiecesCollected",
                                     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
     SaveManager::Instance->LoadData("bombchuUpgradeLevel", gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel);
+    SaveManager::Instance->LoadData("nayrusLoveUses", gSaveContext.ship.quest.data.randomizer.nayrusLoveUses);
     SaveManager::Instance->LoadData("silverShadowBlades", gSaveContext.ship.quest.data.randomizer.silverShadowBlades);
     SaveManager::Instance->LoadData("silverShadowPit", gSaveContext.ship.quest.data.randomizer.silverShadowPit);
     SaveManager::Instance->LoadData("silverShadowSpikes", gSaveContext.ship.quest.data.randomizer.silverShadowSpikes);
@@ -493,6 +494,7 @@ void SaveManager::SaveRandomizer(const SaveContext& saveContext, int sectionID, 
     SaveManager::Instance->SaveData("triforcePiecesCollected",
                                     saveContext.ship.quest.data.randomizer.triforcePiecesCollected);
     SaveManager::Instance->SaveData("bombchuUpgradeLevel", saveContext.ship.quest.data.randomizer.bombchuUpgradeLevel);
+    SaveManager::Instance->SaveData("nayrusLoveUses", saveContext.ship.quest.data.randomizer.nayrusLoveUses);
     SaveManager::Instance->SaveData("silverShadowBlades", gSaveContext.ship.quest.data.randomizer.silverShadowBlades);
     SaveManager::Instance->SaveData("silverShadowPit", gSaveContext.ship.quest.data.randomizer.silverShadowPit);
     SaveManager::Instance->SaveData("silverShadowSpikes", gSaveContext.ship.quest.data.randomizer.silverShadowSpikes);

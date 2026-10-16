@@ -222,6 +222,9 @@ void Audio_ProcessSoundRequest(void) {
         return;
     }
     u16 newSfxId = AudioEditor_GetReplacementSeq(req->sfxId);
+    if (newSfxId == NA_BGM_DISABLED) {
+        return;
+    }
     if (req->sfxId != newSfxId) {
         gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
         req->sfxId = newSfxId;

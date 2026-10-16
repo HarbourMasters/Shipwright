@@ -2538,6 +2538,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                         /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler in Kakariko# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #échanger avec un mendiant dans le Village de Cocorico# donne #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_FISHERMANS_HAT] = HintText(CustomMessage("They say that #giving a Fisherman back his hat# is rewarded by #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Zurückgeben seines Hutes an einen Fischer# mit #[[1]]# belohnt werde.",
+                                                        /*french*/ "Selon moi, #rendre son chapeau à un pêcheur# est récompensé par #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_RED_ICE_ZORAS_DOMAIN] = HintText(CustomMessage("They say that #melting red ice in Zora's Domain# gives #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in Zoras Reich# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #faire fondre la glace rouge dans le Domaine Zora# donne #[[1]]#.", {QM_RED, QM_GREEN}));

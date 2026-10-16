@@ -600,6 +600,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Flags_GetSwitch(play, (this->actor.params & 0xFC00) >> 0xA)
+    // ```
+    // #### `args`
+    // - `*EnGo2`
+    VB_DESPAWN_FREED_FIRE_GORON,
+
+    // #### `result`
+    // ```c
     // Flags_GetItemGetInf(ITEMGETINF_30)
     // ```
     // #### `args`
@@ -693,6 +701,11 @@ typedef enum {
     // In `KaleidoScope_DrawAmmoCount`:
     // ```c
     // true
+    // ```
+    // In `ItemInSlotUsesAmmo` (pause menu, with Better Ammo Rendering):
+    // ```c
+    // item == ITEM_STICK || item == ITEM_NUT || item == ITEM_BOMB || item == ITEM_BOW ||
+    //     item == ITEM_SLINGSHOT || item == ITEM_BOMBCHU || item == ITEM_BEAN
     // ```
     // #### `args`
     // - `*int16_t` (item id)
@@ -1164,6 +1177,14 @@ typedef enum {
     // #### `args`
     // - `*Actor` (EnDivingGame - &this->actor)
     VB_GIVE_ITEM_FROM_DIVING_MINIGAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGo2`
+    VB_GIVE_ITEM_FROM_FIRE_GORON,
 
     // #### `result`
     // ```c
@@ -2008,6 +2029,16 @@ typedef enum {
     // #### `args`
     // - `*EnKo`
     VB_OPEN_KOKIRI_FOREST,
+
+    // #### `result`
+    // In `Interface_DrawAmmoCount` and `KaleidoScope_DrawAmmoCount`:
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*int16_t` (item id)
+    // - `*int16_t` (ammo count)
+    VB_OVERRIDE_AMMO_COUNT,
 
     // #### `result`
     // ```c

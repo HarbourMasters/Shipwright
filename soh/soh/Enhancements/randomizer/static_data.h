@@ -70,8 +70,10 @@ class StaticData {
     static void RegisterSignLocations();
     static void RegisterWonderItemLocations();
     static void RegisterBeggarLocations();
+    static void RegisterFishermansHatLocation();
     static void RegisterIcicleLocations();
     static void RegisterRedIceLocations();
+    static void RegisterFireGoronLocations();
     static void InitHashMaps();
     static std::array<std::pair<RandomizerCheck, RandomizerCheck>, 17> randomizerFishingPondFish;
     static std::unordered_map<int8_t, RandomizerCheck> randomizerGrottoFishMap;
