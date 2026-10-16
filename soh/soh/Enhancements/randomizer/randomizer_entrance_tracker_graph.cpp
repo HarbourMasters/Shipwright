@@ -255,6 +255,8 @@ static ImU32 GetColorForArea(RandomizerArea area) {
             return IM_COL32(0xF2, 0xC6, 0xA0, 0xFF);
         case RA_GERUDO_FORTRESS:
             return IM_COL32(0xE8, 0xB3, 0xA7, 0xFF);
+        case RA_THIEVES_HIDEOUT:
+            return IM_COL32(0xC4, 0xA0, 0xA8, 0xFF);
         case RA_HAUNTED_WASTELAND:
             return IM_COL32(0xC9, 0xB2, 0xC8, 0xFF);
         case RA_DESERT_COLOSSUS:
