@@ -51,8 +51,11 @@ const GraphOptions defaultOptions = {
     },
     {
         2.0f,
+        15.0f,
+        100.0f,
         {
             0.0f,
+            15.0f,
             { 3.0f, 2.0f },
             3.0f,
             IM_COL32(48, 48, 64, 220),
@@ -98,7 +101,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
         ImGui::SetNextItemAllowOverlap();
 
         if (menuOpen) {
-            ImVec2 panelSize = { 325, 400 };
+            ImVec2 panelSize = { 425, 400 };
 
             ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 12.0f);
             ImGui::PushStyleColor(ImGuiCol_ChildBg, IM_COL32(40, 40, 40, 255));
@@ -146,7 +149,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
                           .Max(max)                                       \
                           .DefaultValue(defaultOptions.option_path)       \
                           .Format("%.1f")                                 \
-                          .Size({ 300.0f, 0.0f })                         \
+                          .Size({ 400.0f, 0.0f })                         \
                           .Color(THEME_COLOR))) {                         \
         this->UpdateGraphOptions();                                       \
     }
@@ -158,7 +161,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
                             .Max(max)                                       \
                             .DefaultValue(defaultOptions.option_path)       \
                             .Format(format)                                 \
-                            .Size({ 300.0f, 0.0f })                         \
+                            .Size({ 400.0f, 0.0f })                         \
                             .Step(step)                                     \
                             .Color(THEME_COLOR))) {                         \
         this->UpdateGraphOptions();                                         \
@@ -170,7 +173,7 @@ void EntranceTrackerGraphWindow::DrawElement() {
                                 UIWidgets::FloatSliderOptions()
                                     .IsPercentage()
                                     .DefaultValue(1.0f)
-                                    .Size({ 300.0f, 0.0f })
+                                    .Size({ 400.0f, 0.0f })
                                     .Step(0.01f)
                                     .Color(THEME_COLOR));
 
@@ -208,7 +211,10 @@ void EntranceTrackerGraphWindow::DrawElement() {
 
                 CONFIG_INPUT_BOOL(zoom.edgesScaleWithZoom, "Edges Scale With Zoom");
                 CONFIG_INPUT_FLOAT(edges.thickness, "Edge Thickness", 1.0f, 10.0f, 0.1f, "%.1f");
-                CONFIG_INPUT_FLOAT(edges.label.separation, "Edge Label Separation", 0.0f, 20.0f, 0.1f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.arrowSize, "Arrow Size", 10.0f, 100.0f, 0.1f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.reverseCurve, "Reverse Curve", 0.0f, 200.0f, 1.0f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.label.separationNoReverse, "Edge Label Separation (Edge Without Reverse)", 0.0f, 20.0f, 0.1f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.label.separationReverse, "Edge Label Separation (Edge With Reverse)", 0.0f, 20.0f, 0.1f, "%.1f");
                 // CONFIG_INPUT_IMVEC2(edges.label.padding, "Edge Label Padding", 0.0f, 20.0f);
                 CONFIG_INPUT_FLOAT(edges.label.rounding, "Edge Label Rounding", 1.0f, 10.0f, 0.1f, "%.1f");
                 // CONFIG_INPUT_COLOR(edges.label.backgroundColor, "Edge Label Rounding");
@@ -427,7 +433,10 @@ void EntranceTrackerGraphWindow::UpdateGraphOptions() {
     UPDATE_OPTION_PATH_FLOAT(nodes.label.fadeoutCutoffUpper);
 
     UPDATE_OPTION_PATH_FLOAT(edges.thickness);
-    UPDATE_OPTION_PATH_FLOAT(edges.label.separation);
+    UPDATE_OPTION_PATH_FLOAT(edges.arrowSize);
+    UPDATE_OPTION_PATH_FLOAT(edges.reverseCurve);
+    UPDATE_OPTION_PATH_FLOAT(edges.label.separationNoReverse);
+    UPDATE_OPTION_PATH_FLOAT(edges.label.separationReverse);
     UPDATE_OPTION_PATH_IMVEC2(edges.label.padding);
     UPDATE_OPTION_PATH_FLOAT(edges.label.rounding);
     UPDATE_OPTION_PATH_IMU32(edges.label.backgroundColor);

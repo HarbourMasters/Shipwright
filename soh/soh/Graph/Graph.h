@@ -19,8 +19,11 @@ typedef struct GraphNodeOptions final {
 
 typedef struct GraphEdgeOptions final {
     float thickness;
+    float arrowSize;
+    float reverseCurve;
     struct {
-        float separation;
+        float separationNoReverse;
+        float separationReverse;
         ImVec2 padding;
         float rounding;
         ImU32 backgroundColor;
@@ -29,6 +32,26 @@ typedef struct GraphEdgeOptions final {
         float fadeoutCutoffUpper;
     } label;
 } GraphEdgeOptions;
+
+typedef struct GraphOptions final {
+    struct {
+        float min;
+        float max;
+        bool nodesScaleWithZoom;
+        bool edgesScaleWithZoom;
+    } zoom;
+    struct {
+        float repulsion;
+        float attraction;
+    } forceMultipliers;
+    struct {
+        float starting;
+        float decreasePerIteration;
+        float ending;
+    } temperature;
+    GraphNodeOptions nodes;
+    GraphEdgeOptions edges;
+} GraphOptions;
 
 typedef struct Node final {
     ImVec2 position;
@@ -56,33 +79,14 @@ typedef struct Edge final {
     ImVec2 labelSize;
     ImU32 color;
     ImU32 labelColor;
+    bool hasReverse;
 
     static Edge New(int src, int dst, std::string label, ImU32 color, ImU32 labelColor) noexcept;
-    void Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphEdgeOptions options,
+    void Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphOptions options,
               bool scaleWithZoom, const std::vector<Node>& nodes) noexcept;
     void DrawLabel(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphEdgeOptions options,
                    ImVec2 a, ImVec2 b) noexcept;
 } Edge;
-
-typedef struct GraphOptions final {
-    struct {
-        float min;
-        float max;
-        bool nodesScaleWithZoom;
-        bool edgesScaleWithZoom;
-    } zoom;
-    struct {
-        float repulsion;
-        float attraction;
-    } forceMultipliers;
-    struct {
-        float starting;
-        float decreasePerIteration;
-        float ending;
-    } temperature;
-    GraphNodeOptions nodes;
-    GraphEdgeOptions edges;
-} GraphOptions;
 
 class Graph final {
   public:

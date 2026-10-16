@@ -10,6 +10,14 @@ typedef struct Rect {
     ImVec2 max;
 } Rect;
 
+static float Length(const ImVec2& vec) noexcept {
+    return std::sqrt(vec.x * vec.x + vec.y * vec.y);
+}
+
+static ImVec2 Normalized(const ImVec2& vec) noexcept {
+    return vec / Length(vec);
+}
+
 static Rect GetVisibleWorldRect(ImVec2 canvasSize, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom) noexcept {
     Rect r;
 
@@ -91,10 +99,10 @@ void Node::DrawLabel(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, fl
 }
 
 Edge Edge::New(int src, int dst, std::string label, ImU32 color, ImU32 labelColor) noexcept {
-    return { src, dst, label, { -1, -1 }, color, labelColor };
+    return { src, dst, label, { -1, -1 }, color, labelColor, false };
 }
 
-void Edge::Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphEdgeOptions options,
+void Edge::Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphOptions options,
                 bool scaleWithZoom, const std::vector<Node>& nodes) noexcept {
     // LUSLOG_INFO("[Edge::Draw] Drawing edge: src = %d | dst = %d | label = \"%s\"", this->src, this->dst,
     // this->label.c_str());
@@ -106,19 +114,83 @@ void Edge::Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float z
         return;
     }
 
-    ImVec2 a = nodes[this->src].position;
-    ImVec2 b = nodes[this->dst].position;
+    const ImVec2 srcNodePosition = nodes[this->src].position;
+    const ImVec2 dstNodePosition = nodes[this->dst].position;
 
-    draw->AddLine(WorldSpaceToScreenSpace(a, canvasPos, cameraOffset, zoom),
-                  WorldSpaceToScreenSpace(b, canvasPos, cameraOffset, zoom), this->color,
-                  options.thickness * (scaleWithZoom ? zoom : 1));
+    const ImVec2 srcNodeScreenPosition = WorldSpaceToScreenSpace(srcNodePosition, canvasPos, cameraOffset, zoom);
+    const ImVec2 dstNodeScreenPosition = WorldSpaceToScreenSpace(dstNodePosition, canvasPos, cameraOffset, zoom);
+
+    ImVec2 dir = dstNodeScreenPosition - srcNodeScreenPosition;
+    const float len = Length(dir);
+
+    if (len > 0.001f) {
+        dir /= len;
+
+        const float scale = scaleWithZoom ? zoom : 1.0f;
+        const float nodeRadius = options.nodes.baseSize * scale;
+        const float arrowSize = options.edges.arrowSize * scale;
+        const float thickness = options.edges.thickness * scale;
+
+        const ImVec2 perp = ImVec2(-dir.y, dir.x);
+
+        const ImVec2 start = srcNodeScreenPosition + dir * nodeRadius;
+        const ImVec2 tip = dstNodeScreenPosition - dir * nodeRadius;
+
+        if (this->hasReverse) {
+            const float curveOffset = options.edges.reverseCurve * scale;
+
+            const ImVec2 base = dstNodeScreenPosition - dir * (nodeRadius + arrowSize) + perp * (curveOffset * 0.1f);
+
+            const ImVec2 mid = (start + base) * 0.5f;
+
+            // this was arrived at thru a lot of fiddling (https://www.desmos.com/calculator/nsgsx9df5s)
+            const float biasDenominator = std::sqrt(std::sqrt(100 * (base.x - start.x) * (base.x - start.x) + 100 * (base.y - start.y) * (base.y - start.y)));
+            const ImVec2 bias = ImVec2(-(base.y - start.y), base.x - start.x) / biasDenominator * curveOffset / 50.0f;
+
+            const ImVec2 control = mid + bias;
+
+            draw->AddBezierQuadratic(
+                start,
+                control,
+                base,
+                this->color,
+                thickness,
+                24
+            );
+
+            const ImVec2 arrowDirection = Normalized(base - control);
+            const ImVec2 arrowTip = base + arrowDirection * arrowSize;
+            const ImVec2 arrowPerp = ImVec2(-arrowDirection.y, arrowDirection.x) * arrowSize * 0.4f;
+            const ImVec2 arrowBase = arrowTip - arrowDirection * arrowSize;
+
+            draw->AddTriangleFilled(
+                arrowTip,
+                arrowBase + arrowPerp,
+                arrowBase - arrowPerp,
+                this->color
+            );
+        } else {
+            const ImVec2 arrowTip = dstNodeScreenPosition - dir * nodeRadius;
+            const ImVec2 base = arrowTip - dir * arrowSize;
+            const ImVec2 arrowPerp = perp * arrowSize * 0.4f;
+
+            draw->AddLine(start, base, this->color, thickness);
+
+            draw->AddTriangleFilled(
+                arrowTip,
+                base + arrowPerp,
+                base - arrowPerp,
+                this->color
+            );
+        }
+    }
 }
 
 void Edge::DrawLabel(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float zoom, GraphEdgeOptions options,
                      ImVec2 a, ImVec2 b) noexcept {
     ImVec2 delta = b - a;
 
-    float len = std::sqrt(delta.x * delta.x + delta.y * delta.y);
+    float len = Length(delta);
 
     if (len < 1e-5f) {
         return;
@@ -126,7 +198,7 @@ void Edge::DrawLabel(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, fl
 
     ImVec2 normal = { -delta.y / len, delta.x / len };
 
-    ImVec2 labelPosWorld = a * 0.6f + b * 0.4f + normal * options.label.separation;
+    ImVec2 labelPosWorld = a * 0.6f + b * 0.4f + normal * (this->hasReverse ? options.label.separationReverse : options.label.separationNoReverse);
 
     ImVec2 labelPosScreen = WorldSpaceToScreenSpace(labelPosWorld, canvasPos, cameraOffset, zoom);
 
@@ -170,6 +242,7 @@ Graph Graph::New(std::vector<Node> nodes, std::vector<Edge> edges, GraphOptions 
 
 Graph::Graph(std::vector<Node> _nodes, std::vector<Edge> _edges, GraphOptions _options) noexcept
     : nodes(_nodes), edges(_edges), options(_options) {
+    this->ReplaceEdges(edges);
 }
 
 #ifdef _MSC_VER
@@ -218,7 +291,7 @@ float Graph::StabilizeStep(float width, float height, float temperature) noexcep
         v.displacement += displacement;
     }
 
-    float totalDisplacement = 0;
+    //float totalDisplacement = 0;
     float maxDisplacement = 0;
 
     // apply displacements
@@ -232,7 +305,7 @@ float Graph::StabilizeStep(float width, float height, float temperature) noexcep
         if (len > maxDisplacement) {
             maxDisplacement = len;
         }
-        totalDisplacement += len;
+        //totalDisplacement += len;
     }
 
     // return totalDisplacement;
@@ -306,7 +379,7 @@ void Graph::Draw(ImVec2 canvasSize, ImVec2 canvasPos) noexcept {
             continue;
         }
 
-        e.Draw(draw, canvasPos, this->cameraOffset, this->zoom, this->options.edges,
+        e.Draw(draw, canvasPos, this->cameraOffset, this->zoom, this->options,
                this->options.zoom.edgesScaleWithZoom, this->nodes);
     }
 
@@ -385,5 +458,18 @@ void Graph::ResetView() noexcept {
 }
 
 void Graph::ReplaceEdges(std::vector<Edge> edges) noexcept {
+    //LUSLOG_INFO("[Graph::ReplaceEdges] Start");
     this->edges = edges;
+
+    for (Edge& edge : this->edges) {
+        for (Edge& edge2 : this->edges) {
+            if (edge.src == edge2.dst && edge.dst == edge2.src) {
+                //LUSLOG_INFO("[Graph::ReplaceEdges] edge & edge2 are inverses of each other");
+                edge.hasReverse = true;
+                edge2.hasReverse = true;
+            }
+        }
+    }
+
+    //LUSLOG_INFO("[Graph::ReplaceEdges] End");
 }
