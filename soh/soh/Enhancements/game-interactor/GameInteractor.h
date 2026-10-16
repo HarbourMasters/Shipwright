@@ -559,6 +559,7 @@ class GameInteractor {
         static void TeleportPlayer(int32_t nextEntrance);
         static void ClearAssignedButtons(uint8_t buttonSet);
         static void SetTimeOfDay(uint32_t time);
+        static void PlaySfx(uint16_t sfxId);
         static void SetCollisionViewer(bool active);
         static void EmulateButtonPress(int32_t button);
         static void AddOrTakeAmmo(int16_t amount, int16_t item);
