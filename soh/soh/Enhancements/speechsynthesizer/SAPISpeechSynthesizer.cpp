@@ -7,12 +7,17 @@
 
 #include "SAPISpeechSynthesizer.h"
 #include <sapi.h>
+#include <algorithm>
+#include <cmath>
 #include <thread>
 #include <string>
 #include <spdlog/common.h>
 #include <spdlog/fmt/xchar.h>
+#include <atomic>
 
 ISpVoice* ispVoice = NULL;
+// Read by the detached speaking thread; SAPI carries pitch as markup rather than a voice property.
+std::atomic<int32_t> sPitchAbsMiddle = 0;
 
 SAPISpeechSynthesizer::SAPISpeechSynthesizer() {
 }
@@ -42,7 +47,9 @@ void SpeakThreadTask(std::string text, std::string language) {
     auto wLanguage = CharToWideString(language);
 
     auto speakText = spdlog::fmt_lib::format(
-        L"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{}'>{}</speak>", wLanguage, wText);
+        L"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='{}'><pitch absmiddle='{}'/>{}</"
+        L"speak>",
+        wLanguage, sPitchAbsMiddle.load(), wText);
     ispVoice->Speak(speakText.c_str(), SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
 }
 
@@ -53,4 +60,16 @@ void SAPISpeechSynthesizer::Speak(const char* text, const char* language) {
 
     std::thread t1(SpeakThreadTask, textStr, languageStr);
     t1.detach();
+}
+
+void SAPISpeechSynthesizer::DoApplySettings(int32_t rate, int32_t volume, int32_t pitch) {
+    if (ispVoice == NULL) {
+        return;
+    }
+
+    // SAPI's rate is a -10..10 log scale where each end is a third of / triple the normal speed.
+    const double ratio = std::clamp(rate, 1, 1000) / 100.0;
+    ispVoice->SetRate(std::clamp((int32_t)std::lround(10.0 * std::log(ratio) / std::log(3.0)), -10, 10));
+    ispVoice->SetVolume((USHORT)std::clamp(volume, 0, 100));
+    sPitchAbsMiddle = std::clamp((pitch - 50) / 5, -10, 10);
 }
