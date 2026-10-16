@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00F12630 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x8450
+  symbol: gN64Heap_object_toki_objects

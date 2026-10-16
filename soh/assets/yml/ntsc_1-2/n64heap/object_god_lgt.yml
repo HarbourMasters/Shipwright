@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00FA1E70 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x4350
+  symbol: gN64Heap_object_god_lgt
