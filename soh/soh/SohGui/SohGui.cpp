@@ -53,7 +53,7 @@ static const inline std::vector<std::pair<const char*, const char*>> audioBacken
 #ifdef _WIN32
     { "wasapi", "Windows Audio Session API" },
 #endif
-#if defined(__linux)
+#if defined(__linux) && !defined(__ANDROID__)
     { "pulse", "PulseAudio" },
 #endif
 #ifdef __APPLE__

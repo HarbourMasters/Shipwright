@@ -337,6 +337,10 @@ cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
+## Android
+
+The SDL2/Gradle Android project, SDK/NDK versions, host `soh.o2r` preparation, build commands, ROM import flow, and supported ABIs are documented in [`android/README.md`](../android/README.md). Android requires a host-generated `soh.o2r`; the NDK build intentionally does not try to execute the cross-compiled asset packer. The `generate-builds` GitHub Actions workflow generates that archive on a host runner and supplies it to the Android APK job.
+
 # Compatible Roms
 See [`supportedHashes.json`](supportedHashes.json)
 

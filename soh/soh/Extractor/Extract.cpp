@@ -6,7 +6,11 @@
 #endif
 #include "Extract.h"
 #include "TorchExtract.h"
+#ifndef __ANDROID__
 #include "portable-file-dialogs.h"
+#else
+#include "soh/Android/AndroidBridge.h"
+#endif
 #include "spdlog/spdlog.h"
 #include <ship/utils/binarytools/BitConverter.h>
 #include "soh/ShipUtils.h"
@@ -317,6 +321,10 @@ bool Extractor::GetRomPathFromBox() {
         return false;
     }
     mCurrentRomPath = nameBuffer;
+#elif defined(__ANDROID__)
+    if (!SohAndroid::SelectRom(mCurrentRomPath)) {
+        return false;
+    }
 #else
     auto selection = pfd::open_file("Select a file", mSearchPath, { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 

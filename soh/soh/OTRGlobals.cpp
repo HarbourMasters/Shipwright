@@ -1,10 +1,11 @@
-﻿#include "OTRGlobals.h"
+#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <algorithm>
 #include <atomic>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
+#include <utility>
 #include <vector>
 #include <chrono>
 #include <optional>
@@ -13,10 +14,16 @@
 
 #include "ResourceManagerHelpers.h"
 #include <fast/Fast3dWindow.h>
+#ifdef __ANDROID__
+#include "soh/Android/TouchControls.h"
+#endif
 #include <libultraship/bridge/audiobridge.h>
 #include <libultraship/bridge/gfxdebuggerbridge.h>
 #include <libultraship/bridge/windowbridge.h>
 #include <ship/Context.h>
+#ifdef __ANDROID__
+#include <ship/config/Config.h>
+#endif
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
@@ -286,6 +293,10 @@ OTRGlobals::OTRGlobals() {
 
     context->InitConfiguration();
     context->InitConsoleVariables();
+#ifdef __ANDROID__
+    // Android has no windowed game surface; SDLActivity should hide system bars for play.
+    context->GetConfig()->SetBool("Window.Fullscreen.Enabled", true);
+#endif
 
     auto controlDeck = std::make_shared<LUS::ControlDeck>(std::vector<CONTROLLERBUTTONS_T>({
         BTN_CUSTOM_MODIFIER1,
@@ -305,9 +316,16 @@ OTRGlobals::OTRGlobals() {
 
     auto sohInputEditorWindow =
         std::make_shared<SohInputEditorWindow>(CVAR_WINDOW("ControllerConfiguration"), "Configure Controller");
-    sohFast3dWindow =
-        std::make_shared<Fast::Fast3dWindow>(std::vector<std::shared_ptr<Ship::GuiWindow>>({ sohInputEditorWindow }));
+    std::vector<std::shared_ptr<Ship::GuiWindow>> guiWindows = { sohInputEditorWindow };
+#ifdef __ANDROID__
+    guiWindows.push_back(std::make_shared<SohAndroid::TouchControlsWindow>());
+#endif
+    sohFast3dWindow = std::make_shared<Fast::Fast3dWindow>(std::move(guiWindows));
     context->InitWindow(sohFast3dWindow);
+#ifdef __ANDROID__
+    // Enable touch navigation in the extractor as well as during gameplay.
+    SohAndroid::TouchControls::Initialize();
+#endif
 
     SohGui::SetupMenu();
 
@@ -432,7 +450,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     bool generatedIsMQ = false;
     std::atomic<size_t> extractCount = 0, totalExtract = 0;
 
+#ifdef __ANDROID__
+    // Android stages the extractor assets into the app data directory, not the APK bundle path.
+    std::string installPath = std::filesystem::absolute(Ship::Context::GetAppDirectoryPath(appShortName)).string();
+#else
     std::string installPath = std::filesystem::absolute(Ship::Context::GetAppBundlePath()).string();
+#endif
     std::string dataPath = std::filesystem::absolute(Ship::Context::GetAppDirectoryPath(appShortName)).string();
     std::string file;
 

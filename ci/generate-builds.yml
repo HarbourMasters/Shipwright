@@ -1,0 +1,303 @@
+name: generate-builds
+on:
+  push:
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+
+  generate-soh-otr:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v7
+      with:
+        submodules: true
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2.23
+      with:
+        max-size: "2G"
+        evict-old-files: job
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
+        key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-otr-ccache-${{ github.ref }}
+          ${{ runner.os }}-otr-ccache
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
+    - name: Generate soh.o2r
+      run: |
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DSOH_TOOLS_ONLY=ON
+        cmake --build build-cmake --config Release --target GenerateSohOtr -j4
+    - name: Upload soh.o2r
+      uses: actions/upload-artifact@v7
+      with:
+        name: soh.o2r
+        path: soh.o2r
+        retention-days: 3
+
+  build-android:
+    needs: generate-soh-otr
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v7
+      with:
+        submodules: true
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+        cache: gradle
+        cache-dependency-path: |
+          android/gradle/wrapper/gradle-wrapper.properties
+          android/gradle.properties
+          android/*.gradle.kts
+          android/app/*.gradle.kts
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3
+    - name: Install Android SDK components
+      run: |
+        printf 'y\n%.0s' {1..100} | sdkmanager --licenses
+        sdkmanager --install \
+          "platform-tools" \
+          "platforms;android-35" \
+          "build-tools;35.0.0" \
+          "ndk;27.2.12479018" \
+          "cmake;3.31.6"
+    - name: Download generated soh.o2r
+      uses: actions/download-artifact@v8
+      with:
+        name: soh.o2r
+        path: .
+    - name: Assemble Android debug APK
+      working-directory: android
+      env:
+        CMAKE_BUILD_PARALLEL_LEVEL: 2
+      run: ./gradlew --no-daemon --max-workers=2 assembleDebug
+    - name: Upload Android APK
+      uses: actions/upload-artifact@v7
+      with:
+        name: soh-android-apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
+        if-no-files-found: error
+        retention-days: 3
+
+  build-macos:
+    needs: generate-soh-otr
+    runs-on: macos-14
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v7
+      with:
+        submodules: true
+    - name: Setup Macports
+      uses: melusina-org/setup-macports@v1
+      with:
+        parameters: '.github/macports.yml'
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2.23
+      with:
+        key: ${{ runner.os }} # ccache-macos-{{ timestamp }}
+        max-size: "2G"
+        evict-old-files: job
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
+    - name: Download soh.o2r
+      uses: actions/download-artifact@v8
+      with:
+        name: soh.o2r
+        path: build-cmake/soh
+    - name: Build SoH
+      run: |
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake -j
+        # Spotlight indexing the disk image CPack just made keeps hdiutil from
+        # unmounting it, failing the build with "Resource busy"
+        sudo mdutil -a -i off || true
+        (cd build-cmake && cpack)
+
+        mv _packages/*.dmg SoH.dmg
+        mv README.md readme.txt
+    - name: Upload build
+      uses: actions/upload-artifact@v7
+      with:
+        name: soh-mac
+        path: |
+          SoH.dmg
+          readme.txt
+
+  build-linux:
+    needs: generate-soh-otr
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: x86_64
+          - runner: ubuntu-22.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v7
+      with:
+        submodules: true
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2.23
+      with:
+        max-size: "2G"
+        evict-old-files: job
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
+        key: ${{ runner.os }}-${{ matrix.arch }}-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.arch }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-${{ matrix.arch }}-ccache
+    - name: Restore Cached deps folder
+      id: restore-cache-deps
+      uses: actions/cache/restore@v5
+      with:
+        key: ${{ runner.os }}-${{ matrix.arch }}-deps-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.arch }}-deps-${{ github.ref }}-
+          ${{ runner.os }}-${{ matrix.arch }}-deps-
+        path: deps
+    - name: Create deps folder
+      run: mkdir -p deps
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
+    - name: Install latest SDL
+      run: |
+        if [ ! -d "deps/SDL2-2.30.3" ]; then
+          wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
+          tar -xzf SDL2-2.30.3.tar.gz -C deps
+        fi
+        cd deps/SDL2-2.30.3
+        ./configure --enable-hidapi-libusb
+        make -j 10
+        sudo make install
+        sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.arch }}-linux-gnu/
+    - uses: ./.github/actions/install-sdl2-net
+    - name: Copy SDL libs to multiarch dir
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/${{ matrix.arch }}-linux-gnu/
+    - name: Remove distro tinyxml2
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
+    - name: Install libzip without crypto
+      run: |
+        sudo apt-get remove -y libzip-dev
+        if [ ! -d "deps/libzip-1.10.1" ]; then
+          wget https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.gz
+          tar -xzf libzip-1.10.1.tar.gz -C deps
+        fi
+        cd deps/libzip-1.10.1
+        mkdir -p build
+        cd build
+        cmake .. -DENABLE_COMMONCRYPTO=OFF -DENABLE_GNUTLS=OFF -DENABLE_MBEDTLS=OFF -DENABLE_OPENSSL=OFF
+        make
+        sudo make install
+        sudo cp -av /usr/local/lib/libzip* /lib/${{ matrix.arch }}-linux-gnu/
+    - name: Download soh.o2r
+      uses: actions/download-artifact@v8
+      with:
+        name: soh.o2r
+        path: build-cmake/soh
+    - name: Build SoH
+      run: |
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake --config Release -j4
+        (cd build-cmake && cpack -G External)
+
+        mv build-cmake/*.appimage soh.appimage
+      env:
+        CC: gcc-12
+        CXX: g++-12
+    - name: Upload build
+      uses: actions/upload-artifact@v7
+      with:
+        name: soh-linux-${{ matrix.arch }}
+        path: soh.appimage
+    - name: Save Cache deps folder
+      if: ${{ github.ref_name == github.event.repository.default_branch }}
+      uses: actions/cache/save@v5
+      with:
+        key: ${{ steps.restore-cache-deps.outputs.cache-primary-key }}
+        path: deps
+
+  build-windows:
+    needs: generate-soh-otr
+    runs-on: windows-latest
+    steps:
+    - name: Install dependencies
+      run: |
+        choco install ninja -y
+        Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
+    - name: Git Checkout
+      uses: actions/checkout@v7
+      with:
+        submodules: true
+    - name: Configure ccache
+      uses: hendrikmuhs/ccache-action@v1.2.23
+      with:
+        max-size: "2G"
+        evict-old-files: job
+        save: ${{ github.ref_name == github.event.repository.default_branch }}
+        key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-${{ github.ref }}
+          ${{ runner.os }}-ccache
+    - name: Restore Cached VCPKG folder
+      id: restore-cache-vcpkg
+      uses: actions/cache/restore@v5
+      with:
+        key: ${{ runner.os }}-vcpkg-${{ github.ref }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-${{ github.ref }}-
+          ${{ runner.os }}-vcpkg-
+        path: vcpkg
+    - name: Configure Developer Command Prompt
+      uses: TheMrMilchmann/setup-msvc-dev@v4
+      with:
+        arch: x64
+    - name: Download soh.o2r
+      uses: actions/download-artifact@v8
+      with:
+        name: soh.o2r
+        path: build-windows/soh
+    - name: Build SoH
+      env:
+        VCPKG_ROOT: ${{github.workspace}}/vcpkg
+      run: |
+        set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
+        cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-windows --config Release --parallel 10
+
+        (cd build-windows && cpack)
+        cd ..
+        mv _packages/*.zip _packages/soh-windows.zip
+    - name: Unzip package
+      run: Expand-Archive -Path _packages/soh-windows.zip -DestinationPath soh-windows
+    - name: Upload build
+      uses: actions/upload-artifact@v7
+      with:
+        name: soh-windows
+        path: soh-windows
+    - name: Save Cache VCPKG folder
+      if: ${{ github.ref_name == github.event.repository.default_branch }}
+      uses: actions/cache/save@v5
+      with:
+        key: ${{ steps.restore-cache-vcpkg.outputs.cache-primary-key }}
+        path: vcpkg

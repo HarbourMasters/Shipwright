@@ -13,6 +13,8 @@ void SohStatsWindow::DrawElement() {
     ImGui::Text("Platform: iOS");
 #elif defined(__APPLE__)
     ImGui::Text("Platform: macOS");
+#elif defined(__ANDROID__)
+    ImGui::Text("Platform: Android");
 #elif defined(__linux__)
     ImGui::Text("Platform: Linux");
 #else

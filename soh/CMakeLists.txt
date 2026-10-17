@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.26.0 FATAL_ERROR)
 
-set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+# Preserve the API level selected by the Android NDK toolchain.
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+endif()
 
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
@@ -104,6 +107,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship SYSTEM)
+endif()
+
+if(ANDROID)
+    # Keep libultraship's OpenGL renderer enabled; USE_OPENGLES makes its renderer
+    # include GLES3 headers and select the ES shader path instead of desktop GL.
+    # Route SDL_Init through a SOH bridge so it can request an ES 3.0 context.
+    target_compile_definitions(libultraship PRIVATE SDL_Init=SohAndroidSDL_Init)
+    target_compile_definitions(ImGui PRIVATE IMGUI_IMPL_OPENGL_ES3)
 endif()
 
 set(PROJECT_NAME soh)
@@ -226,7 +237,13 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+if(ANDROID)
+    # SDLActivity loads libmain.so and resolves the SDL_main entry point by name.
+    add_library(${PROJECT_NAME} SHARED ${ALL_FILES})
+    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
+else()
+    add_executable(${PROJECT_NAME} ${ALL_FILES})
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
@@ -297,15 +314,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(dr_libs)
 
-find_package(SDL2)
-set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
-
-find_package(SDL2_net)
-
-if(NOT SDL2_net_FOUND)
-    message(STATUS "SDL2_net not found (it's possible the version installed is too old).")
+if(ANDROID)
+    # SDL2 and SDL2_net are built from source by the root Android dependency setup.
+    set(SDL2-INCLUDE "")
+    set(SDL2-NET-INCLUDE "${SOH_ANDROID_SDL2_NET_INCLUDE_DIR}")
 else()
-    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    find_package(SDL2)
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
+
+    find_package(SDL2_net)
+
+    if(NOT SDL2_net_FOUND)
+        message(STATUS "SDL2_net not found (it's possible the version installed is too old).")
+    else()
+        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
+    endif()
 endif()
 
 if (ESPEAK)
@@ -398,7 +421,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
         "F3DEX_GBI_2;"
         "_CONSOLE;"
         "_CRT_SECURE_NO_WARNINGS;"
-        "ENABLE_OPENGL;"
+        $<$<NOT:$<BOOL:${ANDROID}>>:ENABLE_OPENGL>
         "UNICODE;"
         "_UNICODE;"
         SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
@@ -595,22 +618,29 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         )
     endif()
 endif()
+
+if(ANDROID)
+    # Keep the app library aligned for devices using 16 KB memory pages.
+    target_link_options(${PROJECT_NAME} PRIVATE "-Wl,-z,max-page-size=16384")
+endif()
 ################################################################################
 # Pre build events
 ################################################################################
-if (CMAKE_GENERATOR MATCHES "Visual Studio")
+if(NOT ANDROID)
+    if (CMAKE_GENERATOR MATCHES "Visual Studio")
+        add_custom_command(
+            TARGET ${PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml ${CMAKE_BINARY_DIR}/soh/assets
+        )
+    endif()
     add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml ${CMAKE_BINARY_DIR}/soh/assets
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMENT "Copying asset ymls..."
+        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml $<TARGET_FILE_DIR:soh>/assets
     )
 endif()
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMENT "Copying asset ymls..."
-    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml $<TARGET_FILE_DIR:soh>/assets
-)
 ################################################################################
 # Dependencies
 ################################################################################
@@ -663,6 +693,27 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
             "version;"
             "setupapi"
         )
+    endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    find_library(MATH_LIBRARY m)
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "torch;"
+        SDL2::SDL2
+        SDL2_net
+        Ogg::ogg
+        vorbis
+        vorbisenc
+        vorbisfile
+        Opus::opus
+        Opusfile::Opusfile
+        Threads::Threads
+        ${CMAKE_DL_LIBS}
+    )
+    if(MATH_LIBRARY)
+        list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES ${MATH_LIBRARY})
     endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     find_package(SDL2)
@@ -753,15 +804,17 @@ INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION debug COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION . COMPONENT ship)
 endif()
 
-find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
-execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+if(NOT ANDROID)
+    find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
+    execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
+endif()
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
 INSTALL(TARGETS soh DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.o2r DESTINATION ../Resources COMPONENT ship)
-elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
+elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS|Android")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()
 
