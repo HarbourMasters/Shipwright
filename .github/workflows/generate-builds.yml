@@ -64,7 +64,9 @@ jobs:
           android/*.gradle.kts
           android/app/*.gradle.kts
     - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
+      uses: android-actions/setup-android@v4
+      with:
+        packages: ''
     - name: Install Android SDK components
       run: |
         printf 'y\n%.0s' {1..100} | sdkmanager --licenses
