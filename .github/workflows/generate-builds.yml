@@ -2,6 +2,7 @@ name: generate-builds
 on:
   push:
   pull_request:
+  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -41,54 +42,6 @@ jobs:
       with:
         name: soh.o2r
         path: soh.o2r
-        retention-days: 3
-
-  build-android:
-    needs: generate-soh-otr
-    runs-on: ubuntu-22.04
-    steps:
-    - name: Git Checkout
-      uses: actions/checkout@v7
-      with:
-        submodules: true
-    - name: Set up Java 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: '17'
-        cache: gradle
-        cache-dependency-path: |
-          android/gradle/wrapper/gradle-wrapper.properties
-          android/gradle.properties
-          android/*.gradle.kts
-          android/app/*.gradle.kts
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-    - name: Install Android SDK components
-      run: |
-        printf 'y\n%.0s' {1..100} | sdkmanager --licenses
-        sdkmanager --install \
-          "platform-tools" \
-          "platforms;android-35" \
-          "build-tools;35.0.0" \
-          "ndk;27.2.12479018" \
-          "cmake;3.31.6"
-    - name: Download generated soh.o2r
-      uses: actions/download-artifact@v8
-      with:
-        name: soh.o2r
-        path: .
-    - name: Assemble Android debug APK
-      working-directory: android
-      env:
-        CMAKE_BUILD_PARALLEL_LEVEL: 2
-      run: ./gradlew --no-daemon --max-workers=2 assembleDebug
-    - name: Upload Android APK
-      uses: actions/upload-artifact@v7
-      with:
-        name: soh-android-apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
-        if-no-files-found: error
         retention-days: 3
 
   build-macos:
