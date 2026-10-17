@@ -1378,6 +1378,7 @@ void BossVa_SetupBodyPhase4(BossVa* this, PlayState* play) {
     this->timer2 = (s16)(Rand_ZeroOne() * 150.0f) + 300;
     sBodyState = 1;
     sPhase4HP = 4;
+    GameInteractor_ExecuteOnBossVaHealthInit(&sPhase4HP);
     if (this->actor.shape.yOffset != 0.0f) {
         this->timer = -30;
     }
@@ -1426,6 +1427,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                             GameInteractor_ExecuteOnBossDefeat(&this->actor);
                             return;
                         }
+                        GameInteractor_ExecuteOnBossVaHealthInit(&sPhase4HP);
                         this->actor.speedXZ = -10.0f;
                         this->timer = -170 - (s16)(Rand_ZeroOne() * 150.0f);
                     }
