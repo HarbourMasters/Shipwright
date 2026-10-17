@@ -760,7 +760,7 @@ static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
             // The hint could mean several items, no spoilers!
             continue;
         }
-        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED || loc->GetCheckStatus() == RCSHOW_KNOWN) {
             loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
             changed = true;
         }
@@ -1130,7 +1130,7 @@ void CheckTrackerDialogMessage() {
     auto identifyCheck = [](RandomizerCheck rc) {
         auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
         RandomizerCheckStatus status = loc->GetCheckStatus();
-        if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN_OR_HINTED) {
+        if (status == RCSHOW_UNCHECKED || status == RCSHOW_KNOWN || status == RCSHOW_SEEN_OR_HINTED) {
             loc->SetCheckStatus(RCSHOW_IDENTIFIED);
             RecalculateAvailableChecks();
         }
