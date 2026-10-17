@@ -189,6 +189,8 @@ s16 areaCheckTotals[RCAREA_INVALID];
 uint16_t totalChecks = 0;
 uint16_t totalChecksAvailable = 0;
 uint16_t totalChecksGotten = 0;
+std::array<uint16_t, RCAREA_INVALID> areaChecksKnown = {};
+uint16_t totalChecksKnown = 0;
 bool optCollapseAll; // A bool that will collapse all checks once
 bool optExpandAll;   // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
@@ -221,6 +223,9 @@ bool mystery = false;
 bool showLogicTooltip = false;
 bool enableAvailableChecks = false;
 bool onlyShowAvailable = false;
+// The Known count and filter appear with "Mark Seen Items as Discovered".
+bool showKnownChecks = false;
+bool onlyShowKnown = false;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
@@ -329,6 +334,14 @@ static bool IsShownAsDiscovered(RandomizerCheckStatus status) {
     return status == RCSHOW_DISCOVERED && CVarGetInteger(CVAR_TRACKER_CHECK("DiscoveredItems"), 0);
 }
 
+// A Known check shows its item but is not collected yet: discovered in the world, seen in a shop, or named by a hint.
+static bool IsCheckKnown(RandomizerCheck rc) {
+    Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+    RandomizerCheckStatus status = itemLocation->GetCheckStatus();
+    return !mystery && !itemLocation->GetIsSkipped() &&
+           (status == RCSHOW_SEEN_OR_HINTED || status == RCSHOW_IDENTIFIED || IsShownAsDiscovered(status));
+}
+
 bool IsCheckHidden(RandomizerCheck rc) {
     Rando::ItemLocation* itemLocation = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLocation->GetCheckStatus();
@@ -342,6 +355,20 @@ bool IsCheckHidden(RandomizerCheck rc) {
 
     return !showHidden && ((skipped && hideSkipped) || (seen && hideSeen) || (discovered && hideDiscovered) ||
                            (scummed && hideScummed) || (unchecked && hideUnchecked));
+}
+
+// Statuses change from many places, so the Known totals are counted fresh each draw instead of kept in step.
+static void CountKnownChecks() {
+    totalChecksKnown = 0;
+    for (auto& [rcArea, checks] : checksByArea) {
+        areaChecksKnown[rcArea] = 0;
+        for (auto rc : checks) {
+            if (IsVisibleInCheckTracker(rc) && !IsCheckHidden(rc) && IsCheckKnown(rc)) {
+                areaChecksKnown[rcArea]++;
+            }
+        }
+        totalChecksKnown += areaChecksKnown[rcArea];
+    }
 }
 
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
@@ -1309,6 +1336,8 @@ void CheckTrackerWindow::DrawElement() {
     showLogicTooltip = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
     enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
     onlyShowAvailable = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
+    showKnownChecks = CVarGetInteger(CVAR_TRACKER_CHECK("DiscoveredItems"), 0) && !mystery;
+    onlyShowKnown = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowKnown"), 0);
 
     hideShopUnshuffledChecks = CVarGetInteger(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"), 0);
     alwaysShowGS = CVarGetInteger(CVAR_TRACKER_CHECK("AlwaysShowGSLocs"), 0);
@@ -1356,6 +1385,9 @@ void CheckTrackerWindow::DrawElement() {
             availableChecksStartingRegion = RR_ROOT;
             availableChecksStartingAgeTime = RAT_NONE;
         }
+        if (showKnownChecks) {
+            CountKnownChecks();
+        }
 
         // Quick Options
 #ifdef __WIIU__
@@ -1390,6 +1422,16 @@ void CheckTrackerWindow::DrawElement() {
                         .Color(THEME_COLOR))) {
                 doAreaScroll = true;
                 RecalculateAllAreaTotals();
+            }
+        }
+        if (showKnownChecks && CVarGetInteger(CVAR_TRACKER_CHECK("KnownChecksToggleVisible"), 1)) {
+            if (UIWidgets::CVarCheckbox(
+                    "Only Show Known Checks", CVAR_TRACKER_CHECK("OnlyShowKnown"),
+                    UIWidgets::CheckboxOptions(
+                        { { .tooltip = "When active, only checks with a known item that is not collected yet will be "
+                                       "shown: discovered in the world, seen in a shop, or named by a hint." } })
+                        .Color(THEME_COLOR))) {
+                doAreaScroll = true;
             }
         }
         if (CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0)) {
@@ -1438,6 +1480,9 @@ void CheckTrackerWindow::DrawElement() {
             if (enableAvailableChecks) {
                 totalChecksSS << totalChecksAvailable << " Available / ";
             }
+            if (showKnownChecks) {
+                totalChecksSS << totalChecksKnown << " Known / ";
+            }
             totalChecksSS << totalChecksGotten << " Checked / " << totalChecks << " Total";
             ImGui::Text("%s", totalChecksSS.str().c_str());
         }
@@ -1445,6 +1490,7 @@ void CheckTrackerWindow::DrawElement() {
         bool headerPresent =
             CVarGetInteger(CVAR_TRACKER_CHECK("HiddenItemsToggleVisible"), 1) ||
             (enableAvailableChecks && CVarGetInteger(CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"), 1)) ||
+            (showKnownChecks && CVarGetInteger(CVAR_TRACKER_CHECK("KnownChecksToggleVisible"), 1)) ||
             CVarGetInteger(CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"), 0) ||
             CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1) ||
             CVarGetInteger(CVAR_TRACKER_CHECK("CheckTotalsVisible"), 1);
@@ -1497,7 +1543,8 @@ void CheckTrackerWindow::DrawElement() {
             if ((shouldHideFilteredAreas && filterAreasHidden[rcArea]) ||
                 (!showHidden &&
                  ((hideComplete && thisAreaFullyChecked) || (hideIncomplete && !thisAreaFullyChecked))) ||
-                (enableAvailableChecks && onlyShowAvailable && areaChecksAvailable[rcArea] == 0)) {
+                (enableAvailableChecks && onlyShowAvailable && areaChecksAvailable[rcArea] == 0) ||
+                (showKnownChecks && onlyShowKnown && areaChecksKnown[rcArea] == 0)) {
                 doDraw = false;
             } else {
                 // Get the colour for the area
@@ -1542,6 +1589,10 @@ void CheckTrackerWindow::DrawElement() {
                     if (enableAvailableChecks) {
                         areaTotalsSS << static_cast<uint16_t>(areaChecksAvailable[rcArea]) << " / ";
                         areaTotalsTooltipSS << "Available / ";
+                    }
+                    if (showKnownChecks) {
+                        areaTotalsSS << areaChecksKnown[rcArea] << " / ";
+                        areaTotalsTooltipSS << "Known / ";
                     }
                     areaTotalsSS << static_cast<uint16_t>(areaChecksGotten[rcArea]) << " / "
                                  << static_cast<uint16_t>(areaCheckTotals[rcArea]) << ")";
@@ -2188,6 +2239,9 @@ void DrawLocation(RandomizerCheck rc) {
     if (enableAvailableChecks && onlyShowAvailable && !available) {
         return;
     }
+    if (showKnownChecks && onlyShowKnown && !IsCheckKnown(rc)) {
+        return;
+    }
 
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && hideCollected) {
@@ -2682,6 +2736,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
         UIWidgets::CVarCheckbox("Available Checks Toggle", CVAR_TRACKER_CHECK("AvailableChecksToggleVisible"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+        UIWidgets::CVarCheckbox("Known Checks Toggle", CVAR_TRACKER_CHECK("KnownChecksToggleVisible"),
+                                UIWidgets::CheckboxOptions()
+                                    .Tooltip("Shown while \"Mark Seen Items as Discovered\" is enabled.")
+                                    .Color(THEME_COLOR)
+                                    .DefaultValue(true));
         UIWidgets::CVarCheckbox("Expand/Collapse Buttons", CVAR_TRACKER_CHECK("ExpandCollapseButtonsVisible"),
                                 UIWidgets::CheckboxOptions().Color(THEME_COLOR).DefaultValue(false));
         UIWidgets::CVarCheckbox("Search Input", CVAR_TRACKER_CHECK("SearchInputVisible"),
