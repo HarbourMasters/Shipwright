@@ -9,7 +9,7 @@
 #include <ship/Context.h>
 
 #include "randomizer_check_tracker.h"
-#include "CheckTrackerKnown.h"
+#include "CheckTrackerDiscovered.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizer_tracker_windows.h"
@@ -56,7 +56,7 @@ namespace CheckTracker {
 static WidgetInfo backgroundColorWidget;
 static WidgetInfo windowTypeWidget;
 static WidgetInfo dungeonSpoilerWidget;
-static WidgetInfo knownItemsWidget;
+static WidgetInfo discoveredItemsWidget;
 static WidgetInfo hideUnshuffledShopWidget;
 static WidgetInfo showGSWidget;
 static WidgetInfo showLogicWidget;
@@ -212,7 +212,7 @@ int sectionId;
 bool hideUnchecked = false;
 bool hideScummed = false;
 bool hideSeen = false;
-bool hideKnown = false;
+bool hideDiscovered = false;
 bool hideSkipped = false;
 bool hideSaved = false;
 bool hideCollected = false;
@@ -260,7 +260,7 @@ const Color_RGBA8 Color_Unchecked_Extra_Default = { 255, 255, 255, 255 };       
 const Color_RGBA8 Color_Skipped_Main_Default = { 160, 160, 160, 255 };          // Grey
 const Color_RGBA8 Color_Skipped_Extra_Default = { 160, 160, 160, 255 };         // Grey
 const Color_RGBA8 Color_Seen_Extra_Default = { 255, 255, 255, 255 };            // TODO
-const Color_RGBA8 Color_Known_Extra_Default = { 0, 190, 170, 255 };             // Teal
+const Color_RGBA8 Color_Discovered_Extra_Default = { 0, 190, 170, 255 };        // Teal
 const Color_RGBA8 Color_Hinted_Extra_Default = { 255, 255, 255, 255 };          // TODO
 const Color_RGBA8 Color_Collected_Extra_Default = { 242, 101, 34, 255 };        // Orange
 const Color_RGBA8 Color_Scummed_Extra_Default = { 0, 174, 239, 255 };           // Blue
@@ -278,8 +278,8 @@ Color_RGBA8 Color_Skipped_Main = { 160, 160, 160, 255 };          // Grey
 Color_RGBA8 Color_Skipped_Extra = { 160, 160, 160, 255 };         // Grey
 Color_RGBA8 Color_Seen_Main = { 255, 255, 255, 255 };             // TODO
 Color_RGBA8 Color_Seen_Extra = { 160, 160, 160, 255 };            // TODO
-Color_RGBA8 Color_Known_Main = { 255, 255, 255, 255 };            // White
-Color_RGBA8 Color_Known_Extra = { 0, 190, 170, 255 };             // Teal
+Color_RGBA8 Color_Discovered_Main = { 255, 255, 255, 255 };       // White
+Color_RGBA8 Color_Discovered_Extra = { 0, 190, 170, 255 };        // Teal
 Color_RGBA8 Color_Hinted_Main = { 255, 255, 255, 255 };           // TODO
 Color_RGBA8 Color_Hinted_Extra = { 255, 255, 255, 255 };          // TODO
 Color_RGBA8 Color_Collected_Main = { 255, 255, 255, 255 };        // White
@@ -324,9 +324,9 @@ uint16_t GetTotalChecksGotten() {
     return totalChecksGotten;
 }
 
-// A Known check only displays as Known when the player opted in; otherwise it is treated as Unchecked.
-static bool IsShownAsKnown(RandomizerCheckStatus status) {
-    return status == RCSHOW_KNOWN && CVarGetInteger(CVAR_TRACKER_CHECK("KnownItems"), 0);
+// A Discovered check only displays as Discovered when the player opted in; otherwise it is treated as Unchecked.
+static bool IsShownAsDiscovered(RandomizerCheckStatus status) {
+    return status == RCSHOW_DISCOVERED && CVarGetInteger(CVAR_TRACKER_CHECK("DiscoveredItems"), 0);
 }
 
 bool IsCheckHidden(RandomizerCheck rc) {
@@ -337,10 +337,10 @@ bool IsCheckHidden(RandomizerCheck rc) {
     bool obtained = itemLocation->HasObtained();
     bool seen = status == RCSHOW_SEEN_OR_HINTED || status == RCSHOW_IDENTIFIED;
     bool scummed = status == RCSHOW_SCUMMED;
-    bool known = IsShownAsKnown(status);
-    bool unchecked = status == RCSHOW_UNCHECKED || (status == RCSHOW_KNOWN && !known);
+    bool discovered = IsShownAsDiscovered(status);
+    bool unchecked = status == RCSHOW_UNCHECKED || (status == RCSHOW_DISCOVERED && !discovered);
 
-    return !showHidden && ((skipped && hideSkipped) || (seen && hideSeen) || (known && hideKnown) ||
+    return !showHidden && ((skipped && hideSkipped) || (seen && hideSeen) || (discovered && hideDiscovered) ||
                            (scummed && hideScummed) || (unchecked && hideUnchecked));
 }
 
@@ -691,11 +691,11 @@ void ClearAreaChecksAndTotals() {
     totalChecksAvailable = 0;
 }
 
-// Debug tool for testing Known detection: sends every Known check back to Unchecked.
-static void ResetKnownChecks() {
+// Debug tool for testing Discovered detection: sends every Discovered check back to Unchecked.
+static void ResetDiscoveredChecks() {
     for (int rc = RC_UNKNOWN_CHECK; rc < RC_MAX; rc++) {
         auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-        if (location->GetCheckStatus() == RCSHOW_KNOWN) {
+        if (location->GetCheckStatus() == RCSHOW_DISCOVERED) {
             location->SetCheckStatus(RCSHOW_UNCHECKED);
         }
     }
@@ -772,7 +772,7 @@ static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
             // The hint could mean several items, no spoilers!
             continue;
         }
-        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED || loc->GetCheckStatus() == RCSHOW_KNOWN) {
+        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED || loc->GetCheckStatus() == RCSHOW_DISCOVERED) {
             loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
             changed = true;
         }
@@ -1142,7 +1142,7 @@ void CheckTrackerDialogMessage() {
     auto identifyCheck = [](RandomizerCheck rc) {
         auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
         RandomizerCheckStatus status = loc->GetCheckStatus();
-        if (status == RCSHOW_UNCHECKED || status == RCSHOW_KNOWN || status == RCSHOW_SEEN_OR_HINTED) {
+        if (status == RCSHOW_UNCHECKED || status == RCSHOW_DISCOVERED || status == RCSHOW_SEEN_OR_HINTED) {
             loc->SetCheckStatus(RCSHOW_IDENTIFIED);
             RecalculateAvailableChecks();
         }
@@ -1197,9 +1197,9 @@ void SaveTrackerData(const SaveContext& saveContext, int sectionID, bool fullSav
                 SaveManager::Instance->SaveData("randomizerCheck", check);
                 SaveManager::Instance->SaveData("status", savedStatus);
                 SaveManager::Instance->SaveData("skipped", isSkipped);
-                if (savedStatus == RCSHOW_KNOWN &&
-                    OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->GetKnownAsStandIn()) {
-                    SaveManager::Instance->SaveData("knownAsStandIn", true);
+                if (savedStatus == RCSHOW_DISCOVERED &&
+                    OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->GetDiscoveredAsStandIn()) {
+                    SaveManager::Instance->SaveData("discoveredAsStandIn", true);
                 }
             });
         }
@@ -1223,13 +1223,13 @@ void LoadFile() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerCheckStatus status;
             bool skipped;
-            bool knownAsStandIn;
+            bool discoveredAsStandIn;
             RandomizerCheck rc;
             SaveManager::Instance->LoadData("randomizerCheck", rc, RC_UNKNOWN_CHECK);
             SaveManager::Instance->LoadData("status", status, RCSHOW_UNCHECKED);
             SaveManager::Instance->LoadData("skipped", skipped, false);
-            SaveManager::Instance->LoadData("knownAsStandIn", knownAsStandIn, false);
-            OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetKnownAsStandIn(knownAsStandIn);
+            SaveManager::Instance->LoadData("discoveredAsStandIn", discoveredAsStandIn, false);
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetDiscoveredAsStandIn(discoveredAsStandIn);
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetCheckStatus(status);
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(skipped);
         });
@@ -1246,7 +1246,7 @@ void Teardown() {
     areasSpoiled = 0;
     filterAreasHidden = { 0 };
     filterChecksHidden = { 0 };
-    CheckTrackerKnownTeardown();
+    CheckTrackerDiscoveredTeardown();
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
@@ -1285,8 +1285,9 @@ void CheckTrackerWindow::DrawElement() {
     Color_Skipped_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Skipped.ExtraColor.Value"), Color_Skipped_Extra_Default);
     Color_Seen_Main = CVarGetColor(CVAR_TRACKER_CHECK("Seen.MainColor.Value"), Color_Main_Default);
     Color_Seen_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Seen.ExtraColor.Value"), Color_Seen_Extra_Default);
-    Color_Known_Main = CVarGetColor(CVAR_TRACKER_CHECK("Known.MainColor.Value"), Color_Main_Default);
-    Color_Known_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Known.ExtraColor.Value"), Color_Known_Extra_Default);
+    Color_Discovered_Main = CVarGetColor(CVAR_TRACKER_CHECK("Discovered.MainColor.Value"), Color_Main_Default);
+    Color_Discovered_Extra =
+        CVarGetColor(CVAR_TRACKER_CHECK("Discovered.ExtraColor.Value"), Color_Discovered_Extra_Default);
     Color_Hinted_Main = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.MainColor.Value"), Color_Main_Default);
     Color_Hinted_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Hinted.ExtraColor.Value"), Color_Hinted_Extra_Default);
     Color_Collected_Main = CVarGetColor(CVAR_TRACKER_CHECK("Collected.MainColor.Value"), Color_Main_Default);
@@ -1299,7 +1300,7 @@ void CheckTrackerWindow::DrawElement() {
     hideUnchecked = CVarGetInteger(CVAR_TRACKER_CHECK("Unchecked.Hide"), 0);
     hideScummed = CVarGetInteger(CVAR_TRACKER_CHECK("Scummed.Hide"), 0);
     hideSeen = CVarGetInteger(CVAR_TRACKER_CHECK("Seen.Hide"), 0);
-    hideKnown = CVarGetInteger(CVAR_TRACKER_CHECK("Known.Hide"), 0);
+    hideDiscovered = CVarGetInteger(CVAR_TRACKER_CHECK("Discovered.Hide"), 0);
     hideSkipped = CVarGetInteger(CVAR_TRACKER_CHECK("Skipped.Hide"), 0);
     hideSaved = CVarGetInteger(CVAR_TRACKER_CHECK("Saved.Hide"), 0);
     hideCollected = CVarGetInteger(CVAR_TRACKER_CHECK("Collected.Hide"), 0);
@@ -1608,17 +1609,17 @@ bool ShouldShowCheck(RandomizerCheck check) {
     std::string search = (Rando::StaticData::GetLocation(check)->GetShortName() + " " +
                           Rando::StaticData::GetLocation(check)->GetName() + " " +
                           RandomizerCheckObjects::GetRCAreaName(Rando::StaticData::GetLocation(check)->GetArea()));
-    bool known = IsShownAsKnown(itemLoc->GetCheckStatus());
+    bool discovered = IsShownAsDiscovered(itemLoc->GetCheckStatus());
     if (itemLoc->HasObtained() || itemLoc->GetCheckStatus() == RCSHOW_SCUMMED ||
         (!mystery &&
          (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED || itemLoc->GetCheckStatus() == RCSHOW_SEEN_OR_HINTED ||
-          known) &&
+          discovered) &&
          itemLoc->GetPlacedRandomizerGet() != RG_ICE_TRAP)) {
         search += " " + itemLoc->GetPlacedItemName().GetForLanguage(gSaveContext.language);
     } else if (itemLoc->GetCheckStatus() == RCSHOW_IDENTIFIED && !mystery) {
         search +=
             OTRGlobals::Instance->gRandoContext->overrides[check].GetTrickName().GetForLanguage(gSaveContext.language);
-    } else if ((itemLoc->GetCheckStatus() == RCSHOW_SEEN_OR_HINTED || known) && !mystery) {
+    } else if ((itemLoc->GetCheckStatus() == RCSHOW_SEEN_OR_HINTED || discovered) && !mystery) {
         search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike())
                       .GetName()
                       .GetForLanguage(gSaveContext.language);
@@ -2178,7 +2179,7 @@ void DrawLocation(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
     RandomizerCheckStatus status = itemLoc->GetCheckStatus();
-    if (status == RCSHOW_KNOWN && !IsShownAsKnown(status)) {
+    if (status == RCSHOW_DISCOVERED && !IsShownAsDiscovered(status)) {
         status = RCSHOW_UNCHECKED;
     }
     bool skipped = itemLoc->GetIsSkipped();
@@ -2224,15 +2225,15 @@ void DrawLocation(RandomizerCheck rc) {
                 ? Color_Seen_Extra
                 : Color_Seen_Main;
         extraColor = Color_Seen_Extra;
-    } else if (status == RCSHOW_KNOWN) {
-        if (!showHidden && hideKnown) {
+    } else if (status == RCSHOW_DISCOVERED) {
+        if (!showHidden && hideDiscovered) {
             return;
         }
         mainColor =
             !IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID()) && !IS_RANDO
-                ? Color_Known_Extra
-                : Color_Known_Main;
-        extraColor = Color_Known_Extra;
+                ? Color_Discovered_Extra
+                : Color_Discovered_Main;
+        extraColor = Color_Discovered_Extra;
     } else if (status == RCSHOW_SCUMMED) {
         if (!showHidden && hideScummed) {
             return;
@@ -2268,7 +2269,7 @@ void DrawLocation(RandomizerCheck rc) {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4.0f, 3.0f });
     float sz = ImGui::GetFrameHeight();
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN_OR_HINTED || status == RCSHOW_IDENTIFIED ||
-        status == RCSHOW_KNOWN || status == RCSHOW_SCUMMED || skipped) {
+        status == RCSHOW_DISCOVERED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz),
                                    UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             if (skipped) {
@@ -2341,7 +2342,7 @@ void DrawLocation(RandomizerCheck rc) {
                 break;
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN_OR_HINTED:
-            case RCSHOW_KNOWN:
+            case RCSHOW_DISCOVERED:
                 if (IS_RANDO) {
                     const auto checkType = loc->GetRCType();
                     const bool hideMerchantName =
@@ -2353,7 +2354,7 @@ void DrawLocation(RandomizerCheck rc) {
                     const bool hideShopName = checkType == RCTYPE_SHOP && mystery && IsMysteryShopItem(rc);
                     const bool revealItemName = !(hideMerchantName || hideScrubName || hideShopName);
 
-                    if (status == RCSHOW_KNOWN && itemLoc->GetKnownAsStandIn()) {
+                    if (status == RCSHOW_DISCOVERED && itemLoc->GetDiscoveredAsStandIn()) {
                         txt = Rando::StaticData::RetrieveItem(RG_BLUE_RUPEE)
                                   .GetName()
                                   .GetForLanguage(gSaveContext.language);
@@ -2419,7 +2420,7 @@ static std::set<std::string> rainbowCVars = {
     CVAR_TRACKER_CHECK("Unchecked.MainColor"),      CVAR_TRACKER_CHECK("Unchecked.ExtraColor"),
     CVAR_TRACKER_CHECK("Skipped.MainColor"),        CVAR_TRACKER_CHECK("Skipped.ExtraColor"),
     CVAR_TRACKER_CHECK("Seen.MainColor"),           CVAR_TRACKER_CHECK("Seen.ExtraColor"),
-    CVAR_TRACKER_CHECK("Known.MainColor"),          CVAR_TRACKER_CHECK("Known.ExtraColor"),
+    CVAR_TRACKER_CHECK("Discovered.MainColor"),     CVAR_TRACKER_CHECK("Discovered.ExtraColor"),
     CVAR_TRACKER_CHECK("Hinted.MainColor"),         CVAR_TRACKER_CHECK("Hinted.ExtraColor"),
     CVAR_TRACKER_CHECK("Collected.MainColor"),      CVAR_TRACKER_CHECK("Collected.ExtraColor"),
     CVAR_TRACKER_CHECK("Scummed.MainColor"),        CVAR_TRACKER_CHECK("Scummed.ExtraColor"),
@@ -2639,7 +2640,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget, THEME_COLOR);
-        SohGui::GetSohMenu()->MenuDrawItem(knownItemsWidget, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(discoveredItemsWidget, THEME_COLOR);
         if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
             UIWidgets::ButtonOptions resetOptions;
             ImGui::SameLine();
@@ -2647,12 +2648,12 @@ void CheckTrackerSettingsWindow::DrawElement() {
             ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x -
                                  (ImGui::CalcTextSize(ICON_FA_UNDO).x + resetOptions.padding.x * 2));
             ImGui::BeginDisabled(!GameInteractor::IsSaveLoaded() || !IS_RANDO);
-            if (UIWidgets::Button(ICON_FA_UNDO "##ResetKnownChecks",
+            if (UIWidgets::Button(ICON_FA_UNDO "##ResetDiscoveredChecks",
                                   resetOptions.Size(UIWidgets::Sizes::Inline)
                                       .Color(THEME_COLOR)
-                                      .Tooltip("Debug: reset every Known check in this save to Unchecked, so seen "
+                                      .Tooltip("Debug: reset every Discovered check in this save to Unchecked, so seen "
                                                "items can be marked again."))) {
-                ResetKnownChecks();
+                ResetDiscoveredChecks();
             }
             ImGui::EndDisabled();
         }
@@ -2715,9 +2716,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
             "mode.",
             THEME_COLOR);
         CheckTracker::ImGuiDrawTwoColorPickerSection(
-            "Known", CVAR_TRACKER_CHECK("Known.MainColor"), CVAR_TRACKER_CHECK("Known.ExtraColor"), Color_Known_Main,
-            Color_Known_Extra, Color_Main_Default, Color_Known_Extra_Default, CVAR_TRACKER_CHECK("Known.Hide"),
-            "Items you've seen in the world but haven't collected.", THEME_COLOR);
+            "Discovered", CVAR_TRACKER_CHECK("Discovered.MainColor"), CVAR_TRACKER_CHECK("Discovered.ExtraColor"),
+            Color_Discovered_Main, Color_Discovered_Extra, Color_Main_Default, Color_Discovered_Extra_Default,
+            CVAR_TRACKER_CHECK("Discovered.Hide"), "Items you've seen in the world but haven't collected.",
+            THEME_COLOR);
         CheckTracker::ImGuiDrawTwoColorPickerSection(
             "Scummed", CVAR_TRACKER_CHECK("Scummed.MainColor"), CVAR_TRACKER_CHECK("Scummed.ExtraColor"),
             Color_Scummed_Main, Color_Scummed_Extra, Color_Main_Default, Color_Scummed_Extra_Default,
@@ -2756,7 +2758,7 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(CheckTrackerDialogMessage);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandoHintRevealed>(CheckTrackerHintRevealed);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
-        []() { CheckTrackerKnownFrame(sectionId); });
+        []() { CheckTrackerDiscoveredFrame(sectionId); });
 }
 
 void CheckTrackerWindow::UpdateElement() {
@@ -2787,13 +2789,13 @@ void RegisterCheckTrackerWidgets() {
                               "Otherwise, Vanilla/MQ dungeon locations must be unlocked."));
     SohGui::GetSohMenu()->AddSearchWidget({ dungeonSpoilerWidget, "Randomizer", "Check Tracker", "General Settings" });
 
-    knownItemsWidget = { .name = "Mark Seen Items as Known", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
-    knownItemsWidget.CVar(CVAR_TRACKER_CHECK("KnownItems"))
+    discoveredItemsWidget = { .name = "Mark Seen Items as Discovered", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    discoveredItemsWidget.CVar(CVAR_TRACKER_CHECK("DiscoveredItems"))
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
                      .Tooltip("If enabled, an item's name is shown in the tracker once you have seen it in the world. "
                               "This can occasionally mark an item that was not clearly visible."));
-    SohGui::GetSohMenu()->AddSearchWidget({ knownItemsWidget, "Randomizer", "Check Tracker", "General Settings" });
+    SohGui::GetSohMenu()->AddSearchWidget({ discoveredItemsWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     hideUnshuffledShopWidget = { .name = "Hide Unshuffled Shop Item Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     hideUnshuffledShopWidget.CVar(CVAR_TRACKER_CHECK("HideUnshuffledShopChecks"))

@@ -1,4 +1,4 @@
-#include "CheckTrackerKnown.h"
+#include "CheckTrackerDiscovered.h"
 
 #include <cmath>
 #include <string>
@@ -52,46 +52,46 @@ void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play);
 namespace CheckTracker {
 
 // Consecutive gameplay frames an item must pass every test before it is marked.
-static constexpr int kKnownFramesRequired = 8;
+static constexpr int kDiscoveredFramesRequired = 8;
 // Smallest projected item radius, in native 240-line screen lines, that counts as readable.
-static constexpr float kKnownMinScreenLines = 4.0f;
+static constexpr float kDiscoveredMinScreenLines = 4.0f;
 // Most fog an item may be blended with, from 0 (clear) to 1 (only fog color), and still count as readable.
-static constexpr float kKnownMaxFog = 0.5f;
+static constexpr float kDiscoveredMaxFog = 0.5f;
 // The four edge rays aim at this fraction of the item's radius from its center.
-static constexpr float kKnownRayOffsetFraction = 0.8f;
+static constexpr float kDiscoveredRayOffsetFraction = 0.8f;
 // Edge rays that must be clear, alongside the center ray, for an item to count as seen.
-static constexpr int kKnownMinEdgeRays = 2;
+static constexpr int kDiscoveredMinEdgeRays = 2;
 // Approximate drawn radius of a shuffled item model.
-static constexpr float kKnownItemRadius = 15.0f;
+static constexpr float kDiscoveredItemRadius = 15.0f;
 // Heart containers draw larger than other items.
-static constexpr float kKnownHeartContainerRadius = 25.0f;
+static constexpr float kDiscoveredHeartContainerRadius = 25.0f;
 // EnItem00 drops rest on the ground, so their center sits above the actor position.
-static constexpr float kKnownGroundedYOffset = 15.0f;
+static constexpr float kDiscoveredGroundedYOffset = 15.0f;
 // Webs a sight ray may pass through before it counts as blocked.
-static constexpr int kKnownMaxWebHops = 4;
+static constexpr int kDiscoveredMaxWebHops = 4;
 // How far past a web hit the ray is re-cast from.
-static constexpr float kKnownWebStep = 2.0f;
+static constexpr float kDiscoveredWebStep = 2.0f;
 // Nested display list calls followed before a fake wall model counts as undecodable.
-static constexpr int kKnownMaxDListDepth = 16;
+static constexpr int kDiscoveredMaxDListDepth = 16;
 // Size of the RSP vertex buffer in libultraship's interpreter.
-static constexpr int kKnownVertexSlots = 64;
+static constexpr int kDiscoveredVertexSlots = 64;
 
-struct KnownCandidate {
+struct DiscoveredCandidate {
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
     GetItemEntry drawnEntry = {};
-    float radius = kKnownItemRadius;
+    float radius = kDiscoveredItemRadius;
     float yOffset = 0.0f;
     // Set by PassesFilter when the drawn model is the blue rupee shown in place of an unobtainable item.
     bool standIn = false;
 };
 
 // Keyed by check, not actor, so nothing dangles across frames and duplicate actors count once.
-static std::unordered_map<RandomizerCheck, int> knownFrames;
+static std::unordered_map<RandomizerCheck, int> discoveredFrames;
 static int16_t lastSceneNum = -1;
 
 // Check types describe the vanilla item, not how it is shown, so only exclude the ones where a drawn model does not
 // mean the player has seen the item. Identification already limits marking to actors that draw the real item.
-static bool KnownTypeAllowed(RandomizerCheck rc) {
+static bool DiscoveredTypeAllowed(RandomizerCheck rc) {
     switch (Rando::StaticData::GetLocation(rc)->GetRCType()) {
         case RCTYPE_SHOP:
         case RCTYPE_SCRUB:
@@ -104,7 +104,7 @@ static bool KnownTypeAllowed(RandomizerCheck rc) {
 }
 
 // Resolves an actor's check and the item entry its draw function renders.
-static bool IdentifyCandidate(Actor* actor, KnownCandidate& candidate) {
+static bool IdentifyCandidate(Actor* actor, DiscoveredCandidate& candidate) {
     switch (actor->id) {
         case ACTOR_EN_ITEM00: {
             EnItem00* item00 = reinterpret_cast<EnItem00*>(actor);
@@ -121,7 +121,7 @@ static bool IdentifyCandidate(Actor* actor, KnownCandidate& candidate) {
                                                                                     item00->ogParams);
             }
             candidate.drawnEntry = item00->itemEntry;
-            candidate.yOffset = kKnownGroundedYOffset;
+            candidate.yOffset = kDiscoveredGroundedYOffset;
             break;
         }
         case ACTOR_EN_SI: {
@@ -134,7 +134,7 @@ static bool IdentifyCandidate(Actor* actor, KnownCandidate& candidate) {
             candidate.rc =
                 OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
             candidate.drawnEntry = reinterpret_cast<ItemBHeart*>(actor)->sohItemEntry;
-            candidate.radius = kKnownHeartContainerRadius;
+            candidate.radius = kDiscoveredHeartContainerRadius;
             break;
         }
         case ACTOR_ITEM_ETCETERA: {
@@ -188,11 +188,11 @@ static bool SameItem(const GetItemEntry& a, const GetItemEntry& b) {
     return a.modIndex == b.modIndex && a.getItemId == b.getItemId;
 }
 
-static bool PassesFilter(KnownCandidate& candidate) {
+static bool PassesFilter(DiscoveredCandidate& candidate) {
     auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(candidate.rc);
     RandomizerCheckStatus status = location->GetCheckStatus();
-    bool upgradable = status == RCSHOW_KNOWN && location->GetKnownAsStandIn();
-    if (!KnownTypeAllowed(candidate.rc) || (status != RCSHOW_UNCHECKED && !upgradable)) {
+    bool upgradable = status == RCSHOW_DISCOVERED && location->GetDiscoveredAsStandIn();
+    if (!DiscoveredTypeAllowed(candidate.rc) || (status != RCSHOW_UNCHECKED && !upgradable)) {
         return false;
     }
     // Disguised ice traps match on both sides. An item the player cannot obtain yet draws as a blue rupee, which is
@@ -207,7 +207,7 @@ static bool PassesFilter(KnownCandidate& candidate) {
     return candidate.standIn;
 }
 
-static bool InSight(Actor* actor, const KnownCandidate& candidate) {
+static bool InSight(Actor* actor, const DiscoveredCandidate& candidate) {
     // projectedPos and projectedW are clip coordinates from Actor_DrawAll, earlier this frame.
     float w = actor->projectedW;
     if (w <= 0.0f) {
@@ -222,7 +222,7 @@ static bool InSight(Actor* actor, const KnownCandidate& candidate) {
     }
     float screenLines =
         candidate.radius / (w * std::tan(DEG_TO_RAD(gPlayState->view.fovy) / 2.0f)) * (SCREEN_HEIGHT / 2);
-    if (screenLines < kKnownMinScreenLines) {
+    if (screenLines < kDiscoveredMinScreenLines) {
         return false;
     }
     // Play_SetFog passes (fogNear, 1000) to Gfx_SetFog: below 0 everything is fogged, from 1000 nothing is, and
@@ -232,7 +232,7 @@ static bool InSight(Actor* actor, const KnownCandidate& candidate) {
         return false;
     }
     if (fogNear < 1000 &&
-        (500.0f * actor->projectedPos.z / w + 500.0f - fogNear) / (1000.0f - fogNear) > kKnownMaxFog) {
+        (500.0f * actor->projectedPos.z / w + 500.0f - fogNear) / (1000.0f - fogNear) > kDiscoveredMaxFog) {
         return false;
     }
     return actor->room == gPlayState->roomCtx.curRoom.num || actor->room < 0;
@@ -365,8 +365,8 @@ struct FakeWall {
 };
 
 struct DListDecodeState {
-    Vec3f slots[kKnownVertexSlots];
-    bool loaded[kKnownVertexSlots] = {};
+    Vec3f slots[kDiscoveredVertexSlots];
+    bool loaded[kDiscoveredVertexSlots] = {};
     DecodedMesh& mesh;
     // A room model keeps only surfaces that hide what is behind them.
     bool room = false;
@@ -405,7 +405,7 @@ static VertexSpan GetVertices(std::shared_ptr<Ship::IResource> resource) {
 }
 
 static bool LoadVertices(const VertexSpan& vertices, size_t first, int count, int dest, DListDecodeState& state) {
-    if (vertices.data == nullptr || count < 0 || dest < 0 || dest + count > kKnownVertexSlots ||
+    if (vertices.data == nullptr || count < 0 || dest < 0 || dest + count > kDiscoveredVertexSlots ||
         first + count > vertices.size) {
         return false;
     }
@@ -419,7 +419,7 @@ static bool LoadVertices(const VertexSpan& vertices, size_t first, int count, in
 
 static bool AddTriangle(DListDecodeState& state, uint32_t a, uint32_t b, uint32_t c) {
     for (uint32_t index : { a, b, c }) {
-        if (index >= kKnownVertexSlots || !state.loaded[index]) {
+        if (index >= kDiscoveredVertexSlots || !state.loaded[index]) {
             return false;
         }
     }
@@ -450,7 +450,7 @@ static bool AddTriangle(DListDecodeState& state, uint32_t a, uint32_t b, uint32_
 // that uses one fails the decode.
 static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeState& state, int depth) {
     auto dList = AsResource<Fast::DisplayList>(resource, Fast::ResourceType::DisplayList);
-    if (dList == nullptr || dList->UCode != ucode_f3dex2 || depth > kKnownMaxDListDepth) {
+    if (dList == nullptr || dList->UCode != ucode_f3dex2 || depth > kDiscoveredMaxDListDepth) {
         return false;
     }
     const std::vector<Gfx>& cmds = dList->Instructions;
@@ -817,15 +817,15 @@ static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
             return true;
         }
         DynaPolyActor* dyna = DynaPoly_GetActor(&gPlayState->colCtx, bgId);
-        if (dyna == nullptr || dyna->actor.id != ACTOR_BG_YDAN_SP || hop >= kKnownMaxWebHops) {
+        if (dyna == nullptr || dyna->actor.id != ACTOR_BG_YDAN_SP || hop >= kDiscoveredMaxWebHops) {
             return false;
         }
         Vec3f remaining = Sub(to, hitPos);
         float length = std::sqrt(Dot(remaining, remaining));
-        if (length <= kKnownWebStep) {
+        if (length <= kDiscoveredWebStep) {
             return true;
         }
-        float step = kKnownWebStep / length;
+        float step = kDiscoveredWebStep / length;
         from = { hitPos.x + remaining.x * step, hitPos.y + remaining.y * step, hitPos.z + remaining.z * step };
     }
 }
@@ -857,7 +857,7 @@ static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, GatedOc
 }
 
 // Casts to the item center and four points around it, square to the view direction.
-static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOccluders& occluders,
+static bool RaysClear(Actor* actor, const DiscoveredCandidate& candidate, GatedOccluders& occluders,
                       std::vector<FakeWall>& fakeWalls, const std::vector<const DecodedMesh*>& roomMeshes) {
     const View& view = gPlayState->view;
     Vec3f forward = { view.lookAt.x - view.eye.x, view.lookAt.y - view.eye.y, view.lookAt.z - view.eye.z };
@@ -868,7 +868,7 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOcclud
     }
     Vec3f center = actor->world.pos;
     center.y += candidate.yOffset;
-    float offset = candidate.radius * kKnownRayOffsetFraction;
+    float offset = candidate.radius * kDiscoveredRayOffsetFraction;
     const Vec3f targets[] = {
         center,
         { center.x + right.x * offset, center.y + right.y * offset, center.z + right.z * offset },
@@ -892,37 +892,37 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOcclud
             }
         }
         if (RayClear(view.eye, target, actor, occluders, fakeWalls, roomMeshes)) {
-            if (i > 0 && ++edgesClear >= kKnownMinEdgeRays) {
+            if (i > 0 && ++edgesClear >= kDiscoveredMinEdgeRays) {
                 return true;
             }
-        } else if (i == 0 || ++edgesBlocked > ARRAY_COUNT(targets) - 1 - kKnownMinEdgeRays) {
+        } else if (i == 0 || ++edgesBlocked > ARRAY_COUNT(targets) - 1 - kDiscoveredMinEdgeRays) {
             return false;
         }
     }
     return false;
 }
 
-void CheckTrackerKnownFrame(int saveSectionId) {
+void CheckTrackerDiscoveredFrame(int saveSectionId) {
     if (gPlayState == nullptr || !GameInteractor::IsSaveLoaded() || !IS_RANDO || IS_BOSS_RUSH ||
-        !CVarGetInteger(CVAR_TRACKER_CHECK("KnownItems"), 0) ||
+        !CVarGetInteger(CVAR_TRACKER_CHECK("DiscoveredItems"), 0) ||
         CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
-        knownFrames.clear();
+        discoveredFrames.clear();
         return;
     }
     if (gPlayState->sceneNum != lastSceneNum) {
         lastSceneNum = gPlayState->sceneNum;
-        knownFrames.clear();
+        discoveredFrames.clear();
         roomMeshes.clear();
     }
     // Play_Draw skips Actor_DrawAll while paused, so isDrawn and projectedPos are stale.
     if (gPlayState->pauseCtx.state != 0 || gDbgCamEnabled || CVarGetInteger(CVAR_CHEAT("NoClip"), 0)) {
-        knownFrames.clear();
+        discoveredFrames.clear();
         return;
     }
     // Halted actors leave the OC list empty, and fades or a filled screen draw over the actors.
     if (gPlayState->haltAllActors || gPlayState->transitionTrigger != TRANS_TRIGGER_OFF ||
         gPlayState->transitionMode != TRANS_MODE_OFF || gPlayState->envCtx.fillScreen) {
-        knownFrames.clear();
+        discoveredFrames.clear();
         // Reloading the same scene can place a room model where a cached one used to be.
         if (gPlayState->transitionTrigger != TRANS_TRIGGER_OFF || gPlayState->transitionMode != TRANS_MODE_OFF) {
             roomMeshes.clear();
@@ -940,7 +940,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
             if (!actor->isDrawn) {
                 continue;
             }
-            KnownCandidate candidate;
+            DiscoveredCandidate candidate;
             if (!IdentifyCandidate(actor, candidate) || passing.contains(candidate.rc) || !PassesFilter(candidate) ||
                 !InSight(actor, candidate) || !RaysClear(actor, candidate, occluders, fakeWalls, rooms)) {
                 continue;
@@ -953,26 +953,26 @@ void CheckTrackerKnownFrame(int saveSectionId) {
     std::unordered_map<RandomizerCheck, int> counts;
     bool anyMarked = false;
     for (auto [rc, standIn] : passing) {
-        auto it = knownFrames.find(rc);
-        int frames = (it == knownFrames.end() ? 0 : it->second) + 1;
-        if (frames >= kKnownFramesRequired) {
+        auto it = discoveredFrames.find(rc);
+        int frames = (it == discoveredFrames.end() ? 0 : it->second) + 1;
+        if (frames >= kDiscoveredFramesRequired) {
             // Set before the status, so the status hook (and the Anchor packet it sends) sees the form.
             auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
-            location->SetKnownAsStandIn(standIn);
-            location->SetCheckStatus(RCSHOW_KNOWN);
+            location->SetDiscoveredAsStandIn(standIn);
+            location->SetCheckStatus(RCSHOW_DISCOVERED);
             anyMarked = true;
         } else {
             counts[rc] = frames;
         }
     }
-    knownFrames.swap(counts);
+    discoveredFrames.swap(counts);
     if (anyMarked) {
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, saveSectionId, true);
     }
 }
 
-void CheckTrackerKnownTeardown() {
-    knownFrames.clear();
+void CheckTrackerDiscoveredTeardown() {
+    discoveredFrames.clear();
     lastSceneNum = -1;
     fakeWallMeshes.clear();
     roomMeshes.clear();
