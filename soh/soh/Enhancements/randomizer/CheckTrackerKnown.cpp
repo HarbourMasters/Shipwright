@@ -1,12 +1,19 @@
 #include "CheckTrackerKnown.h"
 
 #include <cmath>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
+#include <fast/resource/type/Vertex.h>
 #include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 
 #include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -16,6 +23,10 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
+#include "objects/object_demo_kekkai/object_demo_kekkai.h"
+#include "objects/object_haka_objects/object_haka_objects.h"
+#include "objects/object_hakach_objects/object_hakach_objects.h"
+#include "objects/object_menkuri_objects/object_menkuri_objects.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
 #include "overlays/actors/ovl_En_Ishi/z_en_ishi.h"
@@ -48,6 +59,14 @@ static constexpr float kKnownItemRadius = 15.0f;
 static constexpr float kKnownHeartContainerRadius = 25.0f;
 // EnItem00 drops rest on the ground, so their center sits above the actor position.
 static constexpr float kKnownGroundedYOffset = 15.0f;
+// Webs a sight ray may pass through before it counts as blocked.
+static constexpr int kKnownMaxWebHops = 4;
+// How far past a web hit the ray is re-cast from.
+static constexpr float kKnownWebStep = 2.0f;
+// Nested display list calls followed before a fake wall model counts as undecodable.
+static constexpr int kKnownMaxDListDepth = 16;
+// Size of the RSP vertex buffer in libultraship's interpreter.
+static constexpr int kKnownVertexSlots = 64;
 
 struct KnownCandidate {
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
@@ -258,27 +277,16 @@ static bool GatedOccluderHit(Vec3f& from, Vec3f& to) {
     return false;
 }
 
-static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item) {
-    Vec3f from = eye;
-    Vec3f to = target;
-    Vec3f hitPos;
-    CollisionPoly* poly;
-    s32 bgId;
-    if (BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId)) {
-        return false;
-    }
-    // Play_Update clears the OC list before Actor_UpdateAll, so it still holds this frame's colliders here.
-    Player* player = GET_PLAYER(gPlayState);
-    Actor* exclusions[] = { item, &player->actor, player->naviActor };
-    if (CollisionCheck_LineOCCheck(gPlayState, &gPlayState->colChkCtx, &from, &to, exclusions,
-                                   ARRAY_COUNT(exclusions))) {
-        return false;
-    }
-    return !GatedOccluderHit(from, to);
-}
-
 static Vec3f Cross(const Vec3f& a, const Vec3f& b) {
     return { a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x };
+}
+
+static float Dot(const Vec3f& a, const Vec3f& b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+static Vec3f Sub(const Vec3f& a, const Vec3f& b) {
+    return { a.x - b.x, a.y - b.y, a.z - b.z };
 }
 
 static bool Normalize(Vec3f& v) {
@@ -290,8 +298,378 @@ static bool Normalize(Vec3f& v) {
     return true;
 }
 
+// Model-space triangles of a fake wall display list.
+struct FakeWallMesh {
+    bool valid = false;
+    std::vector<Vec3f> corners; // three per triangle
+    Vec3f min = { 0.0f, 0.0f, 0.0f };
+    Vec3f max = { 0.0f, 0.0f, 0.0f };
+};
+
+// A fake wall drawn opaque this frame.
+struct FakeWall {
+    Actor* actor;
+    const FakeWallMesh* mesh; // nullptr when its model could not be decoded
+    MtxF worldToModel;
+};
+
+struct DListDecodeState {
+    Vec3f slots[kKnownVertexSlots];
+    bool loaded[kKnownVertexSlots] = {};
+    FakeWallMesh& mesh;
+};
+
+// Keyed by display list path; node-based, so FakeWall::mesh stays valid while entries are added.
+static std::unordered_map<std::string, FakeWallMesh> fakeWallMeshes;
+
+template <class T>
+static std::shared_ptr<T> AsResource(std::shared_ptr<Ship::IResource> resource, Fast::ResourceType type) {
+    if (resource == nullptr || resource->GetInitData()->Type != static_cast<uint32_t>(type)) {
+        return nullptr;
+    }
+    return std::static_pointer_cast<T>(resource);
+}
+
+static bool LoadVertices(const std::shared_ptr<Fast::Vertex>& vertices, size_t first, int count, int dest,
+                         DListDecodeState& state) {
+    if (vertices == nullptr || count < 0 || dest < 0 || dest + count > kKnownVertexSlots ||
+        first + count > vertices->VertexList.size()) {
+        return false;
+    }
+    for (int i = 0; i < count; i++) {
+        const Vtx& vtx = vertices->VertexList[first + i];
+        state.slots[dest + i] = { (float)vtx.v.ob[0], (float)vtx.v.ob[1], (float)vtx.v.ob[2] };
+        state.loaded[dest + i] = true;
+    }
+    return true;
+}
+
+static bool AddTriangle(DListDecodeState& state, uint32_t a, uint32_t b, uint32_t c) {
+    for (uint32_t index : { a, b, c }) {
+        if (index >= kKnownVertexSlots || !state.loaded[index]) {
+            return false;
+        }
+        const Vec3f& corner = state.slots[index];
+        FakeWallMesh& mesh = state.mesh;
+        if (mesh.corners.empty()) {
+            mesh.min = corner;
+            mesh.max = corner;
+        }
+        mesh.min = { std::fmin(mesh.min.x, corner.x), std::fmin(mesh.min.y, corner.y),
+                     std::fmin(mesh.min.z, corner.z) };
+        mesh.max = { std::fmax(mesh.max.x, corner.x), std::fmax(mesh.max.y, corner.y),
+                     std::fmax(mesh.max.z, corner.z) };
+        mesh.corners.push_back(corner);
+    }
+    return true;
+}
+
+// Walks a display list the way libultraship's F3DEX2 interpreter does, keeping only vertex loads, triangles and
+// calls. Segmented addresses cannot be resolved here, so a command that uses one fails the decode.
+static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeState& state, int depth) {
+    auto dList = AsResource<Fast::DisplayList>(resource, Fast::ResourceType::DisplayList);
+    if (dList == nullptr || dList->UCode != ucode_f3dex2 || depth > kKnownMaxDListDepth) {
+        return false;
+    }
+    const std::vector<Gfx>& cmds = dList->Instructions;
+    for (size_t i = 0; i < cmds.size(); i++) {
+        uintptr_t w0 = cmds[i].words.w0;
+        uintptr_t w1 = cmds[i].words.w1;
+        uint8_t opcode = (w0 >> 24) & 0xFF;
+        switch (opcode) {
+            case G_VTX_OTR_HASH: {
+                if (++i >= cmds.size()) {
+                    return false;
+                }
+                uint64_t hash = ((uint64_t)cmds[i].words.w0 << 32) + cmds[i].words.w1;
+                auto vertices = AsResource<Fast::Vertex>(ResourceLoad(hash), Fast::ResourceType::Vertex);
+                if (vertices == nullptr) {
+                    return false;
+                }
+                // After the first draw the interpreter overwrites the byte offset with the resolved pointer.
+                uintptr_t offset = w1 > 0xFFFFF ? w1 - (uintptr_t)vertices->VertexList.data() : w1;
+                if (offset % sizeof(Vtx) != 0) {
+                    return false;
+                }
+                int count = (w0 >> 12) & 0xFF;
+                if (!LoadVertices(vertices, offset / sizeof(Vtx), count, (int)((w0 >> 1) & 0x7F) - count, state)) {
+                    return false;
+                }
+                break;
+            }
+            case G_VTX_OTR_FILEPATH: {
+                if (++i >= cmds.size()) {
+                    return false;
+                }
+                auto vertices = AsResource<Fast::Vertex>(ResourceLoad((const char*)w1), Fast::ResourceType::Vertex);
+                uintptr_t layout = cmds[i].words.w1;
+                if (!LoadVertices(vertices, layout & 0xFFFF, (int)cmds[i].words.w0, (int)(layout >> 16), state)) {
+                    return false;
+                }
+                break;
+            }
+            case G_TRI1:
+                if (!AddTriangle(state, ((w0 >> 16) & 0xFF) / 2, ((w0 >> 8) & 0xFF) / 2, (w0 & 0xFF) / 2)) {
+                    return false;
+                }
+                break;
+            case G_TRI1_OTR:
+                if (!AddTriangle(state, w0 & 0xFFFF, (w1 >> 16) & 0xFFFF, w1 & 0xFFFF)) {
+                    return false;
+                }
+                break;
+            case G_TRI2:
+                if (!AddTriangle(state, (w0 >> 17) & 0x7F, (w0 >> 9) & 0x7F, (w0 >> 1) & 0x7F) ||
+                    !AddTriangle(state, (w1 >> 17) & 0x7F, (w1 >> 9) & 0x7F, (w1 >> 1) & 0x7F)) {
+                    return false;
+                }
+                break;
+            case G_QUAD:
+                if (!AddTriangle(state, ((w0 >> 16) & 0xFF) / 2, ((w0 >> 8) & 0xFF) / 2, (w0 & 0xFF) / 2) ||
+                    !AddTriangle(state, ((w1 >> 16) & 0xFF) / 2, ((w1 >> 8) & 0xFF) / 2, (w1 & 0xFF) / 2)) {
+                    return false;
+                }
+                break;
+            case G_DL_OTR_HASH:
+            case G_DL_OTR_FILEPATH: {
+                std::shared_ptr<Ship::IResource> child;
+                if (opcode == G_DL_OTR_HASH) {
+                    if (++i >= cmds.size()) {
+                        return false;
+                    }
+                    child = ResourceLoad(((uint64_t)cmds[i].words.w0 << 32) + cmds[i].words.w1);
+                } else {
+                    child = ResourceLoad((const char*)w1);
+                }
+                if (!DecodeDList(child, state, depth + 1)) {
+                    return false;
+                }
+                // A branch never returns to this list.
+                if ((w0 >> 16) & 1) {
+                    return true;
+                }
+                break;
+            }
+            case G_ENDDL:
+                return true;
+            case G_VTX:
+            case G_DL:
+            case G_DL_INDEX:
+                return false;
+            case G_SETTIMG_OTR_HASH:
+            case G_BRANCH_Z_OTR:
+            case G_MARKER:
+            case G_MTX_OTR:
+            case G_MOVEMEM_OTR:
+                // The second half of a 128-bit command.
+                i++;
+                break;
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
+static const FakeWallMesh* GetFakeWallMesh(const char* path) {
+    auto it = fakeWallMeshes.find(path);
+    if (it == fakeWallMeshes.end()) {
+        it = fakeWallMeshes.emplace(path, FakeWallMesh()).first;
+        DListDecodeState state = { .mesh = it->second };
+        try {
+            it->second.valid = DecodeDList(ResourceMgr_GetResourceByNameHandlingMQ(path), state, 0);
+        } catch ([[maybe_unused]] const std::exception& e) { it->second.valid = false; }
+    }
+    return it->second.valid ? &it->second : nullptr;
+}
+
+// Looks up the display list a fake wall's draw function renders; path is nullptr for an unknown variant.
+static bool FakeWallDList(Actor* actor, const char*& path) {
+    static const char* const sGndNisekabeDLists[] = {
+        gLightTrialFakeWallDL,
+        gGanonsCastleUnusedFakeWallDL,
+        gGanonsCastleScrubsFakeWallDL,
+    };
+    static const char* const sMenkuriNisekabeDLists[] = { gGTGFakeWallDL, gGTGFakeCeilingDL };
+    // gBotwBloodSplatterDL, drawn on top of variant 0, is always translucent.
+    static const char* const sHakaMeganeDLists[] = {
+        gBotwFakeWallsAndFloorsDL,     gBotwThreeFakeFloorsDL,        gBotwHoleTrap2DL,
+        object_haka_objects_DL_0040F0, object_haka_objects_DL_0043B0, object_haka_objects_DL_001120,
+        object_haka_objects_DL_0045A0, object_haka_objects_DL_0047F0, object_haka_objects_DL_0018F0,
+        object_haka_objects_DL_0049B0, object_haka_objects_DL_003CF0, object_haka_objects_DL_004B70,
+        object_haka_objects_DL_002ED0,
+    };
+    const char* const* dLists;
+    size_t dListCount;
+    size_t index;
+    switch (actor->id) {
+        case ACTOR_BG_GND_NISEKABE:
+            dLists = sGndNisekabeDLists;
+            dListCount = ARRAY_COUNT(sGndNisekabeDLists);
+            index = actor->params & 0xFF;
+            break;
+        case ACTOR_BG_MENKURI_NISEKABE:
+            dLists = sMenkuriNisekabeDLists;
+            dListCount = ARRAY_COUNT(sMenkuriNisekabeDLists);
+            index = actor->params & 0xFF;
+            break;
+        case ACTOR_BG_HAKA_MEGANE:
+            dLists = sHakaMeganeDLists;
+            dListCount = ARRAY_COUNT(sHakaMeganeDLists);
+            index = actor->params < 0 ? dListCount : actor->params;
+            break;
+        default:
+            return false;
+    }
+    path = index < dListCount ? dLists[index] : nullptr;
+    return true;
+}
+
+static std::vector<FakeWall> CollectFakeWalls() {
+    std::vector<FakeWall> walls;
+    for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head; actor != nullptr; actor = actor->next) {
+        const char* path;
+        // Actor_DrawAll only draws a REACT_TO_LENS actor in its own pass when it ends up drawing Opa; with the lens
+        // up these draw Xlu from Actor_DrawLensActors and leave isDrawn false.
+        if (!FakeWallDList(actor, path) || !actor->isDrawn || (actor->flags & ACTOR_FLAG_REACT_TO_LENS)) {
+            continue;
+        }
+        FakeWall wall = { actor, path != nullptr ? GetFakeWallMesh(path) : nullptr, {} };
+        // Same transform as Actor_Draw.
+        MtxF modelToWorld;
+        SkinMatrix_SetTranslateRotateYXZScale(
+            &modelToWorld, actor->scale.x, actor->scale.y, actor->scale.z, actor->shape.rot.x, actor->shape.rot.y,
+            actor->shape.rot.z, actor->world.pos.x, actor->world.pos.y + actor->shape.yOffset * actor->scale.y,
+            actor->world.pos.z);
+        if (SkinMatrix_Invert(&modelToWorld, &wall.worldToModel) != 0) {
+            wall.mesh = nullptr;
+        }
+        walls.push_back(wall);
+    }
+    return walls;
+}
+
+static bool SegmentHitsBox(const Vec3f& start, const Vec3f& delta, const Vec3f& min, const Vec3f& max) {
+    const float starts[] = { start.x, start.y, start.z };
+    const float deltas[] = { delta.x, delta.y, delta.z };
+    const float mins[] = { min.x, min.y, min.z };
+    const float maxs[] = { max.x, max.y, max.z };
+    float tMin = 0.0f;
+    float tMax = 1.0f;
+    for (int axis = 0; axis < 3; axis++) {
+        if (std::fabs(deltas[axis]) < 1e-6f) {
+            if (starts[axis] < mins[axis] || starts[axis] > maxs[axis]) {
+                return false;
+            }
+            continue;
+        }
+        float t1 = (mins[axis] - starts[axis]) / deltas[axis];
+        float t2 = (maxs[axis] - starts[axis]) / deltas[axis];
+        tMin = std::fmax(tMin, std::fmin(t1, t2));
+        tMax = std::fmin(tMax, std::fmax(t1, t2));
+        if (tMin > tMax) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Moller-Trumbore, both faces.
+static bool SegmentHitsTriangle(const Vec3f& start, const Vec3f& delta, const Vec3f* corners) {
+    Vec3f edge1 = Sub(corners[1], corners[0]);
+    Vec3f edge2 = Sub(corners[2], corners[0]);
+    Vec3f p = Cross(delta, edge2);
+    float det = Dot(edge1, p);
+    if (std::fabs(det) < 1e-6f) {
+        return false;
+    }
+    Vec3f s = Sub(start, corners[0]);
+    float u = Dot(s, p) / det;
+    if (u < 0.0f || u > 1.0f) {
+        return false;
+    }
+    Vec3f q = Cross(s, edge1);
+    float v = Dot(delta, q) / det;
+    if (v < 0.0f || u + v > 1.0f) {
+        return false;
+    }
+    float t = Dot(edge2, q) / det;
+    return t >= 0.0f && t <= 1.0f;
+}
+
+static bool FakeWallHit(std::vector<FakeWall>& fakeWalls, const Vec3f& from, const Vec3f& to, Actor* item) {
+    for (FakeWall& wall : fakeWalls) {
+        if (wall.mesh == nullptr) {
+            if (wall.actor->room < 0 || item->room < 0 || wall.actor->room == item->room) {
+                return true;
+            }
+            continue;
+        }
+        Vec3f worldFrom = from;
+        Vec3f worldTo = to;
+        Vec3f start;
+        Vec3f end;
+        SkinMatrix_Vec3fMtxFMultXYZ(&wall.worldToModel, &worldFrom, &start);
+        SkinMatrix_Vec3fMtxFMultXYZ(&wall.worldToModel, &worldTo, &end);
+        Vec3f delta = Sub(end, start);
+        if (!SegmentHitsBox(start, delta, wall.mesh->min, wall.mesh->max)) {
+            continue;
+        }
+        for (size_t i = 0; i + 2 < wall.mesh->corners.size(); i += 3) {
+            if (SegmentHitsTriangle(start, delta, &wall.mesh->corners[i])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Webs collide but can be seen through, so the scene ray is re-cast from just past each web it hits.
+static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
+    Vec3f from = eye;
+    Vec3f to = target;
+    for (int hop = 0;; hop++) {
+        Vec3f hitPos;
+        CollisionPoly* poly;
+        s32 bgId;
+        if (!BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId)) {
+            return true;
+        }
+        DynaPolyActor* dyna = DynaPoly_GetActor(&gPlayState->colCtx, bgId);
+        if (dyna == nullptr || dyna->actor.id != ACTOR_BG_YDAN_SP || hop >= kKnownMaxWebHops) {
+            return false;
+        }
+        Vec3f remaining = Sub(to, hitPos);
+        float length = std::sqrt(Dot(remaining, remaining));
+        if (length <= kKnownWebStep) {
+            return true;
+        }
+        float step = kKnownWebStep / length;
+        from = { hitPos.x + remaining.x * step, hitPos.y + remaining.y * step, hitPos.z + remaining.z * step };
+    }
+}
+
+static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, std::vector<FakeWall>& fakeWalls) {
+    if (!SceneRayClear(eye, target)) {
+        return false;
+    }
+    Vec3f from = eye;
+    Vec3f to = target;
+    // Play_Update clears the OC list before Actor_UpdateAll, so it still holds this frame's colliders here.
+    Player* player = GET_PLAYER(gPlayState);
+    Actor* exclusions[] = { item, &player->actor, player->naviActor };
+    if (CollisionCheck_LineOCCheck(gPlayState, &gPlayState->colChkCtx, &from, &to, exclusions,
+                                   ARRAY_COUNT(exclusions))) {
+        return false;
+    }
+    if (GatedOccluderHit(from, to)) {
+        return false;
+    }
+    return fakeWalls.empty() || !FakeWallHit(fakeWalls, from, to, item);
+}
+
 // Casts to the item center and four points around it, square to the view direction.
-static bool RaysClear(Actor* actor, const KnownCandidate& candidate) {
+static bool RaysClear(Actor* actor, const KnownCandidate& candidate, std::vector<FakeWall>& fakeWalls) {
     const View& view = gPlayState->view;
     Vec3f forward = { view.lookAt.x - view.eye.x, view.lookAt.y - view.eye.y, view.lookAt.z - view.eye.z };
     Vec3f right = Cross(forward, view.up);
@@ -310,7 +688,7 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate) {
         { center.x - up.x * offset, center.y - up.y * offset, center.z - up.z * offset },
     };
     for (const Vec3f& target : targets) {
-        if (!RayClear(view.eye, target, actor)) {
+        if (!RayClear(view.eye, target, actor, fakeWalls)) {
             return false;
         }
     }
@@ -334,6 +712,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
         return;
     }
 
+    std::vector<FakeWall> fakeWalls = CollectFakeWalls();
     std::unordered_set<RandomizerCheck> passing;
     for (int i = 0; i < ACTORCAT_MAX; i++) {
         for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
@@ -342,7 +721,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
             }
             KnownCandidate candidate;
             if (!IdentifyCandidate(actor, candidate) || passing.contains(candidate.rc) || !PassesFilter(candidate) ||
-                !InSight(actor, candidate) || !RaysClear(actor, candidate)) {
+                !InSight(actor, candidate) || !RaysClear(actor, candidate, fakeWalls)) {
                 continue;
             }
             passing.insert(candidate.rc);
@@ -371,6 +750,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
 void CheckTrackerKnownTeardown() {
     knownFrames.clear();
     lastSceneNum = -1;
+    fakeWallMeshes.clear();
 }
 
 } // namespace CheckTracker
