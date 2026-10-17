@@ -6,9 +6,11 @@
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
+Ship of Harkinian includes original assets made by its contributors. See [ASSETS-LICENSE.md](ASSETS-LICENSE.md) for how they may be used, and [CREDITS.md](CREDITS.md) for who made them.
+
 # Quick Start
 
-The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
+The Ship does not include any of the original game's copyright assets.  You are required to provide a supported copy of the game.
 
 ### 1. Verify your ROM dump
 You can verify you have dumped a supported copy of the game by using the compatibility checker at https://ship.equipment/. If you'd prefer to manually validate your ROM dump, you can cross-reference its `sha1` hash with the hashes [here](docs/supportedHashes.json).
@@ -56,16 +58,16 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 # Project Overview
 Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependent on the source code provided by the OOT decompilation project.
 
-In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific rom. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
+In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific ROM. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
 
 ### Graphics Backends
 Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL (all platforms), and Metal (MacOS). You can change which API to use in the `Settings` menu of the menubar, which requires a restart.  If you're having an issue with crashing, you can change the API in the `shipofharkinian.json` file by finding the line `gfxbackend:""` and changing the value to `sdl` for OpenGL. DirectX 11 is the default on Windows.
 
 # Custom Assets
 
-Custom assets are packed in `.otr` archive files. To use custom assets, place them in the `mods` folder.
+Custom assets are packed in `.otr` and `.o2r` archive files. To use custom assets, place them in the `mods` folder.
 
-If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
+If you're interested in creating and/or packing your own custom asset `.otr` or `.o2r` files, check out the following tools:
 * [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
 * [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
 
