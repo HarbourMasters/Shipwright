@@ -9,6 +9,7 @@
 #include <ship/Context.h>
 
 #include "randomizer_check_tracker.h"
+#include "CheckTrackerKnown.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizer_tracker_windows.h"
@@ -1226,6 +1227,7 @@ void Teardown() {
     areasSpoiled = 0;
     filterAreasHidden = { 0 };
     filterChecksHidden = { 0 };
+    CheckTrackerKnownTeardown();
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
@@ -2714,6 +2716,8 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(CheckTrackerDialogMessage);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandoHintRevealed>(CheckTrackerHintRevealed);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
+        []() { CheckTrackerKnownFrame(sectionId); });
 }
 
 void CheckTrackerWindow::UpdateElement() {
