@@ -691,6 +691,18 @@ void ClearAreaChecksAndTotals() {
     totalChecksAvailable = 0;
 }
 
+// Debug tool for testing Known detection: sends every Known check back to Unchecked.
+static void ResetKnownChecks() {
+    for (int rc = RC_UNKNOWN_CHECK; rc < RC_MAX; rc++) {
+        auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        if (location->GetCheckStatus() == RCSHOW_KNOWN) {
+            location->SetCheckStatus(RCSHOW_UNCHECKED);
+        }
+    }
+    RecalculateAllAreaTotals();
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+}
+
 void SetShopSeen(uint32_t sceneNum, bool prices) {
     RandomizerCheck start = startingShopItem.find(sceneNum)->second;
     if (sceneNum == SCENE_POTION_SHOP_KAKARIKO && !LINK_IS_ADULT) {
@@ -2617,6 +2629,22 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
         SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget, THEME_COLOR);
         SohGui::GetSohMenu()->MenuDrawItem(knownItemsWidget, THEME_COLOR);
+        if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) {
+            UIWidgets::ButtonOptions resetOptions;
+            ImGui::SameLine();
+            // Right-align the button on the checkbox's row.
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x -
+                                 (ImGui::CalcTextSize(ICON_FA_UNDO).x + resetOptions.padding.x * 2));
+            ImGui::BeginDisabled(!GameInteractor::IsSaveLoaded() || !IS_RANDO);
+            if (UIWidgets::Button(ICON_FA_UNDO "##ResetKnownChecks",
+                                  resetOptions.Size(UIWidgets::Sizes::Inline)
+                                      .Color(THEME_COLOR)
+                                      .Tooltip("Debug: reset every Known check in this save to Unchecked, so seen "
+                                               "items can be marked again."))) {
+                ResetKnownChecks();
+            }
+            ImGui::EndDisabled();
+        }
         ImGui::EndDisabled();
 
         SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget, THEME_COLOR);
