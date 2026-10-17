@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <fast/lus_gbi.h>
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
 #include <fast/resource/type/Vertex.h>
@@ -15,6 +16,8 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
+#include "soh/resource/type/Array.h"
+#include "soh/resource/type/SohResourceType.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/static_data.h"
@@ -51,9 +54,13 @@ namespace CheckTracker {
 // Consecutive gameplay frames an item must pass every test before it is marked.
 static constexpr int kKnownFramesRequired = 8;
 // Smallest projected item radius, in native 240-line screen lines, that counts as readable.
-static constexpr float kKnownMinScreenLines = 8.0f;
+static constexpr float kKnownMinScreenLines = 4.0f;
+// Most fog an item may be blended with, from 0 (clear) to 1 (only fog color), and still count as readable.
+static constexpr float kKnownMaxFog = 0.5f;
 // The four edge rays aim at this fraction of the item's radius from its center.
 static constexpr float kKnownRayOffsetFraction = 0.8f;
+// Edge rays that must be clear, alongside the center ray, for an item to count as seen.
+static constexpr int kKnownMinEdgeRays = 2;
 // Approximate drawn radius of a shuffled item model.
 static constexpr float kKnownItemRadius = 15.0f;
 // Heart containers draw larger than other items.
@@ -80,27 +87,17 @@ struct KnownCandidate {
 static std::unordered_map<RandomizerCheck, int> knownFrames;
 static int16_t lastSceneNum = -1;
 
+// Check types describe the vanilla item, not how it is shown, so only exclude the ones where a drawn model does not
+// mean the player has seen the item. Identification already limits marking to actors that draw the real item.
 static bool KnownTypeAllowed(RandomizerCheck rc) {
     switch (Rando::StaticData::GetLocation(rc)->GetRCType()) {
-        case RCTYPE_STANDARD:
-        case RCTYPE_SKULL_TOKEN:
-        case RCTYPE_BOSS_HEART_OR_OTHER_REWARD:
-        case RCTYPE_FREESTANDING:
-        case RCTYPE_SILVER:
-        case RCTYPE_POT:
-        case RCTYPE_CRATE:
-        case RCTYPE_NLCRATE:
-        case RCTYPE_SMALL_CRATE:
-        case RCTYPE_ROCK:
-        case RCTYPE_BOULDER:
-        case RCTYPE_TREE:
-        case RCTYPE_NLTREE:
-        case RCTYPE_BUSH:
-        case RCTYPE_BEEHIVE:
-        case RCTYPE_WONDER_ITEM:
-            return true;
-        default:
+        case RCTYPE_SHOP:
+        case RCTYPE_SCRUB:
+        case RCTYPE_MERCHANT:
+        case RCTYPE_CHEST_GAME:
             return false;
+        default:
+            return true;
     }
 }
 
@@ -215,9 +212,13 @@ static bool InSight(Actor* actor, const KnownCandidate& candidate) {
         return false;
     }
     // Play_SetFog passes (fogNear, 1000) to Gfx_SetFog: below 0 everything is fogged, from 1000 nothing is, and
-    // otherwise gSPFogPosition starts the fog at NDC depth (fogNear - 500) / 500.
+    // otherwise gSPFogPosition ramps the fog from NDC depth (fogNear - 500) / 500 to full at NDC depth 1.
     s16 fogNear = gPlayState->lightCtx.fogNear;
-    if (fogNear < 0 || (fogNear < 1000 && actor->projectedPos.z / w >= (fogNear - 500) / 500.0f)) {
+    if (fogNear < 0) {
+        return false;
+    }
+    if (fogNear < 1000 &&
+        (500.0f * actor->projectedPos.z / w + 500.0f - fogNear) / (1000.0f - fogNear) > kKnownMaxFog) {
         return false;
     }
     return actor->room == gPlayState->roomCtx.curRoom.num || actor->room < 0;
@@ -365,14 +366,32 @@ static std::shared_ptr<T> AsResource(std::shared_ptr<Ship::IResource> resource, 
     return std::static_pointer_cast<T>(resource);
 }
 
-static bool LoadVertices(const std::shared_ptr<Fast::Vertex>& vertices, size_t first, int count, int dest,
-                         DListDecodeState& state) {
-    if (vertices == nullptr || count < 0 || dest < 0 || dest + count > kKnownVertexSlots ||
-        first + count > vertices->VertexList.size()) {
+struct VertexSpan {
+    const Vtx* data = nullptr;
+    size_t size = 0;
+};
+
+// Object archives store vertices as SoH Array resources; libultraship's own Vertex type is also accepted.
+static VertexSpan GetVertices(std::shared_ptr<Ship::IResource> resource) {
+    if (auto vertices = AsResource<Fast::Vertex>(resource, Fast::ResourceType::Vertex)) {
+        return { (const Vtx*)vertices->VertexList.data(), vertices->VertexList.size() };
+    }
+    if (resource != nullptr && resource->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Array)) {
+        auto array = std::static_pointer_cast<SOH::Array>(resource);
+        if (array->ArrayType == SOH::ArrayResourceType::Vertex) {
+            return { (const Vtx*)array->Vertices.data(), array->Vertices.size() };
+        }
+    }
+    return {};
+}
+
+static bool LoadVertices(const VertexSpan& vertices, size_t first, int count, int dest, DListDecodeState& state) {
+    if (vertices.data == nullptr || count < 0 || dest < 0 || dest + count > kKnownVertexSlots ||
+        first + count > vertices.size) {
         return false;
     }
     for (int i = 0; i < count; i++) {
-        const Vtx& vtx = vertices->VertexList[first + i];
+        const Vtx& vtx = vertices.data[first + i];
         state.slots[dest + i] = { (float)vtx.v.ob[0], (float)vtx.v.ob[1], (float)vtx.v.ob[2] };
         state.loaded[dest + i] = true;
     }
@@ -417,12 +436,12 @@ static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeSt
                     return false;
                 }
                 uint64_t hash = ((uint64_t)cmds[i].words.w0 << 32) + cmds[i].words.w1;
-                auto vertices = AsResource<Fast::Vertex>(ResourceLoad(hash), Fast::ResourceType::Vertex);
-                if (vertices == nullptr) {
+                VertexSpan vertices = GetVertices(ResourceLoad(hash));
+                if (vertices.data == nullptr) {
                     return false;
                 }
                 // After the first draw the interpreter overwrites the byte offset with the resolved pointer.
-                uintptr_t offset = w1 > 0xFFFFF ? w1 - (uintptr_t)vertices->VertexList.data() : w1;
+                uintptr_t offset = w1 > 0xFFFFF ? w1 - (uintptr_t)vertices.data : w1;
                 if (offset % sizeof(Vtx) != 0) {
                     return false;
                 }
@@ -436,7 +455,7 @@ static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeSt
                 if (++i >= cmds.size()) {
                     return false;
                 }
-                auto vertices = AsResource<Fast::Vertex>(ResourceLoad((const char*)w1), Fast::ResourceType::Vertex);
+                VertexSpan vertices = GetVertices(ResourceLoad((const char*)w1));
                 uintptr_t layout = cmds[i].words.w1;
                 if (!LoadVertices(vertices, layout & 0xFFFF, (int)cmds[i].words.w0, (int)(layout >> 16), state)) {
                     return false;
@@ -733,12 +752,30 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOcclud
         { center.x + up.x * offset, center.y + up.y * offset, center.z + up.z * offset },
         { center.x - up.x * offset, center.y - up.y * offset, center.z - up.z * offset },
     };
-    for (const Vec3f& target : targets) {
-        if (!RayClear(view.eye, target, actor, occluders, fakeWalls)) {
+    // The center must be in view, plus enough of the outline that a wall or rim beside the item does not hide it.
+    int edgesClear = 0;
+    int edgesBlocked = 0;
+    for (size_t i = 0; i < ARRAY_COUNT(targets); i++) {
+        Vec3f target = targets[i];
+        // Edge rays stop one radius short, so the floor or wall the item rests on does not hide it; the center ray
+        // still has to reach the item.
+        if (i > 0) {
+            Vec3f toEye = Sub(view.eye, target);
+            float length = std::sqrt(Dot(toEye, toEye));
+            if (length > candidate.radius) {
+                float step = candidate.radius / length;
+                target = { target.x + toEye.x * step, target.y + toEye.y * step, target.z + toEye.z * step };
+            }
+        }
+        if (RayClear(view.eye, target, actor, occluders, fakeWalls)) {
+            if (i > 0 && ++edgesClear >= kKnownMinEdgeRays) {
+                return true;
+            }
+        } else if (i == 0 || ++edgesBlocked > ARRAY_COUNT(targets) - 1 - kKnownMinEdgeRays) {
             return false;
         }
     }
-    return true;
+    return false;
 }
 
 void CheckTrackerKnownFrame(int saveSectionId) {
