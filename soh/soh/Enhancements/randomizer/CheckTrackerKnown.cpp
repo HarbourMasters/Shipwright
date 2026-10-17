@@ -81,6 +81,8 @@ struct KnownCandidate {
     GetItemEntry drawnEntry = {};
     float radius = kKnownItemRadius;
     float yOffset = 0.0f;
+    // Set by PassesFilter when the drawn model is the blue rupee shown in place of an unobtainable item.
+    bool standIn = false;
 };
 
 // Keyed by check, not actor, so nothing dangles across frames and duplicate actors count once.
@@ -182,15 +184,27 @@ static bool IdentifyCandidate(Actor* actor, KnownCandidate& candidate) {
     return candidate.rc != RC_UNKNOWN_CHECK;
 }
 
-static bool PassesFilter(const KnownCandidate& candidate) {
-    if (!KnownTypeAllowed(candidate.rc) ||
-        OTRGlobals::Instance->gRandoContext->GetItemLocation(candidate.rc)->GetCheckStatus() != RCSHOW_UNCHECKED) {
+static bool SameItem(const GetItemEntry& a, const GetItemEntry& b) {
+    return a.modIndex == b.modIndex && a.getItemId == b.getItemId;
+}
+
+static bool PassesFilter(KnownCandidate& candidate) {
+    auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(candidate.rc);
+    RandomizerCheckStatus status = location->GetCheckStatus();
+    bool upgradable = status == RCSHOW_KNOWN && location->GetKnownAsStandIn();
+    if (!KnownTypeAllowed(candidate.rc) || (status != RCSHOW_UNCHECKED && !upgradable)) {
         return false;
     }
-    // Unobtainable items draw as a blue rupee; only mark when the drawn model matches the truth (disguises match
-    // both sides).
+    // Disguised ice traps match on both sides. An item the player cannot obtain yet draws as a blue rupee, which is
+    // recorded as what was seen until the real item is seen.
     GetItemEntry truth = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(candidate.rc, false, GI_NONE);
-    return candidate.drawnEntry.modIndex == truth.modIndex && candidate.drawnEntry.getItemId == truth.getItemId;
+    if (SameItem(candidate.drawnEntry, truth)) {
+        candidate.standIn = false;
+        return true;
+    }
+    GetItemEntry shown = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(candidate.rc, true, GI_NONE);
+    candidate.standIn = !upgradable && SameItem(candidate.drawnEntry, shown);
+    return candidate.standIn;
 }
 
 static bool InSight(Actor* actor, const KnownCandidate& candidate) {
@@ -804,7 +818,8 @@ void CheckTrackerKnownFrame(int saveSectionId) {
 
     GatedOccluders occluders = CollectGatedOccluders();
     std::vector<FakeWall> fakeWalls = CollectFakeWalls();
-    std::unordered_set<RandomizerCheck> passing;
+    // Whether each passing check was seen only as a blue rupee stand-in.
+    std::unordered_map<RandomizerCheck, bool> passing;
     for (int i = 0; i < ACTORCAT_MAX; i++) {
         for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
             if (!actor->isDrawn) {
@@ -815,18 +830,21 @@ void CheckTrackerKnownFrame(int saveSectionId) {
                 !InSight(actor, candidate) || !RaysClear(actor, candidate, occluders, fakeWalls)) {
                 continue;
             }
-            passing.insert(candidate.rc);
+            passing[candidate.rc] = candidate.standIn;
         }
     }
 
     // A check missing from this frame's passing set starts over.
     std::unordered_map<RandomizerCheck, int> counts;
     bool anyMarked = false;
-    for (RandomizerCheck rc : passing) {
+    for (auto [rc, standIn] : passing) {
         auto it = knownFrames.find(rc);
         int frames = (it == knownFrames.end() ? 0 : it->second) + 1;
         if (frames >= kKnownFramesRequired) {
-            OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetCheckStatus(RCSHOW_KNOWN);
+            // Set before the status, so the status hook (and the Anchor packet it sends) sees the form.
+            auto location = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            location->SetKnownAsStandIn(standIn);
+            location->SetCheckStatus(RCSHOW_KNOWN);
             anyMarked = true;
         } else {
             counts[rc] = frames;

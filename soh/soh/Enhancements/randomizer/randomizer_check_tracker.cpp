@@ -1197,6 +1197,10 @@ void SaveTrackerData(const SaveContext& saveContext, int sectionID, bool fullSav
                 SaveManager::Instance->SaveData("randomizerCheck", check);
                 SaveManager::Instance->SaveData("status", savedStatus);
                 SaveManager::Instance->SaveData("skipped", isSkipped);
+                if (savedStatus == RCSHOW_KNOWN &&
+                    OTRGlobals::Instance->gRandoContext->GetItemLocation(check)->GetKnownAsStandIn()) {
+                    SaveManager::Instance->SaveData("knownAsStandIn", true);
+                }
             });
         }
     });
@@ -1219,10 +1223,13 @@ void LoadFile() {
         SaveManager::Instance->LoadStruct("", [&]() {
             RandomizerCheckStatus status;
             bool skipped;
+            bool knownAsStandIn;
             RandomizerCheck rc;
             SaveManager::Instance->LoadData("randomizerCheck", rc, RC_UNKNOWN_CHECK);
             SaveManager::Instance->LoadData("status", status, RCSHOW_UNCHECKED);
             SaveManager::Instance->LoadData("skipped", skipped, false);
+            SaveManager::Instance->LoadData("knownAsStandIn", knownAsStandIn, false);
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetKnownAsStandIn(knownAsStandIn);
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetCheckStatus(status);
             OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->SetIsSkipped(skipped);
         });
@@ -2346,7 +2353,11 @@ void DrawLocation(RandomizerCheck rc) {
                     const bool hideShopName = checkType == RCTYPE_SHOP && mystery && IsMysteryShopItem(rc);
                     const bool revealItemName = !(hideMerchantName || hideScrubName || hideShopName);
 
-                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && revealItemName) {
+                    if (status == RCSHOW_KNOWN && itemLoc->GetKnownAsStandIn()) {
+                        txt = Rando::StaticData::RetrieveItem(RG_BLUE_RUPEE)
+                                  .GetName()
+                                  .GetForLanguage(gSaveContext.language);
+                    } else if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && revealItemName) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(
                                 gSaveContext.language);

@@ -143,6 +143,9 @@ bool ItemLocation::HasObtained() const {
 
 void ItemLocation::SetCheckStatus(RandomizerCheckStatus status_) {
     status = status_;
+    if (status != RCSHOW_KNOWN) {
+        knownAsStandIn = false;
+    }
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandoSetCheckStatus>(rc, status);
 }
 
@@ -157,6 +160,14 @@ void ItemLocation::SetIsSkipped(bool isSkipped_) {
 
 bool ItemLocation::GetIsSkipped() {
     return isSkipped;
+}
+
+void ItemLocation::SetKnownAsStandIn(bool knownAsStandIn_) {
+    knownAsStandIn = knownAsStandIn_;
+}
+
+bool ItemLocation::GetKnownAsStandIn() const {
+    return knownAsStandIn;
 }
 
 bool ItemLocation::IsHintable() const {
@@ -241,6 +252,7 @@ void ItemLocation::ResetVariables() {
     areas = {};
     status = RCSHOW_UNCHECKED;
     isSkipped = false;
+    knownAsStandIn = false;
     isAvailable = false;
 }
 
