@@ -2,6 +2,11 @@
   segments:
     - [ 2, 0x0169AD60 ]
 
+  directory: scenes/nonmq/ddan_scene
+  external_files:
+    - pal_gc_dbg/scenes/nonmq/ddan_room_0.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
 ddan_scene:
   type: OOT:SCENE
   offset: 0x0
@@ -31,6 +36,8 @@ gDCLavaFloor1Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor2Tex:
   type: TEXTURE
@@ -39,6 +46,8 @@ gDCLavaFloor2Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor3Tex:
   type: TEXTURE
@@ -47,6 +56,8 @@ gDCLavaFloor3Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor4Tex:
   type: TEXTURE
@@ -55,6 +66,8 @@ gDCLavaFloor4Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor5Tex:
   type: TEXTURE
@@ -63,6 +76,8 @@ gDCLavaFloor5Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor6Tex:
   type: TEXTURE
@@ -71,6 +86,8 @@ gDCLavaFloor6Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor7Tex:
   type: TEXTURE
@@ -79,6 +96,8 @@ gDCLavaFloor7Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCLavaFloor8Tex:
   type: TEXTURE
@@ -87,6 +106,8 @@ gDCLavaFloor8Tex:
   format: CI8
   width: 32
   height: 32
+  external_tlut: ddan_room_0
+  external_tlut_offset: 0x11290
 
 gDCNightEntranceTex:
   type: TEXTURE
