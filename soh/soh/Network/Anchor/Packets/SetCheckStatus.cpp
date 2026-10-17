@@ -50,6 +50,10 @@ void Anchor::HandlePacket_SetCheckStatus(nlohmann::json payload) {
 
     isResultOfHandling = true;
 
+    // A Known mark from a peer can arrive after this client already collected or saved the check.
+    if (status == RCSHOW_KNOWN && randoContext->GetItemLocation(rc)->GetCheckStatus() != RCSHOW_UNCHECKED) {
+        status = randoContext->GetItemLocation(rc)->GetCheckStatus();
+    }
     if (randoContext->GetItemLocation(rc)->GetCheckStatus() != status) {
         randoContext->GetItemLocation(rc)->SetCheckStatus(status);
     }

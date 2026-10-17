@@ -29,6 +29,7 @@ extern "C" {
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
+#include "overlays/actors/ovl_En_Goroiwa/z_en_goroiwa.h"
 #include "overlays/actors/ovl_En_Ishi/z_en_ishi.h"
 #include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
 #include "overlays/actors/ovl_En_Si/z_en_si.h"
@@ -203,7 +204,9 @@ static bool InSight(Actor* actor, const KnownCandidate& candidate) {
     }
     // The renderer scales clip x by (4:3 / aspect), so a wider window shows more to each side.
     float xBound = w * OTRGetAspectRatio() / (4.0f / 3.0f);
-    if (std::fabs(actor->projectedPos.x) > xBound || std::fabs(actor->projectedPos.y) > w) {
+    // Cutscene letterbox bars cover this many native lines at the top and at the bottom.
+    float yBound = w * (1.0f - 2.0f * ShrinkWindow_GetCurrentVal() / SCREEN_HEIGHT);
+    if (std::fabs(actor->projectedPos.x) > xBound || std::fabs(actor->projectedPos.y) > yBound) {
         return false;
     }
     float screenLines =
@@ -248,11 +251,30 @@ static ColliderCylinder* GatedOccluderCollider(Actor* actor) {
     }
 }
 
-static bool GatedOccluderHit(Vec3f& from, Vec3f& to) {
+struct GatedOccluders {
+    std::vector<Cylinder16> cylinders;
+    std::vector<Sphere16> spheres;
+};
+
+// Built once per frame, so each ray only walks the occluders rather than every loaded actor.
+static GatedOccluders CollectGatedOccluders() {
+    GatedOccluders occluders;
     for (int i = 0; i < ACTORCAT_MAX; i++) {
         for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
             // A killed container (the pot an item just dropped from) stays listed until the next update.
             if (actor->update == nullptr) {
+                continue;
+            }
+            if (actor->id == ACTOR_EN_GOROIWA) {
+                // Rolling boulders only refresh and register their sphere within 300 units, so rebuild it the way
+                // EnGoroiwa_UpdateCollider does.
+                Sphere16 sphere = reinterpret_cast<EnGoroiwa*>(actor)->collider.elements[0].dim.worldSphere;
+                if (sphere.radius > 0) {
+                    sphere.center.x = actor->world.pos.x;
+                    sphere.center.y = actor->world.pos.y + (((actor->params >> 10) & 1) ? 59.5f : 0.0f);
+                    sphere.center.z = actor->world.pos.z;
+                    occluders.spheres.push_back(sphere);
+                }
                 continue;
             }
             ColliderCylinder* collider = GatedOccluderCollider(actor);
@@ -267,11 +289,24 @@ static bool GatedOccluderHit(Vec3f& from, Vec3f& to) {
             cylinder.pos.x = actor->world.pos.x;
             cylinder.pos.y = actor->world.pos.y;
             cylinder.pos.z = actor->world.pos.z;
-            Vec3f intersectA;
-            Vec3f intersectB;
-            if (Math3D_CylVsLineSeg(&cylinder, &from, &to, &intersectA, &intersectB) != 0) {
-                return true;
-            }
+            occluders.cylinders.push_back(cylinder);
+        }
+    }
+    return occluders;
+}
+
+static bool GatedOccluderHit(GatedOccluders& occluders, Vec3f& from, Vec3f& to) {
+    for (Cylinder16& cylinder : occluders.cylinders) {
+        Vec3f intersectA;
+        Vec3f intersectB;
+        if (Math3D_CylVsLineSeg(&cylinder, &from, &to, &intersectA, &intersectB) != 0) {
+            return true;
+        }
+    }
+    Linef line = { from, to };
+    for (Sphere16& sphere : occluders.spheres) {
+        if (Math3D_LineVsSph(&sphere, &line)) {
+            return true;
         }
     }
     return false;
@@ -455,11 +490,14 @@ static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeSt
             case G_VTX:
             case G_DL:
             case G_DL_INDEX:
+            // The decoder does not track matrices, so triangles after one would land in the wrong place.
+            case G_MTX:
+            case G_MTX_OTR:
+            case G_POPMTX:
                 return false;
             case G_SETTIMG_OTR_HASH:
             case G_BRANCH_Z_OTR:
             case G_MARKER:
-            case G_MTX_OTR:
             case G_MOVEMEM_OTR:
                 // The second half of a 128-bit command.
                 i++;
@@ -477,7 +515,9 @@ static const FakeWallMesh* GetFakeWallMesh(const char* path) {
         it = fakeWallMeshes.emplace(path, FakeWallMesh()).first;
         DListDecodeState state = { .mesh = it->second };
         try {
-            it->second.valid = DecodeDList(ResourceMgr_GetResourceByNameHandlingMQ(path), state, 0);
+            // A model with no triangles means ops this decoder skips, so it cannot be trusted to block anything.
+            it->second.valid =
+                DecodeDList(ResourceMgr_GetResourceByNameHandlingMQ(path), state, 0) && !it->second.corners.empty();
         } catch ([[maybe_unused]] const std::exception& e) { it->second.valid = false; }
     }
     return it->second.valid ? &it->second : nullptr;
@@ -632,7 +672,8 @@ static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
         Vec3f hitPos;
         CollisionPoly* poly;
         s32 bgId;
-        if (!BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId)) {
+        // Both faces: a one-sided floor seen from below is still drawn solid by its room mesh.
+        if (!BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, false, &bgId)) {
             return true;
         }
         DynaPolyActor* dyna = DynaPoly_GetActor(&gPlayState->colCtx, bgId);
@@ -649,7 +690,8 @@ static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
     }
 }
 
-static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, std::vector<FakeWall>& fakeWalls) {
+static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, GatedOccluders& occluders,
+                     std::vector<FakeWall>& fakeWalls) {
     if (!SceneRayClear(eye, target)) {
         return false;
     }
@@ -657,19 +699,23 @@ static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, std::ve
     Vec3f to = target;
     // Play_Update clears the OC list before Actor_UpdateAll, so it still holds this frame's colliders here.
     Player* player = GET_PLAYER(gPlayState);
+    if (player == nullptr) {
+        return false;
+    }
     Actor* exclusions[] = { item, &player->actor, player->naviActor };
     if (CollisionCheck_LineOCCheck(gPlayState, &gPlayState->colChkCtx, &from, &to, exclusions,
                                    ARRAY_COUNT(exclusions))) {
         return false;
     }
-    if (GatedOccluderHit(from, to)) {
+    if (GatedOccluderHit(occluders, from, to)) {
         return false;
     }
     return fakeWalls.empty() || !FakeWallHit(fakeWalls, from, to, item);
 }
 
 // Casts to the item center and four points around it, square to the view direction.
-static bool RaysClear(Actor* actor, const KnownCandidate& candidate, std::vector<FakeWall>& fakeWalls) {
+static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOccluders& occluders,
+                      std::vector<FakeWall>& fakeWalls) {
     const View& view = gPlayState->view;
     Vec3f forward = { view.lookAt.x - view.eye.x, view.lookAt.y - view.eye.y, view.lookAt.z - view.eye.z };
     Vec3f right = Cross(forward, view.up);
@@ -688,7 +734,7 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate, std::vector
         { center.x - up.x * offset, center.y - up.y * offset, center.z - up.z * offset },
     };
     for (const Vec3f& target : targets) {
-        if (!RayClear(view.eye, target, actor, fakeWalls)) {
+        if (!RayClear(view.eye, target, actor, occluders, fakeWalls)) {
             return false;
         }
     }
@@ -711,7 +757,14 @@ void CheckTrackerKnownFrame(int saveSectionId) {
         knownFrames.clear();
         return;
     }
+    // Halted actors leave the OC list empty, and fades or a filled screen draw over the actors.
+    if (gPlayState->haltAllActors || gPlayState->transitionTrigger != TRANS_TRIGGER_OFF ||
+        gPlayState->transitionMode != TRANS_MODE_OFF || gPlayState->envCtx.fillScreen) {
+        knownFrames.clear();
+        return;
+    }
 
+    GatedOccluders occluders = CollectGatedOccluders();
     std::vector<FakeWall> fakeWalls = CollectFakeWalls();
     std::unordered_set<RandomizerCheck> passing;
     for (int i = 0; i < ACTORCAT_MAX; i++) {
@@ -721,7 +774,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
             }
             KnownCandidate candidate;
             if (!IdentifyCandidate(actor, candidate) || passing.contains(candidate.rc) || !PassesFilter(candidate) ||
-                !InSight(actor, candidate) || !RaysClear(actor, candidate, fakeWalls)) {
+                !InSight(actor, candidate) || !RaysClear(actor, candidate, occluders, fakeWalls)) {
                 continue;
             }
             passing.insert(candidate.rc);
