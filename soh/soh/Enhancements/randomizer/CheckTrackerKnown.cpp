@@ -691,8 +691,9 @@ static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
         Vec3f hitPos;
         CollisionPoly* poly;
         s32 bgId;
-        // Both faces: a one-sided floor seen from below is still drawn solid by its room mesh.
-        if (!BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, false, &bgId)) {
+        // Front faces only: rooms do not draw back faces, and the camera often sits behind a wall in small
+        // interiors such as Saria's house, looking in through it.
+        if (!BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId)) {
             return true;
         }
         DynaPolyActor* dyna = DynaPoly_GetActor(&gPlayState->colCtx, bgId);
