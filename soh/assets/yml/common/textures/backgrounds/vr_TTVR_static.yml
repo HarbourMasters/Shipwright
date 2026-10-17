@@ -1,0 +1,30 @@
+:config:
+  segments:
+    - [1, vr_TTVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_TTVR_pal_static.yml
+gCarpentersTent2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gCarpentersTent2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersTentBg2TLUT
+gCarpentersTent3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gCarpentersTent3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersTentBg3TLUT
+gCarpentersTentBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCarpentersTentBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gCarpentersTentBgTLUT

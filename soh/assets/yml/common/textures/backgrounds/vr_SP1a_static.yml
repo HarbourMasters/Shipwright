@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_SP1a_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_SP1a_pal_static.yml
+gBazaar2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gBazaar2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBazaarBg2TLUT
+gBazaarBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBazaarBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gBazaarBgTLUT
