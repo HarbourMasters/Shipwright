@@ -71,6 +71,16 @@ static bool UsesBowModel(Player* player) {
     return LINK_IS_ADULT;
 }
 
+// Detects cutscenes that swap the left hand DL without updating leftHandType.
+static bool IsLeftHandSwappedByCutscene(Player* player) {
+    Gfx** dLists = player->leftHandDLists;
+    if (dLists == &gPlayerLeftHandOpenDLs[0] || dLists == &gPlayerLeftHandOpenDLs[1] ||
+        dLists == &gPlayerLeftHandClosedDLs[0] || dLists == &gPlayerLeftHandClosedDLs[1]) {
+        return true;
+    }
+    return dLists == &gPlayerLeftHandBgsDLs[1] && player->leftHandType != PLAYER_MODELTYPE_LH_BGS;
+}
+
 static u8 sLastValidSwordEquip = EQUIP_VALUE_SWORD_NONE;
 
 static u8 GetEquippedSwordValue(PlayState* play) {
@@ -260,6 +270,8 @@ static void RegisterCustomEquipment() {
                     }
                     break;
                 }
+                if (IsLeftHandSwappedByCutscene(player))
+                    break;
                 switch ((u8)player->leftHandType) {
                     case PLAYER_MODELTYPE_LH_SWORD: {
                         if (player == GET_PLAYER(play)) {
