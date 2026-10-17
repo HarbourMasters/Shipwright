@@ -348,10 +348,11 @@ static bool Normalize(Vec3f& v) {
     return true;
 }
 
-// Model-space triangles of a fake wall display list.
-struct FakeWallMesh {
+// Model-space triangles of a decoded display list.
+struct DecodedMesh {
     bool valid = false;
     std::vector<Vec3f> corners; // three per triangle
+    std::vector<bool> twoSided; // one per triangle, drawn with back faces
     Vec3f min = { 0.0f, 0.0f, 0.0f };
     Vec3f max = { 0.0f, 0.0f, 0.0f };
 };
@@ -359,18 +360,22 @@ struct FakeWallMesh {
 // A fake wall drawn opaque this frame.
 struct FakeWall {
     Actor* actor;
-    const FakeWallMesh* mesh; // nullptr when its model could not be decoded
+    const DecodedMesh* mesh; // nullptr when its model could not be decoded
     MtxF worldToModel;
 };
 
 struct DListDecodeState {
     Vec3f slots[kKnownVertexSlots];
     bool loaded[kKnownVertexSlots] = {};
-    FakeWallMesh& mesh;
+    DecodedMesh& mesh;
+    // A room model keeps only surfaces that hide what is behind them.
+    bool room = false;
+    uint32_t geometryMode = G_CULL_BACK;
+    uint32_t otherModeL = Z_UPD;
 };
 
 // Keyed by display list path; node-based, so FakeWall::mesh stays valid while entries are added.
-static std::unordered_map<std::string, FakeWallMesh> fakeWallMeshes;
+static std::unordered_map<std::string, DecodedMesh> fakeWallMeshes;
 
 template <class T>
 static std::shared_ptr<T> AsResource(std::shared_ptr<Ship::IResource> resource, Fast::ResourceType type) {
@@ -417,8 +422,16 @@ static bool AddTriangle(DListDecodeState& state, uint32_t a, uint32_t b, uint32_
         if (index >= kKnownVertexSlots || !state.loaded[index]) {
             return false;
         }
+    }
+    // Cutout, translucent and decal surfaces show what is behind them.
+    if (state.room && ((state.otherModeL & (CVG_X_ALPHA | (3 << G_MDSFT_ALPHACOMPARE))) ||
+                       !(state.otherModeL & Z_UPD) || (state.geometryMode & G_CULL_BOTH) == G_CULL_BOTH)) {
+        return true;
+    }
+    DecodedMesh& mesh = state.mesh;
+    mesh.twoSided.push_back(!(state.geometryMode & G_CULL_BACK));
+    for (uint32_t index : { a, b, c }) {
         const Vec3f& corner = state.slots[index];
-        FakeWallMesh& mesh = state.mesh;
         if (mesh.corners.empty()) {
             mesh.min = corner;
             mesh.max = corner;
@@ -432,8 +445,9 @@ static bool AddTriangle(DListDecodeState& state, uint32_t a, uint32_t b, uint32_
     return true;
 }
 
-// Walks a display list the way libultraship's F3DEX2 interpreter does, keeping only vertex loads, triangles and
-// calls. Segmented addresses cannot be resolved here, so a command that uses one fails the decode.
+// Walks a display list the way libultraship's F3DEX2 interpreter does, keeping vertex loads, triangles, calls and
+// the modes that decide whether a triangle is drawn opaque. Segmented addresses cannot be resolved here, so a command
+// that uses one fails the decode.
 static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeState& state, int depth) {
     auto dList = AsResource<Fast::DisplayList>(resource, Fast::ResourceType::DisplayList);
     if (dList == nullptr || dList->UCode != ucode_f3dex2 || depth > kKnownMaxDListDepth) {
@@ -518,10 +532,28 @@ static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeSt
                 }
                 break;
             }
+            case G_GEOMETRYMODE:
+                state.geometryMode = (state.geometryMode & (uint32_t)(w0 & 0xFFFFFF)) | (uint32_t)w1;
+                break;
+            case G_SETOTHERMODE_L: {
+                uint32_t length = (w0 & 0xFF) + 1;
+                uint32_t shift = 32 - ((w0 >> 8) & 0xFF) - length;
+                uint32_t mask = (uint32_t)(((1ull << length) - 1) << shift);
+                state.otherModeL = (state.otherModeL & ~mask) | ((uint32_t)w1 & mask);
+                break;
+            }
+            case G_RDPSETOTHERMODE:
+                state.otherModeL = (uint32_t)w1;
+                break;
             case G_ENDDL:
                 return true;
-            case G_VTX:
             case G_DL:
+                // A room model calls segments that the scene draw function points at texture scrolls and colors.
+                if (state.room && !((w0 >> 16) & 1)) {
+                    break;
+                }
+                return false;
+            case G_VTX:
             case G_DL_INDEX:
             // The decoder does not track matrices, so triangles after one would land in the wrong place.
             case G_MTX:
@@ -542,10 +574,10 @@ static bool DecodeDList(std::shared_ptr<Ship::IResource> resource, DListDecodeSt
     return false;
 }
 
-static const FakeWallMesh* GetFakeWallMesh(const char* path) {
+static const DecodedMesh* GetDecodedMesh(const char* path) {
     auto it = fakeWallMeshes.find(path);
     if (it == fakeWallMeshes.end()) {
-        it = fakeWallMeshes.emplace(path, FakeWallMesh()).first;
+        it = fakeWallMeshes.emplace(path, DecodedMesh()).first;
         DListDecodeState state = { .mesh = it->second };
         try {
             // A model with no triangles means ops this decoder skips, so it cannot be trusted to block anything.
@@ -607,7 +639,7 @@ static std::vector<FakeWall> CollectFakeWalls() {
         if (!FakeWallDList(actor, path) || !actor->isDrawn || (actor->flags & ACTOR_FLAG_REACT_TO_LENS)) {
             continue;
         }
-        FakeWall wall = { actor, path != nullptr ? GetFakeWallMesh(path) : nullptr, {} };
+        FakeWall wall = { actor, path != nullptr ? GetDecodedMesh(path) : nullptr, {} };
         // Same transform as Actor_Draw.
         MtxF modelToWorld;
         SkinMatrix_SetTranslateRotateYXZScale(
@@ -647,13 +679,13 @@ static bool SegmentHitsBox(const Vec3f& start, const Vec3f& delta, const Vec3f& 
     return true;
 }
 
-// Moller-Trumbore, both faces.
-static bool SegmentHitsTriangle(const Vec3f& start, const Vec3f& delta, const Vec3f* corners) {
+// Moller-Trumbore. A positive determinant means the segment enters the counter-clockwise front face.
+static bool SegmentHitsTriangle(const Vec3f& start, const Vec3f& delta, const Vec3f* corners, bool frontOnly = false) {
     Vec3f edge1 = Sub(corners[1], corners[0]);
     Vec3f edge2 = Sub(corners[2], corners[0]);
     Vec3f p = Cross(delta, edge2);
     float det = Dot(edge1, p);
-    if (std::fabs(det) < 1e-6f) {
+    if (std::fabs(det) < 1e-6f || (frontOnly && det < 0.0f)) {
         return false;
     }
     Vec3f s = Sub(start, corners[0]);
@@ -697,6 +729,80 @@ static bool FakeWallHit(std::vector<FakeWall>& fakeWalls, const Vec3f& from, con
     return false;
 }
 
+// Opaque room models, keyed by mesh header.
+static std::unordered_map<const void*, DecodedMesh> roomMeshes;
+
+static void DecodeRoomDList(Gfx* dList, DecodedMesh& mesh) {
+    if (dList == nullptr) {
+        return;
+    }
+    size_t triangles = mesh.twoSided.size();
+    DListDecodeState state = { .mesh = mesh, .room = true };
+    bool decoded = false;
+    try {
+        // Room meshes store each display list as a resource path.
+        decoded = DecodeDList(ResourceMgr_GetResourceByNameHandlingMQ((const char*)dList), state, 0);
+    } catch ([[maybe_unused]] const std::exception& e) { decoded = false; }
+    // Collision still covers walls and floors, so a list that fails to decode only drops its own triangles.
+    if (!decoded) {
+        mesh.corners.resize(triangles * 3);
+        mesh.twoSided.resize(triangles);
+    }
+}
+
+static const DecodedMesh* GetRoomMesh(const Room& room) {
+    MeshHeader* header = room.meshHeader;
+    if (header == nullptr || room.num < 0) {
+        return nullptr;
+    }
+    auto it = roomMeshes.find(header);
+    if (it == roomMeshes.end()) {
+        it = roomMeshes.emplace(header, DecodedMesh()).first;
+        DecodedMesh& mesh = it->second;
+        // Prerendered rooms (type 1) draw a background image with no room geometry.
+        if (header->base.type == 0) {
+            PolygonDlist* entries = (PolygonDlist*)SEGMENTED_TO_VIRTUAL(header->polygon0.start);
+            for (int i = 0; i < header->polygon0.num; i++) {
+                DecodeRoomDList(entries[i].opa, mesh);
+            }
+        } else if (header->base.type == 2) {
+            PolygonDlist2* entries = (PolygonDlist2*)SEGMENTED_TO_VIRTUAL(header->polygon2.start);
+            for (int i = 0; i < header->polygon2.num; i++) {
+                DecodeRoomDList(entries[i].opa, mesh);
+            }
+        }
+        mesh.valid = !mesh.corners.empty();
+    }
+    return it->second.valid ? &it->second : nullptr;
+}
+
+// Both rooms draw while Link walks between them.
+static std::vector<const DecodedMesh*> CollectRoomMeshes() {
+    std::vector<const DecodedMesh*> meshes;
+    for (const Room* room : { &gPlayState->roomCtx.curRoom, &gPlayState->roomCtx.prevRoom }) {
+        if (const DecodedMesh* mesh = GetRoomMesh(*room)) {
+            meshes.push_back(mesh);
+        }
+    }
+    return meshes;
+}
+
+// Room geometry with no collision, such as a lavafall, still hides what is behind it.
+static bool RoomMeshHit(const std::vector<const DecodedMesh*>& roomMeshes, const Vec3f& from, const Vec3f& to) {
+    Vec3f delta = Sub(to, from);
+    for (const DecodedMesh* mesh : roomMeshes) {
+        if (!SegmentHitsBox(from, delta, mesh->min, mesh->max)) {
+            continue;
+        }
+        for (size_t i = 0; i < mesh->twoSided.size(); i++) {
+            if (SegmentHitsTriangle(from, delta, &mesh->corners[i * 3], !mesh->twoSided[i])) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // Webs collide but can be seen through, so the scene ray is re-cast from just past each web it hits.
 static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
     Vec3f from = eye;
@@ -725,7 +831,7 @@ static bool SceneRayClear(const Vec3f& eye, const Vec3f& target) {
 }
 
 static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, GatedOccluders& occluders,
-                     std::vector<FakeWall>& fakeWalls) {
+                     std::vector<FakeWall>& fakeWalls, const std::vector<const DecodedMesh*>& roomMeshes) {
     if (!SceneRayClear(eye, target)) {
         return false;
     }
@@ -744,12 +850,15 @@ static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item, GatedOc
     if (GatedOccluderHit(occluders, from, to)) {
         return false;
     }
-    return fakeWalls.empty() || !FakeWallHit(fakeWalls, from, to, item);
+    if (!fakeWalls.empty() && FakeWallHit(fakeWalls, from, to, item)) {
+        return false;
+    }
+    return !RoomMeshHit(roomMeshes, from, to);
 }
 
 // Casts to the item center and four points around it, square to the view direction.
 static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOccluders& occluders,
-                      std::vector<FakeWall>& fakeWalls) {
+                      std::vector<FakeWall>& fakeWalls, const std::vector<const DecodedMesh*>& roomMeshes) {
     const View& view = gPlayState->view;
     Vec3f forward = { view.lookAt.x - view.eye.x, view.lookAt.y - view.eye.y, view.lookAt.z - view.eye.z };
     Vec3f right = Cross(forward, view.up);
@@ -782,7 +891,7 @@ static bool RaysClear(Actor* actor, const KnownCandidate& candidate, GatedOcclud
                 target = { target.x + toEye.x * step, target.y + toEye.y * step, target.z + toEye.z * step };
             }
         }
-        if (RayClear(view.eye, target, actor, occluders, fakeWalls)) {
+        if (RayClear(view.eye, target, actor, occluders, fakeWalls, roomMeshes)) {
             if (i > 0 && ++edgesClear >= kKnownMinEdgeRays) {
                 return true;
             }
@@ -803,6 +912,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
     if (gPlayState->sceneNum != lastSceneNum) {
         lastSceneNum = gPlayState->sceneNum;
         knownFrames.clear();
+        roomMeshes.clear();
     }
     // Play_Draw skips Actor_DrawAll while paused, so isDrawn and projectedPos are stale.
     if (gPlayState->pauseCtx.state != 0 || gDbgCamEnabled || CVarGetInteger(CVAR_CHEAT("NoClip"), 0)) {
@@ -813,11 +923,16 @@ void CheckTrackerKnownFrame(int saveSectionId) {
     if (gPlayState->haltAllActors || gPlayState->transitionTrigger != TRANS_TRIGGER_OFF ||
         gPlayState->transitionMode != TRANS_MODE_OFF || gPlayState->envCtx.fillScreen) {
         knownFrames.clear();
+        // Reloading the same scene can place a room model where a cached one used to be.
+        if (gPlayState->transitionTrigger != TRANS_TRIGGER_OFF || gPlayState->transitionMode != TRANS_MODE_OFF) {
+            roomMeshes.clear();
+        }
         return;
     }
 
     GatedOccluders occluders = CollectGatedOccluders();
     std::vector<FakeWall> fakeWalls = CollectFakeWalls();
+    std::vector<const DecodedMesh*> rooms = CollectRoomMeshes();
     // Whether each passing check was seen only as a blue rupee stand-in.
     std::unordered_map<RandomizerCheck, bool> passing;
     for (int i = 0; i < ACTORCAT_MAX; i++) {
@@ -827,7 +942,7 @@ void CheckTrackerKnownFrame(int saveSectionId) {
             }
             KnownCandidate candidate;
             if (!IdentifyCandidate(actor, candidate) || passing.contains(candidate.rc) || !PassesFilter(candidate) ||
-                !InSight(actor, candidate) || !RaysClear(actor, candidate, occluders, fakeWalls)) {
+                !InSight(actor, candidate) || !RaysClear(actor, candidate, occluders, fakeWalls, rooms)) {
                 continue;
             }
             passing[candidate.rc] = candidate.standIn;
@@ -860,6 +975,7 @@ void CheckTrackerKnownTeardown() {
     knownFrames.clear();
     lastSceneNum = -1;
     fakeWallMeshes.clear();
+    roomMeshes.clear();
 }
 
 } // namespace CheckTracker
