@@ -18,9 +18,17 @@ extern "C" {
 #include "variables.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
+#include "overlays/actors/ovl_En_Ishi/z_en_ishi.h"
+#include "overlays/actors/ovl_En_Kusa/z_en_kusa.h"
 #include "overlays/actors/ovl_En_Si/z_en_si.h"
+#include "overlays/actors/ovl_En_Wood02/z_en_wood02.h"
 #include "overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
+#include "overlays/actors/ovl_Obj_Bombiwa/z_obj_bombiwa.h"
+#include "overlays/actors/ovl_Obj_Hamishi/z_obj_hamishi.h"
+#include "overlays/actors/ovl_Obj_Hana/z_obj_hana.h"
+#include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
+#include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
 extern PlayState* gPlayState;
 float OTRGetAspectRatio(void);
 void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play);
@@ -193,13 +201,80 @@ static bool InSight(Actor* actor, const KnownCandidate& candidate) {
     return actor->room == gPlayState->roomCtx.curRoom.num || actor->room < 0;
 }
 
+// Occluders that register their OC collider only near Link, so the OC list misses them farther away.
+static ColliderCylinder* GatedOccluderCollider(Actor* actor) {
+    switch (actor->id) {
+        case ACTOR_EN_KUSA:
+            // A cut bush is a stump until it regrows.
+            if (actor->flags & ACTOR_FLAG_GRASS_DESTROYED) {
+                return nullptr;
+            }
+            return &reinterpret_cast<EnKusa*>(actor)->collider;
+        case ACTOR_EN_ISHI:
+            return &reinterpret_cast<EnIshi*>(actor)->collider;
+        case ACTOR_OBJ_HANA:
+            return &reinterpret_cast<ObjHana*>(actor)->collider;
+        case ACTOR_EN_WOOD02:
+            return &reinterpret_cast<EnWood02*>(actor)->collider;
+        case ACTOR_OBJ_HAMISHI:
+            return &reinterpret_cast<ObjHamishi*>(actor)->collider;
+        case ACTOR_OBJ_KIBAKO:
+            return &reinterpret_cast<ObjKibako*>(actor)->collider;
+        case ACTOR_OBJ_BOMBIWA:
+            return &reinterpret_cast<ObjBombiwa*>(actor)->collider;
+        case ACTOR_OBJ_TSUBO:
+            return &reinterpret_cast<ObjTsubo*>(actor)->collider;
+        default:
+            return nullptr;
+    }
+}
+
+static bool GatedOccluderHit(Vec3f& from, Vec3f& to) {
+    for (int i = 0; i < ACTORCAT_MAX; i++) {
+        for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
+            // A killed container (the pot an item just dropped from) stays listed until the next update.
+            if (actor->update == nullptr) {
+                continue;
+            }
+            ColliderCylinder* collider = GatedOccluderCollider(actor);
+            // Some variants (flowers without collision, bush-type En_Wood02) never set up their collider.
+            if (collider == nullptr || collider->base.actor == nullptr || collider->dim.radius <= 0 ||
+                !(collider->base.ocFlags1 & OC1_ON) || !(collider->info.ocElemFlags & OCELEM_ON)) {
+                continue;
+            }
+            // dim.pos is only refreshed inside the update distance, so rebuild it the way Collider_UpdateCylinder
+            // does.
+            Cylinder16 cylinder = collider->dim;
+            cylinder.pos.x = actor->world.pos.x;
+            cylinder.pos.y = actor->world.pos.y;
+            cylinder.pos.z = actor->world.pos.z;
+            Vec3f intersectA;
+            Vec3f intersectB;
+            if (Math3D_CylVsLineSeg(&cylinder, &from, &to, &intersectA, &intersectB) != 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 static bool RayClear(const Vec3f& eye, const Vec3f& target, Actor* item) {
     Vec3f from = eye;
     Vec3f to = target;
     Vec3f hitPos;
     CollisionPoly* poly;
     s32 bgId;
-    return !BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId);
+    if (BgCheck_AnyLineTest3(&gPlayState->colCtx, &from, &to, &hitPos, &poly, true, true, true, true, &bgId)) {
+        return false;
+    }
+    // Play_Update clears the OC list before Actor_UpdateAll, so it still holds this frame's colliders here.
+    Player* player = GET_PLAYER(gPlayState);
+    Actor* exclusions[] = { item, &player->actor, player->naviActor };
+    if (CollisionCheck_LineOCCheck(gPlayState, &gPlayState->colChkCtx, &from, &to, exclusions,
+                                   ARRAY_COUNT(exclusions))) {
+        return false;
+    }
+    return !GatedOccluderHit(from, to);
 }
 
 static Vec3f Cross(const Vec3f& a, const Vec3f& b) {
