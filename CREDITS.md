@@ -975,7 +975,7 @@
 * /assets/custom/textures/title_static/gFileSelPleaseChooseAQuestJPNTex.ia8.png
 
 
-### [sitton76](https://github.com/sitton76):
+### sitton76 (Does not wish to be contacted):
 * /assets/custom/objects/object_triforce_completed/gTriforcePieceCompletedDL
 * /assets/custom/objects/object_triforce_completed/gTriforcePieceCompletedDL_vtx_0
 * /assets/custom/objects/object_triforce_completed/gTriforcePieceCompletedDL_vtx_1
@@ -1032,7 +1032,7 @@
 * /assets/custom/textures/buttons/ZBtnOutline.png
 * /assets/custom/textures/buttons/ZBtn.png
 
-### Unknown:
+### Contributor Unknown (please update credit if/when identified):
 * /assets/custom/textures/mapping-xbox.png
 
 * /assets/custom/textures/parameter_static/gArrowDown.ia16.png
