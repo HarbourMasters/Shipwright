@@ -49,7 +49,7 @@ void RegionTable_Init_GerudoFortress() {
         EVENT_ACCESS(LOGIC_GTG_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO)),
     }, {
         //Locations
-        LOCATION(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),
+        LOCATION(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead() && (ctx->GetTrickOption(RT_PASS_GUARDS_WITH_NOTHING) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD))),
     }, {
         //Exits
         ENTRANCE(RR_GF_TO_GTG,             logic->Get(LOGIC_GTG_GATE_OPEN) && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES))),
