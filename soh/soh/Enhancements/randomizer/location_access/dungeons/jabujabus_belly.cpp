@@ -396,7 +396,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Exits
         //without swim, jump from rang chest to the other side
         //you can also bunnyhovers to force your way through but that's a trick
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER, AnyAgeTime([]{return logic->CanKillEnemy(RE_LIZALFOS) && (logic->IsAdult || logic->CanUse(RG_CLIMB) || logic->HasItem(RG_BRONZE_SCALE));})),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_PAST_GEYSER, AnyAgeTime([]{return logic->CanKillEnemy(RE_LIZALFOS) && (logic->IsAdult || logic->HasItem(RG_CLIMB) || logic->HasItem(RG_BRONZE_SCALE));})),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,                    (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_LIZALFOS);})),
     });
 
