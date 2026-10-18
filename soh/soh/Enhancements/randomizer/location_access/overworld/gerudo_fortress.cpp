@@ -49,7 +49,7 @@ void RegionTable_Init_GerudoFortress() {
         EVENT_ACCESS(LOGIC_GTG_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO)),
     }, {
         //Locations
-        LOCATION(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
+        LOCATION(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead() && (ctx->GetTrickOption(RT_PASS_GUARDS_WITH_NOTHING) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD))),
     }, {
         //Exits
         ENTRANCE(RR_GF_TO_GTG,             logic->Get(LOGIC_GTG_GATE_OPEN) && (logic->IsAdult || ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES))),
@@ -57,7 +57,7 @@ void RegionTable_Init_GerudoFortress() {
         ENTRANCE(RR_GF_JAIL_WINDOW,        logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_GF_OUTSKIRTS,          true),
         ENTRANCE(RR_GF_NEAR_GROTTO,        logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        // RANDTODO: Add tricks for getting past the gerudo guarding the hba range
+        // RANDOTODO: Add tricks for getting past the gerudo guarding the hba range
         ENTRANCE(RR_GF_ABOVE_GTG,          logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)),
         ENTRANCE(RR_GF_TOP_OF_UPPER_VINES, logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GF_HBA_RANGE,          logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),

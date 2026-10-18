@@ -2310,7 +2310,7 @@
             },
             "pass_guards_with_nothing": {
                 "name": "Sneak Past Moving Gerudo Guards with No Items",
-                "description": "The logic normally guarantees Bow or Hookshot to stun them from a distance, but every moving guard can be passed with basic movement and AI manipulation"
+                "description": "The logic normally guarantees Bow or Hookshot to stun them from a distance, but every moving guard can be passed with basic movement and AI manipulation. This trick also enables reading the sign outside GTG without Gerudo card, which is barely possible."
             },
             "gf_wasteland_gate_sidehop_skip": {
                 "name": "Gerudo's Fortress Gate Skip with Sidehop",
