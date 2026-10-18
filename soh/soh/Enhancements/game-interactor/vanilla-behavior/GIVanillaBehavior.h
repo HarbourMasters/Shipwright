@@ -60,6 +60,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE)
+    // ```
+    // #### `args`
+    // - `*BossVa`
+    VB_BARINADE_PLAY_REMATCH_INTRO,
+
+    // #### `result`
+    // ```c
     // this->actor.textId == 0x401A
     // ```
     // #### `args`

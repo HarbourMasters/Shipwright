@@ -1022,6 +1022,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
+        case VB_BARINADE_PLAY_REMATCH_INTRO:
+            *should =
+                *should && (!RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS) || Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL));
+            break;
         case VB_MAGIC_METER_DEPLETE_WHILE_CONSUMING:
             *should = *should && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER);
             break;
