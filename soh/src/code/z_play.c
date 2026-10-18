@@ -1468,6 +1468,10 @@ void Play_Draw(PlayState* play) {
             }
         }
 
+        // SoH [Enhancement] Majora's Mask style star field: the branch point has to be placed after the skybox and
+        // before the sun and moon, so that the stars show through the sky but stay hidden behind the moon.
+        Environment_SetupSkyboxStars(play);
+
         if ((HREG(80) != 10) || (HREG(90) & 2)) {
             if (!play->envCtx.sunMoonDisabled) {
                 Environment_DrawSunAndMoon(play);
@@ -1629,6 +1633,10 @@ Play_Draw_skip:
             SkyboxDraw_UpdateMatrix(&play->skyboxCtx, play->view.eye.x, play->view.eye.y, play->view.eye.z);
         }
     }
+
+    // SoH [Enhancement] Majora's Mask style star field: fill the branch point placed earlier in the frame now that
+    // the view matrix is final, so that the stars never lag behind the camera.
+    Environment_DrawSkyboxStars(play);
 
     Camera_Finish(GET_ACTIVE_CAM(play));
 

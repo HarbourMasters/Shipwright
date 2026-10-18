@@ -827,6 +827,63 @@ void SohMenu::AddMenuEnhancements() {
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Night Sky", WIDGET_SEPARATOR_TEXT).RaceDisable(false);
+    AddWidget(path, "Majora's Mask Star Field", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarField"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Draws a Majora's Mask style star field in the clear night sky. Ocarina of Time has no star system of "
+            "its own and paints its whole sky with a single skybox texture, so these stars are drawn over that "
+            "texture and are hidden wherever the moon is."));
+    AddWidget(path, "Telescope Style Stars", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarTelescope"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0); })
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip(
+            "Draws the stars as a round core with four diffraction spikes instead of vanilla square blobs."));
+    AddWidget(path, "Star Size: %.1fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarSize"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0) ||
+                            !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarTelescope"), 1);
+        })
+        .Options(FloatSliderOptions().Min(1.0f).Max(3.0f).DefaultValue(2.0f).Step(0.1f).Format("%.1fx").Tooltip(
+            "Scales the telescope stars up. They are a soft glow, so they read smaller than "
+            "vanilla stars at the same size."));
+    AddWidget(path, "Star Intensity: %.2f", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarIntensity"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0) ||
+                            !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarTelescope"), 1);
+        })
+        .Options(FloatSliderOptions().Min(0.0f).Max(1.0f).DefaultValue(0.5f).Step(0.01f).Format("%.2f").Tooltip(
+            "How opaque the telescope stars are. Higher is less transparent."));
+    AddWidget(path, "Star Twinkle", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarTwinkle"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0); })
+        .Options(CheckboxOptions().Tooltip(
+            "Makes every star twinkle on its own, dipping to half its brightness. Works in both shapes, and each "
+            "star keeps its own parameters from the save name seed."));
+    AddWidget(path, "Twinkle Frequency: %.2f Hz", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarTwinkleFrequency"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0) ||
+                            !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarTwinkle"), 0);
+        })
+        .Options(FloatSliderOptions().Min(0.0f).Max(2.0f).DefaultValue(1.0f).Step(0.05f).Format("%.2f Hz").Tooltip(
+            "Top of the twinkle rate. Each star gets its own frequency between 15% of this value "
+            "and the value. 0 disables it."));
+    AddWidget(path, "Star Count: %.1fx", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("MajoraStarCount"))
+        .RaceDisable(false)
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("MajoraStarField"), 0); })
+        .Options(FloatSliderOptions().Min(1.0f).Max(3.0f).DefaultValue(1.0f).Step(0.1f).Format("%.1fx").Tooltip(
+            "Multiplies how many stars are generated. Extra stars extend the same seed, so the "
+            "existing ones do not move."));
     AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_LOW_RES_MODE)
         .RaceDisable(false)

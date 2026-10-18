@@ -929,6 +929,10 @@ void Environment_DrawLensFlare(PlayState* play, EnvironmentContext* envCtx, View
 void Environment_DrawRain(PlayState* play, View* view, GraphicsContext* gfxCtx);
 void func_80074CE8(PlayState* play, u32 arg1);
 void Environment_DrawSkyboxFilters(PlayState* play);
+// SoH [Enhancement] Majora's Mask style star field
+void Environment_SetupSkyboxStars(PlayState* play);
+void Environment_DrawSkyboxStars(PlayState* play);
+void Environment_DrawSkyboxStarsImpl(PlayState* play, Gfx** gfxP);
 void Environment_UpdateLightningStrike(PlayState* play);
 void Environment_AddLightningBolts(PlayState* play, u8 num);
 void Environment_DrawLightning(PlayState* play, s32 unused);
