@@ -380,8 +380,9 @@ void Draw() {
     if (context == nullptr || context->GetWindow() == nullptr || context->GetWindow()->GetGui() == nullptr) {
         return;
     }
-    const bool uiOpen = context->GetWindow()->GetGui()->GetMenuOrMenubarVisible() ||
-                        ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+    const auto gui = context->GetWindow()->GetGui();
+    const bool popupOpen = ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+    bool uiOpen = gui->GetMenuOrMenubarVisible() || popupOpen;
     if (uiOpen) {
         // Let SDL's touch-to-mouse events navigate ImGui without assigning those fingers to game controls.
         gAssignments.clear();
@@ -393,7 +394,7 @@ void Draw() {
     bool analogActive = false;
     ImVec2 analogPosition = layout.analogCenter;
 
-    // ESC is held across frames so ImGui reliably sees a press even if the touch was very brief.
+    // Keep a synthesized Escape press across frames when a popup needs dismissing.
     if (gEscapeReleasePending) {
         QueueEscapeEvent(false);
         gEscapeReleasePending = false;
@@ -440,8 +441,21 @@ void Draw() {
     }
 
     if (toggleMenu) {
-        QueueEscapeEvent(true);
-        gEscapeReleasePending = true;
+        if (popupOpen) {
+            // Let Escape dismiss modal popups before changing the underlying menu state.
+            QueueEscapeEvent(true);
+            gEscapeReleasePending = true;
+        } else if (const auto menu = gui->GetMenu(); menu != nullptr) {
+            // Toggle directly on the render thread instead of routing this touch through a
+            // synthetic SDL key event before it reaches the ImGui menu handler.
+            menu->ToggleVisibility();
+            context->GetWindow()->GetMouseStateManager()->UpdateMouseCapture();
+        } else {
+            QueueEscapeEvent(true);
+            gEscapeReleasePending = true;
+        }
+        uiOpen = gui->GetMenuOrMenubarVisible() ||
+                 ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
     }
 
     if (uiOpen) {
