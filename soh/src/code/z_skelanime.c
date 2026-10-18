@@ -907,7 +907,7 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
         if (animData == NULL) {
             return;
         }
-        memcpy(ram, (uintptr_t)animData + (((sizeof(Vec3s) * limbCount + 2) * frame)), sizeof(Vec3s) * limbCount + 2);
+        memcpy(ram, (const u8*)animData + (((sizeof(Vec3s) * limbCount + 2) * frame)), sizeof(Vec3s) * limbCount + 2);
     }
 }
 
