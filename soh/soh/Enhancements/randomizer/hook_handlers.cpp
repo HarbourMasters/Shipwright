@@ -11,6 +11,7 @@
 #include "soh/Enhancements/randomizer/fishsanity.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Notification/Notification.h"
 #include "soh/SaveManager.h"
@@ -478,6 +479,9 @@ static void PlantAllBeans() {
         gSaveContext.sceneFlags[patch.scene].swch |= 1 << patch.swchFlag;
         if (gPlayState->sceneNum == patch.scene) {
             Flags_SetSwitch(gPlayState, patch.swchFlag);
+        } else {
+            // Flags_SetSwitch fires this for the current scene, other scenes need it so Anchor syncs them
+            GameInteractor_ExecuteOnSceneFlagSet(patch.scene, FLAG_SCENE_SWITCH, patch.swchFlag);
         }
     }
     ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
@@ -1018,6 +1022,24 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
+        case VB_BARINADE_PLAY_REMATCH_INTRO:
+            *should =
+                *should && (!RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS) || Flags_GetRandomizerInf(RAND_INF_BARINADE_SOUL));
+            break;
+        case VB_MAGIC_METER_DEPLETE_WHILE_CONSUMING:
+            *should = *should && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER);
+            break;
+        case VB_APPLY_MAGIC_METER_FILL_COLOR: {
+            Color_RGB8* color = va_arg(args, Color_RGB8*);
+
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                *color = { 0, 0, 200 };
+                if (CVarGetInteger(CVAR_COSMETIC("Consumable_MagicInfinite.Changed"), 0)) {
+                    *color = CVarGetColor24(CVAR_COSMETIC("Consumable_MagicInfinite.Value"), *color);
+                }
+            }
+            break;
+        }
         case VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC: {
             // Gate non-randomized shop shields/tunics behind finding a non-shop copy.
             if (RAND_GET_OPTION(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON)) {
@@ -1868,7 +1890,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_GANONS_TOWER);
                 randomizerQueuedChecks.push(RC_GANON);
                 CheckTriggers();
-                gPlayState->nextEntranceIndex = ENTR_OUTSIDE_GANONS_CASTLE_1_2;
+                gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_OUTSIDE_GANONS_CASTLE_1_2);
                 gPlayState->transitionTrigger = TRANS_TRIGGER_START;
                 gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
@@ -2742,9 +2764,6 @@ void RandomizerOnPlayerUpdateHandler() {
         // Warp to credits once item queue has drained to avoid losing queued items
         if (GameInteractor::State::TriforceHuntCreditsWarpActive && randomizerQueuedChecks.empty() &&
             randomizerQueuedCheck == RC_UNKNOWN_CHECK) {
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-            gSaveContext.ship.stats.gameComplete = 1;
             Play_PerformSave(gPlayState);
             Notification::Emit({ .message = "Game autosaved" });
             gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;

@@ -1186,12 +1186,12 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                             u16 seqId = AudioEditor_GetReplacementSeq(seqPlayer->seqId);
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
-                            // The game apparantely would sometimes do negative array lookups, the result of which would
+                            // The game apparently would sometimes do negative array lookups, the result of which would
                             // get rejected by AudioHeap_SearchCaches, never changing the actual fontid.
-                            if (result > sDat.numFonts)
+                            if (result >= sDat.numFonts)
                                 break;
 
-                            fontId = sDat.fonts[(sDat.numFonts - result - 1)];
+                            fontId = sDat.fonts[sDat.numFonts - result - 1];
                         }
 
                         if (AudioHeap_SearchCaches(FONT_TABLE, CACHE_EITHER, fontId)) {

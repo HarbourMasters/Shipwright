@@ -104,17 +104,49 @@ inline void from_json(const json& j, SohStats& sohStats) {
     j.at("fileCreatedAt").get_to(sohStats.fileCreatedAt);
 }
 
+#define SILVER_RUPEE_FIELDS(X)       \
+    X(silverShadowBlades)            \
+    X(silverShadowPit)               \
+    X(silverShadowSpikes)            \
+    X(silverSpiritChild)             \
+    X(silverSpiritSun)               \
+    X(silverSpiritBoulders)          \
+    X(silverBotw)                    \
+    X(silverIceCavernBlades)         \
+    X(silverIceCavernBlock)          \
+    X(silverGtgSlope)                \
+    X(silverGtgLava)                 \
+    X(silverGtgWater)                \
+    X(silverGanonLight)              \
+    X(silverGanonForest)             \
+    X(silverGanonFire)               \
+    X(silverGanonSpirit)             \
+    X(silverMqDodongosCavern)        \
+    X(silverMqShadowInvisibleBlades) \
+    X(silverMqSpiritLobby)           \
+    X(silverMqSpiritBigWall)         \
+    X(silverMqGanonWater)            \
+    X(silverMqGanonShadow)
+
 inline void to_json(json& j, const ShipRandomizerSaveContextData& shipRandomizerSaveContextData) {
     j = json{
         { "triforcePiecesCollected", shipRandomizerSaveContextData.triforcePiecesCollected },
         { "bombchuUpgradeLevel", shipRandomizerSaveContextData.bombchuUpgradeLevel },
     };
+#define SILVER_TO_JSON(field) j[#field] = shipRandomizerSaveContextData.field;
+    SILVER_RUPEE_FIELDS(SILVER_TO_JSON)
+#undef SILVER_TO_JSON
 }
 
 inline void from_json(const json& j, ShipRandomizerSaveContextData& shipRandomizerSaveContextData) {
     j.at("triforcePiecesCollected").get_to(shipRandomizerSaveContextData.triforcePiecesCollected);
     j.at("bombchuUpgradeLevel").get_to(shipRandomizerSaveContextData.bombchuUpgradeLevel);
+#define SILVER_FROM_JSON(field) shipRandomizerSaveContextData.field = j.value(#field, (s8)0);
+    SILVER_RUPEE_FIELDS(SILVER_FROM_JSON)
+#undef SILVER_FROM_JSON
 }
+
+#undef SILVER_RUPEE_FIELDS
 
 inline void to_json(json& j, const ShipQuestSpecificSaveContextData& shipQuestSpecificSaveContextData) {
     j = json{
