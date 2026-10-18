@@ -2,7 +2,9 @@
 
 #include <libultraship/bridge/consolevariablebridge.h>
 
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -29,7 +31,13 @@ void RegisterGanonIntros() {
         }
     });
 
-    COND_VB_SHOULD(VB_PLAY_GANONDORF_INTRO_CS, CVAR_VALUE || IS_RANDO || IS_BOSS_RUSH, { *should = false; });
+    COND_VB_SHOULD(VB_PLAY_GANONDORF_INTRO_CS, CVAR_VALUE || IS_RANDO || IS_BOSS_RUSH, {
+        va_arg(args, void*);
+        u16 textId = va_arg(args, int);
+        if (textId != TEXT_GANONDORF || !IS_RANDO || !RAND_GET_OPTION(RSK_GANONDORF_HINT)) {
+            *should = false;
+        }
+    });
 
     // Skip Ganon rising from the rubble, transforming and landing. Skip to knocking sword away.
     COND_VB_SHOULD(VB_PLAY_GANON_INTRO_CS, CVAR_VALUE, {

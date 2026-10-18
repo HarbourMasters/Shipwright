@@ -72,11 +72,6 @@ static std::array<const char*, 16> itemTrackerWindowIDs = { "Item Tracker",
                                                             "Total Checks" };
 void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo);
 
-typedef struct ItemTrackerDungeon {
-    uint32_t id;
-    std::vector<uint32_t> items;
-} ItemTrackerDungeon;
-
 class ItemTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
     using GuiWindow::GuiWindow;

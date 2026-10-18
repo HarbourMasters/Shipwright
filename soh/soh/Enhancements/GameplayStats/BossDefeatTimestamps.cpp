@@ -1,5 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64save.h"
@@ -23,7 +24,9 @@ static void RegisterBossDefeatTimestamps() {
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_GANON, TIMESTAMP_DEFEAT_GANONDORF);
     COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, true, [](void* refActor) {
         gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-        gSaveContext.ship.stats.gameComplete = true;
+        if (!IS_RANDO || RAND_GET_OPTION(RSK_WINCON).Is(RO_WINCON_DEFEAT_GANON)) {
+            gSaveContext.ship.stats.gameComplete = true;
+        }
     });
 }
 
