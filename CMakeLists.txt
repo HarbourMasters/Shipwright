@@ -368,9 +368,13 @@ if(NOT ANDROID)
     file(GLOB_RECURSE SOH_O2R_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/*)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/soh/soh.o2r
-        # copy LUS default shaders into assets/custom
+        # Copy LUS default shaders into assets/custom, then make the GLES shader's
+        # default precision explicit before packing it for Android.
         COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+        COMMAND ${CMAKE_COMMAND}
+                "-DSHADER_FILE=${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/opengl/default.shader.glsl"
+                -P "${CMAKE_CURRENT_SOURCE_DIR}/ci/patch_gles_shader.cmake"
 
         COMMAND $<TARGET_FILE:soh-o2r-packer>
                 ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom
@@ -379,6 +383,7 @@ if(NOT ANDROID)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/soh/soh.o2r ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
         COMMENT "Generating soh.o2r..."
         DEPENDS soh-o2r-packer ${SOH_O2R_ASSETS} ${SOH_O2R_SHADERS}
+                ${CMAKE_CURRENT_SOURCE_DIR}/ci/patch_gles_shader.cmake
         BYPRODUCTS ${CMAKE_SOURCE_DIR}/soh.o2r
         VERBATIM
     )
