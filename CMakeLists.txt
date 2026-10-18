@@ -207,6 +207,10 @@ if(ANDROID)
     set(SDL_TEST OFF CACHE BOOL "Do not build SDL test support for Android" FORCE)
     set(SDL_TESTS OFF CACHE BOOL "Do not build SDL test programs for Android" FORCE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    # Android 64-bit heaps may use top-byte-tagged pointers. Normalize them in
+    # libultraship's OTR signature check so copied font paths resolve as assets.
+    set(INTERPRETER_FILE "${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/interpreter.cpp")
+    include("${CMAKE_CURRENT_SOURCE_DIR}/ci/patch_android_pointer_tags.cmake")
     # Android 15+ devices may use 16 KB pages. Apply the ELF alignment to every
     # shared dependency, not just libmain.so.
     add_link_options("-Wl,-z,max-page-size=16384")
