@@ -737,7 +737,6 @@ void aMixImplNEON(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_a
             }
         }
     }
-    int16x8_t gainVec = vdupq_n_s16(gain);
     int32x4_t x4000Vec = vld1q_s32(x4000Arr);
     while (nbytes > 0) {
         for (unsigned int i = 0; i < 2; i++) {
@@ -745,14 +744,14 @@ void aMixImplNEON(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_a
             int16x8_t outVec = vld1q_s16(out);
             int16x8_t inVec = vld1q_s16(in);
             int16x4_t outLoVec = vget_low_s16(outVec);
-            int16x8_t outLoVec2 = vcombine_s16(outLoVec, outLoVec);
+            int16x4_t outHiVec = vget_high_s16(outVec);
             int16x4_t inLoVec = vget_low_s16(inVec);
-            int16x8_t inLoVec2 = vcombine_s16(inLoVec, inLoVec);
-            int32x4_t outX7fffHiVec = vmull_high_n_s16(outVec, 0x7FFF);
-            int32x4_t outX7fffLoVec = vmull_high_n_s16(outLoVec2, 0x7FFF);
-
-            int32x4_t inGainLoVec = vmull_high_s16(inLoVec2, gainVec);
-            int32x4_t inGainHiVec = vmull_high_s16(inVec, gainVec);
+            int16x4_t inHiVec = vget_high_s16(inVec);
+            // Use 4-lane multiplies to keep this path compatible with ARMv7 NEON.
+            int32x4_t outX7fffHiVec = vmull_n_s16(outHiVec, (int16_t)0x7FFF);
+            int32x4_t outX7fffLoVec = vmull_n_s16(outLoVec, (int16_t)0x7FFF);
+            int32x4_t inGainLoVec = vmull_n_s16(inLoVec, gain);
+            int32x4_t inGainHiVec = vmull_n_s16(inHiVec, gain);
             int32x4_t addVecLo = vaddq_s32(outX7fffLoVec, inGainLoVec);
             int32x4_t addVecHi = vaddq_s32(outX7fffHiVec, inGainHiVec);
             addVecHi = vaddq_s32(addVecHi, x4000Vec);
