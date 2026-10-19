@@ -181,10 +181,10 @@ static const std::map<int32_t, const char*> mirroredWorldModes = {
 // Disables a File Select "Hide" checkbox when its O2R is missing, or when it would hide the last visible quest
 static WidgetFunc HideQuestPreFunc(Quest quest) {
     return [quest](WidgetInfo& info) {
-        if (quest == QUEST_NORMAL && !ResourceMgr_GameHasOriginal()) {
+        if ((quest == QUEST_NORMAL || quest == QUEST_SPEEDRUN) && !ResourceMgr_GameHasOriginal()) {
             info.options->disabled = true;
             info.options->disabledTooltip = "This option requires a loaded original O2R.";
-        } else if (quest == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+        } else if ((quest == QUEST_MASTER || quest == QUEST_SPEEDRUN_MASTER) && !ResourceMgr_GameHasMasterQuest()) {
             info.options->disabled = true;
             info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
         } else if (!SohFileSelect_IsQuestHidden(quest) && SohFileSelect_CountVisibleQuests() <= 1) {
@@ -824,6 +824,18 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(HideQuestPreFunc(QUEST_BOSSRUSH))
         .Options(CheckboxOptions().Tooltip(
             "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Speedrun", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunQuest"))
+        .RaceDisable(false)
+        .PreFunc(HideQuestPreFunc(QUEST_SPEEDRUN))
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Speedrun option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Speedrun Master Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelect.HideSpeedrunMasterQuest"))
+        .RaceDisable(false)
+        .PreFunc(HideQuestPreFunc(QUEST_SPEEDRUN_MASTER))
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Speedrun Master Quest option when selecting a quest type on the File Select screen."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
@@ -1561,6 +1573,14 @@ void SohMenu::AddMenuEnhancements() {
         .Options(IntSliderOptions().Min(-5).Max(5).DefaultValue(0).Format("%+d").Tooltip(
             "-5 will be half as much time, +5 will be 6x as much time. Affects timed switches, torches, GTG statue "
             "eyes, & doors in race with Dampe."));
+    AddWidget(path, "Minimum Heat/Water Timer: %d seconds", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("HazardTimerMin"))
+        .Options(IntSliderOptions()
+                     .Min(0)
+                     .Max(150)
+                     .DefaultValue(0)
+                     .Format("%d seconds")
+                     .Tooltip("Limits how low heat timer or underwater timer can start."));
     AddWidget(path, "Always Win Goron Pot", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GoronPot"))
         .Options(CheckboxOptions().Tooltip("Always get the Heart Piece/Purple Rupee from the Spinning Goron Pot."));

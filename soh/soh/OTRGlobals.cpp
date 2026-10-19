@@ -39,6 +39,7 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/Enhancements/savestates.h"
+#include "soh/Enhancements/speedrun/Speedrun.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -429,7 +430,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     Extractor extract;
     PromptSteps promptStep = PS_FILE_CHECK;
     bool generatedIsMQ = false;
+    // Whether generatedIsMQ is set, i.e. the first prompted rom extracted fine
+    bool generatedFirst = false;
+    bool lastExtractFailed = false;
     std::atomic<size_t> extractCount = 0, totalExtract = 0;
+    // Set by the extraction thread, shown as a popup by the main thread once the task finishes
+    std::atomic<bool> extractFailed = false;
 
     std::string installPath = std::filesystem::absolute(Ship::Context::GetAppBundlePath()).string();
     std::string dataPath = std::filesystem::absolute(Ship::Context::GetAppDirectoryPath(appShortName)).string();
@@ -612,15 +618,17 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extractionTask = threadPool->submit_task([&]() -> void {
-                                extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                  &extractCount, &totalExtract);
+                                extractFailed =
+                                    !extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                       &extractCount, &totalExtract);
                                 extractCount = totalExtract = 0;
                             });
                         });
                     } else {
                         extractionTask = threadPool->submit_task([&]() -> void {
-                            extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                              &extractCount, &totalExtract);
+                            extractFailed =
+                                !extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                   &extractCount, &totalExtract);
                             extractCount = totalExtract = 0;
                         });
                     }
@@ -676,9 +684,13 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                             continue;
                         }
                         extractionTask = threadPool->submit_task([&]() -> void {
-                            extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                              &extractCount, &totalExtract);
-                            generatedIsMQ = extract.IsMasterQuest();
+                            extractFailed =
+                                !extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                                   &extractCount, &totalExtract);
+                            if (!extractFailed) {
+                                generatedIsMQ = extract.IsMasterQuest();
+                                generatedFirst = true;
+                            }
                             promptStep = PS_SECOND;
                             extractCount = 0;
                             totalExtract = 0;
@@ -686,17 +698,28 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         continue;
                     }
                     case PS_SECOND: {
+                        // Keep asking until the user says no, so a failed or cancelled rom can be retried
                         SohGui::RegisterPopup(
-                            "Extraction Complete", "ROM Extracted. Extract another?", "Yes", "No",
+                            lastExtractFailed ? "Extract Another" : "Extraction Complete",
+                            lastExtractFailed ? "Try extracting another ROM?" : "ROM Extracted. Extract another?",
+                            "Yes", "No",
                             [&]() {
-                                if (!extract.ManuallySearchForRomMatchingType(generatedIsMQ ? RomSearchMode::Vanilla
-                                                                                            : RomSearchMode::MQ)) {
-                                    extractStep = ES_VERIFY;
-                                } else {
+                                RomSearchMode mode = RomSearchMode::Both;
+                                if (generatedFirst) {
+                                    mode = generatedIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ;
+                                }
+                                if (extract.ManuallySearchForRomMatchingType(mode)) {
                                     extractionTask = threadPool->submit_task([&]() -> void {
-                                        extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                          &extractCount, &totalExtract);
-                                        extractStep = ES_VERIFY;
+                                        extractFailed = !extract.CallTorch(
+                                            installPath, Ship::Context::GetAppDirectoryPath(appShortName),
+                                            &extractCount, &totalExtract);
+                                        if (!extractFailed && generatedFirst) {
+                                            extractStep = ES_VERIFY;
+                                        } else if (!extractFailed) {
+                                            // A retry of the first rom worked, so still offer the other type
+                                            generatedIsMQ = extract.IsMasterQuest();
+                                            generatedFirst = true;
+                                        }
                                         extractCount = 0;
                                         totalExtract = 0;
                                     });
@@ -752,6 +775,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     extractionTask->get();
                 } catch (const std::exception& e) {
                     SohGui::RegisterPopup("Extraction Crashed", e.what(), "Close", "", []() { exit(1); });
+                }
+                lastExtractFailed = extractFailed;
+                if (extractFailed) {
+                    SohGui::RegisterPopup("Extraction Failed",
+                                          "The ROM could not be extracted. Check the log for details.", "OK", "");
+                    extractFailed = false;
                 }
                 extractionTask.reset();
             } else {
@@ -1532,13 +1561,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion1Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion2Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
-    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion7Updater>());
+    SOH::RegisterVersionUpdaters(conf.get());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1595,6 +1618,8 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     if (CVarGetInteger(CVAR_REMOTE_ANCHOR("Enabled"), 0)) {
         Anchor::Instance->Enable();
     }
+    // Restores settings left over from a run that never exited cleanly, so it must come after other setup.
+    Speedrun_Register();
     ShipInit::InitAll();
     Rando::StaticData::InitHashMaps();
     OTRGlobals::Instance->gRandoContext->AddExcludedOptions();
@@ -1606,6 +1631,7 @@ extern "C" void SaveManager_ThreadPoolWait() {
 
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
+    WaitForRandoGeneration();
     OTRAudio_Exit();
     if (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)) {
         CrowdControl::Instance->Disable();
@@ -1782,9 +1808,14 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
     for (int i = 0; i < count; i++) {
         time += step;
+        const float interpolationStep = (float)time / denom;
         std::unordered_map<Mtx*, MtxF> mtx_replacements =
-            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate((float)time / denom);
-        intp->mInterpolationT = (float)time / denom;
+            (time == denom) ? std::unordered_map<Mtx*, MtxF>() : FrameInterpolation_Interpolate(interpolationStep);
+        // Ribbon vertices are shared by every frame of a tick: re-blend them before each run.
+        FrameInterpolation_UpdateRibbonHeads(interpolationStep);
+        // Skinned vertices are shared by every displayed frame, so blend them before each run
+        FrameInterpolation_UpdateSkinnedVertices(interpolationStep);
+        intp->mInterpolationT = interpolationStep;
         wnd->DrawAndRunGraphicsCommands(Commands, mtx_replacements);
         intp->mInterpolationIndex++;
     }
@@ -2480,6 +2511,8 @@ bool SoH_HandleConfigDrop(char* filePath) {
             return false;
         }
 
+        uint32_t configVersion = SOH::GetConfigVersion(configJson, 0);
+
         CVarClearBlock(CVAR_PREFIX_ENHANCEMENT);
         CVarClearBlock(CVAR_PREFIX_CHEAT);
         CVarClearBlock(CVAR_PREFIX_RANDOMIZER_SETTING);
@@ -2504,6 +2537,9 @@ bool SoH_HandleConfigDrop(char* filePath) {
                 CVarSetFloat(path.c_str(), value.get<float>());
             }
         }
+
+        // Migrate configs from older versions
+        SOH::RunVersionUpdatesFrom(configVersion);
 
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();

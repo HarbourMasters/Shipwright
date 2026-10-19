@@ -20,7 +20,7 @@ typedef struct EnDog {
     /* 0x01EA */ s16 pad1;
     /* 0x01EC */ s16 behaviorTimer;
     /* 0x01EE */ s16 pad2;
-    /* 0x01F0 */ s16 nextBehavior; 
+    /* 0x01F0 */ s16 nextBehavior;
     /* 0x01F2 */ s16 behavior;
     /* 0x01F4 */ Vec3s jointTable[13];
     /* 0x0242 */ Vec3s morphTable[13];

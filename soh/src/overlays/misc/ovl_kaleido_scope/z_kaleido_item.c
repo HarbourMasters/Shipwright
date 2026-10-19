@@ -31,8 +31,10 @@ extern const char* _gAmmoDigit0Tex[];
 
 s8 ItemInSlotUsesAmmo(s16 slot) {
     s16 item = gSaveContext.inventory.items[slot];
-    return item == ITEM_STICK || item == ITEM_NUT || item == ITEM_BOMB || item == ITEM_BOW || item == ITEM_SLINGSHOT ||
-           item == ITEM_BOMBCHU || item == ITEM_BEAN;
+    return GameInteractor_Should(VB_DRAW_AMMO_COUNT,
+                                 item == ITEM_STICK || item == ITEM_NUT || item == ITEM_BOMB || item == ITEM_BOW ||
+                                     item == ITEM_SLINGSHOT || item == ITEM_BOMBCHU || item == ITEM_BEAN,
+                                 &item);
 }
 
 void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx, s16 item, int slot) {
@@ -45,7 +47,9 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     OPEN_DISPS(gfxCtx);
 
-    ammo = AMMO(item);
+    if (GameInteractor_Should(VB_OVERRIDE_AMMO_COUNT, true, &item, &ammo)) {
+        ammo = AMMO(item);
+    }
 
     gDPPipeSync(POLY_OPA_DISP++);
 

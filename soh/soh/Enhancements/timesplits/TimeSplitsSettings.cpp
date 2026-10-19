@@ -125,7 +125,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_SINGLE_MAGIC,               "Magic" },
     { ITEM_WALLET_ADULT,               "Adult's Wallet" },
     { ITEM_DOUBLE_DEFENSE,             "Double Defense" },
-    
+
     // Inventory
     { ITEM_STICK,                      "Deku Stick" },
     { ITEM_NUT,                        "Deku Nut" },
@@ -148,7 +148,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_BOTTLE,                     "Empty Bottle" },
     { ITEM_POCKET_EGG,                 "Pocket Egg" },
     { ITEM_WEIRD_EGG,                  "Weird Egg" },
-    
+
     // Quest
     { ITEM_SONG_LULLABY,               "Zelda's Lullaby" },
     { ITEM_SONG_EPONA,                 "Epona's Song" },
@@ -183,7 +183,7 @@ std::vector<TimesplitObject> splitObjectList = {
     SPLIT_BOSS(ACTOR_BOSS_TW,          "Twinrova"),
     SPLIT_BOSS(ACTOR_BOSS_GANON,       "Ganondorf"),
     SPLIT_BOSS(ACTOR_BOSS_GANON2,      "Ganon"),
-    
+
     // Upgrade Items
     { ITEM_OCARINA_TIME,               "Ocarina of Time" },
     { ITEM_LONGSHOT,                   "Longshot" },
@@ -200,7 +200,7 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_SCALE_GOLDEN,               "Gold Scale" },
     { ITEM_SWORD_KNIFE,                "Giant's Knife" },
     { ITEM_DOUBLE_MAGIC,               "Double Magic" },
-    
+
     // Trade Items
     { ITEM_CHICKEN,                    "Chicken" },
     { ITEM_LETTER_ZELDA,               "Zelda's Letter" },
@@ -222,8 +222,8 @@ std::vector<TimesplitObject> splitObjectList = {
     { ITEM_FROG,                       "Eyeball Frog" },
     { ITEM_EYEDROPS,                   "Eye Drops" },
     { ITEM_CLAIM_CHECK,                "Claim Check" },
-    
-    
+
+
     // Bottled Items
     { ITEM_POTION_RED,                 "Red Potion" },
     { ITEM_POTION_GREEN,               "Green Potion" },

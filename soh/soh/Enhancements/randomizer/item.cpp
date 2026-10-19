@@ -1,6 +1,7 @@
 #include "item.h"
 #include "SeedContext.h"
 #include "logic.h"
+#include "location_access.h"
 #include "../../OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
@@ -43,8 +44,6 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
 }
 
 void Item::ApplyEffect() const {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     }
@@ -52,8 +51,6 @@ void Item::ApplyEffect() const {
 }
 
 void Item::UndoEffect() const {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     }

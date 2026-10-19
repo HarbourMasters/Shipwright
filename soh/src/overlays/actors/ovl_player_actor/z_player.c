@@ -23,8 +23,6 @@
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/game-interactor/vanilla-behavior/GIVanillaBehavior.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
@@ -1611,6 +1609,10 @@ void Player_AnimPlayOnceAdjusted(PlayState* play, Player* this, LinkAnimationHea
 }
 
 void Player_ApplyYawFromAnim(Player* this) {
+    // Blending big turn squishes model, skip it
+    if (ABS(this->skelAnime.jointTable[1].y) > 0x4000) {
+        FrameInterpolation_DontInterpolateChild(&this->actor);
+    }
     this->actor.shape.rot.y += this->skelAnime.jointTable[1].y;
     this->skelAnime.jointTable[1].y = 0;
 }

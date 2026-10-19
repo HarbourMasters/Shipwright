@@ -52,14 +52,7 @@ void SaveEnabledTricks() {
 }
 
 void SaveExcludedLocations() {
-    // todo: this efficiently when we build out cvar array support
-    std::string excludedLocationString = "";
-    for (auto excludedLocationIt : excludedLocations) {
-        if (!excludedLocationString.empty()) {
-            excludedLocationString += ",";
-        }
-        excludedLocationString += std::to_string(excludedLocationIt);
-    }
+    std::string excludedLocationString = Rando::StaticData::SerializeExcludedLocations(excludedLocations);
     if (excludedLocationString == "") {
         CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
     } else {
@@ -330,15 +323,8 @@ void MarkRandomizerMenusDirty() {
 
 void UpdateMenuLocations() {
     RandomizerCheckObjects::UpdateImGuiVisibility();
-    // todo: this efficiently when we build out cvar array support
-    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-    std::string excludedLocationString;
-    excludedLocations.clear();
-    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        if (!excludedLocationString.empty()) {
-            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-        }
-    }
+    excludedLocations =
+        Rando::StaticData::ParseExcludedLocations(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
 }
 
 void UpdateMenuTricks() {

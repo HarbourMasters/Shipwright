@@ -698,7 +698,7 @@ typedef struct PendingFlag {
 #define PLAYER_STATE1_IN_ITEM_CS (1 << 28)
 #define PLAYER_STATE1_IN_CUTSCENE (1 << 29)
 #define PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE (1 << 30) // Lock-on was released automatically, for example by leaving the lock-on leash range
-#define PLAYER_STATE1_FLOOR_DISABLED (1 << 31) //Used for grottos
+#define PLAYER_STATE1_FLOOR_DISABLED (1u << 31) //Used for grottos
 
 #define PLAYER_STATE2_DO_ACTION_GRAB (1 << 0)
 #define PLAYER_STATE2_CAN_ACCEPT_TALK_OFFER (1 << 1) // Can accept a talk offer. "Speak" or "Check" is shown on the A button.
@@ -731,7 +731,7 @@ typedef struct PendingFlag {
 #define PLAYER_STATE2_IDLE_FIDGET (1 << 28) // Playing a fidget idle animation (under typical circumstances, see `Player_ChooseNextIdleAnim` for more info)
 #define PLAYER_STATE2_DISABLE_DRAW (1 << 29)
 #define PLAYER_STATE2_SWORD_LUNGE (1 << 30)
-#define PLAYER_STATE2_FORCED_VOID_OUT (1 << 31)
+#define PLAYER_STATE2_FORCED_VOID_OUT (1u << 31)
 
 #define PLAYER_STATE3_IGNORE_CEILING_FLOOR_WATER (1 << 0)
 #define PLAYER_STATE3_MIDAIR (1 << 1)

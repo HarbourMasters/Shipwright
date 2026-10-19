@@ -20,6 +20,7 @@
 #include <ship/window/gui/Gui.h>
 
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -758,33 +759,12 @@ static std::vector<std::string> ReadUserMappingLines() {
 
 static bool WriteUserMappingLines(const std::vector<std::string>& lines) {
     const std::string path = GetUserMappingsPath();
-    const std::string tempPath = path + ".tmp";
-
-    {
-        std::ofstream file(tempPath, std::ios::binary | std::ios::trunc);
-        if (!file.is_open()) {
-            SPDLOG_ERROR("Failed to open \"{}\" for writing", tempPath);
-            return false;
-        }
-        file << "# SoH user gamepad mappings, written by the built-in gamepad mapper.\n";
-        file << "# Loaded on top of gamecontrollerdb.txt, so entries here win.\n";
-        for (const auto& line : lines) {
-            file << line << "\n";
-        }
-        if (!file.good()) {
-            SPDLOG_ERROR("Failed while writing \"{}\"", tempPath);
-            return false;
-        }
+    std::string contents = "# SoH user gamepad mappings, written by the built-in gamepad mapper.\n"
+                           "# Loaded on top of gamecontrollerdb.txt, so entries here win.\n";
+    for (const auto& line : lines) {
+        contents += line + "\n";
     }
-
-    std::error_code error;
-    std::filesystem::rename(tempPath, path, error);
-    if (error) {
-        SPDLOG_ERROR("Failed to move \"{}\" into place: {}", tempPath, error.message());
-        std::filesystem::remove(tempPath, error);
-        return false;
-    }
-    return true;
+    return SaveManager::WriteFileSafely(path, contents);
 }
 
 std::string FindUserMapping(const std::string& guid) {

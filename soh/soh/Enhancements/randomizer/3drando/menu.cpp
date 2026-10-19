@@ -45,7 +45,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     int ret = Playthrough::Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) {
-            SPDLOG_ERROR("Failed to generate after 5 tries.");
+            SPDLOG_ERROR("Failed to generate after 10 tries.");
             return false;
         } else {
             SPDLOG_ERROR("Error {} with fill.", ret);
@@ -70,9 +70,5 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     SPDLOG_DEBUG("Total Overrides time: {}ms", GetPerformanceTimer(PT_OVERRIDES).count());
     SPDLOG_DEBUG("Total Hint Generation time: {}ms", GetPerformanceTimer(PT_HINTS).count());
     SPDLOG_DEBUG("SpoilerLog writing time: {}ms", GetPerformanceTimer(PT_SPOILER_LOG).count());
-    SPDLOG_DEBUG("Total Event Access Calculation time: {}ms", GetPerformanceTimer(PT_EVENT_ACCESS).count());
-    SPDLOG_DEBUG("Total ToD Access Calculation: {}ms", GetPerformanceTimer(PT_TOD_ACCESS).count());
-    SPDLOG_DEBUG("Total Entrance Logic Calculation time: {}ms", GetPerformanceTimer(PT_ENTRANCE_LOGIC).count());
-    SPDLOG_DEBUG("Total Check Logic Calculation time: {}ms", GetPerformanceTimer(PT_LOCATION_LOGIC).count());
     return true;
 }

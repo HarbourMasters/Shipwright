@@ -11,6 +11,7 @@
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/randomizer/3drando/hints.hpp"
 #include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
@@ -553,11 +554,7 @@ void PlandomizerSaveSpoilerLog() {
         }
     }
 
-    std::ofstream outputFile(filename);
-    if (outputFile.is_open()) {
-        outputFile << spoilerSave.dump(4);
-        outputFile.close();
-    }
+    SaveManager::WriteFileSafely(filename, spoilerSave.dump(4));
 }
 
 void PlandomizerLoadSpoilerLog(std::string logFile) {

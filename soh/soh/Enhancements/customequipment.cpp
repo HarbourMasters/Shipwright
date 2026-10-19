@@ -61,6 +61,26 @@ static Gfx* LoadCustomGfx(const char* path) {
     return ResourceMgr_LoadGfxByName(path);
 }
 
+// Shooting Gallery being weird giving bow and then load slingshot model when child Link
+// This function is used to determine if bow or slingshot model should be loaded
+static bool UsesBowModel(Player* player) {
+    if (CVarGetInteger(CVAR_ENHANCEMENT("BowSlingshotAmmoFix"), 0) ||
+        CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
+        return !Player_HoldsSlingshot(player);
+    }
+    return LINK_IS_ADULT;
+}
+
+// Detects cutscenes that swap the left hand DL without updating leftHandType.
+static bool IsLeftHandSwappedByCutscene(Player* player) {
+    Gfx** dLists = player->leftHandDLists;
+    if (dLists == &gPlayerLeftHandOpenDLs[0] || dLists == &gPlayerLeftHandOpenDLs[1] ||
+        dLists == &gPlayerLeftHandClosedDLs[0] || dLists == &gPlayerLeftHandClosedDLs[1]) {
+        return true;
+    }
+    return dLists == &gPlayerLeftHandBgsDLs[1] && player->leftHandType != PLAYER_MODELTYPE_LH_BGS;
+}
+
 static u8 sLastValidSwordEquip = EQUIP_VALUE_SWORD_NONE;
 
 static u8 GetEquippedSwordValue(PlayState* play) {
@@ -250,6 +270,8 @@ static void RegisterCustomEquipment() {
                     }
                     break;
                 }
+                if (IsLeftHandSwappedByCutscene(player))
+                    break;
                 switch ((u8)player->leftHandType) {
                     case PLAYER_MODELTYPE_LH_SWORD: {
                         if (player == GET_PLAYER(play)) {
@@ -317,7 +339,7 @@ static void RegisterCustomEquipment() {
                         case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
                             fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
                             fpsWeapon =
-                                Player_HoldsBow(player)
+                                UsesBowModel(player)
                                     ? ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL, nullptr })
                                     : ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL, nullptr });
                             break;
@@ -391,7 +413,7 @@ static void RegisterCustomEquipment() {
                                 break;
                             case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
                             case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
-                                customDL = Player_HoldsBow(player) ? gCustomBowDL : gCustomSlingshotDL;
+                                customDL = UsesBowModel(player) ? gCustomBowDL : gCustomSlingshotDL;
                                 break;
                             case PLAYER_MODELTYPE_RH_HOOKSHOT:
                                 customDL = (player->heldItemAction == PLAYER_IA_HOOKSHOT) ? gCustomHookshotDL

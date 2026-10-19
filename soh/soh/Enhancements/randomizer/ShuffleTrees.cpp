@@ -176,6 +176,10 @@ void RegisterShuffleTrees() {
     COND_VB_SHOULD(VB_TREE_SETUP_DRAW, shouldRegisterTree || shouldRegisterBush, {
         EnWood02* treeActor = va_arg(args, EnWood02*);
         if (EnWood02_RandomizerHoldsItem(treeActor, gPlayState)) {
+            const auto treeIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&treeActor->actor);
+            if (Rando::Context::GetInstance()->GetItemLocation(treeIdentity->randomizerCheck)->IsExcluded()) {
+                return;
+            }
             EnWood02_RandomizerDraw(&treeActor->actor, gPlayState);
         }
     });

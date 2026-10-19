@@ -11,7 +11,6 @@ void RegionTable_Init_DesertColossus() {
         EVENT_ACCESS(LOGIC_BUG_ACCESS,                logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
-        LOCATION(RC_COLOSSUS_FREESTANDING_POH,        logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN)),
         LOCATION(RC_COLOSSUS_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_COLOSSUS_GS_TREE,                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_COLOSSUS_GS_HILL,                 logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
@@ -48,6 +47,7 @@ void RegionTable_Init_DesertColossus() {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
         ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle() || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        ENTRANCE(RR_DESERT_COLOSSUS_ARCH,          logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN)),
         ENTRANCE(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, logic->HasExplosives()),
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS,       true),
@@ -73,11 +73,37 @@ void RegionTable_Init_DesertColossus() {
         ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 
-    areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Spirit Entryway", SCENE_DESERT_COLOSSUS, {}, {
+    areaTable[RR_DESERT_COLOSSUS_ARCH] = Region("Desert Colossus Arch", SCENE_DESERT_COLOSSUS, {}, {
+        //Locations
+        LOCATION(RC_COLOSSUS_FREESTANDING_POH, true),
+    }, {
+        //Exits
+        ENTRANCE(RR_DESERT_COLOSSUS, true),
+    });
+
+    //Separate version that handles spirit key logic
+    areaTable[RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT] = Region("Desert Colossus Arch From Spirit", SCENE_DESERT_COLOSSUS, {}, {
+        //Locations
+        LOCATION(RC_COLOSSUS_FREESTANDING_POH, SpiritShared(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT, []{return true;})),
+    }, {
+        //Exits
+        ENTRANCE(RR_DESERT_COLOSSUS_ARCH, SpiritCertainAccess(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT)),
+    });
+
+    //MQ needs to be separate as SpiritShared checks region access
+    areaTable[RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ] = Region("Desert Colossus Arch From Spirit MQ", SCENE_DESERT_COLOSSUS, {}, {
+        //Locations
+        LOCATION(RC_COLOSSUS_FREESTANDING_POH, SpiritShared(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ, []{return true;})),
+    }, {
+        //Exits
+        ENTRANCE(RR_DESERT_COLOSSUS_ARCH, SpiritCertainAccess(RR_DESERT_COLOSSUS_ARCH_FROM_SPIRIT_MQ)),
+    });
+
+    areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Temple", SCENE_DESERT_COLOSSUS, {}, {
         //Locations
         LOCATION(RC_SHEIK_AT_COLOSSUS, true),
     }, {
-        //Exist
+        //Exits
         ENTRANCE(RR_DESERT_COLOSSUS, true),
     });
 

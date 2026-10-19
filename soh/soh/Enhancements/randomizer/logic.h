@@ -1,7 +1,9 @@
 #pragma once
 
-#include "SeedContext.h"
+#include <array>
 #include <stdint.h>
+
+#include "SeedContext.h"
 
 namespace Rando {
 
@@ -44,7 +46,11 @@ class Logic {
     bool SmallKeys(SceneID scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
-    bool CanMiddairGroundJump(bool hasBombflower = false);
+    bool CanMidairGroundJump(bool hasBombflower = false);
+    bool CanMegajump(bool needsBunny = false, bool hasBombflower = false);
+    bool CanBunnyMegaJumpslash(bool hasBombflower = false);
+    bool CanMegadive(bool fallDamage = true, bool hasBombflower = false);
+    bool CanMidairDamageBoost(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanOpenLargeChest();
     bool CanDoGlitch(GlitchType glitch);
@@ -62,8 +68,10 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanRecoilHover(RecoilRequirements req);
-    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
+    bool CanMeleeRecoilHover(RecoilRequirements req);
+    bool CanRecoilHoverFromActor(ActorRecoilRequirements req);
+    bool CanBombRecoilHover(bool bombFlower = false);
+    bool CanRecoilHover(RecoilRequirements req, bool bombFlower = false);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
@@ -98,7 +106,7 @@ class Logic {
     uint8_t DungeonCount();
     uint16_t FireTimer();
     uint16_t WaterTimer();
-    bool TakeDamage();
+    bool TakeDamage(DamageAllowance allowance = DAMAGE_ANY);
     bool CanVoid();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();
@@ -159,14 +167,18 @@ class Logic {
     void SetSaveContext(SaveContext* context);
     void InitSaveContext();
     void NewSaveContext();
-    static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
-    static std::map<uint32_t, SceneID> RandoGetToDungeonScene;
-    static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
+    static const std::array<uint32_t, RG_MAX> RandoGetToQuestItem;
+    static const std::array<SceneID, RG_MAX> RandoGetToDungeonScene;
+    static const std::array<uint32_t, RG_MAX> RandoGetToEquipFlag;
     bool IsReverseAccessPossible();
     bool DMCUpperToPots();
     bool DMCPotsToPad();
     bool DMCPadToPots();
     bool DMCUpperToPad();
+    bool DMCHoverToPoH();
+    bool DMCPadToFarPlatform();
+    bool ForestMQNEToNWViaWell();
+    bool ForestMQNWToNEViaWell();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();
@@ -178,6 +190,7 @@ class Logic {
     bool CouldMQSpirit4KeyWestHand();
     bool OuterWestHandLogic();
     bool OuterWestHandMQLogic();
+    bool SpiritHandToArch();
     bool SpiritExplosiveKeyLogic();
     bool StatueRoomMQKeyLogic();
 

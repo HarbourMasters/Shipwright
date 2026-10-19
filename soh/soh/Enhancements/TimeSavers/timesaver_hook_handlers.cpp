@@ -468,7 +468,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 *should = false;
 
                 // We should still come out of a softlock if the setting was changed during forced dialogue
-                if (GET_PLAYER(gPlayState)->csAction != 7) {
+                if (GET_PLAYER(gPlayState)->csAction == 8) {
                     Player_SetCsAction(gPlayState, NULL, 7);
                 }
             }
@@ -1222,13 +1222,6 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
                 if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
                     Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
-                }
-            }
-            break;
-        case SCENE_GANONDORF_BOSS:
-            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
-                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE)) {
-                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE);
                 }
             }
             break;
