@@ -133,13 +133,14 @@ static std::array<size_t, PRESET_SECTION_MAX> CountChangedCVars(const nlohmann::
         for (const auto& block : blockInfo[i].sections) {
             auto flatBefore = before.contains(block) ? before[block].flatten() : nlohmann::json::object();
             auto flatAfter = after.contains(block) ? after[block].flatten() : nlohmann::json::object();
+            // flatten() stands in a null for an empty block; cvars are never null, so skip those.
             for (auto& [key, value] : flatBefore.items()) {
-                if (!flatAfter.contains(key) || flatAfter[key] != value) {
+                if (!value.is_null() && (!flatAfter.contains(key) || flatAfter[key] != value)) {
                     counts[i]++;
                 }
             }
             for (auto& [key, value] : flatAfter.items()) {
-                if (!flatBefore.contains(key)) {
+                if (!value.is_null() && !flatBefore.contains(key)) {
                     counts[i]++;
                 }
             }
@@ -222,8 +223,8 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
         uint32_t presetVersion = SOH::GetConfigVersion(info.presetValues, 3);
         if (presetVersion < SOH::GetLatestConfigVersion()) {
             SOH::RunVersionUpdatesFrom(presetVersion);
-            // SetBlock already saved the unmigrated values. Save now so the change count sees the migrated ones.
-            CVarSave();
+            // SetBlock already saved the unmigrated values
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
         Rando::Settings::GetInstance()->UpdateAllOptions();
         SohGui::UpdateMenuTricks();
@@ -232,6 +233,8 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
     ShipInit::InitAll();
     OTRGlobals::Instance->ScaleImGui();
 
+    // Migrations and option callbacks above change cvars in memory only.
+    CVarSave();
     nlohmann::json after = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson()["CVars"];
     EmitAppliedNotification(presetName, CountChangedCVars(before, after));
 }
