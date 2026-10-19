@@ -918,7 +918,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                     this->csTimer = 0;
                     this->csCamFov = 60.0f;
                     BossGanon_SetIntroCsCamera(this, 12);
-                    if (GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this)) {
+                    if (GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this, 0x70CB)) {
                         Message_StartTextbox(play, 0x70CB, NULL);
                     }
                 }
@@ -942,7 +942,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             this->csState = 19;
             this->csTimer = 0;
-            if (GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this)) {
+            if (GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this, 0x70CC)) {
                 Message_StartTextbox(play, 0x70CC, NULL);
             }
             Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfRaiseHandStartAnim, -5.0f);
@@ -985,7 +985,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if ((this->csTimer > 80) && (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
-                if (!GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this)) {
+                if (!GameInteractor_Should(VB_PLAY_GANONDORF_INTRO_CS, true, this, 0)) {
                     this->timers[2] = 30;
                     this->csCamAt.x = this->unk_1FC.x - 10.0f;
                     this->csCamAt.y = this->unk_1FC.y + 30.0f;

@@ -328,7 +328,7 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_MAP_RED_ICE,                  logic->BlueFire()),
     }, {});
 
-    //RANDOTODO the default state of the toggle switchs in MQ ice are wierd, investigate for doordsanity
+    //RANDOTODO the default state of the toggle switches in MQ ice are weird, investigate for doorsanity
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         //Implies being able to kill the skull if you hit the switch

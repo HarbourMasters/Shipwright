@@ -57,6 +57,10 @@ int SDL_main(int argc, char* argv[]) {
     setlocale(LC_ALL, ".UTF8");
 #endif
 #else
+    // Keep '.' as the decimal point, user locale may use ','
+    setlocale(LC_NUMERIC, "C");
+
+#else //_WIN32
 int main(int argc, char* argv[]) {
 #endif
     GameConsole_Init();

@@ -293,6 +293,7 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->LoadData("playTimer", gSaveContext.ship.stats.playTimer);
     SaveManager::Instance->LoadData("pauseTimer", gSaveContext.ship.stats.pauseTimer);
+    SaveManager::Instance->LoadData("gameComplete", gSaveContext.ship.stats.gameComplete);
     SaveManager::Instance->LoadArray(
         "itemTimestamps", ARRAY_COUNT(gSaveContext.ship.stats.itemTimestamp),
         [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.ship.stats.itemTimestamp[i]); });
@@ -343,6 +344,7 @@ void SaveStats(const SaveContext& saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("fileCreatedAt", saveContext.ship.stats.fileCreatedAt);
     SaveManager::Instance->SaveData("playTimer", saveContext.ship.stats.playTimer);
     SaveManager::Instance->SaveData("pauseTimer", saveContext.ship.stats.pauseTimer);
+    SaveManager::Instance->SaveData("gameComplete", saveContext.ship.stats.gameComplete);
     SaveManager::Instance->SaveArray(
         "itemTimestamps", ARRAY_COUNT(saveContext.ship.stats.itemTimestamp),
         [&](size_t i) { SaveManager::Instance->SaveData("", saveContext.ship.stats.itemTimestamp[i]); });

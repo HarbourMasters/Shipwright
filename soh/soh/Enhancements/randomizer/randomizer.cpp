@@ -1172,13 +1172,13 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             // This isn't technically necessary, because keys will no longer be consumed,
             // but for the player's sanity we display that they _have_ keys.
             for (Rando::DungeonInfo* dungeon : Rando::Context::GetInstance()->GetDungeons()->GetDungeonList()) {
-                uint8_t keys = Rando::GetSceneSmallKeyMax(dungeon->GetScene());
-                if (keys > 0) {
-                    gSaveContext.inventory.dungeonKeys[dungeon->GetScene()] = keys;
+                if (Rando::GetSceneSmallKeyMax(dungeon->GetScene()) > 0) {
+                    gSaveContext.inventory.dungeonKeys[dungeon->GetScene()] =
+                        Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, dungeon->GetScene());
                 }
             }
             gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] =
-                Rando::GetSceneSmallKeyMax(SCENE_THIEVES_HIDEOUT);
+                Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, SCENE_THIEVES_HIDEOUT);
         } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
             if (!ChildTradeSlotOccupied()) {
                 INV_CONTENT(ITEM_TRADE_CHILD) = (int)ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
@@ -1351,7 +1351,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_TREASURE_GAME_KEY_RING)) {
             u8 keysOnRing = Rando::GetSceneSmallKeyMax((SceneID)mapIndex);
             gSaveContext.ship.stats.dungeonKeys[mapIndex] = keysOnRing;
-            gSaveContext.inventory.dungeonKeys[mapIndex] = keysOnRing;
+            gSaveContext.inventory.dungeonKeys[mapIndex] =
+                Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, (SceneID)mapIndex);
             return Return_Item_Entry(giEntry, RG_NONE);
         }
 
@@ -1401,6 +1402,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
             break;
         case RG_TRIFORCE:
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            gSaveContext.ship.stats.gameComplete = 1;
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             break;
         case RG_TRIFORCE_PIECE:

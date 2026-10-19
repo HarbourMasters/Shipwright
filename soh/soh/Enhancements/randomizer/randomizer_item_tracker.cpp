@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <array>
 #include <map>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -280,65 +282,83 @@ std::vector<ItemTrackerItem> silverRupeeItems = {
     ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_MQ_SILVER_SHADOW, "ShaTri", ITEM_RUPEE_SILVER, 0, DrawItem),
 };
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+// Dungeon items stacked top to bottom in one grid column, scene in data. Unused slots have no drawFunc
+using ItemTrackerDungeonColumn = std::array<ItemTrackerItem, 4>;
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+static ItemTrackerItem Key(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Boss(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Map(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Compass(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_COMPASS, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+static const auto itemTrackerDungeonsWithMapsHorizontal = std::to_array<ItemTrackerDungeonColumn>({
+    { Map(SCENE_DEKU_TREE), Compass(SCENE_DEKU_TREE) },
+    { Map(SCENE_DODONGOS_CAVERN), Compass(SCENE_DODONGOS_CAVERN) },
+    { Map(SCENE_JABU_JABU), Compass(SCENE_JABU_JABU) },
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE), Map(SCENE_FOREST_TEMPLE), Compass(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE), Map(SCENE_FIRE_TEMPLE), Compass(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE), Map(SCENE_WATER_TEMPLE), Compass(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE), Map(SCENE_SPIRIT_TEMPLE), Compass(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE), Map(SCENE_SHADOW_TEMPLE), Compass(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Map(SCENE_BOTTOM_OF_THE_WELL), Compass(SCENE_BOTTOM_OF_THE_WELL) },
+    { Map(SCENE_ICE_CAVERN), Compass(SCENE_ICE_CAVERN) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT), Key(SCENE_TREASURE_BOX_SHOP) },
+});
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-    { SCENE_THIEVES_HIDEOUT, { ITEM_KEY_SMALL } },
-};
+static const auto itemTrackerDungeonsHorizontal = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Key(SCENE_TREASURE_BOX_SHOP) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT) },
+});
+
+static const auto itemTrackerDungeonsWithMapsCompact = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE), Map(SCENE_FOREST_TEMPLE), Compass(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE), Map(SCENE_FIRE_TEMPLE), Compass(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE), Map(SCENE_WATER_TEMPLE), Compass(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE), Map(SCENE_SPIRIT_TEMPLE), Compass(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE), Map(SCENE_SHADOW_TEMPLE), Compass(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Map(SCENE_BOTTOM_OF_THE_WELL), Compass(SCENE_BOTTOM_OF_THE_WELL),
+      Key(SCENE_TREASURE_BOX_SHOP) },
+    { Map(SCENE_DEKU_TREE), Compass(SCENE_DEKU_TREE) },
+    { Map(SCENE_DODONGOS_CAVERN), Compass(SCENE_DODONGOS_CAVERN) },
+    { Map(SCENE_JABU_JABU), Compass(SCENE_JABU_JABU) },
+    { Map(SCENE_ICE_CAVERN), Compass(SCENE_ICE_CAVERN) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT) },
+});
+
+static const auto itemTrackerDungeonsCompact = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND) },
+    { Key(SCENE_THIEVES_HIDEOUT) },
+    { Key(SCENE_TREASURE_BOX_SHOP) },
+});
 
 std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_FOREST_TEMPLE, "FRST" },   { SCENE_FIRE_TEMPLE, "FIRE" },           { SCENE_WATER_TEMPLE, "WATR" },
     { SCENE_SPIRIT_TEMPLE, "SPRT" },   { SCENE_SHADOW_TEMPLE, "SHDW" },         { SCENE_BOTTOM_OF_THE_WELL, "BOTW" },
     { SCENE_DEKU_TREE, "DEKU" },       { SCENE_DODONGOS_CAVERN, "DCVN" },       { SCENE_JABU_JABU, "JABU" },
     { SCENE_ICE_CAVERN, "ICE" },       { SCENE_INSIDE_GANONS_CASTLE, "GANON" }, { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
-    { SCENE_THIEVES_HIDEOUT, "HIDE" },
+    { SCENE_THIEVES_HIDEOUT, "HIDE" }, { SCENE_TREASURE_BOX_SHOP, "TCG" },
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -1439,55 +1459,56 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     }
 }
 
+static bool ShowDungeonItem(const ItemTrackerItem& item) {
+    if (item.data == SCENE_TREASURE_BOX_SHOP) {
+        return IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CHEST_MINIGAME);
+    }
+    if (item.data == SCENE_THIEVES_HIDEOUT) {
+        return !IS_RANDO || RAND_GET_OPTION(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_FREE);
+    }
+    return true;
+}
+
 /**
  * GetDungeonItemsVector
- * Loops over dungeons and creates vectors of items in the correct order
- * to then call DrawItemsInRows
+ * Lays out columns in blocks of `columns` wide, each block as tall as its tallest column,
+ * and flattens them row by row for DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
-    std::vector<ItemTrackerItem> dungeonItems = {};
-
-    size_t rowCount = 0;
-    for (size_t i = 0; i < dungeons.size(); i++) {
-        if (dungeons[i].items.size() > rowCount)
-            rowCount = static_cast<int32_t>(dungeons[i].items.size());
-    }
-
-    for (size_t i = 0; i < rowCount; i++) {
-        for (size_t j = 0; j < std::min(dungeons.size(), columns); j++) {
-            if (dungeons[j].items.size() > i) {
-                switch (dungeons[j].items[i]) {
-                    case ITEM_KEY_SMALL:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                    case ITEM_KEY_BOSS:
-                        // Swap Ganon's Castle boss key to the right scene ID manually
-                        if (dungeons[j].id == SCENE_INSIDE_GANONS_CASTLE) {
-                            dungeonItems.push_back(
-                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", SCENE_GANONS_TOWER, DrawDungeonItem));
-                        } else {
-                            dungeonItems.push_back(
-                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", dungeons[j].id, DrawDungeonItem));
-                        }
-                        break;
-                    case ITEM_DUNGEON_MAP:
-                        dungeonItems.push_back(
-                            ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                    case ITEM_COMPASS:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                }
-            } else {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::span<const ItemTrackerDungeonColumn> layout,
+                                                   size_t columns = 6) {
+    struct ShownColumn {
+        ItemTrackerDungeonColumn items;
+        size_t size = 0;
+    };
+    std::vector<ShownColumn> shown;
+    for (const auto& column : layout) {
+        ShownColumn kept;
+        for (const auto& item : column) {
+            if (item.drawFunc != nullptr && ShowDungeonItem(item)) {
+                kept.items[kept.size++] = item;
             }
+        }
+        if (kept.size > 0) {
+            shown.push_back(kept);
         }
     }
 
-    if (dungeons.size() > columns) {
-        std::vector<ItemTrackerItem> nextDungeonItems =
-            GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
-        dungeonItems.insert(dungeonItems.end(), nextDungeonItems.begin(), nextDungeonItems.end());
+    std::vector<ItemTrackerItem> dungeonItems = {};
+    for (size_t start = 0; start < shown.size(); start += columns) {
+        size_t end = std::min(start + columns, shown.size());
+        size_t rowCount = 0;
+        for (size_t j = start; j < end; j++) {
+            rowCount = std::max(rowCount, shown[j].size);
+        }
+        for (size_t i = 0; i < rowCount; i++) {
+            for (size_t j = start; j < end; j++) {
+                if (i < shown[j].size) {
+                    dungeonItems.push_back(shown[j].items[i]);
+                } else {
+                    dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+                }
+            }
+        }
     }
 
     return dungeonItems;
@@ -1563,18 +1584,12 @@ void UpdateVectors() {
             SECTION_DISPLAY_SEPARATE) {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
-            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         }
     } else {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
         }

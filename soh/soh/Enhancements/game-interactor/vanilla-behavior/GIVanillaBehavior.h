@@ -46,9 +46,25 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Color_RGB8`
+    VB_APPLY_MAGIC_METER_FILL_COLOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BossVa`
     // - `s8*` sCsState
     VB_BARINADE_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
+    // Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE)
+    // ```
+    // #### `args`
+    // - `*BossVa`
+    VB_BARINADE_PLAY_REMATCH_INTRO,
 
     // #### `result`
     // ```c
@@ -1860,6 +1876,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_MAGIC_METER_DEPLETE_WHILE_CONSUMING,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_SONG_EPONA)
     // ```
     // #### `args`
@@ -2265,6 +2289,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*BossGanon`
+    // - `u16` text ID
     VB_PLAY_GANONDORF_INTRO_CS,
 
     // #### `result`
