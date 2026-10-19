@@ -1,4 +1,4 @@
-﻿#include "SohMenu.h"
+#include "SohMenu.h"
 #include <soh/Enhancements/enhancementTypes.h>
 #include "soh/Enhancements/SwitchAge.h"
 #include "soh/Enhancements/AdultMasks.h"
@@ -839,6 +839,19 @@ void SohMenu::AddMenuEnhancements() {
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_LOW_RES_MODE)
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."));
+    AddWidget(path, "Remove Spin Attack Darkness", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Remove the Darkness that appears when charging a Spin Attack."));
+    AddWidget(path, "Disable Link Spinning With Goron Pot", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("DisableLinkSpinWithGoronPot"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Link will not spin when the Goron Pot starts to spin."));
     AddWidget(path, "Night Sky", WIDGET_SEPARATOR_TEXT).RaceDisable(false);
     AddWidget(path, "Majora's Mask Star Field", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("MajoraStarField"))
@@ -896,19 +909,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(FloatSliderOptions().Min(1.0f).Max(3.0f).DefaultValue(1.0f).Step(0.1f).Format("%.1fx").Tooltip(
             "Multiplies how many stars are generated. Extra stars extend the same seed, so the "
             "existing ones do not move."));
-    AddWidget(path, "N64 Mode", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_LOW_RES_MODE)
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Sets the aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution."));
-    AddWidget(path, "Remove Spin Attack Darkness", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("RemoveSpinAttackDarkness"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Remove the Darkness that appears when charging a Spin Attack."));
-    AddWidget(path, "Disable Link Spinning With Goron Pot", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("DisableLinkSpinWithGoronPot"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip("Link will not spin when the Goron Pot starts to spin."));
     AddWidget(path, "Draw Distance", WIDGET_SEPARATOR_TEXT).RaceDisable(false);
     AddWidget(path, "Increase Actor Draw Distance: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("DisableDrawDistance"))
