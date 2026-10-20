@@ -754,6 +754,7 @@ gLinkAdultNose2Tex:
   format: CI8
   width: 16
   height: 16
+  tlut: 0x5C00
 
 gLinkAdultNoseTex:
   type: TEXTURE

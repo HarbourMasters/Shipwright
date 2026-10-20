@@ -2,6 +2,11 @@
   segments:
     - [ 2, 0x016DE340 ]
 
+  directory: scenes/nonmq/ddan_scene
+  external_files:
+    - pal_gc_dbg/scenes/nonmq/ddan_room_0.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
 ddan_scene:
   type: OOT:SCENE
   offset: 0x0
