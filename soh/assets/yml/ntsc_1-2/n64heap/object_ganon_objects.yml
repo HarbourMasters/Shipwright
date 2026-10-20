@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011B92C0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x1170
+  symbol: gN64Heap_object_ganon_objects

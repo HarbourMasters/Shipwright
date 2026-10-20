@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00DDAD70 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x18C0
+  symbol: gN64Heap_object_firefly
