@@ -28,6 +28,7 @@ void Anchor::SendPacket_SetCheckStatus(RandomizerCheck rc) {
     payload["rc"] = rc;
     payload["status"] = randoContext->GetItemLocation(rc)->GetCheckStatus();
     payload["skipped"] = randoContext->GetItemLocation(rc)->GetIsSkipped();
+    payload["discoveredAsStandIn"] = randoContext->GetItemLocation(rc)->GetDiscoveredAsStandIn();
     payload["quiet"] = true;
 
     SendJsonToRemote(payload);
@@ -47,9 +48,24 @@ void Anchor::HandlePacket_SetCheckStatus(nlohmann::json payload) {
     }
     RandomizerCheckStatus status = payload.at("status").get<RandomizerCheckStatus>();
     bool skipped = payload.at("skipped").get<bool>();
+    // Older clients do not send the field.
+    bool discoveredAsStandIn = payload.value("discoveredAsStandIn", false);
 
     isResultOfHandling = true;
 
+    // A Discovered mark from a peer can arrive after this client already collected or saved the check. It only replaces
+    // a local Discovered when it upgrades a blue rupee stand-in to the real item.
+    if (status == RCSHOW_DISCOVERED) {
+        auto location = randoContext->GetItemLocation(rc);
+        RandomizerCheckStatus localStatus = location->GetCheckStatus();
+        bool upgrade = localStatus == RCSHOW_DISCOVERED && location->GetDiscoveredAsStandIn() && !discoveredAsStandIn;
+        if (localStatus == RCSHOW_UNCHECKED || upgrade) {
+            location->SetDiscoveredAsStandIn(discoveredAsStandIn);
+        }
+        if (localStatus != RCSHOW_UNCHECKED) {
+            status = localStatus;
+        }
+    }
     if (randoContext->GetItemLocation(rc)->GetCheckStatus() != status) {
         randoContext->GetItemLocation(rc)->SetCheckStatus(status);
     }
