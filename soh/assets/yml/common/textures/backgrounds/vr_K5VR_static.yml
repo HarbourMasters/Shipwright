@@ -1,0 +1,30 @@
+:config:
+  segments:
+    - [1, vr_K5VR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_K5VR_pal_static.yml
+gSariasHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gSariasHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gSariasHouseBg2TLUT
+gSariasHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gSariasHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gSariasHouseBg3TLUT
+gSariasHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSariasHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gSariasHouseBgTLUT

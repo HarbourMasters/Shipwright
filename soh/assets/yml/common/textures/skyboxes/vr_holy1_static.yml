@@ -1,0 +1,60 @@
+:config:
+  segments:
+    - [1, vr_holy1_static]
+  directory: textures/skyboxes/
+  external_files:
+    - common/textures/skyboxes/vr_holy1_pal_static.yml
+gHoly1Skybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHoly1Skybox1Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gHoly1SkyboxTLUT
+gHoly1Skybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gHoly1Skybox2Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gHoly1SkyboxTLUT
+gHoly1Skybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gHoly1Skybox3Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gHoly1SkyboxTLUT
+gHoly1Skybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gHoly1Skybox4Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 64
+  tlut_symbol: gHoly1SkyboxTLUT
+gHoly1Skybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gHoly1Skybox5Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 128
+  tlut_symbol: gHoly1SkyboxTLUT
+gHoly1Skybox6Tex:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: gHoly1Skybox6Tex
+  format: CI8
+  split_tlut: true
+  width: 128
+  height: 128
+  tlut_symbol: gHoly1SkyboxTLUT

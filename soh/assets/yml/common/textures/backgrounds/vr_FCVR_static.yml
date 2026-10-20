@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_FCVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_FCVR_pal_static.yml
+gMaskShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMaskShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMaskShopBg2TLUT
+gMaskShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gMaskShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gMaskShopBgTLUT

@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_DGVR_static]
+  directory: textures/backgrounds/
+  external_files:
+     - common/textures/backgrounds/vr_DGVR_pal_static.yml
+gKakPotionShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gKakPotionShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKakPotionShopBg2TLUT
+gKakPotionShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKakPotionShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gKakPotionShopBg2TLUT
