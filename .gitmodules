@@ -6,3 +6,7 @@
 	path = torch
 	url = https://github.com/HarbourMasters/Torch.git
 	branch = main
+[submodule "soh/soh/Enhancements/randomizer/logic"]
+	path = soh/soh/Enhancements/randomizer/logic
+	url = https://github.com/serprex/ShipOfHarkinian-RandoLogic.git
+	branch = v930
