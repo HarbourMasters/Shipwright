@@ -43,6 +43,7 @@ bool GameInteractor_ShouldActorDestroy(void* actor);
 void GameInteractor_ExecuteOnActorDestroy(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);
 void GameInteractor_ExecuteOnBossDefeat(void* actor);
+void GameInteractor_ExecuteOnBossVaHealthInit(s8* phase4Hp);
 void GameInteractor_ExecuteOnTimestamp(u8 item);
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnPlayerSetModels(Player* player, u8 modelGroup);
