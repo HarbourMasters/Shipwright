@@ -91,7 +91,7 @@ static void RegisterBombchuBowlingAmmo() {
     static s32 prevAmmoValue = CUCCO_BOWLING_AMMO_DEFAULT;
     s32 nextAmmoValue = CVAR_BOWLING_VALUE ? CVAR_BOWLING_AMMO_VALUE : CUCCO_BOWLING_AMMO_DEFAULT;
 
-    if ((prevAmmoValue != nextAmmoValue) && (gPlayState->bombchuBowlingStatus > 0)) {
+    if ((prevAmmoValue != nextAmmoValue) && gPlayState != NULL && (gPlayState->bombchuBowlingStatus > 0)) {
         gPlayState->bombchuBowlingStatus += nextAmmoValue - prevAmmoValue;
         if (gPlayState->bombchuBowlingStatus <= 0) {
             gPlayState->bombchuBowlingStatus = -1;
