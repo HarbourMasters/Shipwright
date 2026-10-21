@@ -1075,8 +1075,8 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    //Dummied out due to issues with text transfer glitch
-    //VB_GIVE_EYEBALL_FROG_EARLY,
+    // Dummied out due to issues with text transfer glitch
+    // VB_GIVE_EYEBALL_FROG_EARLY,
 
     // #### `result`
     // ```c
