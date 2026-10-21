@@ -9,7 +9,6 @@ extern "C" {
 #include "functions.h"
 
 uint64_t osGetTime(void);
-int16_t OTRGetRectDimensionFromRightEdge(float v);
 }
 
 // SoH [Enhancement] Majora's Mask style star field, ported from the 2S2H "some_love_for_stars" branch.
@@ -128,16 +127,59 @@ extern "C" void MajoraStarField_Setup(PlayState* play) {
     }
 }
 
-// Vanilla star shape, a small rectangle. Used when the telescope shape is turned off.
-static void Ship_DrawSkyboxStar(Gfx** gfxP, f32 x, f32 y, s32 width, s32 height) {
-    Gfx* gfx = *gfxP;
-    // left x coordinate turned into signed value to be used with wide texture rectangle
-    s32 xl = (s32)(x * 4.0f);
-    u32 yl = (u32)(y * 4.0f);
-    u32 xd = width;
-    u32 yd = height;
+// Vanilla star shape, a small quad. Used when the telescope shape is turned off.
+// The star goes through a recorded matrix, so the frame interpolation smooths it like any other geometry. A
+// screen space texture rectangle would stay pinned to the logical frame while the rest of the scene moves.
+static void Ship_DrawSkyboxStarInterpolated(Gfx** gfxP, PlayState* play, Vec3f pos, u32 width, u32 height,
+                                            s32 starNum) {
+    static Vtx sStarVtxData[] = {
+        VTX(-1, -1, 0, 0, 0, 0, 0, 0, 255),
+        VTX(1, -1, 0, 0, 0, 0, 0, 0, 255),
+        VTX(-1, 1, 0, 0, 0, 0, 0, 0, 255),
+        VTX(1, 1, 0, 0, 0, 0, 0, 0, 255),
+    };
 
-    gSPWideTextureRectangle(gfx++, xl, yl, xl + xd, yl + yd, 0, 0, 0, 0, 0);
+    Gfx* gfx = *gfxP;
+    f32 eyeDist;
+    f32 distRatio;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 scaleMultiplier;
+
+    // One time logic before drawing the first star
+    if (starNum == 0) {
+        gSPLoadGeometryMode(gfx++, G_CULL_BACK);
+    }
+
+    if (width >= 2) {
+        // Pull the star to 5500 units from the eye so the far plane cannot clip it
+        eyeDist = Math3D_Vec3f_DistXYZ(&pos, &play->view.eye);
+
+        if (eyeDist > 0.0f) {
+            distRatio = 5500.0f / eyeDist;
+
+            x = play->view.eye.x + ((pos.x - play->view.eye.x) * distRatio);
+            y = play->view.eye.y + ((pos.y - play->view.eye.y) * distRatio);
+            z = play->view.eye.z + ((pos.z - play->view.eye.z) * distRatio);
+
+            // Cancel the field of view so the apparent size stays the same
+            scaleMultiplier = 3.0f / (60.0f / play->view.fovy);
+
+            Matrix_Push();
+
+            Matrix_Translate(x, y, z, MTXMODE_NEW);
+            Matrix_Scale(width * scaleMultiplier, height * scaleMultiplier, 1.0f, MTXMODE_APPLY);
+            Matrix_ReplaceRotation(&play->billboardMtxF);
+
+            gSPMatrix(gfx++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+            gSPVertex(gfx++, (uintptr_t)sStarVtxData, ARRAY_COUNT(sStarVtxData), 0);
+            gSP2Triangles(gfx++, 0, 1, 2, 0, 1, 3, 2, 0);
+
+            Matrix_Pop();
+        }
+    }
 
     *gfxP = gfx;
 }
@@ -387,12 +429,8 @@ static void DrawSkyboxStarsImpl(PlayState* play, Gfx** gfxP) {
     };
 
     Vec3f pos;
-    f32 imgY;
-    f32 imgX;
     Gfx* gfx;
     s32 randomColorIndex;
-    f32 invScale;
-    f32 scale;
     s32 i;
     u32 randInt;
     u32 imgWidth;
@@ -517,49 +555,12 @@ static void DrawSkyboxStarsImpl(PlayState* play, Gfx** gfxP) {
             gDPSetPrimColor(gfx++, 0, 0, starColor.r, starColor.g, starColor.b, (u8)CLAMP(primAlpha, 0.0f, 255.0f));
         }
 
-        // SoH [Enhancement] The telescope star is projected too, so it skips the screen space path below
+        // SoH [Enhancement] Both star shapes go through a recorded matrix, so that the frame interpolation can
+        // smooth them. A screen space texture rectangle would stay pinned to the logical frame.
         if (telescopeStars) {
             Ship_DrawSkyboxStarTelescope(&gfx, play, pos, imgWidth, i, telescopeStarSize, telescopeStarAlphaScale);
-            continue;
-        }
-
-        if (imgWidth >= 2) {
-            f32(*viewProjectionMtxF)[4] = play->viewProjectionMtxF.mf;
-
-            // w component
-            scale = pos.x * viewProjectionMtxF[0][3] + pos.y * viewProjectionMtxF[1][3] +
-                    pos.z * viewProjectionMtxF[2][3] + viewProjectionMtxF[3][3];
-            if (scale >= 1.0f) {
-                invScale = 1.0f / scale;
-                // x component
-                imgX = (pos.x * viewProjectionMtxF[0][0] + pos.y * viewProjectionMtxF[1][0] +
-                        pos.z * viewProjectionMtxF[2][0] + viewProjectionMtxF[3][0]) *
-                       invScale;
-                // y component
-                imgY = ((pos.x * viewProjectionMtxF[0][1]) + (pos.y * viewProjectionMtxF[1][1]) +
-                        (pos.z * viewProjectionMtxF[2][1]) + viewProjectionMtxF[3][1]) *
-                       invScale;
-            }
-
-            // SoH [Cosmetic] An adjusted bounds is calculated based on the new screen width to allow more stars
-            // to be rendered
-            f32 adjustedXBounds = 1.0f;
-            if (OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) > SCREEN_WIDTH) {
-                adjustedXBounds =
-                    (f32)(OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) - (SCREEN_WIDTH / 2)) / (SCREEN_WIDTH / 2);
-            }
-
-            if ((scale >= 1.0f) && (imgX > -adjustedXBounds) && (imgX < adjustedXBounds) && (imgY > -1.0f) &&
-                (imgY < 1.0f)) {
-                if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
-                    imgX *= -1.0f;
-                }
-
-                imgX = (imgX * (SCREEN_WIDTH / 2)) + (SCREEN_WIDTH / 2);
-                imgY = (imgY * -(SCREEN_HEIGHT / 2)) + (SCREEN_HEIGHT / 2);
-
-                Ship_DrawSkyboxStar(&gfx, imgX, imgY, imgWidth, 4);
-            }
+        } else {
+            Ship_DrawSkyboxStarInterpolated(&gfx, play, pos, imgWidth, 4, i);
         }
     }
 
