@@ -40,11 +40,11 @@ cd Shipwright
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
 # Add -T v143 to force use of MSVC v143 if needed
-& cmake' -S . -B "build" -G "Visual Studio 17 2022" -A x64
+& cmake -S . -B "build" -G "Visual Studio 17 2022" -A x64
 
 # Compile project
 # Add `--config Release` if you're packaging
-& 'cmake' --build .\build
+& cmake --build .\build
 
 # Now you can run the executable in .\build or run in Visual Studio
 ```
@@ -74,7 +74,7 @@ cmake --build build-cmake --target clean
 
 ```powershell
 # If you need to regenerate the asset headers to check them into source
-C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHeaders
+& cmake --build build-cmake --target ExtractAssetHeaders
 ```
 
 ## Linux

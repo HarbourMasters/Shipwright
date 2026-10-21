@@ -1,6 +1,6 @@
 # Contributing Basics
 
-This guide is made for absolute beginners in software development to guide them through setting up a fork, making basic changes and PRing it to the main repo. MMore experianced users will likely want to skip this guide and check BUILDING.md instead for more direct instructions.
+This guide is made for absolute beginners in software development to guide them through setting up a fork, making basic changes and PRing it to the main repo. MMore experienced users will likely want to skip this guide and check BUILDING.md instead for more direct instructions.
 
 ## Creating and setting up your fork.
 
@@ -82,7 +82,8 @@ In order to make a feature branch, you must first choose which branch to use as 
 - On Command line: `git push`. The first time you do this for a branch, you'll be prompted with a command to set the origin. do so.
 - with TortoiseGit: Right click, TortoiseGit > `Push`, select the branch you are pushing from the first dropdown, then select `origin` in the first dropdown in the "Destination" box. Then click OK.
 
-You can also use steps 5 and 6 to save your current work onto the cloud, where other people can see and it'll be backed up in case of issues with your computer.
+> [!TIP]
+> You can also use steps 5 and 6 to save your current work onto the cloud, where other people can see and it'll be backed up in case of issues with your computer.
 
 7.  Go to the [Main Repo's Github page, go to the Pull Request tab](https://github.com/HarbourMasters/Shipwright/pulls), and you should see a pop up telling you about your recently pushed branch, otherwise click `New Pull Request`. In the new menu select the branch you are making into a PR in the right hand dropdown, and select the branch you originally created your branch from on the left. Then name and describe your pull request and click `Create Pull Request` to make the PR.
 8. While waiting for merge, a conflict between your PR and new additions to the repo may occur, if this happens, update your PR and resolve the conflicts as described below.
