@@ -16,6 +16,7 @@
 #include <libultraship/bridge/audiobridge.h>
 #include <libultraship/bridge/gfxdebuggerbridge.h>
 #include <libultraship/bridge/windowbridge.h>
+#include <ship/audio/Audio.h>
 #include <ship/Context.h>
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
@@ -29,6 +30,8 @@
 #endif
 #include <ship/resource/archive/O2rArchive.h>
 #include <ship/utils/binarytools/MemoryStream.h>
+#include "soh/Enhancements/audio/MidiSynthManager.h"
+#include "soh/Enhancements/audio/AudioResampler.h"
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/audio/AudioCollection.h"
@@ -878,7 +881,13 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    // Output rate is user-selectable (restart-applied); the pipeline resamples the
+    // native 32 kHz bus up to it. Default 32 kHz matches the console.
+    const int audioOutputRate = CVarGetInteger(CVAR_AUDIO("OutputSampleRate"), 32000);
+    // ~75 ms reservoir scaled to the rate; long blocking loads are kept audible
+    // by OTRAudio_Pump instead of deeper buffering, which would delay every sound.
+    context->InitAudio(
+        { .SampleRate = audioOutputRate, .SampleLength = 1024, .DesiredBuffered = 2400 * audioOutputRate / 32000 });
 
     // The menu is set up before audio is initialized, so its list of available audio backends has to be
     // populated here rather than in Menu::InitElement (where the window backends are handled).
@@ -1066,47 +1075,206 @@ int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
+OTRAudioState audio;
+
+// AudioMgr_ThreadEntry(&gAudioMgr);
+//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+#define SAMPLES_HIGH 560
+#define SAMPLES_MID 544
+#define SAMPLES_LOW 528
+
+#define NUM_AUDIO_CHANNELS 2
+
+// The sequencer advances a fixed slice of musical time per engine update
+// (tempoInternalToExternal in audio_heap.c assumes 60 updates/sec), so with
+// production paced by backend buffer fill the sample count must average
+// exactly 32000/60 = 533.33 per update or tempo drifts.
+// Two thirds 528 one third 544 gives 533.33.
+static int32_t sSampleDebtThirds;
+
+// Output rate is user-selectable (restart-applied); native synthesis is 32 kHz
+// and the pipeline resamples up to it. Default 32 kHz matches the console.
+constexpr int32_t kNativeRate = 32000;
+static int32_t sOutputRate = kNativeRate;
+// Null at the native rate so the stock path stays byte-identical; otherwise a
+// stateful stereo resampler lifts the native bus to the device rate.
+static std::unique_ptr<SOH::AudioResampler> sResampler;
+
+static int32_t ToDeviceFrames(u32 nativeFrames) {
+    return (int32_t)((int64_t)nativeFrames * sOutputRate / kNativeRate);
+}
+
+// Caller holds audio.mutex. Produces one engine update and plays it. Updates
+// are produced one at a time behind a room check, so the backend ring never
+// dips more than one update below its target at any frame rate.
+static void OTRAudio_ProduceUpdate() {
+    u32 num_audio_samples = sSampleDebtThirds > 0 ? SAMPLES_MID : SAMPLES_LOW;
+    sSampleDebtThirds += (1600 - 3 * (int32_t)num_audio_samples);
+
+    const u32 total_samples = num_audio_samples * NUM_AUDIO_CHANNELS;
+
+    static thread_local s16 native_s16[SAMPLES_HIGH * NUM_AUDIO_CHANNELS];
+
+    AudioMgr_CreateNextAudioBuffer(native_s16, num_audio_samples);
+
+#if ENABLE_FLUIDSYNTH
+    auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
+    const bool haveSynth = (bool)synth;
+#else
+    const bool haveSynth = false;
+#endif
+
+    // Stock path: at the native rate with no synth, hand s16 straight through.
+    if (!sResampler && !haveSynth) {
+        AudioPlayer_Play(reinterpret_cast<u8*>(native_s16), total_samples * sizeof(int16_t));
+        return;
+    }
+
+    // Worst case: SAMPLES_HIGH frames at the 32k->48k (x3/2) ratio, stereo, plus
+    // slack for the resampler's phase rounding. 16384 leaves ample headroom.
+    static constexpr size_t kMaxSamples = 16384;
+    static thread_local float native_f32[kMaxSamples];
+    static thread_local float synth_f32[kMaxSamples];
+    static thread_local float mix_f32[kMaxSamples];
+    static thread_local s16 out_s16[kMaxSamples];
+
+    for (u32 s = 0; s < total_samples; s++) {
+        native_f32[s] = native_s16[s] * (1.0f / 32768.0f);
+    }
+
+    const float* stereo = native_f32;
+    int outFrames = (int)num_audio_samples;
+    if (sResampler) {
+        outFrames = sResampler->Process(native_f32, (int)num_audio_samples, mix_f32,
+                                        sResampler->MaxOutputFrames((int)num_audio_samples));
+        stereo = mix_f32;
+    }
+
+#if ENABLE_FLUIDSYNTH
+    if (haveSynth) {
+        synth->Render(synth_f32, (uint32_t)outFrames);
+        // tanh-style soft clip on the summed bus keeps peaks well-behaved when
+        // the synth contributes alongside native SFX.
+        auto softClip = [](float x) {
+            const float x2 = x * x;
+            return x * (27.0f + x2) / (27.0f + 9.0f * x2);
+        };
+        const int n = outFrames * NUM_AUDIO_CHANNELS;
+        for (int i = 0; i < n; i++) {
+            mix_f32[i] = softClip(stereo[i] + synth_f32[i]);
+        }
+        stereo = mix_f32;
+    }
+#endif
+
+    // Stereo s16 out; libultraship still does channel layout / 5.1 downstream.
+    const int n = outFrames * NUM_AUDIO_CHANNELS;
+    for (int i = 0; i < n; i++) {
+        float v = stereo[i] * 32767.0f;
+        v = v > 32767.0f ? 32767.0f : (v < -32768.0f ? -32768.0f : v);
+        out_s16[i] = (s16)lrintf(v);
+    }
+    AudioPlayer_Play(reinterpret_cast<u8*>(out_s16), (size_t)n * sizeof(int16_t));
+}
+
+// The null output backend never consumes, so the ring never opens room and
+// the normal gates would stop the engine entirely, yet the engine still has
+// to advance: it drains the command queue and completes reset handshakes.
+static bool AudioNoDrain() {
+    auto audioBackend = Ship::Context::GetRawInstance()->GetAudio();
+    return audioBackend != nullptr && audioBackend->GetCurrentAudioBackend() == Ship::AudioBackend::NUL;
+}
+
 void OTRAudio_Thread() {
+    // The engine must never run while game logic does: the game writes audio
+    // state with the engine expected to be idle, as on console. The gfx thread
+    // holds in_frame across Graph_ProcessGfxCommands (submit + present), which
+    // is the engine's safe window. Wake on the frame signal, or on a short
+    // timeout so a gfx thread parked in a long present keeps the reservoir
+    // topped up.
+    constexpr auto kSelfPumpInterval = std::chrono::milliseconds(5);
+
     while (audio.running) {
         {
             std::unique_lock<std::mutex> Lock(audio.mutex);
-            while (!audio.processing && audio.running) {
-                audio.cv_to_thread.wait(Lock);
-            }
+            audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval, [&] {
+                return !audio.running || (audio.in_frame && (AudioPlayer_Buffered() + ToDeviceFrames(SAMPLES_MID) <=
+                                                                 AudioPlayer_GetDesiredBuffered() ||
+                                                             (AudioNoDrain() && !audio.produced_in_window)));
+            });
 
             if (!audio.running) {
                 break;
             }
         }
-        std::unique_lock<std::mutex> Lock(audio.mutex);
-// AudioMgr_ThreadEntry(&gAudioMgr);
-//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-#define SAMPLES_HIGH 560
-#define SAMPLES_LOW 528
 
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
-#define NUM_AUDIO_CHANNELS 2
+        while (audio.running) {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
 
-        int samples_left = AudioPlayer_Buffered();
-        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+            // Producer guard (banteg/Shipwright#6594): skip advancing the audio
+            // engine if the backend ring cannot accept the next update. The
+            // reservoir refills once the backend drains.
+            bool room = AudioPlayer_Buffered() + ToDeviceFrames(SAMPLES_MID) <= AudioPlayer_GetDesiredBuffered();
+            if (!audio.in_frame || audio.busy || (!room && !AudioNoDrain())) {
+                break;
+            }
+            // Without a drain the reservoir can never open room; one update per
+            // frame window keeps the engine's protocol moving instead.
+            if (!room && audio.produced_in_window) {
+                break;
+            }
 
-        // 3 is the maximum authentic frame divisor.
-        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
+            audio.busy = true;
+            OTRAudio_ProduceUpdate();
+            audio.busy = false;
+            audio.produced_in_window = true;
+            audio.primed = true;
+            audio.cv_from_thread.notify_all();
         }
-
-        AudioPlayer_Play((u8*)audio_buffer,
-                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-
-        audio.processing = false;
-        audio.cv_from_thread.notify_one();
     }
 }
 
+// Called from the game thread while it is suspended inside a blocking resource
+// load: game logic cannot run then, so advancing the engine here is the
+// console scheduler interleaving audio tasks with gameplay, not the
+// cross-thread racing #6704 got wrong. Keeps long scene and room loads from
+// draining the backend ring to silence.
+extern "C" void OTRAudio_Pump(void) {
+    if (!audio.running) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> Lock(audio.mutex);
+    if (!audio.primed || audio.busy) {
+        return;
+    }
+
+    // Busy/notify match the audio-thread producer, so the gfx thread's
+    // wait-out at window close can never overlap engine work started here.
+    audio.busy = true;
+    while (AudioPlayer_Buffered() + ToDeviceFrames(SAMPLES_MID) <= AudioPlayer_GetDesiredBuffered()) {
+        OTRAudio_ProduceUpdate();
+    }
+    if (AudioNoDrain()) {
+        // The reservoir can never open room without a drain; pace the engine
+        // by wall clock so the protocol keeps moving through loads.
+        auto now = std::chrono::steady_clock::now();
+        if (now - audio.last_tick >= std::chrono::milliseconds(15)) {
+            OTRAudio_ProduceUpdate();
+            audio.last_tick = now;
+        }
+    }
+    audio.busy = false;
+    audio.cv_from_thread.notify_all();
+}
+
 void OTRAudio_Init() {
+    sOutputRate = CVarGetInteger(CVAR_AUDIO("OutputSampleRate"), kNativeRate);
+    sResampler = sOutputRate != kNativeRate
+                     ? std::make_unique<SOH::AudioResampler>(kNativeRate, sOutputRate, NUM_AUDIO_CHANNELS)
+                     : nullptr;
+
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
@@ -1826,7 +1994,8 @@ void RunCommands(Gfx* Commands, int time, int step, int denom, int count) {
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        audio.processing = true;
+        audio.in_frame = true;
+        audio.produced_in_window = false;
     }
 
     audio.cv_to_thread.notify_one();
@@ -1877,7 +2046,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        while (audio.processing) {
+        audio.in_frame = false;
+        while (audio.busy) {
             audio.cv_from_thread.wait(Lock);
         }
     }

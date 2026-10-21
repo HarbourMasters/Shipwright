@@ -19,8 +19,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
 // LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName) {
-    auto res = Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(fileName);
-    return res.get();
+    return ResourceMgr_LoadResourcePumpingAudio(fileName).get();
 }
 
 extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
