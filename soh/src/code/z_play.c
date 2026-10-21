@@ -8,6 +8,7 @@
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/Graphics/MajoraStarField.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -1465,6 +1466,10 @@ void Play_Draw(PlayState* play) {
             }
         }
 
+        // SoH [Enhancement] Majora's Mask style star field: the branch point has to be placed after the skybox and
+        // before the sun and moon, so that the stars show through the sky but stay hidden behind the moon.
+        MajoraStarField_Setup(play);
+
         if ((HREG(80) != 10) || (HREG(90) & 2)) {
             if (!play->envCtx.sunMoonDisabled) {
                 Environment_DrawSunAndMoon(play);
@@ -1626,6 +1631,10 @@ Play_Draw_skip:
             SkyboxDraw_UpdateMatrix(&play->skyboxCtx, play->view.eye.x, play->view.eye.y, play->view.eye.z);
         }
     }
+
+    // SoH [Enhancement] Majora's Mask style star field: fill the branch point placed earlier in the frame now that
+    // the view matrix is final, so that the stars never lag behind the camera.
+    MajoraStarField_Draw(play);
 
     Camera_Finish(GET_ACTIVE_CAM(play));
 
