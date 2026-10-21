@@ -1,30 +1,37 @@
 # Building Ship of Harkinian
 
+If you are unsure how to get a copy of the code with which to build, follow the instructions [here](https://github.com/HarbourMasters/Shipwright/blob/develop/docs/CONTRIBUTION_BASICS.md).
+
+## Build using VSCod(ium)
+
+1. Install dependencies for your OS as described below.
+2. Install the `CMake Tools` Extension. Ignore any warnings about a dependency not working if you are on a fork like Codium, that dependency does nothing and CMake Tools functions as is. 
+3. (Optional) Open CMake Tools settings and changed the `Generator` setting to `Ninja` and add `CMAKE_EXPORT_COMPILE_COMMANDS` to the `Build Enviroment` setting with the value of `ON`. This is necessary for Non-microsoft debuggers used in other tutorials, which are needed for everything except telemetry enabled official VS Code, and should give faster builds with better feedback. If you build without these changes and then switch to Ninja, you'll have to delete your `build` directory in order to rebuild.
+4. Select `Open Folder` and choose the `Shipwright` folder where you cloned the repo.
+5. Click Build on the bottom toolbar. Windows users will be prompted for a target platform and should click `amd64`. If no options appear, click `Scan for kits` and try again once it is done.
+
 ## Windows
 
 Requires:
   * At least 8GB of RAM (machines with 4GB have seen compiler failures)
-  * Visual Studio 2022 Community Edition with the C++ feature set
-  * One of the Windows SDKs that comes with Visual Studio, for example the current Windows 10 version 10.0.19041.0
-  * The `MSVC v143 - VS 2022 C++ build tools` component of Visual Studio
-  * Python 3 (can be installed manually or as part of Visual Studio)
-  * Git (can be installed manually or as part of Visual Studio)
-  * Cmake (can be installed via chocolatey or manually)
-
-During installation, check the "Desktop development with C++" feature set:
+  * `Desktop development with C++` from [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/) (see the image) OR Visual Studio 2022 Community Edition with the C++ feature set and one of the Windows SDKs that comes with Visual Studio.
+  * If you encounter compiler issues, `MSVC v143 - VS 2022 C++ build tools` is known to work.
+  * [Python 3](https://www.python.org/)
+  * [Git](https://git-scm.com/)
+  * Cmake (can be installed via chocolatey or [manually](https://cmake.org/download/))
 
 ![image](https://user-images.githubusercontent.com/30329717/183511274-d11aceea-7900-46ec-acb6-3f2cc110021a.png)
 Doing so should also check one of the Windows SDKs by default.  Then, in the installation details in the right-hand column, make sure you also check the v143 toolset. This is often done by default.
 
 It is recommended that you install Python and Git standalone, the install process in VS Installer has given some issues in the past.
 
-1. Clone the Ship of Harkinian repository
+After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r files.
 
-_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship and torch submodules!_
+##Build using powershell
 
-2. After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r files.
+Ninja is not supported when building via powershell due to issues with the platform.
+These commands assume that Cmake is on the path. likely locations for the .exe's are `C:\Program Files\CMake\bin\` or `C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin`
 
-_Note: Instructions assume using powershell_
 ```powershell
 # Navigate to the Shipwright repo within powershell. ie: cd "C:\yourpath\Shipwright"
 cd Shipwright
@@ -32,36 +39,17 @@ cd Shipwright
 # Setup cmake project
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
-
-# Generate soh.o2r
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target GenerateSohOtr
+# Add -T v143 to force use of MSVC v143 if needed
+& cmake' -S . -B "build" -G "Visual Studio 17 2022" -A x64
 
 # Compile project
 # Add `--config Release` if you're packaging
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64
+& 'cmake' --build .\build
 
-# Now you can run the executable in .\build\x64 or run in Visual Studio
+# Now you can run the executable in .\build or run in Visual Studio
 ```
 
-### Developing SoH
-With the cmake build system you have two options for working on the project:
-
-#### Visual Studio
-To develop using Visual Studio you only need to use cmake to generate the solution file:
-```powershell
-# Generates Ship.sln at `build/x64` for Visual Studio 2022
-& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v143 -A x64
-```
-
-#### Visual Studio Code or another editor
-To develop using Visual Studio Code or another editor you only need to open the repository in it.
-To build you'll need to follow the instructions from the building section.
-
-_Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
-
-_Experimental: You can also use another build system entirely rather than MSVC like [Ninja](https://ninja-build.org/) for possibly better performance._
-
+If you need help developing from here, see [CONTRIBUTION_BASICS.md](https://github.com/HarbourMasters/Shipwright/blob/develop/docs/CONTRIBUTION_BASICS.md)
 
 ### Generating the distributable
 After compiling the project you can generate the distributable by running:
@@ -76,7 +64,7 @@ cd "build/x64"
 #### Clean
 ```powershell
 # If you need to clean the project you can run
-C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target clean
+cmake --build build-cmake --target clean
 ```
 
 #### Regenerate Asset Headers
@@ -90,11 +78,6 @@ C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHe
 ```
 
 ## Linux
-### Clone the repo and enter the directory
-```sh
-git clone https://github.com/HarbourMasters/Shipwright.git
-cd Shipwright
-```
 ### Install dependencies
 
 > [!IMPORTANT]
@@ -168,6 +151,7 @@ git submodule update --init
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
 # Add `-DPython3_EXECUTABLE=$(which python3)` if you are using non-standard Python installations such as PyEnv
+# Add `-DCMAKE_EXPORT_COMPILE_COMMANDS` to create a compile_command.json for use with clangd
 cmake -H. -Bbuild-cmake -GNinja
 
 # Generate soh.o2r
