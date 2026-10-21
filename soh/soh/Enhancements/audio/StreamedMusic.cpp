@@ -33,6 +33,8 @@ using Clock = std::chrono::steady_clock;
 constexpr auto kFadeOutWaitSlack = std::chrono::milliseconds(500);
 // Long enough for a fade-less start issued right after a stop to turn the pair into a crossfade.
 constexpr uint8_t kStopGraceFrames = 3;
+// Two audio frames: what the 0x100100FF stops (Ganondorf's organ, boss defeat) decode to. A cut, not a fade.
+constexpr uint16_t kCutFadeTimer = 8;
 
 struct Fades {
     float inSeconds;
@@ -221,7 +223,7 @@ extern "C" void SOH_StreamedMusic_SequenceStarted(uint8_t playerIdx, uint16_t se
 }
 
 extern "C" uint8_t SOH_StreamedMusic_SequenceStopped(uint8_t playerIdx, uint16_t fadeTimer) {
-    if (fadeTimer != 0 || FadeOutTimerOn(playerIdx) == 0) {
+    if (fadeTimer <= kCutFadeTimer || FadeOutTimerOn(playerIdx) == 0) {
         return 0;
     }
 
