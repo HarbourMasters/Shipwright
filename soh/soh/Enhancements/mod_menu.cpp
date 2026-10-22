@@ -15,6 +15,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "spdlog/spdlog.h"
 
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
@@ -25,6 +26,7 @@ static std::set<std::string> selectedEnabledModFiles;
 static int lastSelectedModIndex = -1;
 static bool boxSelectingMods = false;
 static ImVec2 boxSelectStart;
+static bool sModsFolderMissing = false;
 
 struct ModRowBounds {
     std::string file;
@@ -223,6 +225,7 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     std::map<std::string, std::string> tempMods;
     std::vector<std::filesystem::path> ootrsFiles;
     if (modsPath.length() > 0 && std::filesystem::exists(modsPath)) {
+        SPDLOG_INFO("Scanning mods folder {}", modsPath);
         std::vector<std::filesystem::path> enabledFiles;
         if (std::filesystem::is_directory(modsPath)) {
             for (const std::filesystem::directory_entry& p : std::filesystem::recursive_directory_iterator(
@@ -258,9 +261,11 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 for (std::string mod : enabledTemp) {
                     if (filePaths.contains(mod)) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
+                        SPDLOG_INFO("Enabled mod {}", filePaths.at(mod).generic_string());
                     } else {
-                        enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
-                        changed = true;
+                        // Keep the entry in the list so the user sees it, in red, instead of
+                        // silently dropping a mod they thought they had enabled.
+                        SPDLOG_WARN("Enabled mod \"{}\" not found in {}", mod, modsPath);
                     }
                 }
                 std::sort(ootrsFiles.begin(), ootrsFiles.end());
@@ -270,6 +275,9 @@ void UpdateModFiles(bool init = false, bool reset = false) {
         if (changed) {
             SetEnabledModsCVarValue();
         }
+    } else {
+        SPDLOG_WARN("Mods folder \"{}\" does not exist; custom music and other mods cannot load from it", modsPath);
+        sModsFolderMissing = true;
     }
 }
 
@@ -398,14 +406,33 @@ void DrawMods(bool enabled) {
         }
 
         ImGui::SameLine();
-        std::string displayName = filePaths.at(file).filename().generic_string();
+        const bool missing = !filePaths.contains(file);
+        std::string displayName = missing ? file : filePaths.at(file).filename().generic_string();
         if (enabled) {
             ImGui::PushID(file.c_str());
             float selectableWidth =
                 ImGui::CalcTextSize(displayName.c_str()).x + ImGui::GetStyle().FramePadding.x * 2.0f;
+            if (missing) {
+                ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Red));
+                ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, UIWidgets::ColorValues.at(UIWidgets::Colors::DarkRed));
+            }
             if (ImGui::Selectable(displayName.c_str(), selectedEnabledModFiles.contains(file), 0,
                                   ImVec2(selectableWidth, 0.0f)))
                 HandleModSelection(i, file);
+            if (missing) {
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                if (missing) {
+                    ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
+                                       "Mod file not found: expected in mods folder.");
+                } else {
+                    ImGui::Text("Loaded from: %s", filePaths.at(file).generic_string().c_str());
+                }
+                ImGui::EndTooltip();
+            }
             ImGui::PopID();
         } else {
             ImGui::Text("%s", displayName.c_str());
@@ -480,6 +507,10 @@ void ModMenuWindow::DrawElement() {
         "below them.");
 
     DrawCustomMusicSummary();
+    if (sModsFolderMissing) {
+        ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
+                           "No mods folder found; custom mods cannot load.");
+    }
 
     // if (UIWidgets::Button(
     //         "Update", UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Currently editing..." }
