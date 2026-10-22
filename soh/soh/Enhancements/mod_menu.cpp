@@ -20,7 +20,6 @@
 std::vector<std::string> enabledModFiles;
 std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
-std::set<std::string> missingModFiles;
 std::map<std::string, std::filesystem::path> filePaths;
 static int dragSourceIndex = -1;
 static std::set<std::string> selectedEnabledModFiles;
@@ -221,7 +220,6 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     disabledModFiles.clear();
     unsupportedFiles.clear();
     filePaths.clear();
-    missingModFiles.clear();
     bool changed = false;
     std::string modsPath = Ship::Context::LocateFileAcrossAppDirs("mods", appShortName);
     std::map<std::string, std::string> tempMods;
@@ -267,7 +265,6 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                     } else {
                         // Keep the entry in the list so the user sees it, in red, instead of
                         // silently dropping a mod they thought they had enabled.
-                        missingModFiles.insert(mod);
                         SPDLOG_WARN("Enabled mod \"{}\" not found in {}", mod, modsPath);
                     }
                 }
@@ -409,7 +406,7 @@ void DrawMods(bool enabled) {
         }
 
         ImGui::SameLine();
-        const bool missing = missingModFiles.contains(file);
+        const bool missing = !filePaths.contains(file);
         std::string displayName = missing ? file : filePaths.at(file).filename().generic_string();
         if (enabled) {
             ImGui::PushID(file.c_str());
