@@ -1,6 +1,7 @@
 #include "Presets.h"
 #include <algorithm>
 #include <array>
+#include <set>
 #include <string>
 #include <fstream>
 #include <spdlog/common.h>
@@ -125,25 +126,41 @@ static SectionStrategy GetSectionStrategy(const PresetInfo& info, int section) {
     return SectionStrategy::Overwrite;
 }
 
+// A colour cvar is stored as R/G/B/A/Type entries; map each of them to the colour itself.
+static std::string SettingKey(const std::string& key, const nlohmann::json& flatBefore,
+                              const nlohmann::json& flatAfter) {
+    std::string parent = key.substr(0, key.rfind('/'));
+    if (flatBefore.contains(parent + "/Type") || flatAfter.contains(parent + "/Type")) {
+        return parent;
+    }
+    return key;
+}
+
 // Number of cvars per section that differ between two snapshots of the config's CVars block.
 static std::array<size_t, PRESET_SECTION_MAX> CountChangedCVars(const nlohmann::json& before,
                                                                 const nlohmann::json& after) {
     std::array<size_t, PRESET_SECTION_MAX> counts{};
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         for (const auto& block : blockInfo[i].sections) {
+            // Windows write their own visibility back, so a preset can't change it.
+            if (block == CVAR_PREFIX_WINDOW) {
+                continue;
+            }
             auto flatBefore = before.contains(block) ? before[block].flatten() : nlohmann::json::object();
             auto flatAfter = after.contains(block) ? after[block].flatten() : nlohmann::json::object();
+            std::set<std::string> changed;
             // flatten() stands in a null for an empty block; cvars are never null, so skip those.
             for (auto& [key, value] : flatBefore.items()) {
                 if (!value.is_null() && (!flatAfter.contains(key) || flatAfter[key] != value)) {
-                    counts[i]++;
+                    changed.insert(SettingKey(key, flatBefore, flatAfter));
                 }
             }
             for (auto& [key, value] : flatAfter.items()) {
                 if (!value.is_null() && !flatBefore.contains(key)) {
-                    counts[i]++;
+                    changed.insert(SettingKey(key, flatBefore, flatAfter));
                 }
             }
+            counts[i] += changed.size();
         }
     }
     return counts;
@@ -172,7 +189,7 @@ static void EmitAppliedNotification(const std::string& presetName,
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
     auto& info = presets[presetName];
     bool randoApplied = false;
-    // Save first so the snapshot holds any change not yet written out.
+    // Some menu paths (e.g. Presets from file select) change cvars without saving.
     CVarSave();
     nlohmann::json before = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson()["CVars"];
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
