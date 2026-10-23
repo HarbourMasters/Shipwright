@@ -144,8 +144,10 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
             } else if (i == PRESET_SECTION_DEVELOPMENT) {
-                ApplyValuePreset(info.presetValues);
-                ApplyWarpPointPreset(info.presetValues);
+                ApplyValuePreset(info.presetValues,
+                                 GetSectionStrategy(info, PRESET_SECTION_DEVELOPMENT) == SectionStrategy::Merge);
+                ApplyWarpPointPreset(info.presetValues,
+                                     GetSectionStrategy(info, PRESET_SECTION_DEVELOPMENT) == SectionStrategy::Merge);
             }
             auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
             SectionStrategy sectionStrategy = GetSectionStrategy(info, i);

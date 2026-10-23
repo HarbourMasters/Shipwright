@@ -84,10 +84,15 @@ void SaveValueConfig() {
     Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
-// TODO properly apply merge strategy
-void ApplyValuePreset(const nlohmann::json& preset) {
+void ApplyValuePreset(const nlohmann::json& preset, bool merge) {
     if (preset.find("ValueViewer") != preset.end() && preset["ValueViewer"].is_array()) {
-        valueViewerSettings = preset["ValueViewer"];
+        if (merge) {
+            for (auto value : preset["ValueViewer"]) {
+                valueViewerSettings[value[0]] = value[1];
+            }
+        } else {
+            valueViewerSettings = preset["ValueViewer"];
+        }
     } else {
         valueViewerSettings = {};
     }

@@ -49,10 +49,15 @@ void SaveConfig() {
     Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
-// TODO properly apply merge strategy
-void ApplyWarpPointPreset(const nlohmann::json& preset) {
+void ApplyWarpPointPreset(const nlohmann::json& preset, bool merge) {
     if (preset.find("WarpPoints") != preset.end() && preset["WarpPoints"].is_object()) {
-        warpPoints = preset["WarpPoints"];
+        if (merge) {
+            for (auto& [warpKey, warpValue] : preset["WarpPoints"].items()) {
+                warpPoints[warpKey] = preset["WarpPoints"][warpKey];
+            }
+        } else {
+            warpPoints = preset["WarpPoints"];
+        }
     } else {
         warpPoints = {};
     }
