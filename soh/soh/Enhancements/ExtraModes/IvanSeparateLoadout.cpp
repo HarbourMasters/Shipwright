@@ -165,6 +165,11 @@ static bool IsAmmoItem(s16 itemId) {
 }
 
 static Gfx* DrawAmmoCount(Gfx* gfx, s16 itemId, s16 x, s16 y, s16 alpha) {
+    // Consumable Nayru's Love does not apply to Ivan
+    if (itemId == ITEM_NAYRUS_LOVE) {
+        return gfx;
+    }
+
     if (!GameInteractor_Should(VB_DRAW_AMMO_COUNT, IsAmmoItem(itemId), &itemId)) {
         return gfx;
     }
