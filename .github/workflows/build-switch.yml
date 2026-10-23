@@ -169,11 +169,19 @@ jobs:
         (cd package && zip -r ../SoH-Dewey-Switch.zip .)
         # Only ever replace a release this workflow made. If someone created a release with this tag by hand,
         # leave it alone and publish under a separate tag instead.
-        owner=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --jq '.author.login' 2>/dev/null || true)
+        release_owner() {
+          # Prints the release author, or nothing if there's no such release. (On a 404, gh prints the error body
+          # to stdout, so trust the exit status, not the output.)
+          local out
+          if out=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$1" --jq '.author.login' 2>/dev/null); then
+            echo "$out"
+          fi
+        }
+        owner=$(release_owner "$TAG")
         if [ -n "$owner" ] && [ "$owner" != "github-actions[bot]" ]; then
           echo "::warning::Release $TAG was created by $owner; not replacing it. Publishing as $TAG-build instead."
           TAG="$TAG-build"
-          owner=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --jq '.author.login' 2>/dev/null || true)
+          owner=$(release_owner "$TAG")
           if [ -n "$owner" ] && [ "$owner" != "github-actions[bot]" ]; then
             echo "::error::Release $TAG also exists and was created by $owner; refusing to replace it."
             exit 1
