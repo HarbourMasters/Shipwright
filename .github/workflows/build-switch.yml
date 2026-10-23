@@ -167,7 +167,22 @@ jobs:
         TAG: ${{ github.ref_name }}-latest
       run: |
         (cd package && zip -r ../SoH-Dewey-Switch.zip .)
-        gh release delete "$TAG" -R "$GITHUB_REPOSITORY" --cleanup-tag -y || true
+        # Only ever replace a release this workflow made. If someone created a release with this tag by hand,
+        # leave it alone and publish under a separate tag instead.
+        owner=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --jq '.author.login' 2>/dev/null || true)
+        if [ -n "$owner" ] && [ "$owner" != "github-actions[bot]" ]; then
+          echo "::warning::Release $TAG was created by $owner; not replacing it. Publishing as $TAG-build instead."
+          TAG="$TAG-build"
+          owner=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --jq '.author.login' 2>/dev/null || true)
+          if [ -n "$owner" ] && [ "$owner" != "github-actions[bot]" ]; then
+            echo "::error::Release $TAG also exists and was created by $owner; refusing to replace it."
+            exit 1
+          fi
+        fi
+        if [ -n "$owner" ]; then
+          gh release delete "$TAG" -R "$GITHUB_REPOSITORY" --cleanup-tag -y
+        fi
+        echo "::notice title=Published::https://github.com/$GITHUB_REPOSITORY/releases/tag/$TAG"
         gh release create "$TAG" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
           --title "SoH $(cat package/VERSION.txt) for Switch (unofficial, ${GITHUB_SHA::7})" \
           --notes-file package/README-Switch.txt \
