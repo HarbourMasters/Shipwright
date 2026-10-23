@@ -1,4 +1,5 @@
 #include <mutex>
+#include <spdlog/spdlog.h>
 #include <unordered_set>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <fast/interpreter.h>
