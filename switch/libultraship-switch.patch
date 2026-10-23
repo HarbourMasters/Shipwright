@@ -141,10 +141,10 @@ index af24c702..53ddbe00 100644
  #include <GLES3/gl3.h>
 diff --git a/include/ship/port/switch/SwitchImpl.h b/include/ship/port/switch/SwitchImpl.h
 new file mode 100644
-index 00000000..7c586dd6
+index 00000000..bc6c19ac
 --- /dev/null
 +++ b/include/ship/port/switch/SwitchImpl.h
-@@ -0,0 +1,34 @@
+@@ -0,0 +1,55 @@
 +#pragma once
 +
 +#include <cstdint>
@@ -162,6 +162,27 @@ index 00000000..7c586dd6
 +
 +// CVar holding the selected SwitchProfiles value. Matches the name SoH's config updater migrates gSwitchPerfMode to.
 +#define CVAR_SWITCH_PERF_MODE "gEnhancements.SwitchPerfMode"
++
++// Lightweight performance diagnostics for the Switch build. Everything is lock-free and cheap enough to leave on.
++namespace SwitchPerf {
++enum Counter { ShaderCompile, FileLoad, COUNTER_COUNT };
++
++// Times the enclosing scope and adds it to a counter (safe from any thread).
++class Scope {
++  public:
++    explicit Scope(Counter counter);
++    ~Scope();
++
++  private:
++    Counter mCounter;
++    uint64_t mStart;
++};
++
++// Call once per presented frame from the render thread, with the frame rate the game is targeting.
++void OnFrame(int targetFps);
++// Call when audio is queued, with how many samples were still buffered before queueing.
++void OnAudioQueued(int bufferedSamples);
++} // namespace SwitchPerf
 +
 +class Switch {
 +  public:
@@ -242,10 +263,30 @@ index 2b77a5f2..3d4f1581 100644
  #endif
  
 diff --git a/src/fast/backends/gfx_opengl.cpp b/src/fast/backends/gfx_opengl.cpp
-index ad9b1dde..8125b52d 100644
+index ad9b1dde..4fdb5aa5 100644
 --- a/src/fast/backends/gfx_opengl.cpp
 +++ b/src/fast/backends/gfx_opengl.cpp
-@@ -583,7 +583,7 @@ void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width
+@@ -26,6 +26,9 @@
+ #include "ship/resource/factory/ShaderFactory.h"
+ #include "fast/interpreter.h"
+ #include "ship/config/ConsoleVariable.h"
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++#endif
+ 
+ namespace Fast {
+ int GfxRenderingAPIOGL::GetMaxTextureSize() {
+@@ -404,6 +407,9 @@ void GfxRenderingAPIOGL::ClearShaderCache() {
+ }
+ 
+ ShaderProgram* GfxRenderingAPIOGL::CreateAndLoadNewShader(uint64_t shader_id0, uint64_t shader_id1) {
++#ifdef __SWITCH__
++    Ship::SwitchPerf::Scope perfScope(Ship::SwitchPerf::ShaderCompile);
++#endif
+     CCFeatures cc_features;
+     gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
+     const auto fs_buf = BuildFsShader(cc_features);
+@@ -583,7 +589,7 @@ void GfxRenderingAPIOGL::UploadTexture(const uint8_t* rgba32_buf, uint32_t width
      textures[mCurrentTextureIds[mCurrentTile]].height = height;
  }
  
@@ -254,7 +295,7 @@ index ad9b1dde..8125b52d 100644
  #define GL_MIRROR_CLAMP_TO_EDGE 0x8743
  #endif
  
-@@ -708,7 +708,7 @@ void GfxRenderingAPIOGL::DrawTriangles(float buf_vbo[], size_t buf_vbo_len, size
+@@ -708,7 +714,7 @@ void GfxRenderingAPIOGL::DrawTriangles(float buf_vbo[], size_t buf_vbo_len, size
  }
  
  void GfxRenderingAPIOGL::Init() {
@@ -264,7 +305,7 @@ index ad9b1dde..8125b52d 100644
  #endif
  
 diff --git a/src/fast/backends/gfx_sdl2.cpp b/src/fast/backends/gfx_sdl2.cpp
-index 15c5415f..dabdb8e7 100644
+index 15c5415f..60bb4023 100644
 --- a/src/fast/backends/gfx_sdl2.cpp
 +++ b/src/fast/backends/gfx_sdl2.cpp
 @@ -30,6 +30,12 @@
@@ -357,7 +398,17 @@ index 15c5415f..dabdb8e7 100644
                      SDL_GetWindowSize(mWnd, &mWindowWidth, &mWindowHeight);
  #else
                      SDL_GL_GetDrawableSize(mWnd, &mWindowWidth, &mWindowHeight);
-@@ -778,10 +816,18 @@ bool GfxWindowBackendSDL2::CanDisableVsync() {
+@@ -738,6 +776,9 @@ void GfxWindowBackendSDL2::SyncFramerateWithTime() const {
+ }
+ 
+ void GfxWindowBackendSDL2::SwapBuffersBegin() {
++#ifdef __SWITCH__
++    Ship::SwitchPerf::OnFrame(mTargetFps);
++#endif
+     bool nextVsyncEnabled = Ship::Context::GetRawInstance()->GetConsoleVariables()->GetInteger(CVAR_VSYNC_ENABLED, 1);
+ 
+     if (mVsyncEnabled != nextVsyncEnabled) {
+@@ -778,10 +819,18 @@ bool GfxWindowBackendSDL2::CanDisableVsync() {
  }
  
  bool GfxWindowBackendSDL2::IsRunning() {
@@ -377,7 +428,7 @@ index 15c5415f..dabdb8e7 100644
      SDL_GL_DeleteContext(mCtx);
      SDL_DestroyWindow(mWnd);
 diff --git a/src/fast/interpreter.cpp b/src/fast/interpreter.cpp
-index 2b51ad7f..d3810181 100644
+index 730b6f25..d60499f9 100644
 --- a/src/fast/interpreter.cpp
 +++ b/src/fast/interpreter.cpp
 @@ -7,7 +7,9 @@
@@ -391,7 +442,7 @@ index 2b51ad7f..d3810181 100644
  #include <dlfcn.h>
  #endif
  
-@@ -3974,6 +3976,9 @@ static bool IsValidResolvedAddress(uintptr_t addr) {
+@@ -3987,6 +3989,9 @@ static bool IsValidResolvedAddress(uintptr_t addr) {
      HMODULE module = nullptr;
      return GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
                                reinterpret_cast<LPCSTR>(addr), &module) != 0;
@@ -417,7 +468,7 @@ index e37a3a1d..f66c108c 100644
  
  source_group("port" FILES ${Source_Files__Port})
 diff --git a/src/ship/Context.cpp b/src/ship/Context.cpp
-index 361a1f75..e4db06d7 100644
+index 28a211f1..9f8802f2 100644
 --- a/src/ship/Context.cpp
 +++ b/src/ship/Context.cpp
 @@ -11,6 +11,9 @@
@@ -430,7 +481,7 @@ index 361a1f75..e4db06d7 100644
  #ifdef ENABLE_SCRIPTING
  #include "ship/scripting/ScriptLoader.h"
  #include "ship/security/Keystore.h"
-@@ -246,6 +249,10 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
+@@ -253,6 +256,10 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
      }
  
      if (!allowEmptyPaths && !GetResourceManager()->IsLoaded()) {
@@ -441,7 +492,7 @@ index 361a1f75..e4db06d7 100644
          SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OTR file not found",
                                   "Main OTR file not found. Please generate one", nullptr);
          SPDLOG_ERROR("Main OTR file not found!");
-@@ -256,6 +263,9 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
+@@ -263,6 +270,9 @@ bool Context::InitResourceManager(const std::vector<std::string>& archivePaths,
          return false;
      }
  
@@ -451,12 +502,80 @@ index 361a1f75..e4db06d7 100644
      return true;
  }
  
+diff --git a/src/ship/audio/SDLAudioPlayer.cpp b/src/ship/audio/SDLAudioPlayer.cpp
+index d9f1e44d..a3d4766d 100644
+--- a/src/ship/audio/SDLAudioPlayer.cpp
++++ b/src/ship/audio/SDLAudioPlayer.cpp
+@@ -1,3 +1,6 @@
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++#endif
+ #include "ship/audio/SDLAudioPlayer.h"
+ #include <spdlog/spdlog.h>
+ 
+@@ -54,6 +57,9 @@ int SDLAudioPlayer::Buffered() {
+ }
+ 
+ void SDLAudioPlayer::DoPlay(const uint8_t* buf, size_t len) {
++#ifdef __SWITCH__
++    Ship::SwitchPerf::OnAudioQueued(Buffered());
++#endif
+     if (Buffered() < 6000) {
+         // Don't fill the audio buffer too much in case this happens
+         SDL_QueueAudio(mDevice, buf, len);
+diff --git a/src/ship/config/Config.cpp b/src/ship/config/Config.cpp
+index 03f17a12..e0bbc145 100644
+--- a/src/ship/config/Config.cpp
++++ b/src/ship/config/Config.cpp
+@@ -231,12 +231,42 @@ void Config::Save() {
+             return;
+         }
+     }
++#ifdef __SWITCH__
++    // Horizon's RenameFile refuses to overwrite an existing file (libnx's rename doesn't emulate POSIX), so the
++    // plain rename below would fail on every save after the first. Move the old config aside, put the new one in
++    // place, then drop the backup; if the swap fails, restore the old config.
++    const fs::path backupPath = configPath.parent_path() / (configPath.filename().string() + ".bak");
++    std::error_code backupEc;
++    fs::remove(backupPath, backupEc);
++    const bool hadConfig = fs::exists(configPath, backupEc);
++    if (hadConfig) {
++        fs::rename(configPath, backupPath, ec);
++        if (ec) {
++            SPDLOG_ERROR("Could not move config \"{}\" aside: {}", mPath, ec.message());
++            fs::remove(tempPath, backupEc);
++            return;
++        }
++    }
++    fs::rename(tempPath, configPath, ec);
++    if (ec) {
++        SPDLOG_ERROR("Could not replace config \"{}\": {}", mPath, ec.message());
++        fs::remove(tempPath, backupEc);
++        if (hadConfig) {
++            fs::rename(backupPath, configPath, backupEc);
++        }
++        return;
++    }
++    if (hadConfig) {
++        fs::remove(backupPath, backupEc);
++    }
++#else
+     fs::rename(tempPath, configPath, ec);
+     if (ec) {
+         SPDLOG_ERROR("Could not replace config \"{}\": {}", mPath, ec.message());
+         std::error_code removeEc;
+         fs::remove(tempPath, removeEc);
+     }
++#endif
+ }
+ 
+ template <typename T> std::vector<T> Config::GetArray(const std::string& key) {
 diff --git a/src/ship/port/switch/SwitchImpl.cpp b/src/ship/port/switch/SwitchImpl.cpp
 new file mode 100644
-index 00000000..65b59a4b
+index 00000000..ac00ac2a
 --- /dev/null
 +++ b/src/ship/port/switch/SwitchImpl.cpp
-@@ -0,0 +1,297 @@
+@@ -0,0 +1,434 @@
 +#ifdef __SWITCH__
 +#include "ship/port/switch/SwitchImpl.h"
 +
@@ -701,6 +820,143 @@ index 00000000..65b59a4b
 +    return __real___syscall_thread_create(thread, func, arg, stack_addr, stack_size);
 +}
 +
++// ---------------------------------------------------------------------------------------------------------------
++// Performance diagnostics
++// ---------------------------------------------------------------------------------------------------------------
++#include <atomic>
++
++namespace {
++std::atomic<uint64_t> sPerfCount[Ship::SwitchPerf::COUNTER_COUNT];
++std::atomic<uint64_t> sPerfTicks[Ship::SwitchPerf::COUNTER_COUNT];
++std::atomic<uint64_t> sAudioUnderruns{ 0 };
++std::atomic<bool> sAudioStarted{ false };
++
++constexpr uint64_t kSummaryIntervalNs = 10ull * 1000 * 1000 * 1000;
++constexpr uint64_t kMinHitchLogGapNs = 1000ull * 1000 * 1000;
++
++uint64_t NowNs() {
++    return armTicksToNs(armGetSystemTick());
++}
++
++double TicksToMs(uint64_t ticks) {
++    return armTicksToNs(ticks) / 1.0e6;
++}
++
++uint32_t ReadCpuClockHz() {
++    uint32_t hz = 0;
++    if (sClkrstInitialized) {
++        ClkrstSession session = { 0 };
++        if (R_SUCCEEDED(clkrstOpenSession(&session, PcvModuleId_CpuBus, 3))) {
++            clkrstGetClockRate(&session, &hz);
++            clkrstCloseSession(&session);
++        }
++    } else if (hosversionBefore(8, 0, 0)) {
++        pcvGetClockRate(PcvModule_CpuBus, &hz);
++    }
++    return hz;
++}
++} // namespace
++
++Ship::SwitchPerf::Scope::Scope(Counter counter) : mCounter(counter), mStart(armGetSystemTick()) {
++}
++
++Ship::SwitchPerf::Scope::~Scope() {
++    sPerfTicks[mCounter].fetch_add(armGetSystemTick() - mStart, std::memory_order_relaxed);
++    sPerfCount[mCounter].fetch_add(1, std::memory_order_relaxed);
++}
++
++void Ship::SwitchPerf::OnAudioQueued(int bufferedSamples) {
++    if (bufferedSamples > 0) {
++        sAudioStarted.store(true, std::memory_order_relaxed);
++    } else if (sAudioStarted.load(std::memory_order_relaxed)) {
++        // The device had already drained everything we gave it: that's an audible gap.
++        sAudioUnderruns.fetch_add(1, std::memory_order_relaxed);
++    }
++}
++
++void Ship::SwitchPerf::OnFrame(int targetFps) {
++    // Render thread only.
++    static uint64_t lastFrameNs = 0;
++    static uint64_t windowStartNs = 0;
++    static uint64_t lastHitchLogNs = 0;
++    static uint64_t prevCount[COUNTER_COUNT] = {};
++    static uint64_t prevTicks[COUNTER_COUNT] = {};
++    static uint64_t windowCount[COUNTER_COUNT] = {};
++    static uint64_t windowTicks[COUNTER_COUNT] = {};
++    static uint64_t prevUnderruns = 0;
++    static uint64_t windowUnderruns = 0;
++    static uint32_t windowFrames = 0;
++    static uint32_t windowHitches = 0;
++    static uint64_t windowWorstNs = 0;
++    static bool loggedStartup = false;
++
++    const uint64_t now = NowNs();
++    if (lastFrameNs == 0) {
++        lastFrameNs = windowStartNs = now;
++        return;
++    }
++    const uint64_t frameNs = now - lastFrameNs;
++    lastFrameNs = now;
++
++    // What happened during this frame (counters can be bumped from loader/audio threads as well).
++    uint64_t frameCount[COUNTER_COUNT];
++    uint64_t frameTicks[COUNTER_COUNT];
++    for (int i = 0; i < COUNTER_COUNT; i++) {
++        const uint64_t c = sPerfCount[i].load(std::memory_order_relaxed);
++        const uint64_t t = sPerfTicks[i].load(std::memory_order_relaxed);
++        frameCount[i] = c - prevCount[i];
++        frameTicks[i] = t - prevTicks[i];
++        prevCount[i] = c;
++        prevTicks[i] = t;
++        windowCount[i] += frameCount[i];
++        windowTicks[i] += frameTicks[i];
++    }
++    const uint64_t underruns = sAudioUnderruns.load(std::memory_order_relaxed);
++    const uint64_t frameUnderruns = underruns - prevUnderruns;
++    prevUnderruns = underruns;
++    windowUnderruns += frameUnderruns;
++
++    windowFrames++;
++    if (frameNs > windowWorstNs) {
++        windowWorstNs = frameNs;
++    }
++
++    const int fps = targetFps > 0 ? targetFps : 20;
++    const uint64_t expectedNs = 1000000000ull / fps;
++    if (frameNs > 2 * expectedNs) {
++        windowHitches++;
++        // Log big hitches individually (rate limited) with what happened during them.
++        if (frameNs > 3 * expectedNs && now - lastHitchLogNs > kMinHitchLogGapNs) {
++            lastHitchLogNs = now;
++            SPDLOG_WARN("[perf] hitch {:.0f} ms (target {} fps): {} shader compile(s) {:.0f} ms, {} asset load(s) "
++                        "{:.0f} ms, {} audio underrun(s)",
++                        frameNs / 1.0e6, fps, frameCount[ShaderCompile], TicksToMs(frameTicks[ShaderCompile]),
++                        frameCount[FileLoad], TicksToMs(frameTicks[FileLoad]), frameUnderruns);
++        }
++    }
++
++    if (now - windowStartNs >= kSummaryIntervalNs) {
++        const double seconds = (now - windowStartNs) / 1.0e9;
++        if (!loggedStartup || windowHitches > 0 || windowUnderruns > 0) {
++            SPDLOG_INFO("[perf] {:.0f}s: {:.1f} fps avg, worst frame {:.0f} ms, {} hitch(es); {} shader compile(s) "
++                        "{:.0f} ms; {} asset load(s) {:.0f} ms; {} audio underrun(s) | CPU {} MHz, {}, target {} fps, "
++                        "MSAA {}, internal res {:.0f}%",
++                        seconds, windowFrames / seconds, windowWorstNs / 1.0e6, windowHitches,
++                        windowCount[ShaderCompile], TicksToMs(windowTicks[ShaderCompile]), windowCount[FileLoad],
++                        TicksToMs(windowTicks[FileLoad]), windowUnderruns, ReadCpuClockHz() / 1000000,
++                        Ship::Switch::IsDocked() ? "docked" : "handheld", fps, CVarGetInteger(CVAR_MSAA_VALUE, 1),
++                        CVarGetFloat(CVAR_INTERNAL_RESOLUTION, 1.0f) * 100.0f);
++            loggedStartup = true;
++        }
++        windowStartNs = now;
++        windowFrames = windowHitches = 0;
++        windowWorstNs = windowUnderruns = 0;
++        for (int i = 0; i < COUNTER_COUNT; i++) {
++            windowCount[i] = windowTicks[i] = 0;
++        }
++    }
++}
++
 +bool Ship::Switch::IsAddressMapped(uintptr_t addr) {
 +    MemoryInfo info = {};
 +    u32 pageInfo = 0;
@@ -754,6 +1010,27 @@ index 00000000..65b59a4b
 +                              otrPath.c_str(), RandomText());
 +}
 +#endif
+diff --git a/src/ship/resource/archive/ArchiveManager.cpp b/src/ship/resource/archive/ArchiveManager.cpp
+index 463ae99b..82850598 100644
+--- a/src/ship/resource/archive/ArchiveManager.cpp
++++ b/src/ship/resource/archive/ArchiveManager.cpp
+@@ -1,3 +1,6 @@
++#ifdef __SWITCH__
++#include "ship/port/switch/SwitchImpl.h"
++#endif
+ #include "ship/resource/archive/ArchiveManager.h"
+ 
+ #include <filesystem>
+@@ -53,6 +56,9 @@ std::shared_ptr<File> ArchiveManager::LoadFile(uint64_t hash) {
+         return nullptr;
+     }
+ 
++#ifdef __SWITCH__
++    Ship::SwitchPerf::Scope perfScope(Ship::SwitchPerf::FileLoad);
++#endif
+     return archive->LoadFile(hash);
+ }
+ 
 diff --git a/src/ship/window/gui/Gui.cpp b/src/ship/window/gui/Gui.cpp
 index 1f9279bd..cfe93374 100644
 --- a/src/ship/window/gui/Gui.cpp

@@ -1,3 +1,5 @@
+#include <mutex>
+#include <unordered_set>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <fast/interpreter.h>
 #include <fast/resource/ResourceType.h>
@@ -272,6 +274,17 @@ extern "C" void ResourceMgr_UnloadOriginalWhenAltExists(const char* resName) {
     }
 }
 
+// Logs each missing resource path once, so a missing asset shows up in the log without flooding it every frame.
+static void ResourceMgr_ReportMissing(const char* caller, const char* path) {
+    static std::mutex sMutex;
+    static std::unordered_set<std::string> sReported;
+    const char* shown = path != nullptr ? path : "(null)";
+    std::lock_guard<std::mutex> lock(sMutex);
+    if (sReported.insert(shown).second) {
+        SPDLOG_ERROR("{}: resource \"{}\" could not be loaded", caller, shown);
+    }
+}
+
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
@@ -295,11 +308,19 @@ extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
 
 extern "C" uint8_t ResourceMgr_TexIsRaw(const char* texPath) {
     auto res = std::static_pointer_cast<Fast::Texture>(ResourceMgr_GetResourceByNameHandlingMQ(texPath));
+    if (res == nullptr) {
+        ResourceMgr_ReportMissing(__func__, texPath);
+        return 0;
+    }
     return res->Flags & TEX_FLAG_LOAD_AS_RAW;
 }
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(texPath);
+    if (res == nullptr) {
+        ResourceMgr_ReportMissing(__func__, texPath);
+        return 0;
+    }
     return res->GetInitData()->Type == static_cast<uint32_t>(SOH::ResourceType::SOH_Background);
 }
 
@@ -344,6 +365,12 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
+    // A missing resource used to be dereferenced here (null + 8 data abort, seen in the pause menu on Switch).
+    if (res == nullptr) {
+        ResourceMgr_ReportMissing(__func__, filePath);
+        return nullptr;
+    }
+
     if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
         return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);
     }
@@ -357,6 +384,12 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
+
+    // A missing resource used to be dereferenced here (null + 8 data abort, seen in the pause menu on Switch).
+    if (res == nullptr) {
+        ResourceMgr_ReportMissing(__func__, filePath);
+        return nullptr;
+    }
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
         return (char*)&((std::static_pointer_cast<Fast::DisplayList>(res))->Instructions[0]);

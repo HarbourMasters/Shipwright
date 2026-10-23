@@ -1,14 +1,14 @@
-# Ship of Harkinian 9.3.0 (Dewey Alpha) for Nintendo Switch
+# Ship of Harkinian 9.3.x (Dewey) for Nintendo Switch
 
 Unofficial port. HarbourMasters stopped shipping Switch builds after 8.0.6; this branch restores the
-Switch platform layer on top of 9.3.0. Requires a Switch running custom firmware (Atmosphère) and hbmenu.
+Switch platform layer on top of the latest 9.3.x release. Requires a Switch running custom firmware (Atmosphère) and hbmenu.
 
 ## Install
 
 1. Unzip this package onto the root of your SD card. It creates `/switch/soh/` containing
    `soh.nro` and `soh.o2r`.
 2. Generate the game archive on a PC. The Switch can't do this itself:
-   - Download the **9.3.0 Dewey Alpha** PC release (Windows, Linux or macOS) and run it.
+   - Download a **9.3.x Dewey** PC release (Windows, Linux or macOS) and run it.
    - Point it at your own legally dumped Ocarina of Time ROM when it asks.
      Check that your dump is supported at https://ship.equipment/.
    - It creates `oot.o2r` (and `oot-mq.o2r` for Master Quest) next to the PC executable.
@@ -16,7 +16,8 @@ Switch platform layer on top of 9.3.0. Requires a Switch running custom firmware
 4. Launch hbmenu in **full-memory (title takeover) mode**: hold **R** while starting any game, then
    pick Ship of Harkinian. Album/applet mode does not have enough memory and the game will say so.
 
-Archives must come from the same SoH version as the `.nro`. If you update, regenerate them on the PC.
+Archives must come from the same major SoH version (9.x) as the `.nro`; bugfix updates (9.3.0 -> 9.3.1) keep
+working with your existing archives. The game tells you if they need regenerating.
 Mods go in `/switch/soh/mods/`.
 
 ## Performance
@@ -34,3 +35,11 @@ Mods go in `/switch/soh/mods/`.
 
 - ROM extraction isn't available on the console (see step 2).
 - Online play (Anchor) uses the console's network connection; it needs internet access from homebrew.
+
+## Reporting problems
+
+- **Crashes:** send the newest file in `/atmosphere/crash_reports/` plus `/switch/soh/logs/Ship of Harkinian.log`.
+  Each release ships `soh.elf.xz` (debug symbols) so crash addresses can be mapped to source lines.
+- **Stutter:** the log records `[perf]` lines. Big hitches are logged as they happen, along with how many shader
+  compiles, asset loads and audio underruns happened in that frame. A summary is logged every 10 s whenever
+  something went wrong, including the CPU clock, docked/handheld and graphics settings.

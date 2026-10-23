@@ -111,6 +111,8 @@ jobs:
       run: |
         cp build-switch/soh/soh.nro package/switch/soh/soh.nro
         cp switch/README.md package/README-Switch.txt
+        # e.g. "9.3.1": read from the top-level project() so the release title follows upstream bumps.
+        sed -n 's/^project(Ship VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt > package/VERSION.txt
         ls -la package/switch/soh
     - name: Verify soh.nro
       shell: bash
@@ -133,7 +135,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         # Unzip onto the root of the SD card: it creates /switch/soh/.
-        name: SoH-Dewey-Alpha-Switch
+        name: SoH-Dewey-Switch
         path: package
     - name: Keep symbols for crash reports
       # The .nro is built from this ELF (linked at address 0), so offsets in an Atmosphere crash report for the
@@ -153,7 +155,7 @@ jobs:
     steps:
     - uses: actions/download-artifact@v4
       with:
-        name: SoH-Dewey-Alpha-Switch
+        name: SoH-Dewey-Switch
         path: package
     - uses: actions/download-artifact@v4
       with:
@@ -164,9 +166,9 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         TAG: ${{ github.ref_name }}-latest
       run: |
-        (cd package && zip -r ../SoH-Dewey-Alpha-Switch.zip .)
+        (cd package && zip -r ../SoH-Dewey-Switch.zip .)
         gh release delete "$TAG" -R "$GITHUB_REPOSITORY" --cleanup-tag -y || true
         gh release create "$TAG" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
-          --title "SoH 9.3.0 Dewey Alpha for Switch (unofficial, ${GITHUB_SHA::7})" \
+          --title "SoH $(cat package/VERSION.txt) for Switch (unofficial, ${GITHUB_SHA::7})" \
           --notes-file package/README-Switch.txt \
-          SoH-Dewey-Alpha-Switch.zip soh.elf.xz
+          SoH-Dewey-Switch.zip soh.elf.xz
