@@ -4,10 +4,10 @@
 #include <fstream>
 #include <spdlog/common.h>
 #include <ship/config/Config.h>
-#include <nlohmann/json.hpp>
 #include <ship/resource/archive/ArchiveManager.h>
 #include <ship/resource/type/Json.h>
 #include <ship/Context.h>
+#include "soh/Enhancements/debugger/valueViewer.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/util.h"
@@ -20,6 +20,7 @@
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/ShipInit.hpp"
 #include "soh/config/ConfigUpdaters.h"
+#include "soh/Enhancements/Warping.h"
 
 namespace fs = std::filesystem;
 
@@ -103,6 +104,7 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
     { { CVAR_PREFIX_RANDOMIZER_SETTING }, ICON_FA_RANDOM, { "Rando Settings", "rando" } },
     { { CVAR_PREFIX_TRACKER }, ICON_FA_MAP, { "Trackers", "trackers" } },
     { { CVAR_PREFIX_REMOTE }, ICON_FA_WIFI, { "Network", "network" } },
+    { { CVAR_PREFIX_DEVELOPER_TOOLS }, ICON_FA_CALCULATOR, { "Developer Tools", "tools" } },
 };
 
 std::string FormatPresetPath(std::string name) {
@@ -141,6 +143,9 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                     EntranceTracker::LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
+            } else if (i == PRESET_SECTION_DEVELOPMENT) {
+                ApplyValuePreset(info.presetValues);
+                ApplyWarpPointPreset(info.presetValues);
             }
             auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
             SectionStrategy sectionStrategy = GetSectionStrategy(info, i);
@@ -495,6 +500,10 @@ void DrawEditPresetPopup() {
                 presets[newPresetName].presetValues["blocks"][blockInfo[PRESET_SECTION_TRACKERS].names[1]]["windows"]
                                                    ["Check Tracker"]["pos"]["y"] = pos.y;
             }
+        }
+        if (saveSection[PRESET_SECTION_DEVELOPMENT]) {
+            SaveValuePreset(presets[newPresetName].presetValues);
+            SaveWarpPointPreset(presets[newPresetName].presetValues);
         }
         presets[newPresetName].fileName = newPresetName;
         std::fill_n(presets[newPresetName].apply, PRESET_SECTION_MAX, true);

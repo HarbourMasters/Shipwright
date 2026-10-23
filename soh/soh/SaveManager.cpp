@@ -707,8 +707,10 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
         }
         fileMetaInfo[fileNum].equipment = baseBlock["inventory"]["equipment"];
         fileMetaInfo[fileNum].upgrades = baseBlock["inventory"]["upgrades"];
-        fileMetaInfo[fileNum].isMagicAcquired = baseBlock["isMagicAcquired"];
-        fileMetaInfo[fileNum].isDoubleMagicAcquired = baseBlock["isDoubleMagicAcquired"];
+        // saves before 5.1.0 called these magicAcquired and doubleMagic
+        fileMetaInfo[fileNum].isMagicAcquired = baseBlock.value("isMagicAcquired", baseBlock.value("magicAcquired", 0));
+        fileMetaInfo[fileNum].isDoubleMagicAcquired =
+            baseBlock.value("isDoubleMagicAcquired", baseBlock.value("doubleMagic", 0));
         fileMetaInfo[fileNum].rupees = baseBlock["rupees"];
         fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
         // base version 1 and 2 called this doubleDefense
@@ -725,7 +727,8 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
         fileMetaInfo[fileNum].health = baseBlock["health"];
 
         // isMasterQuest arrived in base version 2
-        bool isMasterQuest = baseBlock.value("isMasterQuest", false);
+        // older saves store this as a number rather than a bool
+        bool isMasterQuest = baseBlock.value("isMasterQuest", 0) != 0;
         fileMetaInfo[fileNum].requiresOriginal = !isMasterQuest;
         fileMetaInfo[fileNum].requiresMasterQuest = isMasterQuest;
 
@@ -758,7 +761,12 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             fileMetaInfo[fileNum].requiresOriginal = randoBlock["masterQuestDungeonCount"] < 12;
         }
 
-        nlohmann::json& statsBlock = sections["sohStats"]["data"];
+        // sohStats didn't exist in older saves
+        nlohmann::json statsBlock = nlohmann::json::object();
+        if (sections.contains("sohStats") && sections["sohStats"].contains("data") &&
+            sections["sohStats"]["data"].is_object()) {
+            statsBlock = sections["sohStats"]["data"];
+        }
         fileMetaInfo[fileNum].buildVersionMajor = statsBlock.value("buildVersionMajor", 0);
         fileMetaInfo[fileNum].buildVersionMinor = statsBlock.value("buildVersionMinor", 0);
         fileMetaInfo[fileNum].buildVersionPatch = statsBlock.value("buildVersionPatch", 0);

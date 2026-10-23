@@ -49,6 +49,20 @@ void SaveConfig() {
     Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
+// TODO properly apply merge strategy
+void ApplyWarpPointPreset(const nlohmann::json& preset) {
+    if (preset.find("WarpPoints") != preset.end() && preset["WarpPoints"].is_object()) {
+        warpPoints = preset["WarpPoints"];
+    } else {
+        warpPoints = {};
+    }
+    SaveConfig();
+}
+
+void SaveWarpPointPreset(nlohmann::json& preset) {
+    preset["WarpPoints"] = warpPoints;
+}
+
 void Warp(WarpPoint& warpPoint) {
     if (gPlayState == NULL) {
         // If gPlayState is NULL, it means the user opted into BootToWarpPoint and the game is starting up.

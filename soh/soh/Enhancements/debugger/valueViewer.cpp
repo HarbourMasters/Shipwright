@@ -84,6 +84,20 @@ void SaveValueConfig() {
     Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
+// TODO properly apply merge strategy
+void ApplyValuePreset(const nlohmann::json& preset) {
+    if (preset.find("ValueViewer") != preset.end() && preset["ValueViewer"].is_array()) {
+        valueViewerSettings = preset["ValueViewer"];
+    } else {
+        valueViewerSettings = {};
+    }
+    SaveValueConfig();
+}
+
+void SaveValuePreset(nlohmann::json& preset) {
+    preset["ValueViewer"] = valueViewerSettings;
+}
+
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
     for (size_t i = 0; i < VVE_MAX; i++) {
         ValueTableElement& element = valueTable[i];
