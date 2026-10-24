@@ -255,27 +255,23 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             break;
         case RG_PROGRESSIVE_OCARINA:
             switch (logic->CurrentInventory(ITEM_OCARINA_FAIRY)) {
-                case ITEM_NONE:
-                    actual = RG_FAIRY_OCARINA;
-                    break;
                 case ITEM_OCARINA_FAIRY:
                 case ITEM_OCARINA_TIME:
                     actual = RG_OCARINA_OF_TIME;
                     break;
                 default:
+                    actual = RG_FAIRY_OCARINA;
                     break;
             }
             break;
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (logic->CurrentInventory(ITEM_HOOKSHOT)) {
-                case ITEM_NONE:
-                    actual = RG_HOOKSHOT;
-                    break;
                 case ITEM_HOOKSHOT:
                 case ITEM_LONGSHOT:
                     actual = RG_LONGSHOT;
                     break;
                 default:
+                    actual = RG_HOOKSHOT;
                     break;
             }
             break;

@@ -365,14 +365,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_DEKU_SEEDS_30:
             return CUR_UPG_VALUE(UPG_BULLET_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY)) {
-                case ITEM_NONE:
-                case ITEM_OCARINA_FAIRY:
-                    return CAN_OBTAIN;
-                case ITEM_OCARINA_TIME:
-                default:
-                    return CANT_OBTAIN_ALREADY_HAVE;
-            }
+            return INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOMBCHU_5:
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
@@ -409,36 +402,29 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             assert(false);
             return CAN_OBTAIN;
         case RG_PROGRESSIVE_HOOKSHOT:
-            switch (INV_CONTENT(ITEM_HOOKSHOT)) {
-                case ITEM_NONE:
-                case ITEM_HOOKSHOT:
-                    return CAN_OBTAIN;
-                case ITEM_LONGSHOT:
-                default:
-                    return CANT_OBTAIN_ALREADY_HAVE;
-            }
+            return INV_CONTENT(ITEM_HOOKSHOT) != ITEM_LONGSHOT ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOOMERANG:
-            return INV_CONTENT(ITEM_BOOMERANG) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_BOOMERANG) != ITEM_BOOMERANG ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_LENS_OF_TRUTH:
-            return INV_CONTENT(ITEM_LENS) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_LENS) != ITEM_LENS ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MAGIC_BEAN:
         case RG_MAGIC_BEAN_PACK:
             return AMMO(ITEM_BEAN) < 10 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_MEGATON_HAMMER:
-            return INV_CONTENT(ITEM_HAMMER) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_HAMMER) != ITEM_HAMMER ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_ARROW_FIRE) != ITEM_ARROW_FIRE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_ARROW_ICE) != ITEM_ARROW_ICE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_LIGHT_ARROWS:
-            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DINS_FIRE:
-            return INV_CONTENT(ITEM_DINS_FIRE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_DINS_FIRE) != ITEM_DINS_FIRE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FARORES_WIND:
-            return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return INV_CONTENT(ITEM_FARORES_WIND) != ITEM_FARORES_WIND ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_NAYRUS_LOVE:
             if (!GetRandoSettingValue(RSK_ROCS_FEATHER)) {
-                return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+                return INV_CONTENT(ITEM_NAYRUS_LOVE) != ITEM_NAYRUS_LOVE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
             } else {
                 return Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
             }
