@@ -144,31 +144,20 @@ void Edge::Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float z
             const ImVec2 mid = (start + base) * 0.5f;
 
             // this was arrived at thru a lot of fiddling (https://www.desmos.com/calculator/nsgsx9df5s)
-            const float biasDenominator = std::sqrt(std::sqrt(100 * (base.x - start.x) * (base.x - start.x) + 100 * (base.y - start.y) * (base.y - start.y)));
+            const float biasDenominator = std::sqrt(std::sqrt(100 * (base.x - start.x) * (base.x - start.x) +
+                                                              100 * (base.y - start.y) * (base.y - start.y)));
             const ImVec2 bias = ImVec2(-(base.y - start.y), base.x - start.x) / biasDenominator * curveOffset / 50.0f;
 
             const ImVec2 control = mid + bias;
 
-            draw->AddBezierQuadratic(
-                start,
-                control,
-                base,
-                this->color,
-                thickness,
-                24
-            );
+            draw->AddBezierQuadratic(start, control, base, this->color, thickness, 24);
 
             const ImVec2 arrowDirection = Normalized(base - control);
             const ImVec2 arrowTip = base + arrowDirection * arrowSize;
             const ImVec2 arrowPerp = ImVec2(-arrowDirection.y, arrowDirection.x) * arrowSize * 0.4f;
             const ImVec2 arrowBase = arrowTip - arrowDirection * arrowSize;
 
-            draw->AddTriangleFilled(
-                arrowTip,
-                arrowBase + arrowPerp,
-                arrowBase - arrowPerp,
-                this->color
-            );
+            draw->AddTriangleFilled(arrowTip, arrowBase + arrowPerp, arrowBase - arrowPerp, this->color);
         } else {
             const ImVec2 arrowTip = dstNodeScreenPosition - dir * nodeRadius;
             const ImVec2 base = arrowTip - dir * arrowSize;
@@ -176,12 +165,7 @@ void Edge::Draw(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, float z
 
             draw->AddLine(start, base, this->color, thickness);
 
-            draw->AddTriangleFilled(
-                arrowTip,
-                base + arrowPerp,
-                base - arrowPerp,
-                this->color
-            );
+            draw->AddTriangleFilled(arrowTip, base + arrowPerp, base - arrowPerp, this->color);
         }
     }
 }
@@ -198,7 +182,9 @@ void Edge::DrawLabel(ImDrawList* draw, ImVec2 canvasPos, ImVec2 cameraOffset, fl
 
     ImVec2 normal = { -delta.y / len, delta.x / len };
 
-    ImVec2 labelPosWorld = a * 0.6f + b * 0.4f + normal * (this->hasReverse ? options.label.separationReverse : options.label.separationNoReverse);
+    ImVec2 labelPosWorld =
+        a * 0.6f + b * 0.4f +
+        normal * (this->hasReverse ? options.label.separationReverse : options.label.separationNoReverse);
 
     ImVec2 labelPosScreen = WorldSpaceToScreenSpace(labelPosWorld, canvasPos, cameraOffset, zoom);
 
@@ -291,7 +277,7 @@ float Graph::StabilizeStep(float width, float height, float temperature) noexcep
         v.displacement += displacement;
     }
 
-    //float totalDisplacement = 0;
+    // float totalDisplacement = 0;
     float maxDisplacement = 0;
 
     // apply displacements
@@ -305,7 +291,7 @@ float Graph::StabilizeStep(float width, float height, float temperature) noexcep
         if (len > maxDisplacement) {
             maxDisplacement = len;
         }
-        //totalDisplacement += len;
+        // totalDisplacement += len;
     }
 
     // return totalDisplacement;
@@ -379,8 +365,8 @@ void Graph::Draw(ImVec2 canvasSize, ImVec2 canvasPos) noexcept {
             continue;
         }
 
-        e.Draw(draw, canvasPos, this->cameraOffset, this->zoom, this->options,
-               this->options.zoom.edgesScaleWithZoom, this->nodes);
+        e.Draw(draw, canvasPos, this->cameraOffset, this->zoom, this->options, this->options.zoom.edgesScaleWithZoom,
+               this->nodes);
     }
 
     for (auto& n : this->nodes) {
@@ -458,18 +444,18 @@ void Graph::ResetView() noexcept {
 }
 
 void Graph::ReplaceEdges(std::vector<Edge> edges) noexcept {
-    //LUSLOG_INFO("[Graph::ReplaceEdges] Start");
+    // LUSLOG_INFO("[Graph::ReplaceEdges] Start");
     this->edges = edges;
 
     for (Edge& edge : this->edges) {
         for (Edge& edge2 : this->edges) {
             if (edge.src == edge2.dst && edge.dst == edge2.src) {
-                //LUSLOG_INFO("[Graph::ReplaceEdges] edge & edge2 are inverses of each other");
+                // LUSLOG_INFO("[Graph::ReplaceEdges] edge & edge2 are inverses of each other");
                 edge.hasReverse = true;
                 edge2.hasReverse = true;
             }
         }
     }
 
-    //LUSLOG_INFO("[Graph::ReplaceEdges] End");
+    // LUSLOG_INFO("[Graph::ReplaceEdges] End");
 }

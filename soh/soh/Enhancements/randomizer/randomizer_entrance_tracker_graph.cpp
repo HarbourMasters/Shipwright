@@ -213,8 +213,10 @@ void EntranceTrackerGraphWindow::DrawElement() {
                 CONFIG_INPUT_FLOAT(edges.thickness, "Edge Thickness", 1.0f, 10.0f, 0.1f, "%.1f");
                 CONFIG_INPUT_FLOAT(edges.arrowSize, "Arrow Size", 10.0f, 100.0f, 0.1f, "%.1f");
                 CONFIG_INPUT_FLOAT(edges.reverseCurve, "Reverse Curve", 0.0f, 200.0f, 1.0f, "%.1f");
-                CONFIG_INPUT_FLOAT(edges.label.separationNoReverse, "Edge Label Separation (Edge Without Reverse)", 0.0f, 20.0f, 0.1f, "%.1f");
-                CONFIG_INPUT_FLOAT(edges.label.separationReverse, "Edge Label Separation (Edge With Reverse)", 0.0f, 20.0f, 0.1f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.label.separationNoReverse, "Edge Label Separation (Edge Without Reverse)",
+                                   0.0f, 20.0f, 0.1f, "%.1f");
+                CONFIG_INPUT_FLOAT(edges.label.separationReverse, "Edge Label Separation (Edge With Reverse)", 0.0f,
+                                   20.0f, 0.1f, "%.1f");
                 // CONFIG_INPUT_IMVEC2(edges.label.padding, "Edge Label Padding", 0.0f, 20.0f);
                 CONFIG_INPUT_FLOAT(edges.label.rounding, "Edge Label Rounding", 1.0f, 10.0f, 0.1f, "%.1f");
                 // CONFIG_INPUT_COLOR(edges.label.backgroundColor, "Edge Label Rounding");
