@@ -14,7 +14,7 @@ void RegionTable_Init_SacredForestMeadow() {
     }, {
         //Exits
         ENTRANCE(RR_LW_BEYOND_MIDO,       true),
-        ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->IsAdult || logic->Get(LOGIC_OPEN_SFM_GATE)),
+        ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->CanHover(true, true) || logic->IsAdult || logic->Get(LOGIC_OPEN_SFM_GATE)),
         ENTRANCE(RR_SFM_WOLFOS_GROTTO,    logic->CanOpenBombGrotto()),
     });
 
@@ -23,7 +23,7 @@ void RegionTable_Init_SacredForestMeadow() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
-        LOCATION(RC_SFM_GS,                                logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_SFM_GS,                                logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG, true) && logic->CanGetNightTimeGS()),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_SFM_MAZE_LOWER_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_SFM_MAZE_UPPER_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),

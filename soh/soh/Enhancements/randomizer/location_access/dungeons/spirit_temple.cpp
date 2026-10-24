@@ -235,7 +235,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM,       true),
         ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F,   true),
         ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,   true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_GS_LEDGE,          logic->CanUse(RG_HOVER_BOOTS) || logic->ReachScarecrow() || logic->CanMegajump()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_GS_LEDGE,          logic->CanUse(RG_HOVER_BOOTS) || logic->ReachScarecrow(false, false) || logic->CanMegajump()),
         //adult requirement is artificial as a way to prevent child logic leaking
         //RANDOTODO child gets across with bunnymegajump from the armos, will be handled in a future PR due to key logic implications
         //hovers backwalk > backflip from the armos also works
@@ -845,7 +845,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_DOOR,   logic->Get(LOGIC_SPIRIT_STATUE_SOUTH_DOOR)),
         //explicit adult check here is a precaution against possible Child logic leaking, Child with a hookshot can do this
         //It's possible to climb the legs of the statue to line up a longshot hit, but you can just go via West
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT, logic->IsAdult && logic->ReachScarecrow()),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT, logic->IsAdult && logic->ReachScarecrow(false, false)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FLAMETHROWER_STAIRS] = Region("Spirit Temple MQ Flamethrower Stairs", SCENE_SPIRIT_TEMPLE, {}, {}, {

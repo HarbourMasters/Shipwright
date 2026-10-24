@@ -125,7 +125,7 @@ void RegionTable_Init_ThievesHideout() {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,              true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
+        ENTRANCE(RR_TH_KITCHEN_OPPOSITE_CORRIDOR, logic->CanHover(true, false) || logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_GF_TOP_OF_LOWER_VINES,        true),
     });
 
@@ -139,7 +139,7 @@ void RegionTable_Init_ThievesHideout() {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_MAIN,        true),
         //hookshot to cross using rafters implied by logic->CanPassEnemy(RE_GERUDO_GUARD)
-        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
+        ENTRANCE(RR_TH_KITCHEN_BY_CORRIDOR, logic->CanHover(true, false) || logic->CanPassEnemy(RE_GERUDO_GUARD) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
         ENTRANCE(RR_GF_NEAR_GS,             true),
     });
 
@@ -158,7 +158,7 @@ void RegionTable_Init_ThievesHideout() {
     }, {
         //Exits
         ENTRANCE(RR_GF_BELOW_CHEST,               logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanHover(true, false) || logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
     areaTable[RR_TH_BREAK_ROOM_LOWER_CORRIDOR] = Region("Thieves Hideout Break Room Lower Corridor", SCENE_THIEVES_HIDEOUT, {}, {
@@ -175,7 +175,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_WONDER_BREAK_ROOM_TOP_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
-        ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanHover(true, false) || logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_GF_ABOVE_JAIL, true),
     });
 }

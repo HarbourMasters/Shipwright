@@ -340,13 +340,34 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_GS_NEAR_SHIP,          logic->CanUse(RG_LONGSHOT)),
-        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow()),
-        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow()),
+        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow(true, false)),
+        LOCATION(RC_SHADOW_TEMPLE_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow(true, false)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_ROOM_TO_BOAT,    logic->SmallKeys(SCENE_SHADOW_TEMPLE, 4)),
         ENTRANCE(RR_SHADOW_TEMPLE_SPINNING_BLADES, logic->Get(LOGIC_SHADOW_SHORTCUT_BLOCK) && logic->HasItem(RG_CLIMB)),
-        ENTRANCE(RR_SHADOW_TEMPLE_BEYOND_BOAT,     ((logic->IsAdult && ((logic->HasItem(RG_GORONS_BRACELET) && logic->HasItem(RG_CLIMB)) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanUse(RG_ZELDAS_LULLABY)),
+        ENTRANCE(RR_SHADOW_TEMPLE_BEYOND_BOAT,
+            // hover past the boat
+            // RANDOTODO: Specific trick for these as the hover is very long and complex
+            // RANDOTODO: HESS
+            // RANDOTODO: RBA use to refill bombchus
+            (
+                false /* <specific trick> && logic->CanHESS() */ &&
+                // 30 chus required at once, more than 50 needed in total
+                (
+                    (
+                        false/* logic->RBARefill(RG_BOMBCHU_5) */ && logic->mSaveContext->ship.quest.data.randomizer.bombchuUpgradeLevel >= 2
+                    ) ||
+                    logic->CheckRandoInf(RAND_INF_HAS_INFINITE_BOMBCHUS)
+                ) &&
+                logic->CanUse(RG_HOVER_BOOTS) &&
+                logic->CanUse(RG_BOMBCHU_5) &&
+                // you need to restart isg in one of the platforms, without a blocking textbox avaliable
+                logic->CanHover(false, false)
+            ) ||
+            // normal method
+            (((logic->IsAdult && ((logic->HasItem(RG_GORONS_BRACELET) && logic->HasItem(RG_CLIMB)) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))) || (ctx->GetTrickOption(RT_HOOKSHOT_LADDERS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanUse(RG_ZELDAS_LULLABY))
+        ),
     });
 
     areaTable[RR_SHADOW_TEMPLE_BEYOND_BOAT] = Region("Shadow Temple Beyond Boat", SCENE_SHADOW_TEMPLE, {
@@ -359,7 +380,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MAZE,            true),
-        ENTRANCE(RR_SHADOW_TEMPLE_CHASM_SCARECROW, logic->ReachDistantScarecrow()),
+        ENTRANCE(RR_SHADOW_TEMPLE_CHASM_SCARECROW, logic->ReachDistantScarecrow(false, false)),
         // a less precise recoil off the broken statue into a jumpslash works.
         ENTRANCE(RR_SHADOW_TEMPLE_ACROSS_CHASM,    logic->Get(LOGIC_SHADOW_BRIDGE_BEYOND_BOAT_LOWERED) || logic->CanMeleeRecoilHover(RECOIL_HAMMER_AND_SHIELD) || logic->CanBunnyMegaJumpslash()),
     });
@@ -398,7 +419,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_ACROSS_CHASM,    true),
-        ENTRANCE(RR_SHADOW_TEMPLE_CHASM_SCARECROW, logic->IsAdult ? logic->ReachScarecrow() : logic->ReachDistantScarecrow()),
+        ENTRANCE(RR_SHADOW_TEMPLE_CHASM_SCARECROW, logic->IsAdult ? logic->ReachScarecrow(false, true) : logic->ReachDistantScarecrow(false, true)),
     });
 
     areaTable[RR_SHADOW_TEMPLE_MAZE] = Region("Shadow Temple Maze", SCENE_SHADOW_TEMPLE, {}, {}, {
@@ -864,8 +885,8 @@ void RegionTable_Init_ShadowTemple() {
         EVENT_ACCESS(LOGIC_SHADOW_SHORTCUT_BLOCK, logic->HasItem(RG_GORONS_BRACELET)),
     }, {
         //Locations
-        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow()),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow()),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_NORTH_HEART, logic->ReachDistantScarecrow(false, false)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_SCARECROW_SOUTH_HEART, logic->ReachDistantScarecrow(false, false)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SHORTCUT_PATH, logic->Get(LOGIC_SHADOW_SHORTCUT_BLOCK) && logic->HasItem(RG_CLIMB)),

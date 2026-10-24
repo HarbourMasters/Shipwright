@@ -110,8 +110,8 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_HOUSE_OF_TWINS,     true),
         ENTRANCE(RR_KF_KNOW_IT_ALL_HOUSE,  true),
         ENTRANCE(RR_KF_KOKIRI_SHOP,        true),
-        ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
-        ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
+        ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  logic->CanHover(true, true) || (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
+        ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->CanHover(true, true) || logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
         ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN)),
         ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR)),
     });
@@ -135,7 +135,7 @@ void RegionTable_Init_KokiriForest() {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST,         true),
         ENTRANCE(RR_THE_LOST_WOODS,        true),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMidairGroundJump() || logic->CanMegajump()),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->CanHover(true, true) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanMidairGroundJump() || logic->CanMegajump()),
         ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
     });
 

@@ -343,7 +343,7 @@ void RegionTable_Init_IceCavern() {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_HUB,            logic->BlueFire()),
         ENTRANCE(RR_ICE_CAVERN_MQ_FIRE_NOOK,      logic->CanUse(RG_SONG_OF_TIME) || logic->BunnyHovers() || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP) || logic->CanBombRecoilHover())) || logic->CanMegajump()),
-        ENTRANCE(RR_ICE_CAVERN_MQ_SCARECROW_NOOK, logic->ReachScarecrow() || (logic->IsAdult && (ctx->GetTrickOption(RT_SLIDE_JUMP) || logic->CanGroundJump())) ||
+        ENTRANCE(RR_ICE_CAVERN_MQ_SCARECROW_NOOK, logic->ReachScarecrow(true, false) || (logic->IsAdult && (ctx->GetTrickOption(RT_SLIDE_JUMP) || logic->CanGroundJump())) ||
                                                       ((logic->CanMegajump() || logic->CanBombRecoilHover()) && (logic->IsAdult || (logic->CanUse(RG_HOVER_BOOTS)/* && roll or bunny or > 8 HP*/)))),
         //The switch defaults into the state where the block exists, and is a temp flag
         ENTRANCE(RR_ICE_CAVERN_MQ_WEST_CORRIDOR,  (logic->IsAdult || logic->BunnyHovers() || logic->CanMegajump() || logic->CanBombRecoilHover()) && logic->BlueFire()),

@@ -80,7 +80,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_HIGH_EMBLEM,         logic->Water3FCentralToHighEmblem()),
         ENTRANCE(RR_WATER_TEMPLE_JET_CHEST_ROOM,      logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         ENTRANCE(RR_WATER_TEMPLE_OUTSIDE_WATERFALL,   logic->CanRecoilHover(RECOIL_HAMMER)),
-        ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER)),
+        ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, logic->CanHover(true, false) || logic->CanRecoilHover(RECOIL_HAMMER)),
     });
 
     //assumes checking for WL_HIGH on entry

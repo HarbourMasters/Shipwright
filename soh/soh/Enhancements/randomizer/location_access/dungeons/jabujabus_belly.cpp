@@ -34,6 +34,8 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, true),
         ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_ROOM_LEDGE,         logic->Get(LOGIC_JABU_LOWERED_PATH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanMidairDamageBoost() || logic->CanMegajump() ||
                                                                   (logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS))),
+        //                                                    biri hover
+        ENTRANCE(RR_JABU_JABUS_BELLY_LIFT_UPPER,              logic->CanHover(true, true, true, true)),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_HOLES_ROOM] = Region("Jabu Jabus Belly Holes Room", SCENE_JABU_JABU, {
