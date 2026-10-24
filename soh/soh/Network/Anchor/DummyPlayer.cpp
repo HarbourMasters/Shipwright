@@ -254,4 +254,10 @@ void DummyPlayer_Destroy(Actor* actor, PlayState* play) {
     // asserts. Set the id back to ACTOR_PLAYER so that `numLoaded` will be decremented
     // correctly.
     actor->id = ACTOR_PLAYER;
+
+    // Drop client's pointer so packet handlers don't use after free
+    uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
+    if (Anchor::Instance->clients.contains(clientId) && Anchor::Instance->clients[clientId].player == (Player*)actor) {
+        Anchor::Instance->clients[clientId].player = nullptr;
+    }
 }

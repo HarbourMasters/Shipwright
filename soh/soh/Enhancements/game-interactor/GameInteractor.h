@@ -492,13 +492,7 @@ class GameInteractor {
         HooksToUnregister<H>::hooksForFilter.clear();
     }
 
-    void RemoveAllQueuedHooks() {
-#define DEFINE_HOOK(name, _) ProcessUnregisteredHooks<name>();
-
-#include "GameInteractor_HookTable.h"
-
-#undef DEFINE_HOOK
-    }
+    void RemoveAllQueuedHooks();
 
     class HookFilter {
       public:

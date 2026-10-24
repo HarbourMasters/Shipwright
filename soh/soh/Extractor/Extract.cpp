@@ -318,6 +318,18 @@ bool Extractor::GetRomPathFromBox() {
     }
     mCurrentRomPath = nameBuffer;
 #else
+    if (!pfd::settings::available()) {
+        std::string msg =
+            "No file picker was found on your system. Ship of Harkinian needs one of these to select a ROM:\n\n"
+            "  - GNOME, Xfce, Cinnamon and other GTK desktops: install \"zenity\"\n"
+            "  - KDE Plasma: install \"kdialog\"\n\n"
+            "On other distributions or window managers, search your package manager.\n\n"
+            "Alternatively, place your ROM in:\n" +
+            mSearchPath + "\nand restart.";
+        ShowErrorBox("File Picker Unavailable", msg.c_str());
+        return false;
+    }
+
     auto selection = pfd::open_file("Select a file", mSearchPath, { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 
     if (selection.empty()) {
@@ -354,7 +366,7 @@ size_t Extractor::GetCurRomSize() const {
 
 bool Extractor::ValidateAndFixRom() {
     // The MQ debug rom sometimes has the header patched to look like a US rom.
-    // Check the crc as if it were changed back, but leave mRomData as the original dump for torch.
+    // Check the crc as if it were changed back. CallTorch changes it back for real.
     const uint8_t region = mRomData[0x3E];
     if (GetRomVerCrc() == OOT_PAL_GC_MQ_DBG) {
         mRomData[0x3E] = 'P';
@@ -653,6 +665,13 @@ bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::a
 
     *totalExtract = SohTorch::CountAssetFiles(srcDir + "/" + GetTorchVersionDir());
     *extractCount = 0;
+
+    // MQ debug dumps only hold 54MB of data, the rest is dump-specific padding, and some have
+    // the region byte changed. Trim and restore it so every dump matches the one config.yml hash.
+    if (GetRomVerCrc() == OOT_PAL_GC_MQ_DBG && mRomData.size() == MB64) {
+        mRomData.resize(MB54);
+        mRomData[0x3E] = 'P';
+    }
 
     // config.yml decides whether this is oot.o2r or oot-mq.o2r.
     std::string archiveName = SohTorch::Extract(std::move(mRomData), srcDir, tempdir, portVersion, extractCount);

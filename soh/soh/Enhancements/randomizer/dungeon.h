@@ -83,6 +83,8 @@ int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, s
 uint8_t GetSceneSmallKeyMax(SceneID scene);
 /// Small keys held for the scene plus the ones already spent there.
 int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, SceneID scene);
+/// The scene's small key max, minus keys already used on doors. Key rings and skeleton key set held keys to this.
+int8_t GetSceneUnspentSmallKeyMax(const SaveContext* saveContext, SceneID scene);
 
 typedef enum {
     DEKU_TREE,
