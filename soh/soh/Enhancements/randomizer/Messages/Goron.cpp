@@ -85,6 +85,22 @@ static CustomMessage FireTempleGoronMessages[] = {
         "Wat weiß'n ich, wieso ich hier&eingepfercht wurd. Ich mach&doch nur %g\"Pull&Requests\"%w.",
         "Je ne sais pas comment on m'a jeté&ici. Il faut croire que je dors comme&une pierre.",
     },
+    {
+        "Hey! Somebody finally stopped!^All the others ran right past me.&Something about %r\"wasting "
+        "time\"%w...^I'm telling everyone back home!&...They won't believe me.",
+        "Hey! Endlich bleibt mal&jemand stehen!^Alle anderen sind einfach an mir&vorbeigerannt. Irgendwas "
+        "von&%r\"Zeitverschwendung\"%w...^Das erzähle ich allen zu Hause!&...Die werden mir nie glauben.",
+        "Hé! Enfin quelqu'un&qui s'arrête!^Tous les autres m'ont dépassé en&courant. Ils parlaient de&%r\"perte "
+        "de temps\"%w...^Je vais le raconter à tout le&monde! ...Personne ne me croira.",
+    },
+    {
+        "You came all this way just to&talk to me?^Nobody does that unless I've got&%rsomething they "
+        "want%w...^...Hey, why are you looking&at my pockets?",
+        "Du bist den ganzen Weg gekommen,&nur um mit mir zu reden?^Das macht keiner, außer ich habe&%retwas, das er "
+        "haben will%w...^...Hey, warum starrst Du so&auf meine Taschen?",
+        "Tu es venu jusqu'ici juste pour&me parler?^Personne ne fait ça, sauf si j'ai&%rquelque chose qu'il "
+        "veut%w...^...Hé, pourquoi tu regardes&mes poches comme ça?",
+    },
 };
 
 void BuildGoronMessage(uint16_t* textId, bool* loadFromMessageTable) {

@@ -128,6 +128,10 @@ void RegisterShuffleIcicles() {
         BgIceTurara* icicleActor = va_arg(args, BgIceTurara*);
         if (BgIceTurara_RandomizerHoldsItem(&icicleActor->dyna.actor) &&
             !ObjectExtension::GetInstance().Has<StalactiteDropped>(&icicleActor->dyna.actor)) {
+            const auto icicleIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&icicleActor->dyna.actor);
+            if (Rando::Context::GetInstance()->GetItemLocation(icicleIdentity->randomizerCheck)->IsExcluded()) {
+                return;
+            }
             DrawItemHalo(&icicleActor->dyna.actor);
         }
     });

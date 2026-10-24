@@ -696,3 +696,11 @@ Rando::Location Rando::Location::RedIce(RandomizerCheck rc, RandomizerCheckQuest
              scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
              false,  collectionCheck };
 }
+
+Rando::Location Rando::Location::FireGoron(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                           SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                           RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_FIRE_GORON,     area_,   ACTOR_EN_GO2,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
+             false,  collectionCheck };
+}

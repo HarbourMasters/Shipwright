@@ -281,6 +281,10 @@ void RegisterShuffleCrates() {
     COND_VB_SHOULD(VB_CRATE_SETUP_DRAW, shouldRegister, {
         ObjKibako2* crateActor = va_arg(args, ObjKibako2*);
         if (ObjKibako2_RandomizerHoldsItem(crateActor, gPlayState)) {
+            const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&crateActor->dyna.actor);
+            if (Rando::Context::GetInstance()->GetItemLocation(crateIdentity->randomizerCheck)->IsExcluded()) {
+                return;
+            }
             crateActor->dyna.actor.draw = (ActorFunc)ObjKibako2_RandomizerDraw;
             *should = false;
         }
@@ -301,6 +305,10 @@ void RegisterShuffleCrates() {
     COND_VB_SHOULD(VB_SMALL_CRATE_SETUP_DRAW, shouldRegister, {
         ObjKibako* smallCrateActor = va_arg(args, ObjKibako*);
         if (ObjKibako_RandomizerHoldsItem(smallCrateActor, gPlayState)) {
+            const auto crateIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&smallCrateActor->actor);
+            if (Rando::Context::GetInstance()->GetItemLocation(crateIdentity->randomizerCheck)->IsExcluded()) {
+                return;
+            }
             smallCrateActor->actor.draw = (ActorFunc)ObjKibako_RandomizerDraw;
             *should = false;
         }

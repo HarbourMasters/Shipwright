@@ -28,7 +28,8 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
     const auto potIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(thisx);
 
     if (potIdentity != nullptr && potIdentity->randomizerCheck != RC_MAX &&
-        Flags_GetRandomizerInf(potIdentity->randomizerInf) == 0) {
+        Flags_GetRandomizerInf(potIdentity->randomizerInf) == 0 &&
+        !Rando::Context::GetInstance()->GetItemLocation(potIdentity->randomizerCheck)->IsExcluded()) {
         bool csmc = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
         int requiresStoneAgony = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
 

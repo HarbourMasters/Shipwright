@@ -137,5 +137,6 @@
         }
     },
     "presetName": "Enhancements - Curated Randomizer",
-    "isBuiltIn": true
+    "isBuiltIn": true,
+    "ConfigVersion": 7
 }

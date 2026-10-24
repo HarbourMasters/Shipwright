@@ -1,5 +1,7 @@
 #include <algorithm>
+#include <array>
 #include <map>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -280,65 +282,83 @@ std::vector<ItemTrackerItem> silverRupeeItems = {
     ITEM_TRACKER_RG_CUSTOM(RG_GANONS_CASTLE_MQ_SILVER_SHADOW, "ShaTri", ITEM_RUPEE_SILVER, 0, DrawItem),
 };
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+// Dungeon items stacked top to bottom in one grid column, scene in data. Unused slots have no drawFunc
+using ItemTrackerDungeonColumn = std::array<ItemTrackerItem, 4>;
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+static ItemTrackerItem Key(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Boss(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Map(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
+static ItemTrackerItem Compass(SceneID scene) {
+    return ITEM_TRACKER_ITEM(ITEM_COMPASS, "", static_cast<uint32_t>(scene), DrawDungeonItem);
+}
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-};
+static const auto itemTrackerDungeonsWithMapsHorizontal = std::to_array<ItemTrackerDungeonColumn>({
+    { Map(SCENE_DEKU_TREE), Compass(SCENE_DEKU_TREE) },
+    { Map(SCENE_DODONGOS_CAVERN), Compass(SCENE_DODONGOS_CAVERN) },
+    { Map(SCENE_JABU_JABU), Compass(SCENE_JABU_JABU) },
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE), Map(SCENE_FOREST_TEMPLE), Compass(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE), Map(SCENE_FIRE_TEMPLE), Compass(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE), Map(SCENE_WATER_TEMPLE), Compass(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE), Map(SCENE_SPIRIT_TEMPLE), Compass(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE), Map(SCENE_SHADOW_TEMPLE), Compass(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Map(SCENE_BOTTOM_OF_THE_WELL), Compass(SCENE_BOTTOM_OF_THE_WELL) },
+    { Map(SCENE_ICE_CAVERN), Compass(SCENE_ICE_CAVERN) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT), Key(SCENE_TREASURE_BOX_SHOP) },
+});
 
-std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
-    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
-    { SCENE_THIEVES_HIDEOUT, { ITEM_KEY_SMALL } },
-};
+static const auto itemTrackerDungeonsHorizontal = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Key(SCENE_TREASURE_BOX_SHOP) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT) },
+});
+
+static const auto itemTrackerDungeonsWithMapsCompact = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE), Map(SCENE_FOREST_TEMPLE), Compass(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE), Map(SCENE_FIRE_TEMPLE), Compass(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE), Map(SCENE_WATER_TEMPLE), Compass(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE), Map(SCENE_SPIRIT_TEMPLE), Compass(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE), Map(SCENE_SHADOW_TEMPLE), Compass(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL), Map(SCENE_BOTTOM_OF_THE_WELL), Compass(SCENE_BOTTOM_OF_THE_WELL),
+      Key(SCENE_TREASURE_BOX_SHOP) },
+    { Map(SCENE_DEKU_TREE), Compass(SCENE_DEKU_TREE) },
+    { Map(SCENE_DODONGOS_CAVERN), Compass(SCENE_DODONGOS_CAVERN) },
+    { Map(SCENE_JABU_JABU), Compass(SCENE_JABU_JABU) },
+    { Map(SCENE_ICE_CAVERN), Compass(SCENE_ICE_CAVERN) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND), Key(SCENE_THIEVES_HIDEOUT) },
+});
+
+static const auto itemTrackerDungeonsCompact = std::to_array<ItemTrackerDungeonColumn>({
+    { Key(SCENE_FOREST_TEMPLE), Boss(SCENE_FOREST_TEMPLE) },
+    { Key(SCENE_FIRE_TEMPLE), Boss(SCENE_FIRE_TEMPLE) },
+    { Key(SCENE_WATER_TEMPLE), Boss(SCENE_WATER_TEMPLE) },
+    { Key(SCENE_SPIRIT_TEMPLE), Boss(SCENE_SPIRIT_TEMPLE) },
+    { Key(SCENE_SHADOW_TEMPLE), Boss(SCENE_SHADOW_TEMPLE) },
+    { Key(SCENE_INSIDE_GANONS_CASTLE), Boss(SCENE_GANONS_TOWER) },
+    { Key(SCENE_BOTTOM_OF_THE_WELL) },
+    { Key(SCENE_GERUDO_TRAINING_GROUND) },
+    { Key(SCENE_THIEVES_HIDEOUT) },
+    { Key(SCENE_TREASURE_BOX_SHOP) },
+});
 
 std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
     { SCENE_FOREST_TEMPLE, "FRST" },   { SCENE_FIRE_TEMPLE, "FIRE" },           { SCENE_WATER_TEMPLE, "WATR" },
     { SCENE_SPIRIT_TEMPLE, "SPRT" },   { SCENE_SHADOW_TEMPLE, "SHDW" },         { SCENE_BOTTOM_OF_THE_WELL, "BOTW" },
     { SCENE_DEKU_TREE, "DEKU" },       { SCENE_DODONGOS_CAVERN, "DCVN" },       { SCENE_JABU_JABU, "JABU" },
     { SCENE_ICE_CAVERN, "ICE" },       { SCENE_INSIDE_GANONS_CASTLE, "GANON" }, { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
-    { SCENE_THIEVES_HIDEOUT, "HIDE" },
+    { SCENE_THIEVES_HIDEOUT, "HIDE" }, { SCENE_TREASURE_BOX_SHOP, "TCG" },
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -460,16 +480,21 @@ static bool presetLoaded = false;
 static std::unordered_map<std::string, ImVec2> presetPos;
 static std::unordered_map<std::string, ImVec2> presetSize;
 
+static bool TrackerHasSave() {
+    return GameInteractor::IsSaveLoaded() ||
+           (gSaveContext.gameMode == GAMEMODE_END_CREDITS && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2);
+}
+
 void TrackSilverRupees(std::vector<ItemTrackerItem>* trackList) {
     for (auto silverRupee : silverRupeeItems) {
         RandomizerGet rg = static_cast<RandomizerGet>(silverRupee.id);
-        if ((gSaveContext.gameMode != GAMEMODE_NORMAL && silverRupee.id <= RG_GANONS_CASTLE_SILVER_SPIRIT) ||
+        if ((!TrackerHasSave() && silverRupee.id <= RG_GANONS_CASTLE_SILVER_SPIRIT) ||
             (IsSilverInPool(rg) && (Rando::StaticData::constantSilvers.contains(rg) ||
                                     CheckTracker::IsAreaSpoiled(Rando::StaticData::silverToArea[rg])))) {
             trackList->push_back(silverRupee);
         }
     }
-    if (gSaveContext.gameMode == GAMEMODE_NORMAL && !CheckTracker::AreAllSilversSpoiled()) {
+    if (TrackerHasSave() && !CheckTracker::AreAllSilversSpoiled()) {
         trackList->push_back({ (uint32_t)ITEMTYPE_SILVER, ITEM_KIND_DUMMY, "????", "ITEM_RUPEE_SILVER",
                                "ITEM_RUPEE_SILVER_Faded", 0, DrawItem });
     }
@@ -502,24 +527,19 @@ void ItemTrackerOnFrame() {
     }
 }
 
-bool IsValidSaveFile() {
-    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
-    return validSave;
-}
-
 bool HasSong(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_QUEST);
-    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
+    return TrackerHasSave() && ((1 << item.id) & gSaveContext.inventory.questItems);
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_QUEST);
-    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.questItems) : false;
+    return TrackerHasSave() && (item.data & gSaveContext.inventory.questItems);
 }
 
 bool HasEquipment(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_ITEM);
-    return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
+    return TrackerHasSave() && (item.data & gSaveContext.inventory.equipment);
 }
 
 void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
@@ -531,6 +551,13 @@ void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
             presetSize[window] = { windowInfo.at("size").at("width"), windowInfo.at("size").at("height") };
         }
     }
+}
+
+// Roc's Feather shares Nayru's Love's slot, so the slot being filled isn't enough
+static bool HasNayrusLove() {
+    return IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)
+               ? Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE)
+               : INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NAYRUS_LOVE;
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -598,6 +625,15 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                 result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
                 result.maxCapacity = 10;
                 result.currentAmmo = AMMO(ITEM_BEAN);
+                break;
+            case ITEM_NAYRUS_LOVE:
+                if (IS_RANDO) {
+                    const uint8_t nlUses = RAND_GET_OPTION(RSK_NAYRUS_LOVE_USES).Get();
+                    if (nlUses > 0 && HasNayrusLove()) {
+                        result.currentCapacity = result.maxCapacity = nlUses;
+                        result.currentAmmo = gSaveContext.ship.quest.data.randomizer.nayrusLoveUses;
+                    }
+                }
                 break;
             case ITEM_HEART_CONTAINER:
                 result.maxCapacity = result.currentCapacity = 8;
@@ -667,7 +703,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 }
 
 void DrawItemCount(ItemTrackerItem item, bool hideMax) {
-    if (!GameInteractor::IsSaveLoaded()) {
+    if (!TrackerHasSave()) {
         return;
     }
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
@@ -715,7 +751,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
-    if (item.kind == ITEM_KIND_ITEM && item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
+    if (item.kind == ITEM_KIND_ITEM && item.id == ITEM_KEY_SMALL) {
         std::string currentString = "";
         std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         ImU32 currentColor = IM_COL_WHITE;
@@ -741,8 +777,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.kind == ITEM_KIND_RG && IsSilver(static_cast<RandomizerGet>(item.id)) && IsValidSaveFile() &&
-               IS_RANDO &&
+    } else if (item.kind == ITEM_KIND_RG && IsSilver(static_cast<RandomizerGet>(item.id)) && IS_RANDO &&
                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) == RO_SHUFFLE_SILVER_ON) {
         std::string maxString = hideMax ? "???" : std::to_string(currentAndMax.maxCapacity);
         std::string str = std::to_string(currentAndMax.currentAmmo) + "/" + maxString;
@@ -756,8 +791,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PushStyleColor(ImGuiCol_Text, color);
         ImGui::Text("%s", str.c_str());
         ImGui::PopStyleColor();
-    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE &&
-               IsValidSaveFile()) {
+    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE) {
         std::string currentString = "";
         std::string maxString = "";
         ImU32 currentColor = IM_COL_WHITE;
@@ -772,8 +806,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
             // These items have a static capacity, so display ammo instead
             (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) ||
-            (item.kind == ITEM_KIND_ITEM &&
-             (item.id == ITEM_BEAN || item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
+            (item.kind == ITEM_KIND_ITEM && (item.id == ITEM_BEAN || item.id == ITEM_NAYRUS_LOVE ||
+                                             item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE));
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
                                   trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
@@ -817,8 +851,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.kind == ITEM_KIND_RG && item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0) &&
-               IsValidSaveFile()) {
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0)) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
@@ -864,7 +897,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 void DrawEquip(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
-    bool hasEquip = HasEquipment(item) && IsValidSaveFile();
+    bool hasEquip = HasEquipment(item);
     bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
     std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
@@ -879,7 +912,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem ? item.iconName : item.fadedIconName),
                        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -905,10 +938,9 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 
 void DrawItem(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
-    uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
-            ? INV_CONTENT(item.id)
-            : (uint8_t)ITEM_NONE;
+    uint32_t actualItemId = TrackerHasSave() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
+                                ? INV_CONTENT(item.id)
+                                : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     bool hideMax = false;
@@ -968,9 +1000,8 @@ void DrawItem(ItemTrackerItem item) {
         }
     } else if (item.kind == ITEM_KIND_RG) {
         actualItemId = item.id;
-        if (Rando::StaticData::RandoGetToRandInf.contains(static_cast<RandomizerGet>(item.id))) {
-            hasItem = Flags_GetRandomizerInf(static_cast<RandomizerInf>(
-                Rando::StaticData::RandoGetToRandInf.at(static_cast<RandomizerGet>(item.id))));
+        if (Rando::StaticData::RandoGetToRandInf[item.id] != RAND_INF_MAX) {
+            hasItem = Flags_GetRandomizerInf(static_cast<RandomizerInf>(Rando::StaticData::RandoGetToRandInf[item.id]));
         }
         auto test = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER);
         switch (item.id) {
@@ -1213,16 +1244,15 @@ void DrawItem(ItemTrackerItem item) {
         }
     }
 
-    if (GameInteractor::IsSaveLoaded() &&
-        (hasItem && item.kind == ITEM_KIND_ITEM && item.id != actualItemId &&
-         actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (hasItem && item.kind == ITEM_KIND_ITEM && item.id != actualItemId &&
+        actualItemTrackerItemMap.contains(actualItemId)) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     ImGui::BeginGroup();
 
-    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasItem ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, hideMax);
 
@@ -1243,18 +1273,16 @@ void DrawBottle(ItemTrackerItem item) {
     auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
+        TrackerHasSave() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : (uint8_t)ITEM_NONE;
     bool hasItem = actualItemId != ITEM_NONE;
 
-    if (GameInteractor::IsSaveLoaded() &&
-        (hasItem && item.id != actualItemId &&
-         actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.contains(actualItemId)) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasItem ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
@@ -1266,19 +1294,15 @@ void DrawDungeonItem(ItemTrackerItem item) {
     ImU32 dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    bool hasItem = GameInteractor::IsSaveLoaded() ? (bitMask & gSaveContext.inventory.dungeonItems[item.data]) : false;
-    bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
+    bool hasItem = TrackerHasSave() && (bitMask & gSaveContext.inventory.dungeonItems[item.data]);
+    bool hasSmallKey = TrackerHasSave() && gSaveContext.inventory.dungeonKeys[item.data] >= 0;
     ImGui::BeginGroup();
-    if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    } else {
-        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                     ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    }
+    bool owned = itemId == ITEM_KEY_SMALL ? hasSmallKey : hasItem;
+    ImGui::Image(gui->GetTextureByName(owned ? item.iconName : item.fadedIconName), ImVec2(iconSize, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
     if (CheckTracker::IsAreaSpoiled(RandomizerCheckObjects::GetRCAreaBySceneID(static_cast<SceneID>(item.data))) &&
-        GameInteractor::IsSaveLoaded()) {
+        TrackerHasSave()) {
         dungeonColor = (ResourceMgr_IsSceneMasterQuest(item.data) ? IM_COL_PURPLE : IM_COL_LIGHT_YELLOW);
     }
 
@@ -1289,7 +1313,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         // offset puts the text at the correct level. for some reason, if the save is loaded, the margin is 3 pixels
         // higher only for small keys, so we use 16 then. Otherwise, 13 is where everything else is
-        int offset = GameInteractor::IsSaveLoaded() ? 16 : 13;
+        int offset = TrackerHasSave() ? 16 : 13;
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + offset)));
@@ -1320,8 +1344,8 @@ void DrawSong(ItemTrackerItem item) {
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(hasSong ? item.iconName : item.fadedIconName), ImVec2(iconSize / 1.5f, iconSize),
+                 ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
@@ -1351,14 +1375,13 @@ void DrawNotes(bool resizeable = false) {
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y)
                              : ImVec2(((iconSize + iconSpacing) * 6) - 8.0f, 200.0f);
-    if (GameInteractor::IsSaveLoaded()) {
+    if (TrackerHasSave()) {
         if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size,
                                                              ImGuiInputTextFlags_AllowTabInput)) {
             notesNeedSave = true;
             notesIdleFrames = 0;
         }
-        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) &&
-            IsValidSaveFile()) {
+        if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames))) {
             notesNeedSave = false;
             SaveManager::Instance->SaveSection(gSaveContext.fileNum, itemTrackerSectionId, true);
         }
@@ -1436,55 +1459,56 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     }
 }
 
+static bool ShowDungeonItem(const ItemTrackerItem& item) {
+    if (item.data == SCENE_TREASURE_BOX_SHOP) {
+        return IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CHEST_MINIGAME);
+    }
+    if (item.data == SCENE_THIEVES_HIDEOUT) {
+        return !IS_RANDO || RAND_GET_OPTION(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_FREE);
+    }
+    return true;
+}
+
 /**
  * GetDungeonItemsVector
- * Loops over dungeons and creates vectors of items in the correct order
- * to then call DrawItemsInRows
+ * Lays out columns in blocks of `columns` wide, each block as tall as its tallest column,
+ * and flattens them row by row for DrawItemsInRows
  */
-std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, size_t columns = 6) {
-    std::vector<ItemTrackerItem> dungeonItems = {};
-
-    size_t rowCount = 0;
-    for (size_t i = 0; i < dungeons.size(); i++) {
-        if (dungeons[i].items.size() > rowCount)
-            rowCount = static_cast<int32_t>(dungeons[i].items.size());
-    }
-
-    for (size_t i = 0; i < rowCount; i++) {
-        for (size_t j = 0; j < std::min(dungeons.size(), columns); j++) {
-            if (dungeons[j].items.size() > i) {
-                switch (dungeons[j].items[i]) {
-                    case ITEM_KEY_SMALL:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                    case ITEM_KEY_BOSS:
-                        // Swap Ganon's Castle boss key to the right scene ID manually
-                        if (dungeons[j].id == SCENE_INSIDE_GANONS_CASTLE) {
-                            dungeonItems.push_back(
-                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", SCENE_GANONS_TOWER, DrawDungeonItem));
-                        } else {
-                            dungeonItems.push_back(
-                                ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, "", dungeons[j].id, DrawDungeonItem));
-                        }
-                        break;
-                    case ITEM_DUNGEON_MAP:
-                        dungeonItems.push_back(
-                            ITEM_TRACKER_ITEM(ITEM_DUNGEON_MAP, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                    case ITEM_COMPASS:
-                        dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_COMPASS, "", dungeons[j].id, DrawDungeonItem));
-                        break;
-                }
-            } else {
-                dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+std::vector<ItemTrackerItem> GetDungeonItemsVector(std::span<const ItemTrackerDungeonColumn> layout,
+                                                   size_t columns = 6) {
+    struct ShownColumn {
+        ItemTrackerDungeonColumn items;
+        size_t size = 0;
+    };
+    std::vector<ShownColumn> shown;
+    for (const auto& column : layout) {
+        ShownColumn kept;
+        for (const auto& item : column) {
+            if (item.drawFunc != nullptr && ShowDungeonItem(item)) {
+                kept.items[kept.size++] = item;
             }
+        }
+        if (kept.size > 0) {
+            shown.push_back(kept);
         }
     }
 
-    if (dungeons.size() > columns) {
-        std::vector<ItemTrackerItem> nextDungeonItems =
-            GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
-        dungeonItems.insert(dungeonItems.end(), nextDungeonItems.begin(), nextDungeonItems.end());
+    std::vector<ItemTrackerItem> dungeonItems = {};
+    for (size_t start = 0; start < shown.size(); start += columns) {
+        size_t end = std::min(start + columns, shown.size());
+        size_t rowCount = 0;
+        for (size_t j = start; j < end; j++) {
+            rowCount = std::max(rowCount, shown[j].size);
+        }
+        for (size_t i = 0; i < rowCount; i++) {
+            for (size_t j = start; j < end; j++) {
+                if (i < shown[j].size) {
+                    dungeonItems.push_back(shown[j].items[i]);
+                } else {
+                    dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, "", 0, DrawItem));
+                }
+            }
+        }
     }
 
     return dungeonItems;
@@ -1560,18 +1584,12 @@ void UpdateVectors() {
             SECTION_DISPLAY_SEPARATE) {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
-            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         }
     } else {
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DungeonItems.DisplayMaps"), 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
-            // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, "", SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
         }
@@ -1778,7 +1796,7 @@ void ItemTrackerInitFile(bool isDebug) {
     itemTrackerNotes.push_back(0);
 }
 
-void ItemTrackerSaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
+void ItemTrackerSaveFile(const SaveContext& saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("personalNotes",
                                     std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
 }

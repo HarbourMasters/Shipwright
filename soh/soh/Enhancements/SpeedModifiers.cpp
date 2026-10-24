@@ -64,6 +64,9 @@ static void RegisterSpeedModifiers() {
     COND_VB_SHOULD(VB_PLAYER_LIMIT_JUMP_SPEED, speedModifierActive || bunnyHoodActive, {
         Player* player = va_arg(args, Player*);
         if (ShouldAmplifyJump(player)) {
+            f32 maxSpeed =
+                (R_RUN_SPEED_LIMIT / 100.0f) * Ship_GetBunnyHoodJumpFactor(player) * GetSpeedModifierJumpFactor();
+            player->linearVelocity = CLAMP(player->linearVelocity, -maxSpeed, maxSpeed);
             *should = false;
         }
     });

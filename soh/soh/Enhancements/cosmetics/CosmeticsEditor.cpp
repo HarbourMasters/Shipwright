@@ -139,13 +139,13 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     like drawing each limb of an actor for instance that you will also want to inspect. What you are looking for is any sort of RGB values, or calls
     directly to gDPSetPrimColor/gDPSetEnvColor in code. If you find one, try changing the arguments and see if that's what you are looking for.
 
-    If this fails, and you aren't able to find any colors within the source of the actor/whatever you will now need to investigate the DLists 
+    If this fails, and you aren't able to find any colors within the source of the actor/whatever you will now need to investigate the DLists
     that are being rendered. The easiest way to do this is to use the experimental Display List Viewer in the developer tools options. An
     alternative to this is to dig through the source of the DLists after you have built the zeldaret/oot repository, but this will be much more
     manual, and I can't provide instructions for it.
 
     Assuming you are planning on using the Display List Viewer, you need to find the name of the DList to inspect. In the same areas you were looking
-    for RGB values you now want to look for calls to gSPDisplayList, or variables that end in "DL". Once you have this name start typing parts of 
+    for RGB values you now want to look for calls to gSPDisplayList, or variables that end in "DL". Once you have this name start typing parts of
     it into the dlist-viewer (in the developer dropdown) and select the desired dlist in the dropdown, there may be many. You will now see a
     list of commands associated with the DList you have selected. If you are lucky, there will be calls to gsDPSetPrimColor/gsDPSetEnvColor with
     the RGB values editable, and you can edit those to determine if that is the DList you are looking for. If it is, make note of the name and
@@ -178,7 +178,7 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     }
     ```
 
-    If instead what you found was that your color was set via a gsDPSetPrimColor command within a DList, you will need to follow the pattern 
+    If instead what you found was that your color was set via a gsDPSetPrimColor command within a DList, you will need to follow the pattern
     displayed in `ApplyOrResetCustomGfxPatches`, using the name of the Dlist, and index of the command you want to replace appropriately.
 
     # Applying variants of the same color
@@ -232,8 +232,8 @@ std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment.BowBody",            "Bow Body",                 COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(140,  90,  10, 255), false, true, false),
     COSMETIC_OPTION("Equipment.BowHandle",          "Bow Handle",               COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8( 50, 150, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment.ChuFace",            "Bombchu Face",             COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(  0, 100, 150, 255), false, true, true),
-    COSMETIC_OPTION("Equipment.ChuBody",            "Bombchu Body",             COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(180, 130,  50, 255), false, true, true), 
-    COSMETIC_OPTION("Equipment.BunnyHood",          "Bunny Hood",               COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(255, 235, 109, 255), false, true, true), 
+    COSMETIC_OPTION("Equipment.ChuBody",            "Bombchu Body",             COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(180, 130,  50, 255), false, true, true),
+    COSMETIC_OPTION("Equipment.BunnyHood",          "Bunny Hood",               COSMETICS_GROUP_EQUIPMENT,    ColorRGBA8(255, 235, 109, 255), false, true, true),
 
     COSMETIC_OPTION("Consumable.Hearts",            "Hearts",                   COSMETICS_GROUP_CONSUMABLE,   ColorRGBA8(255,  70,  50, 255), false, true, false),
     COSMETIC_OPTION("Consumable.HeartBorder",       "Heart Border",             COSMETICS_GROUP_CONSUMABLE,   ColorRGBA8( 50,  40,  60, 255), false, true, true),

@@ -10,6 +10,7 @@
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h"
 #include "overlays/actors/ovl_En_Fhg_Fire/z_en_fhg_fire.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -425,6 +426,9 @@ void EnfHG_SetupApproach(EnfHG* this, PlayState* play, s16 paintingIndex) {
     this->actor.world.pos.y = sPaintings[this->curPainting].pos.y + (GND_BOSSROOM_CENTER_Y + 153.0f);
     this->actor.world.pos.z = (1.3f * sPaintings[this->curPainting].pos.z) - -(GND_BOSSROOM_CENTER_Z - 10.0f);
     this->actor.world.rot.y = sPaintings[this->curPainting].yRot;
+    // Teleporting to another painting, don't blend across the room
+    FrameInterpolation_DontInterpolateChild(&this->actor);
+    FrameInterpolation_DontInterpolateChild(this->actor.parent);
 
     osSyncPrintf("XP1  = %f\n", this->actor.world.pos.x);
     osSyncPrintf("ZP1  = %f\n", this->actor.world.pos.z);

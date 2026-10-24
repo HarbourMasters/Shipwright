@@ -54,6 +54,8 @@ int SDL_main(int argc, char* argv[]) {
 #endif
     // Allow non-ascii characters for Windows
     setlocale(LC_ALL, ".UTF8");
+    // Keep '.' as the decimal point, user locale may use ','
+    setlocale(LC_NUMERIC, "C");
 
 #else //_WIN32
 int main(int argc, char* argv[]) {

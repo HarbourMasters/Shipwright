@@ -3,6 +3,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "fast/Fast3dGui.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include <fstream>
 #include <filesystem>
@@ -307,11 +308,7 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
         }
         saveFile[listName] = listArray;
 
-        std::ofstream outputFile(filename);
-        if (outputFile.is_open()) {
-            outputFile << saveFile.dump(4);
-            outputFile.close();
-        }
+        SaveManager::WriteFileSafely(filename, saveFile.dump(4));
     }
 
     if (action == SPLIT_LOAD) {
@@ -379,10 +376,8 @@ void SplitSaveFileAction(uint32_t action, std::string listName) {
 
 void RegisterTimesplits() {
     if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json"))) {
-        json initFile;
-        std::ofstream file(Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json"));
-        file << initFile.dump(4);
-        file.close();
+        std::string initPath = Ship::Context::GetPathRelativeToAppDirectory("SoHTimeSplitData.json");
+        SaveManager::WriteFileSafely(initPath, json().dump(4));
     }
 
     // Handles Converting any old save data into the new format.

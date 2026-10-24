@@ -54,7 +54,7 @@ typedef struct BossDodongo {
     /* 0x01CA */ char unk_1CA[0x2];
     /* 0x01CC */ s16 unk_1CC;
     /* 0x01CE */ char unk_1CE[0xC];
-    /* 0x01DA */ s16 unk_1DA; 
+    /* 0x01DA */ s16 unk_1DA;
     /* 0x01DC */ s16 unk_1DC;
     /* 0x01DE */ s16 unk_1DE;
     /* 0x01E0 */ s16 unk_1E0;

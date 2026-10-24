@@ -25,5 +25,7 @@
     "quest_sel_vanilla": "Quête - Originale",
     "quest_sel_mq": "Quête - Master Quest",
     "quest_sel_randomizer": "Quête - Randomizer",
-    "quest_sel_boss_rush": "Quête - Boss Rush"
+    "quest_sel_boss_rush": "Quête - Boss Rush",
+    "quest_sel_speedrun": "Quête - Speedrun",
+    "quest_sel_speedrun_mq": "Quête - Speedrun Master Quest"
 }

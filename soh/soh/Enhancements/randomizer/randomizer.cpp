@@ -254,8 +254,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         return Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
     }
 
-    if (Rando::StaticData::RandoGetToRandInf.find(randoGet) != Rando::StaticData::RandoGetToRandInf.end()) {
-        return Flags_GetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(randoGet)->second)
+    if (Rando::StaticData::RandoGetToRandInf[randoGet] != RAND_INF_MAX) {
+        return Flags_GetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf[randoGet])
                    ? CANT_OBTAIN_ALREADY_HAVE
                    : CAN_OBTAIN;
     }
@@ -437,6 +437,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_FARORES_WIND:
             return INV_CONTENT(ITEM_FARORES_WIND) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_NAYRUS_LOVE:
+            if (GetRandoSettingValue(RSK_NAYRUS_LOVE_USES) > 0) {
+                return CAN_OBTAIN;
+            }
             if (!GetRandoSettingValue(RSK_ROCS_FEATHER)) {
                 return INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
             } else {
@@ -605,7 +608,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_GERUDO_FORTRESS_SMALL_KEY:
         case RG_GANONS_CASTLE_SMALL_KEY:
         case RG_TREASURE_GAME_SMALL_KEY: {
-            SceneID scene = Rando::Logic::RandoGetToDungeonScene.find(randoGet)->second;
+            SceneID scene = Rando::Logic::RandoGetToDungeonScene[randoGet];
             return Rando::GetSceneTotalSmallKeys(&gSaveContext, scene) < Rando::GetSceneSmallKeyMax(scene)
                        ? CAN_OBTAIN
                        : CANT_OBTAIN_ALREADY_HAVE;
@@ -937,13 +940,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
 
-    // todo: this efficiently when we build out cvar array support
-    std::set<RandomizerCheck> excludedLocations;
-    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-    std::string excludedLocationString;
-    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-        excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-    }
+    std::set<RandomizerCheck> excludedLocations =
+        Rando::StaticData::ParseExcludedLocations(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
 
     // todo: better way to sort out linking tricks rather than name
 
@@ -1168,19 +1166,19 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     // if it's an item that just sets a randomizerInf, set it
-    if (Rando::StaticData::RandoGetToRandInf.find(item) != Rando::StaticData::RandoGetToRandInf.end()) {
-        Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(item)->second);
+    if (Rando::StaticData::RandoGetToRandInf[item] != RAND_INF_MAX) {
+        Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf[item]);
         if (item == RG_SKELETON_KEY) {
             // This isn't technically necessary, because keys will no longer be consumed,
             // but for the player's sanity we display that they _have_ keys.
             for (Rando::DungeonInfo* dungeon : Rando::Context::GetInstance()->GetDungeons()->GetDungeonList()) {
-                uint8_t keys = Rando::GetSceneSmallKeyMax(dungeon->GetScene());
-                if (keys > 0) {
-                    gSaveContext.inventory.dungeonKeys[dungeon->GetScene()] = keys;
+                if (Rando::GetSceneSmallKeyMax(dungeon->GetScene()) > 0) {
+                    gSaveContext.inventory.dungeonKeys[dungeon->GetScene()] =
+                        Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, dungeon->GetScene());
                 }
             }
             gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] =
-                Rando::GetSceneSmallKeyMax(SCENE_THIEVES_HIDEOUT);
+                Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, SCENE_THIEVES_HIDEOUT);
         } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
             if (!ChildTradeSlotOccupied()) {
                 INV_CONTENT(ITEM_TRADE_CHILD) = (int)ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
@@ -1353,7 +1351,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_TREASURE_GAME_KEY_RING)) {
             u8 keysOnRing = Rando::GetSceneSmallKeyMax((SceneID)mapIndex);
             gSaveContext.ship.stats.dungeonKeys[mapIndex] = keysOnRing;
-            gSaveContext.inventory.dungeonKeys[mapIndex] = keysOnRing;
+            gSaveContext.inventory.dungeonKeys[mapIndex] =
+                Rando::GetSceneUnspentSmallKeyMax(&gSaveContext, (SceneID)mapIndex);
             return Return_Item_Entry(giEntry, RG_NONE);
         }
 
@@ -1403,6 +1402,9 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
             break;
         case RG_TRIFORCE:
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            gSaveContext.ship.stats.gameComplete = 1;
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             break;
         case RG_TRIFORCE_PIECE:

@@ -15,7 +15,7 @@ typedef struct {
 SsSramContext sSsSramContext = { 0 };
 
 
-    
+
 void SsSram_Init(uintptr_t addr, u8 handleType, u8 handleDomain, u8 handleLatency, u8 handlePageSize, u8 handleRelDuration,
                  u8 handlePulse, u32 handleSpeed) {
     u32 prevInt;
