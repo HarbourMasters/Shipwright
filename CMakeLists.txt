@@ -291,7 +291,9 @@ add_executable(soh-torch EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/torch-cli/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor/TorchExtract.cpp
 )
-target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor)
+# libultraship/include is only for the header-only BitConverter; soh-torch doesn't link libultraship.
+target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor
+                                             ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/include)
 target_link_libraries(soh-torch PRIVATE torch)
 
 add_executable(soh-o2r-packer EXCLUDE_FROM_ALL
