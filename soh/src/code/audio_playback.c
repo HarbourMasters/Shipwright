@@ -6,8 +6,9 @@ extern bool gUseLegacySD;
 
 #if ENABLE_FLUIDSYNTH
 extern bool SOH_MidiTranslator_ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan,
-                                           float channelVolume, uint8_t fontId, int16_t instOrWave, uint8_t semitone,
-                                           bool isFinished, uint8_t channelIdx, float resampleRate, float pitchBend);
+                                           float channelVolume, uint8_t reverb, uint8_t fontId, int16_t instOrWave,
+                                           uint8_t semitone, bool isFinished, uint8_t channelIdx, float resampleRate,
+                                           float pitchBend);
 extern void SOH_MidiTranslator_NoteDisabled(int noteIndex);
 #endif
 
@@ -360,8 +361,8 @@ void Audio_ProcessNotes(void) {
                     }
                 }
                 bool handledByFluidSynth = SOH_MidiTranslator_ProcessNote(
-                    i, subAttrs.frequency, noteVelocity, subAttrs.pan, channelVolume, playbackState->fontId, instOrWave,
-                    semitone, (bool)noteSubEu->bitField0.finished, chanIdx,
+                    i, subAttrs.frequency, noteVelocity, subAttrs.pan, channelVolume, subAttrs.reverbVol,
+                    playbackState->fontId, instOrWave, semitone, (bool)noteSubEu->bitField0.finished, chanIdx,
                     gAudioContext.audioBufferParameters.resampleRate, pitchBend);
                 if (handledByFluidSynth) {
                     // FluidSynth owns this note; silence the native side so the two

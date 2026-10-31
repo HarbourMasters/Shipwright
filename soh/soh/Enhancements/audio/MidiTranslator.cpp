@@ -2014,7 +2014,7 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
 // ── ProcessNote ───────────────────────────────────────────────────────────
 
 bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume,
-                                 uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished,
+                                 uint8_t reverb, uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished,
                                  uint8_t channelIdx, float resampleRate, float pitchBend) {
     (void)resampleRate;
     (void)channelIdx;
@@ -2285,7 +2285,8 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     auto resolveEffectCc = [](int8_t ovr, uint8_t fallback) -> uint8_t {
         return (ovr >= 0) ? static_cast<uint8_t>(ovr) : fallback;
     };
-    uint8_t reverbVal = resolveEffectCc(e.reverb, 0);
+    // The engine's top bit swaps the reverb send's channels; the low 7 bits are the amount.
+    uint8_t reverbVal = resolveEffectCc(e.reverb, reverb & 0x7F);
     uint8_t chorusVal = resolveEffectCc(e.chorus, 0);
     uint8_t cutoffVal = resolveEffectCc(e.cutoff, 64);
     uint8_t qVal = resolveEffectCc(e.q, 64);
@@ -2405,11 +2406,11 @@ void MidiTranslator::NoteDisabled(int noteIndex) {
 extern "C" {
 
 bool SOH_MidiTranslator_ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume,
-                                    uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished,
-                                    uint8_t channelIdx, float resampleRate, float pitchBend) {
-    return SOH::MidiTranslator::Instance().ProcessNote(noteIndex, freqScale, velocity, pan, channelVolume, fontId,
-                                                       instOrWave, semitone, isFinished, channelIdx, resampleRate,
-                                                       pitchBend);
+                                    uint8_t reverb, uint8_t fontId, int16_t instOrWave, uint8_t semitone,
+                                    bool isFinished, uint8_t channelIdx, float resampleRate, float pitchBend) {
+    return SOH::MidiTranslator::Instance().ProcessNote(noteIndex, freqScale, velocity, pan, channelVolume, reverb,
+                                                       fontId, instOrWave, semitone, isFinished, channelIdx,
+                                                       resampleRate, pitchBend);
 }
 
 void SOH_MidiTranslator_NoteDisabled(int noteIndex) {

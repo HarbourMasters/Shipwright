@@ -103,7 +103,7 @@ struct ConfigEntry {
     std::string presetName; // user-facing label / recovery hint
     float gain = 0.0f;      // 0.0 = use default 1.0x
     int8_t transpose = 0;
-    int8_t reverb = -1; // CC 91; -1 = no override (default 0)
+    int8_t reverb = -1; // CC 91; -1 = no override (the sequence's reverb send)
     int8_t chorus = -1; // CC 93; -1 = no override (default 0)
     int8_t cutoff = -1; // CC 74; -1 = no override (default 64)
     int8_t q = -1;      // CC 71; -1 = no override (default 64)
@@ -139,9 +139,9 @@ class MidiTranslator {
     static MidiTranslator& Instance();
 
     // Audio-thread entry point (see audio_playback.c hook).
-    bool ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume, uint8_t fontId,
-                     int16_t instOrWave, uint8_t semitone, bool isFinished, uint8_t channelIdx, float resampleRate,
-                     float pitchBend);
+    bool ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume, uint8_t reverb,
+                     uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished, uint8_t channelIdx,
+                     float resampleRate, float pitchBend);
     void NoteDisabled(int noteIndex);
     void Reset();
 
