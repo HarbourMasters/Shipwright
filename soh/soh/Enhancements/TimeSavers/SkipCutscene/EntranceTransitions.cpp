@@ -7,9 +7,9 @@
 #include "z64.h"
 
 extern "C" {
-    #include "macros.h"
-    extern PlayState* gPlayState;
-    extern void Player_StartMode_Idle(PlayState*, Player*);
+#include "macros.h"
+extern PlayState* gPlayState;
+extern void Player_StartMode_Idle(PlayState*, Player*);
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.EntranceTransitions")
@@ -24,7 +24,8 @@ void RegisterSkipEntranceTransitions() {
 
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_STARTMODE_FUNC, CVAR_VALUE, {
         s32 startMode = va_arg(args, s32);
-        if (startMode == PLAYER_START_MODE_IDLE || startMode == PLAYER_START_MODE_MOVE_FORWARD || startMode == PLAYER_START_MODE_MOVE_FORWARD_SLOW) {
+        if (startMode == PLAYER_START_MODE_IDLE || startMode == PLAYER_START_MODE_MOVE_FORWARD ||
+            startMode == PLAYER_START_MODE_MOVE_FORWARD_SLOW) {
             *should = false;
             Player* player = GET_PLAYER(gPlayState);
             Player_StartMode_Idle(gPlayState, player);
