@@ -1219,7 +1219,7 @@ void RegionTable_Init_FireTemple() {
     }, {
         // Locations
         LOCATION(RC_FIRE_TEMPLE_VOLVAGIA_HEART, logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),
-        LOCATION(RC_VOLVAGIA,                   logic->Get(LOGIC_FIRE_TEMPLE_CLEAR)),
+        LOCATION(RC_VOLVAGIA,                   logic->Get(LOGIC_FIRE_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_DARUNIA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_FIRE_TEMPLE_BOSS_ENTRYWAY, false),

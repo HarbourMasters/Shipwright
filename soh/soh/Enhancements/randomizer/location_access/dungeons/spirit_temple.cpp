@@ -1235,7 +1235,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         // Locations
         LOCATION(RC_SPIRIT_TEMPLE_TWINROVA_HEART, logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR)),
-        LOCATION(RC_TWINROVA,                     logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR)),
+        LOCATION(RC_TWINROVA,                     logic->Get(LOGIC_SPIRIT_TEMPLE_CLEAR) && logic->SageHandsOverReward(RG_NABOORU_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY, false),

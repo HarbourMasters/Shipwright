@@ -19,6 +19,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 
@@ -284,6 +285,42 @@ void CheckTriggers() {
     }
 }
 
+// "Sages hold dungeon rewards": while a sage's soul is missing, the reward they'd hand over is held back.
+// The dungeon still counts as done (its flag is set as usual); only the check waits for the soul.
+static bool IsSageSoulMissing(RandomizerGet soul) {
+    const Rando::NpcSoul* npcSoul = Rando::GetNpcSoul(soul);
+    return npcSoul != nullptr && Rando::IsNpcSoulShuffled(*npcSoul) && !Flags_GetRandomizerInf(npcSoul->randInf);
+}
+
+static bool IsCollectionFlagSet(RandomizerCheck rc) {
+    Rando::SpoilerCollectionCheck collectionCheck = Rando::StaticData::GetLocation(rc)->GetCollectionCheck();
+    switch (collectionCheck.type) {
+        case SPOILER_CHK_EVENT_CHK_INF:
+            return Flags_GetEventChkInf(collectionCheck.flag);
+        case SPOILER_CHK_RANDOMIZER_INF:
+            return Flags_GetRandomizerInf(static_cast<RandomizerInf>(collectionCheck.flag));
+        default:
+            return false;
+    }
+}
+
+// Hands over every held-back reward whose sage now has their soul. Runs on scene init and when a soul
+// is received; queuing a check twice is harmless (already obtained checks are skipped).
+static void ReleaseSageRewards() {
+    for (const Rando::SageReward& reward : Rando::GetSageRewards()) {
+        if (Rando::GetSageRewardSoul(reward.rc) == RG_NONE || IsSageSoulMissing(reward.soul) ||
+            !IsCollectionFlagSet(reward.rc)) {
+            continue;
+        }
+        auto loc = Rando::Context::GetInstance()->GetItemLocation(reward.rc);
+        if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) {
+            continue;
+        }
+        SPDLOG_INFO("Queuing RC {} held by a sage", static_cast<uint32_t>(reward.rc));
+        randomizerQueuedChecks.push(reward.rc);
+    }
+}
+
 void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     // Consume adult trade items
     if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Get() && flagType == FLAG_RANDOMIZER_INF) {
@@ -321,6 +358,12 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     auto loc = Rando::Context::GetInstance()->GetItemLocation(rc);
     if (loc == nullptr || loc->HasObtained() || loc->GetPlacedRandomizerGet() == RG_NONE) {
         Rando::Context::GetInstance()->GetItemLocation(rc)->SetCheckStatus(RCSHOW_COLLECTED);
+        return;
+    }
+
+    RandomizerGet sageSoul = Rando::GetSageRewardSoul(rc);
+    if (sageSoul != RG_NONE && IsSageSoulMissing(sageSoul)) {
+        SPDLOG_INFO("Holding RC {} until its sage's soul is found", static_cast<uint32_t>(rc));
         return;
     }
 
@@ -492,6 +535,11 @@ static void PlantAllBeans() {
 }
 
 void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
+    if (receivedItemEntry.modIndex == MOD_RANDOMIZER &&
+        Rando::IsNpcSoul(static_cast<RandomizerGet>(receivedItemEntry.getItemId))) {
+        ReleaseSageRewards();
+    }
+
     if (randomizerQueuedCheck == RC_UNKNOWN_CHECK)
         return;
 
@@ -2173,6 +2221,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 }
 
 void RandomizerOnSceneInitHandler(int16_t sceneNum) {
+    ReleaseSageRewards();
+
     // ENTRTODO: Move all entrance rando handling to a dedicated file
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         // In ER, override roomNum to load based on scene and spawn during scene init

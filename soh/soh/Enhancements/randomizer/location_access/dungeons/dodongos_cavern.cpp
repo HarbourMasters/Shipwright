@@ -764,7 +764,7 @@ void RegionTable_Init_DodongosCavern() {
         // Locations
         LOCATION(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR)),
-        LOCATION(RC_KING_DODONGO,                       logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR)),
+        LOCATION(RC_KING_DODONGO,                       logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR) && logic->SageHandsOverReward(RG_DARUNIA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_DODONGOS_CAVERN_BOSS_EXIT, true),

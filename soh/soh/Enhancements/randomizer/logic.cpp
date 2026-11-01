@@ -2041,6 +2041,10 @@ bool Logic::HasCarpenterSouls() {
                                        (HasItem(RG_SABOORO_SOUL) && HasItem(RG_JIRO_SOUL) && HasItem(RG_SHIRO_SOUL)));
 }
 
+bool Logic::SageHandsOverReward(RandomizerGet sageSoul) {
+    return ctx->GetOption(RSK_NPC_SOULS_SAGES).Is(false) || HasItem(sageSoul);
+}
+
 bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;

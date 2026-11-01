@@ -1971,7 +1971,7 @@
             "npc_souls_sages": {
                 "name": "Sages Hold Dungeon Rewards",
                 "description": [
-                    "With Story souls shuffled, a sage also needs their soul before handing over the dungeon reward at the end of their temple."
+                    "With Story souls shuffled, each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
                 ]
             },
             "starting_id_soul": {

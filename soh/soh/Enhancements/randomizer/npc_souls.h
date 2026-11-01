@@ -51,4 +51,15 @@ bool IsNpcSoulShuffled(const NpcSoul& soul);
 // True when any NPC soul category is shuffled in the current seed.
 bool AreNpcSoulsEnabled();
 
+// "Sages hold dungeon rewards": the sage who hands over a dungeon reward, and the reward location.
+struct SageReward {
+    RandomizerCheck rc;
+    RandomizerGet soul;
+};
+const std::vector<SageReward>& GetSageRewards();
+
+// The sage's soul for a reward location, or RG_NONE when no sage holds that reward in this seed
+// (the switch is off, or the location isn't a sage's).
+RandomizerGet GetSageRewardSoul(RandomizerCheck rc);
+
 } // namespace Rando

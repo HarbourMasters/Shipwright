@@ -44,7 +44,7 @@ void RegionTable_Init_TempleOfTime() {
     areaTable[RR_TOT_BEYOND_DOOR_OF_TIME] = Region("Beyond Door of Time", SCENE_TEMPLE_OF_TIME, {}, {
         //Locations
         LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
-        LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult),
+        LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult && logic->SageHandsOverReward(RG_RAURU_SOUL)),
         LOCATION(RC_SHEIK_AT_TEMPLE,  logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_SHEIK_SOUL)),
     }, {
         //Exits

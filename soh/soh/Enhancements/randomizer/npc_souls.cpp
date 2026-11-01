@@ -69,6 +69,29 @@ bool IsNpcSoulShuffled(const NpcSoul& soul) {
            ctx->GetOption(soul.startingSetting).Is(false);
 }
 
+const std::vector<SageReward>& GetSageRewards() {
+    // The Kokiri Emerald comes from the Deku Tree, who has no soul.
+    static const std::vector<SageReward> rewards = {
+        { RC_KING_DODONGO, RG_DARUNIA_SOUL }, { RC_BARINADE, RG_RUTO_SOUL },
+        { RC_PHANTOM_GANON, RG_SARIA_SOUL },  { RC_VOLVAGIA, RG_DARUNIA_SOUL },
+        { RC_MORPHA, RG_RUTO_SOUL },          { RC_BONGO_BONGO, RG_IMPA_SOUL },
+        { RC_TWINROVA, RG_NABOORU_SOUL },     { RC_GIFT_FROM_RAURU, RG_RAURU_SOUL },
+    };
+    return rewards;
+}
+
+RandomizerGet GetSageRewardSoul(RandomizerCheck rc) {
+    if (Context::GetInstance()->GetOption(RSK_NPC_SOULS_SAGES).Is(false)) {
+        return RG_NONE;
+    }
+    for (const SageReward& reward : GetSageRewards()) {
+        if (reward.rc == rc) {
+            return reward.soul;
+        }
+    }
+    return RG_NONE;
+}
+
 bool AreNpcSoulsEnabled() {
     auto ctx = Context::GetInstance();
     for (NpcSoulCategory category :

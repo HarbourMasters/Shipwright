@@ -46,6 +46,8 @@ class Logic {
     bool SmallKeys(SceneID scene, uint8_t requiredAmount);
     // NPC souls of the carpenters that still have to be freed in the Thieves' Hideout
     bool HasCarpenterSouls();
+    // With "Sages hold dungeon rewards", a sage only hands over their reward once their soul is found
+    bool SageHandsOverReward(RandomizerGet sageSoul);
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMidairGroundJump(bool hasBombflower = false);

@@ -688,7 +688,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
-        LOCATION(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
+        LOCATION(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR) && logic->SageHandsOverReward(RG_RUTO_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_BOSS_EXIT, false),
