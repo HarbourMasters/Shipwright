@@ -8,8 +8,12 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
+#include <iterator>
 #include <string>
 #include <vector>
+
+#include <ship/utils/binarytools/BitConverter.h>
 
 #include "TorchExtract.h"
 
@@ -50,6 +54,15 @@ static std::vector<std::string> CollectRoms(const std::vector<std::string>& args
     }
 
     return roms;
+}
+
+// SohTorch::Extract takes the rom bytes in big-endian order, so v64/n64 dumps are swapped here,
+// the same way the in-game extractor does. Empty if the file can't be read.
+static std::vector<uint8_t> ReadRom(const std::string& path) {
+    std::ifstream file(path, std::ios::binary);
+    std::vector<uint8_t> rom((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    BitConverter::RomToBigEndian(rom.data(), rom.size());
+    return rom;
 }
 
 int main(int argc, char** argv) {
@@ -98,7 +111,7 @@ int main(int argc, char** argv) {
 
     for (const auto& rom : roms) {
         // A fresh extraction per ROM; torch names the archive from config.yml.
-        const std::string archive = SohTorch::Extract(rom, src, dest, version, nullptr);
+        const std::string archive = SohTorch::Extract(ReadRom(rom), src, dest, version, nullptr);
         if (archive.empty()) {
             fprintf(stderr, "failed to extract %s\n", rom.c_str());
             return 1;
