@@ -1,10 +1,8 @@
 #include <libultraship/bridge/resourcebridge.h>
-#include <fast/resource/ResourceType.h>
 #include <fast/resource/type/Texture.h>
 #include <spdlog/spdlog.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include "soh/ResourceManagerHelpers.h"
 
 #include <cstring>
 #include <map>
@@ -19,9 +17,13 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-// A pause page is 15 sections, each clamped at its own edge, so filtering leaves a seam between them. A mod can
-// instead supply the whole page as one texture: textures/icon_item_static/gPause<Page><LANG>Tex, or gPause<Page>Tex
-// for every language. It is 240x160 IA8, or a raw RGBA replacement scaled relative to that.
+/*
+A pause page is normally drawn as 15 separate sections of 80x32 textures.
+Texture filtering and N64 texture offsets leave visible seams across the pause
+page that are more noticable when higher resolution textures are used.
+
+This allows a mod to instead supply the whole page as one texture
+*/
 
 static constexpr int PAGE_WIDTH = 240;
 static constexpr int PAGE_HEIGHT = 160;
@@ -31,44 +33,36 @@ static constexpr int SECTION_ROWS = 5;
 static constexpr int SECTION_VTX_COUNT = 15 * 4;
 // Half a texel in s10.5: cancels the half texel the bilinear filter adds, so the page lines up with the image.
 static constexpr s16 HALF_TEXEL = 16;
+// Index of section "10" (column 1, row 0) in a page's texture array.
+// Use section "10" because section "00" is shared between the save and game-over pages.
+static constexpr int PAGE_NAME_SECTION = 5;
 
 static const char* sLanguageSuffixes[] = { "ENG", "GER", "FRA", "JPN" };
 
-// The combined texture found for each section array and language, or nullptr for none.
+// The combined texture found for each section array and language.
 static std::map<std::pair<void**, u8>, const char*> sCombinedPages;
 
-// The page's name, from its column 1, row 0 section: the one section no two pages share
-// (gPauseGameOver10Tex is drawn with the save prompt's other sections).
 static std::string GetPageName(void** textures) {
-    std::string name = static_cast<const char*>(textures[SECTION_ROWS]);
+     // gPause<PageName><Column><Row><optional<Language>>Tex
+    std::string name = static_cast<const char*>(textures[PAGE_NAME_SECTION]);
     name = name.substr(name.rfind('/') + 1);
-    for (const char* suffix : { "Tex", "ENG", "GER", "FRA", "JPN", "10" }) {
-        if (name.ends_with(suffix)) {
-            name.resize(name.size() - strlen(suffix));
+    if (name.ends_with("Tex")) {
+        name.resize(name.size() - strlen("Tex"));
+    }
+    for (const char* language : sLanguageSuffixes) {
+        if (name.ends_with(language)) {
+            name.resize(name.size() - strlen(language));
         }
+    }
+    if (name.ends_with("10")) {
+        name.resize(name.size() - strlen("10"));
     }
     return name;
 }
 
-// Display lists keep a texture path's pointer, and the interpreter memoizes resolved paths by pointer.
-static const char* GetStableTexturePath(const std::string& path) {
-    static std::unordered_set<std::string> sPaths;
-    return sPaths.insert("__OTR__textures/icon_item_static/" + path).first->c_str();
-}
-
-static bool HasFile(const char* path) {
-    return ResourceMgr_FileExists(path) || (ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists(path));
-}
-
 // Native IA8 must be unscaled because its decoder uses the render tile's 240-byte stride.
 // Raw RGBA replacements use scale metadata relative to 240x160 IA8 (one byte per texel).
-static bool IsPageTexture(const char* path) {
-    auto resource = ResourceLoad(path);
-    if (resource == nullptr || resource->GetInitData()->Type != static_cast<uint32_t>(Fast::ResourceType::Texture)) {
-        return false;
-    }
-
-    auto texture = std::static_pointer_cast<Fast::Texture>(resource);
+static bool IsPageTexture(const std::shared_ptr<Fast::Texture>& texture, const char* path) {
     bool validTexture;
     if (texture->Flags & TEX_FLAG_LOAD_AS_RAW) {
         validTexture = texture->Width * 4 == PAGE_WIDTH * texture->HByteScale &&
@@ -92,12 +86,16 @@ static const char* FindCombinedPage(void** textures) {
     }
 
     std::string page = GetPageName(textures);
-    std::string language = sLanguageSuffixes[gSaveContext.language % ARRAY_COUNT(sLanguageSuffixes)];
+    std::string language = sLanguageSuffixes[gSaveContext.language];
+    // Display lists keep the path's pointer, and the interpreter memoizes resolved paths by pointer,
+    // so the strings must outlive this lookup.
+    static std::unordered_set<std::string> sPaths;
     const char* found = nullptr;
     for (const std::string& name : { page + language + "Tex", page + "Tex" }) {
-        const char* path = GetStableTexturePath(name);
-        if (HasFile(path)) {
-            found = IsPageTexture(path) ? path : nullptr;
+        const char* path = sPaths.insert("__OTR__textures/icon_item_static/" + name).first->c_str();
+        auto texture = std::dynamic_pointer_cast<Fast::Texture>(ResourceLoad(path));
+        if (texture != nullptr) {
+            found = IsPageTexture(texture, path) ? path : nullptr;
             break;
         }
     }
@@ -110,6 +108,7 @@ static void LoadPageTexture(Gfx** gfx, const char* path) {
     gDPSetTile((*gfx)++, G_IM_FMT_IA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOLOD);
     gDPLoadSync((*gfx)++);
+    // The wide load block is two commands, and unlike the other macros it does not advance the pointer.
     gDPLoadBlockWide(*gfx, G_TX_LOADTILE, 0, 0,
                      ((PAGE_WIDTH * PAGE_HEIGHT + G_IM_SIZ_8b_INCR) >> G_IM_SIZ_8b_SHIFT) - 1,
                      CALC_DXT(PAGE_WIDTH, G_IM_SIZ_8b_BYTES));
@@ -122,7 +121,8 @@ static void LoadPageTexture(Gfx** gfx, const char* path) {
                    (PAGE_HEIGHT - 1) << G_TEXTURE_IMAGE_FRAC);
 }
 
-// A copy of the section quads, each pointed at its part of the page. The save prompt's vertices can be drawn twice in
+// A copy of the section quads, each pointed at its part of the page. 
+// The save prompt's vertices can be drawn twice in
 // a frame with different textures, so the originals stay untouched.
 static Vtx* CreatePageVertices(Vtx* vertices) {
     Vtx* page = (Vtx*)Graph_Alloc(gPlayState->state.gfxCtx, SECTION_VTX_COUNT * sizeof(Vtx));
@@ -140,7 +140,7 @@ static Vtx* CreatePageVertices(Vtx* vertices) {
     return page;
 }
 
-// In the batches KaleidoScope_DrawPageSections uses: the vertex buffer holds 32.
+// Same two batches as KaleidoScope_DrawPageSections, since the vertex buffer holds 32 vertices.
 static void DrawSectionQuads(Gfx** gfx, Vtx* vertices) {
     for (int first = 0; first < SECTION_VTX_COUNT; first += 32) {
         int count = MIN(32, SECTION_VTX_COUNT - first);
