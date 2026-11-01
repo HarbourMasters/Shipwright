@@ -369,8 +369,8 @@ static void InitTrickNames() {
     trickNameTable[RG_PROGRESSIVE_STRENGTH] = {
         { Text{ "Power Glove", "Gant de Puissance (prog.)", "Krafthandschuh (prog.)" },
           Text{ "a ", "un ", "einen " } }, // "Guanteletes progresivos"
-        { Text{ "Power Bracelet", "Bracelet de Force (prog.)", "Kraftarmband (prog.)" },
-          Text{ "a ", "un ", "ein " } }, // "Brasaletes progresivos"
+        { Text{ "Darunia's Bracelet", "Bracelet de Darunia (prog.)", "Darunias Armband (prog.)" },
+          Text{ "", "le ", "" } }, // "Brasaletes progresivos"
         { Text{ "Magic Bracelet", "Bracelet Magique (prog.)", "Magiearmband (prog.)" },
           Text{ "a ", "un ", "ein " } }, // "Manoplas progresivas"
     };
