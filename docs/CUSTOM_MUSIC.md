@@ -22,3 +22,20 @@ Once you have prepared your sequences folder:
     - This `mods` folder should be in the same folder as your `oot.o2r` file.
 
 Assuming you have done everything correctly, boot up SoH and select the SFX Editor from the enhancements dropdown menu. You should now be able to swap out any of the in game sequences/fanfares for the sequences added in your newly generated OTR file. If you have any trouble with this process, please reach out in the support section of the Discord.
+
+### Streamed audio
+
+Recorded songs (wav, ogg, mp3, flac) are packed with [future](https://github.com/louist103/future)'s streamed audio window instead, which transcodes them to opus and writes one `custom/music/<name>_SEQ.xml` per song (`_SEQ.xml_fanfare` for fanfares).
+
+#### Fades
+
+A streamed song is one long note, so by default the game's cuts stop it dead. Two optional attributes on the `<Sequence>` element of its `_SEQ.xml` smooth this out, in seconds (decimals allowed, 0 to 60, default 0):
+
+```xml
+<Sequence Index="0" Medium="Cart" CachePolicy="Temporary" Size="0" Streamed="true" FadeIn="1.5" FadeOut="3" Length="209" Looped="true" Stereo="true">
+```
+
+- `FadeIn` - used when the game starts the song without a fade of its own.
+- `FadeOut` - used when the game cuts the song, or switches to another song without a fade. When a sequence player is free the two songs crossfade; otherwise the next song waits for the fade to finish.
+
+Fades the game asks for itself are kept as they are. The attributes are ignored on non-streamed sequences and by older SoH versions.

@@ -27,5 +27,7 @@ class AudioSequence : public Ship::Resource<Sequence> {
     size_t GetPointerSize();
 
     Sequence sequence;
+    float fadeInSeconds = 0.0f;
+    float fadeOutSeconds = 0.0f;
 };
 }; // namespace SOH
