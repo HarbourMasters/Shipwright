@@ -731,7 +731,9 @@ typedef enum {
     // ```c
     // false
     // ```
-    // When true, `Actor_Draw` draws the actor in greyscale (used for NPC soul statues).
+    // When true, `Actor_Draw` draws the actor in greyscale (used for NPC soul statues). A handler returning
+    // true may also set `play->state.frames` and `play->gameplayFrames` for that draw, to freeze effects
+    // that draw functions compute from them (limb sway, texture scroll); `Actor_Draw` restores both after.
     // #### `args`
     // - `*Actor`
     VB_DRAW_ACTOR_IN_GRAYSCALE,

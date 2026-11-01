@@ -1694,8 +1694,10 @@ bool Logic::HookshotOrBoomerang() {
 }
 
 bool Logic::ScarecrowsSong() {
-    return (HasItem(RG_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
-           (!ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW));
+    // Playing it only helps if Pierre is around to answer.
+    return HasItem(RG_PIERRE_SOUL) &&
+           ((HasItem(RG_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
+            (!ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW)));
 }
 
 bool Logic::BlueFire() {
@@ -2031,6 +2033,12 @@ bool Logic::CanTriggerWincon() {
         default:
             return false;
     }
+}
+
+bool Logic::HasCarpenterSouls() {
+    // Fast Gerudo Fortress leaves only the 1 torch carpenter (Ichiro) to free; the others start free.
+    return HasItem(RG_ICHIRO_SOUL) && (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_NORMAL) ||
+                                       (HasItem(RG_SABOORO_SOUL) && HasItem(RG_JIRO_SOUL) && HasItem(RG_SHIRO_SOUL)));
 }
 
 bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {

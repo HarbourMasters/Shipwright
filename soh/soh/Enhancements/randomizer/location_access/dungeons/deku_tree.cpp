@@ -214,7 +214,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_BASEMENT_UPPER, logic->HasItem(RG_CLIMB) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT))),
-        ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY,  AnyAgeTime([]{return logic->CanReflectNuts();})),
+        ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY,  AnyAgeTime([]{return logic->CanReflectNuts();}) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)),
     });
 
 #pragma endregion
@@ -467,7 +467,7 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_B1_BROKE_WEB,          logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB,               logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DEKU_TREE_MQ_DEKU_SCRUB,               logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_1,   logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_2,   logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_UPPER_GRASS_3,   logic->CanCutShrubs()),
@@ -491,7 +491,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_BASEMENT_LEDGE, logic->HasItem(RG_CLIMB) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOOKSHOT))),
-        ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY,     AnyAgeTime([]{return logic->CanReflectNuts();})),
+        ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY,     AnyAgeTime([]{return logic->CanReflectNuts();}) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)),
     });
 
 #pragma endregion

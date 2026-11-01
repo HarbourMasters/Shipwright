@@ -1761,12 +1761,10 @@ static void InitTrickNames() {
 
     // NPC souls: near-miss spellings of the real item name.
     for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
-        std::string possessive = Rando::GetNpcSoulItemName(soul);
-        possessive.resize(possessive.size() - std::string(" Soul").size());
         trickNameTable[soul.rg] = {
-            { Text{ possessive + " Sole" }, Text{ "" } },
-            { Text{ possessive + " Seoul" }, Text{ "" } },
-            { Text{ possessive + " Spirit" }, Text{ "" } },
+            { Text{ Rando::GetNpcSoulItemName(soul, "Sole") }, Text{ "" } },
+            { Text{ Rando::GetNpcSoulItemName(soul, "Seoul") }, Text{ "" } },
+            { Text{ Rando::GetNpcSoulItemName(soul, "Spirit") }, Text{ "" } },
         };
     }
 }

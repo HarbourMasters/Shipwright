@@ -38,8 +38,8 @@ bool IsNpcSoul(RandomizerGet rg);
 // The RSK_SHUFFLE_NPC_SOULS_* setting that controls a category.
 RandomizerSettingKey GetNpcSoulCategorySetting(NpcSoulCategory category);
 
-// "Talon's Soul", "Frogs' Soul"
-std::string GetNpcSoulItemName(const NpcSoul& soul);
+// "Talon's Soul", "Soul of the Zoras". `noun` replaces "Soul" (ice trap names: "Talon's Sole").
+std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun = "Soul");
 
 // "the soul of Talon", "the soul of the Frogs"
 std::string GetNpcSoulHintName(const NpcSoul& soul);

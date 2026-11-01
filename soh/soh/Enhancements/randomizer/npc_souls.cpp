@@ -49,10 +49,14 @@ RandomizerSettingKey GetNpcSoulCategorySetting(NpcSoulCategory category) {
     return RSK_SHUFFLE_NPC_SOULS_MERCHANTS;
 }
 
-std::string GetNpcSoulItemName(const NpcSoul& soul) {
+std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun) {
     std::string name = soul.name;
-    name += (!name.empty() && name.back() == 's') ? "' Soul" : "'s Soul";
-    return name;
+    if (soul.article[0] != '\0') {
+        // Group souls: "Soul of the Zoras"
+        return std::string(noun) + " of " + soul.article + name;
+    }
+    name += (!name.empty() && name.back() == 's') ? "' " : "'s ";
+    return name + noun;
 }
 
 std::string GetNpcSoulHintName(const NpcSoul& soul) {

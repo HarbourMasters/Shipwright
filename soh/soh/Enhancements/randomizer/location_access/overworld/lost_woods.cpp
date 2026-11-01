@@ -60,7 +60,7 @@ void RegionTable_Init_LostWoods() {
         ENTRANCE(RR_GC_WOODS_WARP,            true),
         ENTRANCE(RR_LW_BRIDGE,                (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) || (ctx->GetTrickOption(RT_LW_BRIDGE) && logic->CanJumpslash()))) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_ZR_FROM_SHORTCUT,         logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
-        ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
+        ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || (logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_MIDO_SOUL)) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
         ENTRANCE(RR_LW_NEAR_SHORTCUTS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
@@ -69,7 +69,7 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,  logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE, logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_GOSSIP_STONE,           true),
@@ -85,8 +85,8 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                  logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull(RG_LOST_WOODS_BEAN_SOUL) && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
         LOCATION(RC_LW_BOULDER_RUPEE,                      logic->BlastOrSmash()),
@@ -105,7 +105,7 @@ void RegionTable_Init_LostWoods() {
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,   true),
-        ENTRANCE(RR_THE_LOST_WOODS,   logic->IsChild || logic->CanUse(RG_SARIAS_SONG)),
+        ENTRANCE(RR_THE_LOST_WOODS,   logic->IsChild || (logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_MIDO_SOUL))),
         ENTRANCE(RR_SFM_ENTRYWAY,     true),
         ENTRANCE(RR_DEKU_THEATER,     true),
         ENTRANCE(RR_LW_SCRUBS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
@@ -132,8 +132,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_DEKU_THEATER] = Region("Deku Theater", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK)),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && logic->HasItem(RG_SPEAK_DEKU)),
+        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)),
+        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL))),
         LOCATION(RC_LW_THEATER_RECTANGLE_SIGN,  logic->CanRead()),
     }, {
         //Exits
@@ -142,8 +142,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {

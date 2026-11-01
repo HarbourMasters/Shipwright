@@ -1931,7 +1931,7 @@
             "shuffle_npc_souls_merchants": {
                 "name": "Shuffle Merchants Souls",
                 "description": [
-                    "Shuffles the souls of shopkeepers, salesmen and adult trade quest NPCs into the item pool.\n",
+                    "Shuffles the souls of shopkeepers, salesmen, adult trade quest NPCs and the Deku Scrubs into the item pool.\n",
                     "\n",
                     "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
                 ]
@@ -1963,7 +1963,7 @@
             "shuffle_npc_souls_townsfolk": {
                 "name": "Shuffle Townsfolk Souls",
                 "description": [
-                    "Shuffles the souls of Guru-Guru, the Man on the Roof, the Dog Lady, the Cursed Family, the Hylian Guards, the Running Man and Link the Goron into the item pool.\n",
+                    "Shuffles the souls of everyone else into the item pool: named townsfolk such as Guru-Guru, the Dog Lady, the Cursed Family, Honey and Darling or the scarecrows Pierre and Bonooru, and one soul shared by each people for the NPCs without a name of their own (Kokiri, Hylians, Gorons, Zoras, Gerudo).\n",
                     "\n",
                     "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
                 ]
@@ -2059,7 +2059,7 @@
                 "name": "Start with Skull Kid's Soul"
             },
             "starting_frogs_soul": {
-                "name": "Start with Frogs' Soul"
+                "name": "Start with Soul of the Frogs"
             },
             "starting_anju_soul": {
                 "name": "Start with Anju's Soul"
@@ -2131,7 +2131,7 @@
                 "name": "Start with Rauru's Soul"
             },
             "starting_great_fairies_soul": {
-                "name": "Start with Great Fairies' Soul"
+                "name": "Start with Soul of the Great Fairies"
             },
             "starting_windmill_man_soul": {
                 "name": "Start with Guru-Guru's Soul"
@@ -2143,16 +2143,46 @@
                 "name": "Start with Dog Lady's Soul"
             },
             "starting_skulltula_family_soul": {
-                "name": "Start with Cursed Family's Soul"
+                "name": "Start with Soul of the Cursed Family"
             },
             "starting_hylian_guards_soul": {
-                "name": "Start with Hylian Guards' Soul"
+                "name": "Start with Soul of the Hylian Guards"
             },
             "starting_running_man_soul": {
                 "name": "Start with Running Man's Soul"
             },
             "starting_goron_link_soul": {
                 "name": "Start with Link the Goron's Soul"
+            },
+            "starting_know_it_all_brothers_soul": {
+                "name": "Start with Soul of the Know-It-All Brothers"
+            },
+            "starting_honey_and_darling_soul": {
+                "name": "Start with Honey and Darling's Soul"
+            },
+            "starting_pierre_soul": {
+                "name": "Start with Pierre's Soul"
+            },
+            "starting_bonooru_soul": {
+                "name": "Start with Bonooru's Soul"
+            },
+            "starting_kokiri_soul": {
+                "name": "Start with Soul of the Kokiri"
+            },
+            "starting_hylians_soul": {
+                "name": "Start with Soul of the Hylians"
+            },
+            "starting_gorons_soul": {
+                "name": "Start with Soul of the Gorons"
+            },
+            "starting_zoras_soul": {
+                "name": "Start with Soul of the Zoras"
+            },
+            "starting_gerudo_soul": {
+                "name": "Start with Soul of the Gerudo"
+            },
+            "starting_deku_scrubs_soul": {
+                "name": "Start with Soul of the Deku Scrubs"
             }
         },
         "tricks": {

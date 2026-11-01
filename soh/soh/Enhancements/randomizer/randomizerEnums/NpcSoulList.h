@@ -2,7 +2,8 @@
 
 // X-macro list of every NPC soul.
 //   NPC_SOUL(ID, "article", "Name", "TRACKER", CATEGORY, ADVANCEMENT)
-// ARTICLE is "" or "the ", used in hint text ("the soul of the Frogs").
+// ARTICLE is "" or "the ". "the " marks a soul shared by a group of NPCs: the item is then
+// "Soul of the Frogs" rather than "Frogs' Soul". Hint text reads "the soul of the Frogs".
 // ID expands to RG_<ID>_SOUL, RAND_INF_<ID>_SOUL, RHT_<ID>_SOUL and RSK_STARTING_<ID>_SOUL.
 // TRACKER is the short label drawn under the soul's icon in the item tracker (6 characters or fewer).
 // CATEGORY is one of MERCHANTS, MINIGAMES, GATEKEEPERS, STORY, TOWNSFOLK and picks the
@@ -77,5 +78,16 @@
     NPC_SOUL(SKULLTULA_FAMILY,           "the ", "Cursed Family",              "CURSED", TOWNSFOLK,   true)  \
     NPC_SOUL(HYLIAN_GUARDS,              "the ", "Hylian Guards",              "GUARDS", TOWNSFOLK,   true)  \
     NPC_SOUL(RUNNING_MAN,                "",     "Running Man",                "RUNNER", TOWNSFOLK,   true)  \
-    NPC_SOUL(GORON_LINK,                 "",     "Link the Goron",             "G LINK", TOWNSFOLK,   true)
+    NPC_SOUL(GORON_LINK,                 "",     "Link the Goron",             "G LINK", TOWNSFOLK,   true)  \
+    /* More townsfolk, then one soul shared by each people (appended: saves store these by position) */  \
+    NPC_SOUL(KNOW_IT_ALL_BROTHERS,       "the ", "Know-It-All Brothers",       "KIA",    TOWNSFOLK,   false)  \
+    NPC_SOUL(HONEY_AND_DARLING,          "",     "Honey and Darling",          "H&D",    TOWNSFOLK,   false)  \
+    NPC_SOUL(PIERRE,                     "",     "Pierre",                     "PIERRE", TOWNSFOLK,   true)  \
+    NPC_SOUL(BONOORU,                    "",     "Bonooru",                    "BONOO",  TOWNSFOLK,   true)  \
+    NPC_SOUL(KOKIRI,                     "the ", "Kokiri",                     "KOKIRI", TOWNSFOLK,   false)  \
+    NPC_SOUL(HYLIANS,                    "the ", "Hylians",                    "HYLIAN", TOWNSFOLK,   true)  \
+    NPC_SOUL(GORONS,                     "the ", "Gorons",                     "GORONS", TOWNSFOLK,   true)  \
+    NPC_SOUL(ZORAS,                      "the ", "Zoras",                      "ZORAS",  TOWNSFOLK,   false)  \
+    NPC_SOUL(GERUDO,                     "the ", "Gerudo",                     "GERUDO", TOWNSFOLK,   false)  \
+    NPC_SOUL(DEKU_SCRUBS,                "the ", "Deku Scrubs",                "SCRUBS", MERCHANTS,   true)
 // clang-format on

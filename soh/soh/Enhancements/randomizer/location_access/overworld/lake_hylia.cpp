@@ -10,8 +10,8 @@ void RegionTable_Init_LakeHylia() {
         EVENT_ACCESS(LOGIC_PLANT_LAKE_HYLIA_BEAN, CanPlantBean(RG_LAKE_HYLIA_BEAN_SOUL)),
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,          logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,            logic->IsChild && logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_CHILD_SCARECROW,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
-        EVENT_ACCESS(LOGIC_ADULT_SCARECROW,       logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
+        EVENT_ACCESS(LOGIC_CHILD_SCARECROW,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2 && logic->HasItem(RG_BONOORU_SOUL)),
+        EVENT_ACCESS(LOGIC_ADULT_SCARECROW,       logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2 && logic->HasItem(RG_BONOORU_SOUL)),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
@@ -202,9 +202,9 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_GROTTO] = Region("LH Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LH_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LH_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits

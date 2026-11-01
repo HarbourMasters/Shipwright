@@ -12,7 +12,7 @@ void RegionTable_Init_ZorasDomain() {
         EVENT_ACCESS(LOGIC_STICK_ACCESS,         logic->IsChild && logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FISH_ACCESS,          logic->IsChild),
         EVENT_ACCESS(LOGIC_KING_ZORA_THAWED,     logic->IsAdult && logic->BlueFire()),
-        EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN)),
+        EVENT_ACCESS(LOGIC_DELIVER_RUTOS_LETTER, logic->CanUse(RG_RUTOS_LETTER) && logic->IsChild && ctx->GetOption(RSK_ZORAS_FOUNTAIN).IsNot(RO_ZF_OPEN) && logic->HasItem(RG_KING_ZORA_SOUL)),
     }, {
         //Locations
         LOCATION(RC_ZD_DIVING_MINIGAME,                     logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_DIVING_GAME_ZORA_SOUL) && logic->IsChild),
