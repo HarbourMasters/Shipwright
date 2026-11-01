@@ -1465,6 +1465,8 @@ void Play_Draw(PlayState* play) {
             }
         }
 
+        GameInteractor_ExecuteOnPlayDrawSkyboxEnd();
+
         if ((HREG(80) != 10) || (HREG(90) & 2)) {
             if (!play->envCtx.sunMoonDisabled) {
                 Environment_DrawSunAndMoon(play);
@@ -1626,6 +1628,8 @@ Play_Draw_skip:
             SkyboxDraw_UpdateMatrix(&play->skyboxCtx, play->view.eye.x, play->view.eye.y, play->view.eye.z);
         }
     }
+
+    GameInteractor_ExecuteOnPlayDrawViewFinal();
 
     Camera_Finish(GET_ACTIVE_CAM(play));
 
