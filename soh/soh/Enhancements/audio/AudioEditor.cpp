@@ -565,6 +565,7 @@ bool ApplyFluidSynthFromCVars() {
     // routing on the same mode.
     auto mode = static_cast<SOH::SynthMode>(CVarGetInteger(CVAR_AUDIO("FluidSynthMode"), 0));
     synthConfig.linearVelocity = mode == SOH::SynthMode::Authentic;
+    synthConfig.hostReverb = mode == SOH::SynthMode::Authentic;
 
     // FluidSynth defaults to 256 voices. The game's native scores stay well under
     // that, but custom/modded songs can approach it, so bump to 512 for headroom.
@@ -670,9 +671,7 @@ bool ApplyFluidSynthFromCVars() {
     // partial failure isn't silent on screen.
     SetStatusWarnings(skipped);
 
-    if (mode == SOH::SynthMode::Authentic) {
-        synth->SetReverbParams(0.65, 0.0, 1.0, 1.0);
-    } else {
+    if (mode == SOH::SynthMode::Enhanced) {
         synth->SetReverbParams(0.20, 0.5, 0.5, 0.30);
     }
     // Install the synth last. The audio thread (OTRAudio_Thread) picks it up via

@@ -3,6 +3,7 @@
 
 #include "IMidiSynth.h"
 #include <fluidsynth.h>
+#include <array>
 #include <mutex>
 #include <vector>
 #include <cstdint>
@@ -35,6 +36,10 @@ struct FluidSynthConfig {
     // avoid clipping when many voices sound at once. A game that mixes the synth
     // against a louder source may need to lift this so the two arrive balanced.
     double gain = 0.2;
+
+    // Leave reverb to the host: FluidSynth's own reverb stays off, and Render
+    // hands each channel's CC 91 send to the host instead.
+    bool hostReverb = false;
 };
 
 class FluidSynth final : public IMidiSynth {
@@ -88,7 +93,8 @@ class FluidSynth final : public IMidiSynth {
     bool ProgramSelect(uint8_t channel, int sfontId, uint16_t bank, uint16_t program) override;
     void PitchBend(uint8_t channel, float semitones) override;
     void ControlChange(uint8_t channel, uint8_t cc, uint16_t value) override;
-    void Render(float* out, uint32_t frameCount) override;
+    void Render(float* out, float* reverbSend, uint32_t frameCount) override;
+    void SetReverbSendSwapped(uint8_t channel, bool swapped) override;
     uint32_t GetActiveVoiceCount() const override;
     uint32_t GetPolyphonyLimit() const override;
 
@@ -128,6 +134,8 @@ class FluidSynth final : public IMidiSynth {
     // but before any LoadSoundFont() so instrument-level modulators layer on top.
     void InstallFilterCcModulators();
 
+    void RenderWithHostReverb(float* out, float* reverbSend, uint32_t frameCount);
+
     fluid_settings_t* mSettings = nullptr;
     fluid_synth_t* mSynth = nullptr;
     bool mLinearVelocity = false;
@@ -153,6 +161,16 @@ class FluidSynth final : public IMidiSynth {
     // them; the synth setting is matched to this in the constructor.
     static constexpr int kNumChannels = 64;
     bool mChannelInited[kNumChannels] = {};
+
+    bool mHostReverb = false;
+    std::array<float, kNumChannels> mReverbSend = {};
+    std::array<bool, kNumChannels> mReverbSendSwapped = {};
+    // One stereo buffer per channel, rendered a chunk at a time so nothing is allocated on the audio thread.
+    static constexpr uint32_t kChunkFrames = 512;
+    std::vector<float> mChannelBuffers;
+    std::vector<float*> mChannelOutputs;
+    std::vector<float> mEffectBuffers;
+    std::vector<float*> mEffectOutputs;
 };
 
 } // namespace SOH

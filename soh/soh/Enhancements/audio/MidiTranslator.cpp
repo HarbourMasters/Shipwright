@@ -2290,9 +2290,11 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     uint8_t chorusVal = resolveEffectCc(e.chorus, 0);
     uint8_t cutoffVal = resolveEffectCc(e.cutoff, 64);
     uint8_t qVal = resolveEffectCc(e.q, 64);
-    if (reverbVal != chState.lastReverbCC) {
+    const uint8_t reverbSend = reverbVal | (reverb & 0x80);
+    if (reverbSend != chState.lastReverbCC) {
         synth->ControlChange(targetChannel, 91, static_cast<uint16_t>(reverbVal) << 7);
-        chState.lastReverbCC = reverbVal;
+        synth->SetReverbSendSwapped(targetChannel, (reverb & 0x80) != 0);
+        chState.lastReverbCC = reverbSend;
     }
     if (chorusVal != chState.lastChorusCC) {
         synth->ControlChange(targetChannel, 93, static_cast<uint16_t>(chorusVal) << 7);

@@ -106,7 +106,8 @@ fluid_log_function_t FluidLogToShip(int level) {
 }
 } // namespace
 
-FluidSynth::FluidSynth(const FluidSynthConfig& config) : mLinearVelocity(config.linearVelocity) {
+FluidSynth::FluidSynth(const FluidSynthConfig& config)
+    : mLinearVelocity(config.linearVelocity), mHostReverb(config.hostReverb) {
 
     static std::once_flag once;
     std::call_once(once, [] {
@@ -137,6 +138,22 @@ FluidSynth::FluidSynth(const FluidSynthConfig& config) : mLinearVelocity(config.
     // leak) and idle voices are cheap, so a generous ceiling is fine -- e.g. when a
     // game layers a full melodic mapping plus voice-holding one-shot percussion.
     fluid_settings_setint(mSettings, "synth.polyphony", config.polyphony);
+
+    if (mHostReverb) {
+        // One output per channel, so each channel's send can be weighted on its own.
+        fluid_settings_setint(mSettings, "synth.audio-groups", kNumChannels);
+        fluid_settings_setint(mSettings, "synth.audio-channels", kNumChannels);
+        fluid_settings_setint(mSettings, "synth.reverb.active", 0);
+        mChannelBuffers.assign(static_cast<size_t>(kNumChannels) * 2 * kChunkFrames, 0.0f);
+        for (size_t i = 0; i < static_cast<size_t>(kNumChannels) * 2; i++) {
+            mChannelOutputs.push_back(mChannelBuffers.data() + i * kChunkFrames);
+        }
+        // Reverb then chorus, left and right each.
+        mEffectBuffers.assign(4 * kChunkFrames, 0.0f);
+        for (size_t i = 0; i < 4; i++) {
+            mEffectOutputs.push_back(mEffectBuffers.data() + i * kChunkFrames);
+        }
+    }
 
     mSynth = new_fluid_synth(mSettings);
     if (!mSynth) {
@@ -499,6 +516,15 @@ void FluidSynth::ControlChange(uint8_t channel, uint8_t cc, uint16_t value) {
     if (!mSynth)
         return;
     fluid_synth_cc(mSynth, channel, cc, (value >> 7) & 0x7F);
+    if (cc == 91) {
+        // The engine scales its send by amount / 128.
+        mReverbSend.at(channel) = static_cast<float>((value >> 7) & 0x7F) / 128.0f;
+    }
+}
+
+void FluidSynth::SetReverbSendSwapped(uint8_t channel, bool swapped) {
+    std::lock_guard<std::mutex> lock(mSynthMutex);
+    mReverbSendSwapped.at(channel) = swapped;
 }
 
 void FluidSynth::SetReverbParams(double roomsize, double damping, double width, double level) {
@@ -519,14 +545,58 @@ void FluidSynth::SetMasterGain(float gain) {
     fluid_synth_set_gain(mSynth, gain);
 }
 
-void FluidSynth::Render(float* out, uint32_t frameCount) {
+void FluidSynth::Render(float* out, float* reverbSend, uint32_t frameCount) {
     std::lock_guard<std::mutex> lock(mSynthMutex);
+    std::memset(reverbSend, 0, frameCount * 2 * sizeof(float));
     if (!mSynth || mSfontIds.empty()) {
         std::memset(out, 0, frameCount * 2 * sizeof(float));
         return;
     }
+    if (mHostReverb) {
+        RenderWithHostReverb(out, reverbSend, frameCount);
+        return;
+    }
 
     fluid_synth_write_float(mSynth, static_cast<int>(frameCount), out, 0, 2, out, 1, 2);
+}
+
+void FluidSynth::RenderWithHostReverb(float* out, float* reverbSend, uint32_t frameCount) {
+    const float* chorusLeft = mEffectOutputs.at(2);
+    const float* chorusRight = mEffectOutputs.at(3);
+    for (uint32_t start = 0; start < frameCount; start += kChunkFrames) {
+        const uint32_t frames = std::min(kChunkFrames, frameCount - start);
+        std::fill(mChannelBuffers.begin(), mChannelBuffers.end(), 0.0f);
+        std::fill(mEffectBuffers.begin(), mEffectBuffers.end(), 0.0f);
+        fluid_synth_process(mSynth, static_cast<int>(frames), static_cast<int>(mEffectOutputs.size()),
+                            mEffectOutputs.data(), static_cast<int>(mChannelOutputs.size()), mChannelOutputs.data());
+
+        float* chunkOut = out + static_cast<size_t>(start) * 2;
+        float* chunkSend = reverbSend + static_cast<size_t>(start) * 2;
+        for (uint32_t i = 0; i < frames; i++) {
+            chunkOut[i * 2] = chorusLeft[i];
+            chunkOut[i * 2 + 1] = chorusRight[i];
+        }
+        for (size_t channel = 0; channel < kNumChannels; channel++) {
+            const float* left = mChannelOutputs.at(channel * 2);
+            const float* right = mChannelOutputs.at(channel * 2 + 1);
+            for (uint32_t i = 0; i < frames; i++) {
+                chunkOut[i * 2] += left[i];
+                chunkOut[i * 2 + 1] += right[i];
+            }
+
+            const float send = mReverbSend.at(channel);
+            if (send == 0.0f) {
+                continue;
+            }
+            const bool swapped = mReverbSendSwapped.at(channel);
+            const float* sendLeft = swapped ? right : left;
+            const float* sendRight = swapped ? left : right;
+            for (uint32_t i = 0; i < frames; i++) {
+                chunkSend[i * 2] += sendLeft[i] * send;
+                chunkSend[i * 2 + 1] += sendRight[i] * send;
+            }
+        }
+    }
 }
 
 uint32_t FluidSynth::GetActiveVoiceCount() const {

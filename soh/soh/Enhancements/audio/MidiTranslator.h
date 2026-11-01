@@ -18,14 +18,14 @@ class IMidiSynth;
 // emits a fresh ControlChange/ProgramChange.
 struct ChannelState {
     bool inited = false;
-    uint16_t lastPreset = 0xFFFF; // last ProgramChange value (bank<<8|prog)
-    int16_t lastPinSfont = -1;    // last ProgramSelect sfontId; -1 = unpinned
-    uint8_t lastVolumeCC = 0xFF;  // last CC 7 (channel volume) sent, 7-bit
-    uint8_t lastPanCC = 0xFF;     // last CC 10 (pan) sent, 7-bit
-    uint8_t lastReverbCC = 0xFF;  // CC 91 (reverb send)
-    uint8_t lastChorusCC = 0xFF;  // CC 93 (chorus send)
-    uint8_t lastCutoffCC = 0xFF;  // CC 74 (low-pass filter cutoff)
-    uint8_t lastQCC = 0xFF;       // CC 71 (low-pass filter resonance)
+    uint16_t lastPreset = 0xFFFF;   // last ProgramChange value (bank<<8|prog)
+    int16_t lastPinSfont = -1;      // last ProgramSelect sfontId; -1 = unpinned
+    uint8_t lastVolumeCC = 0xFF;    // last CC 7 (channel volume) sent, 7-bit
+    uint8_t lastPanCC = 0xFF;       // last CC 10 (pan) sent, 7-bit
+    uint16_t lastReverbCC = 0xFFFF; // CC 91 (reverb send); bit 7 = sides swapped
+    uint8_t lastChorusCC = 0xFF;    // CC 93 (chorus send)
+    uint8_t lastCutoffCC = 0xFF;    // CC 74 (low-pass filter cutoff)
+    uint8_t lastQCC = 0xFF;         // CC 71 (low-pass filter resonance)
 };
 
 // Which path a translator slot is currently routing audio through. Slots

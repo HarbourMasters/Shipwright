@@ -69,9 +69,15 @@ class IMidiSynth {
     // Standard MIDI CC. value is 0-16383 (14-bit).
     virtual void ControlChange(uint8_t channel, uint8_t cc, uint16_t value) = 0;
 
-    // Fill `out` with `frameCount` stereo interleaved float32 samples.
-    // Called from the audio thread; must be real-time safe.
-    virtual void Render(float* out, uint32_t frameCount) = 0;
+    // Fill `out` with `frameCount` stereo interleaved float32 samples, and
+    // `reverbSend` with what the host's own reverb should get, in the same
+    // layout. Called from the audio thread; must be real-time safe.
+    virtual void Render(float* out, float* reverbSend, uint32_t frameCount) = 0;
+
+    // Crosses left and right of `channel`'s reverb send. Only a send to the
+    // host's reverb can honour it.
+    virtual void SetReverbSendSwapped(uint8_t channel, bool swapped) {
+    }
 
     // Current number of audible voices held by the synth. Used by host UIs
     // as a real-time diagnostic — when this approaches GetPolyphonyLimit(),
