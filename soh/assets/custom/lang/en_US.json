@@ -228,6 +228,10 @@
                     "Shuffle the entrance from Ganon's Castle to Ganon's Tower into the pool of boss entrances."
                 ]
             },
+            "shuffle_ganons_boss_door": {
+                "name": "Ganon's Boss Door",
+                "description": "Shuffles Ganondorf's Lair."
+            },
             "shuffle_overworld_entrances": {
                 "name": "Overworld Entrances",
                 "description": [
