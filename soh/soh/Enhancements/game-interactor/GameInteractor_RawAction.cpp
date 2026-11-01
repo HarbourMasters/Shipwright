@@ -385,6 +385,11 @@ void GameInteractor::RawAction::SetTimeOfDay(uint32_t time) {
     }
 }
 
+void GameInteractor::RawAction::PlaySfx(uint16_t sfxId) {
+    Audio_PlaySfxGeneral(sfxId, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultReverb);
+}
+
 void GameInteractor::RawAction::SetCollisionViewer(bool active) {
     CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), active);
     CVarSetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Decal"), active);

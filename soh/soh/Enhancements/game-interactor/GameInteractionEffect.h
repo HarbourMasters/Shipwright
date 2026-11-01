@@ -192,6 +192,16 @@ class SetTimeOfDay : public GameInteractionEffectBase, public ParameterizedGameI
     void _Apply() override;
 };
 
+class PlaySfx : public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+    GameInteractionEffectQueryResult CanBeApplied() override;
+    void _Apply() override;
+};
+
+class SwitchAge : public GameInteractionEffectBase {
+    GameInteractionEffectQueryResult CanBeApplied() override;
+    void _Apply() override;
+};
+
 class SetCollisionViewer : public RemovableGameInteractionEffect {
     GameInteractionEffectQueryResult CanBeApplied() override;
     void _Apply() override;

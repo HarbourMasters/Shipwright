@@ -2,6 +2,7 @@
 #include "Notification.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
+#include <mutex>
 
 extern "C" {
 #include "functions.h"
@@ -15,6 +16,8 @@ namespace Notification {
 
 static uint32_t nextId = 0;
 static std::vector<Options> notifications = {};
+// Remote integrations such as Sail emit from their network thread
+static std::mutex notificationsMutex;
 
 void Window::Draw() {
     auto vp = ImGui::GetMainViewport();
@@ -48,6 +51,7 @@ void Window::Draw() {
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 
+    std::lock_guard<std::mutex> lock(notificationsMutex);
     for (size_t index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
         int inverseIndex = ABS(static_cast<int>(index) - (static_cast<int>(notifications.size()) - 1));
@@ -115,6 +119,7 @@ void Window::Draw() {
 }
 
 void Window::UpdateElement() {
+    std::lock_guard<std::mutex> lock(notificationsMutex);
     for (size_t index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
 
@@ -130,11 +135,14 @@ void Window::UpdateElement() {
 }
 
 void Emit(Options notification) {
-    notification.id = nextId++;
     if (notification.remainingTime == 0.0f) {
         notification.remainingTime = CVarGetFloat(CVAR_SETTING("Notifications.Duration"), 10.0f);
     }
-    notifications.push_back(notification);
+    {
+        std::lock_guard<std::mutex> lock(notificationsMutex);
+        notification.id = nextId++;
+        notifications.push_back(notification);
+    }
     if (!notification.mute && !CVarGetInteger(CVAR_SETTING("Notifications.Mute"), 0)) {
         Audio_PlaySfxGeneral(NA_SE_SY_METRONOME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
