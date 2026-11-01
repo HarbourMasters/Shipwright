@@ -63,6 +63,7 @@ extern "C" void Environment_SaveState(SaveStateCtx* ctx);
 extern "C" void MapExp_SaveState(SaveStateCtx* ctx);
 extern "C" void AudioOcarina_SaveState(SaveStateCtx* ctx);
 extern "C" void MessagePAL_SaveState(SaveStateCtx* ctx);
+extern "C" void N64Heap_SaveState(SaveStateCtx* ctx);
 
 static void SaveOverlayState(std::unique_ptr<uint8_t[]>& buf, void (*fn)(SaveStateCtx*)) {
     SaveStateCtx ctx = {};
@@ -117,6 +118,7 @@ typedef struct SaveStateInfo {
     std::unique_ptr<uint8_t[]> mapExpState;
     std::unique_ptr<uint8_t[]> audioOcarinaState;
     std::unique_ptr<uint8_t[]> messagePalState;
+    std::unique_ptr<uint8_t[]> n64HeapState;
 
     // Overlay static data
     std::unique_ptr<uint8_t[]> bgDdanKdState;
@@ -254,6 +256,7 @@ void SaveState::SaveOverlayStaticData(void) {
     SaveOverlayState(info->mapExpState, MapExp_SaveState);
     SaveOverlayState(info->audioOcarinaState, AudioOcarina_SaveState);
     SaveOverlayState(info->messagePalState, MessagePAL_SaveState);
+    SaveOverlayState(info->n64HeapState, N64Heap_SaveState);
     SaveOverlayState(info->bgDdanKdState, BgDdanKd_SaveState);
     SaveOverlayState(info->bgDodoagoState, BgDodoago_SaveState);
     SaveOverlayState(info->bgHakaTrapState, BgHakaTrap_SaveState);
@@ -300,6 +303,7 @@ void SaveState::LoadOverlayStaticData(void) {
     LoadOverlayState(info->mapExpState, MapExp_SaveState);
     LoadOverlayState(info->audioOcarinaState, AudioOcarina_SaveState);
     LoadOverlayState(info->messagePalState, MessagePAL_SaveState);
+    LoadOverlayState(info->n64HeapState, N64Heap_SaveState);
     LoadOverlayState(info->bgDdanKdState, BgDdanKd_SaveState);
     LoadOverlayState(info->bgDodoagoState, BgDodoago_SaveState);
     LoadOverlayState(info->bgHakaTrapState, BgHakaTrap_SaveState);

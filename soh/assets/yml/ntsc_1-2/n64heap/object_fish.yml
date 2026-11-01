@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x012344E0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x155F0
+  symbol: gN64Heap_object_fish

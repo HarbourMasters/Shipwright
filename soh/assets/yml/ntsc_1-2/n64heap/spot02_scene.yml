@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x017214F0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0xBC80
+  symbol: gN64Heap_spot02_scene

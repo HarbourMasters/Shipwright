@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00E9C090 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x5060
+  symbol: gN64Heap_object_oE_anime

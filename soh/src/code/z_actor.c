@@ -3358,6 +3358,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    if (!GameInteractor_Should(VB_ACTOR_FITS_IN_HEAP, true, actorId)) {
+        Actor_FreeOverlay(dbEntry);
+        return NULL;
+    }
     actor = ZELDA_ARENA_MALLOC_DEBUG(dbEntry->instanceSize);
 
     if (actor == NULL) {

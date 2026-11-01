@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00E69070 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x17D20
+  symbol: gN64Heap_object_hidan_objects

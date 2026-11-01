@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00F9FFA0 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x12D0
+  symbol: gN64Heap_object_efc_lgt_shower

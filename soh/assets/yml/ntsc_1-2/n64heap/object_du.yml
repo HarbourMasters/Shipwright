@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x00FDB000 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x12630
+  symbol: gN64Heap_object_du

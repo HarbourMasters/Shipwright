@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x011D8450 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0x9A0
+  symbol: gN64Heap_object_door_gerudo

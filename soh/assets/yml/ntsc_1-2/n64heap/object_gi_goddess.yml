@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 1, 0x0123F770 ]
+
+data:
+  type: BLOB
+  offset: 0x0
+  size: 0xC50
+  symbol: gN64Heap_object_gi_goddess
