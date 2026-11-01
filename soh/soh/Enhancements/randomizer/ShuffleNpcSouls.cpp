@@ -146,12 +146,12 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_MM2,          0,          0,                           kAnyScene, RG_RUNNING_MAN_SOUL,        true  },
     { ACTOR_EN_GO2,          0x1F,       GORON_CITY_LINK,             kAnyScene, RG_GORON_LINK_SOUL,         false },
     // Gatekeepers
-    { ACTOR_EN_HEISHI2,      0xFF,       5,                           kAnyScene, RG_KAKARIKO_GATEKEEPER_SOUL, true, 15, 70 }, // Kakariko gate guard
+    { ACTOR_EN_HEISHI2,      0xFF,       5,                           kAnyScene, RG_HYLIAN_GUARDS_SOUL,      true, 15, 70 }, // Kakariko gate guard
     { ACTOR_EN_MD,           0,          0,                           kAnyScene, RG_MIDO_SOUL,               true, 36, 46, 60.0f },
-    { ACTOR_EN_KO,           0xFF,       ENKO_TYPE_CHILD_3, SCENE_KOKIRI_FOREST, RG_KOKIRI_EXIT_GUARD_SOUL,  true, 20, 46, 80.0f, 246 },
+    { ACTOR_EN_KO,           0xFF,       ENKO_TYPE_CHILD_3, SCENE_KOKIRI_FOREST, RG_KOKIRI_SOUL,             true, 20, 46, 80.0f, 246 },
     { ACTOR_EN_KZ,           0,          0,                           kAnyScene, RG_KING_ZORA_SOUL,          true, 80, 120 },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_OPERATOR,      kAnyScene, RG_WASTELAND_GATEKEEPER_SOUL, true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_TRAINING_GROUND_GATEKEEPER_SOUL, true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_OPERATOR,      kAnyScene, RG_GERUDO_SOUL,             true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_GERUDO_SOUL,          true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
     { ACTOR_EN_GE3,          0,          0,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
     { ACTOR_EN_GE2,          0xFF,       2,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
     // Carpenters, hideout and Kakariko alike: params & 3 is 0 Ichiro (1 torch cell), 1 Shiro (steep slope),
@@ -868,8 +868,7 @@ void RegisterShuffleNpcSouls() {
     // With a closed forest, the Kokiri at the exit stands aside once the Deku Tree is done, but only
     // once he has his soul back. (He only blocks child Link, as logic expects.)
     COND_VB_SHOULD(VB_OPEN_KOKIRI_FOREST, shouldRegister, {
-        if (LINK_IS_CHILD && RAND_GET_OPTION(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
-            IsSoulMissing(RG_KOKIRI_EXIT_GUARD_SOUL)) {
+        if (LINK_IS_CHILD && RAND_GET_OPTION(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) && IsSoulMissing(RG_KOKIRI_SOUL)) {
             *should = false;
         }
     });

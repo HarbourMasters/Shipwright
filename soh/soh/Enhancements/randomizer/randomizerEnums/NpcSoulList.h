@@ -49,12 +49,11 @@
     NPC_SOUL(FROGS,                      "the ", "Frogs",                      "FROGS",  MINIGAMES,   true, "@ der Frösche", "des grenouilles")  \
     NPC_SOUL(ANJU,                       "",     "Anju",                       "ANJU",   MINIGAMES,   true, "Anjus @", "d'Anju")  \
     /* Gatekeepers */                                                                \
-    NPC_SOUL(KAKARIKO_GATEKEEPER,        "",     "Kakariko Gate Guard",        "KAK GT", GATEKEEPERS, true, "@ der Torwache von Kakariko", "du garde de la porte de Cocorico")  \
+    NPC_SOUL(HYLIAN_GUARDS,              "the ", "Hylian Guards",              "GUARDS", GATEKEEPERS, true, "@ der hylianischen Wachen", "des gardes hyliens")  \
     NPC_SOUL(MIDO,                       "",     "Mido",                       "MIDO",   GATEKEEPERS, true, "Midos @", "de Mido")  \
-    NPC_SOUL(KOKIRI_EXIT_GUARD,          "",     "Forest Exit Kokiri",         "EXIT",   GATEKEEPERS, true, "@ des Kokiri am Waldausgang", "du Kokiri de la sortie de la forêt")  \
+    NPC_SOUL(KOKIRI,                     "the ", "Kokiri",                     "KOKIRI", GATEKEEPERS, true, "@ der Kokiri", "des Kokiris")  \
     NPC_SOUL(KING_ZORA,                  "",     "King Zora",                  "KZ",     GATEKEEPERS, true, "König Zoras @", "du Roi Zora")  \
-    NPC_SOUL(WASTELAND_GATEKEEPER,       "",     "Wasteland Gatekeeper",       "HW GT",  GATEKEEPERS, true, "@ der Torwächterin der Wüste", "de la gardienne de la porte du désert")  \
-    NPC_SOUL(TRAINING_GROUND_GATEKEEPER, "",     "Training Ground Gatekeeper", "GTG GT", GATEKEEPERS, true, "@ der Torwächterin der Trainingsarena", "de la gardienne du Gymnase Gerudo")  \
+    NPC_SOUL(GERUDO,                     "the ", "Gerudo",                     "GERUDO", GATEKEEPERS, true, "@ der Gerudo", "des Gerudo")  \
     NPC_SOUL(GERUDO_CARD_GIVER,          "",     "Gerudo Guard",               "CARD",   GATEKEEPERS, true, "@ der Gerudo-Wache", "de la garde Gerudo")  \
     NPC_SOUL(ICHIRO,                     "",     "Ichiro",                     "ICHIRO", GATEKEEPERS, true, "Ichiros @", "d'Ichiro")  \
     NPC_SOUL(SABOORO,                    "",     "Sabooro",                    "SABOO",  GATEKEEPERS, true, "Saboros @", "de Sabooro")  \
@@ -78,7 +77,6 @@
     NPC_SOUL(MAN_ON_ROOF,                "",     "Man on the Roof",            "ROOF",   TOWNSFOLK,   true, "@ des Mannes auf dem Dach", "de l'homme sur le toit")  \
     NPC_SOUL(DOG_LADY,                   "",     "Dog Lady",                   "DOG",    TOWNSFOLK,   true, "@ der Hundedame", "de la dame au chien")  \
     NPC_SOUL(SKULLTULA_FAMILY,           "the ", "Cursed Family",              "CURSED", TOWNSFOLK,   true, "@ der verfluchten Familie", "de la famille maudite")  \
-    NPC_SOUL(HYLIAN_GUARDS,              "the ", "Hylian Guards",              "GUARDS", TOWNSFOLK,   true, "@ der hylianischen Wachen", "des gardes hyliens")  \
     NPC_SOUL(RUNNING_MAN,                "",     "Running Man",                "RUNNER", TOWNSFOLK,   true, "@ des Marathonläufers", "du marathonien")  \
     NPC_SOUL(GORON_LINK,                 "",     "Link the Goron",             "G LINK", TOWNSFOLK,   true, "@ des Goronen Link", "de Link le Goron")  \
     /* More townsfolk, then one soul shared by each people (appended: saves store these by position) */  \
@@ -86,11 +84,9 @@
     NPC_SOUL(HONEY_AND_DARLING,          "",     "Honey and Darling",          "H&D",    TOWNSFOLK,   false, "@ von Honey und Darling", "de Honey et Darling")  \
     NPC_SOUL(PIERRE,                     "",     "Pierre",                     "PIERRE", TOWNSFOLK,   true, "Pierres @", "de Pierre")  \
     NPC_SOUL(BONOORU,                    "",     "Bonooru",                    "BONOO",  TOWNSFOLK,   true, "Bonoorus @", "de Bonooru")  \
-    NPC_SOUL(KOKIRI,                     "the ", "Kokiri",                     "KOKIRI", TOWNSFOLK,   false, "@ der Kokiri", "des Kokiris")  \
     NPC_SOUL(HYLIANS,                    "the ", "Hylians",                    "HYLIAN", TOWNSFOLK,   true, "@ der Hylianer", "des Hyliens")  \
     NPC_SOUL(GORONS,                     "the ", "Gorons",                     "GORONS", TOWNSFOLK,   true, "@ der Goronen", "des Gorons")  \
     NPC_SOUL(ZORAS,                      "the ", "Zoras",                      "ZORAS",  TOWNSFOLK,   false, "@ der Zoras", "des Zoras")  \
-    NPC_SOUL(GERUDO,                     "the ", "Gerudo",                     "GERUDO", TOWNSFOLK,   false, "@ der Gerudo", "des Gerudo")  \
     NPC_SOUL(DEKU_SCRUBS,                "the ", "Deku Scrubs",                "SCRUBS", MERCHANTS,   true, "@ der Deku-Händler", "des pestes Mojo")  \
     NPC_SOUL(SHEIK,                      "",     "Sheik",                      "SHEIK",  STORY,       true, "Shieks @", "de Sheik")
 // clang-format on

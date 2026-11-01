@@ -113,7 +113,7 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
         ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
         ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN)),
-        ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || (logic->Get(LOGIC_DEKU_TREE_CLEAR) && logic->HasItem(RG_KOKIRI_EXIT_GUARD_SOUL))),
+        ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || (logic->Get(LOGIC_DEKU_TREE_CLEAR) && logic->HasItem(RG_KOKIRI_SOUL))),
     });
 
     areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {
