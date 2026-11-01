@@ -18,6 +18,8 @@ class Text : public Ship::Resource<MessageEntry> {
   public:
     using Resource::Resource;
 
+    static constexpr size_t MaxMessageSize = 1280;
+
     Text() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
     }
 
