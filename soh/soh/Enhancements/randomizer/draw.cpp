@@ -4,6 +4,7 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "dungeon.h"
 #include "logic.h"
+#include "npc_soul_figurines.h"
 #include <libultraship/bridge/resourcebridge.h>
 #include "soh/ResourceManagerHelpers.h"
 #include <algorithm>
@@ -1500,6 +1501,14 @@ Gfx* GetNpcSoulTokenDL() {
 } // namespace
 
 extern "C" void Randomizer_DrawNpcSoul(PlayState* play, GetItemEntry* getItemEntry) {
+    // A little figurine of the NPC, unless the generic soul token is preferred or the NPC has none.
+    RandomizerGet soul =
+        (RandomizerGet)(getItemEntry->getItemId != RG_ICE_TRAP ? getItemEntry->getItemId : getItemEntry->drawItemId);
+    if (!CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("SimplerNpcSoulModels"), 0) &&
+        Rando::DrawNpcSoulFigurine(play, soul)) {
+        return;
+    }
+
     Gfx* tokenDL = GetNpcSoulTokenDL();
 
     OPEN_DISPS(play->state.gfxCtx);
