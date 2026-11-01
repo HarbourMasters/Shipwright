@@ -8,6 +8,8 @@
 #include "dungeon.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/rng.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 #include "soh/OTRGlobals.h"
 
 namespace Rando {
@@ -1062,6 +1064,19 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_BEAN_SOULS, CVAR_RANDOMIZER_SETTING("ShuffleBeanSouls"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
+    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_MERCHANTS, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsMerchants"));
+    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_MINIGAMES, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsMinigames"));
+    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsGatekeepers"));
+    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_STORY, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsStory"));
+    OPT_BOOL(RSK_NPC_SOULS_SAGES, CVAR_RANDOMIZER_SETTING("NpcSoulsSages"));
+    OPT_CALLBACK(RSK_SHUFFLE_NPC_SOULS_STORY, {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsStory"), 0)) {
+            mOptions[RSK_NPC_SOULS_SAGES].Enable();
+        } else {
+            mOptions[RSK_NPC_SOULS_SAGES].Disable("Requires the Story NPC souls to be shuffled.");
+        }
+    });
+    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsTownsfolk"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_U8(RSK_SHUFFLE_BOSS_SOULS, {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), WIDGET_CVAR_COMBOBOX);
     OPT_BOOL(RSK_SHUFFLE_DEKU_STICK_BAG, CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_DEKU_STICK_BAG, {
@@ -1474,6 +1489,12 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_STARTING_REQUIEM_OF_SPIRIT, CVAR_RANDOMIZER_SETTING("StartingRequiemOfSpirit"), IMFLAG_NONE);
     OPT_BOOL(RSK_STARTING_NOCTURNE_OF_SHADOW, CVAR_RANDOMIZER_SETTING("StartingNocturneOfShadow"), IMFLAG_NONE);
     OPT_BOOL(RSK_STARTING_PRELUDE_OF_LIGHT, CVAR_RANDOMIZER_SETTING("StartingPreludeOfLight"));
+    for (const NpcSoul& soul : GetNpcSouls()) {
+        // RSK_STARTING_TALON_SOUL -> "gRandoSettings.StartingNpcSouls.TALON_SOUL"
+        std::string cvarName = std::string(CVAR_RANDOMIZER_SETTING("StartingNpcSouls.")) +
+                               std::string(EnumToString(soul.startingSetting).substr(sizeof("RSK_STARTING_") - 1));
+        mOptions[soul.startingSetting] = Option::Bool(soul.startingSetting, cvarName);
+    }
     OPT_U8(RSK_STARTING_SKULLTULA_TOKEN, {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingSkulltulaToken"), WIDGET_CVAR_SLIDER_INT);
     OPT_U8(RSK_STARTING_HEARTS, {NumOpts(1, 20)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHearts"), WIDGET_CVAR_SLIDER_INT, 2);
     // TODO: Remainder of Starting Items
@@ -2115,16 +2136,32 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_ADDITIONAL_ITEMS] =
         OptionGroup::SubGroup("Additional Items",
                               {
-                                  &mOptions[RSK_SHUFFLE_CHILD_WALLET], &mOptions[RSK_INCLUDE_TYCOON_WALLET],
-                                  &mOptions[RSK_SHUFFLE_FISHING_POLE], &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
-                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG], &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
-                                  &mOptions[RSK_SHUFFLE_SWIM],         &mOptions[RSK_SHUFFLE_GRAB],
-                                  &mOptions[RSK_SHUFFLE_CLIMB],        &mOptions[RSK_SHUFFLE_CRAWL],
-                                  &mOptions[RSK_SHUFFLE_SPEAK],        &mOptions[RSK_SHUFFLE_OPEN_CHEST],
-                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],   &mOptions[RSK_ROCS_FEATHER],
-                                  &mOptions[RSK_NAYRUS_LOVE_USES],     &mOptions[RSK_BOMBCHU_BAG],
-                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS], &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
-                                  &mOptions[RSK_INFINITE_UPGRADES],    &mOptions[RSK_SKELETON_KEY],
+                                  &mOptions[RSK_SHUFFLE_CHILD_WALLET],
+                                  &mOptions[RSK_INCLUDE_TYCOON_WALLET],
+                                  &mOptions[RSK_SHUFFLE_FISHING_POLE],
+                                  &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
+                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+                                  &mOptions[RSK_SHUFFLE_SWIM],
+                                  &mOptions[RSK_SHUFFLE_GRAB],
+                                  &mOptions[RSK_SHUFFLE_CLIMB],
+                                  &mOptions[RSK_SHUFFLE_CRAWL],
+                                  &mOptions[RSK_SHUFFLE_SPEAK],
+                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
+                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
+                                  &mOptions[RSK_ROCS_FEATHER],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_MERCHANTS],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_MINIGAMES],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_STORY],
+                                  &mOptions[RSK_NPC_SOULS_SAGES],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK],
+                                  &mOptions[RSK_NAYRUS_LOVE_USES],
+                                  &mOptions[RSK_BOMBCHU_BAG],
+                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
+                                  &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
+                                  &mOptions[RSK_INFINITE_UPGRADES],
+                                  &mOptions[RSK_SKELETON_KEY],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ADDITIONAL_ITEMS] =
@@ -2317,6 +2354,12 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                             &mOptions[RSK_ROCS_FEATHER],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_MERCHANTS],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_MINIGAMES],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_STORY],
+                                            &mOptions[RSK_NPC_SOULS_SAGES],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK],
                                             &mOptions[RSK_NAYRUS_LOVE_USES],
                                             &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
@@ -2422,11 +2465,17 @@ void Settings::CreateOptions() {
                                                                            &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
                                                                            &mOptions[RSK_STARTING_HEARTS],
                                                                        });
+    std::vector<Option*> startingNpcSouls;
+    for (const NpcSoul& soul : GetNpcSouls()) {
+        startingNpcSouls.push_back(&mOptions[soul.startingSetting]);
+    }
+    mOptionGroups[RSG_STARTING_NPC_SOULS] = OptionGroup::SubGroup("NPC Souls", startingNpcSouls);
     mOptionGroups[RSG_STARTING_INVENTORY] = OptionGroup("Starting Inventory",
                                                         {
                                                             &mOptionGroups[RSG_STARTING_ITEMS],
                                                             &mOptionGroups[RSG_STARTING_SONGS],
                                                             &mOptionGroups[RSG_STARTING_OTHER],
+                                                            &mOptionGroups[RSG_STARTING_NPC_SOULS],
                                                         },
                                                         OptionGroupType::DEFAULT);
     mOptionGroups[RSG_TIMESAVERS] = OptionGroup("Timesaver Settings", {
@@ -3134,6 +3183,10 @@ void Settings::SetAllToContext() {
 void Settings::RandomizeAllSettings() {
     // Randomize all settings except tricks
     for (int i = 0; i < RSK_MAX; i++) {
+        // Starting NPC souls are starting inventory, which this leaves alone.
+        if (i >= GetNpcSouls().front().startingSetting && i <= GetNpcSouls().back().startingSetting) {
+            continue;
+        }
         switch (static_cast<RandomizerSettingKey>(i)) {
             case RSK_STARTING_SKULLTULA_TOKEN:
             case RSK_STARTING_HEARTS:

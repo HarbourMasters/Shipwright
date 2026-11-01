@@ -1,4 +1,5 @@
 #include "../../static_data.h"
+#include "../../npc_souls.h"
 #include "../hints.hpp"
 #include "../../../custom-message/CustomMessageManager.h"
 
@@ -2179,5 +2180,13 @@ void StaticData::HintTable_Init_Item() {
                                                   // /*spanish*/Algo Misterioso
 
     // clang-format on
+
+    // NPC souls. Red-herring souls use the same text, so a hint never gives them away.
+    for (const NpcSoul& soul : GetNpcSouls()) {
+        hintTextTable[soul.hintKey] = HintText(CustomMessage(GetNpcSoulHintName(soul)),
+                                               { CustomMessage("a wandering soul") },
+                                               { CustomMessage("someone's missing spirit"),
+                                                 CustomMessage("a lost soul") });
+    }
 }
 } // namespace Rando

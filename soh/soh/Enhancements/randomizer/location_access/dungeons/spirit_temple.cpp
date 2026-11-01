@@ -30,7 +30,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  (logic->IsAdult || logic->HasItem(RG_SPEAK_GERUDO) || logic->Get(LOGIC_SPIRIT_NABOORU_KIDNAPPED)) && logic->CanUse(RG_CRAWL)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_SIDE_HUB,  (logic->IsAdult || (logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_NABOORU_SOUL)) || logic->Get(LOGIC_SPIRIT_NABOORU_KIDNAPPED)) && logic->CanUse(RG_CRAWL)),
         ENTRANCE(RR_SPIRIT_TEMPLE_ADULT_SIDE_HUB,  logic->CanUse(RG_SILVER_GAUNTLETS)),
     });
 
@@ -622,7 +622,7 @@ void RegionTable_Init_SpiritTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,           true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  (logic->IsAdult || logic->HasItem(RG_SPEAK_GERUDO) || logic->Get(LOGIC_SPIRIT_NABOORU_KIDNAPPED)) && logic->CanUse(RG_CRAWL) /*&& logic->HasSoul(RG_NABOORU_SOUL)*/),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  (logic->IsAdult || (logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_NABOORU_SOUL)) || logic->Get(LOGIC_SPIRIT_NABOORU_KIDNAPPED)) && logic->CanUse(RG_CRAWL) /*&& logic->HasSoul(RG_NABOORU_SOUL)*/),
         //You can use the boulder over the eye target to do this with just sword, but it cannot be logical as the boulder is a perm flag
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEHIND_GEYSER,   logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BIG_BLOCKS_HOLE, logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_BOMBCHU_5)),

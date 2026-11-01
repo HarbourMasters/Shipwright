@@ -2,6 +2,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/ShipUtils.h"
 
 #include "soh/Enhancements/randomizer/rng.h"
@@ -1757,6 +1758,17 @@ static void InitTrickNames() {
         Text{"Eye of Truth", "oeil de vérité", "Auge der Wahrheit" }, // "Ojo de la Verdad"
     };
     */
+
+    // NPC souls: near-miss spellings of the real item name.
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        std::string possessive = Rando::GetNpcSoulItemName(soul);
+        possessive.resize(possessive.size() - std::string(" Soul").size());
+        trickNameTable[soul.rg] = {
+            { Text{ possessive + " Sole" }, Text{ "" } },
+            { Text{ possessive + " Seoul" }, Text{ "" } },
+            { Text{ possessive + " Spirit" }, Text{ "" } },
+        };
+    }
 }
 
 /// @brief Gets the "trick name" for an Ice Trap
@@ -1808,6 +1820,9 @@ RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys, state);
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls, state);
+    } else if (trickModel == Rando::GetNpcSouls().front().rg) {
+        // One NPC soul stands in for all of them in the model pool; pick a random one here.
+        trickModel = ShipUtils::RandomElement(Rando::GetNpcSouls(), state).rg;
     } else if (trickModel == RG_SHADOW_SILVER_BLADES) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::silverRupees);
     }

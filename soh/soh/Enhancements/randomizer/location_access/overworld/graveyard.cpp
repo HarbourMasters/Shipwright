@@ -14,7 +14,7 @@ void RegionTable_Init_Graveyard() {
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_FREESTANDING_POH,        (((logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_GRAVEYARD_BEAN)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()) || (ctx->GetTrickOption(RT_GY_POH) && logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild && logic->AtNight), //TODO: This needs to change
+        LOCATION(RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR, logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_DAMPE_SOUL) && logic->IsChild && logic->AtNight), //TODO: This needs to change
         LOCATION(RC_GRAVEYARD_GS_WALL,                 logic->IsChild && logic->HookshotOrBoomerang() && logic->AtNight && logic->CanGetNightTimeGS()),
         LOCATION(RC_GRAVEYARD_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_GRAVEYARD_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_GRAVEYARD_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GRAVEYARD_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -98,8 +98,8 @@ void RegionTable_Init_Graveyard() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanOpenLargeChest()),
-        LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, (logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH) || logic->BunnyHood()) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_DAMPE_SOUL) && logic->CanOpenLargeChest()),
+        LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, (logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH) || logic->BunnyHood()) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_DAMPE_SOUL)),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_1,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_2,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_3,                 logic->CanBreakPots()),

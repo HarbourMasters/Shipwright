@@ -4,6 +4,11 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "dungeon.h"
 #include "logic.h"
+#include <libultraship/bridge/resourcebridge.h>
+#include "soh/ResourceManagerHelpers.h"
+#include <algorithm>
+#include <deque>
+#include <vector>
 
 extern "C" {
 #include "soh_assets.h"
@@ -19,6 +24,7 @@ extern "C" {
 #include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
+#include "objects/object_gi_sutaru/object_gi_sutaru.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_goma/object_goma.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
@@ -1321,6 +1327,208 @@ extern "C" void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEn
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiStickBagDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+// ---------------------------------------------------------------------------------------------
+// NPC souls: the skulltula token, blood red at the top fading to white at the bottom.
+//
+// The token's display list is cloned once from the player's own extracted assets. Every vertex
+// load is pointed at a recoloured copy of its vertices (gradient by height, with the lighting
+// baked in), lighting is switched off so those colours are used as-is, and the combiner keeps
+// only a faint sheen from the gold texture. Nothing from the original model ships in this repo.
+// ---------------------------------------------------------------------------------------------
+
+namespace {
+
+struct NpcSoulTokenModel {
+    Gfx* source = nullptr;                     // the vanilla DL this was built from
+    std::deque<std::vector<Gfx>> displayLists; // [0] is the root; stable addresses
+    std::deque<std::vector<Vtx>> vertices;     // recoloured copies; stable addresses
+    bool valid = false;
+};
+
+NpcSoulTokenModel sNpcSoulToken;
+
+const Gfx sNpcSoulCombine[] = {
+    gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, SHADE, 0, 0, 0, 1, TEXEL0, 0, ENVIRONMENT, SHADE, 0, 0, 0, 1),
+};
+const Gfx sNpcSoulEnvColor[] = { gsDPSetEnvColor(40, 40, 40, 255) };
+const Gfx sNpcSoulNoOp[] = { gsDPNoOp() };
+
+bool IsTwoWordCommand(uint8_t opcode) {
+    return opcode == G_SETTIMG_OTR_HASH || opcode == G_DL_OTR_HASH || opcode == G_VTX_OTR_HASH ||
+           opcode == G_BRANCH_Z_OTR || opcode == G_MARKER || opcode == G_MTX_OTR || opcode == G_MOVEMEM_OTR ||
+           opcode == G_VTX_OTR_FILEPATH;
+}
+
+Vtx* CopyVertices(NpcSoulTokenModel& model, const Vtx* src, size_t count) {
+    model.vertices.emplace_back(src, src + count);
+    return model.vertices.back().data();
+}
+
+// Copies `src` into a new list in `model`, rewriting what the soul look needs. Returns the copy.
+Gfx* CloneTokenDL(NpcSoulTokenModel& model, const Gfx* src, int depth) {
+    model.displayLists.emplace_back();
+    size_t listIndex = model.displayLists.size() - 1;
+    std::vector<Gfx> out;
+
+    if (depth == 0) {
+        Gfx clear[] = { gsSPClearGeometryMode(G_LIGHTING) };
+        out.push_back(clear[0]);
+        out.push_back(sNpcSoulCombine[0]);
+        out.push_back(sNpcSoulEnvColor[0]);
+    }
+
+    for (int i = 0; i < 1024; i++) {
+        Gfx cmd = src[i];
+        uint8_t opcode = (uint8_t)(cmd.words.w0 >> 24);
+
+        if (opcode == (uint8_t)G_ENDDL) {
+            out.push_back(cmd);
+            break;
+        }
+
+        if (opcode == G_VTX_OTR_HASH) {
+            Gfx second = src[i + 1];
+            uint64_t hash = ((uint64_t)second.words.w0 << 32) + second.words.w1;
+            uintptr_t offset = cmd.words.w1;
+            const Vtx* base = nullptr;
+            if (offset > 0xFFFFF) {
+                base = (const Vtx*)offset; // already resolved to a pointer by the renderer
+            } else {
+                char* data = (char*)ResourceGetDataByCrc(hash);
+                base = data != nullptr ? (const Vtx*)(data + offset) : nullptr;
+            }
+            if (base == nullptr) {
+                return nullptr;
+            }
+            size_t count = (cmd.words.w0 >> 12) & 0xFF;
+            cmd.words.w1 = (uintptr_t)CopyVertices(model, base, count);
+            out.push_back(cmd);
+            out.push_back(second);
+            i++;
+            continue;
+        }
+
+        if (opcode == G_DL_OTR_HASH) {
+            Gfx second = src[i + 1];
+            uint64_t hash = ((uint64_t)second.words.w0 << 32) + second.words.w1;
+            const Gfx* sub = (const Gfx*)ResourceGetDataByCrc(hash);
+            Gfx* subCopy = (sub != nullptr && depth < 4) ? CloneTokenDL(model, sub, depth + 1) : nullptr;
+            if (subCopy == nullptr) {
+                return nullptr;
+            }
+            // Same push/branch flag, now a plain pointer call.
+            cmd.words.w0 = ((uint32_t)G_DL << 24) | (cmd.words.w0 & 0x00FFFFFF);
+            cmd.words.w1 = (uintptr_t)subCopy;
+            out.push_back(cmd);
+            out.push_back(sNpcSoulNoOp[0]);
+            i++;
+            continue;
+        }
+
+        if (opcode == (uint8_t)G_GEOMETRYMODE) {
+            cmd.words.w0 &= ~(uint32_t)G_LIGHTING; // add lighting to the clear mask
+            cmd.words.w1 &= ~(uint32_t)G_LIGHTING; // never set it
+        } else if (opcode == (uint8_t)G_SETCOMBINE) {
+            cmd = sNpcSoulCombine[0];
+        } else if (opcode == (uint8_t)G_SETENVCOLOR) {
+            cmd = sNpcSoulEnvColor[0];
+        }
+
+        out.push_back(cmd);
+        if (IsTwoWordCommand(opcode)) {
+            out.push_back(src[i + 1]);
+            i++;
+        }
+    }
+
+    model.displayLists[listIndex] = std::move(out);
+    return model.displayLists[listIndex].data();
+}
+
+void RecolorTokenVertices(NpcSoulTokenModel& model) {
+    float minY = 1e9f;
+    float maxY = -1e9f;
+    for (auto& list : model.vertices) {
+        for (auto& vtx : list) {
+            minY = (std::min)(minY, (float)vtx.n.ob[1]);
+            maxY = (std::max)(maxY, (float)vtx.n.ob[1]);
+        }
+    }
+    float range = (std::max)(maxY - minY, 1.0f);
+
+    // Fixed light from the upper front; the vanilla token is lit, so its normals are real.
+    const float lx = 0.35f, ly = 0.75f, lz = 0.56f;
+    const float red[3] = { 165.0f, 8.0f, 14.0f };
+    const float white[3] = { 255.0f, 250.0f, 245.0f };
+
+    for (auto& list : model.vertices) {
+        for (auto& vtx : list) {
+            float t = ((float)vtx.n.ob[1] - minY) / range; // 0 = bottom, 1 = top
+            t = t * t * (3.0f - 2.0f * t);                 // smoothstep for a softer fade
+            float nx = vtx.n.n[0] / 127.0f, ny = vtx.n.n[1] / 127.0f, nz = vtx.n.n[2] / 127.0f;
+            float lambert = (std::max)(0.0f, nx * lx + ny * ly + nz * lz);
+            float shade = 0.6f + 0.4f * lambert;
+            uint8_t alpha = vtx.n.a;
+            for (int c = 0; c < 3; c++) {
+                float value = (white[c] + (red[c] - white[c]) * t) * shade;
+                vtx.v.cn[c] = (uint8_t)(std::clamp)(value, 0.0f, 255.0f);
+            }
+            vtx.v.cn[3] = alpha;
+        }
+    }
+}
+
+Gfx* GetNpcSoulTokenDL() {
+    Gfx* source = ResourceMgr_LoadGfxByName(gGiSkulltulaTokenDL);
+    if (source == nullptr) {
+        return nullptr;
+    }
+    if (sNpcSoulToken.source != source) {
+        sNpcSoulToken = NpcSoulTokenModel();
+        sNpcSoulToken.source = source;
+        sNpcSoulToken.valid = CloneTokenDL(sNpcSoulToken, source, 0) != nullptr;
+        if (sNpcSoulToken.valid) {
+            RecolorTokenVertices(sNpcSoulToken);
+        }
+    }
+    return sNpcSoulToken.valid ? sNpcSoulToken.displayLists.front().data() : nullptr;
+}
+
+} // namespace
+
+extern "C" void Randomizer_DrawNpcSoul(PlayState* play, GetItemEntry* getItemEntry) {
+    Gfx* tokenDL = GetNpcSoulTokenDL();
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    if (tokenDL != nullptr) {
+        gSPDisplayList(POLY_OPA_DISP++, tokenDL);
+    } else {
+        // Couldn't build the recoloured model: fall back to a red-tinted vanilla token.
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, 200, 30, 30, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSkulltulaTokenDL);
+        gSPGrayscale(POLY_OPA_DISP++, false);
+    }
+
+    // The token's flame, washed out to a pale pink-white.
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+               // Same scroll as the vanilla token's flame; 0 - x avoids negating an unsigned value (MSVC C4146).
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0 - play->state.frames * 5, 32, 32, 1, 0, 0, 32,
+                                             64, 0, -5, 0, 0));
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 215, 215, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiSkulltulaTokenFlameDL);
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

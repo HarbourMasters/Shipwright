@@ -42,7 +42,7 @@ void RegionTable_Init_ZoraRiver() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,           logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_ZORAS_RIVER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
-        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BEAN_SALESMAN_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_ZR_FROGS_OCARINA_GAME,                   logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY) && logic->CanUse(RG_SARIAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_FROGS_IN_THE_RAIN,                    logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_FROGS_ZELDAS_LULLABY,                 logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),

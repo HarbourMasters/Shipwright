@@ -33,7 +33,7 @@ void RegionTable_Init_TempleOfTime() {
         LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->HasItem(RG_SHADOW_MEDALLION) && logic->HasItem(RG_SPIRIT_MEDALLION)),
         LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
         LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
-        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_ZELDA_SOUL)),
         LOCATION(RC_TOT_ALTAR,                 logic->CanRead()),
     }, {
         //Exits

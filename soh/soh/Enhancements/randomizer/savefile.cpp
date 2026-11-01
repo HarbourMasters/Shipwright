@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/randomizer/bean_patches.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -502,6 +503,14 @@ extern "C" void Randomizer_InitSaveFile() {
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BEAN_SOULS) == RO_GENERIC_OFF) {
         for (const BeanPatch& patch : beanPatches) {
             Flags_SetRandomizerInf(patch.soulRandInf);
+        }
+    }
+
+    // NPC souls that aren't in the pool (category off, or a starting soul) are owned from the start.
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        if (Randomizer_GetSettingValue(Rando::GetNpcSoulCategorySetting(soul.category)) == RO_GENERIC_OFF ||
+            Randomizer_GetSettingValue(soul.startingSetting) != RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(soul.randInf);
         }
     }
 

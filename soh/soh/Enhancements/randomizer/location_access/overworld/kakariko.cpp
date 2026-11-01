@@ -11,11 +11,11 @@ void RegionTable_Init_Kakariko() {
         //Open Gate setting is applied in RR_ROOT
         EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN, logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
         //Needs wallet to be able to get another mask after selling Keaton
-        EVENT_ACCESS(LOGIC_SOLD_KEATON_MASK,   logic->IsChild && logic->Get(LOGIC_KAKARIKO_GATE_OPEN) && logic->HasItem(RG_KEATON_MASK) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EVENT_ACCESS(LOGIC_SOLD_KEATON_MASK,   logic->IsChild && logic->Get(LOGIC_KAKARIKO_GATE_OPEN) && logic->HasItem(RG_KEATON_MASK) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_KAKARIKO_GATEKEEPER_SOUL)),
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
-        LOCATION(RC_KAK_ANJU_AS_ADULT,                     logic->IsAdult && logic->AtDay && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_KAK_ANJU_AS_ADULT,                     logic->IsAdult && logic->AtDay && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_ANJU_SOUL)),
         LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->Get(LOGIC_WAKE_UP_ADULT_TALON))),
         //Can kill lower kak skulls with pots
         LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION,       logic->IsChild && logic->CanGetNightTimeGS() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
@@ -101,7 +101,7 @@ void RegionTable_Init_Kakariko() {
         //Locations
         LOCATION(RC_KAK_SILVER_BOULDER, logic->IsAdult && logic->CanUse(RG_SILVER_GAUNTLETS)),
         //assumes access to most of the town
-        LOCATION(RC_KAK_ANJU_AS_CHILD,  logic->IsChild && logic->AtDay && logic->HasItem(RG_POWER_BRACELET) && logic->CanBreakCrates() && logic->HasItem(RG_SPEAK_HYLIAN)), // RANDOTODO adjust requirements to cucco settings
+        LOCATION(RC_KAK_ANJU_AS_CHILD,  logic->IsChild && logic->AtDay && logic->HasItem(RG_POWER_BRACELET) && logic->CanBreakCrates() && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_ANJU_SOUL)), // RANDOTODO adjust requirements to cucco settings
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -138,7 +138,7 @@ void RegionTable_Init_Kakariko() {
     // specifically the roof with Man on Roof
     areaTable[RR_KAK_ROOFTOP] = Region("Kak Rooftop", SCENE_KAKARIKO_VILLAGE, {}, {
         //Locations
-        LOCATION(RC_KAK_MAN_ON_ROOF, logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_KAK_MAN_ON_ROOF, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_MAN_ON_ROOF_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_KAK_BACKYARD,           true),
@@ -181,12 +181,12 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_HOUSE_OF_SKULLTULA] = Region("Kak House of Skulltula", SCENE_HOUSE_OF_SKULLTULA, {}, {
         //Locations
-        LOCATION(RC_KAK_10_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 10),
-        LOCATION(RC_KAK_20_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 20),
-        LOCATION(RC_KAK_30_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 30),
-        LOCATION(RC_KAK_40_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 40),
-        LOCATION(RC_KAK_50_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 50),
-        LOCATION(RC_KAK_100_GOLD_SKULLTULA_REWARD, logic->HasItem(RG_SPEAK_HYLIAN) && logic->GetGSCount() >= 100),
+        LOCATION(RC_KAK_10_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 10),
+        LOCATION(RC_KAK_20_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 20),
+        LOCATION(RC_KAK_30_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 30),
+        LOCATION(RC_KAK_40_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 40),
+        LOCATION(RC_KAK_50_GOLD_SKULLTULA_REWARD,  logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 50),
+        LOCATION(RC_KAK_100_GOLD_SKULLTULA_REWARD, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SKULLTULA_FAMILY_SOUL) && logic->GetGSCount() >= 100),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -235,14 +235,14 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_BAZAAR] = Region("Kak Bazaar", SCENE_BAZAAR, {}, {
         //Locations
-        LOCATION(RC_KAK_BAZAAR_ITEM_1, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_2, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_3, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_4, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_5, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_6, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_7, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_BAZAAR_ITEM_8, logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_1, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_2, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_3, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_4, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_5, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_6, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_7, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_BAZAAR_ITEM_8, logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BAZAAR_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -250,7 +250,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SHOOTING_GALLERY_MAN_SOUL) && logic->HasItem(RG_FAIRY_BOW)),
         LOCATION(RC_KAK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
@@ -259,14 +259,14 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_POTION_SHOP] = Region("Kak Potion Shop", SCENE_POTION_SHOP_KAKARIKO, {}, {
         //Locations
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_1, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_2, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_3, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_4, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_5, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_6, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_7, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_1, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_2, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_3, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_4, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_5, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_6, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_7, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_POTION_SHOPKEEPER_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
@@ -279,7 +279,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) &&
+        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_GRANNY_SOUL) &&
                                             (logic->CanUse(RG_ODD_MUSHROOM) || (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
                                                                                 (logic->HasItem(RG_CLAIM_CHECK) || ctx->GetOption(RSK_EARLY_GRANNYS_SHOP))) &&
                                              GetCheckPrice() <= GetWalletCapacity())),

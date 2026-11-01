@@ -99,13 +99,13 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DMT_SUMMIT_ROCK,            logic->IsChild && logic->CanBreakRocks()),
         LOCATION(RC_DMT_GOSSIP_STONE,           true),
-        LOCATION(RC_BIGGORON_HINT,              logic->IsAdult && logic->HasItem(RG_SPEAK_GORON)),
+        LOCATION(RC_BIGGORON_HINT,              logic->IsAdult && logic->HasItem(RG_SPEAK_GORON) && logic->HasItem(RG_BIGGORON_SOUL)),
         LOCATION(RC_DMT_UPPER_EXIT_ARROW_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_ROCKFALL,  true),
         ENTRANCE(RR_DMC_UPPER_ENTRY,          true),
-        ENTRANCE(RR_DMT_OWL_FLIGHT,           logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_DMT_OWL_FLIGHT,           logic->IsChild && logic->HasItem(RG_KAEPORA_GAEBORA_SOUL) && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
         ENTRANCE(RR_DMT_GREAT_FAIRY_FOUNTAIN, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
