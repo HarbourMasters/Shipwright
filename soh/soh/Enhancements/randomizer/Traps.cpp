@@ -1762,9 +1762,9 @@ static void InitTrickNames() {
     // NPC souls: near-miss spellings of the real item name.
     for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
         trickNameTable[soul.rg] = {
-            { Text{ Rando::GetNpcSoulItemName(soul, "Sole") }, Text{ "" } },
-            { Text{ Rando::GetNpcSoulItemName(soul, "Seoul") }, Text{ "" } },
-            { Text{ Rando::GetNpcSoulItemName(soul, "Spirit") }, Text{ "" } },
+            { Rando::GetNpcSoulItemText(soul, "Sole", "Sohle", "Lame"), Text{ "" } },
+            { Rando::GetNpcSoulItemText(soul, "Seoul", "Seelchen", "Âne"), Text{ "" } },
+            { Rando::GetNpcSoulItemText(soul, "Spirit", "Geist", "Esprit"), Text{ "" } },
         };
     }
 }

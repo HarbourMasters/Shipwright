@@ -154,15 +154,16 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_TRAINING_GROUND_GATEKEEPER_SOUL, true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
     { ACTOR_EN_GE3,          0,          0,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
     { ACTOR_EN_GE2,          0xFF,       2,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
-    // Carpenters, hideout and Kakariko alike: params & 3 is 0 Ichiro, 1 Sabooro, 2 Jiro, 3 Shiro
+    // Carpenters, hideout and Kakariko alike: params & 3 is 0 Ichiro (1 torch cell), 1 Shiro (steep slope),
+    // 2 Jiro (double cell), 3 Sabooro (dead end)
     { ACTOR_EN_DAIKU,        3,          0,                           kAnyScene, RG_ICHIRO_SOUL,             true  },
-    { ACTOR_EN_DAIKU,        3,          1,                           kAnyScene, RG_SABOORO_SOUL,            true  },
+    { ACTOR_EN_DAIKU,        3,          1,                           kAnyScene, RG_SHIRO_SOUL,              true  },
     { ACTOR_EN_DAIKU,        3,          2,                           kAnyScene, RG_JIRO_SOUL,               true  },
-    { ACTOR_EN_DAIKU,        3,          3,                           kAnyScene, RG_SHIRO_SOUL,              true  },
+    { ACTOR_EN_DAIKU,        3,          3,                           kAnyScene, RG_SABOORO_SOUL,            true  },
     { ACTOR_EN_DAIKU_KAKARIKO, 3,        0,                           kAnyScene, RG_ICHIRO_SOUL,             true  },
-    { ACTOR_EN_DAIKU_KAKARIKO, 3,        1,                           kAnyScene, RG_SABOORO_SOUL,            true  },
+    { ACTOR_EN_DAIKU_KAKARIKO, 3,        1,                           kAnyScene, RG_SHIRO_SOUL,              true  },
     { ACTOR_EN_DAIKU_KAKARIKO, 3,        2,                           kAnyScene, RG_JIRO_SOUL,               true  },
-    { ACTOR_EN_DAIKU_KAKARIKO, 3,        3,                           kAnyScene, RG_SHIRO_SOUL,              true  },
+    { ACTOR_EN_DAIKU_KAKARIKO, 3,        3,                           kAnyScene, RG_SABOORO_SOUL,            true  },
     { ACTOR_EN_TA,           0,          0,                           kAnyScene, RG_TALON_SOUL,              true  },
     { ACTOR_EN_OSSAN,        kAnyParams, OSSAN_TYPE_TALON,            kAnyScene, RG_TALON_SOUL,              true  },
     { ACTOR_EN_MA1,          0,          0,                           kAnyScene, RG_MALON_SOUL,              true  },
@@ -421,7 +422,10 @@ struct FaceField {
     size_t offset;
     size_t size;
 };
-#define FACE_FIELD(type, field) FaceField{ offsetof(type, field), sizeof(type::field) }
+static constexpr FaceField MakeFaceField(size_t offset, size_t size) {
+    return { offset, size };
+}
+#define FACE_FIELD(type, field) MakeFaceField(offsetof(type, field), sizeof(type::field))
 
 std::vector<FaceField> GetFaceFields(Actor* actor) {
     switch (actor->id) {
@@ -441,8 +445,7 @@ std::vector<FaceField> GetFaceFields(Actor* actor) {
             return { FACE_FIELD(EnZl2, eyeTexIndex), FACE_FIELD(EnZl2, eyeTexIndex2),
                      FACE_FIELD(EnZl2, mouthTexIndex) };
         case ACTOR_EN_ZL4:
-            return { FACE_FIELD(EnZl4, leftEyeState), FACE_FIELD(EnZl4, rightEyeState),
-                     FACE_FIELD(EnZl4, mouthState) };
+            return { FACE_FIELD(EnZl4, leftEyeState), FACE_FIELD(EnZl4, rightEyeState), FACE_FIELD(EnZl4, mouthState) };
         case ACTOR_EN_XC:
             return { FACE_FIELD(EnXc, eyeIdx) };
         case ACTOR_EN_RL:

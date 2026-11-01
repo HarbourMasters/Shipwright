@@ -2183,10 +2183,13 @@ void StaticData::HintTable_Init_Item() {
 
     // NPC souls. Red-herring souls use the same text, so a hint never gives them away.
     for (const NpcSoul& soul : GetNpcSouls()) {
-        hintTextTable[soul.hintKey] = HintText(CustomMessage(GetNpcSoulHintName(soul)),
-                                               { CustomMessage("a wandering soul") },
-                                               { CustomMessage("someone's missing spirit"),
-                                                 CustomMessage("a lost soul") });
+        hintTextTable[soul.hintKey] =
+            HintText(GetNpcSoulHintMessage(soul),
+                     { CustomMessage("a wandering soul", /*german*/ "eine umherirrende Seele",
+                                     /*french*/ "une âme errante") },
+                     { CustomMessage("someone's missing spirit", /*german*/ "jemandes verlorener Geist",
+                                     /*french*/ "l'esprit disparu de quelqu'un"),
+                       CustomMessage("a lost soul", /*german*/ "eine verlorene Seele", /*french*/ "une âme perdue") });
     }
 }
 } // namespace Rando

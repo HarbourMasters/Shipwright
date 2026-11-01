@@ -12,9 +12,9 @@ namespace Rando {
 
 static std::vector<NpcSoul> BuildNpcSouls() {
     std::vector<NpcSoul> souls;
-#define NPC_SOUL_ENTRY(id, article, name, tracker, category, advancement)                              \
+#define NPC_SOUL_ENTRY(id, article, name, tracker, category, advancement, german, french)              \
     souls.push_back({ RG_##id##_SOUL, RAND_INF_##id##_SOUL, RHT_##id##_SOUL, RSK_STARTING_##id##_SOUL, \
-                      NpcSoulCategory::category, article, name, tracker, advancement });
+                      NpcSoulCategory::category, article, name, tracker, advancement, german, french });
     NPC_SOUL_LIST(NPC_SOUL_ENTRY)
 #undef NPC_SOUL_ENTRY
     return souls;
@@ -64,8 +64,23 @@ std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun) {
     return name + noun;
 }
 
-std::string GetNpcSoulHintName(const NpcSoul& soul) {
-    return std::string("the soul of ") + soul.article + soul.name;
+// "Talons @" with "Seele" is "Talons Seele"
+static std::string FillGermanNoun(const char* german, const std::string& noun) {
+    std::string text = german;
+    size_t at = text.find('@');
+    return at == std::string::npos ? text : text.replace(at, 1, noun);
+}
+
+Text GetNpcSoulItemText(const NpcSoul& soul, const char* english, const char* german, const char* french) {
+    return Text{ GetNpcSoulItemName(soul, english), std::string(french) + " " + soul.french,
+                 FillGermanNoun(soul.german, german) };
+}
+
+CustomMessage GetNpcSoulHintMessage(const NpcSoul& soul) {
+    // A German name that starts with the noun takes an article: "die Seele der Frösche"
+    std::string german = FillGermanNoun(soul.german, soul.german[0] == '@' ? "die Seele" : "Seele");
+    return CustomMessage(std::string("the soul of ") + soul.article + soul.name, german,
+                         std::string("l'âme ") + soul.french);
 }
 
 bool IsNpcSoulShuffled(const NpcSoul& soul) {

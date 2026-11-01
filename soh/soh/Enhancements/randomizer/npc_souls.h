@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "randomizerTypes.h"
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
+#include "soh/Enhancements/custom-message/text.h"
 
 namespace Rando {
 
@@ -25,6 +27,8 @@ struct NpcSoul {
     const char* name;    // "Talon", "Frogs"
     const char* tracker; // short item tracker label, "TALON"
     bool advancement;    // false = red herring that gates nothing
+    const char* german;  // item name with @ for the noun: "Talons @", "@ der Zoras"
+    const char* french;  // follows the noun: "de Talon", "des Zoras"
 };
 
 // Every NPC soul, in enum order.
@@ -41,8 +45,14 @@ RandomizerSettingKey GetNpcSoulCategorySetting(NpcSoulCategory category);
 // "Talon's Soul", "Soul of the Zoras". `noun` replaces "Soul" (ice trap names: "Talon's Sole").
 std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun = "Soul");
 
-// "the soul of Talon", "the soul of the Frogs"
-std::string GetNpcSoulHintName(const NpcSoul& soul);
+// The item name in every language: "Talon's Soul", "Talons Seele", "Âme de Talon". The nouns replace
+// "Soul", "Seele" and "Âme" (ice trap names: "Talon's Sole", "Talons Sohle", "Lame de Talon").
+Text GetNpcSoulItemText(const NpcSoul& soul, const char* english = "Soul", const char* german = "Seele",
+                        const char* french = "Âme");
+
+// Hint text: "the soul of Talon", "Talons Seele", "l'âme de Talon"; "the soul of the Frogs",
+// "die Seele der Frösche", "l'âme des grenouilles"
+CustomMessage GetNpcSoulHintMessage(const NpcSoul& soul);
 
 // True when the seed's settings put this soul in the item pool (its category is on and
 // the player doesn't start with it). A soul that isn't shuffled is owned from the start.
