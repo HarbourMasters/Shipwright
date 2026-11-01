@@ -1,0 +1,22 @@
+:config:
+  segments:
+    - [1, vr_GLVR_static]
+  directory: textures/skyboxes/
+  external_files:
+     - common/textures/backgrounds/vr_GLVR_pal_static.yml
+gGoronShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gGoronShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gGoronShopBg2TLUT
+gGoronShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGoronShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  tlut_symbol: gGoronShopBgTLUT
