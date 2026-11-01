@@ -42,8 +42,8 @@ void RegionTable_Init_SacredForestMeadow() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
-        LOCATION(RC_SONG_FROM_SARIA,                  logic->IsChild && logic->Get(LOGIC_MET_ZELDA)),
-        LOCATION(RC_SHEIK_IN_FOREST,                  logic->IsAdult),
+        LOCATION(RC_SONG_FROM_SARIA,                  logic->IsChild && logic->Get(LOGIC_MET_ZELDA) && logic->HasItem(RG_SARIA_SOUL)),
+        LOCATION(RC_SHEIK_IN_FOREST,                  logic->IsAdult && logic->HasItem(RG_SHEIK_SOUL)),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE,           true),

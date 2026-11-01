@@ -89,5 +89,6 @@
     NPC_SOUL(GORONS,                     "the ", "Gorons",                     "GORONS", TOWNSFOLK,   true)  \
     NPC_SOUL(ZORAS,                      "the ", "Zoras",                      "ZORAS",  TOWNSFOLK,   false)  \
     NPC_SOUL(GERUDO,                     "the ", "Gerudo",                     "GERUDO", TOWNSFOLK,   false)  \
-    NPC_SOUL(DEKU_SCRUBS,                "the ", "Deku Scrubs",                "SCRUBS", MERCHANTS,   true)
+    NPC_SOUL(DEKU_SCRUBS,                "the ", "Deku Scrubs",                "SCRUBS", MERCHANTS,   true)  \
+    NPC_SOUL(SHEIK,                      "",     "Sheik",                      "SHEIK",  STORY,       true)
 // clang-format on

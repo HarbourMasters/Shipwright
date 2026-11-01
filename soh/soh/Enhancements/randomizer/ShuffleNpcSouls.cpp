@@ -29,6 +29,15 @@ extern "C" {
 #include "overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 #include "overlays/actors/ovl_Fishing/z_fishing.h"
 #include "overlays/actors/ovl_En_Md/z_en_md.h"
+#include "overlays/actors/ovl_En_Nb/z_en_nb.h"
+#include "overlays/actors/ovl_En_Xc/z_en_xc.h"
+#include "overlays/actors/ovl_En_Sa/z_en_sa.h"
+#include "overlays/actors/ovl_En_Du/z_en_du.h"
+#include "overlays/actors/ovl_En_Ru1/z_en_ru1.h"
+#include "overlays/actors/ovl_En_Zl4/z_en_zl4.h"
+#include "overlays/actors/ovl_En_Zl1/z_en_zl1.h"
+#include "overlays/actors/ovl_Demo_Im/z_demo_im.h"
+#include "overlays/actors/ovl_En_Ge3/z_en_ge3.h"
 extern PlayState* gPlayState;
 }
 
@@ -46,7 +55,6 @@ constexpr s16 kAnyScene = -1;
 //   blockHeight    cylinder height while orbit-blocking (0: same as `height`).
 //   freezeOnInit   freeze before the first update. For NPCs whose first update would start a forced
 //                  conversation or a cutscene, which a statue would then never finish.
-//   active         when set, the NPC only counts as an NPC while this returns true.
 struct NpcMatcher {
     s16 actorId;
     s32 paramMask;
@@ -59,14 +67,7 @@ struct NpcMatcher {
     f32 orbit = 0.0f;
     s16 blockHeight = 0;
     bool freezeOnInit = false;
-    bool (*active)() = nullptr;
 };
-
-// Until Link has the membership card, the fortress Gerudo aren't NPCs but lookouts who throw him in
-// jail; a statue would make sneaking past them free. They become statues once they are friendly.
-bool GerudosFriendly() {
-    return CHECK_QUEST_ITEM(QUEST_GERUDO_CARD);
-}
 
 // clang-format off
 const NpcMatcher sNpcMatchers[] = {
@@ -97,7 +98,7 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_DIVING_GAME,  0,          0,                           kAnyScene, RG_DIVING_GAME_ZORA_SOUL,   true  },
     { ACTOR_EN_TK,           0,          0,                           kAnyScene, RG_DAMPE_SOUL,              true  },
     { ACTOR_EN_PO_RELAY,     0,          0,                           kAnyScene, RG_DAMPE_SOUL,              false },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_HORSEBACK_ARCHERY,  kAnyScene, RG_HORSEBACK_ARCHER_SOUL,   true, 0, 0, 0.0f, 0, false, GerudosFriendly },
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_HORSEBACK_ARCHERY,  kAnyScene, RG_HORSEBACK_ARCHER_SOUL,   true },
     { ACTOR_FISHING,         kAnyParams, EN_FISH_OWNER,               kAnyScene, RG_FISHING_POND_OWNER_SOUL, true  },
     { ACTOR_EN_MK,           0,          0,                           kAnyScene, RG_SCIENTIST_SOUL,          true  },
     { ACTOR_EN_GO2,          0x1F,       GORON_CITY_ROLLING_BIG,      kAnyScene, RG_HOT_RODDER_SOUL,         false },
@@ -119,8 +120,8 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_MD,           0,          0,                           kAnyScene, RG_MIDO_SOUL,               true, 36, 46, 60.0f },
     { ACTOR_EN_KO,           0xFF,       ENKO_TYPE_CHILD_3, SCENE_KOKIRI_FOREST, RG_KOKIRI_EXIT_GUARD_SOUL,  true, 20, 46, 80.0f, 246 },
     { ACTOR_EN_KZ,           0,          0,                           kAnyScene, RG_KING_ZORA_SOUL,          true, 80, 120 },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_OPERATOR,      kAnyScene, RG_WASTELAND_GATEKEEPER_SOUL, true, 0, 0, 0.0f, 0, false, GerudosFriendly },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_TRAINING_GROUND_GATEKEEPER_SOUL, true, 0, 0, 0.0f, 0, false, GerudosFriendly },
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_OPERATOR,      kAnyScene, RG_WASTELAND_GATEKEEPER_SOUL, true },
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_TRAINING_GROUND_GATEKEEPER_SOUL, true },
     { ACTOR_EN_GE3,          0,          0,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
     { ACTOR_EN_GE2,          0xFF,       2,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
     // Carpenters, hideout and Kakariko alike: params & 3 is 0 Ichiro, 1 Sabooro, 2 Jiro, 3 Shiro
@@ -140,11 +141,28 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_IN,           0,          0,                           kAnyScene, RG_INGO_SOUL,               true  },
     { ACTOR_EN_OSSAN,        kAnyParams, OSSAN_TYPE_INGO,             kAnyScene, RG_INGO_SOUL,               true  },
     { ACTOR_EN_OWL,          0,          0,                           kAnyScene, RG_KAEPORA_GAEBORA_SOUL,    false, 0, 0, 0.0f, 0, true },
+    // Story. These all freeze before their first update: each one starts a cutscene or a forced
+    // conversation by itself (Saria's greeting, Zelda noticing Link, Sheik's songs, Ruto's intro...).
+    { ACTOR_EN_SA,           0,          0,                           kAnyScene, RG_SARIA_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_DU,           0,          0,           SCENE_GORON_CITY,          RG_DARUNIA_SOUL,            true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_RU1,          0,          0,           SCENE_JABU_JABU,           RG_RUTO_SOUL,               true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_NB,           0xFF,       NB_TYPE_CRAWLSPACE, SCENE_SPIRIT_TEMPLE, RG_NABOORU_SOUL,           true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_ZL4,          0,          0,                           kAnyScene, RG_ZELDA_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_ZL1,          0,          0,                           kAnyScene, RG_ZELDA_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_XC,           kAnyParams, SHEIK_TYPE_MINUET,           kAnyScene, RG_SHEIK_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_XC,           kAnyParams, SHEIK_TYPE_BOLERO,           kAnyScene, RG_SHEIK_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_XC,           kAnyParams, SHEIK_TYPE_SERENADE,         kAnyScene, RG_SHEIK_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_EN_XC,           kAnyParams, SHEIK_TYPE_RANDO,            kAnyScene, RG_SHEIK_SOUL,              true, 0, 0, 0.0f, 0, true },
+    { ACTOR_DEMO_IM,         0,          0,  SCENE_CASTLE_COURTYARD_ZELDA,       RG_IMPA_SOUL,               false, 0, 0, 0.0f, 0, true },
+    { ACTOR_BG_DY_YOSEIZO,   0,          0,                           kAnyScene, RG_GREAT_FAIRIES_SOUL,      false, 0, 0, 0.0f, 0, true },
     // More townsfolk
     { ACTOR_EN_KO,           0,          0,      SCENE_KNOW_IT_ALL_BROS_HOUSE, RG_KNOW_IT_ALL_BROTHERS_SOUL, true },
     { ACTOR_EN_TG,           0,          0,                           kAnyScene, RG_HONEY_AND_DARLING_SOUL,  true  },
     { ACTOR_EN_HS2,          0,          0,                           kAnyScene, RG_GROG_SOUL,               true  }, // Grog as a child
     { ACTOR_EN_HEISHI4,      0,          0,                           kAnyScene, RG_HYLIAN_GUARDS_SOUL,      true  },
+    // The castle guards who catch child Link sneaking in (statues make the sneaking free)
+    { ACTOR_EN_HEISHI1,      0,          0,                           kAnyScene, RG_HYLIAN_GUARDS_SOUL,      true  },
+    { ACTOR_EN_HEISHI3,      0,          0,                           kAnyScene, RG_HYLIAN_GUARDS_SOUL,      true  },
     { ACTOR_EN_KAKASI,       0,          0,                           kAnyScene, RG_PIERRE_SOUL,             true  },
     { ACTOR_EN_KAKASI2,      0,          0,                           kAnyScene, RG_PIERRE_SOUL,             false, 0, 0, 0.0f, 0, true }, // where Pierre pops up
     { ACTOR_EN_KAKASI3,      0,          0,                           kAnyScene, RG_BONOORU_SOUL,            true  },
@@ -160,7 +178,11 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_ZO,           0,          0,                           kAnyScene, RG_ZORAS_SOUL,              true  },
     { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_GUARD,         kAnyScene, RG_GERUDO_SOUL,             true  },
     { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_VALLEY_FLOOR,       kAnyScene, RG_GERUDO_SOUL,             true  },
-    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_NORMAL,             kAnyScene, RG_GERUDO_SOUL,             true, 0, 0, 0.0f, 0, false, GerudosFriendly },
+    // The fortress lookouts too, so sneaking past them is free while the soul is missing. The Gerudo
+    // warriors (EnGeldB) stay enemies: they're fought for the cell keys.
+    { ACTOR_EN_GE2,          0xFF,       0,                           kAnyScene, RG_GERUDO_SOUL,             true  }, // patrolling
+    { ACTOR_EN_GE2,          0xFF,       1,                           kAnyScene, RG_GERUDO_SOUL,             true  }, // stationary
+    { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_NORMAL,             kAnyScene, RG_GERUDO_SOUL,             true },
     // Business scrubs hide in the ground (EnShopnuts) and pop out as EnDns once stunned; the Deku
     // Theater controller (EnDntDemo) runs the judges and the stage. In the Deku Tree, the three scrubs
     // of the order puzzle before Gohma (EnHintnuts 1-3) are statues too, keeping the boss door shut.
@@ -197,6 +219,7 @@ struct Statue {
     u32 frozenFrames = 0; // frame counters at the freeze, replayed while drawing the statue
     u32 frozenGameplayFrames = 0;
     s32 updates = 0;
+    s32 drawnUpdates = 0; // updates that ended with the actor drawable
     u8 savedNaviEnemyId = 0xFF;
     bool hasCollider = false;
     ColliderCylinder collider{};
@@ -241,9 +264,6 @@ const NpcMatcher* FindMatcher(Actor* actor) {
         if (params != matcher.paramValue) {
             continue;
         }
-        if (matcher.active != nullptr && !matcher.active()) {
-            continue;
-        }
         return &matcher;
     }
     return nullptr;
@@ -275,6 +295,51 @@ void SlideBlocker(Actor* actor, const Statue& statue) {
     actor->world.pos.x = actor->home.pos.x + statue.matcher->orbit * Math_SinS(yaw);
     actor->world.pos.z = actor->home.pos.z + statue.matcher->orbit * Math_CosS(yaw);
     actor->shape.rot.y = actor->world.rot.y = Actor_WorldYawTowardActor(actor, &player->actor);
+}
+
+// An actor frozen before its first update has an animation set but no pose computed yet, so it would be
+// drawn in its skeleton's bind pose (Saria lying half in the ground). Compute the pose once, without
+// blending from that bind pose.
+template <typename T> void SnapPose(Actor* actor) {
+    SkelAnime* skelAnime = &reinterpret_cast<T*>(actor)->skelAnime;
+    if (skelAnime->animation != nullptr) {
+        skelAnime->morphWeight = 0.0f;
+        SkelAnime_Update(skelAnime);
+    }
+}
+
+void SnapPoseBeforeFirstUpdate(Actor* actor) {
+    switch (actor->id) {
+        case ACTOR_EN_SA:
+            SnapPose<EnSa>(actor);
+            break;
+        case ACTOR_EN_DU:
+            SnapPose<EnDu>(actor);
+            break;
+        case ACTOR_EN_RU1:
+            SnapPose<EnRu1>(actor);
+            break;
+        case ACTOR_EN_NB:
+            SnapPose<EnNb>(actor);
+            break;
+        case ACTOR_EN_ZL4:
+            SnapPose<EnZl4>(actor);
+            break;
+        case ACTOR_EN_ZL1:
+            SnapPose<EnZl1>(actor);
+            break;
+        case ACTOR_EN_XC:
+            SnapPose<EnXc>(actor);
+            break;
+        case ACTOR_DEMO_IM:
+            SnapPose<DemoIm>(actor);
+            break;
+        case ACTOR_EN_GE3:
+            SnapPose<EnGe3>(actor);
+            break;
+        default:
+            break;
+    }
 }
 
 void Freeze(Actor* actor, Statue& statue) {
@@ -336,6 +401,7 @@ void OnActorInit(void* actorRef) {
     actor->naviEnemyId = kStatueNaviEnemyId;
     Statue& stored = sStatues[actor] = statue;
     if (matcher->freezeOnInit) {
+        SnapPoseBeforeFirstUpdate(actor);
         Freeze(actor, stored);
     }
 }
@@ -346,9 +412,13 @@ void OnActorUpdate(void* actorRef) {
     if (statue == nullptr || statue->frozen) {
         return;
     }
+    // The update that makes an actor drawable is often the one where it finishes setting up (its object
+    // just loaded), before it has acted once; Kokiri do that. Count from there so it gets one real update.
     statue->updates++;
-    if ((actor->draw != nullptr && statue->updates >= kUpdatesBeforeFreeze) ||
-        statue->updates >= kMaxUpdatesBeforeFreeze) {
+    if (actor->draw != nullptr) {
+        statue->drawnUpdates++;
+    }
+    if (statue->drawnUpdates >= kUpdatesBeforeFreeze || statue->updates >= kMaxUpdatesBeforeFreeze) {
         Freeze(actor, *statue);
     }
 }
@@ -494,6 +564,25 @@ void RegisterShuffleNpcSouls() {
             *should = false;
         }
     });
+
+    // Story checks that aren't handed over by an actor we can freeze (or that are decided before its first
+    // update) are switched off at their eligibility check instead.
+#define NO_SOUL_NO_EVENT(vb, soul)       \
+    COND_VB_SHOULD(vb, shouldRegister, { \
+        if (IsSoulMissing(soul)) {       \
+            *should = false;             \
+        }                                \
+    })
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_SARIAS_SONG, RG_SARIA_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_SARIAS_GIFT, RG_SARIA_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, RG_DARUNIA_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_OCARINA_OF_TIME, RG_ZELDA_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_PRELUDE_OF_LIGHT, RG_SHEIK_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_SERENADE_OF_WATER, RG_SHEIK_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_REQUIEM_OF_SPIRIT, RG_SHEIK_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW, RG_SHEIK_SOUL);
+    NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, RG_ZELDA_SOUL);
+#undef NO_SOUL_NO_EVENT
 
     // A statue that hasn't frozen yet may still offer to talk during its first updates.
     COND_VB_SHOULD(VB_SPEAK, shouldRegister, {

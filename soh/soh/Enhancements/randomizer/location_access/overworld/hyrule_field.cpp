@@ -11,8 +11,8 @@ void RegionTable_Init_HyruleField() {
         EVENT_ACCESS(LOGIC_SOLD_BUNNY_HOOD,    logic->IsChild && logic->HasItem(RG_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_RUNNING_MAN_SOUL)),
     }, {
         //Locations
-        LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,       logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),
-        LOCATION(RC_SONG_FROM_OCARINA_OF_TIME,     logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,       logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_ZELDA_SOUL)),
+        LOCATION(RC_SONG_FROM_OCARINA_OF_TIME,     logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE) && logic->HasItem(RG_ZELDA_SOUL)),
         LOCATION(RC_HF_POND_STORMS_FAIRY,          logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_HF_CENTRAL_GRASS_1,            logic->CanCutShrubs() || logic->SummonEpona()),
         LOCATION(RC_HF_CENTRAL_GRASS_2,            logic->CanCutShrubs() || logic->SummonEpona()),

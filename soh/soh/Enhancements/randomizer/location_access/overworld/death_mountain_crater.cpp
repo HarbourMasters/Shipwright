@@ -350,7 +350,7 @@ void RegionTable_Init_DeathMountainCrater() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_CRATER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Locations
-        LOCATION(RC_SHEIK_IN_CRATER,                    logic->IsAdult),
+        LOCATION(RC_SHEIK_IN_CRATER,                    logic->IsAdult && logic->HasItem(RG_SHEIK_SOUL)),
         LOCATION(RC_DMC_GS_BEAN_PATCH,                  logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DMC_NEAR_PLATFORM_RED_RUPEE,        logic->IsChild),
         LOCATION(RC_DMC_MIDDLE_PLATFORM_RED_RUPEE,      logic->IsChild),
@@ -391,7 +391,7 @@ void RegionTable_Init_DeathMountainCrater() {
 
     areaTable[RR_DMC_GREAT_FAIRY_FOUNTAIN] = Region("DMC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
         //Locations
-        LOCATION(RC_DMC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_DMC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY) && logic->HasItem(RG_GREAT_FAIRIES_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_DMC_BLOCKED_ENTRY, true),

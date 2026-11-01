@@ -137,7 +137,7 @@ void RegionTable_Init_CastleGrounds() {
     }, {
         //Locations
         LOCATION(RC_HC_ZELDAS_LETTER,                 logic->Get(LOGIC_MET_ZELDA)),
-        LOCATION(RC_SONG_FROM_IMPA,                   logic->Get(LOGIC_MET_ZELDA)),
+        LOCATION(RC_SONG_FROM_IMPA,                   logic->Get(LOGIC_MET_ZELDA) && logic->HasItem(RG_IMPA_SOUL)),
         LOCATION(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
@@ -147,7 +147,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Region("HC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_HC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_HC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY) && logic->HasItem(RG_GREAT_FAIRIES_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY, true),
@@ -217,7 +217,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Region("OGC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
         //Locations
-        LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY) && logic->HasItem(RG_GREAT_FAIRIES_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY, true),

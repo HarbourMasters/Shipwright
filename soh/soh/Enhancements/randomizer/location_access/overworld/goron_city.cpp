@@ -129,7 +129,7 @@ void RegionTable_Init_GoronCity() {
         EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE, logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Locations
-        LOCATION(RC_GC_DARUNIAS_JOY,  logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+        LOCATION(RC_GC_DARUNIAS_JOY,  logic->IsChild && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_DARUNIA_SOUL)),
         LOCATION(RC_GC_DARUNIA_POT_1, logic->CanBreakPots()),
         LOCATION(RC_GC_DARUNIA_POT_2, logic->CanBreakPots()),
         LOCATION(RC_GC_DARUNIA_POT_3, logic->CanBreakPots()),

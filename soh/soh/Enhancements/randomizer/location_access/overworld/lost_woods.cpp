@@ -153,7 +153,7 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BRIDGE_FROM_FOREST] = Region("LW Bridge From Forest", SCENE_LOST_WOODS, {}, {
         //Locations
-        LOCATION(RC_LW_GIFT_FROM_SARIA, true),
+        LOCATION(RC_LW_GIFT_FROM_SARIA, logic->HasItem(RG_SARIA_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_LW_BRIDGE, true),

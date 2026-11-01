@@ -1955,7 +1955,7 @@
             "shuffle_npc_souls_story": {
                 "name": "Shuffle Story Souls",
                 "description": [
-                    "Shuffles the souls of Saria, Darunia, Ruto, Nabooru, Zelda, Impa, Rauru and the Great Fairies into the item pool.\n",
+                    "Shuffles the souls of Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru and the Great Fairies into the item pool.\n",
                     "\n",
                     "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
                 ]
@@ -2183,6 +2183,9 @@
             },
             "starting_deku_scrubs_soul": {
                 "name": "Start with Soul of the Deku Scrubs"
+            },
+            "starting_sheik_soul": {
+                "name": "Start with Sheik's Soul"
             }
         },
         "tricks": {

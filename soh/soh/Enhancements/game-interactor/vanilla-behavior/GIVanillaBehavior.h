@@ -191,6 +191,18 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
+    // CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) &&
+    // LINK_IS_CHILD
+    // ```
+    // Whether walking up to the castle drawbridge as a child starts Zelda's escape, which ends with the
+    // Ocarina of Time and the Song of Time.
+    // #### `args`
+    // - None
+    VB_BE_ELIGIBLE_FOR_OCARINA_OF_TIME,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) &&
     // CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
     // (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) &&
@@ -199,6 +211,26 @@ typedef enum {
     // #### `args`
     // - None
     VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)
+    // ```
+    // Whether leaving the Spirit Temple as a child gets Sheik's Requiem of Spirit.
+    // #### `args`
+    // - None
+    VB_BE_ELIGIBLE_FOR_REQUIEM_OF_SPIRIT,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.entranceIndex == ENTR_LOST_WOODS_BRIDGE_EAST_EXIT) &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)
+    // ```
+    // Whether crossing the bridge out of Kokiri Forest gets Saria's farewell (and the Fairy Ocarina).
+    // #### `args`
+    // - None
+    VB_BE_ELIGIBLE_FOR_SARIAS_GIFT,
 
     // #### `result`
     // ```c
