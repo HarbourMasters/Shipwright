@@ -18,10 +18,10 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_SOLD_SKULL_MASK,              logic->IsChild && logic->HasItem(RG_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SKULL_KID_SOUL) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
-        LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->CanUse(RG_COJIRO)),
+        LOCATION(RC_LW_SKULL_KID,                       logic->HasItem(RG_SKULL_KID_SOUL) && logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+        LOCATION(RC_LW_TRADE_COJIRO,                    logic->HasItem(RG_GROG_SOUL) && logic->IsAdult && logic->CanUse(RG_COJIRO)),
         //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
-        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
+        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->HasItem(RG_FADO_SOUL) && logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
                                                                                                               //all 5 buttons are logically required for memory game
                                                                                                               //because the chances of being able to beat it
                                                                                                               //every time you attempt it are as follows:
@@ -30,7 +30,7 @@ void RegionTable_Init_LostWoods() {
                                                                                                               //3 buttons        => 3.75%
                                                                                                               //4 buttons        => 25.3125%
                                                                                                               //5 buttons        => 100%
-        LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
+        LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->HasItem(RG_SKULL_KID_SOUL) && logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
         LOCATION(RC_LW_TARGET_IN_WOODS,                 logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanAttack()),
         //RANDOTODO handle collecting some of these as you leave the shortcut from the other side

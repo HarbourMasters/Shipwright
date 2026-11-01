@@ -729,6 +729,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // When true, `Actor_Draw` draws the actor in greyscale (used for NPC soul statues).
+    // #### `args`
+    // - `*Actor`
+    VB_DRAW_ACTOR_IN_GRAYSCALE,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`

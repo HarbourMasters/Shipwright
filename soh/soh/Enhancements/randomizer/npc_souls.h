@@ -23,6 +23,7 @@ struct NpcSoul {
     NpcSoulCategory category;
     const char* article; // "" or "the "
     const char* name;    // "Talon", "Frogs"
+    const char* tracker; // short item tracker label, "TALON"
     bool advancement;    // false = red herring that gates nothing
 };
 
@@ -46,5 +47,8 @@ std::string GetNpcSoulHintName(const NpcSoul& soul);
 // True when the seed's settings put this soul in the item pool (its category is on and
 // the player doesn't start with it). A soul that isn't shuffled is owned from the start.
 bool IsNpcSoulShuffled(const NpcSoul& soul);
+
+// True when any NPC soul category is shuffled in the current seed.
+bool AreNpcSoulsEnabled();
 
 } // namespace Rando

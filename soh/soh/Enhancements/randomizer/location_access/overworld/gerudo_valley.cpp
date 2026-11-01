@@ -115,7 +115,7 @@ void RegionTable_Init_GerudoValley() {
     areaTable[RR_GV_FORTRESS_SIDE] = Region("GV Fortress Side", SCENE_GERUDO_VALLEY, {}, {
         //Locations
         LOCATION(RC_GV_CHEST,                          logic->IsAdult && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT))) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_GV_TRADE_SAW,                      logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
+        LOCATION(RC_GV_TRADE_SAW,                      logic->HasItem(RG_MUTOH_SOUL) && logic->IsAdult && logic->CanUse(RG_POACHERS_SAW)),
         LOCATION(RC_GV_GS_BEHIND_TENT,                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_GV_GS_PILLAR,                      logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
         LOCATION(RC_GV_CRATE_BRIDGE_1,                 logic->IsChild && logic->CanBreakCrates()),

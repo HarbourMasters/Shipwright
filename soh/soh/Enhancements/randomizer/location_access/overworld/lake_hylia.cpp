@@ -128,7 +128,7 @@ void RegionTable_Init_LakeHylia() {
     areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
         LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_SCIENTIST_SOUL)),
-        LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
+        LOCATION(RC_LH_TRADE_FROG,      logic->HasItem(RG_SCIENTIST_SOUL) && logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
         LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->HasItem(RG_GOLDEN_SCALE)),
         LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),

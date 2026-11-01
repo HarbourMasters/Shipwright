@@ -7,9 +7,9 @@ namespace Rando {
 
 static std::vector<NpcSoul> BuildNpcSouls() {
     std::vector<NpcSoul> souls;
-#define NPC_SOUL_ENTRY(id, article, name, category, advancement)                                       \
+#define NPC_SOUL_ENTRY(id, article, name, tracker, category, advancement)                              \
     souls.push_back({ RG_##id##_SOUL, RAND_INF_##id##_SOUL, RHT_##id##_SOUL, RSK_STARTING_##id##_SOUL, \
-                      NpcSoulCategory::category, article, name, advancement });
+                      NpcSoulCategory::category, article, name, tracker, advancement });
     NPC_SOUL_LIST(NPC_SOUL_ENTRY)
 #undef NPC_SOUL_ENTRY
     return souls;
@@ -63,6 +63,18 @@ bool IsNpcSoulShuffled(const NpcSoul& soul) {
     auto ctx = Context::GetInstance();
     return ctx->GetOption(GetNpcSoulCategorySetting(soul.category)).Is(true) &&
            ctx->GetOption(soul.startingSetting).Is(false);
+}
+
+bool AreNpcSoulsEnabled() {
+    auto ctx = Context::GetInstance();
+    for (NpcSoulCategory category :
+         { NpcSoulCategory::MERCHANTS, NpcSoulCategory::MINIGAMES, NpcSoulCategory::GATEKEEPERS, NpcSoulCategory::STORY,
+           NpcSoulCategory::TOWNSFOLK }) {
+        if (ctx->GetOption(GetNpcSoulCategorySetting(category)).Is(true)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace Rando

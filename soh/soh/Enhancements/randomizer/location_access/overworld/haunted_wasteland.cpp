@@ -19,7 +19,7 @@ void RegionTable_Init_HauntedWasteland() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,    logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,      logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_CARPET_MERCHANT, logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_WASTELAND_BOMBCHU_SALESMAN) <= GetWalletCapacity() && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())),
+        EVENT_ACCESS(LOGIC_CARPET_MERCHANT, logic->HasItem(RG_CARPET_SALESMAN_SOUL) && logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_WASTELAND_BOMBCHU_SALESMAN) <= GetWalletCapacity() && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood())),
     }, {
         //Locations
         LOCATION(RC_WASTELAND_CHEST,               logic->HasFireSource() && logic->HasItem(RG_OPEN_CHEST)),

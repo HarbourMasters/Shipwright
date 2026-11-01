@@ -92,9 +92,9 @@ void RegionTable_Init_DeathMountainTrail() {
         EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
-        LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),
-        LOCATION(RC_DMT_TRADE_EYEDROPS,         logic->IsAdult && logic->CanUse(RG_EYEDROPS)),
-        LOCATION(RC_DMT_TRADE_CLAIM_CHECK,      logic->IsAdult && logic->CanUse(RG_CLAIM_CHECK)),
+        LOCATION(RC_DMT_TRADE_BROKEN_SWORD,     logic->HasItem(RG_BIGGORON_SOUL) && logic->IsAdult && logic->CanUse(RG_BROKEN_SWORD)),
+        LOCATION(RC_DMT_TRADE_EYEDROPS,         logic->HasItem(RG_BIGGORON_SOUL) && logic->IsAdult && logic->CanUse(RG_EYEDROPS)),
+        LOCATION(RC_DMT_TRADE_CLAIM_CHECK,      logic->HasItem(RG_BIGGORON_SOUL) && logic->IsAdult && logic->CanUse(RG_CLAIM_CHECK)),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DMT_SUMMIT_ROCK,            logic->IsChild && logic->CanBreakRocks()),

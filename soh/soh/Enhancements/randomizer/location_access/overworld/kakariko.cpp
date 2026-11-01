@@ -16,7 +16,7 @@ void RegionTable_Init_Kakariko() {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
         LOCATION(RC_KAK_ANJU_AS_ADULT,                     logic->IsAdult && logic->AtDay && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_ANJU_SOUL)),
-        LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->Get(LOGIC_WAKE_UP_ADULT_TALON))),
+        LOCATION(RC_KAK_TRADE_POCKET_CUCCO,                logic->HasItem(RG_ANJU_SOUL) && logic->IsAdult && logic->AtDay && (logic->CanUse(RG_POCKET_EGG) && logic->Get(LOGIC_WAKE_UP_ADULT_TALON))),
         //Can kill lower kak skulls with pots
         LOCATION(RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION,       logic->IsChild && logic->CanGetNightTimeGS() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
         LOCATION(RC_KAK_GS_SKULLTULA_HOUSE,                logic->IsChild && logic->CanGetNightTimeGS() && (logic->HasItem(RG_POWER_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA))),
@@ -66,9 +66,9 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_SOUTHEAST_EXIT_ARROW_SIGN,         logic->CanRead()),
         LOCATION(RC_KAK_FRONT_GATE_ARROW_SIGN,             logic->CanRead()),
         LOCATION(RC_KAK_WONDER_UNDER_CONSTRUCTION,         logic->IsChild),
-        LOCATION(RC_KAK_BEGGAR_BUGS,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
-        LOCATION(RC_KAK_BEGGAR_FISH,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_FISH)),
-        LOCATION(RC_KAK_BEGGAR_BLUE_FIRE,                  logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
+        LOCATION(RC_KAK_BEGGAR_BUGS,                       logic->HasItem(RG_BEGGAR_SOUL) && logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_KAK_BEGGAR_FISH,                       logic->HasItem(RG_BEGGAR_SOUL) && logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_KAK_BEGGAR_BLUE_FIRE,                  logic->HasItem(RG_BEGGAR_SOUL) && logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,             true),
@@ -216,7 +216,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->CanUse(RG_FAIRY_OCARINA)),
+        LOCATION(RC_SONG_FROM_WINDMILL,            logic->HasItem(RG_WINDMILL_MAN_SOUL) && logic->IsAdult && logic->CanUse(RG_FAIRY_OCARINA)),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE,   true),
@@ -278,7 +278,7 @@ void RegionTable_Init_Kakariko() {
         // RANDOTODO blue pot access
     }, {
         //Locations
-        LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
+        LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->HasItem(RG_GRANNY_SOUL) && logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
         LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_GRANNY_SOUL) &&
                                             (logic->CanUse(RG_ODD_MUSHROOM) || (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
                                                                                 (logic->HasItem(RG_CLAIM_CHECK) || ctx->GetOption(RSK_EARLY_GRANNYS_SHOP))) &&
