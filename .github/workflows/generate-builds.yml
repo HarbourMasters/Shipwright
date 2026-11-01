@@ -13,7 +13,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v7
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2.23
       with:
@@ -50,7 +50,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v7
       with:
-        submodules: true
+        submodules: recursive
     - name: Setup Macports
       uses: melusina-org/setup-macports@v1
       with:
@@ -101,7 +101,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v7
       with:
-        submodules: true
+        submodules: recursive
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -200,7 +200,7 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v7
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2.23
       with:
