@@ -529,10 +529,14 @@ void Play_Init(GameState* thisx) {
 
     if (gSaveContext.gameMode != GAMEMODE_TITLE_SCREEN) {
         if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
-            play->transitionType = ENTRANCE_INFO_END_TRANS_TYPE(
-                gEntranceTable[((void)0, gSaveContext.entranceIndex) + baseSceneLayer].field); // Fade In
+            if (GameInteractor_Should(VB_SET_TRANSITION_TYPE, true, play)) {
+                play->transitionType = ENTRANCE_INFO_END_TRANS_TYPE(
+                    gEntranceTable[((void)0, gSaveContext.entranceIndex) + baseSceneLayer].field); // Fade In
+            }
         } else {
-            play->transitionType = gSaveContext.nextTransitionType;
+            if (GameInteractor_Should(VB_SET_TRANSITION_TYPE, true, play)) {
+                play->transitionType = gSaveContext.nextTransitionType;
+            }
             gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
         }
     } else {
