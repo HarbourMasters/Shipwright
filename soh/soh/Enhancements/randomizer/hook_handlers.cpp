@@ -287,11 +287,6 @@ void CheckTriggers() {
 
 // "Sages hold dungeon rewards": while a sage's soul is missing, the reward they'd hand over is held back.
 // The dungeon still counts as done (its flag is set as usual); only the check waits for the soul.
-static bool IsSageSoulMissing(RandomizerGet soul) {
-    const Rando::NpcSoul* npcSoul = Rando::GetNpcSoul(soul);
-    return npcSoul != nullptr && Rando::IsNpcSoulShuffled(*npcSoul) && !Flags_GetRandomizerInf(npcSoul->randInf);
-}
-
 static bool IsCollectionFlagSet(RandomizerCheck rc) {
     Rando::SpoilerCollectionCheck collectionCheck = Rando::StaticData::GetLocation(rc)->GetCollectionCheck();
     switch (collectionCheck.type) {
@@ -308,7 +303,7 @@ static bool IsCollectionFlagSet(RandomizerCheck rc) {
 // is received; queuing a check twice is harmless (already obtained checks are skipped).
 static void ReleaseSageRewards() {
     for (const Rando::SageReward& reward : Rando::GetSageRewards()) {
-        if (Rando::GetSageRewardSoul(reward.rc) == RG_NONE || IsSageSoulMissing(reward.soul) ||
+        if (Rando::GetSageRewardSoul(reward.rc) == RG_NONE || Rando::IsNpcSoulMissing(reward.soul) ||
             !IsCollectionFlagSet(reward.rc)) {
             continue;
         }
@@ -362,7 +357,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     }
 
     RandomizerGet sageSoul = Rando::GetSageRewardSoul(rc);
-    if (sageSoul != RG_NONE && IsSageSoulMissing(sageSoul)) {
+    if (sageSoul != RG_NONE && Rando::IsNpcSoulMissing(sageSoul)) {
         SPDLOG_INFO("Holding RC {} until its sage's soul is found", static_cast<uint32_t>(rc));
         return;
     }
@@ -2642,8 +2637,11 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         return;
     }
 
+    // Child Nabooru at the Spirit Temple crawlspace is a gate you talk your way past. Without Shuffle Speak
+    // the rando skips her (see savefile.cpp), unless her soul is shuffled: then she's the gate (a statue
+    // until her soul is found, see ShuffleNpcSouls.cpp).
     if (actor->id == ACTOR_EN_NB && (actor->params & 0xFF) == NB_TYPE_CRAWLSPACE &&
-        !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK)) {
+        !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) && !Rando::IsNpcSoulShuffled(*Rando::GetNpcSoul(RG_NABOORU_SOUL))) {
         Actor_Kill(actor);
     }
 

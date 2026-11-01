@@ -1276,6 +1276,8 @@ void SkelAnime_DrawFlexOpa(PlayState* play, void** skeleton, Vec3s* jointTable, 
                            OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg);
 s16 Animation_GetLength(void* animation);
 s16 Animation_GetLastFrame(void* animation);
+void SkelAnime_GetFrameData(AnimationHeader* animation, s32 frame, s32 limbCount, Vec3s* frameTable);
+void SkelAnime_GetFrameData(AnimationHeader* animation, s32 frame, s32 limbCount, Vec3s* frameTable);
 s32 SkelAnime_GetFrameDataLegacy(LegacyAnimationHeader* animation, s32 frame, Vec3s* frameTable);
 s16 Animation_GetLimbCountLegacy(LegacyAnimationHeader* animation);
 s16 Animation_GetLengthLegacy(LegacyAnimationHeader* animation);

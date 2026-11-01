@@ -3,6 +3,11 @@
 #include "SeedContext.h"
 #include "randomizerEnums/NpcSoulList.h"
 
+extern "C" {
+#include "z64.h"
+#include "functions.h"
+}
+
 namespace Rando {
 
 static std::vector<NpcSoul> BuildNpcSouls() {
@@ -90,6 +95,11 @@ RandomizerGet GetSageRewardSoul(RandomizerCheck rc) {
         }
     }
     return RG_NONE;
+}
+
+bool IsNpcSoulMissing(RandomizerGet rg) {
+    const NpcSoul* soul = GetNpcSoul(rg);
+    return soul != nullptr && IsNpcSoulShuffled(*soul) && !Flags_GetRandomizerInf(soul->randInf);
 }
 
 bool AreNpcSoulsEnabled() {

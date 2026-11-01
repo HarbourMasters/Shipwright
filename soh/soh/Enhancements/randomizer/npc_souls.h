@@ -48,6 +48,9 @@ std::string GetNpcSoulHintName(const NpcSoul& soul);
 // the player doesn't start with it). A soul that isn't shuffled is owned from the start.
 bool IsNpcSoulShuffled(const NpcSoul& soul);
 
+// In game: true when this soul is shuffled and hasn't been found yet (its NPC is a statue).
+bool IsNpcSoulMissing(RandomizerGet rg);
+
 // True when any NPC soul category is shuffled in the current seed.
 bool AreNpcSoulsEnabled();
 
