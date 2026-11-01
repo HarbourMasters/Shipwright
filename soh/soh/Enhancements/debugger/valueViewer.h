@@ -87,4 +87,7 @@ class ValueViewerWindow final : public Ship::GuiWindow {
     void UpdateElement() override{};
 };
 
+void ApplyValuePreset(const nlohmann::json& preset, bool merge);
+void SaveValuePreset(nlohmann::json& preset);
+
 #endif
