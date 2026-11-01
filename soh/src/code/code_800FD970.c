@@ -20,6 +20,15 @@ void Rand_Seed(u32 seed) {
     sRandInt = seed;
 }
 
+// SoH [ShipGZ] Accessors so savestates and macros can capture / restore the RNG exactly.
+u32 Rand_GetState(void) {
+    return sRandInt;
+}
+
+void Rand_SetState(u32 state) {
+    sRandInt = state;
+}
+
 /**
  * Returns a pseudo-random floating-point number between 0.0f and 1.0f, by generating
  * the next integer and masking it to an IEEE-754 compliant floating-point number

@@ -2,6 +2,10 @@
 
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include "GameInteractor.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <libultraship/libultra/controller.h>
+#include "z64.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,6 +17,16 @@ void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
 void GameInteractor_ExecuteOnGameStateMainStart();
 void GameInteractor_ExecuteOnGameFrameUpdate();
+void GameInteractor_ExecuteOnShipGZBeginFrame(bool* runGameFrame, bool* slowMotion);
+void GameInteractor_ExecuteOnShipGZEndFrame(bool* resetGame);
+void GameInteractor_ExecuteOnShipGZProcessPads(OSContPad* pads, int32_t numPads);
+uint32_t GameInteractor_ExecuteOnShipGZFilterRandSeed(uint32_t naturalSeed);
+uint32_t GameInteractor_ExecuteOnShipGZFilterAudioRandom(uint32_t naturalValue);
+float GameInteractor_ExecuteOnShipGZGetSpeed(float defaultSpeed);
+void GameInteractor_ExecuteOnShipGZStateSaved(uint32_t slot);
+void GameInteractor_ExecuteOnShipGZStateLoaded(uint32_t slot);
+void GameInteractor_ExecuteOnShipGZBeforeStateSave(uint32_t* rngSeed, void* padInputs, size_t numPadInputs);
+void GameInteractor_ExecuteOnShipGZAfterStateLoad(uint32_t rngSeed, void* padInputs, size_t numPadInputs);
 void GameInteractor_ExecuteOnCameraState(PlayState* play);
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnEquipmentDelete(int16_t equipmentType, uint16_t equipValue);

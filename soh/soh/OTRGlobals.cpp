@@ -39,6 +39,8 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/Enhancements/savestates.h"
+#include "soh/Enhancements/tas/ShipGZ.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/speedrun/Speedrun.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
@@ -1558,6 +1560,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
+    ShipGZ_InitHooks();
     SaveManager::Instance = new SaveManager();
 
     std::shared_ptr<Ship::Config> conf = OTRGlobals::Instance->context->GetConfig();
@@ -1842,6 +1845,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         fps = original_fps;
     }
 
+    // ShipGZ controls playback rate through a GameInteractor hook; default speed preserves normal rendering.
+    const float shipGzSpeed = GameInteractor_ExecuteOnShipGZGetSpeed(1.0f);
+    if (shipGzSpeed > 1.0f) {
+        fps = original_fps;
+    }
+
     if (last_fps != fps || last_update_rate != R_UPDATE_RATE) {
         time = 0;
     }
@@ -1859,7 +1868,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     time -= fps;
 
     if (wnd != nullptr) {
-        wnd->SetTargetFps(fps);
+        wnd->SetTargetFps(shipGzSpeed > 1.0f ? (int)(fps * shipGzSpeed) : fps);
     }
 
     int step = original_fps;
@@ -1894,6 +1903,19 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     // OTRTODO: FIGURE OUT END FRAME POINT
     /* if (OTRGlobals::Instance->context->lastScancode != -1)
          OTRGlobals::Instance->context->lastScancode = -1;*/
+}
+
+// SoH [ShipGZ] Present the last game frame again without running game logic or audio. Used while the game
+// is frozen (pause / frame advance) and for the in-between frames of slow motion. Like the gfx debugger
+// path above, the final (non-interpolated) matrices of the last frame are used.
+extern "C" void Graph_ProcessGfxCommandsFrozen(Gfx* commands, s32 slowMotion) {
+    auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetRawInstance()->GetWindow());
+    int originalFps = 60 / (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1);
+    if (wnd != nullptr) {
+        // Slow motion holds each frame for one original frame period; a full freeze keeps the UI responsive.
+        wnd->SetTargetFps(slowMotion ? originalFps : std::max(static_cast<int>(OTRGlobals::Instance->GetInterpolationFPS()), 60));
+    }
+    RunCommands(commands, originalFps, 0, originalFps, 1);
 }
 
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {

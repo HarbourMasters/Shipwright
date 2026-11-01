@@ -1,4 +1,6 @@
 #include "SohMenu.h"
+#include "soh/Enhancements/tas/ShipGZCore.hpp"
+#include <imgui.h>
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "SohModals.h"
@@ -458,6 +460,78 @@ void SohMenu::AddMenuSettings() {
         .WindowName("Configure Controller")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Bindings Window."));
+    AddWidget(path, "GZ TAS Controller Buttons", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "GZ TAS controller bindings", WIDGET_CUSTOM)
+        .HideInSearch(true)
+        .CustomFunction([](WidgetInfo&) {
+            using namespace ShipGZ;
+            static int captureCmd = -1;
+            static uint32_t accumulatedButtons = 0;
+            static bool sawButtons = false;
+            static const int commands[] = { CMD_PAUSE, CMD_ADVANCE, CMD_SAVE_STATE, CMD_LOAD_STATE };
+
+            ImGui::TextWrapped("Choose a row, then press the desired controller button or button combo. "
+                               "Release to save it. Backspace clears a binding; Escape cancels capture.");
+            if (captureCmd >= 0) {
+                static OSContPad pads[4];
+                osContGetReadData(pads);
+                if (pads[0].button != 0) {
+                    accumulatedButtons |= pads[0].button;
+                    sawButtons = true;
+                } else if (sawButtons) {
+                    SetCommandPad(captureCmd, accumulatedButtons);
+                    captureCmd = -1;
+                    accumulatedButtons = 0;
+                    sawButtons = false;
+                }
+                if (ImGui::IsKeyPressed(ImGuiKey_Escape, false)) {
+                    captureCmd = -1;
+                    accumulatedButtons = 0;
+                    sawButtons = false;
+                } else if (ImGui::IsKeyPressed(ImGuiKey_Backspace, false)) {
+                    SetCommandPad(captureCmd, 0);
+                    captureCmd = -1;
+                    accumulatedButtons = 0;
+                    sawButtons = false;
+                }
+            }
+
+            const char* labels[] = { "Pause", "Frame by frame", "Save state", "Load state" };
+            const std::pair<uint32_t, const char*> buttonNames[] = {
+                { BTN_A, "A" }, { BTN_B, "B" }, { BTN_Z, "Z" }, { BTN_START, "Start" },
+                { BTN_L, "L" }, { BTN_R, "R" }, { BTN_CUP, "C-Up" }, { BTN_CDOWN, "C-Down" },
+                { BTN_CLEFT, "C-Left" }, { BTN_CRIGHT, "C-Right" },
+                { BTN_DUP, "D-Up" }, { BTN_DDOWN, "D-Down" }, { BTN_DLEFT, "D-Left" }, { BTN_DRIGHT, "D-Right" },
+                { 0x0040, "M1" }, { 0x0080, "M2" },
+            };
+            for (int i = 0; i < 4; ++i) {
+                int cmd = commands[i];
+                ImGui::PushID(cmd);
+                ImGui::TextUnformatted(labels[i]);
+                ImGui::SameLine(190.0f);
+                std::string binding;
+                uint32_t combo = GetCommandPad(cmd);
+                for (const auto& button : buttonNames) {
+                    if (combo & button.first) {
+                        if (!binding.empty()) {
+                            binding += " + ";
+                        }
+                        binding += button.second;
+                    }
+                }
+                if (binding.empty()) {
+                    binding = "unbound";
+                }
+                std::string label = captureCmd == cmd ? (sawButtons ? "release to bind" : "press controller buttons...")
+                                                       : binding;
+                if (ImGui::Button(label.c_str(), ImVec2(220.0f, 0.0f))) {
+                    captureCmd = cmd;
+                    accumulatedButtons = 0;
+                    sawButtons = false;
+                }
+                ImGui::PopID();
+            }
+        });
 
     // Input Viewer
     path.sidebarName = "Input Viewer";

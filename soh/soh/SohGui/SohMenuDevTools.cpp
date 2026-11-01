@@ -214,6 +214,17 @@ void SohMenu::AddMenuDevTools() {
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Value Viewer Window."));
 
+    // ShipGZ (TAS tools)
+    path.sidebarName = "ShipGZ (TAS)";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout ShipGZ", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("ShipGZ"))
+        .WindowName("ShipGZ")
+        .Options(WindowButtonOptions().Tooltip(
+            "GZ-style tool-assisted speedrun tools: pause and frame advance, input macro recording and playback, "
+            "savestate rerecording, an input editor, virtual controllers and bindable commands. Default hotkeys: "
+            "F8 window, P pause, O frame advance, F3 record, F4 play, K/L save/load state, [ ] state slot."));
+
     // Message Viewer
     path.sidebarName = "Message Viewer";
     AddSidebarEntry("Dev Tools", path.sidebarName, 2);

@@ -2429,7 +2429,8 @@ s32 AudioOcarina_MemoryGameNextNote(void) {
         return 1;
     }
 
-    randomButtonIndex = Audio_NextRandom();
+    // Subscribers can make this audio RNG deterministic for TAS macros.
+    randomButtonIndex = GameInteractor_ExecuteOnShipGZFilterAudioRandom(Audio_NextRandom());
     randomPitch = sButtonToPitchMap[randomButtonIndex % 5];
 
     if (sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos - 1].pitch == randomPitch) {

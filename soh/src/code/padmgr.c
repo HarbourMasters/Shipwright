@@ -6,6 +6,7 @@
 #include "soh/Enhancements/controls/Mouse.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 s32 D_8012D280 = 1;
 
@@ -217,6 +218,9 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     s32 buttonDiff;
 
     PadMgr_LockPadData(padMgr);
+
+    // Let GameInteractor subscribers modify controller pads before input edges are derived.
+    GameInteractor_ExecuteOnShipGZProcessPads(padMgr->pads, padMgr->nControllers);
 
     input = &padMgr->inputs[0];
     padnow1 = &padMgr->pads[0];
