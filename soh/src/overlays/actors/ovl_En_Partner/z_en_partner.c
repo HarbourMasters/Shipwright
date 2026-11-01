@@ -866,7 +866,11 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
         if (this->usedItem == 0xFF && this->itemTimer <= 0) {
             for (uint8_t i = 0; i < buttonMax; i++) {
                 if (CHECK_BTN_ALL(sControlInput.press.button, partnerButtons[i])) {
-                    this->usedItem = gSaveContext.equips.buttonItems[i + 1];
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanSeparateLoadout"), 0)) {
+                        this->usedItem = gSaveContext.ship.ivanButtonItems[i];
+                    } else {
+                        this->usedItem = gSaveContext.equips.buttonItems[i + 1];
+                    }
                     this->usedItemButton = i;
                     pressed = 1;
                 }
