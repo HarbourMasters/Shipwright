@@ -1429,6 +1429,9 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When you lose 4 quarters of a heart you will permanently lose that Heart Container.\n\n"
             "Disabling this after the fact will restore your Heart Containers."));
+    AddWidget(path, "Damage while Shielding", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ShieldingDealsDamage"))
+        .Options(CheckboxOptions().Tooltip("Attacks blocked with a shield will still deal their normal damage."));
     AddWidget(path, "Damage Multiplier", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("DamageMult"))
         .Options(ComboboxOptions().ComboMap(allPowers).DefaultIndex(0).Tooltip(

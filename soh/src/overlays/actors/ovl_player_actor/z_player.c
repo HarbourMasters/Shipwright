@@ -4786,7 +4786,8 @@ s32 func_808382DC(Player* this, PlayState* play) {
             func_80837C0C(play, this, knockbackResponse[this->knockbackType - 1], this->knockbackSpeed,
                           this->knockbackYVelocity, this->knockbackRot, 20);
         } else {
-            sp64 = (this->shieldQuad.base.acFlags & AC_BOUNCED) != 0;
+            sp64 = GameInteractor_Should(VB_PLAYER_BLOCK_ATTACK_WITH_SHIELD,
+                                         (this->shieldQuad.base.acFlags & AC_BOUNCED) != 0, this);
 
             //! @bug The second set of conditions here seems intended as a way for Link to "block" hits by rolling.
             // However, `Collider.atFlags` is a byte so the flag check at the end is incorrect and cannot work.

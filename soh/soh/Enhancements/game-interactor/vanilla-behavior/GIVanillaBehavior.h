@@ -2553,6 +2553,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->shieldQuad.base.acFlags & AC_BOUNCED) != 0
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_BLOCK_ATTACK_WITH_SHIELD,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
