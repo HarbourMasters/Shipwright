@@ -50,6 +50,7 @@ typedef enum {
     WIDGET_WINDOW_BUTTON,
     WIDGET_AUDIO_BACKEND, // needed for special operations that can't be handled easily with the normal combobox widget
     WIDGET_VIDEO_BACKEND, // same as above
+    WIDGET_SPEECH_DEVICE, // same as above: the device list is only known at runtime
     WIDGET_CUSTOM,
 } WidgetType;
 
@@ -123,6 +124,7 @@ struct WidgetInfo {
         switch (type) {
             case WIDGET_AUDIO_BACKEND:
             case WIDGET_VIDEO_BACKEND:
+            case WIDGET_SPEECH_DEVICE:
             case WIDGET_COMBOBOX:
             case WIDGET_CVAR_COMBOBOX:
                 options = std::make_shared<UIWidgets::ComboboxOptions>(std::get<UIWidgets::ComboboxOptions>(options_));

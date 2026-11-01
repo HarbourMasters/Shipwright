@@ -30,6 +30,7 @@
 #include <ship/resource/archive/O2rArchive.h>
 #include <ship/utils/binarytools/MemoryStream.h>
 #include "Enhancements/speechsynthesizer/SpeechSynthesizer.h"
+#include "Enhancements/audio/SpeechPlayer.h"
 #include "Enhancements/controls/SohInputEditorWindow.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/debugconsole.h"
@@ -130,6 +131,9 @@ const uint32_t defaultImGuiScale = 1;
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 bool SoH_HandleConfigDrop(char* filePath);
+
+// The rate the game renders at, and so the rate anything mixed into it has to match.
+#define AUDIO_SAMPLE_RATE 32000
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -878,7 +882,7 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    context->InitAudio({ .SampleRate = AUDIO_SAMPLE_RATE, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
     // The menu is set up before audio is initialized, so its list of available audio backends has to be
     // populated here rather than in Menu::InitElement (where the window backends are handled).
@@ -1097,6 +1101,11 @@ void OTRAudio_Thread() {
             AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
                                            num_audio_samples);
         }
+
+        // Speech is mixed in here rather than played by the speech engine itself, which
+        // is what lets it land on the game's device and under the game's volume. It adds
+        // nothing when it is idle or on an output of its own.
+        SOH::SpeechPlayer::Instance().Mix(audio_buffer, num_audio_samples * AUDIO_FRAMES_PER_UPDATE, AUDIO_SAMPLE_RATE);
 
         AudioPlayer_Play((u8*)audio_buffer,
                          num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
@@ -1579,6 +1588,10 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     SpeechSynthesizer::Instance = new SpeechLogger();
 #endif
     SpeechSynthesizer::Instance->Init();
+#if ESPEAK
+    SOH::SpeechPlayer::Instance().SetSeparateOutput(CVarGetInteger(CVAR_SETTING("A11yTTSSeparateOutput"), 1) != 0,
+                                                    CVarGetString(CVAR_SETTING("A11yTTSOutputDevice"), ""));
+#endif
 
     CrowdControl::Instance = new CrowdControl();
     Sail::Instance = new Sail();
