@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x015AF190 ]
-
+    - [1, 0x015AF190]
+  directory: textures/
+  external_files:
+    - ntsc_u_mq/textures/vr_GLVR_pal_static.yml
 gGoronShop2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gGoronShop2BgTex:
   height: 256
   external_tlut: vr_GLVR_pal_static
   external_tlut_offset: 0x200
-
 gGoronShopBgTex:
   type: TEXTURE
   offset: 0x0
@@ -21,4 +22,3 @@ gGoronShopBgTex:
   height: 256
   external_tlut: vr_GLVR_pal_static
   external_tlut_offset: 0x0
-

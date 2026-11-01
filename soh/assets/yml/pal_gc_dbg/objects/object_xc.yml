@@ -48,6 +48,7 @@ gSheikEyeHalfClosedTex:
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeOpenTex:
   type: TEXTURE
@@ -56,6 +57,7 @@ gSheikEyeOpenTex:
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeShutTex:
   type: TEXTURE
@@ -64,6 +66,7 @@ gSheikEyeShutTex:
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikEyeSquintingTex:
   type: TEXTURE
@@ -72,6 +75,7 @@ gSheikEyeSquintingTex:
   format: CI8
   width: 32
   height: 32
+  tlut: 0x4A40
 
 gSheikFallingFromContortionsAnim:
   type: OOT:ANIMATION

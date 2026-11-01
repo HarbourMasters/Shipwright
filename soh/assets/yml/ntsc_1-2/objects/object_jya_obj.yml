@@ -333,8 +333,8 @@ gMegami5TLUT:
   offset: 0xAC70
   symbol: gMegami5TLUT
   format: RGBA16
-  width: 4
-  height: 4
+  width: 36
+  height: 1
 
 gMegamiCrumbleTLUT:
   type: TEXTURE
