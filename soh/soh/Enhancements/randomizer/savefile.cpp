@@ -508,7 +508,7 @@ extern "C" void Randomizer_InitSaveFile() {
 
     // NPC souls that aren't in the pool (category off, or a starting soul) are owned from the start.
     for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
-        if (Randomizer_GetSettingValue(Rando::GetNpcSoulCategorySetting(soul.category)) == RO_GENERIC_OFF ||
+        if (!Rando::IsNpcSoulCategoryShuffled(soul.category, Randomizer_GetSettingValue(RSK_SHUFFLE_NPC_SOULS)) ||
             Randomizer_GetSettingValue(soul.startingSetting) != RO_GENERIC_OFF) {
             Flags_SetRandomizerInf(soul.randInf);
         }

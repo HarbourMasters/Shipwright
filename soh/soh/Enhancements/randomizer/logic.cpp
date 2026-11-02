@@ -2042,7 +2042,7 @@ bool Logic::HasCarpenterSouls() {
 }
 
 bool Logic::SageHandsOverReward(RandomizerGet sageSoul) {
-    return ctx->GetOption(RSK_NPC_SOULS_SAGES).Is(false) || HasItem(sageSoul);
+    return !DoSagesHoldRewards() || HasItem(sageSoul);
 }
 
 bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {

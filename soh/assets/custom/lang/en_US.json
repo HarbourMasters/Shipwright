@@ -1928,50 +1928,22 @@
                     "Revealed - Ice Traps will not disguise themselves in text."
                 ]
             },
-            "shuffle_npc_souls_merchants": {
-                "name": "Shuffle Merchants Souls",
+            "shuffle_npc_souls": {
+                "name": "Shuffle NPC Souls",
                 "description": [
-                    "Shuffles the souls of shopkeepers, salesmen, adult trade quest NPCs and the Deku Scrubs into the item pool.\n",
+                    "Shuffles the souls of NPCs into the item pool. Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life.\n",
                     "\n",
-                    "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
-                ]
-            },
-            "shuffle_npc_souls_minigames": {
-                "name": "Shuffle Minigames Souls",
-                "description": [
-                    "Shuffles the souls of NPCs who run minigames, such as the shooting galleries, bowling, the chest game, fishing and Dampe into the item pool.\n",
+                    "Shops & Games - Shopkeepers, salesmen, adult trade quest NPCs, the Deku Scrubs and the NPCs who run minigames, such as the shooting galleries, bowling, the chest game, fishing and Dampe.\n",
                     "\n",
-                    "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
-                ]
-            },
-            "shuffle_npc_souls_gatekeepers": {
-                "name": "Shuffle Gatekeepers Souls",
-                "description": [
-                    "Shuffles the souls of NPCs who open paths or free others, such as gate guards, Mido, King Zora, the carpenters, Talon, Malon and Kaepora into the item pool.\n",
+                    "Shops, Games & Story - Also Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru and the Great Fairies, who hand over songs and story items.\n",
                     "\n",
-                    "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
-                ]
-            },
-            "shuffle_npc_souls_story": {
-                "name": "Shuffle Story Souls",
-                "description": [
-                    "Shuffles the souls of Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru and the Great Fairies into the item pool.\n",
-                    "\n",
-                    "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
-                ]
-            },
-            "shuffle_npc_souls_townsfolk": {
-                "name": "Shuffle Townsfolk Souls",
-                "description": [
-                    "Shuffles the souls of everyone else into the item pool: named townsfolk such as Guru-Guru, the Dog Lady, the Cursed Family, Honey and Darling or the scarecrows Pierre and Bonooru, and one soul shared by each people for the NPCs without a name of their own (Kokiri, Hylians, Gorons, Zoras, Gerudo).\n",
-                    "\n",
-                    "Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life."
+                    "All - Also the NPCs who open paths, such as the guards, Mido, King Zora, the carpenters, Talon, Malon and Kaepora, and everyone else: named townsfolk such as Guru-Guru, the Dog Lady and the Cursed Family, and one soul shared by each people (Kokiri, Hylians, Gorons, Zoras, Gerudo)."
                 ]
             },
             "npc_souls_sages": {
                 "name": "Sages Hold Dungeon Rewards",
                 "description": [
-                    "With Story souls shuffled, each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
+                    "With story souls shuffled (Shops, Games & Story or All), each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
                 ]
             },
             "starting_id_soul": {

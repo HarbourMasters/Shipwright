@@ -7,7 +7,7 @@
 // ID expands to RG_<ID>_SOUL, RAND_INF_<ID>_SOUL, RHT_<ID>_SOUL and RSK_STARTING_<ID>_SOUL.
 // TRACKER is the short label drawn under the soul's icon in the item tracker (6 characters or fewer).
 // CATEGORY is one of MERCHANTS, MINIGAMES, GATEKEEPERS, STORY, TOWNSFOLK and picks the
-// RSK_SHUFFLE_NPC_SOULS_<CATEGORY> setting that puts the soul in the pool.
+// Shuffle NPC Souls step that puts the soul in the pool (see IsNpcSoulCategoryShuffled).
 // ADVANCEMENT is false for red-herring souls that gate no check: they still look and hint
 // like real souls, but the fill treats them as junk.
 // GERMAN is the item name with @ where the noun goes: "Talons @" is "Talons Seele", "@ der Zoras" is

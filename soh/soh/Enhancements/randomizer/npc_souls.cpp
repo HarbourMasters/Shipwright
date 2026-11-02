@@ -38,20 +38,27 @@ bool IsNpcSoul(RandomizerGet rg) {
     return GetNpcSoul(rg) != nullptr;
 }
 
-RandomizerSettingKey GetNpcSoulCategorySetting(NpcSoulCategory category) {
+bool IsNpcSoulCategoryShuffled(NpcSoulCategory category, uint8_t shuffleNpcSouls) {
     switch (category) {
         case NpcSoulCategory::MERCHANTS:
-            return RSK_SHUFFLE_NPC_SOULS_MERCHANTS;
         case NpcSoulCategory::MINIGAMES:
-            return RSK_SHUFFLE_NPC_SOULS_MINIGAMES;
-        case NpcSoulCategory::GATEKEEPERS:
-            return RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS;
+            return shuffleNpcSouls >= RO_NPC_SOULS_SHOPS_AND_GAMES;
         case NpcSoulCategory::STORY:
-            return RSK_SHUFFLE_NPC_SOULS_STORY;
+            return shuffleNpcSouls >= RO_NPC_SOULS_PLUS_STORY;
+        case NpcSoulCategory::GATEKEEPERS:
         case NpcSoulCategory::TOWNSFOLK:
-            return RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK;
+            return shuffleNpcSouls >= RO_NPC_SOULS_ALL;
     }
-    return RSK_SHUFFLE_NPC_SOULS_MERCHANTS;
+    return false;
+}
+
+bool IsNpcSoulCategoryShuffled(NpcSoulCategory category) {
+    return IsNpcSoulCategoryShuffled(category, Context::GetInstance()->GetOption(RSK_SHUFFLE_NPC_SOULS).Get());
+}
+
+bool DoSagesHoldRewards() {
+    auto ctx = Context::GetInstance();
+    return ctx->GetOption(RSK_NPC_SOULS_SAGES).Is(true) && IsNpcSoulCategoryShuffled(NpcSoulCategory::STORY);
 }
 
 std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun) {
@@ -85,8 +92,7 @@ CustomMessage GetNpcSoulHintMessage(const NpcSoul& soul) {
 
 bool IsNpcSoulShuffled(const NpcSoul& soul) {
     auto ctx = Context::GetInstance();
-    return ctx->GetOption(GetNpcSoulCategorySetting(soul.category)).Is(true) &&
-           ctx->GetOption(soul.startingSetting).Is(false);
+    return IsNpcSoulCategoryShuffled(soul.category) && ctx->GetOption(soul.startingSetting).Is(false);
 }
 
 const std::vector<SageReward>& GetSageRewards() {
@@ -101,7 +107,7 @@ const std::vector<SageReward>& GetSageRewards() {
 }
 
 RandomizerGet GetSageRewardSoul(RandomizerCheck rc) {
-    if (Context::GetInstance()->GetOption(RSK_NPC_SOULS_SAGES).Is(false)) {
+    if (!DoSagesHoldRewards()) {
         return RG_NONE;
     }
     for (const SageReward& reward : GetSageRewards()) {
@@ -118,15 +124,7 @@ bool IsNpcSoulMissing(RandomizerGet rg) {
 }
 
 bool AreNpcSoulsEnabled() {
-    auto ctx = Context::GetInstance();
-    for (NpcSoulCategory category :
-         { NpcSoulCategory::MERCHANTS, NpcSoulCategory::MINIGAMES, NpcSoulCategory::GATEKEEPERS, NpcSoulCategory::STORY,
-           NpcSoulCategory::TOWNSFOLK }) {
-        if (ctx->GetOption(GetNpcSoulCategorySetting(category)).Is(true)) {
-            return true;
-        }
-    }
-    return false;
+    return Context::GetInstance()->GetOption(RSK_SHUFFLE_NPC_SOULS).IsNot(RO_NPC_SOULS_OFF);
 }
 
 } // namespace Rando

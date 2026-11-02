@@ -39,8 +39,14 @@ const NpcSoul* GetNpcSoul(RandomizerGet rg);
 
 bool IsNpcSoul(RandomizerGet rg);
 
-// The RSK_SHUFFLE_NPC_SOULS_* setting that controls a category.
-RandomizerSettingKey GetNpcSoulCategorySetting(NpcSoulCategory category);
+// True when the Shuffle NPC Souls setting puts this category's souls in the pool:
+// Shops & Games covers Merchants and Minigames, Shops, Games & Story adds Story, All adds
+// Gatekeepers and Townsfolk.
+bool IsNpcSoulCategoryShuffled(NpcSoulCategory category, uint8_t shuffleNpcSouls);
+bool IsNpcSoulCategoryShuffled(NpcSoulCategory category);
+
+// True when sages hold their dungeon rewards: the switch is on and story souls are shuffled.
+bool DoSagesHoldRewards();
 
 // "Talon's Soul", "Soul of the Zoras". `noun` replaces "Soul" (ice trap names: "Talon's Sole").
 std::string GetNpcSoulItemName(const NpcSoul& soul, const char* noun = "Soul");
@@ -64,7 +70,7 @@ bool IsNpcSoulMissing(RandomizerGet rg);
 // True when any NPC soul category is shuffled in the current seed.
 bool AreNpcSoulsEnabled();
 
-// "Sages hold dungeon rewards": the sage who hands over a dungeon reward, and the reward location.
+// "Sages Hold Dungeon Rewards": the sage who hands over a dungeon reward, and the reward location.
 struct SageReward {
     RandomizerCheck rc;
     RandomizerGet soul;

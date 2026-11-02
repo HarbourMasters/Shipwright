@@ -1064,19 +1064,15 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_BEAN_SOULS, CVAR_RANDOMIZER_SETTING("ShuffleBeanSouls"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
-    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_MERCHANTS, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsMerchants"));
-    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_MINIGAMES, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsMinigames"));
-    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsGatekeepers"));
-    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_STORY, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsStory"));
-    OPT_BOOL(RSK_NPC_SOULS_SAGES, CVAR_RANDOMIZER_SETTING("NpcSoulsSages"));
-    OPT_CALLBACK(RSK_SHUFFLE_NPC_SOULS_STORY, {
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsStory"), 0)) {
+    OPT_U8(RSK_SHUFFLE_NPC_SOULS, {"Off", "Shops & Games", "Shops, Games & Story", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), WIDGET_CVAR_COMBOBOX, RO_NPC_SOULS_OFF);
+    OPT_BOOL(RSK_NPC_SOULS_SAGES, CVAR_RANDOMIZER_SETTING("NpcSoulsSages"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
+    OPT_CALLBACK(RSK_SHUFFLE_NPC_SOULS, {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), RO_NPC_SOULS_OFF) >= RO_NPC_SOULS_PLUS_STORY) {
             mOptions[RSK_NPC_SOULS_SAGES].Enable();
         } else {
-            mOptions[RSK_NPC_SOULS_SAGES].Disable("Requires the Story NPC souls to be shuffled.");
+            mOptions[RSK_NPC_SOULS_SAGES].Disable("Requires the story NPC souls to be shuffled.");
         }
     });
-    OPT_BOOL(RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK, CVAR_RANDOMIZER_SETTING("ShuffleNpcSoulsTownsfolk"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_U8(RSK_SHUFFLE_BOSS_SOULS, {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), WIDGET_CVAR_COMBOBOX);
     OPT_BOOL(RSK_SHUFFLE_DEKU_STICK_BAG, CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_DEKU_STICK_BAG, {
@@ -2136,32 +2132,17 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_ADDITIONAL_ITEMS] =
         OptionGroup::SubGroup("Additional Items",
                               {
-                                  &mOptions[RSK_SHUFFLE_CHILD_WALLET],
-                                  &mOptions[RSK_INCLUDE_TYCOON_WALLET],
-                                  &mOptions[RSK_SHUFFLE_FISHING_POLE],
-                                  &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
-                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],
-                                  &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
-                                  &mOptions[RSK_SHUFFLE_SWIM],
-                                  &mOptions[RSK_SHUFFLE_GRAB],
-                                  &mOptions[RSK_SHUFFLE_CLIMB],
-                                  &mOptions[RSK_SHUFFLE_CRAWL],
-                                  &mOptions[RSK_SHUFFLE_SPEAK],
-                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
-                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
-                                  &mOptions[RSK_ROCS_FEATHER],
-                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_MERCHANTS],
-                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_MINIGAMES],
-                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS],
-                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_STORY],
-                                  &mOptions[RSK_NPC_SOULS_SAGES],
-                                  &mOptions[RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK],
-                                  &mOptions[RSK_NAYRUS_LOVE_USES],
-                                  &mOptions[RSK_BOMBCHU_BAG],
-                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
-                                  &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
-                                  &mOptions[RSK_INFINITE_UPGRADES],
-                                  &mOptions[RSK_SKELETON_KEY],
+                                  &mOptions[RSK_SHUFFLE_CHILD_WALLET], &mOptions[RSK_INCLUDE_TYCOON_WALLET],
+                                  &mOptions[RSK_SHUFFLE_FISHING_POLE], &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
+                                  &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG], &mOptions[RSK_SHUFFLE_OCARINA_BUTTONS],
+                                  &mOptions[RSK_SHUFFLE_SWIM],         &mOptions[RSK_SHUFFLE_GRAB],
+                                  &mOptions[RSK_SHUFFLE_CLIMB],        &mOptions[RSK_SHUFFLE_CRAWL],
+                                  &mOptions[RSK_SHUFFLE_SPEAK],        &mOptions[RSK_SHUFFLE_OPEN_CHEST],
+                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],   &mOptions[RSK_ROCS_FEATHER],
+                                  &mOptions[RSK_SHUFFLE_NPC_SOULS],    &mOptions[RSK_NPC_SOULS_SAGES],
+                                  &mOptions[RSK_NAYRUS_LOVE_USES],     &mOptions[RSK_BOMBCHU_BAG],
+                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS], &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
+                                  &mOptions[RSK_INFINITE_UPGRADES],    &mOptions[RSK_SKELETON_KEY],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ADDITIONAL_ITEMS] =
@@ -2354,12 +2335,8 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                             &mOptions[RSK_ROCS_FEATHER],
-                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_MERCHANTS],
-                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_MINIGAMES],
-                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_GATEKEEPERS],
-                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_STORY],
+                                            &mOptions[RSK_SHUFFLE_NPC_SOULS],
                                             &mOptions[RSK_NPC_SOULS_SAGES],
-                                            &mOptions[RSK_SHUFFLE_NPC_SOULS_TOWNSFOLK],
                                             &mOptions[RSK_NAYRUS_LOVE_USES],
                                             &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
@@ -3120,6 +3097,10 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
 
     if (!mOptions[RSK_SHUFFLE_100_GS_REWARD]) {
         mOptions[RSK_KAK_100_SKULLS_HINT].Set(RO_GENERIC_OFF);
+    }
+
+    if (mOptions[RSK_SHUFFLE_NPC_SOULS].Get() < RO_NPC_SOULS_PLUS_STORY) {
+        mOptions[RSK_NPC_SOULS_SAGES].Set(RO_GENERIC_OFF);
     }
 
     if (!mOptions[RSK_SHUFFLE_FISHING_POLE]) {
