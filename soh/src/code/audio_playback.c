@@ -5,10 +5,7 @@
 extern bool gUseLegacySD;
 
 #if ENABLE_FLUIDSYNTH
-extern bool SOH_MidiTranslator_ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan,
-                                           float channelVolume, uint8_t reverb, uint8_t fontId, int16_t instOrWave,
-                                           uint8_t semitone, bool isFinished, uint8_t channelIdx, float resampleRate,
-                                           float pitchBend);
+extern void SOH_MidiTranslator_ProcessNote(Note* note, NoteSubEu* noteSubEu, const NoteSubAttributes* subAttrs);
 extern void SOH_MidiTranslator_NoteDisabled(int noteIndex);
 #endif
 
@@ -320,56 +317,7 @@ void Audio_ProcessNotes(void) {
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
 
 #if ENABLE_FLUIDSYNTH
-            {
-                SequenceLayer* layer = playbackState->parentLayer;
-                int16_t instOrWave = 0;
-                uint8_t semitone = 0;
-                uint8_t chanIdx = 0;
-                float channelVolume = 1.0f;
-                if (layer != NO_LAYER && layer->channel != NULL) {
-                    instOrWave = (layer->instOrWave == (int16_t)0xFF) ? layer->channel->instOrWave : layer->instOrWave;
-                    semitone = layer->semitone;
-                    channelVolume = layer->channel->volume;
-                    SequenceChannel** channels = layer->channel->seqPlayer->channels;
-
-                    size_t channelCount =
-                        sizeof(layer->channel->seqPlayer->channels) / sizeof(layer->channel->seqPlayer->channels[0]);
-
-                    for (size_t i = 0; i < channelCount; ++i) {
-                        if (channels[i] == layer->channel) {
-                            chanIdx = (uint8_t)i;
-                            break;
-                        }
-                    }
-                }
-                // FluidSynth runs its own volume envelope, so pass the raw key-strike
-                // velocity, not subAttrs.velocity (already ADSR-scaled and near-zero
-                // during attack).
-                float noteVelocity = 1.0f;
-                if (layer != NO_LAYER) {
-                    noteVelocity = layer->noteVelocity;
-                }
-                // Vibrato and portamento ride on the resampling ratio, not on separate
-                // fields, so derive the pitch-bend wheel value from the final frequency.
-                // Dividing by the nominal note frequency cancels sample tuning and the
-                // resample rate, leaving only the continuous pitch modulation.
-                float pitchBend = 1.0f;
-                if (layer != NO_LAYER && layer->sound != NULL && semitone < 0x80 && subAttrs.frequency > 0.0f) {
-                    f32 nominal = gNoteFrequencies[semitone] * layer->sound->tuning * resampRate;
-                    if (nominal > 0.0f) {
-                        pitchBend = subAttrs.frequency / nominal;
-                    }
-                }
-                bool handledByFluidSynth = SOH_MidiTranslator_ProcessNote(
-                    i, subAttrs.frequency, noteVelocity, subAttrs.pan, channelVolume, subAttrs.reverbVol,
-                    playbackState->fontId, instOrWave, semitone, (bool)noteSubEu->bitField0.finished, chanIdx,
-                    gAudioContext.audioBufferParameters.resampleRate, pitchBend);
-                if (handledByFluidSynth) {
-                    // FluidSynth owns this note; silence the native side so the two
-                    // synthesis paths don't sum into a doubled signal.
-                    noteSubEu->bitField0.enabled = false;
-                }
-            }
+            SOH_MidiTranslator_ProcessNote(note, noteSubEu, &subAttrs);
 #endif
 
             noteSubEu->bitField1.bookOffset = bookOffset;

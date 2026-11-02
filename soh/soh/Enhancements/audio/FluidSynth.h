@@ -22,9 +22,10 @@ struct FluidSynthConfig {
 
     // When true, install a softened volume curve: replaces the SF default
     // vel / CC7 / CC11 -> initial-attenuation modulators with versions that keep
-    // the concave NEGATIVE shape but halve the amount (960 -> 480 cB). Maximum
-    // attenuation drops from -96 dB to -48 dB, lifting quiet voices while
-    // preserving dynamics shape. False preserves standard SF behavior.
+    // the concave NEGATIVE shape but halve the amount (960 -> 480 cB), and adds
+    // key pressure on the same curve. Maximum attenuation drops from -96 dB to
+    // -48 dB, lifting quiet voices while preserving dynamics shape. False
+    // preserves standard SF behavior.
     bool linearVelocity = false;
 
     // Maximum simultaneous voices. FluidSynth's stock default is 256; a game that
@@ -93,6 +94,7 @@ class FluidSynth final : public IMidiSynth {
     bool ProgramSelect(uint8_t channel, int sfontId, uint16_t bank, uint16_t program) override;
     void PitchBend(uint8_t channel, float semitones) override;
     void ControlChange(uint8_t channel, uint8_t cc, uint16_t value) override;
+    void KeyPressure(uint8_t channel, uint8_t note, uint8_t value) override;
     void Render(float* out, float* reverbSend, uint32_t frameCount) override;
     void SetReverbSendSwapped(uint8_t channel, bool swapped) override;
     uint32_t GetActiveVoiceCount() const override;

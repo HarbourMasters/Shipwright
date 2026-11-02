@@ -63,8 +63,8 @@ static int ResolveFontIdByPath(const std::string& path) {
 static constexpr int kEngineSemitoneToMidiOffset = 21;
 
 // Held near-max so the SF's default velocity attenuation modulator
-// doesn't silence quiet notes. Dynamics ride CC11 instead (Authentic
-// mode) or NoteOn velocity (Enhanced mode).
+// doesn't silence quiet notes. A note's own dynamics ride key pressure
+// instead (Authentic mode) or NoteOn velocity (Enhanced mode).
 static constexpr uint8_t kFixedNoteOnVelocity = 100;
 
 MidiTranslator::MidiTranslator() {
@@ -76,10 +76,6 @@ MidiTranslator::MidiTranslator() {
     for (auto& row : mActiveEntryIdx)
         for (auto& cell : row)
             cell = -1;
-    // 0xFF = unallocated MIDI channel slot.
-    for (auto& row : mPairChannel)
-        for (auto& cell : row)
-            cell = 0xFF;
     // -1 = pair not forced-drum (and not holding a discovery-pool slot).
     for (auto& row : mForcedDrumPool)
         for (auto& cell : row)
@@ -109,6 +105,8 @@ void MidiTranslator::Reset() {
     for (auto& row : mKeyHold)
         for (auto& cell : row)
             cell = 0;
+    for (uint8_t& count : mChannelNotes)
+        count = 0;
     auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
     if (!synth)
         return;
@@ -1347,61 +1345,32 @@ uint32_t MidiTranslator::GetChannelReclaims() const {
     return mChannelReclaims;
 }
 
-uint8_t MidiTranslator::ReclaimIdleChannel(uint8_t exceptFontId, int16_t exceptInst) {
+uint8_t MidiTranslator::AllocateChannel(uint8_t seqPlayer, uint8_t seqChannel, int16_t entryIdx) {
     for (uint8_t ch = 0; ch < mChannelsAllocated; ++ch) {
-        ChannelOwner& o = mChannelOwner[ch];
-        if (o.instOrWave < 0)
-            continue; // unowned (shouldn't happen without eager release)
-        if (o.fontId == exceptFontId && o.instOrWave == exceptInst)
-            continue; // never evict the pair asking for a channel
-        if (mSynthActiveByPair[o.fontId][o.instOrWave] != 0)
-            continue; // still sounding -- leave it alone
-        // Idle pair: drop its claim. The physical channel keeps its program
-        // and CC state, and so does mChannelState[ch], so the new owner's
-        // ProcessNote re-issues only what differs. No explicit reset needed.
-        mPairChannel[o.fontId][o.instOrWave] = 0xFF;
-        o.instOrWave = -1;
+        const ChannelOwner& o = mChannelOwner[ch];
+        if (o.seqPlayer == seqPlayer && o.seqChannel == seqChannel && o.entryIdx == entryIdx)
+            return ch;
+    }
+
+    if (mChannelsAllocated < kMaxMidiChannels) {
+        const uint8_t ch = mChannelsAllocated++;
+        mChannelOwner[ch] = { seqPlayer, seqChannel, entryIdx };
         return ch;
     }
-    return 0xFF;
-}
 
-// 0xFF return = no channel available; caller routes the note to native.
-uint8_t MidiTranslator::AllocateChannelForPair(uint8_t fontId, int16_t instOrWave) {
-    if (!BypassIndexValid(fontId, instOrWave))
-        return 0xFF;
-    uint8_t& slot = mPairChannel[fontId][instOrWave];
-    if (slot != 0xFF)
-        return slot;
-
-    // Room to grow the pool: hand out the next channel.
-    if (mChannelsAllocated < kMaxMidiChannels) {
-        slot = mChannelsAllocated++;
-        mChannelOwner[slot] = { fontId, instOrWave };
-        return slot;
+    // The physical channel keeps its program and CCs, and so does mChannelState,
+    // so the new owner re-issues only what differs.
+    for (uint8_t ch = 0; ch < kMaxMidiChannels; ++ch) {
+        if (mChannelNotes[ch] == 0) {
+            mChannelOwner[ch] = { seqPlayer, seqChannel, entryIdx };
+            ++mChannelReclaims;
+            return ch;
+        }
     }
 
-    // Pool full: reclaim a channel from a pair that has gone quiet (a prior
-    // song's instruments). Active pairs keep theirs, so nothing sounding is
-    // cut. This is what stops the long-session "instruments stop playing"
-    // collapse -- new pairs get a real channel instead of sharing ch 0.
-    uint8_t reclaimed = ReclaimIdleChannel(fontId, instOrWave);
-    if (reclaimed != 0xFF) {
-        mChannelOwner[reclaimed] = { fontId, instOrWave };
-        ++mChannelReclaims;
-        slot = reclaimed;
-        return slot;
-    }
-
-    // Genuinely exhausted: all 64 channels are sounding distinct pairs right
-    // now. Collapsing onto channel 0 would hijack whatever instrument owns it
-    // and play this note with the wrong program, so signal failure instead and
-    // let the caller fall back to native. mPairChannel stays unassigned, so a
-    // later note retries once any pair goes quiet.
     static bool sLoggedOverflow = false;
     if (!sLoggedOverflow) {
-        SPDLOG_WARN("[MidiTranslator] All {} channels sounding at once; "
-                    "routing overflow pair to native",
+        SPDLOG_WARN("[MidiTranslator] All {} channels sounding at once; routing overflow to native",
                     (int)kMaxMidiChannels);
         sLoggedOverflow = true;
     }
@@ -2013,11 +1982,17 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
 
 // ── ProcessNote ───────────────────────────────────────────────────────────
 
-bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume,
-                                 uint8_t reverb, uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished,
-                                 uint8_t channelIdx, float resampleRate, float pitchBend) {
-    (void)resampleRate;
-    (void)channelIdx;
+bool MidiTranslator::ProcessNote(const EngineNote& engineNote) {
+    const int noteIndex = engineNote.noteIndex;
+    const float freqScale = engineNote.freqScale;
+    const float strike = engineNote.strike;
+    const uint8_t pan = engineNote.pan;
+    const uint8_t reverb = engineNote.reverb;
+    const uint8_t fontId = engineNote.fontId;
+    const int16_t instOrWave = engineNote.instOrWave;
+    const uint8_t semitone = engineNote.semitone;
+    const bool isFinished = engineNote.isFinished;
+    const float pitchBend = engineNote.pitchBend;
 
     if (noteIndex < 0 || noteIndex >= kMaxNotes)
         return false;
@@ -2039,7 +2014,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     // dispatch decision below — guarded by `wasIdleStart` so continuation
     // frames of the same note don't double-count.
     const bool wasIdleStart =
-        BypassIndexValid(fontId, instOrWave) && state.kind == SlotKind::Idle && velocity > 0.0f && !isFinished;
+        BypassIndexValid(fontId, instOrWave) && state.kind == SlotKind::Idle && strike > 0.0f && !isFinished;
     if (wasIdleStart) {
         auto& dbg = mDebugStats[fontId][instOrWave];
         dbg.noteOns.fetch_add(1, std::memory_order_relaxed);
@@ -2066,7 +2041,10 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
 
     auto retireSlot = [&]() {
         if (state.kind == SlotKind::Synth) {
-            ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
+            if (!state.released)
+                ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
+            if (mChannelNotes[state.channel] > 0)
+                mChannelNotes[state.channel]--;
             if (BypassIndexValid(state.pairFontId, state.pairInstOrWave) &&
                 mSynthActiveByPair[state.pairFontId][state.pairInstOrWave] > 0) {
                 mSynthActiveByPair[state.pairFontId][state.pairInstOrWave]--;
@@ -2082,6 +2060,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         state.kind = SlotKind::Idle;
         state.pairInstOrWave = -1;
         state.activeEntryIdx = -1;
+        state.released = false;
     };
 
     // entryIdx attributes the native note to a split row (route=Native) so its
@@ -2129,7 +2108,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     // engine drum; only in Synth mode does per-slot resolution decide synth vs native.
     if ((instOrWave == 0 || instOrWave == 1) && !mDrumChannelSynth[fontId][instOrWave]) {
         int nativeAttrib = FindSlotEntryIdx(fontId, instOrWave, static_cast<uint8_t>(semitone & 0x7F));
-        if (isFinished || velocity <= 0.0f)
+        if (isFinished || strike <= 0.0f)
             retireSlot();
         else
             adoptNative(nativeAttrib);
@@ -2139,7 +2118,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
 
     // ── Resolution: walk the active-split chain ─────────────────────────
     if (!BypassIndexValid(fontId, instOrWave)) {
-        if (isFinished || velocity <= 0.0f)
+        if (isFinished || strike <= 0.0f)
             retireSlot();
         else
             adoptNative(-1);
@@ -2173,7 +2152,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
             bumpRoute(&DebugSlot::routedMute);
             return true;
         }
-        if (isFinished || velocity <= 0.0f)
+        if (isFinished || strike <= 0.0f)
             retireSlot();
         else
             adoptNative(nativeAttrib);
@@ -2194,7 +2173,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     // sibling range synths). First-class winner, not the "no entry" fall-
     // through, so a wider synth split can't shadow it.
     if (e.route == EntryRoute::Native) {
-        if (isFinished || velocity <= 0.0f)
+        if (isFinished || strike <= 0.0f)
             retireSlot();
         else
             adoptNative(activeIdx);
@@ -2220,13 +2199,12 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     // to fire. ProgramSelect(bank=128) sets the channel to drum type, so the
     // per-pair channel allocator handles it like any other preset.
 
-    // Per-pair channel allocation — same channel for the life of a pair
-    // so per-pair effect CCs survive across notes.
-    uint8_t targetChannel = AllocateChannelForPair(fontId, instOrWave);
+    uint8_t targetChannel =
+        AllocateChannel(engineNote.seqPlayer, engineNote.seqChannel, static_cast<int16_t>(activeIdx));
     if (targetChannel == 0xFF) {
         // Channel pool momentarily exhausted (all 64 sounding) -> native, so
         // the instrument still plays instead of corrupting another channel.
-        if (isFinished || velocity <= 0.0f)
+        if (isFinished || strike <= 0.0f)
             retireSlot();
         else
             adoptNative(-1);
@@ -2251,7 +2229,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     uint16_t preset = (static_cast<uint16_t>(gmBank) << 8) | gmProgram;
     ChannelState& chState = mChannelState[targetChannel];
 
-    if (isFinished || velocity <= 0.0f) {
+    if (isFinished || strike <= 0.0f) {
         retireSlot();
         return true;
     }
@@ -2270,7 +2248,12 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         chState.lastPinSfont = pinSfont;
     }
 
-    uint8_t cc7val = static_cast<uint8_t>(std::clamp(channelVolume * 127.0f, 0.0f, 127.0f));
+    float entryGain = e.gain;
+    if (entryGain == 0.0f)
+        entryGain = 1.0f;
+    // Square roots: the engine's amplitudes are squares, the synth's curves expect the control value.
+    const float channelLevel = sqrtf(std::max(0.0f, engineNote.channelVolume)) * mGlobalGain * entryGain;
+    const uint8_t cc7val = static_cast<uint8_t>(std::clamp(channelLevel * 127.0f, 0.0f, 127.0f));
     if (cc7val != chState.lastVolumeCC) {
         synth->ControlChange(targetChannel, 7, static_cast<uint16_t>(cc7val) << 7);
         chState.lastVolumeCC = cc7val;
@@ -2310,22 +2293,8 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     }
     chState.inited = true;
 
-    // ── Velocity shaping ──
-    float entryGain = e.gain;
-    if (entryGain == 0.0f)
-        entryGain = 1.0f;
-    float shaped = std::clamp(sqrtf(std::max(0.0f, velocity)) * mGlobalGain * entryGain, 0.0f, 1.0f);
-
-    uint8_t noteOnVel;
-    uint8_t cc11val;
-    if (mSynthMode == SynthMode::Enhanced) {
-        noteOnVel = static_cast<uint8_t>(shaped * 127.0f);
-        cc11val = 127;
-    } else {
-        noteOnVel = kFixedNoteOnVelocity;
-        cc11val = static_cast<uint8_t>(shaped * 127.0f);
-    }
-    synth->ControlChange(targetChannel, 11, static_cast<uint16_t>(cc11val) << 7);
+    const uint8_t strikeVal = static_cast<uint8_t>(std::clamp(sqrtf(std::max(0.0f, strike)) * 127.0f, 0.0f, 127.0f));
+    const uint8_t noteOnVel = mSynthMode == SynthMode::Enhanced ? strikeVal : kFixedNoteOnVelocity;
 
     // `pitchBend` is the engine's per-note pitch deviation from the nominal note, as
     // a frequency ratio (1.0 = no bend). audio_playback.c already stripped the non-
@@ -2341,6 +2310,8 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         // the voice ring. Melodic notes (no fixedNote) keep their polyphony intact.
         if (hasFixedNote)
             synth->NoteOff(targetChannel, midiNote);
+        if (mSynthMode == SynthMode::Authentic)
+            synth->KeyPressure(targetChannel, midiNote, strikeVal);
         synth->NoteOnPitchFactor(targetChannel, midiNote, noteOnVel, effectiveBend);
         if (targetChannel < kMaxMidiChannels && midiNote < 128 && mKeyHold[targetChannel][midiNote] < 255)
             mKeyHold[targetChannel][midiNote]++;
@@ -2351,6 +2322,8 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         state.pairInstOrWave = instOrWave;
         state.activeEntryIdx = static_cast<int16_t>(activeIdx);
         state.lastFreqScale = freqScale;
+        if (mChannelNotes[targetChannel] < 255)
+            mChannelNotes[targetChannel]++;
         if (mSynthActiveByPair[fontId][instOrWave] < 255) {
             mSynthActiveByPair[fontId][instOrWave]++;
         }
@@ -2376,14 +2349,32 @@ void MidiTranslator::ReleaseKeyHold(IMidiSynth* synth, uint8_t channel, uint8_t 
         synth->NoteOff(channel, midiNote);
 }
 
+bool MidiTranslator::NoteReleased(int noteIndex) {
+    if (noteIndex < 0 || noteIndex >= kMaxNotes)
+        return false;
+    NoteTranslatorState& state = mNoteState[noteIndex];
+    if (state.kind != SlotKind::Synth)
+        return false;
+    if (!state.released) {
+        auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
+        if (!synth)
+            return false;
+        ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
+        state.released = true;
+    }
+    return true;
+}
+
 void MidiTranslator::NoteDisabled(int noteIndex) {
     if (noteIndex < 0 || noteIndex >= kMaxNotes)
         return;
     NoteTranslatorState& state = mNoteState[noteIndex];
     if (state.kind == SlotKind::Synth) {
         auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
-        if (synth)
+        if (synth && !state.released)
             ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
+        if (mChannelNotes[state.channel] > 0)
+            mChannelNotes[state.channel]--;
         if (BypassIndexValid(state.pairFontId, state.pairInstOrWave) &&
             mSynthActiveByPair[state.pairFontId][state.pairInstOrWave] > 0) {
             mSynthActiveByPair[state.pairFontId][state.pairInstOrWave]--;
@@ -2399,6 +2390,7 @@ void MidiTranslator::NoteDisabled(int noteIndex) {
     state.kind = SlotKind::Idle;
     state.pairInstOrWave = -1;
     state.activeEntryIdx = -1;
+    state.released = false;
 }
 
 } // namespace SOH
@@ -2406,14 +2398,6 @@ void MidiTranslator::NoteDisabled(int noteIndex) {
 // ─── C-linkage entry points called from audio_playback.c ───────────────────
 
 extern "C" {
-
-bool SOH_MidiTranslator_ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume,
-                                    uint8_t reverb, uint8_t fontId, int16_t instOrWave, uint8_t semitone,
-                                    bool isFinished, uint8_t channelIdx, float resampleRate, float pitchBend) {
-    return SOH::MidiTranslator::Instance().ProcessNote(noteIndex, freqScale, velocity, pan, channelVolume, reverb,
-                                                       fontId, instOrWave, semitone, isFinished, channelIdx,
-                                                       resampleRate, pitchBend);
-}
 
 void SOH_MidiTranslator_NoteDisabled(int noteIndex) {
     SOH::MidiTranslator::Instance().NoteDisabled(noteIndex);

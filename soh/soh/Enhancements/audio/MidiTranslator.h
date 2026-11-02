@@ -48,6 +48,25 @@ struct NoteTranslatorState {
     // Entry this note resolved to, so retire/NoteDisabled can decrement the
     // right per-entry active counter. -1 = native fall-through (no entry).
     int16_t activeEntryIdx = -1;
+    // The engine let go of the note and the synth voice is in its release.
+    bool released = false;
+};
+
+// One engine note as the translator sees it, read off the engine each update.
+struct EngineNote {
+    int noteIndex = 0;
+    uint8_t seqPlayer = 0;
+    uint8_t seqChannel = 0;
+    uint8_t fontId = 0;
+    int16_t instOrWave = 0;
+    uint8_t semitone = 0;
+    float freqScale = 0.0f;
+    float pitchBend = 1.0f;     // ratio to the nominal note: vibrato and portamento
+    float strike = 0.0f;        // the note's own velocity, as an engine amplitude
+    float channelVolume = 0.0f; // the channel's amplitude, with fades and ducking
+    uint8_t pan = 0;
+    uint8_t reverb = 0;
+    bool isFinished = false;
 };
 
 // Overall translator behaviour, set from AudioEditor and read by ProcessNote.
@@ -139,19 +158,18 @@ class MidiTranslator {
     static MidiTranslator& Instance();
 
     // Audio-thread entry point (see audio_playback.c hook).
-    bool ProcessNote(int noteIndex, float freqScale, float velocity, uint8_t pan, float channelVolume, uint8_t reverb,
-                     uint8_t fontId, int16_t instOrWave, uint8_t semitone, bool isFinished, uint8_t channelIdx,
-                     float resampleRate, float pitchBend);
+    // True when the synth plays the note and the engine must stay silent.
+    bool ProcessNote(const EngineNote& engineNote);
+    // The engine let go of the note. True when the synth plays its release.
+    bool NoteReleased(int noteIndex);
     void NoteDisabled(int noteIndex);
     void Reset();
 
-    // Number of MIDI channels currently held by synth-routed pairs, out of
-    // kMaxMidiChannels. If this reaches the cap, new pairs share channel 0 and
-    // some instruments go silent. Game-thread read of an audio-thread counter,
-    // intentionally unsynchronised (a stale value is fine for a UI gauge).
+    // Number of MIDI channels handed out so far, out of kMaxMidiChannels. At the
+    // cap, a note that finds every channel sounding plays native. Game-thread read
+    // of an audio-thread counter, intentionally unsynchronised (fine for a UI gauge).
     uint8_t GetChannelsInUse() const;
-    // Times the channel pool recycled an idle pair's channel; nonzero means
-    // reclamation is working (no collapse onto channel 0). Companion gauge to
+    // Times the channel pool recycled an idle channel. Companion gauge to
     // GetChannelsInUse() for the FluidSynth tab.
     uint32_t GetChannelReclaims() const;
 
@@ -454,11 +472,9 @@ class MidiTranslator {
     // Claim a free forced-drum histogram pool slot, zeroing it; -1 if the pool
     // is full (>= kMaxForcedDrumPairs flagged at once).
     int AllocForcedDrumPool();
-    uint8_t AllocateChannelForPair(uint8_t fontId, int16_t instOrWave);
-    // Frees the channel of the first idle pair found (no active synth notes,
-    // and not the requesting pair) and returns it, or 0xFF if every channel
-    // is currently sounding. Caller assigns ownership of the returned slot.
-    uint8_t ReclaimIdleChannel(uint8_t exceptFontId, int16_t exceptInst);
+    // A channel per (sequence channel, entry), so the channel's volume, pan and
+    // effect sends follow the sequence channel. 0xFF = all channels sounding.
+    uint8_t AllocateChannel(uint8_t seqPlayer, uint8_t seqChannel, int16_t entryIdx);
 
     // Find an entry by primary key; create a new one if not present.
     // Caller fills bank/presetName even when creating, and decides
@@ -494,18 +510,17 @@ class MidiTranslator {
     uint8_t mEntrySynthActive[kMaxEntries] = {};
     uint8_t mEntryNativeActive[kMaxEntries] = {};
 
-    uint8_t mPairChannel[kMaxFontId][kMaxInstOrWave];
     uint8_t mChannelsAllocated = 0;
 
-    // Reverse map for the reclaim-on-exhaustion path: which pair owns each
-    // allocated MIDI channel. instOrWave == -1 marks an unowned slot. Lets
-    // ReclaimIdleChannel scan 64 channels instead of the full pair grid.
     struct ChannelOwner {
-        uint8_t fontId = 0;
-        int16_t instOrWave = -1; // -1 = unowned
+        uint8_t seqPlayer = 0;
+        uint8_t seqChannel = 0;
+        int16_t entryIdx = -1;
     };
     ChannelOwner mChannelOwner[kMaxMidiChannels] = {};
-    // Count of times an idle pair's channel was reclaimed for a new pair. Pure
+    // Synth notes on each channel, releasing ones included; a channel at 0 can be handed over.
+    uint8_t mChannelNotes[kMaxMidiChannels] = {};
+    // Count of times an idle channel was handed to a new owner. Pure
     // diagnostic: nonzero means the pool wrapped and recycling kicked in.
     uint32_t mChannelReclaims = 0;
 

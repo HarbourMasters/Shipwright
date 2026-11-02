@@ -226,9 +226,14 @@ void FluidSynth::InstallLinearVelocityModulators() {
     fluid_synth_remove_default_mod(mSynth, mod);
     fluid_synth_add_default_mod(mSynth, mod, FLUID_SYNTH_OVERWRITE);
 
+    // 4. Key pressure → initial attenuation, the same curve: per-note dynamics with the velocity held fixed.
+    fluid_mod_set_source1(mod, FLUID_MOD_KEYPRESSURE,
+                          FLUID_MOD_GC | FLUID_MOD_CONCAVE | FLUID_MOD_UNIPOLAR | FLUID_MOD_NEGATIVE);
+    fluid_synth_add_default_mod(mSynth, mod, FLUID_SYNTH_ADD);
+
     delete_fluid_mod(mod);
 
-    SPDLOG_INFO("[FluidSynth] velocity modulators installed (vel/CC7/CC11 concave x 0.5)");
+    SPDLOG_INFO("[FluidSynth] velocity modulators installed (vel/CC7/CC11/key pressure concave x 0.5)");
 }
 
 void FluidSynth::InstallFilterCcModulators() {
@@ -520,6 +525,13 @@ void FluidSynth::ControlChange(uint8_t channel, uint8_t cc, uint16_t value) {
         // The engine scales its send by amount / 128.
         mReverbSend.at(channel) = static_cast<float>((value >> 7) & 0x7F) / 128.0f;
     }
+}
+
+void FluidSynth::KeyPressure(uint8_t channel, uint8_t note, uint8_t value) {
+    std::lock_guard<std::mutex> lock(mSynthMutex);
+    if (!mSynth)
+        return;
+    fluid_synth_key_pressure(mSynth, channel, note, value & 0x7F);
 }
 
 void FluidSynth::SetReverbSendSwapped(uint8_t channel, bool swapped) {

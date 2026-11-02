@@ -66,6 +66,11 @@ class IMidiSynth {
         NoteOn(channel, note, velocity);
     }
 
+    // Polyphonic key pressure, 0-127. Implementations that give it no
+    // meaning may treat this as a no-op.
+    virtual void KeyPressure(uint8_t channel, uint8_t note, uint8_t value) {
+    }
+
     // Standard MIDI CC. value is 0-16383 (14-bit).
     virtual void ControlChange(uint8_t channel, uint8_t cc, uint16_t value) = 0;
 

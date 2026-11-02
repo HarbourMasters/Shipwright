@@ -492,10 +492,10 @@ void SetStatusWarnings(std::vector<std::string> warnings) {
 static float ComputeSynthGlobalGain(SOH::SynthMode mode) {
     // Per-mode constants that match synth loudness to the native engine. The
     // exponent differs because loudness rides a different FluidSynth curve per mode:
-    //   Authentic: loudness via CC11 through the halved (480 cB) modulator, so
-    //     amplitude is linear in the control. Never clamps.
-    //   Enhanced: loudness via NoteOn velocity through the stock concave (960 cB)
-    //     modulator, so amplitude goes as the square; only the loudest notes clip.
+    //   Authentic: loudness via CC7 and key pressure through the halved (480 cB)
+    //     modulators, so amplitude is linear in each control.
+    //   Enhanced: loudness via CC7 and NoteOn velocity through the stock concave
+    //     (960 cB) modulators, so amplitude goes as the square of each.
     // See MidiTranslator::ProcessNote and FluidSynth::InstallLinearVelocityModulators.
     constexpr float kGainCalAuthentic = 0.55f;
     constexpr float kGainCalEnhanced = 1.107f;
@@ -1628,11 +1628,11 @@ void AudioEditor::DrawElement() {
                                 ImGui::TextDisabled("Synth channels: %u / %u  (reclaims: %u)", (unsigned)chUsed,
                                                     (unsigned)chMax, (unsigned)chReclaims);
                                 if (ImGui::IsItemHovered()) {
-                                    ImGui::SetTooltip("MIDI channels held by synth-routed instrument pairs\n"
-                                                      "out of the 64-channel pool. At the cap, the pool\n"
-                                                      "recycles the channel of a pair that has gone quiet\n"
-                                                      "for the new pair; 'reclaims' counts how often that\n"
-                                                      "happened. Sitting at 64 is normal on a long session.");
+                                    ImGui::SetTooltip("MIDI channels handed to sequence channels, one per\n"
+                                                      "sequence channel and instrument, out of the 64-channel\n"
+                                                      "pool. At the cap, the pool recycles a channel that has\n"
+                                                      "gone quiet; 'reclaims' counts how often that happened.\n"
+                                                      "Sitting at 64 is normal on a long session.");
                                 }
                             }
                             // Throttled log so we can correlate user-reported cuts
