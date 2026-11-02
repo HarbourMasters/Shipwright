@@ -774,6 +774,16 @@ typedef enum {
     // ```c
     // true
     // ```
+    // In rando, whether a cutscene draws the item held by a dungeon reward check (the stone or medallion a
+    // sage hands over, or Rauru's gift). False draws nothing there, for a reward that isn't given yet.
+    // #### `args`
+    // - `RandomizerCheck` (passed as `int`)
+    VB_DRAW_CUTSCENE_REWARD_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - None
     VB_DRAW_EPONA_BOOST_CARROTS,

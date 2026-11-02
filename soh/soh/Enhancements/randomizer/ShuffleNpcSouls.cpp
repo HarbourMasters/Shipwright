@@ -857,6 +857,15 @@ void RegisterShuffleNpcSouls() {
             *should = false;             \
         }                                \
     })
+    // A sage still holding their reward hands nothing over in the cutscene, so it shows nothing either.
+    COND_VB_SHOULD(VB_DRAW_CUTSCENE_REWARD_ITEM, shouldRegister, {
+        RandomizerCheck rc = static_cast<RandomizerCheck>(va_arg(args, int));
+        RandomizerGet sageSoul = Rando::GetSageRewardSoul(rc);
+        if (sageSoul != RG_NONE && IsSoulMissing(sageSoul)) {
+            *should = false;
+        }
+    });
+
     NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_SARIAS_SONG, RG_SARIA_SOUL);
     NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_SARIAS_GIFT, RG_SARIA_SOUL);
     NO_SOUL_NO_EVENT(VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD, RG_DARUNIA_SOUL);
