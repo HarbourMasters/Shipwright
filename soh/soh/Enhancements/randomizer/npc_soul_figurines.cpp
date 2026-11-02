@@ -352,7 +352,9 @@ PosedSkeleton* GetPosedSkeleton(PlayState* play, const Figurine& figurine) {
         }
         s32 frame =
             (figurine.frame == kLastFrame) ? Animation_GetLastFrame((void*)figurine.animation) : (s32)figurine.frame;
-        SkelAnime_GetFrameData((AnimationHeader*)figurine.animation, frame, limbCount, posed->jointTable.data());
+        // With no morph, this writes the frame straight into the joint table.
+        Animation_Change(&posed->skelAnime, (AnimationHeader*)figurine.animation, 0.0f, frame, frame, ANIMMODE_ONCE,
+                         0.0f);
 
         Bounds bounds;
         Matrix_Push();
