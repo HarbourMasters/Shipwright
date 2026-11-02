@@ -638,12 +638,13 @@ void GenerateItemPool() {
         AddItemToPool(RG_ZORAS_RIVER_BEAN_SOUL, 2, 1, 1, 1, false);
     }
 
-    // NPC souls: one copy of each soul whose category is shuffled, unless the player starts with it.
+    // NPC souls: one copy of each soul whose category is shuffled, unless the player starts with it. Plentiful
+    // adds a second copy of the souls that gate something, like the other souls; red herrings stay single.
     {
         bool anyNpcSoul = false;
         for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
             if (Rando::IsNpcSoulShuffled(soul)) {
-                AddItemToPool(soul.rg, 1, 1, 1, 1, false);
+                AddItemToPool(soul.rg, soul.advancement ? 2 : 1, 1, 1, 1, false);
                 anyNpcSoul = true;
             }
         }
