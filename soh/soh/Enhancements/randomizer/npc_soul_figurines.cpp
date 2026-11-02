@@ -265,7 +265,7 @@ const std::vector<Figurine> sFigurines = {
     { .soul = RG_ZORAS_SOUL, .skeleton = gZoraSkel, .animation = gZoraIdleAnim, .frame = kLastFrame,
       .textures = { { 0x08, gZoraEyeOpenTex } }, .size = 1.15f },
     { .soul = RG_GERUDO_SOUL, .skeleton = gGerudoPurpleSkel, .animation = gGerudoPurpleLookingAboutAnim,
-      .textures = { { 0x08, gGerudoPurpleEyeOpenTex } }, .size = 1.25f },
+      .textures = { { 0x08, gGerudoPurpleEyeOpenTex } }, .setupDL37 = true, .size = 1.25f },
     { .soul = RG_DEKU_SCRUBS_SOUL, .skeleton = gBusinessScrubSkel, .animation = gBusinessScrubLookAroundAnim },
 };
 // clang-format on
