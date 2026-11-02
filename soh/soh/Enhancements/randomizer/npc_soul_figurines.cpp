@@ -192,7 +192,8 @@ const std::vector<Figurine> sFigurines = {
     { .soul = RG_KING_ZORA_SOUL, .skeleton = gKzSkel, .animation = gKzIdleAnim,
       .textures = { { 0x08, gKzEyeOpenTex } }, .setupDL37 = true, .size = 1.15f },
     { .soul = RG_GERUDO_CARD_GIVER_SOUL, .skeleton = gGerudoRedSkel, .animation = gGerudoRedStandAnim,
-      .textures = { { 0x08, gGerudoRedEyeOpenTex } }, .hiddenLimbs = { 0x05, 0x0B, 0x10 }, .setupDL37 = true },
+      .textures = { { 0x08, gGerudoRedEyeOpenTex } }, .hiddenLimbs = { 0x05, 0x0B, 0x10 }, .setupDL37 = true,
+      .hasEnvColor = true, .envColor = { 140, 0, 0 } }, // her clothes, as SoH's "Gerudo Warrior Clothing Fix"
     { .soul = RG_ICHIRO_SOUL, .skeleton = object_daiku_Skel_007958, .animation = object_daiku_Anim_001AB0,
       .extras = { { 15, object_daiku_DL_005BD0 } }, .hasEnvColor = true, .envColor = { 170, 10, 70 } },
     { .soul = RG_SABOORO_SOUL, .skeleton = object_daiku_Skel_007958, .animation = object_daiku_Anim_001AB0,
