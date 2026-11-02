@@ -273,14 +273,13 @@ class MidiTranslator {
     // create the picked entry; enable + select + bump lastEnabledSeq.
     void PickPreset(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program, int16_t bank,
                     const std::string& presetName);
-    // Disables every enabled entry for (fontId, instOrWave). selected
-    // flags are preserved so ClickSynth can restore.
+    // Disables every enabled entry for (fontId, instOrWave), after stamping the
+    // entries currently playing so ClickSynth can restore exactly those.
     void ClickNative(uint8_t fontId, int16_t instOrWave);
     // Restoration order:
-    //   1. selected entries for (fontId, instOrWave) -> highest seq wins
-    //   2. fallback: any disabled-but-resolvable entry (sfontId >= 0) ->
-    //      highest seq wins (handles the mod-only-row case where the
-    //      user never picked anything)
+    //   1. the entries ClickNative stamped (every split that was playing)
+    //   2. without a stamp (Native since load): the selected entries, or
+    //      failing those every resolvable entry, ranked as at load
     //   3. placeholder { packName="", program=-1, presetName="None" }
     //      (audible result: muted)
     void ClickSynth(uint8_t fontId, int16_t instOrWave);
@@ -403,11 +402,11 @@ class MidiTranslator {
     bool ApplyOverridesFromFile(const std::string& path);
 
     // Publish-as-pack-mapping. Writes a mapping.json shaped for distribution
-    // inside a synth pack: only enabled+selected entries belonging to
-    // `packNameFilter` are emitted, runtime fields are stripped, and the
-    // file carries a top-level "pack_name" field. Returns the number of
+    // inside a synth pack: per pair, only the `packNameFilter` entries that
+    // win among that pack's own rows are emitted, runtime fields are stripped,
+    // and the file carries a top-level "pack_name" field. Returns the number of
     // entries written (or -1 on I/O failure). When packNameFilter is empty,
-    // every selected entry is emitted regardless of its source pack.
+    // the entries currently playing are emitted regardless of their pack.
     int ExportPackMapping(const std::string& path, const std::string& packNameFilter) const;
 
     // Same content ExportPackMapping writes, built in memory (no file I/O).
@@ -488,6 +487,12 @@ class MidiTranslator {
     // wins). Placeholder entries (program<0) participate normally — they
     // resolve only when explicitly enabled and produce muted output.
     void RecomputeActive(uint8_t fontId, int16_t instOrWave);
+    bool Outranks(int ai, int bi) const;
+    // Entries of one pair that win at least one semitone among `candidates`,
+    // highest priority first.
+    std::vector<int> ResolveWinners(const std::vector<int>& candidates) const;
+    // What a pack export writes: per pair, the pack's rows that win among its own.
+    std::vector<int> ExportableEntries(const std::string& packNameFilter) const;
     int PackRank(const std::string& pack) const; // -1 if not in load order
 
     // Walks the cached loaded-preset list and returns the sfontId for

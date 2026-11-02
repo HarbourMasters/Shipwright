@@ -356,47 +356,47 @@ void MidiTranslator::RecomputeAllActive() {
         RecomputeActive(p.first, p.second);
 }
 
-void MidiTranslator::RecomputeActive(uint8_t fontId, int16_t instOrWave) {
-    if (!BypassIndexValid(fontId, instOrWave))
-        return;
+// Total order ranking entries for a semitone (drives both the per-semitone pick
+// and the chain sort): 1) source -- user picks beat mod-supplied; 2) specificity
+// -- narrower range beats wider; 3) pack load order -- later-loaded wins;
+// 4) entry order -- later wins, so a newer pick appended beside an old row beats it.
+bool MidiTranslator::Outranks(int ai, int bi) const {
+    const ConfigEntry& a = mEntries[ai];
+    const ConfigEntry& b = mEntries[bi];
+    int sa = (a.source == EntrySource::UserPicked) ? 1 : 0;
+    int sb = (b.source == EntrySource::UserPicked) ? 1 : 0;
+    if (sa != sb)
+        return sa > sb;
+    int wa = static_cast<int>(a.noteHigh) - static_cast<int>(a.noteLow);
+    int wb = static_cast<int>(b.noteHigh) - static_cast<int>(b.noteLow);
+    if (wa != wb)
+        return wa < wb; // narrower == more specific -> wins
+    int ra = PackRank(a.packName);
+    int rb = PackRank(b.packName);
+    if (ra != rb)
+        return ra > rb;
+    return ai > bi;
+}
 
-    // Total order ranking entries for a semitone (drives both the per-semitone pick
-    // and the chain sort): 1) source -- user picks beat mod-supplied; 2) specificity
-    // -- narrower range beats wider; 3) pack load order -- later-loaded wins.
-    auto outranks = [this](int ai, int bi) {
-        const ConfigEntry& a = mEntries[ai];
-        const ConfigEntry& b = mEntries[bi];
-        int sa = (a.source == EntrySource::UserPicked) ? 1 : 0;
-        int sb = (b.source == EntrySource::UserPicked) ? 1 : 0;
-        if (sa != sb)
-            return sa > sb;
-        int wa = static_cast<int>(a.noteHigh) - static_cast<int>(a.noteLow);
-        int wb = static_cast<int>(b.noteHigh) - static_cast<int>(b.noteLow);
-        if (wa != wb)
-            return wa < wb; // narrower == more specific -> wins
-        return PackRank(a.packName) > PackRank(b.packName);
-    };
+static inline bool IsResolvable(const ConfigEntry& e) {
+    // Native/Mute splits don't reference a soundfont, so they qualify
+    // without a resolved sfontId; only Synth entries need one.
+    return e.enabled && (e.route != EntryRoute::Synth || e.sfontId >= 0);
+}
 
-    // Per-semitone winner: the top-ranked enabled+resolvable entry whose
-    // [noteLow,noteHigh] covers that engine slot. For an unsplit pair every semitone
-    // resolves to the same single entry (or none), collapsing the chain to length 1.
+std::vector<int> MidiTranslator::ResolveWinners(const std::vector<int>& candidates) const {
+    // Per-semitone winner: the top-ranked candidate whose [noteLow,noteHigh]
+    // covers that engine slot. For an unsplit pair every semitone resolves to
+    // the same single entry (or none), collapsing the chain to length 1.
     int winnerAt[128];
     for (int s = 0; s < 128; ++s) {
         int best = -1;
-        for (size_t idx = 0; idx < mEntries.size(); idx++) {
+        for (int idx : candidates) {
             const ConfigEntry& e = mEntries[idx];
-            if (e.fontId != fontId || e.instOrWave != instOrWave)
-                continue;
-            if (!e.enabled)
-                continue;
-            // Native/Mute splits don't reference a soundfont, so they qualify
-            // without a resolved sfontId; only Synth entries need one.
-            if (e.route == EntryRoute::Synth && e.sfontId < 0)
-                continue;
             if (s < e.noteLow || s > e.noteHigh)
                 continue;
-            if (best < 0 || outranks(static_cast<int>(idx), best))
-                best = static_cast<int>(idx);
+            if (best < 0 || Outranks(idx, best))
+                best = idx;
         }
         winnerAt[s] = best;
     }
@@ -414,7 +414,21 @@ void MidiTranslator::RecomputeActive(uint8_t fontId, int16_t instOrWave) {
         if (std::find(winners.begin(), winners.end(), w) == winners.end())
             winners.push_back(w);
     }
-    std::sort(winners.begin(), winners.end(), [&](int a, int b) { return outranks(a, b); });
+    std::sort(winners.begin(), winners.end(), [this](int a, int b) { return Outranks(a, b); });
+    return winners;
+}
+
+void MidiTranslator::RecomputeActive(uint8_t fontId, int16_t instOrWave) {
+    if (!BypassIndexValid(fontId, instOrWave))
+        return;
+
+    std::vector<int> candidates;
+    for (size_t idx = 0; idx < mEntries.size(); idx++) {
+        const ConfigEntry& e = mEntries[idx];
+        if (e.fontId == fontId && e.instOrWave == instOrWave && IsResolvable(e))
+            candidates.push_back(static_cast<int>(idx));
+    }
+    const std::vector<int> winners = ResolveWinners(candidates);
 
     // Reset this pair's links, relink the winners, then publish the head LAST (the
     // single int16_t store) so a concurrent audio-thread walk sees either the intact
@@ -571,6 +585,12 @@ void MidiTranslator::PickPreset(uint8_t fontId, int16_t instOrWave, const std::s
 void MidiTranslator::ClickNative(uint8_t fontId, int16_t instOrWave) {
     if (!BypassIndexValid(fontId, instOrWave))
         return;
+    // Stamped as one set so ClickSynth restores exactly what played, splits included.
+    const uint32_t playingSeq = mNextSeq++;
+    for (int idx = mActiveEntryIdx[fontId][instOrWave]; idx >= 0 && idx < static_cast<int>(mEntries.size());
+         idx = mEntries[idx].nextActiveSplit) {
+        mEntries[idx].lastEnabledSeq = playingSeq;
+    }
     bool hasModEntry = false;
     for (auto& e : mEntries) {
         if (e.fontId == fontId && e.instOrWave == instOrWave) {
@@ -612,8 +632,7 @@ void MidiTranslator::ClickSynth(uint8_t fontId, int16_t instOrWave) {
         return;
 
     // Leaving Native: retire any user Native marker so it stops winning. The
-    // candidate searches below also skip it (deselected here, but the fallback
-    // ignores `selected`).
+    // candidate search below skips it too.
     for (auto& e : mEntries) {
         if (e.fontId == fontId && e.instOrWave == instOrWave && IsNativeMarker(e)) {
             e.enabled = false;
@@ -621,45 +640,33 @@ void MidiTranslator::ClickSynth(uint8_t fontId, int16_t instOrWave) {
         }
     }
 
-    // Primary search: user-selected entries.
-    int bestIdx = -1;
-    uint32_t bestSeq = 0;
+    std::vector<int> candidates;
+    uint32_t restoreSeq = 0;
+    bool anySelected = false;
     for (size_t idx = 0; idx < mEntries.size(); idx++) {
         const ConfigEntry& e = mEntries[idx];
-        if (e.fontId != fontId || e.instOrWave != instOrWave)
+        if (e.fontId != fontId || e.instOrWave != instOrWave || IsNativeMarker(e))
             continue;
-        if (!e.selected)
+        if (e.route == EntryRoute::Synth && e.sfontId < 0)
             continue;
-        if (bestIdx < 0 || e.lastEnabledSeq >= bestSeq) {
-            bestIdx = static_cast<int>(idx);
-            bestSeq = e.lastEnabledSeq;
+        candidates.push_back(static_cast<int>(idx));
+        restoreSeq = std::max(restoreSeq, e.lastEnabledSeq);
+        anySelected = anySelected || e.selected;
+    }
+    // Restore the set ClickNative stamped. Without one (Native since load), the saved
+    // picks come back, else the pack's rows, and RecomputeActive ranks them as at load.
+    const uint32_t enabledSeq = mNextSeq++;
+    for (int idx : candidates) {
+        ConfigEntry& e = mEntries[idx];
+        const bool restore = restoreSeq > 0 ? e.lastEnabledSeq == restoreSeq : (!anySelected || e.selected);
+        if (restore) {
+            e.enabled = true;
+            e.lastEnabledSeq = enabledSeq;
         }
     }
-    // Fallback (option B): any disabled-but-resolvable entry for this
-    // pair. Covers the "mod ships a preset, user never picked, clicked
-    // Native, now wants it back" case.
-    if (bestIdx < 0) {
-        for (size_t idx = 0; idx < mEntries.size(); idx++) {
-            const ConfigEntry& e = mEntries[idx];
-            if (e.fontId != fontId || e.instOrWave != instOrWave)
-                continue;
-            if (IsNativeMarker(e))
-                continue; // never restore the Native marker as a synth pick
-            if (e.sfontId < 0)
-                continue;
-            if (bestIdx < 0 || e.lastEnabledSeq >= bestSeq) {
-                bestIdx = static_cast<int>(idx);
-                bestSeq = e.lastEnabledSeq;
-            }
-        }
-    }
-    if (bestIdx >= 0) {
-        ConfigEntry& e = mEntries[bestIdx];
-        e.enabled = true;
-        e.lastEnabledSeq = mNextSeq++;
-        RecomputeActive(fontId, instOrWave);
+    RecomputeActive(fontId, instOrWave);
+    if (mActiveEntryIdx[fontId][instOrWave] >= 0)
         return;
-    }
     // Last resort: muted placeholder entry. packName=="" tells the resolver
     // / UI that this is a synthetic "None" pick.
     int idx = FindOrCreateEntry(fontId, instOrWave, std::string(), -1, 0, std::string("None"), EntrySource::UserPicked);
@@ -1597,14 +1604,7 @@ bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
     return out.good();
 }
 
-// Shared predicate for "ship this entry inside a pack mapping?". Same gate used by
-// ExportPackMapping and CountExportableEntries so the preview count matches what
-// gets written. Exports every entry currently enabled and resolvable for the pack
-// (its effective mapping now), regardless of source or `selected`. PickPreset
-// keeps at most one entry enabled per (pair, split), so this never double-emits.
 static bool ExportEntryMatches(const ConfigEntry& e, const std::string& packNameFilter) {
-    if (!e.enabled)
-        return false;
     if (e.program < 0)
         return false; // None placeholder — not shippable
     if (e.packName.empty())
@@ -1614,12 +1614,29 @@ static bool ExportEntryMatches(const ConfigEntry& e, const std::string& packName
     return true;
 }
 
+// Enabled is not enough: after a reload the pack's own rows come back enabled beside
+// the user's newer pick, and writing both is how duplicates accumulated. A Native
+// marker competes too, so a pair the author set to native ships nothing.
+std::vector<int> MidiTranslator::ExportableEntries(const std::string& packNameFilter) const {
+    std::map<std::pair<uint8_t, int16_t>, std::vector<int>> candidatesByPair;
+    for (size_t idx = 0; idx < mEntries.size(); idx++) {
+        const ConfigEntry& e = mEntries[idx];
+        if (!IsResolvable(e))
+            continue;
+        if (packNameFilter.empty() || e.packName == packNameFilter || IsNativeMarker(e))
+            candidatesByPair[{ e.fontId, e.instOrWave }].push_back(static_cast<int>(idx));
+    }
+    std::vector<int> exported;
+    for (const auto& [pair, candidates] : candidatesByPair)
+        for (int idx : ResolveWinners(candidates))
+            if (ExportEntryMatches(mEntries[idx], packNameFilter))
+                exported.push_back(idx);
+    std::sort(exported.begin(), exported.end());
+    return exported;
+}
+
 int MidiTranslator::CountExportableEntries(const std::string& packNameFilter) const {
-    int n = 0;
-    for (const auto& e : mEntries)
-        if (ExportEntryMatches(e, packNameFilter))
-            ++n;
-    return n;
+    return static_cast<int>(ExportableEntries(packNameFilter).size());
 }
 
 std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilter, int& outWritten) const {
@@ -1633,9 +1650,11 @@ std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilt
     j["entries"] = nlohmann::json::array();
 
     int written = 0;
-    for (const auto& e : mEntries) {
-        if (!ExportEntryMatches(e, packNameFilter))
-            continue;
+    const std::vector<int> exported = ExportableEntries(packNameFilter);
+    std::set<std::pair<uint8_t, int16_t>> exportedPairs;
+    for (int idx : exported) {
+        const ConfigEntry& e = mEntries[idx];
+        exportedPairs.insert({ e.fontId, e.instOrWave });
 
         nlohmann::json entry;
         entry["fontId"] = e.fontId;
@@ -1680,14 +1699,7 @@ std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilt
         for (int i = kDrumHistInst; i < kMaxInstOrWave; ++i) {
             if (mForcedDrumPool[f][i] < 0)
                 continue;
-            bool shipped = false;
-            for (const auto& e : mEntries) {
-                if (e.fontId == f && e.instOrWave == i && ExportEntryMatches(e, packNameFilter)) {
-                    shipped = true;
-                    break;
-                }
-            }
-            if (shipped) {
+            if (exportedPairs.contains({ static_cast<uint8_t>(f), static_cast<int16_t>(i) })) {
                 nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
                 if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
                     d["font"] = fp;
