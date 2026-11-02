@@ -48,7 +48,6 @@ extern "C" {
 #include "overlays/actors/ovl_En_Rl/z_en_rl.h"
 #include "overlays/actors/ovl_En_Zl2/z_en_zl2.h"
 #include "overlays/actors/ovl_Demo_Du/z_demo_du.h"
-#include "objects/object_du/object_du.h"
 #include "overlays/actors/ovl_Demo_Go/z_demo_go.h"
 #include "overlays/actors/ovl_Demo_Sa/z_demo_sa.h"
 extern PlayState* gPlayState;
@@ -470,45 +469,22 @@ std::vector<FaceField> GetFaceFields(Actor* actor) {
 }
 #undef FACE_FIELD
 
-// A statue posed for the moment its cutscene is about rather than wherever the cutscene starts it:
-// Darunia stays holding up the Goron's Ruby, from his fall in to the end. Fills `joints` and returns
-// true if `actor` has such a pose.
-bool GetSignaturePose(Actor* actor, const SkelAnime* skelAnime, std::vector<Vec3s>& joints) {
-    if (actor->id == ACTOR_DEMO_DU && actor->params == DEMO_DU_CS_GORONS_RUBY) {
-        joints.resize(skelAnime->limbCount);
-        SkelAnime_GetFrameData((AnimationHeader*)gDaruniaItemGiveIdleAnim, 0, skelAnime->limbCount, joints.data());
-        return true;
-    }
-    return false;
-}
-
-void PinFace(Actor* actor, Statue& statue) {
-    statue.pinFace.clear();
-    for (const FaceField& field : GetFaceFields(actor)) {
-        const u8* src = reinterpret_cast<const u8*>(actor) + field.offset;
-        statue.pinFace.insert(statue.pinFace.end(), src, src + field.size);
-    }
-}
-
 // Pins the statue's pose once it has one. Some cutscene actors spawn without an animation and only get
 // their first pose when their part starts (Darunia, falling into the Goron's Ruby cutscene); pinning the
 // empty pose before that would draw nothing. A pose still blending in from another one isn't kept either.
 void PinJoints(Actor* actor, Statue& statue) {
     SkelAnime* skelAnime = GetStatueSkelAnime(actor);
-    if (skelAnime == nullptr || skelAnime->jointTable == nullptr || skelAnime->skeleton == nullptr) {
-        return;
-    }
-    if (GetSignaturePose(actor, skelAnime, statue.pinJoints)) {
-        statue.jointsPinned = true;
-        PinFace(actor, statue);
-        return;
-    }
-    if (skelAnime->animation == nullptr || skelAnime->morphWeight > 0.0f) {
+    if (skelAnime == nullptr || skelAnime->jointTable == nullptr || skelAnime->animation == nullptr ||
+        skelAnime->morphWeight > 0.0f) {
         return;
     }
     statue.pinJoints.assign(skelAnime->jointTable, skelAnime->jointTable + skelAnime->limbCount);
     statue.jointsPinned = true;
-    PinFace(actor, statue);
+    statue.pinFace.clear();
+    for (const FaceField& field : GetFaceFields(actor)) {
+        const u8* src = reinterpret_cast<const u8*>(actor) + field.offset;
+        statue.pinFace.insert(statue.pinFace.end(), src, src + field.size);
+    }
 }
 
 // Puts the pinned pose back, or pins it if the statue has only just got one.
