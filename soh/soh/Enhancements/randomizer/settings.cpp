@@ -1067,10 +1067,13 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_SHUFFLE_NPC_SOULS, {"Off", "Shops & Games", "Shops, Games & Story", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), WIDGET_CVAR_COMBOBOX, RO_NPC_SOULS_OFF);
     OPT_BOOL(RSK_NPC_SOULS_SAGES, CVAR_RANDOMIZER_SETTING("NpcSoulsSages"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_NPC_SOULS, {
+        // Sages Hold Dungeon Rewards only matters once story souls are shuffled.
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), RO_NPC_SOULS_OFF) >= RO_NPC_SOULS_PLUS_STORY) {
-            mOptions[RSK_NPC_SOULS_SAGES].Enable();
+            mOptions[RSK_SHUFFLE_NPC_SOULS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_NPC_SOULS_SAGES].Unhide();
         } else {
-            mOptions[RSK_NPC_SOULS_SAGES].Disable("Requires the story NPC souls to be shuffled.");
+            mOptions[RSK_SHUFFLE_NPC_SOULS].AddFlag(IMFLAG_SEPARATOR_BOTTOM);
+            mOptions[RSK_NPC_SOULS_SAGES].Hide();
         }
     });
     OPT_U8(RSK_SHUFFLE_BOSS_SOULS, {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), WIDGET_CVAR_COMBOBOX);
