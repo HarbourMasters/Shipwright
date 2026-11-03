@@ -9,7 +9,7 @@ void RegionTable_Init_Kakariko() {
         //Events
         EVENT_ACCESS(LOGIC_BUG_ACCESS,         logic->HasItem(RG_POWER_BRACELET)),
         //Open Gate setting is applied in RR_ROOT
-        EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN, logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER) && (ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) || logic->HasItem(RG_HYLIAN_GUARDS_SOUL))),
+        EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN, logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_HYLIAN_GUARDS_SOUL)),
         //Needs wallet to be able to get another mask after selling Keaton
         EVENT_ACCESS(LOGIC_SOLD_KEATON_MASK,   logic->IsChild && logic->Get(LOGIC_KAKARIKO_GATE_OPEN) && logic->HasItem(RG_KEATON_MASK) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_HYLIAN_GUARDS_SOUL)),
     }, {
