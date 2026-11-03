@@ -1819,8 +1819,17 @@ RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls, state);
     } else if (trickModel == Rando::GetNpcSouls().front().rg) {
-        // One NPC soul stands in for all of them in the model pool; pick a random one here.
-        trickModel = ShipUtils::RandomElement(Rando::GetNpcSouls(), state).rg;
+        // One NPC soul stands in for all of them in the model pool; pick a random one of the souls this seed
+        // shuffles, so a trap never looks like a soul that can't be found.
+        std::vector<RandomizerGet> shuffledSouls;
+        for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+            if (Rando::IsNpcSoulShuffled(soul)) {
+                shuffledSouls.push_back(soul.rg);
+            }
+        }
+        if (!shuffledSouls.empty()) {
+            trickModel = ShipUtils::RandomElement(shuffledSouls, state);
+        }
     } else if (trickModel == RG_SHADOW_SILVER_BLADES) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::silverRupees);
     }
