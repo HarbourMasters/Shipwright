@@ -28,6 +28,7 @@ extern "C" int AudioPlayer_GetOutputRate(void);
 #include "soh/Enhancements/audio/MidiSynthManager.h"
 #include "soh/Enhancements/audio/FluidSynth.h"
 #include "MidiTranslator.h"
+#include "soh/Extractor/portable-file-dialogs.h"
 #include "GmInstrumentMap.h"
 #include "InstrumentNames.h"
 #include <ship/resource/archive/ArchiveManager.h>
@@ -35,6 +36,8 @@ extern "C" int AudioPlayer_GetOutputRate(void);
 #include <algorithm>
 #include <cctype>
 #include <filesystem>
+#include <iterator>
+#include <optional>
 #include <fstream>
 #include <system_error>
 #include <utility>
@@ -42,32 +45,26 @@ extern "C" int AudioPlayer_GetOutputRate(void);
 extern "C" void SOH_MidiTranslator_Reset();
 
 namespace {
-// Synth packs stack from two sources: mod-supplied (audio/synth/<pack>/ in a
-// mounted .o2r) then loose .sf2/.sf3 in <config-dir>/synth-packs/. FluidSynth
-// walks SFs in reverse load order, so the last enabled pack wins on collisions.
+// A mod ships each soundfont as audio/synth/<pack>/soundfont.sf[23] with its
+// mapping.json beside it. Mods are read one archive at a time, in mount order,
+// so two mods using the same pack name never shadow each other.
 constexpr const char* kSynthPackRoot = "audio/synth";
-constexpr const char* kSynthPackSf2Name = "soundfont.sf2";
-// Archive glob matching either soundfont.sf2 or soundfont.sf3. Both names are
-// the same length, so the suffix-stripping below can keep using
-// kSynthPackSf2Name for the length math.
 constexpr const char* kSynthPackSfGlob = "soundfont.sf[23]";
 constexpr const char* kSynthPackJsonName = "mapping.json";
-constexpr const char* kLooseSynthPacksDirName = "synth-packs";
 
 struct SynthPackEntry {
-    enum class Source { Archive, Loose };
-    std::string name; // display name + key used in the disabled-set CSV
-    Source source;
-    // Archive: virtual resource paths inside the archive.
-    // Loose:   absolute filesystem paths.
+    std::string mod;  // the archive's file stem, as the mods menu lists it
+    std::string name; // the soundfont folder inside the mod
+    std::shared_ptr<Ship::Archive> archive;
     std::string sfPath;
-    std::string mappingPath; // empty if no mapping json is available
+    std::string mappingPath;
 };
 
 // One row per (sfontId, bank, program) across loaded SFs; filled after the load
 // loop, consumed by the bypass UI. Names come from the SF phdr (the author's).
 struct LoadedPresetEntry {
     int sfontId;
+    std::string modName;
     std::string packName;
     int bank;
     int program;
@@ -84,13 +81,11 @@ struct BankSelectorEntry {
 };
 static std::vector<BankSelectorEntry> sBankSelectors;
 
-// Auto-save model: every UI edit that touches a persisted field commits immediately
-// to fluidsynth_overrides.json, keeping in-memory state == on-disk state (pack
-// toggles reset and re-overlay from disk, so unsaved work must not exist). Drag and
-// slider widgets save once per drag via IsItemDeactivatedAfterEdit(); clicks inline.
-void AutoSaveOverrides() {
-    auto path = Ship::Context::GetPathRelativeToAppDirectory("fluidsynth_overrides.json", appShortName);
-    SOH::MidiTranslator::Instance().SaveOverridesToFile(path);
+// Edits live in memory until Save writes them into the mod being edited.
+static bool sEditedModDirty = false;
+void MarkModEdited() {
+    if (!SOH::MidiTranslator::Instance().GetEditMod().empty())
+        sEditedModDirty = true;
 }
 
 // Session-only Override-column state, never persisted.
@@ -108,352 +103,195 @@ static std::set<std::pair<uint8_t, int16_t>> sExplicitMutedPairs;
 static std::set<std::tuple<uint8_t, int16_t, uint8_t>> sSoloedSlots;
 static std::set<std::tuple<uint8_t, int16_t, uint8_t>> sExplicitMutedSlots;
 
-// Export-pack-mapping popup state. Buffers are session-scoped: the popup
-// prefills sExportPackName from the user's most common selected pack each
-// time it opens, and sExportStatus carries the last write result so the
-// user can re-open and re-confirm without losing the path.
-static char sExportPackName[128] = "";
-static char sExportStatus[512] = "";
+std::string ModNameOf(Ship::Archive& archive) {
+    return std::filesystem::path(archive.GetPath()).stem().string();
+}
 
-// Returns every pack the user could enable: archive-supplied first (alpha
-// sorted), then loose-folder SFs (alpha sorted). Packs are not filtered
-// by the disabled-set CVar here — callers decide whether to apply that
-// filter (UI shows everything; apply path skips disabled rows).
+// Every soundfont of every mounted mod, in mount order (the last one wins a
+// tie), and alphabetically within a mod.
 std::vector<SynthPackEntry> EnumerateSynthPacks() {
     std::vector<SynthPackEntry> result;
-
-    // ── Archive-supplied packs ───────────────────────────────────────
-    auto archives = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager();
-    if (auto matches = archives->ListFiles(std::string(kSynthPackRoot) + "/*/" + kSynthPackSfGlob)) {
-        const size_t prefixLen = std::strlen(kSynthPackRoot) + 1;
-        const size_t suffixLen = std::strlen(kSynthPackSf2Name) + 1;
-        std::vector<SynthPackEntry> arc;
-        arc.reserve(matches->size());
-        for (const auto& path : *matches) {
-            if (path.size() <= prefixLen + suffixLen)
-                continue;
-            std::string name = path.substr(prefixLen, path.size() - prefixLen - suffixLen);
-            SynthPackEntry e;
-            e.name = name;
-            e.source = SynthPackEntry::Source::Archive;
-            e.sfPath = path;
-            e.mappingPath = std::string(kSynthPackRoot) + "/" + name + "/" + kSynthPackJsonName;
-            arc.push_back(std::move(e));
+    auto archives = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetArchives();
+    if (!archives)
+        return result;
+    const std::string root = std::string(kSynthPackRoot) + "/";
+    for (const auto& archive : *archives) {
+        auto files = archive->ListFiles(root + "*/" + kSynthPackSfGlob);
+        if (!files || files->empty())
+            continue;
+        const std::string mod = ModNameOf(*archive);
+        std::vector<SynthPackEntry> inMod;
+        for (const auto& [hash, path] : *files) {
+            const std::string name = std::filesystem::path(path).parent_path().filename().string();
+            if (path != root + name + "/" + std::filesystem::path(path).filename().string())
+                continue; // deeper than one folder
+            inMod.push_back({ mod, name, archive, path, root + name + "/" + kSynthPackJsonName });
         }
-        std::sort(arc.begin(), arc.end(),
+        std::sort(inMod.begin(), inMod.end(),
                   [](const SynthPackEntry& a, const SynthPackEntry& b) { return a.name < b.name; });
-        // Dedupe by name across multiple archives shipping the same pack —
-        // ListFiles returns one entry per archive that contains the file,
-        // and we only want one row in the UI.
-        arc.erase(std::unique(arc.begin(), arc.end(),
-                              [](const SynthPackEntry& a, const SynthPackEntry& b) { return a.name == b.name; }),
-                  arc.end());
-        for (auto& e : arc)
+        for (auto& e : inMod)
             result.push_back(std::move(e));
-    }
-
-    // ── Loose folder ─────────────────────────────────────────────────
-    // The folder is created lazily — its absence is the normal first-run
-    // state and not an error. We never write to the folder; the user owns it.
-    std::string looseDirStr = Ship::Context::GetPathRelativeToAppDirectory(kLooseSynthPacksDirName, appShortName);
-    std::filesystem::path looseDir(looseDirStr);
-    std::error_code ec;
-    if (std::filesystem::is_directory(looseDir, ec)) {
-        std::vector<SynthPackEntry> loose;
-        for (const auto& entry : std::filesystem::directory_iterator(looseDir, ec)) {
-            if (ec)
-                break;
-            if (!entry.is_regular_file(ec))
-                continue;
-            auto ext = entry.path().extension().string();
-            // Case-insensitive .sf2/.sf3 match — Windows users often have .SF2 etc.
-            std::string extLower = ext;
-            std::transform(extLower.begin(), extLower.end(), extLower.begin(),
-                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
-            if (extLower != ".sf2" && extLower != ".sf3")
-                continue;
-
-            SynthPackEntry e;
-            e.name = entry.path().stem().string();
-            e.source = SynthPackEntry::Source::Loose;
-            e.sfPath = entry.path().string();
-            std::filesystem::path jsonPath = entry.path();
-            jsonPath.replace_extension(".json");
-            if (std::filesystem::exists(jsonPath, ec)) {
-                e.mappingPath = jsonPath.string();
-            }
-            loose.push_back(std::move(e));
-        }
-        std::sort(loose.begin(), loose.end(),
-                  [](const SynthPackEntry& a, const SynthPackEntry& b) { return a.name < b.name; });
-        for (auto& e : loose)
-            result.push_back(std::move(e));
-    }
-
-    return result;
-}
-
-// Disabled-set CSV key. Archive packs key on the bare name; loose packs get a
-// "loose:" prefix so a loose <name>.sf3 and a shipped <name>.o2r toggle independently.
-std::string PackKey(const SynthPackEntry& e) {
-    return e.source == SynthPackEntry::Source::Loose ? ("loose:" + e.name) : e.name;
-}
-
-// Disabled-pack CVar: comma-separated pack keys (see PackKey), empty = all enabled.
-// Plain CSV (names are practically alphanumeric); empty entries tolerated on parse.
-
-std::set<std::string> ParseDisabledPacksCSV() {
-    std::set<std::string> result;
-    std::string csv = CVarGetString(CVAR_AUDIO("FluidSynthDisabledPacks"), "");
-    size_t start = 0;
-    while (start <= csv.size()) {
-        size_t comma = csv.find(',', start);
-        std::string name = csv.substr(start, comma == std::string::npos ? std::string::npos : comma - start);
-        if (!name.empty())
-            result.insert(std::move(name));
-        if (comma == std::string::npos)
-            break;
-        start = comma + 1;
     }
     return result;
 }
 
-void WriteDisabledPacksCSV(const std::set<std::string>& disabled) {
-    std::string csv;
-    for (const auto& n : disabled) {
-        if (!csv.empty())
-            csv += ",";
-        csv += n;
-    }
-    CVarSetString(CVAR_AUDIO("FluidSynthDisabledPacks"), csv.c_str());
-}
-
-bool IsPackDisabled(const std::string& name) {
-    return ParseDisabledPacksCSV().count(name) > 0;
-}
-
-void SetPackDisabled(const std::string& name, bool disabled) {
-    auto cur = ParseDisabledPacksCSV();
-    if (disabled)
-        cur.insert(name);
-    else
-        cur.erase(name);
-    WriteDisabledPacksCSV(cur);
-}
-
-// Read the SF / mapping bytes for a pack into memory. Archive packs go
-// through ArchiveManager::LoadFile; loose packs are read straight off the
-// filesystem. Returns an empty vector when the file is missing — the caller
-// distinguishes "load failed" from "no mapping" by the *Path field of the
-// entry (loose: jsonPath empty → no mapping; archive: probe the load).
-std::vector<uint8_t> ReadPackFile(const SynthPackEntry& entry, bool wantSf) {
+std::vector<uint8_t> ReadArchiveFile(Ship::Archive& archive, const std::string& path) {
     std::vector<uint8_t> bytes;
-    const std::string& path = wantSf ? entry.sfPath : entry.mappingPath;
-    if (path.empty())
+    auto file = archive.LoadFile(path);
+    if (!file || !file->Buffer || file->Buffer->size() <= file->BufferOffset)
         return bytes;
-
-    if (entry.source == SynthPackEntry::Source::Archive) {
-        auto archives = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager();
-        auto file = archives->LoadFile(path);
-        if (!file || !file->Buffer || file->Buffer->size() <= file->BufferOffset) {
-            return bytes;
-        }
-        const uint8_t* data = reinterpret_cast<const uint8_t*>(file->Buffer->data()) + file->BufferOffset;
-        const size_t size = file->Buffer->size() - file->BufferOffset;
-        bytes.assign(data, data + size);
-    } else {
-        std::ifstream in(path, std::ios::binary);
-        if (!in.is_open())
-            return bytes;
-        in.seekg(0, std::ios::end);
-        std::streamoff len = in.tellg();
-        if (len <= 0)
-            return bytes;
-        in.seekg(0, std::ios::beg);
-        bytes.resize(static_cast<size_t>(len));
-        in.read(reinterpret_cast<char*>(bytes.data()), len);
-        if (!in)
-            bytes.clear();
-    }
+    const uint8_t* data = reinterpret_cast<const uint8_t*>(file->Buffer->data()) + file->BufferOffset;
+    bytes.assign(data, data + (file->Buffer->size() - file->BufferOffset));
     return bytes;
 }
 
-// Filter EnumerateSynthPacks() down to the rows the user has left enabled.
-// Discovery order is preserved (mods first, loose second), which is also
-// the SF load order — and therefore the priority order FluidSynth uses
-// for collision resolution (last-loaded wins).
-std::vector<SynthPackEntry> EnabledPacksInOrder() {
-    auto all = EnumerateSynthPacks();
-    auto disabled = ParseDisabledPacksCSV();
-    std::vector<SynthPackEntry> out;
-    out.reserve(all.size());
-    for (auto& e : all) {
-        if (!disabled.count(PackKey(e)))
-            out.push_back(std::move(e));
-    }
-    return out;
-}
-
-// One-click pack publish: bundle a pack's soundfont + a freshly-built
-// mapping.json into a single <pack>.o2r under mods/. The .o2r is the
-// shippable artifact -- dropped in mods/ it loads on the next launch and is
-// discovered through the archive path (which keys on soundfont.sf[23]), so it
-// sidesteps the loose-folder sibling-naming the manual mapping export needs.
-// Returns true on success; `outMsg` always carries a user-facing summary or
-// the failure reason (ASCII only -- shown in the ImGui popup).
-bool ExportPackO2r(const std::string& packName, std::string& outMsg) {
-    if (packName.empty()) {
-        outMsg = "Enter a pack name first.";
-        return false;
-    }
-
-    // 1. Locate the source soundfont for this pack (the .sf2/.sf3 the entries
-    //    were authored against) and read its bytes.
-    std::vector<uint8_t> sfBytes;
-    std::string sfExt = ".sf2";
-    {
-        const auto all = EnumerateSynthPacks();
-        const SynthPackEntry* match = nullptr;
-        for (const auto& e : all) {
-            if (e.name == packName) {
-                match = &e;
-                break;
-            }
-        }
-        if (!match) {
-            outMsg = "No discovered pack named '" + packName +
-                     "' to read a soundfont from. Drop its .sf2/.sf3 in synth-packs/ first.";
-            return false;
-        }
-        sfBytes = ReadPackFile(*match, /*wantSf=*/true);
-        if (sfBytes.empty()) {
-            outMsg = "Could not read the soundfont for '" + packName + "'.";
-            return false;
-        }
-        auto dot = match->sfPath.rfind('.');
-        if (dot != std::string::npos) {
-            std::string ext = match->sfPath.substr(dot);
-            std::transform(ext.begin(), ext.end(), ext.begin(),
-                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
-            if (ext == ".sf2" || ext == ".sf3")
-                sfExt = ext;
-        }
-    }
-
-    // 2. Build the mapping.json in memory.
-    int nEntries = 0;
-    std::string mappingJson = SOH::MidiTranslator::Instance().BuildPackMappingJson(packName, nEntries);
-    if (nEntries <= 0) {
-        outMsg = "No exportable entries for '" + packName + "'. Pick presets for it (enabled + selected) first.";
-        return false;
-    }
-
-    // 3. Write both into a fresh <pack>.o2r under mods/. Overwrite any prior
-    //    export so re-running is idempotent.
-    std::string modsDir = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
-    std::error_code ec;
-    std::filesystem::create_directories(modsDir, ec);
-    std::string o2rPath = (std::filesystem::path(modsDir) / (packName + ".o2r")).generic_string();
-    std::filesystem::remove(o2rPath, ec);
-
-    auto archive = std::make_shared<Ship::O2rArchive>(o2rPath);
-    if (!archive->Open()) {
-        outMsg = "Could not create " + o2rPath;
-        return false;
-    }
-    const std::string base = std::string("audio/synth/") + packName + "/";
-    std::vector<uint8_t> jsonBytes(mappingJson.begin(), mappingJson.end());
-    bool ok =
-        archive->WriteFile(base + "mapping.json", jsonBytes) && archive->WriteFile(base + "soundfont" + sfExt, sfBytes);
-    archive->Close();
-    if (!ok) {
-        outMsg = "Failed writing into " + o2rPath + " (see log).";
-        return false;
-    }
-
-    outMsg = "Wrote " + std::to_string(nEntries) + " entries + soundfont (" +
-             std::to_string(sfBytes.size() / (1024 * 1024)) + " MiB) to:\n" + o2rPath +
-             "\nLoads on next launch; share this .o2r to publish the pack.";
-    return true;
-}
-
-// Push the SF stack + load order into the translator and recompute each entry's
-// sfontId. Called after any change to entry resolution (pack load/unload, file
-// load, user pick); sLoadedPresets validates entries, packs order breaks ties.
+// Push the SF stack + mod order into the translator and recompute each entry's
+// sfontId. Called after any change to entry resolution (pack load, user pick).
 void RefreshEntryResolution(const std::vector<SynthPackEntry>& packs) {
     auto& tr = SOH::MidiTranslator::Instance();
     std::vector<std::string> order;
-    order.reserve(packs.size());
-    std::set<std::string> loaded;
-    for (const auto& p : packs) {
-        order.push_back(p.name);
-        loaded.insert(p.name);
-    }
-    tr.SetPackLoadOrder(order);
-    tr.RemoveModEntriesNotIn(loaded);
+    for (const auto& p : packs)
+        if (order.empty() || order.back() != p.mod)
+            order.push_back(p.mod);
+    tr.SetModOrder(order);
 
     std::vector<SOH::MidiTranslator::LoadedPresetRef> refs;
     refs.reserve(sLoadedPresets.size());
     for (const auto& lp : sLoadedPresets) {
-        refs.push_back({ lp.sfontId, lp.packName, lp.bank, lp.program });
+        refs.push_back({ lp.sfontId, lp.modName, lp.packName, lp.bank, lp.program });
     }
     tr.RefreshEntrySfontIds(refs);
     tr.RecomputeAllActive();
 }
 
-// Common prefix used by ReapplyOverrideChain and ResetToPackBaseline:
-// wipe in-memory state, then layer each enabled pack's mapping.json (in
-// the same order as the SF load). The user JSON layer (if any) is what
-// the two callers differ on.
-void ApplyBaselineOnly(const std::vector<SynthPackEntry>& packs) {
+// Rebuild the translator from what the mods hold, dropping unsaved edits.
+void LoadModMappings(const std::vector<SynthPackEntry>& packs) {
     SOH::MidiTranslator::Instance().ResetAllOverrides();
-
     for (const auto& pack : packs) {
-        if (pack.mappingPath.empty())
-            continue; // SF-only pack is valid
-        auto bytes = ReadPackFile(pack, /*wantSf=*/false);
+        auto bytes = ReadArchiveFile(*pack.archive, pack.mappingPath);
         if (bytes.empty())
-            continue;
+            continue; // a soundfont without a mapping yet is valid
         std::string json(reinterpret_cast<const char*>(bytes.data()), bytes.size());
-        // pack.name is the authoritative owner (loose stem / archive folder),
-        // so the mapping.json doesn't need a per-entry "pack" and a renamed
-        // pack still resolves.
-        SOH::MidiTranslator::Instance().ApplyOverridesFromString(json, pack.name);
+        SOH::MidiTranslator::Instance().ApplyModMapping(json, pack.mod, pack.name);
     }
+    sEditedModDirty = false;
 }
 
-// Apply the override chain in precedence order:
-//   1. Reset to factory state (Auto / 1.0× / -1 / 0)
-//   2. Each enabled pack's mapping.json — overlays in load order
-//   3. User's fluidsynth_overrides.json — wins over all the above
-// Called at startup and whenever the enabled-pack set changes, so the
-// live translator state always reflects the current source-of-truth chain.
-void ReapplyOverrideChain(const std::vector<SynthPackEntry>& packs) {
-    ApplyBaselineOnly(packs);
-    SOH::MidiTranslator::Instance().ApplyOverridesFromFile(
-        Ship::Context::GetPathRelativeToAppDirectory("fluidsynth_overrides.json", appShortName));
-    // Entry storage and the pack load order just changed — re-derive
-    // sfontIds and the active-entry cache so the audio thread sees a
-    // consistent state on the next note.
+void ReloadModMappings() {
+    const auto packs = EnumerateSynthPacks();
+    LoadModMappings(packs);
     RefreshEntryResolution(packs);
 }
 
-void ReapplyOverrideChain() {
-    ReapplyOverrideChain(EnabledPacksInOrder());
+// Write the edited mod's mapping.json files back into its archive. Each write
+// rewrites the archive, so only soundfonts whose mapping changed are written.
+bool SaveEditedMod(std::string& outMsg) {
+    const std::string& mod = SOH::MidiTranslator::Instance().GetEditMod();
+    std::vector<SynthPackEntry> packs;
+    for (auto& p : EnumerateSynthPacks())
+        if (p.mod == mod)
+            packs.push_back(std::move(p));
+    if (packs.empty()) {
+        outMsg = "No soundfont found in " + mod + ".";
+        return false;
+    }
+    int rows = 0;
+    int written = 0;
+    for (size_t i = 0; i < packs.size(); i++) {
+        int n = 0;
+        const std::string json = SOH::MidiTranslator::Instance().BuildPackMappingJson(mod, packs[i].name, i == 0, n);
+        rows += n;
+        auto current = ReadArchiveFile(*packs[i].archive, packs[i].mappingPath);
+        if (std::string(current.begin(), current.end()) == json)
+            continue;
+        if (!packs[i].archive->WriteFile(packs[i].mappingPath, std::vector<uint8_t>(json.begin(), json.end()))) {
+            outMsg = "Could not write " + packs[i].mappingPath + " into " + mod + " (see log).";
+            return false;
+        }
+        written++;
+    }
+    sEditedModDirty = false;
+    outMsg = "Saved " + std::to_string(rows) + " rows to " + mod + " (" + std::to_string(written) + " of " +
+             std::to_string(packs.size()) + " mappings changed).";
+    return true;
 }
 
-// Wipe the user's customisations from in-memory state and restore the
-// pack-derived baseline (built-in defaults + every enabled pack's
-// mapping.json). User's on-disk fluidsynth_overrides.json is not touched
-// — the user has to click Save afterward to persist the cleared state.
-void ResetToPackBaseline() {
-    auto packs = EnabledPacksInOrder();
-    ApplyBaselineOnly(packs);
-    // ApplyBaselineOnly only touches the entry storage; we still need to
-    // refresh sfontIds and the active-entry cache, otherwise the
-    // freshly-loaded mod entries have sfontId=-1 and resolution finds
-    // nothing.
-    RefreshEntryResolution(packs);
+std::optional<std::vector<uint8_t>> ReadSoundfontFile(const std::string& path, std::string& outExt,
+                                                      std::string& outMsg) {
+    outExt = std::filesystem::path(path).extension().string();
+    std::transform(outExt.begin(), outExt.end(), outExt.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    if (outExt != ".sf2" && outExt != ".sf3") {
+        outMsg = "Not a soundfont: " + path;
+        return std::nullopt;
+    }
+    std::ifstream in(path, std::ios::binary);
+    std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    if (bytes.empty()) {
+        outMsg = "Could not read " + path;
+        return std::nullopt;
+    }
+    return bytes;
+}
+
+// Put a soundfont from disk into a mod: a new mods/<name>.o2r, or the mounted
+// mod being edited. Returns the mod's name.
+std::optional<std::string> AddSoundfontToMod(const std::string& sfPath, bool newMod, std::string& outMsg) {
+    std::string ext;
+    auto bytes = ReadSoundfontFile(sfPath, ext, outMsg);
+    if (!bytes)
+        return std::nullopt;
+    const std::string pack = std::filesystem::path(sfPath).stem().string();
+    const std::string base = std::string(kSynthPackRoot) + "/" + pack + "/";
+    const std::string emptyMapping = "{\n  \"version\": 2,\n  \"entries\": []\n}";
+
+    auto archiveManager = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager();
+    std::shared_ptr<Ship::Archive> archive;
+    if (newMod) {
+        const std::string modsDir = Ship::Context::GetPathRelativeToAppDirectory("mods", appShortName);
+        const std::string path = (std::filesystem::path(modsDir) / (pack + ".o2r")).generic_string();
+        if (std::filesystem::exists(path)) {
+            outMsg = path + " already exists. Edit that mod, or rename the soundfont.";
+            return std::nullopt;
+        }
+        auto created = std::make_shared<Ship::O2rArchive>(path);
+        const bool ok = created->Open() && created->WriteFile(base + "soundfont" + ext, *bytes) &&
+                        created->WriteFile(base + kSynthPackJsonName,
+                                           std::vector<uint8_t>(emptyMapping.begin(), emptyMapping.end()));
+        created->Close();
+        if (!ok) {
+            outMsg = "Could not write " + path + " (see log).";
+            return std::nullopt;
+        }
+        // Mounted last, where the mods menu also puts a new file next launch.
+        archive = archiveManager->AddArchive(path);
+        if (!archive) {
+            outMsg = "Created " + path + " but could not mount it; restart to load it.";
+            return std::nullopt;
+        }
+    } else {
+        const std::string& mod = SOH::MidiTranslator::Instance().GetEditMod();
+        for (const auto& a : *archiveManager->GetArchives())
+            if (ModNameOf(*a) == mod)
+                archive = a;
+        if (!archive) {
+            outMsg = "Choose the mod to add the soundfont to first.";
+            return std::nullopt;
+        }
+        if (archive->HasFile(base + "soundfont.sf2") || archive->HasFile(base + "soundfont.sf3")) {
+            outMsg = mod + " already has a soundfont named " + pack + ".";
+            return std::nullopt;
+        }
+        if (!archive->WriteFile(base + "soundfont" + ext, *bytes) ||
+            !archive->WriteFile(base + kSynthPackJsonName,
+                                std::vector<uint8_t>(emptyMapping.begin(), emptyMapping.end()))) {
+            outMsg = "Could not write into " + mod + " (see log).";
+            return std::nullopt;
+        }
+    }
+    const std::string mod = ModNameOf(*archive);
+    outMsg = "Added " + pack + " to " + mod + ".";
+    return mod;
 }
 
 // Status line surfaced by the FluidSynth tab so the user sees what's
@@ -526,7 +364,7 @@ bool ApplyFluidSynthFromCVars() {
     }
     // No float-mode toggle here: the device runs at the chosen rate and the audio
     // thread always resamples up to it, so installing a synth is the whole job.
-    auto packs = EnabledPacksInOrder();
+    auto packs = EnumerateSynthPacks();
 
     // Drop the prior synth first so the audio thread sees silence, not two synths
     // overlapping; the old shared_ptr frees once the manager releases it.
@@ -549,7 +387,7 @@ bool ApplyFluidSynthFromCVars() {
         for (const auto& p : packs) {
             if (!orderLog.empty())
                 orderLog += " -> ";
-            orderLog += p.name;
+            orderLog += p.mod + "/" + p.name;
         }
         SPDLOG_INFO("[AudioEditor] FluidSynth: pack load order (last wins): {}", orderLog);
     }
@@ -588,13 +426,13 @@ bool ApplyFluidSynthFromCVars() {
     // One "<name>: <reason>" entry per pack we couldn't load. Loading is
     // best-effort: any pack that fails is skipped and the rest still load.
     std::vector<std::string> skipped;
-    std::unordered_map<int, std::string> idToPackName;
+    std::unordered_map<int, const SynthPackEntry*> idToPack;
     for (const auto& pack : packs) {
-        auto bytes = ReadPackFile(pack, /*wantSf=*/true);
+        auto bytes = ReadArchiveFile(*pack.archive, pack.sfPath);
         if (bytes.empty()) {
             const char* reason = "soundfont file missing or unreadable";
-            SPDLOG_ERROR("[AudioEditor] FluidSynth: skipping pack '{}' -- {}", pack.name, reason);
-            skipped.push_back(pack.name + ": " + reason);
+            SPDLOG_ERROR("[AudioEditor] FluidSynth: skipping pack '{}/{}' -- {}", pack.mod, pack.name, reason);
+            skipped.push_back(pack.mod + "/" + pack.name + ": " + reason);
             continue;
         }
         int id = synth->AddSoundFontFromMemory(bytes.data(), bytes.size());
@@ -604,11 +442,11 @@ bool ApplyFluidSynthFromCVars() {
             // + Vorbis. We can't tell which apart, so name both possibilities.
             const char* reason = "rejected by FluidSynth (corrupt soundfont, or "
                                  ".sf3 without libsndfile/Vorbis support)";
-            SPDLOG_ERROR("[AudioEditor] FluidSynth: skipping pack '{}' -- {}", pack.name, reason);
-            skipped.push_back(pack.name + ": " + reason);
+            SPDLOG_ERROR("[AudioEditor] FluidSynth: skipping pack '{}/{}' -- {}", pack.mod, pack.name, reason);
+            skipped.push_back(pack.mod + "/" + pack.name + ": " + reason);
             continue;
         }
-        idToPackName[id] = pack.name;
+        idToPack[id] = &pack;
         totalBytes += bytes.size();
         loadedPacks++;
         SPDLOG_INFO("[AudioEditor] FluidSynth: loaded soundfont from pack '{}' ({} bytes, id={})", pack.name,
@@ -633,8 +471,9 @@ bool ApplyFluidSynthFromCVars() {
         for (auto& r : raw) {
             LoadedPresetEntry e;
             e.sfontId = r.sfontId;
-            auto it = idToPackName.find(r.sfontId);
-            e.packName = (it != idToPackName.end()) ? it->second : "(unknown)";
+            auto it = idToPack.find(r.sfontId);
+            e.modName = (it != idToPack.end()) ? it->second->mod : "(unknown)";
+            e.packName = (it != idToPack.end()) ? it->second->name : "(unknown)";
             e.bank = r.bank;
             e.program = r.program;
             e.name = std::move(r.name);
@@ -1442,86 +1281,148 @@ void AudioEditor::DrawElement() {
                     }
                     ImGui::Separator();
 
-                    // ── Synth packs ──────────────────────────────────────
-                    // Discovered packs come from two sources (see
-                    // EnumerateSynthPacks): mod-supplied via mounted .o2r
-                    // archives, then loose .sf2/.sf3 files under
-                    // <config-dir>/synth-packs/. The list is cached across
-                    // frames; the Rescan button re-enumerates without a
-                    // restart so a freshly-dropped file becomes visible.
+                    // ── Synth mods ───────────────────────────────────────
+                    // The mods menu decides which mods load and in what order;
+                    // this panel only picks the one being edited.
                     static std::vector<SynthPackEntry> packs;
                     static bool packsListed = false;
                     if (!packsListed) {
                         packs = EnumerateSynthPacks();
                         packsListed = true;
                     }
+                    const int enabledCount = static_cast<int>(packs.size());
+                    std::vector<std::string> synthMods;
+                    for (const auto& e : packs)
+                        if (std::find(synthMods.begin(), synthMods.end(), e.mod) == synthMods.end())
+                            synthMods.push_back(e.mod);
 
-                    // Count enabled packs for the summary header. We
-                    // recompute the disabled set each frame — it's a cheap
-                    // parse and keeps the count truthful even if a sibling
-                    // tool edits the CVar between frames.
-                    auto disabledSet = ParseDisabledPacksCSV();
-                    int enabledCount = 0;
-                    for (const auto& e : packs) {
-                        if (!disabledSet.count(PackKey(e)))
-                            enabledCount++;
+                    auto& translator = SOH::MidiTranslator::Instance();
+                    static std::string sModMsg;
+                    static bool sModMsgError = false;
+                    // The file dialog runs on its own thread; the tab polls it so the
+                    // game keeps rendering while it is open.
+                    static std::unique_ptr<pfd::open_file> sSoundfontDialog;
+                    static bool sSoundfontDialogNewMod = false;
+                    auto openSoundfontDialog = [&](bool newMod) {
+                        if (!pfd::settings::available()) {
+                            sModMsg = "No file dialog available on this system.";
+                            sModMsgError = true;
+                            return;
+                        }
+                        sSoundfontDialogNewMod = newMod;
+                        sSoundfontDialog = std::make_unique<pfd::open_file>(
+                            "Choose a soundfont", "", std::vector<std::string>{ "Soundfonts", "*.sf2 *.sf3" });
+                    };
+                    if (sSoundfontDialog && sSoundfontDialog->ready(0)) {
+                        const auto chosen = sSoundfontDialog->result();
+                        sSoundfontDialog.reset();
+                        if (!chosen.empty()) {
+                            auto mod = AddSoundfontToMod(chosen.front(), sSoundfontDialogNewMod, sModMsg);
+                            sModMsgError = !mod.has_value();
+                            if (mod) {
+                                packs = EnumerateSynthPacks();
+                                translator.SetEditMod(*mod);
+                                if (CVarGetInteger(CVAR_AUDIO("ModernAudioPipeline"), 0))
+                                    ApplyFluidSynthFromCVars();
+                            }
+                        }
                     }
 
-                    ImGui::Text("Synth packs (%d enabled / %d discovered)", enabledCount, (int)packs.size());
+                    ImGui::Text("Synth mods (%d soundfonts in %d mods)", enabledCount,
+                                static_cast<int>(synthMods.size()));
                     ImGui::SameLine();
                     if (ImGui::SmallButton("Rescan##fluidsynthPacks")) {
                         packs = EnumerateSynthPacks();
                     }
                     if (ImGui::IsItemHovered()) {
-                        ImGui::SetTooltip("Re-enumerate audio/synth/* across mounted .o2r archives\n"
-                                          "and <config-dir>/synth-packs/*.sf2 / *.sf3. Use after\n"
-                                          "dropping a new SF2/SF3 or mod without restarting.");
+                        ImGui::SetTooltip("Re-list audio/synth/*/soundfont.sf2 / .sf3 in the mounted mods.");
+                    }
+
+                    {
+                        const std::string& editMod = translator.GetEditMod();
+                        ImGui::TextUnformatted("Editing:");
+                        ImGui::SameLine();
+                        ImGui::SetNextItemWidth(260.0f);
+                        ImGui::BeginDisabled(sEditedModDirty);
+                        if (ImGui::BeginCombo("##editMod",
+                                              editMod.empty() ? "Nothing (listen only)" : editMod.c_str())) {
+                            if (ImGui::Selectable("Nothing (listen only)", editMod.empty()))
+                                translator.SetEditMod("");
+                            for (const auto& m : synthMods)
+                                if (ImGui::Selectable(m.c_str(), m == editMod))
+                                    translator.SetEditMod(m);
+                            ImGui::EndCombo();
+                        }
+                        ImGui::EndDisabled();
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                            ImGui::SetTooltip(sEditedModDirty ? "Save or revert the changes first."
+                                                              : "Changes go into this mod only. Other mods are\n"
+                                                                "never written, whatever plays from them.");
+                        }
+                        ImGui::SameLine();
+                        ImGui::BeginDisabled(!sEditedModDirty);
+                        if (ImGui::Button("Save##editMod")) {
+                            sModMsgError = !SaveEditedMod(sModMsg);
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::Button("Revert##editMod")) {
+                            ReloadModMappings();
+                            sModMsg = "Reloaded the mappings from the mods.";
+                            sModMsgError = false;
+                        }
+                        ImGui::EndDisabled();
+                        if (sEditedModDirty) {
+                            ImGui::SameLine();
+                            ImGui::TextColored(ImVec4(0.95f, 0.75f, 0.30f, 1.0f), "unsaved changes");
+                        }
+
+                        ImGui::BeginDisabled(sSoundfontDialog != nullptr);
+                        if (ImGui::Button("New mod from soundfont...")) {
+                            openSoundfontDialog(true);
+                        }
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                            ImGui::SetTooltip("Creates mods/<soundfont>.o2r holding the soundfont and an\n"
+                                              "empty mapping, loads it, and starts editing it.");
+                        }
+                        ImGui::SameLine();
+                        ImGui::BeginDisabled(editMod.empty());
+                        if (ImGui::Button("Add soundfont...")) {
+                            openSoundfontDialog(false);
+                        }
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                            ImGui::SetTooltip("Adds another soundfont to the mod being edited.");
+                        }
+                        ImGui::EndDisabled();
+                        ImGui::EndDisabled();
+                        if (!sModMsg.empty()) {
+                            ImGui::TextColored(sModMsgError ? ImVec4(1.0f, 0.4f, 0.4f, 1.0f)
+                                                            : ImVec4(0.6f, 0.9f, 0.6f, 1.0f),
+                                               "%s", sModMsg.c_str());
+                        }
                     }
 
                     if (packs.empty()) {
-                        ImGui::TextDisabled("No synth packs discovered.\n"
-                                            "Drop an SF2/SF3 into <config-dir>/synth-packs/ (optionally\n"
-                                            "with a sibling .json mapping) or install a mod that\n"
-                                            "ships audio/synth/<pack>/soundfont.sf2 (or .sf3).");
+                        ImGui::TextDisabled("No synth mods loaded. Create one from a soundfont above, or\n"
+                                            "install a mod that ships audio/synth/<name>/soundfont.sf2.");
                     } else {
-                        // Bordered child so the list reads as a unit when
-                        // many packs are discovered. Height clamps to a
-                        // reasonable max so the rest of the tab stays
-                        // visible; users can scroll inside.
                         const float rowH = ImGui::GetTextLineHeightWithSpacing();
                         float listH = rowH * static_cast<float>(std::min<size_t>(packs.size(), 10)) + 12.0f;
                         if (ImGui::BeginChild("##synthPackList", ImVec2(420.0f, listH), ImGuiChildFlags_Border)) {
                             for (size_t i = 0; i < packs.size(); i++) {
                                 const auto& e = packs[i];
-                                bool enabled = !disabledSet.count(PackKey(e));
-                                ImGui::PushID((int)i);
-                                if (ImGui::Checkbox("##packCheck", &enabled)) {
-                                    SetPackDisabled(PackKey(e), !enabled);
-                                    Ship::Context::GetRawInstance()
-                                        ->GetWindow()
-                                        ->GetGui()
-                                        ->SaveConsoleVariablesNextFrame();
-                                    ReapplyOverrideChain();
-                                    ApplyFluidSynthFromCVars();
-                                }
-                                ImGui::SameLine();
-                                const char* badge = (e.source == SynthPackEntry::Source::Archive) ? "[mod]" : "[loose]";
-                                ImGui::TextDisabled("%-7s", badge);
+                                ImGui::PushID(static_cast<int>(i));
+                                ImGui::TextDisabled("%s", e.mod.c_str());
                                 ImGui::SameLine();
                                 ImGui::TextUnformatted(e.name.c_str());
                                 if (ImGui::IsItemHovered()) {
-                                    if (e.mappingPath.empty()) {
-                                        ImGui::SetTooltip("%s\n(soundfont only - no mapping.json)", e.sfPath.c_str());
-                                    } else {
-                                        ImGui::SetTooltip("%s\nmapping: %s", e.sfPath.c_str(), e.mappingPath.c_str());
-                                    }
+                                    ImGui::SetTooltip("%s\nmapping: %s", e.sfPath.c_str(), e.mappingPath.c_str());
                                 }
                                 ImGui::PopID();
                             }
                         }
                         ImGui::EndChild();
-                        ImGui::TextDisabled("Order = discovery order (mods first, then synth-packs/).\n"
-                                            "Later packs win on (bank, program) collisions.");
+                        ImGui::TextDisabled("Where two mods map the same range, the one lower in the\n"
+                                            "mods menu wins. Enable and order mods there.");
                     }
 
                     if (enabledCount == 0) {
@@ -1765,120 +1666,6 @@ void AudioEditor::DrawElement() {
                         int nPairs = static_cast<int>(pairs.size());
 
                         bool transSemis = CVarGetInteger(CVAR_AUDIO("FluidSynthTransSemitones"), 0) != 0;
-                        if (ImGui::SmallButton("Reset all##bypassReset")) {
-                            // Reset all + auto-save the cleared state so disk reflects
-                            // the wipe. Without this, the next pack toggle would re-read
-                            // the stale fluidsynth_overrides.json and undo the reset.
-                            ResetToPackBaseline();
-                            AutoSaveOverrides();
-                        }
-                        if (ImGui::IsItemHovered()) {
-                            ImGui::SetTooltip("Drop every personal override and restore the active pack's\n"
-                                              "defaults (Mode, Gain, Trans, Preset, effects). Discovered\n"
-                                              "list is left alone. The change is persisted to disk\n"
-                                              "automatically.");
-                        }
-                        ImGui::SameLine();
-                        if (ImGui::SmallButton("Export pack...##bypassExport")) {
-                            // Prefill the pack-name input with the most common pack
-                            // among the currently active entries — matches the export
-                            // gate (enabled + program), so a pack configured purely
-                            // from its loaded mapping.json still prefills.
-                            std::map<std::string, int> tally;
-                            int nEntries = SOH::MidiTranslator::Instance().GetEntryCount();
-                            for (int i = 0; i < nEntries; ++i) {
-                                const auto& e = SOH::MidiTranslator::Instance().GetEntry(i);
-                                if (!e.enabled || e.program < 0 || e.packName.empty())
-                                    continue;
-                                tally[e.packName]++;
-                            }
-                            std::string best;
-                            int bestN = 0;
-                            for (const auto& kv : tally) {
-                                if (kv.second > bestN) {
-                                    best = kv.first;
-                                    bestN = kv.second;
-                                }
-                            }
-                            std::strncpy(sExportPackName, best.c_str(), sizeof(sExportPackName) - 1);
-                            sExportPackName[sizeof(sExportPackName) - 1] = '\0';
-                            sExportStatus[0] = '\0';
-                            ImGui::OpenPopup("Export pack mapping");
-                        }
-                        if (ImGui::IsItemHovered()) {
-                            ImGui::SetTooltip("Publish the pairs you picked for one pack. Only entries\n"
-                                              "currently enabled AND selected for the named pack are\n"
-                                              "exported; runtime fields (enabled/selected/sfontId) are\n"
-                                              "stripped. The pack name is written once in a 'pack_name'\n"
-                                              "header, not on every entry.\n\n"
-                                              "Two outputs:\n"
-                                              "  .o2r     - soundfont + mapping zipped into mods/<pack>.o2r\n"
-                                              "             (the shareable mod; loads on next launch).\n"
-                                              "  JSON only - mapping to synth-packs/<pack>.json, beside\n"
-                                              "             your loose soundfont (picked up on Rescan).");
-                        }
-                        // Export popup: pack-name input + entry-count preview + Export.
-                        ImVec2 popupCenter = ImGui::GetMainViewport()->GetCenter();
-                        ImGui::SetNextWindowPos(popupCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-                        if (ImGui::BeginPopupModal("Export pack mapping", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-                            ImGui::TextWrapped("Publishes only entries that are currently enabled AND\n"
-                                               "selected for the named pack. The pack name (below) must\n"
-                                               "match the soundfont's name so the two stay paired.");
-                            ImGui::Separator();
-
-                            ImGui::SetNextItemWidth(280.0f);
-                            ImGui::InputText("Pack name##exportPackName", sExportPackName, sizeof(sExportPackName));
-                            std::string filter = sExportPackName;
-                            int previewN = SOH::MidiTranslator::Instance().CountExportableEntries(filter);
-                            ImGui::Text("Entries to export: %d", previewN);
-
-                            bool canExport = previewN > 0 && !filter.empty();
-
-                            // Primary: bundle soundfont + mapping into a shareable .o2r.
-                            ImGui::BeginDisabled(!canExport);
-                            if (ImGui::Button("Export .o2r##exportPackO2r", ImVec2(150, 0))) {
-                                std::string msg;
-                                bool ok = ExportPackO2r(filter, msg);
-                                std::snprintf(sExportStatus, sizeof(sExportStatus), "%s%s",
-                                              ok ? "" : "FAILED: ", msg.c_str());
-                            }
-                            if (ImGui::IsItemHovered()) {
-                                ImGui::SetTooltip("Zip the loose soundfont + mapping into\n"
-                                                  "mods/%s.o2r. Loads on next launch.",
-                                                  filter.empty() ? "<pack>" : filter.c_str());
-                            }
-                            ImGui::SameLine();
-                            // Secondary: mapping.json only, beside the loose soundfont.
-                            if (ImGui::Button("JSON only##exportPackGo", ImVec2(120, 0))) {
-                                std::string dest = Ship::Context::GetPathRelativeToAppDirectory(
-                                    (std::string(kLooseSynthPacksDirName) + "/" + filter + ".json").c_str(),
-                                    appShortName);
-                                int n = SOH::MidiTranslator::Instance().ExportPackMapping(dest, filter);
-                                if (n < 0) {
-                                    std::snprintf(sExportStatus, sizeof(sExportStatus),
-                                                  "Export FAILED. See log for details.");
-                                } else {
-                                    std::snprintf(sExportStatus, sizeof(sExportStatus), "Wrote %d entries to:\n%s", n,
-                                                  dest.c_str());
-                                }
-                            }
-                            if (ImGui::IsItemHovered()) {
-                                ImGui::SetTooltip("Write only the mapping to\n"
-                                                  "synth-packs/%s.json (beside your loose soundfont).",
-                                                  filter.empty() ? "<pack>" : filter.c_str());
-                            }
-                            ImGui::EndDisabled();
-                            ImGui::SameLine();
-                            if (ImGui::Button("Close##exportPackClose", ImVec2(100, 0))) {
-                                ImGui::CloseCurrentPopup();
-                            }
-
-                            if (sExportStatus[0]) {
-                                ImGui::Separator();
-                                ImGui::TextWrapped("%s", sExportStatus);
-                            }
-                            ImGui::EndPopup();
-                        }
                         const float viewportH = ImGui::GetMainViewport()->Size.y;
                         float bypassTableHeight = viewportH * 0.65f;
                         if (bypassTableHeight < 400.0f)
@@ -1960,8 +1747,8 @@ void AudioEditor::DrawElement() {
                                                   "  - Soloed rows (all unsoloed)\n"
                                                   "  - Mute toggles on Native rows\n"
                                                   "  - Temp volume sliders on Synth rows\n"
-                                                  "Persisted overrides (Gain, Shift, Preset, effect CCs) are\n"
-                                                  "untouched - use 'Reset all' above the table for those.");
+                                                  "Gain, Shift, Preset and effect CCs belong to the mod and are\n"
+                                                  "untouched - use Revert above the table for unsaved edits.");
                             }
                             ImGui::TableSetColumnIndex(shiftCol);
                             {
@@ -2016,7 +1803,7 @@ void AudioEditor::DrawElement() {
                                             (SOH::MidiTranslator::Instance().*setter)(idx, (int8_t)v);
                                         }
                                         if (ImGui::IsItemDeactivatedAfterEdit())
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         if (ImGui::IsItemHovered())
                                             ImGui::SetTooltip("%s", tip);
                                         ImGui::PopID();
@@ -2081,7 +1868,7 @@ void AudioEditor::DrawElement() {
                                     SOH::MidiTranslator::Instance().SetEntryTranspose(idx, (int8_t)newSemis);
                                 }
                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                    AutoSaveOverrides();
+                                    MarkModEdited();
                                 // Right-click: re-apply the octave Shift derived from this range's
                                 // engine sample tuning (auto-seeded on preset pick; this restores it).
                                 const SOH::ConfigEntry& re = SOH::MidiTranslator::Instance().GetEntry(idx);
@@ -2091,7 +1878,7 @@ void AudioEditor::DrawElement() {
                                     if (ImGui::MenuItem(rSuggest % 12 == 0 ? "Apply suggested octave"
                                                                            : "Apply suggested shift")) {
                                         SOH::MidiTranslator::Instance().SetEntryTranspose(idx, (int8_t)rSuggest);
-                                        AutoSaveOverrides();
+                                        MarkModEdited();
                                     }
                                     ImGui::EndPopup();
                                 }
@@ -2225,10 +2012,9 @@ void AudioEditor::DrawElement() {
                             for (int i = 0; i < nPairs; i++) {
                                 const auto& p = pairs[i];
                                 ImGui::TableNextRow();
-                                // Push the row index BEFORE any widget so every "##" suffix in
-                                // this row gets a unique ID (the Override and Song columns draw
-                                // widgets first, and would otherwise collide across rows).
-                                ImGui::PushID(i);
+                                // Keyed by instrument, not position: rows shift as instruments are
+                                // heard, and an open combo must keep editing the instrument it opened on.
+                                ImGui::PushID((p.fontId << 16) | static_cast<uint16_t>(p.instOrWave));
 
                                 // Activity tint: green if synth-active, blue if native-active,
                                 // uncoloured otherwise. Split parents (drum/SFX, melodic ranges)
@@ -2253,12 +2039,14 @@ void AudioEditor::DrawElement() {
                                 // Native/Synth, a Kit dropdown); expanding reveals one child
                                 // row per drum slot (per-slot Solo/Mute, Mode, Drum Sound).
                                 // Diverts before the melodic body and continues.
-                                bool forcedDrum = SOH::MidiTranslator::Instance().IsForcedDrum(p.fontId, p.instOrWave);
+                                bool forcedDrum =
+                                    SOH::MidiTranslator::Instance().IsForcedDrumInView(p.fontId, p.instOrWave);
                                 if (p.instOrWave == 0 || p.instOrWave == 1 || forcedDrum) {
                                     auto pairKey = std::make_pair(p.fontId, p.instOrWave);
                                     const char* fontName = SOH::GetFontName(p.fontId);
                                     const SOH::ConfigEntry* dActive =
-                                        SOH::MidiTranslator::Instance().GetActiveEntry(p.fontId, p.instOrWave);
+                                        SOH::MidiTranslator::Instance().GetViewEntry(p.fontId, p.instOrWave);
+                                    const std::string& editMod = SOH::MidiTranslator::Instance().GetEditMod();
                                     // The per-instrument Native/Synth state is the explicit
                                     // master flag, NOT "any slot enabled" -- so per-slot edits
                                     // never flip the instrument. A forced-drum pair has no
@@ -2320,7 +2108,7 @@ void AudioEditor::DrawElement() {
                                     std::snprintf(autoBtn, sizeof autoBtn, "Slots (%d)##autosplit", distinct);
                                     if (ImGui::SmallButton(autoBtn)) {
                                         SOH::MidiTranslator::Instance().AutoSplitDrums(p.fontId, p.instOrWave);
-                                        AutoSaveOverrides();
+                                        MarkModEdited();
                                     }
                                     if (ImGui::IsItemHovered())
                                         ImGui::SetTooltip("Discover drum slots: create one entry per slot heard\n"
@@ -2333,11 +2121,12 @@ void AudioEditor::DrawElement() {
                                     // master (the flag IS Synth), so it shows a revert-to-melodic
                                     // button instead.
                                     ImGui::TableSetColumnIndex(modeCol);
+                                    ImGui::BeginDisabled(editMod.empty());
                                     if (forcedDrum) {
                                         if (ImGui::SmallButton("Melodic##undrum")) {
                                             SOH::MidiTranslator::Instance().SetForcedDrum(p.fontId, p.instOrWave,
                                                                                           false);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         if (ImGui::IsItemHovered())
                                             ImGui::SetTooltip("Stop treating this instrument as a drum\n"
@@ -2346,13 +2135,13 @@ void AudioEditor::DrawElement() {
                                         if (ImGui::RadioButton("Native##dmode", !channelSynth)) {
                                             SOH::MidiTranslator::Instance().SetDrumChannelSynth(p.fontId, p.instOrWave,
                                                                                                 false);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         ImGui::SameLine();
                                         if (ImGui::RadioButton("Synth##dmode", channelSynth)) {
                                             SOH::MidiTranslator::Instance().SetDrumChannelSynth(p.fontId, p.instOrWave,
                                                                                                 true);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         // Dormant-slot warning: per-slot Synth entries do nothing
                                         // while the channel master is Native (the channel plays
@@ -2381,6 +2170,8 @@ void AudioEditor::DrawElement() {
                                         }
                                     }
 
+                                    ImGui::EndDisabled();
+
                                     // Preset: Kit dropdown (bank-128 presets). Mirrors the
                                     // melodic Preset combo: a "None" entry sets the instrument to
                                     // Native; picking a kit sets it to Synth.
@@ -2389,7 +2180,10 @@ void AudioEditor::DrawElement() {
                                     std::string curKit = !channelSynth ? "None (native)" : "(pick a kit)";
                                     if (channelSynth && dActive && !dActive->packName.empty())
                                         curKit = dActive->presetName.empty() ? dActive->packName : dActive->presetName;
-                                    if (ImGui::BeginCombo("##drumkit", curKit.c_str())) {
+                                    ImGui::BeginDisabled(editMod.empty());
+                                    const bool kitComboOpen = ImGui::BeginCombo("##drumkit", curKit.c_str());
+                                    ImGui::EndDisabled();
+                                    if (kitComboOpen) {
                                         // "None (native)" returns the whole instrument to native:
                                         // the drum-channel master for 0/1, or un-forcing a
                                         // forced-drum pair back to melodic.
@@ -2400,11 +2194,11 @@ void AudioEditor::DrawElement() {
                                             else
                                                 SOH::MidiTranslator::Instance().SetDrumChannelSynth(
                                                     p.fontId, p.instOrWave, false);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         ImGui::Separator();
                                         for (const auto& lp : sLoadedPresets) {
-                                            if (lp.bank != 128)
+                                            if (lp.bank != 128 || lp.modName != editMod)
                                                 continue;
                                             char lbl[112];
                                             std::snprintf(lbl, sizeof lbl, "%s / %s##kit_%d_%d", lp.packName.c_str(),
@@ -2419,7 +2213,7 @@ void AudioEditor::DrawElement() {
                                                                                                     p.instOrWave, true);
                                                 SOH::MidiTranslator::Instance().SetDrumKit(
                                                     p.fontId, p.instOrWave, lp.packName, (int16_t)lp.program, lp.name);
-                                                AutoSaveOverrides();
+                                                MarkModEdited();
                                             }
                                             if (sel)
                                                 ImGui::SetItemDefaultFocus();
@@ -2449,7 +2243,7 @@ void AudioEditor::DrawElement() {
                                             if (ImGui::SmallButton("Add##addslot")) {
                                                 SOH::MidiTranslator::Instance().AddDrumSlot(
                                                     p.fontId, p.instOrWave, (uint8_t)std::clamp(sAddSlot, 0, 127));
-                                                AutoSaveOverrides();
+                                                MarkModEdited();
                                             }
                                             if (ImGui::IsItemHovered())
                                                 ImGui::SetTooltip("Add a drum slot by index without waiting to\n"
@@ -2543,7 +2337,7 @@ void AudioEditor::DrawElement() {
                                                                     break;
                                                                 }
                                                             }
-                                                            AutoSaveOverrides();
+                                                            MarkModEdited();
                                                         }
                                                     }
                                                     ImGui::EndCombo();
@@ -2594,7 +2388,8 @@ void AudioEditor::DrawElement() {
                                             // when the instrument is Native, the per-slot controls
                                             // are read-only (Solo/Mute above stay live so a native
                                             // drum can still be isolated).
-                                            ImGui::BeginDisabled(!channelSynth);
+                                            ImGui::BeginDisabled(!channelSynth ||
+                                                                 !SOH::MidiTranslator::Instance().IsEditable(ei));
 
                                             // Native / Synth radio: the enabled flag IS the per-slot
                                             // Native/Synth state. Native plays the engine drum;
@@ -2603,7 +2398,7 @@ void AudioEditor::DrawElement() {
                                             ImGui::TableSetColumnIndex(modeCol);
                                             if (ImGui::RadioButton("Native##smode", !ce.enabled)) {
                                                 SOH::MidiTranslator::Instance().SetEntryEnabled(ei, false);
-                                                AutoSaveOverrides();
+                                                MarkModEdited();
                                             }
                                             if (!channelSynth &&
                                                 ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
@@ -2614,7 +2409,7 @@ void AudioEditor::DrawElement() {
                                                 SOH::MidiTranslator::Instance().SetEntryRoute(ei,
                                                                                               SOH::EntryRoute::Synth);
                                                 SOH::MidiTranslator::Instance().SetEntryEnabled(ei, true);
-                                                AutoSaveOverrides();
+                                                MarkModEdited();
                                             }
 
                                             // Sound dropdown, mirroring the melodic Preset combo:
@@ -2665,7 +2460,7 @@ void AudioEditor::DrawElement() {
                                                 bool filterActive = soundFilter[0] != '\0';
                                                 if (!filterActive && ImGui::Selectable("None (native)", !ce.enabled)) {
                                                     SOH::MidiTranslator::Instance().SetEntryEnabled(ei, false);
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 }
                                                 if (ce.bank == 128) {
                                                     for (int n = SOH::kGmPercussionLo; n <= SOH::kGmPercussionHi; ++n) {
@@ -2681,7 +2476,7 @@ void AudioEditor::DrawElement() {
                                                             SOH::MidiTranslator::Instance().SetEntryRoute(
                                                                 ei, SOH::EntryRoute::Synth);
                                                             SOH::MidiTranslator::Instance().SetEntryEnabled(ei, true);
-                                                            AutoSaveOverrides();
+                                                            MarkModEdited();
                                                         }
                                                         if (sel)
                                                             ImGui::SetItemDefaultFocus();
@@ -2698,7 +2493,7 @@ void AudioEditor::DrawElement() {
                                                     SOH::MidiTranslator::Instance().SetEntryGain(ei,
                                                                                                  g < 0.0f ? 0.0f : g);
                                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                             }
 
                                             // Tuned (non-128) Synth slot: an explicit pitch (Shift col).
@@ -2710,7 +2505,7 @@ void AudioEditor::DrawElement() {
                                                     SOH::MidiTranslator::Instance().SetEntryFixedNote(ei,
                                                                                                       (int16_t)pitch);
                                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                             }
 
                                             // Per-slot advanced effects (Reverb/Chorus/Cutoff/Q).
@@ -2793,9 +2588,14 @@ void AudioEditor::DrawElement() {
                                         else
                                             ImGui::Text("%d ranges", (int)ranges.size());
                                         ImGui::SameLine();
-                                        if (ImGui::SmallButton("Flatten##melflat")) {
+                                        const bool canEditRanges =
+                                            SOH::MidiTranslator::Instance().IsEditable(ranges.front());
+                                        ImGui::BeginDisabled(!canEditRanges);
+                                        const bool flattenClicked = ImGui::SmallButton("Flatten##melflat");
+                                        ImGui::EndDisabled();
+                                        if (flattenClicked) {
                                             SOH::MidiTranslator::Instance().FlattenSplits(p.fontId, p.instOrWave);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         if (ImGui::IsItemHovered())
                                             ImGui::SetTooltip("Merge all ranges back into a single full-range entry.");
@@ -2817,6 +2617,7 @@ void AudioEditor::DrawElement() {
                                                 // slots), so a single melodic range can be isolated.
                                                 ImGui::TableSetColumnIndex(overrideCol);
                                                 drawSlotSoloMute(std::make_tuple(p.fontId, p.instOrWave, ce.noteLow));
+                                                ImGui::BeginDisabled(!canEditRanges);
 
                                                 // Inst (and its boundary editor) is hidden in Simple view;
                                                 // show the range read-only so the rows stay tellable apart.
@@ -2847,7 +2648,7 @@ void AudioEditor::DrawElement() {
                                                     SOH::MidiTranslator::Instance().SetSplitBoundary(
                                                         prevIdx, ei, (uint8_t)std::clamp(lo - 1, 0, 127));
                                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 ImGui::EndDisabled();
                                                 ImGui::SameLine(0.0f, 4.0f);
                                                 ImGui::TextUnformatted("..");
@@ -2861,7 +2662,7 @@ void AudioEditor::DrawElement() {
                                                     SOH::MidiTranslator::Instance().SetSplitBoundary(
                                                         ei, nextIdx, (uint8_t)std::clamp(hi, 0, 127));
                                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 ImGui::EndDisabled();
                                                 if (ImGui::IsItemHovered())
                                                     ImGui::SetTooltip(
@@ -2872,14 +2673,14 @@ void AudioEditor::DrawElement() {
                                                 if (ImGui::SmallButton("Split##rsplit")) {
                                                     int mid = ((int)ce.noteLow + (int)ce.noteHigh + 1) / 2;
                                                     SOH::MidiTranslator::Instance().SplitEntry(ei, (uint8_t)mid);
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 }
                                                 if (ImGui::IsItemHovered())
                                                     ImGui::SetTooltip("Split this range in half.");
                                                 ImGui::SameLine();
                                                 if (ImGui::SmallButton("Merge##rmerge")) {
                                                     SOH::MidiTranslator::Instance().MergeWithNext(ei);
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 }
                                                 if (ImGui::IsItemHovered())
                                                     ImGui::SetTooltip("Merge with the next (higher) range.");
@@ -2888,12 +2689,12 @@ void AudioEditor::DrawElement() {
                                                 ImGui::TableSetColumnIndex(modeCol);
                                                 if (ImGui::RadioButton("Native##rmode", !ce.enabled)) {
                                                     SOH::MidiTranslator::Instance().SetEntryEnabled(ei, false);
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 }
                                                 ImGui::SameLine();
                                                 if (ImGui::RadioButton("Synth##rmode", ce.enabled)) {
                                                     SOH::MidiTranslator::Instance().SetEntryEnabled(ei, true);
-                                                    AutoSaveOverrides();
+                                                    MarkModEdited();
                                                 }
 
                                                 // Per-range Gain.
@@ -2905,7 +2706,7 @@ void AudioEditor::DrawElement() {
                                                         SOH::MidiTranslator::Instance().SetEntryGain(ei, g < 0.0f ? 0.0f
                                                                                                                   : g);
                                                     if (ImGui::IsItemDeactivatedAfterEdit())
-                                                        AutoSaveOverrides();
+                                                        MarkModEdited();
                                                 }
 
                                                 // Preset column: preset dropdown (filter + None).
@@ -2946,11 +2747,11 @@ void AudioEditor::DrawElement() {
                                                     bool fActive = rFilter[0] != '\0';
                                                     if (!fActive && ImGui::Selectable("None (native)", !ce.enabled)) {
                                                         SOH::MidiTranslator::Instance().SetEntryEnabled(ei, false);
-                                                        AutoSaveOverrides();
+                                                        MarkModEdited();
                                                     }
                                                     int lastSf = -2;
                                                     for (const auto& lp : sLoadedPresets) {
-                                                        if (lp.bank == 128)
+                                                        if (lp.bank == 128 || lp.modName != ce.modName)
                                                             continue; // percussion kits aren't melodic
                                                         if (fActive && !ciHas(lp.name, rFilter) &&
                                                             !ciHas(lp.packName, rFilter))
@@ -2970,7 +2771,7 @@ void AudioEditor::DrawElement() {
                                                             SOH::MidiTranslator::Instance().SetEntryPreset(
                                                                 ei, lp.packName, (int16_t)lp.program, (int16_t)lp.bank,
                                                                 lp.name);
-                                                            AutoSaveOverrides();
+                                                            MarkModEdited();
                                                         }
                                                         if (sel)
                                                             ImGui::SetItemDefaultFocus();
@@ -2988,6 +2789,7 @@ void AudioEditor::DrawElement() {
                                                 // Per-range advanced effects (Reverb/Chorus/Cutoff/Q).
                                                 ImGui::TableSetColumnIndex(advCol);
                                                 drawAdvPopup(ei);
+                                                ImGui::EndDisabled();
 
                                                 ImGui::PopID();
                                             }
@@ -3007,15 +2809,14 @@ void AudioEditor::DrawElement() {
                                 // human-readable GM name for the "no override" preset
                                 // placeholder.
                                 SOH::GmPreset defaultGmForMode = SOH::GetGmPreset(p.fontId, p.instOrWave);
-                                const SOH::ConfigEntry* activeEntry =
-                                    SOH::MidiTranslator::Instance().GetActiveEntry(p.fontId, p.instOrWave);
-                                int activeIdx =
-                                    SOH::MidiTranslator::Instance().GetActiveEntryIdx(p.fontId, p.instOrWave);
-                                // A whole-pair Native marker wins resolution (activeEntry non-null)
-                                // but means the instrument plays native, so treat it as Native here.
-                                bool effectiveIsNative =
-                                    (activeEntry == nullptr) ||
-                                    (activeEntry->route == SOH::EntryRoute::Native && activeEntry->packName.empty());
+                                auto& tr = SOH::MidiTranslator::Instance();
+                                const SOH::ConfigEntry* activeEntry = tr.GetViewEntry(p.fontId, p.instOrWave);
+                                const int activeIdx = tr.GetViewEntryIdx(p.fontId, p.instOrWave);
+                                const SOH::ConfigEntry* playingEntry = tr.GetActiveEntry(p.fontId, p.instOrWave);
+                                const bool playsNative =
+                                    playingEntry == nullptr || tr.IsAuditionNative(p.fontId, p.instOrWave);
+                                const bool canEditEntry = tr.IsEditable(activeIdx);
+                                const std::string& editMod = tr.GetEditMod();
 
                                 // ── Override column (session-only Solo / Mute) ─────────
                                 ImGui::TableSetColumnIndex(overrideCol);
@@ -3103,13 +2904,15 @@ void AudioEditor::DrawElement() {
                                     std::strncpy(buf, current.c_str(), sizeof(buf) - 1);
                                     buf[sizeof(buf) - 1] = '\0';
                                     ImGui::SetNextItemWidth(-FLT_MIN);
+                                    ImGui::BeginDisabled(editMod.empty());
                                     if (ImGui::InputTextWithHint("##displayName", hint, buf, sizeof(buf))) {
                                         SOH::MidiTranslator::Instance().SetDisplayName(p.fontId, p.instOrWave,
                                                                                        std::string(buf));
                                     }
                                     if (ImGui::IsItemDeactivatedAfterEdit())
-                                        AutoSaveOverrides();
-                                    if (ImGui::IsItemHovered()) {
+                                        MarkModEdited();
+                                    ImGui::EndDisabled();
+                                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
                                         // Always show the engine's three per-range samples,
                                         // whether or not a custom label is set. The custom
                                         // label hides what the engine actually plays per
@@ -3154,10 +2957,11 @@ void AudioEditor::DrawElement() {
                                 // for any synth pair; "L/M/H" mirrors the engine's sample
                                 // ranges and needs the captured boundaries (an .o2r regen).
                                 if (activeEntry != nullptr && activeEntry->program >= 0) {
+                                    ImGui::BeginDisabled(!canEditEntry);
                                     if (ImGui::SmallButton("Split##manualmel")) {
                                         int mid = ((int)activeEntry->noteLow + (int)activeEntry->noteHigh + 1) / 2;
                                         SOH::MidiTranslator::Instance().SplitEntry(activeIdx, (uint8_t)mid);
-                                        AutoSaveOverrides();
+                                        MarkModEdited();
                                     }
                                     if (ImGui::IsItemHovered())
                                         ImGui::SetTooltip("Split this instrument into two note ranges (at the\n"
@@ -3173,7 +2977,7 @@ void AudioEditor::DrawElement() {
                                     if (ImGui::SmallButton("Split N##manualmelN")) {
                                         SOH::MidiTranslator::Instance().SplitEntryEven(activeIdx,
                                                                                        std::clamp(sSplitN, 2, 16));
-                                        AutoSaveOverrides();
+                                        MarkModEdited();
                                     }
                                     if (ImGui::IsItemHovered())
                                         ImGui::SetTooltip("Split this instrument into N equal note ranges at once,\n"
@@ -3185,7 +2989,7 @@ void AudioEditor::DrawElement() {
                                         if (ImGui::SmallButton("L/M/H##autosplitmel")) {
                                             SOH::MidiTranslator::Instance().AutoSplitByEngineRanges(p.fontId,
                                                                                                     p.instOrWave);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         if (ImGui::IsItemHovered())
                                             ImGui::SetTooltip("Split into the engine's low / normal / high sample\n"
@@ -3193,15 +2997,19 @@ void AudioEditor::DrawElement() {
                                                               "preset so each range can be reassigned.",
                                                               (int)rng.rangeLo, (int)rng.rangeHi);
                                     }
+                                    ImGui::EndDisabled();
                                 }
                                 // "Treat as drum": route this melodic instrument through the
                                 // drum path so each distinct note becomes a slot mapped to a GM
                                 // percussion sound. For a melodic slot that's really percussion
                                 // (e.g. a song using an instrument slot for a drum hit). An
                                 // advanced move, so it's hidden in Simple view.
-                                if (!simpleView && ImGui::SmallButton("As Drum##forcedrum")) {
+                                ImGui::BeginDisabled(editMod.empty());
+                                const bool asDrumClicked = !simpleView && ImGui::SmallButton("As Drum##forcedrum");
+                                ImGui::EndDisabled();
+                                if (asDrumClicked) {
                                     SOH::MidiTranslator::Instance().SetForcedDrum(p.fontId, p.instOrWave, true);
-                                    AutoSaveOverrides();
+                                    MarkModEdited();
                                 }
                                 if (!simpleView && ImGui::IsItemHovered())
                                     ImGui::SetTooltip("Treat this instrument as a drum/percussion channel.\n"
@@ -3209,35 +3017,27 @@ void AudioEditor::DrawElement() {
                                                       "a GM drum sound. Play the song first, then expand the\n"
                                                       "row and click Slots to discover the notes.");
                                 ImGui::TableSetColumnIndex(modeCol);
-                                // Native click disables every enabled entry for this pair
-                                // (keeps their selected flag so ClickSynth can restore).
-                                // Synth click re-enables: most-recently-enabled selected
-                                // entry wins, falls back to any disabled-but-resolvable
-                                // entry (mod-only-row case), last resort is a muted
-                                // "None" placeholder. See MidiTranslator::ClickSynth.
-                                if (ImGui::RadioButton("Native##bypass", effectiveIsNative)) {
-                                    SOH::MidiTranslator::Instance().ClickNative(p.fontId, p.instOrWave);
-                                    AutoSaveOverrides();
+                                if (ImGui::RadioButton("Native##bypass", playsNative)) {
+                                    tr.SetAuditionNative(p.fontId, p.instOrWave, true);
+                                }
+                                if (ImGui::IsItemHovered()) {
+                                    ImGui::SetTooltip("Listen to the native instrument for comparison.\n"
+                                                      "Not saved: the mods decide what plays.");
                                 }
                                 ImGui::SameLine();
-                                if (ImGui::RadioButton("Synth##bypass", !effectiveIsNative)) {
-                                    SOH::MidiTranslator::Instance().ClickSynth(p.fontId, p.instOrWave);
-                                    AutoSaveOverrides();
+                                ImGui::BeginDisabled(playingEntry == nullptr);
+                                if (ImGui::RadioButton("Synth##bypass", !playsNative)) {
+                                    tr.SetAuditionNative(p.fontId, p.instOrWave, false);
                                 }
+                                ImGui::EndDisabled();
 
-                                // The per-entry editors (Gain, Shift, effect CCs) operate
-                                // on the active entry; when there is none, nothing to
-                                // edit so we grey them out. The Preset combo stays live
-                                // so the user can pick a preset to leave Native mode.
-                                ImGui::BeginDisabled(effectiveIsNative);
+                                ImGui::BeginDisabled(!canEditEntry);
                                 auto disabledTooltipIfNative = [&]() {
-                                    if (effectiveIsNative &&
-                                        ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-                                        ImGui::SetTooltip("No active entry on this row. Gain / Shift /\n"
-                                                          "effects edit the resolved entry's fields, so\n"
-                                                          "they have nothing to operate on. Pick a preset\n"
-                                                          "below or click Synth to restore the most\n"
-                                                          "recent pick.");
+                                    if (!canEditEntry && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                                        ImGui::SetTooltip(editMod.empty()
+                                                              ? "Choose a mod to edit above the table."
+                                                              : "The mod being edited maps nothing here yet.\n"
+                                                                "Pick a preset first.");
                                     }
                                 };
 
@@ -3251,7 +3051,7 @@ void AudioEditor::DrawElement() {
                                     }
                                 }
                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                    AutoSaveOverrides();
+                                    MarkModEdited();
                                 disabledTooltipIfNative();
 
                                 ImGui::TableSetColumnIndex(shiftCol);
@@ -3320,7 +3120,7 @@ void AudioEditor::DrawElement() {
                                     }
                                 }
                                 if (ImGui::IsItemDeactivatedAfterEdit())
-                                    AutoSaveOverrides();
+                                    MarkModEdited();
                                 // Right-click: re-apply the tuning-derived octave Shift (auto-seeded
                                 // on preset pick). Only meaningful when there's an active entry.
                                 int pairSuggest =
@@ -3332,7 +3132,7 @@ void AudioEditor::DrawElement() {
                                                                               : "Apply suggested shift")) {
                                         SOH::MidiTranslator::Instance().SetEntryTranspose(activeIdx,
                                                                                           (int8_t)pairSuggest);
-                                        AutoSaveOverrides();
+                                        MarkModEdited();
                                     }
                                     ImGui::EndPopup();
                                 }
@@ -3362,36 +3162,6 @@ void AudioEditor::DrawElement() {
                                 }
                                 disabledTooltipIfNative();
 
-                                // ── Source column ─────────────────────────
-                                // Reflects the current resolution winner. When there's no
-                                // active entry but there are selected entries (user picks
-                                // whose source pack isn't loaded), surface the most
-                                // recently enabled one as "[missing] [Pack]" so the user
-                                // sees WHY the row went native.
-                                // fallbackSaved: the most-recently-enabled selected entry for a
-                                // currently-native row -- consumed by the Preset preview +
-                                // tooltip below.
-                                const SOH::ConfigEntry* fallbackSaved = nullptr;
-                                if (!activeEntry) {
-                                    std::vector<int> idxs;
-                                    SOH::MidiTranslator::Instance().GetEntriesForPair(p.fontId, p.instOrWave, idxs);
-                                    uint32_t bestSeq = 0;
-                                    for (int i2 : idxs) {
-                                        const SOH::ConfigEntry& e = SOH::MidiTranslator::Instance().GetEntry(i2);
-                                        if (!e.selected)
-                                            continue;
-                                        if (!fallbackSaved || e.lastEnabledSeq >= bestSeq) {
-                                            fallbackSaved = &e;
-                                            bestSeq = e.lastEnabledSeq;
-                                        }
-                                    }
-                                }
-
-                                // Preset combo stays live even when the row is in Native
-                                // mode — picking a preset is the user's path back to
-                                // Synth (PickPreset disables every other entry for this
-                                // pair, finds/creates the picked entry, enables+selects
-                                // it). The Default item maps to ClickNative semantics.
                                 ImGui::EndDisabled();
 
                                 ImGui::TableSetColumnIndex(presetCol);
@@ -3421,20 +3191,21 @@ void AudioEditor::DrawElement() {
                                         std::snprintf(prgPreview, sizeof(prgPreview), "P%d: %s", activeEntry->program,
                                                       activeEntry->presetName.c_str());
                                     }
-                                } else if (fallbackSaved && fallbackSaved->sfontId >= 0) {
-                                    // Pack still loaded; user just clicked Native. Show
-                                    // the saved preset name so the user remembers what
-                                    // Synth-click would restore.
-                                    std::snprintf(prgPreview, sizeof(prgPreview), "(off) P%d: %s",
-                                                  fallbackSaved->program, fallbackSaved->presetName.c_str());
-                                } else if (fallbackSaved) {
-                                    std::snprintf(prgPreview, sizeof(prgPreview), "(B%d P%d not loaded)",
-                                                  fallbackSaved->bank, fallbackSaved->program);
                                 } else {
                                     std::strcpy(prgPreview, defaultLabel);
                                 }
+                                // Another mod outranks the edited one here, so its pick is not what plays.
+                                const bool shadowed =
+                                    !editMod.empty() && playingEntry != nullptr && playingEntry->modName != editMod;
                                 ImGui::SetNextItemWidth(-FLT_MIN);
-                                if (ImGui::BeginCombo("##prgCombo", prgPreview, ImGuiComboFlags_HeightLargest)) {
+                                ImGui::BeginDisabled(editMod.empty());
+                                if (shadowed)
+                                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.95f, 0.75f, 0.30f, 1.0f));
+                                const bool prgComboOpen =
+                                    ImGui::BeginCombo("##prgCombo", prgPreview, ImGuiComboFlags_HeightLargest);
+                                if (shadowed)
+                                    ImGui::PopStyleColor();
+                                if (prgComboOpen) {
                                     static char prgFilter[64] = "";
                                     if (ImGui::IsWindowAppearing()) {
                                         prgFilter[0] = '\0';
@@ -3461,17 +3232,15 @@ void AudioEditor::DrawElement() {
                                     };
 
                                     if (!filterActive && ImGui::Selectable(defaultLabel, activeEntry == nullptr)) {
-                                        // "Default" disables every enabled entry for this pair
-                                        // (ClickNative). selected flags are preserved so the
-                                        // user can click Synth to restore. Picking a real preset
-                                        // below promotes it to selected.
-                                        SOH::MidiTranslator::Instance().ClickNative(p.fontId, p.instOrWave);
-                                        AutoSaveOverrides();
+                                        tr.RemovePairRows(p.fontId, p.instOrWave);
+                                        MarkModEdited();
                                     }
 
                                     int lastSfont = -2;
                                     int shown = 0;
                                     for (const auto& lp : sLoadedPresets) {
+                                        if (lp.modName != editMod)
+                                            continue;
                                         if (filterActive && !containsCi(lp.name, prgFilter) &&
                                             !containsCi(lp.packName, prgFilter)) {
                                             continue;
@@ -3484,43 +3253,44 @@ void AudioEditor::DrawElement() {
                                         char item[256];
                                         std::snprintf(item, sizeof(item), "B%d P%d: %s##%d:%d:%d", lp.bank, lp.program,
                                                       lp.name.c_str(), lp.sfontId, lp.bank, lp.program);
-                                        bool sel = activeEntry && activeEntry->packName == lp.packName &&
+                                        bool sel = activeEntry && activeEntry->modName == lp.modName &&
+                                                   activeEntry->packName == lp.packName &&
                                                    activeEntry->bank == lp.bank && activeEntry->program == lp.program;
                                         if (ImGui::Selectable(item, sel)) {
                                             SOH::MidiTranslator::Instance().PickPreset(
                                                 p.fontId, p.instOrWave, lp.packName, static_cast<int16_t>(lp.program),
                                                 static_cast<int16_t>(lp.bank), lp.name);
-                                            AutoSaveOverrides();
+                                            MarkModEdited();
                                         }
                                         shown++;
                                     }
-                                    if (sLoadedPresets.empty()) {
+                                    if (shown == 0 && !filterActive) {
                                         ImGui::Separator();
-                                        ImGui::TextDisabled("(no SF presets loaded)");
+                                        ImGui::TextDisabled("(no soundfont loaded from %s)", editMod.c_str());
                                     } else if (filterActive && shown == 0) {
                                         ImGui::Separator();
                                         ImGui::TextDisabled("(no matches for \"%s\")", prgFilter);
                                     }
                                     ImGui::EndCombo();
                                 }
-                                if (ImGui::IsItemHovered()) {
-                                    std::string tip = "Pick a preset from any loaded SF. Selecting creates\n"
-                                                      "or reuses an entry for (font, inst, pack, program),\n"
-                                                      "marks it selected, and disables any other enabled\n"
-                                                      "entries for this pair. The pack + preset name are\n"
-                                                      "persisted so the choice survives an SF stack change.\n"
-                                                      "Default = disable enabled entries (row goes native).";
+                                ImGui::EndDisabled();
+                                if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                                    std::string tip = editMod.empty()
+                                                          ? "Choose a mod to edit above the table."
+                                                          : "Pick a preset from the edited mod's soundfonts. It\n"
+                                                            "replaces whatever this mod mapped here before.\n"
+                                                            "Default = this mod stops mapping the instrument.";
+                                    if (playingEntry != nullptr && (editMod.empty() || shadowed)) {
+                                        tip +=
+                                            "\n\nPlays from " + playingEntry->modName + ": " + playingEntry->presetName;
+                                        if (shadowed)
+                                            tip += "\n(that mod is mounted after this one)";
+                                    }
                                     if (activeEntry && activeEntry->bank == 128) {
                                         tip += "\n\nGM percussion (bank 128) currently falls back\n"
                                                "to native at play time. The picked preset is kept\n"
                                                "in the JSON so a future per-drum-slot routing\n"
                                                "path can use it.";
-                                    }
-                                    if (fallbackSaved) {
-                                        tip += "\n\nMost recent pick (not currently loaded):\n  ";
-                                        tip += fallbackSaved->packName;
-                                        tip += " / ";
-                                        tip += fallbackSaved->presetName;
                                     }
                                     ImGui::SetTooltip("%s", tip.c_str());
                                 }
@@ -3528,7 +3298,7 @@ void AudioEditor::DrawElement() {
                                 // Advanced effects popup (Reverb/Chorus/Cutoff/Q) for the
                                 // active entry.
                                 ImGui::TableSetColumnIndex(advCol);
-                                ImGui::BeginDisabled(effectiveIsNative);
+                                ImGui::BeginDisabled(!canEditEntry);
                                 drawAdvPopup(activeIdx);
                                 ImGui::EndDisabled();
                                 ImGui::PopID();
@@ -3959,12 +3729,7 @@ void RegisterAudioWidgets() {
         }
     }
 
-    // Override layering — applied in order so later sources overlay earlier:
-    //   1. ResetAllOverrides — wipe to factory state (Auto / 1.0× / -1 / 0)
-    //   2. Each enabled pack's mapping.json (in discovery order)
-    //   3. User's fluidsynth_overrides.json — wins (missing file is the
-    //      typical first-run state)
-    ReapplyOverrideChain();
+    ReloadModMappings();
 #endif
 }
 

@@ -284,29 +284,29 @@ void MidiTranslator::ResetDebugStatsForPair(uint8_t fontId, int16_t instOrWave) 
     }
 }
 
-// ── Pack stack + sfontId resolution ───────────────────────────────────────
+// ── Mod stack + sfontId resolution ────────────────────────────────────────
 
-void MidiTranslator::SetPackLoadOrder(const std::vector<std::string>& order) {
-    mPackLoadOrder = order;
+void MidiTranslator::SetModOrder(const std::vector<std::string>& order) {
+    mModOrder = order;
 }
 
-int MidiTranslator::PackRank(const std::string& pack) const {
-    // Higher index = later loaded = wins resolution. -1 if not loaded.
-    for (size_t i = 0; i < mPackLoadOrder.size(); i++) {
-        if (mPackLoadOrder[i] == pack)
+int MidiTranslator::ModRank(const std::string& mod) const {
+    for (size_t i = 0; i < mModOrder.size(); i++) {
+        if (mModOrder[i] == mod)
             return static_cast<int>(i);
     }
     return -1;
 }
 
-int16_t MidiTranslator::ResolveSfontIdFromCache(const std::string& pack, int16_t bank, int16_t program) const {
+int16_t MidiTranslator::ResolveSfontIdFromCache(const std::string& mod, const std::string& pack, int16_t bank,
+                                                int16_t program) const {
     if (pack.empty() || program < 0) {
         // Placeholder entries — synthetic sfontId=0 so they resolve and
         // mute via the program<0 branch in ProcessNote.
         return 0;
     }
     for (const auto& lp : mLoadedPresets) {
-        if (lp.packName == pack && lp.bank == bank && lp.program == program) {
+        if (lp.modName == mod && lp.packName == pack && lp.bank == bank && lp.program == program) {
             return static_cast<int16_t>(lp.sfontId);
         }
     }
@@ -321,23 +321,7 @@ void MidiTranslator::RefreshEntrySfontIds(const std::vector<LoadedPresetRef>& lo
     // practice (a few hundred each). Build a quick lookup if this ever
     // becomes hot.
     for (auto& e : mEntries) {
-        e.sfontId = ResolveSfontIdFromCache(e.packName, e.bank, e.program);
-    }
-}
-
-void MidiTranslator::RemoveModEntriesNotIn(const std::set<std::string>& packNamesLoaded) {
-    // Erase ModSupplied entries whose pack isn't loaded anymore. We also
-    // clear any active-cache slots that pointed into them; the caller is
-    // expected to follow up with RecomputeAllActive() since indices shift.
-    auto newEnd = std::remove_if(mEntries.begin(), mEntries.end(), [&](const ConfigEntry& e) {
-        return e.source == EntrySource::ModSupplied && !packNamesLoaded.count(e.packName);
-    });
-    if (newEnd != mEntries.end()) {
-        mEntries.erase(newEnd, mEntries.end());
-        // Clear the active cache wholesale — indices may have shifted.
-        for (auto& row : mActiveEntryIdx)
-            for (auto& cell : row)
-                cell = -1;
+        e.sfontId = ResolveSfontIdFromCache(e.modName, e.packName, e.bank, e.program);
     }
 }
 
@@ -352,27 +336,32 @@ void MidiTranslator::RecomputeAllActive() {
     for (const auto& e : mEntries)
         if (BypassIndexValid(e.fontId, e.instOrWave))
             pairs.insert({ e.fontId, e.instOrWave });
+    // A flag can outlive its pair's rows, and must then be cleared.
+    for (int f = 0; f < kMaxFontId; ++f)
+        for (int i = 0; i < kMaxInstOrWave; ++i)
+            if ((i < kDrumHistInst && mDrumChannelSynth[f][i]) || mForcedDrumPool[f][i] >= 0)
+                pairs.insert({ static_cast<uint8_t>(f), static_cast<int16_t>(i) });
+    for (const auto& [mod, f, i] : mModDrumChannelSynth)
+        pairs.insert({ f, i });
+    for (const auto& [mod, f, i] : mModForcedDrums)
+        pairs.insert({ f, i });
     for (const auto& p : pairs)
         RecomputeActive(p.first, p.second);
 }
 
 // Total order ranking entries for a semitone (drives both the per-semitone pick
-// and the chain sort): 1) source -- user picks beat mod-supplied; 2) specificity
-// -- narrower range beats wider; 3) pack load order -- later-loaded wins;
-// 4) entry order -- later wins, so a newer pick appended beside an old row beats it.
+// and the chain sort): 1) specificity -- narrower range beats wider; 2) mod
+// order -- later-mounted wins; 3) entry order -- later wins. Nothing here may
+// depend on the session, or what plays would differ from what the mods load as.
 bool MidiTranslator::Outranks(int ai, int bi) const {
     const ConfigEntry& a = mEntries[ai];
     const ConfigEntry& b = mEntries[bi];
-    int sa = (a.source == EntrySource::UserPicked) ? 1 : 0;
-    int sb = (b.source == EntrySource::UserPicked) ? 1 : 0;
-    if (sa != sb)
-        return sa > sb;
     int wa = static_cast<int>(a.noteHigh) - static_cast<int>(a.noteLow);
     int wb = static_cast<int>(b.noteHigh) - static_cast<int>(b.noteLow);
     if (wa != wb)
         return wa < wb; // narrower == more specific -> wins
-    int ra = PackRank(a.packName);
-    int rb = PackRank(b.packName);
+    int ra = ModRank(a.modName);
+    int rb = ModRank(b.modName);
     if (ra != rb)
         return ra > rb;
     return ai > bi;
@@ -381,7 +370,7 @@ bool MidiTranslator::Outranks(int ai, int bi) const {
 static inline bool IsResolvable(const ConfigEntry& e) {
     // Native/Mute splits don't reference a soundfont, so they qualify
     // without a resolved sfontId; only Synth entries need one.
-    return e.enabled && (e.route != EntryRoute::Synth || e.sfontId >= 0);
+    return e.selected && e.enabled && (e.route != EntryRoute::Synth || e.sfontId >= 0);
 }
 
 std::vector<int> MidiTranslator::ResolveWinners(const std::vector<int>& candidates) const {
@@ -440,6 +429,50 @@ void MidiTranslator::RecomputeActive(uint8_t fontId, int16_t instOrWave) {
     for (size_t k = 0; k + 1 < winners.size(); ++k)
         mEntries[winners[k]].nextActiveSplit = static_cast<int16_t>(winners[k + 1]);
     mActiveEntryIdx[fontId][instOrWave] = winners.empty() ? -1 : static_cast<int16_t>(winners[0]);
+    RecomputePairFlags(fontId, instOrWave);
+}
+
+std::vector<int> MidiTranslator::ModWinners(const std::string& mod, uint8_t fontId, int16_t instOrWave) const {
+    std::vector<int> candidates;
+    for (size_t idx = 0; idx < mEntries.size(); idx++) {
+        const ConfigEntry& e = mEntries[idx];
+        if (e.fontId == fontId && e.instOrWave == instOrWave && e.modName == mod && IsResolvable(e))
+            candidates.push_back(static_cast<int>(idx));
+    }
+    return ResolveWinners(candidates);
+}
+
+const std::string* MidiTranslator::OwnerMod(uint8_t fontId, int16_t instOrWave) const {
+    const std::string* owner = nullptr;
+    int ownerRank = -2;
+    auto consider = [&](const std::string& mod) {
+        const int rank = ModRank(mod);
+        if (rank > ownerRank) {
+            owner = &mod;
+            ownerRank = rank;
+        }
+    };
+    for (const auto& e : mEntries)
+        if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected)
+            consider(e.modName);
+    for (const auto& key : mModDrumChannelSynth)
+        if (std::get<1>(key) == fontId && std::get<2>(key) == instOrWave)
+            consider(std::get<0>(key));
+    for (const auto& key : mModForcedDrums)
+        if (std::get<1>(key) == fontId && std::get<2>(key) == instOrWave)
+            consider(std::get<0>(key));
+    return owner;
+}
+
+void MidiTranslator::RecomputePairFlags(uint8_t fontId, int16_t instOrWave) {
+    const std::string* owner = OwnerMod(fontId, instOrWave);
+    const auto flagged = [&](const std::set<ModPair>& flags) {
+        return owner != nullptr && flags.contains({ *owner, fontId, instOrWave });
+    };
+    if (instOrWave < kDrumHistInst)
+        mDrumChannelSynth[fontId][instOrWave] = flagged(mModDrumChannelSynth);
+    else
+        ApplyForcedDrumFlag(fontId, instOrWave, flagged(mModForcedDrums));
 }
 
 // ── Entry queries ─────────────────────────────────────────────────────────
@@ -452,49 +485,69 @@ const ConfigEntry* MidiTranslator::GetActiveEntry(uint8_t fontId, int16_t instOr
         return nullptr;
     return &mEntries[idx];
 }
-int MidiTranslator::GetActiveEntryIdx(uint8_t fontId, int16_t instOrWave) const {
+const ConfigEntry* MidiTranslator::GetViewEntry(uint8_t fontId, int16_t instOrWave) const {
+    const int idx = GetViewEntryIdx(fontId, instOrWave);
+    return idx < 0 ? nullptr : &mEntries[idx];
+}
+
+int MidiTranslator::GetViewEntryIdx(uint8_t fontId, int16_t instOrWave) const {
     if (!BypassIndexValid(fontId, instOrWave))
         return -1;
-    return mActiveEntryIdx[fontId][instOrWave];
+    if (mEditMod.empty())
+        return mActiveEntryIdx[fontId][instOrWave];
+    const std::vector<int> winners = ModWinners(mEditMod, fontId, instOrWave);
+    return winners.empty() ? -1 : winners.front();
 }
 
 void MidiTranslator::GetEntriesForPair(uint8_t fontId, int16_t instOrWave, std::vector<int>& outIdx) const {
     outIdx.clear();
+    std::string viewMod = mEditMod;
+    if (viewMod.empty()) {
+        const ConfigEntry* active = GetActiveEntry(fontId, instOrWave);
+        if (active == nullptr)
+            return;
+        viewMod = active->modName;
+    }
     for (size_t idx = 0; idx < mEntries.size(); idx++) {
         const ConfigEntry& e = mEntries[idx];
-        if (e.fontId == fontId && e.instOrWave == instOrWave) {
+        if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected && e.modName == viewMod) {
             outIdx.push_back(static_cast<int>(idx));
         }
     }
 }
 
-int MidiTranslator::FindEntry(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program,
-                              uint8_t noteLow) const {
+void MidiTranslator::SetEditMod(const std::string& modName) {
+    mEditMod = modName;
+}
+
+bool MidiTranslator::InEditMod(const ConfigEntry& e, uint8_t fontId, int16_t instOrWave) const {
+    return e.fontId == fontId && e.instOrWave == instOrWave && e.selected && !mEditMod.empty() && e.modName == mEditMod;
+}
+
+bool MidiTranslator::IsEditable(int idx) const {
+    return idx >= 0 && idx < static_cast<int>(mEntries.size()) && !mEditMod.empty() && mEntries[idx].selected &&
+           mEntries[idx].modName == mEditMod;
+}
+
+int MidiTranslator::FindOrCreateEntry(const std::string& mod, uint8_t fontId, int16_t instOrWave,
+                                      const std::string& pack, int16_t program, int16_t bank,
+                                      const std::string& presetName, uint8_t noteLow) {
+    int retired = -1;
     for (size_t idx = 0; idx < mEntries.size(); idx++) {
         const ConfigEntry& e = mEntries[idx];
-        if (e.fontId == fontId && e.instOrWave == instOrWave && e.packName == pack && e.program == program &&
-            e.noteLow == noteLow) {
-            return static_cast<int>(idx);
+        if (e.modName == mod && e.fontId == fontId && e.instOrWave == instOrWave && e.packName == pack &&
+            e.program == program && e.noteLow == noteLow) {
+            if (e.selected)
+                return static_cast<int>(idx);
+            retired = static_cast<int>(idx);
         }
     }
-    return -1;
-}
-
-int MidiTranslator::CountSelectedEntries(uint8_t fontId, int16_t instOrWave) const {
-    int n = 0;
-    for (const auto& e : mEntries) {
-        if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected)
-            n++;
+    // Rows are never erased, so switching presets back and forth would fill the
+    // pool; bringing a retired row back also restores its gain and shift.
+    if (retired >= 0) {
+        mEntries[retired].selected = true;
+        return retired;
     }
-    return n;
-}
-
-int MidiTranslator::FindOrCreateEntry(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program,
-                                      int16_t bank, const std::string& presetName, EntrySource source,
-                                      uint8_t noteLow) {
-    int idx = FindEntry(fontId, instOrWave, pack, program, noteLow);
-    if (idx >= 0)
-        return idx;
     if (mEntries.size() >= kMaxEntries) {
         SPDLOG_WARN("[MidiTranslator] Entry pool full ({}); dropping new entry "
                     "for f={}, i={}, pack='{}', program={}",
@@ -504,17 +557,17 @@ int MidiTranslator::FindOrCreateEntry(uint8_t fontId, int16_t instOrWave, const 
     ConfigEntry e;
     e.fontId = fontId;
     e.instOrWave = instOrWave;
+    e.modName = mod;
     e.packName = pack;
     e.program = program;
     e.bank = bank;
     e.presetName = presetName;
-    e.source = source;
+    e.selected = true;
     e.noteLow = noteLow; // noteHigh stays 127 (full range) until a split sets it
     // Resolve sfontId immediately so the entry is eligible for resolution on the
-    // next note; otherwise the filter (enabled && sfontId>=0) skips a fresh pick.
-    // ResolveSfontIdFromCache returns 0 for placeholder entries so they resolve and
-    // produce the silent NoteOn the user asked for.
-    e.sfontId = ResolveSfontIdFromCache(pack, bank, program);
+    // next note. ResolveSfontIdFromCache returns 0 for placeholder entries so they
+    // resolve and produce the silent NoteOn the user asked for.
+    e.sfontId = ResolveSfontIdFromCache(mod, pack, bank, program);
     mEntries.push_back(std::move(e));
     return static_cast<int>(mEntries.size()) - 1;
 }
@@ -523,38 +576,20 @@ int MidiTranslator::FindOrCreateEntry(uint8_t fontId, int16_t instOrWave, const 
 
 void MidiTranslator::PickPreset(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program,
                                 int16_t bank, const std::string& presetName) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
-
-    // Capture the previous winner's pack so we know whether to clear its
-    // selected flag (same SoundFont as the new pick → user moved within
-    // the pack and the old entry is no longer "the one for this pack").
-    std::string prevWinnerPack;
-    int prevWinnerIdx = mActiveEntryIdx[fontId][instOrWave];
-    if (prevWinnerIdx >= 0 && prevWinnerIdx < static_cast<int>(mEntries.size())) {
-        prevWinnerPack = mEntries[prevWinnerIdx].packName;
-    }
-
-    // Disable every currently-enabled entry for this pair.
-    for (auto& e : mEntries) {
-        if (e.fontId == fontId && e.instOrWave == instOrWave && e.enabled) {
-            e.enabled = false;
-        }
-    }
-
-    // Same-SoundFont rule: if the previous winner was from the new
-    // pick's pack, drop its selected flag (the user replaced it in-place).
-    if (!prevWinnerPack.empty() && prevWinnerPack == pack && prevWinnerIdx >= 0) {
-        ConfigEntry& prev = mEntries[prevWinnerIdx];
-        if (prev.program != program) {
-            prev.selected = false;
-        }
-    }
 
     const size_t entryCountBefore = mEntries.size();
-    int idx = FindOrCreateEntry(fontId, instOrWave, pack, program, bank, presetName, EntrySource::UserPicked);
+    int idx = FindOrCreateEntry(mEditMod, fontId, instOrWave, pack, program, bank, presetName);
     if (idx < 0)
         return;
+    for (size_t other = 0; other < mEntries.size(); other++) {
+        ConfigEntry& e = mEntries[other];
+        if (static_cast<int>(other) != idx && InEditMod(e, fontId, instOrWave)) {
+            e.enabled = false;
+            e.selected = false;
+        }
+    }
     ConfigEntry& e = mEntries[idx];
     // On a freshly created entry, seed the octave Shift from the engine sample's
     // tuning so a substitute lands in the native octave by default; user-overridable.
@@ -563,140 +598,53 @@ void MidiTranslator::PickPreset(uint8_t fontId, int16_t instOrWave, const std::s
         e.transpose = static_cast<int8_t>(SuggestedTranspose(fontId, instOrWave, e.noteLow, e.noteHigh));
     }
     // Preserve gain/transpose/effects when reusing; only program/bank/pack identify
-    // the entry. presetName updates so renamed presets surface. Re-resolve sfontId
-    // in case the bank changed on a reused entry (FindEntry keys on pack+program).
+    // the entry. presetName updates so renamed presets surface.
     e.bank = bank;
     e.presetName = presetName;
-    e.sfontId = ResolveSfontIdFromCache(pack, bank, program);
+    e.sfontId = ResolveSfontIdFromCache(mEditMod, pack, bank, program);
+    e.noteLow = 0;
+    e.noteHigh = 127;
+    e.fixedNote = -1;
+    e.route = EntryRoute::Synth;
     e.enabled = true;
-    e.selected = true;
-    e.lastEnabledSeq = mNextSeq++;
-    // source stays whatever it was (might be ModSupplied if the user
-    // clicked a mod-shipped entry; that's fine — picking promotes it to
-    // a selected entry which will be persisted).
-    if (e.source == EntrySource::ModSupplied) {
-        // The act of picking promotes a mod entry to user-owned so we
-        // persist customisations the user makes on top of it.
-        e.source = EntrySource::UserPicked;
-    }
     RecomputeActive(fontId, instOrWave);
 }
 
-void MidiTranslator::ClickNative(uint8_t fontId, int16_t instOrWave) {
+void MidiTranslator::RemovePairRows(uint8_t fontId, int16_t instOrWave) {
     if (!BypassIndexValid(fontId, instOrWave))
         return;
-    // Stamped as one set so ClickSynth restores exactly what played, splits included.
-    const uint32_t playingSeq = mNextSeq++;
-    for (int idx = mActiveEntryIdx[fontId][instOrWave]; idx >= 0 && idx < static_cast<int>(mEntries.size());
-         idx = mEntries[idx].nextActiveSplit) {
-        mEntries[idx].lastEnabledSeq = playingSeq;
-    }
-    bool hasModEntry = false;
     for (auto& e : mEntries) {
-        if (e.fontId == fontId && e.instOrWave == instOrWave) {
-            if (e.source == EntrySource::ModSupplied)
-                hasModEntry = true;
-            e.enabled = false;
-        }
-    }
-    // A pack mapping ships enabled entries that reappear -- and, under source-aware
-    // resolution, win -- on every reload, so disabling our entries can't outlast it.
-    // Persist the Native choice as a user-owned full-range Native marker: it
-    // outranks the mod (UserPicked) and routes to the engine sample. Pairs with no
-    // mod entry need no marker -- a disabled user entry already persists "off".
-    if (hasModEntry) {
-        int idx =
-            FindOrCreateEntry(fontId, instOrWave, std::string(), -1, 0, std::string("Native"), EntrySource::UserPicked);
-        if (idx >= 0) {
-            ConfigEntry& m = mEntries[idx];
-            m.route = EntryRoute::Native;
-            m.noteLow = 0;
-            m.noteHigh = 127;
-            m.enabled = true;
-            m.selected = true;
-            m.source = EntrySource::UserPicked;
-            m.lastEnabledSeq = mNextSeq++;
-        }
-    }
-    RecomputeActive(fontId, instOrWave);
-}
-
-// A user Native marker is an empty-pack, full-range, route=Native entry created by
-// ClickNative to persist "this pair plays native" over a mod that ships a preset.
-static inline bool IsNativeMarker(const ConfigEntry& e) {
-    return e.route == EntryRoute::Native && e.packName.empty();
-}
-
-void MidiTranslator::ClickSynth(uint8_t fontId, int16_t instOrWave) {
-    if (!BypassIndexValid(fontId, instOrWave))
-        return;
-
-    // Leaving Native: retire any user Native marker so it stops winning. The
-    // candidate search below skips it too.
-    for (auto& e : mEntries) {
-        if (e.fontId == fontId && e.instOrWave == instOrWave && IsNativeMarker(e)) {
+        if (InEditMod(e, fontId, instOrWave)) {
             e.enabled = false;
             e.selected = false;
         }
     }
-
-    std::vector<int> candidates;
-    uint32_t restoreSeq = 0;
-    bool anySelected = false;
-    for (size_t idx = 0; idx < mEntries.size(); idx++) {
-        const ConfigEntry& e = mEntries[idx];
-        if (e.fontId != fontId || e.instOrWave != instOrWave || IsNativeMarker(e))
-            continue;
-        if (e.route == EntryRoute::Synth && e.sfontId < 0)
-            continue;
-        candidates.push_back(static_cast<int>(idx));
-        restoreSeq = std::max(restoreSeq, e.lastEnabledSeq);
-        anySelected = anySelected || e.selected;
-    }
-    // Restore the set ClickNative stamped. Without one (Native since load), the saved
-    // picks come back, else the pack's rows, and RecomputeActive ranks them as at load.
-    const uint32_t enabledSeq = mNextSeq++;
-    for (int idx : candidates) {
-        ConfigEntry& e = mEntries[idx];
-        const bool restore = restoreSeq > 0 ? e.lastEnabledSeq == restoreSeq : (!anySelected || e.selected);
-        if (restore) {
-            e.enabled = true;
-            e.lastEnabledSeq = enabledSeq;
-        }
-    }
-    RecomputeActive(fontId, instOrWave);
-    if (mActiveEntryIdx[fontId][instOrWave] >= 0)
-        return;
-    // Last resort: muted placeholder entry. packName=="" tells the resolver
-    // / UI that this is a synthetic "None" pick.
-    int idx = FindOrCreateEntry(fontId, instOrWave, std::string(), -1, 0, std::string("None"), EntrySource::UserPicked);
-    if (idx < 0)
-        return;
-    ConfigEntry& e = mEntries[idx];
-    e.enabled = true;
-    e.selected = true;
-    e.lastEnabledSeq = mNextSeq++;
-    // Placeholder entries get sfontId=0 in RefreshEntrySfontIds so they
-    // participate in resolution; tag here as well in case Refresh hasn't
-    // run since the create.
-    e.sfontId = 0;
     RecomputeActive(fontId, instOrWave);
 }
 
-// Find a drum pair's current kit (pack/program) from any existing selected
-// bank-128 slot entry, so re-running auto-split or toggling Synth preserves
-// the user's kit choice. Falls back to the first loaded bank-128 preset, then
-// to an empty pack (slots stay native until a kit is assigned).
+void MidiTranslator::SetAuditionNative(uint8_t fontId, int16_t instOrWave, bool native) {
+    if (BypassIndexValid(fontId, instOrWave))
+        mAuditionNative[fontId][instOrWave] = native;
+}
+
+bool MidiTranslator::IsAuditionNative(uint8_t fontId, int16_t instOrWave) const {
+    return BypassIndexValid(fontId, instOrWave) && mAuditionNative[fontId][instOrWave];
+}
+
+// Find a drum pair's current kit (pack/program) from the edited mod's bank-128
+// slot entries, so re-running auto-split or toggling Synth preserves the kit
+// choice. Falls back to the mod's first bank-128 preset, then to an empty pack
+// (slots stay native until a kit is assigned).
 void MidiTranslator::ResolveDrumKit(uint8_t fontId, int16_t instOrWave, std::string& outPack, int& outProgram) const {
     for (const auto& e : mEntries) {
-        if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected && e.bank == 128 && !e.packName.empty()) {
+        if (InEditMod(e, fontId, instOrWave) && e.bank == 128 && !e.packName.empty()) {
             outPack = e.packName;
             outProgram = e.program;
             return;
         }
     }
     for (const auto& lp : mLoadedPresets) {
-        if (lp.bank == 128) {
+        if (lp.bank == 128 && lp.modName == mEditMod) {
             outPack = lp.packName;
             outProgram = lp.program;
             return;
@@ -743,30 +691,49 @@ int MidiTranslator::AllocForcedDrumPool() {
 }
 
 void MidiTranslator::SetForcedDrum(uint8_t fontId, int16_t instOrWave, bool forced) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
     if (instOrWave < kDrumHistInst)
         return; // 0/1 are intrinsic drum channels -- use SetDrumChannelSynth
 
-    const bool wasForced = mForcedDrumPool[fontId][instOrWave] >= 0;
-    if (forced == wasForced)
+    const ModPair key{ mEditMod, fontId, instOrWave };
+    if (forced == mModForcedDrums.contains(key))
         return;
 
     if (forced) {
+        mModForcedDrums.insert(key);
+        // A full-range melodic entry would otherwise cover every slot and
+        // shadow the per-slot drum entries once discovered.
+        for (auto& e : mEntries) {
+            if (InEditMod(e, fontId, instOrWave) && e.noteLow == 0 && e.noteHigh == 127) {
+                e.enabled = false;
+                e.selected = false;
+            }
+        }
+    } else {
+        mModForcedDrums.erase(key);
+        // Drop the per-slot drum entries so the pair returns to a clean melodic row.
+        for (auto& e : mEntries) {
+            if (InEditMod(e, fontId, instOrWave) && e.noteLow == e.noteHigh) {
+                e.enabled = false;
+                e.selected = false;
+            }
+        }
+    }
+    RecomputeActive(fontId, instOrWave);
+}
+
+void MidiTranslator::ApplyForcedDrumFlag(uint8_t fontId, int16_t instOrWave, bool forced) {
+    const bool wasForced = mForcedDrumPool[fontId][instOrWave] >= 0;
+    if (forced == wasForced)
+        return;
+    if (forced) {
         int pool = AllocForcedDrumPool();
         if (pool < 0) {
-            SPDLOG_WARN("[MidiTranslator] SetForcedDrum: pool full ({} pairs), "
+            SPDLOG_WARN("[MidiTranslator] forced drum pool full ({} pairs), "
                         "cannot flag font {} inst {}",
                         kMaxForcedDrumPairs, fontId, instOrWave);
-            return; // toggle doesn't stick; the pool is generously sized
-        }
-        // A full-range melodic entry would otherwise cover every slot and
-        // shadow the per-slot drum entries once discovered. Disable any enabled
-        // one so the pair starts from a clean native baseline (it stays in
-        // mEntries, deselected-but-present, so flipping back restores it).
-        for (auto& e : mEntries) {
-            if (e.fontId == fontId && e.instOrWave == instOrWave && e.enabled && e.noteLow == 0 && e.noteHigh == 127)
-                e.enabled = false;
+            return;
         }
         mForcedDrumPool[fontId][instOrWave] = static_cast<int8_t>(pool);
     } else {
@@ -774,20 +741,7 @@ void MidiTranslator::SetForcedDrum(uint8_t fontId, int16_t instOrWave, bool forc
         if (pool >= 0 && pool < kMaxForcedDrumPairs)
             mForcedDrumPoolUsed[pool] = false;
         mForcedDrumPool[fontId][instOrWave] = -1;
-        // Drop the per-slot drum entries so the pair returns to a clean melodic row.
-        // Disable + deselect rather than erase: erasing shifts the cached indices
-        // the audio thread reads. A deselected entry is ignored by resolution and
-        // dropped on the next save; re-forcing rediscovers them by key.
-        for (auto& e : mEntries) {
-            if (e.fontId == fontId && e.instOrWave == instOrWave && e.noteLow == e.noteHigh) {
-                e.enabled = false;
-                e.selected = false;
-            }
-        }
     }
-    // Resolution gates on the flag at play time, but disabling a full-range
-    // entry (above) changes the chain, so recompute either way.
-    RecomputeActive(fontId, instOrWave);
 }
 
 bool MidiTranslator::IsForcedDrum(uint8_t fontId, int16_t instOrWave) const {
@@ -796,8 +750,14 @@ bool MidiTranslator::IsForcedDrum(uint8_t fontId, int16_t instOrWave) const {
     return instOrWave >= kDrumHistInst && mForcedDrumPool[fontId][instOrWave] >= 0;
 }
 
+bool MidiTranslator::IsForcedDrumInView(uint8_t fontId, int16_t instOrWave) const {
+    if (!mEditMod.empty())
+        return mModForcedDrums.contains({ mEditMod, fontId, instOrWave });
+    return IsForcedDrum(fontId, instOrWave);
+}
+
 void MidiTranslator::AutoSplitDrums(uint8_t fontId, int16_t instOrWave) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
     const DrumSlotHit* hist = DrumHistFor(fontId, instOrWave);
     if (!hist)
@@ -819,8 +779,7 @@ void MidiTranslator::AutoSplitDrums(uint8_t fontId, int16_t instOrWave) {
         const ConfigEntry& e = mEntries[idx];
         // Only reuse existing single-slot entries; full-range whole-pair entries
         // (noteLow 0..127) must not be hijacked into slot 0.
-        if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected && e.noteLow == e.noteHigh &&
-            e.noteLow < 128)
+        if (InEditMod(e, fontId, instOrWave) && e.noteLow == e.noteHigh && e.noteLow < 128)
             bySlot[e.noteLow] = static_cast<int>(idx);
     }
 
@@ -845,8 +804,8 @@ void MidiTranslator::AutoSplitDrums(uint8_t fontId, int16_t instOrWave) {
         int idx = bySlot[s];
         const bool isNew = (idx < 0);
         if (isNew) {
-            idx = FindOrCreateEntry(fontId, instOrWave, kitPack, static_cast<int16_t>(kitProgram), kitBank,
-                                    std::string("Drum Kit"), EntrySource::UserPicked, static_cast<uint8_t>(s));
+            idx = FindOrCreateEntry(mEditMod, fontId, instOrWave, kitPack, static_cast<int16_t>(kitProgram), kitBank,
+                                    std::string("Drum Kit"), static_cast<uint8_t>(s));
             if (idx < 0)
                 continue;
         }
@@ -862,30 +821,26 @@ void MidiTranslator::AutoSplitDrums(uint8_t fontId, int16_t instOrWave) {
                                                 static_cast<int>(kGmPercussionLo), static_cast<int>(kGmPercussionHi)));
         }
         e.route = EntryRoute::Synth;
-        e.source = EntrySource::UserPicked;
-        e.selected = true;
         // Discovery only POPULATES the row. A freshly discovered slot defaults
         // to Native (disabled) so switching the instrument to Synth doesn't
         // suddenly blast a guessed GM kit; the user enables each slot by
         // picking a sound. Existing slots keep their saved enabled state.
         if (isNew)
             e.enabled = false;
-        if (e.enabled)
-            e.lastEnabledSeq = mNextSeq++;
         // No kit loaded -> unresolved (native) rather than mis-synthing on the
         // empty-pack placeholder path (which would resolve to sfontId 0).
-        e.sfontId = kitPack.empty() ? -1 : ResolveSfontIdFromCache(kitPack, kitBank, kitProgram);
+        e.sfontId = kitPack.empty() ? -1 : ResolveSfontIdFromCache(mEditMod, kitPack, kitBank, kitProgram);
     }
     RecomputeActive(fontId, instOrWave);
 }
 
 void MidiTranslator::AddDrumSlot(uint8_t fontId, int16_t instOrWave, uint8_t slot) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
     if (slot >= kDrumHistSlots)
         return;
     // Drum-like pairs only: intrinsic drum/SFX channels or a forced-drum pair.
-    if (instOrWave != 0 && instOrWave != 1 && !IsForcedDrum(fontId, instOrWave))
+    if (instOrWave != 0 && instOrWave != 1 && !IsForcedDrumInView(fontId, instOrWave))
         return;
 
     std::string kitPack;
@@ -893,10 +848,14 @@ void MidiTranslator::AddDrumSlot(uint8_t fontId, int16_t instOrWave, uint8_t slo
     const int16_t kitBank = 128;
     ResolveDrumKit(fontId, instOrWave, kitPack, kitProgram);
 
-    int idx = FindSlotEntryIdx(fontId, instOrWave, slot);
+    int idx = -1;
+    for (size_t k = 0; k < mEntries.size() && idx < 0; k++) {
+        if (InEditMod(mEntries[k], fontId, instOrWave) && mEntries[k].noteLow == slot)
+            idx = static_cast<int>(k);
+    }
     if (idx < 0) {
-        idx = FindOrCreateEntry(fontId, instOrWave, kitPack, static_cast<int16_t>(kitProgram), kitBank,
-                                std::string("Drum Kit"), EntrySource::UserPicked, slot);
+        idx = FindOrCreateEntry(mEditMod, fontId, instOrWave, kitPack, static_cast<int16_t>(kitProgram), kitBank,
+                                std::string("Drum Kit"), slot);
         if (idx < 0)
             return;
     }
@@ -912,33 +871,33 @@ void MidiTranslator::AddDrumSlot(uint8_t fontId, int16_t instOrWave, uint8_t slo
                                             static_cast<int>(kGmPercussionHi)));
     }
     e.route = EntryRoute::Synth;
-    e.source = EntrySource::UserPicked;
-    e.selected = true;
     // Native by default (like discovery) so adding a slot never blasts a guessed
     // GM kit; the user enables it by picking a Drum Sound.
     e.enabled = false;
-    e.sfontId = kitPack.empty() ? -1 : ResolveSfontIdFromCache(kitPack, kitBank, kitProgram);
+    e.sfontId = kitPack.empty() ? -1 : ResolveSfontIdFromCache(mEditMod, kitPack, kitBank, kitProgram);
     RecomputeActive(fontId, instOrWave);
 }
 
 void MidiTranslator::SetDrumChannelSynth(uint8_t fontId, int16_t instOrWave, bool synth) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
-    if (instOrWave < 0 || instOrWave >= kDrumHistInst)
+    if (instOrWave >= kDrumHistInst)
         return; // master flag only meaningful for the drum/SFX channels
 
-    // Master switch only: set the per-pair flag. We DON'T touch per-slot
-    // `enabled` here -- that is each slot's own Native/Synth state, preserved
-    // across instrument-mode toggles (so flipping to Native then back restores
-    // exactly what the slots were).
-    mDrumChannelSynth[fontId][instOrWave] = synth;
+    // Master switch only: per-slot `enabled` is each slot's own Native/Synth
+    // state, preserved across instrument-mode toggles.
+    const ModPair key{ mEditMod, fontId, instOrWave };
+    if (synth)
+        mModDrumChannelSynth.insert(key);
+    else
+        mModDrumChannelSynth.erase(key);
 
     if (synth) {
         // Going Synth needs rows to edit. If none exist yet, discover them
         // from the histogram (created Native by default -- see AutoSplitDrums).
         bool hasSlot = false;
         for (const auto& e : mEntries) {
-            if (e.fontId == fontId && e.instOrWave == instOrWave && e.selected && e.noteLow == e.noteHigh) {
+            if (InEditMod(e, fontId, instOrWave) && e.noteLow == e.noteHigh) {
                 hasSlot = true;
                 break;
             }
@@ -946,14 +905,14 @@ void MidiTranslator::SetDrumChannelSynth(uint8_t fontId, int16_t instOrWave, boo
         if (!hasSlot)
             AutoSplitDrums(fontId, instOrWave);
     }
-    // Resolution gates on the flag at play time (ProcessNote), so no chain
-    // rebuild is required for the toggle itself; AutoSplitDrums recomputes if
-    // it ran.
+    RecomputeActive(fontId, instOrWave);
 }
 
 bool MidiTranslator::IsDrumChannelSynth(uint8_t fontId, int16_t instOrWave) const {
     if (fontId >= kMaxFontId || instOrWave < 0 || instOrWave >= kDrumHistInst)
         return false;
+    if (!mEditMod.empty())
+        return mModDrumChannelSynth.contains({ mEditMod, fontId, instOrWave });
     return mDrumChannelSynth[fontId][instOrWave];
 }
 
@@ -962,15 +921,14 @@ void MidiTranslator::SetDrumKit(uint8_t fontId, int16_t instOrWave, const std::s
     if (!BypassIndexValid(fontId, instOrWave))
         return;
     for (auto& e : mEntries) {
-        if (e.fontId != fontId || e.instOrWave != instOrWave || !e.selected)
+        if (!InEditMod(e, fontId, instOrWave))
             continue;
         e.packName = pack;
         e.program = program;
         e.bank = 128;
         if (!presetName.empty())
             e.presetName = presetName;
-        e.source = EntrySource::UserPicked;
-        e.sfontId = ResolveSfontIdFromCache(pack, 128, program);
+        e.sfontId = ResolveSfontIdFromCache(mEditMod, pack, 128, program);
     }
     RecomputeActive(fontId, instOrWave);
 }
@@ -978,18 +936,15 @@ void MidiTranslator::SetDrumKit(uint8_t fontId, int16_t instOrWave, const std::s
 // ── Note-range split editing (melodic) ──────────────────────────────────────
 
 int MidiTranslator::SplitEntry(int idx, uint8_t atSemitone) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return -1;
     // The cut must fall strictly inside the range so both halves are non-empty.
     if (atSemitone <= mEntries[idx].noteLow || atSemitone > mEntries[idx].noteHigh)
         return -1;
     if (mEntries.size() >= kMaxEntries)
         return -1;
-    ConfigEntry sib = mEntries[idx]; // copy preset/gain/effects/route/etc.
-    sib.noteLow = atSemitone;        // sibling takes the upper half
-    sib.selected = true;
-    sib.source = EntrySource::UserPicked;
-    sib.lastEnabledSeq = mNextSeq++;
+    ConfigEntry sib = mEntries[idx];                               // copy preset/gain/effects/route/etc.
+    sib.noteLow = atSemitone;                                      // sibling takes the upper half
     mEntries[idx].noteHigh = static_cast<uint8_t>(atSemitone - 1); // idx keeps lower half
     mEntries.push_back(std::move(sib));                            // mEntries reserved -> no realloc, idx stays valid
     int newIdx = static_cast<int>(mEntries.size()) - 1;
@@ -999,7 +954,7 @@ int MidiTranslator::SplitEntry(int idx, uint8_t atSemitone) {
 }
 
 int MidiTranslator::SplitEntryEven(int idx, int parts) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return idx;
     if (parts < 2)
         return idx;
@@ -1025,7 +980,7 @@ int MidiTranslator::SplitEntryEven(int idx, int parts) {
 }
 
 void MidiTranslator::MergeWithNext(int idx) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     ConfigEntry& e = mEntries[idx];
     if (e.noteHigh >= 127)
@@ -1034,18 +989,15 @@ void MidiTranslator::MergeWithNext(int idx) {
     int sib = -1;
     for (size_t k = 0; k < mEntries.size(); k++) {
         const ConfigEntry& c = mEntries[k];
-        if (c.fontId == e.fontId && c.instOrWave == e.instOrWave && c.selected &&
-            static_cast<int>(c.noteLow) == wantLow) {
+        if (InEditMod(c, e.fontId, e.instOrWave) && static_cast<int>(c.noteLow) == wantLow) {
             sib = static_cast<int>(k);
             break;
         }
     }
     if (sib < 0)
         return;
-    // Extend idx over the sibling's range, then retire the sibling (disable +
-    // deselect rather than erase -- erasing would shift every cached index and
-    // risk an audio-thread read mid-move; a deselected entry is dropped on the
-    // next save and ignored by resolution/UI).
+    // Extend idx over the sibling's range, then retire the sibling rather than
+    // erase it: erasing would shift every cached index the audio thread reads.
     e.noteHigh = mEntries[sib].noteHigh;
     mEntries[sib].enabled = false;
     mEntries[sib].selected = false;
@@ -1054,8 +1006,7 @@ void MidiTranslator::MergeWithNext(int idx) {
 }
 
 void MidiTranslator::SetSplitBoundary(int lowerIdx, int upperIdx, uint8_t boundary) {
-    const int n = static_cast<int>(mEntries.size());
-    if (lowerIdx < 0 || lowerIdx >= n || upperIdx < 0 || upperIdx >= n)
+    if (!IsEditable(lowerIdx) || !IsEditable(upperIdx))
         return;
     ConfigEntry& lo = mEntries[lowerIdx];
     ConfigEntry& hi = mEntries[upperIdx];
@@ -1069,7 +1020,7 @@ void MidiTranslator::SetSplitBoundary(int lowerIdx, int upperIdx, uint8_t bounda
 }
 
 void MidiTranslator::SetEntryNoteRange(int idx, uint8_t noteLow, uint8_t noteHigh) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     if (noteHigh < noteLow)
         noteHigh = noteLow;
@@ -1083,19 +1034,13 @@ void MidiTranslator::NormalizeSplits(uint8_t fontId, int16_t instOrWave) {
     // Drum/SFX and forced-drum pairs are per-slot, not ranges -- normalizing
     // would snap slot entries into a bogus [0,127] tiling (and retire them all
     // when a full-range melodic entry is present).
-    if (instOrWave < kDrumHistInst || IsForcedDrum(fontId, instOrWave))
+    if (instOrWave < kDrumHistInst || IsForcedDrumInView(fontId, instOrWave))
         return;
 
-    // The split set = the user's selected rows, minus the whole-pair Native
-    // marker; mod rows stay selected==false, an untouched base layer below.
     std::vector<int> rows;
     for (size_t i = 0; i < mEntries.size(); i++) {
-        const ConfigEntry& e = mEntries[i];
-        if (e.fontId != fontId || e.instOrWave != instOrWave || !e.selected)
-            continue;
-        if (e.route == EntryRoute::Native && e.packName.empty())
-            continue;
-        rows.push_back(static_cast<int>(i));
+        if (InEditMod(mEntries[i], fontId, instOrWave))
+            rows.push_back(static_cast<int>(i));
     }
     if (rows.empty())
         return;
@@ -1131,24 +1076,11 @@ void MidiTranslator::NormalizeSplits(uint8_t fontId, int16_t instOrWave) {
 void MidiTranslator::FlattenSplits(uint8_t fontId, int16_t instOrWave) {
     if (instOrWave < kDrumHistInst)
         return;
-    // Keep the active row at full range, retire the other selected ranges.
-    int keep = mActiveEntryIdx[fontId][instOrWave];
-    // Only honor the active pick if it's a real selected range (not the
-    // whole-pair Native marker or stale); else adopt the first row in the loop.
-    if (keep >= 0 && keep < static_cast<int>(mEntries.size())) {
-        const ConfigEntry& k = mEntries[keep];
-        const bool isRealRange = k.fontId == fontId && k.instOrWave == instOrWave && k.selected &&
-                                 !(k.route == EntryRoute::Native && k.packName.empty());
-        if (!isRealRange)
-            keep = -1;
-    } else {
-        keep = -1;
-    }
+    // Keep the edited mod's winning row at full range, retire its other ranges.
+    int keep = GetViewEntryIdx(fontId, instOrWave);
     for (size_t i = 0; i < mEntries.size(); i++) {
         ConfigEntry& e = mEntries[i];
-        if (e.fontId != fontId || e.instOrWave != instOrWave || !e.selected)
-            continue;
-        if (e.route == EntryRoute::Native && e.packName.empty())
+        if (!InEditMod(e, fontId, instOrWave))
             continue;
         if (keep < 0)
             keep = static_cast<int>(i); // no active pick: adopt the first row
@@ -1165,7 +1097,7 @@ void MidiTranslator::FlattenSplits(uint8_t fontId, int16_t instOrWave) {
 
 void MidiTranslator::SetEntryPreset(int idx, const std::string& pack, int16_t program, int16_t bank,
                                     const std::string& presetName) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     ConfigEntry& e = mEntries[idx];
     e.packName = pack;
@@ -1176,15 +1108,12 @@ void MidiTranslator::SetEntryPreset(int idx, const std::string& pack, int16_t pr
     e.route = EntryRoute::Synth;
     e.fixedNote = -1; // melodic: derive the played pitch from the engine semitone
     e.enabled = true;
-    e.selected = true;
-    e.source = EntrySource::UserPicked;
-    e.lastEnabledSeq = mNextSeq++;
-    e.sfontId = ResolveSfontIdFromCache(pack, bank, program);
+    e.sfontId = ResolveSfontIdFromCache(e.modName, pack, bank, program);
     RecomputeActive(e.fontId, e.instOrWave);
 }
 
 void MidiTranslator::AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
     if (instOrWave < kDrumHistInst)
         return; // melodic only -- drums use AutoSplitDrums
@@ -1201,8 +1130,8 @@ void MidiTranslator::AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave)
 
     // Split the pair's active entry (its preset is duplicated across the
     // ranges). With no active synth entry there's nothing to mirror.
-    int actIdx = mActiveEntryIdx[fontId][instOrWave];
-    if (actIdx < 0 || actIdx >= static_cast<int>(mEntries.size()))
+    int actIdx = GetViewEntryIdx(fontId, instOrWave);
+    if (!IsEditable(actIdx))
         return;
     ConfigEntry tmpl = mEntries[actIdx]; // copy the preset/gain/effects/route
 
@@ -1220,9 +1149,6 @@ void MidiTranslator::AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave)
         e.noteLow = rLo;
         e.noteHigh = rHi;
         e.transpose = static_cast<int8_t>(SuggestedTranspose(fontId, instOrWave, rLo, rHi));
-        e.selected = true;
-        e.source = EntrySource::UserPicked;
-        e.lastEnabledSeq = mNextSeq++;
         mEntries.push_back(std::move(e));
     };
     if (lo > 0)
@@ -1236,12 +1162,12 @@ void MidiTranslator::AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave)
 // ── Per-entry mutators ────────────────────────────────────────────────────
 
 void MidiTranslator::SetEntryGain(int idx, float gain) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].gain = gain;
 }
 void MidiTranslator::SetEntryTranspose(int idx, int8_t semis) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].transpose = semis;
 }
@@ -1253,34 +1179,34 @@ static inline int8_t ClampCcOrSentinel(int v) {
     return static_cast<int8_t>(v);
 }
 void MidiTranslator::SetEntryReverb(int idx, int8_t cc) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].reverb = ClampCcOrSentinel(cc);
 }
 void MidiTranslator::SetEntryChorus(int idx, int8_t cc) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].chorus = ClampCcOrSentinel(cc);
 }
 void MidiTranslator::SetEntryFilterCutoff(int idx, int8_t cc) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].cutoff = ClampCcOrSentinel(cc);
 }
 void MidiTranslator::SetEntryFilterResonance(int idx, int8_t cc) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].q = ClampCcOrSentinel(cc);
 }
 void MidiTranslator::SetEntryFixedNote(int idx, int16_t note) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     // -1 = derive from semitone; otherwise a valid MIDI note. No chain
     // recompute: fixedNote changes WHAT a winner plays, not WHICH wins.
     mEntries[idx].fixedNote = (note < 0) ? -1 : static_cast<int16_t>(std::clamp<int>(note, 0, 127));
 }
 void MidiTranslator::SetEntryRoute(int idx, EntryRoute route) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     mEntries[idx].route = route;
     // Route doesn't change chain membership today, but recompute keeps the
@@ -1288,27 +1214,42 @@ void MidiTranslator::SetEntryRoute(int idx, EntryRoute route) {
     RecomputeActive(mEntries[idx].fontId, mEntries[idx].instOrWave);
 }
 void MidiTranslator::SetEntryEnabled(int idx, bool enabled) {
-    if (idx < 0 || idx >= static_cast<int>(mEntries.size()))
+    if (!IsEditable(idx))
         return;
     ConfigEntry& e = mEntries[idx];
     e.enabled = enabled;
-    if (enabled)
-        e.lastEnabledSeq = mNextSeq++;
     RecomputeActive(e.fontId, e.instOrWave);
 }
 // ── Per-pair display name (row label) ─────────────────────────────────────
 
 std::string MidiTranslator::GetDisplayName(uint8_t fontId, int16_t instOrWave) const {
-    auto it = mDisplayName.find({ fontId, instOrWave });
-    return it == mDisplayName.end() ? std::string{} : it->second;
+    if (!mEditMod.empty()) {
+        auto it = mDisplayName.find({ mEditMod, fontId, instOrWave });
+        return it == mDisplayName.end() ? std::string{} : it->second;
+    }
+    // The playing mod's label, else the highest-ranked mod that names the pair.
+    if (const std::string* owner = OwnerMod(fontId, instOrWave)) {
+        auto it = mDisplayName.find({ *owner, fontId, instOrWave });
+        if (it != mDisplayName.end())
+            return it->second;
+    }
+    const std::string* best = nullptr;
+    int bestRank = -2;
+    for (const auto& [key, name] : mDisplayName) {
+        if (std::get<1>(key) == fontId && std::get<2>(key) == instOrWave && ModRank(std::get<0>(key)) > bestRank) {
+            best = &name;
+            bestRank = ModRank(std::get<0>(key));
+        }
+    }
+    return best == nullptr ? std::string{} : *best;
 }
 void MidiTranslator::SetDisplayName(uint8_t fontId, int16_t instOrWave, const std::string& name) {
-    if (!BypassIndexValid(fontId, instOrWave))
+    if (!BypassIndexValid(fontId, instOrWave) || mEditMod.empty())
         return;
     if (name.empty())
-        mDisplayName.erase({ fontId, instOrWave });
+        mDisplayName.erase({ mEditMod, fontId, instOrWave });
     else
-        mDisplayName[{ fontId, instOrWave }] = name;
+        mDisplayName[{ mEditMod, fontId, instOrWave }] = name;
 }
 
 // ── Session-only transient state ──────────────────────────────────────────
@@ -1405,13 +1346,12 @@ void MidiTranslator::RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool ma
 
 void MidiTranslator::ResetAllOverrides() {
     mEntries.clear();
-    mParkedEntries.clear();
-    mParkedDrumFlags.clear();
-    mParkedForcedDrums.clear();
     for (auto& row : mActiveEntryIdx)
         for (auto& cell : row)
             cell = -1;
     mDisplayName.clear();
+    mModDrumChannelSynth.clear();
+    mModForcedDrums.clear();
     for (auto& row : mDrumChannelSynth)
         for (auto& cell : row)
             cell = false;
@@ -1445,9 +1385,8 @@ static EntryRoute RouteFromString(const std::string& s) {
 }
 
 // Append the note-range split fields to a serialised entry, each omitted at its
-// default so unsplit entries serialise compactly. Shared by SaveOverridesToFile
-// and ExportPackMapping so the two writers can't drift. (noteLow is part of the
-// entry key, so it is written whenever nonzero.)
+// default so unsplit entries serialise compactly. (noteLow is part of the entry
+// key, so it is written whenever nonzero.)
 static void WriteSplitFields(nlohmann::json& entry, const ConfigEntry& e) {
     if (e.noteLow != 0)
         entry["note_low"] = e.noteLow;
@@ -1476,191 +1415,44 @@ static void ReadSplitFields(const nlohmann::json& entry, ConfigEntry& e) {
         e.route = RouteFromString(entry.value("route", std::string("synth")));
 }
 
-bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
+std::string MidiTranslator::BuildPackMappingJson(const std::string& modName, const std::string& packName,
+                                                 bool ownsUnmapped, int& outWritten) const {
     nlohmann::json j;
     j["version"] = 2;
     j["entries"] = nlohmann::json::array();
 
-    // Save criteria: an entry is persisted when the user has expressed
-    // intent in it (selected=true) OR the pair has a display name
-    // override. Mod-shipped entries the user never touched are NOT
-    // persisted — they reload from each pack's mapping.json next session.
-    for (const auto& e : mEntries) {
-        bool hasDisplayName = false;
-        auto dispIt = mDisplayName.find({ e.fontId, e.instOrWave });
-        if (dispIt != mDisplayName.end() && !dispIt->second.empty())
-            hasDisplayName = true;
-
-        if (!e.selected && !hasDisplayName)
-            continue;
-        if (e.source != EntrySource::UserPicked)
-            continue; // safety
-
-        nlohmann::json entry;
-        entry["fontId"] = e.fontId;
-        if (const char* fp = FontPathForId(e.fontId))
-            entry["font"] = fp;
-        entry["instOrWave"] = e.instOrWave;
-        entry["pack"] = e.packName;
-        entry["program"] = e.program;
-        entry["bank"] = e.bank;
-        if (!e.presetName.empty())
-            entry["preset_name"] = e.presetName;
-        if (e.gain != 0.0f)
-            entry["gain"] = e.gain;
-        if (e.transpose != 0)
-            entry["transpose"] = e.transpose;
-        if (e.reverb >= 0)
-            entry["reverb"] = e.reverb;
-        if (e.chorus >= 0)
-            entry["chorus"] = e.chorus;
-        if (e.cutoff >= 0)
-            entry["filter_cutoff"] = e.cutoff;
-        if (e.q >= 0)
-            entry["filter_q"] = e.q;
-        WriteSplitFields(entry, e);
-        entry["enabled"] = e.enabled;
-        entry["selected"] = e.selected;
-        if (hasDisplayName)
-            entry["display_name"] = dispIt->second;
-        j["entries"].push_back(std::move(entry));
-    }
-
-    // Display-name-only pairs (no matching selected entry) still need a
-    // home in the JSON so the label survives a restart. Write a stub
-    // entry with display_name set but no pack/program/etc.
-    for (const auto& kv : mDisplayName) {
-        if (kv.second.empty())
-            continue;
-        bool alreadyEmitted = false;
-        for (const auto& e : mEntries) {
-            if (e.fontId == kv.first.first && e.instOrWave == kv.first.second && e.selected &&
-                e.source == EntrySource::UserPicked) {
-                alreadyEmitted = true;
-                break;
-            }
-        }
-        if (alreadyEmitted)
-            continue;
-        nlohmann::json entry;
-        entry["fontId"] = kv.first.first;
-        if (const char* fp = FontPathForId(kv.first.first))
-            entry["font"] = fp;
-        entry["instOrWave"] = kv.first.second;
-        entry["display_name"] = kv.second;
-        j["entries"].push_back(std::move(entry));
-    }
-
-    // Entries parked at load (their font's mod isn't mounted this session) are
-    // re-emitted verbatim so they spring back when the mod returns.
-    for (const auto& raw : mParkedEntries) {
-        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
-        if (!parked.is_discarded())
-            j["entries"].push_back(std::move(parked));
-    }
-
-    // Per-pair drum channel mode (the per-instrument Native/Synth master).
-    // Separate from per-slot entries, so persisted as its own list of pairs
-    // currently in Synth mode (absent => Native).
-    j["drum_channels_synth"] = nlohmann::json::array();
-    for (int f = 0; f < kMaxFontId; ++f)
-        for (int i = 0; i < kDrumHistInst; ++i)
-            if (mDrumChannelSynth[f][i]) {
-                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
-                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
-                    d["font"] = fp;
-                j["drum_channels_synth"].push_back(std::move(d));
-            }
-    for (const auto& raw : mParkedDrumFlags) {
-        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
-        if (!parked.is_discarded())
-            j["drum_channels_synth"].push_back(std::move(parked));
-    }
-
-    // Forced-drum ("Treat as drum") pairs: a per-pair list, mirroring the drum
-    // channel-mode list above. The histogram pool slot is runtime-only; only
-    // the flag (instOrWave >= kDrumHistInst) is persisted.
-    j["forced_drums"] = nlohmann::json::array();
-    for (int f = 0; f < kMaxFontId; ++f)
-        for (int i = kDrumHistInst; i < kMaxInstOrWave; ++i)
-            if (mForcedDrumPool[f][i] >= 0) {
-                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
-                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
-                    d["font"] = fp;
-                j["forced_drums"].push_back(std::move(d));
-            }
-    for (const auto& raw : mParkedForcedDrums) {
-        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
-        if (!parked.is_discarded())
-            j["forced_drums"].push_back(std::move(parked));
-    }
-
-    std::ofstream out(path);
-    if (!out.is_open()) {
-        SPDLOG_WARN("[MidiTranslator] SaveOverridesToFile: cannot open {}", path);
-        return false;
-    }
-    out << j.dump(2);
-    return out.good();
-}
-
-static bool ExportEntryMatches(const ConfigEntry& e, const std::string& packNameFilter) {
-    if (e.program < 0)
-        return false; // None placeholder — not shippable
-    if (e.packName.empty())
-        return false;
-    if (!packNameFilter.empty() && e.packName != packNameFilter)
-        return false;
-    return true;
-}
-
-// Enabled is not enough: after a reload the pack's own rows come back enabled beside
-// the user's newer pick, and writing both is how duplicates accumulated. A Native
-// marker competes too, so a pair the author set to native ships nothing.
-std::vector<int> MidiTranslator::ExportableEntries(const std::string& packNameFilter) const {
-    std::map<std::pair<uint8_t, int16_t>, std::vector<int>> candidatesByPair;
-    for (size_t idx = 0; idx < mEntries.size(); idx++) {
-        const ConfigEntry& e = mEntries[idx];
-        if (!IsResolvable(e))
-            continue;
-        if (packNameFilter.empty() || e.packName == packNameFilter || IsNativeMarker(e))
-            candidatesByPair[{ e.fontId, e.instOrWave }].push_back(static_cast<int>(idx));
-    }
-    std::vector<int> exported;
-    for (const auto& [pair, candidates] : candidatesByPair)
-        for (int idx : ResolveWinners(candidates))
-            if (ExportEntryMatches(mEntries[idx], packNameFilter))
-                exported.push_back(idx);
-    std::sort(exported.begin(), exported.end());
-    return exported;
-}
-
-int MidiTranslator::CountExportableEntries(const std::string& packNameFilter) const {
-    return static_cast<int>(ExportableEntries(packNameFilter).size());
-}
-
-std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilter, int& outWritten) const {
-    nlohmann::json j;
-    j["version"] = 2;
-    // The pack name lives once, in this header. Entries do NOT repeat a
-    // per-entry "pack": the loader takes ownership from the pack's discovered
-    // name (and falls back to this header), so the field would be redundant.
-    if (!packNameFilter.empty())
-        j["pack_name"] = packNameFilter;
-    j["entries"] = nlohmann::json::array();
+    // Which of the mod's soundfonts carries each pair's flags and label.
+    std::map<std::pair<uint8_t, int16_t>, std::string> pairPack;
+    for (const auto& e : mEntries)
+        if (e.selected && e.modName == modName)
+            pairPack.try_emplace({ e.fontId, e.instOrWave }, e.packName);
+    auto ownsPair = [&](uint8_t fontId, int16_t instOrWave) {
+        auto it = pairPack.find({ fontId, instOrWave });
+        return it == pairPack.end() ? ownsUnmapped : it->second == packName;
+    };
+    std::set<int> winners;
+    for (const auto& [pair, pack] : pairPack)
+        for (int idx : ModWinners(modName, pair.first, pair.second))
+            winners.insert(idx);
+    auto withFont = [](nlohmann::json& o, uint8_t fontId, int16_t instOrWave) {
+        o["fontId"] = fontId;
+        if (const char* fp = FontPathForId(fontId))
+            o["font"] = fp;
+        o["instOrWave"] = instOrWave;
+    };
 
     int written = 0;
-    const std::vector<int> exported = ExportableEntries(packNameFilter);
-    std::set<std::pair<uint8_t, int16_t>> exportedPairs;
-    for (int idx : exported) {
+    for (size_t idx = 0; idx < mEntries.size(); idx++) {
         const ConfigEntry& e = mEntries[idx];
-        exportedPairs.insert({ e.fontId, e.instOrWave });
+        if (!e.selected || e.modName != modName || e.packName != packName || e.program < 0)
+            continue;
+        // A playable row the mod's own rows shadow never sounds; writing it is how
+        // duplicates used to pile up.
+        if (IsResolvable(e) && !winners.contains(static_cast<int>(idx)))
+            continue;
 
         nlohmann::json entry;
-        entry["fontId"] = e.fontId;
-        if (const char* fp = FontPathForId(e.fontId))
-            entry["font"] = fp;
-        entry["instOrWave"] = e.instOrWave;
+        withFont(entry, e.fontId, e.instOrWave);
         entry["program"] = e.program;
         entry["bank"] = e.bank;
         if (!e.presetName.empty())
@@ -1678,260 +1470,93 @@ std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilt
         if (e.q >= 0)
             entry["filter_q"] = e.q;
         WriteSplitFields(entry, e);
-        // Pack mapping consumers default enabled=true, selected=false at load
-        // time (ApplyOverridesFromString), so we omit both flags here — the
-        // file represents "this is the pack's recommended preset for the
-        // pair", not "this is currently picked by the user".
-        auto dispIt = mDisplayName.find({ e.fontId, e.instOrWave });
-        if (dispIt != mDisplayName.end() && !dispIt->second.empty())
-            entry["display_name"] = dispIt->second;
+        if (!e.enabled)
+            entry["enabled"] = false;
         j["entries"].push_back(std::move(entry));
         ++written;
     }
 
-    // Forced-drum flags for the pairs that actually shipped a slot entry above,
-    // so a downstream user loads the pack with those pairs already routing as
-    // drums (the slot entries alone don't imply the master flag). Scoped to
-    // written pairs to avoid leaking unrelated forced pairs into a single-pack
-    // export.
-    nlohmann::json forced = nlohmann::json::array();
-    for (int f = 0; f < kMaxFontId; ++f) {
-        for (int i = kDrumHistInst; i < kMaxInstOrWave; ++i) {
-            if (mForcedDrumPool[f][i] < 0)
-                continue;
-            if (exportedPairs.contains({ static_cast<uint8_t>(f), static_cast<int16_t>(i) })) {
-                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
-                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
-                    d["font"] = fp;
-                forced.push_back(std::move(d));
-            }
-        }
+    for (const auto& [key, name] : mDisplayName) {
+        const auto& [mod, fontId, instOrWave] = key;
+        if (mod != modName || !ownsPair(fontId, instOrWave))
+            continue;
+        nlohmann::json entry;
+        withFont(entry, fontId, instOrWave);
+        entry["display_name"] = name;
+        j["entries"].push_back(std::move(entry));
     }
-    if (!forced.empty())
-        j["forced_drums"] = std::move(forced);
+    auto writeFlags = [&](const char* field, const std::set<ModPair>& flags) {
+        nlohmann::json list = nlohmann::json::array();
+        for (const auto& [mod, fontId, instOrWave] : flags) {
+            if (mod != modName || !ownsPair(fontId, instOrWave))
+                continue;
+            nlohmann::json d;
+            withFont(d, fontId, instOrWave);
+            list.push_back(std::move(d));
+        }
+        if (!list.empty())
+            j[field] = std::move(list);
+    };
+    writeFlags("drum_channels_synth", mModDrumChannelSynth);
+    writeFlags("forced_drums", mModForcedDrums);
 
     outWritten = written;
     return j.dump(2);
 }
 
-int MidiTranslator::ExportPackMapping(const std::string& path, const std::string& packNameFilter) const {
-    int written = 0;
-    std::string text = BuildPackMappingJson(packNameFilter, written);
-
-    std::error_code ec;
-    auto parent = std::filesystem::path(path).parent_path();
-    if (!parent.empty())
-        std::filesystem::create_directories(parent, ec);
-
-    std::ofstream out(path);
-    if (!out.is_open()) {
-        SPDLOG_WARN("[MidiTranslator] ExportPackMapping: cannot open {}", path);
-        return -1;
-    }
-    out << text;
-    if (!out.good()) {
-        SPDLOG_WARN("[MidiTranslator] ExportPackMapping: write failed for {}", path);
-        return -1;
-    }
-    SPDLOG_INFO("[MidiTranslator] ExportPackMapping: wrote {} entries to {}", written, path);
-    return written;
-}
-
-bool MidiTranslator::ApplyOverridesFromString(const std::string& json, const std::string& packName) {
+bool MidiTranslator::ApplyModMapping(const std::string& json, const std::string& modName, const std::string& packName) {
     nlohmann::json j;
     try {
         j = nlohmann::json::parse(json);
     } catch (const std::exception& e) {
-        SPDLOG_ERROR("[MidiTranslator] ApplyOverridesFromString: parse error: {}", e.what());
+        SPDLOG_ERROR("[MidiTranslator] ApplyModMapping: {}/{}: parse error: {}", modName, packName, e.what());
         return false;
     }
-    // Owner resolution order: the caller's discovered name (authoritative) ->
-    // the file's "pack_name" header -> the per-entry "pack" (legacy files).
-    std::string headerPack = !packName.empty() ? packName : j.value("pack_name", std::string{});
-    auto entries = j.value("entries", nlohmann::json::array());
-    int applied = 0;
-    for (const auto& entry : entries) {
-        // Fonts resolve by name; a modded font referenced only by numeric id is
-        // skipped (ids shift with the mod set), and so is a name that isn't
-        // loaded -- the instrument plays native. Pack mappings reload on every
-        // apply, so unlike the user file nothing needs parking.
-        int fontId = entry.value("fontId", -1);
-        if (fontMap != nullptr) {
-            if (entry.contains("font"))
-                fontId = ResolveFontIdByPath(entry.value("font", std::string{}));
-            else if (fontId >= kBuiltinFontCount)
-                fontId = -1;
-        }
-        int instOrWave = entry.value("instOrWave", -1);
-        if (fontId < 0 || fontId >= kMaxFontId || instOrWave < 0 || instOrWave >= kMaxInstOrWave)
-            continue;
-
-        if (entry.contains("display_name")) {
-            std::string dn = entry.value("display_name", std::string{});
-            SetDisplayName(static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave), dn);
-        }
-        // A routing entry needs a program. Pairs without one are display-name
-        // -only stubs (handled just above) -> skip the routing path. The owner
-        // pack comes from the header/caller, falling back to a per-entry "pack"
-        // only for legacy files that still carry it.
-        if (!entry.contains("program"))
-            continue;
-        std::string pack = !headerPack.empty() ? headerPack : entry.value("pack", std::string{});
-        if (pack.empty())
-            continue;
-        int program = entry.value("program", -1);
-        int bank = entry.value("bank", 0);
-        if (program < -1 || program > 127)
-            continue;
-        if (bank < 0)
-            bank = 0;
-        if (bank > 255)
-            bank = 255;
-        std::string presetName = entry.value("preset_name", std::string{});
-        // note_low is part of the entry key, so it must be resolved before
-        // find-or-create or distinct splits collapse into one entry.
-        uint8_t noteLow = static_cast<uint8_t>(std::clamp(entry.value("note_low", 0), 0, 127));
-
-        int idx = FindOrCreateEntry(static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave), pack,
-                                    static_cast<int16_t>(program), static_cast<int16_t>(bank), presetName,
-                                    EntrySource::ModSupplied, noteLow);
-        if (idx < 0)
-            continue;
-        ConfigEntry& e = mEntries[idx];
-        // Overlay fields. Missing keys keep current values.
-        e.bank = static_cast<int16_t>(bank);
-        if (!presetName.empty())
-            e.presetName = presetName;
-        if (entry.contains("gain"))
-            e.gain = entry.value("gain", 0.0f);
-        if (entry.contains("transpose")) {
-            int t = entry.value("transpose", 0);
-            t = std::clamp(t, -127, 127);
-            e.transpose = static_cast<int8_t>(t);
-        }
-        if (entry.contains("reverb"))
-            e.reverb = ClampCcOrSentinel(entry.value("reverb", -1));
-        if (entry.contains("chorus"))
-            e.chorus = ClampCcOrSentinel(entry.value("chorus", -1));
-        if (entry.contains("filter_cutoff"))
-            e.cutoff = ClampCcOrSentinel(entry.value("filter_cutoff", -1));
-        if (entry.contains("filter_q"))
-            e.q = ClampCcOrSentinel(entry.value("filter_q", -1));
-        ReadSplitFields(entry, e);
-        // Pack mapping.json: enabled by default (mods publish active
-        // presets), selected stays false (user hasn't picked).
-        e.enabled = entry.value("enabled", true);
-        e.selected = entry.value("selected", false);
-        applied++;
-    }
-    // Same name-first font resolution as the entries; unresolved -> skip.
-    auto packFontId = [](const nlohmann::json& d) -> int {
-        int f = d.value("fontId", -1);
-        if (fontMap == nullptr)
-            return f;
-        if (d.contains("font"))
-            return ResolveFontIdByPath(d.value("font", std::string{}));
-        return f < kBuiltinFontCount ? f : -1;
-    };
-    if (j.contains("drum_channels_synth")) {
-        for (const auto& d : j["drum_channels_synth"]) {
-            int f = packFontId(d);
-            int i = d.value("instOrWave", -1);
-            if (f >= 0 && f < kMaxFontId && i >= 0 && i < kDrumHistInst)
-                mDrumChannelSynth[f][i] = true;
-        }
-    }
-    if (j.contains("forced_drums")) {
-        for (const auto& d : j["forced_drums"]) {
-            int f = packFontId(d);
-            int i = d.value("instOrWave", -1);
-            if (f >= 0 && f < kMaxFontId && i >= kDrumHistInst && i < kMaxInstOrWave)
-                SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
-        }
-    }
-    SPDLOG_INFO("[MidiTranslator] ApplyOverridesFromString: applied {} entries", applied);
-    return true;
-}
-
-bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
-    std::ifstream in(path);
-    if (!in.is_open()) {
-        SPDLOG_INFO("[MidiTranslator] ApplyOverridesFromFile: no file at {} (first run?)", path);
-        return false;
-    }
-    nlohmann::json j;
-    try {
-        in >> j;
-    } catch (const std::exception& e) {
-        SPDLOG_ERROR("[MidiTranslator] ApplyOverridesFromFile: parse error: {}", e.what());
-        return false;
-    }
-    int version = j.value("version", 1);
-    auto entries = j.value("entries", nlohmann::json::array());
-    int applied = 0;
-    // Rebuilt from this file; stale parked state must not accumulate.
-    mParkedEntries.clear();
-    mParkedDrumFlags.clear();
-    mParkedForcedDrums.clear();
-    // Resolves an object's font: by name when possible (mod ids shift with the
-    // mod set), else the numeric id for stable vanilla fonts. Returns -1 to
-    // park the object (font not loaded / legacy modded id) -- native plays
-    // until the owning mod is back and the entry can be trusted again.
+    // Fonts resolve by name; a modded font referenced only by numeric id is
+    // skipped (ids shift with the mod set), and so is a name that isn't
+    // loaded -- the instrument plays native.
     auto resolveFont = [](const nlohmann::json& o) -> int {
         int fontId = o.value("fontId", -1);
-        if (fontMap == nullptr) // too early for name resolution; legacy behavior
+        if (fontMap == nullptr)
             return fontId;
         if (o.contains("font"))
             return ResolveFontIdByPath(o.value("font", std::string{}));
         return fontId < kBuiltinFontCount ? fontId : -1;
     };
-    for (const auto& entry : entries) {
+    int applied = 0;
+    int replaced = 0;
+    for (const auto& entry : j.value("entries", nlohmann::json::array())) {
         int fontId = resolveFont(entry);
         int instOrWave = entry.value("instOrWave", -1);
-        if (instOrWave < 0 || instOrWave >= kMaxInstOrWave)
+        if (fontId < 0 || fontId >= kMaxFontId || instOrWave < 0 || instOrWave >= kMaxInstOrWave)
             continue;
-        if (fontId < 0 || fontId >= kMaxFontId) {
-            if (entry.value("fontId", -1) >= 0)
-                mParkedEntries.push_back(entry.dump());
-            continue;
-        }
+        const ModPair key{ modName, static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave) };
 
         if (entry.contains("display_name")) {
             std::string dn = entry.value("display_name", std::string{});
-            SetDisplayName(static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave), dn);
+            if (!dn.empty())
+                mDisplayName[key] = dn;
         }
-        if (!entry.contains("pack"))
+        if (!entry.contains("program"))
             continue;
-        std::string pack = entry.value("pack", std::string{});
         int program = entry.value("program", -1);
-        int bank = entry.value("bank", 0);
+        int bank = std::clamp(entry.value("bank", 0), 0, 255);
         if (program < -1 || program > 127)
             continue;
-        if (bank < 0)
-            bank = 0;
-        if (bank > 255)
-            bank = 255;
         std::string presetName = entry.value("preset_name", std::string{});
         // note_low is part of the entry key, so it must be resolved before
         // find-or-create or distinct splits collapse into one entry.
         uint8_t noteLow = static_cast<uint8_t>(std::clamp(entry.value("note_low", 0), 0, 127));
 
-        int idx = FindOrCreateEntry(static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave), pack,
-                                    static_cast<int16_t>(program), static_cast<int16_t>(bank), presetName,
-                                    EntrySource::UserPicked, noteLow);
+        int idx = FindOrCreateEntry(modName, static_cast<uint8_t>(fontId), static_cast<int16_t>(instOrWave), packName,
+                                    static_cast<int16_t>(program), static_cast<int16_t>(bank), presetName, noteLow);
         if (idx < 0)
             continue;
         ConfigEntry& e = mEntries[idx];
-        e.bank = static_cast<int16_t>(bank);
-        if (!presetName.empty())
-            e.presetName = presetName;
         if (entry.contains("gain"))
             e.gain = entry.value("gain", 0.0f);
-        if (entry.contains("transpose")) {
-            int t = entry.value("transpose", 0);
-            t = std::clamp(t, -127, 127);
-            e.transpose = static_cast<int8_t>(t);
-        }
+        if (entry.contains("transpose"))
+            e.transpose = static_cast<int8_t>(std::clamp(entry.value("transpose", 0), -127, 127));
         if (entry.contains("reverb"))
             e.reverb = ClampCcOrSentinel(entry.value("reverb", -1));
         if (entry.contains("chorus"))
@@ -1941,54 +1566,37 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
         if (entry.contains("filter_q"))
             e.q = ClampCcOrSentinel(entry.value("filter_q", -1));
         ReadSplitFields(entry, e);
-        // File overlay = user file. A missing key defaults to a user pick:
-        // enabled+selected unless the file says otherwise. Older files without
-        // these keys migrate to enabled, selected user picks.
         e.enabled = entry.value("enabled", true);
-        e.selected = entry.value("selected", true);
-        // Promote to UserPicked even if a mod entry already exists for this key;
-        // the user file is the source of truth for source attribution.
-        e.source = EntrySource::UserPicked;
+
+        // A mod keeps one row per range: older files listed a re-picked preset
+        // beside the one it replaced, and the later row is the newer pick.
+        for (size_t other = 0; other < mEntries.size(); other++) {
+            ConfigEntry& o = mEntries[other];
+            if (static_cast<int>(other) != idx && o.selected && o.modName == modName && o.fontId == e.fontId &&
+                o.instOrWave == e.instOrWave && o.noteLow == e.noteLow && o.noteHigh == e.noteHigh) {
+                o.selected = false;
+                o.enabled = false;
+                replaced++;
+            }
+        }
         applied++;
     }
-    if (j.contains("drum_channels_synth")) {
-        for (const auto& d : j["drum_channels_synth"]) {
+    auto readFlags = [&](const char* field, std::set<ModPair>& flags, bool drumChannel) {
+        for (const auto& d : j.value(field, nlohmann::json::array())) {
             int f = resolveFont(d);
             int i = d.value("instOrWave", -1);
-            if (i < 0 || i >= kDrumHistInst)
-                continue;
-            if (f < 0 || f >= kMaxFontId) {
-                if (d.value("fontId", -1) >= 0)
-                    mParkedDrumFlags.push_back(d.dump());
-                continue;
-            }
-            mDrumChannelSynth[f][i] = true;
+            const bool valid = drumChannel ? (i >= 0 && i < kDrumHistInst) : (i >= kDrumHistInst && i < kMaxInstOrWave);
+            if (f >= 0 && f < kMaxFontId && valid)
+                flags.insert({ modName, static_cast<uint8_t>(f), static_cast<int16_t>(i) });
         }
-    }
-    if (j.contains("forced_drums")) {
-        for (const auto& d : j["forced_drums"]) {
-            int f = resolveFont(d);
-            int i = d.value("instOrWave", -1);
-            if (i < kDrumHistInst || i >= kMaxInstOrWave)
-                continue;
-            if (f < 0 || f >= kMaxFontId) {
-                if (d.value("fontId", -1) >= 0)
-                    mParkedForcedDrums.push_back(d.dump());
-                continue;
-            }
-            SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
-        }
-    }
-    // Repair the split cover on load: older/hand-edited files may carry gaps.
-    std::set<std::pair<uint8_t, int16_t>> melodicPairs;
-    for (const ConfigEntry& e : mEntries)
-        if (e.selected && e.instOrWave >= kDrumHistInst)
-            melodicPairs.insert({ e.fontId, e.instOrWave });
-    for (const auto& p : melodicPairs) {
-        NormalizeSplits(p.first, p.second);
-        RecomputeActive(p.first, p.second);
-    }
-    SPDLOG_INFO("[MidiTranslator] ApplyOverridesFromFile: applied {} entries from {} (v{})", applied, path, version);
+    };
+    readFlags("drum_channels_synth", mModDrumChannelSynth, true);
+    readFlags("forced_drums", mModForcedDrums, false);
+    if (replaced > 0)
+        SPDLOG_WARN("[MidiTranslator] {}/{}: {} rows repeated a later row's range and were dropped; saving the mod "
+                    "removes them",
+                    modName, packName, replaced);
+    SPDLOG_INFO("[MidiTranslator] ApplyModMapping: {}/{}: applied {} entries", modName, packName, applied);
     return true;
 }
 
@@ -2096,6 +1704,14 @@ bool MidiTranslator::ProcessNote(const EngineNote& engineNote) {
     if (mTemporaryMute.count({ fontId, instOrWave })) {
         retireSlot();
         return true;
+    }
+    if (IsAuditionNative(fontId, instOrWave)) {
+        if (isFinished || strike <= 0.0f)
+            retireSlot();
+        else
+            adoptNative(-1);
+        bumpRoute(&DebugSlot::routedNative);
+        return false;
     }
 
     // Drum-like routing covers the intrinsic drum/SFX channels (instOrWave 0/1)

@@ -84,14 +84,6 @@ struct DiscoveredPair {
     bool mapped;
 };
 
-// Where a ConfigEntry came from. Decides persistence eligibility and
-// whether the entry is removed when its pack is unloaded.
-enum class EntrySource : uint8_t {
-    UserPicked = 0,  // From fluidsynth_overrides.json or a UI pick
-    ModSupplied = 1, // From a pack mapping.json; not persisted, removed on
-                     // pack unload
-};
-
 // Where a resolved (split) entry sends its notes once it wins resolution.
 // Synth is the default — the entry references a (pack, program) FluidSynth
 // plays. Native makes the entry a first-class winner whose audible path is
@@ -104,10 +96,9 @@ enum class EntryRoute : uint8_t {
     Mute = 2,
 };
 
-// One row in the configuration. Multiple entries can share
-// (fontId, instOrWave); each represents a distinct candidate keyed by
-// (pack, program). Resolution at play time picks the enabled+resolvable
-// candidate whose pack is last in the load order.
+// One row of a mod's mapping. Every row belongs to the mod whose soundfont it
+// plays, and a mod holds at most one row per (fontId, instOrWave, range).
+// Several mods can map the same pair; resolution picks per semitone.
 //
 // IMPORTANT: the audio thread reads primitive fields of this struct via
 // mEntries[mActiveEntryIdx[f][i]] without locking. mEntries is reserved
@@ -116,7 +107,8 @@ enum class EntryRoute : uint8_t {
 struct ConfigEntry {
     uint8_t fontId = 0;
     int16_t instOrWave = -1;
-    std::string packName; // "" = placeholder ("None") entry
+    std::string modName;  // the mod archive (file stem) the row is saved into
+    std::string packName; // soundfont folder inside the mod; "" = placeholder ("None") entry
     int16_t program = -1; // -1 = placeholder (no audible output)
     int16_t bank = 0;
     std::string presetName; // user-facing label / recovery hint
@@ -127,9 +119,9 @@ struct ConfigEntry {
     int8_t cutoff = -1; // CC 74; -1 = no override (default 64)
     int8_t q = -1;      // CC 71; -1 = no override (default 64)
     bool enabled = false;
+    // False once the row is retired: kept in place for the audio thread, but no
+    // longer part of the mod, so it is neither resolved, listed nor saved.
     bool selected = false;
-    uint32_t lastEnabledSeq = 0; // process-lifetime; not persisted
-    EntrySource source = EntrySource::UserPicked;
     // ── Note-range split (engine-semitone space) ─────────────────────────
     // noteLow/noteHigh bound which engine `semitone` values this entry claims
     // (inclusive); default 0..127 is an unsplit entry. fixedNote pins the OUTPUT
@@ -145,7 +137,7 @@ struct ConfigEntry {
     // Refreshed by AudioEditor's pack-apply path; never persisted.
     int16_t sfontId = -1;
     // Runtime: forward link of the active-split chain for this pair, sorted by
-    // resolution priority (source > specificity > pack order), so the audio
+    // resolution priority (specificity > mod order), so the audio
     // thread's first-covering-entry walk reproduces the per-semitone winner even
     // when ranges overlap (-1 = chain tail). Built by RecomputeActive; walked by
     // index over the reserved mEntries vector. Acyclic (each entry linked at most
@@ -226,27 +218,23 @@ class MidiTranslator {
     bool DrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave, uint8_t slot) const;
     bool AnyDrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave) const;
 
-    // ── Pack stack + entry sfontId refresh ───────────────────────────────
-    // Set by AudioEditor after every SF stack change. Used as the
-    // multi-enabled tiebreak rank — last entry in this list wins.
-    void SetPackLoadOrder(const std::vector<std::string>& order);
+    // ── Mod stack + entry sfontId refresh ────────────────────────────────
+    // Mods in mount order, set by AudioEditor after every SF stack change.
+    // Breaks resolution ties the way the mods menu orders files: last wins.
+    void SetModOrder(const std::vector<std::string>& order);
 
-    // Refresh each entry's runtime sfontId from a flat list of (pack, sfontId,
-    // bank, program) tuples. Entries whose pack isn't listed, or whose (bank,
-    // program) isn't in the matched SF, get sfontId=-1. Cached so PickPreset /
-    // ClickSynth can resolve sfontIds for new entries without a UI callback.
+    // Refresh each entry's runtime sfontId from a flat list of (sfontId, mod,
+    // pack, bank, program) tuples. Entries whose soundfont isn't listed, or whose
+    // (bank, program) isn't in it, get sfontId=-1. Cached so new entries resolve
+    // without a UI callback.
     struct LoadedPresetRef {
         int sfontId;
+        std::string modName;
         std::string packName;
         int bank;
         int program;
     };
     void RefreshEntrySfontIds(const std::vector<LoadedPresetRef>& loadedPresets);
-
-    // Drop every ModSupplied entry whose pack is NOT in the supplied set,
-    // so pack toggles don't leave orphan mod entries hanging with
-    // sfontId=-1. User-saved entries stay (they're recoverable).
-    void RemoveModEntriesNotIn(const std::set<std::string>& packNamesLoaded);
 
     // Rebuild mActiveEntryIdx for every (fontId, instOrWave). Called after
     // batches of mutations (pack load, file load).
@@ -259,30 +247,33 @@ class MidiTranslator {
     const ConfigEntry& GetEntry(int idx) const {
         return mEntries[idx];
     }
+    // What plays: the head of the pair's resolved chain across every mod.
     const ConfigEntry* GetActiveEntry(uint8_t fontId, int16_t instOrWave) const;
-    int GetActiveEntryIdx(uint8_t fontId, int16_t instOrWave) const;
+    // What the table shows: the edited mod's own winner, or what plays when no
+    // mod is being edited.
+    const ConfigEntry* GetViewEntry(uint8_t fontId, int16_t instOrWave) const;
+    int GetViewEntryIdx(uint8_t fontId, int16_t instOrWave) const;
+    // The live rows of the mod GetViewEntry reads from.
     void GetEntriesForPair(uint8_t fontId, int16_t instOrWave, std::vector<int>& outIdx) const;
-    int FindEntry(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program,
-                  uint8_t noteLow = 0) const;
-    int CountSelectedEntries(uint8_t fontId, int16_t instOrWave) const;
+
+    // ── Editing ──────────────────────────────────────────────────────────
+    // Every mutator below edits only this mod; with none set they do nothing.
+    void SetEditMod(const std::string& modName);
+    const std::string& GetEditMod() const {
+        return mEditMod;
+    }
+    bool IsEditable(int idx) const;
 
     // ── Row UI actions ───────────────────────────────────────────────────
-    // Picking a preset from the Preset combo: disable every currently-
-    // enabled entry for (fontId, instOrWave); if the previous winner is
-    // from the same pack as the new pick clear its selected; find-or-
-    // create the picked entry; enable + select + bump lastEnabledSeq.
+    // Make one preset the edited mod's only row for the pair, replacing its
+    // splits and any row it had from another of its soundfonts.
     void PickPreset(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program, int16_t bank,
                     const std::string& presetName);
-    // Disables every enabled entry for (fontId, instOrWave), after stamping the
-    // entries currently playing so ClickSynth can restore exactly those.
-    void ClickNative(uint8_t fontId, int16_t instOrWave);
-    // Restoration order:
-    //   1. the entries ClickNative stamped (every split that was playing)
-    //   2. without a stamp (Native since load): the selected entries, or
-    //      failing those every resolvable entry, ranked as at load
-    //   3. placeholder { packName="", program=-1, presetName="None" }
-    //      (audible result: muted)
-    void ClickSynth(uint8_t fontId, int16_t instOrWave);
+    // Retire the edited mod's rows for the pair, so it stops mapping it.
+    void RemovePairRows(uint8_t fontId, int16_t instOrWave);
+    // Session-only: play the pair native whatever the mods map, to compare.
+    void SetAuditionNative(uint8_t fontId, int16_t instOrWave, bool native);
+    bool IsAuditionNative(uint8_t fontId, int16_t instOrWave) const;
 
     // Drum auto-split: for each engine slot the drum/SFX channel actually
     // fired (from the GetDrumSlotHistogram data), create a single-slot entry
@@ -307,7 +298,8 @@ class MidiTranslator {
     // regardless of per-slot enabled (and the UI grays the slot controls);
     // Synth => per-slot enabled decides synth vs native. Switching to Synth
     // with no slots yet auto-splits to populate the rows (created Native by
-    // default). IsDrumChannelSynth reads the flag (audio-thread safe).
+    // default). IsDrumChannelSynth reads the edited mod's flag, or the
+    // effective one when nothing is edited.
     void SetDrumChannelSynth(uint8_t fontId, int16_t instOrWave, bool synth);
     bool IsDrumChannelSynth(uint8_t fontId, int16_t instOrWave) const;
     // "Treat as drum": generalises the drum master from the intrinsic drum/SFX
@@ -318,6 +310,8 @@ class MidiTranslator {
     // No-op for instOrWave 0/1 (use SetDrumChannelSynth).
     void SetForcedDrum(uint8_t fontId, int16_t instOrWave, bool forced);
     bool IsForcedDrum(uint8_t fontId, int16_t instOrWave) const;
+    // The edited mod's flag, or the effective one when nothing is edited.
+    bool IsForcedDrumInView(uint8_t fontId, int16_t instOrWave) const;
     // Set the kit (bank-128 pack/program) for every selected slot entry of a
     // drum pair at once -- the GM percussion note stays per slot (fixedNote).
     void SetDrumKit(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program,
@@ -387,37 +381,17 @@ class MidiTranslator {
     bool IsTemporarilySlotMuted(uint8_t fontId, int16_t instOrWave, uint8_t noteLow) const;
     void SetTemporarySlotMute(uint8_t fontId, int16_t instOrWave, uint8_t noteLow, bool muted);
     void ClearAllTemporarySlotMutes();
-    // ── Persistence + reset ──────────────────────────────────────────────
+    // ── Loading + saving ─────────────────────────────────────────────────
     void ResetAllOverrides();
-    bool SaveOverridesToFile(const std::string& path) const;
-    // String overlay = pack mapping.json: new entries land with source=ModSupplied,
-    // selected=false, enabled=true. `packName`, when non-empty, is the pack's
-    // discovered name and the authoritative owner for every entry, so mapping.json
-    // needn't repeat a per-entry "pack" field. When empty, the owner falls back to
-    // the per-entry "pack", then the file's top-level "pack_name".
-    bool ApplyOverridesFromString(const std::string& json, const std::string& packName = "");
-    // File overlay = user fluidsynth_overrides.json: entries land with
-    // source=UserPicked. enabled / selected come from the file; missing
-    // fields default to true.
-    bool ApplyOverridesFromFile(const std::string& path);
-
-    // Publish-as-pack-mapping. Writes a mapping.json shaped for distribution
-    // inside a synth pack: per pair, only the `packNameFilter` entries that
-    // win among that pack's own rows are emitted, runtime fields are stripped,
-    // and the file carries a top-level "pack_name" field. Returns the number of
-    // entries written (or -1 on I/O failure). When packNameFilter is empty,
-    // the entries currently playing are emitted regardless of their pack.
-    int ExportPackMapping(const std::string& path, const std::string& packNameFilter) const;
-
-    // Same content ExportPackMapping writes, built in memory (no file I/O).
-    // `outWritten` receives the entry count. Used by the one-click .o2r
-    // bundler so the JSON and the soundfont go straight into the archive.
-    std::string BuildPackMappingJson(const std::string& packNameFilter, int& outWritten) const;
-
-    // Helper: how many entries `ExportPackMapping` would emit for a given
-    // pack filter. Same predicate as the writer; lets the UI show a preview
-    // count before the user clicks Export.
-    int CountExportableEntries(const std::string& packNameFilter) const;
+    // Load one soundfont's mapping.json from a mod. Every row is owned by
+    // (modName, packName); a later row repeating an earlier row's range in the
+    // same mod replaces it.
+    bool ApplyModMapping(const std::string& json, const std::string& modName, const std::string& packName);
+    // The mapping.json for one of a mod's soundfonts. Per-instrument flags and
+    // labels go with the soundfont holding the instrument's rows, or with
+    // `ownsUnmapped` when none does. `outWritten` receives the row count.
+    std::string BuildPackMappingJson(const std::string& modName, const std::string& packName, bool ownsUnmapped,
+                                     int& outWritten) const;
 
     void SetSynthMode(SynthMode mode) {
         mSynthMode = mode;
@@ -434,13 +408,6 @@ class MidiTranslator {
   private:
     MidiTranslator();
 
-    // Entries whose font (identified by resource name) isn't loaded this session,
-    // kept as raw JSON so they survive saves untouched and spring back when the
-    // owning mod returns. Their instruments play native meanwhile.
-    std::vector<std::string> mParkedEntries;
-    std::vector<std::string> mParkedDrumFlags;
-    std::vector<std::string> mParkedForcedDrums;
-
     void RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool mapped);
 
     // Decrement the (channel, key) hold count and send the synth NoteOff only
@@ -454,13 +421,19 @@ class MidiTranslator {
     // a no-op so error/fallback paths can pass -1 freely.
     void IncEntryActive(bool synth, int idx);
     void DecEntryActive(bool synth, int idx);
-    // Current kit (pack/program) for a drum pair: an existing selected bank-128
-    // slot entry if any, else the first loaded bank-128 preset, else empty.
+    // Current kit (pack/program) for a drum pair in the edited mod: an existing
+    // bank-128 slot entry if any, else its first bank-128 preset, else empty.
     void ResolveDrumKit(uint8_t fontId, int16_t instOrWave, std::string& outPack, int& outProgram) const;
     // Index of a selected entry whose range starts at `slot` (its noteLow),
     // enabled or not. Lets a native-routed drum note attribute its activity to
     // the slot's row even when the entry is disabled. -1 if none.
     int FindSlotEntryIdx(uint8_t fontId, int16_t instOrWave, uint8_t slot) const;
+    bool InEditMod(const ConfigEntry& e, uint8_t fontId, int16_t instOrWave) const;
+    // The highest-ranked mod with a live row for the pair; its flags apply.
+    const std::string* OwnerMod(uint8_t fontId, int16_t instOrWave) const;
+    // Publish the owner mod's drum flags to the arrays the audio thread reads.
+    void RecomputePairFlags(uint8_t fontId, int16_t instOrWave);
+    void ApplyForcedDrumFlag(uint8_t fontId, int16_t instOrWave, bool forced);
     // Per-slot NoteOn histogram backing this pair's slot discovery, or nullptr if
     // the pair has none (not a drum/SFX channel and not a forced-drum pair).
     // Centralises the "drum/SFX use the static grid, forced pairs use a pool
@@ -475,32 +448,29 @@ class MidiTranslator {
     // effect sends follow the sequence channel. 0xFF = all channels sounding.
     uint8_t AllocateChannel(uint8_t seqPlayer, uint8_t seqChannel, int16_t entryIdx);
 
-    // Find an entry by primary key; create a new one if not present.
-    // Caller fills bank/presetName even when creating, and decides
-    // source / selected / enabled after. Returns the entry index.
-    int FindOrCreateEntry(uint8_t fontId, int16_t instOrWave, const std::string& pack, int16_t program, int16_t bank,
-                          const std::string& presetName, EntrySource source, uint8_t noteLow = 0);
+    // Find a live entry by primary key; create a new one if not present.
+    // Caller fills bank/presetName even when creating, and decides enabled
+    // after. Returns the entry index.
+    int FindOrCreateEntry(const std::string& mod, uint8_t fontId, int16_t instOrWave, const std::string& pack,
+                          int16_t program, int16_t bank, const std::string& presetName, uint8_t noteLow = 0);
 
-    // Recompute mActiveEntryIdx[fontId][instOrWave]. Resolution: filter
-    // mEntries by (fontId, instOrWave) && enabled && sfontId>=0; pick the
-    // candidate whose pack ranks highest in mPackLoadOrder (last loaded
-    // wins). Placeholder entries (program<0) participate normally — they
-    // resolve only when explicitly enabled and produce muted output.
+    // Recompute mActiveEntryIdx[fontId][instOrWave] from the enabled,
+    // resolvable live rows of every mod, then the pair's drum flags.
     void RecomputeActive(uint8_t fontId, int16_t instOrWave);
     bool Outranks(int ai, int bi) const;
     // Entries of one pair that win at least one semitone among `candidates`,
     // highest priority first.
     std::vector<int> ResolveWinners(const std::vector<int>& candidates) const;
-    // What a pack export writes: per pair, the pack's rows that win among its own.
-    std::vector<int> ExportableEntries(const std::string& packNameFilter) const;
-    int PackRank(const std::string& pack) const; // -1 if not in load order
+    std::vector<int> ModWinners(const std::string& mod, uint8_t fontId, int16_t instOrWave) const;
+    int ModRank(const std::string& mod) const; // -1 if not in load order
 
     // Walks the cached loaded-preset list and returns the sfontId for
     // (pack, bank, program), or -1 if the pack isn't loaded / the SF
     // doesn't have that preset. Used at entry-create time so a fresh
     // pick is immediately resolvable without waiting for the next
     // pack-stack change.
-    int16_t ResolveSfontIdFromCache(const std::string& pack, int16_t bank, int16_t program) const;
+    int16_t ResolveSfontIdFromCache(const std::string& mod, const std::string& pack, int16_t bank,
+                                    int16_t program) const;
 
     NoteTranslatorState mNoteState[kMaxNotes] = {};
     ChannelState mChannelState[kMaxMidiChannels] = {};
@@ -535,7 +505,14 @@ class MidiTranslator {
 
     std::set<std::pair<uint8_t, int16_t>> mTemporaryMute;
     std::set<std::tuple<uint8_t, int16_t, uint8_t>> mTemporarySlotMute;
-    std::map<std::pair<uint8_t, int16_t>, std::string> mDisplayName;
+    bool mAuditionNative[kMaxFontId][kMaxInstOrWave] = {};
+
+    // Per-mod, per-pair data that is not a row: what each mod's files say.
+    using ModPair = std::tuple<std::string, uint8_t, int16_t>;
+    std::map<ModPair, std::string> mDisplayName;
+    std::set<ModPair> mModDrumChannelSynth;
+    std::set<ModPair> mModForcedDrums;
+    std::string mEditMod;
 
     // DEBUG: per-pair stats backing storage. Counters use relaxed atomics; read
     // from the UI without synchronisation (best-effort diagnostic).
@@ -562,7 +539,7 @@ class MidiTranslator {
     };
     DrumSlotHit mDrumSlotHits[kMaxFontId][kDrumHistInst][kDrumHistSlots];
 
-    // Per-pair drum channel mode (the per-instrument Native/Synth master), separate
+    // Effective drum channel mode (the per-instrument Native/Synth master), separate
     // from per-slot `enabled` so setting a slot Native doesn't flip the instrument.
     // Native (false, default) => all slots play the engine drum; Synth (true) =>
     // per-slot enabled decides. Audio thread reads per note, UI writes; torn bool
@@ -584,11 +561,10 @@ class MidiTranslator {
     std::vector<ConfigEntry> mEntries;
     // -1 = no active entry for this pair; native plays.
     int16_t mActiveEntryIdx[kMaxFontId][kMaxInstOrWave];
-    uint32_t mNextSeq = 1;
-    std::vector<std::string> mPackLoadOrder;
+    std::vector<std::string> mModOrder;
     // Cached copy of the AudioEditor's sLoadedPresets list. Refreshed by
     // RefreshEntrySfontIds; consumed by ResolveSfontIdFromCache so any
-    // mutator (PickPreset, ClickSynth) can set a new entry's sfontId
+    // mutator (PickPreset, AutoSplitDrums) can set a new entry's sfontId
     // immediately without going through another pack-stack pass.
     std::vector<LoadedPresetRef> mLoadedPresets;
 
