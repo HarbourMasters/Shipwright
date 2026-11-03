@@ -1931,19 +1931,23 @@
             "shuffle_npc_souls": {
                 "name": "Shuffle NPC Souls",
                 "description": [
-                    "Shuffles the souls of NPCs into the item pool. Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life.\n",
+                    "Shuffles the souls of NPCs into the item pool. Without its soul, an NPC is a grey, frozen statue that can't be talked to, traded with or played against. Finding the soul brings it back to life. Each step adds a group of NPCs to the one before.\n",
                     "\n",
-                    "Shops & Games - Shopkeepers, salesmen, adult trade quest NPCs, the Deku Scrubs and the NPCs who run minigames, such as the shooting galleries, bowling, the chest game, fishing and Dampe.\n",
+                    "Story - Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru, the Great Fairies, Mido, King Zora, Talon, Malon and Guru-Guru, who hand over songs and story items or stand in the story's way.\n",
                     "\n",
-                    "Shops, Games & Story - Also Saria, Darunia, Ruto, Nabooru, Zelda, Sheik, Impa, Rauru and the Great Fairies, who hand over songs and story items.\n",
+                    "Story & Quests - Also the NPCs of side quests: the trade quests (Grog, Fado, Mutoh, Biggoron), the Happy Mask Salesman, the Poe Collector, the Cursed Family, the Running Man, the frogs, Skull Kid, Anju, Ingo, the scarecrows and more.\n",
                     "\n",
-                    "All - Also the NPCs who open paths, such as the guards, Mido, King Zora, the carpenters, Talon, Malon and Kaepora, and everyone else: named townsfolk such as Guru-Guru, the Dog Lady and the Cursed Family, and one soul shared by each people (Kokiri, Hylians, Gorons, Zoras, Gerudo)."
+                    "Story, Quests & Games - Also the NPCs who run minigames, such as the shooting galleries, bowling, the chest game, the diving game, Dampe and fishing.\n",
+                    "\n",
+                    "All but Townsfolk - Also the shopkeepers and salesmen (including the Bean Salesman, Medigoron, Granny and the Carpet Salesman), the Beggar and the Deku Scrubs.\n",
+                    "\n",
+                    "All - Also the townsfolk: the guards, the carpenters, Kaepora Gaebora and one soul shared by each people (Kokiri, Hylians, Gorons, Zoras, Gerudo)."
                 ]
             },
             "npc_souls_sages": {
                 "name": "Sages Hold Dungeon Rewards",
                 "description": [
-                    "With story souls shuffled (Shops, Games & Story or All), each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
+                    "With NPC souls shuffled, each sage holds the reward of their dungeons until their soul is found: Darunia for Dodongo's Cavern and the Fire Temple, Ruto for Jabu-Jabu's Belly and the Water Temple, Saria for the Forest Temple, Impa for the Shadow Temple, Nabooru for the Spirit Temple and Rauru for his gift in the Chamber of Sages. The dungeon still counts as cleared, and the reward is handed over as soon as the soul is found."
                 ]
             },
             "starting_id_soul": {

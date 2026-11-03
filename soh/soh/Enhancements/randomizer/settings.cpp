@@ -1064,11 +1064,11 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_BEAN_SOULS, CVAR_RANDOMIZER_SETTING("ShuffleBeanSouls"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
-    OPT_U8(RSK_SHUFFLE_NPC_SOULS, {"Off", "Shops & Games", "Shops, Games & Story", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), WIDGET_CVAR_COMBOBOX, RO_NPC_SOULS_OFF);
+    OPT_U8(RSK_SHUFFLE_NPC_SOULS, {"Off", "Story", "Story & Quests", "Story, Quests & Games", "All but Townsfolk", "All"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), WIDGET_CVAR_COMBOBOX, RO_NPC_SOULS_OFF);
     OPT_BOOL(RSK_NPC_SOULS_SAGES, CVAR_RANDOMIZER_SETTING("NpcSoulsSages"), IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_NPC_SOULS, {
-        // Sages Hold Dungeon Rewards only matters once story souls are shuffled.
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), RO_NPC_SOULS_OFF) >= RO_NPC_SOULS_PLUS_STORY) {
+        // Sages Hold Dungeon Rewards only matters once story souls are shuffled, which every step does.
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleNpcSouls"), RO_NPC_SOULS_OFF) != RO_NPC_SOULS_OFF) {
             mOptions[RSK_SHUFFLE_NPC_SOULS].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
             mOptions[RSK_NPC_SOULS_SAGES].Unhide();
         } else {
@@ -3102,7 +3102,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_KAK_100_SKULLS_HINT].Set(RO_GENERIC_OFF);
     }
 
-    if (mOptions[RSK_SHUFFLE_NPC_SOULS].Get() < RO_NPC_SOULS_PLUS_STORY) {
+    if (mOptions[RSK_SHUFFLE_NPC_SOULS].Is(RO_NPC_SOULS_OFF)) {
         mOptions[RSK_NPC_SOULS_SAGES].Set(RO_GENERIC_OFF);
     }
 

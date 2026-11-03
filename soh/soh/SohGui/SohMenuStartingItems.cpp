@@ -372,8 +372,8 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
 
     ImGui::SeparatorText("NPC Souls");
     static const std::pair<Rando::NpcSoulCategory, const char*> soulCategories[] = {
-        { Rando::NpcSoulCategory::MERCHANTS, "Merchants" },     { Rando::NpcSoulCategory::MINIGAMES, "Minigames" },
-        { Rando::NpcSoulCategory::GATEKEEPERS, "Gatekeepers" }, { Rando::NpcSoulCategory::STORY, "Story" },
+        { Rando::NpcSoulCategory::STORY, "Story" },         { Rando::NpcSoulCategory::QUESTS, "Quests" },
+        { Rando::NpcSoulCategory::MINIGAMES, "Minigames" }, { Rando::NpcSoulCategory::MERCHANTS, "Merchants" },
         { Rando::NpcSoulCategory::TOWNSFOLK, "Townsfolk" },
     };
     for (const auto& [category, label] : soulCategories) {

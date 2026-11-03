@@ -40,12 +40,14 @@ bool IsNpcSoul(RandomizerGet rg) {
 
 bool IsNpcSoulCategoryShuffled(NpcSoulCategory category, uint8_t shuffleNpcSouls) {
     switch (category) {
-        case NpcSoulCategory::MERCHANTS:
-        case NpcSoulCategory::MINIGAMES:
-            return shuffleNpcSouls >= RO_NPC_SOULS_SHOPS_AND_GAMES;
         case NpcSoulCategory::STORY:
-            return shuffleNpcSouls >= RO_NPC_SOULS_PLUS_STORY;
-        case NpcSoulCategory::GATEKEEPERS:
+            return shuffleNpcSouls >= RO_NPC_SOULS_STORY;
+        case NpcSoulCategory::QUESTS:
+            return shuffleNpcSouls >= RO_NPC_SOULS_STORY_QUESTS;
+        case NpcSoulCategory::MINIGAMES:
+            return shuffleNpcSouls >= RO_NPC_SOULS_STORY_QUESTS_GAMES;
+        case NpcSoulCategory::MERCHANTS:
+            return shuffleNpcSouls >= RO_NPC_SOULS_ALL_BUT_TOWNSFOLK;
         case NpcSoulCategory::TOWNSFOLK:
             return shuffleNpcSouls >= RO_NPC_SOULS_ALL;
     }

@@ -9,11 +9,12 @@
 
 namespace Rando {
 
+// In the order the Shuffle NPC Souls steps add them.
 enum class NpcSoulCategory {
-    MERCHANTS,
-    MINIGAMES,
-    GATEKEEPERS,
     STORY,
+    QUESTS,
+    MINIGAMES,
+    MERCHANTS,
     TOWNSFOLK,
 };
 
@@ -39,9 +40,8 @@ const NpcSoul* GetNpcSoul(RandomizerGet rg);
 
 bool IsNpcSoul(RandomizerGet rg);
 
-// True when the Shuffle NPC Souls setting puts this category's souls in the pool:
-// Shops & Games covers Merchants and Minigames, Shops, Games & Story adds Story, All adds
-// Gatekeepers and Townsfolk.
+// True when the Shuffle NPC Souls setting puts this category's souls in the pool. Each step adds one
+// category: Story, then Quests, Minigames, Merchants, and All adds Townsfolk.
 bool IsNpcSoulCategoryShuffled(NpcSoulCategory category, uint8_t shuffleNpcSouls);
 bool IsNpcSoulCategoryShuffled(NpcSoulCategory category);
 
