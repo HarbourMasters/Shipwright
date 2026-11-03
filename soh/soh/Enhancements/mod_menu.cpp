@@ -27,6 +27,7 @@ static int lastSelectedModIndex = -1;
 static bool boxSelectingMods = false;
 static ImVec2 boxSelectStart;
 static bool sModsFolderMissing = false;
+static std::vector<std::string> sMissingModFiles;
 
 struct ModRowBounds {
     std::string file;
@@ -263,9 +264,12 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                         GetArchiveManager()->AddArchive(filePaths.at(mod).generic_string());
                         SPDLOG_INFO("Enabled mod {}", filePaths.at(mod).generic_string());
                     } else {
-                        // Keep the entry in the list so the user sees it, in red, instead of
-                        // silently dropping a mod they thought they had enabled.
+                        // The folder is what is enabled, so a gone file leaves the list; it is
+                        // named once in the menu so the mod does not vanish silently.
                         SPDLOG_WARN("Enabled mod \"{}\" not found in {}", mod, modsPath);
+                        sMissingModFiles.push_back(mod);
+                        enabledModFiles.erase(std::find(enabledModFiles.begin(), enabledModFiles.end(), mod));
+                        changed = true;
                     }
                 }
                 std::sort(ootrsFiles.begin(), ootrsFiles.end());
@@ -510,6 +514,15 @@ void ModMenuWindow::DrawElement() {
     if (sModsFolderMissing) {
         ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Red),
                            "No mods folder found; custom mods cannot load.");
+    }
+    if (!sMissingModFiles.empty()) {
+        std::string names;
+        for (const auto& mod : sMissingModFiles) {
+            names += (names.empty() ? "" : ", ") + mod;
+        }
+        ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Red));
+        ImGui::TextWrapped("Not found in the mods folder, removed from the list: %s", names.c_str());
+        ImGui::PopStyleColor();
     }
 
     // if (UIWidgets::Button(
