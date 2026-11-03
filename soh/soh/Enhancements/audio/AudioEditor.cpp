@@ -166,7 +166,7 @@ void RefreshEntryResolution(const std::vector<SynthPackEntry>& packs) {
 
 // Rebuild the translator from what the mods hold, dropping unsaved edits.
 void LoadModMappings(const std::vector<SynthPackEntry>& packs) {
-    SOH::MidiTranslator::Instance().ResetAllOverrides();
+    SOH::MidiTranslator::Instance().ClearMappings();
     for (const auto& pack : packs) {
         auto bytes = ReadArchiveFile(*pack.archive, pack.mappingPath);
         if (bytes.empty())
@@ -1421,7 +1421,7 @@ void AudioEditor::DrawElement() {
                             }
                         }
                         ImGui::EndChild();
-                        ImGui::TextDisabled("Where two mods map the same range, the one lower in the\n"
+                        ImGui::TextDisabled("Where two mods map the same range, the one higher in the\n"
                                             "mods menu wins. Enable and order mods there.");
                     }
 
@@ -3284,7 +3284,7 @@ void AudioEditor::DrawElement() {
                                         tip +=
                                             "\n\nPlays from " + playingEntry->modName + ": " + playingEntry->presetName;
                                         if (shadowed)
-                                            tip += "\n(that mod is mounted after this one)";
+                                            tip += "\n(it is higher in the mods menu, or maps a narrower range)";
                                     }
                                     if (activeEntry && activeEntry->bank == 128) {
                                         tip += "\n\nGM percussion (bank 128) currently falls back\n"

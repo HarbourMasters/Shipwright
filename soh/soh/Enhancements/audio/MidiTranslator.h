@@ -382,7 +382,8 @@ class MidiTranslator {
     void SetTemporarySlotMute(uint8_t fontId, int16_t instOrWave, uint8_t noteLow, bool muted);
     void ClearAllTemporarySlotMutes();
     // ── Loading + saving ─────────────────────────────────────────────────
-    void ResetAllOverrides();
+    // Drop every mod's rows, labels and flags; runtime state stays.
+    void ClearMappings();
     // Load one soundfont's mapping.json from a mod. Every row is owned by
     // (modName, packName); a later row repeating an earlier row's range in the
     // same mod replaces it.

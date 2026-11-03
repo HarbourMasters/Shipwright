@@ -1342,13 +1342,14 @@ void MidiTranslator::RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool ma
     mDiscoveredCount.store(slot + 1, std::memory_order_release);
 }
 
-// ── ResetAllOverrides + Persistence ───────────────────────────────────────
+// ── Loading + saving ──────────────────────────────────────────────────────
 
-void MidiTranslator::ResetAllOverrides() {
-    mEntries.clear();
+void MidiTranslator::ClearMappings() {
+    // Unpublish before clearing: the audio thread follows these indices unlocked.
     for (auto& row : mActiveEntryIdx)
         for (auto& cell : row)
             cell = -1;
+    mEntries.clear();
     mDisplayName.clear();
     mModDrumChannelSynth.clear();
     mModForcedDrums.clear();
