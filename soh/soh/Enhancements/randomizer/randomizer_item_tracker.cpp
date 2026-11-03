@@ -424,8 +424,22 @@ std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
 };
 
 std::vector<uint32_t> buttonMap = {
-    BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
-    BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT,
+    BTN_A,
+    BTN_B,
+    BTN_CUP,
+    BTN_CDOWN,
+    BTN_CLEFT,
+    BTN_CRIGHT,
+    BTN_L,
+    BTN_Z,
+    BTN_R,
+    BTN_START,
+    BTN_DUP,
+    BTN_DDOWN,
+    BTN_DLEFT,
+    BTN_DRIGHT,
+    BTN_CUSTOM_MODIFIER1,
+    BTN_CUSTOM_MODIFIER2,
 };
 
 typedef enum {
