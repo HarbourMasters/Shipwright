@@ -237,7 +237,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_FINAL_ROOM] = Region("Ice Cavern Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->CanOpenLargeChest()),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,         AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->HasItem(RG_OPEN_CHEST)), // rando enables this for child
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,         AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->HasItem(RG_OPEN_CHEST) && logic->HasItem(RG_SHEIK_SOUL)), // rando enables this for child
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_BEFORE_FINAL_ROOM,     AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);})),
@@ -405,7 +405,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS) && logic->CanOpenLargeChest()),
-        LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST)), // rando enables this for child
+        LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST) && logic->HasItem(RG_SHEIK_SOUL)), // rando enables this for child
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_WEST_CORRIDOR,           AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),

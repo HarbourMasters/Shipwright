@@ -46,7 +46,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GTG] = Region("GF Outside GTG", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EVENT_ACCESS(LOGIC_GTG_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO)),
+        EVENT_ACCESS(LOGIC_GTG_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_SOUL)),
     }, {
         //Locations
         LOCATION(RC_GF_GTG_ENTRANCE_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead() && (ctx->GetTrickOption(RT_PASS_GUARDS_WITH_NOTHING) || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD))),
@@ -196,7 +196,7 @@ void RegionTable_Init_GerudoFortress() {
 //Assumes IsChild || HasItem(RG_GERUDO_MEMBERSHIP_CARD) is checked on entry
     areaTable[RR_GF_TOWER] = Region("Gerudo Fortress Tower", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_SPEAK_GERUDO)),
+        EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_SOUL)),
     }, {}, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,     true),
@@ -229,8 +229,8 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_HBA_RANGE] = Region("GF HBA Range", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
-        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+        LOCATION(RC_GF_HBA_1000_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_HORSEBACK_ARCHER_SOUL) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
+        LOCATION(RC_GF_HBA_1500_POINTS,          logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_HORSEBACK_ARCHER_SOUL) && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->SummonEpona() && logic->CanUse(RG_FAIRY_BOW) && logic->AtDay),
         LOCATION(RC_GF_HBA_RANGE_GS,             logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_1,        logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RANGE_CRATE_2,        logic->CanBreakCrates()),
@@ -256,7 +256,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_OUTSIDE_GATE] = Region("GF Outside Gate", SCENE_GERUDOS_FORTRESS, {
         //Events
-        EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_SPEAK_GERUDO)),
+        EVENT_ACCESS(LOGIC_GF_GATE_OPEN, logic->IsAdult && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD) && logic->HasItem(RG_SPEAK_GERUDO) && logic->HasItem(RG_GERUDO_SOUL)),
     }, {
         //Locations
         LOCATION(RC_GF_GATE_EXIT_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),

@@ -778,6 +778,12 @@ void SohMenu::AddMenuRandomizer() {
         .Options(CheckboxOptions().Tooltip(
             "When shuffling boss souls, they'll appear as a simpler model instead of showing the bosses' models. "
             "This might make boss souls more distinguishable from a distance, and can help with performance."));
+    AddWidget(path, "Simpler NPC Soul Models", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("SimplerNpcSoulModels"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "When shuffling NPC souls, they'll appear as a red soul token instead of a little figurine of the NPC. "
+            "This might make NPC souls more distinguishable from a distance."));
     AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
         .Options(ComboboxOptions().ComboMap(skipGetItemAnimationOptions).DefaultIndex(SGIA_JUNK));

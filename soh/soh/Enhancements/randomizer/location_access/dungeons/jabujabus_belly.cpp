@@ -24,7 +24,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_LIFT_ROOM] = Region("Jabu Jabus Belly Lift Room", SCENE_JABU_JABU, {}, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                  logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_JABU_JABUS_BELLY_DEKU_SCRUB,                  logic->HasItem(RG_BRONZE_SCALE) && (logic->IsChild || logic->HasItem(RG_SILVER_SCALE) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->CanUse(RG_IRON_BOOTS)) && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
         LOCATION(RC_JABU_JABUS_BELLY_PLATFORM_ROOM_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
     }, {
@@ -95,7 +95,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_NORTH] = Region("Jabu Jabus Belly Water Switch Room North", SCENE_JABU_JABU, {
         //Events
         //RANDOTODO check how doorsanity handles ruto
-        EVENT_ACCESS(LOGIC_JABU_RUTO_IN_1F, logic->Get(LOGIC_JABU_RUTO_IN_B1) && (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET)),
+        EVENT_ACCESS(LOGIC_JABU_RUTO_IN_1F, logic->Get(LOGIC_JABU_RUTO_IN_B1) && (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_RUTO_SOUL) && logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
         //RUTO_IN_1F is not the proper flag for this, we only need to bring Ruto into the room,
@@ -405,7 +405,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,              logic->HasItem(RG_CLIMB)),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO,              logic->Get(LOGIC_JABU_WEST_TENTACLE)),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_NORTH, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET) && logic->Get(LOGIC_JABU_RUTO_IN_B1)),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_WATER_SWITCH_ROOM_NORTH, logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_RUTO_SOUL) && logic->HasItem(RG_POWER_BRACELET) && logic->Get(LOGIC_JABU_RUTO_IN_B1)),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_B1_SW_DOOR,        true),
     });
 
@@ -590,8 +590,8 @@ void RegionTable_Init_JabuJabusBelly() {
     // Need Ruto here
     areaTable[RR_JABU_JABUS_BELLY_MQ_BIGOCTO] = Region("Jabu Jabus Belly MQ Big Octo", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO,    AnyAgeTime([]{return logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_BIG_OCTO);})),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO, AnyAgeTime([]{return logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_BIG_OCTO);})),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO,    AnyAgeTime([]{return logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_RUTO_SOUL) && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_BIG_OCTO);})),
+        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO, AnyAgeTime([]{return logic->HasItem(RG_SPEAK_ZORA) && logic->HasItem(RG_RUTO_SOUL) && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_BIG_OCTO);})),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO] = Region("Jabu Jabus Belly MQ Above Big Octo", SCENE_JABU_JABU, {}, {
@@ -688,7 +688,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_5, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_POT_6, logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_BARINADE_HEART, logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
-        LOCATION(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR)),
+        LOCATION(RC_BARINADE,                        logic->Get(LOGIC_JABU_JABUS_BELLY_CLEAR) && logic->SageHandsOverReward(RG_RUTO_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_BOSS_EXIT, false),

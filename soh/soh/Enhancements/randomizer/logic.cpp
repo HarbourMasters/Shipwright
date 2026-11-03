@@ -4,6 +4,8 @@
 #include <spdlog/spdlog.h>
 
 #include "logic.h"
+#include "npc_souls.h"
+#include "randomizerEnums/NpcSoulList.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
 #include "soh/OTRGlobals.h"
@@ -24,6 +26,10 @@ extern "C" PlayState* gPlayState;
 namespace Rando {
 
 bool Logic::HasItem(RandomizerGet itemName) {
+    if (const NpcSoul* soul = GetNpcSoul(itemName)) {
+        // Checking the settings as well as the flag keeps saves made before a soul existed working.
+        return !IsNpcSoulShuffled(*soul) || CheckRandoInf(soul->randInf);
+    }
     switch (itemName) {
         case RG_FAIRY_OCARINA:
             return CheckInventory(ITEM_OCARINA_FAIRY, false);
@@ -1688,8 +1694,10 @@ bool Logic::HookshotOrBoomerang() {
 }
 
 bool Logic::ScarecrowsSong() {
-    return (HasItem(RG_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
-           (!ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW));
+    // Playing it only helps if Pierre is around to answer.
+    return HasItem(RG_PIERRE_SOUL) &&
+           ((HasItem(RG_SCARECROWS_SONG) && HasItem(RG_FAIRY_OCARINA) && OcarinaButtons() >= 2) ||
+            (!ctx->GetOption(RSK_SHUFFLE_SCARECROWS_SONG) && Get(LOGIC_CHILD_SCARECROW) && Get(LOGIC_ADULT_SCARECROW)));
 }
 
 bool Logic::BlueFire() {
@@ -2027,6 +2035,16 @@ bool Logic::CanTriggerWincon() {
     }
 }
 
+bool Logic::HasCarpenterSouls() {
+    // Fast Gerudo Fortress leaves only the 1 torch carpenter (Ichiro) to free; the others start free.
+    return HasItem(RG_ICHIRO_SOUL) && (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_NORMAL) ||
+                                       (HasItem(RG_SABOORO_SOUL) && HasItem(RG_JIRO_SOUL) && HasItem(RG_SHIRO_SOUL)));
+}
+
+bool Logic::SageHandsOverReward(RandomizerGet sageSoul) {
+    return !DoSagesHoldRewards() || HasItem(sageSoul);
+}
+
 bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;
@@ -2104,6 +2122,11 @@ static constexpr std::pair<RandomizerGet, uint32_t> randInfTable[] = {
     { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
     { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
+// clang-format off
+#define NPC_SOUL_RAND_INF_PAIR(id, ...) { RG_##id##_SOUL, RAND_INF_##id##_SOUL },
+    NPC_SOUL_LIST(NPC_SOUL_RAND_INF_PAIR)
+#undef NPC_SOUL_RAND_INF_PAIR
+    // clang-format on
     { RG_OCARINA_A_BUTTON, RAND_INF_HAS_OCARINA_A },
     { RG_OCARINA_C_UP_BUTTON, RAND_INF_HAS_OCARINA_C_UP },
     { RG_OCARINA_C_DOWN_BUTTON, RAND_INF_HAS_OCARINA_C_DOWN },
@@ -2302,6 +2325,10 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
     }
     if (objectId == OBJECT_GI_NUTS) {
         SetInventory(ITEM_NUT, (!state ? ITEM_NONE : ITEM_NUT));
+    }
+    if (const NpcSoul* soul = GetNpcSoul(randoGet)) {
+        SetRandoInf(soul->randInf, state);
+        return;
     }
     switch (item.GetItemType()) {
         case ITEMTYPE_ITEM: {
@@ -3309,6 +3336,13 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
         if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS).Is(false)) {
             for (const BeanPatch& patch : beanPatches) {
                 SetRandoInf(patch.soulRandInf, true);
+            }
+        }
+
+        // NPC souls that aren't in the pool (category off, or a starting soul) are owned from the start.
+        for (const NpcSoul& soul : GetNpcSouls()) {
+            if (!IsNpcSoulShuffled(soul)) {
+                SetRandoInf(soul.randInf, true);
             }
         }
 

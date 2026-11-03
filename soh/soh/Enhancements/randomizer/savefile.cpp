@@ -4,6 +4,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/randomizer/bean_patches.h"
+#include "soh/Enhancements/randomizer/npc_souls.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -505,6 +506,14 @@ extern "C" void Randomizer_InitSaveFile() {
         }
     }
 
+    // NPC souls that aren't in the pool (category off, or a starting soul) are owned from the start.
+    for (const Rando::NpcSoul& soul : Rando::GetNpcSouls()) {
+        if (!Rando::IsNpcSoulCategoryShuffled(soul.category, Randomizer_GetSettingValue(RSK_SHUFFLE_NPC_SOULS)) ||
+            Randomizer_GetSettingValue(soul.startingSetting) != RO_GENERIC_OFF) {
+            Flags_SetRandomizerInf(soul.randInf);
+        }
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
@@ -530,7 +539,10 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_SPEAK) == RO_GENERIC_OFF) {
-        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
+        // With her soul shuffled, the crawlspace Nabooru stays a gate you have to talk to
+        if (!Rando::IsNpcSoulShuffled(*Rando::GetNpcSoul(RG_NABOORU_SOUL))) {
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
+        }
         Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_DEKU);
         Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GERUDO);
         Flags_SetRandomizerInf(RAND_INF_CAN_SPEAK_GORON);

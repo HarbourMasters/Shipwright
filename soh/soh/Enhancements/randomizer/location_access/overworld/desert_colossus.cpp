@@ -101,7 +101,7 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE] = Region("Desert Colossus From Temple", SCENE_DESERT_COLOSSUS, {}, {
         //Locations
-        LOCATION(RC_SHEIK_AT_COLOSSUS, true),
+        LOCATION(RC_SHEIK_AT_COLOSSUS, logic->HasItem(RG_SHEIK_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_DESERT_COLOSSUS, true),
@@ -109,7 +109,7 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Region("Colossus Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_COLOSSUS_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY) && logic->HasItem(RG_GREAT_FAIRIES_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_DESERT_COLOSSUS, true),
@@ -117,8 +117,8 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
     }, {
         //Exits

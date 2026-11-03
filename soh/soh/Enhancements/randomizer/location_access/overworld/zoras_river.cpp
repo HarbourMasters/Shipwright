@@ -42,14 +42,14 @@ void RegionTable_Init_ZoraRiver() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,           logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_ZORAS_RIVER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
-        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZR_FROGS_OCARINA_GAME,                   logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY) && logic->CanUse(RG_SARIAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZR_FROGS_IN_THE_RAIN,                    logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZR_FROGS_ZELDAS_LULLABY,                 logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
-        LOCATION(RC_ZR_FROGS_EPONAS_SONG,                    logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
-        LOCATION(RC_ZR_FROGS_SARIAS_SONG,                    logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_ZR_FROGS_SUNS_SONG,                      logic->IsChild && logic->CanUse(RG_SUNS_SONG)),
-        LOCATION(RC_ZR_FROGS_SONG_OF_TIME,                   logic->IsChild && logic->CanUse(RG_SONG_OF_TIME)),
+        LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_BEAN_SALESMAN_SOUL) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZR_FROGS_OCARINA_GAME,                   logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY) && logic->CanUse(RG_SARIAS_SONG) && logic->CanUse(RG_SUNS_SONG) && logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_ZR_FROGS_IN_THE_RAIN,                    logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_ZR_FROGS_ZELDAS_LULLABY,                 logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
+        LOCATION(RC_ZR_FROGS_EPONAS_SONG,                    logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_ZR_FROGS_SARIAS_SONG,                    logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+        LOCATION(RC_ZR_FROGS_SUNS_SONG,                      logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_ZR_FROGS_SONG_OF_TIME,                   logic->HasItem(RG_FROGS_SOUL) && logic->IsChild && logic->CanUse(RG_SONG_OF_TIME)),
         LOCATION(RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH,    logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_ZR_NEAR_DOMAIN_FREESTANDING_POH,         (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || (logic->IsAdult && ctx->GetTrickOption(RT_ZR_UPPER))),
         LOCATION(RC_ZR_GS_LADDER,                            logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH) && logic->CanGetNightTimeGS()),
@@ -217,8 +217,8 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_STORMS_GROTTO] = Region("ZR Storms Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_ZR_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
     }, {
         //Exits

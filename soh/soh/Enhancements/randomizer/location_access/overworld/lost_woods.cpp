@@ -15,13 +15,13 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN, CanPlantBean(RG_LOST_WOODS_BRIDGE_BEAN_SOUL)),
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,                   logic->IsChild && logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_SOLD_SKULL_MASK,              logic->IsChild && logic->HasItem(RG_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EVENT_ACCESS(LOGIC_SOLD_SKULL_MASK,              logic->IsChild && logic->HasItem(RG_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SKULL_KID_SOUL) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
-        LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
-        LOCATION(RC_LW_TRADE_COJIRO,                    logic->IsAdult && logic->CanUse(RG_COJIRO)),
+        LOCATION(RC_LW_SKULL_KID,                       logic->HasItem(RG_SKULL_KID_SOUL) && logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
+        LOCATION(RC_LW_TRADE_COJIRO,                    logic->HasItem(RG_GROG_SOUL) && logic->IsAdult && logic->CanUse(RG_COJIRO)),
         //I cannot think of a case where you can use Odd pot but not Cojiro to reset the quadrant should you have both. If one exists, add it to logic
-        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
+        LOCATION(RC_LW_TRADE_ODD_POTION,                logic->HasItem(RG_FADO_SOUL) && logic->IsAdult && logic->CanUse(RG_ODD_POTION)),
                                                                                                               //all 5 buttons are logically required for memory game
                                                                                                               //because the chances of being able to beat it
                                                                                                               //every time you attempt it are as follows:
@@ -30,7 +30,7 @@ void RegionTable_Init_LostWoods() {
                                                                                                               //3 buttons        => 3.75%
                                                                                                               //4 buttons        => 25.3125%
                                                                                                               //5 buttons        => 100%
-        LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
+        LOCATION(RC_LW_OCARINA_MEMORY_GAME,             logic->HasItem(RG_SKULL_KID_SOUL) && logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 5),
         LOCATION(RC_LW_TARGET_IN_WOODS,                 logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE,       logic->CanSpawnSoilSkull(RG_LOST_WOODS_BRIDGE_BEAN_SOUL) && logic->CanAttack()),
         //RANDOTODO handle collecting some of these as you leave the shortcut from the other side
@@ -60,7 +60,7 @@ void RegionTable_Init_LostWoods() {
         ENTRANCE(RR_GC_WOODS_WARP,            true),
         ENTRANCE(RR_LW_BRIDGE,                (logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) || (ctx->GetTrickOption(RT_LW_BRIDGE) && logic->CanJumpslash()))) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood() || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_ZR_FROM_SHORTCUT,         logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LOST_WOOD_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
-        ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || logic->CanUse(RG_SARIAS_SONG) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
+        ENTRANCE(RR_LW_BEYOND_MIDO,           logic->IsChild || (logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_MIDO_SOUL)) || ctx->GetTrickOption(RT_LW_MIDO_BACKFLIP)),
         ENTRANCE(RR_LW_NEAR_SHORTCUTS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
@@ -69,7 +69,7 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,  logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE, logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_LW_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_LW_GOSSIP_STONE,           true),
@@ -85,8 +85,8 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                  logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_LEFT,  logic->IsChild && logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_GS_ABOVE_THEATER,                   logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_LW_GS_BEAN) && logic->CanUse(RG_HOOKSHOT) && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE)))) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LW_GS_BEAN_PATCH_NEAR_THEATER,         logic->CanSpawnSoilSkull(RG_LOST_WOODS_BEAN_SOUL) && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) || (ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_OFF) && logic->CanReflectNuts()))),
         LOCATION(RC_LW_BOULDER_RUPEE,                      logic->BlastOrSmash()),
@@ -105,7 +105,7 @@ void RegionTable_Init_LostWoods() {
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,   true),
-        ENTRANCE(RR_THE_LOST_WOODS,   logic->IsChild || logic->CanUse(RG_SARIAS_SONG)),
+        ENTRANCE(RR_THE_LOST_WOODS,   logic->IsChild || (logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_MIDO_SOUL))),
         ENTRANCE(RR_SFM_ENTRYWAY,     true),
         ENTRANCE(RR_DEKU_THEATER,     true),
         ENTRANCE(RR_LW_SCRUBS_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
@@ -132,8 +132,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_DEKU_THEATER] = Region("Deku Theater", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK)),
-        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && logic->HasItem(RG_SPEAK_DEKU)),
+        LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)),
+        LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL))),
         LOCATION(RC_LW_THEATER_RECTANGLE_SIGN,  logic->CanRead()),
     }, {
         //Exits
@@ -142,8 +142,8 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_SCRUBS_GROTTO] = Region("LW Scrubs Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_REAR,      logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_LW_DEKU_SCRUB_GROTTO_FRONT,     logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,   logic->CanBreakUpperBeehives()),
         LOCATION(RC_LW_DEKU_SCRUB_GROTTO_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
     }, {
@@ -153,7 +153,7 @@ void RegionTable_Init_LostWoods() {
 
     areaTable[RR_LW_BRIDGE_FROM_FOREST] = Region("LW Bridge From Forest", SCENE_LOST_WOODS, {}, {
         //Locations
-        LOCATION(RC_LW_GIFT_FROM_SARIA, true),
+        LOCATION(RC_LW_GIFT_FROM_SARIA, logic->HasItem(RG_SARIA_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_LW_BRIDGE, true),

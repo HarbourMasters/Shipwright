@@ -6,6 +6,7 @@
 #include "z64object.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "draw.h"
+#include "npc_souls.h"
 
 using namespace Rando;
 
@@ -512,6 +513,15 @@ void Rando::StaticData::InitItemTable() {
     itemTable[RG_ROCS_FEATHER].SetCustomDrawFunc(Randomizer_DrawRocsFeather);
 
     // clang-format on
+
+    // NPC Souls: a little figurine of the NPC, or the red-to-white skulltula token with "Simpler NPC Soul Models"
+    // (both drawn by Randomizer_DrawNpcSoul).
+    for (const NpcSoul& soul : GetNpcSouls()) {
+        itemTable[soul.rg] = Item(soul.rg, GetNpcSoulItemText(soul), ITEMTYPE_ITEM, 0xE0, soul.advancement, LOGIC_NONE,
+                                  soul.hintKey, soul.rg, OBJECT_GI_SUTARU, GID_SKULL_TOKEN, TEXT_RANDOMIZER_CUSTOM_ITEM,
+                                  0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_RANDOMIZER, {}, "%r");
+        itemTable[soul.rg].SetCustomDrawFunc(Randomizer_DrawNpcSoul);
+    }
 
     // Init itemNameToEnum
     for (auto& item : itemTable) {

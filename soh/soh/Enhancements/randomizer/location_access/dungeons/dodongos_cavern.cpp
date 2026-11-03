@@ -30,7 +30,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MAP_CHEST,              (logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)) && logic->CanOpenLargeChest();),
-        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY,       (logic->CanStunDeku() || logic->HasItem(RG_GORONS_BRACELET)) && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_LOBBY,       (logic->CanStunDeku() || logic->HasItem(RG_GORONS_BRACELET)) && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE_FAIRY,     AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET); }) && logic->CallGossipFairy()),
         LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE_FAIRY_BIG, AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET); }) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DODONGOS_CAVERN_GOSSIP_STONE,           AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET); })),
@@ -119,7 +119,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_NEAR_DODONGO_ROOM] = Region("Dodongos Cavern Near Dodongo Room", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS, logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_DODONGO_ROOM, true),
@@ -196,8 +196,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_2F_SIDE_ROOM] = Region("Dodongos Cavern 2F Side Room", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT,  logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT, logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_LOWER, true),
@@ -327,8 +327,8 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Locations
         LOCATION(RC_DODONGOS_CAVERN_MQ_MAP_CHEST,              (logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)) && logic->CanOpenLargeChest()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,  (logic->CanStunDeku() || (logic->HasItem(RG_GORONS_BRACELET) && logic->BunnyHood())) && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, (logic->CanStunDeku() || (logic->HasItem(RG_GORONS_BRACELET) && logic->BunnyHood())) && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR,  (logic->CanStunDeku() || (logic->HasItem(RG_GORONS_BRACELET) && logic->BunnyHood())) && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT, (logic->CanStunDeku() || (logic->HasItem(RG_GORONS_BRACELET) && logic->BunnyHood())) && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_LOBBY_BOULDER_1,        logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
         LOCATION(RC_DODONGOS_CAVERN_MQ_LOBBY_BOULDER_2,        logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET)),
     }, {
@@ -423,7 +423,7 @@ void RegionTable_Init_DodongosCavern() {
     }, {
         //Locations
         //Jump from vines can reach stairs without climb
-        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE,    logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE,    logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_2, logic->CanBreakCrates()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_STAIRCASE_UPPER_CRATE_3, logic->CanBreakCrates()),
@@ -621,7 +621,7 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE_SCRUB] = Region("Dodongos Cavern MQ Lower Right Side Scrub", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS, logic->CanStunDeku() && (logic->HasItem(RG_SPEAK_DEKU) && logic->HasItem(RG_DEKU_SCRUBS_SOUL)) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE, true),
@@ -764,7 +764,7 @@ void RegionTable_Init_DodongosCavern() {
         // Locations
         LOCATION(RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DODONGOS_CAVERN_KING_DODONGO_HEART, logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR)),
-        LOCATION(RC_KING_DODONGO,                       logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR)),
+        LOCATION(RC_KING_DODONGO,                       logic->Get(LOGIC_DODONGOS_CAVERN_CLEAR) && logic->SageHandsOverReward(RG_DARUNIA_SOUL)),
     }, {
         // Exits
         ENTRANCE(RR_DODONGOS_CAVERN_BOSS_EXIT, true),
