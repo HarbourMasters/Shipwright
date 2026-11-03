@@ -54,7 +54,6 @@
     NPC_SOUL(KOKIRI,                     "the ", "Kokiri",                     "KOKIRI", GATEKEEPERS, true, "@ der Kokiri", "des Kokiris")  \
     NPC_SOUL(KING_ZORA,                  "",     "King Zora",                  "KZ",     GATEKEEPERS, true, "König Zoras @", "du Roi Zora")  \
     NPC_SOUL(GERUDO,                     "the ", "Gerudo",                     "GERUDO", GATEKEEPERS, true, "@ der Gerudo", "des Gerudo")  \
-    NPC_SOUL(GERUDO_CARD_GIVER,          "",     "Gerudo Guard",               "CARD",   GATEKEEPERS, true, "@ der Gerudo-Wache", "de la garde Gerudo")  \
     NPC_SOUL(ICHIRO,                     "",     "Ichiro",                     "ICHIRO", GATEKEEPERS, true, "Ichiros @", "d'Ichiro")  \
     NPC_SOUL(SABOORO,                    "",     "Sabooro",                    "SABOO",  GATEKEEPERS, true, "Saboros @", "de Sabooro")  \
     NPC_SOUL(JIRO,                       "",     "Jiro",                       "JIRO",   GATEKEEPERS, true, "Jiros @", "de Jiro")  \

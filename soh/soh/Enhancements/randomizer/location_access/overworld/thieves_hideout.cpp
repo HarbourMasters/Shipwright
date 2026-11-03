@@ -19,7 +19,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_1_TORCH_CELL_CRATE,     logic->CanBreakCrates()),
         LOCATION(RC_TH_WONDER_1_TORCH_1,       logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_TH_WONDER_1_TORCH_2,       logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_TH_FREED_CARPENTERS,       logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_CARD_GIVER_SOUL))),
+        LOCATION(RC_TH_FREED_CARPENTERS,       logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,   true),
@@ -44,7 +44,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_DOUBLE_CELL_RIGHT_CRATE,       logic->CanBreakCrates()),
         LOCATION(RC_TH_WONDER_DOUBLE_JAIL_LOWER_EXIT, logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_TH_WONDER_DOUBLE_JAIL_UPPER_EXIT, logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_TH_FREED_CARPENTERS,              logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_CARD_GIVER_SOUL))),
+        LOCATION(RC_TH_FREED_CARPENTERS,              logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,          true),
@@ -62,7 +62,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_DEAD_END_CELL_CRATE,             logic->CanBreakCrates()),
         LOCATION(RC_TH_WONDER_DEAD_END_SKULL_ENTRANCE,  logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_TH_WONDER_DEAD_END_SKULL_NEAR_JAIL, logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_TH_FREED_CARPENTERS,                logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_CARD_GIVER_SOUL))),
+        LOCATION(RC_TH_FREED_CARPENTERS,                logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_GF_BELOW_GS, true),
@@ -79,7 +79,7 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_STEEP_SLOPE_LEFT_POT,          logic->CanBreakPots()),
         LOCATION(RC_TH_WONDER_STEEP_SLOPE_LOWER_EXIT, logic->CanUse(RG_FAIRY_BOW)),
         LOCATION(RC_TH_WONDER_STEEP_SLOPE_UPPER_EXIT, logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_TH_FREED_CARPENTERS,              logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_CARD_GIVER_SOUL))),
+        LOCATION(RC_TH_FREED_CARPENTERS,              logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) && (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->HasItem(RG_GERUDO_SOUL))),
     }, {
         //Exits
         ENTRANCE(RR_GF_BOTTOM_OF_LOWER_VINES, true),

@@ -151,8 +151,8 @@ const NpcMatcher sNpcMatchers[] = {
     { ACTOR_EN_KZ,           0,          0,                           kAnyScene, RG_KING_ZORA_SOUL,          true, 80, 120 },
     { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_GATE_OPERATOR,      kAnyScene, RG_GERUDO_SOUL,             true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
     { ACTOR_EN_GE1,          0xFF,       GE1_TYPE_TRAINING_GROUND_GUARD, kAnyScene, RG_GERUDO_SOUL,          true, 0, 0, 0.0f, 0, false, SentryWithoutCard },
-    { ACTOR_EN_GE3,          0,          0,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
-    { ACTOR_EN_GE2,          0xFF,       2,                           kAnyScene, RG_GERUDO_CARD_GIVER_SOUL,  true, 20, 50, 0.0f, 0, true },
+    { ACTOR_EN_GE3,          0,          0,                           kAnyScene, RG_GERUDO_SOUL,             true, 20, 50, 0.0f, 0, true },
+    { ACTOR_EN_GE2,          0xFF,       2,                           kAnyScene, RG_GERUDO_SOUL,             true, 20, 50, 0.0f, 0, true },
     // Carpenters, hideout and Kakariko alike: params & 3 is 0 Ichiro (1 torch cell), 1 Shiro (steep slope),
     // 2 Jiro (double cell), 3 Sabooro (dead end)
     { ACTOR_EN_DAIKU,        3,          0,                           kAnyScene, RG_ICHIRO_SOUL,             true  },
@@ -716,15 +716,15 @@ void ShouldActorUpdate(void* actorRef, bool* result) {
 }
 
 // The Gerudo who hands over the membership card (EnGe3) is spawned once, by the last carpenter to be
-// freed, and is gone when Link leaves the room. If her soul was still missing then, she comes back the
-// next time Link is in the hideout with her soul, so the card can still be collected.
+// freed, and is gone when Link leaves the room. If the Gerudo soul was still missing then, she comes back the
+// next time Link is in the hideout with it, so the card can still be collected.
 s8 sCardGiverRoomTried = -1;
 
 void MaybeRespawnCardGiver() {
     if (gPlayState->sceneNum != SCENE_THIEVES_HIDEOUT) {
         return;
     }
-    const Rando::NpcSoul* soul = Rando::GetNpcSoul(RG_GERUDO_CARD_GIVER_SOUL);
+    const Rando::NpcSoul* soul = Rando::GetNpcSoul(RG_GERUDO_SOUL);
     if (soul == nullptr || !Rando::IsNpcSoulShuffled(*soul) || !Flags_GetRandomizerInf(soul->randInf) ||
         !GET_EVENTCHKINF_CARPENTERS_FREE_ALL() || Flags_GetRandomizerInf(RAND_INF_TH_ITEM_FROM_LEADER_OF_FORTRESS)) {
         return;
