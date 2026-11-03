@@ -217,7 +217,7 @@ typedef enum {
     // (gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) &&
     // !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)
     // ```
-    // Whether leaving the Spirit Temple as a child gets Sheik's Requiem of Spirit.
+    // Whether leaving the Spirit Temple (at either age) plays Sheik teaching the Requiem of Spirit.
     // #### `args`
     // - None
     VB_BE_ELIGIBLE_FOR_REQUIEM_OF_SPIRIT,
