@@ -1609,6 +1609,9 @@ void Play_Draw(PlayState* play) {
             Play_DrawOverlayElements(play);
         }
 
+        // Draw Enhancements that need to be on top of the HUD (e.g. radial item menu)
+        GameInteractor_ExecuteOnPlayDrawOverlayEnd();
+
         // Reset the inverted culling
         if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
             gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
