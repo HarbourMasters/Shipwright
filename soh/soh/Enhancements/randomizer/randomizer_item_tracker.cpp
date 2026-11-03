@@ -732,6 +732,33 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::SetWindowFontScale(1.0f); // Reset font scale to the original state
     }
 
+    if (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER_COUNT).Get() >= 1 && item.id == RG_ROCS_FEATHER) {
+
+        std::string currentString = "";
+        std::string maxString =
+            std::to_string(Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER_COUNT).Get() + 1);
+        ImU32 currentColor = IM_COL_WHITE;
+        ImU32 maxColor = IM_COL_GREEN;
+
+        if (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE)) {
+            currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired);
+            currentString += "/";
+        } else {
+            currentString += std::to_string(gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining);
+            currentString += "/";
+        }
+
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize >> 1) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+        ImGui::Text("%s", currentString.c_str());
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+        ImGui::Text("%s", maxString.c_str());
+        ImGui::PopStyleColor();
+    }
+
     // progressive open chest: 'S' for small chests only, 'B' once big chests can be opened too
     if (item.id == RG_OPEN_CHEST && CVarGetInteger(CVAR_TRACKER_ITEM("OpenChestIdentifier"), 0) && IS_RANDO &&
         RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
@@ -1011,6 +1038,11 @@ void DrawItem(ItemTrackerItem item) {
                 itemName = "Triforce Piece";
                 break;
             case RG_ROCS_FEATHER:
+                if (Rando::Context::GetInstance()->GetOption(RSK_ROCS_FEATHER).Is(RO_ROCS_FEATHER_CONSUMABLE)) {
+                    hasItem = gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining > 0;
+                } else {
+                    hasItem = gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired > 0;
+                }
                 itemName = "Roc's Feather";
                 break;
             case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:

@@ -2879,7 +2879,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gEmptyTexture;
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
-    interfaceCtx->unk_1FA = 1;
+    interfaceCtx->unk_1FA |= (1 << 0);
 }
 
 s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
@@ -4945,6 +4945,70 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void Interface_DrawActionIcon(PlayState* play, f32 x, f32 y, void* texture) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Matrix_Translate(-137.0f + x, 97.0f - y, XREG(18) / 10.0f, MTXMODE_NEW);
+    Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+    Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
+
+    gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[0], 4, 0);
+
+    gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
+
+    s16 item;
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RocsFeatherOnA"), 0) == 1) {
+        item = ITEM_ROCS_FEATHER;
+    } else {
+        item = ITEM_NONE;
+    }
+
+    if (GameInteractor_Should(VB_DRAW_AMMO_COUNT, false, &item)) {
+        s16 ammo;
+        if (GameInteractor_Should(VB_OVERRIDE_AMMO_COUNT, true, &item, &ammo)) {
+            ammo = AMMO(item);
+        }
+
+        gDPPipeSync(OVERLAY_DISP++);
+
+        if (GameInteractor_Should(VB_COLOR_AMMO_GREEN, false, item)) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->aAlpha);
+        }
+
+        s16 ammoX = x + 14;
+        s16 ammoY = y + 27;
+
+        if (ammo == 0) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, interfaceCtx->aAlpha);
+            OVERLAY_DISP =
+                Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[0], 8, 8, ammoX, ammoY, 8, 8, 1 << 10, 1 << 10);
+        } else {
+
+            if (ammo >= 100) {
+                ammo = ammo % 100;
+            }
+
+            u8 tens = ammo / 10;
+            u8 ones = ammo % 10;
+            if (tens > 0) {
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[tens], 8, 8, ammoX - 6, ammoY, 8, 8,
+                                              1 << 10, 1 << 10);
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ones], 8, 8, ammoX, ammoY, 8, 8,
+                                              1 << 10, 1 << 10);
+            } else {
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ones], 8, 8, ammoX, ammoY, 8, 8,
+                                              1 << 10, 1 << 10);
+            }
+        }
+    }
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 void Interface_DrawActionButton(PlayState* play, f32 x, f32 y) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
@@ -5441,7 +5505,7 @@ void Interface_Draw(PlayState* play) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
 
-        if (!(interfaceCtx->unk_1FA)) {
+        if (!(interfaceCtx->unk_1FA & (1 << 0))) {
             // B Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                 if (fullUi) {
@@ -5723,22 +5787,29 @@ void Interface_Draw(PlayState* play) {
         if (fullUi) {
             Interface_DrawActionButton(play, PosX_BtnA, PosY_BtnA);
         }
+
         gDPPipeSync(OVERLAY_DISP++);
         gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-        Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + languageOffset) / 10.0f, MTXMODE_NEW);
-        Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-        Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-        gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
 
-        if ((interfaceCtx->unk_1EC < 2) || (interfaceCtx->unk_1EC == 3)) {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[0]);
+        // bit set to 1 if VB_SET_ACTION_TEXTURE override is to show an icon rather than text
+        if (interfaceCtx->unk_1FA & (1 << 1)) {
+            Interface_DrawActionIcon(play, PosX_BtnA, PosY_BtnA, interfaceCtx->doActionSegment[0]);
         } else {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[1]);
+            Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + languageOffset) / 10.0f, MTXMODE_NEW);
+            Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+            Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
+
+            if ((interfaceCtx->unk_1EC < 2) || (interfaceCtx->unk_1EC == 3)) {
+                Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[0]);
+            } else {
+                Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[1]);
+            }
         }
 
         gDPPipeSync(OVERLAY_DISP++);
@@ -6757,7 +6828,12 @@ void Interface_Update(PlayState* play) {
                 if ((action == DO_ACTION_MAX) || (action == DO_ACTION_MAX + 1)) {
                     action = DO_ACTION_NONE;
                 }
-                Interface_LoadActionLabel(interfaceCtx, action, 0);
+                if (!GameInteractor_Should(VB_SET_ACTION_TEXTURE, true, &action, &interfaceCtx->doActionSegment[0])) {
+                    Interface_LoadActionLabel(interfaceCtx, action, 0);
+                    interfaceCtx->unk_1FA &= ~(1 << 1);
+                } else {
+                    interfaceCtx->unk_1FA |= (1 << 1);
+                }
             }
             break;
         case 3:
@@ -6777,7 +6853,12 @@ void Interface_Update(PlayState* play) {
                 if ((action == DO_ACTION_MAX) || (action == DO_ACTION_MAX + 1)) {
                     action = DO_ACTION_NONE;
                 }
-                Interface_LoadActionLabel(interfaceCtx, action, 0);
+                if (!GameInteractor_Should(VB_SET_ACTION_TEXTURE, true, &action, &interfaceCtx->doActionSegment[0])) {
+                    Interface_LoadActionLabel(interfaceCtx, action, 0);
+                    interfaceCtx->unk_1FA &= ~(1 << 1);
+                } else {
+                    interfaceCtx->unk_1FA |= (1 << 1);
+                }
             }
             break;
     }

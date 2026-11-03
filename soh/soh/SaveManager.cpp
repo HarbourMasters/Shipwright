@@ -333,6 +333,11 @@ void SaveManager::LoadRandomizer() {
     SaveManager::Instance->LoadData("silverMqGanonWater", gSaveContext.ship.quest.data.randomizer.silverMqGanonWater);
     SaveManager::Instance->LoadData("silverMqGanonShadow", gSaveContext.ship.quest.data.randomizer.silverMqGanonShadow);
 
+    SaveManager::Instance->LoadData("rocsFeathersAcquired",
+                                    gSaveContext.ship.quest.data.randomizer.rocsFeathersAcquired);
+    SaveManager::Instance->LoadData("rocsFeathersRemaining",
+                                    gSaveContext.ship.quest.data.randomizer.rocsFeathersRemaining);
+
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
@@ -523,6 +528,11 @@ void SaveManager::SaveRandomizer(const SaveContext& saveContext, int sectionID, 
                                     gSaveContext.ship.quest.data.randomizer.silverMqSpiritBigWall);
     SaveManager::Instance->SaveData("silverMqGanonWater", gSaveContext.ship.quest.data.randomizer.silverMqGanonWater);
     SaveManager::Instance->SaveData("silverMqGanonShadow", gSaveContext.ship.quest.data.randomizer.silverMqGanonShadow);
+
+    SaveManager::Instance->SaveData("rocsFeathersAcquired",
+                                    saveContext.ship.quest.data.randomizer.rocsFeathersAcquired);
+    SaveManager::Instance->SaveData("rocsFeathersRemaining",
+                                    saveContext.ship.quest.data.randomizer.rocsFeathersRemaining);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext.ship.pendingIceTrapCount);
 

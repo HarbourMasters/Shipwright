@@ -4874,7 +4874,8 @@ void KaleidoScope_Update(PlayState* play) {
             // Used to clear swordless temp B after unpause so minigame/epona handling restarts
             GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
-            interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
+            interfaceCtx->unk_1FC = 0;
+            interfaceCtx->unk_1FA &= ~(1 << 0);
             osSyncPrintf(VT_FGCOL(YELLOW));
             osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.prevHudVisibilityMode);
             gSaveContext.hudVisibilityMode = 0;

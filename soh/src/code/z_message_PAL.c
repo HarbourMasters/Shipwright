@@ -4655,7 +4655,8 @@ void Message_Update(PlayState* play) {
             osSyncPrintf(VT_RST);
             msgCtx->msgLength = 0;
             msgCtx->msgMode = MSGMODE_NONE;
-            interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
+            interfaceCtx->unk_1FC = 0;
+            interfaceCtx->unk_1FA &= ~(1 << 0);
             msgCtx->textId = msgCtx->stateTimer = 0;
 
             if (msgCtx->textboxEndType == TEXTBOX_ENDTYPE_PERSISTENT) {

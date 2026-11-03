@@ -1527,8 +1527,16 @@
             "rocs_feather": {
                 "name": "Roc's Feather",
                 "description": [
-                    "Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. ",
-                    "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic."
+                    "Off - Roc's Feather will not be shuffled. No changes will be made to item pool.\n\n",
+                    "On - Adds Roc's Feather to the item pool. Roc's Feather is a custom item granting the player a jump on demand. ",
+                    "Increasing the number of Feathers will allow successive jumps for each feather found.\n\n",
+                    "Consumable - Adds consumable Roc's Feathers to the item pool. Some junk drops and shop refills will be replaced with feathers.\n\n"
+                ]
+            },
+            "rocs_feather_count": {
+                "name": "Roc's Feather Quantity / Max Capacity",
+                "description": [
+                    "If Roc's Feather is 'On' this will be the number of feathers in the pool. If Roc's Feather is 'Consumable' this will be the maximum you can carry at once."
                 ]
             },
             "nayrus_love_uses": {

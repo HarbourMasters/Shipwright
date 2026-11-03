@@ -389,6 +389,30 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // Whether the default action for A should be used. Sending false will (attempt to)
+    // intercept it.
+    // #### `args`
+    // - Player* player
+    // - PlayState* playState
+    VB_CHANGE_ACTION_AND_USE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the default texture for a given action on the A button should be used.
+    // A hook returning false must specify a replacement texture pointer.
+    // A hook returning true /may/ change the ACTION supplied to alter the text shown.
+    // Interface_LoadActionLabel
+    // #### `args`
+    // - `u16* action` (`DO_ACTION_<action>` - specified in `z64.h`'s `DoAction` struct)
+    // - `const char** alternateTexture` (pointer to a 32 x 32 G_IM_FMT_RGBA texture)
+    VB_SET_ACTION_TEXTURE,
+
+    // #### `result`
+    // ```c
     // gSaveContext.rupees < 200
     // ```
     // #### `args`

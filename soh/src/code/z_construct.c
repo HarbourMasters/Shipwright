@@ -17,7 +17,8 @@ void func_801109B0(PlayState* play) {
 
     View_Init(&interfaceCtx->view, play->state.gfxCtx);
 
-    interfaceCtx->unk_1FA = interfaceCtx->unk_261 = interfaceCtx->unk_1FC = 0;
+    interfaceCtx->unk_261 = interfaceCtx->unk_1FC = 0;
+    interfaceCtx->unk_1FA &= ~(1 << 0);
     interfaceCtx->unk_1EC = interfaceCtx->unk_1EE = interfaceCtx->unk_1F0 = 0;
     interfaceCtx->unk_22E = 0;
     interfaceCtx->unk_230 = 16;

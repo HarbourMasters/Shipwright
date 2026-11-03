@@ -6455,7 +6455,7 @@ s32 Player_ActionHandler_Roll(Player* this, PlayState* play) {
             return true;
         } else if ((this->putAwayCooldownTimer == 0) && (this->heldItemAction >= PLAYER_IA_SWORD_MASTER)) {
             Player_UseItem(play, this, ITEM_NONE);
-        } else {
+        } else if (GameInteractor_Should(VB_CHANGE_ACTION_AND_USE, true, this, play)) {
             this->stateFlags2 ^= PLAYER_STATE2_NAVI_ACTIVE;
         }
     }
@@ -9657,6 +9657,11 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
             }
         }
 
+        // check for interactions on A while midair, exit early if one is triggered
+        if (!GameInteractor_Should(VB_CHANGE_ACTION_AND_USE, true, this, play)) {
+            return;
+        }
+
         LinkAnimation_Update(play, &this->skelAnime);
 
         if (!(this->stateFlags2 & PLAYER_STATE2_HOPPING)) {
@@ -11090,7 +11095,10 @@ void Player_UpdateInterface(PlayState* play, Player* this) {
             }
         }
 
-        Interface_SetDoAction(play, doAction);
+        if (!(this->actor.bgCheckFlags & (BGCHECKFLAG_GROUND_LEAVE | BGCHECKFLAG_GROUND_TOUCH) &&
+              GameInteractor_Should(VB_SET_ACTION_TEXTURE, false, &doAction, &play->interfaceCtx.doActionSegment[1]))) {
+            Interface_SetDoAction(play, doAction);
+        }
 
         if (this->stateFlags2 & PLAYER_STATE2_NAVI_ALERT) {
             if (this->focusActor != NULL) {
