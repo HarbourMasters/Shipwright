@@ -1139,8 +1139,8 @@ extern "C" void SOH_Audio_RenderResetRingOut() {
     const size_t pending = sResetRingOut.size() - sResetRingOutPos;
     ringOut.resize(std::max(ringOut.size(), pending), 0);
     for (size_t i = 0; i < pending; i++) {
-        ringOut.at(i) =
-            static_cast<s16>(std::clamp(ringOut.at(i) + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
+        ringOut.at(i) = static_cast<s16>(
+            std::clamp<int32_t>(ringOut.at(i) + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
     }
     sResetRingOut = std::move(ringOut);
     sResetRingOutPos = 0;
@@ -1156,8 +1156,8 @@ static void MixResetRingOut(std::span<s16> output) {
 
     const size_t count = std::min(output.size(), sResetRingOut.size() - sResetRingOutPos);
     for (size_t i = 0; i < count; i++) {
-        output[i] =
-            static_cast<s16>(std::clamp(output[i] + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
+        output[i] = static_cast<s16>(
+            std::clamp<int32_t>(output[i] + sResetRingOut.at(sResetRingOutPos + i), INT16_MIN, INT16_MAX));
     }
     sResetRingOutPos += count;
     if (sResetRingOutPos == sResetRingOut.size()) {
